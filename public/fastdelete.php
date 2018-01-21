@@ -80,12 +80,9 @@ write_log("{$lang['fastdelete_log_first']} {$q['name']} {$lang['fastdelete_log_l
 if ($site_config['seedbonus_on'] == 1) {
     sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus_per_delete']) . ' WHERE id = ' . sqlesc($q['owner'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] - $site_config['bonus_per_delete']);
-    $cache->update_row('userstats_' . $q['owner'], [
+    $cache->update_row('user' . $q['owner'], [
         'seedbonus' => $update['seedbonus'],
-    ], $site_config['expires']['u_stats']);
-    $cache->update_row('user_stats_' . $q['owner'], [
-        'seedbonus' => $update['seedbonus'],
-    ], $site_config['expires']['user_stats']);
+    ], $site_config['expires']['user_cache']);
 }
 
 setSessionVar('is-success', "[h2]Torrent deleted[/h2][p]" . htmlsafechars($q['name']) . "[/p]");

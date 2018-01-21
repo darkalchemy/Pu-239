@@ -14,6 +14,8 @@ $HTMLOUT = '';
 
 /**
  * @param $var
+ *
+ * @return int
  */
 function I_smell_a_rat($var)
 {
@@ -736,7 +738,15 @@ if (isset($_GET['exchange'])) {
             $pm['subject_thief'] = 'Theft summary';
             $pm['message'] = "Hey\nWe are sorry to announce that you have been robbed by [url=" . $site_config['baseurl'] . "/userdetails.php?id=%d]%s[/url]\nNow your total reputation is [b]%d[/b]\n[color=#ff0000]This is normal and you should not worry, if you have enough bonus points you can rob other people[/color]";
             $pm['message_thief'] = "Hey %s:\nYou robbed:\n%s\nYour total reputation is now [b]%d[/b] but you lost [b]%d[/b] karma points ";
-            $foo = [50 => 3, 75 => 3, 100 => 3, 150 => 4, 200 => 5, 250 => 5, 300 => 6];
+            $foo = [
+                50  => 3,
+                75  => 3,
+                100 => 3,
+                150 => 4,
+                200 => 5,
+                250 => 5,
+                300 => 6
+            ];
             $user_limit = isset($foo[$rep_to_steal]) ? $foo[$rep_to_steal] : 3;
 
             $query = $fluent->from('users')
@@ -835,13 +845,10 @@ if (isset($_GET['exchange'])) {
                 sql_query('UPDATE bonus
                             SET pointspool = ' . sqlesc($norefund) . "
                             WHERE id = '11' LIMIT 1") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('userstats_' . $userid, [
-                    'seedbonus' => $seedbonus,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $userid, [
+                $cache->update_row('user' . $userid, [
                     'seedbonus'    => $seedbonus,
                     'bonuscomment' => $bonuscomment,
-                ], $site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_cache']);
                 $cache->delete('freecontribution_');
                 $cache->delete('top_donators_');
                 $cache->delete('freeleech_counter');
@@ -862,13 +869,10 @@ if (isset($_GET['exchange'])) {
                 sql_query('UPDATE users SET
                             seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . '
                             WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('userstats_' . $userid, [
-                    'seedbonus' => $seedbonus,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $userid, [
+                $cache->update_row('user' . $userid, [
                     'seedbonus'    => $seedbonus,
                     'bonuscomment' => $bonuscomment,
-                ], $site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_cache']);
                 $cache->delete('freecontribution_');
                 $cache->delete('top_donators_');
                 $cache->delete('freeleech_counter');
@@ -909,13 +913,10 @@ if (isset($_GET['exchange'])) {
                 sql_query('UPDATE bonus
                             SET pointspool = ' . sqlesc($norefund) . "
                             WHERE id = '12' LIMIT 1") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('userstats_' . $userid, [
-                    'seedbonus' => $seedbonus,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $userid, [
+                $cache->update_row('user' . $userid, [
                     'seedbonus'    => $seedbonus,
                     'bonuscomment' => $bonuscomment,
-                ], $site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_cache']);
                 $cache->delete('freecontribution_');
                 $cache->delete('top_donators2_');
                 $cache->delete('doubleupload_counter');
@@ -936,13 +937,10 @@ if (isset($_GET['exchange'])) {
                 sql_query('UPDATE users
                             SET seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . '
                             WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('userstats_' . $userid, [
-                    'seedbonus' => $seedbonus,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $userid, [
+                $cache->update_row('user' . $userid, [
                     'seedbonus'    => $seedbonus,
                     'bonuscomment' => $bonuscomment,
-                ], $site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_cache']);
                 $cache->delete('freecontribution_');
                 $cache->delete('top_donators2_');
                 $cache->delete('doubleupload_counter');
@@ -983,13 +981,10 @@ if (isset($_GET['exchange'])) {
                 sql_query('UPDATE bonus
                             SET pointspool = ' . sqlesc($norefund) . "
                             WHERE id = '13' LIMIT 1") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('userstats_' . $userid, [
-                    'seedbonus' => $seedbonus,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $userid, [
+                $cache->update_row('user' . $userid, [
                     'seedbonus'    => $seedbonus,
                     'bonuscomment' => $bonuscomment,
-                ], $site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_cache']);
                 $cache->delete('freecontribution_');
                 $cache->delete('top_donators3_');
                 $cache->delete('halfdownload_counter');
@@ -1010,13 +1005,10 @@ if (isset($_GET['exchange'])) {
                 sql_query('UPDATE users
                             SET seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . '
                             WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('userstats_' . $userid, [
-                    'seedbonus' => $seedbonus,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $userid, [
+                $cache->update_row('user' . $userid, [
                     'seedbonus'    => $seedbonus,
                     'bonuscomment' => $bonuscomment,
-                ], $site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_cache']);
                 $cache->delete('freecontribution_');
                 $cache->delete('top_donators3_');
                 $cache->delete('halfdownload_counter');
@@ -1059,15 +1051,11 @@ if (isset($_GET['exchange'])) {
             sql_query('UPDATE users
                         SET uploaded = ' . sqlesc($upload + $difference) . ', bonuscomment = ' . sqlesc($bonuscomment) . ', seedbonus = ' . sqlesc($seedbonus) . '
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-            $cache->update_row('userstats_' . $userid, [
-                'uploaded'  => $upload + $difference,
-                'seedbonus' => $seedbonus,
-            ], $site_config['expires']['u_stats']);
-            $cache->update_row('user_stats_' . $userid, [
+            $cache->update_row('user' . $userid, [
                 'uploaded'     => $upload + $difference,
                 'seedbonus'    => $seedbonus,
                 'bonuscomment' => $bonuscomment,
-            ], $site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_cache']);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?ratio_success=1");
             die;
             break;
@@ -1090,13 +1078,10 @@ if (isset($_GET['exchange'])) {
             sql_query('UPDATE torrents
                         SET bump = "yes", free = ' . sqlesc($free_time) . ', added = ' . TIME_NOW . '
                         WHERE id = ' . sqlesc($torrent_number)) or sqlerr(__FILE__, __LINE__);
-            $cache->update_row('userstats_' . $userid, [
-                'seedbonus' => $seedbonus,
-            ], $site_config['expires']['u_stats']);
-            $cache->update_row('user_stats_' . $userid, [
+            $cache->update_row('user' . $userid, [
                 'seedbonus'    => $seedbonus,
                 'bonuscomment' => $bonuscomment,
-            ], $site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_cache']);
             $cache->update_row('torrent_details_' . $torrent_number, [
                 'added' => TIME_NOW,
                 'bump'  => 'yes',
@@ -1117,17 +1102,12 @@ if (isset($_GET['exchange'])) {
                         SET class = ' . sqlesc(UC_VIP) . ", vip_added = 'yes', vip_until = " . sqlesc($vip_until) . ', seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . '
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user' . $userid, [
-                'class'     => 2,
-                'vip_added' => 'yes',
-                'vip_until' => $vip_until,
-            ], $site_config['expires']['user_cache']);
-            $cache->update_row('userstats_' . $userid, [
-                'seedbonus' => $seedbonus,
-            ], $site_config['expires']['u_stats']);
-            $cache->update_row('user_stats_' . $userid, [
+                'class'        => 2,
+                'vip_added'    => 'yes',
+                'vip_until'    => $vip_until,
                 'seedbonus'    => $seedbonus,
                 'bonuscomment' => $bonuscomment,
-            ], $site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_cache']);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?class_success=1");
             die;
             break;
@@ -1154,16 +1134,11 @@ if (isset($_GET['exchange'])) {
             sql_query('INSERT INTO messages (sender, receiver, added, msg, subject)
                         VALUES (0, ' . sqlesc($userid) . ", $dt, $msg, $subject)") or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user' . $userid, [
-                'warned' => 0,
-            ], $site_config['expires']['user_cache']);
-            $cache->update_row('userstats_' . $userid, [
-                'seedbonus' => $seedbonus,
-            ], $site_config['expires']['u_stats']);
-            $cache->update_row('user_stats_' . $userid, [
+                'warned'       => 0,
                 'seedbonus'    => $seedbonus,
                 'bonuscomment' => $bonuscomment,
                 'modcomment'   => $modcomment,
-            ], $site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_cache']);
             $cache->increment('inbox_' . $userid);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?warning_success=1");
             die;
@@ -1177,15 +1152,10 @@ if (isset($_GET['exchange'])) {
                         SET smile_until = ' . sqlesc($smile_until) . ', seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . '
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user' . $userid, [
-                'smile_until' => $smile_until,
-            ], $site_config['expires']['user_cache']);
-            $cache->update_row('userstats_' . $userid, [
-                'seedbonus' => $seedbonus,
-            ], $site_config['expires']['u_stats']);
-            $cache->update_row('user_stats_' . $userid, [
+                'smile_until'  => $smile_until,
                 'seedbonus'    => $seedbonus,
                 'bonuscomment' => $bonuscomment,
-            ], $site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_cache']);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?smile_success=1");
             die;
             break;
@@ -1199,15 +1169,10 @@ if (isset($_GET['exchange'])) {
                         SET invites = ' . sqlesc($inv) . ', seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . '
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user' . $userid, [
-                'invites' => $inv,
-            ], $site_config['expires']['user_cache']);
-            $cache->update_row('userstats_' . $userid, [
-                'seedbonus' => $seedbonus,
-            ], $site_config['expires']['u_stats']);
-            $cache->update_row('user_stats_' . $userid, [
+                'invites'      => $inv,
                 'seedbonus'    => $seedbonus,
                 'bonuscomment' => $bonuscomment,
-            ], $site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_cache']);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?invite_success=1");
             die;
             break;
@@ -1224,15 +1189,10 @@ if (isset($_GET['exchange'])) {
                         SET title = ' . sqlesc($title) . ', seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . '
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user' . $userid, [
-                'title' => $title,
-            ], $site_config['expires']['user_cache']);
-            $cache->update_row('userstats_' . $userid, [
-                'seedbonus' => $seedbonus,
-            ], $site_config['expires']['u_stats']);
-            $cache->update_row('user_stats_' . $userid, [
+                'title'        => $title,
                 'seedbonus'    => $seedbonus,
                 'bonuscomment' => $bonuscomment,
-            ], $site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_cache']);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?title_success=1");
             die;
             break;
@@ -1250,7 +1210,19 @@ if (isset($_GET['exchange'])) {
             $bonuscomment_gift = htmlsafechars($arr['bonuscomment']);
             $usernamegift = htmlsafechars($arr['username']);
 
-            $check_me = [100, 200, 300, 400, 500, 1000, 5000, 10000, 20000, 50000, 100000];
+            $check_me = [
+                100,
+                200,
+                300,
+                400,
+                500,
+                1000,
+                5000,
+                10000,
+                20000,
+                50000,
+                100000
+            ];
             if (!in_array($points, $check_me)) {
                 stderr('Error', 'I smell a rat!');
             }
@@ -1278,20 +1250,14 @@ if (isset($_GET['exchange'])) {
                 sql_query('UPDATE users
                             SET seedbonus = ' . sqlesc($giftbonus1) . ', bonuscomment = ' . sqlesc($bonuscomment_gift) . '
                             WHERE id = ' . sqlesc($useridgift)) or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('userstats_' . $userid, [
-                    'seedbonus' => $seedbonus,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $userid, [
+                $cache->update_row('user' . $userid, [
                     'seedbonus'    => $seedbonus,
                     'bonuscomment' => $bonuscomment,
-                ], $site_config['expires']['user_stats']);
-                $cache->update_row('userstats_' . $useridgift, [
-                    'seedbonus' => $giftbonus1,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $useridgift, [
+                ], $site_config['expires']['user_cache']);
+                $cache->update_row('user' . $useridgift, [
                     'seedbonus'    => $giftbonus1,
                     'bonuscomment' => $bonuscomment_gift,
-                ], $site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_cache']);
                 //===send message
                 $subject = sqlesc('Someone Loves you');
                 $added = sqlesc(TIME_NOW);
@@ -1492,7 +1458,7 @@ if (!XBT_TRACKER) {
         $hstatus = $font_color_hd . '';
     }
 }
-//==09 Ezeros freeleech contribution top 10 - pdq.Bigjoos
+
 $top_donators = $cache->get('top_donators_');
 if ($top_donators === false || is_null($top_donators)) {
     $a = sql_query("SELECT b.id, SUM(b.donation) AS total, u.username, u.id AS userid, u.pirate, u.king, u.class, u.donor, u.warned, u.leechwarn, u.enabled, u.chatpost

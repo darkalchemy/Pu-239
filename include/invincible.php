@@ -3,6 +3,8 @@
  * @param      $id
  * @param bool $invincible
  * @param bool $bypass_bans
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function invincible($id, $invincible = true, $bypass_bans = true)
 {
@@ -41,28 +43,20 @@ function invincible($id, $invincible = true, $bypass_bans = true)
     $cache->delete('u_passkey_' . $row['torrent_pass']);
     // update ip in db
     $modcomment = get_date(TIME_NOW, '', 1) . ' - ' . $display . ' invincible thanks to ' . $CURUSER['username'] . "\n" . $row['modcomment'];
-    //ipf = '.ipToStorageFormat($ip).',
     sql_query('UPDATE users SET ip = ' . ipToStorageFormat($ip) . ', modcomment = ' . sqlesc($modcomment) . '
               WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    //'ipf'   => $ip,
-    // update ip in caches
-    //$cache->delete('user'.$id);
+
     $cache->update_row('user' . $id, [
-        'ip'    => $ip,
-        'perms' => $row['perms'],
-    ], $site_config['expires']['user_cache']);
-    $cache->update_row('user_stats_' . $id, [
+        'ip'         => $ip,
+        'perms'      => $row['perms'],
         'modcomment' => $modcomment,
-    ], $site_config['expires']['user_stats']);
-    //'ipf'   => $ip,
+    ], $site_config['expires']['user_cache']);
     if ($id == $CURUSER['id']) {
         $cache->update_row('user' . $CURUSER['id'], [
-            'ip'    => $ip,
-            'perms' => $row['perms'],
-        ], $site_config['expires']['user_cache']);
-        $cache->update_row('user_stats_' . $CURUSER['id'], [
+            'ip'         => $ip,
+            'perms'      => $row['perms'],
             'modcomment' => $modcomment,
-        ], $site_config['expires']['user_stats']);
+        ], $site_config['expires']['user_cache']);
     }
     write_log('Member [b][url=userdetails.php?id=' . $id . ']' . (htmlsafechars($row['username'])) . '[/url][/b] is ' . $display . ' invincible thanks to [b]' . $CURUSER['username'] . '[/b]');
     // header ouput

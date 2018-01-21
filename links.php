@@ -51,9 +51,9 @@ $HTMLOUT .= "{$lang['links_other_header']}
     <table width='100%'><tr><td class='text'><ul>
     {$lang['links_other_body']}
     </ul></td></tr></table>";
-$HTMLOUT .= "{$lang['links_tbdev_header']}>
+$HTMLOUT .= "{$lang['links_pu239_header']}>
     <table width='100%'><tr><td class='text'>
-    {$lang['links_tbdev_body']}
+    {$lang['links_pu239_body']}
     </td></tr></table>";
 $HTMLOUT .= '</td></tr></table>';
 echo stdhead('Links') . $HTMLOUT . stdfoot();

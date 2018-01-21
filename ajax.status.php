@@ -38,7 +38,6 @@ function jsonmsg($arr)
 {
     global $cache, $CURUSER;
     $cache->delete('userstatus_' . $CURUSER['id']);
-    $cache->delete('user_status_' . $CURUSER['id']);
 
     return json_encode([
                            'msg'    => $arr[0],

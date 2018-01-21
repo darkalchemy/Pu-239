@@ -1,6 +1,8 @@
 <?php
 /**
  * @param $data
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function pu_update($data)
 {
@@ -51,12 +53,10 @@ function pu_update($data)
                 $users_buffer[] = '(' . $arr['id'] . ', ' . $class_value . ', 1, ' . $modcom . ')';
                 $update['invites'] = ($arr['invites'] + 1);
                 $cache->update_row('user' . $arr['id'], [
-                    'class'   => $class_value,
-                    'invites' => $update['invites'],
-                ], $site_config['expires']['user_cache']);
-                $cache->update_row('user_stats_' . $arr['id'], [
+                    'class'      => $class_value,
+                    'invites'    => $update['invites'],
                     'modcomment' => $modcomment,
-                ], $site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_cache']);
                 $cache->increment('inbox_' . $arr['id']);
             }
             $count = count($users_buffer);

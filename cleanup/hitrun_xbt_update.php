@@ -1,6 +1,8 @@
 <?php
 /**
  * @param $data
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function hitrun_xbt_update($data)
 {
@@ -41,13 +43,8 @@ function hitrun_xbt_update($data)
                     'downloadpos'       => 0,
                     'can_leech'         => 0,
                     'hnrwarn'           => 'yes',
+                    'modcomment'        => $modcomment,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('userstats_xbt_' . $arr_fuckers['uid'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['u_stats_xbt']);
-                $cache->update_row('user_stats_xbt' . $arr_fuckers['uid'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_stats_xbt']);
                 $cache->increment('inbox_' . $arr_fuckers['uid']);
             }
         }
@@ -76,13 +73,8 @@ function hitrun_xbt_update($data)
                     'downloadpos' => 1,
                     'can_leech'   => 1,
                     'hnrwarn'     => 'no',
+                    'modcomment'  => $modcomment,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('user_stats_xbt' . $arr_good_boy['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_stats_xbt']);
-                $cache->update_row('userstats_xbt_' . $arr_good_boy['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['u_stats_xbt']);
                 $cache->increment('inbox_' . $arr_good_boy['id']);
             }
         }

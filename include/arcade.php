@@ -1,5 +1,6 @@
 <?php
 global $site_config, $CURUSER, $cache;
+
 //====  make sure name is what you expect or error... add or remove to match your site
 if (isset($_POST['gname'])) {
     $gname = htmlspecialchars($_POST['gname']);
@@ -11,7 +12,11 @@ if (isset($_POST['gname'])) {
 //====  make sure level name is what you expect or error... add or remove to match your site
 if (isset($_POST['levelName'])) {
     $levelName = htmlspecialchars($_POST['levelName']);
-    $all_levels = ['LEVEL: SLUG', 'LEVEL: WORM', 'LEVEL: PYTHON'];
+    $all_levels = [
+        'LEVEL: SLUG',
+        'LEVEL: WORM',
+        'LEVEL: PYTHON'
+    ];
     if (!in_array($levelName, $all_levels)) {
         stderr('Error', 'I smell a very fat rat!');
     }
@@ -36,13 +41,10 @@ if ($highScore < $score) {
     $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . " - {$site_config['top_score_points']} Points for setting a new high score in $game.\n " . $bonuscomment;
     sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['top_score_points']) . ', bonuscomment = ' . sqlesc($bonuscomment) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $seedbonus = get_one_row('users', 'seedbonus', 'WHERE id = ' . $CURUSER['id']);
-    $cache->update_row('userstats_' . $CURUSER['id'], [
+    $cache->update_row('user' . $CURUSER['id'], [
         'seedbonus' => $seedbonus,
-    ], $site_config['expires']['u_stats']);
-    $cache->update_row('user_stats_' . $CURUSER['id'], [
-        'seedbonus'    => $seedbonus,
         'bonuscomment' => $bonuscomment,
-    ], $site_config['expires']['user_stats']);
+    ], $site_config['expires']['user_cache']);
 } elseif ($score >= .9 * $highScore) {
     $message = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just played $link and scored a whopping " . number_format($score) . '. Excellent! The high score remains ' . number_format($highScore) . '.';
 } else {

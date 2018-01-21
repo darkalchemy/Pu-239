@@ -31,18 +31,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (sql_query('INSERT INTO tickets(user) VALUES ' . join(', ', $t))) {
             sql_query('UPDATE users SET seedbonus = seedbonus - ' . ($tickets * $lottery_config['ticket_amount']) . ' WHERE id = ' . $CURUSER['id']);
             $seedbonus_new = $CURUSER['seedbonus'] - ($tickets * $lottery_config['ticket_amount']);
-            $What_Cache = (XBT_TRACKER ? 'userstats_xbt_' : 'userstats_');
-            $What_Expire = (XBT_TRACKER ? $site_config['expires']['u_stats_xbt'] : $site_config['expires']['u_stats']);
-            $cache->update_row($What_Cache . $CURUSER['id'], [
+            $cache->update_row('user' . $CURUSER['id'], [
                 'seedbonus' => $seedbonus_new,
-            ], $What_Expire);
-            $What_Cache = (XBT_TRACKER ? 'user_stats_xbt_' : 'user_stats_');
-            $What_Expire = (XBT_TRACKER ? $site_config['expires']['user_stats_xbt'] : $site_config['expires']['user_stats']);
-            $cache->update_row($What_Cache . $CURUSER['id'], [
-                'seedbonus' => $seedbonus_new,
-            ], $What_Expire);
-            setSessionVar('is-success', 'You bought <b class="has-text-primary">' . number_format($tickets) . '</b>. You now have <b class="has-text-primary">' . number_format($tickets + $user_tickets) . '</b> tickets!
-');
+            ], $site_config['expires']['user_cache']);
+            setSessionVar('is-success', 'You bought <b class="has-text-primary">' . number_format($tickets) . '</b>. You now have <b class="has-text-primary">' . number_format($tickets + $user_tickets) . '</b> tickets!');
         } else {
             setSessionVar('is-warning', 'There was an error with the update query, mysql error: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         }

@@ -41,7 +41,7 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
         if ($MyPeersCache === false || is_null($MyPeersCache)) {
             $seed['yes'] = $seed['no'] = 0;
             $seed['conn'] = 3;
-            $r = sql_query('SELECT COUNT(id) AS count, seeder, ANY_VALUE(connectable)
+            $r = sql_query('SELECT COUNT(id) AS count, seeder, ANY_VALUE(connectable) AS connectable
                                 FROM peers
                                 WHERE userid = ' . sqlesc($CURUSER['id']) . '
                                 GROUP BY seeder') or sqlerr(__LINE__, __FILE__);

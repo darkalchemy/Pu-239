@@ -1,6 +1,8 @@
 <?php
 /**
  * @param $data
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function trivia_points_update($data)
 {
@@ -63,9 +65,9 @@ function trivia_points_update($data)
             $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - Awarded Bonus Points for Trivia.\n" . $modcomment;
             $msgs_buffer[] = '(0,' . sqlesc($user_id) . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
             $users[] = $user_id;
-            $cache->update_row('user_stats' . $user_id, [
+            $cache->update_row('user' . $user_id, [
                 'modcomment' => $modcomment,
-            ], $site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_cache']);
             sql_query('UPDATE users SET modcomment = ' . sqlesc($modcomment) . ", seedbonus = seedbonus + $points WHERE id = " . sqlesc($user_id)) or sqlerr(__FILE__, __LINE__);
             $count = $i++;
         }
@@ -77,7 +79,7 @@ function trivia_points_update($data)
     write_log('Cleanup - Trivia Bonus Points awarded to - ' . $count . ' Member(s)');
     foreach ($users as $user_id) {
         $cache->increment('inbox_' . $user_id);
-        $cache->deleteMulti(['userstats_' . $user_id, 'user_stats_' . $user_id, 'user' . $user_id]);
+        $cache->delete('user' . $user_id);
     }
 
     sql_query('UPDATE triviaq SET asked = 0, current = 0') or sqlerr(__FILE__, __LINE__);

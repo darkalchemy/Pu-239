@@ -1,12 +1,12 @@
 <?php
+global $site_config;
 
 $lang = [
     'hnr_settings_err'       => 'Eroare',
     'hnr_settings_denied'    => 'Acces refuzat!',
     'hnr_settings_this'      => "?php\n/**\nAcest fisier a fost creat la ",
-    'hnr_settings_stoner'    => ".\nhit_and_run_settings Config.\n**/\n",
-    'hnr_settings_success'   => 'Succes',
-    'hnr_settings_here'      => 'Configurațiile Hit & Run au fost salvate! Clic <a href=staffpanel.php?tool=hit_and_run_settings>aici</a> pentru a reveni la pagina anterioară',
+    'hnr_settings_success'   => 'Success',
+    'hnr_settings_here'      => 'Configurațiile Hit & Run au fost salvate! Clic <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=hit_and_run_settings">aici</a> pentru a reveni la pagina anterioară',
     'hnr_settings_err_query' => 'Ați întâmpinat o eroare la executarea  interogării sau nimic nu s-a actualizat.',
     'hnr_settings_title'     => 'Setări Hit & Run',
     'hnr_settings_online'    => 'Hit & Run Online:',

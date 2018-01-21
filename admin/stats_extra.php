@@ -96,7 +96,6 @@ function show_views()
     global $inbound, $month_names, $lang;
     $page_title = $lang['stats_ex_ptitle'];
     $page_detail = $lang['stats_ex_pdetail'];
-    /* This function not available in this version, you need tbdev2010 */
     stderr($lang['stats_ex_stderr'], $lang['stats_ex_stderr1']);
     if (!checkdate($inbound['to_month'], $inbound['to_day'], $inbound['to_year'])) {
         stderr($lang['stats_ex_ustderr'], $lang['stats_ex_ustderr1']);

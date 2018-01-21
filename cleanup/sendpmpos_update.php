@@ -1,6 +1,8 @@
 <?php
 /**
  * @param $data
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function sendpmpos_update($data)
 {
@@ -21,11 +23,9 @@ function sendpmpos_update($data)
             $msgs_buffer[] = '(0,' . $arr['id'] . ',' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ' )';
             $users_buffer[] = '(' . $arr['id'] . ', \'1\', ' . $modcom . ')';
             $cache->update_row('user' . $arr['id'], [
-                'sendpmpos' => 1,
-            ], $site_config['expires']['user_cache']);
-            $cache->update_row('user_stats_' . $arr['id'], [
+                'sendpmpos'  => 1,
                 'modcomment' => $modcomment,
-            ], $site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_cache']);
             $cache->increment('inbox_' . $arr['id']);
         }
         $count = count($users_buffer);

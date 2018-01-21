@@ -1,6 +1,8 @@
 <?php
 /**
  * @param $data
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function gameaccess_update($data)
 {
@@ -22,10 +24,8 @@ function gameaccess_update($data)
             $users_buffer[] = '(' . $arr['id'] . ', \'1\', ' . $modcom . ')';
             $cache->update_row('user' . $arr['id'], [
                 'game_access' => 1,
+                'modcomment'  => $modcomment,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('user_stats_' . $arr['id'], [
-                'modcomment' => $modcomment,
-            ], $site_config['expires']['user_stats']);
             $cache->increment('inbox_' . $arr['id']);
         }
         $count = count($users_buffer);

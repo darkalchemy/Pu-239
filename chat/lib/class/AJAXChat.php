@@ -470,7 +470,11 @@ class AJAXChat
         // 1 = channel messages (e.g. login/logout, channel enter/leave, kick)
         // 2 = messages with online user updates (nick)
 
-        $bot_only = [2, 3, 4]; // Announce, News, Git
+        $bot_only = [
+            2,
+            3,
+            4
+        ]; // Announce, News, Git
         if (in_array($channelID, $bot_only) && $userRole != 100) {
             return;
         }
@@ -544,7 +548,8 @@ class AJAXChat
         $channelID,
         $text,
         $mode
-    ) {
+    )
+    {
         // The $mode parameter:
         // 0 = normal messages
         // 1 = channel messages (e.g. login/logout, channel enter/leave, kick)
@@ -628,7 +633,8 @@ class AJAXChat
         $userRole,
         $channelID,
         $text
-    ) {
+    )
+    {
         $message = '<message';
         $message .= ' id="' . $messageID . '"';
         $message .= ' dateTime="' . date('r', $timeStamp) . '"';
@@ -1491,7 +1497,10 @@ class AJAXChat
             $this->updateSocketAuthentication(
                 $this->getUserID(),
                 $this->getSocketRegistrationID(),
-                [$channel, $this->getPrivateMessageID()]
+                [
+                    $channel,
+                    $this->getPrivateMessageID()
+                ]
             );
         }
 
@@ -3284,7 +3293,7 @@ class AJAXChat
 
     public function insertParsedMessageGift($textParts)
     {
-        global $CURUSER, $cache;
+        global $CURUSER, $cache, $site_config;
         if (count($textParts) == 1) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
@@ -3301,9 +3310,8 @@ class AJAXChat
             return false;
         }
         $gift = number_format($textParts[2]);
-        $sql = sql_query('SELECT seedbonus FROM users WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-        $res = mysqli_fetch_row($sql);
-        $frombonus = $res[0];
+        $cur_user_data = get_user_data($CURUSER['id']);
+        $frombonus = $cur_user_data['seedbonus'];
         if ((int)$textParts[2] > (int)$frombonus) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
@@ -3317,22 +3325,19 @@ class AJAXChat
         $whereisRoleClass = get_user_class_name($this->getRoleFromID($whereisUserID), true);
         $user = '[' . $whereisRoleClass . ']' . $userName . '[/' . $whereisRoleClass . ']';
         $text = $user . ' has been given a Karma gift of ' . number_format($gift) . ' points from ' . $CURUSER['username'] . '.';
-        $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . " - given karma gift of $gift by " . $CURUSER['username'] . '.';
-        $recbonus = get_one_row('users', 'seedbonus', 'WHERE username = ' . sqlesc($userName));
+        $user_data = get_user_data($whereisUserID);
+        $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . " - given karma gift of $gift by " . $CURUSER['username'] . ".\n" . $user_data['bonuscomment'];
+        $recbonus = $user_data['seedbonus'];
+
         if (sql_query("UPDATE users SET seedbonus = seedbonus - $gift WHERE id = " . sqlesc($CURUSER['id']))) {
-            sql_query("UPDATE users SET seedbonus = seedbonus + $gift, bonuscomment = CONCAT(" . sqlesc($bonuscomment) . ",'\n',IFNULL(bonuscomment,'')) WHERE username = " . sqlesc($userName)) or sqlerr(__FILE__, __LINE__);
-            $cache->update_row('userstats_' . $whereisUserID, [
-                'seedbonus' => $recbonus + $gift,
-            ], 0);
-            $cache->update_row('user_stats_' . $whereisUserID, [
-                'seedbonus' => $recbonus + $gift,
-            ], 0);
-            $cache->update_row('userstats_' . $CURUSER['id'], [
+            sql_query("UPDATE users SET seedbonus = seedbonus + $gift, bonuscomment = " . sqlesc($bonuscomment) . " WHERE id = " . sqlesc($whereisUserID)) or sqlerr(__FILE__, __LINE__);
+            $cache->update_row('user' . $whereisUserID, [
+                'seedbonus'    => $recbonus + $gift,
+                'bonuscomment' => $bonuscomment,
+            ], $site_config['expires']['user_cache']);
+            $cache->update_row('user' . $CURUSER['id'], [
                 'seedbonus' => $frombonus - $gift,
-            ], 0);
-            $cache->update_row('user_stats_' . $CURUSER['id'], [
-                'seedbonus' => $frombonus - $gift,
-            ], 0);
+            ], $site_config['expires']['user_cache']);
 
             $this->insertChatBotMessage(
                 $this->getChannel(),

@@ -9,7 +9,7 @@ global $CURUSER, $site_config, $cache, $lang;
 
 $lang = array_merge($lang, load_language('modtask'));
 
-$curuser_cache = $user_cache = $stats_cache = $user_stats_cache = '';
+$curuser_cache = $user_cache = '';
 $postkey = PostKey([
                        $_POST['userid'],
                        $CURUSER['id'],
@@ -99,7 +99,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
     if (($user['immunity'] >= 1) && ($CURUSER['class'] < UC_MAX)) {
         stderr($lang['modtask_error'], $lang['modtask_user_immune']);
     }
-    $updateset = $curuser_cache = $user_cache = $stats_cache = $user_stats_cache = $useredit['update'] = [];
+    $updateset = $curuser_cache = $user_cache = $useredit['update'] = [];
     $setbits = $clrbits = 0;
     $username = ($CURUSER['perms'] & bt_options::PERMS_STEALTH ? 'System' : htmlsafechars($CURUSER['username']));
     $modcomment = (isset($_POST['modcomment']) && $CURUSER['class'] == UC_MAX) ? $_POST['modcomment'] : $user['modcomment'];
@@ -486,8 +486,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
                 $updateset[] = 'uploaded = ' . sqlesc($newupload) . '';
             }
             $useredit['update'][] = $lang['modtask_uploaded_altered'] . mksize($uploadtoadd) . $lang['modtask_to'] . mksize($newupload);
-            $stats_cache['uploaded'] = $newupload;
-            $user_stats_cache['uploaded'] = $newupload;
+            $user_cache['uploaded'] = $newupload;
         }
         if ($downloadtoadd > 0) {
             if ($mpdown == 'plus') {
@@ -503,8 +502,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
                 $updateset[] = 'downloaded = ' . sqlesc($newdownload) . '';
             }
             $useredit['update'][] = $lang['modtask_download_altered'] . mksize($downloadtoadd) . $lang['modtask_to'] . mksize($newdownload);
-            $stats_cache['downloaded'] = $newdownload;
-            $user_stats_cache['downloaded'] = $newdownload;
+            $user_cache['downloaded'] = $newdownload;
         }
     }
     //== End add/remove upload
@@ -548,8 +546,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
         $modcomment = get_date(TIME_NOW, 'DATE', 1) . $lang['modtask_seedbonus'] . $seedbonus . $lang['modtask_gl_from'] . $curseedbonus . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;
         $updateset[] = 'seedbonus = ' . sqlesc($seedbonus);
         $useredit['update'][] = $lang['modtask_seedbonus_total'];
-        $stats_cache['seedbonus'] = $seedbonus;
-        $user_stats_cache['seedbonus'] = $seedbonus;
+        $user_cache['seedbonus'] = $seedbonus;
     }
     //== Reputation
     if ((isset($_POST['reputation'])) && (($reputation = $_POST['reputation']) != ($curreputation = $user['reputation']))) {
@@ -1051,18 +1048,10 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
     if (($CURUSER['class'] == UC_MAX && ($user['modcomment'] != $_POST['modcomment'] || $modcomment != $_POST['modcomment'])) || ($CURUSER['class'] < UC_MAX && $modcomment != $user['modcomment'])) {
         $updateset[] = 'modcomment = ' . sqlesc($modcomment);
     }
-    $user_stats_cache['modcomment'] = $modcomment;
-    $stats_cache['modcomment'] = $modcomment;
-    //== Memcache - delete the keys
+    $user_cache['modcomment'] = $modcomment;
     $cache->increment('inbox_' . $userid);
     if ($user_cache) {
         $cache->update_row('user' . $userid, $user_cache, $site_config['expires']['user_cache']);
-    }
-    if ($stats_cache) {
-        $cache->update_row('userstats_' . $userid, $stats_cache, $site_config['expires']['u_stats']);
-    }
-    if ($user_stats_cache) {
-        $cache->update_row('user_stats_' . $userid, $user_stats_cache, $site_config['expires']['user_stats']);
     }
     if (sizeof($updateset) > 0) {
         sql_query('UPDATE users SET ' . implode(', ', $updateset) . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);

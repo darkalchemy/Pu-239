@@ -1,8 +1,5 @@
 <?php
-//|------------------------------------------------------- |\\
-//|search for subtiles on http://www.opensubtitles.org/    |\\
-//|made by putyn @tbdev 27/2/2009                          |\\
-//|--------------------------------------------------------|\\
+
 require_once 'xml2array.php';
 
 /**
@@ -99,7 +96,10 @@ function get_base($array)
  */
 function get_results($array)
 {
-    return ['items' => $array['@items'], 'itemsfound' => $array['@itemsfound'], 'searchtime' => $array['@searchtime']];
+    return ['items'      => $array['@items'],
+            'itemsfound' => $array['@itemsfound'],
+            'searchtime' => $array['@searchtime']
+    ];
 }
 
 /**
@@ -168,8 +168,8 @@ function build_result($array, $pager)
             </tr>
             <?php
             $count = ($time['itemsfound'] == 1 ? 1 : count($result));
-            for ($i = 0; $i < $count; ++$i) {
-                $movie = ($count == 1 ? get_details($result) : get_details($result[$i])); ?>
+        for ($i = 0; $i < $count; ++$i) {
+            $movie = ($count == 1 ? get_details($result) : get_details($result[$i])); ?>
                 <tr>
                     <td nowrap="nowrap"><img src="flag/<?php echo $movie['iso639'] ?>.gif" width="18"
                                              height="12" border="0"
@@ -193,7 +193,7 @@ function build_result($array, $pager)
                     ><?php echo $movie['user'] == '' ? 'Unknown' : $movie['user'] ?></td>
                 </tr>
                 <?php
-            } ?>
+        } ?>
         </table>
         <?php echo $time['itemsfound'] > 40 ? '<br><div>' . pager($time['itemsfound'], $pager) . '</div>' : '' ?>
         <?php

@@ -1,6 +1,8 @@
 <?php
 /**
  * @param $data
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function karmavip_update($data)
 {
@@ -21,13 +23,11 @@ function karmavip_update($data)
             $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
             $users_buffer[] = '(' . $arr['id'] . ',1, \'no\', \'0\' , ' . $modcom . ')';
             $cache->update_row('user' . $arr['id'], [
-                'class'     => 1,
-                'vip_added' => 'no',
-                'vip_until' => 0,
-            ], $site_config['expires']['user_cache']);
-            $cache->update_row('user_stats' . $arr['id'], [
+                'class'      => 1,
+                'vip_added'  => 'no',
+                'vip_until'  => 0,
                 'modcomment' => $modcomment,
-            ], $site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_cache']);
             $cache->increment('inbox_' . $arr['id']);
         }
         $count = count($users_buffer);

@@ -6,7 +6,6 @@ global $CURUSER, $site_config, $cache;
 
 $lang = array_merge(load_language('global'), load_language('coins'));
 
-// / Mod by dokty - tbdev.net
 $id = (int)$_GET['id'];
 $points = (int)$_GET['points'];
 if (!is_valid_id($id) || !is_valid_id($points)) {
@@ -65,19 +64,13 @@ $cache->update_row('torrent_details_' . $id, [
     'points' => $update['points'],
 ], $site_config['expires']['torrent_details']);
 //==The uploader
-$cache->update_row('userstats_' . $userid, [
+$cache->update_row('user' . $userid, [
     'seedbonus' => $update['seedbonus_uploader'],
-], $site_config['expires']['u_stats']);
-$cache->update_row('user_stats_' . $userid, [
-    'seedbonus' => $update['seedbonus_uploader'],
-], $site_config['expires']['user_stats']);
+], $site_config['expires']['user_cache']);
 //==The donator
-$cache->update_row('userstats_' . $CURUSER['id'], [
+$cache->update_row('user' . $CURUSER['id'], [
     'seedbonus' => $update['seedbonus_donator'],
-], $site_config['expires']['u_stats']);
-$cache->update_row('user_stats_' . $CURUSER['id'], [
-    'seedbonus' => $update['seedbonus_donator'],
-], $site_config['expires']['user_stats']);
+], $site_config['expires']['user_cache']);
 //== delete the pm keys
 $cache->increment('inbox_' . $userid);
 $cache->delete('coin_points_' . $id);

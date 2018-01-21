@@ -49,26 +49,18 @@ if (happyHour('check') && happyCheck('checkid', $row['category']) && !XBT_TRACKE
     $cache->delete($CURUSER['id'] . '_happy');
 }
 if ($site_config['seedbonus_on'] == 1 && $row['owner'] != $CURUSER['id']) {
-    //===remove karma
     sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus_per_download']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] - $site_config['bonus_per_download']);
-    $cache->update_row('userstats_' . $CURUSER['id'], [
+    $cache->update_row('user' . $CURUSER['id'], [
         'seedbonus' => $update['seedbonus'],
-    ], $site_config['expires']['u_stats']);
-    $cache->update_row('user_stats_' . $CURUSER['id'], [
-        'seedbonus' => $update['seedbonus'],
-    ], $site_config['expires']['user_stats']);
-    //===end
+    ], $site_config['expires']['user_cache']);
 }
 sql_query('UPDATE torrents SET hits = hits + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-/* free mod by pdq **/
-/* freeslots/doubleseed by pdq **/
 if (isset($_GET['slot'])) {
     $added = (TIME_NOW + 14 * 86400);
     $slots_sql = sql_query('SELECT * FROM freeslots WHERE torrentid = ' . sqlesc($id) . ' AND userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $slot = mysqli_fetch_assoc($slots_sql);
     $used_slot = $slot['torrentid'] == $id && $slot['userid'] == $CURUSER['id'];
-    /* freeslot **/
     if ($_GET['slot'] == 'free') {
         if ($used_slot && $slot['free'] == 'yes') {
             stderr('Doh!', 'Freeleech slot already in use.');

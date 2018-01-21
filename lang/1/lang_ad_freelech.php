@@ -2,7 +2,6 @@
 
 $lang = [
     'freelech_thisfile'    => "?php\n\n/**\nThis file created on ",
-    'freelech_modby'       => ".\nfreeleech mod by pdq for TBDev.net 2009.\n**/\n\n\$free = array(\n",
     'freelech_error_form'  => 'Error Complete the Form.',
     'freelech_config_file' => "array('modifier'=> 0, 'expires'=> 'Inf.', 'setby'=> 'No One', 'title'=> 'Add title', 'message'=> 'Add Message')",
     'freelech_current'     => 'Current Freeleech Status',

@@ -42,34 +42,7 @@ if ($user['status'] == 'pending') {
     stderr($lang['userdetails_error'], $lang['userdetails_pending']);
 }
 
-$What_Cache = (XBT_TRACKER ? 'user_stats_xbt_' : 'user_stats_');
-$user_stats = $cache->get($What_Cache . $id);
-if ($user_stats === false || is_null($user_stats)) {
-    $What_Expire = (XBT_TRACKER ? $site_config['expires']['user_stats_xbt'] : $site_config['expires']['user_stats']);
-    $stats_fields_ar_int = [
-        'uploaded',
-        'downloaded',
-    ];
-    $stats_fields_ar_float = [
-        'seedbonus',
-    ];
-    $stats_fields_ar_str = [
-        'modcomment',
-        'bonuscomment',
-    ];
-    $stats_fields = implode(', ', array_merge($stats_fields_ar_int, $stats_fields_ar_float, $stats_fields_ar_str));
-    $sql_1 = sql_query('SELECT ' . $stats_fields . ' FROM users WHERE id= ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $user_stats = mysqli_fetch_assoc($sql_1);
-    foreach ($stats_fields_ar_int as $i) {
-        $user_stats[$i] = (int)$user_stats[$i];
-    }
-    foreach ($stats_fields_ar_float as $i) {
-        $user_stats[$i] = (float)$user_stats[$i];
-    }
-
-    $cache->set($What_Cache . $id, $user_stats, $What_Expire);
-}
-$user_status = $cache->get('user_status_' . $id);
+$user_status = $cache->get('userstatus_' . $id);
 if ($user_status === false || is_null($user_status)) {
     $sql_2 = sql_query('SELECT * FROM ustatus WHERE userid = ' . sqlesc($id));
     if (mysqli_num_rows($sql_2)) {
@@ -81,7 +54,7 @@ if ($user_status === false || is_null($user_status)) {
             'archive'     => '',
         ];
     }
-    $cache->add('user_status_' . $id, $user_status, $site_config['expires']['user_status']); // 30 days
+    $cache->add('userstatus_' . $id, $user_status, $site_config['expires']['user_status']); // 30 days
 }
 
 if ($user['paranoia'] == 3 && $CURUSER['class'] < UC_STAFF && $CURUSER['id'] != $id) {
@@ -400,8 +373,8 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
                             </div> </td></tr>';
 
     $the_flip_box_7 = '[ <a name="system_comments"></a><a class="altlink tooltipper" href="#system_comments" onclick="javascript:flipBox(\'7\')"  name="b_7" title="' . $lang['userdetails_open_system'] . '">view <img onclick="javascript:flipBox(\'7\')" src="' . $site_config['pic_baseurl'] . 'panel_on.gif" name="b_7" width="8" height="8" alt="' . $lang['userdetails_open_system'] . '" class="tooltipper" title="' . $lang['userdetails_open_system'] . '" /></a> ]';
-    if (!empty($user_stats['modcomment'])) {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_system']}</td><td class='has-text-left'>" . ($user_stats['modcomment'] != '' ? $the_flip_box_7 . '<div class="has-text-left" id="box_7"><hr>' . format_comment($user_stats['modcomment']) . '</div>' : '') . "</td></tr>";
+    if (!empty($user['modcomment'])) {
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_system']}</td><td class='has-text-left'>" . ($user['modcomment'] != '' ? $the_flip_box_7 . '<div class="has-text-left" id="box_7"><hr>' . format_comment($user['modcomment']) . '</div>' : '') . "</td></tr>";
     }
 }
 if (curuser::$blocks['userdetails_page'] & block_userdetails::SHOWFRIENDS && $BLOCKS['userdetails_showfriends_on']) {
@@ -622,7 +595,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
     //$HTMLOUT.= "<tr><td class='rowhead'>{$lang['userdetails_support']}</td><td colspan='3' class='has-text-left'><input type='checkbox' name='support' value='yes'" . (($user['opt1'] & user_options::SUPPORT) ? " checked" : "") . " />{$lang['userdetails_yes']}</td></tr>";
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_support']}</td><td colspan='3' class='has-text-left'><input type='radio' name='support' value='yes'" . ($user['support'] == 'yes' ? " checked" : '') . " />{$lang['userdetails_yes']}<input type='radio' name='support' value='no'" . ($user['support'] == 'no' ? " checked" : '') . " />{$lang['userdetails_no']}</td></tr>";
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_supportfor']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='2' name='supportfor'>{$supportfor}</textarea></td></tr>";
-    $modcomment = htmlsafechars($user_stats['modcomment']);
+    $modcomment = htmlsafechars($user['modcomment']);
     if ($CURUSER['class'] < UC_SYSOP) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='6' name='modcomment' readonly='readonly'>$modcomment</textarea></td></tr>";
     } else {
@@ -630,7 +603,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
     }
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_add_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='2' name='addcomment'></textarea></td></tr>";
 
-    $bonuscomment = htmlsafechars($user_stats['bonuscomment']);
+    $bonuscomment = htmlsafechars($user['bonuscomment']);
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_bonus_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='6' name='bonuscomment' readonly='readonly'>$bonuscomment</textarea></td></tr>";
 
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_enabled']}</td><td colspan='3' class='has-text-left'><input name='enabled' value='yes' type='radio'" . ($enabled ? " checked" : '') . " />{$lang['userdetails_yes']} <input name='enabled' value='no' type='radio'" . (!$enabled ? " checked" : '') . " />{$lang['userdetails_no']}</td></tr>";
@@ -899,7 +872,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset_apikey']}</td><td colspan='3'><input type='checkbox' name='reset_apikey' value='1' /><span class='small left10'>{$lang['userdetails_apikey_msg']}</span></td></tr>";
 
     if ($CURUSER['class'] >= UC_STAFF) {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_bonus_points']}</td><td colspan='3' class='has-text-left'><input type='text' class='w-100' name='seedbonus' value='" . (int)$user_stats['seedbonus'] . "' /></td></tr>";
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_bonus_points']}</td><td colspan='3' class='has-text-left'><input type='text' class='w-100' name='seedbonus' value='" . (int)$user['seedbonus'] . "' /></td></tr>";
     }
 
     if ($CURUSER['class'] >= UC_STAFF) {

@@ -57,14 +57,6 @@ function class_check($class = 0, $staff = true, $pin = false)
 
                 /** auto post to forums**/
                 $body = sqlesc('User ' . $CURUSER['username'] . ' - ' . $ip . "\n Class " . $CURUSER['class'] . "\n Current page: " . $_SERVER['PHP_SELF'] . ', Previous page: ' . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . ', Action: ' . $_SERVER['REQUEST_URI'] . "\n Member has been disabled and demoted by class check system.");
-                /*
-                $body2 = sqlesc("User ".$CURUSER['username']." - ".$ip.
-                               " Class ".$CURUSER['class'].
-                               " Current page: ".$_SERVER['PHP_SELF'].
-                               ", Previous page: ".(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer').
-                               ", Action: ".$_SERVER['REQUEST_URI'].
-                               " Member has been disabled and demoted by class check system. - Kill the fuX0r");
-                */
                 $topicid = (int)$site_config['staff']['forumid'];
                 $added = TIME_NOW;
                 $icon = 'topic_normal';
@@ -93,7 +85,6 @@ function class_check($class = 0, $staff = true, $pin = false)
                     //write_log("<span style='color:#FA0606;'>Class Check System Initialized</span><a href='forums.php?action=viewtopic&amp;topicid=$topicid&amp;page=last#$postid'>VIEW</a>", UC_SYSOP, false);
                     write_log('Class Check System Initialized [url=' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topicid . '&amp;page=last#' . $postid . ']VIEW[/url]');
                     //require_once(INCL_DIR.'user_functions.php');
-                    //autoshout($body2);
                     $HTMLOUT = '';
                     $HTMLOUT .= "
 <!doctype html>

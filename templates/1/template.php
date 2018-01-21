@@ -5,6 +5,8 @@
  * @param null   $stdhead
  *
  * @return string
+ *
+ * @throws Exception
  */
 function stdhead($title = '', $stdhead = null)
 {
@@ -120,7 +122,11 @@ function stdhead($title = '', $stdhead = null)
         <div id='base_content' class='bg-05'>
             <div class='inner-wrapper bg-04'>";
 
-    $index_array = ['/', '/index.php', '/login.php'];
+    $index_array = [
+        '/',
+        '/index.php',
+        '/login.php'
+    ];
     if ($CURUSER && !in_array($_SERVER['REQUEST_URI'], $index_array)) {
         $htmlout .= "
                 <div class='container is-fluid portlet padding20 bg-00 round10'>
@@ -263,8 +269,8 @@ function stdfoot($stdfoot = false)
         for (i = 0; i < x.length; i++) {
             var id = x[i].parentNode.id;
             console.log(id);
+            var el = document.getElementById(id);
             if (id && localStorage[id] === 'closed') {
-                var el = document.getElementById(id);
                 el.classList.add('no-margin');
                 el.classList.add('no-padding');
                 var nextSibling = x[i].nextSibling;
@@ -284,6 +290,16 @@ function stdfoot($stdfoot = false)
                 child = x[i].children[0];
                 child.classList.add('icon-up-open');
                 child.classList.remove('icon-down-open');
+            } else {
+                if (el.children[0].children[0].className === 'fa icon-down-open') {
+                    el.classList.add('no-margin');
+                    el.classList.add('no-padding');
+                    var nextSibling = x[i].nextSibling;
+                    while (nextSibling && nextSibling.nodeType != 1) {
+                        nextSibling = nextSibling.nextSibling;
+                    }
+                    nextSibling.style.display = 'none';
+                }
             }
         }
     </script>";
@@ -348,6 +364,8 @@ function StatusBar()
 
 /**
  * @return string
+ *
+ * @throws Exception
  */
 function navbar()
 {

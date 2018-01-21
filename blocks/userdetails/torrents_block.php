@@ -124,9 +124,13 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
         ->select('torrents.name')
         ->select('torrents.seeders')
         ->select('torrents.leechers')
+        ->select('torrents.size')
         ->select('categories.name AS catname')
         ->select('categories.image')
+        ->select('users.uploaded')
+        ->select('users.downloaded')
         ->leftJoin('categories ON torrents.category = categories.id')
+        ->leftJoin('users ON torrents.owner = users.id')
         ->where('torrents.owner = ?', $user['id'])
         ->orderBy('torrents.name')
         ->limit('0, 15');
@@ -223,7 +227,6 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
                 </fieldset>
             </td>
         </tr>";
-
     }
 
     if (!empty($leeching)) {

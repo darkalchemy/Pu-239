@@ -18,7 +18,7 @@ function karma_update($data)
         $What_user_id = (XBT_TRACKER ? 'uid' : 'userid');
         $What_Table = (XBT_TRACKER ? 'xbt_files_users' : 'peers');
         $What_Where = (XBT_TRACKER ? '`left` = 0 AND `active` = 1' : "seeder = 'yes' AND connectable = 'yes'");
-        $sql =  "SELECT COUNT($What_id) As tcount, $What_user_id, seedbonus, users.id AS users_id, users.username
+        $sql = "SELECT COUNT($What_id) As tcount, $What_user_id, seedbonus, users.id AS users_id, users.username
                 FROM $What_Table
                 LEFT JOIN users ON users.id = $What_user_id
                 WHERE $What_Where
@@ -35,12 +35,9 @@ function karma_update($data)
                     $total += $bonus;
                     $update['seedbonus'] = $arr['seedbonus'] + $bonus;
                     $users_buffer[] = "($Buffer_User, " . sqlesc($arr['username']) . ", {$update['seedbonus']}, '', '')";
-                    $cache->update_row('userstats_' . $Buffer_User, [
+                    $cache->update_row('user' . $Buffer_User, [
                         'seedbonus' => $update['seedbonus'],
-                    ], $site_config['expires']['u_stats']);
-                    $cache->update_row('user_stats_' . $Buffer_User, [
-                        'seedbonus' => $update['seedbonus'],
-                    ], $site_config['expires']['user_stats']);
+                    ], $site_config['expires']['user_cache']);
                 }
             }
             $count = count($users_buffer);

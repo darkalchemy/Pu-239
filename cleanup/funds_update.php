@@ -1,6 +1,8 @@
 <?php
 /**
  * @param $data
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function funds_update($data)
 {
@@ -29,10 +31,8 @@ function funds_update($data)
                 'class'      => $update['class'],
                 'donor'      => 'no',
                 'donoruntil' => 0,
-            ], $site_config['expires']['user_cache']);
-            $cache->update_row('user_stats_' . $arr['id'], [
                 'modcomment' => $modcomment,
-            ], $site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_cache']);
             $cache->increment('inbox_' . $arr['id']);
         }
         $count = count($users_buffer);

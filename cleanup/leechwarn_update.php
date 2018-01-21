@@ -1,6 +1,8 @@
 <?php
 /**
  * @param $data
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function leechwarn_update($data)
 {
@@ -29,10 +31,8 @@ function leechwarn_update($data)
             $cache->update_row('user' . $arr['id'], [
                 'leechwarn'   => $update['leechwarn'],
                 'downloadpos' => 0,
+                'modcomment'  => $modcomment,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('user_stats_' . $arr['id'], [
-                'modcomment' => $modcomment,
-            ], $site_config['expires']['user_stats']);
             $cache->increment('inbox_' . $arr['id']);
         }
         $count = count($users_buffer);
@@ -58,10 +58,8 @@ function leechwarn_update($data)
             $cache->update_row('user' . $arr['id'], [
                 'leechwarn'   => 0,
                 'downloadpos' => 1,
+                'modcomment'  => $modcomment,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('user_stats_' . $arr['id'], [
-                'modcomment' => $modcomment,
-            ], $site_config['expires']['user_stats']);
             $cache->increment('inbox_' . $arr['id']);
         }
         $count = count($users_buffer);
@@ -83,12 +81,10 @@ function leechwarn_update($data)
             $modcom = sqlesc($modcomment);
             $users_buffer[] = '(' . $arr['id'] . ' , \'0\', \'no\', ' . $modcom . ')';
             $cache->update_row('user' . $arr['id'], [
-                'leechwarn' => 0,
-                'enabled'   => 'no',
-            ], $site_config['expires']['user_cache']);
-            $cache->update_row('user_stats_' . $arr['id'], [
+                'leechwarn'  => 0,
+                'enabled'    => 'no',
                 'modcomment' => $modcomment,
-            ], $site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_cache']);
         }
         $count = count($users_buffer);
         if ($count > 0) {

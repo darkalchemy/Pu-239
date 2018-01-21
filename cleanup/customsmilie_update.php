@@ -1,6 +1,9 @@
 <?php
+
 /**
  * @param $data
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function customsmilie_update($data)
 {
@@ -23,10 +26,8 @@ function customsmilie_update($data)
             $users_buffer[] = "({$arr['id']}, {$username}, 0, {$modcom})";
             $cache->update_row('user' . $arr['id'], [
                 'smile_until' => 0,
+                'modcomment'  => $modcomment,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('user_stats_' . $arr['id'], [
-                'modcomment' => $modcomment,
-            ], $site_config['expires']['user_stats']);
             $cache->increment('inbox_' . $arr['id']);
         }
         $count = count($users_buffer);

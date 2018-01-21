@@ -41,13 +41,8 @@ function hitrun_update($data)
                     'hit_and_run_total' => $update['hit_and_run_total'],
                     'downloadpos'       => 0,
                     'hnrwarn'           => 'yes',
+                    'modcomment'        => $modcomment,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('user_stats_' . $arr_fuckers['userid'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_stats']);
-                $cache->update_row('userstats_' . $arr_fuckers['userid'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_stats']);
                 $cache->increment('inbox_' . $arr_fuckers['userid']);
             }
         }
@@ -73,14 +68,8 @@ function hitrun_update($data)
                 $cache->update_row('user' . $arr_good_boy['id'], [
                     'downloadpos' => 1,
                     'hnrwarn'     => 'no',
+                    'modcomment'  => $modcomment,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('user_stats' . $arr_good_boy['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_stats']);
-                $cache->update_row('userstats_' . $arr_good_boy['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_stats']);
-                $cache->increment('inbox_' . $arr_good_boy['id']);
             }
         }
         if ($data['clean_log'] && $queries > 0) {

@@ -211,8 +211,6 @@ if ($hand = fsockopen('ssl://www.paypal.com', 443, $errno, $errstr, 30)) {
             sql_query(mk_update_query($vars['amount'], $vars['uid'])) or paypallog(mysqli_error($GLOBALS['___mysqli_ston']));
             //instead of updating the cache delete it :P
             $cache->delete('user' . $vars['uid']);
-            $cache->delete('userstats_' . $vars['uid']);
-            $cache->delete('user_stats_' . $vars['uid']);
             //update total funds
             sql_query(sprintf('INSERT INTO funds(cash,user,added) VALUES (%d,%d,%d)', $vars['amount'], $vars['uid'], TIME_NOW)) or paypallog(mysqli_error($GLOBALS['___mysqli_ston']));
             //clear the cache for the funds

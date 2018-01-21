@@ -14,7 +14,7 @@ $id = (int)$id;
 if (!$id) {
     die();
 }
-/* who is modding by pdq **/
+
 if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $CURUSER['class'] >= UC_STAFF) {
     $cache->delete('editedby_' . $id);
     $returl = "details.php?id=$id";

@@ -37,12 +37,9 @@ if ($bonus_type == 1) {
         $cache->delete('user_achievement_points_' . $id);
         $sql = 'UPDATE users SET downloaded = downloaded - ' . sqlesc($bonus_do) . ' WHERE id = ' . sqlesc($id);
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('userstats_' . $id, [
+        $cache->update_row('user' . $id, [
             'downloaded' => $down - $bonus_do,
-        ], $site_config['expires']['u_stats']);
-        $cache->update_row('user_stats_' . $id, [
-            'downloaded' => $down - $bonus_do,
-        ], $site_config['expires']['user_stats']);
+        ], $site_config['expires']['user_cache']);
     }
     if ($down < $bonus_do) {
         $msg = "{$lang['achbon_congratulations']}, {$lang['achbon_your_dl_been_reset_0']}";
@@ -50,12 +47,9 @@ if ($bonus_type == 1) {
         $cache->delete('user_achievement_points_' . $id);
         $sql = "UPDATE users SET downloaded = '0' WHERE id =" . sqlesc($id);
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('userstats_' . $id, [
+        $cache->update_row('user' . $id, [
             'downloaded' => 0,
-        ], $site_config['expires']['u_stats']);
-        $cache->update_row('user_stats_' . $id, [
-            'downloaded' => 0,
-        ], $site_config['expires']['user_stats']);
+        ], $site_config['expires']['user_cache']);
     }
 }
 if ($bonus_type == 2) {
@@ -64,12 +58,9 @@ if ($bonus_type == 2) {
     $cache->delete('user_achievement_points_' . $id);
     $sql = 'UPDATE users SET uploaded = uploaded + ' . sqlesc($bonus_do) . ' WHERE id = ' . sqlesc($id);
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    $cache->update_row('userstats_' . $id, [
+    $cache->update_row('user' . $id, [
         'uploaded' => $up + $bonus_do,
-    ], $site_config['expires']['u_stats']);
-    $cache->update_row('user_stats_' . $id, [
-        'uploaded' => $up + $bonus_do,
-    ], $site_config['expires']['user_stats']);
+    ], $site_config['expires']['user_cache']);
 }
 if ($bonus_type == 3) {
     $msg = "{$lang['achbon_congratulations']}, {$lang['achbon_you_hv_just_won']} $bonus_desc";
@@ -87,12 +78,9 @@ if ($bonus_type == 4) {
     $cache->delete('user_achievement_points_' . $id);
     $sql = 'UPDATE users SET seedbonus = seedbonus + ' . sqlesc($bonus_do) . ' WHERE id = ' . sqlesc($id);
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    $cache->update_row('userstats_' . $id, [
+    $cache->update_row('user' . $id, [
         'seedbonus' => $karma + $bonus_do,
-    ], $site_config['expires']['u_stats']);
-    $cache->update_row('user_stats_' . $id, [
-        'seedbonus' => $karma + $bonus_do,
-    ], $site_config['expires']['user_stats']);
+    ], $site_config['expires']['user_cache']);
 }
 if ($bonus_type == 5) {
     $rand_fail = random_int(1, 5);

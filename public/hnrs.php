@@ -71,14 +71,10 @@ if (isset($_GET['torrentid'])) {
     sql_query("UPDATE snatched SET hit_and_run = 0, mark_of_cain = 'no' WHERE userid = " . sqlesc($userid) . ' AND torrentid = ' . sqlesc($torrent_number)) or sqlerr(__FILE__, __LINE__);
     $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $cost . ' Points for 1 to 1 ratio on torrent: ' . htmlsafechars($arr_snatched['name']) . ' ' . $torrent_number . ".\n " . $bonuscomment;
     sql_query('UPDATE users SET bonuscomment = ' . sqlesc($bonuscomment) . ', seedbonus = ' . sqlesc($seedbonus) . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-
-    $cache->update_row('userstats_' . $userid, [
-        'seedbonus' => $seedbonus,
-    ], $site_config['expires']['u_stats']);
-    $cache->update_row('user_stats_' . $userid, [
+    $cache->update_row('user' . $userid, [
         'seedbonus'    => $seedbonus,
         'bonuscomment' => $bonuscomment,
-    ], $site_config['expires']['user_stats']);
+    ], $site_config['expires']['user_cache']);
     $cache->delete('userhnrs_' . $userid);
     header('Refresh: 0; url=hnrs.php?userid=' . $userid . '&ratio_success=1');
     die();

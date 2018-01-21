@@ -1,5 +1,9 @@
 In no particular order
 
+update headers: location
+what is cache userstatus
+update queries for user, get/set cache instead of query to get, only to set
+update caches replace delete with proper update
 add daily, weekly, monthly to top 10 stats page
 finish torrent blocks in userdetails, add pagination
 fix anonymous username in popups

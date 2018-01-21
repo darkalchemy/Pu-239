@@ -2,7 +2,6 @@
 
 $lang = [
     'freelech_thisfile'    => "?php\n\n/**\nAcest fişier a fost creat la ",
-    'freelech_modby'       => ".\nfreeleech mod de pdq pentru TBDev.net 2009.\n**/\n\n\$free = array(\n",
     'freelech_error_form'  => 'Eroare la completarea formularului.',
     'freelech_config_file' => "array('modifier'=> 0, 'expires'=> 'Inf.', 'setby'=> 'No One', 'title'=> 'Add title', 'message'=> 'Add Message')",
     'freelech_current'     => 'Stare Freelech în prezent',

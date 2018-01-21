@@ -48,7 +48,7 @@ if (isset($_GET['type'])) {
             break;
     }
 }
-/* end comment stuffs by pdq **/
+
 if ($action == 'add') {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $id = (isset($_POST['tid']) ? (int)$_POST['tid'] : 0);
@@ -86,12 +86,9 @@ if ($action == 'add') {
                 'comments' => $update['comments'],
             ], 0);
             $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus_per_comment']);
-            $cache->update_row('userstats_' . $CURUSER['id'], [
+            $cache->update_row('user' . $CURUSER['id'], [
                 'seedbonus' => $update['seedbonus'],
-            ], $site_config['expires']['u_stats']);
-            $cache->update_row('user_stats_' . $CURUSER['id'], [
-                'seedbonus' => $update['seedbonus'],
-            ], $site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_cache']);
             //===end
         }
         // --- pm if new comment mod---//
@@ -234,12 +231,9 @@ if ($action == 'add') {
             'comments' => $update['comments'],
         ], 0);
         $update['seedbonus'] = ($CURUSER['seedbonus'] - $site_config['bonus_per_comment']);
-        $cache->update_row('userstats_' . $CURUSER['id'], [
+        $cache->update_row('user' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus'],
-        ], $site_config['expires']['u_stats']);
-        $cache->update_row('user_stats_' . $CURUSER['id'], [
-            'seedbonus' => $update['seedbonus'],
-        ], $site_config['expires']['user_stats']);
+        ], $site_config['expires']['user_cache']);
         //===end
     }
     setSessionVar('is-success', 'The comment has been deleted');

@@ -2,6 +2,8 @@
 /**
  * @param      $id
  * @param bool $stealth
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function stealth($id, $stealth = true)
 {
@@ -26,24 +28,18 @@ function stealth($id, $stealth = true)
     $row['perms'] = (int)$row['perms'];
     $modcomment = get_date(TIME_NOW, '', 1) . ' - ' . $display . ' in Stealth Mode thanks to ' . $CURUSER['username'] . "\n" . $row['modcomment'];
     sql_query('UPDATE users SET modcomment = ' . sqlesc($modcomment) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    // update caches
     $cache->update_row('user' . $id, [
-        'perms' => $row['perms'],
-    ], $site_config['expires']['user_cache']);
-    $cache->update_row('user_stats_' . $id, [
+        'perms'      => $row['perms'],
         'modcomment' => $modcomment,
-    ], $site_config['expires']['user_stats']);
+    ], $site_config['expires']['user_cache']);
     if ($id == $CURUSER['id']) {
         $cache->update_row('user' . $CURUSER['id'], [
-            'perms' => $row['perms'],
-        ], $site_config['expires']['user_cache']);
-        $cache->update_row('user_stats_' . $CURUSER['id'], [
+            'perms'      => $row['perms'],
             'modcomment' => $modcomment,
-        ], $site_config['expires']['user_stats']);
+        ], $site_config['expires']['user_cache']);
     }
     write_log('Member [b][url=userdetails.php?id=' . $id . ']' . (htmlsafechars($row['username'])) . '[/url][/b] ' . $display . ' in Stealth Mode thanks to [b]' . $CURUSER['username'] . '[/b]');
-    // header ouput
     $cache->set('display_stealth' . $CURUSER['id'], $display, 5);
-    header('Location: userdetails.php?id=' . $id);
+    header("Location: {$site_config['baseurl']}/userdetails.php?id=$id");
     die();
 }

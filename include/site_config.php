@@ -58,11 +58,7 @@ $site_config['expires']['searchcloud'] = 0; // 0 = infinite
 $site_config['expires']['user_cache'] = 2591999; // 30 days
 $site_config['expires']['curuser'] = 2591999; // 30 days
 $site_config['expires']['u_status'] = 2591999; // 30 days
-$site_config['expires']['u_stats'] = 300; // 300 = 5 min
-$site_config['expires']['u_stats_xbt'] = 30; // 30 seconds
 $site_config['expires']['user_status'] = 2591999; // 30 days
-$site_config['expires']['user_stats'] = 300; // 300 = 5 min
-$site_config['expires']['user_stats_xbt'] = 30; // 30 seconds
 $site_config['expires']['MyPeers_xbt_'] = 30;
 $site_config['expires']['announcement'] = 600; // 600 = 10 min
 $site_config['expires']['forum_posts'] = 0;

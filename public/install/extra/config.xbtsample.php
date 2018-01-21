@@ -2,7 +2,7 @@
 error_reporting(E_ALL); //== turn off = 0 when live
 const REQUIRED_PHP = 50300, REQUIRED_PHP_VERSION = '5.3.0';
 if (PHP_VERSION_ID < REQUIRED_PHP) {
-    die('PHP '.REQUIRED_PHP_VERSION.' or higher is required.');
+    die('PHP ' . REQUIRED_PHP_VERSION . ' or higher is required.');
 }
 if (PHP_INT_SIZE < 8) {
     die('A 64bit or higher OS + Processor is required.');
@@ -22,7 +22,11 @@ if (ini_get('default_charset') != $site_config['char_set']) {
 if (!function_exists('sys_getloadavg')) {
     function sys_getloadavg()
     {
-        return array(0, 0, 0);
+        return [
+            0,
+            0,
+            0
+        ];
     }
 }
 /* Compare php version for date/time stuff etc! */
@@ -46,7 +50,7 @@ $site_config['mysql_db'] = '#mysql_db';
 //== Cookie setup
 $site_config['sessionName'] = '#cookie_prefix';
 $site_config['cookie_prefix'] = '#cookie_prefix'; // This allows you to have multiple trackers, eg for demos, testing etc.
-$site_config['cookie_path'] = '#cookie_path'; // ATTENTION: You should never need this unless the above applies eg: /tbdev
+$site_config['cookie_path'] = '#cookie_path'; // ATTENTION: You should never need this unless the above applies eg: /dev
 $site_config['cookie_domain'] = '#cookie_domain'; // set to eg: .somedomain.com or is subdomain set to: .sub.somedomain.com
 $site_config['cookie_lifetime'] = 365; // length of time cookies will be valid
 $site_config['domain'] = '#domain';
@@ -60,11 +64,7 @@ $site_config['expires']['searchcloud'] = 0; // 0 = infinite
 $site_config['expires']['user_cache'] = 30 * 86400; // 30 days
 $site_config['expires']['curuser'] = 30 * 86400; // 30 days
 $site_config['expires']['u_status'] = 30 * 84600; // 30x86400 = 30 days
-$site_config['expires']['u_stats'] = 300; // 300 = 5 min
-$site_config['expires']['u_stats_xbt'] = 30; // 30 seconds
 $site_config['expires']['user_status'] = 30 * 84600; // 30x86400 = 30 days
-$site_config['expires']['user_stats'] = 300; // 300 = 5 min
-$site_config['expires']['user_stats_xbt'] = 30; // 30 seconds
 $site_config['expires']['MyPeers_xbt_'] = 30;
 $site_config['expires']['announcement'] = 600; // 600 = 10 min
 $site_config['expires']['shoutbox'] = 86400; // 86400 = 1 day
@@ -165,29 +165,29 @@ $site_config['inviteusers'] = 10000;
 $site_config['flood_time'] = 900; //comment/forum/pm flood limit
 $site_config['readpost_expiry'] = 14 * 86400; // 14 days
 
-$site_config['cache'] = ROOT_DIR.'cache';
-$site_config['backup_dir'] = INCL_DIR.'backup';
-$site_config['dictbreaker'] = ROOT_DIR.'dictbreaker';
-$site_config['torrent_dir'] = ROOT_DIR.'torrents'; // must be writable for httpd user
-$site_config['sub_up_dir'] = ROOT_DIR.'uploadsub'; // must be writable for httpd user
-$site_config['flood_file'] = INCL_DIR.'settings'.DIRECTORY_SEPARATOR.'limitfile.txt';
-$site_config['nameblacklist'] = ROOT_DIR.'cache'.DIRECTORY_SEPARATOR.'nameblacklist.txt';
-$site_config['happyhour'] = CACHE_DIR.'happyhour'.DIRECTORY_SEPARATOR.'happyhour.txt';
-$site_config['sql_error_log'] = ROOT_DIR.'sqlerr_logs'.DIRECTORY_SEPARATOR.'sql_err_'.date('M_D_Y').'.log';
+$site_config['cache'] = ROOT_DIR . 'cache';
+$site_config['backup_dir'] = INCL_DIR . 'backup';
+$site_config['dictbreaker'] = ROOT_DIR . 'dictbreaker';
+$site_config['torrent_dir'] = ROOT_DIR . 'torrents'; // must be writable for httpd user
+$site_config['sub_up_dir'] = ROOT_DIR . 'uploadsub'; // must be writable for httpd user
+$site_config['flood_file'] = INCL_DIR . 'settings' . DIRECTORY_SEPARATOR . 'limitfile.txt';
+$site_config['nameblacklist'] = ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR . 'nameblacklist.txt';
+$site_config['happyhour'] = CACHE_DIR . 'happyhour' . DIRECTORY_SEPARATOR . 'happyhour.txt';
+$site_config['sql_error_log'] = ROOT_DIR . 'sqlerr_logs' . DIRECTORY_SEPARATOR . 'sql_err_' . date('M_D_Y') . '.log';
 //== XBT or PHP announce
 if (XBT_TRACKER) {
     $site_config['xbt_prefix'] = '#announce_urls:2710/';
     $site_config['xbt_suffix'] = '/announce';
     $site_config['announce_urls'][] = '#announce_urls:2710/announce';
 } else {
-    $site_config['announce_urls'] = array();
+    $site_config['announce_urls'] = [];
     $site_config['announce_urls'][] = '#announce_urls';
     $site_config['announce_urls'][] = '#announce_https';
 }
 if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == '') {
     $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
 }
-$site_config['baseurl'] = 'http'.(isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] == true ? 's' : '').'://'.$_SERVER['HTTP_HOST'];
+$site_config['baseurl'] = 'http' . (isset($_SERVER['HTTPS']) && (bool)$_SERVER['HTTPS'] == true ? 's' : '') . '://' . $_SERVER['HTTP_HOST'];
 //== Email for sender/return path.
 $site_config['site_email'] = '#site_email';
 $site_config['site_name'] = '#site_name';
@@ -202,16 +202,16 @@ $site_config['categorie_icon'] = 1;
 $site_config['comment_min_class'] = 4; //minim class to be checked when posting comments
 $site_config['comment_check'] = 1; //set it to 0 if you wanna allow commenting with out staff checking
 //for subs & youtube mode
-$site_config['movie_cats'] = array(
+$site_config['movie_cats'] = [
     3,
     10,
     11,
-);
-$site_config['slider_cats'] = array(
+];
+$site_config['slider_cats'] = [
     3,
     10,
     11,
-);
+];
 $youtube_pattern = "/^http(s)?\:\/\/www\.youtube\.com\/watch\?v\=[\w-]{11}/i";
 //== set this to size of user avatars
 $site_config['av_img_height'] = 100;
@@ -220,24 +220,19 @@ $site_config['av_img_width'] = 100;
 $site_config['sig_img_height'] = 100;
 $site_config['sig_img_width'] = 500;
 $site_config['bucket_allowed'] = 0;
-$site_config['allowed_ext'] = array(
+$site_config['allowed_ext'] = [
     'image/gif',
     'image/png',
     'image/jpeg',
-);
+];
 $site_config['bucket_maxsize'] = 500 * 1024; //max size set to 500kb
-//==Class check by pdq
 $site_config['site']['owner'] = 1;
-//== Salt - change this
 $site_config['site']['salt2'] = 'jgutyxcjsaka';
-//= Change staff pin daily or weekly
-$site_config['staff']['staff_pin'] = 'uFie0y3Ihjkij8'; // should be mix of u/l case and min 12 chars length
-//= Change owner pin daily or weekly
-$site_config['staff']['owner_pin'] = 'jjko4kuogqhjj0'; // should be mix of u/l case and min 12 chars length
-//== Staff forum ID for autopost
+$site_config['staff']['staff_pin'] = 'uFie0y3Ihjkij8';
+$site_config['staff']['owner_pin'] = 'jjko4kuogqhjj0';
 $site_config['staff']['forumid'] = 2; // this forum ID should exist and be a staff forum
-$site_config['staff_forums'] = array(
+$site_config['staff_forums'] = [
     1,
     2,
-); // these forum ID's' should exist and be a staff forum's to stop autoshouts
+]; // these forum ID's' should exist and be a staff forum's to stop autoshouts
 $site_config['variant'] = 'Pu-239';

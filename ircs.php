@@ -99,14 +99,9 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's name was changed from: ' . $who . ' to ' . $newusername . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET username = $newname, modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user' . $nsetusername['id'], [
-                    'username' => $newname,
+                    'username'   => $newname,
+                    'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('userstats_' . $nsetusername['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $nsetusername['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_stats']);
                 echo $who . 's name was changed from: ' . $who . ' to ' . $newusername . ' by ' . $modd;
             }
         }
@@ -159,12 +154,9 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldbonus = $nbonus['seedbonus'];
                 $amount = (isset($_GET['amount']) ? (int)($_GET['amount']) : '');
                 sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('userstats_' . $nbonus['id'], [
+                $cache->update_row('user' . $nbonus['id'], [
                     'seedbonus' => $nbonus['seedbonus'] + $amount,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $nbonus['id'], [
-                    'seedbonus' => $nbonus['seedbonus'] + $amount,
-                ], $site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_cache']);
                 $res1 = sql_query("SELECT seedbonus FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $obonus = mysqli_fetch_assoc($res1);
                 $newbonus = $obonus['seedbonus'];
@@ -240,12 +232,9 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldbonus = $nbonus['seedbonus'];
                 $amount = (isset($_GET['amount']) ? number_format($_GET['amount']) : '');
                 sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('userstats_' . $nbonus['id'], [
+                $cache->update_row('user' . $nbonus['id'], [
                     'seedbonus' => $nbonus['seedbonus'] - $amount,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $nbonus['id'], [
-                    'seedbonus' => $nbonus['seedbonus'] - $amount,
-                ], $site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_cache']);
                 $res1 = sql_query("SELECT seedbonus FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $obonus = mysqli_fetch_assoc($res1);
                 $newbonus = $obonus['seedbonus'];
@@ -330,18 +319,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 if ($amount <= $meoldbonus) {
                     sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($amount) . " WHERE username = $me") or sqlerr(__FILE__, __LINE__);
                     sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                    $cache->update_row('userstats_' . $mebonus['id'], [
+                    $cache->update_row('user' . $mebonus['id'], [
                         'seedbonus' => $mebonus['seedbonus'] - $amount,
-                    ], $site_config['expires']['u_stats']);
-                    $cache->update_row('user_stats_' . $mebonus['id'], [
-                        'seedbonus' => $mebonus['seedbonus'] - $amount,
-                    ], $site_config['expires']['user_stats']);
-                    $cache->update_row('userstats_' . $whombonus['id'], [
+                    ], $site_config['expires']['user_cache']);
+                    $cache->update_row('user' . $whombonus['id'], [
                         'seedbonus' => $whombonus['seedbonus'] + $amount,
-                    ], $site_config['expires']['u_stats']);
-                    $cache->update_row('user_stats_' . $whombonus['id'], [
-                        'seedbonus' => $whombonus['seedbonus'] + $amount,
-                    ], $site_config['expires']['user_stats']);
+                    ], $site_config['expires']['user_cache']);
                     $res1 = sql_query("SELECT seedbonus FROM users WHERE username = $me LIMIT 1") or sqlerr(__FILE__, __LINE__);
                     $meobonus = mysqli_fetch_assoc($res1);
                     $res2 = sql_query("SELECT seedbonus FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -474,14 +457,9 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's uploadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET uploadpos = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user' . $upos['id'], [
-                    'uploadpos' => $toggle,
+                    'uploadpos'  => $toggle,
+                    'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('userstats_' . $upos['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $upos['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_stats']);
                 echo $who . 's uploadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -501,13 +479,8 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 sql_query("UPDATE users SET downloadpos = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user' . $dpos['id'], [
                     'downloadpos' => $toggle,
+                    'modcomment'  => $modcomment,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('userstats_' . $dpos['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $dpos['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_stats']);
                 echo $who . 's downloadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -527,13 +500,8 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 sql_query("UPDATE users SET forum_post = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user' . $fpos['id'], [
                     'forum_post' => $toggle,
+                    'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('userstats_' . $fpos['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $fpos['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_stats']);
                 echo $who . 's forumpost changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -552,14 +520,9 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's chatpost changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET chatpost = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user' . $cpos['id'], [
-                    'chatpost' => $toggle,
+                    'chatpost'   => $toggle,
+                    'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('userstats_' . $cpos['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $cpos['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_stats']);
                 echo $who . 's chatpost changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -578,14 +541,9 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's avatarpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET avatarpos = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user' . $apos['id'], [
-                    'avatarpos' => $toggle,
+                    'avatarpos'  => $toggle,
+                    'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('userstats_' . $apos['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $apos['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_stats']);
                 echo $who . 's avatarpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -605,13 +563,8 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 sql_query("UPDATE users SET invite_rights = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user' . $ipos['id'], [
                     'invite_rights' => $toggle,
+                    'modcomment'    => $modcomment,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('userstats_' . $ipos['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $ipos['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_stats']);
                 echo $who . 's invite rights changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -630,14 +583,9 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's enabled changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET enabled = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user' . $epos['id'], [
-                    'enabled' => $toggle,
+                    'enabled'    => $toggle,
+                    'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('userstats_' . $epos['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $epos['id'], [
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_stats']);
                 echo $who . 's enabled changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -659,13 +607,8 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $cache->update_row('user' . $support['id'], [
                 'support'    => 'yes',
                 'supportfor' => $supportfors,
+                'modcomment' => $modcomment,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('userstats_' . $support['id'], [
-                'modcomment' => $modcomment,
-            ], $site_config['expires']['u_stats']);
-            $cache->update_row('user_stats_' . $support['id'], [
-                'modcomment' => $modcomment,
-            ], $site_config['expires']['user_stats']);
             echo $who . 's support changed added to First line support to cover ' . $supportfors . ' by ' . $modd;
         }
     }

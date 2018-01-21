@@ -335,7 +335,6 @@ function torrenttable($res, $variant = 'index')
             }
             $htmlout .= "</td>";
         }
-        /** pdq bookmarks **/
         $booked = '';
         if (!empty($book)) {
             foreach ($book as $bk) {

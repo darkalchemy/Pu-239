@@ -700,8 +700,6 @@ function clearUserCache($userid)
     $cache->delete('user' . $userid);
     $cache->delete('useravatar_' . $userid);
     $cache->delete('inbox_' . $userid);
-    $cache->delete('user_stats_' . $userid);
-    $cache->delete('userstats_' . $userid);
     $cache->delete('userstatus_' . $userid);
     $cache->delete('user_rep_' . $userid);
     $cache->delete('poll_votes_' . $userid);

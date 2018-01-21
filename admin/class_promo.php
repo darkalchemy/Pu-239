@@ -12,7 +12,6 @@ $lang = array_merge($lang, load_language('ad_class_promo'));
 if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'] /*$allowed_ids*/)) {
     stderr($lang['classpromo_error'], $lang['classpromo_denied']);
 }
-//get the config from db - stoner/pdq
 $pconf = sql_query('SELECT * FROM class_promo ORDER BY id ASC ') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($pconf)) {
     $class_config[$ac['name']]['id'] = $ac['id'];

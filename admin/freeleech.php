@@ -8,7 +8,7 @@ global $CURUSER, $site_config, $lang;
 $lang = array_merge($lang, load_language('ad_freelech'));
 $HTMLOUT = '';
 if (isset($_GET['remove'])) {
-    $configfile = '<' . $lang['freelech_thisfile'] . date('M d Y H:i:s') . $lang['freelech_modby'];
+    $configfile = '<' . $lang['freelech_thisfile'] . date('M d Y H:i:s');
     $configfile .= $lang['freelech_config_file'];
     $configfile .= "\n);";
     file_put_contents(CACHE_DIR . 'free_cache.php', $configfile);
@@ -16,7 +16,7 @@ if (isset($_GET['remove'])) {
     die;
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $configfile = '<' . $lang['freelech_thisfile'] . date('M d Y H:i:s') . $lang['freelech_modby'];
+    $configfile = '<' . $lang['freelech_thisfile'] . date('M d Y H:i:s');
     $fl['modifier'] = (isset($_POST['modifier']) ? (int)$_POST['modifier'] : false);
     if (isset($_POST['expires']) && $_POST['expires'] == 255) {
         $fl['expires'] = 1;

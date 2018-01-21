@@ -1,12 +1,5 @@
 <?php
 
-//|------------------------------------------------------- |\\
-//|search for subtiles on http://www.opensubtitles.org/    |\\
-//|made by putyn @tbdev 27/2/2009                          |\\
-//|--------------------------------------------------------|\\
-
-//function to build the menu
-
 /**
  * @param        $name
  * @param        $arr
@@ -30,7 +23,6 @@ function build_menu($name, $arr, $val = '')
     return $menu;
 }
 
-//arrays for menu
 $lang_menu = [
     'all' => 'ALL',
     'alb' => 'Albanian',
@@ -85,7 +77,8 @@ $lang_menu = [
     'tur' => 'Turkish',
     'ukr' => 'Ukrainian',
     'urd' => 'Urdu',
-    'vie' => 'Vietnamese',];
+    'vie' => 'Vietnamese',
+];
 $fps_menu = [
     '23.976' => '23.976',
     '23.980' => '23.980',

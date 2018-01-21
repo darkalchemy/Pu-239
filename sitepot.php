@@ -47,13 +47,9 @@ if ($want_pot && (isset($pot_options[$want_pot]))) {
         sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($want_pot) . ' 
                      WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $update['seedbonus_donator'] = ($CURUSER['seedbonus'] - $want_pot);
-        //====Update the caches
-        $cache->update_row('userstats_' . $CURUSER['id'], [
+        $cache->update_row('user' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus_donator'],
-        ], $site_config['expires']['u_stats']);
-        $cache->update_row('user_stats_' . $CURUSER['id'], [
-            'seedbonus' => $update['seedbonus_donator'],
-        ], $site_config['expires']['curuser']);
+        ], $site_config['expires']['user_cache']);
         $cache->delete('Sitepot_');
         write_log('Site Pot ' . $CURUSER['username'] . ' has donated ' . $want_pot . " karma points to the site pot. {$Remaining} karma points remaining.");
         sql_query('UPDATE avps SET value_i = value_i + ' . sqlesc($want_pot) . " 
@@ -69,13 +65,9 @@ if ($want_pot && (isset($pot_options[$want_pot]))) {
         sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($want_pot) . ' 
                      WHERE id = ' . sqlesc($CURUSER['id']) . '') or sqlerr(__FILE__, __LINE__);
         $update['seedbonus_donator'] = ($CURUSER['seedbonus'] - $want_pot);
-        //====Update the caches
-        $cache->update_row('userstats_' . $CURUSER['id'], [
+        $cache->update_row('user' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus_donator'],
-        ], $site_config['expires']['u_stats']);
-        $cache->update_row('user_stats_' . $CURUSER['id'], [
-            'seedbonus' => $update['seedbonus_donator'],
-        ], $site_config['expires']['curuser']);
+        ], $site_config['expires']['user_cache']);
         $cache->delete('Sitepot_');
         write_log('Site Pot ' . $CURUSER['username'] . ' has donated ' . $want_pot . ' karma points to the site pot.');
         sql_query('UPDATE avps SET value_i = value_i + ' . sqlesc($want_pot) . ", 

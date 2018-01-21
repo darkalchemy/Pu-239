@@ -1,6 +1,5 @@
 <?php
 
-//made by putyn
 $countries = [
     'se'  => [
         'id'   => 1,

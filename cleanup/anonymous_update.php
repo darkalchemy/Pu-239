@@ -23,10 +23,8 @@ function anonymous_update($data)
             $cache->update_row('user' . $arr['id'], [
                 'anonymous_until' => 0,
                 'anonymous'       => 'no',
+                'modcomment'      => $modcomment,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('user_stats_' . $arr['id'], [
-                'modcomment' => $modcomment,
-            ], $site_config['expires']['user_stats']);
             $cache->increment('inbox_' . $arr['id']);
         }
         $count = count($users_buffer);

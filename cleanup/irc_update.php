@@ -1,6 +1,8 @@
 <?php
 /**
  * @param $data
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function irc_update($data)
 {
@@ -16,14 +18,9 @@ function irc_update($data)
             $update['seedbonus'] = ($arr['seedbonus'] + $site_config['bonus_irc_per_duration']);
             $update['irctotal'] = ($arr['irctotal'] + $site_config['autoclean_interval']);
             $cache->update_row('user' . $arr['id'], [
-                'irctotal' => $update['irctotal'],
+                'irctotal'  => $update['irctotal'],
+                'seedbonus' => $update['seedbonus'],
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('user_stats' . $arr['id'], [
-                'seedbonus' => $update['seedbonus'],
-            ], $site_config['expires']['user_stats']);
-            $cache->update_row('userstats_' . $arr['id'], [
-                'seedbonus' => $update['seedbonus'],
-            ], $site_config['expires']['u_stats']);
         }
         $count = count($users_buffer);
         if ($count > 0) {

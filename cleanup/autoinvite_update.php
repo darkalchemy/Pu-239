@@ -25,11 +25,9 @@ function autoinvite_update($data)
             $users_buffer[] = '(' . $arr['id'] . ', 2, ' . $modcom . ')'; //== 2 in the user_buffer is award amount :)
             $update['invites'] = ($arr['invites'] + 2); //== 2 in the user_buffer is award amount :)
             $cache->update_row('user' . $arr['id'], [
-                'invites' => $update['invites'],
-            ], $site_config['expires']['user_cache']);
-            $cache->update_row('user_stats_' . $arr['id'], [
+                'invites'    => $update['invites'],
                 'modcomment' => $modcomment,
-            ], $site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_cache']);
             $cache->increment('inbox_' . $arr['id']);
         }
         $count = count($users_buffer);

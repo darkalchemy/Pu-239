@@ -9,7 +9,6 @@ $lang = array_merge($lang, load_language('ad_class_config'));
 if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'])) {
     stderr($lang['classcfg_error'], $lang['classcfg_denied']);
 }
-//get the config from db - stoner/pdq
 $pconf = sql_query('SELECT * FROM class_config ORDER BY value ASC') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($pconf)) {
     $class_config[$ac['name']]['value'] = $ac['value'];

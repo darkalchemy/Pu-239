@@ -46,7 +46,11 @@ function lotteryclean($data)
         $msg['body'] = sqlesc('Congratulations, You have won : ' . number_format($lottery['user_pot']) . '. This has been added to your seedbonus total amount. Thanks for playing Lottery.');
         foreach ($lottery['winners'] as $winner) {
             $mod_comment = sqlesc("User won the lottery: {$lottery['user_pot']} at " . get_date($dt, 'LONG') . (!empty($winner['modcomment']) ? "\n" . $winner['modcomment'] : ''));
-            $_userq[] = ['id' => (int)$winner['uid'], 'seedbonus' => (float)$winner['seedbonus'] + $lottery['user_pot'], 'modcomment' => $mod_comment];
+            $_userq[] = [
+                'id'         => (int)$winner['uid'],
+                'seedbonus'  => (float)$winner['seedbonus'] + $lottery['user_pot'],
+                'modcomment' => $mod_comment
+            ];
             $_pms[] = '(0,' . $winner['uid'] . ',' . $msg['subject'] . ',' . $msg['body'] . ',' . $dt . ')';
             $uids[] = $winner['uid'];
         }
@@ -67,11 +71,7 @@ function lotteryclean($data)
         foreach ($uids as $user_id) {
             $cache->increment('inbox_' . $user_id);
             $cache->increment('inbox_sb_' . $user_id);
-            $cache->deleteMulti([
-                                    'userstats_' . $user_id,
-                                    'user_stats_' . $user_id,
-                                    'user' . $user_id
-                                ]);
+            $cache->delete('user' . $user_id);
         }
         sql_query('INSERT INTO lottery_config(name,value)
                     VALUES ' . join(',', $lconfig_update) . '

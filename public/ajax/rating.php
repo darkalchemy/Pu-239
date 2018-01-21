@@ -38,17 +38,12 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
             ], $site_config['expires']['torrent_details']);
         }
         if ($site_config['seedbonus_on'] == 1) {
-            //===add karma
             $amount = ($what == 'torrent' ? $site_config['bonus_per_rating'] : $site_config['bonus_per_topic']);
             sql_query("UPDATE users SET seedbonus = seedbonus+$amount WHERE id = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
             $update['seedbonus'] = ($CURUSER['seedbonus'] + $amount);
-            $cache->update_row('userstats_' . $CURUSER['id'], [
+            $cache->update_row('user' . $CURUSER['id'], [
                 'seedbonus' => $update['seedbonus'],
-            ], $site_config['expires']['u_stats']);
-            $cache->update_row('user_stats_' . $CURUSER['id'], [
-                'seedbonus' => $update['seedbonus'],
-            ], $site_config['expires']['user_stats']);
-            //===end
+            ], $site_config['expires']['user_cache']);
         }
         if ($ajax) {
             $qy = sql_query('SELECT sum(r.rating) AS sum, count(r.rating) AS count, r2.rating AS rate FROM rating AS r LEFT JOIN rating AS r2 ON (r2.' . $what . ' = ' . sqlesc($id) . ' AND r2.user = ' . sqlesc($uid) . ') WHERE r.' . $what . ' = ' . sqlesc($id) . ' GROUP BY r.' . sqlesc($what)) or sqlerr(__FILE__, __LINE__);

@@ -1,8 +1,5 @@
 <?php
-//|------------------------------------------------------- |\\
-//|search for subtiles on http://www.opensubtitles.org/    |\\
-//|made by putyn @tbdev 27/2/2009                          |\\
-//|--------------------------------------------------------|\\
+
 require_once 'function_menu.php';
 require_once 'functions.php';
 
@@ -34,7 +31,24 @@ if ($cds) {
 $offset = (isset($_GET['offset']) ? (int)$_GET['offset'] : '');
 
 if ($searchby == 'name') {
-    $name = str_replace(['.', '/', '"', '!', '-', '+', '_', '@', '#', '$', '%', '&', '^', '(', ')', '*'], ' ', $name);
+    $name = str_replace([
+                            '.',
+                            '/',
+                            '"',
+                            '!',
+                            '-',
+                            '+',
+                            '_',
+                            '@',
+                            '#',
+                            '$',
+                            '%',
+                            '&',
+                            '^',
+                            '(',
+                            ')',
+                            '*'
+                        ], ' ', $name);
 }
 
 ?>

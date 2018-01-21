@@ -324,38 +324,6 @@ function userlogin()
         }
     }
 
-    $What_Cache = (XBT_TRACKER ? 'userstats_xbt_' : 'userstats_');
-    $stats = $cache->get($What_Cache . $id);
-    if ($stats === false || is_null($stats)) {
-        $What_Expire = (XBT_TRACKER ? $site_config['expires']['u_stats_xbt'] : $site_config['expires']['u_stats']);
-        $stats_fields_ar_int = [
-            'uploaded',
-            'downloaded',
-        ];
-        $stats_fields_ar_float = [
-            'seedbonus',
-        ];
-        $stats_fields_ar_str = [
-            'modcomment',
-            'bonuscomment',
-        ];
-        $stats_fields = implode(', ', array_merge($stats_fields_ar_int, $stats_fields_ar_float, $stats_fields_ar_str));
-        $s = sql_query('SELECT ' . $stats_fields . ' FROM users WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $stats = mysqli_fetch_assoc($s);
-        foreach ($stats_fields_ar_int as $i) {
-            $stats[$i] = (int)$stats[$i];
-        }
-        foreach ($stats_fields_ar_float as $i) {
-            $stats[$i] = (float)$stats[$i];
-        }
-        foreach ($stats_fields_ar_str as $i) {
-            $stats[$i] = $stats[$i];
-        }
-        $cache->set($What_Cache . $id, $stats, $What_Expire);
-    }
-    $users_data['seedbonus'] = $stats['seedbonus'];
-    $users_data['uploaded'] = $stats['uploaded'];
-    $users_data['downloaded'] = $stats['downloaded'];
     $ustatus = $cache->get('userstatus_' . $id);
     if ($ustatus === false || is_null($ustatus)) {
         $sql2 = sql_query('SELECT * FROM ustatus WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
@@ -1698,6 +1666,7 @@ function unsetSessionVar($key, $prefix = null)
 
 /**
  * @return null|string
+ *
  * @throws Exception
  */
 function salty()

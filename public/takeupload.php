@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class.bencdec.php';
 require_once INCL_DIR . 'function_memcache.php';
 
-$owner_id = '';
+$torrent_pass = $auth = $bot = $owner_id = '';
 extract($_GET);
 unset($_GET);
 extract($_POST);
@@ -178,7 +178,10 @@ if (!validfilename($fname)) {
 if (empty($isbn)) {
     $isbn = '';
 } else {
-    $isbn = str_replace(['-', ' '], '', $isbn);
+    $isbn = str_replace([
+                            '-',
+                            ' '
+                        ], '', $isbn);
 }
 
 if (!preg_match('/^(.+)\.torrent$/si', $fname, $matches)) {
@@ -421,14 +424,13 @@ if (!bencdec::encode_file($dir, $dict)) {
 chmod($dir, 0664);
 
 if ($site_config['seedbonus_on'] == 1) {
+    $user_data = get_user_data($owner_id);
+    $seedbonus = $user_data['seedbonus'];
     sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_upload']) . ', numuploads = numuploads+ 1  WHERE id = ' . sqlesc($owner_id)) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($seedbonus + $site_config['bonus_per_upload']);
-    $cache->update_row('userstats_' . $owner_id, [
+    $cache->update_row('user' . $owner_id, [
         'seedbonus' => $update['seedbonus'],
-    ], $site_config['expires']['u_stats']);
-    $cache->update_row('user_stats_' . $owner_id, [
-        'seedbonus' => $update['seedbonus'],
-    ], $site_config['expires']['user_stats']);
+    ], $site_config['expires']['user_cache']);
 }
 if ($site_config['autoshout_on'] == 1) {
     autoshout($message);
@@ -465,5 +467,5 @@ if ($filled == 0) {
     write_log(sprintf($lang['takeupload_log'], $id, $torrent, $user['username']));
 }
 
-setSessionVar('is-success', $lang['details_success']);
+setSessionVar('is-success', $lang['takeupload_success']);
 header("Location: {$site_config['baseurl']}/details.php?id=$id");

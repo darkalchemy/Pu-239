@@ -40,12 +40,9 @@ $cache->delete('latest_comments_');
 if ($site_config['seedbonus_on'] == 1) {
     sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_comment']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus_per_comment']);
-    $cache->update_row('userstats_' . $CURUSER['id'], [
+    $cache->update_row('user' . $CURUSER['id'], [
         'seedbonus' => $update['seedbonus'],
-    ], $site_config['expires']['u_stats']);
-    $cache->update_row('user_stats_' . $CURUSER['id'], [
-        'seedbonus' => $update['seedbonus'],
-    ], $site_config['expires']['user_stats']);
+    ], $site_config['expires']['user_cache']);
 }
 setSessionVar('is-success', "Your 'Thank you' has been registered!");
 header("Refresh: 0; url=details.php?id=$id");

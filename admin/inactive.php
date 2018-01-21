@@ -9,13 +9,10 @@ global $CURUSER, $site_config, $cache, $lang;
 
 $HTMLOUT = '';
 $lang = array_merge($lang, load_language('inactive'));
-// made by putyn tbdev.net
-// email part by x0r tbdev.net
-// config
+
 $replyto = "{$site_config['site_email']}"; // The Reply-to email.
 $record_mail = true; // set this true or false . If you set this true every time whene you send a mail the time , userid , and the number of mail sent will be recorded
 $days = 50; //number of days of inactivity
-// end config
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $action = isset($_POST['action']) ? htmlsafechars(trim($_POST['action'])) : '';
     if (empty($_POST['userid']) && (($action == 'deluser') || ($action == 'mail'))) {

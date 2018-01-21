@@ -21,11 +21,9 @@ function avatarpos_update($data)
             $msgs_buffer[] = '(0,' . $arr['id'] . ',' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ' )';
             $users_buffer[] = '(' . $arr['id'] . ', \'1\', ' . $modcom . ')';
             $cache->update_row('user' . $arr['id'], [
-                'avatarpos' => 1,
-            ], $site_config['expires']['user_cache']);
-            $cache->update_row('user_stats_' . $arr['id'], [
+                'avatarpos'  => 1,
                 'modcomment' => $modcomment,
-            ], $site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_cache']);
             $cache->increment('inbox_' . $arr['id']);
         }
         $count = count($users_buffer);

@@ -2,6 +2,7 @@
 global $site_config;
 
 $lang = [
+    'takeupload_success'       => 'Successfully uploaded!',
     //takeupload errors
     'takeupload_failed'        => 'Upload failed!',
     'takeupload_no_formdata'   => 'missing form data',

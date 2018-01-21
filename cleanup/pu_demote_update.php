@@ -1,6 +1,8 @@
 <?php
 /**
  * @param $data
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function pu_demote_update($data)
 {
@@ -49,14 +51,9 @@ function pu_demote_update($data)
                 $users_buffer[] = '(' . $arr['id'] . ', ' . $prev_class . ', ' . $modcom . ')';
 
                 $cache->update_row('user' . $arr['id'], [
-                    'class' => $prev_class,
-                ], $site_config['expires']['user_cache']);
-                $cache->update_row('user_stats_' . $arr['id'], [
+                    'class'      => $prev_class,
                     'modcomment' => $modcomment,
-                ], $site_config['expires']['user_stats']);
-                $cache->update_row('MYuser_' . $arr['id'], [
-                    'class' => $prev_class,
-                ], $site_config['expires']['curuser']);
+                ], $site_config['expires']['user_cache']);
                 $cache->increment('inbox_' . $arr['id']);
             }
             $count = count($users_buffer);

@@ -1,5 +1,5 @@
 <?php
-global $CURUSER, $site_config, $cache, $lang, $user, $user_stats;
+global $CURUSER, $site_config, $cache, $lang, $user, $user;
 
 $What_Cache = (XBT_TRACKER ? 'share_ratio_xbt_' : 'share_ratio_');
 $What_Table = (XBT_TRACKER ? 'xbt_files_users' : 'snatched');
@@ -35,7 +35,7 @@ if ($cache_share_ratio['seed_time_total'] > 0 && $cache_share_ratio['total_numbe
         <tr>
             <td>' . $lang['userdetails_time_ratio'] . '</td>
             <td>
-                <div class="level-left">' . (($user_stats['downloaded'] > 0 || $user_stats['uploaded'] > 2147483648) ? '
+                <div class="level-left">' . (($user['downloaded'] > 0 || $user['uploaded'] > 2147483648) ? '
                     <span class="right10" style="color: ' . get_ratio_color(number_format($avg_time_ratio, 3)) . ';">' . number_format($avg_time_ratio, 3) . '</span>' . ratio_image_machine(number_format($avg_time_ratio, 3)) . '
                     <span class="left10">[</span><span style="color: ' . get_ratio_color(number_format($avg_time_ratio, 3)) . ';">&#160;' . $avg_time_seeding . '</span>&#160;' . $lang['userdetails_time_ratio_per'] : $lang['userdetails_inf']) . '
                 </div>

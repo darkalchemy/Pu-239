@@ -662,7 +662,6 @@ if (!empty($user_updateset)) {
         ->where('id = ?', $userid)
         ->execute();
 
-    $cache->delete('userstats_' . $userid);
-    $cache->delete('user_stats_' . $userid);
+    $cache->delete('user' . $userid);
 }
 benc_resp_raw($resp);

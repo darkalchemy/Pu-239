@@ -34,16 +34,11 @@ if (isset($open) && $open == 1) {
                 $update['invites'] = ($User['invites'] + 1);
                 $update['uploaded'] = ($User['uploaded'] + 1024 * 1024 * 1024 * 10);
                 $update['freeslots'] = ($User['freeslots'] + 1);
-                $cache->update_row('userstats_' . $userid, [
-                    'uploaded' => $update['uploaded'],
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $userid, [
-                    'uploaded' => $update['uploaded'],
-                ], $site_config['expires']['user_stats']);
                 $cache->update_row('user' . $userid, [
                     'invites'   => $update['invites'],
                     'freeslots' => $update['freeslots'],
                     'gotgift'   => 'yes',
+                    'uploaded'  => $update['uploaded'],
                 ], $site_config['expires']['user_cache']);
                 header('Refresh: 5; url=' . $site_config['baseurl'] . '/index.php');
                 stderr('Congratulations!', "<img src=\"{$site_config['pic_baseurl']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\" /> <h2> You just got  1 invite 10 GB upload and bonus 1 freeslot !</h2>
@@ -53,15 +48,10 @@ Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry 
                 sql_query("UPDATE users SET invites=invites+3,  seedbonus = seedbonus + 1750, gotgift='yes' WHERE id=" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $update['invites'] = ($User['invites'] + 3);
                 $update['seedbonus'] = ($User['seedbonus'] + 1750);
-                $cache->update_row('userstats_' . $userid, [
-                    'seedbonus' => $update['seedbonus'],
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $userid, [
-                    'seedbonus' => $update['seedbonus'],
-                ], $site_config['expires']['user_stats']);
                 $cache->update_row('user' . $userid, [
-                    'invites' => $update['invites'],
-                    'gotgift' => 'yes',
+                    'invites'   => $update['invites'],
+                    'gotgift'   => 'yes',
+                    'seedbonus' => $update['seedbonus'],
                 ], $site_config['expires']['user_cache']);
                 header('Refresh: 5; url=' . $site_config['baseurl'] . '/index.php');
                 stderr('Congratulations!', "<img src=\"{$site_config['pic_baseurl']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\" /> <h2> You just got 3 invites 1750 karma bonus points !</h2>
@@ -72,16 +62,11 @@ Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry 
                 $update['invites'] = ($User['invites'] + 2);
                 $update['seedbonus'] = ($User['seedbonus'] + 2000);
                 $update['freeslots'] = ($User['freeslots'] + 3);
-                $cache->update_row('userstats_' . $userid, [
-                    'seedbonus' => $update['seedbonus'],
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $userid, [
-                    'seedbonus' => $update['seedbonus'],
-                ], $site_config['expires']['user_stats']);
                 $cache->update_row('user' . $userid, [
                     'invites'   => $update['invites'],
                     'freeslots' => $update['freeslots'],
                     'gotgift'   => 'yes',
+                    'seedbonus' => $update['seedbonus'],
                 ], $site_config['expires']['user_cache']);
                 header('Refresh: 5; url=' . $site_config['baseurl'] . '/index.php');
                 stderr('Congratulations!', "<img src=\"{$site_config['pic_baseurl']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\" /> <h2> You just got 2 invites and 2000 bonus points and a bonus 3 freeslots !</h2>
@@ -93,18 +78,12 @@ Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry 
                 $update['seedbonus'] = ($User['seedbonus'] + 2500);
                 $update['freeslots'] = ($User['freeslots'] + 5);
                 $update['uploaded'] = ($User['uploaded'] + 1024 * 1024 * 1024 * 20);
-                $cache->update_row('userstats_' . $userid, [
-                    'seedbonus' => $update['seedbonus'],
-                    'uploaded'  => $update['uploaded'],
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $userid, [
-                    'seedbonus' => $update['seedbonus'],
-                    'uploaded'  => $update['uploaded'],
-                ], $site_config['expires']['user_stats']);
                 $cache->update_row('user' . $userid, [
                     'invites'   => $update['invites'],
                     'freeslots' => $update['freeslots'],
                     'gotgift'   => 'yes',
+                    'seedbonus' => $update['seedbonus'],
+                    'uploaded'  => $update['uploaded'],
                 ], $site_config['expires']['user_cache']);
                 header('Refresh: 5; url=' . $site_config['baseurl'] . '/index.php');
                 stderr('Congratulations!', "<img src=\"{$site_config['pic_baseurl']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\" /> <h2> You just got 3 invites 1750 karma bonus points !</h2>

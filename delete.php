@@ -13,7 +13,7 @@ $id = (int)$id;
 if (!is_valid_id($id)) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_missing_data']}");
 }
-//==delete torrents by putyn
+
 /**
  * @param $id
  */
@@ -92,19 +92,21 @@ if (XBT_TRACKER) {
     deletetorrent($id);
     remove_torrent_peers($id);
 }
-$cache->deleteMulti(['lastest_tor_', 'top5_tor_', 'last5_tor_', 'scroll_tor_', 'torrent_details_' . $id, 'torrent_details_text' . $id]);
+$cache->deleteMulti([
+                        'lastest_tor_',
+                        'top5_tor_',
+                        'last5_tor_',
+                        'scroll_tor_',
+                        'torrent_details_' . $id,
+                        'torrent_details_text' . $id
+                    ]);
 write_log("{$lang['delete_torrent']} $id ({$row['name']}){$lang['delete_deleted_by']}{$CURUSER['username']} ($reasonstr)\n");
 if ($site_config['seedbonus_on'] == 1) {
-    //===remove karma
     sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus_per_delete']) . ' WHERE id = ' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] - $site_config['bonus_per_delete']);
-    $cache->update_row('userstats_' . $row['owner'], [
+    $cache->update_row('user' . $row['owner'], [
         'seedbonus' => $update['seedbonus'],
-    ], $site_config['expires']['u_stats']);
-    $cache->update_row('user_stats_' . $row['owner'], [
-        'seedbonus' => $update['seedbonus'],
-    ], $site_config['expires']['user_stats']);
-    //===end
+    ], $site_config['expires']['user_cache']);
 }
 if ($CURUSER['id'] != $row['owner'] and $CURUSER['pm_on_delete'] == 'yes') {
     $added = TIME_NOW;

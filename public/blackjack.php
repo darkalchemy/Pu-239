@@ -458,29 +458,13 @@ if ($game) {
 
                     //==stats
                     // winner $CURUSER
-                    $cache->update_row('userstats_' . $CURUSER['id'], [
-                        'uploaded' => $update['uploaded'],
-                    ], $site_config['expires']['u_stats']);
-                    // winner $CURUSER
-                    $cache->update_row('user_stats_' . $CURUSER['id'], [
-                        'uploaded' => $update['uploaded'],
-                    ], $site_config['expires']['user_stats']);
-                    // loser $a
-                    $cache->update_row('userstats_' . $a['userid'], [
-                        'uploaded' => $update['uploaded_loser'],
-                    ], $site_config['expires']['u_stats']);
-                    // loser $a
-                    $cache->update_row('user_stats_' . $a['userid'], [
-                        'uploaded' => $update['uploaded_loser'],
-                    ], $site_config['expires']['user_stats']);
-
-                    //== curuser values
-                    // winner $CURUSER
                     $cache->update_row('user' . $CURUSER['id'], [
-                        'bjwins' => $update['bjwins'],
+                        'uploaded' => $update['uploaded'],
+                        'bjwins'   => $update['bjwins'],
                     ], $site_config['expires']['user_cache']);
                     // loser $a
                     $cache->update_row('user' . $a['userid'], [
+                        'uploaded' => $update['uploaded_loser'],
                         'bjlosses' => $update['bjlosses'],
                     ], $site_config['expires']['user_cache']);
 
@@ -579,28 +563,14 @@ if ($game) {
 
                     //==stats
                     // winner $a
-                    $cache->update_row('userstats_' . $a['userid'], [
-                        'uploaded' => $update['uploaded'],
-                    ], $site_config['expires']['u_stats']);
-                    // winner $a
-                    $cache->update_row('user_stats_' . $a['userid'], [
-                        'uploaded' => $update['uploaded'],
-                    ], $site_config['expires']['user_stats']);
-                    // loser $CURUSER
-                    $cache->update_row('userstats_' . $CURUSER['id'], [
-                        'uploaded' => $update['uploaded_loser'],
-                    ], $site_config['expires']['u_stats']);
-                    // loser $CURUSER
-                    $cache->update_row('user_stats_' . $CURUSER['id'], [
-                        'uploaded' => $update['uploaded_loser'],
-                    ], $site_config['expires']['user_stats']);
-                    //== curuser values
-                    // winner $a
                     $cache->update_row('user' . $a['userid'], [
-                        'bjwins' => $update['bjwins'],
+                        'uploaded' => $update['uploaded'],
+                        'bjwins'   => $update['bjwins'],
                     ], $site_config['expires']['user_cache']);
+
                     // loser $CURUSER
                     $cache->update_row('user' . $CURUSER['id'], [
+                        'uploaded' => $update['uploaded_loser'],
                         'bjlosses' => $update['bjlosses'],
                     ], $site_config['expires']['user_cache']);
 
@@ -828,24 +798,13 @@ if ($game) {
                 sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
                 //==stats
-                $cache->update_row('userstats_' . $update['winnerid'], [
-                    'uploaded' => $update['uploaded'],
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $update['winnerid'], [
-                    'uploaded' => $update['uploaded'],
-                ], $site_config['expires']['user_stats']);
-                $cache->update_row('userstats_' . $update['loserid'], [
-                    'uploaded' => $update['uploaded_loser'],
-                ], $site_config['expires']['u_stats']);
-                $cache->update_row('user_stats_' . $update['loserid'], [
-                    'uploaded' => $update['uploaded_loser'],
-                ], $site_config['expires']['user_stats']);
-                //== curuser values
                 $cache->update_row('user' . $update['winnerid'], [
-                    'bjwins' => $update['bjwins'],
+                    'uploaded' => $update['uploaded'],
+                    'bjwins'   => $update['bjwins'],
                 ], $site_config['expires']['user_cache']);
-                // loser $CURUSER
+
                 $cache->update_row('user' . $update['loserid'], [
+                    'uploaded' => $update['uploaded_loser'],
                     'bjlosses' => $update['bjlosses'],
                 ], $site_config['expires']['user_cache']);
             }
