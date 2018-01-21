@@ -92,7 +92,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         foreach ($names as $name) {
             $$name = (isset($_POST[$name]) ? $_POST[$name] : ($action == 'edit' ? $arr[$name] : ''));
         }
-        if ($action == 'edit' && $CURUSER['class'] < $_POST['av_class']) {
+        if ($action == 'edit' && $CURUSER['class'] < $arr['av_class']) {
             stderr($lang['spanel_error'], $lang['spanel_cant_edit_this_pg']);
         }
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -106,7 +106,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
             if (empty($description)) {
                 $errors[] = $lang['spanel_the_descr'] . ' ' . $lang['spanel_cannot_be_empty'] . '.';
             }
-            if (empty($navbar)) {
+            if (!isset($navbar)) {
                 $errors[] = 'Show in Navbar ' . $lang['spanel_cannot_be_empty'] . '.';
             }
             if (!in_array((int)$_POST['av_class'], $staff_classes)) {
@@ -254,7 +254,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         $maxclass = UC_MAX;
         for ($class = UC_STAFF; $class <= $maxclass; ++$class) {
             $body .= '
-                           <option value="' . $class . '">' . get_user_class_name($class) . '</option>';
+                           <option value="' . $class . '"' . ($arr['av_class'] == $class ? ' selected' : '') . '>' . get_user_class_name($class) . '</option>';
         }
         $body .= '
                         </select>
