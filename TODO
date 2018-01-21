@@ -1,5 +1,8 @@
 In no particular order
 
+add daily, weekly, monthly to top 10 stats page
+finish torrent blocks in userdetails
+fix anonymous username in popups
 replace anonymous user with array of names, like Tom Sawyer
 fix admin uploadapp.php
 remove begin_table and end_table functions
@@ -14,4 +17,5 @@ format divs using main_div function
 wrap all pages in wrapper function
 update/fix forums or replace
 verify announce working
-
+xbt
+ocelot

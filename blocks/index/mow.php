@@ -54,7 +54,7 @@ foreach ($motw as $m_w) {
 
     $HTMLOUT .= "
                         <tr>
-                            <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}caticons/" . get_categorie_icons() . "/{$image}' class='tooltipper' alt='{$cat}' title='{$cat}' /></td>
+                            <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$image}' class='tooltipper' alt='{$cat}' title='{$cat}' /></td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
                                     <span class='dt-tooltipper-large' data-tooltip-content='#mow_id_{$id}_tooltip'>

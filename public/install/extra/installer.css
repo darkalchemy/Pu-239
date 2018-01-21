@@ -90,3 +90,9 @@ tr:hover .input_info {
     height: 67px;
     margin: 20px;
 }
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+
+}

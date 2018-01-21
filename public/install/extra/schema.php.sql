@@ -2387,8 +2387,9 @@ CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
   `passhash` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `torrent_pass` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `auth` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `torrent_pass` char(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `auth` char(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `apikey` char(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` enum('pending','confirmed') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
   `added` int(11) NOT NULL DEFAULT '0',
@@ -2654,4 +2655,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-18  8:36:54
+-- Dump completed on 2018-01-20 22:06:31

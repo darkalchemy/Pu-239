@@ -9,18 +9,21 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
         $r = sql_query("SELECT torrents.name, torrents.added AS torrent_added, xbt_files_users.started AS st, xbt_files_users.completedtime AS c, xbt_files_users.downspeed, xbt_files_users.seedtime, xbt_files_users.active, xbt_files_users.left, xbt_files_users.fid AS tid, categories.id AS category, categories.image, categories.name AS catname, xbt_files_users.uploaded, xbt_files_users.downloaded, xbt_files_users.hit_and_run, xbt_files_users.mark_of_cain, xbt_files_users.completedtime, xbt_files_users.mtime, xbt_files_users.uid, torrents.seeders, torrents.leechers, torrents.owner FROM xbt_files_users JOIN torrents ON torrents.id = xbt_files_users.fid JOIN categories ON categories.id = torrents.category WHERE xbt_files_users.completed>='1' AND uid=" . sqlesc($id) . ' AND torrents.owner != ' . sqlesc($id) . ' ORDER BY xbt_files_users.fid DESC') or sqlerr(__FILE__, __LINE__);
     }
     if (mysqli_num_rows($r) > 0) {
-        $completed .= "<table class='main' >
-    <tr>
-    <td class='colhead'>{$lang['userdetails_type']}</td>
-    <td class='colhead'>{$lang['userdetails_name']}</td>
-    <td class='colhead'>{$lang['userdetails_s']}</td>
-    <td class='colhead'>{$lang['userdetails_l']}</td>
-    <td class='colhead'>{$lang['userdetails_ul']}</td>
-    " . ($site_config['ratio_free'] ? '' : "<td class='colhead'>{$lang['userdetails_dl']}</td>") . "
-    <td class='colhead'>{$lang['userdetails_ratio']}</td>
-    <td class='colhead'>{$lang['userdetails_wcompleted']}</td>
-    <td class='colhead'>{$lang['userdetails_laction']}</td>
-    <td class='colhead'>{$lang['userdetails_speed']}</td></tr>";
+        $heading .= "
+        <tr>
+            <th>{$lang['userdetails_type']}</th>
+            <th>{$lang['userdetails_name']}</th>
+            <th>{$lang['userdetails_s']}</th>
+            <th>{$lang['userdetails_l']}</th>
+            <th>{$lang['userdetails_ul']}</th>
+            " . ($site_config['ratio_free'] ? '' : "
+            <th>{$lang['userdetails_dl']}</th>") . "
+            <th>{$lang['userdetails_ratio']}</th>
+            <th>{$lang['userdetails_wcompleted']}</th>
+            <th>{$lang['userdetails_laction']}</th>
+            <th>{$lang['userdetails_speed']}</th>
+        </tr>";
+        $body = '';
         while ($a = mysqli_fetch_assoc($r)) {
             $What_Id = (XBT_TRACKER ? $a['tid'] : $a['id']);
             $torrent_needed_seed_time = ($a['st'] - $a['torrent_added']);
@@ -106,40 +109,56 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
             $mark_of_cain = ($a['mark_of_cain'] == 'yes' ? "<img src='{$site_config['pic_baseurl']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' title='{$lang['userdetails_c_tmofcain']}' />" . $checkbox_for_delete : '');
             $hit_n_run = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['pic_baseurl']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' title='{$lang['userdetails_c_hitrun1']}' />" : '');
             if (!XBT_TRACKER) {
-                $completed .= "<tr><td style='padding: 0;'><img src='{$site_config['pic_baseurl']}caticons/" . get_categorie_icons() . "/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
-    <td><a class='altlink' href='{$site_config['baseurl']}/details.php?id=" . (int)$a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
-    <br><font>  " . (($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['seeder'] == 'yes' ? "&#160;<span style='color: limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain) : '') . "</td>
-    <td>" . (int)$a['seeders'] . "</td>
-    <td>" . (int)$a['leechers'] . "</td>
-    <td>" . mksize($a['uploaded']) . '</td>
-    ' . ($site_config['ratio_free'] ? '' : "<td>" . mksize($a['downloaded']) . '</td>') . "
-    <td>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . "<br></td>
-    <td>" . get_date($a['complete_date'], 'DATE') . "</td>
-    <td>" . get_date($a['last_action'], 'DATE') . "</td>
-    <td><span style='color: $dlc;'>[{$lang['userdetails_c_dled']}$dl_speed ]</span></td></tr>";
+                $body .= "
+            <tr>
+                <td style='padding: 0;'><img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
+                <td>
+                    <a class='altlink' href='{$site_config['baseurl']}/details.php?id=" . (int)$a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
+                    <br><span>  " . (($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) ? "{$lang['userdetails_c_seedfor']}</span>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['seeder'] == 'yes' ? "&#160;<span class='has-text-lime'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain) : '') . "</td>
+                <td>" . (int)$a['seeders'] . "</td>
+                <td>" . (int)$a['leechers'] . "</td>
+                <td>" . mksize($a['uploaded']) . '</td>
+                ' . ($site_config['ratio_free'] ? '' : "
+                <td>" . mksize($a['downloaded']) . '</td>') . "
+                <td>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . "<br></td>
+                <td>" . get_date($a['complete_date'], 'DATE') . "</td>
+                <td>" . get_date($a['last_action'], 'DATE') . "</td>
+                <td><span style='color: $dlc;'>[{$lang['userdetails_c_dled']}$dl_speed ]</span></td>
+            </tr>";
             } else {
-                $completed .= "<tr><td style='padding: 0;'><img src='{$site_config['pic_baseurl']}caticons/" . get_categorie_icons() . "/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
-    <td><a class='altlink' href='{$site_config['baseurl']}/details.php?id=" . (int)$a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
-    <br><font>  " . (($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['active'] == 1 && $a['left'] = 0 ? "&#160;<span style='color: limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run) : '') . "</td>
-    <td>" . (int)$a['seeders'] . "</td>
-    <td>" . (int)$a['leechers'] . "</td>
-    <td>" . mksize($a['uploaded']) . '</td>
-    ' . ($site_config['ratio_free'] ? '' : "<td>" . mksize($a['downloaded']) . '</td>') . "
-    <td>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? $lang['userdetails_c_inf'] : '---')) . "<br></td>
-    <td>" . get_date($a['completedtime'], 'DATE') . "</td>
-    <td>" . get_date($a['mtime'], 'DATE') . "</td>
-    <td><span style='color: $dlc;'>[{$lang['userdetails_c_dled']}$dl_speed ]</span></td></tr>";
+                $body .= "
+            <tr>
+                <td style='padding: 0;'><img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
+                <td><a class='altlink' href='{$site_config['baseurl']}/details.php?id=" . (int)$a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
+                <br><span>  " . (($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) ? "{$lang['userdetails_c_seedfor']}</span>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['active'] == 1 && $a['left'] = 0 ? "&#160;<span class='has-text-lime'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run) : '') . "</td>
+                <td>" . (int)$a['seeders'] . "</td>
+                <td>" . (int)$a['leechers'] . "</td>
+                <td>" . mksize($a['uploaded']) . '</td>
+                ' . ($site_config['ratio_free'] ? '' : "
+                <td>" . mksize($a['downloaded']) . '</td>') . "
+                <td>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? $lang['userdetails_c_inf'] : '---')) . "<br></td>
+                <td>" . get_date($a['completedtime'], 'DATE') . "</td>
+                <td>" . get_date($a['mtime'], 'DATE') . "</td>
+                <td><span style='color: $dlc;'>[{$lang['userdetails_c_dled']}$dl_speed ]</span></td>
+            </tr>";
             }
         }
-        $completed .= "</table>\n";
+        $completed = main_table($body, $heading);
     }
-    if ($completed && $CURUSER['class'] >= UC_POWER_USER || $completed && $user['id'] == $CURUSER['id']) {
+
+    if (($completed && $CURUSER['class'] >= UC_POWER_USER) || ($completed && $user['id'] == $CURUSER['id'])) {
         if (!isset($_GET['completed'])) {
-            $HTMLOUT .= tr('<b>' . $lang['userdetails_completedt'] . '</b><br>', '[ <a href=\'./userdetails.php?id=' . $id . '&amp;completed=1#completed\' class=\'sublink\'>' . $lang['userdetails_c_show'] . '</a> ]&#160;&#160;-&#160;' . mysqli_num_rows($r), 1);
-        } elseif (mysqli_num_rows($r) == 0) {
-            $HTMLOUT .= tr('<b>' . $lang['userdetails_completedt'] . '</b><br>', '[ <a href=\'./userdetails.php?id=' . $id . '&amp;completed=1\' class=\'sublink\'>' . $lang['userdetails_c_show'] . '</a> ]&#160;&#160;-&#160;' . mysqli_num_rows($r), 1);
-        } else {
-            $HTMLOUT .= tr('<a name=\'completed\'><b>' . $lang['userdetails_completedt'] . '</b></a><br>[ <a href=\'./userdetails.php?id=' . $id . '#history\' class=\'sublink\'>' . $lang['userdetails_c_hide'] . '</a> ]', $completed, 1);
+            $table_data .= "
+            <tr>
+                <td>Completed Torrents</td>
+                <td>
+                <a id='completed-torrents-hash'></a>
+                <fieldset id='completed-torrents' class='header'>
+                    <legend class='flipper size_4'><i class='fa icon-down-open' aria-hidden='true'></i>View Completed Torrents</legend>
+                    $completed
+                </fieldset>
+                </td>
+            </tr>";
         }
     }
 }

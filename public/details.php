@@ -527,7 +527,7 @@ if (count($sim_torrents) > 0) {
         foreach ($sim_torrents as $a) {
             $sim_tor['cat_name'] = htmlsafechars($change[$a['category']]['name']);
             $sim_tor['cat_pic'] = htmlsafechars($change[$a['category']]['image']);
-            $cat = "<img src='{$site_config['pic_baseurl']}caticons/" . get_categorie_icons() . "/{$sim_tor['cat_pic']}' alt='{$sim_tor['cat_name']}' class='tooltipper' title='{$sim_tor['cat_name']}' />";
+            $cat = "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$sim_tor['cat_pic']}' alt='{$sim_tor['cat_name']}' class='tooltipper' title='{$sim_tor['cat_name']}' />";
             $name = htmlsafechars(CutName($a['name']));
             $seeders = (int)$a['seeders'];
             $leechers = (int)$a['leechers'];

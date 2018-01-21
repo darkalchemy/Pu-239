@@ -85,7 +85,7 @@ foreach ($top5torrents as $top5torrentarr) {
     $HTMLOUT .= "
                     <tr>
                         <td class='has-text-centered'>
-                            <img src='{$site_config['pic_baseurl']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' />
+                            <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/" . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' />
                         </td>
                         <td>
                             <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
@@ -154,7 +154,7 @@ foreach ($last5torrents as $last5torrent) {
     $HTMLOUT .= "
                         <tr id='id_{$id}_tooltip'>
                             <td class='has-text-centered'>
-                                <img src='{$site_config['pic_baseurl']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' />
+                                <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/" . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' />
                             </td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>

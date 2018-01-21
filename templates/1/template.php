@@ -258,10 +258,11 @@ function stdfoot($stdfoot = false)
         var cookie_domain   = '{$site_config['cookie_domain']}';
         var cookie_secure   = '{$site_config['sessionCookieSecure']}';
         var csrf_token      = '" . getSessionVar('csrf_token') . "';
-        var x = document.getElementsByClassName('flipper has-text-primary');
+        var x = document.getElementsByClassName('flipper');
         var i;
         for (i = 0; i < x.length; i++) {
             var id = x[i].parentNode.id;
+            console.log(id);
             if (id && localStorage[id] === 'closed') {
                 var el = document.getElementById(id);
                 el.classList.add('no-margin');

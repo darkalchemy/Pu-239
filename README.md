@@ -41,7 +41,7 @@ npm install
 
 # set webroot to path Pu-239/public
 
-# create database, add charset to mysqld.cnf
+# create database, add charset to [mysqld] section of mysqld.cnf
 character-set-server=utf8mb4
 collation-server=utf8mb4_unicode_ci
 

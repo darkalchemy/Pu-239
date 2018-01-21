@@ -23,14 +23,17 @@ $included_extentions = explode(' ', $site_config['coders_log_allowed_ext']);
 foreach ($directories as $path) {
     $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
     foreach ($objects as $name => $object) {
-        $ext = pathinfo($name, PATHINFO_EXTENSION);
-        if (in_array($ext, $included_extentions)) {
-            $fetch_set[$i]['modify'] = filemtime($name);
-            $fetch_set[$i]['size'] = filesize($name);
-            $fetch_set[$i]['hash'] = hash_file('sha256', $name);
-            $fetch_set[$i]['name'] = $name;
-            $fetch_set[$i]['key'] = $i;
-            $i++;
+        preg_match('/(\.idea|\.git|vendor|node_modules)/', $parent, $match);
+        if(empty($match)) {
+            $ext = pathinfo($name, PATHINFO_EXTENSION);
+            if (in_array($ext, $included_extentions)) {
+                $fetch_set[$i]['modify'] = filemtime($name);
+                $fetch_set[$i]['size'] = filesize($name);
+                $fetch_set[$i]['hash'] = hash_file('sha256', $name);
+                $fetch_set[$i]['name'] = $name;
+                $fetch_set[$i]['key'] = $i;
+                $i++;
+            }
         }
     }
 }

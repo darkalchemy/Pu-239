@@ -82,9 +82,9 @@ foreach ($q as $p) {
     }
 }
 
-if (isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) != 32) {
+if (isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) != 64) {
     $lentorrent_pass = strlen($_GET['torrent_pass']);
-    if ($lentorrent_pass > 32 && preg_match('/^([0-9a-f]{32})\?(([0-9a-zA-Z]|_)+)\=/', $_GET['torrent_pass'], $matches)) {
+    if ($lentorrent_pass > 64 && preg_match('/^([0-9a-f]{64})\?(([0-9a-zA-Z]|_)+)\=/', $_GET['torrent_pass'], $matches)) {
         $lenget = strlen($matches[0]);
         $valget = substr($_GET['torrent_pass'], $lenget);
         if (!isset($_GET[$matches[2]])) {

@@ -197,7 +197,7 @@ $sql_updates = [
         'id'    => 33,
         'info'  => 'Add auth column',
         'date'  => '17 Jan, 2018',
-        'query' => 'ALTER TABLE `users` ADD COLUMN `auth` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `torrent_pass`',
+        'query' => 'ALTER TABLE `users` ADD COLUMN `auth` VARCHAR(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `torrent_pass`',
     ],
     [
         'id'    => 34,
@@ -221,7 +221,7 @@ $sql_updates = [
         'id'    => 37,
         'info'  => 'Add Column to Categories',
         'date'  => '17 Jan, 2018',
-        'query' => 'ALTER TABLE `categories` ADD COLUMN `ordered` smallint(6) NOT NULL DEFAULT "0"',
+        'query' => 'ALTER TABLE `categories` ADD COLUMN `ordered` SMALLINT(6) NOT NULL DEFAULT "0"',
     ],
     [
         'id'    => 38,
@@ -239,12 +239,30 @@ $sql_updates = [
         'id'    => 40,
         'info'  => 'Add ISBN column to torrents table',
         'date'  => '17 Jan, 2018',
-        'query' => 'ALTER TABLE `torrents` ADD COLUMN `isbn` varchar(13) COLLATE utf8mb4_unicode_ci DEFAULT NULL',
+        'query' => 'ALTER TABLE `torrents` ADD COLUMN `isbn` VARCHAR(13) COLLATE utf8mb4_unicode_ci DEFAULT NULL',
     ],
     [
         'id'    => 41,
         'info'  => 'Alter time value',
         'date'  => '18 Jan, 2018',
-        'query' => 'ALTER TABLE `wiki` MODIFY COLUMN `time` int(10) unsigned DEFAULT 0',
+        'query' => 'ALTER TABLE `wiki` MODIFY COLUMN `time` INT(10) UNSIGNED DEFAULT 0',
+    ],
+    [
+        'id'    => 42,
+        'info'  => 'Alter AUTH Key length',
+        'date'  => '18 Jan, 2018',
+        'query' => 'ALTER TABLE `users` MODIFY COLUMN `auth` CHAR(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL',
+    ],
+    [
+        'id'    => 43,
+        'info'  => 'Alter Torrent Pass length',
+        'date'  => '18 Jan, 2018',
+        'query' => 'ALTER TABLE `users` MODIFY COLUMN `torrent_pass` CHAR(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL',
+    ],
+    [
+        'id'    => 44,
+        'info'  => 'Add API Key',
+        'date'  => '18 Jan, 2018',
+        'query' => 'ALTER TABLE `users` ADD COLUMN `apikey` CHAR(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `auth`',
     ],
 ];

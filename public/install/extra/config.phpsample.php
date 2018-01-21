@@ -11,10 +11,10 @@ $site_config['sessionKeyPrefix'] = '#cookie_prefix_'; // useful if serving multi
 $site_config['session_csrf'] = 'csrf_token'; // useful if serving multiple sites
 
 // keys
-$site_config['site']['salt'] = '#pass1';
-$site_config['staff']['staff_pin'] = '#pass2';
-$site_config['staff']['owner_pin'] = '#pass3';
-$site_config['tracker_post_key'] = '#pass4';
+$site_config['site']['salt'] = '#pass1'; // random generated during install
+$site_config['staff']['staff_pin'] = '#pass2'; // random generated during install
+$site_config['staff']['owner_pin'] = '#pass3'; // random generated during install
+$site_config['tracker_post_key'] = '#pass4'; // random generated during install
 
 // Site Bot
 $site_config['chatBotName'] = '#bot_username';

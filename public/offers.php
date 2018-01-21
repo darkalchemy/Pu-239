@@ -105,7 +105,7 @@ switch ($action) {
             $status = ($main_query_arr['status'] == 'approved' ? '<span>Approved!</span>' : ($main_query_arr['status'] == 'pending' ? '<span>Pending...</span>' : '<span>denied</span>'));
             $HTMLOUT .= '
     <tr>
-        <td><img border="0" src="' . $site_config['pic_baseurl'] . 'caticons/' . get_categorie_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '" /></td>
+        <td><img border="0" src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '" /></td>
         <td><a class="altlink" href="' . $site_config['baseurl'] . '/offers.php?action=offer_details&amp;id=' . $main_query_arr['offer_id'] . '">' . htmlsafechars($main_query_arr['offer_name'], ENT_QUOTES) . '</a></td>
         <td>' . get_date($main_query_arr['added'], 'LONG') . '</td>
         <td>' . number_format($main_query_arr['comments']) . '</td>
@@ -188,7 +188,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>category:</td>
-    <td><img border="0" src="' . $site_config['pic_baseurl'] . 'caticons/' . get_categorie_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '" /></td>
+    <td><img border="0" src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '" /></td>
     </tr>
     <tr>
     <td>link:</td>
@@ -288,7 +288,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>category:</td>
-    <td><img border="0" src="' . $site_config['pic_baseurl'] . '   caticons/' . get_categorie_icons() . '/' . htmlsafechars($cat_image, ENT_QUOTES) . '" alt="' . htmlsafechars($cat_name, ENT_QUOTES) . '" /></td>
+    <td><img border="0" src="' . $site_config['pic_baseurl'] . '   caticons/' . get_category_icons() . '/' . htmlsafechars($cat_image, ENT_QUOTES) . '" alt="' . htmlsafechars($cat_name, ENT_QUOTES) . '" /></td>
     </tr>
     <tr>
     <td>link:</td>
@@ -426,7 +426,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>category:</td>
-    <td><img border="0" src="' . $site_config['pic_baseurl'] . 'caticons/' . get_categorie_icons() . '/' . htmlsafechars($cat_image, ENT_QUOTES) . '" alt="' . htmlsafechars($cat_name, ENT_QUOTES) . '" /></td>
+    <td><img border="0" src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($cat_image, ENT_QUOTES) . '" alt="' . htmlsafechars($cat_name, ENT_QUOTES) . '" /></td>
     </tr>
     <tr>
     <td>link:</td>

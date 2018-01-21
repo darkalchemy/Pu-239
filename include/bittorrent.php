@@ -543,7 +543,7 @@ function get_stylesheet()
 /**
  * @return mixed
  */
-function get_categorie_icons()
+function get_category_icons()
 {
     global $site_config, $CURUSER;
     return isset($CURUSER['categorie_icon']) ? $CURUSER['categorie_icon'] : $site_config['categorie_icon'];

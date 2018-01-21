@@ -18,8 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'status'       => 'confirmed',
         'added'        => TIME_NOW,
         'last_access'  => TIME_NOW,
-        'torrent_pass' => make_password(16),
-        'auth'         => make_password(16),
+        'torrent_pass' => make_password(32),
+        'auth'         => make_password(32),
+        'apikey'       => make_password(32),
         'ip'           => ipToStorageFormat('127.0.0.1'),
     ];
     if (isset($_POST['username']) && strlen($_POST['username']) >= 5) {
@@ -42,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (sql_query(sprintf(
                       'INSERT INTO users 
-                (username, email, passhash, status, added, last_access, torrent_pass, auth, ip)
+                (username, email, passhash, status, added, last_access, torrent_pass, auth, apikey, ip)
                 VALUES (%s)',
                       join(', ', array_map(
                           'sqlesc',

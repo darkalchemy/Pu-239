@@ -177,7 +177,7 @@ function torrenttable($res, $variant = 'index')
         if (isset($row['cat_name'])) {
             $htmlout .= "<a href='{$site_config['baseurl']}/browse.php?cat=" . (int)$row['category'] . "'>";
             if (isset($row['cat_pic']) && $row['cat_pic'] != '') {
-                $htmlout .= "<img src='{$site_config['pic_baseurl']}caticons/" . get_categorie_icons() . "/{$row['cat_pic']}' class='tooltipper' alt='{$row['cat_name']}' title='{$row['cat_name']}' />";
+                $htmlout .= "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$row['cat_pic']}' class='tooltipper' alt='{$row['cat_name']}' title='{$row['cat_name']}' />";
             } else {
                 $htmlout .= htmlsafechars($row['cat_name']);
             }

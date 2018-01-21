@@ -164,7 +164,9 @@ $lang = [
     'modtask_reset'                    => 'reset to',
     'modtask_torrent_pass'             => 'Torrent Pass',
     //reset auth pass
-    'modtask_authkey'                   => ' - Auth Key ',
+    'modtask_authkey'                  => ' - Auth Key ',
+    //reset apikey
+    'modtask_apikey'                   => 'APIKey ',
     //seedbonus
     'modtask_seedbonus'                => ' - Seedbonus amount changed to ',
     'modtask_seedbonus_total'          => 'Seedbonus points total adjusted',

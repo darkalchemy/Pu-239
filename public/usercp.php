@@ -52,6 +52,7 @@ $possible_actions = [
     'security',
     'links',
     'torrents',
+    'api',
     'personal',
     'default',
 ];
@@ -79,6 +80,7 @@ $HTMLOUT .= "
                             <li class='altlink margin20'><a href='{$site_config['baseurl']}/usercp.php?action=default'>PM's</a></li>
                             <li class='altlink margin20'><a href='{$site_config['baseurl']}/usercp.php?action=security'>Security</a></li>
                             <li class='altlink margin20'><a href='{$site_config['baseurl']}/usercp.php?action=torrents'>Torrents</a></li>
+                            <li class='altlink margin20'><a href='{$site_config['baseurl']}/usercp.php?action=api'>API</a></li>
                             <li class='altlink margin20'><a href='{$site_config['baseurl']}/usercp.php?action=personal'>Personal</a></li>
                             <li class='altlink margin20'><a href='{$site_config['baseurl']}/usercp.php?action=social'>Social</a></li>
                             <li class='altlink margin20'><a href='{$site_config['baseurl']}/usercp.php?action=location'>Location</a></li>
@@ -97,7 +99,6 @@ if (!empty($CURUSER['avatar']) && $CURUSER['av_w'] > 5 && $CURUSER['av_h'] > 5) 
                             <img class='img-polaroid' src='{$site_config['pic_baseurl']}forumicons/default_avatar.gif' alt='' /></td>
                         </span>";
 }
-//== Avatar
 if ($action == 'avatar') {
     $HTMLOUT .= "
                         <div class='table-wrapper w-75'>
@@ -111,7 +112,6 @@ if ($action == 'avatar') {
                                     </tr>
                                 </thead>
                                 <tbody>";
-    //==Disable avatar selection
     if (!($CURUSER['avatarpos'] == 0 or $CURUSER['avatarpos'] != 1)) {
         $HTMLOUT .= "
                                     <tr>
@@ -137,8 +137,6 @@ if ($action == 'avatar') {
                                         </td>
                                     </tr>";
     }
-    //==End
-    //=== adding avatar stuff - snuggs :D
     $HTMLOUT .= tr('Is your avatar offensive', '
                                             <input type="radio" name="offensive_avatar" ' . ($CURUSER['offensive_avatar'] == 'yes' ? 'checked' : '') . ' value="yes" /> Yes
                                             <input type="radio" name="offensive_avatar" ' . ($CURUSER['offensive_avatar'] == 'no' ? 'checked' : '') . ' value="no" /> No', 1);
@@ -157,8 +155,7 @@ if ($action == 'avatar') {
                                         </td>
                                     </tr>
                                 </tbody>";
-} //== Signature
-elseif ($action == 'signature') {
+} elseif ($action == 'signature') {
     $HTMLOUT .= "
                         <div class='table-wrapper w-75'>
                             <table class='table table-bordered table-striped top20 bottom20'>
@@ -171,7 +168,6 @@ elseif ($action == 'signature') {
                                     </tr>
                                 </thead>
                                 <tbody>";
-    //=== signature stuff
     $HTMLOUT .= tr('View Signatures', '
                                             <input type="radio" name="signatures" ' . ($CURUSER['signatures'] == 'yes' ? 'checked' : '') . ' value="yes" /> Yes
                                             <input type="radio" name="signatures" ' . ($CURUSER['signatures'] == 'no' ? 'checked' : '') . ' value="no" /> No', 1);
@@ -188,8 +184,25 @@ elseif ($action == 'signature') {
                                         </td>
                                     </tr>
                                 </tbody>";
-} //== Social
-elseif ($action == 'social') {
+} elseif ($action == 'api') {
+    $HTMLOUT .= "
+                        <div class='table-wrapper w-75'>
+                            <table class='table table-bordered table-striped top20 bottom20'>
+                                <thead>
+                                    <tr>
+                                        <th colspan='2'>
+                                            <input type='hidden' name='action' value='api' />
+                                            API
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>";
+    $HTMLOUT .= tr('Torrent Pass', '<input type="text" class="w-100" name="torrent_pass"  value="' . htmlsafechars($CURUSER['torrent_pass']) . '" readonly onClick="this.select();" /><div class="left10 top10">This is used for downloading and seeding torrents, in your torrent client and your rss reader.</div>', 1);
+    $HTMLOUT .= tr('Auth', '<input type="text" class="w-100" name="auth"  value="' . htmlsafechars($CURUSER['auth']) . '" readonly onClick="this.select();" /><div class="left10 top10">This is only used by an upload script, msg any staff member for the details.</div>', 1);
+    $HTMLOUT .= tr('API Key', '<input type="text" class="w-100" name="auth"  value="' . htmlsafechars($CURUSER['apikey']) . '" readonly onClick="this.select();" /><div class="left10 top10">This is only used by auto downloaders, such as CouchPotato, SickRage and others. (API not implemented, yet)</div>', 1);
+    $HTMLOUT .= "
+                                </tbody>";
+} elseif ($action == 'social') {
     $HTMLOUT .= "
                         <div class='table-wrapper w-75'>
                             <table class='table table-bordered table-striped top20 bottom20'>
@@ -202,7 +215,6 @@ elseif ($action == 'social') {
                                     </tr>
                                 </thead>
                                 <tbody>";
-    //=== social stuff
     $HTMLOUT .= tr('<img src="' . $site_config['pic_baseurl'] . 'forums/google_talk.gif" alt="Google Talk" class="tooltipper right10" title="Google Talk" />Google Talk', '
                                             <input type="text" class="w-100" name="google_talk"  value="' . htmlsafechars($CURUSER['google_talk']) . '" />', 1);
     $HTMLOUT .= tr('<img src="' . $site_config['pic_baseurl'] . 'forums/msn.gif" alt="Msn" class="tooltipper right10" title="Msn" />MSN ', '
@@ -224,8 +236,7 @@ elseif ($action == 'social') {
                                         </td>
                                     </tr>
                                 </tbody>";
-} //== Location
-elseif ($action == 'location') {
+} elseif ($action == 'location') {
     $datetime = unixstamp_to_human(TIME_NOW);
     $HTMLOUT .= "
                         <div class='table-wrapper w-75'>
@@ -240,19 +251,16 @@ elseif ($action == 'location') {
                                 </thead>
                                 <tbody>";
 
-    //==Time Zone
     $HTMLOUT .= tr($lang['usercp_tz'], $time_select, 1);
     $HTMLOUT .= tr($lang['usercp_checkdst'], "
                                             <input type='checkbox' name='checkdst' id='tz-checkdst' value='1' $dst_correction /> {$lang['usercp_auto_dst']}
                                             <div id='tz-checkmanual' class='is_hidden'>
                                                 <input type='checkbox' name='manualdst' value='1' $dst_check /> {$lang['usercp_is_dst']}
                                             </div>", 1);
-    //==Country
     $HTMLOUT .= tr($lang['usercp_country'], "
                                             <select name='country' class='w-100'>
                                                 $countries
                                             </select>", 1);
-    //==Language
     $HTMLOUT .= tr($lang['usercp_language'], "
                                             <select name='language' class='w-100'>
                                                 <option value='1'" . (get_language() == '1' ? " selected" : '') . ">En</option>
@@ -268,8 +276,7 @@ elseif ($action == 'location') {
                                         </td>
                                     </tr>
                                 </tbody>";
-} //== Links
-elseif ($action == 'links') {
+} elseif ($action == 'links') {
     $HTMLOUT .= "
                         <div class='table-wrapper w-25'>
                             <table class='table table-bordered table-striped top20 bottom20 w-100'>
@@ -350,8 +357,7 @@ elseif ($action == 'links') {
                                     </tr>
                                 </tbody>";
     }
-} //== Security
-elseif ($action == 'security') {
+} elseif ($action == 'security') {
     $HTMLOUT .= "
                         <div class='table-wrapper w-75'>
                             <table class='table table-bordered table-striped top20 bottom20'>
@@ -435,7 +441,6 @@ elseif ($action == 'security') {
                                 <tr>
                                     <td colspan='2'>{$lang['usercp_note']}</td>
                                 </tr>";
-    //=== email forum stuff
     $HTMLOUT .= tr('Show Email', '
                                         <input type="radio" name="show_email" ' . ($CURUSER['show_email'] == 'yes' ? ' checked' : '') . ' value="yes" /> Yes
                                         <input type="radio" name="show_email" ' . ($CURUSER['show_email'] == 'no' ? ' checked' : '') . ' value="no" /> No
@@ -490,8 +495,7 @@ elseif ($action == 'security') {
                                         </td>
                                     </tr>
                                 </tbody>";
-} //== Torrents
-elseif ($action == 'torrents') {
+} elseif ($action == 'torrents') {
     $HTMLOUT .= "
                         <div class='table-wrapper w-75'>
                             <table class='table table-bordered table-striped top20 bottom20'>
@@ -504,7 +508,6 @@ elseif ($action == 'torrents') {
                                     </tr>
                                 </thead>
                                 <tbody>";
-    //==cats
     $categories = '';
     $r = sql_query('SELECT id, image, name FROM categories ORDER BY name') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($r) > 0) {
@@ -538,11 +541,11 @@ elseif ($action == 'torrents') {
                                             <input type='checkbox' name='browse_icons'" . (($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) ? " checked" : '') . " value='yes' />(View categories as icons)", 1);
     $HTMLOUT .= tr($lang['usercp_cats_sets'], "
                                             <select name='categorie_icon'>
-                                                <option value='1'" . (get_categorie_icons() == 1 ? " selected" : '') . ">Default</option>
-                                                <option value='2'" . (get_categorie_icons() == 2 ? " selected" : '') . ">Future</option>
-                                                <option value='3'" . (get_categorie_icons() == 3 ? " selected" : '') . ">Alt</option>
-                                                <option value='4'" . (get_categorie_icons() == 4 ? " selected" : '') . '>Pirate</option>
-                                            </select>', get_categorie_icons());
+                                                <option value='1'" . (get_category_icons() == 1 ? " selected" : '') . ">Default</option>
+                                                <option value='2'" . (get_category_icons() == 2 ? " selected" : '') . ">Future</option>
+                                                <option value='3'" . (get_category_icons() == 3 ? " selected" : '') . ">Alt</option>
+                                                <option value='4'" . (get_category_icons() == 4 ? " selected" : '') . '>Pirate</option>
+                                            </select>', get_category_icons());
     $HTMLOUT .= tr($lang['usercp_tor_perpage'], "
                                             <input type='text' class='w-25' name='torrentsperpage' value='{$CURUSER['torrentsperpage']}' />
                                             <div>{$lang['usercp_default']}</div>", 1);
@@ -555,8 +558,7 @@ elseif ($action == 'torrents') {
                                         </td>
                                     </tr>
                                 </tbody>";
-} //== Personal
-elseif ($action == 'personal') {
+} elseif ($action == 'personal') {
     $HTMLOUT .= "
                         <div class='table-wrapper w-75'>
                             <table class='table table-bordered table-striped top20 bottom20'>
@@ -649,7 +651,6 @@ elseif ($action == 'personal') {
                                                 </span>
                                             </div>", 1);
 
-    //==09 Birthday
     $day = $month = $year = '';
     $birthday = $CURUSER['birthday'];
     $birthday = date('Y-m-d', strtotime($birthday));
@@ -710,7 +711,6 @@ elseif ($action == 'personal') {
                                                 {$year}{$month}{$day}
                                             </div>", 1);
     }
-    //== End
     $HTMLOUT .= "
                     <tr>
                         <td colspan='2'>
@@ -721,7 +721,6 @@ elseif ($action == 'personal') {
                     </tr>
                 </tbody>";
 } else {
-    //== Default PMs
     if ($action == 'default') {
         $HTMLOUT .= "
                         <div class='table-wrapper w-75'>

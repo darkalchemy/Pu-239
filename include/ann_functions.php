@@ -96,7 +96,7 @@ function crazyhour_announce()
 function get_user_from_torrent_pass($torrent_pass)
 {
     global $cache, $site_config, $fluent;
-    if (strlen($torrent_pass) != 32) {
+    if (strlen($torrent_pass) != 64) {
         return false;
     }
     $userid = $cache->get('torrent_pass_' . $torrent_pass);

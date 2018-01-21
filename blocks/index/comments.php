@@ -57,7 +57,7 @@ foreach ($comments as $comment) {
     $body .= "
                         <tr>
                             <td class='has-text-centered'>
-                                <img src='{$site_config['pic_baseurl']}caticons/" . get_categorie_icons() . "/$image' class='tooltipper' alt='$cat' title='$cat' />
+                                <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/$image' class='tooltipper' alt='$cat' title='$cat' />
                             </td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id=$torrent&amp;hit=1'>

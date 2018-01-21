@@ -22,7 +22,7 @@ $postkey = PostKey([
 function remove_torrent_pass($torrent_pass)
 {
     global $cache;
-    if (strlen($torrent_pass) != 32 || !bin2hex($torrent_pass)) {
+    if (strlen($torrent_pass) != 64 || !bin2hex($torrent_pass)) {
         return false;
     }
     $cache->delete('user_torrent_pass_' . $torrent_pass);
@@ -517,8 +517,8 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
         $user_cache['title'] = $title;
     }
     //== Reset Torrent pass
-    if ((isset($_POST['reset_torrent_pass'])) && ($_POST['reset_torrent_pass'])) {
-        $newtorrentpass = make_password(16);
+    if (!empty($_POST['reset_torrent_pass'])) {
+        $newtorrentpass = make_password(32);
         $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - {$lang['modtask_torrent_pass']} " . sqlesc($user['torrent_pass']) . " {$lang['modtask_reset']} " . sqlesc($newtorrentpass) . " {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
         $curuser_cache['torrent_pass'] = $newtorrentpass;
         $user_cache['torrent_pass'] = $newtorrentpass;
@@ -526,15 +526,23 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
         $useredit['update'][] = "{$lang['modtask_torrent_pass']} " . sqlesc($user['torrent_pass']) . " {$lang['modtask_reset']} $newtorrentpass}";
     }
     //== Reset Auth
-    if ((isset($_POST['reset_auth'])) && ($_POST['reset_auth'])) {
-        $newauthkey = make_password(16);
+    if (!empty($_POST['reset_auth'])) {
+        $newauthkey = make_password(32);
         $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - {$lang['modtask_authkey']} " . sqlesc($user['auth']) . " {$lang['modtask_reset']} " . sqlesc($newauthkey) . " {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
         $curuser_cache['auth'] = $newauthkey;
         $user_cache['auth'] = $newauthkey;
         $updateset[] = 'auth = ' . sqlesc($newauthkey);
         $useredit['update'][] = "{$lang['modtask_authkey']} " . sqlesc($user['auth']) . " {$lang['modtask_reset']} $newauthkey";
     }
-
+    //== Reset APIKEY
+    if (!empty($_POST['reset_apikey'])) {
+        $newapikey = make_password(32);
+        $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - {$lang['modtask_apikey']} " . sqlesc($user['apikey']) . " {$lang['modtask_reset']} " . sqlesc($newapikey) . " {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
+        $curuser_cache['apikey'] = $newapikey;
+        $user_cache['apikey'] = $newapikey;
+        $updateset[] = 'apikey = ' . sqlesc($newapikey);
+        $useredit['update'][] = "{$lang['modtask_apikey']} " . sqlesc($user['apikey']) . " {$lang['modtask_reset']} $newapikey";
+    }
     //== seedbonus
     if ((isset($_POST['seedbonus'])) && (($seedbonus = $_POST['seedbonus']) != ($curseedbonus = $user['seedbonus']))) {
         $modcomment = get_date(TIME_NOW, 'DATE', 1) . $lang['modtask_seedbonus'] . $seedbonus . $lang['modtask_gl_from'] . $curseedbonus . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;

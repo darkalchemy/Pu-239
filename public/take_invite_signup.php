@@ -126,15 +126,17 @@ if ($email_count != 0) {
 $wantpasshash = make_passhash($wantpassword);
 $wanthintanswer = make_passhash($hintanswer);
 $user_frees = (XBT_TRACKER ? '0' : TIME_NOW + 14 * 86400);
-$torrent_pass = make_password(16);
-$auth = make_password(16);
+$torrent_pass = make_password(32);
+$auth = make_password(32);
+$apikey = make_password(32);
 check_banned_emails($email);
 
-$new_user = sql_query('INSERT INTO users (username, passhash, torrent_pass, auth, passhint, hintanswer, birthday, invitedby, email, added, last_access, last_login, time_offset, dst_in_use, free_switch, ip, status) VALUES (' . implode(',', array_map('sqlesc', [
+$new_user = sql_query('INSERT INTO users (username, passhash, torrent_pass, auth, apikey, passhint, hintanswer, birthday, invitedby, email, added, last_access, last_login, time_offset, dst_in_use, free_switch, ip, status) VALUES (' . implode(',', array_map('sqlesc', [
                           $wantusername,
                           $wantpasshash,
                           $torrent_pass,
                           $auth,
+                          $apikey,
                           $passhint,
                           $wanthintanswer,
                           $birthday,

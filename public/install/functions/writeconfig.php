@@ -76,7 +76,7 @@ $foo = [
         [
             'text'        => 'Path',
             'input'       => 'config[cookie_path]',
-            'info'        => 'Required \'/\' or any other path.',
+            'info'        => 'Required "/" or any other path.',
             'placeholder' => '/',
         ],
         [
@@ -89,6 +89,7 @@ $foo = [
             'text'        => 'Cookie Domain',
             'input'       => 'config[cookie_domain]',
             'info'        => 'Your site domain name - note exclude http and www. This must match the domain used to access the site',
+            'explain'     => '<div>For the sessions to work correctly, the session "Cookie Domain" must match the webserver\'s "server_name".<br>For example:</div><div class="flex"><span>Nginx: </span><span>server_name Pu-239.pw;</span></div><div class="flex"><span>Cookie Domain: </span><span>Pu-239.pw&#160;</span></div>',
             'placeholder' => 'Pu-239.pw',
         ],
         [
@@ -135,9 +136,10 @@ function createblock($fo, $foo)
         } else {
             $type = 'text';
         }
+        $explain = !empty($bo['explain']) ? "<div class='info'>{$bo['explain']}</div>" : "";
         $out .= "
                 <td class='input_input'>
-                    <input type='{$type}' name='{$bo['input']}' size='30' placeholder='{$bo['placeholder']}' title='{$bo['info']}' />
+                    <input type='{$type}' name='{$bo['input']}' size='30' placeholder='{$bo['placeholder']}' title='{$bo['info']}' />$explain
                 </td>
             </tr>";
     }
@@ -180,7 +182,7 @@ function saveconfig()
             $values = array_values($_POST['config']);
             $env = preg_replace($keys, $values, $env);
             if (file_put_contents($root . '.env', $env)) {
-                chmod($root . '.env', 0644);
+                chmod($root . '.env', 0664);
                 $out .= '
         <div class="readable">.env file was created</div>';
             } else {
@@ -208,7 +210,7 @@ function saveconfig()
         $config = preg_replace('/#pass4/', bin2hex(random_bytes(16)), $config);
 
         if (file_put_contents($root . 'include/config.php', $config)) {
-            chmod($root . 'include/config.php', 0644);
+            chmod($root . 'include/config.php', 0664);
             $out .= '
         <div class="readable">config.php file was created</div>';
         } else {
@@ -228,7 +230,7 @@ function saveconfig()
         $values = array_values($_POST['config']);
         $announce = preg_replace($keys, $values, $announce);
         if (file_put_contents($root . 'include/ann_config.php', $announce)) {
-            chmod($root . 'include/ann_config.php', 0644);
+            chmod($root . 'include/ann_config.php', 0664);
             $out .= '
         <div class="readable">ann_config.php file was created</div>';
         } else {

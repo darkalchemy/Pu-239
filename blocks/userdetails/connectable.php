@@ -26,12 +26,21 @@ if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_ST
     } else {
         $connectable = "<span style='color: orange;'><b>{$lang['userdetails_unknown']}</b></span>";
     }
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_connectable']}</td><td>" . $connectable . '</td></tr>';
+    $table_data .= "
+        <tr>
+            <td class='rowhead'>{$lang['userdetails_connectable']}</td>
+            <td>" . $connectable . '</td>
+        </tr>';
     if (!empty($port)) {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_port']}</td><td class='tablea'>" . htmlsafechars($port) . "</td></tr>
-    <tr><td class='rowhead'>{$lang['userdetails_client']}</td><td class='tablea'>" . htmlsafechars($Ident_Client) . '</td></tr>';
+        $table_data .= "
+        <tr>
+            <td class='rowhead'>{$lang['userdetails_port']}</td>
+            <td class='tablea'>" . htmlsafechars($port) . "</td>
+        </tr>
+        <tr>
+            <td class='rowhead'>{$lang['userdetails_client']}</td>
+            <td class='tablea'>" . htmlsafechars($Ident_Client) . '</td>
+        </tr>';
     }
 }
-//==End
-// End Class
-// End File
+

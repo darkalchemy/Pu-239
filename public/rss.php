@@ -12,7 +12,7 @@ if ($cats) {
     $cats = implode(', ', array_map('sqlesc', $validate_cats));
 }
 if (!empty($torrent_pass)) {
-    if (strlen($torrent_pass) != 32) {
+    if (strlen($torrent_pass) != 64) {
         die('Your passkey is not long enough! Go to ' . $site_config['site_name'] . ' and reset your passkey');
     } else {
         $q0 = sql_query('SELECT id, class FROM users WHERE torrent_pass = ' . sqlesc($torrent_pass)) or sqlerr(__FILE__, __LINE__);

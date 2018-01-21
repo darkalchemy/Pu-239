@@ -8,7 +8,7 @@ dbconn();
 global $CURUSER, $site_config, $cache;
 
 $lang = array_merge(load_language('global'), load_language('download'));
-$T_Pass = isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) == 32 ? $_GET['torrent_pass'] : '';
+$T_Pass = isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) == 64 ? $_GET['torrent_pass'] : '';
 if (!empty($T_Pass)) {
     $q0 = sql_query('SELECT * FROM users WHERE torrent_pass = ' . sqlesc($T_Pass)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($q0) == 0) {
@@ -117,7 +117,7 @@ $cache->delete('MyPeers_' . $CURUSER['id']);
 $cache->delete('top5_tor_');
 $cache->delete('last5_tor_');
 $cache->delete('scroll_tor_');
-if (!isset($CURUSER['torrent_pass']) || strlen($CURUSER['torrent_pass']) != 32) {
+if (!isset($CURUSER['torrent_pass']) || strlen($CURUSER['torrent_pass']) != 64) {
     $passkey = make_password(16);
     $uid = $CURUSER['id'];
     $CURUSER['torrent_pass'] = $passkey;

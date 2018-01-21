@@ -13,19 +13,15 @@ if ($cache_share_ratio === false || is_null($cache_share_ratio)) {
     $cache_share_ratio['seed_time_total'] = (int)$cache_share_ratio['seed_time_total'];
     $cache->set($What_Cache . $id, $cache_share_ratio, $What_Expire);
 }
-//=== get times per class
-switch (true) {
-    //===  member
 
+switch (true) {
     case $user['class'] == UC_USER:
         $days = 2;
         break;
-    //=== Member +
 
     case $user['class'] == UC_POWER_USER:
         $days = 1.5;
         break;
-    //=== Member ++
 
     case $user['class'] == UC_VIP || $user['class'] == UC_UPLOADER || $user['class'] == UC_STAFF || $user['class'] == UC_ADMINISTRATOR || $user['class'] == UC_SYSOP:
         $days = 0.5;
@@ -35,6 +31,15 @@ if ($cache_share_ratio['seed_time_total'] > 0 && $cache_share_ratio['total_numbe
     $avg_time_ratio = (($cache_share_ratio['seed_time_total'] / $cache_share_ratio['total_number']) / 86400 / $days);
     $avg_time_seeding = mkprettytime($cache_share_ratio['seed_time_total'] / $cache_share_ratio['total_number']);
     if ($user['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF) {
-        $HTMLOUT .= '<tr><td class="clearalt5"><b>' . $lang['userdetails_time_ratio'] . '</b></td><td class="clearalt5">' . (($user_stats['downloaded'] > 0 || $user_stats['uploaded'] > 2147483648) ? '<font color="' . get_ratio_color(number_format($avg_time_ratio, 3)) . '">' . number_format($avg_time_ratio, 3) . '</font>     ' . ratio_image_machine(number_format($avg_time_ratio, 3)) . '     [<font color="' . get_ratio_color(number_format($avg_time_ratio, 3)) . '"> ' . $avg_time_seeding . '</font>' . $lang['userdetails_time_ratio_per'] . '' : $lang['userdetails_inf']) . '</td></tr>';
+        $table_data .= '
+        <tr>
+            <td>' . $lang['userdetails_time_ratio'] . '</td>
+            <td>
+                <div class="level-left">' . (($user_stats['downloaded'] > 0 || $user_stats['uploaded'] > 2147483648) ? '
+                    <span class="right10" style="color: ' . get_ratio_color(number_format($avg_time_ratio, 3)) . ';">' . number_format($avg_time_ratio, 3) . '</span>' . ratio_image_machine(number_format($avg_time_ratio, 3)) . '
+                    <span class="left10">[</span><span style="color: ' . get_ratio_color(number_format($avg_time_ratio, 3)) . ';">&#160;' . $avg_time_seeding . '</span>&#160;' . $lang['userdetails_time_ratio_per'] : $lang['userdetails_inf']) . '
+                </div>
+            </td>
+        </tr>';
     }
 }

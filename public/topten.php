@@ -33,7 +33,7 @@ chf        =    7d7d7d = background colour, adjust to your theme background colo
 */
 $imgstartbar = '<img src="https://chart.googleapis.com/chart?cht=bvg&amp;chbh=a&amp;chs=780x300&amp;chco=4D89F9,4D89F9&amp;chf=bg,s,000000';
 $imgstartpie = '<img src="https://chart.googleapis.com/chart?cht=p3&amp;chbh=a&amp;chs=780x300&amp;chco=4D89F9&amp;chf=bg,s,000000';
-$HTMLOUT .= "<br><div class='article_header'><a href='topten.php'>Users</a> | <a href='topten.php?view=t'>Torrents</a> | <a href='topten.php?view=c'>Countries</a></div>";
+$HTMLOUT .= "<br><div class='article_header'><a href='{$site_config['baseurl']}/topten.php'>Users</a> | <a href='{$site_config['baseurl']}/topten.php?view=t'>Torrents</a> | <a href='{$site_config['baseurl']}/topten.php?view=c'>Countries</a></div>";
 if (isset($_GET['view']) && $_GET['view'] == 't') {
     $view = strip_tags(isset($_GET['t']));
     // Top Torrents
