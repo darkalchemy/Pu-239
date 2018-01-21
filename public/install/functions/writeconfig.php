@@ -166,13 +166,6 @@ function saveconfig()
             $continue = false;
         }
     }
-    foreach ($_POST['announce'] as $key => $value) {
-        if (!isset($value) || $value === '') {
-            $out .= "
-        <div class='notreadable'>$key must not be empty</div>";
-            $continue = false;
-        }
-    }
 
     if ($continue) {
         $file = $root . '.env.example';

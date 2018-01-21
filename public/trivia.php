@@ -146,7 +146,7 @@ if (empty($gamenum) || empty($qid)) {
         $sql = 'SELECT * FROM triviausers WHERE user_id = ' . sqlesc($user_id) . ' AND qid = ' . sqlesc($qid) . ' AND gamenum = ' . sqlesc($gamenum);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $row2 = mysqli_fetch_assoc($res);
-        $num_rows = count($row2);
+        $num_rows = !empty($row2) ? count($row2) : 0;
 
         if ($num_rows != 0) {
             $table = '';

@@ -159,7 +159,7 @@ function stdfoot($stdfoot = false)
 
     $header = $uptime = $htmlfoot = '';
     $debug = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
-    $queries = count($query_stat);
+    $queries = !empty($query_stat) ? count($query_stat) : '';
     $cachetime = 0; //($cache->Time / 1000);
     $seconds = microtime(true) - $start;
     $r_seconds = round($seconds, 5);

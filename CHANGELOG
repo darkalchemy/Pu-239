@@ -1,4 +1,6 @@
 21 Jan 2018
+fix: incorrect sql erro log path
+fix: countables
 update: signup errors redirect, previous form data intact
 update: install info
 add: apikey for future api access
