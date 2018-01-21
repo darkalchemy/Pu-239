@@ -120,13 +120,12 @@ $site_config['expires']['share_ratio'] = 900; // 900 = 15 min
 $site_config['expires']['share_ratio_xbt'] = 900; // 900 = 15 min
 $site_config['expires']['checked_by'] = 0; // 0 = infinite
 $site_config['expires']['sanity'] = 0; // 0 = infinite
-$site_config['expires']['movieofweek'] = 300; // 604800 = 1 week
+$site_config['expires']['movieofweek'] = 604800; // 604800 = 1 week
 $site_config['expires']['browse_where'] = 60; // 60 = 60 seconds
 $site_config['expires']['torrent_xbt_data'] = 300; // 300 = 5 min
 $site_config['expires']['ismoddin'] = 0; // 0 = infinite
-$site_config['expires']['book_info'] =
+$site_config['expires']['book_info'] = 604800; //604800 = 1 week
 // Tracker configs
-$site_config['tracker_post_key'] = 'lsdflksfda4545frwe35@kk';
 $site_config['max_torrent_size'] = 3 * 1024 * 1024;
 $site_config['announce_interval'] = 60 * 30;
 $site_config['signup_timeout'] = 86400 * 3;

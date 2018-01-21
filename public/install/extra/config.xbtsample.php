@@ -133,7 +133,6 @@ $site_config['expires']['browse_where'] = 60; // 60 = 60 seconds
 $site_config['expires']['torrent_xbt_data'] = 300; // 300 = 5 min
 $site_config['expires']['ismoddin'] = 0; // 0 = infinite
 //== Tracker configs
-$site_config['tracker_post_key'] = 'lsdflksfda4545frwe35@kk';
 $site_config['max_torrent_size'] = 3 * 1024 * 1024;
 $site_config['announce_interval'] = 60 * 30;
 $site_config['signup_timeout'] = 86400 * 3;

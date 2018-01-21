@@ -1,4 +1,6 @@
 21 Jan 2018
+update: missing expire time in site_config
+update: details.php
 merge: userstatus_ and user_status_ caches
 update: snatched_staff.php remove duplicated text
 fix: show/hide userdetails torrent blocks, should be closed at start

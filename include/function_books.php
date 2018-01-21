@@ -71,9 +71,12 @@ function get_book_info($torrent)
         }
 
         $categories = [];
-        foreach ($book->categories as $category) {
-            $categories[] = $category;
+        if (!empty($books->categories)) {
+            foreach ($book->categories as $category) {
+                $categories[] = $category;
+            }
         }
+
         if (!empty($categories)) {
             $ebook_info .= "
         <tr>

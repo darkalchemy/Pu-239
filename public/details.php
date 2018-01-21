@@ -508,7 +508,7 @@ if ($sim_torrents === false || is_null($sim_torrents)) {
     }
     $cache->set('similiar_tor_' . $id, $sim_torrents, 86400);
 }
-if (count($sim_torrents) > 0) {
+if (!empty($sim_torrents) && count($sim_torrents) > 0) {
     $sim_torrent = "
         <div class='table-wrapper bottom20'>
             <table class='table table-bordered table-striped'>
@@ -698,14 +698,9 @@ if ($CURUSER['class'] >= UC_STAFF) {
             </tr>";
     }
 }
-// end
-//==
-if ($torrents['type'] == 'multi') {
-    if (!isset($_GET['filelist'])) {
-        $HTMLOUT .= tr("{$lang['details_num_files']}<br><a href='{$site_config['baseurl']}/filelist.php?id=$id' class='sublink'>{$lang['details_list']}</a>", (int)$torrents['numfiles'] . ' files', 1);
-    } else {
-        $HTMLOUT .= tr("{$lang['details_num-files']}", (int)$torrents['numfiles'] . "{$lang['details_files']}", 1);
-    }
+
+if (!isset($_GET['filelist'])) {
+    $HTMLOUT .= tr("{$lang['details_num_files']}<br><a href='{$site_config['baseurl']}/filelist.php?id=$id' class='sublink'>{$lang['details_list']}</a>", (int)$torrents['numfiles'] . ' files', 1);
 }
 
 if (XBT_TRACKER) {

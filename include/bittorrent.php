@@ -129,7 +129,7 @@ function PostKey($ids = [])
         return false;
     }
 
-    return md5($site_config['tracker_post_key'] . join('', $ids) . $site_config['tracker_post_key']);
+    return hash('sha256', $site_config['tracker_post_key'] . join('', $ids) . $site_config['tracker_post_key']);
 }
 
 /**
@@ -145,7 +145,7 @@ function CheckPostKey($ids, $key)
         return false;
     }
 
-    return $key == md5($site_config['tracker_post_key'] . join('', $ids) . $site_config['tracker_post_key']);
+    return $key == hash('sha256', $site_config['tracker_post_key'] . join('', $ids) . $site_config['tracker_post_key']);
 }
 
 /**
