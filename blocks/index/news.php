@@ -44,6 +44,7 @@ if ($news) {
                     </a>
                 </div>";
         }
+        $username =  format_username($array['userid']);
         if ($array['anonymous'] === 'yes') {
             if ($CURUSER['class'] < UC_STAFF || $array['userid'] === $CURUSER['id']) {
                 $username = get_anonymous_name();
