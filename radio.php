@@ -44,7 +44,7 @@ function radioinfo($radio)
             $history[] = '<b>&#160;' . $temph3[2][1] . '</b> <sub>(' . get_date($temph3[2][0], 'DATE') . ')</sub>';
         }
         preg_match_all('/\<HOSTNAME>(.*?)<\/HOSTNAME>/', $xml, $temph);
-        if (count($temph[1])) {
+        if (!empty($temph[1]) && count($temph[1])) {
             $users_ip = join(', ', array_map('sqlesc', $temph[1]));
         }
         if ($data['STREAMSTATUS'] == 0) {

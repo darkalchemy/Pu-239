@@ -351,7 +351,7 @@ function makepoll()
     if (count($questions) > $site_config['max_poll_questions']) {
         die('poll_to_many');
     }
-    if (count($choices_count) > ($site_config['max_poll_questions'] * $site_config['max_poll_choices_per_question'])) {
+    if (!empty($choices_count) && count($choices_count) > ($site_config['max_poll_questions'] * $site_config['max_poll_choices_per_question'])) {
         die('poll_to_many');
     }
     if (isset($_POST['mode']) and $_POST['mode'] == 'poll_update') {

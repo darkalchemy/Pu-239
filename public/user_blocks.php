@@ -367,7 +367,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($clrbits_userdetails_page) {
         $updateset[] = 'userdetails_page = (userdetails_page & ~' . $clrbits_userdetails_page . ')';
     }
-    if (count($updateset)) {
+    if (!empty($updateset) && count($updateset)) {
         sql_query('UPDATE user_blocks SET ' . implode(',', $updateset) . ' WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('blocks_' . $id);
         setSessionVar('is-success', 'User Blocks Successfully Updated');

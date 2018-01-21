@@ -109,7 +109,7 @@ if (strstr(strtolower(PHP_OS), 'win')) {
     $mem = @shell_exec('systeminfo');
     if ($mem) {
         $server_reply = explode("\n", str_replace("\r", '', $mem));
-        if (count($server_reply)) {
+        if (!empty($server_reply) && count($server_reply)) {
             foreach ($server_reply as $info) {
                 if (strstr($info, 'Total Physical Memory')) {
                     $total_memory = trim(str_replace(':', '', strrchr($info, ':')));

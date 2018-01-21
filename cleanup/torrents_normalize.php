@@ -50,7 +50,7 @@ function torrents_normalize($data)
             $delids[] = $k;
             unset($ar[$k]);
         }
-        if (count($delids)) {
+        if (!empty($delids) && count($delids)) {
             $ids = join(',', $delids);
             sql_query("DELETE torrents t, peers p, files f FROM torrents t
                   left join files f on f.torrent=t.id

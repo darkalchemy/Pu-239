@@ -265,4 +265,16 @@ $sql_updates = [
         'date'  => '18 Jan, 2018',
         'query' => 'ALTER TABLE `users` ADD COLUMN `apikey` CHAR(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `auth`',
     ],
+    [
+        'id'    => 45,
+        'info'  => 'DROP TABLE queries',
+        'date'  => '21 Jan, 2018',
+        'query' => 'DROP TABLE `queries`',
+    ],
+    [
+        'id'    => 46,
+        'info'  => 'Remove log queries',
+        'date'  => '21 Jan, 2018',
+        'query' => 'DELETE FROM `site_config`  WHERE `name` = "log_queries"',
+    ],
 ];

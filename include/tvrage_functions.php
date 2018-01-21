@@ -91,7 +91,7 @@ function tvrage(&$torrents)
             $tvrage_showinfo[$data[1]] = $data[2];
         }
         preg_match_all('/\<genre\>(.*?)\<\/genre>/', $tvrage_xml, $tmp);
-        if (count($tmp[1])) {
+        if (!empty($tmp[1]) && count($tmp[1])) {
             $tvrage_showinfo['genres'] = join(', ', array_map('strtolower', $tmp[1]));
         }
         if (empty($torrents['newgenre'])) {
@@ -108,7 +108,7 @@ function tvrage(&$torrents)
         $cache->update_row('torrent_details_' . $torrents['id'], [
             'poster' => $tvrage_showinfo['image'],
         ], 0);
-        if (count($row_update)) {
+        if (!empty($row_update) && count($row_update)) {
             sql_query('UPDATE torrents SET ' . join(', ', $row_update) . ' WHERE id = ' . $torrents['id']) or sqlerr(__FILE__, __LINE__);
         }
         $tvrage_showinfo = tvrage_format($tvrage_showinfo, 'show') . '<br>';

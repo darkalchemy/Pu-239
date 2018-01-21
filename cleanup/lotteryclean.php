@@ -60,12 +60,12 @@ function lotteryclean($data)
             '(\'lottery_winners_amount\',' . $lottery['user_pot'] . ')',
             '(\'lottery_winners\',\'' . join('|', array_keys($lottery['winners'])) . '\')',
         ];
-        if (count($_userq)) {
+        if (!empty($_userq) && count($_userq)) {
             foreach ($_userq as $update) {
                 sql_query("UPDATE users SET seedbonus = {$update['seedbonus']}, modcomment = {$update['modcomment']} WHERE id = {$update['id']}") or sqlerr(__FILE__, __LINE__);
             }
         }
-        if (count($_pms)) {
+        if (!empty($_pms) && count($_pms)) {
             sql_query('INSERT INTO messages(sender, receiver, subject, msg, added) VALUES ' . join(',', $_pms)) or sqlerr(__FILE__, __LINE__);
         }
         foreach ($uids as $user_id) {

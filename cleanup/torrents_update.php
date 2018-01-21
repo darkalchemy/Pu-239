@@ -34,7 +34,7 @@ function torrents_update($data)
         }
     }
     ((mysqli_free_result($tq) || (is_object($tq) && (get_class($tq) == 'mysqli_result'))) ? true : false);
-    if (count($updatetorrents)) {
+    if (!empty($updatetorrents) && count($updatetorrents)) {
         sql_query('INSERT INTO torrents (id, seeders, leechers, comments) VALUES ' . implode(', ', $updatetorrents) . ' ON DUPLICATE KEY UPDATE seeders = VALUES(seeders), leechers = VALUES(leechers), comments = VALUES(comments)');
     }
     unset($updatetorrents);

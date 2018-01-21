@@ -96,7 +96,7 @@ if (!$lottery_config['use_prize_fund']) {
     $html .= '
                     <li>The more tickets that are sold the bigger the pot will be !</li>';
 }
-if (count($lottery['current_user']['tickets'])) {
+if (!empty($lottery['current_user']['tickets']) && count($lottery['current_user']['tickets'])) {
     $html .= '
                     <li>You own ticket numbers : <b>' . join('</b>, <b>', $lottery['current_user']['tickets']) . '</b></li>';
 }

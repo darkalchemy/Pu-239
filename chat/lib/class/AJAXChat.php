@@ -1144,7 +1144,7 @@ class AJAXChat
      */
     public function isMaxUsersLoggedIn()
     {
-        if (count($this->getOnlineUsersData()) >= $this->getConfig('maxUsersLoggedIn')) {
+        if (!empty($this->getOnlineUsersData()) && count($this->getOnlineUsersData()) >= $this->getConfig('maxUsersLoggedIn')) {
             return true;
         }
 

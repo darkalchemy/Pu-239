@@ -140,7 +140,7 @@ if ($action == 'add') {
     while ($row = mysqli_fetch_assoc($res)) {
         $allrows[] = $row;
     }
-    if (count($allrows)) {
+    if (!empty($allrows) && count($allrows)) {
         require_once INCL_DIR . 'html_functions.php';
         require_once INCL_DIR . 'bbcode_functions.php';
         require_once INCL_DIR . 'user_functions.php';

@@ -6,7 +6,6 @@ update queries for user, get/set cache instead of query to get, only to set
 update caches replace delete with proper update
 add daily, weekly, monthly to top 10 stats page
 finish torrent blocks in userdetails, add pagination
-fix anonymous username in popups
 fix admin uploadapp.php
 remove begin_table and end_table functions
 remove begin_frame and end_frame functions

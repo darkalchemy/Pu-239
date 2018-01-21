@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ], $site_config['expires']['user_cache']);
             $pms[] = '(0,' . $uid . ',' . sqlesc($sub) . ',' . sqlesc($body) . ',' . sqlesc(TIME_NOW) . ')';
         }
-        if (count($pms)) {
+        if (!empty($pms) && count($pms)) {
             $g = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . join(',', $pms)) or ($q_err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
             $q1 = sql_query("UPDATE users SET leechwarn='0', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['leechwarn_mod'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')') or ($q2_err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
             if ($g && $q1) {

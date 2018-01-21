@@ -1351,14 +1351,11 @@ function flood_limit($table)
  */
 function sql_query($query, $log = true)
 {
-    global $query_stat, $queries, $site_config;
-    if (isset($site_config['log_queries']) && $site_config['log_queries'] && $log) {
-        $sql = "INSERT INTO queries (query, dateTime) VALUES (" . sqlesc(preg_replace('/[ \t\n\t\r]+/', ' ', preg_replace('/\s*$^\s*/m', ' ', $query))) . ", NOW())";
-        sql_query($sql, false);
-    }
-    $query_start_time = microtime(true); // Start time
+    global $query_stat, $queries;
+
+    $query_start_time = microtime(true);
     $result = mysqli_query($GLOBALS['___mysqli_ston'], $query);
-    $query_end_time = microtime(true); // End time
+    $query_end_time = microtime(true);
     $query_stat[] = [
         'seconds' => number_format($query_end_time - $query_start_time, 6),
         'query'   => $query,

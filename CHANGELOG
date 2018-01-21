@@ -1,4 +1,8 @@
 21 Jan 2018
+fix: anonymous username in popups
+remove: log queries
+update: adminer.php 4.4.0
+update: check if vaiable is set before counting
 update: missing expire time in site_config
 update: details.php
 merge: userstatus_ and user_status_ caches

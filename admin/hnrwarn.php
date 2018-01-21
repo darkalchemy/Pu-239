@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $cache->update_row('user' . $id, [
             'hnrwarn' => 'no',
         ], $site_config['expires']['user_cache']);
-        if (count($pms)) {
+        if (!empty($pms) && count($pms)) {
             $g = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . join(',', $pms)) or sqlerr(__FILE__, __LINE__);
             $q1 = sql_query("UPDATE users SET hnrwarn='no', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['hnrwarn_rem_log'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')') or sqlerr(__FILE__, __LINE__);
             if ($g && $q1) {

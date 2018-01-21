@@ -597,7 +597,7 @@ if ($action == 'avatar') {
                                                     <span>NO bbcode or html allowed</span>
                                                     <div id='status_count'>140</div>
                                                 <div></div></div>";
-    if (count($CURUSER['archive'])) {
+    if (!empty($CURUSER['archive']) && count($CURUSER['archive'])) {
         $HTMLOUT .= "
                                                 <div>
                                                 <div>

@@ -433,7 +433,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
         while ($row = mysqli_fetch_assoc($res)) {
             $allrows[] = $row;
         }
-        if (count($allrows)) {
+        if (!empty($allrows) && count($allrows)) {
             $HTMLOUT .= '<h2>Most recent comments, in reverse order</h2>';
             $HTMLOUT .= comment_table($allrows);
         }

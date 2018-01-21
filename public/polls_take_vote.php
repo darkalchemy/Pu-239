@@ -43,7 +43,7 @@ if (!$_POST['nullvote']) {
     }
     $poll_answers = unserialize(stripslashes($poll_data['choices']));
     reset($poll_answers);
-    if (count($vote_cast) < count($poll_answers)) {
+    if (!empty($vote_cast) && count($vote_cast) < count($poll_answers)) {
         stderr('ERROR', 'No vote');
     }
     $sql = "INSERT INTO poll_voters (user_id, ip, poll_id, vote_date) VALUES ({$CURUSER['id']}, " . ipToStorageFormat($CURUSER['ip']) . ", {$poll_data['pid']}, " . TIME_NOW . ')';

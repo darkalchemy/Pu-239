@@ -1472,7 +1472,7 @@ if ($top_donators === false || is_null($top_donators)) {
     }
     $cache->set('top_donators_', $top_donators, 0);
 }
-if (count($top_donators) > 0) {
+if (!empty($top_donators) && count($top_donators) > 0) {
     $top_donator = "<h4>Top 10 Contributors </h4>\n";
     if ($top_donators) {
         foreach ($top_donators as $a) {
@@ -1499,7 +1499,7 @@ if ($top_donators2 === false || is_null($top_donators2)) {
     }
     $cache->set('top_donators2_', $top_donators2, 0);
 }
-if (count($top_donators2) > 0) {
+if (!empty($top_donators2) && count($top_donators2) > 0) {
     $top_donator2 = "<h4>Top 10 Contributors </h4>\n";
     if ($top_donators2) {
         foreach ($top_donators2 as $b) {
@@ -1526,7 +1526,7 @@ if ($top_donators3 === false || is_null($top_donators3)) {
     }
     $cache->set('top_donators3_', $top_donators3, 0);
 }
-if (count($top_donators3) > 0) {
+if (!empty($top_donators3) && count($top_donators3) > 0) {
     $top_donator3 = "<h4>Top 10 Contributors </h4>\n";
     if ($top_donators3) {
         foreach ($top_donators3 as $c) {
@@ -1572,7 +1572,7 @@ $HTMLOUT .= "
             <div class='bordered has-text-centered top20'>
                 <span class='size_5'>Exchange your <span class='has-text-primary'>" . number_format($bonus) . "</span> Karma Bonus Points for goodies!</span>
                 <br>
-                <span class='size_2'>
+                <span class='size_3'>
                     [ If no buttons appear, you have not earned enough bonus points to trade. ]
                 </span>
             </div>

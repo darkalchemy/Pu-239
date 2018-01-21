@@ -1563,22 +1563,6 @@ CREATE TABLE `promo` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `queries`
---
-
-DROP TABLE IF EXISTS `queries`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `queries` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `query` mediumtext COLLATE utf8mb4_unicode_ci,
-  `dateTime` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  FULLTEXT KEY `query` (`query`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `rating`
 --
 
@@ -2655,4 +2639,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-20 22:06:31
+-- Dump completed on 2018-01-21 21:41:46

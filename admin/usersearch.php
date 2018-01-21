@@ -385,8 +385,7 @@ function haswildcard($text)
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
-if (count($_POST) > 0) ; //&& isset($_POST['n']))
+if (!empty($_POST) && count($_POST) > 0)
 {
     // name
     $name_is = '';

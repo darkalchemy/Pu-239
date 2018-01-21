@@ -1,5 +1,5 @@
 <?php
-global $site_config, $cache, $lang, $fluent;
+global $site_config, $cache, $lang, $fluent, $CURUSER;
 
 $scroll_torrents = $cache->get('scroll_tor_');
 if ($scroll_torrents === false || is_null($scroll_torrents)) {
@@ -12,6 +12,8 @@ if ($scroll_torrents === false || is_null($scroll_torrents)) {
         ->select('torrents.name')
         ->select('torrents.size')
         ->select('torrents.poster')
+        ->select('torrents.anonymous')
+        ->select('torrents.owner')
         ->leftJoin('users ON torrents.owner = users.id')
         ->select('users.username')
         ->select('users.class')
@@ -35,10 +37,17 @@ if ($scroll_torrents) {
                 <div id='icarousel' class='icarousel'>";
 
     foreach ($scroll_torrents as $scroll_torrent) {
-        $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = '';
+        $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = '';
         extract($scroll_torrent);
         $i = $site_config['latest_torrents_limit_scroll'];
         $poster = ($poster == '' ? '' . $site_config['pic_baseurl'] . 'noposter.png' : htmlsafechars($poster));
+
+        if ($anonymous == 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
+            $uploader = "<span>" . get_anonymous_name() . "</span>";
+        } else {
+            $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . "</span>";
+        }
+
         $HTMLOUT .= "
                     <div class='slide'>
                         <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
@@ -48,7 +57,7 @@ if ($scroll_torrents) {
                                     <span id='scroll_id_{$id}_tooltip'>
                                         <span>
                                             <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($name) . "<br>
-                                            <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b><span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . "</span><br>
+                                            <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b>$username<br>
                                             <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($added, 'DATE', 0, 1) . "<br>
                                             <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($size)) . "<br>
                                             <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>{$seeders}<br>

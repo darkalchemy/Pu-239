@@ -90,7 +90,7 @@ function tvmaze(&$torrents)
         $cache->update_row('torrent_details_' . $torrents['id'], [
             'poster' => $tvmaze_array['image']['original'],
         ], 0);
-        if (count($row_update)) {
+        if (!empty($row_update) && count($row_update)) {
             sql_query('UPDATE torrents SET ' . join(', ', $row_update) . ' WHERE id = ' . $torrents['id']) or sqlerr(__FILE__, __LINE__);
         }
         $tvmaze_showinfo = tvmaze_format($tvmaze_array, 'show') . '<br>';

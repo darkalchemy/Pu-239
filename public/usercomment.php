@@ -114,7 +114,7 @@ if ($action == 'add') {
     while ($row = mysqli_fetch_assoc($res)) {
         $allrows[] = $row;
     }
-    if (count($allrows)) {
+    if (!empty($allrows) && count($allrows)) {
         $HTMLOUT .= "<h2>Most recent comments, in reverse order</h2>\n";
         $HTMLOUT .= usercommenttable($allrows);
     }

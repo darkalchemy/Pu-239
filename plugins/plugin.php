@@ -5,8 +5,8 @@
  * @link    https://www.adminer.org/plugins/#use
  *
  * @author  Jakub Vrana, https://www.vrana.cz/
- * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
- * @license http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2 (one or other)
+ * @license https://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2 (one or other)
  */
 class AdminerPlugin extends Adminer
 {
@@ -41,7 +41,10 @@ class AdminerPlugin extends Adminer
 
     public function _callParent($function, $args)
     {
-        return call_user_func_array(['parent', $function], $args);
+        return call_user_func_array([
+                                        'parent',
+                                        $function
+                                    ], $args);
     }
 
     public function _applyPlugin($function, $args)
@@ -86,7 +89,10 @@ class AdminerPlugin extends Adminer
         $return = $this->_callParent($function, $args);
         foreach ($this->plugins as $plugin) {
             if (method_exists($plugin, $function)) {
-                $return += call_user_func_array([$plugin, $function], $args);
+                $return += call_user_func_array([
+                                                    $plugin,
+                                                    $function
+                                                ], $args);
             }
         }
         return $return;
@@ -157,6 +163,12 @@ class AdminerPlugin extends Adminer
     }
 
     public function headers()
+    {
+        $args = func_get_args();
+        return $this->_applyPlugin(__FUNCTION__, $args);
+    }
+
+    public function csp()
     {
         $args = func_get_args();
         return $this->_applyPlugin(__FUNCTION__, $args);

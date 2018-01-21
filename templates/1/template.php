@@ -268,7 +268,6 @@ function stdfoot($stdfoot = false)
         var i;
         for (i = 0; i < x.length; i++) {
             var id = x[i].parentNode.id;
-            console.log(id);
             var el = document.getElementById(id);
             if (id && localStorage[id] === 'closed') {
                 el.classList.add('no-margin');
