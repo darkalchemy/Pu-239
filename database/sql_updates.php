@@ -277,4 +277,10 @@ $sql_updates = [
         'date'  => '21 Jan, 2018',
         'query' => 'DELETE FROM `site_config`  WHERE `name` = "log_queries"',
     ],
+    [
+        'id'    => 47,
+        'info'  => 'Remove log queries from staffpanel',
+        'date'  => '21 Jan, 2018',
+        'query' => "DELETE FROM `staffpanel` WHERE `page_name` = 'Upgrade Database'",
+    ],
 ];
