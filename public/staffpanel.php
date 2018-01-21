@@ -8,7 +8,7 @@ global $cache, $site_config, $CURUSER;
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('staff_panel'));
 
-$staff_classes1['name'] = '';
+$staff_classes1['name'] = $page_name = $file_name = $navbar = '';
 $staff = sqlesc(UC_STAFF);
 $staff_classes = $cache->get('is_staffs_');
 if ($staff_classes === false || is_null($staff_classes)) {
@@ -67,7 +67,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         $cache->delete('staff_panels_4');
         if (mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
             if ($CURUSER['class'] <= UC_MAX) {
-                $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color($av_class) . "]{$page_name}[/color]'";
+                $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color($arr['av_class']) . "]{$arr['page_name']}[/color]'";
                 $user = "[url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#" . get_user_class_color($CURUSER['class']) . "]{$CURUSER['username']}[/color][/url]";
                 write_log("$page {$lang['spanel_in_the_sp_was']} $action by $user");
             }
@@ -92,7 +92,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         foreach ($names as $name) {
             $$name = (isset($_POST[$name]) ? $_POST[$name] : ($action == 'edit' ? $arr[$name] : ''));
         }
-        if ($action == 'edit' && $CURUSER['class'] < $av_class) {
+        if ($action == 'edit' && $CURUSER['class'] < $arr['av_class']) {
             stderr($lang['spanel_error'], $lang['spanel_cant_edit_this_pg']);
         }
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -106,22 +106,22 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
             if (empty($description)) {
                 $errors[] = $lang['spanel_the_descr'] . ' ' . $lang['spanel_cannot_be_empty'] . '.';
             }
-            if (!isset($navbar)) {
+            if (empty($navbar)) {
                 $errors[] = 'Show in Navbar ' . $lang['spanel_cannot_be_empty'] . '.';
             }
-            if (!in_array((int)$av_class, $staff_classes)) {
+            if (!in_array((int)$arr['av_class'], $staff_classes)) {
                 $errors[] = $lang['spanel_selected_class_not_valid'];
             }
-            if (!is_file($file_name . '.php') && !empty($file_name) && !preg_match('/.php/', $file_name)) {
+            if (!empty($file_name) && !is_file($file_name . '.php') && !preg_match('/.php/', $file_name)) {
                 $errors[] = $lang['spanel_inexistent_php_file'];
             }
-            if (strlen($page_name) < 4 && !empty($page_name)) {
+            if (!empty($page_name) && strlen($page_name) < 4) {
                 $errors[] = $lang['spanel_the_pg_name'] . ' ' . $lang['spanel_is_too_short_min_4'] . '.';
             }
-            if (strlen($page_name) > 80) {
+            if (!empty($page_name) && strlen($page_name) > 80) {
                 $errors[] = $lang['spanel_the_pg_name'] . ' ' . $lang['spanel_is_too_long'] . ' (' . $lang['spanel_max_80'] . ').';
             }
-            if (strlen($file_name) > 80) {
+            if (!empty($file_name) && strlen($file_name) > 80) {
                 $errors[] = $lang['spanel_the_filename'] . ' ' . $lang['spanel_is_too_long'] . ' (' . $lang['spanel_max_80'] . ').';
             }
             if (strlen($description) > 100) {
@@ -135,7 +135,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                                          $file_name,
                                          $description,
                                          $type,
-                                         (int)$av_class,
+                                         (int)$arr['av_class'],
                                          (int)$CURUSER['id'],
                                          TIME_NOW,
                                          $navbar,
@@ -153,7 +153,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                         }
                     }
                 } else {
-                    $res = sql_query('UPDATE staffpanel SET navbar = ' . sqlesc($navbar) . ', page_name = ' . sqlesc($page_name) . ', file_name = ' . sqlesc($file_name) . ', description = ' . sqlesc($description) . ', type = ' . sqlesc($type) . ', av_class = ' . sqlesc((int)$av_class) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+                    $res = sql_query('UPDATE staffpanel SET navbar = ' . sqlesc($navbar) . ', page_name = ' . sqlesc($page_name) . ', file_name = ' . sqlesc($file_name) . ', description = ' . sqlesc($description) . ', type = ' . sqlesc($type) . ', av_class = ' . sqlesc((int)$arr['av_class']) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
                     $cache->delete('av_class_');
                     $cache->delete('staff_panels_6');
                     $cache->delete('staff_panels_5');
@@ -164,7 +164,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                 }
                 if (empty($errors)) {
                     if ($CURUSER['class'] <= UC_MAX) {
-                        $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color($av_class) . "]{$page_name}[/color]'";
+                        $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color($arr['av_class']) . "]{$page_name}[/color]'";
                         $what = $action == 'add' ? 'added' : 'edited';
                         $user = "[url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#" . get_user_class_color($CURUSER['class']) . "]{$CURUSER['username']}[/color][/url]";
                         write_log("$page {$lang['spanel_in_the_sp_was']} $what by $user");
@@ -237,9 +237,9 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                     <td class='rowhead'>{$lang['spanel_type_of_tool']}</td>
                     <td>
                         <select name='type'>";
-        foreach ($types as $types) {
+        foreach ($types as $type) {
             $body .= '
-                            <option value="' . $types . '"' . ($types == $type ? ' selected' : '') . '>' . ucfirst($types) . '</option>';
+                            <option value="' . $type . '"' . ($types == $type ? ' selected' : '') . '>' . ucfirst($type) . '</option>';
         }
         $body .= "
                         </select>
@@ -254,7 +254,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         $maxclass = UC_MAX;
         for ($class = UC_STAFF; $class <= $maxclass; ++$class) {
             $body .= '
-                           <option value="' . $class . '"' . ($class == $av_class ? ' selected' : '') . '>' . get_user_class_name($class) . '</option>';
+                           <option value="' . $class . '"' . ($class == $arr['av_class'] ? ' selected' : '') . '>' . get_user_class_name($class) . '</option>';
         }
         $body .= '
                         </select>
