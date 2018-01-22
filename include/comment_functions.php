@@ -30,7 +30,7 @@ function commenttable($rows, $variant = 'torrent')
         $moodpic = (isset($mood['image'][$row['mood']]) ? htmlsafechars($mood['image'][$row['mood']]) : 'noexpression.gif');
         $this_text .= "
             <div class='bottom20'>
-                <span>#{$row['id']} {$lang['commenttable_by']} ";
+                <span class='level-left'>#{$row['id']} {$lang['commenttable_by']} ";
         $att_str = '';
         if (!empty($row['user_likes'])) {
             $likes = explode(',', $row['user_likes']);

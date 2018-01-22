@@ -1,6 +1,7 @@
 <?php
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'comment_functions.php';
 check_user_status();
@@ -117,7 +118,7 @@ if ($action == 'add') {
     }
     $HTMLOUT = '';
     $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
-    $HTMLOUT .= "<h1>{$lang['comment_add']}'" . htmlsafechars($arr[$name]) . "'</h1>
+    $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['comment_add']}'" . htmlsafechars($arr[$name]) . "'</h1>
       <br><form name='compose' method='post' action='comment.php?action=add'>
       <input type='hidden' name='tid' value='{$id}'/>
       <input type='hidden' name='locale' value='$name' />";
@@ -126,16 +127,20 @@ if ($action == 'add') {
     } else {
         $HTMLOUT .= "<textarea name='text' rows='10' cols='60'></textarea>";
     }
-    $HTMLOUT .= "<br>
-      <label for='anonymous'>Tick this to post anonymously</label>
-      <input id='anonymous' type='checkbox' name='anonymous' value='yes' />
-      <br><input type='submit' class='button is-small' value='{$lang['comment_doit']}' /></form>";
-    $res = sql_query("SELECT c.id, c.text, c.added, c.$locale, c.anonymous, c.editedby, c.editedat, c.username, u.id as user, u.title, u.avatar, u.offavatar, u.av_w, u.av_h, u.class, u.reputation, u.mood, u.donor, u.warned
+    $HTMLOUT .= "
+        <div class='has-text-centered margin20'>
+            <label for='anonymous'>Tick this to post anonymously</label>
+            <input id='anonymous' type='checkbox' name='anonymous' value='yes' /><br>
+            <input type='submit' class='button is-small top20' value='{$lang['comment_doit']}' />
+        </div>
+    </form>";
+    $sql = "SELECT c.id, c.text, c.added, c.$locale, c.anonymous, c.editedby, c.editedat, c.user, u.id as user, u.title, u.avatar, u.offavatar, u.av_w, u.av_h, u.class, u.reputation, u.mood, u.donor, u.warned
                         FROM comments AS c
                         LEFT JOIN users AS u ON c.user = u.id
                         WHERE $locale = " . sqlesc($id) . "
                         ORDER BY c.id DESC
-                        LIMIT 5");
+                        LIMIT 5";
+    $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $allrows = [];
     while ($row = mysqli_fetch_assoc($res)) {
         $allrows[] = $row;
@@ -145,10 +150,10 @@ if ($action == 'add') {
         require_once INCL_DIR . 'bbcode_functions.php';
         require_once INCL_DIR . 'user_functions.php';
         require_once INCL_DIR . 'comment_functions.php';
-        $HTMLOUT .= "<h2>{$lang['comment_recent']}</h2>\n";
-        $HTMLOUT .= commenttable($allrows, $locale);
+        $HTMLOUT = wrapper($HTMLOUT);
+        $HTMLOUT .= wrapper("<h2 class='has-text-centered'>{$lang['comment_recent']}</h2>" . commenttable($allrows, $locale));
     }
-    echo stdhead("{$lang['comment_add']}'" . $arr[$name] . "'", true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+    echo stdhead("{$lang['comment_add']}'" . $arr[$name] . "'", true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die;
 } elseif ($action == 'edit') {
     $commentid = (isset($_GET['cid']) ? (int)$_GET['cid'] : 0);
@@ -182,7 +187,7 @@ if ($action == 'add') {
         die;
     }
     $HTMLOUT = '';
-    $HTMLOUT .= "<h1>{$lang['comment_edit']}'" . htmlsafechars($arr[$name]) . "'</h1>
+    $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['comment_edit']}'" . htmlsafechars($arr[$name]) . "'</h1>
       <form method='post' action='comment.php?action=edit&amp;cid=$commentid'>
       <input type='hidden' name='locale' value='$name' />
        <input type='hidden' name='tid' value='" . (int)$arr['tid'] . "' />
@@ -193,8 +198,12 @@ if ($action == 'add') {
         $HTMLOUT .= "<textarea name='text' rows='10' cols='60'>" . htmlsafechars($arr['text']) . '</textarea>';
     }
     $HTMLOUT .= '
-      <br>' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" value="lasteditedby" checked name="lasteditedby" id="lasteditedby" /> Show Last Edited By<br><br>' : '') . ' <input type="submit" class="button is-small" value="' . $lang['comment_doit'] . '" /></form>';
-    echo stdhead("{$lang['comment_edit']}'" . $arr[$name] . "'", true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+      <br>' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" value="lasteditedby" checked name="lasteditedby" id="lasteditedby" /> Show Last Edited By<br><br>' : '') . '
+        <div class="has-text-centered margin20">
+            <input type="submit" class="button is-small" value="' . $lang['comment_doit'] . '" />
+        </div>
+    </form>';
+    echo stdhead("{$lang['comment_edit']}'" . $arr[$name] . "'", true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die;
 } elseif ($action == 'delete') {
     if ($CURUSER['class'] < UC_STAFF) {
@@ -253,7 +262,7 @@ if ($action == 'add') {
         stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']} $commentid.");
     }
     $HTMLOUT = '';
-    $HTMLOUT .= "<h1>{$lang['comment_original_content']}#$commentid</h1>
+    $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['comment_original_content']}#$commentid</h1>
       <table width='500' >
       <tr><td class='comment'>
       " . htmlsafechars($arr['ori_text']) . '
@@ -262,7 +271,7 @@ if ($action == 'add') {
     if ($returnto) {
         $HTMLOUT .= "<p>(<a href='$returnto'>back</a>)</p>\n";
     }
-    echo stdhead("{$lang['comment_original']}", true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+    echo stdhead("{$lang['comment_original']}", true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die;
 } else {
     stderr("{$lang['comment_error']}", "{$lang['comment_unknown']}");

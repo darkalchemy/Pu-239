@@ -1,5 +1,8 @@
 In no particular order
 
+upgrade imdb class, its ancient
+update auto imdb - looks terrible
+verify tvmaze api working
 update headers: location
 what is cache userstatus
 update queries for user, get/set cache instead of query to get, only to set

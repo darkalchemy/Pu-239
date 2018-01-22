@@ -46,8 +46,8 @@ function remove_torrent($infohash)
     $cache->delete('top5_tor_');
     $cache->delete('last5_tor_');
     $cache->delete('scroll_tor_');
-    $cache->delete('torrent_details_' . $id);
-    $cache->delete('torrent_details_text' . $id);
+    $cache->delete('torrent_details_' . $torrent['id']);
+    $cache->delete('torrent_details_text' . $torrent['id']);
 
     return true;
 }
