@@ -1,4 +1,6 @@
 23 Jan 2018
+add: isbn field to edit.php
+update: fix get correct isbn 10/13
 update: minified js/css files
 update: add anonymizer_url to imdb cast and trailer links
 update: update categories

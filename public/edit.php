@@ -61,13 +61,14 @@ if (isset($_GET['returnto'])) {
 }
 $HTMLOUT .= "<table class='table table-bordered table-striped'>\n";
 $HTMLOUT .= $ismodd;
-$HTMLOUT .= tr("{$lang['edit_imdb_url']}", "<input type='text' name='url' size='80' value='" . htmlsafechars($row['url']) . "' />", 1);
-$HTMLOUT .= tr($lang['edit_poster'], "<input type='text' name='poster' size='80' value='" . htmlsafechars($row['poster']) . "' /><br>{$lang['edit_poster1']}\n", 1);
-$HTMLOUT .= tr($lang['edit_youtube'], "<input type='text' name='youtube' value='" . htmlsafechars($row['youtube']) . "'size='80' /><br>({$lang['edit_youtube_info']})\n", 1);
-$HTMLOUT .= tr($lang['edit_torrent_name'], "<input type='text' name='name' value='" . htmlsafechars($row['name']) . "' size='80' />", 1);
-$HTMLOUT .= tr($lang['edit_torrent_tags'], "<input type='text' name='tags' value='" . htmlsafechars($row['tags']) . "' size='80' /><br>({$lang['edit_tags_info']})\n", 1);
-$HTMLOUT .= tr($lang['edit_torrent_description'], "<input type='text' name='description' value='" . htmlsafechars($row['description']) . "' size='80' />", 1);
-$HTMLOUT .= tr($lang['edit_nfo'], "<input type='radio' name='nfoaction' value='keep' checked />{$lang['edit_keep_current']}<br>" . "<input type='radio' name='nfoaction' value='update' />{$lang['edit_update']}<br><input type='file' name='nfo' size='80' />", 1);
+$HTMLOUT .= tr($lang['edit_imdb_url'], "<input type='text' name='url' class='w-100' value='" . htmlsafechars($row['url']) . "' />", 1);
+$HTMLOUT .= tr($lang['edit_isbn'], "<input type='text' name='isbn' class='w-100' value='" . htmlsafechars($row['isbn']) . "'/><br>{$lang['edit_isbn_details']}", 1);
+$HTMLOUT .= tr($lang['edit_poster'], "<input type='text' name='poster' class='w-100' value='" . htmlsafechars($row['poster']) . "' /><br>{$lang['edit_poster1']}\n", 1);
+$HTMLOUT .= tr($lang['edit_youtube'], "<input type='text' name='youtube' value='" . htmlsafechars($row['youtube']) . "'class='w-100' /><br>({$lang['edit_youtube_info']})\n", 1);
+$HTMLOUT .= tr($lang['edit_torrent_name'], "<input type='text' name='name' value='" . htmlsafechars($row['name']) . "' class='w-100' />", 1);
+$HTMLOUT .= tr($lang['edit_torrent_tags'], "<input type='text' name='tags' value='" . htmlsafechars($row['tags']) . "' class='w-100' /><br>({$lang['edit_tags_info']})\n", 1);
+$HTMLOUT .= tr($lang['edit_torrent_description'], "<input type='text' name='description' value='" . htmlsafechars($row['description']) . "' class='w-100' />", 1);
+$HTMLOUT .= tr($lang['edit_nfo'], "<input type='radio' name='nfoaction' value='keep' checked />{$lang['edit_keep_current']}<br>" . "<input type='radio' name='nfoaction' value='update' />{$lang['edit_update']}<br><input type='file' name='nfo' class='w-100' />", 1);
 if ((strpos($row['ori_descr'], '<') === false) || (strpos($row['ori_descr'], '&lt;') !== false)) {
     $c = '';
 } else {
@@ -110,7 +111,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
 $HTMLOUT .= tr($lang['edit_recommend_torrent'], "<input type='radio' name='recommended' " . (($row['recommended'] == 'yes') ? "checked" : '') . " value='yes' />Yes!<input type='radio' name='recommended' " . ($row['recommended'] == 'no' ? "checked" : '') . " value='no' />No!<br><font class='small' >{$lang['edit_recommend']}</font>", 1);
 if ($CURUSER['class'] >= UC_UPLOADER) {
     $HTMLOUT .= tr('Nuked', "<input type='radio' name='nuked'" . ($row['nuked'] == 'yes' ? " checked" : '') . " value='yes' />Yes <input type='radio' name='nuked'" . ($row['nuked'] == 'no' ? " checked" : '') . " value='no' />No", 1);
-    $HTMLOUT .= tr('Nuke Reason', "<input type='text' name='nukereason' value='" . htmlsafechars($row['nukereason']) . "' size='80' />", 1);
+    $HTMLOUT .= tr('Nuke Reason', "<input type='text' name='nukereason' value='" . htmlsafechars($row['nukereason']) . "' class='w-100' />", 1);
 }
 if ($CURUSER['class'] >= UC_STAFF && !XBT_TRACKER) {
     $HTMLOUT .= tr('Free Leech', ($row['free'] != 0 ? "<input type='checkbox' name='fl' value='1' /> Remove Freeleech" : "

@@ -276,6 +276,12 @@ if (isset($_POST['url']) && (($url = $_POST['url']) != $fetch_assoc['url'] && !e
     $updateset[] = 'url = ' . sqlesc($url);
     $torrent_cache['url'] = $url;
 }
+if (!empty($_POST['isbn']) && $_POST['isbn'] != $fetch_assoc['isbn']) {
+    $isbn = $_POST['isbn'];
+    $updateset[] = 'isbn = ' . sqlesc($isbn);
+    $torrent_cache['isbn'] = $isbn;
+}
+
 //==09 Anonymous torrents
 if (($anonymous = (isset($_POST['anonymous']) != '' ? 'yes' : 'no')) != $fetch_assoc['anonymous']) {
     $updateset[] = 'anonymous = ' . sqlesc($anonymous);

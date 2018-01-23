@@ -65,17 +65,19 @@ function get_book_info($torrent)
             }
         }
         if (!empty($keys)) {
+            $isbn10 = strlen($keys[1]) === 10 ? $keys[1] : $keys[3];
+            $isbn13 = strlen($keys[3]) === 13 ? $keys[3] : $keys[1];
             $ebook_info .= "
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>ISBN 10: </div>
                         <span class='column padding5'>
-                            <a href='{$site_config['anonymizer_url']}https://www.amazon.com/gp/search/field-isbn={$keys[1]}' target='_blank'>{$keys[1]}</a>
+                            <a href='{$site_config['anonymizer_url']}https://www.amazon.com/gp/search/field-isbn={$isbn10}' target='_blank'>{$isbn10}</a>
                         </span>
                     </div>
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>ISBN 13: </div>
                         <span class='column padding5'>
-                            <a href='{$site_config['anonymizer_url']}https://www.amazon.com/gp/search/field-isbn={$keys[3]}' target='_blank'>{$keys[3]}</a>
+                            <a href='{$site_config['anonymizer_url']}https://www.amazon.com/gp/search/field-isbn={$isbn13}' target='_blank'>{$isbn13}</a>
                         </span>
                     </div>";
         }
