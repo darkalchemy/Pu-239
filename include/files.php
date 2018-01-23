@@ -15,7 +15,7 @@ function get_file_name($file)
         if ($site_config['in_production']) {
             switch ($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/40a660b92771eb1fcd32e49a0fc55232.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/36d5b37ebcce0f28358bc9b2ced6f9f0.min.css";
                 case 'js':
                     return "{$site_config['baseurl']}/js/{$style}/ca0db59900eb54b78629b4e92c66955d.min.js";
                 case 'checkport_js':

@@ -7,9 +7,11 @@
  */
 function tvmaze_format($tvmaze_data, $tvmaze_type)
 {
+    global $site_config;
+
     $tvmaze_display['show'] = [
         'name'           => line_by_line('Title', '%s'),
-        'url'            => line_by_line('Link', '%s'),
+        'url'            => line_by_line('Link', "<a href='{$site_config['anonymizer_url']}'>TVMaze Lookup%s</a>"),
         'premiered'      => line_by_line('Started', '%s'),
         'origin_country' => line_by_line('Country', '%s'),
         'status'         => line_by_line('Status', '%s'),
@@ -38,6 +40,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
 function tvmaze(&$torrents)
 {
     global $cache;
+
     $tvmaze_data = '';
     $row_update = [];
     if (preg_match("/^(.*)S\d+(E\d+)?/i", $torrents['name'], $tmp)) {
@@ -66,13 +69,16 @@ function tvmaze(&$torrents)
         $force_update = true;
     }
     $memkey = 'tvrage_' . $tvmaze_id;
-    if ($force_update || ($tvmaze_showinfo = $cache->get($memkey)) === false) {
+    $tvmaze_showinfo = $cache->get($memkey);
+    if ($force_update || $tvmaze_showinfo === false || is_null($tvmaze_showinfo)) {
         $tvmaze['name'] = preg_replace('/\d{4}.$/', '', $tvmaze['name']);
-        $tvmaze_link = sprintf('http://api.tvmaze.com/shows/%d', $tvmaze_id);
+        $tvmaze_link = "http://api.tvmaze.com/shows/$tvmaze_id";
         $tvmaze_array = json_decode(file_get_contents($tvmaze_link), true);
         $tvmaze_array['origin_country'] = $tvmaze_array['network']['country']['name'];
         if (count($tvmaze_array['genres']) > 0) {
-            $tvmaze_array['genres2'] = implode(', ', array_map('strtolower', $tvmaze_array['genres']));
+            $temp = implode(', ', array_map('strtolower', $tvmaze_array['genres']));
+            $temp = explode(', ', $temp);
+            $tvmaze_array['genres2'] = implode(', ', array_map('ucwords', $temp));
         }
         if (empty($torrents['newgenre'])) {
             $row_update[] = 'newgenre = ' . sqlesc(ucwords($tvmaze_showinfo['genres2']));
@@ -90,14 +96,14 @@ function tvmaze(&$torrents)
             sql_query('UPDATE torrents SET ' . join(', ', $row_update) . ' WHERE id = ' . $torrents['id']) or sqlerr(__FILE__, __LINE__);
         }
         $tvmaze_showinfo = tvmaze_format($tvmaze_array, 'show');
-        $cache->set($memkey, $tvmaze_showinfo, 0);
+        $cache->set($memkey, $tvmaze_showinfo, 604800);
         $tvmaze_data .= $tvmaze_showinfo;
         $torrents['poster'] = $tvmaze_array['image']['original'];
     } else {
         $tvmaze_data .= $tvmaze_showinfo;
     }
 
-    return $tvmaze_data;
+    return "<div class='padding10'>$tvmaze_data</div>";
 }
 
 function line_by_line($heading, $body) {

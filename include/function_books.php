@@ -100,7 +100,7 @@ function get_book_info($torrent)
         $cache->set('book_info_' . $hash, $ebook_info, $site_config['expires']['book_info']);
     }
     return [
-        $ebook_info,
+        "<div class='padding10'>$ebook_info</div>",
         $poster
     ];
 }

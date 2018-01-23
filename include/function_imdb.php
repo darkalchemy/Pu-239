@@ -9,7 +9,7 @@ use Imdb\Config;
  */
 function get_imdb_info($imdb_id)
 {
-    global $cache;
+    global $cache, $site_config;
     $imdb_info = $cache->get('imdb_' . $imdb_id);
     $poster = '';
     if ($imdb_info === false || is_null($imdb_info)) {
@@ -61,7 +61,7 @@ function get_imdb_info($imdb_id)
             if (!empty($pp['name']) && !empty($pp['photo']) && !empty($pp['thumb'])) {
                 $cast[] = "
                             <span class='padding5'>
-                                <a href='http://www.imdb.com/name/nm{$pp['imdb']}' target='_blank'>
+                                <a href='{$site_config['anonymizer_url']}http://www.imdb.com/name/nm{$pp['imdb']}' target='_blank'>
                                     <span class='dt-tooltipper-small' data-tooltip-content='#cast_{$pp['imdb']}_tooltip'>
                                         <span>
                                             <img src='" . htmlspecialchars($pp['thumb']) . "' alt='' class='round5'>
@@ -106,9 +106,9 @@ function get_imdb_info($imdb_id)
                             unset($cast);
                         }
                         if ($foo != 'cast' && $foo == 'trailers') {
-                            $imdb_tmp[] = "<a href='{$pp['url']}' target='_blank'>{$pp['title']}</a>";
+                            $imdb_tmp[] = "<a href='{$site_config['anonymizer_url']}{$pp['url']}' target='_blank'>{$pp['title']}</a>";
                         } elseif ($foo != 'cast') {
-                            $imdb_tmp[] = "<a href='http://www.imdb.com/name/nm" . $pp['imdb'] . "' target='_blank' class='tooltipper' title='" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . "'>" . $pp['name'] . "</a>";
+                            $imdb_tmp[] = "<a href='{$site_config['anonymizer_url']}http://www.imdb.com/name/nm" . $pp['imdb'] . "' target='_blank' class='tooltipper' title='" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . "'>" . $pp['name'] . "</a>";
                         }
                     }
                 }

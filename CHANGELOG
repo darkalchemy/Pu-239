@@ -1,4 +1,6 @@
 23 Jan 2018
+update: minified js/css files
+update: add anonymizer_url to imdb cast and trailer links
 update: update categories
 update: apis will set poster to api poster, if poster unset, without page refresh
 update: book uniformity
