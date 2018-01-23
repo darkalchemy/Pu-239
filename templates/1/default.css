@@ -905,34 +905,42 @@ textarea {
 
 .w-1 {
     width: 1%;
+    flex: none;
 }
 
 .w-10 {
     width: 10%;
+    flex: none;
 }
 
 .w-15 {
     width: 15%;
+    flex: none;
 }
 
 .w-20 {
     width: 20%;
+    flex: none;
 }
 
 .w-25 {
     width: 25%;
+    flex: none;
 }
 
 .w-50 {
     width: 50%;
+    flex: none;
 }
 
 .w-75 {
     width: 75%;
+    flex: none;
 }
 
 .w-100 {
     width: 100%;
+    flex: none;
 }
 
 .tabs {
@@ -983,6 +991,11 @@ p + p {
 .is-wrapped {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
+}
+
+.cast > img {
+    width: 20px;
+    height: auto;
 }
 
 @media (max-width: 1200px) {

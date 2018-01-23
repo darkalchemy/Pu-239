@@ -1,4 +1,9 @@
 23 Jan 2018
+update: details.php youtube display highest quality video available
+update: imdb info
+remove: unused beep.mp3 and beep.ogg
+fix: incorrect var name for newsrss enable/disable
+replace: imdb class with imdbphp class via composer
 update: resetpw to use token auth
 
 22 Jan 2018

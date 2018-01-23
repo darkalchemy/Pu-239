@@ -469,7 +469,7 @@ function autoclean()
             }
         }
 
-        if ($site_config['trivia_on']) {
+        if ($site_config['newsrss_on']) {
             $tfreak_cron = $cache->get('tfreak_cron_');
             if ($tfreak_cron === false || is_null($tfreak_cron)) {
                 $tfreak_news = $cache->get('tfreak_news_links_');

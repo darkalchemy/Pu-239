@@ -142,7 +142,7 @@ if ($CURUSER['class'] >= UC_STAFF && !XBT_TRACKER) {
          (' . mkprettytime($row['silver'] - TIME_NOW) . ' to go)' : 'Unlimited'), 1);
     }
 }
-// ===09 Allow Comments
+
 if ($CURUSER['class'] >= UC_STAFF && $CURUSER['class'] == UC_MAX) {
     if ($row['allow_comments'] == 'yes') {
         $messc = '&#160;Comments are allowed for everyone on this torrent!';
@@ -156,7 +156,7 @@ if ($CURUSER['class'] >= UC_STAFF && $CURUSER['class'] == UC_MAX) {
     <option value='" . htmlsafechars($row['allow_comments']) . "'>" . htmlsafechars($row['allow_comments']) . "</option>
     <option value='yes'>Yes</option><option value='no'>No</option></select>{$messc}</td></tr>\n";
 }
-// ===end
+
 if ($CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= tr('Sticky', "<input type='checkbox' name='sticky'" . (($row['sticky'] == 'yes') ? " checked" : '') . " value='yes' />Sticky this torrent !", 1);
     $HTMLOUT .= tr($lang['edit_anonymous'], "<input type='checkbox' name='anonymous'" . (($row['anonymous'] == 'yes') ? " checked" : '') . " value='1' />{$lang['edit_anonymous1']}", 1);
@@ -167,7 +167,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
         $HTMLOUT .= tr('Freeleech', "<input type='checkbox' name='freetorrent'" . (($row['freetorrent'] == 1) ? " checked" : '') . " value='1' /> Check this to make this torrent freeleech", 1);
     }
 }
-//==09 Genre mod no sql
+
 $HTMLOUT .= "
     <tr>
     <td class='rowhead'><b>Genre</b>&#160;&#160;&#160;<br>Optional&#160;&#160;&#160;
@@ -235,7 +235,11 @@ for ($x = 0; $x < count($apps); ++$x) {
     $HTMLOUT .= "<label><input type=\"checkbox\" value=\"$apps[$x]\" name=\"apps[]\" class=\"DEPENDS ON genre BEING apps\" />$apps[$x]</label>";
 }
 $HTMLOUT .= '</td></tr></table></td></tr>';
-$HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['edit_submit']}' class='button is-small' /> <input type='reset' value='{$lang['edit_revert']}' class='button is-small' /></td></tr>
+$HTMLOUT .= "<tr><td colspan='2'>
+    <div class='has-text-centered'>
+        <input type='submit' value='{$lang['edit_submit']}' class='button is-small' /> <input type='reset' value='{$lang['edit_revert']}' class='button is-small' />
+    </div>
+    </td></tr>
     </table>
     </form>
     <br>
@@ -262,9 +266,15 @@ $HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['edit_submit
 if (isset($_GET['returnto'])) {
     $HTMLOUT .= "<input type='hidden' name='returnto' value='" . htmlsafechars($_GET['returnto']) . "' />\n";
 }
-$HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['edit_delete']}' class='button is-small' /></td>
+$HTMLOUT .= "
+    <tr>
+        <td colspan='2'>
+            <div class='has-text-centered margin20'>
+                <input type='submit' value='{$lang['edit_delete']}' class='button is-small' />
+            </div>
+        </td>
     </tr>
     </table>
     </form>";
-//////////////////////////// HTML OUTPIT ////////////////////////////////
+
 echo stdhead("{$lang['edit_stdhead']} '{$row['name']}'", true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);

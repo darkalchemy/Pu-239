@@ -54,7 +54,7 @@ function get_file_name($file)
         } else {
             switch ($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/32a9328a495743300c131d97ee797315.css";
+                    return "{$site_config['baseurl']}/css/{$style}/3d507f71b2de5879cb7afbf872338a43.css";
                 case 'js':
                     return "{$site_config['baseurl']}/js/{$style}/0b22564d088aa8e495034692ef918ce8.js";
                 case 'checkport_js':

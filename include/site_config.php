@@ -299,4 +299,4 @@ $site_config['notifications'] = [
     'is-link'
 ];
 
-$site_config['trivia_on'] = false;
+$site_config['newsrss_on'] = false;

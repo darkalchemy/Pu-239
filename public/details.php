@@ -7,8 +7,8 @@ require_once INCL_DIR . 'comment_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'function_rating.php';
 require_once INCL_DIR . 'tvmaze_functions.php';
-require_once IMDB_DIR . 'imdb.class.php';
 require_once INCL_DIR . 'function_books.php';
+require_once INCL_DIR . 'function_imdb.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $fluent;
 
@@ -60,62 +60,13 @@ foreach ($categorie as $key => $value) {
 
 $torrents = $cache->get('torrent_details_' . $id);
 if ($torrents === false || is_null($torrents)) {
-    $tor_fields_ar_int = [
-        'id',
-        'leechers',
-        'seeders',
-        'thanks',
-        'comments',
-        'owner',
-        'size',
-        'added',
-        'views',
-        'hits',
-        'numfiles',
-        'times_completed',
-        'points',
-        'last_reseed',
-        'category',
-        'free',
-        'freetorrent',
-        'silver',
-        'rating_sum',
-        'checked_when',
-        'num_ratings',
-        'mtime',
-        'checked_when',
-        'checked_by',
-    ];
-    $tor_fields_ar_str = [
-        'isbn',
-        'banned',
-        'HEX(info_hash) AS info_hash',
-        'filename',
-        'search_text',
-        'name',
-        'save_as',
-        'visible',
-        'poster',
-        'url',
-        'anonymous',
-        'allow_comments',
-        'description',
-        'nuked',
-        'nukereason',
-        'vip',
-        'subs',
-        'newgenre',
-        'release_group',
-        'youtube',
-        'tags',
-    ];
-    $tor_fields = implode(', ', array_merge($tor_fields_ar_int, $tor_fields_ar_str));
-    $sql = 'SELECT ' . $tor_fields . ", LENGTH(nfo) AS nfosz, IF(num_ratings < {$site_config['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating FROM torrents WHERE id = " . sqlesc($id);
-    $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    $torrents = mysqli_fetch_assoc($result);
-    foreach ($tor_fields_ar_int as $i) {
-        $torrents[$i] = (int)$torrents[$i];
-    }
+    $torrents = $fluent->from('torrents')
+        ->select('HEX(info_hash) AS info_hash')
+        ->select('LENGTH(nfo) AS nfosz')
+        ->select("IF(num_ratings < {$site_config['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating")
+        ->where('id = ?', $id)
+        ->fetch();
+
     $cache->set('torrent_details_' . $id, $torrents, $site_config['expires']['torrent_details']);
 }
 
@@ -133,6 +84,28 @@ if (in_array($torrents['category'], $site_config['ebook_cats'])) {
             ->where('id = ?', $id)
             ->execute();
         $torrents['poster'] = $ebooks_info[1];
+    }
+}
+
+if (in_array($torrents['category'], $site_config['movie_cats'])) {
+    preg_match('/^http\:\/\/(.*?)imdb\.com\/title\/tt([\d]{7})/i', $torrents['url'], $imdb_tmp);
+    if (!empty($imdb_tmp[2])) {
+        $imdb_id = $imdb_tmp[2];
+        unset($imdb_tmp);
+        $movie_info = get_imdb_info($imdb_id);
+        $imdb_info = $movie_info[0];
+
+        if (empty($torrents['poster']) && !empty($movie_info[1])) {
+            $set = [
+                'poster' => $movie_info[1]
+            ];
+            $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
+            $fluent->update('torrents')
+                ->set($set)
+                ->where('id = ?', $id)
+                ->execute();
+            $torrents['poster'] = $movie_info[1];
+        }
     }
 }
 
@@ -163,9 +136,9 @@ if ($l_a === false || is_null($l_a)) {
     $cache->add('last_action_' . $id, $l_a, 1800);
 }
 
-$torrent_cache['seeders'] = $cache->get('torrents::seeds_' . $id);
-$torrent_cache['leechers'] = $cache->get('torrents::leechs_' . $id);
-$torrent_cache['times_completed'] = $cache->get('torrents::comps_' . $id);
+$torrent_cache['seeders'] = $cache->get('torrents_seeds_' . $id);
+$torrent_cache['leechers'] = $cache->get('torrents_leechs_' . $id);
+$torrent_cache['times_completed'] = $cache->get('torrents_comps_' . $id);
 $torrents['seeders'] = ((!XBT_TRACKER || $torrent_cache['seeders'] === false || $torrent_cache['seeders'] === 0 || $torrent_cache['seeders'] === false) ? $torrents['seeders'] : $torrent_cache['seeders']);
 $torrents['leechers'] = ((!XBT_TRACKER || $torrent_cache['leechers'] === false || $torrent_cache['leechers'] === 0 || $torrent_cache['leechers'] === false) ? $torrents['leechers'] : $torrent_cache['leechers']);
 $torrents['times_completed'] = ((!XBT_TRACKER || $torrent_cache['times_completed'] === false || $torrent_cache['times_completed'] === 0 || $torrent_cache['times_completed'] === false) ? $torrents['times_completed'] : $torrent_cache['times_completed']);
@@ -341,8 +314,8 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
     require_once MODS_DIR . 'free_details.php';
     $HTMLOUT .= "
         </div>
-        <div class='level has-text-centered bottom20'>
-            <div class='img-polaroid round10 right10'>";
+        <div class='level has-text-centered bottom20 columns top20'>
+            <div class='img-polaroid round10 right10 column is-2'>";
 
     if (!empty($torrents['poster'])) {
         $HTMLOUT .= "<img src='" . htmlsafechars($torrents['poster']) . "' class='round10' alt='Poster' />";
@@ -355,7 +328,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
     $Free_Slot_Text = (XBT_TRACKER ? '' : $freeslot_text);
     $HTMLOUT .= "
             </div>
-            <div class='w-100 table-wrapper'>
+            <div class='table-wrapper column'>
                 <table class='table table-bordered crap'>
                     <tr>
                         <td class='rowhead' width='3%'>{$lang['details_download']}</td>
@@ -746,8 +719,16 @@ $HTMLOUT .= "
         <div class='table-wrapper bottom20'>
             <table class='table table-bordered'>";
 if (!empty($torrents['youtube'])) {
-    $HTMLOUT .= tr($lang['details_youtube'], '<object type="application/x-shockwave-flash" data="' . str_replace('watch?v=', 'v/', $torrents['youtube']) . '"><param name="movie" value="' . str_replace('watch?v=', 'v/', $torrents['youtube']) . '" /></object><br><a
-href=\'' . htmlsafechars($torrents['youtube']) . '\' target=\'_blank\'>' . $lang['details_youtube_link'] . '</a>', 1);
+    preg_match('/(watch\?v=|watch\?.+&v=)(.{11})/i', $torrents['youtube'], $match);
+    if (isset($match[2])) {
+        $youtube_id = $match[2];
+        $short_link = 'https://www.youtube.com/embed/' . $youtube_id;
+        $HTMLOUT .= tr($lang['details_youtube'], "
+                <a id='YouTube-hash'>
+                <div class='youtube-embed round10' style='position: relative;padding-top: 56.25%;'>
+                    <iframe class='round10' style='position: absolute;top: 0;left: 0;width: 100%;height: 100%;' src='{$short_link}?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen ></iframe>
+                </div>", 1);
+    }
 } else {
     $HTMLOUT .= '
                 <tr>
@@ -768,117 +749,44 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
     }
 }
 
-if (in_array($torrents['category'], $site_config['movie_cats'])) {
-    if (preg_match('/^http\:\/\/(.*?)imdb\.com\/title\/tt([\d]{7})/i', $torrents['url'], $imdb_tmp)) {
-        $imdb_id = $imdb_tmp[2];
-        unset($imdb_tmp);
-        if (!($imdb_info = $cache->get('imdb::' . $imdb_id))) {
-            $movie = new imdb($imdb_id);
-            $movie->setid($imdb_id);
-            $imdb_data['director'] = $movie->director();
-            $imdb_data['writing'] = $movie->writing();
-            $imdb_data['producer'] = $movie->producer();
-            $imdb_data['composer'] = $movie->composer();
-            $imdb_data['cast'] = $movie->cast();
-            $imdb_data['cast'] = array_slice($imdb_data['cast'], 0, 10);
-            $imdb_data['genres'] = $movie->genres();
-            $imdb_data['plot'] = $movie->plot();
-            $imdb_data['plotoutline'] = $movie->plotoutline();
-            $imdb_data['trailers'] = $movie->trailers();
-            $imdb_data['language'] = $movie->language();
-            $imdb_data['rating'] = $movie->rating();
-            $imdb_data['title'] = $movie->title();
-            $imdb_data['year'] = $movie->year();
-            $imdb_data['runtime'] = $movie->runtime();
-            $imdb_data['votes'] = $movie->votes();
-            $imdb_data['country'] = $movie->country();
-            $imdb = [
-                'country'     => 'Country',
-                'director'    => 'Directed by',
-                'writing'     => 'Writing by',
-                'producer'    => 'Produced by',
-                'cast'        => 'Cast',
-                'plot'        => 'Description',
-                'composer'    => 'Music',
-                'genres'      => 'All genres',
-                'plotoutline' => 'Plot outline',
-                'trailers'    => 'Trailers',
-                'language'    => 'Language',
-                'rating'      => 'Rating',
-                'title'       => 'Title',
-                'year'        => 'Year',
-                'runtime'     => 'Runtime',
-                'votes'       => 'Votes',
-            ];
-            foreach ($imdb as $foo => $boo) {
-                if (isset($imdb_data[$foo]) && !empty($imdb_data[$foo])) {
-                    if (!is_array($imdb_data[$foo])) {
-                        $imdb_info .= "<span>" . $boo . ':</span>' . $imdb_data[$foo] . "<br>\n";
-                    } elseif (is_array($imdb_data[$foo]) && in_array($foo, [
-                            'director',
-                            'writing',
-                            'producer',
-                            'composer',
-                            'cast',
-                            'trailers',
-                        ])) {
-                        foreach ($imdb_data[$foo] as $pp) {
-                            if ($foo == 'cast') {
-                                $imdb_tmp[] = "<a href='http://www.imdb.com/name/nm" . $pp['imdb'] . "' target='_blank' class='tooltipper' title='" . (!empty($pp['name']) ? $pp['name'] : 'unknown') . "'>" . (isset($pp['thumb']) ? "<img src='" . $pp['thumb'] . "' alt='" . $pp['name'] . "' width='20' height='30' />" : $pp['name']) . "</a> as <span>" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . '</span>';
-                            } elseif ($foo == 'trailers') {
-                                $imdb_tmp[] = "<a href='" . $pp . "' target='_blank'>" . $pp . '</a>';
-                            } else {
-                                $imdb_tmp[] = "<a href='http://www.imdb.com/name/nm" . $pp['imdb'] . "' target='_blank' class='tooltipper' title='" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . "'>" . $pp['name'] . "</a>\n";
-                            }
-                        }
-                        $imdb_info .= "<span>" . $boo . ':</span>' . join(', ', $imdb_tmp) . "<br>\n";
-                        unset($imdb_tmp);
-                    } else {
-                        $imdb_info .= "<span>" . $boo . ':</span>' . join(', ', $imdb_data[$foo]) . "<br>\n";
-                    }
-                }
-            }
-            $imdb_info = preg_replace('/&(?![A-Za-z0-9#]{1,7};)/', '&amp;', $imdb_info);
-            $cache->add('imdb::' . $imdb_id, $imdb_info, 0);
-        }
-        $HTMLOUT .= tr('Auto imdb', $imdb_info, 1);
-    }
-}
-
 if (!empty($ebook_info)) {
     $HTMLOUT .= tr('Google Books', main_table($ebook_info), 1);
 }
 
+if (!empty($imdb_info)) {
+    $HTMLOUT .= tr('Auto imdb', $imdb_info, 1);
+}
+
 if (empty($tvmaze_info) && empty($imdb_info) && empty($ebook_info)) {
     $HTMLOUT .= "
-                <tr>
-                    <td colspan='2'>No Imdb, TVMaze or Ebook info.</td>
-                </tr>";
+                <tr >
+                    <td colspan = '2' > No Imdb, TVMaze or Ebook info .</td >
+                </tr > ";
 }
 $HTMLOUT .= "
-            </table>
-        </div>";
+            </table >
+        </div > ";
 
 $HTMLOUT .= "
-    <a name='startcomments'></a>
-    <form name='comment' method='post' action='{$site_config['baseurl']}/comment.php?action=add&amp;tid=$id'>
-        <div class='bordered top20 bottom20'>
-            <div class='alt_bordered bg-00'>
-                <div class='has-text-centered'>
-                    <div class='size_6'>{$lang['details_comments']}:</div>
-                    <h1><a href='{$site_config['baseurl']}/details.php?id=$id'>" . htmlsafechars($torrents['name'], ENT_QUOTES) . "</a></h1>
-                </div>
-                <div class='bg-02 round10'>
-                    <div class='level-center'>
-                        <a class='index' href='{$site_config['baseurl']}/comment.php?action=add&amp;tid=$id'><span class='has-text-primary size_6'>Use the BBcode Editor</span></a>
-                        <a class='index' href='{$site_config['baseurl']}/takethankyou.php?id=" . $id . "'>
-                            <img src='{$site_config['pic_baseurl']}smilies/thankyou.gif' class='tooltipper' alt='Thank You' title='Give a quick \"Thank You\"' />
-                        </a>
-                    </div>
-                    <textarea name='body' class='w-100' rows='6'></textarea>
-                    <input type='hidden' name='tid' value='" . htmlsafechars($id) . "' />
-                    <div class='has-text-centered'>
-                        <a href=\"javascript:SmileIT(':-)','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/smile1.gif' alt='Smile' class='tooltipper' title='Smile' /></a>
+    <a name = 'startcomments' ></a >
+    <form name = 'comment' method = 'post' action = '{$site_config['baseurl']}/comment.php?action=add&amp;tid=$id' >
+        <div class='bordered top20 bottom20' >
+            <div class='alt_bordered bg-00' >
+                <div class='has-text-centered' >
+                    <div class='size_6' >{$lang['details_comments']}:</div >
+                    <h1 ><a href = '{$site_config['baseurl']}/details.php?id=$id' > " . htmlsafechars($torrents['name'], ENT_QUOTES) . " </a ></h1 >
+                </div >
+                <div class='bg-02 round10' >
+                    <div class='level-center' >
+                        <a class='index' href = '{$site_config['baseurl']}/comment.php?action=add&amp;tid=$id' ><span class='has-text-primary size_6' >Use the BBcode Editor </span ></a >
+                        <a class='index' href = '{$site_config['baseurl']}/takethankyou.php?id=" . $id . "' >
+                            <img src = '{$site_config['pic_baseurl']}smilies/thankyou.gif' class='tooltipper' alt = 'Thank You' title = 'Give a quick \"Thank You\"' />
+                        </a >
+                    </div >
+                    <textarea name = 'body' class='w-100' rows = '6' ></textarea >
+                    <input type = 'hidden' name = 'tid' value = '" . htmlsafechars($id) . "' />
+                    <div class='has-text-centered' >
+                        <a href = \"javascript:SmileIT(':-)','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/smile1.gif' alt='Smile' class='tooltipper' title='Smile' /></a>
                         <a href=\"javascript:SmileIT(':smile:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/smile2.gif' alt='Smiling' class='tooltipper' title='Smiling' /></a>
                         <a href=\"javascript:SmileIT(':-D','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/grin.gif' alt='Grin' class='tooltipper' title='Grin' /></a>
                         <a href=\"javascript:SmileIT(':lol:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/laugh.gif' alt='Laughing' class='tooltipper' title='Laughing' /></a>

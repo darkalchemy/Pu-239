@@ -190,7 +190,7 @@ if (($sticky = (isset($_POST['sticky']) != '' ? 'yes' : 'no')) != $fetch_assoc['
     }
     //$torrent_cache['sticky'] = $sticky;
 }
-// ==09 Simple nuke/reason mod
+
 if (isset($_POST['nuked']) && ($nuked = $_POST['nuked']) != $fetch_assoc['nuked']) {
     $updateset[] = 'nuked = ' . sqlesc($nuked);
     $torrent_cache['nuked'] = $nuked;
@@ -199,7 +199,7 @@ if (isset($_POST['nukereason']) && ($nukereason = $_POST['nukereason']) != $fetc
     $updateset[] = 'nukereason = ' . sqlesc($nukereason);
     $torrent_cache['nukereason'] = $nukereason;
 }
-// ==09 Poster Mod
+
 if (isset($_POST['poster']) && (($poster = $_POST['poster']) != $fetch_assoc['poster'] && !empty($poster))) {
     if (!preg_match("/^(http|https):\/\/[^\s'\"<>]+\.(jpg|gif|png)$/i", $poster)) {
         setSessionVar('is-warning', 'Poster MUST be in jpg, gif or png format. Make sure you include http:// in the URL.');
@@ -209,7 +209,12 @@ if (isset($_POST['poster']) && (($poster = $_POST['poster']) != $fetch_assoc['po
     $updateset[] = 'poster = ' . sqlesc($poster);
     $torrent_cache['poster'] = $poster;
 }
-//==09 Set Freeleech on Torrent Time Based
+
+if (empty($_POST['poster']) && !empty($fetch_assoc['poster'])) {
+    $updateset[] = "poster = ''";
+    $torrent_cache['poster'] = '';
+}
+
 if (isset($_POST['free_length']) && ($free_length = (int)$_POST['free_length'])) {
     if ($free_length == 255) {
         $free = 1;
