@@ -6,7 +6,7 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'comment_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'function_rating.php';
-require_once INCL_DIR . 'tvmaze_functions.php';
+require_once INCL_DIR . 'function_tvmaze.php';
 require_once INCL_DIR . 'function_books.php';
 require_once INCL_DIR . 'function_imdb.php';
 check_user_status();
@@ -71,6 +71,10 @@ if ($torrents === false || is_null($torrents)) {
 }
 
 $tvmaze_info = $imdb_info = $ebook_info = '';
+if (in_array($torrents['category'], $site_config['tv_cats'])) {
+    $tvmaze_info = tvmaze($torrents);
+}
+
 if (in_array($torrents['category'], $site_config['ebook_cats'])) {
     $ebooks_info = get_book_info($torrents);
     $ebook_info = $ebooks_info[0];
@@ -742,15 +746,12 @@ $HTMLOUT .= "
         <div class='table-wrapper bottom20'>
             <table class='table table-bordered'>";
 
-if (in_array($torrents['category'], $site_config['tv_cats'])) {
-    $tvmaze_info = tvmaze($torrents);
-    if ($tvmaze_info) {
-        $HTMLOUT .= tr($lang['details_tvrage'], $tvmaze_info, 1);
-    }
+if ($tvmaze_info) {
+    $HTMLOUT .= tr($lang['details_tvrage'], $tvmaze_info, 1);
 }
 
 if (!empty($ebook_info)) {
-    $HTMLOUT .= tr('Google Books', main_table($ebook_info), 1);
+    $HTMLOUT .= tr('Google Books', $ebook_info, 1);
 }
 
 if (!empty($imdb_info)) {

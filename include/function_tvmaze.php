@@ -8,15 +8,15 @@
 function tvmaze_format($tvmaze_data, $tvmaze_type)
 {
     $tvmaze_display['show'] = [
-        'name'           => '<b>%s</b>',
-        'url'            => '%s',
-        'premiered'      => 'Started: %s',
-        'origin_country' => 'Country: %s',
-        'status'         => 'Status: %s',
-        'type'           => 'Classification: %s',
-        'summary'        => 'Summary:<br> %s',
-        'runtime'        => 'Runtime %s min',
-        'genres2'        => 'Genres: %s',
+        'name'           => line_by_line('Title', '%s'),
+        'url'            => line_by_line('Link', '%s'),
+        'premiered'      => line_by_line('Started', '%s'),
+        'origin_country' => line_by_line('Country', '%s'),
+        'status'         => line_by_line('Status', '%s'),
+        'type'           => line_by_line('Classification', '%s'),
+        'summary'        => line_by_line('Summary', '%s'),
+        'runtime'        => line_by_line('Runtime', '%s min'),
+        'genres2'        => line_by_line('Genres', '%s'),
     ];
     foreach ($tvmaze_display[$tvmaze_type] as $key => $value) {
         if (isset($tvmaze_data[$key])) {
@@ -26,13 +26,14 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
         }
     }
 
-    return join('<br><br>', $tvmaze_display[$tvmaze_type]);
+    return join('', $tvmaze_display[$tvmaze_type]);
 }
 
 /**
  * @param $torrents
  *
  * @return string
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function tvmaze(&$torrents)
 {
@@ -48,10 +49,9 @@ function tvmaze(&$torrents)
             'name' => str_replace(['.', '_'], ' ', $torrents['name']),
         ];
     }
-    $memkey = 'tvmaze::' . strtolower($tvmaze['name']);
+    $memkey = 'tvmaze_' . strtolower($tvmaze['name']);
     $tvmaze_id = $cache->get($memkey);
     if ($tvmaze_id === false || is_null($tvmaze_id)) {
-        //get tvrage id
         $tvmaze_link = sprintf('http://api.tvmaze.com/singlesearch/shows?q=%s', urlencode($tvmaze['name']));
         $tvmaze_array = json_decode(file_get_contents($tvmaze_link), true);
         if ($tvmaze_array) {
@@ -65,10 +65,8 @@ function tvmaze(&$torrents)
     if (empty($torrents['newgenre']) || empty($torrents['poster'])) {
         $force_update = true;
     }
-    $memkey = 'tvrage::' . $tvmaze_id;
+    $memkey = 'tvrage_' . $tvmaze_id;
     if ($force_update || ($tvmaze_showinfo = $cache->get($memkey)) === false) {
-        //var_dump('Show from tvrage'); //debug
-        //get tvrage show info
         $tvmaze['name'] = preg_replace('/\d{4}.$/', '', $tvmaze['name']);
         $tvmaze_link = sprintf('http://api.tvmaze.com/shows/%d', $tvmaze_id);
         $tvmaze_array = json_decode(file_get_contents($tvmaze_link), true);
@@ -79,27 +77,33 @@ function tvmaze(&$torrents)
         if (empty($torrents['newgenre'])) {
             $row_update[] = 'newgenre = ' . sqlesc(ucwords($tvmaze_showinfo['genres2']));
         }
-        //==The torrent cache
         $cache->update_row('torrent_details_' . $torrents['id'], [
             'newgenre' => ucwords($tvmaze_array['genres2']),
         ], 0);
         if (empty($torrents['poster'])) {
             $row_update[] = 'poster = ' . sqlesc($tvmaze_array['image']['original']);
         }
-        //==The torrent cache
         $cache->update_row('torrent_details_' . $torrents['id'], [
             'poster' => $tvmaze_array['image']['original'],
         ], 0);
         if (!empty($row_update) && count($row_update)) {
             sql_query('UPDATE torrents SET ' . join(', ', $row_update) . ' WHERE id = ' . $torrents['id']) or sqlerr(__FILE__, __LINE__);
         }
-        $tvmaze_showinfo = tvmaze_format($tvmaze_array, 'show') . '<br>';
+        $tvmaze_showinfo = tvmaze_format($tvmaze_array, 'show');
         $cache->set($memkey, $tvmaze_showinfo, 0);
         $tvmaze_data .= $tvmaze_showinfo;
+        $torrents['poster'] = $tvmaze_array['image']['original'];
     } else {
-        //var_dump('Show from mem'); //debug
         $tvmaze_data .= $tvmaze_showinfo;
     }
 
     return $tvmaze_data;
+}
+
+function line_by_line($heading, $body) {
+    return "
+                    <div class='columns'>
+                        <div class='has-text-red column is-2 size_5 padding5'>$heading: </div>
+                        <span class='column padding5'>$body</span>
+                    </div>";
 }

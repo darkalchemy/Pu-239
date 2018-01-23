@@ -41,6 +41,7 @@ function tvrage_format($tvrage_data, $tvrage_type)
  * @param $torrents
  *
  * @return string
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function tvrage(&$torrents)
 {
@@ -60,7 +61,7 @@ function tvrage(&$torrents)
             'episode' => 0,
         ];
     }
-    $memkey = 'tvrage::' . strtolower($tvrage['name']);
+    $memkey = 'tvrage_' . strtolower($tvrage['name']);
     $tvrage_id = $cache->get($memkey);
     if ($tvrage_id === false || is_null($tvrage_id)) {
         //get tvrage id
@@ -77,7 +78,7 @@ function tvrage(&$torrents)
     if (empty($torrents['newgenre']) || empty($torrents['poster'])) {
         $force_update = true;
     }
-    $memkey = 'tvrage::' . $tvrage_id;
+    $memkey = 'tvrage_' . $tvrage_id;
     if ($force_update || ($tvrage_showinfo = $cache->get($memkey)) === false) {
         //var_dump('Show from tvrage'); //debug
         //get tvrage show info
@@ -120,7 +121,7 @@ function tvrage(&$torrents)
     }
     //check to see if its a show its an episode
     if ($tvrage['season'] > 0 && $tvrage['episode'] > 0) {
-        $memkey = 'tvrage::' . $tvrage_id . '::' . $tvrage['season'] . 'x' . $tvrage['episode'];
+        $memkey = 'tvrage_' . $tvrage_id . '::' . $tvrage['season'] . 'x' . $tvrage['episode'];
         $tvrage_epinfo = $cache->get($memkey);
         if ($tvrage_epinfo === false || is_null($tvrage_epinfo)) {
             //var_dump('Ep from tvrage'); //debug

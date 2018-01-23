@@ -36,24 +36,28 @@ function get_book_info($torrent)
         }
 
         $ebook_info = "
-        <tr>
-            <td class='rowhead'>Title</td><td>{$book->title}</td>
-        </tr>";
+                    <div class='columns'>
+                        <div class='has-text-red column is-2 size_5 padding5'>Title: </div>
+                        <span class='column padding5'>{$book->title}</span>
+                    </div>";
         $authors = [];
         foreach ($book->authors as $author) {
             $authors[] = $author;
         }
         $ebook_info .= "
-        <tr>
-            <td class='rowhead'>Author</td><td>" . implode(', ', $authors) . "</td>
-        </tr>";
+                    <div class='columns'>
+                        <div class='has-text-red column is-2 size_5 padding5'>Author: </div>
+                        <span class='column padding5'>" . implode(', ', $authors) . "</span>
+                    </div>";
         $ebook_info .= "
-        <tr>
-            <td class='rowhead'>Published</td><td>{$book->publishedDate}</td>
-        </tr>
-        <tr>
-            <td class='rowhead'>Description</td><td>{$book->description}</td>
-        </tr>";
+                    <div class='columns'>
+                        <div class='has-text-red column is-2 size_5 padding5'>Published: </div>
+                        <span class='column padding5'>{$book->publishedDate}</span>
+                    </div>
+                    <div class='columns'>
+                        <div class='has-text-red column is-2 size_5 padding5'>Description: </div>
+                        <span class='column padding5'>{$book->description}</span>
+                    </div>";
         $keys = [];
         foreach ($book->industryIdentifiers as $industryIdentifier) {
             foreach ($industryIdentifier as $key => $value) {
@@ -62,12 +66,18 @@ function get_book_info($torrent)
         }
         if (!empty($keys)) {
             $ebook_info .= "
-        <tr>
-            <td class='rowhead'>ISBN 13</td><td>{$keys[1]}</td>
-        </tr>
-        <tr>
-            <td class='rowhead'>ISBN 10</td><td>{$keys[3]}</td>
-        </tr>";
+                    <div class='columns'>
+                        <div class='has-text-red column is-2 size_5 padding5'>ISBN 10: </div>
+                        <span class='column padding5'>
+                            <a href='{$site_config['anonymizer_url']}https://www.amazon.com/gp/search/field-isbn={$keys[1]}' target='_blank'>{$keys[1]}</a>
+                        </span>
+                    </div>
+                    <div class='columns'>
+                        <div class='has-text-red column is-2 size_5 padding5'>ISBN 13: </div>
+                        <span class='column padding5'>
+                            <a href='{$site_config['anonymizer_url']}https://www.amazon.com/gp/search/field-isbn={$keys[3]}' target='_blank'>{$keys[3]}</a>
+                        </span>
+                    </div>";
         }
 
         $categories = [];
@@ -79,9 +89,10 @@ function get_book_info($torrent)
 
         if (!empty($categories)) {
             $ebook_info .= "
-        <tr>
-            <td class='rowhead'>Genre</td><td>" . implode(', ', $categories) . "</td>
-        </tr>";
+                    <div class='columns'>
+                        <div class='has-text-red column is-2 size_5 padding5'>Genre: </div>
+                        <span class='column padding5'>" . implode(', ', $categories) . "</span>
+                    </div>";
         }
         if (empty($torrent['poster']) && !empty($book->imageLinks->thumbnail)) {
             $poster = $book->imageLinks->thumbnail;
