@@ -88,7 +88,7 @@ function get_imdb_info($imdb_id)
                 if (!is_array($imdb_data[$foo])) {
                     $imdb_info .= "
                     <div class='columns'>
-                        <div class='has-text-red column w-10 size_5 padding5'>$boo: </div>
+                        <div class='has-text-red column is-2 size_5 padding5'>$boo: </div>
                         <div class='column padding5'>{$imdb_data[$foo]}</div>
                     </div>";
                 } elseif (is_array($imdb_data[$foo]) && in_array($foo, [
@@ -115,7 +115,7 @@ function get_imdb_info($imdb_id)
                 if (!empty($imdb_tmp)) {
                     $imdb_info .= "
                     <div class='columns'>
-                        <div class='has-text-red column w-10 size_5 padding5'>$boo: </div>
+                        <div class='has-text-red column is-2 size_5 padding5'>$boo: </div>
                         <span class='column padding5'>" . join(', ', $imdb_tmp) . "</span>
                     </div>";
                     unset($imdb_tmp);
@@ -124,7 +124,8 @@ function get_imdb_info($imdb_id)
         }
 
         $imdb_info = preg_replace('/&(?![A-Za-z0-9#]{1,7};)/', '&amp;', $imdb_info);
-        //$cache->add('imdb_' . $imdb_id, $imdb_info, 0);
+        $imdb_info = "<div class='padding10'>$imdb_info</div>";
+        $cache->add('imdb_' . $imdb_id, $imdb_info, 0);
     }
     return [
         $imdb_info,
