@@ -58,15 +58,15 @@ $possible_actions = [
 ];
 $action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
 if (!in_array($action, $possible_actions)) {
-    stderr('error', '<br><div class="alert alert-error">Error! Change a few things up and try submitting again.</div>');
+    setSessionVar('is-warning', "[h2]Error! Change a few things up and try submitting again.[/h2]");
 }
 if (isset($_GET['edited'])) {
-    $HTMLOUT .= "<br><div class='alert alert-success'>{$lang['usercp_updated']}!</div><br>";
+    setSessionVar('is-success', "[h2]{$lang['usercp_updated']}![/h2]");
     if (isset($_GET['mailsent'])) {
-        $HTMLOUT .= "<h2>{$lang['usercp_mail_sent']}!</h2>\n";
+        setSessionVar('is-success', "[h2]{$lang['usercp_mail_sent']}![/h2]");
     }
 } elseif (isset($_GET['emailch'])) {
-    $HTMLOUT .= "<h1>{$lang['usercp_emailch']}!</h1>\n";
+    setSessionVar('is-success', "[h2]{$lang['usercp_emailch']}![/h2]");
 }
 
 $HTMLOUT .= "
@@ -436,7 +436,7 @@ if ($action == 'avatar') {
     $HTMLOUT .= tr($lang['usercp_email'], "
                                         <input type='text' name='email' class='w-100' value='" . htmlsafechars($CURUSER['email']) . "' />
                                         <p class='margin20'>{$lang['usercp_email_pass']}</p>
-                                        <input type='password' name='chmailpass' class='keyboardInput w-100' onkeypress='showkwmessage();return false;' />", 1);
+                                        <input type='password' name='chmailpass' class='w-100' />", 1);
     $HTMLOUT .= "
                                 <tr>
                                     <td colspan='2'>{$lang['usercp_note']}</td>
@@ -446,9 +446,9 @@ if ($action == 'avatar') {
                                         <input type="radio" name="show_email" ' . ($CURUSER['show_email'] == 'no' ? ' checked' : '') . ' value="no" /> No
                                         <p>Do you wish to have your email address visible on the forums?</p>', 1);
     $HTMLOUT .= tr($lang['usercp_chpass'], "
-                                        <input type='password' name='chpassword' class='w-100' class='keyboardInput' onkeypress='showkwmessage();return false;' />", 1);
+                                        <input type='password' name='chpassword' class='w-100' />", 1);
     $HTMLOUT .= tr($lang['usercp_pass_again'], "
-                                        <input type='password' name='passagain' class='w-100' class='keyboardInput' onkeypress='showkwmessage();return false;' />", 1);
+                                        <input type='password' name='passagain' class='w-100' />", 1);
     $secretqs = "<option value='0'>{$lang['usercp_none_select']}</option>";
     $questions = [
         [

@@ -3,16 +3,17 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 dbconn();
-global $CURUSER, $site_config;
+global $CURUSER, $site_config, $sluent;
 if (!$CURUSER) {
     get_template();
 }
-$lang = array_merge(load_language('global'), load_language('recover'));
+$lang = array_merge(load_language('global'), load_language('recover'), load_language('confirm'));
 $stdfoot = [
     'js' => [
         get_file_name('captcha1_js'),
     ],
 ];
+$HTMLOUT = '';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!mkglobal('email' . ($site_config['captcha_on'] ? ':captchaSelection' : '') . '')) {
         stderr('Oops', 'Missing form data - You must fill all fields');
@@ -27,32 +28,70 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!validemail($email)) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_invalidemail']}");
     }
-    $res = sql_query('SELECT * FROM users WHERE email = ' . sqlesc($email) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-    $arr = mysqli_fetch_assoc($res) or stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_notfound']}");
-    if (!mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_dberror']}");
+    $user = $fluent->from('users')
+        ->where('email = ?', $email)
+        ->fetch();
+
+    if (!$user || empty($user)) {
+        stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_notfound']}");
     }
-    $hash = $arr['passhash'];
-    $body = sprintf($lang['email_request'], $email, $_SERVER['REMOTE_ADDR'], $site_config['baseurl'], $arr['id'], $hash) . $site_config['site_name'];
-    @mail($arr['email'], "{$site_config['site_name']} {$lang['email_subjreset']}", $body, "From: {$site_config['site_email']}") or stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_nomail']}");
+    $psecret = '';
+    $secret = make_password(30);
+    $token = make_passhash($secret);
+    $psecret = "$secret";
+    $alt_id = make_password(16);
+    $values = [
+        'email' => $email,
+        'token' => $token,
+        'id'    => $alt_id,
+    ];
+    $fluent->insertInto('tokens')
+        ->values($values)
+        ->execute();
+
+    $body = sprintf($lang['email_request'], $email, $_SERVER['REMOTE_ADDR'], $site_config['baseurl'], $alt_id, $psecret) . $site_config['site_name'];
+    @mail($user['email'], "{$site_config['site_name']} {$lang['email_subjreset']}", $body, "From: {$site_config['site_email']}") or stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_nomail']}");
     stderr($lang['stderr_successhead'], $lang['stderr_confmailsent']);
     unsetSessionVar('simpleCaptchaAnswer');
     unsetSessionVar('simpleCaptchaTimestamp');
 } elseif ($_GET) {
-    $id = (int)$_GET['id'];
-    if (!$id) {
+    $id = isset($_GET['id']) ? $_GET['id'] : 0;
+    $token = isset($_GET['token']) ? $_GET['token'] : '';
+    if (empty($id)) {
+        stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_id']}");
+    }
+    if (!preg_match("/^(?:[\d\w]){60}$/", $token)) {
+        stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_key']}");
+    }
+
+    $row = $fluent->from('tokens')
+        ->select('users.username')
+        ->select('users.email')
+        ->select('users.id AS user_id')
+        ->innerJoin('users ON users.email = tokens.email')
+        ->where('tokens.id = ?', $id)
+        ->where('created_at > DATE_SUB(NOW(), INTERVAL 120 MINUTE)')
+        ->fetch();
+
+    if (!password_verify($token, $row['token'])) {
+        stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_id']}");
         die();
     }
-    $res = sql_query('SELECT username, email, passhash FROM users WHERE id = ' . sqlesc($id));
-    $arr = mysqli_fetch_assoc($res);
-    $email = $arr['email'];
-    $newpassword = make_password();
+
+    $email = $row['email'];
+    $newpassword = make_password(16);
     $newpasshash = make_passhash($newpassword);
-    sql_query('UPDATE users SET passhash = ' . sqlesc($newpasshash) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    if (!mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    $set = [
+        'passhash' => $newpasshash
+    ];
+    $update = $fluent->update('users')
+        ->set($set)
+        ->where('id = ?', $row['user_id'])
+        ->execute();
+    if (!$update || empty($update)) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_noupdate']}");
     }
-    $body = sprintf($lang['email_newpass'], $arr['username'], $newpassword, $site_config['baseurl']) . $site_config['site_name'];
+    $body = sprintf($lang['email_newpass'], $row['username'], $newpassword, $site_config['baseurl']) . $site_config['site_name'];
     @mail($email, "{$site_config['site_name']} {$lang['email_subject']}", $body, "From: {$site_config['site_email']}") or stderr($lang['stderr_errorhead'], $lang['stderr_nomail']);
     stderr($lang['stderr_successhead'], $lang['stderr_mailed']);
     unsetSessionVar('simpleCaptchaAnswer');
@@ -69,12 +108,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </td>
                 </tr>
                 <tr class='no_hover'>
-                    <td colspan='2' id='captcha_show'></td>
-                </tr>" : '') . "
-                <tr class='no_hover'>
                     <td class='rowhead'>{$lang['recover_regdemail']}</td>
                     <td><input type='text' class='w-100' name='email' /></td>
                 </tr>
+                <tr class='no_hover'>
+                    <td colspan='2' id='captcha_show'></td>
+                </tr>" : '') . "
                 <tr class='no_hover'>
                     <td colspan='2'>
                         <div class='has-text-centered'>

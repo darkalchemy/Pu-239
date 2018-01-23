@@ -22,7 +22,7 @@ $row = $fluent->from('tokens')
     ->select('users.id AS user_id')
     ->innerJoin('users ON users.email = tokens.email')
     ->where('tokens.id = ?', $id)
-    ->where('created_at > DATE_SUB(NOW(), INTERVAL 60 MINUTE)')
+    ->where('created_at > DATE_SUB(NOW(), INTERVAL 120 MINUTE)')
     ->fetch();
 
 if (!password_verify($token, $row['token'])) {

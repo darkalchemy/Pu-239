@@ -49,7 +49,7 @@ $required = [
     'submitme'
 ];
 
-foreach($required as $field) {
+foreach ($required as $field) {
     if (empty($$field)) {
         setSessionVar('is-warning', "[h2]{$lang['takesignup_form_data']}[/h2][p]All fields must be completed[/p]");
         header("Location: {$site_config['baseurl']}/signup.php");
@@ -122,7 +122,7 @@ if (empty($day) || empty($month) || empty($year)) {
     die();
 }
 if (checkdate($month, $day, $year)) {
-    $birthday = $year . '-' . $month . '-' . str_pad( $day,2,'0',STR_PAD_LEFT);
+    $birthday = $year . '-' . $month . '-' . str_pad($day, 2, '0', STR_PAD_LEFT);
 } else {
     setSessionVar('is-warning', "[h2]You have to fill in your birthday correctly.[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");

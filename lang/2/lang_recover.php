@@ -26,7 +26,7 @@ If you did not do this ignore this email. Please do not reply.
 
 Should you wish to confirm this request, please follow this link:
 
-%s/recover.php?id=%u&secret=%s
+%s/recover.php?id=%s&token=%s
 
 After you do this, your password will be reset and emailed back
 to you.

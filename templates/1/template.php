@@ -290,7 +290,7 @@ function stdfoot($stdfoot = false)
                 child.classList.add('icon-up-open');
                 child.classList.remove('icon-down-open');
             } else {
-                if (el.children[0].children[0].className === 'fa icon-down-open') {
+                if (el && document.getElementById(el.children[0]) && document.getElementById(el.children[0].children[0]) && el.children[0].children[0].className === 'fa icon-down-open') {
                     el.classList.add('no-margin');
                     el.classList.add('no-padding');
                     var nextSibling = x[i].nextSibling;
