@@ -283,4 +283,34 @@ $sql_updates = [
         'date'  => '21 Jan, 2018',
         'query' => "DELETE FROM `staffpanel` WHERE `page_name` = 'View Mysql Queries'",
     ],
+    [
+        'id'    => 48,
+        'info'  => 'Remove duplicate category',
+        'date'  => '23 Jan, 2018',
+        'query' => "DELETE FROM `categories` WHERE `id` = 14 AND `name` = 'Music'",
+    ],
+    [
+        'id'    => 49,
+        'info'  => 'Rename category',
+        'date'  => '23 Jan, 2018',
+        'query' => "UPDATE `categories` SET `name` = 'Games/Wii' WHERE `name` = 'GAMES'",
+    ],
+    [
+        'id'    => 50,
+        'info'  => 'Rename category',
+        'date'  => '23 Jan, 2018',
+        'query' => "UPDATE `categories` SET `name` = 'Movies/DVD' WHERE `name` = 'Movies'",
+    ],
+    [
+        'id'    => 51,
+        'info'  => 'Rename category',
+        'date'  => '23 Jan, 2018',
+        'query' => "UPDATE `categories` SET `name` = 'TV/Episodes' WHERE `name` = 'Episodes'",
+    ],
+    [
+        'id'    => 52,
+        'info'  => 'Rename category',
+        'date'  => '23 Jan, 2018',
+        'query' => "UPDATE `categories` SET `name` = 'Misc' WHERE `id` = 13 AND `name` = 'Apps'",
+    ],
 ];
