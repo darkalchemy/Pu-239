@@ -19,6 +19,8 @@ require_once VENDOR_DIR . 'autoload.php';
 $dotenv = new Dotenv\Dotenv(ROOT_DIR);
 $dotenv->load();
 
+use Blocktrail\CryptoJSAES\CryptoJSAES;
+
 require_once INCL_DIR . 'database.php';
 require_once INCL_DIR . 'files.php';
 
@@ -2205,6 +2207,27 @@ function get_anonymous_name()
     $anon = $array[$index];
 
     return $anon;
+}
+
+/**
+ * @param $url
+ *
+ * @return string
+ */
+function image_proxy($url)
+{
+
+    global $site_config;
+
+
+    if (empty($url) || preg_match('#' . $site_config['domain'] . '#', $url)) {
+        return $url;
+    }
+    if (!empty($site_config['image_proxy'])) {
+        $encrypted = CryptoJSAES::encrypt($url, $site_config['image_proxy_key']);
+        return $site_config['image_proxy'] . base64_encode($encrypted);
+    }
+    return $url;
 }
 
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {

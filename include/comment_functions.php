@@ -64,7 +64,7 @@ function commenttable($rows, $variant = 'torrent')
                 } else {
                     $title = htmlsafechars($title);
                 }
-                $avatar1 = ($row['anonymous'] == 'yes' ? "<img src='{$site_config['pic_baseurl']}anonymous_1.jpg' alt='Avatar' title='Avatar' class='avatar' />" : "<img src='" . htmlsafechars($row['avatar']) . "' alt='Avatar' title='Avatar' class='avatar' />");
+                $avatar1 = ($row['anonymous'] == 'yes' ? "<img src='{$site_config['pic_baseurl']}anonymous_1.jpg' alt='Avatar' title='Avatar' class='avatar' />" : "<img src='" . htmlsafechars(image_proxy($row['avatar'])) . "' alt='Avatar' title='Avatar' class='avatar' />");
                 if (!$avatar1) {
                     $avatar1 = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
                 }
@@ -102,7 +102,7 @@ function commenttable($rows, $variant = 'torrent')
             <a id='comment_{$row['id']}'></a>
             <div class='is-flex'>
                 <div class='w-20 padding20 round10 bg-02'>
-                    <img src='{$avatar}' alt='Avatar' class='avatar' /><br>" . get_reputation($row, 'comments') . "
+                    <img src='" . image_proxy($avatar) . "' alt='Avatar' class='avatar' /><br>" . get_reputation($row, 'comments') . "
                 </div>
                 <div class='left20 padding20 w-100 bg-02 round10'>
                     $text

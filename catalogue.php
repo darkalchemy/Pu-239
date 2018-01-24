@@ -117,7 +117,7 @@ if (count($rows) > 0) {
          <td nowrap='nowrap'>
             <table width='160'>
                 <tr><td class='colhead'>{$lang['catol_upper']} : <a href='userdetails.php?id=" . (int)$row['owner'] . "'>" . ($row['user'] ? htmlsafechars($row['user']) : "{$lang['catol_unknown']}[" . (int)$row['owner'] . ']') . "</a></td></tr>
-                <tr><td>" . ($row['poster'] ? '<a href="' . htmlsafechars($row['poster']) . '"><img src="' . htmlsafechars($row['poster']) . "\" border=\"0\" width=\"150\" height=\"195\" alt=\"{$lang['catol_no_poster']}\" title=\"{$lang['catol_no_poster']}\" /></a>" : "<img src='{$site_config['pic_baseurl']}noposter.png' width='150' alt='{$lang['catol_no_poster']}' title='{$lang['catol_no_poster']}' />") . "</td></tr>
+                <tr><td>" . ($row['poster'] ? '<a href="' . htmlsafechars($row['poster']) . '"><img src="' . htmlsafechars(image_proxy($row['poster'])) . "\" border=\"0\" width=\"150\" height=\"195\" alt=\"{$lang['catol_no_poster']}\" title=\"{$lang['catol_no_poster']}\" /></a>" : "<img src='{$site_config['pic_baseurl']}noposter.png' width='150' alt='{$lang['catol_no_poster']}' title='{$lang['catol_no_poster']}' />") . "</td></tr>
             </table>
 
         </td>

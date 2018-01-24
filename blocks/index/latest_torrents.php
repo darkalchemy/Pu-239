@@ -84,7 +84,7 @@ foreach ($top5torrents as $top5torrentarr) {
     if (strlen($torrname) > 50) {
         $torrname = substr($torrname, 0, 50) . '...';
     }
-    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . htmlsafechars($poster) . "' class='tooltip-poster' />";
+    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . htmlsafechars(image_proxy($poster)) . "' class='tooltip-poster' />";
 
     if ($anonymous == 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
         $uploader = "<span>" . get_anonymous_name() . "</span>";
@@ -159,7 +159,7 @@ foreach ($last5torrents as $last5torrent) {
     if (strlen($torrname) > 50) {
         $torrname = substr($torrname, 0, 50) . '...';
     }
-    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . htmlsafechars($poster) . "' class='tooltip-poster' />";
+    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . htmlsafechars(image_proxy($poster)) . "' class='tooltip-poster' />";
 
     if ($anonymous == 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
         $uploader = "<span>" . get_anonymous_name() . "</span>";

@@ -52,7 +52,7 @@ if ($scroll_torrents) {
                     <div class='slide'>
                         <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
                             <div class='dt-tooltipper-small' data-tooltip-content='#scroll_id_{$id}_tooltip'>
-                            <img src='" . htmlsafechars($poster) . "' alt='{$name}' width='200' height='300' />
+                            <img src='" . htmlsafechars(image_proxy($poster)) . "' alt='{$name}' width='200' height='300' />
                                 <div class='tooltip_templates'>
                                     <span id='scroll_id_{$id}_tooltip'>
                                         <span>

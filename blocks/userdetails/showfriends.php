@@ -15,7 +15,7 @@ if (!empty($users_friends) && count($users_friends) > 0) {
     $user_friends = "<table width='100%' class='main' >\n" . "<tr><td class='colhead' width='20'>{$lang['userdetails_avatar']}</td><td class='colhead'>{$lang['userdetails_username']}" . ($CURUSER['class'] >= UC_STAFF ? $lang['userdetails_fip'] : '') . "</td><td class='colhead'>{$lang['userdetails_uploaded']}</td>" . ($site_config['ratio_free'] ? '' : "<td class='colhead'>{$lang['userdetails_downloaded']}</td>") . "<td class='colhead'>{$lang['userdetails_ratio']}</td><td class='colhead'>{$lang['userdetails_status']}</td></tr>\n";
     if ($users_friends) {
         foreach ($users_friends as $a) {
-            $avatar = (($user['opt1'] & user_options::AVATARS) ? ($a['avatar'] == '' ? '<img src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif"  width="40" alt="default avatar" />' : '<img src="' . htmlsafechars($a['avatar']) . '" alt="avatar"  width="40" />') : '');
+            $avatar = (($user['opt1'] & user_options::AVATARS) ? ($a['avatar'] == '' ? '<img src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif"  width="40" alt="default avatar" />' : '<img src="' . htmlsafechars(image_proxy($a['avatar'])) . '" alt="avatar"  width="40" />') : '');
             $status = "<img style='vertical-align: middle;' src='{$site_config['pic_baseurl']}" . ($a['last_access'] > $dt && $a['perms'] < bt_options::PERMS_STEALTH ? 'online.png' : 'offline.png') . "' alt='' />";
             $user_stuff = $a;
             $user_stuff['id'] = (int)$a['id'];

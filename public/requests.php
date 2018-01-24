@@ -163,7 +163,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
   </tr>
   <tr>
   <td>image:</td>
-  <td><img src="' . strip_tags($arr['image']) . '" alt="image" /></td>
+  <td><img src="' . strip_tags(image_proxy($arr['image'])) . '" alt="image" /></td>
   </tr>
   <tr>
   <td>description:</td>

@@ -55,7 +55,7 @@ function usercommenttable($rows)
         $htmlout .= "
                     <tr>
                         <td class='has-text-centered' width='150'>
-                            <img src='{$avatar}' alt='Avatar' class='avatar' />
+                            <img src='" . image_proxy($avatar) . "' alt='Avatar' class='avatar' />
                         </td>
                         <td class='text'>{$text}</td>
                     </tr>";

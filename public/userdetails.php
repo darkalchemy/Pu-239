@@ -150,7 +150,7 @@ if (($user['opt1'] & user_options::ANONYMOUS) && ($CURUSER['class'] < UC_STAFF &
         $HTMLOUT .= "
             <tr>
                 <td colspan='3' class='has-text-centered'>
-                    <img src='" . htmlsafechars($user['avatar']) . "'>
+                    <img src='" . htmlsafechars(image_proxy($user['avatar'])) . "'>
                 </td>
             </tr>";
     }

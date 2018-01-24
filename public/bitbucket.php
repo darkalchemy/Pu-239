@@ -65,7 +65,7 @@ if (!isset($_FILES['file'])) {
     if (isset($_GET['updated']) && $_GET['updated'] == 'avatar') {
         $HTMLOUT .= "
         <h3>{$lang['bitbucket_updated']}
-            <img src='" . htmlsafechars($CURUSER['avatar']) . "' alt='' />
+            <img src='" . htmlsafechars(image_proxy($CURUSER['avatar'])) . "' alt='' />
         </h3>";
     }
     $HTMLOUT .= "

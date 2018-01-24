@@ -64,13 +64,13 @@ function get_imdb_info($imdb_id)
                                 <a href='{$site_config['anonymizer_url']}http://www.imdb.com/name/nm{$pp['imdb']}' target='_blank'>
                                     <span class='dt-tooltipper-small' data-tooltip-content='#cast_{$pp['imdb']}_tooltip'>
                                         <span>
-                                            <img src='" . htmlspecialchars($pp['thumb']) . "' alt='' class='round5'>
+                                            <img src='" . htmlspecialchars(image_proxy($pp['thumb'])) . "' alt='' class='round5'>
                                         </span>
                                         <span class='tooltip_templates'>
                                             <span id='cast_{$pp['imdb']}_tooltip'>
                                                 <span class='is-flex'>
                                                     <span class='has-text-centered'>
-                                                        <img src='" . htmlspecialchars($pp['photo']) . "' class='tooltip-poster' />
+                                                        <img src='" . htmlspecialchars(image_proxy($pp['photo'])) . "' class='tooltip-poster' />
                                                         <p class='top10'>{$pp['name']}</p>
                                                         <p>{$pp['role']}</p>
                                                     </span>

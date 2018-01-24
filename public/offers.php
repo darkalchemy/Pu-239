@@ -180,7 +180,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>image:</td>
-    <td><img src="' . strip_tags($arr['image']) . '" alt="image" /></td>
+    <td><img src="' . strip_tags(image_proxy($arr['image'])) . '" alt="image" /></td>
     </tr>
     <tr>
     <td>description:</td>
@@ -280,7 +280,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>image:</td>
-    <td><img src="' . htmlsafechars($image, ENT_QUOTES) . '" alt="image" /></td>
+    <td><img src="' . htmlsafechars(image_proxy($image), ENT_QUOTES) . '" alt="image" /></td>
     </tr>
     <tr>
     <td >description:</td>
@@ -418,7 +418,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>image:</td>
-    <td><img src="' . htmlsafechars($image, ENT_QUOTES) . '" alt="image" /></td>
+    <td><img src="' . htmlsafechars(image_proxy($image), ENT_QUOTES) . '" alt="image" /></td>
     </tr>
     <tr>
     <td>description:</td>

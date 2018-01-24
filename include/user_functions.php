@@ -476,7 +476,7 @@ function format_username($user_id, $icons = true, $tooltipper = true)
         return 'unknown[' . $users_data['id'] . ']';
     }
 
-    $avatar = !empty($users_data['avatar']) ? "<img src='{$users_data['avatar']}' class='avatar' />" : "<img src='{$site_config['pic_baseurl']}forumicons/default_avatar.gif' class='avatar' />";
+    $avatar = !empty($users_data['avatar']) ? "<img src='" . image_proxy($users_data['avatar']) . "' class='avatar' />" : "<img src='{$site_config['pic_baseurl']}forumicons/default_avatar.gif' class='avatar' />";
     $tip = $tooltip = '';
     if ($tooltipper) {
         $tip = "<div class='tooltip_templates'><div id='userid_{$users_data['id']}_tooltip' class='is-flex tooltip'><div class='right20'>{$avatar}</div><div style='min-width: 150px; align: left;'><span class='" . get_user_class_name($users_data['class'], true) . "'>" . htmlsafechars($users_data['username']) . "</span></div></div></div>";

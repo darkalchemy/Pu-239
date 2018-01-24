@@ -322,7 +322,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
             <div class='img-polaroid round10 right10 column is-2'>";
 
     if (!empty($torrents['poster'])) {
-        $HTMLOUT .= "<img src='" . htmlsafechars($torrents['poster']) . "' class='round10' alt='Poster' />";
+        $HTMLOUT .= "<img src='" . htmlsafechars(image_proxy($torrents['poster'])) . "' class='round10' alt='Poster' />";
     }
     if (empty($torrents['poster'])) {
         $HTMLOUT .= "<img src='{$site_config['pic_baseurl']}noposter.png' class='round10' alt='Poster' />";

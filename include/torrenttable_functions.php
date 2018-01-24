@@ -188,7 +188,7 @@ function torrenttable($res, $variant = 'index')
         $htmlout .= "</td>";
         $dispname = htmlsafechars($row['name']);
         $smalldescr = (!empty($row['description']) ? '<i>[' . htmlsafechars($row['description']) . ']</i>' : '');
-        $poster = empty($row['poster']) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' alt='Poster' />" : "<img src='" . htmlsafechars($row['poster']) . "' class='tooltip-poster' alt='Poster' />";
+        $poster = empty($row['poster']) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' alt='Poster' />" : "<img src='" . htmlsafechars(image_proxy($row['poster'])) . "' class='tooltip-poster' alt='Poster' />";
         //$rating = empty($row["rating"]) ? "No votes yet":"".ratingpic($row["rating"])."";
         if (!empty($row['descr'])) {
             $descr = str_replace('"', '&quot;', readMore($row['descr'], 500, $site_config['baseurl'] . '/details.php?id=' . (int)$row['id'] . '&amp;hit=1'));

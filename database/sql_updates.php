@@ -313,4 +313,10 @@ $sql_updates = [
         'date'  => '23 Jan, 2018',
         'query' => "UPDATE `categories` SET `name` = 'Misc' WHERE `id` = 13 AND `name` = 'Apps'",
     ],
+    [
+        'id'    => 53,
+        'info'  => 'Add site config setting for image proxy',
+        'date'  => '24 Jan, 2018',
+        'query' => "INSERT INTO `site_config` (`name`, `value`, `description`) VALUES ('image_proxy', '', 'An image proxy allows you to hotlink images through a proxy, keeping your site url out of their logs.')",
+    ],
 ];

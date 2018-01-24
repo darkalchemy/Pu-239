@@ -286,7 +286,7 @@ elseif ($mode == 'details') {
         $HTMLOUT .= begin_main_frame();
         $HTMLOUT .= "<table width='600' style='border-collapse:collapse;'>
 <tr><td width='150' rowspan='10'>
-<img src='" . htmlsafechars($arr['poster']) . "' width='150' height='195' alt='" . htmlsafechars($arr['name']) . "' />
+<img src='" . htmlsafechars(image_proxy($arr['poster'])) . "' width='150' height='195' alt='" . htmlsafechars($arr['name']) . "' />
 <br><br>
 <form action='downloadsub.php' method='post'>
 <input type='hidden' name='sid' value='" . (int)$arr['id'] . "' />

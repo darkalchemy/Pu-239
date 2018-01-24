@@ -6,7 +6,8 @@
     "envms/fluentpdo": "dev-master",
     "sebastian/version": "^2.0",
     "scriptotek/google-books": "^0.2.3",
-    "imdbphp/imdbphp": "^5.2"
+    "imdbphp/imdbphp": "^5.2",
+    "blocktrail/cryptojs-aes-php": "^0.1.0"
   },
   "autoload": {
     "psr-4": {
