@@ -10543,7 +10543,8 @@ textarea {
   width: 25%;
   flex: none
 }
-.w-50 {
+.w-50,
+.ww-50 {
   width: 50%;
   flex: none
 }
@@ -10611,7 +10612,8 @@ p + p {
 @media (max-width:767px) {
   p {
     text-align: justify;
-    text-justify: kashida
+    text-justify: kashida;
+    -ms-text-justify: kashida
   }
   #base_content {
     padding: 0;

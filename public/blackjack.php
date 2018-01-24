@@ -112,7 +112,7 @@ $player_showcards = $player_showcards_end = '';
 $sql = "SELECT cards FROM blackjack WHERE game_id = " . sqlesc($blackjack['gameid']) . " AND userid != " . sqlesc($CURUSER['id']);
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $list = mysqli_fetch_assoc($res);
-if (count($list) > 0) {
+if (!empty($list) && count($list) > 0) {
     $player_cards = explode(' ', $list['cards']);
     foreach ($player_cards as $card) {
         $arr = getCardData($card);
@@ -129,7 +129,7 @@ if (count($list) > 0) {
     $sql = "SELECT dealer_cards FROM blackjack WHERE game_id = " . sqlesc($blackjack['gameid']) . " AND userid = " . sqlesc($CURUSER['id']);
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $list = mysqli_fetch_assoc($res);
-    if (count($list) > 0) {
+    if (!empty($list) && count($list) > 0) {
         $dealer_cards = explode(' ', $list['dealer_cards']);
         foreach ($dealer_cards as $card) {
             $arr = getCardData($card);
@@ -142,7 +142,7 @@ if (count($list) > 0) {
         $player_showcards_end = $player_showcards;
     }
     $dealer = false;
-    $user_warning = 'You are the player, you can double down with an opening hand worth 11, 10 or 9.';
+    $user_warning = 'You are the player, you can double down with an opening hand worth 9, 10, 11.';
 }
 
 $HTMLOUT .= "
@@ -301,12 +301,12 @@ if ($game) {
                 <h3>{$lang['bj_welcome']}, " . format_username($CURUSER['id']) . "</h3>
                     <table class='table table-bordered table-striped top20 bottom20'>
                         <tr class='no_hover'>
-                            <td class='card-background w-50'>
+                            <td class='card-background ww-50'>
                                 <div class='has-text-centered'>
                                     " . trim($player_showcards) . "
                                 </div>
                             </td>
-                            <td class='card-background w-50'>
+                            <td class='card-background ww-50'>
                                 <div class='has-text-centered'>
                                     " . trim($showcards) . "
                                 </div>
@@ -399,12 +399,12 @@ if ($game) {
                 <h3>{$lang['bj_game_over']}</h3>
                 <table class='table table-bordered table-striped top20 bottom20'>
                     <tr class='no_hover'>
-                        <td class='card-background w-50'>
+                        <td class='card-background ww-50'>
                             <div class='has-text-centered'>
                                 {$player_showcards_end}
                             </div>
                         </td>
-                        <td class='card-background w-50'>
+                        <td class='card-background ww-50'>
                             <div class='has-text-centered'>
                                 {$showcards}
                             </div>
@@ -632,12 +632,12 @@ if ($game) {
                 <h3>{$lang['bj_welcome']}, " . format_username($CURUSER['id']) . "</h3>
                 <table class='table table-bordered table-striped top20 bottom20'>
                     <tr class='no_hover'>
-                        <td class='card-background w-50'>
+                        <td class='card-background ww-50'>
                             <div class='has-text-centered'>
                                 {$player_showcards}
                             </div>
                         </td>
-                        <td class='card-background w-50'>
+                        <td class='card-background ww-50'>
                             <div class='has-text-centered'>
                                 {$showcards}
                             </div>
@@ -710,12 +710,12 @@ if ($game) {
                 <h3>{$lang['bj_game_over']}</h3>
                 <table class='table table-bordered table-striped top20 bottom20'>
                     <tr class='no_hover'>
-                        <td class='card-background w-50'>
+                        <td class='card-background ww-50'>
                             <div class='has-text-centered'>
                                 {$player_showcards_end}
                             </div>
                         </td>
-                        <td class='card-background w-50'>
+                        <td class='card-background ww-50'>
                             <div class='has-text-centered'>
                                 {$showcards}
                             </div>
@@ -891,7 +891,7 @@ if ($game) {
                 $opponent
                 <table class='table table-bordered table-striped top20 bottom20'>
                     <tr class='no_hover'>
-                        <td class='card-background w-50'>
+                        <td class='card-background ww-50'>
                             <div class='has-text-centered'>
                                 <div class='card ace_spades'></div>
                                 <div class='card jack_spades'></div>
@@ -900,10 +900,12 @@ if ($game) {
                     </tr>
                     $doubled
                     <tr class='no_hover'>
-                        <td>
-                            <p class='has-text-centered'>{$lang['bj_you_most_collect_21']}</p>
-                            <p class='has-text-centered'>{$lang['bj_note']} {$game_str}</p>
-                            <p class='has-text-centered'>You can lose 1.5 times your bet if you lose to a Natural Blackjack and a winning Natural Blackjack pays out at 1.5 times the bet.<br>The first player is considered the player and the second is considered the dealer. Only the player can double down on 9, 10, 11 and receive 1 card only. The dealer can see the upcards of the player but must draw a card for anything less than 17. No one wins a tie.</p>
+                        <td class='has-text-centered'>
+                            <p>{$lang['bj_you_most_collect_21']}</p>
+                            <p>{$lang['bj_note']} {$game_str}</p>
+                            <p>You can lose 1.5 times your bet if you lose to a Natural Blackjack and a winning Natural Blackjack pays out at 1.5 times the bet.</p>
+                            <p>The first player is considered the player and the second is considered the dealer. Only the player can double down on 9, 10, 11 and receive 1 card only.</p>
+                            <p>The dealer can see the upcards of the player but must draw a card for anything less than 17. No one wins a tie.</p>
                         </td>
                     </tr>
                     <tr class='no_hover'>
@@ -994,7 +996,7 @@ if ($game) {
         $bjgames[] = $row;
     }
 
-    if (count($bjgames) > 0) {
+    if (!empty($bjgames) && count($bjgames) > 0) {
         $HTMLOUT .= "
                 <table class='table table-bordered table-striped top20 bottom20'>
                     <thead>

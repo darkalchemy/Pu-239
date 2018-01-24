@@ -480,6 +480,7 @@ textarea {
     -moz-border-radius: .625em;
     border-radius: .625em;
 }
+
 .img-polaroid img {
     width: 100%;
     height: auto;
@@ -928,7 +929,7 @@ textarea {
     flex: none;
 }
 
-.w-50 {
+.ww-50, .w-50 {
     width: 50%;
     flex: none;
 }
@@ -1008,6 +1009,7 @@ p + p {
     p {
         text-align: justify;
         text-justify: kashida;
+        -ms-text-justify: kashida;
     }
 
     #base_content {
@@ -1015,10 +1017,6 @@ p + p {
         -webkit-border-radius: 0;
         -moz-border-radius: 0;
         border-radius: 0;
-    }
-
-    #base_globelmessage {
-        /*margin-top: 50px;*/
     }
 
     #logo,
@@ -1082,5 +1080,4 @@ p + p {
         display: -ms-flexbox;
         display: flex;
     }
-
 }
