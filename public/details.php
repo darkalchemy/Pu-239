@@ -622,7 +622,7 @@ $HTMLOUT .= tr('Report Torrent', "<form action='report.php?type=Torrent&amp;id=$
 
 if ($torrent_cache['rep']) {
     $torrents = array_merge($torrents, $torrent_cache['rep']);
-    $member_reputation = get_reputation($torrents, 'torrents', $torrents['anonymous'], $id);
+    $member_reputation = get_reputation(get_user_data($torrents['owner']), 'torrents', $torrents['anonymous'], $id);
     $HTMLOUT .= '
             <tr>
                 <td class="rowhead">Reputation</td>
