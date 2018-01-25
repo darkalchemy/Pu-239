@@ -41,6 +41,7 @@ function tvrage_format($tvrage_data, $tvrage_type)
  * @param $torrents
  *
  * @return string
+ *
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function tvrage(&$torrents)

@@ -10097,6 +10097,9 @@ h1 {
 .bg-06 {
   background: linear-gradient(to bottom,#7d7e7d 0,#0e0e0e 100%)
 }
+.bg-07 {
+  background-color: rgba(75,75,125,.65)
+}
 .bordered {
   border-top: 2px groove red;
   border-bottom: 2px groove red;
@@ -10603,6 +10606,18 @@ p + p {
 .cast > img {
   width: 20px;
   height: auto
+}
+#banner {
+  position: relative;
+  width: 100%;
+  height: 100%
+}
+#overlay {
+  min-height: 50px;
+  position: absolute;
+  width: 100%;
+  top: -3px;
+  left: 0
 }
 @media (max-width:1200px) {
   .w-20 {

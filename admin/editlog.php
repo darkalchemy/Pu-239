@@ -24,7 +24,7 @@ foreach ($directories as $path) {
     $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
     foreach ($objects as $name => $object) {
         preg_match('/(\.idea|\.git|vendor|node_modules)/', $parent, $match);
-        if(empty($match)) {
+        if (empty($match)) {
             $ext = pathinfo($name, PATHINFO_EXTENSION);
             if (in_array($ext, $included_extentions)) {
                 $fetch_set[$i]['modify'] = filemtime($name);

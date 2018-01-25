@@ -63,7 +63,7 @@ function stdhead($title = '', $stdhead = null)
             document.body.className = theme;
         }
     </script>
-    <div class='container'>
+    <div id='container' class='container'>
         <div class='page-wrapper'>";
     if ($CURUSER) {
         $htmlout .= navbar();

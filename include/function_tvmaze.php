@@ -35,6 +35,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
  * @param $torrents
  *
  * @return string
+ *
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function tvmaze(&$torrents)
@@ -106,7 +107,8 @@ function tvmaze(&$torrents)
     return "<div class='padding10'>$tvmaze_data</div>";
 }
 
-function line_by_line($heading, $body) {
+function line_by_line($heading, $body)
+{
     return "
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>$heading: </div>

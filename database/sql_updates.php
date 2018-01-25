@@ -319,4 +319,16 @@ $sql_updates = [
         'date'  => '24 Jan, 2018',
         'query' => "INSERT INTO `site_config` (`name`, `value`, `description`) VALUES ('image_proxy', '', 'An image proxy allows you to hotlink images through a proxy, keeping your site url out of their logs.')",
     ],
+    [
+        'id'    => 54,
+        'info'  => 'Add banners to torrents',
+        'date'  => '25 Jan, 2018',
+        'query' => "ALTER TABLE `torrents` ADD COLUMN `banner` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `poster`",
+    ],
+    [
+        'id'    => 55,
+        'info'  => 'Add background to torrents',
+        'date'  => '25 Jan, 2018',
+        'query' => "ALTER TABLE `torrents` ADD COLUMN `background` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `banner`",
+    ],
 ];

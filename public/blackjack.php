@@ -121,7 +121,8 @@ if (!empty($list) && count($list) > 0) {
         } else {
             $player_showcards .= "<img src='{$site_config['pic_baseurl']}back.png' width='71' height='97' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
         }
-        $player_showcards_end .= "<div class='card {$arr['pic']}'></div>";;
+        $player_showcards_end .= "<div class='card {$arr['pic']}'></div>";
+        ;
     }
     $dealer = true;
     $user_warning = 'You are the dealer, you must take a card below 17.';

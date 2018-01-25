@@ -548,8 +548,7 @@ class AJAXChat
         $channelID,
         $text,
         $mode
-    )
-    {
+    ) {
         // The $mode parameter:
         // 0 = normal messages
         // 1 = channel messages (e.g. login/logout, channel enter/leave, kick)
@@ -633,8 +632,7 @@ class AJAXChat
         $userRole,
         $channelID,
         $text
-    )
-    {
+    ) {
         $message = '<message';
         $message .= ' id="' . $messageID . '"';
         $message .= ' dateTime="' . date('r', $timeStamp) . '"';

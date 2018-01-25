@@ -99,7 +99,6 @@ function get_imdb_info($imdb_id)
                         'cast',
                         'trailers',
                     ])) {
-
                     foreach ($imdb_data[$foo] as $pp) {
                         if ($foo == 'cast' && !empty($cast)) {
                             $imdb_tmp[] = join(' ', $cast);
@@ -131,5 +130,4 @@ function get_imdb_info($imdb_id)
         $imdb_info,
         $poster
     ];
-
 }

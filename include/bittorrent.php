@@ -2216,7 +2216,6 @@ function get_anonymous_name()
  */
 function image_proxy($url)
 {
-
     global $site_config;
 
 

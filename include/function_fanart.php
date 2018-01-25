@@ -1,0 +1,60 @@
+<?php
+
+/**
+ * @param        $imdb
+ * @param string $type
+ *
+ * @return null|string
+ */
+function getMovieImagesByImdb($imdb, $type = 'moviebackground')
+{
+    global $cache;
+
+    $types = [
+        'moviebackground',
+        'movieposter',
+        'moviebanner'
+    ];
+    $key = $_ENV['FANART_API_KEY'];
+    if (empty($key) || empty($imdb) || !in_array($type, $types)) {
+        return null;
+    }
+
+    $fanart = $cache->get('movie_images_' . $imdb);
+    if ($fanart === false || is_null($fanart)) {
+        $url = 'http://webservice.fanart.tv/v3/movies/';
+        $fanart = fetch($url . $imdb . '?api_key=' . $key);
+        if ($fanart != null) {
+            $fanart = json_decode($fanart, true);
+            $cache->set('movie_images_' . $imdb, $fanart, 604800);
+        }
+    }
+    if ($fanart) {
+        $images = [];
+        foreach ($fanart[$type] as $image) {
+            if (empty($image['lang']) || $image['lang'] === 'en') {
+                $images[] = $image['url'];
+            }
+        }
+        if (!empty($images)) {
+            shuffle($images);
+            return $images[0];
+        }
+    }
+    return null;
+}
+
+/**
+ * @param $url
+ *
+ * @return null|\Psr\Http\Message\StreamInterface
+ */
+function fetch($url)
+{
+    $client = new GuzzleHttp\Client();
+    $res = $client->request('GET', $url);
+    if ($res->getStatusCode() === 200) {
+        return $res->getBody();
+    }
+    return null;
+}

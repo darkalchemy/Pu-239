@@ -9,6 +9,7 @@ require_once INCL_DIR . 'function_rating.php';
 require_once INCL_DIR . 'function_tvmaze.php';
 require_once INCL_DIR . 'function_books.php';
 require_once INCL_DIR . 'function_imdb.php';
+require_once INCL_DIR . 'function_fanart.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $fluent;
 
@@ -95,7 +96,52 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
     preg_match('/^http\:\/\/(.*?)imdb\.com\/title\/tt([\d]{7})/i', $torrents['url'], $imdb_tmp);
     if (!empty($imdb_tmp[2])) {
         $imdb_id = $imdb_tmp[2];
+        $imdb = 'tt' . $imdb_id;
         unset($imdb_tmp);
+        if (empty($torrents['poster'])) {
+            $poster = getMovieImagesByImdb($imdb, 'movieposter');
+            if (!empty($poster)) {
+                $set = [
+                    'poster' => $poster
+                ];
+                $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
+                $fluent->update('torrents')
+                    ->set($set)
+                    ->where('id = ?', $id)
+                    ->execute();
+                $torrents['poster'] = $poster;
+            }
+        }
+
+        if (empty($torrents['banner'])) {
+            $banner = getMovieImagesByImdb($imdb, 'moviebanner');
+            if (!empty($banner)) {
+                $set = [
+                    'banner' => $banner
+                ];
+                $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
+                $fluent->update('torrents')
+                    ->set($set)
+                    ->where('id = ?', $id)
+                    ->execute();
+                $torrents['banner'] = $banner;
+            }
+        }
+
+        if (empty($torrents['background'])) {
+            $background = getMovieImagesByImdb($imdb, 'moviebackground');
+            if (!empty($background)) {
+                $set = [
+                    'background' => $background
+                ];
+                $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
+                $fluent->update('torrents')
+                    ->set($set)
+                    ->where('id = ?', $id)
+                    ->execute();
+                $torrents['background'] = $background;
+            }
+        }
         $movie_info = get_imdb_info($imdb_id);
         $imdb_info = $movie_info[0];
 
@@ -229,10 +275,21 @@ if ($CURUSER['class'] >= UC_STAFF) {
 }
 
 $s = htmlsafechars($torrents['name'], ENT_QUOTES);
+
+$banner_image = "
+        <div class='container is-fluid portlet'>";
+if (!empty($torrents['banner'])) {
+    $banner_image = "
+        <div id='banner'>
+            <img src='" . image_proxy($torrents['banner']) . "' class='w-100 round10' />
+        </div>
+        <div id='overlay' class='container is-fluid bg-07 is-marginless round10'>";
+}
+$body_image = image_proxy($torrents['background']);
 $HTMLOUT .= "
-        <div class='container is-fluid portlet'>
+        $banner_image
             <div class='has-text-centered margin20'>
-                <span class='size_7'>$s</span>";
+                <h1>$s</h1>";
 
 $thumbs = $cache->get('thumbs_up_' . $id);
 if ($thumbs === false || is_null($thumbs)) {
@@ -871,4 +928,16 @@ if (!$count) {
                 </div>";
 }
 
+$HTMLOUT .= "
+    <script>
+        document.getElementsByTagName('body')[0].style.backgroundColor =  'black';
+        document.getElementsByTagName('body')[0].style.backgroundImage =  'url($body_image)';
+        document.getElementsByTagName('body')[0].style.backgroundAttachment = 'fixed';
+        document.getElementsByTagName('body')[0].classList.remove('background-16');
+        var height = getComputedStyle(document.getElementById('banner')).height; 
+        document.getElementById('overlay').style.height = height;
+    </script>";
+
 echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+
+

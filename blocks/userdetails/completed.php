@@ -162,4 +162,3 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
         }
     }
 }
-

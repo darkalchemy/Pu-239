@@ -96,7 +96,7 @@ function db_insert()
                     <input type="button" value="Finish" onclick="onClick(6)" />
                 </div>';
     } else {
-            $out .= "
+        $out .= "
                     $fail
                 </fieldset>";
     }

@@ -43,4 +43,3 @@ if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_ST
         </tr>';
     }
 }
-

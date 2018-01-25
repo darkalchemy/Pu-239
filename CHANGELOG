@@ -1,4 +1,5 @@
 25 Jan 2018
+add: fanart api banner, poster, background
 fix: validator.php
 update: staff change user class to allow UC_MAX to set any user to any class
 

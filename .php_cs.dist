@@ -18,6 +18,8 @@ $config = PhpCsFixer\Config::create()
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->in(__DIR__)
+            ->notPath('/^vendor/')
+            ->notPath('/^node_modules/')
     )
 ;
 
