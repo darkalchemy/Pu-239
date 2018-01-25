@@ -20,7 +20,7 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
         }
 
         if (($ipuse['yes'] == 1 && $ipuse['no'] == 0) || ($ipuse['no'] == 1 && $ipuse['yes'] == 0)) {
-            $use = '';
+            $iphistory['use'] = '';
         } else {
             $ipcheck = $user['ip'];
             $enbl = $ipuse['yes'] ? $ipuse['yes'] . ' enabled ' : '';

@@ -38,7 +38,7 @@ function validate($validator, $context, $seconds = 0)
     if ($seconds && time() > $timestamp + $seconds) {
         return false;
     }
-    $hash = substr(hash_hmac('sha1', $CURUSER['secret'], $context . $timestamp), 0, 20);
+    $hash = substr(hash_hmac('sha1', $CURUSER['auth'], $context . $timestamp), 0, 20);
     if (substr($validator, 0, 20) != $hash) {
         return false;
     }

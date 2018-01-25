@@ -105,10 +105,10 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
     $modcomment = (isset($_POST['modcomment']) && $CURUSER['class'] == UC_MAX) ? $_POST['modcomment'] : $user['modcomment'];
     //== Set class
     if ((isset($_POST['class'])) && (($class = $_POST['class']) != $user['class'])) {
-        if ($class >= UC_MAX || ($class >= $CURUSER['class']) || ($user['class'] >= $CURUSER['class'])) {
+        if (($class >= UC_MAX && $CURUSER['class'] != UC_MAX) || ($class >= $CURUSER['class'] && $CURUSER['class'] != UC_MAX) || ($user['class'] >= $CURUSER['class'] && $CURUSER['class'] != UC_MAX)) {
             stderr("{$lang['modtask_user_error']}", "{$lang['modtask_try_again']}");
         }
-        if (!valid_class($class) || $CURUSER['class'] <= $_POST['class']) {
+        if (!valid_class($class) || ($CURUSER['class'] <= $_POST['class'] && $CURUSER['class'] != UC_MAX)) {
             stderr(($lang['modtask_error']), $lang['modtask_badclass']);
         }
         //== Notify user

@@ -1,3 +1,7 @@
+25 Jan 2018
+fix: validator.php
+update: staff change user class to allow UC_MAX to set any user to any class
+
 24 Jan 2018
 fix: left margin on details poster
 fix: incorrect array being passed to get_reputation
