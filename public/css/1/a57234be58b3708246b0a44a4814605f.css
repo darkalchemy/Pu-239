@@ -10134,7 +10134,7 @@ h1 {
 .column:last-child {
   padding-right: 0
 }
-.column:first-child {
+.column:first-child:not(.img-polaroid) {
   padding-left: 0
 }
 .torrent-name {

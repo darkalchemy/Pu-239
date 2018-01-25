@@ -1,4 +1,5 @@
 24 Jan 2018
+fix: left margin on details poster
 fix: incorrect array being passed to get_reputation
 add: ability to use a simple, encrypted image proxy for hotlinked images
 update: blackjack better appearance for mobile

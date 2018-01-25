@@ -427,7 +427,7 @@ span {
     padding-right: 0;
 }
 
-.column:first-child {
+.column:first-child:not(.img-polaroid) {
     padding-left: 0;
 }
 
