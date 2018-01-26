@@ -17,7 +17,7 @@ function get_file_name($file)
                 case 'css':
                     return "{$site_config['baseurl']}/css/{$style}/d4088af8ac08796f2fbb85824be06a6b.min.css";
                 case 'js':
-                    return "{$site_config['baseurl']}/js/{$style}/ca0db59900eb54b78629b4e92c66955d.min.js";
+                    return "{$site_config['baseurl']}/js/{$style}/9427e244d44d52df74df78b9b09d3524.min.js";
                 case 'checkport_js':
                     return "{$site_config['baseurl']}/js/{$style}/4ba42503ffca4c65167590b15a03b842.min.js";
                 case 'chatjs':
@@ -56,7 +56,7 @@ function get_file_name($file)
                 case 'css':
                     return "{$site_config['baseurl']}/css/{$style}/743299301079e926f213a8f613a6aeae.css";
                 case 'js':
-                    return "{$site_config['baseurl']}/js/{$style}/0b22564d088aa8e495034692ef918ce8.js";
+                    return "{$site_config['baseurl']}/js/{$style}/5646dbce1fdf2c25411bc94aa355fc99.js";
                 case 'checkport_js':
                     return "{$site_config['baseurl']}/js/{$style}/4a99c7d4e3c8639af2775ef05d500598.js";
                 case 'chatjs':

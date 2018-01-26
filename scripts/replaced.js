@@ -63,19 +63,6 @@ function refrClock() {
     setTimeout('refrClock()', 1000);
 }
 
-function togglepic(bu, picid, formid) {
-    var pic = document.getElementById(picid);
-    var form = document.getElementById(formid);
-
-    if (pic.src == bu + '/images/plus.gif') {
-        pic.src = bu + '/images/minus.gif';
-        form.value = 'minus';
-    } else {
-        pic.src = bu + '/images/plus.gif';
-        form.value = 'plus';
-    }
-}
-
 $(function () {
     if ($('#clock').length) {
         refrClock();

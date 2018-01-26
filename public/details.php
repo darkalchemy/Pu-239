@@ -930,12 +930,15 @@ if (!$count) {
 
 $HTMLOUT .= "
     <script>
+    if (document.body.contains(document.getElementById('overlay'))) {
         document.getElementsByTagName('body')[0].style.backgroundColor =  'black';
         document.getElementsByTagName('body')[0].style.backgroundImage =  'url($body_image)';
         document.getElementsByTagName('body')[0].style.backgroundAttachment = 'fixed';
         document.getElementsByTagName('body')[0].classList.remove('background-16');
-        var height = getComputedStyle(document.getElementById('banner')).height; 
-        document.getElementById('overlay').style.height = height;
+        var width = document.getElementById('overlay').offsetWidth;
+        var height = (width * 185 / 1000) + 3
+        document.getElementById('overlay').style.height = height + 'px';
+    }
     </script>";
 
 echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
