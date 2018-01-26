@@ -81,5 +81,4 @@ $lang = [
     'details_youtube'          => 'Youtube',
     'details_tags'             => 'Tags',
     'details_youtube_link'     => 'Open in a new window',
-    'details_thumbs'           => 'Thumbs Up',
 ];

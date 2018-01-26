@@ -775,7 +775,7 @@ if ($game) {
                     $update['winnerid'] = $playerarr['userid'];
                     $update['loserid'] = $a['userid'];
                     $outcome = "{$dbl_text}and won";
-                    // loser $CURUSER
+                // loser $CURUSER
                 } elseif (($a['points'] > $playerarr['points'] && $a['points'] < 21) || $a['points'] == 21 || ($a['points'] < $playerarr['points'] && $a['points'] > 21)) {
                     $subject = sqlesc($lang['bj_blackjack_results']);
                     $won_str = str_replace('10GB', mksize($blackjack['mb'], 0), $lang['bj_you_beat_10']);

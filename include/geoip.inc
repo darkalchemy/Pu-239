@@ -1695,7 +1695,8 @@ function _geoip_seek_country_v6($gi, $ipnum)
                 2 * $gi->record_length
             );
         } elseif ($gi->flags & GEOIP_SHARED_MEMORY) {
-            $buf = _sharedMemRead($gi,
+            $buf = _sharedMemRead(
+                $gi,
                                   2 * $gi->record_length * $offset,
                                   2 * $gi->record_length
             );

@@ -68,7 +68,7 @@ $HTMLOUT .= '<legend>' . $lang['pm_draft_save_edit'] . '' . $subject . '</legend
     </tr>
     <tr>
         <td colspan="2">
-        <input type="submit" class="button is-primary" name="buttonval" value="' . $lang['pm_draft_preview'] . '"/>
-        <input type="submit" class="button is-primary" name="buttonval" value="' . $lang['pm_draft_save_as'] . '" /></td>
+        <input type="submit" class="button is-small" name="buttonval" value="' . $lang['pm_draft_preview'] . '"/>
+        <input type="submit" class="button is-small" name="buttonval" value="' . $lang['pm_draft_save_as'] . '" /></td>
     </tr>
     </table></form>';

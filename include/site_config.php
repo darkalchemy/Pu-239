@@ -71,7 +71,6 @@ $site_config['expires']['torrent_details'] = 2591999; // 30 days
 $site_config['expires']['torrent_details_text'] = 2591999; // 30 days
 $site_config['expires']['insertJumpTo'] = 2591999; // 30 days
 $site_config['expires']['get_all_boxes'] = 2591999; // 30 days
-$site_config['expires']['thumbsup'] = 0; // 0 = infinite
 $site_config['expires']['iphistory'] = 900; // 900 = 15 min
 $site_config['expires']['newpoll'] = 0; // 900 = 15 min
 $site_config['expires']['genrelist'] = 2591999; // 30 days

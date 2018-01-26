@@ -289,21 +289,7 @@ $body_image = image_proxy($torrents['background']);
 $HTMLOUT .= "
         $banner_image
             <div class='has-text-centered margin20'>
-                <h1>$s</h1>";
-
-$thumbs = $cache->get('thumbs_up_' . $id);
-if ($thumbs === false || is_null($thumbs)) {
-    $thumbs = mysqli_num_rows(sql_query('SELECT id, type, torrentid, userid FROM thumbsup WHERE torrentid = ' . sqlesc($torrents['id'])));
-    $thumbs = (int)$thumbs;
-    $cache->add('thumbs_up_' . $id, $thumbs, 0);
-}
-$HTMLOUT .= "
-                <div class='top20'>{$lang['details_thumbs']}</div>
-                <div id='thumbsup'>
-                    <a href=\"javascript:ThumbsUp('" . (int)$torrents['id'] . "')\">
-                        <img src='{$site_config['pic_baseurl']}thumb_up.png' alt='Thumbs Up' class='tooltipper' title='Thumbs Up' width='12' height='12' class='right10' />
-                    </a>(" . $thumbs . ")
-                </div>
+                <h1>$s</h1>
            </div>
         </div>
     <div class='tooltip_templates'>
@@ -942,5 +928,3 @@ $HTMLOUT .= "
     </script>";
 
 echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-
-

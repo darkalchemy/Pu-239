@@ -57,6 +57,6 @@ $HTMLOUT .= '<h1>' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subj
         <input type="checkbox" name="urgent" value="yes" />&#160;' : '') . '' . $lang['pm_forward_save'] . '
         <input type="checkbox" name="save" value="1" />
         <input type="hidden" name="first_from" value="' . $forwarded_username . '" /> 
-        <input type="submit" class="button is-primary" name="move" value="' . $lang['pm_forward_btn'] . '" /></td>
+        <input type="submit" class="button is-small" name="move" value="' . $lang['pm_forward_btn'] . '" /></td>
     </tr>
     </table></form>';

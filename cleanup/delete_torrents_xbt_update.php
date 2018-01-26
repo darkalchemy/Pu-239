@@ -13,7 +13,7 @@ function delete_torrents_xbt_update($data)
     sql_query("UPDATE torrents SET flags='1' WHERE added < $dt AND seeders='0' AND leechers='0'") or sqlerr(__FILE__, __LINE__);
     $res = sql_query("SELECT id, name, owner FROM torrents WHERE mtime < $dt AND seeders='0' AND leechers='0' AND flags='1'") or sqlerr(__FILE__, __LINE__);
     while ($arr = mysqli_fetch_assoc($res)) {
-        sql_query('DELETE files.*, comments.*, thankyou.*, thanks.*, thumbsup.*, bookmarks.*, coins.*, rating.*, xbt_files_users.* FROM xbt_files_users
+        sql_query('DELETE files.*, comments.*, thankyou.*, thanks.*, bookmarks.*, coins.*, rating.*, xbt_files_users.* FROM xbt_files_users
                                  LEFT JOIN files ON files.torrent = xbt_files_users.fid
                                  LEFT JOIN comments ON comments.torrent = xbt_files_users.fid
                                  LEFT JOIN thankyou ON thankyou.torid = xbt_files_users.fid
@@ -21,7 +21,6 @@ function delete_torrents_xbt_update($data)
                                  LEFT JOIN bookmarks ON bookmarks.torrentid = xbt_files_users.fid
                                  LEFT JOIN coins ON coins.torrentid = xbt_files_users.fid
                                  LEFT JOIN rating ON rating.torrent = xbt_files_users.fid
-                                 LEFT JOIN thumbsup ON thumbsup.torrentid = xbt_files_users.fid
                                  WHERE xbt_files_users.fid =' . sqlesc($arr['id'])) or sqlerr(__FILE__, __LINE__);
 
         @unlink("{$site_config['torrent_dir']}/{$arr['id']}.torrent");

@@ -117,7 +117,6 @@ function delete_cleanup($users, $using_foreign_keys = true)
         sql_query("DELETE FROM subscriptions WHERE user_id IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM thanks WHERE userid IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM thankyou WHERE uid IN ({$users})") or sqlerr(__FILE__, __LINE__);
-        sql_query("DELETE FROM thumbsup WHERE userid IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM tickets WHERE user IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM triviausers WHERE user_id IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM uploadapp WHERE userid IN ({$users})") or sqlerr(__FILE__, __LINE__);

@@ -190,31 +190,3 @@ function sack(file) {
     this.reset();
     this.createAJAX();
 }
-
-function ThumbsUp(id) {
-    var url = "./ajax/thumbsup.php?id=" + escape(id);
-    try {
-        request = new ActiveXObject("Msxml2.XMLHTTP");
-    } catch (e) {
-        try {
-            request = new ActiveXObject("Microsoft.XMLHTTP");
-        } catch (e2) {
-            request = false;
-        }
-    }
-    if (!request && typeof XMLHttpRequest != "undefined") {
-        request = new XMLHttpRequest();
-    }
-    request.open("GET", url, true);
-    global_content = id;
-    request.onreadystatechange = gom;
-    request.send(null);
-}
-
-function gom() {
-    if (request.readyState == 4) {
-        if (request.status == 200) {
-            document.getElementById("thumbsup").innerHTML = request.responseText;
-        }
-    }
-}

@@ -5,6 +5,7 @@
 function parse_poll()
 {
     global $CURUSER, $site_config, $cache;
+
     $htmlout = '';
     $check = 0;
     $poll_footer = '';
@@ -12,7 +13,7 @@ function parse_poll()
         'allow_creator_vote' => 1,
         'allow_result_view'  => 1,
         'allow_poll_tags'    => 1,
-    ]; // move this elsewhere later!
+    ];
     $poll_data = get_poll();
 
     if (empty($poll_data)) {
@@ -33,7 +34,7 @@ function parse_poll()
 
     if (($poll_data['starter_id'] == $CURUSER['id']) && ($GVARS['allow_creator_vote'] != 1)) {
         $check = 1;
-        $poll_footer = 'poll_you_created';
+        $poll_footer = 'You created this poll and are not allowed to vote';
     }
 
     if ($GVARS['allow_result_view'] == 1) {
@@ -70,7 +71,7 @@ function parse_poll()
                 $width = $percent > 0 ? intval($percent * 2) : 0;
                 $choice_html .= poll_show_rendered_choice($choice_id, $votes, $id, $choice, $percent, $width);
             }
-            $htmlout .= poll_show_rendered_question($id, $question, $choice_html);
+            $htmlout .= poll_show_rendered_question($question, $choice_html);
         }
         $htmlout .= show_total_votes($tv_poll);
     } elseif ($check == 2) {
@@ -191,15 +192,15 @@ function poll_show_rendered_choice($choice_id = '', $votes = '', $id = '', $answ
     global $site_config;
 
     return "
-        <div class='bg-02 round5 padding10'>
-            $answer
-        </div>
-        <div class='has-text-centered top10'>
-            <b>Total Votes: $votes</b>
-        </div>
-        <div>
-            <img src='{$site_config['pic_baseurl']}polls/bar.gif' style='width: {$width}px; height: 11px;' align='middle' alt='' />
-            [$percentage%]
+        <div class='bottom20 bg-02 round10 padding10'>
+            <div class='bg-02 round10 padding10'>
+                $answer
+            </div>
+            <div class='has-text-centered top10'>
+                <img src='{$site_config['pic_baseurl']}polls/bar.gif' style='width: {$width}px; height: 11px;' align='middle' alt='' />
+                [$percentage%]
+                <h1>Total Votes: $votes</h1>
+            </div>
         </div>";
 }
 
@@ -210,14 +211,14 @@ function poll_show_rendered_choice($choice_id = '', $votes = '', $id = '', $answ
  *
  * @return string
  */
-function poll_show_rendered_question($id = '', $question = '', $choice_html = '')
+function poll_show_rendered_question($question = '', $choice_html = '')
 {
     return "
         <div class='has-text-centered'>
             <div class='round10'>
-                <div class='has-text-white'>
+                <h1>
                     $question
-                </div>
+                </h1>
             </div>
             $choice_html
         </div>";
@@ -293,7 +294,7 @@ function poll_show_form_question($id = '', $question = '', $choice_html = '')
  */
 function button_show_voteable()
 {
-    return "<input class='button tooltipper margin10' type='button' name='viewresult' value='Show Votes'  title='Goto poll voting' onclick=\"go_gadget_vote()\" />";
+    return "<input class='button is-small tooltipper margin10' type='button' name='viewresult' value='Show Votes'  title='Goto poll voting' onclick=\"go_gadget_vote()\" />";
 }
 
 /**
@@ -301,7 +302,7 @@ function button_show_voteable()
  */
 function button_show_results()
 {
-    return "<input class='button tooltipper margin10' type='button' value='Results' title='Show all poll results' onclick=\"go_gadget_show()\" />";
+    return "<input class='button is-small tooltipper margin10' type='button' value='Results' title='Show all poll results' onclick=\"go_gadget_show()\" />";
 }
 
 /**
@@ -309,7 +310,7 @@ function button_show_results()
  */
 function button_vote()
 {
-    return "<input class='button tooltipper margin10' type='submit' name='submit' value='Vote' title='Cast Your Vote' />";
+    return "<input class='button is-small tooltipper margin10' type='submit' name='submit' value='Vote' title='Cast Your Vote' />";
 }
 
 /**
@@ -317,5 +318,5 @@ function button_vote()
  */
 function button_null_vote()
 {
-    return "<input class='button tooltipper margin10' type='submit' name='nullvote' value='View Results (Null Vote)' title='View results, but forfeit your vote in this poll' />";
+    return "<input class='button is-small tooltipper margin10' type='submit' name='nullvote' value='View Results (Null Vote)' title='View results, but forfeit your vote in this poll' />";
 }

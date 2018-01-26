@@ -296,7 +296,7 @@ $HTMLOUT .= main_div($level1);
 $HTMLOUT .= "
                 </div>
             <div class='has-text-centered margin20'>
-                <input class='button is-primary' type='submit' name='submit' value='{$lang['block_submit']}' />
+                <input class='button is-small' type='submit' name='submit' value='{$lang['block_submit']}' />
             </div>
         </fieldset>
     </div>
@@ -395,7 +395,7 @@ $HTMLOUT .= main_div($level2);
 $HTMLOUT .= "
                 </div>
             <div class='has-text-centered margin20'>
-                <input class='button is-primary' type='submit' name='submit' value='{$lang['block_submit']}' />
+                <input class='button is-small' type='submit' name='submit' value='{$lang['block_submit']}' />
             </div>
         </fieldset>
         </div>
@@ -650,7 +650,7 @@ $HTMLOUT .= main_div($level3);
 $HTMLOUT .= "
                     </div>
                 <div class='has-text-centered margin20'>
-                    <input class='button is-primary' type='submit' name='submit' value='{$lang['block_submit']}' />
+                    <input class='button is-small' type='submit' name='submit' value='{$lang['block_submit']}' />
                 </div>
             </fieldset>
         </div>

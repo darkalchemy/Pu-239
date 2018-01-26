@@ -331,4 +331,10 @@ $sql_updates = [
         'date'  => '25 Jan, 2018',
         'query' => "ALTER TABLE `torrents` ADD COLUMN `background` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `banner`",
     ],
+    [
+        'id'    => 56,
+        'info'  => 'Remove torrent thumbsup',
+        'date'  => '26 Jan, 2018',
+        'query' => "DROP TABLE `thumbsup`",
+    ],
 ];
