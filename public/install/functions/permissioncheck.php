@@ -23,7 +23,6 @@ function permissioncheck()
     $dirs = [
         $root                      => 0,
         $root . 'dir_list/'        => 0,
-        $root . 'imdb/'            => 0,
         $root . 'cache/'           => 0,
         $root . 'torrents/'        => 0,
         $root . 'uploads/'         => 0,

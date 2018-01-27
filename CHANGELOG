@@ -1,3 +1,6 @@
+27 Jan 2018
+remove: check for imdb dir during install
+
 26 Jan 2018
 fix: polls
 remove: thumbsup, torrent rating is sufficient

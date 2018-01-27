@@ -1,6 +1,6 @@
 In no particular order
 
-verify tvmaze api working
+merge thanks and thankyou tables/code
 update headers: location
 what is cache userstatus
 update queries for user, get/set cache instead of query to get, only to set
@@ -18,6 +18,5 @@ format tables using main_table function
 format divs using main_div function
 wrap all pages in wrapper function
 update/fix forums or replace
-verify announce working
 xbt
 ocelot
