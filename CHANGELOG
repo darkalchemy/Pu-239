@@ -1,3 +1,13 @@
+28 Jan 2018
+update: tvmaze and imdb api to limit cast to first 30
+update: tvmaze and imdb api to only cache the data, not the html
+add: tvmaze table with all tvmaze ids for quicker lookup
+add: tvmaze cleanup to get new tvmaze id's
+update: README to show tvmaze insert/update
+update: sql dumps to allow update
+update: tvmaze api to include episode info
+update: fanart api to include tv 
+
 27 Jan 2018
 remove: check for imdb dir during install
 

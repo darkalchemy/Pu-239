@@ -1,5 +1,12 @@
 In no particular order
 
+replace page refresh with ajax for clickable items
+add live search (look ahead) to all search blocks
+add bot replies
+add yoda speak to chat
+add lyrics api musiXmatch
+add music api spotify/last.fm
+replace paypal with stripe
 merge thanks and thankyou tables/code
 update headers: location
 what is cache userstatus

@@ -1172,6 +1172,7 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
         }
         $offset_set = 1;
     }
+
     if ($site_config['time_use_relative'] == 3) {
         $full_relative = 1;
     }
@@ -1814,9 +1815,9 @@ function get_poll()
     //$poll_data = $cache->get('poll_data_' . $CURUSER['id']);
     //if ($poll_data === false || is_null($poll_data)) {
     $poll_data = $fluent->from('polls')
-            ->orderBy('start_date DESC')
-            ->limit(1)
-            ->fetch();
+        ->orderBy('start_date DESC')
+        ->limit(1)
+        ->fetch();
 
     $vote_data = $fluent->from('poll_voters')
         ->select(null)
@@ -1827,9 +1828,9 @@ function get_poll()
         ->where('poll_id = ?', $poll_data['pid'])
         ->limit('1')
         ->fetch();
-    $poll_data['ip'] =$vote_data['ip'];
-    $poll_data['user_id'] =$vote_data['user_id'];
-    $poll_data['vote_date'] =$vote_data['vote_date'];
+    $poll_data['ip'] = $vote_data['ip'];
+    $poll_data['user_id'] = $vote_data['user_id'];
+    $poll_data['vote_date'] = $vote_data['vote_date'];
 
     $cache->set('poll_data_' . $CURUSER['id'], $poll_data, $site_config['expires']['poll_data']);
     //}
@@ -2237,6 +2238,77 @@ function image_proxy($url)
         return $site_config['image_proxy'] . base64_encode($encrypted);
     }
     return $url;
+}
+
+/**
+ * @param string $name
+ *
+ * @return string
+ */
+function get_show_name(string $name)
+{
+    if (preg_match("/^(.*)S\d+(E\d+)?/i", $name, $tmp)) {
+        return trim(str_replace([
+                                    '.',
+                                    '_'
+                                ], ' ', $tmp[1]));
+    } else {
+        return trim(str_replace([
+                                    '.',
+                                    '_'
+                                ], ' ', $name));
+
+    }
+
+}
+
+/**
+ * @param string $name
+ * @param string $type
+ *
+ * @return null|string
+ */
+function get_show_id(string $name, string $type)
+{
+    global $cache, $fluent;
+
+    if (empty($name) || empty($type)) {
+        return null;
+    }
+    $name = get_show_name($name);
+    $hash = hash('sha512', $name);
+    $id_array = $cache->get('tvshow_ids_' . $hash);
+    if ($id_array === false || is_null($id_array)) {
+        $id_array = $fluent->from('tvmaze')
+            ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $name)
+            ->fetch();
+        if ($id_array) {
+            $cache->set('tvshow_ids_' . $hash, $id_array, 0);
+        }
+    }
+    if ($id_array) {
+        extract($id_array);
+        return $$type;
+    }
+    return null;
+}
+
+/**
+ * @param $h24
+ * @param $min
+ *
+ * @return string
+ */
+function time24to12($h24, $min)
+{
+    if ($h24 === 0) {
+        $newhour = 12;
+    } elseif ($h24 <= 12) {
+        $newhour = $h24;
+    } elseif ($h24 > 12) {
+        $newhour = $h24 - 12;
+    }
+    return ($h24 < 12) ? $newhour . ":$min am" : $newhour . ":$min pm";
 }
 
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {

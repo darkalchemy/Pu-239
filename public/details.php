@@ -71,11 +71,7 @@ if ($torrents === false || is_null($torrents)) {
     $cache->set('torrent_details_' . $id, $torrents, $site_config['expires']['torrent_details']);
 }
 
-$tvmaze_info = $imdb_info = $ebook_info = '';
-if (in_array($torrents['category'], $site_config['tv_cats'])) {
-    $tvmaze_info = tvmaze($torrents);
-}
-
+$tvmaze_episode_info = $tvmaze_info = $imdb_info = $ebook_info = '';
 if (in_array($torrents['category'], $site_config['ebook_cats'])) {
     $ebooks_info = get_book_info($torrents);
     $ebook_info = $ebooks_info[0];
@@ -92,10 +88,88 @@ if (in_array($torrents['category'], $site_config['ebook_cats'])) {
     }
 }
 
+if (in_array($torrents['category'], $site_config['tv_cats'])) {
+    $thetvdb_id = get_show_id($torrents['name'], 'thetvdb_id');
+    $tvmaze_id = get_show_id($torrents['name'], 'tvmaze_id');
+    $imdb_id = get_show_id($torrents['name'], 'imdb_id');
+    if (empty($torrents['url'])) {
+        if (!empty($imdb_id)) {
+            $url = 'http://www.imdb.com/title/' . $imdb_id;
+            $set = [
+                'url' => $url
+            ];
+            $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
+            $fluent->update('torrents')
+                ->set($set)
+                ->where('id = ?', $id)
+                ->execute();
+            $torrents['url'] = $url;
+        }
+    }
+
+    preg_match('/S(\d+)E(\d+)/i', $torrents['name'], $match);
+    $season = !empty($match[1]) ? $match[1] : 0;
+
+    if (empty($torrents['poster'])) {
+        $poster = getTVImagesByImdb($thetvdb_id, 'poster' , $season);
+        if (!empty($poster)) {
+            $set = [
+                'poster' => $poster
+            ];
+            $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
+            $fluent->update('torrents')
+                ->set($set)
+                ->where('id = ?', $id)
+                ->execute();
+            $torrents['poster'] = $poster;
+        }
+    }
+
+    if (empty($torrents['banner'])) {
+        $banner = getTVImagesByImdb($thetvdb_id, 'banner', $season);
+        if (!empty($banner)) {
+            $set = [
+                'banner' => $banner
+            ];
+            $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
+            $fluent->update('torrents')
+                ->set($set)
+                ->where('id = ?', $id)
+                ->execute();
+            $torrents['banner'] = $banner;
+        }
+    }
+
+    if (empty($torrents['background'])) {
+        $background = getTVImagesByImdb($thetvdb_id, 'showbackground', $season);
+        if (!empty($background)) {
+            $set = [
+                'background' => $background
+            ];
+            $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
+            $fluent->update('torrents')
+                ->set($set)
+                ->where('id = ?', $id)
+                ->execute();
+            $torrents['background'] = $background;
+        }
+    }
+
+    if (!empty($match[1]) && !empty($match[1]) && !empty($tvmaze_id)) {
+        $tvmaze_episode_info = get_episode($tvmaze_id, $match[1], $match[2]);
+    }
+    $tvmaze_info = tvmaze($torrents);
+    if (!empty($imdb_id)) {
+        $movie_info = get_imdb_info($imdb_id);
+        $imdb_info = $movie_info[0];
+    }
+}
+
 if (in_array($torrents['category'], $site_config['movie_cats'])) {
     preg_match('/^http\:\/\/(.*?)imdb\.com\/title\/tt([\d]{7})/i', $torrents['url'], $imdb_tmp);
     if (!empty($imdb_tmp[2])) {
         $imdb_id = $imdb_tmp[2];
+
         $imdb = 'tt' . $imdb_id;
         unset($imdb_tmp);
         if (empty($torrents['poster'])) {
@@ -790,7 +864,11 @@ $HTMLOUT .= "
             <table class='table table-bordered'>";
 
 if ($tvmaze_info) {
-    $HTMLOUT .= tr($lang['details_tvrage'], $tvmaze_info, 1);
+    $HTMLOUT .= tr('Series Info', $tvmaze_info, 1);
+}
+
+if ($tvmaze_episode_info) {
+    $HTMLOUT .= tr($lang['details_tvrage'], $tvmaze_episode_info, 1);
 }
 
 if (!empty($ebook_info)) {
@@ -801,7 +879,7 @@ if (!empty($imdb_info)) {
     $HTMLOUT .= tr('Auto imdb', $imdb_info, 1);
 }
 
-if (empty($tvmaze_info) && empty($imdb_info) && empty($ebook_info)) {
+if (empty($tvmaze_episode_info) && empty($tvmaze_info) && empty($imdb_info) && empty($ebook_info)) {
     $HTMLOUT .= "
                 <tr >
                     <td colspan = '2' > No Imdb, TVMaze or Ebook info .</td >

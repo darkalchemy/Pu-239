@@ -374,12 +374,11 @@ function cleanup_take_new()
     }
     // new clean time =
     $params['clean_time'] = intval(time() + $params['clean_increment']);
-    $params['clean_cron_key'] = md5(uniqid()); // just for now.
     //one more time around! LoL
     foreach ($params as $k => $v) {
         $params[$k] = sqlesc($v);
     }
-    sql_query("INSERT INTO cleanup (function_name, clean_title, clean_desc, clean_file, clean_time, clean_increment, clean_cron_key, clean_log, clean_on) VALUES ({$params['function_name']}, {$params['clean_title']}, {$params['clean_desc']}, {$params['clean_file']}, {$params['clean_time']}, {$params['clean_increment']}, {$params['clean_cron_key']}, {$params['clean_log']}, {$params['clean_on']})");
+    sql_query("INSERT INTO cleanup (function_name, clean_title, clean_desc, clean_file, clean_time, clean_increment, clean_log, clean_on) VALUES ({$params['function_name']}, {$params['clean_title']}, {$params['clean_desc']}, {$params['clean_file']}, {$params['clean_time']}, {$params['clean_increment']}, {$params['clean_log']}, {$params['clean_on']})");
     if (((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res)) {
         stderr($lang['cleanup_new_info'], "{$lang['cleanup_new_success']}");
     } else {
