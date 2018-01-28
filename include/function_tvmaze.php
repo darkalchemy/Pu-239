@@ -135,9 +135,9 @@ function get_episode($tvmaze_id, $season, $episode)
  */
 function tvmaze(&$torrents)
 {
-    global $cache;
+    global $cache, $fluent;
 
-    $row_update = [];
+    $set = [];
     $tvmaze['name'] = get_show_name($torrents['name']);
     $tvmaze_id = get_show_id($torrents['name'], 'tvmaze_id');
 
@@ -162,22 +162,25 @@ function tvmaze(&$torrents)
         }
         $cache->set('tvmaze_' . $tvmaze_id, $tvmaze_show_data, 604800);
     }
-
     if (empty($torrents['newgenre'])) {
-        $row_update[] = 'newgenre = ' . sqlesc(ucwords($tvmaze_show_data['genres2']));
+        $torrents['newgenre'] = $tvmaze_show_data['genres2'];
+        $set['newgenre'] = ucwords($tvmaze_show_data['genres2']);
+        $cache->update_row('torrent_details_' . $torrents['id'], [
+            'newgenre' => ucwords($tvmaze_show_data['genres2']),
+        ], 0);
     }
-    $cache->update_row('torrent_details_' . $torrents['id'], [
-        'newgenre' => ucwords($tvmaze_show_data['genres2']),
-    ], 0);
     if (empty($torrents['poster'])) {
         $torrents['poster'] = $tvmaze_show_data['image']['original'];
-        $row_update[] = 'poster = ' . sqlesc($tvmaze_show_data['image']['original']);
+        $set['poster'] = $tvmaze_show_data['image']['original'];
         $cache->update_row('torrent_details_' . $torrents['id'], [
             'poster' => $tvmaze_show_data['image']['original'],
         ], 0);
     }
-    if (!empty($row_update) && count($row_update)) {
-        sql_query('UPDATE torrents SET ' . join(', ', $row_update) . ' WHERE id = ' . $torrents['id']) or sqlerr(__FILE__, __LINE__);
+    if (!empty($set)) {
+        $fluent->update('torrents')
+            ->set($set)
+            ->where('id = ?', $torrents['id'])
+            ->execute();
     }
     if (!empty($tvmaze_show_data)) {
         return "<div class='padding10'>" . tvmaze_format($tvmaze_show_data, 'show') . "</div>";

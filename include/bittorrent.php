@@ -2257,9 +2257,7 @@ function get_show_name(string $name)
                                     '.',
                                     '_'
                                 ], ' ', $name));
-
     }
-
 }
 
 /**

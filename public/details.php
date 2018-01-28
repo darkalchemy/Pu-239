@@ -111,7 +111,7 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
     $season = !empty($match[1]) ? $match[1] : 0;
 
     if (empty($torrents['poster'])) {
-        $poster = getTVImagesByImdb($thetvdb_id, 'poster' , $season);
+        $poster = getTVImagesByImdb($thetvdb_id, 'poster', $season);
         if (!empty($poster)) {
             $set = [
                 'poster' => $poster

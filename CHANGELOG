@@ -1,4 +1,5 @@
 28 Jan 2018
+update: use fluentpdo in tvmaze functions
 update: tvmaze and imdb api to limit cast to first 30
 update: tvmaze and imdb api to only cache the data, not the html
 add: tvmaze table with all tvmaze ids for quicker lookup

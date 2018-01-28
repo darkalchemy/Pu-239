@@ -89,6 +89,7 @@ function get_imdb_info($imdb_id)
         }
     }
 
+    $imdb_info = '';
     foreach ($imdb as $foo => $boo) {
         if (isset($imdb_data[$foo]) && !empty($imdb_data[$foo])) {
             if (!is_array($imdb_data[$foo])) {
