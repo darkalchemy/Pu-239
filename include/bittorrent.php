@@ -1812,28 +1812,29 @@ function get_poll()
 {
     global $CURUSER, $cache, $site_config, $fluent;
 
-    //$poll_data = $cache->get('poll_data_' . $CURUSER['id']);
-    //if ($poll_data === false || is_null($poll_data)) {
-    $poll_data = $fluent->from('polls')
-        ->orderBy('start_date DESC')
-        ->limit(1)
-        ->fetch();
+    $poll_data = $cache->get('poll_data_' . $CURUSER['id']);
+    if ($poll_data === false || is_null($poll_data)) {
+        $poll_data = $fluent->from('polls')
+            ->orderBy('start_date DESC')
+            ->limit(1)
+            ->fetch();
 
-    $vote_data = $fluent->from('poll_voters')
-        ->select(null)
-        ->select('INET6_NTOA(ip) AS ip')
-        ->select('user_id')
-        ->select('vote_date')
-        ->where('user_id = ?', $CURUSER['id'])
-        ->where('poll_id = ?', $poll_data['pid'])
-        ->limit('1')
-        ->fetch();
-    $poll_data['ip'] = $vote_data['ip'];
-    $poll_data['user_id'] = $vote_data['user_id'];
-    $poll_data['vote_date'] = $vote_data['vote_date'];
+        $vote_data = $fluent->from('poll_voters')
+            ->select(null)
+            ->select('INET6_NTOA(ip) AS ip')
+            ->select('user_id')
+            ->select('vote_date')
+            ->where('user_id = ?', $CURUSER['id'])
+            ->where('poll_id = ?', $poll_data['pid'])
+            ->limit('1')
+            ->fetch();
+        $poll_data['ip'] = $vote_data['ip'];
+        $poll_data['user_id'] = $vote_data['user_id'];
+        $poll_data['vote_date'] = $vote_data['vote_date'];
+        $poll_data['time'] = TIME_NOW;
 
-    $cache->set('poll_data_' . $CURUSER['id'], $poll_data, $site_config['expires']['poll_data']);
-    //}
+        $cache->set('poll_data_' . $CURUSER['id'], $poll_data, $site_config['expires']['poll_data']);
+    }
 
     return $poll_data;
 }

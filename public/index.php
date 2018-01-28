@@ -29,6 +29,8 @@ if (isset($_GET['act']) && $_GET['act'] == 'Arcade' && isset($_POST['gname'])) {
     include_once INCL_DIR . 'arcade.php';
 }
 
+$HTMLOUT = '';
+
 $unread = getPmCount($CURUSER['id']);
 if ($unread >= 1) {
     setSessionVar(
@@ -40,7 +42,6 @@ if ($unread >= 1) {
     );
 }
 
-$HTMLOUT = '';
 if (curuser::$blocks['index_page'] & block_index::IE_ALERT && $BLOCKS['ie_user_alert']) {
     $HTMLOUT .= "<div class='container is-fluid portlet' id='IE_ALERT'>";
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'ie_user.php';
@@ -157,6 +158,21 @@ if (curuser::$blocks['index_page'] & block_index::LATEST_USER && $BLOCKS['latest
 }
 
 $poll_data = get_poll();
+if (empty($poll_data['user_id'])) {
+    $HTMLOUT .= "
+<script>
+    window.addEventListener('load', function(){
+        var headerHeight = $('#navbar').outerHeight() + 10;
+        var target = '#poll';
+        var scrollToPosition = $(target).offset().top - headerHeight;
+        $('html, body').animate({
+            scrollTop: scrollToPosition
+        }, animate_duration, 'swing');
+        location.hash = '#poll';
+    });
+</script>";
+}
+
 if (!empty($poll_data) && curuser::$blocks['index_page'] & block_index::ACTIVE_POLL && $BLOCKS['active_poll_on']) {
     $HTMLOUT .= "<div class='container is-fluid portlet' id='ACTIVE_POLL'>";
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'poll.php';

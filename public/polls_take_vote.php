@@ -2,7 +2,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config, $cache, $fluent;
 
 $lang = load_language('global');
 $poll_id = isset($_GET['pollid']) ? intval($_GET['pollid']) : false;
@@ -48,9 +48,12 @@ if (!$_POST['nullvote']) {
     }
     $sql = "INSERT INTO poll_voters (user_id, ip, poll_id, vote_date) VALUES ({$CURUSER['id']}, " . ipToStorageFormat($CURUSER['ip']) . ", {$poll_data['pid']}, " . TIME_NOW . ')';
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    $update['votes'] = $poll_data['votes'] + 1;
+    $votes = $poll_data['votes'] + 1;
     $cache->update_row('poll_data_' . $CURUSER['id'], [
-        'votes' => $update['votes'],
+        'votes' => $votes,
+        'ip' => $CURUSER['ip'],
+        'user_id' => $CURUSER['id'],
+        'vote_date' => TIME_NOW,
     ], $site_config['expires']['poll_data']);
     if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         stderr('DBERROR', 'Could not update records');
@@ -72,9 +75,12 @@ if (!$_POST['nullvote']) {
     sql_query("INSERT INTO poll_voters (user_id, ip, poll_id, vote_date)
                 VALUES
                 ({$CURUSER['id']}, " . ipToStorageFormat($CURUSER['ip']) . ", {$poll_data['pid']}, " . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
-    $update['votes'] = $poll_data['votes'] + 1;
+    $votes = $poll_data['votes'] + 1;
     $cache->update_row('poll_data_' . $CURUSER['id'], [
-        'votes' => $update['votes'],
+        'votes' => $votes,
+        'ip' => $CURUSER['ip'],
+        'user_id' => $CURUSER['id'],
+        'vote_date' => TIME_NOW,
     ], $site_config['expires']['poll_data']);
     if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         stderr('DBERROR', 'Could not update records');

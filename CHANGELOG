@@ -1,4 +1,6 @@
 28 Jan 2018
+update: update poll_data cache when user votes
+update: scroll to poll if user not voted
 update: use fluentpdo in tvmaze functions
 update: tvmaze and imdb api to limit cast to first 30
 update: tvmaze and imdb api to only cache the data, not the html
