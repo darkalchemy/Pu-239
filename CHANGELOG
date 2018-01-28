@@ -1,4 +1,5 @@
 28 Jan 2018
+update: get_poll return false when no poll
 update: update poll_data cache when user votes
 update: scroll to poll if user not voted
 update: use fluentpdo in tvmaze functions

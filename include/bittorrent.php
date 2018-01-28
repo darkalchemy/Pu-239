@@ -1828,12 +1828,14 @@ function get_poll()
             ->where('poll_id = ?', $poll_data['pid'])
             ->limit('1')
             ->fetch();
-        $poll_data['ip'] = $vote_data['ip'];
-        $poll_data['user_id'] = $vote_data['user_id'];
-        $poll_data['vote_date'] = $vote_data['vote_date'];
-        $poll_data['time'] = TIME_NOW;
+        if (!empty($poll_data)) {
+            $poll_data['ip'] = $vote_data['ip'];
+            $poll_data['user_id'] = $vote_data['user_id'];
+            $poll_data['vote_date'] = $vote_data['vote_date'];
+            $poll_data['time'] = TIME_NOW;
 
-        $cache->set('poll_data_' . $CURUSER['id'], $poll_data, $site_config['expires']['poll_data']);
+            $cache->set('poll_data_' . $CURUSER['id'], $poll_data, $site_config['expires']['poll_data']);
+        }
     }
 
     return $poll_data;

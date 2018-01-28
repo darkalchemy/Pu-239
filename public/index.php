@@ -158,7 +158,7 @@ if (curuser::$blocks['index_page'] & block_index::LATEST_USER && $BLOCKS['latest
 }
 
 $poll_data = get_poll();
-if (empty($poll_data['user_id'])) {
+if (!empty($poll_data['pid']) && empty($poll_data['user_id'])) {
     $HTMLOUT .= "
 <script>
     window.addEventListener('load', function(){
