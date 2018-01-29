@@ -157,23 +157,18 @@ if ($action == 'article') {
         }
         if (mysqli_num_rows($res) > 0) {
             $HTMLOUT .= navmenu() . "
-            <h2 class='has-text-centered'>Article search results for: <b>" . htmlsafechars($name) . "</b></h2>
-            <div class='w-100 padding20 round10 bg-02'>";
+            <h2 class='has-text-centered'>Article search results for: <b>" . htmlsafechars($name) . "</b></h2>";
             while ($wiki = mysqli_fetch_array($res)) {
                 if ($wiki['userid'] !== 0) {
                     $user = get_user_data($wiki['userid']);
                     $wikiname = $user['username'];
                 }
-                $HTMLOUT .= '
-                <div class="padding20 bottom10 round10 bg-02">
+                $HTMLOUT .= main_div('
                     <h2><a href="' . $site_config['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($wiki['name']) . '">' . htmlsafechars($wiki['name']) . "</a></h2>
                     <div>{$lang['wiki_added_by']}: " . format_username($wiki['userid']) . '</div>
                     <div>Added on: ' . get_date($wiki['time'], 'LONG') . '</div>' . (!empty($wiki['lastedit']) ? '
-                    <div>Last Edited on: ' . get_date($wiki['lastedit'], 'LONG') . '</div>' : '') . '
-                </div>';
+                    <div>Last Edited on: ' . get_date($wiki['lastedit'], 'LONG') . '</div>' : ''), 'top20');
             }
-            $HTMLOUT .= '
-            </div>';
         } else {
             stderr($lang['wiki_error'], $lang['wiki_no_art_found']);
         }
