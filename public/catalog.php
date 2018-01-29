@@ -220,7 +220,8 @@ if (!empty($rows)) {
         </div>
         <div class='w-100'>
             <h2 class='has-text-centered'>{$lang['catol_seeder_info']}</h2>
-            " . (isset($peers[$row['id']]) ? peer_list($peers[$row['id']]) : "{$lang['catol_no_info_show']}") . '
+            " . (isset($peers[$row['id']]) ? peer_list($peers[$row['id']]) : main_div("
+            <h2 class='has-text-centered'>{$lang['catol_no_info_show']}</h2>")) . '
         </div>';
         $htmlout .= main_div($div, 'top20');
     }
@@ -230,7 +231,7 @@ if (!empty($rows)) {
         </div>";
 } else {
     $htmlout .= main_div("
-        <h2>{$lang['catol_nothing_found']}!</h2>", 'top20');
+        <h2 class='has-text-centered'>{$lang['catol_nothing_found']}!</h2>", 'top20');
 }
 
 echo stdhead($lang['catol_std_head']) . wrapper($htmlout) . stdfoot();
