@@ -2630,7 +2630,7 @@ var ajaxChatConfig = {
         persistFontColor: false,
         fontColor: null,
         audio: true,
-        audioBackend: -1,
+        audioBackend: 0,
         audioVolume: .3,
         soundReceive: "sound_1",
         soundSend: "sound_2",

@@ -100,8 +100,8 @@ var ajaxChatConfig = {
 
         // Defines if sounds are played:
         audio: true,
-        // Defines the audio backend:
-        audioBackend: -1,
+        // Defines the audio backend, Flash is not working properly in ubuntu chrome:
+        audioBackend: 0,
         // Defines the sound volume (0.0 = mute, 1.0 = max):
         audioVolume: 0.3,
 

@@ -30,8 +30,9 @@ function navmenu()
                 <ul>
                     <li><a href="' . $site_config['baseurl'] . '/wiki.php?action=sort&amp;letter=a">A</a></li>';
     for ($i = 0; $i < 25; ++$i) {
-        $div .= '
-                    <li><a href="' . $site_config['baseurl'] . '/wiki.php?action=sort&amp;letter=' . chr($i + 98) . '">' . chr($i + 66) . '</a></li>';
+        $active = !empty($_GET['letter']) && $_GET['letter'] == chr($i + 98) ? "class='active'" : '';
+        $div .= "
+                    <li><a href='{$site_config['baseurl']}/wiki.php?action=sort&amp;letter=" . chr($i + 98) . "' $active>" . chr($i + 66) . "</a></li>";
     }
     $value = !empty($_POST['article']) ? $_POST['article'] : '';
     $div .= "

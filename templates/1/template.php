@@ -485,41 +485,41 @@ function navbar()
                             <li>
                                 <a href='#'>{$lang['gl_torrent']}</a>
                                 <ul class='ddFade ddFadeSlow'>
-                                    <li><a href='{$site_config['baseurl']}/browse.php'>{$lang['gl_torrents']}</a></li>
-                                    <li><a href='{$site_config['baseurl']}/requests.php'>{$lang['gl_requests']}</a></li>
-                                    <li><a href='{$site_config['baseurl']}/offers.php'>{$lang['gl_offers']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/browse.php'>Browse {$lang['gl_torrents']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/catalog.php'>Catalog</a></li>
                                     <li><a href='{$site_config['baseurl']}/needseed.php?needed=seeders'><span class='is-danger'>{$lang['gl_nseeds']}</span></a></li>
                                     <li><a href='{$site_config['baseurl']}/browse.php?today=1'>{$lang['gl_newtor']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/offers.php'>{$lang['gl_offers']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/requests.php'>{$lang['gl_requests']}</a></li>
                                     " . ($CURUSER['class'] <= UC_VIP ? "<li><a href='{$site_config['baseurl']}/uploadapp.php'>{$lang['gl_uapp']}</a></li>" : "<li><a href='{$site_config['baseurl']}/upload.php'>{$lang['gl_upload']}</a></li>") . "
-                                    <li><a href='{$site_config['baseurl']}/bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
                                 </ul>
                             </li>
                             <li>
                                 <a href='#'>{$lang['gl_general']}</a>
-                                <ul class='ddFade ddFadeSlow'>
-                                    <li><a href='{$site_config['baseurl']}/mybonus.php'>Karma Store</a></li>";
+                                <ul class='ddFade ddFadeSlow'>";
         if ($site_config['bucket_allowed'] === 1) {
             $navbar .= "
                                     <li><a href='{$site_config['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>";
         }
         $navbar .= "
-                                    <li><a href='{$site_config['baseurl']}/getrss.php'>RSS</a></li>
-                                    <li><a href='{$site_config['baseurl']}/announcement.php'>{$lang['gl_announcements']}</a></li>
-                                    <li><a href='{$site_config['baseurl']}/topten.php'>{$lang['gl_stats']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/faq.php'>{$lang['gl_faq']}</a></li>
-                                    <li><a href='{$site_config['baseurl']}/rules.php'>{$lang['gl_rules']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/chat.php'>{$lang['gl_irc']}</a></li>
-                                    <li><a href='{$site_config['baseurl']}/staff.php'>{$lang['gl_staff']}</a></li>
-                                    <li><a href='{$site_config['baseurl']}/wiki.php'>{$lang['gl_wiki']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/mybonus.php'>Karma Store</a></li>                                    
                                     <li><a href='#' onclick='radio();'>{$lang['gl_radio']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/getrss.php'>RSS</a></li>
+                                    <li><a href='{$site_config['baseurl']}/rules.php'>{$lang['gl_rules']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/announcement.php'>{$lang['gl_announcements']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/staff.php'>{$lang['gl_staff']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/topten.php'>{$lang['gl_stats']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/rsstfreak.php'>{$lang['gl_tfreak']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/wiki.php'>{$lang['gl_wiki']}</a></li>
                                 </ul>
                             </li>
                             <li>
                                 <a href='#'>{$lang['gl_games']}</a>
                                 <ul class='ddFade ddFadeSlow'>
-                                    <li><a href='{$site_config['baseurl']}/games.php'>{$lang['gl_games']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/arcade.php'>{$lang['gl_arcade']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/games.php'>{$lang['gl_games']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/lottery.php'>{$lang['gl_lottery']}</a></li>
                                 </ul>
                             </li>
@@ -527,12 +527,13 @@ function navbar()
                             <li>
                                 <a href='#'>User</a>
                                 <ul class='ddFade ddFadeSlow'>
-                                    <li><a href='{$site_config['baseurl']}/pm_system.php'>{$lang['gl_pms']}</a></li>
-                                    <li><a href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
-                                    <li><a href='#' onclick='themes();'>{$lang['gl_theme']}</a></li>
-                                    <li><a href='#' onclick='language_select();'>{$lang['gl_language_select']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/friends.php'>{$lang['gl_friends']}</a></li>
+                                    <li><a href='#' onclick='language_select();'>{$lang['gl_language_select']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/pm_system.php'>{$lang['gl_pms']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/users.php'>Search Users</a></li>
+                                    <li><a href='#' onclick='themes();'>{$lang['gl_theme']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
                                 </ul>
                             </li>
 <!--
