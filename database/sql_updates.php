@@ -371,6 +371,6 @@ $sql_updates = [
         'id'    => 60,
         'info'  => 'Add new_email column',
         'date'  => '1 Feb, 2018',
-        'query' => "ALTER TABLE `tokens` ADD COLUMN `new_email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `email`",
+        'query' => "ALTER TABLE `tokens` ADD COLUMN `new_email` VARCHAR(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `email`",
     ],
 ];
