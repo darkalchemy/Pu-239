@@ -2966,9 +2966,9 @@ var ajaxChat = {
 
     replaceBBCodeCode: function (content) {
         // Replace vertical tabs and multiple spaces with two non-breaking space characters:
-        return '<code>'
+        return "<fieldset class='code'><legend>code</legend>"
             + this.replaceBBCode(content.replace(/\t|(?:  )/gm, '&#160;&#160;'))
-            + '</code>';
+            + '</fieldset>';
     },
 
     replaceBBCodeUnderline: function (content) {

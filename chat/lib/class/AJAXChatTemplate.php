@@ -131,8 +131,6 @@ class AJAXChatTemplate
                 return $this->ajaxChat->getConfig('sessionCookiePath');
             case 'COOKIE_DOMAIN':
                 return $this->ajaxChat->getConfig('sessionCookieDomain');
-            case 'COOKIE_SECURE':
-                return $this->ajaxChat->getConfig('sessionCookieSecure');
 
             case 'CHAT_BOT_NAME':
                 return rawurlencode($this->ajaxChat->getConfig('chatBotName'));

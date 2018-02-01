@@ -53,7 +53,7 @@ $lang = [
     'my_tags'                        => 'Displayed on your public page. May contain <a href="tags.php" target="_new">BB codes</a>.',
     'my_email'                       => 'Email address',
     'my_email_pass'                  => 'Please enter your password if changing your email address!',
-    'my_note'                        => '<b>Note:</b> In order to change your email address, you will receive another<br>confirmation email to your new address.',
+    'my_note'                        => '<b>Note:</b> In order to change your email address, you will receive a confirmation email to your new address.',
     'my_chpass'                      => 'Change password',
     'my_pass_again'                  => 'Type password again',
     'my_submit'                      => 'Submit changes!',

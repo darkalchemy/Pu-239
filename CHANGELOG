@@ -1,3 +1,12 @@
+1 Feb 2018
+fix: code block bbcode on ajax chat
+fix: users cache for AJAX Chat when staff add user
+fix: session canary and regenerate session id
+add: encrypted session data, may require delete current sessions
+update: emails to html
+add: mail class to send emails, adds headers and sennds both plain text and html versions or email
+update: torrents scoller to force image dimensions, images all face-up
+
 28 Jan 2018
 update: wiki item formatting
 update: catalog.php formatting remove bbcode from description

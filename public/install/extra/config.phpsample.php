@@ -6,7 +6,6 @@ $site_config['cookie_path'] = '#cookie_path'; // generally '/' is good
 $site_config['cookie_domain'] = '.#cookie_domain'; // set to eg: .somedomain.com or is subdomain set to: .sub.somedomain.com
 $site_config['cookie_lifetime'] = #cookie_lifetime; // length of time cookies will be valid
 $site_config['domain'] = '#domain';
-$site_config['sessionCookieSecure'] = #sessionCookieSecure; // using HTTPS only? then set this
 $site_config['sessionKeyPrefix'] = '#cookie_prefix_'; // useful if serving multiple sites
 $site_config['session_csrf'] = 'csrf_token'; // useful if serving multiple sites
 

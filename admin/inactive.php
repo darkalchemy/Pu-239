@@ -1,23 +1,27 @@
 <?php
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_account_delete.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $cache, $lang;
 
-$HTMLOUT = '';
 $lang = array_merge($lang, load_language('inactive'));
 
-$replyto = "{$site_config['site_email']}"; // The Reply-to email.
+use Nette\Mail\Message;
+use Nette\Mail\SendmailMailer;
+
+$HTMLOUT = '';
 $record_mail = true; // set this true or false . If you set this true every time whene you send a mail the time , userid , and the number of mail sent will be recorded
-$days = 50; //number of days of inactivity
+$days = 30; //number of days of inactivity
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $action = isset($_POST['action']) ? htmlsafechars(trim($_POST['action'])) : '';
     if (empty($_POST['userid']) && (($action == 'deluser') || ($action == 'mail'))) {
         stderr($lang['inactive_error'], "{$lang['inactive_selectuser']}");
     }
+
     if ($action == 'deluser' && (!empty($_POST['userid']))) {
         $res = sql_query('SELECT id, email, modcomment, username, added, last_access FROM users WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ORDER BY last_access DESC ');
         $count = mysqli_num_rows($res);
@@ -32,31 +36,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         stderr($lang['inactive_success'], "{$lang['inactive_deleted']} <a href='" . $site_config['baseurl'] . "/staffpanel.php?tool=inactive>{$lang['inactive_back']}</a>");
     }
+
     if ($action == 'disable' && (!empty($_POST['userid']))) {
         sql_query("UPDATE users SET enabled='no' WHERE id IN (" . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ');
         stderr($lang['inactive_success'], "{$lang['inactive_disabled']} <a href='" . $site_config['baseurl'] . "/staffpanel.php?tool=inactive>{$lang['inactive_back']}</a>");
     }
+
     if ($action == 'mail' && (!empty($_POST['userid']))) {
         $res = sql_query('SELECT id, email, modcomment, username, added, last_access FROM users WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ORDER BY last_access DESC ');
         $count = mysqli_num_rows($res);
         while ($arr = mysqli_fetch_array($res)) {
             $id = (int)$arr['id'];
             $username = htmlsafechars($arr['username']);
-            $email = htmlsafechars($arr['email']);
             $added = get_date($arr['added'], 'DATE');
             $last_access = get_date($arr['last_access'], 'DATE');
-            $subject = "{$lang['inactive_youracc']}{$site_config['site_name']} !";
-            $message = "{$lang['inactive_hey']}
-            {$lang['inactive_youracc']} {$site_config['site_name']} {$lang['inactive_marked']} {$site_config['site_name']}{$lang['inactive_plogin']}\n
-            {$lang['inactive_yourusername']} $username\n
-            {$lang['inactive_created']} $added\n
-            {$lang['inactive_lastaccess']} $last_access\n
-            {$lang['inactive_loginat']} {$site_config['baseurl']}/login.php\n
-            {$lang['inactive_forgotten']} {$site_config['baseurl']}/resetpw.php\n
-            {$lang['inactive_welcomeback']} {$site_config['site_name']}";
-            $headers = 'From: ' . $site_config['site_email'] . "\r\n" . 'Reply-To:' . $replyto . "\r\n" . 'X-Mailer: PHP/' . phpversion();
-            $mail = @mail($email, $subject, $message, $headers);
+            $body = "<html>
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    <title>{$lang['inactive_youracc']}</title>
+</head>
+<body>
+<p>{$lang['inactive_hey']} $username,</p>
+<p>{$lang['inactive_youracc']} {$site_config['site_name']} {$lang['inactive_marked']} {$site_config['site_name']}{$lang['inactive_plogin']}<br>
+{$lang['inactive_yourusername']} $username<br>
+{$lang['inactive_created']} $added<br>
+{$lang['inactive_lastaccess']} $last_access<br>
+{$lang['inactive_loginat']} {$site_config['baseurl']}/login.php<br>
+{$lang['inactive_forgotten']} {$site_config['baseurl']}/resetpw.php<br>
+{$lang['inactive_welcomeback']} {$site_config['site_name']}</p>
+</body>
+</html>";
+
+            $mail = new Message;
+            $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")
+                ->addTo($arr['email'])
+                ->setReturnPath($site_config['site_email'])
+                ->setSubject("{$lang['inactive_youracc']}{$site_config['site_name']}!")
+                ->setHtmlBody($body);
+
+            $mailer = new SendmailMailer;
+            $mailer->commandArgs = "-f{$site_config['site_email']}";
+            $mailer->send($mail);
         }
+
         if ($record_mail) {
             $date = TIME_NOW;
             $userid = (int)$CURUSER['id'];
@@ -64,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 sql_query('UPDATE avps SET value_i=' . sqlesc($date) . ', value_u=' . sqlesc($count) . ', value_s=' . sqlesc($userid) . " WHERE arg='inactivemail'") or sqlerr(__FILE__, __LINE__);
             }
         }
+
         if ($mail) {
             stderr($lang['inactive_success'], "{$lang['inactive_msgsent']} <a href='" . $site_config['baseurl'] . "/staffpanel.php?tool=inactive'>{$lang['inactive_back']}</a>");
         } else {
@@ -72,12 +95,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 $dt = TIME_NOW - ($days * 86400);
-$res = sql_query('SELECT COUNT(id) FROM users WHERE last_access<' . sqlesc($dt) . " AND status='confirmed' AND enabled='yes' ORDER BY last_access DESC");
+$res = sql_query('SELECT COUNT(id) FROM users WHERE last_access<' . sqlesc($dt) . " AND status = 'confirmed' AND enabled = 'yes' ORDER BY last_access DESC");
 $row = mysqli_fetch_array($res);
 $count = $row[0];
 $perpage = 15;
 $pager = pager($perpage, $count, 'staffpanel.php?tool=inactive&amp;');
-$res = sql_query('SELECT id,username,class,email,uploaded,downloaded,last_access FROM users WHERE last_access<' . sqlesc($dt) . " AND status='confirmed' AND enabled='yes' ORDER BY last_access DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT id,username,class,email,uploaded,downloaded,last_access FROM users WHERE last_access < ' . sqlesc($dt) . " AND status='confirmed' AND enabled='yes' ORDER BY last_access DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
 $count_inactive = mysqli_num_rows($res);
 if ($count_inactive > 0) {
     //if ($count > $perpage)
@@ -140,8 +163,8 @@ if ($count_inactive > 0) {
     $HTMLOUT .= '</table></form>';
     $HTMLOUT .= '</div></div>';
 } else {
-    $HTMLOUT .= "<h2>{$lang['inactive_noaccounts']} " . $days . " {$lang['inactive_days']}</h2>";
+    $HTMLOUT .= "<h2 class='has-text-centered margin20'>{$lang['inactive_noaccounts']} " . $days . " {$lang['inactive_days']}</h2>";
 }
 //if ($count > $perpage)
 $HTMLOUT .= $pager['pagerbottom'];
-echo stdhead($lang['inactive_users']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['inactive_users']) . wrapper($HTMLOUT) . stdfoot();

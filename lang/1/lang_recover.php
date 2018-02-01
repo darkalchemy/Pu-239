@@ -17,31 +17,41 @@ $lang = [
     'email_head'          => 'Error',
     'email_subjdetails'   => 'account details',
     'email_subjreset'     => 'password reset confirmation',
-    'email_request'       => 'Someone, hopefully you, requested that the password for the account
-associated with this email address (%s) be reset.
-
-The request originated from %s.
-
-If you did not do this ignore this email. Please do not reply.
-
-Should you wish to confirm this request, please follow this link:
-
-%s/recover.php?id=%s&token=%s
-
-After you do this, your password will be reset and emailed back
-to you.
-
---',
-    'email_newpass'       => 'As per your request we have generated a new password for your account.
-
-Here is the information we now have on file for this account:
-
-    User name: %s
-    Password:  %s
-
-You may login at %s/login.php
-
---',
+    'email_request'       => "<html>
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    <title>{$site_config['site_name']} Reset Password Request</title>
+</head>
+<body>
+<p>Someone, hopefully you, requested that the password for the account associated with this email address (%s) be reset.</p>
+<p>The request originated from %s.</p>
+<p>If you did not do this, you can ignore this email. Please do not reply.</p>
+<p>Should you wish to confirm this request, please follow this link:</p>
+<br>
+<p><b>%s/recover.php?id=%s&token=%s</b></p>
+<br>
+<p>After you do this, your password will be reset and emailed back to you.</p>
+<p>--%s</p>
+</body>
+</html>",
+    'email_newpass'       => "<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    <title>{$site_config['site_name']} Reset Password</title>
+</head>
+<body>
+<p>As per your request we have generated a new password for your account.</p>
+<p>Here is the information we now have on file for this account:</p>
+<br>
+<p>
+User name: %s<br>
+Password:  %s
+</p>
+<br>
+<p>You may login at %s/login.php?returnto=/usercp.php?action=security</p>
+<p>and change your password.</p>
+<p>--%s</p>
+</body>
+</html>",
     //captcha
     'captcha_spam'        => 'NO SPAM! Wait 10 seconds and then refresh page',
     'captcha_refresh'     => 'Click to refresh image',

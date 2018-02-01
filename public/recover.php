@@ -4,10 +4,15 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 dbconn();
 global $CURUSER, $site_config, $sluent;
+
 if (!$CURUSER) {
     get_template();
 }
 $lang = array_merge(load_language('global'), load_language('recover'), load_language('confirm'));
+
+use Nette\Mail\Message;
+use Nette\Mail\SendmailMailer;
+
 $stdfoot = [
     'js' => [
         get_file_name('captcha1_js'),
@@ -35,10 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!$user || empty($user)) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_notfound']}");
     }
-    $psecret = '';
     $secret = make_password(30);
     $token = make_passhash($secret);
-    $psecret = "$secret";
     $alt_id = make_password(16);
     $values = [
         'email' => $email,
@@ -49,8 +52,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ->values($values)
         ->execute();
 
-    $body = sprintf($lang['email_request'], $email, $_SERVER['REMOTE_ADDR'], $site_config['baseurl'], $alt_id, $psecret) . $site_config['site_name'];
-    @mail($user['email'], "{$site_config['site_name']} {$lang['email_subjreset']}", $body, "From: {$site_config['site_email']}") or stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_nomail']}");
+    $body = sprintf($lang['email_request'], $email, $_SERVER['REMOTE_ADDR'], $site_config['baseurl'], $alt_id, $secret, $site_config['site_name']);
+    $mail = new Message;
+    $mail->setFrom( "{$site_config['site_email']}", "{$site_config['chatBotName']}")
+        ->addTo($user['email'])
+        ->setReturnPath($site_config['site_email'])
+        ->setSubject("{$site_config['site_name']} {$lang['email_subjreset']}")
+        ->setHtmlBody($body);
+
+    $mailer = new SendmailMailer;
+    $mailer->commandArgs = "-f{$site_config['site_email']}";
+    $mailer->send($mail);
+
     stderr($lang['stderr_successhead'], $lang['stderr_confmailsent']);
     unsetSessionVar('simpleCaptchaAnswer');
     unsetSessionVar('simpleCaptchaTimestamp');
@@ -91,8 +104,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!$update || empty($update)) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_noupdate']}");
     }
-    $body = sprintf($lang['email_newpass'], $row['username'], $newpassword, $site_config['baseurl']) . $site_config['site_name'];
-    @mail($email, "{$site_config['site_name']} {$lang['email_subject']}", $body, "From: {$site_config['site_email']}") or stderr($lang['stderr_errorhead'], $lang['stderr_nomail']);
+    $body = sprintf($lang['email_newpass'], $row['username'], $newpassword, $site_config['baseurl'], $site_config['site_name']);
+    $mail = new Message;
+    $mail->setFrom( "{$site_config['site_email']}", "{$site_config['chatBotName']}")
+        ->addTo($user['email'])
+        ->setReturnPath($site_config['site_email'])
+        ->setSubject("{$site_config['site_name']} {$lang['email_subjdetails']}")
+        ->setHtmlBody($body);
+
+    $mailer = new SendmailMailer;
+    $mailer->commandArgs = "-f{$site_config['site_email']}";
+    $mailer->send($mail);
+
     stderr($lang['stderr_successhead'], $lang['stderr_mailed']);
     unsetSessionVar('simpleCaptchaAnswer');
     unsetSessionVar('simpleCaptchaTimestamp');

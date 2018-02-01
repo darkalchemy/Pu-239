@@ -308,7 +308,7 @@ body.ajax-chat {
   border: 1px solid
 }
 #content #chatList .deleteSelected {
-  border: 1px dotted red
+  border: 1px dotted
 }
 #content #bbCodeContainer input,
 #content #logoutButton,
@@ -317,6 +317,21 @@ body.ajax-chat {
 #content #submitButton,
 #loginContent #loginButton {
   cursor: pointer
+}
+#content #chatList .code {
+  tab-size: 4;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  white-space: pre-wrap;
+  font-family: consolas,monospaced;
+  font-size: .9em!important;
+  line-height: .9em;
+  border: 1px solid grey;
+  background: linear-gradient(to bottom,#222,#000) #000;
+  -webkit-border-radius: .625em;
+  -moz-border-radius: .625em;
+  border-radius: .625em;
+  padding: 10px
 }
 @media (max-width:700px) {
   #mainPanelContainer #helpContainer,
@@ -826,6 +841,9 @@ textarea {
 }
 #content #chatList .chatBotErrorMessage {
   color: red
+}
+#content #chatList .deleteSelected {
+  border-color: red
 }
 #content #chatList span.dateTime {
   font-family: "Lucida Console",Monaco,monospace;

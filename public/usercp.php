@@ -406,10 +406,10 @@ if ($action == 'avatar') {
                                             <option value='3'" . ($CURUSER['paranoia'] == 3 ? " selected" : '') . ">I wear a tin-foil hat</option>
                                         </select>
                                         <div class='mw-100'>
-                                            <span class='flipper has-text-primary'>
+                                            <div class='flipper has-text-primary top10'>
                                                 <a id='paranoia_open'>Paranoia Levels explained! <i class='fa icon-down-open size_3' aria-hidden='true'></i></a>
-                                            </span>
-                                            <div id='paranoia_info' class='is_hidden wrap'>
+                                            </div>
+                                            <div id='paranoia_info' class='is_hidden wrap padding20'>
                                                 <p>
                                                     I'm totally relaxed<br>
                                                     Default setting, nothing is hidden except your IP, passkey, email. the same as any tracker.
@@ -529,7 +529,7 @@ if ($action == 'avatar') {
     }
 
     $HTMLOUT .= tr($lang['usercp_email_notif'], "
-                                            <input type='checkbox' name='pmnotif'" . (strpos($CURUSER['notifs'], '[pm]') !== false ? " checked" : '') . " value='yes' /> {$lang['usercp_notify_pm']}<br>\n" . "<input type='checkbox' name='emailnotif'" . (strpos($CURUSER['notifs'], '[email]') !== false ? " checked" : '') . " value='yes' /> {$lang['usercp_notify_torrent']}\n", 1);
+                                            <input type='checkbox' name='emailnotif'" . (strpos($CURUSER['notifs'], '[email]') !== false ? " checked" : '') . " value='yes' /> {$lang['usercp_notify_torrent']}\n", 1);
     $HTMLOUT .= tr($lang['usercp_browse'], $categories, 1);
     $HTMLOUT .= tr($lang['usercp_clearnewtagmanually'], "
                                             <input type='checkbox' name='clear_new_tag_manually' value='yes'" . (($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) ? " checked" : '') . " /> {$lang['usercp_default_clearnewtagmanually']}", 1);
@@ -734,6 +734,8 @@ if ($action == 'avatar') {
                                     </tr>
                                 </thead>
                                 <tbody>";
+        $HTMLOUT .= tr($lang['usercp_email_notif'], "
+                                            <input type='checkbox' name='pmnotif'" . (strpos($CURUSER['notifs'], '[pm]') !== false ? " checked" : '') . " value='yes' /> {$lang['usercp_notify_pm']}", 1);
         $HTMLOUT .= tr($lang['usercp_accept_pm'], "
                                             <div class='level-center'>
                                                 <span>

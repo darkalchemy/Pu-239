@@ -64,7 +64,7 @@ function commenttable($rows, $variant = 'torrent')
                 } else {
                     $title = htmlsafechars($title);
                 }
-                $avatar1 = ($row['anonymous'] == 'yes' ? "<img src='{$site_config['pic_baseurl']}anonymous_1.jpg' alt='Avatar' title='Avatar' class='avatar' />" : "<img src='" . htmlsafechars(image_proxy($row['avatar'])) . "' alt='Avatar' title='Avatar' class='avatar' />");
+                $avatar1 = ($row['anonymous'] == 'yes' ? "<img src='{$site_config['pic_baseurl']}anonymous_1.jpg' alt='Avatar' title='Avatar' class='avatar' />" : "<img src='" . image_proxy($row['avatar']) . "' alt='Avatar' title='Avatar' class='avatar' />");
                 if (!$avatar1) {
                     $avatar1 = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
                 }

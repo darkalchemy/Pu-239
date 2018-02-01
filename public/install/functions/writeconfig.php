@@ -98,12 +98,6 @@ $foo = [
             'info'        => 'Your site domain name - note exclude http or www. This must match the domain used to access the site.',
             'placeholder' => 'Pu-239.pw',
         ],
-        [
-            'text'        => 'Secure Session Cookies',
-            'input'       => 'config[sessionCookieSecure]',
-            'info'        => 'true/false/null. Enabled, this requires that session cookies can only be passed using SSL/HTTPS protocals. Null is the default. True only if you do now allow http access, only https. False will only send cookies over http, even when using https.',
-            'placeholder' => 'null',
-        ],
     ],
     'System - Site BOT' => [
         [

@@ -149,7 +149,7 @@ $site_config['latest_posts_limit'] = 5; //query limit for latest forum posts on 
 //latest torrents limit
 $site_config['latest_torrents_limit'] = 5;
 $site_config['latest_torrents_limit_2'] = 5;
-$site_config['latest_torrents_limit_scroll'] = 20;
+$site_config['latest_torrents_limit_scroll'] = 25;
 /* Settings **/
 $site_config['reports'] = 1; // 1/0 on/off
 $site_config['karma'] = 1; // 1/0 on/off

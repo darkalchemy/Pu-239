@@ -57,10 +57,10 @@ rm -r Pu-239/public/install/
 # goto admin cleanup and activate/deactivate scripts, they are initially set to yesterday midnight
 
 # insert trivia questions if desired
-mysql database < Pu-239/public/install/extra/trivia.php.sql
+mysql database < Pu-239/database/trivia.php.sql
 
 # insert tvmaze ids
-mysql database < Pu-239/public/install/extra/tvmaze.php.sql
+mysql database < Pu-239/database/tvmaze.php.sql
 
 # keeping AJAX Chat open after first installing will allow the cleanup to catchup
 ```
@@ -76,10 +76,10 @@ composer update
 npm update
 
 # update trivia questions if desired
-mysql database < Pu-239/public/install/extra/trivia.php.sql
+mysql database < Pu-239/database/trivia.php.sql
 
 # insert tvmaze ids 
-mysql database < Pu-239/public/install/extra/tvmaze.php.sql
+mysql database < Pu-239/database/tvmaze.php.sql
 
 # update database:
 goto admin/upgrade_database to check/update the database

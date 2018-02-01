@@ -7,7 +7,9 @@
     "sebastian/version": "^2.0",
     "scriptotek/google-books": "^0.2.3",
     "imdbphp/imdbphp": "^5.2",
-    "blocktrail/cryptojs-aes-php": "^0.1.0"
+    "blocktrail/cryptojs-aes-php": "^0.1.0",
+    "nette/mail": "^2.4",
+    "ezimuel/php-secure-session": "^1.1"
   },
   "autoload": {
     "psr-4": {

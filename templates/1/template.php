@@ -262,7 +262,6 @@ function stdfoot($stdfoot = false)
         var cookie_path     = '{$site_config['cookie_path']}';
         var cookie_lifetime = '{$site_config['cookie_lifetime']}';
         var cookie_domain   = '{$site_config['cookie_domain']}';
-        var cookie_secure   = '{$site_config['sessionCookieSecure']}';
         var csrf_token      = '" . getSessionVar('csrf_token') . "';
         var x = document.getElementsByClassName('flipper');
         var i;
@@ -387,22 +386,22 @@ function navbar()
                 if ($value['av_class'] <= $CURUSER['class'] && $value['type'] == 'user') {
                     $user_panel .= "
                         <li>
-                            <a href='" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . "</a>
+                            <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . "</a>
                         </li>";
                 } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] == 'settings') {
                     $settings_panel .= "
                         <li>
-                            <a href='" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . "</a>
+                            <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . "</a>
                         </li>";
                 } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] == 'stats') {
                     $stats_panel .= "
                         <li>
-                            <a href='" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . "</a>
+                            <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . "</a>
                         </li>";
                 } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] == 'other') {
                     $other_panel .= "
                         <li>
-                            <a href='" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . "</a>
+                            <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . "</a>
                         </li>";
                 }
             }

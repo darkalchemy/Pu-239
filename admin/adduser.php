@@ -9,6 +9,8 @@ class_check($class);
 global $cache, $site_config, $lang;
 
 $cache->delete('userlist_' . $site_config['chatBotID']);
+$cache->delete('chat_users_list');
+
 $lang = array_merge($lang, load_language('ad_adduser'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $insert = [

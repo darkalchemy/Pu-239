@@ -86,8 +86,6 @@ $config['sessionCookieLifeTime'] = $site_config['cookie_lifetime'];
 $config['sessionCookiePath'] = $site_config['cookie_path'];
 // The domain of the cookies, defaults to the hostname of the server if set to null:
 $config['sessionCookieDomain'] = $site_config['cookie_domain'];
-// If enabled, cookies must be sent over secure (SSL/TLS encrypted) connections:
-$config['sessionCookieSecure'] = $site_config['sessionCookieSecure'];
 
 // Default channelName used together with the defaultChannelID if no channel with this ID exists:
 $config['defaultChannelName'] = $site_config['site_name'];

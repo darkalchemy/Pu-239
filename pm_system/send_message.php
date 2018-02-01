@@ -1,5 +1,9 @@
 <?php
 global $CURUSER, $site_config, $lang, $cache;
+
+use Nette\Mail\Message;
+use Nette\Mail\SendmailMailer;
+
 $subject = $body = '';
 flood_limit('messages');
 
@@ -75,17 +79,29 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     }
     if (strpos($arr_receiver['notifs'], '[pm]') !== false) {
         $username = htmlsafechars($CURUSER['username']);
-        $body = <<<EOD
-{$lang['pm_forwardpm_pmfrom']} $username!
+        $body = "<html>
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    <title>{$site_config['site_name']} PM received</title>
+</head>
+<body>
+<p>{$lang['pm_forwardpm_pmfrom']} $username!</p>
+<p>{$lang['pm_forwardpm_url']}</p>
+<p>{$site_config['baseurl']}/pm_system.php</p>
+<p>--{$site_config['site_name']}</p>
+</body>
+</html>";
 
-{$lang['pm_forwardpm_url']}
+        $mail = new Message;
+        $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")
+            ->addTo($arr_receiver['email'])
+            ->setReturnPath($site_config['site_email'])
+            ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username!")
+            ->setHtmlBody($body);
 
-{$site_config['baseurl']}/pm_system.php
-
---
-{$site_config['site_name']}
-EOD;
-        @mail($user['email'], $lang['pm_forwardpm_pmfrom'] . $username . '!', $body, "{$lang['pm_forwardpm_from']}{$site_config['site_email']}");
+        $mailer = new SendmailMailer;
+        $mailer->commandArgs = "-f{$site_config['site_email']}";
+        $mailer->send($mail);
     }
     if ($delete != 0) {
         $res = sql_query('SELECT saved, receiver FROM messages WHERE id=' . sqlesc($delete)) or sqlerr(__FILE__, __LINE__);

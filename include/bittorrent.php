@@ -1509,12 +1509,14 @@ function sessionStart()
         // Set the session name:
         session_name($site_config['sessionName']);
 
+        $secure_session = get_scheme() === 'https' ? true : false;
+
         // Set session cookie parameters:
         session_set_cookie_params(
             $site_config['cookie_lifetime'] * 86400,
             $site_config['cookie_path'],
             $site_config['cookie_domain'],
-            $site_config['sessionCookieSecure']
+            $secure_session
         );
 
         // enforce php settings before start session
@@ -1526,19 +1528,20 @@ function sessionStart()
         session_start();
     }
 
-    // Create a new AUTH token.
+    if (!getSessionVar('canary')) {
+        setSessionVar('canary', TIME_NOW);
+    }
+
     if (!getSessionVar('auth')) {
         setSessionVar('auth', make_password(32));
     }
 
-    // Create a new CSRF token.
     if (!getSessionVar($site_config['session_csrf'])) {
         setSessionVar($site_config['session_csrf'], make_password(32));
     }
 
-    // Make sure we have a canary set and Regenerate session ID every five minutes:
-    if (!getSessionVar('canary') || getSessionVar('canary') >= TIME_NOW - 300) {
-        regenerateSessionID();
+    if (getSessionVar('canary') <= TIME_NOW - 300) {
+        session_regenerate_id(false);
         setSessionVar('canary', TIME_NOW);
     }
 }
@@ -1562,13 +1565,6 @@ function destroySession()
     }
 
     session_destroy();
-}
-
-function regenerateSessionID()
-{
-    if (!session_id()) {
-        session_regenerate_id(false);
-    }
 }
 
 /**
@@ -2228,13 +2224,16 @@ function get_anonymous_name()
  *
  * @return string
  */
-function image_proxy($url)
+function image_proxy($url, $width = null, $height = null)
 {
     global $site_config;
 
 
     if (empty($url) || preg_match('#' . $site_config['domain'] . '#', $url)) {
         return $url;
+    }
+    if (!empty($width) && !empty($height)) {
+        $url = "{$url}&width={$width}&height={$height}";
     }
     if (!empty($site_config['image_proxy'])) {
         $encrypted = CryptoJSAES::encrypt($url, $site_config['image_proxy_key']);

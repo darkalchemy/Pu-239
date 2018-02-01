@@ -53,7 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
         stderr('Success', 'The promo link <b>' . htmlsafechars($promoname) . '</b> was added! here is the link <br><input type="text" name="promo-link" value="' . $site_config['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $link . '" size="80" onclick="select();"  /><br><a href="' . $_SERVER['PHP_SELF'] . '"><input type="button" value="Back to Promos" /></a>');
     }
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'signup') {
-    //==err("w00t");
     $r_check = sql_query('SELECT * FROM promo WHERE link=' . sqlesc($link)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($r_check) == 0) {
         stderr('Error', 'The link your using is not a valid link');

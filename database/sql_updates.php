@@ -367,4 +367,10 @@ $sql_updates = [
         'date'  => '27 Jan, 2018',
         'query' => "INSERT INTO `cleanup` (`clean_title`, `clean_file`, `clean_time`, `clean_increment`, `clean_log`, `clean_desc`, `clean_on`, `function_name`) VALUES ('TVMaze Update', 'tvmaze_update.php', 1517184000, 86400, 1, 'Insert New TVMaze IDs', 1, 'tvmaze_update')",
     ],
+    [
+        'id'    => 60,
+        'info'  => 'Add new_email column',
+        'date'  => '1 Feb, 2018',
+        'query' => "ALTER TABLE `tokens` ADD COLUMN `new_email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `email`",
+    ],
 ];

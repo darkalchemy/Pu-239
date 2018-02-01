@@ -31,20 +31,18 @@ $lang = [
     'takeeditcp_birth_month'      => 'Please set your birth month.',
     'takeeditcp_birth_day'        => 'Please set your birth day.',
     'takeeditcp_birth_not'        => 'The date entered is not a valid date, please try again',
+    'takeeditcp_email_body'       => "<html>
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    <title>{$site_config['site_name']} Email Change</title>
+</head>
+<body>
+<p>You have requested that your user profile (username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>
+<p>If you did not do this, please ignore this email. The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply.</p>
+<p>To complete the update of your user profile, please follow this link:</p>
+<p><#CHANGE_LINK#></p>
+<p>Your new email address will appear in your profile after you do this. Otherwise your profile will remain unchanged.</p>
+<p>--<#SITENAME#></p>
+</body>
+</html>",
 ];
-
-$lang['takeeditcp_email_body'] = <<<EOD
-You have requested that your user profile (username <#USERNAME#>)
-on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as
-user contact.
-
-If you did not do this, please ignore this email. The person who entered your
-email address had the IP address <#IP_ADDRESS#>. Please do not reply.
-
-To complete the update of your user profile, please follow this link:
-
-<#CHANGE_LINK#>
-
-Your new email address will appear in your profile after you do this. Otherwise
-your profile will remain unchanged.
-EOD;

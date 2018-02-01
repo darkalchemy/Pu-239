@@ -14,7 +14,6 @@ if (!defined('DATABASE_DIR')) {
     require_once DATABASE_DIR . 'sql_updates.php';
 }
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
     unset($_POST);
@@ -29,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
-
 
 $table_exists = $cache->get('table_exists_database_updates');
 if ($table_exists === false || is_null($table_exists)) {

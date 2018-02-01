@@ -2264,7 +2264,7 @@ var ajaxChat = {
         return '<span class="quote"><q>' + this.replaceBBCode(content) + "</q></span>";
     },
     replaceBBCodeCode: function(content) {
-        return "<code>" + this.replaceBBCode(content.replace(/\t|(?:  )/gm, "&#160;&#160;")) + "</code>";
+        return "<fieldset class='code'><legend>code</legend>" + this.replaceBBCode(content.replace(/\t|(?:  )/gm, "&#160;&#160;")) + "</fieldset>";
     },
     replaceBBCodeUnderline: function(content) {
         return '<span style="text-decoration:underline;">' + this.replaceBBCode(content) + "</span>";

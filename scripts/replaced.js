@@ -131,9 +131,9 @@ $(function () {
     if ($('#carousel-container').length) {
         $('#icarousel').iCarousel({
             easing: 'ease-in-out',
-            slides: 10,
+            slides: 11,
             make3D: 1,
-            perspective: 590,
+            perspective: 400,
             animationSpeed: animate_duration,
             pauseTime: 5E3,
             startSlide: 1,
@@ -148,7 +148,7 @@ $(function () {
             playLabel: 'Play',
             pauseLabel: 'Pause',
             randomStart: 1,
-            slidesSpace: '200',
+            slidesSpace: '225',
             slidesTopSpace: 'auto',
             direction: 'rtl',
             timer: '360bar',

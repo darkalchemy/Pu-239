@@ -31,20 +31,18 @@ $lang = [
     'takeeditcp_birth_month'      => 'Va rugam sa setati luna aniversarii.',
     'takeeditcp_birth_day'        => 'Va rugam sa setati ziua aniversarii.',
     'takeeditcp_birth_not'        => 'Data introdusa nu este o data valida, va rugam incercati din nou',
+    'takeeditcp_email_body'       => "<html>
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    <title>{$site_config['site_name']} Email Change</title>
+</head>
+<body>
+<p>You have requested that your user profile (username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>
+<p>If you did not do this, please ignore this email. The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply.</p>
+<p>To complete the update of your user profile, please follow this link:</p>
+<p><#CHANGE_LINK#></p>
+<p>Your new email address will appear in your profile after you do this. Otherwise your profile will remain unchanged.</p>
+<p>--<#SITENAME#></p>
+</body>
+</html>",
 ];
-
-$lang['takeeditcp_email_body'] = <<<EOD
-Ati solicitat ca profilul dvs de utilizator (nume de utilizator <#USERNAME#>)
-pe <#SITENAME#> ar trebui actualizat cu aceasta adresa de email (<#USEREMAIL#>) ca
-contact al utilizatorului.
-
-Daca nu ai facut asta, va rugam sa ignorati acest email, Persoana care a introdus  adresa de email avea aceasta adresa IP <#IP_ADDRESS#>. 
-Va rugam sa nu raspundeti.
-
-Pentru a finaliza actualizarile aduse profilului tau, va rugam urmati acest link:
-
-<#CHANGE_LINK#>
-
-Noua adresa de email va aparea in profilul dumneavoastra dupa ce veti face asta. Daca nu veti face asta profilul tau va ramane neschimbat.
-
-EOD;

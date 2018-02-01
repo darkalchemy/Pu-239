@@ -8,6 +8,9 @@ dbconn();
 get_template();
 global $site_config, $cache, $lang, $fluent;
 
+use Nette\Mail\Message;
+use Nette\Mail\SendmailMailer;
+
 $wantusername = $wantpassword = $passagain = $email = $user_timezone = $year = $month = $day = $passhint = '';
 $hintanswer = $country = $gender = $rulesverify = $faqverify = $ageverify = $captchaSelection = $submitme = '';
 setSessionVar('signup_variables', serialize($_POST));
@@ -96,7 +99,7 @@ if (strlen($wantpassword) < 6) {
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
-if (strlen($wantpassword) > 100) {
+if (strlen($wantpassword) > 72) {
     setSessionVar('is-warning', "[h2]{$lang['takesignup_pass_long']}[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
@@ -279,7 +282,17 @@ if ($users_count > 0 && $site_config['email_confirm']) {
                             $ip,
                             "{$site_config['baseurl']}/confirm.php?id=$alt_id$psecret",
                         ], $lang['takesignup_email_body']);
-    mail($email, "{$site_config['site_name']} {$lang['takesignup_confirm']}", $body, "{$lang['takesignup_from']} {$site_config['site_email']}");
+
+    $mail = new Message;
+    $mail->setFrom( "{$site_config['site_email']}", "{$site_config['chatBotName']}")
+        ->addTo($email)
+        ->setReturnPath($site_config['site_email'])
+        ->setSubject("{$site_config['site_name']} {$lang['takesignup_confirm']}")
+        ->setHtmlBody($body);
+
+    $mailer = new SendmailMailer;
+    $mailer->commandArgs = "-f{$site_config['site_email']}";
+    $mailer->send($mail);
 }
 
 if ($site_config['auto_confirm']) {

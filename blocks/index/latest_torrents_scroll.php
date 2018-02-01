@@ -14,9 +14,10 @@ if ($scroll_torrents === false || is_null($scroll_torrents)) {
         ->select('torrents.poster')
         ->select('torrents.anonymous')
         ->select('torrents.owner')
-        ->leftJoin('users ON torrents.owner = users.id')
         ->select('users.username')
         ->select('users.class')
+        ->leftJoin('users ON torrents.owner = users.id')
+        ->where('poster != ""')
         ->orderBy('torrents.added DESC')
         ->limit($site_config['latest_torrents_limit_scroll'])
         ->fetchAll();
@@ -40,7 +41,6 @@ if ($scroll_torrents) {
         $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = '';
         extract($scroll_torrent);
         $i = $site_config['latest_torrents_limit_scroll'];
-        $poster = ($poster == '' ? '' . $site_config['pic_baseurl'] . 'noposter.png' : htmlsafechars($poster));
 
         if ($anonymous == 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
             $uploader = "<span>" . get_anonymous_name() . "</span>";
@@ -52,7 +52,7 @@ if ($scroll_torrents) {
                     <div class='slide'>
                         <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
                             <div class='dt-tooltipper-small' data-tooltip-content='#scroll_id_{$id}_tooltip'>
-                            <img src='" . htmlsafechars(image_proxy($poster)) . "' alt='{$name}' width='200' height='300' />
+                            <img src='" . image_proxy($poster) . "' alt='{$name}' style='width: auto; height: 300px; max-height: 300px;'  />
                                 <div class='tooltip_templates'>
                                     <span id='scroll_id_{$id}_tooltip'>
                                         <span>

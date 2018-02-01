@@ -55,7 +55,7 @@ $lang = [
     'usercp_tags'                        => 'Displayed on your public page. May contain <a href="tags.php" target="_new">BB codes</a>.',
     'usercp_email'                       => 'Email address',
     'usercp_email_pass'                  => 'Please enter your password if changing your email address!',
-    'usercp_note'                        => '<b>Note:</b> In order to change your email address, you will receive another<br>confirmation email to your new address.',
+    'usercp_note'                        => '<b>Note:</b> In order to change your email address, you will receive a confirmation email to your new address.',
     'usercp_chpass'                      => 'Change password',
     'usercp_pass_again'                  => 'Type password again',
     'usercp_submit'                      => 'Submit changes!',

@@ -1724,13 +1724,15 @@ class AJAXChat
 
     public function setLangCodeCookie()
     {
+        $secure_session = get_scheme() === 'https' ? true : false;
+
         setcookie(
             $this->getConfig('sessionKeyPrefix') . 'lang',
             $this->getLangCode(),
             TIME_NOW + 60 * 60 * 24 * $this->getConfig('sessionCookieLifeTime'),
             $this->getConfig('sessionCookiePath'),
             $this->getConfig('sessionCookieDomain'),
-            $this->getConfig('sessionCookieSecure')
+            $secure_session
         );
     }
 

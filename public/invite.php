@@ -6,8 +6,12 @@ require_once INCL_DIR . 'password_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $fluent;
 
-$HTMLOUT = $sure = '';
 $lang = array_merge(load_language('global'), load_language('invite_code'));
+
+use Nette\Mail\Message;
+use Nette\Mail\SendmailMailer;
+
+$HTMLOUT = $sure = '';
 $do = (isset($_GET['do']) ? htmlsafechars($_GET['do']) : (isset($_POST['do']) ? htmlsafechars($_POST['do']) : ''));
 $valid_actions = [
     'create_invite',
@@ -34,7 +38,7 @@ if ($do == 'view_page') {
         $rows[] = $row;
     }
     $HTMLOUT = "<h1 class='has-text-centered'>{$lang['invites_users']}</h1>";
-    $body = '';
+    $heading = $body = '';
     if (empty($rows)) {
         $body .= "
                     <tr>
@@ -158,7 +162,7 @@ if ($do == 'view_page') {
         ->execute();
 
     $set = [
-        'invites' => new Envms\FluentPDO\Literal('invites - 1')
+        'invites' => new Envms\FluentPDO\Literal('invites - 1'),
     ];
     $fluent->update('users')
         ->set($set)
@@ -195,42 +199,42 @@ if ($do == 'view_page') {
             ->execute();
 
         $inviter = htmlsafechars($CURUSER['username']);
-        $body = <<<EOD
-You have been invited to {$site_config['site_name']} by $inviter.
-
-$inviter has specified this address ($email) as your email.
-
-If you do not know this person, please ignore this email. Please do not reply.
-
-This is a private site and you must agree to the rules before you can enter:
-
-{$site_config['baseurl']}/useragreement.php
-
-{$site_config['baseurl']}/rules.php
-
-{$site_config['baseurl']}/faq.php
-
-------------------------------------------------------------
-
-To confirm your invitation, you have to follow this link:
-
+        $body = "<html>
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    <title>{$site_config['site_name']} Invitation</title>
+</head>
+<body>
+<p>You have been invited to {$site_config['site_name']} by $inviter.<br>
+$inviter has specified this address ($email) as your email.<br>
+If you do not know this person, please ignore this email. Please do not reply.<br>
+This is a private site and you must agree to the rules before you can enter:</p>
+<p>{$site_config['baseurl']}/useragreement.php</p>
+<p>{$site_config['baseurl']}/rules.php</p>
+<p>{$site_config['baseurl']}/faq.php</p>
+<hr>
+<p>To confirm your invitation, you have to follow this link:</p>
 {$site_config['baseurl']}/invite_signup.php?id={$secret}&code=$invite
+<hr>
+<p>After you do this, $inviter may need to confirm your account.<br>
+We urge you to read the RULES and FAQ before you start using {$site_config['site_name']}.</p>
+</body>
+</html>";
 
-------------------------------------------------------------
+        $mail = new Message;
+        $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")
+            ->addTo($email)
+            ->setReturnPath($site_config['site_email'])
+            ->setSubject("You have been invited to {$site_config['site_name']}")
+            ->setHtmlBody($body);
 
-After you do this, your inviter may need to confirm your account.
-We urge you to read the RULES and FAQ before you start using {$site_config['site_name']}.
-EOD;
-        $sendit = mail($email, "You have been invited to {$site_config['site_name']}", $body, "From: {$site_config['site_email']}", "-f{$site_config['site_email']}");
-        if (!$sendit) {
-            setSessionVar('is-error', $lang['invites_unable']);
-            header("Location: {$site_config['baseurl']}/invite.php?do=view_page");
-            die();
-        } else {
-            setSessionVar('is-success', $lang['invites_confirmation']);
-            header("Location: {$site_config['baseurl']}/invite.php?do=view_page");
-            die();
-        }
+        $mailer = new SendmailMailer;
+        $mailer->commandArgs = "-f{$site_config['site_email']}";
+        $mailer->send($mail);
+
+        setSessionVar('is-success', $lang['invites_confirmation']);
+        header("Location: {$site_config['baseurl']}/invite.php?do=view_page");
+        die();
     }
     $id = (isset($_GET['id']) ? (int)$_GET['id'] : (isset($_POST['id']) ? (int)$_POST['id'] : ''));
     if (!is_valid_id($id)) {
@@ -285,7 +289,7 @@ EOD;
         ->execute();
 
     $set = [
-        'invites' => new Envms\FluentPDO\Literal('invites + 1')
+        'invites' => new Envms\FluentPDO\Literal('invites + 1'),
     ];
 
     $fluent->update('users')
@@ -319,7 +323,6 @@ EOD;
         'status' => 'confirmed',
     ], $site_config['expires']['user_cache']);
 
-    //==pm to new invitee/////
     $msg = sqlesc("Hey there :wave:
 Welcome to {$site_config['site_name']}!\n
 We have made many changes to the site, and we hope you enjoy them!\n 

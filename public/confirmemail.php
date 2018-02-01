@@ -1,43 +1,51 @@
 <?php
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-global $cache, $site_config;
+global $cache, $site_config, $fluent;
 
 $lang = array_merge(load_language('global'), load_language('confirmemail'));
-if (!isset($_GET['uid']) or !isset($_GET['key']) or !isset($_GET['email'])) {
-    stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_idiot']}");
+$id = isset($_GET['id']) ? $_GET['id'] : 0;
+$token = isset($_GET['token']) ? $_GET['token'] : '';
+if (empty($id)) {
+    stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_id']}");
 }
-if (!preg_match("/^(?:[\d\w]){32}$/", $_GET['key'])) {
-    stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_no_key']}");
+if (!preg_match("/^(?:[\d\w]){60}$/", $token)) {
+    stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_key']}");
 }
-if (!preg_match("/^(?:\d){1,}$/", $_GET['uid'])) {
-    stderr("{$lang['confirmmail_user-error']}", "{$lang['confirmmail_no_id']}");
+
+$row = $fluent->from('tokens')
+    ->select('users.status')
+    ->select('users.id AS user_id')
+    ->innerJoin('users ON users.email = tokens.email')
+    ->where('tokens.id = ?', $id)
+    ->where('created_at > DATE_SUB(NOW(), INTERVAL 120 MINUTE)')
+    ->fetch();
+
+if (!password_verify($token, $row['token'])) {
+    stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_no_id']}");
+    die();
 }
-$id = intval($_GET['uid']);
-$md5 = $_GET['key'];
-$email = urldecode($_GET['email']);
-if (!validemail($email)) {
-    stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_false_email']}");
+
+if ($row['status'] != 'confirmed') {
+    stderr("{$lang['confirmmail_user_error']}", "Your account is not active");
+    die();
 }
-dbconn();
-$res = sql_query('SELECT editsecret FROM users WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$row = mysqli_fetch_assoc($res);
-if (!$row) {
+
+$passed = $fluent->update('users')
+    ->set(['email' => $row['new_email']])
+    ->where('email = ?', $row['email'])
+    ->execute();
+
+if ($passed) {
+    $fluent->deleteFrom('tokens')
+        ->where('id = ?', $id)
+        ->execute();
+} else {
     stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_not_complete']}");
 }
-$sec = $row['editsecret'];
-if (preg_match('/^ *$/s', $sec)) {
-    stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_not_complete']}");
-}
-if ($md5 != md5($sec . $email . $sec)) {
-    stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_not_complete']}");
-}
-sql_query("UPDATE users SET editsecret = '', email = " . sqlesc($email) . ' WHERE id = ' . sqlesc($id) . ' AND editsecret = ' . sqlesc($row['editsecret'])) or sqlerr(__FILE__, __LINE__);
-$cache->update_row('user' . $id, [
-    'editsecret' => '',
-    'email'      => $email,
+
+$cache->update_row('user' . $row['user_id'], [
+    'email' => $row['new_email'],
 ], $site_config['expires']['user_cache']);
-if (!mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-    stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_not_complete']}");
-}
-header("Refresh: 0; url={$site_config['baseurl']}/usercp.php?action=security&emailch=1");
+setSessionVar('is-success', "[h1]Your email has been updated to {$row['email']}[/h1]");
+header("Refresh: 0; url={$site_config['baseurl']}/usercp.php?action=security");

@@ -181,7 +181,7 @@ if (!empty($rows)) {
             <div class='column is-2 has-text-centered'>
                 <div class='bottom10'>{$lang['catol_upper']}: $uploader</div>
                 <div>" . ($row['poster'] ? "
-                    <img src='" . htmlsafechars(image_proxy($row['poster'])) . "' alt='Poster' class='tooltip-poster' />
+                    <img src='" . image_proxy($row['poster']) . "' alt='Poster' class='tooltip-poster' />
                 </div>" : "
                     <img src='{$site_config['pic_baseurl']}noposter.png' alt='{$lang['catol_no_poster']}' class='tooltip-poster' />
                 </div>") . "

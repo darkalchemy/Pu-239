@@ -25,20 +25,17 @@ $lang = [
     'takesignup_badusername'     => 'The username your trying to use <b>(%s)</b> is on our black list chose another one',
     'takesignup_bannedmail'      => 'This email address is banned!<br><br><strong>Reason</strong>:',
     'takesignup_from'            => 'From:',
+    'takesignup_email_body'      => "<html>
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    <title>{$site_config['site_name']} Registration</title>
+</head>
+<body>
+<p>You have requested a new user account on <#SITENAME#> and you have specified this address (<#USEREMAIL#>) as user contact.</p>
+<p>If you did not do this, please ignore this email. The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply.</p>
+<p>To confirm your user registration, you have to follow this link:</p>
+<p><#REG_LINK#></p>
+<p>After you do this, you will be able to use your new account. If you fail to do this, your account will be deleted within a few days. We urge you to read the RULES and FAQ before you start using <#SITENAME#>.</p>
+</body>
+</html>",
 ];
-$lang['takesignup_email_body'] = <<<EOD
-
-You have requested a new user account on <#SITENAME#> and you have
-specified this address (<#USEREMAIL#>) as user contact.
-
-If you did not do this, please ignore this email. The person who entered your
-email address had the IP address <#IP_ADDRESS#>. Please do not reply.
-
-To confirm your user registration, you have to follow this link:
-
-<#REG_LINK#>
-
-After you do this, you will be able to use your new account. If you fail to
-do this, your account will be deleted within a few days. We urge you to read
-the RULES and FAQ before you start using <#SITENAME#>.
-EOD;
