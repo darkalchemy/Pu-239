@@ -86,6 +86,10 @@ goto admin/upgrade_database to check/update the database
 note: if that does exist, check the changelog for 6 Dec, 2017
 ```
 
+### Image Proxy
+A simple image proxy for hot linked images: https://github.com/darkalchemy/Simple-Image-Proxy
+
+
 # Credits:
 
 All Credit goes to the original code creators of U-232, tbdev, etc. Without them, this would not be possible.
