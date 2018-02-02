@@ -2066,6 +2066,7 @@ DROP TABLE IF EXISTS `tokens`;
 CREATE TABLE `tokens` (
   `id` char(32) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `new_email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   KEY `id` (`id`),
@@ -2641,4 +2642,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-29 20:59:09
+-- Dump completed on 2018-02-02  0:19:54

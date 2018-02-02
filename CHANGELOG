@@ -1,4 +1,5 @@
 1 Feb 2018
+update: sql files
 fix: code block bbcode on ajax chat
 fix: users cache for AJAX Chat when staff add user
 fix: session canary and regenerate session id
