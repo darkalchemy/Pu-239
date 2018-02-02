@@ -1514,6 +1514,10 @@ function sessionStart()
         setSessionVar('auth', make_password(32));
     }
 
+    if (!getSessionVar('salt')) {
+        setSessionVar('salt', make_passhash(getSessionVar('auth')));
+    }
+
     if (!getSessionVar($site_config['session_csrf'])) {
         setSessionVar($site_config['session_csrf'], make_password(32));
     }
@@ -1645,12 +1649,7 @@ function unsetSessionVar($key, $prefix = null)
  */
 function salty()
 {
-    $salt = getSessionVar('salt');
-    $auth = getSessionVar('auth');
-    if (empty($salt)) {
-        setSessionVar('salt', make_passhash(getSessionVar('auth')));
-    }
-    return $auth;
+    return getSessionVar('auth');
 }
 
 /**
