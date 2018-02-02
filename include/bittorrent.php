@@ -32,13 +32,6 @@ $cache = new CACHE();
 // start session on every page request
 sessionStart();
 
-$pu239_version = new SebastianBergmann\Version(
-    '0.1',
-    ROOT_DIR
-);
-
-$site_config['version'] = $pu239_version->getVersion();
-
 /**
  * Class curuser
  */
@@ -55,12 +48,18 @@ require_once CLASS_DIR . 'class_bt_options.php';
 require_once CACHE_DIR . 'block_settings_cache.php';
 require_once INCL_DIR . 'site_settings.php';
 
+if (!$site_config['in_production']) {
+    $pu239_version = new SebastianBergmann\Version(
+        '0.1',
+        ROOT_DIR
+    );
+
+    $site_config['version'] = $pu239_version->getVersion();
+}
+
 $load = sys_getloadavg();
 if ($load[0] > 20) {
-    die(
-    "Load is too high.
-        Don't continuously refresh, or you will just make the problem last longer"
-    );
+    die("Load is too high. Don't continuously refresh, or you will just make the problem last longer");
 }
 if (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_SERVER))) {
     die('Forbidden');
@@ -73,27 +72,6 @@ if (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_P
 }
 if (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_COOKIE))) {
     die('Forbidden');
-}
-
-/**
- * @param $in
- *
- * @return bool|string
- */
-function cleanquotes(&$in)
-{
-    if (is_array($in)) {
-        return array_walk($in, 'cleanquotes');
-    }
-
-    return $in = stripslashes($in);
-}
-
-if (get_magic_quotes_gpc()) {
-    array_walk($_GET, 'cleanquotes');
-    array_walk($_POST, 'cleanquotes');
-    array_walk($_COOKIE, 'cleanquotes');
-    array_walk($_REQUEST, 'cleanquotes');
 }
 
 /**
@@ -1667,12 +1645,11 @@ function unsetSessionVar($key, $prefix = null)
  */
 function salty()
 {
+    $salt = getSessionVar('salt');
     $auth = getSessionVar('auth');
-    if (empty($auth)) {
-        $auth = make_password(32);
+    if (empty($salt)) {
+        setSessionVar('salt', make_passhash(getSessionVar('auth')));
     }
-    setSessionVar('salt', make_passhash($auth));
-
     return $auth;
 }
 

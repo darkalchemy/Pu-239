@@ -127,6 +127,7 @@ function stdhead($title = '', $stdhead = null)
         '/index.php',
         '/login.php'
     ];
+
     if ($CURUSER && !in_array($_SERVER['REQUEST_URI'], $index_array)) {
         $htmlout .= "
                 <div class='container is-fluid portlet padding20 bg-00 round10'>

@@ -7,8 +7,14 @@ $html = '';
 $lang = load_language('global');
 $use_limit = true;
 $limit = 15;
-$xml = file_get_contents('http://feed.torrentfreak.com/Torrentfreak/');
 $icount = 1;
+
+$xml = $cache->get('tfreaknewsrss_');
+if ($xml === false || is_null($xml)) {
+    $xml = file_get_contents('http://feed.torrentfreak.com/Torrentfreak/');
+    $cache->set('tfreaknewsrss_', $xml, 300);
+}
+
 $doc = new DOMDocument();
 @$doc->loadXML($xml);
 $items = $doc->getElementsByTagName('item');
@@ -18,12 +24,11 @@ foreach ($items as $item) {
             <h2>" . $item->getElementsByTagName('title')->item(0)->nodeValue . '</h2>
             <hr>' . preg_replace("/<p>Source\:(.*?)width=\"1\"\/>/is", '', $item->getElementsByTagName('encoded')->item(0)->nodeValue) . '<hr>
         </div>';
-    if ($use_limit && $icount == $limit) {
+    if ($use_limit && $icount++ >= $limit) {
         break;
     }
-
-    ++$icount;
 }
+
 $html = str_replace(['“', '”'], '"', $html);
 $html = str_replace(['’', '‘', '‘'], "'", $html);
 $html = str_replace('–', '-', $html);

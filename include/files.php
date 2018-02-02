@@ -7,11 +7,9 @@
 function get_file_name($file)
 {
     global $site_config;
+
     $style = get_stylesheet();
-    if ($style != 1) {
-        return '';
-    }
-    if (!empty($file)) {
+    if ($style === 1 && !empty($file)) {
         if ($site_config['in_production']) {
             switch ($file) {
                 case 'css':
@@ -51,7 +49,7 @@ function get_file_name($file)
                 case 'staffpanel_js':
                     return "{$site_config['baseurl']}/js/{$style}/660dd9dc9b08b420a482b7908c575a76.min.js";
                 default:
-                    return '';
+                    return null;
             }
         } else {
             switch ($file) {
@@ -92,8 +90,9 @@ function get_file_name($file)
                 case 'staffpanel_js':
                     return "{$site_config['baseurl']}/js/{$style}/0e6c0a3138d3efe7fdd4ff7e1e669f3a.js";
                 default:
-                    return '';
+                    return null;
             }
         }
     }
+    return null;
 }

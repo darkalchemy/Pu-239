@@ -1,3 +1,6 @@
+2 Feb 2018
+fix: 350 millisecond page load delay on page refresh
+
 1 Feb 2018
 update: sql files
 fix: code block bbcode on ajax chat

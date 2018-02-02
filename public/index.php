@@ -20,12 +20,14 @@ $stdfoot = [
         get_file_name('index_js'),
     ],
 ];
+
 $lang = array_merge(
     load_language('global'),
     load_language('index'),
     load_language('trivia')
 );
-if (isset($_GET['act']) && $_GET['act'] == 'Arcade' && isset($_POST['gname'])) {
+
+if (isset($_GET['act']) && $_GET['act'] === 'Arcade' && isset($_POST['gname'])) {
     include_once INCL_DIR . 'arcade.php';
 }
 

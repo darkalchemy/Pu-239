@@ -13,6 +13,7 @@ function rsstfreakinfo()
     $html = '';
     $use_limit = true;
     $limit = 5;
+    $i = 0;
 
 
     $xml = $cache->get('tfreaknewsrss_');
@@ -24,9 +25,8 @@ function rsstfreakinfo()
     $doc = new DOMDocument();
     @$doc->loadXML($xml);
     $items = $doc->getElementsByTagName('item');
-    $i = 0;
     foreach ($items as $item) {
-        $top = $i++ >= 1 ? 'top20' : '';
+        $top = $i >= 1 ? 'top20' : '';
         $html .= "
             <div class='bordered $top'>
                 <div id='" . md5($item->getElementsByTagName('title')->item(0)->nodeValue) . "' class='header alt_bordered bg-00 has-text-left'>
@@ -49,7 +49,7 @@ function rsstfreakinfo()
                     </div>
                 </div>
             </div>";
-        if ($use_limit && ++$i == $limit) {
+        if ($use_limit && ++$i >= $limit) {
             break;
         }
     }
