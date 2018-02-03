@@ -33,7 +33,7 @@ $('.delete').on('click', function () {
 });
 
 function SmileIT(smile, form, text) {
-    document.forms[form].elements[text].value = document.forms[form].elements[text].value + " " + smile + " ";
+    document.forms[form].elements[text].value = document.forms[form].elements[text].value + ' ' + smile + ' ';
     document.forms[form].elements[text].focus();
 }
 
@@ -63,11 +63,22 @@ function refrClock() {
     setTimeout('refrClock()', 1000);
 }
 
+function do_rate(rate, id, what) {
+    $.ajax({
+        url: '/ajax/rating.php',
+        type: 'POST',
+        data: {rate: rate, id: id, what: what},
+        success: function (data) {
+            $('#rated').addClass('star-ratings-css').removeClass('rating');
+            $('#rated').html(data);
+        }
+    });
+}
+
 $(function () {
     if ($('#clock').length) {
         refrClock();
     }
-    ;
 
     if ($('#help_open').length) {
         $('#help_open').click(function () {
@@ -75,7 +86,6 @@ $(function () {
             });
         });
     }
-    ;
 
     if (typeof(Storage) !== 'undefined') {
         $('.flipper').click(function (e) {
@@ -104,29 +114,25 @@ $(function () {
     $('.back-to-top').click(function (event) {
         event.preventDefault();
         $('html, body').animate({scrollTop: 0}, animate_duration, easing);
-        $('.back-to-top').blur()
+        $('.back-to-top').blur();
         return false;
-    })
+    });
 
     if ($('#request_form').length) {
         $('#request_form').validate();
     }
-    ;
 
     if ($('#offer_form').length) {
         $('#offer_form').validate();
     }
-    ;
 
     if ($('#upload_form').length) {
         setupDependencies('upload_form');
     }
-    ;
 
     if ($('#edit_form').length) {
         setupDependencies('edit_form');
     }
-    ;
 
     if ($('#carousel-container').length) {
         $('#icarousel').iCarousel({
@@ -167,14 +173,12 @@ $(function () {
             timerY: 10
         });
     }
-    ;
     if ($('#IE_ALERT').length) {
         if (navigator.userAgent.search('MSIE') >= 0) {
             $('#IE_ALERT').slideToggle(animate_duration, easing, function () {
             });
         }
     }
-    ;
 
     $(window).resize(function () {
         var windowWidth = $(window).width();
@@ -215,20 +219,16 @@ $(function () {
             });
         });
     }
-    ;
 
     if ($('#thanks_holder').length) {
         show_thanks(tid);
     }
-    ;
 
     if ($('#tz-checkdst').length) {
         if (!$('#tz-checkdst').is(':checked')) {
             $('#tz-checkmanual').show();
         }
-        ;
     }
-    ;
 
     $('#tz-checkdst').click(function () {
         $('#tz-checkmanual').slideToggle(animate_duration, easing, function () {
@@ -242,7 +242,6 @@ $(function () {
             $('input:checkbox').prop('checked', $(this).prop('checked'));
         });
     }
-    ;
 
 
     if ($('#checkAll').length) {
@@ -262,7 +261,6 @@ $(function () {
             }
         });
     }
-    ;
 
     if ($('.notification').length) {
         setTimeout(function () {
@@ -271,39 +269,35 @@ $(function () {
             });
         }, 15000);
     }
-    ;
 
     if ($('#accordion').length) {
         $('#accordion').find('.accordion-toggle').click(function () {
             $(this).next().slideToggle(animate_duration);
-            $(".accordion-content").not($(this).next()).slideUp(animate_duration);
+            $('.accordion-content').not($(this).next()).slideUp(animate_duration);
         });
     }
-    ;
 
     $('a[href^=\\#]:not([href=\\#])').click(function (e) {
         if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
             e.preventDefault();
 
-            var headerHeight = $("#navbar").outerHeight() + 10;
-            var target = $(this).attr("href"); //Get the target
+            var headerHeight = $('#navbar').outerHeight() + 10;
+            var target = $(this).attr('href'); //Get the target
             var scrollToPosition = $(target).offset().top - headerHeight;
 
             $('html, body').animate({'scrollTop': scrollToPosition}, animate_duration, function () {
-                window.location.hash = "" + target;
+                window.location.hash = '' + target;
                 $('html, body').animate({'scrollTop': scrollToPosition}, 0);
             });
         }
     });
 
-
     if (window.location.hash) {
-        var headerHeight = $("#navbar").outerHeight() + 10;
+        var headerHeight = $('#navbar').outerHeight() + 10;
         var target = $(window.location.hash);
         var scrollToPosition = $(target).offset().top - headerHeight;
         $('html, body').animate({
             scrollTop: scrollToPosition
         }, animate_duration, 'swing');
     }
-
 });

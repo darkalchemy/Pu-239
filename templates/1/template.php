@@ -125,7 +125,7 @@ function stdhead($title = '', $stdhead = null)
     $index_array = [
         '/',
         '/index.php',
-        '/login.php'
+        '/login.php',
     ];
 
     if ($CURUSER && !in_array($_SERVER['REQUEST_URI'], $index_array)) {
@@ -166,7 +166,7 @@ function stdfoot($stdfoot = false)
 
     $header = $uptime = $htmlfoot = '';
     $debug = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
-    $queries = !empty($query_stat) ? count($query_stat) : '';
+    $queries = !empty($query_stat) ? count($query_stat) : 0;
     $cachetime = 0; //($cache->Time / 1000);
     $seconds = microtime(true) - $start;
     $r_seconds = round($seconds, 5);

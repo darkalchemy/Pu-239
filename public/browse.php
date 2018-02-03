@@ -8,20 +8,25 @@ require_once INCL_DIR . 'searchcloud_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config, $cache, $fluent;
 
 if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
-    sql_query('UPDATE users SET last_browse = ' . TIME_NOW . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    $fluent->update('users')
+        ->set(['last_browse' => TIME_NOW])
+        ->where('id = ?', $CURUSER['id'])
+        ->execute();
     $cache->update_row('user' . $CURUSER['id'], [
         'last_browse' => TIME_NOW,
     ], $site_config['expires']['user_cache']);
     header("Location: {$site_config['baseurl']}/browse.php");
 }
-$stdhead = [
-    'css' => [
-        get_file_name('browse_css'),
+
+$stdfoot = [
+    'js' => [
+        get_file_name('browse_js'),
     ],
 ];
+
 $lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'));
 $HTMLOUT = $searchin = $select_searchin = $where = $addparam = $new_button = $vip_box = $only_free = $searchstr = $join = '';
 $searchincrt = [];
@@ -351,8 +356,8 @@ foreach ([
 $searchin .= '
                     </select>';
 $HTMLOUT .= main_div("
-                    <div class='padding10' class='w-100'>
-                        <input type='text' name='search' placeholder='{$lang['search_search']}' class='search w-100' value='" . (!empty($_GET['search']) ? $_GET['search'] : '') . "' />
+                    <div class='padding10 w-100'>
+                        <input id='search' name='search' type='text' placeholder='{$lang['search_search']}' class='search w-100' value='" . (!empty($_GET['search']) ? $_GET['search'] : '') . "' onkeyup='autosearch()' />
                     </div>
                     <div class='level-center'>
                         <div class='padding10 w-25 mw-50'>
@@ -366,6 +371,12 @@ $HTMLOUT .= main_div("
                         </div>
                         <div class='padding10 w-25 mw-50'>
                             $only_free_box
+                        </div>
+                        <div id='autocomplete' class='w-100'>
+                            <div class='padding20 margin10 bg-00 round10 bordered'>
+                                <div id='autocomplete_list' class='margin10'>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class='margin10 has-text-centered'>
@@ -410,4 +421,4 @@ if (!$no_log_ip) {
         $cache->delete('ip_history_' . $userid);
     }
 }
-echo stdhead($title, true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($title, true) . wrapper($HTMLOUT) . stdfoot($stdfoot);

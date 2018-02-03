@@ -825,7 +825,6 @@
                     ease = 'cubic-bezier(0.680, 0, 0.265, 1)';
                     break;
             }
-            ;
 
             if (ic.support.transition()) return ease;
             else {

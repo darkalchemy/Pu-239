@@ -420,15 +420,15 @@ if (isset($self) && $event == 'stopped') {
                 break;
 
             case $user['class'] < $site_config['hnr_config']['secondclass']:
-                $days_3 = $site_config['hnr_config']['(_3day_second'] * 3600;
-                $days_14 = $site_config['hnr_config']['(_14day_second'] * 3600;
-                $days_over_14 = $site_config['hnr_config']['(_14day_over_second'] * 3600;
+                $days_3 = $site_config['hnr_config']['_3day_second'] * 3600;
+                $days_14 = $site_config['hnr_config']['_14day_second'] * 3600;
+                $days_over_14 = $site_config['hnr_config']['_14day_over_second'] * 3600;
                 break;
 
             case $user['class'] >= $site_config['hnr_config']['thirdclass']:
-                $days_3 = $site_config['hnr_config']['(_3day_third'] * 3600;
-                $days_14 = $site_config['hnr_config']['(_14day_third'] * 3600;
-                $days_over_14 = $site_config['hnr_config']['(_14day_over_third'] * 3600;
+                $days_3 = $site_config['hnr_config']['_3day_third'] * 3600;
+                $days_14 = $site_config['hnr_config']['_14day_third'] * 3600;
+                $days_over_14 = $site_config['hnr_config']['_14day_over_third'] * 3600;
                 break;
 
             default:
@@ -437,15 +437,15 @@ if (isset($self) && $event == 'stopped') {
                 $days_over_14 = 0;
         }
         switch (true) {
-            case ($a['start_snatch'] - $torrent['ts']) < $site_config['hnr_config']['(torrentage1'] * 86400:
+            case ($a['start_snatch'] - $torrent['ts']) < $site_config['hnr_config']['torrentage1'] * 86400:
                 $minus_ratio = ($days_3 - $HnR_time_seeded);
                 break;
 
-            case ($a['start_snatch'] - $torrent['ts']) < $site_config['hnr_config']['(torrentage2'] * 86400:
+            case ($a['start_snatch'] - $torrent['ts']) < $site_config['hnr_config']['torrentage2'] * 86400:
                 $minus_ratio = ($days_14 - $HnR_time_seeded);
                 break;
 
-            case ($a['start_snatch'] - $torrent['ts']) >= $site_config['hnr_config']['(torrentage3'] * 86400:
+            case ($a['start_snatch'] - $torrent['ts']) >= $site_config['hnr_config']['torrentage3'] * 86400:
                 $minus_ratio = ($days_over_14 - $HnR_time_seeded);
                 break;
 

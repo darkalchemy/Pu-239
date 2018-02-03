@@ -34,19 +34,19 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
                     $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600;
                     break;
                 case $user['class'] < $site_config['hnr_config']['secondclass']:
-                    $days_3 = $site_config['hnr_config']['(_3day_second'] * 3600;
-                    $days_14 = $site_config['hnr_config']['(_14day_second'] * 3600;
-                    $days_over_14 = $site_config['hnr_config']['(_14day_over_second'] * 3600;
+                    $days_3 = $site_config['hnr_config']['_3day_second'] * 3600;
+                    $days_14 = $site_config['hnr_config']['_14day_second'] * 3600;
+                    $days_over_14 = $site_config['hnr_config']['_14day_over_second'] * 3600;
                     break;
                 case $user['class'] >= $site_config['hnr_config']['secondclass'] && $user['class'] < $site_config['hnr_config']['thirdclass']:
-                    $days_3 = $site_config['hnr_config']['(_3day_second'] * 3600;
-                    $days_14 = $site_config['hnr_config']['(_14day_second'] * 3600;
-                    $days_over_14 = $site_config['hnr_config']['(_14day_over_second'] * 3600;
+                    $days_3 = $site_config['hnr_config']['_3day_second'] * 3600;
+                    $days_14 = $site_config['hnr_config']['_14day_second'] * 3600;
+                    $days_over_14 = $site_config['hnr_config']['_14day_over_second'] * 3600;
                     break;
                 case $user['class'] >= $site_config['hnr_config']['thirdclass']:
-                    $days_3 = $site_config['hnr_config']['(_3day_third'] * 3600;
-                    $days_14 = $site_config['hnr_config']['(_14day_third'] * 3600;
-                    $days_over_14 = $site_config['hnr_config']['(_14day_over_third'] * 3600;
+                    $days_3 = $site_config['hnr_config']['_3day_third'] * 3600;
+                    $days_14 = $site_config['hnr_config']['_14day_third'] * 3600;
+                    $days_over_14 = $site_config['hnr_config']['_14day_over_third'] * 3600;
                     break;
                 default:
                     $days_3 = 0;
@@ -55,15 +55,15 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
             }
             $foo = $a['downloaded'] > 0 ? $a['uploaded'] / $a['downloaded'] : 0;
             switch (true) {
-                case ($a['st'] - $a['torrent_added']) < $site_config['hnr_config']['(torrentage1'] * 86400:
+                case ($a['st'] - $a['torrent_added']) < $site_config['hnr_config']['torrentage1'] * 86400:
                     $minus_ratio = ($days_3 - $a['seedtime']) - ($foo * 3 * 86400);
                     break;
 
-                case ($a['st'] - $a['torrent_added']) < $site_config['hnr_config']['(torrentage2'] * 86400:
+                case ($a['st'] - $a['torrent_added']) < $site_config['hnr_config']['torrentage2'] * 86400:
                     $minus_ratio = ($days_14 - $a['seedtime']) - ($foo * 2 * 86400);
                     break;
 
-                case ($a['st'] - $a['torrent_added']) >= $site_config['hnr_config']['(torrentage3'] * 86400:
+                case ($a['st'] - $a['torrent_added']) >= $site_config['hnr_config']['torrentage3'] * 86400:
                     $minus_ratio = ($days_over_14 - $a['seedtime']) - ($foo * 86400);
                     break;
             }

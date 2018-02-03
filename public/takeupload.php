@@ -388,6 +388,14 @@ $cache->delete('lastest_tor_');
 $cache->delete('last5_tor_');
 $cache->delete('scroll_tor_');
 $cache->delete('torrent_poster_count_');
+$hashes = $cache->get('hashes_');
+if (!empty($hashes)) {
+    foreach ($hashes as $hash) {
+        $cache->delete('suggest_torrents_' . $hash);
+    }
+    $cache->delete('hashes_');
+}
+
 if (isset($uplver) && $uplver == 'yes') {
     $message = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by ' . get_anonymous_name();
 } else {

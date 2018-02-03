@@ -45,7 +45,10 @@ switch ($params['mode']) {
 function manualclean()
 {
     // these clean_ids need to be run at specific interval, regardless of when they run
-    $run_at_specified_times = [82, 83];
+    $run_at_specified_times = [
+        82,
+        83,
+    ];
 
     global $params, $lang;
     if (function_exists('docleanup')) {
@@ -137,7 +140,7 @@ function cleanup_show_main()
     }
     $htmlout .= '</tbody></table></div>';
     if ($count1 > $perpage) {
-        $htmlout .= $pager['pagerbottom'];
+        $htmlout = $pager['pagertop'] . $htmlout . $pager['pagerbottom'];
     }
     $htmlout .= "
                 <div class='has-text-centered top20'>
@@ -205,7 +208,10 @@ function cleanup_show_edit()
     {$lang['cleanup_show_yes']} <input name='clean_on' value='1' $cleanon type='radio' />&#160;&#160;&#160;<input name='clean_on' value='0' $cleanoff type='radio' /> {$lang['cleanup_show_no']}
     </div>
 
-    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_show_edit']}' class='button is-small' />&#160;<input type='button' value='{$lang['cleanup_show_cancel']}' onclick='javascript: history.back()' /></div>
+    <div style='text-align:center;'>
+        <input type='submit' name='submit' value='{$lang['cleanup_show_edit']}' class='button is-small right1-' />
+        <input type='button' class='button is-small' value='{$lang['cleanup_show_cancel']}' onclick='javascript: history.back()' />
+    </div>
     </form>
     </div>";
     echo stdhead($lang['cleanup_show_stdhead']) . wrapper($htmlout) . stdfoot();
@@ -316,7 +322,10 @@ function cleanup_show_new()
     {$lang['cleanup_show_yes']} <input name='clean_on' value='1' type='radio' />&#160;&#160;&#160;<input name='clean_on' value='0' checked type='radio' /> {$lang['cleanup_show_no']}
     </div>
 
-    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_new_add']}' class='button is-small' />&#160;<input type='button' value='{$lang['cleanup_new_cancel']}' onclick='javascript: history.back()' /></div>
+    <div style='text-align:center;'>
+        <input type='submit' name='submit' value='{$lang['cleanup_new_add']}' class='button is-small right10' />
+        <input type='button' class='button is-small' value='{$lang['cleanup_new_cancel']}' onclick='javascript: history.back()' />
+    </div>
     </form>
     </div>";
     echo stdhead($lang['cleanup_new_stdhead']) . wrapper($htmlout) . stdfoot();

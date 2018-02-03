@@ -13,9 +13,9 @@ function get_file_name($file)
         if ($site_config['in_production']) {
             switch ($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/4e9de5252fb181a663caed702687652a.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/aeb7de34c5bec10eb772308f0856f213.min.css";
                 case 'js':
-                    return "{$site_config['baseurl']}/js/{$style}/1977e0bb1334a362ff70a3cb08045cf0.min.js";
+                    return "{$site_config['baseurl']}/js/{$style}/3203b7c1c099fada671a613ea8ec273c.min.js";
                 case 'checkport_js':
                     return "{$site_config['baseurl']}/js/{$style}/4ba42503ffca4c65167590b15a03b842.min.js";
                 case 'chatjs':
@@ -48,15 +48,17 @@ function get_file_name($file)
                     return "{$site_config['baseurl']}/js/{$style}/d61dfbf2351bba26fe8a769392423113.min.js";
                 case 'staffpanel_js':
                     return "{$site_config['baseurl']}/js/{$style}/660dd9dc9b08b420a482b7908c575a76.min.js";
+                case 'browse_js':
+                    return "{$site_config['baseurl']}/js/{$style}/c0e8d1e5e323c7449617a762b2969198.min.js";
                 default:
                     return null;
             }
         } else {
             switch ($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/5b7c732fdd6b8ee616705d5c8373b996.css";
+                    return "{$site_config['baseurl']}/css/{$style}/318cd9e82060b576b5a852f68efbed46.css";
                 case 'js':
-                    return "{$site_config['baseurl']}/js/{$style}/3939b0790448366809282918c9e63708.js";
+                    return "{$site_config['baseurl']}/js/{$style}/bf6e22d3c396436bc7cb135e1e59a8e8.js";
                 case 'checkport_js':
                     return "{$site_config['baseurl']}/js/{$style}/4a99c7d4e3c8639af2775ef05d500598.js";
                 case 'chatjs':
@@ -89,6 +91,8 @@ function get_file_name($file)
                     return "{$site_config['baseurl']}/js/{$style}/44d555c268081133f47a9ab247ed95ca.js";
                 case 'staffpanel_js':
                     return "{$site_config['baseurl']}/js/{$style}/0e6c0a3138d3efe7fdd4ff7e1e669f3a.js";
+                case 'browse_js':
+                    return "{$site_config['baseurl']}/js/{$style}/eb2fe8334478d94a4a294acec2d8cf09.js";
                 default:
                     return null;
             }

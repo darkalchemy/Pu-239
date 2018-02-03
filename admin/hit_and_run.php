@@ -60,15 +60,15 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
                     break;
 
                 case $hit_and_run_arr['class'] < $site_config['hnr_config']['secondclass']:
-                    $days_3 = $site_config['hnr_config']['(_3day_second'] * 3600;
-                    $days_14 = $site_config['hnr_config']['(_14day_second'] * 3600;
-                    $days_over_14 = $site_config['hnr_config']['(_14day_over_second'] * 3600;
+                    $days_3 = $site_config['hnr_config']['_3day_second'] * 3600;
+                    $days_14 = $site_config['hnr_config']['_14day_second'] * 3600;
+                    $days_over_14 = $site_config['hnr_config']['_14day_over_second'] * 3600;
                     break;
 
                 case $hit_and_run_arr['class'] >= $site_config['hnr_config']['thirdclass']:
-                    $days_3 = $site_config['hnr_config']['(_3day_third'] * 3600;
-                    $days_14 = $site_config['hnr_config']['(_14day_third'] * 3600;
-                    $days_over_14 = $site_config['hnr_config']['(_14day_over_third'] * 3600;
+                    $days_3 = $site_config['hnr_config']['_3day_third'] * 3600;
+                    $days_14 = $site_config['hnr_config']['_14day_third'] * 3600;
+                    $days_over_14 = $site_config['hnr_config']['_14day_over_third'] * 3600;
                     break;
 
                 default:
@@ -77,15 +77,15 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
                     $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600; //== 1 day
             }
             switch (true) {
-                case ($S_date - $hit_and_run_arr['torrent_added']) < $site_config['hnr_config']['(torrentage1'] * 86400:
+                case ($S_date - $hit_and_run_arr['torrent_added']) < $site_config['hnr_config']['torrentage1'] * 86400:
                     $minus_ratio = ($days_3 - $torrent_needed_seed_time);
                     break;
 
-                case ($S_date - $hit_and_run_arr['torrent_added']) < $site_config['hnr_config']['(torrentage2'] * 86400:
+                case ($S_date - $hit_and_run_arr['torrent_added']) < $site_config['hnr_config']['torrentage2'] * 86400:
                     $minus_ratio = ($days_14 - $torrent_needed_seed_time);
                     break;
 
-                case ($S_date - $hit_and_run_arr['torrent_added']) >= $site_config['hnr_config']['(torrentage3'] * 86400:
+                case ($S_date - $hit_and_run_arr['torrent_added']) >= $site_config['hnr_config']['torrentage3'] * 86400:
                     $minus_ratio = ($days_over_14 - $torrent_needed_seed_time);
                     break;
 

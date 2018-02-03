@@ -153,15 +153,15 @@ if (mysqli_num_rows($r) > 0) {
                 break;
 
             case $CURUSER['class'] < $site_config['hnr_config']['secondclass']:
-                $days_3 = $site_config['hnr_config']['(_3day_second'] * 3600;
-                $days_14 = $site_config['hnr_config']['(_14day_second'] * 3600;
-                $days_over_14 = $site_config['hnr_config']['(_14day_over_second'] * 3600;
+                $days_3 = $site_config['hnr_config']['_3day_second'] * 3600;
+                $days_14 = $site_config['hnr_config']['_14day_second'] * 3600;
+                $days_over_14 = $site_config['hnr_config']['_14day_over_second'] * 3600;
                 break;
 
             case $CURUSER['class'] >= $site_config['hnr_config']['thirdclass']:
-                $days_3 = $site_config['hnr_config']['(_3day_third'] * 3600;
-                $days_14 = $site_config['hnr_config']['(_14day_third'] * 3600;
-                $days_over_14 = $site_config['hnr_config']['(_14day_over_third'] * 3600;
+                $days_3 = $site_config['hnr_config']['_3day_third'] * 3600;
+                $days_14 = $site_config['hnr_config']['_14day_third'] * 3600;
+                $days_over_14 = $site_config['hnr_config']['_14day_over_third'] * 3600;
                 break;
 
             default:
@@ -170,15 +170,15 @@ if (mysqli_num_rows($r) > 0) {
                 $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600; //== 1 day
         }
         switch (true) {
-            case ($a['st'] - $a['torrent_added']) < $site_config['hnr_config']['(torrentage1'] * 86400:
+            case ($a['st'] - $a['torrent_added']) < $site_config['hnr_config']['torrentage1'] * 86400:
                 $minus_ratio = ($days_3 - $a['seedtime']);
                 break;
 
-            case ($a['st'] - $a['torrent_added']) < $site_config['hnr_config']['(torrentage2'] * 86400:
+            case ($a['st'] - $a['torrent_added']) < $site_config['hnr_config']['torrentage2'] * 86400:
                 $minus_ratio = ($days_14 - $a['seedtime']);
                 break;
 
-            case ($a['st'] - $a['torrent_added']) >= $site_config['hnr_config']['(torrentage3'] * 86400:
+            case ($a['st'] - $a['torrent_added']) >= $site_config['hnr_config']['torrentage3'] * 86400:
                 $minus_ratio = ($days_over_14 - $a['seedtime']);
                 break;
 

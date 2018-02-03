@@ -77,7 +77,7 @@ if (in_array($torrents['category'], $site_config['ebook_cats'])) {
     $ebook_info = $ebooks_info[0];
     if (empty($torrents['poster']) && !empty($ebooks_info[1])) {
         $set = [
-            'poster' => $ebooks_info[1]
+            'poster' => $ebooks_info[1],
         ];
         $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
         $fluent->update('torrents')
@@ -96,7 +96,7 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
         if (!empty($imdb_id)) {
             $url = 'http://www.imdb.com/title/' . $imdb_id;
             $set = [
-                'url' => $url
+                'url' => $url,
             ];
             $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
             $fluent->update('torrents')
@@ -114,7 +114,7 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
         $poster = getTVImagesByImdb($thetvdb_id, 'poster', $season);
         if (!empty($poster)) {
             $set = [
-                'poster' => $poster
+                'poster' => $poster,
             ];
             $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
             $fluent->update('torrents')
@@ -129,7 +129,7 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
         $banner = getTVImagesByImdb($thetvdb_id, 'banner', $season);
         if (!empty($banner)) {
             $set = [
-                'banner' => $banner
+                'banner' => $banner,
             ];
             $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
             $fluent->update('torrents')
@@ -144,7 +144,7 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
         $background = getTVImagesByImdb($thetvdb_id, 'showbackground', $season);
         if (!empty($background)) {
             $set = [
-                'background' => $background
+                'background' => $background,
             ];
             $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
             $fluent->update('torrents')
@@ -176,7 +176,7 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
             $poster = getMovieImagesByImdb($imdb, 'movieposter');
             if (!empty($poster)) {
                 $set = [
-                    'poster' => $poster
+                    'poster' => $poster,
                 ];
                 $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
                 $fluent->update('torrents')
@@ -191,7 +191,7 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
             $banner = getMovieImagesByImdb($imdb, 'moviebanner');
             if (!empty($banner)) {
                 $set = [
-                    'banner' => $banner
+                    'banner' => $banner,
                 ];
                 $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
                 $fluent->update('torrents')
@@ -206,7 +206,7 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
             $background = getMovieImagesByImdb($imdb, 'moviebackground');
             if (!empty($background)) {
                 $set = [
-                    'background' => $background
+                    'background' => $background,
                 ];
                 $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
                 $fluent->update('torrents')
@@ -221,7 +221,7 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
 
         if (empty($torrents['poster']) && !empty($movie_info[1])) {
             $set = [
-                'poster' => $movie_info[1]
+                'poster' => $movie_info[1],
             ];
             $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
             $fluent->update('torrents')

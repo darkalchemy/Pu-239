@@ -5,22 +5,20 @@ check_user_status();
 global $CURUSER, $site_config, $cache;
 
 $lang = load_language('global');
-if (empty($_GET)) {
-    setSessionVar('is-danger', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    die();
+if (empty($_POST)) {
+    return null;
 }
 
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-$rate = isset($_GET['rate']) ? (int)$_GET['rate'] : 0;
+$id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
+$rate = isset($_POST['rate']) ? (int)$_POST['rate'] : 0;
 $uid = $CURUSER['id'];
-$ajax = isset($_GET['ajax']) && $_GET['ajax'] == 1 ? true : false;
-$what = isset($_GET['what']) && $_GET['what'] == 'torrent' ? 'torrent' : 'topic';
-$ref = isset($_GET['ref']) ? $_GET['ref'] : ($what == 'torrent' ? 'details.php' : 'forums/view_topic.php');
+$ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
+$what = isset($_POST['what']) && $_POST['what'] == 'torrent' ? 'torrent' : 'topic';
+$ref = isset($_POST['ref']) ? $_POST['ref'] : ($what == 'torrent' ? 'details.php' : 'forums/view_topic.php');
 $completeres = sql_query('SELECT * FROM ' . (XBT_TRACKER ? 'xbt_files_users' : 'snatched') . ' WHERE ' . (XBT_TRACKER ? 'completedtime !=0' : 'complete_date !=0') . ' AND ' . (XBT_TRACKER ? 'uid' : 'userid') . ' = ' . $CURUSER['id'] . ' AND ' . (XBT_TRACKER ? 'fid' : 'torrentid') . ' = ' . $id) or sqlerr(__FILE__, __LINE__);
 $completecount = mysqli_num_rows($completeres);
 if ($what == 'torrent' && $completecount == 0) {
-    setSessionVar('is-warning', 'You must have downloaded this torrent in order to rate it.');
+    return false;
 }
 if ($id > 0 && $rate >= 1 && $rate <= 5) {
     if (sql_query('INSERT INTO rating(' . $what . ',rating,user) VALUES (' . sqlesc($id) . ',' . sqlesc($rate) . ',' . sqlesc($uid) . ')')) {
@@ -45,21 +43,48 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
                 'seedbonus' => $update['seedbonus'],
             ], $site_config['expires']['user_cache']);
         }
-        if ($ajax) {
-            $qy = sql_query('SELECT sum(r.rating) AS sum, count(r.rating) AS count, r2.rating AS rate FROM rating AS r LEFT JOIN rating AS r2 ON (r2.' . $what . ' = ' . sqlesc($id) . ' AND r2.user = ' . sqlesc($uid) . ') WHERE r.' . $what . ' = ' . sqlesc($id) . ' GROUP BY r.' . sqlesc($what)) or sqlerr(__FILE__, __LINE__);
-            $a = mysqli_fetch_assoc($qy);
-            echo '<ul class="star-rating tooltipper" title="Your rated this ' . $what . ' ' . htmlsafechars($a['rate']) . ' star' . (htmlsafechars($a['rate']) > 1 ? 's' : '') . '"  ><li class="current-rating" />.</ul>';
-        } else {
-            header('Refresh: 2; url=' . $ref);
-            setSessionVar('is-success', 'Your rating has been added!');
+        $keys['rating'] = 'rating_' . $what . '_' . $id . '_' . $CURUSER['id'];
+        $qy1 = $fluent->from('rating')
+            ->select(null)
+            ->select('SUM(rating) AS sum')
+            ->select('COUNT(*) AS count')
+            ->where("$what = ?", $id)
+            ->fetchAll();
+        $qy2 = $fluent->from('rating')
+            ->select(null)
+            ->select('id AS rated')
+            ->select('rating')
+            ->where("$what = ?", $id)
+            ->where('user = ?', $CURUSER['id'])
+            ->fetchAll();
+
+        $rating_cache = array_merge($qy1[0], $qy2[0]);
+        $ratings = $cache->get('ratings_' . $id);
+        if (!empty($ratings)) {
+            foreach ($ratings as $rater) {
+                $cache->delete('rating_' . $what . '_' . $id . '_' . $rater);
+            }
+            $cache->delete('ratings_' . $id);
         }
+        $cache->set($keys['rating'], $rating_cache, 0);
+
+        $rated = number_format($rating_cache['sum'] / $rating_cache['count'] / 5 * 100, 0) . '%';
+        echo "
+                <div class='star-ratings-css-top tooltipper' title='Rating: $rated. You rated this $what {$rating_cache['rating']} star" . plural($rating_cache['rating']) . "' style='width: $rated;'>
+                    <span>&#9733;</span>
+                    <span>&#9733;</span>
+                    <span>&#9733;</span>
+                    <span>&#9733;</span>
+                    <span>&#9733;</span>
+                </div>
+                <div class='star-ratings-css-bottom'>
+                    <span>&#9734;</span>
+                    <span>&#9734;</span>
+                    <span>&#9734;</span>
+                    <span>&#9734;</span>
+                    <span>&#9734;</span>
+                </div>";
     } else {
-        if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062 && $ajax) {
-            echo 'You already rated this ' . $what . '';
-        } elseif (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) && $ajax) {
-            echo "You can't rate twice, Err - " . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
-        } else {
-            setSessionVar('is-warning', "You can't rate twice, Err - " . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
-        }
+        return null;
     }
 }

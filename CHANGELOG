@@ -1,4 +1,8 @@
 2 Feb 2018
+fix: typo in site_config hnr
+remove: duplicate, unused images
+fix: rating system, using ajax
+add: torrent search suggestions
 move: create session variable salt to login function
 fix: 350 millisecond page load delay on page refresh
 
