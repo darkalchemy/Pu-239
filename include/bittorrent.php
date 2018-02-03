@@ -1503,7 +1503,11 @@ function sessionStart()
         ini_set('default_charset', $site_config['char_set']);
 
         // Start the session:
-        session_start();
+        if (!@session_start()) {
+            destroySession();
+            header('Location: login.php');
+            die();
+        }
     }
 
     if (!getSessionVar('canary')) {
