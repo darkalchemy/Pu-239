@@ -1,4 +1,5 @@
 3 Feb 2018
+fix: freeuser_update.php
 add: redirect to login on no session
 update: sql files
 
