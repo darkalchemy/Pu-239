@@ -9,7 +9,6 @@ class CACHE extends TransactionalStore
      */
     public function __construct()
     {
-        global $site_config;
         switch ($_ENV['CACHE_DRIVER']) {
             case 'couchbase':
                 $cluster = new \CouchbaseCluster('couchbase://localhost');
@@ -29,7 +28,9 @@ class CACHE extends TransactionalStore
             case 'memcached':
                 if (extension_loaded('memcached')) {
                     $client = new \Memcached();
-                    $client->addServer($site_config['memcached_host'], $site_config['memcached_port']);
+                    if (!count($client->getServerList())) {
+                        $client->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
+                    }
                     $cache = new \MatthiasMullie\Scrapbook\Adapters\Memcached($client);
                 } else {
                     die('<h1>Error</h1><p>php-memcached is not available</p>');
@@ -40,7 +41,7 @@ class CACHE extends TransactionalStore
             case 'redis':
                 if (extension_loaded('redis')) {
                     $client = new \Redis();
-                    $client->connect($site_config['redis_host']);
+                    $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
                     $cache = new \MatthiasMullie\Scrapbook\Adapters\Redis($client);
                 } else {
                     die('<h1>Error</h1><p>php-redis is not available</p>');
@@ -52,7 +53,7 @@ class CACHE extends TransactionalStore
                 $filesystem = new \League\Flysystem\Filesystem($adapter);
                 $cache = new \MatthiasMullie\Scrapbook\Adapters\Flysystem($filesystem);
         }
-        $cache = new \MatthiasMullie\Scrapbook\Adapters\Collections\Utils\PrefixKeys($cache, $site_config['cookie_prefix']);
+        $cache = new \MatthiasMullie\Scrapbook\Adapters\Collections\Utils\PrefixKeys($cache, $_ENV['CACHE_PREFIX']);
         $cache = new \MatthiasMullie\Scrapbook\Buffered\BufferedStore($cache);
         $cache = new TransactionalStore($cache);
 

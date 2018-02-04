@@ -122,7 +122,7 @@ select,
 
 .star-ratings-css-bottom > span:not(:last-child),
 .star-ratings-css-top > span:not(:last-child) {
-    padding-right: 5px;
+    padding-right : 5px;
 }
 
 .star-ratings-css,
@@ -200,10 +200,20 @@ select {
     list-style-type : decimal;
 }
 
+.pre,
 pre {
     -moz-tab-size : 4;
     -o-tab-size   : 4;
     tab-size      : 4;
+}
+
+.pre {
+    display      : block;
+    unicode-bidi : embed;
+    white-space  : pre-wrap;
+    white-space  : -moz-pre-wrap;
+    white-space  : -o-pre-wrap;
+    font-family  : "Lucida Console", Monaco, monospace;
 }
 
 .noselect {

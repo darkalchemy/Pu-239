@@ -18,13 +18,25 @@ if (empty($_GET['torrent_pass']) || !preg_match('/^[0-9a-fA-F]{64}$/i', $_GET['t
 
 $info_hash = $peer_id = $compact = '';
 extract($_GET);
-foreach (['torrent_pass', 'info_hash', 'peer_id', 'port', 'downloaded', 'uploaded', 'left', 'compact'] as $x) {
+foreach ([
+             'torrent_pass',
+             'info_hash',
+             'peer_id',
+             'port',
+             'downloaded',
+             'uploaded',
+             'left',
+             'compact',
+         ] as $x) {
     if (!isset($$x)) {
         err("Missing key: $x");
     }
 }
 
-foreach (['info_hash', 'peer_id'] as $x) {
+foreach ([
+             'info_hash',
+             'peer_id',
+         ] as $x) {
     if (strlen($$x) != 20) {
         err("Invalid $x (" . strlen($$x) . ' - ' . urlencode($$x) . ')');
     }
@@ -36,7 +48,11 @@ $downloaded = (int)$downloaded;
 $uploaded = (int)$uploaded;
 $left = (int)$left;
 $rsize = 30;
-foreach (['num want', 'numwant', 'num_want'] as $x) {
+foreach ([
+             'num want',
+             'numwant',
+             'num_want',
+         ] as $x) {
     if (isset($$x)) {
         $rsize = (int)$$x;
         break;
@@ -104,11 +120,11 @@ if (IP_LOGGING) {
             'userid'       => $userid,
             'ip'           => inet_pton($ip),
             'lastannounce' => TIME_NOW,
-            'type'         => 'announce'
+            'type'         => 'announce',
         ];
         $update_values = [
             'lastannounce' => TIME_NOW,
-            'type'         => 'announce'
+            'type'         => 'announce',
         ];
         $fluent->insertInto('ips', $values)
             ->onDuplicateKeyUpdate($update_values)

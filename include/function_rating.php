@@ -54,8 +54,8 @@ function getRate($id, $what)
     if ($rating_cache['rated']) {
         $rated = number_format($rating_cache['sum'] / $rating_cache['count'] / 5 * 100, 0) . '%';
         $rate = "
-            <div class='star-ratings-css'>
-                <div class='star-ratings-css-top tooltipper' title='Rating: $rated.<br>You rated this $what {$rating_cache['rating']} star" . plural($rating_cache['rating']) . "' style='width: $rated;'>
+            <div class='star-ratings-css tooltipper' title='Rating: $rated.<br>You rated this $what {$rating_cache['rating']} star" . plural($rating_cache['rating']) . "'>
+                <div class='star-ratings-css-top' style='width: $rated;'>
                     <span>&#9733;</span>
                     <span>&#9733;</span>
                     <span>&#9733;</span>
@@ -71,14 +71,29 @@ function getRate($id, $what)
                 </div>
             </div>";
     } elseif ($what == 'torrent' && $completecount == 0) {
+        $rated = 0;
+        $title = 'Unrated';
+        if (!empty($rating_cache['count'])) {
+            $rated = number_format($rating_cache['sum'] / $rating_cache['count'] / 5 * 100, 0) . '%';
+            $title = "Rating: $rated.";
+        }
         $rate = "
-                <span class='tooltipper' title='You must download this torrent in order to rate it.'>
-                    <span class='rated'>&#9734;</span>
-                    <span class='rated'>&#9734;</span>
-                    <span class='rated'>&#9734;</span>
-                    <span class='rated'>&#9734;</span>
-                    <span class='rated'>&#9734;</span>
-                </span>";
+            <div class='star-ratings-css tooltipper' title='{$title}<br>You must download this torrent in order to rate it.'>
+                <div class='star-ratings-css-top' style='width: $rated;'>
+                    <span>&#9733;</span>
+                    <span>&#9733;</span>
+                    <span>&#9733;</span>
+                    <span>&#9733;</span>
+                    <span>&#9733;</span>
+                </div>
+                <div class='star-ratings-css-bottom'>
+                    <span>&#9734;</span>
+                    <span>&#9734;</span>
+                    <span>&#9734;</span>
+                    <span>&#9734;</span>
+                    <span>&#9734;</span>
+                </div>
+            </div>";
     } else {
         $i = 5;
         $rate = '

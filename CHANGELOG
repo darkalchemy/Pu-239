@@ -1,3 +1,10 @@
+4 Feb 2018
+update: rating when torrent not downloaded
+update: queries block
+fix: cache variable
+add: cache stats for memcache, redis, apcu and files
+hide: display of stats from all but staff
+
 3 Feb 2018
 fix: freeuser_update.php
 add: redirect to login on no session

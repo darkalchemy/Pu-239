@@ -115,3 +115,9 @@
     background-color: #212121;
     color: #FFF;
 }
+
+#content #chatList span.dateTime {
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: .7em;
+}
+

@@ -1,18 +1,11 @@
 <?php
 $start = microtime(true);
 
-if (!file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php')) {
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'define.php';
+if (!@include_once(INCL_DIR . 'config.php')) {
     header('Location: /install/index.php');
     die();
 }
-
-if (!file_exists(dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . '.env')) {
-    echo 'missing .env file, please copy .env.example to .env and then edit .env';
-    die();
-}
-
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'define.php';
-require_once INCL_DIR . 'config.php';
 require_once INCL_DIR . 'site_config.php';
 require_once VENDOR_DIR . 'autoload.php';
 
@@ -21,7 +14,6 @@ $dotenv->load();
 
 use Blocktrail\CryptoJSAES\CryptoJSAES;
 
-require_once INCL_DIR . 'database.php';
 require_once INCL_DIR . 'files.php';
 
 require_once CACHE_DIR . 'free_cache.php';
@@ -47,6 +39,7 @@ require_once CLASS_DIR . 'class_blocks_userdetails.php';
 require_once CLASS_DIR . 'class_bt_options.php';
 require_once CACHE_DIR . 'block_settings_cache.php';
 require_once INCL_DIR . 'site_settings.php';
+require_once INCL_DIR . 'database.php';
 
 if (!$site_config['in_production']) {
     $pu239_version = new SebastianBergmann\Version(
@@ -901,10 +894,10 @@ function sqlwildcardesc($x)
 {
     return str_replace([
                            '%',
-                           '_'
+                           '_',
                        ], [
                            '\\%',
-                           '\\_'
+                           '\\_',
                        ], mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $x));
 }
 
@@ -1334,14 +1327,20 @@ function sql_query($query, $log = true)
 {
     global $query_stat, $queries;
 
-    $query_start_time = microtime(true);
-    $result = mysqli_query($GLOBALS['___mysqli_ston'], $query);
-    $query_end_time = microtime(true);
-    $query_stat[] = [
-        'seconds' => number_format($query_end_time - $query_start_time, 6),
-        'query'   => $query,
-    ];
-    $queries = count($query_stat);
+    if (SQL_DEBUG) {
+        $query_start_time = microtime(true);
+
+        $result = mysqli_query($GLOBALS['___mysqli_ston'], $query);
+        $query_end_time = microtime(true);
+        $query_stat[] = [
+            'seconds' => number_format($query_end_time - $query_start_time, 6),
+            'query'   => formatQuery($query),
+        ];
+        $queries = count($query_stat);
+    } else {
+        $result = mysqli_query($GLOBALS['___mysqli_ston'], $query);
+    }
+
 
     return $result;
 }
@@ -1472,7 +1471,7 @@ function human_filesize($bytes, $dec = 2)
         'PB',
         'EB',
         'ZB',
-        'YB'
+        'YB',
     ];
     $factor = floor((strlen($bytes) - 1) / 3);
 
@@ -1665,24 +1664,24 @@ function replace_unicode_strings($text)
 {
     $text = str_replace([
                             '“',
-                            '”'
+                            '”',
                         ], '"', $text);
     $text = str_replace([
                             '&quot;',
                             '&lsquo;',
                             '‘',
                             '&rsquo;',
-                            '’'
+                            '’',
                         ], "'", $text);
     $text = str_replace([
                             '&ldquo;',
                             '“',
                             '&rdquo;',
-                            '”'
+                            '”',
                         ], '"', $text);
     $text = str_replace([
                             '&#8212;',
-                            '–'
+                            '–',
                         ], '-', $text);
     $text = str_replace('&amp;', '&#38;', $text);
     return html_entity_decode(htmlentities($text, ENT_QUOTES));
@@ -1930,10 +1929,10 @@ function breadcrumbs($separator = '', $home = 'Home')
     foreach ($path as $x => $crumb) {
         $title = ucwords(str_replace([
                                          '.php',
-                                         '_'
+                                         '_',
                                      ], [
                                          '',
-                                         ' '
+                                         ' ',
                                      ], $crumb));
         if ($x != $last) {
             $breadcrumbs[] = "<li><a href='$base$crumb'>$title</a></li>";
@@ -1945,7 +1944,7 @@ function breadcrumbs($separator = '', $home = 'Home')
     if (!empty($action[0]) && $action[0] === 'action') {
         $type = explode('&', str_replace([
                                              '-',
-                                             '_'
+                                             '_',
                                          ], ' ', $action[1]));
         $breadcrumbs[] = ucwords($type[0]);
     }
@@ -2232,12 +2231,12 @@ function get_show_name(string $name)
     if (preg_match("/^(.*)S\d+(E\d+)?/i", $name, $tmp)) {
         return trim(str_replace([
                                     '.',
-                                    '_'
+                                    '_',
                                 ], ' ', $tmp[1]));
     } else {
         return trim(str_replace([
                                     '.',
-                                    '_'
+                                    '_',
                                 ], ' ', $name));
     }
 }
@@ -2289,6 +2288,41 @@ function time24to12($h24, $min)
         $newhour = $h24 - 12;
     }
     return ($h24 < 12) ? $newhour . ":$min am" : $newhour . ":$min pm";
+}
+
+/**
+ * @param $path
+ *
+ * @return string
+ */
+function GetDirectorySize($path)
+{
+    $bytestotal = 0;
+    $path = realpath($path);
+    if ($path !== false && $path != '' && file_exists($path)) {
+        foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)) as $object) {
+            $bytestotal += $object->getSize();
+        }
+    }
+    return human_filesize($bytestotal);
+}
+
+/**
+ * @param $query
+ *
+ * @return null|string|string[]
+ */
+function formatQuery($query) {
+    $query = preg_replace(
+        '/\b(WHERE|FROM|GROUP BY|HAVING|ORDER BY|LIMIT|OFFSET|UNION|ON DUPLICATE KEY UPDATE|VALUES|SET)\b/',
+        "\n$0", $query
+    );
+    $query = preg_replace(
+        '/\b(INNER|OUTER|LEFT|RIGHT|FULL|CASE|WHEN|END|ELSE|AND)\b/',
+        "\n\t$0", $query
+    );
+    $query = preg_replace("/\s+\n/", "\n", $query); // remove trailing spaces
+    return $query;
 }
 
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {

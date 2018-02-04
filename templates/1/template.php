@@ -167,30 +167,45 @@ function stdfoot($stdfoot = false)
     $header = $uptime = $htmlfoot = '';
     $debug = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
     $queries = !empty($query_stat) ? count($query_stat) : 0;
-    $cachetime = 0; //($cache->Time / 1000);
     $seconds = microtime(true) - $start;
     $r_seconds = round($seconds, 5);
     $querytime = $querytime === null ? 0 : $querytime;
-    $phptime = $seconds - $querytime - $cachetime;
-    $percentphp = number_format(($phptime / $seconds) * 100, 2);
-    $percentmc = number_format(($cachetime / $seconds) * 100, 2);
 
-    if ($CURUSER && $query_stat && $debug) {
-        if (extension_loaded('memcached')) {
-            $MemStats = $cache->get('mc_hits');
-            if ($MemStats === false || is_null($MemStats)) {
-                $MemStats = ''; //$cache->getStats();
-                $MemStats['Hits'] = (($MemStats['get_hits'] / $MemStats['cmd_get'] < 0.7) ? '' : number_format(($MemStats['get_hits'] / $MemStats['cmd_get']) * 100, 3));
-                $cache->set('mc_hits', $MemStats, 10);
+    if ($CURUSER['class'] >= UC_STAFF && $debug) {
+        if (extension_loaded('apcu') && $_ENV['CACHE_DRIVER'] === 'apcu') {
+            $stats = apcu_cache_info();
+            if ($stats) {
+                $stats['Hits'] = number_format($stats['num_hits'] / ($stats['num_hits'] + $stats['num_misses']) * 100, 3);
+                $header = "{$lang['gl_stdfoot_querys_apcu1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['num_entries']) . "{$lang['gl_stdfoot_querys_mstat6']}" . human_filesize($stats['mem_size']);
             }
-        }
-        if (!empty($MemStats['Hits']) && !empty($MemStats['curr_items']) && !empty($phptime) && !empty($percentmc) && !empty($cachetime)) {
-            $header = '<b>' . $lang['gl_stdfoot_querys_mstat'] . '</b> ' . mksize(memory_get_peak_usage()) . ' ' . $lang['gl_stdfoot_querys_mstat1'] . ' ' . round($phptime, 2) . 's | ' . round($percentmc, 2) . '' . $lang['gl_stdfoot_querys_mstat2'] . '' . number_format($cachetime, 4) . 's ' . $lang['gl_stdfoot_querys_mstat3'] . '' . $MemStats['Hits'] . '' . $lang['gl_stdfoot_querys_mstat4'] . '' . number_format((100 - $MemStats['Hits']), 3) . '' . $lang['gl_stdfoot_querys_mstat5'] . '' . number_format($MemStats['curr_items']);
+        } elseif (extension_loaded('redis') && $_ENV['CACHE_DRIVER'] === 'redis') {
+            $client = new \Redis();
+            $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
+            $stats = $client->info();
+            if ($stats) {
+                $stats['Hits'] = number_format($stats['keyspace_hits'] / ($stats['keyspace_hits'] + $stats['keyspace_misses']) * 100, 3);
+                preg_match('/keys=(\d+)/', $stats['db0'], $keys);
+                $header = "{$lang['gl_stdfoot_querys_redis1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($keys[1]) . "{$lang['gl_stdfoot_querys_mstat6']}{$stats['used_memory_human']}";
+            }
+        } elseif (extension_loaded('memcached') && $_ENV['CACHE_DRIVER'] === 'memcached') {
+            $client = new \Memcached('mc');
+            if (!count($client->getServerList())) {
+                $client->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
+            }
+            $stats = $client->getStats();
+            $stats = !empty($stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"]) ? $stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"] : null;
+            if ($stats && !empty($stats['get_hits']) && !empty($stats['cmd_get'])) {
+                $stats['Hits'] = number_format(($stats['get_hits'] / $stats['cmd_get']) * 100, 3);
+                $header = $lang['gl_stdfoot_querys_mstat3'] . $stats['Hits'] . $lang['gl_stdfoot_querys_mstat4'] . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['curr_items']) . "{$lang['gl_stdfoot_querys_mstat6']}" . human_filesize($stats['bytes']);
+            }
+        } elseif ($_ENV['CACHE_DRIVER'] === 'files') {
+            $header = "{$lang['gl_stdfoot_querys_fly1']}{$_ENV['FILES_PATH']} {$lang['gl_stdfoot_querys_fly2']}" . GetDirectorySize($_ENV['FILES_PATH']);
+        } elseif ($_ENV['CACHE_DRIVER'] === 'couchbase') {
+            $header = $lang['gl_stdfoot_querys_cbase'];
         }
 
-        $querytime = 0;
-
-        $htmlfoot .= "
+        if (!empty($query_stat)) {
+            $htmlfoot .= "
                 <div class='container is-fluid portlet'>
                     <a id='queries-hash'></a>
                     <fieldset id='queries' class='header'>
@@ -199,46 +214,47 @@ function stdfoot($stdfoot = false)
                             <table class='table table-bordered table-striped bottom10'>
                                 <thead>
                                     <tr>
-                                        <th>{$lang['gl_stdfoot_id']}</th>
-                                        <th>{$lang['gl_stdfoot_qt']}</th>
+                                        <th class='w-10'>{$lang['gl_stdfoot_id']}</th>
+                                        <th class='w-10'>{$lang['gl_stdfoot_qt']}</th>
                                         <th>{$lang['gl_stdfoot_qs']}</th>
                                     </tr>
                                 </thead>
                                 <tbody>";
-        foreach ($query_stat as $key => $value) {
-            $querytime += $value['seconds'];
-            $htmlfoot .= '
+            foreach ($query_stat as $key => $value) {
+                $querytime += $value['seconds'];
+                $htmlfoot .= '
                                     <tr>
                                         <td>' . ($key + 1) . "</td>
                                         <td>" . ($value['seconds'] > 0.01 ? "<span class='is-danger' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='is-success' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
-                                        <td><div class='text-justify'>" . format_comment($value['query']) . '</div></td>
+                                        <td>
+                                            <div class='text-justify pre'>" . format_comment($value['query']) . '</div>
+                                        </td>
                                     </tr>';
-        }
-        $htmlfoot .= '
+            }
+
+            $htmlfoot .= '
                                 </tbody>
                             </table>
                         </div>
                     </fieldset>
                 </div>';
-    }
-    $htmlfoot .= "
-                </div>
-            </div>";
-
-    if ($CURUSER && $debug) {
+        }
         $uptime = $cache->get('uptime');
         if ($uptime === false || is_null($uptime)) {
             $uptime = `uptime`;
             $cache->set('uptime', $uptime, 25);
         }
     }
+    $htmlfoot .= "
+                </div>
+            </div>";
 
     if ($CURUSER) {
         $htmlfoot .= "
             <div class='container site-debug bg-05 round10 top20 bottom20'>
                 <div class='level bordered bg-04'>
                     <div class='size_4 top10 bottom10'>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_page']} $r_seconds {$lang['gl_stdfoot_querys_seconds']}</p>
+                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_page']} " . mksize(memory_get_peak_usage()) . " in $r_seconds {$lang['gl_stdfoot_querys_seconds']}</p>
                         <p class='is-marginless'>{$lang['gl_stdfoot_querys_server']} $queries {$lang['gl_stdfoot_querys_time']}" . plural($queries) . "</p>
                         " . ($debug ? "<p class='is-marginless'>$header</p><p class='is-marginless'>{$lang['gl_stdfoot_uptime']} $uptime</p>" : '') . "
                     </div>
@@ -504,7 +520,7 @@ function navbar()
         $navbar .= "
                                     <li><a href='{$site_config['baseurl']}/faq.php'>{$lang['gl_faq']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/chat.php'>{$lang['gl_irc']}</a></li>
-                                    <li><a href='{$site_config['baseurl']}/mybonus.php'>Karma Store</a></li>                                    
+                                    <li><a href='{$site_config['baseurl']}/mybonus.php'>Karma Store</a></li>
                                     <li><a href='#' onclick='radio();'>{$lang['gl_radio']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/getrss.php'>RSS</a></li>
                                     <li><a href='{$site_config['baseurl']}/rules.php'>{$lang['gl_rules']}</a></li>

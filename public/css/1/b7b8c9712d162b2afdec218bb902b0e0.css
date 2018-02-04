@@ -315,7 +315,7 @@ body.ajax-chat {
   tab-size: 4;
   -moz-tab-size: 4;
   white-space: pre-wrap;
-  font-family: consolas,monospace;
+  font-family: "Lucida Console",Monaco,monospace;
   font-size: .9em!important;
   line-height: 1.1em;
   border: 1px solid grey;

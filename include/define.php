@@ -25,7 +25,6 @@ define('PLUGINS_DIR', ROOT_DIR . 'plugins' . DIRECTORY_SEPARATOR);
 define('IMDB_CACHE_DIR', CACHE_DIR . 'imdb' . DIRECTORY_SEPARATOR);
 
 define('SQL_DEBUG', true);
-define('SQL_LOGGING', false);
 define('IP_LOGGING', true);
 define('XBT_TRACKER', false);
 define('REQUIRE_CONNECTABLE', false);
