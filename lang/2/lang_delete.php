@@ -7,7 +7,7 @@ $lang = [
     'delete_not_exist'    => 'Torrent does not exist',
     'delete_not_owner'    => "You're not the owner! How did that happen?",
     'delete_invalid'      => 'Invalid reason',
-    'delete_dead'         => 'Dead: 0 seeders, 0 leechers = 0 peers totalDead: 0 seeders, 0 leechers = 0 peers total',
+    'delete_dead'         => 'Dead: 0 seeders, 0 leechers = 0 peers total',
     'delete_dupe'         => 'Dupe',
     'delete_nuked'        => 'Nuked',
     'delete_violated'     => 'Please describe the violated rule.',

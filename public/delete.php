@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_memcache.php';
 check_user_status();
@@ -96,7 +96,7 @@ $cache->deleteMulti([
                         'last5_tor_',
                         'scroll_tor_',
                         'torrent_details_' . $id,
-                        'torrent_details_text' . $id
+                        'torrent_details_text' . $id,
                     ]);
 write_log("{$lang['delete_torrent']} $id ({$row['name']}){$lang['delete_deleted_by']}{$CURUSER['username']} ($reasonstr)\n");
 if ($site_config['seedbonus_on'] == 1) {
@@ -106,20 +106,18 @@ if ($site_config['seedbonus_on'] == 1) {
         'seedbonus' => $update['seedbonus'],
     ], $site_config['expires']['user_cache']);
 }
+$message = "Torrent $id (" . htmlsafechars($row['name']) . ") has been deleted.\n  Reason: $reasonstr";
 if ($CURUSER['id'] != $row['owner'] and $CURUSER['pm_on_delete'] == 'yes') {
     $added = TIME_NOW;
     $pm_on = (int)$row['owner'];
     $subject = 'Torrent Deleted';
-    $message = "Torrent $id (" . htmlsafechars($row['name']) . ") has been deleted.\n  Reason: $reasonstr";
     sql_query('INSERT INTO messages (subject, sender, receiver, msg, added) VALUES(' . sqlesc($subject) . ', 0, ' . sqlesc($pm_on) . ',' . sqlesc($message) . ", $added)") or sqlerr(__FILE__, __LINE__);
     $cache->increment('inbox_' . $pm_on);
 }
-if (isset($_POST['returnto'])) {
-    $ret = "<a href='" . htmlsafechars($_POST['returnto']) . "'>{$lang['delete_go_back']}</a>";
+
+setSessionVar('is-success', $message);
+if (!empty($_POST['returnto'])) {
+    header("Location: " . htmlsafechars($_POST['returnto']));
 } else {
-    $ret = "<a href='{$site_config['baseurl']}/browse.php'>{$lang['delete_back_browse']}</a>";
+    header("Location: {$site_config['baseurl']}/browse.php");
 }
-$HTMLOUT = '';
-$HTMLOUT .= "<h2>{$lang['delete_deleted']}</h2>
-    <p>$ret</p>";
-echo stdhead("{$lang['delete_deleted']}") . $HTMLOUT . stdfoot();

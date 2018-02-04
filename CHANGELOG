@@ -1,4 +1,7 @@
 4 Feb 2018
+update: download torrent
+update: delete torrent
+update: edit torrent
 update: add flush cache for UC_MAX
 update: redis cache to choose database
 update: trivia always autrefresh, hide days when lees than 1 day

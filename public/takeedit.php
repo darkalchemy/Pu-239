@@ -333,7 +333,7 @@ if ($torrent_cache) {
     $cache->delete('last5_tor_');
 }
 if ($torrent_txt_cache) {
-    $cache->update_row('torrent_details_txt' . $id, $torrent_txt_cache, $site_config['expires']['torrent_details_text']);
+    $cache->update_row('torrent_details_txt_' . $id, $torrent_txt_cache, $site_config['expires']['torrent_details_text']);
 }
 remove_torrent($infohash);
 write_log('torrent edited - ' . htmlsafechars($name) . ' was edited by ' . (($fetch_assoc['anonymous'] == 'yes') ? 'Anonymous' : htmlsafechars($CURUSER['username'])) . '');

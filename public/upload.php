@@ -96,7 +96,7 @@ $HTMLOUT .= "<table class='table table-bordered table-striped top20 bottom20'>
     </tr>
     <tr>
     <td class='rowhead'>{$lang['upload_small_description']}</td>
-    <td><input type='text' name='description' class='w-100' /><br>({$lang['upload_small_descr']})</td>
+    <td><input type='text' name='description' class='w-100' maxlength='120' /><br>({$lang['upload_small_descr']})</td>
     </tr>
     <tr>
     <td class='rowhead'>{$lang['upload_nfo']}</td>

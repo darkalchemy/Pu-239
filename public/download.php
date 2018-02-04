@@ -56,6 +56,11 @@ if ($site_config['seedbonus_on'] == 1 && $row['owner'] != $CURUSER['id']) {
     ], $site_config['expires']['user_cache']);
 }
 sql_query('UPDATE torrents SET hits = hits + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$update['hits'] = ($torrents['hits'] + 1);
+$cache->update_row('torrent_details_' . $id, [
+    'hits' => $update['hits'],
+], $site_config['expires']['torrent_details']);
+
 if (isset($_GET['slot'])) {
     $added = (TIME_NOW + 14 * 86400);
     $slots_sql = sql_query('SELECT * FROM freeslots WHERE torrentid = ' . sqlesc($id) . ' AND userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);

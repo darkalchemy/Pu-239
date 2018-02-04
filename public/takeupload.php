@@ -386,6 +386,7 @@ $id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) 
 $cache->delete('MyPeers_' . $owner_id);
 $cache->delete('lastest_tor_');
 $cache->delete('last5_tor_');
+$cache->delete('top5_tor_');
 $cache->delete('scroll_tor_');
 $cache->delete('torrent_poster_count_');
 $hashes = $cache->get('hashes_');

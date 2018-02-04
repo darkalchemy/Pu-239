@@ -31,7 +31,7 @@ $lang = [
     'edit_peers'               => '0 seeders, 0 leechers = 0 peers total',
     'edit_dupe'                => 'Dupe',
     'edit_nuked'               => 'Nuked',
-    'edit_rules'               => 'TB Rules',
+    'edit_rules'               => $site_config['site_name'] . ' Rules',
     'edit_req'                 => 'req',
     'edit_other'               => 'Other:',
     'edit_delete'              => 'Delete it!',

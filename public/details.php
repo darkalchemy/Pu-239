@@ -238,14 +238,14 @@ if (($torrents_xbt = $cache->get('torrent_xbt_data_' . $id)) === false && XBT_TR
     $cache->set('torrent_xbt_data_' . $id, $torrents_xbt, $site_config['expires']['torrent_xbt_data']);
 }
 
-$torrents_txt = $cache->get('torrent_details_txt' . $id);
+$torrents_txt = $cache->get('torrent_details_txt_' . $id);
 if ($torrents_txt === false || is_null($torrents_txt)) {
     $torrents_txt = mysqli_fetch_assoc(sql_query('SELECT descr FROM torrents WHERE id =' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
-    $cache->set('torrent_details_txt' . $id, $torrents_txt, $site_config['expires']['torrent_details_text']);
+    $cache->set('torrent_details_txt_' . $id, $torrents_txt, $site_config['expires']['torrent_details_text']);
 }
 
 if (isset($_GET['hit'])) {
-    sql_query('UPDATE torrents SET views = views + 1 WHERE id =' . sqlesc($id));
+    sql_query('UPDATE torrents SET views = views + 1 WHERE id = ' . sqlesc($id));
     $update['views'] = ($torrents['views'] + 1);
     $cache->update_row('torrent_details_' . $id, [
         'views' => $update['views'],
@@ -306,7 +306,7 @@ if (empty($torrents['tags'])) {
     $tags = explode(',', $torrents['tags']);
     $keywords = '';
     foreach ($tags as $tag) {
-        $keywords .= "<a href='browse.php?search=$tag&amp;searchin=all&amp;incldead=1'>" . htmlsafechars($tag) . '</a>,';
+        $keywords .= "<a href='{$site_config['baseurl']}/browse.php?search=$tag&amp;searchin=all&amp;incldead=1'>" . htmlsafechars($tag) . '</a>,';
     }
     $keywords = substr($keywords, 0, (strlen($keywords) - 1));
 }
@@ -496,13 +496,13 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
                 <tr>
                     <td class="rowhead">Karma Points</td>
                     <td><b>In total ' . (int)$torrents['points'] . ' Karma Points given to this torrent of which ' . $my_points . ' from you.<br><br>
-                        <a href="coins.php?id=' . $id . '&amp;points=10"><img src="' . $site_config['pic_baseurl'] . '10coin.png" alt="10" class="tooltipper" title="10 Points" /></a>
-                        <a href="coins.php?id=' . $id . '&amp;points=20"><img src="' . $site_config['pic_baseurl'] . '20coin.png" alt="20" class="tooltipper" title="20 Points" /></a>
-                        <a href="coins.php?id=' . $id . '&amp;points=50"><img src="' . $site_config['pic_baseurl'] . '50coin.png" alt="50" class="tooltipper" title="50 Points" /></a>
-                        <a href="coins.php?id=' . $id . '&amp;points=100"><img src="' . $site_config['pic_baseurl'] . '100coin.png" alt="100" class="tooltipper" title="100 Points" /></a>
-                        <a href="coins.php?id=' . $id . '&amp;points=200"><img src="' . $site_config['pic_baseurl'] . '200coin.png" alt="200" class="tooltipper" title="200 Points" /></a>
-                        <a href="coins.php?id=' . $id . '&amp;points=500"><img src="' . $site_config['pic_baseurl'] . '500coin.png" alt="500" class="tooltipper" title="500 Points" /></a>
-                        <a href="coins.php?id=' . $id . '&amp;points=1000"><img src="' . $site_config['pic_baseurl'] . '1000coin.png" alt="1000" class="tooltipper" title="1000 Points" /></a></b>
+                        <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=10"><img src="' . $site_config['pic_baseurl'] . '10coin.png" alt="10" class="tooltipper" title="10 Points" /></a>
+                        <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=20"><img src="' . $site_config['pic_baseurl'] . '20coin.png" alt="20" class="tooltipper" title="20 Points" /></a>
+                        <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=50"><img src="' . $site_config['pic_baseurl'] . '50coin.png" alt="50" class="tooltipper" title="50 Points" /></a>
+                        <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=100"><img src="' . $site_config['pic_baseurl'] . '100coin.png" alt="100" class="tooltipper" title="100 Points" /></a>
+                        <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=200"><img src="' . $site_config['pic_baseurl'] . '200coin.png" alt="200" class="tooltipper" title="200 Points" /></a>
+                        <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=500"><img src="' . $site_config['pic_baseurl'] . '500coin.png" alt="500" class="tooltipper" title="500 Points" /></a>
+                        <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=1000"><img src="' . $site_config['pic_baseurl'] . '1000coin.png" alt="1000" class="tooltipper" title="1000 Points" /></a></b>
                         <br>By clicking on the coins you can give Karma Points to the uploader of this torrent.
                     </td>
                 </tr>';

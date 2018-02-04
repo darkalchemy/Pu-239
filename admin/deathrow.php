@@ -73,7 +73,7 @@ function delete_torrent($delete_array, $page)
         // torrent_details
         $cache->delete('torrent_details_' . $id);
         $cache->delete('torrent_xbt_data_' . $id);
-        $cache->delete('torrent_details_txt' . $id);
+        $cache->delete('torrent_details_txt_' . $id);
         $cache->delete('coin_points_' . $id);
 
         $cache->delete('similiar_tor_' . $id);
