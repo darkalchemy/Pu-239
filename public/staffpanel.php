@@ -76,6 +76,31 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         } else {
             stderr($lang['spanel_error'], $lang['spanel_db_error_msg']);
         }
+    } elseif (($action == 'flush' && $CURUSER['class'] == UC_MAX)) {
+        if (extension_loaded('apcu') && $_ENV['CACHE_DRIVER'] === 'apcu') {
+            apcu_clear_cache();
+            setSessionVar('is-success', 'You flushed the APC(u) cache');
+        } elseif (extension_loaded('redis') && $_ENV['CACHE_DRIVER'] === 'redis') {
+            $client = new \Redis();
+            $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
+            $client->select($_ENV['REDIS_DATABASE']);
+            $client->flushDB();
+            setSessionVar('is-success', 'You flushed the Redis db' . $_ENV['REDIS_DATABASE'] . ' cache');
+        } elseif (extension_loaded('memcached') && $_ENV['CACHE_DRIVER'] === 'memcached') {
+            $client = new \Memcached();
+            if (!count($client->getServerList())) {
+                $client->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
+            }
+            $client->flush();
+            setSessionVar('is-success', 'You flushed the Memcached cache');
+        } elseif ($_ENV['CACHE_DRIVER'] === 'files') {
+            rrmdir($_ENV['FILES_PATH']);
+            setSessionVar('is-success', 'You flushed the Flysystem cache: ' . $_ENV['FILES_PATH']);
+        } elseif ($_ENV['CACHE_DRIVER'] === 'couchbase') {
+            setSessionVar('is-info', 'You did not flush the Couchbase cache');
+        }
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        die();
     } elseif (($action == 'add' && $CURUSER['class'] == UC_MAX) || ($action == 'edit' && is_valid_id($id) && $CURUSER['class'] == UC_MAX)) {
         $names = [
             'page_name',
@@ -277,8 +302,9 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         $add_button = '';
         if ($CURUSER['class'] == UC_MAX) {
             $add_button = "
-                <div class='has-text-centered bottom20'>
+                <div class='level-center bottom20'>
                     <a href='{$site_config['baseurl']}/staffpanel.php?action=add' class='tooltipper button is-small' title='{$lang['spanel_add_a_new_pg']}'>{$lang['spanel_add_a_new_pg']}</a>
+                    <a href='{$site_config['baseurl']}/staffpanel.php?action=flush' class='tooltipper button is-small' title='{$lang['spanel_flush_cache']}'>{$lang['spanel_flush_cache']}</a>
                 </div>";
         }
         $res = sql_query('SELECT s.*, u.username 

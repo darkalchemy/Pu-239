@@ -1,4 +1,6 @@
 4 Feb 2018
+update: add flush cache for UC_MAX
+update: redis cache to choose database
 update: trivia always autrefresh, hide days when lees than 1 day
 update: rating when torrent not downloaded
 update: queries block

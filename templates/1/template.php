@@ -181,14 +181,15 @@ function stdfoot($stdfoot = false)
         } elseif (extension_loaded('redis') && $_ENV['CACHE_DRIVER'] === 'redis') {
             $client = new \Redis();
             $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
+            $client->select($_ENV['REDIS_DATABASE']);
             $stats = $client->info();
             if ($stats) {
                 $stats['Hits'] = number_format($stats['keyspace_hits'] / ($stats['keyspace_hits'] + $stats['keyspace_misses']) * 100, 3);
-                preg_match('/keys=(\d+)/', $stats['db0'], $keys);
+                preg_match('/keys=(\d+)/', $stats['db' . $_ENV['REDIS_DATABASE']], $keys);
                 $header = "{$lang['gl_stdfoot_querys_redis1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($keys[1]) . "{$lang['gl_stdfoot_querys_mstat6']}{$stats['used_memory_human']}";
             }
         } elseif (extension_loaded('memcached') && $_ENV['CACHE_DRIVER'] === 'memcached') {
-            $client = new \Memcached('mc');
+            $client = new \Memcached();
             if (!count($client->getServerList())) {
                 $client->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
             }

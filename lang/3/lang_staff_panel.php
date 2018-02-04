@@ -41,6 +41,7 @@ $lang = [
     'spanel_submit'                   => 'Submit',
     'spanel_cancel'                   => 'Cancel',
     'spanel_add_a_new_pg'             => 'Add a new page',
+    'spanel_flush_cache'              => 'Flush Cache',
     'spanel_options'                  => 'Options',
     'spanel_welcome'                  => 'Welcome',
     'spanel_to_the'                   => 'to the',

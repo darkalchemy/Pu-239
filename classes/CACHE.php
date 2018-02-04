@@ -42,6 +42,7 @@ class CACHE extends TransactionalStore
                 if (extension_loaded('redis')) {
                     $client = new \Redis();
                     $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
+                    $client->select($_ENV['REDIS_DATABASE']);
                     $cache = new \MatthiasMullie\Scrapbook\Adapters\Redis($client);
                 } else {
                     die('<h1>Error</h1><p>php-redis is not available</p>');
