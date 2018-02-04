@@ -48,7 +48,7 @@ if (!empty($_POST) && (int)$_POST['qid'] === $qid) {
                 $canswer = $result['canswer'];
                 if ($user_id === 0) {
                     if (function_exists('write_log')) {
-                        write_log("Some asshole is using a user_id of 0!!!!!!!!!!!!!!!! $user_id $qid $date $ip");
+                        write_log("Some asshole is using a user_id of 0! $user_id $qid $date $ip");
                     }
                 } else {
                     $is_correct = $answer == $canswer ? 1 : 0;
@@ -83,14 +83,14 @@ $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $result = mysqli_fetch_assoc($res);
 $gamenum = (int)$result['gamenum'];
 
-$refresh = '';
+$time_refresh = 600;
 if (!empty($gamenum) && !empty($qid)) {
     $time_refresh = 10;
     if ($round_remaining >= 1) {
         $time_refresh = $round_remaining;
     }
-    $refresh = "<meta http-equiv='refresh' content={$time_refresh}; url={$site_config['baseurl']}/trivia.php'>";
 }
+$refresh = "<meta http-equiv='refresh' content={$time_refresh}; url={$site_config['baseurl']}/trivia.php'>";
 
 $HTMLOUT = "<!doctype html>
 <html>
@@ -123,7 +123,7 @@ if (!empty($gamenum) && !empty($qid)) {
                     <span>{$lang['trivia_next_question']}: </span><span class='days'></span><span class='hours'></span><span class='minutes'></span>:<span class='seconds'></span>
                 </div>
                 <div id='clock_game'>
-                    <span>Game Ends in: </span><span class='days'></span> Days, <span class='hours'></span> Hours, <span class='minutes'></span> Minutes, <span class='seconds'></span> Seconds
+                    <span>Game Ends in: </span><span class='days'></span> <span class='hours'></span> Hours, <span class='minutes'></span> Minutes, <span class='seconds'></span> Seconds
                 </div>
             </h3>";
 }
@@ -282,7 +282,7 @@ if (!empty($gamenum) && !empty($qid)) {
 <script>
     <!-- https://www.sitepoint.com/build-javascript-countdown-timer-no-dependencies/ -->
     function getTimeRemaining(endtime){
-        var t = Date.parse(endtime) - Date.parse(new Date());
+        var t = String(Date.parse(endtime) - Date.parse(String(new Date())));
         var seconds = Math.floor( (t/1000) % 60 );
         var minutes = Math.floor( (t/1000/60) % 60 );
         var hours = Math.floor( (t/(1000*60*60)) % 24 );
@@ -307,12 +307,12 @@ if (!empty($gamenum) && !empty($qid)) {
             var minutesSpan = clock.querySelector('.minutes');
             var secondsSpan = clock.querySelector('.seconds');
             if (t.days > 0) {
-                daysSpan.innerHTML = t.days;
+                daysSpan.innerHTML = t.days + ' Days, ';
             }
             if (t.hours > 0) {
-                hoursSpan.innerHTML = t.hours;
+                hoursSpan.innerHTML = String(t.hours);
             }
-            minutesSpan.innerHTML = t.minutes;
+            minutesSpan.innerHTML = String(t.minutes);
             secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
             if(t.total<=0) {
                 clearInterval(timeinterval);
