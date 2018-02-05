@@ -1,4 +1,5 @@
 5 Feb 2018
+update: google books api, track api usage and disable if exceeded. cache only book data, not formatting
 fix: birthday cleanup
 update: books function check if empty
 remove: duplicate trivia questions
