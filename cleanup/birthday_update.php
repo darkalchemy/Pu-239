@@ -3,36 +3,66 @@
 /**
  * @param $data
  *
+ * @throws Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function birthday_update($data)
 {
-    global $site_config, $queries, $cache;
+    global $site_config, $queries, $cache, $fluent;
+
     set_time_limit(1200);
     ignore_user_abort(true);
 
     $current_date = getdate();
-    $res = sql_query('SELECT id, username, class, donor, title, warned, enabled, chatpost, leechwarn, pirate, king, uploaded, birthday FROM users WHERE MONTH(birthday) = ' . sqlesc($current_date['mon']) . ' AND DAYOFMONTH(birthday) = ' . sqlesc($current_date['mday']) . ' ORDER BY username ASC') or sqlerr(__FILE__, __LINE__);
-    $msgs_buffer = $users_buffer = [];
-    if (mysqli_num_rows($res) > 0) {
-        while ($arr = mysqli_fetch_assoc($res)) {
-            $msg = 'Hey there  ' . htmlsafechars($arr['username']) . " happy birthday, hope you have a good day we awarded you 10 gig...Njoi.\n";
-            $subject = 'Its your birthday!!';
-            $msgs_buffer[] = '(0,' . $arr['id'] . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
-            $users_buffer[] = '(' . $arr['id'] . ', 10737418240)';
-            $update['uploaded'] = ($arr['uploaded'] + 10737418240);
-            $cache->update_row('user' . $arr['id'], [
-                'uploaded' => $update['uploaded'],
-            ], $site_config['expires']['user_cache']);
-        }
-        $count = count($users_buffer);
-        if ($data['clean_log'] && $count > 0) {
-            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
-            sql_query('INSERT INTO users (id, uploaded) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE uploaded=uploaded + VALUES(uploaded)') or sqlerr(__FILE__, __LINE__);
-        }
-        if ($data['clean_log'] && $queries > 0) {
-            write_log("Birthday Cleanup: Pm'd' " . $count . ' member(s) and awarded a birthday prize');
-        }
-        unset($users_buffer, $msgs_buffer, $count);
+    $dt = TIME_NOW;
+
+    $query = $fluent->from('users')
+        ->select(null)
+        ->select('id')
+        ->select('class')
+        ->select('username')
+        ->select('uploaded')
+        ->where('MONTH(birthday) = ?', $current_date['mon'])
+        ->where('DAYOFMONTH(birthday) = ?', $current_date['mday']);
+
+    $msgs_buffer = $users_buffer = $values = [];
+    foreach ($query as $arr) {
+        $msg = 'Hey there <span class="' . get_user_class_name($arr['class'], true) . '">'   . htmlsafechars($arr['username']) . "</span> happy birthday, hope you have a good day. We awarded you 10 gig...Njoi.\n";
+        $subject = 'Its your birthday!!';
+        $msgs_buffer[] = '(0,' . $arr['id'] . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+        $update['uploaded'] = ($arr['uploaded'] + 10737418240);
+        $cache->update_row('user' . $arr['id'], [
+            'uploaded' => $update['uploaded'],
+        ], $site_config['expires']['user_cache']);
+
+        $set = [
+            'uploaded' => $update['uploaded'],
+        ];
+
+        $fluent->update('users')
+            ->set($set)
+            ->where('id = ?', $arr['id'])
+            ->execute();
+
+        $values[] = [
+            'sender'   => 0,
+            'receiver' => $arr['id'],
+            'added'    => $dt,
+            'msg'      => $msg,
+            'subject'  => $subject,
+        ];
+        $cache->increment('inbox_' . $arr['id']);
     }
+    $count = count($values);
+    if ($data['clean_log'] && $count > 0) {
+        if ($count > 0) {
+            $fluent->insertInto('messages')
+                ->values($values)
+                ->execute();
+        }
+    }
+    if ($data['clean_log'] && $queries > 0) {
+        write_log("Birthday Cleanup: Pm'd' " . $count . ' member(s) and awarded a birthday prize');
+    }
+    unset($users_buffer, $msgs_buffer, $count);
 }

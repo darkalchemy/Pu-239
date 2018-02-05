@@ -35,7 +35,7 @@ function freeuser_update($data)
             'msg'      => $msg,
             'subject'  => $subject,
         ];
-
+        $cache->increment('inbox_' . $arr['id']);
         $set = [
             'free_switch' => 0,
             'modcomment'  => $modcom,

@@ -11,7 +11,7 @@ function get_book_info($torrent)
 {
     global $cache, $site_config;
 
-    $poster = '';
+    $isbn10 = $isbn13 = $poster = '';
     $search = $torrent['name'];
     if (!empty($torrent['isbn'])) {
         $search = $torrent['isbn'];
@@ -59,14 +59,16 @@ function get_book_info($torrent)
                         <span class='column padding5'>{$book->description}</span>
                     </div>";
         $keys = [];
-        foreach ($book->industryIdentifiers as $industryIdentifier) {
-            foreach ($industryIdentifier as $key => $value) {
-                $keys[] = $value;
+        if (!empty($book->industryIdentifiers)) {
+            foreach ($book->industryIdentifiers as $industryIdentifier) {
+                foreach ($industryIdentifier as $key => $value) {
+                    $keys[] = $value;
+                }
             }
         }
         if (!empty($keys)) {
-            $isbn10 = strlen($keys[1]) === 10 ? $keys[1] : $keys[3];
-            $isbn13 = strlen($keys[3]) === 13 ? $keys[3] : $keys[1];
+            $isbn10 = !empty($keys[1]) && strlen($keys[1]) === 10 ? $keys[1] : !empty($keys[3]) ? $keys[3] : '';
+            $isbn13 = !empty($keys[3]) && strlen($keys[3]) === 13 ? $keys[3] : !empty($keys[1]) ? $keys[1] : '';
             $ebook_info .= "
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>ISBN 10: </div>

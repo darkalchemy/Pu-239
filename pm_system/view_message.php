@@ -10,11 +10,9 @@ $message = mysqli_fetch_assoc($res);
 if (!$res) {
     stderr($lang['pm_error'], $lang['pm_viewmsg_err']);
 }
-//=== get user stuff
 $res_user_stuff = sql_query('SELECT id, username, uploaded, warned, suspended, enabled, donor, class, avatar, leechwarn, chatpost, pirate, king, opt1, opt2 FROM users WHERE id=' . ($message['sender'] === $CURUSER['id'] ? sqlesc($message['receiver']) : sqlesc($message['sender']))) or sqlerr(__FILE__, __LINE__);
 $arr_user_stuff = mysqli_fetch_assoc($res_user_stuff);
 $id = (int)$arr_user_stuff['id'];
-//=== Mark message read
 sql_query('UPDATE messages SET unread="no" WHERE id = ' . sqlesc($pm_id) . ' AND receiver = ' . sqlesc($CURUSER['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
 $cache->decrement('inbox_' . $CURUSER['id']);
 if ($message['friend'] > 0) {
@@ -67,7 +65,7 @@ $HTMLOUT .= "
             </tr>
             <tr class='no_hover'>
                 <td id='photocol'>{$avatar}</td>
-                <td>" . format_comment($message['msg']) . "</td>
+                <td>" . format_comment($message['msg'], false) . "</td>
             </tr>
             <tr class='no_hover'>
                 <td colspan='2'>
