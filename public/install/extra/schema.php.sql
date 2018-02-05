@@ -2203,7 +2203,9 @@ CREATE TABLE `triviaq` (
   `canswer` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
   `asked` tinyint(1) NOT NULL DEFAULT '0',
   `current` tinyint(1) NOT NULL DEFAULT '0',
+  `hash` char(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`qid`),
+  UNIQUE KEY `hash` (`hash`),
   KEY `current` (`current`),
   KEY `asked` (`asked`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -2642,4 +2644,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-03  7:51:31
+-- Dump completed on 2018-02-05 17:31:04
