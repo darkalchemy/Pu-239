@@ -27,7 +27,7 @@ if ($action == '') {
             //== if it's the member flushing
             if ($id == $CURUSER['id']) {
                 //=== catch any missed snatched stuff thingies to stop ghost leechers from getting peers (if the peers they have drop off)
-                sql_query('UPDATE snatched SET seeder=\'no\' WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE snatched SET seeder = "no" WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                 //=== flush dem torrents!!! \o/
                 sql_query('DELETE FROM peers WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                 $number_of_torrents_flushed = mysqli_affected_rows();
@@ -36,10 +36,10 @@ if ($action == '') {
             } //=== if it's staff flushing for a member
             elseif ($id !== $CURUSER['id'] && $CURUSER['class'] >= UC_STAFF) {
                 //=== it's a staff...
-                $res_get_info = sql_query('SELECT username FROM users WHERE id=' . sqlesc($id));
+                $res_get_info = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($id));
                 $user_get_info = mysqli_fetch_assoc($res_get_info);
                 //=== catch any missed snatched stuff thingies to stop ghost leechers from getting peers (if the peers they have drop off)
-                sql_query('UPDATE snatched SET seeder=\'no\' WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE snatched SET seeder="no" WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
                 //=== flush dem torrents!!! \o/
                 sql_query('DELETE FROM peers WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
                 $number_of_torrents_flushed = mysqli_affected_rows();

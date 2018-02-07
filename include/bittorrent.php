@@ -915,6 +915,7 @@ function httperr($code = 404)
 function loggedinorreturn()
 {
     global $CURUSER, $site_config, $cache;
+
     if (!$CURUSER) {
         if ($id = getSessionVar('userID')) {
             $CURUSER = $cache->get('user' . $id);

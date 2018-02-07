@@ -29,7 +29,7 @@ if (!function_exists('sys_getloadavg')) {
         return [
             0,
             0,
-            0
+            0,
         ];
     }
 }
@@ -168,7 +168,7 @@ $site_config['nameblacklist'] = ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR . 'name
 $site_config['happyhour'] = CACHE_DIR . 'happyhour' . DIRECTORY_SEPARATOR . 'happyhour.txt';
 $site_config['sql_error_log'] = SQLERROR_LOGS_DIR . 'sql_err_' . date('M_D_Y') . '.log';
 
-if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == '') {
+if (empty($_SERVER['HTTP_HOST']) || $_SERVER['HTTP_HOST'] == '') {
     $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
 }
 
@@ -224,7 +224,7 @@ $post_max_filesize = ini_get('post_max_filesize') !== null ? return_bytes(ini_ge
 $site_config['bucket_maxsize'] = $upload_max_filesize >= $post_max_filesize ? $upload_max_filesize : $post_max_filesize;
 $site_config['site']['owner'] = 1;
 $site_config['adminer_allowed_ids'] = [
-    1
+    1,
 ];
 
 $site_config['staff']['forumid'] = 2;
@@ -250,7 +250,7 @@ $site_config['arcade_games'] = [
     'autobahn',
     'ghosts-and-goblins',
     'joust',
-    'ms-pac-man'
+    'ms-pac-man',
 ];
 $site_config['arcade_games_names'] = [
     'Asteroids',
@@ -268,7 +268,7 @@ $site_config['arcade_games_names'] = [
     'Autobahn',
     'Ghosts\'n Goblins',
     'Joust',
-    'Ms. Pac-Man'
+    'Ms. Pac-Man',
 ];
 $site_config['top_score_points'] = 1000;
 
@@ -288,14 +288,14 @@ $site_config['bad_words'] = [
     'ADMIN',
     'SYSOP',
     'MODERATOR',
-    'ADMINISTRATOR'
+    'ADMINISTRATOR',
 ];
 $site_config['notifications'] = [
     'is-danger',
     'is-warning',
     'is-success',
     'is-info',
-    'is-link'
+    'is-link',
 ];
 
 $site_config['newsrss_on'] = false;

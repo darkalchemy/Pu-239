@@ -1,3 +1,6 @@
+7 Feb 2018
+update: a few minor fixes
+
 5 Feb 2018
 update: google books api, track api usage and disable if exceeded. cache only book data, not formatting
 fix: birthday cleanup

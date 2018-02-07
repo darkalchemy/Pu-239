@@ -6,6 +6,7 @@ $lang = [
     'index_announce'             => 'Anun&#355;uri',
     'index_latest'               => 'Ultimele torente',
     'index_latest_comments'      => 'Latest Comments',
+    'index_ajaxchat'             => 'AJAX Chat',
     'index_active_irc'           => 'Utilizatori activi pe irc',
     'index_active'               => 'Utilizatori activi',
     'index_active24'             => 'Cei mai multi utilizatori &#238;n 24h',
