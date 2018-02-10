@@ -329,13 +329,13 @@ var ajaxChat = {
             if (overwrite) {
                 domNode.innerHTML = str;
             } else if (prepend) {
-                if (id == "chatList") {
+                if (id === "chatList") {
                     domNode.insertAdjacentHTML("afterbegin", str);
                 } else {
                     domNode.innerHTML = str + domNode.innerHTML;
                 }
             } else {
-                if (id == "chatList") {
+                if (id === "chatList") {
                     domNode.insertAdjacentHTML("beforeend", str);
                 } else {
                     domNode.innerHTML += str;
@@ -357,7 +357,7 @@ var ajaxChat = {
         this.DOMbuffer = "";
         for (var i = 0; i < this.emoticonCodes.length; i++) {
             this.emoticonCodes[i] = this.encodeSpecialChars(this.emoticonCodes[i]);
-            if (this.emoticonDisplay[i] == 2 || this.emoticonDisplay[i] == 3) {
+            if (this.emoticonDisplay[i] === 2 || this.emoticonDisplay[i] === 3) {
                 if (this.dom["emoticonsContainer"]) {
                     this.DOMbuffer = this.DOMbuffer + "<a href=\"javascript:ajaxChat.insertText('" + this.scriptLinkEncode(this.emoticonCodes[i]) + '\');"><img src="' + this.dirs["emoticons"] + this.emoticonFiles[i] + '" alt="' + this.emoticonCodes[i] + '" title="' + this.emoticonCodes[i] + '"/></a>';
                 }
@@ -417,17 +417,19 @@ var ajaxChat = {
     },
     checkFlashSounds: function() {
         if (this.settings["audioBackend"] < 0) {
-            if (navigator.appVersion.indexOf("MSIE") != -1) {
+            if (navigator.appVersion.indexOf("MSIE") !== -1) {
+                var hasFlash = false;
                 try {
-                    flash = new ActiveXObject("ShockwaveFlash.ShockwaveFlash");
-                } catch (e) {
-                    this.flashSounds = false;
+                    hasFlash = Boolean(new ActiveXObject("ShockwaveFlash.ShockwaveFlash"));
+                } catch (exception) {
+                    hasFlash = "undefined" !== typeof navigator.mimeTypes["application/x-shockwave-flash"];
                 }
+                this.flashSounds = hasFlash;
             } else if (navigator.plugins && !navigator.plugins["Shockwave Flash"] || navigator.mimeTypes && !navigator.mimeTypes["application/x-shockwave-flash"]) {
                 this.flashSounds = false;
             }
         } else {
-            this.flashSounds = this.settings["audioBackend"] == 1;
+            this.flashSounds = this.settings["audioBackend"] === 1;
         }
     },
     flashInterfaceLoadCompleteHandler: function() {
@@ -550,7 +552,7 @@ var ajaxChat = {
                     if (!this.soundTransform) {
                         this.soundTransform = FABridge.ajaxChat.create("flash.media.SoundTransform");
                     }
-                    this.soundTransform.setVolume(volume);
+                    this.soundTransform.setAudioVolume(volume);
                 } catch (e) {
                     this.debugMessage("setAudioVolumeFlash", e);
                 }
@@ -566,16 +568,16 @@ var ajaxChat = {
         }
     },
     initializeHTML5Sounds: function() {
-        var audio, mp3, ogg;
+        var audio, mp3, ogg, format;
         try {
             audio = document.createElement("audio");
-            mp3 = !!(audio.canPlayType && audio.canPlayType("audio/mpeg;").replace(/no/, ""));
+            mp3 = !!(audio.canPlayType && audio.canPlayType('audio/mpeg; codecs="mp3"').replace(/no/, ""));
             ogg = !!(audio.canPlayType && audio.canPlayType('audio/ogg; codecs="vorbis"').replace(/no/, ""));
             this.sounds = [];
-            if (mp3) {
-                format = ".mp3";
-            } else if (ogg) {
+            if (ogg) {
                 format = ".ogg";
+            } else if (mp3) {
+                format = ".mp3";
             } else {
                 format = ".wav";
             }
@@ -623,19 +625,11 @@ var ajaxChat = {
     soundPlayCompleteHandler: function(event) {},
     playSound: function(soundID) {
         if (this.sounds && this.sounds[soundID]) {
-            if (this.flashSounds) {
-                try {
-                    return this.sounds[soundID].play(0, 0, this.soundTransform);
-                } catch (e) {
-                    this.debugMessage("playSound", e);
-                }
-            } else {
-                try {
-                    this.sounds[soundID].currentTime = 0;
-                    return this.sounds[soundID].play();
-                } catch (e) {
-                    this.debugMessage("playSound", e);
-                }
+            try {
+                this.sounds[soundID].currentTime = 0;
+                return this.sounds[soundID].play();
+            } catch (e) {
+                this.debugMessage("playSound", e);
             }
         }
         return null;
@@ -812,10 +806,12 @@ var ajaxChat = {
             return false;
         }
         var timediff = new Date() - this.timeStamp;
-        if (timediff > 3e5) {
-            if (this.timerRate < 3e4) {
-                this.timerRate = this.timerRate + 500;
-            }
+        console.log(this.timerRate + " " + timediff);
+        if (timediff > 3e5 && this.timerRate < 6e4) {
+            this.timerRate = this.timerRate + 500;
+        }
+        if (timediff > 36e5) {
+            this.timerRate = 2e3;
         }
         this.handleXML(xmlDoc);
         return true;
@@ -903,7 +899,7 @@ var ajaxChat = {
     handleOnlineUsers: function(userNodes) {
         if (userNodes.length) {
             var index, userID, userName, userRole, i, onlineUsers = [];
-            if (userNodes.length != this.usersList.length) {
+            if (userNodes.length !== this.usersList.length) {
                 this.clearOnlineUsersList();
             }
             for (i = 0; i < userNodes.length; i++) {
@@ -918,9 +914,9 @@ var ajaxChat = {
                     this.removeUserFromOnlineList(userID, index);
                     this.addUserToOnlineList(userID, userName, userRole);
                 }
-                if (userID == this.userID) {
-                    pmCount = userNodes[i].getAttribute("pmCount");
-                    if (pmCount == 0) {
+                if (userID === this.userID) {
+                    var pmCount = userNodes[i].getAttribute("pmCount");
+                    if (pmCount === 0) {
                         window.parent.document.title = this.siteName + " :: Home";
                         document.title = this.siteName + " :: Chat";
                     } else {
@@ -957,7 +953,7 @@ var ajaxChat = {
                     this.DOMbuffering = false;
                 }
                 this.addMessageToChatList(new Date(messageNodes[i].getAttribute("dateTime")), messageNodes[i].getAttribute("userID"), userName, messageNodes[i].getAttribute("userRole"), messageNodes[i].getAttribute("id"), messageText, messageNodes[i].getAttribute("channelID"), messageNodes[i].getAttribute("ip"));
-                if (messageNodes[i].getAttribute("userID") != this.chatBotID) {
+                if (messageNodes[i].getAttribute("userID") !== this.chatBotID) {
                     this.timerRate = this.timerRateReset;
                     this.timeStamp = new Date();
                 }
@@ -1120,7 +1116,7 @@ var ajaxChat = {
     },
     getChatListMessageString: function(dateObject, userID, userName, userRole, messageID, messageText, channelID, ip) {
         var rowClass = this.DOMbufferRowClass, userClass = this.getRoleClass(userRole), colon = ": ";
-        if (userRole == 100 && ~messageText.indexOf("Member Since")) {
+        if (userRole === 100 && ~messageText.indexOf("Member Since")) {
             rowClass += " monospace";
         }
         if (messageText.indexOf("/action") === 0 || messageText.indexOf("/me") === 0 || messageText.indexOf("/privaction") === 0) {
@@ -1164,7 +1160,7 @@ var ajaxChat = {
         return "";
     },
     isAllowedToDeleteMessage: function(messageID, userID, userRole, channelID) {
-        if (this.userRole >= UC_USER && this.allowUserMessageDelete && (userID === this.userID || parseInt(channelID) === parseInt(this.userID) + this.privateMessageDiff || parseInt(channelID) === parseInt(this.userID) + this.privateChannelDiff) || this.userRole >= UC_STAFF && this.allowUserMessageDelete && this.userRole > userRole || this.userRole >= UC_ADMINISTRATOR && (this.userRole > userRole || userRole === ChatBot)) {
+        if (this.userRole >= UC_USER && this.allowUserMessageDelete && (userID === this.userID || parseInt(channelID) === parseInt(this.userID) + this.privateMessageDiff || parseInt(channelID) === parseInt(this.userID) + this.privateChannelDiff) || this.userRole >= UC_STAFF && this.allowUserMessageDelete && this.userRole > userRole || this.userRole >= UC_ADMINISTRATOR && (this.userRole > userRole || userRole === this.chatBotRole)) {
             return true;
         }
         return false;
@@ -2350,7 +2346,7 @@ var ajaxChat = {
             var style = this.getActiveStyle();
             var styleOptions = this.dom["styleSelection"].getElementsByTagName("option");
             for (var i = 0; i < styleOptions.length; i++) {
-                if (styleOptions[i].value == style) {
+                if (styleOptions[i].value === style) {
                     styleOptions[i].selected = true;
                     break;
                 }
@@ -2383,7 +2379,7 @@ var ajaxChat = {
     getActiveStyleSheet: function() {
         var i, a;
         for (i = 0; a = document.getElementsByTagName("link")[i]; i++) {
-            if (a.getAttribute("rel").indexOf("style") != -1 && a.getAttribute("title") && !a.disabled) {
+            if (a.getAttribute("rel").indexOf("style") !== -1 && a.getAttribute("title") && !a.disabled) {
                 return a.getAttribute("title");
             }
         }
@@ -2406,7 +2402,7 @@ var ajaxChat = {
         if (days) {
             var date = new Date();
             date.setTime(date.getTime() + days * 24 * 60 * 60 * 1e3);
-            expires = "; expires=" + date.toGMTString();
+            expires = "; expires=" + date.toUTCString();
         }
         var path = "; path=" + this.cookiePath;
         var domain = this.cookieDomain ? "; domain=" + this.cookieDomain : "";
@@ -2490,6 +2486,104 @@ var ajaxChat = {
             console.log(msg, e);
             if (this.debug === 2) {
                 alert(msg + e);
+            }
+        }
+    }
+};
+
+ajaxChat.logsMonitorMode = null;
+
+ajaxChat.logsLastID = null;
+
+ajaxChat.logsCommand = null;
+
+ajaxChat.startChatUpdate = function() {
+    var infos = "userID,userName,userRole";
+    if (this.socketServerEnabled) {
+        infos += ",socketRegistrationID";
+    }
+    this.updateChat("&getInfos=" + this.encodeText(infos));
+};
+
+ajaxChat.updateChat = function(paramString) {
+    if (paramString || this.logsMonitorMode || !this.logsLastID || this.lastID != this.logsLastID) {
+        this.logsLastID = this.lastID;
+        var requestUrl = this.ajaxURL + "&lastID=" + this.lastID;
+        if (paramString) {
+            requestUrl += paramString;
+        }
+        requestUrl += "&" + this.getLogsCommand();
+        this.makeRequest(requestUrl, "GET", null);
+    } else {
+        this.logsLastID = null;
+    }
+};
+
+ajaxChat.sendMessage = function() {
+    this.getLogs();
+};
+
+ajaxChat.getLogs = function() {
+    clearTimeout(this.timer);
+    this.clearChatList();
+    this.lastID = 0;
+    this.logsCommand = null;
+    this.makeRequest(this.ajaxURL, "POST", this.getLogsCommand());
+};
+
+ajaxChat.getLogsCommand = function() {
+    if (!this.logsCommand) {
+        if (!this.dom["inputField"].value && parseInt(this.dom["yearSelection"].value) <= 0 && parseInt(this.dom["hourSelection"].value) <= 0) {
+            this.logsMonitorMode = true;
+        } else {
+            this.logsMonitorMode = false;
+        }
+        this.logsCommand = "command=getLogs" + "&channelID=" + this.dom["channelSelection"].value + "&year=" + this.dom["yearSelection"].value + "&month=" + this.dom["monthSelection"].value + "&day=" + this.dom["daySelection"].value + "&hour=" + this.dom["hourSelection"].value + "&search=" + this.encodeText(this.dom["inputField"].value);
+    }
+    return this.logsCommand;
+};
+
+ajaxChat.onNewMessage = function(dateObject, userID, userName, userRoleClass, messageID, messageText, channelID, ip) {
+    if (messageText.indexOf("/delete") == 0) {
+        return false;
+    }
+    if (this.logsMonitorMode) {
+        this.blinkOnNewMessage(dateObject, userID, userName, userRoleClass, messageID, messageText, channelID, ip);
+        this.playSoundOnNewMessage(dateObject, userID, userName, userRoleClass, messageID, messageText, channelID, ip);
+    }
+    return true;
+};
+
+ajaxChat.logout = function() {
+    clearTimeout(this.timer);
+};
+
+ajaxChat.switchLanguage = function(langCode) {
+    window.location.search = "?view=logs&lang=" + langCode;
+};
+
+ajaxChat.setChatUpdateTimer = function() {
+    clearTimeout(this.timer);
+    var timeout;
+    if (this.socketIsConnected && this.logsLastID && this.lastID == this.logsLastID) {
+        timeout = this.socketTimerRate;
+    } else {
+        timeout = this.timerRate;
+        if (this.socketServerEnabled && !this.socketReconnectTimer) {
+            this.socketReconnectTimer = setTimeout("ajaxChat.socketConnect();", 6e4);
+        }
+    }
+    this.timer = setTimeout("ajaxChat.updateChat(null);", timeout);
+};
+
+ajaxChat.socketUpdate = function(data) {
+    if (this.logsMonitorMode) {
+        var xmlDoc = this.loadXML(data);
+        if (xmlDoc) {
+            var selectedChannelID = parseInt(this.dom["channelSelection"].value);
+            var channelID = parseInt(xmlDoc.firstChild.getAttribute("channelID"));
+            if (selectedChannelID == -3 || channelID == selectedChannelID || selectedChannelID == -2 && channelID >= this.privateMessageDiff || selectedChannelID == -1 && channelID >= this.privateChannelDiff && channelID < this.privateMessageDiff) {
+                this.handleChatMessages(xmlDoc.getElementsByTagName("message"));
             }
         }
     }
@@ -3044,166 +3138,3 @@ ASProxy.prototype = {
         this.bridge.release(this);
     }
 };
-
-ajaxChat.view = {
-    debounce: false,
-    mobileDetectElement: "submitButtonContainer",
-    tinyScreenDetectElement: "bbCodeContainer",
-    bindPopups: function() {
-        this.bindButtonToPopup("showChannelsButton", "logoutChannelInner");
-        this.bindButtonToPopup("bbCodeColor", "colorCodesContainer");
-    },
-    bindButtonToPopup: function(buttonID, popupID) {
-        var buttonElement = document.getElementById(buttonID), popupElement = document.getElementById(popupID);
-        if (!buttonElement || !popupElement) {
-            return;
-        }
-        if (this.isVisible(buttonElement) || this.isTinyScreen()) {
-            popupElement.style.display = "none";
-            ajaxChat.addClass(popupElement, "popup");
-        } else {
-            popupElement.style.display = "block";
-            ajaxChat.removeClass(popupElement, "popup");
-        }
-        if (!buttonElement.linkedPopupID) {
-            buttonElement.linkedPopupID = popupID;
-            ajaxChat.addEvent(buttonElement, "click", this.toggleButton);
-        }
-    },
-    toggleButton: function(e) {
-        e = e || window.event;
-        var target = e.target || e.srcElement;
-        target.className = target.className === "button" ? "button off" : "button";
-        ajaxChat.showHide(target.linkedPopupID);
-    },
-    renderResize: function() {
-        var self = this;
-        self.useDebounce(function() {
-            if (typeof isIElt8 !== "undefined") {
-                var cont = document.getElementById("mainPanelContainer");
-                cont.removeAttribute("style");
-                cont.style.height = cont.clientHeight;
-            }
-            self.bindPopups();
-            if (self.isMobile()) {
-                ajaxChat.updateChatlistView();
-            }
-            if (self.isTinyScreen()) {
-                ajaxChat.showHide("onlineListContainer", "none");
-                ajaxChat.showHide("settingsContainer", "none");
-                ajaxChat.showHide("helpContainer", "none");
-            }
-        });
-    },
-    useDebounce: function(callback) {
-        var self = this;
-        if (self.debounce === false) {
-            self.debounce = true;
-            setTimeout(function() {
-                callback();
-                self.debounce = false;
-            }, 100);
-        }
-    },
-    isVisible: function(element) {
-        return element.offsetWidth > 0 || element.offsetHeight > 0;
-    },
-    isMobile: function() {
-        return !this.isVisible(document.getElementById(this.mobileDetectElement));
-    },
-    isTinyScreen: function() {
-        return !this.isVisible(document.getElementById(this.tinyScreenDetectElement));
-    },
-    toggleContainer: function(containerID, hideContainerIDs) {
-        if (hideContainerIDs) {
-            for (var i = 0; i < hideContainerIDs.length; i++) {
-                ajaxChat.showHide(hideContainerIDs[i], "none");
-            }
-        }
-        ajaxChat.showHide(containerID);
-    }
-};
-
-function initialize() {
-    if (ajaxChat.view.isMobile()) {
-        ajaxChat.setSetting("blink", false);
-        ajaxChat.view.toggleContainer("onlineListContainer", [ "settingsContainer", "helpContainer" ]);
-    }
-    ajaxChat.view.bindPopups();
-    ajaxChat.addEvent(window, "resize", function() {
-        ajaxChat.view.renderResize();
-    });
-    ajaxChat.updateButton("audio", "audioButton");
-    ajaxChat.updateButton("autoScroll", "autoScrollButton");
-    document.getElementById("postDirectionSetting").checked = ajaxChat.getSetting("postDirection");
-    document.getElementById("bbCodeSetting").checked = ajaxChat.getSetting("bbCode");
-    document.getElementById("bbCodeImagesSetting").checked = ajaxChat.getSetting("bbCodeImages");
-    document.getElementById("bbCodeColorsSetting").checked = ajaxChat.getSetting("bbCodeColors");
-    document.getElementById("hyperLinksSetting").checked = ajaxChat.getSetting("hyperLinks");
-    document.getElementById("lineBreaksSetting").checked = ajaxChat.getSetting("lineBreaks");
-    document.getElementById("emoticonsSetting").checked = ajaxChat.getSetting("emoticons");
-    document.getElementById("autoFocusSetting").checked = ajaxChat.getSetting("autoFocus");
-    document.getElementById("maxMessagesSetting").value = ajaxChat.getSetting("maxMessages");
-    document.getElementById("wordWrapSetting").checked = ajaxChat.getSetting("wordWrap");
-    document.getElementById("maxWordLengthSetting").value = ajaxChat.getSetting("maxWordLength");
-    document.getElementById("dateFormatSetting").value = ajaxChat.getSetting("dateFormat");
-    document.getElementById("persistFontColorSetting").checked = ajaxChat.getSetting("persistFontColor");
-    for (var i = 0; i < document.getElementById("audioBackendSetting").options.length; i++) {
-        if (document.getElementById("audioBackendSetting").options[i].value == ajaxChat.getSetting("audioBackend")) {
-            document.getElementById("audioBackendSetting").options[i].selected = true;
-            break;
-        }
-    }
-    for (var i = 0; i < document.getElementById("audioVolumeSetting").options.length; i++) {
-        if (document.getElementById("audioVolumeSetting").options[i].value == ajaxChat.getSetting("audioVolume")) {
-            document.getElementById("audioVolumeSetting").options[i].selected = true;
-            break;
-        }
-    }
-    ajaxChat.fillSoundSelection("soundReceiveSetting", ajaxChat.getSetting("soundReceive"));
-    ajaxChat.fillSoundSelection("soundSendSetting", ajaxChat.getSetting("soundSend"));
-    ajaxChat.fillSoundSelection("soundEnterSetting", ajaxChat.getSetting("soundEnter"));
-    ajaxChat.fillSoundSelection("soundLeaveSetting", ajaxChat.getSetting("soundLeave"));
-    ajaxChat.fillSoundSelection("soundChatBotSetting", ajaxChat.getSetting("soundChatBot"));
-    ajaxChat.fillSoundSelection("soundErrorSetting", ajaxChat.getSetting("soundError"));
-    ajaxChat.fillSoundSelection("soundPrivateSetting", ajaxChat.getSetting("soundPrivate"));
-    document.getElementById("blinkSetting").checked = ajaxChat.getSetting("blink");
-    document.getElementById("blinkIntervalSetting").value = ajaxChat.getSetting("blinkInterval");
-    document.getElementById("blinkIntervalNumberSetting").value = ajaxChat.getSetting("blinkIntervalNumber");
-}
-
-function PopMoreSmiles() {
-    PopUp("../allsmiles.php", "More Emoticons", 600, 500, 1, 0);
-}
-
-function PopUp(url, name, width, height, center, resize, scroll, posleft, postop) {
-    showx = "";
-    showy = "";
-    if (posleft != 0) {
-        X = posleft;
-    }
-    if (postop != 0) {
-        Y = postop;
-    }
-    if (!scroll) {
-        scroll = 1;
-    }
-    if (!resize) {
-        resize = 1;
-    }
-    if (parseInt(navigator.appVersion) >= 4 && center) {
-        X = (screen.width - width) / 2;
-        Y = (screen.height - height) / 2;
-    }
-    if (X > 0) {
-        showx = ",left=" + X;
-    }
-    if (Y > 0) {
-        showy = ",top=" + Y;
-    }
-    if (scroll != 0) {
-        scroll = 1;
-    }
-    var Win = window.open(url, name, "width=" + width + ",height=" + height + showx + showy + ",resizable=" + resize + ",scrollbars=" + scroll + ",location=no,directories=no,status=no,menubar=no,toolbar=no");
-    event.preventDefault();
-}

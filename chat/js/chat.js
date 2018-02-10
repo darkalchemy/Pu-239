@@ -126,7 +126,7 @@ var ajaxChat = {
     },
 
     initConfig: function (config) {
-        this.token = config["token"];
+        this.token = config['token'];
         this.loginChannelID = config['loginChannelID'];
         this.loginChannelName = config['loginChannelName'];
         this.timerRate = config['timerRate'];
@@ -166,7 +166,7 @@ var ajaxChat = {
         this.socketServerChatID = config['socketServerChatID'];
         this.debug = config['debug'];
         this.DOMbuffering = false;
-        this.DOMbuffer = "";
+        this.DOMbuffer = '';
         this.anonymizer = config['anonLink'];
         this.retryTimerDelay = (this.inactiveTimeout * 6000 - this.timerRate) / 4 + this.timerRate;
     },
@@ -371,13 +371,13 @@ var ajaxChat = {
             if (overwrite) {
                 domNode.innerHTML = str;
             } else if (prepend) {
-                if (id == 'chatList') {
+                if (id === 'chatList') {
                     domNode.insertAdjacentHTML('afterbegin', str);
                 } else {
                     domNode.innerHTML = str + domNode.innerHTML;
                 }
             } else {
-                if (id == 'chatList') {
+                if (id === 'chatList') {
                     domNode.insertAdjacentHTML('beforeend', str);
                 } else {
                     domNode.innerHTML += str;
@@ -398,11 +398,11 @@ var ajaxChat = {
     },
 
     initEmoticons: function () {
-        this.DOMbuffer = "";
+        this.DOMbuffer = '';
         for (var i = 0; i < this.emoticonCodes.length; i++) {
             // Replace specials characters in emoticon codes:
             this.emoticonCodes[i] = this.encodeSpecialChars(this.emoticonCodes[i]);
-            if (this.emoticonDisplay[i] == 2 || this.emoticonDisplay[i] == 3) {
+            if (this.emoticonDisplay[i] === 2 || this.emoticonDisplay[i] === 3) {
                 if (this.dom['emoticonsContainer']) {
                     this.DOMbuffer = this.DOMbuffer
                         + '<a href="javascript:ajaxChat.insertText(\''
@@ -421,12 +421,12 @@ var ajaxChat = {
         if (this.dom['emoticonsContainer']) {
             this.updateDOM('emoticonsContainer', this.DOMbuffer);
         }
-        this.DOMbuffer = "";
+        this.DOMbuffer = '';
     },
 
     initColorCodes: function () {
         if (this.dom['colorCodesContainer']) {
-            this.DOMbuffer = "";
+            this.DOMbuffer = '';
             for (var i = 0; i < this.colorCodes.length; i++) {
                 this.DOMbuffer = this.DOMbuffer
                     + '<a href="javascript:ajaxChat.setFontColor(\''
@@ -436,10 +436,10 @@ var ajaxChat = {
                     + ';" title="'
                     + this.colorCodes[i]
                     + '" onclick="this.parentNode.style.display = \'none\';"></a>'
-                    + "\n";
+                    + '\n';
             }
             this.updateDOM('colorCodesContainer', this.DOMbuffer);
-            this.DOMbuffer = "";
+            this.DOMbuffer = '';
         }
     },
 
@@ -507,17 +507,19 @@ var ajaxChat = {
     checkFlashSounds: function () {
         if (this.settings['audioBackend'] < 0) {
             // autodetect if flash is supported, and default to flash.
-            if (navigator.appVersion.indexOf("MSIE") != -1) {
+            if (navigator.appVersion.indexOf('MSIE') !== -1) {
+                var hasFlash = false;
                 try {
-                    flash = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
-                } catch (e) {
-                    this.flashSounds = false;
+                    hasFlash = Boolean(new ActiveXObject('ShockwaveFlash.ShockwaveFlash'));
+                } catch (exception) {
+                    hasFlash = ('undefined' !== typeof navigator.mimeTypes['application/x-shockwave-flash']);
                 }
-            } else if ((navigator.plugins && !navigator.plugins["Shockwave Flash"]) || (navigator.mimeTypes && !navigator.mimeTypes['application/x-shockwave-flash'])) {
+                this.flashSounds = hasFlash;
+            } else if ((navigator.plugins && !navigator.plugins['Shockwave Flash']) || (navigator.mimeTypes && !navigator.mimeTypes['application/x-shockwave-flash'])) {
                 this.flashSounds = false;
             }
         } else {
-            this.flashSounds = this.settings['audioBackend'] == 1;
+            this.flashSounds = this.settings['audioBackend'] === 1;
         }
     },
 
@@ -674,7 +676,7 @@ var ajaxChat = {
                     if (!this.soundTransform) {
                         this.soundTransform = FABridge.ajaxChat.create('flash.media.SoundTransform');
                     }
-                    this.soundTransform.setVolume(volume);
+                    this.soundTransform.setAudioVolume(volume);
                 } catch (e) {
                     this.debugMessage('setAudioVolumeFlash', e);
                 }
@@ -691,18 +693,18 @@ var ajaxChat = {
     },
 
     initializeHTML5Sounds: function () {
-        var audio, mp3, ogg;
+        var audio, mp3, ogg, format;
         try {
             audio = document.createElement('audio');
-            mp3 = !!(audio.canPlayType && audio.canPlayType('audio/mpeg;').replace(/no/, ''));
+            mp3 = !!(audio.canPlayType && audio.canPlayType('audio/mpeg; codecs="mp3"').replace(/no/, ''));
             ogg = !!(audio.canPlayType && audio.canPlayType('audio/ogg; codecs="vorbis"').replace(/no/, ''));
             this.sounds = [];
-            if (mp3) {
-                format = ".mp3";
-            } else if (ogg) {
-                format = ".ogg";
+            if (ogg) {
+                format = '.ogg';
+            } else if (mp3) {
+                format = '.mp3';
             } else {
-                format = ".wav";
+                format = '.wav';
             }
             for (var key in this.soundFiles) {
                 this.sounds[key] = new Audio(this.dirs['sounds'] + key + format);
@@ -758,23 +760,11 @@ var ajaxChat = {
 
     playSound: function (soundID) {
         if (this.sounds && this.sounds[soundID]) {
-            if (this.flashSounds) {
-                try {
-                    // play() parameters are
-                    // startTime:Number (default = 0),
-                    // loops:int (default = 0) and
-                    // sndTransform:SoundTransform  (default = null)
-                    return this.sounds[soundID].play(0, 0, this.soundTransform);
-                } catch (e) {
-                    this.debugMessage('playSound', e);
-                }
-            } else {
-                try {
-                    this.sounds[soundID].currentTime = 0;
-                    return this.sounds[soundID].play();
-                } catch (e) {
-                    this.debugMessage('playSound', e);
-                }
+            try {
+                this.sounds[soundID].currentTime = 0;
+                return this.sounds[soundID].play();
+            } catch (e) {
+                this.debugMessage('playSound', e);
             }
         }
         return null;
@@ -860,10 +850,10 @@ var ajaxChat = {
                 }
             } else if (window.ActiveXObject) {
                 try {
-                    this.httpRequest[identifier] = new ActiveXObject("Msxml2.XMLHTTP");
+                    this.httpRequest[identifier] = new ActiveXObject('Msxml2.XMLHTTP');
                 } catch (e) {
                     try {
-                        this.httpRequest[identifier] = new ActiveXObject("Microsoft.XMLHTTP");
+                        this.httpRequest[identifier] = new ActiveXObject('Microsoft.XMLHTTP');
                     } catch (e) {
                     }
                 }
@@ -962,12 +952,17 @@ var ajaxChat = {
             return false;
         }
         var timediff = new Date() - this.timeStamp;
-        // change polling timer to maximum of 30 sec
+        console.log(this.timerRate + ' ' + timediff);
+
+        // change polling timer to maximum of 60 sec
         // if quiet for more than 5 minutes
-        if (timediff > 300000) {
-            if (this.timerRate < 30000) {
-                this.timerRate = this.timerRate + 500;
-            }
+        if (timediff > 300000 && this.timerRate < 60000) {
+            this.timerRate = this.timerRate + 500;
+        }
+
+        // reset polling timer to 2 sec after 60 min inactivity
+        if (timediff > 3600000) {
+            this.timerRate = 2000;
         }
 
         this.handleXML(xmlDoc);
@@ -1055,7 +1050,7 @@ var ajaxChat = {
         if (userNodes.length) {
             var index, userID, userName, userRole, i,
                 onlineUsers = [];
-            if (userNodes.length != this.usersList.length) {
+            if (userNodes.length !== this.usersList.length) {
                 this.clearOnlineUsersList();
             }
             for (i = 0; i < userNodes.length; i++) {
@@ -1078,9 +1073,9 @@ var ajaxChat = {
                         userRole
                     );
                 }
-                if (userID == this.userID) {
-                    pmCount = userNodes[i].getAttribute('pmCount');
-                    if (pmCount == 0) {
+                if (userID === this.userID) {
+                    var pmCount = userNodes[i].getAttribute('pmCount');
+                    if (pmCount === 0) {
                         window.parent.document.title = this.siteName + ' :: Home';
                         document.title = this.siteName + ' :: Chat';
                     } else {
@@ -1102,7 +1097,7 @@ var ajaxChat = {
                 }
             }
             this.setOnlineListRowClasses();
-            document.getElementById("olcount").innerHTML = "(" + this.usersList.length + ")";
+            document.getElementById('olcount').innerHTML = '(' + this.usersList.length + ')';
         }
     },
 
@@ -1128,7 +1123,7 @@ var ajaxChat = {
                     messageNodes[i].getAttribute('channelID'),
                     messageNodes[i].getAttribute('ip')
                 );
-                if (messageNodes[i].getAttribute('userID') != this.chatBotID) {
+                if (messageNodes[i].getAttribute('userID') !== this.chatBotID) {
                     this.timerRate = this.timerRateReset;
                     this.timeStamp = new Date();
                 }
@@ -1367,7 +1362,7 @@ var ajaxChat = {
                 if (this.userRole >= UC_ADMINISTRATOR) {
                     menu += '<li><a href="../ajaxchat.php?view=logs" title="View AJAX Chat Logs.">'
                         + 'View Logs'
-                        + '</a></li>'
+                        + '</a></li>';
                 }
             }
         }
@@ -1437,7 +1432,7 @@ var ajaxChat = {
             (this.channelName === 'Git' && parseInt(channelID) !== parseInt(this.channelID))) {
             if (!this.DOMbuffering) {
                 this.updateDOM('chatList', this.DOMbuffer, this.settings['postDirection']);
-                this.DOMbuffer = "";
+                this.DOMbuffer = '';
             }
             return;
         }
@@ -1448,7 +1443,7 @@ var ajaxChat = {
             (this.channelName === 'Git' && parseInt(userRole) !== 100)) {
             if (!this.DOMbuffering) {
                 this.updateDOM('chatList', this.DOMbuffer, this.settings['postDirection']);
-                this.DOMbuffer = "";
+                this.DOMbuffer = '';
             }
             return;
         }
@@ -1456,7 +1451,7 @@ var ajaxChat = {
         if (!this.onNewMessage(dateObject, userID, userName, userRole, messageID, messageText, channelID, ip)) {
             if (!this.DOMbuffering) {
                 this.updateDOM('chatList', this.DOMbuffer, this.settings['postDirection']);
-                this.DOMbuffer = "";
+                this.DOMbuffer = '';
             }
             return;
         }
@@ -1467,7 +1462,7 @@ var ajaxChat = {
             );
         if (!this.DOMbuffering) {
             this.updateDOM('chatList', this.DOMbuffer, this.settings['postDirection']);
-            this.DOMbuffer = "";
+            this.DOMbuffer = '';
         }
     },
 
@@ -1475,7 +1470,7 @@ var ajaxChat = {
         var rowClass = this.DOMbufferRowClass,
             userClass = this.getRoleClass(userRole),
             colon = ': ';
-        if (userRole == 100 && ~messageText.indexOf('Member Since')) {
+        if (userRole === 100 && ~messageText.indexOf('Member Since')) {
             rowClass += ' monospace';
         }
         if (messageText.indexOf('/action') === 0 || messageText.indexOf('/me') === 0 || messageText.indexOf('/privaction') === 0) {
@@ -1553,7 +1548,7 @@ var ajaxChat = {
     isAllowedToDeleteMessage: function (messageID, userID, userRole, channelID) {
         if (this.userRole >= UC_USER && this.allowUserMessageDelete && (userID === this.userID || parseInt(channelID) === parseInt(this.userID) + this.privateMessageDiff || parseInt(channelID) === parseInt(this.userID) + this.privateChannelDiff) ||
             (this.userRole >= UC_STAFF && this.allowUserMessageDelete && this.userRole > userRole) ||
-            (this.userRole >= UC_ADMINISTRATOR && (this.userRole > userRole || userRole === ChatBot))
+            (this.userRole >= UC_ADMINISTRATOR && (this.userRole > userRole || userRole === this.chatBotRole))
         ) {
             return true;
         }
@@ -1892,7 +1887,7 @@ var ajaxChat = {
 
                 if (lastWord.length > 2) {
                     for (i = 0; i < this.userNamesList.length; i++) {
-                        if (this.userNamesList[i].replace("(", "").toLowerCase().indexOf(lastWord.toLowerCase()) === 0) {
+                        if (this.userNamesList[i].replace('(', '').toLowerCase().indexOf(lastWord.toLowerCase()) === 0) {
                             this.dom['inputField'].value = text.replace(new RegExp(lastWord + '$'), this.userNamesList[i]);
                             break;
                         }
@@ -2117,9 +2112,9 @@ var ajaxChat = {
         if (elem.addEventListener) {
             elem.addEventListener(type, eventHandle, false);
         } else if (elem.attachEvent) {
-            elem.attachEvent("on" + type, eventHandle);
+            elem.attachEvent('on' + type, eventHandle);
         } else {
-            elem["on" + type] = eventHandle;
+            elem['on' + type] = eventHandle;
         }
     },
 
@@ -2197,7 +2192,7 @@ var ajaxChat = {
         clearTimeout(this.timer);
         //var message = 'logout=true';
         var message = '';
-        this.makeRequest(this.ajaxURL + "&token=" + this.token, 'POST', message);
+        this.makeRequest(this.ajaxURL + '&token=' + this.token, 'POST', message);
     },
 
     handleLogout: function (url) {
@@ -2332,8 +2327,8 @@ var ajaxChat = {
 
     replaceText: function (text) {
         try {
-            text = text.replace(/&amp;#039;/g, "'");
-            text = text.replace(/&amp;amp;/g, "&amp;");
+            text = text.replace(/&amp;#039;/g, '\'');
+            text = text.replace(/&amp;amp;/g, '&amp;');
             text = this.replaceLineBreaks(text);
             text = this.replaceCustomText(text);
             if (text.charAt(0) === '/') {
@@ -2966,7 +2961,7 @@ var ajaxChat = {
 
     replaceBBCodeCode: function (content) {
         // Replace vertical tabs and multiple spaces with two non-breaking space characters:
-        return "<fieldset class='code'><legend>code</legend>"
+        return '<fieldset class=\'code\'><legend>code</legend>'
             + this.replaceBBCode(content.replace(/\t|(?:  )/gm, '&#160;&#160;'))
             + '</fieldset>';
     },
@@ -3099,7 +3094,7 @@ var ajaxChat = {
             var style = this.getActiveStyle();
             var styleOptions = this.dom['styleSelection'].getElementsByTagName('option');
             for (var i = 0; i < styleOptions.length; i++) {
-                if (styleOptions[i].value == style) {
+                if (styleOptions[i].value === style) {
                     styleOptions[i].selected = true;
                     break;
                 }
@@ -3135,7 +3130,7 @@ var ajaxChat = {
     getActiveStyleSheet: function () {
         var i, a;
         for (i = 0; (a = document.getElementsByTagName('link')[i]); i++) {
-            if (a.getAttribute('rel').indexOf('style') != -1 && a.getAttribute('title') && !a.disabled) {
+            if (a.getAttribute('rel').indexOf('style') !== -1 && a.getAttribute('title') && !a.disabled) {
                 return a.getAttribute('title');
             }
         }
@@ -3164,7 +3159,7 @@ var ajaxChat = {
         if (days) {
             var date = new Date();
             date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            expires = '; expires=' + date.toGMTString();
+            expires = '; expires=' + date.toUTCString();
         }
         var path = '; path=' + this.cookiePath;
         var domain = this.cookieDomain ? '; domain=' + this.cookieDomain : '';

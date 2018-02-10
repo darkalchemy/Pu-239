@@ -2200,7 +2200,9 @@ function get_anonymous_name()
 }
 
 /**
- * @param $url
+ * @param      $url
+ * @param null $width
+ * @param null $height
  *
  * @return string
  */
@@ -2216,8 +2218,8 @@ function image_proxy($url, $width = null, $height = null)
         $url = "{$url}&width={$width}&height={$height}";
     }
     if (!empty($site_config['image_proxy'])) {
-        $encrypted = CryptoJSAES::encrypt($url, $site_config['image_proxy_key']);
-        return $site_config['image_proxy'] . base64_encode($encrypted);
+        $encrypted = CryptoJSAES::encrypt($url, $site_config['image_proxy_key'][1]);
+        return $site_config['image_proxy'] . base64_encode($encrypted . '&uid=' . $site_config['image_proxy_key'][0]);
     }
     return $url;
 }

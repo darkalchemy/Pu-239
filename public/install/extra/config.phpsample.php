@@ -14,7 +14,9 @@ $site_config['site']['salt'] = '#pass1'; // random generated during install
 $site_config['staff']['staff_pin'] = '#pass2'; // random generated during install
 $site_config['staff']['owner_pin'] = '#pass3'; // random generated during install
 $site_config['tracker_post_key'] = '#pass4'; // random generated during install
-$site_config['image_proxy_key'] = '#pass5'; // random generated during install
+$site_config['image_proxy_key'] = [
+    'uid' => 'key',
+]; // assigned by the image proxy host
 
 // Site Bot
 $site_config['chatBotName'] = '#bot_username';

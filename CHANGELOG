@@ -1,4 +1,7 @@
 10 Feb 2018
+update:image_proxy function to match updated simple image proxy
+update: prefer ogg over mp3 audio
+add: missing ogg/wav sound files
 add: anonymize url in advertise block
 
 9 Feb 2018
