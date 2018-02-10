@@ -8,7 +8,7 @@ header('Content-Type: application/json');
 global $site_config, $cache;
 $lang = array_merge(load_language('global'), load_language('index'));
 
-if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
+if ($id = getCookieVar('userID') && validateToken($_POST['csrf_token'])) {
     $user = $cache->get('user' . $id);
     if ($user === false || is_null($user)) {
         echo json_encode('failed...');

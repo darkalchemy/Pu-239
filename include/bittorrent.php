@@ -247,7 +247,7 @@ function userlogin()
     if (!$site_config['site_online']) {
         return;
     }
-    $id = getSessionVar('userID');
+    $id = getCookieVar('userID');
     if (!$id) {
         return;
     }
@@ -917,7 +917,7 @@ function loggedinorreturn()
     global $CURUSER, $site_config, $cache;
 
     if (!$CURUSER) {
-        if ($id = getSessionVar('userID')) {
+        if ($id = getCookieVar('userID')) {
             $CURUSER = $cache->get('user' . $id);
         } else {
             header("Location: {$site_config['baseurl']}/login.php?returnto=" . urlencode($_SERVER['REQUEST_URI']));
@@ -1559,6 +1559,8 @@ function destroySession()
  * @param bool $regen
  *
  * @return bool
+ *
+ * @throws Exception
  */
 function validateToken($token, $key = null, $regen = false)
 {
@@ -2350,6 +2352,37 @@ function rrmdir($dir)
         reset($objects);
         rmdir($dir);
     }
+}
+
+function setCookieVar($key, $value)
+{
+    global $site_config;
+
+    if (empty($key) || empty($value)) {
+        return false;
+    }
+    $encrypted = CryptoJSAES::encrypt($value    , $site_config['site']['salt']);
+    $secure_session = get_scheme() === 'https' ? true : false;
+    setcookie(
+        $site_config['cookie_prefix'] . $key,
+        base64_encode($encrypted),
+        TIME_NOW + $site_config['cookie_lifetime'] * 86400,
+        $site_config['cookie_path'],
+        $site_config['cookie_domain'],
+        $secure_session
+    );
+}
+
+function getCookieVar($key)
+{
+    global $site_config;
+
+    if (empty($key) || empty($_COOKIE[$site_config['cookie_prefix'] . $key])) {
+        return false;
+    }
+    $decrypted = CryptoJSAES::decrypt(base64_decode($_COOKIE[$site_config['cookie_prefix'] . $key]), $site_config['site']['salt']);
+
+    return $decrypted;
 }
 
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {

@@ -286,7 +286,7 @@ class AJAXChat
      */
     public function getUserID()
     {
-        return (int)getSessionVar('userID');
+        return (int)getCookieVar('userID');
     }
 
     /**

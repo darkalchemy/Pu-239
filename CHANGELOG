@@ -1,4 +1,6 @@
 10 Feb 2018
+add: secure cookie store for userID
+remove: userID from sessions
 remove: call to undefined var arcade_top_scores.php
 update: AJAX Chat polling timer
 update:image_proxy function to match updated simple image proxy

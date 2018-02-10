@@ -15,5 +15,8 @@
     "psr-4": {
       "": "classes"
     }
+  },
+  "require-dev": {
+    "mp091689/dump-die": "^1.0"
   }
 }

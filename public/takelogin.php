@@ -168,7 +168,7 @@ $cache->update_row('user' . $row['id'], [
 ], $site_config['expires']['user_cache']);
 
 unsetSessionVar('simpleCaptchaAnswer');
-setSessionVar('userID', $row['id']);
+setCookieVar('userID', $row['id']);
 logincookie($row['id']);
 
 if (isset($returnto)) {
