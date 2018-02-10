@@ -963,6 +963,7 @@ var ajaxChat = {
         // reset polling timer to 2 sec after 60 min inactivity
         if (timediff > 3600000) {
             this.timerRate = 2000;
+            this.timeStamp = new Date();
         }
 
         this.handleXML(xmlDoc);

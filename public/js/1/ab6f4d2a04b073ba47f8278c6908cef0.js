@@ -812,6 +812,7 @@ var ajaxChat = {
         }
         if (timediff > 36e5) {
             this.timerRate = 2e3;
+            this.timeStamp = new Date();
         }
         this.handleXML(xmlDoc);
         return true;

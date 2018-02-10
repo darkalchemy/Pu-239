@@ -152,4 +152,4 @@ if (!empty($member_played_most_games) && !empty($member_high_score)) {
         </div>';
 }
 
-echo stdhead('Top Scores') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead('Top Scores') . wrapper($HTMLOUT) . stdfoot();
