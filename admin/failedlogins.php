@@ -28,80 +28,92 @@ function validate($id)
 if ($mode == 'ban') {
     validate($id);
     sql_query("UPDATE failedlogins SET banned = 'yes' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    header('Refresh: 2; url=' . $site_config['baseurl'] . '/staffpanel.php?tool=failedlogins');
-    stderr($lang['failed_success'], "{$lang['failed_message_ban']}");
-    die();
+    setSessionVar('is-warning', $lang['failed_message_ban']);
+    unset($_POST);
 }
 if ($mode == 'removeban') {
     validate($id);
     sql_query("UPDATE failedlogins SET banned = 'no' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    header('Refresh: 2; url=' . $site_config['baseurl'] . '/staffpanel.php?tool=failedlogins');
-    stderr($lang['failed_success'], "{$lang['failed_message_unban']}");
-    die();
+    setSessionVar('is-success', $lang['failed_message_unban']);
+    unset($_POST);
 }
 if ($mode == 'delete') {
     validate($id);
     sql_query('DELETE FROM failedlogins WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    header('Refresh: 2; url=' . $site_config['baseurl'] . '/staffpanel.php?tool=failedlogins');
-    stderr($lang['failed_success'], "{$lang['failed_message_deleted']}");
-    die();
+    setSessionVar('is-success', $lang['failed_message_deleted']);
+    unset($_POST);
 }
-//==End
-//==Main output
+
 $where = '';
 $search = isset($_POST['search']) ? strip_tags($_POST['search']) : '';
 if (isset($_GET['search'])) {
     $search = strip_tags($_GET['search']);
 }
 if (!$search) {
-    $where = 'WHERE attempts LIKE ' . sqlesc("%$search%") . '';
+    $where = '';
 } else {
-    $where = 'WHERE attempts LIKE' . sqlesc("%$search%") . '';
+    $where = 'WHERE INET6_NTOA(f.ip) = ' . sqlesc($search);
 }
-$res = sql_query("SELECT COUNT(id) FROM failedlogins $where") or sqlerr(__FILE__, __LINE__);
-$row = mysqli_fetch_row($res);
-$count = $row[0];
+
+
+$sql = "SELECT COUNT(id) AS count FROM failedlogins AS f $where";
+$res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+$row = mysqli_fetch_assoc($res);
+$count = $row['count'];
 $perpage = 15;
-$pager = pager($perpage, $count, 'staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;' . (!empty($search) ? "search=$search&amp;" : '') . '');
-if (!$where) {
+$pager = pager($perpage, $count, $site_config['baseurl'] . '/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;' . (!empty($search) ? "search=$search&amp;" : '') . '');
+if (!$where && $count === 0) {
     stderr($lang['failed_main_nofail'], $lang['failed_main_nofail_msg']);
 }
-$HTMLOUT = '';
-$HTMLOUT .= "<table width='115'>\n
-             <tr>
-             <td class='tabletitle'>{$lang['failed_main_search']}</td>\n
-             </tr>
-             <tr>
-             <td class='table'>\n
-             <form method='post' action='staffpanel.php?tool=failedlogins&amp;action=failedlogins'>\n
-             <input type='text' name='search' size='40' value='' />\n
-             <input type='submit' value='{$lang['failed_main_search_btn']}' style='height: 20px;' />\n
-             </form></td></tr></table>";
+$HTMLOUT = main_div("
+    <h1 class='has-text-centered'>{$lang['failed_main_search']}</h1>
+    <form method='post' action='staffpanel.php?tool=failedlogins&amp;action=failedlogins' class='has-text-centered'>
+        <input type='text' name='search' class='w-50' placeholder='Search By IP' value='' /><br>
+        <input type='submit' value='{$lang['failed_main_search_btn']}' class='button is-small top20' />
+    </form>");
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$HTMLOUT .= "<table  width='80%'>\n";
-$res = sql_query("SELECT f.*,u.id as uid, u.username FROM failedlogins as f LEFT JOIN users as u ON u.ip = f.ip $where ORDER BY f.added DESC " . $pager['limit']) or sqlerr(__FILE__, __LINE__);
+$sql = "SELECT f.*, INET6_NTOA(f.ip) AS ip, u.id as uid, u.username FROM failedlogins as f LEFT JOIN users as u ON u.ip = f.ip $where ORDER BY f.added DESC " . $pager['limit'];
+$res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($res) == 0) {
-    $HTMLOUT .= "<tr><td colspan='2'><b>{$lang['failed_message_nothing']}</b></td></tr>\n";
+    $HTMLOUT .= main_div("<h3 class='has-text-centered'>{$lang['failed_message_nothing']}</h3>", 'top20');
 } else {
-    $HTMLOUT .= "<tr><td class='colhead'>{$lang['failed_main_id']}</td><td class='colhead'>{$lang['failed_main_ip']}</td><td class='colhead'>{$lang['failed_main_added']}</td>" . "<td class='colhead'>{$lang['failed_main_attempts']}</td><td class='colhead'>{$lang['failed_main_status']}</td></tr>\n";
+    $heading = "
+        <tr>
+            <th class='has-text-centered'>{$lang['failed_main_id']}</th>
+            <th class='has-text-centered'>{$lang['failed_main_ip']}</th>
+            <th class='has-text-centered'>{$lang['failed_main_added']}</th>
+            <th class='has-text-centered'>{$lang['failed_main_attempts']}</th>
+            <th class='has-text-centered'>{$lang['failed_main_status']}</th>
+        </tr>";
+    $body = '';
     while ($arr = mysqli_fetch_assoc($res)) {
-        $HTMLOUT .= "<tr><td><b>" . (int)$arr['id'] . "</b></td>
-  <td><b>" . htmlsafechars($arr['ip']) . ' ' . ((int)$arr['uid'] ? "<a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['uid'] . "'>" : '') . ' ' . (htmlsafechars($arr['username']) ? '(' . htmlsafechars($arr['username']) . ')</a>' : '') . "</b></td>
-  <td><b>" . get_date($arr['added'], '', 1, 0) . "</b></td>
-  <td><b>" . (int)$arr['attempts'] . "</b></td>
-  <td>
-  " . ($arr['banned'] == 'yes' ? "<span class='has-text-danger'><b>{$lang['failed_main_banned']}</b></span> 
-  <a href='staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=removeban&amp;id=" . (int)$arr['id'] . "'> 
-  <span style='color: green;'>[<b>{$lang['failed_main_remban']}</b>]</font></a>" : "<font color='green;'><b>{$lang['failed_main_noban']}</b></span> 
-  <a href='staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=ban&amp;id=" . (int)$arr['id'] . "'><span class='has-text-danger'>[<b>{$lang['failed_main_ban']}</b>]</span></a>") . "  
-  
-  <a onclick=\"return confirm('{$lang['failed_main_delmessage']}');\" href='staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=delete&amp;id=" . (int)$arr['id'] . "'>[<b>{$lang['failed_main_delete']}</b>]</a></td></tr>\n";
+        $body .= "
+        <tr>
+            <td class='has-text-centered'>{$arr['id']}</td>
+            <td>" . htmlsafechars($arr['ip']) . ' ' . ((int)$arr['uid'] ? format_username($arr['uid']) : '') . "</td>
+            <td class='has-text-centered'>" . get_date($arr['added'], '', 1, 0) . "</td>
+            <td class='has-text-centered'>" . (int)$arr['attempts'] . "</td>
+            <td>" . ($arr['banned'] == 'yes' ? "
+                <span class='has-text-red'>{$lang['failed_main_banned']}</span> 
+                <a href='{$site_config['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=removeban&amp;id=" . (int)$arr['id'] . "'> 
+                    <span class='has-text-green'>[{$lang['failed_main_remban']}]</span>
+                </a>" : "
+                <span class='has-text-green'>{$lang['failed_main_noban']}</span> 
+                <a href='{$site_config['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=ban&amp;id=" . (int)$arr['id'] . "'>
+                    <span class='has-text-danger'>[{$lang['failed_main_ban']}]</span>
+                </a>") . "  
+                <a onclick=\"return confirm('{$lang['failed_main_delmessage']}');\" href='{$site_config['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=delete&amp;id=" . (int)$arr['id'] . "'>
+                    [{$lang['failed_main_delete']}]
+                </a>
+            </td>
+        </tr>";
     }
+    $HTMLOUT .= main_table($body, $heading, 'top20');
 }
-$HTMLOUT .= "</table>\n";
+
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($lang['failed_main_logins']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['failed_main_logins']) . wrapper($HTMLOUT) . stdfoot();

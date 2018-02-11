@@ -1534,19 +1534,33 @@ function sessionStart()
 
 function destroySession()
 {
+    global $site_config;
+
     sessionStart();
     $_SESSION = [];
 
     if (ini_get('session.use_cookies')) {
         $params = session_get_cookie_params();
         setcookie(
-            session_name(),
+            $site_config['cookie_prefix'] . 'userID',
             '',
-            time() - 42000,
+            TIME_NOW - 86400,
             $params['path'],
             $params['domain'],
             $params['secure'],
-            $params['httponly']
+            $params['httponly'],
+            true
+        );
+
+        setcookie(
+            session_name(),
+            '',
+            TIME_NOW - 86400,
+            $params['path'],
+            $params['domain'],
+            $params['secure'],
+            $params['httponly'],
+            true
         );
     }
 
@@ -2361,15 +2375,16 @@ function setCookieVar($key, $value)
     if (empty($key) || empty($value)) {
         return false;
     }
-    $encrypted = CryptoJSAES::encrypt($value    , $site_config['site']['salt']);
+    $encrypted = CryptoJSAES::encrypt($value, $site_config['site']['salt']);
     $secure_session = get_scheme() === 'https' ? true : false;
     setcookie(
         $site_config['cookie_prefix'] . $key,
         base64_encode($encrypted),
-        TIME_NOW + $site_config['cookie_lifetime'] * 86400,
+        TIME_NOW + ($site_config['cookie_lifetime'] * 86400),
         $site_config['cookie_path'],
         $site_config['cookie_domain'],
-        $secure_session
+        $secure_session,
+        true
     );
 }
 

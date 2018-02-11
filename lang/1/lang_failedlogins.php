@@ -6,9 +6,9 @@ $lang = [
     'failed_acc_deny'        => 'Access denied',
     'failed_bad_id'          => 'Invalid Id',
     'failed_success'         => 'Success',
-    'failed_message_ban'     => 'Member banned... redirecting in 2,1..',
-    'failed_message_unban'   => 'Ip ban Removed... redirecting in 2,1..',
-    'failed_message_deleted' => 'Entry deleted... redirecting in 2,1..',
+    'failed_message_ban'     => 'Member banned',
+    'failed_message_unban'   => 'Ip ban Removed',
+    'failed_message_deleted' => 'Entry deleted',
     'failed_message_nothing' => 'Nothing found !',
     //failedlogin main
     'failed_main_ip'         => 'Ip Address',

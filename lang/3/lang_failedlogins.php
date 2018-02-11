@@ -6,9 +6,9 @@ $lang = [
     'failed_acc_deny'        => 'Acces Refuzat',
     'failed_bad_id'          => 'ID nevalid',
     'failed_success'         => 'Succes',
-    'failed_message_ban'     => 'Membru restrictionat (banat)... redirectionare in 2,1..',
-    'failed_message_unban'   => 'Restrictie IP inlaturata... redirectionare in 2,1..',
-    'failed_message_deleted' => 'Registru sters... redirectionare in 2,1..',
+    'failed_message_ban'     => 'Membru restrictionat (banat).',
+    'failed_message_unban'   => 'Restrictie IP inlaturata.',
+    'failed_message_deleted' => 'Registru sters.',
     'failed_message_nothing' => 'Nu s-a gasit nimic!',
     //failedlogin main
     'failed_main_ip'         => 'Adresa IP',

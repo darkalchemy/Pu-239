@@ -1,4 +1,5 @@
 10 Feb 2018
+fix: admin failedlogins.php
 add: secure cookie store for userID
 remove: userID from sessions
 remove: call to undefined var arcade_top_scores.php
