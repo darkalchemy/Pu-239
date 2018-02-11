@@ -1,4 +1,5 @@
 10 Feb 2018
+fix: delete cookie at logout
 fix: admin failedlogins.php
 add: secure cookie store for userID
 remove: userID from sessions

@@ -1494,7 +1494,8 @@ function sessionStart()
             $site_config['cookie_lifetime'] * 86400,
             $site_config['cookie_path'],
             $site_config['cookie_domain'],
-            $secure_session
+            $secure_session,
+            true
         );
 
         // enforce php settings before start session
@@ -1548,8 +1549,7 @@ function destroySession()
             $params['path'],
             $params['domain'],
             $params['secure'],
-            $params['httponly'],
-            true
+            $params['httponly']
         );
 
         setcookie(
@@ -1559,8 +1559,7 @@ function destroySession()
             $params['path'],
             $params['domain'],
             $params['secure'],
-            $params['httponly'],
-            true
+            $params['httponly']
         );
     }
 
