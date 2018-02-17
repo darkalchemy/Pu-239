@@ -20,9 +20,9 @@ require_once CACHE_DIR . 'free_cache.php';
 require_once CACHE_DIR . 'class_config.php';
 require_once INCL_DIR . 'password_functions.php';
 $cache = new CACHE();
+$session = new Session();
 
-// start session on every page request
-sessionStart();
+$session->start();
 
 /**
  * Class curuser
@@ -239,22 +239,60 @@ function logincookie($id, $updatedb = true)
 function userlogin()
 {
     global $site_config, $cache, $CURBLOCK, $mood, $whereis, $CURUSER;
+    $session = new Session();
+
     unset($GLOBALS['CURUSER']);
 
     if (isset($CURUSER)) {
         return;
     }
     if (!$site_config['site_online']) {
-        return;
+        $session->destroy();
+        exit(header('Location: login.php'));
     }
-    $id = getCookieVar('userID');
+
+    $id = $session->get('userID');
     if (!$id) {
-        return;
+        $cookie = getCookieVar('remember');
+        if ($cookie) {
+            $cookie = explode(':', $cookie);
+            // move to db if size becomes an issue 179 bytes each
+            $stashed = $cache->get('remember_' . $cookie[0]);
+            $validator = $cookie[1];
+            if (empty($stashed)) {
+                return;
+            }
+            if (hash_equals($stashed['hash'], hash('sha512', $validator))) {
+                $id = $stashed['uid'];
+                $session->set('userID', $id);
+                $session->set('remembered_by_cookie', true);
+                file_put_contents('/var/log/nginx/remember.log', json_encode($_SESSION) . PHP_EOL, FILE_APPEND);
+            } else {
+                $cache->delete('remember_' . $cookie[0]);
+                return;
+            }
+        } else {
+            return;
+        }
     }
 
     $ip = getip();
 
     $users_data = get_user_data($id);
+    if (empty($users_data)) {
+        return;
+    }
+    $session->set('username', $users_data['username']);
+    $session->set('LoginUserName', $users_data['username']);
+    $session->set('InactiveCheckTimeStamp', TIME_NOW);
+    $session->set('StatusUpdateTimeStamp', TIME_NOW);
+    $session->set('ChannelEnterTimeStamp', TIME_NOW);
+    $session->set('LoginTimeStamp', TIME_NOW);
+    $session->set('IP', $ip);
+    $session->set('LoggedIn', true);
+    $session->set('UserRole', $users_data['class']);
+    $session->set('Channel', 0);
+
     if (!isset($users_data['perms']) || (!($users_data['perms'] & bt_options::PERMS_BYPASS_BAN))) {
         $banned = false;
         if (check_bans($ip, $reason)) {
@@ -276,7 +314,7 @@ function userlogin()
     <p>Reason: <strong>' . htmlsafechars($reason) . '</strong></p>
 </body>
 </html>";
-            die;
+            die();
         }
     }
 
@@ -293,7 +331,7 @@ function userlogin()
             write_log($msg);
             $salty = salty();
             header("Location: {$site_config['baseurl']}/logout.php?hash_please={$salty}");
-            die;
+            die();
         }
     }
 
@@ -912,20 +950,6 @@ function httperr($code = 404)
     die();
 }
 
-function loggedinorreturn()
-{
-    global $CURUSER, $site_config, $cache;
-
-    if (!$CURUSER) {
-        if ($id = getCookieVar('userID')) {
-            $CURUSER = $cache->get('user' . $id);
-        } else {
-            header("Location: {$site_config['baseurl']}/login.php?returnto=" . urlencode($_SERVER['REQUEST_URI']));
-            die();
-        }
-    }
-}
-
 /**
  * @param $s
  *
@@ -989,10 +1013,7 @@ function get_one_row($table, $suffix, $where)
  */
 function stderr($heading, $text, $class = null)
 {
-    $htmlout = stdhead();
-    $htmlout .= stdmsg($heading, $text, $class);
-    $htmlout .= stdfoot();
-    echo $htmlout;
+    echo stdhead() . stdmsg($heading, $text, $class) . stdfoot();
     die();
 }
 
@@ -1479,196 +1500,11 @@ function human_filesize($bytes, $dec = 2)
     return sprintf("%.{$dec}f", $bytes / pow(1024, $factor)) . @$size[$factor];
 }
 
-function sessionStart()
-{
-    global $site_config;
-
-    if (!session_id()) {
-        // Set the session name:
-        session_name($site_config['sessionName']);
-
-        $secure_session = get_scheme() === 'https' ? true : false;
-
-        // Set session cookie parameters:
-        session_set_cookie_params(
-            $site_config['cookie_lifetime'] * 86400,
-            $site_config['cookie_path'],
-            $site_config['cookie_domain'],
-            $secure_session,
-            true
-        );
-
-        // enforce php settings before start session
-        ini_set('session.use_strict_mode', 1);
-        ini_set('session.use_trans_sid', 0);
-        ini_set('default_charset', $site_config['char_set']);
-
-        // Start the session:
-        if (!@session_start()) {
-            destroySession();
-            header('Location: login.php');
-            die();
-        }
-    }
-
-    if (!getSessionVar('canary')) {
-        setSessionVar('canary', TIME_NOW);
-    }
-
-    if (!getSessionVar('auth')) {
-        setSessionVar('auth', make_password(32));
-    }
-
-    if (!getSessionVar('salt')) {
-        setSessionVar('salt', make_passhash(getSessionVar('auth')));
-    }
-
-    if (!getSessionVar($site_config['session_csrf'])) {
-        setSessionVar($site_config['session_csrf'], make_password(32));
-    }
-
-    if (getSessionVar('canary') <= TIME_NOW - 300) {
-        session_regenerate_id(false);
-        setSessionVar('canary', TIME_NOW);
-    }
-}
-
-function destroySession()
-{
-    global $site_config;
-
-    sessionStart();
-    $_SESSION = [];
-
-    if (ini_get('session.use_cookies')) {
-        $params = session_get_cookie_params();
-        setcookie(
-            $site_config['cookie_prefix'] . 'userID',
-            '',
-            TIME_NOW - 86400,
-            $params['path'],
-            $params['domain'],
-            $params['secure'],
-            $params['httponly']
-        );
-
-        setcookie(
-            session_name(),
-            '',
-            TIME_NOW - 86400,
-            $params['path'],
-            $params['domain'],
-            $params['secure'],
-            $params['httponly']
-        );
-    }
-
-    session_destroy();
-}
-
-/**
- * @param      $token
- * @param null $key
- * @param bool $regen
- *
- * @return bool
- *
- * @throws Exception
- */
-function validateToken($token, $key = null, $regen = false)
-{
-    global $site_config;
-    if ($key === null) {
-        $key = $site_config['session_csrf'];
-    }
-    if (empty($token)) {
-        return false;
-    }
-
-    if (hash_equals(getSessionVar($key), $token)) {
-        if ($regen) {
-            unsetSessionVar($key);
-            setSessionVar($key, make_password(32));
-        }
-        return true;
-    }
-    return false;
-}
-
-/**
- * @param      $key
- * @param      $value
- * @param null $prefix
- */
-function setSessionVar($key, $value, $prefix = null)
-{
-    global $site_config;
-    if ($prefix === null) {
-        $prefix = $site_config['sessionKeyPrefix'];
-    }
-    if (in_array($key, $site_config['notifications'])) {
-        $current = getSessionVar($key);
-        if ($current) {
-            if (!in_array($value, $current)) {
-                $_SESSION[$prefix . $key] = array_merge($current, [$value]);
-            }
-        } else {
-            $_SESSION[$prefix . $key] = [$value];
-        }
-    } else {
-        unsetSessionVar($key);
-        $_SESSION[$prefix . $key] = $value;
-    }
-}
-
-/**
- * @param      $key
- * @param null $prefix
- *
- * @return null
- */
-function getSessionVar($key, $prefix = null)
-{
-    global $site_config;
-    if (empty($key)) {
-        return null;
-    }
-
-    if ($prefix === null) {
-        $prefix = $site_config['sessionKeyPrefix'];
-    }
-
-    // Return the session value if existing:
-    if (isset($_SESSION[$prefix . $key])) {
-        return $_SESSION[$prefix . $key];
-    } else {
-        return null;
-    }
-}
-
-/**
- * @param      $key
- * @param null $prefix
- */
-function unsetSessionVar($key, $prefix = null)
-{
-    global $site_config;
-    if ($prefix === null) {
-        $prefix = $site_config['sessionKeyPrefix'];
-    }
-
-    // Set the session value:
-    unset($_SESSION[$prefix . $key]);
-}
-
-/**
- * @return null|string
- *
- * @throws Exception
- */
 function salty()
 {
-    return getSessionVar('auth');
+   $session = new Session();
+
+    return $session->get('auth');
 }
 
 /**
@@ -1741,15 +1577,15 @@ function suspended()
 
 function check_user_status()
 {
+    $session = new Session();
+
     dbconn();
     userlogin();
     referer();
-    if (!validateToken(getSessionVar('auth'), 'auth')) {
-        destroySession();
-        header('Location: login.php');
-        die();
+    if (!$session->validateToken($session->get('auth'), 'auth')) {
+        $session->destroy();
+        exit(header('Location: login.php'));
     }
-    loggedinorreturn();
     parked();
     suspended();
 }
@@ -1927,6 +1763,8 @@ function countries()
 function breadcrumbs($separator = '', $home = 'Home')
 {
     global $site_config;
+    $session = new Session();
+
     $path = array_filter(explode('/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)));
     $query = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
     $base = $site_config['baseurl'] . '/';
@@ -1967,16 +1805,16 @@ function breadcrumbs($separator = '', $home = 'Home')
 
 //    if (!empty($query)) {
 //        $query_str = '';
-//        if (getSessionVar('query_str')) {
-//            $query_str = getSessionVar('query_str');
+//        if ($session->get('query_str')) {
+//            $query_str = $session->get('query_str');
 //        }
 //    }
 
     /*
     if (!empty($query)) {
     $query_str = '';
-    if (getSessionVar('query_str')) {
-        $query_str = getSessionVar('query_str');
+    if ($session->get('query_str')) {
+        $query_str = $session->get('query_str');
     }
 
     $action = explode('=', $query);
@@ -2018,7 +1856,7 @@ function breadcrumbs($separator = '', $home = 'Home')
     array_pop($breadcrumbs);
     $breadcrumbs[] = $current;
 
-    setSessionVar('query_str', parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY));
+    $session->set('query_str', parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY));
     return implode($separator, $breadcrumbs);
 }
 
@@ -2171,6 +2009,7 @@ function Christmas($celebrate = true)
 function get_user_data(int $id)
 {
     global $cache, $fluent, $site_config;
+
     $users_data = $cache->get('user' . $id);
     if ($users_data === false || is_null($users_data)) {
         $users_data = $fluent->from('users')
@@ -2367,23 +2206,24 @@ function rrmdir($dir)
     }
 }
 
-function setCookieVar($key, $value)
+function setCookieVar($key, $value, $expires)
 {
     global $site_config;
 
     if (empty($key) || empty($value)) {
         return false;
     }
+
+    $params = session_get_cookie_params();
     $encrypted = CryptoJSAES::encrypt($value, $site_config['site']['salt']);
-    $secure_session = get_scheme() === 'https' ? true : false;
     setcookie(
         $site_config['cookie_prefix'] . $key,
         base64_encode($encrypted),
-        TIME_NOW + ($site_config['cookie_lifetime'] * 86400),
-        $site_config['cookie_path'],
-        $site_config['cookie_domain'],
-        $secure_session,
-        true
+        $expires,
+        $params['path'],
+        $params['domain'],
+        $params['secure'],
+        $params['httponly']
     );
 }
 
@@ -2400,5 +2240,5 @@ function getCookieVar($key)
 }
 
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {
-    setSessionVar('is-danger', "[h1]This site is vulnerable until you delete the install directory[/h1][p]rm -r " . ROOT_DIR . "public" . DIRECTORY_SEPARATOR . "install" . DIRECTORY_SEPARATOR . "[/p]");
+    $session->set('is-danger', "[h1]This site is vulnerable until you delete the install directory[/h1][p]rm -r " . ROOT_DIR . "public" . DIRECTORY_SEPARATOR . "install" . DIRECTORY_SEPARATOR . "[/p]");
 }

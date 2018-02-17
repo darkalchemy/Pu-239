@@ -9,6 +9,7 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $cache, $CURUSER, $site_config, $fluent;
 
+$session = new Session();
 $lang = array_merge(load_language('global'), load_language('userdetails'));
 $edit_profile = $friend_links = $shitty_link = $sharemark_link = '';
 
@@ -169,7 +170,6 @@ if (($user['opt1'] & user_options::ANONYMOUS) && ($CURUSER['class'] < UC_STAFF &
                     </form>";
     if ($CURUSER['class'] < UC_STAFF && $user['id'] != $CURUSER['id']) {
         echo stdhead($lang['userdetails_anonymoususer']) . $HTMLOUT . stdfoot();
-        die;
     }
     $HTMLOUT .= "
                 </td>
@@ -269,7 +269,7 @@ $HTMLOUT .= "
 
 $stealth = $cache->get('display_stealth' . $CURUSER['id']);
 if ($stealth) {
-    setSessionVar('is-info', htmlsafechars($user['username']) . " $stealth {$lang['userdetails_in_stelth']}");
+    $session->set('is-info', htmlsafechars($user['username']) . " $stealth {$lang['userdetails_in_stelth']}");
 }
 
 $HTMLOUT .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? "

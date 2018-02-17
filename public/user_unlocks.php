@@ -12,7 +12,7 @@ if (!is_valid_id($id) || $CURUSER['class'] < UC_STAFF) {
 }
 if ($CURUSER['class'] < UC_STAFF && $CURUSER['got_moods'] == 'no') {
     stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.... Yer simply no tall enough.");
-    die;
+    die();
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $updateset = [];

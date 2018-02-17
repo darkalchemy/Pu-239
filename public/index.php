@@ -9,6 +9,7 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $BLOCKS, $fluent;
 
+$session = new Session();
 $stdhead = [
     'css' => [
         get_file_name('index_css'),
@@ -35,7 +36,7 @@ $HTMLOUT = '';
 
 $unread = getPmCount($CURUSER['id']);
 if ($unread >= 1) {
-    setSessionVar(
+    $session->set(
         'is-link',
         [
             'message' => "You have $unread unread message" . plural($unread) . " in your Inbox",

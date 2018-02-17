@@ -391,4 +391,10 @@ $sql_updates = [
         'date'  => '5 Feb, 2018',
         'query' => 'ALTER TABLE `triviaq` ADD UNIQUE INDEX `hash`(`hash`)',
     ],
+    [
+        'id'    => 64,
+        'info'  => 'Add index on torrents.free.',
+        'date'  => '12 Feb, 2018',
+        'query' => 'ALTER TABLE `torrents` ADD INDEX `free`(`free`)',
+    ],
 ];

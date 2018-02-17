@@ -7,6 +7,8 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
+$session = new Session();
+
 $HTMLOUT = '';
 $lang = array_merge($lang, load_language('failedlogins'));
 $mode = (isset($_GET['mode']) ? $_GET['mode'] : '');
@@ -28,19 +30,19 @@ function validate($id)
 if ($mode == 'ban') {
     validate($id);
     sql_query("UPDATE failedlogins SET banned = 'yes' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    setSessionVar('is-warning', $lang['failed_message_ban']);
+    $session->set('is-warning', $lang['failed_message_ban']);
     unset($_POST);
 }
 if ($mode == 'removeban') {
     validate($id);
     sql_query("UPDATE failedlogins SET banned = 'no' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    setSessionVar('is-success', $lang['failed_message_unban']);
+    $session->set('is-success', $lang['failed_message_unban']);
     unset($_POST);
 }
 if ($mode == 'delete') {
     validate($id);
     sql_query('DELETE FROM failedlogins WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    setSessionVar('is-success', $lang['failed_message_deleted']);
+    $session->set('is-success', $lang['failed_message_deleted']);
     unset($_POST);
 }
 

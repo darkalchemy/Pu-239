@@ -2,6 +2,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
+$session = new Session();
 
 $pm_what = isset($_POST['pm_what']) && $_POST['pm_what'] == 'last10' ? 'last10' : 'owner';
 $reseedid = (int)$_POST['reseedid'];
@@ -20,9 +21,9 @@ if ($pm_what == 'last10') {
 }
 if (count($pms) > 0) {
     sql_query('INSERT INTO messages (sender, receiver, added, msg ' . ($use_subject ? ', subject' : '') . ' ) VALUES ' . join(',', $pms)) or sqlerr(__FILE__, __LINE__);
-    setSessionVar('is-success', 'PM was sent! Now wait for a seeder!');
+    $session->set('is-success', 'PM was sent! Now wait for a seeder!');
 } else {
-    setSessionVar('is-warning', 'There were no users to PM!');
+    $session->set('is-warning', 'There were no users to PM!');
 }
 sql_query('UPDATE torrents SET last_reseed = ' . TIME_NOW . ' WHERE id = ' . sqlesc($reseedid)) or sqlerr(__FILE__, __LINE__);
 $cache->update_row('torrent_details_' . $reseedid, [

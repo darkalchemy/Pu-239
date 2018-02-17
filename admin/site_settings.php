@@ -4,6 +4,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $cache, $lang;
 
+$session = new Session();
 $lang = array_merge($lang, load_language('ad_sitesettings'));
 $site_settings = $current_site_settings = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
@@ -22,9 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
     }
     if (!empty($update) && sql_query('INSERT INTO site_config(name, value, description) VALUES ' . join(', ', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value), description = VALUES(description)')) {
         $cache->delete('site_settings_');
-        setSessionVar('is-success', 'Update Successful');
+        $session->set('is-success', 'Update Successful');
     } else {
-        setSessionVar('is-warning', $lang['sitesettings_stderr3']);
+        $session->set('is-warning', $lang['sitesettings_stderr3']);
     }
 }
 unset($_POST);

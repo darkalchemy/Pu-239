@@ -5,13 +5,14 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
+$session = new Session();
 $lang = load_language('global');
 $id = (isset($_GET['id']) ? $_GET['id'] : $CURUSER['id']);
 if (!is_valid_id($id) || $CURUSER['class'] < UC_STAFF) {
     $id = $CURUSER['id'];
 }
 if ($CURUSER['class'] < UC_STAFF && $CURUSER['got_blocks'] == 'no') {
-    setSessionVar('is-danger', 'Go to your Karma bonus page and buy this unlock before trying to access it.');
+    $session->set('is-danger', 'Go to your Karma bonus page and buy this unlock before trying to access it.');
     header('Location: ' . $site_config['baseurl'] . '/index.php');
     die();
 }
@@ -370,7 +371,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!empty($updateset) && count($updateset)) {
         sql_query('UPDATE user_blocks SET ' . implode(',', $updateset) . ' WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('blocks_' . $id);
-        setSessionVar('is-success', 'User Blocks Successfully Updated');
+        $session->set('is-success', 'User Blocks Successfully Updated');
         unset($_POST);
         header('Location: ' . $site_config['baseurl'] . '/user_blocks.php');
         die();

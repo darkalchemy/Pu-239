@@ -2,6 +2,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'html_functions.php';
 
+$session = new Session();
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($lconf)) {
     $lottery_config[$ac['name']] = $ac['value'];
@@ -10,18 +11,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fail = false;
     $tickets = isset($_POST['tickets']) ? (int)$_POST['tickets'] : '';
     if (!$tickets) {
-        setSessionVar('is-warning', "How many tickets you wanna buy? [{$_POST['tickets']}]");
+        $session->set('is-warning', "How many tickets you wanna buy? [{$_POST['tickets']}]");
         $fail = true;
     } elseif ($tickets <= 0) {
-        setSessionVar('is-warning', "You can't buy a negative quantity? [{$_POST['tickets']}]");
+        $session->set('is-warning', "You can't buy a negative quantity? [{$_POST['tickets']}]");
         $fail = true;
     }
     $user_tickets = get_row_count('tickets', 'WHERE user = ' . $CURUSER['id']);
     if ($user_tickets + $tickets > $lottery_config['user_tickets']) {
-        setSessionVar('is-warning', 'You reached your limit max is ' . $lottery_config['user_tickets'] . ' ticket(s)');
+        $session->set('is-warning', 'You reached your limit max is ' . $lottery_config['user_tickets'] . ' ticket(s)');
         $fail = true;
     } elseif ($CURUSER['seedbonus'] < $tickets * $lottery_config['ticket_amount']) {
-        setSessionVar('is-warning', 'You need more points to buy the amount of tickets you want');
+        $session->set('is-warning', 'You need more points to buy the amount of tickets you want');
         $fail = true;
     }
     for ($i = 1; $i <= $tickets; ++$i) {
@@ -34,15 +35,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $cache->update_row('user' . $CURUSER['id'], [
                 'seedbonus' => $seedbonus_new,
             ], $site_config['expires']['user_cache']);
-            setSessionVar('is-success', 'You bought <b class="has-text-primary">' . number_format($tickets) . '</b>. You now have <b class="has-text-primary">' . number_format($tickets + $user_tickets) . '</b> tickets!');
+            $session->set('is-success', 'You bought <b class="has-text-primary">' . number_format($tickets) . '</b>. You now have <b class="has-text-primary">' . number_format($tickets + $user_tickets) . '</b> tickets!');
         } else {
-            setSessionVar('is-warning', 'There was an error with the update query, mysql error: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            $session->set('is-warning', 'There was an error with the update query, mysql error: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         }
     }
 }
 $classes_allowed = (strpos($lottery_config['class_allowed'], '|') ? explode('|', $lottery_config['class_allowed']) : $lottery_config['class_allowed']);
 if (!(is_array($classes_allowed) ? in_array($CURUSER['class'], $classes_allowed) : $CURUSER['class'] == $classes_allowed)) {
-    setSessionVar('is-danger', 'Your class is not allowed to play in this lottery');
+    $session->set('is-danger', 'Your class is not allowed to play in this lottery');
     header('Location: index.php');
     die();
 }

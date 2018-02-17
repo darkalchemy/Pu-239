@@ -9,6 +9,7 @@ require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $site_config, $CURUSER, $cache, $lang;
+$session = new Session();
 
 $HTMLOUT = '';
 
@@ -273,6 +274,6 @@ if (mysqli_num_rows($r) > 0) {
     }
     $completed .= main_table($body, $header);
 } else {
-    setSessionVar('is-success', format_username($userid) . " {$lang['userdetails_no_hnrs']}");
+    $session->set('is-success', format_username($userid) . " {$lang['userdetails_no_hnrs']}");
 }
 echo stdhead('HnRs', true) . wrapper($completed) . stdfoot();

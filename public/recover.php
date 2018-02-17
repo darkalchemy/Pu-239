@@ -4,6 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 dbconn();
 global $CURUSER, $site_config, $sluent;
+$session = new Session();
 
 if (!$CURUSER) {
     get_template();
@@ -24,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         stderr('Oops', 'Missing form data - You must fill all fields');
     }
     if ($site_config['captcha_on']) {
-        if (empty($captchaSelection) || getSessionVar('simpleCaptchaAnswer') != $captchaSelection) {
+        if (empty($captchaSelection) || $session->get('simpleCaptchaAnswer') != $captchaSelection) {
             header('Location: recover.php');
             die();
         }
@@ -65,8 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mailer->send($mail);
 
     stderr($lang['stderr_successhead'], $lang['stderr_confmailsent']);
-    unsetSessionVar('simpleCaptchaAnswer');
-    unsetSessionVar('simpleCaptchaTimestamp');
+    $session->unset('simpleCaptchaAnswer');
+    $session->unset('simpleCaptchaTimestamp');
 } elseif ($_GET) {
     $id = isset($_GET['id']) ? $_GET['id'] : 0;
     $token = isset($_GET['token']) ? $_GET['token'] : '';
@@ -117,8 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mailer->send($mail);
 
     stderr($lang['stderr_successhead'], $lang['stderr_mailed']);
-    unsetSessionVar('simpleCaptchaAnswer');
-    unsetSessionVar('simpleCaptchaTimestamp');
+    $session->unset('simpleCaptchaAnswer');
+    $session->unset('simpleCaptchaTimestamp');
 } else {
     $HTMLOUT .= "
     <div class='half-container has-text-centered portlet'>

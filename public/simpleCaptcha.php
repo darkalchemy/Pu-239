@@ -1,6 +1,7 @@
 <?php
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 global $site_config;
+$session = new Session();
 
 dbconn();
 
@@ -19,7 +20,7 @@ $images = [
     'world'        => "{$site_config['pic_baseurl']}captchaImages/10.png",
 ];
 // ------------------- STOP EDITING ---------------- //
-setSessionVar('simpleCaptchaAnswer', null);
+$session->set('simpleCaptchaAnswer', null);
 $resp = [];
 header('Content-Type: application/json');
 if (!isset($images) || !is_array($images) || sizeof($images) < 3) {
@@ -48,7 +49,7 @@ for ($i = 0; $i < $num; ++$i) {
     array_push($used, $keys[$r]);
 }
 $selectText = $used[random_int(0, $num - 1)];
-setSessionVar('simpleCaptchaAnswer', hash('sha512', $selectText . $site_config['site']['salt']));
+$session->set('simpleCaptchaAnswer', hash('sha512', $selectText . $site_config['site']['salt']));
 $resp['text'] = $selectText;
 $resp['images'] = [];
 shuffle($used);

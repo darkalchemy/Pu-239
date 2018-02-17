@@ -3,6 +3,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATO
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 
-setSessionVar('is-danger', 'Access Not Allowed');
+$session = new Session();
+$session->set('is-danger', 'Access Not Allowed');
 header("Location: {$site_config['baseurl']}/index.php");
 die();

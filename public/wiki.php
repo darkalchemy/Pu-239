@@ -9,6 +9,7 @@ $lang = array_merge(load_language('global'), load_language('wiki'));
 $HTMLOUT = '';
 global $CURUSER, $cache;
 
+$session = new Session();
 /**
  * @return string
  */
@@ -76,14 +77,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $body = htmlsafechars($_POST['body']);
         $sql = 'INSERT INTO `wiki` ( `name` , `body` , `userid`, `time` ) VALUES (' . sqlesc($name) . ', ' . sqlesc($body) . ', ' . sqlesc($CURUSER['id']) . ", '" . TIME_NOW . "')";
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        setSessionVar('is-success', 'Wiki article added');
+        $session->set('is-success', 'Wiki article added');
     } elseif (isset($_POST['article-edit'])) {
         $id = (int)$_POST['article-id'];
         $name = htmlspecialchars(urldecode($_POST['article-name']));
         $body = htmlspecialchars($_POST['body']);
         $sql = 'UPDATE wiki SET name = ' . sqlesc($name) . ', body =' . sqlesc($body) . ", lastedit = '" . TIME_NOW . "', lastedituser =" . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($id);
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        setSessionVar('is-success', 'Wiki article edited');
+        $session->set('is-success', 'Wiki article edited');
     } elseif (isset($_POST['wiki'])) {
         $name = htmlsafechars(urldecode($_POST['article']));
         $mode = 'name';

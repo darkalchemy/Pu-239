@@ -5,6 +5,7 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $cache, $site_config, $CURUSER;
 
+$session = new Session();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('staff_panel'));
 
@@ -79,25 +80,25 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
     } elseif (($action == 'flush' && $CURUSER['class'] == UC_MAX)) {
         if (extension_loaded('apcu') && $_ENV['CACHE_DRIVER'] === 'apcu') {
             apcu_clear_cache();
-            setSessionVar('is-success', 'You flushed the APC(u) cache');
+            $session->set('is-success', 'You flushed the APC(u) cache');
         } elseif (extension_loaded('redis') && $_ENV['CACHE_DRIVER'] === 'redis') {
             $client = new \Redis();
             $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
             $client->select($_ENV['REDIS_DATABASE']);
             $client->flushDB();
-            setSessionVar('is-success', 'You flushed the Redis db' . $_ENV['REDIS_DATABASE'] . ' cache');
+            $session->set('is-success', 'You flushed the Redis db' . $_ENV['REDIS_DATABASE'] . ' cache');
         } elseif (extension_loaded('memcached') && $_ENV['CACHE_DRIVER'] === 'memcached') {
             $client = new \Memcached();
             if (!count($client->getServerList())) {
                 $client->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
             }
             $client->flush();
-            setSessionVar('is-success', 'You flushed the Memcached cache');
+            $session->set('is-success', 'You flushed the Memcached cache');
         } elseif ($_ENV['CACHE_DRIVER'] === 'files') {
             rrmdir($_ENV['FILES_PATH']);
-            setSessionVar('is-success', 'You flushed the Flysystem cache: ' . $_ENV['FILES_PATH']);
+            $session->set('is-success', 'You flushed the Flysystem cache: ' . $_ENV['FILES_PATH']);
         } elseif ($_ENV['CACHE_DRIVER'] === 'couchbase') {
-            setSessionVar('is-info', 'You did not flush the Couchbase cache');
+            $session->set('is-info', 'You did not flush the Couchbase cache');
         }
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
@@ -194,7 +195,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                         $user = "[url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#" . get_user_class_color($CURUSER['class']) . "]{$CURUSER['username']}[/color][/url]";
                         write_log("$page {$lang['spanel_in_the_sp_was']} $what by $user");
                     }
-                    setSessionVar('is-success', "'{$page_name}' " . ucwords($action) . "ed Successfully");
+                    $session->set('is-success', "'{$page_name}' " . ucwords($action) . "ed Successfully");
                     header('Location: ' . $_SERVER['PHP_SELF']);
                     die();
                 }

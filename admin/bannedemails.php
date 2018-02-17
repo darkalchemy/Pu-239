@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     sql_query('INSERT INTO bannedemails (added, addedby, comment, email) VALUES(' . TIME_NOW . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($comment) . ', ' . sqlesc($email) . ')') or sqlerr(__FILE__, __LINE__);
     header('Location: staffpanel.php?tool=bannedemails');
-    die;
+    die();
 }
 $HTMLOUT .= begin_frame("{$lang['ad_banemail_add']}", true);
 $HTMLOUT .= "<form method=\"post\" action=\"staffpanel.php?tool=bannedemails\">

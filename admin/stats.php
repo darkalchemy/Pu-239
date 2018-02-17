@@ -96,4 +96,4 @@ if ($n_tor == 0) {
 }
 $HTMLOUT .= end_main_frame();
 echo stdhead($lang['stats_window_title']) . $HTMLOUT . stdfoot();
-die;
+die();

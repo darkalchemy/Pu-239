@@ -1,6 +1,7 @@
 <?php
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 dbconn();
 
 global $CURUSER, $site_config;
@@ -62,15 +63,6 @@ if (!isset($_GET['nowarn'])) {
             </div>";
 }
 $got_ssl = isset($_SERVER['HTTPS']) && (bool)$_SERVER['HTTPS'] == true ? true : false;
-$value = [
-    '...',
-    '...',
-    '...',
-    '...',
-    '...',
-    '...',
-];
-$value[random_int(1, count($value) - 1)] = 'X';
 $HTMLOUT .= "
             <form class='form-inline table-wrapper' method='post' action='takelogin.php'>
                 <table class='table table-bordered'>
@@ -102,20 +94,12 @@ $HTMLOUT .=
                         <td colspan='2' id='captcha_show'></td>
                     </tr>" : '') . "
                     <tr class='no_hover'>
-                        <td colspan='2'>
-                            <span class='has-text-centered'>
-                                {$lang['login_click']}<span class='has-text-danger is-bold'>{$lang['login_x']}</span>
-                            </span>
-                        </td>
-                    </tr>
-                    <tr class='no_hover'>
                         <td colspan='2' class='has-text-centered'>
-                            <span class='tabs is-marginless'>";
-for ($i = 0; $i < count($value); ++$i) {
-    $HTMLOUT .= "
-                                <input name='submitme' type='submit' value='{$value[$i]}' class='button is-small' />";
-}
-$HTMLOUT .= "
+                            <span class='has-text-centered'>
+                                <input name='submitme' type='submit' value='Login' class='button is-small bottom20' /><br>
+                                <label for='remember' class='level-item tooltipper' title='Stay logged in for up to 14 days?''>Remember Me
+                                    <input type='checkbox' name='remember' value='1' id='remember' class='left10' />
+                                </label>
                             </span>";
 
 if (isset($returnto)) {

@@ -1,14 +1,17 @@
 <?php
+return;
+
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-return;
 
 header('Content-Type: application/json');
 global $site_config, $cache;
+$session = new Session();
+
 $lang = array_merge(load_language('global'), load_language('index'));
 
-if ($id = getCookieVar('userID') && validateToken($_POST['csrf_token'])) {
+if ($id = $session->get('userID') && $session->validateToken($_POST['csrf_token'])) {
     $user = $cache->get('user' . $id);
     if ($user === false || is_null($user)) {
         echo json_encode('failed...');

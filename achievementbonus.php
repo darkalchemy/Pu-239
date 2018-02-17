@@ -4,6 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
+$session = new Session();
 
 $lang = array_merge(load_language('global'), load_language('achievementbonus'));
 $id = (int)$CURUSER['id'];
@@ -14,6 +15,7 @@ $res = sql_query('SELECT achpoints FROM usersachiev WHERE userid = ' . sqlesc($i
 $row = mysqli_fetch_row($res);
 $count = $row['0'];
 if (!$count) {
+    $session->set('is-warning', $lang['achbon_no_ach_bon_pnts_msg']);
     header("Refresh: 3; url=achievementhistory.php?id=$id");
     stderr($lang['achbon_no_ach_bon_pnts'], $lang['achbon_no_ach_bon_pnts_msg']);
     die();

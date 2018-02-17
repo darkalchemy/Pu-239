@@ -2,6 +2,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 global $cache, $site_config, $fluent;
+$session = new Session();
 
 $lang = array_merge(load_language('global'), load_language('confirmemail'));
 $id = isset($_GET['id']) ? $_GET['id'] : 0;
@@ -47,5 +48,5 @@ if ($passed) {
 $cache->update_row('user' . $row['user_id'], [
     'email' => $row['new_email'],
 ], $site_config['expires']['user_cache']);
-setSessionVar('is-success', "[h1]Your email has been updated to {$row['email']}[/h1]");
+$session->set('is-success', "[h1]Your email has been updated to {$row['email']}[/h1]");
 header("Refresh: 0; url={$site_config['baseurl']}/usercp.php?action=security");

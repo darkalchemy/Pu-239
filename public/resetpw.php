@@ -4,6 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 dbconn();
 global $CURUSER, $site_config, $cache;
+$session = new Session();
 
 if (!$CURUSER) {
     get_template();
@@ -26,7 +27,7 @@ if ($step == '1') {
             stderr('Oops', 'Missing form data - You must fill all fields');
         }
         if ($site_config['captcha_on']) {
-            if (empty($captchaSelection) || !hash_equals($captchaSelection, getSessionVar('simpleCaptchaAnswer'))) {
+            if (empty($captchaSelection) || !hash_equals($captchaSelection, $session->get('simpleCaptchaAnswer'))) {
                 stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error2']}");
                 die();
             }
@@ -157,8 +158,8 @@ if ($step == '1') {
     $cache->update_row('user' . $id, [
         'passhash' => $newpassword,
     ], $site_config['expires']['user_cache']);
-    unsetSessionVar('simpleCaptchaAnswer');
-    unsetSessionVar('simpleCaptchaTimestamp');
+    $session->unset('simpleCaptchaAnswer');
+    $session->unset('simpleCaptchaTimestamp');
     if (!mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error13']}");
     } else {

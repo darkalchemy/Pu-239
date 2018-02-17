@@ -9,6 +9,7 @@ require_once CACHE_DIR . 'timezones.php';
 check_user_status();
 global $CURUSER, $site_config;
 
+$session = new Session();
 $lang = array_merge(load_language('global'), load_language('usercp'));
 $HTMLOUT = $stylesheets = $wherecatina = '';
 $templates = sql_query('SELECT id, name FROM stylesheets ORDER BY id');
@@ -58,15 +59,15 @@ $possible_actions = [
 ];
 $action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
 if (!in_array($action, $possible_actions)) {
-    setSessionVar('is-warning', "[h2]Error! Change a few things up and try submitting again.[/h2]");
+    $session->set('is-warning', "[h2]Error! Change a few things up and try submitting again.[/h2]");
 }
 if (isset($_GET['edited'])) {
-    setSessionVar('is-success', "[h2]{$lang['usercp_updated']}![/h2]");
+    $session->set('is-success', "[h2]{$lang['usercp_updated']}![/h2]");
     if (isset($_GET['mailsent'])) {
-        setSessionVar('is-success', "[h2]{$lang['usercp_mail_sent']}![/h2]");
+        $session->set('is-success', "[h2]{$lang['usercp_mail_sent']}![/h2]");
     }
 } elseif (isset($_GET['emailch'])) {
-    setSessionVar('is-success', "[h2]{$lang['usercp_emailch']}![/h2]");
+    $session->set('is-success', "[h2]{$lang['usercp_emailch']}![/h2]");
 }
 
 $HTMLOUT .= "

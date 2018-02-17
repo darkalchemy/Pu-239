@@ -4,6 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
+$session = new Session();
 $lang = array_merge(load_language('global'), load_language('coins'));
 
 $id = (int)$_GET['id'];
@@ -23,14 +24,14 @@ $pointscangive = [
 $returnto = "details.php?id=$id";
 
 if (!in_array($points, $pointscangive)) {
-    setSessionVar('is-warning', $lang['coins_you_cant_give_that_amount_of_points']);
+    $session->set('is-warning', $lang['coins_you_cant_give_that_amount_of_points']);
     header("Location: $returnto");
     die();
 }
 $sdsa = sql_query('SELECT 1 FROM coins WHERE torrentid=' . sqlesc($id) . ' AND userid =' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 $asdd = mysqli_fetch_assoc($sdsa);
 if ($asdd) {
-    setSessionVar('is-warning', $lang['coins_you_already_gave_points_to_this_torrent']);
+    $session->set('is-warning', $lang['coins_you_already_gave_points_to_this_torrent']);
     header("Location: $returnto");
     die();
 }
@@ -38,12 +39,12 @@ $res = sql_query('SELECT owner,name,points FROM torrents WHERE id = ' . sqlesc($
 $row = mysqli_fetch_assoc($res) or stderr($lang['gl_error'], $lang['coins_torrent_was_not_found']);
 $userid = (int)$row['owner'];
 if ($userid == $CURUSER['id']) {
-    setSessionVar('is-warning', $lang['coins_you_cant_give_your_self_points']);
+    $session->set('is-warning', $lang['coins_you_cant_give_your_self_points']);
     header("Location: $returnto");
     die();
 }
 if ($CURUSER['seedbonus'] < $points) {
-    setSessionVar('is-warning', $lang['coins_you_dont_have_enough_points']);
+    $session->set('is-warning', $lang['coins_you_dont_have_enough_points']);
     header("Location: $returnto");
     die();
 }
@@ -75,6 +76,6 @@ $cache->update_row('user' . $CURUSER['id'], [
 $cache->increment('inbox_' . $userid);
 $cache->delete('coin_points_' . $id);
 
-setSessionVar('is-success', $lang['coins_successfully_gave_points_to_this_torrent']);
+$session->set('is-success', $lang['coins_successfully_gave_points_to_this_torrent']);
 header("Location: $returnto");
 die();

@@ -165,6 +165,7 @@ if (empty($mode)) {
         write_log($CURUSER['username'] . '(' . get_user_class_name($CURUSER['class']) . ') ' . $lang['backup_successfully'] . '');
     }
     header('Location: staffpanel.php?tool=backup');
+    die();
 } elseif ($mode == 'download') {
     $id = (isset($_GET['id']) ? (int)$_GET['id'] : 0);
     if (!is_valid_id($id)) {
@@ -235,6 +236,7 @@ if (empty($mode)) {
         $location = 'noselection';
     }
     header('Location:staffpanel.php?tool=backup&mode=' . $location);
+    die();
 } else {
     stderr($lang['backup_srry'], $lang['backup_unknow']);
 }

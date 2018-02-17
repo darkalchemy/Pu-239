@@ -13,7 +13,7 @@ if (isset($_GET['remove'])) {
     $configfile .= "\n);";
     file_put_contents(CACHE_DIR . 'free_cache.php', $configfile);
     header("Location: {$site_config['baseurl']}/staffpanel.php?tool=freeleech");
-    die;
+    die();
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $configfile = '<' . $lang['freelech_thisfile'] . date('M d Y H:i:s');
@@ -29,13 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //echo_r($fl);
     if ($fl['modifier'] === false || $fl['expires'] === false || $fl['setby'] === false || $fl['title'] === false || $fl['message'] === false) {
         echo '' . $lang['freelech_error_form'] . '';
-        die;
+        die();
     }
     $configfile .= "array('modifier'=> {$fl['modifier']}, 'expires'=> {$fl['expires']}, 'setby'=> '{$fl['setby']}', 'title'=> '{$fl['title']}', 'message'=> '{$fl['message']}')";
     $configfile .= "\n);";
     file_put_contents(CACHE_DIR . 'free_cache.php', $configfile);
     header("Location: {$site_config['baseurl']}/staffpanel.php?tool=freeleech");
-    die;
+    die();
 }
 require_once CACHE_DIR . 'free_cache.php';
 if (isset($free) && (count($free) < 1)) {
@@ -133,4 +133,4 @@ $HTMLOUT .= "<h2>{$lang['freelech_set_free']}</h2>
     </td></tr>
     </table></form>";
 echo stdhead($lang['freelech_stdhead']) . $HTMLOUT . stdfoot();
-die;
+die();

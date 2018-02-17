@@ -8,12 +8,13 @@ dbconn();
 get_template();
 global $site_config, $cache, $lang, $fluent;
 
+$session = new Session();
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
 
 $wantusername = $wantpassword = $passagain = $email = $user_timezone = $year = $month = $day = $passhint = '';
 $hintanswer = $country = $gender = $rulesverify = $faqverify = $ageverify = $captchaSelection = $submitme = '';
-setSessionVar('signup_variables', serialize($_POST));
+$session->set('signup_variables', serialize($_POST));
 
 extract($_POST);
 unset($_POST);
@@ -54,97 +55,97 @@ $required = [
 
 foreach ($required as $field) {
     if (empty($$field)) {
-        setSessionVar('is-warning', "[h2]{$lang['takesignup_form_data']}[/h2][p]All fields must be completed[/p]");
+        $session->set('is-warning', "[h2]{$lang['takesignup_form_data']}[/h2][p]All fields must be completed[/p]");
         header("Location: {$site_config['baseurl']}/signup.php");
         die();
     }
 }
 
 if ($submitme != 'X') {
-    setSessionVar('is-warning', '[h2]You clicked the wrong button.[/h2]');
+    $session->set('is-warning', '[h2]You clicked the wrong button.[/h2]');
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
 
 if ($site_config['captcha_on']) {
-    if (empty($captchaSelection) || getSessionVar('simpleCaptchaAnswer') != $captchaSelection) {
-        setSessionVar('is-warning', '[h2]The captcha selection was incorrect.[/h2]');
+    if (empty($captchaSelection) || $session->get('simpleCaptchaAnswer') != $captchaSelection) {
+        $session->set('is-warning', '[h2]The captcha selection was incorrect.[/h2]');
         header("Location: {$site_config['baseurl']}/signup.php");
         die();
     }
 }
 
 if ($country == 999999) {
-    setSessionVar('is-warning', '[h2]Please select your country[/h2]');
+    $session->set('is-warning', '[h2]Please select your country[/h2]');
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
 if (!blacklist($wantusername)) {
-    setSessionVar('is-warning', '[h2]' . sprintf($lang['takesignup_badusername'], htmlsafechars($wantusername)) . '[/h2]');
+    $session->set('is-warning', '[h2]' . sprintf($lang['takesignup_badusername'], htmlsafechars($wantusername)) . '[/h2]');
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
 if (strlen($wantusername) > 64) {
-    setSessionVar('is-warning', '[h2]Sorry, username is too long (max is 64 chars)[/h2]');
+    $session->set('is-warning', '[h2]Sorry, username is too long (max is 64 chars)[/h2]');
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
 if ($wantpassword != $passagain) {
-    setSessionVar('is-warning', "[h2]{$lang['takesignup_nomatch']}[/h2]");
+    $session->set('is-warning', "[h2]{$lang['takesignup_nomatch']}[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
 if (strlen($wantpassword) < 6) {
-    setSessionVar('is-warning', "[h2]{$lang['takesignup_pass_short']}[/h2]");
+    $session->set('is-warning', "[h2]{$lang['takesignup_pass_short']}[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
 if (strlen($wantpassword) > 72) {
-    setSessionVar('is-warning', "[h2]{$lang['takesignup_pass_long']}[/h2]");
+    $session->set('is-warning', "[h2]{$lang['takesignup_pass_long']}[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
 if ($wantpassword == $wantusername) {
-    setSessionVar('is-warning', "[h2]{$lang['takesignup_same']}[/h2]");
+    $session->set('is-warning', "[h2]{$lang['takesignup_same']}[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
 if (!validemail($email)) {
-    setSessionVar('is-warning', "[h2]{$lang['takesignup_validemail']}[/h2]");
+    $session->set('is-warning', "[h2]{$lang['takesignup_validemail']}[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
 if (!valid_username($wantusername)) {
-    setSessionVar('is-warning', "[h2]{$lang['takesignup_invalidname']}[/h2]");
+    $session->set('is-warning', "[h2]{$lang['takesignup_invalidname']}[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
 if (empty($day) || empty($month) || empty($year)) {
-    setSessionVar('is-warning', "[h2]You have to fill in your birthday.[/h2]");
+    $session->set('is-warning', "[h2]You have to fill in your birthday.[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
 if (checkdate($month, $day, $year)) {
     $birthday = $year . '-' . $month . '-' . str_pad($day, 2, '0', STR_PAD_LEFT);
 } else {
-    setSessionVar('is-warning', "[h2]You have to fill in your birthday correctly.[/h2]");
+    $session->set('is-warning', "[h2]You have to fill in your birthday correctly.[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
 if ((date('Y') - $year) < 18) {
-    setSessionVar('is-warning', "[h2]You must be at least 18 years old to register.[/h2]");
+    $session->set('is-warning', "[h2]You must be at least 18 years old to register.[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
 if (!(isset($country))) {
-    setSessionVar('is-warning', "[h2]You have to set your country.[/h2]");
+    $session->set('is-warning', "[h2]You have to set your country.[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
 $country = isset($country) && is_valid_id($country) ? intval($country) : 0;
 $gender = isset($gender) ? htmlsafechars($gender) : '';
 if ($rulesverify != 'yes' || $faqverify != 'yes' || $ageverify != 'yes') {
-    setSessionVar('is-warning', "[h2]{$lang['takesignup_qualify']}[/h2]");
+    $session->set('is-warning', "[h2]{$lang['takesignup_qualify']}[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
@@ -155,7 +156,7 @@ $email_count = $fluent->from('users')
     ->where('email = ?', $email)
     ->fetch('count');
 if ($email_count != 0) {
-    setSessionVar('is-warning', "[h2]{$lang['takesignup_email_used']}[/h2]");
+    $session->set('is-warning', "[h2]{$lang['takesignup_email_used']}[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
@@ -167,7 +168,7 @@ if ($site_config['dupeip_check_on']) {
         ->where('ip = ?', inet_pton($ip))
         ->fetch('count');
     if ($ip_count != 0) {
-        setSessionVar('is-warning', "[h2]The ip " . htmlsafechars($ip) . " is already in use. We only allow one account per ip address.[/h2]");
+        $session->set('is-warning', "[h2]The ip " . htmlsafechars($ip) . " is already in use. We only allow one account per ip address.[/h2]");
         header("Location: {$site_config['baseurl']}/signup.php");
         die();
     }
@@ -297,8 +298,8 @@ if ($users_count > 0 && $site_config['email_confirm']) {
 
 if ($site_config['auto_confirm']) {
     clearUserCache($user_id);
-    setSessionVar('userID', $user_id);
+    $session->set('userID', $user_id);
 }
 
-unsetSessionVar('signup_variables');
+$session->unset('signup_variables');
 header("Location: {$site_config['baseurl']}/ok.php?type=" . ($users_count === 0 ? 'sysop' : ($site_config['email_confirm'] ? 'signup&email=' . urlencode($email) : 'confirm')));

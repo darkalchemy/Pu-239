@@ -8,8 +8,6 @@
  * The SELFHTML documentation has been used throughout this project:
  * http://selfhtml.org
  *
- * Stylesheet and cookie methods have been inspired by Paul Sowden (A List Apart):
- * http://www.alistapart.com/stories/alternate/
  */
 
 // AJAX Chat client side logic:
@@ -44,10 +42,6 @@ var ajaxChat = {
     siteName: null,
     sessionName: null,
     sessionKeyPrefix: null,
-    cookieExpiration: null,
-    cookiePath: null,
-    cookieDomain: null,
-    cookieSecure: null,
     chatBotName: null,
     chatBotID: null,
     chatBotRole: null,
@@ -147,10 +141,6 @@ var ajaxChat = {
         this.siteName = config['siteName'];
         this.sessionName = config['sessionName'];
         this.sessionKeyPrefix = config['sessionKeyPrefix'];
-        this.cookieExpiration = config['cookieExpiration'];
-        this.cookiePath = config['cookiePath'];
-        this.cookieDomain = config['cookieDomain'];
-        this.cookieSecure = config['cookieSecure'];
         this.chatBotName = config['chatBotName'];
         this.chatBotID = config['chatBotID'];
         this.chatBotRole = config['chatBotRole'];
@@ -181,12 +171,12 @@ var ajaxChat = {
     },
 
     initSettings: function () {
-        var cookie = this.readCookie(this.sessionKeyPrefix + 'settings'),
+        var store = this.getLocalStorage(this.sessionKeyPrefix + 'settings'),
             i, settingsArray, setting, key, value, number;
         this.settingsInitiated = true;
         this.unusedSettings = {};
-        if (cookie) {
-            settingsArray = cookie.split('&');
+        if (store) {
+            settingsArray = store.split('&');
             for (i = 0; i < settingsArray.length; i++) {
                 setting = settingsArray[i].split('=');
                 if (setting.length === 2) {
@@ -238,7 +228,7 @@ var ajaxChat = {
                 }
                 settingsArray.push(property + '=' + this.encodeText(this.settings[property]));
             }
-            this.createCookie(this.sessionKeyPrefix + 'settings', settingsArray.join('&'), this.cookieExpiration);
+            this.setLocalStorage(this.sessionKeyPrefix + 'settings', settingsArray.join('&'));
         }
     },
 
@@ -282,8 +272,8 @@ var ajaxChat = {
         if (typeof this.initializeFunction === 'function') {
             this.initializeFunction();
         }
-        if (!this.isCookieEnabled()) {
-            this.addChatBotMessageToChatList('/error CookiesRequired');
+        if (!this.isLocalStorageEnabled()) {
+            this.addChatBotMessageToChatList('/error LocalStorageRequired');
         } else {
             if (this.startChatOnLoad) {
                 this.startChat();
@@ -952,18 +942,11 @@ var ajaxChat = {
             return false;
         }
         var timediff = new Date() - this.timeStamp;
-        console.log(this.timerRate + ' ' + timediff);
 
-        // change polling timer to maximum of 60 sec
-        // if quiet for more than 5 minutes
-        if (timediff > 300000 && this.timerRate < 60000) {
-            this.timerRate = this.timerRate + 500;
-        }
-
-        // reset polling timer to 2 sec after 60 min inactivity
-        if (timediff > 3600000) {
-            this.timerRate = 2000;
-            this.timeStamp = new Date();
+        // change polling timer to maximum of 30 sec
+        // if quiet for more than 15 minutes
+        if (timediff > 900000 && this.timerRate < 30000) {
+            this.timerRate = this.timerRate + 250;
         }
 
         this.handleXML(xmlDoc);
@@ -1104,6 +1087,9 @@ var ajaxChat = {
 
     handleChatMessages: function (messageNodes) {
         var userNode, userName, textNode, messageText, i;
+        if (this.settings['postDirection']) {
+            messageNodes = Array.from(messageNodes).reverse();
+        }
         if (messageNodes.length) {
             for (i = 0; i < messageNodes.length; i++) {
                 this.DOMbuffering = true;
@@ -3075,8 +3061,8 @@ var ajaxChat = {
     },
 
     getActiveStyle: function () {
-        var cookie = this.readCookie(this.sessionKeyPrefix + 'style');
-        return cookie ? cookie : this.getPreferredStyleSheet();
+        var store = this.getLocalStorage(this.sessionKeyPrefix + 'style');
+        return store ? store : this.getPreferredStyleSheet();
     },
 
     initStyle: function () {
@@ -3086,7 +3072,7 @@ var ajaxChat = {
 
     persistStyle: function () {
         if (this.styleInitiated) {
-            this.createCookie(this.sessionKeyPrefix + 'style', this.getActiveStyleSheet(), this.cookieExpiration);
+            this.setLocalStorage(this.sessionKeyPrefix + 'style', this.getActiveStyleSheet());
         }
     },
 
@@ -3155,46 +3141,24 @@ var ajaxChat = {
         window.location.search = '?lang=' + langCode;
     },
 
-    createCookie: function (name, value, days) {
-        var expires = '';
-        if (days) {
-            var date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            expires = '; expires=' + date.toUTCString();
-        }
-        var path = '; path=' + this.cookiePath;
-        var domain = this.cookieDomain ? '; domain=' + this.cookieDomain : '';
-        var secure = this.cookieSecure ? '; secure' : '';
-        document.cookie = name + '=' + encodeURIComponent(value) + expires + path + domain + secure;
+    setLocalStorage: function (name, value) {
+        localStorage.setItem(name, encodeURIComponent(value));
     },
 
-    readCookie: function (name) {
-        if (!document.cookie)
-            return null;
-        var nameEQ = name + '=';
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) === ' ') {
-                c = c.substring(1, c.length);
-            }
-            if (c.indexOf(nameEQ) === 0) {
-                return decodeURIComponent(c.substring(nameEQ.length, c.length));
-            }
-        }
-        return null;
+    getLocalStorage: function (name) {
+        var value = decodeURIComponent(localStorage.getItem(name));
+        return value;
     },
 
-    isCookieEnabled: function () {
-        this.createCookie(this.sessionKeyPrefix + 'cookie_test', true, 1);
-        var cookie = this.readCookie(this.sessionKeyPrefix + 'cookie_test');
-        if (cookie) {
-            // Unset the test cookie:
-            this.createCookie(this.sessionKeyPrefix + 'cookie_test', true, -1);
-            // Cookie test successfull, return true:
+    isLocalStorageEnabled: function () {
+        var test = 'test';
+        try {
+            localStorage.setItem(test, test);
+            localStorage.removeItem(test);
             return true;
+        } catch (e) {
+            return false;
         }
-        return false;
     },
 
     finalize: function () {

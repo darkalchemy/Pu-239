@@ -28,4 +28,4 @@ switch ($vars['do']) {
     default:
         die('hmm something looks odd again');
 }
-die;
+die();

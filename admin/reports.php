@@ -7,6 +7,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $cache, $lang;
 
+$session = new Session();
 $lang = array_merge($lang, load_language('ad_report'));
 $HTMLOUT = $delt_link = $type = $count2 = '';
 
@@ -80,7 +81,7 @@ $HTMLOUT .= "<h1>{$lang['reports_active']}</h1>";
 if ((isset($_GET['delete'])) && ($CURUSER['class'] == UC_MAX)) {
     $res = sql_query('DELETE FROM reports WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $cache->delete('new_report_');
-    setSessionVar('is-success', $lang['reports_deleted']);
+    $session->set('is-success', $lang['reports_deleted']);
 }
 
 $res = sql_query('SELECT count(id) FROM reports') or sqlerr(__FILE__, __LINE__);
@@ -224,4 +225,4 @@ if ($count > '0') {
     </form>");
 }
 echo stdhead($lang['reports_stdhead']) . wrapper($HTMLOUT) . stdfoot();
-die;
+die();

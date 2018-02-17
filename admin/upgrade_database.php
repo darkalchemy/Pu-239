@@ -5,6 +5,7 @@ require_once INCL_DIR . 'pager_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $cache, $lang, $fluent;
+$session = new Session();
 
 $lang = array_merge($lang);
 if (!defined('DATABASE_DIR')) {
@@ -22,9 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (sql_query($sql)) {
             $sql = "INSERT INTO database_updates (id, query) VALUES (" . sqlesc($id) . ", " . sqlesc($sql) . ")";
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
-            setSessionVar('is-success', "Query #$id ran without error");
+            $session->set('is-success', "Query #$id ran without error");
         } else {
-            setSessionVar('is-danger', "[p]Query #$id failed to run, try to run manually[/p][p]" . htmlsafechars($sql) . "[/p]");
+            $session->set('is-danger', "[p]Query #$id failed to run, try to run manually[/p][p]" . htmlsafechars($sql) . "[/p]");
         }
     }
 }

@@ -102,6 +102,7 @@ if (!is_array($scheduled_events)) {
                     } else {
                         $HTMLOUT .= "<p>{$lang['events_deleted']}</p>\n";
                         header('Refresh: 2; url=staffpanel.php?tool=events');
+                        die();
                     }
                 }
             } elseif (gettype(strpos($key, 'saveEvent_')) != 'boolean') {
@@ -156,6 +157,7 @@ if (!is_array($scheduled_events)) {
                     } else {
                         $HTMLOUT .= "<p>{$lang['events_saved']}</p>\n";
                         header('Refresh: 2; url=staffpanel.php?tool=events');
+                        die();
                     }
                 }
             }
@@ -273,4 +275,4 @@ if ($count1 > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
 echo stdhead($lang['events_stdhead']) . $HTMLOUT . stdfoot();
-die;
+die();

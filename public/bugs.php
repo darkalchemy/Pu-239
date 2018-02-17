@@ -5,6 +5,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
+$session = new Session();
 
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('bugs'));
@@ -182,7 +183,7 @@ if ($action == 'viewbug') {
         $HTMLOUT .= '</table>';
         $HTMLOUT .= $pager['pagerbottom'];
     } else {
-        setSessionVar('is-warning', $lang['no_bugs']);
+        $session->set('is-warning', $lang['no_bugs']);
         header("Location: index.php");
         die();
     }

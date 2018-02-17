@@ -6,6 +6,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $lang;
 
+$session = new Session();
 $lang = array_merge($lang, load_language('editlog'));
 $HTMLOUT = '';
 $file_data = ROOT_DIR . 'dir_list' . DIRECTORY_SEPARATOR . 'data_' . $CURUSER['username'] . '.txt';
@@ -40,9 +41,9 @@ foreach ($directories as $path) {
 if (!$exist or (isset($_POST['update']) and ($_POST['update'] == 'Update'))) {
     $data = serialize($fetch_set);
     if (file_put_contents($file_data, $data)) {
-        setSessionVar('is-success', "Coder's Log was updated for {$CURUSER['username']}");
+        $session->set('is-success', "Coder's Log was updated for {$CURUSER['username']}");
     } else {
-        setSessionVar('is-warning', "[h3]Could not save data to:[/h3][p]{$file_data}[/p]");
+        $session->set('is-warning', "[h3]Could not save data to:[/h3][p]{$file_data}[/p]");
     }
     $data = $fetch_set;
     unset($_POST);

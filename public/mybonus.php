@@ -4,6 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $fluent;
+$session = new Session();
 
 $lang = array_merge(load_language('global'), load_language('mybonus'));
 if ($site_config['seedbonus_on'] == 0) {
@@ -90,7 +91,7 @@ if (isset($_GET['freeleech_success']) && $_GET['freeleech_success']) {
             echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
         }
 
-        die;
+        die();
     }
     if ($freeleech_success == '2') {
         $HTMLOUT .= "<table class='table table-bordered bottom20'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>" .
@@ -99,26 +100,26 @@ if (isset($_GET['freeleech_success']) && $_GET['freeleech_success']) {
             "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
             '</td></tr></table>';
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
     }
 }
 ////////doubleup
 if (isset($_GET['doubleup_success']) && $_GET['doubleup_success']) {
     $doubleup_success = (int)$_GET['doubleup_success'];
     if ($doubleup_success != '1' && $doubleup_success != '2') {
-        setSessionVar('is-danger', 'I smell a rat on freeleech!');
+        $session->set('is-danger', 'I smell a rat on freeleech!');
     }
     if ($doubleup_success == '1') {
         if ($_GET['norefund'] != '0') {
-            setSessionVar('is-success', "<img src='{$site_config['pic_baseurl']}smilies/karma.gif' alt='good_karma' class='icon' title='Good Karma' /><b>Congratulations! </b>{$CURUSER['username']} you have set the tracker <b>Double Up!</b> <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' />Remaining " . htmlsafechars($_GET['norefund']) . " points have been contributed towards the next doubleup period automatically!");
+            $session->set('is-success', "<img src='{$site_config['pic_baseurl']}smilies/karma.gif' alt='good_karma' class='icon' title='Good Karma' /><b>Congratulations! </b>{$CURUSER['username']} you have set the tracker <b>Double Up!</b> <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' />Remaining " . htmlsafechars($_GET['norefund']) . " points have been contributed towards the next doubleup period automatically!");
         } else {
-            setSessionVar('is-success', "<img src='{$site_config['pic_baseurl']}smilies/karma.gif' alt='good_karma' class='icon' title='Good Karma' /><b>Congratulations! </b>{$CURUSER['username']} you have set the tracker <b>Double Up!</b> <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' />");
+            $session->set('is-success', "<img src='{$site_config['pic_baseurl']}smilies/karma.gif' alt='good_karma' class='icon' title='Good Karma' /><b>Congratulations! </b>{$CURUSER['username']} you have set the tracker <b>Double Up!</b> <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' />");
         }
 
-        die;
+        die();
     }
     if ($doubleup_success == '2') {
-        setSessionVar('is-success', "<img src='{$site_config['pic_baseurl']}smilies/karma.gif' alt='good_karma' class='icon' title='Good Karma' /><b>Congratulations! </b>{$CURUSER['username']} you have contributed towards making the tracker Double Upload! <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' />");
+        $session->set('is-success', "<img src='{$site_config['pic_baseurl']}smilies/karma.gif' alt='good_karma' class='icon' title='Good Karma' /><b>Congratulations! </b>{$CURUSER['username']} you have contributed towards making the tracker Double Upload! <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' />");
     }
 }
 /////////Halfdownload
@@ -144,7 +145,7 @@ if (isset($_GET['halfdown_success']) && $_GET['halfdown_success']) {
             echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
         }
 
-        die;
+        die();
     }
     if ($halfdown_success == '2') {
         $HTMLOUT .= "<table class='table table-bordered bottom20'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>" .
@@ -153,7 +154,7 @@ if (isset($_GET['halfdown_success']) && $_GET['halfdown_success']) {
             "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
             '</td></tr></table>';
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
     }
 }
 //////////
@@ -180,7 +181,7 @@ switch (true) {
 <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br><br><br><br> click to go back to your
 <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['anonymous_success']):
         I_smell_a_rat($_GET['anonymous_success']);
@@ -191,7 +192,7 @@ switch (true) {
 <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br><br><br><br> click to go back to your
 <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['parked_success']):
         {
@@ -203,7 +204,7 @@ switch (true) {
 <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br><br><br><br> click to go back to your
 <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['freeyear_success']):
         {
@@ -215,7 +216,7 @@ switch (true) {
 <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br><br><br><br> click to go back to your
 <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['freeslots_success']):
         {
@@ -228,7 +229,7 @@ switch (true) {
 <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br><br><br><br> click to go back to your
 <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['itrade_success']):
         {
@@ -241,7 +242,7 @@ switch (true) {
 <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br><br><br><br> click to go back to your
 <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['itrade2_success']):
         {
@@ -254,7 +255,7 @@ switch (true) {
 <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br><br><br><br> click to go back to your
 <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['pirate_success']):
         {
@@ -265,7 +266,7 @@ switch (true) {
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself Pirate Status and Freeleech for two weeks! <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br>
 <br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['king_success']):
         {
@@ -276,7 +277,7 @@ switch (true) {
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself King Status and Freeleech for one month! <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br>
 <br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['dload_success']):
         {
@@ -302,7 +303,7 @@ switch (true) {
             "<img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' /><br><br><br><br> click to go back to your " .
             "<a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['class_success']):
         I_smell_a_rat($_GET['class_success']);
@@ -312,7 +313,7 @@ switch (true) {
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself VIP Status for one month! <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br>
 <br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['smile_success']):
         I_smell_a_rat($_GET['smile_success']);
@@ -322,7 +323,7 @@ switch (true) {
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself a set of custom smilies for one month! <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br>
 <br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['warning_success']):
         I_smell_a_rat($_GET['warning_success']);
@@ -332,7 +333,7 @@ switch (true) {
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have removed your warning for the low price of 1000 points!! <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br>
 <br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['invite_success']):
         I_smell_a_rat($_GET['invite_success']);
@@ -342,7 +343,7 @@ switch (true) {
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got your self 3 new invites! <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br><br>
 click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['freeslots_success']):
         I_smell_a_rat($_GET['freeslots_success']);
@@ -352,7 +353,7 @@ click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybo
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got your self 3 freeleech slots! <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br><br>
 click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['title_success']):
         I_smell_a_rat($_GET['title_success']);
@@ -362,7 +363,7 @@ click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybo
 <b>Congratulations! </b>" . $CURUSER['username'] . ' you are now known as <b>' . $CURUSER['title'] . "</b>! <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br>
 <br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['ratio_success']):
         I_smell_a_rat($_GET['ratio_success']);
@@ -373,7 +374,7 @@ have gained a 1 to 1 ratio on the selected torrent, and the difference in MB has
 <br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>
 </td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['gift_fail']):
         I_smell_a_rat($_GET['gift_fail']);
@@ -383,7 +384,7 @@ have gained a 1 to 1 ratio on the selected torrent, and the difference in MB has
 <b>" . $CURUSER['username'] . "...</b> you can not spread the karma to yourself...<br>If you want to spread the love, pick another user! <br>
 <br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['gift_fail_user']):
         I_smell_a_rat($_GET['gift_fail_user']);
@@ -393,7 +394,7 @@ have gained a 1 to 1 ratio on the selected torrent, and the difference in MB has
 <br> No User with that username <br><br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.
 <br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['bump_success']) && $_GET['bump_success'] == 1:
         $res_free = sql_query('SELECT id, name
@@ -404,7 +405,7 @@ have gained a 1 to 1 ratio on the selected torrent, and the difference in MB has
 <img src="' . $site_config['pic_baseurl'] . 'smilies/karma.gif" alt="good karma" /><br> you have ReAnimated the torrent <b><a class="altlink" href="details.php?id=' . $arr_free['id'] . '">' . htmlsafechars($arr_free['name']) . '</a></b>! Bringing it back to page one! <img src="' . $site_config['pic_baseurl'] . 'smilies/w00t.gif" alt="w00t" /><br><br>
 Click to go back to your <a class="altlink" href="mybonus.php">Karma Points</a> page.<br><br>');
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['gift_fail_points']):
         I_smell_a_rat($_GET['gift_fail_points']);
@@ -413,7 +414,7 @@ Click to go back to your <a class="altlink" href="mybonus.php">Karma Points</a> 
 <img src='{$site_config['pic_baseurl']}smilies/cry.gif' alt='oups' title='Bad karma' /></td><td><b>Sorry </b>" . $CURUSER['username'] . " you dont have enough Karma points
 <br> go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['gift_success']):
         I_smell_a_rat($_GET['gift_success']);
@@ -424,7 +425,7 @@ you have spread the Karma well.<br><br>Member <b>' . htmlsafechars($_GET['userna
 <b>Subject:</b> Someone Loves you!<br> <p>You have been given a gift of <b>' . ((int)$_GET['gift_amount_points']) . '</b> Karma points by ' . $CURUSER['username'] . "</p><br>
 You may also <a class='altlink' href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . ((int)$_GET['gift_id']) . "'>send " . htmlsafechars($_GET['usernamegift']) . " a message as well</a>, or go back to your <a class='altlink' href='mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['bounty_success']):
         {
@@ -435,7 +436,7 @@ You may also <a class='altlink' href='{$site_config['baseurl']}/pm_system.php?ac
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself bounty and robbed many users of there reputation points! <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br>
 <br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['reputation_success']):
         I_smell_a_rat($_GET['reputation_success']);
@@ -445,7 +446,7 @@ You may also <a class='altlink' href='{$site_config['baseurl']}/pm_system.php?ac
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got your 100 rep points! <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br><br>
 click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['immunity_success']):
         I_smell_a_rat($_GET['immunity_success']);
@@ -455,7 +456,7 @@ click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybo
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself immuntiy from auto hit and run warnings and auto leech warnings ! <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br><br>
 click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['userblocks_success']):
         I_smell_a_rat($_GET['userblocks_success']);
@@ -465,7 +466,7 @@ click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybo
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself access to control the site user blocks! <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br><br>
 click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 
     case isset($_GET['user_unlocks_success']):
         I_smell_a_rat($_GET['user_unlocks_success']);
@@ -475,7 +476,7 @@ click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybo
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself unlocked bonus moods for use on site! <img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br><br>
 click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
-        die;
+        die();
 }
 
 if (isset($_GET['exchange'])) {
@@ -531,7 +532,7 @@ if (isset($_GET['exchange'])) {
             ];
             update_users_stats($userid, $set);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?up_success=1&amt=$points");
-            die;
+            die();
             break;
 
         case 'reputation':
@@ -547,7 +548,7 @@ if (isset($_GET['exchange'])) {
             ];
             update_users_stats($userid, $set);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?reputation_success=1");
-            die;
+            die();
             break;
 
         case 'immunity':
@@ -563,7 +564,7 @@ if (isset($_GET['exchange'])) {
             ];
             update_users_stats($userid, $set);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?immunity_success=1");
-            die;
+            die();
             break;
 
         case 'userblocks':
@@ -579,7 +580,7 @@ if (isset($_GET['exchange'])) {
             ];
             update_users_stats($userid, $set);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?userblocks_success=1");
-            die;
+            die();
             break;
 
         case 'userunlock':
@@ -595,7 +596,7 @@ if (isset($_GET['exchange'])) {
             ];
             update_users_stats($userid, $set);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?user_unlocks_success=1");
-            die;
+            die();
             break;
 
         case 'anonymous':
@@ -611,7 +612,7 @@ if (isset($_GET['exchange'])) {
             ];
             update_users_stats($userid, $set);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?anonymous_success=1");
-            die;
+            die();
             break;
 
         case 'parked':
@@ -627,7 +628,7 @@ if (isset($_GET['exchange'])) {
             ];
             update_users_stats($userid, $set);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?parked_success=1");
-            die;
+            die();
             break;
 
         case 'traffic2':
@@ -643,7 +644,7 @@ if (isset($_GET['exchange'])) {
             ];
             update_users_stats($userid, $set);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?dload_success=1&amt=$points");
-            die;
+            die();
             break;
 
         case 'freeyear':
@@ -659,7 +660,7 @@ if (isset($_GET['exchange'])) {
             ];
             update_users_stats($userid, $set);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?freeyear_success=1");
-            die;
+            die();
             break;
 
         case 'freeslots':
@@ -672,7 +673,7 @@ if (isset($_GET['exchange'])) {
             ];
             update_users_stats($userid, $set);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?freeslots_success=1");
-            die;
+            die();
             break;
 
         case 'itrade':
@@ -689,7 +690,7 @@ if (isset($_GET['exchange'])) {
             ];
             update_users_stats($userid, $set);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?itrade_success=1");
-            die;
+            die();
             break;
 
         case 'itrade2':
@@ -706,7 +707,7 @@ if (isset($_GET['exchange'])) {
             ];
             update_users_stats($userid, $set);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?itrade2_success=1");
-            die;
+            die();
             break;
 
         case 'pirate':
@@ -723,7 +724,7 @@ if (isset($_GET['exchange'])) {
             ];
             update_users_stats($userid, $set);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?pirate_success=1");
-            die;
+            die();
             break;
 
         case 'bounty':
@@ -802,7 +803,7 @@ if (isset($_GET['exchange'])) {
                 update_users_stats($thief_id, $set);
             }
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?bounty_success=1");
-            die;
+            die();
             break;
 
         case 'king':
@@ -819,7 +820,7 @@ if (isset($_GET['exchange'])) {
             ];
             update_users_stats($userid, $set);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?king_success=1");
-            die;
+            die();
             break;
 
         case 'freeleech':
@@ -829,7 +830,7 @@ if (isset($_GET['exchange'])) {
             $seedbonus = ($bonus - $donation);
             if ($bonus < $donation || $donation <= 0 || $donation > $points2) {
                 stderr('Error', ' <br>Points: ' . (float)$donation . ' <br> Bonus: ' . (float)$bonus . ' <br> Donation: ' . (float)$donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
-                die;
+                die();
             }
             if (($pointspool + $donation) >= $res_points['points']) {
                 $now = TIME_NOW;
@@ -859,7 +860,7 @@ if (isset($_GET['exchange'])) {
                 $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the freeleech contribution pot and has activated freeleech for 3 days ' . $donation . '/' . $points . '';
                 autoshout($msg);
                 header("Refresh: 0; url={$site_config['baseurl']}//mybonus.php?freeleech_success=1&norefund=$norefund");
-                die;
+                die();
             } else {
                 // add to the pool
                 sql_query('UPDATE bonus
@@ -884,9 +885,9 @@ if (isset($_GET['exchange'])) {
                 $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the freeleech contribution pot ! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Freeleech contribution:[/b][/color] [url={$site_config['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
                 autoshout($msg);
                 header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?freeleech_success=2");
-                die;
+                die();
             }
-            die;
+            die();
             break;
 
 //--- doubleupload
@@ -897,7 +898,7 @@ if (isset($_GET['exchange'])) {
             $seedbonus = ($bonus - $donation);
             if ($bonus < $donation || $donation <= 0 || $donation > $points2) {
                 stderr('Error', ' <br>Points: ' . (float)$donation . ' <br> Bonus: ' . (float)$bonus . ' <br> Donation: ' . (float)$donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
-                die;
+                die();
             }
             if (($pointspool + $donation) >= $res_points['points']) {
                 $now = TIME_NOW;
@@ -927,7 +928,7 @@ if (isset($_GET['exchange'])) {
                 $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the double upload contribution pot and has activated Double Upload for 3 days ' . $donation . '/' . $points . '';
                 autoshout($msg);
                 header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?doubleup_success=1&norefund=$norefund");
-                die;
+                die();
             } else {
                 // add to the pool
                 sql_query('UPDATE bonus
@@ -952,9 +953,9 @@ if (isset($_GET['exchange'])) {
                 $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the double upload contribution pot ! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Double upload contribution:[/b][/color] [url={$site_config['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
                 autoshout($msg);
                 header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?doubleup_success=2");
-                die;
+                die();
             }
-            die;
+            die();
             break;
 
 //---Halfdownload
@@ -965,7 +966,7 @@ if (isset($_GET['exchange'])) {
             $seedbonus = ($bonus - $donation);
             if ($bonus < $donation || $donation <= 0 || $donation > $points2) {
                 stderr('Error', ' <br>Points: ' . (float)$donation . ' <br> Bonus: ' . (float)$bonus . ' <br> Donation: ' . (float)$donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
-                die;
+                die();
             }
             if (($pointspool + $donation) >= $res_points['points']) {
                 $now = TIME_NOW;
@@ -995,7 +996,7 @@ if (isset($_GET['exchange'])) {
                 $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the half download contribution pot and has activated half download for 3 days ' . $donation . '/' . $points . '';
                 autoshout($msg);
                 header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?halfdown_success=1&norefund=$norefund");
-                die;
+                die();
             } else {
                 // add to the pool
                 sql_query('UPDATE bonus
@@ -1020,9 +1021,9 @@ if (isset($_GET['exchange'])) {
                 $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the half download contribution pot ! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Half download contribution:[/b][/color] [url={$site_config['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
                 autoshout($msg);
                 header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?halfdown_success=2");
-                die;
+                die();
             }
-            die;
+            die();
             break;
 
         case 'ratio':
@@ -1057,7 +1058,7 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ], $site_config['expires']['user_cache']);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?ratio_success=1");
-            die;
+            die();
             break;
 
         case 'bump':
@@ -1088,7 +1089,7 @@ if (isset($_GET['exchange'])) {
                 'free'  => $free_time,
             ], 0);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?bump_success=1&t_name={$torrent_number}");
-            die;
+            die();
             break;
 
         case 'class':
@@ -1109,7 +1110,7 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ], $site_config['expires']['user_cache']);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?class_success=1");
-            die;
+            die();
             break;
 
         case 'warning':
@@ -1141,7 +1142,7 @@ if (isset($_GET['exchange'])) {
             ], $site_config['expires']['user_cache']);
             $cache->increment('inbox_' . $userid);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?warning_success=1");
-            die;
+            die();
             break;
 
         case 'smile':
@@ -1157,7 +1158,7 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ], $site_config['expires']['user_cache']);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?smile_success=1");
-            die;
+            die();
             break;
 
         case 'invite':
@@ -1174,7 +1175,7 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ], $site_config['expires']['user_cache']);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?invite_success=1");
-            die;
+            die();
             break;
 
         case 'title':
@@ -1194,7 +1195,7 @@ if (isset($_GET['exchange'])) {
                 'bonuscomment' => $bonuscomment,
             ], $site_config['expires']['user_cache']);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?title_success=1");
-            die;
+            die();
             break;
 
         case 'gift_1':
@@ -1234,11 +1235,11 @@ if (isset($_GET['exchange'])) {
                 $giftbonus1 = $userseedbonus + $points;
                 if ($userid == $useridgift) {
                     header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?gift_fail=1");
-                    die;
+                    die();
                 }
                 if (!$useridgift) {
                     header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?gift_fail_user=1");
-                    die;
+                    die();
                 }
                 sql_query('SELECT bonuscomment, id
                             FROM users
@@ -1266,10 +1267,10 @@ if (isset($_GET['exchange'])) {
                             VALUES (0, $subject, $useridgift, $msg, $added)") or sqlerr(__FILE__, __LINE__);
                 $cache->increment('inbox_' . $useridgift);
                 header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?gift_success=1&gift_amount_points=$points&usernamegift=$usernamegift&gift_id=$useridgift");
-                die;
+                die();
             } else {
                 header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?gift_fail_points=1");
-                die;
+                die();
             }
             break;
     }

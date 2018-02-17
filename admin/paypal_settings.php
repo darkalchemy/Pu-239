@@ -3,6 +3,7 @@ require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $cache, $lang;
+$session = new Session();
 
 $lang = array_merge($lang, load_language('ad_paypal_settings'));
 
@@ -15,9 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (sql_query('INSERT INTO paypal_config(name,value) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value)')) {
         $cache->delete('paypal_settings_');
-        setSessionVar('is-success', 'Update Successful');
+        $session->set('is-success', 'Update Successful');
     } else {
-        setSessionVar('is-warning', $lang['paypal_saved']);
+        $session->set('is-warning', $lang['paypal_saved']);
     }
 }
 

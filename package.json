@@ -14,5 +14,9 @@
     "lightbox2": "^2.10.0",
     "normalize.css": "^7.0.0",
     "raphael": "^2.2.7"
-  }
+  },
+  "browserslist": [
+    "> 10%",
+    "last 3 versions"
+  ]
 }

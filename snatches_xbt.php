@@ -5,10 +5,11 @@ require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
 global $CURUSER, $site_config;
 
+$session = new Session();
 $lang = array_merge(load_language('global'), load_language('snatches'));
 $HTMLOUT = '';
 if (empty($_GET['id'])) {
-    setSessionVar('is-warning', 'Invalid Information');
+    $session->set('is-warning', 'Invalid Information');
     header("Location: {$site_config['baseurl']}/index.php");
     die();
 }
@@ -74,4 +75,4 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
 echo stdhead('Snatches') . $HTMLOUT . stdfoot();
-die;
+die();

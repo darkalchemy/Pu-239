@@ -3,10 +3,11 @@ div.global_icon {
     height: 29px;
     text-align: center;
     padding-top: 6px;
-    background: -moz-linear-gradient(100% 100% 90deg, #333, #555);
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#333), to(#555));
-    -moz-border-radius-topleft: 8px;
-    -webkit-border-radius-topleft: 8px;
+    background: #333333;
+    background: -o-linear-gradient(top, #333333 0%,#555555 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#333333),to(#555555));
+    background: linear-gradient(to bottom, #333333 0%,#555555 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#333333', endColorstr='#555555',GradientType=0 );
     border-top-left-radius: 8px;
     float: left;
     display: inline;
@@ -21,10 +22,11 @@ div.global_head {
     color: #fff;
     font-size: 15px;
     font-weight: bolder;
-    background: -moz-linear-gradient(100% 100% 90deg, #555, #666);
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#555), to(#666));
-    -moz-border-radius-topright: 8px;
-    -webkit-border-radius-topright: 8px;
+    background: #555555;
+    background: -o-linear-gradient(top, #555555 0%,#666666 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#555555),to(#666666));
+    background: linear-gradient(to bottom, #555555 0%,#666666 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#555555', endColorstr='#666666',GradientType=0 );
     border-top-right-radius: 8px;
     float: right;
     display: block;
@@ -40,8 +42,6 @@ div.global_text {
     background: #333;
     margin-bottom: 20px;
     padding: 15px;
-    /*-moz-border-radius-bottomright: 8px; -webkit-border-bottom-right-radius: 8px; border-bottom-right-radius: 8px;
-    -moz-border-radius-bottomleft: 8px; -webkit-border-bottom-left-radius: 8px; border-bottom-left-radius: 8px;*/
     -moz-border-radius: 10px;
 }
 

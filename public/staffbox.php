@@ -7,6 +7,8 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $cache;
 
+$session = new Session();
+
 /**
  * @param $x
  *
@@ -19,7 +21,7 @@ function mkint($x)
 
 $lang = array_merge(load_language('global'), load_language('staffbox'));
 if ($CURUSER['class'] < UC_STAFF) {
-    setSessionVar('is-danger', $lang['staffbox_class']);
+    $session->set('is-danger', $lang['staffbox_class']);
     header("Location: index.php");
     die();
 }
@@ -40,16 +42,16 @@ switch ($do) {
             if (sql_query('DELETE FROM staffmessages WHERE id IN (' . join(',', $id) . ')')) {
                 $cache->delete('staff_mess_');
                 header('Refresh: 2; url=' . $_SERVER['PHP_SELF']);
-                setSessionVar('is-success', $lang['staffbox_delete_ids']);
+                $session->set('is-success', $lang['staffbox_delete_ids']);
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             } else {
-                setSessionVar('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+                $session->set('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             }
         } else {
-            setSessionVar('is-warning', $lang['staffbox_odd_err']);
+            $session->set('is-warning', $lang['staffbox_odd_err']);
             header("Location: {$_SERVER['PHP_SELF']}");
             die();
         }
@@ -58,7 +60,7 @@ switch ($do) {
     case 'setanswered':
         if ($id > 0) {
             if ($reply && empty($message)) {
-                setSessionVar('is-warning', $lang['staffbox_no_message']);
+                $session->set('is-warning', $lang['staffbox_no_message']);
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             }
@@ -70,16 +72,16 @@ switch ($do) {
             $message = ', answer=' . sqlesc($message);
             if (sql_query('UPDATE staffmessages SET answered=\'1\', answeredby=' . sqlesc($CURUSER['id']) . ' ' . $message . ' WHERE id IN (' . join(',', $id) . ')')) {
                 $cache->delete('staff_mess_');
-                setSessionVar('is-success', $lang['staffbox_setanswered_ids']);
+                $session->set('is-success', $lang['staffbox_setanswered_ids']);
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             } else {
-                setSessionVar('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+                $session->set('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             }
         } else {
-            setSessionVar('is-warning', $lang['staffbox_odd_err']);
+            $session->set('is-warning', $lang['staffbox_odd_err']);
             header("Location: {$_SERVER['PHP_SELF']}");
             die();
         }
@@ -118,12 +120,12 @@ switch ($do) {
                     </form>");
                 echo stdhead('StaffBox') . wrapper($HTMLOUT) . stdfoot();
             } else {
-                setSessionVar('is-warning', $lang['staffbox_msg_noid']);
+                $session->set('is-warning', $lang['staffbox_msg_noid']);
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             }
         } else {
-            setSessionVar('is-warning', $lang['staffbox_odd_err']);
+            $session->set('is-warning', $lang['staffbox_odd_err']);
             header("Location: {$_SERVER['PHP_SELF']}");
             die();
         }
@@ -134,16 +136,16 @@ switch ($do) {
             if (sql_query("UPDATE staffmessages SET answered='0', answeredby='0' WHERE id IN (" . join(',', $id) . ')')) {
                 $cache->delete('staff_mess_');
                 header('Refresh: 2; url=' . $_SERVER['PHP_SELF']);
-                setSessionVar('is-success', $lang['staffbox_restart_ids']);
+                $session->set('is-success', $lang['staffbox_restart_ids']);
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             } else {
-                setSessionVar('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+                $session->set('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             }
         } else {
-            setSessionVar('is-warning', $lang['staffbox_odd_err']);
+            $session->set('is-warning', $lang['staffbox_odd_err']);
             header("Location: {$_SERVER['PHP_SELF']}");
             die();
         }
@@ -154,7 +156,7 @@ switch ($do) {
         $perpage = 15;
         $pager = pager($perpage, $count_msgs, 'staffbox.php?');
         if (!$count_msgs) {
-            setSessionVar('is-warning', $lang['staffbox_no_msgs']);
+            $session->set('is-warning', $lang['staffbox_no_msgs']);
             header("Location: index.php");
             die();
         } else {

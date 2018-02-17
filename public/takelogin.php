@@ -4,8 +4,9 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class_browser.php';
 dbconn();
-global $CURUSER, $site_config, $cache, $fluent;
+global $CURUSER, $site_config, $fluent, $cache;
 
+$session = new Session();
 if (!$CURUSER) {
     get_template();
 }
@@ -45,12 +46,12 @@ if (empty($user_id)) {
     if ($site_config['captcha_on'] && empty($captchaSelection)) {
         stderr('Error', "Select a captcha image");
     }
-    if (empty($submitme) || $submitme != 'X') {
+    if (empty($submitme) || $submitme != 'Login') {
         stderr('Error', 'You missed, you plonker!');
     }
 
     if ($site_config['captcha_on']) {
-        if (empty($captchaSelection) || getSessionVar('simpleCaptchaAnswer') != $captchaSelection) {
+        if (empty($captchaSelection) || $session->get('simpleCaptchaAnswer') != $captchaSelection) {
             $url = 'login.php';
             if (!empty($_SERVER['HTTP_REFERER'])) {
                 $url = htmlsafechars($_SERVER['HTTP_REFERER']);
@@ -92,6 +93,7 @@ $row = $fluent->from('users')
     ->where('username = ?', $username)
     ->fetch();
 
+$userid = $row['id'];
 $ip_escaped = ipToStorageFormat(getip());
 $ip = getip();
 $added = TIME_NOW;
@@ -112,12 +114,11 @@ if (!password_verify($password, $row['passhash'])) {
     } else {
         sql_query("UPDATE failedlogins SET attempts = attempts + 1 where ip=$ip_escaped") or sqlerr(__FILE__, __LINE__);
     }
-    $to = ((int)$row['id']);
     $subject = 'Failed login';
-    $msg = "[color=red]Security alert[/color]\n Account: ID=" . (int)$row['id'] . ' Somebody (probably you, ' . htmlsafechars($username) . ' !) tried to login but failed!' . "\nTheir [b]Ip Address [/b] was : " . htmlsafechars($ip) . "\n If this wasn't you please report this event to a {$site_config['site_name']} staff member\n - Thank you.\n";
-    $sql = 'INSERT INTO messages (sender, receiver, msg, subject, added) VALUES(0, ' . sqlesc($to) . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ", $added);";
+    $msg = "[color=red]Security alert[/color]\n Account: ID=" . $userid . ' Somebody (probably you, ' . htmlsafechars($username) . ' !) tried to login but failed!' . "\nTheir [b]Ip Address [/b] was : " . htmlsafechars($ip) . "\n If this wasn't you please report this event to a {$site_config['site_name']} staff member\n - Thank you.\n";
+    $sql = 'INSERT INTO messages (sender, receiver, msg, subject, added) VALUES(0, ' . sqlesc($userid) . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ", $added);";
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    $cache->increment('inbox_' . $row['id']);
+    $cache->increment('inbox_' . $userid);
     bark("<b>Error</b>: Username or password entry incorrect <br>Have you forgotten your password? <a href='{$site_config['baseurl']}/resetpw.php'><b>Recover</b></a> your password !");
 }
 
@@ -131,7 +132,6 @@ if ($row['status'] == 'pending') {
     bark('Your account has not been confirmed.');
 }
 sql_query("DELETE FROM failedlogins WHERE ip = $ip_escaped");
-$userid = (int)$row['id'];
 $row['perms'] = (int)$row['perms'];
 $no_log_ip = ($row['perms'] & bt_options::PERMS_NO_IP);
 if ($no_log_ip) {
@@ -158,8 +158,8 @@ $ssluse = ($row['ssluse'] == 2 ? 2 : 1);
 $ua = getBrowser();
 $browser = 'Browser: ' . $ua['name'] . ' ' . $ua['version'] . '. Os: ' . $ua['platform'] . '. Agent : ' . $ua['userAgent'];
 
-sql_query("UPDATE users SET browser = " . sqlesc($browser) . ", $ssl_value, ip = $ip_escaped, last_access = " . TIME_NOW . ", last_login = " . TIME_NOW . " WHERE id = " . sqlesc($row['id'])) or sqlerr(__FILE__, __LINE__);
-$cache->update_row('user' . $row['id'], [
+sql_query("UPDATE users SET browser = " . sqlesc($browser) . ", $ssl_value, ip = $ip_escaped, last_access = " . TIME_NOW . ", last_login = " . TIME_NOW . " WHERE id = " . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+$cache->update_row('user' . $userid, [
     'browser'     => $browser,
     'ip'          => $ip,
     'ssluse'      => $ssluse,
@@ -167,9 +167,22 @@ $cache->update_row('user' . $row['id'], [
     'last_login'  => TIME_NOW,
 ], $site_config['expires']['user_cache']);
 
-unsetSessionVar('simpleCaptchaAnswer');
-setCookieVar('userID', $row['id']);
-logincookie($row['id']);
+$session->unset('simpleCaptchaAnswer');
+$session->set('userID', $userid);
+$session->set('username', $username);
+$session->set('remembered_by_cookie', false);
+logincookie($userid);
+
+$expires = !empty($remember) ? 365 * 86400 : 900;
+$selector = make_password(16);
+$validator = make_password(32);
+$values = [
+    'hash' => hash('sha512', $validator),
+    'uid'  => $userid,
+];
+
+$cache->set('remember_' . $selector, $values, TIME_NOW + $expires);
+setCookieVar('remember', "$selector:$validator", TIME_NOW + $expires);
 
 if (isset($returnto)) {
     header("Location: {$site_config['baseurl']}" . urldecode($returnto));

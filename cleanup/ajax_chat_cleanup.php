@@ -5,6 +5,7 @@
 function ajax_chat_cleanup($data)
 {
     global $site_config, $queries;
+
     require_once INCL_DIR . 'user_functions.php';
     set_time_limit(1200);
     ignore_user_abort(true);

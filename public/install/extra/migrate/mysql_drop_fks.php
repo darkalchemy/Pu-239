@@ -1,13 +1,14 @@
 <?php
 
-$user = "username";
-$pass= "secret";
-$db = "database";
-$host = "localhost";
+require_once __DIR__ . '/../../../../vendor/autoload.php';
+$dotenv = new Dotenv\Dotenv(__DIR__ . '/../../../../');
+$dotenv->load();
 
-if ($user === 'username' || $pass === 'secret') {
-    die("please edit this file\n");
-}
+$user = $_ENV['DB_USERNAME'];
+$pass= $_ENV['DB_PASSWORD'];
+$db = $_ENV['DB_DATABASE'];
+$host = $_ENV['DB_HOST'];
+
 $link = mysqli_connect("$host", "$user", "$pass", "$db") or die("Error " . mysqli_error($link));
 
 $sql = "SELECT TABLE_NAME, CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_NAME LIKE '%_ibfk_%' AND CONSTRAINT_TYPE = 'FOREIGN KEY' AND TABLE_SCHEMA = '$db'";

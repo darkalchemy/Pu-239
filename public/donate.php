@@ -6,6 +6,7 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config;
 
+$session = new Session();
 $lang = load_language('global');
 $nick = ($CURUSER ? $CURUSER['username'] : ('Guest' . random_int(1000, 9999)));
 $form_template = <<<PAYPAL
@@ -93,7 +94,7 @@ if ($site_config['paypal_config']['enable'] == 0) {
 } else {
     $out = '';
     if ($done) {
-        setSessionVar('is-uccess', 'Your donations was sent to paypal wait for processing, this should be immediately! If any errors appear youll be contacted by someone from staff');
+        $session->set('is-success', 'Your donations was sent to paypal wait for processing, this should be immediately! If any errors appear youll be contacted by someone from staff');
     }
     $out .= '
             <h1>Donate</h1>

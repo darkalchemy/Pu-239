@@ -6,6 +6,7 @@ require_once INCL_DIR . 'function_memcache.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
+$session = new Session();
 $lang = array_merge(load_language('global'), load_language('fastdelete'));
 if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'])) {
     stderr($lang['fastdelete_error'], $lang['fastdelete_no_acc']);
@@ -84,7 +85,7 @@ if ($site_config['seedbonus_on'] == 1) {
     ], $site_config['expires']['user_cache']);
 }
 
-setSessionVar('is-success', "[h2]Torrent deleted[/h2][p]" . htmlsafechars($q['name']) . "[/p]");
+$session->set('is-success', "[h2]Torrent deleted[/h2][p]" . htmlsafechars($q['name']) . "[/p]");
 if (isset($_GET['returnto'])) {
     header("Location: {$site_config['baseurl']}{$_GET['returnto']}");
 } else {

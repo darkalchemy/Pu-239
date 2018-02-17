@@ -4,6 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
+$session = new Session();
 $lang = array_merge(load_language('global'), load_language('takerate'));
 if (!mkglobal('id')) {
     die();
@@ -44,5 +45,5 @@ if ($site_config['seedbonus_on'] == 1) {
         'seedbonus' => $update['seedbonus'],
     ], $site_config['expires']['user_cache']);
 }
-setSessionVar('is-success', "Your 'Thank you' has been registered!");
+$session->set('is-success', "Your 'Thank you' has been registered!");
 header("Refresh: 0; url=details.php?id=$id");

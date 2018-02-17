@@ -63,7 +63,7 @@ if ($ip) {
         $HTMLOUT .= "<br><b>No users found</b>\n";
         $HTMLOUT .= end_main_frame();
         echo stdhead('IP sEARCH') . $HTMLOUT . stdfoot();
-        die;
+        die();
     }
     $order = isset($_GET['order']) && $_GET['order'];
     $page = isset($_GET['page']) && (int)$_GET['page'];
@@ -153,4 +153,4 @@ if ($ip) {
 }
 $HTMLOUT .= end_main_frame();
 echo stdhead($lang['ipsearch_stdhead']) . $HTMLOUT . stdfoot();
-die;
+die();

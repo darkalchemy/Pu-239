@@ -4,6 +4,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang, $cache;
 
+$session = new Session();
 $lang = array_merge($lang, load_language('ad_hit_and_run_settings'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ($site_config['hnr_config'] as $c_name => $c_value) {
@@ -13,9 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (sql_query('INSERT INTO hit_and_run_settings(name,value) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value)')) {
         $cache->delete('hnr_settings_');
-        setSessionVar('is-success', 'Update Successful');
+        $session->set('is-success', 'Update Successful');
     } else {
-        setSessionVar('is-warning', $lang['hnr_settings_err_query']);
+        $session->set('is-warning', $lang['hnr_settings_err_query']);
     }
 }
 

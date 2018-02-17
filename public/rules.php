@@ -3,7 +3,9 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 global $site_config;
-if (!getSessionVar('LoggedIn')) {
+
+$session = new Session();
+if (!$session->get('LoggedIn')) {
     dbconn();
     get_template();
 } else {

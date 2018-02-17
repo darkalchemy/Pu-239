@@ -1,3 +1,8 @@
+17 Feb 2018
+move: all session related tasks to Session class
+add: encrypted remember me cookie, set at 1 year
+move: AJAX Chat cookies to localstorage, no need to pass them back and forth with each request
+
 10 Feb 2018
 fix: delete cookie at logout
 fix: admin failedlogins.php

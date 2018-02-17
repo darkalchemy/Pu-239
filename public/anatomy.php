@@ -2,7 +2,9 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
-if (!getSessionVar('LoggedIn')) {
+global $session;
+
+if (!$session->get('LoggedIn')) {
     dbconn();
     get_template();
 } else {

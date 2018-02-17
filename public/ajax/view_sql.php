@@ -3,8 +3,9 @@ require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 check_user_status();
 global $CURUSER, $site_config;
 
+$session = new Session();
 if (empty($CURUSER) || $CURUSER['class'] !== UC_MAX) {
-    setSessionVar('is-warning', 'You do not have access to view that page');
+    $session->set('is-warning', 'You do not have access to view that page');
     header("Location: {$site_config['baseurl']}/index.php");
     die();
 }

@@ -13,6 +13,7 @@ require_once INCL_DIR . 'function_fanart.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $fluent;
 
+$session = new Session();
 $lang = array_merge(load_language('global'), load_language('details'));
 $stdhead = [
     'css' => [
@@ -322,7 +323,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
         $torrents['checked_when'] = $dt;
         $cache->set('checked_by_' . $id, $CURUSER['id'], 0);
         write_log("Torrent <a href=details.php?id=$id>(" . htmlsafechars($torrents['name']) . ")</a> was checked by {$CURUSER['username']}");
-        setSessionVar('is-success', "Torrents has been 'Checked'");
+        $session->set('is-success', "Torrents has been 'Checked'");
     } elseif (isset($_POST['rechecked']) && $_POST['rechecked'] === $_GET['id']) {
         sql_query('UPDATE torrents SET checked_by = ' . sqlesc($CURUSER['id']) . ', checked_when = ' . $dt . ' WHERE id =' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $cache->update_row('torrent_details_' . $id, [
@@ -333,7 +334,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
         $torrents['checked_when'] = $dt;
         $cache->set('checked_by_' . $id, $CURUSER['id'], 0);
         write_log("Torrent <a href=details.php?id=$id>(" . htmlsafechars($torrents['name']) . ")</a> was re-checked by {$CURUSER['username']}");
-        setSessionVar('is-success', "Torrents has been 'Re-Checked'");
+        $session->set('is-success', "Torrents has been 'Re-Checked'");
     } elseif (isset($_POST['clearchecked']) && $_POST['clearchecked'] === $_GET['id']) {
         sql_query("UPDATE torrents SET checked_by = 0, checked_when = 0 WHERE id = " . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $cache->update_row('torrent_details_' . $id, [
@@ -344,7 +345,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
         $torrents['checked_when'] = 0;
         $cache->delete('checked_by_' . $id);
         write_log("Torrent <a href=details.php?id=$id>(" . htmlsafechars($torrents['name']) . ")</a> was un-checked by {$CURUSER['username']}");
-        setSessionVar('is-success', "Torrents has been 'Un-Checked'");
+        $session->set('is-success', "Torrents has been 'Un-Checked'");
     }
 }
 

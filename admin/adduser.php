@@ -7,6 +7,7 @@ require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $cache, $site_config, $lang;
+$session = new Session();
 
 $cache->delete('userlist_' . $site_config['chatBotID']);
 $cache->delete('chat_users_list');
@@ -67,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             autoshout($message);
         }
         if ($user_id == 2) {
-            setSessionVar('is-success', "[p]Pu-239 Install Complete![/p][p]Keep this page (AJAX Chat) open to allow cleanup to catchup.[/p]");
+            $session->set('is-success', "[p]Pu-239 Install Complete![/p][p]Keep this page (AJAX Chat) open to allow cleanup to catchup.[/p]");
             header('Location: index.php');
         } else {
             stderr($lang['std_success'], sprintf($lang['text_user_added'], $user_id));
@@ -87,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         stderr($lang['std_err'], sprintf($lang['err_mysql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
     }
-    die;
+    die();
 }
 $HTMLOUT = '
     <h1 class="has-text-centered">' . $lang['std_adduser'] . '</h1>

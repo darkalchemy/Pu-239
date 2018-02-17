@@ -12,8 +12,9 @@ function stdhead($title = '', $stdhead = null)
 {
     require_once INCL_DIR . 'bbcode_functions.php';
     global $CURUSER, $site_config, $lang, $free, $querytime, $cache, $BLOCKS, $CURBLOCK, $mood;
+    $session = new Session();
 
-    unsetSessionVar('Channel');
+    $session->unset('Channel');
     if (!$site_config['site_online']) {
         die('Site is down for maintenance, please check back again later... thanks<br>');
     }
@@ -140,7 +141,7 @@ function stdhead($title = '', $stdhead = null)
     }
 
     foreach ($site_config['notifications'] as $notif) {
-        if (($messages = getSessionVar($notif)) != false) {
+        if (($messages = $session->get($notif)) != false) {
             foreach ($messages as $message) {
                 $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>" . format_comment($message['message']) . "</a>";
                 $htmlout .= "
@@ -148,7 +149,7 @@ function stdhead($title = '', $stdhead = null)
                     <button class='delete'></button>$message
                 </div>";
             }
-            unsetSessionVar($notif);
+            $session->unset($notif);
         }
     }
     return $htmlout;
@@ -163,6 +164,7 @@ function stdfoot($stdfoot = false)
 {
     require_once INCL_DIR . 'bbcode_functions.php';
     global $CURUSER, $site_config, $start, $query_stat, $cache, $querytime, $lang;
+$session = new Session();
 
     $header = $uptime = $htmlfoot = '';
     $debug = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
@@ -280,7 +282,7 @@ function stdfoot($stdfoot = false)
         var cookie_path     = '{$site_config['cookie_path']}';
         var cookie_lifetime = '{$site_config['cookie_lifetime']}';
         var cookie_domain   = '{$site_config['cookie_domain']}';
-        var csrf_token      = '" . getSessionVar('csrf_token') . "';
+        var csrf_token      = '" . $session->get('csrf_token') . "';
         var x = document.getElementsByClassName('flipper');
         var i;
         for (i = 0; i < x.length; i++) {
@@ -334,6 +336,7 @@ function stdfoot($stdfoot = false)
 </body>
 </html>";
 
+    $session->close();
     return $htmlfoot;
 }
 

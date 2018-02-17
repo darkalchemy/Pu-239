@@ -7,6 +7,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $cache, $lang, $pdo, $fluent;
 
+$session = new Session();
 $lang = array_merge($lang, load_language('ad_bans'));
 $remove = isset($_GET['remove']) ? (int)$_GET['remove'] : 0;
 if ($remove > 0) {
@@ -29,7 +30,7 @@ if ($remove > 0) {
             ->execute();
         $removed = sprintf($lang['text_banremoved'], $remove);
         write_log("{$removed}" . $CURUSER['id'] . ' (' . $CURUSER['username'] . ')');
-        setSessionVar('is-success', "IPS: {$res['first']} to {$res['last']} removed");
+        $session->set('is-success', "IPS: {$res['first']} to {$res['last']} removed");
         unset($_GET);
     }
 }
@@ -65,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $CURUSER['class'] == UC_MAX) {
                         (:added, :addedby, INET6_ATON(:first), INET6_ATON(:last), :comment)'
     );
     $stmt->execute($values);
-    setSessionVar('is-success', "IPs: $first to $last added to Bans");
+    $session->set('is-success', "IPs: $first to $last added to Bans");
     unset($_POST);
 }
 

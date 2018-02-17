@@ -3,6 +3,7 @@ require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $cache, $lang;
+$session = new Session();
 
 $lang = array_merge($lang, load_language('ad_class_config'));
 
@@ -120,9 +121,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
             file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
-            setSessionVar('is-success', $lang['classcfg_success_save']);
+            $session->set('is-success', $lang['classcfg_success_save']);
         } else {
-            setSessionVar('is-warning', $lang['classcfg_error_query1']);
+            $session->set('is-warning', $lang['classcfg_error_query1']);
         }
         unset($_POST);
     }
@@ -216,9 +217,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
                 $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
                 file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
-                setSessionVar('is-success', $lang['classcfg_success_save']);
+                $session->set('is-success', $lang['classcfg_success_save']);
             } else {
-                setSessionVar('is-warning', $lang['classcfg_error_query2']);
+                $session->set('is-warning', $lang['classcfg_error_query2']);
             }
             unset($_POST);
         }
@@ -286,9 +287,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
             file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
-            setSessionVar('is-success', $lang['classcfg_success_reset']);
+            $session->set('is-success', $lang['classcfg_success_reset']);
         } else {
-            setSessionVar('is-warning', $lang['classcfg_error_query2']);
+            $session->set('is-warning', $lang['classcfg_error_query2']);
         }
         unset($_POST);
     }

@@ -86,7 +86,7 @@ if ($action == 'add') {
         $newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
         sql_query('UPDATE users SET comments = comments + 1 WHERE id =' . sqlesc($userid));
         header("Refresh: 0; url=userdetails.php?id=$userid&viewcomm=$newid#comm$newid");
-        die;
+        die();
     }
     $userid = (int)$_GET['userid'];
     if (!is_valid_id($userid)) {
@@ -119,7 +119,6 @@ if ($action == 'add') {
         $HTMLOUT .= usercommenttable($allrows);
     }
     echo stdhead('Add a comment for "' . htmlsafechars($arr['username']) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
-    die;
 } elseif ($action == 'edit') {
     $commentid = (int)$_GET['cid'];
     if (!is_valid_id($commentid)) {
@@ -146,7 +145,7 @@ if ($action == 'add') {
         } else {
             header("Location: {$site_config['baseurl']}/userdetails.php?id={$userid}");
         }
-        die;
+        die();
     }
     $HTMLOUT .= '<h1>Edit comment for "' . htmlsafechars($arr['username']) . "\"</h1>
     <form method='post' action='usercomment.php?action=edit&amp;cid={$commentid}'>
@@ -158,7 +157,7 @@ if ($action == 'add') {
     </div></form>";
     echo stdhead('Edit comment for "' . htmlsafechars($arr['username']) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
     stdfoot();
-    die;
+    die();
 } elseif ($action == 'delete') {
     $commentid = (int)$_GET['cid'];
     if (!is_valid_id($commentid)) {
@@ -190,7 +189,7 @@ if ($action == 'add') {
     } else {
         header("Location: {$site_config['baseurl']}/userdetails.php?id={$userid}");
     }
-    die;
+    die();
 } elseif ($action == 'vieworiginal') {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr('Error', 'Permission denied.');
@@ -214,8 +213,7 @@ if ($action == 'add') {
         $HTMLOUT .= "<font size='small'>(<a href='{$returnto}'>back</a>)</font>\n";
     }
     echo stdhead('User Comments') . wrapper($HTMLOUT) . stdfoot();
-    die;
 } else {
     stderr('Error', 'Unknown action');
 }
-die;
+die();

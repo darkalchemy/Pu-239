@@ -7,6 +7,7 @@ require_once INCL_DIR . 'comment_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
+$session = new Session();
 $lang = array_merge(load_language('global'), load_language('comment'), load_language('capprove'));
 flood_limit('comments');
 $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : 0);
@@ -103,9 +104,9 @@ if ($action == 'add') {
             $cache->increment('inbox_' . $arr['owner']);
         }
         // ---end---//
-        setSessionVar('is-success', 'Your comment has been posted');
+        $session->set('is-success', 'Your comment has been posted');
         header("Refresh: 0; url=$locale_link.php?id=$id$extra_link&viewcomm=$newid#comm$newid");
-        die;
+        die();
     }
     $id = (isset($_GET['tid']) ? (int)$_GET['tid'] : 0);
     if (!is_valid_id($id)) {
@@ -154,7 +155,7 @@ if ($action == 'add') {
         $HTMLOUT .= wrapper("<h2 class='has-text-centered'>{$lang['comment_recent']}</h2>" . commenttable($allrows, $locale));
     }
     echo stdhead("{$lang['comment_add']}'" . $arr[$name] . "'", true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-    die;
+    die();
 } elseif ($action == 'edit') {
     $commentid = (isset($_GET['cid']) ? (int)$_GET['cid'] : 0);
     if (!is_valid_id($commentid)) {
@@ -182,9 +183,9 @@ if ($action == 'add') {
             sql_query('UPDATE comments SET text = ' . sqlesc($text) . ", editedat = $editedat, editedby = 0 WHERE id = " . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
             $cache->delete('latest_comments_');
         }
-        setSessionVar('is-success', 'The comment has been updated');
+        $session->set('is-success', 'The comment has been updated');
         header("Refresh: 0; url=$locale_link.php?id=" . (int)$arr['tid'] . "$extra_link&viewcomm=$commentid#comm$commentid");
-        die;
+        die();
     }
     $HTMLOUT = '';
     $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['comment_edit']}'" . htmlsafechars($arr[$name]) . "'</h1>
@@ -204,7 +205,7 @@ if ($action == 'add') {
         </div>
     </form>';
     echo stdhead("{$lang['comment_edit']}'" . $arr[$name] . "'", true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-    die;
+    die();
 } elseif ($action == 'delete') {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr("{$lang['comment_error']}", "{$lang['comment_denied']}");
@@ -245,9 +246,9 @@ if ($action == 'add') {
         ], $site_config['expires']['user_cache']);
         //===end
     }
-    setSessionVar('is-success', 'The comment has been deleted');
+    $session->set('is-success', 'The comment has been deleted');
     header("Refresh: 0; url=$locale_link.php?id=$tid$extra_link");
-    die;
+    die();
 } elseif ($action == 'vieworiginal') {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr("{$lang['comment_error']}", "{$lang['comment_denied']}");
@@ -272,8 +273,8 @@ if ($action == 'add') {
         $HTMLOUT .= "<p>(<a href='$returnto'>back</a>)</p>\n";
     }
     echo stdhead("{$lang['comment_original']}", true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-    die;
+    die();
 } else {
     stderr("{$lang['comment_error']}", "{$lang['comment_unknown']}");
 }
-die;
+die();

@@ -7,6 +7,7 @@ require_once INCL_DIR . 'function_bemail.php';
 dbconn();
 global $CURUSER, $site_config, $cache, $lang, $fluent;
 
+$session = new Session();
 if (!$CURUSER) {
     get_template();
 }
@@ -32,7 +33,7 @@ if ($submitme != 'X') {
     stderr('Ha Ha', 'You Missed, You plonker!');
 }
 if ($site_config['captcha_on']) {
-    if (empty($captchaSelection) || getSessionVar('simpleCaptchaAnswer') != $captchaSelection) {
+    if (empty($captchaSelection) || $session->get('simpleCaptchaAnswer') != $captchaSelection) {
         header('Location: invite_signup.php');
         die();
     }

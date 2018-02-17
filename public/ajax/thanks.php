@@ -3,14 +3,15 @@ require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 check_user_status();
 global $site_config, $cache;
 
+$session = new Session();
 if (empty($_POST)) {
-    setSessionVar('is-danger', 'Access Not Allowed');
+    $session->set('is-danger', 'Access Not Allowed');
     header("Location: {$site_config['baseurl']}/index.php");
     die();
 }
 
 if (!isset($CURUSER)) {
-    setSessionVar('is-warning', "You can't add a thank you on your own torrent");
+    $session->set('is-warning', "You can't add a thank you on your own torrent");
     header("Location: {$site_config['baseurl']}/index.php");
     die();
 }

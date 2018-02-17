@@ -10,7 +10,7 @@ $lang = array_merge(load_language('global'), load_language('viewnfo'));
 
 $id = (int)$_GET['id'];
 if ($CURUSER['class'] < UC_POWER_USER || !is_valid_id($id)) {
-    die;
+    die();
 }
 $r = sql_query('SELECT name, nfo FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $a = mysqli_fetch_assoc($r) or die("{$lang['text_puke']}");

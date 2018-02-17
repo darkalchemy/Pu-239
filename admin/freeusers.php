@@ -62,4 +62,4 @@ if ($count == 0) {
     $HTMLOUT .= '</table>';
 }
 echo stdhead($lang['freeusers_stdhead']) . $HTMLOUT . stdfoot();
-die;
+die();

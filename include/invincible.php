@@ -9,6 +9,8 @@
 function invincible($id, $invincible = true, $bypass_bans = true)
 {
     global $CURUSER, $cache, $site_config;
+
+    $session = new Session();
     $ip = '127.0.0.1';
     $setbits = $clrbits = 0;
     if ($invincible) {
@@ -60,7 +62,7 @@ function invincible($id, $invincible = true, $bypass_bans = true)
     }
     write_log('Member [b][url=userdetails.php?id=' . $id . ']' . (htmlsafechars($row['username'])) . '[/url][/b] is ' . $display . ' invincible thanks to [b]' . $CURUSER['username'] . '[/b]');
     // header ouput
-    setSessionVar('is-info', "{$CURUSER['username']} is $display Invincible");
+    $session->set('is-info', "{$CURUSER['username']} is $display Invincible");
     header('Location: userdetails.php?id=' . $id);
     die();
 }

@@ -5,6 +5,7 @@ require_once INCL_DIR . 'function_memcache.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
+$session = new Session();
 $lang = array_merge(load_language('global'), load_language('delete'));
 if (!mkglobal('id')) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_missing_data']}");
@@ -115,7 +116,7 @@ if ($CURUSER['id'] != $row['owner'] and $CURUSER['pm_on_delete'] == 'yes') {
     $cache->increment('inbox_' . $pm_on);
 }
 
-setSessionVar('is-success', $message);
+$session->set('is-success', $message);
 if (!empty($_POST['returnto'])) {
     header("Location: " . htmlsafechars($_POST['returnto']));
 } else {

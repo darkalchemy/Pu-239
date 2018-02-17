@@ -4,6 +4,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang, $BLOCKS;
 
+$session = new Session();
 $lang = array_merge($lang, load_language('ad_block_settings'));
 
 $list = [
@@ -90,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $block_out .= "];";
     file_put_contents(CACHE_DIR . 'block_settings_cache.php', $block_out);
 
-    setSessionVar('is-success', $lang['block_updated']);
+    $session->set('is-success', $lang['block_updated']);
     unset($_POST);
     sleep(3);
     header('Location: ' . $site_config['baseurl'] . '/staffpanel.php?tool=block.settings');

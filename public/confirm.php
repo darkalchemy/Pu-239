@@ -2,6 +2,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 global $CURUSER, $site_config, $fluent;
+$session = new Session();
 
 if (!$CURUSER) {
     get_template();
@@ -48,5 +49,5 @@ if (!$passed) {
     stderr("{$lang['confirm_user_error']}", "{$lang['confirm_cannot_confirm']}");
 }
 
-setSessionVar('userID', $row['user_id']);
+$session->set('userID', $row['user_id']);
 header("Refresh: 0; url={$site_config['baseurl']}/ok.php?type=confirm");

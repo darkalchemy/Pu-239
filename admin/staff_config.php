@@ -5,7 +5,8 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 
 global $cache, $site_config;
+$session = new Session();
 $cache->delete('staff_settings_');
 
-setSessionVar('is-success', 'Staff List Updated');
+$session->set('is-success', 'Staff List Updated');
 header("Location: {$site_config['baseurl']}/staffpanel.php");

@@ -3,6 +3,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config;
+$session = new Session();
 
 $lang = array_merge(load_language('global'), load_language('trivia'));
 
@@ -35,7 +36,7 @@ if (!empty($_POST) && (int)$_POST['qid'] === $qid) {
         $date = date('Y-m-d H:i:s');
         $ip = getip();
 
-        if (empty($_POST['token']) || !validateToken($_POST['token'])) {
+        if (empty($_POST['token']) || !$session->validateToken($_POST['token'])) {
             $username = get_one_row('users', 'username', 'WHERE id = ' . sqlesc($user_id));
             write_log("Trivia Game => using curl post => [$user_id]$username qid:$qid $date $ip");
         } else {
@@ -204,7 +205,7 @@ if (empty($gamenum) || empty($qid)) {
                                 <input type='hidden' name='user_id' value='{$user_id}'>
                                 <input type='hidden' name='ans' value='answer1'>
                                 <input type='hidden' name='gamenum' value='{$gamenum}'>
-                                <input type='hidden' name='token' value='" . getSessionVar($csrf) . "'>
+                                <input type='hidden' name='token' value='" . $session->get($csrf) . "'>
                                 <input type='submit' value='" . htmlspecialchars_decode($row['answer1']) . "' class='button margin20'>
                             </form>
                         </li>
@@ -214,7 +215,7 @@ if (empty($gamenum) || empty($qid)) {
                                 <input type='hidden' name='user_id' value='{$user_id}'>
                                 <input type='hidden' name='ans' value='answer2'>
                                 <input type='hidden' name='gamenum' value='{$gamenum}'>
-                                <input type='hidden' name='token' value='" . getSessionVar($csrf) . "'>
+                                <input type='hidden' name='token' value='" . $session->get($csrf) . "'>
                                 <input type='submit' value='" . htmlspecialchars_decode($row['answer2']) . "' class='button margin20'>
                             </form>
                         </li>";
@@ -227,7 +228,7 @@ if (empty($gamenum) || empty($qid)) {
                                 <input type='hidden' name='user_id' value='{$user_id}'>
                                 <input type='hidden' name='ans' value='answer3'>
                                 <input type='hidden' name='gamenum' value='{$gamenum}'>
-                                <input type='hidden' name='token' value='" . getSessionVar($csrf) . "'>
+                                <input type='hidden' name='token' value='" . $session->get($csrf) . "'>
                                 <input type='submit' value='" . htmlspecialchars_decode($row['answer3']) . "' class='button margin20'>
                             </form>
                         </li>";
@@ -240,7 +241,7 @@ if (empty($gamenum) || empty($qid)) {
                                 <input type='hidden' name='user_id' value='{$user_id}'>
                                 <input type='hidden' name='ans' value='answer4'>
                                 <input type='hidden' name='gamenum' value='{$gamenum}'>
-                                <input type='hidden' name='token' value='" . getSessionVar($csrf) . "'>
+                                <input type='hidden' name='token' value='" . $session->get($csrf) . "'>
                                 <input type='submit' value='" . htmlspecialchars_decode($row['answer4']) . "' class='button margin20'>
                             </form>
                         </li>";
@@ -253,7 +254,7 @@ if (empty($gamenum) || empty($qid)) {
                                 <input type='hidden' name='user_id' value='{$user_id}'>
                                 <input type='hidden' name='ans' value='answer5'>
                                 <input type='hidden' name='gamenum' value='{$gamenum}'>
-                                <input type='hidden' name='token' value='" . getSessionVar($csrf) . "'>
+                                <input type='hidden' name='token' value='" . $session->get($csrf) . "'>
                                 <input type='submit' value='" . htmlspecialchars_decode($row['answer5']) . "' class='button margin20'>
                             </form>
                         </li>";

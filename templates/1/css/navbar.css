@@ -31,8 +31,12 @@ header#navbar #menuWrapper {
     height: auto;
     margin-left: 5px;
     margin-right: 5px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: space-between;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
 }
 
 header#navbar ul {
@@ -54,7 +58,6 @@ header#navbar ul > li > a {
     text-transform: uppercase;
     text-decoration: none;
     -webkit-transition: all .3s ease;
-    -moz-transition: all .3s ease;
     -o-transition: all .3s ease;
     transition: all .3s ease;
     line-height: 40px;
@@ -72,7 +75,10 @@ header#navbar .nav_container ul > li > ul {
     min-width: 200px;
     margin: 0;
     pointer-events: none;
-    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
 }
 
 header#navbar .nav_container ul > li > ul > li {
@@ -89,28 +95,26 @@ header#navbar .nav_container ul > li > ul > li > a {
 
 .ddFadeSlow {
     -webkit-transition: all .9s ease-in-out;
-    -moz-transition: all .9s ease-in-out;
     -o-transition: all .9s ease-in-out;
     transition: all .9s ease-in-out;
 }
 
 .ddFadeNormal {
     -webkit-transition: all .6s ease-in-out;
-    -moz-transition: all .6s ease-in-out;
     -o-transition: all .6s ease-in-out;
     transition: all .6s ease-in-out;
 }
 
 .ddFadeFast {
     -webkit-transition: all .3s ease-in-out;
-    -moz-transition: all .3s ease-in-out;
     -o-transition: all .3s ease-in-out;
     transition: all .3s ease-in-out;
 }
 
 header#navbar .nav_container ul > li > ul {
     opacity: 0;
-    perspective: 1000px;
+    -webkit-perspective: 1000px;
+            perspective: 1000px;
     min-width: inherit;
     width: 200px;
     border-bottom-left-radius: .3125em;
@@ -118,15 +122,21 @@ header#navbar .nav_container ul > li > ul {
 }
 
 li:hover ul.hov {
-    animation-duration: .3s;
-    animation-delay: .3s;
+    -webkit-animation-duration: .3s;
+            animation-duration: .3s;
+    -webkit-animation-delay: .3s;
+            animation-delay: .3s;
 }
 
 li:hover ul.hov li {
-    animation-direction: normal;
-    animation-iteration-count: 1;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
+    -webkit-animation-direction: normal;
+            animation-direction: normal;
+    -webkit-animation-iteration-count: 1;
+            animation-iteration-count: 1;
+    -webkit-animation-timing-function: ease-in-out;
+            animation-timing-function: ease-in-out;
+    -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
 }
 
 header#navbar .nav_container ul > li:hover ul {
@@ -163,7 +173,6 @@ header#navbar .nav_container ul > li:hover ul {
     margin-top: 3px;
     color: #fff;
     -webkit-transition: all .3s ease;
-    -moz-transition: all .3s ease;
     -o-transition: all .3s ease;
     transition: all .3s ease;
 }
@@ -190,18 +199,14 @@ header#navbar .nav_container ul > li:hover ul {
     left: 50%;
     margin-left: -3px;
     -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-    transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
 }
 
 #close > span::after {
     -webkit-transform: rotate(-90deg);
-    -moz-transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg);
-    -o-transform: rotate(-90deg);
-    transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+            transform: rotate(-90deg);
 }
 
 #close:hover > span,
@@ -227,27 +232,21 @@ header#navbar .nav_container ul > li:hover ul {
     #hamburger {
         display: block;
         -webkit-transition: all .3s ease;
-        -moz-transition: all .3s ease;
         -o-transition: all .3s ease;
         transition: all .3s ease;
         -webkit-transform: translateY(0);
-        -moz-transform: translateY(0);
-        -ms-transform: translateY(0);
-        -o-transform: translateY(0);
-        transform: translateY(0);
+            -ms-transform: translateY(0);
+                transform: translateY(0);
         z-index: 1;
     }
 
     #close {
         -webkit-transition: all .3s ease;
-        -moz-transition: all .3s ease;
         -o-transition: all .3s ease;
         transition: all .3s ease;
         -webkit-transform: translateX(50px);
-        -moz-transform: translateX(50px);
-        -ms-transform: translateX(50px);
-        -o-transform: translateX(50px);
-        transform: translateX(50px);
+            -ms-transform: translateX(50px);
+                transform: translateX(50px);
         display: block;
         z-index: 1;
     }
@@ -259,7 +258,8 @@ header#navbar .nav_container ul > li:hover ul {
         right: 0;
         z-index: 1005;
         height: 50px;
-        box-shadow: 0 0 15px 0 rgba(0, 0, 0, .1);
+        -webkit-box-shadow: 0 0 15px 0 rgba(0, 0, 0, .1);
+                box-shadow: 0 0 15px 0 rgba(0, 0, 0, .1);
         background-color: #333;
         border-radius: 0;
     }
@@ -335,18 +335,14 @@ header#navbar .nav_container ul > li:hover ul {
 
     header#navbar.showNav #hamburger {
         -webkit-transform: translateX(50px);
-        -moz-transform: translateX(50px);
-        -ms-transform: translateX(50px);
-        -o-transform: translateX(50px);
-        transform: translateX(50px);
+            -ms-transform: translateX(50px);
+                transform: translateX(50px);
     }
 
     header#navbar.showNav #close {
         -webkit-transform: translateX(0);
-        -moz-transform: translateX(0);
-        -ms-transform: translateX(0);
-        -o-transform: translateX(0);
-        transform: translateX(0);
+            -ms-transform: translateX(0);
+                transform: translateX(0);
     }
 
     header#navbar ul:first-child {
@@ -374,7 +370,9 @@ header#navbar .nav_container ul > li:hover ul {
         border: none !important;
         opacity: 1 !important;
         display: block !important;
-        transform: translate(0, 0) rotate(0) !important;
+        -webkit-transform: translate(0, 0) rotate(0) !important;
+            -ms-transform: translate(0, 0) rotate(0) !important;
+                transform: translate(0, 0) rotate(0) !important;
         -webkit-animation: initial !important;
     }
 

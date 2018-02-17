@@ -46,7 +46,7 @@ if ($action == 'add') {
         }
         sql_query("INSERT INTO $table_is VALUES (0, " . sqlesc($userid) . ', ' . sqlesc($targetid) . ", 'no')") or sqlerr(__FILE__, __LINE__);
         stderr('Request Added!', "The user will be informed of your Friend Request, you will be informed via PM upon confirmation.<br><br><a href='{$site_config['baseurl']}/friends.php?id=$userid#$frag'><b>Go to your Friends List</b></a>", false);
-        die;
+        die();
     }
     if ($type == 'block') {
         $r = sql_query("SELECT id FROM $table_is WHERE userid = " . sqlesc($userid) . " AND $field_is = " . sqlesc($targetid)) or sqlerr(__FILE__, __LINE__);
@@ -61,7 +61,7 @@ if ($action == 'add') {
         $cache->delete('user_friends_' . $targetid);
         $cache->delete('user_friends_' . $userid);
         header("Location: {$site_config['baseurl']}/friends.php?id=$userid#$frag");
-        die;
+        die();
     }
 }
 //== action == confirm
@@ -155,7 +155,7 @@ if ($action == 'confirm') {
         stderr('Error', 'Unknown type.');
     }
     header('Location: friends.php');
-    die;
+    die();
 }
 
 $res = sql_query('SELECT * FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);

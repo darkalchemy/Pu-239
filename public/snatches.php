@@ -4,10 +4,11 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
+$session = new Session();
 $lang = array_merge(load_language('global'), load_language('snatches'));
 $HTMLOUT = '';
 if (empty($_GET['id'])) {
-    setSessionVar('is-warning', 'Invalid Information');
+    $session->set('is-warning', 'Invalid Information');
     header("Location: {$site_config['baseurl']}/index.php");
     die();
 }

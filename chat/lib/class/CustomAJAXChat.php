@@ -28,6 +28,8 @@ class CustomAJAXChat extends AJAXChat
     public function getValidLoginUserData()
     {
         global $CURUSER;
+
+        $session = new Session();
         if (!empty($CURUSER) && $CURUSER['enabled'] !== 'no' && $CURUSER['chatpost'] != 0) {
             $userData['userID'] = $CURUSER['id'];
             $userData['userName'] = $this->trimUserName($CURUSER['username']);
@@ -43,7 +45,7 @@ class CustomAJAXChat extends AJAXChat
         }
 
         if ($CURUSER['enabled'] === 'no' && $CURUSER['chatpost'] === 0) {
-            unsetSessionVar('Channel');
+            $session->unset('Channel');
             $this->addInfoMessage('errorBanned');
         }
         return false;

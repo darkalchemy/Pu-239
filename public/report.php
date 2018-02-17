@@ -4,6 +4,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $site_config;
+
+$session = new Session();
 $lang = array_merge(load_language('global'), load_language('report'));
 $stdhead = [
     'css' => [
@@ -62,7 +64,7 @@ if ((isset($_GET['do_it'])) || (isset($_POST['do_it']))) {
         VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . sqlesc($type) . ', ' . sqlesc($reason) . ", $dt, " . sqlesc($id_2) . ')'
     ) or sqlerr(__FILE__, __LINE__);
     $cache->delete('new_report_');
-    setSessionVar('is-success', '[h3]' . str_replace('_', ' ', $type) . " {$lang['report_id']} {$id} report sent.[/h3][p]{$lang['report_reason']} {$reason}[/p]");
+    $session->set('is-success', '[h3]' . str_replace('_', ' ', $type) . " {$lang['report_id']} {$id} report sent.[/h3][p]{$lang['report_reason']} {$reason}[/p]");
     header("Location: {$site_config['baseurl']}");
     die();
 }
@@ -77,4 +79,4 @@ $HTMLOUT .= main_div("
         <input type='submit' class='button is-small margin20' value='{$lang['report_confirm']}' />
     </form>");
 echo stdhead('Report', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
-die;
+die();

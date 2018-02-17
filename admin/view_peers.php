@@ -180,4 +180,4 @@ if ($count > $peersperpage) {
 }
 $HTMLOUT .= end_main_frame();
 echo stdhead($lang['wpeers_peerover']) . $HTMLOUT . stdfoot();
-die;
+die();

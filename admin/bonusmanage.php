@@ -33,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($sql) {
             header("Location: {$site_config['baseurl']}/staffpanel.php?tool=bonusmanage");
+            die();
         } else {
             stderr($lang['bonusmanager_oops'], "{$lang['bonusmanager_sql']}");
         }

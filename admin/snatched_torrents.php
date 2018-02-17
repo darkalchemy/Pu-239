@@ -186,4 +186,4 @@ if ($count > $snatchedperpage) {
 }
 $HTMLOUT .= end_main_frame();
 echo stdhead($lang['ad_snatched_torrents_stdhead']) . $HTMLOUT . stdfoot();
-die;
+die();

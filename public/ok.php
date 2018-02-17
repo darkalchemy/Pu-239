@@ -3,6 +3,8 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 global $CURUSER, $site_config;
+
+$session = new Session();
 if (!$CURUSER) {
     get_template();
 }
@@ -18,7 +20,7 @@ if ($type == 'signup' && isset($_GET['email'])) {
 } elseif ($type == 'sysop') {
     check_user_status();
     if (isset($CURUSER)) {
-        setSessionVar('is-info', "[p]{$lang['ok_sysop_activated']}[/p][p]Create your System BOT, be sure to use the same username as used during the install[/p]");
+        $session->set('is-info', "[p]{$lang['ok_sysop_activated']}[/p][p]Create your System BOT, be sure to use the same username as used during the install[/p]");
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=adduser");
         die();
     }
@@ -39,7 +41,7 @@ if ($type == 'signup' && isset($_GET['email'])) {
 } elseif ($type == 'confirm') {
     check_user_status();
     if (isset($CURUSER)) {
-        setSessionVar('is-info', $lang['ok_signup_confirm']);
+        $session->set('is-info', $lang['ok_signup_confirm']);
         header("Location: {$site_config['baseurl']}/index.php");
         die();
     } else {

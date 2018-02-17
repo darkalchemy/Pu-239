@@ -126,4 +126,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo $HTMLOUT;
     die();
 }
-echo $HTMLOUT . stdfoot();
+echo stdhead('New Announcement', true) . wrapper($HTMLOUT) . stdfoot();

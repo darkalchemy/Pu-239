@@ -58,7 +58,7 @@ if ($mode == 'delete') {
     header('Refresh: 3; url=staffpanel.php?tool=news&mode=news');
     stderr($lang['news_success'], "<h2>{$lang['news_del_redir']}</h2>");
     echo stdhead($lang['news_del_stdhead'], true, $stdhead) . $HTMLOUT . stdfoot();
-    die;
+    die();
 }
 //==Add news
 if ($mode == 'add') {
@@ -238,4 +238,4 @@ if ($mode == 'news') {
     }
 }
 echo stdhead($lang['news_stdhead'], true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
-die;
+die();

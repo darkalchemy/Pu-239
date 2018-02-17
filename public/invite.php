@@ -6,6 +6,7 @@ require_once INCL_DIR . 'password_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $fluent;
 
+$session = new Session();
 $lang = array_merge(load_language('global'), load_language('invite_code'));
 
 use Nette\Mail\Message;
@@ -137,7 +138,7 @@ if ($do == 'view_page') {
                 </div>
             </form>";
     echo stdhead('Invites') . wrapper($HTMLOUT) . stdfoot();
-    die;
+    die();
 } elseif ($do == 'create_invite') {
     if ($CURUSER['invites'] <= 0) {
         stderr($lang['invites_error'], $lang['invites_noinvite']);
@@ -232,7 +233,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
         $mailer->commandArgs = "-f{$site_config['site_email']}";
         $mailer->send($mail);
 
-        setSessionVar('is-success', $lang['invites_confirmation']);
+        $session->set('is-success', $lang['invites_confirmation']);
         header("Location: {$site_config['baseurl']}/invite.php?do=view_page");
         die();
     }

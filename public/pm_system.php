@@ -8,6 +8,7 @@ require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
+$session = new Session();
 
 /**
  *
@@ -137,18 +138,18 @@ if (isset($_GET['show_pm_avatar'])) {
     die();
 }
 
-isset($_GET['deleted']) ? setSessionVar('is-success', $lang['pm_deleted']) : null;
-isset($_GET['avatar']) ? setSessionVar('is-success', $lang['pm_avatar']) : null;
-isset($_GET['pm']) ? setSessionVar('is-success', $lang['pm_changed']) : null;
-isset($_GET['singlemove']) ? setSessionVar('is-success', $lang['pm_moved']) : null;
-isset($_GET['multi_move']) ? setSessionVar('is-success', $lang['pm_moved_s']) : null;
-isset($_GET['multi_delete']) ? setSessionVar('is-success', $lang['pm_deleted_s']) : null;
-isset($_GET['forwarded']) ? setSessionVar('is-success', $lang['pm_forwarded']) : null;
-isset($_GET['boxes']) ? setSessionVar('is-success', $lang['pm_box_added']) : null;
-isset($_GET['name']) ? setSessionVar('is-success', $lang['pm_box_updated']) : null;
-isset($_GET['new_draft']) ? setSessionVar('is-success', $lang['pm_draft_saved']) : null;
-isset($_GET['sent']) ? setSessionVar('is-success', $lang['pm_msg_sent']) : null;
-isset($_GET['pms']) ? setSessionVar('is-success', $lang['pm_msg_sett']) : null;
+isset($_GET['deleted']) ? $session->set('is-success', $lang['pm_deleted']) : null;
+isset($_GET['avatar']) ? $session->set('is-success', $lang['pm_avatar']) : null;
+isset($_GET['pm']) ? $session->set('is-success', $lang['pm_changed']) : null;
+isset($_GET['singlemove']) ? $session->set('is-success', $lang['pm_moved']) : null;
+isset($_GET['multi_move']) ? $session->set('is-success', $lang['pm_moved_s']) : null;
+isset($_GET['multi_delete']) ? $session->set('is-success', $lang['pm_deleted_s']) : null;
+isset($_GET['forwarded']) ? $session->set('is-success', $lang['pm_forwarded']) : null;
+isset($_GET['boxes']) ? $session->set('is-success', $lang['pm_box_added']) : null;
+isset($_GET['name']) ? $session->set('is-success', $lang['pm_box_updated']) : null;
+isset($_GET['new_draft']) ? $session->set('is-success', $lang['pm_draft_saved']) : null;
+isset($_GET['sent']) ? $session->set('is-success', $lang['pm_msg_sent']) : null;
+isset($_GET['pms']) ? $session->set('is-success', $lang['pm_msg_sett']) : null;
 
 $mailbox_name = ($mailbox === PM_INBOX ? $lang['pm_inbox'] : ($mailbox === PM_SENTBOX ? $lang['pm_sentbox'] : $lang['pm_drafts']));
 switch ($action) {

@@ -6,6 +6,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
 global $CURUSER, $cache;
+$session = new Session();
 
 $lang = array_merge(load_language('global'), load_language('contactstaff'));
 $stdhead = [
@@ -26,11 +27,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $returnto = isset($_POST['returnto']) ? htmlsafechars($_POST['returnto']) : $_SERVER['PHP_SELF'];
     $fail = false;
     if (empty($msg)) {
-        setSessionVar('is-warning', $lang['contactstaff_no_msg']);
+        $session->set('is-warning', $lang['contactstaff_no_msg']);
         $fail = true;
     }
     if (empty($subject)) {
-        setSessionVar('is-warning', $lang['contactstaff_no_sub']);
+        $session->set('is-warning', $lang['contactstaff_no_sub']);
         $fail = true;
     }
 
@@ -39,9 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (sql_query($sql)) {
             $cache->delete('staff_mess_');
             header('Refresh: 3; url=' . urldecode($returnto)); //redirect but wait 3 seconds
-            setSessionVar('is-success', $lang['contactstaff_success_msg']);
+            $session->set('is-success', $lang['contactstaff_success_msg']);
         } else {
-            setSessionVar('is-warning', sprintf($lang['contactstaff_mysql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+            $session->set('is-warning', sprintf($lang['contactstaff_mysql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
         }
     }
 } else {

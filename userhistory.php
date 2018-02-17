@@ -94,7 +94,7 @@ if ($action == 'viewposts') {
         $HTMLOUT .= $pager['pagerbottom'];
     }
     echo stdhead($lang['head_post']) . $HTMLOUT . stdfoot();
-    die;
+    die();
 }
 //-------- Action: View comments
 if ($action == 'viewcomments') {
@@ -160,7 +160,7 @@ if ($action == 'viewcomments') {
         $HTMLOUT .= $pager['pagerbottom'];
     }
     echo stdhead($lang['head_comm']) . $HTMLOUT . stdfoot();
-    die;
+    die();
 }
 //-------- Handle unknown action
 if ($action != '') {

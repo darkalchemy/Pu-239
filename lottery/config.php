@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                  'end_date'      => 0,
              ] as $key => $type) {
         if (isset($_POST[$key]) && ($type == 0 && $_POST[$key] == 0 || $type == 1 && count($_POST[$key]) == 0)) {
-            setSessionVar('is-warning', 'You forgot to fill some data');
+            $session->set('is-warning', 'You forgot to fill some data');
         }
     }
     foreach ($lottery_config as $c_name => $c_value) {
@@ -27,11 +27,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (sql_query('INSERT INTO lottery_config(name,value) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value)')) {
         $cache->delete('lottery_info_');
-        setSessionVar('is-success', 'Lottery configuration was saved!');
+        $session->set('is-success', 'Lottery configuration was saved!');
         header("Location: {$site_config['baseurl']}/lottery.php");
         die();
     } else {
-        setSessionVar('is-warning', 'There was an error while executing the update query. Mysql error: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+        $session->set('is-warning', 'There was an error while executing the update query. Mysql error: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
     }
 }
 if ($lottery_config['enable']) {

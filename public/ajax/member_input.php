@@ -4,6 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
+$session = new Session();
 $posted_action = (isset($_POST['action']) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) ? htmlsafechars($_GET['action']) : ''));
 $valid_actions = [
     'flush_torrents',
@@ -11,14 +12,14 @@ $valid_actions = [
     'watched_user',
 ];
 if (empty($_POST)) {
-    setSessionVar('is-danger', 'Access Not Allowed');
+    $session->set('is-danger', 'Access Not Allowed');
     header("Location: {$site_config['baseurl']}/index.php");
     die();
 }
 
 $action = (in_array($posted_action, $valid_actions) ? $posted_action : '');
 if ($action == '') {
-    setSessionVar('is-danger', 'Access Not Allowed');
+    $session->set('is-danger', 'Access Not Allowed');
     header('Location: index.php');
 } else {
     switch ($action) {

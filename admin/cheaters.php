@@ -100,4 +100,4 @@ if ($count > $perpage) {
 $HTMLOUT .= end_frame();
 $HTMLOUT .= end_main_frame();
 echo stdhead($lang['cheaters_stdhead']) . $HTMLOUT . stdfoot();
-die;
+die();

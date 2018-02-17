@@ -6,6 +6,7 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $CURUSER, $site_config;
 
+$session = new Session();
 $lang = array_merge(load_language('global'), load_language('getrss'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     /**
@@ -20,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $cats = isset($_POST['cats']) ? array_map('mkint', $_POST['cats']) : [];
     if (count($cats) == 0) {
-        setSessionVar('is-warning', $lang['getrss_nocat']);
+        $session->set('is-warning', $lang['getrss_nocat']);
     } else {
         $feed = isset($_POST['feed']) && $_POST['feed'] == 'dl' ? 'dl' : 'web';
         $bm = isset($_POST['bm']) && is_int($_POST['bm']) ? $_POST['bm'] : 0;

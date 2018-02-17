@@ -3,6 +3,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once CACHE_DIR . 'timezones.php';
 dbconn();
 global $CURUSER, $site_config, $fluent;
+$session = new Session();
 
 if (!$CURUSER) {
     get_template();
@@ -21,7 +22,7 @@ if (!$site_config['openreg']) {
 }
 $HTMLOUT = $year = $month = $day = $gender = $country = '';
 $lang = array_merge(load_language('global'), load_language('signup'));
-$signup_vars = getSessionVar('signup_variables');
+$signup_vars = $session->get('signup_variables');
 if (!empty($signup_vars)) {
     $signup_vars = unserialize($signup_vars);
 }
