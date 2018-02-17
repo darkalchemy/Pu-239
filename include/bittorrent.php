@@ -244,11 +244,12 @@ function userlogin()
     unset($GLOBALS['CURUSER']);
 
     if (isset($CURUSER)) {
-        return;
+        return true;
     }
     if (!$site_config['site_online']) {
         $session->destroy();
-        exit(header('Location: login.php'));
+        header('Location: login.php');
+        die();
     }
 
     $id = $session->get('userID');
@@ -260,19 +261,24 @@ function userlogin()
             $stashed = $cache->get('remember_' . $cookie[0]);
             $validator = $cookie[1];
             if (empty($stashed)) {
-                return;
+                $session->destroy();
+                header('Location: login.php');
+                die();
             }
             if (hash_equals($stashed['hash'], hash('sha512', $validator))) {
                 $id = $stashed['uid'];
                 $session->set('userID', $id);
                 $session->set('remembered_by_cookie', true);
-                file_put_contents('/var/log/nginx/remember.log', json_encode($_SESSION) . PHP_EOL, FILE_APPEND);
             } else {
                 $cache->delete('remember_' . $cookie[0]);
-                return;
+                $session->destroy();
+                header('Location: login.php');
+                die();
             }
         } else {
-            return;
+            $session->destroy();
+            header('Location: login.php');
+            die();
         }
     }
 
@@ -280,7 +286,9 @@ function userlogin()
 
     $users_data = get_user_data($id);
     if (empty($users_data)) {
-        return;
+        $session->destroy();
+        header('Location: login.php');
+        die();
     }
     $session->set('username', $users_data['username']);
     $session->set('LoginUserName', $users_data['username']);
@@ -314,6 +322,7 @@ function userlogin()
     <p>Reason: <strong>' . htmlsafechars($reason) . '</strong></p>
 </body>
 </html>";
+            $session->destroy();
             die();
         }
     }
@@ -1502,7 +1511,7 @@ function human_filesize($bytes, $dec = 2)
 
 function salty()
 {
-   $session = new Session();
+    $session = new Session();
 
     return $session->get('auth');
 }
@@ -1581,11 +1590,12 @@ function check_user_status()
 
     dbconn();
     userlogin();
-    referer();
     if (!$session->validateToken($session->get('auth'), 'auth')) {
         $session->destroy();
-        exit(header('Location: login.php'));
+        header('Location: login.php');
+        die();
     }
+    referer();
     parked();
     suspended();
 }

@@ -1,4 +1,5 @@
 17 Feb 2018
+fix: unauthenticated user redirected to login
 move: all session related tasks to Session class
 add: encrypted remember me cookie, set at 1 year
 move: AJAX Chat cookies to localstorage, no need to pass them back and forth with each request
