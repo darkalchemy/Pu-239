@@ -9873,7 +9873,7 @@ body {
 }
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 .5em rgba(0,0,0,.1);
-  -moz-box-shadow: inset 0 0 .5em rgba(0,0,0,.1);
+  box-shadow: inset 0 0 .5em rgba(0,0,0,.1);
   border-radius: .3125em;
   background-color: rgba(0,0,0,.1)
 }
@@ -9943,8 +9943,8 @@ select {
   overflow: hidden
 }
 .star-ratings-css-bottom {
-  display: -webkit-inline-box;
   display: -ms-inline-flexbox;
+  display: -webkit-inline-box;
   display: inline-flex;
   z-index: 0
 }
@@ -9976,13 +9976,7 @@ a:hover {
 }
 fieldset {
   margin: 0;
-  -webkit-padding-start: .75em;
-  -webkit-padding-end: .75em;
-  -webkit-padding-before: .75em;
-  -webkit-padding-after: .75em;
-  -moz-padding-start: .75em;
-  -moz-padding-end: .75em;
-  padding: 0;
+  padding: .75em;
   border: 0
 }
 legend {
@@ -10164,10 +10158,7 @@ h1 {
 .alt_bordered,
 .bordered {
   border-radius: .625em;
-  -webkit-padding-before: .75em;
-  -webkit-padding-start: .75em;
-  -webkit-padding-end: .75em;
-  -webkit-padding-after: .75em
+  padding: .75em
 }
 .bg-none {
   background-color: transparent
@@ -10194,6 +10185,7 @@ h1 {
   background-color: rgba(50,50,50,.85)
 }
 .bg-06 {
+  background: #7d7e7d;
   background: -o-linear-gradient(top,#7d7e7d 0,#0e0e0e 100%);
   background: -webkit-gradient(linear,left top,left bottom,color-stop(0,#7d7e7d),to(#0e0e0e));
   background: linear-gradient(to bottom,#7d7e7d 0,#0e0e0e 100%)
@@ -10202,9 +10194,10 @@ h1 {
   background-color: rgba(75,75,125,.65)
 }
 .bordered {
-  border-top: 2px groove red;
-  border-bottom: 2px groove red;
+  border-top: 2px solid red;
+  border-bottom: 2px solid red;
   -webkit-margin-start: .125em;
+  -moz-margin-start: .125em;
   -webkit-margin-end: .125em
 }
 .alt_bordered {
@@ -11108,10 +11101,6 @@ header#navbar .nav_container ul > li > ul a:hover {
 .table > tbody > tr > td,
 .table > thead > tr > th,
 .table-bordered {
-  -webkit-padding-before: .75em;
-  -webkit-padding-start: .75em;
-  -webkit-padding-end: .75em;
-  -webkit-padding-after: .75em;
   -webkit-margin-start: .125em;
   -webkit-margin-end: .125em
 }
@@ -11146,15 +11135,12 @@ header#navbar .nav_container ul > li > ul a:hover {
   border-bottom: 0
 }
 .table-bordered {
-  border: 2px groove red;
+  border: 2px solid red;
   border-collapse: separate;
   border-left: 0;
   border-right: 0;
   border-radius: .625em;
-  -webkit-padding-before: .75em;
-  -webkit-padding-start: .75em;
-  -webkit-padding-end: .75em;
-  -webkit-padding-after: .75em
+  padding: .75em
 }
 .table-bordered > tbody > tr > td,
 .table-bordered > thead > tr > th {

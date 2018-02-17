@@ -1,4 +1,5 @@
 17 Feb 2018
+fix: stylesheets for firefox, should now appear the same in all browsers
 fix: unauthenticated user redirected to login
 move: all session related tasks to Session class
 add: encrypted remember me cookie, set at 1 year
