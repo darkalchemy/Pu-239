@@ -1,7 +1,9 @@
 <?php
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config;
+
+$cache = new Cache();
 $session = new Session();
 
 $pm_what = isset($_POST['pm_what']) && $_POST['pm_what'] == 'last10' ? 'last10' : 'owner';

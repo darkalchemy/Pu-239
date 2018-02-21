@@ -1,4 +1,4 @@
-$(document).ready(function () {
-    $('#tabs').tabs();
-    $('#featuredvid > ul').tabs();
+$(document).ready(function() {
+    $("#tabs").tabs();
+    $("#featuredvid > ul").tabs();
 });

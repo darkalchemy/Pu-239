@@ -5,7 +5,9 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('uploadapp'));
-global $CURUSER, $site_config, $cache, $fluent;
+global $CURUSER, $site_config, $fluent;
+
+$cache = new Cache();
 $CURUSER['class'] = 1;
 $HTMLOUT = '';
 

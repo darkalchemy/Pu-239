@@ -4,7 +4,9 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('blackjack'));
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config;
+
+$cache = new Cache();
 
 $HTMLOUT = $debugout = '';
 
@@ -1076,7 +1078,7 @@ if ($game) {
  */
 function getCardData($cardid)
 {
-    global $cache;
+    $cache = new Cache();
     $card = $cache->get('card_data_' . $cardid);
     if ($card === false || is_null($card)) {
         $sql = 'SELECT * FROM cards WHERE id = ' . sqlesc($cardid);

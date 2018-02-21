@@ -10,7 +10,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: 'Mae %s wedi mewngofnodi.',
     logout: 'Allgofnododd %s.',
     logoutTimeout: 'Allgofnodwyd %s (Terfyn amser).',
@@ -88,6 +87,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Gwall: Methu â llwytho ffeil sain (Gwall Flash IO).',
     errorSocketIO: 'Gwall: Cysylltiad i\'r gweinyddwr soced wedi methu (Gwall Flash IO).',
     errorSocketSecurity: 'Gwall: Cysylltiad i\'r gweinyddwr soced wedi methu (Gwall Diogelwch Flash).',
-    errorDOMSyntax: 'Gwall: Cystrawen DOM Annilys (DOM ID: %s).'
-
+    errorDOMSyntax: 'Gwall: Cystrawen DOM Annilys (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

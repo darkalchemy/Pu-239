@@ -4,7 +4,9 @@ require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 
-global $cache, $site_config;
+global $site_config;
+
+$cache = new Cache();
 $session = new Session();
 $cache->delete('staff_settings_');
 

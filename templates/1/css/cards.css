@@ -50,223 +50,169 @@
 .two_diamonds,
 .two_hearts,
 .two_spades {
-    width: 71px;
-    height: 97px;
+  width: 71px;
+  height: 97px
 }
-
 .card-background {
-    background: #076324 url(../../../images/black-felt.png);
+  background: url(../../../images/black-felt.png) #076324
 }
-
 .card {
-    display: inline-block;
-    margin: 5px;
+  display: inline-block;
+  margin: 5px
 }
-
 .ace_clubs {
-    background: url(../../../images/cards.png) -2px -1px;
+  background: url(../../../images/cards.png) -2px -1px
 }
-
 .two_clubs {
-    background: url(../../../images/cards.png) -75px -1px;
+  background: url(../../../images/cards.png) -75px -1px
 }
-
 .three_clubs {
-    background: url(../../../images/cards.png) -148px -1px;
+  background: url(../../../images/cards.png) -148px -1px
 }
-
 .four_clubs {
-    background: url(../../../images/cards.png) -220px -1px;
+  background: url(../../../images/cards.png) -220px -1px
 }
-
 .five_clubs {
-    background: url(../../../images/cards.png) -294px -1px;
+  background: url(../../../images/cards.png) -294px -1px
 }
-
 .six_clubs {
-    background: url(../../../images/cards.png) -366px -1px;
+  background: url(../../../images/cards.png) -366px -1px
 }
-
 .seven_clubs {
-    background: url(../../../images/cards.png) -440px -1px;
+  background: url(../../../images/cards.png) -440px -1px
 }
-
 .eight_clubs {
-    background: url(../../../images/cards.png) -512px -1px;
+  background: url(../../../images/cards.png) -512px -1px
 }
-
 .nine_clubs {
-    background: url(../../../images/cards.png) -586px -1px;
+  background: url(../../../images/cards.png) -586px -1px
 }
-
 .ten_clubs {
-    background: url(../../../images/cards.png) -658px -1px;
+  background: url(../../../images/cards.png) -658px -1px
 }
-
 .jack_clubs {
-    background: url(../../../images/cards.png) -732px -1px;
+  background: url(../../../images/cards.png) -732px -1px
 }
-
 .queen_clubs {
-    background: url(../../../images/cards.png) -804px -1px;
+  background: url(../../../images/cards.png) -804px -1px
 }
-
 .king_clubs {
-    background: url(../../../images/cards.png) -878px -1px;
+  background: url(../../../images/cards.png) -878px -1px
 }
-
 .ace_hearts {
-    background: url(../../../images/cards.png) -2px -99px;
+  background: url(../../../images/cards.png) -2px -99px
 }
-
 .two_hearts {
-    background: url(../../../images/cards.png) -75px -99px;
+  background: url(../../../images/cards.png) -75px -99px
 }
-
 .three_hearts {
-    background: url(../../../images/cards.png) -148px -99px;
+  background: url(../../../images/cards.png) -148px -99px
 }
-
 .four_hearts {
-    background: url(../../../images/cards.png) -220px -99px;
+  background: url(../../../images/cards.png) -220px -99px
 }
-
 .five_hearts {
-    background: url(../../../images/cards.png) -294px -99px;
+  background: url(../../../images/cards.png) -294px -99px
 }
-
 .six_hearts {
-    background: url(../../../images/cards.png) -366px -99px;
+  background: url(../../../images/cards.png) -366px -99px
 }
-
 .seven_hearts {
-    background: url(../../../images/cards.png) -440px -99px;
+  background: url(../../../images/cards.png) -440px -99px
 }
-
 .eight_hearts {
-    background: url(../../../images/cards.png) -512px -99px;
+  background: url(../../../images/cards.png) -512px -99px
 }
-
 .nine_hearts {
-    background: url(../../../images/cards.png) -586px -99px;
+  background: url(../../../images/cards.png) -586px -99px
 }
-
 .ten_hearts {
-    background: url(../../../images/cards.png) -658px -99px;
+  background: url(../../../images/cards.png) -658px -99px
 }
-
 .jack_hearts {
-    background: url(../../../images/cards.png) -732px -99px;
+  background: url(../../../images/cards.png) -732px -99px
 }
-
 .queen_hearts {
-    background: url(../../../images/cards.png) -804px -99px;
+  background: url(../../../images/cards.png) -804px -99px
 }
-
 .king_hearts {
-    background: url(../../../images/cards.png) -878px -99px;
+  background: url(../../../images/cards.png) -878px -99px
 }
-
 .ace_spades {
-    background: url(../../../images/cards.png) -2px -197px;
+  background: url(../../../images/cards.png) -2px -197px
 }
-
 .two_spades {
-    background: url(../../../images/cards.png) -75px -197px;
+  background: url(../../../images/cards.png) -75px -197px
 }
-
 .three_spades {
-    background: url(../../../images/cards.png) -148px -197px;
+  background: url(../../../images/cards.png) -148px -197px
 }
-
 .four_spades {
-    background: url(../../../images/cards.png) -220px -197px;
+  background: url(../../../images/cards.png) -220px -197px
 }
-
 .five_spades {
-    background: url(../../../images/cards.png) -294px -197px;
+  background: url(../../../images/cards.png) -294px -197px
 }
-
 .six_spades {
-    background: url(../../../images/cards.png) -366px -197px;
+  background: url(../../../images/cards.png) -366px -197px
 }
-
 .seven_spades {
-    background: url(../../../images/cards.png) -440px -197px;
+  background: url(../../../images/cards.png) -440px -197px
 }
-
 .eight_spades {
-    background: url(../../../images/cards.png) -512px -197px;
+  background: url(../../../images/cards.png) -512px -197px
 }
-
 .nine_spades {
-    background: url(../../../images/cards.png) -586px -197px;
+  background: url(../../../images/cards.png) -586px -197px
 }
-
 .ten_spades {
-    background: url(../../../images/cards.png) -658px -197px;
+  background: url(../../../images/cards.png) -658px -197px
 }
-
 .jack_spades {
-    background: url(../../../images/cards.png) -732px -197px;
+  background: url(../../../images/cards.png) -732px -197px
 }
-
 .queen_spades {
-    background: url(../../../images/cards.png) -804px -197px;
+  background: url(../../../images/cards.png) -804px -197px
 }
-
 .king_spades {
-    background: url(../../../images/cards.png) -878px -197px;
+  background: url(../../../images/cards.png) -878px -197px
 }
-
 .ace_diamonds {
-    background: url(../../../images/cards.png) -2px -295px;
+  background: url(../../../images/cards.png) -2px -295px
 }
-
 .two_diamonds {
-    background: url(../../../images/cards.png) -75px -295px;
+  background: url(../../../images/cards.png) -75px -295px
 }
-
 .three_diamonds {
-    background: url(../../../images/cards.png) -148px -295px;
+  background: url(../../../images/cards.png) -148px -295px
 }
-
 .four_diamonds {
-    background: url(../../../images/cards.png) -220px -295px;
+  background: url(../../../images/cards.png) -220px -295px
 }
-
 .five_diamonds {
-    background: url(../../../images/cards.png) -294px -295px;
+  background: url(../../../images/cards.png) -294px -295px
 }
-
 .six_diamonds {
-    background: url(../../../images/cards.png) -366px -295px;
+  background: url(../../../images/cards.png) -366px -295px
 }
-
 .seven_diamonds {
-    background: url(../../../images/cards.png) -440px -295px;
+  background: url(../../../images/cards.png) -440px -295px
 }
-
 .eight_diamonds {
-    background: url(../../../images/cards.png) -512px -295px;
+  background: url(../../../images/cards.png) -512px -295px
 }
-
 .nine_diamonds {
-    background: url(../../../images/cards.png) -586px -295px;
+  background: url(../../../images/cards.png) -586px -295px
 }
-
 .ten_diamonds {
-    background: url(../../../images/cards.png) -658px -295px;
+  background: url(../../../images/cards.png) -658px -295px
 }
-
 .jack_diamonds {
-    background: url(../../../images/cards.png) -732px -295px;
+  background: url(../../../images/cards.png) -732px -295px
 }
-
 .queen_diamonds {
-    background: url(../../../images/cards.png) -804px -295px;
+  background: url(../../../images/cards.png) -804px -295px
 }
-
 .king_diamonds {
-    background: url(../../../images/cards.png) -878px -295px;
+  background: url(../../../images/cards.png) -878px -295px
 }

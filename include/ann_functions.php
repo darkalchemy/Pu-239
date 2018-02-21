@@ -7,7 +7,9 @@
  */
 function crazyhour_announce()
 {
-    global $cache, $fluent;
+    global $fluent;
+
+$cache = new Cache();
 
     $crazy_hour = (TIME_NOW + 3600);
     $cz['crazyhour'] = $cache->get('crazyhour');
@@ -95,7 +97,9 @@ function crazyhour_announce()
  */
 function get_user_from_torrent_pass($torrent_pass)
 {
-    global $cache, $site_config, $fluent;
+    global $site_config, $fluent;
+
+$cache = new Cache();
     if (strlen($torrent_pass) != 64) {
         return false;
     }
@@ -141,7 +145,9 @@ function get_user_from_torrent_pass($torrent_pass)
  */
 function get_torrent_from_hash($info_hash)
 {
-    global $cache, $fluent;
+    global $fluent;
+
+$cache = new Cache();
     $key = 'torrent_hash_' . bin2hex($info_hash);
     $ttl = 21600;
     $torrent = $cache->get($key);
@@ -225,7 +231,7 @@ function get_torrent_from_hash($info_hash)
  */
 function adjust_torrent_peers($id, $seeds = 0, $leechers = 0, $completed = 0)
 {
-    global $cache;
+    $cache = new Cache();
     if (!is_int($id) || $id < 1) {
         return false;
     }
@@ -261,7 +267,9 @@ function adjust_torrent_peers($id, $seeds = 0, $leechers = 0, $completed = 0)
  */
 function get_happy($torrentid, $userid)
 {
-    global $cache, $fluent;
+    global $fluent;
+
+$cache = new Cache();
     $keys['happyhour'] = $userid . '_happy';
     //$happy = $cache->get($keys['happyhour']);
     if ($happy === false || is_null($happy)) {
@@ -290,7 +298,9 @@ function get_happy($torrentid, $userid)
  */
 function get_slots($torrentid, $userid)
 {
-    global $cache, $fluent;
+    global $fluent;
+
+$cache = new Cache();
 
     $ttl_slot = 86400;
     $torrent['freeslot'] = $torrent['doubleslot'] = 0;

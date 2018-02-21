@@ -9,7 +9,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s sohbet odasına girdi.',
     logout: '%s sohbet odasından çıktı.',
     logoutTimeout: '%s sohbetten çıkarıldı (Bağlantı Gecikmesi).',
@@ -66,7 +65,7 @@ var ajaxChatLang = {
     urlDialog: 'Web sayfasının adresini (URL) giriniz:',
     deleteMessage: 'Bu mesajı sil',
     deleteMessageConfirm: 'İşaretli mesajı gerçekten silmek istiyor musunuz?',
-    errorCookiesRequired: 'Bu sohbet için Cookies açık olmalıdır.',
+    errorCookiesRequired: 'Bu sohbet için Cookie açık olmalıdır.',
     errorUserNameNotFound: 'Hata: %s adlı üye bulunamadı.',
     errorMissingText: 'Hata: Mesaj yazısı yok.',
     errorMissingUserName: 'Hata: Üye adı yok.',
@@ -87,6 +86,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Hata: Ses dosyası yüklenemedi (Flash IO Hatası).',
     errorSocketIO: 'Hata: Socket server bağlantısı yapılamadı (Flash IO Hatası).',
     errorSocketSecurity: 'Hata: Socket server bağlantısı yapılamadı(Flash Güvenlik Hatası).',
-    errorDOMSyntax: 'Hata: Geçersiz DOM Sözdizimi (DOM ID: %s).'
-
+    errorDOMSyntax: 'Hata: Geçersiz DOM Sözdizimi (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

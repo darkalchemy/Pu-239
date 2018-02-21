@@ -1,5 +1,7 @@
 <?php
-global $CURUSER, $site_config, $cache, $lang, $user, $user;
+global $CURUSER, $site_config, $lang, $user, $user;
+
+$cache = new Cache();
 
 $What_Cache = (XBT_TRACKER ? 'share_ratio_xbt_' : 'share_ratio_');
 $What_Table = (XBT_TRACKER ? 'xbt_files_users' : 'snatched');

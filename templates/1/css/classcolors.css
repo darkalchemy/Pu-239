@@ -1,93 +1,58 @@
 .user {
-    color: #8E35EF;
+  color: #8e35ef
 }
-
 .power_user {
-    color: #F9A200;
+  color: #f9a200
 }
-
 .vip {
-    color: #009F00;
+  color: #009f00
 }
-
 .uploader {
-    color: #0000FF;
+  color: #00f
 }
-
 .moderator {
-    color: #FE2E2E;
+  color: #fe2e2e
 }
-
 .administrator {
-    color: #B000B0;
+  color: #b000b0
 }
-
 .sysop {
-    color: #61DF00;
+  color: #61df00
 }
-
 #content .chatbot {
-    color: #ff8b49;
+  color: #ff8b49
 }
-
-#content #chatList span.user {
-    font-weight: bold;
-}
-
-#content #chatList span.power_user {
-    font-weight: bold;
-}
-
+#content #chatList span.administrator,
+#content #chatList span.moderator,
+#content #chatList span.power_user,
+#content #chatList span.sysop,
+#content #chatList span.uploader,
+#content #chatList span.user,
 #content #chatList span.vip {
-    font-weight: bold;
+  font-weight: 700
 }
-
-#content #chatList span.uploader {
-    font-weight: bold;
-}
-
-#content #chatList span.moderator {
-    font-weight: bold;
-}
-
-#content #chatList span.administrator {
-    font-weight: bold;
-}
-
-#content #chatList span.sysop {
-    font-weight: bold;
-}
-
 #content #chatList span.chatbot {
-    font-weight: bold;
-    font-style: italic;
+  font-weight: 700;
+  font-style: italic
 }
-
 .user_bk {
-    background: #8E35EF;
+  background: #8e35ef
 }
-
 .power_user_bk {
-    background: #F9A200;
+  background: #f9a200
 }
-
 .vip_bk {
-    background: #009F00;
+  background: #009f00
 }
-
 .uploader_bk {
-    background: #0000FF;
+  background: #00f
 }
-
 .moderator_bk {
-    background: #FE2E2E;
+  background: #fe2e2e
 }
-
 .administrator_bk {
-    background: #B000B0;
+  background: #b000b0
 }
-
 .sysop_bk {
-    background: #61DF00;
+  background: #61df00
 }
-

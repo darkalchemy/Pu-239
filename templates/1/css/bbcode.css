@@ -1,86 +1,77 @@
 .bb_holder {
-    border: 1px solid #222;
-    border-collapse: collapse;
-    background: #808080;
+  border: 1px solid #222;
+  border-collapse: collapse;
+  background: grey
 }
-
-.em_holder td, .em_holder td:hover, .em_holder {
-    border: 1px solid #333333;
-    border-collapse: separate
-}
-
+.em_holder,
+.em_holder td,
 .em_holder td:hover {
-    background: #dddddd;
-    border: 1px solid #2B60DE;
+  border: 1px solid #333;
+  border-collapse: separate
 }
-
-.bb_holder textarea, .bb_holder textarea:hover, .bb_holder textarea:focus {
-    background: #CCCCCC;
-    border: 1px solid #333333;
-    padding: 2px;
-    font-size: 12px;
+.em_holder td:hover {
+  background: #ddd;
+  border: 1px solid #2b60de
 }
-
-.bb_holder textarea:hover, .bb_holder textarea:focus {
-    background: #FFF8C6;
+.bb_holder textarea,
+.bb_holder textarea:focus,
+.bb_holder textarea:hover {
+  background: #ccc;
+  border: 1px solid #333;
+  padding: 2px;
+  font-size: 12px
 }
-
-.bb_icon, .bb_icon:hover {
-    background: #ddd;
-    border: 1px solid #222;
-    border-radius: 3px;
-    padding: 1px;
-    min-width: 18px;
-    cursor: pointer;
-    margin-bottom: 4px;
+.bb_holder textarea:focus,
+.bb_holder textarea:hover {
+  background: #fff8c6
 }
-
+.bb_icon,
 .bb_icon:hover {
-    border: 1px solid #2B60DE;
+  background: #ddd;
+  border: 1px solid #222;
+  border-radius: 3px;
+  padding: 1px;
+  min-width: 18px;
+  cursor: pointer;
+  margin-bottom: 4px
 }
-
+.bb_icon:hover {
+  border: 1px solid #2b60de
+}
 .color_pick td {
-    padding: 0;
-    margin: 0;
-    width: 10px;
-    height: 10px;
-    cursor: pointer;
+  padding: 0;
+  margin: 0;
+  width: 10px;
+  height: 10px;
+  cursor: pointer
 }
-
 .color_pick {
-    background: #ddd;
-    border-collapse: separate;
-    position: absolute;
+  background: #ddd;
+  border-collapse: separate;
+  position: absolute
 }
-
-.color_pick, .color_pick td {
-    border: 1px solid #333333;
+.color_pick,
+.color_pick td {
+  border: 1px solid #333
 }
-
 .size1 {
-    font-size: 8px;
+  font-size: 8px
 }
-
 .size2 {
-    font-size: 12px;
+  font-size: 12px
 }
-
 .size3 {
-    font-size: 16px;
+  font-size: 16px
 }
-
 .size4 {
-    font-size: 20px;
+  font-size: 20px
 }
-
 .size5 {
-    font-size: 24px;
+  font-size: 24px
 }
-
 .size6 {
-    font-size: 28px;
+  font-size: 28px
 }
-
 .size7 {
-    font-size: 32px;
+  font-size: 32px
 }

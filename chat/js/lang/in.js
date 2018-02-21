@@ -8,7 +8,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s masuk ke chat.',
     logout: '%s keluar dari chat.',
     logoutTimeout: '%s telah keluar dari saluran (Timeout).',
@@ -65,7 +64,7 @@ var ajaxChatLang = {
     urlDialog: 'Mohon masukan alamat (URL) of the web:',
     deleteMessage: 'Hapus pesan chat ini',
     deleteMessageConfirm: 'Yakin akan menghapus pesan chat yang dipilih?',
-    errorCookiesRequired: 'Cookies diperlukan untuk chat.',
+    errorCookiesRequired: 'Cookie diperlukan untuk chat.',
     errorUserNameNotFound: 'Error: Pengguna %s tidak ada.',
     errorMissingText: 'Error: Teks pesan tidak ada.',
     errorMissingUserName: 'Error: Nama tidak ada.',
@@ -86,6 +85,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Error: Gagal mengeluarkan suara (Flash IO Error).',
     errorSocketIO: 'Error: Gagal mengadakan koneksi ke server (Flash IO Error).',
     errorSocketSecurity: 'Error: Gagal mengadakan koneksi ke server (Flash Security Error).',
-    errorDOMSyntax: 'Error: Sintaks DOM yang tidak dikenal(DOM ID: %s).'
-
+    errorDOMSyntax: 'Error: Sintaks DOM yang tidak dikenal(DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

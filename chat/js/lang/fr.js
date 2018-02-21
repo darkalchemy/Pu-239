@@ -9,7 +9,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s se connecte au Chat.',
     logout: '%s se déconnecte du Chat.',
     logoutTimeout: '%s a été déconnecté (Temps écoulé).',
@@ -85,8 +84,8 @@ var ajaxChatLang = {
     errorSoundIO: 'Erreur : Impossible de charger le fichier son (Erreur E/S Flash).',
     errorSocketIO: 'Erreur : Connexion au serveur échouée (Erreur E/S Flash).',
     errorSocketSecurity: 'Erreur : Connexion au serveur échouée (Erreur de sécurité Flash).',
-    errorDOMSyntax: 'Erreur : Syntaxe DOM invalide (ID DOM : %s).'
-
+    errorDOMSyntax: 'Erreur : Syntaxe DOM invalide (ID DOM : %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };
 
- 	  	 

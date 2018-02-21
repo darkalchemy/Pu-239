@@ -1,5 +1,7 @@
 <?php
-global $site_config, $cache, $lang, $fluent;
+global $site_config, $lang, $fluent;
+
+$cache = new Cache();
 
 $stats_cache = $cache->get('site_stats_');
 if ($stats_cache === false || is_null($stats_cache)) {

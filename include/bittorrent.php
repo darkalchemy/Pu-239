@@ -19,7 +19,7 @@ require_once INCL_DIR . 'files.php';
 require_once CACHE_DIR . 'free_cache.php';
 require_once CACHE_DIR . 'class_config.php';
 require_once INCL_DIR . 'password_functions.php';
-$cache = new CACHE();
+$cache = new Cache();
 $session = new Session();
 
 $session->start();
@@ -193,10 +193,13 @@ function hashit($var, $addtext = '')
  * @param string $reason
  *
  * @return bool
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function check_bans($ip, &$reason = '')
 {
-    global $cache;
+    $cache = new Cache();
     if (empty($ip)) {
         return false;
     }
@@ -238,8 +241,11 @@ function logincookie($id, $updatedb = true)
 
 function userlogin()
 {
-    global $site_config, $cache, $CURBLOCK, $mood, $whereis, $CURUSER;
+    global $site_config, $CURBLOCK, $mood, $whereis, $CURUSER;
+
+    $cache = new Cache();
     $session = new Session();
+    $user = new User();
 
     unset($GLOBALS['CURUSER']);
 
@@ -252,54 +258,20 @@ function userlogin()
         die();
     }
 
-    $id = $session->get('userID');
+    $id = $user->getUserId();
     if (!$id) {
-        $cookie = getCookieVar('remember');
-        if ($cookie) {
-            $cookie = explode(':', $cookie);
-            // move to db if size becomes an issue 179 bytes each
-            $stashed = $cache->get('remember_' . $cookie[0]);
-            $validator = $cookie[1];
-            if (empty($stashed)) {
-                $session->destroy();
-                header('Location: login.php');
-                die();
-            }
-            if (hash_equals($stashed['hash'], hash('sha512', $validator))) {
-                $id = $stashed['uid'];
-                $session->set('userID', $id);
-                $session->set('remembered_by_cookie', true);
-            } else {
-                $cache->delete('remember_' . $cookie[0]);
-                $session->destroy();
-                header('Location: login.php');
-                die();
-            }
-        } else {
-            $session->destroy();
-            header('Location: login.php');
-            die();
-        }
+        header('Location: login.php');
+        die();
     }
 
     $ip = getip();
 
-    $users_data = get_user_data($id);
+    $users_data = $user->getUserFromId($id);
     if (empty($users_data)) {
         $session->destroy();
         header('Location: login.php');
         die();
     }
-    $session->set('username', $users_data['username']);
-    $session->set('LoginUserName', $users_data['username']);
-    $session->set('InactiveCheckTimeStamp', TIME_NOW);
-    $session->set('StatusUpdateTimeStamp', TIME_NOW);
-    $session->set('ChannelEnterTimeStamp', TIME_NOW);
-    $session->set('LoginTimeStamp', TIME_NOW);
-    $session->set('IP', $ip);
-    $session->set('LoggedIn', true);
-    $session->set('UserRole', $users_data['class']);
-    $session->set('Channel', 0);
 
     if (!isset($users_data['perms']) || (!($users_data['perms'] & bt_options::PERMS_BYPASS_BAN))) {
         $banned = false;
@@ -465,9 +437,15 @@ function get_charset()
     }
 }
 
+/**
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
+ */
 function autoclean()
 {
-    global $site_config, $cache;
+    global $site_config;
+
+    $cache = new Cache();
     $cleanup_timer = $cache->get('cleanup_timer_');
     if ($cleanup_timer === false || is_null($cleanup_timer)) {
         $cache->set('cleanup_timer_', 5, 1); // runs only every 1 second
@@ -663,11 +641,14 @@ function get_template()
  * @param $userid
  * @param $key
  *
- * @return array|string
+ * @return array|bool|mixed
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function make_freeslots($userid, $key)
 {
-    global $cache;
+    $cache = new Cache();
     $slot = $cache->get($key . $userid);
     if ($slot === false || is_null($slot)) {
         $res_slots = sql_query('SELECT * FROM freeslots WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
@@ -687,11 +668,14 @@ function make_freeslots($userid, $key)
  * @param $userid
  * @param $key
  *
- * @return array|string
+ * @return array|bool|mixed
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function make_bookmarks($userid, $key)
 {
-    global $cache;
+    $cache = new Cache();
     $book = $cache->get($key . $userid);
     if ($book === false || is_null($book)) {
         $res_books = sql_query('SELECT * FROM bookmarks WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
@@ -708,11 +692,16 @@ function make_bookmarks($userid, $key)
 }
 
 /**
- * @return array|string
+ * @return array
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function genrelist()
 {
-    global $cache, $site_config;
+    global $site_config;
+
+    $cache = new Cache();
     //if (($ret = $cache->get('genrelist')) == false) {
     $ret = [];
     $res = sql_query('SELECT id, image, name, ordered FROM categories ORDER BY ordered') or sqlerr(__FILE__, __LINE__);
@@ -728,11 +717,14 @@ function genrelist()
 /**
  * @param bool $force
  *
- * @return array|string
+ * @return array|bool|mixed
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function create_moods($force = false)
 {
-    global $cache;
+    $cache = new Cache();
     $key = 'moods';
     if (($mood = $cache->get($key)) === false || $force) {
         $res_moods = sql_query('SELECT * FROM moods ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
@@ -748,16 +740,18 @@ function create_moods($force = false)
     return $mood;
 }
 
-//== delete
 /**
  * @param      $keys
  * @param bool $keyname
  *
  * @return bool
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function delete_id_keys($keys, $keyname = false)
 {
-    global $cache;
+    $cache = new Cache();
     if (!(is_array($keys) || $keyname)) { // if no key given or not an array
         return false;
     } else {
@@ -1026,7 +1020,6 @@ function stderr($heading, $text, $class = null)
     die();
 }
 
-// Basic MySQL error handler
 /**
  * @param string $file
  * @param string $line
@@ -1253,14 +1246,15 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
 /**
  * @param $num
  *
- * @return string|void
+ * @return null|string
  */
 function ratingpic($num)
 {
     global $site_config;
+
     $r = round($num * 2) / 2;
     if ($r < 1 || $r > 5) {
-        return;
+        return null;
     }
 
     return "<img src=\"{$site_config['pic_baseurl']}ratings/{$r}.gif\" border=\"0\" alt=\"Rating: $num / 5\" title=\"Rating: $num / 5\" />";
@@ -1276,7 +1270,6 @@ function hash_pad($hash)
     return str_pad($hash, 20);
 }
 
-//== cutname = Laffin
 /**
  * @param     $txt
  * @param int $len
@@ -1432,6 +1425,9 @@ function strip_tags_array($ar)
     return $ar;
 }
 
+/**
+ *
+ */
 function referer()
 {
     $http_referer = getenv('HTTP_REFERER');
@@ -1551,11 +1547,16 @@ function replace_unicode_strings($text)
 /**
  * @param $userid
  *
- * @return array|string
+ * @return bool|int|mixed
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function getPmCount($userid)
 {
-    global $cache, $site_config;
+    global $site_config;
+
+    $cache = new Cache();
 
     $pmCount = $cache->get('inbox_' . $userid);
     if ($pmCount === false || is_null($pmCount)) {
@@ -1584,6 +1585,11 @@ function suspended()
     }
 }
 
+/**
+ * @throws Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
+ */
 function check_user_status()
 {
     $session = new Session();
@@ -1625,10 +1631,13 @@ function random_color($minVal = 0, $maxVal = 255)
  * @param $user_id
  *
  * @return bool
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function user_exists($user_id)
 {
-    global $cache;
+    $cache = new Cache();
     $userlist = $cache->get('userlist_' . $user_id);
     if ($userlist === false || is_null($userlist)) {
         $query = "SELECT id FROM users WHERE id = " . sqlesc($user_id);
@@ -1643,11 +1652,16 @@ function user_exists($user_id)
 }
 
 /**
- * @return array|null|string
+ * @return bool|mixed
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function get_poll()
 {
-    global $CURUSER, $cache, $site_config, $fluent;
+    global $CURUSER, $site_config, $fluent;
+
+    $cache = new Cache();
 
     $poll_data = $cache->get('poll_data_' . $CURUSER['id']);
     if ($poll_data === false || is_null($poll_data)) {
@@ -1747,11 +1761,16 @@ function array_msort($array, $cols)
 }
 
 /**
- * @return array|string
+ * @return array|bool|mixed
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function countries()
 {
-    global $cache, $site_config;
+    global $site_config;
+
+    $cache = new Cache();
     $ret = $cache->get('countries_arr');
     if ($ret === false || is_null($ret)) {
         $res = sql_query('SELECT id, name, flagpic FROM countries ORDER BY name ASC') or sqlerr(__FILE__, __LINE__);
@@ -1769,6 +1788,9 @@ function countries()
  * @param string $home
  *
  * @return string
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function breadcrumbs($separator = '', $home = 'Home')
 {
@@ -2012,30 +2034,6 @@ function Christmas($celebrate = true)
 }
 
 /**
- * @param $id
- *
- * @return bool|mixed
- */
-function get_user_data(int $id)
-{
-    global $cache, $fluent, $site_config;
-
-    $users_data = $cache->get('user' . $id);
-    if ($users_data === false || is_null($users_data)) {
-        $users_data = $fluent->from('users')
-            ->select('INET6_NTOA(ip) AS ip')
-            ->where('id = ?', $id)
-            ->fetch();
-        unset($users_data['hintanswer']);
-        unset($users_data['passhash']);
-
-        $cache->set('user' . $id, $users_data, $site_config['expires']['user_cache']);
-    }
-
-    return $users_data;
-}
-
-/**
  * @return string
  */
 function show_php_version()
@@ -2112,11 +2110,16 @@ function get_show_name(string $name)
  * @param string $name
  * @param string $type
  *
- * @return null|string
+ * @return null
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function get_show_id(string $name, string $type)
 {
-    global $cache, $fluent;
+    global $fluent;
+
+    $cache = new Cache();
 
     if (empty($name) || empty($type)) {
         return null;
@@ -2214,39 +2217,6 @@ function rrmdir($dir)
         reset($objects);
         rmdir($dir);
     }
-}
-
-function setCookieVar($key, $value, $expires)
-{
-    global $site_config;
-
-    if (empty($key) || empty($value)) {
-        return false;
-    }
-
-    $params = session_get_cookie_params();
-    $encrypted = CryptoJSAES::encrypt($value, $site_config['site']['salt']);
-    setcookie(
-        $site_config['cookie_prefix'] . $key,
-        base64_encode($encrypted),
-        $expires,
-        $params['path'],
-        $params['domain'],
-        $params['secure'],
-        $params['httponly']
-    );
-}
-
-function getCookieVar($key)
-{
-    global $site_config;
-
-    if (empty($key) || empty($_COOKIE[$site_config['cookie_prefix'] . $key])) {
-        return false;
-    }
-    $decrypted = CryptoJSAES::decrypt(base64_decode($_COOKIE[$site_config['cookie_prefix'] . $key]), $site_config['site']['salt']);
-
-    return $decrypted;
 }
 
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {

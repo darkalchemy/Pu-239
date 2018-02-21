@@ -6,7 +6,9 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $cache, $lang;
+global $lang;
+
+$cache = new Cache();
 
 $lang = array_merge($lang, load_language('ad_cloudview'));
 $HTMLOUT = '';

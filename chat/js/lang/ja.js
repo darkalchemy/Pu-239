@@ -8,7 +8,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s さんがログインしました',
     logout: '%s さんがログアウトしました',
     logoutTimeout: '%s さんが強制的にログアウトされました (タイムアウト)',
@@ -86,6 +85,7 @@ var ajaxChatLang = {
     errorSoundIO: 'エラー : サウンドファイルの読み込みに失敗しました (Flash IO Error)',
     errorSocketIO: 'エラー : ソケットサーバへの接続に失敗しました (Flash IO Error)',
     errorSocketSecurity: 'エラー : ソケットサーバへの接続に失敗しました (Flash Security Error)',
-    errorDOMSyntax: 'エラー : DOM の文法が不正です (DOM ID: %s)'
-
+    errorDOMSyntax: 'エラー : DOM の文法が不正です (DOM ID: %s)',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

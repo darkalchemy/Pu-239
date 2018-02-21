@@ -5,7 +5,10 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $cache, $lang;
+global $CURUSER, $site_config, $lang;
+
+$cache = new Cache();
+$user = new User();
 
 $lang = array_merge($lang, load_language('ad_acp'));
 $stdfoot = [
@@ -53,7 +56,7 @@ if (isset($_POST['ids'])) {
         exit;
     }
 }
-$disabled = number_format(get_row_count('users', "WHERE enabled='no'"));
+$disabled = number_format($get_row_count('users', "WHERE enabled='no'"));
 $pending = number_format(get_row_count('users', "WHERE status='pending'"));
 $count = number_format(get_row_count('users', "WHERE enabled='no' OR status='pending' ORDER BY username DESC"));
 $perpage = 25;

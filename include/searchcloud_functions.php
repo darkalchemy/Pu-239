@@ -6,7 +6,7 @@
  */
 function searchcloud($limit = 50)
 {
-    global $cache;
+    $cache = new Cache();
     if (!($return = $cache->get('searchcloud'))) {
         $search_q = sql_query('SELECT searchedfor, howmuch
                                 FROM searchcloud
@@ -33,7 +33,7 @@ function searchcloud($limit = 50)
  */
 function searchcloud_insert($word)
 {
-    global $cache;
+    $cache = new Cache();
     $searchcloud = searchcloud();
     $ip = getip();
     $howmuch = isset($searchcloud[$word]) ? $searchcloud[$word] + 1 : 1;

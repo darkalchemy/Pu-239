@@ -3,8 +3,12 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class.bencdec.php';
 require_once INCL_DIR . 'function_memcache.php';
+global $site_config;
 
 $session = new Session();
+$user = new User();
+$cache = new Cache();
+
 $torrent_pass = $auth = $bot = $owner_id = '';
 extract($_GET);
 unset($_GET);
@@ -22,15 +26,13 @@ if (!empty($bot) && !empty($auth)) {
     $owner_id = $CURUSER['id'];
 }
 
-$user = get_user_data($owner_id);
-
-global $site_config, $cache;
+$user_data = $user->getUserFromId($owner_id);
 
 ini_set('upload_max_filesize', $site_config['max_torrent_size']);
 ini_set('memory_limit', '64M');
 $lang = array_merge(load_language('global'), load_language('takeupload'));
 
-if ($user['class'] < UC_UPLOADER || $user['uploadpos'] == 0 || $user['uploadpos'] > 1 || $user['suspended'] == 'yes') {
+if ($user_data['class'] < UC_UPLOADER || $user_data['uploadpos'] == 0 || $user_data['uploadpos'] > 1 || $user_data['suspended'] == 'yes') {
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
@@ -60,7 +62,7 @@ if (isset($uplver) && $uplver == 'yes') {
     $anon = get_anonymous_name();
 } else {
     $anonymous = 'no';
-    $anon = $user['username'];
+    $anon = $user_data['username'];
 }
 if (isset($allow_comments) && $allow_comments == 'yes') {
     $allow_comments = 'no';
@@ -401,7 +403,7 @@ if (!empty($hashes)) {
 if (isset($uplver) && $uplver == 'yes') {
     $message = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by ' . get_anonymous_name();
 } else {
-    $message = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by ' . htmlsafechars($user['username']);
+    $message = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by ' . htmlsafechars($user_data['username']);
 }
 $messages = "{$site_config['site_name']} New Torrent: $torrent Uploaded By: $anon " . mksize($totallen) . " {$site_config['baseurl']}/details.php?id=$id";
 sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
@@ -434,7 +436,6 @@ if (!bencdec::encode_file($dir, $dict)) {
 chmod($dir, 0664);
 
 if ($site_config['seedbonus_on'] == 1) {
-    $user_data = get_user_data($owner_id);
     $seedbonus = $user_data['seedbonus'];
     sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_upload']) . ', numuploads = numuploads+ 1  WHERE id = ' . sqlesc($owner_id)) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($seedbonus + $site_config['bonus_per_upload']);
@@ -455,7 +456,7 @@ if ($offer > 0) {
     VALUES(0, ' . sqlesc($arr_offer['user_id']) . ', ' . TIME_NOW . ', ' . $message . ', ' . $subject . ', "yes", 1)') or sqlerr(__FILE__, __LINE__);
         $cache->increment('inbox_' . $arr_offer['user_id']);
     }
-    write_log('Offered torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was uploaded by ' . $user['username']);
+    write_log('Offered torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was uploaded by ' . $user_data['username']);
     $filled = 1;
 }
 $filled = 0;
@@ -470,11 +471,11 @@ if ($request > 0) {
     }
     sql_query('UPDATE requests SET filled_by_user_id = ' . sqlesc($owner_id) . ', filled_torrent_id = ' . sqlesc($id) . ' WHERE id = ' . sqlesc($request)) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE usersachiev SET reqfilled = reqfilled + 1 WHERE userid = ' . sqlesc($owner_id)) or sqlerr(__FILE__, __LINE__);
-    write_log('Request for torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was filled by ' . $user['username']);
+    write_log('Request for torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was filled by ' . $user_data['username']);
     $filled = 1;
 }
 if ($filled == 0) {
-    write_log(sprintf($lang['takeupload_log'], $id, $torrent, $user['username']));
+    write_log(sprintf($lang['takeupload_log'], $id, $torrent, $user_data['username']));
 }
 
 $session->set('is-success', $lang['takeupload_success']);

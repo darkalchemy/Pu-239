@@ -6,7 +6,9 @@ require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $cache, $site_config, $lang;
+global $site_config, $lang;
+
+$cache = new Cache();
 $session = new Session();
 
 $cache->delete('userlist_' . $site_config['chatBotID']);

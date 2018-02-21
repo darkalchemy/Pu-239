@@ -7,7 +7,9 @@ require_once INCL_DIR . 'function_onlinetime.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $cache, $CURUSER, $site_config, $fluent;
+global $CURUSER, $site_config, $fluent;
+
+$cache = new Cache();
 
 $session = new Session();
 $lang = array_merge(load_language('global'), load_language('userdetails'));

@@ -1,5 +1,7 @@
 <?php
-global $site_config, $cache, $lang, $fluent;
+global $site_config, $lang, $fluent;
+
+$cache = new Cache();
 
 $birthday = $cache->get('birthdayusers_');
 if ($birthday === false || is_null($birthday)) {

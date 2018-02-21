@@ -86,6 +86,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Pogreška: Učitavanje datoteke zvuka nije uspjelo (Flash IO pogreška).',
     errorSocketIO: 'Pogreška: Povezivanje s priključkom poslužitelja nije uspjelo (Flash IO pogreška).',
     errorSocketSecurity: 'Pogreška: Povezivanje s priključkom poslužitelja nije uspjelo (Flash sigurnosna pogreška).',
-    errorDOMSyntax: 'Pogreška: Nepravilna DOM sintaksa (DOM ID: %s).'
-
+    errorDOMSyntax: 'Pogreška: Nepravilna DOM sintaksa (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.',
 };

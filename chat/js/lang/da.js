@@ -8,7 +8,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s er logget ind.',
     logout: '%s er logget ud.',
     logoutTimeout: '%s Er logget ud (Timeout).',
@@ -65,7 +64,7 @@ var ajaxChatLang = {
     urlDialog: 'Venligst indsæt adressen (URL) for den pågældende hjemmeside:',
     deleteMessage: 'Fjern denne chat besked',
     deleteMessageConfirm: 'Vil du virkelig fjerne denne besked?',
-    errorCookiesRequired: 'Cookies er nødvændige for denne chat',
+    errorCookiesRequired: 'Cookie er nødvændige for denne chat',
     errorUserNameNotFound: 'FEJL: bruger %s ikke fundet.',
     errorMissingText: 'FEJL: Manglende besked.',
     errorMissingUserName: 'FEJL: Manglende brugernavn.',
@@ -86,6 +85,7 @@ var ajaxChatLang = {
     errorSoundIO: 'FEJL: Kunne ikke indlæse lydfil (Flash IO Fejl).',
     errorSocketIO: 'FEJL: Connection to socket server failed (Flash IO fejl).',
     errorSocketSecurity: 'FEJL: forbindelse til til socket server fejlede (Flash sikkerheds fejl).',
-    errorDOMSyntax: 'FEJL: Ugyldig DOM Syntaks(DOM ID: %s).'
-
+    errorDOMSyntax: 'FEJL: Ugyldig DOM Syntaks(DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

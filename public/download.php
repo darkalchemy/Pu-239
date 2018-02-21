@@ -5,7 +5,9 @@ require_once INCL_DIR . 'function_happyhour.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class.bencdec.php';
 dbconn();
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config;
+
+$cache = new Cache();
 
 $lang = array_merge(load_language('global'), load_language('download'));
 $T_Pass = isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) == 64 ? $_GET['torrent_pass'] : '';

@@ -1,5 +1,7 @@
 <?php
-global $CURUSER, $site_config, $lang, $cache;
+global $CURUSER, $site_config, $lang;
+
+$cache = new Cache();
 
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;

@@ -4,7 +4,9 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $cache, $lang, $fluent;
+global $CURUSER, $site_config, $lang, $fluent;
+
+$cache = new Cache();
 
 $lang = array_merge($lang, load_language('uploadapps'));
 $possible_actions = [

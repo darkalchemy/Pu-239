@@ -1,5 +1,7 @@
 <?php
-global $site_config, $cache, $lang, $fluent;
+global $site_config, $lang, $fluent;
+
+$cache = new Cache();
 
 $irc = $cache->get('ircusers_');
 if ($irc === false || is_null($irc)) {

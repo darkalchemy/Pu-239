@@ -9,7 +9,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s влезе в чата.',
     logout: '%s излезе от чата.',
     logoutTimeout: '%s излезе автоматично от чата (Изтичане на времето).',
@@ -87,6 +86,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Грешка: Неуспешно зареждане на звуковия файл (Входно-изходна грешка при Флаш).',
     errorSocketIO: 'Грешка: Неуспешна връзка към сокетния сървър (Входно-изходна грешка при Флаш).',
     errorSocketSecurity: 'Грешка: Неуспешна връзка към сокетния сървър (Грешка в сигурността при Флаш).',
-    errorDOMSyntax: 'Грешка: Неправилен синтаксис при DOM (DOM ID: %s).'
-
+    errorDOMSyntax: 'Грешка: Неправилен синтаксис при DOM (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

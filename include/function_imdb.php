@@ -9,7 +9,9 @@ use Imdb\Config;
  */
 function get_imdb_info($imdb_id)
 {
-    global $cache, $site_config;
+    global $site_config;
+
+$cache = new Cache();
 
     $imdb_data = $cache->get('imdb_' . $imdb_id);
     if ($imdb_data === false || is_null($imdb_data)) {

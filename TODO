@@ -1,6 +1,5 @@
 In no particular order
 
-add remember me cookie
 replace current authentication system
 replace current session handler
 replace php join with implode

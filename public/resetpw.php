@@ -3,7 +3,9 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 dbconn();
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config;
+
+$cache = new Cache();
 $session = new Session();
 
 if (!$CURUSER) {

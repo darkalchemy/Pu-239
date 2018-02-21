@@ -7,7 +7,9 @@ require_once ROOT_DIR . 'polls.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $BLOCKS, $fluent;
+global $CURUSER, $site_config, $BLOCKS, $fluent;
+
+$cache = new Cache();
 
 $session = new Session();
 $stdhead = [

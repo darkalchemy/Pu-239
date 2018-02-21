@@ -8,7 +8,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s se přihlásil.',
     logout: '%s se odhlásil.',
     logoutTimeout: '%s byl odhlášen (překročen timeout).',
@@ -65,7 +64,7 @@ var ajaxChatLang = {
     urlDialog: 'Zadej, prosím adresu (URL) stránky:',
     deleteMessage: 'Vymazat zprávu',
     deleteMessageConfirm: 'Opravdu vymazat tuto zprávu ?',
-    errorCookiesRequired: 'Pro tento chat je nutno povolit Cookies.',
+    errorCookiesRequired: 'Pro tento chat je nutno povolit Cookie.',
     errorUserNameNotFound: 'Chyba: Uživatel %s nebyl nalezen.',
     errorMissingText: 'Chyba: Schází text zprávy.',
     errorMissingUserName: 'Chyba: Schází jméno uživatele.',
@@ -86,6 +85,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Chyba: Nepodařilo se přehrát zvukový soubor (Flash IO Error).',
     errorSocketIO: 'Chyba: Nepodařilo se připojení k serveru (Flash IO Error).',
     errorSocketSecurity: 'Chyba: Připojení k serveru selhalo (Flash Security Error).',
-    errorDOMSyntax: 'Chyba: Neplatná syntaxe DOM (DOM ID: %s).'
-
+    errorDOMSyntax: 'Chyba: Neplatná syntaxe DOM (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

@@ -9,7 +9,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s sa prihlásil do chatu.',
     logout: '%s sa odhlásil z chatu.',
     logoutTimeout: '%s bol odhlásený pre neaktivitu.',
@@ -66,7 +65,7 @@ var ajaxChatLang = {
     urlDialog: 'Prosím, vložte adresu (URL) webstránky:',
     deleteMessage: 'Delete this chat message',
     deleteMessageConfirm: 'Really delete the selected chat message?',
-    errorCookiesRequired: 'Tento chat vyžaduje mať povolené Cookies.',
+    errorCookiesRequired: 'Tento chat vyžaduje mať povolené Cookie.',
     errorUserNameNotFound: 'Chyba: Užívateľ %s nenájdený.',
     errorMissingText: 'Chyba: Chýba text správy.',
     errorMissingUserName: 'Chyba: Chýba meno užívateľa.',
@@ -87,6 +86,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Error: Failed to load sound file (Flash IO Error).',
     errorSocketIO: 'Error: Connection to socket server failed (Flash IO Error).',
     errorSocketSecurity: 'Error: Connection to socket server failed (Flash Security Error).',
-    errorDOMSyntax: 'Error: Invalid DOM Syntax (DOM ID: %s).'
-
+    errorDOMSyntax: 'Error: Invalid DOM Syntax (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

@@ -8,7 +8,9 @@ require_once INCL_DIR . 'searchcloud_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $fluent;
+global $CURUSER, $site_config, $fluent;
+
+$cache = new Cache();
 
 if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
     $fluent->update('users')

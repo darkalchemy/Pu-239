@@ -1,7 +1,6 @@
 [type=checkbox] {
-    display: none;
+  display: none
 }
-
 :checked + div {
-    display: block !important;
+  display: block!important
 }

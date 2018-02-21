@@ -1,5 +1,7 @@
 <?php
-global $site_config, $cache, $lang, $fluent;
+global $site_config, $lang, $fluent;
+
+$cache = new Cache();
 
 $progress = '';
 $funds = $cache->get('totalfunds_');

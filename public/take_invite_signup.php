@@ -5,7 +5,9 @@ require_once INCL_DIR . 'password_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'function_bemail.php';
 dbconn();
-global $CURUSER, $site_config, $cache, $lang, $fluent;
+global $CURUSER, $site_config, $lang, $fluent;
+
+$cache = new Cache();
 
 $session = new Session();
 if (!$CURUSER) {

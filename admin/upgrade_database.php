@@ -4,7 +4,9 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'pager_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $cache, $lang, $fluent;
+global $CURUSER, $lang, $fluent;
+
+$cache = new Cache();
 $session = new Session();
 
 $lang = array_merge($lang);

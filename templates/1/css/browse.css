@@ -1,117 +1,83 @@
 div.global_icon {
-    width: 63px;
-    height: 29px;
-    text-align: center;
-    padding-top: 6px;
-    background: #9c9b9b;
-    background: -o-linear-gradient(top, #9c9b9b 0%,#cfcfcf 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#9c9b9b),to(#cfcfcf));
-    background: linear-gradient(to bottom, #9c9b9b 0%,#cfcfcf 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9c9b9b', endColorstr='#cfcfcf',GradientType=0 );
-    border-top-left-radius: 8px;
-    float: left;
-    display: inline;
-    border-color: #eae9e9;
+  width: 63px;
+  height: 29px;
+  text-align: center;
+  padding-top: 6px;
+  background: #9c9b9b;
+  background: -o-linear-gradient(top,#9c9b9b 0,#cfcfcf 100%);
+  background: -webkit-gradient(linear,left top, left bottom,color-stop(0, #9c9b9b),to(#cfcfcf));
+  background: linear-gradient(to bottom,#9c9b9b 0,#cfcfcf 100%);
+  border-top-left-radius: 8px;
+  float: left;
+  display: inline;
+  border-color: #eae9e9
 }
-
 div.global_head {
-    width: 884px;
-    height: 35px;
-    margin-right: 2px;
-    text-align: left;
-    color: #474747;
-    font-size: 15px;
-    font-weight: bolder;
-    background: #c1c0c0;
-    background: -o-linear-gradient(top, #c1c0c0 0%,#d9d8d8 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#c1c0c0),to(#d9d8d8));
-    background: linear-gradient(to bottom, #c1c0c0 0%,#d9d8d8 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c1c0c0', endColorstr='#d9d8d8',GradientType=0 );
-    border-top-right-radius: 8px;
-    float: right;
-    display: block;
-    line-height: 34px;
-    border-color: #eae9e9;
-    padding-left: 20px;
+  width: 884px;
+  height: 35px;
+  margin-right: 2px;
+  text-align: left;
+  color: #474747;
+  font-size: 15px;
+  font-weight: bolder;
+  background: #c1c0c0;
+  background: -o-linear-gradient(top,#c1c0c0 0,#d9d8d8 100%);
+  background: -webkit-gradient(linear,left top, left bottom,color-stop(0, #c1c0c0),to(#d9d8d8));
+  background: linear-gradient(to bottom,#c1c0c0 0,#d9d8d8 100%);
+  border-top-right-radius: 8px;
+  float: right;
+  display: block;
+  line-height: 34px;
+  border-color: #eae9e9;
+  padding-left: 20px
 }
-
 div.global_text {
-    width: 938px;
-    text-align: center;
-    color: #474747;
-    background: #e1e0e0;
-    margin-bottom: 20px;
-    padding: 15px;
-    border-bottom-right-radius: 8px;
-    border-bottom-left-radius: 8px;
+  width: 938px;
+  text-align: center;
+  color: #474747;
+  background: #e1e0e0;
+  margin-bottom: 20px;
+  padding: 15px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px
 }
-
 div.t_browse {
-    background: #6B8FAA;
-    border-radius: 10px;
+  background: #6b8faa;
+  border-radius: 10px
 }
-
 td.t-col {
-
-    font-weight: bold;
-    float: left;
-    width: 189px;
-    height: 455px;
-    margin: 1em;
-    color: #fff;
-    background-color: #0055A4;
-    border-radius: 5px;
-    -webkit-box-shadow: 0 0 10px #00284E;
-            box-shadow: 0 0 10px #00284E;
-
+  font-weight: 700;
+  float: left;
+  width: 189px;
+  height: 455px;
+  margin: 1em;
+  color: #fff;
+  background-color: #0055a4;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 0 10px #00284e;
+  box-shadow: 0 0 10px #00284e
 }
-
+div.freeslot,
+div.poster,
+div.silver,
+div.stickey,
 div.tdown {
-    background: #0055A4;
+  background: #0055a4
 }
-
-div.poster {
-    background: #0055A4;
-}
-
-div.freeslot {
-    background: #0055A4;
-}
-
-div.silver {
-    background: #0055A4;
-}
-
-div.stickey {
-    background: #0055A4;
-}
-
 div.genre {
-    background: #0055A4;
-    color: #101010;
+  background: #0055a4;
+  color: #101010
 }
-
-div.add {
-    background: #0055A4;
-}
-
-div.size {
-    background: #0055A4;
-}
-
+div.add,
+div.downup,
+div.size,
 div.snatch {
-    background: #0055A4;
+  background: #0055a4
 }
-
-div.downup {
-    background: #0055A4;
-}
-
 div.upby {
-    background: #0055A4;
-    color: #101010;
+  background: #0055a4;
+  color: #101010
 }
-
 div.edit {
-    background: #0055A4;
+  background: #0055a4
 }

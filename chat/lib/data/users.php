@@ -10,8 +10,7 @@
 // List containing the registered chat users:
 $users = [];
 
-global $cache;
-$users = $cache->get('chat_users_list');
+$users = $this->_cache->get('chat_users_list');
 if ($users === false || is_null($users)) {
     $sql = "SELECT id, class FROM users";
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -26,5 +25,5 @@ if ($users === false || is_null($users)) {
             $users[$id]['channels'] = [0, 1, 2, 3, 4, 5];
         }
     }
-    $cache->set('chat_users_list', $users, 86400);
+    $this->_cache->set('chat_users_list', $users, 86400);
 }

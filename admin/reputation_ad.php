@@ -418,7 +418,9 @@ function view_list()
 ///////////////////////////////////////////////
 function do_delete_rep()
 {
-    global $input, $lang, $cache, $site_config;
+    global $input, $lang, $site_config;
+
+$cache = new Cache();
     if (!is_valid_id($input['reputationid'])) {
         stderr($lang['rep_ad_delete_rep_err1'], $lang['rep_ad_delete_rep_err2']);
     }
@@ -444,7 +446,9 @@ function do_delete_rep()
 ///////////////////////////////////////////////
 function do_edit_rep()
 {
-    global $input, $lang, $cache, $site_config;
+    global $input, $lang, $site_config;
+
+$cache = new Cache();
     if (isset($input['reason']) && !empty($input['reason'])) {
         $reason = str_replace('<br>', '', $input['reason']);
         $reason = trim($reason);

@@ -9,7 +9,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s 进入聊天室。',
     logout: '%s 退出聊天室。',
     logoutTimeout: '%s 因超时，退出聊天室。',
@@ -87,6 +86,7 @@ var ajaxChatLang = {
     errorSoundIO: '错误：加载声音文件失败（Flash IO 错误）。',
     errorSocketIO: '错误：连接 Socket 服务器失败（Flash IO 错误）。',
     errorSocketSecurity: '错误：连接 Socket 服务器失败（Flash 安全错误）。',
-    errorDOMSyntax: '错误：错误的 DOM 语法（DOM ID：%s）。'
-
+    errorDOMSyntax: '错误：错误的 DOM 语法（DOM ID：%s）。',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

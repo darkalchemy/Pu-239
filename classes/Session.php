@@ -3,13 +3,25 @@
 class Session
 {
     private $config;
+    private $cache;
 
+    /**
+     * Session constructor.
+     *
+     * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
+     */
     public function __construct()
     {
         global $site_config;
         $this->config = $site_config;
+        $this->cache = new Cache();
     }
 
+    /**
+     * @return bool
+     * @throws Exception
+     */
     public function start()
     {
         if (!session_id()) {
@@ -73,6 +85,11 @@ class Session
         return true;
     }
 
+    /**
+     * @param      $key
+     * @param      $value
+     * @param null $prefix
+     */
     public function set($key, $value, $prefix = null)
     {
         if ($prefix === null) {
@@ -93,6 +110,12 @@ class Session
         }
     }
 
+    /**
+     * @param      $key
+     * @param null $prefix
+     *
+     * @return null
+     */
     public function get($key, $prefix = null)
     {
         if (empty($key)) {
@@ -110,6 +133,10 @@ class Session
         }
     }
 
+    /**
+     * @param      $key
+     * @param null $prefix
+     */
     public function unset($key, $prefix = null)
     {
         if ($prefix === null) {
@@ -119,6 +146,14 @@ class Session
         unset($_SESSION[$prefix . $key]);
     }
 
+    /**
+     * @param      $token
+     * @param null $key
+     * @param bool $regen
+     *
+     * @return bool
+     * @throws Exception
+     */
     public function validateToken($token, $key = null, $regen = false)
     {
         if ($key === null) {
@@ -138,30 +173,34 @@ class Session
         return false;
     }
 
+    /**
+     * @throws Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
+     */
     public function destroy()
     {
-        global $site_config;
+        $cookies = new Cookie('remember');
+        $cookie = $cookies->getToken();
+        if (!empty($cookie[0])) {
+            $this->cache->delete('remember_' . $cookie[0]);
+        }
 
         $this->start();
         $_SESSION = [];
 
         if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
-            $cookies = [
-                'remember',
-            ];
+            setcookie(
+                $this->config['cookie_prefix'] . 'remember',
+                '',
+                TIME_NOW - 86400,
+                $params['path'],
+                $params['domain'],
+                $params['secure'],
+                $params['httponly']
+            );
 
-            foreach ($cookies as $cookie) {
-                setcookie(
-                    $site_config['cookie_prefix'] . $cookie,
-                    '',
-                    TIME_NOW - 86400,
-                    $params['path'],
-                    $params['domain'],
-                    $params['secure'],
-                    $params['httponly']
-                );
-            }
             setcookie(
                 session_name(),
                 '',
@@ -177,8 +216,11 @@ class Session
         session_destroy();
     }
 
+    /**
+     *
+     */
     public function close()
     {
-        //session_write_close();
+        session_write_close();
     }
 }

@@ -122,6 +122,6 @@ $lang = [
     'rep_ad_month_nov'           => 'November',
     'rep_ad_month_dec'           => 'December',
     //rep_cache
-    'rep_ad_cache_cache'         => 'CACHE',
+    'rep_ad_cache_cache'         => 'Cache',
     'rep_ad_cache_none'          => 'No items to cache',
 ];

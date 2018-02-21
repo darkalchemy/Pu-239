@@ -5,7 +5,9 @@ require_once INCL_DIR . 'function_memcache.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $cache, $lang;
+global $CURUSER, $site_config, $lang;
+
+$cache = new Cache();
 
 $lang = array_merge($lang, load_language('ad_datareset'));
 $HTMLOUT = '';
@@ -14,7 +16,9 @@ $HTMLOUT = '';
  */
 function deletetorrent($tid)
 {
-    global $site_config, $cache, $CURUSER;
+    global $site_config, $CURUSER;
+
+$cache = new Cache();
     sql_query('DELETE peers.*, files.*, comments.*, snatched.*, thanks.*, bookmarks.*, coins.*, rating.*, torrents.* FROM torrents 
                  LEFT JOIN peers ON peers.torrent = torrents.id
                  LEFT JOIN files ON files.torrent = torrents.id
@@ -34,7 +38,9 @@ function deletetorrent($tid)
  */
 function deletetorrent_xbt($tid)
 {
-    global $site_config, $cache, $CURUSER;
+    global $site_config, $CURUSER;
+
+$cache = new Cache();
     sql_query('UPDATE torrents SET flags = 1 WHERE id = ' . sqlesc($tid)) or sqlerr(__FILE__, __LINE__);
     sql_query('DELETE files.*, comments.*, xbt_files_users.*, thanks.*, bookmarks.*, coins.*, rating.*, torrents.* FROM torrents 
                  LEFT JOIN files ON files.torrent = torrents.id

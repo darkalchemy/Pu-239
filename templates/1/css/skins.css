@@ -1,33 +1,26 @@
-.skin-1 header#navbar,
-.skin-1 #platform-menu {
-    background : #d3dad0;
-    background : -o-linear-gradient(top, #d3dad0 0, #aeafa9 100%, #aeafa9 100%, #82725e 100%, #64627a 100%, #82725e 101%);
-    background : -webkit-gradient(linear, left top, left bottom, color-stop(0, #d3dad0), color-stop(100%, #aeafa9), color-stop(100%, #aeafa9), color-stop(100%, #82725e), color-stop(100%, #64627a), color-stop(101%, #82725e));
-    background : linear-gradient(to bottom, #d3dad0 0, #aeafa9 100%, #aeafa9 100%, #82725e 100%, #64627a 100%, #82725e 101%);
-    filter     : progid:DXImageTransform.Microsoft.gradient(startColorstr='#d3dad0', endColorstr='#82725e', GradientType=0);
+.skin-1 #platform-menu,
+.skin-1 header#navbar {
+  background: #d3dad0;
+  background: -o-linear-gradient(top,#d3dad0 0,#aeafa9 100%,#aeafa9 100%,#82725e 100%,#64627a 100%,#82725e 101%);
+  background: -webkit-gradient(linear,left top, left bottom,color-stop(0, #d3dad0),color-stop(100%, #aeafa9),color-stop(100%, #aeafa9),color-stop(100%, #82725e),color-stop(100%, #64627a),color-stop(101%, #82725e));
+  background: linear-gradient(to bottom,#d3dad0 0,#aeafa9 100%,#aeafa9 100%,#82725e 100%,#64627a 100%,#82725e 101%)
 }
-
 .skin-1 .ddFade {
-    background : #82725e;
-    background : -o-linear-gradient(top, #82725e -1%, #64627a 0%, #82725e 0%, #aeafa9 0%, #aeafa9 0%, #d3dad0 100%);
-    background : -webkit-gradient(linear, left top, left bottom, color-stop(-1%, #82725e), color-stop(0%, #64627a), color-stop(0%, #82725e), color-stop(0%, #aeafa9), color-stop(0%, #aeafa9), to(#d3dad0));
-    background : linear-gradient(to bottom, #82725e -1%, #64627a 0%, #82725e 0%, #aeafa9 0%, #aeafa9 0%, #d3dad0 100%);
-    filter     : progid:DXImageTransform.Microsoft.gradient(startColorstr='#82725e', endColorstr='#d3dad0', GradientType=0);
+  background: #82725e;
+  background: -o-linear-gradient(top,#82725e -1%,#64627a 0,#82725e 0,#aeafa9 0,#aeafa9 0,#d3dad0 100%);
+  background: -webkit-gradient(linear,left top, left bottom,color-stop(-1%, #82725e),color-stop(0, #64627a),color-stop(0, #82725e),color-stop(0, #aeafa9),color-stop(0, #aeafa9),to(#d3dad0));
+  background: linear-gradient(to bottom,#82725e -1%,#64627a 0,#82725e 0,#aeafa9 0,#aeafa9 0,#d3dad0 100%)
 }
-
-.skin-2 header#navbar,
-.skin-2 #platform-menu {
-    background : #7d7e7d;
-    background : -o-linear-gradient(top, #7d7e7d 0, #0e0e0e 100%);
-    background : -webkit-gradient(linear, left top, left bottom, color-stop(0, #7d7e7d), to(#0e0e0e));
-    background : linear-gradient(to bottom, #7d7e7d 0, #0e0e0e 100%);
-    filter     : progid:DXImageTransform.Microsoft.gradient(startColorstr='#7d7e7d', endColorstr='#0e0e0e', GradientType=0);
+.skin-2 #platform-menu,
+.skin-2 header#navbar {
+  background: #7d7e7d;
+  background: -o-linear-gradient(top,#7d7e7d 0,#0e0e0e 100%);
+  background: -webkit-gradient(linear,left top, left bottom,color-stop(0, #7d7e7d),to(#0e0e0e));
+  background: linear-gradient(to bottom,#7d7e7d 0,#0e0e0e 100%)
 }
-
 .skin-2 .ddFade {
-    background : #0e0e0e;
-    background : -o-linear-gradient(top, #0e0e0e 0%, #7d7e7d 100%);
-    background : -webkit-gradient(linear, left top, left bottom, from(#0e0e0e), to(#7d7e7d));
-    background : linear-gradient(to bottom, #0e0e0e 0%, #7d7e7d 100%);
-    filter     : progid:DXImageTransform.Microsoft.gradient(startColorstr='#0e0e0e', endColorstr='#7d7e7d', GradientType=0);
+  background: #0e0e0e;
+  background: -o-linear-gradient(top,#0e0e0e 0,#7d7e7d 100%);
+  background: -webkit-gradient(linear,left top, left bottom,color-stop(0, #0e0e0e),to(#7d7e7d));
+  background: linear-gradient(to bottom,#0e0e0e 0,#7d7e7d 100%)
 }

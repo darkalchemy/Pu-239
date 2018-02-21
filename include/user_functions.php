@@ -465,11 +465,14 @@ function min_class($min = UC_MIN, $max = UC_MAX)
 function format_username($user_id, $icons = true, $tooltipper = true)
 {
     global $site_config;
+
+    $user = new User();
+
     if (empty($user_id)) {
         return false;
     }
     $user_id = is_array($user_id) && !empty($user_id['id']) ? (int)$user_id['id'] : (int)$user_id;
-    $users_data = get_user_data($user_id);
+    $users_data = $user->getUserFromId($user_id);
     if ($users_data['id'] === 0) {
         return 'System';
     } elseif (empty($users_data['username'])) {
@@ -683,7 +686,9 @@ function get_cache_config_data($the_names, $the_colors, $the_images)
  */
 function clr_forums_cache($post_id)
 {
-    global $cache, $site_config;
+    global $site_config;
+
+$cache = new Cache();
     $uclass = UC_MIN;
     while ($uclass <= UC_MAX) {
         $cache->delete('last_post_' . $post_id . '_' . $uclass);
@@ -695,7 +700,7 @@ function clr_forums_cache($post_id)
 
 function clearUserCache($userid)
 {
-    global $cache;
+    $cache = new Cache();
     $cache->delete('MyPeers_' . $userid);
     $cache->delete('user' . $userid);
     $cache->delete('useravatar_' . $userid);

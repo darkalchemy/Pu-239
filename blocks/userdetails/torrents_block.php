@@ -1,7 +1,9 @@
 <?php
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
-global $CURUSER, $site_config, $cache, $lang, $user;
+global $CURUSER, $site_config, $lang, $user;
+
+$cache = new Cache();
 
 /**
  * @param $torrents

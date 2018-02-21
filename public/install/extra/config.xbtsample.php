@@ -164,13 +164,13 @@ $site_config['inviteusers'] = 10000;
 $site_config['flood_time'] = 900; //comment/forum/pm flood limit
 $site_config['readpost_expiry'] = 14 * 86400; // 14 days
 
-$site_config['cache'] = ROOT_DIR . 'cache';
+$site_config['Cache'] = ROOT_DIR . 'Cache';
 $site_config['backup_dir'] = INCL_DIR . 'backup';
 $site_config['dictbreaker'] = ROOT_DIR . 'dictbreaker';
 $site_config['torrent_dir'] = ROOT_DIR . 'torrents'; // must be writable for httpd user
 $site_config['sub_up_dir'] = ROOT_DIR . 'uploadsub'; // must be writable for httpd user
 $site_config['flood_file'] = INCL_DIR . 'settings' . DIRECTORY_SEPARATOR . 'limitfile.txt';
-$site_config['nameblacklist'] = ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR . 'nameblacklist.txt';
+$site_config['nameblacklist'] = ROOT_DIR . 'Cache' . DIRECTORY_SEPARATOR . 'nameblacklist.txt';
 $site_config['happyhour'] = CACHE_DIR . 'happyhour' . DIRECTORY_SEPARATOR . 'happyhour.txt';
 $site_config['sql_error_log'] = ROOT_DIR . 'sqlerr_logs' . DIRECTORY_SEPARATOR . 'sql_err_' . date('M_D_Y') . '.log';
 //== XBT or PHP announce

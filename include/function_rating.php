@@ -8,7 +8,9 @@
  */
 function getRate($id, $what)
 {
-    global $CURUSER, $cache, $site_config, $fluent;
+    global $CURUSER, $site_config, $fluent;
+
+$cache = new Cache();
     $return = false;
     if ($id == 0 || !in_array($what, [
             'topic',

@@ -4,7 +4,9 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config;
+
+$cache = new Cache();
 
 $lang = load_language('reputation');
 

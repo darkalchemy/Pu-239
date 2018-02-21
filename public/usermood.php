@@ -1,7 +1,9 @@
 <?php
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config;
+
+$cache = new Cache();
 
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('usermood'));

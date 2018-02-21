@@ -157,7 +157,7 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
         <a id='user6'></a>
         <p>Help! I cannot login!? (a.k.a. Login of Death)</p>
-        <p>This problem sometimes occurs with MSIE. Close all Internet Explorer windows and open Internet Options in the control panel. Click the Delete Cookies button. You should now be able to login.</p>
+        <p>This problem sometimes occurs with MSIE. Close all Internet Explorer windows and open Internet Options in the control panel. Click the Delete Cookie button. You should now be able to login.</p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
         <a id='user7'></a>

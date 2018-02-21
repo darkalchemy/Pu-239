@@ -50,7 +50,7 @@ function inactive_update($data)
  */
 function delete_cleanup($users, $using_foreign_keys = true)
 {
-    global $cache;
+    $cache = new Cache();
     if (empty($users)) {
         return;
     }

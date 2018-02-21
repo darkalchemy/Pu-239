@@ -6,7 +6,9 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'function_bemail.php';
 dbconn();
 get_template();
-global $site_config, $cache, $lang, $fluent;
+global $site_config, $lang, $fluent;
+
+$cache = new Cache();
 
 $session = new Session();
 use Nette\Mail\Message;

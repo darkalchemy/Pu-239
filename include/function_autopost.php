@@ -5,7 +5,9 @@
  */
 function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Body') // Function to use the special system message forum
 {
-    global $CURUSER, $site_config, $cache;
+    global $CURUSER, $site_config;
+
+$cache = new Cache();
     if (user_exists($site_config['chatBotID'])) {
         $res = sql_query("SELECT id FROM topics WHERE forum_id = {$site_config['staff']['forumid']} AND topic_name = " . sqlesc($subject));
         if (mysqli_num_rows($res) == 1) { // Topic already exists in the system forum.

@@ -8,7 +8,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s betritt den Chat.',
     logout: '%s verlässt den Chat.',
     logoutTimeout: '%s wurde ausgeloggt (Timeout).',
@@ -65,7 +64,7 @@ var ajaxChatLang = {
     urlDialog: 'Bitte die Adresse (URL) der Webseite eingeben:',
     deleteMessage: 'Diese Chat-Nachricht löschen',
     deleteMessageConfirm: 'Die ausgewählte Chat-Nachricht wirklich löschen?',
-    errorCookiesRequired: 'Cookies werden für diesen Chat benötigt.',
+    errorCookiesRequired: 'Cookie werden für diesen Chat benötigt.',
     errorUserNameNotFound: 'Fehler: Benutzer %s wurde nicht gefunden.',
     errorMissingText: 'Fehler: Nachrichtentext fehlt.',
     errorMissingUserName: 'Fehler: Benutzername fehlt.',
@@ -86,6 +85,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Fehler: Laden einer Sound-Datei fehlgeschlagen (Flash IO Error).',
     errorSocketIO: 'Fehler: Verbindung zum Socket Server fehlgeschlagen (Flash IO Error).',
     errorSocketSecurity: 'Fehler: Verbindung zum Socket Server fehlgeschlagen (Flash Security Error).',
-    errorDOMSyntax: 'Error: Invalid DOM Syntax (DOM ID: %s).'
-
+    errorDOMSyntax: 'Error: Invalid DOM Syntax (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

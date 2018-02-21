@@ -1,3 +1,16 @@
+21 Feb 2018
+fix: usercp.php password change
+fix: AJAX Chat not loggin in user when not in online list
+replace: some globals with new Class()
+move: begin moving functions to class methods
+
+18 Feb 2018
+remove: remember me cookies when user logs out
+move: all cookie functions to cookie class
+move: foreign key scripts to database folder for use after install folder removed
+add: Torrent Class
+add: User Class
+
 17 Feb 2018
 fix: stylesheets for firefox, should now appear the same in all browsers
 fix: unauthenticated user redirected to login

@@ -1,7 +1,9 @@
 <?php
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-global $cache, $site_config, $fluent;
+global $site_config, $fluent;
+
+$cache = new Cache();
 $session = new Session();
 
 $lang = array_merge(load_language('global'), load_language('confirmemail'));

@@ -6,7 +6,9 @@
  */
 function class_check($class = 0, $staff = true, $pin = false)
 {
-    global $CURUSER, $site_config, $cache;
+    global $CURUSER, $site_config;
+
+$cache = new Cache();
     if (!$CURUSER) {
         header("Location: {$site_config['baseurl']}/404.html");
         die();
@@ -121,7 +123,7 @@ function class_check($class = 0, $staff = true, $pin = false)
  */
 function get_access($script)
 {
-    global $cache;
+    $cache = new Cache();
     $ending = parse_url($script, PHP_URL_QUERY);
     $count = substr_count($ending, '&');
     $i = 0;

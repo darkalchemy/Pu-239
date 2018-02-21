@@ -5,7 +5,9 @@ require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $fluent;
+global $CURUSER, $site_config, $fluent;
+
+$cache = new Cache();
 
 $lang = array_merge(load_language('global'), load_language('takeeditcp'));
 
@@ -154,12 +156,41 @@ if ($action == 'avatar') {
         $curuser_cache['ssluse'] = $ssluse;
         $user_cache['ssluse'] = $ssluse;
     }
+    mkglobal('email:chpassword:passagain:chmailpass:secretanswer:current_pass');
+    if (!empty($chpassword)) {
+        if (strlen($chpassword) > 72) {
+            stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_long']);
+        }
 
-    if (!mkglobal('email:chpassword:passagain:chmailpass:secretanswer')) {
-        stderr($lang['takeeditcp_err'], $lang['takeeditcp_no_data']);
+        if ($chpassword !== $passagain) {
+            stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_not_match']);
+        }
+
+        if (empty($current_pass) ) {
+            stderr($lang['takeeditcp_err'], 'Current Password can not be empty!');
+        }
+
+        if ($chpassword === $current_pass) {
+            stderr($lang['takeeditcp_err'], 'New password can not be the same as the old password!');
+        }
+
+        $cur_passhash = $fluent->from('users')
+            ->select(null)
+            ->select('passhash')
+            ->where('id = ?', $CURUSER['id'])
+            ->fetch('passhash');
+
+        if (!password_verify($current_pass, $cur_passhash)) {
+            stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_not_match']);
+        }
+
+        $passhash = make_passhash($chpassword);
+        $updateset[] = "passhash = " . sqlesc($passhash);
+        $curuser_cache['passhash'] = $passhash;
+        $user_cache['passhash'] = $passhash;
     }
 
-    if ($chmailpass != '') {
+    if (!empty($chmailpass)) {
         if (strlen($chmailpass) > 72) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_long']);
         }
@@ -573,6 +604,7 @@ if ($action == 'avatar') {
 if ($user_cache) {
     $cache->update_row('user' . $CURUSER['id'], $user_cache, $site_config['expires']['user_cache']);
 }
+
 if (sizeof($updateset) > 0) {
     sql_query('UPDATE users SET ' . implode(',', $updateset) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 }

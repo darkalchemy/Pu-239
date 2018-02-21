@@ -7,7 +7,7 @@ $dotenv->load();
 $finished = $plist = $corupptthis = '';
 $agent = $_SERVER['HTTP_USER_AGENT'];
 $detectedclient = $_SERVER['HTTP_USER_AGENT'];
-$site_config['cache'] = ROOT_DIR . 'cache';
+$site_config['Cache'] = ROOT_DIR . 'Cache';
 require_once CLASS_DIR . 'class_bt_options.php';
 $site_config['baseurl'] = get_scheme() . '://' . $_SERVER['HTTP_HOST'];
 $site_config['pic_baseurl'] = $site_config['baseurl'] . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
@@ -37,7 +37,7 @@ $site_config['expires']['torrent_details'] = 2591999;
 $site_config['expires']['user_cache'] = 2591999;
 
 require_once INCL_DIR . 'database.php';
-$cache = new CACHE();
+$cache = new Cache();
 
 /**
  * @return mixed

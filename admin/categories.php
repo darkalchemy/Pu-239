@@ -47,7 +47,9 @@ switch ($params['mode']) {
 }
 function move_cat()
 {
-    global $site_config, $params, $cache, $lang;
+    global $site_config, $params, $lang;
+
+$cache = new Cache();
     if ((!isset($params['id']) or !is_valid_id($params['id'])) or (!isset($params['new_cat_id']) or !is_valid_id($params['new_cat_id']))) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
@@ -113,7 +115,9 @@ function move_cat_form()
 
 function add_cat()
 {
-    global $site_config, $params, $cache, $lang;
+    global $site_config, $params, $lang;
+
+$cache = new Cache();
     foreach ([
                  'new_cat_name',
                  'new_cat_desc',
@@ -142,7 +146,9 @@ function add_cat()
 
 function delete_cat()
 {
-    global $site_config, $params, $cache, $lang;
+    global $site_config, $params, $lang;
+
+$cache = new Cache();
     if (!isset($params['id']) or !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
@@ -226,7 +232,9 @@ function delete_cat_form()
 
 function edit_cat()
 {
-    global $site_config, $params, $cache, $lang;
+    global $site_config, $params, $lang;
+
+$cache = new Cache();
 
     if (!isset($params['id']) or !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);

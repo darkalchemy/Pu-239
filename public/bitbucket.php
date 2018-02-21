@@ -4,7 +4,9 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config;
+
+$cache = new Cache();
 
 $lang = array_merge(load_language('global'), load_language('bitbucket'));
 $HTMLOUT = '';

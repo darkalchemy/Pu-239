@@ -436,8 +436,8 @@ if ($action == 'avatar') {
     }
     $HTMLOUT .= tr($lang['usercp_email'], "
                                         <input type='text' name='email' class='w-100' value='" . htmlsafechars($CURUSER['email']) . "' />
-                                        <p class='margin20'>{$lang['usercp_email_pass']}</p>
-                                        <input type='password' name='chmailpass' class='w-100' />", 1);
+                                        <p class='top20 bottom10'>{$lang['usercp_email_pass']}</p>
+                                        <input type='password' name='chmailpass' class='w-100' placeholder='Current Password' />", 1);
     $HTMLOUT .= "
                                 <tr>
                                     <td colspan='2'>{$lang['usercp_note']}</td>
@@ -447,9 +447,10 @@ if ($action == 'avatar') {
                                         <input type="radio" name="show_email" ' . ($CURUSER['show_email'] == 'no' ? ' checked' : '') . ' value="no" /> No
                                         <p>Do you wish to have your email address visible on the forums?</p>', 1);
     $HTMLOUT .= tr($lang['usercp_chpass'], "
-                                        <input type='password' name='chpassword' class='w-100' />", 1);
-    $HTMLOUT .= tr($lang['usercp_pass_again'], "
-                                        <input type='password' name='passagain' class='w-100' />", 1);
+                                        <input type='password' name='chpassword' class='w-100' placeholder='New Password' />    
+                                        <input type='password' name='passagain' class='w-100 top20' placeholder='{$lang['usercp_pass_again']}' />
+                                        <p class='top20 bottom10'>You must enter your current password.</p>
+                                        <input type='password' name='current_pass' class='w-100' placeholder='Current Password' />", 1);
     $secretqs = "<option value='0'>{$lang['usercp_none_select']}</option>";
     $questions = [
         [

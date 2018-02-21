@@ -14,38 +14,52 @@ class CustomAJAXChat extends AJAXChat
 {
     public function initCustomRequestVars()
     {
-        global $CURUSER;
-
-        // Auto-login users:
-        if (!$this->getRequestVar('login') && !empty($CURUSER)) {
-            $this->setRequestVar('login', true);
-        }
+        $this->setRequestVar('login', true);
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function getValidLoginUserData()
     {
-        global $CURUSER;
-
-        $session = new Session();
-        if (!empty($CURUSER) && $CURUSER['enabled'] !== 'no' && $CURUSER['chatpost'] != 0) {
-            $userData['userID'] = $CURUSER['id'];
-            $userData['userName'] = $this->trimUserName($CURUSER['username']);
-            $userData['userClass'] = get_user_class_name($CURUSER['class']);
-            $userData['userRole'] = $CURUSER['class'];
-            $userData['channels'] = [0, 1, 2, 3, 4];
-            if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
-                $userData['channels'] = [0, 1, 2, 3, 4, 5, 6];
-            } elseif ($CURUSER['class'] >= UC_MODERATOR) {
-                $userData['channels'] = [0, 1, 2, 3, 4, 5];
+        $user = $this->_user->getUserFromId($this->getUserID());
+        if (!empty($user) && $user['enabled'] === 'yes' && $user['chatpost'] === 1) {
+            $userData['userID'] = $user['id'];
+            $userData['userName'] = $this->trimUserName($user['username']);
+            $userData['userClass'] = get_user_class_name($user['class']);
+            $userData['userRole'] = $user['class'];
+            $userData['channels'] = [
+                0,
+                1,
+                2,
+                3,
+                4,
+            ];
+            if ($user['class'] >= UC_ADMINISTRATOR) {
+                $userData['channels'] = [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                ];
+            } elseif ($user['class'] >= UC_MODERATOR) {
+                $userData['channels'] = [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                ];
             }
             return $userData;
         }
 
-        if ($CURUSER['enabled'] === 'no' && $CURUSER['chatpost'] === 0) {
-            $session->unset('Channel');
+        if ($user['enabled'] === 'no' || $user['chatpost'] !== 1) {
+            $this->_session->unset('Channel');
             $this->addInfoMessage('errorBanned');
         }
         return false;
@@ -121,7 +135,7 @@ class CustomAJAXChat extends AJAXChat
                 unset($this->_allChannels[$this->getConfig('defaultChannelName')]);
                 $this->_allChannels = array_merge(
                     [
-                        $this->trimChannelName($this->getConfig('defaultChannelName')) => $this->getConfig('defaultChannelID'),
+                        $this->trimChannelName($this->getConfig('defaultChannelName'), $this->getConfig('contentEncoding')) => $this->getConfig('defaultChannelID'),
                     ],
                     $this->_allChannels
                 );

@@ -9,7 +9,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s logs dentro de Chat.',
     logout: '%s logs fora del Chat.',
     logoutTimeout: '%s desconectouse(Tempo de espera esgotado).',
@@ -66,7 +65,7 @@ var ajaxChatLang = {
     urlDialog: 'Por favor, introduce a URL da paxina web:',
     deleteMessage: 'Eliminar mensaxe',
     deleteMessageConfirm: 'Queres borra-la mensaxe?',
-    errorCookiesRequired: 'As Cookies son necesarias para o chat.',
+    errorCookiesRequired: 'As Cookie son necesarias para o chat.',
     errorUserNameNotFound: 'Error: usuario %s non encontrado.',
     errorMissingText: 'Error: mensaxe perdida.',
     errorMissingUserName: 'Error: Usuario non encontrado.',
@@ -87,6 +86,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Error: Error o reproducir son(Flash IO Error).',
     errorSocketIO: 'Error: Conexión co servidor fallida (Flash IO Error).',
     errorSocketSecurity: 'Error: Conexión co servidor fallida(Flash Security Error).',
-    errorDOMSyntax: 'Error: Sintaxis DOM Inválida(DOM ID: %s).'
-
+    errorDOMSyntax: 'Error: Sintaxis DOM Inválida(DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

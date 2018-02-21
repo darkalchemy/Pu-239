@@ -29,7 +29,7 @@ function getip()
  */
 function check_bans($ip, &$reason = '')
 {
-    global $cache;
+    $cache = new Cache();
     if (empty($ip)) {
         return false;
     }

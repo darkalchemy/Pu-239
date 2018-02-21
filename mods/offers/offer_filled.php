@@ -1,5 +1,7 @@
 <?php
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config;
+
+$cache = new Cache();
 
 $torrentid = (isset($_POST['torrentid']) ? (int)$_POST['torrentid'] : 0);
 if ($torrentid < 1) {

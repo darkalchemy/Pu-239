@@ -9,7 +9,9 @@ check_user_status();
 function rsstfreakinfo()
 {
     require_once INCL_DIR . 'html_functions.php';
-    global $site_config, $cache;
+    global $site_config;
+
+$cache = new Cache();
     $html = '';
     $use_limit = true;
     $limit = 5;

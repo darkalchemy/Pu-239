@@ -1,5 +1,7 @@
 <?php
-global $CURUSER, $site_config, $cache, $lang, $user, $id;
+global $CURUSER, $site_config, $lang, $user, $id;
+
+$cache = new Cache();
 
 $forumposts = $cache->get('forum_posts_' . $id);
 if ($forumposts === false || is_null($forumposts)) {

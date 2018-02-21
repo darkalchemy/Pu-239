@@ -4,7 +4,9 @@
  */
 function lotteryclean($data)
 {
-    global $queries, $cache;
+    global $queries;
+
+$cache = new Cache();
     set_time_limit(1200);
     ignore_user_abort(true);
 

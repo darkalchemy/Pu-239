@@ -5,7 +5,9 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $CURUSER, $cache;
+global $CURUSER;
+
+$cache = new Cache();
 
 $session = new Session();
 

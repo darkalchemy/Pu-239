@@ -4,7 +4,9 @@
  */
 function trivia_update($data)
 {
-    global $queries, $cache, $fluent;
+    global $queries, $fluent;
+
+$cache = new Cache();
 
     set_time_limit(1200);
     ignore_user_abort(true);

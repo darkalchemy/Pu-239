@@ -87,6 +87,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Erro: Falha ao carregar o ficheiro de som (Erro Flash IO).',
     errorSocketIO: 'Erro: A conexão socket para o servidor falhou (Erro Flash IO).',
     errorSocketSecurity: 'Erro: A conexão socket para o servidor falhou (Erro de segurança Flash).',
-    errorDOMSyntax: 'Erro: Síntese DOM inválida (DOM ID: %s).'
-
+    errorDOMSyntax: 'Erro: Síntese DOM inválida (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

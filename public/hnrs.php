@@ -8,7 +8,9 @@ require_once INCL_DIR . 'function_onlinetime.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $site_config, $CURUSER, $cache, $lang;
+global $site_config, $CURUSER, $lang;
+
+$cache = new Cache();
 $session = new Session();
 
 $HTMLOUT = '';

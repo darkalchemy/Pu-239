@@ -7,7 +7,9 @@
  */
 function foxnews_shout($links = [])
 {
-    global $site_config, $cache;
+    global $site_config;
+
+$cache = new Cache();
     $feeds = [
         'Tech' => 'http://feeds.foxnews.com/foxnews/tech',
         //'World'         => 'http://feeds.foxnews.com/foxnews/world',
@@ -76,7 +78,9 @@ function foxnews_shout($links = [])
  */
 function tfreak_shout($links = [])
 {
-    global $site_config, $cache;
+    global $site_config;
+
+$cache = new Cache();
     if ($site_config['autoshout_on'] == 1) {
         include_once INCL_DIR . 'user_functions.php';
         $xml = $cache->get('tfreaknewsrss_');
@@ -134,7 +138,9 @@ function tfreak_shout($links = [])
  */
 function github_shout($links = [])
 {
-    global $site_config, $cache;
+    global $site_config;
+
+$cache = new Cache();
     $feeds = [
         'dev'    => 'https://github.com/darkalchemy/Pu-239/commits/dev.atom',
         'master' => 'https://github.com/darkalchemy/Pu-239/commits/master.atom',

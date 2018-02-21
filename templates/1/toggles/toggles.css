@@ -1,23 +1,23 @@
 .toggle-slide {
-    overflow: hidden;
-    cursor: pointer;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    direction: ltr;
+  overflow: hidden;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  direction: ltr
 }
-
-.toggle-slide .toggle-on, .toggle-slide .toggle-off, .toggle-slide .toggle-blob {
-    float: left;
+.toggle-slide .toggle-blob,
+.toggle-slide .toggle-off,
+.toggle-slide .toggle-on {
+  float: left
 }
-
 .toggle-slide .toggle-blob {
-    position: relative;
-    z-index: 99;
-    cursor: grab;
-    cursor: -moz-grab;
-    cursor: -webkit-grab;
+  position: relative;
+  z-index: 99;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab
 }

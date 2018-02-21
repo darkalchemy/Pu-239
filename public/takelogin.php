@@ -4,7 +4,9 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class_browser.php';
 dbconn();
-global $CURUSER, $site_config, $fluent, $cache;
+global $CURUSER, $site_config, $fluent;
+
+$cache = new Cache();
 
 $session = new Session();
 if (!$CURUSER) {
@@ -68,7 +70,9 @@ if (empty($user_id)) {
  */
 function bark($text = 'Username or password incorrect')
 {
-    global $lang, $cache;
+    global $lang;
+
+$cache = new Cache();
     $sha = hash('sha256', $_SERVER['REMOTE_ADDR']);
     $dict_key = 'dictbreaker_' . $sha;
     $flood = $cache->get($dict_key);
@@ -182,7 +186,8 @@ $values = [
 ];
 
 $cache->set('remember_' . $selector, $values, TIME_NOW + $expires);
-setCookieVar('remember', "$selector:$validator", TIME_NOW + $expires);
+$cookies = new Cookie('remember');
+$cookies->set("$selector:$validator", TIME_NOW + $expires);
 
 if (isset($returnto)) {
     header("Location: {$site_config['baseurl']}" . urldecode($returnto));

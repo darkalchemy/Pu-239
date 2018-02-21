@@ -9,7 +9,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s acaba de entrar no Chat.',
     logout: '%s acaba de sair no Chat.',
     logoutTimeout: '%s desconectou (Tempo esgotado).',
@@ -87,6 +86,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Erro: Falha ao carregar som arquivo (Flash IO Error).',
     errorSocketIO: 'Erro: Conexão para socket servidor falhou (Flash IO Error).',
     errorSocketSecurity: 'Erro: Conexão para socket servidor falhou (Flash Security Error).',
-    errorDOMSyntax: 'Erro: Inválido DOM Syntax (DOM ID: %s).'
-
+    errorDOMSyntax: 'Erro: Inválido DOM Syntax (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

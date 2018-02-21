@@ -9,7 +9,9 @@ function commenttable($rows, $variant = 'torrent')
 {
     require_once INCL_DIR . 'html_functions.php';
     require_once INCL_DIR . 'add_functions.php';
-    global $CURUSER, $site_config, $mood, $cache;
+    global $CURUSER, $site_config, $mood;
+
+$cache = new Cache();
     $lang = load_language('torrenttable_functions');
     $count = 0;
     $variant_options = [

@@ -5,7 +5,9 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'comment_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config;
+
+$cache = new Cache();
 
 $session = new Session();
 $lang = array_merge(load_language('global'), load_language('comment'), load_language('capprove'));

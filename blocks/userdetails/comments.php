@@ -1,5 +1,7 @@
 <?php
-global $CURUSER, $site_config, $cache, $lang;
+global $CURUSER, $site_config, $lang;
+
+$cache = new Cache();
 
 $torrentcomments = $cache->get('torrent_comments_' . $id);
 if ($torrentcomments === false || is_null($torrentcomments)) {

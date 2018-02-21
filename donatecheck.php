@@ -1,7 +1,9 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 dbconn();
-global $site_config, $cache;
+global $site_config;
+
+$cache = new Cache();
 
 //$payment_status = "Completed";//Only uncomment if using sandbox mode
 $donate_goods = [

@@ -1,6 +1,8 @@
 <?php
 require_once INCL_DIR . 'html_functions.php';
-global $cache, $lang, $site_config, $fluent;
+global $lang, $site_config, $fluent;
+
+$cache = new Cache();
 
 $comments = $cache->get('latest_comments_');
 if ($comments === false || is_null($comments)) {

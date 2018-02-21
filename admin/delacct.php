@@ -5,7 +5,9 @@ require_once INCL_DIR . 'password_functions.php';
 require_once INCL_DIR . 'function_account_delete.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $cache, $lang;
+global $CURUSER, $lang;
+
+$cache = new Cache();
 
 $lang = array_merge($lang, load_language('ad_delacct'));
 

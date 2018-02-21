@@ -10,7 +10,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s входит в чат.',
     logout: '%s выходит из чата.',
     logoutTimeout: '%s вышел из чата по таймоуту.',
@@ -67,7 +66,7 @@ var ajaxChatLang = {
     urlDialog: 'Пожалуйста введите адрес (URL) Web-страницы:',
     deleteMessage: 'Удалить сообщение',
     deleteMessageConfirm: 'Вы действительно хотите удалить это сообщение?',
-    errorCookiesRequired: 'Необходимо включить Cookies.',
+    errorCookiesRequired: 'Необходимо включить Cookie.',
     errorUserNameNotFound: 'Ошибка: Пользователь %s не найдет.',
     errorMissingText: 'Ошибка: Отсутствует текст сообщения.',
     errorMissingUserName: 'Ошибка: Отсутствует имя.',
@@ -88,6 +87,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Ошибка: Не получается загрузить звуковой файл (Flash IO Error).',
     errorSocketIO: 'Ошибка: Не удалось открыть сокет (Flash IO Error).',
     errorSocketSecurity: 'Ошибка: Не удалость открыть сокет (Flash Security Error).',
-    errorDOMSyntax: 'Ошибка: Некорректный синтаксис DOM (DOM ID: %s).'
-
+    errorDOMSyntax: 'Ошибка: Некорректный синтаксис DOM (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

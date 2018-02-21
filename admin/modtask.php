@@ -5,7 +5,9 @@ require_once INCL_DIR . 'function_autopost.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 class_check(UC_STAFF);
-global $CURUSER, $site_config, $cache, $lang;
+global $CURUSER, $site_config, $lang;
+
+$cache = new Cache();
 
 $lang = array_merge($lang, load_language('modtask'));
 
@@ -21,7 +23,7 @@ $postkey = PostKey([
  */
 function remove_torrent_pass($torrent_pass)
 {
-    global $cache;
+    $cache = new Cache();
     if (strlen($torrent_pass) != 64 || !bin2hex($torrent_pass)) {
         return false;
     }
@@ -46,7 +48,7 @@ function write_info($text)
  */
 function resize_image($in)
 {
-    global $cache;
+    $cache = new Cache();
     $out = [
         'img_width'  => $in['cur_width'],
         'img_height' => $in['cur_height'],

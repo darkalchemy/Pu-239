@@ -11,9 +11,12 @@ require_once INCL_DIR . 'function_books.php';
 require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_fanart.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $fluent;
+global $CURUSER, $site_config, $fluent;
 
 $session = new Session();
+$cache = new Cache();
+$user = new User();
+
 $lang = array_merge(load_language('global'), load_language('details'));
 $stdhead = [
     'css' => [
@@ -740,7 +743,7 @@ $HTMLOUT .= tr('Report Torrent', "<form action='report.php?type=Torrent&amp;id=$
 
 if ($torrent_cache['rep']) {
     $torrents = array_merge($torrents, $torrent_cache['rep']);
-    $member_reputation = get_reputation(get_user_data($torrents['owner']), 'torrents', $torrents['anonymous'], $id);
+    $member_reputation = get_reputation($user->getUserFromId($torrents['owner']), 'torrents', $torrents['anonymous'], $id);
     $HTMLOUT .= '
             <tr>
                 <td class="rowhead">Reputation</td>

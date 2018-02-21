@@ -8,7 +8,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s logis jutukasse.',
     logout: '%s logis jutukast välja.',
     logoutTimeout: '%s logiti jutukast välja (Aeg otsas).',
@@ -86,6 +85,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Viga: Helifaili ei õnnestunud laadida (Flash IO Viga).',
     errorSocketIO: 'Viga: �hendus socket serveriga ebaõnnestus (Flash IO Viga).',
     errorSocketSecurity: 'Viga: �hendus socket serveriga ebaõnnestus (Flash Turvalisuse Viga).',
-    errorDOMSyntax: 'Viga: Vigane DOM Süntaks (DOM ID: %s).'
-
+    errorDOMSyntax: 'Viga: Vigane DOM Süntaks (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

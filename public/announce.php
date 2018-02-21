@@ -1,7 +1,9 @@
 <?php
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'ann_config.php';
 require_once INCL_DIR . 'ann_functions.php';
-global $site_config, $cache, $fluent;
+global $site_config, $fluent;
+
+$cache = new Cache();
 
 if (isset($_SERVER['HTTP_COOKIE']) || isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
     die("It takes 46 muscles to frown but only 4 to flip 'em the bird.");

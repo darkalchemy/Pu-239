@@ -1,5 +1,7 @@
 <?php
-global $site_config, $cache, $lang, $fluent;
+global $site_config, $lang, $fluent;
+
+$cache = new Cache();
 
 $latestuser = $cache->get('latestuser');
 if ($latestuser === false || is_null($latestuser)) {

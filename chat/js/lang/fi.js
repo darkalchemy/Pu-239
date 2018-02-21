@@ -10,7 +10,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s kirjautui sisään.',
     logout: '%s kirjautui ulos.',
     logoutTimeout: '%s kirjautui ulos (Aikakatkaisu).',
@@ -88,6 +87,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Virhe: Äänitiedoston lataus epäonnistui (Flash IO-virhe).',
     errorSocketIO: 'Virhe: Yhteys socket palvelimeen epäonnistui (Flash IO-virhe).',
     errorSocketSecurity: 'Virhe: Yhteys socket palvelimeen epäonnistui  (Flash-turvallisuus virhe).',
-    errorDOMSyntax: 'Virhe: Virheellinen DOM-syntaksi (DOM-tunniste: %s).'
-
+    errorDOMSyntax: 'Virhe: Virheellinen DOM-syntaksi (DOM-tunniste: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

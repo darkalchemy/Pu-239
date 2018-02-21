@@ -1,5 +1,7 @@
 <?php
-global $CURUSER, $cache, $site_config, $lang, $fluent;
+global $CURUSER, $site_config, $lang, $fluent;
+
+$cache = new Cache();
 
 $news = $cache->get('latest_news_');
 if ($news === false || is_null($news)) {

@@ -1,5 +1,7 @@
 <?php
-global $CURUSER, $site_config, $cache, $lang;
+global $CURUSER, $site_config, $lang;
+
+$cache = new Cache();
 
 $pm_messages = $_POST['pm'];
 if (isset($_POST['move'])) {

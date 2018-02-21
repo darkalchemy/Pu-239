@@ -6,7 +6,9 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 
 header('Content-Type: application/json');
-global $site_config, $cache;
+global $site_config;
+
+$cache = new Cache();
 $session = new Session();
 
 $lang = array_merge(load_language('global'), load_language('index'));

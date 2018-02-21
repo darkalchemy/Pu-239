@@ -4,7 +4,9 @@ global $CURUSER, $lang;
 /** freeleech countdown **/
 function freeleech_countdown()
 {
-    global $CURUSER, $cache, $lang, $site_config;
+    global $CURUSER, $lang, $site_config;
+
+$cache = new Cache();
     $htmlout = $freetitle = '';
     $cimg = '<img src="' . $site_config['pic_baseurl'] . 'cat_free.gif" alt="FREE!" />';
     $freeleech['freeleech_countdown'] = $cache->get('freeleech_countdown');

@@ -9,7 +9,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s prijavljen-a na Klepetu.',
     logout: '%s odjavljen-a iz Klepeta.',
     logoutTimeout: '%s je prijava potekla (Timeout).',
@@ -87,6 +86,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Napaka: ZvoÄŤne datoteke ni bilo mogoÄŤe naloĹľiti (Napaka Flash IO)!',
     errorSocketIO: 'Napaka: Povezava na server ni uspela (Napaka Flash IO)!',
     errorSocketSecurity: 'Napaka: Povezava na server ni uspela (Napaka Flash Security)!',
-    errorDOMSyntax: 'Napaka: Nepopolna DOM Syntaxa (DOM ID: %s).'
-
+    errorDOMSyntax: 'Napaka: Nepopolna DOM Syntaxa (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

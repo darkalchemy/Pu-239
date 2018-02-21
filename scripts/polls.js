@@ -1,13 +1,23 @@
-var open_div = 'poll-box-open';
-var closed_div = 'poll-box-closed';
-var stat_div = 'poll-box-stat';
-var main_div = 'poll-box-main';
-var form_id = 'postingform';
+var open_div = "poll-box-open";
+
+var closed_div = "poll-box-closed";
+
+var stat_div = "poll-box-stat";
+
+var main_div = "poll-box-main";
+
+var form_id = "postingform";
+
 var openobj;
+
 var closedobj;
+
 var formobj;
+
 var statobj;
+
 var mainobj;
+
 var used_questions = 0;
 
 function poll_init_state() {
@@ -42,20 +52,20 @@ function lang_build_string() {
     }
     var string = arguments[0];
     for (var i = 1; i < arguments.length; i++) {
-        var match = new RegExp('<%' + i + '>', 'gi');
+        var match = new RegExp("<%" + i + ">", "gi");
         string = string.replace(match, arguments[i]);
     }
     return string;
 }
 
 function poll_draw_main_box() {
-    var html = '';
+    var html = "";
     used_questions = 0;
     for (var i in poll_questions) {
-        var qhtml = '';
+        var qhtml = "";
         used_questions++;
         var question = poll_questions[i];
-        var this_poll_multi = '';
+        var this_poll_multi = "";
         for (var x in poll_multi) {
             if (x == i) {
                 if (poll_multi[x] == 1) {
@@ -65,16 +75,13 @@ function poll_draw_main_box() {
         }
         var inputhtml = lang_build_string(html_question_box, i, _poll_make_form_safe(question), this_poll_multi);
         qhtml += "\n" + inputhtml + "\n";
-        var choices = '';
+        var choices = "";
         var choices_count = 0;
-        for (
-            var c in poll_choices) {
+        for (var c in poll_choices) {
             var votes_box;
             var id = c.replace(new RegExp("^" + i + "_(\\d+)$"), "$1");
             if (!isNaN(id)) {
-
                 votes_box = lang_build_string(html_votes_box, i, id, poll_votes[c]);
-
                 choices_count++;
                 choices += "\n" + lang_build_string(html_choice_box, i, id, _poll_make_form_safe(poll_choices[c]), votes_box);
             }
@@ -82,7 +89,7 @@ function poll_draw_main_box() {
         if (choices_count < max_poll_choices) {
             choices += lang_build_string(html_add_choice, i);
         }
-        if (choices != '') {
+        if (choices != "") {
             qhtml += "\n" + lang_build_string(html_choice_wrap, choices) + "\n";
         }
         html += lang_build_string(html_question_wrap, qhtml);
@@ -100,24 +107,18 @@ function poll_write_form_to_array() {
     var tmp_poll_multi = {};
     for (var i in poll_questions) {
         try {
-            tmp_poll_questions[i] = document.getElementById('question_' + i).value;
-        }
-        catch (e) {
-        }
+            tmp_poll_questions[i] = document.getElementById("question_" + i).value;
+        } catch (e) {}
     }
     for (var x in poll_multi) {
         try {
-            tmp_poll_multi[x] = document.getElementById('multi_' + x).checked ? 1 : 0;
-        }
-        catch (e) {
-        }
+            tmp_poll_multi[x] = document.getElementById("multi_" + x).checked ? 1 : 0;
+        } catch (e) {}
     }
     for (var c in poll_choices) {
         try {
-            tmp_poll_choices[c] = document.getElementById('choice_' + c).value;
-        }
-        catch (e) {
-        }
+            tmp_poll_choices[c] = document.getElementById("choice_" + c).value;
+        } catch (e) {}
     }
     poll_questions = tmp_poll_questions;
     poll_choices = tmp_poll_choices;
@@ -133,8 +134,8 @@ function poll_add_question() {
     }
     maxid = maxid + 1;
     poll_write_form_to_array();
-    poll_questions[maxid] = '';
-    poll_multi[maxid] = '';
+    poll_questions[maxid] = "";
+    poll_multi[maxid] = "";
     poll_draw_main_box();
     return false;
 }
@@ -151,16 +152,16 @@ function poll_add_choice(qid) {
     }
     maxid = maxid + 1;
     poll_write_form_to_array();
-    poll_choices[qid + '_' + maxid] = '';
-    poll_votes[qid + '_' + maxid] = 0;
+    poll_choices[qid + "_" + maxid] = "";
+    poll_votes[qid + "_" + maxid] = 0;
     poll_draw_main_box();
     return false;
 }
 
 function poll_remove_choice(mainid) {
     if (confirm(js_lang_confirm)) {
-        delete(poll_choices[mainid]);
-        delete(poll_votes[mainid]);
+        delete poll_choices[mainid];
+        delete poll_votes[mainid];
         poll_write_form_to_array();
         poll_draw_main_box();
     }
@@ -169,12 +170,12 @@ function poll_remove_choice(mainid) {
 
 function poll_remove_question(mainid) {
     if (confirm(js_lang_confirm)) {
-        delete(poll_questions[mainid]);
+        delete poll_questions[mainid];
         for (var c in poll_choices) {
             var id = c.replace(new RegExp("^" + mainid + "_(\\d+)$"), "$1");
             if (!isNaN(id)) {
-                delete(poll_choices[c]);
-                delete(poll_votes[c]);
+                delete poll_choices[c];
+                delete poll_votes[c];
             }
         }
         poll_write_form_to_array();
@@ -200,8 +201,8 @@ function close_poll_form() {
 }
 
 function _poll_make_form_safe(t) {
-    t = t.replace(/'/g, '&#039;');
-    t = t.replace(/"/g, '&quot;');
+    t = t.replace(/'/g, "&#039;");
+    t = t.replace(/"/g, "&quot;");
     return t;
 }
 

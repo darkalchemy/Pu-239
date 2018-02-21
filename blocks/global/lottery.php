@@ -1,5 +1,7 @@
 <?php
-global $CURUSER, $site_config, $cache, $fluent;
+global $CURUSER, $site_config, $fluent;
+
+$cache = new Cache();
 
 if ($CURUSER) {
     $lottery_info = $cache->get('lottery_info_');

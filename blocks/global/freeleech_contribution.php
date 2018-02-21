@@ -1,5 +1,7 @@
 <?php
-global $cache, $fluent, $site_config;
+global $fluent, $site_config;
+
+$cache = new Cache();
 
 if (XBT_TRACKER) {
     $htmlout .= "

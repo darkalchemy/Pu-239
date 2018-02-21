@@ -14,32 +14,49 @@ class AJAXChat
 {
     public $db;
 
-    protected $_config;
-    protected $_requestVars;
-    protected $_infoMessages;
-    protected $_channels;
-    protected $_allChannels;
-    protected $_view;
-    protected $_lang;
-    protected $_invitations;
-    protected $_customVars;
-    protected $_sessionNew;
-    protected $_onlineUsersData;
-    protected $_bannedUsersData;
-    protected $_session;
+    protected $_config,
+        $_requestVars,
+        $_infoMessages,
+        $_channels,
+        $_allChannels,
+        $_view,
+        $_lang,
+        $_invitations,
+        $_customVars,
+        $_sessionNew,
+        $_onlineUsersData,
+        $_bannedUsersData,
+        $_session,
+        $_user,
+        $_cache,
+        $_fluent,
+        $_siteConfig;
+
 
     /**
      * AJAXChat constructor.
+     *
+     * @throws Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
      */
     public function __construct()
     {
+        global $site_config;
+
+        $this->_siteConfig = $site_config;
+        $this->_session = new Session();
+        $this->_user = new User();
+        $this->_cache = new Cache();
+        $this->_fluent = new Database();
         $this->initialize();
     }
 
+    /**
+     * @throws Exception
+     */
     public function initialize()
     {
-        $this->_session = new Session();
-
         // Initialize configuration settings:
         $this->initConfig();
 
@@ -59,6 +76,9 @@ class AJAXChat
         $this->_session->close();
     }
 
+    /**
+     *
+     */
     public function initConfig()
     {
         $config = null;
@@ -80,6 +100,9 @@ class AJAXChat
     {
     }
 
+    /**
+     *
+     */
     public function initDataBaseConnection()
     {
         $this->db = new AJAXChatDataBase(
@@ -127,13 +150,16 @@ class AJAXChat
         $this->initCustomRequestVars();
     }
 
+    /**
+     * @throws Exception
+     */
     public function initSession()
     {
         $this->startSession();
 
         if ($this->isLoggedIn()) {
             // Logout if the Session IP is not the same when logged in and ipCheck is enabled:
-            if ($this->getConfig('ipCheck') && ($this->getSessionIP() === null || $this->getSessionIP() != $_SERVER['REMOTE_ADDR'])) {
+            if ($this->getConfig('ipCheck') && ($this->getSessionIP() === null || $this->getSessionIP() != getip())) {
                 $this->logout('IP');
 
                 return;
@@ -144,18 +170,16 @@ class AJAXChat
 
                 return;
             }
-        } elseif ($this->getConfig('forceAutoLogin') || $this->getRequestVar('login') || $this->getRequestVar('userName')) {
+        }
+        if ($this->getConfig('forceAutoLogin') || $this->getRequestVar('login') || $this->getRequestVar('userName')) {
             $this->login();
         }
-
         $this->initView();
-
         if ($this->getView() == 'chat') {
             $this->initChatViewSession();
         } elseif ($this->getView() == 'logs') {
             $this->initLogsViewSession();
         }
-
         if (!$this->getRequestVar('ajax') && !headers_sent()) {
             //$this->setPostDirectionCookie();
         }
@@ -163,6 +187,9 @@ class AJAXChat
         $this->initCustomSession();
     }
 
+    /**
+     * @throws Exception
+     */
     public function startSession()
     {
         $this->_session->start();
@@ -300,11 +327,10 @@ class AJAXChat
      */
     public function getOnlineUsersData($channelIDs = null, $key = null, $value = null)
     {
-        global $fluent;
         if ($this->_onlineUsersData === null) {
             $this->_onlineUsersData = [];
 
-            $sql = $fluent->from($this->getDataBaseTable('online'))
+            $sql = $this->_fluent->from($this->getDataBaseTable('online'))
                 ->select(null)
                 ->select('userID')
                 ->select('userName')
@@ -377,9 +403,7 @@ class AJAXChat
      */
     public function removeFromOnlineList($userID)
     {
-        global $fluent;
-
-        $fluent->deleteFrom($this->getDataBaseTable('online'))
+        $this->_fluent->deleteFrom($this->getDataBaseTable('online'))
             ->where('userID = ?', $this->getUserID())
             ->execute();
 
@@ -449,8 +473,6 @@ class AJAXChat
      */
     public function insertCustomMessage($userID, $userName, $userRole, $channelID, $text, $mode = 0, $ttl = 0)
     {
-        global $fluent;
-
         // The $mode parameter is used for socket updates:
         // 0 = normal messages
         // 1 = channel messages (e.g. login/logout, channel enter/leave, kick)
@@ -476,7 +498,7 @@ class AJAXChat
             'ttl'      => $ttl,
         ];
 
-        $lastInsertId = $fluent->insertInto($this->getDataBaseTable('messages'))
+        $lastInsertId = $this->_fluent->insertInto($this->getDataBaseTable('messages'))
             ->values($values)
             ->execute();
 
@@ -487,7 +509,7 @@ class AJAXChat
             'totalshouts'   => new Envms\FluentPDO\Literal('totalshouts + 1'),
         ];
 
-        $fluent->update('usersachiev')
+        $this->_fluent->update('usersachiev')
             ->set($set)
             ->where('userid = ?', $userID)
             ->execute();
@@ -529,7 +551,8 @@ class AJAXChat
         $channelID,
         $text,
         $mode
-    ) {
+    )
+    {
         // The $mode parameter:
         // 0 = normal messages
         // 1 = channel messages (e.g. login/logout, channel enter/leave, kick)
@@ -613,7 +636,8 @@ class AJAXChat
         $userRole,
         $channelID,
         $text
-    ) {
+    )
+    {
         $message = '<message';
         $message .= ' id="' . $messageID . '"';
         $message .= ' dateTime="' . date('r', $timeStamp) . '"';
@@ -649,6 +673,7 @@ class AJAXChat
         $this->_view = null;
         // "chat" is the default view:
         $view = ($this->getRequestVar('view') === null) ? 'chat' : $this->getRequestVar('view');
+
         if ($this->hasAccessTo($view)) {
             $this->_view = $view;
         }
@@ -753,10 +778,14 @@ class AJAXChat
         return true;
     }
 
+
+    /**
+     * @return bool
+     * @throws Exception
+     */
     public function login()
     {
         $userData = $this->getValidLoginUserData();
-
         if (!$userData) {
             $this->_session->unset('Channel');
             $this->addInfoMessage('errorInvalidUser');
@@ -783,7 +812,7 @@ class AJAXChat
             }
         }
 
-        if ($userData['userRole'] < UC_MAX && $this->isUserBanned($userData['userName'], $userData['userID'], $_SERVER['REMOTE_ADDR'])) {
+        if ($userData['userRole'] < UC_MAX && $this->isUserBanned($userData['userName'], $userData['userID'], getip())) {
             $this->_session->unset('Channel');
             $this->addInfoMessage('errorBanned');
 
@@ -803,12 +832,11 @@ class AJAXChat
         $this->setUserRole($userData['userRole']);
         $this->setLoggedIn(true);
         $this->setLoginTimeStamp(TIME_NOW);
-
-        $this->setSessionIP($_SERVER['REMOTE_ADDR']);
+        $this->setSessionIP(getip());
 
         if ($this->getConfig('socketServerEnabled')) {
             $this->setSocketRegistrationID(
-                md5(uniqid(random_int(), true))
+                md5(uniqid(random_int(1000, 10000), true))
             );
         }
 
@@ -824,9 +852,12 @@ class AJAXChat
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function getValidLoginUserData()
     {
-        userlogin();
+        return userlogin();
     }
 
     /**
@@ -976,13 +1007,11 @@ class AJAXChat
      */
     public function setInactive($userID, $userName)
     {
-        global $fluent;
-
         $set = [
             'dateTime' => gmdate("Y-m-d H:i:s", TIME_NOW - ($this->getConfig('inactiveTimeout') * 60) - 60),
         ];
 
-        $fluent->update($this->getDataBaseTable('online'))
+        $this->_fluent->update($this->getDataBaseTable('online'))
             ->set($set)
             ->where('userId = ?', $userID)
             ->where('userName = ?', $userName)
@@ -991,11 +1020,17 @@ class AJAXChat
         $this->resetOnlineUsersData();
     }
 
+    /**
+     *
+     */
     public function resetOnlineUsersData()
     {
         $this->_onlineUsersData = null;
     }
 
+    /**
+     *
+     */
     public function removeInactive()
     {
         $sql = 'SELECT
@@ -1075,12 +1110,10 @@ class AJAXChat
      */
     public function getBannedUsersData($key = null, $value = null)
     {
-        global $fluent;
-
         if ($this->_bannedUsersData === null) {
             $this->_bannedUsersData = [];
 
-            $res = $fluent->from($this->getDataBaseTable('bans'))
+            $res = $this->_fluent->from($this->getDataBaseTable('bans'))
                 ->select(null)
                 ->select('userID')
                 ->select('userName')
@@ -1183,28 +1216,32 @@ class AJAXChat
         $this->_session->set('SocketRegistrationID', $value);
     }
 
+    /**
+     *
+     */
     public function purgeLogs()
     {
-        global $fluent;
-
-        $fluent->deleteFrom($this->getDataBaseTable('messages'))
+        $this->_fluent->deleteFrom($this->getDataBaseTable('messages'))
             ->where('dateTime < ?', gmdate("Y-m-d H:i:s", TIME_NOW - ($this->getConfig('logsPurgeTimeDiff') * 86400)))
             ->execute();
     }
 
+    /**
+     * @return mixed
+     */
     public function getView()
     {
         return $this->_view;
     }
 
+    /**
+     * @throws Exception
+     */
     public function initChatViewSession()
     {
         if ($this->getChannel() !== null) {
             if (!$this->isUserOnline()) {
-                $this->logout();
-
-                return;
-            }
+                $this->addToOnlineList();            }
             if ($this->getRequestVar('ajax')) {
                 $this->initChannel();
                 $this->updateOnlineStatus();
@@ -1217,6 +1254,9 @@ class AJAXChat
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function initChannel()
     {
         $channelID = $this->getRequestVar('channelID');
@@ -1233,6 +1273,8 @@ class AJAXChat
 
     /**
      * @param $channelName
+     *
+     * @throws Exception
      */
     public function switchChannel($channelName)
     {
@@ -1355,7 +1397,7 @@ class AJAXChat
     /**
      * @param $userName
      *
-     * @return null
+     * @return bool|mixed
      */
     public function getIDFromName($userName)
     {
@@ -1367,6 +1409,11 @@ class AJAXChat
         $userDataArray = $this->getBannedUsersData('userName', $userName);
         if ($userDataArray && isset($userDataArray[0])) {
             return $userDataArray[0]['userID'];
+        }
+
+        $userID = $this->_user->getUserIdFromName($userName);
+        if ($userID) {
+            return $userID;
         }
 
         return null;
@@ -1501,6 +1548,9 @@ class AJAXChat
         return $this->_session->get('SocketRegistrationID');
     }
 
+    /**
+     * @throws Exception
+     */
     public function updateOnlineList()
     {
         $this->addToOnlineList();
@@ -1545,6 +1595,9 @@ class AJAXChat
         return null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function updateOnlineStatus()
     {
         if (!$this->getStatusUpdateTimeStamp() || ((TIME_NOW - $this->getStatusUpdateTimeStamp()) > 50)) {
@@ -1593,9 +1646,13 @@ class AJAXChat
         $this->_session->set('InactiveCheckTimeStamp', $time);
     }
 
+    /**
+     * @throws Exception
+     */
     public function chatViewLogin()
     {
         $this->setChannel($this->getValidRequestChannelID());
+
         $this->addToOnlineList();
 
         $this->addInfoMessage($this->getChannel(), 'channelID');
@@ -1630,10 +1687,11 @@ class AJAXChat
         return $channelID;
     }
 
+    /**
+     * @throws Exception
+     */
     public function addToOnlineList()
     {
-        global $fluent;
-
         $values = [
             'userID'   => $this->getUserID(),
             'userName' => $this->getUserName(),
@@ -1651,13 +1709,13 @@ class AJAXChat
             'ip'       => inet_pton(getip()),
         ];
 
-        $lastInsertID = $fluent->insertInto($this->getDataBaseTable('online'))
+        $lastInsertID = $this->_fluent->insertInto($this->getDataBaseTable('online'))
             ->values($values)
             ->ignore()
             ->execute();
 
         if (!$lastInsertID) {
-            $fluent->update($this->getDataBaseTable('online'))
+            $this->_fluent->update($this->getDataBaseTable('online'))
                 ->set($set)
                 ->where('userID = ?', $this->getUserID())
                 ->execute();
@@ -1673,6 +1731,9 @@ class AJAXChat
         return $this->getChannelNameFromChannelID($this->getChannel());
     }
 
+    /**
+     *
+     */
     public function initLogsViewSession()
     {
         if ($this->getConfig('socketServerEnabled')) {
@@ -1683,6 +1744,9 @@ class AJAXChat
         }
     }
 
+    /**
+     *
+     */
     public function updateLogsViewSocketAuthentication()
     {
         if ($this->getUserRole() < UC_ADMINISTRATOR) {
@@ -1725,6 +1789,9 @@ class AJAXChat
     {
     }
 
+    /**
+     * @throws Exception
+     */
     public function handleRequest()
     {
         if ($this->getRequestVar('ajax')) {
@@ -1741,6 +1808,9 @@ class AJAXChat
         }
     }
 
+    /**
+     *
+     */
     public function parseInfoRequests()
     {
         if ($this->getRequestVar('getInfos')) {
@@ -1806,9 +1876,7 @@ class AJAXChat
      */
     public function deleteMessage($messageID)
     {
-        global $fluent;
-
-        $channel = $fluent->from($this->getDataBaseTable('messages'))
+        $channel = $this->_fluent->from($this->getDataBaseTable('messages'))
             ->select(null)
             ->select('channel')
             ->where('id = ?', $messageID)
@@ -1816,18 +1884,18 @@ class AJAXChat
 
         if (is_int($channel) && $channel >= 0) {
             if ($this->getUserRole() >= UC_ADMINISTRATOR) {
-                $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))
+                $result = $this->_fluent->deleteFrom($this->getDataBaseTable('messages'))
                     ->where('id = ?', $messageID)
                     ->where('(userRole = ? OR userRole < ? OR userID = ?)', AJAX_CHAT_CHATBOT, $this->getUserRole(), $this->getUserID())
                     ->execute();
             } elseif ($this->getUserRole() >= UC_STAFF) {
-                $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))
+                $result = $this->_fluent->deleteFrom($this->getDataBaseTable('messages'))
                     ->where('id = ?', $messageID)
                     ->where('userRole != ?', AJAX_CHAT_CHATBOT)
                     ->where('(userRole < ? OR userID = ?)', UC_STAFF, $this->getUserID())
                     ->execute();
             } elseif ($this->getUserRole() < UC_STAFF && $this->getConfig('allowUserMessageDelete')) {
-                $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))
+                $result = $this->_fluent->deleteFrom($this->getDataBaseTable('messages'))
                     ->where('id = ?', $messageID)
                     ->where('userID = ?', $this->getUserID())
                     ->execute();
@@ -1843,6 +1911,9 @@ class AJAXChat
         return false;
     }
 
+    /**
+     * @throws Exception
+     */
     public function initMessageHandling()
     {
         if ($this->getView() != 'chat') {
@@ -1862,6 +1933,8 @@ class AJAXChat
 
     /**
      * @param $text
+     *
+     * @throws Exception
      */
     public function insertMessage($text)
     {
@@ -1901,6 +1974,7 @@ class AJAXChat
 
     /**
      * @return bool
+     * @throws Exception
      */
     public function floodControl()
     {
@@ -1991,6 +2065,9 @@ class AJAXChat
 
     /**
      * @param $text
+     *
+     * @throws Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
      */
     public function insertParsedMessage($text)
     {
@@ -2119,6 +2196,11 @@ class AJAXChat
         return $this->_session->get('QueryUserName');
     }
 
+    /**
+     * @param $textParts
+     *
+     * @throws Exception
+     */
     public function insertParsedMessageJoin($textParts)
     {
         if (count($textParts) == 1) {
@@ -2137,6 +2219,8 @@ class AJAXChat
 
     /**
      * @param $textParts
+     *
+     * @throws Exception
      */
     public function insertParsedMessagePrivMsg($textParts)
     {
@@ -2204,6 +2288,8 @@ class AJAXChat
 
     /**
      * @param $textParts
+     *
+     * @throws Exception
      */
     public function insertParsedMessageInvite($textParts)
     {
@@ -2266,15 +2352,15 @@ class AJAXChat
 
     public function removeExpiredInvitations()
     {
-        global $fluent;
-
-        $fluent->deleteFrom($this->getDataBaseTable('invitations'))
+        $this->_fluent->deleteFrom($this->getDataBaseTable('invitations'))
             ->where('DATE_SUB(NOW(), INTERVAL 1 DAY) > dateTime')
             ->execute();
     }
 
     /**
      * @param $textParts
+     *
+     * @throws Exception
      */
     public function insertParsedMessageUninvite($textParts)
     {
@@ -2318,16 +2404,19 @@ class AJAXChat
      */
     public function removeInvitation($userID, $channelID = null)
     {
-        global $fluent;
-
         $channelID = ($channelID === null) ? $this->getChannel() : $channelID;
 
-        $fluent->deleteFrom($this->getDataBaseTable('invitations'))
+        $this->_fluent->deleteFrom($this->getDataBaseTable('invitations'))
             ->where('userID = ?', $userID)
             ->where('channel = ?', $channelID)
             ->execute();
     }
 
+    /**
+     * @param $textParts
+     *
+     * @throws Exception
+     */
     public function insertParsedMessageQuery($textParts)
     {
         if ($this->isAllowedToSendPrivateMessage()) {
@@ -2377,6 +2466,11 @@ class AJAXChat
         $this->_session->set('QueryUserName', $userName);
     }
 
+    /**
+     * @param $textParts
+     *
+     * @throws Exception
+     */
     public function insertParsedMessageKick($textParts)
     {
         if ($this->getUserRole() >= UC_STAFF) {
@@ -2539,15 +2633,15 @@ class AJAXChat
 
     public function removeExpiredBans()
     {
-        global $fluent;
-
-        $fluent->deleteFrom($this->getDataBaseTable('bans'))
+        $this->_fluent->deleteFrom($this->getDataBaseTable('bans'))
             ->where('dateTime < NOW()')
             ->execute();
     }
 
     /**
      * @param $textParts
+     *
+     * @throws Exception
      */
     public function insertParsedMessageBans($textParts)
     {
@@ -2583,6 +2677,8 @@ class AJAXChat
 
     /**
      * @param $textParts
+     *
+     * @throws Exception
      */
     public function insertParsedMessageUnban($textParts)
     {
@@ -2620,15 +2716,15 @@ class AJAXChat
      */
     public function unbanUser($userName)
     {
-        global $fluent;
-
-        $fluent->deleteFrom($this->getDataBaseTable('bans'))
+        $this->_fluent->deleteFrom($this->getDataBaseTable('bans'))
             ->where('userName = ?', $userName)
             ->execute();
     }
 
     /**
      * @param $textParts
+     *
+     * @throws Exception
      */
     public function insertParsedMessageAction($textParts)
     {
@@ -2654,6 +2750,8 @@ class AJAXChat
 
     /**
      * @param $textParts
+     *
+     * @throws Exception
      */
     public function insertParsedMessageWho($textParts)
     {
@@ -2726,6 +2824,8 @@ class AJAXChat
 
     /**
      * @param $textParts
+     *
+     * @throws Exception
      */
     public function insertParsedMessageList($textParts)
     {
@@ -2755,6 +2855,8 @@ class AJAXChat
 
     /**
      * @param $textParts
+     *
+     * @throws Exception
      */
     public function insertParsedMessageWhereis($textParts)
     {
@@ -2794,6 +2896,8 @@ class AJAXChat
 
     /**
      * @param $textParts
+     *
+     * @throws Exception
      */
     public function insertParsedMessageWhois($textParts)
     {
@@ -2827,6 +2931,8 @@ class AJAXChat
 
     /**
      * @param $textParts
+     *
+     * @throws Exception
      */
     public function insertParsedMessageRoll($textParts)
     {
@@ -2860,6 +2966,7 @@ class AJAXChat
      * @param $sides
      *
      * @return int
+     * @throws Exception
      */
     public function rollDice($sides)
     {
@@ -2868,6 +2975,8 @@ class AJAXChat
 
     /**
      * @param $textParts
+     *
+     * @throws Exception
      */
     public function insertParsedMessageNick($textParts)
     {
@@ -2921,12 +3030,16 @@ class AJAXChat
         }
     }
 
+    /**
+     * @param $textParts
+     *
+     * @throws Exception
+     */
     public function insertParsedMessageCasino($textParts)
     {
-        global $site_config;
         $res = sql_query("SELECT COUNT(*) AS count FROM blackjack WHERE status = 'waiting'") or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_row($res);
-        $msg = '[color=#00FF00]' . $row[0] . ' game' . plural($row[0]) . ' of [url=' . $site_config['baseurl'] . '/games.php]BlackJack[/url] waiting to be played.[/color] ';
+        $msg = '[color=#00FF00]' . $row[0] . ' game' . plural($row[0]) . ' of [url=' . $this->_siteConfig['baseurl'] . '/games.php]BlackJack[/url] waiting to be played.[/color] ';
 
         $res = sql_query("SELECT COUNT(*) AS count, SUM(amount) AS amount FROM casino_bets WHERE winner = ''") or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_row($res);
@@ -2934,7 +3047,7 @@ class AJAXChat
         if (!$row) {
             $msg .= '[color=#00FF00]There are no Casino bets in play. [/color]';
         } else {
-            $msg .= '[color=#00FF00]' . $row[0] . ' bet' . plural(count($row[0])) . ' in the [url=' . $site_config['baseurl'] . '/casino.php]Casino[/url] for ' . mksize($row[1]) . '. [/color]';
+            $msg .= '[color=#00FF00]' . $row[0] . ' bet' . plural(count($row[0])) . ' in the [url=' . $this->_siteConfig['baseurl'] . '/casino.php]Casino[/url] for ' . mksize($row[1]) . '. [/color]';
         }
 
         unset($row);
@@ -2959,13 +3072,13 @@ class AJAXChat
         $res = sql_query('SELECT SUM(win) FROM casino') or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_row($res);
         if ($row) {
-            $msg .= '[color=#00FF00]' . mksize($row[0]) . ' have been won (and lost) in the [url=' . $site_config['baseurl'] . '/casino.php]Casino[/url].[/color] ';
+            $msg .= '[color=#00FF00]' . mksize($row[0]) . ' have been won (and lost) in the [url=' . $this->_siteConfig['baseurl'] . '/casino.php]Casino[/url].[/color] ';
         }
 
         $resbj = sql_query('SELECT SUM(bjwins) FROM users') or sqlerr(__FILE__, __LINE__);
         $bjsum = mysqli_fetch_row($resbj);
         if ($bjsum) {
-            $msg .= '[color=#00FF00]' . mksize($bjsum[0] * 1024 * 1024 * 1024) . ' have been won (and lost) at the [url=' . $site_config['baseurl'] . '/games.php]BlackJack[/url] tables.[/color]';
+            $msg .= '[color=#00FF00]' . mksize($bjsum[0] * 1024 * 1024 * 1024) . ' have been won (and lost) at the [url=' . $this->_siteConfig['baseurl'] . '/games.php]BlackJack[/url] tables.[/color]';
         }
 
         $type = null;
@@ -2978,9 +3091,13 @@ class AJAXChat
         );
     }
 
+    /**
+     * @param $textParts
+     *
+     * @throws Exception
+     */
     public function insertParsedMessageStats($textParts)
     {
-        global $site_config;
         if (count($textParts) == 1) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
@@ -3050,7 +3167,7 @@ class AJAXChat
                 } else {
                     $connectable = '[color=#CC0000]' . number_format($connectyes / $seeder * 100) . '%[/color]';
                 }
-                $bpt = $site_config['bonus_per_duration'];
+                $bpt = $this->_siteConfig['bonus_per_duration'];
                 $sql = 'SELECT COUNT(*)
                         FROM snatched AS s INNER JOIN users AS u ON u.id = s.userid
                         INNER JOIN torrents t ON s.torrentid = t.id
@@ -3066,14 +3183,14 @@ class AJAXChat
                 $seedsize = get_one_row('peers AS p INNER JOIN torrents AS t ON t.id = p.torrent', 'SUM(t.size)', "WHERE p.seeder = 'yes' AND p.connectable = 'yes' AND p.userid = " . $whereisUserID);
                 $volume = '[color=#00FF00]' . human_filesize($seedsize) . '[/color]';
                 $whereisRoleClass = get_user_class_name($stats['class'], true);
-                $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . '][url=' . $site_config['baseurl'] . '/userdetails.php?id=' . $whereisUserID . '&hit=1]' . $stats['username'] . '[/url][/' . $whereisRoleClass . ']' : '@' . $textParts[1];
+                $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . '][url=' . $this->_siteConfig['baseurl'] . '/userdetails.php?id=' . $whereisUserID . '&hit=1]' . $stats['username'] . '[/url][/' . $whereisRoleClass . ']' : '@' . $textParts[1];
                 $str = '';
-                $str .= (isset($stats['donor']) && $stats['donor'] === 'yes' && isset($stats['show_donor']) && $stats['show_donor'] === 'yes' ? '[img]' . $site_config['baseurl'] . '/pic/star.png[/img]' : '');
-                $str .= (isset($stats['warned']) && $stats['warned'] >= 1 ? '[img]' . $site_config['baseurl'] . '/pic/alertred.png[/img]' : '');
-                $str .= (isset($stats['leechwarn']) && $stats['leechwarn'] >= 1 ? '[img]' . $site_config['baseurl'] . '/pic/alertblue.png[/img]' : '');
-                $str .= (isset($stats['enabled']) && $stats['enabled'] != 'yes' ? '[img]' . $site_config['baseurl'] . '/pic/disabled.gif[/img]' : '');
-                $str .= (isset($stats['chatpost']) && $stats['chatpost'] == 0 ? '[img]' . $site_config['baseurl'] . '/pic/warned.png[/img]' : '');
-                $str .= (isset($stats['pirate']) && $stats['pirate'] >= TIME_NOW ? '[img]' . $site_config['baseurl'] . '/pic/pirate.png[/img]' : '');
+                $str .= (isset($stats['donor']) && $stats['donor'] === 'yes' && isset($stats['show_donor']) && $stats['show_donor'] === 'yes' ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/star.png[/img]' : '');
+                $str .= (isset($stats['warned']) && $stats['warned'] >= 1 ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/alertred.png[/img]' : '');
+                $str .= (isset($stats['leechwarn']) && $stats['leechwarn'] >= 1 ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/alertblue.png[/img]' : '');
+                $str .= (isset($stats['enabled']) && $stats['enabled'] != 'yes' ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/disabled.gif[/img]' : '');
+                $str .= (isset($stats['chatpost']) && $stats['chatpost'] == 0 ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/warned.png[/img]' : '');
+                $str .= (isset($stats['pirate']) && $stats['pirate'] >= TIME_NOW ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/pirate.png[/img]' : '');
 
                 $text = "$userNameClass{$str}: [color=#fff]User Class:[/color] [$whereisRoleClass]{$userClass}[/$whereisRoleClass]$enabled
 [color=#fff]idling in irc for:[/color]  {$ircidle}, [color=#fff]Member Since:[/color]  $joined, [color=#fff]Last Seen:[/color]  $seen, [color=#fff]Downloaded:[/color]  $downloaded, [color=#fff]Uploaded:[/color]  $uploaded, [color=#fff]Ratio:[/color]  $ratio, [color=#fff]Seedbonus:[/color]  $seedbonus, [color=#fff]Invites:[/color]  $invites, [color=#fff]Reputation:[/color]  $reputation, [color=#fff]HnRs:[/color]  $hnrs, [color=#fff]Snatched:[/color]  $snatched, [color=#fff]Seeding:[/color]  $seeding, [color=#fff]Seeding Size:[/color]  $volume, [color=#fff]Leeching:[/color]  $leeching, [color=#fff]Requirements Not Met:[/color]  $count_incomplete, [color=#fff]Connectable:[/color]  $connectable, [color=#fff]Uploads:[/color]  $uploads, [color=#fff]Earning Bonus:[/color]  $earns, [color=#fff]Casino:[/color]  $casino, [color=#fff]Blackjack:[/color]  $bj, [color=#fff]Freeleech Until:[/color]  $free, [color=#fff]DoubleUp Until:[/color]  $double, [color=#fff]Free/Double Slots:[/color]  $freeslots";
@@ -3087,6 +3204,12 @@ class AJAXChat
         }
     }
 
+    /**
+     * @param $textParts
+     *
+     * @return bool
+     * @throws Exception
+     */
     public function insertParsedMessageSeen($textParts)
     {
         if (count($textParts) == 1) {
@@ -3098,32 +3221,30 @@ class AJAXChat
             return false;
         } else {
             $userName = $textParts[1];
-            $res = sql_query('SELECT username FROM users WHERE username = ' . sqlesc($userName)) or sqlerr(__FILE__, __LINE__);
-            $quick = mysqli_fetch_array($res);
-            if (empty($quick['username'])) {
+            $userID = $this->getIDFromName($userName);
+            if (!$userID) {
                 $this->insertChatBotMessage(
                     $this->getPrivateMessageID(),
-                    '/error InvalidUserName'
+                    '/error UserNameNotFound' . $userName
                 );
 
                 return false;
             }
-            $userName = $quick['username'];
-            $whereisUserID = $this->getIDFromName($textParts[1]);
-            $whereisRoleClass = get_user_class_name($this->getRoleFromID($whereisUserID), true);
-            $user = '[' . $whereisRoleClass . ']' . $userName . '[/' . $whereisRoleClass . ']';
-            $res = sql_query('SELECT dateTime, text FROM ajax_chat_messages WHERE userName = ' . sqlesc($userName) . ' AND channel = 0 ORDER BY id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
-            $seen = mysqli_fetch_array($res);
+
+            $user_data = $this->_user->getUserFromId($userID);
+            $isRoleClass = get_user_class_name($user_data['class'], true);
+            $user = '[' . $isRoleClass . ']' . $userName . '[/' . $isRoleClass . ']';
+            $seen = $this->_fluent->from($this->getDataBaseTable('messages'))
+                ->select('UNIX_TIMESTAMP(dateTime) AS dateTime')
+                ->where('userID = ?', $userID)
+                ->where('channel = 0')
+                ->orderBy('id DESC')
+                ->limit(1)
+                ->fetch();
+
             if ($seen) {
-                $gender = get_one_row('users', 'gender', 'WHERE id = ' . sqlesc($whereisUserID));
-                if ($gender === 'Male') {
-                    $it = 'he';
-                } elseif ($gender === 'Female') {
-                    $it = 'she';
-                } else {
-                    $it = 'it';
-                }
-                $msg = "$user was last seen " . $seen['dateTime'] . ", where $it said: [quote]" . $seen['text'] . '[/quote]';
+                $gender = $user_data['it'];
+                $msg = "$user was last seen " . get_date($seen['dateTime'], '') . ", where $gender said: [quote]" . $seen['text'] . '[/quote]';
             } else {
                 $msg = "$user has not been seen in many days.";
             }
@@ -3138,11 +3259,15 @@ class AJAXChat
         }
     }
 
+    /**
+     * @param $textParts
+     *
+     * @throws Exception
+     */
     public function insertParsedMessageMentions($textParts)
     {
-        global $CURUSER;
-        $userName = $CURUSER['username'];
-        $whereisUserID = $CURUSER['id'];
+        $userName = $this->getUserName();
+        $whereisUserID = $this->getUserID();
         $whereisRoleClass = get_user_class_name($this->getRoleFromID($whereisUserID), true);
         $user = '[' . $whereisRoleClass . ']' . $userName . '[/' . $whereisRoleClass . ']';
 
@@ -3177,9 +3302,15 @@ class AJAXChat
         );
     }
 
+    /**
+     * @param $textParts
+     *
+     * @return bool
+     * @throws Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+     */
     public function insertParsedMessageRep($textParts)
     {
-        global $CURUSER, $site_config, $cache;
         if (count($textParts) == 1) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
@@ -3187,7 +3318,9 @@ class AJAXChat
             );
 
             return false;
-        } elseif (count($textParts) == 2 || !is_numeric($textParts[2]) || $textParts[2] <= 0) {
+        }
+
+        if (count($textParts) == 2 || !is_numeric($textParts[2]) || $textParts[2] <= 0) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
                 '/error NotInteger'
@@ -3195,11 +3328,21 @@ class AJAXChat
 
             return false;
         }
-        $gift = number_format($textParts[2]);
-        $sql = sql_query('SELECT reputation FROM users WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-        $res = mysqli_fetch_row($sql);
-        $fromrep = $res[0];
-        if ((int)$textParts[2] > (int)$fromrep) {
+
+        $toUserID = (int)$this->getIDFromName($textParts[1]);
+        if (!$toUserID) {
+            $this->insertChatBotMessage(
+                $this->getPrivateMessageID(),
+                '/error UserNameNotFound' . $textParts[1]
+            );
+
+            return false;
+        }
+
+        $gift = $textParts[2];
+        $cur_user_data = $this->_user->getUserFromId($this->getUserID());
+        $fromrep = $cur_user_data['reputation'];
+        if ((int)$gift > (int)$fromrep) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
                 '/error NotEnoughRep'
@@ -3207,42 +3350,24 @@ class AJAXChat
 
             return false;
         }
-        $userName = $textParts[1];
-        $whereisUserID = $this->getIDFromName($textParts[1]);
-        $whereisRoleClass = get_user_class_name($this->getRoleFromID($whereisUserID), true);
-        $user = '[' . $whereisRoleClass . ']' . $userName . '[/' . $whereisRoleClass . ']';
-        $gift = $textParts[2];
-        $text = $user . ' has been given ' . number_format($gift) . ' Reputation Points from ' . $CURUSER['username'] . '.';
-        $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . " - given reputation gift of $gift by " . $CURUSER['username'] . '.';
-        $recbonus = get_one_row('users', 'reputation', 'WHERE username = ' . sqlesc($userName));
-        if (sql_query("UPDATE users SET reputation = reputation - $gift WHERE id = " . sqlesc($CURUSER['id']))) {
-            sql_query("UPDATE users SET reputation = reputation + $gift, bonuscomment = CONCAT(" . sqlesc($bonuscomment) . ",'\n',IFNULL(bonuscomment,'')) WHERE username = " . sqlesc($userName)) or sqlerr(__FILE__, __LINE__);
-            // receiver
-            $cache->update_row('user' . $whereisUserID, [
-                'reputation' => $recbonus + $gift,
-            ], $site_config['expires']['user_cache']);
-            // giver
-            $cache->update_row('user' . $CURUSER['id'], [
-                'reputation' => $fromrep - $gift,
-            ], $site_config['expires']['user_cache']);
 
-            $cache->delete('user_rep_' . $whereisUserID);
-            $save = [
-                'reputation' => sqlesc($gift),
-                'whoadded'   => sqlesc($CURUSER['id']),
-                'reason'     => sqlesc('AJAX Chat'),
-                'dateadd'    => time(),
-                'locale'     => sqlesc('torrents'),
-                'postid'     => 0,
-                'userid'     => sqlesc($whereisUserID),
-            ];
-            $sql = 'INSERT INTO reputation (' . implode(', ', array_keys($save)) . ') VALUES (' . implode(', ', $save) . ')';
-            sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        $toRoleClass = get_user_class_name($this->getRoleFromID($toUserID), true);
+        $user = '[' . $toRoleClass . ']' . $textParts[1] . '[/' . $toRoleClass . ']';
+        $text = $user . ' has been given ' . number_format($gift) . ' Reputation Points from ' . $cur_user_data['username'] . '.';
+        $user_data = $this->_user->getUserFromId($toUserID);
+        $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . " - given reputation gift of $gift by " . $cur_user_data['username'] . ".\n" . $user_data['bonuscomment'];
+        $recrep = $user_data['reputation'];
+
+        if ($this->_user->update($cur_user_data['id'], ['reputation' => $fromrep - $gift])) {
+            $this->_user->update($toUserID, [
+                'reputation'   => $recrep + $gift,
+                'bonuscomment' => $bonuscomment,
+            ]);
+
             $this->insertChatBotMessage(
                 $this->getChannel(),
                 $text,
-                1,
-                600
+                1
             );
         } else {
             $this->insertChatBotMessage(
@@ -3252,9 +3377,15 @@ class AJAXChat
         }
     }
 
+    /**
+     * @param $textParts
+     *
+     * @return bool
+     * @throws Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+     */
     public function insertParsedMessageGift($textParts)
     {
-        global $CURUSER, $cache, $site_config;
         if (count($textParts) == 1) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
@@ -3262,7 +3393,9 @@ class AJAXChat
             );
 
             return false;
-        } elseif (count($textParts) == 2 || !is_numeric($textParts[2]) || $textParts[2] <= 0) {
+        }
+
+        if (count($textParts) == 2 || !is_numeric($textParts[2]) || $textParts[2] <= 0) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
                 '/error NotInteger'
@@ -3270,10 +3403,22 @@ class AJAXChat
 
             return false;
         }
-        $gift = number_format($textParts[2]);
-        $cur_user_data = get_user_data($CURUSER['id']);
+
+        $toUserID = (int)$this->getIDFromName($textParts[1]);
+        if (!$toUserID) {
+            $this->insertChatBotMessage(
+                $this->getPrivateMessageID(),
+                '/error UserNameNotFound' . $textParts[1]
+            );
+
+            return false;
+        }
+
+        $gift = $textParts[2];
+        $cur_user_data = $this->_user->getUserFromId($this->getUserID());
+
         $frombonus = $cur_user_data['seedbonus'];
-        if ((int)$textParts[2] > (int)$frombonus) {
+        if ((int)$gift > (int)$frombonus) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
                 '/error NotEnoughKarma'
@@ -3281,24 +3426,19 @@ class AJAXChat
 
             return false;
         }
-        $userName = $textParts[1];
-        $whereisUserID = $this->getIDFromName($textParts[1]);
-        $whereisRoleClass = get_user_class_name($this->getRoleFromID($whereisUserID), true);
-        $user = '[' . $whereisRoleClass . ']' . $userName . '[/' . $whereisRoleClass . ']';
-        $text = $user . ' has been given a Karma gift of ' . number_format($gift) . ' points from ' . $CURUSER['username'] . '.';
-        $user_data = get_user_data($whereisUserID);
-        $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . " - given karma gift of $gift by " . $CURUSER['username'] . ".\n" . $user_data['bonuscomment'];
+
+        $toRoleClass = get_user_class_name($this->getRoleFromID($toUserID), true);
+        $user = '[' . $toRoleClass . ']' . $textParts[1] . '[/' . $toRoleClass . ']';
+        $text = $user . ' has been given a Karma gift of ' . number_format($gift) . ' points from ' . $cur_user_data['username'] . '.';
+        $user_data = $this->_user->getUserFromId($toUserID);
+        $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . " - given karma gift of $gift by " . $cur_user_data['username'] . ".\n" . $user_data['bonuscomment'];
         $recbonus = $user_data['seedbonus'];
 
-        if (sql_query("UPDATE users SET seedbonus = seedbonus - $gift WHERE id = " . sqlesc($CURUSER['id']))) {
-            sql_query("UPDATE users SET seedbonus = seedbonus + $gift, bonuscomment = " . sqlesc($bonuscomment) . " WHERE id = " . sqlesc($whereisUserID)) or sqlerr(__FILE__, __LINE__);
-            $cache->update_row('user' . $whereisUserID, [
+        if ($this->_user->update($cur_user_data['id'], ['seedbonus' => $frombonus - $gift])) {
+            $this->_user->update($toUserID, [
                 'seedbonus'    => $recbonus + $gift,
                 'bonuscomment' => $bonuscomment,
-            ], $site_config['expires']['user_cache']);
-            $cache->update_row('user' . $CURUSER['id'], [
-                'seedbonus' => $frombonus - $gift,
-            ], $site_config['expires']['user_cache']);
+            ]);
 
             $this->insertChatBotMessage(
                 $this->getChannel(),
@@ -3767,6 +3907,9 @@ class AJAXChat
         return $xml;
     }
 
+    /**
+     *
+     */
     public function sendXHTMLContent()
     {
         $httpHeader = new AJAXChatHTTPHeader($this->getConfig('contentEncoding'), $this->getConfig('contentType'));

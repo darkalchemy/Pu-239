@@ -9,7 +9,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s เข้าสู่ห้องแชท',
     logout: '%s ออกจากห้องแชท',
     logoutTimeout: '%s ออกจากห้องแชทแล้ว (Timeout).',
@@ -87,6 +86,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Error: โหลดไฟล์เสียงผิดพลาด (อาจเกิดจาก Flash IO Error, โปรแกรมช่วยดาวน์โหลด).',
     errorSocketIO: 'Error: การเชื่อมต่อถึง socket เซิร์ฟเวอร์ผิดพลาด (อาจเกิดจาก Flash IO Error).',
     errorSocketSecurity: 'Error: การเชื่อมต่อถึง socket เซิร์ฟเวอร์ผิดพลาด (Flash Security Error).',
-    errorDOMSyntax: 'Error: DOM Syntax ไม่ถูกต้อง (DOM ID: %s).'
-
+    errorDOMSyntax: 'Error: DOM Syntax ไม่ถูกต้อง (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

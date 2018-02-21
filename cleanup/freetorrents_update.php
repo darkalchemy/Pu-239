@@ -8,7 +8,9 @@
  */
 function freetorrents_update($data)
 {
-    global $site_config, $queries, $cache, $fluent;
+    global $site_config, $queries, $fluent;
+
+$cache = new Cache();
 
     set_time_limit(1200);
     ignore_user_abort(true);

@@ -11,10 +11,10 @@
 function stdhead($title = '', $stdhead = null)
 {
     require_once INCL_DIR . 'bbcode_functions.php';
-    global $CURUSER, $site_config, $lang, $free, $querytime, $cache, $BLOCKS, $CURBLOCK, $mood;
+    global $CURUSER, $site_config, $lang, $free, $querytime, $BLOCKS, $CURBLOCK, $mood;
+
     $session = new Session();
 
-    $session->unset('Channel');
     if (!$site_config['site_online']) {
         die('Site is down for maintenance, please check back again later... thanks<br>');
     }
@@ -159,12 +159,16 @@ function stdhead($title = '', $stdhead = null)
  * @param bool $stdfoot
  *
  * @return string
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function stdfoot($stdfoot = false)
 {
     require_once INCL_DIR . 'bbcode_functions.php';
-    global $CURUSER, $site_config, $start, $query_stat, $cache, $querytime, $lang;
-$session = new Session();
+    global $CURUSER, $site_config, $start, $query_stat, $querytime, $lang;
+
+    $cache = new Cache();
+    $session = new Session();
 
     $header = $uptime = $htmlfoot = '';
     $debug = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
@@ -278,21 +282,21 @@ $session = new Session();
         <i class='icon-angle-circled-up' style='font-size:48px'></i>
     </a>
     <script>
-        var cookie_prefix   = '{$site_config['cookie_prefix']}';
-        var cookie_path     = '{$site_config['cookie_path']}';
-        var cookie_lifetime = '{$site_config['cookie_lifetime']}';
-        var cookie_domain   = '{$site_config['cookie_domain']}';
-        var csrf_token      = '" . $session->get('csrf_token') . "';
-        var x = document.getElementsByClassName('flipper');
-        var i;
+        let cookie_prefix   = '{$site_config['cookie_prefix']}';
+        let cookie_path     = '{$site_config['cookie_path']}';
+        let cookie_lifetime = '{$site_config['cookie_lifetime']}';
+        let cookie_domain   = '{$site_config['cookie_domain']}';
+        let csrf_token      = '" . $session->get('csrf_token') . "';
+        let x = document.getElementsByClassName('flipper');
+        let i;
         for (i = 0; i < x.length; i++) {
-            var id = x[i].parentNode.id;
-            var el = document.getElementById(id);
+            let id = x[i].parentNode.id;
+            let el = document.getElementById(id);
             if (id && localStorage[id] === 'closed') {
                 el.classList.add('no-margin');
                 el.classList.add('no-padding');
-                var nextSibling = x[i].nextSibling;
-                while (nextSibling && nextSibling.nodeType != 1) {
+                let nextSibling = x[i].nextSibling, child;
+                while (nextSibling && nextSibling.nodeType !== 1) {
                     nextSibling = nextSibling.nextSibling;
                 }
                 nextSibling.style.display = 'none';
@@ -300,8 +304,8 @@ $session = new Session();
                 child.classList.add('icon-down-open');
                 child.classList.remove('icon-up-open');
             } else if (id && localStorage[id] === 'open') {
-                var nextSibling = x[i].nextSibling;
-                while (nextSibling && nextSibling.nodeType != 1) {
+                let nextSibling = x[i].nextSibling, child;
+                while (nextSibling && nextSibling.nodeType !== 1) {
                     nextSibling = nextSibling.nextSibling;
                 }
                 nextSibling.style.display = 'block';
@@ -312,8 +316,8 @@ $session = new Session();
                 if (el && document.getElementById(el.children[0]) && document.getElementById(el.children[0].children[0]) && el.children[0].children[0].className === 'fa icon-down-open') {
                     el.classList.add('no-margin');
                     el.classList.add('no-padding');
-                    var nextSibling = x[i].nextSibling;
-                    while (nextSibling && nextSibling.nodeType != 1) {
+                    let nextSibling = x[i].nextSibling;
+                    while (nextSibling && nextSibling.nodeType !== 1) {
                         nextSibling = nextSibling.nextSibling;
                     }
                     nextSibling.style.display = 'none';
@@ -388,7 +392,9 @@ function StatusBar()
  */
 function navbar()
 {
-    global $site_config, $CURUSER, $lang, $cache, $fluent;
+    global $site_config, $CURUSER, $lang, $fluent;
+
+    $cache = new Cache();
     $navbar = $panel = $user_panel = $settings_panel = $stats_panel = $other_panel = '';
 
     if ($CURUSER['class'] >= UC_STAFF) {

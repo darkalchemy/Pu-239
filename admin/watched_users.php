@@ -6,7 +6,9 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $cache, $lang;
+global $CURUSER, $site_config, $lang;
+
+$cache = new Cache();
 
 $lang = array_merge($lang, load_language('ad_watchedusers'));
 $stdfoot = [

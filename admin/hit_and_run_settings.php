@@ -2,7 +2,9 @@
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang, $cache;
+global $site_config, $lang;
+
+$cache = new Cache();
 
 $session = new Session();
 $lang = array_merge($lang, load_language('ad_hit_and_run_settings'));

@@ -2,7 +2,7 @@
 
 function getTVImagesByImdb($thetvdb_id, $type = 'showbackground', $season = 0)
 {
-    global $cache;
+    $cache = new Cache();
 
     $types = [
         'showbackground',
@@ -61,7 +61,7 @@ function getTVImagesByImdb($thetvdb_id, $type = 'showbackground', $season = 0)
  */
 function getMovieImagesByImdb($imdb, $type = 'moviebackground')
 {
-    global $cache;
+    $cache = new Cache();
 
     $types = [
         'moviebackground',

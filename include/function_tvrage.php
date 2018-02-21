@@ -46,7 +46,9 @@ function tvrage_format($tvrage_data, $tvrage_type)
  */
 function tvrage(&$torrents)
 {
-    global $cache, $site_config;
+    global $site_config;
+
+$cache = new Cache();
     $tvrage_data = '';
     $row_update = [];
     if (preg_match("/^(.*)S(\d+)(E(\d+))?/", $torrents['name'], $tmp)) {

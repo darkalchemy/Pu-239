@@ -9,7 +9,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s заходить до Чату.',
     logout: '%s виходить з Чату.',
     logoutTimeout: '%s залишає чат (був неактивний).',
@@ -66,7 +65,7 @@ var ajaxChatLang = {
     urlDialog: 'Будь-ласка, введіть адресу веб-сторінки:',
     deleteMessage: 'Видалити це повідомлення',
     deleteMessageConfirm: 'Справді видалити це повідомлення?',
-    errorCookiesRequired: 'Для Чату необхідно дозволити Cookies.',
+    errorCookiesRequired: 'Для Чату необхідно дозволити Cookie.',
     errorUserNameNotFound: 'Помилка: користувач %s не існує.',
     errorMissingText: 'Помилка: повідомлення відсутнє.',
     errorMissingUserName: 'Помилка: відсутнє ім\'я користувача.',
@@ -87,6 +86,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Помилка: Неможливо відкрити звуковий файл (Flash IO Error).',
     errorSocketIO: 'Помилка: З\'єднання з сервером невдалося (Flash IO Error).',
     errorSocketSecurity: 'Помилка: З\'єднання з сервером невдалося (Flash Security Error).',
-    errorDOMSyntax: 'Помилка: Invalid DOM Syntax (DOM ID: %s).'
-
+    errorDOMSyntax: 'Помилка: Invalid DOM Syntax (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

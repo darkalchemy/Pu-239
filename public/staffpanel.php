@@ -3,7 +3,9 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $cache, $site_config, $CURUSER;
+global $site_config, $CURUSER;
+
+$cache = new Cache();
 
 $session = new Session();
 $HTMLOUT = '';

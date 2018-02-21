@@ -2,7 +2,9 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 check_user_status();
 $lang = load_language('global');
-global $CURUSER, $cache, $site_config;
+global $CURUSER, $site_config;
+
+$cache = new Cache();
 
 $sid = 1;
 if ($sid > 0 && $sid != $CURUSER['id']) {

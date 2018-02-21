@@ -3,7 +3,9 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $fluent;
+global $CURUSER, $site_config, $fluent;
+
+$cache = new Cache();
 $session = new Session();
 
 $lang = array_merge(load_language('global'), load_language('mybonus'));
@@ -35,7 +37,9 @@ function I_smell_a_rat($var)
  */
 function update_users_stats($userid, $set)
 {
-    global $fluent, $cache, $site_config;
+    global $fluent, $site_config;
+
+$cache = new Cache();
     if (!empty($set) && is_array($set)) {
         $fluent->update('users')
             ->set($set)

@@ -2,7 +2,9 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_onlinetime.php';
-global $site_config, $cache;
+global $site_config;
+
+$cache = new Cache();
 
 $password = 'adlsadladadll'; // same as in staff.tcl;
 $hash = 'adlsadladadll'; // same as in staff.tcl;

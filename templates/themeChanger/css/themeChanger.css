@@ -1,223 +1,190 @@
 #control_panel {
-    position: fixed;
-    top: 30px;
-    left: -210px;
-    z-index: 999;
-    padding: 16px;
-    width: 208px;
-    background-color: rgba(31, 31, 31, .9);
-    color: #3d3d3d;
-    -webkit-border-radius: 0 5px 5px 0;
-    -moz-border-radius: 0 5px 5px 0;
-    border-radius: 0 5px 5px 0;
+  position: fixed;
+  top: 30px;
+  left: -210px;
+  z-index: 999;
+  padding: 16px;
+  width: 208px;
+  background-color: rgba(31,31,31,.9);
+  color: #3d3d3d;
+  -webkit-border-radius: 0 5px 5px 0;
+  -moz-border-radius: 0 5px 5px 0;
+  border-radius: 0 5px 5px 0
 }
-
 #control_panel > div > span {
-    display: block;
-    margin-left: 2px;
-    color: #fff;
-    font-size: 0.917em;
-    text-transform: uppercase;
-    font-family: Arial, serif;
+  display: block;
+  margin-left: 2px;
+  color: #fff;
+  font-size: .917em;
+  text-transform: uppercase;
+  font-family: Arial,serif
 }
-
 #control_panel ul {
-    overflow: hidden;
-    padding-bottom: 5px;
+  overflow: hidden;
+  padding-bottom: 5px
 }
-
 #control_panel li {
-    float: left;
-    margin: 2px;
+  float: left;
+  margin: 2px
 }
-
 #control_panel li.is-active {
-    border-color: #000;
+  border-color: #000
 }
-
 #control_panel li a {
-    width: 31px;
-    height: 31px;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    display: block;
+  width: 31px;
+  height: 31px;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  display: block
 }
-
 #control_panel .restore_button_wrapper {
-    clear: both;
-    text-align: center;
-    padding: 10px 0 0 0;
+  clear: both;
+  text-align: center;
+  padding: 10px 0 0
 }
-
 #control_label {
-    position: absolute;
-    right: -29px;
-    top: 20px;
-    width: 29px;
-    height: 31px;
-    background: url('../1/themeChanger/images/theme_control_bg.png') no-repeat center center rgba(31, 31, 31, .9);
-    border-radius: 0 5px 5px 0;
-    -moz-border-radius: 0 5px 5px 0;
-    -webkit-border-radius: 0 5px 5px 0;
-    -webkit-transition: all .25s linear;
-    -moz-transition: all .25s linear;
-    -o-transition: all .25s linear;
-    transition: all .25s linear;
+  position: absolute;
+  right: -29px;
+  top: 20px;
+  width: 29px;
+  height: 31px;
+  background: url(../1/themeChanger/images/theme_control_bg.png) center center no-repeat rgba(31,31,31,.9);
+  border-radius: 0 5px 5px 0;
+  -moz-border-radius: 0 5px 5px 0;
+  -webkit-border-radius: 0 5px 5px 0;
+  -webkit-transition: all .25s linear;
+  -moz-transition: all .25s linear;
+  -o-transition: all .25s linear;
+  transition: all .25s linear
 }
-
 #control_label:hover {
-    -webkit-box-shadow: inset 0 0 10px #686868;
-    -moz-box-shadow: inset 0 0 10px #686868;
-    box-shadow: inset 0 0 10px #686868;
+  -webkit-box-shadow: inset 0 0 10px #686868;
+  -moz-box-shadow: inset 0 0 10px #686868;
+  box-shadow: inset 0 0 10px #686868
 }
-
 #control_panel #backgrounds a:not(.background-16) {
-    background-image: url('../1/themeChanger/images/patterns_sprite.png');
-    background-repeat: no-repeat;
-    border: 1px solid #000;
+  background-image: url(../1/themeChanger/images/patterns_sprite.png);
+  background-repeat: no-repeat;
+  border: 1px solid #000
 }
-
 #control_panel #backgrounds .is-active a {
-    border-color: #434343;
+  border-color: #434343
 }
-
 #nav > span {
-    float: left;
-    line-height: 35px;
+  float: left;
+  line-height: 35px
 }
-
 #nav ul {
-    float: right;
+  float: right
 }
-
 #nav ul li a {
-    background: url(../1/themeChanger/images/nav_sprite.png) no-repeat;
-    height: 32px;
-    width: 32px;
+  background: url(../1/themeChanger/images/nav_sprite.png) no-repeat;
+  height: 32px;
+  width: 32px
 }
-
 #nav ul li a.skin-1 {
-    background-position: 0 0;
+  background-position: 0 0
 }
-
 #nav ul li a.skin-2 {
-    background-position: right;
+  background-position: right
 }
-
 #backgrounds .background-1 {
-    background-position: 0 0;
+  background-position: 0 0
 }
-
 #backgrounds .background-2 {
-    background-position: -30px 0;
+  background-position: -30px 0
 }
-
 #backgrounds .background-3 {
-    background-position: -60px 0;
+  background-position: -60px 0
 }
-
 #backgrounds .background-4 {
-    background-position: -90px 0;
+  background-position: -90px 0
 }
-
 #backgrounds .background-5 {
-    background-position: -120px 0;
+  background-position: -120px 0
 }
-
 #backgrounds .background-6 {
-    background-position: 0 -30px;
+  background-position: 0 -30px
 }
-
 #backgrounds .background-7 {
-    background-position: -30px -30px;
+  background-position: -30px -30px
 }
-
 #backgrounds .background-8 {
-    background-position: -60px -30px;
+  background-position: -60px -30px
 }
-
 #backgrounds .background-9 {
-    background-position: -90px -30px;
+  background-position: -90px -30px
 }
-
 #backgrounds .background-10 {
-    background-position: -120px -30px;
+  background-position: -120px -30px
 }
-
 #backgrounds .background-11 {
-    background-position: 0 -60px;
+  background-position: 0 -60px
 }
-
 #backgrounds .background-12 {
-    background-position: -30px -60px;
+  background-position: -30px -60px
 }
-
 #backgrounds .background-13 {
-    background-position: -60px -60px;
+  background-position: -60px -60px
 }
-
 #backgrounds .background-14 {
-    background-position: -90px -60px;
+  background-position: -90px -60px
 }
-
 #backgrounds .background-15 {
-    background-position: -120px -60px;
+  background-position: -120px -60px
 }
-
 .limited.background-16 {
-    background: #282828 radial-gradient(black 15%, transparent 16%) radial-gradient(black 15%, transparent 16%) radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 8px 8px 0 1px 8px 9px;
-    background-size: 16px 16px;
+  background: radial-gradient(black 15%,transparent 16%) 8px 8px 0 1px 8px 9px #282828;
+  background-size: 16px 16px
 }
-
 .style_block {
-    padding: 1em 0;
-    border-bottom: 1px dotted #4c4c4c;
+  padding: 1em 0;
+  border-bottom: 1px dotted #4c4c4c
 }
-
 .style_block select {
-    margin: 2px 0;
-    padding: 2px;
-    color: #777;
-    width: 178px;
-    border: 1px solid #000;
+  margin: 2px 0;
+  padding: 2px;
+  color: #777;
+  width: 178px;
+  border: 1px solid #000
 }
-
 .links_color_wrapper {
-    border-bottom: 1px dotted #4C4C4C;
-    padding: 1em 0;
+  border-bottom: 1px dotted #4c4c4c;
+  padding: 1em 0
 }
-
 .links_color_wrapper > span {
-    float: left;
-    line-height: 3em;
+  float: left;
+  line-height: 3em
 }
-
 .links_color_wrapper .colorPicker {
-    position: relative;
-    float: right;
-    height: 31px;
-    width: 31px;
-    border: 1px solid #000;
-    cursor: pointer;
+  position: relative;
+  float: right;
+  height: 31px;
+  width: 31px;
+  border: 1px solid #000;
+  cursor: pointer
 }
-
 #samplespicker {
-    position: relative;
+  position: relative
 }
-
-.links_color_wrapper .colorPicker:after,
-#samplespicker:after {
-    position: absolute;
-    right: -4px;
-    bottom: -4px;
-    width: 11px;
-    height: 11px;
-    overflow: hidden;
-    background: url(../1/themeChanger/images/colorpicker_select.png);
-    content: "";
+#samplespicker:after,
+.links_color_wrapper .colorPicker:after {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  width: 11px;
+  height: 11px;
+  overflow: hidden;
+  background: url(../1/themeChanger/images/colorpicker_select.png);
+  content: ""
 }
-
+body.background-10,
+body.background-11,
+body.background-12,
+body.background-13,
+body.background-14,
+body.background-15,
 body.background-2,
 body.background-3,
 body.background-4,
@@ -225,94 +192,70 @@ body.background-5,
 body.background-6,
 body.background-7,
 body.background-8,
-body.background-9,
-body.background-10,
-body.background-11,
-body.background-12,
-body.background-13,
-body.background-14,
-body.background-15 {
-    background-attachment: fixed;
-}
-
-body.background-1 {
-    background: url(themeChanger/images/bgs/bg-1.png);
-    background-size: contain;
-    background-attachment: fixed;
-}
-
-body.background-2 {
-    background-image: url(themeChanger/images/bgs/bg-2.jpg);
-}
-
-body.background-3 {
-    background-image: url(themeChanger/images/bgs/bg-3.jpg);
-    background-size: cover;
-}
-
-body.background-4 {
-    background-image: url(themeChanger/images/bgs/bg-4.jpg);
-    background-size: cover;
-}
-
-body.background-5 {
-    background-image: url(themeChanger/images/bgs/bg-5.jpg);
-    background-size: cover;
-}
-
-body.background-6 {
-    background-image: url(themeChanger/images/bgs/bg-6.jpg);
-    background-size: cover;
-}
-
-body.background-7 {
-    background-image: url(themeChanger/images/bgs/bg-7.jpg);
-    background-size: cover;
-}
-
-body.background-8 {
-    background-image: url(themeChanger/images/bgs/bg-8.jpg);
-    background-size: cover;
-}
-
 body.background-9 {
-    background-image: url(themeChanger/images/bgs/bg-9.jpg);
-    background-size: cover;
+  background-attachment: fixed
 }
-
+body.background-1 {
+  background: url(themeChanger/images/bgs/bg-1.png) 0 0/contain fixed
+}
+body.background-2 {
+  background-image: url(themeChanger/images/bgs/bg-2.jpg)
+}
+body.background-3 {
+  background-image: url(themeChanger/images/bgs/bg-3.jpg);
+  background-size: cover
+}
+body.background-4 {
+  background-image: url(themeChanger/images/bgs/bg-4.jpg);
+  background-size: cover
+}
+body.background-5 {
+  background-image: url(themeChanger/images/bgs/bg-5.jpg);
+  background-size: cover
+}
+body.background-6 {
+  background-image: url(themeChanger/images/bgs/bg-6.jpg);
+  background-size: cover
+}
+body.background-7 {
+  background-image: url(themeChanger/images/bgs/bg-7.jpg);
+  background-size: cover
+}
+body.background-8 {
+  background-image: url(themeChanger/images/bgs/bg-8.jpg);
+  background-size: cover
+}
+body.background-9 {
+  background-image: url(themeChanger/images/bgs/bg-9.jpg);
+  background-size: cover
+}
 body.background-10 {
-    background-image: url(themeChanger/images/bgs/bg-10.jpg);
-    background-size: cover;
+  background-image: url(themeChanger/images/bgs/bg-10.jpg);
+  background-size: cover
 }
-
 body.background-11 {
-    background-image: url(themeChanger/images/bgs/bg-11.jpg);
-    background-size: cover;
+  background-image: url(themeChanger/images/bgs/bg-11.jpg);
+  background-size: cover
 }
-
 body.background-12 {
-    background-image: url(themeChanger/images/bgs/bg-12.jpg);
-    background-size: cover;
+  background-image: url(themeChanger/images/bgs/bg-12.jpg);
+  background-size: cover
 }
-
 body.background-13 {
-    background-image: url(themeChanger/images/bgs/bg-13.jpg);
-    background-size: cover;
+  background-image: url(themeChanger/images/bgs/bg-13.jpg);
+  background-size: cover
 }
-
 body.background-14 {
-    background-image: url(themeChanger/images/bgs/bg-14.jpg);
-    background-size: cover;
+  background-image: url(themeChanger/images/bgs/bg-14.jpg);
+  background-size: cover
 }
-
 body.background-15 {
-    background-image: url(themeChanger/images/bgs/bg-15.jpg);
-    background-size: cover;
+  background-image: url(themeChanger/images/bgs/bg-15.jpg);
+  background-size: cover
 }
-
 body.background-16 {
-    background: radial-gradient(black 15%, transparent 16%), radial-gradient(black 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 8px 9px;
-    background-color: #282828;
-    background-size: 16px 16px;
-    background-attachment: fixed;
+  background: radial-gradient(black 15%,transparent 16%),radial-gradient(black 15%,transparent 16%) 8px 8px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 0 1px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 8px 9px;
+  background-color: #282828;
+  background-size: 16px 16px;
+  background-attachment: fixed
 }

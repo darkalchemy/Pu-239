@@ -1,43 +1,39 @@
 .cblock {
-    width         : 750px;
-    height        : 100%;
-    float         : left;
-    margin        : 10px 0 10px 0;
-    border-bottom : 5px solid #d5dde5;
+  width: 750px;
+  height: 100%;
+  float: left;
+  margin: 10px 0;
+  border-bottom: 5px solid #d5dde5
 }
-
 .cblock-header {
-    width                   : 740px;
-    height                  : 21px;
-    color                   : #fff;
-    padding                 : 5px;
-    font-size               : 17px;
-    font-weight             : normal;
-    background              : #192b40;
-    border-top-left-radius  : 5px;
-    border-top-right-radius : 5px;
+  width: 740px;
+  height: 21px;
+  color: #fff;
+  padding: 5px;
+  font-size: 17px;
+  font-weight: 400;
+  background: #192b40;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px
 }
-
 .cblock-lb {
-    width       : 738px;
-    height      : 15px;
-    padding     : 6px;
-    color       : #1d3652;
-    background  : #b6c7db;
-    font-weight : bold;
+  width: 738px;
+  height: 15px;
+  padding: 6px;
+  color: #1d3652;
+  background: #b6c7db;
+  font-weight: 700
 }
-
 .cblock-content {
-    width   : 740px;
-    height  : 100%;
-    padding : 5px;
-    margin  : 0 auto 0 auto;
+  width: 740px;
+  height: 100%;
+  padding: 5px;
+  margin: 0 auto
 }
-
 .inner_header {
-    width      : 737px;
-    height     : 14px;
-    margin     : 10px 0 10px 0;
-    padding    : 3px 0 3px 3px;
-    background : #b4c5d5;
+  width: 737px;
+  height: 14px;
+  margin: 10px 0;
+  padding: 3px 0 3px 3px;
+  background: #b4c5d5
 }

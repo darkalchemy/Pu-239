@@ -7,8 +7,9 @@ check_user_status();
 
 $lang = array_merge(load_language('global'), load_language('wiki'));
 $HTMLOUT = '';
-global $CURUSER, $cache;
+global $CURUSER;
 
+$user = new User();
 $session = new Session();
 /**
  * @return string
@@ -161,7 +162,7 @@ if ($action == 'article') {
             <h2 class='has-text-centered'>Article search results for: <b>" . htmlsafechars($name) . "</b></h2>";
             while ($wiki = mysqli_fetch_array($res)) {
                 if ($wiki['userid'] !== 0) {
-                    $user = get_user_data($wiki['userid']);
+                    $user = $user->getUserFromId($wiki['userid']);
                     $wikiname = $user['username'];
                 }
                 $HTMLOUT .= main_div('
@@ -211,7 +212,7 @@ if ($action == 'sort') {
         <div class='w-100 padding20 round10 bg-02'>";
         while ($wiki = mysqli_fetch_array($sortres)) {
             if ($wiki['userid'] !== 0) {
-                $user = get_user_data($wiki['userid']);
+                $user = $user->getUserFromId($wiki['userid']);
                 $wikiname = $user['username'];
             }
             $HTMLOUT .= '

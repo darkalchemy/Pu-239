@@ -37,7 +37,9 @@ function calctime($val)
  */
 function delete_torrent($delete_array, $page)
 {
-    global $site_config, $CURUSER, $cache, $lang;
+    global $site_config, $CURUSER, $lang;
+
+$cache = new Cache();
     if (empty($delete_array)) {
         return false;
     }

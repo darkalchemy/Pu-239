@@ -9,7 +9,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s μπήκε στο Chat.',
     logout: '%s βγήκε από το Chat.',
     logoutTimeout: '%s βγήκε από το Chat (Ανενεργό).',
@@ -87,6 +86,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Σφάλμα: Απέτυχε η φόρτωση του αρχείου ήχου (Flash IO Σφάλμα).',
     errorSocketIO: 'Σφάλμα: Η σύνδεση στο socket του διακομιστή απέτυχε (Flash IO Σφάλμα).',
     errorSocketSecurity: 'Σφάλμα:Η σύνδεση στο socket του διακομιστή απέτυχε (Σφάλμα ασφαλείας του Flash ).',
-    errorDOMSyntax: 'Σφάλμα: Άκυρη DOM σύνταξη (DOM ID: %s).'
-
+    errorDOMSyntax: 'Σφάλμα: Άκυρη DOM σύνταξη (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

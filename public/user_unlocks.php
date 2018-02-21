@@ -3,7 +3,9 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config;
+
+$cache = new Cache();
 
 $lang = load_language('global');
 $id = (isset($_GET['id']) ? $_GET['id'] : $CURUSER['id']);

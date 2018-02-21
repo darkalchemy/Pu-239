@@ -7,7 +7,9 @@
  */
 function stealth($id, $stealth = true)
 {
-    global $CURUSER, $cache, $site_config;
+    global $CURUSER, $site_config;
+
+$cache = new Cache();
     $setbits = $clrbits = 0;
     if ($stealth) {
         $display = 'is';

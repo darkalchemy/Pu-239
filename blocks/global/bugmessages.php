@@ -1,5 +1,7 @@
 <?php
-global $CURUSER, $site_config, $cache, $lang, $fluent;
+global $CURUSER, $site_config, $lang, $fluent;
+
+$cache = new Cache();
 
 if ($site_config['bug_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $bugs = $cache->get('bug_mess_');

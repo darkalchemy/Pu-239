@@ -26,7 +26,7 @@ $foo = [
             'placeholder' => 'pu239',
         ],
     ],
-    'Tracker'           => [
+    'Tracker' => [
         [
             'text'        => 'Announce Url',
             'input'       => 'config[announce_urls]',
@@ -60,7 +60,7 @@ $foo = [
                 ],
         */
     ],
-    'Cookies'           => [
+    'Cookie'  => [
         [
             'text'        => 'Session Name',
             'input'       => 'config[sessionName]',

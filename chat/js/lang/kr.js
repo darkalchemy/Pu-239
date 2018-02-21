@@ -8,7 +8,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s께서 접속하였습니다.',
     logout: '%s님께서 접속을 종료하였습니다.',
     logoutTimeout: '%s님께서 시간초과로 나가셨습니다.',
@@ -86,6 +85,7 @@ var ajaxChatLang = {
     errorSoundIO: '오류: 입출력 실패로 소리파일을 불러오는데 실패하였습니다.',
     errorSocketIO: '오류: 입출력 실패로 서버에 접속하는데 실패하였습니다.',
     errorSocketSecurity: '오류: 보안문제로 서버에 접속하는데 실패하였습니다.',
-    errorDOMSyntax: '오류: DOM 문법이 잘못되었습니다. (DOM ID: %s).'
-
+    errorDOMSyntax: '오류: DOM 문법이 잘못되었습니다. (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

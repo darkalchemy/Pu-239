@@ -1,5 +1,7 @@
 <?php
-global $CURUSER, $site_config, $cache, $lang;
+global $CURUSER, $site_config, $lang;
+
+$cache = new Cache();
 
 $all_my_boxes = $curuser_cache = $user_cache = $categories = '';
 if (isset($_POST['action2'])) {

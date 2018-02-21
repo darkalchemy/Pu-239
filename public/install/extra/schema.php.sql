@@ -159,8 +159,7 @@ CREATE TABLE `ajax_chat_online` (
   `ip` varbinary(16) NOT NULL,
   PRIMARY KEY (`userID`),
   KEY `userName` (`userName`),
-  CONSTRAINT `ajax_chat_online_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `ajax_chat_online_ibfk_2` FOREIGN KEY (`userName`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `ajax_chat_online_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -225,6 +224,24 @@ CREATE TABLE `attachments` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `attachments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `auth_tokens`
+--
+
+DROP TABLE IF EXISTS `auth_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_tokens` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `selector` char(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `hashedValidator` char(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `userid` int(10) unsigned NOT NULL,
+  `expires` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `selector` (`selector`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -416,8 +433,7 @@ CREATE TABLE `bookmarks` (
   KEY `userid` (`userid`),
   KEY `torrentid` (`torrentid`),
   CONSTRAINT `bookmarks_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `bookmarks_ibfk_2` FOREIGN KEY (`torrentid`) REFERENCES `torrents` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `bookmarks_ibfk_3` FOREIGN KEY (`torrentid`) REFERENCES `torrents` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `bookmarks_ibfk_2` FOREIGN KEY (`torrentid`) REFERENCES `torrents` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1862,8 +1878,7 @@ CREATE TABLE `staffmessages` (
   PRIMARY KEY (`id`),
   KEY `answeredby` (`answeredby`),
   KEY `sender` (`sender`),
-  CONSTRAINT `staffmessages_ibfk_1` FOREIGN KEY (`sender`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `staffmessages_ibfk_2` FOREIGN KEY (`answeredby`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `staffmessages_ibfk_1` FOREIGN KEY (`sender`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2180,6 +2195,7 @@ CREATE TABLE `torrents` (
   KEY `visible` (`visible`),
   KEY `category_visible` (`category`),
   KEY `newgenre` (`newgenre`),
+  KEY `free` (`free`),
   FULLTEXT KEY `search_descr` (`search_text`,`descr`),
   FULLTEXT KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -2644,4 +2660,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-05 17:31:04
+-- Dump completed on 2018-02-18 11:52:59

@@ -3,7 +3,9 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'html_functions.php';
 class_check(UC_STAFF);
-global $cache, $site_config;
+global $site_config;
+
+$cache = new Cache();
 
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($lconf)) {

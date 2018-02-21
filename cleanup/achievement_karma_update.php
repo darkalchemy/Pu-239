@@ -7,7 +7,9 @@
  */
 function achievement_karma_update($data)
 {
-    global $site_config, $queries, $cache;
+    global $site_config, $queries;
+
+$cache = new Cache();
     $lang = load_language('ad_cleanup_manager');
 
     set_time_limit(1200);

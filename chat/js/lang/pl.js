@@ -9,7 +9,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s wszedł na czat.',
     logout: '%s wyszedł na czat.',
     logoutTimeout: '%s został rozłączony (Przekroczony czas połączenia).',
@@ -66,7 +65,7 @@ var ajaxChatLang = {
     urlDialog: 'Podaj adres (URL) strony:',
     deleteMessage: 'Usuń tę wiadomość',
     deleteMessageConfirm: 'Na pewno usunać tę wiadomość?',
-    errorCookiesRequired: 'Do poprawnego działania czat wymaga obsługi Cookies.',
+    errorCookiesRequired: 'Do poprawnego działania czat wymaga obsługi Cookie.',
     errorUserNameNotFound: 'Błąd: Użytkownik %s nie został znaleziony.',
     errorMissingText: 'Błąd: Nie wpisano tekstu.',
     errorMissingUserName: 'Błąd: Nie wpisano nicka.',
@@ -87,6 +86,7 @@ var ajaxChatLang = {
     errorSoundIO: 'Błąd: nie można pobrać pliku dźwiękowego (Flash IO Error).',
     errorSocketIO: 'Bład: nie można połączyć się z serwerem (Flash IO Error).',
     errorSocketSecurity: 'Błąd: Połączenie z serwerem nie powiodło się (Flash Security Error).',
-    errorDOMSyntax: 'Błąd: Nieprawidłowa składnia DOM (DOM ID: %s).'
-
+    errorDOMSyntax: 'Błąd: Nieprawidłowa składnia DOM (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

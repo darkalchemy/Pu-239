@@ -8,7 +8,9 @@
  */
 function invincible($id, $invincible = true, $bypass_bans = true)
 {
-    global $CURUSER, $cache, $site_config;
+    global $CURUSER, $site_config;
+
+$cache = new Cache();
 
     $session = new Session();
     $ip = '127.0.0.1';

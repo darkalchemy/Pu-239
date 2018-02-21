@@ -5,7 +5,9 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'html_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $cache, $lang, $pdo, $fluent;
+global $CURUSER, $site_config, $lang, $pdo, $fluent;
+
+$cache = new Cache();
 
 $session = new Session();
 $lang = array_merge($lang, load_language('ad_bans'));

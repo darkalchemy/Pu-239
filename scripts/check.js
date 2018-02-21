@@ -1,6 +1,6 @@
 function checkit() {
-    wantusername = document.getElementById('wantusername').value;
-    var url = '../ajax/namecheck.php?wantusername=' + escape(wantusername);
+    wantusername = document.getElementById("wantusername").value;
+    var url = "../ajax/namecheck.php?wantusername=" + escape(wantusername);
     try {
         request = new ActiveXObject("Msxml2.XMLHTTP");
     } catch (e) {
@@ -10,8 +10,7 @@ function checkit() {
             request = false;
         }
     }
-
-    if (!request && typeof XMLHttpRequest != 'undefined') {
+    if (!request && typeof XMLHttpRequest != "undefined") {
         request = new XMLHttpRequest();
     }
     request.open("GET", url, true);

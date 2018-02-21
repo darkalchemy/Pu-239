@@ -5,7 +5,9 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $cache, $lang;
+global $CURUSER, $lang;
+
+$cache = new Cache();
 
 $HTMLOUT = '';
 $stdhead = [
@@ -49,7 +51,9 @@ if ($mode == 'delete') {
      */
     function deletenewsid($newsid)
     {
-        global $CURUSER, $cache;
+        global $CURUSER;
+
+$cache = new Cache();
         sql_query('DELETE FROM news WHERE id = ' . sqlesc($newsid) . ' AND userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $cache->delete('latest_news_');
     }

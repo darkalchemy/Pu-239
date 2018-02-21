@@ -8,7 +8,6 @@
 
 // Ajax Chat language Object:
 var ajaxChatLang = {
-
     login: '%s ჩატში შემოვიდა.',
     logout: '%s ჩატიდან გავიდა.',
     logoutTimeout: '%s ჩატი დატოვა (დრო ამოიწურა).',
@@ -86,6 +85,7 @@ var ajaxChatLang = {
     errorSoundIO: 'შეცდომა: ხმის ფაილი ვერ ჩაიტვირთა (Flash IO Error).',
     errorSocketIO: 'შეცდომა: სერვერის სოკეტთან დაკავშირება ჩაიშალა (Flash IO Error).',
     errorSocketSecurity: 'შეცდომა: სერვერის სოკეტთან დაკავშირება ჩაიშალა (Flash Security Error).',
-    errorDOMSyntax: 'შეცდომა: არასწორი DOM სინტაქსი (DOM ID: %s).'
-
+    errorDOMSyntax: 'შეცდომა: არასწორი DOM სინტაქსი (DOM ID: %s).',
+    errorNotEnoughRep: 'Error: Not enough reputaion points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

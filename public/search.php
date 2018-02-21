@@ -5,7 +5,9 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $site_config, $CURUSER, $cache, $lang, $fluent;
+global $site_config, $CURUSER, $lang, $fluent;
+
+$cache = new Cache();
 
 $table = $body = $heading = '';
 if (!empty($_GET)) {

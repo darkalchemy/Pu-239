@@ -3,7 +3,9 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_memcache.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config;
+
+$cache = new Cache();
 
 $session = new Session();
 $lang = array_merge(load_language('global'), load_language('delete'));
@@ -20,7 +22,9 @@ if (!is_valid_id($id)) {
  */
 function deletetorrent($id)
 {
-    global $site_config, $cache, $CURUSER;
+    global $site_config, $CURUSER;
+
+$cache = new Cache();
     sql_query('DELETE peers.*, files.*, comments.*, snatched.*, thanks.*, bookmarks.*, coins.*, rating.*, torrents.* FROM torrents 
                  LEFT JOIN peers ON peers.torrent = torrents.id
                  LEFT JOIN files ON files.torrent = torrents.id
@@ -40,7 +44,9 @@ function deletetorrent($id)
  */
 function deletetorrent_xbt($id)
 {
-    global $site_config, $cache, $CURUSER, $lang;
+    global $site_config, $CURUSER, $lang;
+
+$cache = new Cache();
     sql_query('UPDATE torrents SET flags = 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     sql_query('DELETE files.*, comments.*, thankyou.*, thanks.*, bookmarks.*, coins.*, rating.*, xbt_files_users.* FROM xbt_files_users
                                  LEFT JOIN files ON files.torrent = xbt_files_users.fid

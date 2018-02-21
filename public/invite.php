@@ -4,7 +4,9 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $fluent;
+global $CURUSER, $site_config, $fluent;
+
+$cache = new Cache();
 
 $session = new Session();
 $lang = array_merge(load_language('global'), load_language('invite_code'));

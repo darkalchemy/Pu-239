@@ -1,5 +1,7 @@
 <?php
-global $site_config, $cache, $lang, $fluent;
+global $site_config, $lang, $fluent;
+
+$cache = new Cache();
 
 $active24 = $cache->get('last24_users_');
 if ($active24 === false || is_null($active24)) {

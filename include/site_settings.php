@@ -1,5 +1,7 @@
 <?php
-global $cache, $site_config;
+global $site_config;
+
+$cache = new Cache();
 
 dbconn();
 

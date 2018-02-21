@@ -4,7 +4,9 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $CURUSER, $cache;
+global $CURUSER;
+
+$cache = new Cache();
 
 $lang = array_merge(load_language('global'), load_language('contactstaff'));
 $stdhead = [

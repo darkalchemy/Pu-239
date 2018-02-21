@@ -1,5 +1,7 @@
 <?php
-global $CURUSER, $site_config, $cache, $lang, $fluent;
+global $CURUSER, $site_config, $lang, $fluent;
+
+$cache = new Cache();
 
 if ($site_config['staffmsg_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $answeredby = $cache->get('staff_mess_');
