@@ -7,7 +7,7 @@ require_once CLASS_DIR . 'class.bencdec.php';
 dbconn();
 global $CURUSER, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $lang = array_merge(load_language('global'), load_language('download'));
 $T_Pass = isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) == 64 ? $_GET['torrent_pass'] : '';

@@ -1,7 +1,7 @@
 <?php
 global $site_config, $lang, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $latestuser = $cache->get('latestuser');
 if ($latestuser === false || is_null($latestuser)) {

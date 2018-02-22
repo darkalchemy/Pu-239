@@ -1,7 +1,7 @@
 <?php
 global $site_config, $lang, $fluent, $CURUSER;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $top5torrents = $cache->get('top5_tor_');
 if ($top5torrents === false || is_null($top5torrents)) {

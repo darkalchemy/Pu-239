@@ -7,7 +7,7 @@ require_once CACHE_DIR . 'subs.php';
 check_user_status();
 global $CURUSER, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 if (!mkglobal('id')) {
     die();

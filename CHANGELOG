@@ -1,4 +1,6 @@
 21 Feb 2018
+move: project classes to src
+add: namespace to project classes
 move: manage jquery with npm
 fix: usercp.php password change
 fix: AJAX Chat not loggin in user when not in online list

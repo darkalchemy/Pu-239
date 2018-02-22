@@ -3,7 +3,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 check_user_status();
 global $CURUSER, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('usermood'));

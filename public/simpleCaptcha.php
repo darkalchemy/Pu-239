@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 global $site_config;
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 
 dbconn();
 

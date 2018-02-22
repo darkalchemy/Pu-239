@@ -7,8 +7,8 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang;
 
-$cache = new Cache();
-$user = new User();
+$cache = new DarkAlchemy\Pu239\Cache();
+$user = new DarkAlchemy\Pu239\User();
 
 $lang = array_merge($lang, load_language('ad_acp'));
 $stdfoot = [

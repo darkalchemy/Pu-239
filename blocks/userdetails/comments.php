@@ -1,7 +1,7 @@
 <?php
 global $CURUSER, $site_config, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $torrentcomments = $cache->get('torrent_comments_' . $id);
 if ($torrentcomments === false || is_null($torrentcomments)) {

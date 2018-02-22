@@ -9,7 +9,7 @@ if (!XBT_TRACKER and $site_config['crazy_hour'] == true) {
     {
         global $CURUSER, $site_config, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
         $htmlout = $cz = '';
         $crazy_hour = (TIME_NOW + 3600);
         $crazyhour['crazyhour'] = $cache->get('crazyhour');

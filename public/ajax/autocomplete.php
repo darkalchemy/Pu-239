@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 if (isset($_POST['id'])) {
     $id = $_POST['id'];

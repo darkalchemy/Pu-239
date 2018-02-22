@@ -1,7 +1,7 @@
 <?php
 global $CURUSER, $site_config, $lang, $user, $id;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $forumposts = $cache->get('forum_posts_' . $id);
 if ($forumposts === false || is_null($forumposts)) {

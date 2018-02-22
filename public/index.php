@@ -9,9 +9,9 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $CURUSER, $site_config, $BLOCKS, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 $stdhead = [
     'css' => [
         get_file_name('index_css'),

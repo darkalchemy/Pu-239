@@ -1,7 +1,7 @@
 <?php
 global $CURUSER, $site_config, $lang, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 if ($site_config['uploadapp_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $newapp = $cache->get('new_uploadapp_');

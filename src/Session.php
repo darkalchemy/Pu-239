@@ -1,5 +1,7 @@
 <?php
 
+namespace DarkAlchemy\Pu239;
+
 class Session
 {
     private $config;
@@ -21,6 +23,9 @@ class Session
     /**
      * @return bool
      * @throws Exception
+     * @throws \Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
      */
     public function start()
     {
@@ -152,7 +157,7 @@ class Session
      * @param bool $regen
      *
      * @return bool
-     * @throws Exception
+     * @throws \Exception
      */
     public function validateToken($token, $key = null, $regen = false)
     {
@@ -175,6 +180,7 @@ class Session
 
     /**
      * @throws Exception
+     * @throws \Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
      */

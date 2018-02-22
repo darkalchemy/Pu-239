@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 dbconn();
 global $CURUSER, $site_config, $sluent;
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 
 if (!$CURUSER) {
     get_template();

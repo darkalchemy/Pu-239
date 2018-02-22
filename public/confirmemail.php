@@ -3,8 +3,8 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 global $site_config, $fluent;
 
-$cache = new Cache();
-$session = new Session();
+$cache = new DarkAlchemy\Pu239\Cache();
+$session = new DarkAlchemy\Pu239\Session();
 
 $lang = array_merge(load_language('global'), load_language('confirmemail'));
 $id = isset($_GET['id']) ? $_GET['id'] : 0;

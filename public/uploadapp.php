@@ -7,7 +7,7 @@ check_user_status();
 $lang = array_merge(load_language('global'), load_language('uploadapp'));
 global $CURUSER, $site_config, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 $CURUSER['class'] = 1;
 $HTMLOUT = '';
 

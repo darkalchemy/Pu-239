@@ -5,8 +5,8 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $fluent;
 
-$cache = new Cache();
-$session = new Session();
+$cache = new DarkAlchemy\Pu239\Cache();
+$session = new DarkAlchemy\Pu239\Session();
 
 $lang = array_merge(load_language('global'), load_language('mybonus'));
 if ($site_config['seedbonus_on'] == 0) {
@@ -39,7 +39,7 @@ function update_users_stats($userid, $set)
 {
     global $fluent, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     if (!empty($set) && is_array($set)) {
         $fluent->update('users')
             ->set($set)

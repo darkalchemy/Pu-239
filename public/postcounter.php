@@ -3,7 +3,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config;
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 
 $res = sql_query('SELECT COUNT(*) FROM posts WHERE user_id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_row($res);

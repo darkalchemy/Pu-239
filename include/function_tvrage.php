@@ -48,7 +48,7 @@ function tvrage(&$torrents)
 {
     global $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     $tvrage_data = '';
     $row_update = [];
     if (preg_match("/^(.*)S(\d+)(E(\d+))?/", $torrents['name'], $tmp)) {

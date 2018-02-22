@@ -7,7 +7,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $lang = array_merge($lang, load_language('ad_datareset'));
 $HTMLOUT = '';
@@ -18,7 +18,7 @@ function deletetorrent($tid)
 {
     global $site_config, $CURUSER;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     sql_query('DELETE peers.*, files.*, comments.*, snatched.*, thanks.*, bookmarks.*, coins.*, rating.*, torrents.* FROM torrents 
                  LEFT JOIN peers ON peers.torrent = torrents.id
                  LEFT JOIN files ON files.torrent = torrents.id
@@ -40,7 +40,7 @@ function deletetorrent_xbt($tid)
 {
     global $site_config, $CURUSER;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     sql_query('UPDATE torrents SET flags = 1 WHERE id = ' . sqlesc($tid)) or sqlerr(__FILE__, __LINE__);
     sql_query('DELETE files.*, comments.*, xbt_files_users.*, thanks.*, bookmarks.*, coins.*, rating.*, torrents.* FROM torrents 
                  LEFT JOIN files ON files.torrent = torrents.id

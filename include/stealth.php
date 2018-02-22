@@ -9,7 +9,7 @@ function stealth($id, $stealth = true)
 {
     global $CURUSER, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     $setbits = $clrbits = 0;
     if ($stealth) {
         $display = 'is';

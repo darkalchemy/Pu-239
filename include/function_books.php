@@ -11,7 +11,7 @@ function get_book_info($torrent)
 {
     global $site_config, $CURUSER;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
     $search = $torrent['name'];
     if (!empty($torrent['isbn'])) {

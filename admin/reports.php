@@ -7,9 +7,9 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 $lang = array_merge($lang, load_language('ad_report'));
 $HTMLOUT = $delt_link = $type = $count2 = '';
 

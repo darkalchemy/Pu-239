@@ -5,7 +5,7 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $site_config;
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 $lang = array_merge(load_language('global'), load_language('report'));
 $stdhead = [
     'css' => [

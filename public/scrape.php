@@ -29,7 +29,7 @@ function getip()
  */
 function check_bans($ip, &$reason = '')
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     if (empty($ip)) {
         return false;
     }

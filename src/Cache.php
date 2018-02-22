@@ -1,5 +1,7 @@
 <?php
 
+namespace DarkAlchemy\Pu239;
+
 use MatthiasMullie\Scrapbook\Buffered\TransactionalStore;
 
 class Cache extends TransactionalStore

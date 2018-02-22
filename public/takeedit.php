@@ -4,9 +4,9 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_memcache.php';
 global $CURUSER, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 /**
  *
  */

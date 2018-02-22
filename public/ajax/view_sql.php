@@ -3,7 +3,7 @@ require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 check_user_status();
 global $CURUSER, $site_config;
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 if (empty($CURUSER) || $CURUSER['class'] !== UC_MAX) {
     $session->set('is-warning', 'You do not have access to view that page');
     header("Location: {$site_config['baseurl']}/index.php");

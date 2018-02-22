@@ -1,7 +1,7 @@
 <?php
 global $CURUSER, $site_config, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 if ($CURUSER) {
     $lottery_info = $cache->get('lottery_info_');

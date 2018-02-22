@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_onlinetime.php';
 global $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $password = 'adlsadladadll'; // same as in staff.tcl;
 $hash = 'adlsadladadll'; // same as in staff.tcl;

@@ -3,9 +3,9 @@ require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 check_user_status();
 global $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 if (empty($_POST)) {
     $session->set('is-danger', 'Access Not Allowed');
     header("Location: {$site_config['baseurl']}/index.php");

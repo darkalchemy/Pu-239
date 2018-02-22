@@ -1,5 +1,7 @@
 <?php
 
+namespace DarkAlchemy\Pu239;
+
 use Blocktrail\CryptoJSAES\CryptoJSAES;
 
 class Cookie

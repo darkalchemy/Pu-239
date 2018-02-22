@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $lang = load_language('global');
 $poll_id = isset($_GET['pollid']) ? intval($_GET['pollid']) : false;

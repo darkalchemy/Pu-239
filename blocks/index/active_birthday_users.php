@@ -1,7 +1,7 @@
 <?php
 global $site_config, $lang, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $birthday = $cache->get('birthdayusers_');
 if ($birthday === false || is_null($birthday)) {

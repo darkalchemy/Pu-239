@@ -7,9 +7,9 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 
 /**
  * @param $x

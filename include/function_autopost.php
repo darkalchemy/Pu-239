@@ -7,7 +7,7 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
 {
     global $CURUSER, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     if (user_exists($site_config['chatBotID'])) {
         $res = sql_query("SELECT id FROM topics WHERE forum_id = {$site_config['staff']['forumid']} AND topic_name = " . sqlesc($subject));
         if (mysqli_num_rows($res) == 1) { // Topic already exists in the system forum.

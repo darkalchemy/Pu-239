@@ -11,7 +11,7 @@ function commenttable($rows, $variant = 'torrent')
     require_once INCL_DIR . 'add_functions.php';
     global $CURUSER, $site_config, $mood;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     $lang = load_language('torrenttable_functions');
     $count = 0;
     $variant_options = [

@@ -19,8 +19,8 @@ require_once INCL_DIR . 'files.php';
 require_once CACHE_DIR . 'free_cache.php';
 require_once CACHE_DIR . 'class_config.php';
 require_once INCL_DIR . 'password_functions.php';
-$cache = new Cache();
-$session = new Session();
+$cache = new DarkAlchemy\Pu239\Cache();
+$session = new DarkAlchemy\Pu239\Session();
 
 $session->start();
 
@@ -199,7 +199,7 @@ function hashit($var, $addtext = '')
  */
 function check_bans($ip, &$reason = '')
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     if (empty($ip)) {
         return false;
     }
@@ -239,13 +239,21 @@ function logincookie($id, $updatedb = true)
     }
 }
 
+/**
+ * @return bool
+ * @throws Exception
+ * @throws \DarkAlchemy\Pu239\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ */
 function userlogin()
 {
     global $site_config, $CURBLOCK, $mood, $whereis, $CURUSER;
 
-    $cache = new Cache();
-    $session = new Session();
-    $user = new User();
+    $cache = new DarkAlchemy\Pu239\Cache();
+    $session = new DarkAlchemy\Pu239\Session();
+    $user = new DarkAlchemy\Pu239\User();
 
     unset($GLOBALS['CURUSER']);
 
@@ -445,7 +453,7 @@ function autoclean()
 {
     global $site_config;
 
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     $cleanup_timer = $cache->get('cleanup_timer_');
     if ($cleanup_timer === false || is_null($cleanup_timer)) {
         $cache->set('cleanup_timer_', 5, 1); // runs only every 1 second
@@ -648,7 +656,7 @@ function get_template()
  */
 function make_freeslots($userid, $key)
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     $slot = $cache->get($key . $userid);
     if ($slot === false || is_null($slot)) {
         $res_slots = sql_query('SELECT * FROM freeslots WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
@@ -675,7 +683,7 @@ function make_freeslots($userid, $key)
  */
 function make_bookmarks($userid, $key)
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     $book = $cache->get($key . $userid);
     if ($book === false || is_null($book)) {
         $res_books = sql_query('SELECT * FROM bookmarks WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
@@ -701,7 +709,7 @@ function genrelist()
 {
     global $site_config;
 
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     //if (($ret = $cache->get('genrelist')) == false) {
     $ret = [];
     $res = sql_query('SELECT id, image, name, ordered FROM categories ORDER BY ordered') or sqlerr(__FILE__, __LINE__);
@@ -724,7 +732,7 @@ function genrelist()
  */
 function create_moods($force = false)
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     $key = 'moods';
     if (($mood = $cache->get($key)) === false || $force) {
         $res_moods = sql_query('SELECT * FROM moods ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
@@ -751,7 +759,7 @@ function create_moods($force = false)
  */
 function delete_id_keys($keys, $keyname = false)
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     if (!(is_array($keys) || $keyname)) { // if no key given or not an array
         return false;
     } else {
@@ -1507,7 +1515,7 @@ function human_filesize($bytes, $dec = 2)
 
 function salty()
 {
-    $session = new Session();
+    $session = new DarkAlchemy\Pu239\Session();
 
     return $session->get('auth');
 }
@@ -1556,7 +1564,7 @@ function getPmCount($userid)
 {
     global $site_config;
 
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
 
     $pmCount = $cache->get('inbox_' . $userid);
     if ($pmCount === false || is_null($pmCount)) {
@@ -1592,7 +1600,7 @@ function suspended()
  */
 function check_user_status()
 {
-    $session = new Session();
+    $session = new DarkAlchemy\Pu239\Session();
 
     dbconn();
     userlogin();
@@ -1637,7 +1645,7 @@ function random_color($minVal = 0, $maxVal = 255)
  */
 function user_exists($user_id)
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     $userlist = $cache->get('userlist_' . $user_id);
     if ($userlist === false || is_null($userlist)) {
         $query = "SELECT id FROM users WHERE id = " . sqlesc($user_id);
@@ -1661,7 +1669,7 @@ function get_poll()
 {
     global $CURUSER, $site_config, $fluent;
 
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
 
     $poll_data = $cache->get('poll_data_' . $CURUSER['id']);
     if ($poll_data === false || is_null($poll_data)) {
@@ -1770,7 +1778,7 @@ function countries()
 {
     global $site_config;
 
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     $ret = $cache->get('countries_arr');
     if ($ret === false || is_null($ret)) {
         $res = sql_query('SELECT id, name, flagpic FROM countries ORDER BY name ASC') or sqlerr(__FILE__, __LINE__);
@@ -1795,7 +1803,7 @@ function countries()
 function breadcrumbs($separator = '', $home = 'Home')
 {
     global $site_config;
-    $session = new Session();
+    $session = new DarkAlchemy\Pu239\Session();
 
     $path = array_filter(explode('/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)));
     $query = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
@@ -2119,7 +2127,7 @@ function get_show_id(string $name, string $type)
 {
     global $fluent;
 
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
 
     if (empty($name) || empty($type)) {
         return null;

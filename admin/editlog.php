@@ -6,7 +6,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $lang;
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 $lang = array_merge($lang, load_language('editlog'));
 $HTMLOUT = '';
 $file_data = ROOT_DIR . 'dir_list' . DIRECTORY_SEPARATOR . 'data_' . $CURUSER['username'] . '.txt';

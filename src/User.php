@@ -1,5 +1,7 @@
 <?php
 
+namespace DarkAlchemy\Pu239;
+
 class User
 {
     private $fluent,
@@ -83,6 +85,7 @@ class User
     /**
      * @return bool|int
      * @throws Exception
+     * @throws \Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
      */
@@ -120,8 +123,8 @@ class User
      * @param int   $user_id
      * @param array $set
      *
-     * @return PDOStatement
-     * @throws Exception
+     * @return \PDOStatement
+     * @throws \Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
      */
     public function update(int $user_id, array $set)

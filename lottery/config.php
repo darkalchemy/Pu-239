@@ -5,7 +5,7 @@ require_once INCL_DIR . 'html_functions.php';
 class_check(UC_STAFF);
 global $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($lconf)) {

@@ -5,7 +5,7 @@ check_user_status();
 global $site_config;
 
 if (empty($_POST)) {
-    $session = new Session();
+    $session = new DarkAlchemy\Pu239\Session();
     $session->set('is-danger', 'Access Not Allowed');
     header("Location: {$site_config['baseurl']}/index.php");
     die();

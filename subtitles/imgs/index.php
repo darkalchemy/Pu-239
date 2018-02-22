@@ -3,7 +3,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATO
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 $session->set('is-danger', 'Access Not Allowed');
 header("Location: {$site_config['baseurl']}/index.php");
 die();

@@ -5,8 +5,8 @@ require_once INCL_DIR . 'password_functions.php';
 dbconn();
 global $CURUSER, $site_config;
 
-$cache = new Cache();
-$session = new Session();
+$cache = new DarkAlchemy\Pu239\Cache();
+$session = new DarkAlchemy\Pu239\Session();
 
 if (!$CURUSER) {
     get_template();

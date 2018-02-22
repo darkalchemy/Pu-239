@@ -6,7 +6,7 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $CURUSER, $site_config;
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 $lang = array_merge(load_language('global'), load_language('getrss'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     /**

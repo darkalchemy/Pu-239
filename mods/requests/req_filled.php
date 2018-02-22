@@ -1,7 +1,7 @@
 <?php
 global $CURUSER, $site_config, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $torrentid = (isset($_POST['torrentid']) ? (int)$_POST['torrentid'] : 0);
 if ($torrentid < 1) {

@@ -7,7 +7,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 
 $HTMLOUT = '';
 $lang = array_merge($lang, load_language('failedlogins'));

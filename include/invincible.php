@@ -10,9 +10,9 @@ function invincible($id, $invincible = true, $bypass_bans = true)
 {
     global $CURUSER, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
-    $session = new Session();
+    $session = new DarkAlchemy\Pu239\Session();
     $ip = '127.0.0.1';
     $setbits = $clrbits = 0;
     if ($invincible) {

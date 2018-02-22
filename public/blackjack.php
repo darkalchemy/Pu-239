@@ -6,7 +6,7 @@ check_user_status();
 $lang = array_merge(load_language('global'), load_language('blackjack'));
 global $CURUSER, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $HTMLOUT = $debugout = '';
 
@@ -1078,7 +1078,7 @@ if ($game) {
  */
 function getCardData($cardid)
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     $card = $cache->get('card_data_' . $cardid);
     if ($card === false || is_null($card)) {
         $sql = 'SELECT * FROM cards WHERE id = ' . sqlesc($cardid);

@@ -2,7 +2,7 @@
 
 function getTVImagesByImdb($thetvdb_id, $type = 'showbackground', $season = 0)
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
 
     $types = [
         'showbackground',
@@ -61,7 +61,7 @@ function getTVImagesByImdb($thetvdb_id, $type = 'showbackground', $season = 0)
  */
 function getMovieImagesByImdb($imdb, $type = 'moviebackground')
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
 
     $types = [
         'moviebackground',

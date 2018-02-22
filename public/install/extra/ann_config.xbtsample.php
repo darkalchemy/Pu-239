@@ -13,7 +13,7 @@ require_once CACHE_DIR.'hit_and_run_settings.php';
 if (version_compare(PHP_VERSION, '5.1.0RC1', '>=')) {
     date_default_timezone_set('Europe/London');
 }
-$mc1 = new Cache();
+$mc1 = new DarkAlchemy\Pu239\Cache();
 $site_config['announce_interval'] = 60 * 30;
 $site_config['min_interval'] = 60 * 15;
 $site_config['connectable_check'] = 1;

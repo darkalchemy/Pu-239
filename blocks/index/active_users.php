@@ -1,7 +1,7 @@
 <?php
 global $site_config, $lang, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $active = $cache->get('activeusers_');
 if ($active === false || is_null($active)) {

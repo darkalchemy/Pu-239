@@ -6,7 +6,7 @@
  */
 function searchcloud($limit = 50)
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     if (!($return = $cache->get('searchcloud'))) {
         $search_q = sql_query('SELECT searchedfor, howmuch
                                 FROM searchcloud
@@ -33,7 +33,7 @@ function searchcloud($limit = 50)
  */
 function searchcloud_insert($word)
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     $searchcloud = searchcloud();
     $ip = getip();
     $howmuch = isset($searchcloud[$word]) ? $searchcloud[$word] + 1 : 1;

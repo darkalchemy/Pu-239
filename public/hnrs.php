@@ -10,8 +10,8 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $site_config, $CURUSER, $lang;
 
-$cache = new Cache();
-$session = new Session();
+$cache = new DarkAlchemy\Pu239\Cache();
+$session = new DarkAlchemy\Pu239\Session();
 
 $HTMLOUT = '';
 

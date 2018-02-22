@@ -6,9 +6,9 @@ require_once CLASS_DIR . 'class_browser.php';
 dbconn();
 global $CURUSER, $site_config, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 if (!$CURUSER) {
     get_template();
 }
@@ -72,7 +72,7 @@ function bark($text = 'Username or password incorrect')
 {
     global $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     $sha = hash('sha256', $_SERVER['REMOTE_ADDR']);
     $dict_key = 'dictbreaker_' . $sha;
     $flood = $cache->get($dict_key);
@@ -186,7 +186,7 @@ $values = [
 ];
 
 $cache->set('remember_' . $selector, $values, TIME_NOW + $expires);
-$cookies = new Cookie('remember');
+$cookies = new DarkAlchemy\Pu239\Cookie('remember');
 $cookies->set("$selector:$validator", TIME_NOW + $expires);
 
 if (isset($returnto)) {

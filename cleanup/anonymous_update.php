@@ -6,7 +6,7 @@ function anonymous_update($data)
 {
     global $site_config, $queries;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     set_time_limit(1200);
     ignore_user_abort(true);
 

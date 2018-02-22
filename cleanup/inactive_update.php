@@ -50,7 +50,7 @@ function inactive_update($data)
  */
 function delete_cleanup($users, $using_foreign_keys = true)
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     if (empty($users)) {
         return;
     }

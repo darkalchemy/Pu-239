@@ -9,7 +9,7 @@ function foxnews_shout($links = [])
 {
     global $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     $feeds = [
         'Tech' => 'http://feeds.foxnews.com/foxnews/tech',
         //'World'         => 'http://feeds.foxnews.com/foxnews/world',
@@ -80,7 +80,7 @@ function tfreak_shout($links = [])
 {
     global $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     if ($site_config['autoshout_on'] == 1) {
         include_once INCL_DIR . 'user_functions.php';
         $xml = $cache->get('tfreaknewsrss_');
@@ -140,7 +140,7 @@ function github_shout($links = [])
 {
     global $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     $feeds = [
         'dev'    => 'https://github.com/darkalchemy/Pu-239/commits/dev.atom',
         'master' => 'https://github.com/darkalchemy/Pu-239/commits/master.atom',

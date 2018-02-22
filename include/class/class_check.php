@@ -8,7 +8,7 @@ function class_check($class = 0, $staff = true, $pin = false)
 {
     global $CURUSER, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     if (!$CURUSER) {
         header("Location: {$site_config['baseurl']}/404.html");
         die();
@@ -123,7 +123,7 @@ $cache = new Cache();
  */
 function get_access($script)
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     $ending = parse_url($script, PHP_URL_QUERY);
     $count = substr_count($ending, '&');
     $i = 0;

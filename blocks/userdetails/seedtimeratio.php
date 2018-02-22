@@ -1,7 +1,7 @@
 <?php
 global $CURUSER, $site_config, $lang, $user, $user;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $What_Cache = (XBT_TRACKER ? 'share_ratio_xbt_' : 'share_ratio_');
 $What_Table = (XBT_TRACKER ? 'xbt_files_users' : 'snatched');

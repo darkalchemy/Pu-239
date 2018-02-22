@@ -1,7 +1,7 @@
 <?php
 global $fluent, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 if (XBT_TRACKER) {
     $htmlout .= "

@@ -1,7 +1,7 @@
 <?php
 global $CURUSER, $site_config, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $pm_messages = $_POST['pm'];
 if (isset($_POST['move'])) {

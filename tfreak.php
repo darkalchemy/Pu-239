@@ -11,7 +11,7 @@ function rsstfreakinfo()
     require_once INCL_DIR . 'html_functions.php';
     global $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     $html = '';
     $use_limit = true;
     $limit = 5;

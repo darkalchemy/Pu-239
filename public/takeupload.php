@@ -5,9 +5,9 @@ require_once CLASS_DIR . 'class.bencdec.php';
 require_once INCL_DIR . 'function_memcache.php';
 global $site_config;
 
-$session = new Session();
-$user = new User();
-$cache = new Cache();
+$session = new DarkAlchemy\Pu239\Session();
+$user = new DarkAlchemy\Pu239\User();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $torrent_pass = $auth = $bot = $owner_id = '';
 extract($_GET);

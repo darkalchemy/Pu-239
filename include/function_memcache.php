@@ -6,7 +6,7 @@
  */
 function remove_torrent_peers($id)
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     if (!is_int($id) || $id < 1) {
         return false;
     }
@@ -28,7 +28,7 @@ function remove_torrent_peers($id)
  */
 function remove_torrent($infohash)
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     if (strlen($infohash) != 20 || !bin2hex($infohash)) {
         return false;
     }

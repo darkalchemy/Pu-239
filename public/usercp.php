@@ -9,7 +9,7 @@ require_once CACHE_DIR . 'timezones.php';
 check_user_status();
 global $CURUSER, $site_config;
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 $lang = array_merge(load_language('global'), load_language('usercp'));
 $HTMLOUT = $stylesheets = $wherecatina = '';
 $templates = sql_query('SELECT id, name FROM stylesheets ORDER BY id');

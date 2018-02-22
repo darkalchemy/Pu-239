@@ -6,7 +6,7 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $lang = array_merge(load_language('global'), load_language('contactstaff'));
 $stdhead = [

@@ -6,7 +6,7 @@ function freeleech_countdown()
 {
     global $CURUSER, $lang, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     $htmlout = $freetitle = '';
     $cimg = '<img src="' . $site_config['pic_baseurl'] . 'cat_free.gif" alt="FREE!" />';
     $freeleech['freeleech_countdown'] = $cache->get('freeleech_countdown');

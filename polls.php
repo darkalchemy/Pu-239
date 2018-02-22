@@ -6,7 +6,7 @@ function parse_poll()
 {
     global $CURUSER, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
     $htmlout = '';
     $check = 0;

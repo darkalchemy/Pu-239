@@ -10,7 +10,7 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $CURUSER, $site_config, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
     $fluent->update('users')

@@ -74,6 +74,7 @@ git pull
 # update dependancies:
 composer update
 composer dump-autoload -o
+npm install
 npm update
 
 # update trivia questions if desired

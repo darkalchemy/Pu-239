@@ -1,7 +1,7 @@
 <?php
 global $site_config, $CURUSER, $lang, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 if ($site_config['report_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $delt_with = $cache->get('new_report_');

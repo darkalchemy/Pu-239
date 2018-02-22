@@ -6,9 +6,9 @@ require_once INCL_DIR . 'function_memcache.php';
 check_user_status();
 global $CURUSER, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 $lang = array_merge(load_language('global'), load_language('fastdelete'));
 if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'])) {
     stderr($lang['fastdelete_error'], $lang['fastdelete_no_acc']);
@@ -27,7 +27,7 @@ function deletetorrent($id)
 {
     global $site_config, $CURUSER;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     sql_query('DELETE FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     unlink("{$site_config['torrent_dir']}/$id.torrent");
     $cache->delete('MyPeers_' . $CURUSER['id']);
@@ -43,7 +43,7 @@ function deletetorrent_xbt($id)
 {
     global $site_config, $CURUSER, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     sql_query('UPDATE torrents SET flags = 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     sql_query('DELETE files.*, comments.*, thankyou.*, thanks.*, bookmarks.*, coins.*, rating.*, xbt_files_users.* FROM xbt_files_users
                                      LEFT JOIN files ON files.torrent = xbt_files_users.fid

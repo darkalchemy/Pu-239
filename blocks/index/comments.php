@@ -2,7 +2,7 @@
 require_once INCL_DIR . 'html_functions.php';
 global $lang, $site_config, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $comments = $cache->get('latest_comments_');
 if ($comments === false || is_null($comments)) {

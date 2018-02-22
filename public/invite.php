@@ -6,9 +6,9 @@ require_once INCL_DIR . 'password_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 $lang = array_merge(load_language('global'), load_language('invite_code'));
 
 use Nette\Mail\Message;

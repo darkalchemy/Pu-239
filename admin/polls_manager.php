@@ -46,7 +46,7 @@ function delete_poll()
 {
     global $site_config, $CURUSER, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
     $total_votes = 0;
     if (!isset($_GET['pid']) or !is_valid_id($_GET['pid'])) {
@@ -72,7 +72,7 @@ function update_poll()
 {
     global $site_config, $CURUSER, $lang, $stdfoot;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
     $total_votes = 0;
     if (!isset($_POST['pid']) or !is_valid_id($_POST['pid'])) {
@@ -118,7 +118,7 @@ function insert_new_poll()
 {
     global $site_config, $CURUSER, $lang, $stdfoot;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
     if (!isset($_POST['poll_question']) or empty($_POST['poll_question'])) {
         stderr($lang['poll_inp_usr_err'], $lang['poll_inp_no_title']);

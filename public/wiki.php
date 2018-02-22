@@ -9,8 +9,8 @@ $lang = array_merge(load_language('global'), load_language('wiki'));
 $HTMLOUT = '';
 global $CURUSER;
 
-$user = new User();
-$session = new Session();
+$user = new DarkAlchemy\Pu239\User();
+$session = new DarkAlchemy\Pu239\Session();
 /**
  * @return string
  */

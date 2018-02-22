@@ -12,7 +12,7 @@
   },
   "autoload": {
     "psr-4": {
-      "": "classes"
+      "DarkAlchemy\\Pu239\\": "src"
     }
   },
   "require-dev": {

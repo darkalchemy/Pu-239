@@ -9,8 +9,8 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $CURUSER, $site_config;
 
-$cache = new Cache();
-$session = new Session();
+$cache = new DarkAlchemy\Pu239\Cache();
+$session = new DarkAlchemy\Pu239\Session();
 
 /**
  *
@@ -217,7 +217,7 @@ function get_all_boxes($box = 1)
 {
     global $CURUSER, $site_config, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     $get_all_boxes = $cache->get('get_all_boxes_' . $CURUSER['id']);
     if ($get_all_boxes === false || is_null($get_all_boxes)) {
         $res = sql_query('SELECT boxnumber, name FROM pmboxes WHERE userid = ' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
@@ -252,7 +252,7 @@ function insertJumpTo($mailbox)
 {
     global $CURUSER, $site_config, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     $insertJumpTo = $cache->get('insertJumpTo' . $CURUSER['id']);
     if ($insertJumpTo === false || is_null($insertJumpTo)) {
         $res = sql_query('SELECT boxnumber,name FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);

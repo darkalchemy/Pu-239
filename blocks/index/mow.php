@@ -1,7 +1,7 @@
 <?php
 global $lang, $site_config, $fluent, $CURUSER;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $motw = $cache->get('motw_');
 if ($motw === false || is_null($motw)) {

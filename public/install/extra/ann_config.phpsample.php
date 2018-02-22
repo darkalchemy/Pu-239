@@ -37,7 +37,7 @@ $site_config['expires']['torrent_details'] = 2591999;
 $site_config['expires']['user_cache'] = 2591999;
 
 require_once INCL_DIR . 'database.php';
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 /**
  * @return mixed

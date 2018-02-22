@@ -1,7 +1,7 @@
 <?php
 global $CURUSER, $site_config, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $dt = TIME_NOW - 180;
 $keys['user_friends'] = 'user_friends_' . $id;

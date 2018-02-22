@@ -38,7 +38,7 @@ function jsonmsg($arr)
 {
     global $CURUSER;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     $cache->delete('userstatus_' . $CURUSER['id']);
 
     return json_encode([

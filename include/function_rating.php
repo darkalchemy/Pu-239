@@ -10,7 +10,7 @@ function getRate($id, $what)
 {
     global $CURUSER, $site_config, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     $return = false;
     if ($id == 0 || !in_array($what, [
             'topic',

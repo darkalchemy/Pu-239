@@ -1,7 +1,7 @@
 <?php
 global $CURUSER, $site_config, $lang, $user, $id;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     $What_Cache = (XBT_TRACKER ? 'port_data_xbt_' : 'port_data_');

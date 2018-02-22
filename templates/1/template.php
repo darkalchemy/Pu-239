@@ -13,7 +13,7 @@ function stdhead($title = '', $stdhead = null)
     require_once INCL_DIR . 'bbcode_functions.php';
     global $CURUSER, $site_config, $lang, $free, $querytime, $BLOCKS, $CURBLOCK, $mood;
 
-    $session = new Session();
+    $session = new DarkAlchemy\Pu239\Session();
 
     if (!$site_config['site_online']) {
         die('Site is down for maintenance, please check back again later... thanks<br>');
@@ -167,8 +167,8 @@ function stdfoot($stdfoot = false)
     require_once INCL_DIR . 'bbcode_functions.php';
     global $CURUSER, $site_config, $start, $query_stat, $querytime, $lang;
 
-    $cache = new Cache();
-    $session = new Session();
+    $cache = new DarkAlchemy\Pu239\Cache();
+    $session = new DarkAlchemy\Pu239\Session();
 
     $header = $uptime = $htmlfoot = '';
     $debug = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
@@ -394,7 +394,7 @@ function navbar()
 {
     global $site_config, $CURUSER, $lang, $fluent;
 
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     $navbar = $panel = $user_panel = $settings_panel = $stats_panel = $other_panel = '';
 
     if ($CURUSER['class'] >= UC_STAFF) {

@@ -49,7 +49,7 @@ function move_cat()
 {
     global $site_config, $params, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     if ((!isset($params['id']) or !is_valid_id($params['id'])) or (!isset($params['new_cat_id']) or !is_valid_id($params['new_cat_id']))) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
@@ -117,7 +117,7 @@ function add_cat()
 {
     global $site_config, $params, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     foreach ([
                  'new_cat_name',
                  'new_cat_desc',
@@ -148,7 +148,7 @@ function delete_cat()
 {
     global $site_config, $params, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     if (!isset($params['id']) or !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
@@ -234,7 +234,7 @@ function edit_cat()
 {
     global $site_config, $params, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
     if (!isset($params['id']) or !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);

@@ -420,7 +420,7 @@ function do_delete_rep()
 {
     global $input, $lang, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     if (!is_valid_id($input['reputationid'])) {
         stderr($lang['rep_ad_delete_rep_err1'], $lang['rep_ad_delete_rep_err2']);
     }
@@ -448,7 +448,7 @@ function do_edit_rep()
 {
     global $input, $lang, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     if (isset($input['reason']) && !empty($input['reason'])) {
         $reason = str_replace('<br>', '', $input['reason']);
         $reason = trim($reason);

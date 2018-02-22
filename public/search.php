@@ -7,7 +7,7 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $site_config, $CURUSER, $lang, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $table = $body = $heading = '';
 if (!empty($_GET)) {

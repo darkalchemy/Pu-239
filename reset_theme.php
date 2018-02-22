@@ -4,7 +4,7 @@ check_user_status();
 $lang = load_language('global');
 global $CURUSER, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $sid = 1;
 if ($sid > 0 && $sid != $CURUSER['id']) {

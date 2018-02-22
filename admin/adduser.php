@@ -8,8 +8,8 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
-$cache = new Cache();
-$session = new Session();
+$cache = new DarkAlchemy\Pu239\Cache();
+$session = new DarkAlchemy\Pu239\Session();
 
 $cache->delete('userlist_' . $site_config['chatBotID']);
 $cache->delete('chat_users_list');

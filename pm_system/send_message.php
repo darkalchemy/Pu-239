@@ -1,7 +1,7 @@
 <?php
 global $CURUSER, $site_config, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;

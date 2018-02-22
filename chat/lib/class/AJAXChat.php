@@ -45,10 +45,10 @@ class AJAXChat
         global $site_config;
 
         $this->_siteConfig = $site_config;
-        $this->_session = new Session();
-        $this->_user = new User();
-        $this->_cache = new Cache();
-        $this->_fluent = new Database();
+        $this->_session = new DarkAlchemy\Pu239\Session();
+        $this->_user = new DarkAlchemy\Pu239\User();
+        $this->_cache = new DarkAlchemy\Pu239\Cache();
+        $this->_fluent = new DarkAlchemy\Pu239\Database();
         $this->initialize();
     }
 

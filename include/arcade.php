@@ -1,7 +1,7 @@
 <?php
 global $site_config, $CURUSER;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 //====  make sure name is what you expect or error... add or remove to match your site
 if (isset($_POST['gname'])) {

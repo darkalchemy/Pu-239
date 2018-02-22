@@ -1,7 +1,7 @@
 <?php
 global $site_config, $lang, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $stats_cache = $cache->get('site_stats_');
 if ($stats_cache === false || is_null($stats_cache)) {

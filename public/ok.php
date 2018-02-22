@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 global $CURUSER, $site_config;
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 if (!$CURUSER) {
     get_template();
 }

@@ -4,9 +4,9 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 $lang = array_merge($lang, load_language('ad_sitesettings'));
 $site_settings = $current_site_settings = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {

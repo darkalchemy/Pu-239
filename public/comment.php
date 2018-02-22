@@ -7,9 +7,9 @@ require_once INCL_DIR . 'comment_functions.php';
 check_user_status();
 global $CURUSER, $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 $lang = array_merge(load_language('global'), load_language('comment'), load_language('capprove'));
 flood_limit('comments');
 $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : 0);

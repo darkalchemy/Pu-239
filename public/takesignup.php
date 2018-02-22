@@ -8,9 +8,9 @@ dbconn();
 get_template();
 global $site_config, $lang, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
 

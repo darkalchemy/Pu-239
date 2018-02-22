@@ -466,7 +466,7 @@ function format_username($user_id, $icons = true, $tooltipper = true)
 {
     global $site_config;
 
-    $user = new User();
+    $user = new DarkAlchemy\Pu239\User();
 
     if (empty($user_id)) {
         return false;
@@ -688,7 +688,7 @@ function clr_forums_cache($post_id)
 {
     global $site_config;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     $uclass = UC_MIN;
     while ($uclass <= UC_MAX) {
         $cache->delete('last_post_' . $post_id . '_' . $uclass);
@@ -700,7 +700,7 @@ $cache = new Cache();
 
 function clearUserCache($userid)
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
     $cache->delete('MyPeers_' . $userid);
     $cache->delete('user' . $userid);
     $cache->delete('useravatar_' . $userid);

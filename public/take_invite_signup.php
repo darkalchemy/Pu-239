@@ -7,9 +7,9 @@ require_once INCL_DIR . 'function_bemail.php';
 dbconn();
 global $CURUSER, $site_config, $lang, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 if (!$CURUSER) {
     get_template();
 }

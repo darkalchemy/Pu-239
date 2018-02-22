@@ -1,7 +1,7 @@
 <?php
 global $site_config, $lang, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $irc = $cache->get('ircusers_');
 if ($irc === false || is_null($irc)) {

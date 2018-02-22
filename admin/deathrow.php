@@ -39,7 +39,7 @@ function delete_torrent($delete_array, $page)
 {
     global $site_config, $CURUSER, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     if (empty($delete_array)) {
         return false;
     }

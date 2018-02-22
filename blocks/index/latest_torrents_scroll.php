@@ -1,7 +1,7 @@
 <?php
 global $site_config, $lang, $fluent, $CURUSER;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $scroll_torrents = $cache->get('scroll_tor_');
 if ($scroll_torrents === false || is_null($scroll_torrents)) {

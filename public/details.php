@@ -13,9 +13,9 @@ require_once INCL_DIR . 'function_fanart.php';
 check_user_status();
 global $CURUSER, $site_config, $fluent;
 
-$session = new Session();
-$cache = new Cache();
-$user = new User();
+$session = new DarkAlchemy\Pu239\Session();
+$cache = new DarkAlchemy\Pu239\Cache();
+$user = new DarkAlchemy\Pu239\User();
 
 $lang = array_merge(load_language('global'), load_language('details'));
 $stdhead = [

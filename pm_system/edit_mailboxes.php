@@ -1,7 +1,7 @@
 <?php
 global $CURUSER, $site_config, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $all_my_boxes = $curuser_cache = $user_cache = $categories = '';
 if (isset($_POST['action2'])) {

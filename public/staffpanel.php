@@ -5,9 +5,9 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $site_config, $CURUSER;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
-$session = new Session();
+$session = new DarkAlchemy\Pu239\Session();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('staff_panel'));
 

@@ -6,8 +6,8 @@ class_check($class);
 
 global $site_config;
 
-$cache = new Cache();
-$session = new Session();
+$cache = new DarkAlchemy\Pu239\Cache();
+$session = new DarkAlchemy\Pu239\Session();
 $cache->delete('staff_settings_');
 
 $session->set('is-success', 'Staff List Updated');

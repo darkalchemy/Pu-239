@@ -1,7 +1,7 @@
 <?php
 global $CURUSER, $site_config, $lang, $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
 $news = $cache->get('latest_news_');
 if ($news === false || is_null($news)) {

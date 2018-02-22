@@ -8,7 +8,7 @@ function achievement_request_update($data)
 {
     global $site_config, $queries;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
     $lang = load_language('ad_cleanup_manager');
 
     set_time_limit(1200);

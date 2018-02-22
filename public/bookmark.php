@@ -54,7 +54,7 @@ if ($action == 'add') {
     {
         global $CURUSER, $lang;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
         if ((get_row_count('bookmarks', 'WHERE userid=' . sqlesc($CURUSER['id']) . ' AND torrentid = ' . sqlesc($torrentid))) > 0) {
             stderr($lang['bookmark_err'], $lang['bookmark_already']);
         }
@@ -86,7 +86,7 @@ if ($action == 'delete') {
     {
         global $CURUSER;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
         sql_query('DELETE FROM bookmarks WHERE torrentid = ' . sqlesc($torrentid) . ' AND userid = ' . sqlesc($CURUSER['id']));
         $cache->delete('bookmm_' . $CURUSER['id']);
         make_bookmarks($CURUSER['id'], 'bookmm_');
@@ -114,7 +114,7 @@ $cache = new Cache();
     {
         global $CURUSER;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
         sql_query("UPDATE bookmarks SET private = 'no' WHERE private = 'yes' AND torrentid = " . sqlesc($torrentid) . ' AND userid = ' . sqlesc($CURUSER['id']));
         $cache->delete('bookmm_' . $CURUSER['id']);
         make_bookmarks($CURUSER['id'], 'bookmm_');
@@ -145,7 +145,7 @@ $cache = new Cache();
     {
         global $CURUSER;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
         sql_query("UPDATE bookmarks SET private = 'yes' WHERE private = 'no' AND torrentid = " . sqlesc($torrentid) . ' AND userid = ' . sqlesc($CURUSER['id']));
         $cache->delete('bookmm_' . $CURUSER['id']);
         make_bookmarks($CURUSER['id'], 'bookmm_');

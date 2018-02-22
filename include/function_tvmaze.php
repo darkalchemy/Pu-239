@@ -109,7 +109,7 @@ function episode_format($tvmaze_data, $tvmaze_type)
  */
 function get_episode($tvmaze_id, $season, $episode)
 {
-    $cache = new Cache();
+    $cache = new DarkAlchemy\Pu239\Cache();
 
     $episode_info = $cache->get('tvshow_episode_info_' . $tvmaze_id . $season . $episode);
     if ($episode_info === false || is_null($episode_info)) {
@@ -137,7 +137,7 @@ function tvmaze(&$torrents)
 {
     global $fluent;
 
-$cache = new Cache();
+$cache = new DarkAlchemy\Pu239\Cache();
 
     $set = [];
     $tvmaze['name'] = get_show_name($torrents['name']);
