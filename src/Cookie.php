@@ -26,6 +26,11 @@ class Cookie
         $this->key = $key;
     }
 
+    public function __destruct()
+    {
+        // TODO: Implement __destruct() method.
+    }
+
     /**
      * @param $value
      * @param $expires

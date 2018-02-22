@@ -2,10 +2,20 @@
 
 namespace DarkAlchemy\Pu239;
 
-use MatthiasMullie\Scrapbook\Buffered\TransactionalStore;
+use \MatthiasMullie\Scrapbook\Adapters\Couchbase;
+use \MatthiasMullie\Scrapbook\Adapters\Apc;
+use \MatthiasMullie\Scrapbook\Adapters\Memcached;
+use \MatthiasMullie\Scrapbook\Adapters\Redis;
+use \League\Flysystem\Adapter\Local;
+use \League\Flysystem\Filesystem;
+use \MatthiasMullie\Scrapbook\Adapters\Flysystem;
+use \MatthiasMullie\Scrapbook\Buffered\BufferedStore;
+use \MatthiasMullie\Scrapbook\Buffered\TransactionalStore;
+use \MatthiasMullie\Scrapbook\Adapters\Collections\Utils\PrefixKeys;
 
 class Cache extends TransactionalStore
 {
+    protected $cache;
 
     /**
      * Cache constructor.
@@ -19,12 +29,12 @@ class Cache extends TransactionalStore
             case 'couchbase':
                 $cluster = new \CouchbaseCluster('couchbase://localhost');
                 $bucket = $cluster->openBucket('default');
-                $cache = new \MatthiasMullie\Scrapbook\Adapters\Couchbase($bucket);
+                $this->cache = new Couchbase($bucket);
                 break;
 
             case 'apcu':
                 if (extension_loaded('apcu')) {
-                    $cache = new \MatthiasMullie\Scrapbook\Adapters\Apc();
+                    $this->cache = new Apc();
                 } else {
                     die('<h1>Error</h1><p>php-apcu is not available</p>');
                 }
@@ -37,7 +47,7 @@ class Cache extends TransactionalStore
                     if (!count($client->getServerList())) {
                         $client->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
                     }
-                    $cache = new \MatthiasMullie\Scrapbook\Adapters\Memcached($client);
+                    $this->cache = new Memcached($client);
                 } else {
                     die('<h1>Error</h1><p>php-memcached is not available</p>');
                 }
@@ -49,22 +59,27 @@ class Cache extends TransactionalStore
                     $client = new \Redis();
                     $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
                     $client->select($_ENV['REDIS_DATABASE']);
-                    $cache = new \MatthiasMullie\Scrapbook\Adapters\Redis($client);
+                    $this->cache = new Redis($client);
                 } else {
                     die('<h1>Error</h1><p>php-redis is not available</p>');
                 }
                 break;
 
             default:
-                $adapter = new \League\Flysystem\Adapter\Local($_ENV['FILES_PATH'], LOCK_EX);
-                $filesystem = new \League\Flysystem\Filesystem($adapter);
-                $cache = new \MatthiasMullie\Scrapbook\Adapters\Flysystem($filesystem);
+                $adapter = new Local($_ENV['FILES_PATH'], LOCK_EX);
+                $filesystem = new Filesystem($adapter);
+                $this->cache = new Flysystem($filesystem);
         }
-        $cache = new \MatthiasMullie\Scrapbook\Adapters\Collections\Utils\PrefixKeys($cache, $_ENV['CACHE_PREFIX']);
-        $cache = new \MatthiasMullie\Scrapbook\Buffered\BufferedStore($cache);
-        $cache = new TransactionalStore($cache);
+        $this->cache = new PrefixKeys($this->cache, $_ENV['CACHE_PREFIX']);
+        $this->cache = new BufferedStore($this->cache);
+        $this->cache = new TransactionalStore($this->cache);
 
-        parent::__construct($cache);
+        parent::__construct($this->cache);
+    }
+
+    public function __destruct()
+    {
+        parent::__destruct();
     }
 
     /**

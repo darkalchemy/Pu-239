@@ -461,6 +461,8 @@ function min_class($min = UC_MIN, $max = UC_MAX)
  * @param bool $tooltipper
  *
  * @return bool|string
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function format_username($user_id, $icons = true, $tooltipper = true)
 {

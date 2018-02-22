@@ -1,3 +1,7 @@
+22 Feb 2018
+add: destructor to classes
+add: persistent connections to pdo
+
 21 Feb 2018
 move: project classes to src
 add: namespace to project classes

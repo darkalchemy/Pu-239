@@ -27,6 +27,15 @@ class User
         $this->config = $site_config;
     }
 
+    public function __destruct()
+    {
+        //$this->fluent = null;
+        //$this->session = null;
+        //$this->cookies = null;
+        //$this->cache = null;
+    }
+
+
     /**
      * @param int $user_id
      *

@@ -1,5 +1,6 @@
 In no particular order
 
+add language to staff.php
 replace current authentication system
 replace current session handler
 replace php join with implode
