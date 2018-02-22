@@ -1,4 +1,5 @@
 21 Feb 2018
+move: manage jquery with npm
 fix: usercp.php password change
 fix: AJAX Chat not loggin in user when not in online list
 replace: some globals with new Class()
