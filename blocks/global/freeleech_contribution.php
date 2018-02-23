@@ -9,7 +9,7 @@ if (XBT_TRACKER) {
         <span class='custom info alert alert-success'><em>XBT TRACKER</em>
       <br>XBT TRACKER running - No crazyhours, happyhours, freeslots active :-(<br><br></span></a></li>";
 } else {
-    $fpoints = $dpoints = $hpoints = $freeleech_enabled = $double_upload_enabled = $half_down_enabled = '';
+    $fpoints          = $dpoints          = $hpoints          = $freeleech_enabled          = $double_upload_enabled          = $half_down_enabled          = '';
     $scheduled_events = $cache->get('freecontribution_datas_alerts_');
     if (false === $scheduled_events || is_null($scheduled_events)) {
         $scheduled_events = $fluent->from('events')
@@ -24,32 +24,32 @@ if (XBT_TRACKER) {
             if (is_array($scheduled_event) && array_key_exists('startTime', $scheduled_event) &&
                 array_key_exists('endTime', $scheduled_event)) {
                 $startTime = 0;
-                $endTime = 0;
+                $endTime   = 0;
                 $startTime = $scheduled_event['startTime'];
-                $endTime = $scheduled_event['endTime'];
+                $endTime   = $scheduled_event['endTime'];
                 if (TIME_NOW < $endTime && TIME_NOW > $startTime) {
                     if (array_key_exists('freeleechEnabled', $scheduled_event)) {
                         $freeleechEnabled = $scheduled_event['freeleechEnabled'];
                         if ($scheduled_event['freeleechEnabled']) {
                             $freeleech_start_time = $scheduled_event['startTime'];
-                            $freeleech_end_time = $scheduled_event['endTime'];
-                            $freeleech_enabled = true;
+                            $freeleech_end_time   = $scheduled_event['endTime'];
+                            $freeleech_enabled    = true;
                         }
                     }
                     if (array_key_exists('duploadEnabled', $scheduled_event)) {
                         $duploadEnabled = $scheduled_event['duploadEnabled'];
                         if ($scheduled_event['duploadEnabled']) {
                             $double_upload_start_time = $scheduled_event['startTime'];
-                            $double_upload_end_time = $scheduled_event['endTime'];
-                            $double_upload_enabled = true;
+                            $double_upload_end_time   = $scheduled_event['endTime'];
+                            $double_upload_enabled    = true;
                         }
                     }
                     if (array_key_exists('hdownEnabled', $scheduled_event)) {
                         $hdownEnabled = $scheduled_event['hdownEnabled'];
                         if ($scheduled_event['hdownEnabled']) {
                             $half_down_start_time = $scheduled_event['startTime'];
-                            $half_down_end_time = $scheduled_event['endTime'];
-                            $half_down_enabled = true;
+                            $half_down_end_time   = $scheduled_event['endTime'];
+                            $half_down_enabled    = true;
                         }
                     }
                 }
@@ -177,17 +177,17 @@ if (XBT_TRACKER) {
     if ($freeleech_enabled) {
         $fstatus = "<span class='has-text-green'> ON </span>";
     } else {
-        $fstatus = $font_color_fl.'';
+        $fstatus = $font_color_fl . '';
     }
     if ($double_upload_enabled) {
         $dstatus = "<span class='has-text-green'> ON </span>";
     } else {
-        $dstatus = $font_color_du.'';
+        $dstatus = $font_color_du . '';
     }
     if ($half_down_enabled) {
         $hstatus = "<span class='has-text-green'> ON </span>";
     } else {
-        $hstatus = $font_color_hd.'';
+        $hstatus = $font_color_hd . '';
     }
     $htmlout .= "
                 <li>
@@ -199,7 +199,7 @@ if (XBT_TRACKER) {
                                 <div class='level is-marginless'>
                                     <span>Freeleech</span><span> [ ";
     if ($freeleech_enabled) {
-        $htmlout .= "<span class='has-text-success'> ON </span>".get_date($freeleech_start_time, 'DATE').' - '.get_date($freeleech_end_time, 'DATE');
+        $htmlout .= "<span class='has-text-success'> ON </span>" . get_date($freeleech_start_time, 'DATE') . ' - ' . get_date($freeleech_end_time, 'DATE');
     } else {
         $htmlout .= $fstatus;
     }
@@ -211,7 +211,7 @@ if (XBT_TRACKER) {
                                 <div class='level is-marginless'>
                                     <span>DoubleUpload</span><span> [ ";
     if ($double_upload_enabled) {
-        $htmlout .= "<span class='has-text-success'> ON </span>".get_date($double_upload_start_time, 'DATE').' - '.get_date($double_upload_end_time, 'DATE');
+        $htmlout .= "<span class='has-text-success'> ON </span>" . get_date($double_upload_start_time, 'DATE') . ' - ' . get_date($double_upload_end_time, 'DATE');
     } else {
         $htmlout .= $dstatus;
     }
@@ -223,7 +223,7 @@ if (XBT_TRACKER) {
                                 <div class='level is-marginless'>
                                     <span>Half Download</span><span> [ ";
     if ($half_down_enabled) {
-        $htmlout .= '<span class="has-text-success"> ON</span> '.get_date($half_down_start_time, 'DATE').' - '.get_date($half_down_end_time, 'DATE');
+        $htmlout .= '<span class="has-text-success"> ON</span> ' . get_date($half_down_start_time, 'DATE') . ' - ' . get_date($half_down_end_time, 'DATE');
     } else {
         $htmlout .= $hstatus;
     }

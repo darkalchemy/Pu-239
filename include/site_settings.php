@@ -33,7 +33,7 @@ if (false === $hnr_settings || is_null($hnr_settings)) {
 
 $staff_settings = $cache->get('staff_settings_');
 if (false === $staff_settings || is_null($staff_settings)) {
-    $res = sql_query('SELECT id, username, class FROM users WHERE class BETWEEN '.UC_STAFF.' AND '.UC_MAX.' ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT id, username, class FROM users WHERE class BETWEEN ' . UC_STAFF . ' AND ' . UC_MAX . ' ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
     while ($staff_setting = mysqli_fetch_assoc($res)) {
         $staff_settings['is_staff']['allowed'][] = (int) $staff_setting['id'];
     }

@@ -2,11 +2,11 @@
 
 $step = isset($_GET['step']) ? (int) $_GET['step'] : 0;
 
-$root = dirname(__FILE__, 3).DIRECTORY_SEPARATOR;
-$public = $root.'public';
+$root   = dirname(__FILE__, 3) . DIRECTORY_SEPARATOR;
+$public = $root . 'public';
 
 if (DIRECTORY_SEPARATOR != $public[strlen($public) - 1]) {
-    $public = $public.DIRECTORY_SEPARATOR;
+    $public = $public . DIRECTORY_SEPARATOR;
 }
 
 function return_bytes($val)
@@ -14,9 +14,9 @@ function return_bytes($val)
     if ('' == $val) {
         return 0;
     }
-    $val = strtolower(trim($val));
+    $val  = strtolower(trim($val));
     $last = $val[strlen($val) - 1];
-    $val = rtrim($val, $last);
+    $val  = rtrim($val, $last);
 
     switch ($last) {
         case 'g':
@@ -59,10 +59,10 @@ function get_scheme()
     <?php
     if ('POST' == $_SERVER['REQUEST_METHOD']) {
         $valid_do = [
-            'write' => 1,
+            'write'     => 1,
             'db_insert' => 1,
         ];
-        $do = isset($_POST['do']) && isset($valid_do[$_POST['do']]) ? $_POST['do'] : false;
+        $do = isset($_POST['do'], $valid_do[$_POST['do']]) ? $_POST['do'] : false;
         switch ($do) {
             case 'write':
                 require_once 'functions/writeconfig.php';
@@ -131,7 +131,7 @@ function get_scheme()
                 <fieldset>
                     <legend>All done</legend>
                     <div class="info">Installation complete</div>
-                    <div class="info">goto <a href="'.$site_config['baseurl'].'/signup.php">Signup</a> to create your first user.</div>
+                    <div class="info">goto <a href="' . $site_config['baseurl'] . '/signup.php">Signup</a> to create your first user.</div>
                     <script>
                         var processing = 6;
                     </script>

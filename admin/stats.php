@@ -1,22 +1,22 @@
 <?php
 
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $lang;
 
-$lang = array_merge($lang, load_language('ad_stats'));
+$lang    = array_merge($lang, load_language('ad_stats'));
 $HTMLOUT = '';
 $HTMLOUT .= begin_main_frame();
-$res = sql_query('SELECT COUNT(id) FROM torrents') or sqlerr(__FILE__, __LINE__);
-$n = mysqli_fetch_row($res);
-$n_tor = $n[0];
-$res = sql_query('SELECT COUNT(id) FROM peers') or sqlerr(__FILE__, __LINE__);
-$n = mysqli_fetch_row($res);
-$n_peers = $n[0];
-$uporder = isset($_GET['uporder']) ? $_GET['uporder'] : '';
+$res      = sql_query('SELECT COUNT(id) FROM torrents') or sqlerr(__FILE__, __LINE__);
+$n        = mysqli_fetch_row($res);
+$n_tor    = $n[0];
+$res      = sql_query('SELECT COUNT(id) FROM peers') or sqlerr(__FILE__, __LINE__);
+$n        = mysqli_fetch_row($res);
+$n_peers  = $n[0];
+$uporder  = isset($_GET['uporder']) ? $_GET['uporder'] : '';
 $catorder = isset($_GET['catorder']) ? $_GET['catorder'] : '';
 if ('lastul' == $uporder) {
     $orderby = 'last DESC, name';
@@ -28,9 +28,9 @@ if ('lastul' == $uporder) {
     $orderby = 'name';
 }
 $query = 'SELECT u.id, u.username AS name, MAX(t.added) AS last, COUNT(DISTINCT t.id) AS n_t, COUNT(p.id) as n_p
-      FROM users as u LEFT JOIN torrents as t ON u.id = t.owner LEFT JOIN peers as p ON t.id = p.torrent WHERE u.class = '.UC_UPLOADER.'
+      FROM users as u LEFT JOIN torrents as t ON u.id = t.owner LEFT JOIN peers as p ON t.id = p.torrent WHERE u.class = ' . UC_UPLOADER . '
       GROUP BY u.id UNION SELECT u.id, u.username AS name, MAX(t.added) AS last, COUNT(DISTINCT t.id) AS n_t, COUNT(p.id) as n_p
-      FROM users as u LEFT JOIN torrents as t ON u.id = t.owner LEFT JOIN peers as p ON t.id = p.torrent WHERE u.class > '.UC_UPLOADER."
+      FROM users as u LEFT JOIN torrents as t ON u.id = t.owner LEFT JOIN peers as p ON t.id = p.torrent WHERE u.class > ' . UC_UPLOADER . "
       GROUP BY u.id ORDER BY $orderby";
 $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
 if (0 == mysqli_num_rows($res)) {
@@ -48,12 +48,12 @@ if (0 == mysqli_num_rows($res)) {
       </tr>\n";
     while ($uper = mysqli_fetch_assoc($res)) {
         $HTMLOUT .= "<tr>
-        <td><a href='userdetails.php?id=".(int) $uper['id']."'><b>".htmlsafechars($uper['name']).'</b></a></td>
-        <td '.($uper['last'] ? ('>'.get_date($uper['last'], '').' ('.get_date($uper['last'], '', 0, 1).')') : "align='center'>---")."</td>
+        <td><a href='userdetails.php?id=" . (int) $uper['id'] . "'><b>" . htmlsafechars($uper['name']) . '</b></a></td>
+        <td ' . ($uper['last'] ? ('>' . get_date($uper['last'], '') . ' (' . get_date($uper['last'], '', 0, 1) . ')') : "align='center'>---") . "</td>
         <td>{$uper['n_t']}</td>
-        <td>".($n_tor > 0 ? number_format(100 * $uper['n_t'] / $n_tor, 1).'%' : '---').'</td>
-        <td>'.$uper['n_p'].'</td>
-        <td>'.($n_peers > 0 ? number_format(100 * $uper['n_p'] / $n_peers, 1).'%' : '---')."</td></tr>\n";
+        <td>" . ($n_tor > 0 ? number_format(100 * $uper['n_t'] / $n_tor, 1) . '%' : '---') . '</td>
+        <td>' . $uper['n_p'] . '</td>
+        <td>' . ($n_peers > 0 ? number_format(100 * $uper['n_p'] / $n_peers, 1) . '%' : '---') . "</td></tr>\n";
     }
     $HTMLOUT .= end_table();
     $HTMLOUT .= end_frame();
@@ -85,16 +85,16 @@ if (0 == $n_tor) {
       </tr>\n";
     while ($cat = mysqli_fetch_assoc($res)) {
         $HTMLOUT .= "<tr>
-        <td class='rowhead'>".htmlsafechars($cat['name']).'</td>
-        <td '.($cat['last'] ? ('>'.get_date($cat['last'], '').' ('.get_date($cat['last'], '', 0, 1).')') : "align='center'>---")."</td>
+        <td class='rowhead'>" . htmlsafechars($cat['name']) . '</td>
+        <td ' . ($cat['last'] ? ('>' . get_date($cat['last'], '') . ' (' . get_date($cat['last'], '', 0, 1) . ')') : "align='center'>---") . "</td>
         <td>{$cat['n_t']}</td>
-        <td>".number_format(100 * $cat['n_t'] / $n_tor, 1)."%</td>
+        <td>" . number_format(100 * $cat['n_t'] / $n_tor, 1) . "%</td>
         <td>{$cat['n_p']}</td>
-        <td>".($n_peers > 0 ? number_format(100 * $cat['n_p'] / $n_peers, 1).'%' : '---')."</td></tr>\n";
+        <td>" . ($n_peers > 0 ? number_format(100 * $cat['n_p'] / $n_peers, 1) . '%' : '---') . "</td></tr>\n";
     }
     $HTMLOUT .= end_table();
     $HTMLOUT .= end_frame();
 }
 $HTMLOUT .= end_main_frame();
-echo stdhead($lang['stats_window_title']).$HTMLOUT.stdfoot();
+echo stdhead($lang['stats_window_title']) . $HTMLOUT . stdfoot();
 die();

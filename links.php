@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER;
 
@@ -57,4 +57,4 @@ $HTMLOUT .= "{$lang['links_pu239_header']}>
     {$lang['links_pu239_body']}
     </td></tr></table>";
 $HTMLOUT .= '</td></tr></table>';
-echo stdhead('Links').$HTMLOUT.stdfoot();
+echo stdhead('Links') . $HTMLOUT . stdfoot();

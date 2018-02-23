@@ -1,9 +1,9 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'bbcode_functions.php';
-require_once INCL_DIR.'html_functions.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $site_config, $CURUSER, $lang, $fluent, $cache;
 
@@ -40,11 +40,11 @@ $HTMLOUT = "
     <h1 class='has-text-centered'>BOT Search</h1>
     <form id='search' method='get' action='{$site_config['baseurl']}/search.php'>
         <div class='padding10' class='w-100'>
-            <input type='text' name='search' placeholder='BOT search' class='search w-100' value='".(!empty($_GET['search']) ? $_GET['search'] : '')."' />
+            <input type='text' name='search' placeholder='BOT search' class='search w-100' value='" . (!empty($_GET['search']) ? $_GET['search'] : '') . "' />
         </div>
         <div class='margin10 has-text-centered'>
             <input type='submit' value='Search' class='button is-small' />
         </div>
     </form>$table";
 
-echo stdhead('Bot Search Torrents', true).wrapper($HTMLOUT).stdfoot();
+echo stdhead('Bot Search Torrents', true) . wrapper($HTMLOUT) . stdfoot();

@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 
 $lang = load_language('global');
@@ -17,14 +17,14 @@ $all_our_games = $site_config['arcade_games'];
 if (isset($_GET['gamename'])) {
     $gamename = strip_tags($_GET['gamename']);
     if (!in_array($gamename, $all_our_games)) {
-        stderr('Error', 'No game with that name! ('.$gamename.')');
+        stderr('Error', 'No game with that name! (' . $gamename . ')');
     }
 }
 
 $game_name = str_replace('_', ' ', $gamename);
 //=== make sure that the gameuri is what it is supposed to be... add or subtract games you have... be sure to add the .swf extention
 if (isset($_GET['gameURI'])) {
-    $gameURI = strip_tags($_GET['gameURI']);
+    $gameURI      = strip_tags($_GET['gameURI']);
     $gameURIclean = str_replace('.swf', '', $gameURI);
     if (!in_array($gameURIclean, $all_our_games)) {
         stderr('Error', 'Could not find game!');
@@ -63,10 +63,10 @@ $HTMLOUT .= "
             </div>
         </div>";
 
-$res = sql_query('SELECT * FROM flashscores WHERE game = '.sqlesc($gamename).' ORDER BY score DESC LIMIT 15') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT * FROM flashscores WHERE game = ' . sqlesc($gamename) . ' ORDER BY score DESC LIMIT 15') or sqlerr(__FILE__, __LINE__);
 
 if (mysqli_num_rows($res) > 0) {
-    $id = array_search($gamename, $site_config['arcade_games']);
+    $id           = array_search($gamename, $site_config['arcade_games']);
     $fullgamename = $site_config['arcade_games_names'][$id];
     $HTMLOUT .= "
         <table class='table table-bordered table-striped top20 bottom20'>
@@ -86,38 +86,38 @@ if (mysqli_num_rows($res) > 0) {
                 </tr>
             </thead>
             <tbody>";
-    $at_score_res = sql_query('SELECT * FROM highscores WHERE game = '.sqlesc($gamename).' ORDER BY score DESC LIMIT 15') or sqlerr(__FILE__, __LINE__);
+    $at_score_res = sql_query('SELECT * FROM highscores WHERE game = ' . sqlesc($gamename) . ' ORDER BY score DESC LIMIT 15') or sqlerr(__FILE__, __LINE__);
     while ($at_score_arr = mysqli_fetch_assoc($at_score_res)) {
         $at_username = format_username($at_score_arr['user_id']);
-        $at_ranking = sql_query('SELECT COUNT(id) FROM highscores WHERE game = '.sqlesc($gamename).' AND score > '.sqlesc($at_score_arr['score'])) or sqlerr(__FILE__, __LINE__);
-        $at_rankrow = mysqli_fetch_row($at_ranking);
+        $at_ranking  = sql_query('SELECT COUNT(id) FROM highscores WHERE game = ' . sqlesc($gamename) . ' AND score > ' . sqlesc($at_score_arr['score'])) or sqlerr(__FILE__, __LINE__);
+        $at_rankrow  = mysqli_fetch_row($at_ranking);
         $HTMLOUT .= '
-                <tr'.($at_score_arr['user_id'] == $CURUSER['id'] ? ' class="has-text-primary text-shadow"' : '').'>
+                <tr' . ($at_score_arr['user_id'] == $CURUSER['id'] ? ' class="has-text-primary text-shadow"' : '') . '>
                     <td>0</td>
-                    <td>'.$at_username.'</td>
-                    <td>'.(int) $at_score_arr['level'].'</td>
-                    <td>'.number_format($at_score_arr['score']).'</td>
+                    <td>' . $at_username . '</td>
+                    <td>' . (int) $at_score_arr['level'] . '</td>
+                    <td>' . number_format($at_score_arr['score']) . '</td>
                 </tr>';
     }
 
     while ($row = mysqli_fetch_assoc($res)) {
         $username = format_username($row['user_id']);
-        $ranking = sql_query('SELECT COUNT(id) FROM flashscores WHERE game = '.sqlesc($gamename).' AND score > '.sqlesc($row['score'])) or sqlerr(__FILE__, __LINE__);
-        $rankrow = mysqli_fetch_row($ranking);
+        $ranking  = sql_query('SELECT COUNT(id) FROM flashscores WHERE game = ' . sqlesc($gamename) . ' AND score > ' . sqlesc($row['score'])) or sqlerr(__FILE__, __LINE__);
+        $rankrow  = mysqli_fetch_row($ranking);
 
         $HTMLOUT .= '
-                <tr'.($row['user_id'] == $player ? ' class="has-text-primary text-shadow"' : '').'>
-                    <td>'.number_format($rankrow[0] + 1).'</td>
-                    <td>'.$username.'</td>
-                    <td>'.(int) $row['level'].'</td>
-                    <td>'.number_format($row['score']).'</td>
+                <tr' . ($row['user_id'] == $player ? ' class="has-text-primary text-shadow"' : '') . '>
+                    <td>' . number_format($rankrow[0] + 1) . '</td>
+                    <td>' . $username . '</td>
+                    <td>' . (int) $row['level'] . '</td>
+                    <td>' . number_format($row['score']) . '</td>
                 </tr>';
     }
-    $member_score_res = sql_query('SELECT * FROM flashscores WHERE game = '.sqlesc($gamename).' AND user_id = '.sqlesc($CURUSER['id']).' ORDER BY score DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    $member_score_res = sql_query('SELECT * FROM flashscores WHERE game = ' . sqlesc($gamename) . ' AND user_id = ' . sqlesc($CURUSER['id']) . ' ORDER BY score DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
 
     if (mysqli_num_rows($member_score_res) > 0) {
-        $member_score_arr = mysqli_fetch_assoc($member_score_res);
-        $member_ranking_res = sql_query('SELECT COUNT(id) FROM flashscores WHERE game = '.sqlesc($gamename).' AND score > '.sqlesc($member_score_arr['score'])) or sqlerr(__FILE__, __LINE__);
+        $member_score_arr   = mysqli_fetch_assoc($member_score_res);
+        $member_ranking_res = sql_query('SELECT COUNT(id) FROM flashscores WHERE game = ' . sqlesc($gamename) . ' AND score > ' . sqlesc($member_score_arr['score'])) or sqlerr(__FILE__, __LINE__);
         $member_ranking_arr = mysqli_fetch_row($member_ranking_res);
 
         $member_rank = number_format($member_ranking_arr[0]);
@@ -125,10 +125,10 @@ if (mysqli_num_rows($res) > 0) {
         if ($member_rank > 10) {
             $HTMLOUT .= '
                 <tr>
-                    <td>'.$member_rank.'</td>
-                    <td>'.format_username($CURUSER['id']).'</td>
-                    <td>'.(int) $row['level'].'</td>
-                    <td>'.number_format($member_score_arr['score']).'</td>
+                    <td>' . $member_rank . '</td>
+                    <td>' . format_username($CURUSER['id']) . '</td>
+                    <td>' . (int) $row['level'] . '</td>
+                    <td>' . number_format($member_score_arr['score']) . '</td>
                 </tr>';
         }
     }
@@ -138,7 +138,7 @@ if (mysqli_num_rows($res) > 0) {
         </table>';
 } //}
 else {
-    $id = array_search($gamename, $site_config['arcade_games']);
+    $id           = array_search($gamename, $site_config['arcade_games']);
     $fullgamename = $site_config['arcade_games_names'][$id];
     $HTMLOUT .= "
         <table class='table table-bordered table-striped top20 bottom20'>
@@ -163,4 +163,4 @@ else {
         </table>";
 }
 
-echo stdhead('Old School Arcade', true).wrapper($HTMLOUT, 'has-text-centered').stdfoot();
+echo stdhead('Old School Arcade', true) . wrapper($HTMLOUT, 'has-text-centered') . stdfoot();

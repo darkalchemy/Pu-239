@@ -20,25 +20,25 @@ function freeuser_update($data)
         ->where('free_switch > 1')
         ->where('free_switch < ?', TIME_NOW);
 
-    $values = $msgs_buffer = $set = [];
-    $dt = TIME_NOW;
+    $values  = $msgs_buffer  = $set  = [];
+    $dt      = TIME_NOW;
     $subject = 'Freeleech expired.';
-    $msg = "Your freeleech has expired and has been auto-removed by the system.\n";
+    $msg     = "Your freeleech has expired and has been auto-removed by the system.\n";
     foreach ($query as $arr) {
         $modcomment = $arr['modcomment'];
-        $modcomment = get_date($dt, 'DATE', 1)." - Freeleech Removed By System.\n".$modcomment;
-        $modcom = sqlesc($modcomment);
-        $values[] = [
-            'sender' => 0,
+        $modcomment = get_date($dt, 'DATE', 1) . " - Freeleech Removed By System.\n" . $modcomment;
+        $modcom     = sqlesc($modcomment);
+        $values[]   = [
+            'sender'   => 0,
             'receiver' => $arr['id'],
-            'added' => $dt,
-            'msg' => $msg,
-            'subject' => $subject,
+            'added'    => $dt,
+            'msg'      => $msg,
+            'subject'  => $subject,
         ];
-        $cache->increment('inbox_'.$arr['id']);
+        $cache->increment('inbox_' . $arr['id']);
         $set = [
             'free_switch' => 0,
-            'modcomment' => $modcom,
+            'modcomment'  => $modcom,
         ];
 
         $fluent->update('users')
@@ -46,11 +46,11 @@ function freeuser_update($data)
             ->where('id = ?', $arr['id'])
             ->execute();
 
-        $cache->update_row('user'.$arr['id'], [
+        $cache->update_row('user' . $arr['id'], [
             'free_switch' => 0,
-            'modcomment' => $modcomment,
+            'modcomment'  => $modcomment,
         ], $site_config['expires']['user_cache']);
-        $cache->increment('inbox_'.$arr['id']);
+        $cache->increment('inbox_' . $arr['id']);
     }
     $count = count($values);
     if ($count > 0) {
@@ -59,7 +59,7 @@ function freeuser_update($data)
             ->execute();
     }
     if ($data['clean_log']) {
-        write_log('Cleanup - Removed Freeleech from '.$count.' members');
+        write_log('Cleanup - Removed Freeleech from ' . $count . ' members');
     }
 
     if ($data['clean_log'] && $queries > 0) {

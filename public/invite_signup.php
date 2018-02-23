@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once CACHE_DIR.'timezones.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once CACHE_DIR . 'timezones.php';
 dbconn();
 global $CURUSER, $site_config, $fluent;
 
@@ -25,8 +25,8 @@ if (64 != strlen($_GET['code'])) {
 }
 
 $HTMLOUT = $year = $month = $day = $gender = $country = '';
-$lang = array_merge(load_language('global'), load_language('signup'));
-$count = $fluent->from('users')
+$lang    = array_merge(load_language('global'), load_language('signup'));
+$count   = $fluent->from('users')
     ->select(null)
     ->select('COUNT(*) AS count')
     ->fetch('count');
@@ -35,7 +35,7 @@ if ($count >= $site_config['maxusers']) {
     stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $site_config['maxusers']));
 }
 
-$offset = (string) $site_config['time_offset'];
+$offset      = (string) $site_config['time_offset'];
 $time_select = "<select name='user_timezone' class='w-100'>";
 foreach ($TZ as $off => $words) {
     if (preg_match("/^time_(-?[\d\.]+)$/", $off, $match)) {
@@ -45,10 +45,10 @@ foreach ($TZ as $off => $words) {
 $time_select .= '</select>';
 
 $countries = countries();
-$country .= "<option value='999999'".($CURUSER['country'] == $cntry['id'] ? ' selected' : '').">Atlantis</option>\n";
+$country .= "<option value='999999'" . ($CURUSER['country'] == $cntry['id'] ? ' selected' : '') . ">Atlantis</option>\n";
 
 foreach ($countries as $cntry) {
-    $country .= "<option value='".(int) $cntry['id']."'".($CURUSER['country'] == $cntry['id'] ? ' selected' : '').'>'.htmlsafechars($cntry['name'])."</option>\n";
+    $country .= "<option value='" . (int) $cntry['id'] . "'" . ($CURUSER['country'] == $cntry['id'] ? ' selected' : '') . '>' . htmlsafechars($cntry['name']) . "</option>\n";
 }
 
 $gender .= "<select name='gender' class='w-100'>
@@ -102,10 +102,10 @@ $year .= '<select name="year" class="w-100 bottom10">';
 $year .= "<option value='0000'>{$lang['signup_year']}</option>";
 $i = date('Y');
 while ($i >= 1920) {
-    $year .= '<option value="'.$i.'">'.$i.'</option>';
+    $year .= '<option value="' . $i . '">' . $i . '</option>';
     --$i;
 }
-$year .= '</select>';
+$year  .= '</select>';
 $month .= "<select name='month' class='w-100 bottom10'>
     <option value='00'>{$lang['signup_month']}</option>
     <option value='01'>{$lang['signup_jan']}</option>
@@ -126,47 +126,47 @@ $day .= "<option value='00'>{$lang['signup_day']}</option>";
 $i = 1;
 while ($i <= 31) {
     if ($i < 10) {
-        $day .= '<option value="0'.$i.'">0'.$i.'</option>';
+        $day .= '<option value="0' . $i . '">0' . $i . '</option>';
     } else {
-        $day .= '<option value="'.$i.'">'.$i.'</option>';
+        $day .= '<option value="' . $i . '">' . $i . '</option>';
     }
     ++$i;
 }
-$day .= '</select>';
+$day     .= '</select>';
 $HTMLOUT .= "
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_birth']}<span>*</span></td>
-                <td>".$year.$month.$day.'</td>
+                <td>" . $year . $month . $day . '</td>
             </tr>';
-$passhint = '';
+$passhint  = '';
 $questions = [
     [
-        'id' => '1',
+        'id'       => '1',
         'question' => "{$lang['signup_q1']}",
     ],
     [
-        'id' => '2',
+        'id'       => '2',
         'question' => "{$lang['signup_q2']}",
     ],
     [
-        'id' => '3',
+        'id'       => '3',
         'question' => "{$lang['signup_q3']}",
     ],
     [
-        'id' => '4',
+        'id'       => '4',
         'question' => "{$lang['signup_q4']}",
     ],
     [
-        'id' => '5',
+        'id'       => '5',
         'question' => "{$lang['signup_q5']}",
     ],
     [
-        'id' => '6',
+        'id'       => '6',
         'question' => "{$lang['signup_q6']}",
     ],
 ];
 foreach ($questions as $sph) {
-    $passhint .= "<option value='".$sph['id']."'>".$sph['question']."</option>\n";
+    $passhint .= "<option value='" . $sph['id'] . "'>" . $sph['question'] . "</option>\n";
 }
 $HTMLOUT .= "
             <tr class='no_hover'>
@@ -194,10 +194,10 @@ $HTMLOUT .= "
                     <input type='checkbox' name='faqverify' value='yes' /> {$lang['signup_faq']}<br>
                     <input type='checkbox' name='ageverify' value='yes' /> {$lang['signup_age']}
                 </td>
-            </tr>".($site_config['captcha_on'] ? "
+            </tr>" . ($site_config['captcha_on'] ? "
             <tr class='no_hover'>
                 <td colspan='2' id='captcha_show'></td>
-            </tr>" : '')."
+            </tr>" : '') . "
             <tr class='no_hover'>
                 <td colspan='2'>
                 {$lang['signup_click']} <span class='has-text-danger is-bold'>{$lang['signup_x']}</span> {$lang['signup_click1']}
@@ -208,7 +208,7 @@ $HTMLOUT .= "
                     <span class='tabs is-marginless'>";
 for ($i = 0; $i < count($value); ++$i) {
     $HTMLOUT .= '
-                        <input name="submitme" type="submit" value="'.$value[$i].'" class="button is-small" />';
+                        <input name="submitme" type="submit" value="' . $value[$i] . '" class="button is-small" />';
 }
 $HTMLOUT .= '
                     </span>
@@ -217,4 +217,4 @@ $HTMLOUT .= '
         </table>
     </form>
     </div>';
-echo stdhead('Invite Signup').$HTMLOUT.stdfoot($stdfoot);
+echo stdhead('Invite Signup') . $HTMLOUT . stdfoot($stdfoot);

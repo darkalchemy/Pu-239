@@ -1,13 +1,13 @@
 <?php
 
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'torrenttable_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'torrenttable_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $lang;
 
-$lang = array_merge($lang, load_language('non_con'));
+$lang    = array_merge($lang, load_language('non_con'));
 $HTMLOUT = '';
 if (isset($_GET['action1']) && 'list' == htmlsafechars($_GET['action1'])) {
     $res2 = sql_query("SELECT userid, seeder, torrent, agent FROM peers WHERE connectable='no' ORDER BY userid DESC") or sqlerr(__FILE__, __LINE__);
@@ -16,7 +16,7 @@ if (isset($_GET['action1']) && 'list' == htmlsafechars($_GET['action1'])) {
     <h1>{$lang['non_con_peers']}</h1>
     {$lang['non_con_this']}<br><p><span class='has-text-danger'>*</span> {$lang['non_con_means']}<br>";
     $result = sql_query("SELECT DISTINCT userid FROM peers WHERE connectable = 'no'");
-    $count = mysqli_num_rows($result);
+    $count  = mysqli_num_rows($result);
     $HTMLOUT .= "$count {$lang['non_con_unique']}</p>";
     @((mysqli_free_result($result) || (is_object($result) && ('mysqli_result' == get_class($result)))) ? true : false);
     if (0 == mysqli_num_rows($res2)) {
@@ -25,19 +25,19 @@ if (isset($_GET['action1']) && 'list' == htmlsafechars($_GET['action1'])) {
         $HTMLOUT .= "<table >\n";
         $HTMLOUT .= "<tr><td class='colhead'>{$lang['non_con_name']}</td><td class='colhead'>{$lang['non_con_tor']}</td><td class='colhead'>{$lang['non_con_client']}</td></tr>\n";
         while ($arr2 = mysqli_fetch_assoc($res2)) {
-            $r2 = sql_query('SELECT username FROM users WHERE id='.sqlesc($arr2['userid'])) or sqlerr(__FILE__, __LINE__);
+            $r2 = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr2['userid'])) or sqlerr(__FILE__, __LINE__);
             $a2 = mysqli_fetch_assoc($r2);
-            $HTMLOUT .= "<tr><td><a href='userdetails.php?id=".(int) $arr2['userid']."'>".htmlsafechars($a2['username'])."</a></td><td><a href='details.php?id=".(int) $arr2['torrent']."&amp;dllist=1#seeders'>".(int) $arr2['torrent'].'</a>';
+            $HTMLOUT .= "<tr><td><a href='userdetails.php?id=" . (int) $arr2['userid'] . "'>" . htmlsafechars($a2['username']) . "</a></td><td><a href='details.php?id=" . (int) $arr2['torrent'] . "&amp;dllist=1#seeders'>" . (int) $arr2['torrent'] . '</a>';
             if ('yes' == $arr2['seeder']) {
                 $HTMLOUT .= "<span class='has-text-danger'>*</span>";
             }
-            $HTMLOUT .= '</td><td>'.htmlsafechars($arr2['agent'])."</td></tr>\n";
+            $HTMLOUT .= '</td><td>' . htmlsafechars($arr2['agent']) . "</td></tr>\n";
         }
         $HTMLOUT .= "</table>\n";
     }
 }
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
-    $dt = TIME_NOW;
+    $dt  = TIME_NOW;
     $msg = htmlsafechars($_POST['msg']);
     if (!$msg) {
         stderr('Error', 'Please Type In Some Text');
@@ -45,9 +45,9 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $query = sql_query("SELECT DISTINCT userid FROM peers WHERE connectable='no'");
     while ($dat = mysqli_fetch_assoc($query)) {
         $subject = 'Connectability';
-        sql_query('INSERT INTO messages (sender, receiver, added, msg, subject) VALUES (0, '.sqlesc($dat['userid']).', '.sqlesc(TIME_NOW).', '.sqlesc($msg).', '.sqlesc($subject).')') or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO messages (sender, receiver, added, msg, subject) VALUES (0, ' . sqlesc($dat['userid']) . ', ' . sqlesc(TIME_NOW) . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')') or sqlerr(__FILE__, __LINE__);
     }
-    sql_query('INSERT INTO notconnectablepmlog (user, date) VALUES ('.sqlesc($CURUSER['id']).', '.sqlesc($dt).')') or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO notconnectablepmlog (user, date) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($dt) . ')') or sqlerr(__FILE__, __LINE__);
     header('Refresh: 0; url=staffpanel.php?tool=findnotconnectable');
 }
 if (isset($_GET['action1']) && 'sendpm' == htmlsafechars($_GET['action1'])) {
@@ -56,7 +56,7 @@ if (isset($_GET['action1']) && 'sendpm' == htmlsafechars($_GET['action1'])) {
 <h1>{$lang['non_con_mass']}</h1>
 <form method='post' action='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>";
     if (isset($_GET['returnto']) || isset($_SERVER['HTTP_REFERER'])) {
-        $HTMLOUT .= "<input type='hidden' name='returnto' value='".(isset($_GET['returnto']) ? htmlsafechars($_GET['returnto']) : htmlsafechars($_SERVER['HTTP_REFERER']))."' />";
+        $HTMLOUT .= "<input type='hidden' name='returnto' value='" . (isset($_GET['returnto']) ? htmlsafechars($_GET['returnto']) : htmlsafechars($_SERVER['HTTP_REFERER'])) . "' />";
     }
     $receiver = '';
     // default message
@@ -93,12 +93,12 @@ if ('' == isset($_GET['action1'])) {
     <tr><td class='colhead'>{$lang['non_con_by']}</td>
     <td class='colhead'>{$lang['non_con_date']}</td><td class='colhead'>{$lang['non_con_elapsed']}</td></tr>";
     while ($arr2 = mysqli_fetch_assoc($getlog)) {
-        $r2 = sql_query('SELECT username FROM users WHERE id='.sqlesc($arr2['user'])) or sqlerr(__FILE__, __LINE__);
-        $a2 = mysqli_fetch_assoc($r2);
+        $r2      = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr2['user'])) or sqlerr(__FILE__, __LINE__);
+        $a2      = mysqli_fetch_assoc($r2);
         $elapsed = get_date($arr2['date'], '', 0, 1);
-        $HTMLOUT .= "<tr><td class='colhead'><a href='userdetails.php?id=".(int) $arr2['user']."'>".htmlsafechars($a2['username'])."</a></td><td class='colhead'>".get_date($arr2['date'], '')."</td><td>$elapsed</td></tr>";
+        $HTMLOUT .= "<tr><td class='colhead'><a href='userdetails.php?id=" . (int) $arr2['user'] . "'>" . htmlsafechars($a2['username']) . "</a></td><td class='colhead'>" . get_date($arr2['date'], '') . "</td><td>$elapsed</td></tr>";
     }
     $HTMLOUT .= '</table>';
 }
-echo stdhead().$HTMLOUT.stdfoot();
+echo stdhead() . $HTMLOUT . stdfoot();
 die();

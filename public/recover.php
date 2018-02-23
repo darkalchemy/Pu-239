@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'password_functions.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'password_functions.php';
 dbconn();
 global $CURUSER, $site_config, $fluent, $session;
 
@@ -21,7 +21,7 @@ $stdfoot = [
 ];
 $HTMLOUT = '';
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
-    if (!mkglobal('email'.($site_config['captcha_on'] ? ':captchaSelection' : '').'')) {
+    if (!mkglobal('email' . ($site_config['captcha_on'] ? ':captchaSelection' : '') . '')) {
         stderr('Oops', 'Missing form data - You must fill all fields');
     }
     if ($site_config['captcha_on']) {
@@ -42,12 +42,12 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_notfound']}");
     }
     $secret = make_password(30);
-    $token = make_passhash($secret);
+    $token  = make_passhash($secret);
     $alt_id = make_password(16);
     $values = [
         'email' => $email,
         'token' => $token,
-        'id' => $alt_id,
+        'id'    => $alt_id,
     ];
     $fluent->insertInto('tokens')
         ->values($values)
@@ -61,7 +61,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
         ->setSubject("{$site_config['site_name']} {$lang['email_subjreset']}")
         ->setHtmlBody($body);
 
-    $mailer = new SendmailMailer();
+    $mailer              = new SendmailMailer();
     $mailer->commandArgs = "-f{$site_config['site_email']}";
     $mailer->send($mail);
 
@@ -69,7 +69,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $session->unset('simpleCaptchaAnswer');
     $session->unset('simpleCaptchaTimestamp');
 } elseif ($_GET) {
-    $id = isset($_GET['id']) ? $_GET['id'] : 0;
+    $id    = isset($_GET['id']) ? $_GET['id'] : 0;
     $token = isset($_GET['token']) ? $_GET['token'] : '';
     if (empty($id)) {
         stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_id']}");
@@ -92,10 +92,10 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
         die();
     }
 
-    $email = $row['email'];
+    $email       = $row['email'];
     $newpassword = make_password(16);
     $newpasshash = make_passhash($newpassword);
-    $set = [
+    $set         = [
         'passhash' => $newpasshash,
     ];
     $update = $fluent->update('users')
@@ -113,7 +113,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
         ->setSubject("{$site_config['site_name']} {$lang['email_subjdetails']}")
         ->setHtmlBody($body);
 
-    $mailer = new SendmailMailer();
+    $mailer              = new SendmailMailer();
     $mailer->commandArgs = "-f{$site_config['site_email']}";
     $mailer->send($mail);
 
@@ -124,7 +124,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $HTMLOUT .= "
     <div class='half-container has-text-centered portlet'>
         <form method='post' action='{$_SERVER['PHP_SELF']}'>
-            <table class='table table-bordered top20 bottom20'>".($site_config['captcha_on'] ? "
+            <table class='table table-bordered top20 bottom20'>" . ($site_config['captcha_on'] ? "
                 <tr class='no_hover'>
                     <td colspan='2'>
                         <h2 class='has-text-centered'>{$lang['recover_unamepass']}</h2>
@@ -137,7 +137,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
                 </tr>
                 <tr class='no_hover'>
                     <td colspan='2' id='captcha_show'></td>
-                </tr>" : '')."
+                </tr>" : '') . "
                 <tr class='no_hover'>
                     <td colspan='2'>
                         <div class='has-text-centered'>
@@ -148,5 +148,5 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
             </table>
         </form>
     </div>";
-    echo stdhead($lang['head_recover'], true).$HTMLOUT.stdfoot($stdfoot);
+    echo stdhead($lang['head_recover'], true) . $HTMLOUT . stdfoot($stdfoot);
 }

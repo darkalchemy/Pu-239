@@ -8,7 +8,7 @@ if ($CURUSER['id'] != $num['userid'] && $CURUSER['class'] < UC_MODERATOR) {
     stderr("{$lang['error_error']}", "{$lang['error_denied']}");
 }
 $request = (isset($_POST['requesttitle']) ? htmlspecialchars($_POST['requesttitle']) : '');
-$pic = '';
+$pic     = '';
 if (!empty($_POST['picture'])) {
     if (!preg_match('/^https?:\/\/([a-zA-Z0-9\-\_]+\.)+([a-zA-Z]{1,5}[^\.])(\/[^<>]+)+\.(jpg|jpeg|gif|png|tif|tiff|bmp)$/i', $_POST['picture'])) {
         stderr("{$lang['error_error']}", "{$lang['error_image']}");
@@ -18,7 +18,7 @@ if (!empty($_POST['picture'])) {
     //    $headers  = get_headers($picture2);
     //    if (strpos($headers[0], '200') === false)
     //        $picture = "{$site_config['pic_baseurl']}notfound.png";
-    $pic = '[img]'.$picture."[/img]\n";
+    $pic = '[img]' . $picture . "[/img]\n";
 }
 $descr = "$pic";
 $descr .= isset($_POST['body']) ? $_POST['body'] : '';
@@ -29,10 +29,10 @@ $cat = (isset($_POST['category']) ? (int) $_POST['category'] : ('' != $num['cat'
 if (!is_valid_id($cat)) {
     stderr("{$lang['error_error']}", "{$lang['error_cat']}");
 }
-$request = sqlesc($request);
-$descr = sqlesc($descr);
-$filledby = isset($_POST['filledby']) ? (int) $_POST['filledby'] : 0;
-$filled = isset($_POST['filled']) ? $_POST['filled'] : 0;
+$request   = sqlesc($request);
+$descr     = sqlesc($descr);
+$filledby  = isset($_POST['filledby']) ? (int) $_POST['filledby'] : 0;
+$filled    = isset($_POST['filled']) ? $_POST['filled'] : 0;
 $torrentid = isset($_POST['torrentid']) ? (int) $_POST['torrentid'] : 0;
 if ($filled) {
     if (!is_valid_id($torrentid)) {
@@ -43,12 +43,12 @@ if ($filled) {
     //stderr('Error', 'ID is your own. Cannot fill your own Requests.');
     //$filledby = 0;
     //else {
-    $res = mysqli_query($GLOBALS['___mysqli_ston'], 'SELECT id FROM users WHERE id = '.$filledby);
+    $res = mysqli_query($GLOBALS['___mysqli_ston'], 'SELECT id FROM users WHERE id = ' . $filledby);
     if (0 == mysqli_num_rows($res)) {
         stderr("{$lang['error_error']}", "{$lang['error_no_user']}");
     }
     //  }
-    $res = sql_query('SELECT id FROM torrents WHERE id = '.$torrentid);
+    $res = sql_query('SELECT id FROM torrents WHERE id = ' . $torrentid);
     if (0 == mysqli_num_rows($res)) {
         stderr("{$lang['error_error']}", "{$lang['error_no_torrent']}");
     }

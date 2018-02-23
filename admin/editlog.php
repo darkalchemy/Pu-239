@@ -1,23 +1,23 @@
 <?php
 
-require_once INCL_DIR.'user_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 check_user_status();
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $lang, $session;
 
-$lang = array_merge($lang, load_language('editlog'));
-$HTMLOUT = '';
-$file_data = ROOT_DIR.'dir_list'.DIRECTORY_SEPARATOR.'data_'.$CURUSER['username'].'.txt';
+$lang      = array_merge($lang, load_language('editlog'));
+$HTMLOUT   = '';
+$file_data = ROOT_DIR . 'dir_list' . DIRECTORY_SEPARATOR . 'data_' . $CURUSER['username'] . '.txt';
 if (file_exists($file_data)) {
-    $data = unserialize(file_get_contents($file_data));
+    $data  = unserialize(file_get_contents($file_data));
     $exist = true;
 } else {
     $exist = false;
 }
-$fetch_set = [];
-$i = 0;
+$fetch_set   = [];
+$i           = 0;
 $directories = [ROOT_DIR];
 global $site_config;
 $included_extentions = explode(' ', $site_config['coders_log_allowed_ext']);
@@ -29,10 +29,10 @@ foreach ($directories as $path) {
             $ext = pathinfo($name, PATHINFO_EXTENSION);
             if (in_array($ext, $included_extentions)) {
                 $fetch_set[$i]['modify'] = filemtime($name);
-                $fetch_set[$i]['size'] = filesize($name);
-                $fetch_set[$i]['hash'] = hash_file('sha256', $name);
-                $fetch_set[$i]['name'] = $name;
-                $fetch_set[$i]['key'] = $i;
+                $fetch_set[$i]['size']   = filesize($name);
+                $fetch_set[$i]['hash']   = hash_file('sha256', $name);
+                $fetch_set[$i]['name']   = $name;
+                $fetch_set[$i]['key']    = $i;
                 ++$i;
             }
         }
@@ -51,13 +51,12 @@ if (!$exist or (isset($_POST['update']) and ('Update' == $_POST['update']))) {
 reset($fetch_set);
 reset($data);
 $current = $fetch_set;
-$last = $data;
+$last    = $data;
 foreach ($current as $x) {
     foreach ($last as $y) {
         if ($x['name'] == $y['name']) {
             if (($x['hash'] === $y['hash'])) {
-                unset($current[$x['key']]);
-                unset($last[$y['key']]);
+                unset($current[$x['key']], $last[$y['key']]);
             } else {
                 $current[$x['key']]['status'] = 'modified';
             }
@@ -71,16 +70,15 @@ foreach ($current as $x) {
     }
 }
 $current += $last;
-unset($last);
-unset($data);
-unset($fetch_set);
+unset($last, $data, $fetch_set);
+
 $HTMLOUT .= "
     <div class='container is-fluid portlet'>
         <h2 class='has-text-centered top20'>Coder's Log</h2>
         <div class='bordered bottom20'>
             <div class='alt_bordered bg-00'>
-                <div class='has-text-centered'>Tracking ".str_replace(' ', ', ', $site_config['coders_log_allowed_ext'])." files only!</div>
-                <div class='has-text-centered'>".number_format(count($current)).' files have been added, modifed or deleted since your last update of the '.number_format($i)." files being tracked.</div>
+                <div class='has-text-centered'>Tracking " . str_replace(' ', ', ', $site_config['coders_log_allowed_ext']) . " files only!</div>
+                <div class='has-text-centered'>" . number_format(count($current)) . ' files have been added, modifed or deleted since your last update of the ' . number_format($i) . " files being tracked.</div>
             </div>
         </div>
         <div class='table-wrapper'>
@@ -92,17 +90,17 @@ $HTMLOUT .= "
                 </tr>
             </thead>";
 reset($current);
-$count = 0;
+$count   = 0;
 $current = array_msort($current, ['name' => SORT_ASC]);
 foreach ($current as $x) {
     if ('new' == $x['status']) {
         $HTMLOUT .= '
                 <tr>
-                    <td>'.
-            htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])).'
+                    <td>' .
+            htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . '
                     </td>
-                    <td>'.
-            get_date($x['modify'], 'DATE', 0, 1).'
+                    <td>' .
+            get_date($x['modify'], 'DATE', 0, 1) . '
                     </td>
                 </tr>';
         ++$count;
@@ -131,11 +129,11 @@ foreach ($current as $x) {
     if ('modified' == $x['status']) {
         $HTMLOUT .= '
                 <tr>
-                    <td>'.
-            htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])).'
+                    <td>' .
+            htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . '
                     </td>
-                    <td>'.
-            get_date($x['modify'], 'DATE', 0, 1).'
+                    <td>' .
+            get_date($x['modify'], 'DATE', 0, 1) . '
                     </td>
                 </tr>';
         ++$count;
@@ -164,11 +162,11 @@ foreach ($current as $x) {
     if ('deleted' == $x['status']) {
         $HTMLOUT .= '
                 <tr>
-                    <td>'.
-            htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])).'
+                    <td>' .
+            htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . '
                     </td>
-                    <td>'.
-            get_date($x['modify'], 'DATE', 0, 1).'
+                    <td>' .
+            get_date($x['modify'], 'DATE', 0, 1) . '
                     </td>
                 </tr>';
         ++$count;
@@ -189,4 +187,4 @@ $HTMLOUT .= "
             </div>
         </form>
     </div>";
-echo stdhead($lang['editlog_stdhead']).$HTMLOUT.stdfoot();
+echo stdhead($lang['editlog_stdhead']) . $HTMLOUT . stdfoot();

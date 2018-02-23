@@ -154,7 +154,7 @@ class AJAXChatEncoding
             $str = preg_replace('~&#x([0-9a-f]+);~ei', 'AJAXChatEncoding::unicodeChar(hexdec("\\1"))', $str);
             // Replace literal entities:
             $htmlEntitiesMap = $htmlEntitiesMap ? $htmlEntitiesMap : array_flip(get_html_translation_table(HTML_ENTITIES, ENT_QUOTES));
-            $str = strtr($str, $htmlEntitiesMap);
+            $str             = strtr($str, $htmlEntitiesMap);
         }
 
         return $str;
@@ -170,14 +170,14 @@ class AJAXChatEncoding
         if ($c <= 0x7F) {
             return chr($c);
         } elseif ($c <= 0x7FF) {
-            return chr(0xC0 | $c >> 6).chr(0x80 | $c & 0x3F);
+            return chr(0xC0 | $c >> 6) . chr(0x80 | $c & 0x3F);
         } elseif ($c <= 0xFFFF) {
-            return chr(0xE0 | $c >> 12).chr(0x80 | $c >> 6 & 0x3F)
-                .chr(0x80 | $c & 0x3F);
+            return chr(0xE0 | $c >> 12) . chr(0x80 | $c >> 6 & 0x3F)
+                . chr(0x80 | $c & 0x3F);
         } elseif ($c <= 0x10FFFF) {
-            return chr(0xF0 | $c >> 18).chr(0x80 | $c >> 12 & 0x3F)
-                .chr(0x80 | $c >> 6 & 0x3F)
-                .chr(0x80 | $c & 0x3F);
+            return chr(0xF0 | $c >> 18) . chr(0x80 | $c >> 12 & 0x3F)
+                . chr(0x80 | $c >> 6 & 0x3F)
+                . chr(0x80 | $c & 0x3F);
         } else {
             return null;
         }

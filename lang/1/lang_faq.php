@@ -10,14 +10,14 @@ $lang = [
     <p>Before you go any further you should read the {$site_config['site_name']} <a href='{$site_config['baseurl']}/useragreement.php'>user agreement</a>.</p>",
     'faq_contents_header' => 'Contents',
     'faq_siteinfo_header' => 'Site information',
-    'faq_siteinfo' => "
+    'faq_siteinfo'        => "
     <ul>
         <li><a href='#site1'>What is this bittorrent all about anyway? How do I get the files?</a></li>
         <li><a href='#site2'>Where does the donated money go?</a></li>
         <li><a href='#site4'>Where can I get a copy of the source code?</a></li>
     </ul>",
     'faq_userinfo_header' => 'User information',
-    'faq_userinfo' => "
+    'faq_userinfo'        => "
     <ul>
         <li><a href='#user1'>I registered an account but did not receive the confirmation e-mail!</a></li>
         <li><a href='#user2'>I've lost my user name or password! Can you send it to me?</a></li>
@@ -35,7 +35,7 @@ $lang = [
         <li><a href='#userd'>How do I add an avatar to my profile?</a></li>
     </ul>",
     'faq_stats_header' => 'Stats',
-    'faq_stats' => "
+    'faq_stats'        => "
     <ul>
         <li><a href='#stats1'>Most common reasons for stats not updating</a></li>
         <li><a href='#stats2'>Best practices</a></li>
@@ -48,14 +48,14 @@ $lang = [
         <li><a href='#stats9'>For those of you who are interested (Anatomy of a torrent session)</a></li>
     </ul>",
     'faq_uploading_header' => 'Uploading',
-    'faq_uploading' => "
+    'faq_uploading'        => "
     <ul>
         <li><a href='#up1'>Why can't I upload torrents?</a> </li>
         <li><a href='#up2'>What criteria must I meet before I can join the Uploader team?</a></li>
         <li><a href='#up3'>Can I upload your torrents to other trackers?</a></li>
     </ul>",
     'faq_downloading_header' => 'Downloading',
-    'faq_downloading' => "
+    'faq_downloading'        => "
     <ul>
         <li><a href='#dl1'>How do I use the files I've downloaded?</a></li>
         <li><a href='#dl2'>Downloaded a movie and don't know what CAM/TS/TC/SCR means?</a></li>
@@ -70,7 +70,7 @@ $lang = [
         <li><a href='#dlb'>What's this 'TTL' in the browse page?</a></li>
     </ul>",
     'faq_improve_header' => 'How can I improve my download speed?',
-    'faq_improve' => "
+    'faq_improve'        => "
     <ul>
         <li><a href='#dlsp1'>Do not immediately jump on new torrents</a></li>
         <li><a href='#dlsp2'>Make yourself connectable</a></li>
@@ -81,7 +81,7 @@ $lang = [
         <li><a href='#dlsp7'>Why is my browsing so slow while leeching?</a></li>
     </ul>",
     'faq_isp_header' => 'My ISP uses a transparent proxy. What should I do?',
-    'faq_isp' => "
+    'faq_isp'        => "
     <ul>
         <li><a href='#prox1'>What is a proxy?</a></li>
         <li><a href='#prox2'>How do I find out if I'm behind a (transparent/anonymous) proxy?</a></li>
@@ -92,7 +92,7 @@ $lang = [
         <li><a href='#prox7'>Does this apply to other torrent sites?</a></li>
     </ul>",
     'faq_connect_header' => "Why can't I connect? Is the site blocking me?",
-    'faq_connect' => "
+    'faq_connect'        => "
     <ul>
         <li><a href='#conn1'>Name resolution problems</a></li>
         <li><a href='#conn2'>Maybe my address is blacklisted?</a></li>
@@ -100,7 +100,7 @@ $lang = [
         <li><a href='#conn4'>Alternate port (81)</a></li>
     </ul>",
     'faq_problem_header' => "What if I can't find the answer to my problem here?",
-    'faq_problem' => "
+    'faq_problem'        => "
         <ul>
             <li><a href='#answer_9'>Some useful tips.</a></li>
         </ul>",
@@ -174,7 +174,7 @@ $lang = [
     </div>
     <div class='top20 bg-02 padding20 round10'>
         <a id='user9'></a>
-        <p>What are the different user classes?</p>".main_table(
+        <p>What are the different user classes?</p>" . main_table(
             "
             <tr>
                 <td class='rowhead'><span class='user'>User</span></td>
@@ -251,7 +251,7 @@ $lang = [
                 <td class='rowhead'><p>You don't ask us, we'll ask you!</p></td>
             </tr>"
         )
-        ."
+        . "
     </div>
     <div class='top20 bg-02 padding20 round10'>
         <a id='usere'></a>
@@ -270,8 +270,8 @@ $lang = [
         <p>Please do not make a post just to test your avatar. If everything is allright you'll see it in your profile</p>
     </div>",
     'faq_details_page' => 'details page',
-    'faq_stats_title' => 'Stats',
-    'faq_stats_body' => "
+    'faq_stats_title'  => 'Stats',
+    'faq_stats_body'   => "
     <div class='top20 bg-02 padding20 round10'>
         <a id='stats1'></a>
         <p>Most common reason for stats not updating</p>
@@ -437,7 +437,7 @@ $lang = [
         <p>Why do I get a 'Not authorized (xx h) - READ THE FAQ!' error?</p>
         <p>From the time that each new torrent is uploaded to the tracker, there is a period of time that some users must wait before they can download it.</p>
         <p>This delay in downloading will only affect users with a low ratio, and users with low upload amounts.</p>
-        <p>".main_table(
+        <p>" . main_table(
             "
             <tr>
                 <td class='rowhead'>Ratio below</td>
@@ -471,21 +471,21 @@ $lang = [
                 <td class='rowhead'>delay of</td>
                 <td class='rowhead'><div>06h</div></td>
             </tr>"
-        )."
+        ) . "
         <p>'And/or' means any or both. Your delay will be the largest one for which you meet at least one condition.</p>",
-    'faq_in' => 'In ',
-    'faq_your' => 'your',
-    'faq_case' => ' particular case, ',
-    'faq_both' => 'both ',
-    'faq_ratio' => 'your ratio of ',
-    'faq_and' => ' and ',
-    'faq_totalup' => 'your total uploaded of ',
-    'faq_delay' => ' a delay of ',
-    'faq_hours' => ' hours',
-    'faq_even' => 'Even if your ',
-    'faq_totup' => 'total uploaded is ',
-    'faq_ratiois' => 'ratio is ',
-    'faq_nodelay' => 'you will experience no delay.',
+    'faq_in'                => 'In ',
+    'faq_your'              => 'your',
+    'faq_case'              => ' particular case, ',
+    'faq_both'              => 'both ',
+    'faq_ratio'             => 'your ratio of ',
+    'faq_and'               => ' and ',
+    'faq_totalup'           => 'your total uploaded of ',
+    'faq_delay'             => ' a delay of ',
+    'faq_hours'             => ' hours',
+    'faq_even'              => 'Even if your ',
+    'faq_totup'             => 'total uploaded is ',
+    'faq_ratiois'           => 'ratio is ',
+    'faq_nodelay'           => 'you will experience no delay.',
     'faq_downloading_body1' => "
         <p>This applies to new users as well, so opening a new account will not help. Note also that this works at tracker level, you will be able to grab the .torrent file itself at any time.</p>
         <!--<p>The delay applies only to leeching, not to seeding. If you got the files from any other source and wish to seed them you may do so at any time irrespectively of your ratio or total uploaded.</p>-->
@@ -496,7 +496,7 @@ $lang = [
         <p>Why do I get a 'rejected by tracker - Port xxxx is blacklisted' error?</p>
         <p>Your client is reporting to the tracker that it uses one of the default bittorrent ports (6881-6889) or any other common p2p port for incoming connections.</p>
         <p>{$site_config['site_name']} does not allow clients to use ports commonly associated with p2p protocols. The reason for this is that it is a common practice for ISPs to throttle those ports (that is, limit the bandwidth, hence the speed).</p>
-        <p>The blocked ports list include, but is not neccessarily limited to, the following:</p>".main_table(
+        <p>The blocked ports list include, but is not neccessarily limited to, the following:</p>" . main_table(
             "
             <tr>
                 <td class='rowhead'>Direct Connect</td>
@@ -518,7 +518,7 @@ $lang = [
               <td class='rowhead'>BitTorrent</td>
               <td class='rowhead'><div>6881 - 6889</div></td>
            </tr>"
-        )."
+        ) . "
         <p>In order to use use our tracker you must configure your client to use any port range that does not contain those ports (a range within the region 49152 through 65535 is preferable, cf. <a href='{$site_config['anonymizer_url']}http://www.iana.org/assignments/port-numbers'>IANA</a>). Notice that some clients, like Azureus 2.0.7.0 or higher, use a single port for all torrents, while most others use one port per open torrent. The size of the range you choose should take this into account (typically less than 10 ports wide. There is no benefit whatsoever in choosing a wide range, and there are possible security implications).</p>
         <p>These ports are used for connections between peers, not client to tracker. Therefore this change will not interfere with your ability to use other trackers (in fact it should <i>increase</i> your speed with torrents from any tracker, not just ours). Your client will also still be able to connect to peers that are using the standard ports. If your client does not allow custom ports to be used, you will have to switch to one that does.</p>
         <p>Do not ask us, or in the forums, which ports you should choose. The more random the choice is the harder it will be for ISPs to catch on to us and start limiting speeds on the ports we use. If we simply define another range ISPs will start throttling that range also.</p>
@@ -538,7 +538,7 @@ $lang = [
         <p>The torrent's Time To Live, in hours. It means the torrent will be deleted from the tracker after that many hours have elapsed (yes, even if it is still active). Note that this a maximum value, the torrent may be deleted at any time if it's inactive.</p>
     </div>",
     'faq_improve_speed_title' => 'How can I improve my download speed?',
-    'faq_improve_speed_body' => "
+    'faq_improve_speed_body'  => "
     <p>The download speed mostly depends on the seeder-to-leecher ratio (SLR). Poor download speed is mainly a problem with new and very popular torrents where the SLR is low.</p>
     <p>(Proselytising sidenote: make sure you remember that you did not enjoy the low speed. Seed so that others will not endure the same.)</p>
     <p>There are a couple of things that you can try on your end to improve your speed:</p>
@@ -590,7 +590,7 @@ $lang = [
         <p>Browsing was used just as an example, the same would apply to gaming, IMing, etc...</p>
     </div>",
     'faq_proxy_title' => '<h2>My ISP uses a transparent proxy. What should I do?</h2>',
-    'faq_proxy_body' => "
+    'faq_proxy_body'  => "
     <p><i>Caveat: This is a large and complex topic. It is not possible to cover all variations here.</i></p>
     <p>Short reply: change to an ISP that does not force a proxy upon you. If you cannot or do not want to then read on.</p>
     <div class='top20 bg-02 padding20 round10'>
@@ -620,7 +620,7 @@ $lang = [
             <td class='rowhead'>Public</td>
             <td class='rowhead'><p>(Self explanatory)</p></td>
         </tr>"
-        )."
+        ) . "
         <p>A transparent proxy may or may not be anonymous, and there are several levels of anonymity.</p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
@@ -671,7 +671,7 @@ $lang = [
         <p>This section was written for {$site_config['site_name']}, a closed, port 80-81 tracker. Other trackers may be open or closed, and many listen on e.g. ports 6868 or 6969. The above does not necessarily apply to other trackers.</p>
     </div>",
     'faq_blocked_title' => "<h2>Why can't I connect? Is the site blocking me?</h2>",
-    'faq_blocked_body' => "
+    'faq_blocked_body'  => "
     <div class='top20 bg-02 padding20 round10'>
         <a id='conn1'></a>
         <p>Your failure to connect may be due to several reasons.</p>
@@ -689,7 +689,7 @@ $lang = [
         <p>There's nothing we can do. You should contact your ISP (or get a new one). Note that you can still visit the site via a proxy, follow the instructions in the relevant section. In this case it doesn't matter if the proxy is anonymous or not, or which port it listens to.</p>
         <p>Notice that you will always be listed as an 'unconnectable' client because the tracker will be unable to check that you're capable of accepting incoming connections.</p>
     </div>",
-    'faq_alt_port' => '<h2>Alternate port (81)</h2>',
+    'faq_alt_port'      => '<h2>Alternate port (81)</h2>',
     'faq_alt_port_body' => "
     <div class='top20 bg-02 padding20 round10'>
         <a id='conn4'></a>
@@ -697,7 +697,7 @@ $lang = [
         <p>Editing the .torrent with Notepad is not recommended. It may look like a text file, but it is in fact a bencoded file. If for some reason you must use a plain text editor, change the announce url to {$site_config['site_name']}:80, not {$site_config['site_name']}. (If you're thinking about changing the number before the announce url instead, you know too much to be reading this.)</p>
     </div>",
     'faq_problem_title' => "<h2>What if I can't find the answer to my problem here?</h2>",
-    'faq_problem_body' => "
+    'faq_problem_body'  => "
     <div class='top20 bg-02 padding20 round10'>
         <a id='answer_9'></a>
         <p>Post in the <a href='{$site_config['baseurl']}/forums.php'>Forums</a>, by all means. You'll find they are usually a friendly and helpful place, provided you follow a few basic guidelines:</p>

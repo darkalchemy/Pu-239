@@ -18,15 +18,15 @@ if ($site_config['staffmsg_alert'] && $CURUSER['class'] >= UC_STAFF) {
         $htmlout .= "
         <li>
             <a href='{$site_config['baseurl']}/staffbox.php'>
-                <span class='button tag is-warning dt-tooltipper-small' data-tooltip-content='#staffmessage_tooltip'>".
-            ($answeredby > 1 ? "{$lang['gl_staff_messages']}{$lang['gl_staff_message_news']}" : "{$lang['gl_staff_message']}{$lang['gl_newmess']}")."
+                <span class='button tag is-warning dt-tooltipper-small' data-tooltip-content='#staffmessage_tooltip'>" .
+            ($answeredby > 1 ? "{$lang['gl_staff_messages']}{$lang['gl_staff_message_news']}" : "{$lang['gl_staff_message']}{$lang['gl_newmess']}") . "
                 </span>
                 <div class='tooltip_templates'>
                     <span id='staffmessage_tooltip'>
-                        <div class='size_4 has-text-centered has-text-warning has-text-weight-bold bottom10'>".
-            ($answeredby > 1 ? "{$lang['gl_staff_messages']}{$lang['gl_staff_message_news']}" : "{$lang['gl_staff_message']}{$lang['gl_staff_message_news']}")."
+                        <div class='size_4 has-text-centered has-text-warning has-text-weight-bold bottom10'>" .
+            ($answeredby > 1 ? "{$lang['gl_staff_messages']}{$lang['gl_staff_message_news']}" : "{$lang['gl_staff_message']}{$lang['gl_staff_message_news']}") . "
                         </div>
-                            {$lang['gl_hey']} {$CURUSER['username']}!<br> ".sprintf($lang['gl_staff_message_alert'], $answeredby).($answeredby > 1 ? $lang['gl_staff_message_alerts'] : '')."{$lang['gl_staff_message_for']}
+                            {$lang['gl_hey']} {$CURUSER['username']}!<br> " . sprintf($lang['gl_staff_message_alert'], $answeredby) . ($answeredby > 1 ? $lang['gl_staff_message_alerts'] : '') . "{$lang['gl_staff_message_for']}
                     </span>
                 </div>
             </a>

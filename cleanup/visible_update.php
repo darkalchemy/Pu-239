@@ -9,7 +9,7 @@ function visible_update($data)
     ignore_user_abort(true);
 
     $deadtime_tor = TIME_NOW - $site_config['max_dead_torrent_time'];
-    $What_Time = (XBT_TRACKER ? 'mtime' : 'last_action');
+    $What_Time    = (XBT_TRACKER ? 'mtime' : 'last_action');
     sql_query("UPDATE torrents SET visible='no' WHERE visible='yes' AND $What_Time < $deadtime_tor");
     if (XBT_TRACKER) {
         sql_query("UPDATE torrents SET visible='yes' WHERE visible='no' AND seeders > 0");

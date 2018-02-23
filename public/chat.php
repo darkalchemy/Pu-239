@@ -1,16 +1,16 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config;
 
-$lang = array_merge(load_language('global'), load_language('chat'));
-$nick = ($CURUSER ? $CURUSER['username'] : ('Guest'.random_int(1000, 9999)));
-$irc_url = 'irc.p2p-network.net';
+$lang        = array_merge(load_language('global'), load_language('chat'));
+$nick        = ($CURUSER ? $CURUSER['username'] : ('Guest' . random_int(1000, 9999)));
+$irc_url     = 'irc.p2p-network.net';
 $irc_channel = '#pu-239';
-$HTMLOUT = '';
+$HTMLOUT     = '';
 $HTMLOUT .= "<p>{$lang['chat_channel']}<a href='irc://{$irc_url}'>{$irc_channel}</a> {$lang['chat_network']}</p>
     <div class='borderwrap'>
     <div class='maintitle'>{$site_config['site_name']}</div>
@@ -36,4 +36,4 @@ $HTMLOUT .= "<p>{$lang['chat_channel']}<a href='irc://{$irc_url}'>{$irc_channel}
     </div>
     </div>";
 ///////////////////// HTML OUTPUT ////////////////////////////
-echo stdhead("{$lang['chat_chat']}").wrapper($HTMLOUT, 'padding20 has-text-centered').stdfoot();
+echo stdhead("{$lang['chat_chat']}") . wrapper($HTMLOUT, 'padding20 has-text-centered') . stdfoot();

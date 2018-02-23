@@ -44,23 +44,23 @@ if ($scroll_torrents) {
         $i = $site_config['latest_torrents_limit_scroll'];
 
         if ('yes' == $anonymous && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
-            $uploader = '<span>'.get_anonymous_name().'</span>';
+            $uploader = '<span>' . get_anonymous_name() . '</span>';
         } else {
-            $uploader = "<span class='".get_user_class_name($class, true)."'>".htmlsafechars($username).'</span>';
+            $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . '</span>';
         }
 
         $HTMLOUT .= "
                     <div class='slide'>
                         <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
                             <div class='dt-tooltipper-small' data-tooltip-content='#scroll_id_{$id}_tooltip'>
-                            <img src='".image_proxy($poster)."' alt='{$name}' style='width: auto; height: 300px; max-height: 300px;'  />
+                            <img src='" . image_proxy($poster) . "' alt='{$name}' style='width: auto; height: 300px; max-height: 300px;'  />
                                 <div class='tooltip_templates'>
                                     <span id='scroll_id_{$id}_tooltip'>
                                         <span>
-                                            <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>".htmlsafechars($name)."<br>
+                                            <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($name) . "<br>
                                             <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b>$username<br>
-                                            <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>".get_date($added, 'DATE', 0, 1)."<br>
-                                            <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>".mksize(htmlsafechars($size))."<br>
+                                            <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($added, 'DATE', 0, 1) . "<br>
+                                            <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($size)) . "<br>
                                             <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>{$seeders}<br>
                                             <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_leecher']}</b>{$leechers}<br>
                                         </span>

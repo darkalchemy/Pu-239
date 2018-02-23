@@ -24,11 +24,11 @@ class CustomAJAXChat extends AJAXChat
     {
         $user = $this->_user->getUserFromId($this->getUserID());
         if (!empty($user) && 'yes' === $user['enabled'] && 1 === $user['chatpost']) {
-            $userData['userID'] = $user['id'];
-            $userData['userName'] = $this->trimUserName($user['username']);
+            $userData['userID']    = $user['id'];
+            $userData['userName']  = $this->trimUserName($user['username']);
             $userData['userClass'] = get_user_class_name($user['class']);
-            $userData['userRole'] = $user['class'];
-            $userData['channels'] = [
+            $userData['userRole']  = $user['class'];
+            $userData['channels']  = [
                 0,
                 1,
                 2,
@@ -106,7 +106,7 @@ class CustomAJAXChat extends AJAXChat
     {
         // List containing the registered chat users:
         $users = null;
-        require_once AJAX_CHAT_PATH.'lib'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'users.php';
+        require_once AJAX_CHAT_PATH . 'lib' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'users.php';
 
         return $users;
     }
@@ -152,7 +152,7 @@ class CustomAJAXChat extends AJAXChat
     {
         // List containing the custom channels:
         $channels = null;
-        require_once AJAX_CHAT_PATH.'lib'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'channels.php';
+        require_once AJAX_CHAT_PATH . 'lib' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'channels.php';
         // Channel array structure should be:
         // ChannelName => ChannelID
         return array_flip($channels);

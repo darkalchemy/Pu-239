@@ -19,7 +19,7 @@ define('LOG_PATH', '/var/log/nginx');
  *
  */define('DIRECTORY_SEPARATOR', '/');
 
-$log = (!isset($_GET['p'])) ? $default : urldecode($_GET['p']);
+$log   = (!isset($_GET['p'])) ? $default : urldecode($_GET['p']);
 $lines = (!isset($_GET['lines'])) ? 50 : $_GET['lines'];
 
 $files = get_log_files(LOG_PATH);
@@ -29,7 +29,7 @@ foreach ($files as $dir_name => $file_array) {
     ksort($file_array);
 }
 $filename = $log;
-$title = substr($log, (strrpos($log, '/') + 1));
+$title    = substr($log, (strrpos($log, '/') + 1));
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -338,7 +338,7 @@ $title = substr($log, (strrpos($log, '/') + 1));
 
     <div id="menu">
         <div class="pure-menu pure-menu-open">
-            <a href="<?php echo $_SERVER['PHP_SELF'].'?tool=log_viewer'; ?>" class="pure-menu-heading">Server Logs</a>
+            <a href="<?php echo $_SERVER['PHP_SELF'] . '?tool=log_viewer'; ?>" class="pure-menu-heading">Server Logs</a>
             <ul>
                 <?php show_list_of_files($files, $lines); ?>
 
@@ -349,7 +349,7 @@ $title = substr($log, (strrpos($log, '/') + 1));
     <div id="main">
         <div class="header">
             <h1><?php echo $title; ?></h1>
-            <?= (!empty($filename)) ? '<h2>The last '.$lines.' lines of <span class="truncate">'.basename($filename).'</span></h2>' : ''; ?>
+            <?= (!empty($filename)) ? '<h2>The last ' . $lines . ' lines of <span class="truncate">' . basename($filename) . '</span></h2>' : ''; ?>
 
             <form action="" method="get" class="pure-form pure-form-aligned">
                 <input type="hidden" name="p" value="<?php echo $log; ?>">
@@ -452,7 +452,7 @@ function get_log_files($dir, &$results = [])
     $files = scandir($dir);
     if ($files) {
         foreach ($files as $key => $value) {
-            $path = realpath($dir.DIRECTORY_SEPARATOR.$value);
+            $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
 
             if (!is_dir($path)) {
                 $files_list[] = $path;
@@ -463,7 +463,7 @@ function get_log_files($dir, &$results = [])
 
         foreach ($files_list as $path) {
             preg_match("/^.*\/(\S+)$/", $path, $matches);
-            $name = $matches[1];
+            $name                 = $matches[1];
             $results[$dir][$name] = ['name' => $name, 'path' => $path];
         }
         if (count($dirs_list) > 0) {
@@ -507,7 +507,7 @@ function tail($filename, $lines = 50, $buffer = 4096)
 
     // Start reading
     $output = '';
-    $chunk = '';
+    $chunk  = '';
 
     // While we would like more
     while (ftell($f) > 0 && $lines >= 0) {
@@ -518,7 +518,7 @@ function tail($filename, $lines = 50, $buffer = 4096)
         fseek($f, -$seek, SEEK_CUR);
 
         // Read a chunk and prepend it to our output
-        $output = ($chunk = fread($f, $seek)).$output;
+        $output = ($chunk = fread($f, $seek)) . $output;
 
         // Jump back to where we started reading
         fseek($f, -mb_strlen($chunk, '8bit'), SEEK_CUR);
@@ -563,7 +563,7 @@ function show_list_of_files($files, $lines = 50)
                 continue;
             }
             $active = ($f['path'] == $log) ? 'class="pure-menu-selected"' : '';
-            echo '<li '.$active.'><a href="?tool=log_viewer&amp;p='.urlencode($f['path']).'&lines='.$lines.'">'.$f['name'].'</a></li>';
+            echo '<li ' . $active . '><a href="?tool=log_viewer&amp;p=' . urlencode($f['path']) . '&lines=' . $lines . '">' . $f['name'] . '</a></li>';
         }
         echo '</ul>';
     }

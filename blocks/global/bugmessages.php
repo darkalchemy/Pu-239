@@ -26,7 +26,7 @@ if ($site_config['bug_alert'] && $CURUSER['class'] >= UC_STAFF) {
                     <div class='size_4 has-text-centered has-text-danger has-text-weight-bold bottom10'>
                         {$lang['gl_bug_alert1']}
                     </div>
-                    {$lang['gl_bug_alert2']} {$CURUSER['username']}!<br> ".sprintf($lang['gl_bugs'], $bugs[0]).($bugs[0] > 1 ? "{$lang['gl_bugss']}" : '').'!
+                    {$lang['gl_bug_alert2']} {$CURUSER['username']}!<br> " . sprintf($lang['gl_bugs'], $bugs[0]) . ($bugs[0] > 1 ? "{$lang['gl_bugss']}" : '') . '!
                  </span>
             </div>
         </a>

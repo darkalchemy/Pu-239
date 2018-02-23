@@ -13,9 +13,9 @@ function getTVImagesByImdb($thetvdb_id, $type = 'showbackground', $season = 0)
     ];
 
     if (0 != $season && ('banner' === $type || 'poster' === $type)) {
-        $type = 'season'.$type;
+        $type = 'season' . $type;
     } elseif ('banner' === $type || 'poster' === $type) {
-        $type = 'tv'.$type;
+        $type = 'tv' . $type;
     }
 
     $key = $_ENV['FANART_API_KEY'];
@@ -23,13 +23,13 @@ function getTVImagesByImdb($thetvdb_id, $type = 'showbackground', $season = 0)
         return null;
     }
 
-    $fanart = $cache->get('show_images_'.$thetvdb_id);
+    $fanart = $cache->get('show_images_' . $thetvdb_id);
     if (false === $fanart || is_null($fanart)) {
-        $url = 'http://webservice.fanart.tv/v3/tv/';
-        $fanart = fetch($url.$thetvdb_id.'?api_key='.$key);
+        $url    = 'http://webservice.fanart.tv/v3/tv/';
+        $fanart = fetch($url . $thetvdb_id . '?api_key=' . $key);
         if (null != $fanart) {
             $fanart = json_decode($fanart, true);
-            $cache->set('show_images_'.$thetvdb_id, $fanart, 604800);
+            $cache->set('show_images_' . $thetvdb_id, $fanart, 604800);
         }
     }
     if ($fanart) {
@@ -75,13 +75,13 @@ function getMovieImagesByImdb($imdb, $type = 'moviebackground')
         return null;
     }
 
-    $fanart = $cache->get('movie_images_'.$imdb);
+    $fanart = $cache->get('movie_images_' . $imdb);
     if (false === $fanart || is_null($fanart)) {
-        $url = 'http://webservice.fanart.tv/v3/movies/';
-        $fanart = fetch($url.$imdb.'?api_key='.$key);
+        $url    = 'http://webservice.fanart.tv/v3/movies/';
+        $fanart = fetch($url . $imdb . '?api_key=' . $key);
         if (null != $fanart) {
             $fanart = json_decode($fanart, true);
-            $cache->set('movie_images_'.$imdb, $fanart, 604800);
+            $cache->set('movie_images_' . $imdb, $fanart, 604800);
         }
     }
     if ($fanart) {
@@ -109,7 +109,7 @@ function getMovieImagesByImdb($imdb, $type = 'moviebackground')
 function fetch($url)
 {
     $client = new GuzzleHttp\Client();
-    $res = $client->request('GET', $url);
+    $res    = $client->request('GET', $url);
     if (200 === $res->getStatusCode()) {
         return $res->getBody();
     }

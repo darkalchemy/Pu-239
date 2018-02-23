@@ -31,13 +31,13 @@ function freetorrents_update($data)
             ->where('id = ?', $arr['id'])
             ->execute();
 
-        $cache->update_row('torrent_details_'.$arr['id'], [
+        $cache->update_row('torrent_details_' . $arr['id'], [
             'free' => 0,
         ], $site_config['expires']['torrent_details']);
         ++$count;
     }
     if ($data['clean_log']) {
-        write_log('Cleanup - Removed Free from '.$count.' torrents');
+        write_log('Cleanup - Removed Free from ' . $count . ' torrents');
     }
     unset($set, $count);
 

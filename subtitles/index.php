@@ -4,29 +4,29 @@ require_once 'function_menu.php';
 require_once 'functions.php';
 
 $pager = '';
-$name = (isset($_GET['sub_name']) ? $_GET['sub_name'] : '');
+$name  = (isset($_GET['sub_name']) ? $_GET['sub_name'] : '');
 if ($name) {
-    $pager = 'sub_name='.$name.'&amp;';
+    $pager = 'sub_name=' . $name . '&amp;';
 }
 $searchby = (isset($_GET['searchby']) ? $_GET['searchby'] : '');
 if ($searchby) {
-    $pager .= 'searchby='.$searchby.'&amp;';
+    $pager .= 'searchby=' . $searchby . '&amp;';
 }
 $lang = (isset($_GET['lang']) ? $_GET['lang'] : 'all');
 if ($lang) {
-    $pager .= 'lang='.$lang.'&amp;';
+    $pager .= 'lang=' . $lang . '&amp;';
 }
 $fps = (isset($_GET['fps']) ? $_GET['fps'] : '');
 if ($fps) {
-    $pager .= 'fps='.$fls.'&amp;';
+    $pager .= 'fps=' . $fls . '&amp;';
 }
 $format = (isset($_GET['format']) ? $_GET['format'] : '');
 if ($format) {
-    $pager .= 'format='.$format.'&amp;';
+    $pager .= 'format=' . $format . '&amp;';
 }
 $cds = (isset($_GET['cds']) ? (int) $_GET['cds'] : '');
 if ($cds) {
-    $pager .= 'cds='.$cds.'&amp;';
+    $pager .= 'cds=' . $cds . '&amp;';
 }
 $offset = (isset($_GET['offset']) ? (int) $_GET['offset'] : '');
 
@@ -173,7 +173,7 @@ if ('name' == $searchby) {
     <?php
     if (!empty($name)) {
         $search = xmlconvert(requestXML($name, $searchby, $lang, $cds, $format, $fps, $offset));
-        echo build_result($search, '?'.$pager);
+        echo build_result($search, '?' . $pager);
     }
 
     ?>

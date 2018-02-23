@@ -1,9 +1,9 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once CLASS_DIR.'class_user_options_2.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $CURUSER, $site_config, $session;
 
@@ -23,17 +23,17 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     if (0 == count($cats)) {
         $session->set('is-warning', $lang['getrss_nocat']);
     } else {
-        $feed = isset($_POST['feed']) && 'dl' == $_POST['feed'] ? 'dl' : 'web';
-        $bm = isset($_POST['bm']) && is_int($_POST['bm']) ? $_POST['bm'] : 0;
-        $counts = [15, 30, 50, 100];
-        $count = isset($_POST['count']) && is_int($_POST['count']) && in_array($counts, $_POST['count']) ? $_POST['count'] : 15;
-        $rsslink = "{$site_config['baseurl']}/rss.php?cats=".join(',', $cats)."&amp;type={$feed}&amp;torrent_pass={$CURUSER['torrent_pass']}&amp;count=$count&amp;bm=$bm";
+        $feed    = isset($_POST['feed'])   && 'dl' == $_POST['feed'] ? 'dl' : 'web';
+        $bm      = isset($_POST['bm'])     && is_int($_POST['bm']) ? $_POST['bm'] : 0;
+        $counts  = [15, 30, 50, 100];
+        $count   = isset($_POST['count']) && is_int($_POST['count']) && in_array($counts, $_POST['count']) ? $_POST['count'] : 15;
+        $rsslink = "{$site_config['baseurl']}/rss.php?cats=" . join(',', $cats) . "&amp;type={$feed}&amp;torrent_pass={$CURUSER['torrent_pass']}&amp;count=$count&amp;bm=$bm";
         $HTMLOUT = "
         <div class='container is-fluid portlet has-text-centered'>
             <h2>{$lang['getrss_result']}</h2>
             <input type='text' class='w-100' readonly='readonly' value='{$rsslink}' onclick='select()' />
         </div>";
-        echo stdhead($lang['getrss_head2']).$HTMLOUT.stdfoot();
+        echo stdhead($lang['getrss_head2']) . $HTMLOUT . stdfoot();
         die();
     }
 }
@@ -48,11 +48,11 @@ $catids = genrelist();
 if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
     foreach ($catids as $cat) {
         $text .= "
-                    <span class='margin10 mw-50 is-flex bg-02 round10 tooltipper' title='".htmlsafechars($cat['name'])."'>
+                    <span class='margin10 mw-50 is-flex bg-02 round10 tooltipper' title='" . htmlsafechars($cat['name']) . "'>
                         <span class='bordered level-center'>
-                            <input type='checkbox' name='cats[]' id='cat_".(int) $cat['id']."' value='".(int) $cat['id']."' />
+                            <input type='checkbox' name='cats[]' id='cat_" . (int) $cat['id'] . "' value='" . (int) $cat['id'] . "' />
                             <span class='cat-image left10'>
-                                <img class='radius-sm' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/".htmlsafechars($cat['image'])."'alt='".htmlsafechars($cat['name'])."' />
+                                <img class='radius-sm' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' />
                             </span>
                         </span>
                     </span>";
@@ -60,9 +60,9 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
 } else {
     foreach ($catids as $cat) {
         $text .= "
-                    <span class='margin10 bordered tooltipper' title='".htmlsafechars($cat['name'])."'>
-                        <label for='c".(int) $cat['id']."'>
-                            <input name='c".(int) $cat['id']."' class='styled1' type='checkbox' value='1' />
+                    <span class='margin10 bordered tooltipper' title='" . htmlsafechars($cat['name']) . "'>
+                        <label for='c" . (int) $cat['id'] . "'>
+                            <input name='c" . (int) $cat['id'] . "' class='styled1' type='checkbox' value='1' />
                         </label>
                     </span>";
     }
@@ -110,4 +110,4 @@ $HTMLOUT .= main_div("
             </div>");
 $HTMLOUT .= '
         </form>';
-echo stdhead($lang['getrss_head2']).wrapper($HTMLOUT).stdfoot();
+echo stdhead($lang['getrss_head2']) . wrapper($HTMLOUT) . stdfoot();

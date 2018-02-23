@@ -17,7 +17,7 @@ class Session
     {
         global $site_config;
         $this->config = $site_config;
-        $this->cache = new Cache();
+        $this->cache  = new Cache();
     }
 
     /**
@@ -34,9 +34,9 @@ class Session
             // Set the session name:
             session_name($this->config['sessionName']);
 
-            $expires = $this->config['cookie_lifetime'] <= 1 ? 900 : $this->config['cookie_lifetime'] * 86400;
-            $secure_session = 'https' === get_scheme() ? true : false;
-            $domain = $this->config['cookie_domain'] === $this->config['domain'] ? '' : $this->config['cookie_domain'];
+            $expires        = $this->config['cookie_lifetime'] <= 1 ? 900 : $this->config['cookie_lifetime'] * 86400;
+            $secure_session = 'https'                        === get_scheme() ? true : false;
+            $domain         = $this->config['cookie_domain'] === $this->config['domain'] ? '' : $this->config['cookie_domain'];
 
             // Set session cookie parameters:
             session_set_cookie_params(
@@ -106,14 +106,14 @@ class Session
             $current = $this->get($key);
             if ($current) {
                 if (!in_array($value, $current)) {
-                    $_SESSION[$prefix.$key] = array_merge($current, [$value]);
+                    $_SESSION[$prefix . $key] = array_merge($current, [$value]);
                 }
             } else {
-                $_SESSION[$prefix.$key] = [$value];
+                $_SESSION[$prefix . $key] = [$value];
             }
         } else {
             $this->unset($key);
-            $_SESSION[$prefix.$key] = $value;
+            $_SESSION[$prefix . $key] = $value;
         }
     }
 
@@ -131,8 +131,8 @@ class Session
             $prefix = $this->config['sessionKeyPrefix'];
         }
 
-        if (isset($_SESSION[$prefix.$key])) {
-            return $_SESSION[$prefix.$key];
+        if (isset($_SESSION[$prefix . $key])) {
+            return $_SESSION[$prefix . $key];
         } else {
             return null;
         }
@@ -148,7 +148,7 @@ class Session
             $prefix = $this->config['sessionKeyPrefix'];
         }
 
-        unset($_SESSION[$prefix.$key]);
+        unset($_SESSION[$prefix . $key]);
     }
 
     /**
@@ -190,9 +190,9 @@ class Session
     public function destroy()
     {
         $cookies = new Cookie('remember');
-        $cookie = $cookies->getToken();
+        $cookie  = $cookies->getToken();
         if (!empty($cookie[0])) {
-            $this->cache->delete('remember_'.$cookie[0]);
+            $this->cache->delete('remember_' . $cookie[0]);
         }
 
         $this->start();
@@ -201,7 +201,7 @@ class Session
         if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
             setcookie(
-                $this->config['cookie_prefix'].'remember',
+                $this->config['cookie_prefix'] . 'remember',
                 '',
                 TIME_NOW - 86400,
                 $params['path'],

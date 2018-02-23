@@ -1,29 +1,29 @@
 <?php
 
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'bbcode_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once INCL_DIR.'pager_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'pager_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang;
 
-$lang = array_merge($lang, load_language('ad_events'));
-$HTMLOUT = '';
-$count1 = get_row_count('events');
-$perpage = 15;
-$pager = pager($perpage, $count1, 'staffpanel.php?tool=events&amp;action=events&amp;');
-$scheduled_events = mysql_fetch_all('SELECT e.id, e.userid, e.startTime, e.endTime, e.overlayText, e.displayDates, e.freeleechEnabled, e.duploadEnabled, e.hdownEnabled, u.id, u.username, u.class, u.chatpost, u.leechwarn, u.warned, u.pirate, u.king, u.donor, u.enabled FROM events AS e LEFT JOIN users AS u ON u.id=e.userid ORDER BY startTime DESC '.$pager['limit'].';', []);
+$lang             = array_merge($lang, load_language('ad_events'));
+$HTMLOUT          = '';
+$count1           = get_row_count('events');
+$perpage          = 15;
+$pager            = pager($perpage, $count1, 'staffpanel.php?tool=events&amp;action=events&amp;');
+$scheduled_events = mysql_fetch_all('SELECT e.id, e.userid, e.startTime, e.endTime, e.overlayText, e.displayDates, e.freeleechEnabled, e.duploadEnabled, e.hdownEnabled, u.id, u.username, u.class, u.chatpost, u.leechwarn, u.warned, u.pirate, u.king, u.donor, u.enabled FROM events AS e LEFT JOIN users AS u ON u.id=e.userid ORDER BY startTime DESC ' . $pager['limit'] . ';', []);
 if (is_array($scheduled_events)) {
     foreach ($scheduled_events as $scheduled_event) {
         if (is_array($scheduled_event) && array_key_exists('startTime', $scheduled_event) && array_key_exists('endTime', $scheduled_event)) {
-            $startTime = 0;
-            $endTime = 0;
-            $overlayText = '';
+            $startTime    = 0;
+            $endTime      = 0;
+            $overlayText  = '';
             $displayDates = true;
-            $startTime = $scheduled_event['startTime'];
-            $endTime = $scheduled_event['endTime'];
+            $startTime    = $scheduled_event['startTime'];
+            $endTime      = $scheduled_event['endTime'];
             if (TIME_NOW < $endTime && TIME_NOW > $startTime) {
                 if (array_key_exists('overlayText', $scheduled_event)) {
                     $overlayText = htmlsafechars($scheduled_event['overlayText']);
@@ -65,7 +65,7 @@ if (is_array($scheduled_events)) {
                     $hdownEnabled = true;
                 }
                 if ($displayDates) {
-                    $overlay_text = "<span style='font-size: 90%;'>$overlayText</span><br><span style='font-size: 60%;'>".get_date($startTime, 'DATE').' - '.get_date($endTime, 'DATE')."</span>\n";
+                    $overlay_text = "<span style='font-size: 90%;'>$overlayText</span><br><span style='font-size: 60%;'>" . get_date($startTime, 'DATE') . ' - ' . get_date($endTime, 'DATE') . "</span>\n";
                 } else {
                     $overlay_text = "<span style='font-size: 90%;'>$overlayText</span>\n";
                 }
@@ -96,10 +96,10 @@ if (!is_array($scheduled_events)) {
                 $sql = "DELETE FROM `events` WHERE `id` = $id LIMIT 1;";
                 $res = sql_query($sql);
                 if (0 != ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))) {
-                    $HTMLOUT .= "<p>{$lang['events_err_del']}".((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))."<br>{$lang['events_click']} <a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br></p>\n";
+                    $HTMLOUT .= "<p>{$lang['events_err_del']}" . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br>{$lang['events_click']} <a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br></p>\n";
                 } else {
                     if (0 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-                        $HTMLOUT .= "<p>{$lang['events_err_del']}".((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))."<br>{$lang['events_click']}<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a> {$lang['events_goback']}<br></p>\n";
+                        $HTMLOUT .= "<p>{$lang['events_err_del']}" . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br>{$lang['events_click']}<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a> {$lang['events_goback']}<br></p>\n";
                     } else {
                         $HTMLOUT .= "<p>{$lang['events_deleted']}</p>\n";
                         header('Refresh: 2; url=staffpanel.php?tool=events');
@@ -107,9 +107,9 @@ if (!is_array($scheduled_events)) {
                     }
                 }
             } elseif ('boolean' != gettype(strpos($key, 'saveEvent_'))) {
-                $text = '';
-                $start = 0;
-                $end = 0;
+                $text      = '';
+                $start     = 0;
+                $end       = 0;
                 $showDates = 0;
                 if (array_key_exists('userid', $_POST)) {
                     $userid = (int) $_POST['userid'];
@@ -151,7 +151,7 @@ if (!is_array($scheduled_events)) {
                 }
                 $res = sql_query($sql);
                 if (0 != ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))) {
-                    $HTMLOUT .= "<p>{$lang['events_err_save']}".((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))."<br>{$lang['events_click']}<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br></p>\n";
+                    $HTMLOUT .= "<p>{$lang['events_err_save']}" . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br>{$lang['events_click']}<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br></p>\n";
                 } else {
                     if (0 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
                         $HTMLOUT .= "<p>{$lang['events_err_nochange']}<br>{$lang['events_click']}<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br></p>\n";
@@ -172,14 +172,14 @@ if (!is_array($scheduled_events)) {
 <table width='80%'>
 <tr><th>{$lang['events_user']}</th><th>{$lang['events_text']}</th><th>{$lang['events_start']}</th><th>{$lang['events_end']}</th><th>{$lang['events_freelech']}</th><th>{$lang['events_dupload']}</th><th>{$lang['events_hdown']}</th><th>{$lang['events_sdate']}</th><th>&#160;</th></tr>";
     foreach ($scheduled_events as $scheduled_event) {
-        $id = (int) $scheduled_event['id'];
-        $users = $scheduled_event;
-        $users['id'] = (int) $scheduled_event['userid'];
-        $username = format_username($users);
-        $text = htmlsafechars($scheduled_event['overlayText']);
-        $start = get_date((int) $scheduled_event['startTime'], 'DATE');
-        $end = get_date((int) $scheduled_event['endTime'], 'DATE');
-        $freeleech = (bool) (int) $scheduled_event['freeleechEnabled'];
+        $id           = (int) $scheduled_event['id'];
+        $users        = $scheduled_event;
+        $users['id']  = (int) $scheduled_event['userid'];
+        $username     = format_username($users);
+        $text         = htmlsafechars($scheduled_event['overlayText']);
+        $start        = get_date((int) $scheduled_event['startTime'], 'DATE');
+        $end          = get_date((int) $scheduled_event['endTime'], 'DATE');
+        $freeleech    = (bool) (int) $scheduled_event['freeleechEnabled'];
         $doubleUpload = (bool) (int) $scheduled_event['duploadEnabled'];
         $halfdownload = (bool) (int) $scheduled_event['hdownEnabled'];
         if ($freeleech) {
@@ -225,9 +225,9 @@ if (!is_array($scheduled_events)) {
                 } else {
                     foreach ($scheduled_events as $scheduled_event) {
                         if ($id == $scheduled_event['id']) {
-                            $text = htmlsafechars($scheduled_event['overlayText']);
-                            $start = get_date((int) $scheduled_event['startTime'], 'DATE');
-                            $end = get_date((int) $scheduled_event['endTime'], 'DATE');
+                            $text      = htmlsafechars($scheduled_event['overlayText']);
+                            $start     = get_date((int) $scheduled_event['startTime'], 'DATE');
+                            $end       = get_date((int) $scheduled_event['endTime'], 'DATE');
                             $freeleech = (bool) (int) $scheduled_event['freeleechEnabled'];
                             if ($freeleech) {
                                 $freeleech = 'checked';
@@ -275,5 +275,5 @@ if (!is_array($scheduled_events)) {
 if ($count1 > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($lang['events_stdhead']).$HTMLOUT.stdfoot();
+echo stdhead($lang['events_stdhead']) . $HTMLOUT . stdfoot();
 die();

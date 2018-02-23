@@ -1,19 +1,19 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $site_config, $CURUSER, $cache, $session;
 
 $HTMLOUT = '';
-$lang = array_merge(load_language('global'), load_language('staff_panel'));
+$lang    = array_merge(load_language('global'), load_language('staff_panel'));
 
 $staff_classes1['name'] = $page_name = $file_name = $navbar = '';
-$staff = sqlesc(UC_STAFF);
-$staff_classes = $cache->get('is_staffs_');
+$staff                  = sqlesc(UC_STAFF);
+$staff_classes          = $cache->get('is_staffs_');
 if (false === $staff_classes || is_null($staff_classes)) {
-    $res = sql_query("SELECT value FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX') AND value >= '$staff' ORDER BY value ASC");
+    $res           = sql_query("SELECT value FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX') AND value >= '$staff' ORDER BY value ASC");
     $staff_classes = [];
     while (($row = mysqli_fetch_assoc($res))) {
         $staff_classes[] = $row['value'];
@@ -28,51 +28,51 @@ if (!$CURUSER) {
 if (0 == $site_config['staffpanel_online']) {
     stderr($lang['spanel_information'], $lang['spanel_panel_cur_offline']);
 }
-require_once CLASS_DIR.'class_check.php';
+require_once CLASS_DIR . 'class_check.php';
 class_check(UC_STAFF);
-$action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : null));
-$id = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : null));
+$action      = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : null));
+$id          = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : null));
 $class_color = (function_exists('get_user_class_color') ? true : false);
-$tool = (isset($_GET['tool']) ? $_GET['tool'] : (isset($_POST['tool']) ? $_POST['tool'] : null));
-$tool = isset($_GET['tool']) ? $_GET['tool'] : '';
+$tool        = (isset($_GET['tool']) ? $_GET['tool'] : (isset($_POST['tool']) ? $_POST['tool'] : null));
+$tool        = isset($_GET['tool']) ? $_GET['tool'] : '';
 
-$staff_tools['modtask'] = 'modtask';
+$staff_tools['modtask']   = 'modtask';
 $staff_tools['iphistory'] = 'iphistory';
-$staff_tools['ipsearch'] = 'ipsearch';
+$staff_tools['ipsearch']  = 'ipsearch';
 $staff_tools['shit_list'] = 'shit_list';
 
 $sql = sql_query('SELECT file_name FROM staffpanel') or sqlerr(__FILE__, __LINE__);
 while ($list = mysqli_fetch_assoc($sql)) {
-    $item = str_replace(['staffpanel.php?tool=', '.php', '&mode=news', '&action=app'], '', $list['file_name']);
+    $item               = str_replace(['staffpanel.php?tool=', '.php', '&mode=news', '&action=app'], '', $list['file_name']);
     $staff_tools[$item] = $item;
 }
 
-if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR.$staff_tools[$tool].'.php')) {
-    require_once ADMIN_DIR.$staff_tools[$tool].'.php';
+if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool] . '.php')) {
+    require_once ADMIN_DIR . $staff_tools[$tool] . '.php';
 } else {
     if ('delete' == $action && is_valid_id($id) && UC_MAX == $CURUSER['class']) {
         $sure = ('yes' == (isset($_GET['sure']) ? $_GET['sure'] : ''));
-        $res = sql_query('SELECT navbar, added_by, av_class'.(!$sure || $CURUSER['class'] <= UC_MAX ? ', page_name' : '').' FROM staffpanel WHERE id = '.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $arr = mysqli_fetch_assoc($res);
+        $res  = sql_query('SELECT navbar, added_by, av_class' . (!$sure || $CURUSER['class'] <= UC_MAX ? ', page_name' : '') . ' FROM staffpanel WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $arr  = mysqli_fetch_assoc($res);
         if ($CURUSER['class'] < $arr['av_class']) {
             stderr($lang['spanel_error'], $lang['spanel_you_not_allow_del_page']);
         }
         if (!$sure) {
-            stderr($lang['spanel_sanity_check'], $lang['spanel_are_you_sure_del'].': "'.htmlsafechars($arr['page_name']).'"? '.$lang['spanel_click'].' <a href="'.$_SERVER['PHP_SELF'].'?action='.$action.'&amp;id='.$id.'&amp;sure=yes">'.$lang['spanel_here'].'</a> '.$lang['spanel_to_del_it_or'].' <a href="'.$_SERVER['PHP_SELF'].'">'.$lang['spanel_here'].'</a> '.$lang['spanel_to_go_back'].'.');
+            stderr($lang['spanel_sanity_check'], $lang['spanel_are_you_sure_del'] . ': "' . htmlsafechars($arr['page_name']) . '"? ' . $lang['spanel_click'] . ' <a href="' . $_SERVER['PHP_SELF'] . '?action=' . $action . '&amp;id=' . $id . '&amp;sure=yes">' . $lang['spanel_here'] . '</a> ' . $lang['spanel_to_del_it_or'] . ' <a href="' . $_SERVER['PHP_SELF'] . '">' . $lang['spanel_here'] . '</a> ' . $lang['spanel_to_go_back'] . '.');
         }
         $cache->delete('is_staffs_');
-        sql_query('DELETE FROM staffpanel WHERE id = '.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM staffpanel WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('av_class_');
         $cache->delete('staff_panels_6');
         $cache->delete('staff_panels_5');
         $cache->delete('staff_panels_4');
         if (mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
             if ($CURUSER['class'] <= UC_MAX) {
-                $page = "{$lang['spanel_page']} '[color=#".get_user_class_color($arr['av_class'])."]{$arr['page_name']}[/color]'";
-                $user = "[url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#".get_user_class_color($CURUSER['class'])."]{$CURUSER['username']}[/color][/url]";
+                $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color($arr['av_class']) . "]{$arr['page_name']}[/color]'";
+                $user = "[url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#" . get_user_class_color($CURUSER['class']) . "]{$CURUSER['username']}[/color][/url]";
                 write_log("$page {$lang['spanel_in_the_sp_was']} $action by $user");
             }
-            header('Location: '.$_SERVER['PHP_SELF']);
+            header('Location: ' . $_SERVER['PHP_SELF']);
             die();
         } else {
             stderr($lang['spanel_error'], $lang['spanel_db_error_msg']);
@@ -86,7 +86,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR.$staff_tools[$tool].
             $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
             $client->select($_ENV['REDIS_DATABASE']);
             $client->flushDB();
-            $session->set('is-success', 'You flushed the Redis db'.$_ENV['REDIS_DATABASE'].' cache');
+            $session->set('is-success', 'You flushed the Redis db' . $_ENV['REDIS_DATABASE'] . ' cache');
         } elseif (extension_loaded('memcached') && 'memcached' === $_ENV['CACHE_DRIVER']) {
             $client = new \Memcached();
             if (!count($client->getServerList())) {
@@ -96,11 +96,11 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR.$staff_tools[$tool].
             $session->set('is-success', 'You flushed the Memcached cache');
         } elseif ('files' === $_ENV['CACHE_DRIVER']) {
             rrmdir($_ENV['FILES_PATH']);
-            $session->set('is-success', 'You flushed the Flysystem cache: '.$_ENV['FILES_PATH']);
+            $session->set('is-success', 'You flushed the Flysystem cache: ' . $_ENV['FILES_PATH']);
         } elseif ('couchbase' === $_ENV['CACHE_DRIVER']) {
             $session->set('is-info', 'You did not flush the Couchbase cache');
         }
-        header('Location: '.$_SERVER['PHP_SELF']);
+        header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif (('add' == $action && UC_MAX == $CURUSER['class']) || ('edit' == $action && is_valid_id($id) && UC_MAX == $CURUSER['class'])) {
         $names = [
@@ -112,7 +112,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR.$staff_tools[$tool].
             'navbar',
         ];
         if ('edit' == $action) {
-            $res = sql_query('SELECT '.implode(', ', $names).' FROM staffpanel WHERE id = '.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+            $res = sql_query('SELECT ' . implode(', ', $names) . ' FROM staffpanel WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             $arr = mysqli_fetch_assoc($res);
         }
         foreach ($names as $name) {
@@ -124,39 +124,39 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR.$staff_tools[$tool].
         if ('POST' == $_SERVER['REQUEST_METHOD']) {
             $errors = [];
             if (empty($page_name)) {
-                $errors[] = $lang['spanel_the_pg_name'].' '.$lang['spanel_cannot_be_empty'].'.';
+                $errors[] = $lang['spanel_the_pg_name'] . ' ' . $lang['spanel_cannot_be_empty'] . '.';
             }
             if (empty($file_name)) {
-                $errors[] = $lang['spanel_the_filename'].' '.$lang['spanel_cannot_be_empty'].'.';
+                $errors[] = $lang['spanel_the_filename'] . ' ' . $lang['spanel_cannot_be_empty'] . '.';
             }
             if (empty($description)) {
-                $errors[] = $lang['spanel_the_descr'].' '.$lang['spanel_cannot_be_empty'].'.';
+                $errors[] = $lang['spanel_the_descr'] . ' ' . $lang['spanel_cannot_be_empty'] . '.';
             }
             if (!isset($navbar)) {
-                $errors[] = 'Show in Navbar '.$lang['spanel_cannot_be_empty'].'.';
+                $errors[] = 'Show in Navbar ' . $lang['spanel_cannot_be_empty'] . '.';
             }
             if (!in_array((int) $_POST['av_class'], $staff_classes)) {
                 $errors[] = $lang['spanel_selected_class_not_valid'];
             }
-            if (!empty($file_name) && !is_file($file_name.'.php') && !preg_match('/.php/', $file_name)) {
+            if (!empty($file_name) && !is_file($file_name . '.php') && !preg_match('/.php/', $file_name)) {
                 $errors[] = $lang['spanel_inexistent_php_file'];
             }
             if (!empty($page_name) && strlen($page_name) < 4) {
-                $errors[] = $lang['spanel_the_pg_name'].' '.$lang['spanel_is_too_short_min_4'].'.';
+                $errors[] = $lang['spanel_the_pg_name'] . ' ' . $lang['spanel_is_too_short_min_4'] . '.';
             }
             if (!empty($page_name) && strlen($page_name) > 80) {
-                $errors[] = $lang['spanel_the_pg_name'].' '.$lang['spanel_is_too_long'].' ('.$lang['spanel_max_80'].').';
+                $errors[] = $lang['spanel_the_pg_name'] . ' ' . $lang['spanel_is_too_long'] . ' (' . $lang['spanel_max_80'] . ').';
             }
             if (!empty($file_name) && strlen($file_name) > 80) {
-                $errors[] = $lang['spanel_the_filename'].' '.$lang['spanel_is_too_long'].' ('.$lang['spanel_max_80'].').';
+                $errors[] = $lang['spanel_the_filename'] . ' ' . $lang['spanel_is_too_long'] . ' (' . $lang['spanel_max_80'] . ').';
             }
             if (strlen($description) > 100) {
-                $errors[] = $lang['spanel_the_descr'].' '.$lang['spanel_is_too_long'].' ('.$lang['spanel_max_100'].').';
+                $errors[] = $lang['spanel_the_descr'] . ' ' . $lang['spanel_is_too_long'] . ' (' . $lang['spanel_max_100'] . ').';
             }
             if (empty($errors)) {
                 if ('add' == $action) {
                     $res = sql_query('INSERT INTO staffpanel (page_name, file_name, description, type, av_class, added_by, added, navbar)
-                                      VALUES ('.implode(', ', array_map('sqlesc', [
+                                      VALUES (' . implode(', ', array_map('sqlesc', [
                                          $page_name,
                                          $file_name,
                                          $description,
@@ -165,7 +165,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR.$staff_tools[$tool].
                                          (int) $CURUSER['id'],
                                          TIME_NOW,
                                          $navbar,
-                                     ])).')');
+                                     ])) . ')');
                     $cache->delete('is_staffs_');
                     $cache->delete('av_class_');
                     $cache->delete('staff_panels_6');
@@ -179,7 +179,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR.$staff_tools[$tool].
                         }
                     }
                 } else {
-                    $res = sql_query('UPDATE staffpanel SET navbar = '.sqlesc($navbar).', page_name = '.sqlesc($page_name).', file_name = '.sqlesc($file_name).', description = '.sqlesc($description).', type = '.sqlesc($type).', av_class = '.sqlesc((int) $_POST['av_class']).' WHERE id = '.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+                    $res = sql_query('UPDATE staffpanel SET navbar = ' . sqlesc($navbar) . ', page_name = ' . sqlesc($page_name) . ', file_name = ' . sqlesc($file_name) . ', description = ' . sqlesc($description) . ', type = ' . sqlesc($type) . ', av_class = ' . sqlesc((int) $_POST['av_class']) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
                     $cache->delete('av_class_');
                     $cache->delete('staff_panels_6');
                     $cache->delete('staff_panels_5');
@@ -190,19 +190,19 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR.$staff_tools[$tool].
                 }
                 if (empty($errors)) {
                     if ($CURUSER['class'] <= UC_MAX) {
-                        $page = "{$lang['spanel_page']} '[color=#".get_user_class_color($_POST['av_class'])."]{$page_name}[/color]'";
+                        $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color($_POST['av_class']) . "]{$page_name}[/color]'";
                         $what = 'add' == $action ? 'added' : 'edited';
-                        $user = "[url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#".get_user_class_color($CURUSER['class'])."]{$CURUSER['username']}[/color][/url]";
+                        $user = "[url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#" . get_user_class_color($CURUSER['class']) . "]{$CURUSER['username']}[/color][/url]";
                         write_log("$page {$lang['spanel_in_the_sp_was']} $what by $user");
                     }
-                    $session->set('is-success', "'{$page_name}' ".ucwords($action).'ed Successfully');
-                    header('Location: '.$_SERVER['PHP_SELF']);
+                    $session->set('is-success', "'{$page_name}' " . ucwords($action) . 'ed Successfully');
+                    header('Location: ' . $_SERVER['PHP_SELF']);
                     die();
                 }
             }
         }
         if (!empty($errors)) {
-            $HTMLOUT .= stdmsg($lang['spanel_there'].' '.(count($errors) > 1 ? 'are' : 'is').' '.count($errors).' error'.(count($errors) > 1 ? 's' : '').' '.$lang['spanel_in_the_form'].'.', '<b>'.implode('<br>', $errors).'</b>');
+            $HTMLOUT .= stdmsg($lang['spanel_there'] . ' ' . (count($errors) > 1 ? 'are' : 'is') . ' ' . count($errors) . ' error' . (count($errors) > 1 ? 's' : '') . ' ' . $lang['spanel_in_the_form'] . '.', '<b>' . implode('<br>', $errors) . '</b>');
             $HTMLOUT .= '<br>';
         }
         $HTMLOUT .= "<form method='post' action='{$_SERVER['PHP_SELF']}'>
@@ -213,7 +213,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR.$staff_tools[$tool].
         $header = "
                 <tr>
                     <th colspan='2'>
-                        ".('edit' == $action ? $lang['spanel_edit'].' "'.$page_name.'"' : $lang['spanel_add_a_new']).' Staffpage'.'
+                        " . ('edit' == $action ? $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' Staffpage' . '
                     </th>
                 </tr>';
         $body = "
@@ -246,8 +246,8 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR.$staff_tools[$tool].
                         Show in Navbar
                     </td>
                     <td>
-                        <input name='navbar' value='1' type='radio'".('1' == $navbar ? ' checked' : '')." /><span class='left5'>Yes</span><br>
-                        <input name='navbar' value='0' type='radio'".('0' == $navbar ? ' checked' : '')." /><span class='left5'>No</span>
+                        <input name='navbar' value='1' type='radio'" . ('1' == $navbar ? ' checked' : '') . " /><span class='left5'>Yes</span><br>
+                        <input name='navbar' value='0' type='radio'" . ('0' == $navbar ? ' checked' : '') . " /><span class='left5'>No</span>
                     </td>
                 </tr>";
 
@@ -265,7 +265,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR.$staff_tools[$tool].
                         <select name='type'>";
         foreach ($types as $type) {
             $body .= '
-                            <option value="'.$type.'"'.($types == $type ? ' selected' : '').'>'.ucfirst($type).'</option>';
+                            <option value="' . $type . '"' . ($types == $type ? ' selected' : '') . '>' . ucfirst($type) . '</option>';
         }
         $body .= "
                         </select>
@@ -280,7 +280,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR.$staff_tools[$tool].
         $maxclass = UC_MAX;
         for ($class = UC_STAFF; $class <= $maxclass; ++$class) {
             $body .= '
-                           <option value="'.$class.'"'.($arr['av_class'] == $class ? ' selected' : '').'>'.get_user_class_name($class).'</option>';
+                           <option value="' . $class . '"' . ($arr['av_class'] == $class ? ' selected' : '') . '>' . get_user_class_name($class) . '</option>';
         }
         $body .= '
                         </select>
@@ -298,7 +298,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR.$staff_tools[$tool].
             <input type='submit' class='button is-small' value='{$lang['spanel_cancel']}' />
         </form>
     </div>";
-        echo stdhead($lang['spanel_header'].' :: '.('edit' == $action ? ''.$lang['spanel_edit'].' "'.$page_name.'"' : $lang['spanel_add_a_new']).' page').$HTMLOUT.stdfoot();
+        echo stdhead($lang['spanel_header'] . ' :: ' . ('edit' == $action ? '' . $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' page') . $HTMLOUT . stdfoot();
     } else {
         $add_button = '';
         if (UC_MAX == $CURUSER['class']) {
@@ -311,7 +311,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR.$staff_tools[$tool].
         $res = sql_query('SELECT s.*, u.username 
                                 FROM staffpanel AS s
                                 LEFT JOIN users AS u ON u.id = s.added_by
-                                WHERE s.av_class <= '.sqlesc($CURUSER['class']).'
+                                WHERE s.av_class <= ' . sqlesc($CURUSER['class']) . '
                                 ORDER BY s.av_class DESC, s.page_name ASC') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
             $db_classes = $unique_classes = $mysql_data = [];
@@ -343,15 +343,15 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR.$staff_tools[$tool].
 
                 if (!in_array($arr['av_class'], $unique_classes)) {
                     $unique_classes[] = $arr['av_class'];
-                    $table = "
-            <h1 class='has-text-centered top20 text-shadow'>".($class_color ? '<font color="#'.get_user_class_color($arr['av_class']).'">' : '').get_user_class_name($arr['av_class']).'\'s Panel'.($class_color ? '</font>' : '')."</h1>
+                    $table            = "
+            <h1 class='has-text-centered top20 text-shadow'>" . ($class_color ? '<font color="#' . get_user_class_color($arr['av_class']) . '">' : '') . get_user_class_name($arr['av_class']) . '\'s Panel' . ($class_color ? '</font>' : '') . "</h1>
             {$add_button}";
                 }
                 $body .= "
                     <tr>
                         <td>
                             <div class='size_4'>
-                                <a href='".htmlsafechars($arr['file_name'])."' class='tooltipper' title='".htmlsafechars($arr['description'].'<br>'.$arr['file_name'])."'>".htmlsafechars($arr['page_name'])."</a>
+                                <a href='" . htmlsafechars($arr['file_name']) . "' class='tooltipper' title='" . htmlsafechars($arr['description'] . '<br>' . $arr['file_name']) . "'>" . htmlsafechars($arr['page_name']) . "</a>
                             </div>
                         </td>
                         <td>
@@ -361,22 +361,22 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR.$staff_tools[$tool].
                         </td>
                         <td>
                             <div class='has-text-centered'>
-                                ".format_username($arr['added_by'])."
+                                " . format_username($arr['added_by']) . "
                             </div>
                         </td>
                         <td>
                             <div class='has-text-centered'>
-                                <span>".get_date($arr['added'], 'DATE', 0, 1).'</span>
+                                <span>" . get_date($arr['added'], 'DATE', 0, 1) . '</span>
                             </div>
                         </td>';
                 if (UC_MAX == $CURUSER['class']) {
                     $body .= "
                         <td>
                             <div class='level-center'>
-                                <a href='{$site_config['baseurl']}/staffpanel.php?action=edit&amp;id=".(int) $arr['id']."' class='tooltipper' title='{$lang['spanel_edit']}'>
+                                <a href='{$site_config['baseurl']}/staffpanel.php?action=edit&amp;id=" . (int) $arr['id'] . "' class='tooltipper' title='{$lang['spanel_edit']}'>
                                     <i class='icon-edit icon'></i>
                                 </a>
-                                <a href='{$site_config['baseurl']}/staffpanel.php?action=delete&amp;id=".(int) $arr['id']."' class='tooltipper' title='{$lang['spanel_delete']}'>
+                                <a href='{$site_config['baseurl']}/staffpanel.php?action=delete&amp;id=" . (int) $arr['id'] . "' class='tooltipper' title='{$lang['spanel_delete']}'>
                                     <i class='icon-cancel icon'></i>
                                 </a>
                             </div>
@@ -387,13 +387,13 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR.$staff_tools[$tool].
                 ++$i;
                 if ($end_table) {
                     $i = 1;
-                    $HTMLOUT .= "<div class='bg-00 top20 round10'>$table".main_table($body, $header).'</div>';
+                    $HTMLOUT .= "<div class='bg-00 top20 round10'>$table" . main_table($body, $header) . '</div>';
                     $body = '';
                 }
             }
         } else {
             $HTMLOUT .= stdmsg($lang['spanel_sorry'], $lang['spanel_nothing_found']);
         }
-        echo stdhead($lang['spanel_header']).wrapper($HTMLOUT).stdfoot();
+        echo stdhead($lang['spanel_header']) . wrapper($HTMLOUT) . stdfoot();
     }
 }

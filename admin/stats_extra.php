@@ -1,18 +1,18 @@
 <?php
 
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
-$lang = array_merge($lang, load_language('ad_stats_extra'));
+$lang    = array_merge($lang, load_language('ad_stats_extra'));
 $inbound = array_merge($_GET, $_POST);
 if (!isset($inbound['mode'])) {
     $inbound['mode'] = '';
 }
-$form_code = '';
+$form_code   = '';
 $month_names = [
     1 => $lang['stats_ex_jan'],
     $lang['stats_ex_jan'],
@@ -95,7 +95,7 @@ switch ($inbound['mode']) {
 function show_views()
 {
     global $inbound, $month_names, $lang;
-    $page_title = $lang['stats_ex_ptitle'];
+    $page_title  = $lang['stats_ex_ptitle'];
     $page_detail = $lang['stats_ex_pdetail'];
     stderr($lang['stats_ex_stderr'], $lang['stats_ex_stderr1']);
     if (!checkdate($inbound['to_month'], $inbound['to_day'], $inbound['to_year'])) {
@@ -104,14 +104,14 @@ function show_views()
     if (!checkdate($inbound['from_month'], $inbound['from_day'], $inbound['from_year'])) {
         stderr($lang['stats_ex_ustderr'], $lang['stats_ex_dstderr']);
     }
-    $to_time = mktime(12, 0, 0, $inbound['to_month'], $inbound['to_day'], $inbound['to_year']);
-    $from_time = mktime(12, 0, 0, $inbound['from_month'], $inbound['from_day'], $inbound['from_year']);
-    $human_to_date = getdate($to_time);
+    $to_time         = mktime(12, 0, 0, $inbound['to_month'], $inbound['to_day'], $inbound['to_year']);
+    $from_time       = mktime(12, 0, 0, $inbound['from_month'], $inbound['from_day'], $inbound['from_year']);
+    $human_to_date   = getdate($to_time);
     $human_from_date = getdate($from_time);
-    $sql = [
+    $sql             = [
         'from_time' => $from_time,
-        'to_time' => $to_time,
-        'sortby' => $inbound['sortby'],
+        'to_time'   => $to_time,
+        'sortby'    => $inbound['sortby'],
     ];
     $q = sql_query("SELECT SUM(t.views) as result_count, t.forumid, f.name as result_name
                     FROM topics AS t
@@ -121,11 +121,11 @@ function show_views()
                     GROUP BY t.forumid
                     ORDER BY result_count {$sql['sortby']}") or sqlerr(__FILE__, __LINE__);
     $running_total = 0;
-    $max_result = 0;
-    $results = [];
-    $menu = make_side_menu();
-    $heading = "{$lang['stats_ex_topicv']} ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} {$lang['stats_ex_topict']} {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
-    $htmlout = "<div>
+    $max_result    = 0;
+    $results       = [];
+    $menu          = make_side_menu();
+    $heading       = "{$lang['stats_ex_topicv']} ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} {$lang['stats_ex_topict']} {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
+    $htmlout       = "<div>
       <div style='background: grey; height: 25px;'>
       <span style='font-weight: bold; font-size: 12pt;'>{$lang['stats_ex_center']}</span>
       </div><br>
@@ -147,7 +147,7 @@ function show_views()
             }
             $running_total += $row['result_count'];
             $results[] = [
-                'result_name' => $row['result_name'],
+                'result_name'  => $row['result_name'],
                 'result_count' => $row['result_count'],
             ];
         }
@@ -157,7 +157,7 @@ function show_views()
                 $img_width = 1;
             }
             $img_width .= '%';
-            $htmlout .= "<tr>
+            $htmlout   .= "<tr>
                 <td>$date</td>
                 <td><img src='{$site_config['pic_baseurl']}bar_left.gif' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_baseurl']}bar.gif' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_baseurl']}bar_right.gif' width='4' height='11' align='middle' alt='' /></td>
                     <td><center>{$data['result_count']}</center></td>
@@ -172,7 +172,7 @@ function show_views()
         $htmlout .= "<tr><td colspan='3'>{$lang['stats_ex_noresult']}</td></tr>";
     }
     $htmlout .= '</table></div></div>';
-    echo stdhead($page_title).$htmlout.stdfoot();
+    echo stdhead($page_title) . $htmlout . stdfoot();
 }
 
 /**
@@ -181,7 +181,7 @@ function show_views()
 function result_screen($mode = 'reg')
 {
     global $site_config, $inbound, $month_names, $lang;
-    $page_title = $lang['stats_ex_center_result'];
+    $page_title  = $lang['stats_ex_center_result'];
     $page_detail = '&#160;';
     if (!checkdate($inbound['to_month'], $inbound['to_day'], $inbound['to_year'])) {
         stderr($lang['stats_ex_ustderr'], $lang['stats_ex_ustderr1']);
@@ -189,44 +189,44 @@ function result_screen($mode = 'reg')
     if (!checkdate($inbound['from_month'], $inbound['from_day'], $inbound['from_year'])) {
         stderr($lang['stats_ex_ustderr'], $lang['stats_ex_dstderr']);
     }
-    $to_time = mktime(0, 0, 0, $inbound['to_month'], $inbound['to_day'], $inbound['to_year']);
-    $from_time = mktime(0, 0, 0, $inbound['from_month'], $inbound['from_day'], $inbound['from_year']);
-    $human_to_date = getdate($to_time);
+    $to_time         = mktime(0, 0, 0, $inbound['to_month'], $inbound['to_day'], $inbound['to_year']);
+    $from_time       = mktime(0, 0, 0, $inbound['from_month'], $inbound['from_day'], $inbound['from_year']);
+    $human_to_date   = getdate($to_time);
     $human_from_date = getdate($from_time);
     if ('reg' == $mode) {
-        $table = $lang['stats_ex_registr'];
-        $sql_table = 'users';
-        $sql_field = 'added';
+        $table       = $lang['stats_ex_registr'];
+        $sql_table   = 'users';
+        $sql_field   = 'added';
         $page_detail = $lang['stats_ex_rdetails'];
     } elseif ('topic' == $mode) {
-        $table = $lang['stats_ex_newtopicst'];
-        $sql_table = 'topics';
-        $sql_field = 'added';
+        $table       = $lang['stats_ex_newtopicst'];
+        $sql_table   = 'topics';
+        $sql_field   = 'added';
         $page_detail = $lang['stats_ex_topdetails'];
     } elseif ('post' == $mode) {
-        $table = $lang['stats_ex_poststs'];
-        $sql_table = 'posts';
-        $sql_field = 'added';
+        $table       = $lang['stats_ex_poststs'];
+        $sql_table   = 'posts';
+        $sql_field   = 'added';
         $page_detail = $lang['stats_ex_postdetails'];
     } elseif ('msg' == $mode) {
-        $table = $lang['stats_ex_pmsts'];
-        $sql_table = 'messages';
-        $sql_field = 'added';
+        $table       = $lang['stats_ex_pmsts'];
+        $sql_table   = 'messages';
+        $sql_field   = 'added';
         $page_detail = $lang['stats_ex_pmdetails'];
     } elseif ('comms' == $mode) {
-        $table = $lang['stats_ex_comsts'];
-        $sql_table = 'comments';
-        $sql_field = 'added';
+        $table       = $lang['stats_ex_comsts'];
+        $sql_table   = 'comments';
+        $sql_field   = 'added';
         $page_detail = $lang['stats_ex_cdetails'];
     } elseif ('torrents' == $mode) {
-        $table = $lang['stats_ex_torrsts'];
-        $sql_table = 'torrents';
-        $sql_field = 'added';
+        $table       = $lang['stats_ex_torrsts'];
+        $sql_table   = 'torrents';
+        $sql_field   = 'added';
         $page_detail = $lang['stats_ex_tordetails'];
     } elseif ('reps' == $mode) {
-        $table = $lang['stats_ex_repsts'];
-        $sql_table = 'reputation';
-        $sql_field = 'dateadd';
+        $table       = $lang['stats_ex_repsts'];
+        $sql_table   = 'reputation';
+        $sql_field   = 'dateadd';
         $page_detail = $lang['stats_ex_repdetails'];
     }
     switch ($inbound['timescale']) {
@@ -247,13 +247,13 @@ function result_screen($mode = 'reg')
             break;
     }
     $sort_by = ('DESC' == $inbound['sortby']) ? 'DESC' : 'ASC';
-    $sql = [
+    $sql     = [
         'from_time' => $from_time,
-        'to_time' => $to_time,
-        'sortby' => $sort_by,
+        'to_time'   => $to_time,
+        'sortby'    => $sort_by,
         'sql_field' => $sql_field,
         'sql_table' => $sql_table,
-        'sql_date' => $sql_date,
+        'sql_date'  => $sql_date,
     ];
     $q1 = sql_query("SELECT MAX({$sql['sql_field']}) as result_maxdate,
                  COUNT(*) as result_count,
@@ -264,11 +264,11 @@ function result_screen($mode = 'reg')
                  GROUP BY result_time
                  ORDER BY {$sql['sql_field']} {$sql['sortby']}");
     $running_total = 0;
-    $max_result = 0;
-    $results = [];
-    $heading = ucfirst($inbound['timescale'])." $table ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} to {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
-    $menu = make_side_menu();
-    $htmlout = "<div>
+    $max_result    = 0;
+    $results       = [];
+    $heading       = ucfirst($inbound['timescale']) . " $table ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} to {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
+    $menu          = make_side_menu();
+    $htmlout       = "<div>
       <div style='background: grey; height: 25px;'>
       <span style='font-weight: bold; font-size: 12pt;'>{$lang['stats_ex_center']}</span>
       </div><br>
@@ -291,8 +291,8 @@ function result_screen($mode = 'reg')
             $running_total += $row['result_count'];
             $results[] = [
                 'result_maxdate' => $row['result_maxdate'],
-                'result_count' => $row['result_count'],
-                'result_time' => $row['result_time'],
+                'result_count'   => $row['result_count'],
+                'result_time'    => $row['result_time'],
             ];
         }
         foreach ($results as $data) {
@@ -302,7 +302,7 @@ function result_screen($mode = 'reg')
             }
             $img_width .= '%';
             if ('weekly' == $inbound['timescale']) {
-                $date = 'Week #'.strftime('%W', $data['result_maxdate']).date($php_date, $data['result_maxdate']);
+                $date = 'Week #' . strftime('%W', $data['result_maxdate']) . date($php_date, $data['result_maxdate']);
             } else {
                 $date = date($php_date, $data['result_maxdate']);
             }
@@ -321,7 +321,7 @@ function result_screen($mode = 'reg')
         $htmlout .= "<tr><td colspan='3'>{$lang['stats_ex_noresult']}</td></tr>";
     }
     $htmlout .= '</table></div></div>';
-    echo stdhead($page_title).$htmlout.stdfoot();
+    echo stdhead($page_title) . $htmlout . stdfoot();
 }
 
 /**
@@ -330,37 +330,37 @@ function result_screen($mode = 'reg')
 function main_screen($mode = 'reg')
 {
     global $site_config, $lang;
-    $page_title = $lang['stats_ex_center'];
+    $page_title  = $lang['stats_ex_center'];
     $page_detail = "{$lang['stats_ex_details_main']}<br>{$lang['stats_ex_details_main1']}";
     if ('reg' == $mode) {
         $form_code = 'show_reg';
-        $table = $lang['stats_ex_registr'];
+        $table     = $lang['stats_ex_registr'];
     } elseif ('topic' == $mode) {
         $form_code = 'show_topic';
-        $table = $lang['stats_ex_newtopicst'];
+        $table     = $lang['stats_ex_newtopicst'];
     } elseif ('post' == $mode) {
         $form_code = 'show_post';
-        $table = $lang['stats_ex_poststs'];
+        $table     = $lang['stats_ex_poststs'];
     } elseif ('msg' == $mode) {
         $form_code = 'show_msg';
-        $table = $lang['stats_ex_pmsts'];
+        $table     = $lang['stats_ex_pmsts'];
     } elseif ('views' == $mode) {
         $form_code = 'show_views';
-        $table = $lang['stats_ex_topicviewsts'];
+        $table     = $lang['stats_ex_topicviewsts'];
     } elseif ('comms' == $mode) {
         $form_code = 'show_comms';
-        $table = $lang['stats_ex_comsts'];
+        $table     = $lang['stats_ex_comsts'];
     } elseif ('torrents' == $mode) {
         $form_code = 'show_torrents';
-        $table = $lang['stats_ex_torrsts'];
+        $table     = $lang['stats_ex_torrsts'];
     } elseif ('reps' == $mode) {
         $form_code = 'show_reps';
-        $table = $lang['stats_ex_repsts'];
+        $table     = $lang['stats_ex_repsts'];
     }
     $old_date = getdate(time() - (3600 * 24 * 90));
     $new_date = getdate(time() + (3600 * 24));
-    $menu = make_side_menu();
-    $htmlout = "<div>
+    $menu     = make_side_menu();
+    $htmlout  = "<div>
       <div style='background: grey; height: 25px;'>
       <span style='font-weight: bold; font-size: 12pt;'>{$lang['stats_ex_center']}</span>
       </div><br>
@@ -376,13 +376,13 @@ function main_screen($mode = 'reg')
     <fieldset><legend><strong>{$lang['stats_ex_infor']}</strong></legend>
     {$page_detail}</fieldset>
         <fieldset><legend><strong>{$lang['stats_ex_datefrom']}</strong></legend>";
-    $htmlout .= make_select('from_month', make_month(), $old_date['mon']).'&#160;&#160;';
-    $htmlout .= make_select('from_day', make_day(), $old_date['mday']).'&#160;&#160;';
-    $htmlout .= make_select('from_year', make_year(), $old_date['year']).'</fieldset>';
+    $htmlout .= make_select('from_month', make_month(), $old_date['mon']) . '&#160;&#160;';
+    $htmlout .= make_select('from_day', make_day(), $old_date['mday']) . '&#160;&#160;';
+    $htmlout .= make_select('from_year', make_year(), $old_date['year']) . '</fieldset>';
     $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_dateto']}</strong></legend>";
-    $htmlout .= make_select('to_month', make_month(), $new_date['mon']).'&#160;&#160;';
-    $htmlout .= make_select('to_day', make_day(), $new_date['mday']).'&#160;&#160;';
-    $htmlout .= make_select('to_year', make_year(), $new_date['year']).'</fieldset>';
+    $htmlout .= make_select('to_month', make_month(), $new_date['mon']) . '&#160;&#160;';
+    $htmlout .= make_select('to_day', make_day(), $new_date['mday']) . '&#160;&#160;';
+    $htmlout .= make_select('to_year', make_year(), $new_date['year']) . '</fieldset>';
     if ('views' != $mode) {
         $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_timescale']}</strong></legend>";
         $htmlout .= make_select('timescale', [
@@ -398,7 +398,7 @@ function main_screen($mode = 'reg')
                     'monthly',
                     $lang['stats_ex_monthly'],
                 ],
-            ]).'</fieldset>';
+            ]) . '</fieldset>';
     }
     $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_ressort']}</strong></legend>";
     $htmlout .= make_select('sortby', [
@@ -410,7 +410,7 @@ function main_screen($mode = 'reg')
                 'desc',
                 $lang['stats_ex_desc'],
             ],
-        ], 'desc').'</fieldset>';
+        ], 'desc') . '</fieldset>';
     $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_submit']}</strong></legend>
                 <input value='{$lang['stats_ex_show']}' class='button is-small' accesskey='s' type='submit' />
             </fieldset>
@@ -418,7 +418,7 @@ function main_screen($mode = 'reg')
         </div>
     
     </form></div>";
-    echo stdhead($page_title).$htmlout.stdfoot();
+    echo stdhead($page_title) . $htmlout . stdfoot();
 }
 
 /**
@@ -426,9 +426,9 @@ function main_screen($mode = 'reg')
  */
 function make_year()
 {
-    $time_now = getdate();
-    $return = [];
-    $start_year = 2005;
+    $time_now    = getdate();
+    $return      = [];
+    $start_year  = 2005;
     $latest_year = intval($time_now['year']);
     if ($latest_year == $start_year) {
         $start_year -= 1;

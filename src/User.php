@@ -22,13 +22,13 @@ class User
      */
     public function __construct(Query $fluent)
     {
-        global $site_config;
+        global $site_config, $session, $cache;
 
-        $this->fluent = $fluent;
-        $this->session = new Session();
+        $this->fluent  = $fluent;
+        $this->session = $session;
+        $this->cache   = $cache;
         $this->cookies = new Cookie('remember');
-        $this->cache = new Cache();
-        $this->config = $site_config;
+        $this->config  = $site_config;
     }
 
     /**
@@ -38,7 +38,7 @@ class User
      */
     public function getUserFromId(int $user_id)
     {
-        $user = $this->cache->get('user'.$user_id);
+        $user = $this->cache->get('user' . $user_id);
         if (false === $user || is_null($user)) {
             $user = $this->fluent->from('users')
                 ->select('INET6_NTOA(ip) AS ip')
@@ -46,8 +46,8 @@ class User
                 ->fetch();
 
             if ($user) {
-                unset($user['hintanswer']);
-                unset($user['passhash']);
+                unset($user['hintanswer'], $user['passhash']);
+
                 if ('Male' === $user['gender']) {
                     $user['it'] = 'he';
                 } elseif ('Female' === $user['gender']) {
@@ -56,7 +56,7 @@ class User
                     $user['it'] = 'it';
                 }
 
-                $this->cache->set('user'.$user_id, $user, $this->config['expires']['user_cache']);
+                $this->cache->set('user' . $user_id, $user, $this->config['expires']['user_cache']);
             }
         }
 
@@ -70,7 +70,7 @@ class User
      */
     public function getUserIdFromName($username)
     {
-        $user = $this->cache->get('userid_from_'.urlencode($username));
+        $user = $this->cache->get('userid_from_' . urlencode($username));
 
         if (false === $user || is_null($user)) {
             $user = $this->fluent->from('users')
@@ -79,7 +79,7 @@ class User
                 ->where('username = ?', $username)
                 ->fetch('id');
 
-            $this->cache->set('userid_from_'.urldecode($username), $user, $this->config['expires']['user_cache']);
+            $this->cache->set('userid_from_' . urldecode($username), $user, $this->config['expires']['user_cache']);
         }
 
         return $user;
@@ -100,7 +100,7 @@ class User
         if (!$id) {
             $cookie = $this->cookies->getToken();
             if ($cookie) {
-                $stashed = $this->cache->get('remember_'.$cookie[0]);
+                $stashed   = $this->cache->get('remember_' . $cookie[0]);
                 $validator = $cookie[1];
                 if (empty($stashed)) {
                     $this->session->destroy();
@@ -114,7 +114,7 @@ class User
 
                     return (int) $id;
                 } else {
-                    $this->cache->delete('remember_'.$cookie[0]);
+                    $this->cache->delete('remember_' . $cookie[0]);
                     $this->session->destroy();
 
                     return false;
@@ -146,7 +146,7 @@ class User
 
         if ($result) {
             $this->cache->update_row(
-                'user'.$user_id,
+                'user' . $user_id,
                                      $set,
                                      $this->config['expires']['user_cache']
             );

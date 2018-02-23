@@ -1,20 +1,20 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'bbcode_functions.php';
-require_once INCL_DIR.'pager_functions.php';
-require_once INCL_DIR.'comment_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once INCL_DIR.'function_rating.php';
-require_once INCL_DIR.'function_tvmaze.php';
-require_once INCL_DIR.'function_books.php';
-require_once INCL_DIR.'function_imdb.php';
-require_once INCL_DIR.'function_fanart.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
+require_once INCL_DIR . 'pager_functions.php';
+require_once INCL_DIR . 'comment_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'function_rating.php';
+require_once INCL_DIR . 'function_tvmaze.php';
+require_once INCL_DIR . 'function_books.php';
+require_once INCL_DIR . 'function_imdb.php';
+require_once INCL_DIR . 'function_fanart.php';
 check_user_status();
 global $CURUSER, $site_config, $fluent, $session, $cache, $user;
 
-$lang = array_merge(load_language('global'), load_language('details'));
+$lang    = array_merge(load_language('global'), load_language('details'));
 $stdhead = [
     'css' => [
         get_file_name('details_css'),
@@ -26,24 +26,24 @@ $stdfoot = [
     ],
 ];
 $torrent_cache = [];
-$HTMLOUT = '';
-$dt = TIME_NOW;
+$HTMLOUT       = '';
+$dt            = TIME_NOW;
 
 if (!isset($_GET['id']) || !is_valid_id($_GET['id'])) {
     stderr("{$lang['details_user_error']}", "{$lang['details_bad_id']}{$_GET['id']}");
 }
 $id = (int) $_GET['id'];
 
-$slot = make_freeslots($CURUSER['id'], 'fllslot_');
+$slot                 = make_freeslots($CURUSER['id'], 'fllslot_');
 $torrent['addedfree'] = $torrent['addedup'] = $free_slot = $double_slot = '';
 if (!empty($slot)) {
     foreach ($slot as $sl) {
         if ($sl['torrentid'] == $id && 'yes' == $sl['free']) {
-            $free_slot = 1;
+            $free_slot            = 1;
             $torrent['addedfree'] = $sl['addedfree'];
         }
         if ($sl['torrentid'] == $id && 'yes' == $sl['doubleup']) {
-            $double_slot = 1;
+            $double_slot        = 1;
             $torrent['addedup'] = $sl['addedup'];
         }
         if ($free_slot && $double_slot) {
@@ -54,13 +54,13 @@ if (!empty($slot)) {
 $categorie = genrelist();
 foreach ($categorie as $key => $value) {
     $change[$value['id']] = [
-        'id' => $value['id'],
-        'name' => $value['name'],
+        'id'    => $value['id'],
+        'name'  => $value['name'],
         'image' => $value['image'],
     ];
 }
 
-$torrents = $cache->get('torrent_details_'.$id);
+$torrents = $cache->get('torrent_details_' . $id);
 if (false === $torrents || is_null($torrents)) {
     $torrents = $fluent->from('torrents')
         ->select('HEX(info_hash) AS info_hash')
@@ -69,18 +69,18 @@ if (false === $torrents || is_null($torrents)) {
         ->where('id = ?', $id)
         ->fetch();
 
-    $cache->set('torrent_details_'.$id, $torrents, $site_config['expires']['torrent_details']);
+    $cache->set('torrent_details_' . $id, $torrents, $site_config['expires']['torrent_details']);
 }
 
 $tvmaze_episode_info = $tvmaze_info = $imdb_info = $ebook_info = '';
 if (in_array($torrents['category'], $site_config['ebook_cats'])) {
     $ebooks_info = get_book_info($torrents);
-    $ebook_info = $ebooks_info[0];
+    $ebook_info  = $ebooks_info[0];
     if (empty($torrents['poster']) && !empty($ebooks_info[1])) {
         $set = [
             'poster' => $ebooks_info[1],
         ];
-        $cache->update_row('torrent_details_'.$id, $set, $site_config['expires']['torrent_details']);
+        $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
         $fluent->update('torrents')
             ->set($set)
             ->where('id = ?', $id)
@@ -91,15 +91,15 @@ if (in_array($torrents['category'], $site_config['ebook_cats'])) {
 
 if (in_array($torrents['category'], $site_config['tv_cats'])) {
     $thetvdb_id = get_show_id($torrents['name'], 'thetvdb_id');
-    $tvmaze_id = get_show_id($torrents['name'], 'tvmaze_id');
-    $imdb_id = get_show_id($torrents['name'], 'imdb_id');
+    $tvmaze_id  = get_show_id($torrents['name'], 'tvmaze_id');
+    $imdb_id    = get_show_id($torrents['name'], 'imdb_id');
     if (empty($torrents['url'])) {
         if (!empty($imdb_id)) {
-            $url = 'http://www.imdb.com/title/'.$imdb_id;
+            $url = 'http://www.imdb.com/title/' . $imdb_id;
             $set = [
                 'url' => $url,
             ];
-            $cache->update_row('torrent_details_'.$id, $set, $site_config['expires']['torrent_details']);
+            $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
             $fluent->update('torrents')
                 ->set($set)
                 ->where('id = ?', $id)
@@ -117,7 +117,7 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
             $set = [
                 'poster' => $poster,
             ];
-            $cache->update_row('torrent_details_'.$id, $set, $site_config['expires']['torrent_details']);
+            $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
             $fluent->update('torrents')
                 ->set($set)
                 ->where('id = ?', $id)
@@ -132,7 +132,7 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
             $set = [
                 'banner' => $banner,
             ];
-            $cache->update_row('torrent_details_'.$id, $set, $site_config['expires']['torrent_details']);
+            $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
             $fluent->update('torrents')
                 ->set($set)
                 ->where('id = ?', $id)
@@ -147,7 +147,7 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
             $set = [
                 'background' => $background,
             ];
-            $cache->update_row('torrent_details_'.$id, $set, $site_config['expires']['torrent_details']);
+            $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
             $fluent->update('torrents')
                 ->set($set)
                 ->where('id = ?', $id)
@@ -162,7 +162,7 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
     $tvmaze_info = tvmaze($torrents);
     if (!empty($imdb_id)) {
         $movie_info = get_imdb_info($imdb_id);
-        $imdb_info = $movie_info[0];
+        $imdb_info  = $movie_info[0];
     }
 }
 
@@ -171,7 +171,7 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
     if (!empty($imdb_tmp[2])) {
         $imdb_id = $imdb_tmp[2];
 
-        $imdb = 'tt'.$imdb_id;
+        $imdb = 'tt' . $imdb_id;
         unset($imdb_tmp);
         if (empty($torrents['poster'])) {
             $poster = getMovieImagesByImdb($imdb, 'movieposter');
@@ -179,7 +179,7 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
                 $set = [
                     'poster' => $poster,
                 ];
-                $cache->update_row('torrent_details_'.$id, $set, $site_config['expires']['torrent_details']);
+                $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
                 $fluent->update('torrents')
                     ->set($set)
                     ->where('id = ?', $id)
@@ -194,7 +194,7 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
                 $set = [
                     'banner' => $banner,
                 ];
-                $cache->update_row('torrent_details_'.$id, $set, $site_config['expires']['torrent_details']);
+                $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
                 $fluent->update('torrents')
                     ->set($set)
                     ->where('id = ?', $id)
@@ -209,7 +209,7 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
                 $set = [
                     'background' => $background,
                 ];
-                $cache->update_row('torrent_details_'.$id, $set, $site_config['expires']['torrent_details']);
+                $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
                 $fluent->update('torrents')
                     ->set($set)
                     ->where('id = ?', $id)
@@ -218,13 +218,13 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
             }
         }
         $movie_info = get_imdb_info($imdb_id);
-        $imdb_info = $movie_info[0];
+        $imdb_info  = $movie_info[0];
 
         if (empty($torrents['poster']) && !empty($movie_info[1])) {
             $set = [
                 'poster' => $movie_info[1],
             ];
-            $cache->update_row('torrent_details_'.$id, $set, $site_config['expires']['torrent_details']);
+            $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
             $fluent->update('torrents')
                 ->set($set)
                 ->where('id = ?', $id)
@@ -234,54 +234,54 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
     }
 }
 
-if (false === ($torrents_xbt = $cache->get('torrent_xbt_data_'.$id)) && XBT_TRACKER) {
-    $torrents_xbt = mysqli_fetch_assoc(sql_query('SELECT seeders, leechers, times_completed FROM torrents WHERE id ='.sqlesc($id))) or sqlerr(__FILE__, __LINE__);
-    $cache->set('torrent_xbt_data_'.$id, $torrents_xbt, $site_config['expires']['torrent_xbt_data']);
+if (false === ($torrents_xbt = $cache->get('torrent_xbt_data_' . $id)) && XBT_TRACKER) {
+    $torrents_xbt = mysqli_fetch_assoc(sql_query('SELECT seeders, leechers, times_completed FROM torrents WHERE id =' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
+    $cache->set('torrent_xbt_data_' . $id, $torrents_xbt, $site_config['expires']['torrent_xbt_data']);
 }
 
-$torrents_txt = $cache->get('torrent_details_txt_'.$id);
+$torrents_txt = $cache->get('torrent_details_txt_' . $id);
 if (false === $torrents_txt || is_null($torrents_txt)) {
-    $torrents_txt = mysqli_fetch_assoc(sql_query('SELECT descr FROM torrents WHERE id ='.sqlesc($id))) or sqlerr(__FILE__, __LINE__);
-    $cache->set('torrent_details_txt_'.$id, $torrents_txt, $site_config['expires']['torrent_details_text']);
+    $torrents_txt = mysqli_fetch_assoc(sql_query('SELECT descr FROM torrents WHERE id =' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
+    $cache->set('torrent_details_txt_' . $id, $torrents_txt, $site_config['expires']['torrent_details_text']);
 }
 
 if (isset($_GET['hit'])) {
-    sql_query('UPDATE torrents SET views = views + 1 WHERE id = '.sqlesc($id));
+    sql_query('UPDATE torrents SET views = views + 1 WHERE id = ' . sqlesc($id));
     $update['views'] = ($torrents['views'] + 1);
-    $cache->update_row('torrent_details_'.$id, [
+    $cache->update_row('torrent_details_' . $id, [
         'views' => $update['views'],
     ], $site_config['expires']['torrent_details']);
 }
-$What_String = (XBT_TRACKER ? 'mtime' : 'last_action');
+$What_String     = (XBT_TRACKER ? 'mtime' : 'last_action');
 $What_String_Key = (XBT_TRACKER ? 'last_action_xbt_' : 'last_action_');
-$l_a = $cache->get($What_String_Key.$id);
+$l_a             = $cache->get($What_String_Key . $id);
 if (false === $l_a || is_null($l_a)) {
-    $l_a = mysqli_fetch_assoc(sql_query('SELECT '.$What_String.' AS lastseed '.'FROM torrents '.'WHERE id = '.sqlesc($id))) or sqlerr(__FILE__, __LINE__);
+    $l_a             = mysqli_fetch_assoc(sql_query('SELECT ' . $What_String . ' AS lastseed ' . 'FROM torrents ' . 'WHERE id = ' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
     $l_a['lastseed'] = (int) $l_a['lastseed'];
-    $cache->add('last_action_'.$id, $l_a, 1800);
+    $cache->add('last_action_' . $id, $l_a, 1800);
 }
 
-$torrent_cache['seeders'] = $cache->get('torrents_seeds_'.$id);
-$torrent_cache['leechers'] = $cache->get('torrents_leechs_'.$id);
-$torrent_cache['times_completed'] = $cache->get('torrents_comps_'.$id);
-$torrents['seeders'] = ((!XBT_TRACKER || false === $torrent_cache['seeders'] || 0 === $torrent_cache['seeders'] || false === $torrent_cache['seeders']) ? $torrents['seeders'] : $torrent_cache['seeders']);
-$torrents['leechers'] = ((!XBT_TRACKER || false === $torrent_cache['leechers'] || 0 === $torrent_cache['leechers'] || false === $torrent_cache['leechers']) ? $torrents['leechers'] : $torrent_cache['leechers']);
-$torrents['times_completed'] = ((!XBT_TRACKER || false === $torrent_cache['times_completed'] || 0 === $torrent_cache['times_completed'] || false === $torrent_cache['times_completed']) ? $torrents['times_completed'] : $torrent_cache['times_completed']);
+$torrent_cache['seeders']         = $cache->get('torrents_seeds_' . $id);
+$torrent_cache['leechers']        = $cache->get('torrents_leechs_' . $id);
+$torrent_cache['times_completed'] = $cache->get('torrents_comps_' . $id);
+$torrents['seeders']              = ((!XBT_TRACKER || false === $torrent_cache['seeders'] || 0 === $torrent_cache['seeders'] || false === $torrent_cache['seeders']) ? $torrents['seeders'] : $torrent_cache['seeders']);
+$torrents['leechers']             = ((!XBT_TRACKER || false === $torrent_cache['leechers'] || 0 === $torrent_cache['leechers'] || false === $torrent_cache['leechers']) ? $torrents['leechers'] : $torrent_cache['leechers']);
+$torrents['times_completed']      = ((!XBT_TRACKER || false === $torrent_cache['times_completed'] || 0 === $torrent_cache['times_completed'] || false === $torrent_cache['times_completed']) ? $torrents['times_completed'] : $torrent_cache['times_completed']);
 
-$torrent['addup'] = get_date($torrent['addedup'], 'DATE');
-$torrent['addfree'] = get_date($torrent['addedfree'], 'DATE');
-$torrent['idk'] = ($dt + 14 * 86400);
-$torrent['freeimg'] = '<img src="'.$site_config['pic_baseurl'].'freedownload.gif" alt="" />';
-$torrent['doubleimg'] = '<img src="'.$site_config['pic_baseurl'].'doubleseed.gif" alt="" />';
-$torrent['free_color'] = '#FF0000';
+$torrent['addup']        = get_date($torrent['addedup'], 'DATE');
+$torrent['addfree']      = get_date($torrent['addedfree'], 'DATE');
+$torrent['idk']          = ($dt + 14 * 86400);
+$torrent['freeimg']      = '<img src="' . $site_config['pic_baseurl'] . 'freedownload.gif" alt="" />';
+$torrent['doubleimg']    = '<img src="' . $site_config['pic_baseurl'] . 'doubleseed.gif" alt="" />';
+$torrent['free_color']   = '#FF0000';
 $torrent['silver_color'] = 'silver';
-$torrent_cache['rep'] = $cache->get('user_rep_'.$torrents['owner']);
+$torrent_cache['rep']    = $cache->get('user_rep_' . $torrents['owner']);
 if (false === $torrent_cache['rep'] || is_null($torrent_cache['rep'])) {
     $torrent_cache['rep'] = [];
-    $us = sql_query('SELECT reputation FROM users WHERE id ='.sqlesc($torrents['owner'])) or sqlerr(__FILE__, __LINE__);
+    $us                   = sql_query('SELECT reputation FROM users WHERE id =' . sqlesc($torrents['owner'])) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($us)) {
         $torrent_cache['rep'] = mysqli_fetch_assoc($us);
-        $cache->add('user_rep_'.$torrents['owner'], $torrent_cache['rep'], 14 * 86400);
+        $cache->add('user_rep_' . $torrents['owner'], $torrent_cache['rep'], 14 * 86400);
     }
 }
 $owned = $moderator = 0;
@@ -304,47 +304,47 @@ if ($CURUSER['id'] == $torrents['owner'] || $CURUSER['class'] >= UC_STAFF) {
 if (empty($torrents['tags'])) {
     $keywords = 'No Keywords Specified.';
 } else {
-    $tags = explode(',', $torrents['tags']);
+    $tags     = explode(',', $torrents['tags']);
     $keywords = '';
     foreach ($tags as $tag) {
-        $keywords .= "<a href='{$site_config['baseurl']}/browse.php?search=$tag&amp;searchin=all&amp;incldead=1'>".htmlsafechars($tag).'</a>,';
+        $keywords .= "<a href='{$site_config['baseurl']}/browse.php?search=$tag&amp;searchin=all&amp;incldead=1'>" . htmlsafechars($tag) . '</a>,';
     }
     $keywords = substr($keywords, 0, (strlen($keywords) - 1));
 }
 
 if ($CURUSER['class'] >= UC_STAFF) {
     if (isset($_POST['checked']) && $_POST['checked'] === $_GET['id']) {
-        sql_query('UPDATE torrents SET checked_by = '.sqlesc($CURUSER['id']).', checked_when = '.$dt.' WHERE id ='.sqlesc($id).' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('torrent_details_'.$id, [
-            'checked_by' => $CURUSER['id'],
+        sql_query('UPDATE torrents SET checked_by = ' . sqlesc($CURUSER['id']) . ', checked_when = ' . $dt . ' WHERE id =' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        $cache->update_row('torrent_details_' . $id, [
+            'checked_by'   => $CURUSER['id'],
             'checked_when' => $dt,
         ], $site_config['expires']['torrent_details']);
-        $torrents['checked_by'] = $CURUSER['id'];
+        $torrents['checked_by']   = $CURUSER['id'];
         $torrents['checked_when'] = $dt;
-        $cache->set('checked_by_'.$id, $CURUSER['id'], 0);
-        write_log("Torrent <a href=details.php?id=$id>(".htmlsafechars($torrents['name']).")</a> was checked by {$CURUSER['username']}");
+        $cache->set('checked_by_' . $id, $CURUSER['id'], 0);
+        write_log("Torrent <a href=details.php?id=$id>(" . htmlsafechars($torrents['name']) . ")</a> was checked by {$CURUSER['username']}");
         $session->set('is-success', "Torrents has been 'Checked'");
     } elseif (isset($_POST['rechecked']) && $_POST['rechecked'] === $_GET['id']) {
-        sql_query('UPDATE torrents SET checked_by = '.sqlesc($CURUSER['id']).', checked_when = '.$dt.' WHERE id ='.sqlesc($id).' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('torrent_details_'.$id, [
-            'checked_by' => $CURUSER['id'],
+        sql_query('UPDATE torrents SET checked_by = ' . sqlesc($CURUSER['id']) . ', checked_when = ' . $dt . ' WHERE id =' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        $cache->update_row('torrent_details_' . $id, [
+            'checked_by'   => $CURUSER['id'],
             'checked_when' => $dt,
         ], $site_config['expires']['torrent_details']);
-        $torrents['checked_by'] = $CURUSER['id'];
+        $torrents['checked_by']   = $CURUSER['id'];
         $torrents['checked_when'] = $dt;
-        $cache->set('checked_by_'.$id, $CURUSER['id'], 0);
-        write_log("Torrent <a href=details.php?id=$id>(".htmlsafechars($torrents['name']).")</a> was re-checked by {$CURUSER['username']}");
+        $cache->set('checked_by_' . $id, $CURUSER['id'], 0);
+        write_log("Torrent <a href=details.php?id=$id>(" . htmlsafechars($torrents['name']) . ")</a> was re-checked by {$CURUSER['username']}");
         $session->set('is-success', "Torrents has been 'Re-Checked'");
     } elseif (isset($_POST['clearchecked']) && $_POST['clearchecked'] === $_GET['id']) {
-        sql_query('UPDATE torrents SET checked_by = 0, checked_when = 0 WHERE id = '.sqlesc($id).' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('torrent_details_'.$id, [
-            'checked_by' => 0,
+        sql_query('UPDATE torrents SET checked_by = 0, checked_when = 0 WHERE id = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        $cache->update_row('torrent_details_' . $id, [
+            'checked_by'   => 0,
             'checked_when' => 0,
         ], $site_config['expires']['torrent_details']);
-        $torrents['checked_by'] = 0;
+        $torrents['checked_by']   = 0;
         $torrents['checked_when'] = 0;
-        $cache->delete('checked_by_'.$id);
-        write_log("Torrent <a href=details.php?id=$id>(".htmlsafechars($torrents['name']).")</a> was un-checked by {$CURUSER['username']}");
+        $cache->delete('checked_by_' . $id);
+        write_log("Torrent <a href=details.php?id=$id>(" . htmlsafechars($torrents['name']) . ")</a> was un-checked by {$CURUSER['username']}");
         $session->set('is-success', "Torrents has been 'Un-Checked'");
     }
 }
@@ -356,7 +356,7 @@ $banner_image = "
 if (!empty($torrents['banner'])) {
     $banner_image = "
         <div id='banner'>
-            <img src='".image_proxy($torrents['banner'])."' class='w-100 round10' />
+            <img src='" . image_proxy($torrents['banner']) . "' class='w-100 round10' />
         </div>
         <div id='overlay' class='container is-fluid bg-07 is-marginless round10'>";
 }
@@ -369,12 +369,12 @@ $HTMLOUT .= "
         </div>
     <div class='tooltip_templates'>
         <span id='balloon1'>
-            Once chosen this torrent will be Freeleech {$torrent['freeimg']} until ".get_date($torrent['idk'], 'DATE')." and can be resumed or started over using the regular download link. Doing so will result in one Freeleech Slot being taken away from your total.
+            Once chosen this torrent will be Freeleech {$torrent['freeimg']} until " . get_date($torrent['idk'], 'DATE') . " and can be resumed or started over using the regular download link. Doing so will result in one Freeleech Slot being taken away from your total.
         </span>
     </div>
     <div class='tooltip_templates'>
         <span id='balloon2'>
-            Once chosen this torrent will be Doubleseed {$torrent['doubleimg']} until ".get_date($torrent['idk'], 'DATE')." and can be resumed or started over using the regular download link. Doing so will result in one Freeleech Slot being taken away from your total.
+            Once chosen this torrent will be Doubleseed {$torrent['doubleimg']} until " . get_date($torrent['idk'], 'DATE') . " and can be resumed or started over using the regular download link. Doing so will result in one Freeleech Slot being taken away from your total.
         </span>
     </div>
     <div class='tooltip_templates'>
@@ -382,9 +382,9 @@ $HTMLOUT .= "
             Remember to show your gratitude and Thank the Uploader. <img src='{$site_config['pic_baseurl']}smilies/smile1.gif' alt='' />
         </span>
     </div>";
-$url = 'edit.php?id='.(int) $torrents['id'];
+$url = 'edit.php?id=' . (int) $torrents['id'];
 if (isset($_GET['returnto'])) {
-    $addthis = '&amp;returnto='.urlencode($_GET['returnto']);
+    $addthis = '&amp;returnto=' . urlencode($_GET['returnto']);
     $url .= $addthis;
     $keepget = $addthis;
 }
@@ -394,59 +394,59 @@ if (!(0 == $CURUSER['downloadpos'] && $CURUSER['id'] != $torrents['owner'] or $C
         $HTMLOUT .= '
                 <tr>
                     <td class="rowhead">Slots</td>
-                        <td>'.$torrent['freeimg'].' <b><font color="'.$torrent['free_color'].'">Freeleech Slot In Use!</font></b> (only upload stats are recorded) - Expires: 12:01AM '.$torrent['addfree'].'
+                        <td>' . $torrent['freeimg'] . ' <b><font color="' . $torrent['free_color'] . '">Freeleech Slot In Use!</font></b> (only upload stats are recorded) - Expires: 12:01AM ' . $torrent['addfree'] . '
                     </td>
                 </tr>';
-        $freeslot = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}".(3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '')."&amp;slot=double' data-tooltip-content='#balloon1' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span style='color: ".$torrent['free_color'].";'><b>Doubleseed Slot</b></span></a>- ".htmlsafechars($CURUSER['freeslots']).' Slots Remaining. ' : '');
-        $freeslot_zip = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}".(3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '')."&amp;slot=double&amp;zip=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')'><span style='color: ".$torrent['free_color'].";'><b>Doubleseed Slot</b></span></a>- ".htmlsafechars($CURUSER['freeslots']).' Slots Remaining. ' : '');
-        $freeslot_text = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}".(3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '')."&amp;slot=double&amp;text=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span style='color: ".$torrent['free_color'].";'><b>Doubleseed Slot</b></span></a>- ".htmlsafechars($CURUSER['freeslots']).' Slots Remaining. ' : '');
+        $freeslot      = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '') . "&amp;slot=double' data-tooltip-content='#balloon1' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span style='color: " . $torrent['free_color'] . ";'><b>Doubleseed Slot</b></span></a>- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
+        $freeslot_zip  = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;zip=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')'><span style='color: " . $torrent['free_color'] . ";'><b>Doubleseed Slot</b></span></a>- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
+        $freeslot_text = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;text=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span style='color: " . $torrent['free_color'] . ";'><b>Doubleseed Slot</b></span></a>- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
     } elseif (!$free_slot && $double_slot) {
         $HTMLOUT .= '<tr>
                 <td class="rowhead">Slots</td>
-                <td>'.$torrent['doubleimg'].' <b><font color="'.$torrent['free_color'].'">Doubleseed Slot In Use!</font></b> (upload stats x2) - Expires: 12:01AM '.$torrent['addup'].'
+                <td>' . $torrent['doubleimg'] . ' <b><font color="' . $torrent['free_color'] . '">Doubleseed Slot In Use!</font></b> (upload stats x2) - Expires: 12:01AM ' . $torrent['addup'] . '
                 </td>
             </tr>';
-        $freeslot = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}".(3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '')."&amp;slot=free' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span style='color: ".$torrent['free_color'].";'><b>Freeleech Slot</b></span></a>- ".htmlsafechars($CURUSER['freeslots']).' Slots Remaining. ' : '');
-        $freeslot_zip = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}".(3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '')."&amp;slot=free&amp;zip=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span style='color: ".$torrent['free_color'].";'><b>Freeleech Slot</b></span></a>- ".htmlsafechars($CURUSER['freeslots']).' Slots Remaining. ' : '');
-        $freeslot_text = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}".(3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '')."&amp;slot=free&amp;text=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span style='color: ".$torrent['free_color'].";'><b>Freeleech Slot</b></span></a>- ".htmlsafechars($CURUSER['freeslots']).' Slots Remaining. ' : '');
+        $freeslot      = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '') . "&amp;slot=free' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span style='color: " . $torrent['free_color'] . ";'><b>Freeleech Slot</b></span></a>- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
+        $freeslot_zip  = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;zip=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span style='color: " . $torrent['free_color'] . ";'><b>Freeleech Slot</b></span></a>- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
+        $freeslot_text = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;text=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span style='color: " . $torrent['free_color'] . ";'><b>Freeleech Slot</b></span></a>- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
     } elseif ($free_slot && $double_slot) {
         $HTMLOUT .= '<tr>
                 <td class="rowhead">Slots</td>
-                <td>'.$torrent['freeimg'].' '.$torrent['doubleimg'].' <b><font color="'.$torrent['free_color'].'">Freeleech and Doubleseed Slots In Use!</font></b> (upload stats x2 and no download stats are recorded)<p>Freeleech Expires: 12:01AM '.$torrent['addfree'].' and Doubleseed Expires: 12:01AM '.$torrent['addup'].'</p>
+                <td>' . $torrent['freeimg'] . ' ' . $torrent['doubleimg'] . ' <b><font color="' . $torrent['free_color'] . '">Freeleech and Doubleseed Slots In Use!</font></b> (upload stats x2 and no download stats are recorded)<p>Freeleech Expires: 12:01AM ' . $torrent['addfree'] . ' and Doubleseed Expires: 12:01AM ' . $torrent['addup'] . '</p>
                 </td>
             </tr>';
         $freeslot = $freeslot_zip = $freeslot_text = '';
     } else {
         $freeslot = ($CURUSER['freeslots'] >= 1 ? "
         <b>Use: </b>
-            <a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}".(3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '')."&amp;slot=free' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\">
-                <span style='color: ".$torrent['free_color'].";'><b>Freeleech Slot</b></span>
+            <a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '') . "&amp;slot=free' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\">
+                <span style='color: " . $torrent['free_color'] . ";'><b>Freeleech Slot</b></span>
             </a>
         <b>Use: </b>
-            <a class='index dt-tooltipper-small' href='download.php?torrent={$id}".(3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '')."&amp;slot=double' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\">
-                <span style='color: ".$torrent['free_color'].";'><b>Doubleseed Slot</b></span>
-            </a>- ".htmlsafechars($CURUSER['freeslots']).' Slots Remaining. ' : '');
+            <a class='index dt-tooltipper-small' href='download.php?torrent={$id}" . (3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '') . "&amp;slot=double' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\">
+                <span style='color: " . $torrent['free_color'] . ";'><b>Doubleseed Slot</b></span>
+            </a>- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
     }
-    $freeslot_zip = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}".(3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '')."&amp;slot=free&amp;zip=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span style='color: ".$torrent['free_color'].";'><b>Freeleech Slot</b></font></a> <b>Use: </b><a class='index dt-tooltipper-small' href='download.php?torrent={$id}".(3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '')."&amp;slot=double&amp;zip=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='".$torrent['free_color'].";'><b>Doubleseed Slot</b></span></a>- ".htmlsafechars($CURUSER['freeslots']).' Slots Remaining. ' : '');
-    $freeslot_text = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}".(3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '')."&amp;slot=free&amp;text=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span style='color: ".$torrent['free_color'].";'><b>Freeleech Slot</b></font></a> <b>Use: </b><a class='index dt-tooltipper-small' href='download.php?torrent={$id}".(3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '')."&amp;slot=double&amp;text=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='".$torrent['free_color'].";'><b>Doubleseed Slot</b></span></a>- ".htmlsafechars($CURUSER['freeslots']).' Slots Remaining. ' : '');
+    $freeslot_zip  = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;zip=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span style='color: " . $torrent['free_color'] . ";'><b>Freeleech Slot</b></font></a> <b>Use: </b><a class='index dt-tooltipper-small' href='download.php?torrent={$id}" . (3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;zip=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='" . $torrent['free_color'] . ";'><b>Doubleseed Slot</b></span></a>- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
+    $freeslot_text = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;text=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span style='color: " . $torrent['free_color'] . ";'><b>Freeleech Slot</b></font></a> <b>Use: </b><a class='index dt-tooltipper-small' href='download.php?torrent={$id}" . (3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;text=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='" . $torrent['free_color'] . ";'><b>Doubleseed Slot</b></span></a>- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
 
     $HTMLOUT .= "
         <div class='top10 bottom10 has-text-centered'>";
 
-    require_once MODS_DIR.'free_details.php';
+    require_once MODS_DIR . 'free_details.php';
     $HTMLOUT .= "
         </div>
         <div class='level has-text-centered bottom20 columns top20'>
             <div class='img-polaroid round10 right10 column is-2'>";
 
     if (!empty($torrents['poster'])) {
-        $HTMLOUT .= "<img src='".image_proxy($torrents['poster'])."' class='round10' alt='Poster' />";
+        $HTMLOUT .= "<img src='" . image_proxy($torrents['poster']) . "' class='round10' alt='Poster' />";
     }
     if (empty($torrents['poster'])) {
         $HTMLOUT .= "<img src='{$site_config['pic_baseurl']}noposter.png' class='round10' alt='Poster' />";
     }
-    $Free_Slot = (XBT_TRACKER ? '' : $freeslot);
-    $Free_Slot_Zip = (XBT_TRACKER ? '' : $freeslot_zip);
+    $Free_Slot      = (XBT_TRACKER ? '' : $freeslot);
+    $Free_Slot_Zip  = (XBT_TRACKER ? '' : $freeslot_zip);
     $Free_Slot_Text = (XBT_TRACKER ? '' : $freeslot_text);
     $HTMLOUT .= "
             </div>
@@ -455,19 +455,19 @@ if (!(0 == $CURUSER['downloadpos'] && $CURUSER['id'] != $torrents['owner'] or $C
                     <tr>
                         <td class='rowhead' width='3%'>{$lang['details_download']}</td>
                         <td>
-                            <a class='index' href='{$site_config['baseurl']}/download.php?torrent={$id}".(3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '')."'><u>".htmlsafechars($torrents['filename'])."</u></a><br>{$Free_Slot}
+                            <a class='index' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '') . "'><u>" . htmlsafechars($torrents['filename']) . "</u></a><br>{$Free_Slot}
                         </td>
                     </tr>
                     <tr>
                         <td>{$lang['details_zip']}</td>
                         <td>
-                            <a class='index' href='{$site_config['baseurl']}/download.php?torrent={$id}".(3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '')."'&amp;zip=1'><u>".htmlsafechars($torrents['filename'])."</u></a><br>{$Free_Slot_Zip}
+                            <a class='index' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '') . "'&amp;zip=1'><u>" . htmlsafechars($torrents['filename']) . "</u></a><br>{$Free_Slot_Zip}
                         </td>
                     </tr>
                     <tr>
                         <td>{$lang['details_text']}</td>
                         <td>
-                            <a class='index' href='{$site_config['baseurl']}/download.php?torrent={$id}".(3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '')."'&amp;text=1'><u>".htmlsafechars($torrents['filename'])."</u></a><br>{$Free_Slot_Text}
+                            <a class='index' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (3 == $CURUSER['ssluse'] ? '&amp;ssl=1' : '') . "'&amp;text=1'><u>" . htmlsafechars($torrents['filename']) . "</u></a><br>{$Free_Slot_Text}
                         </td>
                     </tr>
                 </table>
@@ -480,36 +480,36 @@ if (!(0 == $CURUSER['downloadpos'] && $CURUSER['id'] != $torrents['owner'] or $C
                     <td>{$keywords}</td>
                 </tr>";
 
-    $my_points = 0;
-    $torrent['torrent_points_'] = $cache->get('coin_points_'.$id);
+    $my_points                  = 0;
+    $torrent['torrent_points_'] = $cache->get('coin_points_' . $id);
     if (false === $torrent['torrent_points_'] || is_null($torrent['torrent_points_'])) {
-        $sql_points = sql_query('SELECT userid, points FROM coins WHERE torrentid='.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $sql_points                 = sql_query('SELECT userid, points FROM coins WHERE torrentid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $torrent['torrent_points_'] = [];
         if (0 !== mysqli_num_rows($sql_points)) {
             while ($points_cache = mysqli_fetch_assoc($sql_points)) {
                 $torrent['torrent_points_'][$points_cache['userid']] = $points_cache['points'];
             }
         }
-        $cache->add('coin_points_'.$id, $torrent['torrent_points_'], 0);
+        $cache->add('coin_points_' . $id, $torrent['torrent_points_'], 0);
     }
     $my_points = (isset($torrent['torrent_points_'][$CURUSER['id']]) ? (int) $torrent['torrent_points_'][$CURUSER['id']] : 0);
     $HTMLOUT .= '
                 <tr>
                     <td class="rowhead">Karma Points</td>
-                    <td><b>In total '.(int) $torrents['points'].' Karma Points given to this torrent of which '.$my_points.' from you.<br><br>
-                        <a href="'.$site_config['baseurl'].'/coins.php?id='.$id.'&amp;points=10"><img src="'.$site_config['pic_baseurl'].'10coin.png" alt="10" class="tooltipper" title="10 Points" /></a>
-                        <a href="'.$site_config['baseurl'].'/coins.php?id='.$id.'&amp;points=20"><img src="'.$site_config['pic_baseurl'].'20coin.png" alt="20" class="tooltipper" title="20 Points" /></a>
-                        <a href="'.$site_config['baseurl'].'/coins.php?id='.$id.'&amp;points=50"><img src="'.$site_config['pic_baseurl'].'50coin.png" alt="50" class="tooltipper" title="50 Points" /></a>
-                        <a href="'.$site_config['baseurl'].'/coins.php?id='.$id.'&amp;points=100"><img src="'.$site_config['pic_baseurl'].'100coin.png" alt="100" class="tooltipper" title="100 Points" /></a>
-                        <a href="'.$site_config['baseurl'].'/coins.php?id='.$id.'&amp;points=200"><img src="'.$site_config['pic_baseurl'].'200coin.png" alt="200" class="tooltipper" title="200 Points" /></a>
-                        <a href="'.$site_config['baseurl'].'/coins.php?id='.$id.'&amp;points=500"><img src="'.$site_config['pic_baseurl'].'500coin.png" alt="500" class="tooltipper" title="500 Points" /></a>
-                        <a href="'.$site_config['baseurl'].'/coins.php?id='.$id.'&amp;points=1000"><img src="'.$site_config['pic_baseurl'].'1000coin.png" alt="1000" class="tooltipper" title="1000 Points" /></a></b>
+                    <td><b>In total ' . (int) $torrents['points'] . ' Karma Points given to this torrent of which ' . $my_points . ' from you.<br><br>
+                        <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=10"><img src="' . $site_config['pic_baseurl'] . '10coin.png" alt="10" class="tooltipper" title="10 Points" /></a>
+                        <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=20"><img src="' . $site_config['pic_baseurl'] . '20coin.png" alt="20" class="tooltipper" title="20 Points" /></a>
+                        <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=50"><img src="' . $site_config['pic_baseurl'] . '50coin.png" alt="50" class="tooltipper" title="50 Points" /></a>
+                        <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=100"><img src="' . $site_config['pic_baseurl'] . '100coin.png" alt="100" class="tooltipper" title="100 Points" /></a>
+                        <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=200"><img src="' . $site_config['pic_baseurl'] . '200coin.png" alt="200" class="tooltipper" title="200 Points" /></a>
+                        <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=500"><img src="' . $site_config['pic_baseurl'] . '500coin.png" alt="500" class="tooltipper" title="500 Points" /></a>
+                        <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=1000"><img src="' . $site_config['pic_baseurl'] . '1000coin.png" alt="1000" class="tooltipper" title="1000 Points" /></a></b>
                         <br>By clicking on the coins you can give Karma Points to the uploader of this torrent.
                     </td>
                 </tr>';
 
     $downl = ($CURUSER['downloaded'] + $torrents['size']);
-    $sr = $CURUSER['uploaded'] / $downl;
+    $sr    = $CURUSER['uploaded'] / $downl;
     switch (true) {
         case $sr >= 4:
             $s = 'w00t';
@@ -540,7 +540,7 @@ if (!(0 == $CURUSER['downloadpos'] && $CURUSER['id'] != $torrents['owner'] or $C
             break;
     }
     $sr = floor($sr * 1000) / 1000;
-    $sr = "<img src='{$site_config['pic_baseurl']}smilies/{$s}.gif' alt='' class='right10' /><span style='color: ".get_ratio_color($sr).";'>".number_format($sr, 3).'</span>';
+    $sr = "<img src='{$site_config['pic_baseurl']}smilies/{$s}.gif' alt='' class='right10' /><span style='color: " . get_ratio_color($sr) . ";'>" . number_format($sr, 3) . '</span>';
     if ($torrents['free'] >= 1 || $torrents['freetorrent'] >= 1 || $isfree['yep'] || $free_slot or 0 != $double_slot || 0 != $CURUSER['free_switch']) {
         $HTMLOUT .= "
                 <tr>
@@ -581,7 +581,7 @@ $HTMLOUT .= "</table>
         <div class='table-wrapper bottom20'>
             <table class='table table-bordered bottom10'>";
 if (!empty($torrents['description'])) {
-    $HTMLOUT .= tr("{$lang['details_small_descr']}", '<i>'.htmlsafechars($torrents['description']).'</i>', 1);
+    $HTMLOUT .= tr("{$lang['details_small_descr']}", '<i>' . htmlsafechars($torrents['description']) . '</i>', 1);
 } else {
     $HTMLOUT .= '
                 <tr>
@@ -592,16 +592,16 @@ $HTMLOUT .= '
             </table>
         </div>';
 
-$searchname = substr($torrents['name'], 0, 6);
-$query1 = str_replace(' ', '.', sqlesc('%'.$searchname.'%'));
-$query2 = str_replace('.', ' ', sqlesc('%'.$searchname.'%'));
-$sim_torrents = $cache->get('similiar_tor_'.$id);
+$searchname   = substr($torrents['name'], 0, 6);
+$query1       = str_replace(' ', '.', sqlesc('%' . $searchname . '%'));
+$query2       = str_replace('.', ' ', sqlesc('%' . $searchname . '%'));
+$sim_torrents = $cache->get('similiar_tor_' . $id);
 if (false === $sim_torrents || is_null($sim_torrents)) {
-    $r = sql_query("SELECT id, name, size, added, seeders, leechers, category FROM torrents WHERE name LIKE {$query1} AND id <> ".sqlesc($id)." OR name LIKE {$query2} AND id <> ".sqlesc($id).' ORDER BY name') or sqlerr(__FILE__, __LINE__);
+    $r = sql_query("SELECT id, name, size, added, seeders, leechers, category FROM torrents WHERE name LIKE {$query1} AND id <> " . sqlesc($id) . " OR name LIKE {$query2} AND id <> " . sqlesc($id) . ' ORDER BY name') or sqlerr(__FILE__, __LINE__);
     while ($sim_torrent = mysqli_fetch_assoc($r)) {
         $sim_torrents[] = $sim_torrent;
     }
-    $cache->set('similiar_tor_'.$id, $sim_torrents, 86400);
+    $cache->set('similiar_tor_' . $id, $sim_torrents, 86400);
 }
 if (!empty($sim_torrents) && count($sim_torrents) > 0) {
     $sim_torrent = "
@@ -621,17 +621,17 @@ if (!empty($sim_torrents) && count($sim_torrents) > 0) {
     if ($sim_torrents) {
         foreach ($sim_torrents as $a) {
             $sim_tor['cat_name'] = htmlsafechars($change[$a['category']]['name']);
-            $sim_tor['cat_pic'] = htmlsafechars($change[$a['category']]['image']);
-            $cat = "<img src='{$site_config['pic_baseurl']}caticons/".get_category_icons()."/{$sim_tor['cat_pic']}' alt='{$sim_tor['cat_name']}' class='tooltipper' title='{$sim_tor['cat_name']}' />";
-            $name = htmlsafechars(CutName($a['name']));
-            $seeders = (int) $a['seeders'];
-            $leechers = (int) $a['leechers'];
-            $added = get_date($a['added'], 'DATE', 0, 1);
+            $sim_tor['cat_pic']  = htmlsafechars($change[$a['category']]['image']);
+            $cat                 = "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$sim_tor['cat_pic']}' alt='{$sim_tor['cat_name']}' class='tooltipper' title='{$sim_tor['cat_name']}' />";
+            $name                = htmlsafechars(CutName($a['name']));
+            $seeders             = (int) $a['seeders'];
+            $leechers            = (int) $a['leechers'];
+            $added               = get_date($a['added'], 'DATE', 0, 1);
             $sim_torrent .= "
                     <tr>
                         <td>{$cat}</td>
-                        <td><a href='details.php?id=".(int) $a['id']."&amp;hit=1'><b>{$name}</b></a></td>
-                        <td>".mksize($a['size'])."</td>
+                        <td><a href='details.php?id=" . (int) $a['id'] . "&amp;hit=1'><b>{$name}</b></a></td>
+                        <td>" . mksize($a['size']) . "</td>
                         <td>{$added}</td>
                         <td>{$seeders}</td>
                         <td>{$leechers}</td>
@@ -661,7 +661,7 @@ if (!empty($sim_torrents) && count($sim_torrents) > 0) {
         <div class='table-wrapper bottom20'>
             <table class='table table-bordered'>
                 <tr>
-                    <td colspan='2'>Nothing similiar to ".htmlsafechars($torrents['name']).' found.</td>
+                    <td colspan='2'>Nothing similiar to " . htmlsafechars($torrents['name']) . ' found.</td>
                 </tr>
             </table>
         </div>';
@@ -679,11 +679,11 @@ if (in_array($torrents['category'], $site_config['movie_cats']) && !empty($torre
                 <td>";
     $subs_array = explode(',', $torrents['subs']);
     foreach ($subs_array as $k => $sid) {
-        require_once CACHE_DIR.'subs.php';
+        require_once CACHE_DIR . 'subs.php';
         foreach ($subs as $sub) {
             if ($sub['id'] == $sid) {
                 $HTMLOUT .= '
-                    <img width="25px" src="'.htmlsafechars($sub['pic']).'" alt="'.htmlsafechars($sub['name']).'" class="tooltipper" title="'.htmlsafechars($sub['name']).'" />';
+                    <img width="25px" src="' . htmlsafechars($sub['pic']) . '" alt="' . htmlsafechars($sub['name']) . '" class="tooltipper" title="' . htmlsafechars($sub['name']) . '" />';
             }
         }
     }
@@ -695,7 +695,7 @@ if (in_array($torrents['category'], $site_config['movie_cats']) && !empty($torre
 if ($CURUSER['class'] >= UC_POWER_USER && $torrents['nfosz'] > 0) {
     $HTMLOUT .= "
             <tr>
-                <td class='rowhead'>{$lang['details_nfo']}</td><td><a href='viewnfo.php?id=".(int) $torrents['id']."'><b>{$lang['details_view_nfo']}</b></a> (".mksize($torrents['nfosz']).')</td>
+                <td class='rowhead'>{$lang['details_nfo']}</td><td><a href='viewnfo.php?id=" . (int) $torrents['id'] . "'><b>{$lang['details_view_nfo']}</b></a> (" . mksize($torrents['nfosz']) . ')</td>
             </tr>';
 }
 if ('no' == $torrents['visible']) {
@@ -713,7 +713,7 @@ if ('yes' == $torrents['nuked']) {
 if (!empty($torrents['nukereason'])) {
     $HTMLOUT .= "
             <tr>
-                <td class='rowhead'><b>Nuke-Reason</b></td><td>".htmlsafechars($torrents['nukereason']).'</td>
+                <td class='rowhead'><b>Nuke-Reason</b></td><td>" . htmlsafechars($torrents['nukereason']) . '</td>
             </tr>';
 }
 $torrents['cat_name'] = htmlsafechars($change[$torrents['category']]['name']);
@@ -723,8 +723,8 @@ if (isset($torrents['cat_name'])) {
     $HTMLOUT .= tr("{$lang['details_type']}", 'None');
 }
 $HTMLOUT .= tr('Rating', getRate($id, 'torrent'), 1);
-$HTMLOUT .= tr("{$lang['details_last_seeder']}", "{$lang['details_last_activity']}".get_date($l_a['lastseed'], '', 0, 1));
-$HTMLOUT .= tr("{$lang['details_size']}", mksize($torrents['size']).' ('.number_format($torrents['size'])." {$lang['details_bytes']})");
+$HTMLOUT .= tr("{$lang['details_last_seeder']}", "{$lang['details_last_activity']}" . get_date($l_a['lastseed'], '', 0, 1));
+$HTMLOUT .= tr("{$lang['details_size']}", mksize($torrents['size']) . ' (' . number_format($torrents['size']) . " {$lang['details_bytes']})");
 $HTMLOUT .= tr("{$lang['details_added']}", get_date($torrents['added'], "{$lang['details_long']}"));
 $HTMLOUT .= tr("{$lang['details_views']}", (int) $torrents['views']);
 $HTMLOUT .= tr("{$lang['details_hits']}", (int) $torrents['hits']);
@@ -739,17 +739,17 @@ $HTMLOUT .= "
 $HTMLOUT .= tr('Report Torrent', "<form action='report.php?type=Torrent&amp;id=$id' method='post'><input class='button is-small bottom10' type='submit' name='submit' value='Report This Torrent' /><strong><em class='label label-primary'>For breaking the <a href='rules.php'>rules</a></em></strong></form>", 1);
 
 if ($torrent_cache['rep']) {
-    $torrents = array_merge($torrents, $torrent_cache['rep']);
+    $torrents          = array_merge($torrents, $torrent_cache['rep']);
     $member_reputation = get_reputation($user->getUserFromId($torrents['owner']), 'torrents', $torrents['anonymous'], $id);
     $HTMLOUT .= '
             <tr>
                 <td class="rowhead">Reputation</td>
-                <td>'.$member_reputation.' (counts towards uploaders Reputation)<br></td>
+                <td>' . $member_reputation . ' (counts towards uploaders Reputation)<br></td>
             </tr>';
 }
 
 $rowuser = isset($torrents['owner']) ? format_username($torrents['owner']) : $lang['details_unknown'];
-$uprow = (('yes' == $torrents['anonymous']) ? ($CURUSER['class'] < UC_STAFF && $torrents['owner'] != $CURUSER['id'] ? '' : $rowuser.' - ').'<i>'.get_anonymous_name().'</i>' : $rowuser);
+$uprow   = (('yes' == $torrents['anonymous']) ? ($CURUSER['class'] < UC_STAFF && $torrents['owner'] != $CURUSER['id'] ? '' : $rowuser . ' - ') . '<i>' . get_anonymous_name() . '</i>' : $rowuser);
 if ($owned) {
     $uprow .= "<br><$editlink>{$lang['details_edit']}</a>";
 }
@@ -757,16 +757,16 @@ $HTMLOUT .= tr('Upped by', $uprow, 1);
 
 if ($CURUSER['class'] >= UC_STAFF) {
     if (!empty($torrents['checked_by'])) {
-        $checked_by = $cache->get('checked_by_'.$id);
+        $checked_by = $cache->get('checked_by_' . $id);
         if (false === $checked_by || is_null($checked_by)) {
             $checked_by = $torrents['checked_by'];
-            $cache->set('checked_by_'.$id, $checked_by, 0);
+            $cache->set('checked_by_' . $id, $checked_by, 0);
         }
         $HTMLOUT .= "<tr>
                 <td class='rowhead'>Checked by</td>
                 <td>
-                    <div class='bottom10'>".
-            format_username($torrents['checked_by']).(isset($torrents['checked_when']) && $torrents['checked_when'] > 0 ? ' checked: '.get_date($torrents['checked_when'], 'DATE', 0, 1) : '')."
+                    <div class='bottom10'>" .
+            format_username($torrents['checked_by']) . (isset($torrents['checked_when']) && $torrents['checked_when'] > 0 ? ' checked: ' . get_date($torrents['checked_when'], 'DATE', 0, 1) : '') . "
                     </div>
                     <div class='bottom10'>
                         <form method='post' action='./details.php?id={$torrents['id']}'>
@@ -795,21 +795,21 @@ if ($CURUSER['class'] >= UC_STAFF) {
 }
 
 if (!isset($_GET['filelist'])) {
-    $HTMLOUT .= tr("{$lang['details_num_files']}<br><a href='{$site_config['baseurl']}/filelist.php?id=$id' class='sublink'>{$lang['details_list']}</a>", (int) $torrents['numfiles'].' files', 1);
+    $HTMLOUT .= tr("{$lang['details_num_files']}<br><a href='{$site_config['baseurl']}/filelist.php?id=$id' class='sublink'>{$lang['details_list']}</a>", (int) $torrents['numfiles'] . ' files', 1);
 }
 
 if (XBT_TRACKER) {
-    $HTMLOUT .= tr("{$lang['details_peers']}", (int) $torrents_xbt['seeders'].' seeder(s), '.(int) $torrents_xbt['leechers'].' leecher(s) = '.((int) $torrents_xbt['seeders'] + (int) $torrents_xbt['leechers'])."{$lang['details_peer_total']}<br><a href='{$site_config['baseurl']}/peerlist.php?id=$id#seeders' class='button is-small'>{$lang['details_list']}</a>", 1);
+    $HTMLOUT .= tr("{$lang['details_peers']}", (int) $torrents_xbt['seeders'] . ' seeder(s), ' . (int) $torrents_xbt['leechers'] . ' leecher(s) = ' . ((int) $torrents_xbt['seeders'] + (int) $torrents_xbt['leechers']) . "{$lang['details_peer_total']}<br><a href='{$site_config['baseurl']}/peerlist.php?id=$id#seeders' class='button is-small'>{$lang['details_list']}</a>", 1);
 } else {
-    $HTMLOUT .= tr("{$lang['details_peers']}", (int) $torrents['seeders'].' seeder(s), '.(int) $torrents['leechers'].' leecher(s) = '.((int) $torrents['seeders'] + (int) $torrents['leechers'])."{$lang['details_peer_total']}<br><a href='{$site_config['baseurl']}/peerlist.php?id=$id#seeders' class='button is-small'>{$lang['details_list']}</a>", 1);
+    $HTMLOUT .= tr("{$lang['details_peers']}", (int) $torrents['seeders'] . ' seeder(s), ' . (int) $torrents['leechers'] . ' leecher(s) = ' . ((int) $torrents['seeders'] + (int) $torrents['leechers']) . "{$lang['details_peer_total']}<br><a href='{$site_config['baseurl']}/peerlist.php?id=$id#seeders' class='button is-small'>{$lang['details_list']}</a>", 1);
 }
 
 $HTMLOUT .= tr($lang['details_thanks'], '
         <script>
-            var tid = '.$id.';
+            var tid = ' . $id . ';
         </script>
         <noscript>
-            <iframe id="thanked" src ="./ajax/thanks.php?torrentid='.$id.'">
+            <iframe id="thanked" src ="./ajax/thanks.php?torrentid=' . $id . '">
                 <p>Your browser does not support iframes. And it has Javascript disabled!</p>
             </iframe>
         </noscript>
@@ -825,9 +825,9 @@ $reseed = "
                 <option value='last10'>last10</option>
                 <option value='owner'>uploader</option>
             </select>
-            <input type='hidden' name='uploader' value='".(int) $torrents['owner']."' />
+            <input type='hidden' name='uploader' value='" . (int) $torrents['owner'] . "' />
             <input type='hidden' name='reseedid' value='$id' />
-            <input type='submit' class='button is-small left10'".(($next_reseed > $dt) ? ' disabled' : '')." value='SendPM' />
+            <input type='submit' class='button is-small left10'" . (($next_reseed > $dt) ? ' disabled' : '') . " value='SendPM' />
         </form>";
 $HTMLOUT .= tr('Request reseed', $reseed, 1);
 
@@ -844,7 +844,7 @@ if (!empty($torrents['youtube'])) {
     preg_match('/(watch\?v=|watch\?.+&v=)(.{11})/i', $torrents['youtube'], $match);
     if (isset($match[2])) {
         $youtube_id = $match[2];
-        $short_link = 'https://www.youtube.com/embed/'.$youtube_id;
+        $short_link = 'https://www.youtube.com/embed/' . $youtube_id;
         $HTMLOUT .= tr($lang['details_youtube'], "
                 <a id='YouTube-hash'>
                 <div class='youtube-embed round10' style='position: relative;padding-top: 56.25%;'>
@@ -897,17 +897,17 @@ $HTMLOUT .= "
             <div class='alt_bordered bg-00' >
                 <div class='has-text-centered' >
                     <div class='size_6' >{$lang['details_comments']}:</div >
-                    <h1 ><a href = '{$site_config['baseurl']}/details.php?id=$id' > ".htmlsafechars($torrents['name'], ENT_QUOTES)." </a ></h1 >
+                    <h1 ><a href = '{$site_config['baseurl']}/details.php?id=$id' > " . htmlsafechars($torrents['name'], ENT_QUOTES) . " </a ></h1 >
                 </div >
                 <div class='bg-02 round10' >
                     <div class='level-center' >
                         <a class='index' href = '{$site_config['baseurl']}/comment.php?action=add&amp;tid=$id' ><span class='has-text-primary size_6' >Use the BBcode Editor </span ></a >
-                        <a class='index' href = '{$site_config['baseurl']}/takethankyou.php?id=".$id."' >
+                        <a class='index' href = '{$site_config['baseurl']}/takethankyou.php?id=" . $id . "' >
                             <img src = '{$site_config['pic_baseurl']}smilies/thankyou.gif' class='tooltipper' alt = 'Thank You' title = 'Give a quick \"Thank You\"' />
                         </a >
                     </div >
                     <textarea name = 'body' class='w-100' rows = '6' ></textarea >
-                    <input type = 'hidden' name = 'tid' value = '".htmlsafechars($id)."' />
+                    <input type = 'hidden' name = 'tid' value = '" . htmlsafechars($id) . "' />
                     <div class='has-text-centered' >
                         <a href = \"javascript:SmileIT(':-)','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/smile1.gif' alt='Smile' class='tooltipper' title='Smile' /></a>
                         <a href=\"javascript:SmileIT(':smile:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/smile2.gif' alt='Smiling' class='tooltipper' title='Smiling' /></a>
@@ -953,7 +953,7 @@ if ('yes' == $torrents['allow_comments'] || $CURUSER['class'] >= UC_STAFF && $CU
                 </tr>
             </table>
         </div>";
-    echo stdhead("{$lang['details_details']}'".htmlsafechars($torrents['name'], ENT_QUOTES).'"', true, $stdhead).$HTMLOUT.stdfoot($stdfoot);
+    echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
     die();
 }
 $count = (int) $torrents['comments'];
@@ -962,13 +962,13 @@ if (!$count) {
             <h2 class='has-text-centered'>{$lang['details_no_comment']}</h2>";
 } else {
     $perpage = 15;
-    $pager = pager($perpage, $count, "details.php?id=$id&amp;", [
+    $pager   = pager($perpage, $count, "details.php?id=$id&amp;", [
         'lastpagedefault' => 1,
     ]);
     $subres = sql_query('SELECT c.id, c.text, c.user_likes, c.user, c.torrent, c.added, c.anonymous, c.editedby, c.editedat, u.avatar, u.av_w, u.av_h, u.offavatar, u.warned, u.reputation, u.opt1, u.opt2, u.mood, u.username, u.title, u.class, u.donor
                             FROM comments AS c
                             LEFT JOIN users AS u ON c.user = u.id
-                            WHERE torrent = '.sqlesc($id).' ORDER BY c.id '.$pager['limit']) or sqlerr(__FILE__, __LINE__);
+                            WHERE torrent = ' . sqlesc($id) . ' ORDER BY c.id ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
     $allrows = [];
     while ($subrow = mysqli_fetch_assoc($subres)) {
         $allrows[] = $subrow;
@@ -1006,4 +1006,4 @@ $HTMLOUT .= "
     }
     </script>";
 
-echo stdhead("{$lang['details_details']}'".htmlsafechars($torrents['name'], ENT_QUOTES).'"', true, $stdhead).wrapper($HTMLOUT).stdfoot($stdfoot);
+echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

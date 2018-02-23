@@ -2,22 +2,22 @@
 
 $lang = [
     //stderr
-    'stderr_errorhead' => 'Error',
-    'stderr_successhead' => 'Success',
+    'stderr_errorhead'    => 'Error',
+    'stderr_successhead'  => 'Success',
     'stderr_invalidemail' => 'You must enter an email address',
-    'stderr_notfound' => 'The email address was not found in the database',
-    'stderr_dberror' => 'Database error. Please contact an administrator about this.',
+    'stderr_notfound'     => 'The email address was not found in the database',
+    'stderr_dberror'      => 'Database error. Please contact an administrator about this.',
     'stderr_confmailsent' => 'A confirmation email has been mailed. Please allow a few minutes for the mail to arrive.',
-    'stderr_nomail' => 'Unable to send mail. Please contact an administrator about this error.',
-    'stderr_noupdate' => 'Unable to update user data. Please contact an administrator about this error.',
-    'stderr_mailed' => 'The new account details have been mailed to the email on record. Please allow a few minutes for the mail to arrive.',
+    'stderr_nomail'       => 'Unable to send mail. Please contact an administrator about this error.',
+    'stderr_noupdate'     => 'Unable to update user data. Please contact an administrator about this error.',
+    'stderr_mailed'       => 'The new account details have been mailed to the email on record. Please allow a few minutes for the mail to arrive.',
     //head
     'head_recover' => 'Recover',
     //email
-    'email_head' => 'Error',
+    'email_head'        => 'Error',
     'email_subjdetails' => 'account details',
-    'email_subjreset' => 'password reset confirmation',
-    'email_request' => "<html>
+    'email_subjreset'   => 'password reset confirmation',
+    'email_request'     => "<html>
 <head>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
     <title>{$site_config['site_name']} Reset Password Request</title>
@@ -53,13 +53,13 @@ Password:  %s
 </body>
 </html>",
     //captcha
-    'captcha_spam' => 'NO SPAM! Wait 10 seconds and then refresh page',
-    'captcha_refresh' => 'Click to refresh image',
+    'captcha_spam'     => 'NO SPAM! Wait 10 seconds and then refresh page',
+    'captcha_refresh'  => 'Click to refresh image',
     'captcha_imagealt' => 'Captcha image',
-    'captcha_pin' => 'PIN:',
+    'captcha_pin'      => 'PIN:',
     //recover
     'recover_unamepass' => 'Recover lost user name or password',
-    'recover_form' => 'Use the form below to have your password reset and your account details mailed back to you.<br>(You will have to reply to a confirmation email.)',
+    'recover_form'      => 'Use the form below to have your password reset and your account details mailed back to you.<br>(You will have to reply to a confirmation email.)',
     'recover_regdemail' => 'Registered email',
-    'recover_btn' => 'Do it!',
+    'recover_btn'       => 'Do it!',
 ];

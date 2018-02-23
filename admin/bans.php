@@ -1,14 +1,14 @@
 <?php
 
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'pager_functions.php';
-require_once CLASS_DIR.'class_check.php';
-require_once INCL_DIR.'html_functions.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'pager_functions.php';
+require_once CLASS_DIR . 'class_check.php';
+require_once INCL_DIR . 'html_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global  $CURUSER, $site_config, $lang, $pdo, $fluent, $cache, $session;
 
-$lang = array_merge($lang, load_language('ad_bans'));
+$lang   = array_merge($lang, load_language('ad_bans'));
 $remove = isset($_GET['remove']) ? (int) $_GET['remove'] : 0;
 if ($remove > 0) {
     $res = $fluent->from('bans')
@@ -22,40 +22,40 @@ if ($remove > 0) {
         stderr($lang['stderr_error'], $lang['stderr_error1']);
     }
     for ($i = $res['first']; $i <= $res['last']; ++$i) {
-        $cache->delete('bans_'.$i);
+        $cache->delete('bans_' . $i);
     }
     if (is_valid_id($remove)) {
         $fluent->deleteFrom('bans')
             ->where('id = ?', $remove)
             ->execute();
         $removed = sprintf($lang['text_banremoved'], $remove);
-        write_log("{$removed}".$CURUSER['id'].' ('.$CURUSER['username'].')');
+        write_log("{$removed}" . $CURUSER['id'] . ' (' . $CURUSER['username'] . ')');
         $session->set('is-success', "IPS: {$res['first']} to {$res['last']} removed");
         unset($_GET);
     }
 }
 if ('POST' == $_SERVER['REQUEST_METHOD'] && UC_MAX == $CURUSER['class']) {
-    $first = trim($_POST['first']);
-    $last = trim($_POST['last']);
+    $first   = trim($_POST['first']);
+    $last    = trim($_POST['last']);
     $comment = htmlsafechars(trim($_POST['comment']));
     if (!$first || !$last || !$comment) {
         stderr("{$lang['stderr_error']}", "{$lang['text_missing']}");
     }
     $test_first = ip2long($first);
-    $test_last = ip2long($last);
+    $test_last  = ip2long($last);
     if ($test_first == -1 || false === $test_first || $test_last == -1 || false === $test_last) {
         stderr("{$lang['stderr_error']}", "{$lang['text_badip']}");
     }
     $added = TIME_NOW;
     for ($i = $first; $i <= $last; ++$i) {
-        $cache->delete('bans_'.$i);
+        $cache->delete('bans_' . $i);
     }
 
     $values = [
-        'added' => $added,
+        'added'   => $added,
         'addedby' => $CURUSER['id'],
-        'first' => $first,
-        'last' => $last,
+        'first'   => $first,
+        'last'    => $last,
         'comment' => $comment,
     ];
 
@@ -71,8 +71,8 @@ if ('POST' == $_SERVER['REQUEST_METHOD'] && UC_MAX == $CURUSER['class']) {
 }
 
 $perpage = 15;
-$pager = pager($perpage, $count, 'staffpanel.php?tool=bans&amp;');
-$res = $fluent->from('bans')
+$pager   = pager($perpage, $count, 'staffpanel.php?tool=bans&amp;');
+$res     = $fluent->from('bans')
     ->select('INET6_NTOA(first) AS first')
     ->select('INET6_NTOA(last) AS last')
     ->orderBy('added DESC');
@@ -80,7 +80,7 @@ $res = $fluent->from('bans')
 foreach ($res as $arr) {
     $bans[] = $arr;
 }
-$count = count($bans);
+$count   = count($bans);
 $HTMLOUT = "
         <h1 class='has-text-centered'>Bans</h1>
         <div class='top20 bg-00 round10'>
@@ -106,12 +106,12 @@ if (0 == $count) {
     foreach ($bans as $banned) {
         $body .= '
                 <tr>
-                    <td>'.get_date($banned['added'], '').'</td>
-                    <td>'.htmlsafechars($banned['first']).'</td>
-                    <td>'.htmlsafechars($banned['last'])."</td>
-                    <td><a href='".$site_config['baseurl'].'/userdetails.php?id='.$banned['addedby']."'>".format_username($banned['addedby']).'</a></td>
-                    <td>'.htmlsafechars($banned['comment'], ENT_QUOTES)."</td>
-                    <td><a href='".$site_config['baseurl'].'/staffpanel.php?tool=bans&amp;remove='.$banned['id']."'>{$lang['text_remove']}</a></td>
+                    <td>' . get_date($banned['added'], '') . '</td>
+                    <td>' . htmlsafechars($banned['first']) . '</td>
+                    <td>' . htmlsafechars($banned['last']) . "</td>
+                    <td><a href='" . $site_config['baseurl'] . '/userdetails.php?id=' . $banned['addedby'] . "'>" . format_username($banned['addedby']) . '</a></td>
+                    <td>' . htmlsafechars($banned['comment'], ENT_QUOTES) . "</td>
+                    <td><a href='" . $site_config['baseurl'] . '/staffpanel.php?tool=bans&amp;remove=' . $banned['id'] . "'>{$lang['text_remove']}</a></td>
                </tr>";
     }
     $HTMLOUT .= main_table($body, $header);
@@ -147,4 +147,4 @@ if (UC_MAX == $CURUSER['class']) {
             </form>
         </div>";
 }
-echo stdhead("{$lang['stdhead_adduser']}").wrapper($HTMLOUT).stdfoot();
+echo stdhead("{$lang['stdhead_adduser']}") . wrapper($HTMLOUT) . stdfoot();

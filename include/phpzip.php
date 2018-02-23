@@ -16,10 +16,10 @@
  */
 class PHPZip
 {
-    public $datasec = [];
-    public $ctrl_dir = [];
+    public $datasec      = [];
+    public $ctrl_dir     = [];
     public $eof_ctrl_dir = "\x50\x4b\x05\x06\x00\x00\x00\x00";
-    public $old_offset = 0;
+    public $old_offset   = 0;
 
     /**
      * @param $dir
@@ -44,7 +44,7 @@ class PHPZip
             if (count($filelist) > 0) {
                 foreach ($filelist as $filename) {
                     if (is_file($filename)) {
-                        $fd = fopen($filename, 'r');
+                        $fd      = fopen($filename, 'r');
                         $content = fread($fd, filesize($filename));
                         fclose($fd);
                         if (is_array($dir)) {
@@ -77,16 +77,16 @@ class PHPZip
             $file = [];
             $args = func_get_args();
             $pref = $args[1];
-            $dh = opendir($dir);
+            $dh   = opendir($dir);
             while ($files = readdir($dh)) {
                 if (('.' != $files) && ('..' != $files)) {
-                    if (is_dir($dir.$files)) {
+                    if (is_dir($dir . $files)) {
                         $curdir = getcwd();
-                        chdir($dir.$files);
+                        chdir($dir . $files);
                         $file = array_merge($file, $this->GetFileList('', "$pref$files/"));
                         chdir($curdir);
                     } else {
-                        $file[] = $pref.$files;
+                        $file[] = $pref . $files;
                     }
                 }
             }
@@ -103,10 +103,10 @@ class PHPZip
      */
     public function addFile($data, $name, $time = 0)
     {
-        $name = str_replace('\\', '/', $name);
-        $dtime = dechex($this->unix2DosTime($time));
-        $hexdtime = '\x'.$dtime[6].$dtime[7].'\x'.$dtime[4].$dtime[5].'\x'.$dtime[2].$dtime[3].'\x'.$dtime[0].$dtime[1];
-        eval('$hexdtime = "'.$hexdtime.'";');
+        $name     = str_replace('\\', '/', $name);
+        $dtime    = dechex($this->unix2DosTime($time));
+        $hexdtime = '\x' . $dtime[6] . $dtime[7] . '\x' . $dtime[4] . $dtime[5] . '\x' . $dtime[2] . $dtime[3] . '\x' . $dtime[0] . $dtime[1];
+        eval('$hexdtime = "' . $hexdtime . '";');
         $fr = "\x50\x4b\x03\x04";
         $fr .= "\x14\x00"; // ver needed to extract
         $fr .= "\x00\x00"; // gen purpose bit flag
@@ -114,10 +114,10 @@ class PHPZip
         $fr .= $hexdtime; // last mod time and date
         // "local file header" segment
         $unc_len = strlen($data);
-        $crc = crc32($data);
-        $zdata = gzcompress($data);
-        $c_len = strlen($zdata);
-        $zdata = substr(substr($zdata, 0, strlen($zdata) - 4), 2); // fix crc bug
+        $crc     = crc32($data);
+        $zdata   = gzcompress($data);
+        $c_len   = strlen($zdata);
+        $zdata   = substr(substr($zdata, 0, strlen($zdata) - 4), 2); // fix crc bug
         $fr .= pack('V', $crc); // crc32
         $fr .= pack('V', $c_len); // compressed filesize
         $fr .= pack('V', $unc_len); // uncompressed filesize
@@ -133,7 +133,7 @@ class PHPZip
         $fr .= pack('V', $unc_len); // uncompressed filesize
         // add this entry to array
         $this->datasec[] = $fr;
-        $new_offset = strlen(implode('', $this->datasec));
+        $new_offset      = strlen(implode('', $this->datasec));
         // now add to central directory record
         $cdrec = "\x50\x4b\x01\x02";
         $cdrec .= "\x00\x00"; // version made by
@@ -169,10 +169,10 @@ class PHPZip
     {
         $timearray = (0 == $unixtime) ? getdate() : getdate($unixtime);
         if ($timearray['year'] < 1980) {
-            $timearray['year'] = 1980;
-            $timearray['mon'] = 1;
-            $timearray['mday'] = 1;
-            $timearray['hours'] = 0;
+            $timearray['year']    = 1980;
+            $timearray['mon']     = 1;
+            $timearray['mday']    = 1;
+            $timearray['hours']   = 0;
             $timearray['minutes'] = 0;
             $timearray['seconds'] = 0;
         } // end if
@@ -189,13 +189,13 @@ class PHPZip
      */
     public function file()
     {
-        $data = implode('', $this->datasec);
+        $data    = implode('', $this->datasec);
         $ctrldir = implode('', $this->ctrl_dir);
 
-        return $data.$ctrldir.$this->eof_ctrl_dir.pack('v', sizeof($this->ctrl_dir)). // total # of entries "on this disk"
-            pack('v', sizeof($this->ctrl_dir)). // total # of entries overall
-            pack('V', strlen($ctrldir)). // size of central dir
-            pack('V', strlen($data)). // offset to start of central dir
+        return $data . $ctrldir . $this->eof_ctrl_dir . pack('v', sizeof($this->ctrl_dir)) . // total # of entries "on this disk"
+            pack('v', sizeof($this->ctrl_dir)) . // total # of entries overall
+            pack('V', strlen($ctrldir)) . // size of central dir
+            pack('V', strlen($data)) . // offset to start of central dir
             "\x00\x00"; // .zip file comment length
     }
 
@@ -224,9 +224,9 @@ class PHPZip
         header('Cache-Control: private', false);
         header('Content-Type: application/zip');
         header('Content-Encoding: zlib,deflate,gzip');
-        header('Content-Disposition: attachment; filename='.basename($archiveName).';');
+        header('Content-Disposition: attachment; filename=' . basename($archiveName) . ';');
         header('Content-Transfer-Encoding: binary');
-        header('Content-Length: '.filesize($archiveName));
+        header('Content-Length: ' . filesize($archiveName));
         readfile("$archiveName");
     }
 } // end of the 'PHPZip' class

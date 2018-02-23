@@ -1,14 +1,14 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'pager_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once INCL_DIR.'bbcode_functions.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'pager_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $session;
 
-$lang = array_merge(load_language('global'), load_language('contactstaff'));
+$lang    = array_merge(load_language('global'), load_language('contactstaff'));
 $stdhead = [
     'css' => [
         get_file_name('contactstaff_css'),
@@ -22,10 +22,10 @@ $stdfoot = [
 
 $msg = '';
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
-    $msg = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
-    $subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '';
+    $msg      = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
+    $subject  = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '';
     $returnto = isset($_POST['returnto']) ? htmlsafechars($_POST['returnto']) : $_SERVER['PHP_SELF'];
-    $fail = false;
+    $fail     = false;
     if (empty($msg)) {
         $session->set('is-warning', $lang['contactstaff_no_msg']);
         $fail = true;
@@ -36,10 +36,10 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     }
 
     if (!$fail) {
-        $sql = 'INSERT INTO staffmessages (sender, added, msg, subject) VALUES('.sqlesc($CURUSER['id']).', '.TIME_NOW.', '.sqlesc($msg).', '.sqlesc($subject).')';
+        $sql = 'INSERT INTO staffmessages (sender, added, msg, subject) VALUES(' . sqlesc($CURUSER['id']) . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
         if (sql_query($sql)) {
             $cache->delete('staff_mess_');
-            header('Refresh: 3; url='.urldecode($returnto)); //redirect but wait 3 seconds
+            header('Refresh: 3; url=' . urldecode($returnto)); //redirect but wait 3 seconds
             $session->set('is-success', $lang['contactstaff_success_msg']);
         } else {
             $session->set('is-warning', sprintf($lang['contactstaff_mysql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
@@ -47,7 +47,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     }
 } else {
     $HTMLOUT = "
-            <form method='post' name='message' action='".$_SERVER['PHP_SELF']."'>";
+            <form method='post' name='message' action='" . $_SERVER['PHP_SELF'] . "'>";
     $header = "
                     <tr>
                         <th colspan='2'>
@@ -68,8 +68,8 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
 
     $body = "
                     <tr>
-                        <td colspan='2'>".
-        BBcode($msg)."
+                        <td colspan='2'>" .
+        BBcode($msg) . "
                        </td>
                     </tr>
                     <tr>
@@ -81,7 +81,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
                     </tr>";
     if (isset($_GET['returnto'])) {
         $body .= "
-                    <input type='hidden' name='returnto' value='".urlencode($_GET['returnto'])."' />";
+                    <input type='hidden' name='returnto' value='" . urlencode($_GET['returnto']) . "' />";
     }
 
     $HTMLOUT .= main_table($body, $header);
@@ -89,5 +89,5 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $HTMLOUT .= '
             </form>';
 
-    echo stdhead($lang['contactstaff_header'], true, $stdhead).$HTMLOUT.stdfoot($stdfoot);
+    echo stdhead($lang['contactstaff_header'], true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
 }

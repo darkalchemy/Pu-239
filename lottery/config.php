@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once CLASS_DIR.'class_check.php';
-require_once INCL_DIR.'html_functions.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once CLASS_DIR . 'class_check.php';
+require_once INCL_DIR . 'html_functions.php';
 class_check(UC_STAFF);
 global $site_config, $cache;
 
@@ -23,21 +23,21 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     }
     foreach ($lottery_config as $c_name => $c_value) {
         if (isset($_POST[$c_name]) && $_POST[$c_name] != $c_value) {
-            $update[] = '('.sqlesc($c_name).','.sqlesc(is_array($_POST[$c_name]) ? join('|', $_POST[$c_name]) : $_POST[$c_name]).')';
+            $update[] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($_POST[$c_name]) ? join('|', $_POST[$c_name]) : $_POST[$c_name]) . ')';
         }
     }
-    if (sql_query('INSERT INTO lottery_config(name,value) VALUES '.join(',', $update).' ON DUPLICATE KEY UPDATE value = VALUES(value)')) {
+    if (sql_query('INSERT INTO lottery_config(name,value) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value)')) {
         $cache->delete('lottery_info_');
         $session->set('is-success', 'Lottery configuration was saved!');
         header("Location: {$site_config['baseurl']}/lottery.php");
         die();
     } else {
-        $session->set('is-warning', 'There was an error while executing the update query. Mysql error: '.((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+        $session->set('is-warning', 'There was an error while executing the update query. Mysql error: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
     }
 }
 if ($lottery_config['enable']) {
     $classes = join(', ', array_map('get_user_class_name', explode('|', $lottery_config['class_allowed'])));
-    $html .= stdmsg('Lottery configuration closed', 'Classes playing in this lottery are : <b>'.$classes.'</b>');
+    $html .= stdmsg('Lottery configuration closed', 'Classes playing in this lottery are : <b>' . $classes . '</b>');
 } else {
     $html .= "
     <form action='{$site_config['baseurl']}/lottery.php?action=config' method='post'>
@@ -46,15 +46,15 @@ if ($lottery_config['enable']) {
                 <tr>
                     <td class='rowhead'>Enable The Lottery</td>
                     <td>
-                        <input type='radio' name='enable' value='1' ".($lottery_config['enable'] ? 'checked' : '')." /> Yes
-                        <input type='radio' name='enable' value='0' ".(!$lottery_config['enable'] ? 'checked' : '')." /> No
+                        <input type='radio' name='enable' value='1' " . ($lottery_config['enable'] ? 'checked' : '') . " /> Yes
+                        <input type='radio' name='enable' value='0' " . (!$lottery_config['enable'] ? 'checked' : '') . " /> No
                     </td>
                 </tr>
                 <tr>
                     <td>Use Prize Fund (No, uses default pot of all users)</td>
                     <td>
-                        <input type='radio' name='use_prize_fund' value='1' ".($lottery_config['use_prize_fund'] ? 'checked' : '')." /> Yes
-                        <input type='radio' name='use_prize_fund' value='0' ".(!$lottery_config['use_prize_fund'] ? 'checked' : '')." /> No
+                        <input type='radio' name='use_prize_fund' value='1' " . ($lottery_config['use_prize_fund'] ? 'checked' : '') . " /> Yes
+                        <input type='radio' name='use_prize_fund' value='0' " . (!$lottery_config['use_prize_fund'] ? 'checked' : '') . " /> No
                     </td>
                 </tr>
                 <tr>
@@ -83,7 +83,7 @@ if ($lottery_config['enable']) {
     for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
         $html .= "
                     <label for='c{$i}'>
-                        <input type='checkbox' value='{$i}' id='c{$i}' name='class_allowed[]' /> ".get_user_class_name($i).'
+                        <input type='checkbox' value='{$i}' id='c{$i}' name='class_allowed[]' /> " . get_user_class_name($i) . '
                     </label>';
     }
     $html .= "
@@ -97,10 +97,10 @@ if ($lottery_config['enable']) {
                     <td>Start Date</td>
                     <td>
                         <select name='start_date' class='w-100'>
-                            <option value='".TIME_NOW."'>Now</option>";
+                            <option value='" . TIME_NOW . "'>Now</option>";
     for ($i = 2; $i <= 24; $i += 2) {
         $html .= "
-                            <option value='".(TIME_NOW + (3600 * $i))."' >".$i.' hours</option>';
+                            <option value='" . (TIME_NOW + (3600 * $i)) . "' >" . $i . ' hours</option>';
     }
     $html .= "
                         </select>
@@ -113,7 +113,7 @@ if ($lottery_config['enable']) {
                             <option value='0'>------</option>";
     for ($i = 1; $i <= 7; ++$i) {
         $html .= "
-                            <option value='".(TIME_NOW + (84600 * $i))."'>{$i} days</option>";
+                            <option value='" . (TIME_NOW + (84600 * $i)) . "'>{$i} days</option>";
     }
     $html .= "
                         </select>
@@ -130,4 +130,4 @@ if ($lottery_config['enable']) {
         </div>
     </form>";
 }
-echo stdhead('Lottery configuration').wrapper($html).stdfoot();
+echo stdhead('Lottery configuration') . wrapper($html) . stdfoot();

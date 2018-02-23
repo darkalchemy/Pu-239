@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 dbconn();
 
 global $CURUSER, $site_config;
@@ -28,7 +28,7 @@ function left()
 {
     global $site_config, $fluent;
 
-    $ip = getip();
+    $ip    = getip();
     $count = $fluent->from('failedlogins')
         ->select(null)
         ->select('COUNT(*) AS count')
@@ -59,7 +59,7 @@ if (!isset($_GET['nowarn'])) {
                 <h3>{$lang['login_cookies']}</h3>
                 <h3>{$lang['login_cookies1']}</h3>
                 <h3>
-                    <b>[{$site_config['failedlogins']}]</b> {$lang['login_failed']}<br>{$lang['login_failed_1']}<b> ".left()." </b> {$lang['login_failed_2']}
+                    <b>[{$site_config['failedlogins']}]</b> {$lang['login_failed']}<br>{$lang['login_failed_1']}<b> " . left() . " </b> {$lang['login_failed_2']}
                 </h3>
             </div>";
 }
@@ -81,10 +81,10 @@ if ($got_ssl) {
                         <td class='rowhead'>{$lang['login_use_ssl']}</td>
                         <td>
                             <label class='label label-inverse' for='ssl'>{$lang['login_ssl1']}
-                                <input type='checkbox' name='use_ssl' ".($got_ssl ? 'checked' : "disabled title='SSL connection not available'")." value='1' id='ssl'/>
+                                <input type='checkbox' name='use_ssl' " . ($got_ssl ? 'checked' : "disabled title='SSL connection not available'") . " value='1' id='ssl'/>
                             </label><br>
                             <label class='label label-inverse' for='ssl2'>{$lang['login_ssl2']}
-                                <input type='checkbox' name='perm_ssl' ".($got_ssl ? '' : "disabled title='SSL connection not available'")." value='1' id='ssl2'/>
+                                <input type='checkbox' name='perm_ssl' " . ($got_ssl ? '' : "disabled title='SSL connection not available'") . " value='1' id='ssl2'/>
                             </label>
                         </td>
                     </tr>";
@@ -93,7 +93,7 @@ $HTMLOUT .=
     ($site_config['captcha_on'] ? "
                     <tr class='no_hover'>
                         <td colspan='2' id='captcha_show'></td>
-                    </tr>" : '')."
+                    </tr>" : '') . "
                     <tr class='no_hover'>
                         <td colspan='2' class='has-text-centered'>
                             <span class='has-text-centered'>
@@ -105,7 +105,7 @@ $HTMLOUT .=
 
 if (isset($returnto)) {
     $HTMLOUT .= "
-                            <input type='hidden' name='returnto' value='".htmlsafechars($returnto)."' />";
+                            <input type='hidden' name='returnto' value='" . htmlsafechars($returnto) . "' />";
 }
 $HTMLOUT .= "           </td>
                     </tr>
@@ -122,4 +122,4 @@ $HTMLOUT .= "           </td>
             </form>
         </div>";
 
-echo stdhead("{$lang['login_login_btn']}", true).$HTMLOUT.stdfoot($stdfoot);
+echo stdhead("{$lang['login_login_btn']}", true) . $HTMLOUT . stdfoot($stdfoot);

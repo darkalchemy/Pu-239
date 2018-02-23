@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 
 $session = newSession();
 if (!$session->get('LoggedIn')) {
@@ -23,4 +23,4 @@ $HTMLOUT = "
         </div>
     </div>";
 
-echo stdhead($lang['stdhead_usragrmnt']).$HTMLOUT.stdfoot();
+echo stdhead($lang['stdhead_usragrmnt']) . $HTMLOUT . stdfoot();

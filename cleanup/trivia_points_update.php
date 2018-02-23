@@ -11,14 +11,14 @@ function trivia_points_update($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    $count = 0;
+    $count       = 0;
     $msgs_buffer = $users_buffer = $users = [];
-    $i = 1;
-    $gamenum = get_one_row('triviasettings', 'gamenum', 'WHERE gameon = 1');
-    $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username, u.modcomment, (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE gamenum = '.sqlesc($gamenum).' AND correct = 0 AND user_id = t.user_id) AS incorrect
+    $i           = 1;
+    $gamenum     = get_one_row('triviasettings', 'gamenum', 'WHERE gameon = 1');
+    $sql         = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username, u.modcomment, (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE gamenum = ' . sqlesc($gamenum) . ' AND correct = 0 AND user_id = t.user_id) AS incorrect
                 FROM triviausers AS t
                 INNER JOIN users AS u ON u.id = t.user_id
-                WHERE t.correct = 1 AND gamenum = '.sqlesc($gamenum).'
+                WHERE t.correct = 1 AND gamenum = ' . sqlesc($gamenum) . '
                 GROUP BY t.user_id
                 ORDER BY correct DESC, incorrect ASC
                 LIMIT 10';
@@ -62,30 +62,30 @@ function trivia_points_update($data)
                     break;
             }
 
-            $msg = 'You answered '.number_format($correct)." trivia question correctly and were awarded $points Bonus Points!!\n";
-            $modcomment = get_date(TIME_NOW, 'DATE', 1)." - Awarded Bonus Points for Trivia.\n".$modcomment;
-            $msgs_buffer[] = '(0,'.sqlesc($user_id).','.TIME_NOW.', '.sqlesc($msg).', '.sqlesc($subject).')';
-            $users[] = $user_id;
-            $cache->update_row('user'.$user_id, [
+            $msg           = 'You answered ' . number_format($correct) . " trivia question correctly and were awarded $points Bonus Points!!\n";
+            $modcomment    = get_date(TIME_NOW, 'DATE', 1) . " - Awarded Bonus Points for Trivia.\n" . $modcomment;
+            $msgs_buffer[] = '(0,' . sqlesc($user_id) . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+            $users[]       = $user_id;
+            $cache->update_row('user' . $user_id, [
                 'modcomment' => $modcomment,
             ], $site_config['expires']['user_cache']);
-            sql_query('UPDATE users SET modcomment = '.sqlesc($modcomment).", seedbonus = seedbonus + $points WHERE id = ".sqlesc($user_id)) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE users SET modcomment = ' . sqlesc($modcomment) . ", seedbonus = seedbonus + $points WHERE id = " . sqlesc($user_id)) or sqlerr(__FILE__, __LINE__);
             $count = $i++;
         }
     }
 
     if (!empty($msgs_buffer)) {
-        sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES '.implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
     }
-    write_log('Cleanup - Trivia Bonus Points awarded to - '.$count.' Member(s)');
+    write_log('Cleanup - Trivia Bonus Points awarded to - ' . $count . ' Member(s)');
     foreach ($users as $user_id) {
-        $cache->increment('inbox_'.$user_id);
-        $cache->delete('user'.$user_id);
+        $cache->increment('inbox_' . $user_id);
+        $cache->delete('user' . $user_id);
     }
 
-    sql_query('UPDATE triviaq SET asked = 0, current = 0') or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE triviaq SET asked = 0, current = 0')                               or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE triviasettings SET gameon = 0, finished = NOW() WHERE gameon = 1') or sqlerr(__FILE__, __LINE__);
-    sql_query('INSERT INTO triviasettings (gameon, started) VALUES (1, NOW())') or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO triviasettings (gameon, started) VALUES (1, NOW())')          or sqlerr(__FILE__, __LINE__);
 
     if ($data['clean_log'] && $queries > 0) {
         write_log("Trivia Points Cleanup: Completed using $queries queries");

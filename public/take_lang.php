@@ -1,19 +1,19 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
-$lang = load_language('global');
+$lang    = load_language('global');
 $HTMLOUT = $out = '';
 
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $lid = isset($_POST['language']) ? (int) $_POST['language'] : 1;
     if ($lid > 0 && $lid != $CURUSER['id']) {
-        sql_query('UPDATE users SET language = '.sqlesc($lid).' WHERE id = '.sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET language = ' . sqlesc($lid) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     }
-    $cache->update_row('user'.$CURUSER['id'], [
+    $cache->update_row('user' . $CURUSER['id'], [
         'language' => $lid,
     ], $site_config['expires']['user_cache']);
     $HTMLOUT .= '<script>
@@ -27,7 +27,7 @@ $HTMLOUT .= "<!doctype html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'htt
 <head>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
     <title>Choose Language</title>
-    <link rel='stylesheet' href='".get_file_name('css')."' />
+    <link rel='stylesheet' href='" . get_file_name('css') . "' />
 </head>
 <body class='$body_class'>
     <script>
@@ -42,9 +42,9 @@ $HTMLOUT .= "<!doctype html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'htt
             <form action='take_lang.php' method='post'>
                 <p class='has-text-centered'>
                     <select name='language' onchange='this.form.submit();' size='1'>
-                        <option value='1'".('1' == get_language() ? ' selected' : '').">En</option>
-                        <option value='2'".('2' == get_language() ? ' selected' : '').">Dk</option>
-                        <option value='3'".('3' == get_language() ? ' selected' : '').">Rm</option>
+                        <option value='1'" . ('1' == get_language() ? ' selected' : '') . ">En</option>
+                        <option value='2'" . ('2' == get_language() ? ' selected' : '') . ">Dk</option>
+                        <option value='3'" . ('3' == get_language() ? ' selected' : '') . ">Rm</option>
                     </select>
                     <br>
                     <input type='button' class='button is-small margin20' value='Close' onclick='self.close()' />

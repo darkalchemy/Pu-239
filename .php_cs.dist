@@ -14,7 +14,14 @@ $config = PhpCsFixer\Config::create()
         'single_blank_line_before_namespace' => true,
         'standardize_not_equals'             => true,
         'ternary_operator_spaces'            => true,
-        'whitespace_after_comma_in_array'    => true
+        'whitespace_after_comma_in_array'    => true,
+        'concat_space'                       => ["spacing" => "one"],
+        'align_multiline_comment'            => ['comment_type' => 'phpdocs_like'],
+        'array_syntax'                       => ['syntax' => 'short'],
+        'binary_operator_spaces'             => ['default' => 'align'],
+        'cast_spaces'                        => ['space' => 'single'],
+        'combine_consecutive_issets'         => true,
+        'combine_consecutive_unsets'         => true,
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()

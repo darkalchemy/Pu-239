@@ -1,13 +1,13 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once INCL_DIR.'bbcode_functions.php';
-require_once CACHE_DIR.'subs.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
+require_once CACHE_DIR . 'subs.php';
 check_user_status();
 global $CURUSER, $site_config;
-$lang = array_merge(load_language('global'), load_language('upload'));
+$lang    = array_merge(load_language('global'), load_language('upload'));
 $stdfoot = [
     'js' => [
         get_file_name('upload_js'),
@@ -18,7 +18,7 @@ if ($CURUSER['class'] < UC_UPLOADER or 0 == $CURUSER['uploadpos'] || $CURUSER['u
     stderr($lang['upload_sorry'], $lang['upload_no_auth']);
 }
 $res_request = sql_query('SELECT id, request_name FROM requests WHERE filled_by_user_id = 0 ORDER BY request_name ASC') or sqlerr(__FILE__, __LINE__);
-$request = '
+$request     = '
     <tr>
     <td><span>Request:</span></td>
     <td>
@@ -26,7 +26,7 @@ $request = '
         <option class="body" value="0"> Requests </option>';
 if ($res_request) {
     while ($arr_request = mysqli_fetch_assoc($res_request)) {
-        $request .= '<option class="body" value="'.(int) $arr_request['id'].'">'.htmlsafechars($arr_request['request_name']).'</option>';
+        $request .= '<option class="body" value="' . (int) $arr_request['id'] . '">' . htmlsafechars($arr_request['request_name']) . '</option>';
     }
 } else {
     $request .= '<option class="body" value="0">Currently no requests</option>';
@@ -36,7 +36,7 @@ $request .= '</select><span>If you are filling a request please select it here s
 //=== offers list if member has made any offers
 $res_offer = sql_query('SELECT id, offer_name
                         FROM offers
-                        WHERE offered_by_user_id = '.sqlesc($CURUSER['id'])." AND status = 'approved'
+                        WHERE offered_by_user_id = ' . sqlesc($CURUSER['id']) . " AND status = 'approved'
                         ORDER BY offer_name ASC") or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($res_offer) > 0) {
     $offers = '
@@ -47,7 +47,7 @@ if (mysqli_num_rows($res_offer) > 0) {
     <option class="body" value="0">My Offers</option>';
     $message = '<option class="body" value="0">Your have no approved offers yet</option>';
     while ($arr_offer = mysqli_fetch_assoc($res_offer)) {
-        $offers .= '<option class="body" value="'.(int) $arr_offer['id'].'">'.htmlsafechars($arr_offer['offer_name']).'</option>';
+        $offers .= '<option class="body" value="' . (int) $arr_offer['id'] . '">' . htmlsafechars($arr_offer['offer_name']) . '</option>';
     }
     $offers .= '</select> If you are uploading one of your offers, please select it here so interested members will be notified.</td>
     </tr>';
@@ -105,31 +105,31 @@ $HTMLOUT .= "<table class='table table-bordered table-striped top20 bottom20'>
     </tr>
     <tr>
     <td class='rowhead'>{$lang['upload_description']}</td>
-    <td>".BBcode()."
+    <td>" . BBcode() . "
     <br>({$lang['upload_html_bbcode']})</td>
     </tr>";
-$s = "<select name='type'>\n<option value='0'>({$lang['upload_choose_one']})</option>\n";
+$s    = "<select name='type'>\n<option value='0'>({$lang['upload_choose_one']})</option>\n";
 $cats = genrelist();
 foreach ($cats as $row) {
-    $s .= "<option value='".(int) $row['id']."'>".htmlsafechars($row['name'])."</option>\n";
+    $s .= "<option value='" . (int) $row['id'] . "'>" . htmlsafechars($row['name']) . "</option>\n";
 }
-$s .= "</select>\n";
+$s       .= "</select>\n";
 $HTMLOUT .= "<tr>
     <td class='rowhead'>{$lang['upload_type']}</td>
     <td>$s</td>
     </tr>";
-$HTMLOUT .= $offers;
-$HTMLOUT .= $request;
+$HTMLOUT   .= $offers;
+$HTMLOUT   .= $request;
 $subs_list .= "
         <div class='level-center'>";
 foreach ($subs as $s) {
     $subs_list .= "
-            <div class='w-15 margin10 tooltipper bordered level-center' title='".htmlsafechars($s['name'])."'>
+            <div class='w-15 margin10 tooltipper bordered level-center' title='" . htmlsafechars($s['name']) . "'>
                 <span class='has-text-centered'>
                     <input name='subs[]' type='checkbox' value='{$s['id']}' />
-                    <image class='sub_flag' src='{$s['pic']}' alt='".htmlsafechars($s['name'])."' />
+                    <image class='sub_flag' src='{$s['pic']}' alt='" . htmlsafechars($s['name']) . "' />
                 </span>
-                <span class='has-text-centered'>".htmlsafechars($s['name']).'</span>
+                <span class='has-text-centered'>" . htmlsafechars($s['name']) . '</span>
             </div>';
 }
 $subs_list .= '
@@ -191,7 +191,7 @@ $HTMLOUT .= "
 for ($x = 0; $x < count($genres); ++$x) {
     $HTMLOUT .= "
                 <div class='flex_cell_5'>
-                    <input type='radio' value='".strtolower($genres[$x])."' name='genre' />
+                    <input type='radio' value='" . strtolower($genres[$x]) . "' name='genre' />
                     <span>{$genres[$x]}</span>
                 </div>";
 }
@@ -285,4 +285,4 @@ $HTMLOUT .= "
         </table>
         </form>";
 
-echo stdhead($lang['upload_stdhead'], true).wrapper($HTMLOUT).stdfoot($stdfoot);
+echo stdhead($lang['upload_stdhead'], true) . wrapper($HTMLOUT) . stdfoot($stdfoot);

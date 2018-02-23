@@ -1,4 +1,5 @@
 23 Feb 2018
+cleanup: add additional rules to php-cs-fixer(will run before any new commits)
 revert: use globals in functions, until all moved to classes(i'm still learning)
 remove: class destructors
 remove: persistent connections to pdo

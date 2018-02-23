@@ -1,33 +1,33 @@
 <?php
 
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once INCL_DIR.'pager_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'pager_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
-$lang = array_merge($lang, load_language('cheaters'));
+$lang    = array_merge($lang, load_language('cheaters'));
 $HTMLOUT = '';
 if (isset($_POST['nowarned']) && 'nowarned' == $_POST['nowarned']) {
     if (empty($_POST['desact']) && empty($_POST['remove'])) {
         stderr($lang['cheaters_err'], $lang['cheaters_seluser']);
     }
     if (!empty($_POST['remove'])) {
-        sql_query('DELETE FROM cheaters WHERE id IN ('.implode(', ', array_map('sqlesc', $_POST['remove'])).')') or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM cheaters WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['remove'])) . ')') or sqlerr(__FILE__, __LINE__);
     }
     if (!empty($_POST['desact'])) {
-        sql_query("UPDATE users SET enabled = 'no' WHERE id IN (".implode(', ', array_map('sqlesc', $_POST['desact'])).')') or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE users SET enabled = 'no' WHERE id IN (" . implode(', ', array_map('sqlesc', $_POST['desact'])) . ')') or sqlerr(__FILE__, __LINE__);
     }
 }
 $HTMLOUT .= begin_main_frame();
 $HTMLOUT .= begin_frame("{$lang['cheaters_users']}", true);
-$res = sql_query('SELECT COUNT(*) FROM cheaters') or sqlerr(__FILE__, __LINE__);
-$row = mysqli_fetch_array($res);
-$count = $row[0];
+$res     = sql_query('SELECT COUNT(*) FROM cheaters') or sqlerr(__FILE__, __LINE__);
+$row     = mysqli_fetch_array($res);
+$count   = $row[0];
 $perpage = 15;
-$pager = pager($perpage, $count, 'staffpanel.php?tool=cheaters&amp;action=cheaters&amp;');
+$pager   = pager($perpage, $count, 'staffpanel.php?tool=cheaters&amp;action=cheaters&amp;');
 $HTMLOUT .= "<form action='staffpanel.php?tool=cheaters&amp;action=cheaters' method='post'>
 <script>
 /*<![CDATA[*/
@@ -75,19 +75,19 @@ $HTMLOUT .= "<table width=\"80%\">
 <td class=\"table\">{$lang['cheaters_uname']}</td>
 <td class=\"table\" width=\"10\" align=\"center\">{$lang['cheaters_d']}</td>
 <td class=\"table\" width=\"10\" align=\"center\">{$lang['cheaters_r']}</td></tr>\n";
-$res = sql_query('SELECT c.id AS cid, c.added, c.userid, c.torrentid, c.client, c.rate, c.beforeup, c.upthis, c.timediff, c.userip, u.id, u.username, u.class, u.downloaded, u.uploaded, u.chatpost, u.leechwarn, u.warned, u.pirate, u.king, u.donor, u.enabled, t.id AS tid, t.name AS tname FROM cheaters AS c LEFT JOIN users AS u ON u.id=c.userid LEFT JOIN torrents AS t ON t.id=c.torrentid ORDER BY added DESC '.$pager['limit']) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT c.id AS cid, c.added, c.userid, c.torrentid, c.client, c.rate, c.beforeup, c.upthis, c.timediff, c.userip, u.id, u.username, u.class, u.downloaded, u.uploaded, u.chatpost, u.leechwarn, u.warned, u.pirate, u.king, u.donor, u.enabled, t.id AS tid, t.name AS tname FROM cheaters AS c LEFT JOIN users AS u ON u.id=c.userid LEFT JOIN torrents AS t ON t.id=c.torrentid ORDER BY added DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
 while ($arr = mysqli_fetch_assoc($res)) {
-    $torrname = htmlsafechars(CutName($arr['tname'], 80));
-    $users = $arr;
+    $torrname    = htmlsafechars(CutName($arr['tname'], 80));
+    $users       = $arr;
     $users['id'] = (int) $arr['userid'];
-    $cheater = "<b><a href='{$site_config['baseurl']}/userdetails.php?id=".(int) $arr['id']."'>".format_username($users)."</a></b>{$lang['cheaters_hbcc']}<br>
-    <b>{$lang['cheaters_torrent']} <a href='{$site_config['baseurl']}/details.php?id=".(int) $arr['tid']."' title='{$torrname}'>{$torrname}</a></b>
-<br>{$lang['cheaters_upped']} <b>".mksize((int) $arr['upthis'])."</b><br>{$lang['cheaters_speed']} <b>".mksize((int) $arr['rate'])."/s</b><br>{$lang['cheaters_within']} <b>".(int) $arr['timediff']." {$lang['cheaters_sec']}</b><br>{$lang['cheaters_uc']} <b>".htmlsafechars($arr['client'])."</b><br>{$lang['cheaters_ipa']} <b>".htmlsafechars($arr['userip']).'</b>';
-    $HTMLOUT .= '<tr><td class="table" width="10">'.(int) $arr['cid'].'</td>
-    <td class="table">'.format_username($users)."<a href=\"javascript:klappe('a1".(int) $arr['cid']."')\"> {$lang['cheaters_added']}".get_date($arr['added'], 'DATE').'</a>
-    <div id="ka1'.(int) $arr['cid']."\" style=\"display: none;\"><font color=\"black\">{$cheater}</font></div></td>
-    <td class=\"table\" width=\"10\"><input type=\"checkbox\" name=\"desact[]\" value=\"".(int) $arr['id'].'"/></td>
-    <td class="table" width="10"><input type="checkbox" name="remove[]" value="'.(int) $arr['cid'].'"/></td></tr>';
+    $cheater     = "<b><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $arr['id'] . "'>" . format_username($users) . "</a></b>{$lang['cheaters_hbcc']}<br>
+    <b>{$lang['cheaters_torrent']} <a href='{$site_config['baseurl']}/details.php?id=" . (int) $arr['tid'] . "' title='{$torrname}'>{$torrname}</a></b>
+<br>{$lang['cheaters_upped']} <b>" . mksize((int) $arr['upthis']) . "</b><br>{$lang['cheaters_speed']} <b>" . mksize((int) $arr['rate']) . "/s</b><br>{$lang['cheaters_within']} <b>" . (int) $arr['timediff'] . " {$lang['cheaters_sec']}</b><br>{$lang['cheaters_uc']} <b>" . htmlsafechars($arr['client']) . "</b><br>{$lang['cheaters_ipa']} <b>" . htmlsafechars($arr['userip']) . '</b>';
+    $HTMLOUT .= '<tr><td class="table" width="10">' . (int) $arr['cid'] . '</td>
+    <td class="table">' . format_username($users) . "<a href=\"javascript:klappe('a1" . (int) $arr['cid'] . "')\"> {$lang['cheaters_added']}" . get_date($arr['added'], 'DATE') . '</a>
+    <div id="ka1' . (int) $arr['cid'] . "\" style=\"display: none;\"><font color=\"black\">{$cheater}</font></div></td>
+    <td class=\"table\" width=\"10\"><input type=\"checkbox\" name=\"desact[]\" value=\"" . (int) $arr['id'] . '"/></td>
+    <td class="table" width="10"><input type="checkbox" name="remove[]" value="' . (int) $arr['cid'] . '"/></td></tr>';
 }
 $HTMLOUT .= "<tr>
 <td class=\"table\" colspan=\"4\" align=\"right\">
@@ -100,5 +100,5 @@ if ($count > $perpage) {
 }
 $HTMLOUT .= end_frame();
 $HTMLOUT .= end_main_frame();
-echo stdhead($lang['cheaters_stdhead']).$HTMLOUT.stdfoot();
+echo stdhead($lang['cheaters_stdhead']) . $HTMLOUT . stdfoot();
 die();

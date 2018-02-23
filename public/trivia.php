@@ -1,18 +1,18 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $session;
 
 $lang = array_merge(load_language('global'), load_language('trivia'));
 
-$sql = 'SELECT qid FROM triviaq WHERE current = 1 AND asked = 1';
-$res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-$result = mysqli_fetch_assoc($res);
-$qid = (int) $result['qid'];
+$sql     = 'SELECT qid FROM triviaq WHERE current = 1 AND asked = 1';
+$res     = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+$result  = mysqli_fetch_assoc($res);
+$qid     = (int) $result['qid'];
 $display = $answered = '';
-$csrf = $site_config['session_csrf'];
+$csrf    = $site_config['session_csrf'];
 
 /**
  * @param $data
@@ -30,23 +30,23 @@ function clean_data($data)
 
 if (!empty($_POST) && (int) $_POST['qid'] === $qid) {
     if (!empty($_POST['qid']) && !empty($_POST['user_id']) && !empty($_POST['ans']) && !empty($_POST['gamenum'])) {
-        $qid = (int) $_POST['qid'];
+        $qid     = (int) $_POST['qid'];
         $user_id = (int) $_POST['user_id'];
-        $answer = $_POST['ans'];
+        $answer  = $_POST['ans'];
         $gamenum = $_POST['gamenum'];
-        $date = date('Y-m-d H:i:s');
-        $ip = getip();
+        $date    = date('Y-m-d H:i:s');
+        $ip      = getip();
 
         if (empty($_POST['token']) || !$session->validateToken($_POST['token'])) {
-            $username = get_one_row('users', 'username', 'WHERE id = '.sqlesc($user_id));
+            $username = get_one_row('users', 'username', 'WHERE id = ' . sqlesc($user_id));
             write_log("Trivia Game => using curl post => [$user_id]$username qid:$qid $date $ip");
         } else {
-            $rowcount = get_row_count('triviausers', 'WHERE user_id = '.sqlesc($user_id).' AND qid = '.sqlesc($qid).' AND gamenum = '.sqlesc($gamenum));
+            $rowcount = get_row_count('triviausers', 'WHERE user_id = ' . sqlesc($user_id) . ' AND qid = ' . sqlesc($qid) . ' AND gamenum = ' . sqlesc($gamenum));
 
             if (0 === $rowcount) {
-                $sql = 'SELECT canswer FROM triviaq WHERE qid = '.sqlesc($qid);
-                $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-                $result = mysqli_fetch_assoc($res);
+                $sql     = 'SELECT canswer FROM triviaq WHERE qid = ' . sqlesc($qid);
+                $res     = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                $result  = mysqli_fetch_assoc($res);
                 $canswer = $result['canswer'];
                 if (0 === $user_id) {
                     if (function_exists('write_log')) {
@@ -54,7 +54,7 @@ if (!empty($_POST) && (int) $_POST['qid'] === $qid) {
                     }
                 } else {
                     $is_correct = $answer == $canswer ? 1 : 0;
-                    $sql = 'INSERT INTO triviausers (user_id, gamenum, qid, correct, date) VALUES ('.sqlesc($user_id).', '.sqlesc($gamenum).', '.sqlesc($qid).', '.sqlesc($is_correct).', '.sqlesc($date).')';
+                    $sql        = 'INSERT INTO triviausers (user_id, gamenum, qid, correct, date) VALUES (' . sqlesc($user_id) . ', ' . sqlesc($gamenum) . ', ' . sqlesc($qid) . ', ' . sqlesc($is_correct) . ', ' . sqlesc($date) . ')';
                     sql_query($sql) or sqlerr(__FILE__, __LINE__);
                 }
             }
@@ -67,22 +67,22 @@ global $site_config;
 $HTMLOUT = '';
 $user_id = $CURUSER['id'];
 
-$sql = "SELECT clean_time - unix_timestamp(NOW()) AS round_remaining FROM cleanup WHERE clean_file = 'trivia_update.php'";
-$res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-$result = mysqli_fetch_assoc($res);
+$sql             = "SELECT clean_time - unix_timestamp(NOW()) AS round_remaining FROM cleanup WHERE clean_file = 'trivia_update.php'";
+$res             = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+$result          = mysqli_fetch_assoc($res);
 $round_remaining = (int) $result['round_remaining'];
 
-$sql = "SELECT clean_time - unix_timestamp(NOW()) AS game_remaining FROM cleanup WHERE clean_file = 'trivia_points_update.php'";
-$res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-$result = mysqli_fetch_assoc($res);
+$sql            = "SELECT clean_time - unix_timestamp(NOW()) AS game_remaining FROM cleanup WHERE clean_file = 'trivia_points_update.php'";
+$res            = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+$result         = mysqli_fetch_assoc($res);
 $game_remaining = (int) $result['game_remaining'];
 
-$num_totalq = get_row_count('triviaq');
+$num_totalq     = get_row_count('triviaq');
 $num_remainingq = get_row_count('triviaq', 'WHERE asked = 0');
 
-$sql = 'SELECT gamenum FROM triviasettings WHERE gameon = 1 LIMIT 1';
-$res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-$result = mysqli_fetch_assoc($res);
+$sql     = 'SELECT gamenum FROM triviasettings WHERE gameon = 1 LIMIT 1';
+$res     = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+$result  = mysqli_fetch_assoc($res);
 $gamenum = (int) $result['gamenum'];
 
 $time_refresh = 600;
@@ -102,7 +102,7 @@ $HTMLOUT = "<!doctype html>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     $refresh
     <title>Trivia</title>
-    <link rel='stylesheet' href='".get_file_name('css')."' />
+    <link rel='stylesheet' href='" . get_file_name('css') . "' />
 </head>
 <body class='ajax-chat text-9'>
 <script>
@@ -140,23 +140,23 @@ if (empty($gamenum) || empty($qid)) {
         $HTMLOUT .= "
             {$lang['trivia_no_more']}<br><br>{$lang['trivia_wait']}";
     } else {
-        $sql = 'SELECT question, answer1, answer2, answer3, answer4, answer5, asked FROM triviaq WHERE qid = '.sqlesc($qid);
+        $sql = 'SELECT question, answer1, answer2, answer3, answer4, answer5, asked FROM triviaq WHERE qid = ' . sqlesc($qid);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_assoc($res);
         $row = clean_data($row);
 
-        $sql = 'SELECT * FROM triviausers WHERE user_id = '.sqlesc($user_id).' AND qid = '.sqlesc($qid).' AND gamenum = '.sqlesc($gamenum);
-        $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        $row2 = mysqli_fetch_assoc($res);
+        $sql      = 'SELECT * FROM triviausers WHERE user_id = ' . sqlesc($user_id) . ' AND qid = ' . sqlesc($qid) . ' AND gamenum = ' . sqlesc($gamenum);
+        $res      = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        $row2     = mysqli_fetch_assoc($res);
         $num_rows = !empty($row2) ? count($row2) : 0;
 
         if (0 != $num_rows) {
             $table = '';
-            $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username,
-                            (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE gamenum = '.sqlesc($gamenum).' AND correct = 0 AND user_id = t.user_id) AS incorrect
+            $sql   = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username,
+                            (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE gamenum = ' . sqlesc($gamenum) . ' AND correct = 0 AND user_id = t.user_id) AS incorrect
                         FROM triviausers AS t
                         INNER JOIN users AS u ON u.id = t.user_id
-                        WHERE t.correct = 1 AND gamenum = '.sqlesc($gamenum).'
+                        WHERE t.correct = 1 AND gamenum = ' . sqlesc($gamenum) . '
                         GROUP BY t.user_id
                         ORDER BY correct DESC, incorrect ASC
                         LIMIT 10';
@@ -177,8 +177,8 @@ if (empty($gamenum) || empty($qid)) {
                     extract($result);
                     $table .= "
                         <tr>
-                            <td width='5%'><div class='is-pulled-left'>".format_username((int) $user_id)."</div></td>
-                            <td class='has-text-centered' width='5%'>".sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100)."</td>
+                            <td width='5%'><div class='is-pulled-left'>" . format_username((int) $user_id) . "</div></td>
+                            <td class='has-text-centered' width='5%'>" . sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100) . "</td>
                             <td class='has-text-centered' width='5%'>$correct</td>
                             <td class='has-text-centered' width='5%'>$incorrect</td>
                         </tr>";
@@ -197,7 +197,7 @@ if (empty($gamenum) || empty($qid)) {
         } else {
             $HTMLOUT .= "
             <div class='padding20'>
-                <h1 class='has-text-centered has-text-primary'>".htmlspecialchars_decode($row['question'])."</h1>
+                <h1 class='has-text-centered has-text-primary'>" . htmlspecialchars_decode($row['question']) . "</h1>
                 <div class='is-centered is-small'>
                     <ul class='level-center has-text-centered'>
                         <li>
@@ -206,8 +206,8 @@ if (empty($gamenum) || empty($qid)) {
                                 <input type='hidden' name='user_id' value='{$user_id}'>
                                 <input type='hidden' name='ans' value='answer1'>
                                 <input type='hidden' name='gamenum' value='{$gamenum}'>
-                                <input type='hidden' name='token' value='".$session->get($csrf)."'>
-                                <input type='submit' value='".htmlspecialchars_decode($row['answer1'])."' class='button margin20'>
+                                <input type='hidden' name='token' value='" . $session->get($csrf) . "'>
+                                <input type='submit' value='" . htmlspecialchars_decode($row['answer1']) . "' class='button margin20'>
                             </form>
                         </li>
                         <li>
@@ -216,8 +216,8 @@ if (empty($gamenum) || empty($qid)) {
                                 <input type='hidden' name='user_id' value='{$user_id}'>
                                 <input type='hidden' name='ans' value='answer2'>
                                 <input type='hidden' name='gamenum' value='{$gamenum}'>
-                                <input type='hidden' name='token' value='".$session->get($csrf)."'>
-                                <input type='submit' value='".htmlspecialchars_decode($row['answer2'])."' class='button margin20'>
+                                <input type='hidden' name='token' value='" . $session->get($csrf) . "'>
+                                <input type='submit' value='" . htmlspecialchars_decode($row['answer2']) . "' class='button margin20'>
                             </form>
                         </li>";
 
@@ -229,8 +229,8 @@ if (empty($gamenum) || empty($qid)) {
                                 <input type='hidden' name='user_id' value='{$user_id}'>
                                 <input type='hidden' name='ans' value='answer3'>
                                 <input type='hidden' name='gamenum' value='{$gamenum}'>
-                                <input type='hidden' name='token' value='".$session->get($csrf)."'>
-                                <input type='submit' value='".htmlspecialchars_decode($row['answer3'])."' class='button margin20'>
+                                <input type='hidden' name='token' value='" . $session->get($csrf) . "'>
+                                <input type='submit' value='" . htmlspecialchars_decode($row['answer3']) . "' class='button margin20'>
                             </form>
                         </li>";
             }
@@ -242,8 +242,8 @@ if (empty($gamenum) || empty($qid)) {
                                 <input type='hidden' name='user_id' value='{$user_id}'>
                                 <input type='hidden' name='ans' value='answer4'>
                                 <input type='hidden' name='gamenum' value='{$gamenum}'>
-                                <input type='hidden' name='token' value='".$session->get($csrf)."'>
-                                <input type='submit' value='".htmlspecialchars_decode($row['answer4'])."' class='button margin20'>
+                                <input type='hidden' name='token' value='" . $session->get($csrf) . "'>
+                                <input type='submit' value='" . htmlspecialchars_decode($row['answer4']) . "' class='button margin20'>
                             </form>
                         </li>";
             }
@@ -255,8 +255,8 @@ if (empty($gamenum) || empty($qid)) {
                                 <input type='hidden' name='user_id' value='{$user_id}'>
                                 <input type='hidden' name='ans' value='answer5'>
                                 <input type='hidden' name='gamenum' value='{$gamenum}'>
-                                <input type='hidden' name='token' value='".$session->get($csrf)."'>
-                                <input type='submit' value='".htmlspecialchars_decode($row['answer5'])."' class='button margin20'>
+                                <input type='hidden' name='token' value='" . $session->get($csrf) . "'>
+                                <input type='submit' value='" . htmlspecialchars_decode($row['answer5']) . "' class='button margin20'>
                             </form>
                         </li>";
             }

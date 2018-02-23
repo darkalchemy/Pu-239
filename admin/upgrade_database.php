@@ -1,8 +1,8 @@
 <?php
 
-require_once INCL_DIR.'user_functions.php';
-require_once CLASS_DIR.'class_check.php';
-require_once INCL_DIR.'pager_functions.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once CLASS_DIR . 'class_check.php';
+require_once INCL_DIR . 'pager_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $lang, $fluent, $site_config, $cache, $session;
@@ -12,7 +12,7 @@ if (!defined('DATABASE_DIR')) {
     stderr('Error', "add \"define('DATABASE_DIR', ROOT_DIR . 'database' . DIRECTORY_SEPARATOR);\" to define.php");
     die();
 } else {
-    require_once DATABASE_DIR.'sql_updates.php';
+    require_once DATABASE_DIR . 'sql_updates.php';
 }
 
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
@@ -21,18 +21,18 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     if ($id >= 1 && 'Run Query' === $submit) {
         $sql = $sql_updates[$id - 1]['query'];
         if (sql_query($sql)) {
-            $sql = 'INSERT INTO database_updates (id, query) VALUES ('.sqlesc($id).', '.sqlesc($sql).')';
+            $sql = 'INSERT INTO database_updates (id, query) VALUES (' . sqlesc($id) . ', ' . sqlesc($sql) . ')';
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
             $session->set('is-success', "Query #$id ran without error");
         } else {
-            $session->set('is-danger', "[p]Query #$id failed to run, try to run manually[/p][p]".htmlsafechars($sql).'[/p]');
+            $session->set('is-danger', "[p]Query #$id failed to run, try to run manually[/p][p]" . htmlsafechars($sql) . '[/p]');
         }
     }
 }
 
 $table_exists = $cache->get('table_exists_database_updates');
 if (false === $table_exists || is_null($table_exists)) {
-    $sql = "SHOW tables LIKE 'database_updates'";
+    $sql    = "SHOW tables LIKE 'database_updates'";
     $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     if (1 != mysqli_num_rows($result)) {
         sql_query(
@@ -77,13 +77,13 @@ if (file_exists(DATABASE_DIR)) {
 
     $results = !empty($results) ? $results : [0 => '2017-12-06 14:43:22'];
 
-    $count = count($sql_updates);
+    $count    = count($sql_updates);
     $per_page = 15;
-    $pager = pager($per_page, $count, "{$site_config['baseurl']}/staffpanel.php?tool=upgrade_database&amp;");
+    $pager    = pager($per_page, $count, "{$site_config['baseurl']}/staffpanel.php?tool=upgrade_database&amp;");
     preg_match('/LIMIT (\d*),(\d*)/i', $pager['limit'], $match);
     $first = isset($match[1]) ? $match[1] : 0;
-    $last = isset($match[2]) ? $match[1] + $per_page : end($sql_updates)['id'];
-    $page = !empty($_GET['page']) ? "&page={$_GET['page']}" : '';
+    $last  = isset($match[2]) ? $match[1] + $per_page : end($sql_updates)['id'];
+    $page  = !empty($_GET['page']) ? "&page={$_GET['page']}" : '';
 
     $body = '';
     foreach ($sql_updates as $update) {
@@ -102,13 +102,13 @@ if (file_exists(DATABASE_DIR)) {
                 {$update['info']}
             </td>
             <td class='has-text-centered'>
-                ".(array_key_exists($update['id'], $results) ? $results[$update['id']] : $update['date'])."
+                " . (array_key_exists($update['id'], $results) ? $results[$update['id']] : $update['date']) . "
             </td>
             <td>
                 {$update['query']}
             </td>
             <td class='has-text-centered'>
-                ".(array_key_exists($update['id'], $results) ? 'Completed' : $button).'
+                " . (array_key_exists($update['id'], $results) ? 'Completed' : $button) . '
             </td>
         </tr>';
         }
@@ -117,11 +117,11 @@ if (file_exists(DATABASE_DIR)) {
     $body = "
         <tr>
             <td colspan='5'>
-                'Path Missing: => ".DATABASE_DIR.'
+                'Path Missing: => " . DATABASE_DIR . '
             </td>
         </tr>';
 }
 
-$HTMLOUT = wrapper(($count > $per_page ? $pager['pagertop'] : '').main_table($body, $heading).($count > $per_page ? $pager['pagerbottom'] : ''));
+$HTMLOUT = wrapper(($count > $per_page ? $pager['pagertop'] : '') . main_table($body, $heading) . ($count > $per_page ? $pager['pagerbottom'] : ''));
 
-echo stdhead('Update Database').$HTMLOUT.stdfoot();
+echo stdhead('Update Database') . $HTMLOUT . stdfoot();

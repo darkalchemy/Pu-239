@@ -9,27 +9,27 @@ function happyHour($action)
     global $site_config;
     //generate happy hour
     if ('generate' == $action) {
-        $nextDay = date('Y-m-d', TIME_NOW + 86400);
+        $nextDay   = date('Y-m-d', TIME_NOW + 86400);
         $nextHoura = random_int(0, 2);
         if (2 == $nextHoura) {
             $nextHourb = random_int(0, 3);
         } else {
             $nextHourb = random_int(0, 9);
         }
-        $nextHour = $nextHoura.$nextHourb;
-        $nextMina = random_int(0, 5);
-        $nextMinb = random_int(0, 9);
-        $nextMin = $nextMina.$nextMinb;
-        $happyHour = $nextDay.' '.$nextHour.':'.$nextMin.'';
+        $nextHour  = $nextHoura . $nextHourb;
+        $nextMina  = random_int(0, 5);
+        $nextMinb  = random_int(0, 9);
+        $nextMin   = $nextMina . $nextMinb;
+        $happyHour = $nextDay . ' ' . $nextHour . ':' . $nextMin . '';
 
         return $happyHour;
     }
-    $file = $site_config['happyhour'];
-    $happy = unserialize(file_get_contents($file));
+    $file      = $site_config['happyhour'];
+    $happy     = unserialize(file_get_contents($file));
     $happyHour = strtotime($happy['time']);
     $happyDate = $happyHour;
-    $curDate = TIME_NOW;
-    $nextDate = $happyHour + 3600;
+    $curDate   = TIME_NOW;
+    $nextDate  = $happyHour + 3600;
     //action check
     if ('check' == $action) {
         if ($happyDate < $curDate && $nextDate >= $curDate) {
@@ -40,7 +40,7 @@ function happyHour($action)
     if ('time' == $action) {
         $timeLeft = mkprettytime(($happyHour + 3600) - TIME_NOW);
         $timeLeft = explode(':', $timeLeft);
-        $time = ($timeLeft[0].' min : '.$timeLeft[1].' sec');
+        $time     = ($timeLeft[0] . ' min : ' . $timeLeft[1] . ' sec');
 
         return $time;
     }
@@ -73,8 +73,8 @@ function happyHour($action)
 function happyCheck($action, $id = null)
 {
     global $site_config;
-    $file = $site_config['happyhour'];
-    $happy = unserialize(file_get_contents($file));
+    $file       = $site_config['happyhour'];
+    $happy      = unserialize(file_get_contents($file));
     $happycheck = $happy['catid'];
     if ('check' == $action) {
         return $happycheck;
@@ -90,24 +90,24 @@ function happyCheck($action, $id = null)
 function happyFile($act)
 {
     global $site_config;
-    $file = $site_config['happyhour'];
+    $file  = $site_config['happyhour'];
     $happy = unserialize(file_get_contents($file));
     if ('set' == $act) {
         $array_happy = [
-            'time' => happyHour('generate'),
+            'time'   => happyHour('generate'),
             'status' => '1',
-            'catid' => happyHour('todo'),
+            'catid'  => happyHour('todo'),
         ];
     } elseif ('reset' == $act) {
         $array_happy = [
-            'time' => $happy['time'],
+            'time'   => $happy['time'],
             'status' => '0',
-            'catid' => $happy['catid'],
+            'catid'  => $happy['catid'],
         ];
     }
     $array_happy = serialize($array_happy);
-    $file = $site_config['happyhour'];
-    $file = fopen($file, 'w');
+    $file        = $site_config['happyhour'];
+    $file        = fopen($file, 'w');
     ftruncate($file, 0);
     fwrite($file, $array_happy);
     fclose($file);
@@ -121,5 +121,5 @@ function happyFile($act)
 function happyLog($userid, $torrentid, $multi)
 {
     $time = sqlesc(TIME_NOW);
-    sql_query('INSERT INTO happylog (userid, torrentid,multi, date) VALUES('.sqlesc($userid).', '.sqlesc($torrentid).', '.sqlesc($multi).", $time)") or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO happylog (userid, torrentid,multi, date) VALUES(' . sqlesc($userid) . ', ' . sqlesc($torrentid) . ', ' . sqlesc($multi) . ", $time)") or sqlerr(__FILE__, __LINE__);
 }

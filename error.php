@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 global $site_config;
 
 $string = $_SERVER['QUERY_STRING'];
@@ -24,7 +24,7 @@ if ('400' == $string) {
     $page = 'Bad Request - 400';
     $text = 'There has been an error with the page you are trying to view. Please try again later.';
 }
-$domain = htmlsafechars($_SERVER['HTTP_HOST']);
+$domain  = htmlsafechars($_SERVER['HTTP_HOST']);
 $htmlout = "<!doctype html>
 <html>
 <head>

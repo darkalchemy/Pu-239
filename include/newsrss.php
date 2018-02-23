@@ -16,24 +16,24 @@ function foxnews_shout($links = [])
     ];
 
     if (1 == $site_config['autoshout_on']) {
-        include_once INCL_DIR.'user_functions.php';
+        include_once INCL_DIR . 'user_functions.php';
         foreach ($feeds as $key => $feed) {
             $hash = md5($feed);
-            $xml = $cache->get('foxnewsrss_'.$hash);
+            $xml  = $cache->get('foxnewsrss_' . $hash);
             if (false === $xml || is_null($xml)) {
                 $xml = file_get_contents($feed);
-                $cache->set('foxnewsrss_'.$hash, $xml, 300);
+                $cache->set('foxnewsrss_' . $hash, $xml, 300);
             }
             $doc = new DOMDocument();
             @$doc->loadXML($xml);
             $items = $doc->getElementsByTagName('item');
-            $pubs = [];
+            $pubs  = [];
             foreach ($items as $item) {
-                $title = empty($item->getElementsByTagName('title')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')->item(0)->nodeValue;
-                $link = empty($item->getElementsByTagName('link')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')->item(0)->nodeValue;
+                $title  = empty($item->getElementsByTagName('title')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')->item(0)->nodeValue;
+                $link   = empty($item->getElementsByTagName('link')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')->item(0)->nodeValue;
                 $pubs[] = [
                     'title' => replace_unicode_strings($title),
-                    'link' => replace_unicode_strings($link),
+                    'link'  => replace_unicode_strings($link),
                 ];
             }
             $pubs = array_reverse($pubs);
@@ -43,7 +43,7 @@ function foxnews_shout($links = [])
                     continue;
                 }
                 $links[] = $link;
-                $link = sqlesc($link);
+                $link    = sqlesc($link);
                 $cache->set('tfreak_news_links_', $links, 86400);
                 sql_query(
                     "INSERT INTO newsrss (link)
@@ -82,7 +82,7 @@ function tfreak_shout($links = [])
     global $site_config, $cache;
 
     if (1 == $site_config['autoshout_on']) {
-        include_once INCL_DIR.'user_functions.php';
+        include_once INCL_DIR . 'user_functions.php';
         $xml = $cache->get('tfreaknewsrss_');
         if (false === $xml || is_null($xml)) {
             $xml = file_get_contents('http://feed.torrentfreak.com/Torrentfreak/');
@@ -91,13 +91,13 @@ function tfreak_shout($links = [])
         $doc = new DOMDocument();
         @$doc->loadXML($xml);
         $items = $doc->getElementsByTagName('item');
-        $pubs = [];
+        $pubs  = [];
         foreach ($items as $item) {
-            $title = empty($item->getElementsByTagName('title')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')->item(0)->nodeValue;
-            $link = empty($item->getElementsByTagName('link')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')->item(0)->nodeValue;
+            $title  = empty($item->getElementsByTagName('title')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')->item(0)->nodeValue;
+            $link   = empty($item->getElementsByTagName('link')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')->item(0)->nodeValue;
             $pubs[] = [
                 'title' => replace_unicode_strings($title),
-                'link' => replace_unicode_strings($link),
+                'link'  => replace_unicode_strings($link),
             ];
         }
         $pubs = array_reverse($pubs);
@@ -107,7 +107,7 @@ function tfreak_shout($links = [])
                 continue;
             }
             $links[] = $link;
-            $link = sqlesc($link);
+            $link    = sqlesc($link);
             $cache->set('tfreak_news_links_', $links, 86400);
             sql_query(
                 "INSERT INTO newsrss (link)
@@ -141,31 +141,31 @@ function github_shout($links = [])
     global $site_config, $cache;
 
     $feeds = [
-        'dev' => 'https://github.com/darkalchemy/Pu-239/commits/dev.atom',
+        'dev'    => 'https://github.com/darkalchemy/Pu-239/commits/dev.atom',
         'master' => 'https://github.com/darkalchemy/Pu-239/commits/master.atom',
     ];
     if (1 == $site_config['autoshout_on']) {
-        include_once INCL_DIR.'user_functions.php';
+        include_once INCL_DIR . 'user_functions.php';
         foreach ($feeds as $key => $feed) {
             $hash = md5($feed);
-            $rss = $cache->get('githubcommitrss_'.$hash);
+            $rss  = $cache->get('githubcommitrss_' . $hash);
             if (false === $rss || is_null($rss)) {
                 $rss = file_get_contents($feed);
-                $cache->set('githubcommitrss_'.$hash, $rss, 300);
+                $cache->set('githubcommitrss_' . $hash, $rss, 300);
             }
-            $xml = simplexml_load_string($rss);
+            $xml   = simplexml_load_string($rss);
             $items = $xml->entry;
-            $pubs = [];
+            $pubs  = [];
             foreach ($items as $item) {
                 $devices = json_decode(json_encode($item), true);
                 preg_match('/Commit\/(.*)/', $devices['id'], $match);
                 $commit = trim($match[1]);
-                $title = trim($devices['title']);
-                $link = trim($devices['link']['@attributes']['href']);
+                $title  = trim($devices['title']);
+                $link   = trim($devices['link']['@attributes']['href']);
 
                 $pubs[] = [
-                    'title' => replace_unicode_strings($title),
-                    'link' => replace_unicode_strings($link),
+                    'title'  => replace_unicode_strings($title),
+                    'link'   => replace_unicode_strings($link),
                     'commit' => replace_unicode_strings($commit),
                 ];
             }
@@ -176,7 +176,7 @@ function github_shout($links = [])
                     continue;
                 }
                 $links[] = $link;
-                $link = sqlesc($link);
+                $link    = sqlesc($link);
                 $cache->set('tfreak_news_links_', $links, 86400);
                 sql_query(
                     "INSERT INTO newsrss (link)

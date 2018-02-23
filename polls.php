@@ -6,13 +6,13 @@ function parse_poll()
 {
     global $CURUSER, $site_config, $cache;
 
-    $htmlout = '';
-    $check = 0;
+    $htmlout     = '';
+    $check       = 0;
     $poll_footer = '';
-    $GVARS = [
+    $GVARS       = [
         'allow_creator_vote' => 1,
-        'allow_result_view' => 1,
-        'allow_poll_tags' => 1,
+        'allow_result_view'  => 1,
+        'allow_poll_tags'    => 1,
     ];
     $poll_data = get_poll();
 
@@ -21,37 +21,37 @@ function parse_poll()
     }
 
     $member_voted = 0;
-    $total_votes = 0;
+    $total_votes  = 0;
 
     if ($poll_data['user_id']) {
         $member_voted = 1;
     }
 
     if ($member_voted) {
-        $check = 1;
+        $check       = 1;
         $poll_footer = 'You have already voted';
     }
 
     if (($poll_data['starter_id'] == $CURUSER['id']) && (1 != $GVARS['allow_creator_vote'])) {
-        $check = 1;
+        $check       = 1;
         $poll_footer = 'You created this poll and are not allowed to vote';
     }
 
     if (1 == $GVARS['allow_result_view']) {
         if (isset($_GET['mode']) && 'show' == $_GET['mode']) {
-            $check = 1;
+            $check       = 1;
             $poll_footer = '';
         }
     }
     if (1 == $check) {
-        $htmlout = poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question'], ENT_QUOTES));
+        $htmlout      = poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question'], ENT_QUOTES));
         $poll_answers = unserialize(stripslashes($poll_data['choices']));
         reset($poll_answers);
         foreach ($poll_answers as $id => $data) {
             //subtitle question
-            $question = htmlsafechars($data['question'], ENT_QUOTES);
+            $question    = htmlsafechars($data['question'], ENT_QUOTES);
             $choice_html = '';
-            $tv_poll = 0;
+            $tv_poll     = 0;
             //get total votes for each choice
             foreach ($poll_answers[$id]['votes'] as $number) {
                 $tv_poll += intval($number);
@@ -59,7 +59,7 @@ function parse_poll()
             // Get the choises from the unserialised array
             foreach ($data['choice'] as $choice_id => $text) {
                 $choice = htmlsafechars($text, ENT_QUOTES);
-                $votes = intval($data['votes'][$choice_id]);
+                $votes  = intval($data['votes'][$choice_id]);
                 if (strlen($choice) < 1) {
                     continue;
                 }
@@ -68,7 +68,7 @@ function parse_poll()
                 }
                 $percent = 0 == $votes ? 0 : $votes / $tv_poll * 100;
                 $percent = sprintf('%.2f', $percent);
-                $width = $percent > 0 ? intval($percent * 2) : 0;
+                $width   = $percent > 0 ? intval($percent * 2) : 0;
                 $choice_html .= poll_show_rendered_choice($choice_id, $votes, $id, $choice, $percent, $width);
             }
             $htmlout .= poll_show_rendered_question($question, $choice_html);
@@ -86,12 +86,12 @@ function parse_poll()
         $htmlout = poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question'], ENT_QUOTES));
         foreach ($poll_answers as $id => $data) {
             // get the question again!
-            $question = htmlsafechars($data['question'], ENT_QUOTES);
+            $question    = htmlsafechars($data['question'], ENT_QUOTES);
             $choice_html = '';
             // get choices for this question
             foreach ($data['choice'] as $choice_id => $text) {
                 $choice = htmlsafechars($text, ENT_QUOTES);
-                $votes = intval($data['votes'][$choice_id]);
+                $votes  = intval($data['votes'][$choice_id]);
                 if (strlen($choice) < 1) {
                     continue;
                 }

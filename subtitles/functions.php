@@ -17,28 +17,28 @@ function requestXML($name, $searchby, $lang, $cds, $format, $fps, $offset)
 {
     $optional = '';
     if (isset($lang)) {
-        $optional .= '/sublanguageid-'.$lang;
+        $optional .= '/sublanguageid-' . $lang;
     }
     if (isset($cds)) {
-        $optional .= '/subsumcd-'.$cds;
+        $optional .= '/subsumcd-' . $cds;
     }
     if (isset($format)) {
-        $optional .= '/subformat-'.$format;
+        $optional .= '/subformat-' . $format;
     }
     if (isset($offset) && $offset > 0) {
-        $optional .= '/offset-'.$offset;
+        $optional .= '/offset-' . $offset;
     }
     if (isset($searchby) && 'name' == $searchby) {
-        $search = '/moviename-'.urlencode($name);
+        $search = '/moviename-' . urlencode($name);
     }
     if (isset($searchby) && 'imdb' == $searchby) {
         if (!ereg('[0-9]{7}', $name, $imdbid)) {
             die("Can't find imdb id");
         } else {
-            $search = '/imdbid-'.$imdbid[0];
+            $search = '/imdbid-' . $imdbid[0];
         }
     }
-    $link = 'http://www.opensubtitles.org/en/search'.$search.$optional.'/simplexml';
+    $link = 'http://www.opensubtitles.org/en/search' . $search . $optional . '/simplexml';
 
     $xml = file_get_contents($link) or die("can't connect to host to get the xml data");
 
@@ -96,7 +96,7 @@ function get_base($array)
  */
 function get_results($array)
 {
-    return ['items' => $array['@items'],
+    return ['items'      => $array['@items'],
             'itemsfound' => $array['@itemsfound'],
             'searchtime' => $array['@searchtime'],
     ];
@@ -126,7 +126,7 @@ function pager($itemsfound, $href)
             if (1000 == ($i * 40)) {
                 break;
             }
-            $pager .= '<a '.($_GET['offset'] == ($i * 40) ? 'class="sublink-active"' : 'class="sublink"').' href="'.$href.'offset='.($i * 40).'">'.($i + 1).'</a>&#160;';
+            $pager .= '<a ' . ($_GET['offset'] == ($i * 40) ? 'class="sublink-active"' : 'class="sublink"') . ' href="' . $href . 'offset=' . ($i * 40) . '">' . ($i + 1) . '</a>&#160;';
         }
     }
 
@@ -143,8 +143,8 @@ function build_result($array, $pager)
 
     //define some vars
     $result = $array['search']['results']['subtitle'];
-    $base = get_base($array['search']['base']);
-    $time = get_results($array['search']['results']);
+    $base   = get_base($array['search']['base']);
+    $time   = get_results($array['search']['results']);
     //print the content
     if (0 == count($result)) {
         echo '<div><h2>No result found</h2></div>';
@@ -177,13 +177,13 @@ function build_result($array, $pager)
                                              height="12" border="0"
                                              alt="<?php echo $movie['language']; ?>"
                                              title="<?php echo $movie['language']; ?>"/></td>
-                    <td colspan="2" width="100%"><a href="<?php echo $base.$movie['detail']; ?>"
+                    <td colspan="2" width="100%"><a href="<?php echo $base . $movie['detail']; ?>"
                                                     target="_blank">
                             <?php echo $movie['movie']; ?>
                         </a>
-                        <?php echo $movie['releasename'] ? '<br><font class="releasename">'.$movie['releasename'].'</font>' : ''; ?>
+                        <?php echo $movie['releasename'] ? '<br><font class="releasename">' . $movie['releasename'] . '</font>' : ''; ?>
                     </td>
-                    <td nowrap="nowrap"><a href="<?php echo $base.$movie['download']; ?>"
+                    <td nowrap="nowrap"><a href="<?php echo $base . $movie['download']; ?>"
                                            target="blank"><img src="' . $site_config['baseurl']. '/imgs/icon-download.gif" width="12"
                                                                height="12" border="0" alt=" "
                                                                title="download"/></a></td>
@@ -197,7 +197,7 @@ function build_result($array, $pager)
                 <?php
         } ?>
         </table>
-        <?php echo $time['itemsfound'] > 40 ? '<br><div>'.pager($time['itemsfound'], $pager).'</div>' : ''; ?>
+        <?php echo $time['itemsfound'] > 40 ? '<br><div>' . pager($time['itemsfound'], $pager) . '</div>' : ''; ?>
         <?php
     }
 }

@@ -1,29 +1,29 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config;
 
-$lang = array_merge(load_language('global'), load_language('blackjack'));
+$lang    = array_merge(load_language('global'), load_language('blackjack'));
 $HTMLOUT = '';
 if (0 == $CURUSER['game_access'] || $CURUSER['game_access'] > 1 || 'yes' == $CURUSER['suspended']) {
     stderr($lang['bj_error'], $lang['bj_gaming_rights_disabled']);
 }
 
-$width = 100 / 3;
+$width  = 100 / 3;
 $color1 = $color2 = $color3 = $color4 = $color5 = $color6 = $color7 = $color8 = $color9 = 'has-text-red';
 
 $sql = "SELECT game_id FROM blackjack WHERE status = 'waiting' ORDER BY game_id";
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 while ($count = mysqli_fetch_array($res)) {
     extract($count);
-    ${'color'.$game_id} = 'has-text-success';
+    ${'color' . $game_id} = 'has-text-success';
 }
 
 // Casino
-$casino_count = get_row_count('casino', 'WHERE deposit > 0 AND userid != '.sqlesc($CURUSER['id']));
+$casino_count = get_row_count('casino', 'WHERE deposit > 0 AND userid != ' . sqlesc($CURUSER['id']));
 if ($casino_count > 0) {
     $color9 = 'green';
 }
@@ -86,4 +86,4 @@ $HTMLOUT .= "
                 </div>
             </div>";
 
-echo stdhead('Games').wrapper($HTMLOUT).stdfoot();
+echo stdhead('Games') . wrapper($HTMLOUT) . stdfoot();

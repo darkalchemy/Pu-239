@@ -4,9 +4,9 @@ function db_test()
 {
     global $root;
 
-    require_once $root.'include'.DIRECTORY_SEPARATOR.'define.php';
-    require_once INCL_DIR.'config.php';
-    require_once VENDOR_DIR.'autoload.php';
+    require_once $root . 'include' . DIRECTORY_SEPARATOR . 'define.php';
+    require_once INCL_DIR . 'config.php';
+    require_once VENDOR_DIR . 'autoload.php';
 
     $dotenv = new Dotenv\Dotenv(ROOT_DIR);
     $dotenv->load();
@@ -26,7 +26,7 @@ function db_test()
                     <div class="readable">Data can be imported</div>
                     <div style="text-align:center;">
                         <input type="hidden" name="do" value="db_insert" />
-                        <input type="hidden" name="xbt" value="'.$_GET['xbt'].'" />
+                        <input type="hidden" name="xbt" value="' . $_GET['xbt'] . '" />
                     </div>
                  </fieldset>
                 <div style="text-align:center;">
@@ -35,7 +35,7 @@ function db_test()
             </form>';
         } else {
             $out .= '
-                    <div class="notreadable">There was an error while selecting the database<br>'.$mysqli_test->error.'</div>
+                    <div class="notreadable">There was an error while selecting the database<br>' . $mysqli_test->error . '</div>
                 </fieldset>
                 <div style="text-align:center;">
                     <input type="button" value="Reload" onclick="window.location.reload()" />
@@ -43,7 +43,7 @@ function db_test()
         }
     } else {
         $out .= '
-                    <div class="notreadable">There was an error while connection to the database<br>'.$mysqli_test->connect_error.'</div>
+                    <div class="notreadable">There was an error while connection to the database<br>' . $mysqli_test->connect_error . '</div>
                 </fieldset>
                 <div class="info" style="text-align:center;">
                     <input type="button" value="Reload" onclick="window.location.reload()" />
@@ -61,9 +61,9 @@ function db_insert()
 {
     global $root, $public;
 
-    require_once $root.'include'.DIRECTORY_SEPARATOR.'define.php';
-    require_once INCL_DIR.'config.php';
-    require_once VENDOR_DIR.'autoload.php';
+    require_once $root . 'include' . DIRECTORY_SEPARATOR . 'define.php';
+    require_once INCL_DIR . 'config.php';
+    require_once VENDOR_DIR . 'autoload.php';
 
     $dotenv = new Dotenv\Dotenv(ROOT_DIR);
     $dotenv->load();
@@ -71,9 +71,9 @@ function db_insert()
     $out = '<fieldset><legend>Database</legend>';
 
     $timestamp = strtotime('today midnight');
-    $sources = [
-        'schema' => "source {$public}install/extra/schema.php.sql",
-        'data' => "source {$public}install/extra/data.php.sql",
+    $sources   = [
+        'schema'     => "source {$public}install/extra/schema.php.sql",
+        'data'       => "source {$public}install/extra/data.php.sql",
         'timestamps' => "UPDATE cleanup SET clean_time = $timestamp",
     ];
     $fail = '';

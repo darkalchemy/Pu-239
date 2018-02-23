@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 $lang = load_language('global');
 
@@ -25,9 +25,9 @@ $list = $site_config['arcade_games_names'];
 sort($list);
 $i = 0;
 foreach ($list as $gamename) {
-    $id = $i++;
-    $game_id = array_search($gamename, $site_config['arcade_games_names']);
-    $game = $site_config['arcade_games'][$game_id];
+    $id           = $i++;
+    $game_id      = array_search($gamename, $site_config['arcade_games_names']);
+    $game         = $site_config['arcade_games'][$game_id];
     $fullgamename = $site_config['arcade_games_names'][$game_id];
     $HTMLOUT .= "
                 <div class='margin10 w-20'>
@@ -39,4 +39,4 @@ foreach ($list as $gamename) {
 $HTMLOUT .= '
             </div>';
 
-echo stdhead('Arcade').wrapper($HTMLOUT).stdfoot();
+echo stdhead('Arcade') . wrapper($HTMLOUT) . stdfoot();

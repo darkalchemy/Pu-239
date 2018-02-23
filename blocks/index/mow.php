@@ -51,19 +51,19 @@ foreach ($motw as $m_w) {
     extract($m_w);
     $torrname = htmlsafechars($name);
     if (strlen($torrname) > 75) {
-        $torrname = substr($torrname, 0, 50).'...';
+        $torrname = substr($torrname, 0, 50) . '...';
     }
-    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='".image_proxy($poster)."' class='tooltip-poster' />";
+    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . image_proxy($poster) . "' class='tooltip-poster' />";
 
     if ('yes' == $anonymous && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
-        $uploader = '<span>'.get_anonymous_name().'</span>';
+        $uploader = '<span>' . get_anonymous_name() . '</span>';
     } else {
-        $uploader = "<span class='".get_user_class_name($class, true)."'>".htmlsafechars($username).'</span>';
+        $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . '</span>';
     }
 
     $HTMLOUT .= "
                         <tr>
-                            <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}caticons/".get_category_icons()."/{$image}' class='tooltipper' alt='{$cat}' title='{$cat}' /></td>
+                            <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$image}' class='tooltipper' alt='{$cat}' title='{$cat}' /></td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
                                     <span class='dt-tooltipper-large' data-tooltip-content='#mow_id_{$id}_tooltip'>
@@ -75,10 +75,10 @@ foreach ($motw as $m_w) {
                                                         $poster
                                                     </span>
                                                     <span class='margin10'>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>".htmlsafechars($name)."<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($name) . "<br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b>$uploader<br>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>".get_date($added, 'DATE', 0, 1)."<br>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>".mksize(htmlsafechars($size))."<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($added, 'DATE', 0, 1) . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($size)) . "<br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>{$seeders}<br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_leecher']}</b>{$leechers}<br>
                                                     </span>

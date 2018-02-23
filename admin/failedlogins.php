@@ -1,17 +1,17 @@
 <?php
 
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once INCL_DIR.'pager_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'pager_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang, $session;
 
 $HTMLOUT = '';
-$lang = array_merge($lang, load_language('failedlogins'));
-$mode = (isset($_GET['mode']) ? $_GET['mode'] : '');
-$id = isset($_GET['id']) ? (int) $_GET['id'] : '';
+$lang    = array_merge($lang, load_language('failedlogins'));
+$mode    = (isset($_GET['mode']) ? $_GET['mode'] : '');
+$id      = isset($_GET['id']) ? (int) $_GET['id'] : '';
 /**
  * @param $id
  *
@@ -29,24 +29,24 @@ function validate($id)
 
 if ('ban' == $mode) {
     validate($id);
-    sql_query("UPDATE failedlogins SET banned = 'yes' WHERE id = ".sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    sql_query("UPDATE failedlogins SET banned = 'yes' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $session->set('is-warning', $lang['failed_message_ban']);
     unset($_POST);
 }
 if ('removeban' == $mode) {
     validate($id);
-    sql_query("UPDATE failedlogins SET banned = 'no' WHERE id = ".sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    sql_query("UPDATE failedlogins SET banned = 'no' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $session->set('is-success', $lang['failed_message_unban']);
     unset($_POST);
 }
 if ('delete' == $mode) {
     validate($id);
-    sql_query('DELETE FROM failedlogins WHERE id='.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    sql_query('DELETE FROM failedlogins WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $session->set('is-success', $lang['failed_message_deleted']);
     unset($_POST);
 }
 
-$where = '';
+$where  = '';
 $search = isset($_POST['search']) ? strip_tags($_POST['search']) : '';
 if (isset($_GET['search'])) {
     $search = strip_tags($_GET['search']);
@@ -54,15 +54,15 @@ if (isset($_GET['search'])) {
 if (!$search) {
     $where = '';
 } else {
-    $where = 'WHERE INET6_NTOA(f.ip) = '.sqlesc($search);
+    $where = 'WHERE INET6_NTOA(f.ip) = ' . sqlesc($search);
 }
 
-$sql = "SELECT COUNT(id) AS count FROM failedlogins AS f $where";
-$res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-$row = mysqli_fetch_assoc($res);
-$count = $row['count'];
+$sql     = "SELECT COUNT(id) AS count FROM failedlogins AS f $where";
+$res     = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+$row     = mysqli_fetch_assoc($res);
+$count   = $row['count'];
 $perpage = 15;
-$pager = pager($perpage, $count, $site_config['baseurl'].'/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;'.(!empty($search) ? "search=$search&amp;" : '').'');
+$pager   = pager($perpage, $count, $site_config['baseurl'] . '/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;' . (!empty($search) ? "search=$search&amp;" : '') . '');
 if (!$where && 0 === $count) {
     stderr($lang['failed_main_nofail'], $lang['failed_main_nofail_msg']);
 }
@@ -75,7 +75,7 @@ $HTMLOUT = main_div("
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$sql = "SELECT f.*, INET6_NTOA(f.ip) AS ip, u.id as uid, u.username FROM failedlogins as f LEFT JOIN users as u ON u.ip = f.ip $where ORDER BY f.added DESC ".$pager['limit'];
+$sql = "SELECT f.*, INET6_NTOA(f.ip) AS ip, u.id as uid, u.username FROM failedlogins as f LEFT JOIN users as u ON u.ip = f.ip $where ORDER BY f.added DESC " . $pager['limit'];
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 if (0 == mysqli_num_rows($res)) {
     $HTMLOUT .= main_div("<h3 class='has-text-centered'>{$lang['failed_message_nothing']}</h3>", 'top20');
@@ -93,19 +93,19 @@ if (0 == mysqli_num_rows($res)) {
         $body .= "
         <tr>
             <td class='has-text-centered'>{$arr['id']}</td>
-            <td>".htmlsafechars($arr['ip']).' '.((int) $arr['uid'] ? format_username($arr['uid']) : '')."</td>
-            <td class='has-text-centered'>".get_date($arr['added'], '', 1, 0)."</td>
-            <td class='has-text-centered'>".(int) $arr['attempts'].'</td>
-            <td>'.('yes' == $arr['banned'] ? "
+            <td>" . htmlsafechars($arr['ip']) . ' ' . ((int) $arr['uid'] ? format_username($arr['uid']) : '') . "</td>
+            <td class='has-text-centered'>" . get_date($arr['added'], '', 1, 0) . "</td>
+            <td class='has-text-centered'>" . (int) $arr['attempts'] . '</td>
+            <td>' . ('yes' == $arr['banned'] ? "
                 <span class='has-text-red'>{$lang['failed_main_banned']}</span> 
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=removeban&amp;id=".(int) $arr['id']."'> 
+                <a href='{$site_config['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=removeban&amp;id=" . (int) $arr['id'] . "'> 
                     <span class='has-text-green'>[{$lang['failed_main_remban']}]</span>
                 </a>" : "
                 <span class='has-text-green'>{$lang['failed_main_noban']}</span> 
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=ban&amp;id=".(int) $arr['id']."'>
+                <a href='{$site_config['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=ban&amp;id=" . (int) $arr['id'] . "'>
                     <span class='has-text-danger'>[{$lang['failed_main_ban']}]</span>
-                </a>")."  
-                <a onclick=\"return confirm('{$lang['failed_main_delmessage']}');\" href='{$site_config['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=delete&amp;id=".(int) $arr['id']."'>
+                </a>") . "  
+                <a onclick=\"return confirm('{$lang['failed_main_delmessage']}');\" href='{$site_config['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=delete&amp;id=" . (int) $arr['id'] . "'>
                     [{$lang['failed_main_delete']}]
                 </a>
             </td>
@@ -117,4 +117,4 @@ if (0 == mysqli_num_rows($res)) {
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($lang['failed_main_logins']).wrapper($HTMLOUT).stdfoot();
+echo stdhead($lang['failed_main_logins']) . wrapper($HTMLOUT) . stdfoot();

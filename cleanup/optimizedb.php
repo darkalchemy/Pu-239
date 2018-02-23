@@ -8,12 +8,12 @@ function optimizedb($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    $sql = sql_query("SHOW TABLE STATUS FROM {$_ENV['DB_DATABASE']} WHERE Data_free > 1000");
-    $oht = '';
+    $sql    = sql_query("SHOW TABLE STATUS FROM {$_ENV['DB_DATABASE']} WHERE Data_free > 1000");
+    $oht    = '';
     $tables = [];
 
     while ($row = mysqli_fetch_assoc($sql)) {
-        $oht .= $row['Name'].',';
+        $oht .= $row['Name'] . ',';
         $tables[] = $row['Name'];
     }
     $oht = rtrim($oht, ',');
@@ -24,6 +24,6 @@ function optimizedb($data)
         write_log("Auto Optimize DB Cleanup: Completed using $queries queries");
     }
     if ($data['clean_log'] && '' != $oht) {
-        write_log('MySQL Optimized '.count($tables).' table'.plural(count($tables)).": {$oht}");
+        write_log('MySQL Optimized ' . count($tables) . ' table' . plural(count($tables)) . ": {$oht}");
     }
 }

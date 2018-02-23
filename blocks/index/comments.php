@@ -1,6 +1,6 @@
 <?php
 
-require_once INCL_DIR.'html_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 global $lang, $site_config, $fluent, $cache;
 
 $comments = $cache->get('latest_comments_');
@@ -52,18 +52,18 @@ if (!$comments) {
 foreach ($comments as $comment) {
     $user = $torrent = $id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = '';
     extract($comment);
-    $user = 'yes' === $anonymous ? 'Anonymous' : format_username($user);
-    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='".htmlsafechars($poster)."' class='tooltip-poster' />";
+    $user   = 'yes' === $anonymous ? 'Anonymous' : format_username($user);
+    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . htmlsafechars($poster) . "' class='tooltip-poster' />";
 
     $body .= "
                         <tr>
                             <td class='has-text-centered'>
-                                <img src='{$site_config['pic_baseurl']}caticons/".get_category_icons()."/$image' class='tooltipper' alt='$cat' title='$cat' />
+                                <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/$image' class='tooltipper' alt='$cat' title='$cat' />
                             </td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id=$torrent&amp;hit=1'>
                                     <div class='dt-tooltipper-large' data-tooltip-content='#comment_id_{$id}_tooltip'>
-                                        ".format_comment($text)."
+                                        " . format_comment($text) . "
                                         <div class='tooltip_templates'>
                                             <span id='comment_id_{$id}_tooltip'>
                                                 <div class='is-flex tooltip-torrent'>
@@ -71,12 +71,12 @@ foreach ($comments as $comment) {
                                                         $poster
                                                     </span>
                                                     <span class='margin10'>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>".htmlsafechars($name)."<br>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b><span class='".get_user_class_name($class, true)."'>".htmlsafechars($username)."</span><br>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>".get_date($toradd, 'DATE', 0, 1)."<br>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>".mksize(htmlsafechars($size))."<br>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>".(int) $seeders."<br>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_leecher']}</b>".(int) $leechers."<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($name) . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b><span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . "</span><br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($toradd, 'DATE', 0, 1) . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($size)) . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>" . (int) $seeders . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_leecher']}</b>" . (int) $leechers . "<br>
                                                     </span>
                                                 </div>
                                             </span>
@@ -85,8 +85,8 @@ foreach ($comments as $comment) {
                                 </a>
                             </td>
                             <td class='has-text-centered'>$user</td>
-                            <td class='has-text-centered'>".get_date($added, 'LONG')."</td>
-                            <td class='has-text-centered'>".number_format($user_likes).'</td>
+                            <td class='has-text-centered'>" . get_date($added, 'LONG') . "</td>
+                            <td class='has-text-centered'>" . number_format($user_likes) . '</td>
                         </tr>';
 }
 

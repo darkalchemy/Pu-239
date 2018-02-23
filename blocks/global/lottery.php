@@ -23,13 +23,13 @@ if ($CURUSER) {
                     <div>
                         <div class='size_4 has-text-centered has-text-success bottom10'>Lottery Info</div>
                         <div class='level is-marginless'>
-                            <span>Started at: </span><span>".get_date($lottery_info['start_date'], 'LONG')."</span>
+                            <span>Started at: </span><span>" . get_date($lottery_info['start_date'], 'LONG') . "</span>
                         </div>
                         <div class='level is-marginless'>
-                            <span>Ends at:&#160;&#160;&#160;&#160;&#160;&#160;</span><span>".get_date($lottery_info['end_date'], 'LONG')."</span>
+                            <span>Ends at:&#160;&#160;&#160;&#160;&#160;&#160;</span><span>" . get_date($lottery_info['end_date'], 'LONG') . "</span>
                         </div>
                         <div class='level is-marginless'>
-                            <span>Remaining: </span><span>".mkprettytime($lottery_info['end_date'] - TIME_NOW).'</span>
+                            <span>Remaining: </span><span>" . mkprettytime($lottery_info['end_date'] - TIME_NOW) . '</span>
                         </div>
                     </div>
                 </span>

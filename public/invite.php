@@ -1,9 +1,9 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once INCL_DIR.'password_functions.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'password_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $fluent, $cache, $session;
 
@@ -12,8 +12,8 @@ $lang = array_merge(load_language('global'), load_language('invite_code'));
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
 
-$HTMLOUT = $sure = '';
-$do = (isset($_GET['do']) ? htmlsafechars($_GET['do']) : (isset($_POST['do']) ? htmlsafechars($_POST['do']) : ''));
+$HTMLOUT       = $sure       = '';
+$do            = (isset($_GET['do']) ? htmlsafechars($_GET['do']) : (isset($_POST['do']) ? htmlsafechars($_POST['do']) : ''));
 $valid_actions = [
     'create_invite',
     'delete_invite',
@@ -50,8 +50,8 @@ if ('view_page' == $do) {
                     <tr>
                         <th>{$lang['invites_username']}</th>
                         <th>{$lang['invites_uploaded']}</th>
-                        ".($site_config['ratio_free'] ? '' : "
-                        <th>{$lang['invites_downloaded']}</th>")."
+                        " . ($site_config['ratio_free'] ? '' : "
+                        <th>{$lang['invites_downloaded']}</th>") . "
                         <th>{$lang['invites_ratio']}</th>
                         <th>{$lang['invites_status']}</th>
                         <th>{$lang['invites_confirm']}</th>
@@ -65,15 +65,15 @@ if ('view_page' == $do) {
             }
             $body .= "
                     <tr>
-                        <td class='level-left'>".format_username($row['id']).'</td>
-                        <td>'.mksize($row['uploaded']).'</td>'.($site_config['ratio_free'] ? '' : '
-                        <td>'.mksize($row['downloaded']).'</td>')."
+                        <td class='level-left'>" . format_username($row['id']) . '</td>
+                        <td>' . mksize($row['uploaded']) . '</td>' . ($site_config['ratio_free'] ? '' : '
+                        <td>' . mksize($row['downloaded']) . '</td>') . "
                         <td>{$ratio}</td>
                         <td>{$status}</td>";
             if ('pending' == $row['status']) {
                 $body .= "
                         <td>
-                            <a {$site_config['baseurl']}/invite.php?do=confirm_account&amp;userid=".(int) $row['id'].'&amp;sender='.(int) $CURUSER['id']."'>
+                            <a {$site_config['baseurl']}/invite.php?do=confirm_account&amp;userid=" . (int) $row['id'] . '&amp;sender=' . (int) $CURUSER['id'] . "'>
                                 <img src='{$site_config['pic_baseurl']}confirm.png' alt='confirm' class='tooltipper' title='Confirm' />
                             </a>
                         </td>
@@ -87,8 +87,8 @@ if ('view_page' == $do) {
     }
 
     $HTMLOUT .= main_table($body, $heading);
-    $body = $heading = '';
-    $select = sql_query('SELECT * FROM invite_codes WHERE sender = '.sqlesc($CURUSER['id'])." AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
+    $body    = $heading    = '';
+    $select  = sql_query('SELECT * FROM invite_codes WHERE sender = ' . sqlesc($CURUSER['id']) . " AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
     $num_row = mysqli_num_rows($select);
     $HTMLOUT .= "<h1 class='has-text-centered top20'>{$lang['invites_codes']}</h1>";
     if (!$num_row) {
@@ -108,36 +108,36 @@ if ('view_page' == $do) {
         for ($i = 0; $i < $num_row; ++$i) {
             $fetch_assoc = mysqli_fetch_assoc($select);
             $can_send_it = empty($fetch_assoc['email']) ? "
-                            <a href='{$site_config['baseurl']}/invite.php?do=send_email&amp;id=".(int) $fetch_assoc['id']."' class='tooltipper' title='Send Email'>
-                                <i class='icon-mail' aria-hidden='true'></i>".htmlsafechars($fetch_assoc['code']).'
+                            <a href='{$site_config['baseurl']}/invite.php?do=send_email&amp;id=" . (int) $fetch_assoc['id'] . "' class='tooltipper' title='Send Email'>
+                                <i class='icon-mail' aria-hidden='true'></i>" . htmlsafechars($fetch_assoc['code']) . '
                             </a>' : "
                             <span class='tooltipper' title='Email Sent'>
-                                ".htmlsafechars($fetch_assoc['code']).'
+                                " . htmlsafechars($fetch_assoc['code']) . '
                             </span>';
 
             $body .= "
                     <tr>
                         <td>$can_send_it</td>
                         <td class='has-text-centered'>
-                            <span>".(!empty($fetch_assoc['email']) ? htmlsafechars($fetch_assoc['email']) : '---')."</span>
+                            <span>" . (!empty($fetch_assoc['email']) ? htmlsafechars($fetch_assoc['email']) : '---') . "</span>
                         </td>
-                        <td class='has-text-centered'>".get_date($fetch_assoc['added'], '', 0, 1)."</td>
+                        <td class='has-text-centered'>" . get_date($fetch_assoc['added'], '', 0, 1) . "</td>
                         <td class='has-text-centered'>
-                            <a href='{$site_config['baseurl']}/invite.php?do=delete_invite&amp;id=".(int) $fetch_assoc['id'].'&amp;sender='.(int) $CURUSER['id']."' class='tooltipper' title='Delete'>
+                            <a href='{$site_config['baseurl']}/invite.php?do=delete_invite&amp;id=" . (int) $fetch_assoc['id'] . '&amp;sender=' . (int) $CURUSER['id'] . "' class='tooltipper' title='Delete'>
                                 <i class='icon-cancel'></i>
                             </a>
                         </td>
-                        <td class='has-text-centered'>".htmlsafechars($fetch_assoc['status']).'</td>
+                        <td class='has-text-centered'>" . htmlsafechars($fetch_assoc['status']) . '</td>
                     </tr>';
         }
     }
-    $HTMLOUT .= main_table($body, $heading)."
+    $HTMLOUT .= main_table($body, $heading) . "
             <form action='?do=create_invite' method='post'>
                 <div class='has-text-centered margin20'>
                     <input type='submit' class='button is-small' value='{$lang['invites_create']}' />
                 </div>
             </form>";
-    echo stdhead('Invites').wrapper($HTMLOUT).stdfoot();
+    echo stdhead('Invites') . wrapper($HTMLOUT) . stdfoot();
     die();
 } elseif ('create_invite' == $do) {
     if ($CURUSER['invites'] <= 0) {
@@ -155,8 +155,8 @@ if ('view_page' == $do) {
 
     $values = [
         'sender' => $CURUSER['id'],
-        'code' => $token,
-        'added' => TIME_NOW,
+        'code'   => $token,
+        'added'  => TIME_NOW,
     ];
     $fluent->insertInto('invite_codes')
         ->values($values)
@@ -171,13 +171,13 @@ if ('view_page' == $do) {
         ->execute();
 
     $update['invites'] = ($CURUSER['invites'] - 1);
-    $cache->update_row('user'.$CURUSER['id'], [
+    $cache->update_row('user' . $CURUSER['id'], [
         'invites' => $update['invites'],
     ], $site_config['expires']['user_cache']);
     header('Location: ?do=view_page');
 } elseif ('send_email' == $do) {
     if ('POST' == $_SERVER['REQUEST_METHOD']) {
-        $email = (isset($_POST['email']) ? htmlsafechars($_POST['email']) : '');
+        $email  = (isset($_POST['email']) ? htmlsafechars($_POST['email']) : '');
         $invite = (isset($_POST['code']) ? htmlsafechars($_POST['code']) : '');
         $secret = (isset($_POST['secret']) ? htmlsafechars($_POST['secret']) : '');
         if (!$email) {
@@ -200,7 +200,7 @@ if ('view_page' == $do) {
             ->execute();
 
         $inviter = htmlsafechars($CURUSER['username']);
-        $body = "<html>
+        $body    = "<html>
 <head>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
     <title>{$site_config['site_name']} Invitation</title>
@@ -229,7 +229,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
             ->setSubject("You have been invited to {$site_config['site_name']}")
             ->setHtmlBody($body);
 
-        $mailer = new SendmailMailer();
+        $mailer              = new SendmailMailer();
         $mailer->commandArgs = "-f{$site_config['site_email']}";
         $mailer->send($mail);
 
@@ -265,23 +265,23 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
                     </thead>
                 </table>
                 <div class='has-text-centered margin20'>
-                    <input type='hidden' name='code' value='".htmlsafechars($fetch['code'])."' />
-                    <input type='hidden' name='secret' value='".htmlsafechars($fetch['id'])."' />
+                    <input type='hidden' name='code' value='" . htmlsafechars($fetch['code']) . "' />
+                    <input type='hidden' name='secret' value='" . htmlsafechars($fetch['id']) . "' />
                     <input type='submit' value='Send e-mail' class='button is-small' />
                 </div>
             </form>
         </div>";
-    echo stdhead('Invites').$HTMLOUT.stdfoot();
+    echo stdhead('Invites') . $HTMLOUT . stdfoot();
 } elseif ('delete_invite' == $do) {
-    $id = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : ''));
-    $query = sql_query('SELECT * FROM invite_codes WHERE id = '.sqlesc($id).' AND sender = '.sqlesc($CURUSER['id']).' AND status = "pending"') or sqlerr(__FILE__, __LINE__);
+    $id    = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : ''));
+    $query = sql_query('SELECT * FROM invite_codes WHERE id = ' . sqlesc($id) . ' AND sender = ' . sqlesc($CURUSER['id']) . ' AND status = "pending"') or sqlerr(__FILE__, __LINE__);
     $assoc = mysqli_fetch_assoc($query);
     if (!$assoc) {
         stderr($lang['invites_error'], $lang['invites_noexsist']);
     }
     isset($_GET['sure']) && $sure = htmlsafechars($_GET['sure']);
     if (!$sure) {
-        stderr($lang['invites_delete1'], $lang['invites_sure'].' Click <a href="'.$_SERVER['PHP_SELF'].'?do=delete_invite&amp;id='.$id.'&amp;sender='.$CURUSER['id'].'&amp;sure=yes">here</a> to delete it or <a href="?do=view_page">here</a> to go back.');
+        stderr($lang['invites_delete1'], $lang['invites_sure'] . ' Click <a href="' . $_SERVER['PHP_SELF'] . '?do=delete_invite&amp;id=' . $id . '&amp;sender=' . $CURUSER['id'] . '&amp;sure=yes">here</a> to delete it or <a href="?do=view_page">here</a> to go back.');
     }
     $fluent->deleteFrom('invite_codes')
         ->where('id = ?', $id)
@@ -299,7 +299,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
         ->execute();
     $update['invites'] = ($CURUSER['invites'] + 1);
 
-    $cache->update_row('user'.$CURUSER['id'], [
+    $cache->update_row('user' . $CURUSER['id'], [
         'invites' => $update['invites'],
     ], $site_config['expires']['user_cache']);
     header('Location: ?do=view_page');
@@ -309,18 +309,18 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
         stderr($lang['invites_error'], $lang['invites_invalid']);
     }
 
-    $select = sql_query('SELECT id, username FROM users WHERE id = '.sqlesc($userid).' AND invitedby = '.sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    $assoc = mysqli_fetch_assoc($select);
+    $select = sql_query('SELECT id, username FROM users WHERE id = ' . sqlesc($userid) . ' AND invitedby = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    $assoc  = mysqli_fetch_assoc($select);
     if (!$assoc) {
         stderr($lang['invites_error'], $lang['invites_errorid']);
     }
     isset($_GET['sure']) && $sure = htmlsafechars($_GET['sure']);
     if (!$sure) {
-        stderr($lang['invites_confirm1'], $lang['invites_sure1'].' '.htmlsafechars($assoc['username']).'\'s account? Click <a href="?do=confirm_account&amp;userid='.$userid.'&amp;sender='.(int) $CURUSER['id'].'&amp;sure=yes">here</a> to confirm it or <a href="?do=view_page">here</a> to go back.');
+        stderr($lang['invites_confirm1'], $lang['invites_sure1'] . ' ' . htmlsafechars($assoc['username']) . '\'s account? Click <a href="?do=confirm_account&amp;userid=' . $userid . '&amp;sender=' . (int) $CURUSER['id'] . '&amp;sure=yes">here</a> to confirm it or <a href="?do=view_page">here</a> to go back.');
     }
-    sql_query('UPDATE users SET status = "confirmed" WHERE id = '.sqlesc($userid).' AND invitedby = '.sqlesc($CURUSER['id']).' AND status="pending"') or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE users SET status = "confirmed" WHERE id = ' . sqlesc($userid) . ' AND invitedby = ' . sqlesc($CURUSER['id']) . ' AND status="pending"') or sqlerr(__FILE__, __LINE__);
 
-    $cache->update_row('user'.$userid, [
+    $cache->update_row('user' . $userid, [
         'status' => 'confirmed',
     ], $site_config['expires']['user_cache']);
 
@@ -335,10 +335,10 @@ Just for kicks, we've started you out with 200.0 Karma Bonus Points, and a coupl
 so, enjoy\n  
 cheers,\n 
 {$site_config['site_name']} Staff.\n");
-    $id = (int) $assoc['id'];
+    $id      = (int) $assoc['id'];
     $subject = sqlesc("Welcome to {$site_config['site_name']} !");
-    $added = TIME_NOW;
-    sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, ".sqlesc($id).", $msg, $added)") or sqlerr(__FILE__, __LINE__);
+    $added   = TIME_NOW;
+    sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($id) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
     ///////////////////end////////////
     header('Location: ?do=view_page');
 }

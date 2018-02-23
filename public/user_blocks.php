@@ -1,24 +1,24 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'html_functions.php';
-require_once INCL_DIR.'user_functions.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $session;
 
 $lang = load_language('global');
-$id = (isset($_GET['id']) ? $_GET['id'] : $CURUSER['id']);
+$id   = (isset($_GET['id']) ? $_GET['id'] : $CURUSER['id']);
 if (!is_valid_id($id) || $CURUSER['class'] < UC_STAFF) {
     $id = $CURUSER['id'];
 }
 if ($CURUSER['class'] < UC_STAFF && 'no' == $CURUSER['got_blocks']) {
     $session->set('is-danger', 'Go to your Karma bonus page and buy this unlock before trying to access it.');
-    header('Location: '.$site_config['baseurl'].'/index.php');
+    header('Location: ' . $site_config['baseurl'] . '/index.php');
     die();
 }
 
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
-    $updateset = [];
+    $updateset          = [];
     $setbits_index_page = $clrbits_index_page = $setbits_global_stdhead = $clrbits_global_stdhead = $setbits_userdetails_page = $clrbits_userdetails_page = 0;
     //==Index
     if (isset($_POST['ie_alert'])) {
@@ -351,102 +351,102 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     }
     //== set n clear
     if ($setbits_index_page) {
-        $updateset[] = 'index_page = (index_page | '.$setbits_index_page.')';
+        $updateset[] = 'index_page = (index_page | ' . $setbits_index_page . ')';
     }
     if ($clrbits_index_page) {
-        $updateset[] = 'index_page = (index_page & ~'.$clrbits_index_page.')';
+        $updateset[] = 'index_page = (index_page & ~' . $clrbits_index_page . ')';
     }
     if ($setbits_global_stdhead) {
-        $updateset[] = 'global_stdhead = (global_stdhead | '.$setbits_global_stdhead.')';
+        $updateset[] = 'global_stdhead = (global_stdhead | ' . $setbits_global_stdhead . ')';
     }
     if ($clrbits_global_stdhead) {
-        $updateset[] = 'global_stdhead = (global_stdhead & ~'.$clrbits_global_stdhead.')';
+        $updateset[] = 'global_stdhead = (global_stdhead & ~' . $clrbits_global_stdhead . ')';
     }
     if ($setbits_userdetails_page) {
-        $updateset[] = 'userdetails_page = (userdetails_page | '.$setbits_userdetails_page.')';
+        $updateset[] = 'userdetails_page = (userdetails_page | ' . $setbits_userdetails_page . ')';
     }
     if ($clrbits_userdetails_page) {
-        $updateset[] = 'userdetails_page = (userdetails_page & ~'.$clrbits_userdetails_page.')';
+        $updateset[] = 'userdetails_page = (userdetails_page & ~' . $clrbits_userdetails_page . ')';
     }
     if (!empty($updateset) && count($updateset)) {
-        sql_query('UPDATE user_blocks SET '.implode(',', $updateset).' WHERE userid = '.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $cache->delete('blocks_'.$id);
+        sql_query('UPDATE user_blocks SET ' . implode(',', $updateset) . ' WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $cache->delete('blocks_' . $id);
         $session->set('is-success', 'User Blocks Successfully Updated');
         unset($_POST);
-        header('Location: '.$site_config['baseurl'].'/user_blocks.php');
+        header('Location: ' . $site_config['baseurl'] . '/user_blocks.php');
         die();
     }
 }
 
 //==Index
-$checkbox_index_ie_alert = ((curuser::$blocks['index_page'] & block_index::IE_ALERT) ? ' checked' : '');
-$checkbox_index_news = ((curuser::$blocks['index_page'] & block_index::NEWS) ? ' checked' : '');
-$checkbox_index_ajaxchat = ((curuser::$blocks['index_page'] & block_index::AJAXCHAT) ? ' checked' : '');
-$checkbox_index_active_users = ((curuser::$blocks['index_page'] & block_index::ACTIVE_USERS) ? ' checked' : '');
-$checkbox_index_trivia = ((curuser::$blocks['index_page'] & block_index::TRIVIA) ? ' checked' : '');
-$checkbox_index_active_24h_users = ((curuser::$blocks['index_page'] & block_index::LAST_24_ACTIVE_USERS) ? ' checked' : '');
-$checkbox_index_active_irc_users = ((curuser::$blocks['index_page'] & block_index::IRC_ACTIVE_USERS) ? ' checked' : '');
-$checkbox_index_active_birthday_users = ((curuser::$blocks['index_page'] & block_index::BIRTHDAY_ACTIVE_USERS) ? ' checked' : '');
-$checkbox_index_stats = ((curuser::$blocks['index_page'] & block_index::STATS) ? ' checked' : '');
-$checkbox_index_disclaimer = ((curuser::$blocks['index_page'] & block_index::DISCLAIMER) ? ' checked' : '');
-$checkbox_index_latest_user = ((curuser::$blocks['index_page'] & block_index::LATEST_USER) ? ' checked' : '');
-$checkbox_index_latest_comments = ((curuser::$blocks['index_page'] & block_index::LATESTCOMMENTS) ? ' checked' : '');
-$checkbox_index_latest_forumposts = ((curuser::$blocks['index_page'] & block_index::FORUMPOSTS) ? ' checked' : '');
-$checkbox_index_latest_torrents = ((curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS) ? ' checked' : '');
+$checkbox_index_ie_alert               = ((curuser::$blocks['index_page'] & block_index::IE_ALERT) ? ' checked' : '');
+$checkbox_index_news                   = ((curuser::$blocks['index_page'] & block_index::NEWS) ? ' checked' : '');
+$checkbox_index_ajaxchat               = ((curuser::$blocks['index_page'] & block_index::AJAXCHAT) ? ' checked' : '');
+$checkbox_index_active_users           = ((curuser::$blocks['index_page'] & block_index::ACTIVE_USERS) ? ' checked' : '');
+$checkbox_index_trivia                 = ((curuser::$blocks['index_page'] & block_index::TRIVIA) ? ' checked' : '');
+$checkbox_index_active_24h_users       = ((curuser::$blocks['index_page'] & block_index::LAST_24_ACTIVE_USERS) ? ' checked' : '');
+$checkbox_index_active_irc_users       = ((curuser::$blocks['index_page'] & block_index::IRC_ACTIVE_USERS) ? ' checked' : '');
+$checkbox_index_active_birthday_users  = ((curuser::$blocks['index_page'] & block_index::BIRTHDAY_ACTIVE_USERS) ? ' checked' : '');
+$checkbox_index_stats                  = ((curuser::$blocks['index_page'] & block_index::STATS) ? ' checked' : '');
+$checkbox_index_disclaimer             = ((curuser::$blocks['index_page'] & block_index::DISCLAIMER) ? ' checked' : '');
+$checkbox_index_latest_user            = ((curuser::$blocks['index_page'] & block_index::LATEST_USER) ? ' checked' : '');
+$checkbox_index_latest_comments        = ((curuser::$blocks['index_page'] & block_index::LATESTCOMMENTS) ? ' checked' : '');
+$checkbox_index_latest_forumposts      = ((curuser::$blocks['index_page'] & block_index::FORUMPOSTS) ? ' checked' : '');
+$checkbox_index_latest_torrents        = ((curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS) ? ' checked' : '');
 $checkbox_index_latest_torrents_scroll = ((curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SCROLL) ? ' checked' : '');
-$checkbox_index_announcement = ((curuser::$blocks['index_page'] & block_index::ANNOUNCEMENT) ? ' checked' : '');
-$checkbox_index_donation_progress = ((curuser::$blocks['index_page'] & block_index::DONATION_PROGRESS) ? ' checked' : '');
-$checkbox_index_ads = ((curuser::$blocks['index_page'] & block_index::ADVERTISEMENTS) ? ' checked' : '');
-$checkbox_index_radio = ((curuser::$blocks['index_page'] & block_index::RADIO) ? ' checked' : '');
-$checkbox_index_torrentfreak = ((curuser::$blocks['index_page'] & block_index::TORRENTFREAK) ? ' checked' : '');
-$checkbox_index_christmasgift = ((curuser::$blocks['index_page'] & block_index::CHRISTMAS_GIFT) ? ' checked' : '');
-$checkbox_index_active_poll = ((curuser::$blocks['index_page'] & block_index::ACTIVE_POLL) ? ' checked' : '');
-$checkbox_index_mow = ((curuser::$blocks['index_page'] & block_index::MOVIEOFWEEK) ? ' checked' : '');
+$checkbox_index_announcement           = ((curuser::$blocks['index_page'] & block_index::ANNOUNCEMENT) ? ' checked' : '');
+$checkbox_index_donation_progress      = ((curuser::$blocks['index_page'] & block_index::DONATION_PROGRESS) ? ' checked' : '');
+$checkbox_index_ads                    = ((curuser::$blocks['index_page'] & block_index::ADVERTISEMENTS) ? ' checked' : '');
+$checkbox_index_radio                  = ((curuser::$blocks['index_page'] & block_index::RADIO) ? ' checked' : '');
+$checkbox_index_torrentfreak           = ((curuser::$blocks['index_page'] & block_index::TORRENTFREAK) ? ' checked' : '');
+$checkbox_index_christmasgift          = ((curuser::$blocks['index_page'] & block_index::CHRISTMAS_GIFT) ? ' checked' : '');
+$checkbox_index_active_poll            = ((curuser::$blocks['index_page'] & block_index::ACTIVE_POLL) ? ' checked' : '');
+$checkbox_index_mow                    = ((curuser::$blocks['index_page'] & block_index::MOVIEOFWEEK) ? ' checked' : '');
 //==Stdhead
-$checkbox_global_freeleech = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH) ? ' checked' : '');
-$checkbox_global_demotion = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_DEMOTION) ? ' checked' : '');
-$checkbox_global_message_alert = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_NEWPM) ? ' checked' : '');
-$checkbox_global_staff_message_alert = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_STAFF_MESSAGE) ? ' checked' : '');
-$checkbox_global_staff_report = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_REPORTS) ? ' checked' : '');
-$checkbox_global_staff_uploadapp = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_UPLOADAPP) ? ' checked' : '');
-$checkbox_global_happyhour = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_HAPPYHOUR) ? ' checked' : '');
-$checkbox_global_crazyhour = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_CRAZYHOUR) ? ' checked' : '');
-$checkbox_global_bugmessage = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_BUG_MESSAGE) ? ' checked' : '');
+$checkbox_global_freeleech              = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH) ? ' checked' : '');
+$checkbox_global_demotion               = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_DEMOTION) ? ' checked' : '');
+$checkbox_global_message_alert          = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_NEWPM) ? ' checked' : '');
+$checkbox_global_staff_message_alert    = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_STAFF_MESSAGE) ? ' checked' : '');
+$checkbox_global_staff_report           = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_REPORTS) ? ' checked' : '');
+$checkbox_global_staff_uploadapp        = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_UPLOADAPP) ? ' checked' : '');
+$checkbox_global_happyhour              = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_HAPPYHOUR) ? ' checked' : '');
+$checkbox_global_crazyhour              = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_CRAZYHOUR) ? ' checked' : '');
+$checkbox_global_bugmessage             = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_BUG_MESSAGE) ? ' checked' : '');
 $checkbox_global_freeleech_contribution = ((curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH_CONTRIBUTION) ? ' checked' : '');
 //==Userdetails
-$checkbox_userdetails_flush = ((curuser::$blocks['userdetails_page'] & block_userdetails::FLUSH) ? ' checked' : '');
-$checkbox_userdetails_joined = ((curuser::$blocks['userdetails_page'] & block_userdetails::JOINED) ? ' checked' : '');
-$checkbox_userdetails_onlinetime = ((curuser::$blocks['userdetails_page'] & block_userdetails::ONLINETIME) ? ' checked' : '');
-$checkbox_userdetails_browser = ((curuser::$blocks['userdetails_page'] & block_userdetails::BROWSER) ? ' checked' : '');
-$checkbox_userdetails_reputation = ((curuser::$blocks['userdetails_page'] & block_userdetails::REPUTATION) ? ' checked' : '');
-$checkbox_userdetails_userhits = ((curuser::$blocks['userdetails_page'] & block_userdetails::PROFILE_HITS) ? ' checked' : '');
-$checkbox_userdetails_birthday = ((curuser::$blocks['userdetails_page'] & block_userdetails::BIRTHDAY) ? ' checked' : '');
-$checkbox_userdetails_contact_info = ((curuser::$blocks['userdetails_page'] & block_userdetails::CONTACT_INFO) ? ' checked' : '');
-$checkbox_userdetails_iphistory = ((curuser::$blocks['userdetails_page'] & block_userdetails::IPHISTORY) ? ' checked' : '');
-$checkbox_userdetails_traffic = ((curuser::$blocks['userdetails_page'] & block_userdetails::TRAFFIC) ? ' checked' : '');
-$checkbox_userdetails_shareratio = ((curuser::$blocks['userdetails_page'] & block_userdetails::SHARE_RATIO) ? ' checked' : '');
-$checkbox_userdetails_seedtime_ratio = ((curuser::$blocks['userdetails_page'] & block_userdetails::SEEDTIME_RATIO) ? ' checked' : '');
-$checkbox_userdetails_seedbonus = ((curuser::$blocks['userdetails_page'] & block_userdetails::SEEDBONUS) ? ' checked' : '');
-$checkbox_userdetails_irc_stats = ((curuser::$blocks['userdetails_page'] & block_userdetails::IRC_STATS) ? ' checked' : '');
-$checkbox_userdetails_connectable = ((curuser::$blocks['userdetails_page'] & block_userdetails::CONNECTABLE_PORT) ? ' checked' : '');
-$checkbox_userdetails_avatar = ((curuser::$blocks['userdetails_page'] & block_userdetails::AVATAR) ? ' checked' : '');
-$checkbox_userdetails_userclass = ((curuser::$blocks['userdetails_page'] & block_userdetails::USERCLASS) ? ' checked' : '');
-$checkbox_userdetails_gender = ((curuser::$blocks['userdetails_page'] & block_userdetails::GENDER) ? ' checked' : '');
-$checkbox_userdetails_freestuffs = ((curuser::$blocks['userdetails_page'] & block_userdetails::FREESTUFFS) ? ' checked' : '');
+$checkbox_userdetails_flush            = ((curuser::$blocks['userdetails_page'] & block_userdetails::FLUSH) ? ' checked' : '');
+$checkbox_userdetails_joined           = ((curuser::$blocks['userdetails_page'] & block_userdetails::JOINED) ? ' checked' : '');
+$checkbox_userdetails_onlinetime       = ((curuser::$blocks['userdetails_page'] & block_userdetails::ONLINETIME) ? ' checked' : '');
+$checkbox_userdetails_browser          = ((curuser::$blocks['userdetails_page'] & block_userdetails::BROWSER) ? ' checked' : '');
+$checkbox_userdetails_reputation       = ((curuser::$blocks['userdetails_page'] & block_userdetails::REPUTATION) ? ' checked' : '');
+$checkbox_userdetails_userhits         = ((curuser::$blocks['userdetails_page'] & block_userdetails::PROFILE_HITS) ? ' checked' : '');
+$checkbox_userdetails_birthday         = ((curuser::$blocks['userdetails_page'] & block_userdetails::BIRTHDAY) ? ' checked' : '');
+$checkbox_userdetails_contact_info     = ((curuser::$blocks['userdetails_page'] & block_userdetails::CONTACT_INFO) ? ' checked' : '');
+$checkbox_userdetails_iphistory        = ((curuser::$blocks['userdetails_page'] & block_userdetails::IPHISTORY) ? ' checked' : '');
+$checkbox_userdetails_traffic          = ((curuser::$blocks['userdetails_page'] & block_userdetails::TRAFFIC) ? ' checked' : '');
+$checkbox_userdetails_shareratio       = ((curuser::$blocks['userdetails_page'] & block_userdetails::SHARE_RATIO) ? ' checked' : '');
+$checkbox_userdetails_seedtime_ratio   = ((curuser::$blocks['userdetails_page'] & block_userdetails::SEEDTIME_RATIO) ? ' checked' : '');
+$checkbox_userdetails_seedbonus        = ((curuser::$blocks['userdetails_page'] & block_userdetails::SEEDBONUS) ? ' checked' : '');
+$checkbox_userdetails_irc_stats        = ((curuser::$blocks['userdetails_page'] & block_userdetails::IRC_STATS) ? ' checked' : '');
+$checkbox_userdetails_connectable      = ((curuser::$blocks['userdetails_page'] & block_userdetails::CONNECTABLE_PORT) ? ' checked' : '');
+$checkbox_userdetails_avatar           = ((curuser::$blocks['userdetails_page'] & block_userdetails::AVATAR) ? ' checked' : '');
+$checkbox_userdetails_userclass        = ((curuser::$blocks['userdetails_page'] & block_userdetails::USERCLASS) ? ' checked' : '');
+$checkbox_userdetails_gender           = ((curuser::$blocks['userdetails_page'] & block_userdetails::GENDER) ? ' checked' : '');
+$checkbox_userdetails_freestuffs       = ((curuser::$blocks['userdetails_page'] & block_userdetails::FREESTUFFS) ? ' checked' : '');
 $checkbox_userdetails_torrent_comments = ((curuser::$blocks['userdetails_page'] & block_userdetails::COMMENTS) ? ' checked' : '');
-$checkbox_userdetails_forumposts = ((curuser::$blocks['userdetails_page'] & block_userdetails::FORUMPOSTS) ? ' checked' : '');
-$checkbox_userdetails_invitedby = ((curuser::$blocks['userdetails_page'] & block_userdetails::INVITEDBY) ? ' checked' : '');
-$checkbox_userdetails_torrents_block = ((curuser::$blocks['userdetails_page'] & block_userdetails::TORRENTS_BLOCK) ? ' checked' : '');
-$checkbox_userdetails_completed = ((curuser::$blocks['userdetails_page'] & block_userdetails::COMPLETED) ? ' checked' : '');
-$checkbox_userdetails_snatched_staff = ((curuser::$blocks['userdetails_page'] & block_userdetails::SNATCHED_STAFF) ? ' checked' : '');
-$checkbox_userdetails_userinfo = ((curuser::$blocks['userdetails_page'] & block_userdetails::USERINFO) ? ' checked' : '');
-$checkbox_userdetails_showpm = ((curuser::$blocks['userdetails_page'] & block_userdetails::SHOWPM) ? ' checked' : '');
-$checkbox_userdetails_report = ((curuser::$blocks['userdetails_page'] & block_userdetails::REPORT_USER) ? ' checked' : '');
-$checkbox_userdetails_userstatus = ((curuser::$blocks['userdetails_page'] & block_userdetails::USERSTATUS) ? ' checked' : '');
-$checkbox_userdetails_usercomments = ((curuser::$blocks['userdetails_page'] & block_userdetails::USERCOMMENTS) ? ' checked' : '');
-$checkbox_userdetails_showfriends = ((curuser::$blocks['userdetails_page'] & block_userdetails::SHOWFRIENDS) ? ' checked' : '');
+$checkbox_userdetails_forumposts       = ((curuser::$blocks['userdetails_page'] & block_userdetails::FORUMPOSTS) ? ' checked' : '');
+$checkbox_userdetails_invitedby        = ((curuser::$blocks['userdetails_page'] & block_userdetails::INVITEDBY) ? ' checked' : '');
+$checkbox_userdetails_torrents_block   = ((curuser::$blocks['userdetails_page'] & block_userdetails::TORRENTS_BLOCK) ? ' checked' : '');
+$checkbox_userdetails_completed        = ((curuser::$blocks['userdetails_page'] & block_userdetails::COMPLETED) ? ' checked' : '');
+$checkbox_userdetails_snatched_staff   = ((curuser::$blocks['userdetails_page'] & block_userdetails::SNATCHED_STAFF) ? ' checked' : '');
+$checkbox_userdetails_userinfo         = ((curuser::$blocks['userdetails_page'] & block_userdetails::USERINFO) ? ' checked' : '');
+$checkbox_userdetails_showpm           = ((curuser::$blocks['userdetails_page'] & block_userdetails::SHOWPM) ? ' checked' : '');
+$checkbox_userdetails_report           = ((curuser::$blocks['userdetails_page'] & block_userdetails::REPORT_USER) ? ' checked' : '');
+$checkbox_userdetails_userstatus       = ((curuser::$blocks['userdetails_page'] & block_userdetails::USERSTATUS) ? ' checked' : '');
+$checkbox_userdetails_usercomments     = ((curuser::$blocks['userdetails_page'] & block_userdetails::USERCOMMENTS) ? ' checked' : '');
+$checkbox_userdetails_showfriends      = ((curuser::$blocks['userdetails_page'] & block_userdetails::SHOWFRIENDS) ? ' checked' : '');
 
-$form = $level1 = $level2 = '';
+$form     = $level1     = $level2     = '';
 $contents = [];
 $form .= "
     <form action='' method='post'>
@@ -666,7 +666,7 @@ $form .= "
 $level2 .= "
                 <div class='level-center is-inline-flex'>";
 
-$contents = [];
+$contents   = [];
 $contents[] = "
                 <div class='w-100'>Freeleech?</div>
                 <div class='slideThree'> 
@@ -772,7 +772,7 @@ $form .= "
 $level3 = "
                 <div class='level-center is-inline-flex'>";
 
-$contents = [];
+$contents   = [];
 $contents[] = "
                 <div class='w-100'>Flush torrents?</div>
                 <div class='slideThree'> <input type='checkbox' id='userdetails_flush' name='userdetails_flush' value='yes' $checkbox_userdetails_flush />
@@ -989,4 +989,4 @@ $form .= '
     </form>';
 
 $HTMLOUT = wrapper($form);
-echo stdhead('User Blocks Config', true).$HTMLOUT.stdfoot();
+echo stdhead('User Blocks Config', true) . $HTMLOUT . stdfoot();

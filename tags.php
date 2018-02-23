@@ -1,9 +1,9 @@
 <?php
 
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'bbcode_functions.php';
-require_once INCL_DIR.'html_functions.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('tags'));
 /**
@@ -18,7 +18,7 @@ $lang = array_merge(load_language('global'), load_language('tags'));
 function insert_tag($name, $description, $syntax, $example, $remarks)
 {
     global $lang;
-    $result = format_comment($example);
+    $result  = format_comment($example);
     $htmlout = '';
     $htmlout .= "<div class='sub'><b>$name</b></div>\n";
     $htmlout .= "<table class='main' width='100%' >\n";
@@ -41,11 +41,11 @@ $test = isset($_POST['test']) ? $_POST['test'] : '';
 $HTMLOUT .= "{$lang['tags_title']}
 
     <form method='post' action='?'>
-    <textarea name='test' cols='60' rows='3'>".($test ? htmlspecialchars($test) : '')."</textarea>
+    <textarea name='test' cols='60' rows='3'>" . ($test ? htmlspecialchars($test) : '') . "</textarea>
     <input type='submit' value='{$lang['tags_test']}' style='height: 23px; margin-left: 5px;' />
     </form>";
 if ('' != $test) {
-    $HTMLOUT .= '<p><hr>'.format_comment($test)."<hr></p>\n";
+    $HTMLOUT .= '<p><hr>' . format_comment($test) . "<hr></p>\n";
 }
 $HTMLOUT .= insert_tag($lang['tags_bold1'], $lang['tags_bold2'], $lang['tags_bold3'], $lang['tags_bold4'], '');
 $HTMLOUT .= insert_tag($lang['tags_italic1'], $lang['tags_italic2'], $lang['tags_italic3'], $lang['tags_italic4'], '');
@@ -64,4 +64,4 @@ $HTMLOUT .= insert_tag($lang['tags_list1'], $lang['tags_list2'], $lang['tags_lis
 $HTMLOUT .= insert_tag($lang['tags_preformat1'], $lang['tags_preformat2'], $lang['tags_preformat3'], $lang['tags_preformat4'], '');
 $HTMLOUT .= end_frame();
 $HTMLOUT .= end_main_frame();
-echo stdhead("{$lang['tags_tags']}").$HTMLOUT.stdfoot();
+echo stdhead("{$lang['tags_tags']}") . $HTMLOUT . stdfoot();

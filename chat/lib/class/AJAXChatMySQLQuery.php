@@ -15,10 +15,10 @@
 class AJAXChatMySQLQuery
 {
     protected $_connectionID;
-    protected $_sql = '';
+    protected $_sql    = '';
     protected $_result = 0;
-    protected $_errno = 0;
-    protected $_error = '';
+    protected $_errno  = 0;
+    protected $_error  = '';
 
     // Constructor:
 
@@ -30,7 +30,7 @@ class AJAXChatMySQLQuery
      */
     public function __construct($sql, $connectionID = null)
     {
-        $this->_sql = trim($sql);
+        $this->_sql          = trim($sql);
         $this->_connectionID = $connectionID;
         if ($this->_connectionID) {
             $this->_result = mysql_query($this->_sql, $this->_connectionID);
@@ -55,9 +55,9 @@ class AJAXChatMySQLQuery
     public function getError()
     {
         if ($this->error()) {
-            $str = 'Query: '.$this->_sql."\n";
-            $str .= 'Error-Report: '.$this->_error."\n";
-            $str .= 'Error-Code: '.$this->_errno;
+            $str = 'Query: ' . $this->_sql . "\n";
+            $str .= 'Error-Report: ' . $this->_error . "\n";
+            $str .= 'Error-Code: ' . $this->_errno;
         } else {
             $str = 'No errors.';
         }

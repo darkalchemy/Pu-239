@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__, 3).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 check_user_status();
 global $CURUSER, $site_config, $session;
 
@@ -12,9 +12,9 @@ if (empty($CURUSER) || UC_MAX !== $CURUSER['class']) {
 
 function adminer_object()
 {
-    include_once PLUGINS_DIR.'plugin.php';
+    include_once PLUGINS_DIR . 'plugin.php';
 
-    foreach (glob(PLUGINS_DIR.'*.php') as $filename) {
+    foreach (glob(PLUGINS_DIR . '*.php') as $filename) {
         include_once "$filename";
     }
 
@@ -64,4 +64,4 @@ function adminer_object()
     return new AdminerCustomization($plugins);
 }
 
-include ROOT_DIR.'adminer.php';
+include ROOT_DIR . 'adminer.php';

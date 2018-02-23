@@ -1,36 +1,36 @@
 <?php
 
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once INCL_DIR.'password_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'password_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang, $cache, $session;
 
-$cache->delete('userlist_'.$site_config['chatBotID']);
+$cache->delete('userlist_' . $site_config['chatBotID']);
 $cache->delete('chat_users_list');
 
 $lang = array_merge($lang, load_language('ad_adduser'));
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $insert = [
-        'username' => '',
-        'email' => '',
-        'passhash' => '',
-        'status' => 'confirmed',
-        'added' => TIME_NOW,
-        'last_access' => TIME_NOW,
+        'username'     => '',
+        'email'        => '',
+        'passhash'     => '',
+        'status'       => 'confirmed',
+        'added'        => TIME_NOW,
+        'last_access'  => TIME_NOW,
         'torrent_pass' => make_password(32),
-        'auth' => make_password(32),
-        'apikey' => make_password(32),
-        'ip' => ipToStorageFormat('127.0.0.1'),
+        'auth'         => make_password(32),
+        'apikey'       => make_password(32),
+        'ip'           => ipToStorageFormat('127.0.0.1'),
     ];
     if (isset($_POST['username']) && strlen($_POST['username']) >= 5) {
         $insert['username'] = $_POST['username'];
     } else {
         stderr($lang['std_err'], $lang['err_username']);
     }
-    if (isset($_POST['password']) && isset($_POST['password2'])
+    if (isset($_POST['password'], $_POST['password2'])
         && strlen($_POST['password']) > 6
         && trim($_POST['password']) == trim($_POST['password2'])
     ) {
@@ -55,14 +55,14 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
         $user_id = 0;
         while (0 == $user_id) {
             usleep(500);
-            $user_id = get_one_row('users', 'id', 'WHERE username = '.sqlesc($insert['username']));
+            $user_id = get_one_row('users', 'id', 'WHERE username = ' . sqlesc($insert['username']));
         }
 
-        sql_query('INSERT INTO usersachiev (userid) VALUES ('.sqlesc($user_id).')') or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($user_id) . ')') or sqlerr(__FILE__, __LINE__);
         $cache->delete('all_users_');
         $cache->set('latestuser', (int) $user_id, $site_config['expires']['latestuser']);
 
-        $message = "Welcome New {$site_config['site_name']} Member: [user]".htmlsafechars($insert['username']).'[/user]';
+        $message = "Welcome New {$site_config['site_name']} Member: [user]" . htmlsafechars($insert['username']) . '[/user]';
         if ($user_id > 2 && 1 == $site_config['autoshout_on']) {
             autoshout($message);
         }
@@ -77,7 +77,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
             $res = sql_query(
                 'SELECT id 
                         FROM users 
-                        WHERE username = '.sqlesc($insert['username'])
+                        WHERE username = ' . sqlesc($insert['username'])
             ) or sqlerr(__FILE__, __LINE__);
             if (mysqli_num_rows($res)) {
                 $arr = mysqli_fetch_assoc($res);
@@ -90,21 +90,21 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     die();
 }
 $HTMLOUT = '
-    <h1 class="has-text-centered">'.$lang['std_adduser'].'</h1>
+    <h1 class="has-text-centered">' . $lang['std_adduser'] . '</h1>
     <form method="post" action="staffpanel.php?tool=adduser&amp;action=adduser">';
 $HTMLOUT .= main_table('
         <tr>
-            <td class="w-25">'.$lang['text_username'].'</td>
+            <td class="w-25">' . $lang['text_username'] . '</td>
             <td><input type="text" name="username" class="w-100" /></td></tr>
-        <tr><td>'.$lang['text_password'].'</td><td><input type="password" name="password" class="w-100" /></td></tr>
-        <tr><td>'.$lang['text_password2'].'</td><td><input type="password" name="password2" class="w-100" /></td></tr>
+        <tr><td>' . $lang['text_password'] . '</td><td><input type="password" name="password" class="w-100" /></td></tr>
+        <tr><td>' . $lang['text_password2'] . '</td><td><input type="password" name="password2" class="w-100" /></td></tr>
         <tr>
-            <td>'.$lang['text_email'].'</td><td><input type="text" name="email" class="w-100" /></td>
+            <td>' . $lang['text_email'] . '</td><td><input type="text" name="email" class="w-100" /></td>
         </tr>');
 $HTMLOUT .= '
         <div class="has-text-centered margin20">
-            <input type="submit" value="'.$lang['btn_okay'].'" class="button is-small" />
+            <input type="submit" value="' . $lang['btn_okay'] . '" class="button is-small" />
         </div>
   </form>';
 
-echo stdhead($lang['std_adduser']).wrapper($HTMLOUT).stdfoot();
+echo stdhead($lang['std_adduser']) . wrapper($HTMLOUT) . stdfoot();

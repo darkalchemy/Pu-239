@@ -1,8 +1,8 @@
 <?php
 
 require_once 'getstats.php';
-$_settings = $_SERVER['DOCUMENT_ROOT'].'/avatar/settings/';
-$flag_xy = [
+$_settings = $_SERVER['DOCUMENT_ROOT'] . '/avatar/settings/';
+$flag_xy   = [
     1 => [
         121,
         111,
@@ -17,11 +17,11 @@ $flag_xy = [
     ],
 ];
 $user = isset($_GET['user']) ? $_GET['user'] : '';
-if (!file_exists($_settings.strtolower($user).'.set') || !is_array($var = unserialize(file_get_contents($_settings.strtolower($user).'.set')))) {
+if (!file_exists($_settings . strtolower($user) . '.set') || !is_array($var = unserialize(file_get_contents($_settings . strtolower($user) . '.set')))) {
     die("Can't create avatar, settings file not found!");
 }
 $_fromCache = true;
-if ((time() - filemtime($_settings.strtolower($user).'.set')) > 84600 || !file_exists($_settings.strtolower($user).'.png')) {
+if ((time() - filemtime($_settings . strtolower($user) . '.set')) > 84600 || !file_exists($_settings . strtolower($user) . '.png')) {
     $_fromCache = false;
 }
 /**
@@ -41,11 +41,11 @@ function hex2rgb($color)
 if (!$_fromCache) {
     $var['use_country'] = false;
     for ($i = 1; $i <= 3; ++$i) {
-        if (isset($var['line'.$i]['value_p']) && is_array($var['line'.$i]['value_p'])) {
-            $var['use_country'] = true;
-            $_flag_xy = $flag_xy[$i];
-            $_flag = $var['line'.$i]['value_p']['iso'];
-            $var['line'.$i]['value_p'] = $var['line'.$i]['value_p']['name'];
+        if (isset($var['line' . $i]['value_p']) && is_array($var['line' . $i]['value_p'])) {
+            $var['use_country']          = true;
+            $_flag_xy                    = $flag_xy[$i];
+            $_flag                       = $var['line' . $i]['value_p']['iso'];
+            $var['line' . $i]['value_p'] = $var['line' . $i]['value_p']['name'];
         }
     }
     //create image
@@ -56,23 +56,23 @@ if (!$_fromCache) {
         2 => 'smallfont.gdf',
         3 => 'visitort2.gdf',
     ];
-    $font = imageloadfont('fonts/'.$fonts[$var['font']]);
+    $font = imageloadfont('fonts/' . $fonts[$var['font']]);
     //define colors
     //border color
     list($br, $bg, $bb) = hex2rgb($var['bColor']);
-    $bColor = imagecolorallocate($im, $br, $bg, $bb);
+    $bColor             = imagecolorallocate($im, $br, $bg, $bb);
     //background color
     list($bgr, $bgg, $bgb) = hex2rgb($var['bgColor']);
-    $bgColor = imagecolorallocate($im, $bgr, $bgg, $bgb);
+    $bgColor               = imagecolorallocate($im, $bgr, $bgg, $bgb);
     //font color
     list($fr, $fg, $fb) = hex2rgb($var['fontColor']);
-    $fontColor = imagecolorallocate($im, $fr, $fg, $fb);
+    $fontColor          = imagecolorallocate($im, $fr, $fg, $fb);
     //fill avatar body with the background color
     imagefilledrectangle($im, 0, 0, 150, 190, $bgColor);
     //draw border
     imagerectangle($im, 0, 0, 149, 189, $bColor);
     //add smile
-    $smile = imagecreatefrompng('templates/pack'.$var['pack'].'/'.(225 == $var['smile'] ? random_int(1, 20) : $var['smile']).'.png');
+    $smile     = imagecreatefrompng('templates/pack' . $var['pack'] . '/' . (225 == $var['smile'] ? random_int(1, 20) : $var['smile']) . '.png');
     $smile_pos = [
         1 => [
             'x' => '-15',
@@ -93,7 +93,7 @@ if (!$_fromCache) {
     ];
     imagecopy($im, $smile, $smile_pos[$var['pack']]['y'], $smile_pos[$var['pack']]['x'], 0, 0, 128, 128);
     if ($var['use_country']) {
-        $country = imagecreatefrompng('flags/'.$_flag.'.png');
+        $country = imagecreatefrompng('flags/' . $_flag . '.png');
         imagecopy($im, $country, $_flag_xy[0], $_flag_xy[1], 0, 0, 16, 11);
     }
     if ($var['showuser']) {
@@ -115,11 +115,11 @@ if (!$_fromCache) {
         imagestring($im, $font, 14, 170, $var['line3']['value_p'], $fontColor);
     }
 } else {
-    $im = imagecreatefrompng($_settings.strtolower($user).'.png');
+    $im = imagecreatefrompng($_settings . strtolower($user) . '.png');
 }
 header('Content-type: image/png');
 if (!$_fromCache) {
-    imagepng($im, $_settings.strtolower($user).'.png', 9);
+    imagepng($im, $_settings . strtolower($user) . '.png', 9);
     imagepng($im);
 } else {
     imagepng($im);

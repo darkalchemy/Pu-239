@@ -10,9 +10,9 @@ function torrents_normalize($data)
 
     do {
         $res = sql_query('SELECT id FROM torrents');
-        $ar = [];
+        $ar  = [];
         while ($row = mysqli_fetch_array($res, MYSQLI_NUM)) {
-            $id = $row[0];
+            $id      = $row[0];
             $ar[$id] = 1;
         }
         if (!count($ar)) {
@@ -29,12 +29,12 @@ function torrents_normalize($data)
             if (!preg_match('/^(\d+)\.torrent$/', $file, $m)) {
                 continue;
             }
-            $id = $m[1];
+            $id       = $m[1];
             $ar2[$id] = 1;
             if (isset($ar[$id]) && $ar[$id]) {
                 continue;
             }
-            $ff = $site_config['torrent_dir']."/$file";
+            $ff = $site_config['torrent_dir'] . "/$file";
             unlink($ff);
         }
         closedir($dp);

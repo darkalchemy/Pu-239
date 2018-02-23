@@ -67,7 +67,7 @@ function end_frame()
 function begin_table($striped = false)
 {
     $htmlout = '';
-    $stripe = true === $striped ? ' table-striped' : '';
+    $stripe  = true === $striped ? ' table-striped' : '';
     $htmlout .= "<table class='sucks table table-bordered{$stripe}'>\n";
 
     return $htmlout;

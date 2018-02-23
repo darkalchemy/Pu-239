@@ -1,13 +1,13 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'html_functions.php';
-require_once INCL_DIR.'user_functions.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
 $lang = load_language('global');
-$id = (isset($_GET['id']) ? $_GET['id'] : $CURUSER['id']);
+$id   = (isset($_GET['id']) ? $_GET['id'] : $CURUSER['id']);
 if (!is_valid_id($id) || $CURUSER['class'] < UC_STAFF) {
     $id = $CURUSER['id'];
 }
@@ -17,7 +17,7 @@ if ($CURUSER['class'] < UC_STAFF && 'no' == $CURUSER['got_moods']) {
 }
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $updateset = [];
-    $setbits = $clrbits = 0;
+    $setbits   = $clrbits   = 0;
     if (isset($_POST['unlock_user_moods'])) {
         $setbits |= bt_options::UNLOCK_MORE_MOODS;
     } // Unlock bonus moods
@@ -32,21 +32,21 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     }
 
     if ($setbits || $clrbits) {
-        sql_query('UPDATE users SET perms = ((perms | '.$setbits.') & ~'.$clrbits.') 
-                 WHERE id = '.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET perms = ((perms | ' . $setbits . ') & ~' . $clrbits . ') 
+                 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     }
     // grab current data
     $res = sql_query('SELECT perms FROM users
-                     WHERE id = '.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $row = mysqli_fetch_assoc($res);
+                     WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    $row          = mysqli_fetch_assoc($res);
     $row['perms'] = (int) $row['perms'];
-    $cache->update_row('user'.$id, [
+    $cache->update_row('user' . $id, [
         'perms' => $row['perms'],
     ], $site_config['expires']['user_cache']);
-    header('Location: '.$site_config['baseurl'].'/user_unlocks.php');
+    header('Location: ' . $site_config['baseurl'] . '/user_unlocks.php');
     die();
 }
-$checkbox_unlock_moods = (($CURUSER['perms'] & bt_options::UNLOCK_MORE_MOODS) ? ' checked' : '');
+$checkbox_unlock_moods   = (($CURUSER['perms'] & bt_options::UNLOCK_MORE_MOODS) ? ' checked' : '');
 $checkbox_unlock_stealth = (($CURUSER['perms'] & bt_options::PERMS_STEALTH) ? ' checked' : '');
 
 $HTMLOUT = '
@@ -58,7 +58,7 @@ $HTMLOUT = '
                             <span class="bordered level-center bg-02">
                                 <div class="w-100">Enable Bonus Moods?</div>
                                 <div class="slideThree">
-                                    <input type="checkbox" id="unlock_user_moods" name="unlock_user_moods" value="yes"'.$checkbox_unlock_moods.' />
+                                    <input type="checkbox" id="unlock_user_moods" name="unlock_user_moods" value="yes"' . $checkbox_unlock_moods . ' />
                                     <label for="unlock_user_moods"></label>
                                 </div>
                                 <div class="w-100">Check this option to unlock bonus mood smilies.</div>
@@ -68,7 +68,7 @@ $HTMLOUT = '
                             <span class="bordered level-center bg-02">
                                 <div class="w-100">User Stealth Mode?</div>
                                 <div class="slideThree">
-                                    <input type="checkbox" id="perms_stealth" name="perms_stealth" value="yes"'.$checkbox_unlock_stealth.' />
+                                    <input type="checkbox" id="perms_stealth" name="perms_stealth" value="yes"' . $checkbox_unlock_stealth . ' />
                                     <label for="perms_stealth"></label>
                                 </div>
                                 <div class="w-100">Check this option to unlock Stealth Mode.</div>
@@ -81,4 +81,4 @@ $HTMLOUT = '
                 </form>
             </div>';
 
-echo stdhead('User unlocks', true).wrapper($HTMLOUT).stdfoot();
+echo stdhead('User unlocks', true) . wrapper($HTMLOUT) . stdfoot();

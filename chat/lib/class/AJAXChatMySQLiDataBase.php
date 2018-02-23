@@ -27,7 +27,7 @@ class AJAXChatDataBaseMySQLi
     public function __construct(&$dbConnectionConfig)
     {
         $this->_connectionID = $dbConnectionConfig['link'];
-        $this->_dbName = $dbConnectionConfig['name'];
+        $this->_dbName       = $dbConnectionConfig['name'];
     }
 
     // Method to connect to the DataBase server:
@@ -82,10 +82,10 @@ class AJAXChatDataBaseMySQLi
     public function getError()
     {
         if ($this->error()) {
-            $str = 'Error-Report: '.$this->_error."\n";
-            $str .= 'Error-Code: '.$this->_errno."\n";
+            $str = 'Error-Report: ' . $this->_error . "\n";
+            $str .= 'Error-Code: ' . $this->_errno . "\n";
         } else {
-            $str = 'No errors.'."\n";
+            $str = 'No errors.' . "\n";
         }
 
         return $str;
@@ -117,7 +117,7 @@ class AJAXChatDataBaseMySQLi
      */
     public function makeSafe($value)
     {
-        return "'".$this->_connectionID->escape_string($value)."'";
+        return "'" . $this->_connectionID->escape_string($value) . "'";
     }
 
     // Method to perform SQL queries:

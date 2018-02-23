@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(__FILE__, 3).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
+require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $site_config, $cache, $session;
 
@@ -15,43 +15,43 @@ if (empty($_POST)) {
 
 header('Content-Type: application/json');
 if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
-    $upped = mksize($CURUSER['uploaded']);
+    $upped  = mksize($CURUSER['uploaded']);
     $downed = mksize($CURUSER['downloaded']);
 
     if (XBT_TRACKER) {
-        $MyPeersXbtCache = $cache->get('MyPeers_XBT_'.$CURUSER['id']);
+        $MyPeersXbtCache = $cache->get('MyPeers_XBT_' . $CURUSER['id']);
         if (false === $MyPeersXbtCache || is_null($MyPeersXbtCache)) {
-            $seed['yes'] = $seed['no'] = 0;
+            $seed['yes']  = $seed['no']  = 0;
             $seed['conn'] = 3;
-            $r = sql_query('SELECT COUNT(uid) AS count, `left`, active, connectable
+            $r            = sql_query('SELECT COUNT(uid) AS count, `left`, active, connectable
                                 FROM xbt_files_users
-                                WHERE uid = '.sqlesc($CURUSER['id']).'
+                                WHERE uid = ' . sqlesc($CURUSER['id']) . '
                                 GROUP BY `left`') or sqlerr(__LINE__, __FILE__);
             while ($a = mysqli_fetch_assoc($r)) {
-                $key = 0 == $a['left'] ? 'yes' : 'no';
-                $seed[$key] = number_format((int) $a['count']);
+                $key          = 0 == $a['left'] ? 'yes' : 'no';
+                $seed[$key]   = number_format((int) $a['count']);
                 $seed['conn'] = 0 == $a['connectable'] ? 1 : 2;
             }
-            $cache->set('MyPeers_XBT_'.$CURUSER['id'], $seed, $site_config['expires']['MyPeers_xbt_']);
+            $cache->set('MyPeers_XBT_' . $CURUSER['id'], $seed, $site_config['expires']['MyPeers_xbt_']);
             unset($r, $a);
         } else {
             $seed = $MyPeersXbtCache;
         }
     } else {
-        $MyPeersCache = $cache->get('MyPeers_'.$CURUSER['id']);
+        $MyPeersCache = $cache->get('MyPeers_' . $CURUSER['id']);
         if (false === $MyPeersCache || is_null($MyPeersCache)) {
-            $seed['yes'] = $seed['no'] = 0;
+            $seed['yes']  = $seed['no']  = 0;
             $seed['conn'] = 3;
-            $r = sql_query('SELECT COUNT(id) AS count, seeder, ANY_VALUE(connectable) AS connectable
+            $r            = sql_query('SELECT COUNT(id) AS count, seeder, ANY_VALUE(connectable) AS connectable
                                 FROM peers
-                                WHERE userid = '.sqlesc($CURUSER['id']).'
+                                WHERE userid = ' . sqlesc($CURUSER['id']) . '
                                 GROUP BY seeder') or sqlerr(__LINE__, __FILE__);
             while ($a = mysqli_fetch_assoc($r)) {
-                $key = 'yes' == $a['seeder'] ? 'yes' : 'no';
-                $seed[$key] = number_format((int) $a['count']);
+                $key          = 'yes' == $a['seeder'] ? 'yes' : 'no';
+                $seed[$key]   = number_format((int) $a['count']);
                 $seed['conn'] = 'no' == $a['connectable'] ? 1 : 2;
             }
-            $cache->set('MyPeers_'.$CURUSER['id'], $seed, $site_config['expires']['MyPeers_']);
+            $cache->set('MyPeers_' . $CURUSER['id'], $seed, $site_config['expires']['MyPeers_']);
             unset($r, $a);
         } else {
             $seed = $MyPeersCache;
@@ -75,22 +75,22 @@ if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
         $connectable = $lang['gl_na_connectable'];
     }
 
-    $Achievement_Points = $cache->get('user_achievement_points_'.$CURUSER['id']);
+    $Achievement_Points = $cache->get('user_achievement_points_' . $CURUSER['id']);
     if (false === $Achievement_Points || is_null($Achievement_Points)) {
         $Sql = sql_query('SELECT u.id, u.username, a.achpoints, a.spentpoints
                             FROM users AS u
                             LEFT JOIN usersachiev AS a ON u.id = a.userid
-                            WHERE u.id = '.sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-        $Achievement_Points = mysqli_fetch_assoc($Sql);
-        $Achievement_Points['id'] = (int) $Achievement_Points['id'];
-        $Achievement_Points['achpoints'] = (int) $Achievement_Points['achpoints'];
+                            WHERE u.id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        $Achievement_Points                = mysqli_fetch_assoc($Sql);
+        $Achievement_Points['id']          = (int) $Achievement_Points['id'];
+        $Achievement_Points['achpoints']   = (int) $Achievement_Points['achpoints'];
         $Achievement_Points['spentpoints'] = (int) $Achievement_Points['spentpoints'];
-        $cache->set('user_achievement_points_'.$CURUSER['id'], $Achievement_Points, 0);
+        $cache->set('user_achievement_points_' . $CURUSER['id'], $Achievement_Points, 0);
     }
     if (255 != $CURUSER['override_class']) {
-        $usrclass = " <a href='{$site_config['baseurl']}/restoreclass.php' class='tooltipper' title='Restore to Your User Class'><b>".get_user_class_name($CURUSER['override_class']).'</b></a>';
+        $usrclass = " <a href='{$site_config['baseurl']}/restoreclass.php' class='tooltipper' title='Restore to Your User Class'><b>" . get_user_class_name($CURUSER['override_class']) . '</b></a>';
     } elseif ($CURUSER['class'] >= UC_STAFF) {
-        $usrclass = " <a href='{$site_config['baseurl']}/setclass.php' class='tooltipper' title='Temporarily Change User Class'><b>".get_user_class_name($CURUSER['class']).'</b></a>';
+        $usrclass = " <a href='{$site_config['baseurl']}/setclass.php' class='tooltipper' title='Temporarily Change User Class'><b>" . get_user_class_name($CURUSER['class']) . '</b></a>';
     } else {
         $usrclass = get_user_class_name($CURUSER['class']);
     }
@@ -113,17 +113,17 @@ if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
     </div>
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_karma']}</div>
-        <div><a href='{$site_config['baseurl']}/mybonus.php'>".number_format($CURUSER['seedbonus'])."</a></div>
+        <div><a href='{$site_config['baseurl']}/mybonus.php'>" . number_format($CURUSER['seedbonus']) . "</a></div>
     </div>
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_achpoints']}</div>
-        <div><a href='{$site_config['baseurl']}/achievementhistory.php?id={$CURUSER['id']}'>".(int) $Achievement_Points['achpoints']."</a></div>
+        <div><a href='{$site_config['baseurl']}/achievementhistory.php?id={$CURUSER['id']}'>" . (int) $Achievement_Points['achpoints'] . "</a></div>
     </div>
     <br>
     <div class='navbar-start'>{$lang['gl_tstats']}</div>
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_shareratio']}</div>
-        <div>".member_ratio($CURUSER['uploaded'], $site_config['ratio_free'] ? '0' : $CURUSER['downloaded']).'</div>
+        <div>" . member_ratio($CURUSER['uploaded'], $site_config['ratio_free'] ? '0' : $CURUSER['downloaded']) . '</div>
     </div>';
 
     if ($site_config['ratio_free']) {
@@ -157,17 +157,17 @@ if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
         <div class='navbar-start'>{$lang['gl_connectable']}</div>
         <div>{$connectable}</div>
     </div>
-    ".($CURUSER['class'] >= UC_STAFF || 'yes' == $CURUSER['got_blocks'] || 'yes' == $CURUSER['got_moods'] ? "
+    " . ($CURUSER['class'] >= UC_STAFF || 'yes' == $CURUSER['got_blocks'] || 'yes' == $CURUSER['got_moods'] ? "
     <br>
     <div class='navbar-start'>{$lang['gl_userblocks']}</div>
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_myblocks']}</div>
-        <div><a href='{$site_config['baseurl']}/user_blocks.php'>{$lang['gl_click']}</a></div>" : '').'
+        <div><a href='{$site_config['baseurl']}/user_blocks.php'>{$lang['gl_click']}</a></div>" : '') . '
     </div>
-    '.($CURUSER['class'] >= UC_STAFF || 'yes' == $CURUSER['got_moods'] ? "
+    ' . ($CURUSER['class'] >= UC_STAFF || 'yes' == $CURUSER['got_moods'] ? "
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_myunlocks']}</div>
-        <div><a href='{$site_config['baseurl']}/user_unlocks.php'>{$lang['gl_click']}</a></div>" : '').'
+        <div><a href='{$site_config['baseurl']}/user_unlocks.php'>{$lang['gl_click']}</a></div>" : '') . '
     </div>';
 
     echo json_encode($StatusBar);

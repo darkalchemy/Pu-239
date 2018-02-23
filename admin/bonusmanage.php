@@ -1,35 +1,35 @@
 <?php
 
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
-$lang = array_merge($lang, load_language('bonusmanager'));
+$lang    = array_merge($lang, load_language('bonusmanager'));
 $HTMLOUT = $count = '';
-$res = sql_query('SELECT * FROM bonus ORDER BY orderid, bonusname') or sqlerr(__FILE__, __LINE__);
+$res     = sql_query('SELECT * FROM bonus ORDER BY orderid, bonusname') or sqlerr(__FILE__, __LINE__);
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
     if (isset($_POST['id']) || isset($_POST['orderid']) || isset($_POST['points']) || isset($_POST['pointspool']) || isset($_POST['minpoints']) || isset($_POST['description']) || isset($_POST['enabled']) || isset($_POST['minclass'])) {
-        $id = (int) $_POST['id'];
-        $points = (int) $_POST['bonuspoints'];
+        $id         = (int) $_POST['id'];
+        $points     = (int) $_POST['bonuspoints'];
         $pointspool = (int) $_POST['pointspool'];
-        $minpoints = (int) $_POST['minpoints'];
-        $minclass = (int) $_POST['minclass'];
-        $descr = htmlsafechars($_POST['description']);
-        $enabled = 'yes';
+        $minpoints  = (int) $_POST['minpoints'];
+        $minclass   = (int) $_POST['minclass'];
+        $descr      = htmlsafechars($_POST['description']);
+        $enabled    = 'yes';
         if ('' == isset($_POST['enabled'])) {
             $enabled = 'no';
         }
         $orderid = (int) $_POST['orderid'];
-        $sql = sql_query('UPDATE bonus SET orderid = '.sqlesc($orderid).', points = '.sqlesc($points).', pointspool='.sqlesc($pointspool).', minpoints='.sqlesc($minpoints).', minclass='.sqlesc($minclass).', enabled = '.sqlesc($enabled).', description = '.sqlesc($descr).' WHERE id = '.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        sql_query("UPDATE bonus SET orderid = orderid + 1 WHERE orderid >= $orderid AND id != $id") or sqlerr(__FILE__, __LINE__);
+        $sql     = sql_query('UPDATE bonus SET orderid = ' . sqlesc($orderid) . ', points = ' . sqlesc($points) . ', pointspool=' . sqlesc($pointspool) . ', minpoints=' . sqlesc($minpoints) . ', minclass=' . sqlesc($minclass) . ', enabled = ' . sqlesc($enabled) . ', description = ' . sqlesc($descr) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE bonus SET orderid = orderid + 1 WHERE orderid >= $orderid AND id != $id")                                                                                                                                                                                                                                         or sqlerr(__FILE__, __LINE__);
 
         $query = sql_query('SELECT id FROM bonus ORDER BY orderid, id');
-        $iter = 0;
+        $iter  = 0;
         while ($arr = mysqli_fetch_assoc($query)) {
-            sql_query('UPDATE bonus SET orderid = '.++$iter.' WHERE id = '.$arr['id']) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE bonus SET orderid = ' . ++$iter . ' WHERE id = ' . $arr['id']) or sqlerr(__FILE__, __LINE__);
         }
 
         if ($sql) {
@@ -59,18 +59,18 @@ while ($arr = mysqli_fetch_assoc($res)) {
         <td class='colhead'>{$lang['bonusmanager_quantity']}</td>
         <td class='colhead'>{$lang['bonusmanager_action']}</td></tr> 
       <tr><td>
-        <input name='id' type='hidden' value='".(int) $arr['id']."' />".(int) $arr['id']."</td>
-        <td><input type='text' name='orderid' value='".(int) $arr['orderid']."' size='4' /></td>
-        <td><input name='enabled' type='checkbox'".('yes' == $arr['enabled'] ? ' checked' : '').' /></td>
-        <td>'.htmlsafechars($arr['bonusname'])."</td>
-        <td><input type='text' name='bonuspoints' value='".(int) $arr['points']."' size='4' /></td>
-        <td><input type='text' name='pointspool' value='".(int) $arr['pointspool']."' size='4' /></td>
-        <td><input type='text' name='minpoints' value='".(int) $arr['minpoints']."' size='4' /></td>
-        <td><input type='text' name='minclass' value='".(int) $arr['minclass']."' size='4' /></td>
-        <td><textarea name='description' rows='4' cols='10'>".htmlsafechars($arr['description']).'</textarea></td>
-        <td>'.htmlsafechars($arr['art']).'</td>
-        <td>'.(('traffic' == $arr['art'] || 'traffic2' == $arr['art'] || 'gift_1' == $arr['art'] || 'gift_2' == $arr['art']) ? (htmlsafechars($arr['menge']) / 1024 / 1024 / 1024).' GB' : htmlsafechars($arr['menge']))."</td>
+        <input name='id' type='hidden' value='" . (int) $arr['id'] . "' />" . (int) $arr['id'] . "</td>
+        <td><input type='text' name='orderid' value='" . (int) $arr['orderid'] . "' size='4' /></td>
+        <td><input name='enabled' type='checkbox'" . ('yes' == $arr['enabled'] ? ' checked' : '') . ' /></td>
+        <td>' . htmlsafechars($arr['bonusname']) . "</td>
+        <td><input type='text' name='bonuspoints' value='" . (int) $arr['points'] . "' size='4' /></td>
+        <td><input type='text' name='pointspool' value='" . (int) $arr['pointspool'] . "' size='4' /></td>
+        <td><input type='text' name='minpoints' value='" . (int) $arr['minpoints'] . "' size='4' /></td>
+        <td><input type='text' name='minclass' value='" . (int) $arr['minclass'] . "' size='4' /></td>
+        <td><textarea name='description' rows='4' cols='10'>" . htmlsafechars($arr['description']) . '</textarea></td>
+        <td>' . htmlsafechars($arr['art']) . '</td>
+        <td>' . (('traffic' == $arr['art'] || 'traffic2' == $arr['art'] || 'gift_1' == $arr['art'] || 'gift_2' == $arr['art']) ? (htmlsafechars($arr['menge']) / 1024 / 1024 / 1024) . ' GB' : htmlsafechars($arr['menge'])) . "</td>
         <td><input type='submit' value='{$lang['bonusmanager_submit']}' /></td>
         </tr></table></div></form>";
 }
-echo stdhead($lang['bonusmanager_stdhead']).$HTMLOUT.stdfoot();
+echo stdhead($lang['bonusmanager_stdhead']) . $HTMLOUT . stdfoot();

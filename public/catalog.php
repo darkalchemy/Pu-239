@@ -1,10 +1,10 @@
 <?php
 
-require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'bbcode_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once INCL_DIR.'pager_functions.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
 global $CURUSER;
 
@@ -21,7 +21,7 @@ function readMore($text, $char, $link)
 {
     global $lang;
 
-    return format_comment_no_bbcode(strlen($text) > $char ? substr(htmlsafechars($text), 0, $char - 1)."...<br><a href='$link'><span class='has-text-primary'>{$lang['catol_read_more']}</span></a>" : htmlsafechars($text));
+    return format_comment_no_bbcode(strlen($text) > $char ? substr(htmlsafechars($text), 0, $char - 1) . "...<br><a href='$link'><span class='has-text-primary'>{$lang['catol_read_more']}</span></a>" : htmlsafechars($text));
 }
 
 /**
@@ -52,17 +52,17 @@ function peer_list($array)
         $time = max(1, (TIME_NOW - $p['started']) - (TIME_NOW - $p['last_action']));
         $body .= '
         <tr>
-            <td>'.format_username($p['p_uid']).'</td>';
+            <td>' . format_username($p['p_uid']) . '</td>';
         if ($CURUSER['class'] >= UC_STAFF) {
             $body .= '
-            <td>'.($CURUSER['class'] >= UC_STAFF ? htmlsafechars($p['ip']).' : '.(int) $p['port'] : 'xx.xx.xx.xx:xxxx').'</td>';
+            <td>' . ($CURUSER['class'] >= UC_STAFF ? htmlsafechars($p['ip']) . ' : ' . (int) $p['port'] : 'xx.xx.xx.xx:xxxx') . '</td>';
         }
         $body .= '
-            <td>'.($p['downloaded'] > 0 ? number_format(($p['uploaded'] / $p['downloaded']), 2) : ($p['uploaded'] > 0 ? '&infin;' : '---')).'</td>
-            <td>'.($p['downloaded'] > 0 ? mksize($p['downloaded']).' @'.(mksize(($p['downloaded'] - $p['downloadoffset']) / $time)).'s' : '0kb').'</td>
-            <td>'.($p['uploaded'] > 0 ? mksize($p['uploaded']).' @'.(mksize(($p['uploaded'] - $p['uploadoffset']) / $time)).'s' : '0kb').'</td>
-            <td>'.(get_date($p['started'], 'LONG', 0, 1)).'</td>
-            <td>'.(get_date($p['finishedat'], 'LONG', 0, 1)).'</td>
+            <td>' . ($p['downloaded'] > 0 ? number_format(($p['uploaded'] / $p['downloaded']), 2) : ($p['uploaded'] > 0 ? '&infin;' : '---')) . '</td>
+            <td>' . ($p['downloaded'] > 0 ? mksize($p['downloaded']) . ' @' . (mksize(($p['downloaded'] - $p['downloadoffset']) / $time)) . 's' : '0kb') . '</td>
+            <td>' . ($p['uploaded'] > 0 ? mksize($p['uploaded']) . ' @' . (mksize(($p['uploaded'] - $p['uploadoffset']) / $time)) . 's' : '0kb') . '</td>
+            <td>' . (get_date($p['started'], 'LONG', 0, 1)) . '</td>
+            <td>' . (get_date($p['finishedat'], 'LONG', 0, 1)) . '</td>
         </tr>';
     }
 
@@ -75,17 +75,17 @@ if (strlen($search) > 4) {
     $params = [
         ':name' => "%$search%",
     ];
-    $p = 'search='.$search.'&amp;';
+    $p = 'search=' . $search . '&amp;';
 } elseif (1 == strlen($letter) && false !== stripos('abcdefghijklmnopqrstuvwxyz', $letter)) {
     $params = [
         ':name' => "$letter%",
     ];
-    $p = 'letter='.$letter.'&amp;';
+    $p = 'letter=' . $letter . '&amp;';
 } else {
     $params = [
         ':name' => 'a%',
     ];
-    $p = 'letter=a&amp;';
+    $p      = 'letter=a&amp;';
     $letter = 'a';
 }
 
@@ -96,9 +96,9 @@ $count = $fluent->from('torrents')
     ->fetch('count');
 
 $perpage = 10;
-$pager = pager($perpage, $count, $_SERVER['PHP_SELF'].'?'.$p);
-$top = $bottom = '';
-$rows = $tids = [];
+$pager   = pager($perpage, $count, $_SERVER['PHP_SELF'] . '?' . $p);
+$top     = $bottom     = '';
+$rows    = $tids    = [];
 
 $query = $fluent->from('torrents')
     ->select(null)
@@ -118,7 +118,7 @@ $query = $fluent->from('torrents')
 
 foreach ($query as $ta) {
     $rows[] = $ta;
-    $tid[] = $ta['id'];
+    $tid[]  = $ta['id'];
 }
 
 if (!empty($tid)) {
@@ -151,7 +151,7 @@ $htmlout = "
     <h1 class='has-text-centered'>Torrent Catalog</h1>";
 $div = "
     <h2 class='has-text-centered'>{$lang['catol_search']}</h2>
-    <form  action='".$_SERVER['PHP_SELF']."' method='get' class='has-text-centered'>
+    <form  action='" . $_SERVER['PHP_SELF'] . "' method='get' class='has-text-centered'>
         <input type='text' name='search' class='w-50' placeholder='{$lang['catol_search_for_tor']}' value='$search' /><br>
         <input type='submit' value='search!' class='button is-small margin20' />
     </form>
@@ -161,7 +161,7 @@ for ($i = 97; $i < 123; ++$i) {
     $active = !empty($letter) && $letter == chr($i) ? "class='active'" : '';
     $div .= "
             <li>
-                <a href='{$site_config['baseurl']}/catalog.php?letter=".chr($i)."' $active>".chr($i - 32).'</a>
+                <a href='{$site_config['baseurl']}/catalog.php?letter=" . chr($i) . "' $active>" . chr($i - 32) . '</a>
             </li>';
 }
 $div .= '
@@ -182,11 +182,11 @@ if (!empty($rows)) {
         <div class='columns'>
             <div class='column is-2 has-text-centered'>
                 <div class='bottom10'>{$lang['catol_upper']}: $uploader</div>
-                <div>".($row['poster'] ? "
-                    <img src='".image_proxy($row['poster'])."' alt='Poster' class='tooltip-poster' />
+                <div>" . ($row['poster'] ? "
+                    <img src='" . image_proxy($row['poster']) . "' alt='Poster' class='tooltip-poster' />
                 </div>" : "
                     <img src='{$site_config['pic_baseurl']}noposter.png' alt='{$lang['catol_no_poster']}' class='tooltip-poster' />
-                </div>")."
+                </div>") . "
             </div   >
             <div class='column'>";
         $heading = "
@@ -200,12 +200,12 @@ if (!empty($rows)) {
                     </tr>";
         $body = "
                     <tr>
-                        <td><a href='{$site_config['baseurl']}/details.php?id=".(int) $row['id']."&amp;hit=1'><b>".substr(htmlsafechars($row['name']), 0, 60).'</b></a></td>
-                        <td>'.get_date($row['added'], 'LONG', 0, 1)."</td>
-                        <td nowrap='nowrap'>".(mksize($row['size']))."</td>
-                        <td nowrap='nowrap'>".($row['snatched'] > 0 ? (1 == $row['snatched'] ? (int) $row['snatched'].' time' : (int) $row['snatched'].' times') : 0).'</td>
-                        <td>'.(int) $row['seeders'].'</td>
-                        <td>'.(int) $row['leechers'].'</td>
+                        <td><a href='{$site_config['baseurl']}/details.php?id=" . (int) $row['id'] . "&amp;hit=1'><b>" . substr(htmlsafechars($row['name']), 0, 60) . '</b></a></td>
+                        <td>' . get_date($row['added'], 'LONG', 0, 1) . "</td>
+                        <td nowrap='nowrap'>" . (mksize($row['size'])) . "</td>
+                        <td nowrap='nowrap'>" . ($row['snatched'] > 0 ? (1 == $row['snatched'] ? (int) $row['snatched'] . ' time' : (int) $row['snatched'] . ' times') : 0) . '</td>
+                        <td>' . (int) $row['seeders'] . '</td>
+                        <td>' . (int) $row['leechers'] . '</td>
                     </tr>';
         $div .= main_table($body, $heading, 'top20');
         $heading = "
@@ -214,7 +214,7 @@ if (!empty($rows)) {
                 </tr>";
         $body = '
                 <tr>
-                    <td>'.readMore($row['descr'], 500, $site_config['baseurl'].'/details.php?id='.(int) $row['id'].'&amp;hit=1').'</td>
+                    <td>' . readMore($row['descr'], 500, $site_config['baseurl'] . '/details.php?id=' . (int) $row['id'] . '&amp;hit=1') . '</td>
                 </tr>';
         $div .= main_table($body, $heading, 'top20');
         $div .= "
@@ -222,8 +222,8 @@ if (!empty($rows)) {
         </div>
         <div class='w-100'>
             <h2 class='has-text-centered'>{$lang['catol_seeder_info']}</h2>
-            ".(isset($peers[$row['id']]) ? peer_list($peers[$row['id']]) : main_div("
-            <h2 class='has-text-centered'>{$lang['catol_no_info_show']}</h2>")).'
+            " . (isset($peers[$row['id']]) ? peer_list($peers[$row['id']]) : main_div("
+            <h2 class='has-text-centered'>{$lang['catol_no_info_show']}</h2>")) . '
         </div>';
         $htmlout .= main_div($div, 'top20');
     }
@@ -236,4 +236,4 @@ if (!empty($rows)) {
         <h2 class='has-text-centered'>{$lang['catol_nothing_found']}!</h2>", 'top20');
 }
 
-echo stdhead($lang['catol_std_head']).wrapper($htmlout).stdfoot();
+echo stdhead($lang['catol_std_head']) . wrapper($htmlout) . stdfoot();

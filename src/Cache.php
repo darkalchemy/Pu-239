@@ -27,8 +27,8 @@ class Cache extends TransactionalStore
     {
         switch ($_ENV['CACHE_DRIVER']) {
             case 'couchbase':
-                $cluster = new \CouchbaseCluster('couchbase://localhost');
-                $bucket = $cluster->openBucket('default');
+                $cluster     = new \CouchbaseCluster('couchbase://localhost');
+                $bucket      = $cluster->openBucket('default');
                 $this->cache = new Couchbase($bucket);
                 break;
 
@@ -66,8 +66,8 @@ class Cache extends TransactionalStore
                 break;
 
             default:
-                $adapter = new Local($_ENV['FILES_PATH'], LOCK_EX);
-                $filesystem = new Filesystem($adapter);
+                $adapter     = new Local($_ENV['FILES_PATH'], LOCK_EX);
+                $filesystem  = new Filesystem($adapter);
                 $this->cache = new Flysystem($filesystem);
         }
         $this->cache = new PrefixKeys($this->cache, $_ENV['CACHE_PREFIX']);
