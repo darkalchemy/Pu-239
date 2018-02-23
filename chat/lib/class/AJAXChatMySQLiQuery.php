@@ -10,7 +10,7 @@
 // Class to perform SQL (MySQLi) queries:
 
 /**
- * Class AJAXChatMySQLiQuery
+ * Class AJAXChatMySQLiQuery.
  */
 class AJAXChatMySQLiQuery
 {
@@ -47,9 +47,9 @@ class AJAXChatMySQLiQuery
     public function getError()
     {
         if ($this->error()) {
-            $str = 'Query: ' . $this->_sql . "\n";
-            $str .= 'Error-Report: ' . $this->_error . "\n";
-            $str .= 'Error-Code: ' . $this->_errno;
+            $str = 'Query: '.$this->_sql."\n";
+            $str .= 'Error-Report: '.$this->_error."\n";
+            $str .= 'Error-Code: '.$this->_errno;
         } else {
             $str = 'No errors.';
         }
@@ -65,14 +65,11 @@ class AJAXChatMySQLiQuery
     public function error()
     {
         // Returns true if the Result-ID is valid:
-        return !(bool)($this->_result);
+        return !(bool) ($this->_result);
     }
 
     // Returns the content:
 
-    /**
-     * @return null
-     */
     public function fetch()
     {
         if ($this->error()) {
@@ -84,9 +81,6 @@ class AJAXChatMySQLiQuery
 
     // Returns the number of rows (SELECT or SHOW):
 
-    /**
-     * @return null
-     */
     public function numRows()
     {
         if ($this->error()) {
@@ -98,9 +92,6 @@ class AJAXChatMySQLiQuery
 
     // Returns the number of affected rows (INSERT, UPDATE, REPLACE or DELETE):
 
-    /**
-     * @return null
-     */
     public function affectedRows()
     {
         if ($this->error()) {

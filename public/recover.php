@@ -1,10 +1,10 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'password_functions.php';
+
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'user_functions.php';
+require_once INCL_DIR.'password_functions.php';
 dbconn();
-global $CURUSER, $site_config, $sluent;
-$session = new DarkAlchemy\Pu239\Session();
+global $CURUSER, $site_config, $fluent, $session;
 
 if (!$CURUSER) {
     get_template();
@@ -20,8 +20,8 @@ $stdfoot = [
     ],
 ];
 $HTMLOUT = '';
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (!mkglobal('email' . ($site_config['captcha_on'] ? ':captchaSelection' : '') . '')) {
+if ('POST' == $_SERVER['REQUEST_METHOD']) {
+    if (!mkglobal('email'.($site_config['captcha_on'] ? ':captchaSelection' : '').'')) {
         stderr('Oops', 'Missing form data - You must fill all fields');
     }
     if ($site_config['captcha_on']) {
@@ -47,21 +47,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $values = [
         'email' => $email,
         'token' => $token,
-        'id'    => $alt_id,
+        'id' => $alt_id,
     ];
     $fluent->insertInto('tokens')
         ->values($values)
         ->execute();
 
     $body = sprintf($lang['email_request'], $email, $_SERVER['REMOTE_ADDR'], $site_config['baseurl'], $alt_id, $secret, $site_config['site_name']);
-    $mail = new Message;
+    $mail = new Message();
     $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")
         ->addTo($user['email'])
         ->setReturnPath($site_config['site_email'])
         ->setSubject("{$site_config['site_name']} {$lang['email_subjreset']}")
         ->setHtmlBody($body);
 
-    $mailer = new SendmailMailer;
+    $mailer = new SendmailMailer();
     $mailer->commandArgs = "-f{$site_config['site_email']}";
     $mailer->send($mail);
 
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $newpassword = make_password(16);
     $newpasshash = make_passhash($newpassword);
     $set = [
-        'passhash' => $newpasshash
+        'passhash' => $newpasshash,
     ];
     $update = $fluent->update('users')
         ->set($set)
@@ -106,14 +106,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_noupdate']}");
     }
     $body = sprintf($lang['email_newpass'], $row['username'], $newpassword, $site_config['baseurl'], $site_config['site_name']);
-    $mail = new Message;
+    $mail = new Message();
     $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")
         ->addTo($email)
         ->setReturnPath($site_config['site_email'])
         ->setSubject("{$site_config['site_name']} {$lang['email_subjdetails']}")
         ->setHtmlBody($body);
 
-    $mailer = new SendmailMailer;
+    $mailer = new SendmailMailer();
     $mailer->commandArgs = "-f{$site_config['site_email']}";
     $mailer->send($mail);
 
@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $HTMLOUT .= "
     <div class='half-container has-text-centered portlet'>
         <form method='post' action='{$_SERVER['PHP_SELF']}'>
-            <table class='table table-bordered top20 bottom20'>" . ($site_config['captcha_on'] ? "
+            <table class='table table-bordered top20 bottom20'>".($site_config['captcha_on'] ? "
                 <tr class='no_hover'>
                     <td colspan='2'>
                         <h2 class='has-text-centered'>{$lang['recover_unamepass']}</h2>
@@ -137,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </tr>
                 <tr class='no_hover'>
                     <td colspan='2' id='captcha_show'></td>
-                </tr>" : '') . "
+                </tr>" : '')."
                 <tr class='no_hover'>
                     <td colspan='2'>
                         <div class='has-text-centered'>
@@ -148,5 +148,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </table>
         </form>
     </div>";
-    echo stdhead($lang['head_recover'], true) . $HTMLOUT . stdfoot($stdfoot);
+    echo stdhead($lang['head_recover'], true).$HTMLOUT.stdfoot($stdfoot);
 }

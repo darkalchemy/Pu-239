@@ -25,7 +25,7 @@ function torrents_normalize_xbt($data)
         }
 
         $ar2 = [];
-        while (($file = readdir($dp)) !== false) {
+        while (false !== ($file = readdir($dp))) {
             if (!preg_match('/^(\d+)\.torrent$/', $file, $m)) {
                 continue;
             }
@@ -34,7 +34,7 @@ function torrents_normalize_xbt($data)
             if (isset($ar[$id]) && $ar[$id]) {
                 continue;
             }
-            $ff = $site_config['torrent_dir'] . "/$file";
+            $ff = $site_config['torrent_dir']."/$file";
             unlink($ff);
         }
         closedir($dp);

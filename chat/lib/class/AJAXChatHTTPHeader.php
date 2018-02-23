@@ -10,7 +10,7 @@
 // Class to manage HTTP header
 
 /**
- * Class AJAXChatHTTPHeader
+ * Class AJAXChatHTTPHeader.
  */
 class AJAXChatHTTPHeader
 {
@@ -28,13 +28,13 @@ class AJAXChatHTTPHeader
     public function __construct($encoding = 'UTF-8', $contentType = null, $noCache = true)
     {
         if ($contentType) {
-            $this->_contentType = $contentType . '; charset=' . $encoding;
+            $this->_contentType = $contentType.'; charset='.$encoding;
             $this->_constant = true;
         } else {
-            if (isset($_SERVER['HTTP_ACCEPT']) && (strpos($_SERVER['HTTP_ACCEPT'], 'application/xhtml+xml') !== false)) {
-                $this->_contentType = 'application/xhtml+xml; charset=' . $encoding;
+            if (isset($_SERVER['HTTP_ACCEPT']) && (false !== strpos($_SERVER['HTTP_ACCEPT'], 'application/xhtml+xml'))) {
+                $this->_contentType = 'application/xhtml+xml; charset='.$encoding;
             } else {
-                $this->_contentType = 'text/html; charset=' . $encoding;
+                $this->_contentType = 'text/html; charset='.$encoding;
             }
             $this->_constant = false;
         }
@@ -51,7 +51,7 @@ class AJAXChatHTTPHeader
         }
 
         // Send the content-type-header:
-        header('Content-Type: ' . $this->_contentType);
+        header('Content-Type: '.$this->_contentType);
 
         // Send vary header if content-type varies (important for proxy-caches):
         if (!$this->_constant) {

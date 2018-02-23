@@ -1,8 +1,9 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'bbcode_functions.php';
-require_once INCL_DIR . 'comment_functions.php';
+
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'user_functions.php';
+require_once INCL_DIR.'bbcode_functions.php';
+require_once INCL_DIR.'comment_functions.php';
 check_user_status();
 global $CURUSER, $site_config;
 
@@ -14,7 +15,7 @@ $action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
 
 $act_validation = ['', 'add', 'edit', 'delete', 'update'];
 
-$id = (isset($_GET['id']) ? (int)$_GET['id'] : '');
+$id = (isset($_GET['id']) ? (int) $_GET['id'] : '');
 
 if (!in_array($action, $act_validation)) {
     stderr('Error', 'Unknown action.');
@@ -31,23 +32,23 @@ if (!function_exists('CutName')) {
      */
     function CutName($txt, $len)
     {
-        return strlen($txt) > $len ? substr($txt, 0, $len - 4) . '[...]' : $txt;
+        return strlen($txt) > $len ? substr($txt, 0, $len - 4).'[...]' : $txt;
     }
 }
 
-if (isset($_POST['action']) == 'add' && $CURUSER['class'] >= UC_SYSOP) {
+if ('add' == isset($_POST['action']) && $CURUSER['class'] >= UC_SYSOP) {
     $name = ($_POST['name']);
     $description = ($_POST['description']);
     $category = ($_POST['category']);
     $link = ($_POST['link']);
     $status = ($_POST['status']);
     $credit = ($_POST['credit']);
-    sql_query('INSERT INTO modscredits (name, description,  category,  pu239lnk,  status, credit) VALUES(' . sqlesc($name) . ', ' . sqlesc($description) . ', ' . sqlesc($category) . ', ' . sqlesc($link) . ', ' . sqlesc($status) . ', ' . sqlesc($credit) . ')') or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO modscredits (name, description,  category,  pu239lnk,  status, credit) VALUES('.sqlesc($name).', '.sqlesc($description).', '.sqlesc($category).', '.sqlesc($link).', '.sqlesc($status).', '.sqlesc($credit).')') or sqlerr(__FILE__, __LINE__);
     header("Location: {$site_config['baseurl']}/credits.php");
     die();
 }
 
-if ($action == 'delete' && $CURUSER['class'] >= UC_SYSOP) {
+if ('delete' == $action && $CURUSER['class'] >= UC_SYSOP) {
     if (!$id) {
         stderr("{$lang['credits_error']}", "{$lang['credits_error2']}");
     }
@@ -56,21 +57,21 @@ if ($action == 'delete' && $CURUSER['class'] >= UC_SYSOP) {
     die();
 }
 
-if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
-    $id = (int)$_GET['id'];
-    $res = sql_query('SELECT name, description, category, pu239lnk, status, credit FROM modscredits WHERE id =' . $id . '') or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($res) == 0) {
+if ('edit' == $action && $CURUSER['class'] >= UC_SYSOP) {
+    $id = (int) $_GET['id'];
+    $res = sql_query('SELECT name, description, category, pu239lnk, status, credit FROM modscredits WHERE id ='.$id.'') or sqlerr(__FILE__, __LINE__);
+    if (0 == mysqli_num_rows($res)) {
         stderr("{$lang['credits_error']}", "{$lang['credits_nocr']}");
     }
     while ($mod = mysqli_fetch_assoc($res)) {
-        $HTMLOUT .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . '?action=update&amp;id=' . $id . "'>
+        $HTMLOUT .= "<form method='post' action='".$_SERVER['PHP_SELF'].'?action=update&amp;id='.$id."'>
   <table width='50%' border='1'>
-    <tr><td class='rowhead'>{$lang['credits_mod']}</td>" .
-            "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='name' " . "value='" . htmlsafechars($mod['name']) . "' /></td></tr>\n" .
+    <tr><td class='rowhead'>{$lang['credits_mod']}</td>".
+            "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='name' "."value='".htmlsafechars($mod['name'])."' /></td></tr>\n".
             "<tr>
-    <td class='rowhead'>{$lang['credits_description']}</td>" .
+    <td class='rowhead'>{$lang['credits_description']}</td>".
             "<td style='padding: 0'>
-    <input type='text' size='60' maxlength='120' name='description' value='" . htmlsafechars($mod['description']) . "' /></td></tr>\n" .
+    <input type='text' size='60' maxlength='120' name='description' value='".htmlsafechars($mod['description'])."' /></td></tr>\n".
             "<tr>
     <td class='rowhead'>{$lang['credits_category']}</td>
   <td style='padding: 0'>
@@ -79,14 +80,14 @@ if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
         $result = sql_query('SHOW COLUMNS FROM modscredits WHERE field=\'category\'');
         while ($row = mysqli_fetch_row($result)) {
             foreach (explode("','", substr($row[1], 6, -2)) as $v) {
-                $HTMLOUT .= "<option value='$v" . ($mod['category'] == $v ? ' selected' : '') . "'>$v</option>";
+                $HTMLOUT .= "<option value='$v".($mod['category'] == $v ? ' selected' : '')."'>$v</option>";
             }
         }
 
         $HTMLOUT .= '</select></td></tr>';
 
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['credits_link']}</td>" .
-            "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='link' " . "value='" . htmlsafechars($mod['pu239lnk']) . "' /></td></tr>\n" .
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['credits_link']}</td>".
+            "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='link' "."value='".htmlsafechars($mod['pu239lnk'])."' /></td></tr>\n".
             "<tr>
   <td class='rowhead'>{$lang['credits_status']}</td>
   <td style='padding: 0'>
@@ -95,26 +96,26 @@ if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
         $result = sql_query('SHOW COLUMNS FROM modscredits WHERE field=\'status\'');
         while ($row = mysqli_fetch_row($result)) {
             foreach (explode("','", substr($row[1], 6, -2)) as $y) {
-                $HTMLOUT .= "<option value='$y" . ($mod['status'] == $y ? ' selected' : '') . "'>$y</option>";
+                $HTMLOUT .= "<option value='$y".($mod['status'] == $y ? ' selected' : '')."'>$y</option>";
             }
         }
 
         $HTMLOUT .= '</select></td></tr>';
 
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['credits_credits']}</td><td style='padding: 0'>
-  <input type='text' size='60' maxlength='120' name='credits' value='" . htmlsafechars($mod['credit']) . "' /></td></tr>\n";
+  <input type='text' size='60' maxlength='120' name='credits' value='".htmlsafechars($mod['credit'])."' /></td></tr>\n";
         $HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='Submit' /></td></tr>\n";
         $HTMLOUT .= '</table></form>';
     }
-    echo stdhead($lang['credits_editmod']) . $HTMLOUT . stdfoot();
+    echo stdhead($lang['credits_editmod']).$HTMLOUT.stdfoot();
     die();
-} elseif ($action == 'update' && $CURUSER['class'] >= UC_SYSOP) {
-    $id = (int)$_GET['id'];
+} elseif ('update' == $action && $CURUSER['class'] >= UC_SYSOP) {
+    $id = (int) $_GET['id'];
     if (!is_valid_id($id)) {
         stderr('Error', 'Invalid ID!');
     }
-    $res = sql_query('SELECT id FROM modscredits WHERE id = ' . sqlesc($id));
-    if (mysqli_num_rows($res) == 0) {
+    $res = sql_query('SELECT id FROM modscredits WHERE id = '.sqlesc($id));
+    if (0 == mysqli_num_rows($res)) {
         stderr("{$lang['credits_error']}", "{$lang['credits_nocr']}");
     }
 
@@ -141,7 +142,7 @@ if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
         stderr("{$lang['credits_error']}", "{$lang['credits_error6']}");
     }
 
-    sql_query('UPDATE modscredits SET name = ' . sqlesc($name) . ', category = ' . sqlesc($category) . ', status = ' . sqlesc($modstatus) . ',  pu239lnk = ' . sqlesc($link) . ', credit = ' . sqlesc($credit) . ', description = ' . sqlesc($description) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE modscredits SET name = '.sqlesc($name).', category = '.sqlesc($category).', status = '.sqlesc($modstatus).',  pu239lnk = '.sqlesc($link).', credit = '.sqlesc($credit).', description = '.sqlesc($description).' WHERE id = '.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     header("Location: {$_SERVER['PHP_SELF']}");
     die();
 }
@@ -152,7 +153,7 @@ $HTMLOUT .= "<script>
   {
     if(confirm('Are you sure you want to delete this mod credit?'))
     {
-    self.location.href='" . $_SERVER['PHP_SELF'] . "?action=delete&id='+id;
+    self.location.href='".$_SERVER['PHP_SELF']."?action=delete&id='+id;
     }
   }
   //-->
@@ -177,24 +178,24 @@ if ($row = mysqli_fetch_array($res)) {
         $id = $row['id'];
         $name = $row['name'];
         $category = $row['category'];
-        if ($row['status'] == 'In-Progress') {
-            $status = '[b][color=#ff0000]' . $row['status'] . '[/color][/b]';
+        if ('In-Progress' == $row['status']) {
+            $status = '[b][color=#ff0000]'.$row['status'].'[/color][/b]';
         } else {
-            $status = '[b][color=#018316]' . $row['status'] . '[/color][/b]';
+            $status = '[b][color=#018316]'.$row['status'].'[/color][/b]';
         }
         $link = $row['pu239lnk'];
         $credit = $row['credit'];
         $descr = $row['description'];
 
-        $HTMLOUT .= "<tr><td><a target='_blank' class='altlink' href='" . $link . "'>" . htmlsafechars(CutName($name, 60)) . '</a>';
+        $HTMLOUT .= "<tr><td><a target='_blank' class='altlink' href='".$link."'>".htmlsafechars(CutName($name, 60)).'</a>';
         if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
-            $HTMLOUT .= "&#160;<a class='altlink_blue' href='?action=edit&amp;id=" . $id . "'>{$lang['credits_edit']}</a>&#160;<a class='altlink_blue' href=\"javascript:confirm_delete(" . $id . ");\">{$lang['credits_delete']}</a>";
+            $HTMLOUT .= "&#160;<a class='altlink_blue' href='?action=edit&amp;id=".$id."'>{$lang['credits_edit']}</a>&#160;<a class='altlink_blue' href=\"javascript:confirm_delete(".$id.");\">{$lang['credits_delete']}</a>";
         }
 
-        $HTMLOUT .= "<br><font class='small'>" . htmlsafechars($descr) . '</font></td>';
-        $HTMLOUT .= '<td><b>' . htmlsafechars($category) . '</b></td>';
-        $HTMLOUT .= '<td><b>' . format_comment($status) . '</b></td>';
-        $HTMLOUT .= '<td>' . htmlsafechars($credit) . '</td></tr>';
+        $HTMLOUT .= "<br><font class='small'>".htmlsafechars($descr).'</font></td>';
+        $HTMLOUT .= '<td><b>'.htmlsafechars($category).'</b></td>';
+        $HTMLOUT .= '<td><b>'.format_comment($status).'</b></td>';
+        $HTMLOUT .= '<td>'.htmlsafechars($credit).'</td></tr>';
     } while ($row = mysqli_fetch_array($res));
 } else {
     $HTMLOUT .= "<tr><td colspan='4'>{$lang['credits_nosofar']}</td></tr>";
@@ -204,7 +205,7 @@ $HTMLOUT .= '</table>';
 
 if ($CURUSER['class'] >= UC_SYSOP) { //I recommend a higher class like UC_CODER
     $HTMLOUT .= "<br>
-      <form method='post' action='" . $_SERVER['PHP_SELF'] . "'>
+      <form method='post' action='".$_SERVER['PHP_SELF']."'>
       <table width='80%'>
     <tr>
         <td colspan='2' class='colhead'>
@@ -257,4 +258,4 @@ if ($CURUSER['class'] >= UC_SYSOP) { //I recommend a higher class like UC_CODER
       </tr>
       </table></form>";
 }
-echo stdhead($lang['credits_headers']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['credits_headers']).$HTMLOUT.stdfoot();

@@ -1,10 +1,10 @@
 <?php
-require_once CLASS_DIR . 'class_check.php';
+
+require_once CLASS_DIR.'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang, $BLOCKS;
+global $site_config, $lang, $BLOCKS, $session;
 
-$session = new DarkAlchemy\Pu239\Session();
 $lang = array_merge($lang, load_language('ad_block_settings'));
 
 $list = [
@@ -74,35 +74,35 @@ $list = [
     'userdetails_showfriends_on',
 ];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ('POST' === $_SERVER['REQUEST_METHOD']) {
     global $lang;
     unset($_POST['submit']);
     $updated = [];
-    $block_set_cache = CACHE_DIR . 'block_settings_cache.php';
-    $block_out = '<' . "?php\n\n\$BLOCKS = [\n";
+    $block_set_cache = CACHE_DIR.'block_settings_cache.php';
+    $block_out = '<'."?php\n\n\$BLOCKS = [\n";
     foreach ($_POST as $k => $v) {
         $updated[] = $k;
-        $block_out .= ($k == 'block_undefined') ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => " . intval($v) . ",\n";
+        $block_out .= ('block_undefined' == $k) ? "\t'{$k}' => '".htmlsafechars($v)."',\n" : "\t'{$k}' => ".intval($v).",\n";
     }
     $missed = array_diff($list, $updated);
     foreach ($missed as $k) {
-        $block_out .= ($k == 'block_undefined') ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => 0,\n";
+        $block_out .= ('block_undefined' == $k) ? "\t'{$k}' => '".htmlsafechars($v)."',\n" : "\t'{$k}' => 0,\n";
     }
-    $block_out .= "];";
-    file_put_contents(CACHE_DIR . 'block_settings_cache.php', $block_out);
+    $block_out .= '];';
+    file_put_contents(CACHE_DIR.'block_settings_cache.php', $block_out);
 
     $session->set('is-success', $lang['block_updated']);
     unset($_POST);
     sleep(3);
-    header('Location: ' . $site_config['baseurl'] . '/staffpanel.php?tool=block.settings');
+    header('Location: '.$site_config['baseurl'].'/staffpanel.php?tool=block.settings');
     die();
 }
 
 clearstatcache();
-if (!is_file(CACHE_DIR . 'block_settings_cache.php')) {
+if (!is_file(CACHE_DIR.'block_settings_cache.php')) {
     $BLOCKS = [];
 } else {
-    include CACHE_DIR . 'block_settings_cache.php';
+    include CACHE_DIR.'block_settings_cache.php';
     if (!is_array($BLOCKS)) {
         $BLOCKS = [];
     }
@@ -290,8 +290,8 @@ foreach ($contents as $content) {
                     </div>";
 }
 
-$level1 .= "
-                </div>";
+$level1 .= '
+                </div>';
 
 $HTMLOUT .= main_div($level1);
 $HTMLOUT .= "
@@ -389,8 +389,8 @@ foreach ($contents as $content) {
                     </div>";
 }
 
-$level2 .= "
-                </div>";
+$level2 .= '
+                </div>';
 
 $HTMLOUT .= main_div($level2);
 $HTMLOUT .= "
@@ -644,8 +644,8 @@ foreach ($contents as $content) {
                     </div>";
 }
 
-$level3 .= "
-                </div>";
+$level3 .= '
+                </div>';
 
 $HTMLOUT .= main_div($level3);
 $HTMLOUT .= "
@@ -669,7 +669,8 @@ echo stdhead($lang['block_stdhead']), $HTMLOUT, stdfoot();
 function template_out($matches)
 {
     global $BLOCKS;
+
     return "
-    <input type='checkbox' id='{$matches[1]}' name='{$matches[1]}' value='1'" . ($BLOCKS[$matches[1]] == 1 ? ' checked' : '') . " /> 
+    <input type='checkbox' id='{$matches[1]}' name='{$matches[1]}' value='1'".(1 == $BLOCKS[$matches[1]] ? ' checked' : '')." /> 
     <label for='{$matches[1]}'></label>";
 }

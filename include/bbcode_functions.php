@@ -1,4 +1,5 @@
 <?php
+
 require_once 'emoticons.php';
 
 /**
@@ -16,7 +17,7 @@ function smilies_frame($smilies_set)
             <span class='margin10 mw-50 is-flex tooltipper' title='{$code}'>
                 <span class='bordered bg-03'>
                     <a href='#' alt='{$code}'>
-                        <img src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='{$code}' />
+                        <img src='{$site_config['pic_baseurl']}smilies/".$url."' alt='{$code}' />
                     </a>
                 </span>
             </span>";
@@ -49,34 +50,34 @@ function BBcode($body = '')
                         <ul class="level-center">
                             <li>
                                 <a href="#BBcode" id="smilies" class="button is-link">Smilies</a>
-                            </li>' . ($CURUSER['smile_until'] > 0 ? '
+                            </li>'.($CURUSER['smile_until'] > 0 ? '
                             <li>
                                 <a href="#BBcode" id="custom" class="button is-link">Custom</a>
-                            </li>' : '') . ($CURUSER['class'] < UC_STAFF ? '' : '
+                            </li>' : '').($CURUSER['class'] < UC_STAFF ? '' : '
                             <li>
                                 <a href="#BBcode" id="staff" class="button is-link">Staff</a>
-                            </li>') . '
+                            </li>').'
                         </ul>
                         <div class="scroll_wrapper">
                             <div class="scroll" id="box_0" style="display: none;">
                                 <div class="smilies_frame">
-                                    <img src="' . $site_config['pic_baseurl'] . 'forums/updating.gif" alt="Loading..." />
+                                    <img src="'.$site_config['pic_baseurl'].'forums/updating.gif" alt="Loading..." />
                                 </div>
                             </div>
                             <div class="scroll" id="box_1" style="display: none;">
-                                ' . $emoticons_normal . '
+                                '.$emoticons_normal.'
                             </div>
-                            ' . ($CURUSER['smile_until'] > 0 ? '<div class="scroll" id="box_2" style="display: none;">
-                                ' . $emoticons_custom . '
-                            </div>' : '') . ($CURUSER['class'] < UC_STAFF ? '' : '<div class="scroll" id="box_3" style="display: none;">
-                                ' . $emoticons_staff . '
-                            </div>') . '
+                            '.($CURUSER['smile_until'] > 0 ? '<div class="scroll" id="box_2" style="display: none;">
+                                '.$emoticons_custom.'
+                            </div>' : '').($CURUSER['class'] < UC_STAFF ? '' : '<div class="scroll" id="box_3" style="display: none;">
+                                '.$emoticons_staff.'
+                            </div>').'
                         </div>
                     </div>
                 </div>
                 <div id="tblDefects" class="w-100">
                     <div class="table-wrapper">
-                    <textarea id="bbcode_editor" name="body" rows="20">' . $body . '</textarea>
+                    <textarea id="bbcode_editor" name="body" rows="20">'.$body.'</textarea>
                     <div id="outer-preview" class="outer-preview">
                         <div class="inner-preview">
                             <div id="preview-window" class="preview-window has-text-left">
@@ -99,13 +100,13 @@ function validate_imgs($s)
 {
     $start = '(http|https)://';
     $end = "+\.(?:jpe?g|png|gif)";
-    preg_match_all('!' . $start . '(.*)' . $end . '!Ui', $s, $result);
+    preg_match_all('!'.$start.'(.*)'.$end.'!Ui', $s, $result);
     $array = $result[0];
     for ($i = 0; $i < count($array); ++$i) {
         $headers = @get_headers($array[$i]);
-        if (strpos($headers[0], '200') === false) {
-            $s = str_replace('[img]' . $array[$i] . '[/img]', '', $s);
-            $s = str_replace('[img=' . $array[$i] . ']', '', $s);
+        if (false === strpos($headers[0], '200')) {
+            $s = str_replace('[img]'.$array[$i].'[/img]', '', $s);
+            $s = str_replace('[img='.$array[$i].']', '', $s);
         }
     }
 
@@ -130,7 +131,7 @@ function check_BBcode($html)
     $openedtags = array_reverse($openedtags);
     for ($i = 0; $i < $len_opened; ++$i) {
         if (!in_array($openedtags[$i], $closedtags)) {
-            $html .= '</' . $openedtags[$i] . '>';
+            $html .= '</'.$openedtags[$i].'>';
         } else {
             unset($closedtags[array_search($openedtags[$i], $closedtags)]);
         }
@@ -206,16 +207,16 @@ function islocal($link)
     } else {
         $url = $title = trim($link[2]);
     }
-    if (strlen($title) > $limit && $flag == false) {
+    if (strlen($title) > $limit && false == $flag) {
         $l[0] = substr($title, 0, ($limit / 2));
         $l[1] = substr($title, strlen($title) - round($limit / 3));
-        $lshort = $l[0] . '...' . $l[1];
+        $lshort = $l[0].'...'.$l[1];
     } else {
         $lshort = $title;
     }
     $url = htmlsafechars($url);
 
-    return '<a href="' . ((stristr($url, $site_config['url']) !== false) ? '' : $site_config['anonymizer_url']) . $url . '" target="_blank">' . $lshort . '</a>';
+    return '<a href="'.((false !== stristr($url, $site_config['url'])) ? '' : $site_config['anonymizer_url']).$url.'" target="_blank">'.$lshort.'</a>';
 }
 
 /**
@@ -247,12 +248,12 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
                                           'www',
                                           'http://www',
                                           'https://',
-                                          'https://www'
+                                          'https://www',
                                       ], '', $site_config['baseurl']);
-    if (isset($_SERVER['HTTPS']) && (bool)$_SERVER['HTTPS'] == true) {
-        $s = preg_replace('/http:\/\/((?:www\.)?' . $site_config['url'] . ')/i', 'https://$1', $s);
+    if (isset($_SERVER['HTTPS']) && true == (bool) $_SERVER['HTTPS']) {
+        $s = preg_replace('/http:\/\/((?:www\.)?'.$site_config['url'].')/i', 'https://$1', $s);
     } else {
-        $s = preg_replace('/https:\/\/((?:www\.)?' . $site_config['url'] . ')/i', 'http://$1', $s);
+        $s = preg_replace('/https:\/\/((?:www\.)?'.$site_config['url'].')/i', 'http://$1', $s);
     }
     // This fixes the extraneous ;) smilies problem. When there was an html escaped
     // char before a closing bracket - like >), "), ... - this would be encoded
@@ -409,7 +410,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     if ($urls) {
         $s = format_urls($s);
     }
-    if (stripos($s, '[url') !== false && $urls) {
+    if (false !== stripos($s, '[url') && $urls) {
         $s = preg_replace_callback("/\[url=([^()<>\s]+?)\](.+?)\[\/url\]/is", 'islocal', $s);
         // [url]http://www.example.com[/url]
         $s = preg_replace_callback("/\[url\]([^()<>\s]+?)\[\/url\]/is", 'islocal', $s);
@@ -419,18 +420,18 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     $s = dynamic_user_vars($s);
 
     // [pre]Preformatted[/pre]
-    if (stripos($s, '[pre]') !== false) {
+    if (false !== stripos($s, '[pre]')) {
         $s = preg_replace("/\[pre\]((\s|.)+?)\[\/pre\]/i", '<tt><span style="white-space: nowrap;">\\1</span></tt>', $s);
     }
     // [nfo]NFO-preformatted[/nfo]
-    if (stripos($s, '[nfo]') !== false) {
+    if (false !== stripos($s, '[nfo]')) {
         $s = preg_replace("/\[nfo\]((\s|.)+?)\[\/nfo\]/i", "<tt><span style=\"white-space: nowrap;\"><font face='MS Linedraw' size='2' style='font-size: 10pt; line-height: 10pt;'>\\1</font></span></tt>", $s);
     }
     //==Media tag
-    if (stripos($s, '[media=') !== false) {
+    if (false !== stripos($s, '[media=')) {
         $s = preg_replace("#\[media=(youtube|liveleak|GameTrailers|vimeo|imdb)\](.+?)\[/media\]#ies", "_MediaTag('\\2','\\1')", $s);
     }
-    if (stripos($s, '[img') !== false && $images) {
+    if (false !== stripos($s, '[img') && $images) {
         // [img]http://www/image.gif[/img]
         $s = preg_replace("/\[img\]((http|https):\/\/[^\s'\"<>]+(\.(jpeg|jpg|gif|png|bmp)))\[\/img\]/i", '<a href="\\1" data-lightbox="details"><img src="\\1" alt="" class="img-responsive" /></a>', $s);
         // [img=http://www/image.gif]
@@ -446,18 +447,18 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         }
     }
     // [mcom]Text[/mcom]
-    if (stripos($s, '[mcom]') !== false) {
+    if (false !== stripos($s, '[mcom]')) {
         $s = preg_replace("/\[mcom\](.+?)\[\/mcom\]/is", '<div style="font-size: 18pt; line-height: 50%;">
    <div style="border-color: red; background-color: red; color: #fff; text-align: center; font-weight: bold; font-size: large;"><b>\\1</b></div></div>', $s);
     }
     // the [you] tag
-    if (stripos($s, '[you]') !== false) {
+    if (false !== stripos($s, '[you]')) {
         $s = preg_replace("/https?:\/\/[^\s'\"<>]*\[you\][^\s'\"<>]*/i", ' ', $s);
         $s = preg_replace("/\[you\]/i", $CURUSER['username'], $s);
     }
 
     // the [username] tag
-    if (stripos($s, '[username]') !== false) {
+    if (false !== stripos($s, '[username]')) {
         $s = preg_replace("/https?:\/\/[^\s'\"<>]*\[username\][^\s'\"<>]*/i", ' ', $s);
         $s = preg_replace("/\[username\]/i", $CURUSER['username'], $s);
     }
@@ -487,8 +488,9 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
                          "\r\n",
                          "\r",
                          "\n",
-                         '&lt;br&gt;'
-                     ], "<br>", $s);
+                         '&lt;br&gt;',
+                     ], '<br>', $s);
+
     return $s;
 }
 
@@ -530,9 +532,9 @@ function format_code($s)
                     <b>code:</b>
                 </div>
                 <pre class='round10'>", $s);
-        $s = str_replace('[/code]', "
+        $s = str_replace('[/code]', '
                 </pre>
-            </div>", $s);
+            </div>', $s);
         $s = html_entity_decode($s);
     }
 
@@ -658,7 +660,7 @@ function format_comment_no_bbcode($text, $strip_html = true)
 function _MediaTag($content, $type)
 {
     global $site_config;
-    if ($content == '' or $type == '') {
+    if ('' == $content or '' == $type) {
         return;
     }
     $return = '';

@@ -1,9 +1,11 @@
 <?php
+
 function is_installed($ext)
 {
     if (extension_loaded($ext)) {
         return true;
     }
+
     return false;
 }
 
@@ -32,26 +34,26 @@ function extensionscheck()
     if (version_compare(phpversion(), $php_min_vers, '<')) {
         $php = false;
         $out .= '
-            <div class="notreadable">PHP ' . $php_min_vers . '+ is required.</div>';
+            <div class="notreadable">PHP '.$php_min_vers.'+ is required.</div>';
     } else {
         $out .= '
-            <div class="readable">' . phpversion() . '</div>';
+            <div class="readable">'.phpversion().'</div>';
     }
     foreach ($extensions as $ext) {
         if (!is_installed($ext)) {
             $missing[] = $ext;
             $out .= '
-            <div class="notreadable">' . $ext . '</div>';
+            <div class="notreadable">'.$ext.'</div>';
         } else {
             $out .= '
-            <div class="readable">' . $ext . '</div>';
+            <div class="readable">'.$ext.'</div>';
         }
     }
     if (!empty($missing)) {
         $out .= '
             <div class="info" style="text-align:center;">
                 It looks like you need to install some php extensions:<br>
-                <span style="color: red;">' . implode(', ', $missing) . '</span>.<br>
+                <span style="color: red;">'.implode(', ', $missing).'</span>.<br>
                 Once you have installed the extensions marked in red, you can continue.<br><br>
                 <input type="button" value="Reload" onclick="window.location.reload()" />
             </div>';
@@ -59,7 +61,7 @@ function extensionscheck()
     if (!$php) {
         $out .= '
             <div class="info" style="text-align:center;">
-                Please update PHP to at least version ' . $php_min_vers . '.<br><br>
+                Please update PHP to at least version '.$php_min_vers.'.<br><br>
                 <input type="button" value="Reload" onclick="window.location.reload()" />
             </div>';
     }

@@ -1,8 +1,9 @@
 <?php
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'html_functions.php';
-require_once INCL_DIR . 'pager_functions.php';
-require_once CLASS_DIR . 'class_check.php';
+
+require_once INCL_DIR.'user_functions.php';
+require_once INCL_DIR.'html_functions.php';
+require_once INCL_DIR.'pager_functions.php';
+require_once CLASS_DIR.'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
@@ -16,11 +17,11 @@ if ($ip) {
     if (!preg_match($regex, $ip)) {
         $HTMLOUT .= stdmsg($lang['ipsearch_error'], $lang['ipsearch_invalid']);
         $HTMLOUT .= end_main_frame();
-        echo stdhead('IP Search') . $HTMLOUT . stdfoot();
+        echo stdhead('IP Search').$HTMLOUT.stdfoot();
         die();
     }
     $mask = isset($_GET['mask']) ? htmlsafechars(trim($_GET['mask'])) : '';
-    if ($mask == '' || $mask == '255.255.255.255') {
+    if ('' == $mask || '255.255.255.255' == $mask) {
         $where1 = "u.ip = '$ip'";
         $where2 = "ips.ip = '$ip'";
         $dom = @gethostbyaddr($ip);
@@ -30,12 +31,12 @@ if ($ip) {
             $addr = $dom;
         }
     } else {
-        if (substr($mask, 0, 1) == '/') {
+        if ('/' == substr($mask, 0, 1)) {
             $n = substr($mask, 1, strlen($mask) - 1);
             if (!is_numeric($n) or $n < 0 or $n > 32) {
                 $HTMLOUT .= stdmsg($lang['ipsearch_error'], $lang['ipsearch_subnet']);
                 $HTMLOUT .= end_main_frame();
-                echo stdhead('IP Search') . $HTMLOUT . stdfoot();
+                echo stdhead('IP Search').$HTMLOUT.stdfoot();
                 die();
             } else {
                 $mask = long2ip(pow(2, 32) - pow(2, 32 - $n));
@@ -43,7 +44,7 @@ if ($ip) {
         } elseif (!preg_match($regex, $mask)) {
             $HTMLOUT .= stdmsg($lang['ipsearch_error'], $lang['ipsearch_subnet']);
             $HTMLOUT .= end_main_frame();
-            echo stdhead('IP Search') . $HTMLOUT . stdfoot();
+            echo stdhead('IP Search').$HTMLOUT.stdfoot();
             die();
         }
         $where1 = "INET_ATON(u.ip) & INET_ATON('$mask') = INET_ATON('$ip') & INET_ATON('$mask')";
@@ -59,25 +60,25 @@ if ($ip) {
     $res = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_array($res);
     $count = $row[0];
-    if ($count == 0) {
+    if (0 == $count) {
         $HTMLOUT .= "<br><b>No users found</b>\n";
         $HTMLOUT .= end_main_frame();
-        echo stdhead('IP sEARCH') . $HTMLOUT . stdfoot();
+        echo stdhead('IP sEARCH').$HTMLOUT.stdfoot();
         die();
     }
     $order = isset($_GET['order']) && $_GET['order'];
-    $page = isset($_GET['page']) && (int)$_GET['page'];
+    $page = isset($_GET['page']) && (int) $_GET['page'];
     $perpage = 20;
     $pager = pager($perpage, $count, "staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=$order&amp;");
-    if ($order == 'added') {
+    if ('added' == $order) {
         $orderby = 'added DESC';
-    } elseif ($order == 'username') {
+    } elseif ('username' == $order) {
         $orderby = 'UPPER(username) ASC';
-    } elseif ($order == 'email') {
+    } elseif ('email' == $order) {
         $orderby = 'email ASC';
-    } elseif ($order == 'last_ip') {
+    } elseif ('last_ip' == $order) {
         $orderby = 'last_ip ASC';
-    } elseif ($order == 'last_access') {
+    } elseif ('last_access' == $order) {
         $orderby = 'last_ip ASC';
     } else {
         $orderby = 'access DESC';
@@ -93,56 +94,56 @@ if ($ip) {
           GROUP BY u.id ) as ipsearch
           GROUP BY id
           ORDER BY $orderby
-          " . $pager['limit'] . '';
+          ".$pager['limit'].'';
     $res = sql_query($query1) or sqlerr(__FILE__, __LINE__);
-    $HTMLOUT .= begin_frame('' . htmlsafechars($count) . " {$lang['ipsearch_have_used']}" . htmlsafechars($ip) . ' (' . htmlsafechars($addr) . ')', true);
+    $HTMLOUT .= begin_frame(''.htmlsafechars($count)." {$lang['ipsearch_have_used']}".htmlsafechars($ip).' ('.htmlsafechars($addr).')', true);
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
     }
     $HTMLOUT .= "<table >\n";
     $HTMLOUT .= "<tr>
-      <td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=username'>{$lang['ipsearch_username']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_ratio']}</td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=email'>{$lang['ipsearch_email']}</a></td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_ip'>{$lang['ipsearch_ip']}</a></td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_access'>{$lang['ipsearch_access']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_num']}</td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask'>{$lang['ipsearch_access']} on <br>" . htmlsafechars($ip) . '</a></td>' . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=added'>{$lang['ipsearch_added']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_invited']}</td></tr>";
+      <td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=username'>{$lang['ipsearch_username']}</a></td>"."<td class='colhead'>{$lang['ipsearch_ratio']}</td>"."<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=email'>{$lang['ipsearch_email']}</a></td>"."<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_ip'>{$lang['ipsearch_ip']}</a></td>"."<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_access'>{$lang['ipsearch_access']}</a></td>"."<td class='colhead'>{$lang['ipsearch_num']}</td>"."<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask'>{$lang['ipsearch_access']} on <br>".htmlsafechars($ip).'</a></td>'."<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=added'>{$lang['ipsearch_added']}</a></td>"."<td class='colhead'>{$lang['ipsearch_invited']}</td></tr>";
     while ($user = mysqli_fetch_assoc($res)) {
-        if ($user['added'] == '0') {
+        if ('0' == $user['added']) {
             $user['added'] = '---';
         }
-        if ($user['last_access'] == '0') {
+        if ('0' == $user['last_access']) {
             $user['last_access'] = '---';
         }
         if ($user['last_ip']) {
             $nip = ip2long($user['last_ip']);
             $res1 = sql_query("SELECT COUNT(*) FROM bans WHERE $nip >= first AND $nip <= last") or sqlerr(__FILE__, __LINE__);
             $array = mysqli_fetch_row($res1);
-            if ($array[0] == 0) {
+            if (0 == $array[0]) {
                 $ipstr = $user['last_ip'];
             } else {
-                $ipstr = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['last_ip']) . "'><span style='color: #FF0000;'><b>" . htmlsafechars($user['last_ip']) . '</b></span></a>';
+                $ipstr = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=".htmlsafechars($user['last_ip'])."'><span style='color: #FF0000;'><b>".htmlsafechars($user['last_ip']).'</b></span></a>';
             }
         } else {
             $ipstr = '---';
         }
-        $resip = sql_query('SELECT ip FROM ips WHERE userid=' . sqlesc($user['id']) . ' GROUP BY ips.ip') or sqlerr(__FILE__, __LINE__);
+        $resip = sql_query('SELECT ip FROM ips WHERE userid='.sqlesc($user['id']).' GROUP BY ips.ip') or sqlerr(__FILE__, __LINE__);
         $iphistory = mysqli_num_rows($resip);
         if ($user['invitedby'] > 0) {
-            $res2 = sql_query('SELECT username FROM users WHERE id=' . sqlesc($user['invitedby']) . '');
+            $res2 = sql_query('SELECT username FROM users WHERE id='.sqlesc($user['invitedby']).'');
             $array = mysqli_fetch_assoc($res2);
             $invitedby = $array['username'];
-            if ($invitedby == '') {
+            if ('' == $invitedby) {
                 $invitedby = "<i>[{$lang['ipsearch_deleted']}]</i>";
             } else {
-                $invitedby = "<a href='{$site_config['baseurl']}/userdetails.php?id={$user['invitedby']}'>" . htmlsafechars($invitedby) . '</a>';
+                $invitedby = "<a href='{$site_config['baseurl']}/userdetails.php?id={$user['invitedby']}'>".htmlsafechars($invitedby).'</a>';
             }
         } else {
             $invitedby = '--';
         }
         $HTMLOUT .= "<tr>
-           <td><b><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$user['id'] . "'></a></b>" . format_username($user) . '</td>' . '<td>' . member_ratio($user['uploaded'], $user['downloaded']) . '</td>
-          <td>' . $user['email'] . '</td><td>' . $ipstr . "</td>
-          <td><div>" . get_date($user['last_access'], 'DATE', 1, 0) . "</div></td>
-          <td><div><b><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=" . (int)$user['id'] . "'>" . htmlsafechars($iphistory) . "</a></b></div></td>
-          <td><div>" . get_date($user['access'], 'DATE', 1, 0) . "</div></td>
-          <td><div>" . get_date($user['added'], 'DATE', 1, 0) . "</div></td>
-          <td><div>" . $invitedby . "</div></td>
+           <td><b><a href='{$site_config['baseurl']}/userdetails.php?id=".(int) $user['id']."'></a></b>".format_username($user).'</td>'.'<td>'.member_ratio($user['uploaded'], $user['downloaded']).'</td>
+          <td>'.$user['email'].'</td><td>'.$ipstr.'</td>
+          <td><div>'.get_date($user['last_access'], 'DATE', 1, 0)."</div></td>
+          <td><div><b><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=".(int) $user['id']."'>".htmlsafechars($iphistory).'</a></b></div></td>
+          <td><div>'.get_date($user['access'], 'DATE', 1, 0).'</div></td>
+          <td><div>'.get_date($user['added'], 'DATE', 1, 0).'</div></td>
+          <td><div>'.$invitedby."</div></td>
           </tr>\n";
     }
     $HTMLOUT .= '</table>';
@@ -152,5 +153,5 @@ if ($ip) {
     $HTMLOUT .= end_frame();
 }
 $HTMLOUT .= end_main_frame();
-echo stdhead($lang['ipsearch_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['ipsearch_stdhead']).$HTMLOUT.stdfoot();
 die();

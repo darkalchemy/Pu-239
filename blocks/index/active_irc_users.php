@@ -1,10 +1,9 @@
 <?php
-global $site_config, $lang, $fluent;
 
-$cache = new DarkAlchemy\Pu239\Cache();
+global $site_config, $lang, $fluent, $cache;
 
 $irc = $cache->get('ircusers_');
-if ($irc === false || is_null($irc)) {
+if (false === $irc || is_null($irc)) {
     $irc = $list = [];
     $query = $fluent->from('users')
         ->select(null)
@@ -20,7 +19,7 @@ if ($irc === false || is_null($irc)) {
     $list[] = format_username(2);
     $irc['ircusers'] = implode(',&nbsp;&nbsp;', $list);
     $irc['count'] = count($list);
-    if ($irc['count'] === 0) {
+    if (0 === $irc['count']) {
         $irc['ircusers'] = $lang['index_irc_nousers'];
     }
     $cache->set('ircusers_', $irc, $site_config['expires']['activeircusers']);

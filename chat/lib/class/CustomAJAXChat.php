@@ -8,7 +8,7 @@
  */
 
 /**
- * Class CustomAJAXChat
+ * Class CustomAJAXChat.
  */
 class CustomAJAXChat extends AJAXChat
 {
@@ -23,7 +23,7 @@ class CustomAJAXChat extends AJAXChat
     public function getValidLoginUserData()
     {
         $user = $this->_user->getUserFromId($this->getUserID());
-        if (!empty($user) && $user['enabled'] === 'yes' && $user['chatpost'] === 1) {
+        if (!empty($user) && 'yes' === $user['enabled'] && 1 === $user['chatpost']) {
             $userData['userID'] = $user['id'];
             $userData['userName'] = $this->trimUserName($user['username']);
             $userData['userClass'] = get_user_class_name($user['class']);
@@ -55,13 +55,15 @@ class CustomAJAXChat extends AJAXChat
                     5,
                 ];
             }
+
             return $userData;
         }
 
-        if ($user['enabled'] === 'no' || $user['chatpost'] !== 1) {
+        if ('no' === $user['enabled'] || 1 !== $user['chatpost']) {
             $this->_session->unset('Channel');
             $this->addInfoMessage('errorBanned');
         }
+
         return false;
     }
 
@@ -71,7 +73,7 @@ class CustomAJAXChat extends AJAXChat
     public function &getChannels()
     {
         $validChannels = [];
-        if ($this->_channels === null) {
+        if (null === $this->_channels) {
             $this->_channels = [];
 
             $customUsers = $this->getCustomUsers();
@@ -96,17 +98,15 @@ class CustomAJAXChat extends AJAXChat
                 }
             }
         }
+
         return $this->_channels;
     }
 
-    /**
-     * @return null
-     */
     public function &getCustomUsers()
     {
         // List containing the registered chat users:
         $users = null;
-        require_once AJAX_CHAT_PATH . 'lib' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'users.php';
+        require_once AJAX_CHAT_PATH.'lib'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'users.php';
 
         return $users;
     }
@@ -116,7 +116,7 @@ class CustomAJAXChat extends AJAXChat
      */
     public function &getAllChannels()
     {
-        if ($this->_allChannels === null) {
+        if (null === $this->_allChannels) {
             // Get all existing channels:
             $customChannels = $this->getCustomChannels();
 
@@ -152,7 +152,7 @@ class CustomAJAXChat extends AJAXChat
     {
         // List containing the custom channels:
         $channels = null;
-        require_once AJAX_CHAT_PATH . 'lib' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'channels.php';
+        require_once AJAX_CHAT_PATH.'lib'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'channels.php';
         // Channel array structure should be:
         // ChannelName => ChannelID
         return array_flip($channels);

@@ -6,11 +6,12 @@
  */
 function searchcloud($limit = 50)
 {
-    $cache = new DarkAlchemy\Pu239\Cache();
+    global $cache;
+
     if (!($return = $cache->get('searchcloud'))) {
         $search_q = sql_query('SELECT searchedfor, howmuch
                                 FROM searchcloud
-                                ORDER BY id DESC' . ($limit > 0 ? ' LIMIT ' . $limit : '')) or sqlerr(__FILE__, __LINE__);
+                                ORDER BY id DESC'.($limit > 0 ? ' LIMIT '.$limit : '')) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($search_q)) {
             $return = [];
             while ($search_a = mysqli_fetch_assoc($search_q)) {
@@ -25,15 +26,19 @@ function searchcloud($limit = 50)
         return [];
     }
     ksort($return);
+
     return $return;
 }
 
 /**
  * @param $word
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function searchcloud_insert($word)
 {
-    $cache = new DarkAlchemy\Pu239\Cache();
+    global $cache;
+
     $searchcloud = searchcloud();
     $ip = getip();
     $howmuch = isset($searchcloud[$word]) ? $searchcloud[$word] + 1 : 1;
@@ -45,7 +50,7 @@ function searchcloud_insert($word)
             $word => $howmuch,
         ], 0);
     }
-    sql_query('INSERT INTO searchcloud(searchedfor,howmuch,ip) VALUES (' . sqlesc($word) . ',1,' . ipToStorageFormat($ip) . ') ON DUPLICATE KEY UPDATE howmuch = howmuch + 1') or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO searchcloud(searchedfor,howmuch,ip) VALUES ('.sqlesc($word).',1,'.ipToStorageFormat($ip).') ON DUPLICATE KEY UPDATE howmuch = howmuch + 1') or sqlerr(__FILE__, __LINE__);
 }
 
 /**
@@ -63,7 +68,7 @@ function cloud()
         $minimum_count = min(array_values($tags));
         $maximum_count = max(array_values($tags));
         $spread = $maximum_count - $minimum_count;
-        if ($spread == 0) {
+        if (0 == $spread) {
             $spread = 1;
         }
         $cloud_html = '';
@@ -73,11 +78,11 @@ function cloud()
             $size = floor($small + round(($count - $minimum_count) * ($big - $small) / $spread, 0, PHP_ROUND_HALF_UP));
             $color = random_color(100, 200);
             $cloud_tags[] = "
-                            <a class='tooltipper tag_cloud' style='color:{$color}; font-size: {$size}px' href='{$site_config['baseurl']}/browse.php?search=" . urlencode($tag) . "&amp;searchin=all&amp;incldead=1' title='<div class=\"size_5 has-text-primary has-text-centered\">\"" . htmlsafechars($tag) . "\"</div><br>has been searched for {$count} times.'>
-                                <span class='padding10 has-no-wrap'>" . htmlsafechars(stripslashes($tag)) . "</span>
-                            </a>";
+                            <a class='tooltipper tag_cloud' style='color:{$color}; font-size: {$size}px' href='{$site_config['baseurl']}/browse.php?search=".urlencode($tag)."&amp;searchin=all&amp;incldead=1' title='<div class=\"size_5 has-text-primary has-text-centered\">\"".htmlsafechars($tag)."\"</div><br>has been searched for {$count} times.'>
+                                <span class='padding10 has-no-wrap'>".htmlsafechars(stripslashes($tag)).'</span>
+                            </a>';
         }
-        $cloud_html = join("\n", $cloud_tags) . "\n";
+        $cloud_html = join("\n", $cloud_tags)."\n";
 
         return $cloud_html;
     }

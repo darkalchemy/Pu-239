@@ -1,6 +1,7 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
+
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'user_functions.php';
 check_user_status();
 
 /**
@@ -8,17 +9,16 @@ check_user_status();
  */
 function rsstfreakinfo()
 {
-    require_once INCL_DIR . 'html_functions.php';
-    global $site_config;
+    require_once INCL_DIR.'html_functions.php';
+    global $site_config, $cache;
 
-$cache = new DarkAlchemy\Pu239\Cache();
     $html = '';
     $use_limit = true;
     $limit = 5;
     $i = 0;
 
     $xml = $cache->get('tfreaknewsrss_');
-    if ($xml === false || is_null($xml)) {
+    if (false === $xml || is_null($xml)) {
         $xml = file_get_contents('http://feed.torrentfreak.com/Torrentfreak/');
         $cache->set('tfreaknewsrss_', $xml, 300);
     }
@@ -30,29 +30,29 @@ $cache = new DarkAlchemy\Pu239\Cache();
         $top = $i >= 1 ? 'top20' : '';
         $html .= "
             <div class='bordered $top'>
-                <div id='" . md5($item->getElementsByTagName('title')->item(0)->nodeValue) . "' class='header alt_bordered bg-00 has-text-left'>
+                <div id='".md5($item->getElementsByTagName('title')->item(0)->nodeValue)."' class='header alt_bordered bg-00 has-text-left'>
                     <legend class='flipper has-text-primary flex flex-left'>
                         <i class='fa icon-up-open size_3' aria-hidden='true'></i>
-                        <small>" . htmlsafechars($item->getElementsByTagName('title')->item(0)->nodeValue) . "</small>
+                        <small>".htmlsafechars($item->getElementsByTagName('title')->item(0)->nodeValue)."</small>
                     </legend>
                     <div class='bg-02 round5 padding10'>
                         <div class='bottom20 size_3 has-text-primary'>
-                            by " . str_replace([
+                            by ".str_replace([
                                                                                                                                                                                                                                                                               '<![CDATA[',
-                                                                                                                                                                                                                                                                              ']]>'
-                                                                                                                                                                                                                                                                          ], '', htmlsafechars($item->getElementsByTagName('creator')->item(0)->nodeValue)) . " on " . htmlsafechars($item->getElementsByTagName('pubDate')->item(0)->nodeValue) . "
+                                                                                                                                                                                                                                                                              ']]>',
+                                                                                                                                                                                                                                                                          ], '', htmlsafechars($item->getElementsByTagName('creator')->item(0)->nodeValue)).' on '.htmlsafechars($item->getElementsByTagName('pubDate')->item(0)->nodeValue).'
                         </div>
                         <div>
-                            " . str_replace([
+                            '.str_replace([
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    '<![CDATA[',
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ']]>',
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   'href="'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   'href="',
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ], [
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    '',
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    '',
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   'href="' . $site_config['anonymizer_url']
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ], preg_replace('/<p>/', "<p class='has-text-white'>", $item->getElementsByTagName('description')->item(0)->nodeValue, 1)) . "
-                            <a href='{$site_config['anonymizer_url']}" . $item->getElementsByTagName('link')->item(0)->nodeValue . "' target='_blank'>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   'href="'.$site_config['anonymizer_url'],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ], preg_replace('/<p>/', "<p class='has-text-white'>", $item->getElementsByTagName('description')->item(0)->nodeValue, 1))."
+                            <a href='{$site_config['anonymizer_url']}".$item->getElementsByTagName('link')->item(0)->nodeValue."' target='_blank'>
                                 <span class='size_3 has-text-primary'>
                                     Read more
                                 </span>
@@ -67,12 +67,12 @@ $cache = new DarkAlchemy\Pu239\Cache();
     }
     $html = str_replace([
                             '“',
-                            '”'
+                            '”',
                         ], '"', $html);
     $html = str_replace([
                             '’',
                             '‘',
-                            '‘'
+                            '‘',
                         ], "'", $html);
     $html = str_replace('–', '-', $html);
 

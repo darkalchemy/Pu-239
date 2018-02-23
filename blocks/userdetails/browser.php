@@ -1,7 +1,8 @@
 <?php
+
 global $lang, $user;
 
-if ($user['browser'] != '') {
+if ('' != $user['browser']) {
     $browser = htmlsafechars($user['browser']);
 } else {
     $browser = $lang['userdetails_nobrowser'];

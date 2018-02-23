@@ -1,10 +1,10 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'html_functions.php';
-global $CURUSER;
 
-$session = new DarkAlchemy\Pu239\Session();
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'user_functions.php';
+require_once INCL_DIR.'html_functions.php';
+global $CURUSER, $session;
+
 if (!$session->get('LoggedIn')) {
     dbconn();
     get_template();
@@ -124,7 +124,7 @@ if ($CURUSER) {
         if ($down > 0) {
             $r = number_format($up / $down, 2);
             if ($color) {
-                $r = "<span style='color: " . get_ratio_color($r) . ";'>$r</span>";
+                $r = "<span style='color: ".get_ratio_color($r).";'>$r</span>";
             }
         } elseif ($up > 0) {
             $r = "'Inf.'";
@@ -177,7 +177,7 @@ if ($CURUSER) {
     $next_para .= "{$lang['faq_in']}<a class='altlink' href='userdetails.php?id={$CURUSER['id']}'>{$lang['faq_your']}</a>{$lang['faq_case']}";
     if (isset($wait)) {
         $byboth = $byratio && $byul;
-        $next_para .= ($byboth ? "{$lang['faq_both']}" : '') . ($byratio ? "{$lang['faq_ratio']}" . format_ratio($CURUSER['uploaded'], $CURUSER['downloaded']) : '') . ($byboth ? "{$lang['faq_and']}" : '') . ($byul ? "{$lang['faq_totalup']}" . round($gigs, 2) . ' GB' : '') . ' impl' . ($byboth ? 'y' : 'ies') . "{$lang['faq_delay']}$wait{$lang['faq_hours']}" . ($byboth ? '' : " ({$lang['faq_even']}" . ($byratio ? "{$lang['faq_totup']}" . round($gigs, 2) . ' GB' : "{$lang['faq_ratiois']}" . format_ratio($CURUSER['uploaded'], $CURUSER['downloaded'])) . '.)');
+        $next_para .= ($byboth ? "{$lang['faq_both']}" : '').($byratio ? "{$lang['faq_ratio']}".format_ratio($CURUSER['uploaded'], $CURUSER['downloaded']) : '').($byboth ? "{$lang['faq_and']}" : '').($byul ? "{$lang['faq_totalup']}".round($gigs, 2).' GB' : '').' impl'.($byboth ? 'y' : 'ies')."{$lang['faq_delay']}$wait{$lang['faq_hours']}".($byboth ? '' : " ({$lang['faq_even']}".($byratio ? "{$lang['faq_totup']}".round($gigs, 2).' GB' : "{$lang['faq_ratiois']}".format_ratio($CURUSER['uploaded'], $CURUSER['downloaded'])).'.)');
     } else {
         $next_para .= "{$lang['faq_nodelay']}";
     }
@@ -213,4 +213,4 @@ $HTMLOUT .= main_div("
 
 $HTMLOUT = wrapper($HTMLOUT, 'has-text-left');
 
-echo stdhead('FAQ', true) . $HTMLOUT . stdfoot();
+echo stdhead('FAQ', true).$HTMLOUT.stdfoot();

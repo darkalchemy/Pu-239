@@ -1,5 +1,6 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
 
 /**
  * @param $root
@@ -9,7 +10,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
  */
 function valid_path($root, $input)
 {
-    $fullpath = $root . $input;
+    $fullpath = $root.$input;
     $fullpath = realpath($fullpath);
     $root = realpath($root);
     $rl = strlen($root);
@@ -31,17 +32,17 @@ if (isset($_SERVER['REQUEST_URI'])) {
         $img['since'] = explode(';', $_SERVER['HTTP_IF_MODIFIED_SINCE'], 2);
         $img['since'] = strtotime($img['since'][0]);
         if ($img['since'] == $img['last_mod']) {
-            header($_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified');
+            header($_SERVER['SERVER_PROTOCOL'].' 304 Not Modified');
             $img['stop'] = true;
         }
     }
-    header('Expires: ' . $img['ex_date']);
+    header('Expires: '.$img['ex_date']);
     header('Cache-Control: private, max-age=604800');
     if ($img['stop']) {
         die();
     }
-    header('Last-Modified: ' . $img['lm_date']);
-    header('Content-type: image/' . $pi['extension']);
+    header('Last-Modified: '.$img['lm_date']);
+    header('Content-type: image/'.$pi['extension']);
     readfile($image);
     die();
 }

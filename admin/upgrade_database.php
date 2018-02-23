@@ -1,42 +1,40 @@
 <?php
-require_once INCL_DIR . 'user_functions.php';
-require_once CLASS_DIR . 'class_check.php';
-require_once INCL_DIR . 'pager_functions.php';
+
+require_once INCL_DIR.'user_functions.php';
+require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR.'pager_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang, $fluent;
-
-$cache = new DarkAlchemy\Pu239\Cache();
-$session = new DarkAlchemy\Pu239\Session();
+global $CURUSER, $lang, $fluent, $site_config, $cache, $session;
 
 $lang = array_merge($lang);
 if (!defined('DATABASE_DIR')) {
     stderr('Error', "add \"define('DATABASE_DIR', ROOT_DIR . 'database' . DIRECTORY_SEPARATOR);\" to define.php");
     die();
 } else {
-    require_once DATABASE_DIR . 'sql_updates.php';
+    require_once DATABASE_DIR.'sql_updates.php';
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ('POST' == $_SERVER['REQUEST_METHOD']) {
     extract($_POST);
     unset($_POST);
-    if ($id >= 1 && $submit === 'Run Query') {
+    if ($id >= 1 && 'Run Query' === $submit) {
         $sql = $sql_updates[$id - 1]['query'];
         if (sql_query($sql)) {
-            $sql = "INSERT INTO database_updates (id, query) VALUES (" . sqlesc($id) . ", " . sqlesc($sql) . ")";
+            $sql = 'INSERT INTO database_updates (id, query) VALUES ('.sqlesc($id).', '.sqlesc($sql).')';
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
             $session->set('is-success', "Query #$id ran without error");
         } else {
-            $session->set('is-danger', "[p]Query #$id failed to run, try to run manually[/p][p]" . htmlsafechars($sql) . "[/p]");
+            $session->set('is-danger', "[p]Query #$id failed to run, try to run manually[/p][p]".htmlsafechars($sql).'[/p]');
         }
     }
 }
 
 $table_exists = $cache->get('table_exists_database_updates');
-if ($table_exists === false || is_null($table_exists)) {
+if (false === $table_exists || is_null($table_exists)) {
     $sql = "SHOW tables LIKE 'database_updates'";
     $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($result) != 1) {
+    if (1 != mysqli_num_rows($result)) {
         sql_query(
             "CREATE TABLE `database_updates` (
               `id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
@@ -104,26 +102,26 @@ if (file_exists(DATABASE_DIR)) {
                 {$update['info']}
             </td>
             <td class='has-text-centered'>
-                " . (array_key_exists($update['id'], $results) ? $results[$update['id']] : $update['date']) . "
+                ".(array_key_exists($update['id'], $results) ? $results[$update['id']] : $update['date'])."
             </td>
             <td>
                 {$update['query']}
             </td>
             <td class='has-text-centered'>
-                " . (array_key_exists($update['id'], $results) ? 'Completed' : $button) . "
+                ".(array_key_exists($update['id'], $results) ? 'Completed' : $button).'
             </td>
-        </tr>";
+        </tr>';
         }
     }
 } else {
     $body = "
         <tr>
             <td colspan='5'>
-                'Path Missing: => " . DATABASE_DIR . "
+                'Path Missing: => ".DATABASE_DIR.'
             </td>
-        </tr>";
+        </tr>';
 }
 
-$HTMLOUT = wrapper(($count > $per_page ? $pager['pagertop'] : '') . main_table($body, $heading) . ($count > $per_page ? $pager['pagerbottom'] : ''));
+$HTMLOUT = wrapper(($count > $per_page ? $pager['pagertop'] : '').main_table($body, $heading).($count > $per_page ? $pager['pagerbottom'] : ''));
 
-echo stdhead('Update Database') . $HTMLOUT . stdfoot();
+echo stdhead('Update Database').$HTMLOUT.stdfoot();

@@ -25,7 +25,7 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
         }
     }
     if (isset($_GET['page'])) {
-        $page = (int)$_GET['page'];
+        $page = (int) $_GET['page'];
         if ($page < 0) {
             $page = $pagedefault;
         }
@@ -36,11 +36,11 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
     $pager = $pager2 = '';
     if ($page >= 1) {
         $pager = "
-                        <a href='{$href}page=" . ($page - 1) . "' class='pagination-previous button $class tooltipper is_hidden-mobile'  title='Goto Page $page'>Previous</a>";
+                        <a href='{$href}page=".($page - 1)."' class='pagination-previous button $class tooltipper is_hidden-mobile'  title='Goto Page $page'>Previous</a>";
     }
     if ($page < $mp && $mp >= 0) {
         $pager2 = "
-                        <a href='{$href}page=" . ($page + 1) . "' class='pagination-next button $class tooltipper is_hidden-mobile' title='Goto Page " . ($page + 2) . "'>Next</a>";
+                        <a href='{$href}page=".($page + 1)."' class='pagination-next button $class tooltipper is_hidden-mobile' title='Goto Page ".($page + 2)."'>Next</a>";
     }
     if ($count) {
         $pagerarr[] = "<ul class='pagination-list'>";
@@ -73,14 +73,14 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
                             <li><a class='pagination-link is-current' aria-label='Page $text' aria-current='page'>$text</a></li>";
             }
         }
-        $pagerarr[] = "
-                        </ul>";
+        $pagerarr[] = '
+                        </ul>';
         $pagerstr = join('', $pagerarr);
         $pagertop = "<nav class='pagination is-centered is-marginless is-small' role='navigation' aria-label='pagination'>{$pager}{$pager2}
                         $pagerstr
                     </nav>";
         $pagerbottom = "
-                    <div class='has-text-centered bottom10'>Overall $count items in " . ($i) . ' page' . ($i > 1 ? '\'s' : '') . ", showing $rpp per page.</div>
+                    <div class='has-text-centered bottom10'>Overall $count items in ".($i).' page'.($i > 1 ? '\'s' : '').", showing $rpp per page.</div>
                     <nav class='pagination is-centered is-marginless is-small' role='navigation' aria-label='pagination'>{$pager}{$pager2}
                         $pagerstr
                     </nav>";
@@ -91,9 +91,9 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
     $start = $page * $rpp;
 
     return [
-        'pagertop'    => $pagertop,
+        'pagertop' => $pagertop,
         'pagerbottom' => $pagerbottom,
-        'limit'       => "LIMIT $start,$rpp",
+        'limit' => "LIMIT $start,$rpp",
     ];
 }
 
@@ -105,10 +105,10 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
 function pager_rep($data)
 {
     $pager = [
-        'pages'     => 0,
+        'pages' => 0,
         'page_span' => '',
-        'start'     => '',
-        'end'       => '',
+        'start' => '',
+        'end' => '',
     ];
     $section = $data['span'] = isset($data['span']) ? $data['span'] : 2;
     $parameter = isset($data['parameter']) ? $data['parameter'] : 'page';
@@ -146,7 +146,7 @@ function pager_rep($data)
                     continue;
                 }
                 if ($PageNo > ($pager['current_page'] + $section)) {
-                    $pager['end'] = "&#160;<a href='{$data['url']}&amp;$parameter=" . (($pager['pages'] - 1) * $data['perpage']) . "' class='tooltipper' title='Go To Last'><span class='{$mini}pagelinklast'>&raquo;</span></a>&#160;";
+                    $pager['end'] = "&#160;<a href='{$data['url']}&amp;$parameter=".(($pager['pages'] - 1) * $data['perpage'])."' class='tooltipper' title='Go To Last'><span class='{$mini}pagelinklast'>&raquo;</span></a>&#160;";
                     break;
                 }
                 $pager['page_span'] .= "&#160;<a href='{$data['url']}&amp;$parameter={$RealNo}' class='tooltipper' title='$PageNo'><span  class='{$mini}pagelink'>$PageNo</span></a>";

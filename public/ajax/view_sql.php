@@ -1,10 +1,10 @@
 <?php
-require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-check_user_status();
-global $CURUSER, $site_config;
 
-$session = new DarkAlchemy\Pu239\Session();
-if (empty($CURUSER) || $CURUSER['class'] !== UC_MAX) {
+require_once dirname(__FILE__, 3).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+check_user_status();
+global $CURUSER, $site_config, $session;
+
+if (empty($CURUSER) || UC_MAX !== $CURUSER['class']) {
     $session->set('is-warning', 'You do not have access to view that page');
     header("Location: {$site_config['baseurl']}/index.php");
     die();
@@ -12,9 +12,9 @@ if (empty($CURUSER) || $CURUSER['class'] !== UC_MAX) {
 
 function adminer_object()
 {
-    include_once PLUGINS_DIR . 'plugin.php';
+    include_once PLUGINS_DIR.'plugin.php';
 
-    foreach (glob(PLUGINS_DIR . '*.php') as $filename) {
+    foreach (glob(PLUGINS_DIR.'*.php') as $filename) {
         include_once "$filename";
     }
 
@@ -23,11 +23,10 @@ function adminer_object()
                                     'mysql',
                                     'sys',
                                     'performance_schema',
-                                    'information_schema'
+                                    'information_schema',
                                 ]),
-        new AdminerFrames()
+        new AdminerFrames(),
     ];
-
 
     class AdminerCustomization extends AdminerPlugin
     {
@@ -56,7 +55,7 @@ function adminer_object()
                 return [
                     'localhost',
                     $_ENV['DB_USERNAME'],
-                    $_ENV['DB_PASSWORD']
+                    $_ENV['DB_PASSWORD'],
                 ];
             }
         }
@@ -65,4 +64,4 @@ function adminer_object()
     return new AdminerCustomization($plugins);
 }
 
-include ROOT_DIR . 'adminer.php';
+include ROOT_DIR.'adminer.php';

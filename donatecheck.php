@@ -1,160 +1,159 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-dbconn();
-global $site_config;
 
-$cache = new DarkAlchemy\Pu239\Cache();
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+dbconn();
+global $site_config, $cache;
 
 //$payment_status = "Completed";//Only uncomment if using sandbox mode
 $donate_goods = [
     $site_config['paypal_config']['gb_donated_1'] => [
-        'to_add'    => [
-            'uploaded'      => $site_config['paypal_config']['up_amt_1'] * 1073741824,
-            'invites'       => $site_config['paypal_config']['inv_amt_1'],
-            'seedbonus'     => $site_config['paypal_config']['kp_amt_1'],
+        'to_add' => [
+            'uploaded' => $site_config['paypal_config']['up_amt_1'] * 1073741824,
+            'invites' => $site_config['paypal_config']['inv_amt_1'],
+            'seedbonus' => $site_config['paypal_config']['kp_amt_1'],
             'total_donated' => $site_config['paypal_config']['gb_donated_1'],
         ],
         'to_update' => [
-            'donated'           => $site_config['paypal_config']['gb_donated_1'],
-            'warned'            => 0,
-            'downloadpos'       => 1,
-            'uploadpos'         => 1,
-            'leechwarn'         => 0,
+            'donated' => $site_config['paypal_config']['gb_donated_1'],
+            'warned' => 0,
+            'downloadpos' => 1,
+            'uploadpos' => 1,
+            'leechwarn' => 0,
             'hit_and_run_total' => 0,
-            'hnrwarn'           => '\'no\'',
-            'enabled'           => '\'yes\'',
-            'class'             => 'IF(class < ' . UC_VIP . ', ' . UC_VIP . ', class), vipclass_before = IF(class < ' . UC_VIP . ', class, 0)',
-            'donoruntil'        => sprintf('IF(donoruntil > 0,donoruntil + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['duntil_dur_1'], $site_config['paypal_config']['duntil_dur_1']),
-            'vip_until'         => sprintf('IF(vip_until > 0,vip_until + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['vip_dur_1'], $site_config['paypal_config']['vip_dur_1']),
-            'free_switch'       => sprintf('IF(free_switch > 0,free_switch + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['free_dur_1'], $site_config['paypal_config']['free_dur_1']),
-            'immunity'          => sprintf('IF(immunity > 0,immunity + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['imm_dur_1'], $site_config['paypal_config']['imm_dur_1']),
-            'donor'             => '\'yes\'',
-            'modcomment'        => "CONCAT('" . get_date(TIME_NOW, 'DATE', 1) . ' - User donated ' . $site_config['paypal_config']['gb_donated_1'] . ' ' . $site_config['paypal_config']['currency'] . "\n',modcomment)",
+            'hnrwarn' => '\'no\'',
+            'enabled' => '\'yes\'',
+            'class' => 'IF(class < '.UC_VIP.', '.UC_VIP.', class), vipclass_before = IF(class < '.UC_VIP.', class, 0)',
+            'donoruntil' => sprintf('IF(donoruntil > 0,donoruntil + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['duntil_dur_1'], $site_config['paypal_config']['duntil_dur_1']),
+            'vip_until' => sprintf('IF(vip_until > 0,vip_until + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['vip_dur_1'], $site_config['paypal_config']['vip_dur_1']),
+            'free_switch' => sprintf('IF(free_switch > 0,free_switch + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['free_dur_1'], $site_config['paypal_config']['free_dur_1']),
+            'immunity' => sprintf('IF(immunity > 0,immunity + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['imm_dur_1'], $site_config['paypal_config']['imm_dur_1']),
+            'donor' => '\'yes\'',
+            'modcomment' => "CONCAT('".get_date(TIME_NOW, 'DATE', 1).' - User donated '.$site_config['paypal_config']['gb_donated_1'].' '.$site_config['paypal_config']['currency']."\n',modcomment)",
         ],
     ],
     $site_config['paypal_config']['gb_donated_2'] => [
-        'to_add'    => [
-            'uploaded'      => $site_config['paypal_config']['up_amt_2'] * 1073741824,
-            'invites'       => $site_config['paypal_config']['inv_amt_2'],
-            'seedbonus'     => $site_config['paypal_config']['kp_amt_2'],
+        'to_add' => [
+            'uploaded' => $site_config['paypal_config']['up_amt_2'] * 1073741824,
+            'invites' => $site_config['paypal_config']['inv_amt_2'],
+            'seedbonus' => $site_config['paypal_config']['kp_amt_2'],
             'total_donated' => $site_config['paypal_config']['gb_donated_2'],
         ],
         'to_update' => [
-            'donated'           => $site_config['paypal_config']['gb_donated_2'],
-            'warned'            => 0,
-            'downloadpos'       => 1,
-            'uploadpos'         => 1,
-            'leechwarn'         => 0,
+            'donated' => $site_config['paypal_config']['gb_donated_2'],
+            'warned' => 0,
+            'downloadpos' => 1,
+            'uploadpos' => 1,
+            'leechwarn' => 0,
             'hit_and_run_total' => 0,
-            'hnrwarn'           => '\'no\'',
-            'enabled'           => '\'yes\'',
-            'class'             => 'IF(class < ' . UC_VIP . ', ' . UC_VIP . ', class), vipclass_before = IF(class < ' . UC_VIP . ', class, 0)',
-            'donoruntil'        => sprintf('IF(donoruntil > 0,donoruntil + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['duntil_dur_2'], $site_config['paypal_config']['duntil_dur_2']),
-            'vip_until'         => sprintf('IF(vip_until > 0,vip_until + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['vip_dur_2'], $site_config['paypal_config']['vip_dur_2']),
-            'free_switch'       => sprintf('IF(free_switch > 0,free_switch + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['free_dur_2'], $site_config['paypal_config']['free_dur_2']),
-            'immunity'          => sprintf('IF(immunity > 0,immunity + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['imm_dur_2'], $site_config['paypal_config']['imm_dur_2']),
-            'donor'             => '\'yes\'',
-            'modcomment'        => "CONCAT('" . get_date(TIME_NOW, 'DATE', 1) . ' - User donated ' . $site_config['paypal_config']['gb_donated_2'] . ' ' . $site_config['paypal_config']['currency'] . "\n',modcomment)",
+            'hnrwarn' => '\'no\'',
+            'enabled' => '\'yes\'',
+            'class' => 'IF(class < '.UC_VIP.', '.UC_VIP.', class), vipclass_before = IF(class < '.UC_VIP.', class, 0)',
+            'donoruntil' => sprintf('IF(donoruntil > 0,donoruntil + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['duntil_dur_2'], $site_config['paypal_config']['duntil_dur_2']),
+            'vip_until' => sprintf('IF(vip_until > 0,vip_until + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['vip_dur_2'], $site_config['paypal_config']['vip_dur_2']),
+            'free_switch' => sprintf('IF(free_switch > 0,free_switch + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['free_dur_2'], $site_config['paypal_config']['free_dur_2']),
+            'immunity' => sprintf('IF(immunity > 0,immunity + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['imm_dur_2'], $site_config['paypal_config']['imm_dur_2']),
+            'donor' => '\'yes\'',
+            'modcomment' => "CONCAT('".get_date(TIME_NOW, 'DATE', 1).' - User donated '.$site_config['paypal_config']['gb_donated_2'].' '.$site_config['paypal_config']['currency']."\n',modcomment)",
         ],
     ],
     $site_config['paypal_config']['gb_donated_3'] => [
-        'to_add'    => [
-            'uploaded'      => $site_config['paypal_config']['up_amt_3'] * 1073741824,
-            'invites'       => $site_config['paypal_config']['inv_amt_3'],
-            'seedbonus'     => $site_config['paypal_config']['kp_amt_3'],
+        'to_add' => [
+            'uploaded' => $site_config['paypal_config']['up_amt_3'] * 1073741824,
+            'invites' => $site_config['paypal_config']['inv_amt_3'],
+            'seedbonus' => $site_config['paypal_config']['kp_amt_3'],
             'total_donated' => $site_config['paypal_config']['gb_donated_3'],
         ],
         'to_update' => [
-            'donated'           => $site_config['paypal_config']['gb_donated_3'],
-            'warned'            => 0,
-            'downloadpos'       => 1,
-            'uploadpos'         => 1,
-            'leechwarn'         => 0,
+            'donated' => $site_config['paypal_config']['gb_donated_3'],
+            'warned' => 0,
+            'downloadpos' => 1,
+            'uploadpos' => 1,
+            'leechwarn' => 0,
             'hit_and_run_total' => 0,
-            'hnrwarn'           => '\'no\'',
-            'enabled'           => '\'yes\'',
-            'class'             => 'IF(class < ' . UC_VIP . ', ' . UC_VIP . ', class), vipclass_before = IF(class < ' . UC_VIP . ', class, 0)',
-            'donoruntil'        => sprintf('IF(donoruntil > 0,donoruntil + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['duntil_dur_3'], $site_config['paypal_config']['duntil_dur_3']),
-            'vip_until'         => sprintf('IF(vip_until > 0,vip_until + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['vip_dur_3'], $site_config['paypal_config']['vip_dur_3']),
-            'free_switch'       => sprintf('IF(free_switch > 0,free_switch + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['free_dur_3'], $site_config['paypal_config']['free_dur_3']),
-            'immunity'          => sprintf('IF(immunity > 0,immunity + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['imm_dur_3'], $site_config['paypal_config']['imm_dur_3']),
-            'donor'             => '\'yes\'',
-            'modcomment'        => "CONCAT('" . get_date(TIME_NOW, 'DATE', 1) . ' - User donated ' . $site_config['paypal_config']['gb_donated_3'] . ' ' . $site_config['paypal_config']['currency'] . "\n',modcomment)",
+            'hnrwarn' => '\'no\'',
+            'enabled' => '\'yes\'',
+            'class' => 'IF(class < '.UC_VIP.', '.UC_VIP.', class), vipclass_before = IF(class < '.UC_VIP.', class, 0)',
+            'donoruntil' => sprintf('IF(donoruntil > 0,donoruntil + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['duntil_dur_3'], $site_config['paypal_config']['duntil_dur_3']),
+            'vip_until' => sprintf('IF(vip_until > 0,vip_until + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['vip_dur_3'], $site_config['paypal_config']['vip_dur_3']),
+            'free_switch' => sprintf('IF(free_switch > 0,free_switch + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['free_dur_3'], $site_config['paypal_config']['free_dur_3']),
+            'immunity' => sprintf('IF(immunity > 0,immunity + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['imm_dur_3'], $site_config['paypal_config']['imm_dur_3']),
+            'donor' => '\'yes\'',
+            'modcomment' => "CONCAT('".get_date(TIME_NOW, 'DATE', 1).' - User donated '.$site_config['paypal_config']['gb_donated_3'].' '.$site_config['paypal_config']['currency']."\n',modcomment)",
         ],
     ],
     $site_config['paypal_config']['gb_donated_4'] => [
-        'to_add'    => [
-            'uploaded'      => $site_config['paypal_config']['up_amt_4'] * 1073741824,
-            'invites'       => $site_config['paypal_config']['inv_amt_4'],
-            'seedbonus'     => $site_config['paypal_config']['kp_amt_4'],
+        'to_add' => [
+            'uploaded' => $site_config['paypal_config']['up_amt_4'] * 1073741824,
+            'invites' => $site_config['paypal_config']['inv_amt_4'],
+            'seedbonus' => $site_config['paypal_config']['kp_amt_4'],
             'total_donated' => $site_config['paypal_config']['gb_donated_4'],
         ],
         'to_update' => [
-            'donated'           => $site_config['paypal_config']['gb_donated_4'],
-            'warned'            => 0,
-            'downloadpos'       => 1,
-            'uploadpos'         => 1,
-            'leechwarn'         => 0,
+            'donated' => $site_config['paypal_config']['gb_donated_4'],
+            'warned' => 0,
+            'downloadpos' => 1,
+            'uploadpos' => 1,
+            'leechwarn' => 0,
             'hit_and_run_total' => 0,
-            'hnrwarn'           => '\'no\'',
-            'enabled'           => '\'yes\'',
-            'class'             => 'IF(class < ' . UC_VIP . ', ' . UC_VIP . ', class), vipclass_before = IF(class < ' . UC_VIP . ', class, 0)',
-            'donoruntil'        => sprintf('IF(donoruntil > 0,donoruntil + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['duntil_dur_4'], $site_config['paypal_config']['duntil_dur_4']),
-            'vip_until'         => sprintf('IF(vip_until > 0,vip_until + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['vip_dur_4'], $site_config['paypal_config']['vip_dur_4']),
-            'free_switch'       => sprintf('IF(free_switch > 0,free_switch + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['free_dur_4'], $site_config['paypal_config']['free_dur_4']),
-            'immunity'          => sprintf('IF(immunity > 0,immunity + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['imm_dur_4'], $site_config['paypal_config']['imm_dur_4']),
-            'donor'             => '\'yes\'',
-            'modcomment'        => "CONCAT('" . get_date(TIME_NOW, 'DATE', 1) . ' - User donated ' . $site_config['paypal_config']['gb_donated_4'] . ' ' . $site_config['paypal_config']['currency'] . "\n',modcomment)",
+            'hnrwarn' => '\'no\'',
+            'enabled' => '\'yes\'',
+            'class' => 'IF(class < '.UC_VIP.', '.UC_VIP.', class), vipclass_before = IF(class < '.UC_VIP.', class, 0)',
+            'donoruntil' => sprintf('IF(donoruntil > 0,donoruntil + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['duntil_dur_4'], $site_config['paypal_config']['duntil_dur_4']),
+            'vip_until' => sprintf('IF(vip_until > 0,vip_until + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['vip_dur_4'], $site_config['paypal_config']['vip_dur_4']),
+            'free_switch' => sprintf('IF(free_switch > 0,free_switch + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['free_dur_4'], $site_config['paypal_config']['free_dur_4']),
+            'immunity' => sprintf('IF(immunity > 0,immunity + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['imm_dur_4'], $site_config['paypal_config']['imm_dur_4']),
+            'donor' => '\'yes\'',
+            'modcomment' => "CONCAT('".get_date(TIME_NOW, 'DATE', 1).' - User donated '.$site_config['paypal_config']['gb_donated_4'].' '.$site_config['paypal_config']['currency']."\n',modcomment)",
         ],
     ],
     $site_config['paypal_config']['gb_donated_5'] => [
-        'to_add'    => [
-            'uploaded'      => $site_config['paypal_config']['up_amt_5'] * 1073741824,
-            'invites'       => $site_config['paypal_config']['inv_amt_5'],
-            'seedbonus'     => $site_config['paypal_config']['kp_amt_5'],
+        'to_add' => [
+            'uploaded' => $site_config['paypal_config']['up_amt_5'] * 1073741824,
+            'invites' => $site_config['paypal_config']['inv_amt_5'],
+            'seedbonus' => $site_config['paypal_config']['kp_amt_5'],
             'total_donated' => $site_config['paypal_config']['gb_donated_5'],
         ],
         'to_update' => [
-            'donated'           => $site_config['paypal_config']['gb_donated_5'],
-            'warned'            => 0,
-            'downloadpos'       => 1,
-            'uploadpos'         => 1,
-            'leechwarn'         => 0,
+            'donated' => $site_config['paypal_config']['gb_donated_5'],
+            'warned' => 0,
+            'downloadpos' => 1,
+            'uploadpos' => 1,
+            'leechwarn' => 0,
             'hit_and_run_total' => 0,
-            'hnrwarn'           => '\'no\'',
-            'enabled'           => '\'yes\'',
-            'class'             => 'IF(class < ' . UC_VIP . ', ' . UC_VIP . ', class), vipclass_before = IF(class < ' . UC_VIP . ', class, 0)',
-            'donoruntil'        => sprintf('IF(donoruntil > 0,donoruntil + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['duntil_dur_5'], $site_config['paypal_config']['duntil_dur_5']),
-            'vip_until'         => sprintf('IF(vip_until > 0,vip_until + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['vip_dur_5'], $site_config['paypal_config']['vip_dur_5']),
-            'free_switch'       => sprintf('IF(free_switch > 0,free_switch + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['free_dur_5'], $site_config['paypal_config']['free_dur_5']),
-            'immunity'          => sprintf('IF(immunity > 0,immunity + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['imm_dur_5'], $site_config['paypal_config']['imm_dur_5']),
-            'donor'             => '\'yes\'',
-            'modcomment'        => "CONCAT('" . get_date(TIME_NOW, 'DATE', 1) . ' - User donated ' . $site_config['paypal_config']['gb_donated_5'] . ' ' . $site_config['paypal_config']['currency'] . "\n',modcomment)",
+            'hnrwarn' => '\'no\'',
+            'enabled' => '\'yes\'',
+            'class' => 'IF(class < '.UC_VIP.', '.UC_VIP.', class), vipclass_before = IF(class < '.UC_VIP.', class, 0)',
+            'donoruntil' => sprintf('IF(donoruntil > 0,donoruntil + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['duntil_dur_5'], $site_config['paypal_config']['duntil_dur_5']),
+            'vip_until' => sprintf('IF(vip_until > 0,vip_until + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['vip_dur_5'], $site_config['paypal_config']['vip_dur_5']),
+            'free_switch' => sprintf('IF(free_switch > 0,free_switch + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['free_dur_5'], $site_config['paypal_config']['free_dur_5']),
+            'immunity' => sprintf('IF(immunity > 0,immunity + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['imm_dur_5'], $site_config['paypal_config']['imm_dur_5']),
+            'donor' => '\'yes\'',
+            'modcomment' => "CONCAT('".get_date(TIME_NOW, 'DATE', 1).' - User donated '.$site_config['paypal_config']['gb_donated_5'].' '.$site_config['paypal_config']['currency']."\n',modcomment)",
         ],
     ],
     $site_config['paypal_config']['gb_donated_6'] => [
-        'to_add'    => [
-            'uploaded'      => $site_config['paypal_config']['up_amt_6'] * 1073741824,
-            'invites'       => $site_config['paypal_config']['inv_amt_6'],
-            'seedbonus'     => $site_config['paypal_config']['kp_amt_6'],
+        'to_add' => [
+            'uploaded' => $site_config['paypal_config']['up_amt_6'] * 1073741824,
+            'invites' => $site_config['paypal_config']['inv_amt_6'],
+            'seedbonus' => $site_config['paypal_config']['kp_amt_6'],
             'total_donated' => $site_config['paypal_config']['gb_donated_6'],
         ],
         'to_update' => [
-            'donated'           => $site_config['paypal_config']['gb_donated_6'],
-            'warned'            => 0,
-            'downloadpos'       => 1,
-            'uploadpos'         => 1,
-            'leechwarn'         => 0,
+            'donated' => $site_config['paypal_config']['gb_donated_6'],
+            'warned' => 0,
+            'downloadpos' => 1,
+            'uploadpos' => 1,
+            'leechwarn' => 0,
             'hit_and_run_total' => 0,
-            'hnrwarn'           => '\'no\'',
-            'enabled'           => '\'yes\'',
-            'class'             => 'IF(class < ' . UC_VIP . ', ' . UC_VIP . ', class), vipclass_before = IF(class < ' . UC_VIP . ', class, 0)',
-            'donoruntil'        => sprintf('IF(donoruntil > 0,donoruntil + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['duntil_dur_6'], $site_config['paypal_config']['duntil_dur_6']),
-            'vip_until'         => sprintf('IF(vip_until > 0,vip_until + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['vip_dur_6'], $site_config['paypal_config']['vip_dur_6']),
-            'free_switch'       => sprintf('IF(free_switch > 0,free_switch + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['free_dur_6'], $site_config['paypal_config']['free_dur_6']),
-            'immunity'          => sprintf('IF(immunity > 0,immunity + (%d * 604800), ' . TIME_NOW . ' + (%d * 604800))', $site_config['paypal_config']['imm_dur_6'], $site_config['paypal_config']['imm_dur_6']),
-            'donor'             => '\'yes\'',
-            'modcomment'        => "CONCAT('" . get_date(TIME_NOW, 'DATE', 1) . ' - User donated ' . $site_config['paypal_config']['gb_donated_6'] . ' ' . $site_config['paypal_config']['currency'] . "\n',modcomment)",
+            'hnrwarn' => '\'no\'',
+            'enabled' => '\'yes\'',
+            'class' => 'IF(class < '.UC_VIP.', '.UC_VIP.', class), vipclass_before = IF(class < '.UC_VIP.', class, 0)',
+            'donoruntil' => sprintf('IF(donoruntil > 0,donoruntil + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['duntil_dur_6'], $site_config['paypal_config']['duntil_dur_6']),
+            'vip_until' => sprintf('IF(vip_until > 0,vip_until + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['vip_dur_6'], $site_config['paypal_config']['vip_dur_6']),
+            'free_switch' => sprintf('IF(free_switch > 0,free_switch + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['free_dur_6'], $site_config['paypal_config']['free_dur_6']),
+            'immunity' => sprintf('IF(immunity > 0,immunity + (%d * 604800), '.TIME_NOW.' + (%d * 604800))', $site_config['paypal_config']['imm_dur_6'], $site_config['paypal_config']['imm_dur_6']),
+            'donor' => '\'yes\'',
+            'modcomment' => "CONCAT('".get_date(TIME_NOW, 'DATE', 1).' - User donated '.$site_config['paypal_config']['gb_donated_6'].' '.$site_config['paypal_config']['currency']."\n',modcomment)",
         ],
     ],
 ];
@@ -183,57 +182,57 @@ function mk_update_query($amount, $user_id)
  */
 function paypallog($txt)
 {
-    file_put_contents(ROOT_DIR . '/logs/paypal.txt', "\n[" . date('h:m D-M-Y') . "]\n" . $txt, FILE_APPEND);
+    file_put_contents(ROOT_DIR.'/logs/paypal.txt', "\n[".date('h:m D-M-Y')."]\n".$txt, FILE_APPEND);
 }
 
-if (sizeof($_POST) == 0) {
+if (0 == sizeof($_POST)) {
     paypallog('There is no _POST from paypal');
 }
 $request = 'cmd=_notify-validate';
 foreach ($_POST as $p_key => $p_value) {
-    $request .= '&' . $p_key . '=' . urlencode(stripslashes($p_value));
+    $request .= '&'.$p_key.'='.urlencode(stripslashes($p_value));
 }
 $header = "POST /cgi-bin/webscr HTTP/1.0\r\n";
 $header .= "Host: www.paypal.com\r\n";
 $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-$header .= 'Content-Length: ' . strlen($request) . "\r\n\r\n";
+$header .= 'Content-Length: '.strlen($request)."\r\n\r\n";
 if ($hand = fsockopen('ssl://www.paypal.com', 443, $errno, $errstr, 30)) {
-    fputs($hand, $header . $request);
+    fputs($hand, $header.$request);
     $paypal_data = '';
     while (!feof($hand)) {
         $paypal_data .= fgets($hand, 128);
     }
-    $vars['uid'] = isset($_POST['custom']) ? (int)$_POST['custom'] : 0;
-    $vars['amount'] = isset($_POST['mc_gross']) ? (int)$_POST['mc_gross'] : 0;
+    $vars['uid'] = isset($_POST['custom']) ? (int) $_POST['custom'] : 0;
+    $vars['amount'] = isset($_POST['mc_gross']) ? (int) $_POST['mc_gross'] : 0;
     $vars['memo'] = isset($_POST['memo']) ? htmlsafechars($_POST['memo']) : '';
-    if (stripos($paypal_data, 'VERIFIED') !== false) {
+    if (false !== stripos($paypal_data, 'VERIFIED')) {
         $user_query = sql_query(sprintf('SELECT COUNT(id) FROM users WHERE id = %d', $vars['uid'])) or paypallog(mysqli_error($GLOBALS['___mysqli_ston']));
-        if (mysqli_num_rows($user_query) == 1) {
+        if (1 == mysqli_num_rows($user_query)) {
             //update the user and add the goodies
             sql_query(mk_update_query($vars['amount'], $vars['uid'])) or paypallog(mysqli_error($GLOBALS['___mysqli_ston']));
             //instead of updating the cache delete it :P
-            $cache->delete('user' . $vars['uid']);
+            $cache->delete('user'.$vars['uid']);
             //update total funds
             sql_query(sprintf('INSERT INTO funds(cash,user,added) VALUES (%d,%d,%d)', $vars['amount'], $vars['uid'], TIME_NOW)) or paypallog(mysqli_error($GLOBALS['___mysqli_ston']));
             //clear the cache for the funds
             $cache->delete('totalfunds_');
-            $msg[] = '(' . $vars['uid'] . ',0,' . sqlesc('Donation - processed') . ',' . sqlesc("Your donation was processed by paypal and our system\nWe remind you that you donated " . $vars['amount'] . $site_config['paypal_config']['currency'] . "\nIf you forgot what you'll get check the donation page again\nStaff from " . $site_config['site_name'] . " is grateful for your donation\nIf you have any question's feel free to contact someone from staff") . ',' . TIME_NOW . ')';
-            $msg[] = '(' . $site_config['paypal_config']['staff'] . ',0,' . sqlesc('Donation - made') . ',' . sqlesc('This [url=' . $site_config['baseurl'] . '/userdetails.php?id=' . (int)$vars['uid'] . ']user[/url] - donated ' . $vars['amount'] . $site_config['paypal_config']['currency'] . (!empty($vars['memo']) ? "\nUser sent a message with his donation:\n[b]" . $vars['memo'] . '[/b]' : '')) . ',' . TIME_NOW . ')';
+            $msg[] = '('.$vars['uid'].',0,'.sqlesc('Donation - processed').','.sqlesc("Your donation was processed by paypal and our system\nWe remind you that you donated ".$vars['amount'].$site_config['paypal_config']['currency']."\nIf you forgot what you'll get check the donation page again\nStaff from ".$site_config['site_name']." is grateful for your donation\nIf you have any question's feel free to contact someone from staff").','.TIME_NOW.')';
+            $msg[] = '('.$site_config['paypal_config']['staff'].',0,'.sqlesc('Donation - made').','.sqlesc('This [url='.$site_config['baseurl'].'/userdetails.php?id='.(int) $vars['uid'].']user[/url] - donated '.$vars['amount'].$site_config['paypal_config']['currency'].(!empty($vars['memo']) ? "\nUser sent a message with his donation:\n[b]".$vars['memo'].'[/b]' : '')).','.TIME_NOW.')';
         } else {
-            paypallog('Could not find user with id = ' . $vars['uid']);
+            paypallog('Could not find user with id = '.$vars['uid']);
         }
-    } elseif (stripos($paypal_data, 'INVALID') !== false) {
+    } elseif (false !== stripos($paypal_data, 'INVALID')) {
         //something went wrong log data
-        paypallog('Paypal didn\'t like the transaction and it rejected it. _POST = ' . print_r($_POST, 1));
+        paypallog('Paypal didn\'t like the transaction and it rejected it. _POST = '.print_r($_POST, 1));
         //make some nice messages to let everyone know about the problem
-        $msg[] = '(' . $vars['uid'] . ',0,' . sqlesc('Donation - problem') . ',' . sqlesc("We are sorry to announce you that paypal rejected the donation please contact the staff\n" . $site_config['site_name'] . "'s staff") . ',' . TIME_NOW . ')';
-        $msg[] = '(' . $site_config['paypal_config']['staff'] . ',0,' . sqlesc('Donation - problem') . ',' . sqlesc('This [url=' . $site_config['baseurl'] . '/userdetails.php?id=' . (int)$vars['uid'] . ']user[/url] - donated but there was a problem with paypal. Check paypal log!') . ',' . TIME_NOW . ')';
+        $msg[] = '('.$vars['uid'].',0,'.sqlesc('Donation - problem').','.sqlesc("We are sorry to announce you that paypal rejected the donation please contact the staff\n".$site_config['site_name']."'s staff").','.TIME_NOW.')';
+        $msg[] = '('.$site_config['paypal_config']['staff'].',0,'.sqlesc('Donation - problem').','.sqlesc('This [url='.$site_config['baseurl'].'/userdetails.php?id='.(int) $vars['uid'].']user[/url] - donated but there was a problem with paypal. Check paypal log!').','.TIME_NOW.')';
     }
-    sql_query('INSERT INTO messages(receiver,sender,subject,msg,added) VALUES ' . join(',', $msg)) or paypallog(mysqli_error($GLOBALS['___mysqli_ston']));
+    sql_query('INSERT INTO messages(receiver,sender,subject,msg,added) VALUES '.join(',', $msg)) or paypallog(mysqli_error($GLOBALS['___mysqli_ston']));
     //clear memcache for staff
-    $cache->increment('inbox_' . $site_config['paypal_config']['staff']);
+    $cache->increment('inbox_'.$site_config['paypal_config']['staff']);
     //and for the user that donated
-    $cache->increment('inbox_' . $vars['uid']);
+    $cache->increment('inbox_'.$vars['uid']);
     fclose($hand);
 } else {
     paypallog('Can\'t open hand');

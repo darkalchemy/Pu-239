@@ -1,10 +1,9 @@
 <?php
-global $site_config, $lang, $fluent;
 
-$cache = new DarkAlchemy\Pu239\Cache();
+global $site_config, $lang, $fluent, $cache;
 
 $active = $cache->get('activeusers_');
-if ($active === false || is_null($active)) {
+if (false === $active || is_null($active)) {
     $list = [];
     $dt = TIME_NOW - 900;
     $query = $fluent->from('users')
@@ -21,7 +20,7 @@ if ($active === false || is_null($active)) {
     $list[] = format_username(2);
     $active['activeusers'] = implode(',&nbsp;&nbsp;', $list);
     $active['actcount'] = count($list);
-    if ($active['actcount'] === 0) {
+    if (0 === $active['actcount']) {
         $active['activeusers'] = $lang['index_active_users_no'];
     }
     $active_users_cache['au'] = number_format($active['actcount']);

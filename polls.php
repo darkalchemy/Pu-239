@@ -4,17 +4,15 @@
  */
 function parse_poll()
 {
-    global $CURUSER, $site_config;
-
-$cache = new DarkAlchemy\Pu239\Cache();
+    global $CURUSER, $site_config, $cache;
 
     $htmlout = '';
     $check = 0;
     $poll_footer = '';
     $GVARS = [
         'allow_creator_vote' => 1,
-        'allow_result_view'  => 1,
-        'allow_poll_tags'    => 1,
+        'allow_result_view' => 1,
+        'allow_poll_tags' => 1,
     ];
     $poll_data = get_poll();
 
@@ -34,18 +32,18 @@ $cache = new DarkAlchemy\Pu239\Cache();
         $poll_footer = 'You have already voted';
     }
 
-    if (($poll_data['starter_id'] == $CURUSER['id']) && ($GVARS['allow_creator_vote'] != 1)) {
+    if (($poll_data['starter_id'] == $CURUSER['id']) && (1 != $GVARS['allow_creator_vote'])) {
         $check = 1;
         $poll_footer = 'You created this poll and are not allowed to vote';
     }
 
-    if ($GVARS['allow_result_view'] == 1) {
-        if (isset($_GET['mode']) && $_GET['mode'] == 'show') {
+    if (1 == $GVARS['allow_result_view']) {
+        if (isset($_GET['mode']) && 'show' == $_GET['mode']) {
             $check = 1;
             $poll_footer = '';
         }
     }
-    if ($check == 1) {
+    if (1 == $check) {
         $htmlout = poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question'], ENT_QUOTES));
         $poll_answers = unserialize(stripslashes($poll_data['choices']));
         reset($poll_answers);
@@ -68,7 +66,7 @@ $cache = new DarkAlchemy\Pu239\Cache();
                 if ($GVARS['allow_poll_tags']) {
                     $choice = preg_replace("/\[url=([^()<>\s]+?)\]((\s|.)+?)\[\/url\]/i", '<a href="\\1">\\2</a>', $choice);
                 }
-                $percent = $votes == 0 ? 0 : $votes / $tv_poll * 100;
+                $percent = 0 == $votes ? 0 : $votes / $tv_poll * 100;
                 $percent = sprintf('%.2f', $percent);
                 $width = $percent > 0 ? intval($percent * 2) : 0;
                 $choice_html .= poll_show_rendered_choice($choice_id, $votes, $id, $choice, $percent, $width);
@@ -76,7 +74,7 @@ $cache = new DarkAlchemy\Pu239\Cache();
             $htmlout .= poll_show_rendered_question($question, $choice_html);
         }
         $htmlout .= show_total_votes($tv_poll);
-    } elseif ($check == 2) {
+    } elseif (2 == $check) {
         // only for guests when view before vote is off
         $htmlout = poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question'], ENT_QUOTES));
         $htmlout .= poll_show_no_guest_view();
@@ -101,7 +99,7 @@ $cache = new DarkAlchemy\Pu239\Cache();
                 if ($GVARS['allow_poll_tags']) {
                     $choice = $s = preg_replace("/\[url=([^()<>\s]+?)\]((\s|.)+?)\[\/url\]/i", '<a href="\\1">\\2</a>', $choice);
                 }
-                if (isset($data['multi']) and $data['multi'] == 1) {
+                if (isset($data['multi']) and 1 == $data['multi']) {
                     $choice_html .= poll_show_form_choice_multi($choice_id, $votes, $id, $choice);
                 } else {
                     $choice_html .= poll_show_form_choice($choice_id, $votes, $id, $choice);
@@ -113,11 +111,11 @@ $cache = new DarkAlchemy\Pu239\Cache();
         $htmlout .= show_total_votes($total_votes);
     }
     $htmlout .= poll_footer();
-    if ($poll_footer != '') {
+    if ('' != $poll_footer) {
         $htmlout = str_replace('<!--VOTE-->', $poll_footer, $htmlout);
     } else {
-        if ($GVARS['allow_result_view'] == 1) {
-            if (isset($_GET['mode']) && $_GET['mode'] == 'show') {
+        if (1 == $GVARS['allow_result_view']) {
+            if (isset($_GET['mode']) && 'show' == $_GET['mode']) {
                 $htmlout = str_replace('<!--SHOW-->', button_show_voteable(), $htmlout);
             } else {
                 $htmlout = str_replace('<!--SHOW-->', button_show_results(), $htmlout);

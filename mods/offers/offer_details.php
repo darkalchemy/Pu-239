@@ -1,4 +1,5 @@
 <?php
+
 global $CURUSER, $site_config;
 
 $stdfoot = [
@@ -8,48 +9,48 @@ $stdfoot = [
 ];
 $res = sql_query('SELECT o.*, o.added AS utadded, u.username 
                   FROM offers AS o LEFT JOIN users AS u ON (u.id=o.userid) 
-                  WHERE o.id = ' . $id) or sqlerr(__FILE__, __LINE__);
+                  WHERE o.id = '.$id) or sqlerr(__FILE__, __LINE__);
 if (!mysqli_num_rows($res)) {
     stderr('Error', 'Invalid Offer ID');
 }
 $num = mysqli_fetch_assoc($res);
 $added = get_date($num['utadded'], '');
 $s = htmlspecialchars($num['offer']);
-$HTMLOUT .= '<h3>Details Of Offer: ' . $s . '</h3>';
+$HTMLOUT .= '<h3>Details Of Offer: '.$s.'</h3>';
 $HTMLOUT .= "<table width='750px'><tr><td colspan='2'><h1>$s</h1></td></tr>";
 if ($num['descr']) {
     require_once 'include/bbcode_functions.php';
     $HTMLOUT .= "<tr><td><b>Description</b></td>
-    <td colspan='2'>" . format_comment($num['descr']) . '</td></tr>';
+    <td colspan='2'>".format_comment($num['descr']).'</td></tr>';
 }
 $HTMLOUT .= "<tr><td><b>Added</b></td>
 <td>$added</td></tr>";
 if ($CURUSER['id'] == $num['userid'] || $CURUSER['class'] >= UC_MODERATOR) {
-    $edit = " | <a class='altlink' href='viewoffers.php?id=" . $id . "&amp;edit_offer'>Edit Offer</a> |";
-    $delete = " <a class='altlink' href='viewoffers.php?id=" . $id . "&amp;del_offer'>Delete offer</a> ";
-    if ($num['torrentid'] != 0) {
-        $reset = "| <a class='altlink' href='viewoffers.php?id=" . $id . "&amp;offer_reset'>Re-set Offer</a>";
+    $edit = " | <a class='altlink' href='viewoffers.php?id=".$id."&amp;edit_offer'>Edit Offer</a> |";
+    $delete = " <a class='altlink' href='viewoffers.php?id=".$id."&amp;del_offer'>Delete offer</a> ";
+    if (0 != $num['torrentid']) {
+        $reset = "| <a class='altlink' href='viewoffers.php?id=".$id."&amp;offer_reset'>Re-set Offer</a>";
     }
 }
 $HTMLOUT .= "<tr>
 <td><b>offered&#160;By</b></td><td>
 <a class='altlink' href='userdetails.php?id=$num[userid]'>{$num['username']}</a>  $edit  $delete $reset  |
 <a class='altlink' href='viewoffers.php'><b>All offers</b></a> </td></tr><tr><td>
-<b>Vote for this offer</b></td><td><a href='viewoffers.php?id=" . $id . "&amp;offer_vote'><b>Vote</b></a>
+<b>Vote for this offer</b></td><td><a href='viewoffers.php?id=".$id."&amp;offer_vote'><b>Vote</b></a>
 </td></tr>
-" . ($site_config['reports'] ? "<tr><td><b>Report Offer</b></td><td>
+".($site_config['reports'] ? "<tr><td><b>Report Offer</b></td><td>
 for breaking the rules 
 <form action='report.php?type=Offer&amp;id=$id' method='post'><input class='button is-small' type='submit' name='submit' value='Report Offer' /></form></td>
 </tr>" : '');
-if ($num['torrentid'] == 0) {
+if (0 == $num['torrentid']) {
     $HTMLOUT .= "<tr><td><b>Accept This Offer</b></td>
     <td>
-    <form method='post' action='viewoffers.php?id=" . $id . "&amp;offer_filled'>
-    <strong>" . $site_config['baseurl'] . "/details.php?id=</strong><input type='text' size='10' name='torrentid' value='' /> <input type='submit' value='Fill Offer' class='button is-small' /><br>
+    <form method='post' action='viewoffers.php?id=".$id."&amp;offer_filled'>
+    <strong>".$site_config['baseurl']."/details.php?id=</strong><input type='text' size='10' name='torrentid' value='' /> <input type='submit' value='Fill Offer' class='button is-small' /><br>
     Enter the <b>ID</b>  of the torrent. (copy/paste the <strong>ID</strong> from another window/tab the correct ID number)<br></form></td>
     </tr>\n";
 } else {
-    $HTMLOUT .= "<tr><td><b>This Offer was accepted:</b></td><td><a class='altlink' href='details.php?id=" . $num['torrentid'] . "'><b>" . $site_config['baseurl'] . '/details.php?id=' . $num['torrentid'] . '</b></a></td></tr>';
+    $HTMLOUT .= "<tr><td><b>This Offer was accepted:</b></td><td><a class='altlink' href='details.php?id=".$num['torrentid']."'><b>".$site_config['baseurl'].'/details.php?id='.$num['torrentid'].'</b></a></td></tr>';
 }
 $HTMLOUT .= "<tr><td class='embedded' colspan='2'><p><a name='startcomments'></a></p>\n";
 $commentbar = "<p><a class='index' href='comment.php?action=add&amp;tid=$id&amp;type=offer'>Add Comment</a></p>\n";
@@ -76,10 +77,10 @@ if (!$count) {
     }
     $HTMLOUT .= $commentbar;
     $HTMLOUT .= $pager['pagertop'];
-    require_once INCL_DIR . 'html_functions.php';
+    require_once INCL_DIR.'html_functions.php';
     $HTMLOUT .= commenttable($allrows, 'offer');
     $HTMLOUT .= $pager['pagerbottom'];
 }
 $HTMLOUT .= $commentbar;
 /////////////////////// HTML OUTPUT //////////////////////////////
-echo stdhead('Offer Details') . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead('Offer Details').$HTMLOUT.stdfoot($stdfoot);

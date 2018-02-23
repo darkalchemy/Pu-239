@@ -12,8 +12,6 @@ function sitestats_update($data)
     $XBT_Seeder = mysqli_fetch_assoc(sql_query('SELECT sum(seeders) AS seeders FROM torrents')) or sqlerr(__FILE__, __LINE__);
     $XBT_Leecher = mysqli_fetch_assoc(sql_query('SELECT sum(leechers) AS leechers FROM torrents')) or sqlerr(__FILE__, __LINE__);
 
-
-
     $registered = get_row_count('users');
     $unverified = get_row_count('users', "WHERE status='pending'");
     $torrents = get_row_count('torrents');
@@ -28,14 +26,14 @@ function sitestats_update($data)
     $gender_na = get_row_count('users', "WHERE gender = 'NA'");
     $gender_male = get_row_count('users', "WHERE gender = 'Male'");
     $gender_female = get_row_count('users', "WHERE gender = 'Female'");
-    $powerusers = get_row_count('users', "WHERE class = '" . UC_POWER_USER . "'");
+    $powerusers = get_row_count('users', "WHERE class = '".UC_POWER_USER."'");
     $disabled = get_row_count('users', "WHERE enabled = 'no'");
-    $uploaders = get_row_count('users', "WHERE class = '" . UC_UPLOADER . "'");
-    $moderators = get_row_count('users', "WHERE class = '" . UC_MODERATOR . "'");
-    $administrators = get_row_count('users', "WHERE class = '" . UC_ADMINISTRATOR . "'");
-    $sysops = get_row_count('users', "WHERE class = '" . UC_SYSOP . "'");
-    $seeders = (int)$XBT_Seeder['seeders'];
-    $leechers = (int)$XBT_Leecher['leechers'];
+    $uploaders = get_row_count('users', "WHERE class = '".UC_UPLOADER."'");
+    $moderators = get_row_count('users', "WHERE class = '".UC_MODERATOR."'");
+    $administrators = get_row_count('users', "WHERE class = '".UC_ADMINISTRATOR."'");
+    $sysops = get_row_count('users', "WHERE class = '".UC_SYSOP."'");
+    $seeders = (int) $XBT_Seeder['seeders'];
+    $leechers = (int) $XBT_Leecher['leechers'];
     sql_query("UPDATE stats SET regusers = '$registered', unconusers = '$unverified', torrents = '$torrents', seeders = '$seeders', leechers = '$leechers', unconnectables = '$unconnectables', torrentstoday = '$torrentstoday', donors = '$donors', forumposts = '$forumposts', forumtopics = '$forumtopics', numactive = '$numactive', torrentsmonth = '$torrentsmonth', gender_na = '$gender_na', gender_male = '$gender_male', gender_female = '$gender_female', powerusers = '$powerusers', disabled = '$disabled', uploaders = '$uploaders', moderators = '$moderators', administrators = '$administrators', sysops = '$sysops' WHERE id = 1 LIMIT 1");
     if ($data['clean_log'] && $queries > 0) {
         write_log("Stats Cleanup: Completed using $queries queries");

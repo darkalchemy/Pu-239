@@ -1,4 +1,5 @@
 <?php
+
 global $CURUSER, $site_config, $lang;
 
 $res = sql_query("SELECT userid, cat FROM requests WHERE id = $id") or sqlerr(__FILE__, __LINE__);
@@ -17,22 +18,22 @@ if (!empty($_POST['picture'])) {
     //    $headers  = get_headers($picture2);
     //    if (strpos($headers[0], '200') === false)
     //        $picture = "{$site_config['pic_baseurl']}notfound.png";
-    $pic = '[img]' . $picture . "[/img]\n";
+    $pic = '[img]'.$picture."[/img]\n";
 }
 $descr = "$pic";
 $descr .= isset($_POST['body']) ? $_POST['body'] : '';
 if (!$descr) {
     stderr("{$lang['error_error']}", "{$lang['error_descr']}");
 }
-$cat = (isset($_POST['category']) ? (int)$_POST['category'] : ($num['cat'] != '' ? $num['cat'] : 0));
+$cat = (isset($_POST['category']) ? (int) $_POST['category'] : ('' != $num['cat'] ? $num['cat'] : 0));
 if (!is_valid_id($cat)) {
     stderr("{$lang['error_error']}", "{$lang['error_cat']}");
 }
 $request = sqlesc($request);
 $descr = sqlesc($descr);
-$filledby = isset($_POST['filledby']) ? (int)$_POST['filledby'] : 0;
+$filledby = isset($_POST['filledby']) ? (int) $_POST['filledby'] : 0;
 $filled = isset($_POST['filled']) ? $_POST['filled'] : 0;
-$torrentid = isset($_POST['torrentid']) ? (int)$_POST['torrentid'] : 0;
+$torrentid = isset($_POST['torrentid']) ? (int) $_POST['torrentid'] : 0;
 if ($filled) {
     if (!is_valid_id($torrentid)) {
         stderr("{$lang['error_error']}", "{$lang['error_invalid_torrent']}");
@@ -42,13 +43,13 @@ if ($filled) {
     //stderr('Error', 'ID is your own. Cannot fill your own Requests.');
     //$filledby = 0;
     //else {
-    $res = mysqli_query($GLOBALS['___mysqli_ston'], 'SELECT id FROM users WHERE id = ' . $filledby);
-    if (mysqli_num_rows($res) == 0) {
+    $res = mysqli_query($GLOBALS['___mysqli_ston'], 'SELECT id FROM users WHERE id = '.$filledby);
+    if (0 == mysqli_num_rows($res)) {
         stderr("{$lang['error_error']}", "{$lang['error_no_user']}");
     }
     //  }
-    $res = sql_query('SELECT id FROM torrents WHERE id = ' . $torrentid);
-    if (mysqli_num_rows($res) == 0) {
+    $res = sql_query('SELECT id FROM torrents WHERE id = '.$torrentid);
+    if (0 == mysqli_num_rows($res)) {
         stderr("{$lang['error_error']}", "{$lang['error_no_torrent']}");
     }
     sql_query("UPDATE requests SET cat = $cat, request = $request, descr = $descr, filledby = $filledby, torrentid=$torrentid WHERE id = $id") or sqlerr(__FILE__, __LINE__);

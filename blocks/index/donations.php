@@ -1,11 +1,10 @@
 <?php
-global $site_config, $lang, $fluent;
 
-$cache = new DarkAlchemy\Pu239\Cache();
+global $site_config, $lang, $fluent, $cache;
 
 $progress = '';
 $funds = $cache->get('totalfunds_');
-if ($funds === false || is_null($funds)) {
+if (false === $funds || is_null($funds)) {
     $funds = $fluent->from('funds')
         ->select(null)
         ->select('cash AS total_funds')

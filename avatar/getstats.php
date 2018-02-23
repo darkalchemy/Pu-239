@@ -1,8 +1,9 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/include/bittorrent.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/cache/country.php';
+
+require_once $_SERVER['DOCUMENT_ROOT'].'/include/bittorrent.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/cache/country.php';
 dbconn();
-$_settings = $_SERVER['DOCUMENT_ROOT'] . '/avatar/settings/';
+$_settings = $_SERVER['DOCUMENT_ROOT'].'/avatar/settings/';
 /**
  * @param $val
  *
@@ -46,46 +47,47 @@ function time_return($stamp)
     $minutes = floor($stamp / $msecs);
     $stamp %= $msecs;
     $seconds = $stamp;
-    if ($years == 1) {
+    if (1 == $years) {
         $nicetime['years'] = '1 Year';
     } elseif ($years > 1) {
-        $nicetime['years'] = $years . ' Years';
+        $nicetime['years'] = $years.' Years';
     }
-    if ($months == 1) {
+    if (1 == $months) {
         $nicetime['months'] = '1 Month';
     } elseif ($months > 1) {
-        $nicetime['months'] = $months . ' Months';
+        $nicetime['months'] = $months.' Months';
     }
-    if ($weeks == 1) {
+    if (1 == $weeks) {
         $nicetime['weeks'] = '1 Week';
     } elseif ($weeks > 1) {
-        $nicetime['weeks'] = $weeks . ' Weeks';
+        $nicetime['weeks'] = $weeks.' Weeks';
     }
-    if ($days == 1) {
+    if (1 == $days) {
         $nicetime['days'] = '1 Day';
     } elseif ($days > 1) {
-        $nicetime['days'] = $days . ' Day';
+        $nicetime['days'] = $days.' Day';
     }
-    if ($hours == 1) {
+    if (1 == $hours) {
         $nicetime['hours'] = '1 Hour';
     } elseif ($hours > 1) {
-        $nicetime['hours'] = $hours . ' Hours';
+        $nicetime['hours'] = $hours.' Hours';
     }
-    if ($minutes == 1) {
+    if (1 == $minutes) {
         $nicetime['minutes'] = '1 minute';
     } elseif ($minutes > 1) {
-        $nicetime['minutes'] = $minutes . ' Minutes';
+        $nicetime['minutes'] = $minutes.' Minutes';
     }
-    if ($seconds == 1) {
+    if (1 == $seconds) {
         $nicetime['seconds'] = '1 second';
     } elseif ($seconds > 1) {
-        $nicetime['seconds'] = $seconds . ' Seconds';
-    } elseif ($seconds == 0) {
+        $nicetime['seconds'] = $seconds.' Seconds';
+    } elseif (0 == $seconds) {
         $nicetime['seconds'] = 'No online time recorded';
     }
     if (is_array($nicetime)) {
         return implode(', ', $nicetime);
     }
+
     return false;
 }
 
@@ -98,11 +100,11 @@ function time_return($stamp)
 function getStats($user, $forced = false)
 {
     global $_settings, $countries;
-    if (!file_exists($_settings . $user . '.set') || !is_array($var = unserialize(file_get_contents($_settings . $user . '.set')))) {
+    if (!file_exists($_settings.$user.'.set') || !is_array($var = unserialize(file_get_contents($_settings.$user.'.set')))) {
         return false;
     }
-    $query = mysqli_query($GLOBALS['___mysqli_ston'], 'SELECT u.id, u.irctotal, u.last_login, u.onlinetime, u.reputation, u.hits, u.uploaded, u.downloaded, u.country, u.browser, count(p.id) AS posts ,count(c.id) AS comments FROM users AS u LEFT JOIN posts AS p ON u.id = p.user_id LEFT JOIN comments AS c ON c.user = u.id WHERE u.username = ' . sqlesc($user) . ' GROUP BY u.id') or sqlerr(__FILE__, __LINE__); //or die('Error Error Error! 1');
-    if (mysqli_num_rows($query) != 1) {
+    $query = mysqli_query($GLOBALS['___mysqli_ston'], 'SELECT u.id, u.irctotal, u.last_login, u.onlinetime, u.reputation, u.hits, u.uploaded, u.downloaded, u.country, u.browser, count(p.id) AS posts ,count(c.id) AS comments FROM users AS u LEFT JOIN posts AS p ON u.id = p.user_id LEFT JOIN comments AS c ON c.user = u.id WHERE u.username = '.sqlesc($user).' GROUP BY u.id') or sqlerr(__FILE__, __LINE__); //or die('Error Error Error! 1');
+    if (1 != mysqli_num_rows($query)) {
         die('Error Error Error! 2');
     }
     $a = mysqli_fetch_assoc($query);
@@ -115,42 +117,42 @@ function getStats($user, $forced = false)
     foreach ($ops as $op) {
         switch ($op) {
             case 1:
-                $var['line' . $i]['value_p'] = $a['posts'] . ' post' . ($a['posts'] > 1 ? 's' : '');
+                $var['line'.$i]['value_p'] = $a['posts'].' post'.($a['posts'] > 1 ? 's' : '');
                 break;
 
             case 2:
                 //$var['line'.$i]['value_p'] = mksize($a['downloaded']) . " - " . mksize($a['uploaded']);
-                $var['line' . $i]['value_p'] = mksize($a['downloaded']) . ' - ' . mksize($a['uploaded']);
+                $var['line'.$i]['value_p'] = mksize($a['downloaded']).' - '.mksize($a['uploaded']);
                 break;
 
             case 3:
                 list($days, $hours, $mins) = explode(',', calctime($a['irctotal']));
-                $var['line' . $i]['value_p'] = "$days - $hours";
+                $var['line'.$i]['value_p'] = "$days - $hours";
                 //$var['line'.$i]['value_p'] = "not yet";
                 break;
 
             case 4:
-                $var['line' . $i]['value_p'] = $a['reputation'] . ' point' . ($a['reputation'] > 1 ? 's' : '');
+                $var['line'.$i]['value_p'] = $a['reputation'].' point'.($a['reputation'] > 1 ? 's' : '');
                 break;
 
             case 5:
                 foreach ($countries as $c) {
                     if ($c['id'] == $a['country']) {
-                        $var['line' . $i]['value_p'] = $c;
+                        $var['line'.$i]['value_p'] = $c;
                     }
                 }
                 break;
 
             case 6:
-                $var['line' . $i]['value_p'] = $a['comments'] . ' comment' . ($a['comments'] > 1 ? 's' : '');
+                $var['line'.$i]['value_p'] = $a['comments'].' comment'.($a['comments'] > 1 ? 's' : '');
                 break;
 
             case 7:
-                $var['line' . $i]['value_p'] = $a['browser'];
+                $var['line'.$i]['value_p'] = $a['browser'];
                 break;
 
             case 8:
-                $var['line' . $i]['value_p'] = $a['hits'] . ' hit' . ($a['hits'] > 1 ? 's' : '');
+                $var['line'.$i]['value_p'] = $a['hits'].' hit'.($a['hits'] > 1 ? 's' : '');
                 break;
             /*
                   case 9:
@@ -159,18 +161,18 @@ function getStats($user, $forced = false)
                       break;
             */
             case 9:
-                $var['line' . $i]['value_p'] = time_return($a['onlinetime']);
+                $var['line'.$i]['value_p'] = time_return($a['onlinetime']);
                 break;
         }
         ++$i;
     }
-    if (is_writable($_settings . $user . '.set')) {
-        file_put_contents($_settings . $user . '.set', serialize($var));
+    if (is_writable($_settings.$user.'.set')) {
+        file_put_contents($_settings.$user.'.set', serialize($var));
     } else {
         die("Can't write user setting");
     }
-    if (file_exists($_settings . $user . '.png')) {
-        unlink($_settings . $user . '.png');
+    if (file_exists($_settings.$user.'.png')) {
+        unlink($_settings.$user.'.png');
     }
 
     return $var;

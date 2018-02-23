@@ -1,4 +1,5 @@
 <?php
+
 $site_config['tvrage_api'] = 'NxDOrw2uadOgyLuDtmaR';
 /**
  * @param $tvrage_data
@@ -9,19 +10,19 @@ $site_config['tvrage_api'] = 'NxDOrw2uadOgyLuDtmaR';
 function tvrage_format($tvrage_data, $tvrage_type)
 {
     $tvrage_display['show'] = [
-        'showname'       => '<b>%s</b>',
-        'showlink'       => '%s',
-        'startdate'      => 'Started: %s',
-        'ended'          => 'Ended: %s',
+        'showname' => '<b>%s</b>',
+        'showlink' => '%s',
+        'startdate' => 'Started: %s',
+        'ended' => 'Ended: %s',
         'origin_country' => 'Country: %s',
-        'status'         => 'Status: %s',
+        'status' => 'Status: %s',
         'classification' => 'Classification: %s',
-        'summary'        => 'Summary:<br> %s',
-        'runtime'        => 'Runtime %s min',
-        'genres'         => 'Genres: %s',
+        'summary' => 'Summary:<br> %s',
+        'runtime' => 'Runtime %s min',
+        'genres' => 'Genres: %s',
     ];
     $tvrage_display['episode'] = [
-        'episode'     => 'This week episode: %s "%s" on %s<br>%s<br>Summary: %s',
+        'episode' => 'This week episode: %s "%s" on %s<br>%s<br>Summary: %s',
         'nextepisode' => 'Next episode: %s "%s" on %s %s %s',
     ];
     foreach ($tvrage_data as $key => $data) {
@@ -46,27 +47,26 @@ function tvrage_format($tvrage_data, $tvrage_type)
  */
 function tvrage(&$torrents)
 {
-    global $site_config;
+    global $site_config, $cache;
 
-$cache = new DarkAlchemy\Pu239\Cache();
     $tvrage_data = '';
     $row_update = [];
     if (preg_match("/^(.*)S(\d+)(E(\d+))?/", $torrents['name'], $tmp)) {
         $tvrage = [
-            'name'    => str_replace('.', ' ', $tmp[1]),
-            'season'  => (int)$tmp[2],
-            'episode' => (int)(isset($tmp[4]) ? $tmp[4] : 0),
+            'name' => str_replace('.', ' ', $tmp[1]),
+            'season' => (int) $tmp[2],
+            'episode' => (int) (isset($tmp[4]) ? $tmp[4] : 0),
         ];
     } else {
         $tvrage = [
-            'name'    => str_replace('.', ' ', $torrents['name']),
-            'season'  => 0,
+            'name' => str_replace('.', ' ', $torrents['name']),
+            'season' => 0,
             'episode' => 0,
         ];
     }
-    $memkey = 'tvrage_' . strtolower($tvrage['name']);
+    $memkey = 'tvrage_'.strtolower($tvrage['name']);
     $tvrage_id = $cache->get($memkey);
-    if ($tvrage_id === false || is_null($tvrage_id)) {
+    if (false === $tvrage_id || is_null($tvrage_id)) {
         //get tvrage id
         $tvrage_link = sprintf('http://services.tvrage.com/myfeeds/search.php?key=%s&show=%s', $site_config['tvrage_api'], urlencode($tvrage['name']));
         $tvrage_xml = file_get_contents($tvrage_link);
@@ -81,8 +81,8 @@ $cache = new DarkAlchemy\Pu239\Cache();
     if (empty($torrents['newgenre']) || empty($torrents['poster'])) {
         $force_update = true;
     }
-    $memkey = 'tvrage_' . $tvrage_id;
-    if ($force_update || ($tvrage_showinfo = $cache->get($memkey)) === false) {
+    $memkey = 'tvrage_'.$tvrage_id;
+    if ($force_update || false === ($tvrage_showinfo = $cache->get($memkey))) {
         //var_dump('Show from tvrage'); //debug
         //get tvrage show info
         $tvrage_link = sprintf('http://services.tvrage.com/myfeeds/showinfo.php?key=%s&sid=%d', $site_config['tvrage_api'], $tvrage_id);
@@ -99,23 +99,23 @@ $cache = new DarkAlchemy\Pu239\Cache();
             $tvrage_showinfo['genres'] = join(', ', array_map('strtolower', $tmp[1]));
         }
         if (empty($torrents['newgenre'])) {
-            $row_update[] = 'newgenre = ' . sqlesc(ucwords($tvrage_showinfo['genres']));
+            $row_update[] = 'newgenre = '.sqlesc(ucwords($tvrage_showinfo['genres']));
         }
         //==The torrent cache
-        $cache->update_row('torrent_details_' . $torrents['id'], [
+        $cache->update_row('torrent_details_'.$torrents['id'], [
             'newgenre' => ucwords($tvrage_showinfo['genres']),
         ], 0);
         if (empty($torrents['poster'])) {
-            $row_update[] = 'poster = ' . sqlesc($tvrage_showinfo['image']);
+            $row_update[] = 'poster = '.sqlesc($tvrage_showinfo['image']);
         }
         //==The torrent cache
-        $cache->update_row('torrent_details_' . $torrents['id'], [
+        $cache->update_row('torrent_details_'.$torrents['id'], [
             'poster' => $tvrage_showinfo['image'],
         ], 0);
         if (!empty($row_update) && count($row_update)) {
-            sql_query('UPDATE torrents SET ' . join(', ', $row_update) . ' WHERE id = ' . $torrents['id']) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE torrents SET '.join(', ', $row_update).' WHERE id = '.$torrents['id']) or sqlerr(__FILE__, __LINE__);
         }
-        $tvrage_showinfo = tvrage_format($tvrage_showinfo, 'show') . '<br>';
+        $tvrage_showinfo = tvrage_format($tvrage_showinfo, 'show').'<br>';
         $cache->set($memkey, $tvrage_showinfo, 0);
         $tvrage_data .= $tvrage_showinfo;
     } else {
@@ -124,9 +124,9 @@ $cache = new DarkAlchemy\Pu239\Cache();
     }
     //check to see if its a show its an episode
     if ($tvrage['season'] > 0 && $tvrage['episode'] > 0) {
-        $memkey = 'tvrage_' . $tvrage_id . '::' . $tvrage['season'] . 'x' . $tvrage['episode'];
+        $memkey = 'tvrage_'.$tvrage_id.'::'.$tvrage['season'].'x'.$tvrage['episode'];
         $tvrage_epinfo = $cache->get($memkey);
-        if ($tvrage_epinfo === false || is_null($tvrage_epinfo)) {
+        if (false === $tvrage_epinfo || is_null($tvrage_epinfo)) {
             //var_dump('Ep from tvrage'); //debug
             //get episode info
             $tvrage_link = sprintf('http://services.tvrage.com/myfeeds/episodeinfo.php?key=%s&sid=%d&ep=%dx%d', $site_config['tvrage_api'], $tvrage_id, $tvrage['season'], $tvrage['episode']);
@@ -138,7 +138,7 @@ $cache = new DarkAlchemy\Pu239\Cache();
                     $tvrage_epinfo[$data[1]][$data_1[1]] = $data_1[2];
                 }
             }
-            $tvrage_epinfo = tvrage_format($tvrage_epinfo, 'episode') . '<br>';
+            $tvrage_epinfo = tvrage_format($tvrage_epinfo, 'episode').'<br>';
             $cache->set($memkey, $tvrage_epinfo, 0);
             $tvrage_data .= $tvrage_epinfo;
         } else {

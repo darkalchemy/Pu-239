@@ -1,9 +1,8 @@
 <?php
-require_once INCL_DIR . 'html_functions.php';
-require_once INCL_DIR . 'pager_functions.php';
-global $CURUSER, $site_config, $lang, $user;
 
-$cache = new DarkAlchemy\Pu239\Cache();
+require_once INCL_DIR.'html_functions.php';
+require_once INCL_DIR.'pager_functions.php';
+global $CURUSER, $site_config, $lang, $user, $cache;
 
 /**
  * @param $torrents
@@ -19,9 +18,9 @@ function snatchtable($torrents)
             <th>{$lang['userdetails_s_cat']}</th>
             <th>{$lang['userdetails_s_torr']}</th>
             <th>{$lang['userdetails_s_up']}</th>
-            <th>{$lang['userdetails_rate']}</th>" . ($site_config['ratio_free'] ? '' : "
-            <th>{$lang['userdetails_downl']}</th>") . ($site_config['ratio_free'] ? '' : "
-            <th>{$lang['userdetails_rate']}</th>") . "
+            <th>{$lang['userdetails_rate']}</th>".($site_config['ratio_free'] ? '' : "
+            <th>{$lang['userdetails_downl']}</th>").($site_config['ratio_free'] ? '' : "
+            <th>{$lang['userdetails_rate']}</th>")."
             <th>{$lang['userdetails_ratio']}</th>
             <th>{$lang['userdetails_activity']}</th>
             <th>{$lang['userdetails_s_fin']}</th>
@@ -36,22 +35,22 @@ function snatchtable($torrents)
         $body .= "
         <tr>
             <td>
-                <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/" . htmlsafechars($torrent['image']) . "' alt='" . htmlsafechars($torrent['catname']) . "' width='42' height='42' />
+                <img src='{$site_config['pic_baseurl']}caticons/".get_category_icons().'/'.htmlsafechars($torrent['image'])."' alt='".htmlsafechars($torrent['catname'])."' width='42' height='42' />
             </td>
             <td>
-                <a href='{$site_config['baseurl']}/details.php?id=" . (int)$XBT_or_PHP . "'><b>" . (strlen($torrent['name']) > 50 ? substr($torrent['name'], 0, 50 - 3) . '...' : htmlsafechars($torrent['name'])) . '</b></a>
+                <a href='{$site_config['baseurl']}/details.php?id=".(int) $XBT_or_PHP."'><b>".(strlen($torrent['name']) > 50 ? substr($torrent['name'], 0, 50 - 3).'...' : htmlsafechars($torrent['name'])).'</b></a>
             </td>
-            <td>' . mksize($torrent['uploaded']) . "</td>
-            <td>$upspeed/s</td>" . ($site_config['ratio_free'] ? '' : '
-            <td>' . mksize($torrent['downloaded']) . '</td>') . ($site_config['ratio_free'] ? '' : "
-            <td>$downspeed/s</td>") . "
+            <td>'.mksize($torrent['uploaded'])."</td>
+            <td>$upspeed/s</td>".($site_config['ratio_free'] ? '' : '
+            <td>'.mksize($torrent['downloaded']).'</td>').($site_config['ratio_free'] ? '' : "
+            <td>$downspeed/s</td>")."
             <td>$ratio</td>
-            <td>" . mkprettytime($torrent['seedtime'] + $torrent['leechtime']) . '</td>
-            <td>' . ($XBT_or_PHP_TIME != 0 ? "
+            <td>".mkprettytime($torrent['seedtime'] + $torrent['leechtime']).'</td>
+            <td>'.(0 != $XBT_or_PHP_TIME ? "
                 <span class='has-text-lime'><b>{$lang['userdetails_yes']}</b></span>" : "
-                <span class='has-text-red'><b>{$lang['userdetails_no']}</b></span>") . "
+                <span class='has-text-red'><b>{$lang['userdetails_no']}</b></span>").'
             </td>
-        </tr>";
+        </tr>';
     }
     $table = main_table($body, $heading);
 
@@ -75,21 +74,21 @@ function maketable($torrents)
             <th>{$lang['userdetails_size']}</th>
             <th>{$lang['userdetails_se']}</th>
             <th>{$lang['userdetails_le']}</th>
-            <th>{$lang['userdetails_upl']}</th>" . ($site_config['ratio_free'] ? '' : "
-            <th>{$lang['userdetails_downl']}</th>") . "
+            <th>{$lang['userdetails_upl']}</th>".($site_config['ratio_free'] ? '' : "
+            <th>{$lang['userdetails_downl']}</th>")."
             <th>{$lang['userdetails_ratio']}</th>
         </tr>";
     $body = '';
     foreach ($torrents as $torrent) {
         if ($torrent['downloaded'] > 0) {
             $ratio = number_format($torrent['uploaded'] / $torrent['downloaded'], 3);
-            $ratio = "<span style='color: " . get_ratio_color($ratio) . ";'>$ratio</span>";
+            $ratio = "<span style='color: ".get_ratio_color($ratio).";'>$ratio</span>";
         } elseif ($torrent['uploaded'] > 0) {
             $ratio = "{$lang['userdetails_inf']}";
         } else {
             $ratio = '---';
         }
-        $catimage = "{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$torrent['image']}";
+        $catimage = "{$site_config['pic_baseurl']}caticons/".get_category_icons()."/{$torrent['image']}";
         $catname = htmlsafechars($torrent['catname']);
         $catimage = "<img src='$catimage' title='$catname' alt='$catname' width='42' height='42' class='tooltipper' />";
         $size = str_replace(' ', '<br>', mksize($torrent['size']));
@@ -102,13 +101,13 @@ function maketable($torrents)
         <tr>
             <td class='has-text-centered'>$catimage</td>
             <td>
-                <a href='{$site_config['baseurl']}/details.php?id=" . (int)$XBT_or_PHP . "&amp;hit=1'><b>" . htmlsafechars($torrent['name']) . "</b></a>
+                <a href='{$site_config['baseurl']}/details.php?id=".(int) $XBT_or_PHP."&amp;hit=1'><b>".htmlsafechars($torrent['name'])."</b></a>
             </td>
             <td class='has-text-centered'>$size</td>
             <td class='has-text-centered'>$seeders</td>
             <td class='has-text-centered'>$leechers</td>
-            <td class='has-text-centered'>$uploaded</td>" . ($site_config['ratio_free'] ? '' : "
-            <td class='has-text-centered'>$downloaded</td>") . "
+            <td class='has-text-centered'>$uploaded</td>".($site_config['ratio_free'] ? '' : "
+            <td class='has-text-centered'>$downloaded</td>")."
             <td class='has-text-centered'>$ratio</td>
         </tr>";
     }
@@ -141,9 +140,9 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
     }
 
     if (XBT_TRACKER) {
-        $res = sql_query('SELECT x.fid, x.uploaded, x.downloaded, x.active, x.left, t.added, t.name AS torrentname, t.size, t.category, t.seeders, t.leechers, c.name AS catname, c.image FROM xbt_files_users x LEFT JOIN torrents t ON x.fid = t.id LEFT JOIN categories c ON t.category = c.id WHERE x.uid=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT x.fid, x.uploaded, x.downloaded, x.active, x.left, t.added, t.name AS torrentname, t.size, t.category, t.seeders, t.leechers, c.name AS catname, c.image FROM xbt_files_users x LEFT JOIN torrents t ON x.fid = t.id LEFT JOIN categories c ON t.category = c.id WHERE x.uid='.sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
         while ($arr = mysqli_fetch_assoc($res)) {
-            if ($arr['left'] == '0') {
+            if ('0' == $arr['left']) {
                 $seeding[] = $arr;
             } else {
                 $leeching[] = $arr;
@@ -172,7 +171,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
             ->limit('0, 15');
 
         foreach ($query as $arr) {
-            if ($arr['seeder'] === 'yes') {
+            if ('yes' === $arr['seeder']) {
                 $seeding[] = $arr;
             } else {
                 $leeching[] = $arr;
@@ -180,8 +179,8 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
         }
     }
 
-    $user_snatches_data = $cache->get('user_snatches_data_' . $user['id']);
-    if ($user_snatches_data === false || is_null($user_snatches_data)) {
+    $user_snatches_data = $cache->get('user_snatches_data_'.$user['id']);
+    if (false === $user_snatches_data || is_null($user_snatches_data)) {
         if (!XBT_TRACKER) {
             $query = $fluent->from('snatched')
                 ->select(null)
@@ -195,12 +194,12 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
                 ->orderBy('last_action DESC')
                 ->limit('0, 15');
         } else {
-            $ressnatch = sql_query('SELECT x.*, t.name AS name, c.name AS catname, c.image AS catimg FROM xbt_files_users AS x INNER JOIN torrents AS t ON x.fid = t.id LEFT JOIN categories AS c ON t.category = c.id WHERE x.uid =' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
+            $ressnatch = sql_query('SELECT x.*, t.name AS name, c.name AS catname, c.image AS catimg FROM xbt_files_users AS x INNER JOIN torrents AS t ON x.fid = t.id LEFT JOIN categories AS c ON t.category = c.id WHERE x.uid ='.sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
         }
         foreach ($query as $item) {
             $user_snatches_data[] = $item;
         }
-        $cache->set('user_snatches_data_' . $user['id'], $user_snatches_data, $site_config['expires']['user_snatches_data']);
+        $cache->set('user_snatches_data_'.$user['id'], $user_snatches_data, $site_config['expires']['user_snatches_data']);
     }
 
     if (!empty($torrents)) {
@@ -211,10 +210,10 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
                 <a id='torrents-hash'></a>
                 <fieldset id='torrents' class='header'>
                     <legend class='flipper size_4'><i class='fa icon-down-open' aria-hidden='true'></i>View Torrents you uploaded</legend>
-                    " . maketable($torrents) . "
+                    ".maketable($torrents).'
                 </fieldset>
             </td>
-        </tr>";
+        </tr>';
     }
 
     if (!empty($seeding)) {
@@ -225,10 +224,10 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
                 <a id='seeding-hash'></a>
                 <fieldset id='seeding' class='header'>
                     <legend class='flipper size_4'><i class='fa icon-down-open' aria-hidden='true'></i>View Torrents you are currently seeding</legend>
-                    " . maketable($seeding) . "
+                    ".maketable($seeding).'
                 </fieldset>
             </td>
-        </tr>";
+        </tr>';
     }
 
     if (!empty($leeching)) {
@@ -239,10 +238,10 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
                 <a id='leeching-hash'></a>
                 <fieldset id='leeching' class='header'>
                     <legend class='flipper size_4'><i class='fa icon-down-open' aria-hidden='true'></i>View Torrents you are currently leeching</legend>
-                " . maketable($leeching) . "
+                ".maketable($leeching).'
                 </fieldset>
             </td>
-        </tr>";
+        </tr>';
     }
 
     if (!empty($user_snatches_data)) {
@@ -253,9 +252,9 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
                 <a id='snatched-hash'></a>
                 <fieldset id='snatched' class='header'>
                     <legend class='flipper size_4'><i class='fa icon-down-open' aria-hidden='true'></i>View Torrents you have snatched</legend>
-                " . snatchtable($user_snatches_data) . "
+                ".snatchtable($user_snatches_data).'
                 </fieldset>
             </td>
-        </tr>";
+        </tr>';
     }
 }

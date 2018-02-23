@@ -1,11 +1,12 @@
 <?php
+
 global $site_config;
 
 const REQUIRED_PHP = 70000, REQUIRED_PHP_VERSION = '7.0.0';
 $site_settings = $paypal_settings = $hnr_settings = $staff_settings = [];
 
 if (PHP_VERSION_ID < REQUIRED_PHP) {
-    die('PHP ' . REQUIRED_PHP_VERSION . ' or higher is required.');
+    die('PHP '.REQUIRED_PHP_VERSION.' or higher is required.');
 }
 if (PHP_INT_SIZE < 8) {
     die('A 64bit or higher OS + Processor is required.');
@@ -17,7 +18,6 @@ if (ini_get('register_long_arrays') || ini_get('register_globals') || ini_get('s
     die('PHP is configured incorrectly. Turn off safe_mode, register_globals and register_long_arrays.');
 }
 $site_config['variant'] = 'Pu-239';
-
 
 // charset
 $site_config['char_set'] = 'UTF-8'; //also to be used site wide in meta tags
@@ -158,28 +158,28 @@ $site_config['inviteusers'] = 10000;
 $site_config['flood_time'] = 900; //comment/forum/pm flood limit
 $site_config['readpost_expiry'] = 14 * 86400; // 14 days
 
-$site_config['Cache'] = ROOT_DIR . 'Cache';
-$site_config['backup_dir'] = INCL_DIR . 'backup';
-$site_config['dictbreaker'] = ROOT_DIR . 'dictbreaker';
-$site_config['torrent_dir'] = ROOT_DIR . 'torrents'; // must be writable for httpd user
-$site_config['sub_up_dir'] = ROOT_DIR . 'uploadsub'; // must be writable for httpd user
-$site_config['flood_file'] = INCL_DIR . 'settings' . DIRECTORY_SEPARATOR . 'limitfile.txt';
-$site_config['nameblacklist'] = ROOT_DIR . 'Cache' . DIRECTORY_SEPARATOR . 'nameblacklist.txt';
-$site_config['happyhour'] = CACHE_DIR . 'happyhour' . DIRECTORY_SEPARATOR . 'happyhour.txt';
-$site_config['sql_error_log'] = SQLERROR_LOGS_DIR . 'sql_err_' . date('M_D_Y') . '.log';
+$site_config['Cache'] = ROOT_DIR.'Cache';
+$site_config['backup_dir'] = INCL_DIR.'backup';
+$site_config['dictbreaker'] = ROOT_DIR.'dictbreaker';
+$site_config['torrent_dir'] = ROOT_DIR.'torrents'; // must be writable for httpd user
+$site_config['sub_up_dir'] = ROOT_DIR.'uploadsub'; // must be writable for httpd user
+$site_config['flood_file'] = INCL_DIR.'settings'.DIRECTORY_SEPARATOR.'limitfile.txt';
+$site_config['nameblacklist'] = ROOT_DIR.'Cache'.DIRECTORY_SEPARATOR.'nameblacklist.txt';
+$site_config['happyhour'] = CACHE_DIR.'happyhour'.DIRECTORY_SEPARATOR.'happyhour.txt';
+$site_config['sql_error_log'] = SQLERROR_LOGS_DIR.'sql_err_'.date('M_D_Y').'.log';
 
-if (empty($_SERVER['HTTP_HOST']) || $_SERVER['HTTP_HOST'] == '') {
+if (empty($_SERVER['HTTP_HOST']) || '' == $_SERVER['HTTP_HOST']) {
     $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
 }
 
-$site_config['baseurl'] = get_scheme() . '://' . $_SERVER['HTTP_HOST'];
+$site_config['baseurl'] = get_scheme().'://'.$_SERVER['HTTP_HOST'];
 
 $site_config['msg_alert'] = 1; // saves a query when off
 $site_config['report_alert'] = 1; // saves a query when off
 $site_config['staffmsg_alert'] = 1; // saves a query when off
 $site_config['uploadapp_alert'] = 1; // saves a query when off
 $site_config['bug_alert'] = 1; // saves a query when off
-$site_config['pic_baseurl'] = $site_config['baseurl'] . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
+$site_config['pic_baseurl'] = $site_config['baseurl'].DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR;
 $site_config['stylesheet'] = 1;
 $site_config['categorie_icon'] = 1;
 $site_config['comment_min_class'] = 4; //minim class to be checked when posting comments
@@ -219,8 +219,8 @@ $site_config['allowed_ext'] = [
     'image.jpg',
     'image/jpeg',
 ];
-$upload_max_filesize = ini_get('upload_max_filesize') !== null ? return_bytes(ini_get('upload_max_filesize')) : 0;
-$post_max_filesize = ini_get('post_max_filesize') !== null ? return_bytes(ini_get('post_max_filesize')) : 0;
+$upload_max_filesize = null !== ini_get('upload_max_filesize') ? return_bytes(ini_get('upload_max_filesize')) : 0;
+$post_max_filesize = null !== ini_get('post_max_filesize') ? return_bytes(ini_get('post_max_filesize')) : 0;
 $site_config['bucket_maxsize'] = $upload_max_filesize >= $post_max_filesize ? $upload_max_filesize : $post_max_filesize;
 $site_config['site']['owner'] = 1;
 $site_config['adminer_allowed_ids'] = [

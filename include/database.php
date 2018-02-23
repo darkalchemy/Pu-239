@@ -12,7 +12,7 @@ $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
 $fluent = new Envms\FluentPDO\Query($pdo);
 
-if (SQL_DEBUG && $_SERVER['PHP_SELF'] != '/announce.php') {
+if (SQL_DEBUG && '/announce.php' != $_SERVER['PHP_SELF']) {
     $fluent->debug = function ($BaseQuery) {
         global $pdo, $query_stat;
         $params = [];
@@ -27,12 +27,12 @@ if (SQL_DEBUG && $_SERVER['PHP_SELF'] != '/announce.php') {
                     $params[] = $pdo->quote($param);
                 }
             }
-            $query =  vsprintf($query, $params) . "\n";
+            $query = vsprintf($query, $params)."\n";
         }
         if (!empty($query)) {
             $query_stat[] = [
                 'seconds' => number_format($time, 6),
-                'query'   => trim($query) . '<br>[color=red]PDO: time may not be accurate[/color]',
+                'query' => trim($query).'<br>[color=red]PDO: time may not be accurate[/color]',
             ];
         }
     };

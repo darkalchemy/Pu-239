@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Class Chmod
+ * Class Chmod.
  */
 class Chmod
 {
     private $_dir;
     private $_modes = [
-        'owner'  => 0,
-        'group'  => 0,
+        'owner' => 0,
+        'group' => 0,
         'public' => 0,
     ];
 
@@ -123,6 +123,6 @@ class Chmod
      */
     private function getMode()
     {
-        return $this->_modes['owner'] . $this->_modes['group'] . $this->_modes['public'];
+        return $this->_modes['owner'].$this->_modes['group'].$this->_modes['public'];
     }
 }

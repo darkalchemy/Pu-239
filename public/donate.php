@@ -1,14 +1,14 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'bbcode_functions.php';
-require_once INCL_DIR . 'html_functions.php';
-check_user_status();
-global $CURUSER, $site_config;
 
-$session = new DarkAlchemy\Pu239\Session();
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'user_functions.php';
+require_once INCL_DIR.'bbcode_functions.php';
+require_once INCL_DIR.'html_functions.php';
+check_user_status();
+global $CURUSER, $site_config, $session;
+
 $lang = load_language('global');
-$nick = ($CURUSER ? $CURUSER['username'] : ('Guest' . random_int(1000, 9999)));
+$nick = ($CURUSER ? $CURUSER['username'] : ('Guest'.random_int(1000, 9999)));
 $form_template = <<<PAYPAL
 <form action='https://www.{$site_config['paypal_config']['sandbox']}paypal.com/cgi-bin/webscr' method='post'>
 <input type='hidden' name='business' value='{$site_config['paypal_config']['email']}' />
@@ -28,67 +28,67 @@ PAYPAL;
 //this shows what they get
 $donate = [
     $site_config['paypal_config']['gb_donated_1'] => [
-        'ViP ' . $site_config['paypal_config']['vip_dur_1'] . ' week',
-        'Donor ' . $site_config['paypal_config']['donor_dur_1'] . ' week',
-        'Freeleech ' . $site_config['paypal_config']['free_dur_1'] . ' wk',
-        '' . $site_config['paypal_config']['up_amt_1'] . 'G upload',
-        '' . $site_config['paypal_config']['kp_amt_1'] . ' bonus points',
-        '' . $site_config['paypal_config']['inv_amt_1'] . ' invite',
-        'Donor star ' . $site_config['paypal_config']['duntil_dur_1'] . ' week',
-        'Imunnity ' . $site_config['paypal_config']['imm_dur_1'] . ' week',
+        'ViP '.$site_config['paypal_config']['vip_dur_1'].' week',
+        'Donor '.$site_config['paypal_config']['donor_dur_1'].' week',
+        'Freeleech '.$site_config['paypal_config']['free_dur_1'].' wk',
+        ''.$site_config['paypal_config']['up_amt_1'].'G upload',
+        ''.$site_config['paypal_config']['kp_amt_1'].' bonus points',
+        ''.$site_config['paypal_config']['inv_amt_1'].' invite',
+        'Donor star '.$site_config['paypal_config']['duntil_dur_1'].' week',
+        'Imunnity '.$site_config['paypal_config']['imm_dur_1'].' week',
     ],
     $site_config['paypal_config']['gb_donated_2'] => [
-        'ViP ' . $site_config['paypal_config']['vip_dur_2'] . ' weeks',
-        'Donor ' . $site_config['paypal_config']['donor_dur_2'] . ' weeks',
-        'Freeleech ' . $site_config['paypal_config']['free_dur_2'] . ' wks',
-        '' . $site_config['paypal_config']['up_amt_2'] . 'G upload',
-        '' . $site_config['paypal_config']['kp_amt_2'] . ' bonus points',
-        '' . $site_config['paypal_config']['inv_amt_2'] . ' invites',
-        'Donor star ' . $site_config['paypal_config']['duntil_dur_2'] . ' weeks',
-        'Imunnity ' . $site_config['paypal_config']['imm_dur_2'] . ' weeks',
+        'ViP '.$site_config['paypal_config']['vip_dur_2'].' weeks',
+        'Donor '.$site_config['paypal_config']['donor_dur_2'].' weeks',
+        'Freeleech '.$site_config['paypal_config']['free_dur_2'].' wks',
+        ''.$site_config['paypal_config']['up_amt_2'].'G upload',
+        ''.$site_config['paypal_config']['kp_amt_2'].' bonus points',
+        ''.$site_config['paypal_config']['inv_amt_2'].' invites',
+        'Donor star '.$site_config['paypal_config']['duntil_dur_2'].' weeks',
+        'Imunnity '.$site_config['paypal_config']['imm_dur_2'].' weeks',
     ],
     $site_config['paypal_config']['gb_donated_3'] => [
-        'ViP ' . $site_config['paypal_config']['vip_dur_3'] . ' weeks',
-        'Donor ' . $site_config['paypal_config']['donor_dur_3'] . ' weeks',
-        'Freeleech ' . $site_config['paypal_config']['free_dur_3'] . ' wks',
-        '' . $site_config['paypal_config']['up_amt_3'] . 'G upload',
-        '' . $site_config['paypal_config']['kp_amt_3'] . ' bonus points',
-        '' . $site_config['paypal_config']['inv_amt_3'] . ' invites',
-        'Donor star ' . $site_config['paypal_config']['duntil_dur_3'] . ' weeks',
-        'Imunnity ' . $site_config['paypal_config']['imm_dur_3'] . ' weeks',
+        'ViP '.$site_config['paypal_config']['vip_dur_3'].' weeks',
+        'Donor '.$site_config['paypal_config']['donor_dur_3'].' weeks',
+        'Freeleech '.$site_config['paypal_config']['free_dur_3'].' wks',
+        ''.$site_config['paypal_config']['up_amt_3'].'G upload',
+        ''.$site_config['paypal_config']['kp_amt_3'].' bonus points',
+        ''.$site_config['paypal_config']['inv_amt_3'].' invites',
+        'Donor star '.$site_config['paypal_config']['duntil_dur_3'].' weeks',
+        'Imunnity '.$site_config['paypal_config']['imm_dur_3'].' weeks',
     ],
     $site_config['paypal_config']['gb_donated_4'] => [
-        'ViP ' . $site_config['paypal_config']['vip_dur_4'] . ' weeks',
-        'Donor ' . $site_config['paypal_config']['donor_dur_4'] . ' weeks',
-        'Freeleech ' . $site_config['paypal_config']['free_dur_4'] . ' wks',
-        '' . $site_config['paypal_config']['up_amt_4'] . 'G upload',
-        '' . $site_config['paypal_config']['kp_amt_4'] . ' bonus points',
-        '' . $site_config['paypal_config']['inv_amt_4'] . ' invites',
-        'Donor star ' . $site_config['paypal_config']['duntil_dur_4'] . ' weeks',
-        'Imunnity ' . $site_config['paypal_config']['imm_dur_4'] . ' weeks',
+        'ViP '.$site_config['paypal_config']['vip_dur_4'].' weeks',
+        'Donor '.$site_config['paypal_config']['donor_dur_4'].' weeks',
+        'Freeleech '.$site_config['paypal_config']['free_dur_4'].' wks',
+        ''.$site_config['paypal_config']['up_amt_4'].'G upload',
+        ''.$site_config['paypal_config']['kp_amt_4'].' bonus points',
+        ''.$site_config['paypal_config']['inv_amt_4'].' invites',
+        'Donor star '.$site_config['paypal_config']['duntil_dur_4'].' weeks',
+        'Imunnity '.$site_config['paypal_config']['imm_dur_4'].' weeks',
     ],
     $site_config['paypal_config']['gb_donated_5'] => [
-        'ViP ' . $site_config['paypal_config']['vip_dur_5'] . ' weeks',
-        'Donor ' . $site_config['paypal_config']['donor_dur_5'] . ' weeks',
-        'Freeleech ' . $site_config['paypal_config']['free_dur_5'] . ' wks',
-        '' . $site_config['paypal_config']['up_amt_5'] . 'G upload',
-        '' . $site_config['paypal_config']['kp_amt_5'] . ' bonus points',
-        '' . $site_config['paypal_config']['inv_amt_5'] . ' invites',
-        'Donor star ' . $site_config['paypal_config']['duntil_dur_5'] . ' weeks',
-        'Imunnity ' . $site_config['paypal_config']['imm_dur_5'] . ' weeks',
+        'ViP '.$site_config['paypal_config']['vip_dur_5'].' weeks',
+        'Donor '.$site_config['paypal_config']['donor_dur_5'].' weeks',
+        'Freeleech '.$site_config['paypal_config']['free_dur_5'].' wks',
+        ''.$site_config['paypal_config']['up_amt_5'].'G upload',
+        ''.$site_config['paypal_config']['kp_amt_5'].' bonus points',
+        ''.$site_config['paypal_config']['inv_amt_5'].' invites',
+        'Donor star '.$site_config['paypal_config']['duntil_dur_5'].' weeks',
+        'Imunnity '.$site_config['paypal_config']['imm_dur_5'].' weeks',
     ],
     $site_config['paypal_config']['gb_donated_6'] => [
-        'ViP ' . $site_config['paypal_config']['vip_dur_6'] . ' weeks',
-        'Donor ' . $site_config['paypal_config']['donor_dur_6'] . ' weeks',
-        'Freeleech ' . $site_config['paypal_config']['free_dur_6'] . ' wks',
-        '' . $site_config['paypal_config']['up_amt_6'] . 'G upload',
-        '' . $site_config['paypal_config']['kp_amt_6'] . ' bonus points',
-        '' . $site_config['paypal_config']['inv_amt_6'] . ' invites',
-        'Donor star ' . $site_config['paypal_config']['duntil_dur_6'] . ' weeks',
-        'Imunnity ' . $site_config['paypal_config']['imm_dur_6'] . ' weeks',
+        'ViP '.$site_config['paypal_config']['vip_dur_6'].' weeks',
+        'Donor '.$site_config['paypal_config']['donor_dur_6'].' weeks',
+        'Freeleech '.$site_config['paypal_config']['free_dur_6'].' wks',
+        ''.$site_config['paypal_config']['up_amt_6'].'G upload',
+        ''.$site_config['paypal_config']['kp_amt_6'].' bonus points',
+        ''.$site_config['paypal_config']['inv_amt_6'].' invites',
+        'Donor star '.$site_config['paypal_config']['duntil_dur_6'].' weeks',
+        'Imunnity '.$site_config['paypal_config']['imm_dur_6'].' weeks',
     ],
 ];
-$done = isset($_GET['done']) && $_GET['done'] == 1 ? true : false;
+$done = isset($_GET['done']) && 1 == $_GET['done'] ? true : false;
 if ($site_config['paypal_config']['enable'] == 0) {
     $out = stdmsg('Sorry', 'Donation system is currently offline.');
 } else {
@@ -104,7 +104,7 @@ if ($site_config['paypal_config']['enable'] == 0) {
             <div class="w-15">';
         $header = '
                 <tr>
-                    <th class="has-text-centered">Donate $' . $amount . ' ' . $site_config['paypal_config']['currency'] . '</th>
+                    <th class="has-text-centered">Donate $'.$amount.' '.$site_config['paypal_config']['currency'].'</th>
                 </tr>';
         $body = '
                 <tr>
@@ -112,14 +112,14 @@ if ($site_config['paypal_config']['enable'] == 0) {
                         <ul>';
         foreach ($ops as $op) {
             $body .= '
-                            <li>' . $op . '</li>';
+                            <li>'.$op.'</li>';
         }
         $body .= '
                         </ul>
                     </td>
                 </tr>
                 <tr>
-                    <td class="has-text-centered">' . str_replace([
+                    <td class="has-text-centered">'.str_replace([
                                                                                        '#amount',
                                                                                        '#item_name',
                                                                                        '#item_number',
@@ -137,6 +137,6 @@ if ($site_config['paypal_config']['enable'] == 0) {
         $out .= '        
             </div>';
     }
-    $out .= '</div>' . stdmsg('Note', '<p>If you want to say something to ' . $site_config['site_name'] . ' staff, click on <b>Add special instructions to seller</b> link as soon as you are on paypal.com page.</p><p>Please note donating will reset Hit and Runs, any warnings and download bans.</p>');
+    $out .= '</div>'.stdmsg('Note', '<p>If you want to say something to '.$site_config['site_name'].' staff, click on <b>Add special instructions to seller</b> link as soon as you are on paypal.com page.</p><p>Please note donating will reset Hit and Runs, any warnings and download bans.</p>');
 }
-echo stdhead('Donate') . wrapper($out) . stdfoot();
+echo stdhead('Donate').wrapper($out).stdfoot();

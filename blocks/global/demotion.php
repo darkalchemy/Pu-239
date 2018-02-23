@@ -1,7 +1,8 @@
 <?php
+
 global $CURUSER, $lang;
 
-if ($CURUSER && $CURUSER['override_class'] != 255) {
+if ($CURUSER && 255 != $CURUSER['override_class']) {
     $htmlout .= "
     <li>
         <a href='{$site_config['baseurl']}/restoreclass.php'>

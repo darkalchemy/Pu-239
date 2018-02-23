@@ -2,20 +2,20 @@
 
 function getTVImagesByImdb($thetvdb_id, $type = 'showbackground', $season = 0)
 {
-    $cache = new DarkAlchemy\Pu239\Cache();
+    global $cache;
 
     $types = [
         'showbackground',
         'tvposter',
         'tvbanner',
         'seasonposter',
-        'seasonbanner'
+        'seasonbanner',
     ];
 
-    if ($season != 0 && ($type === 'banner' || $type === 'poster')) {
-        $type = 'season' . $type;
-    } elseif ($type === 'banner' || $type === 'poster') {
-        $type = 'tv' . $type;
+    if (0 != $season && ('banner' === $type || 'poster' === $type)) {
+        $type = 'season'.$type;
+    } elseif ('banner' === $type || 'poster' === $type) {
+        $type = 'tv'.$type;
     }
 
     $key = $_ENV['FANART_API_KEY'];
@@ -23,20 +23,20 @@ function getTVImagesByImdb($thetvdb_id, $type = 'showbackground', $season = 0)
         return null;
     }
 
-    $fanart = $cache->get('show_images_' . $thetvdb_id);
-    if ($fanart === false || is_null($fanart)) {
+    $fanart = $cache->get('show_images_'.$thetvdb_id);
+    if (false === $fanart || is_null($fanart)) {
         $url = 'http://webservice.fanart.tv/v3/tv/';
-        $fanart = fetch($url . $thetvdb_id . '?api_key=' . $key);
-        if ($fanart != null) {
+        $fanart = fetch($url.$thetvdb_id.'?api_key='.$key);
+        if (null != $fanart) {
             $fanart = json_decode($fanart, true);
-            $cache->set('show_images_' . $thetvdb_id, $fanart, 604800);
+            $cache->set('show_images_'.$thetvdb_id, $fanart, 604800);
         }
     }
     if ($fanart) {
         $images = [];
         foreach ($fanart[$type] as $image) {
-            if (empty($image['lang']) || $image['lang'] === 'en') {
-                if ($season != 0) {
+            if (empty($image['lang']) || 'en' === $image['lang']) {
+                if (0 != $season) {
                     if ($image['season'] == $season) {
                         $images[] = $image['url'];
                     }
@@ -47,9 +47,11 @@ function getTVImagesByImdb($thetvdb_id, $type = 'showbackground', $season = 0)
         }
         if (!empty($images)) {
             shuffle($images);
+
             return $images[0];
         }
     }
+
     return null;
 }
 
@@ -61,39 +63,41 @@ function getTVImagesByImdb($thetvdb_id, $type = 'showbackground', $season = 0)
  */
 function getMovieImagesByImdb($imdb, $type = 'moviebackground')
 {
-    $cache = new DarkAlchemy\Pu239\Cache();
+    global $cache;
 
     $types = [
         'moviebackground',
         'movieposter',
-        'moviebanner'
+        'moviebanner',
     ];
     $key = $_ENV['FANART_API_KEY'];
     if (empty($key) || empty($imdb) || !in_array($type, $types)) {
         return null;
     }
 
-    $fanart = $cache->get('movie_images_' . $imdb);
-    if ($fanart === false || is_null($fanart)) {
+    $fanart = $cache->get('movie_images_'.$imdb);
+    if (false === $fanart || is_null($fanart)) {
         $url = 'http://webservice.fanart.tv/v3/movies/';
-        $fanart = fetch($url . $imdb . '?api_key=' . $key);
-        if ($fanart != null) {
+        $fanart = fetch($url.$imdb.'?api_key='.$key);
+        if (null != $fanart) {
             $fanart = json_decode($fanart, true);
-            $cache->set('movie_images_' . $imdb, $fanart, 604800);
+            $cache->set('movie_images_'.$imdb, $fanart, 604800);
         }
     }
     if ($fanart) {
         $images = [];
         foreach ($fanart[$type] as $image) {
-            if (empty($image['lang']) || $image['lang'] === 'en') {
+            if (empty($image['lang']) || 'en' === $image['lang']) {
                 $images[] = $image['url'];
             }
         }
         if (!empty($images)) {
             shuffle($images);
+
             return $images[0];
         }
     }
+
     return null;
 }
 
@@ -106,8 +110,9 @@ function fetch($url)
 {
     $client = new GuzzleHttp\Client();
     $res = $client->request('GET', $url);
-    if ($res->getStatusCode() === 200) {
+    if (200 === $res->getStatusCode()) {
         return $res->getBody();
     }
+
     return null;
 }

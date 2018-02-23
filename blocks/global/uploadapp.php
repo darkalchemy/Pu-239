@@ -1,11 +1,10 @@
 <?php
-global $CURUSER, $site_config, $lang, $fluent;
 
-$cache = new DarkAlchemy\Pu239\Cache();
+global $CURUSER, $site_config, $lang, $fluent, $cache;
 
 if ($site_config['uploadapp_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $newapp = $cache->get('new_uploadapp_');
-    if ($newapp === false || is_null($newapp)) {
+    if (false === $newapp || is_null($newapp)) {
         $res = $fluent->from('uploadapp')
             ->select(null)
             ->select('COUNT(id) AS count')
@@ -25,7 +24,7 @@ if ($site_config['uploadapp_alert'] && $CURUSER['class'] >= UC_STAFF) {
             <div class='tooltip_templates'>
                 <span id='uploadapp_tooltip'>
                     <div class='size_4 has-text-centered has-text-danger has-text-weight-bold bottom10'>
-                        {$lang['gl_hey']} {$CURUSER['username']}!<br> $newapp {$lang['gl_uploadapp_ua']}" . ($newapp > 1 ? 's' : '') . " {$lang['gl_uploadapp_dealt']} 
+                        {$lang['gl_hey']} {$CURUSER['username']}!<br> $newapp {$lang['gl_uploadapp_ua']}".($newapp > 1 ? 's' : '')." {$lang['gl_uploadapp_dealt']} 
                     </div>
                 </span>
             </div>

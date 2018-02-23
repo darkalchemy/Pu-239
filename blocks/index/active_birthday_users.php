@@ -1,10 +1,9 @@
 <?php
-global $site_config, $lang, $fluent;
 
-$cache = new DarkAlchemy\Pu239\Cache();
+global $site_config, $lang, $fluent, $cache;
 
 $birthday = $cache->get('birthdayusers_');
-if ($birthday === false || is_null($birthday)) {
+if (false === $birthday || is_null($birthday)) {
     $birthday = $list = [];
     $current_date = getdate();
     $query = $fluent->from('users')
@@ -20,7 +19,7 @@ if ($birthday === false || is_null($birthday)) {
     }
     $birthday['birthdayusers'] = implode(',&nbsp;&nbsp;', $list);
     $birthday['count'] = count($list);
-    if ($birthday['count'] === 0) {
+    if (0 === $birthday['count']) {
         $birthday['birthdayusers'] = $lang['index_birthday_no'];
     }
     $cache->set('birthdayusers_', $birthday, $site_config['expires']['birthdayusers']);

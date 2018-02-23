@@ -9,9 +9,7 @@ use Scriptotek\GoogleBooks\GoogleBooks;
  */
 function get_book_info($torrent)
 {
-    global $site_config, $CURUSER;
-
-$cache = new DarkAlchemy\Pu239\Cache();
+    global $site_config, $CURUSER, $cache;
 
     $search = $torrent['name'];
     if (!empty($torrent['isbn'])) {
@@ -19,8 +17,8 @@ $cache = new DarkAlchemy\Pu239\Cache();
     }
     $api_hits = $cache->get('google_api_limits_');
     $hash = hash('sha256', $search);
-    $ebook = $cache->get('book_info_' . $hash);
-    if ($ebook === false || is_null($ebook)) {
+    $ebook = $cache->get('book_info_'.$hash);
+    if (false === $ebook || is_null($ebook)) {
         $api_limit = 100;
         if (!empty($_ENV['GOOGLE_API_KEY'])) {
             $api_limit = 1000;
@@ -38,6 +36,7 @@ $cache = new DarkAlchemy\Pu239\Cache();
                     '',
                 ];
             }
+
             return false;
         } else {
             date_default_timezone_set('America/Los_Angeles');
@@ -68,8 +67,8 @@ $cache = new DarkAlchemy\Pu239\Cache();
                 $keys[] = $value;
             }
         }
-        $ebook['isbn10'] = !empty($keys[1]) && strlen($keys[1]) === 10 ? $keys[1] : !empty($keys[3]) ? $keys[3] : '';
-        $ebook['isbn13'] = !empty($keys[3]) && strlen($keys[3]) === 13 ? $keys[3] : !empty($keys[1]) ? $keys[1] : '';
+        $ebook['isbn10'] = !empty($keys[1]) && 10 === strlen($keys[1]) ? $keys[1] : !empty($keys[3]) ? $keys[3] : '';
+        $ebook['isbn13'] = !empty($keys[3]) && 13 === strlen($keys[3]) ? $keys[3] : !empty($keys[1]) ? $keys[1] : '';
         foreach ($book->categories as $category) {
             $ebook['categories'][] = $category;
         }
@@ -77,7 +76,7 @@ $cache = new DarkAlchemy\Pu239\Cache();
         $ebook['poster'] = $book->imageLinks->thumbnail;
 
         if (!empty($book)) {
-            $cache->set('book_info_' . $hash, $ebook, $site_config['expires']['book_info']);
+            $cache->set('book_info_'.$hash, $ebook, $site_config['expires']['book_info']);
         }
     }
 
@@ -92,7 +91,7 @@ $cache = new DarkAlchemy\Pu239\Cache();
                     </div>
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>Author: </div>
-                        <span class='column padding5'>" . implode(', ', $ebook['authors']) . "</span>
+                        <span class='column padding5'>".implode(', ', $ebook['authors'])."</span>
                     </div>
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>Published: </div>
@@ -122,8 +121,8 @@ $cache = new DarkAlchemy\Pu239\Cache();
         $ebook_info .= "
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>Genre: </div>
-                        <span class='column padding5'>" . implode(', ', $ebook['categories']) . "</span>
-                    </div>";
+                        <span class='column padding5'>".implode(', ', $ebook['categories']).'</span>
+                    </div>';
     }
     $ebook_info .= "
                     <div class='columns'>

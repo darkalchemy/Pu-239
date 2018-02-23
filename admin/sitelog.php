@@ -1,8 +1,9 @@
 <?php
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'pager_functions.php';
-require_once INCL_DIR . 'bbcode_functions.php';
-require_once CLASS_DIR . 'class_check.php';
+
+require_once INCL_DIR.'user_functions.php';
+require_once INCL_DIR.'pager_functions.php';
+require_once INCL_DIR.'bbcode_functions.php';
+require_once CLASS_DIR.'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $lang;
@@ -14,7 +15,7 @@ if (isset($_GET['search'])) {
     $search = strip_tags($_GET['search']);
 }
 if (!empty($search)) {
-    $where = 'WHERE txt LIKE ' . sqlesc("%$search%") . '';
+    $where = 'WHERE txt LIKE '.sqlesc("%$search%").'';
 }
 // delete items older than 1 month
 $secs = TIME_NOW - (30 * 86400);
@@ -23,7 +24,7 @@ $resx = sql_query("SELECT COUNT(*) FROM sitelog $where");
 $rowx = mysqli_fetch_array($resx, MYSQLI_NUM);
 $count = $rowx[0];
 $perpage = 30;
-$pager = pager($perpage, $count, 'staffpanel.php?tool=sitelog&amp;action=sitelog&amp;' . (!empty($search) ? "search=$search&amp;" : '') . '');
+$pager = pager($perpage, $count, 'staffpanel.php?tool=sitelog&amp;action=sitelog&amp;'.(!empty($search) ? "search=$search&amp;" : '').'');
 $HTMLOUT = '';
 $res = sql_query("SELECT added, txt FROM sitelog $where ORDER BY added DESC {$pager['limit']} ") or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= "
@@ -39,7 +40,7 @@ $HTMLOUT .= "
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-if (mysqli_num_rows($res) == 0) {
+if (0 == mysqli_num_rows($res)) {
     $HTMLOUT .= "<b>{$lang['text_logempty']}</b>";
 } else {
     $HTMLOUT .= "
@@ -73,17 +74,17 @@ if (mysqli_num_rows($res) == 0) {
                         <span class='has-text-black'>{$date[0]}{$date[1]}</span>
                     </td>
                     <td style='background-color: {$color};'>
-                        <span class='has-text-black'>" . format_comment($arr['txt']) . "</span>
+                        <span class='has-text-black'>".format_comment($arr['txt']).'</span>
                     </td>
-                </tr>";
+                </tr>';
     }
-    $HTMLOUT .= "
+    $HTMLOUT .= '
             </tbody>
         </table>
-    </div>";
+    </div>';
 }
 $HTMLOUT .= "<p>{$lang['text_times']}</p>";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead("{$lang['stdhead_log']}") . $HTMLOUT . stdfoot();
+echo stdhead("{$lang['stdhead_log']}").$HTMLOUT.stdfoot();

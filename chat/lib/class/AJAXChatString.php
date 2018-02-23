@@ -10,7 +10,7 @@
 // Class to provide multibyte enabled string methods
 
 /**
- * Class AJAXChatString
+ * Class AJAXChatString.
  */
 class AJAXChatString
 {
@@ -24,7 +24,7 @@ class AJAXChatString
      */
     public static function subString($str, $start = 0, $length = null, $encoding = 'UTF-8')
     {
-        if ($length === null) {
+        if (null === $length) {
             $length = self::stringLength($str);
         }
         if (function_exists('mb_substr')) {

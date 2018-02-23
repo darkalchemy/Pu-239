@@ -1,11 +1,10 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'html_functions.php';
-check_user_status();
-global $site_config;
 
-$fluent = new DarkAlchemy\Pu239\Database();
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'user_functions.php';
+require_once INCL_DIR.'html_functions.php';
+check_user_status();
+global $site_config, $fluent;
 
 $lang = array_merge(load_language('global'), load_language('staff'));
 $stdhead = [
@@ -32,16 +31,16 @@ $query = $fluent->from('users')
     ->orderBy('username');
 
 foreach ($query as $arr2) {
-    if ($arr2['support'] === 'yes') {
+    if ('yes' === $arr2['support']) {
         $support[] = $arr2;
     }
-    if ($arr2['class'] === UC_MODERATOR) {
+    if (UC_MODERATOR === $arr2['class']) {
         $mods[] = $arr2;
     }
-    if ($arr2['class'] === UC_ADMINISTRATOR) {
+    if (UC_ADMINISTRATOR === $arr2['class']) {
         $admin[] = $arr2;
     }
-    if ($arr2['class'] === UC_SYSOP) {
+    if (UC_SYSOP === $arr2['class']) {
         $sysop[] = $arr2;
     }
 }
@@ -51,6 +50,7 @@ foreach ($query as $arr2) {
  * @param $staffclass
  *
  * @return null|string
+ *
  * @throws \MatthiasMullie\Scrapbook\Exception\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
@@ -71,14 +71,15 @@ function DoStaff($staff_array, $staffclass)
                     <tr>';
         $flagpic = !empty($staff['flagpic']) ? "{$site_config['pic_baseurl']}flag/{$staff['flagpic']}" : '';
         $flagname = !empty($staff['flagname']) ? $staff['flagname'] : '';
-        $body .= "
-                        <td>" . format_username($staff['id']) . "</td>
-                        <td><img src='{$site_config['pic_baseurl']}staff/" . ($staff['last_access'] > $dt && $staff['perms'] < bt_options::PERMS_STEALTH ? 'online.png' : 'offline.png') . "' height='16' alt='' /></td>" . "
-                        <td><a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int)$staff['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . "'><img src='{$site_config['pic_baseurl']}mailicon.png' class='tooltipper' title='Personal Message' alt='' /></a></td>" . "
-                        <td><img src='$flagpic' alt='" . htmlsafechars($flagname) . "' /></td>
+        $body .= '
+                        <td>'.format_username($staff['id'])."</td>
+                        <td><img src='{$site_config['pic_baseurl']}staff/".($staff['last_access'] > $dt && $staff['perms'] < bt_options::PERMS_STEALTH ? 'online.png' : 'offline.png')."' height='16' alt='' /></td>"."
+                        <td><a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=".(int) $staff['id'].'&amp;returnto='.urlencode($_SERVER['REQUEST_URI'])."'><img src='{$site_config['pic_baseurl']}mailicon.png' class='tooltipper' title='Personal Message' alt='' /></a></td>"."
+                        <td><img src='$flagpic' alt='".htmlsafechars($flagname)."' /></td>
                     </tr>";
     }
-    return $htmlout . main_table($body);
+
+    return $htmlout.main_table($body);
 }
 
 $htmlout .= DoStaff($sysop, 'Sysops');
@@ -90,13 +91,13 @@ if (!empty($support)) {
     foreach ($support as $a) {
         $flagpic = !empty($staff['flagpic']) ? "{$site_config['pic_baseurl']}flag/{$staff['flagpic']}" : '';
         $flagname = !empty($staff['flagname']) ? $staff['flagname'] : '';
-        $body .= "
+        $body .= '
                 <tr>
-                    <td>" . format_username($a['id']) . "</td>
-                    <td><img src='{$site_config['pic_baseurl']}/staff/" . ($a['last_access'] > $dt ? 'online.png' : 'offline.png') . "' alt='' /></td>
-                    <td><a href='{$site_config['baseurl']}pm_system.php?action=send_message&amp;receiver=" . (int)$a['id'] . "'><img src='{$site_config['pic_baseurl']}mailicon.png' class='tooltipper' title='{$lang['alt_pm']}' alt='' /></a></td>
-                    <td><img src='$flagpic' alt='" . htmlsafechars($flagname) . "' /></td>
-                    <td>" . htmlsafechars($a['supportfor']) . '</td>
+                    <td>'.format_username($a['id'])."</td>
+                    <td><img src='{$site_config['pic_baseurl']}/staff/".($a['last_access'] > $dt ? 'online.png' : 'offline.png')."' alt='' /></td>
+                    <td><a href='{$site_config['baseurl']}pm_system.php?action=send_message&amp;receiver=".(int) $a['id']."'><img src='{$site_config['pic_baseurl']}mailicon.png' class='tooltipper' title='{$lang['alt_pm']}' alt='' /></a></td>
+                    <td><img src='$flagpic' alt='".htmlsafechars($flagname)."' /></td>
+                    <td>".htmlsafechars($a['supportfor']).'</td>
                 </tr>';
     }
     $htmlout .= "
@@ -114,4 +115,4 @@ if (!empty($support)) {
                     </tr>";
     $htmlout .= main_table($body, $heading);
 }
-echo stdhead('Staff', true, $stdhead) . wrapper($htmlout) . stdfoot();
+echo stdhead('Staff', true, $stdhead).wrapper($htmlout).stdfoot();

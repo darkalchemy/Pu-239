@@ -1,3 +1,9 @@
+23 Feb 2018
+revert: use globals in functions, until all moved to classes(i'm still learning)
+remove: class destructors
+remove: persistent connections to pdo
+add: @Symfony to php-cs-fixer default rules
+
 22 Feb 2018
 add: destructor to classes
 add: persistent connections to pdo
@@ -7,7 +13,7 @@ move: project classes to src
 add: namespace to project classes
 move: manage jquery with npm
 fix: usercp.php password change
-fix: AJAX Chat not loggin in user when not in online list
+fix: AJAX Chat not login user when not in online list
 replace: some globals with new Class()
 move: begin moving functions to class methods
 

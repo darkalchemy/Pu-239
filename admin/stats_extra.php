@@ -1,7 +1,8 @@
 <?php
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'html_functions.php';
-require_once CLASS_DIR . 'class_check.php';
+
+require_once INCL_DIR.'user_functions.php';
+require_once INCL_DIR.'html_functions.php';
+require_once CLASS_DIR.'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
@@ -109,8 +110,8 @@ function show_views()
     $human_from_date = getdate($from_time);
     $sql = [
         'from_time' => $from_time,
-        'to_time'   => $to_time,
-        'sortby'    => $inbound['sortby'],
+        'to_time' => $to_time,
+        'sortby' => $inbound['sortby'],
     ];
     $q = sql_query("SELECT SUM(t.views) as result_count, t.forumid, f.name as result_name
                     FROM topics AS t
@@ -146,7 +147,7 @@ function show_views()
             }
             $running_total += $row['result_count'];
             $results[] = [
-                'result_name'  => $row['result_name'],
+                'result_name' => $row['result_name'],
                 'result_count' => $row['result_count'],
             ];
         }
@@ -171,7 +172,7 @@ function show_views()
         $htmlout .= "<tr><td colspan='3'>{$lang['stats_ex_noresult']}</td></tr>";
     }
     $htmlout .= '</table></div></div>';
-    echo stdhead($page_title) . $htmlout . stdfoot();
+    echo stdhead($page_title).$htmlout.stdfoot();
 }
 
 /**
@@ -192,37 +193,37 @@ function result_screen($mode = 'reg')
     $from_time = mktime(0, 0, 0, $inbound['from_month'], $inbound['from_day'], $inbound['from_year']);
     $human_to_date = getdate($to_time);
     $human_from_date = getdate($from_time);
-    if ($mode == 'reg') {
+    if ('reg' == $mode) {
         $table = $lang['stats_ex_registr'];
         $sql_table = 'users';
         $sql_field = 'added';
         $page_detail = $lang['stats_ex_rdetails'];
-    } elseif ($mode == 'topic') {
+    } elseif ('topic' == $mode) {
         $table = $lang['stats_ex_newtopicst'];
         $sql_table = 'topics';
         $sql_field = 'added';
         $page_detail = $lang['stats_ex_topdetails'];
-    } elseif ($mode == 'post') {
+    } elseif ('post' == $mode) {
         $table = $lang['stats_ex_poststs'];
         $sql_table = 'posts';
         $sql_field = 'added';
         $page_detail = $lang['stats_ex_postdetails'];
-    } elseif ($mode == 'msg') {
+    } elseif ('msg' == $mode) {
         $table = $lang['stats_ex_pmsts'];
         $sql_table = 'messages';
         $sql_field = 'added';
         $page_detail = $lang['stats_ex_pmdetails'];
-    } elseif ($mode == 'comms') {
+    } elseif ('comms' == $mode) {
         $table = $lang['stats_ex_comsts'];
         $sql_table = 'comments';
         $sql_field = 'added';
         $page_detail = $lang['stats_ex_cdetails'];
-    } elseif ($mode == 'torrents') {
+    } elseif ('torrents' == $mode) {
         $table = $lang['stats_ex_torrsts'];
         $sql_table = 'torrents';
         $sql_field = 'added';
         $page_detail = $lang['stats_ex_tordetails'];
-    } elseif ($mode == 'reps') {
+    } elseif ('reps' == $mode) {
         $table = $lang['stats_ex_repsts'];
         $sql_table = 'reputation';
         $sql_field = 'dateadd';
@@ -245,14 +246,14 @@ function result_screen($mode = 'reg')
             $php_date = ' [F Y]';
             break;
     }
-    $sort_by = ($inbound['sortby'] == 'DESC') ? 'DESC' : 'ASC';
+    $sort_by = ('DESC' == $inbound['sortby']) ? 'DESC' : 'ASC';
     $sql = [
         'from_time' => $from_time,
-        'to_time'   => $to_time,
-        'sortby'    => $sort_by,
+        'to_time' => $to_time,
+        'sortby' => $sort_by,
         'sql_field' => $sql_field,
         'sql_table' => $sql_table,
-        'sql_date'  => $sql_date,
+        'sql_date' => $sql_date,
     ];
     $q1 = sql_query("SELECT MAX({$sql['sql_field']}) as result_maxdate,
                  COUNT(*) as result_count,
@@ -265,7 +266,7 @@ function result_screen($mode = 'reg')
     $running_total = 0;
     $max_result = 0;
     $results = [];
-    $heading = ucfirst($inbound['timescale']) . " $table ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} to {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
+    $heading = ucfirst($inbound['timescale'])." $table ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} to {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
     $menu = make_side_menu();
     $htmlout = "<div>
       <div style='background: grey; height: 25px;'>
@@ -290,8 +291,8 @@ function result_screen($mode = 'reg')
             $running_total += $row['result_count'];
             $results[] = [
                 'result_maxdate' => $row['result_maxdate'],
-                'result_count'   => $row['result_count'],
-                'result_time'    => $row['result_time'],
+                'result_count' => $row['result_count'],
+                'result_time' => $row['result_time'],
             ];
         }
         foreach ($results as $data) {
@@ -300,8 +301,8 @@ function result_screen($mode = 'reg')
                 $img_width = 1;
             }
             $img_width .= '%';
-            if ($inbound['timescale'] == 'weekly') {
-                $date = 'Week #' . strftime('%W', $data['result_maxdate']) . date($php_date, $data['result_maxdate']);
+            if ('weekly' == $inbound['timescale']) {
+                $date = 'Week #'.strftime('%W', $data['result_maxdate']).date($php_date, $data['result_maxdate']);
             } else {
                 $date = date($php_date, $data['result_maxdate']);
             }
@@ -320,7 +321,7 @@ function result_screen($mode = 'reg')
         $htmlout .= "<tr><td colspan='3'>{$lang['stats_ex_noresult']}</td></tr>";
     }
     $htmlout .= '</table></div></div>';
-    echo stdhead($page_title) . $htmlout . stdfoot();
+    echo stdhead($page_title).$htmlout.stdfoot();
 }
 
 /**
@@ -331,28 +332,28 @@ function main_screen($mode = 'reg')
     global $site_config, $lang;
     $page_title = $lang['stats_ex_center'];
     $page_detail = "{$lang['stats_ex_details_main']}<br>{$lang['stats_ex_details_main1']}";
-    if ($mode == 'reg') {
+    if ('reg' == $mode) {
         $form_code = 'show_reg';
         $table = $lang['stats_ex_registr'];
-    } elseif ($mode == 'topic') {
+    } elseif ('topic' == $mode) {
         $form_code = 'show_topic';
         $table = $lang['stats_ex_newtopicst'];
-    } elseif ($mode == 'post') {
+    } elseif ('post' == $mode) {
         $form_code = 'show_post';
         $table = $lang['stats_ex_poststs'];
-    } elseif ($mode == 'msg') {
+    } elseif ('msg' == $mode) {
         $form_code = 'show_msg';
         $table = $lang['stats_ex_pmsts'];
-    } elseif ($mode == 'views') {
+    } elseif ('views' == $mode) {
         $form_code = 'show_views';
         $table = $lang['stats_ex_topicviewsts'];
-    } elseif ($mode == 'comms') {
+    } elseif ('comms' == $mode) {
         $form_code = 'show_comms';
         $table = $lang['stats_ex_comsts'];
-    } elseif ($mode == 'torrents') {
+    } elseif ('torrents' == $mode) {
         $form_code = 'show_torrents';
         $table = $lang['stats_ex_torrsts'];
-    } elseif ($mode == 'reps') {
+    } elseif ('reps' == $mode) {
         $form_code = 'show_reps';
         $table = $lang['stats_ex_repsts'];
     }
@@ -375,14 +376,14 @@ function main_screen($mode = 'reg')
     <fieldset><legend><strong>{$lang['stats_ex_infor']}</strong></legend>
     {$page_detail}</fieldset>
         <fieldset><legend><strong>{$lang['stats_ex_datefrom']}</strong></legend>";
-    $htmlout .= make_select('from_month', make_month(), $old_date['mon']) . '&#160;&#160;';
-    $htmlout .= make_select('from_day', make_day(), $old_date['mday']) . '&#160;&#160;';
-    $htmlout .= make_select('from_year', make_year(), $old_date['year']) . '</fieldset>';
+    $htmlout .= make_select('from_month', make_month(), $old_date['mon']).'&#160;&#160;';
+    $htmlout .= make_select('from_day', make_day(), $old_date['mday']).'&#160;&#160;';
+    $htmlout .= make_select('from_year', make_year(), $old_date['year']).'</fieldset>';
     $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_dateto']}</strong></legend>";
-    $htmlout .= make_select('to_month', make_month(), $new_date['mon']) . '&#160;&#160;';
-    $htmlout .= make_select('to_day', make_day(), $new_date['mday']) . '&#160;&#160;';
-    $htmlout .= make_select('to_year', make_year(), $new_date['year']) . '</fieldset>';
-    if ($mode != 'views') {
+    $htmlout .= make_select('to_month', make_month(), $new_date['mon']).'&#160;&#160;';
+    $htmlout .= make_select('to_day', make_day(), $new_date['mday']).'&#160;&#160;';
+    $htmlout .= make_select('to_year', make_year(), $new_date['year']).'</fieldset>';
+    if ('views' != $mode) {
         $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_timescale']}</strong></legend>";
         $htmlout .= make_select('timescale', [
                 0 => [
@@ -397,7 +398,7 @@ function main_screen($mode = 'reg')
                     'monthly',
                     $lang['stats_ex_monthly'],
                 ],
-            ]) . '</fieldset>';
+            ]).'</fieldset>';
     }
     $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_ressort']}</strong></legend>";
     $htmlout .= make_select('sortby', [
@@ -409,7 +410,7 @@ function main_screen($mode = 'reg')
                 'desc',
                 $lang['stats_ex_desc'],
             ],
-        ], 'desc') . '</fieldset>';
+        ], 'desc').'</fieldset>';
     $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_submit']}</strong></legend>
                 <input value='{$lang['stats_ex_show']}' class='button is-small' accesskey='s' type='submit' />
             </fieldset>
@@ -417,7 +418,7 @@ function main_screen($mode = 'reg')
         </div>
     
     </form></div>";
-    echo stdhead($page_title) . $htmlout . stdfoot();
+    echo stdhead($page_title).$htmlout.stdfoot();
 }
 
 /**
@@ -487,8 +488,8 @@ function make_select($name, $in = [], $default = '')
     $html = "<select name='$name' class='dropdown'>\n";
     foreach ($in as $v) {
         $selected = '';
-        if (($default != '') and ($v[0] == $default)) {
-            $selected = " selected";
+        if (('' != $default) and ($v[0] == $default)) {
+            $selected = ' selected';
         }
         $html .= "<option value='{$v[0]}'{$selected}>{$v[1]}</option>\n";
     }

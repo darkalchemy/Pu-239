@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class block_index
+ * Class block_index.
  */
 class block_index
 {

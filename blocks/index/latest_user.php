@@ -1,10 +1,9 @@
 <?php
-global $site_config, $lang, $fluent;
 
-$cache = new DarkAlchemy\Pu239\Cache();
+global $site_config, $lang, $fluent, $cache;
 
 $latestuser = $cache->get('latestuser');
-if ($latestuser === false || is_null($latestuser)) {
+if (false === $latestuser || is_null($latestuser)) {
     $latestuser = $fluent->from('users')
         ->select(null)
         ->select('id')

@@ -1,7 +1,8 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'html_functions.php';
+
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'user_functions.php';
+require_once INCL_DIR.'html_functions.php';
 check_user_status();
 global $site_config, $CURUSER, $lang;
 
@@ -13,7 +14,7 @@ $stdfoot = [
 ];
 
 if ($CURUSER >= UC_STAFF && !empty($_GET['id']) && is_valid_id($_GET['id'])) {
-    $id = (int)$_GET['id'];
+    $id = (int) $_GET['id'];
 } else {
     $id = $CURUSER['id'];
 }
@@ -25,7 +26,7 @@ $completed .= main_div(
     "
     <section id='ipports'></section>
     <section>
-        <input class='has-text-centered w-25' type='text' id='userip' placeholder='Your Torrent Client IP [" . getip() . "]' />
+        <input class='has-text-centered w-25' type='text' id='userip' placeholder='Your Torrent Client IP [".getip()."]' />
         <input class='has-text-centered w-25' type='text' id='userport' placeholder='Your Torrent Client Port' />
         <input class='has-text-centered w-25' type='text' id='ipport' placeholder='Check Status' readonly />
         <div class='has-text-centered'>
@@ -37,4 +38,4 @@ $completed .= main_div(
     </script>"
 );
 
-echo stdhead('Check My Ports', true) . wrapper($completed) . stdfoot($stdfoot);
+echo stdhead('Check My Ports', true).wrapper($completed).stdfoot($stdfoot);

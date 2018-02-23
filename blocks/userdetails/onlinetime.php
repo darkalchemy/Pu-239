@@ -1,4 +1,5 @@
 <?php
+
 global $lang, $user;
 
 if ($user['onlinetime'] > 0) {

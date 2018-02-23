@@ -8,9 +8,7 @@
  */
 function silvertorrents_update($data)
 {
-    global $site_config, $queries, $fluent;
-
-$cache = new DarkAlchemy\Pu239\Cache();
+    global $site_config, $queries, $fluent, $cache;
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -33,14 +31,14 @@ $cache = new DarkAlchemy\Pu239\Cache();
             ->where('id = ?', $arr['id'])
             ->execute();
 
-        $cache->update_row('torrent_details_' . $arr['id'], [
+        $cache->update_row('torrent_details_'.$arr['id'], [
             'silver' => 0,
         ], $site_config['expires']['torrent_details']);
-        $count++;
+        ++$count;
     }
 
     if ($data['clean_log']) {
-        write_log('Cleanup - Removed Silver from ' . $count . ' torrents');
+        write_log('Cleanup - Removed Silver from '.$count.' torrents');
     }
     unset($set, $count);
 

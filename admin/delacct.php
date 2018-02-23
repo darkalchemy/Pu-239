@@ -1,25 +1,24 @@
 <?php
-require_once INCL_DIR . 'user_functions.php';
-require_once CLASS_DIR . 'class_check.php';
-require_once INCL_DIR . 'password_functions.php';
-require_once INCL_DIR . 'function_account_delete.php';
+
+require_once INCL_DIR.'user_functions.php';
+require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR.'password_functions.php';
+require_once INCL_DIR.'function_account_delete.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang;
-
-$cache = new DarkAlchemy\Pu239\Cache();
+global $CURUSER, $lang, $site_config, $cache;
 
 $lang = array_merge($lang, load_language('ad_delacct'));
 
 //==
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $username = trim(htmlsafechars($_POST['username']));
     $password = trim(htmlsafechars($_POST['password']));
     if (!$username || !$password) {
         stderr("{$lang['text_error']}", "{$lang['text_please']}");
     }
-    $res = sql_query('SELECT id, secret, passhash FROM users WHERE username=' . sqlesc($username) . '') or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($res) != 1) {
+    $res = sql_query('SELECT id, secret, passhash FROM users WHERE username='.sqlesc($username).'') or sqlerr(__FILE__, __LINE__);
+    if (1 != mysqli_num_rows($res)) {
         stderr("{$lang['text_error']}", "{$lang['text_bad']}");
     }
     $arr = mysqli_fetch_assoc($res);
@@ -27,11 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($arr['passhash'] != $wantpasshash) {
         stderr("{$lang['text_error']}", "{$lang['text_bad']}");
     }
-    $userid = (int)$arr['id'];
+    $userid = (int) $arr['id'];
     $res = sql_query(account_delete($userid)) or sqlerr(__FILE__, __LINE__);
     //$res = sql_query("DELETE FROM users WHERE id=" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) !== false) {
-        $cache->delete('user' . $userid);
+    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+        $cache->delete('user'.$userid);
         $cache->delete('all_users_');
         write_log("User: $username Was deleted by {$CURUSER['username']}");
         stderr("{$lang['stderr_success']}", "{$lang['text_success']}");
@@ -65,4 +64,4 @@ function deleteConfirm(){
       </tr>
     </table>
     </form></div></div><br>";
-echo stdhead("{$lang['stdhead_delete']}") . $HTMLOUT . stdfoot();
+echo stdhead("{$lang['stdhead_delete']}").$HTMLOUT.stdfoot();

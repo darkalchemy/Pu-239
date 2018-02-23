@@ -1,13 +1,14 @@
 <?php
-require_once INCL_DIR . 'user_functions.php';
-require_once CLASS_DIR . 'class_check.php';
+
+require_once INCL_DIR.'user_functions.php';
+require_once CLASS_DIR.'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
 $lang = array_merge($lang, load_language('ad_testip'));
 $HTMLOUT = '';
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $ip = isset($_POST['ip']) ? $_POST['ip'] : false;
 } else {
     $ip = isset($_GET['ip']) ? $_GET['ip'] : false;
@@ -18,7 +19,7 @@ if ($ip) {
         stderr($lang['testip_error'], $lang['testip_error1']);
     }
     $res = sql_query("SELECT * FROM bans WHERE $nip >= first AND $nip <= last") or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($res) == 0) {
+    if (0 == mysqli_num_rows($res)) {
         stderr($lang['testip_result'], sprintf($lang['testip_notice'], htmlentities($ip, ENT_QUOTES)));
     } else {
         $HTMLOUT .= "<table class='main' >
@@ -34,7 +35,7 @@ if ($ip) {
             $HTMLOUT .= "<tr><td>$first</td><td>$last</td><td>$comment</td></tr>\n";
         }
         $HTMLOUT .= "</table>\n";
-        stderr($lang['testip_result'], "<table ><tr><td class='embedded' style='padding-right: 5px'><img src='{$site_config['pic_baseurl']}smilies/excl.gif' alt='' /></td><td class='embedded'>" . sprintf($lang['testip_notice2'], $ip) . "</td></tr></table><p>$HTMLOUT</p>");
+        stderr($lang['testip_result'], "<table ><tr><td class='embedded' style='padding-right: 5px'><img src='{$site_config['pic_baseurl']}smilies/excl.gif' alt='' /></td><td class='embedded'>".sprintf($lang['testip_notice2'], $ip)."</td></tr></table><p>$HTMLOUT</p>");
     }
 }
 $HTMLOUT .= "
@@ -45,4 +46,4 @@ $HTMLOUT .= "
     <tr><td colspan='2'><input type='submit' class='button is-small' value='{$lang['testip_ok']}' /></td></tr>
     </table>
     </form>";
-echo stdhead($lang['testip_windows_title']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['testip_windows_title']).$HTMLOUT.stdfoot();

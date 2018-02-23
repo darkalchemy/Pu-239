@@ -26,11 +26,6 @@ class Cookie
         $this->key = $key;
     }
 
-    public function __destruct()
-    {
-        // TODO: Implement __destruct() method.
-    }
-
     /**
      * @param $value
      * @param $expires
@@ -46,7 +41,7 @@ class Cookie
         $params = session_get_cookie_params();
         $encrypted = CryptoJSAES::encrypt($value, $this->config['site']['salt']);
         setcookie(
-            $this->config['cookie_prefix'] . $this->key,
+            $this->config['cookie_prefix'].$this->key,
             base64_encode($encrypted),
             $expires,
             $params['path'],
@@ -61,10 +56,10 @@ class Cookie
      */
     public function get()
     {
-        if (empty($this->key) || empty($_COOKIE[$this->config['cookie_prefix'] . $this->key])) {
+        if (empty($this->key) || empty($_COOKIE[$this->config['cookie_prefix'].$this->key])) {
             return false;
         }
-        $decrypted = CryptoJSAES::decrypt(base64_decode($_COOKIE[$this->config['cookie_prefix'] . $this->key]), $this->config['site']['salt']);
+        $decrypted = CryptoJSAES::decrypt(base64_decode($_COOKIE[$this->config['cookie_prefix'].$this->key]), $this->config['site']['salt']);
 
         return $decrypted;
     }

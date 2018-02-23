@@ -10,7 +10,7 @@
 // Class to initialize the MySQL DataBase connection:
 
 /**
- * Class AJAXChatDataBaseMySQL
+ * Class AJAXChatDataBaseMySQL.
  */
 class AJAXChatDataBaseMySQL
 {
@@ -83,10 +83,10 @@ class AJAXChatDataBaseMySQL
     public function getError()
     {
         if ($this->error()) {
-            $str = 'Error-Report: ' . $this->_error . "\n";
-            $str .= 'Error-Code: ' . $this->_errno . "\n";
+            $str = 'Error-Report: '.$this->_error."\n";
+            $str .= 'Error-Code: '.$this->_errno."\n";
         } else {
-            $str = 'No errors.' . "\n";
+            $str = 'No errors.'."\n";
         }
 
         return $str;
@@ -99,7 +99,7 @@ class AJAXChatDataBaseMySQL
      */
     public function error()
     {
-        return (bool)$this->_error;
+        return (bool) $this->_error;
     }
 
     // Method to return the connection identifier:
@@ -118,7 +118,7 @@ class AJAXChatDataBaseMySQL
      */
     public function makeSafe($value)
     {
-        return "'" . mysql_real_escape_string($value, $this->_connectionID) . "'";
+        return "'".mysql_real_escape_string($value, $this->_connectionID)."'";
     }
 
     // Method to perform SQL queries:

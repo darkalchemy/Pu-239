@@ -1,4 +1,5 @@
 <?php
+
 global $CURUSER, $lang;
 
 $height = 600;

@@ -8,9 +8,7 @@
  */
 function birthday_update($data)
 {
-    global $site_config, $queries, $fluent;
-
-$cache = new DarkAlchemy\Pu239\Cache();
+    global $site_config, $queries, $fluent, $cache;
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -29,11 +27,11 @@ $cache = new DarkAlchemy\Pu239\Cache();
 
     $msgs_buffer = $users_buffer = $values = [];
     foreach ($query as $arr) {
-        $msg = 'Hey there <span class="' . get_user_class_name($arr['class'], true) . '">'   . htmlsafechars($arr['username']) . "</span> happy birthday, hope you have a good day. We awarded you 10 gig...Njoi.\n";
+        $msg = 'Hey there <span class="'.get_user_class_name($arr['class'], true).'">'.htmlsafechars($arr['username'])."</span> happy birthday, hope you have a good day. We awarded you 10 gig...Njoi.\n";
         $subject = 'Its your birthday!!';
-        $msgs_buffer[] = '(0,' . $arr['id'] . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+        $msgs_buffer[] = '(0,'.$arr['id'].', '.TIME_NOW.', '.sqlesc($msg).', '.sqlesc($subject).')';
         $update['uploaded'] = ($arr['uploaded'] + 10737418240);
-        $cache->update_row('user' . $arr['id'], [
+        $cache->update_row('user'.$arr['id'], [
             'uploaded' => $update['uploaded'],
         ], $site_config['expires']['user_cache']);
 
@@ -47,13 +45,13 @@ $cache = new DarkAlchemy\Pu239\Cache();
             ->execute();
 
         $values[] = [
-            'sender'   => 0,
+            'sender' => 0,
             'receiver' => $arr['id'],
-            'added'    => $dt,
-            'msg'      => $msg,
-            'subject'  => $subject,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
         ];
-        $cache->increment('inbox_' . $arr['id']);
+        $cache->increment('inbox_'.$arr['id']);
     }
     $count = count($values);
     if ($data['clean_log'] && $count > 0) {
@@ -64,7 +62,7 @@ $cache = new DarkAlchemy\Pu239\Cache();
         }
     }
     if ($data['clean_log'] && $queries > 0) {
-        write_log("Birthday Cleanup: Pm'd' " . $count . ' member(s) and awarded a birthday prize');
+        write_log("Birthday Cleanup: Pm'd' ".$count.' member(s) and awarded a birthday prize');
     }
     unset($users_buffer, $msgs_buffer, $count);
 }

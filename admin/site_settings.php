@@ -1,29 +1,27 @@
 <?php
-require_once CLASS_DIR . 'class_check.php';
+
+require_once CLASS_DIR.'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang;
+global $lang, $site_config, $cache, $session;
 
-$cache = new DarkAlchemy\Pu239\Cache();
-
-$session = new DarkAlchemy\Pu239\Session();
 $lang = array_merge($lang, load_language('ad_sitesettings'));
 $site_settings = $current_site_settings = [];
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
+if ('POST' === $_SERVER['REQUEST_METHOD'] && !empty($_POST)) {
     $pconf = sql_query('SELECT * FROM site_config') or sqlerr(__FILE__, __LINE__);
     while ($ac = mysqli_fetch_assoc($pconf)) {
         $current_site_settings[$ac['name']] = ['value' => $ac['value'], 'description' => $ac['description']];
     }
     $update = [];
     foreach ($_POST as $key => $value) {
-        if ($key != 'new' && ($value["description"] != $current_site_settings[$key]["description"] || $value["value"] != $current_site_settings[$key]["value"])) {
-            $update[] = '(' . sqlesc($key) . ', ' . sqlesc(trim($value["value"])) . ', ' . sqlesc(trim($value["description"])) . ')';
-        } elseif ($key === 'new' && isset($value["value"]) && $value["value"] != '') {
+        if ('new' != $key && ($current_site_settings[$key]['description'] != $value['description'] || $current_site_settings[$key]['value'] != $value['value'])) {
+            $update[] = '('.sqlesc($key).', '.sqlesc(trim($value['value'])).', '.sqlesc(trim($value['description'])).')';
+        } elseif ('new' === $key && isset($value['value']) && '' != $value['value']) {
             extract($value);
-            $update[] = '(' . sqlesc(strtolower(str_replace(' ', '_', trim($setting)))) . ', ' . sqlesc(trim($value)) . ', ' . sqlesc(trim($description)) . ')';
+            $update[] = '('.sqlesc(strtolower(str_replace(' ', '_', trim($setting)))).', '.sqlesc(trim($value)).', '.sqlesc(trim($description)).')';
         }
     }
-    if (!empty($update) && sql_query('INSERT INTO site_config(name, value, description) VALUES ' . join(', ', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value), description = VALUES(description)')) {
+    if (!empty($update) && sql_query('INSERT INTO site_config(name, value, description) VALUES '.join(', ', $update).' ON DUPLICATE KEY UPDATE value = VALUES(value), description = VALUES(description)')) {
         $cache->delete('site_settings_');
         $session->set('is-success', 'Update Successful');
     } else {
@@ -44,36 +42,36 @@ $HTMLOUT .= "
 foreach ($site_settings as $site_setting) {
     extract($site_setting);
     if (is_numeric($value)) {
-        $value = (float)$value;
+        $value = (float) $value;
     }
-    $var = $name . '[value]';
+    $var = $name.'[value]';
     $input = "
-                        <input type='text' name='{$var}' value='" . htmlsafechars($value) . "' class='w-100' />";
-    if (is_numeric($value) && ($value == 0 || $value == 1)) {
+                        <input type='text' name='{$var}' value='".htmlsafechars($value)."' class='w-100' />";
+    if (is_numeric($value) && (0 == $value || 1 == $value)) {
         $input = "
                         <div class='level-center'>
                             <label for ='{$var}' class='right10'>{$lang['sitesettings_no']}
-                                <input class='table' type='radio' name='{$var}' value='0' " . ((int)$value === 0 ? 'checked' : '') . " />
+                                <input class='table' type='radio' name='{$var}' value='0' ".(0 === (int) $value ? 'checked' : '')." />
                             </label>
                             <label for ='{$var}' class='right10'>{$lang['sitesettings_yes']}
-                                <input class='table' type='radio' name='{$var}' value='1' " . ((int)$value === 1 ? 'checked' : '') . " />
+                                <input class='table' type='radio' name='{$var}' value='1' ".(1 === (int) $value ? 'checked' : '').' />
                             </label>
-                        </div>";
+                        </div>';
     }
 
-    $var = $name . '[description]';
+    $var = $name.'[description]';
     $HTMLOUT .= "
                     <tr>
                         <td class='w-10'>
-                            " . htmlsafechars(ucwords(str_replace('_', ' ', $name))) . "
+                            ".htmlsafechars(ucwords(str_replace('_', ' ', $name)))."
                         </td>
                         <td class='w-15'>
                             $input
                         </td>
                         <td>
-                            <textarea name='{$var}' class='w-100'>" . htmlsafechars($description) . "</textarea>
+                            <textarea name='{$var}' class='w-100'>".htmlsafechars($description).'</textarea>
                         </td>
-                    </tr>";
+                    </tr>';
 }
 
 $name = 'new[setting]';
@@ -99,4 +97,4 @@ $HTMLOUT .= "
             </form>
         </div>";
 
-echo stdhead($lang['sitesettings_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['sitesettings_stdhead']).$HTMLOUT.stdfoot();

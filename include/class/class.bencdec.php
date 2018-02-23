@@ -204,7 +204,7 @@ returning false
 */
 
 /**
- * Class bencdec
+ * Class bencdec.
  */
 class bencdec
 {
@@ -258,9 +258,9 @@ class bencdec
     public static function decode($str, $options = 0)
     {
         if (!is_string($str)) {
-            return self::decode_error('Input data must be string in order to decode, "' . gettype($str) . '" given');
+            return self::decode_error('Input data must be string in order to decode, "'.gettype($str).'" given');
         }
-        if (strlen($str) == 0) {
+        if (0 == strlen($str)) {
             return self::decode_error('Input string empty');
         }
         self::$bdata_position = 0;
@@ -294,7 +294,7 @@ class bencdec
      */
     private static function decode_error($msg = '')
     {
-        trigger_error('Badly B-Encoded data at position ' . self::$bdata_position . ($msg != '' ? ': ' . $msg : ''), E_USER_WARNING);
+        trigger_error('Badly B-Encoded data at position '.self::$bdata_position.('' != $msg ? ': '.$msg : ''), E_USER_WARNING);
         self::$bdata_position = 0;
         self::$bdata_length = 0;
         self::$bdata = '';
@@ -310,7 +310,7 @@ class bencdec
     private static function bdecode()
     {
         $char = self::char();
-        if ($char === false) {
+        if (false === $char) {
             return self::decode_error('B-encoded data ended unexpectedly');
         }
         $ord = ord($char); // 1 function call and a comparison with integers is
@@ -346,7 +346,7 @@ class bencdec
             case 57: // 9
                 return self::dec_str();
             default:
-                return self::decode_error('Invalid data type (' . $ord . ')'); // invalid
+                return self::decode_error('Invalid data type ('.$ord.')'); // invalid
         }
     }
 
@@ -370,25 +370,25 @@ class bencdec
     private static function dec_int()
     {
         $epos = @strpos(self::$bdata, 'e', ++self::$bdata_position);
-        if ($epos === false) {
+        if (false === $epos) {
             return self::decode_error('No ending "e" for integer');
         }
         $lenuptoep = $epos - self::$bdata_position;
         $idata = @substr(self::$bdata, self::$bdata_position, $lenuptoep++);
         if (self::$ext_valid) {
-            $ndata = $idata[0] === '-' ? @substr($idata, 1) : $idata;
+            $ndata = '-' === $idata[0] ? @substr($idata, 1) : $idata;
             $len = strlen($ndata);
             if (!$len) {
                 return self::decode_error('Empty integer');
             }
-            if ($len > 1 && $ndata[0] === '0') {
+            if ($len > 1 && '0' === $ndata[0]) {
                 return self::decode_error('Integer prefixed by 0');
             }
             if (!ctype_digit($ndata)) {
                 return self::decode_error('Non-digit characters found in integer');
             }
         }
-        $int = (int)$idata;
+        $int = (int) $idata;
         self::$bdata_position += $lenuptoep;
 
         return $int;
@@ -401,34 +401,34 @@ class bencdec
     {
         $dict = [];
         if (self::$bdata_depth >= self::MAX_DEPTH) {
-            return self::decode_error('B-Encoded data has exceeded the maximum recursion depth of ' . self::MAX_DEPTH);
+            return self::decode_error('B-Encoded data has exceeded the maximum recursion depth of '.self::MAX_DEPTH);
         }
         $last_name = '';
         ++self::$bdata_depth;
         ++self::$bdata_position;
         while (true) {
             $char = self::char();
-            if ($char === false) {
+            if (false === $char) {
                 return self::decode_error('Data ended before dictionary terminated');
             }
-            if ($char === 'e') {
+            if ('e' === $char) {
                 break;
             }
 
             $name = self::dec_str(true);
-            if ($name === false) {
+            if (false === $name) {
                 return false;
             }
             if (self::$ext_valid) {
                 if (isset($dict[$name])) {
-                    return self::decode_error('Duplicate key "' . $name . '" in dictionary');
+                    return self::decode_error('Duplicate key "'.$name.'" in dictionary');
                 }
                 if (strcmp($name, $last_name) < 1) {
                     return self::decode_error('Incorrect sort order in dictionary');
                 }
             }
             $data = self::bdecode();
-            if ($data === false) {
+            if (false === $data) {
                 return false;
             }
             $dict[$name] = $data;
@@ -449,20 +449,20 @@ class bencdec
     private static function dec_str($atleastone = false)
     {
         $colpos = @strpos(self::$bdata, ':', self::$bdata_position);
-        if ($colpos === false) {
+        if (false === $colpos) {
             return self::decode_error('No ":" to separate string from length');
         }
         $llen = $colpos - self::$bdata_position;
         $ldata = @substr(self::$bdata, self::$bdata_position, $llen++);
         if (self::$ext_valid) {
-            if ($ldata[0] === '0' && strlen($ldata) > 1) {
+            if ('0' === $ldata[0] && strlen($ldata) > 1) {
                 return self::decode_error('String length prefixed by 0');
             }
             if (!ctype_digit($ldata)) {
                 return self::decode_error('Non-digit characters found in string length');
             }
         }
-        $len = (int)$ldata;
+        $len = (int) $ldata;
         if ($atleastone) {
             if ($len < 1) {
                 return self::decode_error('String length must be at least 1');
@@ -476,7 +476,7 @@ class bencdec
         }
         self::$bdata_position += $llen + $len;
 
-        return $string === false ? '' : $string;
+        return false === $string ? '' : $string;
     }
 
     /**
@@ -485,22 +485,22 @@ class bencdec
     private static function dec_list()
     {
         if (self::$bdata_depth >= self::MAX_DEPTH) {
-            return self::decode_error('B-Encoded data has exceeded the maximum recursion depth of ' . self::MAX_DEPTH);
+            return self::decode_error('B-Encoded data has exceeded the maximum recursion depth of '.self::MAX_DEPTH);
         }
         $list = [];
         ++self::$bdata_depth;
         ++self::$bdata_position;
         while (true) {
             $char = self::char();
-            if ($char === false) {
+            if (false === $char) {
                 return self::decode_error('Data ended before list terminated');
             }
-            if ($char === 'e') {
+            if ('e' === $char) {
                 break;
             }
 
             $data = self::bdecode();
-            if ($data === false) {
+            if (false === $data) {
                 return false;
             }
             $list[] = $data;
@@ -529,7 +529,7 @@ class bencdec
         }
         $data = self::encode($array);
         unset($array);
-        if ($data === false) {
+        if (false === $data) {
             return false;
         }
         $d = file_put_contents($fn, $data);
@@ -574,20 +574,20 @@ class bencdec
             return self::TYPE_DICT;
         }
         if (is_bool($val)) {
-            $val = (int)$val;
+            $val = (int) $val;
         }
         if (is_int($val)) {
-            $val = (string)$val;
+            $val = (string) $val;
 
             return self::TYPE_INT;
         }
         if (is_float($val)) {
             if (floor($val) == $val) {
-                $val = (string)number_format($val, 0, '', '');
+                $val = (string) number_format($val, 0, '', '');
 
                 return self::TYPE_INT;
             }
-            $val = (string)$val;
+            $val = (string) $val;
 
             return self::TYPE_STR;
         }
@@ -599,7 +599,7 @@ class bencdec
 
             return self::TYPE_DICT;
         }
-        trigger_error('Bad input type for B-Encoding: ' . gettype($val), E_USER_WARNING);
+        trigger_error('Bad input type for B-Encoding: '.gettype($val), E_USER_WARNING);
 
         return false;
     }
@@ -611,7 +611,7 @@ class bencdec
      */
     private static function enc_int($val)
     {
-        return 'i' . $val . 'e';
+        return 'i'.$val.'e';
     }
 
     /**
@@ -621,7 +621,7 @@ class bencdec
      */
     private static function enc_str($val)
     {
-        return strlen($val) . ':' . $val;
+        return strlen($val).':'.$val;
     }
 
     /**
@@ -635,7 +635,7 @@ class bencdec
         $list = 'l';
         foreach ($val as $value) {
             $data = self::encode($value);
-            if ($data === false) {
+            if (false === $data) {
                 return false;
             }
             $list .= $data;
@@ -659,10 +659,10 @@ class bencdec
         $dict = 'd';
         foreach ($val as $name => $value) {
             $data = self::encode($value);
-            if ($data === false) {
+            if (false === $data) {
                 return false;
             }
-            $dict .= self::enc_str((string)$name) . $data;
+            $dict .= self::enc_str((string) $name).$data;
             unset($data);
         }
         $dict .= 'e';

@@ -1,5 +1,6 @@
 <?php
-require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+
+require_once dirname(__FILE__, 3).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
 dbconn(false);
 
 if (empty($_POST['uid'])) {
@@ -7,7 +8,7 @@ if (empty($_POST['uid'])) {
 }
 
 $uid = intval($_POST['uid']);
-$sql = 'SELECT ip, port, agent FROM peers WHERE userid = ' . sqlesc($uid) . ' GROUP BY ip, port';
+$sql = 'SELECT ip, port, agent FROM peers WHERE userid = '.sqlesc($uid).' GROUP BY ip, port';
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
 $out = '';

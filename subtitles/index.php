@@ -6,31 +6,31 @@ require_once 'functions.php';
 $pager = '';
 $name = (isset($_GET['sub_name']) ? $_GET['sub_name'] : '');
 if ($name) {
-    $pager = 'sub_name=' . $name . '&amp;';
+    $pager = 'sub_name='.$name.'&amp;';
 }
 $searchby = (isset($_GET['searchby']) ? $_GET['searchby'] : '');
 if ($searchby) {
-    $pager .= 'searchby=' . $searchby . '&amp;';
+    $pager .= 'searchby='.$searchby.'&amp;';
 }
 $lang = (isset($_GET['lang']) ? $_GET['lang'] : 'all');
 if ($lang) {
-    $pager .= 'lang=' . $lang . '&amp;';
+    $pager .= 'lang='.$lang.'&amp;';
 }
 $fps = (isset($_GET['fps']) ? $_GET['fps'] : '');
 if ($fps) {
-    $pager .= 'fps=' . $fls . '&amp;';
+    $pager .= 'fps='.$fls.'&amp;';
 }
 $format = (isset($_GET['format']) ? $_GET['format'] : '');
 if ($format) {
-    $pager .= 'format=' . $format . '&amp;';
+    $pager .= 'format='.$format.'&amp;';
 }
-$cds = (isset($_GET['cds']) ? (int)$_GET['cds'] : '');
+$cds = (isset($_GET['cds']) ? (int) $_GET['cds'] : '');
 if ($cds) {
-    $pager .= 'cds=' . $cds . '&amp;';
+    $pager .= 'cds='.$cds.'&amp;';
 }
-$offset = (isset($_GET['offset']) ? (int)$_GET['offset'] : '');
+$offset = (isset($_GET['offset']) ? (int) $_GET['offset'] : '');
 
-if ($searchby == 'name') {
+if ('name' == $searchby) {
     $name = str_replace([
                             '.',
                             '/',
@@ -47,7 +47,7 @@ if ($searchby == 'name') {
                             '^',
                             '(',
                             ')',
-                            '*'
+                            '*',
                         ], ' ', $name);
 }
 
@@ -141,26 +141,26 @@ if ($searchby == 'name') {
                 <tr>
                     <td nowrap="nowrap">Search</td>
                     <td colspan="7" nowrap="nowrap"><input type="text" name="sub_name"
-                                                           value="<?php echo $name ? $name : '' ?>"
+                                                           value="<?php echo $name ? $name : ''; ?>"
                                                            size="80"/>
                         &#160;by&#160;
                         <select name="searchby">
-                            <option value="name" <?php echo $searchby == 'name' ? 'selected' : '' ?>>Name
+                            <option value="name" <?php echo 'name' == $searchby ? 'selected' : ''; ?>>Name
                             </option>
-                            <option value="imdb" <?php echo $searchby == 'imdb' ? 'selected' : '' ?>>IMDb
+                            <option value="imdb" <?php echo 'imdb' == $searchby ? 'selected' : ''; ?>>IMDb
                                 id
                             </option>
                         </select></td>
                 </tr>
                 <tr>
                     <td nowrap="nowrap">Subtitle format</td>
-                    <td><?php echo build_menu('format', $format_menu, $format) ?></td>
+                    <td><?php echo build_menu('format', $format_menu, $format); ?></td>
                     <td nowrap="nowrap">Cds</td>
-                    <td><?php echo build_menu('cds', $cds_menu, $cds) ?></td>
+                    <td><?php echo build_menu('cds', $cds_menu, $cds); ?></td>
                     <td nowrap="nowrap">Language</td>
-                    <td><?php echo build_menu('lang', $lang_menu, $lang) ?></td>
+                    <td><?php echo build_menu('lang', $lang_menu, $lang); ?></td>
                     <td nowrap="nowrap">FPS</td>
-                    <td><?php echo build_menu('fps', $fps_menu, $fps) ?></td>
+                    <td><?php echo build_menu('fps', $fps_menu, $fps); ?></td>
                 </tr>
                 <tr>
                     <td colspan="8"><input type="submit" value="Search"/></td>
@@ -173,7 +173,7 @@ if ($searchby == 'name') {
     <?php
     if (!empty($name)) {
         $search = xmlconvert(requestXML($name, $searchby, $lang, $cds, $format, $fps, $offset));
-        echo build_result($search, '?' . $pager);
+        echo build_result($search, '?'.$pager);
     }
 
     ?>

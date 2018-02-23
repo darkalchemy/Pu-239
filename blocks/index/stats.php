@@ -1,10 +1,9 @@
 <?php
-global $site_config, $lang, $fluent;
 
-$cache = new DarkAlchemy\Pu239\Cache();
+global $site_config, $lang, $fluent, $cache;
 
 $stats_cache = $cache->get('site_stats_');
-if ($stats_cache === false || is_null($stats_cache)) {
+if (false === $stats_cache || is_null($stats_cache)) {
     $stats_cache = $fluent->from('stats')
         ->select('seeders + leechers AS peers')
         ->select('seeders / leechers AS ratio')
@@ -99,10 +98,10 @@ $HTMLOUT .= "
                                     <td>{$lang['index_stats_unconpeer']}</td><td class='w-15 has-text-centered'>{$stats_cache['unconnectables']}</td>
                                 </tr>
                                 <tr>
-                                    <td><b>{$lang['index_stats_unconratio']}</b></td><td class='w-15 has-text-centered'><b>" . round($stats_cache['ratiounconn'] * 100) . "</b></td>
+                                    <td><b>{$lang['index_stats_unconratio']}</b></td><td class='w-15 has-text-centered'><b>".round($stats_cache['ratiounconn'] * 100)."</b></td>
                                 </tr>
                                 <tr>
-                                    <td>{$lang['index_stats_slratio']}</td><td class='w-15 has-text-centered'>" . round($stats_cache['ratio'] * 100) . "</td>
+                                    <td>{$lang['index_stats_slratio']}</td><td class='w-15 has-text-centered'>".round($stats_cache['ratio'] * 100).'</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -110,4 +109,4 @@ $HTMLOUT .= "
                 </div>
             </div>
         </div>
-    </fieldset>";
+    </fieldset>';

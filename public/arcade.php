@@ -1,7 +1,8 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'html_functions.php';
+
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'user_functions.php';
+require_once INCL_DIR.'html_functions.php';
 check_user_status();
 $lang = load_language('global');
 
@@ -38,4 +39,4 @@ foreach ($list as $gamename) {
 $HTMLOUT .= '
             </div>';
 
-echo stdhead('Arcade') . wrapper($HTMLOUT) . stdfoot();
+echo stdhead('Arcade').wrapper($HTMLOUT).stdfoot();

@@ -1,10 +1,9 @@
 <?php
-require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-check_user_status();
-global $site_config;
 
-$cache = new DarkAlchemy\Pu239\Cache();
+require_once dirname(__FILE__, 3).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'user_functions.php';
+check_user_status();
+global $site_config, $cache;
 
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
@@ -17,8 +16,8 @@ $keyword = $_POST['keyword'];
 $hash = hash('sha256', $keyword);
 $hashes = [];
 
-$results = $cache->get('suggest_torrents_' . $hash);
-if ($results === false || is_null($results)) {
+$results = $cache->get('suggest_torrents_'.$hash);
+if (false === $results || is_null($results)) {
     $results = $fluent->from('torrents')
         ->select(null)
         ->select('id')
@@ -29,7 +28,7 @@ if ($results === false || is_null($results)) {
         ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $keyword)
         ->limit(10)
         ->fetchAll();
-    $cache->set('suggest_torrents_' . $hash, $results, 0);
+    $cache->set('suggest_torrents_'.$hash, $results, 0);
     $hashes = $cache->get('suggest_torrents_hashes_');
     if (!in_array($hash, $hashes)) {
         $hashes[] = $hash;
@@ -53,8 +52,8 @@ if (!empty($results)) {
         <hr class='top5 bottom20'>";
     $i = 1;
     foreach ($results as $result) {
-        $color = $result['visible'] === 'yes' ? 'has-text-green' : 'has-text-red';
-        $background = $i++ % 2 === 0 ? 'bg-04' : 'bg-03';
+        $color = 'yes' === $result['visible'] ? 'has-text-green' : 'has-text-red';
+        $background = 0 === $i++ % 2 ? 'bg-04' : 'bg-03';
         $temp .= "
         <ul class='columns level w-100 padding10 round5 $background'>
             <li class='column is-three-fifth is-paddingless'>

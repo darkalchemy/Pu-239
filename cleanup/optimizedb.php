@@ -13,7 +13,7 @@ function optimizedb($data)
     $tables = [];
 
     while ($row = mysqli_fetch_assoc($sql)) {
-        $oht .= $row['Name'] . ',';
+        $oht .= $row['Name'].',';
         $tables[] = $row['Name'];
     }
     $oht = rtrim($oht, ',');
@@ -23,7 +23,7 @@ function optimizedb($data)
     if ($data['clean_log'] && $queries > 0) {
         write_log("Auto Optimize DB Cleanup: Completed using $queries queries");
     }
-    if ($data['clean_log'] && $oht != '') {
-        write_log("MySQL Optimized " . count($tables) . " table" . plural(count($tables)) . ": {$oht}");
+    if ($data['clean_log'] && '' != $oht) {
+        write_log('MySQL Optimized '.count($tables).' table'.plural(count($tables)).": {$oht}");
     }
 }

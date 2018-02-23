@@ -42,13 +42,13 @@ function getBrowser()
         $ub,
         'other',
     ];
-    $pattern = '#(?<browser>' . join('|', $known) . ')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
+    $pattern = '#(?<browser>'.join('|', $known).')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
     if (!preg_match_all($pattern, $u_agent, $matches)) {
         // we have no matching number just continue
     }
     // see how many we have
     $i = count($matches['browser']);
-    if ($i != 1) {
+    if (1 != $i) {
         //we will have two since we are not using 'other' argument yet
         //see if version is before or after the name
         if (strripos($u_agent, 'Version') < strripos($u_agent, $ub)) {
@@ -60,15 +60,15 @@ function getBrowser()
         $version = $matches['version'][0];
     }
     // check if we have a number
-    if ($version == null || $version == '') {
+    if (null == $version || '' == $version) {
         $version = '?';
     }
 
     return [
         'userAgent' => $u_agent,
-        'name'      => $bname,
-        'version'   => $version,
-        'platform'  => $platform,
-        'pattern'   => $pattern,
+        'name' => $bname,
+        'version' => $version,
+        'platform' => $platform,
+        'pattern' => $pattern,
     ];
 }

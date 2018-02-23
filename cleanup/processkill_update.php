@@ -12,7 +12,7 @@ function processkill_update($data)
     $sql = sql_query('SHOW PROCESSLIST');
     $cnt = 0;
     while ($arr = mysqli_fetch_assoc($sql)) {
-        if ($arr['db'] == $_ENV['DB_DATABASE'] && $arr['Command'] == 'Sleep' && $arr['Time'] > 120) {
+        if ($arr['db'] == $_ENV['DB_DATABASE'] && 'Sleep' == $arr['Command'] && $arr['Time'] > 120) {
             sql_query("KILL {$arr['Id']}");
             ++$cnt;
         }

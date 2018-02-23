@@ -14,9 +14,9 @@ function build_menu($name, $arr, $val = '')
         die('cant build menu');
     }
 
-    $menu .= '<select name="' . $name . "\"><option value=\"\">Select</option>\n";
+    $menu .= '<select name="'.$name."\"><option value=\"\">Select</option>\n";
     foreach ($arr as $value => $opname) {
-        $menu .= '<option value="' . $value . '" ' . ($value == $val ? 'selected' : '') . '>' . $opname . "</option>\n";
+        $menu .= '<option value="'.$value.'" '.($value == $val ? 'selected' : '').'>'.$opname."</option>\n";
     }
     $menu .= '</select>';
 

@@ -1,8 +1,8 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
 check_user_status();
-global $CURUSER, $site_config;
-$session = new DarkAlchemy\Pu239\Session();
+global $CURUSER, $site_config, $session;
 
 if (empty($_GET['hash_please'])) {
     die('No Hash? Are you up to no good?');

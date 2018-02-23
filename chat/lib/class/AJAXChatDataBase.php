@@ -10,7 +10,7 @@
 // Class to initialize the DataBase connection:
 
 /**
- * Class AJAXChatDataBase
+ * Class AJAXChatDataBase.
  */
 class AJAXChatDataBase
 {

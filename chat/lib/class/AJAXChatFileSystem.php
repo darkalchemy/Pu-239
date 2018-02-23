@@ -10,7 +10,7 @@
 // Class to provide methods for file system access:
 
 /**
- * Class AJAXChatFileSystem
+ * Class AJAXChatFileSystem.
  */
 class AJAXChatFileSystem
 {

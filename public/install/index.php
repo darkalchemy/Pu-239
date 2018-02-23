@@ -1,17 +1,17 @@
 <?php
 
-$step = isset($_GET['step']) ? (int)$_GET['step'] : 0;
+$step = isset($_GET['step']) ? (int) $_GET['step'] : 0;
 
-$root = dirname(__FILE__, 3) . DIRECTORY_SEPARATOR;
-$public = $root . 'public';
+$root = dirname(__FILE__, 3).DIRECTORY_SEPARATOR;
+$public = $root.'public';
 
-if ($public[strlen($public) - 1] != DIRECTORY_SEPARATOR) {
-    $public = $public . DIRECTORY_SEPARATOR;
+if (DIRECTORY_SEPARATOR != $public[strlen($public) - 1]) {
+    $public = $public.DIRECTORY_SEPARATOR;
 }
 
 function return_bytes($val)
 {
-    if ($val == '') {
+    if ('' == $val) {
         return 0;
     }
     $val = strtolower(trim($val));
@@ -39,6 +39,7 @@ function get_scheme()
     if (isset($_SERVER['REQUEST_SCHEME'])) {
         $scheme = $_SERVER['REQUEST_SCHEME'];
     }
+
     return $scheme;
 }
 
@@ -56,9 +57,9 @@ function get_scheme()
 <div id='wrapper'>
     <div id='logo'></div>
     <?php
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ('POST' == $_SERVER['REQUEST_METHOD']) {
         $valid_do = [
-            'write'     => 1,
+            'write' => 1,
             'db_insert' => 1,
         ];
         $do = isset($_POST['do']) && isset($valid_do[$_POST['do']]) ? $_POST['do'] : false;
@@ -130,7 +131,7 @@ function get_scheme()
                 <fieldset>
                     <legend>All done</legend>
                     <div class="info">Installation complete</div>
-                    <div class="info">goto <a href="' . $site_config['baseurl'] . '/signup.php">Signup</a> to create your first user.</div>
+                    <div class="info">goto <a href="'.$site_config['baseurl'].'/signup.php">Signup</a> to create your first user.</div>
                     <script>
                         var processing = 6;
                     </script>

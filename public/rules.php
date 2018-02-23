@@ -1,10 +1,9 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'html_functions.php';
-global $site_config;
 
-$session = new DarkAlchemy\Pu239\Session();
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'user_functions.php';
+require_once INCL_DIR.'html_functions.php';
+global $site_config, $session;
 if (!$session->get('LoggedIn')) {
     dbconn();
     get_template();
@@ -60,7 +59,7 @@ $HTMLOUT = "
                                 <li>{$lang['rules_forum_body11']}</li>
                             </ul>
                         </div>
-                        <p class='accordion-toggle has-text-black" . ($CURUSER['class'] < UC_UPLOADER ? ' round5-bottom' : '') . "'>
+                        <p class='accordion-toggle has-text-black".($CURUSER['class'] < UC_UPLOADER ? ' round5-bottom' : '')."'>
                             {$lang['rules_avatar_header']}<span class='has-text-blue'>{$lang['rules_avatar_header_sub']}</span>
                         </p>
                         <div class='accordion-content padding20'>
@@ -73,7 +72,7 @@ $HTMLOUT = "
 
 if (isset($CURUSER) and $CURUSER['class'] >= UC_UPLOADER) {
     $HTMLOUT .= "
-                        <p class='accordion-toggle has-text-black" . ($CURUSER['class'] < UC_STAFF ? ' round5-bottom' : '') . "'>
+                        <p class='accordion-toggle has-text-black".($CURUSER['class'] < UC_STAFF ? ' round5-bottom' : '')."'>
                             {$lang['rules_uploading_header']}<span class='has-text-blue'>{$lang['rules_uploading_header_sub']}</span>
                         </p>
                         <div class='accordion-content padding20'>
@@ -165,11 +164,11 @@ if (isset($CURUSER) and $CURUSER['class'] >= UC_STAFF) {
                         </div>";
 }
 
-$HTMLOUT .= "
+$HTMLOUT .= '
                     </div>
                 </div>
             </div>
         </div>
-    </fieldset>";
+    </fieldset>';
 
-echo stdhead('Rules', true) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead('Rules', true).wrapper($HTMLOUT).stdfoot();

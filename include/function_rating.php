@@ -8,19 +8,18 @@
  */
 function getRate($id, $what)
 {
-    global $CURUSER, $site_config, $fluent;
+    global $CURUSER, $site_config, $fluent, $cache;
 
-$cache = new DarkAlchemy\Pu239\Cache();
     $return = false;
-    if ($id == 0 || !in_array($what, [
+    if (0 == $id || !in_array($what, [
             'topic',
             'torrent',
         ])) {
         return $return;
     }
-    $keys['rating'] = 'rating_' . $what . '_' . $id . '_' . $CURUSER['id'];
+    $keys['rating'] = 'rating_'.$what.'_'.$id.'_'.$CURUSER['id'];
     $rating_cache = $cache->get($keys['rating']);
-    if ($rating_cache === false || is_null($rating_cache)) {
+    if (false === $rating_cache || is_null($rating_cache)) {
         $qy1 = $fluent->from('rating')
             ->select(null)
             ->select('IFNULL(SUM(rating), 0) AS sum')
@@ -44,19 +43,19 @@ $cache = new DarkAlchemy\Pu239\Cache();
             $rating_cache['rating'] = 0;
         }
         $cache->set($keys['rating'], $rating_cache, 0);
-        $ratings = $cache->get('ratings_' . $id);
+        $ratings = $cache->get('ratings_'.$id);
         if (!empty($ratings) && !in_array($CURUSER['id'], $ratings)) {
             $ratings[] = $CURUSER['id'];
-            $cache->set('ratings_' . $id, $ratings, 0);
+            $cache->set('ratings_'.$id, $ratings, 0);
         }
     }
 
-    $completeres = sql_query('SELECT * FROM ' . (XBT_TRACKER ? 'xbt_files_users' : 'snatched') . ' WHERE ' . (XBT_TRACKER ? 'completedtime !=0' : 'complete_date !=0') . ' AND ' . (XBT_TRACKER ? 'uid' : 'userid') . ' = ' . $CURUSER['id'] . ' AND ' . (XBT_TRACKER ? 'fid' : 'torrentid') . ' = ' . $id);
+    $completeres = sql_query('SELECT * FROM '.(XBT_TRACKER ? 'xbt_files_users' : 'snatched').' WHERE '.(XBT_TRACKER ? 'completedtime !=0' : 'complete_date !=0').' AND '.(XBT_TRACKER ? 'uid' : 'userid').' = '.$CURUSER['id'].' AND '.(XBT_TRACKER ? 'fid' : 'torrentid').' = '.$id);
     $completecount = mysqli_num_rows($completeres);
     if ($rating_cache['rated']) {
-        $rated = number_format($rating_cache['sum'] / $rating_cache['count'] / 5 * 100, 0) . '%';
+        $rated = number_format($rating_cache['sum'] / $rating_cache['count'] / 5 * 100, 0).'%';
         $rate = "
-            <div class='star-ratings-css tooltipper' title='Rating: $rated.<br>You rated this $what {$rating_cache['rating']} star" . plural($rating_cache['rating']) . "'>
+            <div class='star-ratings-css tooltipper' title='Rating: $rated.<br>You rated this $what {$rating_cache['rating']} star".plural($rating_cache['rating'])."'>
                 <div class='star-ratings-css-top' style='width: $rated;'>
                     <span>&#9733;</span>
                     <span>&#9733;</span>
@@ -72,11 +71,11 @@ $cache = new DarkAlchemy\Pu239\Cache();
                     <span>&#9734;</span>
                 </div>
             </div>";
-    } elseif ($what == 'torrent' && $completecount == 0) {
+    } elseif ('torrent' == $what && 0 == $completecount) {
         $rated = 0;
         $title = 'Unrated';
         if (!empty($rating_cache['count'])) {
-            $rated = number_format($rating_cache['sum'] / $rating_cache['count'] / 5 * 100, 0) . '%';
+            $rated = number_format($rating_cache['sum'] / $rating_cache['count'] / 5 * 100, 0).'%';
             $title = "Rating: $rated.";
         }
         $rate = "
@@ -109,17 +108,17 @@ $cache = new DarkAlchemy\Pu239\Cache();
                  ] as $star) {
             $rate .= "
                         <span title='$star out of 5' class='tooltipper' onclick=\"do_rate($i,$id,'$what'); return false\">☆</span>";
-            $i--;
+            --$i;
         }
         $rate .= '</div>';
     }
     switch ($what) {
         case 'torrent':
-            $return = '<div id="rate_' . $id . '">' . $rate . '</div>';
+            $return = '<div id="rate_'.$id.'">'.$rate.'</div>';
             break;
 
         case 'topic':
-            $return = '<div id="rate_' . $id . '">' . $rate . '</div>';
+            $return = '<div id="rate_'.$id.'">'.$rate.'</div>';
             break;
     }
 

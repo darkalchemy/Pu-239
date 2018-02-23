@@ -122,7 +122,7 @@ function search_text_in_db($searchstr, $base_sql, $where_search, $add_where = []
         'not',
         'and',
     ];
-    $add_where = (sizeof($add_where) ? ' AND ' . implode(' AND ', $add_where) : '');
+    $add_where = (sizeof($add_where) ? ' AND '.implode(' AND ', $add_where) : '');
     $cleansearchstr = searchfield($searchstr);
     $lower_searchstr = strtolower($searchstr);
     if ($strict) {
@@ -134,7 +134,7 @@ function search_text_in_db($searchstr, $base_sql, $where_search, $add_where = []
         if ($lower_searchstr != $searchstr) {
             $search_full_string = true;
             foreach ($match_types as $_null => $match_type) {
-                if (strpos($lower_searchstr, $match_type) !== false) {
+                if (false !== strpos($lower_searchstr, $match_type)) {
                     $search_full_string = false;
                 }
             }
@@ -173,26 +173,26 @@ function search_text_in_db($searchstr, $base_sql, $where_search, $add_where = []
                     $current_match_type = 'and';
                 }
                 if ($strict) {
-                    $search = $where_search . ' = \'' . sqlesc($split_search[$i]) . '\'' . $add_where;
+                    $search = $where_search.' = \''.sqlesc($split_search[$i]).'\''.$add_where;
                 } else {
                     $match_word = str_replace('*', '%', $split_search[$i]);
-                    $search = $where_search . ' LIKE \'%' . sqlesc($match_word) . '%\'' . $add_where;
+                    $search = $where_search.' LIKE \'%'.sqlesc($match_word).'%\''.$add_where;
                     //$search = $where_search . ' REGEXP \'[[:<:]]' . $db->sql_escape($match_word) . '[[:>:]]\'' . $add_where;
                 }
-                $sql = $base_sql . ' WHERE ' . $search;
+                $sql = $base_sql.' WHERE '.$search;
                 $result = sql_query($sql);
                 $row = [];
                 while ($temp_row = mysqli_fetch_row($result)) {
                     $row[$temp_row['id']] = 1;
                     if (!$word_count) {
                         $result_list[$temp_row['id']] = 1;
-                    } elseif ($current_match_type == 'or') {
+                    } elseif ('or' == $current_match_type) {
                         $result_list[$temp_row['id']] = 1;
-                    } elseif ($current_match_type == 'not') {
+                    } elseif ('not' == $current_match_type) {
                         $result_list[$temp_row['id']] = 0;
                     }
                 }
-                if ($current_match_type == 'and' && $word_count) {
+                if ('and' == $current_match_type && $word_count) {
                     @reset($result_list);
                     foreach ($result_list as $id => $match_count) {
                         if (!isset($row[$id]) || !$row[$id]) {

@@ -1,7 +1,8 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'html_functions.php';
+
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'user_functions.php';
+require_once INCL_DIR.'html_functions.php';
 global $session;
 
 if (!$session->get('LoggedIn')) {
@@ -92,4 +93,4 @@ Let's dissect this:
 
 $HTMLOUT = wrapper($HTMLOUT, 'has-text-left');
 
-echo stdhead('FAQ') . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead('FAQ').$HTMLOUT.stdfoot($stdfoot);

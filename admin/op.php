@@ -7,18 +7,18 @@
  * @author  Andrew Collington, andy@amnuts.com
  * @license MIT, http://acollington.mit-license.org/
  */
-require_once INCL_DIR . 'user_functions.php';
-require_once CLASS_DIR . 'class_check.php';
+require_once INCL_DIR.'user_functions.php';
+require_once CLASS_DIR.'class_check.php';
 class_check(UC_MAX);
 if (!function_exists('opcache_get_status')) {
     die('The Zend OPcache extension does not appear to be installed');
 }
 
 $settings = [
-    'compress_path_threshold'               => 2,
+    'compress_path_threshold' => 2,
     'used_memory_percentage_high_threshold' => 80,
-    'used_memory_percentage_mid_threshold'  => 60,
-    'allow_invalidate'                      => true,
+    'used_memory_percentage_mid_threshold' => 60,
+    'allow_invalidate' => true,
 ];
 
 $validPages = ['overview', 'files', 'reset', 'invalidate'];
@@ -28,19 +28,19 @@ empty($_GET['page']) || !in_array($_GET['page'], $validPages)
     : strtolower($_GET['page'])
 );
 
-if ($page == 'reset') {
+if ('reset' == $page) {
     opcache_reset();
     header('Location: staffpanel.php?tool=op&page=overview');
     exit;
 }
 
-if ($page == 'invalidate') {
+if ('invalidate' == $page) {
     $file = (isset($_GET['file']) ? trim($_GET['file']) : null);
     if (!$settings['allow_invalidate'] || !function_exists('opcache_invalidate') || empty($file)) {
         header('Location: staffpanel.php?tool=op&page=files&error=1');
         exit;
     }
-    $success = (int)opcache_invalidate(urldecode($file), true);
+    $success = (int) opcache_invalidate(urldecode($file), true);
     header("Location: staffpanel.php?tool=op&page=files&success={$success}");
     exit;
 }
@@ -85,7 +85,7 @@ function memsize($size, $precision = 3, $space = false)
 function rc($at = null)
 {
     static $i = 0;
-    if ($at !== null) {
+    if (null !== $at) {
         $i = $at;
     } else {
         echo ++$i % 2 ? 'even' : 'odd';
@@ -96,22 +96,22 @@ $data = array_merge(
     $opcache_status['memory_usage'],
     $opcache_status['opcache_statistics'],
     [
-        'total_memory_size'      => memsize($opcache_config['directives']['opcache.memory_consumption']),
+        'total_memory_size' => memsize($opcache_config['directives']['opcache.memory_consumption']),
         'used_memory_percentage' => round(100 * (
                                               ($opcache_status['memory_usage']['used_memory'] + $opcache_status['memory_usage']['wasted_memory'])
                                               / $opcache_config['directives']['opcache.memory_consumption']
                                           )),
-        'hit_rate_percentage'    => round($opcache_status['opcache_statistics']['opcache_hit_rate']),
-        'wasted_percentage'      => round($opcache_status['memory_usage']['current_wasted_percentage'], 2),
-        'used_memory_size'       => memsize($opcache_status['memory_usage']['used_memory']),
-        'free_memory_size'       => memsize($opcache_status['memory_usage']['free_memory']),
-        'wasted_memory_size'     => memsize($opcache_status['memory_usage']['wasted_memory']),
-        'files_cached'           => number_format($opcache_status['opcache_statistics']['num_cached_scripts']),
-        'hits_size'              => number_format($opcache_status['opcache_statistics']['hits']),
-        'miss_size'              => number_format($opcache_status['opcache_statistics']['misses']),
-        'blacklist_miss_size'    => number_format($opcache_status['opcache_statistics']['blacklist_misses']),
-        'num_cached_keys_size'   => number_format($opcache_status['opcache_statistics']['num_cached_keys']),
-        'max_cached_keys_size'   => number_format($opcache_status['opcache_statistics']['max_cached_keys']),
+        'hit_rate_percentage' => round($opcache_status['opcache_statistics']['opcache_hit_rate']),
+        'wasted_percentage' => round($opcache_status['memory_usage']['current_wasted_percentage'], 2),
+        'used_memory_size' => memsize($opcache_status['memory_usage']['used_memory']),
+        'free_memory_size' => memsize($opcache_status['memory_usage']['free_memory']),
+        'wasted_memory_size' => memsize($opcache_status['memory_usage']['wasted_memory']),
+        'files_cached' => number_format($opcache_status['opcache_statistics']['num_cached_scripts']),
+        'hits_size' => number_format($opcache_status['opcache_statistics']['hits']),
+        'miss_size' => number_format($opcache_status['opcache_statistics']['misses']),
+        'blacklist_miss_size' => number_format($opcache_status['opcache_statistics']['blacklist_misses']),
+        'num_cached_keys_size' => number_format($opcache_status['opcache_statistics']['num_cached_keys']),
+        'max_cached_keys_size' => number_format($opcache_status['opcache_statistics']['max_cached_keys']),
     ]
 );
 
@@ -123,7 +123,7 @@ if ($data['used_memory_percentage'] >= $settings['used_memory_percentage_high_th
 }
 
 if (!empty($_SERVER['HTTP_X_REQUESTED_WITH'])
-    && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'
+    && 'xmlhttprequest' == strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])
 ) {
     echo json_encode($data);
     exit;
@@ -349,7 +349,7 @@ empty($_SERVER['SERVER_NAME'])
     </p>
 </div>
 
-<?php if ($page == 'overview'): ?>
+<?php if ('overview' == $page): ?>
     <h2>Overview</h2>
     <div class="container">
         <div id="counts">
@@ -426,7 +426,7 @@ empty($_SERVER['SERVER_NAME'])
                 </tr>
                 <tr class="<?php rc(); ?>">
                     <td>Last reset</td>
-                    <td><?php echo $data['last_restart_time'] == 0
+                    <td><?php echo 0 == $data['last_restart_time']
                             ? '<em>never</em>'
                             : date_format(date_create("@{$data['last_restart_time']}"), 'Y-m-d H:i:s'); ?></td>
                 </tr>
@@ -498,12 +498,12 @@ empty($_SERVER['SERVER_NAME'])
     </script>
 <?php endif; ?>
 
-<?php if ($page == 'files'): ?>
+<?php if ('files' == $page): ?>
     <h2>File usage</h2>
     <p><label>Start typing to filter on script path<br><input type="text" style="width:40em;" name="filter"
                                                               id="frmFilter"/><label></p>
     <div class="container">
-        <h3><?php echo $data['files_cached']; ?> file<?php echo $data['files_cached'] == 1 ? '' : 's'; ?> cached <span
+        <h3><?php echo $data['files_cached']; ?> file<?php echo 1 == $data['files_cached'] ? '' : 's'; ?> cached <span
                     id="filterShowing"></span></h3>
         <table>
             <tr>
@@ -517,8 +517,8 @@ empty($_SERVER['SERVER_NAME'])
                             $base = basename($s['full_path']);
                             $parts = array_filter(explode(DIRECTORY_SEPARATOR, dirname($s['full_path'])));
                             if (!empty($settings['compress_path_threshold'])) {
-                                echo '<span class="showmore"><span class="button is-small">…</span><span class="text" style="display:none;">' . DIRECTORY_SEPARATOR;
-                                echo join(DIRECTORY_SEPARATOR, array_slice($parts, 0, $settings['compress_path_threshold'])) . DIRECTORY_SEPARATOR;
+                                echo '<span class="showmore"><span class="button is-small">…</span><span class="text" style="display:none;">'.DIRECTORY_SEPARATOR;
+                                echo join(DIRECTORY_SEPARATOR, array_slice($parts, 0, $settings['compress_path_threshold'])).DIRECTORY_SEPARATOR;
                                 echo '</span>';
                                 echo join(DIRECTORY_SEPARATOR, array_slice($parts, $settings['compress_path_threshold']));
                                 if (count($parts) > $settings['compress_path_threshold']) {
@@ -539,7 +539,7 @@ empty($_SERVER['SERVER_NAME'])
                             hits: <?php echo $s['hits']; ?>,
                             memory: <?php echo memsize($s['memory_consumption']); ?><br>
                             last used: <?php echo date_format(date_create($s['last_used']), 'Y-m-d H:i:s'); ?>
-                            <?php if ($s['timestamp'] === 0): ?>
+                            <?php if (0 === $s['timestamp']): ?>
                                 <br><i class="invalid">has been invalidated</i>
                             <?php endif; ?>
                         </p>

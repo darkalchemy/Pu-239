@@ -8,7 +8,7 @@
  */
 
 /**
- * Class CustomAJAXChatInterface
+ * Class CustomAJAXChatInterface.
  */
 class CustomAJAXChatInterface extends CustomAJAXChat
 {

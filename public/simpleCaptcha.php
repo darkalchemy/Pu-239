@@ -1,23 +1,23 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-global $site_config;
-$session = new DarkAlchemy\Pu239\Session();
+
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+global $site_config, $session;
 
 dbconn();
 
 $numImages = '';
 // -------------------- EDIT THESE ----------------- //
 $images = [
-    'house'        => "{$site_config['pic_baseurl']}captchaImages/01.png",
-    'key'          => "{$site_config['pic_baseurl']}captchaImages/02.png",
-    'flag'         => "{$site_config['pic_baseurl']}captchaImages/03.png",
-    'clock'        => "{$site_config['pic_baseurl']}captchaImages/04.png",
-    'bug'          => "{$site_config['pic_baseurl']}captchaImages/05.png",
-    'pen'          => "{$site_config['pic_baseurl']}captchaImages/06.png",
-    'light bulb'   => "{$site_config['pic_baseurl']}captchaImages/07.png",
+    'house' => "{$site_config['pic_baseurl']}captchaImages/01.png",
+    'key' => "{$site_config['pic_baseurl']}captchaImages/02.png",
+    'flag' => "{$site_config['pic_baseurl']}captchaImages/03.png",
+    'clock' => "{$site_config['pic_baseurl']}captchaImages/04.png",
+    'bug' => "{$site_config['pic_baseurl']}captchaImages/05.png",
+    'pen' => "{$site_config['pic_baseurl']}captchaImages/06.png",
+    'light bulb' => "{$site_config['pic_baseurl']}captchaImages/07.png",
     'musical note' => "{$site_config['pic_baseurl']}captchaImages/08.png",
-    'heart'        => "{$site_config['pic_baseurl']}captchaImages/09.png",
-    'world'        => "{$site_config['pic_baseurl']}captchaImages/10.png",
+    'heart' => "{$site_config['pic_baseurl']}captchaImages/09.png",
+    'world' => "{$site_config['pic_baseurl']}captchaImages/10.png",
 ];
 // ------------------- STOP EDITING ---------------- //
 $session->set('simpleCaptchaAnswer', null);
@@ -43,19 +43,19 @@ $keys = array_keys($images);
 $used = [];
 for ($i = 0; $i < $num; ++$i) {
     $r = random_int(0, $size - 1);
-    while (array_search($keys[$r], $used) !== false) {
+    while (false !== array_search($keys[$r], $used)) {
         $r = random_int(0, $size - 1);
     }
     array_push($used, $keys[$r]);
 }
 $selectText = $used[random_int(0, $num - 1)];
-$session->set('simpleCaptchaAnswer', hash('sha512', $selectText . $site_config['site']['salt']));
+$session->set('simpleCaptchaAnswer', hash('sha512', $selectText.$site_config['site']['salt']));
 $resp['text'] = $selectText;
 $resp['images'] = [];
 shuffle($used);
 for ($i = 0; $i < sizeof($used); ++$i) {
     array_push($resp['images'], [
-        'hash' => hash('sha512', $used[$i] . $site_config['site']['salt']),
+        'hash' => hash('sha512', $used[$i].$site_config['site']['salt']),
         'file' => $images[$used[$i]],
     ]);
 }

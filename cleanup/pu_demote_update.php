@@ -6,9 +6,8 @@
  */
 function pu_demote_update($data)
 {
-    global $site_config, $queries;
+    global $site_config, $queries, $cache;
 
-$cache = new DarkAlchemy\Pu239\Cache();
     set_time_limit(1200);
     ignore_user_abort(true);
 
@@ -27,18 +26,18 @@ $cache = new DarkAlchemy\Pu239\Cache();
         $minratio = $class_config[$ac['name']]['low_ratio'];
 
         $class_value = $class_config[$ac['name']]['name'];
-        $res1 = sql_query("SELECT * FROM class_config WHERE value = " . sqlesc($class_value));
+        $res1 = sql_query('SELECT * FROM class_config WHERE value = '.sqlesc($class_value));
         while ($arr1 = mysqli_fetch_assoc($res1)) {
             $class_name = $arr1['classname'];
             $prev_class = $class_value - 1;
         }
 
-        $res2 = sql_query("SELECT * FROM class_config WHERE value = " . sqlesc($prev_class));
+        $res2 = sql_query('SELECT * FROM class_config WHERE value = '.sqlesc($prev_class));
         while ($arr2 = mysqli_fetch_assoc($res2)) {
             $prev_class_name = $arr2['classname'];
         }
 
-        $res = sql_query("SELECT id, uploaded, downloaded, modcomment FROM users WHERE class = " . sqlesc($class_value) . " AND uploaded / downloaded < $minratio") or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT id, uploaded, downloaded, modcomment FROM users WHERE class = '.sqlesc($class_value)." AND uploaded / downloaded < $minratio") or sqlerr(__FILE__, __LINE__);
         $subject = 'Auto Demotion';
         $msgs_buffer = $users_buffer = [];
         if (mysqli_num_rows($res) > 0) {
@@ -47,24 +46,24 @@ $cache = new DarkAlchemy\Pu239\Cache();
             while ($arr = mysqli_fetch_assoc($res)) {
                 $ratio = number_format($arr['uploaded'] / $arr['downloaded'], 3);
                 $modcomment = $arr['modcomment'];
-                $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - Demoted To ' . $prev_class_name . ' by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ").\n" . $modcomment;
+                $modcomment = get_date(TIME_NOW, 'DATE', 1).' - Demoted To '.$prev_class_name.' by System (UL='.mksize($arr['uploaded']).', DL='.mksize($arr['downloaded']).', R='.$ratio.").\n".$modcomment;
                 $modcom = sqlesc($modcomment);
-                $msgs_buffer[] = '(0,' . $arr['id'] . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
-                $users_buffer[] = '(' . $arr['id'] . ', ' . $prev_class . ', ' . $modcom . ')';
+                $msgs_buffer[] = '(0,'.$arr['id'].', '.TIME_NOW.', '.sqlesc($msg).', '.sqlesc($subject).')';
+                $users_buffer[] = '('.$arr['id'].', '.$prev_class.', '.$modcom.')';
 
-                $cache->update_row('user' . $arr['id'], [
-                    'class'      => $prev_class,
+                $cache->update_row('user'.$arr['id'], [
+                    'class' => $prev_class,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
-                $cache->increment('inbox_' . $arr['id']);
+                $cache->increment('inbox_'.$arr['id']);
             }
             $count = count($users_buffer);
             if ($count > 0) {
-                sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
-                sql_query('INSERT INTO users (id, class, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE class = VALUES(class),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
+                sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES '.implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
+                sql_query('INSERT INTO users (id, class, modcomment) VALUES '.implode(', ', $users_buffer).' ON DUPLICATE KEY UPDATE class = VALUES(class),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
             }
             if ($data['clean_log']) {
-                write_log('Cleanup: Demoted ' . $count . " member(s) from {$class_name} to {$prev_class_name}");
+                write_log('Cleanup: Demoted '.$count." member(s) from {$class_name} to {$prev_class_name}");
             }
             unset($users_buffer, $msgs_buffer, $count);
             status_change($arr['id']);

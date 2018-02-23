@@ -10,11 +10,12 @@
 // Class to provide static encoding methods
 
 /**
- * Class AJAXChatEncoding
+ * Class AJAXChatEncoding.
  */
 class AJAXChatEncoding
 {
     // Helper function to store special chars as we cannot use static class members in PHP4:
+
     /**
      * @param        $str
      * @param string $contentCharset
@@ -94,10 +95,10 @@ class AJAXChatEncoding
         if (function_exists('iconv')) {
             return iconv($charsetFrom, $charsetTo, $str);
         }
-        if (($charsetFrom == 'UTF-8') && ($charsetTo == 'ISO-8859-1')) {
+        if (('UTF-8' == $charsetFrom) && ('ISO-8859-1' == $charsetTo)) {
             return utf8_decode($str);
         }
-        if (($charsetFrom == 'ISO-8859-1') && ($charsetTo == 'UTF-8')) {
+        if (('ISO-8859-1' == $charsetFrom) && ('UTF-8' == $charsetTo)) {
             return utf8_encode($str);
         }
 
@@ -169,14 +170,14 @@ class AJAXChatEncoding
         if ($c <= 0x7F) {
             return chr($c);
         } elseif ($c <= 0x7FF) {
-            return chr(0xC0 | $c >> 6) . chr(0x80 | $c & 0x3F);
+            return chr(0xC0 | $c >> 6).chr(0x80 | $c & 0x3F);
         } elseif ($c <= 0xFFFF) {
-            return chr(0xE0 | $c >> 12) . chr(0x80 | $c >> 6 & 0x3F)
-                . chr(0x80 | $c & 0x3F);
+            return chr(0xE0 | $c >> 12).chr(0x80 | $c >> 6 & 0x3F)
+                .chr(0x80 | $c & 0x3F);
         } elseif ($c <= 0x10FFFF) {
-            return chr(0xF0 | $c >> 18) . chr(0x80 | $c >> 12 & 0x3F)
-                . chr(0x80 | $c >> 6 & 0x3F)
-                . chr(0x80 | $c & 0x3F);
+            return chr(0xF0 | $c >> 18).chr(0x80 | $c >> 12 & 0x3F)
+                .chr(0x80 | $c >> 6 & 0x3F)
+                .chr(0x80 | $c & 0x3F);
         } else {
             return null;
         }

@@ -1,7 +1,6 @@
 <?php
-global $fluent, $site_config;
 
-$cache = new DarkAlchemy\Pu239\Cache();
+global $fluent, $site_config, $cache;
 
 if (XBT_TRACKER) {
     $htmlout .= "
@@ -12,7 +11,7 @@ if (XBT_TRACKER) {
 } else {
     $fpoints = $dpoints = $hpoints = $freeleech_enabled = $double_upload_enabled = $half_down_enabled = '';
     $scheduled_events = $cache->get('freecontribution_datas_alerts_');
-    if ($scheduled_events === false || is_null($scheduled_events)) {
+    if (false === $scheduled_events || is_null($scheduled_events)) {
         $scheduled_events = $fluent->from('events')
             ->orderBy('startTime DESC')
             ->limit(3)
@@ -59,7 +58,7 @@ if (XBT_TRACKER) {
     }
 
     $percent_fl = $cache->get('freeleech_counter_alerts_');
-    if ($percent_fl === false || is_null($percent_fl)) {
+    if (false === $percent_fl || is_null($percent_fl)) {
         $res = $fluent->from('bonus')
             ->select(null)
             ->select('pointspool / points * 100 AS percent')
@@ -98,7 +97,7 @@ if (XBT_TRACKER) {
     }
 
     $percent_du = $cache->get('doubleupload_counter_alerts_');
-    if ($percent_du === false || is_null($percent_du)) {
+    if (false === $percent_du || is_null($percent_du)) {
         $res = $fluent->from('bonus')
             ->select(null)
             ->select('pointspool / points * 100 AS percent')
@@ -137,7 +136,7 @@ if (XBT_TRACKER) {
     }
 
     $percent_hd = $cache->get('halfdownload_counter_alerts_');
-    if ($percent_hd === false || is_null($percent_hd)) {
+    if (false === $percent_hd || is_null($percent_hd)) {
         $res = $fluent->from('bonus')
             ->select(null)
             ->select('pointspool / points * 100 AS percent')
@@ -178,17 +177,17 @@ if (XBT_TRACKER) {
     if ($freeleech_enabled) {
         $fstatus = "<span class='has-text-green'> ON </span>";
     } else {
-        $fstatus = $font_color_fl . '';
+        $fstatus = $font_color_fl.'';
     }
     if ($double_upload_enabled) {
         $dstatus = "<span class='has-text-green'> ON </span>";
     } else {
-        $dstatus = $font_color_du . '';
+        $dstatus = $font_color_du.'';
     }
     if ($half_down_enabled) {
         $hstatus = "<span class='has-text-green'> ON </span>";
     } else {
-        $hstatus = $font_color_hd . '';
+        $hstatus = $font_color_hd.'';
     }
     $htmlout .= "
                 <li>
@@ -200,7 +199,7 @@ if (XBT_TRACKER) {
                                 <div class='level is-marginless'>
                                     <span>Freeleech</span><span> [ ";
     if ($freeleech_enabled) {
-        $htmlout .= "<span class='has-text-success'> ON </span>" . get_date($freeleech_start_time, 'DATE') . ' - ' . get_date($freeleech_end_time, 'DATE');
+        $htmlout .= "<span class='has-text-success'> ON </span>".get_date($freeleech_start_time, 'DATE').' - '.get_date($freeleech_end_time, 'DATE');
     } else {
         $htmlout .= $fstatus;
     }
@@ -212,7 +211,7 @@ if (XBT_TRACKER) {
                                 <div class='level is-marginless'>
                                     <span>DoubleUpload</span><span> [ ";
     if ($double_upload_enabled) {
-        $htmlout .= "<span class='has-text-success'> ON </span>" . get_date($double_upload_start_time, 'DATE') . ' - ' . get_date($double_upload_end_time, 'DATE');
+        $htmlout .= "<span class='has-text-success'> ON </span>".get_date($double_upload_start_time, 'DATE').' - '.get_date($double_upload_end_time, 'DATE');
     } else {
         $htmlout .= $dstatus;
     }
@@ -224,7 +223,7 @@ if (XBT_TRACKER) {
                                 <div class='level is-marginless'>
                                     <span>Half Download</span><span> [ ";
     if ($half_down_enabled) {
-        $htmlout .= '<span class="has-text-success"> ON</span> ' . get_date($half_down_start_time, 'DATE') . ' - ' . get_date($half_down_end_time, 'DATE');
+        $htmlout .= '<span class="has-text-success"> ON</span> '.get_date($half_down_start_time, 'DATE').' - '.get_date($half_down_end_time, 'DATE');
     } else {
         $htmlout .= $hstatus;
     }

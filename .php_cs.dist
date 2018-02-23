@@ -4,6 +4,7 @@ $config = PhpCsFixer\Config::create()
     ->setUsingCache(false)
     ->setRules([
         '@PSR2'                              => true,
+        '@Symfony'                           => true,
         'no_whitespace_in_blank_line'        => true,
         'phpdoc_align'                       => true,
         'phpdoc_indent'                      => true,
@@ -18,8 +19,10 @@ $config = PhpCsFixer\Config::create()
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->in(__DIR__)
-            ->notPath('/^vendor/')
-            ->notPath('/^node_modules/')
+            ->exclude('vendor')
+            ->exclude('node_modules')
+            ->exclude('plugins')
+            ->notPath('adminer.php')
     )
 ;
 

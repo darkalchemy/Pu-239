@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class block_stdhead
+ * Class block_stdhead.
  */
 class block_stdhead
 {

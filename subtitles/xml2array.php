@@ -56,7 +56,7 @@ class Xml2Array
      */
     public function get_array()
     {
-        if ($this->get_dom() === false) {
+        if (false === $this->get_dom()) {
             return false;
         }
 
@@ -95,20 +95,20 @@ class Xml2Array
      */
     private function node_2_array($dom_element)
     {
-        if ($dom_element->nodeType != XML_ELEMENT_NODE) {
+        if (XML_ELEMENT_NODE != $dom_element->nodeType) {
             return false;
         }
 
         $children = $dom_element->childNodes;
 
         foreach ($children as $child) {
-            if ($child->nodeType != XML_ELEMENT_NODE) {
+            if (XML_ELEMENT_NODE != $child->nodeType) {
                 continue;
             }
 
-            $prefix = ($child->prefix) ? $child->prefix . ':' : '';
+            $prefix = ($child->prefix) ? $child->prefix.':' : '';
 
-            if (!is_array($result[$prefix . $child->nodeName])) {
+            if (!is_array($result[$prefix.$child->nodeName])) {
                 $subnode = false;
 
                 foreach ($children as $test_node) {
@@ -122,9 +122,9 @@ class Xml2Array
             }
 
             if ($subnode) {
-                $result[$prefix . $child->nodeName][] = $this->node_2_array($child);
+                $result[$prefix.$child->nodeName][] = $this->node_2_array($child);
             } else {
-                $result[$prefix . $child->nodeName] = $this->node_2_array($child);
+                $result[$prefix.$child->nodeName] = $this->node_2_array($child);
             }
         }
 
@@ -134,8 +134,8 @@ class Xml2Array
 
         if ($dom_element->hasAttributes()) {
             foreach ($dom_element->attributes as $attrib) {
-                $prefix = ($attrib->prefix) ? $attrib->prefix . ':' : '';
-                $result['@' . $prefix . $attrib->nodeName] = $attrib->nodeValue;
+                $prefix = ($attrib->prefix) ? $attrib->prefix.':' : '';
+                $result['@'.$prefix.$attrib->nodeName] = $attrib->nodeValue;
             }
         }
 

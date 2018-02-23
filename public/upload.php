@@ -1,9 +1,10 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'html_functions.php';
-require_once INCL_DIR . 'bbcode_functions.php';
-require_once CACHE_DIR . 'subs.php';
+
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'user_functions.php';
+require_once INCL_DIR.'html_functions.php';
+require_once INCL_DIR.'bbcode_functions.php';
+require_once CACHE_DIR.'subs.php';
 check_user_status();
 global $CURUSER, $site_config;
 $lang = array_merge(load_language('global'), load_language('upload'));
@@ -13,7 +14,7 @@ $stdfoot = [
     ],
 ];
 $HTMLOUT = $offers = $subs_list = $request = $descr = '';
-if ($CURUSER['class'] < UC_UPLOADER or $CURUSER['uploadpos'] == 0 || $CURUSER['uploadpos'] > 1 || $CURUSER['suspended'] == 'yes') {
+if ($CURUSER['class'] < UC_UPLOADER or 0 == $CURUSER['uploadpos'] || $CURUSER['uploadpos'] > 1 || 'yes' == $CURUSER['suspended']) {
     stderr($lang['upload_sorry'], $lang['upload_no_auth']);
 }
 $res_request = sql_query('SELECT id, request_name FROM requests WHERE filled_by_user_id = 0 ORDER BY request_name ASC') or sqlerr(__FILE__, __LINE__);
@@ -25,17 +26,17 @@ $request = '
         <option class="body" value="0"> Requests </option>';
 if ($res_request) {
     while ($arr_request = mysqli_fetch_assoc($res_request)) {
-        $request .= '<option class="body" value="' . (int)$arr_request['id'] . '">' . htmlsafechars($arr_request['request_name']) . '</option>';
+        $request .= '<option class="body" value="'.(int) $arr_request['id'].'">'.htmlsafechars($arr_request['request_name']).'</option>';
     }
 } else {
     $request .= '<option class="body" value="0">Currently no requests</option>';
 }
-$request .= "</select><span>If you are filling a request please select it here so interested members can be notified.</span></td>
-    </tr>";
+$request .= '</select><span>If you are filling a request please select it here so interested members can be notified.</span></td>
+    </tr>';
 //=== offers list if member has made any offers
-$res_offer = sql_query("SELECT id, offer_name
+$res_offer = sql_query('SELECT id, offer_name
                         FROM offers
-                        WHERE offered_by_user_id = " . sqlesc($CURUSER['id']) . " AND status = 'approved'
+                        WHERE offered_by_user_id = '.sqlesc($CURUSER['id'])." AND status = 'approved'
                         ORDER BY offer_name ASC") or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($res_offer) > 0) {
     $offers = '
@@ -46,7 +47,7 @@ if (mysqli_num_rows($res_offer) > 0) {
     <option class="body" value="0">My Offers</option>';
     $message = '<option class="body" value="0">Your have no approved offers yet</option>';
     while ($arr_offer = mysqli_fetch_assoc($res_offer)) {
-        $offers .= '<option class="body" value="' . (int)$arr_offer['id'] . '">' . htmlsafechars($arr_offer['offer_name']) . '</option>';
+        $offers .= '<option class="body" value="'.(int) $arr_offer['id'].'">'.htmlsafechars($arr_offer['offer_name']).'</option>';
     }
     $offers .= '</select> If you are uploading one of your offers, please select it here so interested members will be notified.</td>
     </tr>';
@@ -104,13 +105,13 @@ $HTMLOUT .= "<table class='table table-bordered table-striped top20 bottom20'>
     </tr>
     <tr>
     <td class='rowhead'>{$lang['upload_description']}</td>
-    <td>" . BBcode() . "
+    <td>".BBcode()."
     <br>({$lang['upload_html_bbcode']})</td>
     </tr>";
 $s = "<select name='type'>\n<option value='0'>({$lang['upload_choose_one']})</option>\n";
 $cats = genrelist();
 foreach ($cats as $row) {
-    $s .= "<option value='" . (int)$row['id'] . "'>" . htmlsafechars($row['name']) . "</option>\n";
+    $s .= "<option value='".(int) $row['id']."'>".htmlsafechars($row['name'])."</option>\n";
 }
 $s .= "</select>\n";
 $HTMLOUT .= "<tr>
@@ -123,22 +124,22 @@ $subs_list .= "
         <div class='level-center'>";
 foreach ($subs as $s) {
     $subs_list .= "
-            <div class='w-15 margin10 tooltipper bordered level-center' title='" . htmlsafechars($s['name']) . "'>
+            <div class='w-15 margin10 tooltipper bordered level-center' title='".htmlsafechars($s['name'])."'>
                 <span class='has-text-centered'>
                     <input name='subs[]' type='checkbox' value='{$s['id']}' />
-                    <image class='sub_flag' src='{$s['pic']}' alt='" . htmlsafechars($s['name']) . "' />
+                    <image class='sub_flag' src='{$s['pic']}' alt='".htmlsafechars($s['name'])."' />
                 </span>
-                <span class='has-text-centered'>" . htmlsafechars($s['name']) . "</span>
-            </div>";
+                <span class='has-text-centered'>".htmlsafechars($s['name']).'</span>
+            </div>';
 }
-$subs_list .= "
-        </div>";
+$subs_list .= '
+        </div>';
 
 $HTMLOUT .= tr('Subtitiles', $subs_list, 1);
 $rg = "<select name='release_group'>\n<option value='none'>None</option>\n<option value='p2p'>p2p</option>\n<option value='scene'>Scene</option>\n</select>\n";
 $HTMLOUT .= tr('Release Type', $rg, 1);
 $HTMLOUT .= tr("{$lang['upload_anonymous']}", "<div class='flex'><input type='checkbox' name='uplver' value='yes' /><span>{$lang['upload_anonymous1']}</span></div>", 1);
-if ($CURUSER['class'] == UC_MAX) {
+if (UC_MAX == $CURUSER['class']) {
     $HTMLOUT .= tr("{$lang['upload_comment']}", "<div class='flex'><input type='checkbox' name='allow_commentd' value='yes' /><span>{$lang['upload_discom1']}</span></div>", 1);
 }
 $HTMLOUT .= tr('Strip ASCII', "<div class='flex'><input type='checkbox' name='strip' value='strip' checked /><span><a href='http://en.wikipedia.org/wiki/ASCII_art' target='_blank'>What is this ?</a></span></div>", 1);
@@ -190,7 +191,7 @@ $HTMLOUT .= "
 for ($x = 0; $x < count($genres); ++$x) {
     $HTMLOUT .= "
                 <div class='flex_cell_5'>
-                    <input type='radio' value='" . strtolower($genres[$x]) . "' name='genre' />
+                    <input type='radio' value='".strtolower($genres[$x])."' name='genre' />
                     <span>{$genres[$x]}</span>
                 </div>";
 }
@@ -214,7 +215,7 @@ $movie = [
     'Adult',
     'Sci-fi',
 ];
-for ($x = 0; $x < count($movie); $x++) {
+for ($x = 0; $x < count($movie); ++$x) {
     $HTMLOUT .= "
                 <label>
                     <input type='checkbox' value='{$movie[$x]}' name='{movie[]}' class='DEPENDS ON genre BEING movie' />
@@ -229,7 +230,7 @@ $music = [
     'Techno',
     'Commercial',
 ];
-for ($x = 0; $x < count($music); $x++) {
+for ($x = 0; $x < count($music); ++$x) {
     $HTMLOUT .= "
                 <label>
                     <input type='checkbox' value='{$music[$x]}' name='{music[]}' class='DEPENDS ON genre BEING music' />
@@ -243,7 +244,7 @@ $game = [
     '3rd Person',
     'Acton',
 ];
-for ($x = 0; $x < count($game); $x++) {
+for ($x = 0; $x < count($game); ++$x) {
     $HTMLOUT .= "
                 <label>
                     <input type='checkbox' value='{$game[$x]}' name='{game[]}' class='DEPENDS ON genre BEING game' />
@@ -259,16 +260,16 @@ $apps = [
     'Misc',
     'Image',
 ];
-for ($x = 0; $x < count($apps); $x++) {
+for ($x = 0; $x < count($apps); ++$x) {
     $HTMLOUT .= "
                 <label>
                     <input type='checkbox' value='{$apps[$x]}' name='{apps[]}' class='DEPENDS ON genre BEING apps' />
                     <span>{$apps[$x]}</span>
                 </label>";
 }
-$HTMLOUT .= "
+$HTMLOUT .= '
             </td>
-        </tr>";
+        </tr>';
 
 if ($CURUSER['class'] >= UC_UPLOADER and !XBT_TRACKER) {
     $HTMLOUT .= tr('Vip Torrent', "<div class='flex'><input type='checkbox' name='vip' value='1' /><span>If this one is checked, only Vip's can download this torrent</span></div>", 1);
@@ -284,4 +285,4 @@ $HTMLOUT .= "
         </table>
         </form>";
 
-echo stdhead($lang['upload_stdhead'], true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($lang['upload_stdhead'], true).wrapper($HTMLOUT).stdfoot($stdfoot);

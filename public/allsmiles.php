@@ -1,7 +1,8 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'bbcode_functions.php';
-require_once INCL_DIR . 'html_functions.php';
+
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'bbcode_functions.php';
+require_once INCL_DIR.'html_functions.php';
 check_user_status();
 global $CURUSER;
 
@@ -14,7 +15,7 @@ $htmlout = "<!doctype html>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <title>All Smilies</title>
-    <link rel='stylesheet' href='" . get_file_name('css') . "' />
+    <link rel='stylesheet' href='".get_file_name('css')."' />
 </head>
 <body class='$body_class'>
     <script>
@@ -36,8 +37,8 @@ foreach ($smilies as $code => $url) {
     $list1 .= "
         <span class='margin10 mw-50 is-flex'>
             <span class='bordered bg-04'>
-                <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
-                    <img src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='' />
+                <a href=\"javascript: pops('".str_replace("'", "\'", $code)."')\">
+                    <img src='{$site_config['pic_baseurl']}smilies/".$url."' alt='' />
                 </a>
             </span>
         </span>";
@@ -46,8 +47,8 @@ foreach ($customsmilies as $code => $url) {
     $list2 .= "
         <span class='margin10 mw-50 is-flex'>
             <span class='bordered bg-04'>
-                <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
-                    <img src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='' />
+                <a href=\"javascript: pops('".str_replace("'", "\'", $code)."')\">
+                    <img src='{$site_config['pic_baseurl']}smilies/".$url."' alt='' />
                 </a>
             </span>
         </span>";
@@ -57,8 +58,8 @@ if ($CURUSER['class'] >= UC_STAFF) {
         $list3 .= "
         <span class='margin10 mw-50 is-flex'>
             <span class='bordered bg-04'>
-                <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
-                    <img src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='' />
+                <a href=\"javascript: pops('".str_replace("'", "\'", $code)."')\">
+                    <img src='{$site_config['pic_baseurl']}smilies/".$url."' alt='' />
                 </a>
             </span>
         </span>";
@@ -71,7 +72,7 @@ $list = "
             $list1
         </div>";
 
-if ($CURUSER['smile_until'] != '0') {
+if ('0' != $CURUSER['smile_until']) {
     $list .= "
         <h1>Custom Smilies</h1>
         <div class='level-center bg-04 round10 margin20'>
@@ -87,11 +88,11 @@ if ($CURUSER['class'] >= UC_STAFF) {
         </div>";
 }
 
-$htmlout .= "
-    </div>";
+$htmlout .= '
+    </div>';
 $htmlout .= main_div($list);
-$htmlout .= "
+$htmlout .= '
 </body>
-</html>";
+</html>';
 
 echo $htmlout;

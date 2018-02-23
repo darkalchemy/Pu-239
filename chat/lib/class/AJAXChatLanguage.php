@@ -8,7 +8,7 @@
  */
 
 /**
- * Class AJAXChatLanguage
+ * Class AJAXChatLanguage.
  */
 class AJAXChatLanguage
 {
@@ -39,9 +39,6 @@ class AJAXChatLanguage
 
     // Method to detect the language code from the HTTP_ACCEPT_LANGUAGE header:
 
-    /**
-     * @return null
-     */
     public function getLangCode()
     {
         if (!$this->_langCode) {
@@ -87,7 +84,7 @@ class AJAXChatLanguage
 
             // Get the language quality given as float value:
             if (isset($matches[2])) {
-                $langQuality = (float)$matches[2];
+                $langQuality = (float) $matches[2];
             } else {
                 // Missing language quality value is maximum quality:
                 $langQuality = 1.0;

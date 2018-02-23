@@ -1,24 +1,24 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'html_functions.php';
-require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'pager_functions.php';
+
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'html_functions.php';
+require_once INCL_DIR.'user_functions.php';
+require_once INCL_DIR.'pager_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('uploadapp'));
-global $CURUSER, $site_config, $fluent;
+global $CURUSER, $site_config, $fluent, $cache;
 
-$cache = new DarkAlchemy\Pu239\Cache();
 $CURUSER['class'] = 1;
 $HTMLOUT = '';
 
-if (isset($_POST['form']) != 1) {
-    $res = sql_query('SELECT status FROM uploadapp WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+if (1 != isset($_POST['form'])) {
+    $res = sql_query('SELECT status FROM uploadapp WHERE userid = '.sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
     if ($CURUSER['class'] >= UC_UPLOADER) {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_alreadyup']);
-    } elseif ($arr['status'] == 'pending') {
+    } elseif ('pending' == $arr['status']) {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_pending']);
-    } elseif ($arr['status'] == 'rejected') {
+    } elseif ('rejected' == $arr['status']) {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_rejected']);
     } else {
         $HTMLOUT .= "
@@ -53,17 +53,17 @@ if (isset($_POST['form']) != 1) {
                 <tr>
                     <td class='rowhead'>{$lang['uploadapp_username']}</td>
                     <td>
-                        <input name='userid' type='hidden' value='" . (int)$CURUSER['id'] . "' />
+                        <input name='userid' type='hidden' value='".(int) $CURUSER['id']."' />
                         {$CURUSER['username']}
                      </td>
                 </tr>
                 <tr>
                     <td class='rowhead'>{$lang['uploadapp_joined']}</td>
-                    <td>" . get_date($CURUSER['added'], '', 0, 1) . "</td>
+                    <td>".get_date($CURUSER['added'], '', 0, 1)."</td>
                 </tr>
                 <tr>
                     <td class='rowhead'>{$lang['uploadapp_ratio']}</td>
-                    <td>" . ($ratio >= 1 ? 'No' : 'Yes') . "</td>
+                    <td>".($ratio >= 1 ? 'No' : 'Yes')."</td>
                 </tr>
                 <tr>
                     <td class='rowhead'>
@@ -157,7 +157,7 @@ if (isset($_POST['form']) != 1) {
     if (!$_POST['reason']) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_reasonblank']);
     }
-    if ($_POST['sites'] == 'yes' && !$_POST['sitenames']) {
+    if ('yes' == $_POST['sites'] && !$_POST['sitenames']) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_sitesblank']);
     }
     $dupe = $fluent->from('uploadapp')
@@ -168,17 +168,17 @@ if (isset($_POST['form']) != 1) {
     }
 
     $values = [
-        'userid'      => (int)$_POST['userid'],
-        'applied'     => TIME_NOW,
+        'userid' => (int) $_POST['userid'],
+        'applied' => TIME_NOW,
         'connectable' => htmlsafechars($_POST['connectable']),
-        'speed'       => htmlsafechars($_POST['spped']),
-        'offer'       => htmlsafechars($_POST['offer']),
-        'reason'      => htmlsafechars($_POST['reason']),
-        'sites'       => htmlsafechars($_POST['sites']),
-        'sitenames'   => htmlsafechars($_POST['sitenames']),
-        'scene'       => htmlsafechars($_POST['scene']),
-        'creating'    => htmlsafechars($_POST['creating']),
-        'seeding'     => htmlsafechars($_POST['seeding'])
+        'speed' => htmlsafechars($_POST['spped']),
+        'offer' => htmlsafechars($_POST['offer']),
+        'reason' => htmlsafechars($_POST['reason']),
+        'sites' => htmlsafechars($_POST['sites']),
+        'sitenames' => htmlsafechars($_POST['sitenames']),
+        'scene' => htmlsafechars($_POST['scene']),
+        'creating' => htmlsafechars($_POST['creating']),
+        'seeding' => htmlsafechars($_POST['seeding']),
     ];
     $res = $fluent->insertInto('uploadapp')
         ->values($values)
@@ -188,7 +188,7 @@ if (isset($_POST['form']) != 1) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_tryagain']);
     } else {
         $subject = 'Uploader application';
-        $msg = "An uploader application has just been filled in by [url={$site_config['baseurl']}/userdetails.php?id=" . (int)$CURUSER['id'] . "][b]{$CURUSER['username']}[/b][/url]. Click [url={$site_config['baseurl']}/staffpanel.php?tool=uploadapps&action=app][b]Here[/b][/url] to go to the uploader applications page.";
+        $msg = "An uploader application has just been filled in by [url={$site_config['baseurl']}/userdetails.php?id=".(int) $CURUSER['id']."][b]{$CURUSER['username']}[/b][/url]. Click [url={$site_config['baseurl']}/staffpanel.php?tool=uploadapps&action=app][b]Here[/b][/url] to go to the uploader applications page.";
         $dt = TIME_NOW;
         $subres = $fluent->from('users')
             ->select(null)
@@ -198,19 +198,19 @@ if (isset($_POST['form']) != 1) {
 
         foreach ($subres as $arr) {
             $values = [
-                'sender'   => 0,
+                'sender' => 0,
                 'receiver' => $arr['id'],
-                'added'    => TIME_NOW,
-                'msg'      => $msg,
-                'subject'  => $subject,
-                'poster'   => 0
+                'added' => TIME_NOW,
+                'msg' => $msg,
+                'subject' => $subject,
+                'poster' => 0,
             ];
             $fluent->insertInto('messages')
                 ->values($values)
                 ->execute();
-            $cache->increment('inbox_' . $arr['id']);
+            $cache->increment('inbox_'.$arr['id']);
         }
         stderr($lang['uploadapp_appsent'], $lang['uploadapp_success']);
     }
 }
-echo stdhead('Uploader application page') . wrapper($HTMLOUT) . stdfoot();
+echo stdhead('Uploader application page').wrapper($HTMLOUT).stdfoot();

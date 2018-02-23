@@ -10,7 +10,7 @@
 // Class to perform SQL (MySQL) queries:
 
 /**
- * Class AJAXChatMySQLQuery
+ * Class AJAXChatMySQLQuery.
  */
 class AJAXChatMySQLQuery
 {
@@ -55,9 +55,9 @@ class AJAXChatMySQLQuery
     public function getError()
     {
         if ($this->error()) {
-            $str = 'Query: ' . $this->_sql . "\n";
-            $str .= 'Error-Report: ' . $this->_error . "\n";
-            $str .= 'Error-Code: ' . $this->_errno;
+            $str = 'Query: '.$this->_sql."\n";
+            $str .= 'Error-Report: '.$this->_error."\n";
+            $str .= 'Error-Code: '.$this->_errno;
         } else {
             $str = 'No errors.';
         }
@@ -73,7 +73,7 @@ class AJAXChatMySQLQuery
     public function error()
     {
         // Returns true if the Result-ID is valid:
-        return !(bool)($this->_result);
+        return !(bool) ($this->_result);
     }
 
     // Returns the content:

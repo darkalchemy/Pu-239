@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class block_userdetails
+ * Class block_userdetails.
  */
 class block_userdetails
 {

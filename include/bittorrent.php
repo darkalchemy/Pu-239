@@ -1,31 +1,34 @@
 <?php
+
 $start = microtime(true);
 
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'define.php';
-if (!@include_once(INCL_DIR . 'config.php')) {
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'define.php';
+if (!@include_once(INCL_DIR.'config.php')) {
     header('Location: /install/index.php');
     die();
 }
-require_once INCL_DIR . 'site_config.php';
-require_once VENDOR_DIR . 'autoload.php';
+require_once INCL_DIR.'site_config.php';
+require_once VENDOR_DIR.'autoload.php';
 
 $dotenv = new Dotenv\Dotenv(ROOT_DIR);
 $dotenv->load();
 
 use Blocktrail\CryptoJSAES\CryptoJSAES;
 
-require_once INCL_DIR . 'files.php';
+require_once INCL_DIR.'files.php';
 
-require_once CACHE_DIR . 'free_cache.php';
-require_once CACHE_DIR . 'class_config.php';
-require_once INCL_DIR . 'password_functions.php';
+require_once CACHE_DIR.'free_cache.php';
+require_once CACHE_DIR.'class_config.php';
+require_once INCL_DIR.'password_functions.php';
 $cache = new DarkAlchemy\Pu239\Cache();
 $session = new DarkAlchemy\Pu239\Session();
+$fluent = new DarkAlchemy\Pu239\Database();
+$user = new DarkAlchemy\Pu239\User($fluent);
 
 $session->start();
 
 /**
- * Class curuser
+ * Class curuser.
  */
 class curuser
 {
@@ -33,13 +36,13 @@ class curuser
 }
 
 $CURBLOCK = &curuser::$blocks;
-require_once CLASS_DIR . 'class_blocks_index.php';
-require_once CLASS_DIR . 'class_blocks_stdhead.php';
-require_once CLASS_DIR . 'class_blocks_userdetails.php';
-require_once CLASS_DIR . 'class_bt_options.php';
-require_once CACHE_DIR . 'block_settings_cache.php';
-require_once INCL_DIR . 'site_settings.php';
-require_once INCL_DIR . 'database.php';
+require_once CLASS_DIR.'class_blocks_index.php';
+require_once CLASS_DIR.'class_blocks_stdhead.php';
+require_once CLASS_DIR.'class_blocks_userdetails.php';
+require_once CLASS_DIR.'class_bt_options.php';
+require_once CACHE_DIR.'block_settings_cache.php';
+require_once INCL_DIR.'site_settings.php';
+require_once INCL_DIR.'database.php';
 
 if (!$site_config['in_production']) {
     $pu239_version = new SebastianBergmann\Version(
@@ -102,7 +105,7 @@ function PostKey($ids = [])
         return false;
     }
 
-    return hash('sha256', $site_config['tracker_post_key'] . join('', $ids) . $site_config['tracker_post_key']);
+    return hash('sha256', $site_config['tracker_post_key'].join('', $ids).$site_config['tracker_post_key']);
 }
 
 /**
@@ -118,7 +121,7 @@ function CheckPostKey($ids, $key)
         return false;
     }
 
-    return $key == hash('sha256', $site_config['tracker_post_key'] . join('', $ids) . $site_config['tracker_post_key']);
+    return $key == hash('sha256', $site_config['tracker_post_key'].join('', $ids).$site_config['tracker_post_key']);
 }
 
 /**
@@ -142,6 +145,7 @@ function getip()
     if (IP_LOGGING) {
         return $_SERVER['REMOTE_ADDR'];
     }
+
     return '127.0.0.1';
 }
 
@@ -154,14 +158,14 @@ function dbconn($autoclean = true)
         switch (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
             case 1040:
             case 2002:
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                if ('GET' == $_SERVER['REQUEST_METHOD']) {
                     die("<html><head><meta http-equiv='refresh' content=\"5 $_SERVER[REQUEST_URI]\"></head><body><table width='100%' height='100%'><tr><td><h3>The server load is very high at the moment. Retrying, please wait...</h3></td></tr></table></body></html>");
                 } else {
                     die('Too many users. Please press the Refresh button in your browser to retry.');
                 }
             // no break
             default:
-                die('[' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) . '] dbconn: mysqli_connect: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+                die('['.((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)).'] dbconn: mysqli_connect: '.((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         }
     }
     if ($autoclean) {
@@ -174,7 +178,7 @@ function dbconn($autoclean = true)
  */
 function status_change($id)
 {
-    sql_query('UPDATE announcement_process SET status = 0 WHERE user_id = ' . sqlesc($id) . ' AND status = 1') or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE announcement_process SET status = 0 WHERE user_id = '.sqlesc($id).' AND status = 1') or sqlerr(__FILE__, __LINE__);
 }
 
 /**
@@ -185,7 +189,7 @@ function status_change($id)
  */
 function hashit($var, $addtext = '')
 {
-    return md5('Th15T3xt' . $addtext . $var . $addtext . 'is5add3dto66uddy6he@water...');
+    return md5('Th15T3xt'.$addtext.$var.$addtext.'is5add3dto66uddy6he@water...');
 }
 
 /**
@@ -193,29 +197,26 @@ function hashit($var, $addtext = '')
  * @param string $reason
  *
  * @return bool
- *
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function check_bans($ip, &$reason = '')
 {
-    $cache = new DarkAlchemy\Pu239\Cache();
+    global $cache;
     if (empty($ip)) {
         return false;
     }
-    $key = 'bans_' . $ip;
+    $key = 'bans_'.$ip;
     $ban = $cache->get($key);
-    if ($ban === false || is_null($ban)) {
+    if (false === $ban || is_null($ban)) {
         $nip = sqlesc($ip);
-        $ban_sql = sql_query('SELECT comment FROM bans WHERE (INET6_NTOA(first) <= ' . $nip . ' AND INET6_NTOA(last) >= ' . $nip . ') LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        $ban_sql = sql_query('SELECT comment FROM bans WHERE (INET6_NTOA(first) <= '.$nip.' AND INET6_NTOA(last) >= '.$nip.') LIMIT 1') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($ban_sql)) {
             $comment = mysqli_fetch_row($ban_sql);
-            $reason = 'Manual Ban (' . $comment[0] . ')';
+            $reason = 'Manual Ban ('.$comment[0].')';
             $cache->set($key, $reason, 86400); // 86400 // banned
 
             return true;
         }
-        ((mysqli_free_result($ban_sql) || (is_object($ban_sql) && (get_class($ban_sql) == 'mysqli_result'))) ? true : false);
+        ((mysqli_free_result($ban_sql) || (is_object($ban_sql) && ('mysqli_result' == get_class($ban_sql)))) ? true : false);
         $cache->set($key, 0, 86400);
 
         return false;
@@ -235,12 +236,13 @@ function check_bans($ip, &$reason = '')
 function logincookie($id, $updatedb = true)
 {
     if ($updatedb) {
-        sql_query("UPDATE users SET last_login = " . TIME_NOW . " WHERE id = " . sqlesc($id)) or sqlerr(__file__, __line__);
+        sql_query('UPDATE users SET last_login = '.TIME_NOW.' WHERE id = '.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     }
 }
 
 /**
  * @return bool
+ *
  * @throws Exception
  * @throws \DarkAlchemy\Pu239\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\Exception
@@ -249,11 +251,7 @@ function logincookie($id, $updatedb = true)
  */
 function userlogin()
 {
-    global $site_config, $CURBLOCK, $mood, $whereis, $CURUSER;
-
-    $cache = new DarkAlchemy\Pu239\Cache();
-    $session = new DarkAlchemy\Pu239\Session();
-    $user = new DarkAlchemy\Pu239\User();
+    global $site_config, $CURBLOCK, $mood, $whereis, $CURUSER, $cache, $session, $user;
 
     unset($GLOBALS['CURUSER']);
 
@@ -309,13 +307,13 @@ function userlogin()
 
     if ($users_data['class'] >= UC_STAFF) {
         $allowed_ID = $site_config['is_staff']['allowed'];
-        if (!in_array(((int)$users_data['id']), $allowed_ID, true)) {
-            $msg = 'Fake Account Detected: Username: ' . htmlsafechars($users_data['username']) . ' - userID: ' . (int)$users_data['id'] . ' - UserIP : ' . getip();
+        if (!in_array(((int) $users_data['id']), $allowed_ID, true)) {
+            $msg = 'Fake Account Detected: Username: '.htmlsafechars($users_data['username']).' - userID: '.(int) $users_data['id'].' - UserIP : '.getip();
             // Demote and disable
-            sql_query("UPDATE users SET enabled = 'no', class = 0 WHERE id =" . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
-            $cache->update_row('user' . $users_data['id'], [
+            sql_query("UPDATE users SET enabled = 'no', class = 0 WHERE id =".sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
+            $cache->update_row('user'.$users_data['id'], [
                 'enabled' => 'no',
-                'class'   => 0,
+                'class' => 0,
             ], $site_config['expires']['user_cache']);
             write_log($msg);
             $salty = salty();
@@ -324,70 +322,70 @@ function userlogin()
         }
     }
 
-    $ustatus = $cache->get('userstatus_' . $id);
-    if ($ustatus === false || is_null($ustatus)) {
-        $sql2 = sql_query('SELECT * FROM ustatus WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    $ustatus = $cache->get('userstatus_'.$id);
+    if (false === $ustatus || is_null($ustatus)) {
+        $sql2 = sql_query('SELECT * FROM ustatus WHERE userid = '.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($sql2)) {
             $ustatus = mysqli_fetch_assoc($sql2);
         } else {
             $ustatus = [
                 'last_status' => '',
                 'last_update' => 0,
-                'archive'     => '',
+                'archive' => '',
             ];
         }
-        $cache->add('userstatus_' . $id, $ustatus, $site_config['expires']['u_status']); // 30 days
+        $cache->add('userstatus_'.$id, $ustatus, $site_config['expires']['u_status']); // 30 days
     }
     $users_data['last_status'] = $ustatus['last_status'];
     $users_data['last_update'] = $ustatus['last_update'];
     $users_data['archive'] = $ustatus['archive'];
     if ($users_data['ssluse'] > 1 && !isset($_SERVER['HTTPS']) && !defined('NO_FORCE_SSL')) {
         $site_config['baseurl'] = str_replace('http', 'https', $site_config['baseurl']);
-        header('Location: ' . $site_config['baseurl'] . $_SERVER['REQUEST_URI']);
+        header('Location: '.$site_config['baseurl'].$_SERVER['REQUEST_URI']);
         die();
     }
-    $blocks_key = 'blocks_' . $users_data['id'];
+    $blocks_key = 'blocks_'.$users_data['id'];
 
     $CURBLOCK = $cache->get($blocks_key);
-    if ($CURBLOCK === false || is_null($CURBLOCK)) {
-        $c_sql = sql_query('SELECT * FROM user_blocks WHERE userid = ' . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($c_sql) == 0) {
-            sql_query('INSERT INTO user_blocks(userid) VALUES (' . sqlesc($users_data['id']) . ')') or sqlerr(__FILE__, __LINE__);
-            $c_sql = sql_query('SELECT * FROM user_blocks WHERE userid = ' . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
+    if (false === $CURBLOCK || is_null($CURBLOCK)) {
+        $c_sql = sql_query('SELECT * FROM user_blocks WHERE userid = '.sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
+        if (0 == mysqli_num_rows($c_sql)) {
+            sql_query('INSERT INTO user_blocks(userid) VALUES ('.sqlesc($users_data['id']).')') or sqlerr(__FILE__, __LINE__);
+            $c_sql = sql_query('SELECT * FROM user_blocks WHERE userid = '.sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
         }
         $CURBLOCK = mysqli_fetch_assoc($c_sql);
-        $CURBLOCK['index_page'] = (int)$CURBLOCK['index_page'];
-        $CURBLOCK['global_stdhead'] = (int)$CURBLOCK['global_stdhead'];
-        $CURBLOCK['userdetails_page'] = (int)$CURBLOCK['userdetails_page'];
+        $CURBLOCK['index_page'] = (int) $CURBLOCK['index_page'];
+        $CURBLOCK['global_stdhead'] = (int) $CURBLOCK['global_stdhead'];
+        $CURBLOCK['userdetails_page'] = (int) $CURBLOCK['userdetails_page'];
         $cache->set($blocks_key, $CURBLOCK, 0);
     }
     $where_is['username'] = htmlsafechars($users_data['username']);
     $whereis_array = [
-        'index'            => '%s is viewing the <a href="%s">home page</a>',
-        'browse'           => '%s is viewing the <a href="%s">torrents page</a>',
-        'requests'         => '%s is viewing the <a href="%s">requests page</a>',
-        'upload'           => '%s is viewing the <a href="%s">upload page</a>',
-        'casino'           => '%s is viewing the <a href="%s">casino page</a>',
-        'blackjack'        => '%s is viewing the <a href="%s">blackjack page</a>',
-        'bet'              => '%s is viewing the <a href="%s">bet page</a>',
-        'forums'           => '%s is viewing the <a href="%s">forums page</a>',
-        'chat'             => '%s is viewing the <a href="%s">irc page</a>',
-        'topten'           => '%s is viewing the <a href="%s">statistics page</a>',
-        'faq'              => '%s is viewing the <a href="%s">faq page</a>',
-        'rules'            => '%s is viewing the <a href="%s">rules page</a>',
-        'staff'            => '%s is viewing the <a href="%s">staff page</a>',
-        'announcement'     => '%s is viewing the <a href="%s">announcements page</a>',
-        'usercp'           => '%s is viewing the <a href="%s">usercp page</a>',
-        'offers'           => '%s is viewing the <a href="%s">offers page</a>',
-        'pm_system'        => '%s is viewing the <a href="%s">mailbox page</a>',
-        'userdetails'      => '%s is viewing the <a href="%s">personal profile page</a>',
-        'details'          => '%s is viewing the <a href="%s">torrents details page</a>',
-        'games'            => '%s is viewing the <a href="%s">games page</a>',
-        'arcade'           => '%s is viewing the <a href="%s">arcade page</a>',
-        'flash'            => '%s is playing a <a href="%s">flash game</a>',
+        'index' => '%s is viewing the <a href="%s">home page</a>',
+        'browse' => '%s is viewing the <a href="%s">torrents page</a>',
+        'requests' => '%s is viewing the <a href="%s">requests page</a>',
+        'upload' => '%s is viewing the <a href="%s">upload page</a>',
+        'casino' => '%s is viewing the <a href="%s">casino page</a>',
+        'blackjack' => '%s is viewing the <a href="%s">blackjack page</a>',
+        'bet' => '%s is viewing the <a href="%s">bet page</a>',
+        'forums' => '%s is viewing the <a href="%s">forums page</a>',
+        'chat' => '%s is viewing the <a href="%s">irc page</a>',
+        'topten' => '%s is viewing the <a href="%s">statistics page</a>',
+        'faq' => '%s is viewing the <a href="%s">faq page</a>',
+        'rules' => '%s is viewing the <a href="%s">rules page</a>',
+        'staff' => '%s is viewing the <a href="%s">staff page</a>',
+        'announcement' => '%s is viewing the <a href="%s">announcements page</a>',
+        'usercp' => '%s is viewing the <a href="%s">usercp page</a>',
+        'offers' => '%s is viewing the <a href="%s">offers page</a>',
+        'pm_system' => '%s is viewing the <a href="%s">mailbox page</a>',
+        'userdetails' => '%s is viewing the <a href="%s">personal profile page</a>',
+        'details' => '%s is viewing the <a href="%s">torrents details page</a>',
+        'games' => '%s is viewing the <a href="%s">games page</a>',
+        'arcade' => '%s is viewing the <a href="%s">arcade page</a>',
+        'flash' => '%s is playing a <a href="%s">flash game</a>',
         'arcade_top_score' => '%s is viewing the <a href="%s">arcade top scores page</a>',
-        'staffpanel'       => '%s is viewing the <a href="%s">Staff Panel</a>',
-        'unknown'          => '%s location is unknown',
+        'staffpanel' => '%s is viewing the <a href="%s">Staff Panel</a>',
+        'unknown' => '%s location is unknown',
     ];
     if (preg_match('/\/(.*?)\.php/is', $_SERVER['REQUEST_URI'], $whereis_temp)) {
         if (isset($whereis_array[$whereis_temp[1]])) {
@@ -402,20 +400,20 @@ function userlogin()
     $new_time = TIME_NOW - $users_data['last_access_numb'];
     $update_time = 0;
     if ($new_time < 300) {
-        $userupdate0 = 'onlinetime = onlinetime + ' . $new_time;
+        $userupdate0 = 'onlinetime = onlinetime + '.$new_time;
         $update_time = $new_time;
     }
-    $userupdate1 = 'last_access_numb = ' . TIME_NOW;
+    $userupdate1 = 'last_access_numb = '.TIME_NOW;
     $update_time = ($users_data['onlinetime'] + $update_time);
-    if (($users_data['last_access'] != '0') && (($users_data['last_access']) < (TIME_NOW - 180))) {
+    if (('0' != $users_data['last_access']) && (($users_data['last_access']) < (TIME_NOW - 180))) {
         sql_query('UPDATE users
-                    SET where_is =' . sqlesc($whereis) . ', last_access=' . TIME_NOW . ", $userupdate0, $userupdate1
-                    WHERE id = " . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('user' . $users_data['id'], [
-            'last_access'      => TIME_NOW,
-            'onlinetime'       => $update_time,
+                    SET where_is ='.sqlesc($whereis).', last_access='.TIME_NOW.", $userupdate0, $userupdate1
+                    WHERE id = ".sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
+        $cache->update_row('user'.$users_data['id'], [
+            'last_access' => TIME_NOW,
+            'onlinetime' => $update_time,
             'last_access_numb' => TIME_NOW,
-            'where_is'         => $whereis,
+            'where_is' => $whereis,
         ], $site_config['expires']['user_cache']);
     }
     if ($users_data['override_class'] < $users_data['class']) {
@@ -434,28 +432,23 @@ function get_charset()
     global $CURUSER;
     $lang_charset = $CURUSER['language'];
     switch ($lang_charset) {
-        case $lang_charset == 2:
+        case 2 == $lang_charset:
             return 'ISO-8859-1';
-        case $lang_charset == 3:
+        case 3 == $lang_charset:
             return 'ISO-8859-17';
-        case $lang_charset == 4:
+        case 4 == $lang_charset:
             return 'ISO-8859-15';
         default:
             return 'UTF-8';
     }
 }
 
-/**
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
- */
 function autoclean()
 {
-    global $site_config;
+    global $site_config, $cache;
 
-    $cache = new DarkAlchemy\Pu239\Cache();
     $cleanup_timer = $cache->get('cleanup_timer_');
-    if ($cleanup_timer === false || is_null($cleanup_timer)) {
+    if (false === $cleanup_timer || is_null($cleanup_timer)) {
         $cache->set('cleanup_timer_', 5, 1); // runs only every 1 second
 
         $now = TIME_NOW;
@@ -463,12 +456,12 @@ function autoclean()
         $row = mysqli_fetch_assoc($sql);
         if ($row['clean_id']) {
             $next_clean = intval($row['clean_time'] + $row['clean_increment']);
-            if ($row['clean_id'] == 82) {
+            if (82 == $row['clean_id']) {
                 $next_clean = ceil(TIME_NOW / 300) * 300;
             }
-            sql_query('UPDATE cleanup SET clean_time = ' . sqlesc($next_clean) . ' WHERE clean_id = ' . sqlesc($row['clean_id'])) or sqlerr(__FILE__, __LINE__);
-            if (file_exists(CLEAN_DIR . $row['clean_file'])) {
-                require_once CLEAN_DIR . $row['clean_file'];
+            sql_query('UPDATE cleanup SET clean_time = '.sqlesc($next_clean).' WHERE clean_id = '.sqlesc($row['clean_id'])) or sqlerr(__FILE__, __LINE__);
+            if (file_exists(CLEAN_DIR.$row['clean_file'])) {
+                require_once CLEAN_DIR.$row['clean_file'];
                 if (function_exists($row['function_name'])) {
                     register_shutdown_function($row['function_name'], $row);
                 }
@@ -477,10 +470,10 @@ function autoclean()
 
         if ($site_config['newsrss_on']) {
             $tfreak_cron = $cache->get('tfreak_cron_');
-            if ($tfreak_cron === false || is_null($tfreak_cron)) {
+            if (false === $tfreak_cron || is_null($tfreak_cron)) {
                 $tfreak_news = $cache->get('tfreak_news_links_');
-                if ($tfreak_news === false || is_null($tfreak_news)) {
-                    $sql = sql_query("SELECT link FROM newsrss") or sqlerr(__FILE__, __LINE__);
+                if (false === $tfreak_news || is_null($tfreak_news)) {
+                    $sql = sql_query('SELECT link FROM newsrss') or sqlerr(__FILE__, __LINE__);
                     while ($tfreak_new = mysqli_fetch_assoc($sql)) {
                         $tfreak_news[] = $tfreak_new['link'];
                     }
@@ -489,7 +482,7 @@ function autoclean()
 
                 if (user_exists($site_config['chatBotID'])) {
                     $cache->set('tfreak_cron_', TIME_NOW, 30);
-                    require_once INCL_DIR . 'newsrss.php';
+                    require_once INCL_DIR.'newsrss.php';
                     if (empty($tfreak_news)) {
                         github_shout();
                         foxnews_shout();
@@ -511,6 +504,7 @@ function autoclean()
 function get_stylesheet()
 {
     global $site_config, $CURUSER;
+
     return isset($CURUSER['stylesheet']) ? $CURUSER['stylesheet'] : $site_config['stylesheet'];
 }
 
@@ -520,6 +514,7 @@ function get_stylesheet()
 function get_category_icons()
 {
     global $site_config, $CURUSER;
+
     return isset($CURUSER['categorie_icon']) ? $CURUSER['categorie_icon'] : $site_config['categorie_icon'];
 }
 
@@ -529,37 +524,34 @@ function get_category_icons()
 function get_language()
 {
     global $site_config, $CURUSER;
+
     return isset($CURUSER['language']) ? $CURUSER['language'] : $site_config['language'];
 }
 
-
-/**
- *
- */
 function get_template()
 {
     global $CURUSER, $site_config;
     if (isset($CURUSER)) {
-        if (file_exists(TEMPLATE_DIR . "{$CURUSER['stylesheet']}/template.php")) {
-            require_once TEMPLATE_DIR . "{$CURUSER['stylesheet']}/template.php";
+        if (file_exists(TEMPLATE_DIR."{$CURUSER['stylesheet']}/template.php")) {
+            require_once TEMPLATE_DIR."{$CURUSER['stylesheet']}/template.php";
         } else {
             if (isset($site_config)) {
-                if (file_exists(TEMPLATE_DIR . "{$site_config['stylesheet']}/template.php")) {
-                    require_once TEMPLATE_DIR . "{$site_config['stylesheet']}/template.php";
+                if (file_exists(TEMPLATE_DIR."{$site_config['stylesheet']}/template.php")) {
+                    require_once TEMPLATE_DIR."{$site_config['stylesheet']}/template.php";
                 } else {
                     echo 'Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.';
                 }
             } else {
-                if (file_exists(TEMPLATE_DIR . '1/template.php')) {
-                    require_once TEMPLATE_DIR . '1/template.php';
+                if (file_exists(TEMPLATE_DIR.'1/template.php')) {
+                    require_once TEMPLATE_DIR.'1/template.php';
                 } else {
                     echo 'Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.';
                 }
             }
         }
     } else {
-        if (file_exists(TEMPLATE_DIR . "{$site_config['stylesheet']}/template.php")) {
-            require_once TEMPLATE_DIR . "{$site_config['stylesheet']}/template.php";
+        if (file_exists(TEMPLATE_DIR."{$site_config['stylesheet']}/template.php")) {
+            require_once TEMPLATE_DIR."{$site_config['stylesheet']}/template.php";
         } else {
             echo 'Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.';
         }
@@ -602,9 +594,9 @@ function get_template()
                 }
             }
 
-            $htmlfoot .= "
+            $htmlfoot .= '
             </body>
-            </html>";
+            </html>';
 
             return $htmlfoot;
         }
@@ -619,7 +611,7 @@ function get_template()
          */
         function stdmsg($heading, $text, $class = null)
         {
-            require_once INCL_DIR . 'html_functions.php';
+            require_once INCL_DIR.'html_functions.php';
 
             $htmlout = '';
             if ($heading) {
@@ -650,23 +642,21 @@ function get_template()
  * @param $key
  *
  * @return array|bool|mixed
- *
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function make_freeslots($userid, $key)
 {
-    $cache = new DarkAlchemy\Pu239\Cache();
-    $slot = $cache->get($key . $userid);
-    if ($slot === false || is_null($slot)) {
-        $res_slots = sql_query('SELECT * FROM freeslots WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+    global $cache;
+
+    $slot = $cache->get($key.$userid);
+    if (false === $slot || is_null($slot)) {
+        $res_slots = sql_query('SELECT * FROM freeslots WHERE userid = '.sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
         $slot = [];
         if (mysqli_num_rows($res_slots)) {
             while ($rowslot = mysqli_fetch_assoc($res_slots)) {
                 $slot[] = $rowslot;
             }
         }
-        $cache->set($key . $userid, $slot, 86400 * 7);
+        $cache->set($key.$userid, $slot, 86400 * 7);
     }
 
     return $slot;
@@ -677,23 +667,21 @@ function make_freeslots($userid, $key)
  * @param $key
  *
  * @return array|bool|mixed
- *
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function make_bookmarks($userid, $key)
 {
-    $cache = new DarkAlchemy\Pu239\Cache();
-    $book = $cache->get($key . $userid);
-    if ($book === false || is_null($book)) {
-        $res_books = sql_query('SELECT * FROM bookmarks WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+    global $cache;
+
+    $book = $cache->get($key.$userid);
+    if (false === $book || is_null($book)) {
+        $res_books = sql_query('SELECT * FROM bookmarks WHERE userid = '.sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
         $book = [];
         if (mysqli_num_rows($res_books)) {
             while ($rowbook = mysqli_fetch_assoc($res_books)) {
                 $book[] = $rowbook;
             }
         }
-        $cache->set($key . $userid, $book, 86400 * 7); // 7 days
+        $cache->set($key.$userid, $book, 86400 * 7); // 7 days
     }
 
     return $book;
@@ -701,23 +689,19 @@ function make_bookmarks($userid, $key)
 
 /**
  * @return array
- *
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function genrelist()
 {
-    global $site_config;
+    global $site_config, $cache;
 
-    $cache = new DarkAlchemy\Pu239\Cache();
-    //if (($ret = $cache->get('genrelist')) == false) {
-    $ret = [];
-    $res = sql_query('SELECT id, image, name, ordered FROM categories ORDER BY ordered') or sqlerr(__FILE__, __LINE__);
-    while ($row = mysqli_fetch_assoc($res)) {
-        $ret[] = $row;
+    if (false == ($ret = $cache->get('genrelist'))) {
+        $ret = [];
+        $res = sql_query('SELECT id, image, name, ordered FROM categories ORDER BY ordered') or sqlerr(__FILE__, __LINE__);
+        while ($row = mysqli_fetch_assoc($res)) {
+            $ret[] = $row;
+        }
+        $cache->set('genrelist', $ret, $site_config['expires']['genrelist']);
     }
-    $cache->set('genrelist', $ret, $site_config['expires']['genrelist']);
-    //}
 
     return $ret;
 }
@@ -726,15 +710,13 @@ function genrelist()
  * @param bool $force
  *
  * @return array|bool|mixed
- *
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function create_moods($force = false)
 {
-    $cache = new DarkAlchemy\Pu239\Cache();
+    global $cache;
+
     $key = 'moods';
-    if (($mood = $cache->get($key)) === false || $force) {
+    if (false === ($mood = $cache->get($key)) || $force) {
         $res_moods = sql_query('SELECT * FROM moods ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
         $mood = [];
         if (mysqli_num_rows($res_moods)) {
@@ -745,6 +727,7 @@ function create_moods($force = false)
         }
         $cache->set($key, $mood, 86400);
     }
+
     return $mood;
 }
 
@@ -753,18 +736,15 @@ function create_moods($force = false)
  * @param bool $keyname
  *
  * @return bool
- *
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function delete_id_keys($keys, $keyname = false)
 {
-    $cache = new DarkAlchemy\Pu239\Cache();
+    global $cache;
     if (!(is_array($keys) || $keyname)) { // if no key given or not an array
         return false;
     } else {
         foreach ($keys as $id) { // proceed
-            $cache->delete($keyname . $id);
+            $cache->delete($keyname.$id);
         }
     }
 
@@ -799,31 +779,31 @@ function mksize($bytes, $dec = 2)
     }
 
     $bytes = abs($bytes);
-    $bytes = max(0, (int)$bytes);
+    $bytes = max(0, (int) $bytes);
 
     if ($bytes < 1024000) {
-        return number_format($neg * $bytes / 1024, $dec) . ' KB';
+        return number_format($neg * $bytes / 1024, $dec).' KB';
     } //Kilobyte
     elseif ($bytes < 1048576000) {
-        return number_format($neg * $bytes / 1048576, $dec) . ' MB';
+        return number_format($neg * $bytes / 1048576, $dec).' MB';
     } //Megabyte
     elseif ($bytes < 1073741824000) {
-        return number_format($neg * $bytes / 1073741824, $dec) . ' GB';
+        return number_format($neg * $bytes / 1073741824, $dec).' GB';
     } //Gigebyte
     elseif ($bytes < 1099511627776000) {
-        return number_format($neg * $bytes / 1099511627776, $dec) . ' TB';
+        return number_format($neg * $bytes / 1099511627776, $dec).' TB';
     } //Terabyte
     elseif ($bytes < 1125899906842624000) {
-        return number_format($neg * $bytes / 1125899906842624, $dec) . ' PB';
+        return number_format($neg * $bytes / 1125899906842624, $dec).' PB';
     } //Petabyte
     elseif ($bytes < 1152921504606846976000) {
-        return number_format($neg * $bytes / 1152921504606846976, $dec) . ' EB';
+        return number_format($neg * $bytes / 1152921504606846976, $dec).' EB';
     } //Exabyte
     elseif ($bytes < 1180591620717411303424000) {
-        return number_format($neg * $bytes / 1180591620717411303424, $dec) . ' ZB';
+        return number_format($neg * $bytes / 1180591620717411303424, $dec).' ZB';
     } //Zettabyte
     else {
-        return number_format($neg * $bytes / 1208925819614629174706176, $dec) . ' YB';
+        return number_format($neg * $bytes / 1208925819614629174706176, $dec).' YB';
     } //Yottabyte
 }
 
@@ -854,7 +834,7 @@ function mkprettytime($s)
         $t[$y[1]] = $v;
     }
     if ($t['day']) {
-        return $t['day'] . 'd ' . sprintf('%02d:%02d:%02d', $t['hour'], $t['min'], $t['sec']);
+        return $t['day'].'d '.sprintf('%02d:%02d:%02d', $t['hour'], $t['min'], $t['sec']);
     }
     if ($t['hour']) {
         return sprintf('%d:%02d:%02d', $t['hour'], $t['min'], $t['sec']);
@@ -914,7 +894,7 @@ function validemail($email)
 function sqlesc($x)
 {
     if (is_integer($x)) {
-        return (int)$x;
+        return (int) $x;
     }
 
     return sprintf('\'%s\'', mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $x));
@@ -928,7 +908,7 @@ function sqlesc($x)
 function sqlesc_noquote($x)
 {
     if (is_integer($x)) {
-        return (int)$x;
+        return (int) $x;
     }
 
     return mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $x);
@@ -995,7 +975,7 @@ function get_row_count($table, $suffix = '')
     ($r = sql_query("SELECT COUNT(*) FROM $table$suffix")) or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
     ($a = mysqli_fetch_row($r)) or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
 
-    return (int)$a[0];
+    return (int) $a[0];
 }
 
 /**
@@ -1024,7 +1004,7 @@ function get_one_row($table, $suffix, $where)
  */
 function stderr($heading, $text, $class = null)
 {
-    echo stdhead() . stdmsg($heading, $text, $class) . stdfoot();
+    echo stdhead().stdmsg($heading, $text, $class).stdfoot();
     die();
 }
 
@@ -1041,12 +1021,12 @@ function sqlerr($file = '', $line = '')
         die();
     } elseif ($site_config['sql_error_log'] && SQL_DEBUG == 1) {
         $_error_string = "\n===================================================";
-        $_error_string .= "\n Date: " . date('r');
-        $_error_string .= "\n Error Number: " . $the_error_no;
-        $_error_string .= "\n Error: " . $the_error;
-        $_error_string .= "\n IP Address: " . $_SERVER['REMOTE_ADDR'];
-        $_error_string .= "\n in file " . $file . ' on line ' . $line;
-        $_error_string .= "\n URL:" . $_SERVER['REQUEST_URI'];
+        $_error_string .= "\n Date: ".date('r');
+        $_error_string .= "\n Error Number: ".$the_error_no;
+        $_error_string .= "\n Error: ".$the_error;
+        $_error_string .= "\n IP Address: ".$_SERVER['REMOTE_ADDR'];
+        $_error_string .= "\n in file ".$file.' on line '.$line;
+        $_error_string .= "\n URL:".$_SERVER['REQUEST_URI'];
         $_error_string .= "\n Username: {$CURUSER['username']}[{$CURUSER['id']}]";
         if ($FH = @fopen($site_config['sql_error_log'], 'a')) {
             @fwrite($FH, $_error_string);
@@ -1058,15 +1038,15 @@ function sqlerr($file = '', $line = '')
                        You can try to refresh the page by clicking <a href="javascript:window.location=window.location;">here</a>
                   </body></html>';
     } else {
-        $the_error = "\nSQL error: " . $the_error . "\n";
-        $the_error .= 'SQL error code: ' . $the_error_no . "\n";
-        $the_error .= 'Date: ' . date("l dS \of F Y h:i:s A");
+        $the_error = "\nSQL error: ".$the_error."\n";
+        $the_error .= 'SQL error code: '.$the_error_no."\n";
+        $the_error .= 'Date: '.date("l dS \of F Y h:i:s A");
         $out = "<html>\n<head>\n<title>MySQLI Error</title>\n
                    <style>P,BODY{ font-family:arial,sans-serif; font-size:11px; }</style>\n</head>\n<body>\n
                    <blockquote>\n<h1>MySQLI Error</h1><b>There appears to be an error with the database.</b><br>
                    You can try to refresh the page by clicking <a href=\"javascript:window.location=window.location;\">here</a>.
                    <br><br><b>Error Returned</b><br>
-                   <form name='mysql'><textarea rows=\"15\" cols=\"60\">" . htmlsafechars($the_error, ENT_QUOTES) . '</textarea></form><br>We apologise for any inconvenience</blockquote></body></html>';
+                   <form name='mysql'><textarea rows=\"15\" cols=\"60\">".htmlsafechars($the_error, ENT_QUOTES).'</textarea></form><br>We apologise for any inconvenience</blockquote></body></html>';
         echo $out;
     }
     die();
@@ -1112,12 +1092,12 @@ function unixstamp_to_human($unix = 0)
     list($day, $month, $year, $hour, $min, $ampm) = explode(',', $tmp);
 
     return [
-        'day'    => $day,
-        'month'  => $month,
-        'year'   => $year,
-        'hour'   => $hour,
+        'day' => $day,
+        'month' => $month,
+        'year' => $year,
+        'hour' => $hour,
         'minute' => $min,
-        'ampm'   => $ampm,
+        'ampm' => $ampm,
     ];
 }
 
@@ -1128,7 +1108,7 @@ function get_time_offset()
 {
     global $CURUSER, $site_config;
 
-    $r = (($CURUSER['time_offset'] != '') ? $CURUSER['time_offset'] : $site_config['time_offset']) * 3600;
+    $r = (('' != $CURUSER['time_offset']) ? $CURUSER['time_offset'] : $site_config['time_offset']) * 3600;
     if ($site_config['time_adjust']) {
         $r += ($site_config['time_adjust'] * 60);
     }
@@ -1156,10 +1136,10 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
     static $yesterday_time = 0;
     $time_options = [
         'JOINED' => $site_config['time_joined'],
-        'SHORT'  => $site_config['time_short'],
-        'LONG'   => $site_config['time_long'],
-        'TINY'   => $site_config['time_tiny'] ? $site_config['time_tiny'] : 'j M Y - G:i',
-        'DATE'   => $site_config['time_date'] ? $site_config['time_date'] : 'j M Y',
+        'SHORT' => $site_config['time_short'],
+        'LONG' => $site_config['time_long'],
+        'TINY' => $site_config['time_tiny'] ? $site_config['time_tiny'] : 'j M Y - G:i',
+        'DATE' => $site_config['time_date'] ? $site_config['time_date'] : 'j M Y',
     ];
     if (!$date) {
         return '--';
@@ -1167,7 +1147,7 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
     if (empty($method)) {
         $method = 'LONG';
     }
-    if ($offset_set == 0) {
+    if (0 == $offset_set) {
         $GLOBALS['offset'] = get_time_offset();
         if ($site_config['time_use_relative']) {
             $today_time = gmdate('d,m,Y', (TIME_NOW + $GLOBALS['offset']));
@@ -1176,10 +1156,10 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
         $offset_set = 1;
     }
 
-    if ($site_config['time_use_relative'] == 3) {
+    if (3 == $site_config['time_use_relative']) {
         $full_relative = 1;
     }
-    if ($full_relative && ($norelative != 1) && !$calc) {
+    if ($full_relative && (1 != $norelative) && !$calc) {
         $diff = TIME_NOW - $date;
         if ($diff < 3600) {
             if ($diff < 120) {
@@ -1202,9 +1182,9 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
         } else {
             return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
         }
-    } elseif ($site_config['time_use_relative'] && ($norelative != 1) && !$calc) {
+    } elseif ($site_config['time_use_relative'] && (1 != $norelative) && !$calc) {
         $this_time = gmdate('d,m,Y', ($date + $GLOBALS['offset']));
-        if ($site_config['time_use_relative'] == 2) {
+        if (2 == $site_config['time_use_relative']) {
             $diff = TIME_NOW - $date;
             if ($diff < 3600) {
                 if ($diff < 120) {
@@ -1232,16 +1212,16 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
         //$secs = $date - ($mins * 60);
         $text = [];
         if ($years > 0) {
-            $text[] = number_format($years) . " years";
+            $text[] = number_format($years).' years';
         }
         if ($days > 0) {
-            $text[] = number_format($days) . " days";
+            $text[] = number_format($days).' days';
         }
         if ($hours > 0) {
-            $text[] = number_format($hours) . " hours";
+            $text[] = number_format($hours).' hours';
         }
         if ($mins > 0) {
-            $text[] = number_format($mins) . " min";
+            $text[] = number_format($mins).' min';
         }
         if (!empty($text)) {
             return implode(', ', $text);
@@ -1286,7 +1266,7 @@ function hash_pad($hash)
  */
 function CutName($txt, $len = 40)
 {
-    return strlen($txt) > $len ? substr($txt, 0, $len - 1) . '...' : $txt;
+    return strlen($txt) > $len ? substr($txt, 0, $len - 1).'...' : $txt;
 }
 
 /**
@@ -1297,7 +1277,7 @@ function CutName($txt, $len = 40)
  */
 function CutName_B($txt, $len = 20)
 {
-    return strlen($txt) > $len ? substr($txt, 0, $len - 1) . '...' : $txt;
+    return strlen($txt) > $len ? substr($txt, 0, $len - 1).'...' : $txt;
 }
 
 /**
@@ -1310,18 +1290,19 @@ function load_language($file = '')
     global $site_config, $CURUSER;
     $lang = [];
     if (!isset($GLOBALS['CURUSER']) || empty($GLOBALS['CURUSER']['language'])) {
-        if (!file_exists(LANG_DIR . "{$site_config['language']}/lang_{$file}.php")) {
+        if (!file_exists(LANG_DIR."{$site_config['language']}/lang_{$file}.php")) {
             stderr('System Error', "Can't find language files({$site_config['language']})");
         }
-        include_once LANG_DIR . "{$site_config['language']}/lang_{$file}.php";
-    } elseif (!file_exists(LANG_DIR . "{$CURUSER['language']}/lang_{$file}.php")) {
-        if (!file_exists(LANG_DIR . "1/lang_{$file}.php")) {
+        include_once LANG_DIR."{$site_config['language']}/lang_{$file}.php";
+    } elseif (!file_exists(LANG_DIR."{$CURUSER['language']}/lang_{$file}.php")) {
+        if (!file_exists(LANG_DIR."1/lang_{$file}.php")) {
             stderr('System Error', "Can't find language files({$CURUSER['language']} and 1)");
         }
-        include_once LANG_DIR . "1/lang_{$file}.php";
+        include_once LANG_DIR."1/lang_{$file}.php";
     } else {
-        include_once LANG_DIR . "{$CURUSER['language']}/lang_{$file}.php";
+        include_once LANG_DIR."{$CURUSER['language']}/lang_{$file}.php";
     }
+
     return $lang;
 }
 
@@ -1338,14 +1319,14 @@ function flood_limit($table)
         return;
     }
     $tb = [
-        'posts'    => 'posts.userid',
+        'posts' => 'posts.userid',
         'comments' => 'comments.user',
         'messages' => 'messages.sender',
     ];
-    $q = sql_query('SELECT min(' . $table . '.added) as first_post, count(' . $table . '.id) as how_many FROM ' . $table . ' WHERE ' . $tb[$table] . ' = ' . $CURUSER['id'] . ' AND ' . TIME_NOW . ' - ' . $table . '.added < ' . $site_config['flood_time']) or sqlerr(__FILE__, __LINE__);
+    $q = sql_query('SELECT min('.$table.'.added) as first_post, count('.$table.'.id) as how_many FROM '.$table.' WHERE '.$tb[$table].' = '.$CURUSER['id'].' AND '.TIME_NOW.' - '.$table.'.added < '.$site_config['flood_time']) or sqlerr(__FILE__, __LINE__);
     $a = mysqli_fetch_assoc($q);
     if ($a['how_many'] > $max[$CURUSER['class']]) {
-        stderr($lang['gl_sorry'], $lang['gl_flood_msg'] . '' . mkprettytime($site_config['flood_time'] - (TIME_NOW - $a['first_post'])));
+        stderr($lang['gl_sorry'], $lang['gl_flood_msg'].''.mkprettytime($site_config['flood_time'] - (TIME_NOW - $a['first_post'])));
     }
 }
 
@@ -1366,13 +1347,12 @@ function sql_query($query, $log = true)
         $query_end_time = microtime(true);
         $query_stat[] = [
             'seconds' => number_format($query_end_time - $query_start_time, 6),
-            'query'   => formatQuery($query),
+            'query' => formatQuery($query),
         ];
         $queries = count($query_stat);
     } else {
         $result = mysqli_query($GLOBALS['___mysqli_ston'], $query);
     }
-
 
     return $result;
 }
@@ -1433,21 +1413,18 @@ function strip_tags_array($ar)
     return $ar;
 }
 
-/**
- *
- */
 function referer()
 {
     $http_referer = getenv('HTTP_REFERER');
-    if (!empty($_SERVER['HTTP_HOST']) && (strstr($http_referer, $_SERVER['HTTP_HOST']) == false) && ($http_referer != '')) {
+    if (!empty($_SERVER['HTTP_HOST']) && (false == strstr($http_referer, $_SERVER['HTTP_HOST'])) && ('' != $http_referer)) {
         $ip = $_SERVER['REMOTE_ADDR'];
         $http_agent = $_SERVER['HTTP_USER_AGENT'];
-        $http_page = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
+        $http_page = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
         if (!empty($_SERVER['QUERY_STRING'])) {
-            $http_page .= '?' . $_SERVER['QUERY_STRING'];
+            $http_page .= '?'.$_SERVER['QUERY_STRING'];
         }
         sql_query('INSERT INTO referrers (browser, ip, referer, page, date)
-            VALUES (' . sqlesc($http_agent) . ', ' . ipToStorageFormat($ip, true) . ', ' . sqlesc($http_referer) . ', ' . sqlesc($http_page) . ', ' . sqlesc(TIME_NOW) . ')') or sqlerr(__FILE__, __LINE__);
+            VALUES ('.sqlesc($http_agent).', '.ipToStorageFormat($ip, true).', '.sqlesc($http_referer).', '.sqlesc($http_page).', '.sqlesc(TIME_NOW).')') or sqlerr(__FILE__, __LINE__);
     }
 }
 
@@ -1469,7 +1446,7 @@ function mysql_fetch_all($query, $default_value = [])
             $result[] = $row;
         }
     }
-    if (count($result) == 0) {
+    if (0 == count($result)) {
         return $default_value;
     }
 
@@ -1486,7 +1463,7 @@ function write_bonus_log($userid, $amount, $type)
     $added = TIME_NOW;
     $donation_type = $type;
     sql_query('INSERT INTO bonuslog (id, donation, type, added_at)
-                VALUES(' . sqlesc($userid) . ', ' . sqlesc($amount) . ', ' . sqlesc($donation_type) . ", $added)") or sqlerr(__FILE__, __LINE__);
+                VALUES('.sqlesc($userid).', '.sqlesc($amount).', '.sqlesc($donation_type).", $added)") or sqlerr(__FILE__, __LINE__);
 }
 
 /**
@@ -1510,12 +1487,12 @@ function human_filesize($bytes, $dec = 2)
     ];
     $factor = floor((strlen($bytes) - 1) / 3);
 
-    return sprintf("%.{$dec}f", $bytes / pow(1024, $factor)) . @$size[$factor];
+    return sprintf("%.{$dec}f", $bytes / pow(1024, $factor)).@$size[$factor];
 }
 
 function salty()
 {
-    $session = new DarkAlchemy\Pu239\Session();
+    global $session;
 
     return $session->get('auth');
 }
@@ -1549,6 +1526,7 @@ function replace_unicode_strings($text)
                             '–',
                         ], '-', $text);
     $text = str_replace('&amp;', '&#38;', $text);
+
     return html_entity_decode(htmlentities($text, ENT_QUOTES));
 }
 
@@ -1556,22 +1534,17 @@ function replace_unicode_strings($text)
  * @param $userid
  *
  * @return bool|int|mixed
- *
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function getPmCount($userid)
 {
-    global $site_config;
+    global $site_config, $cache;
 
-    $cache = new DarkAlchemy\Pu239\Cache();
-
-    $pmCount = $cache->get('inbox_' . $userid);
-    if ($pmCount === false || is_null($pmCount)) {
-        $res = sql_query('SELECT COUNT(id) FROM messages WHERE receiver = ' . sqlesc($userid) . " AND unread = 'yes' AND location = 1") or sqlerr(__LINE__, __FILE__);
+    $pmCount = $cache->get('inbox_'.$userid);
+    if (false === $pmCount || is_null($pmCount)) {
+        $res = sql_query('SELECT COUNT(id) FROM messages WHERE receiver = '.sqlesc($userid)." AND unread = 'yes' AND location = 1") or sqlerr(__LINE__, __FILE__);
         $result = mysqli_fetch_row($res);
-        $pmCount = (int)$result[0];
-        $cache->set('inbox_' . $userid, $pmCount, $site_config['expires']['unread']);
+        $pmCount = (int) $result[0];
+        $cache->set('inbox_'.$userid, $pmCount, $site_config['expires']['unread']);
     }
 
     return $pmCount;
@@ -1580,7 +1553,8 @@ function getPmCount($userid)
 function parked()
 {
     global $CURUSER;
-    if ($CURUSER['parked'] == 'yes') {
+
+    if ('yes' == $CURUSER['parked']) {
         stderr('Error', '<b>Your account is currently parked.</b>');
     }
 }
@@ -1588,19 +1562,22 @@ function parked()
 function suspended()
 {
     global $CURUSER;
-    if ($CURUSER['suspended'] == 'yes') {
+
+    if ('yes' == $CURUSER['suspended']) {
         stderr('Error', '<b>Your account is currently suspended.</b>');
     }
 }
 
 /**
  * @throws Exception
+ * @throws \DarkAlchemy\Pu239\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function check_user_status()
 {
-    $session = new DarkAlchemy\Pu239\Session();
+    global $session;
 
     dbconn();
     userlogin();
@@ -1639,40 +1616,34 @@ function random_color($minVal = 0, $maxVal = 255)
  * @param $user_id
  *
  * @return bool
- *
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function user_exists($user_id)
 {
-    $cache = new DarkAlchemy\Pu239\Cache();
-    $userlist = $cache->get('userlist_' . $user_id);
-    if ($userlist === false || is_null($userlist)) {
-        $query = "SELECT id FROM users WHERE id = " . sqlesc($user_id);
+    global $cache;
+
+    $userlist = $cache->get('userlist_'.$user_id);
+    if (false === $userlist || is_null($userlist)) {
+        $query = 'SELECT id FROM users WHERE id = '.sqlesc($user_id);
         $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
         $res = mysqli_fetch_assoc($res);
         if (empty($res)) {
             return false;
         }
-        $cache->set('userlist_' . $user_id, $res, 86400);
+        $cache->set('userlist_'.$user_id, $res, 86400);
     }
+
     return true;
 }
 
 /**
  * @return bool|mixed
- *
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function get_poll()
 {
-    global $CURUSER, $site_config, $fluent;
+    global $CURUSER, $site_config, $fluent, $cache;
 
-    $cache = new DarkAlchemy\Pu239\Cache();
-
-    $poll_data = $cache->get('poll_data_' . $CURUSER['id']);
-    if ($poll_data === false || is_null($poll_data)) {
+    $poll_data = $cache->get('poll_data_'.$CURUSER['id']);
+    if (false === $poll_data || is_null($poll_data)) {
         $poll_data = $fluent->from('polls')
             ->orderBy('start_date DESC')
             ->limit(1)
@@ -1693,7 +1664,7 @@ function get_poll()
             $poll_data['vote_date'] = $vote_data['vote_date'];
             $poll_data['time'] = TIME_NOW;
 
-            $cache->set('poll_data_' . $CURUSER['id'], $poll_data, $site_config['expires']['poll_data']);
+            $cache->set('poll_data_'.$CURUSER['id'], $poll_data, $site_config['expires']['poll_data']);
         }
     }
 
@@ -1720,6 +1691,7 @@ function shuffle_assoc($list, $times = 1)
     foreach ($keys as $key) {
         $random[$key] = $list[$key];
     }
+
     return $random;
 }
 
@@ -1731,6 +1703,7 @@ function get_scheme()
     if (isset($_SERVER['REQUEST_SCHEME'])) {
         return $_SERVER['REQUEST_SCHEME'];
     }
+
     return null;
 }
 
@@ -1746,14 +1719,14 @@ function array_msort($array, $cols)
     foreach ($cols as $col => $order) {
         $colarr[$col] = [];
         foreach ($array as $k => $row) {
-            $colarr[$col]['_' . $k] = strtolower($row[$col]);
+            $colarr[$col]['_'.$k] = strtolower($row[$col]);
         }
     }
     $eval = 'array_multisort(';
     foreach ($cols as $col => $order) {
-        $eval .= '$colarr[\'' . $col . '\'],' . $order . ',';
+        $eval .= '$colarr[\''.$col.'\'],'.$order.',';
     }
-    $eval = substr($eval, 0, -1) . ');';
+    $eval = substr($eval, 0, -1).');';
     eval($eval);
     $ret = [];
     foreach ($colarr as $col => $arr) {
@@ -1765,22 +1738,19 @@ function array_msort($array, $cols)
             $ret[$k][$col] = $array[$k][$col];
         }
     }
+
     return $ret;
 }
 
 /**
  * @return array|bool|mixed
- *
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function countries()
 {
-    global $site_config;
+    global $site_config, $cache;
 
-    $cache = new DarkAlchemy\Pu239\Cache();
     $ret = $cache->get('countries_arr');
-    if ($ret === false || is_null($ret)) {
+    if (false === $ret || is_null($ret)) {
         $res = sql_query('SELECT id, name, flagpic FROM countries ORDER BY name ASC') or sqlerr(__FILE__, __LINE__);
         while ($row = mysqli_fetch_assoc($res)) {
             $ret[] = $row;
@@ -1796,18 +1766,14 @@ function countries()
  * @param string $home
  *
  * @return string
- *
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function breadcrumbs($separator = '', $home = 'Home')
 {
-    global $site_config;
-    $session = new DarkAlchemy\Pu239\Session();
+    global $site_config, $session;
 
     $path = array_filter(explode('/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)));
     $query = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
-    $base = $site_config['baseurl'] . '/';
+    $base = $site_config['baseurl'].'/';
     $breadcrumbs = ["<li><a href='$base'>$home</a></li>"];
     $keys = array_keys($path);
     $last = end($keys);
@@ -1816,7 +1782,7 @@ function breadcrumbs($separator = '', $home = 'Home')
     if (!empty($query)) {
         $action = explode('=', $query);
     }
-    if (!empty($action[0]) && $action[0] === 'action') {
+    if (!empty($action[0]) && 'action' === $action[0]) {
         $last = '';
     }
 
@@ -1835,7 +1801,7 @@ function breadcrumbs($separator = '', $home = 'Home')
         }
     }
 
-    if (!empty($action[0]) && $action[0] === 'action') {
+    if (!empty($action[0]) && 'action' === $action[0]) {
         $type = explode('&', str_replace([
                                              '-',
                                              '_',
@@ -1892,11 +1858,12 @@ function breadcrumbs($separator = '', $home = 'Home')
     }
     }
 */
-    $current = "<li class='is-active'><a href='#' aria-current='page'><span class='has-text-white'>" . end($breadcrumbs) . "</span></a></li>";
+    $current = "<li class='is-active'><a href='#' aria-current='page'><span class='has-text-white'>".end($breadcrumbs).'</span></a></li>';
     array_pop($breadcrumbs);
     $breadcrumbs[] = $current;
 
     $session->set('query_str', parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY));
+
     return implode($separator, $breadcrumbs);
 }
 
@@ -1933,7 +1900,7 @@ function make_nice_address($ip)
     if ($dom == $ip || @gethostbyname($dom) != $ip) {
         return $ip;
     } else {
-        return $ip . '<br>' . $dom;
+        return $ip.'<br>'.$dom;
     }
 }
 
@@ -1944,7 +1911,7 @@ function make_nice_address($ip)
  */
 function return_bytes($val)
 {
-    if ($val == '') {
+    if ('' == $val) {
         return 0;
     }
     $val = strtolower(trim($val));
@@ -1973,7 +1940,7 @@ function return_bytes($val)
  */
 function plural($int)
 {
-    if ($int != 1) {
+    if (1 != $int) {
         return 's';
     }
 }
@@ -1989,7 +1956,8 @@ function ipToStorageFormat($ip)
     if (!filter_var($ip, FILTER_VALIDATE_IP)) {
         $ip = '10.10.10.10';
     }
-    return '0x' . bin2hex(inet_pton($ip));
+
+    return '0x'.bin2hex(inet_pton($ip));
 }
 
 /**
@@ -2002,7 +1970,7 @@ function valid_username($username, $ajax = false)
 {
     global $lang;
 
-    if ($username == '') {
+    if ('' == $username) {
         return false;
     }
     $namelength = strlen($username);
@@ -2019,8 +1987,10 @@ function valid_username($username, $ajax = false)
             echo "<span style='color: #cc0000;'>{$lang['takesignup_allowed_chars']}</span>";
             die();
         }
+
         return false;
     }
+
     return true;
 }
 
@@ -2031,13 +2001,14 @@ function valid_username($username, $ajax = false)
  */
 function Christmas($celebrate = true)
 {
-    $upperBound = new DateTime("Dec 31");
-    $lowerBound = new DateTime("Dec 1");
-    $checkDate = new DateTime(date('M d', strtotime("Today")));
+    $upperBound = new DateTime('Dec 31');
+    $lowerBound = new DateTime('Dec 1');
+    $checkDate = new DateTime(date('M d', strtotime('Today')));
 
     if ($celebrate && $checkDate >= $lowerBound && $checkDate <= $upperBound) {
         return true;
     }
+
     return false;
 }
 
@@ -2080,8 +2051,7 @@ function image_proxy($url, $width = null, $height = null)
 {
     global $site_config;
 
-
-    if (empty($url) || preg_match('#' . $site_config['domain'] . '#', $url)) {
+    if (empty($url) || preg_match('#'.$site_config['domain'].'#', $url)) {
         return $url;
     }
     if (!empty($width) && !empty($height)) {
@@ -2089,8 +2059,10 @@ function image_proxy($url, $width = null, $height = null)
     }
     if (!empty($site_config['image_proxy'])) {
         $encrypted = CryptoJSAES::encrypt($url, $site_config['image_proxy_key'][1]);
-        return $site_config['image_proxy'] . base64_encode($encrypted . '&uid=' . $site_config['image_proxy_key'][0]);
+
+        return $site_config['image_proxy'].base64_encode($encrypted.'&uid='.$site_config['image_proxy_key'][0]);
     }
+
     return $url;
 }
 
@@ -2117,36 +2089,31 @@ function get_show_name(string $name)
 /**
  * @param string $name
  * @param string $type
- *
- * @return null
- *
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function get_show_id(string $name, string $type)
 {
-    global $fluent;
-
-    $cache = new DarkAlchemy\Pu239\Cache();
+    global $fluent, $cache;
 
     if (empty($name) || empty($type)) {
         return null;
     }
     $name = get_show_name($name);
     $hash = hash('sha512', $name);
-    $id_array = $cache->get('tvshow_ids_' . $hash);
-    if ($id_array === false || is_null($id_array)) {
+    $id_array = $cache->get('tvshow_ids_'.$hash);
+    if (false === $id_array || is_null($id_array)) {
         $id_array = $fluent->from('tvmaze')
             ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $name)
             ->fetch();
         if ($id_array) {
-            $cache->set('tvshow_ids_' . $hash, $id_array, 0);
+            $cache->set('tvshow_ids_'.$hash, $id_array, 0);
         }
     }
     if ($id_array) {
         extract($id_array);
+
         return $$type;
     }
+
     return null;
 }
 
@@ -2158,14 +2125,15 @@ function get_show_id(string $name, string $type)
  */
 function time24to12($h24, $min)
 {
-    if ($h24 === 0) {
+    if (0 === $h24) {
         $newhour = 12;
     } elseif ($h24 <= 12) {
         $newhour = $h24;
     } elseif ($h24 > 12) {
         $newhour = $h24 - 12;
     }
-    return ($h24 < 12) ? $newhour . ":$min am" : $newhour . ":$min pm";
+
+    return ($h24 < 12) ? $newhour.":$min am" : $newhour.":$min pm";
 }
 
 /**
@@ -2177,11 +2145,12 @@ function GetDirectorySize($path)
 {
     $bytestotal = 0;
     $path = realpath($path);
-    if ($path !== false && $path != '' && file_exists($path)) {
+    if (false !== $path && '' != $path && file_exists($path)) {
         foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)) as $object) {
             $bytestotal += $object->getSize();
         }
     }
+
     return human_filesize($bytestotal);
 }
 
@@ -2214,11 +2183,11 @@ function rrmdir($dir)
     if (is_dir($dir)) {
         $objects = scandir($dir);
         foreach ($objects as $object) {
-            if ($object != "." && $object != "..") {
-                if (filetype($dir . "/" . $object) == "dir") {
-                    rrmdir($dir . "/" . $object);
+            if ('.' != $object && '..' != $object) {
+                if ('dir' == filetype($dir.'/'.$object)) {
+                    rrmdir($dir.'/'.$object);
                 } else {
-                    unlink($dir . "/" . $object);
+                    unlink($dir.'/'.$object);
                 }
             }
         }
@@ -2227,6 +2196,6 @@ function rrmdir($dir)
     }
 }
 
-if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {
-    $session->set('is-danger', "[h1]This site is vulnerable until you delete the install directory[/h1][p]rm -r " . ROOT_DIR . "public" . DIRECTORY_SEPARATOR . "install" . DIRECTORY_SEPARATOR . "[/p]");
+if (file_exists(ROOT_DIR.'public'.DIRECTORY_SEPARATOR.'install')) {
+    $session->set('is-danger', '[h1]This site is vulnerable until you delete the install directory[/h1][p]rm -r '.ROOT_DIR.'public'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'[/p]');
 }

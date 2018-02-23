@@ -1,7 +1,8 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'ann_config.php';
-require_once INCL_DIR . 'ann_functions.php';
-require_once CLASS_DIR . 'class_bt_options.php';
+
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'ann_config.php';
+require_once INCL_DIR.'ann_functions.php';
+require_once CLASS_DIR.'class_bt_options.php';
 
 /**
  * @param $err
@@ -10,7 +11,7 @@ function error($err)
 {
     header('Content-Type: text/plain; charset=UTF-8');
     header('Pragma: no-cache');
-    die('d14:failure reason' . strlen($err) . ":{$err}ed5:flagsd20:min_request_intervali1800eeee");
+    die('d14:failure reason'.strlen($err).":{$err}ed5:flagsd20:min_request_intervali1800eeee");
 }
 
 /**
@@ -29,23 +30,23 @@ function getip()
  */
 function check_bans($ip, &$reason = '')
 {
-    $cache = new DarkAlchemy\Pu239\Cache();
+    global $cache;
     if (empty($ip)) {
         return false;
     }
-    $key = 'bans_' . $ip;
+    $key = 'bans_'.$ip;
     $ban = $cache->get($key);
-    if ($ban === false || is_null($ban)) {
+    if (false === $ban || is_null($ban)) {
         $nip = sqlesc($ip);
-        $ban_sql = sql_query('SELECT comment FROM bans WHERE (INET6_NTOA(first) <= ' . $nip . ' AND INET6_NTOA(last) >= ' . $nip . ') LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        $ban_sql = sql_query('SELECT comment FROM bans WHERE (INET6_NTOA(first) <= '.$nip.' AND INET6_NTOA(last) >= '.$nip.') LIMIT 1') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($ban_sql)) {
             $comment = mysqli_fetch_row($ban_sql);
-            $reason = 'Manual Ban (' . $comment[0] . ')';
+            $reason = 'Manual Ban ('.$comment[0].')';
             $cache->set($key, $reason, 86400); // 86400 // banned
 
             return true;
         }
-        ((mysqli_free_result($ban_sql) || (is_object($ban_sql) && (get_class($ban_sql) == 'mysqli_result'))) ? true : false);
+        ((mysqli_free_result($ban_sql) || (is_object($ban_sql) && ('mysqli_result' == get_class($ban_sql)))) ? true : false);
         $cache->set($key, 0, 86400);
 
         return false;
@@ -82,7 +83,7 @@ foreach ($q as $p) {
     }
 }
 
-if (isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) != 64) {
+if (isset($_GET['torrent_pass']) && 64 != strlen($_GET['torrent_pass'])) {
     $lentorrent_pass = strlen($_GET['torrent_pass']);
     if ($lentorrent_pass > 64 && preg_match('/^([0-9a-f]{64})\?(([0-9a-zA-Z]|_)+)\=/', $_GET['torrent_pass'], $matches)) {
         $lenget = strlen($matches[0]);
@@ -112,7 +113,7 @@ if (!$torrent_pass) {
 if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD']))) {
     die();
 }
-@((bool)mysqli_query($GLOBALS['___mysqli_ston'], "USE {$_ENV['DB_DATABASE']}")) or die();
+@((bool) mysqli_query($GLOBALS['___mysqli_ston'], "USE {$_ENV['DB_DATABASE']}")) or die();
 
 $numhash = 1;
 if (!empty($_GET['info_hash']) && is_array($_GET['info_hash'])) {
@@ -123,7 +124,7 @@ if (!empty($_GET['info_hash']) && is_array($_GET['info_hash'])) {
 $torrents = [];
 if ($numhash < 1) {
     die('Scrape Error d5:filesdee');
-} elseif ($numhash === 1) {
+} elseif (1 === $numhash) {
     $torrent = get_torrent_from_hash($_GET['info_hash']);
     if ($torrent) {
         $torrents[$_GET['info_hash']] = $torrent;
@@ -143,7 +144,7 @@ if (!$user || !count($torrents)) {
 }
 $r = 'd5:filesd';
 foreach ($torrents as $info_hash => $torrent) {
-    $r .= '20:' . $info_hash . 'd8:completei' . $torrent['seeders'] . 'e10:downloadedi' . $torrent['times_completed'] . 'e10:incompletei' . $torrent['leechers'] . 'ee';
+    $r .= '20:'.$info_hash.'d8:completei'.$torrent['seeders'].'e10:downloadedi'.$torrent['times_completed'].'e10:incompletei'.$torrent['leechers'].'ee';
 }
 $r .= 'ee';
 header('Content-Type: text/plain; charset=UTF-8');

@@ -1,8 +1,8 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-global $CURUSER, $site_config, $fluent;
-$session = new DarkAlchemy\Pu239\Session();
+
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'user_functions.php';
+global $CURUSER, $site_config, $fluent, $session;
 
 if (!$CURUSER) {
     get_template();
@@ -31,7 +31,7 @@ if (!password_verify($token, $row['token'])) {
     die();
 }
 
-if ($row['status'] != 'pending') {
+if ('pending' != $row['status']) {
     header("Refresh: 0; url={$site_config['baseurl']}/ok.php?type=confirmed");
     die();
 }

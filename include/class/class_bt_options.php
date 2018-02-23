@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class bt_options
+ * Class bt_options.
  */
 class bt_options
 {

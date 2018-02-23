@@ -1,8 +1,9 @@
 <?php
+
 error_reporting(E_ALL); //== turn off = 0 when live
 const REQUIRED_PHP = 50300, REQUIRED_PHP_VERSION = '5.3.0';
 if (PHP_VERSION_ID < REQUIRED_PHP) {
-    die('PHP ' . REQUIRED_PHP_VERSION . ' or higher is required.');
+    die('PHP '.REQUIRED_PHP_VERSION.' or higher is required.');
 }
 if (PHP_INT_SIZE < 8) {
     die('A 64bit or higher OS + Processor is required.');
@@ -25,7 +26,7 @@ if (!function_exists('sys_getloadavg')) {
         return [
             0,
             0,
-            0
+            0,
         ];
     }
 }
@@ -164,15 +165,15 @@ $site_config['inviteusers'] = 10000;
 $site_config['flood_time'] = 900; //comment/forum/pm flood limit
 $site_config['readpost_expiry'] = 14 * 86400; // 14 days
 
-$site_config['Cache'] = ROOT_DIR . 'Cache';
-$site_config['backup_dir'] = INCL_DIR . 'backup';
-$site_config['dictbreaker'] = ROOT_DIR . 'dictbreaker';
-$site_config['torrent_dir'] = ROOT_DIR . 'torrents'; // must be writable for httpd user
-$site_config['sub_up_dir'] = ROOT_DIR . 'uploadsub'; // must be writable for httpd user
-$site_config['flood_file'] = INCL_DIR . 'settings' . DIRECTORY_SEPARATOR . 'limitfile.txt';
-$site_config['nameblacklist'] = ROOT_DIR . 'Cache' . DIRECTORY_SEPARATOR . 'nameblacklist.txt';
-$site_config['happyhour'] = CACHE_DIR . 'happyhour' . DIRECTORY_SEPARATOR . 'happyhour.txt';
-$site_config['sql_error_log'] = ROOT_DIR . 'sqlerr_logs' . DIRECTORY_SEPARATOR . 'sql_err_' . date('M_D_Y') . '.log';
+$site_config['Cache'] = ROOT_DIR.'Cache';
+$site_config['backup_dir'] = INCL_DIR.'backup';
+$site_config['dictbreaker'] = ROOT_DIR.'dictbreaker';
+$site_config['torrent_dir'] = ROOT_DIR.'torrents'; // must be writable for httpd user
+$site_config['sub_up_dir'] = ROOT_DIR.'uploadsub'; // must be writable for httpd user
+$site_config['flood_file'] = INCL_DIR.'settings'.DIRECTORY_SEPARATOR.'limitfile.txt';
+$site_config['nameblacklist'] = ROOT_DIR.'Cache'.DIRECTORY_SEPARATOR.'nameblacklist.txt';
+$site_config['happyhour'] = CACHE_DIR.'happyhour'.DIRECTORY_SEPARATOR.'happyhour.txt';
+$site_config['sql_error_log'] = ROOT_DIR.'sqlerr_logs'.DIRECTORY_SEPARATOR.'sql_err_'.date('M_D_Y').'.log';
 //== XBT or PHP announce
 if (XBT_TRACKER) {
     $site_config['xbt_prefix'] = '#announce_urls:2710/';
@@ -183,10 +184,10 @@ if (XBT_TRACKER) {
     $site_config['announce_urls'][] = '#announce_urls';
     $site_config['announce_urls'][] = '#announce_https';
 }
-if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == '') {
+if (isset($_SERVER['HTTP_HOST']) && '' == $_SERVER['HTTP_HOST']) {
     $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
 }
-$site_config['baseurl'] = 'http' . (isset($_SERVER['HTTPS']) && (bool)$_SERVER['HTTPS'] == true ? 's' : '') . '://' . $_SERVER['HTTP_HOST'];
+$site_config['baseurl'] = 'http'.(isset($_SERVER['HTTPS']) && true == (bool) $_SERVER['HTTPS'] ? 's' : '').'://'.$_SERVER['HTTP_HOST'];
 //== Email for sender/return path.
 $site_config['site_email'] = '#site_email';
 $site_config['site_name'] = '#site_name';

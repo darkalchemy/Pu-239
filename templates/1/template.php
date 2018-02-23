@@ -10,10 +10,8 @@
  */
 function stdhead($title = '', $stdhead = null)
 {
-    require_once INCL_DIR . 'bbcode_functions.php';
-    global $CURUSER, $site_config, $lang, $free, $querytime, $BLOCKS, $CURBLOCK, $mood;
-
-    $session = new DarkAlchemy\Pu239\Session();
+    require_once INCL_DIR.'bbcode_functions.php';
+    global $CURUSER, $site_config, $lang, $free, $querytime, $BLOCKS, $CURBLOCK, $mood, $session;
 
     if (!$site_config['site_online']) {
         die('Site is down for maintenance, please check back again later... thanks<br>');
@@ -21,7 +19,7 @@ function stdhead($title = '', $stdhead = null)
     if (empty($title)) {
         $title = $site_config['site_name'];
     } else {
-        $title = $site_config['site_name'] . ' :: ' . htmlsafechars($title);
+        $title = $site_config['site_name'].' :: '.htmlsafechars($title);
     }
     $css_incl = '';
     if (!empty($stdhead['css'])) {
@@ -47,7 +45,7 @@ function stdhead($title = '', $stdhead = null)
     <link rel='manifest' href='{$site_config['baseurl']}/manifest.json' />
     <link rel='mask-icon' href='{$site_config['baseurl']}/safari-pinned-tab.svg' color='#5bbad5' />
     <meta name='theme-color' content='#fff'>
-    <link rel='stylesheet' href='" . get_file_name('css') . "' />
+    <link rel='stylesheet' href='".get_file_name('css')."' />
     {$css_incl}
     <style>#mlike{cursor:pointer;}</style>
     <script>
@@ -71,7 +69,7 @@ function stdhead($title = '', $stdhead = null)
         $htmlout .= "
             <div id='logo' class='logo columns level is-marginless'>
                 <div class='column'>
-                    <h1>" . $site_config['variant'] . " Code</h1>
+                    <h1>".$site_config['variant']." Code</h1>
                     <p class='description left20'><i>Making progress, 1 day at a time...</i></p>
                 </div>
             </div>";
@@ -82,36 +80,36 @@ function stdhead($title = '', $stdhead = null)
                     <ul class='level-center tags'>";
 
         if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_REPORTS && $BLOCKS['global_staff_report_on']) {
-            require_once BLOCK_DIR . 'global/report.php';
+            require_once BLOCK_DIR.'global/report.php';
         }
         if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_UPLOADAPP && $BLOCKS['global_staff_uploadapp_on']) {
-            require_once BLOCK_DIR . 'global/uploadapp.php';
+            require_once BLOCK_DIR.'global/uploadapp.php';
         }
         if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_HAPPYHOUR && $BLOCKS['global_happyhour_on'] && !XBT_TRACKER) {
-            require_once BLOCK_DIR . 'global/happyhour.php';
+            require_once BLOCK_DIR.'global/happyhour.php';
         }
         if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_STAFF_MESSAGE && $BLOCKS['global_staff_warn_on']) {
-            require_once BLOCK_DIR . 'global/staffmessages.php';
+            require_once BLOCK_DIR.'global/staffmessages.php';
         }
         if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_NEWPM && $BLOCKS['global_message_on']) {
-            require_once BLOCK_DIR . 'global/message.php';
+            require_once BLOCK_DIR.'global/message.php';
         }
         if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_DEMOTION && $BLOCKS['global_demotion_on']) {
-            require_once BLOCK_DIR . 'global/demotion.php';
+            require_once BLOCK_DIR.'global/demotion.php';
         }
         if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH && $BLOCKS['global_freeleech_on'] && !XBT_TRACKER) {
-            require_once BLOCK_DIR . 'global/freeleech.php';
+            require_once BLOCK_DIR.'global/freeleech.php';
         }
         if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_CRAZYHOUR && $BLOCKS['global_crazyhour_on'] && !XBT_TRACKER) {
-            require_once BLOCK_DIR . 'global/crazyhour.php';
+            require_once BLOCK_DIR.'global/crazyhour.php';
         }
         if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_BUG_MESSAGE && $BLOCKS['global_bug_message_on']) {
-            require_once BLOCK_DIR . 'global/bugmessages.php';
+            require_once BLOCK_DIR.'global/bugmessages.php';
         }
         if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH_CONTRIBUTION && $BLOCKS['global_freeleech_contribution_on']) {
-            require_once BLOCK_DIR . 'global/freeleech_contribution.php';
+            require_once BLOCK_DIR.'global/freeleech_contribution.php';
         }
-        require_once BLOCK_DIR . 'global/lottery.php';
+        require_once BLOCK_DIR.'global/lottery.php';
 
         $htmlout .= '
                     </ul>
@@ -134,16 +132,16 @@ function stdhead($title = '', $stdhead = null)
                 <div class='container is-fluid portlet padding20 bg-00 round10'>
                     <nav class='breadcrumb' aria-label='breadcrumbs'>
                         <ul>
-                            " . breadcrumbs() . "
+                            ".breadcrumbs().'
                         </ul>
                     </nav>
-                </div>";
+                </div>';
     }
 
     foreach ($site_config['notifications'] as $notif) {
-        if (($messages = $session->get($notif)) != false) {
+        if (false != ($messages = $session->get($notif))) {
             foreach ($messages as $message) {
-                $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>" . format_comment($message['message']) . "</a>";
+                $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>".format_comment($message['message']).'</a>';
                 $htmlout .= "
                 <div class='notification $notif has-text-centered size_6'>
                     <button class='delete'></button>$message
@@ -152,6 +150,7 @@ function stdhead($title = '', $stdhead = null)
             $session->unset($notif);
         }
     }
+
     return $htmlout;
 }
 
@@ -159,42 +158,40 @@ function stdhead($title = '', $stdhead = null)
  * @param bool $stdfoot
  *
  * @return string
+ *
  * @throws \MatthiasMullie\Scrapbook\Exception\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function stdfoot($stdfoot = false)
 {
-    require_once INCL_DIR . 'bbcode_functions.php';
-    global $CURUSER, $site_config, $start, $query_stat, $querytime, $lang;
-
-    $cache = new DarkAlchemy\Pu239\Cache();
-    $session = new DarkAlchemy\Pu239\Session();
+    require_once INCL_DIR.'bbcode_functions.php';
+    global $CURUSER, $site_config, $start, $query_stat, $querytime, $lang, $cache, $session;
 
     $header = $uptime = $htmlfoot = '';
     $debug = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
     $queries = !empty($query_stat) ? count($query_stat) : 0;
     $seconds = microtime(true) - $start;
     $r_seconds = round($seconds, 5);
-    $querytime = $querytime === null ? 0 : $querytime;
+    $querytime = null === $querytime ? 0 : $querytime;
 
     if ($CURUSER['class'] >= UC_STAFF && $debug) {
-        if (extension_loaded('apcu') && $_ENV['CACHE_DRIVER'] === 'apcu') {
+        if (extension_loaded('apcu') && 'apcu' === $_ENV['CACHE_DRIVER']) {
             $stats = apcu_cache_info();
             if ($stats) {
                 $stats['Hits'] = number_format($stats['num_hits'] / ($stats['num_hits'] + $stats['num_misses']) * 100, 3);
-                $header = "{$lang['gl_stdfoot_querys_apcu1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['num_entries']) . "{$lang['gl_stdfoot_querys_mstat6']}" . human_filesize($stats['mem_size']);
+                $header = "{$lang['gl_stdfoot_querys_apcu1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}".number_format((100 - $stats['Hits']), 3).$lang['gl_stdfoot_querys_mstat5'].number_format($stats['num_entries'])."{$lang['gl_stdfoot_querys_mstat6']}".human_filesize($stats['mem_size']);
             }
-        } elseif (extension_loaded('redis') && $_ENV['CACHE_DRIVER'] === 'redis') {
+        } elseif (extension_loaded('redis') && 'redis' === $_ENV['CACHE_DRIVER']) {
             $client = new \Redis();
             $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
             $client->select($_ENV['REDIS_DATABASE']);
             $stats = $client->info();
             if ($stats) {
                 $stats['Hits'] = number_format($stats['keyspace_hits'] / ($stats['keyspace_hits'] + $stats['keyspace_misses']) * 100, 3);
-                preg_match('/keys=(\d+)/', $stats['db' . $_ENV['REDIS_DATABASE']], $keys);
-                $header = "{$lang['gl_stdfoot_querys_redis1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($keys[1]) . "{$lang['gl_stdfoot_querys_mstat6']}{$stats['used_memory_human']}";
+                preg_match('/keys=(\d+)/', $stats['db'.$_ENV['REDIS_DATABASE']], $keys);
+                $header = "{$lang['gl_stdfoot_querys_redis1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}".number_format((100 - $stats['Hits']), 3).$lang['gl_stdfoot_querys_mstat5'].number_format($keys[1])."{$lang['gl_stdfoot_querys_mstat6']}{$stats['used_memory_human']}";
             }
-        } elseif (extension_loaded('memcached') && $_ENV['CACHE_DRIVER'] === 'memcached') {
+        } elseif (extension_loaded('memcached') && 'memcached' === $_ENV['CACHE_DRIVER']) {
             $client = new \Memcached();
             if (!count($client->getServerList())) {
                 $client->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
@@ -203,11 +200,11 @@ function stdfoot($stdfoot = false)
             $stats = !empty($stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"]) ? $stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"] : null;
             if ($stats && !empty($stats['get_hits']) && !empty($stats['cmd_get'])) {
                 $stats['Hits'] = number_format(($stats['get_hits'] / $stats['cmd_get']) * 100, 3);
-                $header = $lang['gl_stdfoot_querys_mstat3'] . $stats['Hits'] . $lang['gl_stdfoot_querys_mstat4'] . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['curr_items']) . "{$lang['gl_stdfoot_querys_mstat6']}" . human_filesize($stats['bytes']);
+                $header = $lang['gl_stdfoot_querys_mstat3'].$stats['Hits'].$lang['gl_stdfoot_querys_mstat4'].number_format((100 - $stats['Hits']), 3).$lang['gl_stdfoot_querys_mstat5'].number_format($stats['curr_items'])."{$lang['gl_stdfoot_querys_mstat6']}".human_filesize($stats['bytes']);
             }
-        } elseif ($_ENV['CACHE_DRIVER'] === 'files') {
-            $header = "{$lang['gl_stdfoot_querys_fly1']}{$_ENV['FILES_PATH']} {$lang['gl_stdfoot_querys_fly2']}" . GetDirectorySize($_ENV['FILES_PATH']);
-        } elseif ($_ENV['CACHE_DRIVER'] === 'couchbase') {
+        } elseif ('files' === $_ENV['CACHE_DRIVER']) {
+            $header = "{$lang['gl_stdfoot_querys_fly1']}{$_ENV['FILES_PATH']} {$lang['gl_stdfoot_querys_fly2']}".GetDirectorySize($_ENV['FILES_PATH']);
+        } elseif ('couchbase' === $_ENV['CACHE_DRIVER']) {
             $header = $lang['gl_stdfoot_querys_cbase'];
         }
 
@@ -231,10 +228,10 @@ function stdfoot($stdfoot = false)
                 $querytime += $value['seconds'];
                 $htmlfoot .= '
                                     <tr>
-                                        <td>' . ($key + 1) . "</td>
-                                        <td>" . ($value['seconds'] > 0.01 ? "<span class='is-danger' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='is-success' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
+                                        <td>'.($key + 1).'</td>
+                                        <td>'.($value['seconds'] > 0.01 ? "<span class='is-danger' title='{$lang['gl_stdfoot_ysoq']}'>".$value['seconds'].'</span>' : "<span class='is-success' title='{$lang['gl_stdfoot_qg']}'>".$value['seconds'].'</span>')."</td>
                                         <td>
-                                            <div class='text-justify pre'>" . format_comment($value['query']) . '</div>
+                                            <div class='text-justify pre'>".format_comment($value['query']).'</div>
                                         </td>
                                     </tr>';
             }
@@ -247,27 +244,27 @@ function stdfoot($stdfoot = false)
                 </div>';
         }
         $uptime = $cache->get('uptime');
-        if ($uptime === false || is_null($uptime)) {
+        if (false === $uptime || is_null($uptime)) {
             $uptime = `uptime`;
             $cache->set('uptime', $uptime, 25);
         }
     }
-    $htmlfoot .= "
+    $htmlfoot .= '
                 </div>
-            </div>";
+            </div>';
 
     if ($CURUSER) {
         $htmlfoot .= "
             <div class='container site-debug bg-05 round10 top20 bottom20'>
                 <div class='level bordered bg-04'>
                     <div class='size_4 top10 bottom10'>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_page']} " . mksize(memory_get_peak_usage()) . " in $r_seconds {$lang['gl_stdfoot_querys_seconds']}</p>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_server']} $queries {$lang['gl_stdfoot_querys_time']}" . plural($queries) . "</p>
-                        " . ($debug ? "<p class='is-marginless'>$header</p><p class='is-marginless'>{$lang['gl_stdfoot_uptime']} $uptime</p>" : '') . "
+                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_page']} ".mksize(memory_get_peak_usage())." in $r_seconds {$lang['gl_stdfoot_querys_seconds']}</p>
+                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_server']} $queries {$lang['gl_stdfoot_querys_time']}".plural($queries).'</p>
+                        '.($debug ? "<p class='is-marginless'>$header</p><p class='is-marginless'>{$lang['gl_stdfoot_uptime']} $uptime</p>" : '')."
                     </div>
                     <div class='size_4 top10 bottom10'>
                         <p class='is-marginless'>{$lang['gl_stdfoot_powered']}{$site_config['variant']}</p>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_using']}{$lang['gl_stdfoot_using1']} " . show_php_version() . "</p>
+                        <p class='is-marginless'>{$lang['gl_stdfoot_using']}{$lang['gl_stdfoot_using1']} ".show_php_version()."</p>
                     </div>
                 </div>
             </div>
@@ -286,7 +283,7 @@ function stdfoot($stdfoot = false)
         let cookie_path     = '{$site_config['cookie_path']}';
         let cookie_lifetime = '{$site_config['cookie_lifetime']}';
         let cookie_domain   = '{$site_config['cookie_domain']}';
-        let csrf_token      = '" . $session->get('csrf_token') . "';
+        let csrf_token      = '".$session->get('csrf_token')."';
         let x = document.getElementsByClassName('flipper');
         let i;
         for (i = 0; i < x.length; i++) {
@@ -327,7 +324,7 @@ function stdfoot($stdfoot = false)
     </script>";
 
     $htmlfoot .= "
-    <script src='" . get_file_name('js') . "'></script>";
+    <script src='".get_file_name('js')."'></script>";
 
     if (!empty($stdfoot['js'])) {
         foreach ($stdfoot['js'] as $JS) {
@@ -336,11 +333,12 @@ function stdfoot($stdfoot = false)
         }
     }
 
-    $htmlfoot .= "
+    $htmlfoot .= '
 </body>
-</html>";
+</html>';
 
     $session->close();
+
     return $htmlfoot;
 }
 
@@ -353,7 +351,7 @@ function stdfoot($stdfoot = false)
  */
 function stdmsg($heading, $text, $class = null)
 {
-    require_once INCL_DIR . 'html_functions.php';
+    require_once INCL_DIR.'html_functions.php';
 
     $htmlout = '';
     if ($heading) {
@@ -379,8 +377,8 @@ function StatusBar()
     $StatusBar .= "
                     <div id='base_usermenu' class='tooltipper-ajax right10 level-item'>
                         <span id='clock' class='has-text-white right10'>{$clock}</span>
-                        " . format_username($CURUSER['id'], true, false) . "
-                    </div>";
+                        ".format_username($CURUSER['id'], true, false).'
+                    </div>';
 
     return $StatusBar;
 }
@@ -392,44 +390,43 @@ function StatusBar()
  */
 function navbar()
 {
-    global $site_config, $CURUSER, $lang, $fluent;
+    global $site_config, $CURUSER, $lang, $fluent, $cache;
 
-    $cache = new DarkAlchemy\Pu239\Cache();
     $navbar = $panel = $user_panel = $settings_panel = $stats_panel = $other_panel = '';
 
     if ($CURUSER['class'] >= UC_STAFF) {
-        $staff_panel = $cache->get('staff_panels_' . $CURUSER['class']);
-        if ($staff_panel === false || is_null($staff_panel)) {
+        $staff_panel = $cache->get('staff_panels_'.$CURUSER['class']);
+        if (false === $staff_panel || is_null($staff_panel)) {
             $staff_panel = $fluent->from('staffpanel')
                 ->where('navbar = 1')
                 ->where('av_class <= ?', $CURUSER['class'])
                 ->orderBy('page_name')
                 ->fetchAll();
-            $cache->set('staff_panels_' . $CURUSER['class'], $staff_panel, 0);
+            $cache->set('staff_panels_'.$CURUSER['class'], $staff_panel, 0);
         }
 
         if ($staff_panel) {
             foreach ($staff_panel as $key => $value) {
-                if ($value['av_class'] <= $CURUSER['class'] && $value['type'] == 'user') {
+                if ($value['av_class'] <= $CURUSER['class'] && 'user' == $value['type']) {
                     $user_panel .= "
                         <li>
-                            <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . "</a>
-                        </li>";
-                } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] == 'settings') {
+                            <a href='{$site_config['baseurl']}/".htmlsafechars($value['file_name'])."'>".htmlsafechars($value['page_name']).'</a>
+                        </li>';
+                } elseif ($value['av_class'] <= $CURUSER['class'] && 'settings' == $value['type']) {
                     $settings_panel .= "
                         <li>
-                            <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . "</a>
-                        </li>";
-                } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] == 'stats') {
+                            <a href='{$site_config['baseurl']}/".htmlsafechars($value['file_name'])."'>".htmlsafechars($value['page_name']).'</a>
+                        </li>';
+                } elseif ($value['av_class'] <= $CURUSER['class'] && 'stats' == $value['type']) {
                     $stats_panel .= "
                         <li>
-                            <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . "</a>
-                        </li>";
-                } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] == 'other') {
+                            <a href='{$site_config['baseurl']}/".htmlsafechars($value['file_name'])."'>".htmlsafechars($value['page_name']).'</a>
+                        </li>';
+                } elseif ($value['av_class'] <= $CURUSER['class'] && 'other' == $value['type']) {
                     $other_panel .= "
                         <li>
-                            <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . "</a>
-                        </li>";
+                            <a href='{$site_config['baseurl']}/".htmlsafechars($value['file_name'])."'>".htmlsafechars($value['page_name']).'</a>
+                        </li>';
                 }
             }
 
@@ -477,7 +474,7 @@ function navbar()
                             <li>
                                 <a href='{$site_config['baseurl']}/staffpanel.php'>Staff Panel</a>
                             </li>";
-                if ($CURUSER['class'] === UC_MAX) {
+                if (UC_MAX === $CURUSER['class']) {
                     $panel .= "
                             <li>
                                 <a href='{$site_config['baseurl']}/view_sql.php'>Adminer</a>
@@ -517,13 +514,13 @@ function navbar()
                                     <li><a href='{$site_config['baseurl']}/browse.php?today=1'>{$lang['gl_newtor']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/offers.php'>{$lang['gl_offers']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/requests.php'>{$lang['gl_requests']}</a></li>
-                                    " . ($CURUSER['class'] <= UC_VIP ? "<li><a href='{$site_config['baseurl']}/uploadapp.php'>{$lang['gl_uapp']}</a></li>" : "<li><a href='{$site_config['baseurl']}/upload.php'>{$lang['gl_upload']}</a></li>") . "
+                                    ".($CURUSER['class'] <= UC_VIP ? "<li><a href='{$site_config['baseurl']}/uploadapp.php'>{$lang['gl_uapp']}</a></li>" : "<li><a href='{$site_config['baseurl']}/upload.php'>{$lang['gl_upload']}</a></li>")."
                                 </ul>
                             </li>
                             <li>
                                 <a href='#'>{$lang['gl_general']}</a>
                                 <ul class='ddFade ddFadeSlow'>";
-        if ($site_config['bucket_allowed'] === 1) {
+        if (1 === $site_config['bucket_allowed']) {
             $navbar .= "
                                     <li><a href='{$site_config['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>";
         }
@@ -571,8 +568,8 @@ function navbar()
                                 </ul>
 -->
                             </li>
-                            <li>" . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/bugs.php?action=add'>{$lang['gl_breport']}</a>" : "<a href='{$site_config['baseurl']}/bugs.php?action=bugs'>[Bugs]</a>") . "</li>
-                            <li>" . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/contactstaff.php'>{$lang['gl_cstaff']}</a>" : "<a href='{$site_config['baseurl']}/staffbox.php'>[Messages]</a>") . "</li>
+                            <li>".($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/bugs.php?action=add'>{$lang['gl_breport']}</a>" : "<a href='{$site_config['baseurl']}/bugs.php?action=bugs'>[Bugs]</a>").'</li>
+                            <li>'.($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/contactstaff.php'>{$lang['gl_cstaff']}</a>" : "<a href='{$site_config['baseurl']}/staffbox.php'>[Messages]</a>")."</li>
                             $panel
                             <li>
                                 <a href='{$site_config['baseurl']}/logout.php?hash_please={$salty}' class='is-flex'>
@@ -586,6 +583,7 @@ function navbar()
         </header>
     </div>";
     }
+
     return $navbar;
 }
 
@@ -599,13 +597,14 @@ function platform_menu()
     $menu = "
         <div id='platform-menu' class='container platform-menu'>
             <div class='platform-wrapper level'>
-                <ul class='level-left'>" . (!$site_config['in_production'] ? "
-                    <li class='left10 has-text-primary'>Pu-239 v{$site_config['version']}</li>" : '') . "
+                <ul class='level-left'>".(!$site_config['in_production'] ? "
+                    <li class='left10 has-text-primary'>Pu-239 v{$site_config['version']}</li>" : '')."
                 </ul>
-                <ul class='level-right'>" .
-        StatusBar() . "
+                <ul class='level-right'>".
+        StatusBar().'
                 </ul>
             </div>
-        </div>";
+        </div>';
+
     return $menu;
 }

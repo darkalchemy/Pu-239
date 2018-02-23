@@ -1,6 +1,7 @@
 <?php
-require_once INCL_DIR . 'user_functions.php';
-require_once CLASS_DIR . 'class_check.php';
+
+require_once INCL_DIR.'user_functions.php';
+require_once CLASS_DIR.'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $lang;
@@ -44,9 +45,7 @@ switch ($params['mode']) {
 
 function delete_poll()
 {
-    global $site_config, $CURUSER, $lang;
-
-$cache = new DarkAlchemy\Pu239\Cache();
+    global $site_config, $CURUSER, $lang, $cache;
 
     $total_votes = 0;
     if (!isset($_GET['pid']) or !is_valid_id($_GET['pid'])) {
@@ -62,17 +61,15 @@ $cache = new DarkAlchemy\Pu239\Cache();
             {$lang['poll_dp_delete2']}
         </a>");
     }
-    sql_query('DELETE FROM polls WHERE pid = ' . sqlesc($pid));
-    sql_query('DELETE FROM poll_voters WHERE poll_id = ' . sqlesc($pid));
-    $cache->delete('poll_data_' . $CURUSER['id']);
+    sql_query('DELETE FROM polls WHERE pid = '.sqlesc($pid));
+    sql_query('DELETE FROM poll_voters WHERE poll_id = '.sqlesc($pid));
+    $cache->delete('poll_data_'.$CURUSER['id']);
     show_poll_archive();
 }
 
 function update_poll()
 {
-    global $site_config, $CURUSER, $lang, $stdfoot;
-
-$cache = new DarkAlchemy\Pu239\Cache();
+    global $site_config, $CURUSER, $lang, $stdfoot, $cache;
 
     $total_votes = 0;
     if (!isset($_POST['pid']) or !is_valid_id($_POST['pid'])) {
@@ -92,8 +89,8 @@ $cache = new DarkAlchemy\Pu239\Cache();
     }
     //all ok, serialize
     $poll_data = sqlesc(serialize($poll_data));
-    sql_query("UPDATE polls SET choices = $poll_data, starter_id = {$CURUSER['id']}, votes = $total_votes, poll_question = $poll_title WHERE pid = " . sqlesc($pid)) or sqlerr(__FILE__, __LINE__);
-    $cache->delete('poll_data_' . $CURUSER['id']);
+    sql_query("UPDATE polls SET choices = $poll_data, starter_id = {$CURUSER['id']}, votes = $total_votes, poll_question = $poll_title WHERE pid = ".sqlesc($pid)) or sqlerr(__FILE__, __LINE__);
+    $cache->delete('poll_data_'.$CURUSER['id']);
     if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $msg = "
         <h1 class='has-text-centered'>{$lang['poll_up_error']}</h1>
@@ -111,14 +108,12 @@ $cache = new DarkAlchemy\Pu239\Cache();
             </a>
         </div>";
     }
-    echo stdhead($lang['poll_up_stdhead']) . wrapper($msg) . stdfoot($stdfoot);
+    echo stdhead($lang['poll_up_stdhead']).wrapper($msg).stdfoot($stdfoot);
 }
 
 function insert_new_poll()
 {
-    global $site_config, $CURUSER, $lang, $stdfoot;
-
-$cache = new DarkAlchemy\Pu239\Cache();
+    global $site_config, $CURUSER, $lang, $stdfoot, $cache;
 
     if (!isset($_POST['poll_question']) or empty($_POST['poll_question'])) {
         stderr($lang['poll_inp_usr_err'], $lang['poll_inp_no_title']);
@@ -134,7 +129,7 @@ $cache = new DarkAlchemy\Pu239\Cache();
     $username = sqlesc($CURUSER['username']);
     $time = TIME_NOW;
     sql_query("INSERT INTO polls (start_date, choices, starter_id, votes, poll_question)VALUES($time, $poll_data, {$CURUSER['id']}, 0, $poll_title)") or sqlerr(__FILE__, __LINE__);
-    $cache->delete('poll_data_' . $CURUSER['id']);
+    $cache->delete('poll_data_'.$CURUSER['id']);
     if (false == ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res)) {
         $msg = "
         <h1 class='has-text-centered'>{$lang['poll_inp_error']}</h1>
@@ -152,7 +147,7 @@ $cache = new DarkAlchemy\Pu239\Cache();
             </a>
         </div>";
     }
-    echo stdhead($lang['poll_inp_stdhead']) . wrapper($msg) . stdfoot($stdfoot);
+    echo stdhead($lang['poll_inp_stdhead']).wrapper($msg).stdfoot($stdfoot);
 }
 
 function show_poll_form()
@@ -160,7 +155,7 @@ function show_poll_form()
     global $site_config, $lang, $stdfoot;
 
     $poll_box = poll_box($site_config['max_poll_questions'], $site_config['max_poll_choices_per_question'], 'poll_new');
-    echo stdhead($lang['poll_spf_stdhead']) . wrapper($poll_box) . stdfoot($stdfoot);
+    echo stdhead($lang['poll_spf_stdhead']).wrapper($poll_box).stdfoot($stdfoot);
 }
 
 /**
@@ -174,21 +169,21 @@ function edit_poll_form()
     $poll_multi = '';
     $poll_choices = '';
     $poll_votes = '';
-    $query = sql_query('SELECT * FROM polls WHERE pid = ' . intval($_GET['pid']));
+    $query = sql_query('SELECT * FROM polls WHERE pid = '.intval($_GET['pid']));
     if (false == mysqli_num_rows($query)) {
         return $lang['poll_epf_no_poll'];
     }
     $poll_data = mysqli_fetch_assoc($query);
     $poll_answers = $poll_data['choices'] ? unserialize(stripslashes($poll_data['choices'])) : [];
     foreach ($poll_answers as $question_id => $data) {
-        $poll_questions .= "\t{$question_id} : '" . str_replace("'", '&#39;', $data['question']) . "',\n";
+        $poll_questions .= "\t{$question_id} : '".str_replace("'", '&#39;', $data['question'])."',\n";
         $data['multi'] = isset($data['multi']) ? intval($data['multi']) : 0;
-        $poll_multi .= "\t{$question_id} : '" . $data['multi'] . "',\n";
+        $poll_multi .= "\t{$question_id} : '".$data['multi']."',\n";
         foreach ($data['choice'] as $choice_id => $text) {
             $choice = $text;
             $votes = intval($data['votes'][$choice_id]);
-            $poll_choices .= "\t'{$question_id}_{$choice_id}' : '" . str_replace("'", '&#39;', $choice) . "',\n";
-            $poll_votes .= "\t'{$question_id}_{$choice_id}' : '" . $votes . "',\n";
+            $poll_choices .= "\t'{$question_id}_{$choice_id}' : '".str_replace("'", '&#39;', $choice)."',\n";
+            $poll_votes .= "\t'{$question_id}_{$choice_id}' : '".$votes."',\n";
         }
     }
     $poll_questions = preg_replace("#,(\n)?$#", '\\1', $poll_questions);
@@ -198,7 +193,7 @@ function edit_poll_form()
     $poll_question = $poll_data['poll_question'];
     $show_open = $poll_data['choices'] ? 1 : 0;
     $poll_box = poll_box($site_config['max_poll_questions'], $site_config['max_poll_choices_per_question'], 'poll_update', $poll_questions, $poll_choices, $poll_votes, $show_open, $poll_question, $poll_multi);
-    echo stdhead($lang['poll_epf_stdhead']) . wrapper($poll_box) . stdfoot($stdfoot);
+    echo stdhead($lang['poll_epf_stdhead']).wrapper($poll_box).stdfoot($stdfoot);
 }
 
 function show_poll_archive()
@@ -237,22 +232,22 @@ function show_poll_archive()
             $row['start_date'] = get_date($row['start_date'], 'DATE');
             $body .= '
         <tr>
-            <td>' . (int)$row['pid'] . '</td>
-            <td>' . htmlsafechars($row['poll_question']) . '</td>
-            <td>' . (int)$row['votes'] . '</td>
-            <td>' . htmlsafechars($row['start_date']) . "</td>
+            <td>'.(int) $row['pid'].'</td>
+            <td>'.htmlsafechars($row['poll_question']).'</td>
+            <td>'.(int) $row['votes'].'</td>
+            <td>'.htmlsafechars($row['start_date']).'</td>
             <td>
-                " . format_username($row['starter_id']) . "</a>
+                '.format_username($row['starter_id'])."</a>
             </td>
             <td>
                 <div class='level-center'>
                     <span>
-                        <a href='{$site_config['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=edit&amp;pid=" . (int)$row['pid'] . "' title='{$lang['poll_spa_edit']}' class='tooltipper'>
+                        <a href='{$site_config['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=edit&amp;pid=".(int) $row['pid']."' title='{$lang['poll_spa_edit']}' class='tooltipper'>
                             <i class='icon-edit icon'></i>
                         </a>
                     </span>
                     <span>
-                        <a href='{$site_config['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=delete&amp;pid=" . (int)$row['pid'] . "' title='{$lang['poll_spa_delete']}' class='tooltipper'>
+                        <a href='{$site_config['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=delete&amp;pid=".(int) $row['pid']."' title='{$lang['poll_spa_delete']}' class='tooltipper'>
                             <i class='icon-cancel icon'></i>
                         </a>
                     </span>
@@ -261,7 +256,7 @@ function show_poll_archive()
         }
         $HTMLOUT .= main_table($body, $heading);
     }
-    echo stdhead($lang['poll_spa_stdhead']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+    echo stdhead($lang['poll_spa_stdhead']).wrapper($HTMLOUT).stdfoot($stdfoot);
 }
 
 /**
@@ -281,7 +276,7 @@ function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type =
 {
     global $site_config, $lang;
     $pid = isset($_GET['pid']) ? intval($_GET['pid']) : 0;
-    $form_type = ($form_type != '' ? $form_type : 'poll_update');
+    $form_type = ('' != $form_type ? $form_type : 'poll_update');
     $HTMLOUT = "
     <script>
         var showfullonload = parseInt(\"{$show_open}\");
@@ -379,7 +374,7 @@ function makepoll()
             }
             $questions[$question_id]['choice'][$choice_id] = htmlsafechars(strip_tags($choice), ENT_QUOTES);
             $_POST['votes'] = isset($_POST['votes']) ? $_POST['votes'] : 0;
-            $questions[$question_id]['votes'][$choice_id] = intval($_POST['votes'][$question_id . '_' . $choice_id]);
+            $questions[$question_id]['votes'][$choice_id] = intval($_POST['votes'][$question_id.'_'.$choice_id]);
             $poll_total_votes += $questions[$question_id]['votes'][$choice_id];
         }
     }
@@ -396,7 +391,7 @@ function makepoll()
     if (!empty($choices_count) && count($choices_count) > ($site_config['max_poll_questions'] * $site_config['max_poll_choices_per_question'])) {
         die('poll_to_many');
     }
-    if (isset($_POST['mode']) and $_POST['mode'] == 'poll_update') {
+    if (isset($_POST['mode']) and 'poll_update' == $_POST['mode']) {
         $questions['total_votes'] = $poll_total_votes;
     }
 

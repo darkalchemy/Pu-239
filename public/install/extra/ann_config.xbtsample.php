@@ -1,10 +1,12 @@
 <?php
+
 error_reporting(E_ALL);
+global $site_config;
 
 $finished = $plist = $corupptthis = '';
 $agent = $_SERVER['HTTP_USER_AGENT'];
 $detectedclient = $_SERVER['HTTP_USER_AGENT'];
-$site_config['Cache'] = ROOT_DIR. 'Cache';
+$site_config['Cache'] = ROOT_DIR.'Cache';
 require_once CLASS_DIR.'class_cache.php';
 require_once CLASS_DIR.'class_bt_options.php';
 $site_config['pic_baseurl'] = './pic/';
@@ -13,7 +15,6 @@ require_once CACHE_DIR.'hit_and_run_settings.php';
 if (version_compare(PHP_VERSION, '5.1.0RC1', '>=')) {
     date_default_timezone_set('Europe/London');
 }
-$mc1 = new DarkAlchemy\Pu239\Cache();
 $site_config['announce_interval'] = 60 * 30;
 $site_config['min_interval'] = 60 * 15;
 $site_config['connectable_check'] = 1;

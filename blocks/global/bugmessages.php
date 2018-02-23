@@ -1,11 +1,10 @@
 <?php
-global $CURUSER, $site_config, $lang, $fluent;
 
-$cache = new DarkAlchemy\Pu239\Cache();
+global $CURUSER, $site_config, $lang, $fluent, $cache;
 
 if ($site_config['bug_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $bugs = $cache->get('bug_mess_');
-    if ($bugs === false || is_null($bugs)) {
+    if (false === $bugs || is_null($bugs)) {
         $res = $fluent->from('bugs')
             ->select(null)
             ->select('COUNT(id) AS count')
@@ -27,10 +26,10 @@ if ($site_config['bug_alert'] && $CURUSER['class'] >= UC_STAFF) {
                     <div class='size_4 has-text-centered has-text-danger has-text-weight-bold bottom10'>
                         {$lang['gl_bug_alert1']}
                     </div>
-                    {$lang['gl_bug_alert2']} {$CURUSER['username']}!<br> " . sprintf($lang['gl_bugs'], $bugs[0]) . ($bugs[0] > 1 ? "{$lang['gl_bugss']}" : '') . "!
+                    {$lang['gl_bug_alert2']} {$CURUSER['username']}!<br> ".sprintf($lang['gl_bugs'], $bugs[0]).($bugs[0] > 1 ? "{$lang['gl_bugss']}" : '').'!
                  </span>
             </div>
         </a>
-    </li>";
+    </li>';
     }
 }

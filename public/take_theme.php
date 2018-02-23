@@ -1,25 +1,24 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'user_functions.php';
-check_user_status();
-global $CURUSER, $site_config;
 
-$cache = new DarkAlchemy\Pu239\Cache();
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'user_functions.php';
+check_user_status();
+global $CURUSER, $site_config, $cache;
 
 $lang = load_language('global');
 $HTMLOUT = $out = '';
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $sid = isset($_POST['stylesheet']) ? (int)$_POST['stylesheet'] : 1;
+if ('POST' == $_SERVER['REQUEST_METHOD']) {
+    $sid = isset($_POST['stylesheet']) ? (int) $_POST['stylesheet'] : 1;
     if ($sid > 0 && $sid != $CURUSER['id']) {
-        sql_query('UPDATE users SET stylesheet=' . sqlesc($sid) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET stylesheet='.sqlesc($sid).' WHERE id = '.sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     }
-    $cache->update_row('user' . $CURUSER['id'], [
+    $cache->update_row('user'.$CURUSER['id'], [
         'stylesheet' => $sid,
     ], $site_config['expires']['user_cache']);
-    $HTMLOUT .= "<script>
+    $HTMLOUT .= '<script>
         opener.location.reload(true);
         self.close();
-      </script>";
+      </script>';
 }
 $body_class = 'background-16 h-style-9 text-9 skin-2';
 $HTMLOUT .= "<!doctype html>
@@ -29,7 +28,7 @@ $HTMLOUT .= "<!doctype html>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <title>Choose theme</title>
-    <link rel='stylesheet' href='" . get_file_name('css') . "' />
+    <link rel='stylesheet' href='".get_file_name('css')."' />
 </head>
 <body class='$body_class'>
     <script>
@@ -48,7 +47,7 @@ $HTMLOUT .= "<!doctype html>
 $ss_r = sql_query('SELECT id, name FROM stylesheets ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
 while ($ar = mysqli_fetch_assoc($ss_r)) {
     $out .= '
-                        <option value="' . (int)$ar['id'] . '" ' . ($ar['id'] == $CURUSER['stylesheet'] ? 'selected=\'selected\'' : '') . '>' . htmlsafechars($ar['name']) . '</option>';
+                        <option value="'.(int) $ar['id'].'" '.($ar['id'] == $CURUSER['stylesheet'] ? 'selected=\'selected\'' : '').'>'.htmlsafechars($ar['name']).'</option>';
 }
 $HTMLOUT .= $out;
 $HTMLOUT .= "

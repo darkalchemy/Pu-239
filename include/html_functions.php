@@ -15,10 +15,10 @@ function begin_main_frame()
  */
 function end_main_frame()
 {
-    return "
+    return '
                     </td>
                 </tr>
-            </table>";
+            </table>';
 }
 
 /**
@@ -36,7 +36,7 @@ function begin_frame($caption = '', $center = false, $padding = 10)
         $htmlout .= "<h2>$caption</h2>\n";
     }
     if ($center) {
-        $tdextra .= "";
+        $tdextra .= '';
     }
     $htmlout .= "<table class='shit table table-bordered table-striped'><tr><td$tdextra>\n";
 
@@ -67,7 +67,7 @@ function end_frame()
 function begin_table($striped = false)
 {
     $htmlout = '';
-    $stripe = $striped === true ? ' table-striped' : '';
+    $stripe = true === $striped ? ' table-striped' : '';
     $htmlout .= "<table class='sucks table table-bordered{$stripe}'>\n";
 
     return $htmlout;
@@ -137,10 +137,11 @@ function insert_smilies_frame()
  */
 function main_table($body, $header = null, $class = null, $wrapper_class = null)
 {
-    $thead = $header != null ? "
+    $thead = null != $header ? "
                         <thead>
                             $header
                         </thead>" : '';
+
     return "
                 <div class='table-wrapper $wrapper_class'>
                     <table class='table table-bordered table-striped $class'>
@@ -159,7 +160,7 @@ function main_table($body, $header = null, $class = null, $wrapper_class = null)
  */
 function main_div($text, $class = null)
 {
-    if ($text === '') {
+    if ('' === $text) {
         return;
     } else {
         return "
@@ -179,7 +180,7 @@ function main_div($text, $class = null)
  */
 function wrapper($text, $class = '')
 {
-    if ($text === '') {
+    if ('' === $text) {
         return;
     } else {
         return "

@@ -6,9 +6,8 @@
  */
 function achievement_bday_update($data)
 {
-    global $site_config, $queries;
+    global $site_config, $queries, $cache;
 
-$cache = new DarkAlchemy\Pu239\Cache();
     $lang = load_language('ad_cleanup_manager');
 
     set_time_limit(1200);
@@ -28,60 +27,60 @@ $cache = new DarkAlchemy\Pu239\Cache();
         $points = random_int(1, 3);
         $var1 = 'bday';
         while ($arr = mysqli_fetch_assoc($res)) {
-            $bday = (int)$arr['bday'];
-            $added = (int)$arr['added'];
-            if ($bday == 0 && $added < $maxdt) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]First Birthday[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/birthday1.png[/img]');
+            $bday = (int) $arr['bday'];
+            $added = (int) $arr['added'];
+            if (0 == $bday && $added < $maxdt) {
+                $msg = sqlesc('Congratulations, you have just earned the [b]First Birthday[/b] achievement. :) [img]'.$site_config['pic_baseurl'].'achievements/birthday1.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['id']}, $dt, $msg, $subject)";
-                $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'First Birthday\', \'birthday1.png\' , \'Been a member for at least 1 year.\')';
-                $usersachiev_buffer[] = '(' . $arr['id'] . ',1, ' . $points . ')';
-                $cache->increment('inbox_' . $arr['id']);
-                $cache->delete('user_achievement_points_' . $arr['id']);
+                $achievements_buffer[] = '('.$arr['id'].', '.$dt.', \'First Birthday\', \'birthday1.png\' , \'Been a member for at least 1 year.\')';
+                $usersachiev_buffer[] = '('.$arr['id'].',1, '.$points.')';
+                $cache->increment('inbox_'.$arr['id']);
+                $cache->delete('user_achievement_points_'.$arr['id']);
             }
-            if ($bday == 1 && $added < $maxdt2) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Second Birthday[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/birthday2.png[/img]');
+            if (1 == $bday && $added < $maxdt2) {
+                $msg = sqlesc('Congratulations, you have just earned the [b]Second Birthday[/b] achievement. :) [img]'.$site_config['pic_baseurl'].'achievements/birthday2.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['id']}, $dt, $msg, $subject)";
-                $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Second Birthday\', \'birthday2.png\' , \'Been a member for a period of at least 2 years.\')';
-                $usersachiev_buffer[] = '(' . $arr['id'] . ',2, ' . $points . ')';
-                $cache->increment('inbox_' . $arr['id']);
+                $achievements_buffer[] = '('.$arr['id'].', '.$dt.', \'Second Birthday\', \'birthday2.png\' , \'Been a member for a period of at least 2 years.\')';
+                $usersachiev_buffer[] = '('.$arr['id'].',2, '.$points.')';
+                $cache->increment('inbox_'.$arr['id']);
             }
-            if ($bday == 2 && $added < $maxdt3) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Third Birthday[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/birthday3.png[/img]');
+            if (2 == $bday && $added < $maxdt3) {
+                $msg = sqlesc('Congratulations, you have just earned the [b]Third Birthday[/b] achievement. :) [img]'.$site_config['pic_baseurl'].'achievements/birthday3.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['id']}, $dt, $msg, $subject)";
-                $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Third Birthday\', \'birthday3.png\' , \'Been a member for a period of at least 3 years.\')';
-                $usersachiev_buffer[] = '(' . $arr['id'] . ',3, ' . $points . ')';
-                $cache->increment('inbox_' . $arr['id']);
+                $achievements_buffer[] = '('.$arr['id'].', '.$dt.', \'Third Birthday\', \'birthday3.png\' , \'Been a member for a period of at least 3 years.\')';
+                $usersachiev_buffer[] = '('.$arr['id'].',3, '.$points.')';
+                $cache->increment('inbox_'.$arr['id']);
             }
-            if ($bday == 3 && $added < $maxdt4) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Fourth Birthday[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/birthday4.png[/img]');
+            if (3 == $bday && $added < $maxdt4) {
+                $msg = sqlesc('Congratulations, you have just earned the [b]Fourth Birthday[/b] achievement. :) [img]'.$site_config['pic_baseurl'].'achievements/birthday4.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['id']}, $dt, $msg, $subject)";
-                $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Fourth Birthday\', \'birthday4.png\' , \'Been a member for a period of at least 4 years.\')';
-                $usersachiev_buffer[] = '(' . $arr['id'] . ',4, ' . $points . ')';
-                $cache->increment('inbox_' . $arr['id']);
+                $achievements_buffer[] = '('.$arr['id'].', '.$dt.', \'Fourth Birthday\', \'birthday4.png\' , \'Been a member for a period of at least 4 years.\')';
+                $usersachiev_buffer[] = '('.$arr['id'].',4, '.$points.')';
+                $cache->increment('inbox_'.$arr['id']);
             }
-            if ($bday == 4 && $added < $maxdt5) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Fifth Birthday[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/birthday5.png[/img]');
+            if (4 == $bday && $added < $maxdt5) {
+                $msg = sqlesc('Congratulations, you have just earned the [b]Fifth Birthday[/b] achievement. :) [img]'.$site_config['pic_baseurl'].'achievements/birthday5.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['id']}, $dt, $msg, $subject)";
-                $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Fifth Birthday\', \'birthday5.png\' , \'Been a member for a period of at least 5 years.\')';
-                $usersachiev_buffer[] = '(' . $arr['id'] . ',5, ' . $points . ')';
-                $cache->increment('inbox_' . $arr['id']);
+                $achievements_buffer[] = '('.$arr['id'].', '.$dt.', \'Fifth Birthday\', \'birthday5.png\' , \'Been a member for a period of at least 5 years.\')';
+                $usersachiev_buffer[] = '('.$arr['id'].',5, '.$points.')';
+                $cache->increment('inbox_'.$arr['id']);
             }
-            if ($bday == 5 && $added < $maxdt6) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Sixth Birthday[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/birthday6.png[/img]');
+            if (5 == $bday && $added < $maxdt6) {
+                $msg = sqlesc('Congratulations, you have just earned the [b]Sixth Birthday[/b] achievement. :) [img]'.$site_config['pic_baseurl'].'achievements/birthday6.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['id']}, $dt, $msg, $subject)";
-                $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Sixth Birthday\', \'birthday6.png\' , \'Been a member for a period of at least 6 years.\')';
-                $usersachiev_buffer[] = '(' . $arr['id'] . ',6, ' . $points . ')';
-                $cache->increment('inbox_' . $arr['id']);
+                $achievements_buffer[] = '('.$arr['id'].', '.$dt.', \'Sixth Birthday\', \'birthday6.png\' , \'Been a member for a period of at least 6 years.\')';
+                $usersachiev_buffer[] = '('.$arr['id'].',6, '.$points.')';
+                $cache->increment('inbox_'.$arr['id']);
             }
         }
         $count = count($achievements_buffer);
         if ($count > 0) {
-            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
-            sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE KEY UPDATE date = VALUES(date),achievement = VALUES(achievement),icon = VALUES(icon),description = VALUES(description)') or sqlerr(__FILE__, __LINE__);
-            sql_query("INSERT INTO usersachiev (userid, $var1, achpoints) VALUES " . implode(', ', $usersachiev_buffer) . " ON DUPLICATE KEY UPDATE $var1 = VALUES($var1), achpoints=achpoints + VALUES(achpoints)") or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES '.implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES '.implode(', ', $achievements_buffer).' ON DUPLICATE KEY UPDATE date = VALUES(date),achievement = VALUES(achievement),icon = VALUES(icon),description = VALUES(description)') or sqlerr(__FILE__, __LINE__);
+            sql_query("INSERT INTO usersachiev (userid, $var1, achpoints) VALUES ".implode(', ', $usersachiev_buffer)." ON DUPLICATE KEY UPDATE $var1 = VALUES($var1), achpoints=achpoints + VALUES(achpoints)") or sqlerr(__FILE__, __LINE__);
         }
         if ($data['clean_log'] && $queries > 0) {
-            write_log("Achievements Cleanup: Birthdays Completed using $queries queries. Birthday Achievements awarded to - " . $count . ' Member(s)');
+            write_log("Achievements Cleanup: Birthdays Completed using $queries queries. Birthday Achievements awarded to - ".$count.' Member(s)');
         }
         unset($usersachiev_buffer, $achievement_buffer, $msgs_buffer, $count);
     }

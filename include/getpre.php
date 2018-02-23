@@ -19,22 +19,22 @@ function get_pretime($st)
     $secs_elapsed = floor($st - $mins * 60);
     $pretime = '';
     if ($secs_elapsed > 0) {
-        $pretime = "$secs_elapsed Secs. " . $pretime;
+        $pretime = "$secs_elapsed Secs. ".$pretime;
     }
     if ($mins_elapsed > 0) {
-        $pretime = "$mins_elapsed Mins, " . $pretime;
+        $pretime = "$mins_elapsed Mins, ".$pretime;
     }
     if ($hours_elapsed > 0) {
-        $pretime = "$hours_elapsed Hrs., " . $pretime;
+        $pretime = "$hours_elapsed Hrs., ".$pretime;
     }
     if ($days_elapsed > 0) {
-        $pretime = "$days_elapsed Days, " . $pretime;
+        $pretime = "$days_elapsed Days, ".$pretime;
     }
     if ($week_elapsed > 0) {
-        $pretime = "$week_elapsed Weeks, " . $pretime;
+        $pretime = "$week_elapsed Weeks, ".$pretime;
     }
     if ($month > 0) {
-        $pretime = "$month Months, " . $pretime;
+        $pretime = "$month Months, ".$pretime;
     }
 
     return "$pretime";

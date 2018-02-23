@@ -1,6 +1,6 @@
 <?php
-global $lang, $site_config;
 
+global $lang, $site_config;
 
 $HTMLOUT .= "
     <a id='trivia-hash'></a>

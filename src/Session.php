@@ -20,13 +20,9 @@ class Session
         $this->cache = new Cache();
     }
 
-    public function __destruct()
-    {
-        // TODO: Implement __destruct() method.
-    }
-
     /**
      * @return bool
+     *
      * @throws Exception
      * @throws \Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\Exception
@@ -35,12 +31,11 @@ class Session
     public function start()
     {
         if (!session_id()) {
-
             // Set the session name:
             session_name($this->config['sessionName']);
 
             $expires = $this->config['cookie_lifetime'] <= 1 ? 900 : $this->config['cookie_lifetime'] * 86400;
-            $secure_session = get_scheme() === 'https' ? true : false;
+            $secure_session = 'https' === get_scheme() ? true : false;
             $domain = $this->config['cookie_domain'] === $this->config['domain'] ? '' : $this->config['cookie_domain'];
 
             // Set session cookie parameters:
@@ -62,12 +57,14 @@ class Session
             // Start the session:
             if (!@session_start()) {
                 $this->destroy();
+
                 return false;
             }
         }
 
         if (!session_id()) {
             $this->destroy();
+
             return false;
         }
 
@@ -102,29 +99,27 @@ class Session
      */
     public function set($key, $value, $prefix = null)
     {
-        if ($prefix === null) {
+        if (null === $prefix) {
             $prefix = $this->config['sessionKeyPrefix'];
         }
         if (in_array($key, $this->config['notifications'])) {
             $current = $this->get($key);
             if ($current) {
                 if (!in_array($value, $current)) {
-                    $_SESSION[$prefix . $key] = array_merge($current, [$value]);
+                    $_SESSION[$prefix.$key] = array_merge($current, [$value]);
                 }
             } else {
-                $_SESSION[$prefix . $key] = [$value];
+                $_SESSION[$prefix.$key] = [$value];
             }
         } else {
             $this->unset($key);
-            $_SESSION[$prefix . $key] = $value;
+            $_SESSION[$prefix.$key] = $value;
         }
     }
 
     /**
      * @param      $key
      * @param null $prefix
-     *
-     * @return null
      */
     public function get($key, $prefix = null)
     {
@@ -132,12 +127,12 @@ class Session
             return null;
         }
 
-        if ($prefix === null) {
+        if (null === $prefix) {
             $prefix = $this->config['sessionKeyPrefix'];
         }
 
-        if (isset($_SESSION[$prefix . $key])) {
-            return $_SESSION[$prefix . $key];
+        if (isset($_SESSION[$prefix.$key])) {
+            return $_SESSION[$prefix.$key];
         } else {
             return null;
         }
@@ -149,11 +144,11 @@ class Session
      */
     public function unset($key, $prefix = null)
     {
-        if ($prefix === null) {
+        if (null === $prefix) {
             $prefix = $this->config['sessionKeyPrefix'];
         }
 
-        unset($_SESSION[$prefix . $key]);
+        unset($_SESSION[$prefix.$key]);
     }
 
     /**
@@ -162,11 +157,12 @@ class Session
      * @param bool $regen
      *
      * @return bool
+     *
      * @throws \Exception
      */
     public function validateToken($token, $key = null, $regen = false)
     {
-        if ($key === null) {
+        if (null === $key) {
             $key = $this->config['session_csrf'];
         }
         if (empty($token)) {
@@ -178,8 +174,10 @@ class Session
                 $this->unset($key);
                 $this->set($key, bin2hex(random_bytes(32)));
             }
+
             return true;
         }
+
         return false;
     }
 
@@ -194,7 +192,7 @@ class Session
         $cookies = new Cookie('remember');
         $cookie = $cookies->getToken();
         if (!empty($cookie[0])) {
-            $this->cache->delete('remember_' . $cookie[0]);
+            $this->cache->delete('remember_'.$cookie[0]);
         }
 
         $this->start();
@@ -203,7 +201,7 @@ class Session
         if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
             setcookie(
-                $this->config['cookie_prefix'] . 'remember',
+                $this->config['cookie_prefix'].'remember',
                 '',
                 TIME_NOW - 86400,
                 $params['path'],
@@ -227,9 +225,6 @@ class Session
         session_destroy();
     }
 
-    /**
-     *
-     */
     public function close()
     {
         session_write_close();

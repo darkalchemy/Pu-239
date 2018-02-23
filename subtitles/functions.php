@@ -17,28 +17,28 @@ function requestXML($name, $searchby, $lang, $cds, $format, $fps, $offset)
 {
     $optional = '';
     if (isset($lang)) {
-        $optional .= '/sublanguageid-' . $lang;
+        $optional .= '/sublanguageid-'.$lang;
     }
     if (isset($cds)) {
-        $optional .= '/subsumcd-' . $cds;
+        $optional .= '/subsumcd-'.$cds;
     }
     if (isset($format)) {
-        $optional .= '/subformat-' . $format;
+        $optional .= '/subformat-'.$format;
     }
     if (isset($offset) && $offset > 0) {
-        $optional .= '/offset-' . $offset;
+        $optional .= '/offset-'.$offset;
     }
-    if (isset($searchby) && $searchby == 'name') {
-        $search = '/moviename-' . urlencode($name);
+    if (isset($searchby) && 'name' == $searchby) {
+        $search = '/moviename-'.urlencode($name);
     }
-    if (isset($searchby) && $searchby == 'imdb') {
+    if (isset($searchby) && 'imdb' == $searchby) {
         if (!ereg('[0-9]{7}', $name, $imdbid)) {
             die("Can't find imdb id");
         } else {
-            $search = '/imdbid-' . $imdbid[0];
+            $search = '/imdbid-'.$imdbid[0];
         }
     }
-    $link = 'http://www.opensubtitles.org/en/search' . $search . $optional . '/simplexml';
+    $link = 'http://www.opensubtitles.org/en/search'.$search.$optional.'/simplexml';
 
     $xml = file_get_contents($link) or die("can't connect to host to get the xml data");
 
@@ -96,9 +96,9 @@ function get_base($array)
  */
 function get_results($array)
 {
-    return ['items'      => $array['@items'],
+    return ['items' => $array['@items'],
             'itemsfound' => $array['@itemsfound'],
-            'searchtime' => $array['@searchtime']
+            'searchtime' => $array['@searchtime'],
     ];
 }
 
@@ -120,13 +120,13 @@ function pager($itemsfound, $href)
     if ($links > 1) {
         $pager = '';
         for ($i = 0; $i < $links; ++$i) {
-            if ($i % 15 == 0) {
+            if (0 == $i % 15) {
                 $pager .= '<br><br>';
             }
-            if (($i * 40) == 1000) {
+            if (1000 == ($i * 40)) {
                 break;
             }
-            $pager .= '<a ' . ($_GET['offset'] == ($i * 40) ? 'class="sublink-active"' : 'class="sublink"') . ' href="' . $href . 'offset=' . ($i * 40) . '">' . ($i + 1) . '</a>&#160;';
+            $pager .= '<a '.($_GET['offset'] == ($i * 40) ? 'class="sublink-active"' : 'class="sublink"').' href="'.$href.'offset='.($i * 40).'">'.($i + 1).'</a>&#160;';
         }
     }
 
@@ -146,16 +146,16 @@ function build_result($array, $pager)
     $base = get_base($array['search']['base']);
     $time = get_results($array['search']['results']);
     //print the content
-    if (count($result) == 0) {
+    if (0 == count($result)) {
         echo '<div><h2>No result found</h2></div>';
     } else {
         ?>
         <table width="55%" style="border-collapse:collapse;" border="1">
             <tr>
                 <td colspan="9">Search took&#160;<font class="releasename">
-                        <?php echo $time['searchtime'] ?>
+                        <?php echo $time['searchtime']; ?>
                         s</font>, Items found <font class="releasename">
-                        <?php echo $time['itemsfound'] ?>
+                        <?php echo $time['itemsfound']; ?>
                     </font></td>
             </tr>
             <tr>
@@ -169,35 +169,35 @@ function build_result($array, $pager)
                                          title="Uploader"/></td>
             </tr>
             <?php
-            $count = ($time['itemsfound'] == 1 ? 1 : count($result));
+            $count = (1 == $time['itemsfound'] ? 1 : count($result));
         for ($i = 0; $i < $count; ++$i) {
-            $movie = ($count == 1 ? get_details($result) : get_details($result[$i])); ?>
+            $movie = (1 == $count ? get_details($result) : get_details($result[$i])); ?>
                 <tr>
-                    <td nowrap="nowrap"><img src="' . $site_config['baseurl']. '/flag/<?php echo $movie['iso639'] ?>.gif" width="18"
+                    <td nowrap="nowrap"><img src="' . $site_config['baseurl']. '/flag/<?php echo $movie['iso639']; ?>.gif" width="18"
                                              height="12" border="0"
-                                             alt="<?php echo $movie['language'] ?>"
-                                             title="<?php echo $movie['language'] ?>"/></td>
-                    <td colspan="2" width="100%"><a href="<?php echo $base . $movie['detail'] ?>"
+                                             alt="<?php echo $movie['language']; ?>"
+                                             title="<?php echo $movie['language']; ?>"/></td>
+                    <td colspan="2" width="100%"><a href="<?php echo $base.$movie['detail']; ?>"
                                                     target="_blank">
-                            <?php echo $movie['movie'] ?>
+                            <?php echo $movie['movie']; ?>
                         </a>
-                        <?php echo $movie['releasename'] ? '<br><font class="releasename">' . $movie['releasename'] . '</font>' : '' ?>
+                        <?php echo $movie['releasename'] ? '<br><font class="releasename">'.$movie['releasename'].'</font>' : ''; ?>
                     </td>
-                    <td nowrap="nowrap"><a href="<?php echo $base . $movie['download'] ?>"
+                    <td nowrap="nowrap"><a href="<?php echo $base.$movie['download']; ?>"
                                            target="blank"><img src="' . $site_config['baseurl']. '/imgs/icon-download.gif" width="12"
                                                                height="12" border="0" alt=" "
                                                                title="download"/></a></td>
                     <td nowrap="nowrap"
-                    ><?php echo str_replace(' ', '<br>', $movie['subadddate']) ?></td>
-                    <td nowrap="nowrap"><?php echo $movie['files'] ?></td>
-                    <td nowrap="nowrap"><?php echo $movie['format'] ?></td>
+                    ><?php echo str_replace(' ', '<br>', $movie['subadddate']); ?></td>
+                    <td nowrap="nowrap"><?php echo $movie['files']; ?></td>
+                    <td nowrap="nowrap"><?php echo $movie['format']; ?></td>
                     <td nowrap="nowrap"
-                    ><?php echo $movie['user'] == '' ? 'Unknown' : $movie['user'] ?></td>
+                    ><?php echo '' == $movie['user'] ? 'Unknown' : $movie['user']; ?></td>
                 </tr>
                 <?php
         } ?>
         </table>
-        <?php echo $time['itemsfound'] > 40 ? '<br><div>' . pager($time['itemsfound'], $pager) . '</div>' : '' ?>
+        <?php echo $time['itemsfound'] > 40 ? '<br><div>'.pager($time['itemsfound'], $pager).'</div>' : ''; ?>
         <?php
     }
 }

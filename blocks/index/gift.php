@@ -1,4 +1,5 @@
 <?php
+
 global $CURUSER, $site_config, $lang;
 
 $Christmasday = mktime(0, 0, 0, 12, 25, date('Y'));

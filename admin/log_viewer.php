@@ -10,14 +10,12 @@
 */
 
 /* Absolute local path to your server 'log' directory */
-/**
- *
- */define('LOG_PATH', '/var/log/nginx');
+define('LOG_PATH', '/var/log/nginx');
 
-/**
+/*
  *
  */define('DISPLAY_REVERSE', true); // true = displays log entries starting with the most recent
-/**
+/*
  *
  */define('DIRECTORY_SEPARATOR', '/');
 
@@ -340,7 +338,7 @@ $title = substr($log, (strrpos($log, '/') + 1));
 
     <div id="menu">
         <div class="pure-menu pure-menu-open">
-            <a href="<?php echo $_SERVER['PHP_SELF'] . '?tool=log_viewer' ?>" class="pure-menu-heading">Server Logs</a>
+            <a href="<?php echo $_SERVER['PHP_SELF'].'?tool=log_viewer'; ?>" class="pure-menu-heading">Server Logs</a>
             <ul>
                 <?php show_list_of_files($files, $lines); ?>
 
@@ -351,17 +349,17 @@ $title = substr($log, (strrpos($log, '/') + 1));
     <div id="main">
         <div class="header">
             <h1><?php echo $title; ?></h1>
-            <?= (!empty($filename)) ? '<h2>The last ' . $lines . ' lines of <span class="truncate">' . basename($filename) . '</span></h2>' : ''; ?>
+            <?= (!empty($filename)) ? '<h2>The last '.$lines.' lines of <span class="truncate">'.basename($filename).'</span></h2>' : ''; ?>
 
             <form action="" method="get" class="pure-form pure-form-aligned">
-                <input type="hidden" name="p" value="<?php echo $log ?>">
+                <input type="hidden" name="p" value="<?php echo $log; ?>">
                 <label>How many lines to display?
                     <select name="lines" onchange="this.form.submit()">
-                        <option value="10" <?php echo ($lines == '10') ? 'selected' : '' ?>>10</option>
-                        <option value="50" <?php echo ($lines == '50') ? 'selected' : '' ?>>50</option>
-                        <option value="100" <?php echo ($lines == '100') ? 'selected' : '' ?>>100</option>
-                        <option value="500" <?php echo ($lines == '500') ? 'selected' : '' ?>>500</option>
-                        <option value="1000" <?php echo ($lines == '1000') ? 'selected' : '' ?>>1000</option>
+                        <option value="10" <?php echo ('10' == $lines) ? 'selected' : ''; ?>>10</option>
+                        <option value="50" <?php echo ('50' == $lines) ? 'selected' : ''; ?>>50</option>
+                        <option value="100" <?php echo ('100' == $lines) ? 'selected' : ''; ?>>100</option>
+                        <option value="500" <?php echo ('500' == $lines) ? 'selected' : ''; ?>>500</option>
+                        <option value="1000" <?php echo ('1000' == $lines) ? 'selected' : ''; ?>>1000</option>
                     </select>
                 </label>
             </form>
@@ -454,11 +452,11 @@ function get_log_files($dir, &$results = [])
     $files = scandir($dir);
     if ($files) {
         foreach ($files as $key => $value) {
-            $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
+            $path = realpath($dir.DIRECTORY_SEPARATOR.$value);
 
             if (!is_dir($path)) {
                 $files_list[] = $path;
-            } elseif ($value != "." && $value != "..") {
+            } elseif ('.' != $value && '..' != $value) {
                 $dirs_list[] = $path;
             }
         }
@@ -473,8 +471,10 @@ function get_log_files($dir, &$results = [])
                 get_log_files($path, $results);
             }
         }
+
         return $results;
     }
+
     return false;
 }
 
@@ -491,7 +491,7 @@ function tail($filename, $lines = 50, $buffer = 4096)
     if (!is_file($filename)) {
         return false;
     }
-    $f = fopen($filename, "rb");
+    $f = fopen($filename, 'rb');
     if (!$f) {
         return false;
     }
@@ -501,7 +501,7 @@ function tail($filename, $lines = 50, $buffer = 4096)
 
     // Read it and adjust line number if necessary
     // (Otherwise the result would be wrong if file doesn't end with a blank line)
-    if (fread($f, 1) != "\n") {
+    if ("\n" != fread($f, 1)) {
         $lines -= 1;
     }
 
@@ -518,7 +518,7 @@ function tail($filename, $lines = 50, $buffer = 4096)
         fseek($f, -$seek, SEEK_CUR);
 
         // Read a chunk and prepend it to our output
-        $output = ($chunk = fread($f, $seek)) . $output;
+        $output = ($chunk = fread($f, $seek)).$output;
 
         // Jump back to where we started reading
         fseek($f, -mb_strlen($chunk, '8bit'), SEEK_CUR);
@@ -536,6 +536,7 @@ function tail($filename, $lines = 50, $buffer = 4096)
 
     // Close file and return
     fclose($f);
+
     return $output;
 }
 
@@ -562,7 +563,7 @@ function show_list_of_files($files, $lines = 50)
                 continue;
             }
             $active = ($f['path'] == $log) ? 'class="pure-menu-selected"' : '';
-            echo '<li ' . $active . '><a href="?tool=log_viewer&amp;p=' . urlencode($f['path']) . '&lines=' . $lines . '">' . $f['name'] . '</a></li>';
+            echo '<li '.$active.'><a href="?tool=log_viewer&amp;p='.urlencode($f['path']).'&lines='.$lines.'">'.$f['name'].'</a></li>';
         }
         echo '</ul>';
     }

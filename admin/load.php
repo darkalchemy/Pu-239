@@ -1,25 +1,26 @@
 <?php
-require_once INCL_DIR . 'user_functions.php';
-require_once CLASS_DIR . 'class_check.php';
+
+require_once INCL_DIR.'user_functions.php';
+require_once CLASS_DIR.'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
 $lang = array_merge($lang, load_language('ad_index'));
 $HTMLOUT = '';
-/**
+/*
  *
  */
 define('INTERVAL_1_MIN', 0); // load average for last 1 minute
-/**
+/*
  *
  */
 define('INTERVAL_5_MIN', 1); // load average for last 5 minute
-/**
+/*
  *
  */
 define('INTERVAL_15_MIN', 2); //  load average for last 15 minute
-/**
+/*
  *
  */
 define('DEFAULT_AVG', INTERVAL_15_MIN); // selects which load average to return by default if no parameters are passed
@@ -31,7 +32,7 @@ define('DEFAULT_AVG', INTERVAL_15_MIN); // selects which load average to return 
 function is_s($n)
 {
     global $lang;
-    if ($n == 1) {
+    if (1 == $n) {
         return '';
     } else {
         return $lang['index_load_s'];
@@ -47,17 +48,17 @@ function uptime()
     $res = '';
     $filename = '/proc/uptime';
     $fd = fopen($filename, 'r');
-    if ($fd === false) {
+    if (false === $fd) {
         $res = $lang['index_load_uptime'];
     } else {
         $uptime = fgets($fd, 64);
         fclose($fd);
         $mults = [
-            4  => $lang['index_load_month'],
-            7  => $lang['index_load_week'],
+            4 => $lang['index_load_month'],
+            7 => $lang['index_load_week'],
             24 => $lang['index_load_day'],
             60 => $lang['index_load_hour'],
-            1  => $lang['index_load_minute'],
+            1 => $lang['index_load_minute'],
         ];
         $n = 2419200;
         $periods = [];
@@ -72,7 +73,7 @@ function uptime()
                 if ($shown) {
                     $res .= ', ';
                 }
-                $res .= "$nmbr $v" . is_s($nmbr);
+                $res .= "$nmbr $v".is_s($nmbr);
                 $shown = true;
             }
         }
@@ -95,7 +96,7 @@ function loadavg($return_all = false)
     $res = '';
     $filename = '/proc/loadavg';
     $fd = fopen($filename, 'r');
-    if ($fd === false) {
+    if (false === $fd) {
         $res = $lang['index_load_average'];
     } else {
         $loadavg = fgets($fd, 64);
@@ -156,16 +157,16 @@ if ($percent <= 70) {
 $width = $percent * 4;
 $HTMLOUT .= "<img height='15' width='$width' src=\"{$site_config['pic_baseurl']}{$pic}\" alt='$percent&#37;' /><br>{$lang['index_load_curr']}{$percent}{$lang['index_load_cpu']}<br>";
 //==End graphic
-$HTMLOUT .= "{$lang['index_load_uptime1']}" . uptime() . '';
+$HTMLOUT .= "{$lang['index_load_uptime1']}".uptime().'';
 $loadinfo = loadavg(true);
 $HTMLOUT .= "<br>
-    {$lang['index_load_pastmin']}" . $loadinfo['last1'] . "<br>
-    {$lang['index_load_pastmin5']}" . $loadinfo['last5'] . "<br>
-    {$lang['index_load_pastmin15']}" . $loadinfo['last15'] . "<br>
-    {$lang['index_load_numtsk']}" . $loadinfo['tasks'] . "<br>
-    {$lang['index_load_numproc']}" . $loadinfo['processes'] . "<br>
-   {$lang['index_load_pid']}" . $loadinfo['lastpid'] . '<br>
+    {$lang['index_load_pastmin']}".$loadinfo['last1']."<br>
+    {$lang['index_load_pastmin5']}".$loadinfo['last5']."<br>
+    {$lang['index_load_pastmin15']}".$loadinfo['last15']."<br>
+    {$lang['index_load_numtsk']}".$loadinfo['tasks']."<br>
+    {$lang['index_load_numproc']}".$loadinfo['processes']."<br>
+   {$lang['index_load_pid']}".$loadinfo['lastpid'].'<br>
     </td></tr></table></td></tr></table></div><br>';
 //==End
 
-echo stdhead($lang['index_serverload']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['index_serverload']).$HTMLOUT.stdfoot();

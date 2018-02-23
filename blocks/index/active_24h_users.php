@@ -1,10 +1,9 @@
 <?php
-global $site_config, $lang, $fluent;
 
-$cache = new DarkAlchemy\Pu239\Cache();
+global $site_config, $lang, $fluent, $cache;
 
 $active24 = $cache->get('last24_users_');
-if ($active24 === false || is_null($active24)) {
+if (false === $active24 || is_null($active24)) {
     $list = [];
     $record = $fluent->from('avps')
         ->where('arg = ?', 'last24')
@@ -25,12 +24,12 @@ if ($active24 === false || is_null($active24)) {
     $list[] = format_username(2);
     $count = count($list);
     $active24['activeusers24'] = implode(',&nbsp;&nbsp;', $list);
-    if ($count === 0) {
+    if (0 === $count) {
         $active24['activeusers24'] = $lang['index_last24_nousers'];
     }
     $active24['totalonline24'] = number_format($count);
     $active24['last24'] = number_format($record['value_i']);
-    $active24['ss24'] = $lang['gl_member'] . plural($count);
+    $active24['ss24'] = $lang['gl_member'].plural($count);
     $active24['record'] = get_date($record['value_u'], '');
     if ($count > $record['value_i']) {
         $set = [

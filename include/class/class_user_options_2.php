@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class user_options_2
+ * Class user_options_2.
  */
 class user_options_2
 {

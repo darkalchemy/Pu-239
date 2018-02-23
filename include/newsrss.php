@@ -7,23 +7,22 @@
  */
 function foxnews_shout($links = [])
 {
-    global $site_config;
+    global $site_config, $cache;
 
-$cache = new DarkAlchemy\Pu239\Cache();
     $feeds = [
         'Tech' => 'http://feeds.foxnews.com/foxnews/tech',
         //'World'         => 'http://feeds.foxnews.com/foxnews/world',
         //'Entertainment' => 'http://feeds.foxnews.com/foxnews/entertainment',
     ];
 
-    if ($site_config['autoshout_on'] == 1) {
-        include_once INCL_DIR . 'user_functions.php';
+    if (1 == $site_config['autoshout_on']) {
+        include_once INCL_DIR.'user_functions.php';
         foreach ($feeds as $key => $feed) {
             $hash = md5($feed);
-            $xml = $cache->get('foxnewsrss_' . $hash);
-            if ($xml === false || is_null($xml)) {
+            $xml = $cache->get('foxnewsrss_'.$hash);
+            if (false === $xml || is_null($xml)) {
                 $xml = file_get_contents($feed);
-                $cache->set('foxnewsrss_' . $hash, $xml, 300);
+                $cache->set('foxnewsrss_'.$hash, $xml, 300);
             }
             $doc = new DOMDocument();
             @$doc->loadXML($xml);
@@ -34,7 +33,7 @@ $cache = new DarkAlchemy\Pu239\Cache();
                 $link = empty($item->getElementsByTagName('link')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')->item(0)->nodeValue;
                 $pubs[] = [
                     'title' => replace_unicode_strings($title),
-                    'link'  => replace_unicode_strings($link),
+                    'link' => replace_unicode_strings($link),
                 ];
             }
             $pubs = array_reverse($pubs);
@@ -66,8 +65,10 @@ $cache = new DarkAlchemy\Pu239\Cache();
                 }
             }
         }
+
         return true;
     }
+
     return false;
 }
 
@@ -78,13 +79,12 @@ $cache = new DarkAlchemy\Pu239\Cache();
  */
 function tfreak_shout($links = [])
 {
-    global $site_config;
+    global $site_config, $cache;
 
-$cache = new DarkAlchemy\Pu239\Cache();
-    if ($site_config['autoshout_on'] == 1) {
-        include_once INCL_DIR . 'user_functions.php';
+    if (1 == $site_config['autoshout_on']) {
+        include_once INCL_DIR.'user_functions.php';
         $xml = $cache->get('tfreaknewsrss_');
-        if ($xml === false || is_null($xml)) {
+        if (false === $xml || is_null($xml)) {
             $xml = file_get_contents('http://feed.torrentfreak.com/Torrentfreak/');
             $cache->set('tfreaknewsrss_', $xml, 300);
         }
@@ -97,7 +97,7 @@ $cache = new DarkAlchemy\Pu239\Cache();
             $link = empty($item->getElementsByTagName('link')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')->item(0)->nodeValue;
             $pubs[] = [
                 'title' => replace_unicode_strings($title),
-                'link'  => replace_unicode_strings($link),
+                'link' => replace_unicode_strings($link),
             ];
         }
         $pubs = array_reverse($pubs);
@@ -138,21 +138,20 @@ $cache = new DarkAlchemy\Pu239\Cache();
  */
 function github_shout($links = [])
 {
-    global $site_config;
+    global $site_config, $cache;
 
-$cache = new DarkAlchemy\Pu239\Cache();
     $feeds = [
-        'dev'    => 'https://github.com/darkalchemy/Pu-239/commits/dev.atom',
+        'dev' => 'https://github.com/darkalchemy/Pu-239/commits/dev.atom',
         'master' => 'https://github.com/darkalchemy/Pu-239/commits/master.atom',
     ];
-    if ($site_config['autoshout_on'] == 1) {
-        include_once INCL_DIR . 'user_functions.php';
+    if (1 == $site_config['autoshout_on']) {
+        include_once INCL_DIR.'user_functions.php';
         foreach ($feeds as $key => $feed) {
             $hash = md5($feed);
-            $rss = $cache->get('githubcommitrss_' . $hash);
-            if ($rss === false || is_null($rss)) {
+            $rss = $cache->get('githubcommitrss_'.$hash);
+            if (false === $rss || is_null($rss)) {
                 $rss = file_get_contents($feed);
-                $cache->set('githubcommitrss_' . $hash, $rss, 300);
+                $cache->set('githubcommitrss_'.$hash, $rss, 300);
             }
             $xml = simplexml_load_string($rss);
             $items = $xml->entry;
@@ -162,11 +161,11 @@ $cache = new DarkAlchemy\Pu239\Cache();
                 preg_match('/Commit\/(.*)/', $devices['id'], $match);
                 $commit = trim($match[1]);
                 $title = trim($devices['title']);
-                $link = trim($devices['link']["@attributes"]['href']);
+                $link = trim($devices['link']['@attributes']['href']);
 
                 $pubs[] = [
-                    'title'  => replace_unicode_strings($title),
-                    'link'   => replace_unicode_strings($link),
+                    'title' => replace_unicode_strings($title),
+                    'link' => replace_unicode_strings($link),
                     'commit' => replace_unicode_strings($commit),
                 ];
             }

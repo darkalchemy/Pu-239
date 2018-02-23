@@ -24,6 +24,9 @@ function get_parked()
  * @param     $msg
  * @param int $channel
  * @param int $ttl
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function autoshout($msg, $channel = 0, $ttl = 7200)
 {
@@ -31,14 +34,14 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
 
     if (user_exists($site_config['chatBotID'])) {
         $values = [
-            'userID'   => $site_config['chatBotID'],
+            'userID' => $site_config['chatBotID'],
             'userName' => $site_config['chatBotName'],
             'userRole' => 100,
-            'channel'  => $channel,
-            'dateTime' => gmdate("Y-m-d H:i:s", TIME_NOW),
-            'ip'       => '127.0.0.1',
-            'text'     => $msg,
-            'ttl'      => $ttl,
+            'channel' => $channel,
+            'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
+            'ip' => '127.0.0.1',
+            'text' => $msg,
+            'ttl' => $ttl,
         ];
 
         $stmt = $pdo->prepare(
@@ -64,7 +67,7 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
     global $site_config, $CURUSER;
     $member_reputation = '';
     if ($rep_is_on) {
-        include CACHE_DIR . 'rep_cache.php';
+        include CACHE_DIR.'rep_cache.php';
         //require_once (CLASS_DIR . 'class_user_options.php');
         // ok long winded file checking, but it's much better than file_exists
         if (!isset($reputations) || !is_array($reputations) || count($reputations) < 1) {
@@ -72,7 +75,7 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
         }
         $user['g_rep_hide'] = isset($user['g_rep_hide']) ? $user['g_rep_hide'] : 0;
         //$user['username'] = (($user['opt1'] & user_options::ANONYMOUS) ? $user['username'] : 'Anonymous');
-        $user['username'] = ($user['anonymous'] != 'yes') ? $user['username'] : 'Anonymous';
+        $user['username'] = ('yes' != $user['anonymous']) ? $user['username'] : 'Anonymous';
         // Hmmm...bit of jiggery-pokery here, couldn't think of a better way.
         $max_rep = max(array_keys($reputations));
         if ($user['reputation'] >= $max_rep) {
@@ -90,7 +93,7 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
         //$CURUSER['g_rep_hide'] = FALSE;
         $rep_power = $user['reputation'];
         $posneg = '';
-        if ($user['reputation'] == 0) {
+        if (0 == $user['reputation']) {
             $rep_img = 'balance';
             $rep_power = $user['reputation'] * -1;
         } elseif ($user['reputation'] < 0) {
@@ -101,9 +104,7 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
             $rep_img = 'pos';
             $rep_img_2 = 'highpos';
         }
-        /**
-         *
-         */
+
         // shiny, shiny, shiny boots...
         // ok, now we can work out the number of bars/pippy things
         $pips = 12;
@@ -138,17 +139,17 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
             $rep_level = $user_reputation ? $user_reputation : 'rep_undefined'; // just incase
             for ($i = 0; $i <= $rep_bar; ++$i) {
                 if ($i >= 5) {
-                    $posneg .= "<img src='{$site_config['pic_baseurl']}rep/reputation_$rep_img_2.gif' alt=\"Reputation Power $rep_power\n" . htmlsafechars($user['username']) . " $rep_level\" title=\"Reputation Power $rep_power " . htmlsafechars($user['username']) . " $rep_level\" />";
+                    $posneg .= "<img src='{$site_config['pic_baseurl']}rep/reputation_$rep_img_2.gif' alt=\"Reputation Power $rep_power\n".htmlsafechars($user['username'])." $rep_level\" title=\"Reputation Power $rep_power ".htmlsafechars($user['username'])." $rep_level\" />";
                 } else {
-                    $posneg .= "<img src='{$site_config['pic_baseurl']}rep/reputation_$rep_img.gif' alt=\"Reputation Power $rep_power\n" . htmlsafechars($user['username']) . " $rep_level\" title=\"Reputation Power $rep_power " . htmlsafechars($user['username']) . " $rep_level\" />";
+                    $posneg .= "<img src='{$site_config['pic_baseurl']}rep/reputation_$rep_img.gif' alt=\"Reputation Power $rep_power\n".htmlsafechars($user['username'])." $rep_level\" title=\"Reputation Power $rep_power ".htmlsafechars($user['username'])." $rep_level\" />";
                 }
             }
         }
 
-        if ($mode != '') {
-            return 'Rep: ' . $posneg . "<br><br><a href='javascript:;' onclick=\"PopUp('{$site_config['baseurl']}/reputation.php?pid=" . ($post_id != 0 ? (int)$post_id : (int)$user['id']) . '&amp;locale=' . $mode . "','Reputation',400,300,1,1);\"><img src='{$site_config['pic_baseurl']}forumicons/giverep.jpg' alt='Add reputation:: " . htmlsafechars($user['username']) . "' title='Add reputation:: " . htmlsafechars($user['username']) . "' /></a>";
+        if ('' != $mode) {
+            return 'Rep: '.$posneg."<br><br><a href='javascript:;' onclick=\"PopUp('{$site_config['baseurl']}/reputation.php?pid=".(0 != $post_id ? (int) $post_id : (int) $user['id']).'&amp;locale='.$mode."','Reputation',400,300,1,1);\"><img src='{$site_config['pic_baseurl']}forumicons/giverep.jpg' alt='Add reputation:: ".htmlsafechars($user['username'])."' title='Add reputation:: ".htmlsafechars($user['username'])."' /></a>";
         } else {
-            return ' ' . $posneg;
+            return ' '.$posneg;
         }
     }
 
@@ -322,39 +323,39 @@ function ratio_image_machine($ratio_to_check)
     global $site_config;
     switch ($ratio_to_check) {
         case $ratio_to_check >= 5:
-            return '<img src="' . $site_config['pic_baseurl'] . 'smilies/yay.gif" alt="Yay" title="Yay" />';
+            return '<img src="'.$site_config['pic_baseurl'].'smilies/yay.gif" alt="Yay" title="Yay" />';
             break;
 
         case $ratio_to_check >= 4:
-            return '<img src="' . $site_config['pic_baseurl'] . 'smilies/pimp.gif" alt="Pimp" title="Pimp" />';
+            return '<img src="'.$site_config['pic_baseurl'].'smilies/pimp.gif" alt="Pimp" title="Pimp" />';
             break;
 
         case $ratio_to_check >= 3:
-            return '<img src="' . $site_config['pic_baseurl'] . 'smilies/w00t.gif" alt="W00t" title="W00t" />';
+            return '<img src="'.$site_config['pic_baseurl'].'smilies/w00t.gif" alt="W00t" title="W00t" />';
             break;
 
         case $ratio_to_check >= 2:
-            return '<img src="' . $site_config['pic_baseurl'] . 'smilies/grin.gif" alt="Grin" title="Grin" />';
+            return '<img src="'.$site_config['pic_baseurl'].'smilies/grin.gif" alt="Grin" title="Grin" />';
             break;
 
         case $ratio_to_check >= 1.5:
-            return '<img src="' . $site_config['pic_baseurl'] . 'smilies/evo.gif" alt="Evo" title="Evo" />';
+            return '<img src="'.$site_config['pic_baseurl'].'smilies/evo.gif" alt="Evo" title="Evo" />';
             break;
 
         case $ratio_to_check >= 1:
-            return '<img src="' . $site_config['pic_baseurl'] . 'smilies/smile1.gif" alt="Smile" title="Smile" />';
+            return '<img src="'.$site_config['pic_baseurl'].'smilies/smile1.gif" alt="Smile" title="Smile" />';
             break;
 
         case $ratio_to_check >= 0.5:
-            return '<img src="' . $site_config['pic_baseurl'] . 'smilies/noexpression.gif" alt="Blank" title="Blank" />';
+            return '<img src="'.$site_config['pic_baseurl'].'smilies/noexpression.gif" alt="Blank" title="Blank" />';
             break;
 
         case $ratio_to_check >= 0.25:
-            return '<img src="' . $site_config['pic_baseurl'] . 'smilies/cry.gif" alt="Cry" title="Cry" />';
+            return '<img src="'.$site_config['pic_baseurl'].'smilies/cry.gif" alt="Cry" title="Cry" />';
             break;
 
         case $ratio_to_check < 0.25:
-            return '<img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="Shit" title="Shit" />';
+            return '<img src="'.$site_config['pic_baseurl'].'smilies/shit.gif" alt="Shit" title="Shit" />';
             break;
     }
 }
@@ -368,7 +369,7 @@ function ratio_image_machine($ratio_to_check)
 function get_user_class_name($class, $to_lower = false)
 {
     global $class_names;
-    $class = (int)$class;
+    $class = (int) $class;
     if (!valid_class($class)) {
         return '';
     }
@@ -389,7 +390,7 @@ function get_user_class_name($class, $to_lower = false)
 function get_user_class_color($class)
 {
     global $class_colors;
-    $class = (int)$class;
+    $class = (int) $class;
     if (!valid_class($class)) {
         return '';
     }
@@ -408,7 +409,7 @@ function get_user_class_color($class)
 function get_user_class_image($class)
 {
     global $class_images;
-    $class = (int)$class;
+    $class = (int) $class;
     if (!valid_class($class)) {
         return '';
     }
@@ -426,9 +427,9 @@ function get_user_class_image($class)
  */
 function valid_class($class)
 {
-    $class = (int)$class;
+    $class = (int) $class;
 
-    return (bool)($class >= UC_MIN && $class <= UC_MAX);
+    return (bool) ($class >= UC_MIN && $class <= UC_MAX);
 }
 
 /**
@@ -440,8 +441,8 @@ function valid_class($class)
 function min_class($min = UC_MIN, $max = UC_MAX)
 {
     global $CURUSER;
-    $minclass = (int)$min;
-    $maxclass = (int)$max;
+    $minclass = (int) $min;
+    $maxclass = (int) $max;
     if (!isset($CURUSER)) {
         return false;
     }
@@ -452,7 +453,7 @@ function min_class($min = UC_MIN, $max = UC_MAX)
         return false;
     }
 
-    return (bool)($CURUSER['class'] >= $minclass && $CURUSER['class'] <= $maxclass);
+    return (bool) ($CURUSER['class'] >= $minclass && $CURUSER['class'] <= $maxclass);
 }
 
 /**
@@ -461,51 +462,50 @@ function min_class($min = UC_MIN, $max = UC_MAX)
  * @param bool $tooltipper
  *
  * @return bool|string
+ *
  * @throws \MatthiasMullie\Scrapbook\Exception\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function format_username($user_id, $icons = true, $tooltipper = true)
 {
-    global $site_config;
-
-    $user = new DarkAlchemy\Pu239\User();
+    global $site_config, $fluent, $user;
 
     if (empty($user_id)) {
         return false;
     }
-    $user_id = is_array($user_id) && !empty($user_id['id']) ? (int)$user_id['id'] : (int)$user_id;
+    $user_id = is_array($user_id) && !empty($user_id['id']) ? (int) $user_id['id'] : (int) $user_id;
     $users_data = $user->getUserFromId($user_id);
-    if ($users_data['id'] === 0) {
+    if (0 === $users_data['id']) {
         return 'System';
     } elseif (empty($users_data['username'])) {
-        return 'unknown[' . $users_data['id'] . ']';
+        return 'unknown['.$users_data['id'].']';
     }
 
-    $avatar = !empty($users_data['avatar']) ? "<img src='" . image_proxy($users_data['avatar']) . "' class='avatar' />" : "<img src='{$site_config['pic_baseurl']}forumicons/default_avatar.gif' class='avatar' />";
+    $avatar = !empty($users_data['avatar']) ? "<img src='".image_proxy($users_data['avatar'])."' class='avatar' />" : "<img src='{$site_config['pic_baseurl']}forumicons/default_avatar.gif' class='avatar' />";
     $tip = $tooltip = '';
     if ($tooltipper) {
-        $tip = "<div class='tooltip_templates'><div id='userid_{$users_data['id']}_tooltip' class='is-flex tooltip'><div class='right20'>{$avatar}</div><div style='min-width: 150px; align: left;'><span class='" . get_user_class_name($users_data['class'], true) . "'>" . htmlsafechars($users_data['username']) . "</span></div></div></div>";
-        $tooltip = "class='" . get_user_class_name($users_data['class'], true) . " dt-tooltipper-large' data-tooltip-content='#userid_{$users_data['id']}_tooltip'";
+        $tip = "<div class='tooltip_templates'><div id='userid_{$users_data['id']}_tooltip' class='is-flex tooltip'><div class='right20'>{$avatar}</div><div style='min-width: 150px; align: left;'><span class='".get_user_class_name($users_data['class'], true)."'>".htmlsafechars($users_data['username']).'</span></div></div></div>';
+        $tooltip = "class='".get_user_class_name($users_data['class'], true)." dt-tooltipper-large' data-tooltip-content='#userid_{$users_data['id']}_tooltip'";
     } else {
-        $tooltip = "class='" . get_user_class_name(($users_data['override_class'] != 255 ? $users_data['override_class'] : $users_data['class']), true) . "'";
+        $tooltip = "class='".get_user_class_name((255 != $users_data['override_class'] ? $users_data['override_class'] : $users_data['class']), true)."'";
     }
 
     $str = "
                 <span>
                 $tip
-                <a href='{$site_config['baseurl']}/userdetails.php?id={$users_data['id']}' target='_blank'><span {$tooltip}>" . htmlsafechars($users_data['username']) . "</span></a>";
+                <a href='{$site_config['baseurl']}/userdetails.php?id={$users_data['id']}' target='_blank'><span {$tooltip}>".htmlsafechars($users_data['username']).'</span></a>';
 
-    if ($icons != false) {
-        $str .= (isset($users_data['king']) && $users_data['king'] >= TIME_NOW ? '<img class="tooltipper icon left5" src="' . $site_config['pic_baseurl'] . 'king.png" alt="King" title="King" />' : '');
-        $str .= ($users_data['donor'] == 'yes' ? '<img class="tooltipper icon left5" src="' . $site_config['pic_baseurl'] . 'star.png" alt="Donor" title="Donor" />' : '');
-        $str .= ($users_data['warned'] >= 1 ? '<img class="tooltipper icon left5" src="' . $site_config['pic_baseurl'] . 'alertred.png" alt="Warned" title="Warned" />' : '');
-        $str .= ($users_data['leechwarn'] >= 1 ? '<img class="tooltipper icon left5" src="' . $site_config['pic_baseurl'] . 'alertblue.png" alt="Leech Warned" title="Leech Warned" />' : '');
-        $str .= ($users_data['enabled'] != 'yes' ? '<img class="tooltipper icon left5" src="' . $site_config['pic_baseurl'] . 'disabled.gif" alt="Disabled" title="Disabled" />' : '');
-        $str .= (isset($users_data['downloadpos']) && $users_data['downloadpos'] != 1 ? '<img class="tooltipper icon left5" src="' . $site_config['pic_baseurl'] . 'downloadpos.gif" alt="Download Disabled" title="Download Disabled" />' : '');
-        $str .= ($users_data['chatpost'] == 0 ? '<img class="tooltipper icon left5" src="' . $site_config['pic_baseurl'] . 'warned.png" alt="No Chat" title="Shout disabled" />' : '');
-        $str .= ($users_data['pirate'] != 0 ? '<img class="tooltipper icon left5" src="' . $site_config['pic_baseurl'] . 'pirate.png" alt="Pirate" title="Pirate" />' : '');
+    if (false != $icons) {
+        $str .= (isset($users_data['king']) && $users_data['king'] >= TIME_NOW ? '<img class="tooltipper icon left5" src="'.$site_config['pic_baseurl'].'king.png" alt="King" title="King" />' : '');
+        $str .= ('yes' == $users_data['donor'] ? '<img class="tooltipper icon left5" src="'.$site_config['pic_baseurl'].'star.png" alt="Donor" title="Donor" />' : '');
+        $str .= ($users_data['warned'] >= 1 ? '<img class="tooltipper icon left5" src="'.$site_config['pic_baseurl'].'alertred.png" alt="Warned" title="Warned" />' : '');
+        $str .= ($users_data['leechwarn'] >= 1 ? '<img class="tooltipper icon left5" src="'.$site_config['pic_baseurl'].'alertblue.png" alt="Leech Warned" title="Leech Warned" />' : '');
+        $str .= ('yes' != $users_data['enabled'] ? '<img class="tooltipper icon left5" src="'.$site_config['pic_baseurl'].'disabled.gif" alt="Disabled" title="Disabled" />' : '');
+        $str .= (isset($users_data['downloadpos']) && 1 != $users_data['downloadpos'] ? '<img class="tooltipper icon left5" src="'.$site_config['pic_baseurl'].'downloadpos.gif" alt="Download Disabled" title="Download Disabled" />' : '');
+        $str .= (0 == $users_data['chatpost'] ? '<img class="tooltipper icon left5" src="'.$site_config['pic_baseurl'].'warned.png" alt="No Chat" title="Shout disabled" />' : '');
+        $str .= (0 != $users_data['pirate'] ? '<img class="tooltipper icon left5" src="'.$site_config['pic_baseurl'].'pirate.png" alt="Pirate" title="Pirate" />' : '');
         if (Christmas()) {
-            $str .= (isset($users_data['gotgift']) && $users_data['gotgift'] == 'yes' ? '<img class="tooltipper icon left5" src="' . $site_config['pic_baseurl'] . 'gift.png" alt="Christmas Gift" title="Has Claimed a Christmas Gift" />' : '');
+            $str .= (isset($users_data['gotgift']) && 'yes' == $users_data['gotgift'] ? '<img class="tooltipper icon left5" src="'.$site_config['pic_baseurl'].'gift.png" alt="Christmas Gift" title="Has Claimed a Christmas Gift" />' : '');
         }
     }
 
@@ -535,15 +535,15 @@ function member_ratio($up, $down)
 {
     switch (true) {
         case $down > 0 && $up > 0:
-            $ratio = '<span style="color:' . get_ratio_color($up / $down) . ';">' . number_format($up / $down, 3) . '</span>';
+            $ratio = '<span style="color:'.get_ratio_color($up / $down).';">'.number_format($up / $down, 3).'</span>';
             break;
 
-        case $down > 0 && $up == 0:
-            $ratio = '<span style="color:' . get_ratio_color(1 / $down) . ';">' . number_format(1 / $down, 3) . '</span>';
+        case $down > 0 && 0 == $up:
+            $ratio = '<span style="color:'.get_ratio_color(1 / $down).';">'.number_format(1 / $down, 3).'</span>';
             break;
 
-        case $down == 0 && $up > 0:
-            $ratio = '<span style="color: ' . get_ratio_color($up / 1) . ';">Inf</span>';
+        case 0 == $down && $up > 0:
+            $ratio = '<span style="color: '.get_ratio_color($up / 1).';">Inf</span>';
             break;
 
         default:
@@ -562,40 +562,40 @@ function get_user_ratio_image($ratio)
 {
     global $site_config;
     switch ($ratio) {
-        case $ratio == 0:
+        case 0 == $ratio:
             return;
             break;
 
         case $ratio < 0.6:
-            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt=" Bad ratio :("  title=" Bad ratio :("/>';
+            return ' <img src="'.$site_config['pic_baseurl'].'smilies/shit.gif" alt=" Bad ratio :("  title=" Bad ratio :("/>';
             break;
 
         case $ratio <= 0.7:
-            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/weep.gif" alt=" Could be better"  title=" Could be better" />';
+            return ' <img src="'.$site_config['pic_baseurl'].'smilies/weep.gif" alt=" Could be better"  title=" Could be better" />';
             break;
 
         case $ratio <= 0.8:
-            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/cry.gif" alt=" Getting there!" title=" Getting there!" />';
+            return ' <img src="'.$site_config['pic_baseurl'].'smilies/cry.gif" alt=" Getting there!" title=" Getting there!" />';
             break;
 
         case $ratio <= 1.5:
-            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/smile1.gif" alt=" Good Ratio :)" title=" Good Ratio :)" />';
+            return ' <img src="'.$site_config['pic_baseurl'].'smilies/smile1.gif" alt=" Good Ratio :)" title=" Good Ratio :)" />';
             break;
 
         case $ratio <= 2.0:
-            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/grin.gif" alt=" Great Ratio :)" title=" Great Ratio :)" />';
+            return ' <img src="'.$site_config['pic_baseurl'].'smilies/grin.gif" alt=" Great Ratio :)" title=" Great Ratio :)" />';
             break;
 
         case $ratio <= 3.0:
-            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/w00t.gif" alt=" Wow! :D" title=" Wow! :D" />';
+            return ' <img src="'.$site_config['pic_baseurl'].'smilies/w00t.gif" alt=" Wow! :D" title=" Wow! :D" />';
             break;
 
         case $ratio <= 4.0:
-            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/pimp.gif" alt=" Fa-boo Ratio!" title=" Fa-boo Ratio!" />';
+            return ' <img src="'.$site_config['pic_baseurl'].'smilies/pimp.gif" alt=" Fa-boo Ratio!" title=" Fa-boo Ratio!" />';
             break;
 
         case $ratio > 4.0:
-            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/yahoo.gif" alt=" Great ratio :-D" title=" Great ratio :-D" />';
+            return ' <img src="'.$site_config['pic_baseurl'].'smilies/yahoo.gif" alt=" Great ratio :-D" title=" Great ratio :-D" />';
             break;
     }
 
@@ -611,7 +611,7 @@ function get_user_ratio_image($ratio)
 function avatar_stuff($avatar, $width = 80)
 {
     global $CURUSER, $site_config;
-    $avatar_show = ($CURUSER['avatars'] == 'no' ? '' : (!$avatar['avatar'] ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif" alt="avatar" />' : (($avatar['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_baseurl'] . 'fuzzybunny.gif" alt="avatar" />' : '<img style="max-width:' . $width . 'px;" src="' . htmlsafechars($avatar['avatar']) . '" alt="avatar" />')));
+    $avatar_show = ('no' == $CURUSER['avatars'] ? '' : (!$avatar['avatar'] ? '<img style="max-width:'.$width.'px;" src="'.$site_config['pic_baseurl'].'forumicons/default_avatar.gif" alt="avatar" />' : (('yes' === $avatar['offensive_avatar'] && 'no' === $CURUSER['view_offensive_avatar']) ? '<img style="max-width:'.$width.'px;" src="'.$site_config['pic_baseurl'].'fuzzybunny.gif" alt="avatar" />' : '<img style="max-width:'.$width.'px;" src="'.htmlsafechars($avatar['avatar']).'" alt="avatar" />')));
 
     return $avatar_show;
 }
@@ -625,7 +625,7 @@ function blacklist($fo)
 {
     global $site_config;
     $blacklist = file_exists($site_config['nameblacklist']) && is_array(unserialize(file_get_contents($site_config['nameblacklist']))) ? unserialize(file_get_contents($site_config['nameblacklist'])) : [];
-    if (isset($blacklist[$fo]) && $blacklist[$fo] == 1) {
+    if (isset($blacklist[$fo]) && 1 == $blacklist[$fo]) {
         return false;
     }
 
@@ -668,16 +668,16 @@ function get_cache_config_data($the_names, $the_colors, $the_images)
     $the_names = str_replace(',', ",\n", trim($the_names, ','));
     $the_colors = str_replace(',', ",\n", trim($the_colors, ','));
     $the_images = str_replace(',', ",\n", trim($the_images, ','));
-    $configfile .= "\n\n\n" . '$class_names = array(
-  ' . $the_names . '
+    $configfile .= "\n\n\n".'$class_names = array(
+  '.$the_names.'
   );';
     // adding class colors like in user_functions
-    $configfile .= "\n\n\n" . '$class_colors = array(
-  ' . $the_colors . '
+    $configfile .= "\n\n\n".'$class_colors = array(
+  '.$the_colors.'
   );';
     // adding class pics like in user_functions
-    $configfile .= "\n\n\n" . '$class_images = array(
-  ' . $the_images . '
+    $configfile .= "\n\n\n".'$class_images = array(
+  '.$the_images.'
   );';
 
     return $configfile;
@@ -688,33 +688,36 @@ function get_cache_config_data($the_names, $the_colors, $the_images)
  */
 function clr_forums_cache($post_id)
 {
-    global $site_config;
+    global $cache;
 
-$cache = new DarkAlchemy\Pu239\Cache();
     $uclass = UC_MIN;
     while ($uclass <= UC_MAX) {
-        $cache->delete('last_post_' . $post_id . '_' . $uclass);
-        $cache->delete('sv_last_post_' . $post_id . '_' . $uclass);
-        $cache->delete('last_posts_' . $uclass);
+        $cache->delete('last_post_'.$post_id.'_'.$uclass);
+        $cache->delete('sv_last_post_'.$post_id.'_'.$uclass);
+        $cache->delete('last_posts_'.$uclass);
         ++$uclass;
     }
 }
 
+/**
+ * @param $userid
+ */
 function clearUserCache($userid)
 {
-    $cache = new DarkAlchemy\Pu239\Cache();
-    $cache->delete('MyPeers_' . $userid);
-    $cache->delete('user' . $userid);
-    $cache->delete('useravatar_' . $userid);
-    $cache->delete('inbox_' . $userid);
-    $cache->delete('userstatus_' . $userid);
-    $cache->delete('user_rep_' . $userid);
-    $cache->delete('poll_votes_' . $userid);
-    $cache->delete('userhnrs_' . $userid);
-    $cache->delete('get_all_boxes_' . $userid);
-    $cache->delete('insertJumpTo' . $userid);
-    if ($username = get_one_row('users', 'username', 'WHERE id = ' . sqlesc($userid))) {
-        $cache->delete('userclasses_' . $username);
-        $cache->delete('users_names_' . $username);
+    global $cache;
+
+    $cache->delete('MyPeers_'.$userid);
+    $cache->delete('user'.$userid);
+    $cache->delete('useravatar_'.$userid);
+    $cache->delete('inbox_'.$userid);
+    $cache->delete('userstatus_'.$userid);
+    $cache->delete('user_rep_'.$userid);
+    $cache->delete('poll_votes_'.$userid);
+    $cache->delete('userhnrs_'.$userid);
+    $cache->delete('get_all_boxes_'.$userid);
+    $cache->delete('insertJumpTo'.$userid);
+    if ($username = get_one_row('users', 'username', 'WHERE id = '.sqlesc($userid))) {
+        $cache->delete('userclasses_'.$username);
+        $cache->delete('users_names_'.$username);
     }
 }

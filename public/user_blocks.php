@@ -1,25 +1,23 @@
 <?php
-require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR . 'html_functions.php';
-require_once INCL_DIR . 'user_functions.php';
+
+require_once dirname(__FILE__, 2).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'html_functions.php';
+require_once INCL_DIR.'user_functions.php';
 check_user_status();
-global $CURUSER, $site_config;
+global $CURUSER, $site_config, $cache, $session;
 
-$cache = new DarkAlchemy\Pu239\Cache();
-
-$session = new DarkAlchemy\Pu239\Session();
 $lang = load_language('global');
 $id = (isset($_GET['id']) ? $_GET['id'] : $CURUSER['id']);
 if (!is_valid_id($id) || $CURUSER['class'] < UC_STAFF) {
     $id = $CURUSER['id'];
 }
-if ($CURUSER['class'] < UC_STAFF && $CURUSER['got_blocks'] == 'no') {
+if ($CURUSER['class'] < UC_STAFF && 'no' == $CURUSER['got_blocks']) {
     $session->set('is-danger', 'Go to your Karma bonus page and buy this unlock before trying to access it.');
-    header('Location: ' . $site_config['baseurl'] . '/index.php');
+    header('Location: '.$site_config['baseurl'].'/index.php');
     die();
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $updateset = [];
     $setbits_index_page = $clrbits_index_page = $setbits_global_stdhead = $clrbits_global_stdhead = $setbits_userdetails_page = $clrbits_userdetails_page = 0;
     //==Index
@@ -353,29 +351,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     //== set n clear
     if ($setbits_index_page) {
-        $updateset[] = 'index_page = (index_page | ' . $setbits_index_page . ')';
+        $updateset[] = 'index_page = (index_page | '.$setbits_index_page.')';
     }
     if ($clrbits_index_page) {
-        $updateset[] = 'index_page = (index_page & ~' . $clrbits_index_page . ')';
+        $updateset[] = 'index_page = (index_page & ~'.$clrbits_index_page.')';
     }
     if ($setbits_global_stdhead) {
-        $updateset[] = 'global_stdhead = (global_stdhead | ' . $setbits_global_stdhead . ')';
+        $updateset[] = 'global_stdhead = (global_stdhead | '.$setbits_global_stdhead.')';
     }
     if ($clrbits_global_stdhead) {
-        $updateset[] = 'global_stdhead = (global_stdhead & ~' . $clrbits_global_stdhead . ')';
+        $updateset[] = 'global_stdhead = (global_stdhead & ~'.$clrbits_global_stdhead.')';
     }
     if ($setbits_userdetails_page) {
-        $updateset[] = 'userdetails_page = (userdetails_page | ' . $setbits_userdetails_page . ')';
+        $updateset[] = 'userdetails_page = (userdetails_page | '.$setbits_userdetails_page.')';
     }
     if ($clrbits_userdetails_page) {
-        $updateset[] = 'userdetails_page = (userdetails_page & ~' . $clrbits_userdetails_page . ')';
+        $updateset[] = 'userdetails_page = (userdetails_page & ~'.$clrbits_userdetails_page.')';
     }
     if (!empty($updateset) && count($updateset)) {
-        sql_query('UPDATE user_blocks SET ' . implode(',', $updateset) . ' WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $cache->delete('blocks_' . $id);
+        sql_query('UPDATE user_blocks SET '.implode(',', $updateset).' WHERE userid = '.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $cache->delete('blocks_'.$id);
         $session->set('is-success', 'User Blocks Successfully Updated');
         unset($_POST);
-        header('Location: ' . $site_config['baseurl'] . '/user_blocks.php');
+        header('Location: '.$site_config['baseurl'].'/user_blocks.php');
         die();
     }
 }
@@ -651,8 +649,8 @@ foreach ($contents as $content) {
                     </span>
                 </div>";
 }
-$level1 .= "
-            </div>";
+$level1 .= '
+            </div>';
 $form .= main_div($level1);
 $form .= "
                     <div class='has-text-centered margin20'>
@@ -757,8 +755,8 @@ foreach ($contents as $content) {
                     </span>
                 </div>";
 }
-$level2 .= "
-            </div>";
+$level2 .= '
+            </div>';
 $form .= main_div($level2);
 $form .= "
                     <div class='has-text-centered margin20'>
@@ -977,8 +975,8 @@ foreach ($contents as $content) {
                 </div>";
 }
 $contents = [];
-$level3 .= "
-            </div>";
+$level3 .= '
+            </div>';
 $form .= main_div($level3);
 $form .= "
                     <div class='has-text-centered margin20'>
@@ -987,8 +985,8 @@ $form .= "
         </fieldset>
         </div>";
 
-$form .= "
-    </form>";
+$form .= '
+    </form>';
 
 $HTMLOUT = wrapper($form);
-echo stdhead('User Blocks Config', true) . $HTMLOUT . stdfoot();
+echo stdhead('User Blocks Config', true).$HTMLOUT.stdfoot();

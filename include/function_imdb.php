@@ -9,12 +9,10 @@ use Imdb\Config;
  */
 function get_imdb_info($imdb_id)
 {
-    global $site_config;
+    global $site_config, $cache;
 
-$cache = new DarkAlchemy\Pu239\Cache();
-
-    $imdb_data = $cache->get('imdb_' . $imdb_id);
-    if ($imdb_data === false || is_null($imdb_data)) {
+    $imdb_data = $cache->get('imdb_'.$imdb_id);
+    if (false === $imdb_data || is_null($imdb_data)) {
         $config = new Config();
         $config->language = 'en-US';
         $config->cachedir = IMDB_CACHE_DIR;
@@ -38,7 +36,7 @@ $cache = new DarkAlchemy\Pu239\Cache();
         $imdb_data['poster'] = $movie->photo(false);
         $imdb_data['country'] = $movie->country();
 
-        $cache->add('imdb_' . $imdb_id, $imdb_data, 604800);
+        $cache->add('imdb_'.$imdb_id, $imdb_data, 604800);
     }
     if (empty($imdb_data)) {
         return null;
@@ -46,23 +44,23 @@ $cache = new DarkAlchemy\Pu239\Cache();
     $poster = !empty($imdb_data['poster']) ? $imdb_data['poster'] : '';
 
     $imdb = [
-        'title'       => 'Title',
-        'country'     => 'Country',
-        'director'    => 'Directors',
-        'writing'     => 'Writers',
-        'producer'    => 'Producer',
-        'plot'        => 'Description',
-        'composer'    => 'Music',
+        'title' => 'Title',
+        'country' => 'Country',
+        'director' => 'Directors',
+        'writing' => 'Writers',
+        'producer' => 'Producer',
+        'plot' => 'Description',
+        'composer' => 'Music',
         'plotoutline' => 'Plot outline',
-        'trailers'    => 'Trailers',
-        'genres'      => 'All genres',
-        'language'    => 'Language',
-        'rating'      => 'Rating',
-        'year'        => 'Year',
-        'runtime'     => 'Runtime',
-        'votes'       => 'Votes',
-        'critics'     => 'Critic Rating',
-        'cast'        => 'Cast',
+        'trailers' => 'Trailers',
+        'genres' => 'All genres',
+        'language' => 'Language',
+        'rating' => 'Rating',
+        'year' => 'Year',
+        'runtime' => 'Runtime',
+        'votes' => 'Votes',
+        'critics' => 'Critic Rating',
+        'cast' => 'Cast',
     ];
 
     foreach ($imdb_data['cast'] as $pp) {
@@ -72,13 +70,13 @@ $cache = new DarkAlchemy\Pu239\Cache();
                                 <a href='{$site_config['anonymizer_url']}http://www.imdb.com/name/nm{$pp['imdb']}' target='_blank'>
                                     <span class='dt-tooltipper-small' data-tooltip-content='#cast_{$pp['imdb']}_tooltip'>
                                         <span class='cast'>
-                                            <img src='" . htmlspecialchars(image_proxy($pp['thumb'])) . "' alt='' class='round5'>
+                                            <img src='".htmlspecialchars(image_proxy($pp['thumb']))."' alt='' class='round5'>
                                         </span>
                                         <span class='tooltip_templates'>
                                             <span id='cast_{$pp['imdb']}_tooltip'>
                                                 <span class='is-flex'>
                                                     <span class='has-text-centered'>
-                                                        <img src='" . htmlspecialchars(image_proxy($pp['photo'])) . "' class='tooltip-poster' />
+                                                        <img src='".htmlspecialchars(image_proxy($pp['photo']))."' class='tooltip-poster' />
                                                         <p class='top10'>{$pp['name']}</p>
                                                         <p>{$pp['role']}</p>
                                                     </span>
@@ -109,14 +107,14 @@ $cache = new DarkAlchemy\Pu239\Cache();
                     'trailers',
                 ])) {
                 foreach ($imdb_data[$foo] as $pp) {
-                    if ($foo == 'cast' && !empty($cast)) {
+                    if ('cast' == $foo && !empty($cast)) {
                         $imdb_tmp[] = join(' ', $cast);
                         unset($cast);
                     }
-                    if ($foo != 'cast' && $foo == 'trailers') {
+                    if ('cast' != $foo && 'trailers' == $foo) {
                         $imdb_tmp[] = "<a href='{$site_config['anonymizer_url']}{$pp['url']}' target='_blank'>{$pp['title']}</a>";
-                    } elseif ($foo != 'cast') {
-                        $imdb_tmp[] = "<a href='{$site_config['anonymizer_url']}http://www.imdb.com/name/nm" . $pp['imdb'] . "' target='_blank' class='tooltipper' title='" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . "'>" . $pp['name'] . "</a>";
+                    } elseif ('cast' != $foo) {
+                        $imdb_tmp[] = "<a href='{$site_config['anonymizer_url']}http://www.imdb.com/name/nm".$pp['imdb']."' target='_blank' class='tooltipper' title='".(!empty($pp['role']) ? $pp['role'] : 'unknown')."'>".$pp['name'].'</a>';
                     }
                 }
             }
@@ -124,8 +122,8 @@ $cache = new DarkAlchemy\Pu239\Cache();
                 $imdb_info .= "
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>$boo: </div>
-                        <span class='column padding5'>" . join(', ', $imdb_tmp) . "</span>
-                    </div>";
+                        <span class='column padding5'>".join(', ', $imdb_tmp).'</span>
+                    </div>';
                 unset($imdb_tmp);
             }
         }
@@ -136,6 +134,6 @@ $cache = new DarkAlchemy\Pu239\Cache();
 
     return [
         $imdb_info,
-        $poster
+        $poster,
     ];
 }

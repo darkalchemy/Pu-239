@@ -1,4 +1,5 @@
 <?php
+
 //
 // PHPZip v1.2 by Sext (sext@neud.net) 2002-11-18
 //     (Changed: 2003-03-01)
@@ -11,7 +12,7 @@
 //
 
 /**
- * Class PHPZip
+ * Class PHPZip.
  */
 class PHPZip
 {
@@ -78,14 +79,14 @@ class PHPZip
             $pref = $args[1];
             $dh = opendir($dir);
             while ($files = readdir($dh)) {
-                if (($files != '.') && ($files != '..')) {
-                    if (is_dir($dir . $files)) {
+                if (('.' != $files) && ('..' != $files)) {
+                    if (is_dir($dir.$files)) {
                         $curdir = getcwd();
-                        chdir($dir . $files);
+                        chdir($dir.$files);
                         $file = array_merge($file, $this->GetFileList('', "$pref$files/"));
                         chdir($curdir);
                     } else {
-                        $file[] = $pref . $files;
+                        $file[] = $pref.$files;
                     }
                 }
             }
@@ -104,8 +105,8 @@ class PHPZip
     {
         $name = str_replace('\\', '/', $name);
         $dtime = dechex($this->unix2DosTime($time));
-        $hexdtime = '\x' . $dtime[6] . $dtime[7] . '\x' . $dtime[4] . $dtime[5] . '\x' . $dtime[2] . $dtime[3] . '\x' . $dtime[0] . $dtime[1];
-        eval('$hexdtime = "' . $hexdtime . '";');
+        $hexdtime = '\x'.$dtime[6].$dtime[7].'\x'.$dtime[4].$dtime[5].'\x'.$dtime[2].$dtime[3].'\x'.$dtime[0].$dtime[1];
+        eval('$hexdtime = "'.$hexdtime.'";');
         $fr = "\x50\x4b\x03\x04";
         $fr .= "\x14\x00"; // ver needed to extract
         $fr .= "\x00\x00"; // gen purpose bit flag
@@ -166,7 +167,7 @@ class PHPZip
      */
     public function unix2DosTime($unixtime = 0)
     {
-        $timearray = ($unixtime == 0) ? getdate() : getdate($unixtime);
+        $timearray = (0 == $unixtime) ? getdate() : getdate($unixtime);
         if ($timearray['year'] < 1980) {
             $timearray['year'] = 1980;
             $timearray['mon'] = 1;
@@ -191,10 +192,10 @@ class PHPZip
         $data = implode('', $this->datasec);
         $ctrldir = implode('', $this->ctrl_dir);
 
-        return $data . $ctrldir . $this->eof_ctrl_dir . pack('v', sizeof($this->ctrl_dir)) . // total # of entries "on this disk"
-            pack('v', sizeof($this->ctrl_dir)) . // total # of entries overall
-            pack('V', strlen($ctrldir)) . // size of central dir
-            pack('V', strlen($data)) . // offset to start of central dir
+        return $data.$ctrldir.$this->eof_ctrl_dir.pack('v', sizeof($this->ctrl_dir)). // total # of entries "on this disk"
+            pack('v', sizeof($this->ctrl_dir)). // total # of entries overall
+            pack('V', strlen($ctrldir)). // size of central dir
+            pack('V', strlen($data)). // offset to start of central dir
             "\x00\x00"; // .zip file comment length
     }
 
@@ -210,7 +211,7 @@ class PHPZip
             ini_set('zlib.output_compression', 'Off');
         }
         // Security checks
-        if ($archiveName == '') {
+        if ('' == $archiveName) {
             echo '<html><title>Public Photo Directory - Download </title><body><br><b>ERROR:</b> The download file was NOT SPECIFIED.</body></html>';
             exit;
         } elseif (!file_exists($archiveName)) {
@@ -223,9 +224,9 @@ class PHPZip
         header('Cache-Control: private', false);
         header('Content-Type: application/zip');
         header('Content-Encoding: zlib,deflate,gzip');
-        header('Content-Disposition: attachment; filename=' . basename($archiveName) . ';');
+        header('Content-Disposition: attachment; filename='.basename($archiveName).';');
         header('Content-Transfer-Encoding: binary');
-        header('Content-Length: ' . filesize($archiveName));
+        header('Content-Length: '.filesize($archiveName));
         readfile("$archiveName");
     }
 } // end of the 'PHPZip' class

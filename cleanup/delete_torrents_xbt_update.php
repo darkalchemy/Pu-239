@@ -4,9 +4,8 @@
  */
 function delete_torrents_xbt_update($data)
 {
-    global $site_config, $queries;
+    global $site_config, $queries, $cache;
 
-$cache = new DarkAlchemy\Pu239\Cache();
     set_time_limit(1200);
     ignore_user_abort(true);
 
@@ -23,13 +22,13 @@ $cache = new DarkAlchemy\Pu239\Cache();
                                  LEFT JOIN bookmarks ON bookmarks.torrentid = xbt_files_users.fid
                                  LEFT JOIN coins ON coins.torrentid = xbt_files_users.fid
                                  LEFT JOIN rating ON rating.torrent = xbt_files_users.fid
-                                 WHERE xbt_files_users.fid =' . sqlesc($arr['id'])) or sqlerr(__FILE__, __LINE__);
+                                 WHERE xbt_files_users.fid ='.sqlesc($arr['id'])) or sqlerr(__FILE__, __LINE__);
 
         @unlink("{$site_config['torrent_dir']}/{$arr['id']}.torrent");
-        $msg = 'Torrent ' . (int)$arr['id'] . ' (' . htmlsafechars($arr['name']) . ") was deleted by system (older than $days days and no seeders)";
-        sql_query("INSERT INTO messages (sender, receiver, added, msg, subject, saved, location) VALUES (0, " . (int)$arr['owner'] . ", " .
-                  TIME_NOW . ", " . sqlesc($msg) . ", 'Torrent Deleted', 'yes', 1)") or sqlerr(__FILE__, __LINE__);
-        $cache->increment('inbox_' . (int)$arr['owner']);
+        $msg = 'Torrent '.(int) $arr['id'].' ('.htmlsafechars($arr['name']).") was deleted by system (older than $days days and no seeders)";
+        sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, saved, location) VALUES (0, '.(int) $arr['owner'].', '.
+                  TIME_NOW.', '.sqlesc($msg).", 'Torrent Deleted', 'yes', 1)") or sqlerr(__FILE__, __LINE__);
+        $cache->increment('inbox_'.(int) $arr['owner']);
         if ($data['clean_log']) {
             write_log($msg);
         }

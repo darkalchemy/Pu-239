@@ -1,6 +1,7 @@
 <?php
-require_once INCL_DIR . 'user_functions.php';
-require_once CLASS_DIR . 'class_check.php';
+
+require_once INCL_DIR.'user_functions.php';
+require_once CLASS_DIR.'class_check.php';
 class_check(UC_MAX, true, true);
 global $site_config, $lang;
 
@@ -38,7 +39,7 @@ h2 {font-size: 125%;}
 .h {background-color: #9999cc; font-weight: bold;}
 .v {background-color: #cccccc; white-space: normal;}
 </style>\n";
-    $html = $php_style . $php_body;
+    $html = $php_style.$php_body;
     echo $html;
     stdfoot();
     die();
@@ -60,10 +61,10 @@ function sql_get_version()
     $tmp = explode('.', preg_replace("#[^\d\.]#", '\\1', $row['version']));
     $mysql_version = sprintf('%d%02d%02d', $tmp[0], $tmp[1], $tmp[2]);
 
-    return $mysql_version . ' (' . $true_version . ')';
+    return $mysql_version.' ('.$true_version.')';
 }
 
-$php_version = phpversion() . ' (' . @php_sapi_name() . ") ( <a href='{$site_config['baseurl']}/staffpanel.php?tool=system_view&amp;action=system_view&amp;phpinfo=1'>{$lang['system_phpinfo']}</a> )";
+$php_version = phpversion().' ('.@php_sapi_name().") ( <a href='{$site_config['baseurl']}/staffpanel.php?tool=system_view&amp;action=system_view&amp;phpinfo=1'>{$lang['system_phpinfo']}</a> )";
 $server_software = php_uname();
 // print $php_version ." ".$server_software;
 $load_limit = '--';
@@ -101,7 +102,7 @@ if (!$server_load_found) {
         }
     }
     if ($load_limit) {
-        @sql_query("UPDATE avps SET value_s = '" . $load_limit . '-' . time() . "' WHERE arg = 'loadlimit'");
+        @sql_query("UPDATE avps SET value_s = '".$load_limit.'-'.time()."' WHERE arg = 'loadlimit'");
     }
 }
 $total_memory = $avail_memory = '--';
@@ -125,8 +126,8 @@ if (strstr(strtolower(PHP_OS), 'win')) {
     $server_reply = explode("\n", str_replace("\r", '', $mem));
     $mem = array_slice($server_reply, 1, 1);
     $mem = preg_split("#\s+#", $mem[0]);
-    $total_memory = $mem[1] . ' MB';
-    $avail_memory = $mem[3] . ' MB';
+    $total_memory = $mem[1].' MB';
+    $avail_memory = $mem[3].' MB';
 }
 $disabled_functions = @ini_get('disable_functions') ? str_replace(',', ', ', @ini_get('disable_functions')) : "<i>{$lang['system_noinf']}</i>";
 if (strstr(strtolower(PHP_OS), 'win')) {
@@ -139,9 +140,9 @@ if (strstr(strtolower(PHP_OS), 'win')) {
 if (!$tasks) {
     $tasks = "<i>{$lang['system_unable']}</i>";
 } else {
-    $tasks = '<pre>' . $tasks . '</pre>';
+    $tasks = '<pre>'.$tasks.'</pre>';
 }
-$load_limit = $load_limit . " ({$lang['system_fromcache']}" . ($using_cache == 1 ? "<span style='color:green;font-weight:bold;'>{$lang['system_true']})</span>" : "<span style='color:red;font-weight:bold;'>{$lang['system_false']})</span>");
+$load_limit = $load_limit." ({$lang['system_fromcache']}".(1 == $using_cache ? "<span style='color:green;font-weight:bold;'>{$lang['system_true']})</span>" : "<span style='color:red;font-weight:bold;'>{$lang['system_false']})</span>");
 $html[] = [
     $lang['system_mysql'],
     sql_get_version(),
@@ -152,7 +153,7 @@ $html[] = [
 ];
 $html[] = [
     $lang['system_safe'],
-    @ini_get('safe_mode') == 1 ? "<span style='color:red;font-weight:bold;'>{$lang['system_on']}</span>" : "<span style='color:green;font-weight:bold;'>{$lang['system_off']}</span>",
+    1 == @ini_get('safe_mode') ? "<span style='color:red;font-weight:bold;'>{$lang['system_on']}</span>" : "<span style='color:green;font-weight:bold;'>{$lang['system_off']}</span>",
 ];
 $html[] = [
     $lang['system_disabled'],
@@ -180,7 +181,7 @@ $html[] = [
 ];
 $htmlout .= '<table>';
 foreach ($html as $key => $value) {
-    $htmlout .= '<tr><td>' . $value[0] . '</td><td>' . $value[1] . '</td></tr>';
+    $htmlout .= '<tr><td>'.$value[0].'</td><td>'.$value[1].'</td></tr>';
 }
 $htmlout .= '</table>';
-echo stdhead($lang['system_stdhead']) . $htmlout . stdfoot();
+echo stdhead($lang['system_stdhead']).$htmlout.stdfoot();
