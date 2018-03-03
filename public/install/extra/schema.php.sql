@@ -787,7 +787,8 @@ CREATE TABLE `failedlogins` (
   `added` int(11) NOT NULL,
   `banned` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `attempts` int(10) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `ip` (`ip`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1129,8 +1130,9 @@ CREATE TABLE `ips` (
   `lastlogin` int(11) NOT NULL DEFAULT '0',
   `lastannounce` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `ip_userid` (`ip`,`userid`),
+  UNIQUE KEY `ip_userid_type` (`ip`,`userid`,`type`),
   KEY `userid` (`userid`),
+  KEY `ip` (`ip`),
   CONSTRAINT `ips_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1323,6 +1325,7 @@ CREATE TABLE `now_viewing` (
   `added` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`),
   KEY `forum_id` (`forum_id`),
+  KEY `added` (`added`),
   CONSTRAINT `now_viewing_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1443,6 +1446,8 @@ CREATE TABLE `peers` (
   KEY `userid` (`userid`),
   KEY `torrent_pass` (`torrent_pass`),
   KEY `torrent_connect` (`torrent`),
+  KEY `to_go` (`to_go`),
+  KEY `seeder` (`seeder`),
   CONSTRAINT `peers_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `peers_ibfk_2` FOREIGN KEY (`torrent`) REFERENCES `torrents` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1517,7 +1522,8 @@ CREATE TABLE `polls` (
   `starter_id` mediumint(8) NOT NULL DEFAULT '0',
   `votes` smallint(5) NOT NULL DEFAULT '0',
   `poll_question` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`pid`)
+  PRIMARY KEY (`pid`),
+  KEY `start_date` (`start_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1593,8 +1599,7 @@ CREATE TABLE `rating` (
   PRIMARY KEY (`id`),
   KEY `user` (`user`),
   KEY `torrent` (`torrent`),
-  CONSTRAINT `rating_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `rating_ibfk_2` FOREIGN KEY (`torrent`) REFERENCES `torrents` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `rating_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1853,6 +1858,7 @@ CREATE TABLE `snatched` (
   UNIQUE KEY `userid_torrentid` (`userid`,`torrentid`),
   KEY `tr_usr` (`torrentid`),
   KEY `userid` (`userid`),
+  KEY `hit_and_run` (`hit_and_run`),
   CONSTRAINT `snatched_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `snatched_ibfk_2` FOREIGN KEY (`torrentid`) REFERENCES `torrents` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -2118,6 +2124,7 @@ CREATE TABLE `topics` (
   KEY `userid` (`user_id`),
   KEY `subject` (`topic_name`),
   KEY `lastpost` (`last_post`),
+  KEY `forum_id` (`forum_id`),
   CONSTRAINT `topics_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2660,4 +2667,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-23 20:02:44
+-- Dump completed on 2018-03-03 15:38:00
