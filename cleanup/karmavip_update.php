@@ -40,7 +40,7 @@ function karmavip_update($data)
             write_log('Cleanup - Karma Vip status expired on - ' . $count . ' Member(s)');
         }
         unset($users_buffer, $msgs_buffer, $count);
-        status_change($arr['id']); //== For Retros announcement mod
+        status_change($arr['id']);
     }
     //==
     if ($data['clean_log'] && $queries > 0) {

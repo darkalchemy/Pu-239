@@ -47,7 +47,7 @@ $highlight = " bgcolor='lightgrey'";
                     echo $lang['usersearch_name']; ?></td>
                 <td <?php
                 echo (isset($_POST['n']) && !empty($_POST['n'])) ? $highlight : ''; ?>><input name="n" type="text"
-                                                                                             value=""<?php
+                                                                                              value=""<?php
                     echo isset($_POST['n']) ? htmlsafechars($_POST['n']) : ''; ?>" size='25' />
                 </td>
 
@@ -94,14 +94,14 @@ $highlight = " bgcolor='lightgrey'";
                     echo $lang['usersearch_email']; ?></td>
                 <td <?php
                 echo (isset($_POST['em']) && !empty($_POST['em'])) ? $highlight : ''; ?>><input name="em" type="text"
-                                                                                               value=""<?php
+                                                                                                value=""<?php
                     echo isset($_POST['em']) ? $_POST['em'] : ''; ?>" size="25" />
                 </td>
                 <td class='rowhead'><?php
                     echo $lang['usersearch_ip']; ?></td>
                 <td <?php
                 echo (isset($_POST['ip']) && !empty($_POST['ip'])) ? $highlight : ''; ?>><input name="ip" type="text"
-                                                                                               value=""<?php
+                                                                                                value=""<?php
                     echo isset($_POST['ip']) ? $_POST['ip'] : ''; ?>" maxlength="17" />
                 </td>
 
@@ -126,14 +126,14 @@ $highlight = " bgcolor='lightgrey'";
                     echo $lang['usersearch_comments']; ?></td>
                 <td <?php
                 echo (isset($_POST['co']) && !empty($_POST['co'])) ? $highlight : ''; ?>><input name="co" type="text"
-                                                                                               value=""<?php
+                                                                                                value=""<?php
                     echo isset($_POST['co']) ? $_POST['co'] : ''; ?>" size="25" />
                 </td>
                 <td class='rowhead'><?php
                     echo $lang['usersearch_mask']; ?></td>
                 <td <?php
                 echo (isset($_POST['ma']) && !empty($_POST['ma'])) ? $highlight : ''; ?>><input name="ma" type="text"
-                                                                                               value=""<?php
+                                                                                                value=""<?php
                     echo isset($_POST['ma']) ? $_POST['ma'] : ''; ?>" maxlength="17" />
                 </td>
                 <td class='rowhead'><?php
@@ -299,15 +299,16 @@ $highlight = " bgcolor='lightgrey'";
                 <td class='rowhead'><?php
                     echo $lang['usersearch_active']; ?></td>
                 <td <?php
-                echo (isset($_POST['ac']) && !empty($_POST['ac'])) ? $highlight : ''; ?>><input name="ac" type="checkbox"
-                                                                                               value="1" <?php
+                echo (isset($_POST['ac']) && !empty($_POST['ac'])) ? $highlight : ''; ?>><input name="ac"
+                                                                                                type="checkbox"
+                                                                                                value="1" <?php
                     echo (isset($_POST['ac'])) ? 'checked' : ''; ?> /></td>
                 <td class='rowhead'><?php
                     echo $lang['usersearch_banned']; ?></td>
                 <td <?php
                 echo (isset($_POST['dip']) && !empty($_POST['dip'])) ? $highlight : ''; ?>><input name="dip"
-                                                                                                 type="checkbox"
-                                                                                                 value="1" <?php
+                                                                                                  type="checkbox"
+                                                                                                  value="1" <?php
                     echo (isset($_POST['dip'])) ? 'checked' : ''; ?> /></td>
             </tr>
             <tr>
@@ -378,7 +379,7 @@ function ratios($up, $down, $color = true)
  */
 function haswildcard($text)
 {
-    if (false === strpos($text, '*') && false === strpos($text, '?') && false === strpos($text, '%') && false === strpos($text, '_')) {
+    if (strpos($text, '*') === false && false === strpos($text, '?') && false === strpos($text, '%') && false === strpos($text, '_')) {
         return false;
     } else {
         return true;
@@ -409,7 +410,13 @@ if (!empty($_POST) && count($_POST) > 0) {
                 if (!haswildcard($name)) {
                     $name_is .= (!empty($name_is) ? ' OR ' : '') . 'u.username = ' . sqlesc($name);
                 } else {
-                    $name = str_replace(['?', '*'], ['_', '%'], $name);
+                    $name = str_replace([
+                                            '?',
+                                            '*',
+                                        ], [
+                                            '_',
+                                            '%',
+                                        ], $name);
                     $name_is .= (!empty($name_is) ? ' OR ' : '') . 'u.username LIKE ' . sqlesc($name);
                 }
             }
@@ -423,7 +430,13 @@ if (!empty($_POST) && count($_POST) > 0) {
                 if (!haswildcard($name)) {
                     $name_is .= (isset($name_is) ? ' OR ' : '') . 'u.username = ' . sqlesc($name);
                 } else {
-                    $name = str_replace(['?', '*'], ['_', '%'], $name);
+                    $name = str_replace([
+                                            '?',
+                                            '*',
+                                        ], [
+                                            '_',
+                                            '%',
+                                        ], $name);
                     $name_is .= (isset($name_is) ? ' OR ' : '') . 'u.username LIKE ' . sqlesc($name);
                 }
             }
@@ -437,7 +450,7 @@ if (!empty($_POST) && count($_POST) > 0) {
         if ('' !== $emaila[0]) {
             $where_is .= !empty($where_is) ? ' AND (' : '(';
             foreach ($emaila as $email) {
-                if (false === strpos($email, '*') && false === strpos($email, '?') && false === strpos($email, '%')) {
+                if (strpos($email, '*') === false && strpos($email, '?') === false && strpos($email, '%') === false) {
                     if (1 !== validemail($email)) {
                         stdmsg($lang['usersearch_error'], $lang['usersearch_bademail']);
                         stdfoot();
@@ -481,7 +494,7 @@ if (!empty($_POST) && count($_POST) > 0) {
         } else {
             if ('/' == substr($mask, 0, 1)) {
                 $n = substr($mask, 1, strlen($mask) - 1);
-                if (!is_numeric($n) or $n < 0 or $n > 32) {
+                if (!is_numeric($n) || $n < 0 || $n > 32) {
                     stdmsg($lang['usersearch_error'], $lang['usersearch_badmask']);
                     stdfoot();
                     die();
@@ -526,7 +539,7 @@ if (!empty($_POST) && count($_POST) > 0) {
                     stdfoot();
                     die();
                 }
-                if (!is_numeric($ratio2) or $ratio2 < $ratio) {
+                if (!is_numeric($ratio2) || $ratio2 < $ratio) {
                     stdmsg($lang['usersearch_error'], $lang['usersearch_badratio3']);
                     stdfoot();
                     die();
@@ -618,7 +631,7 @@ if (!empty($_POST) && count($_POST) > 0) {
                 stdfoot();
                 die();
             }
-            if (!is_numeric($ul2) or $ul2 < $ul) {
+            if (!is_numeric($ul2) || $ul2 < $ul) {
                 stdmsg($lang['usersearch_error'], $lang['usersearch_badup3']);
                 stdfoot();
                 die();
@@ -653,7 +666,7 @@ if (!empty($_POST) && count($_POST) > 0) {
                 stdfoot();
                 die();
             }
-            if (!is_numeric($dl2) or $dl2 < $dl) {
+            if (!is_numeric($dl2) || $dl2 < $dl) {
                 stdmsg($lang['usersearch_error'], $lang['usersearch_baddl3']);
                 stdfoot();
                 die();

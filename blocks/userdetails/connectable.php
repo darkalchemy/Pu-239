@@ -1,11 +1,12 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $user, $id, $cache;
+global $CURUSER, $site_config, $lang, $user_stuffs, $id, $cache;
 
+$user = $user_stuffs->getUserFromId($CURUSER);
 if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     $What_Cache = (XBT_TRACKER ? 'port_data_xbt_' : 'port_data_');
     $port_data  = $cache->get($What_Cache . $id);
-    if (false === $port_data || is_null($port_data)) {
+    if ($port_data === false || is_null($port_data)) {
         if (XBT_TRACKER) {
             $q1 = sql_query('SELECT `connectable`, `peer_id` FROM `xbt_files_users` WHERE uid = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
         } else {

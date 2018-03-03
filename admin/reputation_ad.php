@@ -426,7 +426,7 @@ function do_delete_rep()
     }
     // check it's a valid ID.
     $query = sql_query('SELECT reputationid, reputation, userid FROM reputation WHERE reputationid=' . intval($input['reputationid']));
-    if (false === ($r = mysqli_fetch_assoc($query))) {
+    if (($r = mysqli_fetch_assoc($query)) === false) {
         stderr($lang['rep_ad_delete_rep_err3'], $lang['rep_ad_delete_rep_err4']);
     }
     $sql  = sql_query('SELECT reputation ' . 'FROM users ' . 'WHERE id = ' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
@@ -462,7 +462,7 @@ function do_edit_rep()
     $newrep = intval($input['reputation']);
     // valid ID?
     $query = sql_query('SELECT reputationid, reason, userid FROM reputation WHERE reputationid=' . intval($input['reputationid']));
-    if (false === $r = mysqli_fetch_assoc($query)) {
+    if ($r = mysqli_fetch_assoc($query) === false) {
         stderr($lang['rep_ad_edit_input'], $lang['rep_ad_edit_noid']);
     }
     if ($oldrep != $newrep) {

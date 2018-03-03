@@ -73,7 +73,7 @@ function bark($text = 'Username or password incorrect')
     $sha      = hash('sha256', $_SERVER['REMOTE_ADDR']);
     $dict_key = 'dictbreaker_' . $sha;
     $flood    = $cache->get($dict_key);
-    if (false === $flood || is_null($flood)) {
+    if ($flood === false || is_null($flood)) {
         $cache->set($dict_key, 'flood_check', 20);
     } else {
         die('Minimum 8 seconds between login attempts :)');
@@ -98,7 +98,7 @@ $userid     = $row['id'];
 $ip_escaped = ipToStorageFormat(getip());
 $ip         = getip();
 $added      = TIME_NOW;
-if (false === $row) {
+if ($row === false) {
     $fail = (@mysqli_fetch_row(sql_query("SELECT COUNT(id) from failedlogins where ip = $ip_escaped"))) or sqlerr(__FILE__, __LINE__);
     if (0 == $fail[0]) {
         sql_query("INSERT INTO failedlogins (ip, added, attempts) VALUES ($ip_escaped, $added, 1)") or sqlerr(__FILE__, __LINE__);

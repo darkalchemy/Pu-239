@@ -4,7 +4,7 @@ global $site_config, $lang, $fluent, $cache;
 
 $progress = '';
 $funds    = $cache->get('totalfunds_');
-if (false === $funds || is_null($funds)) {
+if ($funds === false || is_null($funds)) {
     $funds = $fluent->from('funds')
         ->select(null)
         ->select('cash AS total_funds')

@@ -20,7 +20,7 @@ if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
 
     if (XBT_TRACKER) {
         $MyPeersXbtCache = $cache->get('MyPeers_XBT_' . $CURUSER['id']);
-        if (false === $MyPeersXbtCache || is_null($MyPeersXbtCache)) {
+        if ($MyPeersXbtCache === false || is_null($MyPeersXbtCache)) {
             $seed['yes']  = $seed['no']  = 0;
             $seed['conn'] = 3;
             $r            = sql_query('SELECT COUNT(uid) AS count, `left`, active, connectable
@@ -38,24 +38,8 @@ if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
             $seed = $MyPeersXbtCache;
         }
     } else {
-        $MyPeersCache = $cache->get('MyPeers_' . $CURUSER['id']);
-        if (false === $MyPeersCache || is_null($MyPeersCache)) {
-            $seed['yes']  = $seed['no']  = 0;
-            $seed['conn'] = 3;
-            $r            = sql_query('SELECT COUNT(id) AS count, seeder, ANY_VALUE(connectable) AS connectable
-                                FROM peers
-                                WHERE userid = ' . sqlesc($CURUSER['id']) . '
-                                GROUP BY seeder') or sqlerr(__LINE__, __FILE__);
-            while ($a = mysqli_fetch_assoc($r)) {
-                $key          = 'yes' == $a['seeder'] ? 'yes' : 'no';
-                $seed[$key]   = number_format((int) $a['count']);
-                $seed['conn'] = 'no' == $a['connectable'] ? 1 : 2;
-            }
-            $cache->set('MyPeers_' . $CURUSER['id'], $seed, $site_config['expires']['MyPeers_']);
-            unset($r, $a);
-        } else {
-            $seed = $MyPeersCache;
-        }
+        $peer = new DarkAlchemy\Pu239\Peer();
+        $seed = $peer->getPeersFromUserId($user_id);
     }
 
     if (!empty($seed['conn'])) {
@@ -76,7 +60,7 @@ if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
     }
 
     $Achievement_Points = $cache->get('user_achievement_points_' . $CURUSER['id']);
-    if (false === $Achievement_Points || is_null($Achievement_Points)) {
+    if ($Achievement_Points === false || is_null($Achievement_Points)) {
         $Sql = sql_query('SELECT u.id, u.username, a.achpoints, a.spentpoints
                             FROM users AS u
                             LEFT JOIN usersachiev AS a ON u.id = a.userid

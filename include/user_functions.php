@@ -457,34 +457,62 @@ function min_class($min = UC_MIN, $max = UC_MAX)
 }
 
 /**
- * @param      $user_id
+ * @param int  $user_id
  * @param bool $icons
  * @param bool $tooltipper
  *
- * @return bool|string
- *
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
+ * @return string
  */
-function format_username($user_id, $icons = true, $tooltipper = true)
+function format_username(int $user_id, $icons = true, $tooltipper = true)
 {
-    global $site_config, $fluent, $user;
+    global $site_config, $user_stuffs;
 
-    if (empty($user_id)) {
-        return false;
-    }
-    $user_id    = is_array($user_id) && !empty($user_id['id']) ? (int) $user_id['id'] : (int) $user_id;
-    $users_data = $user->getUserFromId($user_id);
+    $users_data = $user_stuffs->getUserFromId($user_id);
+    $peer       = new DarkAlchemy\Pu239\Peer();
+    $peers      = $peer->getPeersFromUserId($user_id);
+    //dd($peers);
+
     if (0 === $users_data['id']) {
         return 'System';
     } elseif (empty($users_data['username'])) {
         return 'unknown[' . $users_data['id'] . ']';
     }
 
-    $avatar = !empty($users_data['avatar']) ? "<img src='" . image_proxy($users_data['avatar']) . "' class='avatar' />" : "<img src='{$site_config['pic_baseurl']}forumicons/default_avatar.gif' class='avatar' />";
+    $avatar = !empty($users_data['avatar']) ? "<img src='" . image_proxy($users_data['avatar']) . "' class='round10' />" : "<img src='{$site_config['pic_baseurl']}forumicons/default_avatar.gif' class='round10' />";
     $tip    = $tooltip    = '';
     if ($tooltipper) {
-        $tip     = "<div class='tooltip_templates'><div id='userid_{$users_data['id']}_tooltip' class='is-flex tooltip'><div class='right20'>{$avatar}</div><div style='min-width: 150px; align: left;'><span class='" . get_user_class_name($users_data['class'], true) . "'>" . htmlsafechars($users_data['username']) . '</span></div></div></div>';
+        $tip = "
+                <div class='tooltip_templates'>
+                    <div id='userid_{$users_data['id']}_tooltip' class='is-flex tooltip'>
+                        <div class='right20'>{$avatar}</div>
+                        <div style='min-width: 150px;'>
+                            <span class='level is-marginless'>
+                                <span class='level-left " . get_user_class_name($users_data['class'], true) . "'>" . htmlsafechars($users_data['username']) . "</span>
+                                <span class='level-right " . get_user_class_name($users_data['class'], true) . "'>" . get_user_class_name($users_data['class'], false) . "</span>
+                            </span>
+                            <span class='level is-marginless'>
+                                <span class='level-left'>Uploaded: </span>
+                                <span class='level-right'>" . human_filesize($users_data['uploaded']) . "</span>
+                            </span>
+                            <span class='level is-marginless'>
+                                <span class='level-left'>Downloaded: </span>
+                                <span class='level-right'>" . human_filesize($users_data['downloaded']) . "</span>
+                            </span>
+                            <span class='level is-marginless'>
+                                <span class='level-left'>Karma: </span>
+                                <span class='level-right'>" . number_format($users_data['seedbonus']) . "</span>
+                            </span>
+                            <span class='level is-marginless'>
+                                <span class='level-left'>Seeding: </span>
+                                <span class='level-right'>" . number_format($peers['yes']) . "</span>
+                            </span>
+                            <span class='level is-marginless'>
+                                <span class='level-left'>Leeching: </span>
+                                <span class='level-right'>" . number_format($peers['no']) . '</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>';
         $tooltip = "class='" . get_user_class_name($users_data['class'], true) . " dt-tooltipper-large' data-tooltip-content='#userid_{$users_data['id']}_tooltip'";
     } else {
         $tooltip = "class='" . get_user_class_name((255 != $users_data['override_class'] ? $users_data['override_class'] : $users_data['class']), true) . "'";
@@ -567,35 +595,35 @@ function get_user_ratio_image($ratio)
             break;
 
         case $ratio < 0.6:
-            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt=" Bad ratio :("  title=" Bad ratio :("/>';
+            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt=" Bad ratio :("  title=" Bad ratio :(" class="tooltipper icon" />';
             break;
 
         case $ratio <= 0.7:
-            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/weep.gif" alt=" Could be better"  title=" Could be better" />';
+            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/weep.gif" alt=" Could be better"  title=" Could be better" class="tooltipper icon" />';
             break;
 
         case $ratio <= 0.8:
-            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/cry.gif" alt=" Getting there!" title=" Getting there!" />';
+            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/cry.gif" alt=" Getting there!" title=" Getting there!" class="tooltipper icon" />';
             break;
 
         case $ratio <= 1.5:
-            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/smile1.gif" alt=" Good Ratio :)" title=" Good Ratio :)" />';
+            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/smile1.gif" alt=" Good Ratio :)" title=" Good Ratio :)" class="tooltipper icon" />';
             break;
 
         case $ratio <= 2.0:
-            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/grin.gif" alt=" Great Ratio :)" title=" Great Ratio :)" />';
+            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/grin.gif" alt=" Great Ratio :)" title=" Great Ratio :)" class="tooltipper icon" />';
             break;
 
         case $ratio <= 3.0:
-            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/w00t.gif" alt=" Wow! :D" title=" Wow! :D" />';
+            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/w00t.gif" alt=" Wow! :D" title=" Wow! :D" class="tooltipper icon" />';
             break;
 
         case $ratio <= 4.0:
-            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/pimp.gif" alt=" Fa-boo Ratio!" title=" Fa-boo Ratio!" />';
+            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/pimp.gif" alt=" Fa-boo Ratio!" title=" Fa-boo Ratio!" class="tooltipper icon" />';
             break;
 
         case $ratio > 4.0:
-            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/yahoo.gif" alt=" Great ratio :-D" title=" Great ratio :-D" />';
+            return ' <img src="' . $site_config['pic_baseurl'] . 'smilies/yahoo.gif" alt=" Great ratio :-D" title=" Great ratio :-D" class="tooltipper icon" />';
             break;
     }
 

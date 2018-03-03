@@ -48,9 +48,9 @@ if ('avatar' == $action) {
     $avatars               = (isset($_POST['avatars']) && 'yes' === $_POST['avatars'] ? 'yes' : 'no');
     $offensive_avatar      = (isset($_POST['offensive_avatar']) && 'yes' === $_POST['offensive_avatar'] ? 'yes' : 'no');
     $view_offensive_avatar = (isset($_POST['view_offensive_avatar']) && 'yes' === $_POST['view_offensive_avatar'] ? 'yes' : 'no');
-    if (!(0 == $CURUSER['avatarpos'] or 1 != $CURUSER['avatarpos'])) {
+    if (!(0 == $CURUSER['avatarpos'] || 1 != $CURUSER['avatarpos'])) {
         $avatar = trim(urldecode($_POST['avatar']));
-        if (preg_match("/^http:\/\/$/i", $avatar) or preg_match('/[?&;]/', $avatar) or preg_match('#javascript:#is', $avatar) or !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $avatar)) {
+        if (preg_match("/^http:\/\/$/i", $avatar) || preg_match('/[?&;]/', $avatar) || preg_match('#javascript:#is', $avatar) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $avatar)) {
             $avatar = '';
         }
     }
@@ -63,7 +63,7 @@ if ('avatar' == $action) {
             stderr($lang['takeeditcp_user_error'], $lang['takeeditcp_small_image']);
         }
         sql_query('UPDATE usersachiev SET avatarset = avatarset+1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND avatarset = '0'") or sqlerr(__FILE__, __LINE__);
-        if (($img_size[0] > $site_config['av_img_width']) or ($img_size[1] > $site_config['av_img_height'])) {
+        if (($img_size[0] > $site_config['av_img_width']) || ($img_size[1] > $site_config['av_img_height'])) {
             $image = resize_image([
                                       'max_width'  => $site_config['av_img_width'],
                                       'max_height' => $site_config['av_img_height'],
@@ -83,7 +83,7 @@ if ('avatar' == $action) {
     }
     $updateset[] = 'offensive_avatar = ' . sqlesc($offensive_avatar);
     $updateset[] = 'view_offensive_avatar = ' . sqlesc($view_offensive_avatar);
-    if (!(0 == $CURUSER['avatarpos'] or 1 != $CURUSER['avatarpos'])) {
+    if (!(0 == $CURUSER['avatarpos'] || 1 != $CURUSER['avatarpos'])) {
         $updateset[] = 'avatar = ' . sqlesc($avatar);
     }
     $updateset[]                            = 'avatars = ' . sqlesc($avatars);
@@ -110,7 +110,7 @@ if ('avatar' == $action) {
     }
     $signatures = (isset($_POST['signatures']) && 'yes' === $_POST['signatures'] ? 'yes' : 'no');
     $signature  = trim(urldecode($_POST['signature']));
-    if (preg_match("/^http:\/\/$/i", $signature) or preg_match('/[?&;]/', $signature) or preg_match('#javascript:#is', $signature) or !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $signature)) {
+    if (preg_match("/^http:\/\/$/i", $signature) || preg_match('/[?&;]/', $signature) || preg_match('#javascript:#is', $signature) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $signature)) {
         $signature = '';
     }
     if (!empty($signature)) {
@@ -122,7 +122,7 @@ if ('avatar' == $action) {
             stderr($lang['takeeditcp_uerr'], $lang['takeeditcp_img_to_small']);
         }
         sql_query('UPDATE usersachiev SET sigset = sigset+1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND sigset = '0'") or sqlerr(__FILE__, __LINE__);
-        if (($img_size[0] > $site_config['sig_img_width']) or ($img_size[1] > $site_config['sig_img_height'])) {
+        if (($img_size[0] > $site_config['sig_img_width']) || ($img_size[1] > $site_config['sig_img_height'])) {
             $image = resize_image([
                                       'max_width'  => $site_config['sig_img_width'],
                                       'max_height' => $site_config['sig_img_height'],

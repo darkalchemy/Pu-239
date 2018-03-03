@@ -44,7 +44,7 @@ function valid_torrent_name($torrent_name)
 {
     $allowedchars = 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-_[]*()';
     for ($i = 0; $i < strlen($torrent_name); ++$i) {
-        if (false === strpos($allowedchars, $torrent_name[$i])) {
+        if (strpos($allowedchars, $torrent_name[$i]) === false) {
             return false;
         }
     }
@@ -73,8 +73,8 @@ if (!function_exists('is_valid_url')) {
  * @End
  */
 $nfoaction      = '';
-$select_torrent = sql_query('SELECT name, descr, category, visible, vip, release_group, poster, url, newgenre, description, anonymous, sticky, owner, allow_comments, nuked, nukereason, filename, save_as, youtube, tags, info_hash, freetorrent FROM torrents WHERE id = ' . sqlesc($id))    or sqlerr(__FILE__, __LINE__);
-$fetch_assoc    = mysqli_fetch_assoc($select_torrent)                                                                                                                                                                                                                                          or stderr('Error', 'No torrent with this ID!');
+$select_torrent = sql_query('SELECT name, descr, category, visible, vip, release_group, poster, url, newgenre, description, anonymous, sticky, owner, allow_comments, nuked, nukereason, filename, save_as, youtube, tags, info_hash, freetorrent FROM torrents WHERE id = ' . sqlesc($id))       or sqlerr(__FILE__, __LINE__);
+$fetch_assoc    = mysqli_fetch_assoc($select_torrent)                                                                                                                                                                                                                                             or stderr('Error', 'No torrent with this ID!');
 $infohash       = $fetch_assoc['info_hash'];
 if ($CURUSER['id'] != $fetch_assoc['owner'] && $CURUSER['class'] < MIN_CLASS) {
     $session->set('is-danger', "You're not the owner of this torrent.");

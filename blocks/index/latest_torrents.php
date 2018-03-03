@@ -3,7 +3,7 @@
 global $site_config, $lang, $fluent, $CURUSER, $cache;
 
 $top5torrents = $cache->get('top5_tor_');
-if (false === $top5torrents || is_null($top5torrents)) {
+if ($top5torrents === false || is_null($top5torrents)) {
     $top5torrents = $fluent->from('torrents')
         ->select(null)
         ->select('torrents.id')
@@ -30,7 +30,7 @@ if (false === $top5torrents || is_null($top5torrents)) {
 }
 
 $last5torrents = $cache->get('last5_tor_');
-if (false === $last5torrents || is_null($last5torrents)) {
+if ($last5torrents === false || is_null($last5torrents)) {
     $last5torrents = $fluent->from('torrents')
         ->select(null)
         ->select('torrents.id')

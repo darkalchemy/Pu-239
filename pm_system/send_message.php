@@ -131,7 +131,7 @@ $replyto  = (isset($_GET['replyto']) ? intval($_GET['replyto']) : (isset($_POST[
 $returnto = htmlsafechars(isset($_POST['returnto']) ? $_POST['returnto'] : '');
 if (!$receiver) {
     $all_users = $cache->get('all_users_');
-    if (false === $all_users || is_null($all_users)) {
+    if ($all_users === false || is_null($all_users)) {
         $sql = "SELECT id, username, class FROM users WHERE acceptpms != 'no' ORDER BY LOWER(username)";
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $ids = [];
@@ -205,7 +205,7 @@ $HTMLOUT .= '
             </tr>
             <tr class="no_hover">
                 <td><span style="font-weight: bold;">' . $lang['pm_send_subject'] . '</span></td>
-                <td><input name="subject" type="text" class="text_default" value="' . $subject . '" /></td>
+                <td><input name="subject" type="text" class="w-100" value="' . $subject . '" /></td>
             </tr>
             <tr class="no_hover">
                 <td><span style="font-weight: bold;">' . $lang['pm_send_body'] . '</span></td>

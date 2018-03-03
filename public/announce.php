@@ -92,7 +92,7 @@ if (portblacklisted($port)) {
 } elseif ($site_config['connectable_check']) {
     $connkey     = 'connectable_' . $realip . '_' . $port;
     $connectable = $cache->get($connkey);
-    if (false === $connectable || is_null($connectable)) {
+    if ($connectable === false || is_null($connectable)) {
         $sockres = @fsockopen($ip, $port, $errno, $errstr, 5);
         if (!$sockres) {
             $connectable = 'no';
@@ -127,10 +127,14 @@ if (IP_LOGGING) {
             'lastannounce' => TIME_NOW,
             'type'         => 'announce',
         ];
-        $fluent->insertInto('ips', $values)
-            ->onDuplicateKeyUpdate($update_values)
-            ->execute();
-        $cache->delete('ip_history_' . $userid);
+        $announce_ip = $cache->get('announce_ip_' . $userid . '_' . $ip);
+        if ($announce_ip === false || is_null($announce_ip)) {
+            $fluent->insertInto('ips', $values)
+                ->onDuplicateKeyUpdate($update_values)
+                ->execute();
+            $cache->delete('ip_history_' . $userid);
+        }
+        $cache->set('announce_ip_' . $userid . '_' . $ip, $ip, 60);
     }
 }
 $torrent = get_torrent_from_hash($info_hash, $userid);
@@ -302,7 +306,7 @@ if (!isset($self)) {
         $downthis = 0;
     }
     $contribution = $cache->get('freecontribution_');
-    if (false === $contribution || is_null($contribution)) {
+    if ($contribution === false || is_null($contribution)) {
         $contribution_fields_ar_int = [
             'startTime',
             'endTime',
@@ -343,9 +347,9 @@ if (!isset($self)) {
         include CACHE_DIR . 'free_cache.php';
         if (isset($free)) {
             foreach ($free as $fl) {
-                $isfree   = (1 == $fl['modifier'] || 3 == $fl['modifier'])   && $fl['expires']                         > TIME_NOW;
-                $isdouble = (2 == $fl['modifier'] || 3 == $fl['modifier'])   && $fl['expires']                         > TIME_NOW;
-                $issilver = (4 == $fl['modifier'])                           && $fl['expires']                         > TIME_NOW;
+                $isfree   = (1 == $fl['modifier'] || 3 == $fl['modifier']) && $fl['expires'] > TIME_NOW;
+                $isdouble = (2 == $fl['modifier'] || 3 == $fl['modifier']) && $fl['expires'] > TIME_NOW;
+                $issilver = (4 == $fl['modifier'])                         && $fl['expires'] > TIME_NOW;
             }
         }
         if (0 != $torrent['silver'] || $issilver) {
@@ -427,6 +431,8 @@ if (isset($self) && 'stopped' == $event) {
         ->where('(peer_id = ? OR peer_id = ?)', $peer_id, preg_replace('/ *$/s', '', $peer_id))
         ->execute();
 
+    $cache->delete('MyPeers_' . $userid);
+
     if (($a['uploaded'] + $upthis) < ($a['downloaded'] + $downthis) && 'yes' == $a['finished']) {
         $HnR_time_seeded = ($a['seedtime'] + $self['announcetime']);
         switch (true) {
@@ -496,8 +502,8 @@ if (isset($self) && 'stopped' == $event) {
             $snatch_updateset['uploaded']    = new Envms\FluentPDO\Literal("uploaded + $upthis");
             $snatch_updateset['downloaded']  = new Envms\FluentPDO\Literal($site_config['ratio_free'] ? 'downloaded + 0' : "downloaded + $downthis");
             $snatch_updateset['to_go']       = $left;
-            $snatch_updateset['upspeed']     = $upthis     > 0 ? "$upthis / {$self['announcetime']}" : 0;
-            $snatch_updateset['downspeed']   = $downthis   > 0 ? "$downthis / {$self['announcetime']}" : 0;
+            $snatch_updateset['upspeed']     = $upthis   > 0 ? "$upthis / {$self['announcetime']}" : 0;
+            $snatch_updateset['downspeed']   = $downthis > 0 ? "$downthis / {$self['announcetime']}" : 0;
             if ('yes' == $self['seeder']) {
                 $snatch_updateset['seedtime'] = new Envms\FluentPDO\Literal("seedtime + {$self['announcetime']}");
             } else {
@@ -540,6 +546,8 @@ if (isset($self) && 'stopped' == $event) {
         ->where('(peer_id = ? OR peer_id = ?)', $peer_id, preg_replace('/ *$/s', '', $peer_id))
         ->execute();
 
+    $cache->delete('MyPeers_' . $userid);
+
     if ($updated >= 1) {
         if ($seeder != $self['seeder']) {
             if ('yes' == $seeder) {
@@ -562,8 +570,8 @@ if (isset($self) && 'stopped' == $event) {
             $snatch_updateset['uploaded']    = new Envms\FluentPDO\Literal("uploaded + $upthis");
             $snatch_updateset['downloaded']  = new Envms\FluentPDO\Literal($site_config['ratio_free'] ? 'downloaded + 0' : "downloaded + $downthis");
             $snatch_updateset['to_go']       = $left;
-            $snatch_updateset['upspeed']     = $upthis     > 0 ? "$upthis / {$self['announcetime']}" : 0;
-            $snatch_updateset['downspeed']   = $downthis   > 0 ? "$downthis / {$self['announcetime']}" : 0;
+            $snatch_updateset['upspeed']     = $upthis   > 0 ? "$upthis / {$self['announcetime']}" : 0;
+            $snatch_updateset['downspeed']   = $downthis > 0 ? "$downthis / {$self['announcetime']}" : 0;
             if ('yes' == $self['seeder']) {
                 $snatch_updateset['seedtime'] = new Envms\FluentPDO\Literal("seedtime + {$self['announcetime']}");
             } else {
@@ -578,7 +586,7 @@ if (isset($self) && 'stopped' == $event) {
 } else {
     if ('yes' == $user['parked']) {
         err('Your account is parked! (Read the FAQ)');
-    } elseif (1 != $user['downloadpos'] || 'yes' == $user['hnrwarn'] and 'yes' != $seeder) {
+    } elseif ($user['downloadpos'] != 1 || ($user['hnrwarn'] = 'yes' && $seeder != 'yes')) {
         err('Your downloading privileges have been disabled! (Read the rules)');
     }
     $values = [
@@ -615,7 +623,7 @@ if (isset($self) && 'stopped' == $event) {
     $insert_peers = $fluent->insertInto('peers', $values)
         ->ignore()
         ->execute();
-    echo $insert_peers;
+
     if (0 == $insert_peers) {
         $fluent->update('peers')
             ->set($update_values)
@@ -644,6 +652,7 @@ if (isset($self) && 'stopped' == $event) {
             $snatch_updateset['mark_of_cain'] = 'no';
         }
     }
+    $cache->delete('MyPeers_' . $userid);
 }
 
 if ('yes' == $seeder) {

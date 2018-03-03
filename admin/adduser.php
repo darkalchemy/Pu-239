@@ -12,7 +12,7 @@ $cache->delete('userlist_' . $site_config['chatBotID']);
 $cache->delete('chat_users_list');
 
 $lang = array_merge($lang, load_language('ad_adduser'));
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $insert = [
         'username'     => '',
         'email'        => '',
@@ -63,17 +63,17 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
         $cache->set('latestuser', (int) $user_id, $site_config['expires']['latestuser']);
 
         $message = "Welcome New {$site_config['site_name']} Member: [user]" . htmlsafechars($insert['username']) . '[/user]';
-        if ($user_id > 2 && 1 == $site_config['autoshout_on']) {
+        if ($user_id > 2 && $site_config['autoshout_on'] == 1) {
             autoshout($message);
         }
-        if (2 == $user_id) {
+        if ($user_id == 2) {
             $session->set('is-success', '[p]Pu-239 Install Complete![/p][p]Keep this page (AJAX Chat) open to allow cleanup to catchup.[/p]');
             header('Location: index.php');
         } else {
             stderr($lang['std_success'], sprintf($lang['text_user_added'], $user_id));
         }
     } else {
-        if (1062 == ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
+        if (((is_object($GLOBALS['___mysqli_ston'])) == 1062 ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
             $res = sql_query(
                 'SELECT id 
                         FROM users 

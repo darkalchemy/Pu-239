@@ -6,7 +6,7 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $fluent, $cache, $user;
+global $CURUSER, $site_config, $lang, $fluent, $cache;
 
 $lang    = array_merge($lang, load_language('ad_acp'));
 $stdfoot = [
@@ -23,23 +23,23 @@ if (isset($_POST['ids'])) {
         }
     }
     $do = isset($_POST['do']) ? htmlsafechars(trim($_POST['do'])) : '';
-    if ('enabled' == $do) {
+    if ($do == 'enabled') {
         sql_query("UPDATE users SET enabled = 'yes' WHERE ID IN(" . join(', ', array_map('sqlesc', $ids)) . ") AND enabled = 'no'") or sqlerr(__FILE__, __LINE__);
     }
     $cache->update_row('user' . $id, [
         'enabled' => 'yes',
     ], $site_config['expires']['user_cache']);
     //else
-    if ('confirm' == $do) {
+    if ($do == 'confirm') {
         sql_query("UPDATE users SET status = 'confirmed' WHERE ID IN(" . join(', ', array_map('sqlesc', $ids)) . ") AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
     }
     $cache->update_row('user' . $id, [
         'status' => 'confirmed',
     ], $site_config['expires']['user_cache']);
     //else
-    if ('delete' == $do && ($CURUSER['class'] >= UC_SYSOP)) {
+    if ($do == 'delete' && ($CURUSER['class'] >= UC_SYSOP)) {
         $res_del = sql_query('SELECT id, username, added, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE ID IN(' . join(', ', array_map('sqlesc', $ids)) . ') AND class < 3 ORDER BY username DESC');
-        if (0 != mysqli_num_rows($res_del)) {
+        if (mysqli_num_rows($res_del) != 0) {
             while ($arr_del = mysqli_fetch_assoc($res_del)) {
                 $userid = $arr_del['id'];
                 $res    = sql_query('DELETE FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
@@ -61,7 +61,7 @@ $perpage  = 25;
 $pager    = pager($perpage, $count, 'staffpanel.php?tool=acpmanage&amp;action=acpmanage&amp;');
 $res      = sql_query("SELECT id, username, added, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE enabled='no' OR status='pending' ORDER BY username DESC {$pager['limit']}");
 $HTMLOUT .= begin_main_frame($lang['text_du'] . " [$disabled] | " . $lang['text_pu'] . "[$pending]");
-if (0 != mysqli_num_rows($res)) {
+if (mysqli_num_rows($res) != 0) {
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
     }

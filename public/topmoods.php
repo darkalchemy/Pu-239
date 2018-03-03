@@ -22,7 +22,7 @@ $abba = '<h2>Top Moods</h2>
          </tr>';
 $key      = 'topmoods';
 $topmoods = $cache->get($key);
-if (false === $topmoods || is_null($topmoods)) {
+if ($topmoods === false || is_null($topmoods)) {
     $res = sql_query('SELECT moods.*, users.mood, COUNT(users.mood) as moodcount ' . 'FROM users LEFT JOIN moods ON (users.mood = moods.id) GROUP BY users.mood ' . 'ORDER BY moodcount DESC, moods.id ASC') or sqlerr(__FILE__, __LINE__);
     while ($arr = mysqli_fetch_assoc($res)) {
         $topmoods .= '<tr><td>' . (int) $arr['moodcount'] . '</td>

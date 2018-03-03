@@ -14,7 +14,7 @@ $stdfoot = [
     ],
 ];
 $HTMLOUT = $offers = $subs_list = $request = $descr = '';
-if ($CURUSER['class'] < UC_UPLOADER or 0 == $CURUSER['uploadpos'] || $CURUSER['uploadpos'] > 1 || 'yes' == $CURUSER['suspended']) {
+if ($CURUSER['class'] < UC_UPLOADER || $CURUSER['uploadpos'] === 0 || $CURUSER['uploadpos'] > 1 || $CURUSER['suspended'] === 'yes') {
     stderr($lang['upload_sorry'], $lang['upload_no_auth']);
 }
 $res_request = sql_query('SELECT id, request_name FROM requests WHERE filled_by_user_id = 0 ORDER BY request_name ASC') or sqlerr(__FILE__, __LINE__);
@@ -139,11 +139,11 @@ $HTMLOUT .= tr('Subtitiles', $subs_list, 1);
 $rg = "<select name='release_group'>\n<option value='none'>None</option>\n<option value='p2p'>p2p</option>\n<option value='scene'>Scene</option>\n</select>\n";
 $HTMLOUT .= tr('Release Type', $rg, 1);
 $HTMLOUT .= tr("{$lang['upload_anonymous']}", "<div class='flex'><input type='checkbox' name='uplver' value='yes' /><span>{$lang['upload_anonymous1']}</span></div>", 1);
-if (UC_MAX == $CURUSER['class']) {
+if ($CURUSER['class'] === UC_MAX) {
     $HTMLOUT .= tr("{$lang['upload_comment']}", "<div class='flex'><input type='checkbox' name='allow_commentd' value='yes' /><span>{$lang['upload_discom1']}</span></div>", 1);
 }
 $HTMLOUT .= tr('Strip ASCII', "<div class='flex'><input type='checkbox' name='strip' value='strip' checked /><span><a href='http://en.wikipedia.org/wiki/ASCII_art' target='_blank'>What is this ?</a></span></div>", 1);
-if ($CURUSER['class'] >= UC_UPLOADER and !XBT_TRACKER) {
+if ($CURUSER['class'] >= UC_UPLOADER && !XBT_TRACKER) {
     $HTMLOUT .= "<tr>
     <td class='rowhead'>Free Leech</td>
     <td>
@@ -271,7 +271,7 @@ $HTMLOUT .= '
             </td>
         </tr>';
 
-if ($CURUSER['class'] >= UC_UPLOADER and !XBT_TRACKER) {
+if ($CURUSER['class'] >= UC_UPLOADER && !XBT_TRACKER) {
     $HTMLOUT .= tr('Vip Torrent', "<div class='flex'><input type='checkbox' name='vip' value='1' /><span>If this one is checked, only Vip's can download this torrent</span></div>", 1);
 }
 $HTMLOUT .= "

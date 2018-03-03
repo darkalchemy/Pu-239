@@ -28,7 +28,7 @@ if (!$count) {
     stderr($lang['achievement_history_no'], "{$lang['achievement_history_err2']}<a class='altlink' href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['username']) . "</a>{$lang['achievement_history_err3']}");
 }
 $pager = pager($perpage, $count, "?id=$id&amp;");
-if ($id == $CURUSER['id']) {
+if ($id === $CURUSER['id']) {
     $HTMLOUT .= "
     <div class='w-100'>
         <ul class='level-center padding20 bg-06'>
@@ -51,7 +51,7 @@ $HTMLOUT .= "
     <div class='has-text-centered'>
         <h1 class='level-item'>{$lang['achievement_history_afu']}&nbsp;" . format_username($arr['id']) . "</h1>
         <h2>{$lang['achievement_history_c']}" . htmlsafechars($row['0']) . $lang['achievement_history_a'] . (1 == $row[0] ? '' : 's') . '.';
-if ($id == $CURUSER['id']) {
+if ($id === $CURUSER['id']) {
     $HTMLOUT .= " <a class='altlink' href='{$site_config['baseurl']}/achievementbonus.php'>" . htmlsafechars($achpoints) . "{$lang['achievement_history_pa']}" . htmlsafechars($spentpoints) . "{$lang['achievement_history_ps']}</a>";
 }
 $HTMLOUT .= '</h2>
@@ -74,12 +74,12 @@ $body = '';
 while ($arr = mysqli_fetch_assoc($res)) {
     $body .= "
                     <tr>
-                        <td><img src='{$site_config['pic_baseurl']}achievements/" . htmlsafechars($arr['icon']) . "' alt='" . htmlsafechars($arr['achievement']) . "' class='tooltipper' title='" . htmlsafechars($arr['achievement']) . "' /></td>
+                        <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}achievements/" . htmlsafechars($arr['icon']) . "' alt='" . htmlsafechars($arr['achievement']) . "' class='tooltipper icon' title='" . htmlsafechars($arr['achievement']) . "' /></td>
                         <td>" . htmlsafechars($arr['description']) . '</td>
                         <td>' . get_date($arr['date'], '') . '</td>
                     </tr>';
 }
-$HTMLOUT .= main_table($body, $header) . '
+$HTMLOUT .= main_table($body, $heading) . '
         </div>';
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];

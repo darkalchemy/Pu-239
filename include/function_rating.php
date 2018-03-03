@@ -19,7 +19,7 @@ function getRate($id, $what)
     }
     $keys['rating'] = 'rating_' . $what . '_' . $id . '_' . $CURUSER['id'];
     $rating_cache   = $cache->get($keys['rating']);
-    if (false === $rating_cache || is_null($rating_cache)) {
+    if ($rating_cache === false || is_null($rating_cache)) {
         $qy1 = $fluent->from('rating')
             ->select(null)
             ->select('IFNULL(SUM(rating), 0) AS sum')

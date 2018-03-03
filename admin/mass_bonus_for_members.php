@@ -382,7 +382,7 @@ switch ($action) {
 $count                   = 1;
 $all_classes_check_boxes = '<table border="0"><tr>';
 for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
-    $all_classes_check_boxes .= '<td class="one">
+    $all_classes_check_boxes .= '<td>
         <input type="checkbox" name="free_for_classes[]" value="' . $i . '" checked /> <span style="font-weight: bold;color:#' . get_user_class_color($i) . ';">' . get_user_class_name($i) . '</span></td>';
     if (6 == $count) {
         $all_classes_check_boxes .= '</tr>' . ($i < UC_MAX ? '<tr>' : '');
@@ -390,7 +390,7 @@ for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
     }
     ++$count;
 }
-$all_classes_check_boxes .= (0 == $count ? '</table>' : '<tr><td colspan="' . (7 - $count) . '" class="one"></td></tr></table>') . '';
+$all_classes_check_boxes .= (0 == $count ? '</table>' : '<tr><td colspan="' . (7 - $count) . '"></td></tr></table>') . '';
 $bonus_GB = '<select name="GB">
         <option class="head" value="">' . $lang['bonusmanager_up_add'] . '</option>
         <option class="body" value="1073741824">' . $lang['bonusmanager_up_1gb'] . '</option>
@@ -446,12 +446,12 @@ $pm_drop_down = '<form name="compose" method="post" action="mass_bonus_for_membe
                  <td colspan="2" class="colhead">' . $lang['bonusmanager_pm_send'] . '</td>
                  </tr>
                  <tr>
-                 <td class="one"><span style="font-weight: bold;">' . $lang['bonusmanager_pm_subject'] . '</span></td>
-                 <td class="one"><input name="subject" type="text" class="text_default" value="' . $subject . '" /></td>
+                 <td><span style="font-weight: bold;">' . $lang['bonusmanager_pm_subject'] . '</span></td>
+                 <td><input name="subject" type="text" class="w-100" value="' . $subject . '" /></td>
                  </tr>
                  <tr>
-                 <td class="one"><span style="font-weight: bold;">' . $lang['bonusmanager_pm_body'] . '</span></td>
-                 <td class="one">' . BBcode($body) . '</td>
+                 <td><span style="font-weight: bold;">' . $lang['bonusmanager_pm_body'] . '</span></td>
+                 <td>' . BBcode($body) . '</td>
                  </tr>
                  </table></form>';
 $drop_down = '
@@ -478,8 +478,8 @@ $HTMLOUT    .= '<form name="inputform" method="post" action="' . $site_config['b
         <td class="colhead" colspan="2">' . $lang['bonusmanager_mass_bonus_selected'] . '</td>
     </tr>
     <tr>
-        <td class="one" width="160px"><span style="font-weight: bold;">' . $lang['bonusmanager_bonus_type'] . '</span></td>
-        <td class="one">' . $drop_down . '
+        <td width="160px"><span style="font-weight: bold;">' . $lang['bonusmanager_bonus_type'] . '</span></td>
+        <td>' . $drop_down . '
         <div id="div_upload_credit" class="select_me"><br>' . $bonus_GB . '<hr></div>
         <div id="div_karma" class="select_me"><br>' . $karma_drop_down . '<hr></div>
         <div id="div_freeslots" class="select_me"><br>' . $free_leech_slot_drop_down . '<hr></div>
@@ -488,18 +488,18 @@ $HTMLOUT    .= '<form name="inputform" method="post" action="' . $site_config['b
         </td>
     </tr>
     <tr>
-        <td class="one"><span style="font-weight: bold;">' . $lang['bonusmanager_apply_bonus'] . '</span></td>
-        <td class="one">
+        <td><span style="font-weight: bold;">' . $lang['bonusmanager_apply_bonus'] . '</span></td>
+        <td>
         <input type="checkbox" id="all_or_selected_classes" name="all_or_selected_classes" value="1"  checked />
         <span style="font-weight: bold;">' . $lang['bonusmanager_all_classes'] . '</span>' . $lang['bonusmanager_uncheck'] . '
         <div id="classes_open" style="display:none;"><br>' . $all_classes_check_boxes . '</div></td>
     </tr>
     <tr>
-        <td class="one"></td>
-        <td class="one">' . $lang['bonusmanager_note'] . '<br></td>
+        <td></td>
+        <td>' . $lang['bonusmanager_note'] . '<br></td>
     </tr>
     <tr>
-        <td class="one" colspan="2">
+        <td colspan="2">
         <input type="submit" class="button is-small" name="button" value="' . $lang['bonusmanager_doit'] . '"  /></td>
     </tr>
     </table></form>';

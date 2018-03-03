@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
@@ -47,29 +48,35 @@ $HTMLOUT .= '<!doctype html>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>' . $lang['user_mood_title'] . '</title>
     <link rel="stylesheet" href="' . get_file_name('css') . '" />
-</head>
-<body class="$body_class">
+</head>';
+
+$body = '
+<body class="' . $body_class . '">
     <script>
         var theme = localStorage.getItem("theme");
         if (theme) {
             document.body.className = theme;
         }
-    </script>
+    </script>';
+
+$div = '
     <h3 class="has-text-centered has-text-white top20">' . $CURUSER['username'] . '\'' . $lang['user_mood_s'] . '</h3>
     <div class="level-center bottom20">';
 $res   = sql_query('SELECT * FROM moods WHERE bonus < ' . sqlesc($more) . ' ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
 $count = 0;
 while ($arr = mysqli_fetch_assoc($res)) {
-    $HTMLOUT .= '
-        <span class="margin10 bordered w-25 has-text-centered">
+    $div .= '
+        <span class="margin10 bordered has-text-centered bg-04">
             <a href="?id=' . (int) $arr['id'] . '">
                 <img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt="" class="bottom10" />
                 <br>' . htmlsafechars($arr['name']) . '
             </a>
         </span>';
 }
-$HTMLOUT .= '
-    </div>
+$div .= '
+    </div>';
+
+$body .= main_div($div) . '
     <div class="w-100 has-text-centered margin20">
         <a href="javascript:self.close();">
             <span class="button bottom20">' . $lang['user_mood_close'] . '</span>
@@ -78,6 +85,7 @@ $HTMLOUT .= '
     <noscript>
         <a href="' . $site_config['baseurl'] . '/index.php">' . $lang['user_mood_back'] . '</a>
     </noscript>
-</body>
+</body>';
+$HTMLOUT .= wrapper($body) . '
 </html>';
 echo $HTMLOUT;

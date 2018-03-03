@@ -3,7 +3,7 @@
 global $site_config, $lang, $fluent, $cache;
 
 $active = $cache->get('activeusers_');
-if (false === $active || is_null($active)) {
+if ($active === false || is_null($active)) {
     $list  = [];
     $dt    = TIME_NOW - 900;
     $query = $fluent->from('users')

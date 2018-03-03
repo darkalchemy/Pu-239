@@ -51,7 +51,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $body    = trim((isset($_POST['body']) ? $_POST['body'] : ''));
     $subject = trim((isset($_POST['subject']) ? $_POST['subject'] : ''));
     $expiry  = (int) (isset($_POST['expiry']) ? $_POST['expiry'] : 0);
-    if ((isset($_POST['buttonval']) and 'Submit' == $_POST['buttonval'])) {
+    if ((isset($_POST['buttonval']) && 'Submit' == $_POST['buttonval'])) {
         //== Check values before inserting into row...
         if (empty($body)) {
             stderr('Error', 'No body to announcement');

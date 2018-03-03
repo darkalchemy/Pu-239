@@ -12,8 +12,8 @@ $table = "
             <div class='container is-fluid portlet'>";
 while ($result = mysqli_fetch_assoc($res)) {
     $gamenum = (int) $result['gamenum'];
-    $ended   = $result['ended']     >= 1 ? get_date($result['ended'], 'LONG') : 0;
-    $started = $result['started']   >= 1 ? get_date($result['started'], 'LONG') : 0;
+    $ended   = $result['ended']       >= 1 ? get_date($result['ended'], 'LONG') : 0;
+    $started = $result['started']     >= 1 ? get_date($result['started'], 'LONG') : 0;
     $sql     = 'SELECT t.gamenum, t.user_id, COUNT(t.correct) AS correct,
                 (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE correct = 0 AND user_id = t.user_id AND gamenum = ' . sqlesc($gamenum) . ') AS incorrect,
                 u.username, u.modcomment

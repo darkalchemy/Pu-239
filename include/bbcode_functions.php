@@ -104,7 +104,7 @@ function validate_imgs($s)
     $array = $result[0];
     for ($i = 0; $i < count($array); ++$i) {
         $headers = @get_headers($array[$i]);
-        if (false === strpos($headers[0], '200')) {
+        if (strpos($headers[0], '200') === false) {
             $s = str_replace('[img]' . $array[$i] . '[/img]', '', $s);
             $s = str_replace('[img=' . $array[$i] . ']', '', $s);
         }
@@ -660,7 +660,7 @@ function format_comment_no_bbcode($text, $strip_html = true)
 function _MediaTag($content, $type)
 {
     global $site_config;
-    if ('' == $content or '' == $type) {
+    if ('' == $content || '' == $type) {
         return;
     }
     $return = '';

@@ -17,15 +17,15 @@ $res     = sql_query('
         WHERE u.id = ' . sqlesc($CURUSER['id']) . ' AND u.enabled="yes" AND u.status = "confirmed"') or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res);
 
-if (($row['curr_ann_id'] > 0) and (null == $row['curr_ann_body'])) {
+if (($row['curr_ann_id'] > 0) && (null == $row['curr_ann_body'])) {
     0 == $row['curr_ann_id'];
     0 == $row['curr_ann_last_check'];
 }
 // If elapsed > 3 minutes, force a announcement refresh.
-if ((0 != $row['curr_ann_last_check']) and (($row['curr_ann_last_check']) < ($dt - 600)) /* 10 mins **/) {
+if ((0 != $row['curr_ann_last_check']) && (($row['curr_ann_last_check']) < ($dt - 600)) /* 10 mins **/) {
     0 == $row['curr_ann_last_check'];
 }
-if ((0 == $row['curr_ann_id']) and (0 == $row['curr_ann_last_check'])) { // Force an immediate check...
+if ((0 == $row['curr_ann_id']) && (0 == $row['curr_ann_last_check'])) { // Force an immediate check...
     $query = sprintf('
                 SELECT m.*,p.process_id
                 FROM announcement_main AS m

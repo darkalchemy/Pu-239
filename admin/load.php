@@ -48,7 +48,7 @@ function uptime()
     $res      = '';
     $filename = '/proc/uptime';
     $fd       = fopen($filename, 'r');
-    if (false === $fd) {
+    if ($fd === false) {
         $res = $lang['index_load_uptime'];
     } else {
         $uptime = fgets($fd, 64);
@@ -96,7 +96,7 @@ function loadavg($return_all = false)
     $res      = '';
     $filename = '/proc/loadavg';
     $fd       = fopen($filename, 'r');
-    if (false === $fd) {
+    if ($fd === false) {
         $res = $lang['index_load_average'];
     } else {
         $loadavg = fgets($fd, 64);

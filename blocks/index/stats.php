@@ -3,7 +3,7 @@
 global $site_config, $lang, $fluent, $cache;
 
 $stats_cache = $cache->get('site_stats_');
-if (false === $stats_cache || is_null($stats_cache)) {
+if ($stats_cache === false || is_null($stats_cache)) {
     $stats_cache = $fluent->from('stats')
         ->select('seeders + leechers AS peers')
         ->select('seeders / leechers AS ratio')

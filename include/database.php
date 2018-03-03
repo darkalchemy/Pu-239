@@ -12,7 +12,7 @@ $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
 $fluent = new Envms\FluentPDO\Query($pdo);
 
-if (SQL_DEBUG && '/announce.php' != $_SERVER['PHP_SELF']) {
+if (SQL_DEBUG && $_SERVER['PHP_SELF'] != '/announce.php') {
     $fluent->debug = function ($BaseQuery) {
         global $pdo, $query_stat;
         $params     = [];

@@ -33,7 +33,7 @@ $HTMLOUT .= $top_links . '<h1>' . $lang['pm_draft_new'] . '</h1>' . '
     </tr>
     <tr>
         <td><span style="font-weight: bold;">' . $lang['pm_draft_subject'] . '</span></td>
-        <td><input type="text" class="text_default" name="subject" value="' . $subject . '" /></td>
+        <td><input type="text" class="w-100" name="subject" value="' . $subject . '" /></td>
     </tr>
     <tr>
         <td><span style="font-weight: bold;">' . $lang['pm_draft_body'] . '</span></td>

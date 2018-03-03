@@ -27,7 +27,6 @@ if (isset($_POST['buttonval']) && 'save as draft' == $_POST['buttonval']) {
     header('Location: /pm_system.php?action=view_mailbox&box=-2&new_draft=1');
     die();
 } //=== end save draft
-//=== Code for preview Retros code
 if (isset($_POST['buttonval']) && 'preview' == $_POST['buttonval']) {
     $subject = htmlsafechars(trim($_POST['subject']));
     $draft   = trim($_POST['body']);
@@ -61,7 +60,7 @@ $HTMLOUT .= '<legend>' . $lang['pm_draft_save_edit'] . '' . $subject . '</legend
     </tr>
     <tr>
         <td><span style="font-weight: bold;">' . $lang['pm_draft_subject'] . '</span></td>
-        <td><input type="text" class="text_default" name="subject" value="' . $subject . '" /></td>
+        <td><input type="text" class="w-100" name="subject" value="' . $subject . '" /></td>
     </tr>
     <tr>
         <td><span style="font-weight: bold;">' . $lang['pm_draft_body'] . '</span></td>

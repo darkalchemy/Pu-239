@@ -53,7 +53,7 @@ class AJAXChatTemplate
     {
         $this->_parsedContent = $this->getContent();
 
-        if ($this->_contentType && (false === strpos($this->_contentType, 'xml'))) {
+        if ($this->_contentType && (strpos($this->_contentType, 'xml')) === false) {
             $doctypeStart = strpos($this->_parsedContent, '<!doctype ');
             if (false !== $doctypeStart) {
                 $this->_parsedContent = substr($this->_parsedContent, $doctypeStart);

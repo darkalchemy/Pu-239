@@ -3,7 +3,7 @@
 global $CURUSER, $site_config, $lang, $fluent, $cache;
 
 $news = $cache->get('latest_news_');
-if (false === $news || is_null($news)) {
+if ($news === false || is_null($news)) {
     $dt   = TIME_NOW - (86400 * 45);
     $news = $fluent->from('news')
         ->where('added > ?', $dt)

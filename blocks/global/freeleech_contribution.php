@@ -11,7 +11,7 @@ if (XBT_TRACKER) {
 } else {
     $fpoints          = $dpoints          = $hpoints          = $freeleech_enabled          = $double_upload_enabled          = $half_down_enabled          = '';
     $scheduled_events = $cache->get('freecontribution_datas_alerts_');
-    if (false === $scheduled_events || is_null($scheduled_events)) {
+    if ($scheduled_events === false || is_null($scheduled_events)) {
         $scheduled_events = $fluent->from('events')
             ->orderBy('startTime DESC')
             ->limit(3)
@@ -58,7 +58,7 @@ if (XBT_TRACKER) {
     }
 
     $percent_fl = $cache->get('freeleech_counter_alerts_');
-    if (false === $percent_fl || is_null($percent_fl)) {
+    if ($percent_fl === false || is_null($percent_fl)) {
         $res = $fluent->from('bonus')
             ->select(null)
             ->select('pointspool / points * 100 AS percent')
@@ -97,7 +97,7 @@ if (XBT_TRACKER) {
     }
 
     $percent_du = $cache->get('doubleupload_counter_alerts_');
-    if (false === $percent_du || is_null($percent_du)) {
+    if ($percent_du === false || is_null($percent_du)) {
         $res = $fluent->from('bonus')
             ->select(null)
             ->select('pointspool / points * 100 AS percent')
@@ -136,7 +136,7 @@ if (XBT_TRACKER) {
     }
 
     $percent_hd = $cache->get('halfdownload_counter_alerts_');
-    if (false === $percent_hd || is_null($percent_hd)) {
+    if ($percent_hd === false || is_null($percent_hd)) {
         $res = $fluent->from('bonus')
             ->select(null)
             ->select('pointspool / points * 100 AS percent')

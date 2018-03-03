@@ -536,7 +536,7 @@ function comment_table($rows)
     global $CURUSER, $site_config;
     $comment_table = '<table class="table table-bordered table-striped">
     <tr>
-    <td class="three">';
+    <td >';
     foreach ($rows as $row) {
         //=======change colors
         $text = format_comment($row['text']);

@@ -310,7 +310,7 @@ class bencdec
     private static function bdecode()
     {
         $char = self::char();
-        if (false === $char) {
+        if ($char === false) {
             return self::decode_error('B-encoded data ended unexpectedly');
         }
         $ord = ord($char); // 1 function call and a comparison with integers is
@@ -370,7 +370,7 @@ class bencdec
     private static function dec_int()
     {
         $epos = @strpos(self::$bdata, 'e', ++self::$bdata_position);
-        if (false === $epos) {
+        if ($epos === false) {
             return self::decode_error('No ending "e" for integer');
         }
         $lenuptoep = $epos - self::$bdata_position;
@@ -408,7 +408,7 @@ class bencdec
         ++self::$bdata_position;
         while (true) {
             $char = self::char();
-            if (false === $char) {
+            if ($char === false) {
                 return self::decode_error('Data ended before dictionary terminated');
             }
             if ('e' === $char) {
@@ -416,7 +416,7 @@ class bencdec
             }
 
             $name = self::dec_str(true);
-            if (false === $name) {
+            if ($name === false) {
                 return false;
             }
             if (self::$ext_valid) {
@@ -428,7 +428,7 @@ class bencdec
                 }
             }
             $data = self::bdecode();
-            if (false === $data) {
+            if ($data === false) {
                 return false;
             }
             $dict[$name] = $data;
@@ -449,7 +449,7 @@ class bencdec
     private static function dec_str($atleastone = false)
     {
         $colpos = @strpos(self::$bdata, ':', self::$bdata_position);
-        if (false === $colpos) {
+        if ($colpos === false) {
             return self::decode_error('No ":" to separate string from length');
         }
         $llen  = $colpos - self::$bdata_position;
@@ -492,7 +492,7 @@ class bencdec
         ++self::$bdata_position;
         while (true) {
             $char = self::char();
-            if (false === $char) {
+            if ($char === false) {
                 return self::decode_error('Data ended before list terminated');
             }
             if ('e' === $char) {
@@ -500,7 +500,7 @@ class bencdec
             }
 
             $data = self::bdecode();
-            if (false === $data) {
+            if ($data === false) {
                 return false;
             }
             $list[] = $data;
@@ -529,7 +529,7 @@ class bencdec
         }
         $data = self::encode($array);
         unset($array);
-        if (false === $data) {
+        if ($data === false) {
             return false;
         }
         $d = file_put_contents($fn, $data);
@@ -635,7 +635,7 @@ class bencdec
         $list = 'l';
         foreach ($val as $value) {
             $data = self::encode($value);
-            if (false === $data) {
+            if ($data === false) {
                 return false;
             }
             $list .= $data;
@@ -659,7 +659,7 @@ class bencdec
         $dict = 'd';
         foreach ($val as $name => $value) {
             $data = self::encode($value);
-            if (false === $data) {
+            if ($data === false) {
                 return false;
             }
             $dict .= self::enc_str((string) $name) . $data;

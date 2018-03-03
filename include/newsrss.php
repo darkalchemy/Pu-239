@@ -20,7 +20,7 @@ function foxnews_shout($links = [])
         foreach ($feeds as $key => $feed) {
             $hash = md5($feed);
             $xml  = $cache->get('foxnewsrss_' . $hash);
-            if (false === $xml || is_null($xml)) {
+            if ($xml === false || is_null($xml)) {
                 $xml = file_get_contents($feed);
                 $cache->set('foxnewsrss_' . $hash, $xml, 300);
             }
@@ -84,7 +84,7 @@ function tfreak_shout($links = [])
     if (1 == $site_config['autoshout_on']) {
         include_once INCL_DIR . 'user_functions.php';
         $xml = $cache->get('tfreaknewsrss_');
-        if (false === $xml || is_null($xml)) {
+        if ($xml === false || is_null($xml)) {
             $xml = file_get_contents('http://feed.torrentfreak.com/Torrentfreak/');
             $cache->set('tfreaknewsrss_', $xml, 300);
         }
@@ -149,7 +149,7 @@ function github_shout($links = [])
         foreach ($feeds as $key => $feed) {
             $hash = md5($feed);
             $rss  = $cache->get('githubcommitrss_' . $hash);
-            if (false === $rss || is_null($rss)) {
+            if ($rss === false || is_null($rss)) {
                 $rss = file_get_contents($feed);
                 $cache->set('githubcommitrss_' . $hash, $rss, 300);
             }

@@ -20,10 +20,10 @@ require_once INCL_DIR . 'files.php';
 require_once CACHE_DIR . 'free_cache.php';
 require_once CACHE_DIR . 'class_config.php';
 require_once INCL_DIR . 'password_functions.php';
-$cache   = new DarkAlchemy\Pu239\Cache();
-$session = new DarkAlchemy\Pu239\Session();
-$fluent  = new DarkAlchemy\Pu239\Database();
-$user    = new DarkAlchemy\Pu239\User($fluent);
+$cache       = new DarkAlchemy\Pu239\Cache();
+$session     = new DarkAlchemy\Pu239\Session();
+$fluent      = new DarkAlchemy\Pu239\Database();
+$user_stuffs = new DarkAlchemy\Pu239\User($fluent);
 
 $session->start();
 
@@ -117,7 +117,7 @@ function PostKey($ids = [])
 function CheckPostKey($ids, $key)
 {
     global $site_config;
-    if (!is_array($ids) or !$key) {
+    if (!is_array($ids) || !$key) {
         return false;
     }
 
@@ -206,7 +206,7 @@ function check_bans($ip, &$reason = '')
     }
     $key = 'bans_' . $ip;
     $ban = $cache->get($key);
-    if (false === $ban || is_null($ban)) {
+    if ($ban === false || is_null($ban)) {
         $nip     = sqlesc($ip);
         $ban_sql = sql_query('SELECT comment FROM bans WHERE (INET6_NTOA(first) <= ' . $nip . ' AND INET6_NTOA(last) >= ' . $nip . ') LIMIT 1') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($ban_sql)) {
@@ -251,7 +251,7 @@ function logincookie($id, $updatedb = true)
  */
 function userlogin()
 {
-    global $site_config, $CURBLOCK, $mood, $whereis, $CURUSER, $cache, $session, $user;
+    global $site_config, $CURBLOCK, $mood, $whereis, $CURUSER, $cache, $session, $user_stuffs;
 
     unset($GLOBALS['CURUSER']);
 
@@ -264,18 +264,21 @@ function userlogin()
         die();
     }
 
-    $id = $user->getUserId();
+    $id = $user_stuffs->getUserId();
     if (!$id) {
-        header('Location: login.php');
+        $session->destroy();
+        $returnto = !empty($_SERVER['REQUEST_URI']) ? '?returnto=' . urlencode($_SERVER['REQUEST_URI']) : '';
+        header('Location: login.php' . $returnto);
         die();
     }
 
     $ip = getip();
 
-    $users_data = $user->getUserFromId($id);
+    $users_data = $user_stuffs->getUserFromId($id);
     if (empty($users_data)) {
         $session->destroy();
-        header('Location: login.php');
+        $returnto = !empty($_SERVER['REQUEST_URI']) ? '?returnto=' . urlencode($_SERVER['REQUEST_URI']) : '';
+        header('Location: login.php' . $returnto);
         die();
     }
 
@@ -323,7 +326,7 @@ function userlogin()
     }
 
     $ustatus = $cache->get('userstatus_' . $id);
-    if (false === $ustatus || is_null($ustatus)) {
+    if ($ustatus === false || is_null($ustatus)) {
         $sql2 = sql_query('SELECT * FROM ustatus WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($sql2)) {
             $ustatus = mysqli_fetch_assoc($sql2);
@@ -347,7 +350,7 @@ function userlogin()
     $blocks_key = 'blocks_' . $users_data['id'];
 
     $CURBLOCK = $cache->get($blocks_key);
-    if (false === $CURBLOCK || is_null($CURBLOCK)) {
+    if ($CURBLOCK === false || is_null($CURBLOCK)) {
         $c_sql = sql_query('SELECT * FROM user_blocks WHERE userid = ' . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
         if (0 == mysqli_num_rows($c_sql)) {
             sql_query('INSERT INTO user_blocks(userid) VALUES (' . sqlesc($users_data['id']) . ')')     or sqlerr(__FILE__, __LINE__);
@@ -448,7 +451,7 @@ function autoclean()
     global $site_config, $cache;
 
     $cleanup_timer = $cache->get('cleanup_timer_');
-    if (false === $cleanup_timer || is_null($cleanup_timer)) {
+    if ($cleanup_timer === false || is_null($cleanup_timer)) {
         $cache->set('cleanup_timer_', 5, 1); // runs only every 1 second
 
         $now = TIME_NOW;
@@ -470,9 +473,9 @@ function autoclean()
 
         if ($site_config['newsrss_on']) {
             $tfreak_cron = $cache->get('tfreak_cron_');
-            if (false === $tfreak_cron || is_null($tfreak_cron)) {
+            if ($tfreak_cron === false || is_null($tfreak_cron)) {
                 $tfreak_news = $cache->get('tfreak_news_links_');
-                if (false === $tfreak_news || is_null($tfreak_news)) {
+                if ($tfreak_news === false || is_null($tfreak_news)) {
                     $sql = sql_query('SELECT link FROM newsrss') or sqlerr(__FILE__, __LINE__);
                     while ($tfreak_new = mysqli_fetch_assoc($sql)) {
                         $tfreak_news[] = $tfreak_new['link'];
@@ -648,7 +651,7 @@ function make_freeslots($userid, $key)
     global $cache;
 
     $slot = $cache->get($key . $userid);
-    if (false === $slot || is_null($slot)) {
+    if ($slot === false || is_null($slot)) {
         $res_slots = sql_query('SELECT * FROM freeslots WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
         $slot      = [];
         if (mysqli_num_rows($res_slots)) {
@@ -673,7 +676,7 @@ function make_bookmarks($userid, $key)
     global $cache;
 
     $book = $cache->get($key . $userid);
-    if (false === $book || is_null($book)) {
+    if ($book === false || is_null($book)) {
         $res_books = sql_query('SELECT * FROM bookmarks WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
         $book      = [];
         if (mysqli_num_rows($res_books)) {
@@ -716,7 +719,7 @@ function create_moods($force = false)
     global $cache;
 
     $key = 'moods';
-    if (false === ($mood = $cache->get($key)) || $force) {
+    if (($mood = $cache->get($key)) || $force === false) {
         $res_moods = sql_query('SELECT * FROM moods ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
         $mood      = [];
         if (mysqli_num_rows($res_moods)) {
@@ -1540,7 +1543,7 @@ function getPmCount($userid)
     global $site_config, $cache;
 
     $pmCount = $cache->get('inbox_' . $userid);
-    if (false === $pmCount || is_null($pmCount)) {
+    if ($pmCount === false || is_null($pmCount)) {
         $res     = sql_query('SELECT COUNT(id) FROM messages WHERE receiver = ' . sqlesc($userid) . " AND unread = 'yes' AND location = 1") or sqlerr(__LINE__, __FILE__);
         $result  = mysqli_fetch_row($res);
         $pmCount = (int) $result[0];
@@ -1622,7 +1625,7 @@ function user_exists($user_id)
     global $cache;
 
     $userlist = $cache->get('userlist_' . $user_id);
-    if (false === $userlist || is_null($userlist)) {
+    if ($userlist === false || is_null($userlist)) {
         $query = 'SELECT id FROM users WHERE id = ' . sqlesc($user_id);
         $res   = sql_query($query) or sqlerr(__FILE__, __LINE__);
         $res   = mysqli_fetch_assoc($res);
@@ -1643,7 +1646,7 @@ function get_poll()
     global $CURUSER, $site_config, $fluent, $cache;
 
     $poll_data = $cache->get('poll_data_' . $CURUSER['id']);
-    if (false === $poll_data || is_null($poll_data)) {
+    if ($poll_data === false || is_null($poll_data)) {
         $poll_data = $fluent->from('polls')
             ->orderBy('start_date DESC')
             ->limit(1)
@@ -1750,7 +1753,7 @@ function countries()
     global $site_config, $cache;
 
     $ret = $cache->get('countries_arr');
-    if (false === $ret || is_null($ret)) {
+    if ($ret === false || is_null($ret)) {
         $res = sql_query('SELECT id, name, flagpic FROM countries ORDER BY name ASC') or sqlerr(__FILE__, __LINE__);
         while ($row = mysqli_fetch_assoc($res)) {
             $ret[] = $row;
@@ -1873,15 +1876,22 @@ function breadcrumbs($separator = '', $home = 'Home')
  *
  * @return string
  */
-function bubble($link, $text)
+function bubble($link, $text, $title = false)
 {
     $id     = uniqid('id_');
     $bubble = "
-        <span class='dt-tooltipper-small size_5 has-text-primary' data-tooltip-content='#{$id}'>
+        <span class='dt-tooltipper-large size_5 has-text-primary' data-tooltip-content='#{$id}'>
             $link
         </span>
         <div class='tooltip_templates'>
-            <span id='$id'>
+            <span id='$id'>";
+    if ($title) {
+        $bubble .= "
+                <div class='size_6 has-text-green has-text-centered bottom20'>
+                    $title
+                </div>";
+    }
+    $bubble .= "
                 $text
             </span>
         </div>";
@@ -2100,7 +2110,7 @@ function get_show_id(string $name, string $type)
     $name     = get_show_name($name);
     $hash     = hash('sha512', $name);
     $id_array = $cache->get('tvshow_ids_' . $hash);
-    if (false === $id_array || is_null($id_array)) {
+    if ($id_array === false || is_null($id_array)) {
         $id_array = $fluent->from('tvmaze')
             ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $name)
             ->fetch();

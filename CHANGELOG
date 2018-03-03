@@ -1,3 +1,13 @@
+3 Mar 2018
+add: stock forums(mostly done, but not happy with it)
+add: cache insert/update AJAX Chat user online, only hit db once per 60 sec per user
+fix: php-cs-fixer @Symfony reversing if comparisons(yoda style)
+
+25 Feb 2018
+fix: global user expecting users data, instead of class instance
+fix: announce update not updating peers cache
+add: stock forums
+
 23 Feb 2018
 cleanup: add additional rules to php-cs-fixer(will run before any new commits)
 revert: use globals in functions, until all moved to classes(i'm still learning)

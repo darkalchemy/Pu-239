@@ -22,6 +22,7 @@ $config = PhpCsFixer\Config::create()
         'cast_spaces'                        => ['space' => 'single'],
         'combine_consecutive_issets'         => true,
         'combine_consecutive_unsets'         => true,
+        'yoda_style'                         => false,
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()

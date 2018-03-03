@@ -47,7 +47,7 @@ function dltable($name, $arr, $torrent)
         $body .= '
         <tr>';
         if ($e['username']) {
-            if ((('yes' == $e['tanonymous'] && $e['owner'] == $e['userid'] || 'yes' == $e['anonymous'] or $e['paranoia'] >= 2) && $CURUSER['id'] != $e['userid']) && $CURUSER['class'] < UC_STAFF) {
+            if ((('yes' == $e['tanonymous'] && $e['owner'] == $e['userid'] || 'yes' == $e['anonymous'] || $e['paranoia'] >= 2) && $CURUSER['id'] != $e['userid']) && $CURUSER['class'] < UC_STAFF) {
                 $username = get_anonymous_name();
                 $body .= "
             <td><b>$username</b></td>";

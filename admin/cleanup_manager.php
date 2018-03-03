@@ -114,9 +114,9 @@ function cleanup_show_main()
     while ($row = mysqli_fetch_assoc($sql)) {
         $row['_clean_time']     = get_date($row['clean_time'], 'LONG');
         $row['clean_increment'] = (int) $row['clean_increment'];
-        $row['_class']          = 1      != $row['clean_on'] ? " style='color:red'" : '';
-        $row['_title']          = 1      != $row['clean_on'] ? " {$lang['cleanup_lock']}" : '';
-        $row['_clean_time']     = 1      != $row['clean_on'] ? "<span style='color:red'>{$row['_clean_time']}</span>" : $row['_clean_time'];
+        $row['_class']          = 1           != $row['clean_on'] ? " style='color:red'" : '';
+        $row['_title']          = 1           != $row['clean_on'] ? " {$lang['cleanup_lock']}" : '';
+        $row['_clean_time']     = 1           != $row['clean_on'] ? "<span style='color:red'>{$row['_clean_time']}</span>" : $row['_clean_time'];
         $htmlout .= "
         <tr>
             <td{$row['_class']}>{$row['clean_title']}{$row['_title']}<br><span class='size_3'>{$row['clean_desc']}</span></td>
@@ -269,8 +269,7 @@ function cleanup_take_edit()
     if (!file_exists(CLEAN_DIR . "{$params['clean_file']}")) {
         stderr($lang['cleanup_take_error'], "{$lang['cleanup_take_error3']}");
     }
-    // new clean time =
-    $params['clean_time'] = intval(TIME_NOW + $params['clean_increment']);
+    // new clean time = $params['clean_time'] = intval(TIME_NOW + $params['clean_increment']);
     //one more time around! LoL
     foreach ($params as $k => $v) {
         $params[$k] = sqlesc($v);
@@ -382,8 +381,7 @@ function cleanup_take_new()
     if (!file_exists(CLEAN_DIR . "{$params['clean_file']}")) {
         stderr($lang['cleanup_take_error'], "{$lang['cleanup_take_error3']}");
     }
-    // new clean time =
-    $params['clean_time'] = intval(time() + $params['clean_increment']);
+    // new clean time = $params['clean_time'] = intval(time() + $params['clean_increment']);
     //one more time around! LoL
     foreach ($params as $k => $v) {
         $params[$k] = sqlesc($v);
@@ -411,7 +409,7 @@ function cleanup_take_delete()
     }
     $params['cid'] = sqlesc($params['cid']);
     sql_query("DELETE FROM cleanup WHERE clean_id = {$params['cid']}");
-    if (1 === mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 1) {
         stderr($lang['cleanup_del_info'], "{$lang['cleanup_del_success']}");
     } else {
         stderr($lang['cleanup_del_error'], "{$lang['cleanup_del_error2']}");
@@ -450,7 +448,7 @@ function cleanup_take_unlock()
     $params['cid']      = sqlesc($params['cid']);
     $params['clean_on'] = (1 === $params['clean_on'] ? sqlesc($params['clean_on'] - 1) : sqlesc($params['clean_on'] + 1));
     sql_query("UPDATE cleanup SET clean_on = {$params['clean_on']} WHERE clean_id = {$params['cid']}");
-    if (1 === mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 1) {
         cleanup_show_main(); // this go bye bye later
     } else {
         stderr($lang['cleanup_unlock_error'], "{$lang['cleanup_unlock_error']}");

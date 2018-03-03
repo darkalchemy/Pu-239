@@ -10,7 +10,7 @@ $HTMLOUT = $out = '';
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $sid = isset($_POST['stylesheet']) ? (int) $_POST['stylesheet'] : 1;
     if ($sid > 0 && $sid != $CURUSER['id']) {
-        sql_query('UPDATE users SET stylesheet=' . sqlesc($sid) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET stylesheet = ' . sqlesc($sid) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     }
     $cache->update_row('user' . $CURUSER['id'], [
         'stylesheet' => $sid,

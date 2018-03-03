@@ -12,7 +12,7 @@ function get_imdb_info($imdb_id)
     global $site_config, $cache;
 
     $imdb_data = $cache->get('imdb_' . $imdb_id);
-    if (false === $imdb_data || is_null($imdb_data)) {
+    if ($imdb_data === false || is_null($imdb_data)) {
         $config           = new Config();
         $config->language = 'en-US';
         $config->cachedir = IMDB_CACHE_DIR;

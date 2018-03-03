@@ -19,9 +19,9 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
             $cache->delete('forum_posts_' . $CURUSER['id']);
         }
         $added = TIME_NOW;
-        sql_query('INSERT INTO posts (topic_id, user_id, added, body) ' . 'VALUES(' . sqlesc($topicid) . ", {$site_config['chatBotID']}, $added, " . sqlesc($body) . ')')    or sqlerr(__FILE__, __LINE__);
-        $res    = sql_query('SELECT id FROM posts WHERE topic_id=' . sqlesc($topicid) . ' ORDER BY id DESC LIMIT 1')                                                         or sqlerr(__FILE__, __LINE__);
-        $arr    = mysqli_fetch_row($res)                                                                                                                                     or die('No post found');
+        sql_query('INSERT INTO posts (topic_id, user_id, added, body) ' . 'VALUES(' . sqlesc($topicid) . ", {$site_config['chatBotID']}, $added, " . sqlesc($body) . ')')       or sqlerr(__FILE__, __LINE__);
+        $res    = sql_query('SELECT id FROM posts WHERE topic_id=' . sqlesc($topicid) . ' ORDER BY id DESC LIMIT 1')                                                            or sqlerr(__FILE__, __LINE__);
+        $arr    = mysqli_fetch_row($res)                                                                                                                                        or die('No post found');
         $postid = $arr[0];
         sql_query('UPDATE topics SET last_post=' . sqlesc($postid) . ' WHERE id=' . sqlesc($topicid)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('last_posts_' . $CURUSER['class']);

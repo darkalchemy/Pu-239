@@ -39,7 +39,7 @@ $HTMLOUT .= '<h1>' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subj
     </tr>
     <tr>
         <td><span style="font-weight: bold;">' . $lang['pm_forward_subject'] . '</span></td>
-        <td><input type="text" class="text_default" name="subject" value="' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subject']) . '" /></td>
+        <td><input type="text" class="w-100" name="subject" value="' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subject']) . '" /></td>
     </tr>
     <tr>
         <td></td>

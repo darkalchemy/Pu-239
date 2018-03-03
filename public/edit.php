@@ -48,7 +48,7 @@ $HTMLOUT = $mod_cache_name = $subs_list = '';
 
 if ($CURUSER['class'] >= UC_STAFF) {
     $mod_cache_name = $cache->get('editedby_' . $id);
-    if (false === $mod_cache_name || is_null($mod_cache_name)) {
+    if ($mod_cache_name === false || is_null($mod_cache_name)) {
         $mod_cache_name = $CURUSER['username'];
         $cache->add('editedby_' . $id, $mod_cache_name, $site_config['expires']['ismoddin']);
     }
@@ -70,7 +70,7 @@ $HTMLOUT .= tr($lang['edit_torrent_name'], "<input type='text' name='name' value
 $HTMLOUT .= tr($lang['edit_torrent_tags'], "<input type='text' name='tags' value='" . htmlsafechars($row['tags']) . "' class='w-100' /><br>({$lang['edit_tags_info']})\n", 1);
 $HTMLOUT .= tr($lang['edit_torrent_description'], "<input type='text' name='description' value='" . htmlsafechars($row['description']) . "' class='w-100' />", 1);
 $HTMLOUT .= tr($lang['edit_nfo'], "<input type='radio' name='nfoaction' value='keep' checked class='right5' />{$lang['edit_keep_current']}<br><input type='radio' name='nfoaction' value='update' class='right5' />{$lang['edit_update']}<br><input type='file' name='nfo' class='w-100' />", 1);
-if ((false === strpos($row['ori_descr'], '<')) || (false !== strpos($row['ori_descr'], '&lt;'))) {
+if ((strpos($row['ori_descr'], '<')) || (false !== strpos($row['ori_descr'], '&lt;')) === false) {
     $c = '';
 } else {
     $c = ' checked';

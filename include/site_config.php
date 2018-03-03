@@ -168,7 +168,7 @@ $site_config['nameblacklist'] = ROOT_DIR . 'Cache' . DIRECTORY_SEPARATOR . 'name
 $site_config['happyhour']     = CACHE_DIR . 'happyhour' . DIRECTORY_SEPARATOR . 'happyhour.txt';
 $site_config['sql_error_log'] = SQLERROR_LOGS_DIR . 'sql_err_' . date('M_D_Y') . '.log';
 
-if (empty($_SERVER['HTTP_HOST']) || '' == $_SERVER['HTTP_HOST']) {
+if (empty($_SERVER['HTTP_HOST'])) {
     $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
 }
 

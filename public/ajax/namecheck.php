@@ -16,7 +16,7 @@ $lang    = array_merge(load_language('global'), load_language('takesignup'));
  */
 $is_valid = valid_username($_GET['wantusername'], true);
 
-if (true !== $is_valid) {
+if ($is_valid !== true) {
     echo $is_valid;
     die();
 }

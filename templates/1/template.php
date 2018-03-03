@@ -158,9 +158,6 @@ function stdhead($title = '', $stdhead = null)
  * @param bool $stdfoot
  *
  * @return string
- *
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function stdfoot($stdfoot = false)
 {
@@ -229,7 +226,7 @@ function stdfoot($stdfoot = false)
                 $htmlfoot .= '
                                     <tr>
                                         <td>' . ($key + 1) . '</td>
-                                        <td>' . ($value['seconds'] > 0.01 ? "<span class='is-danger' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='is-success' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
+                                        <td>' . ($value['seconds'] > 0.01 ? "<span class='has-text-red' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='has-text-green' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
                                         <td>
                                             <div class='text-justify pre'>" . format_comment($value['query']) . '</div>
                                         </td>
@@ -244,7 +241,7 @@ function stdfoot($stdfoot = false)
                 </div>';
         }
         $uptime = $cache->get('uptime');
-        if (false === $uptime || is_null($uptime)) {
+        if ($uptime === false || is_null($uptime)) {
             $uptime = `uptime`;
             $cache->set('uptime', $uptime, 25);
         }
@@ -279,20 +276,20 @@ function stdfoot($stdfoot = false)
         <i class='icon-angle-circled-up' style='font-size:48px'></i>
     </a>
     <script>
-        let cookie_prefix   = '{$site_config['cookie_prefix']}';
-        let cookie_path     = '{$site_config['cookie_path']}';
-        let cookie_lifetime = '{$site_config['cookie_lifetime']}';
-        let cookie_domain   = '{$site_config['cookie_domain']}';
-        let csrf_token      = '" . $session->get('csrf_token') . "';
-        let x = document.getElementsByClassName('flipper');
-        let i;
+        var cookie_prefix = '{$site_config['cookie_prefix']}';
+        var cookie_path = '{$site_config['cookie_path']}';
+        var cookie_lifetime = '{$site_config['cookie_lifetime']}';
+        var cookie_domain = '{$site_config['cookie_domain']}';
+        var csrf_token = '" . $session->get('csrf_token') . "';
+        var x = document.getElementsByClassName('flipper');
+        var i;
         for (i = 0; i < x.length; i++) {
-            let id = x[i].parentNode.id;
-            let el = document.getElementById(id);
+            var id = x[i].parentNode.id;
+            var el = document.getElementById(id);
             if (id && localStorage[id] === 'closed') {
                 el.classList.add('no-margin');
                 el.classList.add('no-padding');
-                let nextSibling = x[i].nextSibling, child;
+                var nextSibling = x[i].nextSibling, child;
                 while (nextSibling && nextSibling.nodeType !== 1) {
                     nextSibling = nextSibling.nextSibling;
                 }
@@ -301,7 +298,7 @@ function stdfoot($stdfoot = false)
                 child.classList.add('icon-down-open');
                 child.classList.remove('icon-up-open');
             } else if (id && localStorage[id] === 'open') {
-                let nextSibling = x[i].nextSibling, child;
+                var nextSibling = x[i].nextSibling, child;
                 while (nextSibling && nextSibling.nodeType !== 1) {
                     nextSibling = nextSibling.nextSibling;
                 }
@@ -313,7 +310,7 @@ function stdfoot($stdfoot = false)
                 if (el && document.getElementById(el.children[0]) && document.getElementById(el.children[0].children[0]) && el.children[0].children[0].className === 'fa icon-down-open') {
                     el.classList.add('no-margin');
                     el.classList.add('no-padding');
-                    let nextSibling = x[i].nextSibling;
+                    var nextSibling = x[i].nextSibling;
                     while (nextSibling && nextSibling.nodeType !== 1) {
                         nextSibling = nextSibling.nextSibling;
                     }
@@ -396,7 +393,7 @@ function navbar()
 
     if ($CURUSER['class'] >= UC_STAFF) {
         $staff_panel = $cache->get('staff_panels_' . $CURUSER['class']);
-        if (false === $staff_panel || is_null($staff_panel)) {
+        if ($staff_panel === false || is_null($staff_panel)) {
             $staff_panel = $fluent->from('staffpanel')
                 ->where('navbar = 1')
                 ->where('av_class <= ?', $CURUSER['class'])
@@ -559,14 +556,12 @@ function navbar()
                                     <li><a href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
                                 </ul>
                             </li>
-<!--
                             <li>
                                 <a href='#'>{$lang['gl_forums']}</a>
                                 <ul class='ddFade ddFadeSlow'>
                                     <li><a href='http://pu-239.pw'>{$lang['gl_tforums']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/forums.php'>{$lang['gl_forums']}</a></li>
                                 </ul>
--->
                             </li>
                             <li>" . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/bugs.php?action=add'>{$lang['gl_breport']}</a>" : "<a href='{$site_config['baseurl']}/bugs.php?action=bugs'>[Bugs]</a>") . '</li>
                             <li>' . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/contactstaff.php'>{$lang['gl_cstaff']}</a>" : "<a href='{$site_config['baseurl']}/staffbox.php'>[Messages]</a>") . "</li>

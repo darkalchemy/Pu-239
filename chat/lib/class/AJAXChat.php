@@ -36,18 +36,16 @@ class AJAXChat
      * AJAXChat constructor.
      *
      * @throws Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
      */
     public function __construct()
     {
-        global $site_config, $fluent, $session, $cache, $user;
+        global $site_config, $fluent, $session, $cache, $user_stuffs;
 
         $this->_siteConfig = $site_config;
         $this->_session    = $session;
         $this->_cache      = $cache;
         $this->_fluent     = $fluent;
-        $this->_user       = $user;
+        $this->_user       = $user_stuffs;
         $this->initialize();
     }
 
@@ -1644,35 +1642,40 @@ class AJAXChat
      */
     public function addToOnlineList()
     {
-        $values = [
-            'userID'   => $this->getUserID(),
-            'userName' => $this->getUserName(),
-            'userRole' => $this->getUserRole(),
-            'channel'  => $this->getChannel(),
-            'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
-            'ip'       => inet_pton(getip()),
-        ];
+        $key           = 'ajaxchat_online_' . $this->getChannel() . '_' . $this->getUserID();
+        $active_online = $this->_cache->get($key);
+        if ($active_online === false || is_null($active_online)) {
+            $values = [
+                'userID'   => $this->getUserID(),
+                'userName' => $this->getUserName(),
+                'userRole' => $this->getUserRole(),
+                'channel'  => $this->getChannel(),
+                'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
+                'ip'       => inet_pton(getip()),
+            ];
 
-        $set = [
-            'userName' => $this->getUserName(),
-            'userRole' => $this->getUserRole(),
-            'channel'  => $this->getChannel(),
-            'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
-            'ip'       => inet_pton(getip()),
-        ];
+            $set = [
+                'userName' => $this->getUserName(),
+                'userRole' => $this->getUserRole(),
+                'channel'  => $this->getChannel(),
+                'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
+                'ip'       => inet_pton(getip()),
+            ];
 
-        $lastInsertID = $this->_fluent->insertInto($this->getDataBaseTable('online'))
-            ->values($values)
-            ->ignore()
-            ->execute();
-
-        if (!$lastInsertID) {
-            $this->_fluent->update($this->getDataBaseTable('online'))
-                ->set($set)
-                ->where('userID = ?', $this->getUserID())
+            $lastInsertID = $this->_fluent->insertInto($this->getDataBaseTable('online'))
+                ->values($values)
+                ->ignore()
                 ->execute();
+
+            if (!$lastInsertID) {
+                $this->_fluent->update($this->getDataBaseTable('online'))
+                    ->set($set)
+                    ->where('userID = ?', $this->getUserID())
+                    ->execute();
+            }
+            $this->resetOnlineUsersData();
+            $this->_cache->set($key, $active_online, 60);
         }
-        $this->resetOnlineUsersData();
     }
 
     /**
@@ -3053,8 +3056,8 @@ class AJAXChat
                 $uploaded    = '[color=#00FF00]' . human_filesize($stats['uploaded']) . '[/color]';
                 $downloaded  = '[color=#00FF00]' . human_filesize($stats['downloaded']) . '[/color]';
                 $userClass   = get_user_class_name($stats['class']);
-                $enabled     = 'yes'                                                                                                                                                                                                                                                         === $stats['enabled'] && 1 == $stats['downloadpos'] ? '[color=#00FF00](Enabled)[/color]' : '[color=#CC0000](Disabled)[/color]';
-                $invites     = $stats['invites'] > 0                                                                                                                                                                                                                                && 'yes' === $stats['invite_rights'] ? '[color=#00FF00]' . number_format($stats['invites']) . '[/color]' : '[color=#CC0000]0[/color]';
+                $enabled     = 'yes'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           === $stats['enabled'] && 1 == $stats['downloadpos'] ? '[color=#00FF00](Enabled)[/color]' : '[color=#CC0000](Disabled)[/color]';
+                $invites     = $stats['invites'] > 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  && 'yes' === $stats['invite_rights'] ? '[color=#00FF00]' . number_format($stats['invites']) . '[/color]' : '[color=#CC0000]0[/color]';
                 switch (true) {
                     case $stats['downloaded'] > 0 && $stats['uploaded'] > 0:
                         $ratio = '[color=#00FF00]' . number_format($stats['uploaded'] / $stats['downloaded'], 3) . '[/color]';
@@ -3074,8 +3077,8 @@ class AJAXChat
                 $freeslots  = '[color=#00FF00]' . number_format($stats['freeslots']) . '[/color]';
                 $ircidle    = $stats['irctotal'] > 0 ? '[color=#00FF00]' . get_date($stats['irctotal'], 'LONG', false, false, true) . '[/color]' : '[color=#CC0000]' . get_date($stats['irctotal'], 'LONG', false, false, true) . '[/color]';
                 $reputation = '[color=#00FF00]' . number_format($stats['reputation']) . '[/color]';
-                $free       = get_date($stats['free_switch'], 'LONG')     > date('Y-m-d H:i:s') ? '[color=#00FF00]' . get_date($stats['free_switch'], 'LONG') . '[/color]' : '[color=#CC0000]Expired[/color]';
-                $double     = get_date($stats['double_switch'], 'LONG')   > date('Y-m-d H:i:s') ? '[color=#00FF00]' . get_date($stats['double_switch'], 'LONG') . '[/color]' : '[color=#CC0000]Expired[/color]';
+                $free       = get_date($stats['free_switch'], 'LONG')       > date('Y-m-d H:i:s') ? '[color=#00FF00]' . get_date($stats['free_switch'], 'LONG') . '[/color]' : '[color=#CC0000]Expired[/color]';
+                $double     = get_date($stats['double_switch'], 'LONG')     > date('Y-m-d H:i:s') ? '[color=#00FF00]' . get_date($stats['double_switch'], 'LONG') . '[/color]' : '[color=#CC0000]Expired[/color]';
                 $joined     = '[color=#00FF00]' . get_date($stats['added'], 'LONG') . '[/color]';
                 $seen       = '[color=#00FF00]' . get_date($stats['last_access'], 'LONG') . '[/color]';
                 $seeder     = (int) get_row_count('peers', 'WHERE seeder = "yes" and userid = ' . sqlesc($whereisUserID));

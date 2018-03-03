@@ -53,7 +53,7 @@ if (!isset($_FILES['file'])) {
     }
     if (isset($_GET['avatar']) && '' != $_GET['avatar'] && (($_GET['avatar']) != $CURUSER['avatar'])) {
         $type = ((isset($_GET['type']) && 1 == $_GET['type']) ? 1 : 2);
-        if (preg_match("/^http:\/\/$/i", $_GET['avatar']) or preg_match('/[?&;]/', $_GET['avatar']) or preg_match('#javascript:#is', $_GET['avatar']) or !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $_GET['avatar'])) {
+        if (preg_match("/^http:\/\/$/i", $_GET['avatar']) || preg_match('/[?&;]/', $_GET['avatar']) || preg_match('#javascript:#is', $_GET['avatar']) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $_GET['avatar'])) {
             stderr($lang['bitbucket_error'], "{$lang['bitbucket_mustbe']}");
         }
         $avatar = sqlesc($_GET['avatar']);
@@ -193,7 +193,7 @@ if ($_FILES['file']['size'] > $maxsize) {
 }
 $file  = preg_replace('`[^a-z0-9\-\_\.]`i', '', $_FILES['file']['name']);
 $allow = ',' . join(',', $formats);
-if (false === stristr($allow, ',' . substr($file, -4))) {
+if (stristr($allow, ',' . substr($file, -4)) === false) {
     stderr($lang['bitbucket_err'], $lang['bitbucket_invalid']);
 }
 if (!function_exists('exif_imagetype')) {

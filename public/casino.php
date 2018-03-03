@@ -94,7 +94,7 @@ if ($CURUSER['downloaded'] > 0) {
 } else {
     $ratio = 0;
 }
-if (false === $site_config['ratio_free'] && $ratio < $required_ratio) {
+if ($site_config['ratio_free'] && $ratio < $required_ratio === false) {
     stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " {$lang['casino_your_ratio_is_under']} {$required_ratio}");
 }
 $global_down2   = sql_query('SELECT (sum(win)-sum(lost)) AS globaldown,(sum(deposit)) AS globaldeposit, sum(win) AS win, sum(lost) AS lost FROM casino') or sqlerr(__FILE__, __LINE__);

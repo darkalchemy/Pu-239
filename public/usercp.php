@@ -113,7 +113,7 @@ if ('avatar' == $action) {
                                     </tr>
                                 </thead>
                                 <tbody>";
-    if (!(0 == $CURUSER['avatarpos'] or 1 != $CURUSER['avatarpos'])) {
+    if (!(0 == $CURUSER['avatarpos'] || 1 != $CURUSER['avatarpos'])) {
         $HTMLOUT .= "
                                     <tr>
                                         <td class='rowhead'>{$lang['usercp_avatar']}</td>

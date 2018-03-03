@@ -38,7 +38,7 @@ foreach ($directories as $path) {
         }
     }
 }
-if (!$exist or (isset($_POST['update']) and ('Update' == $_POST['update']))) {
+if (!$exist || (isset($_POST['update']) && ('Update' == $_POST['update']))) {
     $data = serialize($fetch_set);
     if (file_put_contents($file_data, $data)) {
         $session->set('is-success', "Coder's Log was updated for {$CURUSER['username']}");
@@ -65,7 +65,7 @@ foreach ($current as $x) {
             $last[$y['key']]['status'] = 'deleted';
         }
     }
-    if (isset($current[$x['key']]['name']) and !isset($current[$x['key']]['status'])) {
+    if (isset($current[$x['key']]['name']) && !isset($current[$x['key']]['status'])) {
         $current[$x['key']]['status'] = 'new';
     }
 }

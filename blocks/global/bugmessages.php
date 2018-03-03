@@ -4,7 +4,7 @@ global $CURUSER, $site_config, $lang, $fluent, $cache;
 
 if ($site_config['bug_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $bugs = $cache->get('bug_mess_');
-    if (false === $bugs || is_null($bugs)) {
+    if ($bugs === false || is_null($bugs)) {
         $res = $fluent->from('bugs')
             ->select(null)
             ->select('COUNT(id) AS count')

@@ -2,8 +2,9 @@
 
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
-global $CURUSER, $site_config, $lang, $user, $cache;
+global $CURUSER, $site_config, $lang, $user_stuffs, $cache;
 
+$user = $user_stuffs->getUserFromId($CURUSER['id']);
 /**
  * @param $torrents
  *
@@ -59,7 +60,6 @@ function snatchtable($torrents)
 
 /**
  * @param $torrents
- * @param $userid
  *
  * @return string
  */
@@ -180,7 +180,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
     }
 
     $user_snatches_data = $cache->get('user_snatches_data_' . $user['id']);
-    if (false === $user_snatches_data || is_null($user_snatches_data)) {
+    if ($user_snatches_data === false || is_null($user_snatches_data)) {
         if (!XBT_TRACKER) {
             $query = $fluent->from('snatched')
                 ->select(null)

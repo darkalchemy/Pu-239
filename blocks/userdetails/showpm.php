@@ -1,7 +1,8 @@
 <?php
 
-global $CURUSER, $user, $site_config, $lang;
+global $CURUSER, $user_stuffs, $site_config, $lang;
 
+$user = $user_stuffs->getUserFromId($CURUSER['id']);
 if ($CURUSER['id'] != $user['id']) {
     if ($CURUSER['class'] >= UC_STAFF) {
         $showpmbutton = 1;

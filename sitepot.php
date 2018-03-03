@@ -9,8 +9,8 @@ $lang = load_language('global');
 /** Size of Pot**/
 $potsize = 10000;
 /** Site Pot **/
-$Pot_query = mysqli_query($GLOBALS['___mysqli_ston'], "SELECT value_s, value_i, value_u FROM avps WHERE arg = 'sitepot'")   or sqlerr(__FILE__, __LINE__);
-$SitePot   = mysqli_fetch_assoc($Pot_query)                                                                                 or stderr('ERROR', 'db error.');
+$Pot_query = mysqli_query($GLOBALS['___mysqli_ston'], "SELECT value_s, value_i, value_u FROM avps WHERE arg = 'sitepot'")     or sqlerr(__FILE__, __LINE__);
+$SitePot   = mysqli_fetch_assoc($Pot_query)                                                                                   or stderr('ERROR', 'db error.');
 if ($SitePot['value_u'] < TIME_NOW && '1' == $SitePot['value_s']) {
     mysqli_query($GLOBALS['___mysqli_ston'], "UPDATE avps SET value_i = 0, value_s = '0' WHERE arg = 'sitepot'") or sqlerr(__FILE__, __LINE__);
     header('Location: sitepot.php');

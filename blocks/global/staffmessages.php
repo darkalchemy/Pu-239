@@ -4,7 +4,7 @@ global $CURUSER, $site_config, $lang, $fluent, $cache;
 
 if ($site_config['staffmsg_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $answeredby = $cache->get('staff_mess_');
-    if (false === $answeredby || is_null($answeredby)) {
+    if ($answeredby === false || is_null($answeredby)) {
         $res = $fluent->from('staffmessages')
             ->select(null)
             ->select('COUNT(id) AS count')

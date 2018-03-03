@@ -50,17 +50,17 @@ function move_cat()
 {
     global $site_config, $params, $lang, $cache;
 
-    if ((!isset($params['id']) or !is_valid_id($params['id'])) or (!isset($params['new_cat_id']) or !is_valid_id($params['new_cat_id']))) {
+    if ((!isset($params['id']) || !is_valid_id($params['id'])) || (!isset($params['new_cat_id']) || !is_valid_id($params['new_cat_id']))) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
-    if (!is_valid_id($params['new_cat_id']) or ($params['id'] == $params['new_cat_id'])) {
+    if (!is_valid_id($params['new_cat_id']) || ($params['id'] == $params['new_cat_id'])) {
         stderr($lang['categories_error'], $lang['categories_move_error2']);
     }
     $old_cat_id = intval($params['id']);
     $new_cat_id = intval($params['new_cat_id']);
 
     $q = sql_query("SELECT id FROM categories WHERE id IN($old_cat_id, $new_cat_id)");
-    if (2 != mysqli_num_rows($q)) {
+    if (mysqli_num_rows($q) != 2) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     }
     sql_query('UPDATE torrents SET category = ' . sqlesc($new_cat_id) . ' WHERE category = ' . sqlesc($old_cat_id));
@@ -76,7 +76,7 @@ function move_cat()
 function move_cat_form()
 {
     global $params, $lang, $site_config;
-    if (!isset($params['id']) or !is_valid_id($params['id'])) {
+    if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
     $q = sql_query('SELECT * FROM categories WHERE id = ' . intval($params['id']));
@@ -122,7 +122,7 @@ function add_cat()
                  'new_cat_desc',
                  'new_cat_image',
              ] as $x) {
-        if (!isset($params[$x]) or empty($params[$x])) {
+        if (!isset($params[$x]) || empty($params[$x])) {
             stderr($lang['categories_error'], $lang['categories_add_error1']);
         }
     }
@@ -147,7 +147,7 @@ function delete_cat()
 {
     global $site_config, $params, $lang, $cache;
 
-    if (!isset($params['id']) or !is_valid_id($params['id'])) {
+    if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
     $q = sql_query('SELECT * FROM categories WHERE id = ' . intval($params['id']));
@@ -157,7 +157,7 @@ function delete_cat()
     $r          = mysqli_fetch_assoc($q);
     $old_cat_id = intval($r['id']);
     if (isset($params['new_cat_id'])) {
-        if (!is_valid_id($params['new_cat_id']) or ($r['id'] == $params['new_cat_id'])) {
+        if (!is_valid_id($params['new_cat_id']) || ($r['id'] == $params['new_cat_id'])) {
             stderr($lang['categories_error'], $lang['categories_exist_error']);
         }
         $new_cat_id = intval($params['new_cat_id']);
@@ -182,7 +182,7 @@ function delete_cat()
 function delete_cat_form()
 {
     global $params, $lang, $site_config;
-    if (!isset($params['id']) or !is_valid_id($params['id'])) {
+    if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
     $q = sql_query('SELECT * FROM categories WHERE id = ' . intval($params['id']));
@@ -232,7 +232,7 @@ function edit_cat()
 {
     global $site_config, $params, $lang, $cache;
 
-    if (!isset($params['id']) or !is_valid_id($params['id'])) {
+    if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
     foreach ([
@@ -240,7 +240,7 @@ function edit_cat()
                  'cat_desc',
                  'cat_image',
              ] as $x) {
-        if (!isset($params[$x]) or empty($params[$x])) {
+        if (!isset($params[$x]) || empty($params[$x])) {
             stderr($lang['categories_error'], $lang['categories_edit_error1'] . $x . '');
         }
     }
@@ -273,7 +273,7 @@ function edit_cat()
 function edit_cat_form()
 {
     global $site_config, $params, $lang;
-    if (!isset($params['id']) or !is_valid_id($params['id'])) {
+    if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
     $htmlout = '';

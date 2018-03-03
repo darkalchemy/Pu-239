@@ -21,7 +21,9 @@ $completecount = mysqli_num_rows($completeres);
 if ('torrent' == $what && 0 == $completecount) {
     return false;
 }
+
 if ($id > 0 && $rate >= 1 && $rate <= 5) {
+    file_put_contents('/var/log/nginx/rate.log', 'INSERT INTO rating(' . $what . ',rating,user) VALUES (' . sqlesc($id) . ',' . sqlesc($rate) . ',' . sqlesc($uid) . ')' . PHP_EOL, FILE_APPEND);
     if (sql_query('INSERT INTO rating(' . $what . ',rating,user) VALUES (' . sqlesc($id) . ',' . sqlesc($rate) . ',' . sqlesc($uid) . ')')) {
         $table = ('torrent' == $what ? 'torrents' : 'topics');
         sql_query('UPDATE ' . $table . ' SET num_ratings = num_ratings + 1, rating_sum = rating_sum+' . sqlesc($rate) . ' WHERE id = ' . sqlesc($id));

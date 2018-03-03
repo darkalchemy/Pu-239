@@ -17,7 +17,7 @@ $hash    = hash('sha256', $keyword);
 $hashes  = [];
 
 $results = $cache->get('suggest_torrents_' . $hash);
-if (false === $results || is_null($results)) {
+if ($results === false || is_null($results)) {
     $results = $fluent->from('torrents')
         ->select(null)
         ->select('id')

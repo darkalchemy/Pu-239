@@ -1,14 +1,15 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $user, $user, $cache;
+global $CURUSER, $site_config, $lang, $user_stuffs, $cache;
 
+$user              = $user_stuffs->getUserFromId($CURUSER['id']);
 $What_Cache        = (XBT_TRACKER ? 'share_ratio_xbt_' : 'share_ratio_');
 $What_Table        = (XBT_TRACKER ? 'xbt_files_users' : 'snatched');
 $What_String       = (XBT_TRACKER ? 'fid' : 'id');
 $What_User_String  = (XBT_TRACKER ? 'uid' : 'userid');
 $What_Expire       = (XBT_TRACKER ? $site_config['expires']['share_ratio_xbt'] : $site_config['expires']['share_ratio']);
 $cache_share_ratio = $cache->get($What_Cache . $id);
-if (false === $cache_share_ratio || is_null($cache_share_ratio)) {
+if ($cache_share_ratio === false || is_null($cache_share_ratio)) {
     $cache_share_ratio                    = mysqli_fetch_assoc(sql_query("SELECT SUM(seedtime) AS seed_time_total, COUNT($What_String) AS total_number FROM $What_Table WHERE seedtime > '0' AND $What_User_String =" . sqlesc($user['id'])));
     $cache_share_ratio['total_number']    = (int) $cache_share_ratio['total_number'];
     $cache_share_ratio['seed_time_total'] = (int) $cache_share_ratio['seed_time_total'];

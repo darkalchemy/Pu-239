@@ -99,7 +99,7 @@ function parse_poll()
                 if ($GVARS['allow_poll_tags']) {
                     $choice = $s = preg_replace("/\[url=([^()<>\s]+?)\]((\s|.)+?)\[\/url\]/i", '<a href="\\1">\\2</a>', $choice);
                 }
-                if (isset($data['multi']) and 1 == $data['multi']) {
+                if (isset($data['multi']) && $data['multi'] == 1) {
                     $choice_html .= poll_show_form_choice_multi($choice_id, $votes, $id, $choice);
                 } else {
                     $choice_html .= poll_show_form_choice($choice_id, $votes, $id, $choice);

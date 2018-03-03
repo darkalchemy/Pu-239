@@ -159,8 +159,8 @@ if ('confirm' == $action) {
     die();
 }
 
-$res      = sql_query('SELECT * FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-$user     = mysqli_fetch_assoc($res)                                     or stderr($lang['friends_error'], $lang['friends_no_user']);
+$res      = sql_query('SELECT * FROM users WHERE id=' . sqlesc($userid))  or sqlerr(__FILE__, __LINE__);
+$user     = mysqli_fetch_assoc($res)                                      or stderr($lang['friends_error'], $lang['friends_no_user']);
 $HTMLOUT  = '';
 $i        = 0;
 $res      = sql_query('SELECT f.userid AS id, u.username, u.class, u.avatar, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.perms FROM friends AS f LEFT JOIN users AS u ON f.userid = u.id WHERE friendid=' . sqlesc($CURUSER['id']) . " AND f.confirmed='no' AND NOT f.userid IN (SELECT blockid FROM blocks WHERE blockid=f.userid) ORDER BY username") or sqlerr(__FILE__, __LINE__);

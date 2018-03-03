@@ -13,7 +13,7 @@ $lang = array_merge(load_language('global'), load_language('index'));
 
 if ($id = $session->get('userID') && $session->validateToken($_POST['csrf_token'])) {
     $user = $cache->get('user' . $id);
-    if (false === $user || is_null($user)) {
+    if ($user === false || is_null($user)) {
         echo json_encode('failed...');
     }
 
@@ -22,7 +22,7 @@ if ($id = $session->get('userID') && $session->validateToken($_POST['csrf_token'
 
     if (XBT_TRACKER) {
         $MyPeersXbtCache = $cache->get('MyPeers_XBT_' . $user['id']);
-        if (false === $MyPeersXbtCache || is_null($MyPeersXbtCache)) {
+        if ($MyPeersXbtCache === false || is_null($MyPeersXbtCache)) {
             $seed['yes']  = $seed['no']  = 0;
             $seed['conn'] = 3;
             $r            = sql_query('SELECT COUNT(uid) AS count, `left`, active, connectable
@@ -41,7 +41,7 @@ if ($id = $session->get('userID') && $session->validateToken($_POST['csrf_token'
         }
     } else {
         $MyPeersCache = $cache->get('MyPeers_' . $user['id']);
-        if (false === $MyPeersCache || is_null($MyPeersCache)) {
+        if ($MyPeersCache === false || is_null($MyPeersCache)) {
             $seed['yes']  = $seed['no']  = 0;
             $seed['conn'] = 3;
             $r            = sql_query('SELECT COUNT(id) AS count, seeder, connectable
@@ -78,7 +78,7 @@ if ($id = $session->get('userID') && $session->validateToken($_POST['csrf_token'
     }
 
     $Achievement_Points = $cache->get('user_achievement_points_' . $user['id']);
-    if (false === $Achievement_Points || is_null($Achievement_Points)) {
+    if ($Achievement_Points === false || is_null($Achievement_Points)) {
         $Sql = sql_query('SELECT u.id, u.username, a.achpoints, a.spentpoints
                             FROM users AS u
                             LEFT JOIN usersachiev AS a ON u.id = a.userid

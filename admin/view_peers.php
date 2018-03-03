@@ -34,7 +34,7 @@ function my_inet_ntop($ip)
             if ('' != $seg) {
                 $res .= ('' == $res ? '' : ':') . $seg;
             } else {
-                if (false === strpos($res, '::')) {
+                if (strpos($res, '::') === false) {
                     if (':' == substr($res, -1)) {
                         continue;
                     }

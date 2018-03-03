@@ -4,6 +4,7 @@ var animate_duration = 1e3;
 
 var easing = 'swing';
 
+
 function themes() {
     PopUp('take_theme.php', 'My themes', 300, 150, 1, 0);
 }
@@ -74,6 +75,15 @@ function do_rate(rate, id, what) {
             var el = $('#rated');
             el.addClass('star-ratings-css').removeClass('rating');
             el.html(data);
+            $('.star-ratings-css-top').tooltipster({
+                theme: "tooltipster-borderless",
+                side: "top",
+                animation: animation,
+                animationDuration: animate_duration,
+                arrow: true,
+                contentAsHTML: true,
+                maxWidth: 500
+            });
         }
     });
 }

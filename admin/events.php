@@ -78,7 +78,7 @@ $HTMLOUT .= "
 /*<![CDATA[*/
 function checkAllGood(event){
 var result = confirm('Are you sure you want to remove ';' + event + ';' Event ?';)
-if(result)
+if (result)
 return true;
 else
 return false;

@@ -1,10 +1,11 @@
 <?php
 
-global $user, $CURUSER, $fluent;
+global $user_stuffs, $CURUSER, $fluent;
 
+$user = $user_stuffs->getUserFromId($CURUSER['id']);
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
     $iphistory = $cache->get('ip_history_' . $id);
-    if (false === $iphistory || is_null($iphistory)) {
+    if ($iphistory === false || is_null($iphistory)) {
         $ipuse['yes'] = $ipuse['no'] = 0;
         $ipsinuse     = $fluent->from('users')
             ->select(null)

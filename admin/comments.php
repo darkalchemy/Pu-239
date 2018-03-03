@@ -78,7 +78,7 @@ switch ($view) {
             ++$Row_Count;
         }
 
-        if (0 == $rows) {
+        if ($rows == 0) {
             //==== Display an error if there are no rows in the MySQLI table
             $HTMLOUT .= "<tr><td colspan='9'>{$lang['text_no_rows']}</td></tr>";
         }

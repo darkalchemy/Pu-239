@@ -21,9 +21,9 @@ if (!empty($T_Pass)) {
     check_user_status();
 }
 $id     = isset($_GET['torrent']) ? (int) $_GET['torrent'] : 0;
-$ssluse = isset($_GET['ssl'])   && 1 == $_GET['ssl'] || 3 == $CURUSER['ssluse'] ? 1 : 0;
-$zipuse = isset($_GET['zip'])   && 1 == $_GET['zip'] ? true : false;
-$text   = isset($_GET['text'])  && 1 == $_GET['text'] ? true : false;
+$ssluse = isset($_GET['ssl'])     && 1 == $_GET['ssl'] || 3 == $CURUSER['ssluse'] ? 1 : 0;
+$zipuse = isset($_GET['zip'])     && 1 == $_GET['zip'] ? true : false;
+$text   = isset($_GET['text'])    && 1 == $_GET['text'] ? true : false;
 if (!is_valid_id($id)) {
     stderr($lang['download_user_error'], $lang['download_no_id']);
 }

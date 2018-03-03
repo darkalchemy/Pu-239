@@ -3,7 +3,7 @@
 global $site_config, $lang, $fluent, $cache;
 
 $active24 = $cache->get('last24_users_');
-if (false === $active24 || is_null($active24)) {
+if ($active24 === false || is_null($active24)) {
     $list   = [];
     $record = $fluent->from('avps')
         ->where('arg = ?', 'last24')

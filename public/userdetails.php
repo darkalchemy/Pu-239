@@ -28,7 +28,7 @@ if (!is_valid_id($id)) {
     stderr($lang['userdetails_error'], "{$lang['userdetails_bad_id']}");
 }
 $user = $cache->get('user' . $id);
-if (false === $user || is_null($user)) {
+if ($user === false || is_null($user)) {
     $user = $fluent->from('users')
         ->select('INET6_NTOA(ip) AS ip')
         ->where('id = ?', $id)
@@ -43,7 +43,7 @@ if ('pending' == $user['status']) {
 }
 
 $user_status = $cache->get('userstatus_' . $id);
-if (false === $user_status || is_null($user_status)) {
+if ($user_status === false || is_null($user_status)) {
     $sql_2 = sql_query('SELECT * FROM ustatus WHERE userid = ' . sqlesc($id));
     if (mysqli_num_rows($sql_2)) {
         $user_status = mysqli_fetch_assoc($sql_2);
@@ -194,13 +194,13 @@ if (!$enabled) {
     $h1 .= $lang['userdetails_disabled'];
 } elseif ($CURUSER['id'] != $user['id']) {
     $friends = $cache->get('Friends_' . $id);
-    if (false === $friends || is_null($friends)) {
+    if ($friends === false || is_null($friends)) {
         $r3      = sql_query('SELECT id FROM friends WHERE userid=' . sqlesc($CURUSER['id']) . ' AND friendid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $friends = mysqli_num_rows($r3);
         $cache->set('Friends_' . $id, $friends, $site_config['expires']['user_friends']);
     }
     $blocks = $cache->get('Blocks_' . $id);
-    if (false === $blocks || is_null($blocks)) {
+    if ($blocks === false || is_null($blocks)) {
         $r4     = sql_query('SELECT id FROM blocks WHERE userid=' . sqlesc($CURUSER['id']) . ' AND blockid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $blocks = mysqli_num_rows($r4);
         $cache->set('Blocks_' . $id, $blocks, $site_config['expires']['user_blocks']);
@@ -220,7 +220,7 @@ if (!$enabled) {
 if ($CURUSER['class'] >= UC_STAFF) {
     $shitty    = '';
     $shit_list = $cache->get('shit_list_' . $id);
-    if (false === $shit_list || is_null($shit_list)) {
+    if ($shit_list === false || is_null($shit_list)) {
         $check_if_theyre_shitty = sql_query('SELECT suspect FROM shit_list WHERE userid=' . sqlesc($CURUSER['id']) . ' AND suspect=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         list($shit_list)        = mysqli_fetch_row($check_if_theyre_shitty);
         $cache->set('shit_list_' . $id, $shit_list, $site_config['expires']['shit_list']);

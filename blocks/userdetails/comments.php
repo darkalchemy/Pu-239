@@ -3,7 +3,7 @@
 global $CURUSER, $site_config, $lang, $cache;
 
 $torrentcomments = $cache->get('torrent_comments_' . $id);
-if (false === $torrentcomments || is_null($torrentcomments)) {
+if ($torrentcomments === false || is_null($torrentcomments)) {
     $res                   = sql_query('SELECT COUNT(id) FROM comments WHERE user=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
     list($torrentcomments) = mysqli_fetch_row($res);
     $cache->set('torrent_comments_' . $id, $torrentcomments, $site_config['expires']['torrent_comments']);

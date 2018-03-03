@@ -24,7 +24,7 @@ function getTVImagesByImdb($thetvdb_id, $type = 'showbackground', $season = 0)
     }
 
     $fanart = $cache->get('show_images_' . $thetvdb_id);
-    if (false === $fanart || is_null($fanart)) {
+    if ($fanart === false || is_null($fanart)) {
         $url    = 'http://webservice.fanart.tv/v3/tv/';
         $fanart = fetch($url . $thetvdb_id . '?api_key=' . $key);
         if (null != $fanart) {
@@ -76,7 +76,7 @@ function getMovieImagesByImdb($imdb, $type = 'moviebackground')
     }
 
     $fanart = $cache->get('movie_images_' . $imdb);
-    if (false === $fanart || is_null($fanart)) {
+    if ($fanart === false || is_null($fanart)) {
         $url    = 'http://webservice.fanart.tv/v3/movies/';
         $fanart = fetch($url . $imdb . '?api_key=' . $key);
         if (null != $fanart) {

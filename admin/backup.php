@@ -25,7 +25,7 @@ if (is_array($required_class)) {
         stderr($lang['backup_stderr'], $lang['backup_stderr']);
     }
 } else {
-    if ($CURUSER['class'] != $required_class) {
+    if ($required_class != $CURUSER['class']) {
         stderr($lang['backup_stderr'], $lang['backup_stderr1']);
     }
 }
@@ -144,7 +144,7 @@ if (empty($mode)) {
         $HTMLOUT .= stdmsg($lang['backup_stderr'], $lang['backup_selectb']);
     }
     echo stdhead($lang['backup_stdhead']) . $HTMLOUT . stdfoot();
-} elseif ('backup' == $mode) {
+} elseif ($mode === 'backup') {
     global $site_config;
     $mysql_host = $_ENV['DB_HOST'];
     $mysql_user = $_ENV['DB_USERNAME'];
@@ -167,7 +167,7 @@ if (empty($mode)) {
     }
     header('Location: staffpanel.php?tool=backup');
     die();
-} elseif ('download' == $mode) {
+} elseif ($mode === 'download') {
     $id = (isset($_GET['id']) ? (int) $_GET['id'] : 0);
     if (!is_valid_id($id)) {
         stderr($lang['backup_stderr'], $lang['backup_id']);
@@ -206,7 +206,7 @@ if (empty($mode)) {
     header('Content-Transfer-Encoding: binary');
     header('Content-Length: ' . filesize($filename));
     readfile($filename);
-} elseif ('delete' == $mode) {
+} elseif ($mode === 'delete') {
     $ids = (isset($_POST['ids']) ? $_POST['ids'] : (isset($_GET['id']) ? [
         $_GET['id'],
     ] : []));

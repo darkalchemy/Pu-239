@@ -31,7 +31,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
 }
 
 $table_exists = $cache->get('table_exists_database_updates');
-if (false === $table_exists || is_null($table_exists)) {
+if ($table_exists === false || is_null($table_exists)) {
     $sql    = "SHOW tables LIKE 'database_updates'";
     $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     if (1 != mysqli_num_rows($result)) {

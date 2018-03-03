@@ -4,7 +4,7 @@ global $CURUSER, $site_config, $lang, $fluent, $cache;
 
 if ($site_config['uploadapp_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $newapp = $cache->get('new_uploadapp_');
-    if (false === $newapp || is_null($newapp)) {
+    if ($newapp === false || is_null($newapp)) {
         $res = $fluent->from('uploadapp')
             ->select(null)
             ->select('COUNT(id) AS count')

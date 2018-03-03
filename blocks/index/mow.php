@@ -3,7 +3,7 @@
 global $lang, $site_config, $fluent, $CURUSER, $cache;
 
 $motw = $cache->get('motw_');
-if (false === $motw || is_null($motw)) {
+if ($motw === false || is_null($motw)) {
     $motw = $fluent->from('torrents')
         ->select(null)
         ->select('torrents.id')

@@ -27,9 +27,9 @@ if (!empty($poll_data['user_id'])) {
 }
 $_POST['nullvote'] = isset($_POST['nullvote']) ? $_POST['nullvote'] : 0;
 if (!$_POST['nullvote']) {
-    if (is_array($_POST['choice']) and count($_POST['choice'])) {
+    if (is_array($_POST['choice']) && count($_POST['choice'])) {
         foreach ($_POST['choice'] as $question_id => $choice_id) {
-            if (!$question_id or !isset($choice_id)) {
+            if (!$question_id || !isset($choice_id)) {
                 continue;
             }
             $vote_cast[$question_id][] = $choice_id;

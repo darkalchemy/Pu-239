@@ -87,7 +87,7 @@ $lang = [
     'modtask_down_dis_for'    => ' - Download disablement for',
     'modtask_down_pos_no'     => 'Download possible = No',
     'modtask_down_pos_yes'    => 'Download possible = Yes',
-    'modtask_down_disabled'   => 'Downloads disabled  = ',
+    'modtask_down_disabled'   => 'Downloads disabled = ',
     //upload posssible
     'modtask_up_dis_by'     => ' - Upload disablement by ',
     'modtask_up_dis_right'  => 'Your Uploading rights have been disabled by ',
@@ -97,7 +97,7 @@ $lang = [
     'modtask_up_dis_for'    => ' - Upload disablement for',
     'modtask_up_pos_no'     => 'Uploads enabled = No',
     'modtask_up_pos_yes'    => 'Uploads enabled = Yes',
-    'modtask_up_disabled'   => 'Uploads disabled  = ',
+    'modtask_up_disabled'   => 'Uploads disabled = ',
     //pm possible
     'modtask_pm_dis_by'     => ' - Pm disablement by ',
     'modtask_pm_dis_right'  => 'Your Pm rights have been disabled by ',
@@ -201,7 +201,7 @@ $lang = [
     //fls support
     'modtask_fls_promoted' => ' - Promoted to FLS by ',
     'modtask_fls_demoted'  => ' - Demoted from FLS by ',
-    'modtask_fls_support'  => 'Support  = ',
+    'modtask_fls_support'  => 'Support = ',
     //free slots
     'modtask_freeslots_amount' => ' - freeslots amount changed to ',
     'modtask_freeslots_total'  => 'Freeeslots total adjusted = Yes',
@@ -222,7 +222,7 @@ $lang = [
     'modtask_games_res_by'     => 'Your gaming rights have been restored by ',
     'modtask_games_dis_from'   => 'games disablement from ',
     'modtask_games_dis_for'    => ' - Games disablement for',
-    'modtask_games_disabled'   => 'Games disabled  = ',
+    'modtask_games_disabled'   => 'Games disabled = ',
     'modtask_games_poss_yes'   => 'Games possible = Yes',
     'modtask_games_poss_no'    => 'Games possible = No',
     //Avatar possible
@@ -232,7 +232,7 @@ $lang = [
     'modtask_avatar_res_by'     => 'Your Avatar rights have been restored by ',
     'modtask_avatar_dis_from'   => 'Avatar disablement from ',
     'modtask_avatar_dis_for'    => ' - Avatar disablement for',
-    'modtask_avatar_sel_dis'    => 'Avatar selection disabled  = ',
+    'modtask_avatar_sel_dis'    => 'Avatar selection disabled = ',
     'modtask_avatar_poss_yes'   => 'Avatars possible = Yes',
     'modtask_avatar_poss_no'    => 'Avatars possible = No',
     //highspeed

@@ -23,8 +23,8 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
             $enabled = 'no';
         }
         $orderid = (int) $_POST['orderid'];
-        $sql     = sql_query('UPDATE bonus SET orderid = ' . sqlesc($orderid) . ', points = ' . sqlesc($points) . ', pointspool=' . sqlesc($pointspool) . ', minpoints=' . sqlesc($minpoints) . ', minclass=' . sqlesc($minclass) . ', enabled = ' . sqlesc($enabled) . ', description = ' . sqlesc($descr) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        sql_query("UPDATE bonus SET orderid = orderid + 1 WHERE orderid >= $orderid AND id != $id")                                                                                                                                                                                                                                         or sqlerr(__FILE__, __LINE__);
+        $sql     = sql_query('UPDATE bonus SET orderid = ' . sqlesc($orderid) . ', points = ' . sqlesc($points) . ', pointspool=' . sqlesc($pointspool) . ', minpoints=' . sqlesc($minpoints) . ', minclass=' . sqlesc($minclass) . ', enabled = ' . sqlesc($enabled) . ', description = ' . sqlesc($descr) . ' WHERE id = ' . sqlesc($id))     or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE bonus SET orderid = orderid + 1 WHERE orderid >= $orderid AND id != $id")                                                                                                                                                                                                                                             or sqlerr(__FILE__, __LINE__);
 
         $query = sql_query('SELECT id FROM bonus ORDER BY orderid, id');
         $iter  = 0;

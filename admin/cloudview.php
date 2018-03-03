@@ -59,10 +59,10 @@ while ($arr = mysqli_fetch_assoc($search_q)) {
     $hits          = (int) $arr['howmuch'];
     $ip            = htmlsafechars(ipToStorageFormat($arr['ip']));
     $HTMLOUT .= "<tr>
-<td class='one'>$search_phrase</td>
-<td class='two'>$hits</td>
-<td class='two'>$ip</td>
-<td class='one'><input type='checkbox' name='delcloud[]' title='{$lang['cloudview_mark']}' value='" . (int) $arr['id'] . "' /></td></tr>\n";
+<td >$search_phrase</td>
+<td>$hits</td>
+<td>$ip</td>
+<td ><input type='checkbox' name='delcloud[]' title='{$lang['cloudview_mark']}' value='" . (int) $arr['id'] . "' /></td></tr>\n";
 }
 $HTMLOUT .= "<tr>
 <td colspan='4' class='colhead'>{$lang['cloudview_markall_search']}<input type='checkbox' title='{$lang['cloudview_markall']}' value='{$lang['cloudview_markall']}' onclick=\"this.value=check(form.elements);\" /></td></tr>

@@ -63,7 +63,7 @@ function dltable($name, $arr, $torrent)
         $upspeed   = ($e['upspeed'] > 0 ? mksize($e['upspeed']) : ($e['seedtime'] > 0 ? mksize($e['uploaded'] / ($e['seedtime'] + $e['leechtime'])) : mksize(0)));
         $downspeed = ($e['downspeed'] > 0 ? mksize($e['downspeed']) : ($e['leechtime'] > 0 ? mksize($e['downloaded'] / $e['leechtime']) : mksize(0)));
         if ($e['username']) {
-            if (('yes' == $e['tanonymous'] && $e['owner'] == $e['uid'] || 'yes' == $e['anonymous'] or $e['paranoia'] >= 2 && $CURUSER['id'] != $e['uid']) && $CURUSER['class'] < UC_STAFF) {
+            if (('yes' == $e['tanonymous'] && $e['owner'] == $e['uid'] || 'yes' == $e['anonymous'] || $e['paranoia'] >= 2 && $CURUSER['id'] != $e['uid']) && $CURUSER['class'] < UC_STAFF) {
                 $htmlout .= "<td><b>Kezer Soze</b></td>\n";
             } else {
                 $htmlout .= "<td><a href='userdetails.php?id=" . (int) $e['uid'] . "'><b>" . htmlsafechars($e['username']) . "</b></a></td>\n";

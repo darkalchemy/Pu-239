@@ -128,7 +128,7 @@ $i = 1;
 if (0 == mysqli_num_rows($res)) {
     $HTMLOUT .= '
    <tr>
-      <td class="one" colspan="4">
+      <td colspan="4">
       <img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" />' . $lang['shitlist_empty'] . '<img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /></td>
    </tr>';
 } else {
@@ -157,6 +157,6 @@ if (0 == mysqli_num_rows($res)) {
         ++$i;
     }
 } //=== end while
-$HTMLOUT .= ((0 == $i % 2) ? '<td class="one" colspan="2"></td></tr>' : '');
+$HTMLOUT .= ((0 == $i % 2) ? '<td colspan="2"></td></tr>' : '');
 $HTMLOUT .= '</table><p><span class="button is-small" style="padding:3px;"><img style="vertical-align:middle;" src="' . $site_config['pic_baseurl'] . 'btn_search.gif" /><a class="altlink" href="' . $site_config['baseurl'] . '/users.php">' . $lang['shitlist_find'] . '</span></a></p>';
 echo stdhead($lang['shitlist_stdhead'] . htmlsafechars($CURUSER['username'])) . $HTMLOUT . stdfoot();

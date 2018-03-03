@@ -1,7 +1,8 @@
 <?php
 
-global $lang, $user;
+global $lang, $user_stuffs, $CURUSER;
 
+$user = $user_stuffs->getUserFromId($CURUSER['id']);
 if ($user['onlinetime'] > 0) {
     $onlinetime = time_return($user['onlinetime']);
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_time_online']}</td><td width='99%'>{$onlinetime}</td></tr>";

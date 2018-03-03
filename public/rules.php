@@ -70,7 +70,7 @@ $HTMLOUT = "
                             </ul>
                         </div>";
 
-if (isset($CURUSER) and $CURUSER['class'] >= UC_UPLOADER) {
+if (isset($CURUSER) && $CURUSER['class'] >= UC_UPLOADER) {
     $HTMLOUT .= "
                         <p class='accordion-toggle has-text-black" . ($CURUSER['class'] < UC_STAFF ? ' round5-bottom' : '') . "'>
                             {$lang['rules_uploading_header']}<span class='has-text-blue'>{$lang['rules_uploading_header_sub']}</span>
@@ -90,7 +90,7 @@ if (isset($CURUSER) and $CURUSER['class'] >= UC_UPLOADER) {
                             </ul>
                         </div>";
 }
-if (isset($CURUSER) and $CURUSER['class'] >= UC_STAFF) {
+if (isset($CURUSER) && $CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= "
                         <p class='accordion-toggle has-text-black'>
                             {$lang['rules_moderating_header']}<span class='has-text-blue'>{$lang['rules_moderating_header_sub']}</span>

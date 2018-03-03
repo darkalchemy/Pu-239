@@ -2,7 +2,7 @@
 
 global $CURUSER, $site_config, $lang;
 
-if (!XBT_TRACKER or true == $site_config['happy_hour']) {
+if (!XBT_TRACKER || true == $site_config['happy_hour']) {
     if ($CURUSER) {
         require_once INCL_DIR . 'function_happyhour.php';
         if (happyHour('check')) {

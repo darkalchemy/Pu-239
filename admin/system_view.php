@@ -7,7 +7,7 @@ global $site_config, $lang;
 
 $lang    = array_merge($lang, load_language('ad_systemview'));
 $htmlout = '';
-if (isset($_GET['phpinfo']) and $_GET['phpinfo']) {
+if (isset($_GET['phpinfo']) && $_GET['phpinfo']) {
     @ob_start();
     phpinfo();
     $parsed = @ob_get_contents();

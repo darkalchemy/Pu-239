@@ -32,14 +32,14 @@ class User
     }
 
     /**
-     * @param int $user_id
+     * @param $user_id
      *
      * @return bool|mixed
      */
-    public function getUserFromId(int $user_id)
+    public function getUserFromId($user_id)
     {
         $user = $this->cache->get('user' . $user_id);
-        if (false === $user || is_null($user)) {
+        if ($user === false || is_null($user)) {
             $user = $this->fluent->from('users')
                 ->select('INET6_NTOA(ip) AS ip')
                 ->where('id = ?', $user_id)
@@ -72,7 +72,7 @@ class User
     {
         $user = $this->cache->get('userid_from_' . urlencode($username));
 
-        if (false === $user || is_null($user)) {
+        if ($user === false || is_null($user)) {
             $user = $this->fluent->from('users')
                 ->select(null)
                 ->select('id')
@@ -147,8 +147,8 @@ class User
         if ($result) {
             $this->cache->update_row(
                 'user' . $user_id,
-                                     $set,
-                                     $this->config['expires']['user_cache']
+                $set,
+                $this->config['expires']['user_cache']
             );
         }
 

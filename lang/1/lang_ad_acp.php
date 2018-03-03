@@ -2,10 +2,10 @@
 
 $lang = [
     //stderr//stdmsg
-    'std_error'   => 'Error',
-    'std_nf'      => 'Nothing found!',
-    'std_invalid' => 'Invalid ID!',
-    'std_sorry'   => 'Sorry',
+    'std_error'     => 'Error',
+    'std_nf'        => 'Nothing found!',
+    'std_invalid'   => 'Invalid ID!',
+    'std_sorry'     => 'Sorry',
     //Texts
     'text_markall'  => 'Mark All',
     'text_du'       => 'Disabled Users: ',

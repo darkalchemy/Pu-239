@@ -28,9 +28,9 @@ function mysql_fetch_rowsarr($result, $numass = MYSQLI_BOTH)
 }
 
 /*
-chs        =    widthxheight (adjust if needed)
-chco    =    chart colours, a,b,a,b,a,b,a,b
-chf        =    7d7d7d = background colour, adjust to your theme background colour
+chs = widthxheight (adjust if needed)
+chco = chart colours, a,b,a,b,a,b,a,b
+chf = 7d7d7d = background colour, adjust to your theme background colour
 */
 $imgstartbar = '<img src="https://chart.googleapis.com/chart?cht=bvg&amp;chbh=a&amp;chs=780x300&amp;chco=4D89F9,4D89F9&amp;chf=bg,s,000000';
 $imgstartpie = '<img src="https://chart.googleapis.com/chart?cht=p3&amp;chbh=a&amp;chs=780x300&amp;chco=4D89F9&amp;chf=bg,s,000000';

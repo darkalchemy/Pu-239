@@ -212,7 +212,7 @@ if ($game) {
             } else {
                 $ratio = 0;
             }
-            if (false === $site_config['ratio_free'] && $ratio < $required_ratio) {
+            if ($site_config['ratio_free'] && $ratio < $required_ratio === false) {
                 stderr("{$lang['bj_sorry2']} " . $CURUSER['username'], "{$lang['bj_your_ratio_is_lower_req']} " . $required_ratio . '%.');
             }
             $sql = 'SELECT * FROM blackjack WHERE userid = ' . sqlesc($CURUSER['id']) . ' AND game_id = ' . sqlesc($blackjack['gameid']);
@@ -1078,7 +1078,7 @@ function getCardData($cardid)
 {
     global $cache;
     $card = $cache->get('card_data_' . $cardid);
-    if (false === $card || is_null($card)) {
+    if ($card === false || is_null($card)) {
         $sql  = 'SELECT * FROM cards WHERE id = ' . sqlesc($cardid);
         $res  = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $card = mysqli_fetch_assoc($res);

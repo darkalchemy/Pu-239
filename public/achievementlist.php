@@ -8,7 +8,7 @@ global $CURUSER, $site_config;
 
 $lang = array_merge(load_language('global'), load_language('achievementlist'));
 //$doUpdate = false;
-if ('POST' == $_SERVER['REQUEST_METHOD'] && $CURUSER['class'] >= UC_MAX) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && $CURUSER['class'] >= UC_MAX) {
     $clienticon = htmlsafechars(trim($_POST['clienticon']));
     $achievname = htmlsafechars(trim($_POST['achievname']));
     $notes      = htmlsafechars($_POST['notes']);
@@ -22,7 +22,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD'] && $CURUSER['class'] >= UC_MAX) {
 $res     = sql_query('SELECT a1.*, (SELECT COUNT(a2.id) FROM achievements AS a2 WHERE a2.achievement = a1.achievname) AS count FROM achievementist AS a1 ORDER BY a1.id') or sqlerr(__FILE__, __LINE__);
 $HTMLOUT = '';
 $HTMLOUT .= "<h1>{$lang['achlst_std_head']}</h1>\n";
-if (0 == mysqli_num_rows($res)) {
+if (mysqli_num_rows($res) === 0) {
     $HTMLOUT .= "<p><b>{$lang['achlst_there_no_ach_msg']}!<br>{$lang['achlst_staff_been_lazy']}!</b></p>\n";
 } else {
     $heading = "
@@ -35,7 +35,7 @@ if (0 == mysqli_num_rows($res)) {
     while ($arr = mysqli_fetch_assoc($res)) {
         $notes      = htmlsafechars($arr['notes']);
         $clienticon = '';
-        if ('' != $arr['clienticon']) {
+        if ($arr['clienticon'] != '') {
             $clienticon = "<img src='" . $site_config['pic_baseurl'] . 'achievements/' . htmlsafechars($arr['clienticon']) . "' title='" . htmlsafechars($arr['achievname']) . "' alt='" . htmlsafechars($arr['achievname']) . "' />";
         }
         $body .= "
@@ -48,7 +48,7 @@ if (0 == mysqli_num_rows($res)) {
 }
 $HTMLOUT .= main_table($body, $heading);
 
-if (UC_MAX === $CURUSER['class']) {
+if ($CURUSER['class'] === UC_MAX) {
     $HTMLOUT .= "
     <h2>{$lang['achlst_add_an_ach_lst']}</h2>
     <form method='post' action='achievementlist.php'>" . main_table("

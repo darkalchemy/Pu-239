@@ -56,7 +56,7 @@ class Xml2Array
      */
     public function get_array()
     {
-        if (false === $this->get_dom()) {
+        if ($this->get_dom() === false) {
             return false;
         }
 

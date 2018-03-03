@@ -9,8 +9,8 @@ function sitestats_update($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    $XBT_Seeder  = mysqli_fetch_assoc(sql_query('SELECT sum(seeders) AS seeders FROM torrents'))    or sqlerr(__FILE__, __LINE__);
-    $XBT_Leecher = mysqli_fetch_assoc(sql_query('SELECT sum(leechers) AS leechers FROM torrents'))  or sqlerr(__FILE__, __LINE__);
+    $XBT_Seeder  = mysqli_fetch_assoc(sql_query('SELECT sum(seeders) AS seeders FROM torrents'))     or sqlerr(__FILE__, __LINE__);
+    $XBT_Leecher = mysqli_fetch_assoc(sql_query('SELECT sum(leechers) AS leechers FROM torrents'))   or sqlerr(__FILE__, __LINE__);
 
     $registered     = get_row_count('users');
     $unverified     = get_row_count('users', "WHERE status='pending'");

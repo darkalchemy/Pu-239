@@ -4,7 +4,7 @@ require_once INCL_DIR . 'html_functions.php';
 global $lang, $site_config, $fluent, $cache;
 
 $comments = $cache->get('latest_comments_');
-if (false === $comments || is_null($comments)) {
+if ($comments === false || is_null($comments)) {
     $comments = $fluent->from('comments')
         ->select(null)
         ->select('comments.id')

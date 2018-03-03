@@ -129,8 +129,8 @@ if ('viewbug' == $action) {
     $count        = $row[0];
     $perpage      = 10;
     $pager        = pager($perpage, $count, 'bugs.php?action=bugs&amp;');
-    $res          = sql_query("SELECT b.*, u.username, staff.username AS staffusername FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id LEFT JOIN users AS staff ON b.staff = staff.id ORDER BY b.id DESC {$pager['limit']}")   or sqlerr(__FILE__, __LINE__);
-    $r            = sql_query("SELECT * FROM bugs WHERE status = 'na'")                                                                                                                                                               or sqlerr(__FILE__, __LINE__);
+    $res          = sql_query("SELECT b.*, u.username, staff.username AS staffusername FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id LEFT JOIN users AS staff ON b.staff = staff.id ORDER BY b.id DESC {$pager['limit']}")     or sqlerr(__FILE__, __LINE__);
+    $r            = sql_query("SELECT * FROM bugs WHERE status = 'na'")                                                                                                                                                                 or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $count = mysqli_num_rows($r);
         $HTMLOUT .= $pager['pagertop'];

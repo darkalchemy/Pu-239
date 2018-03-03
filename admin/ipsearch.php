@@ -33,7 +33,7 @@ if ($ip) {
     } else {
         if ('/' == substr($mask, 0, 1)) {
             $n = substr($mask, 1, strlen($mask) - 1);
-            if (!is_numeric($n) or $n < 0 or $n > 32) {
+            if (!is_numeric($n) || $n < 0 || $n > 32) {
                 $HTMLOUT .= stdmsg($lang['ipsearch_error'], $lang['ipsearch_subnet']);
                 $HTMLOUT .= end_main_frame();
                 echo stdhead('IP Search') . $HTMLOUT . stdfoot();
@@ -66,8 +66,8 @@ if ($ip) {
         echo stdhead('IP sEARCH') . $HTMLOUT . stdfoot();
         die();
     }
-    $order   = isset($_GET['order'])  && $_GET['order'];
-    $page    = isset($_GET['page'])   && (int) $_GET['page'];
+    $order   = isset($_GET['order'])   && $_GET['order'];
+    $page    = isset($_GET['page'])    && (int) $_GET['page'];
     $perpage = 20;
     $pager   = pager($perpage, $count, "staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=$order&amp;");
     if ('added' == $order) {

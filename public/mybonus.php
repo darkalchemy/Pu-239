@@ -47,7 +47,7 @@ function update_users_stats($userid, $set)
 }
 
 $User = $cache->get('user' . $CURUSER['id']);
-if (false === $User || is_null($User)) {
+if ($User === false || is_null($User)) {
     $User = $fluent->from('users')
         ->select('INET6_NTOA(ip) AS ip')
         ->where('id = ?', $CURUSER['id'])
@@ -485,7 +485,7 @@ if (isset($_GET['exchange'])) {
     $option = (int) $_POST['option'];
 
     $res_points = $cache->get('bonus_points_' . $option);
-    if (false === $res_points || is_null($res_points)) {
+    if ($res_points === false || is_null($res_points)) {
         $res_points = $fluent->from('bonus')
             ->where('id', $option)
             ->fetch();
@@ -707,7 +707,7 @@ if (isset($_GET['exchange'])) {
             break;
 
         case 'pirate':
-            if (0 != $CURUSER['pirate'] or 0 != $CURUSER['king']) {
+            if (0 != $CURUSER['pirate'] || 0 != $CURUSER['king']) {
                 stderr('Error', "Now why would you want to add what you already have?<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for 2 weeks Pirate + freeleech Status.\n " . $bonuscomment;
@@ -803,7 +803,7 @@ if (isset($_GET['exchange'])) {
             break;
 
         case 'king':
-            if (0 != $CURUSER['king'] or 0 != $CURUSER['pirate']) {
+            if (0 != $CURUSER['king'] || 0 != $CURUSER['pirate']) {
                 stderr('Error', "Now why would you want to add what you already have?<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for 1 month King + freeleech Status.\n " . $bonuscomment;
@@ -1279,7 +1279,7 @@ $fpoints = $dpoints = $hpoints = $freeleech_enabled = $double_upload_enabled = $
 
 if (!XBT_TRACKER) {
     $scheduled_events = $cache->get('freecontribution_datas_');
-    if (false === $scheduled_events || is_null($scheduled_events)) {
+    if ($scheduled_events === false || is_null($scheduled_events)) {
         $scheduled_events = mysql_fetch_all('SELECT * FROM `events` ORDER BY `startTime` DESC LIMIT 3;', []);
         $cache->set('freecontribution_datas_', $scheduled_events, 3 * 86400);
     }
@@ -1322,7 +1322,7 @@ if (!XBT_TRACKER) {
         }
     }
     $freeleech_counter = $cache->get('freeleech_counter');
-    if (false === $freeleech_counter || is_null($freeleech_counter)) {
+    if ($freeleech_counter === false || is_null($freeleech_counter)) {
         $total_fl = sql_query('SELECT SUM(pointspool) AS pointspool, points
                                 FROM bonus
                                 WHERE id = 11') or sqlerr(__FILE__, __LINE__);
@@ -1363,7 +1363,7 @@ if (!XBT_TRACKER) {
     //=== get total points
     //$target_du = 30000;
     $doubleupload_counter = $cache->get('doubleupload_counter');
-    if (false === $doubleupload_counter || is_null($doubleupload_counter)) {
+    if ($doubleupload_counter === false || is_null($doubleupload_counter)) {
         $total_du = sql_query('SELECT SUM(pointspool) AS pointspool, points
                                 FROM bonus
                                 WHERE id = 12') or sqlerr(__FILE__, __LINE__);
@@ -1402,7 +1402,7 @@ if (!XBT_TRACKER) {
     //=== get total points
     //$target_hd = 30000;
     $halfdownload_counter = $cache->get('halfdownload_counter');
-    if (false === $halfdownload_counter || is_null($halfdownload_counter)) {
+    if ($halfdownload_counter === false || is_null($halfdownload_counter)) {
         $total_hd = sql_query('SELECT SUM(pointspool) AS pointspool, points
                                 FROM bonus
                                 WHERE id = 13') or sqlerr(__FILE__, __LINE__);
@@ -1457,7 +1457,7 @@ if (!XBT_TRACKER) {
 }
 
 $top_donators = $cache->get('top_donators_');
-if (false === $top_donators || is_null($top_donators)) {
+if ($top_donators === false || is_null($top_donators)) {
     $a = sql_query("SELECT b.id, SUM(b.donation) AS total, u.username, u.id AS userid, u.pirate, u.king, u.class, u.donor, u.warned, u.leechwarn, u.enabled, u.chatpost
                         FROM bonuslog AS b
                         LEFT JOIN users AS u ON b.id = u.id
@@ -1484,7 +1484,7 @@ if (!empty($top_donators) && count($top_donators) > 0) {
 //$cache->delete('top_donators_');
 //==
 $top_donators2 = $cache->get('top_donators2_');
-if (false === $top_donators2 || is_null($top_donators2)) {
+if ($top_donators2 === false || is_null($top_donators2)) {
     $b = sql_query("SELECT b.id, SUM(b.donation) AS total, u.username, u.id AS userid, u.pirate, u.king, u.class, u.donor, u.warned, u.leechwarn, u.enabled, u.chatpost
                         FROM bonuslog AS b
                         LEFT JOIN users AS u ON b.id = u.id
@@ -1511,7 +1511,7 @@ if (!empty($top_donators2) && count($top_donators2) > 0) {
 //$cache->delete('top_donators2_');
 //==
 $top_donators3 = $cache->get('top_donators3_');
-if (false === $top_donators3 || is_null($top_donators3)) {
+if ($top_donators3 === false || is_null($top_donators3)) {
     $c = sql_query("SELECT b.id, SUM(b.donation) AS total, u.username, u.id AS userid, u.pirate, u.king, u.class, u.donor, u.warned, u.leechwarn, u.enabled, u.chatpost
                         FROM bonuslog AS b
                         LEFT JOIN users AS u ON b.id = u.id
@@ -1634,7 +1634,7 @@ while ($gets = mysqli_fetch_assoc($res)) {
             $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int) $gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '</td><td>' . (float) $gets['points'] . '</td>';
     }
 
-    if ($bonus >= $gets['points'] or $bonus >= $gets['minpoints']) {
+    if ($bonus >= $gets['points'] || $bonus >= $gets['minpoints']) {
         switch (true) {
             case 7 == $gets['id']:
                 $HTMLOUT .= "<td><input class='button is-small' type='submit' name='submit' value='Karma Gift!' /></td></form>";
@@ -1687,8 +1687,7 @@ $HTMLOUT .= "</tr></table></div>
                 <p>
                     If you save up enough of them, you can trade them in for goodies like bonus GB(s) to increase your upload stats, also to get more invites, or doing the real Karma booster... give them to another user!<br>
                     This is awarded on a per torrent basis (max of $bmt) even if there are no leechers on the Torrent you are seeding! <br>
-                    Seeding Torrents Based on Connectable Status =
-                    <span>
+                    Seeding Torrents Based on Connectable Status = <span>
                         <span class='tooltipper' title='Seeding $atform torrents'> $atform </span>*
                         <span class='tooltipper' title='$bpt per announce period'> $bpt </span>*
                         <span class='tooltipper' title='2 announce periods per hour'> 2 </span>= $activet

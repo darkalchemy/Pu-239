@@ -4,7 +4,7 @@ global $site_config, $CURUSER, $lang, $fluent, $cache;
 
 if ($site_config['report_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $delt_with = $cache->get('new_report_');
-    if (false === $delt_with || is_null($delt_with)) {
+    if ($delt_with === false || is_null($delt_with)) {
         $res_reports = $fluent->from('reports')
             ->select(null)
             ->select('COUNT(id) AS count')

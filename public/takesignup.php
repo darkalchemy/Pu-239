@@ -196,7 +196,6 @@ $values = [
     'passhint'     => $passhint,
     'hintanswer'   => make_passhash($hintanswer),
     'email'        => $email,
-    'ip'           => $ip,
     'added'        => TIME_NOW,
     'last_access'  => TIME_NOW,
     'time_offset'  => $time_offset,
@@ -207,7 +206,7 @@ $values = [
     'class'        => (0 === $users_count ? UC_SYSOP : UC_USER),
 ];
 
-if (0 == $users_count) {
+if ($users_count === 0) {
     $values['seedbonus'] = 1000000;
     $values['invites']   = 1000;
 }

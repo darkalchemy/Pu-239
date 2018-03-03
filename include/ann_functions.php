@@ -7,11 +7,11 @@
  */
 function crazyhour_announce()
 {
-    global $fluent,$site_config, $cache;
+    global $fluent, $site_config, $cache;
 
     $crazy_hour      = (TIME_NOW + 3600);
     $cz['crazyhour'] = $cache->get('crazyhour');
-    if (false === $cz['crazyhour'] || is_null($cz['crazyhour'])) {
+    if ($cz['crazyhour'] === false || is_null($cz['crazyhour'])) {
         $cz['crazyhour'] = $fluent->from('freeleech')
             ->select(null)
             ->select('var')
@@ -19,7 +19,7 @@ function crazyhour_announce()
             ->where('type = ?', 'crazyhour')
             ->fetch();
 
-        if (false === $cz['crazyhour']) {
+        if ($cz['crazyhour'] === false) {
             $cz['crazyhour']['var']    = random_int(TIME_NOW, (TIME_NOW + 86400));
             $cz['crazyhour']['amount'] = 0;
             $fluent->update('freeleech')
@@ -34,13 +34,16 @@ function crazyhour_announce()
     }
 
     if ($cz['crazyhour']['var'] < TIME_NOW) {
-        if (false !== ($cz_lock = $cache->add('crazyhour_lock', 1, 10))) {
+        if (($cz_lock = $cache->add('crazyhour_lock', 1, 10)) !== false) {
             $cz['crazyhour_new']       = mktime(23, 59, 59, date('m'), date('d'), date('y'));
             $cz['crazyhour']['var']    = random_int($cz['crazyhour_new'], ($cz['crazyhour_new'] + 86400));
             $cz['crazyhour']['amount'] = 0;
             $cz['remaining']           = ($cz['crazyhour']['var'] - TIME_NOW);
 
-            $set = ['var' => $cz['crazyhour']['var'], 'amount' => $cz['crazyhour']['amount']];
+            $set = [
+                'var'    => $cz['crazyhour']['var'],
+                'amount' => $cz['crazyhour']['amount'],
+            ];
             $fluent->update('freeleech')
                 ->set($set)
                 ->where('type = ?', 'crazyhour')
@@ -52,7 +55,10 @@ function crazyhour_announce()
             autoshout($msg);
 
             $text   = 'Next <span style="font-weight:bold;color:orange;">Crazyhour</span> is at ' . date('F j, g:i a', $cz['crazyhour']['var']);
-            $values = ['added' => TIME_NOW, 'txt' => $text];
+            $values = [
+                'added' => TIME_NOW,
+                'txt'   => $text,
+            ];
             $fluent->insertInto('sitelog')
                 ->values($values)
                 ->execute();
@@ -62,7 +68,7 @@ function crazyhour_announce()
     } elseif (($cz['crazyhour']['var'] < $crazy_hour) && ($cz['crazyhour']['var'] >= TIME_NOW)) { // if crazyhour
         if ($cz['crazyhour']['amount'] !== 1) {
             $cz['crazyhour']['amount'] = 1;
-            if (false !== ($cz_lock = $cache->add('crazyhour_lock', 1, 10))) {
+            if (($cz_lock = $cache->add('crazyhour_lock', 1, 10)) !== false) {
                 $set = ['amount' => $cz['crazyhour']['amount']];
                 $fluent->update('freeleech')
                     ->set($set)
@@ -75,7 +81,10 @@ function crazyhour_announce()
                 autoshout($msg);
 
                 $text   = 'w00t! It\'s <span style="font-weight:bold;color:orange;">Crazyhour</span> <img src="./images/smilies/w00t.gif" alt=":w00t:" />';
-                $values = ['added' => TIME_NOW, 'txt' => $text];
+                $values = [
+                    'added' => TIME_NOW,
+                    'txt'   => $text,
+                ];
                 $fluent->insertInto('sitelog')
                     ->values($values)
                     ->execute();
@@ -97,11 +106,11 @@ function get_user_from_torrent_pass($torrent_pass)
 {
     global $site_config, $fluent, $cache;
 
-    if (64 != strlen($torrent_pass)) {
+    if (strlen($torrent_pass) != 64) {
         return false;
     }
     $userid = $cache->get('torrent_pass_' . $torrent_pass);
-    if (false === $userid || is_null($userid)) {
+    if ($userid === false || is_null($userid)) {
         $userid = $fluent->from('users')
             ->select(null)
             ->select('id')
@@ -115,7 +124,7 @@ function get_user_from_torrent_pass($torrent_pass)
         return false;
     }
     $user = $cache->get('user' . $userid);
-    if (false === $user || is_null($user)) {
+    if ($user === false || is_null($user)) {
         $user = $fluent->from('users')
             ->select('INET6_NTOA(ip) AS ip')
             ->where('id = ?', $userid)
@@ -123,7 +132,7 @@ function get_user_from_torrent_pass($torrent_pass)
         unset($user['hintanswer'], $user['passhash']);
 
         $cache->set('user' . $userid, $user, $site_config['expires']['user_cache']);
-        if ('yes' != $user['enabled']) {
+        if ($user['enabled'] != 'yes') {
             return false;
         }
     }
@@ -146,7 +155,7 @@ function get_torrent_from_hash($info_hash)
     $key     = 'torrent_hash_' . bin2hex($info_hash);
     $ttl     = 21600;
     $torrent = $cache->get($key);
-    if (false === $torrent || is_null($torrent) || !is_array($torrent)) {
+    if ($torrent === false || is_null($torrent)) {
         $torrent = $fluent->from('torrents')
             ->select(null)
             ->select('id')
@@ -163,7 +172,7 @@ function get_torrent_from_hash($info_hash)
             ->select('visible')
             ->where('HEX(info_hash) = ?', bin2hex($info_hash))
             ->fetch();
-        if (false !== $torrent) {
+        if ($torrent !== false) {
             $cache->set($key, $torrent, $ttl);
             $seed_key  = 'torrents_seeds_' . $torrent['id'];
             $leech_key = 'torrents_leechs_' . $torrent['id'];
@@ -184,9 +193,9 @@ function get_torrent_from_hash($info_hash)
         $torrent['leechers']        = $cache->get($leech_key);
         $torrent['times_completed'] = $cache->get($comp_key);
         if (
-            false === $torrent['seeders'] ||
-            false === $torrent['leechers'] ||
-            false === $torrent['times_completed'] ||
+            $torrent['seeders'] === false ||
+            $torrent['leechers'] === false ||
+            $torrent['times_completed'] === false ||
             is_null($torrent['seeders']) ||
             is_null($torrent['leechers']) ||
             is_null($torrent['times_completed'])
@@ -199,7 +208,7 @@ function get_torrent_from_hash($info_hash)
                 ->where('id = ?', $torrent['id'])
                 ->fetch();
 
-            if (false !== $res) {
+            if ($res !== false) {
                 $cache->add($seed_key, $res['seeders'], $ttl);
                 $cache->add($leech_key, $res['leechers'], $ttl);
                 $cache->add($comp_key, $res['times_completed'], $ttl);
@@ -266,7 +275,7 @@ function get_happy($torrentid, $userid)
 
     $keys['happyhour'] = $userid . '_happy';
     $happy             = $cache->get($keys['happyhour']);
-    if (false === $happy || is_null($happy)) {
+    if ($happy === false || is_null($happy)) {
         $res = $fluent->from('happyhour')
             ->where('userid = ?', $userid)
             ->fetchAll();
@@ -297,7 +306,7 @@ function get_slots($torrentid, $userid)
     $ttl_slot            = 86400;
     $torrent['freeslot'] = $torrent['doubleslot'] = 0;
     $slot                = $cache->get('fllslot_' . $userid);
-    if (false === $slot || is_null($slot)) {
+    if ($slot === false || is_null($slot)) {
         $slot = $fluent->from('freeslots')
             ->where('userid = ?', $userid)
             ->fetchAll();
@@ -305,10 +314,10 @@ function get_slots($torrentid, $userid)
     }
     if (!empty($slot)) {
         foreach ($slot as $sl) {
-            if ($sl['torrentid'] == $torrentid && 'yes' == $sl['free']) {
+            if ($sl['torrentid'] == $torrentid && $sl['free'] == 'yes') {
                 $torrent['freeslot'] = 1;
             }
-            if ($sl['torrentid'] == $torrentid && 'yes' == $sl['doubleup']) {
+            if ($sl['torrentid'] == $torrentid && $sl['doubleup'] == 'yes') {
                 $torrent['doubleslot'] = 1;
             }
         }
@@ -334,9 +343,15 @@ function auto_enter_abnormal_upload($userid, $rate, $upthis, $diff, $torrentid, 
     global $fluent;
 
     $values = [
-        'added'    => TIME_NOW, 'userid' => $userid, 'client' => $client, 'rate' => $rate,
-        'beforeup' => $last_up, 'upthis' => $upthis, 'timediff' => $diff,
-        'userip'   => ipToStorageFormat($realip), 'torrentid' => $torrentid,
+        'added'     => TIME_NOW,
+        'userid'    => $userid,
+        'client'    => $client,
+        'rate'      => $rate,
+        'beforeup'  => $last_up,
+        'upthis'    => $upthis,
+        'timediff'  => $diff,
+        'userip'    => inet_pton($realip),
+        'torrentid' => $torrentid,
     ];
     $fluent->insertInto('cheaters')
         ->values($values)
@@ -466,7 +481,6 @@ function benc_dict($d)
  */
 function portblacklisted($port)
 {
-    //=== new portblacklisted ....... ==> direct connect 411 ot 413,  bittorrent 6881 to 6889, kazaa 1214, gnutella 6346 to 6347, emule 4662, winmx 6699, IRC bot based trojans 65535
     $portblacklisted = [
         411,
         412,

@@ -216,7 +216,7 @@ function get_all_boxes($box = 1)
     global $CURUSER, $site_config, $lang, $cache;
 
     $get_all_boxes = $cache->get('get_all_boxes_' . $CURUSER['id']);
-    if (false === $get_all_boxes || is_null($get_all_boxes)) {
+    if ($get_all_boxes === false || is_null($get_all_boxes)) {
         $res = sql_query('SELECT boxnumber, name FROM pmboxes WHERE userid = ' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
         while ($row = mysqli_fetch_assoc($res)) {
             $get_all_boxes[] = $row;
@@ -250,7 +250,7 @@ function insertJumpTo($mailbox)
     global $CURUSER, $site_config, $lang, $cache;
 
     $insertJumpTo = $cache->get('insertJumpTo' . $CURUSER['id']);
-    if (false === $insertJumpTo || is_null($insertJumpTo)) {
+    if ($insertJumpTo === false || is_null($insertJumpTo)) {
         $res          = sql_query('SELECT boxnumber,name FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
         $insertJumpTo = '<form action="pm_system.php" method="get">
                                     <input type="hidden" name="action" value="view_mailbox" />

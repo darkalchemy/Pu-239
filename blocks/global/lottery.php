@@ -4,7 +4,7 @@ global $CURUSER, $site_config, $fluent, $cache;
 
 if ($CURUSER) {
     $lottery_info = $cache->get('lottery_info_');
-    if (false === $lottery_info || is_null($lottery_info)) {
+    if ($lottery_info === false || is_null($lottery_info)) {
         $lottery_info = $fluent->from('lottery_config')
             ->fetchPairs('name', 'value');
 

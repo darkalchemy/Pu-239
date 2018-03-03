@@ -36,7 +36,7 @@ function check_bans($ip, &$reason = '')
     }
     $key = 'bans_' . $ip;
     $ban = $cache->get($key);
-    if (false === $ban || is_null($ban)) {
+    if ($ban === false || is_null($ban)) {
         $nip     = sqlesc($ip);
         $ban_sql = sql_query('SELECT comment FROM bans WHERE (INET6_NTOA(first) <= ' . $nip . ' AND INET6_NTOA(last) >= ' . $nip . ') LIMIT 1') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($ban_sql)) {

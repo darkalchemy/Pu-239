@@ -109,7 +109,7 @@ if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS && $BLOCKS['la
 
 if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SCROLL && $BLOCKS['latest_torrents_scroll_on']) {
     $count = $cache->get('torrent_poster_count_');
-    if (false === $count || is_null($count)) {
+    if ($count === false || is_null($count)) {
         $count = $fluent->from('torrents')
             ->select(null)
             ->select('COUNT(*) AS count')

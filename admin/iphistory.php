@@ -36,8 +36,8 @@ if (isset($_GET['setseedbox2'])) {
         sql_query('UPDATE ips SET seedbox = 0 WHERE id =' . sqlesc($setseedbox2)) or sqlerr(__FILE__, __LINE__);
     }
 }
-$res      = sql_query('SELECT username FROM users WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$user     = mysqli_fetch_array($res)                                        or stderr("{$lang['stderr_error']}", "{$lang['stderr_noid']}");
+$res      = sql_query('SELECT username FROM users WHERE id=' . sqlesc($id))  or sqlerr(__FILE__, __LINE__);
+$user     = mysqli_fetch_array($res)                                         or stderr("{$lang['stderr_error']}", "{$lang['stderr_noid']}");
 $username = htmlsafechars($user['username']);
 $resip    = sql_query('SELECT * FROM ips WHERE userid = ' . sqlesc($id) . ' GROUP BY ip ORDER BY id DESC') or sqlerr(__FILE__, __LINE__);
 $ipcount  = mysqli_num_rows($resip);

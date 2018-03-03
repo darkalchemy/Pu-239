@@ -1,7 +1,8 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $user, $user, $id;
+global $CURUSER, $site_config, $lang, $user_stuffs, $id;
 
+$user = $user_stuffs->getUserFromId($CURUSER['id']);
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     if ($user['downloaded'] > 0) {
         $table_data .= '

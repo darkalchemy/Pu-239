@@ -35,7 +35,7 @@ function remove_torrent($infohash)
     }
     $key     = 'torrent_hash_' . bin2hex($infohash);
     $torrent = $cache->get($key);
-    if (false === $torrent || is_null($torrent)) {
+    if ($torrent === false || is_null($torrent)) {
         $cache->delete($key);
 
         return false;

@@ -11,7 +11,7 @@ $limit     = 15;
 $icount    = 1;
 
 $xml = $cache->get('tfreaknewsrss_');
-if (false === $xml || is_null($xml)) {
+if ($xml === false || is_null($xml)) {
     $xml = file_get_contents('http://feed.torrentfreak.com/Torrentfreak/');
     $cache->set('tfreaknewsrss_', $xml, 300);
 }

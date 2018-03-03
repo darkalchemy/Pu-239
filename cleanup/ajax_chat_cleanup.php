@@ -14,7 +14,7 @@ function ajax_chat_cleanup($data)
                         WHERE ttl > 0 AND UNIX_TIMESTAMP(dateTime) + ttl <= UNIX_TIMESTAMP(NOW())') or sqlerr(__FILE__, __LINE__);
 
     while ($row = mysqli_fetch_assoc($res)) {
-        if (false === strpos($row['text'], '/delete')) {
+        if (strpos($row['text'], '/delete') === false) {
             sql_query('INSERT INTO ajax_chat_messages (userID, userName, userRole, channel, dateTime, ttl, ip, text) VALUES (2, ' . sqlesc($site_config['chatBotName']) . ' ,' . sqlesc($site_config['chatBotRole']) . ', ' . $row['channel'] . ", NOW(), 300, '', '/delete " . $row['id'] . "')") or sqlerr(__FILE__, __LINE__);
         }
         sql_query('DELETE FROM ajax_chat_messages WHERE id = ' . $row['id']) or sqlerr(__FILE__, __LINE__);

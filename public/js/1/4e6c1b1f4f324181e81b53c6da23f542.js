@@ -11306,6 +11306,15 @@ function do_rate(rate, id, what) {
             var el = $("#rated");
             el.addClass("star-ratings-css").removeClass("rating");
             el.html(data);
+            $(".star-ratings-css-top").tooltipster({
+                theme: "tooltipster-borderless",
+                side: "top",
+                animation: animation,
+                animationDuration: animate_duration,
+                arrow: true,
+                contentAsHTML: true,
+                maxWidth: 500
+            });
         }
     });
 }

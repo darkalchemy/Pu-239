@@ -26,7 +26,7 @@ $lang = [
     'classpromo_apply'         => 'Aplic&#259; schimb&#259;ri',
     'classpromo_info_minratio' => 'Ra&#355;ia minim&#259; = Ra&#355;ia minim&#259; pe care un utilizator trebuie s&#259; o ob&#355;in&#259; pentru a ajunge la aceast&#259; clasa.',
     'classpromo_info_minupl'   => 'Minim de Upload = Cantitatea minim&#259; de upload pe care un utilizator trebuie s&#259; o ob&#355;ina pentru a ajunge la aceast&#259; clasa.',
-    'classpromo_info_mintime'  => 'Timpul minim pe site  = Timpul minim pe care un utilizator trebuie s&#259; &#238;l ob&#355;ina de la data &#238;nregistr&#259;rii pe site pentru a ajunge la aceast&#259; clas&#259;.',
+    'classpromo_info_mintime'  => 'Timpul minim pe site = Timpul minim pe care un utilizator trebuie s&#259; &#238;l ob&#355;ina de la data &#238;nregistr&#259;rii pe site pentru a ajunge la aceast&#259; clas&#259;.',
     'classpromo_info_lowratio' => 'Ra&#355;ie scazut&#259; = Dac&#259; unui utilizator &#238;i scade ra&#355;ia va fi retrogradat la clasa pe care o avea &#238;nainte de promovare.',
     'classpromo_add_new_rule'  => 'Adaug&#259; o nou&#259; regul&#259; de promovare',
     'classpromo_add_new'       => 'Adaug&#259; o nou&#259; clas&#259;',

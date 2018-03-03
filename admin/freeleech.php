@@ -28,7 +28,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $fl['title']   = (isset($_POST['title']) ? htmlsafechars($_POST['title']) : false);
     $fl['message'] = (isset($_POST['message']) ? htmlsafechars($_POST['message']) : false);
     //echo_r($fl);
-    if (false === $fl['modifier'] || false === $fl['expires'] || false === $fl['setby'] || false === $fl['title'] || false === $fl['message']) {
+    if ($fl['modifier'] === false || $fl['expires'] === false || $fl['setby'] === false || $fl['title'] === false || $fl['message'] === false) {
         echo '' . $lang['freelech_error_form'] . '';
         die();
     }

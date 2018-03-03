@@ -18,7 +18,7 @@ function get_book_info($torrent)
     $api_hits = $cache->get('google_api_limits_');
     $hash     = hash('sha256', $search);
     $ebook    = $cache->get('book_info_' . $hash);
-    if (false === $ebook || is_null($ebook)) {
+    if ($ebook === false || is_null($ebook)) {
         $api_limit = 100;
         if (!empty($_ENV['GOOGLE_API_KEY'])) {
             $api_limit = 1000;

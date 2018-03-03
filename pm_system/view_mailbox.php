@@ -85,7 +85,7 @@ if (0 === mysqli_num_rows($res)) {
         </tr>";
 } else {
     while ($row = mysqli_fetch_assoc($res)) {
-        if (PM_DRAFTS === $mailbox || 0 === $row['id']) {
+        if ($mailbox === PM_DRAFTS || 0 === $row['id']) {
             $friends = '';
         } else {
             if ($row['friend'] > 0) {

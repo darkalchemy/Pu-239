@@ -121,7 +121,7 @@ if (0 == $count) {
 }
 $HTMLOUT .= '
         </div>';
-if (UC_MAX == $CURUSER['class']) {
+if ($CURUSER['class'] == UC_MAX) {
     $HTMLOUT .= "
         <div class='top20 bg-00 round10'>
             <div class='padding20'>

@@ -74,8 +74,8 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
             'hnrwarn' => 'no',
         ], $site_config['expires']['user_cache']);
         if (!empty($pms) && count($pms)) {
-            $g  = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . join(',', $pms))                                                                                                                             or sqlerr(__FILE__, __LINE__);
-            $q1 = sql_query("UPDATE users SET hnrwarn='no', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['hnrwarn_rem_log'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')')  or sqlerr(__FILE__, __LINE__);
+            $g  = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . join(',', $pms))                                                                                                                              or sqlerr(__FILE__, __LINE__);
+            $q1 = sql_query("UPDATE users SET hnrwarn='no', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['hnrwarn_rem_log'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')')   or sqlerr(__FILE__, __LINE__);
             if ($g && $q1) {
                 header('Refresh: 2; url=' . $r);
                 stderr($lang['hnrwarn_success'], count($pms) . $lang['hnrwarn_user'] . (count($pms) > 1 ? 's' : '') . $lang['hnrwarn_rem_suc']);

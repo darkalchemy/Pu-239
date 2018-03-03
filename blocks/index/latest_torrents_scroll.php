@@ -3,7 +3,7 @@
 global $site_config, $lang, $fluent, $CURUSER, $cache;
 
 $scroll_torrents = $cache->get('scroll_tor_');
-if (false === $scroll_torrents || is_null($scroll_torrents)) {
+if ($scroll_torrents === false || is_null($scroll_torrents)) {
     $scroll_torrents = $fluent->from('torrents')
         ->select(null)
         ->select('torrents.id')

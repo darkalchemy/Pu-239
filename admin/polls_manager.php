@@ -48,7 +48,7 @@ function delete_poll()
     global $site_config, $CURUSER, $lang, $cache;
 
     $total_votes = 0;
-    if (!isset($_GET['pid']) or !is_valid_id($_GET['pid'])) {
+    if (!isset($_GET['pid']) || !is_valid_id($_GET['pid'])) {
         stderr($lang['poll_dp_usr_err'], $lang['poll_dp_no_poll']);
     }
     $pid = intval($_GET['pid']);
@@ -72,11 +72,11 @@ function update_poll()
     global $site_config, $CURUSER, $lang, $stdfoot, $cache;
 
     $total_votes = 0;
-    if (!isset($_POST['pid']) or !is_valid_id($_POST['pid'])) {
+    if (!isset($_POST['pid']) || !is_valid_id($_POST['pid'])) {
         stderr($lang['poll_up_usr_err'], $lang['poll_up_no_poll']);
     }
     $pid = intval($_POST['pid']);
-    if (!isset($_POST['poll_question']) or empty($_POST['poll_question'])) {
+    if (!isset($_POST['poll_question']) || empty($_POST['poll_question'])) {
         stderr($lang['poll_up_usr_err'], $lang['poll_up_no_title']);
     }
     $poll_title = sqlesc(htmlsafechars(strip_tags($_POST['poll_question']), ENT_QUOTES));
@@ -84,7 +84,7 @@ function update_poll()
     $poll_data   = makepoll();
     $total_votes = isset($poll_data['total_votes']) ? intval($poll_data['total_votes']) : 0;
     unset($poll_data['total_votes']);
-    if (!is_array($poll_data) or !count($poll_data)) {
+    if (!is_array($poll_data) || !count($poll_data)) {
         stderr($lang['poll_up_sys_err'], $lang['poll_up_no_data']);
     }
     //all ok, serialize
@@ -115,13 +115,13 @@ function insert_new_poll()
 {
     global $site_config, $CURUSER, $lang, $stdfoot, $cache;
 
-    if (!isset($_POST['poll_question']) or empty($_POST['poll_question'])) {
+    if (!isset($_POST['poll_question']) || empty($_POST['poll_question'])) {
         stderr($lang['poll_inp_usr_err'], $lang['poll_inp_no_title']);
     }
     $poll_title = sqlesc(htmlsafechars(strip_tags($_POST['poll_question']), ENT_QUOTES));
     //get the main crux of the poll data
     $poll_data = makepoll();
-    if (!is_array($poll_data) or !count($poll_data)) {
+    if (!is_array($poll_data) || !count($poll_data)) {
         stderr($lang['poll_inp_sys_err'], $lang['poll_inp_no_data']);
     }
     //all ok, serialize
@@ -289,7 +289,7 @@ function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type =
 
         // Setting elements
         var max_poll_questions = parseInt(\"{$max_poll_questions}\");
-        var max_poll_choices   = parseInt(\"{$max_poll_choices}\");
+        var max_poll_choices = parseInt(\"{$max_poll_choices}\");
 
         // HTML elements
         var html_add_question = \"<a href='#' title='{$lang['poll_pb_add_q']}' onclick='return poll_add_question()' class='button is-small bottom20'>{$lang['poll_pb_add_q']}</a>\";
@@ -345,28 +345,28 @@ function makepoll()
     $questions        = [];
     $choices_count    = 0;
     $poll_total_votes = 0;
-    if (isset($_POST['question']) and is_array($_POST['question']) and count($_POST['question'])) {
+    if (isset($_POST['question']) && is_array($_POST['question']) && count($_POST['question'])) {
         foreach ($_POST['question'] as $id => $q) {
-            if (!$q or !$id) {
+            if (!$q || !$id) {
                 continue;
             }
             $questions[$id]['question'] = htmlsafechars(strip_tags($q), ENT_QUOTES);
         }
     }
-    if (isset($_POST['multi']) and is_array($_POST['multi']) and count($_POST['multi'])) {
+    if (isset($_POST['multi']) && is_array($_POST['multi']) && count($_POST['multi'])) {
         foreach ($_POST['multi'] as $id => $q) {
-            if (!$q or !$id) {
+            if (!$q || !$id) {
                 continue;
             }
             $questions[$id]['multi'] = intval($q);
         }
     }
-    if (isset($_POST['choice']) and is_array($_POST['choice']) and count($_POST['choice'])) {
+    if (isset($_POST['choice']) && is_array($_POST['choice']) && count($_POST['choice'])) {
         foreach ($_POST['choice'] as $mainid => $choice) {
             list($question_id, $choice_id) = explode('_', $mainid);
             $question_id                   = intval($question_id);
             $choice_id                     = intval($choice_id);
-            if (!$question_id or !isset($choice_id)) {
+            if (!$question_id || !isset($choice_id)) {
                 continue;
             }
             if (!$questions[$question_id]['question']) {
@@ -379,7 +379,7 @@ function makepoll()
         }
     }
     foreach ($questions as $id => $data) {
-        if (!is_array($data['choice']) or !count($data['choice'])) {
+        if (!is_array($data['choice']) || !count($data['choice'])) {
             unset($questions[$id]);
         } else {
             $choices_count += intval(count($data['choice']));
@@ -391,7 +391,7 @@ function makepoll()
     if (!empty($choices_count) && count($choices_count) > ($site_config['max_poll_questions'] * $site_config['max_poll_choices_per_question'])) {
         die('poll_to_many');
     }
-    if (isset($_POST['mode']) and 'poll_update' == $_POST['mode']) {
+    if (isset($_POST['mode']) && 'poll_update' == $_POST['mode']) {
         $questions['total_votes'] = $poll_total_votes;
     }
 

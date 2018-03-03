@@ -2,7 +2,7 @@
 
 global $site_config;
 
-if (!XBT_TRACKER and true == $site_config['crazy_hour']) {
+if (!XBT_TRACKER && true == $site_config['crazy_hour']) {
     /**
      * @return string
      */
@@ -13,7 +13,7 @@ if (!XBT_TRACKER and true == $site_config['crazy_hour']) {
         $htmlout                = $cz                = '';
         $crazy_hour             = (TIME_NOW + 3600);
         $crazyhour['crazyhour'] = $cache->get('crazyhour');
-        if (false === $crazyhour['crazyhour'] || is_null($crazyhour['crazyhour'])) {
+        if ($crazyhour['crazyhour'] === false || is_null($crazyhour['crazyhour'])) {
             $crazyhour['crazyhour_sql'] = sql_query('SELECT var, amount FROM freeleech WHERE type = "crazyhour"') or sqlerr(__FILE__, __LINE__);
             $crazyhour['crazyhour']     = [];
             if (0 !== mysqli_num_rows($crazyhour['crazyhour_sql'])) {

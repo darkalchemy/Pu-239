@@ -152,7 +152,7 @@ $HTMLOUT .= '<h1>' . $lang['pm_usedraft'] . '' . $subject . '</h1>' . $top_links
     </tr>
     <tr>
         <td><span style="font-weight: bold;">' . $lang['pm_send_subject'] . '</span></td>
-        <td><input type="text" class="text_default" name="subject" value="' . $subject . '" /></td>
+        <td><input type="text" class="w-100" name="subject" value="' . $subject . '" /></td>
     </tr>
     <tr>
         <td><span style="font-weight: bold;">' . $lang['pm_send_body'] . '</span></td>

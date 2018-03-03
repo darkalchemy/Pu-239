@@ -10,7 +10,7 @@ function trivia_update($data)
     ignore_user_abort(true);
 
     $count = $cache->get('trivia_questions_count_');
-    if (false === $count || is_null($count)) {
+    if ($count === false || is_null($count)) {
         $count = $fluent->from('triviaq')
             ->select(null)
             ->select('COUNT(qid) AS count')
@@ -27,7 +27,7 @@ function trivia_update($data)
 
         if ($gamenum >= 1) {
             $qids = $cache->get('triviaquestions_');
-            if (false === $qids || is_null($qids)) {
+            if ($qids === false || is_null($qids)) {
                 $sql = 'SELECT qid FROM triviaq WHERE asked = 0 AND current = 0';
                 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
                 while ($qidarray = mysqli_fetch_assoc($res)) {

@@ -1,9 +1,10 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $user, $id, $cache;
+global $CURUSER, $site_config, $lang, $user_stuffs, $id, $cache;
 
+$user       = $user_stuffs->getUserFromId($CURUSER['id']);
 $forumposts = $cache->get('forum_posts_' . $id);
-if (false === $forumposts || is_null($forumposts)) {
+if ($forumposts === false || is_null($forumposts)) {
     $res              = sql_query('SELECT COUNT(id) FROM posts WHERE user_id=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
     list($forumposts) = mysqli_fetch_row($res);
     $cache->set('forum_posts_' . $id, $forumposts, $site_config['expires']['forum_posts']);

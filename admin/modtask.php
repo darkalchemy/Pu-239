@@ -563,7 +563,7 @@ if ((isset($_POST['action'])) && ('edituser' == $_POST['action'])) {
     //== Avatar Changed
     if ((isset($_POST['avatar'])) && (($avatar = $_POST['avatar']) != ($curavatar = $user['avatar']))) {
         $avatar = trim(urldecode($avatar));
-        if (preg_match("/^http:\/\/$/i", $avatar) or preg_match('/[?&;]/', $avatar) or preg_match('#javascript:#is', $avatar) or !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $avatar)) {
+        if (preg_match("/^http:\/\/$/i", $avatar) || preg_match('/[?&;]/', $avatar) || preg_match('#javascript:#is', $avatar) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $avatar)) {
             $avatar = '';
         }
         if (!empty($avatar)) {
@@ -574,7 +574,7 @@ if ((isset($_POST['action'])) && ('edituser' == $_POST['action'])) {
             if ($img_size[0] < 5 || $img_size[1] < 5) {
                 stderr("{$lang['modtask_user_error']}", "{$lang['modtask_image_small']}");
             }
-            if (($img_size[0] > $site_config['av_img_width']) or ($img_size[1] > $site_config['av_img_height'])) {
+            if (($img_size[0] > $site_config['av_img_width']) || ($img_size[1] > $site_config['av_img_height'])) {
                 $image = resize_image([
                                           'max_width'  => $site_config['av_img_width'],
                                           'max_height' => $site_config['av_img_height'],
@@ -597,7 +597,7 @@ if ((isset($_POST['action'])) && ('edituser' == $_POST['action'])) {
     //== sig checks
     if ((isset($_POST['signature'])) && (($signature = $_POST['signature']) != ($cursignature = $user['signature']))) {
         $signature = trim(urldecode($signature));
-        if (preg_match("/^http:\/\/$/i", $signature) or preg_match('/[?&;]/', $signature) or preg_match('#javascript:#is', $signature) or !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $signature)) {
+        if (preg_match("/^http:\/\/$/i", $signature) || preg_match('/[?&;]/', $signature) || preg_match('#javascript:#is', $signature) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $signature)) {
             $signature = '';
         }
         if (!empty($signature)) {
@@ -608,7 +608,7 @@ if ((isset($_POST['action'])) && ('edituser' == $_POST['action'])) {
             if ($img_size[0] < 5 || $img_size[1] < 5) {
                 stderr("{$lang['modtask_user_error']}", "{$lang['modtask_image_small']}");
             }
-            if (($img_size[0] > $site_config['sig_img_width']) or ($img_size[1] > $site_config['sig_img_height'])) {
+            if (($img_size[0] > $site_config['sig_img_width']) || ($img_size[1] > $site_config['sig_img_height'])) {
                 $image = resize_image([
                                           'max_width'  => $site_config['sig_img_width'],
                                           'max_height' => $site_config['sig_img_height'],

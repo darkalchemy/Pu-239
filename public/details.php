@@ -12,7 +12,7 @@ require_once INCL_DIR . 'function_books.php';
 require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_fanart.php';
 check_user_status();
-global $CURUSER, $site_config, $fluent, $session, $cache, $user;
+global $CURUSER, $site_config, $fluent, $session, $cache, $user_stuffs;
 
 $lang    = array_merge(load_language('global'), load_language('details'));
 $stdhead = [
@@ -61,7 +61,7 @@ foreach ($categorie as $key => $value) {
 }
 
 $torrents = $cache->get('torrent_details_' . $id);
-if (false === $torrents || is_null($torrents)) {
+if ($torrents === false || is_null($torrents)) {
     $torrents = $fluent->from('torrents')
         ->select('HEX(info_hash) AS info_hash')
         ->select('LENGTH(nfo) AS nfosz')
@@ -234,13 +234,13 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
     }
 }
 
-if (false === ($torrents_xbt = $cache->get('torrent_xbt_data_' . $id)) && XBT_TRACKER) {
+if (($torrents_xbt = $cache->get('torrent_xbt_data_' . $id)) && XBT_TRACKER === false) {
     $torrents_xbt = mysqli_fetch_assoc(sql_query('SELECT seeders, leechers, times_completed FROM torrents WHERE id =' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
     $cache->set('torrent_xbt_data_' . $id, $torrents_xbt, $site_config['expires']['torrent_xbt_data']);
 }
 
 $torrents_txt = $cache->get('torrent_details_txt_' . $id);
-if (false === $torrents_txt || is_null($torrents_txt)) {
+if ($torrents_txt === false || is_null($torrents_txt)) {
     $torrents_txt = mysqli_fetch_assoc(sql_query('SELECT descr FROM torrents WHERE id =' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
     $cache->set('torrent_details_txt_' . $id, $torrents_txt, $site_config['expires']['torrent_details_text']);
 }
@@ -255,7 +255,7 @@ if (isset($_GET['hit'])) {
 $What_String     = (XBT_TRACKER ? 'mtime' : 'last_action');
 $What_String_Key = (XBT_TRACKER ? 'last_action_xbt_' : 'last_action_');
 $l_a             = $cache->get($What_String_Key . $id);
-if (false === $l_a || is_null($l_a)) {
+if ($l_a === false || is_null($l_a)) {
     $l_a             = mysqli_fetch_assoc(sql_query('SELECT ' . $What_String . ' AS lastseed ' . 'FROM torrents ' . 'WHERE id = ' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
     $l_a['lastseed'] = (int) $l_a['lastseed'];
     $cache->add('last_action_' . $id, $l_a, 1800);
@@ -276,7 +276,7 @@ $torrent['doubleimg']    = '<img src="' . $site_config['pic_baseurl'] . 'doubles
 $torrent['free_color']   = '#FF0000';
 $torrent['silver_color'] = 'silver';
 $torrent_cache['rep']    = $cache->get('user_rep_' . $torrents['owner']);
-if (false === $torrent_cache['rep'] || is_null($torrent_cache['rep'])) {
+if ($torrent_cache['rep'] === false || is_null($torrent_cache['rep'])) {
     $torrent_cache['rep'] = [];
     $us                   = sql_query('SELECT reputation FROM users WHERE id =' . sqlesc($torrents['owner'])) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($us)) {
@@ -389,7 +389,7 @@ if (isset($_GET['returnto'])) {
     $keepget = $addthis;
 }
 $editlink = "a href='$url' class='button is-small bottom10'";
-if (!(0 == $CURUSER['downloadpos'] && $CURUSER['id'] != $torrents['owner'] or $CURUSER['downloadpos'] > 1)) {
+if (!(0 == $CURUSER['downloadpos'] && $CURUSER['id'] != $torrents['owner'] || $CURUSER['downloadpos'] > 1)) {
     if ($free_slot && !$double_slot) {
         $HTMLOUT .= '
                 <tr>
@@ -482,7 +482,7 @@ if (!(0 == $CURUSER['downloadpos'] && $CURUSER['id'] != $torrents['owner'] or $C
 
     $my_points                  = 0;
     $torrent['torrent_points_'] = $cache->get('coin_points_' . $id);
-    if (false === $torrent['torrent_points_'] || is_null($torrent['torrent_points_'])) {
+    if ($torrent['torrent_points_'] === false || is_null($torrent['torrent_points_'])) {
         $sql_points                 = sql_query('SELECT userid, points FROM coins WHERE torrentid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $torrent['torrent_points_'] = [];
         if (0 !== mysqli_num_rows($sql_points)) {
@@ -541,7 +541,7 @@ if (!(0 == $CURUSER['downloadpos'] && $CURUSER['id'] != $torrents['owner'] or $C
     }
     $sr = floor($sr * 1000) / 1000;
     $sr = "<img src='{$site_config['pic_baseurl']}smilies/{$s}.gif' alt='' class='right10' /><span style='color: " . get_ratio_color($sr) . ";'>" . number_format($sr, 3) . '</span>';
-    if ($torrents['free'] >= 1 || $torrents['freetorrent'] >= 1 || $isfree['yep'] || $free_slot or 0 != $double_slot || 0 != $CURUSER['free_switch']) {
+    if ($torrents['free'] >= 1 || $torrents['freetorrent'] >= 1 || $isfree['yep'] || $free_slot || 0 != $double_slot || 0 != $CURUSER['free_switch']) {
         $HTMLOUT .= "
                 <tr>
                     <td class='rowhead'>Ratio After Download</td>
@@ -596,7 +596,7 @@ $searchname   = substr($torrents['name'], 0, 6);
 $query1       = str_replace(' ', '.', sqlesc('%' . $searchname . '%'));
 $query2       = str_replace('.', ' ', sqlesc('%' . $searchname . '%'));
 $sim_torrents = $cache->get('similiar_tor_' . $id);
-if (false === $sim_torrents || is_null($sim_torrents)) {
+if ($sim_torrents === false || is_null($sim_torrents)) {
     $r = sql_query("SELECT id, name, size, added, seeders, leechers, category FROM torrents WHERE name LIKE {$query1} AND id <> " . sqlesc($id) . " OR name LIKE {$query2} AND id <> " . sqlesc($id) . ' ORDER BY name') or sqlerr(__FILE__, __LINE__);
     while ($sim_torrent = mysqli_fetch_assoc($r)) {
         $sim_torrents[] = $sim_torrent;
@@ -740,7 +740,7 @@ $HTMLOUT .= tr('Report Torrent', "<form action='report.php?type=Torrent&amp;id=$
 
 if ($torrent_cache['rep']) {
     $torrents          = array_merge($torrents, $torrent_cache['rep']);
-    $member_reputation = get_reputation($user->getUserFromId($torrents['owner']), 'torrents', $torrents['anonymous'], $id);
+    $member_reputation = get_reputation($user_stuffs->getUserFromId($torrents['owner']), 'torrents', $torrents['anonymous'], $id);
     $HTMLOUT .= '
             <tr>
                 <td class="rowhead">Reputation</td>
@@ -758,7 +758,7 @@ $HTMLOUT .= tr('Upped by', $uprow, 1);
 if ($CURUSER['class'] >= UC_STAFF) {
     if (!empty($torrents['checked_by'])) {
         $checked_by = $cache->get('checked_by_' . $id);
-        if (false === $checked_by || is_null($checked_by)) {
+        if ($checked_by === false || is_null($checked_by)) {
             $checked_by = $torrents['checked_by'];
             $cache->set('checked_by_' . $id, $checked_by, 0);
         }
@@ -996,8 +996,8 @@ if (!$count) {
 $HTMLOUT .= "
     <script>
     if (document.body.contains(document.getElementById('overlay'))) {
-        document.getElementsByTagName('body')[0].style.backgroundColor =  'black';
-        document.getElementsByTagName('body')[0].style.backgroundImage =  'url($body_image)';
+        document.getElementsByTagName('body')[0].style.backgroundColor = 'black';
+        document.getElementsByTagName('body')[0].style.backgroundImage = 'url($body_image)';
         document.getElementsByTagName('body')[0].style.backgroundAttachment = 'fixed';
         document.getElementsByTagName('body')[0].classList.remove('background-16');
         var width = document.getElementById('overlay').offsetWidth;

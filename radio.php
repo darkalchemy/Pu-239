@@ -55,7 +55,7 @@ function radioinfo($radio)
             unset($data['STREAMSTATUS']);
             $md5_current_song = md5($data['SONGTITLE']);
             $current_song     = $cache->get('current_radio_song');
-            if (false === $current_song || $current_song != $md5_current_song) {
+            if ($current_song === false || $current_song != $md5_current_song) {
                 //autoshout(str_replace(array('<','>'),array('[',']'),$data['SONGTITLE'].' playing on '.strtolower($data['SERVERTITLE']).' - '.strtolower($data['SERVERURL'])));
                 $cache->set('current_radio_song', $md5_current_song, 0);
             }
@@ -65,7 +65,7 @@ function radioinfo($radio)
                 $html .= '<li><b>' . $d . '</b></li>';
             }
             $html .= '<li><b>Playlist history: </b> ' . (count($history) > 0 ? join(', ', $history) : 'No playlist history') . '</li>';
-            if (false === empty($users_ip)) {
+            if (empty($users_ip) === false) {
                 $q1 = sql_query('SELECT id, username FROM users WHERE ip IN (' . $users_ip . ') ORDER BY username ASC') or sqlerr(__FILE__, __LINE__);
                 if (0 == mysqli_num_rows($q1)) {
                     $html .= '<li><b>Listeners</b>: currently no listener from site </li>';

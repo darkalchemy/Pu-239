@@ -113,7 +113,7 @@ function get_episode($tvmaze_id, $season, $episode)
     global $cache;
 
     $episode_info = $cache->get('tvshow_episode_info_' . $tvmaze_id . $season . $episode);
-    if (false === $episode_info || is_null($episode_info)) {
+    if ($episode_info === false || is_null($episode_info)) {
         $tvmaze_link  = "http://api.tvmaze.com/shows/{$tvmaze_id}/episodebynumber?season={$season}&number={$episode}";
         $episode_info = json_decode(file_get_contents($tvmaze_link), true);
         if (!empty($episode_info['summary'])) {

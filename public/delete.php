@@ -110,7 +110,7 @@ if (1 == $site_config['seedbonus_on']) {
     ], $site_config['expires']['user_cache']);
 }
 $message = "Torrent $id (" . htmlsafechars($row['name']) . ") has been deleted.\n  Reason: $reasonstr";
-if ($CURUSER['id'] != $row['owner'] and 'yes' == $CURUSER['pm_on_delete']) {
+if ($CURUSER['id'] != $row['owner'] && 'yes' == $CURUSER['pm_on_delete']) {
     $added   = TIME_NOW;
     $pm_on   = (int) $row['owner'];
     $subject = 'Torrent Deleted';

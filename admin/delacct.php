@@ -41,7 +41,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
 $HTMLOUT = "<script>
 function deleteConfirm(){
     var result = confirm('Are you sure to delete user?');
-    if(result){
+    if (result){
         return true;
     }else{
         return false;

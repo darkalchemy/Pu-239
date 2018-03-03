@@ -12,7 +12,7 @@ $lang    = array_merge(load_language('global'), load_language('staff_panel'));
 $staff_classes1['name'] = $page_name = $file_name = $navbar = '';
 $staff                  = sqlesc(UC_STAFF);
 $staff_classes          = $cache->get('is_staffs_');
-if (false === $staff_classes || is_null($staff_classes)) {
+if ($staff_classes === false || is_null($staff_classes)) {
     $res           = sql_query("SELECT value FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX') AND value >= '$staff' ORDER BY value ASC");
     $staff_classes = [];
     while (($row = mysqli_fetch_assoc($res))) {
@@ -47,7 +47,7 @@ while ($list = mysqli_fetch_assoc($sql)) {
     $staff_tools[$item] = $item;
 }
 
-if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool] . '.php')) {
+if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool] . '.php')) {
     require_once ADMIN_DIR . $staff_tools[$tool] . '.php';
 } else {
     if ('delete' == $action && is_valid_id($id) && UC_MAX == $CURUSER['class']) {

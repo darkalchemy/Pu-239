@@ -3,7 +3,7 @@
 global $site_config, $lang, $fluent, $cache;
 
 $birthday = $cache->get('birthdayusers_');
-if (false === $birthday || is_null($birthday)) {
+if ($birthday === false || is_null($birthday)) {
     $birthday     = $list     = [];
     $current_date = getdate();
     $query        = $fluent->from('users')

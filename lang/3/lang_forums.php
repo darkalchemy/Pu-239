@@ -16,7 +16,6 @@ $lang = [
     'forums_bad_post'         => 'Bad forum last_post',
     //FORUM FUNCTIONS
     'forum_functions_access'   => '<h1>Incorrect access</h1>You cannot access this file directly.',
-    'forum_functions_jump'     => 'Quick jump: ',
     'forum_functions_badid'    => 'Bad forum id',
     'forum_functions_newtopic' => 'New topic in ',
     'forum_functions_forum'    => ' forum',

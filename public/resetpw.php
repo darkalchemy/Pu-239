@@ -136,8 +136,8 @@ if ('1' == $step) {
     if (!mkglobal('id:newpass:newpassagain:hash')) {
         die();
     }
-    $select = sql_query('SELECT id, hintanswer FROM users WHERE id = ' . sqlesc($id))  or sqlerr(__FILE__, __LINE__);
-    $fetch  = mysqli_fetch_assoc($select)                                              or stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error8']}");
+    $select = sql_query('SELECT id, hintanswer FROM users WHERE id = ' . sqlesc($id))   or sqlerr(__FILE__, __LINE__);
+    $fetch  = mysqli_fetch_assoc($select)                                               or stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error8']}");
     if (empty($newpass)) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error9']}");
     }

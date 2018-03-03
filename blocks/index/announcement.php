@@ -3,7 +3,7 @@
 // Announcement Code...
    $ann_subject = trim($CURUSER['curr_ann_subject']);
    $ann_body = trim($CURUSER['curr_ann_body']);
-   if ((!empty($ann_subject)) AND (!empty($ann_body)))
+   if ((!empty($ann_subject)) && (!empty($ann_body)))
    {
    $HTMLOUT .= "<div class='headline'>{$lang['index_announce']}</div>
    <div class='headbody'>

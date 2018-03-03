@@ -4,7 +4,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class.bencdec.php';
 require_once INCL_DIR . 'function_memcache.php';
-global $site_config, $fluent, $session, $user, $cache;
+global $site_config, $fluent, $session, $user_stuffs, $cache;
 
 $torrent_pass = $auth = $bot = $owner_id = '';
 extract($_GET);
@@ -23,7 +23,7 @@ if (!empty($bot) && !empty($auth)) {
     $owner_id = $CURUSER['id'];
 }
 
-$user_data = $user->getUserFromId($owner_id);
+$user_data = $user_stuffs->getUserFromId($owner_id);
 
 ini_set('upload_max_filesize', $site_config['max_torrent_size']);
 ini_set('memory_limit', '64M');
@@ -205,7 +205,7 @@ if (!filesize($tmpname)) {
     die();
 }
 $dict = bencdec::decode_file($tmpname, $site_config['max_torrent_size'], bencdec::OPTION_EXTENDED_VALIDATION);
-if (false === $dict) {
+if ($dict === false) {
     $session->set('is-warning', 'What did you upload? This is not a bencoded file!');
     header("Location: {$site_config['baseurl']}/upload.php");
     die();

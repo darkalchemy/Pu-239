@@ -3,7 +3,7 @@
 global $site_config, $lang, $fluent, $cache;
 
 $irc = $cache->get('ircusers_');
-if (false === $irc || is_null($irc)) {
+if ($irc === false || is_null($irc)) {
     $irc   = $list   = [];
     $query = $fluent->from('users')
         ->select(null)
