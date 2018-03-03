@@ -12,10 +12,6 @@
 9. Remove js from head and relocate to body
 10. Fully responsive and mobile ready
 
-A permanent site at http://pu-239.pw where you can view the code [master branch] in action, ask questions, etc.
-
-There is a temporary site at http://dev.pu-239.pw where you can view the code [dev branch] in action, but may be re-installed without notice.
-
 This is a fork of U-232 V4.
 
 PHP 7.0+ is required, PHP 7.2 recommended.
