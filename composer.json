@@ -1,5 +1,14 @@
 {
   "require": {
+    "ext-gd": "*",
+    "ext-xml": "*",
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "ext-mysqli": "*",
+    "ext-zip": "*",
+    "ext-simplexml": "*",
+    "ext-curl": "*",
+    "ext-exif": "*",
     "vlucas/phpdotenv": "^2.4",
     "matthiasmullie/scrapbook": "^1.4",
     "league/flysystem": "^1.0",
