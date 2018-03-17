@@ -110,7 +110,7 @@ function fetch($url)
 {
     $client = new GuzzleHttp\Client();
     $res    = $client->request('GET', $url);
-    if (200 === $res->getStatusCode()) {
+    if ($res->getStatusCode() === 200) {
         return $res->getBody();
     }
 

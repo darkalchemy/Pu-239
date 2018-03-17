@@ -469,4 +469,28 @@ $sql_updates = [
         'date'  => '2 Mar, 2018',
         'query' => 'ALTER TABLE `polls` ADD INDEX `start_date`(`start_date`)',
     ],
+    [
+        'id'    => 77,
+        'info'  => 'Drop unique index on snatched.',
+        'date'  => '4 Mar, 2018',
+        'query' => 'ALTER TABLE `snatched` DROP INDEX `userid_torrentid`',
+    ],
+    [
+        'id'    => 78,
+        'info'  => 'Drop index on snatched.',
+        'date'  => '4 Mar, 2018',
+        'query' => 'ALTER TABLE `snatched` DROP INDEX `tr_usr`',
+    ],
+    [
+        'id'    => 79,
+        'info'  => 'Add index on snatched.',
+        'date'  => '4 Mar, 2018',
+        'query' => 'ALTER TABLE `snatched` ADD INDEX `tr_usr`(`torrentid`, `userid`)',
+    ],
+    [
+        'id'    => 80,
+        'info'  => 'Add index on snatched.',
+        'date'  => '4 Mar, 2018',
+        'query' => 'ALTER TABLE `snatched` ADD INDEX `torrentid`(`torrentid`)',
+    ],
 ];
