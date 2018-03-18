@@ -2062,15 +2062,19 @@ function image_proxy($url, $width = null, $height = null)
     global $site_config;
 
     if (empty($url) || preg_match('#' . $site_config['domain'] . '#', $url)) {
+
         return $url;
     }
+
     if (!empty($width) && !empty($height)) {
         $url = "{$url}&width={$width}&height={$height}";
     }
-    if (!empty($site_config['image_proxy'])) {
-        $encrypted = CryptoJSAES::encrypt($url, $site_config['image_proxy_key'][1]);
 
-        return $site_config['image_proxy'] . base64_encode($encrypted . '&uid=' . $site_config['image_proxy_key'][0]);
+    if (!empty($site_config['image_proxy'])) {
+        $key = each($site_config['image_proxy_key']);
+        $encrypted = CryptoJSAES::encrypt($url, $key[1]);
+
+        return $site_config['image_proxy'] . base64_encode($encrypted . '&uid=' . $key[0]);
     }
 
     return $url;
