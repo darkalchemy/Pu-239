@@ -141,7 +141,7 @@ function github_shout($links = [])
     global $site_config, $cache;
 
     $feeds = [
-        'dev'    => 'https://github.com/darkalchemy/Pu-239/commits/dev.atom',
+        //'dev'    => 'https://github.com/darkalchemy/Pu-239/commits/dev.atom',
         'master' => 'https://github.com/darkalchemy/Pu-239/commits/master.atom',
     ];
     if (1 == $site_config['autoshout_on']) {

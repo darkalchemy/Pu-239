@@ -180,7 +180,11 @@ function stdfoot($stdfoot = false)
             }
         } elseif (extension_loaded('redis') && 'redis' === $_ENV['CACHE_DRIVER']) {
             $client = new \Redis();
-            $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
+            if (!SOCKET) {
+                $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
+            } else {
+                $client->connect($_ENV['REDIS_SOCKET']);
+            }
             $client->select($_ENV['REDIS_DATABASE']);
             $stats = $client->info();
             if ($stats) {

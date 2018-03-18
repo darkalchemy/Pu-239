@@ -1,5 +1,4 @@
 <?php
-
 namespace DarkAlchemy\Pu239;
 
 use MatthiasMullie\Scrapbook\Adapters\Couchbase;
@@ -57,7 +56,12 @@ class Cache extends TransactionalStore
             case 'redis':
                 if (extension_loaded('redis')) {
                     $client = new \Redis();
-                    $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
+                    if (!SOCKET) {
+                        $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
+                    } else {
+                        $client->connect($_ENV['REDIS_SOCKET']);
+                    }
+
                     $client->select($_ENV['REDIS_DATABASE']);
                     $this->cache = new Redis($client);
                 } else {
