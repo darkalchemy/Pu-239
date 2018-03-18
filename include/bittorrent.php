@@ -2062,7 +2062,6 @@ function image_proxy($url, $width = null, $height = null)
     global $site_config;
 
     if (empty($url) || preg_match('#' . $site_config['domain'] . '#', $url)) {
-
         return $url;
     }
 
@@ -2071,7 +2070,7 @@ function image_proxy($url, $width = null, $height = null)
     }
 
     if (!empty($site_config['image_proxy'])) {
-        $key = each($site_config['image_proxy_key']);
+        $key = [key($site_config['image_proxy_key']), current($site_config['image_proxy_key'])];
         $encrypted = CryptoJSAES::encrypt($url, $key[1]);
 
         return $site_config['image_proxy'] . base64_encode($encrypted . '&uid=' . $key[0]);
