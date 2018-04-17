@@ -1,5 +1,3 @@
-## This code was used as a learning tool for myself. As far as I know, everything works correctly. But, it is full of incomplete transitions from one method to another. I am not sure if I will continue to give this project any attention as I have begun rewriting this using the Laravel framework. My initial intent was to slowly transition this to Laravel or to another framework, possibly slim. But, that just is not possible. I will accept any pull requests and fix any issues that are created, if I can.
-
 # Pu-239
 
 ## Goals:
