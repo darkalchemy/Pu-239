@@ -22,18 +22,20 @@ This is still a WIP and a few pages may not be functional in there current locat
 
 Do not use the xbt install, as it's update has not been started and is, therefore broken.
 
+A working site with this code is at http://pu-239.pw/
+
 ### To Install:
 ```
 # get the files
 git clone https://github.com/darkalchemy/Pu-239.git
 
-# set ownership
-chown -R www-data:www-data Pu-239
-
 # install dependancies
 cd Pu-239
 composer install
 npm install
+
+# set ownership
+chown -R www-data:www-data Pu-239
 
 # set webroot to path Pu-239/public
 
