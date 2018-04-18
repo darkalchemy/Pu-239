@@ -25,7 +25,7 @@ function torrents_normalize_xbt($data)
         }
 
         $ar2 = [];
-        while (false !== ($file = readdir($dp))) {
+        while (($file = readdir($dp)) !== false) {
             if (!preg_match('/^(\d+)\.torrent$/', $file, $m)) {
                 continue;
             }

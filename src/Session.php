@@ -34,9 +34,9 @@ class Session
             // Set the session name:
             session_name($this->config['sessionName']);
 
-            $expires        = $this->config['cookie_lifetime'] <= 1 ? 900 : $this->config['cookie_lifetime'] * 86400;
-            $secure_session = 'https'                        === get_scheme() ? true : false;
-            $domain         = $this->config['cookie_domain'] === $this->config['domain'] ? '' : $this->config['cookie_domain'];
+            $expires = $this->config['cookie_lifetime'] <= 1 ? 900 : $this->config['cookie_lifetime'] * 86400;
+            $secure_session = 'https' === get_scheme() ? true : false;
+            $domain = $this->config['cookie_domain'] === $this->config['domain'] ? '' : $this->config['cookie_domain'];
 
             // Set session cookie parameters:
             session_set_cookie_params(
@@ -52,7 +52,11 @@ class Session
             ini_set('session.use_trans_sid', 0);
             ini_set('default_charset', $this->config['char_set']);
             ini_set('session.lazy_write', 0);
-            ini_set('session.sid_length', 256);
+            if (ini_get('session.save_handler') != 'files') {
+                ini_set('session.sid_length', 256);
+            } else {
+                ini_set('session.sid_length', 128);
+            }
 
             // Start the session:
             if (!@session_start()) {
@@ -90,6 +94,7 @@ class Session
         }
 
         return true;
+
     }
 
     /**

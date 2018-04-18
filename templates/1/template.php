@@ -139,7 +139,7 @@ function stdhead($title = '', $stdhead = null)
     }
 
     foreach ($site_config['notifications'] as $notif) {
-        if (false != ($messages = $session->get($notif))) {
+        if (($messages = $session->get($notif)) != false) {
             foreach ($messages as $message) {
                 $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>" . format_comment($message['message']) . '</a>';
                 $htmlout .= "
@@ -172,13 +172,13 @@ function stdfoot($stdfoot = false)
     $querytime = null === $querytime ? 0 : $querytime;
 
     if ($CURUSER['class'] >= UC_STAFF && $debug) {
-        if (extension_loaded('apcu') && 'apcu' === $_ENV['CACHE_DRIVER']) {
+        if ($_ENV['CACHE_DRIVER'] === 'apcu' && extension_loaded('apcu')) {
             $stats = apcu_cache_info();
             if ($stats) {
                 $stats['Hits'] = number_format($stats['num_hits'] / ($stats['num_hits'] + $stats['num_misses']) * 100, 3);
                 $header        = "{$lang['gl_stdfoot_querys_apcu1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['num_entries']) . "{$lang['gl_stdfoot_querys_mstat6']}" . human_filesize($stats['mem_size']);
             }
-        } elseif (extension_loaded('redis') && 'redis' === $_ENV['CACHE_DRIVER']) {
+        } elseif ($_ENV['CACHE_DRIVER'] === 'redis' && extension_loaded('redis')) {
             $client = new \Redis();
             if (!SOCKET) {
                 $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
@@ -192,7 +192,7 @@ function stdfoot($stdfoot = false)
                 preg_match('/keys=(\d+)/', $stats['db' . $_ENV['REDIS_DATABASE']], $keys);
                 $header = "{$lang['gl_stdfoot_querys_redis1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($keys[1]) . "{$lang['gl_stdfoot_querys_mstat6']}{$stats['used_memory_human']}";
             }
-        } elseif (extension_loaded('memcached') && 'memcached' === $_ENV['CACHE_DRIVER']) {
+        } elseif ($_ENV['CACHE_DRIVER'] === 'memcached' && extension_loaded('memcached')) {
             $client = new \Memcached();
             if (!count($client->getServerList())) {
                 $client->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
@@ -203,7 +203,7 @@ function stdfoot($stdfoot = false)
                 $stats['Hits'] = number_format(($stats['get_hits'] / $stats['cmd_get']) * 100, 3);
                 $header        = $lang['gl_stdfoot_querys_mstat3'] . $stats['Hits'] . $lang['gl_stdfoot_querys_mstat4'] . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['curr_items']) . "{$lang['gl_stdfoot_querys_mstat6']}" . human_filesize($stats['bytes']);
             }
-        } elseif ('files' === $_ENV['CACHE_DRIVER']) {
+        } elseif ($_ENV['CACHE_DRIVER'] === 'files') {
             $header = "{$lang['gl_stdfoot_querys_fly1']}{$_ENV['FILES_PATH']} {$lang['gl_stdfoot_querys_fly2']}" . GetDirectorySize($_ENV['FILES_PATH']);
         } elseif ('couchbase' === $_ENV['CACHE_DRIVER']) {
             $header = $lang['gl_stdfoot_querys_cbase'];

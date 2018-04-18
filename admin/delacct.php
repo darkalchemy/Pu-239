@@ -29,7 +29,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $userid = (int) $arr['id'];
     $res    = sql_query(account_delete($userid)) or sqlerr(__FILE__, __LINE__);
     //$res = sql_query("DELETE FROM users WHERE id=" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) !== false) {
         $cache->delete('user' . $userid);
         $cache->delete('all_users_');
         write_log("User: $username Was deleted by {$CURUSER['username']}");

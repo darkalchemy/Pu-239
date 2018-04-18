@@ -1,3 +1,6 @@
+18 Apr 2018
+fix: site not working without redis installed and used as php session handler
+
 17 Apr 2018
 update: README
 4 Mar 2018

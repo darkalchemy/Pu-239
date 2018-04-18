@@ -80,7 +80,7 @@ function sack(file) {
         this.setVar("rndval", new Date().getTime());
         urlstringtemp = new Array();
         for (key in this.vars) {
-            if (false == this.vars[key][1] && true == this.encodeURIString) {
+            if (this.vars[key][1] == false && this.encodeURIString == true) {
                 encoded = this.encVar(key, this.vars[key][0], true);
                 delete this.vars[key];
                 this.vars[encoded[0]] = Array(encoded[1], true);

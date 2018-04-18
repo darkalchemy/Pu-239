@@ -28,4 +28,4 @@ define('SQL_DEBUG', true);
 define('IP_LOGGING', true);
 define('XBT_TRACKER', false);
 define('REQUIRE_CONNECTABLE', false);
-define('SOCKET', true);
+define('SOCKET', false);
