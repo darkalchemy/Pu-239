@@ -83,8 +83,8 @@ $foo = [
         [
             'text'        => 'Cookie Lifetime',
             'input'       => 'config[cookie_lifetime]',
-            'info'        => 'The number of days that the cookie is alive.',
-            'placeholder' => '365',
+            'info'        => 'The number of days that the cookie is alive. 1 is recommended as the remember me cookie will handle longer expiration times.',
+            'placeholder' => '1',
         ],
         [
             'text'        => 'Cookie Domain',
