@@ -1,4 +1,5 @@
 18 Apr 2018
+fix: incorrect var for users id
 update: cookie lifetime to 1 as default
 fix: site not working without redis installed and used as php session handler
 

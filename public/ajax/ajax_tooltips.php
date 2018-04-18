@@ -39,7 +39,7 @@ if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
         }
     } else {
         $peer = new DarkAlchemy\Pu239\Peer();
-        $seed = $peer->getPeersFromUserId($user_id);
+        $seed = $peer->getPeersFromUserId($CURUSER['id']);
     }
 
     if (!empty($seed['conn'])) {
