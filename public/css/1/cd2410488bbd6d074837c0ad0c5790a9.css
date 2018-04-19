@@ -11083,7 +11083,6 @@ header#navbar .nav_container ul > li > ul a:hover {
   header#navbar .nav_container ul > li > ul > li {
     border: none!important;
     opacity: 1!important;
-    display: block!important;
     -webkit-transform: translate(0,0) rotate(0)!important;
     -ms-transform: translate(0,0) rotate(0)!important;
     transform: translate(0,0) rotate(0)!important;
