@@ -1,5 +1,4 @@
 19 Apr 2018
-update: navbar while mobile should be collapsed by default #2
 fix: README typo #3
 fix: newest user block shows user id instead of formatted user name #1
 fix: site stats not populating
