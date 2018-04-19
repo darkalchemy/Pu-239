@@ -135,7 +135,7 @@ function cleanup_show_main()
                 <img src='{$site_config['pic_baseurl']}warned.png' alt='{$lang['cleanup_off_on2']}' class='tooltipper' title='{$lang['cleanup_off_on']}' height='12' width='12' /></a>
             </td>
             <td class='has-text-centered'>
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=run&amp;cid={$row['clean_id']}'>{$lang['cleanup_run_now2']}</a>
+                <a class='button is-small' href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=run&amp;cid={$row['clean_id']}'>{$lang['cleanup_run_now2']}</a>
             </td>
          </tr>";
     }

@@ -1,4 +1,5 @@
 19 Apr 2018
+fix: site stats not populating
 fix: call getUserFromId() with array instead of id
 
 18 Apr 2018
