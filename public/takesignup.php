@@ -262,7 +262,7 @@ $fluent->insertInto('messages')
     ->execute();
 
 $cache->delete('all_users_');
-$cache->set('latestuser', (int) $user_id, $site_config['expires']['latestuser']);
+$cache->set('latestuser', format_username($user_id), $site_config['expires']['latestuser']);
 write_log('User account ' . (int) $user_id . ' (' . htmlsafechars($wantusername) . ') was created');
 
 if ($user_id > 2 && 1 == $site_config['autoshout_on']) {

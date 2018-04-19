@@ -1,4 +1,5 @@
 19 Apr 2018
+fix: newest user block shows user id instead of formatted user name #1
 fix: site stats not populating
 fix: call getUserFromId() with array instead of id
 
