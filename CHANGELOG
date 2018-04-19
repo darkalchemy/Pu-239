@@ -1,3 +1,6 @@
+19 Apr 2018
+fix: call getUserFromId() with array instead of id
+
 18 Apr 2018
 update: README
 fix: incorrect var for users id
