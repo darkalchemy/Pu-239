@@ -410,22 +410,22 @@ function navbar()
             foreach ($staff_panel as $key => $value) {
                 if ($value['av_class'] <= $CURUSER['class'] && 'user' == $value['type']) {
                     $user_panel .= "
-                        <li class='is_hidden'>
+                        <li class='iss_hidden'>
                             <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . '</a>
                         </li>';
                 } elseif ($value['av_class'] <= $CURUSER['class'] && 'settings' == $value['type']) {
                     $settings_panel .= "
-                        <li class='is_hidden'>
+                        <li class='iss_hidden'>
                             <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . '</a>
                         </li>';
                 } elseif ($value['av_class'] <= $CURUSER['class'] && 'stats' == $value['type']) {
                     $stats_panel .= "
-                        <li class='is_hidden'>
+                        <li class='iss_hidden'>
                             <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . '</a>
                         </li>';
                 } elseif ($value['av_class'] <= $CURUSER['class'] && 'other' == $value['type']) {
                     $other_panel .= "
-                        <li class='is_hidden'>
+                        <li class='iss_hidden'>
                             <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . '</a>
                         </li>';
                 }
@@ -436,7 +436,7 @@ function navbar()
                     <li class='clickable'>
                         <a id='staff_users' href='#'>[Users]</a>
                         <ul class='ddFade ddFadeSlow'>
-                            <li class='is_hidden'>
+                            <li class='iss_hidden'>
                                 <a href='{$site_config['baseurl']}/staffpanel.php'>Staff Panel</a>
                             </li>
                             $user_panel
@@ -448,7 +448,7 @@ function navbar()
                    <li class='clickable'>
                         <a id='staff_settings' href='#'>[Settings]</a>
                         <ul class='ddFade ddFadeSlow'>
-                            <li class='is_hidden'>
+                            <li class='iss_hidden'>
                                 <a href='{$site_config['baseurl']}/staffpanel.php'>Staff Panel</a>
                             </li>
                             $settings_panel
@@ -460,7 +460,7 @@ function navbar()
                     <li class='clickable'>
                         <a id='staff_stats' href='#'>[Stats]</a>
                         <ul class='ddFade ddFadeSlow'>
-                            <li class='is_hidden'>
+                            <li class='iss_hidden'>
                                 <a href='{$site_config['baseurl']}/staffpanel.php'>Staff Panel</a>
                             </li>
                             $stats_panel
@@ -472,12 +472,12 @@ function navbar()
                     <li class='clickable'>
                         <a id='staff_other' href='#'>[Other]</a>
                         <ul class='ddFade ddFadeSlow'>
-                            <li class='is_hidden'>
+                            <li class='iss_hidden'>
                                 <a href='{$site_config['baseurl']}/staffpanel.php'>Staff Panel</a>
                             </li>";
                 if (UC_MAX === $CURUSER['class']) {
                     $panel .= "
-                            <li class='is_hidden'>
+                            <li class='iss_hidden'>
                                 <a href='{$site_config['baseurl']}/view_sql.php'>Adminer</a>
                             </li>";
                 }
@@ -509,13 +509,13 @@ function navbar()
                             <li id='torrents' class='clickable'>
                                 <a href='#'>{$lang['gl_torrent']}</a>
                                 <ul class='ddFade ddFadeSlow'>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/browse.php'>Browse {$lang['gl_torrents']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/catalog.php'>Catalog</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/needseed.php?needed=seeders'><span class='is-danger'>{$lang['gl_nseeds']}</span></a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/browse.php?today=1'>{$lang['gl_newtor']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/offers.php'>{$lang['gl_offers']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/requests.php'>{$lang['gl_requests']}</a></li>
-                                    " . ($CURUSER['class'] <= UC_VIP ? "<li class='is_hidden'><a href='{$site_config['baseurl']}/uploadapp.php'>{$lang['gl_uapp']}</a></li>" : "<li class='is_hidden'><a href='{$site_config['baseurl']}/upload.php'>{$lang['gl_upload']}</a></li>") . "
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/browse.php'>Browse {$lang['gl_torrents']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/catalog.php'>Catalog</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/needseed.php?needed=seeders'><span class='is-danger'>{$lang['gl_nseeds']}</span></a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/browse.php?today=1'>{$lang['gl_newtor']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/offers.php'>{$lang['gl_offers']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/requests.php'>{$lang['gl_requests']}</a></li>
+                                    " . ($CURUSER['class'] <= UC_VIP ? "<li class='iss_hidden'><a href='{$site_config['baseurl']}/uploadapp.php'>{$lang['gl_uapp']}</a></li>" : "<li class='iss_hidden'><a href='{$site_config['baseurl']}/upload.php'>{$lang['gl_upload']}</a></li>") . "
                                 </ul>
                             </li>
                             <li id='general' class='clickable'>
@@ -523,48 +523,48 @@ function navbar()
                                 <ul class='ddFade ddFadeSlow'>";
         if (1 === $site_config['bucket_allowed']) {
             $navbar .= "
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>";
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>";
         }
         $navbar .= "
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/faq.php'>{$lang['gl_faq']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/chat.php'>{$lang['gl_irc']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/mybonus.php'>Karma Store</a></li>
-                                    <li class='is_hidden'><a href='#' onclick='radio();'>{$lang['gl_radio']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/getrss.php'>RSS</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/rules.php'>{$lang['gl_rules']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/announcement.php'>{$lang['gl_announcements']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/staff.php'>{$lang['gl_staff']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/topten.php'>{$lang['gl_stats']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/rsstfreak.php'>{$lang['gl_tfreak']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/wiki.php'>{$lang['gl_wiki']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/faq.php'>{$lang['gl_faq']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/chat.php'>{$lang['gl_irc']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/mybonus.php'>Karma Store</a></li>
+                                    <li class='iss_hidden'><a href='#' onclick='radio();'>{$lang['gl_radio']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/getrss.php'>RSS</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/rules.php'>{$lang['gl_rules']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/announcement.php'>{$lang['gl_announcements']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/staff.php'>{$lang['gl_staff']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/topten.php'>{$lang['gl_stats']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/rsstfreak.php'>{$lang['gl_tfreak']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/wiki.php'>{$lang['gl_wiki']}</a></li>
                                 </ul>
                             </li>
                             <li id='games' class='clickable'>
                                 <a href='#'>{$lang['gl_games']}</a>
                                 <ul class='ddFade ddFadeSlow'>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/arcade.php'>{$lang['gl_arcade']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/games.php'>{$lang['gl_games']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/lottery.php'>{$lang['gl_lottery']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/arcade.php'>{$lang['gl_arcade']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/games.php'>{$lang['gl_games']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/lottery.php'>{$lang['gl_lottery']}</a></li>
                                 </ul>
                             </li>
                             <li><a href='{$site_config['baseurl']}/donate.php'>{$lang['gl_donate']}</a></li>
                             <li id='user' class='clickable'>
                                 <a href='#'>User</a>
                                 <ul class='ddFade ddFadeSlow'>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/friends.php'>{$lang['gl_friends']}</a></li>
-                                    <li class='is_hidden'><a href='#' onclick='language_select();'>{$lang['gl_language_select']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/pm_system.php'>{$lang['gl_pms']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/users.php'>Search Users</a></li>
-                                    <li class='is_hidden'><a href='#' onclick='themes();'>{$lang['gl_theme']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/friends.php'>{$lang['gl_friends']}</a></li>
+                                    <li class='iss_hidden'><a href='#' onclick='language_select();'>{$lang['gl_language_select']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/pm_system.php'>{$lang['gl_pms']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/users.php'>Search Users</a></li>
+                                    <li class='iss_hidden'><a href='#' onclick='themes();'>{$lang['gl_theme']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
                                 </ul>
                             </li>
                             <li>
                                 <a href='#'>{$lang['gl_forums']}</a>
                                 <ul class='ddFade ddFadeSlow'>
-                                    <li class='is_hidden'><a href='http://pu-239.pw'>{$lang['gl_tforums']}</a></li>
-                                    <li class='is_hidden'><a href='{$site_config['baseurl']}/forums.php'>{$lang['gl_forums']}</a></li>
+                                    <li class='iss_hidden'><a href='http://pu-239.pw'>{$lang['gl_tforums']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/forums.php'>{$lang['gl_forums']}</a></li>
                                 </ul>
                             </li>
                             <li>" . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/bugs.php?action=add'>{$lang['gl_breport']}</a>" : "<a href='{$site_config['baseurl']}/bugs.php?action=bugs'>[Bugs]</a>") . '</li>
