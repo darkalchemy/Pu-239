@@ -6,7 +6,7 @@
 3. Remove merged bootstrap - Done
 4. Update jquery - Done
 5. Update all javascript files
-6. Merge, mininify and gzip css/js files to reduce the number of requests - Done
+6. Merge, minify and gzip css/js files to reduce the number of requests - Done
 7. Replace manual concat/gzip of css/js file with webpack
 8. Optimize all images for web - Done
 9. Remove js from head and relocate to body
