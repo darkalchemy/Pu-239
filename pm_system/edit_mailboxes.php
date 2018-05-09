@@ -1,6 +1,6 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $cache;
+global $CURUSER, $site_config, $lang, $cache, $h1_thingie;
 
 $all_my_boxes = $curuser_cache = $user_cache = $categories = '';
 if (isset($_POST['action2'])) {
@@ -51,7 +51,7 @@ if (isset($_POST['action2'])) {
 
         case 'edit_boxes':
             $res = sql_query('SELECT * FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-            if (0 === mysqli_num_rows($res)) {
+            if (mysqli_num_rows($res) === 0) {
                 stderr($lang['pm_error'], $lang['pm_edmail_err1']);
             }
             while ($row = mysqli_fetch_assoc($res)) {
@@ -62,7 +62,7 @@ if (isset($_POST['action2'])) {
                     $cache->delete('insertJumpTo' . $CURUSER['id']);
                     $worked = '&name=1';
                 }
-                if ('' == $_POST['edit' . $row['id']]) {
+                if ($_POST['edit' . $row['id']] == '') {
                     $remove_messages_res = sql_query('SELECT id FROM messages WHERE location=' . sqlesc($row['boxnumber']) . '  AND receiver=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                     while ($remove_messages_arr = mysqli_fetch_assoc($remove_messages_res)) {
                         sql_query('UPDATE messages SET location=1 WHERE id=' . sqlesc($remove_messages_arr['id'])) or sqlerr(__FILE__, __LINE__);
@@ -95,14 +95,14 @@ if (isset($_POST['action2'])) {
             $updateset[]                     = 'savepms = ' . sqlesc($save_pms);
             $curuser_cache['savepms']        = $save_pms;
             $user_cache['savepms']           = $save_pms;
-            $deletepms                       = ((isset($_POST['deletepms']) && 'yes' == $_POST['deletepms']) ? 'yes' : 'no');
+            $deletepms                       = ((isset($_POST['deletepms']) && $_POST['deletepms'] == 'yes') ? 'yes' : 'no');
             $updateset[]                     = 'deletepms = ' . sqlesc($deletepms);
             $curuser_cache['deletepms']      = $deletepms;
             $user_cache['deletepms']         = $deletepms;
             $pmnotif                         = (isset($_POST['pmnotif']) ? $_POST['pmnotif'] : '');
             $emailnotif                      = (isset($_POST['emailnotif']) ? $_POST['emailnotif'] : '');
-            $notifs                          = ('yes' == $pmnotif ? $lang['pm_edmail_pm_1'] : '');
-            $notifs .= ('yes' == $emailnotif ? $lang['pm_edmail_email_1'] : '');
+            $notifs                          = ($pmnotif == 'yes' ? $lang['pm_edmail_pm_1'] : '');
+            $notifs .= ($emailnotif == 'yes' ? $lang['pm_edmail_email_1'] : '');
             $cats = genrelist();
             $r    = sql_query('SELECT id FROM categories') or sqlerr(__FILE__, __LINE__);
             $rows = mysqli_num_rows($r);

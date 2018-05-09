@@ -35,6 +35,7 @@ $do      = isset($_GET['do']) && in_array($_GET['do'], $valid_do) ? $_GET['do'] 
 $id      = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) && is_array($_POST['id']) ? array_map('mkint', $_POST['id']) : 0);
 $message = isset($_POST['message'])     && !empty($_POST['message']) ? htmlsafechars($_POST['message']) : '';
 $reply   = isset($_POST['reply'])       && 1 == $_POST['reply'] ? true : false;
+$HTMLOUT = '';
 switch ($do) {
     case 'delete':
         if ($id > 0) {
