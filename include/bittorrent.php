@@ -158,7 +158,7 @@ function dbconn($autoclean = true)
         switch (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
             case 1040:
             case 2002:
-                if ('GET' == $_SERVER['REQUEST_METHOD']) {
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     die("<html><head><meta http-equiv='refresh' content=\"5 $_SERVER[REQUEST_URI]\"></head><body><table width='100%' height='100%'><tr><td><h3>The server load is very high at the moment. Retrying, please wait...</h3></td></tr></table></body></html>");
                 } else {
                     die('Too many users. Please press the Refresh button in your browser to retry.');
@@ -352,7 +352,7 @@ function userlogin()
     $CURBLOCK = $cache->get($blocks_key);
     if ($CURBLOCK === false || is_null($CURBLOCK)) {
         $c_sql = sql_query('SELECT * FROM user_blocks WHERE userid = ' . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
-        if (0 == mysqli_num_rows($c_sql)) {
+        if (mysqli_num_rows($c_sql) == 0) {
             sql_query('INSERT INTO user_blocks(userid) VALUES (' . sqlesc($users_data['id']) . ')')     or sqlerr(__FILE__, __LINE__);
             $c_sql = sql_query('SELECT * FROM user_blocks WHERE userid = ' . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
         }
@@ -435,11 +435,11 @@ function get_charset()
     global $CURUSER;
     $lang_charset = $CURUSER['language'];
     switch ($lang_charset) {
-        case 2 == $lang_charset:
+        case $lang_charset == 2:
             return 'ISO-8859-1';
-        case 3 == $lang_charset:
+        case $lang_charset == 3:
             return 'ISO-8859-17';
-        case 4 == $lang_charset:
+        case $lang_charset == 4:
             return 'ISO-8859-15';
         default:
             return 'UTF-8';
@@ -455,18 +455,19 @@ function autoclean()
         $cache->set('cleanup_timer_', 5, 1); // runs only every 1 second
 
         $now = TIME_NOW;
-        $sql = sql_query("SELECT * FROM cleanup WHERE clean_on = 1 AND clean_time < {$now} ORDER BY clean_time ASC, clean_increment DESC LIMIT 0, 1") or sqlerr(__FILE__, __LINE__);
-        $row = mysqli_fetch_assoc($sql);
-        if ($row['clean_id']) {
-            $next_clean = intval($row['clean_time'] + $row['clean_increment']);
-            if (82 == $row['clean_id']) {
-                $next_clean = ceil(TIME_NOW / 300) * 300;
-            }
-            sql_query('UPDATE cleanup SET clean_time = ' . sqlesc($next_clean) . ' WHERE clean_id = ' . sqlesc($row['clean_id'])) or sqlerr(__FILE__, __LINE__);
-            if (file_exists(CLEAN_DIR . $row['clean_file'])) {
-                require_once CLEAN_DIR . $row['clean_file'];
-                if (function_exists($row['function_name'])) {
-                    register_shutdown_function($row['function_name'], $row);
+        $sql = sql_query("SELECT * FROM cleanup WHERE clean_on = 1 AND clean_time < {$now} ORDER BY clean_time ASC, clean_increment DESC") or sqlerr(__FILE__, __LINE__);
+        while ($row = mysqli_fetch_assoc($sql)) {
+            if ($row['clean_id']) {
+                $next_clean = intval($row['clean_time'] + $row['clean_increment']);
+                if ($row['clean_title'] === 'Trivia Cleanup') {
+                    $next_clean = ceil(TIME_NOW / 300) * 300;
+                }
+                sql_query('UPDATE cleanup SET clean_time = ' . sqlesc($next_clean) . ' WHERE clean_id = ' . sqlesc($row['clean_id'])) or sqlerr(__FILE__, __LINE__);
+                if (file_exists(CLEAN_DIR . $row['clean_file'])) {
+                    require_once CLEAN_DIR . $row['clean_file'];
+                    if (function_exists($row['function_name'])) {
+                        register_shutdown_function($row['function_name'], $row);
+                    }
                 }
             }
         }
@@ -697,7 +698,8 @@ function genrelist()
 {
     global $site_config, $cache;
 
-    if (false == ($ret = $cache->get('genrelist'))) {
+    $ret = $cache->get('genrelist');
+    if ($ret === false || is_null($ret)) {
         $ret = [];
         $res = sql_query('SELECT id, image, name, ordered FROM categories ORDER BY ordered') or sqlerr(__FILE__, __LINE__);
         while ($row = mysqli_fetch_assoc($res)) {
@@ -718,8 +720,9 @@ function create_moods($force = false)
 {
     global $cache;
 
-    $key = 'moods';
-    if (($mood = $cache->get($key)) || $force === false) {
+    $mood = $cache->get('moods');
+    if ($mood === false || is_null($mood) || $force === true) {
+
         $res_moods = sql_query('SELECT * FROM moods ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
         $mood      = [];
         if (mysqli_num_rows($res_moods)) {
@@ -728,7 +731,7 @@ function create_moods($force = false)
                 $mood['name'][$rmood['id']]  = $rmood['name'];
             }
         }
-        $cache->set($key, $mood, 86400);
+        $cache->set('moods', $mood, 86400);
     }
 
     return $mood;
@@ -1150,7 +1153,7 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
     if (empty($method)) {
         $method = 'LONG';
     }
-    if (0 == $offset_set) {
+    if ($offset_set == 0) {
         $GLOBALS['offset'] = get_time_offset();
         if ($site_config['time_use_relative']) {
             $today_time     = gmdate('d,m,Y', (TIME_NOW + $GLOBALS['offset']));
@@ -1159,10 +1162,10 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
         $offset_set = 1;
     }
 
-    if (3 == $site_config['time_use_relative']) {
+    if ($site_config['time_use_relative'] == 3) {
         $full_relative = 1;
     }
-    if ($full_relative && (1 != $norelative) && !$calc) {
+    if ($full_relative && $norelative != 1 && !$calc) {
         $diff = TIME_NOW - $date;
         if ($diff < 3600) {
             if ($diff < 120) {
@@ -1187,7 +1190,7 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
         }
     } elseif ($site_config['time_use_relative'] && (1 != $norelative) && !$calc) {
         $this_time = gmdate('d,m,Y', ($date + $GLOBALS['offset']));
-        if (2 == $site_config['time_use_relative']) {
+        if ($site_config['time_use_relative'] == 2) {
             $diff = TIME_NOW - $date;
             if ($diff < 3600) {
                 if ($diff < 120) {
@@ -1419,7 +1422,7 @@ function strip_tags_array($ar)
 function referer()
 {
     $http_referer = getenv('HTTP_REFERER');
-    if (!empty($_SERVER['HTTP_HOST']) && (false == strstr($http_referer, $_SERVER['HTTP_HOST'])) && ('' != $http_referer)) {
+    if (!empty($_SERVER['HTTP_HOST']) && strstr($http_referer, $_SERVER['HTTP_HOST']) === false && $http_referer != '') {
         $ip         = $_SERVER['REMOTE_ADDR'];
         $http_agent = $_SERVER['HTTP_USER_AGENT'];
         $http_page  = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
@@ -1449,7 +1452,7 @@ function mysql_fetch_all($query, $default_value = [])
             $result[] = $row;
         }
     }
-    if (0 == count($result)) {
+    if (count($result) == 0) {
         return $default_value;
     }
 
@@ -1557,7 +1560,7 @@ function parked()
 {
     global $CURUSER;
 
-    if ('yes' == $CURUSER['parked']) {
+    if ($CURUSER['parked']  == 'yes') {
         stderr('Error', '<b>Your account is currently parked.</b>');
     }
 }
@@ -1566,7 +1569,7 @@ function suspended()
 {
     global $CURUSER;
 
-    if ('yes' == $CURUSER['suspended']) {
+    if ($CURUSER['suspended'] == 'yes') {
         stderr('Error', '<b>Your account is currently suspended.</b>');
     }
 }
@@ -1785,7 +1788,7 @@ function breadcrumbs($separator = '', $home = 'Home')
     if (!empty($query)) {
         $action = explode('=', $query);
     }
-    if (!empty($action[0]) && 'action' === $action[0]) {
+    if (!empty($action[0]) && $action[0] === 'action') {
         $last = '';
     }
 
@@ -1804,7 +1807,7 @@ function breadcrumbs($separator = '', $home = 'Home')
         }
     }
 
-    if (!empty($action[0]) && 'action' === $action[0]) {
+    if (!empty($action[0]) && $action[0] === 'action') {
         $type = explode('&', str_replace([
                                              '-',
                                              '_',
@@ -1921,7 +1924,7 @@ function make_nice_address($ip)
  */
 function return_bytes($val)
 {
-    if ('' == $val) {
+    if ($val == '') {
         return 0;
     }
     $val  = strtolower(trim($val));
@@ -1980,7 +1983,7 @@ function valid_username($username, $ajax = false)
 {
     global $lang;
 
-    if ('' == $username) {
+    if ($username === '') {
         return false;
     }
     $namelength = strlen($username);
@@ -2138,7 +2141,7 @@ function get_show_id(string $name, string $type)
  */
 function time24to12($h24, $min)
 {
-    if (0 === $h24) {
+    if ($h24 === 0) {
         $newhour = 12;
     } elseif ($h24 <= 12) {
         $newhour = $h24;
@@ -2158,7 +2161,7 @@ function GetDirectorySize($path)
 {
     $bytestotal = 0;
     $path       = realpath($path);
-    if (false !== $path && '' != $path && file_exists($path)) {
+    if ($path !== false && $path != '' && file_exists($path)) {
         foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)) as $object) {
             $bytestotal += $object->getSize();
         }
@@ -2196,8 +2199,8 @@ function rrmdir($dir)
     if (is_dir($dir)) {
         $objects = scandir($dir);
         foreach ($objects as $object) {
-            if ('.' != $object && '..' != $object) {
-                if ('dir' == filetype($dir . '/' . $object)) {
+            if ($object != '.' && $object != '..') {
+                if (filetype($dir . '/' . $object) == 'dir') {
                     rrmdir($dir . '/' . $object);
                 } else {
                     unlink($dir . '/' . $object);
