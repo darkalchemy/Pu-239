@@ -471,11 +471,6 @@ function autoclean()
                 }
             }
         }
-        $cleanup_perpetuate_timer = $cache->get('cleanup_perpetuate_timer_');
-        if ($cleanup_perpetuate_timer === false || is_null($cleanup_perpetuate_timer)) {
-            register_shutdown_function('autoclean');
-            $cache->set('cleanup_perpetuate_timer_', 5, 30); // runs in purpetuity every 30 seconds
-        }
 
         if ($site_config['newsrss_on']) {
             $tfreak_cron = $cache->get('tfreak_cron_');
@@ -505,6 +500,26 @@ function autoclean()
             }
         }
     }
+
+    $cleanup_perpetuate = $cache->get('cleanup_perpetuate_');
+    if ($cleanup_perpetuate === false || is_null($cleanup_perpetuate)) {
+        register_shutdown_function('autoclean_perpetuate');
+    }
+}
+
+function autoclean_perpetuate()
+{
+    global $cache;
+
+    $cache->set('cleanup_perpetuate_', 5, 0);
+    $cleanup_perpetuate_timer = $cache->get('cleanup_perpetuate_timer_');
+    while ($cleanup_perpetuate_timer !== false) {
+        sleep(5);
+        $cleanup_perpetuate_timer = $cache->get('cleanup_perpetuate_timer_');
+    }
+    $cache->set('cleanup_perpetuate_timer_', 5, 30);
+    $cache->delete('cleanup_perpetuate_');
+    register_shutdown_function('autoclean');
 }
 
 /**

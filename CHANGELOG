@@ -1,5 +1,6 @@
 11 May 2018
 update: cleanup process runs in perpetuity once started
+fix: incorrect implementation of autoclean perpetuity
 
 10 May 2018
 update: cleanup process select all scripts that need processing instead of just 1
