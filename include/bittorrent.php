@@ -471,6 +471,11 @@ function autoclean()
                 }
             }
         }
+        $cleanup_perpetuate_timer = $cache->get('cleanup_perpetuate_timer_');
+        if ($cleanup_perpetuate_timer === false || is_null($cleanup_perpetuate_timer)) {
+            register_shutdown_function('autoclean');
+            $cache->set('cleanup_perpetuate_timer_', 5, 30); // runs in purpetuity every 30 seconds
+        }
 
         if ($site_config['newsrss_on']) {
             $tfreak_cron = $cache->get('tfreak_cron_');
