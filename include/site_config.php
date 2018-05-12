@@ -3,7 +3,7 @@
 global $site_config;
 
 const REQUIRED_PHP = 70000, REQUIRED_PHP_VERSION = '7.0.0';
-$site_settings     = $paypal_settings     = $hnr_settings     = $staff_settings     = [];
+$site_settings = $paypal_settings = $hnr_settings = $staff_settings = [];
 
 if (PHP_VERSION_ID < REQUIRED_PHP) {
     die('PHP ' . REQUIRED_PHP_VERSION . ' or higher is required.');
@@ -182,7 +182,7 @@ $site_config['bug_alert']         = 1; // saves a query when off
 $site_config['pic_baseurl']       = $site_config['baseurl'] . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
 $site_config['stylesheet']        = 1;
 $site_config['categorie_icon']    = 1;
-$site_config['comment_min_class'] = 4; //minim class to be checked when posting comments
+$site_config['comment_min_class'] = 4; //min class to be checked when posting comments
 $site_config['comment_check']     = 1; //set it to 0 if you wanna allow commenting with out staff checking
 //for subs & youtube mode
 $site_config['movie_cats'] = [
@@ -219,8 +219,8 @@ $site_config['allowed_ext']    = [
     'image.jpg',
     'image/jpeg',
 ];
-$upload_max_filesize                = null !== ini_get('upload_max_filesize') ? return_bytes(ini_get('upload_max_filesize')) : 0;
-$post_max_filesize                  = null !== ini_get('post_max_filesize') ? return_bytes(ini_get('post_max_filesize')) : 0;
+$upload_max_filesize                = ini_get('upload_max_filesize') !== null ? return_bytes(ini_get('upload_max_filesize')) : 0;
+$post_max_filesize                  = ini_get('post_max_filesize') !== null ? return_bytes(ini_get('post_max_filesize')) : 0;
 $site_config['bucket_maxsize']      = $upload_max_filesize >= $post_max_filesize ? $upload_max_filesize : $post_max_filesize;
 $site_config['site']['owner']       = 1;
 $site_config['adminer_allowed_ids'] = [
