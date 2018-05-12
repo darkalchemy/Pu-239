@@ -1,5 +1,5 @@
 12 May 2018
-request: allow any alphanumeric character in username
+request: allow any alphanumeric character in username #4
 update: require all new users or change username to use function valid_username
 
 11 May 2018
