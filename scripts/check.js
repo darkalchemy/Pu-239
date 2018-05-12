@@ -1,6 +1,6 @@
 function checkit() {
     wantusername = document.getElementById("wantusername").value;
-    var url = "../ajax/namecheck.php?wantusername=" + escape(wantusername);
+    var url = "../ajax/namecheck.php?wantusername=" + encodeURI(wantusername);
     try {
         request = new ActiveXObject("Msxml2.XMLHTTP");
     } catch (e) {

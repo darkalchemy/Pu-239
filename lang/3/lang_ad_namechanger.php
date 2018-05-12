@@ -17,4 +17,5 @@ $lang = [
     'namechanger_if'            => 'Dac&#259; e&#351;ti sigur atunci;: ',
     'namechanger_change_name'   => 'Schimb&#259; numele!',
     'namechanger_stdhead'       => 'Schimbare nume de utilizator',
+    'namechanger_invalid'       => 'is invalid',
 ];

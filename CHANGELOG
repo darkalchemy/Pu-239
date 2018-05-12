@@ -1,3 +1,7 @@
+12 May 2018
+request: allow any alphanumeric character in username
+update: require all new users or change username to use function valid_username
+
 11 May 2018
 update: cleanup process runs in perpetuity once started
 fix: incorrect implementation of autoclean perpetuity

@@ -2015,10 +2015,9 @@ function valid_username($username, $ajax = false)
         }
     }
 
-    if (!ctype_alnum($username)) {
+    if(!preg_match("/^[\p{L}\p{N}]+$/u", urldecode($username))) {
         if ($ajax) {
-            echo "<span style='color: #cc0000;'>{$lang['takesignup_allowed_chars']}</span>";
-            die();
+            return "<span style='color: #cc0000;'>{$lang['takesignup_allowed_chars']}</span>";
         }
 
         return false;

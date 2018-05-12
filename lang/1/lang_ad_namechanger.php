@@ -17,4 +17,5 @@ $lang = [
     'namechanger_if'            => 'If You Are Sure Then: ',
     'namechanger_change_name'   => 'Change Name!',
     'namechanger_stdhead'       => 'Username Changer',
+    'namechanger_invalid'       => 'is invalid',
 ];

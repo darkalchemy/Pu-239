@@ -25,15 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'apikey'       => make_password(32),
         'ip'           => ipToStorageFormat('127.0.0.1'),
     ];
-    if (isset($_POST['username']) && strlen($_POST['username']) >= 5) {
+    if (isset($_POST['username']) && strlen($_POST['username']) >= 3 && valid_username($_POST['username']) {
         $insert['username'] = $_POST['username'];
     } else {
         stderr($lang['std_err'], $lang['err_username']);
     }
-    if (isset($_POST['password'], $_POST['password2'])
-        && strlen($_POST['password']) > 6
-        && trim($_POST['password']) == trim($_POST['password2'])
-    ) {
+    if (isset($_POST['password'], $_POST['password2']) && strlen($_POST['password']) > 6 && trim($_POST['password']) == trim($_POST['password2'])) {
         $insert['passhash'] = make_passhash(trim($_POST['password']));
     } else {
         stderr($lang['std_err'], $lang['err_password']);
@@ -43,8 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         stderr($lang['std_err'], $lang['err_email']);
     }
-    if (sql_query(sprintf(
-                      'INSERT INTO users 
+    if (sql_query(sprintf('INSERT INTO users
                 (username, email, passhash, status, added, last_access, torrent_pass, auth, apikey, ip)
                 VALUES (%s)',
                       join(', ', array_map(
@@ -53,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                       ))
                   ))) {
         $user_id = 0;
-        while (0 == $user_id) {
+        while ($user_id == 0) {
             usleep(500);
             $user_id = get_one_row('users', 'id', 'WHERE username = ' . sqlesc($insert['username']));
         }
@@ -67,16 +63,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             autoshout($message);
         }
         if ($user_id == 2) {
-            $session->set('is-success', '[p]Pu-239 Install Complete![/p][p]Keep this page (AJAX Chat) open to allow cleanup to catchup.[/p]');
+            $session->set('is-success', '[p]Pu-239 Install Complete![/p]');
             header('Location: index.php');
         } else {
             stderr($lang['std_success'], sprintf($lang['text_user_added'], $user_id));
         }
     } else {
         if (((is_object($GLOBALS['___mysqli_ston'])) == 1062 ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
-            $res = sql_query(
-                'SELECT id 
-                        FROM users 
+            $res = sql_query('SELECT id
+                        FROM users
                         WHERE username = ' . sqlesc($insert['username'])
             ) or sqlerr(__FILE__, __LINE__);
             if (mysqli_num_rows($res)) {

@@ -200,10 +200,10 @@ $values = [
     'last_access'  => TIME_NOW,
     'time_offset'  => $time_offset,
     'dst_in_use'   => $dst_in_use['tm_isdst'],
-    'free_switch'  => (XBT_TRACKER ? '0' : TIME_NOW + 14 * 86400),
+    'free_switch'  => XBT_TRACKER ? '0' : TIME_NOW + 14 * 86400,
     'ip'           => inet_pton($ip),
-    'status'       => (0 === $users_count || (!$site_config['email_confirm'] && $site_config['auto_confirm']) ? 'confirmed' : 'pending'),
-    'class'        => (0 === $users_count ? UC_SYSOP : UC_USER),
+    'status'       => $users_count === 0 || (!$site_config['email_confirm'] && $site_config['auto_confirm']) ? 'confirmed' : 'pending',
+    'class'        => $users_count === 0 ? UC_SYSOP : UC_USER,
 ];
 
 if ($users_count === 0) {

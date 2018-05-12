@@ -9,19 +9,24 @@ global $site_config, $lang, $cache;
 $lang    = array_merge($lang, load_language('ad_namechanger'));
 $HTMLOUT = '';
 $mode    = (isset($_GET['mode']) && htmlsafechars($_GET['mode']));
-if (isset($mode) && 'change' == $mode) {
+if (isset($mode) && $mode == 'change') {
     $uid   = (int) $_POST['uid'];
     $uname = htmlsafechars($_POST['uname']);
-    if ('' == $_POST['uname'] || '' == $_POST['uid']) {
+    if ($_POST['uname'] == '' || $_POST['uid'] == '') {
         stderr($lang['namechanger_err'], $lang['namechanger_missing']);
     }
+
+    if (strlen($_POST['uname']) < 3 || !valid_username($_POST['uname']) {
+        stderr($lang['namechanger_err'], "<b>'{$_POST['uname']}'</b> {$lang['namechanger_invalid']}");
+    }
+
     $nc_sql = sql_query('SELECT class FROM users WHERE id = ' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($nc_sql)) {
         $classuser = mysqli_fetch_assoc($nc_sql);
         if ($classuser['class'] >= UC_STAFF) {
             stderr($lang['namechanger_err'], $lang['namechanger_cannot']);
         }
-        $change = sql_query('UPDATE users SET username=' . sqlesc($uname) . ' WHERE id = ' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
+        $change = sql_query('UPDATE users SET username =' . sqlesc($uname) . ' WHERE id = ' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user' . $uid, [
             'username' => $uname,
         ], $site_config['expires']['user_cache']);
@@ -29,7 +34,7 @@ if (isset($mode) && 'change' == $mode) {
         $changed = sqlesc("{$lang['namechanger_changed_to']} $uname");
         $subject = sqlesc($lang['namechanger_changed']);
         if (!$change) {
-            if (1062 == ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
+            if (((is_object($GLOBALS['___mysqli_ston'])) == 1062 ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
                 stderr($lang['namechanger_borked'], $lang['namechanger_already_exist']);
             }
         }
