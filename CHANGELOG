@@ -1,3 +1,6 @@
+13 May 2018
+update: enable latest forum posts on index page
+
 12 May 2018
 request: allow any alphanumeric character in username #4
 update: require all new users or change username to use function valid_username

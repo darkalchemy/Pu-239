@@ -81,13 +81,11 @@ if (curuser::$blocks['index_page'] & block_index::ADVERTISEMENTS && $BLOCKS['ads
     $HTMLOUT .= '</div>';
 }
 
-/*
 if (curuser::$blocks['index_page'] & block_index::FORUMPOSTS && $BLOCKS['forum_posts_on']) {
     $HTMLOUT .= "<div class='container is-fluid portlet' id='FORUMPOSTS'>";
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'forum_posts.php';
     $HTMLOUT .= '</div>';
 }
-*/
 
 if (curuser::$blocks['index_page'] & block_index::LATESTCOMMENTS && $BLOCKS['latest_comments_on']) {
     $HTMLOUT .= "<div class='container is-fluid portlet' id='LATESTCOMMENTS'>";
