@@ -1,4 +1,5 @@
 13 May 2018
+update: move check for width/height to after if proxy url exists
 remove: image proxy default url
 update: enable latest forum posts on index page
 

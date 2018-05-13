@@ -2087,11 +2087,10 @@ function image_proxy($url, $width = null, $height = null)
         return $url;
     }
 
-    if (!empty($width) && !empty($height)) {
-        $url = "{$url}&width={$width}&height={$height}";
-    }
-
     if (!empty($site_config['image_proxy'])) {
+        if (!empty($width) && !empty($height)) {
+            $url = "{$url}&width={$width}&height={$height}";
+        }
         $key = [key($site_config['image_proxy_key']), current($site_config['image_proxy_key'])];
         $encrypted = CryptoJSAES::encrypt($url, $key[1]);
 
