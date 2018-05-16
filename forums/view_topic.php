@@ -293,8 +293,11 @@ if (!empty($topic_users)) {
     $topic_users = $lang['fe_currently_viewing_this_topic'] . ': ' . $topic_users;
 }
 
+$set = [
+        'views' => new Envms\FluentPDO\Literal('views + 1')
+];
 $fluent->update('topics')
-    ->set('views = ?', new Envms\FluentPDO\Literal('views + 1'))
+    ->set($set)
     ->where('id = ?', $topic_id)
     ->execute();
 
