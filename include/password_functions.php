@@ -7,10 +7,11 @@
 function make_passhash($pass)
 {
     $options = [
-        'cost' => 12,
+            'memory_cost' => 2048,
+            'time_cost' => 12,
+            'threads' => 4,
     ];
-
-    return password_hash($pass, PASSWORD_BCRYPT, $options);
+    return password_hash($pass, PASSWORD_ARGON2I, $options);
 }
 
 /**

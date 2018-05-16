@@ -1,3 +1,7 @@
+16 May 2018
+update: replace password_hash algorithm bcrypt with argon2i, this only effects new or updated passwords,
+        all previous password will continue to use bcrypt until password is updated
+
 13 May 2018
 update: move check for width/height to after if proxy url exists
 remove: image proxy default url
