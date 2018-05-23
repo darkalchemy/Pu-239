@@ -154,6 +154,8 @@ function getip()
  */
 function dbconn($autoclean = true)
 {
+    global $site_config;
+
     if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $_ENV['DB_PORT']))) {
         switch (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
             case 1040:
@@ -168,7 +170,7 @@ function dbconn($autoclean = true)
                 die('[' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) . '] dbconn: mysqli_connect: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         }
     }
-    if ($autoclean) {
+    if (user_exists($site_config['chatBotID']) && $autoclean) {
         register_shutdown_function('autoclean');
     }
 }

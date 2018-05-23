@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'apikey'       => make_password(32),
         'ip'           => ipToStorageFormat('127.0.0.1'),
     ];
-    if (isset($_POST['username']) && strlen($_POST['username']) >= 3 && valid_username($_POST['username']) {
+    if (isset($_POST['username']) && strlen($_POST['username']) >= 3 && valid_username($_POST['username'])) {
         $insert['username'] = $_POST['username'];
     } else {
         stderr($lang['std_err'], $lang['err_username']);

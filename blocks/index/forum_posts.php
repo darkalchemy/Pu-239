@@ -25,7 +25,7 @@ if ($topics === false || is_null($topics)) {
     }
     $cache->set('last_posts_' . $CURUSER['class'], $topics, $site_config['expires']['latestposts']);
 }
-if (count($topics) > 0) {
+if (!empty($topics) && count($topics) > 0) {
     $HTMLOUT .= "
             <table class='table table-bordered table-striped'>
                 <thead>
