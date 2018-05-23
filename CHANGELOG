@@ -1,4 +1,5 @@
 23 May 2018
+update: clear default cache during install
 fix: dissallow cleanup scripts to run before installation completed
 fix: typo in adduser.php
 fix: count in forum_posts.php

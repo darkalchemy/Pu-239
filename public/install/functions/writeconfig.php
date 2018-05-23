@@ -227,6 +227,11 @@ function saveconfig()
             $continue = false;
         }
     }
+    if(rrmdir('/dev/shm/' . $_POST['config']['mysql_db'])) {
+        $out .= '
+        <div class="readable">default cache has ben cleared</div>';
+    }
+
     if ($continue) {
         //$xbt = 0;
         if (isset($_POST['config']['xbt_tracker'])) {
@@ -259,3 +264,26 @@ function saveconfig()
 
     echo $out;
 }
+
+function rrmdir($dir)
+{
+    if (is_dir($dir)) {
+        $objects = scandir($dir);
+        foreach ($objects as $object) {
+            if ($object != '.' && $object != '..') {
+                if (filetype($dir . '/' . $object) == 'dir') {
+                    rrmdir($dir . '/' . $object);
+                } else {
+                    unlink($dir . '/' . $object);
+                }
+            }
+        }
+        reset($objects);
+        rmdir($dir);
+
+        return true;
+    }
+
+    return false;
+}
+
