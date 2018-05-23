@@ -8,15 +8,13 @@ function achievement_sig_update($data)
 {
     global $site_config, $queries, $cache;
 
-    $lang = load_language('ad_cleanup_manager');
-
     set_time_limit(1200);
     ignore_user_abort(true);
 
     $res         = sql_query('SELECT userid, sigset FROM usersachiev WHERE sigset = 1 AND sigach = 0') or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
-        $subject = sqlesc($lang['doc_achiev_earned']);
+        $subject = sqlesc('New Achievement Earned!');
         $msg     = sqlesc('Congratulations, you have just earned the [b]Signature Setter[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/signature.png[/img]');
         $dt      = TIME_NOW;
         while ($arr = mysqli_fetch_assoc($res)) {

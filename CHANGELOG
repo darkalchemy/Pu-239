@@ -1,4 +1,6 @@
 23 May 2018
+update: increase karma achievement to start at 250, users start with 200
+fix: undefinded lang in cleanup
 update: clear default cache during install
 fix: dissallow cleanup scripts to run before installation completed
 fix: typo in adduser.php

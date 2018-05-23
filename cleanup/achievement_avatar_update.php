@@ -9,15 +9,13 @@ function achievement_avatar_update($data)
 {
     global $site_config, $queries, $cache;
 
-    $lang = load_language('ad_cleanup_manager');
-
     set_time_limit(1200);
     ignore_user_abort(true);
 
     $res         = sql_query('SELECT userid, avatarset FROM usersachiev WHERE avatarset = 1 AND avatarach = 0') or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
-        $subject = sqlesc($lang['doc_achiev_earned']);
+        $subject = sqlesc('New Achievement Earned!');
         $msg     = sqlesc('Congratulations, you have just earned the [b]Avatar Setter[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/piratesheep.png[/img]');
         while ($arr = mysqli_fetch_assoc($res)) {
             $dt                    = TIME_NOW;

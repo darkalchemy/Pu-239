@@ -8,8 +8,6 @@ function achievement_seedtime_update($data)
 {
     global $site_config, $queries, $cache;
 
-    $lang = load_language('ad_cleanup_manager');
-
     set_time_limit(1200);
     ignore_user_abort(true);
 
@@ -27,7 +25,7 @@ function achievement_seedtime_update($data)
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $dt      = TIME_NOW;
-        $subject = sqlesc($lang['doc_achiev_earned']);
+        $subject = sqlesc('New Achievement Earned!');
         $points  = random_int(1, 3);
         $var1    = 'dayseed';
         while ($arr = mysqli_fetch_assoc($res)) {
