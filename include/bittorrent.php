@@ -457,7 +457,7 @@ function autoclean()
         $cache->set('cleanup_timer_', 5, 1); // runs only every 1 second
 
         $now = TIME_NOW;
-        $sql = sql_query("SELECT * FROM cleanup WHERE clean_on = 1 AND clean_time < {$now} ORDER BY clean_time ASC, clean_increment DESC") or sqlerr(__FILE__, __LINE__);
+        $sql = sql_query("SELECT * FROM cleanup WHERE clean_on = 1 AND clean_time < {$now} ORDER BY clean_time ASC, clean_increment DESC LIMIT 5") or sqlerr(__FILE__, __LINE__);
         while ($row = mysqli_fetch_assoc($sql)) {
             if ($row['clean_id']) {
                 $next_clean = intval($row['clean_time'] + $row['clean_increment']);

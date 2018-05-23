@@ -1,4 +1,5 @@
 23 May 2018
+add: limit to number of cleanup scripts processed each run
 update: increase karma achievement to start at 250, users start with 200
 fix: undefinded lang in cleanup
 update: clear default cache during install
