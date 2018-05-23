@@ -1,3 +1,8 @@
+23 May 2018
+fix: dissallow cleanup scripts to run before installation completed
+fix: typo in adduser.php
+fix: count in forum_posts.php
+
 16 May 2018
 fix: topics view increment
 update: dependencies
