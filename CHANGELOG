@@ -1,3 +1,6 @@
+24 May 2018
+update: use PASSWORD_BCRYPT for php versions prior to 7.2.0
+
 23 May 2018
 add: limit to number of cleanup scripts processed each run
 update: increase karma achievement to start at 250, users start with 200

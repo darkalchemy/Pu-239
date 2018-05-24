@@ -6,12 +6,19 @@
  */
 function make_passhash($pass)
 {
+    if (PHP_VERSION_ID >= 70200) {
+        $options = [
+                'memory_cost' => 2048,
+                'time_cost' => 12,
+                'threads' => 4,
+        ];
+        return password_hash($pass, PASSWORD_ARGON2I, $options);
+    }
     $options = [
-            'memory_cost' => 2048,
-            'time_cost' => 12,
-            'threads' => 4,
+        'cost' => 12,
     ];
-    return password_hash($pass, PASSWORD_ARGON2I, $options);
+
+    return password_hash($pass, PASSWORD_BCRYPT, $options);
 }
 
 /**
