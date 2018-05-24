@@ -121,12 +121,31 @@ if (!password_verify($password, $row['passhash'])) {
     $res     = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $cache->increment('inbox_' . $userid);
     bark("<b>Error</b>: Username or password entry incorrect <br>Have you forgotten your password? <a href='{$site_config['baseurl']}/resetpw.php'><b>Recover</b></a> your password !");
+} else {
+    global $site_config;
+
+    if (PHP_VERSION_ID >= 70200 && @password_hash('secret_password', PASSWORD_ARGON2I)) {
+        $algo = PASSWORD_ARGON2I;
+        $options = [
+                'memory_cost' => !empty($site_config['password_memory_cost']) ? $site_config['password_memory_cost'] : 2048,
+                'time_cost' => !empty($site_config['password_time_cost']) ? $site_config['password_time_cost'] : 12,
+                'threads' => !empty($site_config['password_threads']) ? $site_config['password_threads'] : 4,
+        ];
+    } else {
+        $algo = PASSWORD_BCRYPT;
+        $options = [
+            'cost' => !empty($site_config['password_cost']) ? $site_config['password_cost'] : 12,
+        ];
+    }
+    if (password_needs_rehash($row['passhash'], $algo, $options)) {
+        sql_query("UPDATE users SET passhash = " . sqlesc(make_passhash($password)) . " WHERE id = " . sqlesc($row['id'])) or sqlerr(__FILE__, __LINE__);
+    }
 }
 
-if ('no' == $row['enabled']) {
+if ($row['enabled'] === 'no') {
     bark($lang['tlogin_disabled']);
 }
-if ('pending' == $row['status']) {
+if ($row['status'] === 'pending') {
     if ($site_config['email_confirm']) {
         bark('You have not confirmed your amail address. Please use the link in the email that you should have received.');
     }

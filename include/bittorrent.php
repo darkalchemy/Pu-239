@@ -473,7 +473,6 @@ function autoclean()
                 }
             }
         }
-
         if ($site_config['newsrss_on']) {
             $tfreak_cron = $cache->get('tfreak_cron_');
             if ($tfreak_cron === false || is_null($tfreak_cron)) {

@@ -35,3 +35,9 @@ if (XBT_TRACKER) {
 // Email for sender/return path.
 $site_config['site_email'] = '#site_email';
 $site_config['site_name']  = '#site_name';
+
+$site_config['password_memory_cost'] = 2048;
+$site_config['password_time_cost'] = 12;
+$site_config['password_threads'] = 4;
+$site_config['password_cost'] = 12;
+

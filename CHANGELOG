@@ -1,4 +1,6 @@
 24 May 2018
+add: password_needs_rehash to login
+update: check to assure PASSWORD_ARGON2I is available
 fix: errors in log_viewer.php
 update: use PASSWORD_BCRYPT for php versions prior to 7.2.0
 
