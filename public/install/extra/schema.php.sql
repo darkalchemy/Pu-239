@@ -2092,7 +2092,7 @@ CREATE TABLE `tokens` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   KEY `id` (`id`),
   KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
