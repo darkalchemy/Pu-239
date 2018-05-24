@@ -6,7 +6,7 @@
  */
 function make_passhash($pass)
 {
-    if (PHP_VERSION_ID >= 70200) {
+    if (PHP_VERSION_ID >= 70200 && defined(PASSWORD_ARGON2I)) {
         $options = [
                 'memory_cost' => 2048,
                 'time_cost' => 12,
