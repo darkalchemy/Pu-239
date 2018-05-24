@@ -1,4 +1,5 @@
 24 May 2018
+add: check for mysql variable innodb_large_prefix = 1 during install
 update: schema tokens table to dynamic
 add: password_needs_rehash to login
 update: check to assure PASSWORD_ARGON2I is available

@@ -71,22 +71,31 @@ function db_insert()
     $out = '<fieldset><legend>Database</legend>';
 
     $timestamp = strtotime('today midnight');
+    $fail = '';
+    $query = 'SHOW VARIABLES LIKE "innodb_large_prefix"';
+    $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $query);
+    $retval = shell_exec($sql);
+    if (!preg_match('/innodb_large_prefix\s+ON/', $retval)) {
+        $fail .= "<div class='notreadable'>Please add/update my.cnf 'innodb_large_prefix = 1' and restart mysql.</div>";
+    }
     $sources   = [
         'schema'     => "source {$public}install/extra/schema.php.sql",
         'data'       => "source {$public}install/extra/data.php.sql",
         'timestamps' => "UPDATE cleanup SET clean_time = $timestamp",
         'stats'      => "INSERT INTO stats (regusers) VALUES (1)"
     ];
-    $fail = '';
-    foreach ($sources as $name => $source) {
-        $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $source);
-        set_time_limit(1200);
-        ini_set('max_execution_time', 1200);
-        ini_set('request_terminate_timeout', 1200);
-        ignore_user_abort(true);
-        exec($sql, $output, $retval);
-        if (0 != $retval) {
-            $fail .= "<div class='notreadable'>There was an error while creating the database $name</div>";
+
+    if (empty($fail)) {
+        foreach ($sources as $name => $source) {
+            $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $source);
+            set_time_limit(1200);
+            ini_set('max_execution_time', 1200);
+            ini_set('request_terminate_timeout', 1200);
+            ignore_user_abort(true);
+            exec($sql, $output, $retval);
+            if ($retval != 0) {
+                $fail .= "<div class='notreadable'>There was an error while creating the database $name</div>";
+            }
         }
     }
 
