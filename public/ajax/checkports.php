@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-dbconn(false);
+dbconn();
 
 if (empty($_POST['uid'])) {
     return false;

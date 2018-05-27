@@ -149,10 +149,7 @@ function getip()
     return '127.0.0.1';
 }
 
-/**
- * @param bool $autoclean
- */
-function dbconn($autoclean = true)
+function dbconn()
 {
     global $site_config;
 
@@ -169,9 +166,6 @@ function dbconn($autoclean = true)
             default:
                 die('[' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) . '] dbconn: mysqli_connect: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         }
-    }
-    if (user_exists($site_config['chatBotID']) && $autoclean) {
-        register_shutdown_function('autoclean');
     }
 }
 
@@ -446,81 +440,6 @@ function get_charset()
         default:
             return 'UTF-8';
     }
-}
-
-function autoclean()
-{
-    global $site_config, $cache;
-
-    $cleanup_timer = $cache->get('cleanup_timer_');
-    if ($cleanup_timer === false || is_null($cleanup_timer)) {
-        $cache->set('cleanup_timer_', 5, 1); // runs only every 1 second
-
-        $now = TIME_NOW;
-        $sql = sql_query("SELECT * FROM cleanup WHERE clean_on = 1 AND clean_time < {$now} ORDER BY clean_time ASC, clean_increment DESC LIMIT 5") or sqlerr(__FILE__, __LINE__);
-        while ($row = mysqli_fetch_assoc($sql)) {
-            if ($row['clean_id']) {
-                $next_clean = intval($row['clean_time'] + $row['clean_increment']);
-                if ($row['clean_title'] === 'Trivia Cleanup') {
-                    $next_clean = ceil(TIME_NOW / 300) * 300;
-                }
-                sql_query('UPDATE cleanup SET clean_time = ' . sqlesc($next_clean) . ' WHERE clean_id = ' . sqlesc($row['clean_id'])) or sqlerr(__FILE__, __LINE__);
-                if (file_exists(CLEAN_DIR . $row['clean_file'])) {
-                    require_once CLEAN_DIR . $row['clean_file'];
-                    if (function_exists($row['function_name'])) {
-                        register_shutdown_function($row['function_name'], $row);
-                    }
-                }
-            }
-        }
-        if ($site_config['newsrss_on']) {
-            $tfreak_cron = $cache->get('tfreak_cron_');
-            if ($tfreak_cron === false || is_null($tfreak_cron)) {
-                $tfreak_news = $cache->get('tfreak_news_links_');
-                if ($tfreak_news === false || is_null($tfreak_news)) {
-                    $sql = sql_query('SELECT link FROM newsrss') or sqlerr(__FILE__, __LINE__);
-                    while ($tfreak_new = mysqli_fetch_assoc($sql)) {
-                        $tfreak_news[] = $tfreak_new['link'];
-                    }
-                    $cache->set('tfreak_news_links_', $tfreak_news, 86400);
-                }
-
-                if (user_exists($site_config['chatBotID'])) {
-                    $cache->set('tfreak_cron_', TIME_NOW, 30);
-                    require_once INCL_DIR . 'newsrss.php';
-                    if (empty($tfreak_news)) {
-                        github_shout();
-                        foxnews_shout();
-                        tfreak_shout();
-                    } else {
-                        github_shout($tfreak_news);
-                        foxnews_shout($tfreak_news);
-                        tfreak_shout($tfreak_news);
-                    }
-                }
-            }
-        }
-    }
-
-    $cleanup_perpetuate = $cache->get('cleanup_perpetuate_');
-    if ($cleanup_perpetuate === false || is_null($cleanup_perpetuate)) {
-        register_shutdown_function('autoclean_perpetuate');
-    }
-}
-
-function autoclean_perpetuate()
-{
-    global $cache;
-
-    $cache->set('cleanup_perpetuate_', 5, 0);
-    $cleanup_perpetuate_timer = $cache->get('cleanup_perpetuate_timer_');
-    while ($cleanup_perpetuate_timer !== false) {
-        sleep(5);
-        $cleanup_perpetuate_timer = $cache->get('cleanup_perpetuate_timer_');
-    }
-    $cache->set('cleanup_perpetuate_timer_', 5, 30);
-    $cache->delete('cleanup_perpetuate_');
-    register_shutdown_function('autoclean');
 }
 
 /**
@@ -1657,6 +1576,7 @@ function user_exists($user_id)
             return false;
         }
         $cache->set('userlist_' . $user_id, $res, 86400);
+        $cache->set('cleanup_timer_', 'initial wait', 600);
     }
 
     return true;

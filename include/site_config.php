@@ -128,7 +128,6 @@ $site_config['expires']['book_info']              = 604800; //604800 = 1 week
 $site_config['max_torrent_size']      = 3     * 1024     * 1024;
 $site_config['announce_interval']     = 60    * 30;
 $site_config['signup_timeout']        = 86400 * 3;
-$site_config['autoclean_interval']    = 1800;
 $site_config['sub_max_size']          = 500 * 1024;
 $site_config['minvotes']              = 1;
 $site_config['max_dead_torrent_time'] = 6 * 3600;
@@ -169,7 +168,7 @@ $site_config['happyhour']     = CACHE_DIR . 'happyhour' . DIRECTORY_SEPARATOR . 
 $site_config['sql_error_log'] = SQLERROR_LOGS_DIR . 'sql_err_' . date('M_D_Y') . '.log';
 
 if (empty($_SERVER['HTTP_HOST'])) {
-    $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
+    $_SERVER['HTTP_HOST'] = !empty($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $site_config['domain'];
 }
 
 $site_config['baseurl'] = get_scheme() . '://' . $_SERVER['HTTP_HOST'];

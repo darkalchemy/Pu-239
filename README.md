@@ -60,7 +60,11 @@ mysql database < Pu-239/database/trivia.php.sql
 # insert tvmaze ids
 mysql database < Pu-239/database/tvmaze.php.sql
 
-# keeping AJAX Chat open after first installing will allow the cleanup to catchup
+# add cron job to root cron for running cleanup, please change path as needed
+sudo crontab -e
+
+# runs cron_controller.php every minute, if not already running, as user www-data
+* * * * * su www-data -s /bin/bash -c "/usr/bin/php /var/www/Pu-239/include/cron_controller.php" >/dev/null 2>&1
 ```
 
 ### To Update:

@@ -248,7 +248,7 @@ if (0 === $users_count) {
 
 $added   = TIME_NOW;
 $subject = 'Welcome';
-$msg     = 'Hey there ' . htmlsafechars($wantusername) . "! Welcome to {$site_config['site_name']}! :clap2: \n\n Please ensure your connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\nBe aware that the users database is deleted every few days.\n\ncheers {$site_config['site_name']} staff.\n";
+$msg     = 'Hey there ' . htmlsafechars($wantusername) . "!\n\n Welcome to {$site_config['site_name']}! :clap2: \n\n Please ensure you're connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\nBe aware that the users database is deleted every few days.\n\ncheers {$site_config['site_name']} staff.\n";
 $values  = [
     'sender'   => 0,
     'subject'  => $subject,

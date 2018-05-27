@@ -24,20 +24,33 @@ class Peer
     {
         $peers = $this->cache->get('MyPeers_' . $user_id);
         if ($peers === false || is_null($peers)) {
-            $peers['yes']  = $peers['no']  = 0;
+            $peers['yes'] = $peers['no'] = $peers['conn_yes'] = $peers['conn_no'] = $peers['count'] = 0;
             $peers['conn'] = 3;
-            $query         = $this->fluent->from('peers')
+            $peers['percentage'] = 0;
+            $query = $this->fluent->from('peers')
                 ->select(null)
-                ->select('COUNT(*) AS count')
                 ->select('seeder')
-                ->select('ANY_VALUE(connectable) AS connectable')
-                ->where('userid = ?', $user_id)
-                ->groupBy('seeder');
+                ->select('connectable')
+                ->where('userid = ?', $user_id);
 
             foreach ($query as $a) {
-                $key           = 'yes' == $a['seeder'] ? 'yes' : 'no';
-                $peers[$key]   = number_format((int) $a['count']);
-                $peers['conn'] = 'no' == $a['connectable'] ? 1 : 2;
+                $key = $a['seeder'] === 'yes' ? 'yes' : 'no';
+                $peers[$key] += 1;
+                $conn = $a['connectable'] === 'yes' ? 'conn_yes' : 'conn_no';
+                $peers[$conn] += 1;
+                $peers['count'] += 1;
+            }
+            if ($peers['conn_no'] === 0 && $peers['conn_yes'] > 0) {
+                $peers['conn'] = 2;
+            } elseif ($peers['conn_no'] > 0) {
+                $peers['conn'] = 1;
+            }
+            if ($peers['count'] > 0) {
+                if ($peers['conn_no'] === 0 && $peers['conn_yes'] > 0) {
+                    $peers['percentage'] = 100;
+                } elseif ($peers['conn_yes'] > 0) {
+                    $peers['percentage'] = ceil(($peers['conn_yes'] / $peers['count']) * 100);
+                }
             }
             $this->cache->set('MyPeers_' . $user_id, $peers, $this->config['expires']['MyPeers_']);
         }

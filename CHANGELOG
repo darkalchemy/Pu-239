@@ -1,3 +1,12 @@
+27 May 2018
+remove: cleanup from user thread, remove autoclean and register_shutdown_function
+add: cronjob to contol cleanup on separate thread
+update: manually set $_SERVER['HTTP_HOST'] = $site_config['domain'] when $_SERVER['HTTP_HOST'] and $_SERVER['SERVER_NAME'] are empty
+update: login.php move 'remember me' above login button
+update: welcome message to new users
+update: cleanup info for hourly backup
+update: rewrite Peer Class to remove need for ANY_VALUE, MariaDB does not have it 
+
 24 May 2018
 add: check for mysql variable innodb_large_prefix = 1 during install
 update: schema tokens table to dynamic

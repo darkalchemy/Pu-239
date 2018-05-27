@@ -470,16 +470,15 @@ function format_username(int $user_id, $icons = true, $tooltipper = true)
     $users_data = $user_stuffs->getUserFromId($user_id);
     $peer       = new DarkAlchemy\Pu239\Peer();
     $peers      = $peer->getPeersFromUserId($user_id);
-    //dd($peers);
 
-    if (0 === $users_data['id']) {
+    if ($users_data['id'] === 0) {
         return 'System';
     } elseif (empty($users_data['username'])) {
         return 'unknown[' . $users_data['id'] . ']';
     }
 
     $avatar = !empty($users_data['avatar']) ? "<img src='" . image_proxy($users_data['avatar']) . "' class='round10' />" : "<img src='{$site_config['pic_baseurl']}forumicons/default_avatar.gif' class='round10' />";
-    $tip    = $tooltip    = '';
+    $tip = $tooltip = '';
     if ($tooltipper) {
         $tip = "
                 <div class='tooltip_templates'>
@@ -523,7 +522,7 @@ function format_username(int $user_id, $icons = true, $tooltipper = true)
                 $tip
                 <a href='{$site_config['baseurl']}/userdetails.php?id={$users_data['id']}' target='_blank'><span {$tooltip}>" . htmlsafechars($users_data['username']) . '</span></a>';
 
-    if (false != $icons) {
+    if ($icons != false) {
         $str .= (isset($users_data['king']) && $users_data['king'] >= TIME_NOW ? '<img class="tooltipper icon left5" src="' . $site_config['pic_baseurl'] . 'king.png" alt="King" title="King" />' : '');
         $str .= ('yes' == $users_data['donor'] ? '<img class="tooltipper icon left5" src="' . $site_config['pic_baseurl'] . 'star.png" alt="Donor" title="Donor" />' : '');
         $str .= ($users_data['warned'] >= 1 ? '<img class="tooltipper icon left5" src="' . $site_config['pic_baseurl'] . 'alertred.png" alt="Warned" title="Warned" />' : '');

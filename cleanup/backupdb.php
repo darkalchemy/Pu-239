@@ -33,22 +33,45 @@ function backupdb($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    $mysql_host = $_ENV['DB_HOST'];
-    $mysql_user = $_ENV['DB_USERNAME'];
-    $mysql_pass = $_ENV['DB_PASSWORD'];
-    $mysql_db   = $_ENV['DB_DATABASE'];
-    $dt         = TIME_NOW;
-    $c1         = 'mysqldump -h ' . $mysql_host . ' -u ' . $mysql_user . ' -p' . $mysql_pass . ' ' . $mysql_db . ' -d > ' . $site_config['backup_dir'] . '/db_structure.sql';
-    $c          = 'mysqldump -h ' . $mysql_host . ' -u ' . $mysql_user . ' -p' . $mysql_pass . ' ' . $mysql_db . ' ' . tables('peers|sitelog') . ' | bzip2 -cq9 > ' . $site_config['backup_dir'] . '/db_' . date('m_d_y[H]', $dt) . '.sql.bz2';
+    $host = $_ENV['DB_HOST'];
+    $user = $_ENV['DB_USERNAME'];
+    $pass = $_ENV['DB_PASSWORD'];
+    $db   = $_ENV['DB_DATABASE'];
+    $dt   = TIME_NOW;
+    $bdir = $site_config['backup_dir'];
+    $filename = 'db_' . date('m_d_y_H', TIME_NOW) . '.sql';
+
+    $c1 = "mysqldump -h $host -u{$user} -p{$pass} $db -d > $bdir/db_structure.sql";
+    $c2 = "mysqldump -h $host -u{$user} -p{$pass} $db " . tables('peers') . " | bzip2 -9 > $bdir/{$filename}.bzip";
+
     system($c1);
-    system($c);
-    $files = glob($site_config['backup_dir'] . '/db_*');
+    exec($c2);
+
+    // table backup
+    $tables = explode(' ', tables());
+    foreach ($tables as $table) {
+        $filename = "tbl_{$table}_" . date("m_d_y_H", TIME_NOW) . ".sql";
+        $c2 = "mysqldump -h $host -u{$user} -p{$pass} $db $table | bzip2 -cq9 > $bdir/{$filename}.bzip";
+        system($c2);
+    }
+
+    // delete db files older than 3 days
+    $files = glob($bdir . '/db_*');
     foreach ($files as $file) {
         if (($dt - filemtime($file)) > 3 * 86400) {
             unlink($file);
         }
     }
-    $ext = 'db_' . date('m_d_y[H]', $dt) . '.sql.bz2';
+
+    // delete table files older than 1 day
+    $files = glob($bdir . '/tbl_*');
+    foreach ($files as $file) {
+        if ((TIME_NOW - filemtime($file)) > 1 * 86400) {
+            unlink($file);
+        }
+    }
+
+    $ext = 'db_' . date('m_d_y_H', $dt) . '.sql.bz2';
     sql_query('INSERT INTO dbbackup (name, added, userid) VALUES (' . sqlesc($ext) . ', ' . $dt . ', ' . $site_config['site']['owner'] . ')') or sqlerr(__FILE__, __LINE__);
     if ($data['clean_log'] && $queries > 0) {
         write_log("Auto DB Backup Cleanup: Completed using $queries queries");

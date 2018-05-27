@@ -40,7 +40,7 @@ if ('top' == substr($_do, 0, 3)) {
 //$_hash = "YXBwemZhbg";
 if ($_hash === $hash) {
     require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-    dbconn(false, false);
+    dbconn();
     if (empty($_user) && ('stats' == $_do || 'torrents' == $_do || 'irc' == $_do)) {
         die("Can't find the username");
     }
