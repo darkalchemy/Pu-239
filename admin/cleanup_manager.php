@@ -39,16 +39,31 @@ switch ($params['mode']) {
         manualclean();
         break;
 
+    case 'reset':
+        resettimer();
+        break;
+
     default:
         cleanup_show_main();
         break;
 }
+
+function resettimer() {
+    global $session;
+
+    $timestamp = strtotime('today midnight');
+    sql_query("UPDATE cleanup SET clean_time = $timestamp");
+    $session->set('is-success', 'Cleanup Time Set to ' . get_date($timestamp, 'LONG'));
+    cleanup_show_main();
+    die();
+}
+
 function manualclean()
 {
     // these clean_ids need to be run at specific interval, regardless of when they run
     $run_at_specified_times = [
         'Trivia Cleanup',
-|       'Trivia Bonus Points',
+        'Trivia Bonus Points',
     ];
 
     global $params, $lang;
@@ -146,6 +161,7 @@ function cleanup_show_main()
     $htmlout .= "
                 <div class='has-text-centered top20'>
                     <a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=new' class='margin20 button is-small'>{$lang['cleanup_add_new']}</a>
+                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=reset' class='margin20 button is-small'>{$lang['cleanup_reset']}</a>
                 </div>";
     echo stdhead($lang['cleanup_stdhead']) . wrapper($htmlout) . stdfoot();
 }

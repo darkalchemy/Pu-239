@@ -1,4 +1,6 @@
 30 May 2018
+fix: typo in cleanup_manager.php
+add: ability to reset cleanup time to yesterday midnight from cleanup manager
 remove: radio.php has no need for check_user_status since not loaded directly by user
 remove: need to hash check, salty function for logout.php
 revert: reversed conditionals

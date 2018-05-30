@@ -24,6 +24,7 @@ $lang = [
     'cleanup_off_on'   => 'on/off',
     'cleanup_run_now2' => 'Run it now',
     'cleanup_add_new'  => 'Add new',
+    'cleanup_reset'    => 'Reset Clean Time',
     'cleanup_stdhead'  => 'Cleanup Manager - View',
     //cleanup_show_edit
     'cleanup_show_head'     => 'Editing cleanup: ',
