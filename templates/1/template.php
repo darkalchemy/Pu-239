@@ -12,7 +12,7 @@ function stdhead($title = '', $stdhead = null)
 {
     require_once INCL_DIR . 'bbcode_functions.php';
     global $CURUSER, $site_config, $lang, $free, $querytime, $BLOCKS, $CURBLOCK, $mood, $session;
-
+//  dd($GLOBALS);
     if (!$site_config['site_online']) {
         die('Site is down for maintenance, please check back again later... thanks<br>');
     }
@@ -490,7 +490,6 @@ function navbar()
     }
 
     if ($CURUSER) {
-        $salty = salty();
         $navbar .= "
     <div class='spacer'>
         <header id='navbar' class='container'>
@@ -571,7 +570,7 @@ function navbar()
                             <li>' . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/contactstaff.php'>{$lang['gl_cstaff']}</a>" : "<a href='{$site_config['baseurl']}/staffbox.php'>[Messages]</a>") . "</li>
                             $panel
                             <li>
-                                <a href='{$site_config['baseurl']}/logout.php?hash_please={$salty}' class='is-flex'>
+                                <a href='{$site_config['baseurl']}/logout.php' class='is-flex'>
                                     <i class='icon-logout size_6' aria-hidden='true'></i>
                                 </a>
                             </li>

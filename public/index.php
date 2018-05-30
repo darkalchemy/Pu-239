@@ -31,7 +31,6 @@ $lang = array_merge(
 if (isset($_GET['act']) && $_GET['act'] === 'Arcade' && isset($_POST['gname'])) {
     include_once INCL_DIR . 'arcade.php';
 }
-
 $HTMLOUT = '';
 
 $unread = getPmCount($CURUSER['id']);

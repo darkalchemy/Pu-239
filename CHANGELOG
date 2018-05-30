@@ -1,4 +1,6 @@
 30 May 2018
+remove: radio.php has no need for check_user_status since not loaded directly by user
+remove: need to hash check, salty function for logout.php
 revert: reversed conditionals
 fix: a couple of var set that should have been a comparison
 replace: sizeof with count for consistency

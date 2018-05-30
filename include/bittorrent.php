@@ -316,8 +316,7 @@ function userlogin()
                 'class'   => 0,
             ], $site_config['expires']['user_cache']);
             write_log($msg);
-            $salty = salty();
-            header("Location: {$site_config['baseurl']}/logout.php?hash_please={$salty}");
+            header("Location: {$site_config['baseurl']}/logout.php");
             die();
         }
     }
@@ -476,7 +475,8 @@ function get_language()
 function get_template()
 {
     global $CURUSER, $site_config;
-    if (isset($CURUSER)) {
+
+    if (!empty($CURUSER)) {
         if (file_exists(TEMPLATE_DIR . "{$CURUSER['stylesheet']}/template.php")) {
             require_once TEMPLATE_DIR . "{$CURUSER['stylesheet']}/template.php";
         } else {
@@ -501,7 +501,6 @@ function get_template()
             echo 'Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.';
         }
     }
-
     if (!function_exists('stdhead')) {
         /**
          * @param string $title
@@ -1436,13 +1435,6 @@ function human_filesize($bytes, $dec = 2)
     $factor = floor((strlen($bytes) - 1) / 3);
 
     return sprintf("%.{$dec}f", $bytes / pow(1024, $factor)) . @$size[$factor];
-}
-
-function salty()
-{
-    global $session;
-
-    return $session->get('auth');
 }
 
 /**
