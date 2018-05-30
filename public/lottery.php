@@ -24,20 +24,20 @@ $valid        = [
     ],
 ];
 $do = isset($_GET['action']) && in_array($_GET['action'], array_keys($valid)) ? $_GET['action'] : '';
-if (0 == $CURUSER['game_access'] || $CURUSER['game_access'] > 1 || 'yes' == $CURUSER['suspended']) {
+if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['suspended'] === 'yes') {
     stderr('Error', 'Your gaming rights have been disabled.');
     die();
 }
 switch (true) {
-    case 'config' === $do && $CURUSER['class'] >= $valid['config']['minclass']:
+    case $do === 'config' && $CURUSER['class'] >= $valid['config']['minclass']:
         require_once $valid['config']['file'];
         break;
 
-    case 'viewtickets' == $do && $CURUSER['class'] >= $valid['viewtickets']['minclass']:
+    case $do === 'viewtickets' && $CURUSER['class'] >= $valid['viewtickets']['minclass']:
         require_once $valid['viewtickets']['file'];
         break;
 
-    case 'tickets' == $do && $CURUSER['class'] >= $valid['tickets']['minclass']:
+    case $do === 'tickets' && $CURUSER['class'] >= $valid['tickets']['minclass']:
         require_once $valid['tickets']['file'];
         break;
 

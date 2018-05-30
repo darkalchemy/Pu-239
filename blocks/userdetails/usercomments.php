@@ -15,17 +15,17 @@ function usercommenttable($rows)
         $htmlout .= "<p class='sub'>#" . (int) $row['id'] . ' by ';
         if (isset($row['username'])) {
             $title = $row['title'];
-            if ('' == $title) {
+            if ($title == '') {
                 $title = get_user_class_name($row['class']);
             } else {
                 $title = htmlsafechars($title);
             }
-            $htmlout .= "<a name='comm" . (int) $row['id'] . "' href='userdetails.php?id=" . (int) $row['user'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ('yes' == $row['donor'] ? "<img src=\"{$site_config['pic_baseurl']}star.gif\" alt='{$lang['userdetails_donor']}' />" : '') . ($row['warned'] >= '1' ? '<img src=' . "\"{$site_config['pic_baseurl']}warned.gif\" alt=\"{$lang['userdetails_warned']}\" />" : '') . " ($title)\n";
+            $htmlout .= "<a name='comm" . (int) $row['id'] . "' href='userdetails.php?id=" . (int) $row['user'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] === 'yes' ? "<img src=\"{$site_config['pic_baseurl']}star.gif\" alt='{$lang['userdetails_donor']}' />" : '') . ($row['warned'] >= '1' ? '<img src=' . "\"{$site_config['pic_baseurl']}warned.gif\" alt=\"{$lang['userdetails_warned']}\" />" : '') . " ($title)\n";
         } else {
             $htmlout .= '<a name="comm' . (int) $row['id'] . "\"><i>{$lang['userdetails_orphaned']}</i></a>\n";
         }
         $htmlout .= ' ' . get_date($row['added'], 'DATE', 0, 1) . '' . ($userid == $CURUSER['id'] || $row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=edit&amp;cid=" . (int) $row['id'] . "'>{$lang['userdetails_comm_edit']}</a>]" : '') . ($userid == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=delete&amp;cid=" . (int) $row['id'] . "'>{$lang['userdetails_comm_delete']}</a>]" : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=vieworiginal&amp;cid=" . (int) $row['id'] . "'>{$lang['userdetails_comm_voriginal']}</a>]" : '') . "</p>\n";
-        $avatar = ('yes' == $CURUSER['avatars'] ? htmlsafechars($row['avatar']) : '');
+        $avatar = ($CURUSER['avatars'] === 'yes' ? htmlsafechars($row['avatar']) : '');
         if (!$avatar) {
             $avatar = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
         }

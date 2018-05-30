@@ -37,7 +37,7 @@ $rep_locale = (isset($input['locale']) && (in_array($input['locale'], $locales))
 if (!$check) {
     rep_output('Incorrect Access');
 }
-if ('posts' == $rep_locale) {
+if ($rep_locale === 'posts') {
     $forum = sql_query("SELECT posts.topic_id AS locale, posts.user_id AS userid, forums.min_class_read,
 users.username, users.reputation
 FROM posts
@@ -45,20 +45,20 @@ LEFT JOIN topics ON topic_id = topics.id
 LEFT JOIN forums ON topics.forum_id = forums.id
 LEFT JOIN users ON posts.user_id = users.id
 WHERE posts.id ={$input['pid']}");
-} elseif ('comments' == $rep_locale) {
+} elseif ($rep_locale === 'comments') {
     $forum = sql_query("SELECT comments.id, comments.user AS userid, comments.anonymous AS anon,
      comments.torrent AS locale,
      users.username, users.reputation
      FROM comments
      LEFT JOIN users ON comments.user = users.id
      WHERE comments.id = {$input['pid']}");
-} elseif ('torrents' == $rep_locale) {
+} elseif ($rep_locale === 'torrents') {
     $forum = sql_query("SELECT torrents.id as locale, torrents.owner AS userid, torrents.anonymous AS anon,
     users.username, users.reputation
     FROM torrents
     LEFT JOIN users ON torrents.owner = users.id
     WHERE torrents.id ={$input['pid']}");
-} elseif ('users' == $rep_locale) {
+} elseif ($rep_locale === 'users') {
     $forum = sql_query("SELECT id AS userid, username, reputation, opt1, opt2 FROM users WHERE id ={$input['pid']}");
 }
 switch ($rep_locale) {
@@ -83,16 +83,15 @@ if (!mysqli_num_rows($forum)) {
 }
 
 $res = mysqli_fetch_assoc($forum) or sqlerr(__LINE__, __FILE__);
-if (isset($res['minclassread'])) { // 'posts'
+if (isset($res['minclassread'])) {
     if ($CURUSER['class'] < $res['minclassread']) {
-        // check permissions! Dun want sneaky pests lookin!
         rep_output('Wrong Permissions');
     }
 }
 
 $repeat = sql_query("SELECT postid FROM reputation WHERE postid ={$input['pid']} AND whoadded={$CURUSER['id']}");
-if (mysqli_num_rows($repeat) > 0 && 'users' != $rep_locale) { // blOOdy eedjit check!
-    rep_output('You have already added Rep to this ' . $this_rep . '!'); // Is insane!
+if (mysqli_num_rows($repeat) > 0 && $rep_locale != 'users') {
+    rep_output('You have already added Rep to this ' . $this_rep . '!');
 }
 
 if (!$is_mod) {
@@ -127,7 +126,7 @@ $reason = '';
 if (isset($input['reason']) && !empty($input['reason'])) {
     $reason = trim($input['reason']);
     $temp   = stripslashes($input['reason']);
-    if ((strlen(trim($temp)) < 2) || ('' == $reason)) {
+    if ((strlen(trim($temp)) < 2) || ($reason == '')) {
         rep_output($lang['info_reason_too_short']);
     }
     if (strlen(preg_replace('/&#([0-9]+);/', '-', stripslashes($input['reason']))) > 250) {
@@ -135,7 +134,7 @@ if (isset($input['reason']) && !empty($input['reason'])) {
     }
 }
 
-if (isset($input['do']) && 'addrep' == $input['do']) {
+if (isset($input['do']) && $input['do'] === 'addrep') {
     if ($res['userid'] == $CURUSER['id']) { // sneaky bastiges!
         rep_output($lang['info_cannot_rate_own']);
     }
@@ -188,7 +187,7 @@ if (isset($input['do']) && 'addrep' == $input['do']) {
 </tr>";
             }
 
-            if (0 == $total) {
+            if ($total == 0) {
                 $rep = $lang['rep_even'];
             } elseif ($total > 0 && $total <= 5) {
                 $rep = $lang['rep_somewhat_positive'];
@@ -250,7 +249,7 @@ if (isset($input['do']) && 'addrep' == $input['do']) {
                         </tr>";
     } else {
         $res['anon'] = (isset($res['anon']) ? $res['anon'] : 'no');
-        $rep_text    = sprintf("What do you think of %s's " . $this_rep . '?', ('yes' == $res['anon'] ? 'Anonymous' : htmlsafechars($res['username'])));
+        $rep_text = sprintf("What do you think of %s's " . $this_rep . '?', ($res['anon'] === 'yes' ? 'Anonymous' : htmlsafechars($res['username'])));
         $negativerep = ($is_mod || $GVARS['g_rep_negative']) ? true : false;
         $closewindow = false;
         $html        = "
@@ -375,7 +374,7 @@ function fetch_reppower($user = [], $rep = 'pos')
     if (!$GVARS['g_rep_use']) { // allowed to rep at all?
         $rep = 0;
     } elseif ($is_mod && $GVARS['rep_adminpower']) { // is a mod and has loadsa power?
-        $reppower = ('pos' != $rep) ? intval($GVARS['rep_adminpower'] * -1) : intval($GVARS['rep_adminpower']);
+        $reppower = ($rep != 'pos') ? intval($GVARS['rep_adminpower'] * -1) : intval($GVARS['rep_adminpower']);
     } elseif (($user['posts'] < $GVARS['rep_minpost']) || ($user['reputation'] < $GVARS['rep_minrep'])) { // not an admin, then work out postal based power
         $reppower = 0;
     } else { // ok failed all tests, so ratio is 1:1 but not negative, unless allowed
@@ -389,7 +388,7 @@ function fetch_reppower($user = [], $rep = 'pos')
         if ($GVARS['rep_rdpower']) { // time based power
             $reppower += intval((TIME_NOW - $user['added']) / 86400 / $GVARS['rep_rdpower']);
         }
-        if ('pos' != $rep) {
+        if ($rep != 'pos') {
             $reppower = intval($reppower / 2);
             $reppower = ($reppower < 1) ? 1 : $reppower;
             $reppower *= -1;

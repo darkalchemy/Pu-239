@@ -61,7 +61,7 @@ foreach ($required as $field) {
     }
 }
 
-if ('X' != $submitme) {
+if ($submitme != 'X') {
     $session->set('is-warning', '[h2]You clicked the wrong button.[/h2]');
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
@@ -75,7 +75,7 @@ if ($site_config['captcha_on']) {
     }
 }
 
-if (999999 == $country) {
+if ($country == 999999) {
     $session->set('is-warning', '[h2]Please select your country[/h2]');
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
@@ -144,7 +144,7 @@ if (!(isset($country))) {
 }
 $country = isset($country) && is_valid_id($country) ? intval($country) : 0;
 $gender  = isset($gender) ? htmlsafechars($gender) : '';
-if ('yes' != $rulesverify || 'yes' != $faqverify || 'yes' != $ageverify) {
+if ($rulesverify != 'yes' || $faqverify != 'yes' || $ageverify != 'yes') {
     $session->set('is-warning', "[h2]{$lang['takesignup_qualify']}[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
@@ -155,7 +155,7 @@ $email_count = $fluent->from('users')
     ->select('COUNT(id) AS count')
     ->where('email = ?', $email)
     ->fetch('count');
-if (0 != $email_count) {
+if ($email_count != 0) {
     $session->set('is-warning', "[h2]{$lang['takesignup_email_used']}[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
@@ -167,8 +167,8 @@ if ($site_config['dupeip_check_on']) {
         ->select('COUNT(id) AS count')
         ->where('ip = ?', inet_pton($ip))
         ->fetch('count');
-    if (0 != $ip_count) {
-        $session->set('is-warning', '[h2]The ip ' . htmlsafechars($ip) . ' is already in use. We only allow one account per ip address.[/h2]');
+    if ($ip_count != 0) {
+        $session->set('is-warning', "[h2]The ip " . htmlsafechars($ip) . " is already in use. We only allow one account per ip address.[/h2]");
         header("Location: {$site_config['baseurl']}/signup.php");
         die();
     }
@@ -242,13 +242,13 @@ if ($users_count > 0 && $site_config['email_confirm']) {
 
 $cache->delete('birthdayusers');
 $cache->delete('chat_users_list');
-if (0 === $users_count) {
+if ($users_count === 0) {
     $cache->delete('staff_settings_');
 }
 
 $added   = TIME_NOW;
 $subject = 'Welcome';
-$msg     = 'Hey there ' . htmlsafechars($wantusername) . "!\n\n Welcome to {$site_config['site_name']}! :clap2: \n\n Please ensure you're connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\nBe aware that the users database is deleted every few days.\n\ncheers {$site_config['site_name']} staff.\n";
+$msg     = 'Hey there ' . htmlsafechars($wantusername) . "!\n\n Welcome to {$site_config['site_name']}! :clap2: \n\n Please ensure you're connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\ncheers {$site_config['site_name']} staff.\n";
 $values  = [
     'sender'   => 0,
     'subject'  => $subject,
@@ -265,7 +265,7 @@ $cache->delete('all_users_');
 $cache->set('latestuser', format_username($user_id), $site_config['expires']['latestuser']);
 write_log('User account ' . (int) $user_id . ' (' . htmlsafechars($wantusername) . ') was created');
 
-if ($user_id > 2 && 1 == $site_config['autoshout_on']) {
+if ($user_id > 2 && $site_config['autoshout_on'] == 1) {
     $message = "Welcome New {$site_config['site_name']} Member: [user]" . htmlsafechars($wantusername) . '[/user]';
     autoshout($message);
 }
@@ -301,4 +301,4 @@ if ($site_config['auto_confirm']) {
 }
 
 $session->unset('signup_variables');
-header("Location: {$site_config['baseurl']}/ok.php?type=" . (0 === $users_count ? 'sysop' : ($site_config['email_confirm'] ? 'signup&email=' . urlencode($email) : 'confirm')));
+header("Location: {$site_config['baseurl']}/ok.php?type=" . ($users_count === 0 ? 'sysop' : ($site_config['email_confirm'] ? 'signup&email=' . urlencode($email) : 'confirm')));

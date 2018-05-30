@@ -13,11 +13,11 @@ dbconn();
 $lang    = array_merge(load_language('global'), load_language('ok'));
 $type    = isset($_GET['type']) ? $_GET['type'] : '';
 $HTMLOUT = '';
-if ('signup' == $type && isset($_GET['email'])) {
+if ($type === 'signup' && isset($_GET['email'])) {
     stderr("{$lang['ok_success']}", sprintf((!$site_config['email_confirm'] ? $lang['ok_email'] : $lang['ok_email_confirm']), htmlsafechars($_GET['email'], ENT_QUOTES)));
-} elseif ('invite' == $type && isset($_GET['email'])) {
+} elseif ($type === 'invite' && isset($_GET['email'])) {
     stderr("{$lang['ok_invsuccess']}", sprintf($lang['ok_email2'], htmlsafechars($_GET['email'], ENT_QUOTES)));
-} elseif ('sysop' == $type) {
+} elseif ($type === 'sysop') {
     check_user_status();
     if (isset($CURUSER)) {
         $session->set('is-info', "[p]{$lang['ok_sysop_activated']}[/p][p]Create your System BOT, be sure to use the same username as used during the install[/p]");
@@ -31,14 +31,14 @@ if ('signup' == $type && isset($_GET['email'])) {
     $HTMLOUT .= stdfoot();
     echo $HTMLOUT;
     die();
-} elseif ('confirmed' == $type) {
+} elseif ($type === 'confirmed') {
     $HTMLOUT .= stdhead("{$lang['ok_confirmed']}");
     $HTMLOUT .= "<h1>{$lang['ok_confirmed']}</h1>\n";
     $HTMLOUT .= "{$lang['ok_user_confirmed']}";
     $HTMLOUT .= stdfoot();
     echo $HTMLOUT;
     die();
-} elseif ('confirm' == $type) {
+} elseif ($type === 'confirm') {
     check_user_status();
     if (isset($CURUSER)) {
         $session->set('is-info', $lang['ok_signup_confirm']);

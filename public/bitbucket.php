@@ -23,7 +23,7 @@ $formats = [
 ];
 
 $bucketdir  = (isset($_POST['avy']) ? AVATAR_DIR : BITBUCKET_DIR . $folders . '/');
-$bucketlink = ((isset($_POST['avy']) || (isset($_GET['images']) && 2 == $_GET['images'])) ? 'avatar/' : $folders . '/');
+$bucketlink = ((isset($_POST['avy']) || (isset($_GET['images']) && $_GET['images'] == 2)) ? 'avatar/' : $folders . '/');
 $PICSALT    = $SaLt . $CURUSER['username'];
 $USERSALT   = substr(md5($SaLty . $CURUSER['id']), 0, 6);
 make_year(BITBUCKET_DIR);
@@ -44,15 +44,15 @@ if (!isset($_FILES['file'])) {
         }
         $folder_m = (!isset($_GET['month']) ? '&month=' . date('m') : '&month=' . (int) $_GET['month']);
         $yea      = (!isset($_GET['year']) ? '&year=' . date('Y') : '&year=' . (int) $_GET['year']);
-        if (isset($_GET['type']) && 2 == $_GET['type']) {
+        if (isset($_GET['type']) && $_GET['type'] == 2) {
             header("Refresh: 2; url={$site_config['baseurl']}/bitbucket.php?images=2");
         } else {
             header("Refresh: 2; url={$site_config['baseurl']}/bitbucket.php?images=1" . $yea . $folder_m);
         }
         die($lang['bitbucket_deleting'] . $delfile . $lang['bitbucket_redir']);
     }
-    if (isset($_GET['avatar']) && '' != $_GET['avatar'] && (($_GET['avatar']) != $CURUSER['avatar'])) {
-        $type = ((isset($_GET['type']) && 1 == $_GET['type']) ? 1 : 2);
+    if (isset($_GET['avatar']) && $_GET['avatar'] != '' && (($_GET['avatar']) != $CURUSER['avatar'])) {
+        $type = isset($_GET['type']) && $_GET['type'] == 1 ? 1 : 2;
         if (preg_match("/^http:\/\/$/i", $_GET['avatar']) || preg_match('/[?&;]/', $_GET['avatar']) || preg_match('#javascript:#is', $_GET['avatar']) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $_GET['avatar'])) {
             stderr($lang['bitbucket_error'], "{$lang['bitbucket_mustbe']}");
         }
@@ -63,7 +63,7 @@ if (!isset($_FILES['file'])) {
         ], $site_config['expires']['user_cache']);
         header("Refresh: 0; url={$site_config['baseurl']}/bitbucket.php?images=$type&updated=avatar");
     }
-    if (isset($_GET['updated']) && 'avatar' == $_GET['updated']) {
+    if (isset($_GET['updated']) && $_GET['updated'] === 'avatar') {
         $HTMLOUT .= "
         <h3>{$lang['bitbucket_updated']}
             <img src='" . image_proxy($CURUSER['avatar']) . "' alt='' />
@@ -97,7 +97,7 @@ if (!isset($_FILES['file'])) {
                     document.getElementById(id).select();
                 }
             </script>";
-    if (isset($_GET['images']) && 1 == $_GET['images']) {
+    if (isset($_GET['images']) && $_GET['images'] == 1) {
         $folder_month = (!isset($_GET['month']) ? date('m') : ($_GET['month'] < 10 ? '0' : '') . (int) $_GET['month']);
         $year         = (!isset($_GET['year']) ? '&amp;year=' . date('Y') : '&amp;year=' . (int) $_GET['year']);
         $HTMLOUT .= "
@@ -125,7 +125,7 @@ if (!isset($_FILES['file'])) {
                 <a href='bitbucket.php?images=1&amp;month=11{$year}'>{$lang['bitbucket_nov']}</a> &#160;
                 <a href='bitbucket.php?images=1&amp;month=12{$year}'>{$lang['bitbucket_dec']}</a> &#160;
             </div>";
-    } elseif (isset($_GET['images']) && 2 == $_GET['images']) {
+    } elseif (isset($_GET['images']) && $_GET['images'] == 2) {
         $HTMLOUT .= "
             <div>
                 <a href='{$site_config['baseurl']}/bitbucket.php?images=1'>{$lang['bitbucket_viewmonths']}</a>
@@ -145,8 +145,8 @@ if (!isset($_FILES['file'])) {
     if (isset($_GET['images'])) {
         $folder_month = (!isset($_GET['month']) ? date('m') : ($_GET['month'] < 10 ? '0' : '') . (int) $_GET['month']);
         $folder_name  = (!isset($_GET['year']) ? date('Y') . '/' : (int) $_GET['year'] . '/') . $folder_month;
-        $bucketlink2  = ((isset($_POST['avy']) || (isset($_GET['images']) && 2 == $_GET['images'])) ? 'avatar/' : $folder_name . '/');
-        foreach ((array) glob((2 == $_GET['images'] ? AVATAR_DIR . $USERSALT : BITBUCKET_DIR . $folder_name . '/' . $USERSALT) . '_*') as $filename) {
+        $bucketlink2 = ((isset($_POST['avy']) || (isset($_GET['images']) && $_GET['images'] == 2)) ? 'avatar/' : $folder_name . '/');
+        foreach ((array)glob(($_GET['images'] == 2 ? AVATAR_DIR . $USERSALT : BITBUCKET_DIR . $folder_name . '/' . $USERSALT) . '_*') as $filename) {
             if (!empty($filename)) {
                 $filename          = basename($filename);
                 $filename          = $bucketlink2 . $filename;
@@ -168,10 +168,10 @@ if (!isset($_FILES['file'])) {
                     <input id='t{$eid}t' onclick=\"SelectAll('t{$eid}t');\" type='text' size='70' value='[img]{$site_config['baseurl']}/img.php?{$filename}[/img]' readonly='readonly' />
                 </div>
                 <div>
-                    <a href='{$site_config['baseurl']}/bitbucket.php?type=" . ((isset($_GET['images']) && 2 == $_GET['images']) ? '2' : '1') . "&amp;avatar={$site_config['baseurl']}/img.php?{$filename}'>{$lang['bitbucket_maketma']}</a>
+                    <a href='{$site_config['baseurl']}/bitbucket.php?type=" . ((isset($_GET['images']) && $_GET['images'] == 2) ? '2' : '1') . "&amp;avatar={$site_config['baseurl']}/img.php?{$filename}'>{$lang['bitbucket_maketma']}</a>
                 </div>
                 <div>
-                    <a href='{$site_config['baseurl']}/bitbucket.php?type=" . ((isset($_GET['images']) && 2 == $_GET['images']) ? '2' : '1') . '&amp;delete=' . $encryptedfilename . '&amp;delhash=' . md5($filename . $USERSALT . $SaLt) . '&amp;month=' . (!isset($_GET['month']) ? date('m') : ($_GET['month'] < 10 ? '0' : '') . (int) $_GET['month']) . '&amp;year=' . (!isset($_GET['year']) ? date('Y') : (int) $_GET['year']) . "'>{$lang['bitbucket_delete']}</a>
+                    <a href='{$site_config['baseurl']}/bitbucket.php?type=" . ((isset($_GET['images']) && $_GET['images'] == 2) ? '2' : '1') . '&amp;delete=' . $encryptedfilename . '&amp;delhash=' . md5($filename . $USERSALT . $SaLt) . '&amp;month=' . (!isset($_GET['month']) ? date('m') : ($_GET['month'] < 10 ? '0' : '') . (int)$_GET['month']) . '&amp;year=' . (!isset($_GET['year']) ? date('Y') : (int)$_GET['year']) . "'>{$lang['bitbucket_delete']}</a>
                 </div>
             </div>";
             } else {
@@ -212,7 +212,7 @@ if (!function_exists('exif_imagetype')) {
     }
 }
 $it1 = exif_imagetype($_FILES['file']['tmp_name']);
-if (IMAGETYPE_GIF != $it1 && IMAGETYPE_JPEG != $it1 && IMAGETYPE_PNG != $it1) {
+if ($it1 != IMAGETYPE_GIF && $it1 != IMAGETYPE_JPEG && $it1 != IMAGETYPE_PNG) {
     $HTMLOUT .= "
         <h1>{$lang['bitbucket_upfail']}{$lang['bitbucket_sorry']}</h1>";
     die();
@@ -228,7 +228,7 @@ if (!move_uploaded_file($_FILES['file']['tmp_name'], $path)) {
 if (!file_exists($path)) {
     stderr($lang['bitbucket_error'], 'path not exists ' . $lang['bitbucket_upfail']);
 }
-if (isset($_POST['from']) && 'upload' == $_POST['from']) {
+if (isset($_POST['from']) && $_POST['from'] === 'upload') {
     echo "
         <div>
             <b><font color='red'>{$lang['bitbucket_success']}</b>

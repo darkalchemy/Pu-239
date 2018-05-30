@@ -2,7 +2,7 @@
 
 $preview      = '';
 $save_or_edit = (isset($_POST['edit']) ? 'edit' : (isset($_GET['edit']) ? 'edit' : 'save'));
-if (isset($_POST['buttonval']) && 'save as draft' == $_POST['buttonval']) {
+if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'save as draft') {
     //=== make sure they wrote something :P
     if (empty($_POST['subject'])) {
         stderr($lang['pm_error'], $lang['pm_draft_err']);
@@ -12,22 +12,22 @@ if (isset($_POST['buttonval']) && 'save as draft' == $_POST['buttonval']) {
     }
     $body    = sqlesc($_POST['body']);
     $subject = sqlesc(strip_tags($_POST['subject']));
-    if ('save' === $save_or_edit) {
+    if ($save_or_edit === 'save') {
         sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, location, draft, unread, saved) VALUES  
                                                                         (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($CURUSER['id']) . ',' . TIME_NOW . ', ' . $body . ', ' . $subject . ', \'-2\', \'yes\',\'no\',\'yes\')') or sqlerr(__FILE__, __LINE__);
         $cache->increment('inbox_' . $CURUSER['id']);
     }
-    if ('edit' === $save_or_edit) {
+    if ($save_or_edit === 'edit') {
         sql_query('UPDATE messages SET msg = ' . $body . ', subject = ' . $subject . ' WHERE id = ' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
     }
     //=== Check if messages was saved as draft
-    if (0 === mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
         stderr($lang['pm_error'], $lang['pm_draft_wasnt']);
     }
     header('Location: /pm_system.php?action=view_mailbox&box=-2&new_draft=1');
     die();
-} //=== end save draft
-if (isset($_POST['buttonval']) && 'preview' == $_POST['buttonval']) {
+}
+if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'preview') {
     $subject = htmlsafechars(trim($_POST['subject']));
     $draft   = trim($_POST['body']);
     $preview = '

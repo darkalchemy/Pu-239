@@ -6,7 +6,7 @@ class_check($class);
 global $site_config, $lang, $cache, $session;
 
 $lang = array_merge($lang, load_language('ad_hit_and_run_settings'));
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($site_config['hnr_config'] as $c_name => $c_value) {
         if (isset($_POST[$c_name]) && $_POST[$c_name] != $c_value) {
             $update[] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($_POST[$c_name]) ? join('|', $_POST[$c_name]) : $_POST[$c_name]) . ')';

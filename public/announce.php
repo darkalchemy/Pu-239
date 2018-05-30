@@ -38,7 +38,7 @@ foreach ([
              'info_hash',
              'peer_id',
          ] as $x) {
-    if (20 != strlen($$x)) {
+    if (strlen($$x) != 20) {
         err("Invalid $x (" . strlen($$x) . ' - ' . urlencode($$x) . ')');
     }
 }
@@ -74,14 +74,14 @@ if (!$port || $port > 0xffff) {
 if (!isset($event)) {
     $event = '';
 }
-$seeder = (0 === $left) ? 'yes' : 'no';
+$seeder = $left === 0 ? 'yes' : 'no';
 $user   = get_user_from_torrent_pass($torrent_pass);
 if (!$user) {
     err('Invalid torrent_pass. Please redownload the torrent from ' . $site_config['baseurl']);
 }
 $userid        = (int) $user['id'];
 $user['perms'] = (int) $user['perms'];
-if ('no' == $user['enabled']) {
+if ($user['enabled'] === 'no') {
     err("Permission denied, you're account is disabled");
 }
 
@@ -105,9 +105,8 @@ if (portblacklisted($port)) {
     }
 }
 
-if ('no' === $connectable && REQUIRE_CONNECTABLE) {
-    $msg = "Your IP:PORT({$realip}:{$port}) does not appear to be open and/or properly forwarded. Please visit https://portforward.com/ and review their guides for port forwarding.";
-    err($msg);
+if ($connectable === 'no' && REQUIRE_CONNECTABLE) {
+    err("Your IP:PORT({$realip}:{$port}) does not appear to be open and/or properly forwarded. Please visit https://portforward.com/ and review their guides for port forwarding.");
 }
 
 if (IP_LOGGING) {
@@ -149,7 +148,7 @@ $torrent['doubleslot'] = $torrent_modifier['doubleslot'];
 $happy_multiplier      = ($site_config['happy_hour'] ? get_happy($torrentid, $userid) : 0);
 
 $wantseeds = '';
-if ('yes' == $seeder) {
+if ($seeder === 'yes') {
     $wantseeds = "seeder = 'no' AND ";
 }
 
@@ -173,7 +172,7 @@ $res = $fluent->from('peers')
 
 unset($wantseeds);
 
-if (1 != $compact) {
+if ($compact != 1) {
     $resp = 'd' . benc_str('interval') . 'i' . $site_config['announce_interval'] . 'e' . benc_str('private') . 'i1e' . benc_str('peers') . 'l';
 } else {
     $resp = 'd' . benc_str('interval') . 'i' . $site_config['announce_interval'] . 'e' . benc_str('private') . 'i1e' . benc_str('min interval') . 'i' . 300 . 'e5:' . 'peers';
@@ -182,7 +181,7 @@ if (1 != $compact) {
 $peer     = [];
 $peer_num = 0;
 foreach ($res as $row) {
-    if (1 != $compact) {
+    if ($compact != 1) {
         $row['peer_id'] = str_pad($row['peer_id'], 20);
         if ($row['peer_id'] === $peer_id) {
             $self = $row;
@@ -198,7 +197,7 @@ foreach ($res as $row) {
         $peer_ip   = pack('C*', $peer_ip[0], $peer_ip[1], $peer_ip[2], $peer_ip[3]);
         $peer_port = pack('n*', (int) $row['port']);
         $time      = intval((TIME_NOW % 7680) / 60);
-        if (0 == $_GET['left']) {
+        if ($_GET['left'] == 0) {
             $time += 128;
         }
         $time   = pack('C', $time);
@@ -207,7 +206,7 @@ foreach ($res as $row) {
     }
 }
 
-if (1 != $compact) {
+if ($compact != 1) {
     $resp .= 'ee';
 } else {
     $o = '';
@@ -273,7 +272,7 @@ $agentarray = [
     '-AG',
 ];
 foreach ($agentarray as $bannedclient) {
-    if (false !== strpos($useragent, $bannedclient)) {
+    if (strpos($useragent, $bannedclient) !== false) {
         err('This client is banned. Please use rTorrent, deluge, Transmission, uTorrent 2.2.1+ or any other modern torrent client.');
     }
 }
@@ -283,7 +282,7 @@ $announce_wait = 30;
 if (isset($self) && $self['prevts'] > ($self['nowts'] - $announce_wait)) {
     err('There is a minimum announce time of ' . $announce_wait . ' seconds');
 }
-if ($left > 0 && 1 == $torrent['vip'] && $user['class'] < UC_VIP) {
+if ($left > 0 && $torrent['vip'] == 1 && $user['class'] < UC_VIP) {
     err('VIP Access Required, You must be a VIP In order to view details or download this torrent! You may become a Vip By Donating to our site. Donating ensures we stay online to provide you with more Excellent Torrents!');
 }
 
@@ -331,14 +330,14 @@ if (!isset($self)) {
         $cache->set('freecontribution_', $contribution, $site_config['expires']['contribution']);
     }
     if ($contribution['startTime'] < TIME_NOW && $contribution['endTime'] > TIME_NOW) {
-        if (1 == $contribution['freeleechEnabled']) {
+        if ($contribution['freeleechEnabled'] == 1) {
             $downthis = 0;
         }
-        if (1 == $contribution['duploadEnabled']) {
+        if ($contribution['duploadEnabled'] == 1) {
             $upthis   = $upthis * 2;
             $downthis = 0;
         }
-        if (1 == $contribution['hdownEnabled']) {
+        if ($contribution['hdownEnabled'] == 1) {
             $downthis = $downthis / 2;
         }
     }
@@ -347,31 +346,31 @@ if (!isset($self)) {
         include CACHE_DIR . 'free_cache.php';
         if (isset($free)) {
             foreach ($free as $fl) {
-                $isfree   = (1 == $fl['modifier'] || 3 == $fl['modifier']) && $fl['expires'] > TIME_NOW;
-                $isdouble = (2 == $fl['modifier'] || 3 == $fl['modifier']) && $fl['expires'] > TIME_NOW;
-                $issilver = (4 == $fl['modifier'])                         && $fl['expires'] > TIME_NOW;
+                $isfree = ($fl['modifier'] == 1 || $fl['modifier'] == 3) && $fl['expires'] > TIME_NOW;
+                $isdouble = ($fl['modifier'] == 2 || $fl['modifier'] == 3) && $fl['expires'] > TIME_NOW;
+                $issilver = ($fl['modifier'] == 4) && $fl['expires'] > TIME_NOW;
             }
         }
-        if (0 != $torrent['silver'] || $issilver) {
+        if ($torrent['silver'] != 0 || $issilver) {
             $downthis = $downthis / 2;
         }
 
         $RatioFreeCondition = ($site_config['ratio_free'] ? 'downloaded + 0' : "downloaded + $downthis");
         $crazyhour_on       = ($site_config['crazy_hour'] ? crazyhour_announce() : false);
         if ($downthis > 0) {
-            if (!($crazyhour_on || $isfree || 0 != $user['free_switch'] || 0 != $torrent['free'] || 0 != $torrent['vip'] || (0 != $torrent['freeslot']))) {
+            if (!($crazyhour_on || $isfree || $user['free_switch'] != 0 || $torrent['free'] != 0 || $torrent['vip'] != 0 || ($torrent['freeslot'] != 0))) {
                 $user_updateset['downloaded'] = $RatioFreeCondition;
             }
         }
         if ($upthis > 0) {
             if (!$crazyhour_on) {
-                $user_updateset['uploaded'] = 'uploaded + ' . ((0 != $torrent['doubleslot'] || $isdouble) ? ($upthis * 2) : $upthis);
+                $user_updateset['uploaded'] = 'uploaded + ' . (($torrent['doubleslot'] != 0 || $isdouble) ? ($upthis * 2) : $upthis);
             } else {
                 $user_updateset['uploaded'] = "uploaded + ($upthis * 3)";
             }
         }
     }
-    if ('no' == $user['highspeed'] && $upthis > 103872) {
+    if ($user['highspeed'] === 'no' && $upthis > 103872) {
         $diff    = (TIME_NOW - $self['ts']);
         $rate    = ($upthis / ($diff + 1));
         $last_up = (int) $user['uploaded'];
@@ -410,7 +409,7 @@ if (empty($a)) {
         'agent'       => $agent,
     ];
 
-    if ('no' == $seeder) {
+    if ($seeder === 'no') {
         $fluent->insertInto('snatched', $values)
             ->execute();
     } else {
@@ -424,7 +423,7 @@ if (empty($a)) {
             ->execute();
     }
 }
-if (isset($self) && 'stopped' == $event) {
+if (isset($self) && $event === 'stopped') {
     $seeder       = 'no';
     $delete_count = $fluent->deleteFrom('peers')
         ->where('torrent = ?', $torrentid)
@@ -433,7 +432,7 @@ if (isset($self) && 'stopped' == $event) {
 
     $cache->delete('MyPeers_' . $userid);
 
-    if (($a['uploaded'] + $upthis) < ($a['downloaded'] + $downthis) && 'yes' == $a['finished']) {
+    if (($a['uploaded'] + $upthis) < ($a['downloaded'] + $downthis) && $a['finished'] === 'yes') {
         $HnR_time_seeded = ($a['seedtime'] + $self['announcetime']);
         switch (true) {
             case $user['class'] <= $site_config['hnr_config']['firstclass']:
@@ -485,12 +484,12 @@ if (isset($self) && 'stopped' == $event) {
         $hit_and_run = 0;
     }
     if ($delete_count >= 1) {
-        if ('yes' == $self['seeder']) {
+        if ($self['seeder'] === 'yes') {
             adjust_torrent_peers($torrentid, -1, 0, 0);
         } else {
             adjust_torrent_peers($torrentid, 0, -1, 0);
         }
-        if ('yes' == $self['seeder']) {
+        if ($self['seeder'] === 'yes') {
             $torrent_updateset['seeders'] = new Envms\FluentPDO\Literal('seeders - 1');
         } else {
             $torrent_updateset['leechers'] = new Envms\FluentPDO\Literal('leechers - 1');
@@ -503,8 +502,8 @@ if (isset($self) && 'stopped' == $event) {
             $snatch_updateset['downloaded']  = new Envms\FluentPDO\Literal($site_config['ratio_free'] ? 'downloaded + 0' : "downloaded + $downthis");
             $snatch_updateset['to_go']       = $left;
             $snatch_updateset['upspeed']     = $upthis   > 0 ? "$upthis / {$self['announcetime']}" : 0;
-            $snatch_updateset['downspeed']   = $downthis > 0 ? "$downthis / {$self['announcetime']}" : 0;
-            if ('yes' == $self['seeder']) {
+            $snatch_updateset['do=wnspeed']   = $downthis > 0 ? "$downthis / {$self['announcetime']}" : 0;
+            if ($self['seeder'] == 'yes') {
                 $snatch_updateset['seedtime'] = new Envms\FluentPDO\Literal("seedtime + {$self['announcetime']}");
             } else {
                 $snatch_updateset['leechtime'] = new Envms\FluentPDO\Literal("leechtime + {$self['announcetime']}");
@@ -517,7 +516,7 @@ if (isset($self) && 'stopped' == $event) {
     }
 } elseif (isset($self)) {
     $set = [];
-    if ('completed' == $event) {
+    if ($event === 'completed') {
         if ($a) {
             $snatch_updateset['complete_date'] = TIME_NOW;
             $snatch_updateset['finished']      = 'yes';
@@ -550,15 +549,12 @@ if (isset($self) && 'stopped' == $event) {
 
     if ($updated >= 1) {
         if ($seeder != $self['seeder']) {
-            if ('yes' == $seeder) {
+            if ($seeder === 'yes') {
                 adjust_torrent_peers($torrentid, 1, -1, 0);
-            } else {
-                adjust_torrent_peers($torrentid, -1, 1, 0);
-            }
-            if ('yes' == $seeder) {
                 $torrent_updateset['seeders']  = new Envms\FluentPDO\Literal('seeders + 1');
                 $torrent_updateset['leechers'] = new Envms\FluentPDO\Literal('leechers - 1');
             } else {
+                adjust_torrent_peers($torrentid, -1, 1, 0);
                 $torrent_updateset['seeders']  = new Envms\FluentPDO\Literal('seeders - 1');
                 $torrent_updateset['leechers'] = new Envms\FluentPDO\Literal('leechers + 1');
             }
@@ -572,7 +568,7 @@ if (isset($self) && 'stopped' == $event) {
             $snatch_updateset['to_go']       = $left;
             $snatch_updateset['upspeed']     = $upthis   > 0 ? "$upthis / {$self['announcetime']}" : 0;
             $snatch_updateset['downspeed']   = $downthis > 0 ? "$downthis / {$self['announcetime']}" : 0;
-            if ('yes' == $self['seeder']) {
+            if ($self['seeder'] == 'yes') {
                 $snatch_updateset['seedtime'] = new Envms\FluentPDO\Literal("seedtime + {$self['announcetime']}");
             } else {
                 $snatch_updateset['leechtime'] = new Envms\FluentPDO\Literal("leechtime + {$self['announcetime']}");
@@ -584,9 +580,9 @@ if (isset($self) && 'stopped' == $event) {
         }
     }
 } else {
-    if ('yes' == $user['parked']) {
+    if ($user['parked'] === 'yes') {
         err('Your account is parked! (Read the FAQ)');
-    } elseif ($user['downloadpos'] != 1 || ($user['hnrwarn'] = 'yes' && $seeder != 'yes')) {
+    } elseif (($user['downloadpos'] != 1 || $user['hnrwarn'] === 'yes') && $seeder != 'yes') {
         err('Your downloading privileges have been disabled! (Read the rules)');
     }
     $values = [
@@ -624,20 +620,18 @@ if (isset($self) && 'stopped' == $event) {
         ->ignore()
         ->execute();
 
-    if (0 == $insert_peers) {
+    echo $insert_peers;
+    if ($insert_peers == 0) {
         $fluent->update('peers')
             ->set($update_values)
             ->execute();
     } else {
-        if ('yes' == $seeder) {
+        if ($seeder == 'yes') {
+            adjust_torrent_peers($torrentid, 1, 0, 0);
             $torrent_updateset['seeders'] = new Envms\FluentPDO\Literal('seeders + 1');
         } else {
-            $torrent_updateset['leechers'] = new Envms\FluentPDO\Literal('leechers + 1');
-        }
-        if ('yes' == $seeder) {
-            adjust_torrent_peers($torrentid, 1, 0, 0);
-        } else {
             adjust_torrent_peers($torrentid, 0, 1, 0);
+            $torrent_updateset['leechers'] = new Envms\FluentPDO\Literal('leechers + 1');
         }
         if ($a) {
             $snatch_updateset['ip']           = inet_pton($realip);
@@ -655,8 +649,8 @@ if (isset($self) && 'stopped' == $event) {
     $cache->delete('MyPeers_' . $userid);
 }
 
-if ('yes' == $seeder) {
-    if ('yes' != $torrent['banned']) {
+if ($seeder === 'yes') {
+    if ($torrent['banned'] != 'yes') {
         $torrent_updateset['visible'] = 'yes';
     }
     $torrent_updateset['last_action'] = TIME_NOW;

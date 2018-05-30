@@ -8,7 +8,7 @@ $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__)
 while ($ac = mysqli_fetch_assoc($lconf)) {
     $lottery_config[$ac['name']] = $ac['value'];
 }
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fail    = false;
     $tickets = isset($_POST['tickets']) ? (int) $_POST['tickets'] : '';
     if (!$tickets) {

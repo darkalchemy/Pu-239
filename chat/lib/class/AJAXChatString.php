@@ -24,7 +24,7 @@ class AJAXChatString
      */
     public static function subString($str, $start = 0, $length = null, $encoding = 'UTF-8')
     {
-        if (null === $length) {
+        if ($length === null) {
             $length = self::stringLength($str);
         }
         if (function_exists('mb_substr')) {

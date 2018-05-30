@@ -16,10 +16,10 @@ if (isset($_GET['remove'])) {
     header("Location: {$site_config['baseurl']}/staffpanel.php?tool=freeleech");
     die();
 }
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $configfile     = '<' . $lang['freelech_thisfile'] . date('M d Y H:i:s');
     $fl['modifier'] = (isset($_POST['modifier']) ? (int) $_POST['modifier'] : false);
-    if (isset($_POST['expires']) && 255 == $_POST['expires']) {
+    if (isset($_POST['expires']) && $_POST['expires'] == 255) {
         $fl['expires'] = 1;
     } else {
         $fl['expires'] = (isset($_POST['expires']) ? ($_POST['expires'] * 86400 + TIME_NOW) : false);
@@ -77,7 +77,7 @@ if (isset($free) && (count($free) < 1)) {
                 $mode = $lang['freelech_not_enable'];
         }
         $HTMLOUT .= "<tr><td>$mode
-             </td><td>" . ('Inf.' != $fl['expires'] && 1 != $fl['expires'] ? "{$lang['freelech_until']}" . get_date($fl['expires'], 'DATE') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . "{$lang['freelech_togo']})" : '' . $lang['freelech_unlimited'] . '') . " </td>
+             </td><td>" . ($fl['expires'] != 'Inf.' && $fl['expires'] != 1 ? "{$lang['freelech_until']}" . get_date($fl['expires'], 'DATE') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . "{$lang['freelech_togo']})" : '' . $lang['freelech_unlimited'] . '') . " </td>
              <td>{$fl['setby']}</td>
              <td>{$fl['title']}</td>
              <td>{$fl['message']}</td>

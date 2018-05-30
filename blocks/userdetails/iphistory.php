@@ -21,7 +21,7 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
             $ipuse[$ipsinuse[1]['enabled']] = $ipsinuse[1]['count'];
         }
 
-        if ((1 == $ipuse['yes'] && 0 == $ipuse['no']) || (1 == $ipuse['no'] && 0 == $ipuse['yes'])) {
+        if (($ipuse['yes'] == 1 && $ipuse['no'] == 0) || ($ipuse['no'] == 1 && $ipuse['yes'] == 0)) {
             $iphistory['use'] = '';
         } else {
             $ipcheck          = $user['ip'];

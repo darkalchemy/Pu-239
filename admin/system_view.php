@@ -142,7 +142,7 @@ if (!$tasks) {
 } else {
     $tasks = '<pre>' . $tasks . '</pre>';
 }
-$load_limit = $load_limit . " ({$lang['system_fromcache']}" . (1 == $using_cache ? "<span style='color:green;font-weight:bold;'>{$lang['system_true']})</span>" : "<span style='color:red;font-weight:bold;'>{$lang['system_false']})</span>");
+$load_limit = $load_limit . " ({$lang['system_fromcache']}" . ($using_cache == 1 ? "<span style='color:green;font-weight:bold;'>{$lang['system_true']})</span>" : "<span style='color:red;font-weight:bold;'>{$lang['system_false']})</span>");
 $html[]     = [
     $lang['system_mysql'],
     sql_get_version(),
@@ -153,7 +153,7 @@ $html[] = [
 ];
 $html[] = [
     $lang['system_safe'],
-    1 == @ini_get('safe_mode') ? "<span style='color:red;font-weight:bold;'>{$lang['system_on']}</span>" : "<span style='color:green;font-weight:bold;'>{$lang['system_off']}</span>",
+    @ini_get('safe_mode') == 1 ? "<span style='color:red;font-weight:bold;'>{$lang['system_on']}</span>" : "<span style='color:green;font-weight:bold;'>{$lang['system_off']}</span>",
 ];
 $html[] = [
     $lang['system_disabled'],

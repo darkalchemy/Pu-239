@@ -82,9 +82,8 @@ function tvrage(&$torrents)
         $force_update = true;
     }
     $memkey = 'tvrage_' . $tvrage_id;
-    if ($force_update || false === ($tvrage_showinfo = $cache->get($memkey))) {
-        //var_dump('Show from tvrage'); //debug
-        //get tvrage show info
+    $tvrage_showinfo = $cache->get($memkey);
+    if ($force_update || $active === false || is_null($active)) {
         $tvrage_link = sprintf('http://services.tvrage.com/myfeeds/showinfo.php?key=%s&sid=%d', $site_config['tvrage_api'], $tvrage_id);
         $tvrage_xml  = file_get_contents($tvrage_link);
         preg_match_all('/\<(showname|showlink|startdate|ended|image|origin_country|status|classification|summary|airtime|runtime)\>(.+)\<\/\\1\>/s', $tvrage_xml, $tmp, PREG_SET_ORDER);

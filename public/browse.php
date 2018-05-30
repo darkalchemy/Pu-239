@@ -11,7 +11,9 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $CURUSER, $site_config, $fluent, $cache;
 
-if (isset($_GET['clear_new']) && 1 == $_GET['clear_new']) {
+$cache = new Cache();
+
+if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
     $fluent->update('users')
         ->set(['last_browse' => TIME_NOW])
         ->where('id = ?', $CURUSER['id'])
@@ -111,13 +113,13 @@ if (!empty($_GET['today']) && $_GET['today']) {
     $today = 1;
 }
 
-if (isset($_GET['incldead']) && 1 == $_GET['incldead']) {
+if (isset($_GET['incldead']) && $_GET['incldead'] == 1) {
     $addparam .= 'incldead=1&amp;';
     if (!isset($CURUSER) || $CURUSER['class'] < UC_ADMINISTRATOR) {
         $wherea[] = "banned != 'yes'";
     }
 } else {
-    if (isset($_GET['incldead']) && 2 == $_GET['incldead']) {
+    if (isset($_GET['incldead']) && $_GET['incldead'] == 2) {
         $addparam .= 'incldead=2&amp;';
         $wherea[] = "visible = 'no'";
     } else {
@@ -125,14 +127,14 @@ if (isset($_GET['incldead']) && 1 == $_GET['incldead']) {
     }
 }
 
-if (isset($_GET['only_free']) && 1 == $_GET['only_free']) {
+if (isset($_GET['only_free']) && $_GET['only_free'] == 1) {
     $wherea[] = XBT_TRACKER ? $wherea[] = "freetorrent >= '1'" : $wherea[] = "free >= '1'";
     $addparam .= 'only_free=1&amp;';
 }
 if (isset($_GET['vip'])) {
-    if (2 == $_GET['vip']) {
+    if ($_GET['vip'] == 2) {
         $wherea[] = "vip = '1'";
-    } elseif (1 == $_GET['vip']) {
+    } elseif ($_GET['vip'] == 1) {
         $wherea[] = "vip = '0'";
     }
     $addparam .= "vip={$_GET['vip']}&amp;";
@@ -141,7 +143,7 @@ if (isset($_GET['vip'])) {
 $category = (isset($_GET['cat'])) ? (int) $_GET['cat'] : false;
 if (!$_GET && $CURUSER['notifs']) {
     foreach ($catids as $cat) {
-        if (false !== strpos($CURUSER['notifs'], '[cat' . $cat['id'] . ']')) {
+        if (strpos($CURUSER['notifs'], '[cat' . $cat['id'] . ']') !== false) {
             $wherecatina[] = $cat['id'];
             $addparam .= "c{$cat['id']}=1&amp;";
         }
@@ -163,11 +165,11 @@ if (!$_GET && $CURUSER['notifs']) {
 
 if (count($wherecatina) > 1) {
     $wherea[] = 'category IN (' . join(', ', $wherecatina) . ') ';
-} elseif (1 == count($wherecatina)) {
+} elseif (count($wherecatina) == 1) {
     $wherea[] = 'category =' . $wherecatina[0];
 }
 if (isset($cleansearchstr)) {
-    if ('' != $searchstr) {
+    if ($searchstr != '') {
         $addparam .= 'search=' . rawurlencode($searchstr) . '&amp;searchin=' . htmlsafechars($_GET['searchin']) . '&amp;incldead=' . intval($_GET['incldead']) . '&amp;';
         $searchstring = str_replace([
                                         '_',
@@ -194,14 +196,14 @@ if (isset($cleansearchstr)) {
         $join = '';
         foreach ($searcha as $foo) {
             foreach ($searchin as $boo) {
-                if ('owner' === $boo) {
+                if ($boo === 'owner') {
                     $wherea[] = 'u.username = ' . sqlesc($searchstr);
                     $join     = 'LEFT JOIN users AS u ON u.id = t.owner';
-                } elseif ('newgenre' === $boo) {
+                } elseif ($boo === 'newgenre') {
                     $wherea[] = 'newgenre = ' . sqlesc($searchstr);
-                } elseif ('descr' === $boo) {
+                } elseif ($boo === 'descr') {
                     $searchincrt[] = 'MATCH (`search_text`, `descr`) AGAINST (' . sqlesc($searchstr) . ' IN NATURAL LANGUAGE MODE)';
-                } elseif ('name' === $boo) {
+                } elseif ($boo === 'name') {
                     $searchincrt[] = 'MATCH (`name`) AGAINST (' . sqlesc($searchstr) . ' IN NATURAL LANGUAGE MODE)';
                 } else {
                     $searchincrt[] = 'MATCH (`search_text`, `descr`) AGAINST (' . sqlesc($searchstr) . ' IN NATURAL LANGUAGE MODE)';
@@ -210,7 +212,7 @@ if (isset($cleansearchstr)) {
         }
         if (count($searchincrt) > 1) {
             $wherea[] = '(' . join(' OR ', $searchincrt) . ')';
-        } elseif (1 === count($searchincrt)) {
+        } elseif (count($searchincrt) === 1) {
             $wherea[] = join(' OR ', $searchincrt);
         }
     }
@@ -230,9 +232,9 @@ if (!$torrentsperpage) {
     $torrentsperpage = 15;
 }
 if ($count) {
-    if ('' != $addparam) {
-        if ('' != $pagerlink) {
-            if (';' != $addparam[strlen($addparam) - 1]) { // & = &amp;
+    if ($addparam != '') {
+        if ($pagerlink != '') {
+            if ($addparam[strlen($addparam) - 1] != ';') {
                 $addparam = $addparam . '&' . $pagerlink;
             } else {
                 $addparam = $addparam . $pagerlink;
@@ -323,23 +325,23 @@ $vip     = ((isset($_GET['vip'])) ? intval($_GET['vip']) : '');
 $vip_box = "
                     <select name='vip' class='w-100'>
                         <option value='0'>VIP Torrents Included</option>
-                        <option value='1'" . (1 == $vip ? ' selected' : '') . ">VIP Torrents Not Included</option>
-                        <option value='2'" . (2 == $vip ? ' selected' : '') . '>VIP Torrents Only</option>
+                        <option value='1'" . ($vip == 1 ? ' selected' : '') . ">VIP Torrents Not Included</option>
+                        <option value='2'" . ($vip == 2 ? ' selected' : '') . '>VIP Torrents Only</option>
                     </select>';
 
 $selected  = (isset($_GET['incldead'])) ? (int) $_GET['incldead'] : '';
 $deadcheck = "
                     <select name='incldead' class='w-100'>
                         <option value='0'>{$lang['browse_active']}</option>
-                        <option value='1'" . (1 == $selected ? ' selected' : '') . ">{$lang['browse_inc_dead']}</option>
-                        <option value='2'" . (2 == $selected ? ' selected' : '') . ">{$lang['browse_dead']}</option>
+                        <option value='1'" . ($selected == 1 ? ' selected' : '') . ">{$lang['browse_inc_dead']}</option>
+                        <option value='2'" . ($selected == 2 ? ' selected' : '') . ">{$lang['browse_dead']}</option>
                     </select>";
 
 $only_free     = ((isset($_GET['only_free'])) ? intval($_GET['only_free']) : '');
 $only_free_box = "
                     <select name='only_free' class='w-100'>
                         <option value='0'>Include Non Free Torrents</option>
-                        <option value='1'" . (1 == $only_free ? ' selected' : '') . '>Include Only Free Torrents</option>
+                        <option value='1'" . ($only_free == 1 ? ' selected' : '') . '>Include Only Free Torrents</option>
                     </select>';
 
 $searchin = '
@@ -414,7 +416,7 @@ if (!$no_log_ip) {
     $userid = (int) $CURUSER['id'];
     $added  = TIME_NOW;
     $res    = sql_query('SELECT * FROM ips WHERE ip = ' . ipToStorageFormat($ip) . ' AND userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-    if (0 == mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) == 0) {
         sql_query('INSERT INTO ips (userid, ip, lastbrowse, type) VALUES (' . sqlesc($userid) . ', ' . ipToStorageFormat($ip) . ", $added, 'Browse')") or sqlerr(__FILE__, __LINE__);
         $cache->delete('ip_history_' . $userid);
     } else {

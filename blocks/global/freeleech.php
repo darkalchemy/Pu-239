@@ -13,7 +13,7 @@ function freeleech_countdown()
     if ($freeleech['freeleech_countdown'] === false || is_null($freeleech['freeleech_countdown'])) {
         $freeleech['freeleech_sql']       = sql_query('SELECT var, amount FROM freeleech WHERE type = "countdown"') or sqlerr(__FILE__, __LINE__);
         $freeleech['freeleech_countdown'] = [];
-        if (0 !== mysqli_num_rows($freeleech['freeleech_sql'])) {
+        if (mysqli_num_rows($freeleech['freeleech_sql']) !== 0) {
             $freeleech['freeleech_countdown'] = mysqli_fetch_assoc($freeleech['freeleech_sql']);
         } else {
             //$freeleech_sunday = strtotime('next Sunday');
@@ -90,12 +90,12 @@ if ($CURUSER) {
                 default:
                     $mode = 0;
             }
-            $htmlout .= (0 != $fl['modifier'] && $fl['expires'] > TIME_NOW ? '
+            $htmlout .= ($fl['modifier'] != 0 && $fl['expires'] > TIME_NOW ? '
      <li>
      <a class="tooltip" href="#"><b class="button is-info is-small">' . $lang['gl_freeleech'] . '</b>
      <span class="custom info alert alert-info"><em>' . $fl['title'] . '</em>
      ' . $mode . '<br>
-     ' . $fl['message'] . ' ' . $lang['gl_freeleech_sb'] . ' ' . $fl['setby'] . '<br>' . (1 != $fl['expires'] ? '' . $lang['gl_freeleech_u'] . ' ' . get_date($fl['expires'], 'DATE') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . ' ' . $lang['gl_freeleech_tg'] . ')' : '') . '  
+     ' . $fl['message'] . ' ' . $lang['gl_freeleech_sb'] . ' ' . $fl['setby'] . '<br>' . ($fl['expires'] != 1 ? '' . $lang['gl_freeleech_u'] . ' ' . get_date($fl['expires'], 'DATE') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . ' ' . $lang['gl_freeleech_tg'] . ')' : '') . '  
      </span></a></li>' : '');
         }
     }

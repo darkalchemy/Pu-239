@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 dbconn();
 global $site_config, $cache;
 
@@ -185,7 +185,7 @@ function paypallog($txt)
     file_put_contents(ROOT_DIR . '/logs/paypal.txt', "\n[" . date('h:m D-M-Y') . "]\n" . $txt, FILE_APPEND);
 }
 
-if (0 == sizeof($_POST)) {
+if (count($_POST) == 0) {
     paypallog('There is no _POST from paypal');
 }
 $request = 'cmd=_notify-validate';
@@ -205,9 +205,9 @@ if ($hand = fsockopen('ssl://www.paypal.com', 443, $errno, $errstr, 30)) {
     $vars['uid']    = isset($_POST['custom']) ? (int) $_POST['custom'] : 0;
     $vars['amount'] = isset($_POST['mc_gross']) ? (int) $_POST['mc_gross'] : 0;
     $vars['memo']   = isset($_POST['memo']) ? htmlsafechars($_POST['memo']) : '';
-    if (false !== stripos($paypal_data, 'VERIFIED')) {
+    if (stripos($paypal_data, 'VERIFIED') !== false) {
         $user_query = sql_query(sprintf('SELECT COUNT(id) FROM users WHERE id = %d', $vars['uid'])) or paypallog(mysqli_error($GLOBALS['___mysqli_ston']));
-        if (1 == mysqli_num_rows($user_query)) {
+        if (mysqli_num_rows($user_query) == 1) {
             //update the user and add the goodies
             sql_query(mk_update_query($vars['amount'], $vars['uid'])) or paypallog(mysqli_error($GLOBALS['___mysqli_ston']));
             //instead of updating the cache delete it :P
@@ -221,7 +221,7 @@ if ($hand = fsockopen('ssl://www.paypal.com', 443, $errno, $errstr, 30)) {
         } else {
             paypallog('Could not find user with id = ' . $vars['uid']);
         }
-    } elseif (false !== stripos($paypal_data, 'INVALID')) {
+    } elseif (stripos($paypal_data, 'INVALID') !== false) {
         //something went wrong log data
         paypallog('Paypal didn\'t like the transaction and it rejected it. _POST = ' . print_r($_POST, 1));
         //make some nice messages to let everyone know about the problem

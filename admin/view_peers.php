@@ -17,31 +17,31 @@ $HTMLOUT = $count = '';
  */
 function my_inet_ntop($ip)
 {
-    if (4 == strlen($ip)) {
+    if (strlen($ip) == 4) {
         // ipv4
         list(, $ip) = unpack('N', $ip);
         $ip         = long2ip($ip);
-    } elseif (16 == strlen($ip)) {
+    } elseif (strlen($ip) == 16) {
         // ipv6
         $ip  = bin2hex($ip);
         $ip  = substr(chunk_split($ip, 4, ':'), 0, -1);
         $ip  = explode(':', $ip);
         $res = '';
         foreach ($ip as $seg) {
-            while ('0' == $seg[0]) {
+            while ($seg[0] == '0') {
                 $seg = substr($seg, 1);
             }
-            if ('' != $seg) {
-                $res .= ('' == $res ? '' : ':') . $seg;
+            if ($seg != '') {
+                $res .= ($res == '' ? '' : ':') . $seg;
             } else {
                 if (strpos($res, '::') === false) {
-                    if (':' == substr($res, -1)) {
+                    if (substr($res, -1) === ':') {
                         continue;
                     }
                     $res .= ':';
                     continue;
                 }
-                $res .= ('' == $res ? '' : ':') . '0';
+                $res .= ($res === '' ? '' : ':') . '0';
             }
         }
         $ip = $res;
@@ -95,7 +95,7 @@ if (XBT_TRACKER) {
     $sql = 'SELECT p.id, p.userid, p.torrent, p.torrent_pass, p.peer_id, p.ip, p.port, p.uploaded, p.downloaded, p.to_go, p.seeder, p.started, p.last_action, p.connectable, p.agent, p.finishedat, p.downloadoffset, p.uploadoffset, u.username, t.name ' . 'FROM peers AS p ' . 'LEFT JOIN users AS u ON u.id=p.userid ' . "LEFT JOIN torrents AS t ON t.id=p.torrent WHERE started != '0'" . "ORDER BY p.started DESC {$pager['limit']}";
 }
 $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-if (0 != mysqli_num_rows($result)) {
+if (mysqli_num_rows($result) != 0) {
     if (XBT_TRACKER) {
         $HTMLOUT .= "<table width='100%' >
 <tr>
@@ -103,12 +103,12 @@ if (0 != mysqli_num_rows($result)) {
 <td class='colhead' width='1%'>{$lang['wpeers_torrent']}</td>
 <td class='colhead' width='1%'>{$lang['wpeers_ip']}</td>
 <td class='colhead' width='1%'>{$lang['wpeers_up']}</td>
-" . (true == $site_config['ratio_free'] ? '' : "<td class='colhead' width='1%'>{$lang['wpeers_dn']}</td>") . "
+" . ($site_config['ratio_free'] == true ? '' : "<td class='colhead' width='1%'>{$lang['wpeers_dn']}</td>") . "
 <td class='colhead' width='1%'>{$lang['wpeers_pssky']}</td>
 <td class='colhead' width='1%'>{$lang['wpeers_seed']}</td>
 <td class='colhead' width='1%'>{$lang['wpeers_last']}</td>
 <td class='colhead' width='1%'>{$lang['wpeers_uspeed']}</td>
-" . (true == $site_config['ratio_free'] ? '' : "<td class='colhead' width='1%'>{$lang['wpeers_dspeed']}</td>") . "
+" . ($site_config['ratio_free'] == true ? '' : "<td class='colhead' width='1%'>{$lang['wpeers_dspeed']}</td>") . "
 <td class='colhead' width='1%'>{$lang['wpeers_togo']}</td>
 </tr>";
     } else {
@@ -119,14 +119,14 @@ if (0 != mysqli_num_rows($result)) {
 <td class='colhead' width='1%'>{$lang['wpeers_ip']}</td>
 <td class='colhead' width='1%'>{$lang['wpeers_port']}</td>
 <td class='colhead' width='1%'>{$lang['wpeers_up']}</td>
-" . (true == $site_config['ratio_free'] ? '' : "<td class='colhead' width='1%'>{$lang['wpeers_dn']}</td>") . "
+" . ($site_config['ratio_free'] == true ? '' : "<td class='colhead' width='1%'>{$lang['wpeers_dn']}</td>") . "
 <td class='colhead' width='1%'>{$lang['wpeers_pssky']}</td>
 <td class='colhead' width='1%'>{$lang['wpeers_con']}</td>
 <td class='colhead' width='1%'>{$lang['wpeers_seed']}</td>
 <td class='colhead' width='1%'>{$lang['wpeers_start']}</td>
 <td class='colhead' width='1%'>{$lang['wpeers_last']}</td>
 <td class='colhead' width='1%'>{$lang['wpeers_upoff']}</td>
-" . (true == $site_config['ratio_free'] ? '' : "<td class='colhead' width='1%'>{$lang['wpeers_dnoff']}</td>") . "
+" . ($site_config['ratio_free'] == true ? '' : "<td class='colhead' width='1%'>{$lang['wpeers_dnoff']}</td>") . "
 <td class='colhead' width='1%'>{$lang['wpeers_togo']}</td>
 </tr>";
     }
@@ -145,12 +145,12 @@ if (0 != mysqli_num_rows($result)) {
 <td><a href="details.php?id=' . (int) ($row['fid']) . '">' . $smallname . '</a></td>
 <td>' . htmlsafechars(XBT_IP_CONVERT($row['ipa'])) . '</td>
 <td>' . htmlsafechars(mksize($row['uploaded'])) . '</td>
-' . (true == $site_config['ratio_free'] ? '' : '<td>' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
+' . ($site_config['ratio_free'] == true ? '' : '<td>' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
 <td>' . htmlsafechars($row['torrent_pass']) . '</td>
 <td>' . ($row['seeders'] >= 1 ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
 <td>' . get_date($row['mtime'], 'DATE', 0, 1) . '</td>
 <td>' . htmlsafechars(mksize($row['upspeed'])) . '/s</td>
-' . (true == $site_config['ratio_free'] ? '' : '<td>' . htmlsafechars(mksize($row['downspeed'])) . '/s</td>') . '
+' . ($site_config['ratio_free'] == true ? '' : '<td>' . htmlsafechars(mksize($row['downspeed'])) . '/s</td>') . '
 <td>' . htmlsafechars(mksize($row['left'])) . '</td>
 </tr>';
         } else {
@@ -160,14 +160,14 @@ if (0 != mysqli_num_rows($result)) {
 <td>' . htmlsafechars($row['ip']) . '</td>
 <td>' . htmlsafechars($row['port']) . '</td>
 <td>' . htmlsafechars(mksize($row['uploaded'])) . '</td>
-' . (true == $site_config['ratio_free'] ? '' : '<td>' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
+' . ($site_config['ratio_free'] == true ? '' : '<td>' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
 <td>' . htmlsafechars($row['torrent_pass']) . '</td>
-<td>' . ('yes' == $row['connectable'] ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
-<td>' . ('yes' == $row['seeder'] ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
+<td>' . ($row['connectable'] == 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
+<td>' . ($row['seeder'] == 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
 <td>' . get_date($row['started'], 'DATE') . '</td>
 <td>' . get_date($row['last_action'], 'DATE', 0, 1) . '</td>
 <td>' . htmlsafechars(mksize($row['uploadoffset'])) . '</td>
-' . (true == $site_config['ratio_free'] ? '' : '<td>' . htmlsafechars(mksize($row['downloadoffset'])) . '</td>') . '
+' . ($site_config['ratio_free'] == true ? '' : '<td>' . htmlsafechars(mksize($row['downloadoffset'])) . '</td>') . '
 <td>' . htmlsafechars(mksize($row['to_go'])) . '</td>
 </tr>';
         }

@@ -1,5 +1,10 @@
 30 May 2018
+revert: reversed conditionals
+fix: a couple of var set that should have been a comparison
+replace: sizeof with count for consistency
+replace: __DIR__ with dirname(__FILE__) for consistency
 update: README to include required MariaDB settings
+add: check for innodb_file_format , innodb_large_prefix, innodb_file_per_table in mysql during install
 
 27 May 2018
 remove: cleanup from user thread, remove autoclean and register_shutdown_function

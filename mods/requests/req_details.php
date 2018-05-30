@@ -28,7 +28,7 @@ $HTMLOUT .= "<tr><td><b>{$lang['req_added']}</b></td>
 if ($CURUSER['id'] == $num['userid'] || $CURUSER['class'] >= UC_MODERATOR) {
     $edit   = " | <a class='altlink' href='viewrequests.php?id=" . $id . "&amp;edit_request'>{$lang['details_edit']}</a> |";
     $delete = " <a class='altlink' href='viewrequests.php?id=" . $id . "&amp;del_req'>{$lang['details_delete']}</a> ";
-    if (0 != $num['torrentid']) {
+    if ($num['torrentid'] != 0) {
         $reset = "| <a class='altlink' href='viewrequests.php?id=" . $id . "&amp;req_reset'>{$lang['details_reset']}</a>";
     }
 }
@@ -42,7 +42,7 @@ $HTMLOUT .= "<tr>
 {$lang['details_break']} 
 <form action='report.php?type=Request&amp;id=$id' method='post'><input class='button is-small' type='submit' name='submit' value='{$lang['details_report']}' /></form></td>
 </tr>" : '');
-if (0 == $num['torrentid']) {
+if ($num['torrentid'] == 0) {
     $HTMLOUT .= "<tr><td><b>{$lang['details_fill_this']}</b></td>
 <td>" . ($CURUSER['id'] != $num['userid'] ? "
 <form method='post' action='viewrequests.php?id=" . $id . "&amp;req_filled'>

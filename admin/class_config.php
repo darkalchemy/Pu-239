@@ -79,10 +79,10 @@ function write_css($data)
     file_put_contents(ROOT_DIR . 'templates/1/css/classcolors.css', $classdata . PHP_EOL);
 }
 
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [];
     $cache->delete('is_staffs_');
-    if ('edit' == $mode) {
+    if ($mode === 'edit') {
         foreach ($class_config as $c_name => $value) {
             // handing from database
             $c_value      = $value['value']; // $key is like UC_USER etc....
@@ -128,7 +128,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
         unset($_POST);
     }
     //ADD CLASS
-    if ('add' == $mode) {
+    if ($mode === 'add') {
         if (!empty($_POST['name']) && !empty($_POST['value']) && !empty($_POST['cname']) && !empty($_POST['color'])) {
             $name   = isset($_POST['name']) ? htmlsafechars($_POST['name']) : stderr($lang['classcfg_error'], $lang['classcfg_error_class_name']);
             $value  = isset($_POST['value']) ? (int) $_POST['value'] : stderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
@@ -225,7 +225,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
         }
     }
     // remove
-    if ('remove' == $mode) {
+    if ($mode === 'remove') {
         $name = isset($_POST['remove']) ? htmlsafechars($_POST['remove']) : stderr($lang['classcfg_error'], $lang['classcfg_error_required']);
         $res  = sql_query("SELECT value from class_config WHERE name = '$name' ");
         while ($arr = mysqli_fetch_array($res)) {

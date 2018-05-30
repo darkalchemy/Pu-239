@@ -19,7 +19,7 @@ if (!isset($CURUSER)) {
 $uid  = (int) $CURUSER['id'];
 $tid  = isset($_POST['torrentid']) ? (int) $_POST['torrentid'] : (isset($_GET['torrentid']) ? (int) $_GET['torrentid'] : 0);
 $do   = isset($_POST['action']) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) ? htmlsafechars($_GET['action']) : 'list');
-$ajax = isset($_POST['ajax']) && 1 == $_POST['ajax'] ? true : false;
+$ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
 /**
  * @return string
  */
@@ -99,7 +99,7 @@ switch ($do) {
             $c      = 'SELECT count(id) FROM thanks WHERE userid = ' . sqlesc($uid) . ' AND torrentid = ' . sqlesc($tid);
             $result = sql_query($c);
             $arr    = $result->fetch_row();
-            if (0 == $arr[0]) {
+            if ($arr[0] == 0) {
                 if (sql_query('INSERT INTO thanks(userid,torrentid) VALUES(' . sqlesc($uid) . ',' . sqlesc($tid) . ')')) {
                     echo print_list();
                 } else {
@@ -111,7 +111,7 @@ switch ($do) {
                 }
             }
         }
-        if (1 == $site_config['seedbonus_on']) {
+        if ($site_config['seedbonus_on'] == 1) {
             sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($site_config['bonus_per_thanks']) . ' WHERE id =' . sqlesc($uid))                                 or sqlerr(__FILE__, __LINE__);
             $sql                 = sql_query('SELECT seedbonus ' . 'FROM users ' . 'WHERE id = ' . sqlesc($uid))                                                           or sqlerr(__FILE__, __LINE__);
             $User                = mysqli_fetch_assoc($sql);

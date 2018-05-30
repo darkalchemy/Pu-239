@@ -276,7 +276,7 @@ function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type =
 {
     global $site_config, $lang;
     $pid       = isset($_GET['pid']) ? intval($_GET['pid']) : 0;
-    $form_type = ('' != $form_type ? $form_type : 'poll_update');
+    $form_type = ($form_type != '' ? $form_type : 'poll_update');
     $HTMLOUT   = "
     <script>
         var showfullonload = parseInt(\"{$show_open}\");
@@ -391,7 +391,7 @@ function makepoll()
     if (!empty($choices_count) && count($choices_count) > ($site_config['max_poll_questions'] * $site_config['max_poll_choices_per_question'])) {
         die('poll_to_many');
     }
-    if (isset($_POST['mode']) && 'poll_update' == $_POST['mode']) {
+    if (isset($_POST['mode']) && $_POST['mode'] == 'poll_update') {
         $questions['total_votes'] = $poll_total_votes;
     }
 

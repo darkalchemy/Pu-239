@@ -20,8 +20,8 @@ if ($downloaded > 0) {
 } else {
     $ratio = $newratio = $ratiochange = '---';
 }
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
-    if ('yes' == $CURUSER['tenpercent']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($CURUSER['tenpercent'] === 'yes') {
         stderr('Used', 'It appears that you have already used your 10% addition.');
     }
     $sure = (isset($_POST['sure']) ? intval($_POST['sure']) : '');
@@ -45,7 +45,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
         stderr('10% Added', 'Your total upload amount has been increased by 10% from <b>' . mksize($uploaded) . '</b> to <b>' . mksize($newuploaded) . "</b>, which brings your ratio to <b>$newratio</b>.");
     }
 }
-if ('no' == $CURUSER['tenpercent']) {
+if ($CURUSER['tenpercent'] === 'no') {
     $HTMLOUT .= '
   <script>
   /*<![CDATA[*/
@@ -58,7 +58,7 @@ if ('no' == $CURUSER['tenpercent']) {
   /*]]>*/
   </script>';
 }
-if ('yes' == $CURUSER['tenpercent']) {
+if ($CURUSER['tenpercent'] === 'yes') {
     stderr('Oops', 'It appears that you have already used your 10% addition');
     die();
 }

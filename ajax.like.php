@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'add_functions.php';
 check_user_status();
@@ -13,7 +13,7 @@ $banned_users = [
 ]; // Please insert single or nultiple user id's with a comma  EG: 1,50,114,556   etc
 $check         = isset($_POST['type']) ? $_POST['type'] : '';
 $disabled_time = (isset($_POST['time'], $check)) ? (int) $_POST['time'] : 0;
-if ('disabled' == $check) {
+if ($check === 'disabled') {
     $res = sql_query('INSERT INTO manage_likes (user_id,disabled_time) VALUES (' . $CURUSER['id'] . ',' . time() . "+$disabled_time) ON DUPLICATE KEY UPDATE disabled_time=" . time() . '') or sqlerr(__FILE__, __LINE__);
     die();
 }
@@ -40,13 +40,13 @@ function comment_like_unlike()
         die($lang['ajlike_you_been_banned']);
     }
     $exp = explode(',', $data[0]);
-    if ($res && 'like' == $type[1] && array_key_exists($type[0], $tb_fields)) {
+    if ($res && $type[1] == 'like' && array_key_exists($type[0], $tb_fields)) {
         if (!(in_array($CURUSER['id'], $exp))) {
             $res2 = sql_query('UPDATE ' . $tb_fields[$type[0]] . " SET user_likes = IF(LENGTH(user_likes),CONCAT(user_likes,','," . sqlesc((string) $CURUSER['id']) . '),' . sqlesc((string) $CURUSER['id']) . ') WHERE id = ' . sqlesc($the_id) . '') or sqlerr(__FILE__, __LINE__);
         } else {
             die($lang['ajlike_you_already_liked']);
         }
-    } elseif ($res && 'unlike' == $type[1] && array_key_exists($type[0], $tb_fields)) {
+    } elseif ($res && $type[1] == 'unlike' && array_key_exists($type[0], $tb_fields)) {
         if (in_array($CURUSER['id'], $exp)) {
             $key = array_search($CURUSER['id'], $exp);
             unset($exp[$key]);

@@ -2,7 +2,7 @@
 
 return;
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 
@@ -30,9 +30,9 @@ if ($id = $session->get('userID') && $session->validateToken($_POST['csrf_token'
                                 WHERE uid = ' . sqlesc($user['id']) . '
                                 GROUP BY `left`') or sqlerr(__LINE__, __FILE__);
             while ($a = mysqli_fetch_assoc($r)) {
-                $key          = 0 == $a['left'] ? 'yes' : 'no';
+                $key = $a['left'] == 0 ? 'yes' : 'no';
                 $seed[$key]   = number_format((int) $a['count']);
-                $seed['conn'] = 0 == $a['connectable'] ? 1 : 2;
+                $seed['conn'] = $a['connectable'] == 0 ? 1 : 2;
             }
             $cache->set('MyPeers_XBT_' . $user['id'], $seed, $site_config['expires']['MyPeers_xbt_']);
             unset($r, $a);
@@ -49,9 +49,9 @@ if ($id = $session->get('userID') && $session->validateToken($_POST['csrf_token'
                                 WHERE userid = ' . sqlesc($user['id']) . '
                                 GROUP BY seeder');
             while ($a = mysqli_fetch_assoc($r)) {
-                $key          = 'yes' == $a['seeder'] ? 'yes' : 'no';
+                $key = $a['seeder'] === 'yes' ? 'yes' : 'no';
                 $seed[$key]   = number_format((int) $a['count']);
-                $seed['conn'] = 'no' == $a['connectable'] ? 1 : 2;
+                $seed['conn'] = $a['connectable'] === 'no' ? 1 : 2;
             }
             $cache->set('MyPeers_' . $user['id'], $seed, $site_config['expires']['MyPeers_']);
             unset($r, $a);
@@ -90,7 +90,7 @@ if ($id = $session->get('userID') && $session->validateToken($_POST['csrf_token'
         $cache->set('user_achievement_points_' . $user['id'], $Achievement_Points, 0);
     }
 
-    if (255 != $user['override_class']) {
+    if ($user['override_class'] != 255) {
         $usrclass = ' <b>(' . get_user_class_name($user['class']) . ')</b> ';
     } elseif ($user['class'] >= UC_STAFF) {
         $usrclass = " <a href='{$site_config['baseurl']}/setclass.php'><b>(" . get_user_class_name($user['class']) . ')</b></a>';
@@ -158,14 +158,14 @@ if ($id = $session->get('userID') && $session->validateToken($_POST['csrf_token'
         <div class='left'>{$lang['gl_connectable']}</div>
         <div>{$connectable}</div>
     </div>
-    " . ($user['class'] >= UC_STAFF || 'yes' == $user['got_blocks'] || 'yes' == $user['got_moods'] ? "
+    " . ($user['class'] >= UC_STAFF || $user['got_blocks'] === 'yes' || $user['got_moods'] === 'yes' ? "
     <br>
     <div class='left'>{$lang['gl_userblocks']}</div>
     <div class='flex-user-stats'>
         <div class='left'>{$lang['gl_myblocks']}</div>
         <div><a href='{$site_config['baseurl']}/user_blocks.php'>{$lang['gl_click']}</a></div>" : '') . '
     </div>
-    ' . ($user['class'] >= UC_STAFF || 'yes' == $user['got_moods'] ? "
+    " . ($user['class'] >= UC_STAFF || $user['got_moods'] === 'yes' ? "
     <div class='flex-user-stats'>
         <div class='left'>{$lang['gl_myunlocks']}</div>
         <div><a href='{$site_config['baseurl']}/user_unlocks.php'>{$lang['gl_click']}</a></div>" : '') . '

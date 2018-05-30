@@ -1,7 +1,7 @@
 <?php
 
 $subject = $draft = '';
-if (isset($_POST['buttonval']) && 'save draft' == $_POST['buttonval']) {
+if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'save draft') {
     //=== make sure they wrote something :P
     if (empty($_POST['subject'])) {
         stderr($lang['pm_error'], $lang['pm_draft_err']);
@@ -16,7 +16,7 @@ if (isset($_POST['buttonval']) && 'save draft' == $_POST['buttonval']) {
     $cache->increment('inbox_' . $CURUSER['id']);
     $new_draft_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
     //=== Check if messages was saved as draft
-    if (0 === mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
         stderr($lang['pm_error'], $lang['pm_draft_err2']);
     }
     header('Location: pm_system.php?action=view_message&new_draft=1&id=' . $new_draft_id);

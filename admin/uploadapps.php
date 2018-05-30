@@ -22,8 +22,8 @@ if (!in_array($action, $possible_actions)) {
 }
 $HTMLOUT = $where = $where1 = '';
 
-if ('app' == $action || 'show' == $action) {
-    if ('show' == $action) {
+if ($action === 'app' || $action === 'show') {
+    if ($action === 'show') {
         $hide = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'>{$lang['uploadapps_hide']}</a>";
         $res  = $fluent->from('uploadapp')
             ->select('users.uploaded')
@@ -55,7 +55,7 @@ if ('app' == $action || 'show' == $action) {
             </ul>
         </div>
         <h1 class='has-text-centered'>{$lang['uploadapps_applications']}</h1>";
-    if (0 == $count) {
+    if ($count == 0) {
         $HTMLOUT .= main_div($lang['uploadapps_noapps']);
     } else {
         $HTMLOUT .= "
@@ -77,9 +77,9 @@ if ('app' == $action || 'show' == $action) {
             </tr>";
         $body = '';
         foreach ($res as $arr) {
-            if ('accepted' == $arr['status']) {
+            if ($arr['status'] === 'accepted') {
                 $status = "<span style='color: green;'>{$lang['uploadapps_accepted']}</span>";
-            } elseif ('rejected' == $arr['status']) {
+            } elseif ($arr['status'] === 'rejected') {
                 $status = "<span class='has-text-danger'>{$lang['uploadapps_rejected']}</span>";
             } else {
                 $status = "<span style='color: blue;'>{$lang['uploadapps_pending']}</span>";
@@ -110,7 +110,7 @@ if ('app' == $action || 'show' == $action) {
     }
 }
 
-if ('viewapp' == $action) {
+if ($action === 'viewapp') {
     $id  = (int) $_GET['id'];
     $arr = $fluent->from('uploadapp')
         ->select('users.uploaded')
@@ -174,7 +174,7 @@ if ('viewapp' == $action) {
             <td>{$lang['uploadapps_uploader']}</td>
             <td>" . htmlsafechars($arr['sites']) . '</td>
         </tr>';
-    if ('' != $arr['sitenames']) {
+    if ($arr['sitenames'] != '') {
         $table .= "
         <tr>
             <td>{$lang['uploadapps_sites']}</td>
@@ -194,7 +194,7 @@ if ('viewapp' == $action) {
             <td>" . htmlsafechars($arr['seeding']) . '</td>
         </tr>';
     }
-    if ('pending' == $arr['status']) {
+    if ($arr['status'] === 'pending') {
         $div1 = "
             <h2>{$lang['uploadapps_note']}</h2>
             <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=acceptapp'>
@@ -218,7 +218,7 @@ if ('viewapp' == $action) {
         $table = "
         <tr>
             <td colspan='2'>
-                {$lang['uploadapps_application']} " . ('accepted' == $arr['status'] ? 'accepted' : 'rejected') . ' by <b>' . htmlsafechars($arr['moderator']) . "</b><br>{$lang['uploadapps_comm']}" . htmlsafechars($arr['comment']) . "
+                {$lang['uploadapps_application']} " . ($arr['status'] === 'accepted' ? 'accepted' : 'rejected') . ' by <b>' . htmlsafechars($arr['moderator']) . "</b><br>{$lang['uploadapps_comm']}" . htmlsafechars($arr['comment']) . "
             </td>
         </tr>
         <div>
@@ -227,7 +227,7 @@ if ('viewapp' == $action) {
         $HTMLOUT .= main_table($table);
     }
 }
-if ('acceptapp' == $action) {
+if ($action === 'acceptapp') {
     $id = (int) $_POST['id'];
     if (!is_valid_id($id)) {
         stderr($lang['uploadapps_error'], $lang['uploadapps_noid']);
@@ -244,7 +244,7 @@ if ('acceptapp' == $action) {
     $subject    = sqlesc($lang['uploadapps_subject']);
     $msg        = sqlesc("{$lang['uploadapps_msg']}\n\n{$lang['uploadapps_msg_note']} $note");
     $msg1       = sqlesc("{$lang['uploadapps_msg_user']} [url={$site_config['baseurl']}/userdetails.php?id=" . (int) $arr['uid'] . "][b]{$arr['username']}[/b][/url] {$lang['uploadapps_msg_been']} {$CURUSER['username']}.");
-    $modcomment = get_date(TIME_NOW, 'DATE', 1) . $lang['uploadapps_modcomment'] . $CURUSER['username'] . '.' . ('' != $arr['modcomment'] ? "\n" : '') . "{$arr['modcomment']}";
+    $modcomment = get_date(TIME_NOW, 'DATE', 1) . $lang['uploadapps_modcomment'] . $CURUSER['username'] . '.' . ($arr['modcomment'] != '' ? "\n" : '') . "{$arr['modcomment']}";
     $dt         = TIME_NOW;
     sql_query("UPDATE uploadapp SET status = 'accepted', comment = " . sqlesc($note) . ', moderator = ' . sqlesc($CURUSER['username']) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE users SET class = ' . UC_UPLOADER . ', modcomment = ' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($arr['uid']) . ' AND class < ' . UC_STAFF) or sqlerr(__FILE__, __LINE__);
@@ -262,7 +262,7 @@ if ('acceptapp' == $action) {
     $cache->delete('new_uploadapp_');
     stderr($lang['uploadapps_app_accepted'], "{$lang['uploadapps_app_msg']} {$lang['uploadapps_app_click']} <a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'><b>{$lang['uploadapps_app_here']}</b></a> {$lang['uploadapps_app_return']}");
 }
-if ('rejectapp' == $action) {
+if ($action === 'rejectapp') {
     $id = (int) $_POST['id'];
     if (!is_valid_id($id)) {
         stderr($lang['uploadapps_error'], $lang['uploadapps_no_up']);
@@ -279,7 +279,7 @@ if ('rejectapp' == $action) {
     stderr($lang['uploadapps_app_rej'], "{$lang['uploadapps_app_rejbeen']} {$lang['uploadapps_app_click']} <a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'><b>{$lang['uploadapps_app_here']}</b></a>{$lang['uploadapps_app_return']}");
 }
 //== Delete applications
-if ('takeappdelete' == $action) {
+if ($action === 'takeappdelete') {
     if (empty($_POST['deleteapp'])) {
         stderr($lang['uploadapps_silly'], $lang['uploadapps_twix']);
     } else {

@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'phpzip.php';
 check_user_status();
 global $site_config;
@@ -8,9 +8,9 @@ global $site_config;
 $lang = load_language('global');
 
 $action = (isset($_POST['action']) ? htmlsafechars($_POST['action']) : '');
-if ('download' == $action) {
+if ($action === 'download') {
     $id = isset($_POST['sid']) ? (int) $_POST['sid'] : 0;
-    if (0 == $id) {
+    if ($id == 0) {
         stderr($lang['gl_error'], $lang['gl_not_a_valid_id']);
     } else {
         $res      = sql_query('SELECT id, name, filename FROM subtitles WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);

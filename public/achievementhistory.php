@@ -50,7 +50,7 @@ if ($id === $CURUSER['id']) {
 $HTMLOUT .= "
     <div class='has-text-centered'>
         <h1 class='level-item'>{$lang['achievement_history_afu']}&nbsp;" . format_username($arr['id']) . "</h1>
-        <h2>{$lang['achievement_history_c']}" . htmlsafechars($row['0']) . $lang['achievement_history_a'] . (1 == $row[0] ? '' : 's') . '.';
+        <h2>{$lang['achievement_history_c']}" . htmlsafechars($row['0']) . $lang['achievement_history_a'] . ($row[0] == 1 ? '' : 's') . '.';
 if ($id === $CURUSER['id']) {
     $HTMLOUT .= " <a class='altlink' href='{$site_config['baseurl']}/achievementbonus.php'>" . htmlsafechars($achpoints) . "{$lang['achievement_history_pa']}" . htmlsafechars($spentpoints) . "{$lang['achievement_history_ps']}</a>";
 }

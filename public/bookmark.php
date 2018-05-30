@@ -35,7 +35,7 @@ $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : '');
 if (!in_array($action, $possible_actions)) {
     stderr($lang['bookmark_err'], $lang['bookmark_aruffian']);
 }
-if ('add' == $action) {
+if ($action === 'add') {
     $torrentid = (int) $_GET['torrent'];
     $sure      = isset($_GET['sure']) ? (int) $_GET['sure'] : '';
     if (!is_valid_id($torrentid)) {
@@ -66,7 +66,7 @@ if ('add' == $action) {
     $HTMLOUT .= addbookmark($torrentid);
     $HTMLOUT .= "<h2>{$lang['bookmark_added']}</h2>";
 }
-if ('delete' == $action) {
+if ($action === 'delete') {
     $torrentid = (int) $_GET['torrent'];
     $sure      = isset($_GET['sure']) ? (int) $_GET['sure'] : '';
     if (!is_valid_id($torrentid)) {
@@ -93,7 +93,7 @@ if ('delete' == $action) {
 
     $HTMLOUT .= deletebookmark($torrentid);
     $HTMLOUT .= "<h2>{$lang['bookmark_deleted']}</h2>";
-} elseif ('public' == $action) {
+} elseif ($action === 'public') {
     $torrentid = (int) $_GET['torrent'];
     $sure      = isset($_GET['sure']) ? (int) $_GET['sure'] : '';
     if (!is_valid_id($torrentid)) {
@@ -120,7 +120,7 @@ if ('delete' == $action) {
 
     $HTMLOUT .= publickbookmark($torrentid);
     $HTMLOUT .= "<h2>{$lang['bookmark_public']}</h2>";
-} elseif ('private' == $action) {
+} elseif ($action === 'private') {
     $torrentid = (int) $_GET['torrent'];
     $sure      = isset($_GET['sure']) ? (int) $_GET['sure'] : '';
     if (!is_valid_id($torrentid)) {

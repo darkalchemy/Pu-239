@@ -7,10 +7,10 @@ global $CURUSER, $site_config, $cache;
 
 $lang    = array_merge(load_language('global'), load_language('setclass'));
 $HTMLOUT = '';
-if ($CURUSER['class'] < UC_STAFF || 255 != $CURUSER['override_class']) {
+if ($CURUSER['class'] < UC_STAFF || $CURUSER['override_class'] != 255) {
     stderr('Error', 'whats the story?');
 }
-if (isset($_GET['action']) && 'editclass' == htmlsafechars($_GET['action'])) {
+if (isset($_GET['action']) && htmlsafechars($_GET['action']) === 'editclass') {
     $newclass = (int) $_GET['class'];
     $returnto = htmlsafechars($_GET['returnto']);
     sql_query('UPDATE users SET override_class = ' . sqlesc($newclass) . ' WHERE id = ' . sqlesc($CURUSER['id']));
@@ -34,7 +34,7 @@ $HTMLOUT .= "<br>
     <select name='class'>";
 $maxclass = $CURUSER['class'] - 1;
 for ($i = 0; $i <= $maxclass; ++$i) {
-    if ('' != trim(get_user_class_name($i))) {
+    if (trim(get_user_class_name($i)) != '') {
         $HTMLOUT .= "<option value='$i" . "'>" . get_user_class_name($i) . "</option>\n";
     }
 }

@@ -19,7 +19,7 @@ if ($count > 0) {
     $HTMLOUT .= "<h1>Voters for <a class='altlink' href='viewoffers.php?id=$id&amp;offer_details'><b>" . htmlspecialchars($arr2['offer']) . '</b></a></h1>';
     $HTMLOUT .= "<p>Vote for this <a class='altlink' href='viewoffers.php?id=$id&amp;offer_vote'><b>Offer</b></a></p>";
     $HTMLOUT .= $pager['pagertop'];
-    if (0 == mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) == 0) {
         $HTMLOUT .= "<p><b>Nothing found</b></p>\n";
     } else {
         $HTMLOUT .= "<table >
@@ -30,7 +30,7 @@ if ($count > 0) {
             $uploaded   = mksize($arr['uploaded']);
             $joindate   = get_date($arr['added'], '');
             $downloaded = mksize($arr['downloaded']);
-            $enabled    = ('no' == $arr['enabled'] ? '<span style="color:red;">No</span>' : '<span style="color:green;">Yes</span>');
+            $enabled = ($arr['enabled'] === 'no' ? '<span style="color:red;">No</span>' : '<span style="color:green;">Yes</span>');
             $arr['id']  = $arr['userid'];
             $username   = format_username($arr['userid']);
             $HTMLOUT .= "<tr><td>$username</td>

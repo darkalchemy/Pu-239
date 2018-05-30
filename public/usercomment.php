@@ -34,7 +34,7 @@ function usercommenttable($rows)
         $htmlout .= "<p class='sub'>#" . (int) $row['id'] . ' by ';
         if (isset($row['username'])) {
             $title = $row['title'];
-            if ('' == $title) {
+            if ($title == '') {
                 $title = get_user_class_name($row['class']);
             } else {
                 $title = htmlsafechars($title);
@@ -44,7 +44,7 @@ function usercommenttable($rows)
             $htmlout .= '<a name="comm' . (int) $row['id'] . "\"><i>(orphaned)</i></a>\n";
         }
         $htmlout .= ' ' . get_date($row['added'], 'DATE', 0, 1) . '' . ($userid == $CURUSER['id'] || $row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=edit&amp;cid=" . (int) $row['id'] . "'>Edit</a>]" : '') . ($userid == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=delete&amp;cid=" . (int) $row['id'] . "'>Delete</a>]" : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=vieworiginal&amp;cid=" . (int) $row['id'] . "'>View original</a>]" : '') . "</p>\n";
-        $avatar = ('yes' == $CURUSER['avatars'] ? htmlsafechars($row['avatar']) : '');
+        $avatar = ($CURUSER['avatars'] === 'yes' ? htmlsafechars($row['avatar']) : '');
         if (!$avatar) {
             $avatar = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
         }
@@ -68,8 +68,8 @@ function usercommenttable($rows)
     return $htmlout;
 }
 
-if ('add' == $action) {
-    if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($action === 'add') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $userid = (int) $_POST['userid'];
         if (!is_valid_id($userid)) {
             stderr('Error', 'Invalid ID.');
@@ -120,7 +120,7 @@ if ('add' == $action) {
         $HTMLOUT .= usercommenttable($allrows);
     }
     echo stdhead('Add a comment for "' . htmlsafechars($arr['username']) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
-} elseif ('edit' == $action) {
+} elseif ($action === 'edit') {
     $commentid = (int) $_GET['cid'];
     if (!is_valid_id($commentid)) {
         stderr('Error', 'Invalid ID.');
@@ -133,10 +133,10 @@ if ('add' == $action) {
     if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
         stderr('Error', 'Permission denied.');
     }
-    if ('POST' == $_SERVER['REQUEST_METHOD']) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $body     = htmlsafechars($_POST['body']);
         $returnto = htmlsafechars($_POST['returnto']);
-        if ('' == $body) {
+        if ($body == '') {
             stderr('Error', 'Comment body cannot be empty!');
         }
         $editedat = sqlesc(TIME_NOW);
@@ -159,7 +159,7 @@ if ('add' == $action) {
     echo stdhead('Edit comment for "' . htmlsafechars($arr['username']) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
     stdfoot();
     die();
-} elseif ('delete' == $action) {
+} elseif ($action === 'delete') {
     $commentid = (int) $_GET['cid'];
     if (!is_valid_id($commentid)) {
         stderr('Error', 'Invalid ID.');
@@ -191,7 +191,7 @@ if ('add' == $action) {
         header("Location: {$site_config['baseurl']}/userdetails.php?id={$userid}");
     }
     die();
-} elseif ('vieworiginal' == $action) {
+} elseif ($action === 'vieworiginal') {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr('Error', 'Permission denied.');
     }

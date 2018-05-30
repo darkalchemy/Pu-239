@@ -16,7 +16,7 @@ if (is_valid_id($remove)) {
     sql_query('DELETE FROM bannedemails WHERE id = ' . sqlesc($remove)) or sqlerr(__FILE__, __LINE__);
     write_log("{$lang['ad_banemail_log1']} $remove {$lang['ad_banemail_log2']} {$CURUSER['username']}");
 }
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email   = htmlsafechars(trim($_POST['email']));
     $comment = htmlsafechars(trim($_POST['comment']));
     if (!$email || !$comment) {
@@ -46,7 +46,7 @@ $HTMLOUT .= begin_frame("{$lang['ad_banemail_current']}", true);
 if ($count1 > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-if (0 == mysqli_num_rows($res)) {
+if (mysqli_num_rows($res) == 0) {
     $HTMLOUT .= "<p><b>{$lang['ad_banemail_nothing']}</b></p>\n";
 } else {
     $HTMLOUT .= "<table >\n";

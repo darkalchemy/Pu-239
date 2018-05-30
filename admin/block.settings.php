@@ -74,7 +74,7 @@ $list = [
     'userdetails_showfriends_on',
 ];
 
-if ('POST' === $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     global $lang;
     unset($_POST['submit']);
     $updated         = [];
@@ -82,11 +82,11 @@ if ('POST' === $_SERVER['REQUEST_METHOD']) {
     $block_out       = '<' . "?php\n\n\$BLOCKS = [\n";
     foreach ($_POST as $k => $v) {
         $updated[] = $k;
-        $block_out .= ('block_undefined' == $k) ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => " . intval($v) . ",\n";
+        $block_out .= ($k === 'block_undefined') ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => " . intval($v) . ",\n";
     }
     $missed = array_diff($list, $updated);
     foreach ($missed as $k) {
-        $block_out .= ('block_undefined' == $k) ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => 0,\n";
+        $block_out .= ($k === 'block_undefined') ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => 0,\n";
     }
     $block_out .= '];';
     file_put_contents(CACHE_DIR . 'block_settings_cache.php', $block_out);
@@ -671,6 +671,6 @@ function template_out($matches)
     global $BLOCKS;
 
     return "
-    <input type='checkbox' id='{$matches[1]}' name='{$matches[1]}' value='1'" . (1 == $BLOCKS[$matches[1]] ? ' checked' : '') . " /> 
+    <input type='checkbox' id='{$matches[1]}' name='{$matches[1]}' value='1'" . ($BLOCKS[$matches[1]] == 1 ? ' checked' : '') . " /> 
     <label for='{$matches[1]}'></label>";
 }

@@ -22,7 +22,7 @@ function commenttable($rows, $variant = 'torrent')
     } else {
         return;
     }
-    $extra_link = ('request' == $variant ? '&type=request' : ('offer' == $variant ? '&type=offer' : ''));
+    $extra_link = ($variant === 'request' ? '&type=request' : ($variant === 'offer' ? '&type=offer' : ''));
     $htmlout    = '';
     $i          = 0;
     foreach ($rows as $row) {
@@ -40,13 +40,13 @@ function commenttable($rows, $variant = 'torrent')
         }
         if (!empty($likes) && count(array_unique($likes)) > 0) {
             if (in_array($CURUSER['id'], $likes)) {
-                if (1 == count($likes)) {
+                if (count($likes) == 1) {
                     $att_str = jq('You like this');
                 } elseif (count(array_unique($likes)) > 1) {
-                    $att_str = jq('You and ') . ('1' == (count(array_unique($likes)) - 1) ? '1 other person likes this' : (count($likes) - 1) . 'others like this');
+                    $att_str = jq('You and ') . ((count(array_unique($likes)) - 1) == '1' ? '1 other person likes this' : (count($likes) - 1) . 'others like this');
                 }
             } elseif (!(in_array($CURUSER['id'], $likes))) {
-                if (1 == count(array_unique($likes))) {
+                if (count(array_unique($likes)) == 1) {
                     $att_str = '1 other person likes this';
                 } elseif (count(array_unique($likes)) > 1) {
                     $att_str = (count(array_unique($likes))) . ' others like this';
@@ -56,23 +56,23 @@ function commenttable($rows, $variant = 'torrent')
         $wht = ((!empty($likes) && count(array_unique($likes)) > 0 && in_array($CURUSER['id'], $likes)) ? 'unlike' : 'like');
 
         if (isset($row['username'])) {
-            if ('yes' == $row['anonymous']) {
+            if ($row['anonymous'] === 'yes') {
                 $this_text .= ($CURUSER['class'] >= UC_STAFF ? 'Anonymous - Posted by: <b>' . htmlsafechars($row['username']) . '</b> ID: ' . (int) $row['user'] . '' : 'Anonymous') . ' ';
             } else {
                 $title = $row['title'];
-                if ('' == $title) {
+                if ($title == '') {
                     $title = get_user_class_name($row['class']);
                 } else {
                     $title = htmlsafechars($title);
                 }
-                $avatar1 = ('yes' == $row['anonymous'] ? "<img src='{$site_config['pic_baseurl']}anonymous_1.jpg' alt='Avatar' title='Avatar' class='avatar' />" : "<img src='" . image_proxy($row['avatar']) . "' alt='Avatar' title='Avatar' class='avatar' />");
+                $avatar1 = ($row['anonymous'] == 'yes' ? "<img src='{$site_config['pic_baseurl']}anonymous_1.jpg' alt='Avatar' title='Avatar' class='avatar' />" : "<img src='" . image_proxy($row['avatar']) . "' alt='Avatar' title='Avatar' class='avatar' />");
                 if (!$avatar1) {
                     $avatar1 = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
                 }
                 $this_text .= format_username($row['user']);
                 $this_text .= '
                     <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'Mood\',530,500,1,1);">
-                        <img src="' . $site_config['pic_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" class="tooltipper" title="' . ('yes' == $row['anonymous'] ? '<i>Anonymous</i>' : htmlsafechars($row['username'])) . ' ' . $moodname . '!" />
+                        <img src="' . $site_config['pic_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" class="tooltipper" title="' . ($row['anonymous'] === 'yes' ? '<i>Anonymous</i>' : htmlsafechars($row['username'])) . ' ' . $moodname . '!" />
                     </a>';
             }
         } else {
@@ -89,7 +89,7 @@ function commenttable($rows, $variant = 'torrent')
                     <span class='tot-{$row['id']}' data-tot='" . (!empty($likes) && count(array_unique($likes)) > 0 ? count(array_unique($likes)) : '') . "'>&#160;{$att_str}</span>
                 </span>
             </div>";
-        $avatar = ('yes' == $row['anonymous'] ? "{$site_config['pic_baseurl']}anonymous_1.jpg" : htmlsafechars($row['avatar']));
+        $avatar = ($row['anonymous'] === 'yes' ? "{$site_config['pic_baseurl']}anonymous_1.jpg" : htmlsafechars($row['avatar']));
         if (!$avatar) {
             $avatar = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
         }

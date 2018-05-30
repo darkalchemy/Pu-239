@@ -17,15 +17,15 @@ $res     = sql_query('
         WHERE u.id = ' . sqlesc($CURUSER['id']) . ' AND u.enabled="yes" AND u.status = "confirmed"') or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res);
 
-if (($row['curr_ann_id'] > 0) && (null == $row['curr_ann_body'])) {
-    0 == $row['curr_ann_id'];
-    0 == $row['curr_ann_last_check'];
+if (($row['curr_ann_id'] > 0) && ($row['curr_ann_body'] == null)) {
+    $row['curr_ann_id'] = 0;
+    $row['curr_ann_last_check'] = 0;
 }
 // If elapsed > 3 minutes, force a announcement refresh.
-if ((0 != $row['curr_ann_last_check']) && (($row['curr_ann_last_check']) < ($dt - 600)) /* 10 mins **/) {
-    0 == $row['curr_ann_last_check'];
+if (($row['curr_ann_last_check'] != 0) && (($row['curr_ann_last_check']) < ($dt - 600)) /* 10 mins **/) {
+    $row['curr_ann_last_check'] = 0;
 }
-if ((0 == $row['curr_ann_id']) && (0 == $row['curr_ann_last_check'])) { // Force an immediate check...
+if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Force an immediate check...
     $query = sprintf('
                 SELECT m.*,p.process_id
                 FROM announcement_main AS m
@@ -65,7 +65,7 @@ if ((0 == $row['curr_ann_id']) && (0 == $row['curr_ann_last_check'])) { // Force
             $status = 1;
         }
         // Create or set status of process
-        if (null === $ann_row['process_id']) {
+        if ($ann_row['process_id'] === null) {
             // Insert Process result set status = 1 (Ignore)
             $query = sprintf('INSERT INTO announcement_process (main_id, ' . 'user_id, status) VALUES (%s, %s, %s)', sqlesc($ann_row['main_id']), sqlesc($row['id']), sqlesc($status));
         } else {

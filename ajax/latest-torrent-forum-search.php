@@ -1,17 +1,17 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . '../include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '../include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 
-if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 'xmlhttprequest' == strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
     $modes   = ['torrent', 'forum'];
     $htmlout = $att = '';
 
     if (isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['qsearch']) && in_array($_POST['qsearch'], $modes)) {
         $cleansearchstr = searchfield(sqlesc($_POST['search']));
         $i              = 1;
-        if ('torrent' == $_POST['qsearch']) {
+        if ($_POST['qsearch'] === 'torrent') {
             $query = sql_query("SELECT * FROM torrents WHERE name LIKE '%$cleansearchstr%' AND visible = 'yes' AND banned = 'no' AND nuked = 'no' ORDER BY id LIMIT 5");
             $count = $query->num_rows;
             if (!$count) {
@@ -25,7 +25,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 'xmlhttprequest' == strtolower(
                             </div>";
                 ++$i;
             }
-        } elseif ('forum' == $_POST['qsearch']) {
+        } elseif ($_POST['qsearch'] === 'forum') {
             $query = sql_query("SELECT forum.*,topic.*,topic.id as tid FROM topics as topic INNER JOIN forums as forum ON topic.forum_id = forum.id AND forum.min_class_read >= 0 AND topic.topic_name LIKE '%$cleansearchstr%' ORDER BY tid DESC LIMIT 5");
             $count = $query->num_rows;
             if (!$count) {

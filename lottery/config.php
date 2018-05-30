@@ -10,14 +10,14 @@ $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__)
 while ($ac = mysqli_fetch_assoc($lconf)) {
     $lottery_config[$ac['name']] = $ac['value'];
 }
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ([
                  'ticket_amount' => 0,
                  'class_allowed' => 1,
                  'user_tickets' => 0,
                  'end_date' => 0,
              ] as $key => $type) {
-        if (isset($_POST[$key]) && (0 == $type && 0 == $_POST[$key] || 1 == $type && 0 == count($_POST[$key]))) {
+        if (isset($_POST[$key]) && ($type == 0 && $_POST[$key] == 0 || $type == 1 && count($_POST[$key]) == 0)) {
             $session->set('is-warning', 'You forgot to fill some data');
         }
     }

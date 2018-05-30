@@ -12,9 +12,9 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     $receiver = sqlesc(isset($_POST['receiver']) ? intval($_POST['receiver']) : 0);
     $subject  = sqlesc(htmlsafechars($_POST['subject']));
     $body     = sqlesc(trim($_POST['body']));
-    $save     = isset($_POST['save']) && 1 === $_POST['save'] ? 'yes' : 'no';
-    $delete   = sqlesc((isset($_POST['delete']) && 0 !== $_POST['delete']) ? intval($_POST['delete']) : 0);
-    $urgent   = sqlesc((isset($_POST['urgent']) && 'yes' === $_POST['urgent'] && $CURUSER['class'] >= UC_STAFF) ? 'yes' : 'no');
+    $save = isset($_POST['save']) && $_POST['save'] === 1 ? 'yes' : 'no';
+    $delete = sqlesc((isset($_POST['delete']) && $_POST['delete'] !== 0) ? intval($_POST['delete']) : 0);
+    $urgent = sqlesc((isset($_POST['urgent']) && $_POST['urgent'] === 'yes' && $CURUSER['class'] >= UC_STAFF) ? 'yes' : 'no');
     $returnto = htmlsafechars(isset($_POST['returnto']) ? $_POST['returnto'] : '');
     //$returnto = htmlsafechars($_POST['returnto']);
 
@@ -26,7 +26,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     if (!isset($_POST['body'])) {
         stderr($lang['pm_error'], $lang['pm_send_nobody']);
     }
-    if ('yes' === $CURUSER['suspended']) {
+    if ($CURUSER['suspended'] === 'yes') {
         $res = sql_query('SELECT class FROM users WHERE id = ' . sqlesc($receiver)) or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_assoc($res);
         if ($row['class'] < UC_STAFF) {
@@ -40,7 +40,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     }
 
     if ($CURUSER['class'] < UC_STAFF) {
-        $should_i_send_this = ('yes' == $arr_receiver['acceptpms'] ? 'yes' : ('no' == $arr_receiver['acceptpms'] ? 'no' : ('friends' == $arr_receiver['acceptpms'] ? 'friends' : '')));
+        $should_i_send_this = ($arr_receiver['acceptpms'] === 'yes' ? 'yes' : ($arr_receiver['acceptpms'] === 'no' ? 'no' : ($arr_receiver['acceptpms'] === 'friends' ? 'friends' : '')));
         switch ($should_i_send_this) {
             case 'yes':
                 $r     = sql_query('SELECT id FROM blocks WHERE userid = ' . sqlesc($receiver) . ' AND blockid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -53,7 +53,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
             case 'friends':
                 $r      = sql_query('SELECT id FROM friends WHERE userid = ' . sqlesc($receiver) . ' AND friendid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                 $friend = mysqli_fetch_row($r);
-                if (0 == $friend[0]) {
+                if ($friend[0] == 0) {
                     stderr('Refused', htmlsafechars($arr_receiver['username']) . ' only accepts PMs from members in their friends list.');
                 }
                 break;
@@ -75,10 +75,10 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
         1,' .
               $urgent . ')') or sqlerr(__FILE__, __LINE__);
     $cache->increment('inbox_' . $receiver);
-    if (0 === mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
         stderr($lang['pm_error'], $lang['pm_send_wasnt']);
     }
-    if (false !== strpos($arr_receiver['notifs'], '[pm]')) {
+    if (strpos($arr_receiver['notifs'], '[pm]') !== false) {
         $username = htmlsafechars($CURUSER['username']);
         $body     = "<html>
 <head>
@@ -104,16 +104,16 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
         $mailer->commandArgs = "-f{$site_config['site_email']}";
         $mailer->send($mail);
     }
-    if (0 != $delete) {
+    if ($delete != 0) {
         $res = sql_query('SELECT saved, receiver FROM messages WHERE id=' . sqlesc($delete)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
             $arr = mysqli_fetch_assoc($res);
             if ($arr['receiver'] != $CURUSER['id']) {
                 stderr($lang['pm_send_quote'], $lang['pm_send_thou']);
             }
-            if ('no' == $arr['saved']) {
+            if ($arr['saved'] === 'no') {
                 sql_query('DELETE FROM messages WHERE id = ' . sqlesc($delete)) or sqlerr(__FILE__, __LINE__);
-            } elseif ('yes' == $arr['saved']) {
+            } elseif ($arr['saved'] === 'yes') {
                 sql_query('UPDATE messages SET location = 0 WHERE id = ' . sqlesc($delete)) or sqlerr(__FILE__, __LINE__);
             }
         }
@@ -149,7 +149,7 @@ if ($receiver) {
     $arr_member = mysqli_fetch_row($res_member);
 }
 
-if (0 != $replyto) {
+if ($replyto != 0) {
     if (!valid_username($arr_member[0])) {
         stderr($lang['pm_error'], $lang['pm_send_mid']);
     }
@@ -166,13 +166,13 @@ if (0 != $replyto) {
     }
 }
 
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subject = trim($_POST['subject']);
     $body    = trim($_POST['body']);
 }
 
-$avatar = (('no' === $CURUSER['avatars']) ? '' : (empty($CURUSER['avatar']) ? '
-        <img width="80" src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (('yes' === $CURUSER['offensive_avatar'] && 'no' === $CURUSER['view_offensive_avatar']) ? '<img width="80" src="' . $site_config['pic_baseurl'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<img width="80" src="' . htmlsafechars($CURUSER['avatar']) . '" alt="avatar" />')));
+$avatar = (($CURUSER['avatars'] === 'no') ? '' : (empty($CURUSER['avatar']) ? '
+        <img width="80" src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($CURUSER['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '<img width="80" src="' . $site_config['pic_baseurl'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<img width="80" src="' . htmlsafechars($CURUSER['avatar']) . '" alt="avatar" />')));
 
 $HTMLOUT .= $top_links . '
     <form name="compose" method="post" action="pm_system.php">
@@ -215,17 +215,17 @@ $HTMLOUT .= '
                 <td colspan="2">
                     <div class="has-text-centered">
                         ' . ($CURUSER['class'] >= UC_STAFF ? '
-                        <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && 'yes' === $_POST['urgent']) ? ' checked' : '') . ' /> 
+                        <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? ' checked' : '') . ' /> 
                         <span class="right10">' . $lang['pm_send_mark'] . '</span>' : '');
 if ($replyto) {
     $HTMLOUT .= '
-                        <input type="checkbox" name="delete" value="' . $replyto . '"' . ('yes' == $CURUSER['deletepms'] ? ' checked' : '') . ' />' . $lang['pm_send_delete'];
+                        <input type="checkbox" name="delete" value="' . $replyto . '"' . ($CURUSER['deletepms'] === 'yes' ? ' checked' : '') . ' />' . $lang['pm_send_delete'];
 }
 $HTMLOUT .= '
                         <input type="checkbox" name="save" value="1" checked />' . $lang['pm_send_savepm'] . '
                     </div>
                     <div class="has-text-centered">
-                        <input type="submit" class="button is-small" name="buttonval" value="' . ((isset($_POST['draft']) && 1 == $_POST['draft']) ? $lang['pm_send_save'] : $lang['pm_send_btn']) . '" />
+                        <input type="submit" class="button is-small" name="buttonval" value="' . ((isset($_POST['draft']) && $_POST['draft'] == 1) ? $lang['pm_send_save'] : $lang['pm_send_btn']) . '" />
                     </div>
                 </td>
             </tr>

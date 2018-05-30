@@ -7,7 +7,7 @@ global $CURUSER, $site_config, $cache;
 
 $lang    = load_language('global');
 $HTMLOUT = $out = '';
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sid = isset($_POST['stylesheet']) ? (int) $_POST['stylesheet'] : 1;
     if ($sid > 0 && $sid != $CURUSER['id']) {
         sql_query('UPDATE users SET stylesheet = ' . sqlesc($sid) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);

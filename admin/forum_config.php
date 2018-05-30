@@ -63,8 +63,8 @@ $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=forum
         <tr>
             <td><span style="font-weight: bold;">' . $lang['forum_config_delete'] . '</span></td>
             <td>
-            <input type="radio" name="delete_for_real" value="1" ' . (1 == $arr['delete_for_real'] ? 'checked' : '') . ' />' . $lang['forum_config_yes'] . '
-            <input type="radio" name="delete_for_real" value="0" ' . (0 == $arr['delete_for_real'] ? 'checked' : '') . ' />' . $lang['forum_config_no'] . '<br>
+            <input type="radio" name="delete_for_real" value="1" ' . ($arr['delete_for_real'] == 1 ? 'checked' : '') . ' />' . $lang['forum_config_yes'] . '
+            <input type="radio" name="delete_for_real" value="0" ' . ($arr['delete_for_real'] == 0 ? 'checked' : '') . ' />' . $lang['forum_config_no'] . '<br>
             ' . $lang['forum_config_no_desc'] . '</td>
         </tr>
         <tr>

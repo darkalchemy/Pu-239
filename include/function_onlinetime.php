@@ -25,37 +25,37 @@ function time_return($stamp)
     $minutes = floor($stamp / $msecs);
     $stamp %= $msecs;
     $seconds = $stamp;
-    if (1 == $years) {
+    if ($years == 1) {
         $nicetime['years'] = '1 Year';
     } elseif ($years > 1) {
         $nicetime['years'] = $years . ' Years';
     }
-    if (1 == $months) {
+    if ($months == 1) {
         $nicetime['months'] = '1 Month';
     } elseif ($months > 1) {
         $nicetime['months'] = $months . ' Months';
     }
-    if (1 == $weeks) {
+    if ($weeks == 1) {
         $nicetime['weeks'] = '1 Week';
     } elseif ($weeks > 1) {
         $nicetime['weeks'] = $weeks . ' Weeks';
     }
-    if (1 == $days) {
+    if ($days == 1) {
         $nicetime['days'] = '1 Day';
     } elseif ($days > 1) {
         $nicetime['days'] = $days . ' Day';
     }
-    if (1 == $hours) {
+    if ($hours == 1) {
         $nicetime['hours'] = '1 Hour';
     } elseif ($hours > 1) {
         $nicetime['hours'] = $hours . ' Hours';
     }
-    if (1 == $minutes) {
+    if ($minutes == 1) {
         $nicetime['minutes'] = '1 minute';
     } elseif ($minutes > 1) {
         $nicetime['minutes'] = $minutes . ' Minutes';
     }
-    if (1 == $seconds) {
+    if ($seconds == 1) {
         $nicetime['seconds'] = '1 second';
     } elseif ($seconds > 1) {
         $nicetime['seconds'] = $seconds . ' Seconds';

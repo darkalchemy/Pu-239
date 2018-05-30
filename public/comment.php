@@ -51,8 +51,8 @@ if (isset($_GET['type'])) {
     }
 }
 
-if ('add' == $action) {
-    if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($action === 'add') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = (isset($_POST['tid']) ? (int) $_POST['tid'] : 0);
         if (!is_valid_id($id)) {
             stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
@@ -67,9 +67,9 @@ if ('add' == $action) {
             stderr("{$lang['comment_error']}", "{$lang['comment_body']}");
         }
         $owner            = (isset($arr['owner']) ? $arr['owner'] : 0);
-        $arr['anonymous'] = (isset($arr['anonymous']) && 'yes' == $arr['anonymous'] ? 'yes' : 'no');
+        $arr['anonymous'] = (isset($arr['anonymous']) && $arr['anonymous'] === 'yes' ? 'yes' : 'no');
         $arr['comments']  = (isset($arr['comments']) ? $arr['comments'] : 0);
-        if ($CURUSER['id'] == $owner && 'yes' == $arr['anonymous'] || (isset($_POST['anonymous']) && 'yes' == $_POST['anonymous'])) {
+        if ($CURUSER['id'] == $owner && $arr['anonymous'] === 'yes' || (isset($_POST['anonymous']) && $_POST['anonymous'] === 'yes')) {
             $anon = "'yes'";
         } else {
             $anon = "'no'";
@@ -79,7 +79,7 @@ if ('add' == $action) {
         $newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
         sql_query("UPDATE $table_type SET comments = comments + 1 WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('latest_comments_');
-        if (1 == $site_config['seedbonus_on']) {
+        if ($site_config['seedbonus_on'] == 1) {
             if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
                 sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_comment']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
             }
@@ -96,7 +96,7 @@ if ('add' == $action) {
         // --- pm if new comment mod---//
         $cpm   = sql_query('SELECT commentpm FROM users WHERE id = ' . sqlesc($owner)) or sqlerr(__FILE__, __LINE__);
         $cpm_r = mysqli_fetch_assoc($cpm);
-        if ('yes' == $cpm_r['commentpm']) {
+        if ($cpm_r['commentpm'] === 'yes') {
             $added  = TIME_NOW;
             $subby  = sqlesc('Someone has left a comment');
             $notifs = sqlesc("You have received a comment on your torrent [url={$site_config['baseurl']}/details.php?id={$id}] " . htmlsafechars($arr['name']) . '[/url].');
@@ -156,7 +156,7 @@ if ('add' == $action) {
     }
     echo stdhead("{$lang['comment_add']}'" . $arr[$name] . "'", true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
-} elseif ('edit' == $action) {
+} elseif ($action === 'edit') {
     $commentid = (isset($_GET['cid']) ? (int) $_GET['cid'] : 0);
     if (!is_valid_id($commentid)) {
         stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
@@ -169,9 +169,9 @@ if ('add' == $action) {
     if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
         stderr("{$lang['comment_error']}", "{$lang['comment_denied']}");
     }
-    if ('POST' == $_SERVER['REQUEST_METHOD']) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $body = (isset($_POST['body']) ? $_POST['body'] : '');
-        if ('' == $body) {
+        if ($body == '') {
             stderr("{$lang['comment_error']}", "{$lang['comment_body']}");
         }
         $text     = htmlsafechars($body);
@@ -206,7 +206,7 @@ if ('add' == $action) {
     </form>';
     echo stdhead("{$lang['comment_edit']}'" . $arr[$name] . "'", true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
-} elseif ('delete' == $action) {
+} elseif ($action === 'delete') {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr("{$lang['comment_error']}", "{$lang['comment_denied']}");
     }
@@ -217,7 +217,7 @@ if ('add' == $action) {
     }
     $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : false;
     if (!$sure) {
-        stderr("{$lang['comment_delete']}", "{$lang['comment_about_delete']}\n" . "<a href='comment.php?action=delete&amp;cid=$commentid&amp;tid=$tid&amp;sure=1" . ('request' == $locale ? '&amp;type=request' : '') . "'>
+        stderr("{$lang['comment_delete']}", "{$lang['comment_about_delete']}\n" . "<a href='comment.php?action=delete&amp;cid=$commentid&amp;tid=$tid&amp;sure=1" . ($locale === 'request' ? '&amp;type=request' : '') . "'>
           here</a> {$lang['comment_delete_sure']}");
     }
     $res = sql_query("SELECT $locale FROM comments WHERE id = " . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
@@ -231,7 +231,7 @@ if ('add' == $action) {
     if ($id && mysqli_affected_rows($GLOBALS['___mysqli_ston']) > 0) {
         sql_query("UPDATE $table_type SET comments = comments - 1 WHERE id = " . sqlesc($id));
     }
-    if (1 == $site_config['seedbonus_on']) {
+    if ($site_config['seedbonus_on'] == 1) {
         if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
             sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus_per_comment']) . ' WHERE id =' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         }
@@ -249,7 +249,7 @@ if ('add' == $action) {
     $session->set('is-success', 'The comment has been deleted');
     header("Refresh: 0; url=$locale_link.php?id=$tid$extra_link");
     die();
-} elseif ('vieworiginal' == $action) {
+} elseif ($action === 'vieworiginal') {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr("{$lang['comment_error']}", "{$lang['comment_denied']}");
     }

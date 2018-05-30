@@ -18,11 +18,11 @@ $n        = mysqli_fetch_row($res);
 $n_peers  = $n[0];
 $uporder  = isset($_GET['uporder']) ? $_GET['uporder'] : '';
 $catorder = isset($_GET['catorder']) ? $_GET['catorder'] : '';
-if ('lastul' == $uporder) {
+if ($uporder === 'lastul') {
     $orderby = 'last DESC, name';
-} elseif ('torrents' == $uporder) {
+} elseif ($uporder === 'torrents') {
     $orderby = 'n_t DESC, name';
-} elseif ('peers' == $uporder) {
+} elseif ($uporder === 'peers') {
     $orderby = 'n_p DESC, name';
 } else {
     $orderby = 'name';
@@ -33,7 +33,7 @@ $query = 'SELECT u.id, u.username AS name, MAX(t.added) AS last, COUNT(DISTINCT 
       FROM users as u LEFT JOIN torrents as t ON u.id = t.owner LEFT JOIN peers as p ON t.id = p.torrent WHERE u.class > ' . UC_UPLOADER . "
       GROUP BY u.id ORDER BY $orderby";
 $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
-if (0 == mysqli_num_rows($res)) {
+if (mysqli_num_rows($res) == 0) {
     stdmsg($lang['stats_error'], $lang['stats_error1']);
 } else {
     $HTMLOUT .= begin_frame($lang['stats_title1'], true);
@@ -58,14 +58,14 @@ if (0 == mysqli_num_rows($res)) {
     $HTMLOUT .= end_table();
     $HTMLOUT .= end_frame();
 }
-if (0 == $n_tor) {
+if ($n_tor == 0) {
     stdmsg($lang['stats_error'], $lang['stats_error2']);
 } else {
-    if ('lastul' == $catorder) {
+    if ($catorder === 'lastul') {
         $orderby = 'last DESC, c.name';
-    } elseif ('torrents' == $catorder) {
+    } elseif ($catorder === 'torrents') {
         $orderby = 'n_t DESC, c.name';
-    } elseif ('peers' == $catorder) {
+    } elseif ($catorder === 'peers') {
         $orderby = 'n_p DESC, name';
     } else {
         $orderby = 'c.name';

@@ -47,7 +47,7 @@ function snatchtable($torrents)
             <td>$downspeed/s</td>") . "
             <td>$ratio</td>
             <td>" . mkprettytime($torrent['seedtime'] + $torrent['leechtime']) . '</td>
-            <td>' . (0 != $XBT_or_PHP_TIME ? "
+            <td>' . ($XBT_or_PHP_TIME != 0 ? "
                 <span class='has-text-lime'><b>{$lang['userdetails_yes']}</b></span>" : "
                 <span class='has-text-red'><b>{$lang['userdetails_no']}</b></span>") . '
             </td>
@@ -142,7 +142,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
     if (XBT_TRACKER) {
         $res = sql_query('SELECT x.fid, x.uploaded, x.downloaded, x.active, x.left, t.added, t.name AS torrentname, t.size, t.category, t.seeders, t.leechers, c.name AS catname, c.image FROM xbt_files_users x LEFT JOIN torrents t ON x.fid = t.id LEFT JOIN categories c ON t.category = c.id WHERE x.uid=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
         while ($arr = mysqli_fetch_assoc($res)) {
-            if ('0' == $arr['left']) {
+            if ($arr['left'] == '0') {
                 $seeding[] = $arr;
             } else {
                 $leeching[] = $arr;
@@ -171,7 +171,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
             ->limit('0, 15');
 
         foreach ($query as $arr) {
-            if ('yes' === $arr['seeder']) {
+            if ($arr['seeder'] === 'yes') {
                 $seeding[] = $arr;
             } else {
                 $leeching[] = $arr;

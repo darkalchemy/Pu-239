@@ -19,7 +19,7 @@ if ($birthday === false || is_null($birthday)) {
     }
     $birthday['birthdayusers'] = implode(',&nbsp;&nbsp;', $list);
     $birthday['count']         = count($list);
-    if (0 === $birthday['count']) {
+    if ($birthday['count'] === 0) {
         $birthday['birthdayusers'] = $lang['index_birthday_no'];
     }
     $cache->set('birthdayusers_', $birthday, $site_config['expires']['birthdayusers']);

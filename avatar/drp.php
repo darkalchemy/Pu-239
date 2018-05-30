@@ -11,7 +11,7 @@ $op[7]                 = 'Browser';
 $op[8]                 = 'Profile hits';
 $op[9]                 = 'Online time';
 $var['line1']['value'] = $var['line2']['value'] = $var['line3']['value'] = 0;
-if (isset($_POST['firstrun']) && 1 == $_POST['firstrun']) {
+if (isset($_POST['firstrun']) && $_POST['firstrun'] == 1) {
     $user = isset($_POST['user']) ? strtolower($_POST['user']) : '';
     if (file_exists($_settings . $user . '.set')) {
         $var = unserialize(file_get_contents($_settings . $user . '.set'));
@@ -42,5 +42,5 @@ foreach ($drp as $key => $ops) {
 for ($i = 1; $i <= 3; ++$i) {
     $temp['line' . $i] = isset($var['line' . $i]['title']) ? $var['line' . $i]['title'] : '';
 }
-$temp['showuser'] = isset($var['showuser']) && 1 == $var['showuser'] ? 1 : 0;
+$temp['showuser'] = isset($var['showuser']) && $var['showuser'] == 1 ? 1 : 0;
 echo json_encode($temp);

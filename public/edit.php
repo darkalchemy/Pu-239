@@ -16,7 +16,7 @@ if (!$id) {
     die();
 }
 
-if ((isset($_GET['unedit']) && 1 == $_GET['unedit']) && $CURUSER['class'] >= UC_STAFF) {
+if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $CURUSER['class'] >= UC_STAFF) {
     $cache->delete('editedby_' . $id);
     $returl = "details.php?id=$id";
     if (isset($_POST['returnto'])) {
@@ -70,7 +70,7 @@ $HTMLOUT .= tr($lang['edit_torrent_name'], "<input type='text' name='name' value
 $HTMLOUT .= tr($lang['edit_torrent_tags'], "<input type='text' name='tags' value='" . htmlsafechars($row['tags']) . "' class='w-100' /><br>({$lang['edit_tags_info']})\n", 1);
 $HTMLOUT .= tr($lang['edit_torrent_description'], "<input type='text' name='description' value='" . htmlsafechars($row['description']) . "' class='w-100' />", 1);
 $HTMLOUT .= tr($lang['edit_nfo'], "<input type='radio' name='nfoaction' value='keep' checked class='right5' />{$lang['edit_keep_current']}<br><input type='radio' name='nfoaction' value='update' class='right5' />{$lang['edit_update']}<br><input type='file' name='nfo' class='w-100' />", 1);
-if ((strpos($row['ori_descr'], '<')) || (false !== strpos($row['ori_descr'], '&lt;')) === false) {
+if ((strpos($row['ori_descr'], '<') === false) || (strpos($row['ori_descr'], '&lt;') !== false)) {
     $c = '';
 } else {
     $c = ' checked';
@@ -103,19 +103,19 @@ $subs_list .= '
 
 $HTMLOUT .= tr('Subtitiles', $subs_list, 1);
 
-$rg = "<select name='release_group'>\n<option value='scene'" . ('scene' == $row['release_group'] ? ' selected' : '') . ">Scene</option>\n<option value='p2p'" . ('p2p' == $row['release_group'] ? ' selected' : '') . ">p2p</option>\n<option value='none'" . ('none' == $row['release_group'] ? ' selected' : '') . ">None</option> \n</select>\n";
+$rg = "<select name='release_group'>\n<option value='scene'" . ($row['release_group'] === 'scene' ? ' selected' : '') . ">Scene</option>\n<option value='p2p'" . ($row['release_group'] === 'p2p' ? ' selected' : '') . ">p2p</option>\n<option value='none'" . ($row['release_group'] === 'none' ? ' selected' : '') . ">None</option> \n</select>\n";
 $HTMLOUT .= tr('Release Group', $rg, 1);
-$HTMLOUT .= tr($lang['edit_visible'], "<input type='checkbox' name='visible'" . (('yes' == $row['visible']) ? ' checked' : '') . " value='1' /> {$lang['edit_visible_mainpage']}<br><table class='table table-bordered table-striped'><tr><td class='embedded'>{$lang['edit_visible_info']}</td></tr></table>", 1);
+$HTMLOUT .= tr($lang['edit_visible'], "<input type='checkbox' name='visible'" . ((row['visible']) === 'yes' ? ' checked' : '') . " value='1' /> {$lang['edit_visible_mainpage']}<br><table class='table table-bordered table-striped'><tr><td class='embedded'>{$lang['edit_visible_info']}</td></tr></table>", 1);
 if ($CURUSER['class'] >= UC_STAFF) {
-    $HTMLOUT .= tr($lang['edit_banned'], "<input type='checkbox' name='banned'" . (('yes' == $row['banned']) ? ' checked' : '') . " value='1' /> {$lang['edit_banned']}", 1);
+    $HTMLOUT .= tr($lang['edit_banned'], "<input type='checkbox' name='banned'" . (($row['banned']) === 'yes' ? ' checked' : '') . " value='1' /> {$lang['edit_banned']}", 1);
 }
-$HTMLOUT .= tr($lang['edit_recommend_torrent'], "<input type='radio' name='recommended' " . (('yes' == $row['recommended']) ? 'checked' : '') . " value='yes' class='right5' />Yes!<input type='radio' name='recommended' " . ('no' == $row['recommended'] ? 'checked' : '') . " value='no' class='right5' />No!<br><font class='small' >{$lang['edit_recommend']}</font>", 1);
+$HTMLOUT .= tr($lang['edit_recommend_torrent'], "<input type='radio' name='recommended' " . (($row['recommended'] === 'yes' ) ? 'checked' : '') . " value='yes' class='right5' />Yes!<input type='radio' name='recommended' " . ($row['recommended'] === 'no' ? 'checked' : '') . " value='no' class='right5' />No!<br><font class='small' >{$lang['edit_recommend']}</font>", 1);
 if ($CURUSER['class'] >= UC_UPLOADER) {
-    $HTMLOUT .= tr('Nuked', "<input type='radio' name='nuked'" . ('yes' == $row['nuked'] ? ' checked' : '') . " value='yes' class='right5' />Yes <input type='radio' name='nuked'" . ('no' == $row['nuked'] ? ' checked' : '') . " value='no' class='right5' />No", 1);
+    $HTMLOUT .= tr('Nuked', "<input type='radio' name='nuked'" . ($row['nuked'] === 'yes' ? ' checked' : '') . " value='yes' class='right5' />Yes <input type='radio' name='nuked'" . ($row['nuked'] === 'no' ? ' checked' : '') . " value='no' class='right5' />No", 1);
     $HTMLOUT .= tr('Nuke Reason', "<input type='text' name='nukereason' value='" . htmlsafechars($row['nukereason']) . "' class='w-100' />", 1);
 }
 if ($CURUSER['class'] >= UC_STAFF && !XBT_TRACKER) {
-    $HTMLOUT .= tr('Free Leech', (0 != $row['free'] ? "<input type='checkbox' name='fl' value='1' /> Remove Freeleech" : "
+    $HTMLOUT .= tr('Free Leech', ($row['free'] != 0 ? "<input type='checkbox' name='fl' value='1' /> Remove Freeleech" : "
     <select name='free_length'>
     <option value='0'>------</option>
     <option value='42'>Free for 1 day</option>
@@ -125,11 +125,11 @@ if ($CURUSER['class'] >= UC_STAFF && !XBT_TRACKER) {
     <option value='8'>Free for 8 weeks</option>
     <option value='255'>Unlimited</option>
     </select>"), 1);
-    if (0 != $row['free']) {
-        $HTMLOUT .= tr('Free Leech Duration', (1 != $row['free'] ? 'Until ' . get_date($row['free'], 'DATE') . '
+    if ($row['free'] != 0) {
+        $HTMLOUT .= tr('Free Leech Duration', ($row['free'] != 1 ? 'Until ' . get_date($row['free'], 'DATE') . '
          (' . mkprettytime($row['free'] - TIME_NOW) . ' to go)' : 'Unlimited'), 1);
     }
-    $HTMLOUT .= tr('Silver torrent ', (0 != $row['silver'] ? "<input type='checkbox' name='slvr' value='1' /> Remove Silver torrent" : "
+    $HTMLOUT .= tr('Silver torrent ', ($row['silver'] != 0 ? "<input type='checkbox' name='slvr' value='1' /> Remove Silver torrent" : "
     <select name='half_length'>
     <option value='0'>------</option>
     <option value='42'>Silver for 1 day</option>
@@ -139,14 +139,14 @@ if ($CURUSER['class'] >= UC_STAFF && !XBT_TRACKER) {
     <option value='8'>Silver for 8 weeks</option>
     <option value='255'>Unlimited</option>
     </select>"), 1);
-    if (0 != $row['silver']) {
-        $HTMLOUT .= tr('Silver Torrent Duration', (1 != $row['silver'] ? 'Until ' . get_date($row['silver'], 'DATE') . '
+    if ($row['silver'] != 0) {
+        $HTMLOUT .= tr('Silver Torrent Duration', ($row['silver'] != 1 ? 'Until ' . get_date($row['silver'], 'DATE') . '
          (' . mkprettytime($row['silver'] - TIME_NOW) . ' to go)' : 'Unlimited'), 1);
     }
 }
 
-if ($CURUSER['class'] >= UC_STAFF && UC_MAX == $CURUSER['class']) {
-    if ('yes' == $row['allow_comments']) {
+if ($CURUSER['class'] >= UC_STAFF && $CURUSER['class'] == UC_MAX) {
+    if ($row['allow_comments'] === 'yes') {
         $messc = '&#160;Comments are allowed for everyone on this torrent!';
     } else {
         $messc = '&#160;Only staff members are able to comment on this torrent!';
@@ -160,13 +160,13 @@ if ($CURUSER['class'] >= UC_STAFF && UC_MAX == $CURUSER['class']) {
 }
 
 if ($CURUSER['class'] >= UC_STAFF) {
-    $HTMLOUT .= tr('Sticky', "<input type='checkbox' name='sticky'" . (('yes' == $row['sticky']) ? ' checked' : '') . " value='yes' />Sticky this torrent !", 1);
-    $HTMLOUT .= tr($lang['edit_anonymous'], "<input type='checkbox' name='anonymous'" . (('yes' == $row['anonymous']) ? ' checked' : '') . " value='1' />{$lang['edit_anonymous1']}", 1);
+    $HTMLOUT .= tr('Sticky', "<input type='checkbox' name='sticky'" . (($row['sticky']) === 'yes' ? ' checked' : '') . " value='yes' />Sticky this torrent !", 1);
+    $HTMLOUT .= tr($lang['edit_anonymous'], "<input type='checkbox' name='anonymous'" . (($row['anonymous'] === 'yes') ? ' checked' : '') . " value='1' />{$lang['edit_anonymous1']}", 1);
     if (!XBT_TRACKER) {
-        $HTMLOUT .= tr('VIP Torrent?', "<input type='checkbox' name='vip'" . ((1 == $row['vip']) ? ' checked' : '') . " value='1' /> If this one is checked, only VIPs can download this torrent", 1);
+        $HTMLOUT .= tr('VIP Torrent?', "<input type='checkbox' name='vip'" . (($row['vip'] == 1) ? ' checked' : '') . " value='1' /> If this one is checked, only VIPs can download this torrent", 1);
     }
     if (XBT_TRACKER) {
-        $HTMLOUT .= tr('Freeleech', "<input type='checkbox' name='freetorrent'" . ((1 == $row['freetorrent']) ? ' checked' : '') . " value='1' /> Check this to make this torrent freeleech", 1);
+        $HTMLOUT .= tr('Freeleech', "<input type='checkbox' name='freetorrent'" . (($row['freetorrent'] == 1) ? ' checked' : '') . " value='1' /> Check this to make this torrent freeleech", 1);
     }
 }
 

@@ -30,7 +30,7 @@ if ($cds) {
 }
 $offset = (isset($_GET['offset']) ? (int) $_GET['offset'] : '');
 
-if ('name' == $searchby) {
+if ($searchby === 'name') {
     $name = str_replace([
                             '.',
                             '/',
@@ -145,9 +145,9 @@ if ('name' == $searchby) {
                                                            size="80"/>
                         &#160;by&#160;
                         <select name="searchby">
-                            <option value="name" <?php echo 'name' == $searchby ? 'selected' : ''; ?>>Name
+                            <option value="name" <?php echo $searchby === 'name' ? 'selected' : ''; ?>>Name
                             </option>
-                            <option value="imdb" <?php echo 'imdb' == $searchby ? 'selected' : ''; ?>>IMDb
+                            <option value="imdb" <?php echo $searchby === 'imdb' ? 'selected' : ''; ?>>IMDb
                                 id
                             </option>
                         </select></td>

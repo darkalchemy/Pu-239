@@ -45,13 +45,13 @@ function mkint($x)
     return (int) $x;
 }
 
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $groups = isset($_POST['groups']) ? $_POST['groups'] : '';
     //$groups = isset($_POST["groups"]) ? array_map('mkint',$_POST["groups"]) : ""; //no need for this kind of check because every value its checked inside the switch also the array contains no integer values so that will be a problem
     $subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '';
     $msg     = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
     $msg     = str_replace('&amp', '&', $_POST['body']);
-    $sender  = isset($_POST['system']) && 'yes' == $_POST['system'] ? 0 : $CURUSER['id'];
+    $sender = isset($_POST['system']) && $_POST['system'] === 'yes' ? 0 : $CURUSER['id'];
     if (empty($subject)) {
         $err[] = $lang['grouppm_nosub'];
     }
@@ -62,7 +62,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     if (empty($groups)) {
         $err[] = $lang['grouppm_nogrp'];
     }
-    if (0 == sizeof($err)) {
+    if (count($err) == 0) {
         $where = $classes = $ids = [];
         foreach ($groups as $group) {
             if (is_string($group)) {
@@ -88,14 +88,12 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
                         break;
 
                     case 'all_friends':
-
-                            $fq = sql_query('SELECT friendid FROM friends WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-                            if (mysqli_num_rows($fq)) {
-                                while ($fa = mysqli_fetch_row($fq)) {
-                                    $ids[] = $fa[0];
-                                }
+                        $fq = sql_query('SELECT friendid FROM friends WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+                        if (mysqli_num_rows($fq)) {
+                            while ($fa = mysqli_fetch_row($fq)) {
+                                $ids[] = $fa[0];
                             }
-
+                        }
                         break;
                 }
             }
@@ -104,10 +102,10 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
                 $sent2classes[] = get_user_class_name($group);
             }
         }
-        if (sizeof($classes) > 0) {
+        if (count($classes) > 0) {
             $where[] = 'u.class IN (' . join(',', $classes) . ')';
         }
-        if (sizeof($where) > 0) {
+        if (count($where) > 0) {
             $q1 = sql_query('SELECT u.id FROM users AS u WHERE ' . join(' OR ', $where)) or sqlerr(__FILE__, __LINE__);
             if (mysqli_num_rows($q1) > 0) {
                 while ($a = mysqli_fetch_row($q1)) {
@@ -116,13 +114,13 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
             }
         }
         $ids = array_unique($ids);
-        if (sizeof($ids) > 0) {
+        if (count($ids) > 0) {
             $pms = [];
             $msg .= "\n[p]" . $lang['grouppm_this'] . join(', ', $sent2classes) . '[/p]';
             foreach ($ids as $rid) {
                 $pms[] = '(' . $sender . ',' . $rid . ',' . TIME_NOW . ',' . sqlesc($msg) . ',' . sqlesc($subject) . ')';
             }
-            if (sizeof($pms) > 0) {
+            if (count($pms) > 0) {
                 $r = sql_query('INSERT INTO messages(sender,receiver,added,msg,subject) VALUES ' . join(',', $pms)) or sqlerr(__FILE__, __LINE__);
             }
             foreach ($ids as $rid) {
@@ -180,8 +178,8 @@ function dropdown()
 }
 
 $HTMLOUT .= begin_main_frame();
-if (sizeof($err) > 0) {
-    $class = (true == stristr($err[0], 'sent!') ? 'sent' : 'notsent');
+if (count($err) > 0) {
+    $class = (stristr($err[0], 'sent!') == true ? 'sent' : 'notsent');
     $errs  = '<ul><li>' . join('</li><li>', $err) . '</li></ul>';
     $HTMLOUT .= '<div class="' . $class . "\">$errs</div>";
 }

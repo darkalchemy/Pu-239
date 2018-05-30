@@ -260,7 +260,7 @@ class bencdec
         if (!is_string($str)) {
             return self::decode_error('Input data must be string in order to decode, "' . gettype($str) . '" given');
         }
-        if (0 == strlen($str)) {
+        if (strlen($str) == 0) {
             return self::decode_error('Input string empty');
         }
         self::$bdata_position = 0;
@@ -294,7 +294,7 @@ class bencdec
      */
     private static function decode_error($msg = '')
     {
-        trigger_error('Badly B-Encoded data at position ' . self::$bdata_position . ('' != $msg ? ': ' . $msg : ''), E_USER_WARNING);
+        trigger_error('Badly B-Encoded data at position ' . self::$bdata_position . ($msg != '' ? ': ' . $msg : ''), E_USER_WARNING);
         self::$bdata_position = 0;
         self::$bdata_length   = 0;
         self::$bdata          = '';
@@ -376,12 +376,12 @@ class bencdec
         $lenuptoep = $epos - self::$bdata_position;
         $idata     = @substr(self::$bdata, self::$bdata_position, $lenuptoep++);
         if (self::$ext_valid) {
-            $ndata = '-' === $idata[0] ? @substr($idata, 1) : $idata;
+            $ndata = $idata[0] === '-' ? @substr($idata, 1) : $idata;
             $len   = strlen($ndata);
             if (!$len) {
                 return self::decode_error('Empty integer');
             }
-            if ($len > 1 && '0' === $ndata[0]) {
+            if ($len > 1 && $ndata[0] === '0') {
                 return self::decode_error('Integer prefixed by 0');
             }
             if (!ctype_digit($ndata)) {
@@ -411,7 +411,7 @@ class bencdec
             if ($char === false) {
                 return self::decode_error('Data ended before dictionary terminated');
             }
-            if ('e' === $char) {
+            if ($char === 'e') {
                 break;
             }
 
@@ -455,7 +455,7 @@ class bencdec
         $llen  = $colpos - self::$bdata_position;
         $ldata = @substr(self::$bdata, self::$bdata_position, $llen++);
         if (self::$ext_valid) {
-            if ('0' === $ldata[0] && strlen($ldata) > 1) {
+            if ($ldata[0] === '0' && strlen($ldata) > 1) {
                 return self::decode_error('String length prefixed by 0');
             }
             if (!ctype_digit($ldata)) {
@@ -476,7 +476,7 @@ class bencdec
         }
         self::$bdata_position += $llen + $len;
 
-        return false === $string ? '' : $string;
+        return $string === false ? '' : $string;
     }
 
     /**
@@ -495,7 +495,7 @@ class bencdec
             if ($char === false) {
                 return self::decode_error('Data ended before list terminated');
             }
-            if ('e' === $char) {
+            if ($char === 'e') {
                 break;
             }
 

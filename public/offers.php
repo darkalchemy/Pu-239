@@ -56,10 +56,10 @@ switch ($action) {
         //=== see if they voted yet
         $res_did_they_vote = sql_query('SELECT vote FROM offer_votes WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND offer_id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $row_did_they_vote = mysqli_fetch_row($res_did_they_vote);
-        if ('' == $row_did_they_vote[0]) {
-            $yes_or_no = (1 == $vote ? 'yes' : 'no');
+        if ($row_did_they_vote[0] == '') {
+            $yes_or_no = ($vote == 1 ? 'yes' : 'no');
             sql_query('INSERT INTO offer_votes (offer_id, user_id, vote) VALUES (' . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ', \'' . $yes_or_no . '\')')                  or sqlerr(__FILE__, __LINE__);
-            sql_query('UPDATE offers SET ' . ('yes' == $yes_or_no ? 'vote_yes_count = vote_yes_count + 1' : 'vote_no_count = vote_no_count + 1') . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE offers SET ' . ($yes_or_no === 'yes' ? 'vote_yes_count = vote_yes_count + 1' : 'vote_no_count = vote_no_count + 1') . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             header('Location: /offers.php?action=offer_details&voted=1&id=' . $id);
             die();
         } else {
@@ -79,7 +79,7 @@ switch ($action) {
         $count              = $count_arr[0];
         $page               = isset($_GET['page']) ? (int) $_GET['page'] : 0;
         $perpage            = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
-        list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'offers.php?' . (20 == $perpage ? '' : '&amp;perpage=' . $perpage));
+        list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'offers.php?' . ($perpage == 20 ? '' : '&amp;perpage=' . $perpage));
         $main_query_res     = sql_query('SELECT o.id AS offer_id, o.offer_name, o.category, o.added, o.offered_by_user_id, o.vote_yes_count, o.vote_no_count, o.comments, o.status,
                                                     u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class,  u.leechwarn, u.chatpost, u.pirate, u.king,
                                                     c.id AS cat_id, c.name AS cat_name, c.image AS cat_image
@@ -103,7 +103,7 @@ switch ($action) {
     </tr>';
         while ($main_query_arr = mysqli_fetch_assoc($main_query_res)) {
             //=======change colors
-            $status = ('approved' == $main_query_arr['status'] ? '<span>Approved!</span>' : ('pending' == $main_query_arr['status'] ? '<span>Pending...</span>' : '<span>denied</span>'));
+=            $status = ($main_query_arr['status'] == 'approved' ? '<span>Approved!</span>' : ($main_query_arr['status'] === 'pending' ? '<span>Pending...</span>' : '<span>denied</span>'));
             $HTMLOUT .= '
     <tr>
         <td><img border="0" src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '" /></td>
@@ -143,7 +143,7 @@ switch ($action) {
         //=== see if they voted yet
         $res_did_they_vote = sql_query('SELECT vote FROM offer_votes WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND offer_id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $row_did_they_vote = mysqli_fetch_row($res_did_they_vote);
-        if ('' == $row_did_they_vote[0]) {
+        if ($row_did_they_vote[0] == '') {
             $vote_yes = '<form method="post" action="offers.php">
                     <input type="hidden" name="action" value="vote" />
                     <input type="hidden" name="id" value="' . $id . '" />
@@ -166,14 +166,14 @@ switch ($action) {
                     <input type="hidden" name="action" value="alter_status" />
                     <input type="hidden" name="id" value="' . $id . '" />
                     <select name="set_status">
-                    <option class="body" value="pending"' . ('pending' == $arr['status'] ? ' selected' : '') . '>Status: pending</option>
-                    <option class="body" value="approved"' . ('approved' == $arr['status'] ? ' selected' : '') . '>Status: approved</option>
-                    <option class="body" value="denied"' . ('denied' == $arr['status'] ? ' selected' : '') . '>Status: denied</option>
+                    <option class="body" value="pending"' . ($arr['status'] == 'pending' ? ' selected' : '') . '>Status: pending</option>
+                    <option class="body" value="approved"' . ($arr['status'] == 'approved' ? ' selected' : '') . '>Status: approved</option>
+                    <option class="body" value="denied"' . ($arr['status'] == 'denied' ? ' selected' : '') . '>Status: denied</option>
                     </select>
                     <input type="submit" class="button is-small" value="change status!" />
                     </form> ');
         //=== start page
-        $HTMLOUT .= (isset($_GET['status_changed']) ? '<h1>Offer Status Updated!</h1>' : '') . (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . ('approved' == $arr['status'] ? '<span>status: approved!</span>' : ('pending' == $arr['status'] ? '<span>status: pending...</span>' : '<span>status: denied</span>')) . $status_drop_down . '<br><br>
+        $HTMLOUT .= (isset($_GET['status_changed']) ? '<h1>Offer Status Updated!</h1>' : '') . (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . ($arr['status'] === 'approved' ? '<span>status: approved!</span>' : ($arr['status'] === 'pending' ? '<span>status: pending...</span>' : '<span>status: denied</span>')) . $status_drop_down . '<br><br>
     <table class="table table-bordered table-striped">
     <tr>
     <td class="colhead" colspan="2"><h1>' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="offers.php?action=edit_offer&amp;id=' . $id . '">edit</a> ]
@@ -222,7 +222,7 @@ switch ($action) {
             //=== get stuff for the pager
             $page               = isset($_GET['page']) ? (int) $_GET['page'] : 0;
             $perpage            = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
-            list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'offers.php?action=offer_details&amp;id=' . $id, (20 == $perpage ? '' : '&amp;perpage=' . $perpage) . '#comments');
+            list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'offers.php?action=offer_details&amp;id=' . $id, ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . '#comments');
             $subres             = sql_query('SELECT c.offer, c.id AS comment_id, c.text, c.added, c.editedby, c.editedat,
                                     u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.title, u.leechwarn, u.chatpost, u.pirate, u.king FROM comments AS c LEFT JOIN users AS u ON c.user = u.id WHERE c.offer = ' . sqlesc($id) . ' ORDER BY c.id ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
             $allrows = [];
@@ -261,7 +261,7 @@ switch ($action) {
             $cat_name  = htmlsafechars($cat_arr['cat_name'], ENT_QUOTES);
         }
         //=== if posted and not preview, process it :D
-        if (isset($_POST['button']) && 'Submit' == $_POST['button']) {
+        if (isset($_POST['button']) && $_POST['button'] === 'Submit') {
             sql_query('INSERT INTO offers (offer_name, image, description, category, added, offered_by_user_id, link) VALUES
                     (' . sqlesc($offer_name) . ', ' . sqlesc($image) . ', ' . sqlesc($body) . ', ' . sqlesc($category) . ', ' . TIME_NOW . ', ' . sqlesc($CURUSER['id']) . ',  ' . sqlesc($link) . ');') or sqlerr(__FILE__, __LINE__);
             $new_offer_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
@@ -274,7 +274,7 @@ switch ($action) {
     <td class="embedded">
     <h1>New Offer</h1>' . $top_menu . '
     <form method="post" action="offers.php?action=add_new_offer" name="offer_form" id="offer_form">
-   ' . (isset($_POST['button']) && 'Preview' == $_POST['button'] ? '<br>
+   ' . (isset($_POST['button']) && $_POST['button'] === 'Preview' ? '<br>
      <table class="table table-bordered table-striped">
     <tr>
     <td class="colhead" colspan="2"><h1>' . htmlsafechars($offer_name, ENT_QUOTES) . '</h1></td>
@@ -399,7 +399,7 @@ switch ($action) {
         $cat_image = htmlsafechars($cat_arr['cat_image'], ENT_QUOTES);
         $cat_name  = htmlsafechars($cat_arr['cat_name'], ENT_QUOTES);
         //=== if posted and not preview, process it :D
-        if (isset($_POST['button']) && 'Edit' == $_POST['button']) {
+        if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
             sql_query('UPDATE offers SET offer_name = ' . sqlesc($offer_name) . ', image = ' . sqlesc($image) . ', description = ' . sqlesc($body) . ',
                     category = ' . sqlesc($category) . ', link = ' . sqlesc($link) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             header('Location: offers.php?action=offer_details&edited=1&id=' . $id);
@@ -412,7 +412,7 @@ switch ($action) {
     <h1>Edit Offer</h1>' . $top_menu . '
     <form method="post" action="offers.php?action=edit_offer" name="offer_form" id="offer_form">
     <input type="hidden" name="id" value="' . $id . '" />
-    ' . (isset($_POST['button']) && 'Preview' == $_POST['button'] ? '<br>
+    ' . (isset($_POST['button']) && $_POST['button'] === 'Preview' ? '<br>
      <table class="table table-bordered table-striped">
     <tr>
     <td class="colhead" colspan="2"><h1>' . htmlsafechars($offer_name, ENT_QUOTES) . '</h1></td>
@@ -487,7 +487,7 @@ switch ($action) {
         if (!$arr) {
             stderr('Error', 'No offer with that ID.');
         }
-        if (isset($_POST['button']) && 'Save' == $_POST['button']) {
+        if (isset($_POST['button']) && $_POST['button'] === 'Save') {
             $body = trim($_POST['body']);
             if (!$body) {
                 stderr('Error', 'Comment body cannot be empty!');
@@ -500,7 +500,7 @@ switch ($action) {
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
         $HTMLOUT .= $top_menu . '<form method="post" action="offers.php?action=add_comment">
-    <input type="hidden" name="id" value="' . $id . '"/>' . (isset($_POST['button']) && 'Preview' == $_POST['button'] ? '
+    <input type="hidden" name="id" value="' . $id . '"/>' . (isset($_POST['button']) && $_POST['button'] === 'Preview' ? '
     <table class="table table-bordered table-striped">
     <tr>
     <td class="colhead" colspan="2"><h1>Preview</h1></td>
@@ -552,8 +552,8 @@ switch ($action) {
             stderr('Error', 'Permission denied.');
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : $arr['text']));
-        if (isset($_POST['button']) && 'Edit' == $_POST['button']) {
-            if ('' == $body) {
+        if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
+            if ($body == '') {
                 stderr('Error', 'Comment body cannot be empty!');
             }
             sql_query('UPDATE comments SET text=' . sqlesc($body) . ', editedat=' . TIME_NOW . ', editedby=' . sqlesc($CURUSER['id']) . ' WHERE id=' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
@@ -570,7 +570,7 @@ switch ($action) {
         $HTMLOUT .= $top_menu . '<form method="post" action="offers.php?action=edit_comment">
     <input type="hidden" name="id" value="' . $arr['offer'] . '"/>
     <input type="hidden" name="comment_id" value="' . $comment_id . '"/>
-     ' . (isset($_POST['button']) && 'Preview' == $_POST['button'] ? '<table class="table table-bordered table-striped">
+     ' . (isset($_POST['button']) && $_POST['button'] === 'Preview' ? '<table class="table table-bordered table-striped">
     <tr>
     <td class="colhead" colspan="2"><h1>Preview</h1></td>
     </tr>
@@ -637,19 +637,19 @@ switch ($action) {
         ];
         //=== check it
         $change_it = (in_array($set_status, $ok_stuff) ? $set_status : 'poop');
-        if ('poop' == $change_it) { //=== ok, so I had a bit of fun with that *blush
+        if ($change_it === 'poop') { //=== ok, so I had a bit of fun with that *blush
             stderr('Error', 'Nice try Mr. Fancy Pants!');
         }
         //=== get torrent name :P
         $res_name = sql_query('SELECT offer_name, offered_by_user_id FROM offers WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $arr_name = mysqli_fetch_assoc($res_name);
-        if ('approved' == $change_it) {
+        if ($change_it === 'approved') {
             $subject = sqlesc('Your Offer has been approved!');
             $message = sqlesc("Hi, \n An offer you made has been approved!!! \n\n Please  [url=" . $site_config['baseurl'] . '/upload.php]Upload ' . htmlsafechars($arr_name['offer_name'], ENT_QUOTES) . "[/url] as soon as possible! \n Members who voted on it will be notified as soon as you do! \n\n [url=" . $site_config['baseurl'] . '/offers.php?action=offer_details&id=' . $id . ']HERE[/url] is your offer.');
             sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, saved, location)
                 VALUES(0, ' . sqlesc($arr_name['offered_by_user_id']) . ', ' . TIME_NOW . ', ' . $message . ', ' . $subject . ', \'yes\', 1)') or sqlerr(__FILE__, __LINE__);
         }
-        if ('denied' == $change_it) {
+        if ($change_it === 'denied') {
             $subject = sqlesc('Your Offer has been denied!');
             $message = sqlesc("Hi, \n An offer you made has been denied. \n\n  [url=" . $site_config['baseurl'] . '/offers.php?action=offer_details&id=' . $id . ']' . htmlsafechars($arr_name['offer_name'], ENT_QUOTES) . '[/url] was denied by ' . $CURUSER['username'] . '. Please contact them to find out why.');
             sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, saved, location)
@@ -682,7 +682,7 @@ function comment_table($rows)
             $text .= '<p>Last edited by <a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . (int) $row['editedby'] . '">
         <b>' . htmlsafechars($arr_user['username']) . '</b></a> at ' . get_date($row['editedat'], 'DATE') . '</p>';
         }
-        $top_comment_stuff = $row['comment_id'] . ' by ' . (isset($row['username']) ? format_username($row) . ('' !== $row['title'] ? ' [ ' . htmlsafechars($row['title']) . ' ] ' : ' [ ' . get_user_class_name($row['class']) . ' ]  ') : ' M.I.A. ') . get_date($row['added'], '') . ($row['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? '
+        $top_comment_stuff = $row['comment_id'] . ' by ' . (isset($row['username']) ? format_username($row) . ($row['title'] !== '' ? ' [ ' . htmlsafechars($row['title']) . ' ] ' : ' [ ' . get_user_class_name($row['class']) . ' ]  ') : ' M.I.A. ') . get_date($row['added'], '') . ($row['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? '
      - [<a href="offers.php?action=edit_comment&amp;id=' . (int) $row['offer'] . '&amp;comment_id=' . (int) $row['comment_id'] . '">Edit</a>]' : '') . ($CURUSER['class'] >= UC_STAFF ? '
      - [<a href="offers.php?action=delete_comment&amp;id=' . (int) $row['offer'] . '&amp;comment_id=' . (int) $row['comment_id'] . '">Delete</a>]' : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? '
      - [<a href="comment.php?action=vieworiginal&amp;cid=' . (int) $row['id'] . '">View original</a>]' : '') . '

@@ -5,13 +5,13 @@ $step = isset($_GET['step']) ? (int) $_GET['step'] : 0;
 $root   = dirname(__FILE__, 3) . DIRECTORY_SEPARATOR;
 $public = $root . 'public';
 
-if (DIRECTORY_SEPARATOR != $public[strlen($public) - 1]) {
+if ($public[strlen($public) - 1] != DIRECTORY_SEPARATOR) {
     $public = $public . DIRECTORY_SEPARATOR;
 }
 
 function return_bytes($val)
 {
-    if ('' == $val) {
+    if ($val == '') {
         return 0;
     }
     $val  = strtolower(trim($val));
@@ -57,7 +57,7 @@ function get_scheme()
 <div id='wrapper'>
     <div id='logo'></div>
     <?php
-    if ('POST' == $_SERVER['REQUEST_METHOD']) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $valid_do = [
             'write'     => 1,
             'db_insert' => 1,

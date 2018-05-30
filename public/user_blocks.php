@@ -11,13 +11,13 @@ $id   = (isset($_GET['id']) ? $_GET['id'] : $CURUSER['id']);
 if (!is_valid_id($id) || $CURUSER['class'] < UC_STAFF) {
     $id = $CURUSER['id'];
 }
-if ($CURUSER['class'] < UC_STAFF && 'no' == $CURUSER['got_blocks']) {
+if ($CURUSER['class'] < UC_STAFF && $CURUSER['got_blocks'] === 'no') {
     $session->set('is-danger', 'Go to your Karma bonus page and buy this unlock before trying to access it.');
     header('Location: ' . $site_config['baseurl'] . '/index.php');
     die();
 }
 
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $updateset          = [];
     $setbits_index_page = $clrbits_index_page = $setbits_global_stdhead = $clrbits_global_stdhead = $setbits_userdetails_page = $clrbits_userdetails_page = 0;
     //==Index

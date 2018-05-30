@@ -63,7 +63,7 @@ if (!isset($_GET['nowarn'])) {
                 </h3>
             </div>";
 }
-$got_ssl = isset($_SERVER['HTTPS']) && true == (bool) $_SERVER['HTTPS'] ? true : false;
+$got_ssl = isset($_SERVER['HTTPS']) && (bool)$_SERVER['HTTPS'] == true ? true : false;
 $HTMLOUT .= "
             <form class='form-inline table-wrapper' method='post' action='takelogin.php'>
                 <table class='table table-bordered'>

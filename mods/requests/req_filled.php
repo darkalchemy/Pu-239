@@ -41,7 +41,7 @@ if (mysqli_num_rows($res) > 0) {
     }
     unset($msgs_buffer);
 }
-((mysqli_free_result($res) || (is_object($res) && ('mysqli_result' == get_class($res)))) ? true : false);
+((mysqli_free_result($res) || (is_object($res) && (get_class($res) === 'mysqli_result'))) ? true : false);
 $HTMLOUT .= "<table class='main' width='750px' >" . "<tr><td class='embedded'>\n";
 $HTMLOUT .= "<h1>{$lang['reset_success']}</h1>
 <table>

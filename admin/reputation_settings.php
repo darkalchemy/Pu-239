@@ -20,7 +20,7 @@ function rep_cache()
 {
     $rep_out = '<' . "?php\n\n\$GVARS = array(\n";
     foreach ($_POST as $k => $v) {
-        $rep_out .= ('rep_undefined' == $k) ? "\t'{$k}' => '" . htmlsafechars($v, ENT_QUOTES) . "',\n" : "\t'{$k}' => " . intval($v) . ",\n";
+        $rep_out .= ($k === 'rep_undefined') ? "\t'{$k}' => '" . htmlsafechars($v, ENT_QUOTES) . "',\n" : "\t'{$k}' => " . intval($v) . ",\n";
     }
     $rep_out .= "\t'g_rep_negative' => true,\n";
     $rep_out .= "\t'g_rep_seeown' => true,\n";
@@ -208,8 +208,8 @@ echo stdhead($lang['repset_stdhead']) . $HTMLOUT . stdfoot();
 function template_out($matches)
 {
     global $GVARS, $lang;
-    if ('rep_is_online' == $matches[1]) {
-        return '' . $lang['repset_yes'] . '<input name="rep_is_online" value="1" ' . (1 == $GVARS['rep_is_online'] ? 'checked' : '') . ' type="radio">&#160;&#160;&#160;<input name="rep_is_online" value="0" ' . (1 == $GVARS['rep_is_online'] ? '' : 'checked') . ' type="radio">' . $lang['repset_no'] . '';
+    if ($matches[1] === 'rep_is_online') {
+        return '' . $lang['repset_yes'] . '<input name="rep_is_online" value="1" ' . ($GVARS['rep_is_online'] == 1 ? 'checked' : '') . ' type="radio">&#160;&#160;&#160;<input name="rep_is_online" value="0" ' . ($GVARS['rep_is_online'] == 1 ? '' : 'checked') . ' type="radio">' . $lang['repset_no'] . '';
     } else {
         return $GVARS[$matches[1]];
     }

@@ -63,7 +63,7 @@ function byteformat($value, $limes = 2, $comma = 0)
             break 1;
         } // end if
     } // end for
-    if ($GLOBALS['byteUnits'][0] != $unit) {
+    if ($unit != $GLOBALS['byteUnits'][0]) {
         $return_value = number_format($value, $comma, '.', ',');
     } else {
         $return_value = number_format($value, 0, '.', ',');
@@ -108,7 +108,7 @@ function timespanFormat($seconds)
 function localisedDate($timestamp = -1, $format = '')
 {
     global $datefmt, $month, $day_of_week;
-    if ('' == $format) {
+    if ($format == '') {
         $format = $datefmt;
     }
     if ($timestamp == -1) {
@@ -127,7 +127,7 @@ $res = @sql_query('SHOW GLOBAL STATUS') or sqlerr(__FILE__, __LINE__);
 while ($row = mysqli_fetch_row($res)) {
     $serverStatus[$row[0]] = $row[1];
 }
-@((mysqli_free_result($res) || (is_object($res) && ('mysqli_result' == get_class($res)))) ? true : false);
+@((mysqli_free_result($res) || (is_object($res) && (get_class($res) === 'mysqli_result'))) ? true : false);
 unset($res, $row);
 
 $res = @sql_query('SELECT UNIX_TIMESTAMP() - ' . $serverStatus['Uptime']);
@@ -139,14 +139,14 @@ $HTMLOUT .= "<table class='torrenttable' border='1'>
         </td>
       </tr>
       </table><br>';
-((mysqli_free_result($res) || (is_object($res) && ('mysqli_result' == get_class($res)))) ? true : false);
+((mysqli_free_result($res) || (is_object($res) && (get_class($res) === 'mysqli_result'))) ? true : false);
 unset($res, $row);
 
 //Get query statistics
 $queryStats = [];
 $tmp_array  = $serverStatus;
 foreach ($tmp_array as $name => $value) {
-    if ('Com_' == substr($name, 0, 4)) {
+    if (substr($name, 0, 4) === 'Com_') {
         $queryStats[str_replace('_', ' ', substr($name, 4))] = $value;
         unset($serverStatus[$name]);
     }

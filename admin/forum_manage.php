@@ -94,11 +94,11 @@ switch ($action) {
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_name'] . '</span></td>
-                    <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . '" class="w-100" /></td>
+                    <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . ' /></td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_description'] . '</span></td>
-                    <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . '" class="w-100" /></td>
+                    <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . ' /></td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_over'] . '</span></td>
@@ -115,7 +115,7 @@ switch ($action) {
                 <td><span>' . $lang['fm_efp_sub'] . '</span></td>
                 <td>
                 <select name="parent_forum">
-                <option class="body" value="0"' . (0 == $parent_forum ? ' selected' : '') . '>' . $lang['fm_efp_select'] . '</option>';
+                <option class="body" value="0"' . ($parent_forum == 0 ? ' selected' : '') . '>' . $lang['fm_efp_select'] . '</option>';
             $res = sql_query('SELECT name, id FROM forums');
             while ($arr = mysqli_fetch_array($res)) {
                 if (is_valid_id($arr['id'])) {
@@ -212,11 +212,11 @@ $HTMLOUT .= '</table><br><br>
             </tr>
             <tr>
             <td><span>' . $lang['fm_mp_fname'] . '</span></td>
-            <td><input name="name" type="text" class="w-100" maxlength="60" class="w-100" /></td>
+            <td><input name="name" type="text" class="w-100" maxlength="60" /></td>
             </tr>
             <tr>
             <td><span>' . $lang['fm_mp_description'] . '</span>  </td>
-            <td><input name="desc" type="text" class="w-100" maxlength="200" class="w-100" /></td>
+            <td><input name="desc" type="text" class="w-100" maxlength="200" /></td>
             </tr>
             <tr>
             <td><span>' . $lang['fm_mp_over2'] . '</span></td>

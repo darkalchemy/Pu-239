@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
@@ -8,7 +8,7 @@ check_user_status();
 $lang    = load_language('global');
 $HTMLOUT = '';
 $id      = (isset($_GET['id']) ? (int) $_GET['id'] : '0');
-if ('0' == $id) {
+if ($id == '0') {
     stderr('Err', 'I dont think so!');
 }
 $ur      = sql_query('SELECT username FROM users WHERE id=' . sqlesc($id));

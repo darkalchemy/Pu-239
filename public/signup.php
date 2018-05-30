@@ -60,9 +60,9 @@ foreach ($countries as $cntry) {
 
 $gender .= "
     <select name='gender' class='w-100'>
-        <option value='Male'" . ('Male' == $signup_vars['gender'] ? ' selected ' : '') . ">{$lang['signup_male']}</option>
-        <option value='Female'" . ('Female' == $signup_vars['gender'] ? ' selected ' : '') . ">{$lang['signup_female']}</option>
-        <option value='NA'" . ('NA' == $signup_vars['gender'] ? ' selected ' : '') . ">{$lang['signup_na']}</option>
+        <option value='Male'" . ($signup_vars['gender'] == 'Male' ? ' selected ' : '') . ">{$lang['signup_male']}</option>
+        <option value='Female'" . ($signup_vars['gender'] == 'Female' ? ' selected ' : '') . ">{$lang['signup_female']}</option>
+        <option value='NA'" . ($signup_vars['gender'] == 'NA' ? ' selected ' : '') . ">{$lang['signup_na']}</option>
     </select>";
 
 $value = [
@@ -123,18 +123,18 @@ $year .= '
 $month .= "
     <select name='month' class='w-100 bottom10'>
         <option value='00'>{$lang['signup_month']}</option>
-        <option value='01'" . ('01' == $signup_vars['month'] ? ' selected ' : '') . ">{$lang['signup_jan']}</option>
-        <option value='02'" . ('02' == $signup_vars['month'] ? ' selected ' : '') . ">{$lang['signup_feb']}</option>
-        <option value='03'" . ('03' == $signup_vars['month'] ? ' selected ' : '') . ">{$lang['signup_mar']}</option>
-        <option value='04'" . ('04' == $signup_vars['month'] ? ' selected ' : '') . ">{$lang['signup_apr']}</option>
-        <option value='05'" . ('05' == $signup_vars['month'] ? ' selected ' : '') . ">{$lang['signup_may']}</option>
-        <option value='06'" . ('06' == $signup_vars['month'] ? ' selected ' : '') . ">{$lang['signup_jun']}</option>
-        <option value='07'" . ('07' == $signup_vars['month'] ? ' selected ' : '') . ">{$lang['signup_jul']}</option>
-        <option value='08'" . ('08' == $signup_vars['month'] ? ' selected ' : '') . ">{$lang['signup_aug']}</option>
-        <option value='09'" . ('09' == $signup_vars['month'] ? ' selected ' : '') . ">{$lang['signup_sep']}</option>
-        <option value='10'" . ('10' == $signup_vars['month'] ? ' selected ' : '') . ">{$lang['signup_oct']}</option>
-        <option value='11'" . ('11' == $signup_vars['month'] ? ' selected ' : '') . ">{$lang['signup_nov']}</option>
-        <option value='12'" . ('12' == $signup_vars['month'] ? ' selected ' : '') . ">{$lang['signup_dec']}</option>
+        <option value='01'" . ($signup_vars['month'] == '01' ? ' selected ' : '') . ">{$lang['signup_jan']}</option>
+        <option value='02'" . ($signup_vars['month'] == '02' ? ' selected ' : '') . ">{$lang['signup_feb']}</option>
+        <option value='03'" . ($signup_vars['month'] == '03' ? ' selected ' : '') . ">{$lang['signup_mar']}</option>
+        <option value='04'" . ($signup_vars['month'] == '04' ? ' selected ' : '') . ">{$lang['signup_apr']}</option>
+        <option value='05'" . ($signup_vars['month'] == '05' ? ' selected ' : '') . ">{$lang['signup_may']}</option>
+        <option value='06'" . ($signup_vars['month'] == '06' ? ' selected ' : '') . ">{$lang['signup_jun']}</option>
+        <option value='07'" . ($signup_vars['month'] == '07' ? ' selected ' : '') . ">{$lang['signup_jul']}</option>
+        <option value='08'" . ($signup_vars['month'] == '08' ? ' selected ' : '') . ">{$lang['signup_aug']}</option>
+        <option value='09'" . ($signup_vars['month'] == '09' ? ' selected ' : '') . ">{$lang['signup_sep']}</option>
+        <option value='10'" . ($signup_vars['month'] == '10' ? ' selected ' : '') . ">{$lang['signup_oct']}</option>
+        <option value='11'" . ($signup_vars['month'] == '11' ? ' selected ' : '') . ">{$lang['signup_nov']}</option>
+        <option value='12'" . ($signup_vars['month'] == '12' ? ' selected ' : '') . ">{$lang['signup_dec']}</option>
     </select>";
 $day .= '
     <select name="day" class="w-100 bottom10">';
@@ -210,9 +210,9 @@ $HTMLOUT .= "
             <tr class='no_hover'>
                 <td class='rowhead'></td>
                 <td>
-                    <input type='checkbox' name='rulesverify' value='yes'" . ('yes' == $signup_vars['rulesverify'] ? ' checked ' : '') . "/> {$lang['signup_rules']}<br>
-                    <input type='checkbox' name='faqverify' value='yes'" . ('yes' == $signup_vars['faqverify'] ? ' checked ' : '') . "/> {$lang['signup_faq']}<br>
-                    <input type='checkbox' name='ageverify' value='yes'" . ('yes' == $signup_vars['ageverify'] ? ' checked ' : '') . "/> {$lang['signup_age']}
+                    <input type='checkbox' name='rulesverify' value='yes'" . ($signup_vars['rulesverify'] === 'yes' ? ' checked ' : '') . "/> {$lang['signup_rules']}<br>
+                    <input type='checkbox' name='faqverify' value='yes'" . ($signup_vars['faqverify'] === 'yes' ? ' checked ' : '') . "/> {$lang['signup_faq']}<br>
+                    <input type='checkbox' name='ageverify' value='yes'" . ($signup_vars['ageverify'] === 'yes' ? ' checked ' : '') . "/> {$lang['signup_age']}
                 </td>
             </tr>" . ($site_config['captcha_on'] ? "
             <tr class='no_hover'>

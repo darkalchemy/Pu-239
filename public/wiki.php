@@ -72,7 +72,7 @@ function wikimenu()
 $action = 'article';
 $mode   = $name   = '';
 
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['article-add'])) {
         $name = htmlsafechars(urldecode($_POST['article-name']));
         $body = htmlsafechars($_POST['body']);
@@ -120,13 +120,13 @@ if (isset($_GET['action'])) {
     }
 }
 
-if ('article' == $action) {
+if ($action === 'article') {
     if (!empty($mode) && !empty($name)) {
-        $res = sql_query("SELECT * FROM wiki WHERE $mode = '" . ('name' == $mode ? "$name" : "$id") . "'");
+        $res = sql_query("SELECT * FROM wiki WHERE $mode = '" . ($mode === 'name' ? "$name" : "$id") . "'");
     } else {
         $res = sql_query('SELECT * FROM wiki ORDER BY GREATEST(time, lastedit) DESC');
     }
-    if (1 === mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) === 1) {
         $HTMLOUT .= navmenu();
         $edit = '';
         $HTMLOUT .= '
@@ -161,7 +161,7 @@ if ('article' == $action) {
             $HTMLOUT .= navmenu() . "
             <h2 class='has-text-centered'>Article search results for: <b>" . htmlsafechars($name) . '</b></h2>';
             while ($wiki = mysqli_fetch_array($res)) {
-                if (0 !== $wiki['userid']) {
+                if ($wiki['userid'] !== 0) {
                     $user     = $user_stuffs->getUserFromId($wiki['userid']);
                     $wikiname = $user['username'];
                 }
@@ -177,7 +177,7 @@ if ('article' == $action) {
     }
 }
 $wiki = 0;
-if ('add' == $action) {
+if ($action === 'add') {
     $HTMLOUT .= navmenu() . "
             <form method='post' action='wiki.php'>
                 <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' placeholder='Article Title' />" .
@@ -187,7 +187,7 @@ if ('add' == $action) {
                 </div>
             </form>";
 }
-if ('edit' == $action) {
+if ($action === 'edit') {
     $sql    = sql_query('SELECT * FROM wiki WHERE id = ' . sqlesc($id));
     $result = mysqli_fetch_assoc($sql);
     if (($CURUSER['class'] >= UC_STAFF) || ($CURUSER['id'] == $result['userid'])) {
@@ -204,14 +204,14 @@ if ('edit' == $action) {
         stderr($lang['wiki_error'], $lang['wiki_access_denied']);
     }
 }
-if ('sort' == $action) {
+if ($action === 'sort') {
     $sortres = sql_query("SELECT * FROM wiki WHERE name LIKE '$letter%' ORDER BY name");
     if (mysqli_num_rows($sortres) > 0) {
         $HTMLOUT .= navmenu() . "
         <h2 class='has-text-centered'>{$lang['wiki_art_found_starting']}: <b>" . htmlsafechars($letter) . "</b></h2>
         <div class='w-100 padding20 round10 bg-02'>";
         while ($wiki = mysqli_fetch_array($sortres)) {
-            if (0 !== $wiki['userid']) {
+            if ($wiki['userid'] !== 0) {
                 $user     = $user_stuffs->getUserFromId($wiki['userid']);
                 $wikiname = $user['username'];
             }

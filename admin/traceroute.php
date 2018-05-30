@@ -9,7 +9,7 @@ global $lang;
 
 $lang    = array_merge($lang, load_language('ad_traceroute'));
 $HTMLOUT = '';
-if (strtoupper('WIN' == substr(PHP_OS, 0, 3))) {
+if (strtoupper(substr(PHP_OS, 0, 3) === 'WIN')) {
     $windows = 1;
     $unix    = 0;
 } else {
@@ -29,7 +29,7 @@ if ($register_globals) {
     $ip     = $_SERVER['REMOTE_ADDR'];
     $self   = $_SERVER['SCRIPT_NAME'];
 }
-if ('do' == $action) {
+if ($action === 'do') {
     $host = preg_replace('/[^A-Za-z0-9.]/', '', $host);
     $HTMLOUT .= '<div class="error">';
     $HTMLOUT .= '' . $lang['trace_out'] . '<br>';

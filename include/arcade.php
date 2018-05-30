@@ -53,7 +53,7 @@ if ($highScore < $score) {
 }
 
 require_once INCL_DIR . 'user_functions.php';
-if (1 == $site_config['autoshout_on']) {
+if ($site_config['autoshout_on'] == 1) {
     autoshout($message);
 }
 // update alltime high scores

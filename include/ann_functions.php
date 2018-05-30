@@ -155,7 +155,7 @@ function get_torrent_from_hash($info_hash)
     $key     = 'torrent_hash_' . bin2hex($info_hash);
     $ttl     = 21600;
     $torrent = $cache->get($key);
-    if ($torrent === false || is_null($torrent)) {
+    if ($torrent === false || is_null($torrent) || !is_array($torrent)) {
         $torrent = $fluent->from('torrents')
             ->select(null)
             ->select('id')

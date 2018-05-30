@@ -12,9 +12,9 @@ function getTVImagesByImdb($thetvdb_id, $type = 'showbackground', $season = 0)
         'seasonbanner',
     ];
 
-    if (0 != $season && ('banner' === $type || 'poster' === $type)) {
+    if ($season != 0 && ($type === 'banner' || $type === 'poster')) {
         $type = 'season' . $type;
-    } elseif ('banner' === $type || 'poster' === $type) {
+    } elseif ($type === 'banner' || $type === 'poster') {
         $type = 'tv' . $type;
     }
 
@@ -27,7 +27,7 @@ function getTVImagesByImdb($thetvdb_id, $type = 'showbackground', $season = 0)
     if ($fanart === false || is_null($fanart)) {
         $url    = 'http://webservice.fanart.tv/v3/tv/';
         $fanart = fetch($url . $thetvdb_id . '?api_key=' . $key);
-        if (null != $fanart) {
+        if ($fanart != null) {
             $fanart = json_decode($fanart, true);
             $cache->set('show_images_' . $thetvdb_id, $fanart, 604800);
         }
@@ -35,8 +35,8 @@ function getTVImagesByImdb($thetvdb_id, $type = 'showbackground', $season = 0)
     if ($fanart) {
         $images = [];
         foreach ($fanart[$type] as $image) {
-            if (empty($image['lang']) || 'en' === $image['lang']) {
-                if (0 != $season) {
+            if (empty($image['lang']) || $image['lang'] === 'en') {
+                if ($season != 0) {
                     if ($image['season'] == $season) {
                         $images[] = $image['url'];
                     }
@@ -79,7 +79,7 @@ function getMovieImagesByImdb($imdb, $type = 'moviebackground')
     if ($fanart === false || is_null($fanart)) {
         $url    = 'http://webservice.fanart.tv/v3/movies/';
         $fanart = fetch($url . $imdb . '?api_key=' . $key);
-        if (null != $fanart) {
+        if ($fanart != null) {
             $fanart = json_decode($fanart, true);
             $cache->set('movie_images_' . $imdb, $fanart, 604800);
         }
@@ -87,7 +87,7 @@ function getMovieImagesByImdb($imdb, $type = 'moviebackground')
     if ($fanart) {
         $images = [];
         foreach ($fanart[$type] as $image) {
-            if (empty($image['lang']) || 'en' === $image['lang']) {
+            if (empty($image['lang']) || $image['lang'] === 'en') {
                 $images[] = $image['url'];
             }
         }

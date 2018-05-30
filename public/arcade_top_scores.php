@@ -25,7 +25,7 @@ foreach ($list as $gname) {
     //=== get high score (5)
     $sql       = 'SELECT * FROM flashscores WHERE game = ' . sqlesc($game) . ' ORDER BY score DESC LIMIT 25';
     $score_res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    if (0 !== mysqli_num_rows($score_res)) {
+    if (mysqli_num_rows($score_res) !== 0) {
         $HTMLOUT .= "
         <div class='bg-02 has-text-centered padtop10 round5'>
             <a name='{$game}'></a>
@@ -77,7 +77,7 @@ foreach ($list as $gname) {
         $sql              = 'SELECT score FROM flashscores WHERE game = ' . sqlesc($game) . ' AND user_id = ' . sqlesc($CURUSER['id']) . ' ORDER BY score DESC LIMIT 1';
         $member_score_res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
-        if (0 != mysqli_num_rows($member_score_res)) {
+        if (mysqli_num_rows($member_score_res) != 0) {
             $score_arr       = mysqli_fetch_row($member_score_res);
             $member_rank_res = sql_query('SELECT COUNT(id) FROM flashscores WHERE game = ' . sqlesc($game) . ' AND score > ' . sqlesc($score_arr[0])) or sqlerr(__FILE__, __LINE__);
             $member_rank_arr = mysqli_fetch_row($member_rank_res);

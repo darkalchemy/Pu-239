@@ -18,14 +18,14 @@ $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_PO
 if (!in_array($action, $possible_actions)) {
     stderr('Error', 'A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.');
 }
-if ('viewbug' == $action) {
-    if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($action === 'viewbug') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($CURUSER['class'] < UC_MAX) {
             stderr("{$lang['stderr_error']}", "{$lang['stderr_only_coder']}");
         }
         $id     = isset($_POST['id']) ? (int) $_POST['id'] : '';
         $status = isset($_POST['status']) ? htmlsafechars($_POST['status']) : '';
-        if ('na' == $status) {
+        if ($status === 'na') {
             stderr("{$lang['stderr_error']}", "{$lang['stderr_no_na']}");
         }
         if (!$id || !is_valid_id($id)) {
@@ -115,12 +115,12 @@ if ('viewbug' == $action) {
       <tr><td class='rowhead'>{$lang['priority']}</td><td>" . $priority . "</td></tr>
       <tr><td class='rowhead'>{$lang['problem_bug']}</td><td><textarea cols='60' rows='10' readonly='readonly'>{$problem}</textarea></td></tr>
       <tr><td class='rowhead'>{$lang['status']} / {$lang['by']}</td><td>{$status} - {$by}</td></tr>";
-        if ('na' == $a['status']) {
+        if ($a['status'] === 'na') {
             $HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['submit_btn_fix']}' class='button is-small'/></td></tr>\n";
         }
     }
     $HTMLOUT .= "</table></form><a href='bugs.php?action=bugs'>{$lang['go_back']}</a>\n";
-} elseif ('bugs' == $action) {
+} elseif ($action === 'bugs') {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr("{$lang['stderr_error']}", "{$lang['stderr_only_staff_can_view']}");
     }
@@ -177,7 +177,7 @@ if ('viewbug' == $action) {
           <td nowrap='nowrap'>" . get_date($q1['added'], 'TINY') . " / <a href='userdetails.php?id=" . (int) $q1['sender'] . "'>" . htmlsafechars($q1['username']) . "</a></td>
           <td>{$priority}</td>
           <td>{$status}</td>
-      <td>" . ('na' != $q1['status'] ? "<a href='userdetails.php?id=" . (int) $q1['staff'] . "'>" . htmlsafechars($q1['staffusername']) . '</a>' : '---') . '</td>
+      <td>" . ($q1['status'] != 'na' ? "<a href='userdetails.php?id=" . (int)$q1['staff'] . "'>" . htmlsafechars($q1['staffusername']) . '</a>' : '---') . '</td>
       </tr>';
         }
         $HTMLOUT .= '</table>';
@@ -187,8 +187,8 @@ if ('viewbug' == $action) {
         header('Location: index.php');
         die();
     }
-} elseif ('add' == $action) {
-    if ('POST' == $_SERVER['REQUEST_METHOD']) {
+} elseif ($action === 'add') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $title    = htmlsafechars($_POST['title']);
         $priority = htmlsafechars($_POST['priority']);
         $problem  = htmlsafechars($_POST['problem']);

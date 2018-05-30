@@ -31,7 +31,7 @@ if (!password_verify($token, $row['token'])) {
     die();
 }
 
-if ('pending' != $row['status']) {
+if ($row['status'] != 'pending') {
     header("Refresh: 0; url={$site_config['baseurl']}/ok.php?type=confirmed");
     die();
 }

@@ -24,12 +24,12 @@ if (mysqli_num_rows($rez_invited) < 1) {
         <td class="colhead"><b>' . $lang['userdetails_ratio'] . '</b></td>
         <td class="colhead"><b>' . $lang['userdetails_status'] . '</b></td></tr>';
     while ($arr_invited = mysqli_fetch_assoc($rez_invited)) {
-        $inviteted_by_this_member .= '<tr><td>' . ('pending' == $arr_invited['status'] ? htmlsafechars($arr_invited['username']) : format_username($arr_invited) . '<br> ' . ($CURUSER['class'] < UC_STAFF ? '' : $arr_invited['ip'])) . '</td>
+        $inviteted_by_this_member .= '<tr><td>' . ($arr_invited['status'] === 'pending' ? htmlsafechars($arr_invited['username']) : format_username($arr_invited) . '<br> ' . ($CURUSER['class'] < UC_STAFF ? '' : $arr_invited['ip'])) . '</td>
         <td>' . htmlsafechars($arr_invited['email']) . '</td>
         <td>' . mksize($arr_invited['uploaded']) . '</td>
         ' . ($site_config['ratio_free'] ? '' : '<td>' . mksize($arr_invited['downloaded']) . '</td>') . '
         <td>' . member_ratio($arr_invited['uploaded'], $site_config['ratio_free'] ? '0' : $arr_invited['downloaded']) . '</td>
-        <td>' . ('confirmed' == $arr_invited['status'] ? '<span style="color: green;">' . $lang['userdetails_confirmed'] . '</span></td></tr>' : '<span style="color: red;">' . $lang['userdetails_pending'] . '</span></td></tr>');
+        <td>' . ($arr_invited['status'] === 'confirmed' ? '<span style="color: green;">' . $lang['userdetails_confirmed'] . '</span></td></tr>' : '<span style="color: red;">' . $lang['userdetails_pending'] . '</span></td></tr>');
     }
     $inviteted_by_this_member .= '</table>';
 }

@@ -47,7 +47,7 @@ function dltable($name, $arr, $torrent)
         $body .= '
         <tr>';
         if ($e['username']) {
-            if ((('yes' == $e['tanonymous'] && $e['owner'] == $e['userid'] || 'yes' == $e['anonymous'] || $e['paranoia'] >= 2) && $CURUSER['id'] != $e['userid']) && $CURUSER['class'] < UC_STAFF) {
+            if ((($e['tanonymous'] === 'yes' && $e['owner'] == $e['userid'] || $e['anonymous'] === 'yes' || $e['paranoia'] >= 2) && $CURUSER['id'] != $e['userid']) && $CURUSER['class'] < UC_STAFF) {
                 $username = get_anonymous_name();
                 $body .= "
             <td><b>$username</b></td>";
@@ -60,11 +60,11 @@ function dltable($name, $arr, $torrent)
             <td>' . ($mod ? $e['ip'] : preg_replace('/\.\d+$/', '.xxx', $e['ip'])) . '</td>';
         }
         $secs = max(1, ($now - $e['st']) - ($now - $e['la']));
-        $body .= '<td>' . ('yes' == $e['connectable'] ? "{$lang['peerslist_yes']}" : "<span class='has-text-danger'>{$lang['peerslist_no']}</span>") . "</td>\n";
+        $body .= '<td>' . ($e['connectable'] === 'yes' ? "{$lang['peerslist_yes']}" : "<span class='has-text-danger'>{$lang['peerslist_no']}</span>") . "</td>\n";
         $body .= '<td>' . mksize($e['uploaded']) . "</td>\n";
         $body .= '<td><span style="white-space: nowrap;">' . mksize(($e['uploaded'] - $e['uploadoffset']) / $secs) . "/s</span></td>\n";
         $body .= '' . ($site_config['ratio_free'] ? '' : '<td>' . mksize($e['downloaded']) . '</td>') . "\n";
-        if ('no' == $e['seeder']) {
+        if ($e['seeder'] === 'no') {
             $body .= '' . ($site_config['ratio_free'] ? '' : '<td><span style="white-space: nowrap;">' . mksize(($e['downloaded'] - $e['downloadoffset']) / $secs) . '/s</span></td>') . "\n";
         } else {
             $body .= '' . ($site_config['ratio_free'] ? '' : '<td><span style="white-space: nowrap;">' . mksize(($e['downloaded'] - $e['downloadoffset']) / max(1, $e['finishedat'] - $e['st'])) . '/s</span></td>') . "\n";
@@ -82,7 +82,7 @@ function dltable($name, $arr, $torrent)
 }
 
 $res = sql_query('SELECT * FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-if (0 == mysqli_num_rows($res)) {
+if (mysqli_num_rows($res) == 0) {
     stderr("{$lang['peerslist_error']}", "{$lang['peerslist_nothing']}");
 }
 $row         = mysqli_fetch_assoc($res);
@@ -93,11 +93,11 @@ $subres      = sql_query('SELECT u.username, u.anonymous, u.paranoia, t.owner, t
     LEFT JOIN users u ON p.userid = u.id
     LEFT JOIN torrents AS t ON t.id = p.torrent
     WHERE p.torrent = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-if (0 == mysqli_num_rows($subres)) {
+if (mysqli_num_rows($subres) == 0) {
     stderr("{$lang['peerslist_warning']}", "{$lang['peerslist_no_data']}");
 }
 while ($subrow = mysqli_fetch_assoc($subres)) {
-    if ('yes' == $subrow['seeder']) {
+    if ($subrow['seeder'] === 'yes') {
         $seeders[] = $subrow;
     } else {
         $downloaders[] = $subrow;

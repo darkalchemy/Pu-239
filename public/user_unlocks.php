@@ -11,11 +11,11 @@ $id   = (isset($_GET['id']) ? $_GET['id'] : $CURUSER['id']);
 if (!is_valid_id($id) || $CURUSER['class'] < UC_STAFF) {
     $id = $CURUSER['id'];
 }
-if ($CURUSER['class'] < UC_STAFF && 'no' == $CURUSER['got_moods']) {
+if ($CURUSER['class'] < UC_STAFF && $CURUSER['got_moods'] === 'no') {
     stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.... Yer simply no tall enough.");
     die();
 }
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $updateset = [];
     $setbits   = $clrbits   = 0;
     if (isset($_POST['unlock_user_moods'])) {

@@ -2,7 +2,7 @@
 
 $start = microtime(true);
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'define.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'define.php';
 if (!@include_once(INCL_DIR . 'config.php')) {
     header('Location: /install/index.php');
     die();
@@ -197,6 +197,7 @@ function hashit($var, $addtext = '')
 function check_bans($ip, &$reason = '')
 {
     global $cache;
+
     if (empty($ip)) {
         return false;
     }
@@ -212,7 +213,7 @@ function check_bans($ip, &$reason = '')
 
             return true;
         }
-        ((mysqli_free_result($ban_sql) || (is_object($ban_sql) && ('mysqli_result' == get_class($ban_sql)))) ? true : false);
+        ((mysqli_free_result($ban_sql) || (is_object($ban_sql) && (get_class($ban_sql) === 'mysqli_result'))) ? true : false);
         $cache->set($key, 0, 86400);
 
         return false;
@@ -404,7 +405,7 @@ function userlogin()
     }
     $userupdate1 = 'last_access_numb = ' . TIME_NOW;
     $update_time = ($users_data['onlinetime'] + $update_time);
-    if (('0' != $users_data['last_access']) && (($users_data['last_access']) < (TIME_NOW - 180))) {
+    if (($users_data['last_access'] != '0') && (($users_data['last_access']) < (TIME_NOW - 180))) {
         sql_query('UPDATE users
                     SET where_is =' . sqlesc($whereis) . ', last_access=' . TIME_NOW . ", $userupdate0, $userupdate1
                     WHERE id = " . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
@@ -686,6 +687,7 @@ function create_moods($force = false)
 function delete_id_keys($keys, $keyname = false)
 {
     global $cache;
+
     if (!(is_array($keys) || $keyname)) { // if no key given or not an array
         return false;
     } else {
@@ -1054,7 +1056,7 @@ function get_time_offset()
 {
     global $CURUSER, $site_config;
 
-    $r = (('' != $CURUSER['time_offset']) ? $CURUSER['time_offset'] : $site_config['time_offset']) * 3600;
+    $r = (($CURUSER['time_offset'] != '') ? $CURUSER['time_offset'] : $site_config['time_offset']) * 3600;
     if ($site_config['time_adjust']) {
         $r += ($site_config['time_adjust'] * 60);
     }
@@ -1128,7 +1130,7 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
         } else {
             return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
         }
-    } elseif ($site_config['time_use_relative'] && (1 != $norelative) && !$calc) {
+    } elseif ($site_config['time_use_relative'] && $norelative != 1 && !$calc) {
         $this_time = gmdate('d,m,Y', ($date + $GLOBALS['offset']));
         if ($site_config['time_use_relative'] == 2) {
             $diff = TIME_NOW - $date;
@@ -1576,7 +1578,6 @@ function user_exists($user_id)
             return false;
         }
         $cache->set('userlist_' . $user_id, $res, 86400);
-        $cache->set('cleanup_timer_', 'initial wait', 600);
     }
 
     return true;
@@ -1651,7 +1652,7 @@ function get_scheme()
         return $_SERVER['REQUEST_SCHEME'];
     }
 
-    return null;
+    return 'http';
 }
 
 /**
@@ -1894,7 +1895,7 @@ function return_bytes($val)
  */
 function plural($int)
 {
-    if (1 != $int) {
+    if ($int != 1) {
         return 's';
     }
 }
@@ -1938,7 +1939,8 @@ function valid_username($username, $ajax = false)
 
     if (!preg_match("/^[\p{L}\p{N}]+$/u", urldecode($username))) {
         if ($ajax) {
-            return "<span style='color: #cc0000;'>{$lang['takesignup_allowed_chars']}</span>";
+            echo "<span style='color: #cc0000;'>{$lang['takesignup_allowed_chars']}</span>";
+            die();
         }
 
         return false;
@@ -2139,10 +2141,10 @@ function rrmdir($dir)
         $objects = scandir($dir);
         foreach ($objects as $object) {
             if ($object != '.' && $object != '..') {
-                if (filetype($dir . '/' . $object) == 'dir') {
-                    rrmdir($dir . '/' . $object);
+                if (filetype($dir . DIRECTORY_SEPARATOR . $object) == 'dir') {
+                    rrmdir($dir . DIRECTORY_SEPARATOR . $object);
                 } else {
-                    unlink($dir . '/' . $object);
+                    unlink($dir . DIRECTORY_SEPARATOR . $object);
                 }
             }
         }

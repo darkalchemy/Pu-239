@@ -11,14 +11,14 @@ global $CURUSER, $site_config, $fluent, $cache;
 $CURUSER['class'] = 1;
 $HTMLOUT          = '';
 
-if (1 != isset($_POST['form'])) {
+if (isset($_POST['form']) != 1) {
     $res = sql_query('SELECT status FROM uploadapp WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
     if ($CURUSER['class'] >= UC_UPLOADER) {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_alreadyup']);
-    } elseif ('pending' == $arr['status']) {
+    } elseif ($arr['status'] === 'pending') {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_pending']);
-    } elseif ('rejected' == $arr['status']) {
+    } elseif ($arr['status'] === 'rejected') {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_rejected']);
     } else {
         $HTMLOUT .= "
@@ -157,7 +157,7 @@ if (1 != isset($_POST['form'])) {
     if (!$_POST['reason']) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_reasonblank']);
     }
-    if ('yes' == $_POST['sites'] && !$_POST['sitenames']) {
+    if ($_POST['sites'] === 'yes' && !$_POST['sitenames']) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_sitesblank']);
     }
     $dupe = $fluent->from('uploadapp')

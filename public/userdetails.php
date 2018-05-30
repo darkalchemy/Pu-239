@@ -38,7 +38,7 @@ if ($user === false || is_null($user)) {
     $cache->set('user' . $id, $user, $site_config['expires']['user_cache']);
 }
 
-if ('pending' == $user['status']) {
+if ($user['status'] === 'pending') {
     stderr($lang['userdetails_error'], $lang['userdetails_pending']);
 }
 
@@ -57,7 +57,7 @@ if ($user_status === false || is_null($user_status)) {
     $cache->add('userstatus_' . $id, $user_status, $site_config['expires']['user_status']); // 30 days
 }
 
-if (3 == $user['paranoia'] && $CURUSER['class'] < UC_STAFF && $CURUSER['id'] != $id) {
+if ($user['paranoia'] == 3 && $CURUSER['class'] < UC_STAFF && $CURUSER['id'] != $id) {
     stderr($lang['userdetails_error'], '<span><img src="' . $site_config['pic_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '" />
        ' . $lang['userdetails_tinfoil2'] . ' <img src="' . $site_config['pic_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '" /></span>');
     die();
@@ -73,7 +73,7 @@ if (isset($_GET['delete_hit_and_run']) && $CURUSER['class'] >= UC_STAFF) {
     } else {
         sql_query('UPDATE xbt_files_users SET hit_and_run = \'0\', mark_of_cain = \'no\' WHERE fid = ' . sqlesc($delete_me)) or sqlerr(__FILE__, __LINE__);
     }
-    if (0 === @mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    if (@mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
         stderr($lang['userdetails_error'], $lang['userdetails_notdeleted']);
     }
     header('Location: ?id=' . $id . '&completed=1');
@@ -83,23 +83,23 @@ if ($user['ip'] && ($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id
     $dom  = @gethostbyaddr($user['ip']);
     $addr = ($dom == $user['ip'] || @gethostbyname($dom) != $user['ip']) ? $user['ip'] : $user['ip'] . ' (' . $dom . ')';
 }
-if (0 == $user['added'] || $user['perms'] & bt_options::PERMS_STEALTH) {
+if ($user['added'] == 0 || $user['perms'] & bt_options::PERMS_STEALTH) {
     $joindate = "{$lang['userdetails_na']}";
 } else {
     $joindate = get_date($user['added'], '');
 }
 $lastseen = $user['last_access'];
-if (0 == $lastseen || $user['perms'] & bt_options::PERMS_STEALTH) {
+if ($lastseen == 0 || $user['perms'] & bt_options::PERMS_STEALTH) {
     $lastseen = "{$lang['userdetails_never']}";
 } else {
     $lastseen = get_date($user['last_access'], '', 0, 1);
 }
 
-if (((UC_MAX == $user['class'] || $user['id'] == $CURUSER['id']) || ($user['class'] < UC_MAX) && UC_MAX == $CURUSER['class']) && isset($_GET['invincible'])) {
+if ((($user['class'] == UC_MAX || $user['id'] == $CURUSER['id']) || ($user['class'] < UC_MAX) && $CURUSER['class'] == UC_MAX) && isset($_GET['invincible'])) {
     require_once INCL_DIR . 'invincible.php';
-    if ('yes' == $_GET['invincible']) {
+    if ($_GET['invincible'] === 'yes') {
         $HTMLOUT .= invincible($id, true, true);
-    } elseif ('remove_bypass' == $_GET['invincible']) {
+    } elseif ($_GET['invincible'] === 'remove_bypass') {
         $HTMLOUT .= invincible($id, false, false);
     } else {
         $HTMLOUT .= invincible($id, false, false);
@@ -108,9 +108,9 @@ if (((UC_MAX == $user['class'] || $user['id'] == $CURUSER['id']) || ($user['clas
 
 if ((($user['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) || ($user['class'] < UC_STAFF) && $CURUSER['class'] >= UC_STAFF) && isset($_GET['stealth'])) {
     require_once INCL_DIR . 'stealth.php';
-    if ('yes' == $_GET['stealth']) {
+    if ($_GET['stealth'] === 'yes') {
         $HTMLOUT .= stealth($id);
-    } elseif ('no' == $_GET['stealth']) {
+    } elseif ($_GET['stealth'] === 'no') {
         $HTMLOUT .= stealth($id, false);
     }
 }
@@ -178,14 +178,14 @@ if (($user['opt1'] & user_options::ANONYMOUS) && ($CURUSER['class'] < UC_STAFF &
 }
 $h1_thingie = ((isset($_GET['sn']) || isset($_GET['wu'])) ? '<h1>' . $lang['userdetails_updated'] . '</h1>' : '');
 if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
-    $suspended .= ('yes' == $user['suspended'] ? '  <img src="' . $site_config['pic_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '" /> <b>' . $lang['userdetails_usersuspended'] . '</b> <img src="' . $site_config['pic_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '" />' : '');
+    $suspended .= ($user['suspended'] === 'yes' ? '  <img src="' . $site_config['pic_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '" /> <b>' . $lang['userdetails_usersuspended'] . '</b> <img src="' . $site_config['pic_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '" />' : '');
 }
 if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
-    $watched_user .= (0 == $user['watched_user'] ? '' : '  <img src="' . $site_config['pic_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '" /> <b>' . $lang['userdetails_watchlist1'] . ' <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users" >' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $site_config['pic_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '" />');
+    $watched_user .= ($user['watched_user'] == 0 ? '' : '  <img src="' . $site_config['pic_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '" /> <b>' . $lang['userdetails_watchlist1'] . ' <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users" >' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $site_config['pic_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '" />');
 }
 $perms   .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_NO_IP) ? '  <img src="' . $site_config['pic_baseurl'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  class="tooltipper" title="' . $lang['userdetails_invincible'] . '" />' : '') : '');
 $stealth .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? '  <img src="' . $site_config['pic_baseurl'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stelth'] . '"  class="tooltipper" title="' . $lang['userdetails_stelth'] . '" />' : '') : '');
-$enabled = 'yes' == $user['enabled'];
+$enabled = $user['enabled'] === 'yes';
 $parked  = $user['opt1'] & user_options::PARKED ? $lang['userdetails_parked'] : '';
 
 $h1 = "
@@ -237,9 +237,9 @@ if ($CURUSER['class'] >= UC_STAFF) {
     }
 }
 
-if ($user['donor'] && $CURUSER['id'] == $user['id'] || UC_SYSOP == $CURUSER['class']) {
+if ($user['donor'] && $CURUSER['id'] == $user['id'] || $CURUSER['class'] == UC_SYSOP) {
     $donoruntil = htmlsafechars($user['donoruntil']);
-    if ('0' == $donoruntil) {
+    if ($donoruntil == '0') {
         $HTMLOUT .= '';
     } else {
         $h1 .= "<br><b>{$lang['userdetails_donatedtill']} - " . get_date($user['donoruntil'], 'DATE') . '';
@@ -260,7 +260,7 @@ $HTMLOUT .= "
         $sharemark_link
         $shitty_link
         $friend_links
-        $edit_profile" . (UC_MAX === $CURUSER['class'] ? $user['perms'] & bt_options::PERMS_NO_IP ? "
+        $edit_profile" . ($CURUSER['class'] === UC_MAX ? $user['perms'] & bt_options::PERMS_NO_IP ? "
         <li><a class='altlink margin20 tooltipper' title='{$lang['userdetails_invincible_def1']}<br>{$lang['userdetails_invincible_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=no'>{$lang['userdetails_invincible_remove']}</a></li>" . ($user['perms'] & bt_options::PERMS_BYPASS_BAN) ? "
         <li><a class='altlink margin20 tooltipper' title='{$lang['userdetails_invincible_def3']}<br>{$lang['userdetails_invincible_def4']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=remove_bypass'>{$lang['userdetails_remove_bypass']}</a></li>" : "
         <li><a class='altlink margin20 tooltipper' title='{$lang['userdetails_invincible_def5']}<br>{$lang['userdetails_invincible_def6']}<br>{$lang['userdetails_invincible_def7']}<br>{$lang['userdetails_invincible_def8']} href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_add_bypass']}</a></li>" : "
@@ -285,7 +285,7 @@ $HTMLOUT .= "
                 <li class='top20'><a href='#general'>{$lang['userdetails_general']}</a></li>
                 <li class='top20'><a href='#activity'>{$lang['userdetails_activity']}</a></li>
                 <li class='top20'><a href='#comments'>{$lang['userdetails_usercomments']}</a></li>";
-if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_MAX === $CURUSER['class']) {
+if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CURUSER['class'] === UC_MAX) {
     $HTMLOUT .= "
                 <li class='top20'><a href='#edit'>{$lang['userdetails_edit_user']}</a></li>";
 }
@@ -345,7 +345,7 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
                                         <input type='hidden' value='watched_user' name='action' />
                                         {$lang['userdetails_add_watch']}
                                         <input type='radio' class='right5' value='yes' name='add_to_watched_users'" . ($user['watched_user'] > 0 ? ' checked' : '') . " />{$lang['userdetails_yes1']}
-                                        <input type='radio' class='right5' value='no' name='add_to_watched_users'" . (0 == $user['watched_user'] ? ' checked' : '') . "' />{$lang['userdetails_no1']}<br>
+                                        <input type='radio' class='right5' value='no' name='add_to_watched_users'" . ($user['watched_user'] == 0 ? ' checked' : '') . "' />{$lang['userdetails_no1']}<br>
                                         <div id='desc_text'>
                                             * {$lang['userdetails_watch_change1']}<br>
                                             {$lang['userdetails_watch_change2']}
@@ -361,7 +361,7 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
 
     $the_flip_box_4 = '[ <a name="staff_notes"></a><a class="altlink tooltipper" href="#staff_notes" onclick="javascript:flipBox(\'4\')" name="b_4" title="' . $lang['userdetails_open_staff'] . '">view <img onclick="javascript:flipBox(\'4\')" src="' . $site_config['pic_baseurl'] . 's/panel_on.gif" name="b_4" width="8" height="8" alt="' . $lang['userdetails_open_staff'] . '" class="tooltipper" title="' . $lang['userdetails_open_staff'] . '" /></a> ]';
     $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_staffnotes'] . '</td><td class="has-text-left">
-                            <a class="altlink tooltipper" href="#staff_notes" onclick="javascript:flipBox(\'6\')" name="b_6" title="' . $lang['userdetails_aev_staffnote'] . '">' . ('' !== $user['staff_notes'] ? '' . $lang['userdetails_vae'] . ' ' : '' . $lang['userdetails_add'] . ' ') . '<img onclick="javascript:flipBox(\'6\')" src="' . $site_config['pic_baseurl'] . 'panel_on.gif" name="b_6" width="8" height="8" alt="' . $lang['userdetails_aev_staffnote'] . '" class="tooltipper" title="' . $lang['userdetails_aev_staffnote'] . '" /></a>
+                            <a class="altlink tooltipper" href="#staff_notes" onclick="javascript:flipBox(\'6\')" name="b_6" title="' . $lang['userdetails_aev_staffnote'] . '">' . ($user['staff_notes'] !== '' ? '' . $lang['userdetails_vae'] . ' ' : '' . $lang['userdetails_add'] . ' ') . '<img onclick="javascript:flipBox(\'6\')" src="' . $site_config['pic_baseurl'] . 'panel_on.gif" name="b_6" width="8" height="8" alt="' . $lang['userdetails_aev_staffnote'] . '" class="tooltipper" title="' . $lang['userdetails_aev_staffnote'] . '" /></a>
                             <div class="has-text-left" id="box_6">
                             <form method="post" action="ajax/member_input.php" name="notes_for_staff">
                             <input name="id" type="hidden" value="' . (int) $user['id'] . '" />
@@ -373,7 +373,7 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
 
     $the_flip_box_7 = '[ <a name="system_comments"></a><a class="altlink tooltipper" href="#system_comments" onclick="javascript:flipBox(\'7\')"  name="b_7" title="' . $lang['userdetails_open_system'] . '">view <img onclick="javascript:flipBox(\'7\')" src="' . $site_config['pic_baseurl'] . 'panel_on.gif" name="b_7" width="8" height="8" alt="' . $lang['userdetails_open_system'] . '" class="tooltipper" title="' . $lang['userdetails_open_system'] . '" /></a> ]';
     if (!empty($user['modcomment'])) {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_system']}</td><td class='has-text-left'>" . ('' != $user['modcomment'] ? $the_flip_box_7 . '<div class="has-text-left" id="box_7"><hr>' . format_comment($user['modcomment']) . '</div>' : '') . '</td></tr>';
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_system']}</td><td class='has-text-left'>" . ($user['modcomment'] != '' ? $the_flip_box_7 . '<div class="has-text-left" id="box_7"><hr>' . format_comment($user['modcomment']) . '</div>' : '') . "</td></tr>";
     }
 }
 if (curuser::$blocks['userdetails_page'] & block_userdetails::SHOWFRIENDS && $BLOCKS['userdetails_showfriends_on']) {
@@ -464,7 +464,7 @@ if (curuser::$blocks['userdetails_page'] & block_userdetails::USERCOMMENTS && $B
 $HTMLOUT .= '</div>';
 $HTMLOUT .= "<div id='edit' class='table-wrapper'>";
 
-if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_MAX === $CURUSER['class']) {
+if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CURUSER['class'] === UC_MAX) {
     $HTMLOUT .= "<form method='post' action='staffpanel.php?tool=modtask'>";
     require_once CLASS_DIR . 'validator.php';
     $HTMLOUT .= validatorForm('ModTask_' . $user['id']);
@@ -485,12 +485,12 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
     $HTMLOUT .= "<tr>
     <td class='rowhead'>{$lang['userdetails_signature_rights']}</td>
     <td colspan='3' class='has-text-left'>
-        <input name='signature_post' value='yes' type='radio'" . ('yes' == $user['signature_post'] ? '    checked' : '') . " />{$lang['userdetails_yes']}
-        <input name='signature_post' value='no' type='radio'" . ('no' == $user['signature_post'] ? ' checked' : '') . " />{$lang['userdetails_disable_signature']}
+        <input name='signature_post' value='yes' type='radio'" . ($user['signature_post'] === 'yes' ? '    checked' : '') . " />{$lang['userdetails_yes']}
+        <input name='signature_post' value='no' type='radio'" . ($user['signature_post'] === 'no' ? ' checked' : '') . " />{$lang['userdetails_disable_signature']}
     </td></tr>
    <!--<tr><td class='rowhead'>{$lang['userdetails_view_signature']}</td>
-   <td colspan='3' class='has-text-left'><input name='signatures' value='yes' type='radio'" . ('yes' == $user['signatures'] ? ' checked' : '') . " />{$lang['userdetails_yes']}
-   <input name='signatures' value='no' type='radio'" . ('no' == $user['signatures'] ? ' checked' : '') . " /></td>
+   <td colspan='3' class='has-text-left'><input name='signatures' value='yes' type='radio'" . ($user['signatures'] === 'yes' ? ' checked' : '') . " />{$lang['userdetails_yes']}
+   <input name='signatures' value='no' type='radio'" . ($user['signatures'] === 'no' ? ' checked' : '') . " /></td>
    </tr>-->
                <tr>
                       <td class='rowhead'>{$lang['userdetails_signature']}</td>
@@ -522,8 +522,8 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
                       <td colspan='3' class='has-text-left'><input type='text' class='w-100' name='website' value='" . htmlsafechars($user['website']) . "' /></td>
                 </tr>";
 
-    if (UC_MAX === $CURUSER['class']) {
-        $donor = 'yes' == $user['donor'];
+    if ($CURUSER['class'] === UC_MAX) {
+        $donor = $user['donor'] == 'yes';
         $HTMLOUT .= "
                 <tr>
                     <td class='rowhead' class='has-text-right'><b>
@@ -532,7 +532,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
                     <td colspan='2' class='has-text-centered'>";
         if ($donor) {
             $donoruntil = (int) $user['donoruntil'];
-            if ('0' == $donoruntil) {
+            if ($donoruntil == '0') {
                 $HTMLOUT .= $lang['userdetails_arbitrary'];
             } else {
                 $HTMLOUT .= $lang['userdetails_donor2'] . ' ' . get_date($user['donoruntil'], 'DATE') . ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ] {$lang['userdetails_togo']}";
@@ -574,13 +574,13 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
                     </td>
                 </tr>';
     }
-    if (UC_STAFF === $CURUSER['class'] && $user['class'] > UC_VIP) {
+    if ($CURUSER['class'] === UC_STAFF && $user['class'] > UC_VIP) {
         $HTMLOUT .= "<input type='hidden' name='class' value='{$user['class']}' />";
     } else {
         $HTMLOUT .= "<tr><td class='rowhead'>Class</td><td colspan='3' class='has-text-left'><select name='class' class='w-100'>";
-        if (UC_MAX === $CURUSER['class']) {
+        if ($CURUSER['class'] === UC_MAX) {
             $maxclass = UC_SYSOP;
-        } elseif (UC_STAFF === $CURUSER['class']) {
+        } elseif ($CURUSER['class'] === UC_STAFF) {
             $maxclass = UC_VIP;
         } else {
             $maxclass = $CURUSER['class'] - 1;
@@ -592,7 +592,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
     }
     $supportfor = htmlsafechars($user['supportfor']);
     //$HTMLOUT.= "<tr><td class='rowhead'>{$lang['userdetails_support']}</td><td colspan='3' class='has-text-left'><input type='checkbox' name='support' value='yes'" . (($user['opt1'] & user_options::SUPPORT) ? " checked" : "") . " />{$lang['userdetails_yes']}</td></tr>";
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_support']}</td><td colspan='3' class='has-text-left'><input type='radio' name='support' value='yes'" . ('yes' == $user['support'] ? ' checked' : '') . " />{$lang['userdetails_yes']}<input type='radio' name='support' value='no'" . ('no' == $user['support'] ? ' checked' : '') . " />{$lang['userdetails_no']}</td></tr>";
+    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_support']}</td><td colspan='3' class='has-text-left'><input type='radio' name='support' value='yes'" . ($user['support'] === 'yes' ? ' checked' : '') . " />{$lang['userdetails_yes']}<input type='radio' name='support' value='no'" . ($user['support'] === 'no' ? ' checked' : '') . " />{$lang['userdetails_no']}</td></tr>";
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_supportfor']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='2' name='supportfor'>{$supportfor}</textarea></td></tr>";
     $modcomment = htmlsafechars($user['modcomment']);
     if ($CURUSER['class'] < UC_SYSOP) {
@@ -616,11 +616,11 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
                 </tr>";
     }
     if ($CURUSER['class'] >= UC_ADMINISTRATOR && !XBT_TRACKER) {
-        $free_switch = 0 != $user['free_switch'];
+        $free_switch = $user['free_switch'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$free_switch ? ' rowspan="2"' : '') . ">{$lang['userdetails_freeleech_status']}</td>
                 <td class='has-text-left' width='20%'>" . ($free_switch ? "<input name='free_switch' value='42' type='radio' />{$lang['userdetails_remove_freeleech']}" : $lang['userdetails_no_freeleech']) . '</td>';
         if ($free_switch) {
-            if (1 == $user['free_switch']) {
+            if ($user['free_switch'] == 1) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
                 $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['free_switch'], 'DATE') . ' (' . mkprettytime($user['free_switch'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
@@ -639,15 +639,15 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
     }
 
     if (XBT_TRACKER) {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_canleech']}</td><td class='row' colspan='3' class='has-text-left'><input type='radio' name='can_leech' value='1' " . (1 == $user['can_leech'] ? ' checked' : '') . " />{$lang['userdetails_yes']} <input type='radio' name='can_leech' value='0' " . (0 == $user['can_leech'] ? ' checked' : '') . " />{$lang['userdetails_no']}</td></tr>";
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_canleech']}</td><td class='row' colspan='3' class='has-text-left'><input type='radio' name='can_leech' value='1' " . ($user['can_leech'] == 1 ? ' checked' : '') . " />{$lang['userdetails_yes']} <input type='radio' name='can_leech' value='0' " . ($user['can_leech'] == 0 ? ' checked' : '') . " />{$lang['userdetails_no']}</td></tr>";
     }
 
     if ($CURUSER['class'] >= UC_STAFF && !XBT_TRACKER) {
-        $downloadpos = 1 != $user['downloadpos'];
+        $downloadpos = $user['downloadpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$downloadpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_dpos']}</td>
                <td class='has-text-left' width='20%'>" . ($downloadpos ? "<input name='downloadpos' value='42' type='radio' />{$lang['userdetails_remove_download_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($downloadpos) {
-            if (0 == $user['downloadpos']) {
+            if ($user['downloadpos'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
                 $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['downloadpos'], 'DATE') . ' (' . mkprettytime($user['downloadpos'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
@@ -666,11 +666,11 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
     }
 
     if ($CURUSER['class'] >= UC_STAFF) {
-        $uploadpos = 1 != $user['uploadpos'];
+        $uploadpos = $user['uploadpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$uploadpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_upos']}</td>
                <td class='has-text-left' width='20%'>" . ($uploadpos ? "<input name='uploadpos' value='42' type='radio' />{$lang['userdetails_remove_upload_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($uploadpos) {
-            if (0 == $user['uploadpos']) {
+            if ($user['uploadpos'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
                 $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['uploadpos'], 'DATE') . ' (' . mkprettytime($user['uploadpos'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
@@ -689,11 +689,11 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
     }
 
     if ($CURUSER['class'] >= UC_STAFF) {
-        $sendpmpos = 1 != $user['sendpmpos'];
+        $sendpmpos = $user['sendpmpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$sendpmpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_pmpos']}</td>
                <td class='has-text-left' width='20%'>" . ($sendpmpos ? "<input name='sendpmpos' value='42' type='radio' />{$lang['userdetails_remove_pm_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($sendpmpos) {
-            if (0 == $user['sendpmpos']) {
+            if ($user['sendpmpos'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
                 $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['sendpmpos'], 'DATE') . ' (' . mkprettytime($user['sendpmpos'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
@@ -712,11 +712,11 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
     }
 
     if ($CURUSER['class'] >= UC_STAFF) {
-        $chatpost = 1 != $user['chatpost'];
+        $chatpost = $user['chatpost'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$chatpost ? ' rowspan="2"' : '') . ">{$lang['userdetails_chatpos']}</td>
                <td class='has-text-left' width='20%'>" . ($chatpost ? "<input name='chatpost' value='42' type='radio' />{$lang['userdetails_remove_shout_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($chatpost) {
-            if (0 == $user['chatpost']) {
+            if ($user['chatpost'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
                 $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['chatpost'], 'DATE') . ' (' . mkprettytime($user['chatpost'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
@@ -735,11 +735,11 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
     }
 
     if ($CURUSER['class'] >= UC_STAFF) {
-        $avatarpos = 1 != $user['avatarpos'];
+        $avatarpos = $user['avatarpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$avatarpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_avatarpos']}</td>
           <td class='has-text-left' width='20%'>" . ($avatarpos ? "<input name='avatarpos' value='42' type='radio' />{$lang['userdetails_remove_avatar_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($avatarpos) {
-            if (0 == $user['avatarpos']) {
+            if ($user['avatarpos'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
                 $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['avatarpos'], 'DATE') . ' (' . mkprettytime($user['avatarpos'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
@@ -758,11 +758,11 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
     }
 
     if ($CURUSER['class'] >= UC_STAFF) {
-        $immunity = 0 != $user['immunity'];
+        $immunity = $user['immunity'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$immunity ? ' rowspan="2"' : '') . ">{$lang['userdetails_immunity']}</td>
                <td class='has-text-left' width='20%'>" . ($immunity ? "<input name='immunity' value='42' type='radio' />{$lang['userdetails_remove_immunity']}" : $lang['userdetails_no_immunity']) . '</td>';
         if ($immunity) {
-            if (1 == $user['immunity']) {
+            if ($user['immunity'] == 1) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
                 $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['immunity'], 'DATE') . ' (' . mkprettytime($user['immunity'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
@@ -781,11 +781,11 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
     }
 
     if ($CURUSER['class'] >= UC_STAFF) {
-        $leechwarn = 0 != $user['leechwarn'];
+        $leechwarn = $user['leechwarn'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$leechwarn ? ' rowspan="2"' : '') . ">{$lang['userdetails_leechwarn']}</td>
                <td class='has-text-left' width='20%'>" . ($leechwarn ? "<input name='leechwarn' value='42' type='radio' />{$lang['userdetails_remove_leechwarn']}" : $lang['userdetails_no_leechwarn']) . '</td>';
         if ($leechwarn) {
-            if (1 == $user['leechwarn']) {
+            if ($user['leechwarn'] == 1) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
                 $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['leechwarn'], 'DATE') . ' (' . mkprettytime($user['leechwarn'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
@@ -804,11 +804,11 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
     }
 
     if ($CURUSER['class'] >= UC_STAFF) {
-        $warned = 0 != $user['warned'];
+        $warned = $user['warned'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$warned ? ' rowspan="2"' : '') . ">{$lang['userdetails_warned']}</td>
                <td class='has-text-left' width='20%'>" . ($warned ? "<input name='warned' value='42' type='radio' />{$lang['userdetails_remove_warned']}" : $lang['userdetails_no_warning']) . '</td>';
         if ($warned) {
-            if (1 == $user['warned']) {
+            if ($user['warned'] == 1) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
                 $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['warned'], 'DATE') . ' (' . mkprettytime($user['warned'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
@@ -827,11 +827,11 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
     }
 
     if ($CURUSER['class'] >= UC_STAFF) {
-        $game_access = 1 != $user['game_access'];
+        $game_access = $user['game_access'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$game_access ? ' rowspan="2"' : '') . ">{$lang['userdetails_games']}</td>
            <td class='has-text-left' width='20%'>" . ($game_access ? "<input name='game_access' value='42' type='radio' />{$lang['userdetails_remove_game_d']}" : $lang['userdetails_no_disablement']) . '</td>';
         if ($game_access) {
-            if (0 == $user['game_access']) {
+            if ($user['game_access'] == 0) {
                 $HTMLOUT .= '<td class="has-text-centered">(' . $lang['userdetails_unlimited_d'] . ')</td></tr>';
             } else {
                 $HTMLOUT .= "<td class='has-text-centered'>{$lang['userdetails_until']} " . get_date($user['game_access'], 'DATE') . ' (' . mkprettytime($user['game_access'] - TIME_NOW) . " {$lang['userdetails_togo']})</td></tr>";
@@ -860,12 +860,12 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
         }
     }
 
-    if (UC_MAX == $CURUSER['class'] && !XBT_TRACKER) {
+    if ($CURUSER['class'] == UC_MAX && !XBT_TRACKER) {
         //$HTMLOUT.= "<tr><td class='rowhead'>{$lang['userdetails_highspeed']}</td><td class='row' colspan='3' class='has-text-left'><input type='checkbox' name='highspeed' value='yes'" . (($user['opt1'] & user_options::HIGHSPEED) ? " checked" : "") . " />Yes</td></tr>";
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_highspeed']}</td><td class='row' colspan='3' class='has-text-left'><input type='radio' name='highspeed' value='yes' " . ('yes' == $user['highspeed'] ? ' checked' : '') . " />{$lang['userdetails_yes']} <input type='radio' name='highspeed' value='no' " . ('no' == $user['highspeed'] ? ' checked' : '') . " />{$lang['userdetails_no']}</td></tr>";
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_highspeed']}</td><td class='row' colspan='3' class='has-text-left'><input type='radio' name='highspeed' value='yes' " . ($user['highspeed'] === 'yes' ? ' checked' : '') . " />{$lang['userdetails_yes']} <input type='radio' name='highspeed' value='no' " . ($user['highspeed'] === 'no' ? ' checked' : '') . " />{$lang['userdetails_no']}</td></tr>";
     }
 
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_park']}</td><td colspan='3' class='has-text-left'><input name='parked' value='yes' type='radio'" . ('yes' == $user['parked'] ? ' checked' : '') . " />{$lang['userdetails_yes']} <input name='parked' value='no' type='radio'" . ('no' == $user['parked'] ? ' checked' : '') . " />{$lang['userdetails_no']}</td></tr>";
+    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_park']}</td><td colspan='3' class='has-text-left'><input name='parked' value='yes' type='radio'" . ($user['parked'] === 'yes' ? ' checked' : '') . " />{$lang['userdetails_yes']} <input name='parked' value='no' type='radio'" . ($user['parked'] === 'no' ? ' checked' : '') . " />{$lang['userdetails_no']}</td></tr>";
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset']}</td><td colspan='3'><input type='checkbox' name='reset_torrent_pass' value='1' /><span class='small left10'>{$lang['userdetails_pass_msg']}</span></td></tr>";
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset_auth']}</td><td colspan='3'><input type='checkbox' name='reset_auth' value='1' /><span class='small left10'>{$lang['userdetails_auth_msg']}</span></td></tr>";
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset_apikey']}</td><td colspan='3'><input type='checkbox' name='reset_apikey' value='1' /><span class='small left10'>{$lang['userdetails_apikey_msg']}</span></td></tr>";
@@ -884,17 +884,17 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
 
     $HTMLOUT .= "<tr>
                   <td class='rowhead'>{$lang['userdetails_avatar_rights']}</td>
-                  <td colspan='3' class='has-text-left'><input name='view_offensive_avatar' value='yes' type='radio'" . ('yes' == $user['view_offensive_avatar'] ? ' checked' : '') . " />{$lang['userdetails_yes']}
-                  <input name='view_offensive_avatar' value='no' type='radio'" . ('no' == $user['view_offensive_avatar'] ? ' checked' : '') . " />{$lang['userdetails_no']} </td>
+                  <td colspan='3' class='has-text-left'><input name='view_offensive_avatar' value='yes' type='radio'" . ($user['view_offensive_avatar'] === 'yes' ? ' checked' : '') . " />{$lang['userdetails_yes']}
+                  <input name='view_offensive_avatar' value='no' type='radio'" . ($user['view_offensive_avatar'] === 'no' ? ' checked' : '') . " />{$lang['userdetails_no']} </td>
                  </tr>
                  <tr>
                   <td class='rowhead'>{$lang['userdetails_offensive']}</td>
-                  <td colspan='3' class='has-text-left'><input name='offensive_avatar' value='yes' type='radio'" . ('yes' == $user['offensive_avatar'] ? ' checked' : '') . " />{$lang['userdetails_yes']}
-                  <input name='offensive_avatar' value='no' type='radio'" . ('no' == $user['offensive_avatar'] ? ' checked' : '') . " />{$lang['userdetails_no']} </td>
+                  <td colspan='3' class='has-text-left'><input name='offensive_avatar' value='yes' type='radio'" . ($user['offensive_avatar'] === 'yes' ? ' checked' : '') . " />{$lang['userdetails_yes']}
+                  <input name='offensive_avatar' value='no' type='radio'" . ($user['offensive_avatar'] === 'no' ? ' checked' : '') . " />{$lang['userdetails_no']} </td>
                 </tr>
                 <tr>
                   <td class='rowhead'>{$lang['userdetails_view_offensive']}</td>
-                  <td colspan='3' class='has-text-left'><input name='avatar_rights' value='yes' type='radio'" . ('yes' == $user['avatar_rights'] ? ' checked' : '') . " />{$lang['userdetails_yes']}
+                  <td colspan='3' class='has-text-left'><input name='avatar_rights' value='yes' type='radio'" . ($user['avatar_rights'] === 'yes' ? ' checked' : '') . " />{$lang['userdetails_yes']}
                   <input name='avatar_rights' value='no' type='radio'" . ('no' == $user['avatar_rights'] ? ' checked' : '') . " />{$lang['userdetails_no']} </td>
                </tr>";
     $HTMLOUT .= '<tr>
@@ -903,8 +903,8 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
                 </tr>
                  <tr>
                      <td class="rowhead">' . $lang['userdetails_suspended'] . '</td>
-                     <td colspan="3" class="has-text-left"><input name="suspended" value="yes" type="radio"' . ('yes' == $user['suspended'] ? ' checked' : '') . ' />' . $lang['userdetails_yes'] . '
-                     <input name="suspended" value="no" type="radio"' . ('no' == $user['suspended'] ? ' checked' : '') . ' />' . $lang['userdetails_no'] . '
+                     <td colspan="3" class="has-text-left"><input name="suspended" value="yes" type="radio"' . ($user['suspended'] === 'yes' ? ' checked' : '') . ' />' . $lang['userdetails_yes'] . '
+                     <input name="suspended" value="no" type="radio"' . ($user['suspended'] === 'no' ? ' checked' : '') . ' />' . $lang['userdetails_no'] . '
         ' . $lang['userdetails_suspended_reason'] . '<br>
                     <input type="text" class="w-100" name="suspended_reason" /></td>
                    </tr>
@@ -919,16 +919,16 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || UC_
                       <td class='rowhead'>{$lang['userdetails_paranoia']}</td>
                       <td colspan='3' class='has-text-left'>
                       <select name='paranoia' class='w-100'>
-                      <option value='0'" . (0 == $user['paranoia'] ? ' selected' : '') . ">{$lang['userdetails_paranoia_0']}</option>
-                      <option value='1'" . (1 == $user['paranoia'] ? ' selected' : '') . ">{$lang['userdetails_paranoia_1']}</option>
-                      <option value='2'" . (2 == $user['paranoia'] ? ' selected' : '') . ">{$lang['userdetails_paranoia_2']}</option>
-                      <option value='3'" . (3 == $user['paranoia'] ? ' selected' : '') . ">{$lang['userdetails_paranoia_3']}</option>
+                      <option value='0'" . ($user['paranoia'] == 0 ? ' selected' : '') . ">{$lang['userdetails_paranoia_0']}</option>
+                      <option value='1'" . ($user['paranoia'] == 1 ? ' selected' : '') . ">{$lang['userdetails_paranoia_1']}</option>
+                      <option value='2'" . ($user['paranoia'] == 2 ? ' selected' : '') . ">{$lang['userdetails_paranoia_2']}</option>
+                      <option value='3'" . ($user['paranoia'] == 3 ? ' selected' : '') . ">{$lang['userdetails_paranoia_3']}</option>
                       </select></td>
                 </tr>
                  <tr>
                      <td class='rowhead'>{$lang['userdetails_forum_rights']}</td>
-                     <td colspan='3' class='has-text-left'><input name='forum_post' value='yes' type='radio'" . ('yes' == $user['forum_post'] ? ' checked' : '') . " />{$lang['userdetails_yes']}
-                     <input name='forum_post' value='no' type='radio'" . ('no' == $user['forum_post'] ? ' checked' : '') . " />{$lang['userdetails_forums_no']}</td>
+                     <td colspan='3' class='has-text-left'><input name='forum_post' value='yes' type='radio'" . ($user['forum_post'] === 'yes' ? ' checked' : '') . " />{$lang['userdetails_yes']}
+                     <input name='forum_post' value='no' type='radio'" . ($user['forum_post'] === 'no' ? ' checked' : '') . " />{$lang['userdetails_forums_no']}</td>
                     </tr>
                 <!--<tr>
                       <td class='rowhead'>{$lang['userdetails_forum_rights']}</td>

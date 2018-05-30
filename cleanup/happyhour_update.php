@@ -14,12 +14,12 @@ function happyhour_update($data)
     $happyHour = strtotime($happy['time']);
     $curDate   = TIME_NOW;
     $happyEnd  = $happyHour + 3600;
-    if (0 == $happy['status'] && true == $site_config['happy_hour']) {
+    if ($happy['status'] == 0 && $site_config['happy_hour'] == true) {
         if ($data['clean_log']) {
             write_log('Happy hour was @ ' . get_date($happyHour, 'LONG', 1, 0) . ' and Catid ' . $happy['catid'] . ' ');
         }
         happyFile('set');
-    } elseif (($curDate > $happyEnd) && 1 == $happy['status']) {
+    } elseif (($curDate > $happyEnd) && $happy['status'] == 1) {
         happyFile('reset');
     }
     if ($data['clean_log'] && $queries > 0) {

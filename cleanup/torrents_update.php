@@ -33,7 +33,7 @@ function torrents_update($data)
             $updatetorrents[] = '(' . $t['id'] . ', ' . $t['seeders_num'] . ', ' . $t['leechers_num'] . ', ' . $t['comments_num'] . ')';
         }
     }
-    ((mysqli_free_result($tq) || (is_object($tq) && ('mysqli_result' == get_class($tq)))) ? true : false);
+    ((mysqli_free_result($tq) || (is_object($tq) && (get_class($tq) === 'mysqli_result'))) ? true : false);
     if (!empty($updatetorrents) && count($updatetorrents)) {
         sql_query('INSERT INTO torrents (id, seeders, leechers, comments) VALUES ' . implode(', ', $updatetorrents) . ' ON DUPLICATE KEY UPDATE seeders = VALUES(seeders), leechers = VALUES(leechers), comments = VALUES(comments)');
     }

@@ -27,7 +27,7 @@ if (!password_verify($token, $row['token'])) {
     die();
 }
 
-if ('confirmed' != $row['status']) {
+if ($row['status'] != 'confirmed') {
     stderr("{$lang['confirmmail_user_error']}", 'Your account is not active');
     die();
 }

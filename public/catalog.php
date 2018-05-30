@@ -76,7 +76,7 @@ if (strlen($search) > 4) {
         ':name' => "%$search%",
     ];
     $p = 'search=' . $search . '&amp;';
-} elseif (1 == strlen($letter) && false !== stripos('abcdefghijklmnopqrstuvwxyz', $letter)) {
+} elseif (strlen($letter) == 1 && stripos('abcdefghijklmnopqrstuvwxyz', $letter) !== false) {
     $params = [
         ':name' => "$letter%",
     ];
@@ -172,7 +172,7 @@ $htmlout .= main_div($div);
 
 if (!empty($rows)) {
     foreach ($rows as $row) {
-        if ('yes' == $row['anonymous'] && ($CURUSER['class'] < UC_STAFF || $row['owner'] === $CURUSER['id'])) {
+        if ($row['anonymous'] === 'yes' && ($CURUSER['class'] < UC_STAFF || $row['owner'] === $CURUSER['id'])) {
             $uploader = get_anonymous_name();
         } else {
             $uploader = format_username($row['owner']);
@@ -203,7 +203,7 @@ if (!empty($rows)) {
                         <td><a href='{$site_config['baseurl']}/details.php?id=" . (int) $row['id'] . "&amp;hit=1'><b>" . substr(htmlsafechars($row['name']), 0, 60) . '</b></a></td>
                         <td>' . get_date($row['added'], 'LONG', 0, 1) . "</td>
                         <td nowrap='nowrap'>" . (mksize($row['size'])) . "</td>
-                        <td nowrap='nowrap'>" . ($row['snatched'] > 0 ? (1 == $row['snatched'] ? (int) $row['snatched'] . ' time' : (int) $row['snatched'] . ' times') : 0) . '</td>
+                        <td nowrap='nowrap'>" . ($row['snatched'] > 0 ? ($row['snatched'] == 1 ? (int) $row['snatched'] . ' time' : (int) $row['snatched'] . ' times') : 0) . '</td>
                         <td>' . (int) $row['seeders'] . '</td>
                         <td>' . (int) $row['leechers'] . '</td>
                     </tr>';

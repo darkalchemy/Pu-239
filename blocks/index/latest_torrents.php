@@ -87,7 +87,7 @@ foreach ($top5torrents as $top5torrentarr) {
     }
     $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . image_proxy($poster) . "' class='tooltip-poster' />";
 
-    if ('yes' == $anonymous && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
+    if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';
     } else {
         $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . '</span>';
@@ -127,7 +127,7 @@ foreach ($top5torrents as $top5torrentarr) {
                         <td class='has-text-centered'>{$leechers}</td>
                     </tr>";
 }
-if (0 === count($top5torrents)) {
+if (count($top5torrents) === 0) {
     $HTMLOUT .= "
                     <tr>
                         <td colspan='5'>{$lang['top5torrents_no_torrents']}</td>
@@ -161,7 +161,7 @@ foreach ($last5torrents as $last5torrent) {
     }
     $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . image_proxy($poster) . "' class='tooltip-poster' />";
 
-    if ('yes' == $anonymous && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
+    if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';
     } else {
         $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . '</span>';
@@ -201,7 +201,7 @@ foreach ($last5torrents as $last5torrent) {
                             <td class='has-text-centered'>{$leechers}</td>
                         </tr>";
 }
-if (0 === count($last5torrents)) {
+if (count($last5torrents) === 0) {
     $HTMLOUT .= "
                         <tr>
                             <td colspan='5'>{$lang['last5torrents_no_torrents']}</td>

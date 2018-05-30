@@ -48,7 +48,7 @@ switch ($action) {
         }
         $bonus_added = ($GB / 1073741824);
         //=== if for all classes
-        if (1 === $free_for_classes) {
+        if ($free_for_classes === 1) {
             $res_GB    = sql_query('SELECT id, uploaded, modcomment FROM users WHERE enabled = \'yes\' AND suspended = \'no\'') or sqlerr(__FILE__, __LINE__);
             $pm_buffer = $users_buffer = [];
             if (mysqli_num_rows($res_GB) > 0) {
@@ -77,7 +77,7 @@ switch ($action) {
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&GB=1');
             die();
-        } elseif (0 === $free_for_classes) {
+        } elseif ($free_for_classes === 0) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
                     $res_GB    = sql_query('SELECT id, uploaded, modcomment FROM users WHERE enabled = \'yes\' AND suspended = \'no\' AND class = ' . $class);
@@ -119,7 +119,7 @@ switch ($action) {
             stderr($lang['bonusmanager_karma_err'], $lang['bonusmanager_karma_err1']);
         }
         //=== if for all classes
-        if (1 === $free_for_classes) {
+        if ($free_for_classes === 1) {
             $res_karma = sql_query('SELECT id, seedbonus, modcomment FROM users WHERE enabled = \'yes\' AND suspended = \'no\'') or sqlerr(__FILE__, __LINE__);
             $pm_buffer = $users_buffer = [];
             if (mysqli_num_rows($res_karma) > 0) {
@@ -148,7 +148,7 @@ switch ($action) {
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&karma=1');
             die();
-        } elseif (0 === $free_for_classes) {
+        } elseif ($free_for_classes === 0) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
                     $res_karma = sql_query('SELECT id, seedbonus, modcomment FROM users WHERE enabled = \'yes\' AND suspended = \'no\' AND class = ' . $class);
@@ -190,7 +190,7 @@ switch ($action) {
             stderr($lang['bonusmanager_freeslots_err'], $lang['bonusmanager_freeslots_err1']);
         }
         //=== if for all classes
-        if (1 === $free_for_classes) {
+        if ($free_for_classes === 1) {
             $res_freeslots = sql_query('SELECT id, freeslots, modcomment FROM users WHERE enabled = \'yes\' AND suspended = \'no\'') or sqlerr(__FILE__, __LINE__);
             $pm_buffer     = $users_buffer     = [];
             if (mysqli_num_rows($res_freeslots) > 0) {
@@ -219,7 +219,7 @@ switch ($action) {
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&freeslots=1');
             die();
-        } elseif (0 === $free_for_classes) {
+        } elseif ($free_for_classes === 0) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
                     $res_freeslots = sql_query('SELECT id, freeslots, modcomment FROM users WHERE enabled = \'yes\' AND suspended = \'no\' AND class = ' . $class);
@@ -261,7 +261,7 @@ switch ($action) {
             stderr($lang['bonusmanager_invite_err'], $lang['bonusmanager_invite_err1']);
         }
         //=== if for all classes
-        if (1 === $free_for_classes) {
+        if ($free_for_classes === 1) {
             $res_invites = sql_query('SELECT id, invites, modcomment FROM users WHERE enabled = \'yes\' AND suspended = \'no\' AND invite_on = \'yes\'');
             $pm_buffer   = $users_buffer   = [];
             if (mysqli_num_rows($res_invites) > 0) {
@@ -290,7 +290,7 @@ switch ($action) {
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&invites=1');
             die();
-        } elseif (0 === $free_for_classes) {
+        } elseif ($free_for_classes === 0) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
                     $res_invites = sql_query('SELECT id, invites, modcomment FROM users WHERE enabled = \'yes\' AND suspended = \'no\' AND invite_on = \'yes\' AND class = ' . $class);
@@ -333,7 +333,7 @@ switch ($action) {
             stderr($lang['bonusmanager_pm_err'], $lang['bonusmanager_pm_err2']);
         }
         //=== if for all classes
-        if (1 === $free_for_classes) {
+        if ($free_for_classes === 1) {
             $res_pms   = sql_query('SELECT id FROM users WHERE enabled = \'yes\' AND suspended = \'no\'');
             $pm_buffer = [];
             if (mysqli_num_rows($res_pms) > 0) {
@@ -352,7 +352,7 @@ switch ($action) {
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&pm=1');
             die();
-        } elseif (0 === $free_for_classes) {
+        } elseif ($free_for_classes === 0) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
                     $res_pms   = sql_query('SELECT id FROM users WHERE enabled = \'yes\' AND suspended = \'no\' AND class = ' . $class);
@@ -384,13 +384,13 @@ $all_classes_check_boxes = '<table border="0"><tr>';
 for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
     $all_classes_check_boxes .= '<td>
         <input type="checkbox" name="free_for_classes[]" value="' . $i . '" checked /> <span style="font-weight: bold;color:#' . get_user_class_color($i) . ';">' . get_user_class_name($i) . '</span></td>';
-    if (6 == $count) {
+    if ($count == 6) {
         $all_classes_check_boxes .= '</tr>' . ($i < UC_MAX ? '<tr>' : '');
         $count = 0;
     }
     ++$count;
 }
-$all_classes_check_boxes .= (0 == $count ? '</table>' : '<tr><td colspan="' . (7 - $count) . '"></td></tr></table>') . '';
+$all_classes_check_boxes .= ($count == 0 ? '</table>' : '<tr><td colspan="' . (7 - $count) . '" class="one"></td></tr></table>') . '';
 $bonus_GB = '<select name="GB">
         <option class="head" value="">' . $lang['bonusmanager_up_add'] . '</option>
         <option class="body" value="1073741824">' . $lang['bonusmanager_up_1gb'] . '</option>
@@ -423,7 +423,7 @@ $free_leech_slot_drop_down = '
         <option class="head" value="">' . $lang['bonusmanager_freeslots_add'] . '</option>';
 $i = 1;
 while ($i <= 50) {
-    $free_leech_slot_drop_down .= '<option class="body" value="' . $i . '.0">' . $i . $lang['bonusmanager_freeslots_freeslot'] . (1 !== $i ? 's' : '') . '</option>';
+    $free_leech_slot_drop_down .= '<option class="body" value="' . $i . '.0">' . $i . $lang['bonusmanager_freeslots_freeslot'] . ($i !== 1 ? 's' : '') . '</option>';
     $i = ($i < 10 ? $i = $i + 1 : $i = $i + 5);
 }
 $free_leech_slot_drop_down .= '</select>' . $lang['bonusmanager_freeslots_amount'] . ' ';
@@ -432,7 +432,7 @@ $invites_drop_down = '
         <option class="head" value="">' . $lang['bonusmanager_invite_add'] . '</option>';
 $i = 1;
 while ($i <= 50) {
-    $invites_drop_down .= '<option class="body" value="' . $i . '.0">' . $i . ' ' . $lang['bonusmanager_invite_add'] . (1 !== $i ? 's' : '') . '</option>';
+    $invites_drop_down .= '<option class="body" value="' . $i . '.0">' . $i . ' ' . $lang['bonusmanager_invite_add'] . ($i !== 1 ? 's' : '') . '</option>';
     $i = ($i < 10 ? $i = $i + 1 : $i = $i + 5);
 }
 $invites_drop_down .= '</select>' . $lang['bonusmanager_invite_amount'] . '';
@@ -465,11 +465,11 @@ $drop_down = '
         <option value="">' . $lang['bonusmanager_reset'] . '</option>
         </select>';
 //=== h1 stuffzzzz
-$h1_thingie .= (isset($_GET['GB']) ? (1 === $_GET['GB'] ? '<h2>' . $lang['bonusmanager_h1_upload'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_upload'] . '</h2>') : '');
-$h1_thingie .= (isset($_GET['karma']) ? (1 === $_GET['karma'] ? '<h2>' . $lang['bonusmanager_h1_karma'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_karma1'] . '</h2>') : '');
-$h1_thingie .= (isset($_GET['freeslots']) ? (1 === $_GET['freeslots'] ? '<h2>' . $lang['bonusmanager_h1_freeslot'] . '<h2>' : '<h2>' . $lang['bonusmanager_h1_freeslot1'] . '</h2>') : '');
-$h1_thingie .= (isset($_GET['invites']) ? (1 === $_GET['invites'] ? '<h2>' . $lang['bonusmanager_h1_invite'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_invite1'] . '</h2>') : '');
-$h1_thingie .= (isset($_GET['pm']) ? (1 === $_GET['pm'] ? '<h2>' . $lang['bonusmanager_h1_pm'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_pm1'] . '</h2>') : '');
+$h1_thingie .= (isset($_GET['GB']) ? ($_GET['GB'] === 1 ? '<h2>' . $lang['bonusmanager_h1_upload'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_upload'] . '</h2>') : '');
+$h1_thingie .= (isset($_GET['karma']) ? ($_GET['karma'] === 1 ? '<h2>' . $lang['bonusmanager_h1_karma'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_karma1'] . '</h2>') : '');
+$h1_thingie .= (isset($_GET['freeslots']) ? ($_GET['freeslots'] === 1 ? '<h2>' . $lang['bonusmanager_h1_freeslot'] . '<h2>' : '<h2>' . $lang['bonusmanager_h1_freeslot1'] . '</h2>') : '');
+$h1_thingie .= (isset($_GET['invites']) ? ($_GET['invites'] === 1 ? '<h2>' . $lang['bonusmanager_h1_invite'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_invite1'] . '</h2>') : '');
+$h1_thingie .= (isset($_GET['pm']) ? ($_GET['pm'] === 1 ? '<h2>' . $lang['bonusmanager_h1_pm'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_pm1'] . '</h2>') : '');
 $HTMLOUT    .= '<h1>' . $site_config['site_name'] . ' ' . $lang['bonusmanager_mass_bonus'] . '</h1>' . $h1_thingie;
 $HTMLOUT    .= '<form name="inputform" method="post" action="' . $site_config['baseurl'] . '/staffpanel.php?tool=mass_bonus_for_members&amp;action=mass_bonus_for_members" enctype="multipart/form-data">
         <input type="hidden" id="action_2" name="action_2" value="" />

@@ -21,7 +21,7 @@ if ($ip) {
         die();
     }
     $mask = isset($_GET['mask']) ? htmlsafechars(trim($_GET['mask'])) : '';
-    if ('' == $mask || '255.255.255.255' == $mask) {
+    if ($mask == '' || $mask === '255.255.255.255') {
         $where1 = "u.ip = '$ip'";
         $where2 = "ips.ip = '$ip'";
         $dom    = @gethostbyaddr($ip);
@@ -31,7 +31,7 @@ if ($ip) {
             $addr = $dom;
         }
     } else {
-        if ('/' == substr($mask, 0, 1)) {
+        if (substr($mask, 0, 1) == '/') {
             $n = substr($mask, 1, strlen($mask) - 1);
             if (!is_numeric($n) || $n < 0 || $n > 32) {
                 $HTMLOUT .= stdmsg($lang['ipsearch_error'], $lang['ipsearch_subnet']);
@@ -60,7 +60,7 @@ if ($ip) {
     $res   = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
     $row   = mysqli_fetch_array($res);
     $count = $row[0];
-    if (0 == $count) {
+    if ($count == 0) {
         $HTMLOUT .= "<br><b>No users found</b>\n";
         $HTMLOUT .= end_main_frame();
         echo stdhead('IP sEARCH') . $HTMLOUT . stdfoot();
@@ -70,15 +70,15 @@ if ($ip) {
     $page    = isset($_GET['page'])    && (int) $_GET['page'];
     $perpage = 20;
     $pager   = pager($perpage, $count, "staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=$order&amp;");
-    if ('added' == $order) {
+    if ($order === 'added') {
         $orderby = 'added DESC';
-    } elseif ('username' == $order) {
+    } elseif ($order === 'username') {
         $orderby = 'UPPER(username) ASC';
-    } elseif ('email' == $order) {
+    } elseif ($order === 'email') {
         $orderby = 'email ASC';
-    } elseif ('last_ip' == $order) {
+    } elseif ($order === 'last_ip') {
         $orderby = 'last_ip ASC';
-    } elseif ('last_access' == $order) {
+    } elseif ($order === 'last_access') {
         $orderby = 'last_ip ASC';
     } else {
         $orderby = 'access DESC';
@@ -104,17 +104,17 @@ if ($ip) {
     $HTMLOUT .= "<tr>
       <td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=username'>{$lang['ipsearch_username']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_ratio']}</td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=email'>{$lang['ipsearch_email']}</a></td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_ip'>{$lang['ipsearch_ip']}</a></td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_access'>{$lang['ipsearch_access']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_num']}</td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask'>{$lang['ipsearch_access']} on <br>" . htmlsafechars($ip) . '</a></td>' . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=added'>{$lang['ipsearch_added']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_invited']}</td></tr>";
     while ($user = mysqli_fetch_assoc($res)) {
-        if ('0' == $user['added']) {
+        if ($user['added'] == '0') {
             $user['added'] = '---';
         }
-        if ('0' == $user['last_access']) {
+        if ($user['last_access'] == '0') {
             $user['last_access'] = '---';
         }
         if ($user['last_ip']) {
             $nip   = ip2long($user['last_ip']);
             $res1  = sql_query("SELECT COUNT(*) FROM bans WHERE $nip >= first AND $nip <= last") or sqlerr(__FILE__, __LINE__);
             $array = mysqli_fetch_row($res1);
-            if (0 == $array[0]) {
+            if ($array[0] == 0) {
                 $ipstr = $user['last_ip'];
             } else {
                 $ipstr = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['last_ip']) . "'><span style='color: #FF0000;'><b>" . htmlsafechars($user['last_ip']) . '</b></span></a>';
@@ -128,7 +128,7 @@ if ($ip) {
             $res2      = sql_query('SELECT username FROM users WHERE id=' . sqlesc($user['invitedby']) . '');
             $array     = mysqli_fetch_assoc($res2);
             $invitedby = $array['username'];
-            if ('' == $invitedby) {
+            if ($invitedby == '') {
                 $invitedby = "<i>[{$lang['ipsearch_deleted']}]</i>";
             } else {
                 $invitedby = "<a href='{$site_config['baseurl']}/userdetails.php?id={$user['invitedby']}'>" . htmlsafechars($invitedby) . '</a>';

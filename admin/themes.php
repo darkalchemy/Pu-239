@@ -23,7 +23,7 @@ if (isset($_GET['act'])) {
     if (!is_valid_id($ACT)) {
         stderr("{$lang['themes_error']}", "{$lang['themes_inv_act']}");
     }
-    if (1 == $ACT) { //--EDIT
+    if ($ACT == 1) { //--EDIT
         if (!isset($_GET['id'])) {
             stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
         }
@@ -50,7 +50,7 @@ if (isset($_GET['act'])) {
             <tr><td class='colhead' colspan='2'><input type='submit' value='{$lang['themes_save']}' /></td></tr></table></form>
             ";
     }
-    if (2 == $ACT) { //--DELETE
+    if ($ACT == 2) { //--DELETE
         if (!isset($_GET['id'])) {
             stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
         }
@@ -61,7 +61,7 @@ if (isset($_GET['act'])) {
         stderr("{$lang['themes_delete_q']}", "{$lang['themes_delete_sure_q']}<a href='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=5&amp;id=$ID&amp;sure=1'>
             {$lang['themes_delete_sure_q2']}</a> {$lang['themes_delete_sure_q3']}");
     }
-    if (3 == $ACT) { //--ADD NEW
+    if ($ACT == 3) { //--ADD NEW
         $IDS = sql_query('SELECT id FROM stylesheets');
         while ($ID = mysqli_fetch_array($IDS)) {
             if (file_exists(TEMPLATE_DIR . (int) $ID['id'] . '/template.php')) {
@@ -84,7 +84,7 @@ if (isset($_GET['act'])) {
             </form>
             ";
     }
-    if (4 == $ACT) { //--SAVE EDIT
+    if ($ACT == 4) { //--SAVE EDIT
         if (!isset($_POST['id'])) {
             stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
         }
@@ -116,7 +116,7 @@ if (isset($_GET['act'])) {
         }
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=themes&action=themes&msg=1");
     }
-    if (5 == $ACT) { //--DELETE FINAL
+    if ($ACT == 5) { //--DELETE FINAL
         if (!isset($_GET['id'])) {
             stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
         }
@@ -127,7 +127,7 @@ if (isset($_GET['act'])) {
         if (!isset($_POST['sure'])) {
             header('Location: staffpanel.php?tool=themes');
         }
-        if (isset($_POST['sure']) && 1 != $_POST['sure']) {
+        if (isset($_POST['sure']) && $_POST['sure'] != 1) {
             header('Location: staffpanel.php?tool=themes');
         }
         sql_query('DELETE FROM stylesheets WHERE id = ' . sqlesc($ID));
@@ -135,7 +135,7 @@ if (isset($_GET['act'])) {
         sql_query('UPDATE users SET stylesheet=' . sqlesc($RANDSTYLE['id']) . ' WHERE stylesheet = ' . sqlesc($ID));
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=themes&action=themes&msg=2");
     }
-    if (6 == $ACT) { //--ADD NEW SAVE
+    if ($ACT == 6) { //--ADD NEW SAVE
         if (!isset($_POST['id'])) {
             stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
         }
@@ -152,7 +152,7 @@ if (isset($_GET['act'])) {
         sql_query('INSERT INTO stylesheets(id, uri, name)VALUES(' . sqlesc($_POST['id']) . ', ' . sqlesc($_POST['uri']) . ', ' . sqlesc($_POST['name']) . ')');
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=themes&action=themes&msg=3");
     }
-    if (7 == $ACT) { //--ADD NEW IF FOLDER NO EXISTS
+    if ($ACT == 7) { //--ADD NEW IF FOLDER NO EXISTS
         if (!isset($_GET['id'])) {
             stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
         }

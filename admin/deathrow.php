@@ -191,15 +191,15 @@ if ($count) {
     $res   = sql_query($query) or sqlerr(__FILE__, __LINE__);
     $b     = "<p><b>$count {$lang['deathrow_title']}</b>" . "</p><form action='' method='post'><table width='95%' id='deathtable'>" . "<thead><tr><th class='colhead'>{$lang['deathrow_uname']}</th><th class='colhead'>{$lang['deathrow_tname']}</th><th class='colhead'>{$lang['deathrow_del_resn']}</th><th class='colhead'>{$lang['deathrow_del_torr']}</th></tr></thead>\n";
     while ($queued = mysqli_fetch_assoc($res)) {
-        if (1 == $queued['reason']) {
+        if ($queued['reason'] == 1) {
             $reason = $lang['deathrow_nopeer'] . calctime($x_time);
-        } elseif (2 == $queued['reason']) {
+        } elseif ($queued['reason'] == 2) {
             $reason = $lang['deathrow_no_peers'] . calctime($y_time);
         } else {
             $reason = $lang['deathrow_no_seed'] . calctime($z_time) . $lang['deathrow_new_torr'];
         }
         $id = (int) $queued['tid'];
-        $b .= '<tr>' . ($CURUSER['class'] >= UC_STAFF ? "<td><a href='userdetails.php?id=" . $queued['uid'] . "&amp;hit=1'><b>" . htmlsafechars($queued['username']) . '</b></a></td>' : "<td><strong>{$lang['deathrow_hidden']}</strong></td>") . "<td><a href='details.php?id=" . $id . "&amp;hit=1'>" . htmlsafechars($queued['torrent_name']) . '</a></td><td>' . $reason . '</td><td>' . ($queued['username'] == $CURUSER['username'] || $CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" name="remove[]" value="' . $id . '" /><b>' . ($queued['username'] == $CURUSER['username'] ? '&#160;&#160;<font color="#800000">' . $lang['deathrow_delete'] . '</font>' : '' . $lang['deathrow_delete1'] . '') . '</b>' : "{$lang['deathrow_ownstaff']}") . '</td></tr>';
+        $b .= '<tr>' . ($CURUSER['class'] >= UC_STAFF ? "<td><a href='userdetails.php?id=" . $queued['uid'] . "&amp;hit=1'><b>" . htmlsafechars($queued['username']) . '</b></a></td>' : "<td><strong>{$lang['deathrow_hidden']}</strong></td>") . "<td><a href='details.php?id=" . $id . "&amp;hit=1'>" . htmlsafechars($queued['torrent_name']) . '</a></td><td>' . $reason . '</td><td>' . ($queued['username'] === $CURUSER['username'] || $CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" name="remove[]" value="' . $id . '" /><b>' . ($queued['username'] === $CURUSER['username'] ? '&#160;&#160;<font color="#800000">' . $lang['deathrow_delete'] . '</font>' : '' . $lang['deathrow_delete1'] . '') . '</b>' : "{$lang['deathrow_ownstaff']}") . '</td></tr>';
     }
     $b .= '<tr><td class="table" colspan="11"><input type="button" value="' . $lang['deathrow_checkall'] . '" onclick="this.value=check(this.form.elements[\'remove[]\'])"/>
 <input type="submit" name="submit" value="' . $lang['deathrow_apply'] . '" /></td></tr></table></form>';

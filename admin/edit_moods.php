@@ -15,13 +15,13 @@ $edit_mood['id']     = (isset($edit_params['id']) ? (int) $edit_params['id'] : 0
 $edit_mood['name']   = (isset($edit_params['name']) ? $edit_params['name'] : 0);
 $edit_mood['image']  = (isset($edit_params['image']) ? $edit_params['image'] : 0);
 $edit_mood['bonus']  = (isset($edit_params['bonus']) ? (int) $edit_params['bonus'] : 0);
-if ('added' == $edit_mood['action']) {
-    if ($edit_mood['name'] && $edit_mood['name'] && $edit_mood['name'] && ($edit_mood['name'] != '' . $lang['moods_example'] . '' && 'smile1.gif' != $edit_mood['image'])) {
+if ($edit_mood['action'] === 'added') {
+    if ($edit_mood['name'] && $edit_mood['name'] && $edit_mood['name'] && ($edit_mood['name'] != '' . $lang['moods_example'] . '' && $edit_mood['image'] != 'smile1.gif')) {
         sql_query('INSERT INTO moods (name, image, bonus) VALUES (' . sqlesc($edit_mood['name']) . ', ' . sqlesc($edit_mood['image']) . ', ' . sqlesc($edit_mood['bonus']) . ')') or sqlerr(__FILE__, __LINE__);
         $cache->delete('topmoods');
         write_log('<b>' . $lang['moods_added'] . '</b> ' . htmlsafechars($CURUSER['username']) . ' - ' . htmlsafechars($edit_mood['name']) . '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($edit_mood['image']) . '" alt="" />');
     }
-} elseif ('edited' == $edit_mood['action']) {
+} elseif ($edit_mood['action'] === 'edited') {
     if ($edit_mood['name'] && $edit_mood['name'] && $edit_mood['name']) {
         sql_query('UPDATE moods SET name = ' . sqlesc($edit_mood['name']) . ', image = ' . sqlesc($edit_mood['image']) . ', bonus = ' . sqlesc($edit_mood['bonus']) . ' WHERE id = ' . sqlesc($edit_mood['id'])) or sqlerr(__FILE__, __LINE__);
         $cache->delete('topmoods');
@@ -35,7 +35,7 @@ elseif ($edit_mood['action'] == 'remove') {
    write_log2('<b>'.$lang['moods_deleted'].'</b> '.$CURUSER['username'].' - '.$edit_mood['id']);
 }
 */
-if ('edit' == $edit_mood['action'] && $edit_mood['id']) {
+if ($edit_mood['action'] === 'edit' && $edit_mood['id']) {
     $edit_mood['res'] = sql_query('SELECT * FROM moods WHERE id = ' . sqlesc($edit_mood['id'])) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($edit_mood['res'])) {
         $edit_mood['arr'] = mysqli_fetch_assoc($edit_mood['res']);
@@ -86,7 +86,7 @@ if (mysqli_num_rows($res)) {
       <td><img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt="" /></td>
       <td>' . htmlsafechars($arr['name']) . '</td>
       <td>' . htmlsafechars($arr['image']) . '</td>
-      <td>' . (0 != $arr['bonus'] ? '' . $lang['moods_yes'] . '' : '' . $lang['moods_no'] . '') . '</td>
+      <td>' . ($arr['bonus'] != 0 ? '' . $lang['moods_yes'] . '' : '' . $lang['moods_no'] . '') . '</td>
       <td><a style="color:#FF0000" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=edit_moods&amp;id=' . (int) $arr['id'] . '&amp;action=edit">' . $lang['moods_edit1'] . '</a></td></tr>' .
             //<td><a style="color:#FF0000" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=edit_moods&amp;action=remove$amp;id='.$arr['id'].'&amp;hash='.$form_hash.'>'.$lang['moods_remove'].'</a></td></tr>
             '';

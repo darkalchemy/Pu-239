@@ -8,7 +8,7 @@ global $site_config, $lang;
 
 $lang    = array_merge($lang, load_language('ad_testip'));
 $HTMLOUT = '';
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ip = isset($_POST['ip']) ? $_POST['ip'] : false;
 } else {
     $ip = isset($_GET['ip']) ? $_GET['ip'] : false;
@@ -19,7 +19,7 @@ if ($ip) {
         stderr($lang['testip_error'], $lang['testip_error1']);
     }
     $res = sql_query("SELECT * FROM bans WHERE $nip >= first AND $nip <= last") or sqlerr(__FILE__, __LINE__);
-    if (0 == mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) == 0) {
         stderr($lang['testip_result'], sprintf($lang['testip_notice'], htmlentities($ip, ENT_QUOTES)));
     } else {
         $HTMLOUT .= "<table class='main' >

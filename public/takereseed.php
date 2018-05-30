@@ -4,19 +4,19 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 check_user_status();
 global $CURUSER, $site_config, $cache, $session;
 
-$pm_what     = isset($_POST['pm_what']) && 'last10' == $_POST['pm_what'] ? 'last10' : 'owner';
+$pm_what     = isset($_POST['pm_what']) && $_POST['pm_what'] === 'last10' ? 'last10' : 'owner';
 $reseedid    = (int) $_POST['reseedid'];
 $uploader    = (int) $_POST['uploader'];
 $use_subject = true;
 $subject     = 'Request reseed!';
 $pm_msg      = 'User ' . $CURUSER['username'] . ' asked for a reseed on torrent ' . $site_config['baseurl'] . '/details.php?id=' . $reseedid . " !\nThank You!";
 $pms         = [];
-if ('last10' == $pm_what) {
+if ($pm_what === 'last10') {
     $res = sql_query('SELECT s.userid, s.torrentid FROM snatched AS s WHERE s.torrentid =' . sqlesc($reseedid) . " AND s.seeder = 'yes' LIMIT 10") or sqlerr(__FILE__, __LINE__);
     while ($row = mysqli_fetch_assoc($res)) {
         $pms[] = '(0,' . sqlesc($row['userid']) . ',' . TIME_NOW . ',' . sqlesc($pm_msg) . ($use_subject ? ',' . sqlesc($subject) : '') . ')';
     }
-} elseif ('owner' == $pm_what) {
+} elseif ($pm_what === 'owner') {
     $pms[] = "(0, $uploader, " . TIME_NOW . ', ' . sqlesc($pm_msg) . ($use_subject ? ', ' . sqlesc($subject) : '') . ')';
 }
 if (count($pms) > 0) {
@@ -29,7 +29,7 @@ sql_query('UPDATE torrents SET last_reseed = ' . TIME_NOW . ' WHERE id = ' . sql
 $cache->update_row('torrent_details_' . $reseedid, [
     'last_reseed' => TIME_NOW,
 ], $site_config['expires']['torrent_details']);
-if (1 == $site_config['seedbonus_on']) {
+if ($site_config['seedbonus_on'] == 1) {
     sql_query('UPDATE users SET seedbonus = seedbonus-10.0 WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] - 10);
     $cache->update_row('user' . $CURUSER['id'], [

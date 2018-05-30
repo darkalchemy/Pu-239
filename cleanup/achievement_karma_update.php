@@ -22,7 +22,7 @@ function achievement_karma_update($data)
         while ($arr = mysqli_fetch_assoc($res)) {
             $seedbonus = (float) $arr['seedbonus'];
             $lvl       = (int) $arr['bonus'];
-            if ($seedbonus >= 250 && 0 == $lvl) {
+            if ($seedbonus >= 250 && $lvl == 0) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL1[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/bonus1.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Bonus Banker LVL1\', \'bonus1.png\' , \'Earned at least 1 bonus point.\')';
@@ -30,7 +30,7 @@ function achievement_karma_update($data)
                 $cache->increment('inbox_' . $arr['id']);
                 $cache->delete('user_achievement_points_' . $arr['id']);
             }
-            if ($seedbonus >= 500 && 1 == $lvl) {
+            if ($seedbonus >= 500 && $lvl == 1) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL2[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/bonus2.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Bonus Banker LVL2\', \'bonus2.png\' , \'Earned at least 100 bonus points.\')';
@@ -38,7 +38,7 @@ function achievement_karma_update($data)
                 $cache->increment('inbox_' . $arr['id']);
                 $cache->delete('user_achievement_points_' . $arr['id']);
             }
-            if ($seedbonus >= 1000 && 2 == $lvl) {
+            if ($seedbonus >= 1000 && $lvl == 2) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL3[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/bonus3.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Bonus Banker LVL3\', \'bonus3.png\' , \'Earned at least 500 bonus points.\')';
@@ -46,7 +46,7 @@ function achievement_karma_update($data)
                 $cache->increment('inbox_' . $arr['id']);
                 $cache->delete('user_achievement_points_' . $arr['id']);
             }
-            if ($seedbonus >= 2000 && 3 == $lvl) {
+            if ($seedbonus >= 2000 && $lvl == 3) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL4[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/bonus4.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Bonus Banker LVL4\', \'bonus4.png\' , \'Earned at least 1000 bonus points.\')';
@@ -54,7 +54,7 @@ function achievement_karma_update($data)
                 $cache->increment('inbox_' . $arr['id']);
                 $cache->delete('user_achievement_points_' . $arr['id']);
             }
-            if ($seedbonus >= 2500 && 4 == $lvl) {
+            if ($seedbonus >= 2500 && $lvl == 4) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL5[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/bonus5.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Bonus Banker LVL5\', \'bonus5.png\' , \'Earned at least 2000 bonus points.\')';
@@ -62,14 +62,14 @@ function achievement_karma_update($data)
                 $cache->increment('inbox_' . $arr['id']);
                 $cache->delete('user_achievement_points_' . $arr['id']);
             }
-            if ($seedbonus >= 5000 && 5 == $lvl) {
+            if ($seedbonus >= 5000 && $lvl == 5) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL6[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/bonus6.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Bonus Banker LVL6\', \'bonus6.png\' , \'Earned at least 5000 bonus points.\')';
                 $usersachiev_buffer[]  = '(' . $arr['id'] . ',6, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['id']);
             }
-            if ($seedbonus >= 10000 && 6 == $lvl) {
+            if ($seedbonus >= 10000 && $lvl == 6) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL7[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/bonus7.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Bonus Banker LVL7\', \'bonus7.png\' , \'Earned at least 10000 bonus points.\')';
@@ -77,7 +77,7 @@ function achievement_karma_update($data)
                 $cache->increment('inbox_' . $arr['id']);
                 $cache->delete('user_achievement_points_' . $arr['id']);
             }
-            if ($seedbonus >= 30000 && 7 == $lvl) {
+            if ($seedbonus >= 30000 && $lvl == 7) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL8[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/bonus8.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Bonus Banker LVL8\', \'bonus8.png\' , \'Earned at least 30000 bonus points.\')';
@@ -85,7 +85,7 @@ function achievement_karma_update($data)
                 $cache->increment('inbox_' . $arr['id']);
                 $cache->delete('user_achievement_points_' . $arr['id']);
             }
-            if ($seedbonus >= 70000 && 8 == $lvl) {
+            if ($seedbonus >= 70000 && $lvl == 8) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL9[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/bonus9.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Bonus Banker LVL9\', \'bonus9.png\' , \'Earned at least 70000 bonus points.\')';
@@ -93,14 +93,14 @@ function achievement_karma_update($data)
                 $cache->increment('inbox_' . $arr['id']);
                 $cache->delete('user_achievement_points_' . $arr['id']);
             }
-            if ($seedbonus >= 100000 && 9 == $lvl) {
+            if ($seedbonus >= 100000 && $lvl == 9) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL10[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/bonus10.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Bonus Banker LVL10\', \'bonus10.png\' , \'Earned at least 100000 bonus points.\')';
                 $usersachiev_buffer[]  = '(' . $arr['id'] . ',10, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['id']);
             }
-            if ($seedbonus >= 1000000 && 10 == $lvl) {
+            if ($seedbonus >= 1000000 && $lvl == 10) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL11[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/bonus11.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Bonus Banker LVL11\', \'bonus11.png\' , \'Earned at least 1000000 bonus points.\')';

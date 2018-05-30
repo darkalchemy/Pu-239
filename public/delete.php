@@ -70,13 +70,13 @@ if (!is_int($rt) || $rt < 1 || $rt > 5) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_invalid']}");
 }
 $reason = $_POST['reason'];
-if (1 == $rt) {
+if ($rt == 1) {
     $reasonstr = "{$lang['delete_dead']}";
-} elseif (2 == $rt) {
+} elseif ($rt == 2) {
     $reasonstr = "{$lang['delete_dupe']}" . ($reason[0] ? (': ' . trim($reason[0])) : '!');
-} elseif (3 == $rt) {
+} elseif ($rt == 3) {
     $reasonstr = "{$lang['delete_nuked']}" . ($reason[1] ? (': ' . trim($reason[1])) : '!');
-} elseif (4 == $rt) {
+} elseif ($rt == 4) {
     if (!$reason[2]) {
         stderr("{$lang['delete_failed']}", "{$lang['delete_violated']}");
     }
@@ -102,7 +102,7 @@ $cache->deleteMulti([
                         'torrent_details_text' . $id,
                     ]);
 write_log("{$lang['delete_torrent']} $id ({$row['name']}){$lang['delete_deleted_by']}{$CURUSER['username']} ($reasonstr)\n");
-if (1 == $site_config['seedbonus_on']) {
+if ($site_config['seedbonus_on'] == 1) {
     sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus_per_delete']) . ' WHERE id = ' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] - $site_config['bonus_per_delete']);
     $cache->update_row('user' . $row['owner'], [
@@ -110,7 +110,7 @@ if (1 == $site_config['seedbonus_on']) {
     ], $site_config['expires']['user_cache']);
 }
 $message = "Torrent $id (" . htmlsafechars($row['name']) . ") has been deleted.\n  Reason: $reasonstr";
-if ($CURUSER['id'] != $row['owner'] && 'yes' == $CURUSER['pm_on_delete']) {
+if ($CURUSER['id'] != $row['owner'] && $CURUSER['pm_on_delete'] === 'yes') {
     $added   = TIME_NOW;
     $pm_on   = (int) $row['owner'];
     $subject = 'Torrent Deleted';

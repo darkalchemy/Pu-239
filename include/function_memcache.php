@@ -7,6 +7,7 @@
 function remove_torrent_peers($id)
 {
     global $cache;
+
     if (!is_int($id) || $id < 1) {
         return false;
     }
@@ -30,7 +31,7 @@ function remove_torrent($infohash)
 {
     global $cache;
 
-    if (20 != strlen($infohash) || !bin2hex($infohash)) {
+    if (strlen($infohash) != 20 || !bin2hex($infohash)) {
         return false;
     }
     $key     = 'torrent_hash_' . bin2hex($infohash);

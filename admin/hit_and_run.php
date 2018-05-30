@@ -40,7 +40,7 @@ $HTMLOUT .= '<h2>' . (!isset($_GET['really_bad']) ? $lang['hitnrun_chance'] : $l
         <td class="colhead">' . $lang['hitnrun_actions'] . '</td>' : '<tr><td>' . $lang['hitnrun_none'] . '</td>') . '</tr>';
 while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
     //=== Xbt Tracker or Default Announce
-    $Xbt_Seed = (XBT_TRACKER === true ? 1 !== $hit_and_run_arr['active'] : 'yes' !== $hit_and_run_arr['seeder']);
+    $Xbt_Seed = (XBT_TRACKER === true ? $hit_and_run_arr['active'] !== 1 : $hit_and_run_arr['seeder'] !== 'yes');
     $Uid_ID   = (XBT_TRACKER === true ? $hit_and_run_arr['uid'] : $hit_and_run_arr['userid']);
     $S_date   = (XBT_TRACKER === true ? $hit_and_run_arr['started'] : $hit_and_run_arr['start_date']);
     $T_ID     = (XBT_TRACKER === true ? $hit_and_run_arr['fid'] : $hit_and_run_arr['torrentid']);
@@ -50,7 +50,7 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
         if ($Uid_ID !== $hit_and_run_arr['owner']) {
             $ratio_site               = member_ratio($hit_and_run_arr['up'], $site_config['ratio_free'] ? '0' : $hit_and_run_arr['down']);
             $ratio_torrent            = member_ratio($hit_and_run_arr['uload'], $site_config['ratio_free'] ? '0' : $hit_and_run_arr['dload']);
-            $avatar                   = ('yes' == $CURUSER['avatars'] ? ('' == $hit_and_run_arr['avatar'] ? '<img src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif"  width="40" alt="default avatar" />' : '<img src="' . image_proxy($hit_and_run_arr['avatar']) . '" alt="avatar"  width="40" />') : '');
+            $avatar = ($CURUSER['avatars'] === 'yes' ? ($hit_and_run_arr['avatar'] == '' ? '<img src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif"  width="40" alt="default avatar" />' : '<img src="' . image_proxy($hit_and_run_arr['avatar']) . '" alt="avatar"  width="40" />') : '');
             $torrent_needed_seed_time = $hit_and_run_arr['seedtime'];
             //=== get times per class
             switch (true) {

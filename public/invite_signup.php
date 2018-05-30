@@ -20,7 +20,7 @@ $stdfoot = [
 if (!$site_config['openreg_invites']) {
     stderr('Sorry', 'Invite Signups are presently closed');
 }
-if (64 != strlen($_GET['code'])) {
+if (strlen($_GET['code']) != 64) {
     stderr($lang['stderr_errorhead'], 'Invalid Invite Code!');
 }
 

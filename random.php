@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 check_user_status();
 global $CURUSER;
 
@@ -14,11 +14,11 @@ if ($CURUSER['notifs']) {
         999,
     ]; // junk data
     foreach ($parts as $x) {
-        if ('cat' === substr($x, 0, 3)) {
+        if (substr($x, 0, 3) === 'cat') {
             $cats[] = substr($x, 3);
         }
     }
-    $where = (2 === count($cats)) ? '' : 'WHERE category IN(' . join(',', $cats) . ') AND visible=\'yes\'';
+    $where = (count($cats) === 2) ? '' : 'WHERE category IN(' . join(',', $cats) . ') AND visible=\'yes\'';
 }
 /* end **/
 // possible to shuffle torrents within specific category, overides previous $where
@@ -29,7 +29,7 @@ if (isset($_GET['cat'])) {
 $cat_id = (isset($cat) ? '&cat=' . $cat : '');
 $res    = sql_query('SELECT id FROM torrents ' . $where . ' ORDER BY RAND() LIMIT 1'); //dunno if adding LIMIT here would help any since dies after 1st row
 while (list($id) = mysqli_fetch_array($res)) {
-    if (null != $id) {
+    if ($id != null) {
         header('Location: details.php?id=' . $id . $cat_id . '&random'); //add &random to indicate on details.php random browsing
         die();
     }

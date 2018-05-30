@@ -13,7 +13,7 @@ function peer_update_xbt($data)
     $dead_peers    = sql_query('SELECT fid, uid, peer_id, `left`, `active` FROM xbt_files_users WHERE mtime < ' . $deadtime);
     while ($dead_peer = mysqli_fetch_assoc($dead_peers)) {
         $torrentid = (int) $dead_peer['fid'];
-        $seed      = 0 === $dead_peer['left'];
+        $seed = $dead_peer['left'] === 0;
         sql_query('DELETE FROM xbt_files_users WHERE fid = ' . sqlesc($torrentid) . ' AND peer_id = ' . sqlesc($dead_peer['peer_id']) . ' AND `active` = "0"');
         if (!isset($torrent_seeds[$torrentid])) {
             $torrent_seeds[$torrentid] = $torrent_leeches[$torrentid] = 0;

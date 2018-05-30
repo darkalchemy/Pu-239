@@ -21,8 +21,8 @@ if ($CURUSER) {
     stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error1']}");
 }
 $step = (isset($_GET['step']) ? (int) $_GET['step'] : (isset($_POST['step']) ? (int) $_POST['step'] : ''));
-if ('1' == $step) {
-    if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($step == '1') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!mkglobal('email' . ($site_config['captcha_on'] ? ':captchaSelection' : '') . '')) {
             stderr('Oops', 'Missing form data - You must fill all fields');
         }
@@ -43,7 +43,7 @@ if ('1' == $step) {
         if (empty($assoc['passhint']) || empty($assoc['hintanswer'])) {
             stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error3']}");
         }
-        if ('confirmed' != $assoc['status']) {
+        if ($assoc['status'] != 'confirmed') {
             stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error4']}");
         } else {
             $HTMLOUT .= "
@@ -85,7 +85,7 @@ if ('1' == $step) {
             echo stdhead('Reset Lost Password') . $HTMLOUT . stdfoot();
         }
     }
-} elseif ('2' == $step) {
+} elseif ($step == '2') {
     if (!mkglobal('id:answer')) {
         die();
     }
@@ -132,7 +132,7 @@ if ('1' == $step) {
 
         echo stdhead('Reset Lost Password') . $HTMLOUT . stdfoot();
     }
-} elseif ('3' == $step) {
+} elseif ($step == '3') {
     if (!mkglobal('id:newpass:newpassagain:hash')) {
         die();
     }

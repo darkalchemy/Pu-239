@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jonnyboy
- * Date: 12/16/17
- * Time: 4:48 AM.
- */
+
 function checkdir(&$dirs)
 {
     foreach ($dirs as $dir => $x) {

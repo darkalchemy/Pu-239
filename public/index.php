@@ -28,7 +28,7 @@ $lang = array_merge(
     load_language('trivia')
 );
 
-if (isset($_GET['act']) && 'Arcade' === $_GET['act'] && isset($_POST['gname'])) {
+if (isset($_GET['act']) && $_GET['act'] === 'Arcade' && isset($_POST['gname'])) {
     include_once INCL_DIR . 'arcade.php';
 }
 
@@ -57,7 +57,7 @@ if (curuser::$blocks['index_page'] & block_index::IE_ALERT && $BLOCKS['ie_user_a
 //    $HTMLOUT .= '</div>';
 //}
 
-if (curuser::$blocks['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_on'] && 1 === $CURUSER['chatpost']) {
+if (curuser::$blocks['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_on'] && $CURUSER['chatpost'] === 1) {
     $HTMLOUT .= "<div class='container is-fluid portlet' id='AJAXCHAT'>";
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'ajaxchat.php';
     $HTMLOUT .= '</div>';
@@ -194,7 +194,7 @@ if (curuser::$blocks['index_page'] & block_index::RADIO && $BLOCKS['radio_on']) 
     $HTMLOUT .= '</div>';
 }
 
-if (curuser::$blocks['index_page'] & block_index::TORRENTFREAK && $BLOCKS['torrentfreak_on']) {
+if (curuser::$blocks['index_page'] & block_index::TORRENTFREAK && $BLOCKS['torrentfreak_on'] && $site_config['newsrss_on']) {
     $HTMLOUT .= "<div class='container is-fluid portlet' id='TORRENTFREAK'>";
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'torrentfreak.php';
     $HTMLOUT .= '</div>';

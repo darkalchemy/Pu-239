@@ -7,16 +7,16 @@ global $lang, $site_config, $cache, $session;
 
 $lang          = array_merge($lang, load_language('ad_sitesettings'));
 $site_settings = $current_site_settings = [];
-if ('POST' === $_SERVER['REQUEST_METHOD'] && !empty($_POST)) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
     $pconf = sql_query('SELECT * FROM site_config') or sqlerr(__FILE__, __LINE__);
     while ($ac = mysqli_fetch_assoc($pconf)) {
         $current_site_settings[$ac['name']] = ['value' => $ac['value'], 'description' => $ac['description']];
     }
     $update = [];
     foreach ($_POST as $key => $value) {
-        if ('new' != $key && ($current_site_settings[$key]['description'] != $value['description'] || $current_site_settings[$key]['value'] != $value['value'])) {
-            $update[] = '(' . sqlesc($key) . ', ' . sqlesc(trim($value['value'])) . ', ' . sqlesc(trim($value['description'])) . ')';
-        } elseif ('new' === $key && isset($value['value']) && '' != $value['value']) {
+        if ($key != 'new' && ($value["description"] != $current_site_settings[$key]["description"] || $value["value"] != $current_site_settings[$key]["value"])) {
+            $update[] = '(' . sqlesc($key) . ', ' . sqlesc(trim($value["value"])) . ', ' . sqlesc(trim($value["description"])) . ')';
+        } elseif ($key === 'new' && isset($value["value"]) && $value["value"] != '') {
             extract($value);
             $update[] = '(' . sqlesc(strtolower(str_replace(' ', '_', trim($setting)))) . ', ' . sqlesc(trim($value)) . ', ' . sqlesc(trim($description)) . ')';
         }
@@ -47,14 +47,14 @@ foreach ($site_settings as $site_setting) {
     $var   = $name . '[value]';
     $input = "
                         <input type='text' name='{$var}' value='" . htmlsafechars($value) . "' class='w-100' />";
-    if (is_numeric($value) && (0 == $value || 1 == $value)) {
+    if (is_numeric($value) && ($value == 0 || $value == 1)) {
         $input = "
                         <div class='level-center'>
                             <label for ='{$var}' class='right10'>{$lang['sitesettings_no']}
-                                <input class='table' type='radio' name='{$var}' value='0' " . (0 === (int) $value ? 'checked' : '') . " />
+                                <input class='table' type='radio' name='{$var}' value='0' " . ((int) $value === 0 ? 'checked' : '') . " />
                             </label>
                             <label for ='{$var}' class='right10'>{$lang['sitesettings_yes']}
-                                <input class='table' type='radio' name='{$var}' value='1' " . (1 === (int) $value ? 'checked' : '') . ' />
+                                <input class='table' type='radio' name='{$var}' value='1' " . ((int) $value === 1 ? 'checked' : '') . ' />
                             </label>
                         </div>';
     }

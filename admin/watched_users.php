@@ -57,12 +57,12 @@ if (isset($_GET['remove'])) {
         }
     }
     //=== Check if members were removed
-    if (0 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
         stderr($lang['watched_stderr'], '' . $lang['watched_stderr2'] . '!');
     } else {
         write_log('[b]' . $CURUSER['username'] . '[/b] ' . $lang['watched_removed1'] . '<br>' . $removed_log . ' <br>' . $lang['watched_removedfrom'] . '');
     }
-    $H1_thingie = '<h1>' . $count . ' ' . $lang['watched_member'] . '' . (1 == $count ? '' : 's') . ' ' . $lang['watched_removelist'] . '</h1>';
+    $H1_thingie = '<h1>' . $count . ' ' . $lang['watched_member'] . '' . ($count == 1 ? '' : 's') . ' ' . $lang['watched_removelist'] . '</h1>';
 }
 //=== to add members to the watched user list... all staff!
 if (isset($_GET['add'])) {
@@ -75,7 +75,7 @@ if (isset($_GET['add'])) {
             stderr($lang['watched_stderr'], htmlsafechars($user['username']) . ' ' . $lang['watched_already'] . '<a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $member_whos_been_bad . '" >' . $lang['watched_backto'] . ' ' . htmlsafechars($user['username']) . '\'s ' . $lang['watched_profile'] . '</a>');
         }
         //== ok they are not watched yet let's add the info part 1
-        if ($_GET['add'] && 1 == $_GET['add']) {
+        if ($_GET['add'] && $_GET['add'] == 1) {
             $text = "
                 <form method='post' action='./staffpanel.php?tool=watched_users&amp;action=watched_users&amp;add=2&amp;id={$member_whos_been_bad}'>
                     <h2>{$lang['watched_add']}{$user['username']}{$lang['watched_towu']}</h2>
@@ -114,7 +114,7 @@ $good_stuff = [
     'invited_by',
 ];
 $ORDER_BY = ((isset($_GET['sort']) && in_array($_GET['sort'], $good_stuff, true)) ? $_GET['sort'] . ' ' : 'watched_user ');
-$ASC      = (isset($_GET['ASC']) ? ('ASC' == $_GET['ASC'] ? 'DESC' : 'ASC') : 'DESC');
+$ASC = (isset($_GET['ASC']) ? ($_GET['ASC'] === 'ASC' ? 'DESC' : 'ASC') : 'DESC');
 $i        = 1;
 $HTMLOUT .= $H1_thingie . '<br>
         <form action="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;remove=1" method="post"  name="checkme" onsubmit="return ValidateForm(this,\'wu\')">
@@ -136,7 +136,7 @@ if ($how_many > 0) {
     </tr>';
     while ($arr = @mysqli_fetch_assoc($res)) {
         $invitor_arr = [];
-        if (0 != $arr['invitedby']) {
+        if ($arr['invitedby'] != 0) {
             $invitor_res = sql_query('SELECT id, username, donor, class, enabled, warned, leechwarn, chatpost, pirate, king, suspended FROM users WHERE id = ' . sqlesc($arr['invitedby'])) or sqlerr(__FILE__, __LINE__);
             $invitor_arr = mysqli_fetch_assoc($invitor_res);
         }
@@ -149,7 +149,7 @@ if ($how_many > 0) {
         <td class="has-text-left">' . format_username($arr['id']) . '</td>
         <td class="has-text-left">' . $the_flip_box . '</td>
         <td class="has-text-centered">' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
-        <td class="has-text-centered">' . ('' == $invitor_arr['username'] ? '' . $lang['watched_open_sign-ups'] . '' : format_username($invitor_arr)) . '</td>
+        <td class="has-text-centered">' . ($invitor_arr['username'] == '' ? '' . $lang['watched_open_sign-ups'] . '' : format_username($invitor_arr)) . '</td>
         ' . ($CURUSER['class'] >= UC_STAFF ? '
         <td class="has-text-centered"><input type="checkbox" name="wu[]" value="' . (int) $arr['id'] . '" /></td>' : '') . '
     </tr>';

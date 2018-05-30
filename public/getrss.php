@@ -8,7 +8,7 @@ check_user_status();
 global $CURUSER, $site_config, $session;
 
 $lang = array_merge(load_language('global'), load_language('getrss'));
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     /**
      * @param $x
      *
@@ -20,10 +20,10 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     }
 
     $cats = isset($_POST['cats']) ? array_map('mkint', $_POST['cats']) : [];
-    if (0 == count($cats)) {
+    if (count($cats) == 0) {
         $session->set('is-warning', $lang['getrss_nocat']);
     } else {
-        $feed    = isset($_POST['feed'])     && 'dl' == $_POST['feed'] ? 'dl' : 'web';
+        $feed = isset($_POST['feed']) && $_POST['feed'] === 'dl' ? 'dl' : 'web';
         $bm      = isset($_POST['bm'])       && is_int($_POST['bm']) ? $_POST['bm'] : 0;
         $counts  = [15, 30, 50, 100];
         $count   = isset($_POST['count']) && is_int($_POST['count']) && in_array($counts, $_POST['count']) ? $_POST['count'] : 15;

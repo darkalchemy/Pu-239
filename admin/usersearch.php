@@ -379,7 +379,7 @@ function ratios($up, $down, $color = true)
  */
 function haswildcard($text)
 {
-    if (strpos($text, '*') === false && false === strpos($text, '?') && false === strpos($text, '%') && false === strpos($text, '_')) {
+    if (strpos($text, '*') === false && strpos($text, '?') === false && strpos($text, '%') === false && strpos($text, '_') === false) {
         return false;
     } else {
         return true;
@@ -393,10 +393,10 @@ if (!empty($_POST) && count($_POST) > 0) {
     $names     = isset($_POST['n']) ? explode(' ', trim($_POST['n'])) : [
         0 => '',
     ];
-    if ('' !== $names[0]) {
+    if ($names[0] !== '') {
         foreach ($names as $name) {
-            if ('~' == substr($name, 0, 1)) {
-                if ('~' == $name) {
+            if (substr($name, 0, 1) == '~') {
+                if ($name == '~') {
                     continue;
                 }
                 $names_exc[] = substr($name, 1);
@@ -447,11 +447,11 @@ if (!empty($_POST) && count($_POST) > 0) {
     // email
     if (is_set_not_empty('em')) {
         $emaila = explode(' ', trim($_POST['em']));
-        if ('' !== $emaila[0]) {
+        if ($emaila[0] !== '') {
             $where_is .= !empty($where_is) ? ' AND (' : '(';
             foreach ($emaila as $email) {
                 if (strpos($email, '*') === false && strpos($email, '?') === false && strpos($email, '%') === false) {
-                    if (1 !== validemail($email)) {
+                    if (validemail($email) !== 1) {
                         stdmsg($lang['usersearch_error'], $lang['usersearch_bademail']);
                         stdfoot();
                         die();
@@ -489,12 +489,12 @@ if (!empty($_POST) && count($_POST) > 0) {
             die();
         }
         $mask = trim($_POST['ma']);
-        if ('' == $mask || '255.255.255.255' == $mask) {
+        if ($mask == '' || $mask === '255.255.255.255') {
             $where_is .= (!empty($where_is) ? ' AND ' : '') . "u.ip = '$ip'";
         } else {
-            if ('/' == substr($mask, 0, 1)) {
+            if (substr($mask, 0, 1) == '/') {
                 $n = substr($mask, 1, strlen($mask) - 1);
-                if (!is_numeric($n) || $n < 0 || $n > 32) {
+                if (!is_numeric($n) or $n < 0 or $n > 32) {
                     stdmsg($lang['usersearch_error'], $lang['usersearch_badmask']);
                     stdfoot();
                     die();
@@ -514,11 +514,11 @@ if (!empty($_POST) && count($_POST) > 0) {
     // ratio
     if (is_set_not_empty('r')) {
         $ratio = trim($_POST['r']);
-        if ('---' == $ratio) {
+        if ($ratio == '---') {
             $ratio2 = '';
             $where_is .= !empty($where_is) ? ' AND ' : '';
             $where_is .= ' u.uploaded = 0 and u.downloaded = 0';
-        } elseif ('inf' == strtolower(substr($ratio, 0, 3))) {
+        } elseif (strtolower(substr($ratio, 0, 3)) === 'inf') {
             $ratio2 = '';
             $where_is .= !empty($where_is) ? ' AND ' : '';
             $where_is .= ' u.uploaded > 0 and u.downloaded = 0';
@@ -532,7 +532,7 @@ if (!empty($_POST) && count($_POST) > 0) {
             $where_is .= ' (u.uploaded/u.downloaded)';
             $ratiotype = $_POST['rt'];
             $q1 .= ($q1 ? '&amp;' : '') . "rt=$ratiotype";
-            if ('3' == $ratiotype) {
+            if ($ratiotype == '3') {
                 $ratio2 = trim($_POST['r2']);
                 if (!$ratio2) {
                     stdmsg($lang['usersearch_error'], $lang['usersearch_badratio2']);
@@ -546,9 +546,9 @@ if (!empty($_POST) && count($_POST) > 0) {
                 }
                 $where_is .= " BETWEEN $ratio and $ratio2";
                 $q1       .= ($q1 ? '&amp;' : '') . "r2=$ratio2";
-            } elseif ('2' == $ratiotype) {
+            } elseif ($ratiotype == '2') {
                 $where_is .= " < $ratio";
-            } elseif ('1' == $ratiotype) {
+            } elseif ($ratiotype == '1') {
                 $where_is .= " > $ratio";
             } else {
                 $where_is .= " BETWEEN ($ratio - 0.004) and ($ratio + 0.004)";
@@ -559,10 +559,10 @@ if (!empty($_POST) && count($_POST) > 0) {
     // comment
     if (is_set_not_empty('co')) {
         $comments = explode(' ', trim($_POST['co']));
-        if ('' !== $comments[0]) {
+        if ($comments[0] !== '') {
             foreach ($comments as $comment) {
-                if ('~' == substr($comment, 0, 1)) {
-                    if ('~' == $comment) {
+                if (substr($comment, 0, 1) == '~') {
+                    if ($comment == '~') {
                         continue;
                     }
                     $comments_exc[] = substr($comment, 1);
@@ -624,7 +624,7 @@ if (!empty($_POST) && count($_POST) > 0) {
         $where_is .= ' u.uploaded ';
         $ultype = $_POST['ult'];
         $q1 .= ($q1 ? '&amp;' : '') . "ult=$ultype";
-        if ('3' == $ultype) {
+        if ($ultype == '3') {
             $ul2 = trim($_POST['ul2']);
             if (!$ul2) {
                 stdmsg($lang['usersearch_error'], $lang['usersearch_badup2']);
@@ -638,9 +638,9 @@ if (!empty($_POST) && count($_POST) > 0) {
             }
             $where_is .= ' BETWEEN ' . $ul * $unit . ' and ' . $ul2 * $unit;
             $q1       .= ($q1 ? '&amp;' : '') . "ul2=$ul2";
-        } elseif ('2' == $ultype) {
+        } elseif ($ultype == '2') {
             $where_is .= ' < ' . $ul * $unit;
-        } elseif ('1' == $ultype) {
+        } elseif ($ultype == '1') {
             $where_is .= ' >' . $ul * $unit;
         } else {
             $where_is .= ' BETWEEN ' . ($ul - 0.004) * $unit . ' and ' . ($ul + 0.004) * $unit;
@@ -659,7 +659,7 @@ if (!empty($_POST) && count($_POST) > 0) {
         $where_is .= ' u.downloaded ';
         $dltype = $_POST['dlt'];
         $q1 .= ($q1 ? '&amp;' : '') . "dlt=$dltype";
-        if ('3' == $dltype) {
+        if ($dltype == '3') {
             $dl2 = trim($_POST['dl2']);
             if (!$dl2) {
                 stdmsg($lang['usersearch_error'], $lang['usersearch_baddl2']);
@@ -673,9 +673,9 @@ if (!empty($_POST) && count($_POST) > 0) {
             }
             $where_is .= ' BETWEEN ' . $dl * $unit . ' and ' . $dl2 * $unit;
             $q1       .= ($q1 ? '&amp;' : '') . "dl2=$dl2";
-        } elseif ('2' == $dltype) {
+        } elseif ($dltype == '2') {
             $where_is .= ' < ' . $dl * $unit;
-        } elseif ('1' == $dltype) {
+        } elseif ($dltype == '1') {
             $where_is .= ' > ' . $dl * $unit;
         } else {
             $where_is .= ' BETWEEN ' . ($dl - 0.004) * $unit . ' and ' . ($dl + 0.004) * $unit;
@@ -693,13 +693,13 @@ if (!empty($_POST) && count($_POST) > 0) {
         $q1 .= ($q1 ? '&amp;' : '') . "d=$date";
         $datetype = $_POST['dt'];
         $q1 .= ($q1 ? '&amp;' : '') . "dt=$datetype";
-        if ('0' == $datetype) {
+        if ($datetype == '0') {
             // For mySQL 4.1.1 or above use instead
             // $where_is .= (isset($where_is)?" AND ":"")."DATE(added) = DATE('$date')";
             $where_is .= (!empty($where_is) ? ' AND ' : '') . "(added - $date) BETWEEN 0 and 86400";
         } else {
             $where_is .= (!empty($where_is) ? ' AND ' : '') . 'u.added ';
-            if ('3' == $datetype) {
+            if ($datetype == '3') {
                 $date2 = strtotime(trim($_POST['d2']));
                 if ($date2) {
                     if (!$date = strtotime($date)) {
@@ -714,9 +714,9 @@ if (!empty($_POST) && count($_POST) > 0) {
                     stdfoot();
                     die();
                 }
-            } elseif ('1' == $datetype) {
+            } elseif ($datetype == '1') {
                 $where_is .= "< '$date'";
-            } elseif ('2' == $datetype) {
+            } elseif ($datetype == '2') {
                 $where_is .= "> '$date'";
             }
         }
@@ -732,13 +732,13 @@ if (!empty($_POST) && count($_POST) > 0) {
         $q1 .= ($q1 ? '&amp;' : '') . "ls=$last";
         $lasttype = $_POST['lst'];
         $q1 .= ($q1 ? '&amp;' : '') . "lst=$lasttype";
-        if ('0' == $lasttype) {
+        if ($lasttype == '0') {
             // For mySQL 4.1.1 or above use instead
             // $where_is .= (isset($where_is)?" AND ":"")."DATE(added) = DATE('$date')";
             $where_is .= (!empty($where_is) ? ' AND ' : '') . "(last_access - $last) BETWEEN 0 and 86400";
         } else {
             $where_is .= (!empty($where_is) ? ' AND ' : '') . 'u.last_access ';
-            if ('3' == $lasttype) {
+            if ($lasttype == '3') {
                 $last2 = strtotime(trim($_POST['ls2']));
                 if ($last2) {
                     $where_is .= " BETWEEN '$last' and '$last2'";
@@ -748,9 +748,9 @@ if (!empty($_POST) && count($_POST) > 0) {
                     stdfoot();
                     die();
                 }
-            } elseif ('1' == $lasttype) {
+            } elseif ($lasttype == '1') {
                 $where_is .= "< '$last'";
-            } elseif ('2' == $lasttype) {
+            } elseif ($lasttype == '2') {
                 $where_is .= "> '$last'";
             }
         }
@@ -759,7 +759,7 @@ if (!empty($_POST) && count($_POST) > 0) {
     if (is_set_not_empty('st')) {
         $status = $_POST['st'];
         $where_is .= ((!empty($where_is)) ? ' AND ' : '');
-        if ('1' == $status) {
+        if ($status == '1') {
             $where_is .= "u.status = 'confirmed'";
         } else {
             $where_is .= "u.status = 'pending'";
@@ -770,7 +770,7 @@ if (!empty($_POST) && count($_POST) > 0) {
     if (is_set_not_empty('as')) {
         $accountstatus = $_POST['as'];
         $where_is .= (!empty($where_is)) ? ' AND ' : '';
-        if ('1' == $accountstatus) {
+        if ($accountstatus == '1') {
             $where_is .= " u.enabled = 'yes'";
         } else {
             $where_is .= " u.enabled = 'no'";
@@ -781,7 +781,7 @@ if (!empty($_POST) && count($_POST) > 0) {
     if (is_set_not_empty('do')) {
         $donor = $_POST['do'];
         $where_is .= (!empty($where_is)) ? ' AND ' : '';
-        if (1 == $donor) {
+        if ($donor == 1) {
             $where_is .= " u.donor = 'yes'";
         } else {
             $where_is .= " u.donor = 'no'";
@@ -792,7 +792,7 @@ if (!empty($_POST) && count($_POST) > 0) {
     if (is_set_not_empty('w')) {
         $warned = $_POST['w'];
         $where_is .= (!empty($where_is)) ? ' AND ' : '';
-        if (1 == $warned) {
+        if ($warned == 1) {
             $where_is .= " u.warned >= '1'";
         } else {
             $where_is .= " u.warned = '0'";
@@ -809,7 +809,7 @@ if (!empty($_POST) && count($_POST) > 0) {
     }
     // active
     $active = isset($_POST['ac']) ? $_POST['ac'] : '';
-    if ('1' == $active) {
+    if ($active == '1') {
         $distinct = 'DISTINCT ';
         $join_is .= ' LEFT JOIN peers AS p ON u.id = p.userid';
         $q1      .= ($q1 ? '&amp;' : '') . "ac=$active";
@@ -817,9 +817,9 @@ if (!empty($_POST) && count($_POST) > 0) {
     $from_is            = isset($join_is) ? 'users AS u' . $join_is : 'users AS u';
     $distinct           = isset($distinct) ? $distinct : '';
     $where_is           = !empty($where_is) ? $where_is : '';
-    $queryc             = 'SELECT COUNT(' . $distinct . 'u.id) FROM ' . $from_is . (('' == $where_is) ? '' : " WHERE $where_is ");
-    $querypm            = 'FROM ' . $from_is . (('' == $where_is) ? ' ' : " WHERE $where_is ");
-    $announcement_query = 'SELECT u.id FROM ' . $from_is . (('' == $where_is) ? ' WHERE 1 = 1' : " WHERE $where_is");
+    $queryc = 'SELECT COUNT(' . $distinct . 'u.id) FROM ' . $from_is . (($where_is == '') ? '' : " WHERE $where_is ");
+    $querypm = 'FROM ' . $from_is . (($where_is == '') ? ' ' : " WHERE $where_is ");
+    $announcement_query = 'SELECT u.id FROM ' . $from_is . (($where_is == '') ? ' WHERE 1 = 1' : " WHERE $where_is");
     $select_is          = 'u.id, u.username, u.email, u.status, u.added, u.last_access, u.ip,
       u.class, u.uploaded, u.downloaded, u.donor, u.modcomment, u.enabled, u.warned';
     $query1 = 'SELECT ' . $distinct . ' ' . $select_is . ' ' . $querypm;
@@ -832,7 +832,7 @@ if (!empty($_POST) && count($_POST) > 0) {
         stdmsg($lang['usersearch_url'], $q1);
         stdmsg('Announce Query', $announcement_query);
         echo '<br><br>';
-        if (2 == $DEBUG_MODE) {
+        if ($DEBUG_MODE == 2) {
             stdfoot();
         }
         die();
@@ -846,7 +846,7 @@ if (!empty($_POST) && count($_POST) > 0) {
     $pager   = pager($perpage, $count, 'staffpanel.php?tool=usersearch&amp;action=usersearch&amp;' . $q1);
     $query1 .= $pager['limit'];
     $res = sql_query($query1) or sqlerr(__FILE__, __LINE__);
-    if (0 == mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) == 0) {
         stdmsg($lang['usersearch_warn'], $lang['usersearch_nouser']);
 //    else if (mysqli_num_rows($res) == 1) {
 //        $usertt = mysqli_fetch_array($res);
@@ -867,7 +867,7 @@ if (!empty($_POST) && count($_POST) > 0) {
                 $nip    = ip2long($user['ip']);
                 $auxres = sql_query("SELECT COUNT(*) FROM bans WHERE $nip >= first AND $nip <= last") or sqlerr(__FILE__, __LINE__);
                 $array  = mysqli_fetch_row($auxres);
-                if (0 == $array[0]) {
+                if ($array[0] == 0) {
                     $ipstr = $user['ip'];
                 } else {
                     $ipstr = "<a href='staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['ip']) . "'><span style='color: #FF0000;'><b>" . htmlsafechars($user['ip']) . '</b></span></a>';
@@ -896,7 +896,7 @@ if (!empty($_POST) && count($_POST) > 0) {
             $n          = mysqli_fetch_row($auxres);
             $n_comments = $n[0];
             $ids     .= (int) $user['id'] . ':';
-            $HTMLOUT .= "<tr><td><b><a href='userdetails.php?id=" . (int) $user['id'] . "'>" . htmlsafechars($user['username']) . '</a></b>' . ('yes' == $user['donor'] ? "<img src='{$site_config['pic_baseurl']}star.gif' alt=\"{$lang['usersearch_donor']}\" />" : '') . ('yes' == $user['warned'] ? "<img src=\"./images/warned.gif\" alt=\"{$lang['usersearch_warned']}\" />" : '') . '</td>
+            $HTMLOUT .= "<tr><td><b><a href='userdetails.php?id=" . (int) $user['id'] . "'>" . htmlsafechars($user['username']) . '</a></b>' . ($user['donor'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}star.gif' alt=\"{$lang['usersearch_donor']}\" />" : '') . ($user['warned'] === 'yes' ? "<img src=\"./images/warned.gif\" alt=\"{$lang['usersearch_warned']}\" />" : '') . '</td>
           <td>' . ratios($user['uploaded'], $user['downloaded']) . '</td>
           <td>' . $ipstr . '</td><td>' . htmlsafechars($user['email']) . '</td>
           <td><div>' . get_date($user['added'], '') . '</div></td>

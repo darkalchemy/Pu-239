@@ -12,7 +12,7 @@ $lang    = array_merge($lang, load_language('ad_donations'));
 $HTMLOUT = '';
 if (isset($_GET['total_donors'])) {
     $total_donors = (int) $_GET['total_donors'];
-    if ('1' != $total_donors) {
+    if ($total_donors != '1') {
         stderr($lang['donate_err'], $lang['donate_err1']);
     }
     $res     = sql_query("SELECT COUNT(*) FROM users WHERE total_donated != '0.00' AND enabled='yes'") or sqlerr(__FILE__, __LINE__);
@@ -20,7 +20,7 @@ if (isset($_GET['total_donors'])) {
     $count   = $row[0];
     $perpage = 15;
     $pager   = pager($perpage, $count, 'staffpanel.php?tool=donations&amp;action=donations&amp;');
-    if (0 == mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) == 0) {
         stderr($lang['donate_sorry'], $lang['donate_nofound']);
     }
     $users = number_format(get_row_count('users', "WHERE total_donated != '0.00'"));
@@ -33,7 +33,7 @@ else {
     $count   = $row[0];
     $perpage = 15;
     $pager   = pager($perpage, $count, 'staffpanel.php?tool=donations&amp;action=donations&amp;');
-    if (0 == mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) == 0) {
         stderr($lang['donate_sorry'], $lang['donate_nofound']);
     }
     $users = number_format(get_row_count('users', "WHERE donor='yes'"));
@@ -50,7 +50,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     // =======end
     $HTMLOUT .= "<tr><td><a class='altlink' href='{$site_config['baseurl']}/userdetails.php?id=" . htmlsafechars($arr['id']) . "'>" . htmlsafechars($arr['id']) . '</a></td>' . "<td><a class='altlink' href='{$site_config['baseurl']}/userdetails.php?id=" . htmlsafechars($arr['id']) . "'><b>" . htmlsafechars($arr['username']) . '</b></a>' . "</td><td><a class='altlink' href='mailto:" . htmlsafechars($arr['email']) . "'>" . htmlsafechars($arr['email']) . '</a>' . '</td><td><font size="-3"> ' . get_date($arr['added'], 'DATE') . '</font>' . '</td><td>';
     $donoruntil = (int) $arr['donoruntil'];
-    if ('0' == $donoruntil) {
+    if ($donoruntil == '0') {
         $HTMLOUT .= 'n/a';
     } else {
         $HTMLOUT .= '<font size="-3"> ' . get_date($arr['donoruntil'], 'DATE') . ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ]{$lang['donate_togo']}</font>";

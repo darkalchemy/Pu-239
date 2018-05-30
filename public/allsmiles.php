@@ -72,7 +72,7 @@ $list = "
             $list1
         </div>";
 
-if ('0' != $CURUSER['smile_until']) {
+if ($CURUSER['smile_until'] != '0') {
     $list .= "
         <h1>Custom Smilies</h1>
         <div class='level-center bg-04 round10 margin20'>

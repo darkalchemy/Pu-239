@@ -39,7 +39,7 @@ $HTMLOUT .= '</td></tr>';
 if ($CURUSER['class'] >= UC_MODERATOR) {
     $HTMLOUT .= "<tr><td colspan='2'>{$lang['edit_staff']}</td></tr>
     <tr><td><b>{$lang['details_filled']}</b></td>
-    <td><input type='checkbox' name='filled'" . (0 != $numz['torrentid'] ? ' checked' : '') . " /></td></tr>
+    <td><input type='checkbox' name='filled'" . ($numz['torrentid'] != 0 ? ' checked' : '') . " /></td></tr>
     <tr><td><b>{$lang['edit_filled_by']}</b></td><td>
     <input type='text' size='10' value='$numz[filledby]' name='filledby' /></td></tr>
     <tr><td>

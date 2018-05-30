@@ -27,19 +27,19 @@ function validate($id)
     return true;
 }
 
-if ('ban' == $mode) {
+if ($mode === 'ban') {
     validate($id);
     sql_query("UPDATE failedlogins SET banned = 'yes' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $session->set('is-warning', $lang['failed_message_ban']);
     unset($_POST);
 }
-if ('removeban' == $mode) {
+if ($mode === 'removeban') {
     validate($id);
     sql_query("UPDATE failedlogins SET banned = 'no' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $session->set('is-success', $lang['failed_message_unban']);
     unset($_POST);
 }
-if ('delete' == $mode) {
+if ($mode === 'delete') {
     validate($id);
     sql_query('DELETE FROM failedlogins WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $session->set('is-success', $lang['failed_message_deleted']);
@@ -63,7 +63,7 @@ $row     = mysqli_fetch_assoc($res);
 $count   = $row['count'];
 $perpage = 15;
 $pager   = pager($perpage, $count, $site_config['baseurl'] . '/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;' . (!empty($search) ? "search=$search&amp;" : '') . '');
-if (!$where && 0 === $count) {
+if (!$where && $count === 0) {
     stderr($lang['failed_main_nofail'], $lang['failed_main_nofail_msg']);
 }
 $HTMLOUT = main_div("
@@ -77,7 +77,7 @@ if ($count > $perpage) {
 }
 $sql = "SELECT f.*, INET6_NTOA(f.ip) AS ip, u.id as uid, u.username FROM failedlogins as f LEFT JOIN users as u ON u.ip = f.ip $where ORDER BY f.added DESC " . $pager['limit'];
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-if (0 == mysqli_num_rows($res)) {
+if (mysqli_num_rows($res) == 0) {
     $HTMLOUT .= main_div("<h3 class='has-text-centered'>{$lang['failed_message_nothing']}</h3>", 'top20');
 } else {
     $heading = "
@@ -96,7 +96,7 @@ if (0 == mysqli_num_rows($res)) {
             <td>" . htmlsafechars($arr['ip']) . ' ' . ((int) $arr['uid'] ? format_username($arr['uid']) : '') . "</td>
             <td class='has-text-centered'>" . get_date($arr['added'], '', 1, 0) . "</td>
             <td class='has-text-centered'>" . (int) $arr['attempts'] . '</td>
-            <td>' . ('yes' == $arr['banned'] ? "
+            <td>' . ($arr['banned'] === 'yes' ? "
                 <span class='has-text-red'>{$lang['failed_main_banned']}</span> 
                 <a href='{$site_config['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=removeban&amp;id=" . (int) $arr['id'] . "'> 
                     <span class='has-text-green'>[{$lang['failed_main_remban']}]</span>

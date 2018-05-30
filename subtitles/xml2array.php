@@ -95,14 +95,14 @@ class Xml2Array
      */
     private function node_2_array($dom_element)
     {
-        if (XML_ELEMENT_NODE != $dom_element->nodeType) {
+        if ($dom_element->nodeType != XML_ELEMENT_NODE) {
             return false;
         }
 
         $children = $dom_element->childNodes;
 
         foreach ($children as $child) {
-            if (XML_ELEMENT_NODE != $child->nodeType) {
+            if ($child->nodeType != XML_ELEMENT_NODE) {
                 continue;
             }
 

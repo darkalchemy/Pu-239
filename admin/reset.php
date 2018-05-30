@@ -8,7 +8,7 @@ class_check($class);
 global $CURUSER, $lang;
 
 $lang = array_merge($lang, load_language('ad_reset'));
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username    = trim(htmlsafechars($_POST['username']));
     $uid         = (int) $_POST['uid'];
     $newpassword = make_password();
@@ -18,13 +18,13 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
                            $CURUSER['id'],
                        ]);
     $res = sql_query('UPDATE users SET passhash = ' . sqlesc($passhash) . ' WHERE username = ' . sqlesc($username) . ' AND id = ' . sqlesc($uid) . ' AND class < ' . $CURUSER['class']) or sqlerr(__FILE__, __LINE__);
-    if (1 != mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) != 1) {
         stderr($lang['reset_stderr'], $lang['reset_stderr1']);
     }
-    if (false == CheckPostKey([
+    if (CheckPostKey([
                          $uid,
                          $CURUSER['id'],
-                     ], $postkey)) {
+                     ], $postkey) == false) {
         stderr($lang['reset_stderr2'], $lang['reset_stderr3']);
     }
     write_log($lang['reset_pw_log1'] . htmlsafechars($username) . $lang['reset_pw_log2'] . htmlsafechars($CURUSER['username']));

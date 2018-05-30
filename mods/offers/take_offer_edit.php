@@ -25,7 +25,7 @@ $descr .= isset($_POST['body']) ? $_POST['body'] : '';
 if (!$descr) {
     stderr('Error', 'You must enter a description!');
 }
-$cat = (isset($_POST['category']) ? (int) $_POST['category'] : ('' != $num['cat'] ? $num['cat'] : 0));
+$cat = (isset($_POST['category']) ? (int) $_POST['category'] : ($num['cat'] != '' ? $num['cat'] : 0));
 if (!is_valid_id($cat)) {
     stderr('Error', 'You must select a category to put the request in!');
 }
@@ -44,12 +44,12 @@ if ($filled) {
     //$filledby = 0;
     //else {
     $res = sql_query('SELECT id FROM users WHERE id = ' . $filledby);
-    if (0 == mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) == 0) {
         stderr('Error', 'ID doesn\'t match any users, try again');
     }
     //  }
     $res = sql_query('SELECT id FROM torrents WHERE id = ' . $torrentid);
-    if (0 == mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) == 0) {
         stderr('Error', 'ID doesn\'t match any torrents, try again');
     }
     sql_query("UPDATE offers SET cat = $cat, offer = $offer, descr = $descr, acceptedby = $acceptedby, torrentid=$torrentid WHERE id = $id") or sqlerr(__FILE__, __LINE__);

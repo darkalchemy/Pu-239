@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'html_functions.php';
@@ -26,7 +26,7 @@ function insert_tag($name, $description, $syntax, $example, $remarks)
     $htmlout .= "<tr><td>{$lang['tags_systax']}</td><td><tt>$syntax</tt></td></tr>\n";
     $htmlout .= "<tr><td>{$lang['tags_example']}</td><td><tt>$example</tt></td></tr>\n";
     $htmlout .= "<tr><td>{$lang['tags_result']}</td><td>$result</td></tr>\n";
-    if ('' != $remarks) {
+    if ($remarks != '') {
         $htmlout .= "<tr><td>{$lang['tags_remarks']}</td><td>$remarks</td></tr>\n";
     }
     $htmlout .= "</table>\n";
@@ -44,7 +44,7 @@ $HTMLOUT .= "{$lang['tags_title']}
     <textarea name='test' cols='60' rows='3'>" . ($test ? htmlspecialchars($test) : '') . "</textarea>
     <input type='submit' value='{$lang['tags_test']}' style='height: 23px; margin-left: 5px;' />
     </form>";
-if ('' != $test) {
+if ($test != '') {
     $HTMLOUT .= '<p><hr>' . format_comment($test) . "<hr></p>\n";
 }
 $HTMLOUT .= insert_tag($lang['tags_bold1'], $lang['tags_bold2'], $lang['tags_bold3'], $lang['tags_bold4'], '');

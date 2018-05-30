@@ -86,7 +86,7 @@ $fname     = $fetch_assoc['filename'];
 preg_match('/^(.+)\.torrent$/si', $fname, $matches);
 $shortfname = $matches[1];
 $dname      = $fetch_assoc['save_as'];
-if ((isset($_POST['nfoaction'])) && ('update' == $_POST['nfoaction'])) {
+if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] === 'update')) {
     if (empty($_FILES['nfo']['name'])) {
         $session->set('is-warning', 'No NFO!');
         header("Location: {$_SERVER['HTTP_REFERER']}");
@@ -111,7 +111,7 @@ if ((isset($_POST['nfoaction'])) && ('update' == $_POST['nfoaction'])) {
         $updateset[] = 'nfo = ' . sqlesc(str_replace("\x0d\x0d\x0a", "\x0d\x0a", file_get_contents($_FILES['nfo']['tmp_name'])));
     }
     $torrent_cache['nfo'] = str_replace("\x0d\x0d\x0a", "\x0d\x0a", file_get_contents($_FILES['nfo']['tmp_name']));
-} elseif ('remove' == $nfoaction) {
+} elseif ($nfoaction === 'remove') {
     $updateset[]          = "nfo = ''";
     $torrent_cache['nfo'] = '';
 }
@@ -156,8 +156,8 @@ if (isset($_POST['type']) && (($category = (int) $_POST['type']) != $fetch_assoc
     $updateset[]               = 'category = ' . sqlesc($category);
     $torrent_cache['category'] = $category;
 }
-///////////////////////////////
-if (($visible = ('' != isset($_POST['visible']) ? 'yes' : 'no')) != $fetch_assoc['visible']) {
+
+if (($visible = (!empty($_POST['visible']) ? 'yes' : 'no')) != $fetch_assoc['visible']) {
     $updateset[]              = 'visible = ' . sqlesc($visible);
     $torrent_cache['visible'] = $visible;
 }
@@ -184,9 +184,9 @@ if (in_array($category, $site_config['movie_cats'])) {
     $torrent_cache['subs'] = $subs;
 }
 // ==09 Sticky torrents
-if (($sticky = ('' != isset($_POST['sticky']) ? 'yes' : 'no')) != $fetch_assoc['sticky']) {
+if (($sticky = (!empty($_POST['sticky']) ? 'yes' : 'no')) != $fetch_assoc['sticky']) {
     $updateset[] = 'sticky = ' . sqlesc($sticky);
-    if ('yes' == $sticky) {
+    if ($sticky === 'yes') {
         sql_query('UPDATE usersachiev SET stickyup = stickyup + 1 WHERE userid = ' . sqlesc($fetch_assoc['owner'])) or sqlerr(__FILE__, __LINE__);
     }
     //$torrent_cache['sticky'] = $sticky;
@@ -217,18 +217,18 @@ if (empty($_POST['poster']) && !empty($fetch_assoc['poster'])) {
 }
 
 if (isset($_POST['free_length']) && ($free_length = (int) $_POST['free_length'])) {
-    if (255 == $free_length) {
+    if ($free_length == 255) {
         $free = 1;
-    } elseif (42 == $free_length) {
+    } elseif ($free_length == 42) {
         $free = (86400 + TIME_NOW);
     } else {
         $free = (TIME_NOW + $free_length * 604800);
     }
     $updateset[]           = 'free = ' . sqlesc($free);
     $torrent_cache['free'] = $free;
-    write_log("Torrent $id ($name) set Free for " . (1 != $free ? 'Until ' . get_date($free, 'DATE') : 'Unlimited') . " by $CURUSER[username]");
+    write_log("Torrent $id ($name) set Free for " . ($free != 1 ? 'Until ' . get_date($free, 'DATE') : 'Unlimited') . " by $CURUSER[username]");
 }
-if (isset($_POST['fl']) && (1 == $_POST['fl'])) {
+if (isset($_POST['fl']) && ($_POST['fl'] == 1)) {
     $updateset[]           = "free = '0'";
     $torrent_cache['free'] = '0';
     write_log("Torrent $id ($name) No Longer Free. Removed by $CURUSER[username]");
@@ -236,18 +236,18 @@ if (isset($_POST['fl']) && (1 == $_POST['fl'])) {
 /// end freeleech mod
 //==09 Set Silver on Torrent Time Based
 if (isset($_POST['half_length']) && ($half_length = (int) $_POST['half_length'])) {
-    if (255 == $half_length) {
+    if ($half_length == 255) {
         $silver = 1;
-    } elseif (42 == $half_length) {
+    } elseif ($half_length == 42) {
         $silver = (86400 + TIME_NOW);
     } else {
         $silver = (TIME_NOW + $half_length * 604800);
     }
     $updateset[]             = 'silver = ' . sqlesc($silver);
     $torrent_cache['silver'] = $silver;
-    write_log("Torrent $id ($name) set Half leech for " . (1 != $silver ? 'Until ' . get_date($silver, 'DATE') : 'Unlimited') . " by $CURUSER[username]");
+    write_log("Torrent $id ($name) set Half leech for " . ($silver != 1 ? 'Until ' . get_date($silver, 'DATE') : 'Unlimited') . " by $CURUSER[username]");
 }
-if (isset($_POST['slvr']) && (1 == $_POST['slvr'])) {
+if (isset($_POST['slvr']) && ($_POST['slvr'] == 1)) {
     $updateset[]             = "silver = '0'";
     $torrent_cache['silver'] = '0';
     write_log("Torrent $id ($name) No Longer Half leech. Removed by $CURUSER[username]");
@@ -262,7 +262,7 @@ if ((isset($_POST['allow_comments'])) && (($allow_comments = $_POST['allow_comme
 }
 // ===end
 //==Xbt freetorrent
-if (($freetorrent = ('' != isset($_POST['freetorrent']) ? '1' : '0')) != $fetch_assoc['freetorrent']) {
+if (($freetorrent = (!empty($_POST['freetorrent']) ? '1' : '0')) != $fetch_assoc['freetorrent']) {
     $updateset[]                  = 'freetorrent = ' . sqlesc($freetorrent);
     $torrent_cache['freetorrent'] = $freetorrent;
 }
@@ -284,12 +284,12 @@ if (!empty($_POST['isbn']) && $_POST['isbn'] != $fetch_assoc['isbn']) {
 }
 
 //==09 Anonymous torrents
-if (($anonymous = ('' != isset($_POST['anonymous']) ? 'yes' : 'no')) != $fetch_assoc['anonymous']) {
+if (($anonymous = (!empty($_POST['anonymous']) ? 'yes' : 'no')) != $fetch_assoc['anonymous']) {
     $updateset[]                = 'anonymous = ' . sqlesc($anonymous);
     $torrent_cache['anonymous'] = $anonymous;
 }
 //==09 vip tor
-if (($vip = ('' != isset($_POST['vip']) ? '1' : '0')) != $fetch_assoc['vip']) {
+if (($vip = (!empty($_POST['vip']) ? '1' : '0')) != $fetch_assoc['vip']) {
     $updateset[]          = 'vip = ' . sqlesc($vip);
     $torrent_cache['vip'] = $vip;
 }
@@ -300,18 +300,17 @@ $release_group_choices = [
     'none'  => 3,
 ];
 
-    $release_group = (isset($_POST['release_group']) ? $_POST['release_group'] : 'none');
-    if (isset($release_group_choices[$release_group])) {
-        $updateset[] = 'release_group = ' . sqlesc($release_group);
-    }
-    $torrent_cache['release_group'] = $release_group;
+$release_group = (isset($_POST['release_group']) ? $_POST['release_group'] : 'none');
+if (isset($release_group_choices[$release_group])) {
+    $updateset[] = 'release_group = ' . sqlesc($release_group);
+}
+$torrent_cache['release_group'] = $release_group;
 
-//==09 Genre Mod without mysql table by Traffic
 $genreaction = (isset($_POST['genre']) ? $_POST['genre'] : '');
 
-    $genre = '';
+$genre = '';
 
-if ('keep' != $genreaction) {
+if ($genreaction != 'keep') {
     if (isset($_POST['music'])) {
         $genre = implode(',', $_POST['music']);
     } elseif (isset($_POST['movie'])) {
@@ -324,8 +323,7 @@ if ('keep' != $genreaction) {
     $updateset[]               = 'newgenre = ' . sqlesc($genre);
     $torrent_cache['newgenre'] = $genre;
 }
-//==End - now update the sets
-if (sizeof($updateset) > 0) {
+if (count($updateset) > 0) {
     sql_query('UPDATE torrents SET ' . implode(',', $updateset) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 }
 if ($torrent_cache) {
@@ -337,7 +335,7 @@ if ($torrent_txt_cache) {
     $cache->update_row('torrent_details_txt_' . $id, $torrent_txt_cache, $site_config['expires']['torrent_details_text']);
 }
 remove_torrent($infohash);
-write_log('torrent edited - ' . htmlsafechars($name) . ' was edited by ' . (('yes' == $fetch_assoc['anonymous']) ? 'Anonymous' : htmlsafechars($CURUSER['username'])) . '');
+write_log('torrent edited - ' . htmlsafechars($name) . ' was edited by ' . (($fetch_assoc['anonymous'] == 'yes') ? 'Anonymous' : htmlsafechars($CURUSER['username'])) . '');
 $cache->delete('editedby_' . $id);
 //$returl = (isset($_POST['returnto']) ? '&returnto=' . urlencode($_POST['returnto']) : 'details.php?id=' . $id);
 

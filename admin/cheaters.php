@@ -10,7 +10,7 @@ global $site_config, $lang;
 
 $lang    = array_merge($lang, load_language('cheaters'));
 $HTMLOUT = '';
-if (isset($_POST['nowarned']) && 'nowarned' == $_POST['nowarned']) {
+if (isset($_POST['nowarned']) && $_POST['nowarned'] === 'nowarned') {
     if (empty($_POST['desact']) && empty($_POST['remove'])) {
         stderr($lang['cheaters_err'], $lang['cheaters_seluser']);
     }

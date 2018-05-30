@@ -34,17 +34,17 @@ while ($ras = mysqli_fetch_assoc($res)) {
         if ($num2 > 1) {
             ++$uc;
             while ($arr = mysqli_fetch_assoc($ros)) {
-                if ('0' == $arr['added']) {
+                if ($arr['added'] == '0') {
                     $arr['added'] = '-';
                 }
-                if ('0' == $arr['last_access']) {
+                if ($arr['last_access'] == '0') {
                     $arr['last_access'] = '-';
                 }
                 $uploaded    = mksize($arr['uploaded']);
                 $downloaded  = mksize($arr['downloaded']);
                 $added       = get_date($arr['added'], 'DATE', 1, 0);
                 $last_access = get_date($arr['last_access'], '', 1, 0);
-                if (0 == $uc % 2) {
+                if ($uc % 2 == 0) {
                     $utc = '';
                 } else {
                     $utc = ' bgcolor="333333"';

@@ -107,14 +107,14 @@ function get_imdb_info($imdb_id)
                     'trailers',
                 ])) {
                 foreach ($imdb_data[$foo] as $pp) {
-                    if ('cast' == $foo && !empty($cast)) {
+                    if ($foo === 'cast' && !empty($cast)) {
                         $imdb_tmp[] = join(' ', $cast);
                         unset($cast);
                     }
-                    if ('cast' != $foo && 'trailers' == $foo) {
+                    if ($foo != 'cast' && $foo === 'trailers') {
                         $imdb_tmp[] = "<a href='{$site_config['anonymizer_url']}{$pp['url']}' target='_blank'>{$pp['title']}</a>";
-                    } elseif ('cast' != $foo) {
-                        $imdb_tmp[] = "<a href='{$site_config['anonymizer_url']}http://www.imdb.com/name/nm" . $pp['imdb'] . "' target='_blank' class='tooltipper' title='" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . "'>" . $pp['name'] . '</a>';
+                    } elseif ($foo != 'cast') {
+                        $imdb_tmp[] = "<a href='{$site_config['anonymizer_url']}http://www.imdb.com/name/nm" . $pp['imdb'] . "' target='_blank' class='tooltipper' title='" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . "'>" . $pp['name'] . "</a>";
                     }
                 }
             }

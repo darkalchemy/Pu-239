@@ -55,7 +55,7 @@ foreach ($motw as $m_w) {
     }
     $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . image_proxy($poster) . "' class='tooltip-poster' />";
 
-    if ('yes' == $anonymous && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
+    if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';
     } else {
         $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . '</span>';
@@ -94,7 +94,7 @@ foreach ($motw as $m_w) {
                         </tr>";
 }
 
-if (0 === count($motw)) {
+if (count($motw) === 0) {
     $HTMLOUT .= "
                         <tr>
                             <td colspan='5'>{$lang['index_mow_no']}!</td>

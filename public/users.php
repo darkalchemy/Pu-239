@@ -11,10 +11,10 @@ $search = isset($_GET['search']) ? strip_tags(trim($_GET['search'])) : '';
 $class  = isset($_GET['class']) ? $_GET['class'] : '-';
 $letter = '';
 $q1     = '';
-if ('-' == $class || !ctype_digit($class)) {
+if ($class === '-' || !ctype_digit($class)) {
     $class = '';
 }
-if ('' != $search || $class) {
+if ($search != '' || $class) {
     $query1 = 'username LIKE ' . sqlesc("%$search%") . " AND status = 'confirmed' AND anonymous_until = 0";
     if ($search) {
         $q1 = 'search=' . htmlsafechars($search);
@@ -24,7 +24,7 @@ if ('' != $search || $class) {
     if (strlen($letter) > 1) {
         die();
     }
-    if ('' == $letter || false === strpos('abcdefghijklmnopqrstuvwxyz0123456789', $letter)) {
+    if ($letter == '' || strpos('abcdefghijklmnopqrstuvwxyz0123456789', $letter) === false) {
         $letter = '';
     }
     $query1 = "username LIKE '$letter%' AND status = 'confirmed' AND anonymous_until = 0";
@@ -112,7 +112,7 @@ if ($arr[0] > $perpage) {
             break;
         }
     }
-    if (1 == $page) {
+    if ($page == 1) {
         $browsemenu .= "<span class='button is-small'>&lsaquo;</span>$pagemenu";
     } else {
         $browsemenu .= "<a href='users.php?$q1&amp;page=1' title='{$lang['pager_first']}(1)'><span class='button is-small'>&laquo;</span></a>&#160;<a href='users.php?$q1&amp;page=" . ($page - 1) . "'><span class='button is-small'>&lsaquo;</span></a>$pagemenu";
@@ -130,8 +130,8 @@ if ($arr[0] > 0) {
     $HTMLOUT .= "<table class='table table-bordered table-striped'>\n";
     $HTMLOUT .= "<tr><td class='colhead'>{$lang['users_username']}</td><td class='colhead'>{$lang['users_regd']}</td><td class='colhead'>{$lang['users_la']}</td><td class='colhead'>{$lang['users_class']}</td><td class='colhead'>{$lang['users_country']}</td></tr>\n";
     while ($row = mysqli_fetch_assoc($res)) {
-        $country = (null != $row['name']) ? "<td><img src='{$site_config['pic_baseurl']}flag/" . htmlsafechars($row['flagpic']) . "' alt='" . htmlsafechars($row['name']) . "' /></td>" : '<td>---</td>';
-        $HTMLOUT .= "<tr><td><a href='userdetails.php?id=" . (int) $row['id'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] > 0 ? "<img src='{$site_config['pic_baseurl']}star.gif' alt='{$lang['users_donor']}' />" : '') . '</td>' . '<td>' . get_date($row['added'], '') . '</td><td>' . get_date($row['last_access'], '') . '</td>' . '<td>' . get_user_class_name($row['class']) . "</td>$country</tr>\n";
+        $country = ($row['name'] != null) ? "<td><img src='{$site_config['pic_baseurl']}flag/" . htmlsafechars($row['flagpic']) . "' alt='" . htmlsafechars($row['name']) . "' /></td>" : "<td>---</td>";
+        $HTMLOUT .= "<tr><td><a href='userdetails.php?id=" . (int)$row['id'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] > 0 ? "<img src='{$site_config['pic_baseurl']}star.gif' alt='{$lang['users_donor']}' />" : '') . '</td>' . '<td>' . get_date($row['added'], '') . '</td><td>' . get_date($row['last_access'], '') . '</td>' . "<td>" . get_user_class_name($row['class']) . "</td>$country</tr>\n";
     }
     $HTMLOUT .= "</table></div>\n";
 }

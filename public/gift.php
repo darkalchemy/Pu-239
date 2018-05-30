@@ -21,16 +21,16 @@ if (!is_valid_id($userid)) {
     stderr('Error', 'Invalid ID');
 }
 $open = (isset($_GET['open']) ? intval($_GET['open']) : 0);
-if (1 != $open) {
+if ($open != 1) {
     stderr('Error', 'Invalid url');
 }
 $sql  = sql_query('SELECT seedbonus, invites, freeslots, uploaded ' . 'FROM users ' . 'WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 $User = mysqli_fetch_assoc($sql);
-if (isset($open) && 1 == $open) {
+if (isset($open) && $open == 1) {
     if ($today >= $Christmasday) {
         //if (!($CURUSER["opt1"] & user_options::GOTGIFT)) {
-        if ('no' == $CURUSER['gotgift']) {
-            if ('upload' == $gift) {
+        if ($CURUSER['gotgift'] === 'no') {
+            if ($gift === 'upload') {
                 sql_query("UPDATE users SET invites=invites+1, uploaded=uploaded+1024*1024*1024*10, freeslots=freeslots+1, gotgift='yes' WHERE id=" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $update['invites']   = ($User['invites'] + 1);
                 $update['uploaded']  = ($User['uploaded'] + 1024 * 1024 * 1024 * 10);
@@ -45,7 +45,7 @@ if (isset($open) && 1 == $open) {
                 stderr('Congratulations!', "<img src=\"{$site_config['pic_baseurl']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\" /> <h2> You just got  1 invite 10 GB upload and bonus 1 freeslot !</h2>
 Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry Christmas and a happy New Year from {$site_config['site_name']}  Crew ! Redirecting in 5..4..3..2..1");
             }
-            if ('bonus' == $gift) {
+            if ($gift === 'bonus') {
                 sql_query("UPDATE users SET invites=invites+3,  seedbonus = seedbonus + 1750, gotgift='yes' WHERE id=" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $update['invites']   = ($User['invites'] + 3);
                 $update['seedbonus'] = ($User['seedbonus'] + 1750);
@@ -58,7 +58,7 @@ Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry 
                 stderr('Congratulations!', "<img src=\"{$site_config['pic_baseurl']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\" /> <h2> You just got 3 invites 1750 karma bonus points !</h2>
 Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry Christmas and a happy New Year from {$site_config['site_name']}  Crew ! Redirecting in 5..4..3..2..1");
             }
-            if ('invites' == $gift) {
+            if ($gift === 'invites') {
                 sql_query("UPDATE users SET invites=invites+2, seedbonus = seedbonus + 2000, freeslots=freeslots+3, gotgift='yes' WHERE id=" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $update['invites']   = ($User['invites'] + 2);
                 $update['seedbonus'] = ($User['seedbonus'] + 2000);
@@ -73,7 +73,7 @@ Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry 
                 stderr('Congratulations!', "<img src=\"{$site_config['pic_baseurl']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\" /> <h2> You just got 2 invites and 2000 bonus points and a bonus 3 freeslots !</h2>
 Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry Christmas and a happy New Year from {$site_config['site_name']} Crew ! Redirecting in 5..4..3..2..1");
             }
-            if ('bonus2' == $gift) {
+            if ($gift === 'bonus2') {
                 sql_query("UPDATE users SET invites=invites+3, uploaded=uploaded+1024*1024*1024*20, seedbonus = seedbonus + 2500, freeslots=freeslots+5, gotgift='yes' WHERE id=" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $update['invites']   = ($User['invites'] + 3);
                 $update['seedbonus'] = ($User['seedbonus'] + 2500);

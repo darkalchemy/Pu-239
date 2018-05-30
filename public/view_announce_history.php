@@ -26,7 +26,7 @@ unset($x, $result);
 
 reset($ann_list);
 $body = '';
-if ('read_announce' == $action) {
+if ($action === 'read_announce') {
     $id = (isset($_GET['id']) ? (int) $_GET['id'] : 0);
     if (!is_int($id)) {
         $HTMLOUT .= stdmsg($lang['annhistory_error'], $lang['annhistory_invalid']);

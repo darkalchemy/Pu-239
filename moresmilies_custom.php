@@ -1,13 +1,13 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER;
 
 $lang = load_language('global');
-if ('0' == $CURUSER['smile_until']) {
+if ($CURUSER['smile_until'] == '0') {
     stderr('Error', 'you do not have access!');
 }
 $htmlout = '';
@@ -33,7 +33,7 @@ $count = 0;
 $ctr   = 0;
 global $customsmilies;
 while ((list($code, $url) = each($customsmilies))) {
-    if (0 == $count % 3) {
+    if ($count % 3 == 0) {
         $htmlout .= '
         <tr>';
     }
@@ -44,7 +44,7 @@ while ((list($code, $url) = each($customsmilies))) {
                 </a>
             </td>";
     ++$count;
-    if (0 == $count % 3) {
+    if ($count % 3 == 0) {
         $htmlout .= '
         </tr>';
     }

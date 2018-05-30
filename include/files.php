@@ -9,7 +9,7 @@ function get_file_name($file)
     global $site_config;
 
     $style = get_stylesheet();
-    if (1 === $style && !empty($file)) {
+    if ($style === 1 && !empty($file)) {
         if ($site_config['in_production']) {
             switch ($file) {
                 case 'css':

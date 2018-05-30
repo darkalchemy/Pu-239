@@ -89,7 +89,7 @@ function episode_format($tvmaze_data, $tvmaze_type)
 
     foreach ($tvmaze_display[$tvmaze_type] as $key => $value) {
         if (isset($tvmaze_data[$key])) {
-            if ('timestamp' === $key) {
+            if ($key === 'timestamp') {
                 $tvmaze_data[$key] = get_date($tvmaze_data[$key], 'LONG');
             }
             $tvmaze_display[$tvmaze_type][$key] = sprintf($value, $tvmaze_data[$key]);
@@ -152,7 +152,7 @@ function tvmaze(&$torrents)
     }
 
     $tvmaze_show_data = $cache->get('tvmaze_' . $tvmaze_id);
-    if ($force_update || false === $tvmaze_show_data || is_null($tvmaze_show_data)) {
+    if ($force_update || $tvmaze_show_data === false || is_null($tvmaze_show_data)) {
         $tvmaze_link                 = "http://api.tvmaze.com/shows/{$tvmaze_id}?embed=cast";
         $tvmaze_show_data            = json_decode(file_get_contents($tvmaze_link), true);
         $tvmaze_show_data['rated']   = $tvmaze_show_data['rating']['average'];

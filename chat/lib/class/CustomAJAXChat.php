@@ -23,7 +23,7 @@ class CustomAJAXChat extends AJAXChat
     public function getValidLoginUserData()
     {
         $user = $this->_user->getUserFromId($this->getUserID());
-        if (!empty($user) && 'yes' === $user['enabled'] && 1 === $user['chatpost']) {
+        if (!empty($user) && $user['enabled'] === 'yes' && $user['chatpost'] === 1) {
             $userData['userID']    = $user['id'];
             $userData['userName']  = $this->trimUserName($user['username']);
             $userData['userClass'] = get_user_class_name($user['class']);
@@ -59,7 +59,7 @@ class CustomAJAXChat extends AJAXChat
             return $userData;
         }
 
-        if ('no' === $user['enabled'] || 1 !== $user['chatpost']) {
+        if ($user['enabled'] === 'no' || $user['chatpost'] !== 1) {
             $this->_session->unset('Channel');
             $this->addInfoMessage('errorBanned');
         }
@@ -73,7 +73,7 @@ class CustomAJAXChat extends AJAXChat
     public function &getChannels()
     {
         $validChannels = [];
-        if (null === $this->_channels) {
+        if ($this->_channels === null) {
             $this->_channels = [];
 
             $customUsers = $this->getCustomUsers();
@@ -116,7 +116,7 @@ class CustomAJAXChat extends AJAXChat
      */
     public function &getAllChannels()
     {
-        if (null === $this->_allChannels) {
+        if ($this->_allChannels === null) {
             // Get all existing channels:
             $customChannels = $this->getCustomChannels();
 

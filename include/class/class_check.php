@@ -20,7 +20,7 @@ function class_check($class = 0, $staff = true, $pin = false)
                 die();
             }
             $passed = false;
-            if (isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])   && $_SERVER['PHP_AUTH_USER'] === ($CURUSER['username'])) {
+            if (isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) && $_SERVER['PHP_AUTH_USER'] === ($CURUSER['username'])) {
                 $hash = md5($site_config['site']['salt2'] . $_SERVER['PHP_AUTH_PW'] . $CURUSER['secret']);
                 if (md5($site_config['site']['salt2'] . $site_config['staff']['staff_pin'] . $CURUSER['secret']) === $hash) {
                     $passed = true;
@@ -123,6 +123,7 @@ function class_check($class = 0, $staff = true, $pin = false)
 function get_access($script)
 {
     global $cache;
+
     $ending = parse_url($script, PHP_URL_QUERY);
     $count  = substr_count($ending, '&');
     $i      = 0;
@@ -132,7 +133,8 @@ function get_access($script)
         }
         ++$i;
     }
-    if (false == ($class = $cache->get('av_class_' . $ending))) {
+    $class = $cache->get('av_class_' . $ending);
+    if ($class === false || is_null($class)) {
         $classid = sql_query("SELECT av_class FROM staffpanel WHERE file_name LIKE '%$ending%'") or sqlerr(__FILE__, __LINE__);
         $classid = mysqli_fetch_assoc($classid);
         $class   = (int) $classid['av_class'];

@@ -46,7 +46,7 @@ function check_bans($ip, &$reason = '')
 
             return true;
         }
-        ((mysqli_free_result($ban_sql) || (is_object($ban_sql) && ('mysqli_result' == get_class($ban_sql)))) ? true : false);
+        ((mysqli_free_result($ban_sql) || (is_object($ban_sql) && (get_class($ban_sql) === 'mysqli_result'))) ? true : false);
         $cache->set($key, 0, 86400);
 
         return false;
@@ -83,7 +83,7 @@ foreach ($q as $p) {
     }
 }
 
-if (isset($_GET['torrent_pass']) && 64 != strlen($_GET['torrent_pass'])) {
+if (isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) != 64) {
     $lentorrent_pass = strlen($_GET['torrent_pass']);
     if ($lentorrent_pass > 64 && preg_match('/^([0-9a-f]{64})\?(([0-9a-zA-Z]|_)+)\=/', $_GET['torrent_pass'], $matches)) {
         $lenget = strlen($matches[0]);
@@ -124,7 +124,7 @@ if (!empty($_GET['info_hash']) && is_array($_GET['info_hash'])) {
 $torrents = [];
 if ($numhash < 1) {
     die('Scrape Error d5:filesdee');
-} elseif (1 === $numhash) {
+} elseif ($numhash === 1) {
     $torrent = get_torrent_from_hash($_GET['info_hash']);
     if ($torrent) {
         $torrents[$_GET['info_hash']] = $torrent;

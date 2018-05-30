@@ -28,9 +28,9 @@ if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
                                 WHERE uid = ' . sqlesc($CURUSER['id']) . '
                                 GROUP BY `left`') or sqlerr(__LINE__, __FILE__);
             while ($a = mysqli_fetch_assoc($r)) {
-                $key          = 0 == $a['left'] ? 'yes' : 'no';
+                $key = $a['left'] == 0 ? 'yes' : 'no';
                 $seed[$key]   = number_format((int) $a['count']);
-                $seed['conn'] = 0 == $a['connectable'] ? 1 : 2;
+                $seed['conn'] = $a['connectable'] == 0 ? 1 : 2;
             }
             $cache->set('MyPeers_XBT_' . $CURUSER['id'], $seed, $site_config['expires']['MyPeers_xbt_']);
             unset($r, $a);
@@ -71,7 +71,7 @@ if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
         $Achievement_Points['spentpoints'] = (int) $Achievement_Points['spentpoints'];
         $cache->set('user_achievement_points_' . $CURUSER['id'], $Achievement_Points, 0);
     }
-    if (255 != $CURUSER['override_class']) {
+    if ($CURUSER['override_class'] != 255) {
         $usrclass = " <a href='{$site_config['baseurl']}/restoreclass.php' class='tooltipper' title='Restore to Your User Class'><b>" . get_user_class_name($CURUSER['override_class']) . '</b></a>';
     } elseif ($CURUSER['class'] >= UC_STAFF) {
         $usrclass = " <a href='{$site_config['baseurl']}/setclass.php' class='tooltipper' title='Temporarily Change User Class'><b>" . get_user_class_name($CURUSER['class']) . '</b></a>';
@@ -141,14 +141,14 @@ if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
         <div class='navbar-start'>{$lang['gl_connectable']}</div>
         <div>{$connectable}</div>
     </div>
-    " . ($CURUSER['class'] >= UC_STAFF || 'yes' == $CURUSER['got_blocks'] || 'yes' == $CURUSER['got_moods'] ? "
+    " . ($CURUSER['class'] >= UC_STAFF || $CURUSER['got_blocks'] === 'yes' || $CURUSER['got_moods'] === 'yes' ? "
     <br>
     <div class='navbar-start'>{$lang['gl_userblocks']}</div>
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_myblocks']}</div>
         <div><a href='{$site_config['baseurl']}/user_blocks.php'>{$lang['gl_click']}</a></div>" : '') . '
     </div>
-    ' . ($CURUSER['class'] >= UC_STAFF || 'yes' == $CURUSER['got_moods'] ? "
+    " . ($CURUSER['class'] >= UC_STAFF || $CURUSER['got_moods'] === 'yes' ? "
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_myunlocks']}</div>
         <div><a href='{$site_config['baseurl']}/user_unlocks.php'>{$lang['gl_click']}</a></div>" : '') . '

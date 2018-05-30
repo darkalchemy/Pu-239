@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
@@ -10,7 +10,7 @@ $lang = load_language('global');
 if ($CURUSER['class'] < UC_ADMINISTRATOR) {
     stderr('Error', 'Your not authorised');
 }
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //== The expiry days.
     $days = [
         [
@@ -51,7 +51,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $body    = trim((isset($_POST['body']) ? $_POST['body'] : ''));
     $subject = trim((isset($_POST['subject']) ? $_POST['subject'] : ''));
     $expiry  = (int) (isset($_POST['expiry']) ? $_POST['expiry'] : 0);
-    if ((isset($_POST['buttonval']) && 'Submit' == $_POST['buttonval'])) {
+    if ((isset($_POST['buttonval']) && $_POST['buttonval'] === 'Submit')) {
         //== Check values before inserting into row...
         if (empty($body)) {
             stderr('Error', 'No body to announcement');

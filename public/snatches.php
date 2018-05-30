@@ -31,7 +31,7 @@ if (!$count) {
     stderr('No snatches', "It appears that there are currently no snatches for the torrent <a href='{$site_config['baseurl']}/details.php?id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['name']) . '</a>.');
 }
 $HTMLOUT .= "<h1 class='has-text-centered'>Snatches for torrent <a href='{$site_config['baseurl']}/details.php?id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></h1>\n";
-$HTMLOUT .= "<h3 class='has-text-centered'>Currently {$row['0']} snatch" . (1 == $row[0] ? '' : 'es') . "</h3>\n";
+$HTMLOUT .= "<h3 class='has-text-centered'>Currently {$row['0']} snatch" . ($row[0] == 1 ? '' : 'es') . "</h3>\n";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
@@ -68,11 +68,11 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $ratio      = ($arr['downloaded'] > 0 ? number_format($arr['uploaded'] / $arr['downloaded'], 3) : ($arr['uploaded'] > 0 ? 'Inf.' : '---'));
     $completed  = sprintf('%.2f%%', 100 * (1 - ($arr['to_go'] / $arr['size'])));
     $snatchuser = (isset($arr['userid']) ? format_username($arr['userid']) : "{$lang['snatches_unknown']}");
-    $username   = (('yes' == $arr['anonymous2'] or $arr['paranoia'] >= 2) ? ($CURUSER['class'] < UC_STAFF && $arr['userid'] != $CURUSER['id'] ? '' : $snatchuser . ' - ') . "<i>{$lang['snatches_anon']}</i>" : $snatchuser);
+    $username = (($arr['anonymous2'] === 'yes' or $arr['paranoia'] >= 2) ? ($CURUSER['class'] < UC_STAFF && $arr['userid'] != $CURUSER['id'] ? '' : $snatchuser . ' - ') . "<i>{$lang['snatches_anon']}</i>" : $snatchuser);
     $body .= "
         <tr>
             <td class='has-text-left'>{$username}</td>
-            <td class='has-text-centered'>" . ('yes' == $arr['connectable'] ? "<span class='has-text-success'>Yes</span>" : "<span class='has-text-danger'>No</span>") . "</td>
+            <td class='has-text-centered'>" . ($arr['connectable'] === 'yes' ? "<span class='has-text-success'>Yes</span>" : "<span class='has-text-danger'>No</span>") . "</td>
             <td class='has-text-right'>" . mksize($arr['uploaded']) . "</td>
             <td class='has-text-right'>" . htmlsafechars($upspeed) . '/s</td>
             ' . ($site_config['ratio_free'] ? '' : "<td class='has-text-right'>" . mksize($arr['downloaded']) . '</td>') . '

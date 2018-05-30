@@ -11,7 +11,7 @@ function getRate($id, $what)
     global $CURUSER, $site_config, $fluent, $cache;
 
     $return = false;
-    if (0 == $id || !in_array($what, [
+    if ($id == 0 || !in_array($what, [
             'topic',
             'torrent',
         ])) {
@@ -71,7 +71,7 @@ function getRate($id, $what)
                     <span>&#9734;</span>
                 </div>
             </div>";
-    } elseif ('torrent' == $what && 0 == $completecount) {
+    } elseif ($what === 'torrent' && $completecount == 0) {
         $rated = 0;
         $title = 'Unrated';
         if (!empty($rating_cache['count'])) {

@@ -117,7 +117,7 @@ function show_form($type = 'edit')
 {
     global $input, $lang;
     $html = $lang['rep_ad_form_html'];
-    if ('edit' == $type) {
+    if ($type === 'edit') {
         $query = sql_query('SELECT * FROM reputationlevel WHERE reputationlevelid=' . intval($input['reputationlevelid'])) or sqlerr(__LINE__, __FILE__);
         if (!$res = mysqli_fetch_assoc($query)) {
             stderr($lang['rep_ad_form_error'], $lang['rep_ad_form_error_msg']);
@@ -162,10 +162,10 @@ function show_form($type = 'edit')
 function do_update($type = '')
 {
     global $input, $lang;
-    if ('' != $type) {
+    if ($type != '') {
         $level = strip_tags($input['level']);
         $level = trim($level);
-        if ((strlen($input['level']) < 2) || ('' == $level)) {
+        if ((strlen($input['level']) < 2) || ($level == '')) {
             stderr('', $lang['rep_ad_update_err1']);
         }
         if (strlen($input['level']) > 250) {
@@ -176,10 +176,10 @@ function do_update($type = '')
         $redirect = '' . $lang['rep_ad_update_saved'] . ' <i>' . htmlsafechars($input['level'], ENT_QUOTES) . '</i> ' . $lang['rep_ad_update_success'] . '';
     }
     // what we gonna do?
-    if ('new' == $type) {
+    if ($type === 'new') {
         @sql_query("INSERT INTO reputationlevel ( minimumreputation, level ) 
                             VALUES  ($minrep, $level )");
-    } elseif ('edit' == $type) {
+    } elseif ($type === 'edit') {
         $levelid = intval($input['reputationlevelid']);
         if (!is_valid_id($levelid)) {
             stderr('', $lang['rep_ad_update_err3']);
@@ -451,7 +451,7 @@ function do_edit_rep()
     if (isset($input['reason']) && !empty($input['reason'])) {
         $reason = str_replace('<br>', '', $input['reason']);
         $reason = trim($reason);
-        if ((strlen(trim($reason)) < 2) || ('' == $reason)) {
+        if ((strlen(trim($reason)) < 2) || ($reason == '')) {
             stderr($lang['rep_ad_edit_txt'], $lang['rep_ad_edit_short']);
         }
         if (strlen($input['reason']) > 250) {

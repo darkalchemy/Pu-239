@@ -48,7 +48,7 @@ function getBrowser()
     }
     // see how many we have
     $i = count($matches['browser']);
-    if (1 != $i) {
+    if ($i != 1) {
         //we will have two since we are not using 'other' argument yet
         //see if version is before or after the name
         if (strripos($u_agent, 'Version') < strripos($u_agent, $ub)) {
@@ -60,7 +60,7 @@ function getBrowser()
         $version = $matches['version'][0];
     }
     // check if we have a number
-    if (null == $version || '' == $version) {
+    if ($version == null || $version == '') {
         $version = '?';
     }
 

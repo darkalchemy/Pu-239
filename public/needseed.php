@@ -25,7 +25,7 @@ foreach ($categorie as $key => $value) {
         'image' => $value['image'],
     ];
 }
-if ('leechers' == $needed) {
+if ($needed === 'leechers') {
     $HTMLOUT .= "
         <div class='padding20'>
             <ul class='tabs'>

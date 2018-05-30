@@ -169,7 +169,7 @@ function stdfoot($stdfoot = false)
     $queries   = !empty($query_stat) ? count($query_stat) : 0;
     $seconds   = microtime(true) - $start;
     $r_seconds = round($seconds, 5);
-    $querytime = null === $querytime ? 0 : $querytime;
+    $querytime = $querytime === null ? 0 : $querytime;
 
     if ($CURUSER['class'] >= UC_STAFF && $debug) {
         if ($_ENV['CACHE_DRIVER'] === 'apcu' && extension_loaded('apcu')) {
@@ -205,7 +205,7 @@ function stdfoot($stdfoot = false)
             }
         } elseif ($_ENV['CACHE_DRIVER'] === 'files') {
             $header = "{$lang['gl_stdfoot_querys_fly1']}{$_ENV['FILES_PATH']} {$lang['gl_stdfoot_querys_fly2']}" . GetDirectorySize($_ENV['FILES_PATH']);
-        } elseif ('couchbase' === $_ENV['CACHE_DRIVER']) {
+        } elseif ($_ENV['CACHE_DRIVER'] === 'couchbase') {
             $header = $lang['gl_stdfoot_querys_cbase'];
         }
 
@@ -408,22 +408,22 @@ function navbar()
 
         if ($staff_panel) {
             foreach ($staff_panel as $key => $value) {
-                if ($value['av_class'] <= $CURUSER['class'] && 'user' == $value['type']) {
+                if ($value['av_class'] <= $CURUSER['class'] && $value['type'] === 'user') {
                     $user_panel .= "
                         <li class='iss_hidden'>
                             <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . '</a>
                         </li>';
-                } elseif ($value['av_class'] <= $CURUSER['class'] && 'settings' == $value['type']) {
+                } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] === 'settings') {
                     $settings_panel .= "
                         <li class='iss_hidden'>
                             <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . '</a>
                         </li>';
-                } elseif ($value['av_class'] <= $CURUSER['class'] && 'stats' == $value['type']) {
+                } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] === 'stats') {
                     $stats_panel .= "
                         <li class='iss_hidden'>
                             <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . '</a>
                         </li>';
-                } elseif ($value['av_class'] <= $CURUSER['class'] && 'other' == $value['type']) {
+                } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] === 'other') {
                     $other_panel .= "
                         <li class='iss_hidden'>
                             <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . '</a>
@@ -475,7 +475,7 @@ function navbar()
                             <li class='iss_hidden'>
                                 <a href='{$site_config['baseurl']}/staffpanel.php'>Staff Panel</a>
                             </li>";
-                if (UC_MAX === $CURUSER['class']) {
+                if ($CURUSER['class'] === UC_MAX) {
                     $panel .= "
                             <li class='iss_hidden'>
                                 <a href='{$site_config['baseurl']}/view_sql.php'>Adminer</a>
@@ -521,7 +521,7 @@ function navbar()
                             <li id='general' class='clickable'>
                                 <a href='#'>{$lang['gl_general']}</a>
                                 <ul class='ddFade ddFadeSlow'>";
-        if (1 === $site_config['bucket_allowed']) {
+        if ($site_config['bucket_allowed'] === 1) {
             $navbar .= "
                                     <li class='iss_hidden'><a href='{$site_config['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>";
         }

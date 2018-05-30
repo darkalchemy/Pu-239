@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_onlinetime.php';
 global $site_config, $cache;
@@ -40,23 +40,23 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $id           = (isset($arr['id']) ? (int) $arr['id'] : 0);
             $seedingbonus = (isset($arr['seedbonus']) ? (int) $arr['seedbonus'] : '');
             $username     = htmlsafechars($arr['username']);
-            if (isset($_GET['func']) && 'stats' == $_GET['func']) {
+            if (isset($_GET['func']) && $_GET['func'] === 'stats') {
                 $ratio    = (($arr['downloaded'] > 0) ? ($arr['uploaded'] / $arr['downloaded']) : '0.00');
                 $lastseen = htmlsafechars($arr['last_access']);
                 echo htmlsafechars($arr['username']) . ' - Uploaded: (' . mksize($arr['uploaded']) . ') - Downloaded: (' . mksize($arr['downloaded']) . ') - Ratio: (' . number_format($ratio, 2) . ') - Invites: (' . (int) $arr['invites'] . ') - Joined: (' . get_date($arr['added'], 'DATE', 0, 1) . '' . ') - Online time: (' . time_return($arr['onlinetime']) . ') - Last Seen: (' . get_date($lastseen, 'DATE', 0, 1) . ')';
-            } elseif (isset($_GET['func']) && 'check' == $_GET['func']) {
+            } elseif (isset($_GET['func']) && $_GET['func'] === 'check') {
                 echo htmlsafechars($arr['username']) . ' - Seedbonus: (' . number_format($arr['seedbonus'], 1) . ')';
-            } elseif (isset($_GET['func']) && 'ircbonus' == $_GET['func']) {
+            } elseif (isset($_GET['func']) && $_GET['func'] === 'ircbonus') {
                 $ircbonus = (!empty($arr['irctotal']) ? number_format($arr['irctotal'] / ($site_config['autoclean_interval'] * 4), 1) : '0.0');
                 echo $arr['username'] . ' - IRC Bonus: (' . $ircbonus . ')';
-            } elseif (isset($_GET['func']) && 'irctotal' == $_GET['func']) {
+            } elseif (isset($_GET['func']) && $_GET['func'] === 'irctotal') {
                 $irctotal = (!empty($arr['irctotal']) ? calctime($arr['irctotal']) : $arr['username'] . ' has never been on IRC!');
                 echo $arr['username'] . ' - IRC Total: (' . $irctotal . ')';
-            } elseif (isset($_GET['func']) && 'connectable' == $_GET['func']) {
+            } elseif (isset($_GET['func']) && $_GET['func'] === 'connectable') {
                 $res5 = sql_query('SELECT connectable FROM peers WHERE userid=' . sqlesc($arr['id'])) or sqlerr(__FILE__, __LINE__);
                 if ($row = mysqli_fetch_row($res5)) {
                     $connect = $row[0];
-                    if ('yes' == $connect) {
+                    if ($connect === 'yes') {
                         $connectable = 'Yes - ' . $username . ' is connectable';
                     } else {
                         $connectable = 'No - ' . $username . ' is not connectable';
@@ -65,7 +65,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                     $connectable = 'Waiting - ' . $username . ' has an unknown connection';
                 }
                 echo $connectable;
-            } elseif (isset($_GET['func']) && 'online' == $_GET['func']) {
+            } elseif (isset($_GET['func']) && $_GET['func'] === 'online') {
                 $dt       = TIME_NOW - 180;
                 $lastseen = (isset($arr['last_access']) ? $arr['last_access'] : '');
                 if (!empty($lastseen)) {
@@ -74,7 +74,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                     '' . $username . ' has never been active';
                 }
                 echo $seen;
-            } elseif (isset($_GET['func']) && 'flushtorrents' == $_GET['func']) {
+            } elseif (isset($_GET['func']) && $_GET['func'] === 'flushtorrents') {
                 sql_query('DELETE FROM peers WHERE userid = ' . $id) or sqlerr(__FILE__, __LINE__);
                 $cache->delete('MyPeers_' . $id);
                 echo $username . 's torrents have been flushed';
@@ -114,9 +114,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             if ($ircusers) {
                 $ircusers .= ",\n";
             }
-
             $arr['username'] = '' . get_user_class_name($arr['class']) . ' Leader is : ' . $arr['username'] . '(' . $ircbonus . ')';
-
             $ircusers .= $arr['username'];
         }
         if (!isset($ircusers)) {
@@ -143,7 +141,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
         $row   = mysqli_fetch_array($res, MYSQLI_NUM);
         $count = $row[0];
         echo '-' . $count . ' torrents found';
-    } elseif (isset($_GET['func']) && 'add' == $_GET['func']) {
+    } elseif (isset($_GET['func']) && $_GET['func'] === 'add') {
         if (isset($_GET['bonus'])) {
             $whom   = (isset($_GET['whom']) ? sqlesc($_GET['whom']) : '');
             $res    = sql_query("SELECT id, seedbonus FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -221,7 +219,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 echo $who . 's Reputation was changed from: ' . $oldreputation . ' to ' . $newreputation;
             }
         }
-    } elseif (isset($_GET['func']) && 'rem' == $_GET['func']) {
+    } elseif (isset($_GET['func']) && $_GET['func'] === 'rem') {
         if (isset($_GET['bonus'])) {
             $whom   = (isset($_GET['whom']) ? sqlesc($_GET['whom']) : '');
             $res    = sql_query("SELECT id, seedbonus FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -299,9 +297,9 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 echo $who . 's Reputation was changed from: ' . $oldreputation . ' to ' . $newreputation;
             }
         }
-    } elseif (isset($_GET['func']) && 'check' == $_GET['func']) {
+    } elseif (isset($_GET['func']) && $_GET['func'] === 'check') {
         echo $username . 's  - Seedbonus: (' . number_format($seedingbonus, 1) . ')';
-    } elseif (isset($_GET['func']) && 'give' == $_GET['func']) {
+    } elseif (isset($_GET['func']) && $_GET['func'] === 'give') {
         if (isset($_GET['bonus'])) {
             $whom      = (isset($_GET['whom']) ? sqlesc($_GET['whom']) : '');
             $me        = (isset($_GET['me']) ? sqlesc($_GET['me']) : '');
@@ -444,7 +442,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             }
         }
     } elseif (isset($_GET['uploadpos'])) {
-        if ((isset($_GET['toggle']) && 1 == $_GET['toggle']) || (isset($_GET['toggle']) && 0 == $_GET['toggle'])) {
+        if ((isset($_GET['toggle']) && $_GET['toggle'] == 1) || (isset($_GET['toggle']) && $_GET['toggle'] == 0)) {
             $whom = (isset($_GET['whom']) ? sqlesc($_GET['whom']) : '');
             $who  = (isset($_GET['whom']) ? htmlsafechars($_GET['whom']) : '');
             $res  = sql_query("SELECT id, uploadpos FROM users WHERE username = $whom AND class < $modclass LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -465,7 +463,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             }
         }
     } elseif (isset($_GET['downloadpos'])) {
-        if ((isset($_GET['toggle']) && 1 == $_GET['toggle']) || (isset($_GET['toggle']) && 0 == $_GET['toggle'])) {
+        if ((isset($_GET['toggle']) && $_GET['toggle'] == 1) || (isset($_GET['toggle']) && $_GET['toggle'] == 0)) {
             $whom = (isset($_GET['whom']) ? sqlesc($_GET['whom']) : '');
             $who  = (isset($_GET['whom']) ? htmlsafechars($_GET['whom']) : '');
             $res  = sql_query("SELECT id, downloadpos FROM users WHERE username = $whom AND class < $modclass LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -486,7 +484,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             }
         }
     } elseif (isset($_GET['forum_post'])) {
-        if ((isset($_GET['toggle']) && 'yes' == $_GET['toggle']) || (isset($_GET['toggle']) && 'no' == $_GET['toggle'])) {
+        if ((isset($_GET['toggle']) && $_GET['toggle'] === 'yes') || (isset($_GET['toggle']) && $_GET['toggle'] === 'no')) {
             $whom = (isset($_GET['whom']) ? sqlesc($_GET['whom']) : '');
             $who  = (isset($_GET['whom']) ? htmlsafechars($_GET['whom']) : '');
             $res  = sql_query("SELECT id, forum_post FROM users WHERE username = $whom AND class < $modclass LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -507,7 +505,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             }
         }
     } elseif (isset($_GET['chatpost'])) {
-        if ((isset($_GET['toggle']) && 1 == $_GET['toggle']) || (isset($_GET['toggle']) && 0 == $_GET['toggle'])) {
+        if ((isset($_GET['toggle']) && $_GET['toggle'] == 1) || (isset($_GET['toggle']) && $_GET['toggle'] == 0)) {
             $whom = (isset($_GET['whom']) ? sqlesc($_GET['whom']) : '');
             $who  = (isset($_GET['whom']) ? htmlsafechars($_GET['whom']) : '');
             $res  = sql_query("SELECT id, chatpost FROM users WHERE username = $whom AND class < $modclass LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -528,7 +526,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             }
         }
     } elseif (isset($_GET['avatarpos'])) {
-        if ((isset($_GET['toggle']) && 1 == $_GET['toggle']) || (isset($_GET['toggle']) && 0 == $_GET['toggle'])) {
+        if ((isset($_GET['toggle']) && $_GET['toggle'] == 1) || (isset($_GET['toggle']) && $_GET['toggle'] == 0)) {
             $whom = (isset($_GET['whom']) ? sqlesc($_GET['whom']) : '');
             $who  = (isset($_GET['whom']) ? htmlsafechars($_GET['whom']) : '');
             $res  = sql_query("SELECT id, avatarpos FROM users WHERE username = $whom AND class < $modclass LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -549,7 +547,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             }
         }
     } elseif (isset($_GET['invite_rights'])) {
-        if ((isset($_GET['toggle']) && 'yes' == $_GET['toggle']) || (isset($_GET['toggle']) && 'no' == $_GET['toggle'])) {
+        if ((isset($_GET['toggle']) && $_GET['toggle'] === 'yes') || (isset($_GET['toggle']) && $_GET['toggle'] === 'no')) {
             $whom = (isset($_GET['whom']) ? sqlesc($_GET['whom']) : '');
             $who  = (isset($_GET['whom']) ? htmlsafechars($_GET['whom']) : '');
             $res  = sql_query("SELECT id, invite_rights FROM users WHERE username = $whom AND class < $modclass LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -570,7 +568,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             }
         }
     } elseif (isset($_GET['enabled'])) {
-        if ((isset($_GET['toggle']) && 'yes' == $_GET['toggle']) || (isset($_GET['toggle']) && 'no' == $_GET['toggle'])) {
+        if ((isset($_GET['toggle']) && $_GET['toggle'] === 'yes') || (isset($_GET['toggle']) && $_GET['toggle'] === 'no')) {
             $whom = (isset($_GET['whom']) ? sqlesc($_GET['whom']) : '');
             $who  = (isset($_GET['whom']) ? htmlsafechars($_GET['whom']) : '');
             $res  = sql_query("SELECT id, enabled FROM users WHERE username = $whom AND class < $modclass LIMIT 1") or sqlerr(__FILE__, __LINE__);

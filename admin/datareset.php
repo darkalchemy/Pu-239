@@ -52,12 +52,12 @@ function deletetorrent_xbt($tid)
     $cache->delete('MyPeers_XBT_' . $CURUSER['id']);
 }
 
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tid = (isset($_POST['tid']) ? (int) $_POST['tid'] : 0);
-    if (0 == $tid) {
+    if ($tid == 0) {
         stderr($lang['datareset_stderr'], $lang['datareset_stderr1']);
     }
-    if (1 != get_row_count('torrents', 'where id=' . sqlesc($tid))) {
+    if (get_row_count('torrents', 'where id=' . sqlesc($tid)) != 1) {
         stderr($lang['datareset_stderr'], $lang['datareset_stderr2']);
     }
     $q1 = sql_query('SELECT s.downloaded AS sd , t.id AS tid, t.name,t.size, u.username,u.id AS uid,u.downloaded AS ud FROM torrents AS t LEFT JOIN snatched AS s ON s.torrentid = t.id LEFT JOIN users AS u ON u.id = s.userid WHERE t.id =' . sqlesc($tid)) or sqlerr(__FILE__, __LINE__);

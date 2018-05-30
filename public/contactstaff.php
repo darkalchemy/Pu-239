@@ -21,7 +21,7 @@ $stdfoot = [
 ];
 
 $msg = '';
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $msg      = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
     $subject  = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '';
     $returnto = isset($_POST['returnto']) ? htmlsafechars($_POST['returnto']) : $_SERVER['PHP_SELF'];

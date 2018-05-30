@@ -442,8 +442,7 @@ function get_log_files($dir, &$results = [])
 
             if(!is_dir($path)) {
                 $files_list[] = $path;
-            }
-            elseif ($value != "." && $value != "..") {
+            } elseif ($value != "." && $value != "..") {
                 $dirs_list[] = $path;
             }
         }
@@ -463,7 +462,7 @@ function get_log_files($dir, &$results = [])
     return false;
 }
 
-function tail($filename, $lines = 50, $buffer = 4096){
+function tail($filename, $lines = 50, $buffer = 4096) {
     // Open the file
     if(!is_file($filename)){
         return false;
@@ -478,7 +477,9 @@ function tail($filename, $lines = 50, $buffer = 4096){
 
     // Read it and adjust line number if necessary
     // (Otherwise the result would be wrong if file doesn't end with a blank line)
-    if(fread($f, 1) != "\n") $lines -= 1;
+    if (fread($f, 1) != "\n") {
+        $lines -= 1;
+    }
 
     // Start reading
     $output = '';
@@ -514,8 +515,9 @@ function tail($filename, $lines = 50, $buffer = 4096){
     return $output;
 }
 
-function show_list_of_files($files, $lines  = 50){
+function show_list_of_files($files, $lines  = 50) {
     global $log;
+
     if(empty($files)){
         return false;
     }

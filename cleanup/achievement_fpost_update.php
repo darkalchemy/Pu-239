@@ -21,7 +21,7 @@ function achievement_fpost_update($data)
         while ($arr = mysqli_fetch_assoc($res)) {
             $posts = (int) $arr['forumposts'];
             $lvl   = (int) $arr['postachiev'];
-            if ($posts >= 1 && 0 == $lvl) {
+            if ($posts >= 1 && $lvl == 0) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Forum Poster Level 1[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/fpost1.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Forum Poster LVL1\', \'fpost1.png\' , \'Made at least 1 post in the forums.\')';
@@ -29,7 +29,7 @@ function achievement_fpost_update($data)
                 $cache->increment('inbox_' . $arr['userid']);
                 $cache->delete('user_achievement_points_' . $arr['userid']);
             }
-            if ($posts >= 25 && 1 == $lvl) {
+            if ($posts >= 25 && $lvl == 1) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Forum Poster Level 2[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/fpost2.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Forum Poster LVL2\', \'fpost2.png\' , \'Made at least 25 posts in the forums.\')';
@@ -37,7 +37,7 @@ function achievement_fpost_update($data)
                 $cache->increment('inbox_' . $arr['userid']);
                 $cache->delete('user_achievement_points_' . $arr['userid']);
             }
-            if ($posts >= 50 && 2 == $lvl) {
+            if ($posts >= 50 && $lvl == 2) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Forum Poster Level 3[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/fpost3.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Forum Poster LVL3\', \'fpost3.png\' , \'Made at least 50 posts in the forums.\')';
@@ -45,14 +45,14 @@ function achievement_fpost_update($data)
                 $cache->increment('inbox_' . $arr['userid']);
                 $cache->delete('user_achievement_points_' . $arr['userid']);
             }
-            if ($posts >= 100 && 3 == $lvl) {
+            if ($posts >= 100 && $lvl == 3) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Forum Poster Level 4[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/fpost4.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Forum Poster LVL4\', \'fpost4.png\' , \'Made at least 100 posts in the forums.\')';
                 $usersachiev_buffer[]  = '(' . $arr['userid'] . ',4, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['userid']);
             }
-            if ($posts >= 250 && 4 == $lvl) {
+            if ($posts >= 250 && $lvl == 4) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Forum Poster Level 5[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/fpost5.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Forum Poster LVL5\', \'fpost5.png\' , \'Made at least 250 posts in the forums.\')';
@@ -60,14 +60,14 @@ function achievement_fpost_update($data)
                 $cache->increment('inbox_' . $arr['userid']);
                 $cache->delete('user_achievement_points_' . $arr['userid']);
             }
-            if ($posts >= 500 && 5 == $lvl) {
+            if ($posts >= 500 && $lvl == 5) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Forum Poster Level 6[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/fpost6.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Forum Poster LVL6\', \'fpost6.png\' , \'Made at least 500 posts in the forums.\')';
                 $usersachiev_buffer[]  = '(' . $arr['userid'] . ',6, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['userid']);
             }
-            if ($posts >= 750 && 6 == $lvl) {
+            if ($posts >= 750 && $lvl == 6) {
                 $msg                   = sqlesc('Congratulations, you have just earned the [b]Forum Poster Level 7[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/fpost7.png[/img]');
                 $msgs_buffer[]         = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Forum Poster LVL7\', \'fpost7.png\' , \'Made at least 750 posts in the forums.\')';

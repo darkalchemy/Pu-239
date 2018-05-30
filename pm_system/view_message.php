@@ -36,7 +36,7 @@ if ($message['location'] > 1) {
     //== get name of PM box if not in or out
     $res_box_name = sql_query('SELECT name FROM pmboxes WHERE userid = ' . sqlesc($CURUSER['id']) . ' AND boxnumber=' . sqlesc($mailbox) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $arr_box_name = mysqli_fetch_row($res_box_name);
-    if (0 === mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) === 0) {
         stderr($lang['pm_error'], $lang['pm_mailbox_invalid']);
     }
     $mailbox_name   = htmlsafechars($arr_box_name[0]);
@@ -47,21 +47,21 @@ if ($message['location'] > 1) {
 
 $HTMLOUT .= "
     <div class='container is-fluid portlet'>
-        $h1_thingie" . ('yes' === $message['draft'] ? "
+        $h1_thingie" . ($message['draft'] === 'yes' ? "
         <h1>{$lang['pm_viewmsg_tdraft']}</h1>" : "
         <h1>{$lang['pm_viewmsg_mailbox']}{$mailbox_name}</h1>") . "
         $top_links
         <table class='table table-bordered top20 bottom20'>
             <tr class='no_hover'>
                 <td colspan='2'>
-                    <h2>{$lang['pm_send_subject']} " . ('' !== $message['subject'] ? htmlsafechars($message['subject']) : $lang['pm_search_nosubject']) . "</h2>
+                    <h2>{$lang['pm_send_subject']} " . ($message['subject'] !== '' ? htmlsafechars($message['subject']) : $lang['pm_search_nosubject']) . "</h2>
                 </td>
             </tr>
             <tr class='no_hover'>
                 <td colspan='2'>
                     <span>" . ($message['sender'] === $CURUSER['id'] ? $lang['pm_viewmsg_to'] : $lang['pm_viewmsg_from']) . ': </span>' .
-    (0 == $arr_user_stuff['id'] ? $lang['pm_viewmsg_sys'] : format_username($arr_user_stuff['id'])) . "{$friends}
-                    <br><span>{$lang['pm_viewmsg_sent']}: </span>" . get_date($message['added'], '') . (($message['sender'] === $CURUSER['id'] && 'yes' == $message['unread']) ? $lang['pm_mailbox_char1'] . "<span class='has-text-red'>{$lang['pm_mailbox_unread']}</span>{$lang['pm_mailbox_char2']}" : '') . ('yes' === $message['urgent'] ? "<span class='has-text-red'>{$lang['pm_mailbox_urgent']}</span>" : '') . "
+    ($arr_user_stuff['id'] == 0 ? $lang['pm_viewmsg_sys'] : format_username($arr_user_stuff['id'])) . "{$friends}
+                    <br><span>{$lang['pm_viewmsg_sent']}: </span>" . get_date($message['added'], '') . (($message['sender'] === $CURUSER['id'] && $message['unread'] === 'yes') ? $lang['pm_mailbox_char1'] . "<span class='has-text-red'>{$lang['pm_mailbox_unread']}</span>{$lang['pm_mailbox_char2']}" : '') . ($message['urgent'] === 'yes' ? "<span class='has-text-red'>{$lang['pm_mailbox_urgent']}</span>" : '') . "
                 </td>
             </tr>
             <tr class='no_hover'>
@@ -82,7 +82,7 @@ $HTMLOUT .= "
                     <div class='has-text-centered flex flex-center top20'>
                         <a href='{$site_config['baseurl']}/pm_system.php?action=delete&amp;id={$pm_id}'>
                             <input type='submit' class='button is-small' value='{$lang['pm_viewmsg_delete']}' />
-                        </a>" . ('no' === $message['draft'] ? "
+                        </a>" . ($message['draft'] === 'no' ? "
                         <a href='{$site_config['baseurl']}/pm_system.php?action=save_or_edit_draft&amp;id={$pm_id}'>
                             <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_sdraft']}' />
                         </a>" . (($id < 1 || $message['sender'] === $CURUSER['id']) ? '' : "

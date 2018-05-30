@@ -1,15 +1,14 @@
 <?php
-
-require_once __DIR__ . DIRECTORY_SEPARATOR . '../include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 
-if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 'xmlhttprequest' == strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
     $modes   = ['torrents', 'forums'];
     $htmlout = $att = '';
     $i       = 1;
-    if (isset($_POST['load'], $_POST['load'])   && in_array($_POST['load'], $modes)) {
-        if ('torrents' == $_POST['load']) {
+    if (isset($_POST['load'], $_POST['load']) && in_array($_POST['load'], $modes)) {
+        if ($_POST['load'] === 'torrents') {
             $query = sql_query('SELECT id, name FROM torrents ORDER BY seeders + leechers DESC LIMIT 5') or sqlerr(__FILE__, __LINE__);
             while ($res = mysqli_fetch_assoc($query)) {
                 $att .= "<div class='tr'>
@@ -19,7 +18,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 'xmlhttprequest' == strtolower(
                             </div>";
                 ++$i;
             }
-        } elseif ('forums' == $_POST['load']) {
+        } elseif ($_POST['load'] === 'forums') {
             $query = sql_query('SELECT forum.*,topic.*,topic.id AS tid FROM topics AS topic INNER JOIN forums AS forum ON topic.forum_id = forum.id AND forum.min_class_read >= 0 ORDER BY tid DESC LIMIT 5') or sqlerr(__FILE__, __LINE__);
             while ($res = mysqli_fetch_assoc($query)) {
                 $att .= "<div class='tr'>

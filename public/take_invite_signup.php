@@ -29,7 +29,7 @@ $lang = array_merge(load_language('global'), load_language('takesignup'));
 if (!mkglobal('wantusername:wantpassword:passagain:invite' . ($site_config['captcha_on'] ? ':captchaSelection:' : ':') . 'submitme:passhint:hintanswer:country')) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_form_data']);
 }
-if ('X' != $submitme) {
+if ($submitme != 'X') {
     stderr('Ha Ha', 'You Missed, You plonker!');
 }
 if ($site_config['captcha_on']) {
@@ -42,7 +42,7 @@ if ($site_config['captcha_on']) {
 if (empty($wantusername) || empty($wantpassword) || empty($invite) || empty($passhint) || empty($hintanswer) || empty($country)) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_blank']);
 }
-if (999999 == $country) {
+if ($country == 999999) {
     stderr($lang['takesignup_user_error'], 'Please select your country');
 }
 if (!blacklist($wantusername)) {
@@ -82,7 +82,7 @@ if (!(isset($_POST['country']))) {
 }
 $country = (((isset($_POST['country']) && is_valid_id($_POST['country'])) ? intval($_POST['country']) : 0));
 $gender  = isset($_POST['gender'], $_POST['gender']) ? htmlsafechars($_POST['gender']) : '';
-if ('yes' != $_POST['rulesverify'] || 'yes' != $_POST['faqverify'] || 'yes' != $_POST['ageverify']) {
+if ($_POST['rulesverify'] != 'yes' || $_POST['faqverify'] != 'yes' || $_POST['ageverify'] != 'yes') {
     stderr($lang['takesignup_failed'], $lang['takesignup_qualify']);
 }
 
@@ -92,7 +92,7 @@ if ($site_config['dupeip_check_on']) {
         ->select('COUNT(id) AS count')
         ->where('ip = ?', inet_pton($ip))
         ->fetch('count');
-    if (0 != $ip_count) {
+    if ($ip_count != 0) {
         stderr('Error', 'The ip ' . htmlsafechars($ip) . ' is already in use. We only allow one account per ip address.');
         die();
     }
@@ -108,10 +108,10 @@ $dst_in_use = localtime(TIME_NOW + ($time_offset * 3600), true);
 $select_inv = sql_query('SELECT sender, receiver, status, email FROM invite_codes WHERE code = ' . sqlesc($invite)) or sqlerr(__FILE__, __LINE__);
 $rows       = mysqli_num_rows($select_inv);
 $assoc      = mysqli_fetch_assoc($select_inv);
-if (0 == $rows) {
+if ($rows == 0) {
     stderr('Error', "Invite not found.\nPlease request a invite from one of our members.");
 }
-if (0 != $assoc['receiver']) {
+if ($assoc['receiver'] != 0) {
     stderr('Error', "Invite already taken.\nPlease request a new one from your inviter.");
 }
 $email       = $assoc['email'];
@@ -120,7 +120,7 @@ $email_count = $fluent->from('users')
     ->select('COUNT(id) AS count')
     ->where('email = ?', $email)
     ->fetch('count');
-if (0 != $email_count) {
+if ($email_count != 0) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_email_used']);
     die();
 }
@@ -153,7 +153,7 @@ $new_user = sql_query('INSERT INTO users (username, passhash, torrent_pass, auth
                           'confirmed',
                       ])) . ')');
 $id = 0;
-while (0 == $id) {
+while ($id == 0) {
     usleep(500);
     $id = get_one_row('users', 'id', 'WHERE username = ' . sqlesc($wantusername));
 }
@@ -161,7 +161,7 @@ sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($id) . ')')      
 sql_query('UPDATE usersachiev SET invited = invited + 1 WHERE userid = ' . sqlesc($assoc['sender'])) or sqlerr(__FILE__, __LINE__);
 $msg = "Welcome New {$site_config['site_name']} Member : - [user]" . htmlsafechars($wantusername) . '[/user]';
 if (!$new_user) {
-    if (1062 == ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
+    if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
         stderr('Error', 'Username already exists!');
     }
 }
@@ -190,7 +190,7 @@ $cache->set('latestuser', $latestuser_cache, 0, $site_config['expires']['latestu
 $cache->delete('birthdayusers');
 $cache->delete('chat_users_list');
 write_log('User account ' . htmlsafechars($wantusername) . ' was created!');
-if ($id > 2 && 1 == $site_config['autoshout_on']) {
+if ($id > 2 && $site_config['autoshout_on'] == 1) {
     $msg = "Welcome New {$site_config['site_name']} Member: [user]" . htmlsafechars($wantusername) . '[/user]';
     autoshout($msg);
 }

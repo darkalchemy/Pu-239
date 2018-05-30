@@ -19,7 +19,7 @@ if ($irc === false || is_null($irc)) {
     $list[]          = format_username(2);
     $irc['ircusers'] = implode(',&nbsp;&nbsp;', $list);
     $irc['count']    = count($list);
-    if (0 === $irc['count']) {
+    if ($irc['count'] === 0) {
         $irc['ircusers'] = $lang['index_irc_nousers'];
     }
     $cache->set('ircusers_', $irc, $site_config['expires']['activeircusers']);

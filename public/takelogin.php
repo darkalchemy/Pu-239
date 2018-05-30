@@ -46,7 +46,7 @@ if (empty($user_id)) {
     if ($site_config['captcha_on'] && empty($captchaSelection)) {
         stderr('Error', 'Select a captcha image');
     }
-    if (empty($submitme) || 'Login' != $submitme) {
+    if (empty($submitme) || $submitme != 'Login') {
         stderr('Error', 'You missed, you plonker!');
     }
 
@@ -100,7 +100,7 @@ $ip         = getip();
 $added      = TIME_NOW;
 if ($row === false) {
     $fail = (@mysqli_fetch_row(sql_query("SELECT COUNT(id) from failedlogins where ip = $ip_escaped"))) or sqlerr(__FILE__, __LINE__);
-    if (0 == $fail[0]) {
+    if ($fail[0] == 0) {
         sql_query("INSERT INTO failedlogins (ip, added, attempts) VALUES ($ip_escaped, $added, 1)") or sqlerr(__FILE__, __LINE__);
     } else {
         sql_query("UPDATE failedlogins SET attempts = attempts + 1 where ip = $ip_escaped") or sqlerr(__FILE__, __LINE__);
@@ -110,7 +110,7 @@ if ($row === false) {
 
 if (!password_verify($password, $row['passhash'])) {
     $fail = (@mysqli_fetch_row(sql_query("SELECT COUNT(id), ip from failedlogins where ip = $ip_escaped"))) or sqlerr(__FILE__, __LINE__);
-    if (0 == $fail[0]) {
+    if ($fail[0] == 0) {
         sql_query("INSERT INTO failedlogins (ip, added, attempts) VALUES ($ip_escaped, $added, 1)") or sqlerr(__FILE__, __LINE__);
     } else {
         sql_query("UPDATE failedlogins SET attempts = attempts + 1 where ip=$ip_escaped") or sqlerr(__FILE__, __LINE__);
@@ -122,8 +122,6 @@ if (!password_verify($password, $row['passhash'])) {
     $cache->increment('inbox_' . $userid);
     bark("<b>Error</b>: Username or password entry incorrect <br>Have you forgotten your password? <a href='{$site_config['baseurl']}/resetpw.php'><b>Recover</b></a> your password !");
 } else {
-    global $site_config;
-
     if (PHP_VERSION_ID >= 70200 && @password_hash('secret_password', PASSWORD_ARGON2I)) {
         $algo = PASSWORD_ARGON2I;
         $options = [
@@ -161,7 +159,7 @@ $ip_escaped = ipToStorageFormat($ip);
 
 if (!$no_log_ip) {
     $res = sql_query("SELECT * FROM ips WHERE ip = $ip_escaped AND userid = " . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-    if (0 == mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) == 0) {
         sql_query('INSERT INTO ips (userid, ip, lastlogin, type) VALUES (' . sqlesc($userid) . ", $ip_escaped , $added, 'Login')") or sqlerr(__FILE__, __LINE__);
         $cache->delete('ip_history_' . $userid);
     } else {
@@ -169,12 +167,12 @@ if (!$no_log_ip) {
         $cache->delete('ip_history_' . $userid);
     }
 }
-if (isset($use_ssl) && 1 == $use_ssl && !isset($_SERVER['HTTPS'])) {
+if (isset($use_ssl) && $use_ssl == 1 && !isset($_SERVER['HTTPS'])) {
     $site_config['baseurl'] = str_replace('http', 'https', $site_config['baseurl']);
 }
 
-$ssl_value = (isset($perm_ssl) && 1 == $perm_ssl ? 'ssluse = 2' : 'ssluse = 1');
-$ssluse    = (2 == $row['ssluse'] ? 2 : 1);
+$ssl_value = (isset($perm_ssl) && $perm_ssl == 1 ? 'ssluse = 2' : 'ssluse = 1');
+$ssluse    = $row['ssluse'] == 2 ? 2 : 1;
 $ua        = getBrowser();
 $browser   = 'Browser: ' . $ua['name'] . ' ' . $ua['version'] . '. Os: ' . $ua['platform'] . '. Agent : ' . $ua['userAgent'];
 

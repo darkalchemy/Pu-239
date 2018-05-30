@@ -55,10 +55,10 @@ switch ($action) {
         //=== see if they voted yet
         $res_did_they_vote = sql_query('SELECT vote FROM request_votes WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND request_id = ' . sqlesc($id));
         $row_did_they_vote = mysqli_fetch_row($res_did_they_vote);
-        if ('' == $row_did_they_vote[0]) {
-            $yes_or_no = (1 == $vote ? 'yes' : 'no');
+        if ($row_did_they_vote[0] == '') {
+            $yes_or_no = ($vote == 1 ? 'yes' : 'no');
             sql_query('INSERT INTO request_votes (request_id, user_id, vote) VALUES (' . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($yes_or_no) . ')');
-            sql_query('UPDATE requests SET ' . ('yes' == $yes_or_no ? 'vote_yes_count = vote_yes_count + 1' : 'vote_no_count = vote_no_count + 1') . ' WHERE id = ' . sqlesc($id));
+            sql_query('UPDATE requests SET ' . ($yes_or_no === 'yes' ? 'vote_yes_count = vote_yes_count + 1' : 'vote_no_count = vote_no_count + 1') . ' WHERE id = ' . sqlesc($id));
             header('Location: /requests.php?action=request_details&voted=1&id=' . sqlesc($id));
             die();
         } else {
@@ -78,7 +78,7 @@ switch ($action) {
         $count              = $count_arr[0];
         $page               = isset($_GET['page']) ? (int) $_GET['page'] : 0;
         $perpage            = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
-        list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'requests.php?' . (20 == $perpage ? '' : '&amp;perpage=' . $perpage));
+        list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'requests.php?' . ($perpage == 20 ? '' : '&amp;perpage=' . $perpage));
         $main_query_res     = sql_query('SELECT r.id AS request_id, r.request_name, r.category, r.added, r.requested_by_user_id, r.filled_by_user_id, r.filled_torrent_id, r.vote_yes_count, r.vote_no_count, r.comments, u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.leechwarn, u.chatpost, u.pirate, u.king,
 c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT JOIN categories AS c ON r.category = c.id LEFT JOIN users AS u ON r.requested_by_user_id = u.id ORDER BY r.added DESC ' . $LIMIT);
         if ($count = 0) {
@@ -136,7 +136,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
         //=== see if they voted yet
         $res_did_they_vote = sql_query('SELECT vote FROM request_votes WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND request_id = ' . sqlesc($id));
         $row_did_they_vote = mysqli_fetch_row($res_did_they_vote);
-        if ('' == $row_did_they_vote[0]) {
+        if ($row_did_they_vote[0] == '') {
             $vote_yes = '<form method="post" action="requests.php">
                     <input type="hidden" name="action" value="vote" />
                     <input type="hidden" name="id" value="' . $id . '" />
@@ -208,7 +208,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
             //=== get stuff for the pager
             $page               = isset($_GET['page']) ? (int) $_GET['page'] : 0;
             $perpage            = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
-            list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'requests.php?action=request_details&amp;id=' . $id, (20 == $perpage ? '' : '&amp;perpage=' . $perpage) . '#comments');
+            list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'requests.php?action=request_details&amp;id=' . $id, ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . '#comments');
             $subres             = sql_query('SELECT c.request, c.id AS comment_id, c.text, c.added, c.editedby, c.editedat, u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.leechwarn, u.chatpost, u.pirate, u.king, u.title FROM comments AS c LEFT JOIN users AS u ON c.user = u.id WHERE c.request = ' . sqlesc($id) . ' ORDER BY c.id ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
             $allrows            = [];
             while ($subrow = mysqli_fetch_assoc($subres)) {
@@ -385,7 +385,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
    <tr>
    <td>description:</td>
    <td>' . BBcode($body) . '</td>
-   </tr>' . (0 == $edit_arr['filled_by_user_id'] ? '' : '
+   </tr>' . ($edit_arr['filled_by_user_id'] == 0 ? '' : '
    <tr>
    <td>filled:</td>
    <td>' . $filled_by . ' <input type="checkbox" name="filled_by" value="1"' . (isset($_POST['filled_by']) ? ' "checked"' : '') . ' /> check this box to re-set this request. [ removes filled by ]  </td>
@@ -414,7 +414,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
         if (!$arr) {
             stderr('Error', 'No request with that ID.');
         }
-        if (isset($_POST['button']) && 'Save' == $_POST['button']) {
+        if (isset($_POST['button']) && $_POST['button'] === 'Save') {
             $body = trim($_POST['body']);
             if (!$body) {
                 stderr('Error', 'Comment body cannot be empty!');
@@ -458,8 +458,8 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
             stderr('Error', 'Permission denied.');
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : $arr['text']));
-        if (isset($_POST['button']) && 'Edit' == $_POST['button']) {
-            if ('' == $body) {
+        if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
+            if ($body == '') {
                 stderr('Error', 'Comment body cannot be empty!');
             }
             sql_query('UPDATE comments SET text=' . sqlesc($body) . ', editedat=' . TIME_NOW . ', editedby=' . sqlesc($CURUSER['id']) . ' WHERE id=' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
@@ -476,7 +476,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
         $HTMLOUT .= $top_menu . '<form method="post" action="requests.php?action=edit_comment">
     <input type="hidden" name="id" value="' . $arr['request'] . '"/>
     <input type="hidden" name="comment_id" value="' . $comment_id . '"/>
-     ' . (isset($_POST['button']) && 'Preview' == $_POST['button'] ? '<table class="table table-bordered table-striped">
+     ' . (isset($_POST['button']) && $_POST['button'] === 'Preview' ? '<table class="table table-bordered table-striped">
     <tr>
     <td colspan="2"><h1>Preview</h1></td>
     </tr>
@@ -545,7 +545,7 @@ function comment_table($rows)
             $arr_user = mysqli_fetch_assoc($res_user);
             $text .= '<p>Last edited by <a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . (int) $row['editedby'] . '"><b>' . htmlsafechars($arr_user['username']) . '</b></a> at ' . get_date($row['editedat'], 'DATE') . '</p>';
         }
-        $top_comment_stuff = $row['comment_id'] . ' by ' . (isset($row['username']) ? format_username($row) . ('' !== $row['title'] ? ' [ ' . htmlsafechars($row['title']) . ' ] ' : ' [ ' . get_user_class_name($row['class']) . ' ]  ') : ' M.I.A. ') . get_date($row['added'], '') . ($row['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? '
+        $top_comment_stuff = $row['comment_id'] . ' by ' . (isset($row['username']) ? format_username($row) . ($row['title'] !== '' ? ' [ ' . htmlsafechars($row['title']) . ' ] ' : ' [ ' . get_user_class_name($row['class']) . ' ]  ') : ' M.I.A. ') . get_date($row['added'], '') . ($row['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? '
      - [<a href="requests.php?action=edit_comment&amp;id=' . (int) $row['request'] . '&amp;comment_id=' . (int) $row['comment_id'] . '">Edit</a>]' : '') . ($CURUSER['class'] >= UC_STAFF ? '
      - [<a href="requests.php?action=delete_comment&amp;id=' . (int) $row['request'] . '&amp;comment_id=' . (int) $row['comment_id'] . '">Delete</a>]' : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? '
      - [<a href="comment.php?action=vieworiginal&amp;cid=' . (int) $row['id'] . '">View original</a>]' : '') . '

@@ -25,8 +25,7 @@ if ($topics === false || is_null($topics)) {
     }
     $cache->set('last_posts_' . $CURUSER['class'], $topics, $site_config['expires']['latestposts']);
 }
-if (!empty($topics) && count($topics) > 0) {
-    $HTMLOUT .= "
+$HTMLOUT .= "
             <table class='table table-bordered table-striped'>
                 <thead>
                     <tr>
@@ -37,81 +36,80 @@ if (!empty($topics) && count($topics) > 0) {
                     </tr>
                 </thead>
                 <tbody>";
-    if ($topics) {
-        foreach ($topics as $topicarr) {
-            $topicid = (int) $topicarr['id'];
-            $perpage = (int) $CURUSER['postsperpage'];
+if (!empty($topics) && count($topics) > 0) {
+    foreach ($topics as $topicarr) {
+        $topicid = (int) $topicarr['id'];
+        $perpage = (int) $CURUSER['postsperpage'];
 
-            if (!$perpage) {
-                $perpage = 24;
+        if (!$perpage) {
+            $perpage = 24;
+        }
+        $posts   = (int) $topicarr['p_count'];
+        $replies = max(0, $posts - 1);
+        $first   = ($page * $perpage)                                                                                                                                                                                                                                                                                                                                                                                                                                                                               - $perpage + 1;
+        $last    = $first                                                                                                                                                                                                                                                                                                                                                                                                                                                                                + $perpage - 1;
+        if ($last > $num) {
+            $last = $num;
+        }
+        $pages = ceil($posts / $perpage);
+        $menu  = '';
+        for ($i = 1; $i <= $pages; ++$i) {
+            if ($i == 1 && $i != $pages) {
+                $menu .= '[ ';
             }
-            $posts   = (int) $topicarr['p_count'];
-            $replies = max(0, $posts - 1);
-            $first   = ($page * $perpage)                                                                                                                                                                                                                                                                                                                                                                                                                                                                               - $perpage + 1;
-            $last    = $first                                                                                                                                                                                                                                                                                                                                                                                                                                                                                + $perpage - 1;
-            if ($last > $num) {
-                $last = $num;
+            if ($pages > 1) {
+                $menu .= "<a href='{$site_config['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=$i'>$i</a>\n";
             }
-            $pages = ceil($posts / $perpage);
-            $menu  = '';
-            for ($i = 1; $i <= $pages; ++$i) {
-                if (1 == $i && $i != $pages) {
-                    $menu .= '[ ';
-                }
-                if ($pages > 1) {
-                    $menu .= "<a href='{$site_config['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=$i'>$i</a>\n";
-                }
-                if ($i < $pages) {
-                    $menu .= "|\n";
-                }
-                if ($i == $pages && $i > 1) {
-                    $menu .= ']';
-                }
+            if ($i < $pages) {
+                $menu .= "|\n";
             }
-            $added = get_date($topicarr['added'], '', 0, 1);
-            if ('yes' == $topicarr['pan']) {
-                if ($CURUSER['class'] < UC_STAFF && $topicarr['tuser_id'] != $CURUSER['id']) {
-                    $username = (!empty($topicarr['puser_id']) ? "<i>{$lang['index_fposts_anonymous']}</i>" : "<i>{$lang['index_fposts_unknow']}</i>");
-                } else {
-                    $username = (!empty($topicarr['puser_id']) ? "<i>{$lang['index_fposts_anonymous']}</i>[ " . format_username($topicarr['puser_id']) . ' ]' : "<i>{$lang['index_fposts_unknow']}[{$topicarr['tuser_id']}]</i>");
-                }
+            if ($i == $pages && $i > 1) {
+                $menu .= ']';
+            }
+        }
+        $added = get_date($topicarr['added'], '', 0, 1);
+        if ($topicarr['pan'] === 'yes') {
+            if ($CURUSER['class'] < UC_STAFF && $topicarr['tuser_id'] != $CURUSER['id']) {
+                $username = (!empty($topicarr['puser_id']) ? "<i>{$lang['index_fposts_anonymous']}</i>" : "<i>{$lang['index_fposts_unknow']}</i>");
             } else {
-                $username = (!empty($topicarr['puser_id']) ? format_username($topicarr['puser_id']) : "<i>{$lang['index_fposts_unknow']}[{$topicarr['tuser_id']}]</i>");
+                $username = (!empty($topicarr['puser_id']) ? "<i>{$lang['index_fposts_anonymous']}</i>[ " . format_username($topicarr['puser_id']) . ' ]' : "<i>{$lang['index_fposts_unknow']}[{$topicarr['tuser_id']}]</i>");
             }
-            if ('yes' == $topicarr['tan']) {
-                if ($CURUSER['class'] < UC_STAFF && $topicarr['tuser_id'] != $CURUSER['id']) {
-                    $author = (!empty($topicarr['tuser_id']) ? "<i>{$lang['index_fposts_anonymous']}</i>" : ('0' == $topicarr['tuser_id'] ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}</i>"));
-                } else {
-                    $author = (!empty($topicarr['tuser_id']) ? "<i>{$lang['index_fposts_anonymous']}</i><br>[ " . format_username($topicarr['tuser_id']) . ' ]' : ('0' == $topicarr['tuser_id'] ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}[{$topicarr['tuser_id']}]</i>"));
-                }
+        } else {
+            $username = (!empty($topicarr['puser_id']) ? format_username($topicarr['puser_id']) : "<i>{$lang['index_fposts_unknow']}[{$topicarr['tuser_id']}]</i>");
+        }
+        if ($topicarr['tan'] === 'yes') {
+            if ($CURUSER['class'] < UC_STAFF && $topicarr['tuser_id'] != $CURUSER['id']) {
+                $author = (!empty($topicarr['tuser_id']) ? "<i>{$lang['index_fposts_anonymous']}</i>" : ($topicarr['tuser_id'] == '0' ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}</i>"));
             } else {
-                $author = (!empty($topicarr['tuser_id']) ? format_username($topicarr['tuser_id']) : ('0' == $topicarr['tuser_id'] ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}[{$topicarr['tuser_id']}]</i>"));
+                $author = (!empty($topicarr['tuser_id']) ? "<i>{$lang['index_fposts_anonymous']}</i><br>[ " . format_username($topicarr['tuser_id']) . ' ]' : ($topicarr['tuser_id'] == '0' ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}[{$topicarr['tuser_id']}]</i>"));
             }
-            $staffimg   = ($topicarr['min_class_read'] >= UC_STAFF ? "<img src='" . $site_config['pic_baseurl'] . "staff.png' alt='Staff forum' title='Staff Forum' />" : '');
-            $stickyimg  = ('yes' == $topicarr['sticky'] ? "<img src='" . $site_config['pic_baseurl'] . "sticky.gif' alt='{$lang['index_fposts_sticky']}' title='{$lang['index_fposts_stickyt']}' />&#160;&#160;" : '');
-            $lockedimg  = ('yes' == $topicarr['locked'] ? "<img src='" . $site_config['pic_baseurl'] . "forumicons/locked.gif' alt='{$lang['index_fposts_locked']}' title='{$lang['index_fposts_lockedt']}' />&#160;" : '');
-            $topic_name = $lockedimg . $stickyimg . "<a href='{$site_config['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=last#" . (int) $topicarr['last_post'] . "'><b>" . htmlsafechars($topicarr['topic_name']) . "</b></a>&#160;&#160;$staffimg&#160;&#160;$menu<br><font class='small'>{$lang['index_fposts_in']}<a href='forums.php?action=view_forum&amp;forum_id=" . (int) $topicarr['forum_id'] . "'>" . htmlsafechars($topicarr['name']) . "</a>&#160;by&#160;$author&#160;&#160;($added)</font>";
-            $HTMLOUT .= "
+        } else {
+            $author = (!empty($topicarr['tuser_id']) ? format_username($topicarr['tuser_id']) : ($topicarr['tuser_id'] == '0' ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}[{$topicarr['tuser_id']}]</i>"));
+        }
+        $staffimg   = ($topicarr['min_class_read'] >= UC_STAFF ? "<img src='" . $site_config['pic_baseurl'] . "staff.png' alt='Staff forum' title='Staff Forum' />" : '');
+        $stickyimg = ($topicarr['sticky'] === 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "sticky.gif' alt='{$lang['index_fposts_sticky']}' title='{$lang['index_fposts_stickyt']}' />&#160;&#160;" : '');
+        $lockedimg = ($topicarr['locked'] === 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "forumicons/locked.gif' alt='{$lang['index_fposts_locked']}' title='{$lang['index_fposts_lockedt']}' />&#160;" : '');
+        $topic_name = $lockedimg . $stickyimg . "<a href='{$site_config['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=last#" . (int) $topicarr['last_post'] . "'><b>" . htmlsafechars($topicarr['topic_name']) . "</b></a>&#160;&#160;$staffimg&#160;&#160;$menu<br><font class='small'>{$lang['index_fposts_in']}<a href='forums.php?action=view_forum&amp;forum_id=" . (int) $topicarr['forum_id'] . "'>" . htmlsafechars($topicarr['name']) . "</a>&#160;by&#160;$author&#160;&#160;($added)</font>";
+        $HTMLOUT .= "
                     <tr>
                         <td>{$topic_name}</td>
                         <td>{$replies}</td>
                         <td>" . number_format($topicarr['views']) . "</td>
                         <td>{$username}</td>
                     </tr>";
-        }
-        $HTMLOUT .= '
+    }
+    $HTMLOUT .= '
                 </tbody>
             </table>
         </div>
     </fieldset>';
-    } else {
-        //if there are no posts...
-        if (empty($topics)) {
-            $HTMLOUT .= "
-        <tr><td colspan='4'>
-         {$lang['latestposts_no_posts']}
-        </td></tr></table>
-        </div></fieldset>";
-        }
-    }
+} else {
+    $HTMLOUT .= "
+                    <tr>
+                        <td colspan='4'>{$lang['latestposts_no_posts']}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </fieldset>";
 }

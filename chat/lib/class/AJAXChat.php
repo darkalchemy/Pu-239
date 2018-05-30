@@ -14,23 +14,23 @@ class AJAXChat
 {
     public $db;
 
-    protected $_config;
-    protected $_requestVars;
-    protected $_infoMessages;
-    protected $_channels;
-    protected $_allChannels;
-    protected $_view;
-    protected $_lang;
-    protected $_invitations;
-    protected $_customVars;
-    protected $_sessionNew;
-    protected $_onlineUsersData;
-    protected $_bannedUsersData;
-    protected $_session;
-    protected $_user;
-    protected $_cache;
-    protected $_fluent;
-    protected $_siteConfig;
+    protected $_config,
+        $_requestVars,
+        $_infoMessages,
+        $_channels,
+        $_allChannels,
+        $_view,
+        $_lang,
+        $_invitations,
+        $_customVars,
+        $_sessionNew,
+        $_onlineUsersData,
+        $_bannedUsersData,
+        $_session,
+        $_user,
+        $_cache,
+        $_fluent,
+        $_siteConfig;
 
     /**
      * AJAXChat constructor.
@@ -150,7 +150,7 @@ class AJAXChat
 
         if ($this->isLoggedIn()) {
             // Logout if the Session IP is not the same when logged in and ipCheck is enabled:
-            if ($this->getConfig('ipCheck') && (null === $this->getSessionIP() || $this->getSessionIP() != getip())) {
+            if ($this->getConfig('ipCheck') && ($this->getSessionIP() === null || $this->getSessionIP() != getip())) {
                 $this->logout('IP');
 
                 return;
@@ -166,9 +166,9 @@ class AJAXChat
             $this->login();
         }
         $this->initView();
-        if ('chat' == $this->getView()) {
+        if ($this->getView() == 'chat') {
             $this->initChatViewSession();
-        } elseif ('logs' == $this->getView()) {
+        } elseif ($this->getView() == 'logs') {
             $this->initLogsViewSession();
         }
         if (!$this->getRequestVar('ajax') && !headers_sent()) {
@@ -294,7 +294,7 @@ class AJAXChat
      */
     public function isUserOnline($userID = null)
     {
-        $userID        = (null === $userID) ? $this->getUserID() : $userID;
+        $userID = ($userID === null) ? $this->getUserID() : $userID;
         $userDataArray = $this->getOnlineUsersData(null, 'userID', $userID);
         if ($userDataArray && count($userDataArray) > 0) {
             return true;
@@ -312,7 +312,7 @@ class AJAXChat
      */
     public function getOnlineUsersData($channelIDs = null, $key = null, $value = null)
     {
-        if (null === $this->_onlineUsersData) {
+        if ($this->_onlineUsersData === null) {
             $this->_onlineUsersData = [];
 
             $sql = $this->_fluent->from($this->getDataBaseTable('online'))
@@ -342,7 +342,7 @@ class AJAXChat
                     if (!isset($userData[$key])) {
                         return $onlineUsersData;
                     }
-                    if (null !== $value) {
+                    if ($value !== null) {
                         if ($userData[$key] == $value) {
                             array_push($onlineUsersData, $userData);
                         } else {
@@ -369,7 +369,7 @@ class AJAXChat
      */
     public function getDataBaseTable($table)
     {
-        if ('online' === $table || 'bans' === $table) {
+        if ($table === 'online' || $table === 'bans') {
             return $this->getConfig('dbTableNames', $table);
         }
 
@@ -408,7 +408,7 @@ class AJAXChat
         if (!$this->_onlineUsersData) {
             return;
         }
-        $userID = (null === $userID) ? $this->getUserID() : $userID;
+        $userID = ($userID === null) ? $this->getUserID() : $userID;
         for ($i = 0; $i < count($this->_onlineUsersData); ++$i) {
             if ($this->_onlineUsersData[$i]['userID'] == $userID) {
                 array_splice($this->_onlineUsersData, $i, 1);
@@ -466,7 +466,7 @@ class AJAXChat
             3,
             4,
         ]; // Announce, News, Git
-        if (in_array($channelID, $bot_only) && 100 != $userRole) {
+        if (in_array($channelID, $bot_only) && $userRole != 100) {
             return;
         }
 
@@ -546,7 +546,7 @@ class AJAXChat
             // Add the list of online users if the user list has been updated ($mode > 0):
             $xml .= $this->getChatViewOnlineUsersXML([$channelID]);
         }
-        if (1 != $mode || $this->getConfig('showChannelMessages')) {
+        if ($mode != 1 || $this->getConfig('showChannelMessages')) {
             $xml .= '<messages>';
             $xml .= $this->getChatViewMessageXML(
                 $messageID,
@@ -650,7 +650,7 @@ class AJAXChat
     {
         $this->_view = null;
         // "chat" is the default view:
-        $view = (null === $this->getRequestVar('view')) ? 'chat' : $this->getRequestVar('view');
+        $view = ($this->getRequestVar('view') === null) ? 'chat' : $this->getRequestVar('view');
 
         if ($this->hasAccessTo($view)) {
             $this->_view = $view;
@@ -701,7 +701,7 @@ class AJAXChat
     public function getUserRole()
     {
         $userRole = $this->_session->get('UserRole');
-        if (null === $userRole) {
+        if ($userRole === null) {
             userlogin();
         }
 
@@ -720,7 +720,7 @@ class AJAXChat
             return false;
         }
         $time = TIME_NOW;
-        if (null !== $this->getConfig('timeZoneOffset')) {
+        if ($this->getConfig('timeZoneOffset') !== null) {
             // Subtract the server timezone offset and add the config timezone offset:
             $time -= date('Z', $time);
             $time += $this->getConfig('timeZoneOffset');
@@ -885,7 +885,7 @@ class AJAXChat
      */
     public function convertToUnicode($str, $sourceEncoding = null)
     {
-        if (null === $sourceEncoding) {
+        if ($sourceEncoding === null) {
             $sourceEncoding = $this->getConfig('sourceEncoding');
         }
 
@@ -963,7 +963,7 @@ class AJAXChat
      */
     public function isUserNameInUse($userName = null)
     {
-        $userName      = (null === $userName) ? $this->getUserName() : $userName;
+        $userName = ($userName === null) ? $this->getUserName() : $userName;
         $userDataArray = $this->getOnlineUsersData(null, 'userName', $userName);
         if ($userDataArray && count($userDataArray) > 0) {
             return true;
@@ -1049,13 +1049,13 @@ class AJAXChat
      */
     public function isUserBanned($userName, $userID = null, $ip = null)
     {
-        if (null !== $userID) {
+        if ($userID !== null) {
             $bannedUserDataArray = $this->getBannedUsersData('userID', $userID);
             if ($bannedUserDataArray && isset($bannedUserDataArray[0])) {
                 return true;
             }
         }
-        if (null !== $ip) {
+        if ($ip !== null) {
             $bannedUserDataArray = $this->getBannedUsersData('ip', $ip);
             if ($bannedUserDataArray && isset($bannedUserDataArray[0])) {
                 return true;
@@ -1077,7 +1077,7 @@ class AJAXChat
      */
     public function getBannedUsersData($key = null, $value = null)
     {
-        if (null === $this->_bannedUsersData) {
+        if ($this->_bannedUsersData === null) {
             $this->_bannedUsersData = [];
 
             $res = $this->_fluent->from($this->getDataBaseTable('bans'))
@@ -1203,7 +1203,7 @@ class AJAXChat
      */
     public function initChatViewSession()
     {
-        if (null !== $this->getChannel()) {
+        if ($this->getChannel() !== null) {
             if (!$this->isUserOnline()) {
                 $this->addToOnlineList();
             }
@@ -1226,10 +1226,10 @@ class AJAXChat
     {
         $channelID   = $this->getRequestVar('channelID');
         $channelName = $this->getRequestVar('channelName');
-        if (null !== $channelID) {
+        if ($channelID !== null) {
             $this->switchChannel($this->getChannelNameFromChannelID($channelID));
-        } elseif (null !== $channelName) {
-            if (null === $this->getChannelIDFromChannelName($channelName)) {
+        } elseif ($channelName !== null) {
+            if ($this->getChannelIDFromChannelName($channelName) === null) {
                 $channelName = $this->trimChannelName($channelName, $this->getConfig('contentEncoding'));
             }
             $this->switchChannel($channelName);
@@ -1245,7 +1245,7 @@ class AJAXChat
     {
         $channelID = $this->getChannelIDFromChannelName($channelName);
 
-        if (null !== $channelID && $this->getChannel() == $channelID) {
+        if ($channelID !== null && $this->getChannel() == $channelID) {
             return;
         }
 
@@ -1298,7 +1298,7 @@ class AJAXChat
                 $strlenChannelName - ($strlenPrefix + $strlenSuffix)
             );
             $userID = $this->getIDFromName($userName);
-            if (null !== $userID) {
+            if ($userID !== null) {
                 $channelID = $this->getPrivateChannelID($userID);
             }
         }
@@ -1311,7 +1311,7 @@ class AJAXChat
      */
     public function &getAllChannels()
     {
-        if (null === $this->_allChannels) {
+        if ($this->_allChannels === null) {
             $this->_allChannels = [];
 
             $this->_allChannels[$this->trimChannelName($this->getConfig('defaultChannelName'), $this->getConfig('contentEncoding'))] = $this->getConfig('defaultChannelID');
@@ -1338,7 +1338,7 @@ class AJAXChat
      */
     public function getPrivateChannelName($userName = null)
     {
-        if (null === $userName) {
+        if ($userName === null) {
             $userName = $this->getUserName();
         }
 
@@ -1350,7 +1350,7 @@ class AJAXChat
      */
     public function getPrivateChannelID($userID = null)
     {
-        if (null === $userID) {
+        if ($userID === null) {
             $userID = $this->getUserID();
         }
 
@@ -1389,7 +1389,7 @@ class AJAXChat
      */
     public function validateChannel($channelID)
     {
-        if (null === $channelID) {
+        if ($channelID === null) {
             return false;
         }
         if (in_array($channelID, $this->getChannels())) {
@@ -1410,7 +1410,7 @@ class AJAXChat
      */
     public function &getChannels()
     {
-        if (null === $this->_channels) {
+        if ($this->_channels === null) {
             $this->_channels = $this->getAllChannels();
         }
 
@@ -1434,7 +1434,7 @@ class AJAXChat
      */
     public function getInvitations()
     {
-        if (null === $this->_invitations) {
+        if ($this->_invitations === null) {
             $this->_invitations = [];
 
             $sql = 'SELECT
@@ -1461,7 +1461,7 @@ class AJAXChat
      */
     public function getPrivateMessageID($userID = null)
     {
-        if (null === $userID) {
+        if ($userID === null) {
             $userID = $this->getUserID();
         }
 
@@ -1531,7 +1531,7 @@ class AJAXChat
             return $this->getPrivateChannelName();
         }
         $userName = $this->getNameFromID($channelID - $this->getConfig('privateChannelDiff'));
-        if (null === $userName) {
+        if ($userName === null) {
             return null;
         }
 
@@ -1616,10 +1616,10 @@ class AJAXChat
     {
         $channelID   = $this->getRequestVar('channelID');
         $channelName = $this->getRequestVar('channelName');
-        if (null === $channelID) {
-            if (null !== $channelName) {
+        if ($channelID === null) {
+            if ($channelName !== null) {
                 $channelID = $this->getChannelIDFromChannelName($channelName);
-                if (null === $channelID) {
+                if ($channelID === null) {
                     $channelID = $this->getChannelIDFromChannelName(
                         $this->trimChannelName($channelName, $this->getConfig('contentEncoding'))
                     );
@@ -1627,7 +1627,7 @@ class AJAXChat
             }
         }
         if (!$this->validateChannel($channelID)) {
-            if (null !== $this->getChannel()) {
+            if ($this->getChannel() !== null) {
                 return $this->getChannel();
             }
 
@@ -1802,7 +1802,7 @@ class AJAXChat
 
     public function parseCommandRequests()
     {
-        if (null !== $this->getRequestVar('delete')) {
+        if ($this->getRequestVar('delete') !== null) {
             $this->deleteMessage($this->getRequestVar('delete'));
         }
     }
@@ -1858,7 +1858,7 @@ class AJAXChat
      */
     public function initMessageHandling()
     {
-        if ('chat' != $this->getView()) {
+        if ($this->getView() != 'chat') {
             return;
         }
 
@@ -1868,7 +1868,7 @@ class AJAXChat
             return;
         }
 
-        if (null !== $this->getRequestVar('text')) {
+        if ($this->getRequestVar('text') !== null) {
             $this->insertMessage($this->getRequestVar('text'));
         }
     }
@@ -1889,7 +1889,7 @@ class AJAXChat
         }
 
         $text = $this->trimMessageText($text);
-        if ('' == $text) {
+        if ($text == '') {
             return;
         }
 
@@ -2008,11 +2008,11 @@ class AJAXChat
      */
     public function insertParsedMessage($text)
     {
-        if (null !== $this->getQueryUserName() && 0 !== strpos($text, '/')) {
+        if ($this->getQueryUserName() !== null && strpos($text, '/') !== 0) {
             $text = '/msg ' . $this->getQueryUserName() . ' ' . $text;
         }
 
-        if (0 === strpos($text, '/')) {
+        if (strpos($text, '/') === 0) {
             $textParts = explode(' ', $text);
 
             switch ($textParts[0]) {
@@ -2137,7 +2137,7 @@ class AJAXChat
      */
     public function insertParsedMessageJoin($textParts)
     {
-        if (1 == count($textParts)) {
+        if (count($textParts) == 1) {
             if ($this->isAllowedToCreatePrivateChannel()) {
                 $this->switchChannel($this->getChannelNameFromChannelID($this->getPrivateChannelID()));
             } else {
@@ -2160,7 +2160,7 @@ class AJAXChat
     {
         if ($this->isAllowedToSendPrivateMessage()) {
             if (count($textParts) < 3) {
-                if (2 == count($textParts)) {
+                if (count($textParts) == 2) {
                     $this->insertChatBotMessage(
                         $this->getPrivateMessageID(),
                         '/error MissingText'
@@ -2173,8 +2173,8 @@ class AJAXChat
                 }
             } else {
                 $toUserID = $this->getIDFromName($textParts[1]);
-                if (null === $toUserID) {
-                    if (null !== $this->getQueryUserName()) {
+                if ($toUserID === null) {
+                    if ($this->getQueryUserName() !== null) {
                         $this->insertMessage('/query');
                     } else {
                         $this->insertChatBotMessage(
@@ -2183,7 +2183,7 @@ class AJAXChat
                         );
                     }
                 } else {
-                    $command = ('/describe' == $textParts[0]) ? '/privaction' : '/privmsg';
+                    $command = ($textParts[0] == '/describe') ? '/privaction' : '/privmsg';
                     $this->insertCustomMessage(
                         $this->getUserID(),
                         $this->getUserName(),
@@ -2228,14 +2228,14 @@ class AJAXChat
     public function insertParsedMessageInvite($textParts)
     {
         if ($this->getChannel() == $this->getPrivateChannelID() || in_array($this->getChannel(), $this->getChannels())) {
-            if (1 == count($textParts)) {
+            if (count($textParts) == 1) {
                 $this->insertChatBotMessage(
                     $this->getPrivateMessageID(),
                     '/error MissingUserName'
                 );
             } else {
                 $toUserID = $this->getIDFromName($textParts[1]);
-                if (null === $toUserID) {
+                if ($toUserID === null) {
                     $this->insertChatBotMessage(
                         $this->getPrivateMessageID(),
                         '/error UserNameNotFound ' . $textParts[1]
@@ -2269,7 +2269,7 @@ class AJAXChat
     {
         $this->removeExpiredInvitations();
 
-        $channelID = (null === $channelID) ? $this->getChannel() : $channelID;
+        $channelID = ($channelID === null) ? $this->getChannel() : $channelID;
         $sql       = 'INSERT INTO ' . $this->getDataBaseTable('invitations') . '(
                     userID,
                     channel,
@@ -2299,14 +2299,14 @@ class AJAXChat
     public function insertParsedMessageUninvite($textParts)
     {
         if ($this->getChannel() == $this->getPrivateChannelID() || in_array($this->getChannel(), $this->getChannels())) {
-            if (1 == count($textParts)) {
+            if (count($textParts) == 1) {
                 $this->insertChatBotMessage(
                     $this->getPrivateMessageID(),
                     '/error MissingUserName'
                 );
             } else {
                 $toUserID = $this->getIDFromName($textParts[1]);
-                if (null === $toUserID) {
+                if ($toUserID === null) {
                     $this->insertChatBotMessage(
                         $this->getPrivateMessageID(),
                         '/error UserNameNotFound ' . $textParts[1]
@@ -2338,7 +2338,7 @@ class AJAXChat
      */
     public function removeInvitation($userID, $channelID = null)
     {
-        $channelID = (null === $channelID) ? $this->getChannel() : $channelID;
+        $channelID = ($channelID === null) ? $this->getChannel() : $channelID;
 
         $this->_fluent->deleteFrom($this->getDataBaseTable('invitations'))
             ->where('userID = ?', $userID)
@@ -2354,8 +2354,8 @@ class AJAXChat
     public function insertParsedMessageQuery($textParts)
     {
         if ($this->isAllowedToSendPrivateMessage()) {
-            if (1 == count($textParts)) {
-                if (null !== $this->getQueryUserName()) {
+            if (count($textParts) == 1) {
+                if ($this->getQueryUserName() !== null) {
                     $this->insertChatBotMessage(
                         $this->getPrivateMessageID(),
                         '/queryClose ' . $this->getQueryUserName()
@@ -2368,13 +2368,13 @@ class AJAXChat
                     );
                 }
             } else {
-                if (null === $this->getIDFromName($textParts[1])) {
+                if ($this->getIDFromName($textParts[1]) === null) {
                     $this->insertChatBotMessage(
                         $this->getPrivateMessageID(),
                         '/error UserNameNotFound ' . $textParts[1]
                     );
                 } else {
-                    if (null !== $this->getQueryUserName()) {
+                    if ($this->getQueryUserName() !== null) {
                         $this->insertMessage('/query');
                     }
                     $this->setQueryUserName($textParts[1]);
@@ -2408,14 +2408,14 @@ class AJAXChat
     public function insertParsedMessageKick($textParts)
     {
         if ($this->getUserRole() >= UC_STAFF) {
-            if (1 == count($textParts)) {
+            if (count($textParts) == 1) {
                 $this->insertChatBotMessage(
                     $this->getPrivateMessageID(),
                     '/error MissingUserName'
                 );
             } else {
                 $kickUserID = $this->getIDFromName($textParts[1]);
-                if (null === $kickUserID) {
+                if ($kickUserID === null) {
                     $this->insertChatBotMessage(
                         $this->getPrivateMessageID(),
                         '/error UserNameNotFound ' . $textParts[1]
@@ -2431,7 +2431,7 @@ class AJAXChat
                         $channel    = $this->getChannelFromID($kickUserID);
                         $banMinutes = (count($textParts) > 2) ? $textParts[2] : null;
                         $this->kickUser($textParts[1], $banMinutes, $kickUserID);
-                        if (null !== $channel) {
+                        if ($channel !== null) {
                             $this->insertChatBotMessage(
                                 $channel,
                                 '/kick ' . $textParts[1],
@@ -2491,14 +2491,14 @@ class AJAXChat
      */
     public function kickUser($userName, $banMinutes = null, $userID = null)
     {
-        if (null === $userID) {
+        if ($userID === null) {
             $userID = $this->getIDFromName($userName);
         }
-        if (null === $userID) {
+        if ($userID === null) {
             return;
         }
 
-        $banMinutes = (null !== $banMinutes) ? $banMinutes : $this->getConfig('defaultBanTime');
+        $banMinutes = ($banMinutes !== null) ? $banMinutes : $this->getConfig('defaultBanTime');
 
         if ($banMinutes) {
             $this->banUser($userName, $banMinutes, $userID);
@@ -2514,11 +2514,11 @@ class AJAXChat
      */
     public function banUser($userName, $banMinutes = null, $userID = null)
     {
-        if (null === $userID) {
+        if ($userID === null) {
             $userID = $this->getIDFromName($userName);
         }
         $ip = $this->getIPFromID($userID);
-        if (!$ip || null === $userID) {
+        if (!$ip || $userID === null) {
             return;
         }
 
@@ -2612,7 +2612,7 @@ class AJAXChat
     {
         if ($this->getUserRole() >= UC_STAFF) {
             $this->removeExpiredBans();
-            if (1 == count($textParts)) {
+            if (count($textParts) == 1) {
                 $this->insertChatBotMessage(
                     $this->getPrivateMessageID(),
                     '/error MissingUserName'
@@ -2656,13 +2656,13 @@ class AJAXChat
      */
     public function insertParsedMessageAction($textParts)
     {
-        if (1 == count($textParts)) {
+        if (count($textParts) == 1) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
                 '/error MissingText'
             );
         } else {
-            if (null !== $this->getQueryUserName()) {
+            if ($this->getQueryUserName() !== null) {
                 $this->insertMessage('/describe ' . $this->getQueryUserName() . ' ' . implode(' ', array_slice($textParts, 1)));
             } else {
                 $this->insertCustomMessage(
@@ -2683,7 +2683,7 @@ class AJAXChat
      */
     public function insertParsedMessageWho($textParts)
     {
-        if (1 == count($textParts)) {
+        if (count($textParts) == 1) {
             if ($this->isAllowedToListHiddenUsers()) {
                 $this->insertChatBotMessage(
                     $this->getPrivateMessageID(),
@@ -2764,7 +2764,7 @@ class AJAXChat
         }
         foreach ($this->getInvitations() as $channelID) {
             $channelName = $this->getChannelNameFromChannelID($channelID);
-            if (null !== $channelName && !in_array($channelName, $channelNames)) {
+            if ($channelName !== null && !in_array($channelName, $channelNames)) {
                 array_push($channelNames, $channelName);
             }
         }
@@ -2789,14 +2789,14 @@ class AJAXChat
      */
     public function insertParsedMessageWhereis($textParts)
     {
-        if (1 == count($textParts)) {
+        if (count($textParts) == 1) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
                 '/error MissingUserName'
             );
         } else {
             $whereisUserID = $this->getIDFromName($textParts[1]);
-            if (null === $whereisUserID) {
+            if ($whereisUserID === null) {
                 $this->insertChatBotMessage(
                     $this->getPrivateMessageID(),
                     '/error UserNameNotFound ' . $textParts[1]
@@ -2808,7 +2808,7 @@ class AJAXChat
                 } else {
                     $channelName = null;
                 }
-                if (null === $channelName) {
+                if ($channelName === null) {
                     $this->insertChatBotMessage(
                         $this->getPrivateMessageID(),
                         '/error UserNameNotFound ' . $textParts[1]
@@ -2831,14 +2831,14 @@ class AJAXChat
     public function insertParsedMessageWhois($textParts)
     {
         if ($this->getUserRole() >= UC_STAFF) {
-            if (1 == count($textParts)) {
+            if (count($textParts) == 1) {
                 $this->insertChatBotMessage(
                     $this->getPrivateMessageID(),
                     '/error MissingUserName'
                 );
             } else {
                 $whoisUserID = $this->getIDFromName($textParts[1]);
-                if (null === $whoisUserID) {
+                if ($whoisUserID === null) {
                     $this->insertChatBotMessage(
                         $this->getPrivateMessageID(),
                         '/error UserNameNotFound ' . $textParts[1]
@@ -2865,18 +2865,18 @@ class AJAXChat
      */
     public function insertParsedMessageRoll($textParts)
     {
-        if (1 == count($textParts)) {
+        if (count($textParts) == 1) {
             $text = '/roll ' . $this->getUserName() . ' 1d6 ' . $this->rollDice(6);
         } else {
             $diceParts = explode('d', $textParts[1]);
-            if (2 == count($diceParts)) {
+            if (count($diceParts) == 2) {
                 $number = (int) $diceParts[0];
                 $sides  = (int) $diceParts[1];
                 $number = ($number > 0 && $number <= 100) ? $number : 1;
                 $sides  = ($sides > 0 && $sides <= 100) ? $sides : 6;
                 $text   = '/roll ' . $this->getUserName() . ' ' . $number . 'd' . $sides . ' ';
                 for ($i = 0; $i < $number; ++$i) {
-                    if (0 != $i) {
+                    if ($i != 0) {
                         $text .= ',';
                     }
                     $text .= $this->rollDice($sides);
@@ -2915,7 +2915,7 @@ class AJAXChat
                 $this->getPrivateMessageID(),
                 '/error CommandNotAllowed ' . $textParts[0]
             );
-        } elseif (1 == count($textParts)) {
+        } elseif (count($textParts) == 1) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
                 '/error MissingUserName'
@@ -2985,7 +2985,7 @@ class AJAXChat
         $row = mysqli_fetch_row($res);
         if ($row) {
             $whereisRoleClass = get_user_class_name($row[0], true);
-            $userNameClass    = null != $whereisRoleClass ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
+            $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
             $msg .= $userNameClass . ' [color=#00FF00]is the biggest winner with ' . mksize($row[3]) . '. [/color]';
         }
 
@@ -2994,7 +2994,7 @@ class AJAXChat
         $row = mysqli_fetch_row($res);
         if ($row) {
             $whereisRoleClass = get_user_class_name($row[0], true);
-            $userNameClass    = null != $whereisRoleClass ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
+            $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
             $msg .= $userNameClass . ' [color=#00FF00]is the biggest loser with ' . mksize($row[3]) . '. [/color]';
         }
 
@@ -3028,14 +3028,14 @@ class AJAXChat
      */
     public function insertParsedMessageStats($textParts)
     {
-        if (1 == count($textParts)) {
+        if (count($textParts) == 1) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
                 '/error MissingUserName'
             );
         } else {
             $whereisUserID = $this->getIDFromName($textParts[1]);
-            if (null === $whereisUserID) {
+            if ($whereisUserID === null) {
                 $this->insertChatBotMessage(
                     $this->getPrivateMessageID(),
                     '/error UserNameNotFound ' . $textParts[1]
@@ -3056,16 +3056,16 @@ class AJAXChat
                 $uploaded    = '[color=#00FF00]' . human_filesize($stats['uploaded']) . '[/color]';
                 $downloaded  = '[color=#00FF00]' . human_filesize($stats['downloaded']) . '[/color]';
                 $userClass   = get_user_class_name($stats['class']);
-                $enabled     = 'yes'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           === $stats['enabled'] && 1 == $stats['downloadpos'] ? '[color=#00FF00](Enabled)[/color]' : '[color=#CC0000](Disabled)[/color]';
-                $invites     = $stats['invites'] > 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  && 'yes' === $stats['invite_rights'] ? '[color=#00FF00]' . number_format($stats['invites']) . '[/color]' : '[color=#CC0000]0[/color]';
+                $enabled = $stats['enabled'] === 'yes' && $stats['downloadpos'] == 1 ? '[color=#00FF00](Enabled)[/color]' : '[color=#CC0000](Disabled)[/color]';
+                $invites = $stats['invites'] > 0 && $stats['invite_rights'] === 'yes' ? '[color=#00FF00]' . number_format($stats['invites']) . '[/color]' : '[color=#CC0000]0[/color]';
                 switch (true) {
                     case $stats['downloaded'] > 0 && $stats['uploaded'] > 0:
                         $ratio = '[color=#00FF00]' . number_format($stats['uploaded'] / $stats['downloaded'], 3) . '[/color]';
                         break;
-                    case $stats['downloaded'] > 0 && 0 == $stats['uploaded']:
+                    case $stats['downloaded'] > 0 && $stats['uploaded'] == 0:
                         $ratio = '[color=#CC0000]' . number_format(1 / $stats['downloaded'], 3) . '[/color]';
                         break;
-                    case 0 == $stats['downloaded'] && $stats['uploaded'] >= 0:
+                    case $stats['downloaded'] == 0 && $stats['uploaded'] >= 0:
                         $ratio = '[color=#00FF00]INF[/color]';
                         break;
                     default:
@@ -3087,12 +3087,12 @@ class AJAXChat
                 $uploads    = '[color=#00FF00]' . number_format((int) get_row_count('torrents', 'WHERE owner = ' . sqlesc($whereisUserID))) . '[/color]';
                 $snatched   = '[color=#00FF00]' . number_format((int) get_row_count('snatched', 'WHERE userid = ' . sqlesc($whereisUserID))) . '[/color]';
                 $hnrs       = (int) get_row_count('snatched', 'WHERE mark_of_cain = "yes" AND userid = ' . sqlesc($whereisUserID));
-                $hnrs       = 0 == $hnrs ? '[color=#00FF00]' . '0[/color]' : '[color=#CC0000]' . number_format($hnrs) . '[/color]';
+                $hnrs = $hnrs == 0 ? '[color=#00FF00]' . '0[/color]' : '[color=#CC0000]' . number_format($hnrs) . '[/color]';
                 $connectyes = (int) get_row_count('peers', 'WHERE seeder = "yes" and connectable = "yes" and userid = ' . sqlesc($whereisUserID));
                 $connectno  = (int) get_row_count('peers', 'WHERE seeder = "yes" and connectable = "no" and userid = ' . sqlesc($whereisUserID));
-                if (0 === $connectyes && 0 === $connectno || $connectno === $seeder) {
+                if ($connectyes === 0 && $connectno === 0 || $connectno === $seeder) {
                     $connectable = '[color=#CC0000]no[/color]';
-                } elseif (0 != $connectyes && 0 === $connectno) {
+                } elseif ($connectyes != 0 && $connectno === 0) {
                     $connectable = '[color=#00FF00]yes[/color]';
                 } else {
                     $connectable = '[color=#CC0000]' . number_format($connectyes / $seeder * 100) . '%[/color]';
@@ -3107,19 +3107,19 @@ class AJAXChat
                 $row              = mysqli_fetch_row($res);
                 $count_incomplete = $row[0] > 0 ? "[color=#CC0000]{$row[0]}[/color]" : "[color=#00FF00]{$row[0]}[/color]";
 
-                $ircbonus         = 'yes' == $stats['onirc'] ? .45 : 0;
+                $ircbonus = $stats['onirc'] == 'yes' ? .45 : 0;
                 $allbonus         = number_format(($connectyes * $bpt * 2) + $ircbonus, 2);
                 $earns            = $connectyes > 0 ? '[color=#00FF00]' . $allbonus . 'bph[/color]' : '[color=#CC0000]' . $allbonus . 'bph[/color]';
                 $seedsize         = get_one_row('peers AS p INNER JOIN torrents AS t ON t.id = p.torrent', 'SUM(t.size)', "WHERE p.seeder = 'yes' AND p.connectable = 'yes' AND p.userid = " . $whereisUserID);
                 $volume           = '[color=#00FF00]' . human_filesize($seedsize) . '[/color]';
                 $whereisRoleClass = get_user_class_name($stats['class'], true);
-                $userNameClass    = null != $whereisRoleClass ? '[' . $whereisRoleClass . '][url=' . $this->_siteConfig['baseurl'] . '/userdetails.php?id=' . $whereisUserID . '&hit=1]' . $stats['username'] . '[/url][/' . $whereisRoleClass . ']' : '@' . $textParts[1];
+                $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . '][url=' . $this->_siteConfig['baseurl'] . '/userdetails.php?id=' . $whereisUserID . '&hit=1]' . $stats['username'] . '[/url][/' . $whereisRoleClass . ']' : '@' . $textParts[1];
                 $str              = '';
-                $str .= (isset($stats['donor']) && 'yes' === $stats['donor'] && isset($stats['show_donor']) && 'yes' === $stats['show_donor'] ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/star.png[/img]' : '');
+                $str .= (isset($stats['donor']) && $stats['donor'] === 'yes' && isset($stats['show_donor']) && $stats['show_donor'] === 'yes' ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/star.png[/img]' : '');
                 $str .= (isset($stats['warned']) && $stats['warned'] >= 1 ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/alertred.png[/img]' : '');
                 $str .= (isset($stats['leechwarn']) && $stats['leechwarn'] >= 1 ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/alertblue.png[/img]' : '');
-                $str .= (isset($stats['enabled']) && 'yes' != $stats['enabled'] ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/disabled.gif[/img]' : '');
-                $str .= (isset($stats['chatpost']) && 0 == $stats['chatpost'] ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/warned.png[/img]' : '');
+                $str .= (isset($stats['enabled']) && $stats['enabled'] != 'yes' ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/disabled.gif[/img]' : '');
+                $str .= (isset($stats['chatpost']) && $stats['chatpost'] == 0 ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/warned.png[/img]' : '');
                 $str .= (isset($stats['pirate']) && $stats['pirate'] >= TIME_NOW ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/pirate.png[/img]' : '');
 
                 $text = "$userNameClass{$str}: [color=#fff]User Class:[/color] [$whereisRoleClass]{$userClass}[/$whereisRoleClass]$enabled
@@ -3143,7 +3143,7 @@ class AJAXChat
      */
     public function insertParsedMessageSeen($textParts)
     {
-        if (1 == count($textParts)) {
+        if (count($textParts) == 1) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
                 '/error MissingUserName'
@@ -3218,7 +3218,7 @@ class AJAXChat
             $messages[]  = "{$mentions['dateTime']}: " . $posterName . " => {$mention}";
         }
 
-        if (0 === count($messages)) {
+        if (count($messages) === 0) {
             $msg = "$user has not been mentioned.";
         } else {
             $msg = "\n[code]" . implode("\n", $messages) . '[/code]';
@@ -3252,7 +3252,7 @@ class AJAXChat
             return false;
         }
 
-        if (2 == count($textParts) || !is_numeric($textParts[2]) || $textParts[2] <= 0) {
+        if (count($textParts) == 2 || !is_numeric($textParts[2]) || $textParts[2] <= 0) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
                 '/error NotInteger'
@@ -3319,7 +3319,7 @@ class AJAXChat
      */
     public function insertParsedMessageGift($textParts)
     {
-        if (1 == count($textParts)) {
+        if (count($textParts) == 1) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
                 '/error MissingUserName'
@@ -3328,7 +3328,7 @@ class AJAXChat
             return false;
         }
 
-        if (2 == count($textParts) || !is_numeric($textParts[2]) || $textParts[2] <= 0) {
+        if (count($textParts) == 2 || !is_numeric($textParts[2]) || $textParts[2] <= 0) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
                 '/error NotInteger'
@@ -3750,36 +3750,36 @@ class AJAXChat
                 }
         }
 
-        $hour  = (null === $this->getRequestVar('hour') || $this->getRequestVar('hour') > 23 || $this->getRequestVar('hour') < 0) ? null : $this->getRequestVar('hour');
-        $day   = (null === $this->getRequestVar('day') || $this->getRequestVar('day') > 31 || $this->getRequestVar('day') < 1) ? null : $this->getRequestVar('day');
-        $month = (null === $this->getRequestVar('month') || $this->getRequestVar('month') > 12 || $this->getRequestVar('month') < 1) ? null : $this->getRequestVar('month');
-        $year  = (null === $this->getRequestVar('year') || $this->getRequestVar('year') > date('Y') || $this->getRequestVar('year') < $this->getConfig('logsFirstYear')) ? null : $this->getRequestVar('year');
+        $hour = ($this->getRequestVar('hour') === null || $this->getRequestVar('hour') > 23 || $this->getRequestVar('hour') < 0) ? null : $this->getRequestVar('hour');
+        $day = ($this->getRequestVar('day') === null || $this->getRequestVar('day') > 31 || $this->getRequestVar('day') < 1) ? null : $this->getRequestVar('day');
+        $month = ($this->getRequestVar('month') === null || $this->getRequestVar('month') > 12 || $this->getRequestVar('month') < 1) ? null : $this->getRequestVar('month');
+        $year = ($this->getRequestVar('year') === null || $this->getRequestVar('year') > date('Y') || $this->getRequestVar('year') < $this->getConfig('logsFirstYear')) ? null : $this->getRequestVar('year');
 
-        if (null !== $hour) {
-            if (null === $day) {
+        if ($hour !== null) {
+            if ($day === null) {
                 $day = date('j');
             }
-            if (null === $month) {
+            if ($month === null) {
                 $month = date('n');
             }
-            if (null === $year) {
+            if ($year === null) {
                 $year = date('Y');
             }
         }
 
-        if (null === $year) {
+        if ($year === null) {
             // No year given, so no period condition
-        } elseif (null === $month) {
+        } elseif ($month === null) {
             // Define the given year as period:
             $periodStart = mktime(0, 0, 0, 1, 1, $year);
             // The last day in a month can be expressed by using 0 for the day of the next month:
             $periodEnd = mktime(23, 59, 59, 13, 0, $year);
-        } elseif (null === $day) {
+        } elseif ($day === null) {
             // Define the given month as period:
             $periodStart = mktime(0, 0, 0, $month, 1, $year);
             // The last day in a month can be expressed by using 0 for the day of the next month:
             $periodEnd = mktime(23, 59, 59, $month + 1, 0, $year);
-        } elseif (null === $hour) {
+        } elseif ($hour === null) {
             // Define the given day as period:
             $periodStart = mktime(0, 0, 0, $month, $day, $year);
             $periodEnd   = mktime(23, 59, 59, $month, $day, $year);
@@ -3795,11 +3795,11 @@ class AJAXChat
 
         // Check the search condition:
         if ($this->getRequestVar('search')) {
-            if (($this->getUserRole() >= UC_STAFF) && 0 === strpos($this->getRequestVar('search'), 'ip=')) {
+            if (($this->getUserRole() >= UC_STAFF) && strpos($this->getRequestVar('search'), 'ip=') === 0) {
                 // Search for messages with the given IP:
                 $ip = substr($this->getRequestVar('search'), 3);
                 $condition .= ' AND (ip = ' . ipToStorageFormat($ip) . ')';
-            } elseif (0 === strpos($this->getRequestVar('search'), 'userID=')) {
+            } elseif (strpos($this->getRequestVar('search'), 'userID=') === 0) {
                 // Search for messages with the given userID:
                 $userID = substr($this->getRequestVar('search'), 7);
                 $condition .= ' AND (userID = ' . sqlesc($userID) . ')';
@@ -3910,7 +3910,7 @@ class AJAXChat
      */
     public function convertFromUnicode($str, $contentEncoding = null)
     {
-        if (null === $contentEncoding) {
+        if ($contentEncoding === null) {
             $contentEncoding = $this->getConfig('contentEncoding');
         }
 
@@ -3960,7 +3960,7 @@ class AJAXChat
             require_once AJAX_CHAT_PATH . 'lib' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . $this->getLangCode() . '.php';
             $this->_lang = &$lang;
         }
-        if (null === $key) {
+        if ($key === null) {
             return $this->_lang;
         }
         if (isset($this->_lang[$key])) {
@@ -3983,7 +3983,7 @@ class AJAXChat
             (isset($_SERVER['HTTPS']) ? 'https://' : 'http://') .
             (isset($_SERVER['REMOTE_USER']) ? $_SERVER['REMOTE_USER'] . '@' : '') .
             (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : ($_SERVER['SERVER_NAME'] .
-                (isset($_SERVER['HTTPS']) && 443 == $_SERVER['SERVER_PORT'] || 80 == $_SERVER['SERVER_PORT'] ? '' : ':' . $_SERVER['SERVER_PORT']))) .
+                (isset($_SERVER['HTTPS']) && $_SERVER['SERVER_PORT'] == 443 || $_SERVER['SERVER_PORT'] == 80 ? '' : ':' . $_SERVER['SERVER_PORT']))) .
             substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '/') + 1);
     }
 

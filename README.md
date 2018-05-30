@@ -48,6 +48,12 @@ innodb_file_format = Barracuda
 innodb_large_prefix = 1
 innodb_file_per_table = 1
 
+# restart mysql
+sudo service mysql restart
+
+# create database
+CREATE DATABASE Pu-239;
+
 # goto website and complete install, all fields must be completed and each fields includes an example and tooltip explanation when hovered
 
 # delete public/install folder once directed to

@@ -83,8 +83,8 @@ $page             = (isset($_GET['page']) ? intval($_GET['page']) : 0);
 $perpage          = (isset($_GET['perpage']) ? intval($_GET['perpage']) : ($CURUSER['pms_per_page'] > 0 ? $CURUSER['pms_per_page'] : 20));
 $mailbox          = (isset($_GET['box']) ? intval($_GET['box']) : (isset($_POST['box']) ? intval($_POST['box']) : 1));
 $pm_id            = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
-$save             = ((isset($_POST['save']) && 1 === $_POST['save']) ? '1' : '0');
-$urgent           = ((isset($_POST['urgent']) && 'yes' === $_POST['urgent']) ? 'yes' : 'no');
+$save = ((isset($_POST['save']) && $_POST['save'] === 1) ? '1' : '0');
+$urgent = ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? 'yes' : 'no');
 $desc_asc         = (isset($_GET['ASC']) ? '&amp;DESC=1' : (isset($_GET['DESC']) ? '&amp;ASC=1' : ''));
 $desc_asc_2       = (isset($_GET['DESC']) ? 'ascending' : 'descending');
 $spacer           = '&#160;&#160;&#160;&#160;';
@@ -125,7 +125,7 @@ if (isset($_GET['change_pm_number'])) {
 }
 
 if (isset($_GET['show_pm_avatar'])) {
-    $show_pm_avatar = ('yes' === $_GET['show_pm_avatar'] ? 'yes' : 'no');
+    $show_pm_avatar = ($_GET['show_pm_avatar'] === 'yes' ? 'yes' : 'no');
     sql_query('UPDATE users SET show_pm_avatar = ' . sqlesc($show_pm_avatar) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $cache->update_row('user' . $CURUSER['id'], [
         'show_pm_avatar' => $show_pm_avatar,
@@ -151,7 +151,7 @@ isset($_GET['new_draft']) ? $session->set('is-success', $lang['pm_draft_saved'])
 isset($_GET['sent']) ? $session->set('is-success', $lang['pm_msg_sent']) : null;
 isset($_GET['pms']) ? $session->set('is-success', $lang['pm_msg_sett']) : null;
 
-$mailbox_name = (PM_INBOX === $mailbox ? $lang['pm_inbox'] : (PM_SENTBOX === $mailbox ? $lang['pm_sentbox'] : $lang['pm_drafts']));
+$mailbox_name = ($mailbox === PM_INBOX ? $lang['pm_inbox'] : ($mailbox === PM_SENTBOX ? $lang['pm_sentbox'] : $lang['pm_drafts']));
 switch ($action) {
     case 'view_mailbox':
         require_once PM_DIR . 'view_mailbox.php';
@@ -225,7 +225,7 @@ function get_all_boxes($box = 1)
     }
     $boxes = "
         <select name='box' class='right10'>
-            <option value='1'" . (1 === $box ? 'selected' : '') . ">{$lang['pm_inbox']}</option>
+            <option value='1'" . ($box === 1 ? 'selected' : '') . ">{$lang['pm_inbox']}</option>
             <option value='-1'" . ($box === -1 ? 'selected' : '') . ">{$lang['pm_sentbox']}</option>
             <option value='-2'" . ($box === -2 ? 'selected' : '') . ">{$lang['pm_drafts']}</option>";
     if (!empty($get_all_boxes)) {
@@ -256,9 +256,9 @@ function insertJumpTo($mailbox)
                                     <input type="hidden" name="action" value="view_mailbox" />
                                     <select name="box" onchange="location = this.options[this.selectedIndex].value;">
                                     <option class="head" value="">' . $lang['pm_jump_to'] . '</option>
-                                    <option value="pm_system.php?action=view_mailbox&amp;box=1" ' . ('1' == $mailbox ? 'selected' : '') . '>' . $lang['pm_inbox'] . '</option>
-                                    <option value="pm_system.php?action=view_mailbox&amp;box=-1" ' . ('-1' == $mailbox ? 'selected' : '') . '>' . $lang['pm_sentbox'] . '</option>
-                                    <option value="pm_system.php?action=view_mailbox&amp;box=-2" ' . ('-2' == $mailbox ? 'selected' : '') . '>' . $lang['pm_drafts'] . '</option>';
+                                    <option value="pm_system.php?action=view_mailbox&amp;box=1" ' . ($mailbox == '1' ? 'selected' : '') . '>' . $lang['pm_inbox'] . '</option>
+                                    <option value="pm_system.php?action=view_mailbox&amp;box=-1" ' . ($mailbox == '-1' ? 'selected' : '') . '>' . $lang['pm_sentbox'] . '</option>
+                                    <option value="pm_system.php?action=view_mailbox&amp;box=-2" ' . ($mailbox == '-2' ? 'selected' : '') . '>' . $lang['pm_drafts'] . '</option>';
         while ($row = mysqli_fetch_assoc($res)) {
             $insertJumpTo .= '<option value="pm_system.php?action=view_mailbox&amp;box=' . (int) $row['boxnumber'] . '" ' . ((int) $row['boxnumber'] == $mailbox ? 'selected' : '') . '>' . htmlsafechars($row['name']) . '</option>';
         }

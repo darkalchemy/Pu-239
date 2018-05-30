@@ -55,7 +55,7 @@ class AJAXChatTemplate
 
         if ($this->_contentType && (strpos($this->_contentType, 'xml')) === false) {
             $doctypeStart = strpos($this->_parsedContent, '<!doctype ');
-            if (false !== $doctypeStart) {
+            if ($doctypeStart !== false) {
                 $this->_parsedContent = substr($this->_parsedContent, $doctypeStart);
             }
         }
@@ -106,7 +106,7 @@ class AJAXChatTemplate
                 return $this->_contentType;
 
             case 'LOGIN_URL':
-                return ('logs' == $this->ajaxChat->getRequestVar('view')) ? './?view=logs' : './';
+                return ($this->ajaxChat->getRequestVar('view') == 'logs') ? './?view=logs' : './';
 
             case 'USER_NAME_MAX_LENGTH':
                 return $this->ajaxChat->getConfig('userNameMaxLength');
@@ -276,7 +276,7 @@ class AJAXChatTemplate
         }
         if (!$channelSelected) {
             $channelName = $this->ajaxChat->getChannelName();
-            if (null !== $channelName) {
+            if ($channelName !== null) {
                 $channelOptions .= '<option value="' . $this->ajaxChat->htmlEncode($channelName) . '" selected="selected">' . $this->ajaxChat->htmlEncode($channelName) . '</option>';
             } else {
                 $channelOptions .= '<option value="" selected="selected">---</option>';
@@ -413,7 +413,7 @@ class AJAXChatTemplate
     {
         static $i;
         $i += 1;
-        if (0 == $i % 2) {
+        if ($i % 2 == 0) {
             return $rowEven;
         } else {
             return $rowOdd;

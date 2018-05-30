@@ -79,7 +79,7 @@ class PHPZip
             $pref = $args[1];
             $dh   = opendir($dir);
             while ($files = readdir($dh)) {
-                if (('.' != $files) && ('..' != $files)) {
+                if (($files != '.') && ($files != '..')) {
                     if (is_dir($dir . $files)) {
                         $curdir = getcwd();
                         chdir($dir . $files);
@@ -167,7 +167,7 @@ class PHPZip
      */
     public function unix2DosTime($unixtime = 0)
     {
-        $timearray = (0 == $unixtime) ? getdate() : getdate($unixtime);
+        $timearray = ($unixtime == 0) ? getdate() : getdate($unixtime);
         if ($timearray['year'] < 1980) {
             $timearray['year']    = 1980;
             $timearray['mon']     = 1;
@@ -192,8 +192,8 @@ class PHPZip
         $data    = implode('', $this->datasec);
         $ctrldir = implode('', $this->ctrl_dir);
 
-        return $data . $ctrldir . $this->eof_ctrl_dir . pack('v', sizeof($this->ctrl_dir)) . // total # of entries "on this disk"
-            pack('v', sizeof($this->ctrl_dir)) . // total # of entries overall
+        return $data . $ctrldir . $this->eof_ctrl_dir . pack('v', count($this->ctrl_dir)) . // total # of entries "on this disk"
+            pack('v', count($this->ctrl_dir)) . // total # of entries overall
             pack('V', strlen($ctrldir)) . // size of central dir
             pack('V', strlen($data)) . // offset to start of central dir
             "\x00\x00"; // .zip file comment length
@@ -211,7 +211,7 @@ class PHPZip
             ini_set('zlib.output_compression', 'Off');
         }
         // Security checks
-        if ('' == $archiveName) {
+        if ($archiveName == '') {
             echo '<html><title>Public Photo Directory - Download </title><body><br><b>ERROR:</b> The download file was NOT SPECIFIED.</body></html>';
             exit;
         } elseif (!file_exists($archiveName)) {

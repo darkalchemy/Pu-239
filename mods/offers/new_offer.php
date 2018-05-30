@@ -3,7 +3,7 @@
 global $CURUSER, $site_config;
 
 $offer = (isset($_POST['offertitle']) ? $_POST['offertitle'] : '');
-if ('' == $offer) {
+if ($offer == '') {
     stderr('Error', 'You must enter a title!');
 }
 $cat = (isset($_POST['category']) ? (int) $_POST['category'] : 0);
@@ -37,7 +37,7 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
     mysqli_query($GLOBALS['___mysqli_ston'], 'UPDATE users SET seedbonus = seedbonus-' . $site_config['offer_cost_bonus'] . " WHERE id = $CURUSER[id]") or sqlerr(__FILE__, __LINE__);
 }
 write_log('Offer (' . $offer . ") was added to the Offer section by $CURUSER[username]");
-if (1 == $site_config['autoshout_on']) {
+if ($site_config['autoshout_on'] == 1) {
     $message = " [b][color=blue]New Offer[/color][/b]  [url={$site_config['baseurl']}/viewoffers.php?id=$id&offer_details] " . $offer . '[/url]  ';
     autoshout($message);
 }

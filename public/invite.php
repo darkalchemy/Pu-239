@@ -22,11 +22,11 @@ $valid_actions = [
     'send_email',
 ];
 $do = (($do && in_array($do, $valid_actions, true)) ? $do : '') or header('Location: ?do=view_page');
-if ('yes' == $CURUSER['suspended']) {
+if ($CURUSER['suspended'] === 'yes') {
     stderr('Sorry', 'Your account is suspended');
 }
 
-if ('view_page' == $do) {
+if ($do === 'view_page') {
     $sql = $fluent->from('users')
         ->select(null)
         ->select('id')
@@ -58,7 +58,7 @@ if ('view_page' == $do) {
                     </tr>";
         foreach ($rows as $row) {
             $ratio = member_ratio($row['uploaded'], $site_config['ratio_free'] ? '0' : $row['downloaded']);
-            if ('confirmed' == $row['status']) {
+            if ($row['status'] === 'confirmed') {
                 $status = "<span class='has-text-success'>{$lang['invites_confirm1']}</span>";
             } else {
                 $status = "<span class='has-text-red'>{$lang['invites_pend']}</span>";
@@ -70,7 +70,7 @@ if ('view_page' == $do) {
                         <td>' . mksize($row['downloaded']) . '</td>') . "
                         <td>{$ratio}</td>
                         <td>{$status}</td>";
-            if ('pending' == $row['status']) {
+            if ($row['status'] === 'pending') {
                 $body .= "
                         <td>
                             <a {$site_config['baseurl']}/invite.php?do=confirm_account&amp;userid=" . (int) $row['id'] . '&amp;sender=' . (int) $CURUSER['id'] . "'>
@@ -139,11 +139,11 @@ if ('view_page' == $do) {
             </form>";
     echo stdhead('Invites') . wrapper($HTMLOUT) . stdfoot();
     die();
-} elseif ('create_invite' == $do) {
+} elseif ($do === 'create_invite') {
     if ($CURUSER['invites'] <= 0) {
         stderr($lang['invites_error'], $lang['invites_noinvite']);
     }
-    if ('no' == $CURUSER['invite_rights'] || 'yes' == $CURUSER['suspended']) {
+    if ($CURUSER['invite_rights'] ==='no' || $CURUSER['suspended'] === 'yes') {
         stderr($lang['invites_deny'], $lang['invites_disabled']);
     }
     $res = sql_query('SELECT COUNT(id) FROM users') or sqlerr(__FILE__, __LINE__);
@@ -175,8 +175,8 @@ if ('view_page' == $do) {
         'invites' => $update['invites'],
     ], $site_config['expires']['user_cache']);
     header('Location: ?do=view_page');
-} elseif ('send_email' == $do) {
-    if ('POST' == $_SERVER['REQUEST_METHOD']) {
+} elseif ($do === 'send_email') {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $email  = (isset($_POST['email']) ? htmlsafechars($_POST['email']) : '');
         $invite = (isset($_POST['code']) ? htmlsafechars($_POST['code']) : '');
         $secret = (isset($_POST['secret']) ? htmlsafechars($_POST['secret']) : '');
@@ -188,7 +188,7 @@ if ('view_page' == $do) {
             ->select('COUNT(*) AS count')
             ->where('email = ?', $email)
             ->fetch('count');
-        if (0 != $check) {
+        if ($check != 0) {
             stderr('Error', 'This email address is already in use!');
         }
         if (!validemail($email)) {
@@ -272,7 +272,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
             </form>
         </div>";
     echo stdhead('Invites') . $HTMLOUT . stdfoot();
-} elseif ('delete_invite' == $do) {
+} elseif ($do === 'delete_invite') {
     $id    = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : ''));
     $query = sql_query('SELECT * FROM invite_codes WHERE id = ' . sqlesc($id) . ' AND sender = ' . sqlesc($CURUSER['id']) . ' AND status = "pending"') or sqlerr(__FILE__, __LINE__);
     $assoc = mysqli_fetch_assoc($query);

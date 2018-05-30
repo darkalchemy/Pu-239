@@ -15,10 +15,10 @@ if (!defined('DATABASE_DIR')) {
     require_once DATABASE_DIR . 'sql_updates.php';
 }
 
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     extract($_POST);
     unset($_POST);
-    if ($id >= 1 && 'Run Query' === $submit) {
+    if ($id >= 1 && $submit === 'Run Query') {
         $sql = $sql_updates[$id - 1]['query'];
         if (sql_query($sql)) {
             $sql = 'INSERT INTO database_updates (id, query) VALUES (' . sqlesc($id) . ', ' . sqlesc($sql) . ')';
@@ -34,7 +34,7 @@ $table_exists = $cache->get('table_exists_database_updates');
 if ($table_exists === false || is_null($table_exists)) {
     $sql    = "SHOW tables LIKE 'database_updates'";
     $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    if (1 != mysqli_num_rows($result)) {
+    if (mysqli_num_rows($result) != 1) {
         sql_query(
             "CREATE TABLE `database_updates` (
               `id` INT(10) UNSIGNED NOT NULL DEFAULT '0',

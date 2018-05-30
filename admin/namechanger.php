@@ -34,7 +34,7 @@ if (isset($mode) && $mode == 'change') {
         $changed = sqlesc("{$lang['namechanger_changed_to']} $uname");
         $subject = sqlesc($lang['namechanger_changed']);
         if (!$change) {
-            if (((is_object($GLOBALS['___mysqli_ston'])) == 1062 ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
+            if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
                 stderr($lang['namechanger_borked'], $lang['namechanger_already_exist']);
             }
         }

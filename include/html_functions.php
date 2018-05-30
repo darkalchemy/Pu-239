@@ -67,7 +67,7 @@ function end_frame()
 function begin_table($striped = false)
 {
     $htmlout = '';
-    $stripe  = true === $striped ? ' table-striped' : '';
+    $stripe = $striped === true ? ' table-striped' : '';
     $htmlout .= "<table class='sucks table table-bordered{$stripe}'>\n";
 
     return $htmlout;
@@ -137,7 +137,7 @@ function insert_smilies_frame()
  */
 function main_table($body, $header = null, $class = null, $wrapper_class = null)
 {
-    $thead = null != $header ? "
+    $thead = $header != null ? "
                         <thead>
                             $header
                         </thead>" : '';
@@ -160,7 +160,7 @@ function main_table($body, $header = null, $class = null, $wrapper_class = null)
  */
 function main_div($text, $class = null)
 {
-    if ('' === $text) {
+    if ($text === '') {
         return;
     } else {
         return "
@@ -180,7 +180,7 @@ function main_div($text, $class = null)
  */
 function wrapper($text, $class = '')
 {
-    if ('' === $text) {
+    if ($text === '') {
         return;
     } else {
         return "

@@ -10,7 +10,7 @@ global $site_config, $lang;
 $lang    = array_merge($lang, load_language('bonusmanager'));
 $HTMLOUT = $count = '';
 $res     = sql_query('SELECT * FROM bonus ORDER BY orderid, bonusname') or sqlerr(__FILE__, __LINE__);
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['id']) || isset($_POST['orderid']) || isset($_POST['points']) || isset($_POST['pointspool']) || isset($_POST['minpoints']) || isset($_POST['description']) || isset($_POST['enabled']) || isset($_POST['minclass'])) {
         $id         = (int) $_POST['id'];
         $points     = (int) $_POST['bonuspoints'];
@@ -19,7 +19,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
         $minclass   = (int) $_POST['minclass'];
         $descr      = htmlsafechars($_POST['description']);
         $enabled    = 'yes';
-        if ('' == isset($_POST['enabled'])) {
+        if (empty($_POST['enabled'])) {
             $enabled = 'no';
         }
         $orderid = (int) $_POST['orderid'];
@@ -61,7 +61,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
       <tr><td>
         <input name='id' type='hidden' value='" . (int) $arr['id'] . "' />" . (int) $arr['id'] . "</td>
         <td><input type='text' name='orderid' value='" . (int) $arr['orderid'] . "' size='4' /></td>
-        <td><input name='enabled' type='checkbox'" . ('yes' == $arr['enabled'] ? ' checked' : '') . ' /></td>
+        <td><input name='enabled' type='checkbox'" . ($arr['enabled'] === 'yes' ? ' checked' : '') . ' /></td>
         <td>' . htmlsafechars($arr['bonusname']) . "</td>
         <td><input type='text' name='bonuspoints' value='" . (int) $arr['points'] . "' size='4' /></td>
         <td><input type='text' name='pointspool' value='" . (int) $arr['pointspool'] . "' size='4' /></td>
@@ -69,7 +69,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
         <td><input type='text' name='minclass' value='" . (int) $arr['minclass'] . "' size='4' /></td>
         <td><textarea name='description' rows='4' cols='10'>" . htmlsafechars($arr['description']) . '</textarea></td>
         <td>' . htmlsafechars($arr['art']) . '</td>
-        <td>' . (('traffic' == $arr['art'] || 'traffic2' == $arr['art'] || 'gift_1' == $arr['art'] || 'gift_2' == $arr['art']) ? (htmlsafechars($arr['menge']) / 1024 / 1024 / 1024) . ' GB' : htmlsafechars($arr['menge'])) . "</td>
+        <td>' . (($arr['art'] === 'traffic' || $arr['art'] === 'traffic2' || $arr['art'] === 'gift_1' || $arr['art'] === 'gift_2') ? (htmlsafechars($arr['menge']) / 1024 / 1024 / 1024) . ' GB' : htmlsafechars($arr['menge'])) . "</td>
         <td><input type='submit' value='{$lang['bonusmanager_submit']}' /></td>
         </tr></table></div></form>";
 }

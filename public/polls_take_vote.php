@@ -18,7 +18,7 @@ $sql = "SELECT * FROM polls
             AND poll_voters.user_id = {$CURUSER['id']}
             WHERE pid = " . sqlesc($poll_id);
 $query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-if (1 == !mysqli_num_rows($query)) {
+if (!mysqli_num_rows($query) == 1) {
     stderr('ERROR', 'No poll with that ID');
 }
 $poll_data = mysqli_fetch_assoc($query);
@@ -37,7 +37,7 @@ if (!$_POST['nullvote']) {
     }
     foreach ($_POST as $k => $v) {
         if (preg_match("#^choice_(\d+)_(\d+)$#", $k, $matches)) {
-            if (1 == $_POST[$k]) {
+            if ($_POST[$k] == 1) {
                 $vote_cast[$matches[1]][] = $matches[2];
             }
         }

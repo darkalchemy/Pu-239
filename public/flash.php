@@ -30,7 +30,7 @@ if (isset($_GET['gameURI'])) {
         stderr('Error', 'Could not find game!');
     }
 }
-if (!isset($CURUSER['gameheight']) || 0 === $CURUSER['gameheight']) {
+if (!isset($CURUSER['gameheight']) || $CURUSER['gameheight'] === 0) {
     $game_height = 800;
 } else {
     $game_height = $CURUSER['gameheight'];

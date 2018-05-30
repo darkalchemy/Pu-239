@@ -124,14 +124,14 @@ function createblock($fo, $foo)
         $out .= '
             <tr>
                 <td class="input_text">' . $bo['text'] . '</td>';
-        if (true == strpos($bo['input'], 'pass')) {
+        if (strpos($bo['input'], 'pass') == true) {
             $type = 'password';
-        } elseif ('config[xbt_tracker]' == $bo['input']) {
+        } elseif ($bo['input'] == 'config[xbt_tracker]') {
             $type = 'checkbox" value="yes"';
         } else {
             $type = 'text';
         }
-        $explain = !empty($bo['explain']) ? "<div class='info'>{$bo['explain']}</div>" : '';
+        $explain = !empty($bo['explain']) ? "<div class='info'>{$bo['explain']}</div>" : "";
         $out .= "
                 <td class='input_input'>
                     <input type='{$type}' name='{$bo['input']}' size='30' placeholder='{$bo['placeholder']}' title='{$bo['info']}' />$explain
@@ -155,7 +155,7 @@ function saveconfig()
         <legend>Write config</legend>';
 
     foreach ($_POST['config'] as $key => $value) {
-        if (!isset($value) || '' === $value) {
+        if (!isset($value) || $value === '') {
             $out .= "
         <div class='notreadable'>$key must not be empty</div>";
             $continue = false;
@@ -227,7 +227,7 @@ function saveconfig()
             $continue = false;
         }
     }
-    if(rrmdir('/dev/shm/' . $_POST['config']['mysql_db'])) {
+    if (rrmdir('/dev/shm/' . $_POST['config']['mysql_db'])) {
         $out .= '
         <div class="readable">default cache has ben cleared</div>';
     }

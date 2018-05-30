@@ -17,20 +17,20 @@ use Nette\Mail\SendmailMailer;
 $HTMLOUT     = '';
 $record_mail = true; // set this true or false . If you set this true every time whene you send a mail the time , userid , and the number of mail sent will be recorded
 $days        = 30; //number of days of inactivity
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = isset($_POST['action']) ? htmlsafechars(trim($_POST['action'])) : '';
-    if (empty($_POST['userid']) && (('deluser' == $action) || ('mail' == $action))) {
+    if (empty($_POST['userid']) && (($action === 'deluser') || ($action === 'mail'))) {
         stderr($lang['inactive_error'], "{$lang['inactive_selectuser']}");
     }
 
-    if ('deluser' == $action && (!empty($_POST['userid']))) {
+    if ($action === 'deluser' && (!empty($_POST['userid']))) {
         $res   = sql_query('SELECT id, email, modcomment, username, added, last_access FROM users WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ORDER BY last_access DESC ');
         $count = mysqli_num_rows($res);
         while ($arr = mysqli_fetch_array($res)) {
             $userid   = (int) $arr['id'];
             $username = htmlsafechars($arr['username']);
             $res_del  = sql_query(account_delete($userid)) or sqlerr(__FILE__, __LINE__);
-            if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+            if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) !== false) {
                 $cache->delete('user' . $userid);
                 write_log("User: $username Was deleted by {$CURUSER['username']}");
             }
@@ -38,12 +38,12 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
         stderr($lang['inactive_success'], "{$lang['inactive_deleted']} <a href='" . $site_config['baseurl'] . "/staffpanel.php?tool=inactive>{$lang['inactive_back']}</a>");
     }
 
-    if ('disable' == $action && (!empty($_POST['userid']))) {
+    if ($action === 'disable' && (!empty($_POST['userid']))) {
         sql_query("UPDATE users SET enabled='no' WHERE id IN (" . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ');
         stderr($lang['inactive_success'], "{$lang['inactive_disabled']} <a href='" . $site_config['baseurl'] . "/staffpanel.php?tool=inactive>{$lang['inactive_back']}</a>");
     }
 
-    if ('mail' == $action && (!empty($_POST['userid']))) {
+    if ($action === 'mail' && (!empty($_POST['userid']))) {
         $res   = sql_query('SELECT id, email, modcomment, username, added, last_access FROM users WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ORDER BY last_access DESC ');
         $count = mysqli_num_rows($res);
         while ($arr = mysqli_fetch_array($res)) {
@@ -136,7 +136,7 @@ if ($count_inactive > 0) {
     <td class='colhead'>{$lang['inactive_x']}</td></tr>";
     while ($arr = mysqli_fetch_assoc($res)) {
         $ratio     = (member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']));
-        $last_seen = (('0' == $arr['last_access']) ? 'never' : '' . get_date($arr['last_access'], 'DATE') . '&#160;');
+        $last_seen = (($arr['last_access'] == '0') ? 'never' : '' . get_date($arr['last_access'], 'DATE') . '&#160;');
         $class     = get_user_class_name($arr['class']);
         $HTMLOUT .= "<tr>
         <td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['username']) . '</a></td>

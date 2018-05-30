@@ -1,7 +1,7 @@
 <?php
 
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'bittorrent.php';
 global $cache;
 
 $cleanup_check = $cache->get('cleanup_check_');

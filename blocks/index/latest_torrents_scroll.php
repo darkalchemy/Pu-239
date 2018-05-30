@@ -43,7 +43,7 @@ if ($scroll_torrents) {
         extract($scroll_torrent);
         $i = $site_config['latest_torrents_limit_scroll'];
 
-        if ('yes' == $anonymous && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
+        if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
             $uploader = '<span>' . get_anonymous_name() . '</span>';
         } else {
             $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . '</span>';

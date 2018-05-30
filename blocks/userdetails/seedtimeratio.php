@@ -17,15 +17,15 @@ if ($cache_share_ratio === false || is_null($cache_share_ratio)) {
 }
 
 switch (true) {
-    case UC_USER == $user['class']:
+    case $user['class'] == UC_USER:
         $days = 2;
         break;
 
-    case UC_POWER_USER == $user['class']:
+    case $user['class'] == UC_POWER_USER:
         $days = 1.5;
         break;
 
-    case UC_VIP == $user['class'] || UC_UPLOADER == $user['class'] || UC_STAFF == $user['class'] || UC_ADMINISTRATOR == $user['class'] || UC_SYSOP == $user['class']:
+    case $user['class'] == UC_VIP || $user['class'] == UC_UPLOADER || $user['class'] == UC_STAFF || $user['class'] == UC_ADMINISTRATOR || $user['class'] == UC_SYSOP:
         $days = 0.5;
         break;
 }

@@ -34,7 +34,7 @@ if ($remove > 0) {
         unset($_GET);
     }
 }
-if ('POST' == $_SERVER['REQUEST_METHOD'] && UC_MAX == $CURUSER['class']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] == UC_MAX) {
     $first   = trim($_POST['first']);
     $last    = trim($_POST['last']);
     $comment = htmlsafechars(trim($_POST['comment']));
@@ -43,7 +43,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD'] && UC_MAX == $CURUSER['class']) {
     }
     $test_first = ip2long($first);
     $test_last  = ip2long($last);
-    if ($test_first == -1 || false === $test_first || $test_last == -1 || false === $test_last) {
+    if ($test_first == -1 || $test_first === false || $test_last == -1 || $test_last === false) {
         stderr("{$lang['stderr_error']}", "{$lang['text_badip']}");
     }
     $added = TIME_NOW;
@@ -87,7 +87,7 @@ $HTMLOUT = "
             <div class='padding20'>
                 <h2>{$lang['text_current']}</h2>
             </div>";
-if (0 == $count) {
+if ($count == 0) {
     $HTMLOUT .= main_div("<p><b>{$lang['text_nothing']}</b></p>");
 } else {
     if ($count > $perpage) {

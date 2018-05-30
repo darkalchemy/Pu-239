@@ -32,7 +32,7 @@ define('DEFAULT_AVG', INTERVAL_15_MIN); // selects which load average to return 
 function is_s($n)
 {
     global $lang;
-    if (1 == $n) {
+    if ($n == 1) {
         return '';
     } else {
         return $lang['index_load_s'];

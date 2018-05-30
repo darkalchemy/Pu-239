@@ -23,7 +23,7 @@ $images = [
 $session->set('simpleCaptchaAnswer', null);
 $resp = [];
 header('Content-Type: application/json');
-if (!isset($images) || !is_array($images) || sizeof($images) < 3) {
+if (!isset($images) || !is_array($images) || count($images) < 3) {
     $resp['error'] = "There aren't enough images!";
     echo json_encode($resp);
     exit;
@@ -34,7 +34,7 @@ if (isset($_POST['numImages']) && strlen($_POST['numImages']) > 0) {
     $numImages = intval($_GET['numImages']);
 }
 $numImages = ($numImages > 0) ? $numImages : 5;
-$size      = sizeof($images);
+$size      = count($images);
 $num       = min([
                $size,
                $numImages,
@@ -43,7 +43,7 @@ $keys = array_keys($images);
 $used = [];
 for ($i = 0; $i < $num; ++$i) {
     $r = random_int(0, $size - 1);
-    while (false !== array_search($keys[$r], $used)) {
+    while (array_search($keys[$r], $used) !== false) {
         $r = random_int(0, $size - 1);
     }
     array_push($used, $keys[$r]);
@@ -53,7 +53,7 @@ $session->set('simpleCaptchaAnswer', hash('sha512', $selectText . $site_config['
 $resp['text']   = $selectText;
 $resp['images'] = [];
 shuffle($used);
-for ($i = 0; $i < sizeof($used); ++$i) {
+for ($i = 0; $i < count($used); ++$i) {
     array_push($resp['images'], [
         'hash' => hash('sha512', $used[$i] . $site_config['site']['salt']),
         'file' => $images[$used[$i]],

@@ -90,15 +90,15 @@ if (!is_array($scheduled_events)) {
     $HTMLOUT .= "{$lang['events_err_load']}";
 } else {
     foreach ($_POST as $key => $value) {
-        if ('boolean' != gettype($pos = strpos($key, '_'))) {
+        if (gettype($pos = strpos($key, '_')) != 'boolean') {
             $id = (int) substr($key, $pos + 1);
-            if ('boolean' != gettype(strpos($key, 'removeEvent_'))) {
+            if (gettype(strpos($key, 'removeEvent_')) != 'boolean') {
                 $sql = "DELETE FROM `events` WHERE `id` = $id LIMIT 1;";
                 $res = sql_query($sql);
-                if (0 != ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))) {
+                if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) != 0) {
                     $HTMLOUT .= "<p>{$lang['events_err_del']}" . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br>{$lang['events_click']} <a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br></p>\n";
                 } else {
-                    if (0 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+                    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
                         $HTMLOUT .= "<p>{$lang['events_err_del']}" . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br>{$lang['events_click']}<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a> {$lang['events_goback']}<br></p>\n";
                     } else {
                         $HTMLOUT .= "<p>{$lang['events_deleted']}</p>\n";
@@ -106,7 +106,7 @@ if (!is_array($scheduled_events)) {
                         die();
                     }
                 }
-            } elseif ('boolean' != gettype(strpos($key, 'saveEvent_'))) {
+            } elseif (gettype(strpos($key, 'saveEvent_')) != 'boolean') {
                 $text      = '';
                 $start     = 0;
                 $end       = 0;
@@ -126,19 +126,19 @@ if (!is_array($scheduled_events)) {
                 if (isset($_POST['editFreeleech'])) {
                     $freeleech = 1;
                 }
-                if ('' == isset($_POST['editFreeleech'])) {
+                if (isset($_POST['editFreeleech']) == '') {
                     $freeleech = 0;
                 }
                 if (isset($_POST['editDoubleupload'])) {
                     $doubleupload = 1;
                 }
-                if ('' == isset($_POST['editDoubleupload'])) {
+                if (isset($_POST['editDoubleupload']) == '') {
                     $doubleupload = 0;
                 }
                 if (isset($_POST['editHalfdownload'])) {
                     $halfdownload = 1;
                 }
-                if ('' == isset($_POST['editHalfdownload'])) {
+                if (isset($_POST['editHalfdownload']) == '') {
                     $halfdownload = 0;
                 }
                 if (array_key_exists('editShowDates', $_POST)) {
@@ -150,10 +150,10 @@ if (!is_array($scheduled_events)) {
                     $sql = "UPDATE `events` SET `overlayText` = '$text',`startTime` = $start, `endTime` = $end, `displayDates` = $showDates, `freeleechEnabled` = $freeleech, `duploadEnabled` = $doubleupload, `hdownEnabled` = $halfdownload, `userid` = $userid  WHERE `id` = $id;";
                 }
                 $res = sql_query($sql);
-                if (0 != ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))) {
+                if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) != 0) {
                     $HTMLOUT .= "<p>{$lang['events_err_save']}" . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br>{$lang['events_click']}<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br></p>\n";
                 } else {
-                    if (0 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+                    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
                         $HTMLOUT .= "<p>{$lang['events_err_nochange']}<br>{$lang['events_click']}<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br></p>\n";
                     } else {
                         $HTMLOUT .= "<p>{$lang['events_saved']}</p>\n";
@@ -207,9 +207,9 @@ if (!is_array($scheduled_events)) {
     }
     $HTMLOUT .= "<tr><td colspan='9'><input type='submit' class='button is-small' name='editEvent_-1' value='{$lang['events_add']}'' /></td></tr></table>";
     foreach ($_POST as $key => $value) {
-        if ('boolean' != gettype($pos = strpos($key, '_'))) {
+        if (gettype($pos = strpos($key, '_')) != 'boolean') {
             $id = (int) substr($key, $pos + 1);
-            if ('boolean' != gettype(strpos($key, 'editEvent_'))) {
+            if (gettype(strpos($key, 'editEvent_')) != 'boolean') {
                 if ($id == -1) {
                     $HTMLOUT .= "<table>
 <tr><th>{$lang['events_userid']}</th><td><input type='text' name='userid' value='{$CURUSER['id']}' /></td></tr>

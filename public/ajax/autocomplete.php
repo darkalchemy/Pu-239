@@ -52,8 +52,8 @@ if (!empty($results)) {
         <hr class='top5 bottom20'>";
     $i = 1;
     foreach ($results as $result) {
-        $color      = 'yes' === $result['visible'] ? 'has-text-green' : 'has-text-red';
-        $background = 0     === $i++ % 2 ? 'bg-04' : 'bg-03';
+        $color = $result['visible'] === 'yes' ? 'has-text-green' : 'has-text-red';
+        $background = $i++ % 2 === 0 ? 'bg-04' : 'bg-03';
         $temp .= "
         <ul class='columns level w-100 padding10 round5 $background'>
             <li class='column is-three-fifth is-paddingless'>

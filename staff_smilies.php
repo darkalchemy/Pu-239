@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
@@ -34,7 +34,7 @@ $count = 0;
 $ctr   = 0;
 global $staff_smilies;
 while ((list($code, $url) = each($staff_smilies))) {
-    if (0 == $count % 3) {
+    if ($count % 3 == 0) {
         $htmlout .= '
         <tr>';
     }
@@ -45,7 +45,7 @@ while ((list($code, $url) = each($staff_smilies))) {
                 </a>
             </td>";
     ++$count;
-    if (0 == $count % 3) {
+    if ($count % 3 == 0) {
         $htmlout .= '
         </tr>';
     }

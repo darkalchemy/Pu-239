@@ -1,26 +1,26 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 global $site_config;
 
 $string = $_SERVER['QUERY_STRING'];
-if ('404' == $string) {
+if ($string === '404') {
     $page = 'Page Not Found - 404';
     $text = 'Sorry, The page you are looking for cannot be found.';
 }
-if ('401' == $string) {
+if ($string === '401') {
     $page = 'Authorization Required - 401';
     $text = 'You need to be Authorized to access this page. You do not have the correct credentials.';
 }
-if ('403' == $string) {
+if ($string === '403') {
     $page = 'Forbidden - 403';
     $text = 'You do not have full permission to access this page.';
 }
-if ('500' == $string) {
+if ($string === '500') {
     $page = 'Internal Server Error - 500';
     $text = 'There seems to have been an error on this server. Please notify the webmaster of the site.';
 }
-if ('400' == $string) {
+if ($string === '400') {
     $page = 'Bad Request - 400';
     $text = 'There has been an error with the page you are trying to view. Please try again later.';
 }

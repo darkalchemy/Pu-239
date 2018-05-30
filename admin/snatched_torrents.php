@@ -108,7 +108,7 @@ if (XBT_TRACKER) {
     $sql = 'SELECT sn.userid, sn.id, sn.torrentid, sn.timesann, sn.hit_and_run, sn.mark_of_cain, sn.uploaded, sn.downloaded, sn.start_date, sn.complete_date, sn.seeder, sn.leechtime, sn.seedtime, u.username, t.name ' . 'FROM snatched AS sn ' . 'LEFT JOIN users AS u ON u.id=sn.userid ' . "LEFT JOIN torrents AS t ON t.id=sn.torrentid WHERE complete_date != '0'" . 'ORDER BY sn.complete_date DESC ' . $pager['limit'];
 }
 $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-if (0 != mysqli_num_rows($result)) {
+if (mysqli_num_rows($result) != 0) {
     if (XBT_TRACKER) {
         $HTMLOUT .= "<table width='100%' >
 <tr>
@@ -175,7 +175,7 @@ if (0 != mysqli_num_rows($result)) {
             } else {
                 $HTMLOUT .= "<td><b><span class='has-text-danger'>{$lang['ad_snatched_torrents_ncomplete']}</span></b></td></tr>";
             }
-            $HTMLOUT .= '<td><b>' . ('yes' == $row['seeder'] ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['ad_snatched_torrents_yes']}' title='{$lang['ad_snatched_torrents_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['ad_snatched_torrents_no']}' title='{$lang['ad_snatched_torrents_no']}' />") . '</b></td></tr>';
+            $HTMLOUT .= "<td><b>" . ($row['seeder'] === 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['ad_snatched_torrents_yes']}' title='{$lang['ad_snatched_torrents_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['ad_snatched_torrents_no']}' title='{$lang['ad_snatched_torrents_no']}' />") . '</b></td></tr>';
         }
     }
     $HTMLOUT .= '</table>';

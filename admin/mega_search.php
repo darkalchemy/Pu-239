@@ -165,12 +165,12 @@ if (isset($_POST['msg_to_analyze'])) {
             $users[] = $result;
         }
 
-        if (0 == count($users)) {
+        if (count($users) == 0) {
             $failed[] = $tested_email;
         } else {
             $number = 1;
             foreach ($users as $arr) {
-                if ('' !== $arr['id']) {
+                if ($arr['id'] !== '') {
                     if ($arr['invitedby'] > 0) {
                         $inviter = format_username($arr['invitedby']);
                     } else {
@@ -258,7 +258,7 @@ if (isset($_POST['msg_to_analyze'])) {
             </th>
         </tr>';
     $body = $similar_emails;
-    if (1 === $number) {
+    if ($number === 1) {
         $HTMLOUT .= main_table($body, $heading, 'top20');
     }
 
@@ -285,7 +285,7 @@ if (isset($_POST['msg_to_analyze'])) {
             $users[] = $result;
         }
 
-        if (0 == count($users)) {
+        if (count($users) == 0) {
             $failed[] = $tested_ip;
         } else {
             $heading = '
@@ -303,11 +303,11 @@ if (isset($_POST['msg_to_analyze'])) {
                     <th>' . $lang['mega_invited_by'] . '</th>
                 </tr>';
             foreach ($users as $arr) {
-                if ('' !== $arr['username']) {
+                if ($arr['username'] !== '') {
                     if ($arr['invitedby'] > 0) {
                         $res_inviter = sql_query('SELECT id, username, class, donor, suspended, leechwarn, chatpost, pirate, king, warned, enabled FROM users WHERE id = ' . sqlesc($arr['invitedby'])) or sqlerr(__FILE__, __LINE__);
                         $arr_inviter = mysqli_fetch_array($res_inviter);
-                        $inviter     = ('' !== $arr_inviter['username'] ? format_username($arr_inviter) : $lang['mega_open']);
+                        $inviter = ($arr_inviter['username'] !== '' ? format_username($arr_inviter) : $lang['mega_open']);
                     } else {
                         $inviter = $lang['mega_open'];
                     }
@@ -367,7 +367,7 @@ if (isset($_POST['invite_code'])) {
         ->where('invite_codes.code = ?', $invite_code)
         ->fetch();
 
-    if ('' == $user['id']) {
+    if ($user['id'] == '') {
         $HTMLOUT .= stdmsg($lang['mega_error'], $lang['mega_invite_gone'], 'top20');
     } else {
         $heading = '
@@ -394,7 +394,7 @@ if (isset($_POST['invite_code'])) {
                     <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
                     <span style="color: red;">' . mksize($user['downloaded']) . '</span></td>') . '
                     <td>' . member_ratio($user['uploaded'], $site_config['ratio_free'] ? '0' : $user['downloaded']) . '</td>
-                    <td>' . (0 == $user['invitedby'] ? $lang['mega_open'] : format_username($user['invitedby'])) . '</td>
+                    <td>' . ($user['invitedby'] == 0 ? $lang['mega_open'] : format_username($user['invitedby'])) . '</td>
                 </tr>';
         $HTMLOUT .= wrapper(main_table($body, $heading), 'top20');
     }
@@ -416,7 +416,7 @@ if (isset($_POST['invite_code'])) {
         ->where('invite_codes.code = ?', $invite_code)
         ->fetch();
 
-    if ('' == $user_invited['id']) {
+    if ($user_invited['id'] == '') {
         $HTMLOUT .= stdmsg($lang['mega_error'], $lang['mega_not_used'], 'top20');
     } else {
         $heading = '
@@ -443,7 +443,7 @@ if (isset($_POST['invite_code'])) {
                     <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
                     <span style="color: red;">' . mksize($user_invited['downloaded']) . '</span></td>') . '
                     <td>' . member_ratio($user_invited['uploaded'], $site_config['ratio_free'] ? '0' : $user_invited['downloaded']) . '</td>
-                    <td>' . (0 == $user_invited['invitedby'] ? $lang['mega_open'] : format_username($user_invited['receiver'])) . '</td>
+                    <td>' . ($user_invited['invitedby'] == 0 ? $lang['mega_open'] : format_username($user_invited['receiver'])) . '</td>
                 </tr>';
         $HTMLOUT .= wrapper(main_table($body, $heading));
     }

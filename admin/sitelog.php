@@ -40,7 +40,7 @@ $HTMLOUT .= "
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-if (0 == mysqli_num_rows($res)) {
+if (mysqli_num_rows($res) == 0) {
     $HTMLOUT .= "<b>{$lang['text_logempty']}</b>";
 } else {
     $HTMLOUT .= "

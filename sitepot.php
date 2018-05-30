@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
@@ -11,7 +11,7 @@ $potsize = 10000;
 /** Site Pot **/
 $Pot_query = mysqli_query($GLOBALS['___mysqli_ston'], "SELECT value_s, value_i, value_u FROM avps WHERE arg = 'sitepot'")     or sqlerr(__FILE__, __LINE__);
 $SitePot   = mysqli_fetch_assoc($Pot_query)                                                                                   or stderr('ERROR', 'db error.');
-if ($SitePot['value_u'] < TIME_NOW && '1' == $SitePot['value_s']) {
+if ($SitePot['value_u'] < TIME_NOW && $SitePot['value_s'] == '1') {
     mysqli_query($GLOBALS['___mysqli_ston'], "UPDATE avps SET value_i = 0, value_s = '0' WHERE arg = 'sitepot'") or sqlerr(__FILE__, __LINE__);
     header('Location: sitepot.php');
     die();
@@ -111,7 +111,7 @@ foreach ($pot_options as $Pot_option) {
                     <form action='' method='post'>
                         <div class='buttons'>
                             <input name='want_pot' type='hidden' value='" . $Pot_option . "' />
-                            <button value='Exchange!' " . ('true' == $disabled ? 'disabled' : '') . " type='submit' class='positive'>
+                            <button value='Exchange!' " . ($disabled === 'true' ? "disabled" : '') . " type='submit' class='positive'>
                                 <img src='{$site_config['pic_baseurl']}aff_tick.gif' alt='' /> Exchange!
                             </button>
                         </div>

@@ -24,11 +24,11 @@ $stdfoot = [
     ],
 ];
 $this_url = $_SERVER['SCRIPT_NAME'];
-$do       = isset($_GET['do']) && 'disabled' == $_GET['do'] ? 'disabled' : 'warned';
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+$do = isset($_GET['do']) && $_GET['do'] === 'disabled' ? 'disabled' : 'warned';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $r     = isset($_POST['ref']) ? $_POST['ref'] : $this_url;
     $_uids = isset($_POST['users']) ? array_map('mkint', $_POST['users']) : 0;
-    if (0 == $_uids || 0 == count($_uids)) {
+    if ($_uids == 0 || count($_uids) == 0) {
         stderr($lang['warn_stderr'], $lang['warn_stderr_msg']);
     }
     $valid = [
@@ -40,9 +40,9 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     if (!$act) {
         stderr('Err', $lang['warn_stderr_msg1']);
     }
-    if ('delete' == $act && $CURUSER['class'] >= UC_SYSOP) {
+    if ($act === 'delete' && $CURUSER['class'] >= UC_SYSOP) {
         $res_del = sql_query('SELECT id, username, added, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE id IN (' . join(',', $_uids) . ') ORDER BY username DESC');
-        if (0 != mysqli_num_rows($res_del)) {
+        if (mysqli_num_rows($res_del) != 0) {
             $count = mysqli_num_rows($res_del);
             while ($arr_del = mysqli_fetch_assoc($res_del)) {
                 $userid = $arr_del['id'];
@@ -54,7 +54,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
             stderr($lang['warn_stderr'], $lang['warn_stderr_msg2']);
         }
     }
-    if ('disable' == $act) {
+    if ($act === 'disable') {
         if (sql_query("UPDATE users SET enabled='no', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['warn_disabled_by'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')')) {
             foreach ($_uids as $uid) {
                 $cache->update_row('user' . $uid, [
@@ -67,7 +67,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
         } else {
             stderr($lang['warn_stderr'], $lang['warn_stderr_msg3']);
         }
-    } elseif ('unwarn' == $act) {
+    } elseif ($act === 'unwarn') {
         $sub  = $lang['warn_removed'];
         $body = $lang['warn_removed_msg'] . $CURUSER['username'] . $lang['warn_removed_msg1'];
         $pms  = [];
@@ -108,7 +108,7 @@ $g     = sql_query($query) or print (is_object($GLOBALS['___mysqli_ston'])) ? my
 $count = mysqli_num_rows($g);
 $HTMLOUT .= begin_main_frame();
 $HTMLOUT .= begin_frame($title . "&#160;[<font class=\"small\">{$lang['warn_total']}" . $count . $lang['warn_total_user'] . ($count > 1 ? $lang['warn_total_user_plural'] : '') . '</font>] - ' . $link);
-if (0 == $count) {
+if ($count == 0) {
     $HTMLOUT .= stdmsg($lang['warn_hey'], $lang['warn_hey_msg'] . strtolower($title));
 } else {
     $HTMLOUT .= "<form action='staffpanel.php?tool=warn&amp;action=warn' method='post'>
@@ -122,7 +122,7 @@ if (0 == $count) {
                         <td class='colhead' nowrap='nowrap'><input type='checkbox' name='checkall' /></td>
                 </tr>";
     while ($a = mysqli_fetch_assoc($g)) {
-        $tip = ('warned' == $do ? $lang['warn_for'] . $a['warn_reason'] . '<br>' . $lang['warn_till'] . get_date($a['warned'], 'DATE', 1) . ' - ' . mkprettytime($a['warned'] - TIME_NOW) : $lang['warn_disabled_for'] . $a['disable_reason']);
+        $tip = ($do === 'warned' ? $lang['warn_for'] . $a['warn_reason'] . '<br>' . $lang['warn_till'] . get_date($a['warned'], 'DATE', 1) . ' - ' . mkprettytime($a['warned'] - TIME_NOW) : $lang['warn_disabled_for'] . $a['disable_reason']);
         $HTMLOUT .= "<tr>
                                   <td width='100%'><a href='userdetails.php?id=" . (int) $a['id'] . "' onmouseover=\"Tip('($tip)')\" onmouseout=\"UnTip()\">" . htmlsafechars($a['username']) . "</a></td>
                                   <td nowrap='nowrap'>" . (float) $a['ratio'] . "<br><font class='small'><b>{$lang['warn_down']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['warn_upl']}</b> " . mksize($a['uploaded']) . "</font></td>

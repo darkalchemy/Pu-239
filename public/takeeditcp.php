@@ -44,11 +44,11 @@ $action    = isset($_POST['action']) ? htmlsafechars(trim($_POST['action'])) : '
 $updateset = $curuser_cache = $user_cache = [];
 $setbits   = $clrbits   = 0;
 
-if ('avatar' == $action) {
-    $avatars               = (isset($_POST['avatars']) && 'yes' === $_POST['avatars'] ? 'yes' : 'no');
-    $offensive_avatar      = (isset($_POST['offensive_avatar']) && 'yes' === $_POST['offensive_avatar'] ? 'yes' : 'no');
-    $view_offensive_avatar = (isset($_POST['view_offensive_avatar']) && 'yes' === $_POST['view_offensive_avatar'] ? 'yes' : 'no');
-    if (!(0 == $CURUSER['avatarpos'] || 1 != $CURUSER['avatarpos'])) {
+if ($action == 'avatar') {
+    $avatars = (isset($_POST['avatars']) && $_POST['avatars'] === 'yes' ? 'yes' : 'no');
+    $offensive_avatar = (isset($_POST['offensive_avatar']) && $_POST['offensive_avatar'] === 'yes' ? 'yes' : 'no');
+    $view_offensive_avatar = (isset($_POST['view_offensive_avatar']) && $_POST['view_offensive_avatar'] === 'yes' ? 'yes' : 'no');
+    if (!($CURUSER['avatarpos'] == 0 or $CURUSER['avatarpos'] != 1)) {
         $avatar = trim(urldecode($_POST['avatar']));
         if (preg_match("/^http:\/\/$/i", $avatar) || preg_match('/[?&;]/', $avatar) || preg_match('#javascript:#is', $avatar) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $avatar)) {
             $avatar = '';
@@ -56,7 +56,7 @@ if ('avatar' == $action) {
     }
     if (!empty($avatar)) {
         $img_size = @getimagesize($avatar);
-        if (false == $img_size || !in_array($img_size['mime'], $site_config['allowed_ext'])) {
+        if ($img_size == false || !in_array($img_size['mime'], $site_config['allowed_ext'])) {
             stderr($lang['takeeditcp_user_error'], $lang['takeeditcp_image_error']);
         }
         if ($img_size[0] < 5 || $img_size[1] < 5) {
@@ -83,7 +83,7 @@ if ('avatar' == $action) {
     }
     $updateset[] = 'offensive_avatar = ' . sqlesc($offensive_avatar);
     $updateset[] = 'view_offensive_avatar = ' . sqlesc($view_offensive_avatar);
-    if (!(0 == $CURUSER['avatarpos'] || 1 != $CURUSER['avatarpos'])) {
+    if (!($CURUSER['avatarpos'] == 0 || $CURUSER['avatarpos'] != 1)) {
         $updateset[] = 'avatar = ' . sqlesc($avatar);
     }
     $updateset[]                            = 'avatars = ' . sqlesc($avatars);
@@ -102,20 +102,20 @@ if ('avatar' == $action) {
     //if (isset($_POST['avatars'])) $setbits|= user_options::AVATARS;
     //else $clrbits|= user_options::AVATARS;
     $action = 'avatar';
-} elseif ('signature' == $action) {
+} elseif ($action === 'signature') {
     if (isset($_POST['info']) && (($info = $_POST['info']) != $CURUSER['info'])) {
         $updateset[]           = 'info = ' . sqlesc($info);
         $curuser_cache['info'] = $info;
         $user_cache['info']    = $info;
     }
-    $signatures = (isset($_POST['signatures']) && 'yes' === $_POST['signatures'] ? 'yes' : 'no');
+    $signatures = (isset($_POST['signatures']) && $_POST['signatures'] === 'yes' ? 'yes' : 'no');
     $signature  = trim(urldecode($_POST['signature']));
     if (preg_match("/^http:\/\/$/i", $signature) || preg_match('/[?&;]/', $signature) || preg_match('#javascript:#is', $signature) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $signature)) {
         $signature = '';
     }
     if (!empty($signature)) {
         $img_size = @getimagesize($signature);
-        if (false == $img_size || !in_array($img_size['mime'], $site_config['allowed_ext'])) {
+        if ($img_size == false || !in_array($img_size['mime'], $site_config['allowed_ext'])) {
             stderr($lang['takeeditcp_uerr'], $lang['takeeditcp_img_unsupported']);
         }
         if ($img_size[0] < 5 || $img_size[1] < 5) {
@@ -149,7 +149,7 @@ if ('avatar' == $action) {
     //if (isset($_POST['signatures'])) $setbits|= user_options::SIGNATURES;
     //else $clrbits|= user_options::SIGNATURES;
     $action = 'signature';
-} elseif ('security' == $action) {
+} elseif ($action === 'security') {
     if (isset($_POST['ssluse']) && ($ssluse = (int) $_POST['ssluse']) && ($ssluse != $CURUSER['ssluse'])) {
         $updateset[]             = 'ssluse = ' . $ssluse;
         $curuser_cache['ssluse'] = $ssluse;
@@ -215,7 +215,7 @@ if ('avatar' == $action) {
         $changedemail = 1;
     }
 
-    if ('' != $secretanswer) {
+    if ($secretanswer != '') {
         if (strlen($secretanswer) < 3) {
             stderr($lang['takeeditcp_sorry'], $lang['takeeditcp_secret_short']);
         }
@@ -224,7 +224,7 @@ if ('avatar' == $action) {
         $curuser_cache['hintanswer'] = $new_secret_answer;
         $user_cache['hintanswer']    = $new_secret_answer;
     }
-    if ('1' == get_parked()) {
+    if (get_parked() == '1') {
         //if (isset($_POST['parked'])) $setbits|= user_options::PARKED;
         //else $clrbits|= user_options::PARKED;
         if (isset($_POST['parked']) && ($parked = $_POST['parked']) != $CURUSER['parked']) {
@@ -233,10 +233,10 @@ if ('avatar' == $action) {
             $user_cache['parked']    = $parked;
         }
     }
-    if ('0' != get_anonymous()) {
+    if (get_anonymous() != '0') {
         //if (isset($_POST['anonymous'])) $setbits|= user_options::ANONYMOUS;
         //else $clrbits|= user_options::ANONYMOUS;
-        $anonymous                  = (isset($_POST['anonymous']) && '' != $_POST['anonymous'] ? 'yes' : 'no');
+        $anonymous = (isset($_POST['anonymous']) && $_POST['anonymous'] != '' ? 'yes' : 'no');
         $updateset[]                = 'anonymous = ' . sqlesc($anonymous);
         $curuser_cache['anonymous'] = $anonymous;
         $user_cache['anonymous']    = $anonymous;
@@ -319,19 +319,19 @@ if ('avatar' == $action) {
         $urladd .= '&mailsent=1';
     }
     $action = 'security';
-} elseif ('torrents' == $action) {
+} elseif ($action === 'torrents') {
     $emailnotif = isset($_POST['emailnotif']) ? $_POST['emailnotif'] : '';
     $pmnotif    = 'no';
-    if (false !== strpos($CURUSER['notifs'], '[pm]')) {
+    if (strpos($CURUSER['notifs'], '[pm]') !== false) {
         $pmnotif = 'yes';
     }
-    $notifs = ('yes' == $pmnotif ? '[pm]' : '');
-    $notifs .= ('yes' == $emailnotif ? '[email]' : '');
+    $notifs = ($pmnotif === 'yes' ? '[pm]' : '');
+    $notifs .= ($emailnotif === 'yes' ? '[email]' : '');
     $r    = sql_query('SELECT id FROM categories') or sqlerr(__FILE__, __LINE__);
     $rows = mysqli_num_rows($r);
     for ($i = 0; $i < $rows; ++$i) {
         $a = mysqli_fetch_assoc($r);
-        if (isset($_POST["cat{$a['id']}"]) && 'yes' == $_POST["cat{$a['id']}"]) {
+        if (isset($_POST["cat{$a['id']}"]) && $_POST["cat{$a['id']}"] === 'yes') {
             $notifs .= "[cat{$a['id']}]";
         }
     }
@@ -397,7 +397,7 @@ if ('avatar' == $action) {
         $user_cache['categorie_icon']    = $categorie_icon;
     }
     $action = 'torrents';
-} elseif ('personal' == $action) {
+} elseif ($action === 'personal') {
     //custom-title check
     if (isset($_POST['title']) && $CURUSER['class'] >= UC_VIP && ($title = $_POST['title']) != $CURUSER['title']) {
         $notallow = [
@@ -460,18 +460,18 @@ if ('avatar' == $action) {
         $user_cache['gender']    = $gender;
     }
 
-    if ('0000-00-00' == $CURUSER['birthday']) {
+    if ($CURUSER['birthday'] === '0000-00-00') {
         $year     = isset($_POST['year']) ? (int) $_POST['year'] : 0;
         $month    = isset($_POST['month']) ? (int) $_POST['month'] : 0;
         $day      = isset($_POST['day']) ? (int) $_POST['day'] : 0;
         $birthday = date("$year.$month.$day");
-        if ('0000' == $year) {
+        if ($year === '0000') {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_birth_year']);
         }
-        if ('00' == $month) {
+        if ($month === '00') {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_birth_month']);
         }
-        if ('00' == $day) {
+        if ($day === '00') {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_birth_day']);
         }
         if (!checkdate($month, $day, $year)) {
@@ -483,7 +483,7 @@ if ('avatar' == $action) {
         $cache->delete('birthdayusers');
     }
     $action = 'personal';
-} elseif ('social' == $action) {
+} elseif ($action === 'social') {
     if (isset($_POST['google_talk']) && ($google_talk = $_POST['google_talk']) != $CURUSER['google_talk']) {
         $updateset[]                  = 'google_talk= ' . sqlesc($google_talk);
         $curuser_cache['google_talk'] = $google_talk;
@@ -515,7 +515,7 @@ if ('avatar' == $action) {
         $user_cache['website']    = $website;
     }
     $action = 'social';
-} elseif ('location' == $action) {
+} elseif ($action === 'location') {
     if (isset($_POST['country']) && (($country = $_POST['country']) != $CURUSER['country']) && is_valid_id($country)) {
         $updateset[]              = "country = $country";
         $curuser_cache['country'] = $country;
@@ -539,15 +539,15 @@ if ('avatar' == $action) {
     $user_cache['dst_in_use']          = (isset($_POST['manualdst']) ? 1 : 0);
 
     $action = 'location';
-} elseif ('default' == $action) {
+} elseif ($action === 'default') {
     $pmnotif    = isset($_POST['pmnotif']) ? $_POST['pmnotif'] : '';
     $emailnotif = 'no';
-    if (false !== strpos($CURUSER['notifs'], '[email]')) {
+    if (strpos($CURUSER['notifs'], '[email]') !== false) {
         $emailnotif = 'yes';
     }
 
-    $notifs = ('yes' == $pmnotif ? '[pm]' : '');
-    $notifs .= ('yes' == $emailnotif ? '[email]' : '');
+    $notifs = ($pmnotif === 'yes' ? '[pm]' : '');
+    $notifs .= ($emailnotif === 'yes' ? '[email]' : '');
 
     $updateset[]             = 'notifs = ' . sqlesc($notifs);
     $curuser_cache['notifs'] = $notifs;
@@ -570,7 +570,7 @@ if ('avatar' == $action) {
     $user_cache['deletepms']    = $deletepms;
     //if (isset($_POST['deletepms'])) $setbits|= user_options::DELETEPMS;
     //else $clrbits|= user_options::DELETEPMS;
-    $savepms                  = (isset($_POST['savepms']) && '' != $_POST['savepms'] ? 'yes' : 'no');
+    $savepms = (isset($_POST['savepms']) && $_POST['savepms'] != '' ? 'yes' : 'no');
     $updateset[]              = "savepms = '$savepms'";
     $curuser_cache['savepms'] = $savepms;
     $user_cache['savepms']    = $savepms;
@@ -604,7 +604,7 @@ if ($user_cache) {
     $cache->update_row('user' . $CURUSER['id'], $user_cache, $site_config['expires']['user_cache']);
 }
 
-if (sizeof($updateset) > 0) {
+if (count($updateset) > 0) {
     sql_query('UPDATE users SET ' . implode(',', $updateset) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 }
 if ($setbits || $clrbits) {

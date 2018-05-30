@@ -93,13 +93,13 @@ function sendMemcacheCommand($server, $port, $command)
     $buf = '';
     while ((!feof($s))) {
         $buf .= fgets($s, 256);
-        if (false !== strpos($buf, "END\r\n")) { // stat says end
+        if (strpos($buf, "END\r\n") !== false) {
             break;
         }
-        if (false !== strpos($buf, "DELETED\r\n") || false !== strpos($buf, "NOT_FOUND\r\n")) { // delete says these
+        if (strpos($buf, "DELETED\r\n") !== false || strpos($buf, "NOT_FOUND\r\n") !== false) { // delete says these
             break;
         }
-        if (false !== strpos($buf, "OK\r\n")) { // flush_all says ok
+        if (strpos($buf, "OK\r\n") !== false) {
             break;
         }
     }
@@ -121,9 +121,9 @@ function parseMemcacheResults($str)
     for ($i = 0; $i < $cnt; ++$i) {
         $line = $lines[$i];
         $l    = explode(' ', $line, 3);
-        if (3 == count($l)) {
+        if (count($l) == 3) {
             $res[$l[0]][$l[1]] = $l[2];
-            if ('VALUE' == $l[0]) { // next line is the value
+            if ($l[0] === 'VALUE') {
                 $res[$l[0]][$l[1]]         = [];
                 list($flag, $size)         = explode(' ', $l[2]);
                 $res[$l[0]][$l[1]]['stat'] = [
@@ -132,7 +132,7 @@ function parseMemcacheResults($str)
                 ];
                 $res[$l[0]][$l[1]]['value'] = $lines[++$i];
             }
-        } elseif ('DELETED' == $line || 'NOT_FOUND' == $line || 'OK' == $line) {
+        } elseif ($line === 'DELETED' || $line === 'NOT_FOUND' || $line === 'OK') {
             return $line;
         }
     }
@@ -186,7 +186,7 @@ function getCacheItems()
         foreach ($iteminfo as $keyinfo => $value) {
             if (preg_match('/items\:(\d+?)\:(.+?)$/', $keyinfo, $matches)) {
                 $serverItems[$server][$matches[1]][$matches[2]] = $value;
-                if ('number' == $matches[2]) {
+                if ($matches[2] === 'number') {
                     $totalItems[$server] += $value;
                 }
             }
@@ -334,31 +334,31 @@ function duration($ts)
     $hours = (int) (($rem) / 3600)  - $days     * 24  - $weeks     * 7     * 24;
     $mins  = (int) (($rem) / 60)    - $hours    * 60    - $days    * 24    * 60    - $weeks    * 7    * 24    * 60;
     $str   = '';
-    if (1 == $years) {
+    if ($years == 1) {
         $str .= "$years year, ";
     }
     if ($years > 1) {
         $str .= "$years years, ";
     }
-    if (1 == $weeks) {
+    if ($weeks == 1) {
         $str .= "$weeks week, ";
     }
     if ($weeks > 1) {
         $str .= "$weeks weeks, ";
     }
-    if (1 == $days) {
+    if ($days == 1) {
         $str .= "$days day,";
     }
     if ($days > 1) {
         $str .= "$days days,";
     }
-    if (1 == $hours) {
+    if ($hours == 1) {
         $str .= " $hours hour and";
     }
     if ($hours > 1) {
         $str .= " $hours hours and";
     }
-    if (1 == $mins) {
+    if ($mins == 1) {
         $str .= ' 1 minute';
     } else {
         $str .= " $mins minutes";
@@ -636,7 +636,7 @@ function getMenu()
 {
     global $site_config;
     echo '<ol class=menu>';
-    if (4 != $_GET['op']) {
+    if ($_GET['op'] != 4) {
         echo <<<EOB
     <li><a href="{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op={$_GET['op']}">Refresh Data</a></li>
 EOB;
@@ -798,8 +798,8 @@ if (isset($_GET['IMG'])) {
             break;
 
         case 2: // hit miss
-            $hits   = (0 == $memcacheStats['get_hits']) ? 1 : $memcacheStats['get_hits'];
-            $misses = (0 == $memcacheStats['get_misses']) ? 1 : $memcacheStats['get_misses'];
+            $hits = ($memcacheStats['get_hits'] == 0) ? 1 : $memcacheStats['get_hits'];
+            $misses = ($memcacheStats['get_misses'] == 0) ? 1 : $memcacheStats['get_misses'];
             $total  = $hits + $misses;
             fill_box($image, 30, $size, 50, -$hits * ($size - 21) / $total, $col_black, $col_green, sprintf('%.1f%%', $hits * 100 / $total));
             fill_box($image, 130, $size, 50, -max(4, ($total - $hits) * ($size - 21) / $total), $col_black, $col_red, sprintf('%.1f%%', $misses * 100 / $total));
@@ -822,8 +822,8 @@ switch ($_GET['op']) {
         $startTime           = time()    - array_sum($memcacheStats['uptime']);
         $curr_items          = $memcacheStats['curr_items'];
         $total_items         = $memcacheStats['total_items'];
-        $hits                = (0 == $memcacheStats['get_hits']) ? 1 : $memcacheStats['get_hits'];
-        $misses              = (0 == $memcacheStats['get_misses']) ? 1 : $memcacheStats['get_misses'];
+        $hits                = ($memcacheStats['get_hits'] == 0) ? 1 : $memcacheStats['get_hits'];
+        $misses              = ($memcacheStats['get_misses'] == 0) ? 1 : $memcacheStats['get_misses'];
         $sets                = $memcacheStats['cmd_set'];
         $req_rate            = sprintf('%.2f', ($hits + $misses) / ($time - $startTime));
         $hit_rate            = sprintf('%.2f', ($hits) / ($time - $startTime));
@@ -912,7 +912,7 @@ EOB;
 EOB;
             foreach ($entries as $slabId => $slab) {
                 $dumpUrl = $site_config['baseurl'] . '/staffpanel.php?tool=memcache&amp;op=2&amp;server=' . (array_search($server, $MEMCACHE_SERVERS)) . '&amp;dumpslab=' . $slabId;
-                echo "<tr class='tr-$m'>", "<td class='td-0'><center>", '<a href="', $dumpUrl, '">', $slabId, '</a>', '</center></td>', "<td class='td-last'><b>Item count:</b> ", $slab['number'], '<br><b>Age:</b>', duration($time - $slab['age']), '<br> <b>Evicted:</b>', ((isset($slab['evicted']) && 1 == $slab['evicted']) ? 'Yes' : 'No');
+                echo "<tr class='tr-$m'>", "<td class='td-0'><center>", '<a href="', $dumpUrl, '">', $slabId, '</a>', '</center></td>', "<td class='td-last'><b>Item count:</b> ", $slab['number'], '<br><b>Age:</b>', duration($time - $slab['age']), '<br> <b>Evicted:</b>', ((isset($slab['evicted']) && $slab['evicted'] == 1) ? 'Yes' : 'No');
                 if ((isset($_GET['dumpslab']) && $_GET['dumpslab'] == $slabId) && (isset($_GET['server']) && $_GET['server'] == array_search($server, $MEMCACHE_SERVERS))) {
                     echo '<br><b>Items: item</b><br>';
                     $items = dumpCacheSlab($server, $slabId, $slab['number']);
@@ -921,9 +921,9 @@ EOB;
                     foreach ($items['ITEM'] as $itemKey => $itemInfo) {
                         $itemInfo = trim($itemInfo, '[ ]');
                         echo '<a href="', $site_config['baseurl'], '/staffpanel.php?tool=memcache&amp;op=4&amp;server=', (array_search($server, $MEMCACHE_SERVERS)), '&amp;key=', base64_encode($itemKey) . '">', $itemKey, '</a>';
-                        if (0 == $i++ % 10) {
+                        if ($i++ % 10 == 0) {
                             echo '<br>';
-                        } elseif ($slab['number'] + 1 != $i) {
+                        } elseif ($i != $slab['number'] + 1) {
                             echo ',';
                         }
                     }

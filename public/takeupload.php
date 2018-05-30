@@ -29,7 +29,7 @@ ini_set('upload_max_filesize', $site_config['max_torrent_size']);
 ini_set('memory_limit', '64M');
 $lang = array_merge(load_language('global'), load_language('takeupload'));
 
-if ($user_data['class'] < UC_UPLOADER || 0 == $user_data['uploadpos'] || $user_data['uploadpos'] > 1 || 'yes' == $user_data['suspended']) {
+if ($user_data['class'] < UC_UPLOADER || $user_data['uploadpos'] == 0 || $user_data['uploadpos'] > 1 || $user_data['suspended'] === 'yes') {
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
@@ -54,14 +54,14 @@ if (empty($fname)) {
     die();
 }
 
-if (isset($uplver) && 'yes' == $uplver) {
+if (isset($uplver) && $uplver === 'yes') {
     $anonymous = 'yes';
     $anon      = get_anonymous_name();
 } else {
     $anonymous = 'no';
     $anon      = $user_data['username'];
 }
-if (isset($allow_comments) && 'yes' == $allow_comments) {
+if (isset($allow_comments) && $allow_comments === 'yes') {
     $allow_comments = 'no';
     $disallow       = 'Yes';
 } else {
@@ -84,12 +84,12 @@ $nfo = sqlesc('');
 
 if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
     $nfofile = $_FILES['nfo'];
-    if ('' == $nfofile['name']) {
+    if ($nfofile['name'] == '') {
         $session->set('is-warning', $lang['takeupload_no_nfo']);
         header("Location: {$site_config['baseurl']}/upload.php");
         die();
     }
-    if (0 == $nfofile['size']) {
+    if ($nfofile['size'] == 0) {
         $session->set('is-warning', $lang['takeupload_0_byte']);
         header("Location: {$site_config['baseurl']}/upload.php");
         die();
@@ -110,9 +110,9 @@ if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
 
 $free2 = 0;
 if (isset($free_length) && ($free_length = (int) $free_length)) {
-    if (255 == $free_length) {
+    if ($free_length == 255) {
         $free2 = 1;
-    } elseif (42 == $free_length) {
+    } elseif ($free_length == 42) {
         $free2 = (86400 + TIME_NOW);
     } else {
         $free2 = (TIME_NOW + $free_length * 604800);
@@ -121,9 +121,9 @@ if (isset($free_length) && ($free_length = (int) $free_length)) {
 
 $silver = 0;
 if (isset($half_length) && ($half_length = (int) $half_length)) {
-    if (255 == $half_length) {
+    if ($half_length == 255) {
         $silver = 1;
-    } elseif (42 == $half_length) {
+    } elseif ($half_length == 42) {
         $silver = (86400 + TIME_NOW);
     } else {
         $silver = (TIME_NOW + $half_length * 604800);
@@ -227,7 +227,7 @@ if (get_row_count('torrents', 'WHERE info_hash = ' . sqlesc($infohash)) > 0) {
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
-if ('dictionary' != bencdec::get_type($info)) {
+if (bencdec::get_type($info) != 'dictionary') {
     $session->set('is-warning', 'invalid torrent, info is not a dictionary');
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
@@ -237,7 +237,7 @@ if (!isset($info['name']) || !isset($info['piece length']) || !isset($info['piec
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
-if ('string' != bencdec::get_type($info['name']) || 'integer' != bencdec::get_type($info['piece length']) || 'string' != bencdec::get_type($info['pieces'])) {
+if (bencdec::get_type($info['name']) != 'string' || bencdec::get_type($info['piece length']) != 'integer' || bencdec::get_type($info['pieces']) != 'string') {
     $session->set('is-warning', 'invalid torrent, invalid types in info dictionary');
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
@@ -245,7 +245,7 @@ if ('string' != bencdec::get_type($info['name']) || 'integer' != bencdec::get_ty
 $dname      = $info['name'];
 $plen       = $info['piece length'];
 $pieces_len = strlen($info['pieces']);
-if (0 != $pieces_len % 20) {
+if ($pieces_len % 20 != 0) {
     $session->set('is-warning', 'invalid pieces');
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
@@ -257,7 +257,7 @@ if ($plen % 4096) {
 }
 $filelist = [];
 if (isset($info['length'])) {
-    if ('integer' != bencdec::get_type($info['length'])) {
+    if (bencdec::get_type($info['length']) != 'integer') {
         $session->set('is-warning', 'length must be an integer');
         header("Location: {$site_config['baseurl']}/upload.php");
         die();
@@ -273,7 +273,7 @@ if (isset($info['length'])) {
         header("Location: {$site_config['baseurl']}/upload.php");
         die();
     }
-    if ('list' != bencdec::get_type($info['files'])) {
+    if (bencdec::get_type($info['files']) != 'list') {
         $session->set('is-warning', 'invalid files, not a list');
         header("Location: {$site_config['baseurl']}/upload.php");
         die();
@@ -291,7 +291,7 @@ if (isset($info['length'])) {
             header("Location: {$site_config['baseurl']}/upload.php");
             die();
         }
-        if ('integer' != bencdec::get_type($fn['length']) || 'list' != bencdec::get_type($fn['path'])) {
+        if (bencdec::get_type($fn['length']) != 'integer' || bencdec::get_type($fn['path']) != 'list') {
             $session->set('is-warning', 'invalid file info');
             header("Location: {$site_config['baseurl']}/upload.php");
             die();
@@ -301,7 +301,7 @@ if (isset($info['length'])) {
         $totallen += $ll;
         $ffa = [];
         foreach ($ff as $ffe) {
-            if ('string' != bencdec::get_type($ffe)) {
+            if (bencdec::get_type($ffe) != 'string') {
                 $session->set('is-warning', 'filename type error');
                 header("Location: {$site_config['baseurl']}/upload.php");
                 die();
@@ -370,7 +370,7 @@ $sql = 'INSERT INTO torrents (isbn, search_text, filename, owner, visible, vip, 
 $ret = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
 if (!$ret) {
-    if (1062 == ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
+    if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
         $session->set('is-warning', $lang['takeupload_already']);
         header("Location: {$site_config['baseurl']}/upload.php");
         die();
@@ -397,7 +397,7 @@ if (!empty($hashes)) {
     $cache->delete('hashes_');
 }
 
-if (isset($uplver) && 'yes' == $uplver) {
+if (isset($uplver) && $uplver === 'yes') {
     $message = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by ' . get_anonymous_name();
 } else {
     $message = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by ' . htmlsafechars($user_data['username']);
@@ -432,7 +432,7 @@ if (!bencdec::encode_file($dir, $dict)) {
 @unlink($tmpname);
 chmod($dir, 0664);
 
-if (1 == $site_config['seedbonus_on']) {
+if ($site_config['seedbonus_on'] == 1) {
     $seedbonus = $user_data['seedbonus'];
     sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_upload']) . ', numuploads = numuploads+ 1  WHERE id = ' . sqlesc($owner_id)) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($seedbonus + $site_config['bonus_per_upload']);
@@ -440,7 +440,7 @@ if (1 == $site_config['seedbonus_on']) {
         'seedbonus' => $update['seedbonus'],
     ], $site_config['expires']['user_cache']);
 }
-if (1 == $site_config['autoshout_on']) {
+if ($site_config['autoshout_on'] == 1) {
     autoshout($message);
     autoshout($message, 2, 0);
 }
@@ -471,7 +471,7 @@ if ($request > 0) {
     write_log('Request for torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was filled by ' . $user_data['username']);
     $filled = 1;
 }
-if (0 == $filled) {
+if ($filled == 0) {
     write_log(sprintf($lang['takeupload_log'], $id, $torrent, $user_data['username']));
 }
 

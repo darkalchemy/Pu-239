@@ -24,7 +24,7 @@ if ($active24 === false || is_null($active24)) {
     $list[]                    = format_username(2);
     $count                     = count($list);
     $active24['activeusers24'] = implode(',&nbsp;&nbsp;', $list);
-    if (0 === $count) {
+    if ($count === 0) {
         $active24['activeusers24'] = $lang['index_last24_nousers'];
     }
     $active24['totalonline24'] = number_format($count);

@@ -94,7 +94,7 @@ while ($iphistory = mysqli_fetch_array($resip)) {
     if (strpos($host, 'feralhosting.com')) {
         $seedboxdetected = 'yes';
     }
-    if ('yes' == $seedboxdetected) {
+    if ($seedboxdetected === 'yes') {
         sql_query('UPDATE ips SET seedbox=1 WHERE id =' . sqlesc($ipid)) or sqlerr(__FILE__, __LINE__);
     }
     $lastbrowse   = (int) $iphistory['lastbrowse'];
@@ -107,7 +107,7 @@ while ($iphistory = mysqli_fetch_array($resip)) {
     $ipcount      = $arrip2[0];
     $banres       = sql_query('SELECT COUNT(*) FROM bans WHERE ' . ipToStorageFormat($iphistory['ip']) . ' >= first AND ' . ipToStorageFormat($iphistory['ip']) . ' <= last') or sqlerr(__FILE__, __LINE__);
     $banarr       = mysqli_fetch_row($banres);
-    if (0 == $banarr[0]) {
+    if ($banarr[0] == 0) {
         if ($ipcount > 1) {
             $ipshow = "<b><a class='altlink' href='{$site_config['baseurl']}/staffpanel . php ? tool = ipsearch & amp;action = ipsearch & amp;ip = " . htmlsafechars($iphistory['ip']) . "'><font color='black'>" . htmlsafechars($iphistory['ip']) . ' </font ></a ></b > ';
         } else {
@@ -131,7 +131,7 @@ while ($iphistory = mysqli_fetch_array($resip)) {
     // end fetch geoip code
     //Is this a seedbox check
     $seedbox = htmlsafechars($iphistory['seedbox']);
-    if ('0' == $seedbox) {
+    if ($seedbox == '0') {
         $seedbox = "<a href='{$site_config['baseurl']}/staffpanel . php ? tool = iphistory & amp;action = iphistory & amp;id = $id & amp;setseedbox = " . (int) $iphistory['id'] . "'><span class='has-text-danger'><b>{$lang['iphistory_no']}</b></span></a>";
         $HTMLOUT .= "<tr>
                 <td class='heading2'>{$lang['iphistory_browse']}" . get_date($lastbrowse, '') . "<br>{$lang['iphistory_login']}" . get_date($lastlogin, '') . "<br>{$lang['iphistory_ann']}" . get_date($lastannounce, '') . "</td>

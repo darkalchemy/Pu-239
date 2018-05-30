@@ -67,8 +67,8 @@ function get_book_info($torrent)
                 $keys[] = $value;
             }
         }
-        $ebook['isbn10'] = !empty($keys[1]) && 10 === strlen($keys[1]) ? $keys[1] : !empty($keys[3]) ? $keys[3] : '';
-        $ebook['isbn13'] = !empty($keys[3]) && 13 === strlen($keys[3]) ? $keys[3] : !empty($keys[1]) ? $keys[1] : '';
+        $ebook['isbn10'] = !empty($keys[1]) && strlen($keys[1]) === 10 ? $keys[1] : !empty($keys[3]) ? $keys[3] : '';
+        $ebook['isbn13'] = !empty($keys[3]) && strlen($keys[3]) === 13 ? $keys[3] : !empty($keys[1]) ? $keys[1] : '';
         foreach ($book->categories as $category) {
             $ebook['categories'][] = $category;
         }

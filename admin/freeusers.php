@@ -24,7 +24,7 @@ if ($remove) {
             $msgs_ids[]     = $arr['id'];
             $usernames[]    = $arr['username'];
         }
-        if (sizeof($msgs_buffer) > 0) {
+        if (count($msgs_buffer) > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer))                                                                                                          or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, free_switch, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE free_switch = VALUES(free_switch), modcomment=concat(VALUES(modcomment),modcomment)') or sqlerr(__FILE__, __LINE__);
             foreach ($usernames as $username) {
@@ -42,7 +42,7 @@ if ($remove) {
 $res2  = sql_query('SELECT id, username, class, free_switch FROM users WHERE free_switch != 0 ORDER BY username ASC') or sqlerr(__FILE__, __LINE__);
 $count = mysqli_num_rows($res2);
 $HTMLOUT .= "<h1>{$lang['freeusers_head']} ($count)</h1>";
-if (0 == $count) {
+if ($count == 0) {
     $HTMLOUT .= '<p><b>' . $lang['freeusers_nothing'] . '</b></p>';
 } else {
     $HTMLOUT .= "<table width='50%'>

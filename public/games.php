@@ -8,7 +8,7 @@ global $CURUSER, $site_config;
 
 $lang    = array_merge(load_language('global'), load_language('blackjack'));
 $HTMLOUT = '';
-if (0 == $CURUSER['game_access'] || $CURUSER['game_access'] > 1 || 'yes' == $CURUSER['suspended']) {
+if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['suspended'] === 'yes') {
     stderr($lang['bj_error'], $lang['bj_gaming_rights_disabled']);
 }
 

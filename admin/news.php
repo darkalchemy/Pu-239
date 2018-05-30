@@ -31,7 +31,7 @@ if (!in_array($mode, $possible_modes)) {
     stderr($lang['news_error'], $lang['news_error_ruffian']);
 }
 //==Delete news
-if ('delete' == $mode) {
+if ($mode === 'delete') {
     $newsid = (int) $_GET['newsid'];
     if (!is_valid_id($newsid)) {
         stderr($lang['news_error'], $lang['news_del_invalid']);
@@ -63,7 +63,7 @@ if ('delete' == $mode) {
     die();
 }
 //==Add news
-if ('add' == $mode) {
+if ($mode === 'add') {
     $body      = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
     $sticky    = isset($_POST['sticky']) ? htmlsafechars($_POST['sticky']) : 'yes';
     $anonymous = isset($_POST['anonymous']) ? htmlsafechars($_POST['anonymous']) : 'no';
@@ -81,28 +81,28 @@ if ('add' == $mode) {
     sql_query('INSERT INTO news (userid, added, body, title, sticky, anonymous) VALUES (' . sqlesc($CURUSER['id']) . ',' . sqlesc($added) . ', ' . sqlesc($body) . ', ' . sqlesc($title) . ', ' . sqlesc($sticky) . ', ' . sqlesc($anonymous) . ')') or sqlerr(__FILE__, __LINE__);
     $cache->delete('latest_news_');
     header('Refresh: 3; url=staffpanel.php?tool=news&mode=news');
-    1 == mysqli_affected_rows($GLOBALS['___mysqli_ston']) ? stderr($lang['news_success'], $lang['news_add_success']) : stderr($lang['news_add_oopss'], $lang['news_add_something']);
+    mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 1 ? stderr($lang['news_success'], $lang['news_add_success']) : stderr($lang['news_add_oopss'], $lang['news_add_something']);
 }
 //==Edit/change news
-if ('edit' == $mode) {
+if ($mode === 'edit') {
     $newsid = (int) $_GET['newsid'];
     if (!is_valid_id($newsid)) {
         stderr($lang['news_error'], $lang['news_edit_invalid']);
     }
     $res = sql_query('SELECT id, body, title, userid, added, anonymous, sticky FROM news WHERE id=' . sqlesc($newsid)) or sqlerr(__FILE__, __LINE__);
-    if (1 != mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) != 1) {
         stderr($lang['news_error'], $lang['news_edit_nonews']);
     }
     $arr = mysqli_fetch_assoc($res);
-    if ('POST' == $_SERVER['REQUEST_METHOD']) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $body      = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
         $sticky    = isset($_POST['sticky']) ? htmlsafechars($_POST['sticky']) : 'yes';
         $anonymous = isset($_POST['anonymous']) ? htmlsafechars($_POST['anonymous']) : 'no';
-        if ('' == $body) {
+        if ($body == '') {
             stderr($lang['news_error'], $lang['news_edit_body']);
         }
         $title = htmlsafechars($_POST['title']);
-        if ('' == $title) {
+        if ($title == '') {
             stderr($lang['news_error'], $lang['news_edit_title']);
         }
         sql_query('UPDATE news SET body=' . sqlesc($body) . ', sticky=' . sqlesc($sticky) . ', anonymous=' . sqlesc($anonymous) . ', title=' . sqlesc($title) . ' WHERE id=' . sqlesc($newsid)) or sqlerr(__FILE__, __LINE__);
@@ -136,9 +136,9 @@ if ('edit' == $mode) {
                             {$lang['news_sticky']}
                         </td>
                         <td>
-                            <input type='radio' " . ('yes' == $arr['sticky'] ? ' checked' : '') . " name='sticky' value='yes' />
+                            <input type='radio' " . ($arr['sticky'] === 'yes' ? ' checked' : '') . " name='sticky' value='yes' />
                             {$lang['news_yes']}
-                            <input type='radio' " . ('no' == $arr['sticky'] ? ' checked' : '') . " name='sticky' value='no' />
+                            <input type='radio' " . ($arr['sticky'] === 'no' ? ' checked' : '') . " name='sticky' value='no' />
                             {$lang['news_no']}
                         </td>
                     </tr>
@@ -148,9 +148,9 @@ if ('edit' == $mode) {
                         </td>
                         <td>
                             {$lang['news_anonymous']}
-                            <input type='radio' " . ('yes' == $arr['anonymous'] ? ' checked' : '') . " name='anonymous' value='yes' />
+                            <input type='radio' " . ($arr['anonymous'] === 'yes' ? ' checked' : '') . " name='anonymous' value='yes' />
                             {$lang['news_yes']}
-                            <input type='radio' " . ('no' == $arr['anonymous'] ? ' checked' : '') . " name='anonymous' value='no' />
+                            <input type='radio' " . ($arr['anonymous'] === 'no' ? ' checked' : '') . " name='anonymous' value='no' />
                             {$lang['news_no']}
                         </td>
                     </tr>
@@ -169,7 +169,7 @@ if ('edit' == $mode) {
     }
 }
 //==Final Actions
-if ('news' == $mode) {
+if ($mode === 'news') {
     $res = sql_query('SELECT n.id AS newsid, n.body, n.title, n.userid, n.added, n.anonymous, u.id, u.username, u.class, u.warned, u.chatpost, u.pirate, u.king, u.leechwarn, u.enabled, u.donor FROM news AS n LEFT JOIN users AS u ON u.id=n.userid ORDER BY sticky, added DESC') or sqlerr(__FILE__, __LINE__);
     $HTMLOUT .= "
     <div class='container is-fluid portlet'>

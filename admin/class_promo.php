@@ -32,8 +32,8 @@ $mode = (isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '');
 if (!in_array($mode, $possible_modes)) {
     stderr($lang['classpromo_error'], $lang['classpromo_ruffian']);
 }
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
-    if ('edit' == $mode) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($mode === 'edit') {
         foreach ($class_config as $c_name => $value) {
             // handing from database
             $c_value     = $value['id']; // $key is like 0, 1, 2 etc....
@@ -64,7 +64,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     }
 
     //ADD CLASS
-    if ('add' == $mode) {
+    if ($mode === 'add') {
         print_r($_POST, true);
         $name      = isset($_POST['name']) ? htmlsafechars($_POST['name']) : stderr($lang['classpromo_error'], $lang['classpromo_err_clsname']);
         $min_ratio = isset($_POST['min_ratio']) ? $_POST['min_ratio'] : stderr($lang['classpromo_error'], $lang['classpromo_err_minratio']);
@@ -81,7 +81,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     }
 
     // remove
-    if ('remove' == $mode) {
+    if ($mode === 'remove') {
         $name = isset($_POST['remove']) ? htmlsafechars($_POST['remove']) : stderr($lang['classpromo_error'], $lang['classpromo_err_required']);
         if (sql_query('DELETE FROM class_promo WHERE name = ' . sqlesc($name) . '')) {
             stderr($lang['classpromo_success'], $lang['classpromo_success_reset']);

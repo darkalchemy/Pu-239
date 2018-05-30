@@ -64,7 +64,7 @@ if (isset($_GET['torrentid'])) {
     $res_snatched   = sql_query('SELECT s.uploaded, s.downloaded, t.name, t.size FROM snatched AS s LEFT JOIN torrents AS t ON t.id = s.torrentid WHERE s.userid = ' . sqlesc($userid) . ' AND torrentid = ' . sqlesc($torrent_number) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $arr_snatched   = mysqli_fetch_assoc($res_snatched);
     $downloaded     = $site_config['ratio_free'] ? (int) $arr_snatched['size'] : (int) $arr_snatched['downloaded'];
-    if ('' == $arr_snatched['name']) {
+    if ($arr_snatched['name'] == '') {
         stderr('Error', "No torrent with that ID!<br>Back to your <a class='altlink' href='hnrs.php'>Hit and Runs</a> page.");
     }
     $download_amt = $site_config['ratio_free'] ? ', downloaded = ".sqlesc($downloaded)."' : '';
@@ -213,7 +213,7 @@ if (mysqli_num_rows($r) > 0) {
         $dl_speed = mksize($dl_speed);
         //=== mark of cain / hit and run
         $checkbox_for_delete = ($CURUSER['class'] >= UC_STAFF ? " [<a href='" . $site_config['baseurl'] . '/userdetails.php?id=' . $userid . '&amp;delete_hit_and_run=' . (int) $What_Id . "'>{$lang['userdetails_c_remove']}</a>]" : '');
-        $mark_of_cain        = ('yes' == $a['mark_of_cain'] ? "<img src='{$site_config['pic_baseurl']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' title='{$lang['userdetails_c_tmofcain']}' />" . $checkbox_for_delete : '');
+        $mark_of_cain = ($a['mark_of_cain'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' title='{$lang['userdetails_c_tmofcain']}' />" . $checkbox_for_delete : '');
         $hit_n_run           = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['pic_baseurl']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' title='{$lang['userdetails_c_hitrun1']}' />" : '');
         $needs_seed          = $a['hit_and_run'] + 86400 > time() ? ' in ' . mkprettytime($a['hit_and_run'] + 86400 - time()) : '';
 
@@ -231,16 +231,16 @@ if (mysqli_num_rows($r) > 0) {
             $buybytes = '';
         }
 
-        $or = '' != $buyout && '' != $buybytes ? 'or' : '';
+        $or = $buyout != '' && $buybytes != '' ? 'or' : '';
         //            $sucks = $buyout == '' && $buybytes == '' ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
-        $sucks = '' == $buyout ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
+        $sucks = $buyout == '' ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
 
         if (!XBT_TRACKER) {
             $body .= "
         <tr>
             <td style='padding: 5px'><img height='42px' class='tnyrad' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
             <td align='left'><a class='altlink' href='details.php?id=" . (int) $a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
-                <br><span style='color: .$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $userid == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (('0:00' != $minus_ratio) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ('yes' == $a['seeder'] ? "&#160;<font color='limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain . $needs_seed) : '') . "
+                <br><span style='color: .$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00') ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['seeder'] === 'yes' ? "&#160;<font color='limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain . $needs_seed) : '') . "
             </td>
             <td class='has-text-center'>" . (int) $a['seeders'] . "</td>
             <td class='has-text-center'>" . (int) $a['leechers'] . "</td>
@@ -257,7 +257,7 @@ if (mysqli_num_rows($r) > 0) {
         <tr>
             <td style='padding: 5px'><img  height='42px' class='tnyrad' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
             <td align='left'><a class='altlink' href='details.php?id=" . (int) $a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
-                <br><span style='color: .$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $userid == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (('0:00' != $minus_ratio && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . (1 == $a['active'] && $a['left'] = 0 ? "&#160;<font color='limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . $needs_seed) : '') . "
+                <br><span style='color: .$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['active'] == 1 && $a['left'] == 0 ? "&#160;<font color='limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . $needs_seed) : '') . "
             </td>
             <td class='has-text-center'>" . (int) $a['seeders'] . "</td>
             <td class='has-text-center'>" . (int) $a['leechers'] . "</td>

@@ -207,7 +207,7 @@ function islocal($link)
     } else {
         $url = $title = trim($link[2]);
     }
-    if (strlen($title) > $limit && false == $flag) {
+    if (strlen($title) > $limit && $flag == false) {
         $l[0]   = substr($title, 0, ($limit / 2));
         $l[1]   = substr($title, strlen($title) - round($limit / 3));
         $lshort = $l[0] . '...' . $l[1];
@@ -216,7 +216,7 @@ function islocal($link)
     }
     $url = htmlsafechars($url);
 
-    return '<a href="' . ((false !== stristr($url, $site_config['url'])) ? '' : $site_config['anonymizer_url']) . $url . '" target="_blank">' . $lshort . '</a>';
+    return '<a href="' . ((stristr($url, $site_config['url']) !== false) ? '' : $site_config['anonymizer_url']) . $url . '" target="_blank">' . $lshort . '</a>';
 }
 
 /**
@@ -250,7 +250,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
                                           'https://',
                                           'https://www',
                                       ], '', $site_config['baseurl']);
-    if (isset($_SERVER['HTTPS']) && true == (bool) $_SERVER['HTTPS']) {
+    if (isset($_SERVER['HTTPS']) && (bool)$_SERVER['HTTPS'] == true) {
         $s = preg_replace('/http:\/\/((?:www\.)?' . $site_config['url'] . ')/i', 'https://$1', $s);
     } else {
         $s = preg_replace('/https:\/\/((?:www\.)?' . $site_config['url'] . ')/i', 'http://$1', $s);
@@ -410,7 +410,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     if ($urls) {
         $s = format_urls($s);
     }
-    if (false !== stripos($s, '[url') && $urls) {
+    if (stripos($s, '[url') !== false && $urls) {
         $s = preg_replace_callback("/\[url=([^()<>\s]+?)\](.+?)\[\/url\]/is", 'islocal', $s);
         // [url]http://www.example.com[/url]
         $s = preg_replace_callback("/\[url\]([^()<>\s]+?)\[\/url\]/is", 'islocal', $s);
@@ -420,18 +420,18 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     $s = dynamic_user_vars($s);
 
     // [pre]Preformatted[/pre]
-    if (false !== stripos($s, '[pre]')) {
+    if (stripos($s, '[pre]') !== false) {
         $s = preg_replace("/\[pre\]((\s|.)+?)\[\/pre\]/i", '<tt><span style="white-space: nowrap;">\\1</span></tt>', $s);
     }
     // [nfo]NFO-preformatted[/nfo]
-    if (false !== stripos($s, '[nfo]')) {
+    if (stripos($s, '[nfo]') !== false) {
         $s = preg_replace("/\[nfo\]((\s|.)+?)\[\/nfo\]/i", "<tt><span style=\"white-space: nowrap;\"><font face='MS Linedraw' size='2' style='font-size: 10pt; line-height: 10pt;'>\\1</font></span></tt>", $s);
     }
     //==Media tag
-    if (false !== stripos($s, '[media=')) {
+    if (stripos($s, '[media=') !== false) {
         $s = preg_replace("#\[media=(youtube|liveleak|GameTrailers|vimeo|imdb)\](.+?)\[/media\]#ies", "_MediaTag('\\2','\\1')", $s);
     }
-    if (false !== stripos($s, '[img') && $images) {
+    if (stripos($s, '[img') !== false && $images) {
         // [img]http://www/image.gif[/img]
         $s = preg_replace("/\[img\]((http|https):\/\/[^\s'\"<>]+(\.(jpeg|jpg|gif|png|bmp)))\[\/img\]/i", '<a href="\\1" data-lightbox="details"><img src="\\1" alt="" class="img-responsive" /></a>', $s);
         // [img=http://www/image.gif]
@@ -447,18 +447,18 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         }
     }
     // [mcom]Text[/mcom]
-    if (false !== stripos($s, '[mcom]')) {
+    if (stripos($s, '[mcom]') !== false) {
         $s = preg_replace("/\[mcom\](.+?)\[\/mcom\]/is", '<div style="font-size: 18pt; line-height: 50%;">
    <div style="border-color: red; background-color: red; color: #fff; text-align: center; font-weight: bold; font-size: large;"><b>\\1</b></div></div>', $s);
     }
     // the [you] tag
-    if (false !== stripos($s, '[you]')) {
+    if (stripos($s, '[you]') !== false) {
         $s = preg_replace("/https?:\/\/[^\s'\"<>]*\[you\][^\s'\"<>]*/i", ' ', $s);
         $s = preg_replace("/\[you\]/i", $CURUSER['username'], $s);
     }
 
     // the [username] tag
-    if (false !== stripos($s, '[username]')) {
+    if (stripos($s, '[username]') !== false) {
         $s = preg_replace("/https?:\/\/[^\s'\"<>]*\[username\][^\s'\"<>]*/i", ' ', $s);
         $s = preg_replace("/\[username\]/i", $CURUSER['username'], $s);
     }
@@ -660,7 +660,7 @@ function format_comment_no_bbcode($text, $strip_html = true)
 function _MediaTag($content, $type)
 {
     global $site_config;
-    if ('' == $content || '' == $type) {
+    if ($content == '' || $type == '') {
         return;
     }
     $return = '';

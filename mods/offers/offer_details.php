@@ -28,7 +28,7 @@ $HTMLOUT .= "<tr><td><b>Added</b></td>
 if ($CURUSER['id'] == $num['userid'] || $CURUSER['class'] >= UC_MODERATOR) {
     $edit   = " | <a class='altlink' href='viewoffers.php?id=" . $id . "&amp;edit_offer'>Edit Offer</a> |";
     $delete = " <a class='altlink' href='viewoffers.php?id=" . $id . "&amp;del_offer'>Delete offer</a> ";
-    if (0 != $num['torrentid']) {
+    if ($num['torrentid'] != 0) {
         $reset = "| <a class='altlink' href='viewoffers.php?id=" . $id . "&amp;offer_reset'>Re-set Offer</a>";
     }
 }
@@ -42,7 +42,7 @@ $HTMLOUT .= "<tr>
 for breaking the rules 
 <form action='report.php?type=Offer&amp;id=$id' method='post'><input class='button is-small' type='submit' name='submit' value='Report Offer' /></form></td>
 </tr>" : '');
-if (0 == $num['torrentid']) {
+if ($num['torrentid'] == 0) {
     $HTMLOUT .= "<tr><td><b>Accept This Offer</b></td>
     <td>
     <form method='post' action='viewoffers.php?id=" . $id . "&amp;offer_filled'>

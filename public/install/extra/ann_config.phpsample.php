@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'define.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'define.php';
 require_once VENDOR_DIR . 'autoload.php';
 $dotenv = new Dotenv\Dotenv(dirname(__FILE__, 2) . DIRECTORY_SEPARATOR);
 $dotenv->load();

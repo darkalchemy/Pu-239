@@ -5,7 +5,7 @@ dbconn();
 global $site_config;
 
 $torrent_pass = (isset($_GET['torrent_pass']) ? htmlsafechars($_GET['torrent_pass']) : '');
-$feed         = (isset($_GET['type']) && 'dl' == $_GET['type'] ? 'dl' : 'web');
+$feed         = (isset($_GET['type']) && $_GET['type'] === 'dl' ? 'dl' : 'web');
 $cats         = (isset($_GET['cats']) ? $_GET['cats'] : '');
 if ($cats) {
     $validate_cats = explode(',', $cats);
@@ -13,11 +13,11 @@ if ($cats) {
     $cats          = implode(', ', array_map('sqlesc', $validate_cats));
 }
 if (!empty($torrent_pass)) {
-    if (64 != strlen($torrent_pass)) {
+    if (strlen($torrent_pass) != 64) {
         die('Your passkey is not long enough! Go to ' . $site_config['site_name'] . ' and reset your passkey');
     } else {
         $q0 = sql_query('SELECT id, class FROM users WHERE torrent_pass = ' . sqlesc($torrent_pass)) or sqlerr(__FILE__, __LINE__);
-        if (0 == mysqli_num_rows($q0)) {
+        if (mysqli_num_rows($q0) == 0) {
             die('Your passkey is invalid! Go to ' . $site_config['site_name'] . ' and reset your passkey');
         } else {
             $CURUSER = mysqli_fetch_assoc($q0);
@@ -36,7 +36,7 @@ if (!empty($cats)) {
 if ($CURUSER['class'] < UC_VIP) {
     $where[] = "t.vip = '0'";
 }
-if (isset($_POST['bm']) && is_int($_POST['bm']) && 1 == $_POST['bm']) {
+if (isset($_POST['bm']) && is_int($_POST['bm']) && $_POST['bm'] == 1) {
     $join = 'LEFT JOIN bookmarks AS b ON b.torrentid = t.id';
 }
 $counts = [15, 30, 50, 100];
@@ -79,7 +79,7 @@ $sql = "SELECT t.id, t.name, t.descr, t.size, t.category, t.seeders, t.leechers,
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
 while ($a = mysqli_fetch_assoc($res)) {
-    $link     = $site_config['baseurl'] . ('dl' == $feed ? '/download.php?torrent=' . (int) $a['id'] . '&amp;torrent_pass=' . $torrent_pass : '/details.php?id=' . (int) $a['id'] . '&amp;hit=1');
+    $link     = $site_config['baseurl'] . ($feed === 'dl' ? '/download.php?torrent=' . (int) $a['id'] . '&amp;torrent_pass=' . $torrent_pass : '/details.php?id=' . (int) $a['id'] . '&amp;hit=1');
     $br       = '&lt;br/&gt;';
     $guidlink = $site_config['baseurl'] . '/details.php?id=' . (int) $a['id'];
     $HTMLOUT .= '

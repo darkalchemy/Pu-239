@@ -69,8 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             stderr($lang['std_success'], sprintf($lang['text_user_added'], $user_id));
         }
     } else {
-        if (((is_object($GLOBALS['___mysqli_ston'])) == 1062 ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
-            $res = sql_query('SELECT id
+        if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
+            $res = sql_query('SELECT id 
                         FROM users
                         WHERE username = ' . sqlesc($insert['username'])
             ) or sqlerr(__FILE__, __LINE__);

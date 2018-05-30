@@ -12,7 +12,7 @@ function karma_update($data)
     ignore_user_abort(true);
     $count = $total = 0;
 
-    if (1 == $site_config['seedbonus_on']) {
+    if ($site_config['seedbonus_on'] == 1) {
         $users_buffer = [];
         $bmt          = $site_config['bonus_max_torrents'];
         $What_id      = (XBT_TRACKER ? 'fid' : 'torrent');
@@ -31,7 +31,7 @@ function karma_update($data)
                     $arr['tcount'] = $bmt;
                 }
                 $Buffer_User = (XBT_TRACKER ? $arr['uid'] : $arr['userid']);
-                if ($arr['users_id'] == $Buffer_User && null != $arr['users_id']) {
+                if ($arr['users_id'] == $Buffer_User && $arr['users_id'] != null) {
                     $bonus = $site_config['bonus_per_duration'] * $arr['tcount'];
                     $total += $bonus;
                     $update['seedbonus'] = $arr['seedbonus'] + $bonus;

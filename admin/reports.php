@@ -78,7 +78,7 @@ if ((isset($_GET['deal_with_report'])) || (isset($_POST['deal_with_report']))) {
 
 $HTMLOUT .= "<h1>{$lang['reports_active']}</h1>";
 
-if ((isset($_GET['delete'])) && (UC_MAX == $CURUSER['class'])) {
+if ((isset($_GET['delete'])) && ($CURUSER['class'] == UC_MAX)) {
     $res = sql_query('DELETE FROM reports WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $cache->delete('new_report_');
     $session->set('is-success', $lang['reports_deleted']);
@@ -89,7 +89,7 @@ $row     = mysqli_fetch_array($res);
 $count   = $row[0];
 $perpage = 15;
 $pager   = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?tool=reports&amp;");
-if ('0' == $count) {
+if ($count == '0') {
     $HTMLOUT .= main_div($lang['reports_nice']);
 } else {
     $HTMLOUT .= $pager['pagertop'];
@@ -103,7 +103,7 @@ if ('0' == $count) {
             <th>{$lang['reports_type']}</th>
             <th>{$lang['reports_reason']}</th>
             <th>{$lang['reports_dealt']}</th>
-            <th>{$lang['reports_deal']}</th>" . (UC_MAX == $CURUSER['class'] ? "
+            <th>{$lang['reports_deal']}</th>" . ($CURUSER['class'] == UC_MAX ? "
             <th>{$lang['reports_delete']}</th>" : '') . '
         </tr>';
 
@@ -112,7 +112,7 @@ if ('0' == $count) {
     while ($arr_info = mysqli_fetch_assoc($res_info)) {
         $added       = (int) $arr_info['added'];
         $solved_date = (int) $arr_info['when_delt_with'];
-        if ('0' == $solved_date) {
+        if ($solved_date == '0') {
             $solved_in    = ' [N/A]';
             $solved_color = 'pink';
         } else {
@@ -137,7 +137,7 @@ if ('0' == $count) {
             $checkbox  = "<input type='radio' name='id' value='" . (int) $arr_info['id'] . "' />";
         }
 
-        if ('' != $arr_info['reporting_type']) {
+        if ($arr_info['reporting_type'] != '') {
             switch ($arr_info['reporting_type']) {
                 case 'User':
                     $link_to_thing = format_username($arr_info['reporting_what']);
@@ -200,7 +200,7 @@ if ('0' == $count) {
             <td><b>" . str_replace('_', ' ', $arr_info['reporting_type']) . '</b>' . '</td>
             <td>' . htmlsafechars($arr_info['reason']) . "</td>
             <td>{$dealtwith} {$delt_link}</td>
-            <td>{$checkbox}</td>" . (UC_MAX == $CURUSER['class'] ? "
+            <td>{$checkbox}</td>" . ($CURUSER['class'] == UC_MAX ? "
             <td><a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=reports&amp;action=reports&amp;id=" . (int) $arr_info['id'] . "&amp;delete=1'>
                     <span class='has-text-danger'>{$lang['reports_delete']}</span>
                 </a>
@@ -209,10 +209,10 @@ if ('0' == $count) {
         if ($arr_info['how_delt_with']) {
             $HTMLOUT .= "
         <tr>
-            <td colspan='" . (UC_MAX == $CURUSER['class'] ? '8' : '7') . "'><b>{$lang['reports_with']} " . htmlsafechars($arr_who['username']) . ':</b> ' . get_date($arr_info['when_delt_with'], 'LONG', 0, 1) . "</td>
+            <td colspan='" . ($CURUSER['class'] == UC_MAX ? '8' : '7') . "'><b>{$lang['reports_with']} " . htmlsafechars($arr_who['username']) . ':</b> ' . get_date($arr_info['when_delt_with'], 'LONG', 0, 1) . "</td>
         </tr>
         <tr>
-            <td colspan='" . (UC_MAX == $CURUSER['class'] ? '8' : '7') . "'>" . htmlsafechars($arr_info['how_delt_with']) . '<br><br></td>
+            <td colspan='" . ($CURUSER['class'] == UC_MAX ? '8' : '7') . "'>" . htmlsafechars($arr_info['how_delt_with']) . '<br><br></td>
         </tr>';
         }
     }

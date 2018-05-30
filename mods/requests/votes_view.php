@@ -16,7 +16,7 @@ if ($count > 0) {
     $HTMLOUT .= "<h1>{$lang['view_voters']}<a class='altlink' href='viewrequests.php?id=$id&amp;req_details'><b>" . htmlspecialchars($arr2['request']) . '</b></a></h1>';
     $HTMLOUT .= "<p>{$lang['view_vote_this']}<a class='altlink' href='viewrequests.php?id=$id&amp;req_vote'><b>{$lang['view_req']}</b></a></p>";
     $HTMLOUT .= $pager['pagertop'];
-    if (0 == mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) == 0) {
         $HTMLOUT .= "<p><b>{$lang['view_nothing']}</b></p>\n";
     } else {
         $HTMLOUT .= "<table >
@@ -27,7 +27,7 @@ if ($count > 0) {
             $uploaded   = mksize($arr['uploaded']);
             $joindate   = get_date($arr['added'], '');
             $downloaded = mksize($arr['downloaded']);
-            $enabled    = ('no' == $arr['enabled'] ? '<span style="color:red;">No</span>' : '<span style="color:green;">Yes</span>');
+            $enabled = ($arr['enabled'] === 'no' ? '<span style="color:red;">No</span>' : '<span style="color:green;">Yes</span>');
             $arr['id']  = $arr['userid'];
             $username   = format_username($arr['userid']);
             $HTMLOUT .= "<tr><td>$username</td>

@@ -7,8 +7,8 @@ global $site_config, $lang;
 
 $lang = array_merge($lang, load_language('ad_mysql_overview'));
 //Do we wanna continue here, or skip to just the overview?
-if (isset($_GET['Do'], $_GET['table'])) {
-    $Do = ('T' === $_GET['Do']) ? sqlesc($_GET['Do']) : ''; //for later use!
+if (isset($_GET['Do']) && isset($_GET['table'])) {
+    $Do = ($_GET['Do'] === 'T') ? sqlesc($_GET['Do']) : ''; //for later use!
     //Make sure the GET only has alpha letters and nothing else
     if (!ereg('[^A-Za-z_]+', $_GET['table'])) {
         $Table = '`' . $_GET['table'] . '`'; //add backquotes to GET or we is doomed!
@@ -54,7 +54,7 @@ function byteformat($value, $limes = 2, $comma = 0)
             break 1;
         } // end if
     } // end for
-    if ($GLOBALS['byteUnits'][0] != $unit) {
+    if ($unit != $GLOBALS['byteUnits'][0]) {
         $return_value = number_format($value, $comma, '.', ',');
     } else {
         $return_value = number_format($value, 0, '.', ',');

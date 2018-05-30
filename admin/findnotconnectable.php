@@ -9,7 +9,7 @@ global $CURUSER, $lang;
 
 $lang    = array_merge($lang, load_language('non_con'));
 $HTMLOUT = '';
-if (isset($_GET['action1']) && 'list' == htmlsafechars($_GET['action1'])) {
+if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'list') {
     $res2 = sql_query("SELECT userid, seeder, torrent, agent FROM peers WHERE connectable='no' ORDER BY userid DESC") or sqlerr(__FILE__, __LINE__);
     $HTMLOUT .= "<h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=sendpm'>{$lang['non_con_sendall']}</a></h3>
     <h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>{$lang['non_con_view']}</a></h3>
@@ -18,8 +18,8 @@ if (isset($_GET['action1']) && 'list' == htmlsafechars($_GET['action1'])) {
     $result = sql_query("SELECT DISTINCT userid FROM peers WHERE connectable = 'no'");
     $count  = mysqli_num_rows($result);
     $HTMLOUT .= "$count {$lang['non_con_unique']}</p>";
-    @((mysqli_free_result($result) || (is_object($result) && ('mysqli_result' == get_class($result)))) ? true : false);
-    if (0 == mysqli_num_rows($res2)) {
+    @((mysqli_free_result($result) || (is_object($result) && (get_class($result) === 'mysqli_result'))) ? true : false);
+    if (mysqli_num_rows($res2) == 0) {
         $HTMLOUT .= "<p><b>{$lang['non_con_all']}</b></p>\n";
     } else {
         $HTMLOUT .= "<table >\n";
@@ -28,7 +28,7 @@ if (isset($_GET['action1']) && 'list' == htmlsafechars($_GET['action1'])) {
             $r2 = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr2['userid'])) or sqlerr(__FILE__, __LINE__);
             $a2 = mysqli_fetch_assoc($r2);
             $HTMLOUT .= "<tr><td><a href='userdetails.php?id=" . (int) $arr2['userid'] . "'>" . htmlsafechars($a2['username']) . "</a></td><td><a href='details.php?id=" . (int) $arr2['torrent'] . "&amp;dllist=1#seeders'>" . (int) $arr2['torrent'] . '</a>';
-            if ('yes' == $arr2['seeder']) {
+            if ($arr2['seeder'] === 'yes') {
                 $HTMLOUT .= "<span class='has-text-danger'>*</span>";
             }
             $HTMLOUT .= '</td><td>' . htmlsafechars($arr2['agent']) . "</td></tr>\n";
@@ -36,7 +36,7 @@ if (isset($_GET['action1']) && 'list' == htmlsafechars($_GET['action1'])) {
         $HTMLOUT .= "</table>\n";
     }
 }
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dt  = TIME_NOW;
     $msg = htmlsafechars($_POST['msg']);
     if (!$msg) {
@@ -50,7 +50,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     sql_query('INSERT INTO notconnectablepmlog (user, date) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($dt) . ')') or sqlerr(__FILE__, __LINE__);
     header('Refresh: 0; url=staffpanel.php?tool=findnotconnectable');
 }
-if (isset($_GET['action1']) && 'sendpm' == htmlsafechars($_GET['action1'])) {
+if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'sendpm') {
     $HTMLOUT .= "<table class='main' width='750' ><tr><td class='embedded'>
 <div>
 <h1>{$lang['non_con_mass']}</h1>
@@ -83,7 +83,7 @@ if (isset($_GET['action1']) && 'sendpm' == htmlsafechars($_GET['action1'])) {
 NOTE: No HTML Code Allowed. (NO HTML)
 ";
 }
-if ('' == isset($_GET['action1'])) {
+if (isset($_GET['action1']) == '') {
     $getlog = sql_query('SELECT * FROM `notconnectablepmlog` ORDER BY date DESC LIMIT 20') or sqlerr(__FILE__, __LINE__);
     $HTMLOUT .= "<h1>{$lang['non_con_uncon']}</h1>
     <h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=sendpm'>{$lang['non_con_sendall']}</a></h3>

@@ -34,7 +34,7 @@ $valid_do = [
 $do      = isset($_GET['do']) && in_array($_GET['do'], $valid_do) ? $_GET['do'] : (isset($_POST['do']) && in_array($_POST['do'], $valid_do) ? $_POST['do'] : '');
 $id      = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) && is_array($_POST['id']) ? array_map('mkint', $_POST['id']) : 0);
 $message = isset($_POST['message'])     && !empty($_POST['message']) ? htmlsafechars($_POST['message']) : '';
-$reply   = isset($_POST['reply'])       && 1 == $_POST['reply'] ? true : false;
+$reply   = isset($_POST['reply'])       && $_POST['reply'] == 1 ? true : false;
 $HTMLOUT = '';
 switch ($do) {
     case 'delete':
@@ -90,7 +90,7 @@ switch ($do) {
     case 'view':
         if ($id > 0) {
             $q2 = sql_query('SELECT s.id, s.added, s.msg, s.subject, s.answered, s.answer, s.answeredby, s.sender, s.answer, u.username, u2.username AS username2 FROM staffmessages AS s LEFT JOIN users AS u ON s.sender = u.id LEFT JOIN users AS u2 ON s.answeredby = u2.id  WHERE s.id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-            if (1 == mysqli_num_rows($q2)) {
+            if (mysqli_num_rows($q2) == 1) {
                 $a = mysqli_fetch_assoc($q2);
                 $HTMLOUT .= "
                     <h1 class='has-text-centered'>{$lang['staffbox_pm_view']}</h1>" . main_div("
@@ -104,7 +104,7 @@ switch ($do) {
                                                                                                                            format_comment($a['msg']) . "
                         </div>
                         <div class='bordered top20 bottom20 bg-00'>
-                            {$lang['staffbox_pm_answer']} " . (0 == $a['answeredby'] ? "
+                            {$lang['staffbox_pm_answer']} " . ($a['answeredby'] == 0 ? "
                             <textarea rows='5' class='w-100' name='message' ></textarea>" : ($a['answer'] ? format_comment($a['answer']) : "<b>{$lang['staffbox_pm_noanswer']}</b>")) . "
                         </div>
                         <div class='has-text-centered top20'>

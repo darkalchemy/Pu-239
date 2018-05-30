@@ -107,7 +107,7 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
                     break;
             }
             $checkbox_for_delete = ($CURUSER['class'] >= UC_STAFF ? " [<a href='" . $site_config['baseurl'] . '/userdetails.php?id=' . $id . '&amp;delete_hit_and_run=' . (int) $What_Id . "'>{$lang['userdetails_c_remove']}</a>]" : '');
-            $mark_of_cain        = ('yes' == $a['mark_of_cain'] ? "<img src='{$site_config['pic_baseurl']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' title='{$lang['userdetails_c_tmofcain']}' />" . $checkbox_for_delete : '');
+            $mark_of_cain = ($a['mark_of_cain'] == 'yes' ? "<img src='{$site_config['pic_baseurl']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' title='{$lang['userdetails_c_tmofcain']}' />" . $checkbox_for_delete : '');
             $hit_n_run           = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['pic_baseurl']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' title='{$lang['userdetails_c_hitrun1']}' />" : '');
             if (!XBT_TRACKER) {
                 $body .= "
@@ -115,7 +115,7 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
                 <td style='padding: 0;'><img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
                 <td>
                     <a class='altlink' href='{$site_config['baseurl']}/details.php?id=" . (int) $a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . '</b></a>
-                    <br><span>  ' . (($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) ? "{$lang['userdetails_c_seedfor']}</span>: " . mkprettytime($a['seedtime']) . (('0:00' != $minus_ratio && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ('yes' == $a['seeder'] ? "&#160;<span class='has-text-lime'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain) : '') . '</td>
+                    <br><span>  ' . (($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) ? "{$lang['userdetails_c_seedfor']}</span>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['seeder'] === 'yes' ? "&#160;<span class='has-text-lime'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain) : '') . '</td>
                 <td>' . (int) $a['seeders'] . '</td>
                 <td>' . (int) $a['leechers'] . '</td>
                 <td>' . mksize($a['uploaded']) . '</td>
@@ -131,7 +131,7 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
             <tr>
                 <td style='padding: 0;'><img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
                 <td><a class='altlink' href='{$site_config['baseurl']}/details.php?id=" . (int) $a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . '</b></a>
-                <br><span>  ' . (($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) ? "{$lang['userdetails_c_seedfor']}</span>: " . mkprettytime($a['seedtime']) . (('0:00' != $minus_ratio && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . (1 == $a['active'] && $a['left'] = 0 ? "&#160;<span class='has-text-lime'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run) : '') . '</td>
+                <br><span>  ' . (($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) ? "{$lang['userdetails_c_seedfor']}</span>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['active'] == 1 && $a['left'] == 0 ? "&#160;<span class='has-text-lime'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run) : '') . '</td>
                 <td>' . (int) $a['seeders'] . '</td>
                 <td>' . (int) $a['leechers'] . '</td>
                 <td>' . mksize($a['uploaded']) . '</td>

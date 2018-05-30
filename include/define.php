@@ -2,7 +2,7 @@
 
 define('TIME_NOW', time());
 
-define('INCL_DIR', __DIR__ . DIRECTORY_SEPARATOR);
+define('INCL_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 define('ROOT_DIR', dirname(INCL_DIR, 1) . DIRECTORY_SEPARATOR);
 define('ADMIN_DIR', ROOT_DIR . 'admin' . DIRECTORY_SEPARATOR);
 define('FORUM_DIR', ROOT_DIR . 'forums' . DIRECTORY_SEPARATOR);

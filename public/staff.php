@@ -31,16 +31,16 @@ $query   = $fluent->from('users')
     ->orderBy('username');
 
 foreach ($query as $arr2) {
-    if ('yes' === $arr2['support']) {
+    if ($arr2['support'] === 'yes') {
         $support[] = $arr2;
     }
-    if (UC_MODERATOR === $arr2['class']) {
+    if ($arr2['class'] == UC_MODERATOR) {
         $mods[] = $arr2;
     }
-    if (UC_ADMINISTRATOR === $arr2['class']) {
+    if ($arr2['class'] == UC_ADMINISTRATOR) {
         $admin[] = $arr2;
     }
-    if (UC_SYSOP === $arr2['class']) {
+    if ($arr2['class'] == UC_SYSOP) {
         $sysop[] = $arr2;
     }
 }

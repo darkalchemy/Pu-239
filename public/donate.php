@@ -88,7 +88,7 @@ $donate = [
         'Imunnity ' . $site_config['paypal_config']['imm_dur_6'] . ' weeks',
     ],
 ];
-$done = isset($_GET['done']) && 1 == $_GET['done'] ? true : false;
+$done = isset($_GET['done']) && $_GET['done'] == 1 ? true : false;
 if ($site_config['paypal_config']['enable'] == 0) {
     $out = stdmsg('Sorry', 'Donation system is currently offline.');
 } else {

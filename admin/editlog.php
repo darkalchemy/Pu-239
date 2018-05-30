@@ -38,7 +38,7 @@ foreach ($directories as $path) {
         }
     }
 }
-if (!$exist || (isset($_POST['update']) && ('Update' == $_POST['update']))) {
+if (!$exist || (isset($_POST['update']) && ($_POST['update'] === 'Update'))) {
     $data = serialize($fetch_set);
     if (file_put_contents($file_data, $data)) {
         $session->set('is-success', "Coder's Log was updated for {$CURUSER['username']}");
@@ -93,7 +93,7 @@ reset($current);
 $count   = 0;
 $current = array_msort($current, ['name' => SORT_ASC]);
 foreach ($current as $x) {
-    if ('new' == $x['status']) {
+    if ($x['status'] === 'new') {
         $HTMLOUT .= '
                 <tr>
                     <td>' .
@@ -126,7 +126,7 @@ $HTMLOUT .= "
 reset($current);
 $count = 0;
 foreach ($current as $x) {
-    if ('modified' == $x['status']) {
+    if ($x['status'] === 'modified') {
         $HTMLOUT .= '
                 <tr>
                     <td>' .
@@ -159,7 +159,7 @@ $HTMLOUT .= "
 reset($current);
 $count = 0;
 foreach ($current as $x) {
-    if ('deleted' == $x['status']) {
+    if ($x['status'] === 'deleted') {
         $HTMLOUT .= '
                 <tr>
                     <td>' .

@@ -25,7 +25,7 @@ $descr .= isset($_POST['body']) ? $_POST['body'] : '';
 if (!$descr) {
     stderr("{$lang['error_error']}", "{$lang['error_descr']}");
 }
-$cat = (isset($_POST['category']) ? (int) $_POST['category'] : ('' != $num['cat'] ? $num['cat'] : 0));
+$cat = (isset($_POST['category']) ? (int) $_POST['category'] : ($num['cat'] != '' ? $num['cat'] : 0));
 if (!is_valid_id($cat)) {
     stderr("{$lang['error_error']}", "{$lang['error_cat']}");
 }
@@ -44,12 +44,12 @@ if ($filled) {
     //$filledby = 0;
     //else {
     $res = mysqli_query($GLOBALS['___mysqli_ston'], 'SELECT id FROM users WHERE id = ' . $filledby);
-    if (0 == mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) == 0) {
         stderr("{$lang['error_error']}", "{$lang['error_no_user']}");
     }
     //  }
     $res = sql_query('SELECT id FROM torrents WHERE id = ' . $torrentid);
-    if (0 == mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) == 0) {
         stderr("{$lang['error_error']}", "{$lang['error_no_torrent']}");
     }
     sql_query("UPDATE requests SET cat = $cat, request = $request, descr = $descr, filledby = $filledby, torrentid=$torrentid WHERE id = $id") or sqlerr(__FILE__, __LINE__);

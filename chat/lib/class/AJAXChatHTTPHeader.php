@@ -31,7 +31,7 @@ class AJAXChatHTTPHeader
             $this->_contentType = $contentType . '; charset=' . $encoding;
             $this->_constant    = true;
         } else {
-            if (isset($_SERVER['HTTP_ACCEPT']) && (false !== strpos($_SERVER['HTTP_ACCEPT'], 'application/xhtml+xml'))) {
+            if (isset($_SERVER['HTTP_ACCEPT']) && (strpos($_SERVER['HTTP_ACCEPT'], 'application/xhtml+xml') !== false)) {
                 $this->_contentType = 'application/xhtml+xml; charset=' . $encoding;
             } else {
                 $this->_contentType = 'text/html; charset=' . $encoding;

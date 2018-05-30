@@ -53,7 +53,7 @@ if ((isset($_GET['do_it'])) || (isset($_POST['do_it']))) {
     }
 
     $res = sql_query('SELECT id FROM reports WHERE reported_by =' . sqlesc($CURUSER['id']) . ' AND reporting_what =' . sqlesc($id) . ' AND reporting_type = ' . sqlesc($type)) or sqlerr(__FILE__, __LINE__);
-    if (0 != mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) != 0) {
         stderr("{$lang['report_error5']}", "{$lang['report_error6']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>$id</b>!");
     }
 

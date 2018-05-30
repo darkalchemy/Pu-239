@@ -43,12 +43,12 @@ if (!empty($_POST) && (int) $_POST['qid'] === $qid) {
         } else {
             $rowcount = get_row_count('triviausers', 'WHERE user_id = ' . sqlesc($user_id) . ' AND qid = ' . sqlesc($qid) . ' AND gamenum = ' . sqlesc($gamenum));
 
-            if (0 === $rowcount) {
+            if ($rowcount === 0) {
                 $sql     = 'SELECT canswer FROM triviaq WHERE qid = ' . sqlesc($qid);
                 $res     = sql_query($sql) or sqlerr(__FILE__, __LINE__);
                 $result  = mysqli_fetch_assoc($res);
                 $canswer = $result['canswer'];
-                if (0 === $user_id) {
+                if ($user_id === 0) {
                     if (function_exists('write_log')) {
                         write_log("Some asshole is using a user_id of 0! $user_id $qid $date $ip");
                     }
@@ -136,7 +136,7 @@ if (empty($gamenum) || empty($qid)) {
                 {$lang['trivia_game_stopped']}
             </div>";
 } else {
-    if (0 === $num_remainingq) {
+    if ($num_remainingq === 0) {
         $HTMLOUT .= "
             {$lang['trivia_no_more']}<br><br>{$lang['trivia_wait']}";
     } else {
@@ -150,7 +150,7 @@ if (empty($gamenum) || empty($qid)) {
         $row2     = mysqli_fetch_assoc($res);
         $num_rows = !empty($row2) ? count($row2) : 0;
 
-        if (0 != $num_rows) {
+        if ($num_rows != 0) {
             $table = '';
             $sql   = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username,
                             (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE gamenum = ' . sqlesc($gamenum) . ' AND correct = 0 AND user_id = t.user_id) AS incorrect
@@ -187,7 +187,7 @@ if (empty($gamenum) || empty($qid)) {
                     </tbody>
                 </table>';
             }
-            if (1 == $row2['correct']) {
+            if ($row2['correct'] == 1) {
                 $answered = "<h2 class='has-text-success'>{$lang['trivia_correct']}</h2>";
                 $HTMLOUT .= $table;
             } else {
@@ -221,7 +221,7 @@ if (empty($gamenum) || empty($qid)) {
                             </form>
                         </li>";
 
-            if (null != $row['answer3']) {
+            if ($row['answer3'] != null) {
                 $HTMLOUT .= "
                         <li>
                             <form id='submit2' method='post' action='trivia.php'>
@@ -234,7 +234,7 @@ if (empty($gamenum) || empty($qid)) {
                             </form>
                         </li>";
             }
-            if (null != $row['answer4']) {
+            if ($row['answer4'] != null) {
                 $HTMLOUT .= "
                         <li>
                             <form id='submit3' method='post' action='trivia.php'>
@@ -247,7 +247,7 @@ if (empty($gamenum) || empty($qid)) {
                             </form>
                         </li>";
             }
-            if (null != $row['answer5']) {
+            if ($row['answer5'] != null) {
                 $HTMLOUT .= "
                         <li>
                             <form id='submit4' method='post' action='trivia.php'>

@@ -8,10 +8,10 @@ class_check($class);
 global $site_config, $lang;
 
 $lang = array_merge($lang, load_language('ad_floodlimit'));
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $limits = isset($_POST['limit']) && is_array($_POST['limit']) ? $_POST['limit'] : 0;
     foreach ($limits as $class => $limit) {
-        if (0 == $limit) {
+        if ($limit == 0) {
             unset($limits[$class]);
         }
     }

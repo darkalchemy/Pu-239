@@ -20,7 +20,7 @@ $stdfoot = [
     ],
 ];
 $HTMLOUT = '';
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!mkglobal('email' . ($site_config['captcha_on'] ? ':captchaSelection' : '') . '')) {
         stderr('Oops', 'Missing form data - You must fill all fields');
     }

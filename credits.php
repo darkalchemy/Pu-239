@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'comment_functions.php';
@@ -36,7 +36,7 @@ if (!function_exists('CutName')) {
     }
 }
 
-if ('add' == isset($_POST['action']) && $CURUSER['class'] >= UC_SYSOP) {
+if (isset($_POST['action']) === 'add' && $CURUSER['class'] >= UC_SYSOP) {
     $name        = ($_POST['name']);
     $description = ($_POST['description']);
     $category    = ($_POST['category']);
@@ -48,7 +48,7 @@ if ('add' == isset($_POST['action']) && $CURUSER['class'] >= UC_SYSOP) {
     die();
 }
 
-if ('delete' == $action && $CURUSER['class'] >= UC_SYSOP) {
+if ($action === 'delete' && $CURUSER['class'] >= UC_SYSOP) {
     if (!$id) {
         stderr("{$lang['credits_error']}", "{$lang['credits_error2']}");
     }
@@ -57,10 +57,10 @@ if ('delete' == $action && $CURUSER['class'] >= UC_SYSOP) {
     die();
 }
 
-if ('edit' == $action && $CURUSER['class'] >= UC_SYSOP) {
+if ($action === 'edit' && $CURUSER['class'] >= UC_SYSOP) {
     $id  = (int) $_GET['id'];
     $res = sql_query('SELECT name, description, category, pu239lnk, status, credit FROM modscredits WHERE id =' . $id . '') or sqlerr(__FILE__, __LINE__);
-    if (0 == mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) == 0) {
         stderr("{$lang['credits_error']}", "{$lang['credits_nocr']}");
     }
     while ($mod = mysqli_fetch_assoc($res)) {
@@ -109,13 +109,13 @@ if ('edit' == $action && $CURUSER['class'] >= UC_SYSOP) {
     }
     echo stdhead($lang['credits_editmod']) . $HTMLOUT . stdfoot();
     die();
-} elseif ('update' == $action && $CURUSER['class'] >= UC_SYSOP) {
+} elseif ($action === 'update' && $CURUSER['class'] >= UC_SYSOP) {
     $id = (int) $_GET['id'];
     if (!is_valid_id($id)) {
         stderr('Error', 'Invalid ID!');
     }
     $res = sql_query('SELECT id FROM modscredits WHERE id = ' . sqlesc($id));
-    if (0 == mysqli_num_rows($res)) {
+    if (mysqli_num_rows($res) == 0) {
         stderr("{$lang['credits_error']}", "{$lang['credits_nocr']}");
     }
 
@@ -178,7 +178,7 @@ if ($row = mysqli_fetch_array($res)) {
         $id       = $row['id'];
         $name     = $row['name'];
         $category = $row['category'];
-        if ('In-Progress' == $row['status']) {
+        if ($row['status'] === 'In-Progress') {
             $status = '[b][color=#ff0000]' . $row['status'] . '[/color][/b]';
         } else {
             $status = '[b][color=#018316]' . $row['status'] . '[/color][/b]';

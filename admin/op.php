@@ -28,13 +28,13 @@ empty($_GET['page']) || !in_array($_GET['page'], $validPages)
     : strtolower($_GET['page'])
 );
 
-if ('reset' == $page) {
+if ($page === 'reset') {
     opcache_reset();
     header('Location: staffpanel.php?tool=op&page=overview');
     exit;
 }
 
-if ('invalidate' == $page) {
+if ($page === 'invalidate') {
     $file = (isset($_GET['file']) ? trim($_GET['file']) : null);
     if (!$settings['allow_invalidate'] || !function_exists('opcache_invalidate') || empty($file)) {
         header('Location: staffpanel.php?tool=op&page=files&error=1');
@@ -85,7 +85,7 @@ function memsize($size, $precision = 3, $space = false)
 function rc($at = null)
 {
     static $i = 0;
-    if (null !== $at) {
+    if ($at !== null) {
         $i = $at;
     } else {
         echo ++$i % 2 ? 'even' : 'odd';
@@ -122,9 +122,7 @@ if ($data['used_memory_percentage'] >= $settings['used_memory_percentage_high_th
     $threshold = ' mid';
 }
 
-if (!empty($_SERVER['HTTP_X_REQUESTED_WITH'])
-    && 'xmlhttprequest' == strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])
-) {
+if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
     echo json_encode($data);
     exit;
 }
@@ -349,7 +347,7 @@ empty($_SERVER['SERVER_NAME'])
     </p>
 </div>
 
-<?php if ('overview' == $page): ?>
+<?php if ($page === 'overview'): ?>
     <h2>Overview</h2>
     <div class="container">
         <div id="counts">
@@ -426,7 +424,7 @@ empty($_SERVER['SERVER_NAME'])
                 </tr>
                 <tr class="<?php rc(); ?>">
                     <td>Last reset</td>
-                    <td><?php echo 0 == $data['last_restart_time']
+                    <td><?php echo $data['last_restart_time'] == 0
                             ? '<em>never</em>'
                             : date_format(date_create("@{$data['last_restart_time']}"), 'Y-m-d H:i:s'); ?></td>
                 </tr>
@@ -498,12 +496,12 @@ empty($_SERVER['SERVER_NAME'])
     </script>
 <?php endif; ?>
 
-<?php if ('files' == $page): ?>
+<?php if ($page === 'files'): ?>
     <h2>File usage</h2>
     <p><label>Start typing to filter on script path<br><input type="text" style="width:40em;" name="filter"
                                                               id="frmFilter"/><label></p>
     <div class="container">
-        <h3><?php echo $data['files_cached']; ?> file<?php echo 1 == $data['files_cached'] ? '' : 's'; ?> cached <span
+        <h3><?php echo $data['files_cached']; ?> file<?php echo $data['files_cached'] == 1 ? '' : 's'; ?> cached <span
                     id="filterShowing"></span></h3>
         <table>
             <tr>
@@ -539,7 +537,7 @@ empty($_SERVER['SERVER_NAME'])
                             hits: <?php echo $s['hits']; ?>,
                             memory: <?php echo memsize($s['memory_consumption']); ?><br>
                             last used: <?php echo date_format(date_create($s['last_used']), 'Y-m-d H:i:s'); ?>
-                            <?php if (0 === $s['timestamp']): ?>
+                            <?php if ($s['timestamp'] === 0): ?>
                                 <br><i class="invalid">has been invalidated</i>
                             <?php endif; ?>
                         </p>

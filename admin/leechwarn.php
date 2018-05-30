@@ -20,11 +20,11 @@ function mkint($x)
 }
 
 $this_url = $_SERVER['SCRIPT_NAME'];
-$do       = isset($_GET['do']) && 'disabled' == $_GET['do'] ? 'disabled' : 'leechwarn';
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
+$do = isset($_GET['do']) && $_GET['do'] === 'disabled' ? 'disabled' : 'leechwarn';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $r     = isset($_POST['ref']) ? $_POST['ref'] : $this_url;
     $_uids = isset($_POST['users']) ? array_map('mkint', $_POST['users']) : 0;
-    if (0 == $_uids || 0 == count($_uids)) {
+    if ($_uids == 0 || count($_uids) == 0) {
         stderr($lang['leechwarn_stderror'], $lang['leechwarn_nouser']);
     }
     $valid = [
@@ -36,9 +36,9 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     if (!$act) {
         stderr($lang['leechwarn_stderror'], $lang['leechwarn_wrong']);
     }
-    if ('delete' == $act && $CURUSER['class'] >= UC_SYSOP) {
+    if ($act === 'delete' && $CURUSER['class'] >= UC_SYSOP) {
         $res_del = sql_query('SELECT id, username, added, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE id IN (' . join(',', $_uids) . ') ORDER BY username DESC');
-        if (0 != mysqli_num_rows($res_del)) {
+        if (mysqli_num_rows($res_del) != 0) {
             $count = mysqli_num_rows($res_del);
             while ($arr_del = mysqli_fetch_assoc($res_del)) {
                 $userid = $arr_del['id'];
@@ -50,7 +50,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
             stderr($lang['leechwarn_stderror'], $lang['leechwarn_wrong2']);
         }
     }
-    if ('disable' == $act) {
+    if ($act === 'disable') {
         if (sql_query("UPDATE users SET enabled = 'no', modcomment = CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['leechwarn_disabled_by'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')')) {
             foreach ($_uids as $uid) {
                 $cache->update_row('user' . $uid, [
@@ -63,7 +63,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
         } else {
             stderr($lang['leechwarn_stderror'], $lang['leechwarn_wrong3']);
         }
-    } elseif ('unwarn' == $act) {
+    } elseif ($act === 'unwarn') {
         $sub  = $lang['leechwarn_removed'];
         $body = $lang['leechwarn_removed_msg1'] . $CURUSER['username'] . $lang['leechwarn_removed_msg2'];
         $pms  = [];
@@ -103,7 +103,7 @@ $g     = sql_query($query) or print (is_object($GLOBALS['___mysqli_ston'])) ? my
 $count = mysqli_num_rows($g);
 $HTMLOUT .= begin_main_frame();
 $HTMLOUT .= begin_frame($title . "&#160;[<font class=\"small\">{$lang['leechwarn_total']}" . $count . $lang['leechwarn_user'] . ($count > 1 ? $lang['leechwarn_s'] : '') . '</font>] - ' . $link);
-if (0 == $count) {
+if ($count == 0) {
     $HTMLOUT .= stdmsg($lang['leechwarn_hey'], $lang['leechwarn_none'] . strtolower($title));
 } else {
     $HTMLOUT .= "<form action='staffpanel.php?tool=leechwarn&amp;action=leechwarn' method='post'>
@@ -117,7 +117,7 @@ if (0 == $count) {
             <td class='colhead' nowrap='nowrap'><input type='checkbox' name='checkall' /></td>
         </tr>";
     while ($a = mysqli_fetch_assoc($g)) {
-        $tip = ('leechwarn' == $do ? $lang['leechwarn_warned_for'] . htmlsafechars($a['warn_reason']) . '<br>' . $lang['leechwarn_warned_till'] . get_date($a['leechwarn'], 'DATE', 1) . ' - ' . mkprettytime($a['leechwarn'] - TIME_NOW) : $lang['leechwarn_disabled_for'] . htmlsafechars($a['disable_reason']));
+        $tip = ($do === 'leechwarn' ? $lang['leechwarn_warned_for'] . htmlsafechars($a['warn_reason']) . '<br>' . $lang['leechwarn_warned_till'] . get_date($a['leechwarn'], 'DATE', 1) . ' - ' . mkprettytime($a['leechwarn'] - TIME_NOW) : $lang['leechwarn_disabled_for'] . htmlsafechars($a['disable_reason']));
         $HTMLOUT .= "<tr>
                   <td width='100%'><a href='userdetails.php?id=" . (int) $a['id'] . "' onmouseover=\"Tip('($tip)')\" onmouseout=\"UnTip()\">" . htmlsafechars($a['username']) . "</a></td>
                   <td nowrap='nowrap'>" . (float) $a['ratio'] . "<br><font class='small'><b>{$lang['leechwarn_d']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['leechwarn_u']}</b> " . mksize($a['uploaded']) . "</font></td>

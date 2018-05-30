@@ -6,7 +6,7 @@ $HTMLOUT .= "<table class='main' width='750px' >" . "<tr><td class='embedded'>\n
 $res = sql_query("SELECT userid, filledby, request, torrentid FROM requests WHERE id = $id") or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_assoc($res);
 if (($CURUSER['id'] == $arr['userid']) || ($CURUSER['class'] >= UC_MODERATOR) || ($CURUSER['id'] == $arr['filledby'])) {
-    if ($site_config['karma'] && isset($CURUSER['seedbonus']) && 0 != $arr['torrentid']) {
+    if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $arr['torrentid'] != 0) {
         sql_query('UPDATE users SET seedbonus = seedbonus-' . $site_config['req_comment_bonus'] . " WHERE id = $arr[filledby]") or sqlerr(__FILE__, __LINE__);
     }
     sql_query("UPDATE requests SET torrentid = 0, filledby = 0 WHERE id = $id") or sqlerr(__FILE__, __LINE__);

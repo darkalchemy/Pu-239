@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'password_functions.php';
@@ -16,24 +16,24 @@ $HTMLOUT = '';
 $do   = (isset($_GET['do']) ? $_GET['do'] : (isset($_POST['do']) ? $_POST['do'] : ''));
 $id   = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : '0'));
 $link = (isset($_GET['link']) ? $_GET['link'] : (isset($_POST['link']) ? $_POST['link'] : ''));
-$sure = (isset($_GET['sure']) && 'yes' == $_GET['sure'] ? 'yes' : 'no');
-if ('POST' == $_SERVER['REQUEST_METHOD'] && 'addpromo' == $do) {
+$sure = (isset($_GET['sure']) && $_GET['sure'] === 'yes' ? 'yes' : 'no');
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     $promoname = (isset($_POST['promoname']) ? $_POST['promoname'] : '');
     if (empty($promoname)) {
         stderr('Error', 'No name for the promo');
     }
     $days_valid = (isset($_POST['days_valid']) ? (int) $_POST['days_valid'] : 0);
-    if (0 == $days_valid) {
+    if ($days_valid == 0) {
         stderr('Error', "Link will be valid for 0 days ? I don't think so!");
     }
     $max_users = (isset($_POST['max_users']) ? (int) $_POST['max_users'] : 0);
-    if (0 == $max_users) {
+    if ($max_users == 0) {
         stderr('Error', 'Max users cant be 0 i think you missed that!');
     }
     $bonus_upload  = (isset($_POST['bonus_upload']) ? (int) $_POST['bonus_upload'] : 0);
     $bonus_invites = (isset($_POST['bonus_invites']) ? (int) $_POST['bonus_invites'] : 0);
     $bonus_karma   = (isset($_POST['bonus_karma']) ? (int) $_POST['bonus_karma'] : 0);
-    if (0 == $bonus_upload && 0 == $bonus_invites && 0 == $bonus_karma) {
+    if ($bonus_upload == 0 && $bonus_invites == 0 && $bonus_karma == 0) {
         stderr('Error', 'No gift for the new users ?! :w00t: give them some gifts :D');
     }
     $link = md5('promo_link' . TIME_NOW);
@@ -53,9 +53,9 @@ if ('POST' == $_SERVER['REQUEST_METHOD'] && 'addpromo' == $do) {
     } else {
         stderr('Success', 'The promo link <b>' . htmlsafechars($promoname) . '</b> was added! here is the link <br><input type="text" name="promo-link" value="' . $site_config['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $link . '" size="80" onclick="select();"  /><br><a href="' . $_SERVER['PHP_SELF'] . '"><input type="button" value="Back to Promos" /></a>');
     }
-} elseif ('POST' == $_SERVER['REQUEST_METHOD'] && 'signup' == $do) {
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'signup') {
     $r_check = sql_query('SELECT * FROM promo WHERE link=' . sqlesc($link)) or sqlerr(__FILE__, __LINE__);
-    if (0 == mysqli_num_rows($r_check)) {
+    if (mysqli_num_rows($r_check) == 0) {
         stderr('Error', 'The link your using is not a valid link');
     } else {
         $ar_check = mysqli_fetch_assoc($r_check);
@@ -93,7 +93,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD'] && 'addpromo' == $do) {
         }
         //==Check if username or password already exists
         $var_check = sql_query('SELECT id FROM users WHERE username = ' . sqlesc($username) . ' OR email = ' . sqlesc($email)) or sqlerr(__FILE__, __LINE__);
-        if (1 == mysqli_num_rows($var_check)) {
+        if (mysqli_num_rows($var_check) == 1) {
             stderr('Error', 'Username or password already exists');
         }
         $passhash = make_passhash($password);
@@ -144,7 +144,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD'] && 'addpromo' == $do) {
             sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($userid) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
             //==End new member pm
             write_log('User account ' . (int) $id . ' (' . htmlsafechars($username) . ') was created');
-            if (1 == $site_config['autoshout_on']) {
+            if ($site_config['autoshout_on'] == 1) {
                 $message = "Welcome New {$site_config['site_name']} Member : - " . htmlsafechars($username) . '';
                 autoshout($message);
             }
@@ -154,12 +154,12 @@ if ('POST' == $_SERVER['REQUEST_METHOD'] && 'addpromo' == $do) {
             stderr('Error', 'Something odd happned please retry');
         }
     }
-} elseif ('delete' == $do && $id > 0) {
+} elseif ($do === 'delete' && $id > 0) {
     $r = sql_query('SELECT name FROM promo WHERE id=' . $id) or sqlerr(__FILE__, __LINE__);
-    if ('no' == $sure) {
+    if ($sure === 'no') {
         $a = mysqli_fetch_assoc($r);
         stderr('Sanity check...', 'You are about to delete promo <b>' . htmlsafechars($a['name']) . '</b>, if you are sure click <a href="' . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . $id . '&amp;sure=yes">here</a>');
-    } elseif ('yes' == $sure) {
+    } elseif ($sure === 'yes') {
         if (sql_query('DELETE FROM promo WHERE id=' . $id) or sqlerr(__FILE__, __LINE__)) {
             header('Refresh: 2; url=' . $_SERVER['PHP_SELF']);
             stderr('Success', 'Promo was deleted!');
@@ -167,7 +167,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD'] && 'addpromo' == $do) {
             stderr('Error', 'Odd things happned!Contact your coder!');
         }
     }
-} elseif ('addpromo' == $do) {
+} elseif ($do === 'addpromo') {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr('Error', 'There is nothing for you here! Go play somewere else');
     }
@@ -202,12 +202,12 @@ if ('POST' == $_SERVER['REQUEST_METHOD'] && 'addpromo' == $do) {
                 </form>";
     $HTMLOUT .= end_frame();
     echo stdhead('Add Promo Link') . $HTMLOUT . stdfoot();
-} elseif ('signup' == $do) {
+} elseif ($do === 'signup') {
     if (empty($link)) {
         stderr('Error', 'There is no link found! Please check the link');
     } else {
         $r_promo = sql_query('SELECT * FROM promo WHERE link=' . sqlesc($link)) or sqlerr(__FILE__, __LINE__);
-        if (0 == mysqli_num_rows($r_promo)) {
+        if (mysqli_num_rows($r_promo) == 0) {
             stderr('Error', 'There is no promo with that link ');
         } else {
             $ar = mysqli_fetch_assoc($r_promo);
@@ -275,12 +275,12 @@ if ('POST' == $_SERVER['REQUEST_METHOD'] && 'addpromo' == $do) {
             echo stdhead('Signup for promo :' . htmlsafechars($ar['name']) . '') . $HTMLOUT . stdfoot();
         }
     }
-} elseif ('accounts' == $do) {
-    if (0 == $id) {
+} elseif ($do === 'accounts') {
+    if ($id == 0) {
         die("Can't find id");
     } else {
         $q1 = sql_query('SELECT name, users FROM promo WHERE id = ' . $id) or sqlerr(__FILE__, __LINE__);
-        if (1 == mysqli_num_rows($q1)) {
+        if (mysqli_num_rows($q1) == 1) {
             $a1 = mysqli_fetch_assoc($q1);
             if (!empty($a1['users'])) {
                 $users = explode(',', $a1['users']);
@@ -331,7 +331,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD'] && 'addpromo' == $do) {
         stderr('Error', 'There is nothing for you here! Go play somewere else');
     }
     $r = sql_query('SELECT p.*,u.username FROM promo AS p LEFT JOIN users AS u ON p.creator=u.id ORDER BY p.added,p.days_valid DESC') or sqlerr(__FILE__, __LINE__);
-    if (0 == mysqli_num_rows($r)) {
+    if (mysqli_num_rows($r) == 0) {
         stderr('Error', 'There is no promo if you want to make one click <a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo">here</a>');
     } else {
         $HTMLOUT .= begin_frame('Current Promos&#160;<font class="small"><a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo">- Add promo</a></font>');

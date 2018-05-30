@@ -12,12 +12,12 @@ $lang    = array_merge($lang, load_language('ad_invite_tree'));
 $HTMLOUT = '';
 //=== if we got here from a members page, get their info... if not, ask for a username to get the info...
 $id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
-if (0 !== $id) {
+if ($id !== 0) {
     $rez_user = sql_query('SELECT username, warned, suspended, enabled, donor, invitedby FROM users WHERE id = ' . sqlesc($id));
     $arr_user = mysqli_fetch_assoc($rez_user);
     //=== start the page
-    $HTMLOUT .= '<h1>' . htmlsafechars($arr_user['username']) . ('s' == substr($arr_user['username'], -1) ? '\'' : '\'s') . ' ' . $lang['invite_head'] . '</h1>
-        <p>' . (0 == $arr_user['invitedby'] ? '<a title="' . htmlsafechars($arr_user['username']) . ' ' . $lang['invite_open'] . '">' . $lang['invite_up'] . '</a>' : '<a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;really_deep=1&amp;id=' . (int) $arr_user['invitedby'] . '" title="go up one level">' . $lang['invite_up'] . '</a>') . ' | 
+    $HTMLOUT .= '<h1>' . htmlsafechars($arr_user['username']) . (substr($arr_user['username'], -1) === 's' ? '\'' : '\'s') . ' ' . $lang['invite_head'] . '</h1>
+        <p>' . ($arr_user['invitedby'] == 0 ? '<a title="' . htmlsafechars($arr_user['username']) . ' ' . $lang['invite_open'] . '">' . $lang['invite_up'] . '</a>' : '<a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;really_deep=1&amp;id=' . (int)$arr_user['invitedby'] . '" title="go up one level">' . $lang['invite_up'] . '</a>') . ' | 
         | <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree' . (isset($_GET['deeper']) ? '' : '&amp;deeper=1') . '&amp;id=' . $id . '" title=" ' . $lang['invite_click'] . ' ' . (isset($_GET['deeper']) ? $lang['invite_shrink'] : $lang['invite_expand']) . ' ' . $lang['invite_this'] . ' ">' . $lang['invite_expand_tree'] . '</a> | 
         | <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;really_deep=1&amp;id=' . $id . '" title="' . $lang['invite_click_more'] . '">' . $lang['invite_expand_more'] . '</a></p>';
     $HTMLOUT .= '<table class="main" width="750px" border="0">
@@ -40,7 +40,7 @@ if (0 !== $id) {
             if (isset($_GET['deeper']) || isset($_GET['really_deep'])) {
                 $rez_invited_deeper = sql_query('SELECT id, username, email, uploaded, downloaded, status, warned, suspended, enabled, donor, email, ip, class, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($arr_invited['id']) . ' ORDER BY added');
                 if (mysqli_num_rows($rez_invited_deeper) > 0) {
-                    $deeper .= '<tr><td   colspan="6"><span style="font-weight: bold;">' . htmlsafechars($arr_invited['username']) . ('s' == substr($arr_invited['username'], -1) ? '\'' : '\'s') . '' . $lang['invite_invites'] . '</span><br>
+                    $deeper .= '<tr><td   colspan="6"><span style="font-weight: bold;">' . htmlsafechars($arr_invited['username']) . (substr($arr_invited['username'], -1) === 's' ? '\'' : '\'s') . '' . $lang['invite_invites'] . '</span><br>
                         <div><table width="95%" border="1">
                         <tr><td class="colhead"><span style="font-weight: bold;">' . $lang['invite_username'] . '</span></td>
                         <td class="colhead"><span style="font-weight: bold;">' . $lang['invite_email'] . '</span></td>
@@ -54,7 +54,7 @@ if (0 !== $id) {
                         if (isset($_GET['really_deep'])) {
                             $rez_invited_really_deep = sql_query('SELECT id, username, email, uploaded, downloaded, status, warned, suspended, enabled, donor, email, ip, class, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($arr_invited_deeper['id']) . ' ORDER BY added');
                             if (mysqli_num_rows($rez_invited_really_deep) > 0) {
-                                $really_deep .= '<tr><td  colspan="6"><span style="font-weight: bold;">' . htmlsafechars($arr_invited_deeper['username']) . ('s' == substr($arr_invited_deeper['username'], -1) ? '\'' : '\'s') . ' Invites:</span><br>
+                                $really_deep .= '<tr><td  colspan="6"><span style="font-weight: bold;">' . htmlsafechars($arr_invited_deeper['username']) . (substr($arr_invited_deeper['username'], -1) === 's' ? '\'' : '\'s') . ' Invites:</span><br>
                                         <div><table width="95%" border="1">
                                         <tr><td class="colhead"><span style="font-weight: bold;">' . $lang['invite_username'] . '</span></td>
                                         <td class="colhead"><span style="font-weight: bold;">' . $lang['invite_email'] . '</span></td>
@@ -63,32 +63,32 @@ if (0 !== $id) {
                                         <td class="colhead"><span style="font-weight: bold;">' . $lang['invite_ratio'] . '</span></td>
                                         <td class="colhead"><span style="font-weight: bold;">' . $lang['invite_status'] . '</span></td></tr>';
                                 while ($arr_invited_really_deep = mysqli_fetch_assoc($rez_invited_really_deep)) {
-                                    $really_deep .= '<tr><td>' . ('pending' == $arr_invited_really_deep['status'] ? htmlsafechars($arr_invited_really_deep['username']) : format_username($arr_invited_really_deep) . '<br>' . $arr_invited_really_deep['ip']) . '
+                                    $really_deep .= '<tr><td>' . ($arr_invited_really_deep['status'] === 'pending' ? htmlsafechars($arr_invited_really_deep['username']) : format_username($arr_invited_really_deep) . '<br>' . $arr_invited_really_deep['ip']) . '
                                             </td><td>' . htmlsafechars($arr_invited_really_deep['email']) . '</td>
                                             <td>' . mksize($arr_invited_really_deep['uploaded']) . '</td>
                                             <td>' . mksize($arr_invited_really_deep['downloaded']) . '</td>
                                             <td>' . member_ratio($arr_invited_really_deep['uploaded'], $arr_invited_really_deep['downloaded']) . '</td>
-                                            <td>' . ('confirmed' == $arr_invited_really_deep['status'] ? '<span style="color: green;">' . $lang['invite_confirmed'] . '</span></td></tr>' : '<span style="color: red;">' . $lang['invite_pending'] . '</span></td></tr>');
+                                            <td>' . ($arr_invited_really_deep['status'] === 'confirmed' ? '<span style="color: green;">' . $lang['invite_confirmed'] . '</span></td></tr>' : '<span style="color: red;">' . $lang['invite_pending'] . '</span></td></tr>');
                                 }
                                 $really_deep .= '</td></tr></table></div>';
                             }
                         }
-                        $deeper .= '<tr><td >' . ('pending' == $arr_invited_deeper['status'] ? htmlsafechars($arr_invited_deeper['username']) : format_username($arr_invited_deeper) . '<br>' . $arr_invited_deeper['ip']) . '</td>
+                        $deeper .= '<tr><td >' . ($arr_invited_deeper['status'] === 'pending' ? htmlsafechars($arr_invited_deeper['username']) : format_username($arr_invited_deeper) . '<br>' . $arr_invited_deeper['ip']) . '</td>
     `                        <td >' . htmlsafechars($arr_invited_deeper['email']) . '</td>
                             <td >' . mksize($arr_invited_deeper['uploaded']) . '</td>
                             <td >' . mksize($arr_invited_deeper['downloaded']) . '</td>
                             <td >' . member_ratio($arr_invited_deeper['uploaded'], $arr_invited_deeper['downloaded']) . '</td>
-                            <td >' . ('confirmed' == $arr_invited_deeper['status'] ? '<span style="color: green;">' . $lang['invite_confirmed'] . '</span></td></tr>' : '<span style="color: red;">' . $lang['invite_pending'] . '</span></td></tr>');
+                            <td >' . ($arr_invited_deeper['status'] === 'confirmed' ? '<span style="color: green;">' . $lang['invite_confirmed'] . '</span></td></tr>' : '<span style="color: red;">' . $lang['invite_pending'] . '</span></td></tr>');
                     }
                     $deeper .= (isset($_GET['really_deep']) ? $really_deep . '</table></div>' : '</td></tr></table></div>');
                 }
             }
-            $HTMLOUT .= '<tr><td>' . ('pending' == $arr_invited['status'] ? htmlsafechars($arr_invited['username']) : format_username($arr_invited) . '<br>' . $arr_invited['ip']) . '</td>
+            $HTMLOUT .= '<tr><td>' . ($arr_invited['status'] === 'pending' ? htmlsafechars($arr_invited['username']) : format_username($arr_invited) . '<br>' . $arr_invited['ip']) . '</td>
             <td>' . htmlsafechars($arr_invited['email']) . '</td>
             <td>' . mksize($arr_invited['uploaded']) . '</td>
             <td>' . mksize($arr_invited['downloaded']) . '</td>
             <td>' . member_ratio($arr_invited['uploaded'], $arr_invited['downloaded']) . '</td>
-            <td>' . ('confirmed' == $arr_invited['status'] ? '<span style="color: green;">' . $lang['invite_confirmed'] . '</span></td></tr>' : '<span style="color: red;">' . $lang['invite_pending'] . '</span></td></tr>');
+            <td>' . ($arr_invited['status'] === 'confirmed' ? '<span style="color: green;">' . $lang['invite_confirmed'] . '</span></td></tr>' : '<span style="color: red;">' . $lang['invite_pending'] . '</span></td></tr>');
             $HTMLOUT .= $deeper;
         }
         $HTMLOUT .= '</table>';
@@ -102,10 +102,10 @@ if (0 !== $id) {
     $class  = isset($_GET['class']) ? $_GET['class'] : '-';
     $letter = '';
     $q      = '';
-    if ('-' == $class || !ctype_digit($class)) {
+    if ($class == '-' || !ctype_digit($class)) {
         $class = '';
     }
-    if ('' != $search || $class) {
+    if ($search != '' || $class) {
         $query = 'username LIKE ' . sqlesc("%$search%") . ' AND status=\'confirmed\'';
         if ($search) {
             $q = 'search=' . htmlsafechars($search);
@@ -115,7 +115,7 @@ if (0 !== $id) {
         if (strlen($letter) > 1) {
             die();
         }
-        if ('' == $letter || false === strpos('abcdefghijklmnopqrstuvwxyz0123456789', $letter)) {
+        if ($letter == '' || strpos('abcdefghijklmnopqrstuvwxyz0123456789', $letter) === false) {
             $letter = '';
         }
         $query = 'username LIKE ' . sqlesc("$letter%") . ' AND status=\'confirmed\'';
@@ -150,7 +150,7 @@ if (0 !== $id) {
     $HTMLOUT .= '<div>';
     $count = 0;
     foreach ($cc as $L) {
-        $HTMLOUT .= (10 == $count) ? '<br><br>' : '';
+        $HTMLOUT .= ($count == 10) ? '<br><br>' : '';
         if (!strcmp($L, $letter)) {
             $HTMLOUT .= ' <span class="button is-small" style="background:orange;">' . strtoupper($L) . '</span>';
         } else {
@@ -178,7 +178,7 @@ if (0 !== $id) {
             <td class="colhead">' . $lang['invite_search_country'] . '</td>
             <td class="colhead">' . $lang['invite_search_edit'] . '</td></tr>';
         while ($row = mysqli_fetch_assoc($res)) {
-            $country = (null != $row['name']) ? '<td style="padding: 0;"><img src="' . $site_config['pic_baseurl'] . 'flag/' . (int) $row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" /></td>' : '<td>---</td>';
+            $country = ($row['name'] != null) ? '<td style="padding: 0;"><img src="' . $site_config['pic_baseurl'] . 'flag/' . (int) $row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" /></td>' : '<td>---</td>';
             $HTMLOUT .= '<tr><td>' . format_username($row) . '</td>
         <td>' . get_date($row['added'], '') . '</td><td>' . get_date($row['last_access'], '') . '</td>
         <td>' . get_user_class_name($row['class']) . '</td>

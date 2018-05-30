@@ -20,7 +20,7 @@ if ($active === false || is_null($active)) {
     $list[]                = format_username(2);
     $active['activeusers'] = implode(',&nbsp;&nbsp;', $list);
     $active['actcount']    = count($list);
-    if (0 === $active['actcount']) {
+    if ($active['actcount'] === 0) {
         $active['activeusers'] = $lang['index_active_users_no'];
     }
     $active_users_cache['au'] = number_format($active['actcount']);
