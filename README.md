@@ -39,9 +39,14 @@ chown -R www-data:www-data Pu-239
 
 # set webroot to path Pu-239/public
 
-# create database, add charset to [mysqld] section of mysqld.cnf
+# add charset to [mysqld] section of mysqld.cnf
 character-set-server=utf8mb4
 collation-server=utf8mb4_unicode_ci
+
+# add/modify these in [mysqld] to increase max size for index(required)
+innodb_file_format = Barracuda
+innodb_large_prefix = 1
+innodb_file_per_table = 1
 
 # goto website and complete install, all fields must be completed and each fields includes an example and tooltip explanation when hovered
 
