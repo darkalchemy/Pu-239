@@ -215,9 +215,18 @@ $site_config['sig_img_width']  = 500;
 $site_config['bucket_allowed'] = 0;
 $site_config['allowed_ext']    = [
     'image/gif',
-    'image.jpg',
+    'image/jpg',
     'image/jpeg',
+    'image/png'
 ];
+// should match above
+$site_config['allowed_formats'] = [
+    '.gif',
+    '.jpg',
+    '.jpeg',
+    '.png',
+];
+
 $upload_max_filesize                = ini_get('upload_max_filesize') !== null ? return_bytes(ini_get('upload_max_filesize')) : 0;
 $post_max_filesize                  = ini_get('post_max_filesize') !== null ? return_bytes(ini_get('post_max_filesize')) : 0;
 $site_config['bucket_maxsize']      = $upload_max_filesize >= $post_max_filesize ? $upload_max_filesize : $post_max_filesize;

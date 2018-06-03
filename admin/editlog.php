@@ -2,7 +2,6 @@
 
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
-check_user_status();
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $lang, $session;
@@ -20,11 +19,12 @@ $fetch_set   = [];
 $i           = 0;
 $directories = [ROOT_DIR];
 global $site_config;
+
 $included_extentions = explode(' ', $site_config['coders_log_allowed_ext']);
 foreach ($directories as $path) {
     $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
     foreach ($objects as $name => $object) {
-        preg_match('/(\.idea|\.git|vendor|node_modules)/', $parent, $match);
+        preg_match('/(\.idea|\.git|vendor|node_modules)/', $name, $match);
         if (empty($match)) {
             $ext = pathinfo($name, PATHINFO_EXTENSION);
             if (in_array($ext, $included_extentions)) {

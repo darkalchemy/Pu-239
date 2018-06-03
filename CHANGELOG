@@ -1,5 +1,11 @@
 3 Jun 2018
 change: some non-expiring cache items to 86400
+move: 404.jpg, off.gif, on.gih to public/images/
+fix: admin/events.php format_username
+fix: admin/editlog.php remove check_user_status
+remove: mycrypt dependency for bitbucket
+add: bucket folder for bitbucket
+update: bitbucket.php
 
 2 Jun 2018
 change: persistent db connections to false

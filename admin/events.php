@@ -175,7 +175,7 @@ if (!is_array($scheduled_events)) {
         $id           = (int) $scheduled_event['id'];
         $users        = $scheduled_event;
         $users['id']  = (int) $scheduled_event['userid'];
-        $username     = format_username($users);
+        $username     = format_username($users['id']);
         $text         = htmlsafechars($scheduled_event['overlayText']);
         $start        = get_date((int) $scheduled_event['startTime'], 'DATE');
         $end          = get_date((int) $scheduled_event['endTime'], 'DATE');

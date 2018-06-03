@@ -162,12 +162,12 @@ function stdhead($title = '', $stdhead = null)
 function stdfoot($stdfoot = false)
 {
     require_once INCL_DIR . 'bbcode_functions.php';
-    global $CURUSER, $site_config, $start, $query_stat, $querytime, $lang, $cache, $session;
+    global $CURUSER, $site_config, $starttime, $query_stat, $querytime, $lang, $cache, $session;
 
     $header    = $uptime    = $htmlfoot    = '';
     $debug     = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
     $queries   = !empty($query_stat) ? count($query_stat) : 0;
-    $seconds   = microtime(true) - $start;
+    $seconds   = microtime(true) - $starttime;
     $r_seconds = round($seconds, 5);
     $querytime = $querytime === null ? 0 : $querytime;
 

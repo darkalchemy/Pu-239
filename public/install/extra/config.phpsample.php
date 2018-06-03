@@ -12,9 +12,11 @@ $site_config['session_csrf']     = 'csrf_token'; // useful if serving multiple s
 
 // keys
 $site_config['site']['salt']       = '#pass1'; // random generated during install
-$site_config['staff']['staff_pin'] = '#pass2'; // random generated during install
-$site_config['staff']['owner_pin'] = '#pass3'; // random generated during install
-$site_config['tracker_post_key']   = '#pass4'; // random generated during install
+$site_config['site']['salty']      = '#pass2'; // random generated during install
+$site_config['site']['skey']       = '#pass3'; // random generated during install
+$site_config['staff']['staff_pin'] = '#pass4'; // random generated during install
+$site_config['staff']['owner_pin'] = '#pass5'; // random generated during install
+$site_config['tracker_post_key']   = '#pass6'; // random generated during install
 $site_config['image_proxy_key']    = [
     'uid' => 'key',
 ]; // assigned by the image proxy host

@@ -1,6 +1,6 @@
 <?php
 
-$start = microtime(true);
+$starttime = microtime(true);
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'define.php';
 if (!@include_once(INCL_DIR . 'config.php')) {
