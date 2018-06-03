@@ -3006,7 +3006,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `staff_notes` text CHARACTER SET utf8,
   `game_access` int(11) NOT NULL DEFAULT '1',
   `where_is` text CHARACTER SET utf8,
-  `show_staffshout` enum('yes','no') CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT 'yes',
   `request_uri` varchar(40) CHARACTER SET utf8 DEFAULT NULL,
   `browse_icons` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `numuploads` int(10) NOT NULL DEFAULT '0',

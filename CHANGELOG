@@ -1,3 +1,7 @@
+2 Jun 2018
+fix: typo in ajax_tooltips.php
+remove: show_staffshout from database
+
 30 May 2018
 remove: tfreak.php has no need for check_user_status since not loaded directly by user
 fix: typo in cleanup_manager.php

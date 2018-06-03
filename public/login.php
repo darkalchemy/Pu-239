@@ -97,7 +97,7 @@ $HTMLOUT .=
                     <tr class='no_hover'>
                         <td colspan='2' class='has-text-centered'>
                             <span class='has-text-centered'>
-                                <label for='remember' class='level-item tooltipper' title='Keep me logged in'>Remember Me
+                                <label for='remember' class='level-item tooltipper' title='Keep me logged in'>Remember Me?
                                     <input type='checkbox' name='remember' value='1' id='remember' class='left10' />
                                 </label><br>
                                 <input name='submitme' type='submit' value='Login' class='button is-small bottom20' />

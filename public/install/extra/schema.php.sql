@@ -2535,7 +2535,6 @@ CREATE TABLE `users` (
   `staff_notes` mediumtext COLLATE utf8mb4_unicode_ci,
   `game_access` int(11) NOT NULL DEFAULT '1',
   `where_is` mediumtext COLLATE utf8mb4_unicode_ci,
-  `show_staffshout` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `request_uri` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `browse_icons` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `numuploads` int(10) NOT NULL DEFAULT '0',

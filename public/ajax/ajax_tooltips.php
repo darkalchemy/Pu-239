@@ -148,7 +148,7 @@ if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
         <div class='navbar-start'>{$lang['gl_myblocks']}</div>
         <div><a href='{$site_config['baseurl']}/user_blocks.php'>{$lang['gl_click']}</a></div>" : '') . '
     </div>
-    " . ($CURUSER['class'] >= UC_STAFF || $CURUSER['got_moods'] === 'yes' ? "
+    ' . ($CURUSER['class'] >= UC_STAFF || $CURUSER['got_moods'] === 'yes' ? "
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_myunlocks']}</div>
         <div><a href='{$site_config['baseurl']}/user_unlocks.php'>{$lang['gl_click']}</a></div>" : '') . '
