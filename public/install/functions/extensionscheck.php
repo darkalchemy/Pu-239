@@ -23,7 +23,6 @@ function extensionscheck()
         'exif',
         'mbstring',
         'gd',
-        'mcrypt',
     ];
 
     $missing = [];
