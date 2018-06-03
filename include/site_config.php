@@ -53,20 +53,20 @@ $site_config['time_date']                = '';
 $site_config['expires']['latestuser']             = 0; // 0 = infinite
 $site_config['expires']['MyPeers_']               = 120; // 60 = 60 seconds
 $site_config['expires']['unread']                 = 86400; // 86400 = 1 day
-$site_config['expires']['alerts']                 = 0; // 0 = infinite
-$site_config['expires']['searchcloud']            = 0; // 0 = infinite
+$site_config['expires']['alerts']                 = 86400; // 86400 = 1 day
+$site_config['expires']['searchcloud']            = 86400; // 86400 = 1 day
 $site_config['expires']['user_cache']             = 2591999; // 30 days
 $site_config['expires']['curuser']                = 2591999; // 30 days
 $site_config['expires']['u_status']               = 2591999; // 30 days
 $site_config['expires']['user_status']            = 2591999; // 30 days
 $site_config['expires']['MyPeers_xbt_']           = 30;
 $site_config['expires']['announcement']           = 600; // 600 = 10 min
-$site_config['expires']['forum_posts']            = 0;
+$site_config['expires']['forum_posts']            = 86400;
 $site_config['expires']['torrent_comments']       = 900; // 900 = 15 min
-$site_config['expires']['latestposts']            = 0; // 900 = 15 min
-$site_config['expires']['top5_torrents']          = 0; // 0 = infinite
-$site_config['expires']['last5_torrents']         = 0; // 0 = infinite
-$site_config['expires']['scroll_torrents']        = 0; // 0 = infinite
+$site_config['expires']['latestposts']            = 86400; // 86400 = 1 day
+$site_config['expires']['top5_torrents']          = 86400; // 86400 = 1 day
+$site_config['expires']['last5_torrents']         = 86400; // 86400 = 1 day
+$site_config['expires']['scroll_torrents']        = 86400; // 86400 = 1 day
 $site_config['expires']['torrent_details']        = 2591999; // 30 days
 $site_config['expires']['torrent_details_text']   = 2591999; // 30 days
 $site_config['expires']['insertJumpTo']           = 2591999; // 30 days
@@ -97,17 +97,17 @@ $site_config['expires']['section_view']           = 30; // 60 = 1 minutes
 $site_config['expires']['child_boards']           = 900; // 60 = 1 minutes
 $site_config['expires']['sv_child_boards']        = 900; // 60 = 1 minutes
 $site_config['expires']['forum_insertJumpTo']     = 3600; // = 1 hour
-$site_config['expires']['last_post']              = 0; // infinite
-$site_config['expires']['sv_last_post']           = 0; // infinite
-$site_config['expires']['last_read_post']         = 0; // infinite
-$site_config['expires']['sv_last_read_post']      = 0; // infinite
+$site_config['expires']['last_post']              = 86400; // 86400 = 1 day
+$site_config['expires']['sv_last_post']           = 86400; // 86400 = 1 day
+$site_config['expires']['last_read_post']         = 86400; // 86400 = 1 day
+$site_config['expires']['sv_last_read_post']      = 86400; // 86400 = 1 day
 $site_config['expires']['last24']                 = 3600; // 3600 = 1 hours
 $site_config['expires']['activeircusers']         = 300; // 300 = 5 min
 $site_config['expires']['birthdayusers']          = 43200; // 43200 = 12 hours
 $site_config['expires']['news_users']             = 3600; // 3600 = 1 hours
 $site_config['expires']['user_invitees']          = 900; // 900 = 15 min
 $site_config['expires']['ip_data']                = 900; // 900 = 15 min
-$site_config['expires']['latesttorrents']         = 0; // 0 = infinite
+$site_config['expires']['latesttorrents']         = 86400; // 86400 = 1 day
 $site_config['expires']['invited_by']             = 900; // 900 = 15 min
 $site_config['expires']['user_torrents']          = 900; // 900 = 15 min
 $site_config['expires']['user_seedleech']         = 900; // 900 = 15 min

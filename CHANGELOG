@@ -1,3 +1,6 @@
+3 Jun 2018
+change: some non-expiring cache items to 86400
+
 2 Jun 2018
 change: persistent db connections to false
 fix: typo in ajax_tooltips.php
