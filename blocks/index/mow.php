@@ -26,7 +26,7 @@ if ($motw === false || is_null($motw)) {
         ->where('avps.arg', 'bestfilmofweek')
         ->fetchAll();
 
-    $cache->set('motw_', $motw, 0);
+    $cache->set('motw_', $motw, $site_config['expires']['motw']);
 }
 
 $HTMLOUT .= "

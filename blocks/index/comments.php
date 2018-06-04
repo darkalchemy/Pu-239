@@ -30,7 +30,7 @@ if ($comments === false || is_null($comments)) {
         ->orderBy('comments.id DESC')
         ->limit(5)
         ->fetchAll();
-    $cache->set('latest_comments_', $comments, 3600);
+    $cache->set('latest_comments_', $comments, $site_config['expires']['latestcomments']);
 }
 
 $header = "
