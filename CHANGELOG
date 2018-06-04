@@ -1,3 +1,6 @@
+4 Jun 2018
+fix: set timeout on cron_controller cache, in the event any cleanup failed cleanup would not run again
+
 3 Jun 2018
 remove: mcrypt check during install
 change: some non-expiring cache items to 86400

@@ -13,7 +13,7 @@ function autoclean()
 {
     global $site_config, $cache, $fluent;
 
-    $cache->set('cleanup_check_', 'running', 0);
+    $cache->set('cleanup_check_', 'running', 90);
     $now = TIME_NOW;
     $query = $fluent->from('cleanup')
         ->where('clean_on = 1')
