@@ -169,6 +169,7 @@ function cleanup_show_main()
 function cleanup_show_edit()
 {
     global $params, $lang;
+
     if (!isset($params['cid']) || empty($params['cid']) || !is_valid_id($params['cid'])) {
         cleanup_show_main();
         exit;
@@ -193,6 +194,7 @@ function cleanup_show_edit()
     <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager'>
     <input type='hidden' name='mode' value='takeedit' />
     <input type='hidden' name='cid' value='{$row['clean_id']}' />
+    <input type='hidden' name='clean_time' value='{$row['clean_time']}' />
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_title']}</label>
@@ -237,6 +239,7 @@ function cleanup_show_edit()
 function cleanup_take_edit()
 {
     global $params, $lang;
+
     //ints
     foreach ([
                  'cid',
@@ -298,10 +301,13 @@ function cleanup_take_edit()
 function cleanup_show_new()
 {
     global $lang;
+
+    $clean_time = strtotime('today midnight');
     $htmlout = "<h2>{$lang['cleanup_new_head']}</h2>
     <div style='width: 800px; text-align: left; padding: 10px; margin: 0 auto;border-style: solid; border-color: #333333; border-width: 5px 2px;'>
     <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager'>
     <input type='hidden' name='mode' value='takenew' />
+    <input type='hidden' name='clean_time' value='{$clean_time}' />
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_title']}</label>
@@ -350,6 +356,7 @@ function cleanup_show_new()
 function cleanup_take_new()
 {
     global $params, $lang;
+
     //ints
     foreach ([
                  'clean_increment',
@@ -397,8 +404,7 @@ function cleanup_take_new()
     if (!file_exists(CLEAN_DIR . "{$params['clean_file']}")) {
         stderr($lang['cleanup_take_error'], "{$lang['cleanup_take_error3']}");
     }
-    // new clean time = $params['clean_time'] = intval(time() + $params['clean_increment']);
-    //one more time around! LoL
+
     foreach ($params as $k => $v) {
         $params[$k] = sqlesc($v);
     }
