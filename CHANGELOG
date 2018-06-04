@@ -1,4 +1,5 @@
 4 Jun 2018
+update: when cleanup item is missed, next cleanup time is set to time later than now
 fix: cleanup manager not updating or creating cleanup items
 update: timeout for all index page blocks
 fix: set timeout on cron_controller cache, in the event any cleanup failed cleanup would not run again

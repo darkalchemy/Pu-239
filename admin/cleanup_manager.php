@@ -60,13 +60,8 @@ function resettimer() {
 
 function manualclean()
 {
-    // these clean_ids need to be run at specific interval, regardless of when they run
-    $run_at_specified_times = [
-        'Trivia Cleanup',
-        'Trivia Bonus Points',
-    ];
-
     global $params, $lang;
+
     if (function_exists('docleanup')) {
         stderr($lang['cleanup_stderr'], $lang['cleanup_stderr1']);
     }
@@ -83,10 +78,7 @@ function manualclean()
     $sql           = sql_query('SELECT * FROM cleanup WHERE clean_id = ' . sqlesc($params['cid'])) or sqlerr(__FILE__, __LINE__);
     $row           = mysqli_fetch_assoc($sql);
     if ($row['clean_id']) {
-        $next_clean = intval(TIME_NOW + ($row['clean_increment'] ? $row['clean_increment'] : 15 * 60));
-        if (in_array($row['clean_title'], $run_at_specified_times)) {
-            $next_clean = intval($row['clean_time'] + $row['clean_increment']);
-        }
+        $next_clean = ceil($row['clean_time'] / $row['clean_increment']) * $row['clean_increment'] + $row['clean_increment'];
         sql_query('UPDATE cleanup SET clean_time = ' . sqlesc($next_clean) . ' WHERE clean_id = ' . sqlesc($row['clean_id'])) or sqlerr(__FILE__, __LINE__);
         if (file_exists(CLEAN_DIR . $row['clean_file'])) {
             require_once CLEAN_DIR . $row['clean_file'];

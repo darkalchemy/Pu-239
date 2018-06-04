@@ -1,6 +1,5 @@
 <?php
 
-
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'bittorrent.php';
 global $cache;
 
@@ -23,10 +22,7 @@ function autoclean()
 
     foreach ($query as $row) {
         if ($row['clean_id']) {
-            $next_clean = intval($row['clean_time'] + $row['clean_increment']);
-            if ($row['clean_title'] === 'Trivia Cleanup') {
-                $next_clean = ceil(TIME_NOW / 300) * 300;
-            }
+            $next_clean = ceil(TIME_NOW / $row['clean_increment']) * $row['clean_increment'];
             $set = [
                 'clean_time' => $next_clean,
             ];
@@ -75,4 +71,3 @@ function autoclean()
     }
     $cache->delete('cleanup_check_');
 }
-
