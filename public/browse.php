@@ -11,8 +11,6 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $CURUSER, $site_config, $fluent, $cache;
 
-$cache = new Cache();
-
 if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
     $fluent->update('users')
         ->set(['last_browse' => TIME_NOW])

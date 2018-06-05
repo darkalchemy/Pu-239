@@ -1,3 +1,6 @@
+5 Jun 2018
+fix: remove Cache class instantiation
+
 4 Jun 2018
 update: when cleanup item is missed, next cleanup time is set to time later than now
 fix: cleanup manager not updating or creating cleanup items
