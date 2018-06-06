@@ -84,7 +84,7 @@ function get_file_name($file)
                 case 'details_js':
                     return "{$site_config['baseurl']}/js/{$style}/f0a5a109311c2c6a392a75be553ff6d8.js";
                 case 'forums_js':
-                    return "{$site_config['baseurl']}/js/{$style}/12345.js";
+                    return "{$site_config['baseurl']}/js/{$style}/89f1dedae45a25f8e0165758411321ce.js";
                 case 'staffpanel_js':
                     return "{$site_config['baseurl']}/js/{$style}/0e6c0a3138d3efe7fdd4ff7e1e669f3a.js";
                 case 'browse_js':
