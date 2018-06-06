@@ -50,7 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                       false,
                       $context
         );
-        if (!$result['success']) {
+        $responseKeys = json_decode($result, true);
+        if (intval($responseKeys['success']) !== 1) {
             stderr('Error', "reCAPTCHA Failed");
         }
     }

@@ -52,7 +52,8 @@ if ($step == '1') {
                           false,
                           $context
             );
-            if (!$result['success']) {
+            $responseKeys = json_decode($result, true);
+            if (intval($responseKeys['success']) !== 1) {
                 stderr('Error', "reCAPTCHA Failed");
             }
         }

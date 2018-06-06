@@ -59,7 +59,8 @@ if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
                   false,
                   $context
     );
-    if (!$result['success']) {
+    $responseKeys = json_decode($result, true);
+    if (intval($responseKeys['success']) !== 1) {
         $session->set('is-warning', '[h2]reCAPTCHA was incorrect.[/h2]');
         header("Location: {$site_config['baseurl']}/invite_signup.php");
         die();
