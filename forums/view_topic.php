@@ -382,7 +382,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
 				 ' . (($CURUSER['class'] >= UC_STAFF && '' !== $arr['post_history']) ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
         }
     }
-    $body = ($arr['bbcode'] === 'yes' ? format_comment(htmlspecialchars($arr['body'])) : format_comment_no_bbcode($arr['body']));
+    $body = ($arr['bbcode'] === 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body']));
     if (isset($_GET['search'])) {
         $body       = highlightWords($body, $search);
         $post_title = highlightWords($post_title, $search);
