@@ -13,6 +13,7 @@ if (!$CURUSER) {
 }
 $stdfoot = [
     'js' => [
+        get_file_name('captcha2_js'),
     ],
 ];
 

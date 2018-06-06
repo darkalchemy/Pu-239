@@ -1,4 +1,6 @@
 6 Jun 2018
+fix: missing semicolon in takesignup.php
+fix: missing js file signup.php
 update: missing response var
 fix: reCAPTCHA success check
 update: README.md
