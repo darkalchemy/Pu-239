@@ -13,7 +13,7 @@ use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
 
 $wantusername = $wantpassword = $passagain = $email = $user_timezone = $year = $month = $day = $passhint = '';
-$hintanswer   = $country   = $gender   = $rulesverify   = $faqverify   = $ageverify   = $captchaSelection   = $submitme   = '';
+$hintanswer   = $country   = $gender   = $rulesverify   = $faqverify   = $ageverify   = $submitme   = '';
 $session->set('signup_variables', serialize($_POST));
 
 extract($_POST);
@@ -67,9 +67,34 @@ if ($submitme != 'X') {
     die();
 }
 
-if ($site_config['captcha_on']) {
-    if (empty($captchaSelection) || $session->get('simpleCaptchaAnswer') != $captchaSelection) {
-        $session->set('is-warning', '[h2]The captcha selection was incorrect.[/h2]');
+if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
+    if ($response === '') {
+        header('Location: login.php');
+        exit();
+    }
+    $ip = getip();
+    $url = 'https://www.google.com/recaptcha/api/siteverify';
+    $params = [
+        'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
+        'response' => $response,
+        'remoteip' => $ip,
+    ];
+    $query = http_build_query($params);
+    $contextData = [
+                'method' => 'POST',
+                'header' => "Content-Type: application/x-www-form-urlencoded\r\n".
+                            "Connection: close\r\n".
+                            'Content-Length: '.strlen($query)."\r\n",
+                'content' => $query
+    ];
+    $context = stream_context_create(['http' => $contextData]);
+    $result = file_get_contents(
+                  $url,
+                  false,
+                  $context
+    );
+    if (!$result['success']) {
+        $session->set('is-warning', '[h2]reCAPTCHA was incorrect.[/h2]');
         header("Location: {$site_config['baseurl']}/signup.php");
         die();
     }

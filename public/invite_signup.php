@@ -13,7 +13,6 @@ if (!$CURUSER) {
 }
 $stdfoot = [
     'js' => [
-        get_file_name('captcha2_js'),
     ],
 ];
 
@@ -194,10 +193,17 @@ $HTMLOUT .= "
                     <input type='checkbox' name='faqverify' value='yes' /> {$lang['signup_faq']}<br>
                     <input type='checkbox' name='ageverify' value='yes' /> {$lang['signup_age']}
                 </td>
-            </tr>" . ($site_config['captcha_on'] ? "
-            <tr class='no_hover'>
-                <td colspan='2' id='captcha_show'></td>
-            </tr>" : '') . "
+            </tr>";
+if (!empty($_ENV['RECAPTCHA_SITE_KEY'])) {
+    $HTMLOUT .= "
+                    <tr>
+                        <td colspan='2'>
+                            <div class='g-recaptcha level-center' data-theme='dark' data-sitekey='{$_ENV['RECAPTCHA_SITE_KEY']}'></div>
+                        </td>
+                    </tr>";
+}
+
+$HTMLOUT .= "
             <tr class='no_hover'>
                 <td colspan='2'>
                 {$lang['signup_click']} <span class='has-text-danger is-bold'>{$lang['signup_x']}</span> {$lang['signup_click1']}

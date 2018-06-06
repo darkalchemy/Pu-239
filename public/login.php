@@ -15,7 +15,6 @@ if (!$CURUSER) {
 }
 $stdfoot = [
     'js' => [
-        get_file_name('captcha1_js'),
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('login'));
@@ -89,18 +88,19 @@ if ($got_ssl) {
                         </td>
                     </tr>";
 }
-$HTMLOUT .=
-    ($site_config['captcha_on'] ? "
-                    <tr class='no_hover'>
-                        <td colspan='2' id='captcha_show'></td>
-                    </tr>" : '') . "
+if (!empty($_ENV['RECAPTCHA_SITE_KEY'])) {
+    $HTMLOUT .= "
+                    <tr>
+                        <td colspan='2'>
+                            <div class='g-recaptcha level-center' data-theme='dark' data-sitekey='{$_ENV['RECAPTCHA_SITE_KEY']}'></div>
+                        </td>
+                    </tr>";
+}
+$HTMLOUT .= "
                     <tr class='no_hover'>
                         <td colspan='2' class='has-text-centered'>
-                            <span class='has-text-centered'>
-                                <label for='remember' class='level-item tooltipper' title='Keep me logged in'>Remember Me?
-                                    <input type='checkbox' name='remember' value='1' id='remember' class='left10' />
-                                </label><br>
-                                <input name='submitme' type='submit' value='Login' class='button is-small bottom20' />
+                            <span class='has-text-centered margin5'>
+                                <input name='submitme' type='submit' value='Login' class='button is-small' />
                             </span>";
 
 if (isset($returnto)) {
@@ -110,8 +110,17 @@ if (isset($returnto)) {
 $HTMLOUT .= "           </td>
                     </tr>
                     <tr class='no_hover'>
+                        <td colspan='2' class='has-text-centered'>
+                            <span class='has-text-centered margin5'>
+                                <label for='remember' class='level-item tooltipper' title='Keep me logged in'>Remember Me?
+                                    <input type='checkbox' name='remember' value='1' id='remember' class='left10' />
+                                </label>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr class='no_hover'>
                         <td colspan='2'>
-                            <span class='level is-flex is-wrapped top5 bottom5'>
+                            <span class='level is-flex is-wrapped margin5'>
                                 <span class='tab'>{$lang['login_signup']}</span>
                                 <span class='tab'>{$lang['login_forgot']}</span>
                                 <span class='tab'>{$lang['login_forgot_1']}</span>

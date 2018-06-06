@@ -1,4 +1,7 @@
 5 Jun 2018
+replace: jquery.simpleCaptcha-0.2.js with reCAPTCHA V2
+fix: userdetails.php tabs not working
+fix: > UC_UPLOADER should not be demoted to UC_VIP when donating
 fix: remove Cache class instantiation
 
 4 Jun 2018

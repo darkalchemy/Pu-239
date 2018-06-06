@@ -12,7 +12,6 @@ if (!$CURUSER) {
 $lang    = array_merge(load_language('global'), load_language('passhint'));
 $stdfoot = [
     'js' => [
-        get_file_name('captcha1_js'),
     ],
 ];
 $HTMLOUT = '';
@@ -23,15 +22,41 @@ if ($CURUSER) {
 $step = (isset($_GET['step']) ? (int) $_GET['step'] : (isset($_POST['step']) ? (int) $_POST['step'] : ''));
 if ($step == '1') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if (!mkglobal('email' . ($site_config['captcha_on'] ? ':captchaSelection' : '') . '')) {
+        if (!mkglobal('email')) {
             stderr('Oops', 'Missing form data - You must fill all fields');
         }
-        if ($site_config['captcha_on']) {
-            if (empty($captchaSelection) || !hash_equals($captchaSelection, $session->get('simpleCaptchaAnswer'))) {
+        if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
+            $response = !empty($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
+            if ($response === '') {
                 stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error2']}");
                 die();
             }
+            $ip = getip();
+            $url = 'https://www.google.com/recaptcha/api/siteverify';
+            $params = [
+                'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
+                'response' => $response,
+                'remoteip' => $ip,
+            ];
+            $query = http_build_query($params);
+            $contextData = [
+                        'method' => 'POST',
+                        'header' => "Content-Type: application/x-www-form-urlencoded\r\n".
+                                    "Connection: close\r\n".
+                                    'Content-Length: '.strlen($query)."\r\n",
+                        'content' => $query
+            ];
+            $context = stream_context_create(['http' => $contextData]);
+            $result = file_get_contents(
+                          $url,
+                          false,
+                          $context
+            );
+            if (!$result['success']) {
+                stderr('Error', "reCAPTCHA Failed");
+            }
         }
+
         if (empty($email)) {
             stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_invalidemail']}");
         }
@@ -158,8 +183,6 @@ if ($step == '1') {
     $cache->update_row('user' . $id, [
         'passhash' => $newpassword,
     ], $site_config['expires']['user_cache']);
-    $session->unset('simpleCaptchaAnswer');
-    $session->unset('simpleCaptchaTimestamp');
     if (!mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error13']}");
     } else {
@@ -176,10 +199,16 @@ if ($step == '1') {
                 <tr class='no_hover'>
                     <td class='rowhead'>{$lang['main_email_add']}</td>
                     <td><input type='text' class='w-100' name='email' /></td>
-                </tr>" . ($site_config['captcha_on'] ? "
-                <tr class='no_hover'>
-                    <td colspan='2' id='captcha_show'></td>
-                </tr>" : '') . "
+                </tr>";
+if (!empty($_ENV['RECAPTCHA_SITE_KEY'])) {
+    $HTMLOUT .= "
+                    <tr>
+                        <td colspan='2'>
+                            <div class='g-recaptcha level-center' data-theme='dark' data-sitekey='{$_ENV['RECAPTCHA_SITE_KEY']}'></div>
+                        </td>
+                    </tr>";
+}
+$HTMLOUT .= "
                 <tr class='no_hover'>
                     <td colspan='2'>
                         <div class='has-text-centered'>

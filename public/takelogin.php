@@ -25,6 +25,7 @@ function failedloginscheck()
 }
 
 $user_id = '';
+$response = !empty($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
 extract($_POST);
 unset($_POST);
 extract($_GET);
@@ -36,6 +37,7 @@ if (!empty($bot) && !empty($auth)) {
         ->where('class > ? AND username = ? AND auth = ? AND uploadpos = 1 AND suspended = "no"', UC_UPLOADER, $bot, $auth)
         ->fetch('id');
 }
+
 if (empty($user_id)) {
     if (empty($username)) {
         stderr('Error', "Username can't be blank");
@@ -43,22 +45,38 @@ if (empty($user_id)) {
     if (empty($password)) {
         stderr('Error', "Password can't be blank");
     }
-    if ($site_config['captcha_on'] && empty($captchaSelection)) {
-        stderr('Error', 'Select a captcha image');
-    }
     if (empty($submitme) || $submitme != 'Login') {
         stderr('Error', 'You missed, you plonker!');
     }
 
-    if ($site_config['captcha_on']) {
-        if (empty($captchaSelection) || $session->get('simpleCaptchaAnswer') != $captchaSelection) {
-            $url = 'login.php';
-            if (!empty($_SERVER['HTTP_REFERER'])) {
-                $url = htmlsafechars($_SERVER['HTTP_REFERER']);
-            }
-
-            header("Location: $url");
-            die();
+    if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
+        if ($response === '') {
+            header('Location: login.php');
+            exit();
+        }
+        $ip = getip();
+        $url = 'https://www.google.com/recaptcha/api/siteverify';
+        $params = [
+            'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
+            'response' => $response,
+            'remoteip' => $ip,
+        ];
+        $query = http_build_query($params);
+        $contextData = [
+                    'method' => 'POST',
+                    'header' => "Content-Type: application/x-www-form-urlencoded\r\n".
+                                "Connection: close\r\n".
+                                'Content-Length: '.strlen($query)."\r\n",
+                    'content' => $query
+        ];
+        $context = stream_context_create(['http' => $contextData]);
+        $result = file_get_contents(
+                      $url,
+                      false,
+                      $context
+        );
+        if (!$result['success']) {
+            stderr('Error', "reCAPTCHA Failed");
         }
     }
 }
@@ -185,7 +203,6 @@ $cache->update_row('user' . $userid, [
     'last_login'  => TIME_NOW,
 ], $site_config['expires']['user_cache']);
 
-$session->unset('simpleCaptchaAnswer');
 $session->set('userID', $userid);
 $session->set('username', $username);
 $session->set('remembered_by_cookie', false);

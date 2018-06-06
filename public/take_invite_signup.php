@@ -26,15 +26,42 @@ if ($users_count >= $site_config['maxusers']) {
     stderr($lang['takesignup_error'], $lang['takesignup_limit']);
 }
 $lang = array_merge(load_language('global'), load_language('takesignup'));
-if (!mkglobal('wantusername:wantpassword:passagain:invite' . ($site_config['captcha_on'] ? ':captchaSelection:' : ':') . 'submitme:passhint:hintanswer:country')) {
+if (!mkglobal('wantusername:wantpassword:passagain:invite:submitme:passhint:hintanswer:country')) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_form_data']);
 }
 if ($submitme != 'X') {
     stderr('Ha Ha', 'You Missed, You plonker!');
 }
-if ($site_config['captcha_on']) {
-    if (empty($captchaSelection) || $session->get('simpleCaptchaAnswer') != $captchaSelection) {
-        header('Location: invite_signup.php');
+
+if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
+    if ($response === '') {
+        header('Location: login.php');
+        exit();
+    }
+    $ip = getip();
+    $url = 'https://www.google.com/recaptcha/api/siteverify';
+    $params = [
+        'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
+        'response' => $response,
+        'remoteip' => $ip,
+    ];
+    $query = http_build_query($params);
+    $contextData = [
+                'method' => 'POST',
+                'header' => "Content-Type: application/x-www-form-urlencoded\r\n".
+                            "Connection: close\r\n".
+                            'Content-Length: '.strlen($query)."\r\n",
+                'content' => $query
+    ];
+    $context = stream_context_create(['http' => $contextData]);
+    $result = file_get_contents(
+                  $url,
+                  false,
+                  $context
+    );
+    if (!$result['success']) {
+        $session->set('is-warning', '[h2]reCAPTCHA was incorrect.[/h2]');
+        header("Location: {$site_config['baseurl']}/invite_signup.php");
         die();
     }
 }

@@ -13,7 +13,7 @@ function get_file_name($file)
         if ($site_config['in_production']) {
             switch ($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/a08d02625528270aa9252fdf42f54f48.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/dfcca84290e6b17ab828c8c1ca87f060.min.css";
                 case 'js':
                     return "{$site_config['baseurl']}/js/{$style}/b39cfe659667b801c122db91c1dc570e.min.js";
                 case 'checkport_js':
@@ -30,10 +30,8 @@ function get_file_name($file)
                     return "{$site_config['baseurl']}/js/{$style}/abfa0df75e42840eadd5153ba7384065.min.js";
                 case 'index_js':
                     return "{$site_config['baseurl']}/js/{$style}/734cb25df9f80f35967d30a9b371da37.min.js";
-                case 'captcha1_js':
-                    return "{$site_config['baseurl']}/js/{$style}/6a02935c047228545700735bbe6feba6.min.js";
                 case 'captcha2_js':
-                    return "{$site_config['baseurl']}/js/{$style}/7bb0c73b3f4f63b2517714b7b3c45eb7.min.js";
+                    return "{$site_config['baseurl']}/js/{$style}/baec24224b2573ea63563552bcaec948.min.js";
                 case 'upload_js':
                     return "{$site_config['baseurl']}/js/{$style}/a504f1a0ebd6bc7e9f01543c8c11c7bc.min.js";
                 case 'requests_js':
@@ -56,7 +54,7 @@ function get_file_name($file)
         } else {
             switch ($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/cd2410488bbd6d074837c0ad0c5790a9.css";
+                    return "{$site_config['baseurl']}/css/{$style}/9291e068e4c72af76fcb7766ea74e539.css";
                 case 'js':
                     return "{$site_config['baseurl']}/js/{$style}/4e6c1b1f4f324181e81b53c6da23f542.js";
                 case 'checkport_js':
@@ -73,10 +71,8 @@ function get_file_name($file)
                     return "{$site_config['baseurl']}/js/{$style}/a4c172a85fb36c2b00a6ef229205a674.js";
                 case 'index_js':
                     return "{$site_config['baseurl']}/js/{$style}/f9567fbf7012cbd82aa2ff70c4c4226a.js";
-                case 'captcha1_js':
-                    return "{$site_config['baseurl']}/js/{$style}/421d04585d4091db9268de6db0f2bc65.js";
                 case 'captcha2_js':
-                    return "{$site_config['baseurl']}/js/{$style}/b386d1c21492bf0189ecf970a4aca08c.js";
+                    return "{$site_config['baseurl']}/js/{$style}/895cc8b15a1b6299037181aa27d6e0b8.js";
                 case 'upload_js':
                     return "{$site_config['baseurl']}/js/{$style}/562e3b9f1b437cb1ad1b85b12f7eb260.js";
                 case 'requests_js':
@@ -88,7 +84,7 @@ function get_file_name($file)
                 case 'details_js':
                     return "{$site_config['baseurl']}/js/{$style}/f0a5a109311c2c6a392a75be553ff6d8.js";
                 case 'forums_js':
-                    return "{$site_config['baseurl']}/js/{$style}/89f1dedae45a25f8e0165758411321ce.js";
+                    return "{$site_config['baseurl']}/js/{$style}/12345.js";
                 case 'staffpanel_js':
                     return "{$site_config['baseurl']}/js/{$style}/0e6c0a3138d3efe7fdd4ff7e1e669f3a.js";
                 case 'browse_js':

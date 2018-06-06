@@ -16,20 +16,45 @@ use Nette\Mail\SendmailMailer;
 
 $stdfoot = [
     'js' => [
-        get_file_name('captcha1_js'),
     ],
 ];
 $HTMLOUT = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!mkglobal('email' . ($site_config['captcha_on'] ? ':captchaSelection' : '') . '')) {
+    if (!mkglobal('email')) {
         stderr('Oops', 'Missing form data - You must fill all fields');
     }
-    if ($site_config['captcha_on']) {
-        if (empty($captchaSelection) || $session->get('simpleCaptchaAnswer') != $captchaSelection) {
-            header('Location: recover.php');
+    if (!empty($_ENV['RECAPTCHA_SITE_KEY'])) {
+        $response = !empty($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
+        if ($response === '') {
+            stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error2']}");
             die();
         }
+        $ip = getip();
+        $url = 'https://www.google.com/recaptcha/api/siteverify';
+        $params = [
+            'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
+            'response' => $response,
+            'remoteip' => $ip,
+        ];
+        $query = http_build_query($params);
+        $contextData = [
+                    'method' => 'POST',
+                    'header' => "Content-Type: application/x-www-form-urlencoded\r\n".
+                                "Connection: close\r\n".
+                                'Content-Length: '.strlen($query)."\r\n",
+                    'content' => $query
+        ];
+        $context = stream_context_create(['http' => $contextData]);
+        $result = file_get_contents(
+                      $url,
+                      false,
+                      $context
+        );
+        if (!$result['success']) {
+            stderr('Error', "reCAPTCHA Failed");
+        }
     }
+
     $email = trim($_POST['email']);
     if (!validemail($email)) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_invalidemail']}");
@@ -66,8 +91,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mailer->send($mail);
 
     stderr($lang['stderr_successhead'], $lang['stderr_confmailsent']);
-    $session->unset('simpleCaptchaAnswer');
-    $session->unset('simpleCaptchaTimestamp');
 } elseif ($_GET) {
     $id    = isset($_GET['id']) ? $_GET['id'] : 0;
     $token = isset($_GET['token']) ? $_GET['token'] : '';
@@ -118,13 +141,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mailer->send($mail);
 
     stderr($lang['stderr_successhead'], $lang['stderr_mailed']);
-    $session->unset('simpleCaptchaAnswer');
-    $session->unset('simpleCaptchaTimestamp');
 } else {
     $HTMLOUT .= "
     <div class='half-container has-text-centered portlet'>
         <form method='post' action='{$_SERVER['PHP_SELF']}'>
-            <table class='table table-bordered top20 bottom20'>" . ($site_config['captcha_on'] ? "
+            <table class='table table-bordered top20 bottom20'>
                 <tr class='no_hover'>
                     <td colspan='2'>
                         <h2 class='has-text-centered'>{$lang['recover_unamepass']}</h2>
@@ -134,10 +155,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <tr class='no_hover'>
                     <td class='rowhead'>{$lang['recover_regdemail']}</td>
                     <td><input type='text' class='w-100' name='email' /></td>
-                </tr>
-                <tr class='no_hover'>
-                    <td colspan='2' id='captcha_show'></td>
-                </tr>" : '') . "
+                </tr>";
+    if (!empty($_ENV['RECAPTCHA_SITE_KEY'])) {
+        $HTMLOUT .= "
+                    <tr>
+                        <td colspan='2'>
+                            <div class='g-recaptcha level-center' data-theme='dark' data-sitekey='{$_ENV['RECAPTCHA_SITE_KEY']}'></div>
+                        </td>
+                    </tr>";
+    }
+    $HTMLOUT .= "
                 <tr class='no_hover'>
                     <td colspan='2'>
                         <div class='has-text-centered'>
