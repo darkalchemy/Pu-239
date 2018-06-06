@@ -1,8 +1,7 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $user_stuffs, $id, $cache;
+global $CURUSER, $site_config, $lang, $user_stuffs, $id, $cache, $user;
 
-$user = $user_stuffs->getUserFromId($CURUSER['id']);
 if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     $What_Cache = (XBT_TRACKER ? 'port_data_xbt_' : 'port_data_');
     $port_data  = $cache->get($What_Cache . $id);

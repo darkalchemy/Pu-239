@@ -1,8 +1,7 @@
 <?php
 
-global $site_config, $lang, $user_stuffs;
+global $site_config, $lang, $user_stuffs, $user;
 
-$user = $user_stuffs->getUserFromId($CURUSER['id']);
 /**
  * @param $val
  *

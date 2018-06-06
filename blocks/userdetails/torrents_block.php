@@ -2,9 +2,8 @@
 
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
-global $CURUSER, $site_config, $lang, $user_stuffs, $cache;
+global $CURUSER, $site_config, $lang, $user_stuffs, $cache, $user;
 
-$user = $user_stuffs->getUserFromId($CURUSER['id']);
 /**
  * @param $torrents
  *

@@ -1,8 +1,7 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $user_stuffs, $id, $cache;
+global $CURUSER, $site_config, $lang, $user_stuffs, $id, $cache, $user;
 
-$user       = $user_stuffs->getUserFromId($CURUSER['id']);
 $forumposts = $cache->get('forum_posts_' . $id);
 if ($forumposts === false || is_null($forumposts)) {
     $res              = sql_query('SELECT COUNT(id) FROM posts WHERE user_id=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);

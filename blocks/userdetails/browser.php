@@ -1,8 +1,7 @@
 <?php
 
-global $lang, $user_stuffs, $CURUSER;
+global $lang, $user_stuffs, $CURUSER, $user;
 
-$user = $user_stuffs->getUserFromId($CURUSER['id']);
 if ($user['browser'] != '') {
     $browser = htmlsafechars($user['browser']);
 } else {

@@ -1,6 +1,6 @@
 <?php
 
-global $CURUSER, $site_config, $lang;
+global $CURUSER, $site_config, $lang, $user;
 
 if ($user['invitedby'] > 0) {
     //=== Fetch inviter info

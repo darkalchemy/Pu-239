@@ -1,8 +1,7 @@
 <?php
 
-global $site_config, $lang, $user_stuffs, $id, $CURUSER;
+global $site_config, $lang, $user_stuffs, $id, $CURUSER, $user;
 
-$user = $user_stuffs->getUserFromId($CURUSER['id']);
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     $days = round((TIME_NOW - $user['added']) / 86400);
     if ($site_config['ratio_free']) {

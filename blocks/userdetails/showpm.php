@@ -1,16 +1,15 @@
 <?php
 
-global $CURUSER, $user_stuffs, $site_config, $lang;
+global $CURUSER, $user_stuffs, $site_config, $lang, $user;
 
-$user = $user_stuffs->getUserFromId($CURUSER['id']);
 if ($CURUSER['id'] != $user['id']) {
     if ($CURUSER['class'] >= UC_STAFF) {
         $showpmbutton = 1;
     } elseif ($user['acceptpms'] === 'yes') {
-        $r            = sql_query('SELECT id FROM blocks WHERE userid=' . sqlesc($user['id']) . ' AND blockid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        $r            = sql_query('SELECT id FROM blocks WHERE userid = ' . sqlesc($user['id']) . ' AND blockid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $showpmbutton = (mysqli_num_rows($r) == 1 ? 0 : 1);
     } elseif ($user['acceptpms'] === 'friends') {
-        $r            = sql_query('SELECT id FROM friends WHERE userid=' . sqlesc($user['id']) . ' AND friendid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        $r            = sql_query('SELECT id FROM friends WHERE userid = ' . sqlesc($user['id']) . ' AND friendid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $showpmbutton = (mysqli_num_rows($r) == 1 ? 1 : 0);
     }
 }

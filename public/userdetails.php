@@ -37,7 +37,6 @@ if ($user === false || is_null($user)) {
 
     $cache->set('user' . $id, $user, $site_config['expires']['user_cache']);
 }
-
 if ($user['status'] === 'pending') {
     stderr($lang['userdetails_error'], $lang['userdetails_pending']);
 }
@@ -69,9 +68,9 @@ if (isset($_GET['delete_hit_and_run']) && $CURUSER['class'] >= UC_STAFF) {
         stderr($lang['userdetails_error'], $lang['userdetails_bad_id']);
     }
     if (!XBT_TRACKER) {
-        sql_query('UPDATE snatched SET hit_and_run = \'0\', mark_of_cain = \'no\' WHERE id = ' . sqlesc($delete_me)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE snatched SET hit_and_run = "0", mark_of_cain = "no" WHERE id = ' . sqlesc($delete_me)) or sqlerr(__FILE__, __LINE__);
     } else {
-        sql_query('UPDATE xbt_files_users SET hit_and_run = \'0\', mark_of_cain = \'no\' WHERE fid = ' . sqlesc($delete_me)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE xbt_files_users SET hit_and_run = "0", mark_of_cain = "no" WHERE fid = ' . sqlesc($delete_me)) or sqlerr(__FILE__, __LINE__);
     }
     if (@mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
         stderr($lang['userdetails_error'], $lang['userdetails_notdeleted']);
@@ -125,7 +124,7 @@ foreach ($countries as $cntry) {
 }
 
 if (!(isset($_GET['hit'])) && $CURUSER['id'] != $user['id']) {
-    $res = sql_query('SELECT added FROM userhits WHERE userid =' . sqlesc($CURUSER['id']) . ' AND hitid = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT added FROM userhits WHERE userid =' . sqlesc($user['id']) . ' AND hitid = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_row($res);
     if (!($row[0] > TIME_NOW - 3600)) {
         $hitnumber = $user['hits'] + 1;
@@ -135,7 +134,7 @@ if (!(isset($_GET['hit'])) && $CURUSER['id'] != $user['id']) {
         $cache->update_row('user' . $id, [
             'hits' => $update['user_hits'],
         ], $site_config['expires']['user_cache']);
-        sql_query('INSERT INTO userhits (userid, hitid, number, added) VALUES(' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . sqlesc($hitnumber) . ', ' . sqlesc(TIME_NOW) . ')') or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO userhits (userid, hitid, number, added) VALUES(' . sqlesc($user['id']) . ', ' . sqlesc($id) . ', ' . sqlesc($hitnumber) . ', ' . sqlesc(TIME_NOW) . ')') or sqlerr(__FILE__, __LINE__);
     }
 }
 $HTMLOUT = $perms = $stealth = $suspended = $watched_user = $h1_thingie = '';
@@ -195,13 +194,13 @@ if (!$enabled) {
 } elseif ($CURUSER['id'] != $user['id']) {
     $friends = $cache->get('Friends_' . $id);
     if ($friends === false || is_null($friends)) {
-        $r3      = sql_query('SELECT id FROM friends WHERE userid=' . sqlesc($CURUSER['id']) . ' AND friendid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $r3      = sql_query('SELECT id FROM friends WHERE userid = ' . sqlesc($user['id']) . ' AND friendid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $friends = mysqli_num_rows($r3);
         $cache->set('Friends_' . $id, $friends, $site_config['expires']['user_friends']);
     }
     $blocks = $cache->get('Blocks_' . $id);
     if ($blocks === false || is_null($blocks)) {
-        $r4     = sql_query('SELECT id FROM blocks WHERE userid=' . sqlesc($CURUSER['id']) . ' AND blockid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $r4     = sql_query('SELECT id FROM blocks WHERE userid = ' . sqlesc($user['id']) . ' AND blockid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $blocks = mysqli_num_rows($r4);
         $cache->set('Blocks_' . $id, $blocks, $site_config['expires']['user_blocks']);
     }
@@ -221,7 +220,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     $shitty    = '';
     $shit_list = $cache->get('shit_list_' . $id);
     if ($shit_list === false || is_null($shit_list)) {
-        $check_if_theyre_shitty = sql_query('SELECT suspect FROM shit_list WHERE userid=' . sqlesc($CURUSER['id']) . ' AND suspect=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $check_if_theyre_shitty = sql_query('SELECT suspect FROM shit_list WHERE userid = ' . sqlesc($user['id']) . ' AND suspect = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         list($shit_list)        = mysqli_fetch_row($check_if_theyre_shitty);
         $cache->set('shit_list_' . $id, $shit_list, $site_config['expires']['shit_list']);
     }
@@ -236,8 +235,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
             </a></li>";
     }
 }
-
-if ($user['donor'] && $CURUSER['id'] == $user['id'] || $CURUSER['class'] == UC_SYSOP) {
+if ($user['donor'] && $CURUSER['id'] == $user['id'] || $CURUSER['class'] >= UC_SYSOP) {
     $donoruntil = htmlsafechars($user['donoruntil']);
     if ($donoruntil == '0') {
         $HTMLOUT .= '';
@@ -266,7 +264,7 @@ $HTMLOUT .= "
         <li><a class='altlink margin20 tooltipper' title='{$lang['userdetails_invincible_def5']}<br>{$lang['userdetails_invincible_def6']}<br>{$lang['userdetails_invincible_def7']}<br>{$lang['userdetails_invincible_def8']} href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_add_bypass']}</a></li>" : "
         <li><a class='altlink margin20 tooltipper' title='{$lang['userdetails_invincible_def9']}<br>{$lang['userdetails_invincible_def0']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_make_invincible']}</a></li>" : '');
 
-$stealth = $cache->get('display_stealth' . $CURUSER['id']);
+$stealth = $cache->get('display_stealth' . $user['id']);
 if ($stealth) {
     $session->set('is-info', htmlsafechars($user['username']) . " $stealth {$lang['userdetails_in_stelth']}");
 }
@@ -523,7 +521,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
                 </tr>";
 
     if ($CURUSER['class'] === UC_MAX) {
-        $donor = $user['donor'] == 'yes';
+        $donor = $user['donor'] === 'yes';
         $HTMLOUT .= "
                 <tr>
                     <td class='rowhead' class='has-text-right'><b>
@@ -579,7 +577,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
     } else {
         $HTMLOUT .= "<tr><td class='rowhead'>Class</td><td colspan='3' class='has-text-left'><select name='class' class='w-100'>";
         if ($CURUSER['class'] === UC_MAX) {
-            $maxclass = UC_SYSOP;
+            $maxclass = UC_MAX;
         } elseif ($CURUSER['class'] === UC_STAFF) {
             $maxclass = UC_VIP;
         } else {
@@ -595,7 +593,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_support']}</td><td colspan='3' class='has-text-left'><input type='radio' name='support' value='yes'" . ($user['support'] === 'yes' ? ' checked' : '') . " />{$lang['userdetails_yes']}<input type='radio' name='support' value='no'" . ($user['support'] === 'no' ? ' checked' : '') . " />{$lang['userdetails_no']}</td></tr>";
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_supportfor']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='2' name='supportfor'>{$supportfor}</textarea></td></tr>";
     $modcomment = htmlsafechars($user['modcomment']);
-    if ($CURUSER['class'] < UC_SYSOP) {
+    if ($CURUSER['class'] < UC_MAX) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='6' name='modcomment' readonly='readonly'>$modcomment</textarea></td></tr>";
     } else {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='6' name='modcomment'>$modcomment</textarea></td></tr>";

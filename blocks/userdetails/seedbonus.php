@@ -1,8 +1,7 @@
 <?php
 
-global $site_config, $lang, $user_stuffs, $CURUSER;
+global $site_config, $lang, $user_stuffs, $CURUSER, $user;
 
-$user = $user_stuffs->getUserFromId($CURUSER['id']);
 $HTMLOUT .= "
     <tr>
         <td class='rowhead'>{$lang['userdetails_bonus_points']}</td>

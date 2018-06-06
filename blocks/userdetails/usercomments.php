@@ -8,6 +8,7 @@ function usercommenttable($rows)
 {
     $htmlout = '';
     global $CURUSER, $site_config, $userid, $lang;
+
     $htmlout .= "<table class='main' width='750' >" . "<tr><td class='embedded'>";
     $htmlout .= begin_frame();
     $count = 0;
@@ -25,7 +26,7 @@ function usercommenttable($rows)
             $htmlout .= '<a name="comm' . (int) $row['id'] . "\"><i>{$lang['userdetails_orphaned']}</i></a>\n";
         }
         $htmlout .= ' ' . get_date($row['added'], 'DATE', 0, 1) . '' . ($userid == $CURUSER['id'] || $row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=edit&amp;cid=" . (int) $row['id'] . "'>{$lang['userdetails_comm_edit']}</a>]" : '') . ($userid == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=delete&amp;cid=" . (int) $row['id'] . "'>{$lang['userdetails_comm_delete']}</a>]" : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=vieworiginal&amp;cid=" . (int) $row['id'] . "'>{$lang['userdetails_comm_voriginal']}</a>]" : '') . "</p>\n";
-        $avatar = ($CURUSER['avatars'] === 'yes' ? htmlsafechars($row['avatar']) : '');
+        $avatar = ($user['avatars'] === 'yes' ? htmlsafechars($row['avatar']) : '');
         if (!$avatar) {
             $avatar = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
         }

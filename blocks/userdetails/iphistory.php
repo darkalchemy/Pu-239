@@ -1,8 +1,7 @@
 <?php
 
-global $user_stuffs, $CURUSER, $fluent;
+global $user_stuffs, $CURUSER, $fluent, $user;
 
-$user = $user_stuffs->getUserFromId($CURUSER['id']);
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
     $iphistory = $cache->get('ip_history_' . $id);
     if ($iphistory === false || is_null($iphistory)) {

@@ -1,8 +1,7 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $user_stuffs, $cache;
+global $CURUSER, $site_config, $lang, $user_stuffs, $cache, $user;
 
-$user              = $user_stuffs->getUserFromId($CURUSER['id']);
 $What_Cache        = (XBT_TRACKER ? 'share_ratio_xbt_' : 'share_ratio_');
 $What_Table        = (XBT_TRACKER ? 'xbt_files_users' : 'snatched');
 $What_String       = (XBT_TRACKER ? 'fid' : 'id');

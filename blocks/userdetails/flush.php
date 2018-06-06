@@ -1,6 +1,6 @@
 <?php
 
-global $CURUSER, $lang;
+global $CURUSER, $lang, $user;
 
 if ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $user['id']) {
     $table_data .= '

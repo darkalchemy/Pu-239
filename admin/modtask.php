@@ -94,9 +94,9 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         stderr($lang['modtask_pmsl'], $lang['modtask_die_bit']);
     }
     //== Fetch current user data...
-    $res  = sql_query('SELECT * FROM users WHERE id=' . sqlesc($userid));
+    $res  = sql_query('SELECT * FROM users WHERE id = ' . sqlesc($userid));
     $user = mysqli_fetch_assoc($res) or sqlerr(__FILE__, __LINE__);
-    if ($CURUSER['class'] <= $user['class'] && ($CURUSER['id'] != $userid && $CURUSER['class'] < UC_ADMINISTRATOR)) {
+    if ($CURUSER['class'] <= $user['class'] && ($CURUSER['id'] != $userid && $CURUSER['class'] < UC_MAX)) {
         stderr($lang['modtask_error'], $lang['modtask_cannot_edit']);
     }
     if (($user['immunity'] >= 1) && ($CURUSER['class'] < UC_MAX)) {
