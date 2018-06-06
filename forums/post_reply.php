@@ -58,8 +58,8 @@ if (isset($_POST['button']) && 'Post' == $_POST['button']) {
     $cache->delete('forum_posts_' . $CURUSER['id']);
     $post_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
     sql_query('UPDATE topics SET last_post=' . sqlesc($post_id) . ', post_count = post_count + 1 WHERE id=' . sqlesc($topic_id));
-    sql_query('UPDATE `forums` SET post_count = post_count +1 WHERE id =' . sqlesc($arr['real_forum_id']));
-    sql_query('UPDATE usersachiev SET forumposts=forumposts+1 WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE `forums` SET post_count = post_count + 1 WHERE id =' . sqlesc($arr['real_forum_id']));
+    sql_query('UPDATE usersachiev SET forumposts = forumposts + 1 WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     if (1 == $site_config['autoshout_on']) {
         $message = $CURUSER['username'] . ' ' . $lang['pr_replied_to_topic'] . " [url={$site_config['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last]{$topic_name}[/url]";
         if (!in_array($arr['real_forum_id'], $site_config['staff_forums'])) {
