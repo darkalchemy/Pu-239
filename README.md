@@ -112,6 +112,10 @@ Fanart.tv needs api key set in .inv
 
 Google API key allows up to 1000 api hits instead of 100 per day, set in .env
 
+IMDb no key needed
+
+TVMaze no key needed
+
 
 ### Cache Engines
 
