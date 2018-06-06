@@ -16,7 +16,8 @@ $wantusername = $wantpassword = $passagain = $email = $user_timezone = $year = $
 $hintanswer   = $country   = $gender   = $rulesverify   = $faqverify   = $ageverify   = $submitme   = '';
 $session->set('signup_variables', serialize($_POST));
 
-extract($_POST);
+$response = !empty($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
+extract($_POST)
 unset($_POST);
 
 $cache->delete('userlist_' . $site_config['chatBotID']);

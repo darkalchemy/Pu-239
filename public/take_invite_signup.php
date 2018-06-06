@@ -34,6 +34,7 @@ if ($submitme != 'X') {
 }
 
 if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
+    $response = !empty($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
     if ($response === '') {
         header('Location: login.php');
         exit();
