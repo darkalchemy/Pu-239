@@ -156,11 +156,13 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
             $subject                          = sqlesc($lang['modtask_donor_subject']);
             $modcomment                       = get_date(TIME_NOW, 'DATE', 1) . "{$lang['modtask_donor_set']}" . $CURUSER['username'] . ".\n" . $modcomment;
             $updateset[]                      = 'donoruntil = ' . sqlesc($donoruntil);
-            $updateset[]                      = 'vipclass_before = ' . sqlesc($user['class']);
             $curuser_cache['donoruntil']      = $donoruntil;
             $user_cache['donoruntil']         = $donoruntil;
-            $curuser_cache['vipclass_before'] = $user['class'];
-            $user_cache['vipclass_before']    = $user['class'];
+            if ($user['class'] < UC_UPLOADER) {
+                $updateset[]                      = 'vipclass_before = ' . sqlesc($user['class']);
+                $curuser_cache['vipclass_before'] = $user['class'];
+                $user_cache['vipclass_before']    = $user['class'];
+            }
         }
         $added = sqlesc(TIME_NOW);
         sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($userid) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
@@ -172,9 +174,9 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         //$arr = mysqli_fetch_assoc($res);
         if ($user['class'] < UC_UPLOADER) {
             $updateset[] = 'class = ' . UC_VIP . '';
+            $curuser_cache['class'] = UC_VIP;
+            $user_cache['class']    = UC_VIP;
         }
-        $curuser_cache['class'] = UC_VIP;
-        $user_cache['class']    = UC_VIP;
     }
     // === add to donor length // thanks to CoLdFuSiOn
     if ((isset($_POST['donorlengthadd'])) && ($donorlengthadd = (int) $_POST['donorlengthadd'])) {
@@ -1056,14 +1058,14 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
     if ($user_cache) {
         $cache->update_row('user' . $userid, $user_cache, $site_config['expires']['user_cache']);
     }
-    if (count($updateset) > 0) {
+    if (!empty($updateset)) {
         sql_query('UPDATE users SET ' . implode(', ', $updateset) . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     }
     status_change($userid);
     if ((isset($_POST['class'])) && (($class = $_POST['class']) != $user['class'])) {
         $cache->delete('staff_settings_');
     }
-    if (count($setbits) > 0 || count($clrbits) > 0) {
+    if (!empty($setbits) || !empty($countbits)) {
         sql_query('UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . '), opt2 = ((opt2 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     }
 

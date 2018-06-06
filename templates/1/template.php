@@ -53,7 +53,23 @@ function stdhead($title = '', $stdhead = null)
             obj.style.height = 0;
             obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
         }
-    </script>
+    </script>";
+$current_page = basename($_SERVER['PHP_SELF']);
+$captcha = [
+    'login.php',
+    'takelogin.php',
+    'signup.php',
+    'takesignup.php',
+    'invite_signup.php',
+    'take_invite_signup.php',
+    'resetpw.php',
+    'recover.php',
+];
+if (in_array($current_page, $captcha) && !empty($_ENV['RECAPTCHA_SITE_KEY'])) {
+    $htmlout .= "
+        <script src='https://www.google.com/recaptcha/api.js'></script>";
+}
+$htmlout .= "
 </head>
 <body class='{$body_class}'>
     <script>
@@ -505,7 +521,7 @@ function navbar()
                                     <span class='home'>{$site_config['site_name']}</span>
                                 </a>
                             </li>
-                            <li id='torrents' class='clickable'>
+                            <li id='torrents_links' class='clickable'>
                                 <a href='#'>{$lang['gl_torrent']}</a>
                                 <ul class='ddFade ddFadeSlow'>
                                     <li class='iss_hidden'><a href='{$site_config['baseurl']}/browse.php'>Browse {$lang['gl_torrents']}</a></li>
@@ -517,7 +533,7 @@ function navbar()
                                     " . ($CURUSER['class'] <= UC_VIP ? "<li class='iss_hidden'><a href='{$site_config['baseurl']}/uploadapp.php'>{$lang['gl_uapp']}</a></li>" : "<li class='iss_hidden'><a href='{$site_config['baseurl']}/upload.php'>{$lang['gl_upload']}</a></li>") . "
                                 </ul>
                             </li>
-                            <li id='general' class='clickable'>
+                            <li id='general_links' class='clickable'>
                                 <a href='#'>{$lang['gl_general']}</a>
                                 <ul class='ddFade ddFadeSlow'>";
         if ($site_config['bucket_allowed'] === 1) {
@@ -538,7 +554,7 @@ function navbar()
                                     <li class='iss_hidden'><a href='{$site_config['baseurl']}/wiki.php'>{$lang['gl_wiki']}</a></li>
                                 </ul>
                             </li>
-                            <li id='games' class='clickable'>
+                            <li id='games_links' class='clickable'>
                                 <a href='#'>{$lang['gl_games']}</a>
                                 <ul class='ddFade ddFadeSlow'>
                                     <li class='iss_hidden'><a href='{$site_config['baseurl']}/arcade.php'>{$lang['gl_arcade']}</a></li>
@@ -547,7 +563,7 @@ function navbar()
                                 </ul>
                             </li>
                             <li><a href='{$site_config['baseurl']}/donate.php'>{$lang['gl_donate']}</a></li>
-                            <li id='user' class='clickable'>
+                            <li id='user_links' class='clickable'>
                                 <a href='#'>User</a>
                                 <ul class='ddFade ddFadeSlow'>
                                     <li class='iss_hidden'><a href='{$site_config['baseurl']}/bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
