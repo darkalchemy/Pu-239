@@ -5,11 +5,12 @@
 2. Error free with MySQL 5.7 strict mode - default settings - Done
 3. Remove merged bootstrap - Done
 4. Update jquery - Done
-5. Update all javascript files
+5. Update all javascript files to remove jquery dependency
 6. Merge, mininify and gzip css/js files to reduce the number of requests - Done
 7. Replace manual concat/gzip of css/js file with webpack
 8. Optimize all images for web - Done
 9. Remove js from head and relocate to body
+10. REplace Simple Captcha with reCAPTCHA V2 - Done
 10. Fully responsive and mobile ready
 
 This is a fork of U-232 V4.
@@ -24,7 +25,7 @@ This is still a WIP and a few pages may not be functional in there current locat
 
 Do not use the xbt install, as it's update has not been started and is, therefore broken.
 
-A working site with this code is at http://pu-239.pw/
+A working site with this code is at https://pu-239.pw/
 
 ### To Install:
 ```
@@ -102,6 +103,20 @@ mysql database < Pu-239/database/tvmaze.php.sql
 goto admin/upgrade_database to check/update the database
 note: if that does exist, check the changelog for 6 Dec, 2017
 ```
+
+### API's
+
+reCAPTCHA V2 needs both the site key and secret key set in .env
+
+Fanart.tv needs api key set in .inv
+
+Google API key allows up to 1000 api hits instead of 100 per day, set in .env
+
+
+### Cache Engines
+
+couchbase, apcu, memcached, redis or file. file is set as default set in .env
+
 
 ### Image Proxy:
 
