@@ -36,7 +36,8 @@ git clone https://github.com/darkalchemy/Pu-239.git
 cd Pu-239
 composer install
 npm install
-php bin/uglify.php
+[sudo] php bin/set_perms.php
+[sudo] php bin/uglify.php
 
 # set ownership
 chown -R www-data:www-data Pu-239
@@ -94,7 +95,8 @@ composer update
 composer dump-autoload -o
 npm install
 npm update
-php bin/uglify.php
+[sudo] php bin/set_perms.php
+[sudo] php bin/uglify.php
 
 # update trivia questions if desired
 mysql database < Pu-239/database/trivia.php.sql

@@ -1,4 +1,5 @@
 7 Jun 2018
+add: bin/set_perms.php script to set file permissions to 0664
 add: bin/uglify.php script to process css/js files
 
 6 Jun 2018
