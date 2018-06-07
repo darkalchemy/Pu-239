@@ -225,7 +225,7 @@ function get_file_name(\$file)
 
 foreach ($pages as $page) {
     $output .= "
-        case {$page[0]}:
+        case '{$page[0]}':
             return \"{\$site_config['baseurl']}/{$page[1]}\";";
 }
 $output .= "
