@@ -949,7 +949,6 @@ if ($game) {
                             <td>+/-</td>
                             <td>" . human_filesize($plus_minus) . '</td>
                         </tr>
-                      
                 </table>';
     // site stats
     $sql = "SELECT id, bjwins * 1024 * 1024 * 1024 AS wins, bjlosses * 1024 * 1024 * 1024 AS losses, (bjwins - bjlosses) * 1024 * 1024 * 1024 AS sum
@@ -1187,7 +1186,6 @@ function output($blackjack, $HTMLOUT, $debugout)
     global $CURUSER;
     $stdhead = [
         'css' => [
-            get_file_name('bj_css'),
         ],
     ];
 
@@ -1202,7 +1200,7 @@ function output($blackjack, $HTMLOUT, $debugout)
                             </th>
                         </tr>
                     </thead>
-                    <tbody>                    
+                    <tbody>
                         {$debugout}
                     </tbody>
                 </table>";

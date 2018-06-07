@@ -17,7 +17,6 @@ global $CURUSER, $site_config, $fluent, $session, $cache, $user_stuffs;
 $lang    = array_merge(load_language('global'), load_language('details'));
 $stdhead = [
     'css' => [
-        get_file_name('details_css'),
     ],
 ];
 $stdfoot = [

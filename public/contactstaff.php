@@ -11,7 +11,6 @@ global $CURUSER, $site_config, $cache, $session;
 $lang    = array_merge(load_language('global'), load_language('contactstaff'));
 $stdhead = [
     'css' => [
-        get_file_name('contactstaff_css'),
     ],
 ];
 $stdfoot = [

@@ -10,7 +10,6 @@ global $site_config, $CURUSER, $lang, $cache;
 $lang    = array_merge($lang, load_language('ad_bonus_for_members'));
 $stdhead = [
     'css' => [
-        get_file_name('upload_css'),
     ],
 ];
 $stdfoot = [

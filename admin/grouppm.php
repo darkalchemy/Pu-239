@@ -12,7 +12,6 @@ $lang = array_merge($lang, load_language('ad_grouppm'));
 
 $stdhead = [
     'css' => [
-        get_file_name('upload_css'),
     ],
 ];
 

@@ -11,7 +11,6 @@ global $CURUSER, $lang, $site_config, $cache;
 $HTMLOUT = '';
 $stdhead = [
     'css' => [
-        get_file_name('upload_css'),
     ],
 ];
 $stdfoot = [

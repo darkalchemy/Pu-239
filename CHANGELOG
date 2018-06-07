@@ -1,3 +1,6 @@
+7 Jun 2018
+add: bin/uglify.php script to process css/js files
+
 6 Jun 2018
 fix: missing '/'
 fix: incorrect column name used

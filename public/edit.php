@@ -26,14 +26,13 @@ if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $CURUSER['class'] >= UC_
     die();
 }
 $lang    = array_merge(load_language('global'), load_language('edit'));
+$stdhead = [
+    'css' => [
+    ],
+];
 $stdfoot = [
     'js' => [
         get_file_name('upload_js'),
-    ],
-];
-$stdhead = [
-    'css' => [
-        get_file_name('upload_css'),
     ],
 ];
 $res = sql_query('SELECT * FROM torrents WHERE id = ' . sqlesc($id));

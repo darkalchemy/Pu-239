@@ -9,7 +9,6 @@ global $site_config, $fluent;
 $lang    = array_merge(load_language('global'), load_language('staff'));
 $stdhead = [
     'css' => [
-        get_file_name('staff_css'),
     ],
 ];
 $support = $mods = $admin = $sysop = [];

@@ -12,7 +12,6 @@ global $CURUSER, $site_config, $BLOCKS, $fluent, $cache, $session;
 
 $stdhead = [
     'css' => [
-        get_file_name('index_css'),
     ],
 ];
 

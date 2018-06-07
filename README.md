@@ -36,6 +36,7 @@ git clone https://github.com/darkalchemy/Pu-239.git
 cd Pu-239
 composer install
 npm install
+php bin/uglify.php
 
 # set ownership
 chown -R www-data:www-data Pu-239
@@ -85,6 +86,7 @@ sudo crontab -e
 ```
 # get the files
 # how you do this step will depend how you did it initially, I personally use rsync to overwrite files from git to my webpath, then remove the install folder
+cd Pu-239
 git pull
 
 # update dependancies:
@@ -92,6 +94,7 @@ composer update
 composer dump-autoload -o
 npm install
 npm update
+php bin/uglify.php
 
 # update trivia questions if desired
 mysql database < Pu-239/database/trivia.php.sql

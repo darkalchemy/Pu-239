@@ -15,7 +15,6 @@ $edit_profile = $friend_links = $shitty_link = $sharemark_link = '';
 
 $stdhead = [
     'css' => [
-        get_file_name('userdetails_css'),
     ],
 ];
 $stdfoot = [
