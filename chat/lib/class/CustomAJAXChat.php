@@ -157,4 +157,41 @@ class CustomAJAXChat extends AJAXChat
         // ChannelName => ChannelID
         return array_flip($channels);
     }
+
+    // Add custom commands
+    public function parseCustomCommands($text, $textParts)
+    {
+        global $CURUSER, $cache;
+
+        if ($this->getUserRole() >= UC_STAFF) {
+            switch ($textParts[0]) {
+                case '/takeover':
+                    $this->insertChatBotMessage($this->getChannel(), $text);
+
+                    return true;
+                case '/announce':
+                    $this->insertChatBotMessage(0, $text);
+                    $this->insertChatBotMessage(5, $text);
+                    $sql = "SELECT id FROM users WHERE enabled = 'yes'";
+                    $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                    while ($id = mysqli_fetch_assoc($res)) {
+                        $ids[] = $id;
+                    }
+                    $pms = [];
+                    foreach ($ids as $rid) {
+                        $pms[] = '(0,' . $rid['id'] . ',' . TIME_NOW . ',' . sqlesc(str_replace('/announce ', '', $text)) . ", 'Site News')";
+                    }
+                    if (count($pms) > 0) {
+                        $r = sql_query('INSERT INTO messages(sender, receiver, added, msg, subject) VALUES '.implode(',', $pms)) or sqlerr(__FILE__, __LINE__);
+                    }
+                    foreach ($ids as $rid) {
+                        $cache->increment('inbox_' . $rid['id']);
+                    }
+
+                    return true;
+                default:
+                    return false;
+            }
+        }
+    }
 }

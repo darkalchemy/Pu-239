@@ -1,3 +1,8 @@
+8 Jun 2018
+add: AJAX Chat command takeover to allow staff to speak as BOT
+add: AJAX Chat command announce to allow staff to speak as BOT and send as a PM to all users
+add: missing help info to AJAX Chat commands
+
 7 Jun 2018
 fix: missing quotes
 add: bin/set_perms.php script to set file permissions to 0664

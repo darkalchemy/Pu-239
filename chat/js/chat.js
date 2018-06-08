@@ -1344,6 +1344,12 @@ var ajaxChat = {
                 if (this.userRole >= UC_STAFF) {
                     menu += '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/bans\');">'
                         + this.lang['userMenuBans']
+                        + '</a></li>'
+                        + '<li class="disc"><a href="javascript:ajaxChat.insertMessageWrapper(\'/announce \');" title="Make an announcement that also goes out as a PM to all users.">'
+                        + 'Make Announcement'
+                        + '</a></li>'
+                        + '<li class="disc"><a href="javascript:ajaxChat.insertMessageWrapper(\'/takeover \');" title="Speak as Site BOT in the current channel.">'
+                        + 'Takeover BOT'
                         + '</a></li>';
                 }
                 if (this.userRole >= UC_ADMINISTRATOR) {
@@ -2344,6 +2350,7 @@ var ajaxChat = {
                 return text;
             }
             var textParts = text.split(' ');
+            console.log(textParts[0]);
             switch (textParts[0]) {
                 case '/privmsg':
                     return this.replaceCommandPrivMsg(textParts);
@@ -2412,8 +2419,8 @@ var ajaxChat = {
                     return this.replaceCommandRoll(textParts);
                 case '/nick':
                     return this.replaceCommandNick(textParts);
-                case '/error':
-                    return this.replaceCommandError(textParts);
+                //case '/error':
+                    //return this.replaceCommandError(textParts);
                 default:
                     return this.replaceCustomCommands(text, textParts);
             }
@@ -3234,6 +3241,7 @@ var ajaxChat = {
     // Return replaced text for custom commands
     // text contains the whole message, textParts the message split up as words array
     replaceCustomCommands: function (text, textParts) {
+        console.log('is called');
         return text;
     },
 

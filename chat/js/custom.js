@@ -14,3 +14,15 @@ ajaxChat.replaceCustomCommands = function(text, textParts) {
 	return text;
 }
  */
+
+ajaxChat.replaceCustomCommands = function(e, a) {
+    console.log('called');
+    switch (a[0]) {
+        case "/announce":
+            e = e.replace("/announce", " ");
+        case "/takeover":
+            return e = e.replace("/takeover", " "), e = this.replaceBBCode(e), e = this.replaceHyperLinks(e), e = this.replaceEmoticons(e), '<span class="chatBotMessage">' + e + "</span>";
+        default:
+            return e
+    }
+};

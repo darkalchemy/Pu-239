@@ -122,6 +122,9 @@ IMDb no key needed
 TVMaze no key needed
 
 
+### Making Changes to css/js files
+Make any edits or changes to the files in templates and scripts folder, then run php bin/uglify.php to concatenate, minify and gzip the files for use
+
 ### Cache Engines
 
 couchbase, apcu, memcached, redis or file. file is set as default set in .env
