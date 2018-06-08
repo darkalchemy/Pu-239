@@ -240,7 +240,7 @@ function format_urls($s)
 function format_comment($text, $strip_html = true, $urls = true, $images = true)
 {
     global $smilies, $staff_smilies, $customsmilies, $site_config, $CURUSER;
-    $s = htmlspecialchars($text);
+    $s = $text;
     unset($text);
     $s                  = validate_imgs($s);
     $site_config['url'] = str_replace([
@@ -531,7 +531,7 @@ function format_code($s)
                 <div class='size_6 top10 bottom10'>
                     <b>code:</b>
                 </div>
-                <pre class='round10'>", $s);
+                <pre class='round10'>", htmlspecialchars($s));
         $s = str_replace('[/code]', '
                 </pre>
             </div>', $s);
@@ -551,7 +551,6 @@ function format_code($s)
 function format_comment_no_bbcode($text, $strip_html = true)
 {
     global $site_config;
-    $s = htmlspecialchars($text);
     if ($strip_html) {
         //$s = htmlsafechars($s);
         $s = htmlsafechars($s, ENT_QUOTES, get_charset());
