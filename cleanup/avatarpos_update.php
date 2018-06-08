@@ -29,7 +29,7 @@ function avatarpos_update($data)
         }
         $count = count($users_buffer);
         if ($data['clean_log'] && $count > 0) {
-            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer))                                                                                   or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, avatarpos, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE avatarpos = VALUES(avatarpos), modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
         }
         if ($data['clean_log']) {

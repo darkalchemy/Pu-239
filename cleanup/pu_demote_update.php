@@ -26,13 +26,13 @@ function pu_demote_update($data)
         $minratio = $class_config[$ac['name']]['low_ratio'];
 
         $class_value = $class_config[$ac['name']]['name'];
-        $res1        = sql_query('SELECT * FROM class_config WHERE value = ' . sqlesc($class_value));
+        $res1        = sql_query('SELECT * FROM class_config WHERE value = ' . sqlesc($class_value)) or sqlerr(__FILE__, __LINE__);
         while ($arr1 = mysqli_fetch_assoc($res1)) {
             $class_name = $arr1['classname'];
             $prev_class = $class_value - 1;
         }
 
-        $res2 = sql_query('SELECT * FROM class_config WHERE value = ' . sqlesc($prev_class));
+        $res2 = sql_query('SELECT * FROM class_config WHERE value = ' . sqlesc($prev_class)) or sqlerr(__FILE__, __LINE__);
         while ($arr2 = mysqli_fetch_assoc($res2)) {
             $prev_class_name = $arr2['classname'];
         }
@@ -59,7 +59,7 @@ function pu_demote_update($data)
             }
             $count = count($users_buffer);
             if ($count > 0) {
-                sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer))                                                                      or sqlerr(__FILE__, __LINE__);
+                sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
                 sql_query('INSERT INTO users (id, class, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE class = VALUES(class),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
             }
             if ($data['clean_log']) {

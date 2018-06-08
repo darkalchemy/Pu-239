@@ -38,7 +38,7 @@ function leechwarn_update($data)
         }
         $count = count($users_buffer);
         if ($count > 0) {
-            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer))                                                                                                                                 or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, leechwarn, downloadpos, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE leechwarn = VALUES(leechwarn),downloadpos = VALUES(downloadpos),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
             write_log('Cleanup: System applied auto leech Warning(s) to  ' . $count . ' Member(s)');
         }
@@ -65,7 +65,7 @@ function leechwarn_update($data)
         }
         $count = count($users_buffer);
         if ($count > 0) {
-            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer))                                                                                                                                 or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, leechwarn, downloadpos, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE leechwarn = VALUES(leechwarn),downloadpos = VALUES(downloadpos),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
         }
         if ($data['clean_log']) {

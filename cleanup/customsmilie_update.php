@@ -33,7 +33,7 @@ function customsmilie_update($data)
         }
         $count = count($users_buffer);
         if ($data['clean_log'] && $count > 0) {
-            sql_query('INSERT INTO messages (sender, receiver, added, msg, subject) VALUES ' . implode(', ', $msgs_buffer))                                                                                               or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO messages (sender, receiver, added, msg, subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, username, smile_until, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE smile_until = VALUES(smile_until), modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
             write_log('Cleanup - Removed Custom smilies from ' . $count . ' members');
         }

@@ -13,7 +13,7 @@ function funds_update($data)
 
     $secs = 30 * 86400;
     $dt   = sqlesc(TIME_NOW - $secs);
-    sql_query("DELETE FROM funds WHERE added < $dt");
+    sql_query("DELETE FROM funds WHERE added < $dt") or sqlerr(__FILE__, __LINE__);
     $cache->delete('totalfunds_');
     $dt          = TIME_NOW;
     $res         = sql_query("SELECT id, modcomment, vipclass_before FROM users WHERE donor = 'yes' AND donoruntil < " . $dt . " AND donoruntil <> '0'") or sqlerr(__FILE__, __LINE__);

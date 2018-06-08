@@ -31,7 +31,7 @@ function uploadpos_update($data)
         }
         $count = count($users_buffer);
         if ($count > 0) {
-            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer))                                                                                   or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, uploadpos, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE uploadpos = VALUES(uploadpos), modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
         }
         if ($data['clean_log']) {

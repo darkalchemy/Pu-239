@@ -27,7 +27,7 @@ function torrents_update($data)
     FROM torrents AS t
     ORDER BY t.id ASC';
     $updatetorrents = [];
-    $tq             = sql_query($tsql);
+    $tq             = sql_query($tsql) or sqlerr(__FILE__, __LINE__);
     while ($t = mysqli_fetch_assoc($tq)) {
         if ($t['seeders'] != $t['seeders_num'] || $t['leechers'] != $t['leechers_num'] || $t['comments'] != $t['comments_num']) {
             $updatetorrents[] = '(' . $t['id'] . ', ' . $t['seeders_num'] . ', ' . $t['leechers_num'] . ', ' . $t['comments_num'] . ')';
@@ -35,7 +35,7 @@ function torrents_update($data)
     }
     ((mysqli_free_result($tq) || (is_object($tq) && (get_class($tq) === 'mysqli_result'))) ? true : false);
     if (!empty($updatetorrents) && count($updatetorrents)) {
-        sql_query('INSERT INTO torrents (id, seeders, leechers, comments) VALUES ' . implode(', ', $updatetorrents) . ' ON DUPLICATE KEY UPDATE seeders = VALUES(seeders), leechers = VALUES(leechers), comments = VALUES(comments)');
+        sql_query('INSERT INTO torrents (id, seeders, leechers, comments) VALUES ' . implode(', ', $updatetorrents) . ' ON DUPLICATE KEY UPDATE seeders = VALUES(seeders), leechers = VALUES(leechers), comments = VALUES(comments)') or sqlerr(__FILE__, __LINE__);
     }
     unset($updatetorrents);
     if ($data['clean_log'] && $queries > 0) {

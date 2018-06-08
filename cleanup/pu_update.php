@@ -29,13 +29,13 @@ function pu_update($data)
         $maxdt    = ($dt - 86400 * $class_config[$ac['name']]['time']);
 
         $class_value = $class_config[$ac['name']]['name'];
-        $res1        = sql_query('SELECT * FROM class_config WHERE value = ' . sqlesc($class_value));
+        $res1        = sql_query('SELECT * FROM class_config WHERE value = ' . sqlesc($class_value)) or sqlerr(__FILE__, __LINE__);
         while ($arr1 = mysqli_fetch_assoc($res1)) {
             $class_name = $arr1['classname'];
             $prev_class = $class_value - 1;
         }
 
-        $res2 = sql_query('SELECT * FROM class_config WHERE value = ' . sqlesc($prev_class));
+        $res2 = sql_query('SELECT * FROM class_config WHERE value = ' . sqlesc($prev_class)) or sqlerr(__FILE__, __LINE__);
         while ($arr2 = mysqli_fetch_assoc($res2)) {
             $prev_class_name = $arr2['classname'];
         }
@@ -62,7 +62,7 @@ function pu_update($data)
             }
             $count = count($users_buffer);
             if ($count > 0) {
-                sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer))                                                                                                                     or sqlerr(__FILE__, __LINE__);
+                sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
                 sql_query('INSERT INTO users (id, class, invites, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE class = VALUES(class), invites = invites + VALUES(invites), modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
             }
             if ($data['clean_log']) {

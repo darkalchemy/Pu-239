@@ -1,4 +1,6 @@
 8 Jun 2018
+fix: ambiguous 'status' view_forum.php
+add: missing sqlerr in many queries
 fix: missing space in query view_topic.php
 fix: missing global
 add: AJAX Chat command takeover to allow staff to speak as BOT

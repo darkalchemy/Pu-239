@@ -11,7 +11,7 @@ function delete_torrents_update($data)
 
     $days = 30;
     $dt   = (TIME_NOW - ($days * 86400));
-    $res  = sql_query("SELECT id, name, owner FROM torrents WHERE last_action < $dt AND seeders='0' AND leechers='0'");
+    $res  = sql_query("SELECT id, name, owner FROM torrents WHERE last_action < $dt AND seeders='0' AND leechers='0'") or sqlerr(__FILE__, __LINE__);
     while ($arr = mysqli_fetch_assoc($res)) {
         sql_query('DELETE peers.*, files.*, comments.*, snatched.*, thankyou.*, thanks.*, bookmarks.*, coins.*, rating.*, torrents.* FROM torrents 
                  LEFT JOIN peers ON peers.torrent = torrents.id

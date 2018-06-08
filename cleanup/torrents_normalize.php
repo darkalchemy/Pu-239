@@ -9,7 +9,7 @@ function torrents_normalize($data)
     ignore_user_abort(true);
 
     do {
-        $res = sql_query('SELECT id FROM torrents');
+        $res = sql_query('SELECT id FROM torrents') or sqlerr(__FILE__, __LINE__);
         $ar  = [];
         while ($row = mysqli_fetch_array($res, MYSQLI_NUM)) {
             $id      = $row[0];
@@ -55,9 +55,9 @@ function torrents_normalize($data)
             sql_query("DELETE torrents t, peers p, files f FROM torrents t
                   left join files f on f.torrent=t.id
                   left join peers p on p.torrent=t.id
-                  WHERE f.torrent IN ($ids) 
-                  OR p.torrent IN ($ids) 
-                  OR t.id IN ($ids)");
+                  WHERE f.torrent IN ($ids)
+                  OR p.torrent IN ($ids)
+                  OR t.id IN ($ids)") or sqlerr(__FILE__, __LINE__);
         }
     } while (0);
     if ($data['clean_log'] && $queries > 0) {
