@@ -46,6 +46,7 @@ $js_list = [
     'chat_js' => [
         ROOT_DIR . 'chat/js/chat.js',
         ROOT_DIR . 'chat/js/custom.js',
+        ROOT_DIR . 'chat/js/classes.js',
         ROOT_DIR . 'chat/js/lang/en.js',
         ROOT_DIR . 'chat/js/config.js',
         ROOT_DIR . 'chat/js/FABridge.js',
@@ -55,6 +56,7 @@ $js_list = [
         ROOT_DIR . 'chat/js/chat.js',
         ROOT_DIR . 'chat/js/logs.js',
         ROOT_DIR . 'chat/js/custom.js',
+        ROOT_DIR . 'chat/js/classes.js',
         ROOT_DIR . 'chat/js/lang/en.js',
         ROOT_DIR . 'chat/js/config.js',
         ROOT_DIR . 'chat/js/FABridge.js',

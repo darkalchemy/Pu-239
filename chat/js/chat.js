@@ -1837,26 +1837,7 @@ var ajaxChat = {
     },
 
     getRoleClass: function (roleID) {
-        switch (parseInt(roleID)) {
-            case parseInt(UC_USER):
-                return 'user';
-            case parseInt(UC_POWER_USER):
-                return 'power_user';
-            case parseInt(UC_VIP):
-                return 'vip';
-            case parseInt(UC_UPLOADER):
-                return 'uploader';
-            case parseInt(UC_MODERATOR):
-                return 'moderator';
-            case parseInt(UC_ADMINISTRATOR):
-                return 'administrator';
-            case parseInt(UC_SYSOP):
-                return 'sysop';
-            case parseInt(this.chatBotRole):
-                return 'chatbot';
-            default:
-                return 'user';
-        }
+        return roleID;
     },
 
     handleInputFieldKeyDown: function (event) {
@@ -2350,7 +2331,6 @@ var ajaxChat = {
                 return text;
             }
             var textParts = text.split(' ');
-            console.log(textParts[0]);
             switch (textParts[0]) {
                 case '/privmsg':
                     return this.replaceCommandPrivMsg(textParts);
@@ -3241,7 +3221,6 @@ var ajaxChat = {
     // Return replaced text for custom commands
     // text contains the whole message, textParts the message split up as words array
     replaceCustomCommands: function (text, textParts) {
-        console.log('is called');
         return text;
     },
 

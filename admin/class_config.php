@@ -78,6 +78,27 @@ function write_css($data)
     file_put_contents(ROOT_DIR . 'templates/1/css/classcolors.css', $classdata . PHP_EOL);
 }
 
+function write_classes($data) {
+    $text = "
+
+ajaxChat.getRoleClass = function(roleID) {
+    switch (parseInt(roleID)) {";
+    foreach($data as $class) {
+        $text .= "
+        case parseInt($class):
+            return '" . strtolower(str_replace('UC_', '', $class)) . "';";
+    }
+    $text .= "
+        case parseInt(ajaxChat.chatBotRole):
+            return 'chatbot';
+        default:
+            return 'user';
+    }
+};";
+
+    file_put_contents(ROOT_DIR . 'chat/js/classes.js', $text, FILE_APPEND);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [];
     $cache->delete('is_staffs_');
@@ -100,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         write_css($data);
-        if (sql_query('INSERT INTO class_config(name,value,classname,classcolor,classpic) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value),classname = VALUES(classname),classcolor = VALUES(classcolor),classpic = VALUES(classpic)')) { // need to change strut
+        if (sql_query('INSERT INTO class_config(name, value, classname, classcolor, classpic) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value), classname = VALUES(classname), classcolor = VALUES(classcolor), classpic = VALUES(classpic)')) { // need to change strut
             $t          = 'define(';
             $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
             $res        = sql_query('SELECT * FROM class_config ORDER BY value  ASC');
@@ -109,13 +130,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $configfile .= '' . $t . "'{$arr['name']}', {$arr['value']});\n";
             }
             unset($arr);
-            $res       = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
+            $res       = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX') ORDER BY value  ASC");
             $the_names = $the_colors = $the_images = '';
             while ($arr = mysqli_fetch_assoc($res)) {
-                $the_names  .= "{$arr['name']} => '{$arr['classname']}',";
-                $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
-                $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/{$arr[classpic]}',";
+                if ($arr['name'] !== 'UC_STAFF') {
+                    $the_names  .= "{$arr['name']} => '{$arr['classname']}',";
+                    $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
+                    $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/{$arr['classpic']}',";
+                    $js_classes[] = $arr['name'];
+                }
+                $classes[] = "var {$arr['name']} = {$arr['value']};";
             }
+            file_put_contents(ROOT_DIR . 'chat/js/classes.js', implode("\n", $classes));
+            write_classes($js_classes);
             $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
             file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
             $session->set('is-success', $lang['classcfg_success_save']);
@@ -124,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         unset($_POST);
     }
-    //ADD CLASS
+
     if ($mode === 'add') {
         if (!empty($_POST['name']) && !empty($_POST['value']) && !empty($_POST['cname']) && !empty($_POST['color'])) {
             $name   = isset($_POST['name']) ? htmlsafechars($_POST['name']) : stderr($lang['classcfg_error'], $lang['classcfg_error_class_name']);
@@ -184,7 +211,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
             }
-            if (sql_query('INSERT INTO class_config (name, value,classname,classcolor,classpic) VALUES (' . sqlesc($name) . ',' . sqlesc($value) . ',' . sqlesc($r_name) . ',' . sqlesc($color) . ',' . sqlesc($pic) . ')')) {
+            if (sql_query('INSERT INTO class_config (name, value, classname, classcolor, classpic) VALUES (' . sqlesc($name) . ',' . sqlesc($value) . ',' . sqlesc($r_name) . ',' . sqlesc($color) . ',' . sqlesc($pic) . ')')) {
                 $t          = 'define(';
                 $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
                 $res        = sql_query('SELECT * FROM class_config ORDER BY value  ASC');
@@ -193,15 +220,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $configfile .= '' . $t . "'{$arr['name']}', {$arr['value']});\n";
                 }
                 unset($arr);
-                $res       = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
+                $res       = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX') ORDER BY value  ASC");
                 $the_names = $the_colors = $the_images = '';
                 while ($arr = mysqli_fetch_assoc($res)) {
-                    $the_names  .= "{$arr['name']} => '{$arr['classname']}',";
-                    $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
-                    $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/{$arr[classpic]}',";
-                    $data[]     = ['className' => $arr['classname'], 'classColor' => '#' . strtolower($arr['classcolor'])];
+                    if ($arr['name'] !== 'UC_STAFF') {
+                        $the_names  .= "{$arr['name']} => '{$arr['classname']}',";
+                        $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
+                        $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/{$arr['classpic']}',";
+                        $js_classes[] = $arr['name'];
+                        $data[]     = ['className' => $arr['classname'], 'classColor' => '#' . strtolower($arr['classcolor'])];
+                    }
+                    $classes[] = "var {$arr['name']} = {$arr['value']};";
                 }
                 write_css($data);
+                file_put_contents(ROOT_DIR . 'chat/js/classes.js', implode("\n", $classes));
+                write_classes($js_classes);
                 $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
                 file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
                 $session->set('is-success', $lang['classcfg_success_save']);
@@ -211,21 +244,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             unset($_POST);
         }
     }
-    // remove
+
     if ($mode === 'remove') {
         $name = isset($_POST['remove']) ? htmlsafechars($_POST['remove']) : stderr($lang['classcfg_error'], $lang['classcfg_error_required']);
         $res  = sql_query("SELECT value from class_config WHERE name = '$name' ");
         while ($arr = mysqli_fetch_array($res)) {
             $value = $arr['value'];
         }
-        //FIND UC_MAX;
         $res = sql_query("SELECT * FROM class_config WHERE name IN ('UC_MAX') ");
         while ($arr = mysqli_fetch_array($res)) {
             $old_max = $arr['value'];
             $new_max = $arr['value'] - 1;
             sql_query("UPDATE class_config SET value = '$new_max' WHERE name = 'UC_MAX'");
         }
-        //FIND AND UPDATE UC_STAFF
         $res = sql_query("SELECT * FROM class_config WHERE name = 'UC_STAFF'");
         while ($arr = mysqli_fetch_array($res)) {
             if ($value <= $arr['value']) {
@@ -233,13 +264,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 sql_query("UPDATE class_config SET value = '$new_staff' WHERE name = 'UC_STAFF'");
             }
         }
-        //UPDATE ALL CLASSES TO ONE LOWER, BUT NOT SECURITY SHITZ
         $i = $value;
         while ($i <= $old_max) {
             sql_query("UPDATE class_config SET value = value -1 where value = $i AND name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')");
             ++$i;
         }
-        //UPDATE ALL USERS TO ONE LOWER IN REVERSE ORDER
         $i = $value;
         while ($i <= $old_max) {
             sql_query("UPDATE users SET class = class -1 where class = $i");
@@ -265,15 +294,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $configfile .= '' . $t . "'{$arr['name']}', {$arr['value']});\n";
             }
             unset($arr);
-            $res       = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
+            $res       = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX') ORDER BY value  ASC");
             $the_names = $the_colors = $the_images = '';
             while ($arr = mysqli_fetch_assoc($res)) {
-                $the_names  .= "{$arr['name']} => '{$arr['classname']}',";
-                $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
-                $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/{$arr[classpic]}',";
-                $data[]     = ['className' => $arr['classname'], 'classColor' => '#' . strtolower($arr['classcolor'])];
+                if ($arr['name'] !== 'UC_STAFF') {
+                    $the_names  .= "{$arr['name']} => '{$arr['classname']}',";
+                    $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
+                    $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/{$arr['classpic']}',";
+                    $js_classes[] = $arr['name'];
+                    $data[]     = ['className' => $arr['classname'], 'classColor' => '#' . strtolower($arr['classcolor'])];
+                }
+                $classes[] = "var {$arr['name']} = {$arr['value']};";
             }
             write_css($data);
+            file_put_contents(ROOT_DIR . 'chat/js/classes.js', implode("\n", $classes));
+            write_classes($js_classes);
             $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
             file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
             $session->set('is-success', $lang['classcfg_success_reset']);

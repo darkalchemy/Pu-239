@@ -16,7 +16,6 @@ ajaxChat.replaceCustomCommands = function(text, textParts) {
  */
 
 ajaxChat.replaceCustomCommands = function(e, a) {
-    console.log('called');
     switch (a[0]) {
         case "/announce":
             e = e.replace("/announce", " ");
