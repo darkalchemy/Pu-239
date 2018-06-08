@@ -1,5 +1,6 @@
 8 Jun 2018
-update: missing global
+fix: missing space in query view_topic.php
+fix: missing global
 add: AJAX Chat command takeover to allow staff to speak as BOT
 add: AJAX Chat command announce to allow staff to speak as BOT and send as a PM to all users
 add: missing help info to AJAX Chat commands

@@ -12,7 +12,7 @@ $upload_errors_size = isset($_GET['se']) ? intval($_GET['se']) : 0;
 $upload_errors_type = isset($_GET['ee']) ? intval($_GET['ee']) : 0;
 
 $_forum_sort = isset($CURUSER['forum_sort']) ? $CURUSER['forum_sort'] : 'DESC';
-$where       = $CURUSER['class'] < UC_STAFF ? 'topics.status = "ok" AND ' : $CURUSER['class'] < $min_delete_view_class ? 'topics.status != "deleted" AND' : '';
+$where       = $CURUSER['class'] < UC_STAFF ? 'topics.status = "ok" AND ' : $CURUSER['class'] < $min_delete_view_class ? 'topics.status != "deleted" AND ' : '';
 $arr         = $fluent->from('topics')
     ->select(null)
     ->select('topics.id AS topic_id')
