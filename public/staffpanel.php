@@ -77,7 +77,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         } else {
             stderr($lang['spanel_error'], $lang['spanel_db_error_msg']);
         }
-    } elseif (($action === 'flush' && $CURUSER['class'] == UC_MAX)) {
+    } elseif (($action === 'flush' && $CURUSER['class'] >= UC_SYSOP)) {
         if (extension_loaded('apcu') && $_ENV['CACHE_DRIVER'] === 'apcu') {
             apcu_clear_cache();
             $session->set('is-success', 'You flushed the APC(u) cache');
@@ -94,7 +94,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             }
             $client->flush();
             $session->set('is-success', 'You flushed the Memcached cache');
-        } elseif ($_ENV['CACHE_DRIVER'] === 'files') {
+        } elseif ($_ENV['CACHE_DRIVER'] === 'file') {
             rrmdir($_ENV['FILES_PATH']);
             $session->set('is-success', 'You flushed the Flysystem cache: ' . $_ENV['FILES_PATH']);
         } elseif ($_ENV['CACHE_DRIVER'] === 'couchbase') {
@@ -301,7 +301,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         echo stdhead($lang['spanel_header'] . ' :: ' . ($action == 'edit' ? '' . $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' page') . $HTMLOUT . stdfoot();
     } else {
         $add_button = '';
-        if ($CURUSER['class'] == UC_MAX) {
+        if ($CURUSER['class'] >= UC_SYSOP) {
             $add_button = "
                 <div class='level-center bottom20'>
                     <a href='{$site_config['baseurl']}/staffpanel.php?action=add' class='tooltipper button is-small' title='{$lang['spanel_add_a_new_pg']}'>{$lang['spanel_add_a_new_pg']}</a>
