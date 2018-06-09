@@ -1,5 +1,8 @@
 <?php
 
+if (!file_exists(dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'class_config.php')) {
+    copy(dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'class_config.php.example', dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'class_config.php');
+}
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 global $site_config;
 
@@ -35,8 +38,12 @@ foreach ($dirs as $dir) {
 
 copy(ROOT_DIR . 'node_modules/lightbox2/dist/css/lightbox.css', BIN_DIR . 'lightbox.css');
 passthru("sed -i 's#..\/images\/#../../images/#g' " . BIN_DIR . "'lightbox.css'");
-if (!file_exists(ROOT_DIR . 'chat/js/classes.js')) {
-    copy(ROOT_DIR . 'chat/js/classes.js.example', ROOT_DIR . 'chat/js/classes.js');
+if (!file_exists(CHAT_DIR . 'js/classes.js')) {
+    copy(CHAT_DIR . 'js/classes.js.example', CHAT_DIR . 'js/classes.js');
+}
+if (!file_exists(TEMPLATE_DIR . '1/css/classcolors.css')) {
+    copy(TEMPLATE_DIR . '1/css/classcolors.css.example', TEMPLATE_DIR . '1/css/classcolors.css');
+    copy(TEMPLATE_DIR . '1/css/classcolors.css.example', CHAT_DIR . 'css/classcolors.css');
 }
 $js_list = [
     'checkport_js' => [
@@ -46,22 +53,22 @@ $js_list = [
         SCRIPTS_DIR . 'autocomplete.js'
     ],
     'chat_js' => [
-        ROOT_DIR . 'chat/js/chat.js',
-        ROOT_DIR . 'chat/js/custom.js',
-        ROOT_DIR . 'chat/js/classes.js',
-        ROOT_DIR . 'chat/js/lang/en.js',
-        ROOT_DIR . 'chat/js/config.js',
-        ROOT_DIR . 'chat/js/FABridge.js',
+        CHAT_DIR . 'js/chat.js',
+        CHAT_DIR . 'js/custom.js',
+        CHAT_DIR . 'js/classes.js',
+        CHAT_DIR . 'js/lang/en.js',
+        CHAT_DIR . 'js/config.js',
+        CHAT_DIR . 'js/FABridge.js',
         SCRIPTS_DIR . 'ajaxchat.js',
     ],
     'chat_log_js' => [
-        ROOT_DIR . 'chat/js/chat.js',
-        ROOT_DIR . 'chat/js/logs.js',
-        ROOT_DIR . 'chat/js/custom.js',
-        ROOT_DIR . 'chat/js/classes.js',
-        ROOT_DIR . 'chat/js/lang/en.js',
-        ROOT_DIR . 'chat/js/config.js',
-        ROOT_DIR . 'chat/js/FABridge.js',
+        CHAT_DIR . 'js/chat.js',
+        CHAT_DIR . 'js/logs.js',
+        CHAT_DIR . 'js/custom.js',
+        CHAT_DIR . 'js/classes.js',
+        CHAT_DIR . 'js/lang/en.js',
+        CHAT_DIR . 'js/config.js',
+        CHAT_DIR . 'js/FABridge.js',
     ],
     'index_js' => [
         ROOT_DIR . 'node_modules/raphael/raphael.js',
@@ -101,8 +108,8 @@ $js_list = [
     ],
     'js' => [
         ROOT_DIR . 'node_modules/jquery/dist/jquery.js',
-        ROOT_DIR . 'templates/themeChanger/js/colorpicker.js',
-        ROOT_DIR . 'templates/themeChanger/js/themeChanger.js',
+        TEMPLATE_DIR . 'themeChanger/js/colorpicker.js',
+        TEMPLATE_DIR . 'themeChanger/js/themeChanger.js',
         SCRIPTS_DIR . 'popup.js',
         SCRIPTS_DIR . 'markitup/jquery.markitup.js',
         SCRIPTS_DIR . 'markitup/sets/default/set.js',
@@ -117,41 +124,41 @@ $js_list = [
 
 $css_list = [
     'css' => [
-        ROOT_DIR . 'templates/1/css/reset.css',
+        TEMPLATE_DIR . '1/css/reset.css',
         ROOT_DIR . 'node_modules/normalize.css/normalize.css',
         ROOT_DIR . 'node_modules/bulma/css/bulma.css',
-        ROOT_DIR . 'templates/1/css/fonts.css',
-        ROOT_DIR . 'templates/1/css/fontello.css',
-        ROOT_DIR . 'templates/1/default.css',
-        ROOT_DIR . 'templates/1/css/navbar.css',
-        ROOT_DIR . 'templates/1/css/tables.css',
-        ROOT_DIR . 'templates/1/css/cards.css',
-        ROOT_DIR . 'templates/1/css/tooltipster.bundle.css',
-        ROOT_DIR . 'templates/1/css/tooltipster-sideTip-borderless.css',
-        ROOT_DIR . 'templates/themeChanger/css/themeChanger.css',
-        ROOT_DIR . 'templates/themeChanger/css/colorpicker.css',
-        ROOT_DIR . 'templates/1/css/classcolors.css',
-        ROOT_DIR . 'templates/1/css/skins.css',
-        ROOT_DIR . 'templates/1/css/iCarousel.css',
-        ROOT_DIR . 'templates/1/css/markitup.css',
+        TEMPLATE_DIR . '1/css/fonts.css',
+        TEMPLATE_DIR . '1/css/fontello.css',
+        TEMPLATE_DIR . '1/default.css',
+        TEMPLATE_DIR . '1/css/navbar.css',
+        TEMPLATE_DIR . '1/css/tables.css',
+        TEMPLATE_DIR . '1/css/cards.css',
+        TEMPLATE_DIR . '1/css/tooltipster.bundle.css',
+        TEMPLATE_DIR . '1/css/tooltipster-sideTip-borderless.css',
+        TEMPLATE_DIR . 'themeChanger/css/themeChanger.css',
+        TEMPLATE_DIR . 'themeChanger/css/colorpicker.css',
+        TEMPLATE_DIR . '1/css/classcolors.css',
+        TEMPLATE_DIR . '1/css/skins.css',
+        TEMPLATE_DIR . '1/css/iCarousel.css',
+        TEMPLATE_DIR . '1/css/markitup.css',
         BIN_DIR . 'lightbox.css',
-        ROOT_DIR . 'templates/1/custom.css',
+        TEMPLATE_DIR . '1/custom.css',
     ],
     'chat_css_trans' => [
-        ROOT_DIR . 'chat/css/global.css',
-        ROOT_DIR . 'chat/css/fonts.css',
-        ROOT_DIR . 'chat/css/print.css',
-        ROOT_DIR . 'chat/css/custom.css',
-        ROOT_DIR . 'chat/css/classcolors.css',
-        ROOT_DIR . 'chat/css/transparent.css',
+        CHAT_DIR . 'css/global.css',
+        CHAT_DIR . 'css/fonts.css',
+        CHAT_DIR . 'css/print.css',
+        CHAT_DIR . 'css/custom.css',
+        CHAT_DIR . 'css/classcolors.css',
+        CHAT_DIR . 'css/transparent.css',
     ],
     'chat_css_uranium' => [
-        ROOT_DIR . 'chat/css/global.css',
-        ROOT_DIR . 'chat/css/fonts.css',
-        ROOT_DIR . 'chat/css/print.css',
-        ROOT_DIR . 'chat/css/custom.css',
-        ROOT_DIR . 'chat/css/classcolors.css',
-        ROOT_DIR . 'chat/css/Uranium.css',
+        CHAT_DIR . 'css/global.css',
+        CHAT_DIR . 'css/fonts.css',
+        CHAT_DIR . 'css/print.css',
+        CHAT_DIR . 'css/custom.css',
+        CHAT_DIR . 'css/classcolors.css',
+        CHAT_DIR . 'css/Uranium.css',
     ],
 ];
 

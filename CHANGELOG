@@ -1,4 +1,6 @@
 9 Jun 2018
+fix: query using incorrect id
+fix: classcolors.css overwrite on git pull
 fix: classes.js overwrite on git pull
 fix: missing ip class_check.php in query
 fix: typos

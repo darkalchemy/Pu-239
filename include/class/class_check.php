@@ -63,7 +63,7 @@ function class_check($class = 0, $staff = true, $pin = false)
                 $icon    = 'topic_normal';
                 $sip     = ipToStorageFormat($ip, true);
                 if (user_exists($site_config['chatBotID'])) {
-                    sql_query('INSERT INTO posts (topic_id, user_id, added, body, icon, ip) ' . "VALUES ($topicid , " . $site_config['chatBotID'] . ", $added, $body, " . sqlesc($icon) . ', $sip)') or sqlerr(__FILE__, __LINE__);
+                    sql_query('INSERT INTO posts (topic_id, user_id, added, body, icon, ip) ' . "VALUES ($topicid , {$site_config['chatBotID']}, {$added}, {$body}, " . sqlesc($icon) . ", {$sip})") or sqlerr(__FILE__, __LINE__);
                     /** get mysql_insert_id(); **/
                     $res = sql_query("SELECT id FROM posts WHERE topic_id = $topicid
                                         ORDER BY id DESC LIMIT 1")       or sqlerr(__FILE__, __LINE__);
