@@ -35,7 +35,9 @@ foreach ($dirs as $dir) {
 
 copy(ROOT_DIR . 'node_modules/lightbox2/dist/css/lightbox.css', BIN_DIR . 'lightbox.css');
 passthru("sed -i 's#..\/images\/#../../images/#g' " . BIN_DIR . "'lightbox.css'");
-
+if (!file_exists(ROOT_DIR . 'chat/js/classes.js',)) {
+    copy(ROOT_DIR . 'chat/js/classes.js.example',, ROOT_DIR . 'chat/js/classes.js',)
+}
 $js_list = [
     'checkport_js' => [
         SCRIPTS_DIR . 'checkports.js',
