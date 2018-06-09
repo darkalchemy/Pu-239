@@ -24,14 +24,14 @@ if (isset($_POST['ids'])) {
     }
     $do = isset($_POST['do']) ? htmlsafechars(trim($_POST['do'])) : '';
     if ($do == 'enabled') {
-        sql_query("UPDATE users SET enabled = 'yes' WHERE ID IN(" . join(', ', array_map('sqlesc', $ids)) . ") AND enabled = 'no'") or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE users SET enabled = 'yes' WHERE ID IN (" . join(', ', array_map('sqlesc', $ids)) . ") AND enabled = 'no'") or sqlerr(__FILE__, __LINE__);
     }
     $cache->update_row('user' . $id, [
         'enabled' => 'yes',
     ], $site_config['expires']['user_cache']);
     //else
     if ($do == 'confirm') {
-        sql_query("UPDATE users SET status = 'confirmed' WHERE ID IN(" . join(', ', array_map('sqlesc', $ids)) . ") AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE users SET status = 'confirmed' WHERE ID IN (" . join(', ', array_map('sqlesc', $ids)) . ") AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
     }
     $cache->update_row('user' . $id, [
         'status' => 'confirmed',
@@ -42,7 +42,7 @@ if (isset($_POST['ids'])) {
         if (mysqli_num_rows($res_del) != 0) {
             while ($arr_del = mysqli_fetch_assoc($res_del)) {
                 $userid = $arr_del['id'];
-                $res    = sql_query('DELETE FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                $res    = sql_query('DELETE FROM users WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $cache->delete('user' . $userid);
                 write_log("User: {$arr_del['username']} Was deleted by " . $CURUSER['username']);
             }
@@ -54,12 +54,12 @@ if (isset($_POST['ids'])) {
         exit;
     }
 }
-$disabled = number_format($get_row_count('users', "WHERE enabled='no'"));
-$pending  = number_format(get_row_count('users', "WHERE status='pending'"));
-$count    = number_format(get_row_count('users', "WHERE enabled='no' OR status='pending' ORDER BY username DESC"));
+$disabled = number_format(get_row_count('users', "WHERE enabled = 'no'"));
+$pending  = number_format(get_row_count('users', "WHERE status = 'pending'"));
+$count    = number_format(get_row_count('users', "WHERE enabled = 'no' OR status = 'pending' ORDER BY username DESC"));
 $perpage  = 25;
 $pager    = pager($perpage, $count, 'staffpanel.php?tool=acpmanage&amp;action=acpmanage&amp;');
-$res      = sql_query("SELECT id, username, added, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE enabled='no' OR status='pending' ORDER BY username DESC {$pager['limit']}");
+$res      = sql_query("SELECT id, username, added, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE enabled = 'no' OR status = 'pending' ORDER BY username DESC {$pager['limit']}");
 $HTMLOUT .= begin_main_frame($lang['text_du'] . " [$disabled] | " . $lang['text_pu'] . "[$pending]");
 if (mysqli_num_rows($res) != 0) {
     if ($count > $perpage) {
