@@ -1,4 +1,6 @@
 9 Jun 2018
+update: ssluse for everything, always if using https
+fix: announce.php
 replace: deprecated function each()
 fix: incorrect lang var
 add: missing sqlerr in many forum queries

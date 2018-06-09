@@ -338,7 +338,7 @@ function userlogin()
     $users_data['last_status'] = $ustatus['last_status'];
     $users_data['last_update'] = $ustatus['last_update'];
     $users_data['archive']     = $ustatus['archive'];
-    if ($users_data['ssluse'] > 1 && !isset($_SERVER['HTTPS']) && !defined('NO_FORCE_SSL')) {
+    if ($users_data['ssluse'] >= 1 && !isset($_SERVER['HTTPS']) && !defined('NO_FORCE_SSL')) {
         $site_config['baseurl'] = str_replace('http', 'https', $site_config['baseurl']);
         header('Location: ' . $site_config['baseurl'] . $_SERVER['REQUEST_URI']);
         die();

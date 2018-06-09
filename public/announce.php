@@ -84,7 +84,6 @@ $user['perms'] = (int) $user['perms'];
 if ($user['enabled'] === 'no') {
     err("Permission denied, you're account is disabled");
 }
-
 $connectable = 'yes';
 $conn_ttl    = 900;
 if (portblacklisted($port)) {
@@ -145,7 +144,7 @@ $torrentid             = (int) $torrent['id'];
 $torrent_modifier      = get_slots($torrentid, $userid);
 $torrent['freeslot']   = $torrent_modifier['freeslot'];
 $torrent['doubleslot'] = $torrent_modifier['doubleslot'];
-$happy_multiplier      = ($site_config['happy_hour'] ? get_happy($torrentid, $userid) : 0);
+$happy_multiplier      = $site_config['happy_hour'] ? get_happy($torrentid, $userid) : 0;
 
 $wantseeds = '';
 if ($seeder === 'yes') {
@@ -205,7 +204,6 @@ foreach ($res as $row) {
         ++$peer_num;
     }
 }
-
 if ($compact != 1) {
     $resp .= 'ee';
 } else {
@@ -240,7 +238,6 @@ if (!isset($self)) {
         $self   = $row;
     }
 }
-
 $useragent  = substr($peer_id, 0, 8);
 $agentarray = [
     'R34',
@@ -380,7 +377,6 @@ if (!isset($self)) {
         }
     }
 }
-
 $a = $fluent->from('snatched')
     ->select(null)
     ->select('seedtime')
@@ -502,7 +498,7 @@ if (isset($self) && $event === 'stopped') {
             $snatch_updateset['downloaded']  = new Envms\FluentPDO\Literal($site_config['ratio_free'] ? 'downloaded + 0' : "downloaded + $downthis");
             $snatch_updateset['to_go']       = $left;
             $snatch_updateset['upspeed']     = $upthis   > 0 ? "$upthis / {$self['announcetime']}" : 0;
-            $snatch_updateset['do=wnspeed']   = $downthis > 0 ? "$downthis / {$self['announcetime']}" : 0;
+            $snatch_updateset['downspeed']   = $downthis > 0 ? "$downthis / {$self['announcetime']}" : 0;
             if ($self['seeder'] == 'yes') {
                 $snatch_updateset['seedtime'] = new Envms\FluentPDO\Literal("seedtime + {$self['announcetime']}");
             } else {
@@ -675,8 +671,6 @@ if (!empty($snatch_updateset)) {
         ->execute();
 }
 if (!empty($user_updateset)) {
-    print_r($user_updateset);
-    die();
     $fluent->update('users')
         ->set($user_updateset)
         ->where('id = ?', $userid)
@@ -684,4 +678,5 @@ if (!empty($user_updateset)) {
 
     $cache->delete('user' . $userid);
 }
+
 benc_resp_raw($resp);

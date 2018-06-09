@@ -68,26 +68,16 @@ $HTMLOUT .= "
                 <table class='table table-bordered'>
                     <tr class='no_hover'>
                         <td class='rowhead'>{$lang['login_username']}</td>
-                        <td><input type='text' class='w-100' name='username' /></td>
+                        <td>
+                            <input type='text' class='w-100' name='username' />" . ($got_ssl ? "
+                            <input type='hidden' name='use_ssl' value='" . ($got_ssl ? 1 : 0) . "' id='ssl' />" : '') . "
+                        </td>
                     </tr>
                     <tr class='no_hover'>
                         <td class='rowhead'>{$lang['login_password']}</td>
                         <td><input type='password' class='w-100' name='password' /></td>
                     </tr>";
-if ($got_ssl) {
-    $HTMLOUT .= "
-                    <tr class='no_hover'>
-                        <td class='rowhead'>{$lang['login_use_ssl']}</td>
-                        <td>
-                            <label class='label label-inverse' for='ssl'>{$lang['login_ssl1']}
-                                <input type='checkbox' name='use_ssl' " . ($got_ssl ? 'checked' : "disabled title='SSL connection not available'") . " value='1' id='ssl'/>
-                            </label><br>
-                            <label class='label label-inverse' for='ssl2'>{$lang['login_ssl2']}
-                                <input type='checkbox' name='perm_ssl' " . ($got_ssl ? '' : "disabled title='SSL connection not available'") . " value='1' id='ssl2'/>
-                            </label>
-                        </td>
-                    </tr>";
-}
+
 if (!empty($_ENV['RECAPTCHA_SITE_KEY'])) {
     $HTMLOUT .= "
                     <tr>

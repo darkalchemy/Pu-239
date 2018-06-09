@@ -186,16 +186,12 @@ if (!$no_log_ip) {
         $cache->delete('ip_history_' . $userid);
     }
 }
-if (isset($use_ssl) && $use_ssl == 1 && !isset($_SERVER['HTTPS'])) {
-    $site_config['baseurl'] = str_replace('http', 'https', $site_config['baseurl']);
-}
 
-$ssl_value = (isset($perm_ssl) && $perm_ssl == 1 ? 'ssluse = 2' : 'ssluse = 1');
-$ssluse    = $row['ssluse'] == 2 ? 2 : 1;
+$ssluse    = isset($use_ssl) && $use_ssl == 1 ? 1 : 0;
 $ua        = getBrowser();
 $browser   = 'Browser: ' . $ua['name'] . ' ' . $ua['version'] . '. Os: ' . $ua['platform'] . '. Agent : ' . $ua['userAgent'];
 
-sql_query('UPDATE users SET browser = ' . sqlesc($browser) . ", $ssl_value, ip = $ip_escaped, last_access = " . TIME_NOW . ', last_login = ' . TIME_NOW . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+sql_query('UPDATE users SET browser = ' . sqlesc($browser) . ", ssluse = " . sqlesc($ssluse) . ", ip = $ip_escaped, last_access = " . TIME_NOW . ', last_login = ' . TIME_NOW . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 $cache->update_row('user' . $userid, [
     'browser'     => $browser,
     'ip'          => $ip,

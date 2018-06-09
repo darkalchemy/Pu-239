@@ -21,7 +21,7 @@ if (!empty($T_Pass)) {
     check_user_status();
 }
 $id     = isset($_GET['torrent']) ? (int) $_GET['torrent'] : 0;
-$ssluse = isset($_GET['ssl']) && $_GET['ssl'] == 1 || $CURUSER['ssluse'] == 3 ? 1 : 0;
+$ssluse = isset($_GET['ssl']) && $_GET['ssl'] >= 1 || $CURUSER['ssluse'] >= 1 ? 1 : 0;
 $zipuse = isset($_GET['zip']) && $_GET['zip'] == 1 ? true : false;
 $text = isset($_GET['text']) && $_GET['text'] == 1 ? true : false;
 if (!is_valid_id($id)) {
@@ -57,7 +57,8 @@ if ($site_config['seedbonus_on'] == 1 && $row['owner'] != $CURUSER['id']) {
     ], $site_config['expires']['user_cache']);
 }
 sql_query('UPDATE torrents SET hits = hits + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$update['hits'] = ($torrents['hits'] + 1);
+$torrents = $cache->get('torrent_details_' . $id);
+$update['hits'] = $torrents['hits'] + 1;
 $cache->update_row('torrent_details_' . $id, [
     'hits' => $update['hits'],
 ], $site_config['expires']['torrent_details']);
