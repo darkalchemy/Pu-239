@@ -2492,7 +2492,7 @@ CREATE TABLE `users` (
   `pirate` int(11) unsigned NOT NULL DEFAULT '0',
   `king` int(11) unsigned NOT NULL DEFAULT '0',
   `hidecur` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `ssluse` int(1) NOT NULL DEFAULT '1',
+  `ssluse` int(1) NOT NULL DEFAULT '0',
   `signature_post` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `forum_post` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `avatar_rights` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',

@@ -493,4 +493,10 @@ $sql_updates = [
         'date'  => '4 Mar, 2018',
         'query' => 'ALTER TABLE `snatched` ADD INDEX `torrentid`(`torrentid`)',
     ],
+    [
+        'id'    => 81,
+        'info'  => 'Fix default ssl.',
+        'date'  => '9 Jun, 2018',
+        'query' => 'ALTER TABLE `users` MODIFY `ssluse` int(1) NOT NULL DEFAULT 0',
+    ],
 ];
