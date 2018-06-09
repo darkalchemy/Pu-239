@@ -166,7 +166,7 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
 }
 
 if (in_array($torrents['category'], $site_config['movie_cats'])) {
-    preg_match('/^http\:\/\/(.*?)imdb\.com\/title\/tt([\d]{7})/i', $torrents['url'], $imdb_tmp);
+    preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/tt([\d]{7})/i', $torrents['url'], $imdb_tmp);
     if (!empty($imdb_tmp[2])) {
         $imdb_id = $imdb_tmp[2];
 
