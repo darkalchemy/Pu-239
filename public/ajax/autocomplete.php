@@ -14,7 +14,6 @@ if (!isset($_POST['keyword']) || strlen($_POST['keyword']) < 5) {
 }
 $keyword = $_POST['keyword'];
 $hash    = hash('sha256', $keyword);
-$hashes  = [];
 
 $results = $cache->get('suggest_torrents_' . $hash);
 if ($results === false || is_null($results)) {
@@ -30,6 +29,9 @@ if ($results === false || is_null($results)) {
         ->fetchAll();
     $cache->set('suggest_torrents_' . $hash, $results, 0);
     $hashes = $cache->get('suggest_torrents_hashes_');
+    if (empty($hashes)) {
+        $hashes = [];
+    }
     if (!in_array($hash, $hashes)) {
         $hashes[] = $hash;
         $cache->set('suggest_torrents_hashes_', $hashes, 0);

@@ -104,7 +104,7 @@ $HTMLOUT .= tr('Subtitiles', $subs_list, 1);
 
 $rg = "<select name='release_group'>\n<option value='scene'" . ($row['release_group'] === 'scene' ? ' selected' : '') . ">Scene</option>\n<option value='p2p'" . ($row['release_group'] === 'p2p' ? ' selected' : '') . ">p2p</option>\n<option value='none'" . ($row['release_group'] === 'none' ? ' selected' : '') . ">None</option> \n</select>\n";
 $HTMLOUT .= tr('Release Group', $rg, 1);
-$HTMLOUT .= tr($lang['edit_visible'], "<input type='checkbox' name='visible'" . ((row['visible']) === 'yes' ? ' checked' : '') . " value='1' /> {$lang['edit_visible_mainpage']}<br><table class='table table-bordered table-striped'><tr><td class='embedded'>{$lang['edit_visible_info']}</td></tr></table>", 1);
+$HTMLOUT .= tr($lang['edit_visible'], "<input type='checkbox' name='visible'" . (($row['visible']) === 'yes' ? ' checked' : '') . " value='1' /> {$lang['edit_visible_mainpage']}<br><table class='table table-bordered table-striped'><tr><td class='embedded'>{$lang['edit_visible_info']}</td></tr></table>", 1);
 if ($CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= tr($lang['edit_banned'], "<input type='checkbox' name='banned'" . (($row['banned']) === 'yes' ? ' checked' : '') . " value='1' /> {$lang['edit_banned']}", 1);
 }
