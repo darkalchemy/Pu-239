@@ -1072,6 +1072,7 @@ vertical_center {
 .responsive-container iframe {
     max-width: 1280px;
     max-height: 720px;
+    border-radius: 10px;
 }
 
 .responsive-container iframe {
