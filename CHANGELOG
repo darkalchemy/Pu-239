@@ -1,4 +1,5 @@
 9 Jun 2018
+fix: tracker bencode issue, you will need to manually merge this with your include/ann_config.php
 update: ssluse for everything, always if using https
 fix: announce.php
 replace: deprecated function each()
