@@ -1,4 +1,5 @@
 8 Jun 2018
+fix: youtube display
 fix: class add/remove not updating AJAX Chat classes
 fix: flush cache when driver is 'file'
 fix: adding/removing user class not updating class colors
