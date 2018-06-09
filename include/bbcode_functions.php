@@ -240,7 +240,7 @@ function format_urls($s)
 function format_comment($text, $strip_html = true, $urls = true, $images = true)
 {
     global $smilies, $staff_smilies, $customsmilies, $site_config, $CURUSER;
-    $s = $text;
+    $s = htmlspecialchars($text);
     unset($text);
     $s                  = validate_imgs($s);
     $site_config['url'] = str_replace([
@@ -527,11 +527,11 @@ function format_code($s)
             }
         } // Cannot close before opening. Return raw string...
         $s = str_replace('[code]', "
-            <div class='round10'>
-                <div class='size_6 top10 bottom10'>
-                    <b>code:</b>
-                </div>
-                <pre class='round10'>", htmlspecialchars($s));
+            <div class='round10 w-100 bg-00'>
+                <span class='size_5 has-text-weight-bold'>
+                    code:
+                </span>
+                <pre class='round10 margin10'>", $s);
         $s = str_replace('[/code]', '
                 </pre>
             </div>', $s);
@@ -551,8 +551,8 @@ function format_code($s)
 function format_comment_no_bbcode($text, $strip_html = true)
 {
     global $site_config;
+    $s = htmlspecialchars($text);
     if ($strip_html) {
-        //$s = htmlsafechars($s);
         $s = htmlsafechars($s, ENT_QUOTES, get_charset());
     }
     // BBCode to find...

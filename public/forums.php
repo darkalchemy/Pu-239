@@ -438,16 +438,15 @@ switch ($action) {
 
                 $last_post_arr = $cache->get('last_post_' . $forum_id . '_' . $CURUSER['class']);
                 if ($last_post_arr === false || is_null($last_post_arr)) {
-//                    $query = $fluent->from('topics')
-//                        ->fetchAll();
-//                    dd($query);
-                    $last_post_arr = mysqli_fetch_assoc(sql_query('SELECT t.id AS topic_id, t.topic_name, t.last_post, t.anonymous AS tan, p.added, p.anonymous AS pan, p.user_id, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.avatar_rights FROM topics AS t LEFT JOIN posts AS p ON p.topic_id = t.id RIGHT JOIN users AS u ON u.id = p.user_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? ' t.status != \'deleted\' AND p.status != \'deleted\' AND' : '')) . ' t.forum_id = ' . sqlesc($forum_id) . ' ORDER BY p.id DESC LIMIT 1'));
+                    $query = sql_query('SELECT t.id AS topic_id, t.topic_name, t.last_post, t.anonymous AS tan, p.added, p.anonymous AS pan, p.user_id, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.avatar_rights FROM topics AS t LEFT JOIN posts AS p ON p.topic_id = t.id RIGHT JOIN users AS u ON u.id = p.user_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? ' t.status != \'deleted\' AND p.status != \'deleted\' AND' : '')) . ' t.forum_id = ' . sqlesc($forum_id) . ' ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+                    $last_post_arr = mysqli_fetch_assoc($query);
                     $cache->set('last_post_' . $forum_id . '_' . $CURUSER['class'], $last_post_arr, $site_config['expires']['last_post']);
                 }
                 if ($last_post_arr['last_post'] > 0) {
                     $last_post_id = (int) $last_post_arr['last_post'];
                     if (($last_read_post_arr = $cache->get('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'])) === false) {
-                        $last_read_post_arr = mysqli_fetch_row(sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($last_post_arr['topic_id'])));
+                        $query = sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($last_post_arr['topic_id'])) or sqlerr(__FILE__, __LINE__);
+                        $last_read_post_arr = mysqli_fetch_row($query);
                         $cache->set('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'], $last_read_post_arr, $site_config['expires']['last_read_post']);
                     }
                     $image_to_use = ($last_post_arr['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_read_post_arr or $last_post_id > $last_read_post_arr[0]) : 0;

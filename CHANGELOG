@@ -1,3 +1,9 @@
+9 Jun 2018
+replace: deprecated function each()
+fix: incorrect lang var
+add: missing sqlerr in many forum queries
+fix: bbcode code block breaking layout
+
 8 Jun 2018
 add: rounded corners to youtube
 fix: youtube display

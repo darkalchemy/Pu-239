@@ -112,7 +112,7 @@ foreach ($query as $sub_forums_arr) {
 						' . get_date($post_arr['added'], '') . '<br></span>';
         }
 
-        $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($last_post_id)) or sqlerr(__FILE__, __LINE__);
+        $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($last_post_id)) or sqlerr(__FILE__, __LINE__);
         $last_unread_post_arr = mysqli_fetch_row($last_unread_post_res);
         $last_unread_post_id  = ($last_unread_post_arr[0] >= 0 ? $last_unread_post_arr[0] : $first_post_arr['first_post_id']);
         $image_to_use         = ($post_arr['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_unread_post_arr || $last_post_id > $last_unread_post_arr[0]) : 0;
@@ -276,13 +276,13 @@ if ($count > 0) {
         $icon            = ('' == $first_post_arr['icon'] ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_thread_icon'] . '" title="' . $lang['fe_thread_icon'] . '" class="tooltipper icon" />' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" />');
         $first_post_text = bubble('<img src="' . $site_config['pic_baseurl'] . 'forums/mg.gif" alt="' . $lang['fe_preview'] . '" class="icon" />', format_comment($first_post_arr['body'], true, false, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
 
-        $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+        $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $last_unread_post_arr = mysqli_fetch_row($last_unread_post_res);
         $last_unread_post_id  = ($last_unread_post_arr[0] > 0 ? $last_unread_post_arr[0] : $first_post_arr['first_post_id']);
-        $did_i_post_here      = sql_query('SELECT user_id FROM posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+        $did_i_post_here      = sql_query('SELECT user_id FROM posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $posted               = (mysqli_num_rows($did_i_post_here) > 0 ? 1 : 0);
 
-        $sub           = sql_query('SELECT user_id FROM subscriptions WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+        $sub           = sql_query('SELECT user_id FROM subscriptions WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $subscriptions = (mysqli_num_rows($sub) > 0 ? 1 : 0);
 
         $total_pages = floor($posts / $perpage);

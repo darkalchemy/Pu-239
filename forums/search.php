@@ -21,7 +21,7 @@ $pager_links .= ($asc_desc ? '&amp;asc_desc=' . $asc_desc : '');
 $pager_links .= ($show_as ? '&amp;show_as=' . $show_as : '');
 if ($author) {
     //=== get member info
-    $res_member = sql_query('SELECT id FROM users WHERE username LIKE ' . sqlesc($author));
+    $res_member = sql_query('SELECT id FROM users WHERE username LIKE ' . sqlesc($author)) or sqlerr(__FILE__, __LINE__);
     $arr_member = mysqli_fetch_assoc($res_member);
     $author_id  = (int) $arr_member['id'];
     //=== if no member found
@@ -31,7 +31,7 @@ if ($author) {
 if ($search) {
     $search_where = ('body' === $search_what ? 'p.body' : ('title' === $search_what ? 't.topic_name, p.post_title' : 'p.post_title, p.body, t.topic_name'));
     //=== get the forum id list to check if any were selected
-    $res_forum_ids = sql_query('SELECT id FROM forums');
+    $res_forum_ids = sql_query('SELECT id FROM forums') or sqlerr(__FILE__, __LINE__);
     while ($arr_forum_ids = mysqli_fetch_assoc($res_forum_ids)) {
         //$selected_forums[] = (isset($_GET["f$arr_forum_ids[id]"]) ? $arr_forum_ids['id'] : '');
         if (isset($_GET["f$arr_forum_ids[id]"])) {
@@ -56,11 +56,7 @@ if ($search) {
         $AND .= $selected_forums_undone;
     }
     //=== just do the minimum to get the count
-    $res_count = sql_query('SELECT p.id, MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . ' IN BOOLEAN MODE) AS relevance 
-			FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON t.forum_id = f.id 
-			WHERE MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . 'IN BOOLEAN MODE) 
-			AND ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' 
-			f.min_class_read <= ' . $CURUSER['class'] . $AND . ' HAVING relevance > 0.2');
+    $res_count = sql_query('SELECT p.id, MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . ' IN BOOLEAN MODE) AS relevance FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON t.forum_id = f.id WHERE MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . 'IN BOOLEAN MODE) AND ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class'] . $AND . ' HAVING relevance > 0.2') or sqlerr(__FILE__, __LINE__);
     $count = mysqli_num_rows($res_count);
     //=== get stuff for the pager
     $page               = isset($_GET['page']) ? (int) $_GET['page'] : 0;
@@ -69,7 +65,7 @@ if ($search) {
     $order_by           = ((isset($_GET['sort_by']) && 'date' === $_GET['sort_by']) ? 'p.added ' : 'relevance ');
     $ASC_DESC           = ((isset($_GET['asc_desc']) && 'ASC' === $_GET['asc_desc']) ? ' ASC ' : ' DESC ');
     //=== main search... could split it up for list / post thing, but it's only a couple of things so it seems pointless...
-    $res = sql_query('SELECT p.id AS post_id, p.body, p.post_title, p.added, p.icon, p.edited_by, p.edit_reason, p.edit_date, p.bbcode, p.anonymous AS pan, t.anonymous AS tan, t.id AS topic_id, t.topic_name AS   topic_title, t.topic_desc, t.post_count, t.views, t.locked, t.sticky, t.poll_id, t.num_ratings, t.rating_sum, f.id AS forum_id, f.name AS forum_name, f.description AS forum_desc, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king,  u.title, u.avatar, u.offensive_avatar, MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . ' IN BOOLEAN MODE) AS relevance FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON t.forum_id = f.id LEFT JOIN users AS u ON p.user_id = u.id WHERE MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . ' IN BOOLEAN MODE) AND ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class'] . $AND . ' HAVING relevance > 0.2 ORDER BY ' . $order_by . $ASC_DESC . $LIMIT);
+    $res = sql_query('SELECT p.id AS post_id, p.body, p.post_title, p.added, p.icon, p.edited_by, p.edit_reason, p.edit_date, p.bbcode, p.anonymous AS pan, t.anonymous AS tan, t.id AS topic_id, t.topic_name AS   topic_title, t.topic_desc, t.post_count, t.views, t.locked, t.sticky, t.poll_id, t.num_ratings, t.rating_sum, f.id AS forum_id, f.name AS forum_name, f.description AS forum_desc, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king,  u.title, u.avatar, u.offensive_avatar, MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . ' IN BOOLEAN MODE) AS relevance FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON t.forum_id = f.id LEFT JOIN users AS u ON p.user_id = u.id WHERE MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . ' IN BOOLEAN MODE) AND ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class'] . $AND . ' HAVING relevance > 0.2 ORDER BY ' . $order_by . $ASC_DESC . $LIMIT) or sqlerr(__FILE__, __LINE__);
     //=== top and bottom stuff
     $the_top_and_bottom = '<table border="0" cellspacing="0" cellpadding="0" width="90%">
 	<tr><td  valign="middle">' . (($count > $perpage) ? $menu : '') . '</td>
@@ -196,7 +192,7 @@ if ('posts' === $show_as) {
         $post_icon = ('' != $arr['icon'] ? '<img src="pic/smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" /> ' : '<img src="pic/forums/topic_normal.gif" alt="Normal Topic" /> ');
         $edited_by = '';
         if ($arr['edit_date'] > 0) {
-            $res_edited = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr['edited_by']));
+            $res_edited = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr['edited_by'])) or sqlerr(__FILE__, __LINE__);
             $arr_edited = mysqli_fetch_assoc($res_edited);
             $edited_by  = '<br><br><br><span style="font-weight: bold; font-size: x-small;">Last edited by <a class="altlink" href="member_details.php?id=' . (int) $arr['edited_by'] . '">' . htmlsafechars($arr_edited['username']) . '</a> at ' . get_date($arr['edit_date'], '') . ' GMT ' . ('' != $arr['edit_reason'] ? ' </span>[ Reason: ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '');
         }
@@ -243,7 +239,7 @@ $search__help_boolean = '<div id="help"style="display:none"><h1>' . $lang['sea_h
    <span style="font-weight: bold;">" "</span> ' . $lang['sea_help_msg8'] . ' <br><br><span style="font-weight: bold;">( )</span> ' . $lang['sea_help_msg9'] . '<br><br></div>';
 $search_in_forums = '<table width="100%">';
 $row_count        = 0;
-$res_forums       = sql_query('SELECT o_f.name AS over_forum_name, o_f.id AS over_forum_id, f.id AS real_forum_id, f.name, f.description,  f.forum_id FROM over_forums AS o_f JOIN forums AS f WHERE o_f.min_class_view <= ' . $CURUSER['class'] . ' AND f.min_class_read <=  ' . $CURUSER['class'] . ' ORDER BY o_f.sort, f.sort ASC');
+$res_forums       = sql_query('SELECT o_f.name AS over_forum_name, o_f.id AS over_forum_id, f.id AS real_forum_id, f.name, f.description,  f.forum_id FROM over_forums AS o_f JOIN forums AS f WHERE o_f.min_class_view <= ' . $CURUSER['class'] . ' AND f.min_class_read <=  ' . $CURUSER['class'] . ' ORDER BY o_f.sort, f.sort ASC') or sqlerr(__FILE__, __LINE__);
 //=== well... let's do the loop and make the damned forum thingie!
 while ($arr_forums = mysqli_fetch_assoc($res_forums)) {
     //=== if it's a forums section print it, if not, list the fourm sections in it \o/

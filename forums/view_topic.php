@@ -242,7 +242,7 @@ if (0 != $arr['num_ratings']) {
     $rating = round($arr['rating_sum'] / $arr['num_ratings'], 1);
 }
 
-$res_subscriptions = sql_query('SELECT id FROM subscriptions WHERE topic_id=' . sqlesc($topic_id) . ' AND user_id=' . sqlesc($CURUSER['id']));
+$res_subscriptions = sql_query('SELECT id FROM subscriptions WHERE topic_id = ' . sqlesc($topic_id) . ' AND user_id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 $row_subscriptions = mysqli_fetch_row($res_subscriptions);
 $subscriptions     = $row_subscriptions[0] > 0 ? '
         <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=delete_subscription&amp;topic_id=' . $topic_id . '"> 
@@ -301,7 +301,7 @@ $fluent->update('topics')
     ->where('id = ?', $topic_id)
     ->execute();
 
-$res_count = sql_query('SELECT COUNT(id) AS count FROM posts WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id));
+$res_count = sql_query('SELECT COUNT(id) AS count FROM posts WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
 $arr_count = mysqli_fetch_row($res_count);
 $count     = $arr_count[0];
 
@@ -310,14 +310,14 @@ $perpage             = isset($_GET['perpage']) ? intval($_GET['perpage']) : 15;
 $subscription_on_off = (isset($_GET['s']) ? (1 == $_GET['s'] ? '<br><div>' . $lang['fe_sub_to_topic'] . ' <img src="' . $site_config['pic_baseurl'] . 'forums/subscribe.gif" alt="' . $lang['fe_subscribed'] . '" title="' . $lang['fe_subscribed'] . '" class="tooltipper emoticon" /></div>' : '<br><div >' . $lang['fe_unsub_to_topic'] . ' <img src="' . $site_config['pic_baseurl'] . 'forums/unsubscribe.gif" alt="' . $lang['fe_unsubscribe'] . '" title="' . $lang['fe_unsubscribe'] . '" class="tooltipper emoticon" /></div>') : '');
 list($menu, $LIMIT)  = pager_new($count, $perpage, $page, 'forums.php?action=view_topic&amp;topic_id=' . $topic_id . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
 
-$res = sql_query('SELECT p.id AS post_id, p.topic_id, p.user_id, p.staff_lock, p.added, p.body, p.edited_by, p.edit_date, p.icon, p.post_title, p.bbcode, p.post_history, p.edit_reason, INET6_NTOA(p.ip) AS ip, p.status AS post_status, p.anonymous, u.seedbonus, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.chatpost, u.leechwarn, u.pirate, u.king, u.enabled, u.email, u.website, u.icq, u.msn, u.aim, u.yahoo, u.last_access, u.show_email, u.paranoia, u.hit_and_run_total, u.avatar, u.title, u.uploaded, u.downloaded, u.signature, u.google_talk, u.icq, u.msn, u.aim, u.yahoo, u.website, u.mood, u.perms, u.reputation, u.offensive_avatar FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id) . ' ORDER BY p.id ' . $_forum_sort . ' ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT p.id AS post_id, p.topic_id, p.user_id, p.staff_lock, p.added, p.body, p.edited_by, p.edit_date, p.icon, p.post_title, p.bbcode, p.post_history, p.edit_reason, INET6_NTOA(p.ip) AS ip, p.status AS post_status, p.anonymous, u.seedbonus, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.chatpost, u.leechwarn, u.pirate, u.king, u.enabled, u.email, u.website, u.icq, u.msn, u.aim, u.yahoo, u.last_access, u.show_email, u.paranoia, u.hit_and_run_total, u.avatar, u.title, u.uploaded, u.downloaded, u.signature, u.google_talk, u.icq, u.msn, u.aim, u.yahoo, u.website, u.mood, u.perms, u.reputation, u.offensive_avatar FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND' : '')) . ' topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id ' . $_forum_sort . ' ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
 
 $may_post = ($CURUSER['class'] >= $arr['min_class_write'] && $CURUSER['forum_post'] === 'yes' && $CURUSER['suspended'] === 'no');
 
-$locked_or_reply_button = ($locked === 'yes' ? '<span><img src="' . $site_config['pic_baseurl'] . 'forums/thread_locked.gif" alt="' . $lang['fe_thread_locked'] . '" title="' . $lang['fe_thread_locked'] . '" class="tooltipper emoticon" />' . $lang['fe_this_topic_is_locked'] . ', you may not post in this thread.</span>' : ('no' == $CURUSER['forum_post'] ? '<span>Your posting rights have been removed. You may not post.</span>' : '<a href="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '" class="btn">Add Reply</a>'));
+$locked_or_reply_button = ($locked === 'yes' ? '<span><img src="' . $site_config['pic_baseurl'] . 'forums/thread_locked.gif" alt="' . $lang['fe_thread_locked'] . '" title="' . $lang['fe_thread_locked'] . '" class="tooltipper emoticon" />' . $lang['fe_this_topic_is_locked'] . ', you may not post in this thread.</span>' : ('no' == $CURUSER['forum_post'] ? '<span>Your posting rights have been removed. You may not post.</span>' : '<a href="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '" class="button is-small margin10">Add Reply</a>'));
 
 if ($arr['parent_forum'] > 0) {
-    $parent_forum_res  = sql_query('SELECT name AS parent_forum_name FROM forums WHERE id = ' . sqlesc($arr['parent_forum']));
+    $parent_forum_res  = sql_query('SELECT name AS parent_forum_name FROM forums WHERE id = ' . sqlesc($arr['parent_forum'])) or sqlerr(__FILE__, __LINE__);
     $parent_forum_arr  = mysqli_fetch_row($parent_forum_res);
     $child             = ($arr['parent_forum'] > 0 ? '<span> [ ' . $lang['fe_child_board'] . ' ]</span>' : '');
     $parent_forum_name = '<img src="' . $site_config['pic_baseurl'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" class="tooltipper emoticon" /> 
@@ -328,7 +328,7 @@ $the_top_and_bottom = '
     <tr>
         <td>' . $subscriptions . '</td>
 		<td>' . (($count > $perpage) ? $menu : '') . '</td>
-		<td>' . ($may_post ? $locked_or_reply_button : '
+		<td class="has-text-right">' . ($may_post ? $locked_or_reply_button : '
             <span>
 		        You are not permitted to post in this thread.
 		    </span>') . '
@@ -389,7 +389,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     }
     $post_id = $arr['post_id'];
 
-    $attachments_res = sql_query('SELECT id, file_name, extension, size FROM attachments WHERE post_id =' . sqlesc($post_id) . ' AND user_id = ' . sqlesc($arr['id']));
+    $attachments_res = sql_query('SELECT id, file_name, extension, size FROM attachments WHERE post_id =' . sqlesc($post_id) . ' AND user_id = ' . sqlesc($arr['id'])) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($attachments_res) > 0) {
         $attachments = '<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr><td><span >' . $lang['fe_attachments'] . ':</span><hr>';
         while ($attachments_arr = mysqli_fetch_assoc($attachments_res)) {
@@ -456,14 +456,14 @@ while ($arr = mysqli_fetch_assoc($res)) {
                     </div>
                 </div>
             </td>
-        </tr>	
+        </tr>
 		<tr>
          <td class="w-10">' . ('yes' == $arr['anonymous'] ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_baseurl'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($arr)) . '<br>
 			' . ('yes' == $arr['anonymous'] ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($arr['user_id'])) . ('yes' == $arr['anonymous'] || '' == $arr['title'] ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($arr['title']) . ']</span>') . '<br>
 			<span >' . ('yes' == $arr['anonymous'] ? '' : get_user_class_name($arr['class'])) . '</span><br>
 			' . ($arr['last_access'] > (TIME_NOW - 300) && $arr['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper emoticon" /> Online' : ' <img src="' . $site_config['pic_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper emoticon" /> ' . $lang['fe_offline'] . '') . '<br>
 			' . $lang['fe_karma'] . ': ' . number_format($arr['seedbonus']) . $member_reputation . '<br>' . ($arr['google_talk'] !== '' ? ' <a href="http://talkgadget.google.com/talkgadget/popout?member=' . htmlsafechars($arr['google_talk']) . '" title="' . $lang['fe_click_for_google_talk_gadget'] . '"  target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/google_talk.gif" alt="' . $lang['fe_google_talk'] . '" class="tooltipper emoticon" /></a> ' : '') . ('' !== $arr['icq'] ? ' <a href="http://people.icq.com/people/&amp;uin=' . htmlsafechars($arr['icq']) . '" title="' . $lang['fe_click_to_open_icq_page'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/icq.gif" alt="icq" class="tooltipper emoticon" /></a> ' : '') . ('' !== $arr['msn'] ? ' <a href="http://members.msn.com/' . htmlsafechars($arr['msn']) . '" target="_blank" title="' . $lang['fe_click_to_see_msn_details'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/msn.gif" alt="msn" title="msn" class="tooltipper emoticon" /></a> ' : '') . ('' !== $arr['aim'] ? ' <a href="http://aim.search.aol.com/aol/search?s_it=searchbox.webhome&amp;q=' . htmlsafechars($arr['aim']) . '" target="_blank" title="' . $lang['fe_click_to_search_on_aim'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/aim.gif" alt="AIM" title="AIM" class="tooltipper emoticon" /></a> ' : '') . ('' !== $arr['yahoo'] ? ' <a href="http://webmessenger.yahoo.com/?im=' . htmlsafechars($arr['yahoo']) . '" target="_blank" title="' . $lang['fe_click_to_open_yahoo'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/yahoo.gif" alt="yahoo" title="Yahoo!" class="tooltipper emoticon" /></a> ' : '') . ($arr['website'] !== '' ? ' <a href="' . htmlsafechars($arr['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/website.gif" alt="website" /></a> ' : '') . ('yes' == $arr['show_email'] ? ' <a href="mailto:' . htmlsafechars($arr['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'email.gif" alt="email" title="email" class="tooltipper emoticon" /> </a>' : '') . '
-			' . ($CURUSER['class'] >= UC_STAFF ? '   
+			' . ($CURUSER['class'] >= UC_STAFF ? '
 			<ul class="makeMenu">
 				<li>' . htmlsafechars($arr['ip']) . '
 					<ul>
@@ -473,15 +473,15 @@ while ($arr = mysqli_fetch_assoc($res)) {
 				</li>
 			</ul>' : '') . '
 			</td>
-			<td class="' . $post_status . '"   colspan="2">' . $body . $edited_by . '</td></tr>
+			<td class="' . $post_status . '"   colspan="2">' . $body . $edited_by . '</td></tr>' . (!empty($signature) ? '
 			<tr>
 			    <td></td>
 			    <td colspan="2">' . $signature . '</td>
-			</tr>
+			</tr>' : '') . (!empty($attachments) ? '
 			<tr>
 			    <td></td>
 			    <td colspan="2">' . $attachments . '</td>
-			</tr>
+			</tr>' : '') . '
 			<tr>
 			    <td colspan="3">' . (($arr['paranoia'] >= 1 && $CURUSER['class'] < UC_STAFF) ? '' : '
                     <span><img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['vt_uploaded'] . '" title="' . $lang['vt_uploaded'] . '" class="tooltipper emoticon" /> ' . mksize($arr['uploaded']) . '</span>  
@@ -567,7 +567,6 @@ if ($CURUSER['class'] >= UC_STAFF) {
             </td>
             <td colspan="2">
                 <div id="pm" style="display:none">' . main_table('
-                    
                     <tr>
                         <td colspan="2">' . $lang['vt_send_pm_select_mem'] . '</td>
                     </tr>

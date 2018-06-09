@@ -907,8 +907,8 @@ DROP TABLE IF EXISTS `forums`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `forums` (
-  `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `name` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `min_class_read` tinyint(3) unsigned NOT NULL DEFAULT '0',

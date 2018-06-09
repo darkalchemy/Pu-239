@@ -43,9 +43,9 @@ switch ($action) {
 
     case 'delete':
         if (!$id) {
-            stderr($lang['std_err'], $lang['std_err_id']);
+            stderr($lang['std_error'], $lang['std_error_id']);
         }
-        sql_query('DELETE FROM over_forums WHERE id = ' . sqlesc($id));
+        sql_query('DELETE FROM over_forums WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         header('Location: staffpanel.php?tool=over_forums');
         die();
         break;
@@ -53,13 +53,13 @@ switch ($action) {
 
     case 'edit_forum':
         if (!$name && !$desc && !$id) {
-            stderr($lang['std_err'], $lang['std_err_form']);
+            stderr($lang['std_error'], $lang['std_error_form']);
         }
-        $res = sql_query('SELECT sort FROM over_forums WHERE sort = ' . sqlesc($sort));
+        $res = sql_query('SELECT sort FROM over_forums WHERE sort = ' . sqlesc($sort)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
-            stderr($lang['std_err'], $lang['std_err_select_another']);
+            stderr($lang['std_error'], $lang['std_error_select_another']);
         }
-        sql_query('UPDATE over_forums SET sort = ' . sqlesc($sort) . ', name = ' . sqlesc($name) . ', description = ' . sqlesc($desc) . ', min_class_view = ' . sqlesc($min_class_view) . ' WHERE id = ' . sqlesc($id));
+        sql_query('UPDATE over_forums SET sort = ' . sqlesc($sort) . ', name = ' . sqlesc($name) . ', description = ' . sqlesc($desc) . ', min_class_view = ' . sqlesc($min_class_view) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         header('Location: staffpanel.php?tool=over_forums');
         die();
         break;
@@ -67,20 +67,20 @@ switch ($action) {
 
     case 'add_forum':
         if (!$name && !$desc) {
-            stderr($lang['std_err'], $lang['std_err_form']);
+            stderr($lang['std_error'], $lang['std_error_form']);
         }
-        $res = sql_query('SELECT sort FROM over_forums WHERE sort = ' . sqlesc($sort));
+        $res = sql_query('SELECT sort FROM over_forums WHERE sort = ' . sqlesc($sort)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
-            stderr($lang['std_err'], $lang['std_err_select_another']);
+            stderr($lang['std_error'], $lang['std_error_select_another']);
         }
-        sql_query('INSERT INTO over_forums (sort, name,  description,  min_class_view) VALUES (' . sqlesc($sort) . ', ' . sqlesc($name) . ', ' . sqlesc($desc) . ', ' . sqlesc($min_class_view) . ')');
+        sql_query('INSERT INTO over_forums (sort, name,  description,  min_class_view) VALUES (' . sqlesc($sort) . ', ' . sqlesc($name) . ', ' . sqlesc($desc) . ', ' . sqlesc($min_class_view) . ')') or sqlerr(__FILE__, __LINE__);
         header('Location: staffpanel.php?tool=over_forums');
         die();
         break;
     //=== edit over forum stuff
 
     case 'edit_forum_page':
-        $res = sql_query('SELECT * FROM over_forums WHERE id =' . sqlesc($id));
+        $res = sql_query('SELECT * FROM over_forums WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
             $row = mysqli_fetch_array($res);
             $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=over_forums&amp;action=over_forums">
@@ -134,7 +134,7 @@ switch ($action) {
                 <th class="has-text-centered">' . $lang['ad_over_minview1'] . '</th>
                 <th class="has-text-centered">' . $lang['ad_over_modify'] . '</th>
             </tr>';
-        $res = sql_query('SELECT * FROM over_forums ORDER BY sort ASC');
+        $res = sql_query('SELECT * FROM over_forums ORDER BY sort ASC') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
             $body = '';
             while ($row = mysqli_fetch_array($res)) {
@@ -195,7 +195,7 @@ switch ($action) {
                     <td><span>' . $lang['ad_over_sort'] . '</span></td>
                     <td>
                         <select name="sort">';
-        $res      = sql_query('SELECT sort FROM over_forums');
+        $res      = sql_query('SELECT sort FROM over_forums') or sqlerr(__FILE__, __LINE__);
         $nr       = mysqli_num_rows($res);
         $maxclass = $nr + 1;
         for ($i = 0; $i <= $maxclass; ++$i) {

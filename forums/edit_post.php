@@ -9,7 +9,7 @@ if (!is_valid_id($post_id) || !is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
 //=== get the post info
-$res_post = sql_query('SELECT p.added, p.user_id AS puser_id, p.body, p.icon, p.post_title, p.bbcode, p.post_history, p.edited_by, p.edit_date, p.edit_reason, p.staff_lock, a.file, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, t.topic_name, t.locked, t.user_id, t.topic_desc, f.min_class_read, f.min_class_write, f.id AS forum_id FROM posts AS p LEFT JOIN attachments AS a ON p.id = a.post_id LEFT JOIN users AS u ON p.user_id = u.id LEFT JOIN topics AS t ON t.id = p.topic_id LEFT JOIN forums AS f ON t.forum_id = f.id WHERE p.id=' . sqlesc($post_id));
+$res_post = sql_query('SELECT p.added, p.user_id AS puser_id, p.body, p.icon, p.post_title, p.bbcode, p.post_history, p.edited_by, p.edit_date, p.edit_reason, p.staff_lock, a.file, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, t.topic_name, t.locked, t.user_id, t.topic_desc, f.min_class_read, f.min_class_write, f.id AS forum_id FROM posts AS p LEFT JOIN attachments AS a ON p.id = a.post_id LEFT JOIN users AS u ON p.user_id = u.id LEFT JOIN topics AS t ON t.id = p.topic_id LEFT JOIN forums AS f ON t.forum_id = f.id WHERE p.id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
 $arr_post = mysqli_fetch_assoc($res_post);
 //=== get any attachments
 $colour = $attachments = $extension_error = $size_error = '';
@@ -21,7 +21,7 @@ if (!empty($arr_post['file'])) {
 	<tr>
 	<td class="forum_head" align="left" valign="middle" colspan="2"><span style="font-weight: bold">' . $lang['fe_delete'] . '</span></td>
 	</tr>';
-    $attachments_res = sql_query('SELECT id, file_name, extension, size FROM attachments WHERE post_id =' . sqlesc($post_id) . ' AND user_id = ' . sqlesc($arr_post['id']));
+    $attachments_res = sql_query('SELECT id, file_name, extension, size FROM attachments WHERE post_id =' . sqlesc($post_id) . ' AND user_id = ' . sqlesc($arr_post['id'])) or sqlerr(__FILE__, __LINE__);
     while ($attachments_arr = mysqli_fetch_assoc($attachments_res)) {
         $attachments .= '
 	<tr>
@@ -86,16 +86,16 @@ if (isset($_POST['button']) && 'Edit' == $_POST['button']) {
         $edit_date    = (int) $arr_post['edit_date'];
         $post_history = htmlsafechars($arr_post['post_history']);
     }
-    sql_query('UPDATE posts SET body = ' . sqlesc($body) . ', icon = ' . sqlesc($icon) . ', post_title = ' . sqlesc($post_title) . ', bbcode = ' . sqlesc($show_bbcode) . ', edit_reason = ' . sqlesc($edit_reason) . ', edited_by = ' . sqlesc($edited_by) . ', edit_date = ' . sqlesc($edit_date) . ', post_history = ' . sqlesc($post_history) . ' WHERE id = ' . sqlesc($post_id));
+    sql_query('UPDATE posts SET body = ' . sqlesc($body) . ', icon = ' . sqlesc($icon) . ', post_title = ' . sqlesc($post_title) . ', bbcode = ' . sqlesc($show_bbcode) . ', edit_reason = ' . sqlesc($edit_reason) . ', edited_by = ' . sqlesc($edited_by) . ', edit_date = ' . sqlesc($edit_date) . ', post_history = ' . sqlesc($post_history) . ' WHERE id = ' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
     clr_forums_cache($post_id);
     $cache->delete('forum_posts_' . $CURUSER['id']);
     //=== update topic stuff
     if ($can_edit) {
-        sql_query('UPDATE topics SET topic_name = ' . sqlesc($topic_name) . ', topic_desc = ' . sqlesc($topic_desc) . ' WHERE id = ' . sqlesc($topic_id));
+        sql_query('UPDATE topics SET topic_name = ' . sqlesc($topic_name) . ', topic_desc = ' . sqlesc($topic_desc) . ' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     }
     //=== stuff for file uploads
     if ($CURUSER['class'] >= $min_upload_class) {
-        while (list($key, $name) = each($_FILES['attachment']['name'])) {
+        foreach ($_FILES['attachment']['name'] as $key => $name) {
             if (!empty($name)) {
                 $size = intval($_FILES['attachment']['size'][$key]);
                 $type = $_FILES['attachment']['type'][$key];
@@ -134,8 +134,7 @@ if (isset($_POST['button']) && 'Edit' == $_POST['button']) {
                         $name      = substr($name, 0, -strlen($file_extension));
                         $upload_to = $upload_folder . $name . '(id-' . $post_id . ')' . $file_extension;
                         //===plop it into the DB all safe and snuggly
-                        sql_query('INSERT INTO `attachments` (`post_id`, `user_id`, `file`, `file_name`, `added`, `extension`, `size`) VALUES 
-( ' . sqlesc($post_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($name . '(id-' . $post_id . ')' . $file_extension) . ', ' . sqlesc($name) . ', ' . TIME_NOW . ', ' . ('.zip' === $file_extension ? '\'zip\'' : '\'rar\'') . ', ' . $size . ')');
+                        sql_query('INSERT INTO `attachments` (`post_id`, `user_id`, `file`, `file_name`, `added`, `extension`, `size`) VALUES ( ' . sqlesc($post_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($name . '(id-' . $post_id . ')' . $file_extension) . ', ' . sqlesc($name) . ', ' . TIME_NOW . ', ' . ('.zip' === $file_extension ? '\'zip\'' : '\'rar\'') . ', ' . $size . ')') or sqlerr(__FILE__, __LINE__);
                         copy($_FILES['attachment']['tmp_name'][$key], $upload_to);
                         chmod($upload_to, 0777);
                 }
@@ -149,12 +148,12 @@ if (isset($_POST['button']) && 'Edit' == $_POST['button']) {
         foreach ($_POST['attachment_to_delete'] as $var) {
             $attachment_to_delete = intval($var);
             //=== get attachment info
-            $attachments_res = sql_query('SELECT file FROM attachments WHERE id = ' . sqlesc($attachment_to_delete));
+            $attachments_res = sql_query('SELECT file FROM attachments WHERE id = ' . sqlesc($attachment_to_delete)) or sqlerr(__FILE__, __LINE__);
             $attachments_arr = mysqli_fetch_array($attachments_res);
             //=== delete the file
             unlink($upload_folder . $attachments_arr['file']);
             //=== delete them from the DB
-            sql_query('DELETE FROM attachments WHERE id = ' . sqlesc($attachment_to_delete) . ' AND post_id = ' . sqlesc($post_id));
+            sql_query('DELETE FROM attachments WHERE id = ' . sqlesc($attachment_to_delete) . ' AND post_id = ' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
         }
     } //=== end attachment stuff
     //=== only write to staff actions if it's a staff editing and not their own post
@@ -261,7 +260,7 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	</td></tr>
 	</table></form>';
 
-$res_posts = sql_query('SELECT p.id AS post_id, p.user_id, p.added, p.body, p.icon, p.post_title, p.bbcode, p.anonymous, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.avatar, u.chatpost, u.leechwarn, u.pirate, u.king, u.offensive_avatar FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND' : '')) . '  topic_id=' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1, 10');
+$res_posts = sql_query('SELECT p.id AS post_id, p.user_id, p.added, p.body, p.icon, p.post_title, p.bbcode, p.anonymous, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.avatar, u.chatpost, u.leechwarn, u.pirate, u.king, u.offensive_avatar FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND' : '')) . '  topic_id=' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1, 10') or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= '<br><span>' . $lang['fe_last_ten_posts_in_reverse_order'] . '</span>
 	<table border="0" cellspacing="5" cellpadding="10" width="90%">';
 

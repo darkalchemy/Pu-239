@@ -34,11 +34,10 @@ if (1 == $action) {
 switch ($action) {
     case 'poll_vote':
         //=== Get poll info
-        $res_poll = sql_query('SELECT t.poll_id, t.locked, f.min_class_write, f.min_class_read, p.poll_starts, p.poll_ends, p.change_vote, p.multi_options, p.poll_closed
-										FROM topics AS t LEFT JOIN forum_poll AS p ON t.poll_id = p.id LEFT JOIN forums AS f ON t.forum_id = f.id  WHERE t.id = ' . sqlesc($topic_id));
+        $res_poll = sql_query('SELECT t.poll_id, t.locked, f.min_class_write, f.min_class_read, p.poll_starts, p.poll_ends, p.change_vote, p.multi_options, p.poll_closed FROM topics AS t LEFT JOIN forum_poll AS p ON t.poll_id = p.id LEFT JOIN forums AS f ON t.forum_id = f.id  WHERE t.id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_assoc($res_poll);
         //=== did they vote yet
-        $res_poll_did_they_vote = sql_query('SELECT COUNT(id) FROM forum_poll_votes WHERE poll_id = ' . sqlesc($arr_poll['poll_id']) . ' AND user_id = ' . sqlesc($CURUSER['id']));
+        $res_poll_did_they_vote = sql_query('SELECT COUNT(id) FROM forum_poll_votes WHERE poll_id = ' . sqlesc($arr_poll['poll_id']) . ' AND user_id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $row                    = mysqli_fetch_row($res_poll_did_they_vote);
         $vote_count             = number_format($row[0]);
         $post_vote              = (isset($_POST['vote']) ? $_POST['vote'] : '');
@@ -77,20 +76,20 @@ switch ($action) {
         $added = TIME_NOW;
         //=== if they selected "I just want to see the results!" only enter that one... 666 is reserved for that :)
         if (in_array('666', $post_vote)) {
-            sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES (' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', 666, ' . sqlesc($ip) . ', ' . $added . ')');
+            sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES (' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', 666, ' . sqlesc($ip) . ', ' . $added . ')') or sqlerr(__FILE__, __LINE__);
             //=== all went well, send them back!
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
             die();
         } else {
             //=== if single vote (not array)
             if (is_valid_poll_vote($post_vote)) {
-                sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES(' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($post_vote) . ', ' . sqlesc($ip) . ', ' . $added . ')');
+                sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES(' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($post_vote) . ', ' . sqlesc($ip) . ', ' . $added . ')') or sqlerr(__FILE__, __LINE__);
                 $success = 1;
             } else {
                 foreach ($post_vote as $votes) {
                     $vote = 0 + $votes;
                     if (is_valid_poll_vote($vote)) {
-                        sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES(' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($vote) . ', ' . sqlesc($ip) . ', ' . $added . ')');
+                        sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES(' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($vote) . ', ' . sqlesc($ip) . ', ' . $added . ')') or sqlerr(__FILE__, __LINE__);
                         $success = 1;
                     }
                 }
@@ -108,11 +107,10 @@ switch ($action) {
 
     case 'reset_vote':
         //=== Get poll info
-        $res_poll = sql_query('SELECT t.poll_id, t.locked, f.min_class_write, f.min_class_read, p.poll_starts, p.poll_ends, p.change_vote, p.multi_options, p.poll_closed
-										FROM topics AS t LEFT JOIN forum_poll AS p ON t.poll_id = p.id LEFT JOIN forums AS f ON t.forum_id = f.id  WHERE t.id = ' . sqlesc($topic_id));
+        $res_poll = sql_query('SELECT t.poll_id, t.locked, f.min_class_write, f.min_class_read, p.poll_starts, p.poll_ends, p.change_vote, p.multi_options, p.poll_closed FROM topics AS t LEFT JOIN forum_poll AS p ON t.poll_id = p.id LEFT JOIN forums AS f ON t.forum_id = f.id  WHERE t.id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_assoc($res_poll);
         //=== did they vote yet
-        $res_poll_did_they_vote = sql_query('SELECT COUNT(id) FROM forum_poll_votes WHERE poll_id = ' . sqlesc($arr_poll['poll_id']) . ' AND user_id = ' . sqlesc($CURUSER['id']));
+        $res_poll_did_they_vote = sql_query('SELECT COUNT(id) FROM forum_poll_votes WHERE poll_id = ' . sqlesc($arr_poll['poll_id']) . ' AND user_id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $row                    = mysqli_fetch_row($res_poll_did_they_vote);
         $vote_count             = number_format($row[0]);
         //=== let's do all the possible errors
@@ -146,7 +144,7 @@ switch ($action) {
                 break;
         }
         //=== ok all is well, let then change their votes :)
-        sql_query('DELETE FROM forum_poll_votes WHERE poll_id = ' . sqlesc($arr_poll['poll_id']) . ' AND user_id = ' . sqlesc($CURUSER['id']));
+        sql_query('DELETE FROM forum_poll_votes WHERE poll_id = ' . sqlesc($arr_poll['poll_id']) . ' AND user_id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         //=== all went well, send them back!
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
         die();
@@ -155,7 +153,7 @@ switch ($action) {
 
     case 'poll_add':
         //=== be sure there is no poll yet :P
-        $res_poll = sql_query('SELECT poll_id, user_id, topic_name FROM topics WHERE id = ' . sqlesc($topic_id));
+        $res_poll = sql_query('SELECT poll_id, user_id, topic_name FROM topics WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_assoc($res_poll);
         $poll_id  = (int) $arr_poll['poll_id'];
         $user_id  = (int) $arr_poll['user_id'];
@@ -191,11 +189,10 @@ switch ($action) {
             $multi_options = ((isset($_POST['multi_options']) && $_POST['multi_options'] <= $i) ? intval($_POST['multi_options']) : 1);
             //=== serialize it and slap it in the DB allready!
             $poll_options = serialize($break_down_poll_options);
-            sql_query('INSERT INTO `forum_poll` (`user_id` ,`question` ,`poll_answers` ,`number_of_options` ,`poll_starts` ,`poll_ends` ,`change_vote` ,`multi_options`)
-					VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($poll_question) . ', ' . sqlesc($poll_options) . ', ' . $i . ', ' . $poll_starts . ', ' . $poll_ends . ', \'' . $change_vote . '\', ' . $multi_options . ')');
+            sql_query('INSERT INTO `forum_poll` (`user_id` ,`question` ,`poll_answers` ,`number_of_options` ,`poll_starts` ,`poll_ends` ,`change_vote` ,`multi_options`) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($poll_question) . ', ' . sqlesc($poll_options) . ', ' . $i . ', ' . $poll_starts . ', ' . $poll_ends . ', \'' . $change_vote . '\', ' . $multi_options . ')') or sqlerr(__FILE__, __LINE__);
             $poll_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
             if (is_valid_id($poll_id)) {
-                sql_query('UPDATE `topics` SET poll_id = ' . sqlesc($poll_id) . ' WHERE id=' . sqlesc($topic_id));
+                sql_query('UPDATE `topics` SET poll_id = ' . sqlesc($poll_id) . ' WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
             } else {
                 stderr($lang['gl_error'], '' . sprintf($lang['poll_something_went_wrong_the_poll_was_not_x'], 'added') . '.');
             }
@@ -296,18 +293,18 @@ switch ($action) {
             stderr($lang['gl_error'], $lang['poll_non_staff_poll_del_msg']);
         }
         //=== be sure there is a poll to delete :P
-        $res_poll = sql_query('SELECT poll_id FROM topics WHERE id = ' . sqlesc($topic_id));
+        $res_poll = sql_query('SELECT poll_id FROM topics WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_row($res_poll);
         $poll_id  = $arr_poll[0];
         if (!is_valid_id($poll_id)) {
             stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . '.. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
         } else {
             //=== delete the poll
-            sql_query('DELETE FROM forum_poll WHERE id = ' . sqlesc($poll_id));
+            sql_query('DELETE FROM forum_poll WHERE id = ' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
             //=== delete the votes
-            sql_query('DELETE FROM forum_poll_votes WHERE poll_id = ' . sqlesc($poll_id));
+            sql_query('DELETE FROM forum_poll_votes WHERE poll_id = ' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
             //=== remove poll refrence from topic
-            sql_query('UPDATE topics SET `poll_id` = 0 WHERE id = ' . sqlesc($topic_id));
+            sql_query('UPDATE topics SET `poll_id` = 0 WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
             $success = 1;
         }
         //=== did it work?
@@ -325,14 +322,14 @@ switch ($action) {
             stderr($lang['gl_error'], $lang['poll_non_staff_poll_reset_msg']);
         }
         //=== be sure there is a poll to reset :P
-        $res_poll = sql_query('SELECT poll_id FROM topics WHERE id = ' . sqlesc($topic_id));
+        $res_poll = sql_query('SELECT poll_id FROM topics WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_row($res_poll);
         $poll_id  = $arr_poll[0];
         if (!is_valid_id($poll_id)) {
             stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . '.. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
         } else {
             //=== delete the votes
-            sql_query('DELETE FROM forum_poll_votes WHERE poll_id = ' . sqlesc($poll_id));
+            sql_query('DELETE FROM forum_poll_votes WHERE poll_id = ' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
             $success = 1;
         }
         //=== did it work?
@@ -350,14 +347,14 @@ switch ($action) {
             stderr($lang['gl_error'], $lang['poll_non_staff_poll_close_msg']);
         }
         //=== be sure there is a poll to close :P
-        $res_poll = sql_query('SELECT poll_id FROM topics WHERE id = ' . sqlesc($topic_id));
+        $res_poll = sql_query('SELECT poll_id FROM topics WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_row($res_poll);
         $poll_id  = $arr_poll[0];
         if (!is_valid_id($poll_id)) {
             stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . '.. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
         } else {
             //=== close the poll
-            sql_query('UPDATE forum_poll SET `poll_closed` = \'yes\', poll_ends = ' . TIME_NOW . ' WHERE id = ' . sqlesc($poll_id));
+            sql_query('UPDATE forum_poll SET `poll_closed` = \'yes\', poll_ends = ' . TIME_NOW . ' WHERE id = ' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
             $success = 1;
         }
         //=== did it work?
@@ -375,14 +372,14 @@ switch ($action) {
             stderr($lang['gl_error'], $lang['poll_non_staff_poll_open_msg']);
         }
         //=== be sure there is a poll to open :P
-        $res_poll = sql_query('SELECT poll_id FROM topics WHERE id = ' . sqlesc($topic_id));
+        $res_poll = sql_query('SELECT poll_id FROM topics WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_row($res_poll);
         $poll_id  = $arr_poll[0];
         if (!is_valid_id($poll_id)) {
             stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . '.. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
         } else {
             //=== open the poll
-            sql_query('UPDATE forum_poll SET `poll_closed` = \'no\', poll_ends = \'1356048000\' WHERE id = ' . sqlesc($poll_id));
+            sql_query('UPDATE forum_poll SET `poll_closed` = \'no\', poll_ends = \'1356048000\' WHERE id = ' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
             $success = 1;
         }
         //=== did it work?
@@ -400,7 +397,7 @@ switch ($action) {
             stderr($lang['gl_error'], $lang['poll_non_staff_poll_edit_msg']);
         }
         //=== be sure there is a poll to edit :P
-        $res_poll = sql_query('SELECT poll_id, topic_name FROM topics WHERE id = ' . sqlesc($topic_id));
+        $res_poll = sql_query('SELECT poll_id, topic_name FROM topics WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_assoc($res_poll);
         $poll_id  = (int) $arr_poll['poll_id'];
         if (!is_valid_id($poll_id)) {
@@ -432,15 +429,15 @@ switch ($action) {
             $multi_options = ((isset($_POST['multi_options']) && $_POST['multi_options'] <= $i) ? intval($_POST['multi_options']) : 1);
             //=== serialize it and slap it in the DB FFS!
             $poll_options = serialize($break_down_poll_options);
-            sql_query('UPDATE forum_poll  SET question = ' . sqlesc($poll_question) . ', poll_answers = ' . sqlesc($poll_options) . ', number_of_options = ' . $i . ' , poll_starts = ' . $poll_starts . ' , poll_ends = ' . $poll_ends . ', change_vote = \'' . $change_vote . '\', multi_options = ' . $multi_options . ', poll_closed = \'no\' WHERE id = ' . sqlesc($poll_id));
+            sql_query('UPDATE forum_poll  SET question = ' . sqlesc($poll_question) . ', poll_answers = ' . sqlesc($poll_options) . ', number_of_options = ' . $i . ' , poll_starts = ' . $poll_starts . ' , poll_ends = ' . $poll_ends . ', change_vote = \'' . $change_vote . '\', multi_options = ' . $multi_options . ', poll_closed = \'no\' WHERE id = ' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
             //=== delete the votes
-            sql_query('DELETE FROM forum_poll_votes WHERE poll_id = ' . sqlesc($poll_id));
+            sql_query('DELETE FROM forum_poll_votes WHERE poll_id = ' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
             //=== send them back!
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
             die();
         } //=== end of posting poll to DB
         //=== get poll stuff to edit
-        $res_edit          = sql_query('SELECT * FROM forum_poll WHERE id = ' . sqlesc($poll_id));
+        $res_edit          = sql_query('SELECT * FROM forum_poll WHERE id = ' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
         $arr_edit          = mysqli_fetch_assoc($res_edit);
         $poll_question     = strip_tags($arr_edit['question']);
         $poll_answers      = unserialize($arr_edit['poll_answers']);

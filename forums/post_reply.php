@@ -7,9 +7,7 @@ $topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POS
 if (!is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
-$res = sql_query('SELECT t.topic_name, t.locked, f.min_class_read, f.min_class_write, f.id AS real_forum_id, s.id AS subscribed_id 
-								FROM topics AS t LEFT JOIN forums AS f ON t.forum_id = f.id LEFT JOIN subscriptions AS s ON s.topic_id = t.id 
-								WHERE ' . ($CURUSER['class'] < UC_STAFF ? 't.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 't.status != \'deleted\'  AND' : '')) . ' t.id=' . sqlesc($topic_id));
+$res = sql_query('SELECT t.topic_name, t.locked, f.min_class_read, f.min_class_write, f.id AS real_forum_id, s.id AS subscribed_id FROM topics AS t LEFT JOIN forums AS f ON t.forum_id = f.id LEFT JOIN subscriptions AS s ON s.topic_id = t.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 't.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 't.status != \'deleted\'  AND' : '')) . ' t.id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_assoc($res);
 //=== stop them, they shouldn't be here lol
 if ('yes' == $arr['locked']) {
@@ -32,7 +30,7 @@ $topic_name = htmlsafechars($arr['topic_name']);
 $anonymous  = (isset($_POST['anonymous']) && '' != $_POST['anonymous'] ? 'yes' : 'no');
 //== if it's a quote
 if (0 !== $quote && '' == $body) {
-    $res_quote = sql_query('SELECT p.body, p.staff_lock, p.anonymous, p.user_id, u.username FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE p.id=' . sqlesc($quote));
+    $res_quote = sql_query('SELECT p.body, p.staff_lock, p.anonymous, p.user_id, u.username FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE p.id=' . sqlesc($quote)) or sqlerr(__FILE__, __LINE__);
     $arr_quote = mysqli_fetch_array($res_quote);
     //=== if member exists, then add username, and then link back to post that was quoted with date :-D
     //==Anonymous
@@ -53,12 +51,12 @@ if (isset($_POST['button']) && 'Post' == $_POST['button']) {
         stderr($lang['gl_error'], $lang['fe_no_body_txt']);
     }
     $ip = ('' == $CURUSER['ip'] ? htmlsafechars($_SERVER['REMOTE_ADDR']) : $CURUSER['ip']);
-    sql_query('INSERT INTO `posts` (`topic_id`, `user_id`, `added`, `body`, `icon`, `post_title`, `bbcode`, `ip` , `anonymous`) VALUES (' . sqlesc($topic_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . TIME_NOW . ', ' . sqlesc($body) . ', ' . sqlesc($icon) . ', ' . sqlesc($post_title) . ', ' . sqlesc($bb_code) . ', ' . sqlesc($ip) . ', ' . sqlesc($anonymous) . ')');
+    sql_query('INSERT INTO `posts` (`topic_id`, `user_id`, `added`, `body`, `icon`, `post_title`, `bbcode`, `ip` , `anonymous`) VALUES (' . sqlesc($topic_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . TIME_NOW . ', ' . sqlesc($body) . ', ' . sqlesc($icon) . ', ' . sqlesc($post_title) . ', ' . sqlesc($bb_code) . ', ' . sqlesc($ip) . ', ' . sqlesc($anonymous) . ')') or sqlerr(__FILE__, __LINE__);
     clr_forums_cache($arr['real_forum_id']);
     $cache->delete('forum_posts_' . $CURUSER['id']);
     $post_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
-    sql_query('UPDATE topics SET last_post=' . sqlesc($post_id) . ', post_count = post_count + 1 WHERE id=' . sqlesc($topic_id));
-    sql_query('UPDATE `forums` SET post_count = post_count + 1 WHERE id =' . sqlesc($arr['real_forum_id']));
+    sql_query('UPDATE topics SET last_post=' . sqlesc($post_id) . ', post_count = post_count + 1 WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE `forums` SET post_count = post_count + 1 WHERE id =' . sqlesc($arr['real_forum_id'])) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE usersachiev SET forumposts = forumposts + 1 WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     if (1 == $site_config['autoshout_on']) {
         $message = $CURUSER['username'] . ' ' . $lang['pr_replied_to_topic'] . " [url={$site_config['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last]{$topic_name}[/url]";
@@ -78,9 +76,9 @@ if (isset($_POST['button']) && 'Post' == $_POST['button']) {
         ]);
     }
     if ('yes' == $subscribe && $arr['subscribed_id'] < 1) {
-        sql_query('INSERT INTO `subscriptions` (`user_id`, `topic_id`) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($topic_id) . ')');
+        sql_query('INSERT INTO `subscriptions` (`user_id`, `topic_id`) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($topic_id) . ')') or sqlerr(__FILE__, __LINE__);
     } elseif ('no' == $subscribe && $arr['subscribed_id'] > 0) {
-        sql_query('DELETE FROM `subscriptions` WHERE `user_id`= ' . sqlesc($CURUSER['id']) . ' AND  `topic_id` = ' . sqlesc($topic_id));
+        sql_query('DELETE FROM `subscriptions` WHERE `user_id`= ' . sqlesc($CURUSER['id']) . ' AND  `topic_id` = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     }
     // === PM subscribed members
     $res_sub = sql_query('SELECT user_id FROM subscriptions WHERE topic_id =' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
@@ -96,7 +94,7 @@ if (isset($_POST['button']) && 'Post' == $_POST['button']) {
     //=== stuff for file uploads
     if ($CURUSER['class'] >= $min_upload_class) {
         //=== make sure file is kosher
-        while (list($key, $name) = each($_FILES['attachment']['name'])) {
+        foreach ($_FILES['attachment']['name'] as $key => $name) {
             if (!empty($name)) {
                 $size = intval($_FILES['attachment']['size'][$key]);
                 $type = $_FILES['attachment']['type'][$key];
@@ -138,8 +136,7 @@ if (isset($_POST['button']) && 'Post' == $_POST['button']) {
                         $name      = substr($name, 0, -strlen($file_extension));
                         $upload_to = $upload_folder . $name . '(id-' . $post_id . ')' . $file_extension;
                         //===plop it into the DB all safe and snuggly
-                        sql_query('INSERT INTO `attachments` (`post_id`, `user_id`, `file`, `file_name`, `added`, `extension`, `size`) VALUES 
-( ' . sqlesc($post_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($name . '(id-' . $post_id . ')' . $file_extension) . ', ' . sqlesc($name) . ', ' . TIME_NOW . ', ' . ('.zip' === $file_extension ? '\'zip\'' : '\'rar\'') . ', ' . $size . ')');
+                        sql_query('INSERT INTO `attachments` (`post_id`, `user_id`, `file`, `file_name`, `added`, `extension`, `size`) VALUES ( ' . sqlesc($post_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($name . '(id-' . $post_id . ')' . $file_extension) . ', ' . sqlesc($name) . ', ' . TIME_NOW . ', ' . ('.zip' === $file_extension ? '\'zip\'' : '\'rar\'') . ', ' . $size . ')') or sqlerr(__FILE__, __LINE__);
                         copy($_FILES['attachment']['tmp_name'][$key], $upload_to);
                         chmod($upload_to, 0777);
                 }
@@ -235,10 +232,7 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	</td></tr>
 	</table></form>';
 //=== get last ten posts
-$res_posts = sql_query('SELECT p.id AS post_id, p.user_id, p.added, p.body, p.icon, p.post_title, p.bbcode, p.anonymous,
-				u.id, u.username, u.class, u.donor, u.suspended, u.chatpost, u.leechwarn, u.pirate, u.king, u.warned, u.enabled, u.avatar, u.offensive_avatar 
-				FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id 
-				WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 0, 10');
+$res_posts = sql_query('SELECT p.id AS post_id, p.user_id, p.added, p.body, p.icon, p.post_title, p.bbcode, p.anonymous, u.id, u.username, u.class, u.donor, u.suspended, u.chatpost, u.leechwarn, u.pirate, u.king, u.warned, u.enabled, u.avatar, u.offensive_avatar FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 0, 10') or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= '<br><span>' . $lang['fe_last_ten_posts_in_reverse_order'] . '</span>
 	<table border="0" cellspacing="5" cellpadding="10" width="90%">';
 //=== lets start the loop \o/

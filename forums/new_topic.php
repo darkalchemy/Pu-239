@@ -144,7 +144,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     }
 
     if ($CURUSER['class'] >= $min_upload_class) {
-        while (list($key, $name) = each($_FILES['attachment']['name'])) {
+        foreach ($_FILES['attachment']['name'] as $key => $name) {
             if (!empty($name)) {
                 $size                = intval($_FILES['attachment']['size'][$key]);
                 $type                = $_FILES['attachment']['type'][$key];

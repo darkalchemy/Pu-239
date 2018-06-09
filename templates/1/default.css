@@ -196,7 +196,11 @@ select {
 pre {
     -moz-tab-size : 4;
     -o-tab-size   : 4;
-    tab-size      : 4
+    tab-size      : 4;
+    overflow      : auto;
+    width         : calc(100vh - 1.25em);
+    margin-left   : auto !important;
+    margin-right  : auto !important;
 }
 
 .pre {

@@ -7,7 +7,7 @@ if (!is_valid_id($forum_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
 //=== stupid query just to get overforum name :'(
-$over_forums_res = sql_query('SELECT name, min_class_view FROM over_forums WHERE id =' . sqlesc($forum_id));
+$over_forums_res = sql_query('SELECT name, min_class_view FROM over_forums WHERE id =' . sqlesc($forum_id)) or sqlerr(__FILE__, __LINE__);
 $over_forums_arr = mysqli_fetch_assoc($over_forums_res);
 //=== make sure they can be here
 if ($CURUSER['class'] < $over_forums_arr['min_class_view']) {
@@ -23,7 +23,7 @@ $HTMLOUT .= '<br><table border="0" cellspacing="0" cellpadding="5" width="90%">
 	<td align="left" colspan="4"><span style="color: white;">' . $lang['sv_section_view_for'] . ' ' . htmlsafechars($over_forums_arr['name'], ENT_QUOTES) . '</span></td>
    </tr>';
 //=== basic query
-$forums_res = sql_query('SELECT name AS forum_name, description AS forum_description, id AS forum_id, post_count, topic_count FROM forums WHERE min_class_read < ' . sqlesc($CURUSER['class']) . ' AND forum_id=' . sqlesc($forum_id) . ' AND parent_forum = 0 ORDER BY sort');
+$forums_res = sql_query('SELECT name AS forum_name, description AS forum_description, id AS forum_id, post_count, topic_count FROM forums WHERE min_class_read < ' . sqlesc($CURUSER['class']) . ' AND forum_id=' . sqlesc($forum_id) . ' AND parent_forum = 0 ORDER BY sort') or sqlerr(__FILE__, __LINE__);
 //=== lets start the loop \o/
 while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
     //=== change colors
@@ -31,14 +31,16 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
     $class  = (0 == $colour ? 'one' : 'two');
     //=== Get last post info
     if (($last_post_arr = $cache->get('sv_last_post_' . $forums_arr['forum_id'] . '_' . $CURUSER['class'])) === false) {
-        $last_post_arr = mysqli_fetch_assoc(sql_query('SELECT t.last_post, t.topic_name, t.id AS topic_id, t.anonymous AS tan, p.user_id, p.added, p.anonymous AS pan, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.perms, u.offensive_avatar FROM topics AS t LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\' AND' : '')) . ' forum_id=' . sqlesc($forums_arr['forum_id']) . ' ORDER BY last_post DESC LIMIT 1'));
+        $query = sql_query('SELECT t.last_post, t.topic_name, t.id AS topic_id, t.anonymous AS tan, p.user_id, p.added, p.anonymous AS pan, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.perms, u.offensive_avatar FROM topics AS t LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\' AND' : '')) . ' forum_id = ' . sqlesc($forums_arr['forum_id']) . ' ORDER BY last_post DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        $last_post_arr = mysqli_fetch_assoc($query);
         $cache->set('sv_last_post_' . $forums_arr['forum_id'] . '_' . $CURUSER['class'], $last_post_arr, $site_config['expires']['sv_last_post']);
     }
     //=== only do more if there is a stuff here...
     if ($last_post_arr['last_post'] > 0) {
         //=== get the last post read by CURUSER
         if (($last_read_post_arr = $cache->get('sv_last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'])) === false) {
-            $last_read_post_arr = mysqli_fetch_row(sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($last_post_arr['topic_id'])));
+            $query = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($last_post_arr['topic_id'])) or sqlerr(__FILE__, __LINE__);
+            $last_read_post_arr = mysqli_fetch_row($query);
             $cache->set('sv_last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'], $last_read_post_arr, $site_config['expires']['sv_last_read_post']);
         }
         $image_and_link = ($last_post_arr['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_read_post_arr || $last_post_arr['last_post'] > $last_read_post_arr[0]) : 0;
