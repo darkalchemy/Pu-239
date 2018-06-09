@@ -843,11 +843,10 @@ if (!empty($torrents['youtube'])) {
     preg_match('/(watch\?v=|watch\?.+&v=)(.{11})/i', $torrents['youtube'], $match);
     if (isset($match[2])) {
         $youtube_id = $match[2];
-        $short_link = 'https://www.youtube.com/embed/' . $youtube_id;
-        $HTMLOUT .= tr($lang['details_youtube'], "
+        $HTMLOUT .= tr($lang['details_youtube'],"
                 <a id='YouTube-hash'>
-                <div class='youtube-embed round10' style='position: relative;padding-top: 56.25%;'>
-                    <iframe class='round10' style='position: absolute;top: 0;left: 0;width: 100%;height: 100%;' src='{$short_link}?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen ></iframe>
+                <div class='responsive-container'>
+                    <iframe width='1920px' height='1080px' src='//youtube.com/embed/{$youtube_id}?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen></iframe>
                 </div>", 1);
     }
 } else {
