@@ -176,13 +176,13 @@ if (mysqli_num_rows($res) == 0) {
             $title = get_user_class_name($friendp['class']);
         }
         $linktouser = format_username($friendp['id']) . " [$title]<br>{$lang['friends_last_seen']} " . ($friendp['perms'] < bt_options::PERMS_STEALTH ? get_date($friendp['last_access'], '') : 'Never');
-        $confirm    = "<br><span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=friend&amp;targetid=" . (int) $friendp['id'] . "'>Confirm</a></span>";
-        $block      = " <span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=" . (int) $friendp['id'] . "'>Block</a></span>";
+        $confirm    = "<br><span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=friend&amp;targetid=" . (int) $friendp['id'] . "' class='has-text-black'>Confirm</a></span>";
+        $block      = " <span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=" . (int) $friendp['id'] . "' class='has-text-black'>Block</a></span>";
         $avatar = ($CURUSER['avatars'] === 'yes' ? htmlsafechars($friendp['avatar']) : '');
         if (!$avatar) {
             $avatar = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
         }
-        $reject = " <span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=friend&amp;targetid=" . (int) $friendp['id'] . "'>{$lang['friends_reject']}</a></span>";
+        $reject = " <span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=friend&amp;targetid=" . (int) $friendp['id'] . "' class='has-text-black'>{$lang['friends_reject']}</a></span>";
         $friendsp .= '<div>' . ($avatar ? "<img width='50px' src='$avatar' alt='Avatar' />" : '') . "<p >{$linktouser}<br><br>{$confirm}{$block}{$reject}</p></div><br>";
     }
 }
@@ -220,8 +220,8 @@ if (mysqli_num_rows($res) == 0) {
         }
         $ratio      = member_ratio($friend['uploaded'], $site_config['ratio_free'] ? '0' : $friend['downloaded']);
         $linktouser = format_username($friend['id']) . " [$title] [$ratio]<br>{$lang['friends_last_seen']} " . ($friend['perms'] < bt_options::PERMS_STEALTH ? get_date($friend['last_access'], '') : 'Never');
-        $delete     = "<span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . (int) $friend['id'] . "'>{$lang['friends_remove']}</a></span>";
-        $pm_link    = " <span class='button is-small'><a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int) $friend['id'] . "'>{$lang['friends_pm']}</a></span>";
+        $delete     = "<span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_remove']}</a></span>";
+        $pm_link    = " <span class='button is-small'><a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_pm']}</a></span>";
         $avatar = ($CURUSER['avatars'] === 'yes' ? htmlsafechars($friend['avatar']) : '');
         if (!$avatar) {
             $avatar = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
@@ -237,7 +237,7 @@ if (mysqli_num_rows($res) == 0) {
 } else {
     while ($block = mysqli_fetch_assoc($res)) {
         $blocks .= '<div>';
-        $blocks .= "<span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=block&amp;targetid=" . (int) $block['id'] . "'>{$lang['friends_delete']}</a></span><br>";
+        $blocks .= "<span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=block&amp;targetid=" . (int) $block['id'] . "' class='has-text-black'>{$lang['friends_delete']}</a></span><br>";
         $blocks .= "<p>" . format_username($block['id']) . '</p></div><br>';
     }
 }
