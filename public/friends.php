@@ -175,7 +175,7 @@ if (mysqli_num_rows($res) == 0) {
         if (!$title) {
             $title = get_user_class_name($friendp['class']);
         }
-        $linktouser = "<a href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $friendp['id'] . "'><b>" . format_username($friendp) . "</b></a>[$title]<br>{$lang['friends_last_seen']} " . ($friendp['perms'] < bt_options::PERMS_STEALTH ? get_date($friendp['last_access'], '') : 'Never');
+        $linktouser = format_username($friendp['id']) . " [$title]<br>{$lang['friends_last_seen']} " . ($friendp['perms'] < bt_options::PERMS_STEALTH ? get_date($friendp['last_access'], '') : 'Never');
         $confirm    = "<br><span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=friend&amp;targetid=" . (int) $friendp['id'] . "'>Confirm</a></span>";
         $block      = " <span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=" . (int) $friendp['id'] . "'>Block</a></span>";
         $avatar = ($CURUSER['avatars'] === 'yes' ? htmlsafechars($friendp['avatar']) : '');
@@ -197,7 +197,7 @@ if (mysqli_num_rows($res) == 0) {
         if ($i % 6 == 0) {
             $friendreqs .= '<tr>';
         }
-        $friendreqs .= "<td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $friendreq['id'] . "'><b>" . format_username($friendreq) . '</b></a></td></tr>';
+        $friendreqs .= "<td>" . format_username($friendreq['id']) . '</td></tr>';
         if ($i % 6 == 5) {
             $friendreqs .= '</tr>';
         }
@@ -219,7 +219,7 @@ if (mysqli_num_rows($res) == 0) {
             $title = get_user_class_name($friend['class']);
         }
         $ratio      = member_ratio($friend['uploaded'], $site_config['ratio_free'] ? '0' : $friend['downloaded']);
-        $linktouser = "<a href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $friend['id'] . "'><b>" . format_username($friend) . "</b></a>[$title] [$ratio]<br>{$lang['friends_last_seen']} " . ($friend['perms'] < bt_options::PERMS_STEALTH ? get_date($friend['last_access'], '') : 'Never');
+        $linktouser = format_username($friend['id']) . " [$title] [$ratio]<br>{$lang['friends_last_seen']} " . ($friend['perms'] < bt_options::PERMS_STEALTH ? get_date($friend['last_access'], '') : 'Never');
         $delete     = "<span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . (int) $friend['id'] . "'>{$lang['friends_remove']}</a></span>";
         $pm_link    = " <span class='button is-small'><a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int) $friend['id'] . "'>{$lang['friends_pm']}</a></span>";
         $avatar = ($CURUSER['avatars'] === 'yes' ? htmlsafechars($friend['avatar']) : '');
@@ -238,7 +238,7 @@ if (mysqli_num_rows($res) == 0) {
     while ($block = mysqli_fetch_assoc($res)) {
         $blocks .= '<div>';
         $blocks .= "<span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=block&amp;targetid=" . (int) $block['id'] . "'>{$lang['friends_delete']}</a></span><br>";
-        $blocks .= "<p><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $block['id'] . "'><b>" . format_username($block) . '</b></a></p></div><br>';
+        $blocks .= "<p>" . format_username($block['id']) . '</p></div><br>';
     }
 }
 
@@ -251,7 +251,7 @@ foreach ($countries as $cntry) {
     }
 }
 $HTMLOUT .= "
-        <h1 class='has-text-centered' class='has-text-centered'>{$lang['friends_personal']} " . htmlsafechars($user['username'], ENT_QUOTES) . " $country</h1>
+        <h1 class='has-text-centered'>{$lang['friends_personal']} " . htmlsafechars($user['username'], ENT_QUOTES) . " $country</h1>
         <table class='table table-bordered table-striped top20 bottom20'>
             <thead>
                 <tr>
