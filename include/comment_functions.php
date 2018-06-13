@@ -8,7 +8,6 @@
 function commenttable($rows, $variant = 'torrent')
 {
     require_once INCL_DIR . 'html_functions.php';
-    require_once INCL_DIR . 'add_functions.php';
     global $CURUSER, $site_config, $mood, $cache;
 
     $lang            = load_language('torrenttable_functions');
@@ -41,9 +40,9 @@ function commenttable($rows, $variant = 'torrent')
         if (!empty($likes) && count(array_unique($likes)) > 0) {
             if (in_array($CURUSER['id'], $likes)) {
                 if (count($likes) == 1) {
-                    $att_str = jq('You like this');
+                    $att_str = "<span class='chg'>'You like this'</span>";
                 } elseif (count(array_unique($likes)) > 1) {
-                    $att_str = jq('You and ') . ((count(array_unique($likes)) - 1) == '1' ? '1 other person likes this' : (count($likes) - 1) . 'others like this');
+                    $att_str = "<span class='chg'>You and " . (count(array_unique($likes)) - 1) == '1' ? '1 other person likes this' : (count($likes) - 1) . 'others like this' . '</span>';
                 }
             } elseif (!(in_array($CURUSER['id'], $likes))) {
                 if (count(array_unique($likes)) == 1) {
@@ -81,11 +80,11 @@ function commenttable($rows, $variant = 'torrent')
         $this_text .= get_date($row['added'], '');
         $row['id'] = (int) $row['id'];
         $this_text .= ($row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? "
-                    <a href='{$site_config['baseurl']}/comment.php?action=edit&amp;cid={$row['id']}{$extra_link}&amp;tid={$row[$variant]}' class='button is-small is-primary left10'>{$lang['commenttable_edit']}</a>" : '') . ($CURUSER['class'] >= UC_VIP ? "
-                    <a href='{$site_config['baseurl']}/report.php?type=Comment&amp;id={$row['id']}' class='button is-small is-primary left10'>Report this Comment</a>" : '') . ($CURUSER['class'] >= UC_STAFF ? "
-                    <a href='{$site_config['baseurl']}/comment.php?action=delete&amp;cid={$row['id']}{$extra_link}&amp;tid={$row[$variant]}' class='button is-small is-primary left10'>{$lang['commenttable_delete']}</a>" : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? "
-                    <a href='{$site_config['baseurl']}/comment.php?action=vieworiginal&amp;cid={$row['id']}{$extra_link}&amp;tid={$row[$variant]}' class='button is-small is-primary left10'>{$lang['commenttable_view_original']}</a>" : '') . "
-                    <span id='mlike' data-com='{$row['id']}' class='comment {$wht} button is-small is-primary left10'>" . ucfirst($wht) . "</span>
+                    <a href='{$site_config['baseurl']}/comment.php?action=edit&amp;cid={$row['id']}{$extra_link}&amp;tid={$row[$variant]}' class='button is-small left10'>{$lang['commenttable_edit']}</a>" : '') . ($CURUSER['class'] >= UC_VIP ? "
+                    <a href='{$site_config['baseurl']}/report.php?type=Comment&amp;id={$row['id']}' class='button is-small left10'>Report this Comment</a>" : '') . ($CURUSER['class'] >= UC_STAFF ? "
+                    <a href='{$site_config['baseurl']}/comment.php?action=delete&amp;cid={$row['id']}{$extra_link}&amp;tid={$row[$variant]}' class='button is-small left10'>{$lang['commenttable_delete']}</a>" : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? "
+                    <a href='{$site_config['baseurl']}/comment.php?action=vieworiginal&amp;cid={$row['id']}{$extra_link}&amp;tid={$row[$variant]}' class='button is-small left10'>{$lang['commenttable_view_original']}</a>" : '') . "
+                    <span id='mlike' data-com='{$row['id']}' class='comment {$wht} button is-small left10'>" . ucfirst($wht) . "</span>
                     <span class='tot-{$row['id']}' data-tot='" . (!empty($likes) && count(array_unique($likes)) > 0 ? count(array_unique($likes)) : '') . "'>&#160;{$att_str}</span>
                 </span>
             </div>";
@@ -101,11 +100,11 @@ function commenttable($rows, $variant = 'torrent')
         $htmlout .= main_div("
             $this_text
             <a id='comment_{$row['id']}'></a>
-            <div class='is-flex'>
-                <div class='w-20 padding20 round10 bg-02'>
+            <div class='columns'>
+                <div class='margin10 round10 bg-02 column is-one-fifth has-text-centered'>
                     <img src='" . image_proxy($avatar) . "' alt='Avatar' class='avatar' /><br>" . get_reputation($row, 'comments') . "
                 </div>
-                <div class='left20 padding20 w-100 bg-02 round10'>
+                <div class='margin10 left10 bg-02 round10 column'>
                     $text
                 </div>
             </div>", $top);
