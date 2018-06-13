@@ -305,7 +305,7 @@ elseif ($mode === 'details') {
         $HTMLOUT .= "<tr><td>FPS :&#160;<b>" . ($arr['fps'] == 0 ? 'Unknown' : htmlsafechars($arr['fps'])) . "</b></td></tr>
 <tr><td>Cd# :&#160;<b>" . ($arr['cds'] == 0 ? 'Unknown' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . "</b></td></tr>
 <tr><td>Hits :&#160;<b>" . (int)$arr['hits'] . "</b></td></tr>
-<tr><td>Uploader :&#160;<b><a href='userdetails.php?id=" . (int) $arr['owner'] . "' target='_blank'>" . htmlsafechars($arr['username']) . '</a></b>&#160;&#160;';
+<tr><td>Uploader : " . format_username($arr['owner']);
         if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_MODERATOR) {
             $HTMLOUT .= "<a href='subtitles.php?mode=edit&amp;id=" . (int) $arr['id'] . "'><img src='{$site_config['pic_baseurl']}edit.png' alt='Edit Sub' title='Edit Sub' style='border:none;padding:2px;' /></a>
 <a href='subtitles.php?mode=delete&amp;id=" . (int) $arr['id'] . "'><img src='{$site_config['pic_baseurl']}drop.png' alt='Delete Sub' title='Delete Sub' style='border:none;padding:2px;' /></a>";
@@ -430,7 +430,7 @@ elseif ($mode === 'details') {
 <a href='subtitles.php?mode=delete&amp;id=" . (int) $arr['id'] . "'><img src='{$site_config['pic_baseurl']}drop.png' alt='Delete Sub' title='Delete Sub' style='border:none;padding:2px;' /></a>
 </td>";
             }
-            $HTMLOUT .= "<td><a href='userdetails.php?id=" . (int) $arr['owner'] . "'>" . htmlsafechars($arr['username']) . '</a></td></tr>';
+            $HTMLOUT .= "<td>" . format_username($arr['owner']) . '</td></tr>';
         }
         $HTMLOUT .= '</table>';
     }

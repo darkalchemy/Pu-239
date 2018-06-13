@@ -140,7 +140,7 @@ if (mysqli_num_rows($res) == 0) {
         $HTMLOUT .= (($i % 2 == 1) ? '<tr>' : '') . '
       <td class="' . (($i % 2 == 0) ? 'one' : 'two') . '" width="80">' . avatar_stuff($shit_list) . '<br>
 
-      ' . format_username($shit_list) . '<br>
+      ' . format_username($shit_list['id']) . '<br>
 
       <b> [ ' . get_user_class_name($shit_list['class']) . ' ]</b><br>
 

@@ -80,11 +80,11 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $torrname    = htmlsafechars(CutName($arr['tname'], 80));
     $users       = $arr;
     $users['id'] = (int) $arr['userid'];
-    $cheater     = "<b><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $arr['id'] . "'>" . format_username($users) . "</a></b>{$lang['cheaters_hbcc']}<br>
+    $cheater     = format_username($users['id']) . " {$lang['cheaters_hbcc']}<br>
     <b>{$lang['cheaters_torrent']} <a href='{$site_config['baseurl']}/details.php?id=" . (int) $arr['tid'] . "' title='{$torrname}'>{$torrname}</a></b>
 <br>{$lang['cheaters_upped']} <b>" . mksize((int) $arr['upthis']) . "</b><br>{$lang['cheaters_speed']} <b>" . mksize((int) $arr['rate']) . "/s</b><br>{$lang['cheaters_within']} <b>" . (int) $arr['timediff'] . " {$lang['cheaters_sec']}</b><br>{$lang['cheaters_uc']} <b>" . htmlsafechars($arr['client']) . "</b><br>{$lang['cheaters_ipa']} <b>" . htmlsafechars($arr['userip']) . '</b>';
     $HTMLOUT .= '<tr><td class="table" width="10">' . (int) $arr['cid'] . '</td>
-    <td class="table">' . format_username($users) . "<a href=\"javascript:klappe('a1" . (int) $arr['cid'] . "')\"> {$lang['cheaters_added']}" . get_date($arr['added'], 'DATE') . '</a>
+    <td class="table">' . format_username($users['id']) . "<a href=\"javascript:klappe('a1" . (int) $arr['cid'] . "')\"> {$lang['cheaters_added']}" . get_date($arr['added'], 'DATE') . '</a>
     <div id="ka1' . (int) $arr['cid'] . "\" style=\"display: none;\"><font color=\"black\">{$cheater}</font></div></td>
     <td class=\"table\" width=\"10\"><input type=\"checkbox\" name=\"desact[]\" value=\"" . (int) $arr['id'] . '"/></td>
     <td class="table" width="10"><input type="checkbox" name="remove[]" value="' . (int) $arr['cid'] . '"/></td></tr>';

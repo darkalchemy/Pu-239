@@ -27,7 +27,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $HTMLOUT .= '<tr>
 <td>' . $i . '</td>
 <td>' . (int) $arr['how_many_torrents'] . '</td>
-<td>' . format_username($arr) . '</td>
+<td>' . format_username($arr['id']) . '</td>
 <td>' . get_user_class_name($arr['class']) . '</td>
 <td>' . $ratio . '</td>
 <td>' . get_date($arr['added'], 'DATE', 0, 1) . '</td>

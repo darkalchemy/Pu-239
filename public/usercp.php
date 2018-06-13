@@ -88,7 +88,7 @@ $HTMLOUT .= "
                             <li class='altlink margin20'><a href='{$site_config['baseurl']}/usercp.php?action=links'>Links</a></li>
                         </ul>
                     </div>
-                    <h1 class='has-text-centered'>Welcome " . format_username((int) $CURUSER['id']) . "!</h1>
+                    <h1 class='has-text-centered'>Welcome " . format_username($CURUSER['id']) . "!</h1>
                     <div class='level has-text-centered flex-top'>
                         <span class='margin20'>";
 if (!empty($CURUSER['avatar']) && $CURUSER['av_w'] > 5 && $CURUSER['av_h'] > 5) {

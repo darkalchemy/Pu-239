@@ -127,11 +127,11 @@ if ($ip) {
         if ($user['invitedby'] > 0) {
             $res2      = sql_query('SELECT username FROM users WHERE id=' . sqlesc($user['invitedby']) . '');
             $array     = mysqli_fetch_assoc($res2);
-            $invitedby = $array['username'];
+            $invitedby = $array['id'];
             if ($invitedby == '') {
                 $invitedby = "<i>[{$lang['ipsearch_deleted']}]</i>";
             } else {
-                $invitedby = "<a href='{$site_config['baseurl']}/userdetails.php?id={$user['invitedby']}'>" . htmlsafechars($invitedby) . '</a>';
+                $invitedby = format_username($invitedby);
             }
         } else {
             $invitedby = '--';

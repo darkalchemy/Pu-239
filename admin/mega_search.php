@@ -306,13 +306,13 @@ if (isset($_POST['msg_to_analyze'])) {
                     if ($arr['invitedby'] > 0) {
                         $res_inviter = sql_query('SELECT id, username, class, donor, suspended, leechwarn, chatpost, pirate, king, warned, enabled FROM users WHERE id = ' . sqlesc($arr['invitedby'])) or sqlerr(__FILE__, __LINE__);
                         $arr_inviter = mysqli_fetch_array($res_inviter);
-                        $inviter = ($arr_inviter['username'] !== '' ? format_username($arr_inviter) : $lang['mega_open']);
+                        $inviter = ($arr_inviter['username'] !== '' ? format_username($arr_inviter['id']) : $lang['mega_open']);
                     } else {
                         $inviter = $lang['mega_open'];
                     }
                     $body .= '
                 <tr>
-                    <td>' . format_username($arr) . '</td>
+                    <td>' . format_username($arr['id']) . '</td>
                     <td><span style="color: red; font-weight: bold;">' . $tested_ip . ' </span></td>
                     <td>' . htmlsafechars($arr['email']) . '</td>
                     <td>

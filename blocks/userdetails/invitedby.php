@@ -6,7 +6,7 @@ if ($user['invitedby'] > 0) {
     //=== Fetch inviter info
     $res_get_invitor  = sql_query('SELECT id, class, username, warned, suspended, enabled, donor, chatpost, leechwarn, pirate, king FROM users WHERE id=' . sqlesc($user['invitedby'])) or sqlerr(__FILE__, __LINE__);
     $user_get_invitor = mysqli_fetch_assoc($res_get_invitor);
-    $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_invited_by'] . '</td><td>' . format_username($user_get_invitor) . '</td></tr>';
+    $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_invited_by'] . '</td><td>' . format_username($user_get_invitor['id']) . '</td></tr>';
 } else {
     $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_invited_by'] . '</td><td><b>' . $lang['userdetails_iopen_s'] . '</b></td></tr>';
 }
@@ -24,7 +24,7 @@ if (mysqli_num_rows($rez_invited) < 1) {
         <td class="colhead"><b>' . $lang['userdetails_ratio'] . '</b></td>
         <td class="colhead"><b>' . $lang['userdetails_status'] . '</b></td></tr>';
     while ($arr_invited = mysqli_fetch_assoc($rez_invited)) {
-        $inviteted_by_this_member .= '<tr><td>' . ($arr_invited['status'] === 'pending' ? htmlsafechars($arr_invited['username']) : format_username($arr_invited) . '<br> ' . ($CURUSER['class'] < UC_STAFF ? '' : $arr_invited['ip'])) . '</td>
+        $inviteted_by_this_member .= '<tr><td>' . ($arr_invited['status'] === 'pending' ? htmlsafechars($arr_invited['username']) : format_username($arr_invited['id']) . '<br> ' . ($CURUSER['class'] < UC_STAFF ? '' : $arr_invited['ip'])) . '</td>
         <td>' . htmlsafechars($arr_invited['email']) . '</td>
         <td>' . mksize($arr_invited['uploaded']) . '</td>
         ' . ($site_config['ratio_free'] ? '' : '<td>' . mksize($arr_invited['downloaded']) . '</td>') . '

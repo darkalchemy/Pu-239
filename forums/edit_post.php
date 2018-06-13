@@ -39,16 +39,16 @@ $can_edit = ($arr_post['puser_id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_
 if ($CURUSER['class'] < $arr_post['min_class_read'] || $CURUSER['class'] < $arr_post['min_class_write']) {
     stderr($lang['gl_error'], $lang['fe_topic_not_found']);
 }
-if ('no' == $CURUSER['forum_post'] || 'yes' == $CURUSER['suspended']) {
+if ($CURUSER['forum_post'] === 'no' || $CURUSER['suspended'] === 'yes') {
     stderr($lang['gl_error'], $lang['fe_your_no_post_right']);
 }
 if (!$can_edit) {
     stderr($lang['gl_error'], '' . $lang['fe_this_is_not_your_post_to_edit'] . '');
 }
-if ('yes' == $arr_post['locked']) {
+if ($arr_post['locked'] === 'yes') {
     stderr($lang['gl_error'], $lang['fe_this_topic_is_locked']);
 }
-if (1 == $arr_post['staff_lock']) {
+if ($arr_post['staff_lock'] === 1) {
     stderr($lang['gl_error'], $lang['fe_this_post_is_staff_locked']);
 }
 $edited_by = $CURUSER['id'];
@@ -62,8 +62,8 @@ $post_title     = strip_tags(isset($_POST['post_title']) ? $_POST['post_title'] 
 $icon           = (isset($_POST['icon']) ? htmlsafechars($_POST['icon']) : htmlsafechars($arr_post['icon']));
 $show_bbcode    = (isset($_POST['show_bbcode']) ? $_POST['show_bbcode'] : $arr_post['bbcode']);
 $edit_reason    = strip_tags(isset($_POST['edit_reason']) ? ($_POST['edit_reason']) : '');
-$show_edited_by = ((isset($_POST['show_edited_by']) && 'no' == $_POST['show_edited_by'] && UC_MAX == $CURUSER['class'] && $CURUSER['id'] == $arr_post['id']) ? 'no' : 'yes');
-if (isset($_POST['button']) && 'Edit' == $_POST['button']) {
+$show_edited_by = ((isset($_POST['show_edited_by']) && $_POST['show_edited_by'] === 'no' && $CURUSER['class'] == UC_MAX && $CURUSER['id'] == $arr_post['id']) ? 'no' : 'yes');
+if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
     if (empty($body)) {
         stderr($lang['gl_error'], $lang['fe_body_text_can_not_be_empty']);
     }
@@ -80,7 +80,7 @@ if (isset($_POST['button']) && 'Edit' == $_POST['button']) {
 	</tr>
 	</table><br>' . $arr_post['post_history'];
     //=== let the sysop have the power to not show they edited their own post if they wish...
-    if ('no' == $show_edited_by && UC_MAX == $CURUSER['class']) {
+    if ($show_edited_by === 'no' && $CURUSER['class'] == UC_MAX) {
         $edit_reason  = htmlsafechars($arr_post['edit_reason']);
         $edited_by    = htmlsafechars($arr_post['edited_by']);
         $edit_date    = (int) $arr_post['edit_date'];
@@ -169,7 +169,6 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	<h1>' . $lang['ep_edit_post_by'] . ':' . format_username($arr_post['user_id']) . ' ' . $lang['ep_in_topic'] . ' 
 	"<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_post['topic_name'], ENT_QUOTES) . '</a>"</h1>
 	<form method="post" action="' . $site_config['baseurl'] . '/forums.php?action=edit_post&amp;topic_id=' . $topic_id . '&amp;post_id=' . $post_id . '&amp;page=' . $page . '" enctype="multipart/form-data">
-	
 	' . (isset($_POST['button']) && $_POST['button'] == '' . $lang['fe_preview'] . '' ? '<br>
 	<table width="80%" border="0" cellspacing="5" cellpadding="5">
 	<tr><td class="forum_head" colspan="2"><span style="color: black; font-weight: bold;">' . $lang['fe_preview'] . '</span></td></tr>
@@ -246,7 +245,7 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	<td align="left" ><input type="text" maxlength="20" name="edit_reason" value="' . trim(strip_tags($edit_reason)) . '" class="w-100" /> [ optional ] 
 	&nbsp;&nbsp;&nbsp;&nbsp;
 	</td></tr>
-	' . ((UC_MAX == $CURUSER['class'] or $CURUSER['id'] == $arr_post['id']) ? '<tr><td align="right" ><span style="white-space:nowrap; font-weight: bold;">Edit By</span></td>
+	' . (($CURUSER['class'] == UC_MAX || $CURUSER['id'] == $arr_post['id']) ? '<tr><td align="right" ><span style="white-space:nowrap; font-weight: bold;">Edit By</span></td>
 	<td align="left" >
 	<input type="radio" name="show_edited_by" value="yes"' . ('yes' == $show_edited_by ? ' checked="checked"' : '') . ' /> yes
 	<input type="radio" name="show_edited_by" value="no"' . ('no' == $show_edited_by ? ' checked="checked"' : '') . ' /> no
@@ -255,8 +254,8 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	<td align="left" >' . BBcode($body) . $more_options . '
 	</td></tr>
 	<tr><td colspan="2" >
-	<input type="submit" name="button" class="button" value="' . $lang['fe_preview'] . '"  />
-	<input type="submit" name="button" class="button_tiny" value="Edit" onmouseover="this.className=\'button_tiny_hover\'" onmouseout="this.className=\'button_tiny\'" />
+	<input type="submit" name="button" class="button is-small" value="' . $lang['fe_preview'] . '"  />
+	<input type="submit" name="button" class="button is-small" value="Edit" />
 	</td></tr>
 	</table></form>';
 
@@ -270,7 +269,7 @@ while ($arr = mysqli_fetch_assoc($res_posts)) {
 		<span style="font-weight: bold;">' . ('yes' == $arr['anonymous'] ? '<i>' . $lang['fe_anonymous'] . '</i>' : htmlsafechars($arr['username'])) . '</span></span></td>
 		<td class="forum_head" align="left" valign="middle"><span style="white-space:nowrap;"> ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span></td></tr>';
     $width = 100;
-    if ('yes' == $arr['anonymous']) {
+    if ($arr['anonymous'] === 'yes') {
         if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
             $HTMLOUT .= '<tr><td><img style="max-width:' . $width . 'px;" src="' . $site_config['pic_baseurl'] . 'anonymous_1.jpg" alt="avatar" /><br><i>' . $lang['fe_anonymous'] . '</i></td>';
         } else {

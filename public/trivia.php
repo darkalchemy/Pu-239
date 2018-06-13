@@ -177,7 +177,7 @@ if (empty($gamenum) || empty($qid)) {
                     extract($result);
                     $table .= "
                         <tr>
-                            <td width='5%'><div class='is-pulled-left'>" . format_username((int) $user_id) . "</div></td>
+                            <td width='5%'><div class='is-pulled-left'>" . format_username($user_id) . "</div></td>
                             <td class='has-text-centered' width='5%'>" . sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100) . "</td>
                             <td class='has-text-centered' width='5%'>$correct</td>
                             <td class='has-text-centered' width='5%'>$incorrect</td>

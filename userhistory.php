@@ -37,7 +37,7 @@ if ($action === 'viewposts') {
     $res = sql_query('SELECT id, username, class, donor, warned, leechwarn, pirate, king, chatpost, enabled FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 1) {
         $arr     = mysqli_fetch_assoc($res);
-        $subject = '' . format_username($arr, true);
+        $subject = '' . format_username($arr['id']);
     } else {
         $subject = $lang['posts_unknown'] . '[' . $userid . ']';
     }
@@ -115,7 +115,7 @@ if ($action === 'viewcomments') {
     $res = sql_query('SELECT id, class, username, donor, warned, leechwarn, chatpost, pirate, king, enabled FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 1) {
         $arr     = mysqli_fetch_assoc($res);
-        $subject = '' . format_username($arr, true);
+        $subject = '' . format_username($arr['id]);
     } else {
         $subject = $lang['posts_unknown'] . '[' . $userid . ']';
     }

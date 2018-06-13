@@ -27,7 +27,7 @@ $stdfoot = [
     ],
 ];
 $over_forum_id = $count = $now_viewing = $child_boards = '';
-if (0 == $site_config['forums_online'] && $CURUSER['class'] < UC_STAFF) {
+if ($site_config['forums_online'] == 0 && $CURUSER['class'] < UC_STAFF) {
     stderr($lang['fm_information'], $lang['fm_the_forums_are_currently_offline']);
 }
 if (function_exists('parked')) {
@@ -44,7 +44,7 @@ $config_arr = $fluent->from('forum_config')
     ->where('id = ?', $config_id)
     ->fetch();
 
-$delete_for_real         = (1 == $config_arr['delete_for_real'] ? 1 : 0);
+$delete_for_real         = ($config_arr['delete_for_real'] == 1 ? 1 : 0);
 $min_delete_view_class   = htmlsafechars($config_arr['min_delete_view_class']);
 $readpost_expiry         = ((int) $config_arr['readpost_expiry'] * 86400);
 $min_upload_class        = htmlsafechars($config_arr['min_upload_class']);
@@ -104,7 +104,6 @@ if ($CURUSER['class'] >= UC_STAFF) {
         'clear_unread_post',
         'download_attachment',
         'poll',
-        'member_post_history',
     ];
 }
 
@@ -119,28 +118,30 @@ if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
         }
     </script>";
 }
-
 $mini_menu = "
     <div class='bottom20'>
-        <ul class='level-center bg-06'>
+        <ul class='level-center bg-06'>" . ($action !== 'forum' ? "
+            <li class='margin20'>
+                <a href='{$site_config['baseurl']}/forums.php'>{$lang['fe_forums_main']}</a>
+            </li>" : '') . ($action !== 'subscriptions' ? "
             <li class='margin20'>
                 <a href='{$site_config['baseurl']}/forums.php?action=subscriptions'>{$lang['fm_my_subscriptions']}</a>
-            </li>
+            </li>" : '') . ($action !== 'search' ? "
             <li class='margin20'>
                 <a href='{$site_config['baseurl']}/forums.php?action=search'>{$lang['fe_search']}</a>
-            </li>
+            </li>" : '') . ($action !== 'view_unread_posts' ? "
             <li class='margin20'>
                 <a href='{$site_config['baseurl']}/forums.php?action=view_unread_posts'>{$lang['fm_unread_posts']}</a>
-            </li>
+            </li>" : '') . ($action !== 'new_replies' ? "
             <li class='margin20'>
                 <a href='{$site_config['baseurl']}/forums.php?action=new_replies'>{$lang['fm_new_replies']}</a>
-            </li>
+            </li>" : '') . ($action !== 'vew_my_posts' ? "
             <li class='margin20'>
                 <a href='{$site_config['baseurl']}/forums.php?action=view_my_posts'>{$lang['fm_my_posts']}</a>
-            </li>
+            </li>" : '') . "
             <li class='margin20'>
         	    <a href='{$site_config['baseurl']}/forums.php?action=mark_all_as_read'>{$lang['fm_mark_all_as_read']}</a>
-        	</li>" . (UC_MAX === $CURUSER['class'] ? "
+        	</li>" . ($CURUSER['class'] >= UC_SYSOP && $action !== 'member_post_history' ? "
             <li class='margin20'>
         	    <a href='{$site_config['baseurl']}/forums.php?action=member_post_history'>{$lang['fm_member_post_history']}</a>
         	</li>" : '') . '
@@ -288,7 +289,6 @@ $more_options = '
 $forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));
 
 $the_bottom_of_the_page = insert_quick_jump_menu($forum_id) . $legend;
-
 switch ($action) {
     case 'view_forum':
         require_once FORUM_DIR . 'view_forum.php';
@@ -358,6 +358,7 @@ switch ($action) {
 
     case 'member_post_history':
         require_once FORUM_DIR . 'member_post_history.php';
+//dd($HTMLOUT);
         $HTMLOUT .= $the_bottom_of_the_page;
         break;
 
@@ -445,7 +446,7 @@ switch ($action) {
                 if ($last_post_arr['last_post'] > 0) {
                     $last_post_id = (int) $last_post_arr['last_post'];
                     if (($last_read_post_arr = $cache->get('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'])) === false) {
-                        $query = sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($last_post_arr['topic_id'])) or sqlerr(__FILE__, __LINE__);
+                        $query = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($last_post_arr['topic_id'])) or sqlerr(__FILE__, __LINE__);
                         $last_read_post_arr = mysqli_fetch_row($query);
                         $cache->set('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'], $last_read_post_arr, $site_config['expires']['last_read_post']);
                     }
@@ -455,7 +456,7 @@ switch ($action) {
                         if ($CURUSER['class'] < UC_STAFF && $last_post_arr['user_id'] != $CURUSER['id']) {
                             $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . $lang['fe_anonymous'] . '</i> in &#9658; <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
                         } else {
-                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . $lang['fe_anonymous'] . '</i> [' . ('' !== $last_post_arr['username'] ? format_username($last_post_arr) : '' . $lang['fe_lost'] . '') . '] <span style="font-size: x-small;"> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>in &#9658; <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
+                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . $lang['fe_anonymous'] . '</i> [' . ('' !== $last_post_arr['username'] ? format_username($last_post_arr['id']) : '' . $lang['fe_lost'] . '') . '] <span style="font-size: x-small;"> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>in &#9658; <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
                         }
                     } else {
                         $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . ('' !== $last_post_arr['username'] ? format_username($last_post_arr['id']) : '' . $lang['fe_lost'] . '') . ' <span style="font-size: x-small;"> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>in &#9658; <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';

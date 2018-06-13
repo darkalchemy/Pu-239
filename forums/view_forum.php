@@ -181,7 +181,7 @@ $row   = mysqli_fetch_row($res);
 $count = $posts = $row[0];
 
 $page    = isset($_GET['page']) ? (int) $_GET['page'] : 0;
-$perpage = 0 !== $CURUSER['topicsperpage'] ? $CURUSER['topicsperpage'] : (isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15);
+$perpage = $CURUSER['topicsperpage'] !== 0 ? $CURUSER['topicsperpage'] : (isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15);
 //$perpage = max(($CURUSER['topicsperpage'] !== 0 ? $CURUSER['topicsperpage'] :  (isset($_GET['perpage']) ? (int)$_GET['perpage'] : 15)), 15);
 list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'forums.php?action=view_forum&amp;forum_id=' . $forum_id . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
 
@@ -243,14 +243,14 @@ if ($count > 0) {
                 break;
         }
 
-        if ('yes' == $arr_post_stuff['anonymous']) {
+        if ($arr_post_stuff['anonymous'] == 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $arr_post_stuff['user_id'] != $CURUSER['id']) {
-                $last_post_username = ('' !== $arr_post_stuff['username'] ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . (int) $arr_post_stuff['id'] . ']');
+                $last_post_username = ($arr_post_stuff['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . (int) $arr_post_stuff['id'] . ']');
             } else {
-                $last_post_username = ('' !== $arr_post_stuff['username'] ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($arr_post_stuff['user_id']) . ']' : '' . $lang['fe_lost'] . ' [' . (int) $arr_post_stuff['id'] . ']');
+                $last_post_username = ($arr_post_stuff['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($arr_post_stuff['user_id']) . ']' : '' . $lang['fe_lost'] . ' [' . (int) $arr_post_stuff['id'] . ']');
             }
         } else {
-            $last_post_username = ('' !== $arr_post_stuff['username'] ? format_username($arr_post_stuff['user_id']) : '' . $lang['fe_lost'] . ' [' . (int) $arr_post_stuff['id'] . ']');
+            $last_post_username = ($arr_post_stuff['username'] !== '' ? format_username($arr_post_stuff['user_id']) : '' . $lang['fe_lost'] . ' [' . (int) $arr_post_stuff['id'] . ']');
         }
 
         $last_post_id = (int) $arr_post_stuff['last_post_id'];
@@ -263,17 +263,17 @@ if ($count > 0) {
 												topic_id=' . sqlesc($topic_id) . ' ORDER BY p.id ASC LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $first_post_arr = mysqli_fetch_assoc($first_post_res);
 
-        if ('yes' == $first_post_arr['anonymous']) {
+        if ($first_post_arr['anonymous'] === 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $first_post_arr['user_id'] != $CURUSER['id']) {
-                $thread_starter = ('' !== $first_post_arr['username'] ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+                $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
             } else {
-                $thread_starter = ('' !== $first_post_arr['username'] ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($first_post_arr['user_id']) . ']' : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+                $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($first_post_arr['user_id']) . ']' : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
             }
         } else {
-            $thread_starter = ('' !== $first_post_arr['username'] ? format_username($first_post_arr['user_id']) : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+            $thread_starter = ($first_post_arr['username'] !== '' ? format_username($first_post_arr['user_id']) : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
         }
 
-        $icon            = ('' == $first_post_arr['icon'] ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_thread_icon'] . '" title="' . $lang['fe_thread_icon'] . '" class="tooltipper icon" />' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" />');
+        $icon            = ($first_post_arr['icon'] === '' ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_thread_icon'] . '" title="' . $lang['fe_thread_icon'] . '" class="tooltipper icon" />' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" />');
         $first_post_text = bubble('<img src="' . $site_config['pic_baseurl'] . 'forums/mg.gif" alt="' . $lang['fe_preview'] . '" class="icon" />', format_comment($first_post_arr['body'], true, false, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
 
         $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
@@ -287,7 +287,7 @@ if ($count > 0) {
 
         $total_pages = floor($posts / $perpage);
         switch (true) {
-            case 0 == $total_pages:
+            case $total_pages == 0:
                 $multi_pages = '';
                 break;
 
@@ -317,7 +317,7 @@ if ($count > 0) {
 
         $rpic = ($topic_arr['num_ratings'] != 0 ? ratingpic_forums(round($topic_arr['rating_sum'] / $topic_arr['num_ratings'], 1)) : '');
 
-        if (UC_MAX == $CURUSER['class'] && 2 === $forum_id) { //=== set this to your forum that you don't want to bother with the sanity check
+        if ($CURUSER['class'] == UC_MAX && $forum_id === 2) { //=== set this to your forum that you don't want to bother with the sanity check
             $delete_me = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: x-small;">[ <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=delete_topic&amp;topic_id=' . $topic_id . '&amp;sure=1&amp;send_me_back=666">' . $lang['fe_delete'] . '</a> ]</span>';
         }
 
@@ -339,7 +339,7 @@ if ($count > 0) {
 		    <div>
 		    ' . $rpic . '
 		    </div>
-		</td>' . ('' !== $topic_arr['topic_desc'] ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($topic_arr['topic_desc'], ENT_QUOTES) . '</span>' : '') . '</td>
+		</td>' . ($topic_arr['topic_desc'] !== '' ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($topic_arr['topic_desc'], ENT_QUOTES) . '</span>' : '') . '</td>
 		<td>' . $thread_starter . '</td>
 		<td>' . number_format($topic_arr['post_count']) . '</td>
 		<td>' . number_format($topic_arr['views']) . '</td>

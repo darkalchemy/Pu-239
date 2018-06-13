@@ -2,22 +2,19 @@
 
 global $lang;
 $posts = $lppostid = $topicpoll = $rpic = $content = '';
-$links = '<span><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
-$HTMLOUT .= '<h1>Subscribed Forums for ' . format_username($CURUSER) . '</h1>' . $links;
+$HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">Subscribed Forums for ' . format_username($CURUSER['id']) . '</h1>';
 //=== Get count
 $res   = sql_query('SELECT COUNT(id) FROM subscriptions WHERE user_id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 $row   = mysqli_fetch_row($res);
 $count = $row[0];
 //=== nothing here? kill the page
-if (0 == $count) {
-    $HTMLOUT .= '<br><br><table border="0" cellspacing="10" cellpadding="10" width="400px">
-		<tr><td>
-		<h1>' . $lang['sub_no_subscript_found'] . '!</h1>' . $lang['sub_you_have_yet_sub_forums'] . ' 
-		<span>' . $lang['sub_subscrib_to_forum'] . '</span> ' . $lang['sub_no_subscript_found_msg1'] . '.<br><br>
-		' . $lang['sub_to_be_notified_via_pm'] . ' <a class="altlink" href="my.php">' . $lang['sub_profile'] . '</a> 
-		' . $lang['sub_page_and_set'] . ' <span>' . $lang['sub_pm_on_subcript'] . '</span> ' . $lang['sub_to_yes'] . '.<br><br>
-		</td></tr></table><br><br>';
-    $HTMLOUT .= $links . '<br>';
+if ($count == 0) {
+    $HTMLOUT .= main_div("
+        <h1 class='has-text-centered'>{$lang['sub_no_subscript_found']}!</h1>
+        <p>{$lang['sub_you_have_yet_sub_forums']} {$lang['sub_subscrib_to_forum']} {$lang['sub_no_subscript_found_msg1']}.</p>
+		<p>{$lang['sub_to_be_notified_via_pm']} <a class='altlink has-text-lime' href='usercp.php?action=default'>{$lang['sub_profile']}</a>
+		{$lang['sub_page_and_set']} {$lang['sub_pm_on_subcript']} {$lang['sub_to_yes']}.</p>", 'bottom20');
+    return;
 }
 //=== get stuff for the pager
 $page               = isset($_GET['page']) ? (int) $_GET['page'] : 0;
@@ -31,34 +28,34 @@ $the_top_and_bottom = '<table border="0" cellspacing="0" cellpadding="0" width="
 $res = sql_query('SELECT s.id AS subscribed_id, t.id AS topic_id, t.topic_name, t.topic_desc, t.last_post, t.views, t.post_count, t.locked, t.sticky, t.poll_id, t.user_id, t.anonymous AS tan, p.id AS post_id, p.added, p.user_id, p.anonymous AS pan, u.username, u.id, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.perms, u.offensive_avatar FROM subscriptions AS s LEFT JOIN topics AS t ON s.topic_id = t.id LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN forums AS f ON f.id = t.forum_id LEFT JOIN users AS u ON u.id = p.user_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' s.user_id = ' . $CURUSER['id'] . ' AND f.min_class_read < ' . sqlesc($CURUSER['class']) . ' AND s.user_id = ' . sqlesc($CURUSER['id']) . '  ORDER BY t.id DESC ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
 while ($topic_arr = mysqli_fetch_assoc($res)) {
     $topic_id           = (int) $topic_arr['topic_id'];
-    $locked             = 'yes' == $topic_arr['locked'];
-    $sticky             = 'yes' == $topic_arr['sticky'];
+    $locked             = $topic_arr['locked'] === 'yes';
+    $sticky             = $topic_arr['sticky'] === 'yes';
     $topic_poll         = $topic_arr['poll_id'] > 0;
-    $last_post_username = ('no' == $topic_arr['pan'] && '' !== $topic_arr['username'] ? format_username($topic_arr) : '[<i>' . $lang['fe_anonymous'] . '</i>]');
+    $last_post_username = ($topic_arr['pan'] === 'no' && $topic_arr['username'] !== '' ? format_username($topic_arr['id']) : '[<i>' . $lang['fe_anonymous'] . '</i>]');
     $last_post_id       = (int) $topic_arr['last_post'];
     //=== Get author / first post info
-    $first_post_res = sql_query('SELECT p.added, p.icon, p.body, p.user_id, p.anonymous, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id) . ' ORDER BY id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    $first_post_res = sql_query('SELECT p.added, p.icon, p.body, p.user_id, p.anonymous, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND' : '')) . ' topic_id = ' . sqlesc($topic_id) . ' ORDER BY id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $first_post_arr = mysqli_fetch_assoc($first_post_res);
-    if ('yes' == $topic_arr['tan']) {
+    if ($topic_arr['tan'] === 'yes') {
         if ($CURUSER['class'] < UC_STAFF && $first_post_arr['user_id'] != $CURUSER['id']) {
-            $thread_starter = ('' !== $first_post_arr['username'] ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+            $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
         } else {
-            $thread_starter = ('' !== $first_post_arr['username'] ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($first_post_arr) . ']' : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+            $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($first_post_arr['id']) . ']' : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
         }
     } else {
-        $thread_starter = ('' !== $first_post_arr['username'] ? format_username($first_post_arr) : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+        $thread_starter = ($first_post_arr['username'] !== '' ? format_username($first_post_arr['id']) : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
     }
-    $icon            = ('' == $first_post_arr['icon'] ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" title="' . htmlsafechars($first_post_arr['icon']) . '" />');
+    $icon            = ($first_post_arr['icon'] === '' ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" title="' . htmlsafechars($first_post_arr['icon']) . '" />');
     $first_post_text = bubble(' <img src="' . $site_config['pic_baseurl'] . 'forums/mg.gif" height="14" alt="' . $lang['fe_preview'] . '" />', format_comment($first_post_arr['body'], true, false, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
     //=== last post read in topic
-    $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+    $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     $last_unread_post_arr = mysqli_fetch_row($last_unread_post_res);
-    $did_i_post_here      = sql_query('SELECT user_id FROM posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+    $did_i_post_here      = sql_query('SELECT user_id FROM posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     $posted               = (mysqli_num_rows($did_i_post_here) > 0 ? 1 : 0);
     //=== make the multi pages thing...
     $total_pages = floor($posts / $perpage);
     switch (true) {
-        case 0 == $total_pages:
+        case $total_pages == 0:
             $multi_pages = '';
             break;
 
@@ -96,7 +93,7 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
 		<td align="right">' . $rpic . '</td>
 		</tr>
 		</table>
-		' . ('' !== $topic_arr['topic_desc'] ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($topic_arr['topic_desc'], ENT_QUOTES) . '</span>' : '') . '</td>
+		' . ($topic_arr['topic_desc'] !== '' ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($topic_arr['topic_desc'], ENT_QUOTES) . '</span>' : '') . '</td>
 		<td>' . $thread_starter . '</td>
 		<td>' . number_format($topic_arr['post_count'] - 1) . '</td>
 		<td>' . number_format($topic_arr['views']) . '</td>
@@ -123,6 +120,6 @@ $HTMLOUT .= $the_top_and_bottom . '<form action="' . $site_config['baseurl'] . '
 		<td valign="middle" colspan="9">
 		<a class="altlink" href="javascript:SetChecked(1,\'remove[]\')"> <span style="color: black;">' . $lang['sub_select_all'] . '</span></a> - 
 		<a class="altlink" href="javascript:SetChecked(0,\'remove[]\')"><span style="color: black;">' . $lang['sub_un_select_all'] . '</span></a>  
-		<input type="submit" name="button" class="button" value="' . $lang['fe_remove'] . ' Selected"  /></td>
-		</tr></table></form><script type="text/javascript" src="' . $site_config['baseurl'] . '/scripts/check_selected.js"></script>
-		' . $the_top_and_bottom . '<br><br>' . $links . '<br>';
+		<input type="submit" name="button" class="button is-small" value="' . $lang['fe_remove'] . ' Selected"  /></td>
+		</tr></table></form>
+		' . $the_top_and_bottom;

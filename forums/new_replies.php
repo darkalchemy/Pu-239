@@ -4,8 +4,7 @@ global $lang;
 
 //=== start page
 $colour = $topicpoll = '';
-$links  = '<span><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
-$HTMLOUT .= '<h1>' . $lang['nr_new_replys_to_treads'] . ' ' . $lang['nr_youve_posted_in'] . '</h1>' . $links;
+$HTMLOUT .= $mini_menu . '<h1>' . $lang['nr_new_replys_to_treads'] . ' ' . $lang['nr_youve_posted_in'] . '</h1>';
 //$time = $readpost_expiry;
 $res_count = sql_query('SELECT t.id, t.last_post FROM topics AS t LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN forums AS f ON f.id = t.forum_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class']) or sqlerr(__FILE__, __LINE__);
 //=== lets do the loop / Check if post is read / get count there must be a beter way to do this lol
@@ -25,7 +24,6 @@ if (0 == $count) {
    <tr><td>
    <h1>' . $lang['fe_no_unread_posts'] . '!</h1>' . $lang['fe_you_are_uptodate_topics'] . ' ' . $lang['nr_youve_posted_in'] . '.<br><br>
 	</td></tr></table><br><br>';
-    $HTMLOUT .= $links . '<br>';
 } else {
     //=== get stuff for the pager
     $page               = isset($_GET['page']) ? (int) $_GET['page'] : 0;
@@ -64,26 +62,26 @@ if (0 == $count) {
         if ($arr_post_read[0] < $arr_unread['last_post'] && $posted) {
             //=== change colors
             $colour                  = (++$colour) % 2;
-            $class                   = (0 == $colour ? 'one' : 'two');
-            $locked                  = 'yes' == $arr_unread['locked'];
-            $sticky                  = 'yes' == $arr_unread['sticky'];
+            $class                   = ($colour == 0 ? 'one' : 'two');
+            $locked                  = $arr_unread['locked'] === 'yes';
+            $sticky                  = $arr_unread['sticky'] === 'yes';
             $topic_poll              = $arr_unread['poll_id'] > 0;
             $first_unread_poster     = sql_query('SELECT added FROM posts WHERE status = \'ok\'  AND topic_id=' . sqlesc($arr_unread['topic_id']) . ' ORDER BY id ASC LIMIT 1') or sqlerr(__FILE__, __LINE__);
             $first_unread_poster_arr = mysqli_fetch_row($first_unread_poster);
-            if ('yes' == $arr_unread['tan']) {
+            if ($arr_unread['tan'] === 'yes') {
                 if ($CURUSER['class'] < UC_STAFF && $arr_unread['user_id'] != $CURUSER['id']) {
                     $thread_starter = ('' !== $arr_unread['username'] ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
                 } else {
-                    $thread_starter = ('' !== $arr_unread['username'] ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($arr_unread) . ']' : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
+                    $thread_starter = ('' !== $arr_unread['username'] ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($arr_unread['id']) . ']' : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
                 }
             } else {
-                $thread_starter = ('' !== $arr_unread['username'] ? format_username($arr_unread) : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
+                $thread_starter = ('' !== $arr_unread['username'] ? format_username($arr_unread['id']) : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
             }
             $topicpic        = ($arr_unread['post_count'] < 30 ? ($locked ? 'lockednew' : 'topicnew') : ($locked ? 'lockednew' : 'hot_topic_new'));
             $rpic            = (0 != $arr_unread['num_ratings'] ? ratingpic_forums(round($arr_unread['rating_sum'] / $arr_unread['num_ratings'], 1)) : '');
             $sub             = sql_query('SELECT user_id FROM subscriptions WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($arr_unread['topic_id'])) or sqlerr(__FILE__, __LINE__);
             $subscriptions   = (mysqli_num_rows($sub) > 0 ? 1 : 0);
-            $icon            = ('' == $arr_unread['icon'] ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="pic/smilies/' . htmlsafechars($arr_unread['icon']) . '.gif" alt="' . htmlsafechars($arr_unread['icon']) . '" title="' . htmlsafechars($arr_unread['icon']) . '" />');
+            $icon            = ($arr_unread['icon'] === '' ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr_unread['icon']) . '.gif" alt="' . htmlsafechars($arr_unread['icon']) . '" title="' . htmlsafechars($arr_unread['icon']) . '" />');
             $first_post_text = bubble(' <img src="' . $site_config['pic_baseurl'] . 'forums/mg.gif" height="14" alt="' . $lang['fe_preview'] . '" />', format_comment($arr_unread['body'], true, false, false), '' . $lang['fe_last_post'] . ' ' . $lang['fe_preview'] . '');
             $topic_name      = ($sticky ? '<img src="' . $site_config['pic_baseurl'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" /> ' : ' ') . ($topicpoll ? '<img src="' . $site_config['pic_baseurl'] . 'forums/poll.gif" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '" /> ' : ' ') . ' <a class="altlink" href="?action=view_topic&amp;topic_id=' . (int) $arr_unread['topic_id'] . '" title="' . $lang['fe_1st_post_in_tread'] . '">' . htmlsafechars($arr_unread['topic_name'], ENT_QUOTES) . '</a><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $arr_unread['topic_id'] . '&amp;page=0#' . (int) $arr_post_read[0] . '" title="' . $lang['fe_1st_unread_post_topic'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/last_post.gif" alt="First unread post" title="First unread post" /></a>' . ($posted ? '<img src="' . $site_config['pic_baseurl'] . 'forums/posted.gif" alt="Posted" title="Posted" /> ' : ' ') . ($subscriptions ? '<img src="' . $site_config['pic_baseurl'] . 'forums/subscriptions.gif" alt="' . $lang['fe_subscribed'] . '" title="' . $lang['fe_subscribed'] . '" /> ' : ' ') . ' <img src="' . $site_config['pic_baseurl'] . 'forums/new.gif" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!" />';
             //=== print here
@@ -106,5 +104,5 @@ if (0 == $count) {
 		</tr>';
         }
     }
-    $HTMLOUT .= '</table>' . $the_top_and_bottom . '<br><br>' . $links . '<br>';
+    $HTMLOUT .= '</table>' . $the_top_and_bottom;
 }

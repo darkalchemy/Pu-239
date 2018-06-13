@@ -231,9 +231,9 @@ if (isset($_GET['search'])) {
     $search     = htmlsafechars($_GET['search']);
     $topic_name = highlightWords($topic_name, $search);
 }
-$forum_desc = ('' !== $arr['topic_desc'] ? '<span >' . htmlsafechars($arr['topic_desc'], ENT_QUOTES) . '</span>' : '');
-$locked     = ('yes' === $arr['locked'] ? 'yes' : 'no');
-$sticky     = ('yes' === $arr['sticky'] ? 'yes' : 'no');
+$forum_desc = ($arr['topic_desc'] !== '' ? '<span >' . htmlsafechars($arr['topic_desc'], ENT_QUOTES) . '</span>' : '');
+$locked     = ($arr['locked'] === 'yes' ? 'yes' : 'no');
+$sticky     = ($arr['sticky'] === 'yes' ? 'yes' : 'no');
 $views      = number_format($arr['views']);
 
 $forum_name = htmlsafechars($arr['forum_name'], ENT_QUOTES);
@@ -366,7 +366,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $member_reputation = $arr['username'] != '' ? get_reputation($arr, 'posts', true, $arr['post_id']) : '';
     $edited_by         = '';
     if ($arr['edit_date'] > 0) {
-        if ('yes' == $arr['anonymous']) {
+        if ($arr['anonymous'] == 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
                 $edited_by = '<span>' . $lang['vmp_last_edit_by_anony'] . '
 				 at ' . get_date($arr['edit_date'], '') . ' UTC ' . ('' !== $arr['edit_reason'] ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
@@ -402,7 +402,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $width  = 300;
     $height = 100;
 
-    $signature = (($CURUSER['opt1'] & user_options::SIGNATURES) ? '' : ('' == $arr['signature'] ? '' : ('yes' == $arr['anonymous'] || $arr['perms'] & bt_options::PERMS_STEALTH ? '<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr><td><hr><img style="max-width:' . $width . 'px;max-height:' . $height . 'px;" src="' . $site_config['pic_baseurl'] . 'anonymous_2.jpg" alt="Signature" /></td></tr></table>' : '<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr><td ><hr>' . format_comment($arr['signature']) . '</td></tr></table>')));
+    $signature = (($CURUSER['opt1'] & user_options::SIGNATURES) ? '' : ($arr['signature']== '' ? '' : ($arr['anonymous'] == 'yes' || $arr['perms'] & bt_options::PERMS_STEALTH ? '<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr><td><hr><img style="max-width:' . $width . 'px;max-height:' . $height . 'px;" src="' . $site_config['pic_baseurl'] . 'anonymous_2.jpg" alt="Signature" /></td></tr></table>' : '<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr><td ><hr>' . format_comment($arr['signature']) . '</td></tr></table>')));
 
     $post_status = htmlsafechars($arr['post_status']);
     switch ($post_status) {
@@ -451,18 +451,18 @@ while ($arr = mysqli_fetch_assoc($res)) {
                         <a href="' . $site_config['baseurl'] . '/report.php?type=Post&amp;id=' . $post_id . '&amp;id_2=' . $topic_id . '"><img src="' . $site_config['pic_baseurl'] . 'forums/report.gif" alt="' . $lang['fe_report'] . '" title="' . $lang['fe_report'] . '" class="tooltipper emoticon" /> ' . $lang['fe_report'] . '</a>
                         ' . (UC_MAX == $CURUSER['class'] && 1 == $arr['staff_lock'] ? '<a href="' . $site_config['baseurl'] . '/forums.php?action=staff_lock&amp;mode=unlock&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '"><img src="' . $site_config['pic_baseurl'] . 'key.gif" alt="' . $lang['fe_un_lock'] . '" title="' . $lang['fe_un_lock'] . '" class="tooltipper emoticon" /> ' . $lang['fe_unlock_post'] . '</a>' : '') . '
                         ' . (UC_MAX == $CURUSER['class'] && 0 == $arr['staff_lock'] ? '<a href="' . $site_config['baseurl'] . '/forums.php?action=staff_lock&amp;mode=lock&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '"><img src="' . $site_config['pic_baseurl'] . 'key.gif" alt="' . $lang['fe_lock'] . '" title="' . $lang['fe_lock'] . '" class="tooltipper emoticon" /> ' . $lang['fe_lock_post'] . '</a>' : '') . $stafflocked . '
-                        <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '#top"><img src="' . $site_config['pic_baseurl'] . 'up.gif" alt="' . $lang['fe_top'] . '" title="' . $lang['fe_top'] . '" class="tooltipper emoticon" /></a> 
+                        <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '#top"><img src="' . $site_config['pic_baseurl'] . 'forums/up.gif" alt="' . $lang['fe_top'] . '" title="' . $lang['fe_top'] . '" class="tooltipper emoticon" /></a> 
                         <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '#bottom"><img src="' . $site_config['pic_baseurl'] . 'forums/down.gif" alt="' . $lang['fe_bottom'] . '" title="' . $lang['fe_bottom'] . '" class="tooltipper emoticon" /></a> 
                     </div>
                 </div>
             </td>
         </tr>
 		<tr>
-         <td class="w-10">' . ('yes' == $arr['anonymous'] ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_baseurl'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($arr)) . '<br>
-			' . ('yes' == $arr['anonymous'] ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($arr['user_id'])) . ('yes' == $arr['anonymous'] || '' == $arr['title'] ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($arr['title']) . ']</span>') . '<br>
-			<span >' . ('yes' == $arr['anonymous'] ? '' : get_user_class_name($arr['class'])) . '</span><br>
+         <td class="w-10">' . ($arr['anonymous'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_baseurl'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($arr)) . '<br>
+			' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($arr['user_id'])) . ($arr['anonymous'] == 'yes' || $arr['title'] == '' ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($arr['title']) . ']</span>') . '<br>
+			<span >' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name($arr['class'])) . '</span><br>
 			' . ($arr['last_access'] > (TIME_NOW - 300) && $arr['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper emoticon" /> Online' : ' <img src="' . $site_config['pic_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper emoticon" /> ' . $lang['fe_offline'] . '') . '<br>
-			' . $lang['fe_karma'] . ': ' . number_format($arr['seedbonus']) . $member_reputation . '<br>' . ($arr['google_talk'] !== '' ? ' <a href="http://talkgadget.google.com/talkgadget/popout?member=' . htmlsafechars($arr['google_talk']) . '" title="' . $lang['fe_click_for_google_talk_gadget'] . '"  target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/google_talk.gif" alt="' . $lang['fe_google_talk'] . '" class="tooltipper emoticon" /></a> ' : '') . ('' !== $arr['icq'] ? ' <a href="http://people.icq.com/people/&amp;uin=' . htmlsafechars($arr['icq']) . '" title="' . $lang['fe_click_to_open_icq_page'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/icq.gif" alt="icq" class="tooltipper emoticon" /></a> ' : '') . ('' !== $arr['msn'] ? ' <a href="http://members.msn.com/' . htmlsafechars($arr['msn']) . '" target="_blank" title="' . $lang['fe_click_to_see_msn_details'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/msn.gif" alt="msn" title="msn" class="tooltipper emoticon" /></a> ' : '') . ('' !== $arr['aim'] ? ' <a href="http://aim.search.aol.com/aol/search?s_it=searchbox.webhome&amp;q=' . htmlsafechars($arr['aim']) . '" target="_blank" title="' . $lang['fe_click_to_search_on_aim'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/aim.gif" alt="AIM" title="AIM" class="tooltipper emoticon" /></a> ' : '') . ('' !== $arr['yahoo'] ? ' <a href="http://webmessenger.yahoo.com/?im=' . htmlsafechars($arr['yahoo']) . '" target="_blank" title="' . $lang['fe_click_to_open_yahoo'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/yahoo.gif" alt="yahoo" title="Yahoo!" class="tooltipper emoticon" /></a> ' : '') . ($arr['website'] !== '' ? ' <a href="' . htmlsafechars($arr['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/website.gif" alt="website" /></a> ' : '') . ('yes' == $arr['show_email'] ? ' <a href="mailto:' . htmlsafechars($arr['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'email.gif" alt="email" title="email" class="tooltipper emoticon" /> </a>' : '') . '
+			' . $lang['fe_karma'] . ': ' . number_format($arr['seedbonus']) . $member_reputation . '<br>' . ($arr['google_talk'] !== '' ? ' <a href="http://talkgadget.google.com/talkgadget/popout?member=' . htmlsafechars($arr['google_talk']) . '" title="' . $lang['fe_click_for_google_talk_gadget'] . '"  target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/google_talk.gif" alt="' . $lang['fe_google_talk'] . '" class="tooltipper emoticon" /></a> ' : '') . ('' !== $arr['icq'] ? ' <a href="http://people.icq.com/people/&amp;uin=' . htmlsafechars($arr['icq']) . '" title="' . $lang['fe_click_to_open_icq_page'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/icq.gif" alt="icq" class="tooltipper emoticon" /></a> ' : '') . ('' !== $arr['msn'] ? ' <a href="http://members.msn.com/' . htmlsafechars($arr['msn']) . '" target="_blank" title="' . $lang['fe_click_to_see_msn_details'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/msn.gif" alt="msn" title="msn" class="tooltipper emoticon" /></a> ' : '') . ('' !== $arr['aim'] ? ' <a href="http://aim.search.aol.com/aol/search?s_it=searchbox.webhome&amp;q=' . htmlsafechars($arr['aim']) . '" target="_blank" title="' . $lang['fe_click_to_search_on_aim'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/aim.gif" alt="AIM" title="AIM" class="tooltipper emoticon" /></a> ' : '') . ('' !== $arr['yahoo'] ? ' <a href="http://webmessenger.yahoo.com/?im=' . htmlsafechars($arr['yahoo']) . '" target="_blank" title="' . $lang['fe_click_to_open_yahoo'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/yahoo.gif" alt="yahoo" title="Yahoo!" class="tooltipper emoticon" /></a> ' : '') . ($arr['website'] !== '' ? ' <a href="' . htmlsafechars($arr['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/website.gif" alt="website" /></a> ' : '') . ($arr['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($arr['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'email.gif" alt="email" title="email" class="tooltipper emoticon" /> </a>' : '') . '
 			' . ($CURUSER['class'] >= UC_STAFF ? '
 			<ul class="makeMenu">
 				<li>' . htmlsafechars($arr['ip']) . '
@@ -486,7 +486,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
 			    <td colspan="3">' . (($arr['paranoia'] >= 1 && $CURUSER['class'] < UC_STAFF) ? '' : '
                     <span><img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['vt_uploaded'] . '" title="' . $lang['vt_uploaded'] . '" class="tooltipper emoticon" /> ' . mksize($arr['uploaded']) . '</span>  
                     ' . ($site_config['ratio_free'] ? '' : '<span style="color: red;"><img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['vt_downloaded'] . '" title="' . $lang['vt_downloaded'] . '" class="tooltipper emoticon" /> ' . mksize($arr['downloaded']) . '</span>') . '') . (($arr['paranoia'] >= 2 && $CURUSER['class'] < UC_STAFF) ? '' : '' . $lang['vt_ratio'] . ': ' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '
-                    ' . (0 == $arr['hit_and_run_total'] ? '<img src="' . $site_config['pic_baseurl'] . 'forums/no_hit_and_runs2.gif"  alt="' . ('yes' == $arr['anonymous'] ? '' . $lang['fe_anonymous'] . '' : htmlsafechars($arr['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" title="' . ($arr['anonymous'] == 'yes' ? $lang['fe_anonymous'] : htmlsafechars($arr['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" class="tooltipper emoticon" />' : '') . '
+                    ' . (0 == $arr['hit_and_run_total'] ? '<img src="' . $site_config['pic_baseurl'] . 'forums/no_hit_and_runs2.gif"  alt="' . ($arr['anonymous'] == 'yes' ? '' . $lang['fe_anonymous'] . '' : htmlsafechars($arr['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" title="' . ($arr['anonymous'] == 'yes' ? $lang['fe_anonymous'] : htmlsafechars($arr['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" class="tooltipper emoticon" />' : '') . '
                     ') . '
                     <a class="altlink" href="pm_system.php?action=send_message&amp;receiver=' . $arr['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . '"><img src="' . $site_config['pic_baseurl'] . 'forums/send_pm.png" alt="' . $lang['vt_send_pm'] . '" title="' . $lang['vt_send_pm'] . '" class="tooltipper emoticon" /> ' . $lang['vt_send_message'] . '</a>
                 </td>
@@ -593,7 +593,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                             <span>' . $lang['vt_from'] . ':</span>
                         </td>
                         <td>
-                            <input type="radio" name="pm_from" value="0" checked="checked" /> ' . $lang['vt_system'] . '  
+                            <input type="radio" name="pm_from" value="0" checked="checked" /> ' . $lang['vt_system'] . '
                             <input type="radio" name="pm_from" value="1" /> ' . format_username($CURUSER['id']) . '
                         </td>
                     </tr>', '', 'top20') . '

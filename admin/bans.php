@@ -108,8 +108,8 @@ if ($count == 0) {
                 <tr>
                     <td>' . get_date($banned['added'], '') . '</td>
                     <td>' . htmlsafechars($banned['first']) . '</td>
-                    <td>' . htmlsafechars($banned['last']) . "</td>
-                    <td><a href='" . $site_config['baseurl'] . '/userdetails.php?id=' . $banned['addedby'] . "'>" . format_username($banned['addedby']) . '</a></td>
+                    <td>' . htmlsafechars($banned['last']) . '</td>
+                    <td>' . format_username($banned['addedby']) . '</td>
                     <td>' . htmlsafechars($banned['comment'], ENT_QUOTES) . "</td>
                     <td><a href='" . $site_config['baseurl'] . '/staffpanel.php?tool=bans&amp;remove=' . $banned['id'] . "'>{$lang['text_remove']}</a></td>
                </tr>";

@@ -31,7 +31,7 @@ comment_like_unlike();
 function comment_like_unlike()
 {
     global $CURUSER, $type, $tb_fields, $the_id, $banned_users, $disabled_time, $lang;
-    $userip = $_SERVER['REMOTE_ADDR'];
+    $userip = getip();
     $res    = sql_query('SELECT user_likes,disabled_time FROM ' . $tb_fields[$type[0]] . ' LEFT OUTER JOIN manage_likes ON manage_likes.user_id = ' . sqlesc($CURUSER['id']) . ' WHERE ' . $tb_fields[$type[0]] . '.id = ' . sqlesc($the_id) . '') or sqlerr(__FILE__, __LINE__);
     $data   = mysqli_fetch_row($res);
     if ($data[1] + $disabled_time > time()) {
