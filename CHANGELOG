@@ -1,4 +1,5 @@
 13 Jun 2018
+update: all requests for ip, except announce and scrape, use the function getip() to facilitate logging ip true/false false by default
 fix: calling format_username() with array instead of id
 
 12 Jun 2018

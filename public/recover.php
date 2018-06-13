@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ->values($values)
         ->execute();
 
-    $body = sprintf($lang['email_request'], $email, $_SERVER['REMOTE_ADDR'], $site_config['baseurl'], $alt_id, $secret, $site_config['site_name']);
+    $body = sprintf($lang['email_request'], $email, getip(), $site_config['baseurl'], $alt_id, $secret, $site_config['site_name']);
     $mail = new Message();
     $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")
         ->addTo($user['email'])

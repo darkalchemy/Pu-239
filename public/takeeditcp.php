@@ -291,7 +291,7 @@ if ($action == 'avatar') {
                                 $CURUSER['username'],
                                 $site_config['site_name'],
                                 $email,
-                                $_SERVER['REMOTE_ADDR'],
+                                getip(),
                                 "{$site_config['baseurl']}/confirmemail.php?id={$alt_id}&token=$secret",
                             ], $lang['takeeditcp_email_body']);
 

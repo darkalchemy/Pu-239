@@ -15,8 +15,9 @@ $lang = array_merge(load_language('global'), load_language('takelogin'));
 function failedloginscheck()
 {
     global $site_config;
-    $ip          = getip();
-    $res         = sql_query('SELECT SUM(attempts), ip FROM failedlogins WHERE ip = ' . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
+
+    $ip = getip();
+    $res = sql_query('SELECT SUM(attempts), ip FROM failedlogins WHERE ip = ' . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
     list($total) = mysqli_fetch_row($res);
     if ($total >= $site_config['failedlogins']) {
         sql_query("UPDATE failedlogins SET banned = 'yes' WHERE ip = " . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
@@ -89,7 +90,7 @@ function bark($text = 'Username or password incorrect')
 {
     global $lang, $site_config, $cache;
 
-    $sha      = hash('sha256', $_SERVER['REMOTE_ADDR']);
+    $sha      = hash('sha256', getip());
     $dict_key = 'dictbreaker_' . $sha;
     $flood    = $cache->get($dict_key);
     if ($flood === false || is_null($flood)) {

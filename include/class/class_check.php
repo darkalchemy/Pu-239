@@ -54,7 +54,7 @@ function class_check($class = 0, $staff = true, $pin = false)
 
                 /** SQL ban them **/
                 //require_once(INCL_DIR.'bans.php');
-                //make_bans($ip, $_SERVER['REMOTE_ADDR'], 'Bad Class. Join IRC for assistance.');
+                //make_bans($ip, getip(), 'Bad Class. Join IRC for assistance.');
 
                 /** auto post to forums**/
                 $body    = sqlesc('User ' . $CURUSER['username'] . ' - ' . $ip . "\n Class " . $CURUSER['class'] . "\n Current page: " . $_SERVER['PHP_SELF'] . ', Previous page: ' . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . ', Action: ' . $_SERVER['REQUEST_URI'] . "\n Member has been disabled and demoted by class check system.");

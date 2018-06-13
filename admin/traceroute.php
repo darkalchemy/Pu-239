@@ -26,7 +26,7 @@ if ($register_globals) {
 } else {
     $action = isset($_POST['action']) ? $_POST['action'] : '';
     $host   = isset($_POST['host']) ? $_POST['host'] : '';
-    $ip     = $_SERVER['REMOTE_ADDR'];
+    $ip     = getip();
     $self   = $_SERVER['SCRIPT_NAME'];
 }
 if ($action === 'do') {

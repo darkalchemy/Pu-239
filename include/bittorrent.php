@@ -142,7 +142,11 @@ function validip($ip)
  */
 function getip()
 {
-    if (IP_LOGGING) {
+    global $CURUSER;
+
+    $no_log_ip = $CURUSER['perms'] & bt_options::PERMS_NO_IP;
+
+    if (IP_LOGGING && !$no_log_ip) {
         return $_SERVER['REMOTE_ADDR'];
     }
 
@@ -971,7 +975,7 @@ function sqlerr($file = '', $line = '')
         $_error_string .= "\n Date: " . date('r');
         $_error_string .= "\n Error Number: " . $the_error_no;
         $_error_string .= "\n Error: " . $the_error;
-        $_error_string .= "\n IP Address: " . $_SERVER['REMOTE_ADDR'];
+        $_error_string .= "\n IP Address: " . getip();
         $_error_string .= "\n in file " . $file . ' on line ' . $line;
         $_error_string .= "\n URL:" . $_SERVER['REQUEST_URI'];
         $_error_string .= "\n Username: {$CURUSER['username']}[{$CURUSER['id']}]";
@@ -1364,7 +1368,7 @@ function referer()
 {
     $http_referer = getenv('HTTP_REFERER');
     if (!empty($_SERVER['HTTP_HOST']) && strstr($http_referer, $_SERVER['HTTP_HOST']) === false && $http_referer != '') {
-        $ip         = $_SERVER['REMOTE_ADDR'];
+        $ip         = getip();
         $http_agent = $_SERVER['HTTP_USER_AGENT'];
         $http_page  = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
         if (!empty($_SERVER['QUERY_STRING'])) {
