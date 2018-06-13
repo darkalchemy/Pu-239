@@ -17,8 +17,8 @@ $stdfoot = [
     ],
 ];
 $HTMLOUT = $count2 = '';
-if ($CURUSER['class'] < UC_POWER_USER) {
-    stderr('Error!', 'Sorry, power user and up only!');
+if ($CURUSER['class'] < (UC_MIN + 1)) {
+    stderr('Error!', 'Sorry, you need to rank up!');
 }
 //=== possible stuff to be $_GETting lol
 $id              = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));

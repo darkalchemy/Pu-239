@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (mysqli_num_rows($res) == 0) {
                     stderr('Sorry', 'There is no subtitle with that id');
                 }
-                if ($CURUSER['id'] != $arr['owner'] && $CURUSER['class'] < UC_MODERATOR) {
+                if ($CURUSER['id'] != $arr['owner'] && $CURUSER['class'] < UC_STAFF) {
                     bark("You're not the owner! How did that happen?\n");
                 }
                 $updateset = [];
@@ -306,7 +306,7 @@ elseif ($mode === 'details') {
 <tr><td>Cd# :&#160;<b>" . ($arr['cds'] == 0 ? 'Unknown' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . "</b></td></tr>
 <tr><td>Hits :&#160;<b>" . (int)$arr['hits'] . "</b></td></tr>
 <tr><td>Uploader : " . format_username($arr['owner']);
-        if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_MODERATOR) {
+        if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_STAFF) {
             $HTMLOUT .= "<a href='subtitles.php?mode=edit&amp;id=" . (int) $arr['id'] . "'><img src='{$site_config['pic_baseurl']}edit.png' alt='Edit Sub' title='Edit Sub' style='border:none;padding:2px;' /></a>
 <a href='subtitles.php?mode=delete&amp;id=" . (int) $arr['id'] . "'><img src='{$site_config['pic_baseurl']}drop.png' alt='Delete Sub' title='Delete Sub' style='border:none;padding:2px;' /></a>";
         }
@@ -395,7 +395,7 @@ elseif ($mode === 'details') {
 <td class='colhead'>FPS</td>
 <td class='colhead'>CD#</td>";
         while ($arr = mysqli_fetch_assoc($res)) {
-            if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_MODERATOR) {
+            if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_STAFF) {
                 $HTMLOUT .= "<td class='colhead'>Tools</td>";
             }
             $HTMLOUT .= "<td class='colhead'>Upper</td></tr>";

@@ -329,7 +329,7 @@ if ($action === 'avatar') {
                                     <tr>
                                         <td><a href='{$site_config['baseurl']}/topmoods.php'>Top Member Mood's</a></td>
                                     </tr>";
-    if ($CURUSER['class'] >= UC_POWER_USER) {
+    if ($CURUSER['class'] >= MIN_TO_PLAY) {
         $HTMLOUT .= "
                                     <tr>
                                         <td>
@@ -398,7 +398,7 @@ if ($action === 'avatar') {
     $HTMLOUT .= tr('Hide current seed and leech', "
                                         <input type='radio' name='hidecur'" . ($CURUSER['hidecur'] === 'yes' ? ' checked' : '') . " value='yes' /> Yes
                                         <input type='radio' name='hidecur'" . ($CURUSER['hidecur'] === 'no' ? ' checked' : '') . " value='no' /> No", 1);
-    if ($CURUSER['class'] > UC_USER) {
+    if ($CURUSER['class'] > UC_MIN) {
         $HTMLOUT .= tr('My Paranoia', "
                                         <select name='paranoia'>
                                             <option value='0'" . ($CURUSER['paranoia'] == 0 ? ' selected' : '') . ">I'm totally relaxed</option>

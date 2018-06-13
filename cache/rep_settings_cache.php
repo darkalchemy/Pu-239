@@ -17,5 +17,5 @@ $GVARS = [
     'rep_repeat'     => 20,
     'g_rep_negative' => true,
     'g_rep_seeown'   => true,
-    'g_rep_use'      => $CURUSER['class'] > UC_USER ? true : false,
+    'g_rep_use'      => $CURUSER['class'] > UC_MIN ? true : false,
 ];

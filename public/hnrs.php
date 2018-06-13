@@ -14,7 +14,7 @@ $HTMLOUT = '';
 
 $lang = array_merge(load_language('global'), load_language('userdetails'));
 
-if ($CURUSER['class'] < UC_USER) {
+if ($CURUSER['class'] < UC_MIN) {
     stderr('Sorry', 'You must be at least a User.');
 }
 

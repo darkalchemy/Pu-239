@@ -521,7 +521,7 @@ if (isset($_GET['exchange'])) {
             break;
 
         case 'reputation':
-            if ($CURUSER['class'] < UC_POWER_USER || $User['reputation'] >= 5000) {
+            if ($CURUSER['class'] === UC_MIN || $User['reputation'] >= 5000) {
                 stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you already have to many rep points :-P<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $rep          = $reputation + $res_points['menge'];
@@ -537,7 +537,7 @@ if (isset($_GET['exchange'])) {
             break;
 
         case 'immunity':
-            if ($CURUSER['class'] < UC_POWER_USER || $User['reputation'] < 3000) {
+            if ($CURUSER['class'] === UC_MIN || $User['reputation'] < 3000) {
                 stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep :-P<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for 1 years immunity status.\n " . $bonuscomment;
@@ -554,7 +554,7 @@ if (isset($_GET['exchange'])) {
 
         case 'userblocks':
             $reputation = $User['reputation'];
-            if ($CURUSER['class'] < UC_POWER_USER || $User['reputation'] < 50) {
+            if ($CURUSER['class'] === UC_MIN || $User['reputation'] < 50) {
                 stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep points yet - Minimum 50 required :-P<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for user blocks access.\n " . $bonuscomment;
@@ -570,7 +570,7 @@ if (isset($_GET['exchange'])) {
 
         case 'userunlock':
             $reputation = $User['reputation'];
-            if ($CURUSER['class'] < UC_POWER_USER || $User['reputation'] < 50) {
+            if ($CURUSER['class'] === UC_MIN || $User['reputation'] < 50) {
                 stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep points yet - Minimum 50 required :-P<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for user unlocks access.\n " . $bonuscomment;

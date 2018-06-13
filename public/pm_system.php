@@ -33,28 +33,8 @@ $stdhead = [
 ];
 $HTMLOUT = $count2 = $other_box_info = $maxpic = $maxbox = '';
 
-if ($CURUSER['class'] <= UC_USER) {
-    $maxbox   = 50;
-    $maxboxes = 5;
-} elseif ($CURUSER['class'] >= UC_POWER_USER && $CURUSER['class'] < UC_VIP) {
-    $maxbox   = 100;
-    $maxboxes = 6;
-} elseif ($CURUSER['class'] >= UC_VIP && $CURUSER['class'] < UC_UPLOADER) {
-    $maxbox   = 300;
-    $maxboxes = 15;
-} elseif ($CURUSER['class'] >= UC_UPLOADER && $CURUSER['class'] < UC_STAFF) {
-    $maxbox   = 300;
-    $maxboxes = 20;
-} elseif ($CURUSER['class'] >= UC_STAFF && $CURUSER['class'] < UC_SYSOP) {
-    $maxbox   = 3000;
-    $maxboxes = 100;
-} elseif ($CURUSER['class'] >= UC_SYSOP) {
-    $maxbox   = 20000;
-    $maxboxes = 1000;
-} else {
-    $maxbox   = 50;
-    $maxboxes = 5;
-}
+$maxbox   = 100 * ($CURUSER['class'] + 1);
+$maxboxes = 5 * ($CURUSER['class'] + 1);
 
 $returnto         = isset($_GET['returnto']) ? $_GET['returnto'] : isset($_POST['returnto']) ? $_POST['returnto'] : '/index.php';
 $possible_actions = [

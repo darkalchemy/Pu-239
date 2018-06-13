@@ -4,7 +4,7 @@ global $CURUSER, $site_config;
 
 $rs   = sql_query("SELECT o.*, c.id AS catid, c.name AS catname FROM offers AS o LEFT JOIN categories AS c ON (c.id=o.cat) WHERE o.id = $id") or sqlerr(__FILE__, __LINE__);
 $numz = mysqli_fetch_assoc($rs);
-if ($CURUSER['id'] != $numz['userid'] && $CURUSER['class'] < UC_MODERATOR) {
+if ($CURUSER['id'] != $numz['userid'] && $CURUSER['class'] < UC_STAFF) {
     stderr('Error!', 'This is not your offer to edit.');
 }
 $s       = htmlspecialchars($numz['offer']);
@@ -36,7 +36,7 @@ if ($site_config['textbbcode']) {
     $HTMLOUT .= "<textarea name='body' rows='10' cols='60'>$body</textarea>";
 }
 $HTMLOUT .= '</td></tr>';
-if ($CURUSER['class'] >= UC_MODERATOR) {
+if ($CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= "<tr><td colspan='2'>Staff Only</td></tr>
     <tr><td><b>Filled</b></td>
     <td><input type='checkbox' name='filled'" . ($numz['torrentid'] != 0 ? ' checked' : '') . " /></td></tr>

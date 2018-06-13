@@ -1,7 +1,7 @@
 <?php
 
 /**
-This file was created on Jun 08 2018 23:21:52.
+This file was created on Jun 13 2018 20:24:59.
 User Class Config.
 **/
 
@@ -41,11 +41,11 @@ $class_colors = [
 
 
 $class_images = [
-  UC_USER => $site_config['pic_baseurl'].'class/user.gif',
-  UC_POWER_USER => $site_config['pic_baseurl'].'class/power.gif',
-  UC_VIP => $site_config['pic_baseurl'].'class/vip.gif',
-  UC_UPLOADER => $site_config['pic_baseurl'].'class/uploader.gif',
-  UC_MODERATOR => $site_config['pic_baseurl'].'class/moderator.gif',
-  UC_ADMINISTRATOR => $site_config['pic_baseurl'].'class/administrator.gif',
-  UC_SYSOP => $site_config['pic_baseurl'].'class/sysop.gif'
+  UC_USER => $site_config['pic_baseurl'] . 'class/user.gif',
+  UC_POWER_USER => $site_config['pic_baseurl'] . 'class/power.gif',
+  UC_VIP => $site_config['pic_baseurl'] . 'class/vip.gif',
+  UC_UPLOADER => $site_config['pic_baseurl'] . 'class/uploader.gif',
+  UC_MODERATOR => $site_config['pic_baseurl'] . 'class/moderator.gif',
+  UC_ADMINISTRATOR => $site_config['pic_baseurl'] . 'class/administrator.gif',
+  UC_SYSOP => $site_config['pic_baseurl'] . 'class/sysop.gif'
 ];

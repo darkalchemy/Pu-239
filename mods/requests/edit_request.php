@@ -4,7 +4,7 @@ global $CURUSER, $site_config, $lang;
 
 $rs   = sql_query("SELECT r.*, c.id AS catid, c.name AS catname FROM requests AS r LEFT JOIN categories AS c ON (c.id=r.cat) WHERE r.id = $id") or sqlerr(__FILE__, __LINE__);
 $numz = mysqli_fetch_assoc($rs);
-if ($CURUSER['id'] != $numz['userid'] && $CURUSER['class'] < UC_MODERATOR) {
+if ($CURUSER['id'] != $numz['userid'] && $CURUSER['class'] < UC_STAFF) {
     stderr("{$lang['error_error']}", "{$lang['error_not_yours1']}");
 }
 $s       = htmlspecialchars($numz['request']);
@@ -36,7 +36,7 @@ if ($site_config['textbbcode']) {
     $HTMLOUT .= "<textarea name='body' rows='10' cols='60'>$body</textarea>";
 }
 $HTMLOUT .= '</td></tr>';
-if ($CURUSER['class'] >= UC_MODERATOR) {
+if ($CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= "<tr><td colspan='2'>{$lang['edit_staff']}</td></tr>
     <tr><td><b>{$lang['details_filled']}</b></td>
     <td><input type='checkbox' name='filled'" . ($numz['torrentid'] != 0 ? ' checked' : '') . " /></td></tr>

@@ -25,7 +25,7 @@ if ($num['descr']) {
 }
 $HTMLOUT .= "<tr><td><b>{$lang['req_added']}</b></td>
 <td>$added</td></tr>";
-if ($CURUSER['id'] == $num['userid'] || $CURUSER['class'] >= UC_MODERATOR) {
+if ($CURUSER['id'] == $num['userid'] || $CURUSER['class'] >= UC_STAFF) {
     $edit   = " | <a class='altlink' href='viewrequests.php?id=" . $id . "&amp;edit_request'>{$lang['details_edit']}</a> |";
     $delete = " <a class='altlink' href='viewrequests.php?id=" . $id . "&amp;del_req'>{$lang['details_delete']}</a> ";
     if ($num['torrentid'] != 0) {

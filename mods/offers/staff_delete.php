@@ -2,7 +2,7 @@
 
 global $CURUSER;
 
-if ($CURUSER['class'] >= UC_MODERATOR) {
+if ($CURUSER['class'] >= UC_STAFF) {
     if (empty($_POST['deloff'])) {
         stderr('ERROR', "Don't leave any fields blank.");
     }

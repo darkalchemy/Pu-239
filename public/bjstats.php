@@ -4,11 +4,11 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $CURUSER;
+global $CURUSER, $site_config;
 
 $lang = array_merge(load_language('global'), load_language('blackjack'));
-if ($CURUSER['class'] < UC_POWER_USER) {
-    stderr($lang['bj_sorry'], $lang['bj_you_must_be_pu']);
+if ($CURUSER['class'] < MIN_TO_PLAY) {
+    stderr($lang['bj_sorry'], 'Sorry, you must be a ' . $class_names[MIN_TO_PLAY] . ' to play blackjack!');
     exit;
 }
 /**

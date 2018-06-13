@@ -25,7 +25,7 @@ if ($num['descr']) {
 }
 $HTMLOUT .= "<tr><td><b>Added</b></td>
 <td>$added</td></tr>";
-if ($CURUSER['id'] == $num['userid'] || $CURUSER['class'] >= UC_MODERATOR) {
+if ($CURUSER['id'] == $num['userid'] || $CURUSER['class'] >= UC_STAFF) {
     $edit   = " | <a class='altlink' href='viewoffers.php?id=" . $id . "&amp;edit_offer'>Edit Offer</a> |";
     $delete = " <a class='altlink' href='viewoffers.php?id=" . $id . "&amp;del_offer'>Delete offer</a> ";
     if ($num['torrentid'] != 0) {

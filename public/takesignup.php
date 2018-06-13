@@ -230,7 +230,7 @@ $values = [
     'free_switch'  => XBT_TRACKER ? '0' : TIME_NOW + 14 * 86400,
     'ip'           => inet_pton($ip),
     'status'       => $users_count === 0 || (!$site_config['email_confirm'] && $site_config['auto_confirm']) ? 'confirmed' : 'pending',
-    'class'        => $users_count === 0 ? UC_SYSOP : UC_USER,
+    'class'        => $users_count === 0 ? UC_MAX : UC_MIN,
 ];
 
 if ($users_count === 0) {

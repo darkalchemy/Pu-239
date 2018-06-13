@@ -4,7 +4,7 @@ global $CURUSER, $site_config, $lang;
 
 $res = sql_query("SELECT userid, cat FROM requests WHERE id = $id") or sqlerr(__FILE__, __LINE__);
 $num = mysqli_fetch_assoc($res);
-if ($CURUSER['id'] != $num['userid'] && $CURUSER['class'] < UC_MODERATOR) {
+if ($CURUSER['id'] != $num['userid'] && $CURUSER['class'] < UC_STAFF) {
     stderr("{$lang['error_error']}", "{$lang['error_denied']}");
 }
 $request = (isset($_POST['requesttitle']) ? htmlspecialchars($_POST['requesttitle']) : '');

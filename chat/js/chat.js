@@ -1337,7 +1337,7 @@ var ajaxChat = {
                 + '<li><a href="javascript:ajaxChat.insertMessageWrapper(\'/nick \');">'
                 + this.lang['userMenuNick']
                 + '</a></li>';
-            if (this.userRole >= UC_POWER_USER) {
+            if (this.userRole >= (UC_MIN + 1)) {
                 menu += '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/join\');">'
                     + this.lang['userMenuEnterPrivateRoom']
                     + '</a></li>';
@@ -1539,7 +1539,7 @@ var ajaxChat = {
     },
 
     isAllowedToDeleteMessage: function (messageID, userID, userRole, channelID) {
-        if (this.userRole >= UC_USER && this.allowUserMessageDelete && (userID === this.userID || parseInt(channelID) === parseInt(this.userID) + this.privateMessageDiff || parseInt(channelID) === parseInt(this.userID) + this.privateChannelDiff) ||
+        if (this.userRole >= UC_MIN && this.allowUserMessageDelete && (userID === this.userID || parseInt(channelID) === parseInt(this.userID) + this.privateMessageDiff || parseInt(channelID) === parseInt(this.userID) + this.privateChannelDiff) ||
             (this.userRole >= UC_STAFF && this.allowUserMessageDelete && this.userRole > userRole) ||
             (this.userRole >= UC_ADMINISTRATOR && (this.userRole > userRole || userRole === this.chatBotRole))
         ) {

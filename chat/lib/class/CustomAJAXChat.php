@@ -45,7 +45,7 @@ class CustomAJAXChat extends AJAXChat
                     5,
                     6,
                 ];
-            } elseif ($user['class'] >= UC_MODERATOR) {
+            } elseif ($user['class'] >= UC_STAFF) {
                 $userData['channels'] = [
                     0,
                     1,

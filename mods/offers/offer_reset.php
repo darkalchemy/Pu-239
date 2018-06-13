@@ -5,7 +5,7 @@ global $CURUSER, $site_config;
 $HTMLOUT .= "<table class='main' width='750px' >" . "<tr><td class='embedded'>\n";
 $res = sql_query("SELECT userid, acceptedby, offer, torrentid FROM offers WHERE id = $id") or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_assoc($res);
-if (($CURUSER['id'] == $arr['userid']) || ($CURUSER['class'] >= UC_MODERATOR) || ($CURUSER['id'] == $arr['acceptedby'])) {
+if (($CURUSER['id'] == $arr['userid']) || ($CURUSER['class'] >= UC_STAFF) || ($CURUSER['id'] == $arr['acceptedby'])) {
     if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $arr['torrentid'] != 0) {
         sql_query('UPDATE users SET seedbonus = seedbonus-' . $site_config['offer_comment_bonus'] . " WHERE id = $arr[acceptedby]") or sqlerr(__FILE__, __LINE__);
     }

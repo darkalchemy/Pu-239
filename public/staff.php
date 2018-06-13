@@ -27,20 +27,14 @@ $query   = $fluent->from('users')
     ->leftJoin('countries ON countries.id = users.country')
     ->where('users.class >= ? OR users.support = ?', UC_STAFF, 'yes')
     ->where('users.status = ?', 'confirmed')
+    ->orderBy('class DESC')
     ->orderBy('username');
 
 foreach ($query as $arr2) {
     if ($arr2['support'] === 'yes') {
         $support[] = $arr2;
-    }
-    if ($arr2['class'] == UC_MODERATOR) {
-        $mods[] = $arr2;
-    }
-    if ($arr2['class'] == UC_ADMINISTRATOR) {
-        $admin[] = $arr2;
-    }
-    if ($arr2['class'] == UC_SYSOP) {
-        $sysop[] = $arr2;
+    } else {
+        $staffs[strtolower($class_names[$arr2['class']])][] = $arr2;
     }
 }
 
@@ -81,9 +75,10 @@ function DoStaff($staff_array, $staffclass)
     return $htmlout . main_table($body);
 }
 
-$htmlout .= DoStaff($sysop, 'Sysops');
-$htmlout .= DoStaff($admin, 'Administrator');
-$htmlout .= DoStaff($mods, 'Moderators');
+foreach ($staffs as $key => $value) {
+    $htmlout .= DoStaff($value, ucfirst($key) . 's');
+}
+
 $dt = TIME_NOW - 180;
 if (!empty($support)) {
     $body = '';

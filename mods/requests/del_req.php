@@ -4,7 +4,7 @@ global $CURUSER, $lang;
 
 $res = sql_query('SELECT userid, request FROM requests WHERE id = ' . $id) or sqlerr(__FILE__, __LINE__);
 $num = mysqli_fetch_assoc($res);
-if ($CURUSER['id'] != $num['userid'] && $CURUSER['class'] < UC_MODERATOR) {
+if ($CURUSER['id'] != $num['userid'] && $CURUSER['class'] < UC_STAFF) {
     stderr("{$lang['error_error']}", "{$lang['error_not_yours']}");
 }
 if (!isset($_GET['sure'])) {

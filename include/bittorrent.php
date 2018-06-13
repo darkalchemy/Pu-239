@@ -24,6 +24,7 @@ $cache       = new DarkAlchemy\Pu239\Cache();
 $session     = new DarkAlchemy\Pu239\Session();
 $fluent      = new DarkAlchemy\Pu239\Database();
 $user_stuffs = new DarkAlchemy\Pu239\User($fluent);
+define('MIN_TO_PLAY', UC_POWER_USER);
 
 $session->start();
 

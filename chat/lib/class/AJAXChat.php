@@ -687,7 +687,7 @@ class AJAXChat
             case 'logs':
                 if ($this->isLoggedIn() && (
                         $this->getUserRole() >= UC_ADMINISTRATOR ||
-                        ($this->getConfig('logsUserAccess') && ($this->getUserRole() >= UC_USER))
+                        ($this->getConfig('logsUserAccess') && ($this->getUserRole() >= UC_MIN))
                     )) {
                     return true;
                 }
@@ -774,7 +774,7 @@ class AJAXChat
         }
 
         if ($this->isUserOnline($userData['userID']) || $this->isUserNameInUse($userData['userName'])) {
-            if ($userData['userRole'] >= UC_USER) {
+            if ($userData['userRole'] >= UC_MIN) {
                 $this->setInactive($userData['userID'], $userData['userName']);
                 $this->removeInactive();
             } else {
@@ -1422,7 +1422,7 @@ class AJAXChat
      */
     public function isAllowedToCreatePrivateChannel()
     {
-        if ($this->getConfig('allowPrivateChannels') && $this->getUserRole() >= UC_USER) {
+        if ($this->getConfig('allowPrivateChannels') && $this->getUserRole() >= UC_MIN) {
             return true;
         }
 
@@ -1907,7 +1907,7 @@ class AJAXChat
      */
     public function isAllowedToWriteMessage()
     {
-        if ($this->getUserRole() >= UC_USER) {
+        if ($this->getUserRole() >= UC_MIN) {
             return true;
         }
 
@@ -2910,7 +2910,7 @@ class AJAXChat
      */
     public function insertParsedMessageNick($textParts)
     {
-        if (!$this->getConfig('allowNickChange') || $this->getUserRole() <= UC_USER) {
+        if (!$this->getConfig('allowNickChange') || $this->getUserRole() <= UC_MIN) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
                 '/error CommandNotAllowed ' . $textParts[0]

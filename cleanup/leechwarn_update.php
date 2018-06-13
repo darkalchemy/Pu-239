@@ -15,7 +15,7 @@ function leechwarn_update($data)
     $base_ratio  = 0.0;
     $downloaded  = 10 * 1024 * 1024 * 1024; // + 10 GB
     $length      = 3  * 7; // Give 3 weeks to let them sort there shit
-    $res         = sql_query("SELECT id, modcomment FROM users WHERE enabled='yes' AND class = " . UC_USER . " AND leechwarn = '0' AND uploaded / downloaded < $minratio AND uploaded / downloaded > $base_ratio AND downloaded >= $downloaded AND immunity = '0'") or sqlerr(__FILE__, __LINE__);
+    $res         = sql_query("SELECT id, modcomment FROM users WHERE enabled = 'yes' AND class = " . UC_MIN . " AND leechwarn = '0' AND uploaded / downloaded < $minratio AND uploaded / downloaded > $base_ratio AND downloaded >= $downloaded AND immunity = '0'") or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $users_buffer = [];
     $dt          = TIME_NOW;
     if (mysqli_num_rows($res) > 0) {

@@ -21,7 +21,7 @@ if ($users === false || is_null($users)) {
         $users[$id]['channels'] = [0, 1, 2, 3, 4];
         if ($class >= UC_ADMINISTRATOR) {
             $users[$id]['channels'] = [0, 1, 2, 3, 4, 5, 6];
-        } elseif ($class >= UC_MODERATOR) {
+        } elseif ($class >= UC_STAFF) {
             $users[$id]['channels'] = [0, 1, 2, 3, 4, 5];
         }
     }

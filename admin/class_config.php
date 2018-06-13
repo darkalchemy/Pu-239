@@ -130,17 +130,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $configfile .= '' . $t . "'{$arr['name']}', {$arr['value']});\n";
             }
             unset($arr);
-            $res       = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX') ORDER BY value  ASC");
+            $res       = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX') ORDER BY value ASC");
             $the_names = $the_colors = $the_images = '';
+            $classes[] = "var UC_MIN = 0;";
             while ($arr = mysqli_fetch_assoc($res)) {
                 if ($arr['name'] !== 'UC_STAFF') {
                     $the_names  .= "{$arr['name']} => '{$arr['classname']}',";
                     $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
-                    $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/{$arr['classpic']}',";
+                    $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . " . 'class/{$arr['classpic']}',";
                     $js_classes[] = $arr['name'];
                 }
+                $val = $arr['value'];
                 $classes[] = "var {$arr['name']} = {$arr['value']};";
             }
+            $classes[] = "var UC_MAX = {$val};";
             file_put_contents(ROOT_DIR . 'chat/js/classes.js', implode("\n", $classes));
             write_classes($js_classes);
             $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
@@ -411,9 +414,9 @@ $HTMLOUT .= "
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input class='w-100' type='text' name='name' value='' /></td>
+                        <td><input class='w-100 tooltipper' type='text' name='name' value='' placeholder='UC_OWNER' title='All class names must begin with UC_' /></td>
                         <td><input class='w-100' type='text' name='value' value='' /></td>
-                        <td><input class='w-100' type='text' name='cname' value='' /></td>
+                        <td><input class='w-100 tooltipper' type='text' name='cname' value='' placeholder='OWNER' title='All class reference names must be same as class name without UC_' /></td>
                         <td><input class='w-100' type='text' name='color' value='#ff0000' /></td>
                         <td><input class='w-100' type='text' name='pic' value='' /></td>
                     </tr>

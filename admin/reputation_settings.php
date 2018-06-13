@@ -24,7 +24,7 @@ function rep_cache()
     }
     $rep_out .= "\t'g_rep_negative' => true,\n";
     $rep_out .= "\t'g_rep_seeown' => true,\n";
-    $rep_out .= "\t'g_rep_use' => \$CURUSER['class'] > UC_USER ? true : false\n";
+    $rep_out .= "\t'g_rep_use' => \$CURUSER['class'] > UC_MIN ? true : false\n";
     $rep_out .= "\n);";
     file_put_contents(CACHE_DIR . 'rep_settings_cache.php', $rep_out);
     redirect('staffpanel.php?tool=reputation_settings', $lang['repset_updated'], 3);
@@ -53,7 +53,7 @@ function get_cache_array()
         'rep_undefined'  => $lang['repset_scale'],
         /*'g_rep_negative' => true,
         'g_rep_seeown' => true,
-        'g_rep_use' => $CURUSER['class'] > UC_USER ? true : false*/
+        'g_rep_use' => $CURUSER['class'] > UC_MIN ? true : false*/
     ];
 }
 

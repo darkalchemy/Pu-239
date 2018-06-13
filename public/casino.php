@@ -5,8 +5,10 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 global $CURUSER, $site_config, $cache;
 
-//require_once INCL_DIR . 'function_ircbot.php';
 check_user_status();
+if ($CURUSER['class'] < MIN_TO_PLAY) {
+    stderr('Error!', 'Sorry, you must be a ' . $class_names[MIN_TO_PLAY] . ' to play in the casino!');
+}
 
 $lang = array_merge(load_language('global'), load_language('casino'));
 //== Config

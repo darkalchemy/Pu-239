@@ -10,7 +10,7 @@ if ($torrentcomments === false || is_null($torrentcomments)) {
 }
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comments']}</td>";
-    if ($torrentcomments && (($user['class'] >= UC_POWER_USER && $user['id'] == $CURUSER['id']) || $CURUSER['class'] >= UC_STAFF)) {
+    if ($torrentcomments && (($user['class'] >= (UC_MIN + 1) && $user['id'] == $CURUSER['id']) || $CURUSER['class'] >= UC_STAFF)) {
         $HTMLOUT .= "<td><a href='userhistory.php?action=viewcomments&amp;id=$id'>" . (int) $torrentcomments . "</a></td></tr>\n";
     } else {
         $HTMLOUT .= '<td>' . (int) $torrentcomments . "</td></tr>\n";

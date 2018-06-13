@@ -7,8 +7,9 @@ check_user_status();
 $lang = load_language('global');
 
 global $site_config, $CURUSER;
-if ($CURUSER['class'] < UC_USER) {
-    stderr('Error!', 'Sorry, you must be this tall to ride this ride... User and up can play in the arcade!');
+
+if ($CURUSER['class'] < MIN_TO_PLAY) {
+    stderr('Error!', 'Sorry, you must be a ' . $class_names[MIN_TO_PLAY] . ' to play in the arcade!');
 }
 
 $HTMLOUT = "

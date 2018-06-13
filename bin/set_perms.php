@@ -14,6 +14,7 @@ $exts = [
     'md',
     'json',
     'gz',
+    'example'
 ];
 
 $i = 0;

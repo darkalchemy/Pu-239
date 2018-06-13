@@ -4,7 +4,7 @@ global $CURUSER;
 
 $res = sql_query('SELECT userid, offer FROM offers WHERE id = ' . $id) or sqlerr(__FILE__, __LINE__);
 $num = mysqli_fetch_assoc($res);
-if ($CURUSER['id'] != $num['userid'] && $CURUSER['class'] < UC_MODERATOR) {
+if ($CURUSER['id'] != $num['userid'] && $CURUSER['class'] < UC_STAFF) {
     stderr('Error', 'This is not your Offer to delete!');
 }
 if (!isset($_GET['sure'])) {

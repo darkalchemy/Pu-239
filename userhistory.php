@@ -13,7 +13,7 @@ $userid = (int) $_GET['id'];
 if (!is_valid_id($userid)) {
     stderr($lang['stderr_errorhead'], $lang['stderr_invalidid']);
 }
-if ($CURUSER['class'] < UC_POWER_USER || ($CURUSER['id'] != $userid && $CURUSER['class'] < UC_STAFF)) {
+if ($CURUSER['class'] == UC_MIN || ($CURUSER['id'] != $userid && $CURUSER['class'] < UC_STAFF)) {
     stderr($lang['stderr_errorhead'], $lang['stderr_perms']);
 }
 $page   = (isset($_GET['page']) ? $_GET['page'] : ''); // not used?

@@ -2,7 +2,7 @@
 
 global $CURUSER, $site_config, $user;
 
-if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_POWER_USER) {
+if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= (UC_MIN + 1)) {
     $completed = $count2 = $dlc = '';
     if (!XBT_TRACKER) {
         $r = sql_query("SELECT torrents.name, torrents.added AS torrent_added, snatched.complete_date AS c, snatched.downspeed, snatched.seedtime, snatched.seeder, snatched.torrentid AS tid, snatched.id, categories.id AS category, categories.image, categories.name AS catname, snatched.uploaded, snatched.downloaded, snatched.hit_and_run, snatched.mark_of_cain, snatched.complete_date, snatched.last_action, torrents.seeders, torrents.leechers, torrents.owner, snatched.start_date AS st, snatched.start_date FROM snatched JOIN torrents ON torrents.id = snatched.torrentid JOIN categories ON categories.id = torrents.category WHERE snatched.finished = 'yes' AND userid = " . sqlesc($id) . ' AND torrents.owner != ' . sqlesc($id) . ' ORDER BY snatched.id DESC') or sqlerr(__FILE__, __LINE__);
@@ -147,7 +147,7 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
         $completed = main_table($body, $heading);
     }
 
-    if (($completed && $CURUSER['class'] >= UC_POWER_USER) || ($completed && $user['id'] == $CURUSER['id'])) {
+    if (($completed && $CURUSER['class'] >= (UC_MIN + 1)) || ($completed && $user['id'] == $CURUSER['id'])) {
         if (!isset($_GET['completed'])) {
             $table_data .= "
             <tr>
