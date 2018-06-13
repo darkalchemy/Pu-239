@@ -30,9 +30,6 @@ $over_forum_id = $count = $now_viewing = $child_boards = '';
 if ($site_config['forums_online'] == 0 && $CURUSER['class'] < UC_STAFF) {
     stderr($lang['fm_information'], $lang['fm_the_forums_are_currently_offline']);
 }
-if (function_exists('parked')) {
-    parked();
-}
 $HTMLOUT = '';
 $fluent->update('users')
     ->set(['forum_access' => TIME_NOW])
