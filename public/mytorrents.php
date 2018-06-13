@@ -49,7 +49,7 @@ if (isset($_GET['sort'], $_GET['type'])) {
     $pagerlink = '';
 }
 $where = 'WHERE owner = ' . sqlesc($CURUSER['id']) . " AND banned != 'yes'";
-$res   = sql_query("SELECT COUNT(id) FROM torrents $where");
+$res   = sql_query("SELECT COUNT(id) FROM torrents $where") or sqlerr(__FILE__, __LINE__);
 $row   = mysqli_fetch_array($res, MYSQLI_NUM);
 $count = $row[0];
 if (!$count) {
@@ -57,10 +57,10 @@ if (!$count) {
     $HTMLOUT .= "{$lang['mytorrents_no_uploads']}";
 } else {
     $pager = pager(20, $count, "mytorrents.php?{$pagerlink}");
-    $res   = sql_query("SELECT type, sticky, vip, descr, nuked, bump, nukereason, release_group, free, silver, comments, leechers, seeders, owner, IF(num_ratings < {$site_config['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating, id, name, save_as, numfiles, added, size, views, visible, hits, times_completed, category, description, username FROM torrents $where $orderby " . $pager['limit']);
+    $res   = sql_query("SELECT sticky, vip, descr, nuked, bump, nukereason, release_group, free, silver, comments, leechers, seeders, owner, IF(num_ratings < {$site_config['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating, id, name, save_as, numfiles, added, size, views, visible, hits, times_completed, category, description FROM torrents $where $orderby " . $pager['limit']) or sqlerr(__FILE__, __LINE__);
     $HTMLOUT .= $pager['pagertop'];
     $HTMLOUT .= '<br>';
     $HTMLOUT .= torrenttable($res, 'mytorrents');
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($CURUSER['username'] . "'s torrents") . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead($CURUSER['username'] . "'s torrents") . $HTMLOUT . stdfoot();
