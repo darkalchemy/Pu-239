@@ -1,4 +1,5 @@
 13 Jun 2018
+update: guzzle request in function_fanart,php
 update: normalize user classes so that adding/removing most classes will not need any code changes
 fix: typo
 remove: redundant parked() check in forums.php

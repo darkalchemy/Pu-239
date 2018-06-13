@@ -108,7 +108,7 @@ function getMovieImagesByImdb($imdb, $type = 'moviebackground')
  */
 function fetch($url)
 {
-    $client = new GuzzleHttp\Client();
+    $client = new GuzzleHttp\Client(['http_errors' => false]);
     $res    = $client->request('GET', $url);
     if ($res->getStatusCode() === 200) {
         return $res->getBody();
