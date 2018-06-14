@@ -122,7 +122,7 @@ function get_imdb_info($imdb_id)
                 $imdb_info .= "
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>$boo: </div>
-                        <span class='column padding5'>" . join(', ', $imdb_tmp) . '</span>
+                        <div class='column padding5'>" . join(', ', $imdb_tmp) . '</div>
                     </div>';
                 unset($imdb_tmp);
             }

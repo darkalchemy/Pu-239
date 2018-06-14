@@ -22,6 +22,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
         'rated'     => line_by_line('Rating', '%s'),
         'summary'   => line_by_line('Summary', '%s'),
     ];
+
     foreach ($tvmaze_display[$tvmaze_type] as $key => $value) {
         if (isset($tvmaze_data[$key])) {
             $tvmaze_display[$tvmaze_type][$key] = sprintf($value, $tvmaze_data[$key]);
@@ -138,13 +139,13 @@ function get_episode($tvmaze_id, $season, $episode)
  * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
-function tvmaze(&$torrents)
+function tvmaze($tvmaze_id, $id)
 {
     global $fluent, $cache;
-
     $set            = [];
-    $tvmaze['name'] = get_show_name($torrents['name']);
-    $tvmaze_id      = get_show_id($torrents['name'], 'tvmaze_id');
+    if (empty($tvmaze_id)) {
+        return null;
+    }
 
     $force_update = false;
     if (empty($torrents['newgenre']) || empty($torrents['poster'])) {
@@ -170,21 +171,21 @@ function tvmaze(&$torrents)
     if (empty($torrents['newgenre'])) {
         $torrents['newgenre'] = $tvmaze_show_data['genres2'];
         $set['newgenre']      = ucwords($tvmaze_show_data['genres2']);
-        $cache->update_row('torrent_details_' . $torrents['id'], [
+        $cache->update_row('torrent_details_' . $id, [
             'newgenre' => ucwords($tvmaze_show_data['genres2']),
         ], 0);
     }
     if (empty($torrents['poster'])) {
         $torrents['poster'] = $tvmaze_show_data['image']['original'];
         $set['poster']      = $tvmaze_show_data['image']['original'];
-        $cache->update_row('torrent_details_' . $torrents['id'], [
+        $cache->update_row('torrent_details_' . $id, [
             'poster' => $tvmaze_show_data['image']['original'],
         ], 0);
     }
     if (!empty($set)) {
         $fluent->update('torrents')
             ->set($set)
-            ->where('id = ?', $torrents['id'])
+            ->where('id = ?', $id)
             ->execute();
     }
     if (!empty($tvmaze_show_data)) {

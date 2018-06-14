@@ -14,7 +14,7 @@
     "last 3 versions"
   ],
   "devDependencies": {
-    "autoprefixer": "^8.5.0",
+    "autoprefixer": "^8.6.2",
     "bulma": "^0.6.2",
     "clean-css": "^4.1.11",
     "clean-css-cli": "^4.1.11",

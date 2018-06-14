@@ -2044,31 +2044,52 @@ function get_show_name(string $name)
  * @param string $name
  * @param string $type
  */
-function get_show_id(string $name, string $type)
+function get_show_id(string $name)
 {
     global $fluent, $cache;
 
-    if (empty($name) || empty($type)) {
+    if (empty($name)) {
         return null;
     }
     $name     = get_show_name($name);
     $hash     = hash('sha512', $name);
     $id_array = $cache->get('tvshow_ids_' . $hash);
     if ($id_array === false || is_null($id_array)) {
-        $id_array = $fluent->from('tvmaze')
+        $items = $fluent->from('tvmaze')
             ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $name)
-            ->fetch();
-        if ($id_array) {
+            ->fetchAll();
+        if ($items) {
+            $id_array = $items[0];
+            foreach ($items as $item) {
+                if (strtolower($item['name']) === strtolower($name)) {
+                    $id_array = $item;
+                }
+            }
             $cache->set('tvshow_ids_' . $hash, $id_array, 0);
         }
     }
-    if ($id_array) {
-        extract($id_array);
 
-        return $$type;
+    return $id_array;
+}
+
+function get_show_id_by_imdb(string $imdbid)
+{
+    global $fluent, $cache;
+
+    if (empty($imdbid)) {
+        return null;
+    }
+    $id_array = $cache->get('tvshow_ids_' . $imdbid);
+    if ($id_array === false || is_null($id_array)) {
+        $id_array = $fluent->from('tvmaze')
+            ->where('imdb_id = ?', $imdbid)
+            ->fetch();
+        if ($id_array) {
+            $cache->set('tvshow_ids_' . $imdbid, $id_array, 0);
+        }
     }
 
-    return null;
+    return $id_array;
 }
 
 /**

@@ -32,7 +32,6 @@ if (!isset($_GET['id']) || !is_valid_id($_GET['id'])) {
     stderr("{$lang['details_user_error']}", "{$lang['details_bad_id']}{$_GET['id']}");
 }
 $id = (int) $_GET['id'];
-
 $slot                 = make_freeslots($CURUSER['id'], 'fllslot_');
 $torrent['addedfree'] = $torrent['addedup'] = $free_slot = $double_slot = '';
 if (!empty($slot)) {
@@ -89,28 +88,32 @@ if (in_array($torrents['category'], $site_config['ebook_cats'])) {
 }
 
 if (in_array($torrents['category'], $site_config['tv_cats'])) {
-    $thetvdb_id = get_show_id($torrents['name'], 'thetvdb_id');
-    $tvmaze_id  = get_show_id($torrents['name'], 'tvmaze_id');
-    $imdb_id    = get_show_id($torrents['name'], 'imdb_id');
-    if (empty($torrents['url'])) {
-        if (!empty($imdb_id)) {
-            $url = 'http://www.imdb.com/title/' . $imdb_id;
-            $set = [
-                'url' => $url,
-            ];
-            $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
-            $fluent->update('torrents')
-                ->set($set)
-                ->where('id = ?', $id)
-                ->execute();
-            $torrents['url'] = $url;
-        }
+    preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $torrents['url'], $imdb_tmp);
+    $imdb_id = !empty($imdb_tmp[2]) ? $imdb_tmp[2] : '';
+    if (!empty($imdb_id)) {
+        $ids = get_show_id_by_imdb($imdb_id);
+    } else {
+        $ids = get_show_id($torrents['name'], $imdb_id);
+    }
+    extract($ids);
+
+    if (empty($torrents['url']) && !empty($imdb_id)) {
+        $url = 'https://www.imdb.com/title/' . $imdb_id;
+        $set = [
+            'url' => $url,
+        ];
+        $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
+        $fluent->update('torrents')
+            ->set($set)
+            ->where('id = ?', $id)
+            ->execute();
+        $torrents['url'] = $url;
     }
 
     preg_match('/S(\d+)E(\d+)/i', $torrents['name'], $match);
     $season = !empty($match[1]) ? $match[1] : 0;
 
-    if (empty($torrents['poster'])) {
+    if (empty($torrents['poster']) && !empty($thetvdb_id)) {
         $poster = getTVImagesByImdb($thetvdb_id, 'poster', $season);
         if (!empty($poster)) {
             $set = [
@@ -125,7 +128,7 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
         }
     }
 
-    if (empty($torrents['banner'])) {
+    if (empty($torrents['banner']) && !empty($thetvdb_id)) {
         $banner = getTVImagesByImdb($thetvdb_id, 'banner', $season);
         if (!empty($banner)) {
             $set = [
@@ -140,7 +143,7 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
         }
     }
 
-    if (empty($torrents['background'])) {
+    if (empty($torrents['background']) && !empty($thetvdb_id)) {
         $background = getTVImagesByImdb($thetvdb_id, 'showbackground', $season);
         if (!empty($background)) {
             $set = [
@@ -154,11 +157,13 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
             $torrents['background'] = $background;
         }
     }
-
     if (!empty($match[1]) && !empty($match[1]) && !empty($tvmaze_id)) {
         $tvmaze_episode_info = get_episode($tvmaze_id, $match[1], $match[2]);
     }
-    $tvmaze_info = tvmaze($torrents);
+    if (!empty($tvmaze_id)) {
+        $tvmaze_info = tvmaze($tvmaze_id, $id);
+    }
+
     if (!empty($imdb_id)) {
         $movie_info = get_imdb_info($imdb_id);
         $imdb_info  = $movie_info[0];
@@ -310,10 +315,11 @@ if (empty($torrents['tags'])) {
     }
     $keywords = substr($keywords, 0, (strlen($keywords) - 1));
 }
-
+//dd($_POST);
+//dd($id);
 if ($CURUSER['class'] >= UC_STAFF) {
-    if (isset($_POST['checked']) && $_POST['checked'] === $_GET['id']) {
-        sql_query('UPDATE torrents SET checked_by = ' . sqlesc($CURUSER['id']) . ', checked_when = ' . $dt . ' WHERE id =' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    if (isset($_POST['checked']) && $_POST['checked'] == $id) {
+        sql_query('UPDATE torrents SET checked_by = ' . sqlesc($CURUSER['id']) . ', checked_when = ' . $dt . ' WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('torrent_details_' . $id, [
             'checked_by'   => $CURUSER['id'],
             'checked_when' => $dt,
@@ -323,8 +329,8 @@ if ($CURUSER['class'] >= UC_STAFF) {
         $cache->set('checked_by_' . $id, $CURUSER['id'], 0);
         write_log("Torrent <a href=details.php?id=$id>(" . htmlsafechars($torrents['name']) . ")</a> was checked by {$CURUSER['username']}");
         $session->set('is-success', "Torrents has been 'Checked'");
-    } elseif (isset($_POST['rechecked']) && $_POST['rechecked'] === $_GET['id']) {
-        sql_query('UPDATE torrents SET checked_by = ' . sqlesc($CURUSER['id']) . ', checked_when = ' . $dt . ' WHERE id =' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    } elseif (isset($_POST['rechecked']) && $_POST['rechecked'] == $id) {
+        sql_query('UPDATE torrents SET checked_by = ' . sqlesc($CURUSER['id']) . ', checked_when = ' . $dt . ' WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('torrent_details_' . $id, [
             'checked_by'   => $CURUSER['id'],
             'checked_when' => $dt,
@@ -334,8 +340,8 @@ if ($CURUSER['class'] >= UC_STAFF) {
         $cache->set('checked_by_' . $id, $CURUSER['id'], 0);
         write_log("Torrent <a href=details.php?id=$id>(" . htmlsafechars($torrents['name']) . ")</a> was re-checked by {$CURUSER['username']}");
         $session->set('is-success', "Torrents has been 'Re-Checked'");
-    } elseif (isset($_POST['clearchecked']) && $_POST['clearchecked'] === $_GET['id']) {
-        sql_query('UPDATE torrents SET checked_by = 0, checked_when = 0 WHERE id = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    } elseif (isset($_POST['clearchecked']) && $_POST['clearchecked'] == $id) {
+        sql_query('UPDATE torrents SET checked_by = 0, checked_when = 0 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('torrent_details_' . $id, [
             'checked_by'   => 0,
             'checked_when' => 0,
@@ -345,6 +351,30 @@ if ($CURUSER['class'] >= UC_STAFF) {
         $cache->delete('checked_by_' . $id);
         write_log("Torrent <a href=details.php?id=$id>(" . htmlsafechars($torrents['name']) . ")</a> was un-checked by {$CURUSER['username']}");
         $session->set('is-success', "Torrents has been 'Un-Checked'");
+    } elseif (isset($_POST['clear_cache']) && $_POST['clear_cache'] == $id) {
+        sql_query("UPDATE torrents SET banner = '', background = '' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $cache->delete('torrent_details_' . $id);
+        $cache->delete('top5_tor_');
+        $cache->delete('last5_tor_');
+        $cache->delete('torrent_xbt_data_' . $id);
+        $cache->delete('torrent_details_txt_' . $id);
+        $cache->delete('similiar_tor_' . $id);
+        if (!empty($imdb_id)) {
+            $cache->delete('tvshow_ids_' . $imdb_id);
+        }
+        if (!empty($tvmaze_id)) {
+            $cache->delete('tvshow_episode_info_' . $tvmaze_id);
+            $cache->delete('tvsmaze_' . $tvmaze_id);
+        }
+        if (!empty($thetvdb_id)) {
+            $cache->delete('show_images_' . $thetvdb_id);
+            $cache->delete('movie_images_' . $thetvdb_id);
+        }
+        $cache->delete('tvshow_ids_' . hash('sha512', get_show_name($torrents['name'])));
+
+        $session->set('is-success', 'Torrent Cache Cleared');
+        header("Location: {$site_config['baseurl']}/details.php?id=$id");
+        die();
     }
 }
 
@@ -691,7 +721,7 @@ if (in_array($torrents['category'], $site_config['movie_cats']) && !empty($torre
             </tr>';
 }
 
-if ($CURUSER['class'] >= UC_POWER_USER && $torrents['nfosz'] > 0) {
+if ($CURUSER['class'] >= (UC_MIN + 1) && $torrents['nfosz'] > 0) {
     $HTMLOUT .= "
             <tr>
                 <td class='rowhead'>{$lang['details_nfo']}</td><td><a href='viewnfo.php?id=" . (int) $torrents['id'] . "'><b>{$lang['details_view_nfo']}</b></a> (" . mksize($torrents['nfosz']) . ')</td>
@@ -753,6 +783,20 @@ if ($owned) {
     $uprow .= "<br><$editlink>{$lang['details_edit']}</a>";
 }
 $HTMLOUT .= tr('Upped by', $uprow, 1);
+
+if ($CURUSER['class'] >= UC_STAFF) {
+        $HTMLOUT .= "<tr>
+                <td class='rowhead'>Clear Cache</td>
+                <td>
+                    <div class='bottom10'>
+                        <form method='post' action='./details.php?id={$torrents['id']}'>
+                            <input type='hidden' name='clear_cache' value={$torrents['id']}>
+                            <input type='submit' class='button is-small bottom10' value='Clear Cache' />
+                        </form>
+                    </div>
+                </td>
+            </tr>";
+}
 
 if ($CURUSER['class'] >= UC_STAFF) {
     if (!empty($torrents['checked_by'])) {
@@ -834,60 +878,36 @@ $HTMLOUT .= '
 </table>
 </div>';
 if (!empty($torrents_txt['descr'])) {
+    if (!preg_match('/\[pre\].*\[\/pre\]/isU', $torrents_txt['descr'])) {
+        $torrents_txt["descr"] = '[pre]' . $torrents_txt["descr"] . '[/pre]';
+    }
     $HTMLOUT .= main_div(format_comment($torrents_txt['descr']), 'has-text-left bottom20');
 }
-$HTMLOUT .= "
-        <div class='table-wrapper bottom20'>
-            <table class='table table-bordered'>";
+
 if (!empty($torrents['youtube'])) {
     preg_match('/(watch\?v=|watch\?.+&v=)(.{11})/i', $torrents['youtube'], $match);
     if (isset($match[2])) {
         $youtube_id = $match[2];
-        $HTMLOUT .= tr($lang['details_youtube'],"
-                <a id='YouTube-hash'>
-                <div class='responsive-container'>
-                    <iframe width='1920px' height='1080px' src='//youtube.com/embed/{$youtube_id}?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen></iframe>
-                </div>", 1);
+        $HTMLOUT .= main_div("
+                    <a id='youtube-hash'></a>
+                    <div class='responsive-container'>
+                        <iframe width='1920px' height='1080px' src='//youtube.com/embed/{$youtube_id}?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen></iframe>
+                    </div>", 'bottom20');
     }
-} else {
-    $HTMLOUT .= '
-                <tr>
-                    <td>No youtube data found</td>
-                </tr>';
 }
-$HTMLOUT .= '
-            </table>
-        </div>';
-$HTMLOUT .= "
-        <div class='table-wrapper bottom20'>
-            <table class='table table-bordered'>";
 
 if ($tvmaze_info) {
-    $HTMLOUT .= tr('Series Info', $tvmaze_info, 1);
+    $HTMLOUT .= main_div($tvmaze_info, 'bottom20');
 }
-
 if ($tvmaze_episode_info) {
-    $HTMLOUT .= tr($lang['details_tvrage'], $tvmaze_episode_info, 1);
+    $HTMLOUT .= main_div($tvmaze_episode_info, 'bottom20');
 }
-
 if (!empty($ebook_info)) {
-    $HTMLOUT .= tr('Google Books', $ebook_info, 1);
+    $HTMLOUT .= main_div($ebook_info, 'bottom20');
 }
-
 if (!empty($imdb_info)) {
-    $HTMLOUT .= tr('Auto imdb', $imdb_info, 1);
+    $HTMLOUT .= main_div($imdb_info, 'bottom20');
 }
-
-if (empty($tvmaze_episode_info) && empty($tvmaze_info) && empty($imdb_info) && empty($ebook_info)) {
-    $HTMLOUT .= "
-                <tr >
-                    <td colspan = '2' > No Imdb, TVMaze or Ebook info .</td >
-                </tr > ";
-}
-$HTMLOUT .= '
-            </table >
-        </div > ';
-
 $HTMLOUT .= "
     <a name = 'startcomments' ></a >
     <form name = 'comment' method = 'post' action = '{$site_config['baseurl']}/comment.php?action=add&amp;tid=$id' >
@@ -944,7 +964,7 @@ if ($torrents['allow_comments'] === 'yes' || $CURUSER['class'] >= UC_STAFF && $C
             <p><a name='startcomments'></a></p>";
 } else {
     $HTMLOUT .= "
-        <div class='table-wrapper bottom20'>
+        <div class='table-wrapper'>
             <table class='table table-bordered'>
                 <tr>
                     <td><a name='startcomments'> </a><b>{$lang['details_com_disabled']}</b></td>
@@ -972,7 +992,7 @@ if (!$count) {
         $allrows[] = $subrow;
     }
     $HTMLOUT .= "
-                <div class='container is-fluid portlet'>
+                <div class='container is-fluid portlet is-marginless'>
                     <a id='comments-hash'></a>
                     <fieldset id='comments' class='header'>
                         <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>Comments</legend>
@@ -1001,6 +1021,7 @@ $HTMLOUT .= "
         var width = document.getElementById('overlay').offsetWidth;
         var height = (width * 185 / 1000) + 3
         document.getElementById('overlay').style.height = height + 'px';
+        document.getElementById('body-overlay')[0].classList.add('body-overlay');
     }
     </script>";
 

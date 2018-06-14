@@ -127,7 +127,7 @@ foreach ([
         die();
     }
 }
-if (isset($_POST['youtube']) && preg_match($youtube_pattern, $_POST['youtube'], $temp_youtube)) {
+if (isset($_POST['youtube']) && (preg_match($youtube_pattern, $_POST['youtube'], $temp_youtube) || $_POST['youtube'] === '')) {
     if ($temp_youtube[0] != $fetch_assoc['youtube']) {
         $updateset[] = 'youtube = ' . sqlesc($temp_youtube[0]);
     }
@@ -201,7 +201,7 @@ if (isset($_POST['nukereason']) && ($nukereason = $_POST['nukereason']) != $fetc
     $torrent_cache['nukereason'] = $nukereason;
 }
 
-if (isset($_POST['poster']) && (($poster = $_POST['poster']) != $fetch_assoc['poster'] && !empty($poster))) {
+if (!empty($_POST['poster']) && (($poster = $_POST['poster']) != $fetch_assoc['poster'])) {
     if (!preg_match("/^(http|https):\/\/[^\s'\"<>]+\.(jpg|gif|png)$/i", $poster)) {
         $session->set('is-warning', 'Poster MUST be in jpg, gif or png format. Make sure you include http:// in the URL.');
         header("Location: {$_SERVER['HTTP_REFERER']}");
@@ -330,6 +330,9 @@ if ($torrent_cache) {
     $cache->update_row('torrent_details_' . $id, $torrent_cache, $site_config['expires']['torrent_details']);
     $cache->delete('top5_tor_');
     $cache->delete('last5_tor_');
+    $cache->delete('torrent_xbt_data_' . $id);
+    $cache->delete('torrent_details_txt_' . $id);
+    $cache->delete('similiar_tor_' . $id);
 }
 if ($torrent_txt_cache) {
     $cache->update_row('torrent_details_txt_' . $id, $torrent_txt_cache, $site_config['expires']['torrent_details_text']);

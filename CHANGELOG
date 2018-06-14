@@ -1,3 +1,7 @@
+14 Jun 2018
+fix: tvmaze lookup
+add: clear torrent cache button on details page
+
 13 Jun 2018
 fix: remove deleted columns from query mytorrents.php
 update: guzzle request in function_fanart,php

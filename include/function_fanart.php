@@ -32,7 +32,7 @@ function getTVImagesByImdb($thetvdb_id, $type = 'showbackground', $season = 0)
             $cache->set('show_images_' . $thetvdb_id, $fanart, 604800);
         }
     }
-    if ($fanart) {
+    if (!empty($fanart[$type])) {
         $images = [];
         foreach ($fanart[$type] as $image) {
             if (empty($image['lang']) || $image['lang'] === 'en') {
@@ -84,7 +84,7 @@ function getMovieImagesByImdb($imdb, $type = 'moviebackground')
             $cache->set('movie_images_' . $imdb, $fanart, 604800);
         }
     }
-    if ($fanart) {
+    if (!empty($fanart[$type])) {
         $images = [];
         foreach ($fanart[$type] as $image) {
             if (empty($image['lang']) || $image['lang'] === 'en') {
