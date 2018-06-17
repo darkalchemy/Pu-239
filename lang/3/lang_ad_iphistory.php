@@ -1,5 +1,7 @@
 <?php
 
+global $username, $username2, $id;
+
 $lang = [
     //Errors
     'stderr_error'  => 'Eroare',
@@ -26,9 +28,9 @@ $lang = [
     'iphistory_yes'          => 'Da',
     'iphistory_stdhead'      => "Istorie IP al utilizatorului {$username}'",
     'iphistory_browse'       => 'Rasfoire: ',
-    'iphistory_ann'          => 'Anunta: ',
+    'iphistory_announce'     => 'Anunta: ',
     'iphistory_login'        => 'Autentificare: ',
-    //'iphistory_wipe' => "Curata istorie:",
-    //'iphistory_justwipe' => " tocmai a curatat IP-ul : ",
-    //'iphistory_from' => " de la Istoria IP al utilizatorului (<a href='{$site_config['baseurl']}/userdetails.php?id=$id'><b>$username2</b></a>)"
+    'iphistory_wipe' => "Curata istorie:",
+    'iphistory_justwipe' => " tocmai a curatat IP-ul : ",
+    'iphistory_from' => " de la Istoria IP al utilizatorului (<a href='{$site_config['baseurl']}/userdetails.php?id=$id'><b>$username2</b></a>)"
 ];

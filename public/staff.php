@@ -66,7 +66,7 @@ function DoStaff($staff_array, $staffclass)
         $flagname = !empty($staff['flagname']) ? $staff['flagname'] : '';
         $body .= '
                         <td>' . format_username($staff['id']) . "</td>
-                        <td><img src='{$site_config['pic_baseurl']}staff/" . ($staff['last_access'] > $dt && $staff['perms'] < bt_options::PERMS_STEALTH ? 'online.png' : 'offline.png') . "' height='16' alt='' /></td>" . "
+                        <td><img src='{$site_config['pic_baseurl']}" . ($staff['last_access'] > $dt && $staff['perms'] < bt_options::PERMS_STEALTH ? 'online.png' : 'offline.png') . "' height='16' alt='' /></td>" . "
                         <td><a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int) $staff['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . "'><img src='{$site_config['pic_baseurl']}mailicon.png' class='tooltipper' title='Personal Message' alt='' /></a></td>" . "
                         <td><img src='$flagpic' alt='" . htmlsafechars($flagname) . "' /></td>
                     </tr>";
@@ -88,7 +88,7 @@ if (!empty($support)) {
         $body .= '
                 <tr>
                     <td>' . format_username($a['id']) . "</td>
-                    <td><img src='{$site_config['pic_baseurl']}/staff/" . ($a['last_access'] > $dt ? 'online.png' : 'offline.png') . "' alt='' /></td>
+                    <td><img src='{$site_config['pic_baseurl']}" . ($a['last_access'] > $dt ? 'online.png' : 'offline.png') . "' alt='' /></td>
                     <td><a href='{$site_config['baseurl']}pm_system.php?action=send_message&amp;receiver=" . (int) $a['id'] . "'><img src='{$site_config['pic_baseurl']}mailicon.png' class='tooltipper' title='{$lang['alt_pm']}' alt='' /></a></td>
                     <td><img src='$flagpic' alt='" . htmlsafechars($flagname) . "' /></td>
                     <td>" . htmlsafechars($a['supportfor']) . '</td>

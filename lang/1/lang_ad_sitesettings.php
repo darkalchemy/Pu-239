@@ -1,5 +1,7 @@
 <?php
 
+global $site_config;
+
 $lang = [
     //sitesettings
     'sitesettings_stderr'        => 'Error',
@@ -10,7 +12,7 @@ $lang = [
     'sitesettings_stderr3'       => 'There was an error while executing the update query or nothing was updated.',
     'sitesettings_stdhead'       => 'Site Settings',
     'sitesettings_success'       => 'Success',
-    'sitesettings_success1'      => 'Site configuration was saved! Click <a href=staffpanel.php?tool=site_settings>here to get back</a>',
+    'sitesettings_success1'      => "Site configuration was saved! Click <a href={$site_config['baseurl']}/staffpanel.php?tool=site_settings>here to get back</a>",
     'sitesettings_sitehead'      => 'Site Settings',
     'sitesettings_online'        => 'Site Online:',
     'sitesettings_yes'           => 'Yes ',

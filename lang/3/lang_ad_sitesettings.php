@@ -1,5 +1,7 @@
 <?php
 
+global $site_config;
+
 $lang = [
     //sitesettings
     'sitesettings_stderr'        => 'Eroare',
@@ -10,7 +12,7 @@ $lang = [
     'sitesettings_stderr3'       => 'Am &#238;nt&#226;mpinat o eroare la executarea interog&#259;rii &#351;i/sau nimic nu s-a actualizat.',
     'sitesettings_stdhead'       => 'Set&#259;ri Site',
     'sitesettings_success'       => 'Succes',
-    'sitesettings_success1'      => 'Configura&#355;iile site-ului au fost salvate! Clic <a href=staffpanel.php?tool=site_settings> aici </a> pentru a reveni la pagina anterioar&#259;',
+    'sitesettings_success1'      => "Configura&#355;iile site-ului au fost salvate! Clic <a href={$site_config['baseurl']}/staffpanel.php?tool=site_settings> aici </a> pentru a reveni la pagina anterioar&#259;",
     'sitesettings_sitehead'      => 'Set&#259;ri Site',
     'sitesettings_online'        => 'Site Online:',
     'sitesettings_yes'           => 'Da ',

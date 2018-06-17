@@ -11,7 +11,7 @@ if ($user['invitedby'] > 0) {
     $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_invited_by'] . '</td><td><b>' . $lang['userdetails_iopen_s'] . '</b></td></tr>';
 }
 //=== members invites by snuggles
-$rez_invited              = sql_query('SELECT id, class, username, email, uploaded, downloaded, status, warned, suspended, enabled, donor, email, ip, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($user['id']) . ' ORDER BY added');
+$rez_invited = sql_query('SELECT id, class, username, email, uploaded, downloaded, status, warned, suspended, enabled, donor, email, ip, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($user['id']) . ' ORDER BY added') or sqlerr(__FILE__, __LINE__);;
 $inviteted_by_this_member = '';
 if (mysqli_num_rows($rez_invited) < 1) {
     $inviteted_by_this_member .= 'No invitees yet.';

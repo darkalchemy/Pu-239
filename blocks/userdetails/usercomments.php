@@ -53,7 +53,7 @@ $text = "
         <h1>{$lang['userdetails_comm_left']}" . format_username($id) . '</a></h1>';
 $commentbar = "
         <a href='{$site_config['baseurl']}/usercomment.php?action=add&amp;userid={$id}'>Add a comment</a>";
-$subres = sql_query('SELECT COUNT(id) FROM usercomments WHERE userid = ' . sqlesc($id));
+$subres = sql_query('SELECT COUNT(id) FROM usercomments WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $subrow = mysqli_fetch_array($subres, MYSQLI_NUM);
 $count  = $subrow[0];
 if (!$count) {

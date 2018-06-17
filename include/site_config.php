@@ -214,7 +214,7 @@ $site_config['sig_img_height'] = 100;
 $site_config['sig_img_width']  = 500;
 
 // Image uploads
-$site_config['bucket_allowed'] = 0;
+$site_config['bucket_allowed'] = 1;
 $site_config['allowed_ext']    = [
     'image/gif',
     'image/jpg',
@@ -308,4 +308,4 @@ $site_config['notifications'] = [
     'is-link',
 ];
 
-$site_config['newsrss_on'] = false;
+$site_config['newsrss_on'] = true;

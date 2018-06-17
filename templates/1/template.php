@@ -248,7 +248,7 @@ function stdfoot($stdfoot = false)
                                         <td>' . ($key + 1) . '</td>
                                         <td>' . ($value['seconds'] > 0.01 ? "<span class='has-text-red' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='has-text-green' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
                                         <td>
-                                            <div class='text-justify pre'>" . format_comment($value['query']) . '</div>
+                                            <div class='text-justify'>" . format_comment($value['query']) . '</div>
                                         </td>
                                     </tr>';
             }

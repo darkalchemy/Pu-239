@@ -1534,6 +1534,7 @@ function check_user_status()
     referer();
     parked();
     suspended();
+    insert_update_ip();
 }
 
 /**
@@ -2168,6 +2169,27 @@ function rrmdir($dir)
         }
         reset($objects);
         rmdir($dir);
+    }
+}
+
+function insert_update_ip()
+{
+    global $CURUSER, $cache;
+
+    if (empty($CURUSER)) {
+        return;
+    }
+    $id = (int) $CURUSER['id'];
+    $user_ips = $cache->get('user_ips_' . $id);
+    if ($user_ips === false || is_null($user_ips)) {
+        $ip = getip();
+        $added  = TIME_NOW;
+        sql_query('INSERT INTO ips (userid, ip, lastbrowse, type)
+                    VALUES (' . sqlesc($id) . ', ' . ipToStorageFormat($ip) . ", $added, 'Browse')
+                    ON DUPLICATE KEY UPDATE
+                    ip = VALUES(ip), lastbrowse = VALUES(lastbrowse), type = VALUES(type)") or sqlerr(__FILE__, __LINE__);
+        $cache->delete('ip_history_' . $id);
+        $cache->set('user_ips_' .  $id, 300);
     }
 }
 

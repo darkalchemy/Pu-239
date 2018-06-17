@@ -1,5 +1,7 @@
 <?php
 
+global $username, $username2, $id;
+
 $lang = [
     //Errors
     'stderr_error'  => 'Error',
@@ -28,7 +30,7 @@ $lang = [
     'iphistory_browse'       => 'Browse: ',
     'iphistory_announce'     => 'Announce: ',
     'iphistory_login'        => 'Login: ',
-    //'iphistory_wipe' => "History Wipe:",
-    //'iphistory_justwipe' => " has just wiped IP: ",
-    //'iphistory_from' => " from (<a href='{$site_config['baseurl']}/userdetails.php?id=$id'><b>$username2</b></a>)'s Ip History"
+    'iphistory_wipe' => "History Wipe:",
+    'iphistory_justwipe' => " has just wiped IP: ",
+    'iphistory_from' => " from (<a href='{$site_config['baseurl']}/userdetails.php?id=$id'><b>$username2</b></a>)'s Ip History"
 ];

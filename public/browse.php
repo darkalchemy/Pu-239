@@ -405,21 +405,5 @@ if ($count) {
                                 <p>{$lang['browse_sorry']}(</p>", 'top20 has-text-centered');
     }
 }
-$ip        = getip();
-$no_log_ip = ($CURUSER['perms'] & bt_options::PERMS_NO_IP);
-if ($no_log_ip) {
-    $ip = '127.0.0.1';
-}
-if (!$no_log_ip) {
-    $userid = (int) $CURUSER['id'];
-    $added  = TIME_NOW;
-    $res    = sql_query('SELECT * FROM ips WHERE ip = ' . ipToStorageFormat($ip) . ' AND userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($res) == 0) {
-        sql_query('INSERT INTO ips (userid, ip, lastbrowse, type) VALUES (' . sqlesc($userid) . ', ' . ipToStorageFormat($ip) . ", $added, 'Browse')") or sqlerr(__FILE__, __LINE__);
-        $cache->delete('ip_history_' . $userid);
-    } else {
-        sql_query("UPDATE ips SET lastbrowse = $added WHERE ip = " . ipToStorageFormat($ip) . ' AND userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-        $cache->delete('ip_history_' . $userid);
-    }
-}
+
 echo stdhead($title, true) . wrapper($HTMLOUT) . stdfoot($stdfoot);

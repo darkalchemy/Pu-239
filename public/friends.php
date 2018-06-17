@@ -170,7 +170,7 @@ if (mysqli_num_rows($res) == 0) {
 } else {
     while ($friendp = mysqli_fetch_assoc($res)) {
         $dt     = TIME_NOW - 180;
-        $online = ($friendp['last_access'] >= $dt && $friendp['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'staff/online.png" alt="Online" class="tooltipper" title="Online" />' : '<img src="' . $site_config['pic_baseurl'] . 'staff/offline.png" alt="Offline" class="tooltipper" title="Offline" />');
+        $online = ($friendp['last_access'] >= $dt && $friendp['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'online.png" alt="Online" class="tooltipper" title="Online" />' : '<img src="' . $site_config['pic_baseurl'] . 'offline.png" alt="Offline" class="tooltipper" title="Offline" />');
         $title  = htmlsafechars($friendp['title']);
         if (!$title) {
             $title = get_user_class_name($friendp['class']);
@@ -213,7 +213,7 @@ if (mysqli_num_rows($res) == 0) {
 } else {
     while ($friend = mysqli_fetch_assoc($res)) {
         $dt     = TIME_NOW - 180;
-        $online = ($friend['last_access'] >= $dt && $friend['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'staff/online.png" alt="Online" class="tooltipper" title="Online" />' : '<img src="' . $site_config['pic_baseurl'] . 'staff/offline.png" alt="Offline" class="tooltipper" title="Offline" />');
+        $online = ($friend['last_access'] >= $dt && $friend['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'online.png" alt="Online" class="tooltipper" title="Online" />' : '<img src="' . $site_config['pic_baseurl'] . 'offline.png" alt="Offline" class="tooltipper" title="Offline" />');
         $title  = htmlsafechars($friend['title']);
         if (!$title) {
             $title = get_user_class_name($friend['class']);

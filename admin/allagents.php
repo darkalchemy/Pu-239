@@ -7,12 +7,19 @@ class_check($class);
 global $lang;
 
 $lang    = array_merge($lang, load_language('ad_allagents'));
-$HTMLOUT = '';
-$res     = sql_query('SELECT agent, peer_id FROM peers GROUP BY agent') or sqlerr(__FILE__, __LINE__);
-$HTMLOUT .= "<table >
-    <tr><td class='colhead'>{$lang['allagents_client']}</td><td class='colhead'>{$lang['allagents_peerid']}</td></tr>";
+$res     = sql_query('SELECT agent, HEX(peer_id) AS peer_id FROM peers GROUP BY agent') or sqlerr(__FILE__, __LINE__);
+$heading=  "
+        <tr>
+            <th>{$lang['allagents_client']}</th>
+            <th>{$lang['allagents_peerid']}</th>
+        </tr>";
+$body = '';
 while ($arr = mysqli_fetch_assoc($res)) {
-    $HTMLOUT .= '<tr><td>' . htmlsafechars($arr['agent']) . '</td><td>' . htmlsafechars($arr['peer_id']) . "</td></tr>\n";
+    $body .= '
+        <tr>
+            <td>' . htmlsafechars($arr['agent']) . '</td>
+            <td>' . htmlsafechars($arr['peer_id']) . "</td>
+        </tr>";
 }
-$HTMLOUT .= "</table>\n";
-echo stdhead($lang['allagents_allclients']) . $HTMLOUT . stdfoot();
+$HTMLOUT = main_table($body, $heading);
+echo stdhead($lang['allagents_allclients']) . wrapper($HTMLOUT) . stdfoot();

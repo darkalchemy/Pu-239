@@ -36,32 +36,32 @@ if (isset($_GET['setseedbox2'])) {
         sql_query('UPDATE ips SET seedbox = 0 WHERE id =' . sqlesc($setseedbox2)) or sqlerr(__FILE__, __LINE__);
     }
 }
-$res      = sql_query('SELECT username FROM users WHERE id=' . sqlesc($id))  or sqlerr(__FILE__, __LINE__);
+$res      = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($id))  or sqlerr(__FILE__, __LINE__);
 $user     = mysqli_fetch_array($res)                                         or stderr("{$lang['stderr_error']}", "{$lang['stderr_noid']}");
 $username = htmlsafechars($user['username']);
-$resip    = sql_query('SELECT * FROM ips WHERE userid = ' . sqlesc($id) . ' GROUP BY ip ORDER BY id DESC') or sqlerr(__FILE__, __LINE__);
+$resip    = sql_query('SELECT *, INET6_NTOA(ip) AS ip FROM ips WHERE userid = ' . sqlesc($id) . ' GROUP BY ip ORDER BY id DESC') or sqlerr(__FILE__, __LINE__);
 $ipcount  = mysqli_num_rows($resip);
 $HTMLOUT  = '';
-$HTMLOUT .= "<table >
-                <tr><td class='colhead'>{$lang['iphistory_usedby']}<a class='altlink_white' href='{$site_config['baseurl']}/userdetails.php?id=$id'><b>$username</b></a></td></tr>
-                <tr>
-                <td class='heading2'>{$lang['iphistory_total_unique']} <b>$username</b> {$lang['iphistory_total_logged']} <b><u>$ipcount</u></b>.</td></tr>
-                <tr>
-                <td class='heading2'><b><span style='color: blue'>{$lang['iphistory_single']}</font> - <span class='has-text-danger;'>{$lang['iphistory_banned']}</span> - <font color='black'>{$lang['iphistory_dupe']}</span></b></td>
-                </tr>
-                </table><br>
+$HTMLOUT .= "
+        <h1 class='has-text-centered'>{$lang['iphistory_usedby']}" . format_username($id) . "</h1>
+        <p class='has-text-centered'>{$lang['iphistory_total_unique']} <b>$username</b> {$lang['iphistory_total_logged']} <b><u>$ipcount</u></b>.</p>
+        <p class='has-text-centered'>
+            <span class='has-text-blue'>{$lang['iphistory_single']}</span> - <span class='has-text-danger'>{$lang['iphistory_banned']}</span> - <span class='has-text-lime'>{$lang['iphistory_dupe']}</span>
+        </p>";
 
-                <table >
-                <tr>
-                <td class='colhead'>{$lang['iphistory_last']}</td>
-                <td class='colhead'>{$lang['iphistory_address']}</td>
-                <td class='colhead'>{$lang['iphistory_isphost']}</td>
-                <td class='colhead'>{$lang['iphistory_location']}</td>
-                <td class='colhead'>{$lang['iphistory_type']}</td>
-                <td class='colhead'>{$lang['iphistory_seedbox']}</td>
-                <td class='colhead'>{$lang['iphistory_delete']}</td>
-                <td class='colhead'>{$lang['iphistory_ban']}</td>
-                </tr>";
+$heading = "
+        <tr>
+            <th>{$lang['iphistory_last']}</th>
+            <th>{$lang['iphistory_address']}</th>
+            <th>{$lang['iphistory_isphost']}</th>
+            <th>{$lang['iphistory_location']}</th>
+            <th>{$lang['iphistory_type']}</th>
+            <th>{$lang['iphistory_seedbox']}</th>
+            <th>{$lang['iphistory_delete']}</th>
+            <th>{$lang['iphistory_ban']}</th>
+        </tr>";
+
+$body = '';
 while ($iphistory = mysqli_fetch_array($resip)) {
     if (!filter_var($iphistory['ip'], FILTER_VALIDATE_IP)) {
         continue;
@@ -109,54 +109,56 @@ while ($iphistory = mysqli_fetch_array($resip)) {
     $banarr       = mysqli_fetch_row($banres);
     if ($banarr[0] == 0) {
         if ($ipcount > 1) {
-            $ipshow = "<b><a class='altlink' href='{$site_config['baseurl']}/staffpanel . php ? tool = ipsearch & amp;action = ipsearch & amp;ip = " . htmlsafechars($iphistory['ip']) . "'><font color='black'>" . htmlsafechars($iphistory['ip']) . ' </font ></a ></b > ';
+            $ipshow = "<b><a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><span class='has-text-lime'>" . htmlsafechars($iphistory['ip']) . ' </span></a ></b > ';
         } else {
-            $ipshow = "<a class='altlink' href='{$site_config['baseurl']}/staffpanel . php ? tool = ipsearch & amp;action = ipsearch & amp;ip = " . htmlsafechars($iphistory['ip']) . "'><b><font color='blue'>" . htmlsafechars($iphistory['ip']) . ' </font ></b ></a > ';
+            $ipshow = "<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><b><span class='has-text-blue'>" . htmlsafechars($iphistory['ip']) . ' </span></b ></a > ';
         }
     } else {
-        $ipshow = "<a class='altlink' href='{$site_config['baseurl']}/staffpanel . php ? tool = testip & amp;action = testip & amp;ip = " . htmlsafechars($iphistory['ip']) . "'><font color='red'><b>" . htmlsafechars($iphistory['ip']) . ' </b ></font ></a > ';
+        $ipshow = "<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><span class='has-text-red'><b>" . htmlsafechars($iphistory['ip']) . ' </b ></span></a > ';
     }
     // User IP listed for GeoIP tracing
-    $gi          = geoip_open(ROOT_DIR . 'GeoIP / GeoIP . dat', GEOIP_STANDARD);
+    $gi          = geoip_open(ROOT_DIR . 'GeoIP' . DIRECTORY_SEPARATOR . 'GeoIP.dat', GEOIP_STANDARD);
     $countrybyip = geoip_country_name_by_addr($gi, $userip);
     $listcountry = $countrybyip;
     geoip_close($gi);
     // end fetch geoip code
     // User IP listed for GeoIP tracing
-    $gi         = geoip_open(ROOT_DIR . 'GeoIP / GeoLiteCity . dat', GEOIP_STANDARD);
+    $gi         = geoip_open(ROOT_DIR . 'GeoIP' . DIRECTORY_SEPARATOR . 'GeoLiteCity.dat', GEOIP_STANDARD);
     $citybyip   = geoip_record_by_addr($gi, $userip);
-    $listcity   = $citybyip->city;
-    $listregion = $citybyip->region;
+    $listcity   = @$citybyip->city;
+    $listregion = @$citybyip->region;
     geoip_close($gi);
     // end fetch geoip code
     //Is this a seedbox check
     $seedbox = htmlsafechars($iphistory['seedbox']);
     if ($seedbox == '0') {
-        $seedbox = "<a href='{$site_config['baseurl']}/staffpanel . php ? tool = iphistory & amp;action = iphistory & amp;id = $id & amp;setseedbox = " . (int) $iphistory['id'] . "'><span class='has-text-danger'><b>{$lang['iphistory_no']}</b></span></a>";
-        $HTMLOUT .= "<tr>
-                <td class='heading2'>{$lang['iphistory_browse']}" . get_date($lastbrowse, '') . "<br>{$lang['iphistory_login']}" . get_date($lastlogin, '') . "<br>{$lang['iphistory_ann']}" . get_date($lastannounce, '') . "</td>
-                <td class='heading2'>$ipshow</td>
-                <td class='heading2'>$host</td>
-                <td class='heading2'>$listcity, $listregion<br>$listcountry</td>
-                <td class='heading2'>$iptype</td>
-                <td class='heading2'>$seedbox</td>
-                <td class='heading2'><a href='{$site_config['baseurl']}/staffpanel . php ? tool = iphistory & amp;action = iphistory & amp;id = $id & amp;remove = $ipid & amp;deleteip = $userip & amp;username2 = $username'><b>{$lang['iphistory_delete']}</b></a></td>
-                <td class='heading2'><a href='{$site_config['baseurl']}/staffpanel . php ? tool = iphistory & amp;action = bans & amp;banthisuser = $username & amp;banthisip = $userip'><b>{$lang['iphistory_ban']}</b></a></td>
-                </tr>";
+        $seedbox = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=$id&amp;setseedbox=" . (int) $iphistory['id'] . "'><span class='has-text-danger'><b>{$lang['iphistory_no']}</b></span></a>";
+        $body .= "
+        <tr>
+            <td>{$lang['iphistory_browse']}" . get_date($lastbrowse, '') . "<br>{$lang['iphistory_login']}" . get_date($lastlogin, '') . "<br>{$lang['iphistory_announce']}" . get_date($lastannounce, '') . "</td>
+            <td>$ipshow</td>
+            <td>$host</td>
+            <td>$listcity, $listregion<br>$listcountry</td>
+            <td>$iptype</td>
+            <td>$seedbox</td>
+            <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=$id&amp;remove=$ipid&amp;deleteip=$userip&amp;username2=$username'><b>{$lang['iphistory_delete']}</b></a></td>
+            <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=bans&amp;banthisuser=$username&amp;banthisip=$userip'><b>{$lang['iphistory_ban']}</b></a></td>
+        </tr>";
     } else {
-        $seedbox = "<a class='altlink' href='{$site_config['baseurl']}/staffpanel . php ? tool = iphistory & amp;action = iphistory & amp;id = $id & amp;setseedbox2 = " . (int) $iphistory['id'] . "'><span style='color: Green;'><b>{$lang['iphistory_yes']}</b></span></a>";
-        $color   = '#CCFFFF';
-        $HTMLOUT .= "<tr>
-                <td class='heading2' style='background-color:$color'>{$lang['iphistory_browse']}" . get_date($lastbrowse, '') . "<br>{$lang['iphistory_login']}" . get_date($lastlogin, '') . "<br>{$lang['iphistory_announce']}" . get_date($lastannounce, '') . "</td>
-                <td class='heading2' style='background-color:$color'>$ipshow</td>
-                <td class='heading2' style='background-color:$color'>$host</td>
-                <td class='heading2' style='background-color:$color'>$listcity, $listregion<br>$listcountry</td>
-                <td class='heading2' style='background-color:$color'>$iptype</td>
-                <td class='heading2' style='background-color:$color'>$seedbox</td>
-                <td class='heading2' style='background-color:$color'><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=$id&amp;remove=$ipid&amp;deleteip=$userip&amp;username2=$username'><b>{$lang['iphistory_delete']}</b></a></td>
-                <td class='heading2' style='background-color:$color'><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=bans&amp;banthisuser=$username&amp;banthisip=$userip'><b>{$lang['iphistory_ban']}</b></a></td>
-                </tr>";
-    } // End Seedbox Check
+        $seedbox = "<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=$id&amp;setseedbox2=" . (int) $iphistory['id'] . "'><span class='has-text-green'><b>{$lang['iphistory_yes']}</b></span></a>";
+        $body .= "
+        <tr>
+            <td>{$lang['iphistory_browse']}" . get_date($lastbrowse, '') . "<br>{$lang['iphistory_login']}" . get_date($lastlogin, '') . "<br>{$lang['iphistory_announce']}" . get_date($lastannounce, '') . "</td>
+            <td>$ipshow</td>
+            <td>$host</td>
+            <td>$listcity, $listregion<br>$listcountry</td>
+            <td>$iptype</td>
+            <td>$seedbox</td>
+            <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=$id&amp;remove=$ipid&amp;deleteip=$userip&amp;username2=$username'><b>{$lang['iphistory_delete']}</b></a></td>
+            <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=bans&amp;banthisuser=$username&amp;banthisip=$userip'><b>{$lang['iphistory_ban']}</b></a></td>
+        </tr>";
+    }
+    $HTMLOUT .= main_table($body, $heading);
 }
-$HTMLOUT .= '</table>';
-echo stdhead("{$username}'s IP History") . $HTMLOUT . stdfoot();
+
+echo stdhead("{$username}'s IP History") . wrapper($HTMLOUT) . stdfoot();

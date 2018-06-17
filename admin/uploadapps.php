@@ -234,6 +234,7 @@ if ($action === 'acceptapp') {
     }
     $arr = $fluent->from('uploadapp')
         ->select(null)
+        ->select('uploadapp.userid AS uid')
         ->select('uploadapp.id')
         ->select('users.modcomment')
         ->leftJoin('users ON uploadapp.userid = users.id')

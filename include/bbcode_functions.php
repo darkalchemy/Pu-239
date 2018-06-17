@@ -240,7 +240,8 @@ function format_urls($s)
 function format_comment($text, $strip_html = true, $urls = true, $images = true)
 {
     global $smilies, $staff_smilies, $customsmilies, $site_config, $CURUSER;
-    $s = htmlspecialchars($text);
+    //$s = htmlspecialchars($text);
+    $s = $text;
     unset($text);
     $s                  = validate_imgs($s);
     $site_config['url'] = str_replace([
