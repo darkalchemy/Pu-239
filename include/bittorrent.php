@@ -2181,7 +2181,7 @@ function insert_update_ip()
     }
     $id = (int) $CURUSER['id'];
     $ip = getip();
-    $hash = hash('sha512', "$id_$ip");
+    $hash = hash('sha512', "{$id}_{$ip}");
     $user_ips = $cache->get('user_ips_' . $hash);
     if ($user_ips === false || is_null($user_ips)) {
         $added  = TIME_NOW;
