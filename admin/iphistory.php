@@ -7,7 +7,7 @@ require_once INCL_DIR . 'geoipregionvars.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang;
+global $site_config, $lang, $user_stuffs;
 
 $lang = array_merge($lang, load_language('ad_iphistory'));
 //Clear the fields for use.
@@ -36,10 +36,10 @@ if (isset($_GET['setseedbox2'])) {
         sql_query('UPDATE ips SET seedbox = 0 WHERE id =' . sqlesc($setseedbox2)) or sqlerr(__FILE__, __LINE__);
     }
 }
-$res      = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($id))  or sqlerr(__FILE__, __LINE__);
-$user     = mysqli_fetch_array($res)                                         or stderr("{$lang['stderr_error']}", "{$lang['stderr_noid']}");
+
+$user = $user_stuffs->getUserFromId($id);
 $username = htmlsafechars($user['username']);
-$resip    = sql_query('SELECT *, INET6_NTOA(ip) AS ip FROM ips WHERE userid = ' . sqlesc($id) . ' GROUP BY ip ORDER BY id DESC') or sqlerr(__FILE__, __LINE__);
+$resip    = sql_query('SELECT *, INET6_NTOA(ip) AS ip FROM ips WHERE userid = ' . sqlesc($id) . ' GROUP BY ip') or sqlerr(__FILE__, __LINE__);
 $ipcount  = mysqli_num_rows($resip);
 $HTMLOUT  = '';
 $HTMLOUT .= "
@@ -72,30 +72,15 @@ while ($iphistory = mysqli_fetch_array($resip)) {
     if ($host == $userip) {
         $host = "<span class='has-text-danger'><b>{$lang['iphistory_notfound']}</b></span>";
     }
-    $seedboxdetected = ''; //Clear the field
-    if (strpos($host, 'kimsufi.com')) {
-        $seedboxdetected = 'yes';
-    }
-    if (strpos($host, 'leaseweb.com')) {
-        $seedboxdetected = 'yes';
-    }
-    if (strpos($host, 'ovh.net')) {
-        $seedboxdetected = 'yes';
-    }
-    if (strpos($host, 'powserv.com')) {
-        $seedboxdetected = 'yes';
-    }
-    if (strpos($host, 'server.lu')) {
-        $seedboxdetected = 'yes';
-    }
-    if (strpos($host, 'xirvik.com')) {
-        $seedboxdetected = 'yes';
-    }
-    if (strpos($host, 'feralhosting.com')) {
-        $seedboxdetected = 'yes';
+    $seedboxdetected = 'no';
+    $seedboxes = ['kimsufi.com', 'leaseweb.com', 'ovh.net','powserv.com', 'server.lu', 'xirvik.com', 'feralhosting.com'];
+    foreach ($seedboxes as $seedbox) {
+        if (stripos($host, $seedbox) !== false) {
+            $seedboxdetected = 'yes';
+        }
     }
     if ($seedboxdetected === 'yes') {
-        sql_query('UPDATE ips SET seedbox=1 WHERE id =' . sqlesc($ipid)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE ips SET seedbox = 1 WHERE id =' . sqlesc($ipid)) or sqlerr(__FILE__, __LINE__);
     }
     $lastbrowse   = (int) $iphistory['lastbrowse'];
     $lastlogin    = (int) $iphistory['lastlogin'];
@@ -131,6 +116,7 @@ while ($iphistory = mysqli_fetch_array($resip)) {
     // end fetch geoip code
     //Is this a seedbox check
     $seedbox = htmlsafechars($iphistory['seedbox']);
+
     if ($seedbox == '0') {
         $seedbox = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=$id&amp;setseedbox=" . (int) $iphistory['id'] . "'><span class='has-text-danger'><b>{$lang['iphistory_no']}</b></span></a>";
         $body .= "
@@ -158,7 +144,12 @@ while ($iphistory = mysqli_fetch_array($resip)) {
             <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=bans&amp;banthisuser=$username&amp;banthisip=$userip'><b>{$lang['iphistory_ban']}</b></a></td>
         </tr>";
     }
-    $HTMLOUT .= main_table($body, $heading);
+}
+
+if (!empty($body)) {
+    $HTMLOUT .= main_table($body, $heading, 'top20');
+} else {
+    $HTMLOUT .= main_div('No IP Data Available');
 }
 
 echo stdhead("{$username}'s IP History") . wrapper($HTMLOUT) . stdfoot();

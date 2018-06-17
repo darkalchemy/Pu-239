@@ -2180,16 +2180,17 @@ function insert_update_ip()
         return;
     }
     $id = (int) $CURUSER['id'];
-    $user_ips = $cache->get('user_ips_' . $id);
+    $ip = getip();
+    $hash = hash('sha512', "$id_$ip");
+    $user_ips = $cache->get('user_ips_' . $hash);
     if ($user_ips === false || is_null($user_ips)) {
-        $ip = getip();
         $added  = TIME_NOW;
         sql_query('INSERT INTO ips (userid, ip, lastbrowse, type)
                     VALUES (' . sqlesc($id) . ', ' . ipToStorageFormat($ip) . ", $added, 'Browse')
                     ON DUPLICATE KEY UPDATE
                     ip = VALUES(ip), lastbrowse = VALUES(lastbrowse), type = VALUES(type)") or sqlerr(__FILE__, __LINE__);
         $cache->delete('ip_history_' . $id);
-        $cache->set('user_ips_' .  $id, 300);
+        $cache->set('user_ips_' .  $hash, 300);
     }
 }
 
