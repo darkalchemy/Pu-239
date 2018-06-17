@@ -59,16 +59,12 @@ $HTMLOUT .= '</h2>
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$HTMLOUT .= "
-        <div class='row-fluid'>";
 $heading = "
-                <thead>
                     <tr>
                         <th>{$lang['achievement_history_award']}</th>
                         <th>{$lang['achievement_history_descr']}</th>
                         <th>{$lang['achievement_history_date']}</th>
-                    </tr>
-                </thead>";
+                    </tr>";
 $res  = sql_query('SELECT * FROM achievements WHERE userid=' . sqlesc($id) . " ORDER BY date DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
 $body = '';
 while ($arr = mysqli_fetch_assoc($res)) {
