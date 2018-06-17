@@ -48,7 +48,8 @@ switch ($params['mode']) {
         break;
 }
 
-function resettimer() {
+function resettimer()
+{
     global $session;
 
     $timestamp = strtotime('today midnight');
@@ -121,9 +122,9 @@ function cleanup_show_main()
     while ($row = mysqli_fetch_assoc($sql)) {
         $row['_clean_time']     = get_date($row['clean_time'], 'LONG');
         $row['clean_increment'] = (int) $row['clean_increment'];
-        $row['_class'] = $row['clean_on'] != 1 ? " style='color:red'" : '';
-        $row['_title'] = $row['clean_on'] != 1 ? " {$lang['cleanup_lock']}" : '';
-        $row['_clean_time'] = $row['clean_on'] != 1 ? "<span style='color:red'>{$row['_clean_time']}</span>" : $row['_clean_time'];
+        $row['_class']          = $row['clean_on'] != 1 ? " style='color:red'" : '';
+        $row['_title']          = $row['clean_on'] != 1 ? " {$lang['cleanup_lock']}" : '';
+        $row['_clean_time']     = $row['clean_on'] != 1 ? "<span style='color:red'>{$row['_clean_time']}</span>" : $row['_clean_time'];
         $htmlout .= "
         <tr>
             <td{$row['_class']}>{$row['clean_title']}{$row['_title']}<br><span class='size_3'>{$row['clean_desc']}</span></td>
@@ -295,7 +296,7 @@ function cleanup_show_new()
     global $lang;
 
     $clean_time = strtotime('today midnight');
-    $htmlout = "<h2>{$lang['cleanup_new_head']}</h2>
+    $htmlout    = "<h2>{$lang['cleanup_new_head']}</h2>
     <div style='width: 800px; text-align: left; padding: 10px; margin: 0 auto;border-style: solid; border-color: #333333; border-width: 5px 2px;'>
     <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager'>
     <input type='hidden' name='mode' value='takenew' />

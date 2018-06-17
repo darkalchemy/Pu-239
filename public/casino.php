@@ -217,7 +217,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     }
     //== Convert bet amount into bits
     if (isset($_POST['unit'])) {
-        if ((int)$_POST['unit'] === 1) {
+        if ((int) $_POST['unit'] === 1) {
             $nobits = $amnt * $mb_basic;
         } else {
             $nobits = $amnt * $mb_basic * 1024;
@@ -326,7 +326,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     $loca    = sql_query("SELECT * FROM casino_bets WHERE challenged ='empty'") or sqlerr(__FILE__, __LINE__);
     $totbets = mysqli_num_rows($loca);
     if (isset($_POST['unit'])) {
-        if ((int)$_POST['unit'] === 1) {
+        if ((int) $_POST['unit'] === 1) {
             $nobits = (int) $_POST['amnt'] * $mb_basic;
         } else {
             $nobits = (int) $_POST['amnt'] * $mb_basic * 1024;

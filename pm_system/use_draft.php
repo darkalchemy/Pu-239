@@ -18,7 +18,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
 
     $body    = sqlesc(trim($_POST['body']));
     $subject = sqlesc(strip_tags(trim($_POST['subject'])));
-    $urgent = sqlesc((isset($_POST['urgent']) && $_POST['urgent'] === 'yes' && $CURUSER['class'] >= UC_STAFF) ? 'yes' : 'no');
+    $urgent  = sqlesc((isset($_POST['urgent']) && $_POST['urgent'] === 'yes' && $CURUSER['class'] >= UC_STAFF) ? 'yes' : 'no');
     if ($save_or_edit === 'save') {
         sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, location, draft, unread, saved) VALUES  
                                                                         (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($CURUSER['id']) . ',' . TIME_NOW . ', ' . $body . ', ' . $subject . ', \'-2\', \'yes\',\'no\',\'yes\')') or sqlerr(__FILE__, __LINE__);

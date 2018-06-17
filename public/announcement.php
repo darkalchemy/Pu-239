@@ -18,7 +18,7 @@ $res     = sql_query('
 $row = mysqli_fetch_assoc($res);
 
 if (($row['curr_ann_id'] > 0) && ($row['curr_ann_body'] == null)) {
-    $row['curr_ann_id'] = 0;
+    $row['curr_ann_id']         = 0;
     $row['curr_ann_last_check'] = 0;
 }
 // If elapsed > 3 minutes, force a announcement refresh.

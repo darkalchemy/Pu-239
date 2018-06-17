@@ -177,7 +177,7 @@ if ($action === 'viewbug') {
           <td nowrap='nowrap'>" . get_date($q1['added'], 'TINY') . " / <a href='userdetails.php?id=" . (int) $q1['sender'] . "'>" . htmlsafechars($q1['username']) . "</a></td>
           <td>{$priority}</td>
           <td>{$status}</td>
-      <td>" . ($q1['status'] != 'na' ? "<a href='userdetails.php?id=" . (int)$q1['staff'] . "'>" . htmlsafechars($q1['staffusername']) . '</a>' : '---') . '</td>
+      <td>" . ($q1['status'] != 'na' ? "<a href='userdetails.php?id=" . (int) $q1['staff'] . "'>" . htmlsafechars($q1['staffusername']) . '</a>' : '---') . '</td>
       </tr>';
         }
         $HTMLOUT .= '</table>';

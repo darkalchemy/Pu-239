@@ -37,7 +37,7 @@ if (isset($_GET['setseedbox2'])) {
     }
 }
 
-$user = $user_stuffs->getUserFromId($id);
+$user     = $user_stuffs->getUserFromId($id);
 $username = htmlsafechars($user['username']);
 $resip    = sql_query('SELECT *, INET6_NTOA(ip) AS ip FROM ips WHERE userid = ' . sqlesc($id) . ' GROUP BY ip') or sqlerr(__FILE__, __LINE__);
 $ipcount  = mysqli_num_rows($resip);
@@ -73,7 +73,7 @@ while ($iphistory = mysqli_fetch_array($resip)) {
         $host = "<span class='has-text-danger'><b>{$lang['iphistory_notfound']}</b></span>";
     }
     $seedboxdetected = 'no';
-    $seedboxes = ['kimsufi.com', 'leaseweb.com', 'ovh.net','powserv.com', 'server.lu', 'xirvik.com', 'feralhosting.com'];
+    $seedboxes       = ['kimsufi.com', 'leaseweb.com', 'ovh.net', 'powserv.com', 'server.lu', 'xirvik.com', 'feralhosting.com'];
     foreach ($seedboxes as $seedbox) {
         if (stripos($host, $seedbox) !== false) {
             $seedboxdetected = 'yes';

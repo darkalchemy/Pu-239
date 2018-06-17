@@ -7,19 +7,19 @@ function get_file_name($file)
     $style = get_stylesheet();
     switch ($file) {
         case 'css':
-            return "{$site_config['baseurl']}/css/1/css_7261fa94.css";
+            return "{$site_config['baseurl']}/css/1/css_55ee9f43.css";
         case 'chat_css_trans':
-            return "{$site_config['baseurl']}/css/1/chat_trans_0edcff2e.css";
+            return "{$site_config['baseurl']}/css/1/chat_trans_70895ec7.css";
         case 'chat_css_uranium':
-            return "{$site_config['baseurl']}/css/1/chat_uranium_f462a1a7.css";
+            return "{$site_config['baseurl']}/css/1/chat_uranium_b2bdd383.css";
         case 'checkport_js':
             return "{$site_config['baseurl']}/js/1/checkport_dd06d98b.js";
         case 'browse_js':
             return "{$site_config['baseurl']}/js/1/browse_09a435c8.js";
         case 'chat_js':
-            return "{$site_config['baseurl']}/js/1/chat_a3899948.js";
+            return "{$site_config['baseurl']}/js/1/chat_b3a23970.js";
         case 'chat_log_js':
-            return "{$site_config['baseurl']}/js/1/chat_log_e91590fb.js";
+            return "{$site_config['baseurl']}/js/1/chat_log_7a5bdc04.js";
         case 'index_js':
             return "{$site_config['baseurl']}/js/1/index_c73226cb.js";
         case 'captcha2_js':
@@ -39,7 +39,7 @@ function get_file_name($file)
         case 'staffpanel_js':
             return "{$site_config['baseurl']}/js/1/staffpanel_801ab346.js";
         case 'js':
-            return "{$site_config['baseurl']}/js/1/js_9676b8f5.js";
+            return "{$site_config['baseurl']}/js/1/js_a05488d3.js";
         default:
             return null;
     }

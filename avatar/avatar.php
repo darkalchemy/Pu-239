@@ -72,7 +72,7 @@ if (!$_fromCache) {
     //draw border
     imagerectangle($im, 0, 0, 149, 189, $bColor);
     //add smile
-    $smile = imagecreatefrompng('templates/pack' . $var['pack'] . '/' . ($var['smile'] == 225 ? random_int(1, 20) : $var['smile']) . '.png');
+    $smile     = imagecreatefrompng('templates/pack' . $var['pack'] . '/' . ($var['smile'] == 225 ? random_int(1, 20) : $var['smile']) . '.png');
     $smile_pos = [
         1 => [
             'x' => '-15',

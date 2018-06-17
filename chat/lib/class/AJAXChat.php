@@ -14,23 +14,23 @@ class AJAXChat
 {
     public $db;
 
-    protected $_config,
-        $_requestVars,
-        $_infoMessages,
-        $_channels,
-        $_allChannels,
-        $_view,
-        $_lang,
-        $_invitations,
-        $_customVars,
-        $_sessionNew,
-        $_onlineUsersData,
-        $_bannedUsersData,
-        $_session,
-        $_user,
-        $_cache,
-        $_fluent,
-        $_siteConfig;
+    protected $_config;
+    protected $_requestVars;
+    protected $_infoMessages;
+    protected $_channels;
+    protected $_allChannels;
+    protected $_view;
+    protected $_lang;
+    protected $_invitations;
+    protected $_customVars;
+    protected $_sessionNew;
+    protected $_onlineUsersData;
+    protected $_bannedUsersData;
+    protected $_session;
+    protected $_user;
+    protected $_cache;
+    protected $_fluent;
+    protected $_siteConfig;
 
     /**
      * AJAXChat constructor.
@@ -294,7 +294,7 @@ class AJAXChat
      */
     public function isUserOnline($userID = null)
     {
-        $userID = ($userID === null) ? $this->getUserID() : $userID;
+        $userID        = ($userID === null) ? $this->getUserID() : $userID;
         $userDataArray = $this->getOnlineUsersData(null, 'userID', $userID);
         if ($userDataArray && count($userDataArray) > 0) {
             return true;
@@ -963,7 +963,7 @@ class AJAXChat
      */
     public function isUserNameInUse($userName = null)
     {
-        $userName = ($userName === null) ? $this->getUserName() : $userName;
+        $userName      = ($userName === null) ? $this->getUserName() : $userName;
         $userDataArray = $this->getOnlineUsersData(null, 'userName', $userName);
         if ($userDataArray && count($userDataArray) > 0) {
             return true;
@@ -2985,7 +2985,7 @@ class AJAXChat
         $row = mysqli_fetch_row($res);
         if ($row) {
             $whereisRoleClass = get_user_class_name($row[0], true);
-            $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
+            $userNameClass    = $whereisRoleClass != null ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
             $msg .= $userNameClass . ' [color=#00FF00]is the biggest winner with ' . mksize($row[3]) . '. [/color]';
         }
 
@@ -2994,7 +2994,7 @@ class AJAXChat
         $row = mysqli_fetch_row($res);
         if ($row) {
             $whereisRoleClass = get_user_class_name($row[0], true);
-            $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
+            $userNameClass    = $whereisRoleClass != null ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
             $msg .= $userNameClass . ' [color=#00FF00]is the biggest loser with ' . mksize($row[3]) . '. [/color]';
         }
 
@@ -3056,8 +3056,8 @@ class AJAXChat
                 $uploaded    = '[color=#00FF00]' . human_filesize($stats['uploaded']) . '[/color]';
                 $downloaded  = '[color=#00FF00]' . human_filesize($stats['downloaded']) . '[/color]';
                 $userClass   = get_user_class_name($stats['class']);
-                $enabled = $stats['enabled'] === 'yes' && $stats['downloadpos'] == 1 ? '[color=#00FF00](Enabled)[/color]' : '[color=#CC0000](Disabled)[/color]';
-                $invites = $stats['invites'] > 0 && $stats['invite_rights'] === 'yes' ? '[color=#00FF00]' . number_format($stats['invites']) . '[/color]' : '[color=#CC0000]0[/color]';
+                $enabled     = $stats['enabled']                                                                                                                                                                                                                         === 'yes' && $stats['downloadpos'] == 1 ? '[color=#00FF00](Enabled)[/color]' : '[color=#CC0000](Disabled)[/color]';
+                $invites     = $stats['invites'] > 0                                                                                                                                                                                                                               && $stats['invite_rights'] === 'yes' ? '[color=#00FF00]' . number_format($stats['invites']) . '[/color]' : '[color=#CC0000]0[/color]';
                 switch (true) {
                     case $stats['downloaded'] > 0 && $stats['uploaded'] > 0:
                         $ratio = '[color=#00FF00]' . number_format($stats['uploaded'] / $stats['downloaded'], 3) . '[/color]';
@@ -3087,7 +3087,7 @@ class AJAXChat
                 $uploads    = '[color=#00FF00]' . number_format((int) get_row_count('torrents', 'WHERE owner = ' . sqlesc($whereisUserID))) . '[/color]';
                 $snatched   = '[color=#00FF00]' . number_format((int) get_row_count('snatched', 'WHERE userid = ' . sqlesc($whereisUserID))) . '[/color]';
                 $hnrs       = (int) get_row_count('snatched', 'WHERE mark_of_cain = "yes" AND userid = ' . sqlesc($whereisUserID));
-                $hnrs = $hnrs == 0 ? '[color=#00FF00]' . '0[/color]' : '[color=#CC0000]' . number_format($hnrs) . '[/color]';
+                $hnrs       = $hnrs == 0 ? '[color=#00FF00]' . '0[/color]' : '[color=#CC0000]' . number_format($hnrs) . '[/color]';
                 $connectyes = (int) get_row_count('peers', 'WHERE seeder = "yes" and connectable = "yes" and userid = ' . sqlesc($whereisUserID));
                 $connectno  = (int) get_row_count('peers', 'WHERE seeder = "yes" and connectable = "no" and userid = ' . sqlesc($whereisUserID));
                 if ($connectyes === 0 && $connectno === 0 || $connectno === $seeder) {
@@ -3107,13 +3107,13 @@ class AJAXChat
                 $row              = mysqli_fetch_row($res);
                 $count_incomplete = $row[0] > 0 ? "[color=#CC0000]{$row[0]}[/color]" : "[color=#00FF00]{$row[0]}[/color]";
 
-                $ircbonus = $stats['onirc'] == 'yes' ? .45 : 0;
+                $ircbonus         = $stats['onirc'] == 'yes' ? .45 : 0;
                 $allbonus         = number_format(($connectyes * $bpt * 2) + $ircbonus, 2);
                 $earns            = $connectyes > 0 ? '[color=#00FF00]' . $allbonus . 'bph[/color]' : '[color=#CC0000]' . $allbonus . 'bph[/color]';
                 $seedsize         = get_one_row('peers AS p INNER JOIN torrents AS t ON t.id = p.torrent', 'SUM(t.size)', "WHERE p.seeder = 'yes' AND p.connectable = 'yes' AND p.userid = " . $whereisUserID);
                 $volume           = '[color=#00FF00]' . human_filesize($seedsize) . '[/color]';
                 $whereisRoleClass = get_user_class_name($stats['class'], true);
-                $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . '][url=' . $this->_siteConfig['baseurl'] . '/userdetails.php?id=' . $whereisUserID . '&hit=1]' . $stats['username'] . '[/url][/' . $whereisRoleClass . ']' : '@' . $textParts[1];
+                $userNameClass    = $whereisRoleClass != null ? '[' . $whereisRoleClass . '][url=' . $this->_siteConfig['baseurl'] . '/userdetails.php?id=' . $whereisUserID . '&hit=1]' . $stats['username'] . '[/url][/' . $whereisRoleClass . ']' : '@' . $textParts[1];
                 $str              = '';
                 $str .= (isset($stats['donor']) && $stats['donor'] === 'yes' && isset($stats['show_donor']) && $stats['show_donor'] === 'yes' ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/star.png[/img]' : '');
                 $str .= (isset($stats['warned']) && $stats['warned'] >= 1 ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/alertred.png[/img]' : '');
@@ -3750,10 +3750,10 @@ class AJAXChat
                 }
         }
 
-        $hour = ($this->getRequestVar('hour') === null || $this->getRequestVar('hour') > 23 || $this->getRequestVar('hour') < 0) ? null : $this->getRequestVar('hour');
-        $day = ($this->getRequestVar('day') === null || $this->getRequestVar('day') > 31 || $this->getRequestVar('day') < 1) ? null : $this->getRequestVar('day');
+        $hour  = ($this->getRequestVar('hour') === null || $this->getRequestVar('hour') > 23 || $this->getRequestVar('hour') < 0) ? null : $this->getRequestVar('hour');
+        $day   = ($this->getRequestVar('day') === null || $this->getRequestVar('day') > 31 || $this->getRequestVar('day') < 1) ? null : $this->getRequestVar('day');
         $month = ($this->getRequestVar('month') === null || $this->getRequestVar('month') > 12 || $this->getRequestVar('month') < 1) ? null : $this->getRequestVar('month');
-        $year = ($this->getRequestVar('year') === null || $this->getRequestVar('year') > date('Y') || $this->getRequestVar('year') < $this->getConfig('logsFirstYear')) ? null : $this->getRequestVar('year');
+        $year  = ($this->getRequestVar('year') === null || $this->getRequestVar('year') > date('Y') || $this->getRequestVar('year') < $this->getConfig('logsFirstYear')) ? null : $this->getRequestVar('year');
 
         if ($hour !== null) {
             if ($day === null) {

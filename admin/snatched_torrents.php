@@ -175,7 +175,7 @@ if (mysqli_num_rows($result) != 0) {
             } else {
                 $HTMLOUT .= "<td><b><span class='has-text-danger'>{$lang['ad_snatched_torrents_ncomplete']}</span></b></td></tr>";
             }
-            $HTMLOUT .= "<td><b>" . ($row['seeder'] === 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['ad_snatched_torrents_yes']}' title='{$lang['ad_snatched_torrents_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['ad_snatched_torrents_no']}' title='{$lang['ad_snatched_torrents_no']}' />") . '</b></td></tr>';
+            $HTMLOUT .= '<td><b>' . ($row['seeder'] === 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['ad_snatched_torrents_yes']}' title='{$lang['ad_snatched_torrents_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['ad_snatched_torrents_no']}' title='{$lang['ad_snatched_torrents_no']}' />") . '</b></td></tr>';
         }
     }
     $HTMLOUT .= '</table>';

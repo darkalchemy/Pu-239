@@ -17,16 +17,16 @@ $can_delete = ($arr_post['user_id'] === $CURUSER['id'] || $CURUSER['class'] >= U
 if ($CURUSER['class'] < $arr_post['min_class_read'] || $CURUSER['class'] < $arr_post['min_class_write']) {
     stderr($lang['gl_error'], $lang['fe_topic_not_found']);
 }
-if ('no' == $CURUSER['forum_post'] || 'yes' == $CURUSER['suspended']) {
+if ($CURUSER['forum_post'] === 'no' || $CURUSER['suspended'] === 'yes') {
     stderr($lang['gl_error'], $lang['fe_your_no_post_right']);
 }
 if (!$can_delete) {
     stderr($lang['gl_error'], $lang['fe_no_your_post_del']);
 }
-if ('yes' == $arr_post['locked']) {
+if ($arr_post['locked'] === 'yes') {
     stderr($lang['gl_error'], $lang['fe_this_topic_is_locked']);
 }
-if (1 == $arr_post['staff_lock']) {
+if ($arr_post['staff_lock'] === 1) {
     stderr($lang['gl_error'], $lang['fe_this_topic_is_locked_staff']);
 }
 if ($arr_post['first_post'] == $post_id && $CURUSER['class'] < UC_STAFF) {
@@ -38,14 +38,14 @@ if ($arr_post['first_post'] == $post_id && $CURUSER['class'] >= UC_STAFF) {
 //=== ok... they made it this far, so let's delete the damned post!
 if ($sanity_check > 0) {
     //=== if you want the un-delete option (only admin and up can see "deleted" posts)
-    if (1 === $delete_for_real) {
+    if ($delete_for_real === 1) {
         //=== re-do that last post thing ;)
         $res = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_assoc($res);
         sql_query('UPDATE topics SET last_post = ' . sqlesc($arr['id']) . ', post_count = post_count - 1 WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-        sql_query('UPDATE forums SET post_count = post_count - 1 WHERE id = ' . sqlesc($arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
-        sql_query('DELETE FROM posts WHERE id = ' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
-        sql_query('UPDATE usersachiev SET forumposts = forumposts - 1 WHERE userid = ' . sqlesc($arr_post['user_id'])) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE forums SET post_count = post_count - 1 WHERE id = ' . sqlesc($arr['forum_id']))                                  or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM posts WHERE id = ' . sqlesc($post_id))                                                                      or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usersachiev SET forumposts = forumposts - 1 WHERE userid = ' . sqlesc($arr_post['user_id']))                     or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($arr['forum_id']);
         clr_forums_cache($post_id);
     } else {

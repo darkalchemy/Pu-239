@@ -106,13 +106,13 @@ function get_book_info($torrent)
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>ISBN 10: </div>
                         <span class='column padding5'>
-                            <a href='{$site_config['anonymizer_url']}https://www.amazon.com/gp/search/field-isbn={$ebook['isbn10']}' target='_blank'>{$ebook['isbn10']}</a>
+                            <a href='" . url_proxy("https://www.amazon.com/gp/search/field-isbn={$ebook['isbn10']}") . "' target='_blank'>{$ebook['isbn10']}</a>
                         </span>
                     </div>
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>ISBN 13: </div>
                         <span class='column padding5'>
-                            <a href='{$site_config['anonymizer_url']}https://www.amazon.com/gp/search/field-isbn={$ebook['isbn13']}' target='_blank'>{$ebook['isbn13']}</a>
+                            <a href='" . url_proxy("https://www.amazon.com/gp/search/field-isbn={$ebook['isbn13']}") . "' target='_blank'>{$ebook['isbn13']}</a>
                         </span>
                     </div>";
     }

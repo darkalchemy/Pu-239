@@ -81,7 +81,7 @@ function tvrage(&$torrents)
     if (empty($torrents['newgenre']) || empty($torrents['poster'])) {
         $force_update = true;
     }
-    $memkey = 'tvrage_' . $tvrage_id;
+    $memkey          = 'tvrage_' . $tvrage_id;
     $tvrage_showinfo = $cache->get($memkey);
     if ($force_update || $active === false || is_null($active)) {
         $tvrage_link = sprintf('http://services.tvrage.com/myfeeds/showinfo.php?key=%s&sid=%d', $site_config['tvrage_api'], $tvrage_id);

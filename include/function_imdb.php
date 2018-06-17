@@ -67,16 +67,16 @@ function get_imdb_info($imdb_id)
         if (!empty($pp['name']) && !empty($pp['photo']) && !empty($pp['thumb'])) {
             $cast[] = "
                             <span class='padding5'>
-                                <a href='{$site_config['anonymizer_url']}http://www.imdb.com/name/nm{$pp['imdb']}' target='_blank'>
+                                <a href='" . url_proxy("https://www.imdb.com/name/nm{$pp['imdb']}") . "' target='_blank'>
                                     <span class='dt-tooltipper-small' data-tooltip-content='#cast_{$pp['imdb']}_tooltip'>
                                         <span class='cast'>
-                                            <img src='" . htmlspecialchars(image_proxy($pp['thumb'])) . "' alt='' class='round5'>
+                                            <img src='" . url_proxy(strip_tags($pp['thumb']), true) . "' alt='' class='round5'>
                                         </span>
                                         <span class='tooltip_templates'>
                                             <span id='cast_{$pp['imdb']}_tooltip'>
                                                 <span class='is-flex'>
                                                     <span class='has-text-centered'>
-                                                        <img src='" . htmlspecialchars(image_proxy($pp['photo'])) . "' class='tooltip-poster' />
+                                                        <img src='" . url_proxy(strip_tags($pp['photo']), true, 150, 'auto') . "' class='tooltip-poster' />
                                                         <p class='top10'>{$pp['name']}</p>
                                                         <p>{$pp['role']}</p>
                                                     </span>
@@ -112,9 +112,9 @@ function get_imdb_info($imdb_id)
                         unset($cast);
                     }
                     if ($foo != 'cast' && $foo === 'trailers') {
-                        $imdb_tmp[] = "<a href='{$site_config['anonymizer_url']}{$pp['url']}' target='_blank'>{$pp['title']}</a>";
+                        $imdb_tmp[] = "<a href='" . url_proxy($pp['url']) . "' target='_blank'>{$pp['title']}</a>";
                     } elseif ($foo != 'cast') {
-                        $imdb_tmp[] = "<a href='{$site_config['anonymizer_url']}http://www.imdb.com/name/nm" . $pp['imdb'] . "' target='_blank' class='tooltipper' title='" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . "'>" . $pp['name'] . "</a>";
+                        $imdb_tmp[] = "<a href='" . url_proxy("https://www.imdb.com/name/nm{$pp['imdb']}") . "' target='_blank' class='tooltipper' title='" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . "'>" . $pp['name'] . '</a>';
                     }
                 }
             }

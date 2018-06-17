@@ -14,9 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
     }
     $update = [];
     foreach ($_POST as $key => $value) {
-        if ($key != 'new' && ($value["description"] != $current_site_settings[$key]["description"] || $value["value"] != $current_site_settings[$key]["value"])) {
-            $update[] = '(' . sqlesc($key) . ', ' . sqlesc(trim($value["value"])) . ', ' . sqlesc(trim($value["description"])) . ')';
-        } elseif ($key === 'new' && isset($value["value"]) && $value["value"] != '') {
+        if ($key != 'new' && ($value['description'] != $current_site_settings[$key]['description'] || $value['value'] != $current_site_settings[$key]['value'])) {
+            $update[] = '(' . sqlesc($key) . ', ' . sqlesc(trim($value['value'])) . ', ' . sqlesc(trim($value['description'])) . ')';
+        } elseif ($key === 'new' && isset($value['value']) && $value['value'] != '') {
             extract($value);
             $update[] = '(' . sqlesc(strtolower(str_replace(' ', '_', trim($setting)))) . ', ' . sqlesc(trim($value)) . ', ' . sqlesc(trim($description)) . ')';
         }

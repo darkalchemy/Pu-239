@@ -15,9 +15,8 @@ define('LOG_PATH', '/var/log/nginx');
 define('DISPLAY_REVERSE', true); // true = displays log entries starting with the most recent
 //define('DIRECTORY_SEPARATOR', '/');
 
-$log = (!isset($_GET['p'])) ? '' : urldecode($_GET['p']);
+$log   = (!isset($_GET['p'])) ? '' : urldecode($_GET['p']);
 $lines = (!isset($_GET['lines'])) ? 50 : $_GET['lines'];
-
 
 $files = get_log_files(LOG_PATH);
 
@@ -26,7 +25,7 @@ foreach ($files as $dir_name => $file_array) {
     ksort($file_array);
 }
 $filename = $log;
-$title = substr($log, (strrpos($log, '/')+1));
+$title    = substr($log, (strrpos($log, '/')+1));
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -331,18 +330,18 @@ ol li pre{
 
     <div id="main">
         <div class="header">
-            <h1><?php echo $title;?></h1>
-            <?= (!empty($filename)) ? '<h2>The last '. $lines. ' lines of <span class="truncate">'. basename($filename) . '</span></h2>': ''; ?>
+            <h1><?php echo $title; ?></h1>
+            <?= (!empty($filename)) ? '<h2>The last ' . $lines . ' lines of <span class="truncate">' . basename($filename) . '</span></h2>' : ''; ?>
             
             <form action="" method="get" class="pure-form pure-form-aligned">
             <input type="hidden" name="p" value="<?php echo $log; ?>">
             <label>How many lines to display?
             <select name="lines" onchange="this.form.submit()">
-                <option value="10" <?php echo ($lines=='10') ? 'selected':'' ?>>10</option>
-                <option value="50" <?php echo ($lines=='50') ? 'selected':'' ?>>50</option>
-                <option value="100" <?php echo ($lines=='100') ? 'selected':'' ?>>100</option>
-                <option value="500" <?php echo ($lines=='500') ? 'selected':'' ?>>500</option>
-                <option value="1000" <?php echo ($lines=='1000') ? 'selected':'' ?>>1000</option>
+                <option value="10" <?php echo ($lines=='10') ? 'selected' : ''; ?>>10</option>
+                <option value="50" <?php echo ($lines=='50') ? 'selected' : ''; ?>>50</option>
+                <option value="100" <?php echo ($lines=='100') ? 'selected' : ''; ?>>100</option>
+                <option value="500" <?php echo ($lines=='500') ? 'selected' : ''; ?>>500</option>
+                <option value="1000" <?php echo ($lines=='1000') ? 'selected' : ''; ?>>1000</option>
             </select>
             </label>
     </form>
@@ -354,16 +353,16 @@ ol li pre{
 <?php
 $output = tail($filename, $lines);
 
-if ($output){
+if ($output) {
     $output = explode("\n", $output);
-    if(DISPLAY_REVERSE){
+    if (DISPLAY_REVERSE) {
         // Latest first
         $output = array_reverse($output);
     }
     $output = implode('</pre><li><pre>', $output);
     echo $output;
-} else{
-?>
+} else {
+    ?>
             <ul>
 
             <?php show_list_of_files($files, $lines); ?>
@@ -372,7 +371,6 @@ if ($output){
             </ul>
     <?php
 }
-
 
 ?>
 </ol>
@@ -435,43 +433,46 @@ if ($output){
 function get_log_files($dir, &$results = [])
 {
     $dirs_list = [];
-    $files = scandir($dir);
-    if($files){
-        foreach($files as $key => $value){
-            $path = realpath($dir.DIRECTORY_SEPARATOR.$value);
+    $files     = scandir($dir);
+    if ($files) {
+        foreach ($files as $key => $value) {
+            $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
 
-            if(!is_dir($path)) {
+            if (!is_dir($path)) {
                 $files_list[] = $path;
-            } elseif ($value != "." && $value != "..") {
+            } elseif ($value != '.' && $value != '..') {
                 $dirs_list[] = $path;
             }
         }
 
         foreach ($files_list as $path) {
             preg_match("/^.*\/(\S+)$/", $path, $matches);
-            $name = $matches[1];
+            $name                 = $matches[1];
             $results[$dir][$name] = ['name' => $name, 'path' => $path];
         }
-        if(count($dirs_list)>0){
+        if (count($dirs_list)>0) {
             foreach ($dirs_list as $path) {
                 get_log_files($path, $results);
             }
         }
+
         return $results;
     }
+
     return false;
 }
 
-function tail($filename, $lines = 50, $buffer = 4096) {
+function tail($filename, $lines = 50, $buffer = 4096)
+{
     // Open the file
-    if(!is_file($filename)){
+    if (!is_file($filename)) {
         return false;
     }
-    $f = fopen($filename, "rb");
-    if(!$f){
+    $f = fopen($filename, 'rb');
+    if (!$f) {
         return false;
     }
-    
+
     // Jump to last character
     fseek($f, -1, SEEK_END);
 
@@ -483,7 +484,7 @@ function tail($filename, $lines = 50, $buffer = 4096) {
 
     // Start reading
     $output = '';
-    $chunk = '';
+    $chunk  = '';
 
     // While we would like more
     while (ftell($f) > 0 && $lines >= 0) {
@@ -494,7 +495,7 @@ function tail($filename, $lines = 50, $buffer = 4096) {
         fseek($f, -$seek, SEEK_CUR);
 
         // Read a chunk and prepend it to our output
-        $output = ($chunk = fread($f, $seek)).$output;
+        $output = ($chunk = fread($f, $seek)) . $output;
 
         // Jump back to where we started reading
         fseek($f, -mb_strlen($chunk, '8bit'), SEEK_CUR);
@@ -512,27 +513,29 @@ function tail($filename, $lines = 50, $buffer = 4096) {
 
     // Close file and return
     fclose($f);
+
     return $output;
 }
 
-function show_list_of_files($files, $lines  = 50) {
+function show_list_of_files($files, $lines  = 50)
+{
     global $log;
 
-    if(empty($files)){
+    if (empty($files)) {
         return false;
     }
-    
+
     // Generate a menu
     foreach ($files as $dir => $files_array) {
         //echo '<li>'.dirname($dir).'</li>';
         echo '<ul>';
-        foreach($files_array as $k=>$f){
-            if(!is_file($f['path'])){
+        foreach ($files_array as $k=>$f) {
+            if (!is_file($f['path'])) {
                 // File does not exist, remove it from the array, so it does not appear in the menu.
                 unset($files_array[$k]);
                 continue;
             }
-            $active = ($f['path'] == $log) ? 'class="pure-menu-selected"':'';
+            $active = ($f['path'] == $log) ? 'class="pure-menu-selected"' : '';
             echo '<li ' . $active . '><a href="?tool=log_viewer&amp;p=' . urlencode($f['path']) . '&lines=' . $lines . '">' . $f['name'] . '</a></li>';
         }
         echo '</ul>';

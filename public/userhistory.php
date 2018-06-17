@@ -16,8 +16,8 @@ if (!is_valid_id($userid)) {
 if ($CURUSER['class'] == UC_MIN || ($CURUSER['id'] != $userid && $CURUSER['class'] < UC_STAFF)) {
     stderr($lang['stderr_errorhead'], $lang['stderr_perms']);
 }
-$page   = isset($_GET['page']) ? $_GET['page'] : '';
-$action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : '';
+$page    = isset($_GET['page']) ? $_GET['page'] : '';
+$action  = isset($_GET['action']) ? htmlsafechars($_GET['action']) : '';
 $perpage = 25;
 $HTMLOUT = '';
 
@@ -27,11 +27,11 @@ if ($action === 'viewposts') {
     $where_is  = 'p.user_id = ' . sqlesc($userid) . ' AND f.min_class_read <= ' . sqlesc($CURUSER['class']);
     $order_is  = 'p.id DESC';
     $query     = "SELECT $select_is FROM $from_is WHERE $where_is";
-    $res       = sql_query($query) or sqlerr(__FILE__, __LINE__);
+    $res       = sql_query($query)      or sqlerr(__FILE__, __LINE__);
     $arr       = mysqli_fetch_row($res) or stderr($lang['stderr_errorhead'], $lang['top_noposts']);
     $postcount = $arr[0];
-    $pager = pager($perpage, $postcount, "userhistory.php?action=viewposts&amp;id=$userid&amp;");
-    $user = $user_stuffs->getUserFromId($userid);
+    $pager     = pager($perpage, $postcount, "userhistory.php?action=viewposts&amp;id=$userid&amp;");
+    $user      = $user_stuffs->getUserFromId($userid);
     if (!empty($user)) {
         $subject = format_username($user['id']);
     } else {
@@ -76,9 +76,9 @@ if ($action === 'viewposts') {
             $body .= "
                 <p>
                     <div class='size_4'>
-                        {$lang['posts_lasteditedby']} " . format_username($arr['edited_by']) . " {$lang['posts_at']} " . get_date($arr['edit_date'], 'LONG', 0, 1) . "
+                        {$lang['posts_lasteditedby']} " . format_username($arr['edited_by']) . " {$lang['posts_at']} " . get_date($arr['edit_date'], 'LONG', 0, 1) . '
                     </div>
-                </p>";
+                </p>';
         }
 
         $HTMLOUT .= "
@@ -87,8 +87,6 @@ if ($action === 'viewposts') {
             $title
             </h2>" . main_div($body) . '
         </div>';
-
-
     }
     if ($postcount > $perpage) {
         $HTMLOUT .= $pager['pagerbottom'];
@@ -97,7 +95,7 @@ if ($action === 'viewposts') {
     die();
 } elseif ($action === 'viewcomments') {
     $select_is = 'COUNT(*)';
-    $from_is = 'comments AS c LEFT JOIN torrents as t
+    $from_is   = 'comments AS c LEFT JOIN torrents as t
                   ON c.torrent = t.id';
     $where_is     = 'c.user =' . sqlesc($userid) . '';
     $order_is     = 'c.id DESC';
@@ -105,8 +103,8 @@ if ($action === 'viewposts') {
     $res          = sql_query($query)      or sqlerr(__FILE__, __LINE__);
     $arr          = mysqli_fetch_row($res) or stderr($lang['stderr_errorhead'], $lang['top_nocomms']);
     $commentcount = $arr[0];
-    $pager = pager($perpage, $commentcount, "userhistory.php?action=viewcomments&amp;id=$userid&amp;");
-    $user = $user_stuffs->getUserFromId($userid);
+    $pager        = pager($perpage, $commentcount, "userhistory.php?action=viewcomments&amp;id=$userid&amp;");
+    $user         = $user_stuffs->getUserFromId($userid);
     if (!empty($user)) {
         $subject = format_username($user['id']);
     } else {
@@ -136,7 +134,7 @@ if ($action === 'viewposts') {
         $comm_page = floor($count / 20);
         $page_url  = $comm_page ? "&amp;page=$comm_page" : '';
         $added     = get_date($arr['added'], '') . ' (' . get_date($arr['added'], '', 0, 1) . ')';
-        $body = format_comment($arr['text']);
+        $body      = format_comment($arr['text']);
         $HTMLOUT .= "
         <div class='container is-fluid portlet'>
             <h2 class='has-text-centered'>

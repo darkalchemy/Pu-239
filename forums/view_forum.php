@@ -3,7 +3,7 @@
 require_once INCL_DIR . 'html_functions.php';
 global $lang, $site_config, $CURUSER, $fluent;
 
-$posts = $delete_me = $rpic = $content = $child = $parent_forum_name = $first_post_arr = $post_status_image = $sub_forums = $locked = '';
+$posts    = $delete_me    = $rpic    = $content    = $child    = $parent_forum_name    = $first_post_arr    = $post_status_image    = $sub_forums    = $locked    = '';
 $forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));
 if (!is_valid_id($forum_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
@@ -27,6 +27,7 @@ $arr = $fluent->from('forums')
     ->fetch();
 
 $forum_name      = htmlsafechars($arr['name'], ENT_QUOTES);
+
 $parent_forum_id = $arr['parent_forum'];
 if ($CURUSER['class'] < $arr['min_class_read']) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
@@ -47,6 +48,7 @@ $query = $fluent->from('forums')
     ->fetchAll();
 
 $sub_forums_stuff = '';
+
 foreach ($query as $sub_forums_arr) {
     if ($sub_forums_arr['min_class_read'] > $CURUSER['class']) {
         die();
@@ -360,7 +362,7 @@ if ($count > 0) {
 		</tr>';
     $the_top_and_bottom = '';
 }
-$HTMLOUT .= $mini_menu . $sub_forums;
+$HTMLOUT .= $mini_menu . $sub_forums . "<h1 class='has-text-centered'>$forum_name</h1>";
 $heading = $body = '';
 if (!empty($content)) {
     $heading = '
@@ -377,7 +379,7 @@ if (!empty($content)) {
 }
 $table = main_table($content, $heading);
 $HTMLOUT .= $table . ($may_post ? '
-                    <div class="has-text-centered margin20">    
+                    <div class="has-text-centered margin20">
                         <form action="' . $site_config['baseurl'] . '/forums.php" method="post" name="new">
 		                    <input type="hidden" name="action" value="new_topic" />
 		                    <input type="hidden" name="forum_id" value="' . $forum_id . '" />

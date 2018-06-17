@@ -17,7 +17,7 @@ if ($id !== 0) {
     $arr_user = mysqli_fetch_assoc($rez_user);
     //=== start the page
     $HTMLOUT .= '<h1>' . htmlsafechars($arr_user['username']) . (substr($arr_user['username'], -1) === 's' ? '\'' : '\'s') . ' ' . $lang['invite_head'] . '</h1>
-        <p>' . ($arr_user['invitedby'] == 0 ? '<a title="' . htmlsafechars($arr_user['username']) . ' ' . $lang['invite_open'] . '">' . $lang['invite_up'] . '</a>' : '<a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;really_deep=1&amp;id=' . (int)$arr_user['invitedby'] . '" title="go up one level">' . $lang['invite_up'] . '</a>') . ' | 
+        <p>' . ($arr_user['invitedby'] == 0 ? '<a title="' . htmlsafechars($arr_user['username']) . ' ' . $lang['invite_open'] . '">' . $lang['invite_up'] . '</a>' : '<a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;really_deep=1&amp;id=' . (int) $arr_user['invitedby'] . '" title="go up one level">' . $lang['invite_up'] . '</a>') . ' | 
         | <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree' . (isset($_GET['deeper']) ? '' : '&amp;deeper=1') . '&amp;id=' . $id . '" title=" ' . $lang['invite_click'] . ' ' . (isset($_GET['deeper']) ? $lang['invite_shrink'] : $lang['invite_expand']) . ' ' . $lang['invite_this'] . ' ">' . $lang['invite_expand_tree'] . '</a> | 
         | <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;really_deep=1&amp;id=' . $id . '" title="' . $lang['invite_click_more'] . '">' . $lang['invite_expand_more'] . '</a></p>';
     $HTMLOUT .= '<table class="main" width="750px" border="0">
@@ -83,7 +83,7 @@ if ($id !== 0) {
                     $deeper .= (isset($_GET['really_deep']) ? $really_deep . '</table></div>' : '</td></tr></table></div>');
                 }
             }
-            $HTMLOUT .= '<tr><td>' . ($arr_invited['status'] === 'pending' ? htmlsafechars($arr_invited['username']) : format_username($arr_invited['id') . '<br>' . $arr_invited['ip']) . '</td>
+            $HTMLOUT .= '<tr><td>' . ($arr_invited['status'] === 'pending' ? htmlsafechars($arr_invited['username']) : format_username($arr_invited['id']) . '<br>' . $arr_invited['ip']) . '</td>
             <td>' . htmlsafechars($arr_invited['email']) . '</td>
             <td>' . mksize($arr_invited['uploaded']) . '</td>
             <td>' . mksize($arr_invited['downloaded']) . '</td>

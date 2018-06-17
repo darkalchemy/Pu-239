@@ -14,7 +14,7 @@ function peer_update($data)
     $dead_peers    = sql_query('SELECT torrent, userid, peer_id, seeder FROM peers WHERE last_action < ' . $deadtime) or sqlerr(__FILE__, __LINE__);
     while ($dead_peer = mysqli_fetch_assoc($dead_peers)) {
         $torrentid = (int) $dead_peer['torrent'];
-        $seed = $dead_peer['seeder'] === 'yes';
+        $seed      = $dead_peer['seeder'] === 'yes';
         sql_query('DELETE FROM peers WHERE torrent = ' . $torrentid . ' AND peer_id = ' . sqlesc($dead_peer['peer_id'])) or sqlerr(__FILE__, __LINE__);
         if (!isset($torrent_seeds[$torrentid])) {
             $torrent_seeds[$torrentid] = $torrent_leeches[$torrentid] = 0;

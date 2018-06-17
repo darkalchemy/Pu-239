@@ -20,7 +20,7 @@ function mkint($x)
 }
 
 $this_url = $_SERVER['SCRIPT_NAME'];
-$do = isset($_GET['do']) && $_GET['do'] === 'disabled' ? 'disabled' : 'leechwarn';
+$do       = isset($_GET['do']) && $_GET['do'] === 'disabled' ? 'disabled' : 'leechwarn';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $r     = isset($_POST['ref']) ? $_POST['ref'] : $this_url;
     $_uids = isset($_POST['users']) ? array_map('mkint', $_POST['users']) : 0;

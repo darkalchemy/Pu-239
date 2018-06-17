@@ -3,7 +3,6 @@
   cursor: pointer;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -18,12 +17,12 @@
   position: relative;
   z-index: 99;
   cursor: hand;
-  cursor: -moz-grab;
   cursor: -webkit-grab
 }
 .toggle-iphone .toggle-slide {
   border-radius: 9999px;
-  box-shadow: 0 0 0 1px #999
+  -webkit-box-shadow: 0 0 0 1px #999;
+          box-shadow: 0 0 0 1px #999
 }
 .toggle-iphone .toggle-slide .toggle-blob,
 .toggle-iphone .toggle-slide .toggle-off,
@@ -36,10 +35,12 @@
 .toggle-iphone .toggle-slide .toggle-on {
   border-radius: 9999px 0 0 9999px;
   background: #037bda;
-  box-shadow: inset 2px 2px 5px rgba(0,0,0,.4)
+  -webkit-box-shadow: inset 2px 2px 5px rgba(0,0,0,.4);
+          box-shadow: inset 2px 2px 5px rgba(0,0,0,.4)
 }
 .toggle-iphone .toggle-slide .toggle-off {
-  box-shadow: inset -2px 2px 5px rgba(0,0,0,.4);
+  -webkit-box-shadow: inset -2px 2px 5px rgba(0,0,0,.4);
+          box-shadow: inset -2px 2px 5px rgba(0,0,0,.4);
   border-radius: 0 9999px 9999px 0;
   color: #828282;
   text-shadow: 0 0 1px #fff;
@@ -47,11 +48,8 @@
 }
 .toggle-iphone .toggle-slide .toggle-on:after {
   background: #1189f1;
-  background: -moz-linear-gradient(top,#1189f1 0,#3797ef 100%);
-  background: -webkit-gradient(linear,left top,left bottom,color-stop(0,#1189f1),color-stop(100%,#3797ef));
-  background: -webkit-linear-gradient(top,#1189f1 0,#3797ef 100%);
   background: -o-linear-gradient(top,#1189f1 0,#3797ef 100%);
-  background: -ms-linear-gradient(top,#1189f1 0,#3797ef 100%);
+  background: -webkit-gradient(linear,left top, left bottom,color-stop(0, #1189f1),to(#3797ef));
   background: linear-gradient(to bottom,#1189f1 0,#3797ef 100%);
   height: 50%;
   content: '';
@@ -62,11 +60,8 @@
 }
 .toggle-iphone .toggle-slide .toggle-off:after {
   background: #fafafa;
-  background: -moz-linear-gradient(top,#fafafa 0,#fdfdfd 100%);
-  background: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fafafa),color-stop(100%,#fdfdfd));
-  background: -webkit-linear-gradient(top,#fafafa 0,#fdfdfd 100%);
   background: -o-linear-gradient(top,#fafafa 0,#fdfdfd 100%);
-  background: -ms-linear-gradient(top,#fafafa 0,#fdfdfd 100%);
+  background: -webkit-gradient(linear,left top, left bottom,color-stop(0, #fafafa),to(#fdfdfd));
   background: linear-gradient(to bottom,#fafafa 0,#fdfdfd 100%);
   height: 50%;
   content: '';
@@ -78,11 +73,9 @@
 .toggle-iphone .toggle-slide .toggle-blob {
   border-radius: 50px;
   background: #d1d1d1;
-  background: -moz-linear-gradient(top,#d1d1d1 0,#fafafa 100%);
-  background: -webkit-gradient(linear,left top,left bottom,color-stop(0,#d1d1d1),color-stop(100%,#fafafa));
-  background: -webkit-linear-gradient(top,#d1d1d1 0,#fafafa 100%);
   background: -o-linear-gradient(top,#d1d1d1 0,#fafafa 100%);
-  background: -ms-linear-gradient(top,#d1d1d1 0,#fafafa 100%);
+  background: -webkit-gradient(linear,left top, left bottom,color-stop(0, #d1d1d1),to(#fafafa));
   background: linear-gradient(to bottom,#d1d1d1 0,#fafafa 100%);
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,.6),inset 0 0 0 2px #fff,0 0 3px rgba(0,0,0,.6)
+  -webkit-box-shadow: inset 0 0 0 1px rgba(0,0,0,.6),inset 0 0 0 2px #fff,0 0 3px rgba(0,0,0,.6);
+          box-shadow: inset 0 0 0 1px rgba(0,0,0,.6),inset 0 0 0 2px #fff,0 0 3px rgba(0,0,0,.6)
 }

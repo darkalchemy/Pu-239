@@ -249,7 +249,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                         </tr>";
     } else {
         $res['anon'] = (isset($res['anon']) ? $res['anon'] : 'no');
-        $rep_text = sprintf("What do you think of %s's " . $this_rep . '?', ($res['anon'] === 'yes' ? 'Anonymous' : htmlsafechars($res['username'])));
+        $rep_text    = sprintf("What do you think of %s's " . $this_rep . '?', ($res['anon'] === 'yes' ? 'Anonymous' : htmlsafechars($res['username'])));
         $negativerep = ($is_mod || $GVARS['g_rep_negative']) ? true : false;
         $closewindow = false;
         $html        = "

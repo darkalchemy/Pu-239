@@ -187,7 +187,7 @@ if (XBT_TRACKER) {
 if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == '') {
     $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
 }
-$site_config['baseurl'] = 'http' . (isset($_SERVER['HTTPS']) && (bool)$_SERVER['HTTPS'] === true ? 's' : '') . '://' . $_SERVER['HTTP_HOST'];
+$site_config['baseurl'] = 'http' . (isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] === true ? 's' : '') . '://' . $_SERVER['HTTP_HOST'];
 //== Email for sender/return path.
 $site_config['site_email']        = '#site_email';
 $site_config['site_name']         = '#site_name';

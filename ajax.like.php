@@ -21,7 +21,7 @@ $tb_fields = [
     'forum'     => 'topics',
     'user_comm' => 'usercomments',
 ];
-$agent = isset($_POST['agent']) ? $_POST['agent'] : die('hell no');
+$agent       = isset($_POST['agent']) ? $_POST['agent'] : die('hell no');
 $user_ag_chk = isset($_POST['ua']) ? md5($agent) == $_POST['ua'] ? true : die('Wrong User Agent') : die('No User Agent');
 $the_id      = isset($_POST['one']) ? (int) $_POST['one'] : die('false');
 $type        = isset($_POST['two']) ? (array_key_exists($_POST['two'][0], $tb_fields) && isset($_POST['two'][1])) ? $_POST['two'] : die('Data Missing') : die('Missing Data');

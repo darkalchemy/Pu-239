@@ -77,7 +77,7 @@ function lotteryclean($data)
         sql_query('INSERT INTO lottery_config(name,value)
                     VALUES ' . join(',', $lconfig_update) . '
                     ON DUPLICATE KEY UPDATE value=VALUES(value)') or sqlerr(__FILE__, __LINE__);
-        sql_query('DELETE FROM tickets') or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM tickets')                          or sqlerr(__FILE__, __LINE__);
         $cache->delete('lottery_info_');
     }
 

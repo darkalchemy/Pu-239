@@ -46,16 +46,16 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
     foreach ($roles as $role) {
         $persons[] = "
                             <span class='padding5'>
-                                <a href='{$site_config['anonymizer_url']}{$role['url']}' target='_blank'>
+                                <a href='" . url_proxy($role['url']) . "' target='_blank'>
                                     <span class='dt-tooltipper-small' data-tooltip-content='#cast_{$role['id']}_tooltip'>
                                         <span class='cast'>
-                                            <img src='" . htmlspecialchars(image_proxy($role['thumb'])) . "' alt='' class='round5'>
+                                            <img src='" . url_proxy(strip_tags($role['thumb']), true) . "' alt='' class='round5'>
                                         </span>
                                         <span class='tooltip_templates'>
                                             <span id='cast_{$role['id']}_tooltip'>
                                                 <span class='is-flex'>
                                                     <span class='has-text-centered'>
-                                                        <img src='" . htmlspecialchars(image_proxy($role['photo'])) . "' class='tooltip-poster' />
+                                                        <img src='" . url_proxy(strip_tags($role['photo']), true, 150, 'auto') . "' class='tooltip-poster' />
                                                         <p class='top10'>{$role['name']}</p>
                                                         <p>{$role['character']}</p>
                                                     </span>

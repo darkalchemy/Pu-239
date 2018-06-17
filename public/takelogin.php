@@ -16,8 +16,8 @@ function failedloginscheck()
 {
     global $site_config;
 
-    $ip = getip();
-    $res = sql_query('SELECT SUM(attempts), ip FROM failedlogins WHERE ip = ' . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
+    $ip          = getip();
+    $res         = sql_query('SELECT SUM(attempts), ip FROM failedlogins WHERE ip = ' . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
     list($total) = mysqli_fetch_row($res);
     if ($total >= $site_config['failedlogins']) {
         sql_query("UPDATE failedlogins SET banned = 'yes' WHERE ip = " . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
@@ -25,7 +25,7 @@ function failedloginscheck()
     }
 }
 
-$user_id = '';
+$user_id  = '';
 $response = !empty($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
 extract($_POST);
 unset($_POST);
@@ -55,30 +55,30 @@ if (empty($user_id)) {
             header('Location: login.php');
             exit();
         }
-        $ip = getip();
-        $url = 'https://www.google.com/recaptcha/api/siteverify';
+        $ip     = getip();
+        $url    = 'https://www.google.com/recaptcha/api/siteverify';
         $params = [
-            'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
+            'secret'   => $_ENV['RECAPTCHA_SECRET_KEY'],
             'response' => $response,
             'remoteip' => $ip,
         ];
-        $query = http_build_query($params);
+        $query       = http_build_query($params);
         $contextData = [
                     'method' => 'POST',
-                    'header' => "Content-Type: application/x-www-form-urlencoded\r\n".
-                                "Connection: close\r\n".
-                                'Content-Length: '.strlen($query)."\r\n",
-                    'content' => $query
+                    'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
+                                "Connection: close\r\n" .
+                                'Content-Length: ' . strlen($query) . "\r\n",
+                    'content' => $query,
         ];
         $context = stream_context_create(['http' => $contextData]);
-        $result = file_get_contents(
+        $result  = file_get_contents(
                       $url,
                       false,
                       $context
         );
         $responseKeys = json_decode($result, true);
         if (intval($responseKeys['success']) !== 1) {
-            stderr('Error', "reCAPTCHA Failed");
+            stderr('Error', 'reCAPTCHA Failed');
         }
     }
 }
@@ -143,20 +143,20 @@ if (!password_verify($password, $row['passhash'])) {
     bark("<b>Error</b>: Username or password entry incorrect <br>Have you forgotten your password? <a href='{$site_config['baseurl']}/resetpw.php'><b>Recover</b></a> your password !");
 } else {
     if (PHP_VERSION_ID >= 70200 && @password_hash('secret_password', PASSWORD_ARGON2I)) {
-        $algo = PASSWORD_ARGON2I;
+        $algo    = PASSWORD_ARGON2I;
         $options = [
                 'memory_cost' => !empty($site_config['password_memory_cost']) ? $site_config['password_memory_cost'] : 2048,
-                'time_cost' => !empty($site_config['password_time_cost']) ? $site_config['password_time_cost'] : 12,
-                'threads' => !empty($site_config['password_threads']) ? $site_config['password_threads'] : 4,
+                'time_cost'   => !empty($site_config['password_time_cost']) ? $site_config['password_time_cost'] : 12,
+                'threads'     => !empty($site_config['password_threads']) ? $site_config['password_threads'] : 4,
         ];
     } else {
-        $algo = PASSWORD_BCRYPT;
+        $algo    = PASSWORD_BCRYPT;
         $options = [
             'cost' => !empty($site_config['password_cost']) ? $site_config['password_cost'] : 12,
         ];
     }
     if (password_needs_rehash($row['passhash'], $algo, $options)) {
-        sql_query("UPDATE users SET passhash = " . sqlesc(make_passhash($password)) . " WHERE id = " . sqlesc($row['id'])) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET passhash = ' . sqlesc(make_passhash($password)) . ' WHERE id = ' . sqlesc($row['id'])) or sqlerr(__FILE__, __LINE__);
     }
 }
 
@@ -192,7 +192,7 @@ $ssluse    = isset($use_ssl) && $use_ssl == 1 ? 1 : 0;
 $ua        = getBrowser();
 $browser   = 'Browser: ' . $ua['name'] . ' ' . $ua['version'] . '. Os: ' . $ua['platform'] . '. Agent : ' . $ua['userAgent'];
 
-sql_query('UPDATE users SET browser = ' . sqlesc($browser) . ", ssluse = " . sqlesc($ssluse) . ", ip = $ip_escaped, last_access = " . TIME_NOW . ', last_login = ' . TIME_NOW . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+sql_query('UPDATE users SET browser = ' . sqlesc($browser) . ', ssluse = ' . sqlesc($ssluse) . ", ip = $ip_escaped, last_access = " . TIME_NOW . ', last_login = ' . TIME_NOW . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 $cache->update_row('user' . $userid, [
     'browser'     => $browser,
     'ip'          => $ip,

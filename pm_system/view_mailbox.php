@@ -115,7 +115,7 @@ if (mysqli_num_rows($res) === 0) {
 }
 
 $per_page_drop_down = '<form action="pm_system.php" method="post"><select name="amount_per_page" onchange="location = this.options[this.selectedIndex].value;">';
-$i = 20;
+$i                  = 20;
 while ($i <= ($maxbox > 200 ? 200 : $maxbox)) {
     $per_page_drop_down .= '<option class="body" value="' . $link . '&amp;change_pm_number=' . $i . '"  ' . ($CURUSER['pms_per_page'] == $i ? ' selected' : '') . '>' . $i . $lang['pm_edmail_perpage'] . '</option>';
     $i = ($i < 100 ? $i = $i + 10 : $i = $i + 25);

@@ -28,7 +28,7 @@ $staff_action = (in_array($posted_staff_action, $valid_staff_actions) ? $posted_
 if ($CURUSER['class'] < UC_STAFF) {
     stderr($lang['gl_error'], $lang['fe_no_access_for_you_mr']);
 }
-if (1 == $staff_action) {
+if ($staff_action == 1) {
     stderr($lang['gl_error'], $lang['fe_no_action_selected']);
 }
 $post_id  = (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0);
@@ -70,7 +70,7 @@ switch ($staff_action) {
                     $res = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
                     $arr = mysqli_fetch_assoc($res);
                     sql_query('UPDATE topics SET last_post = ' . sqlesc($arr['id']) . ', post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-                    sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
+                    sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($arr['forum_id']))                                  or sqlerr(__FILE__, __LINE__);
                 }
             } else {
                 stderr($lang['gl_error'], $lang['fe_nothing_deleted']);
@@ -106,7 +106,7 @@ switch ($staff_action) {
         }
         $new_topic_name = strip_tags((isset($_POST['new_topic_name']) ? trim($_POST['new_topic_name']) : ''));
         $new_topic_desc = strip_tags((isset($_POST['new_topic_desc']) ? trim($_POST['new_topic_desc']) : ''));
-        if ('' === $new_topic_name) {
+        if ($new_topic_name === '') {
             stderr($lang['gl_error'], $lang['fe_to_split_this_topic_you_must_supply_a_name_for_the_new_topic']);
         }
         if (isset($_POST['post_to_mess_with'])) {
@@ -168,12 +168,12 @@ switch ($staff_action) {
                 $res_from = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
                 $arr_from = mysqli_fetch_assoc($res_from);
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_from['id']) . ', post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-                sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($arr_from['forum_id'])) or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($arr_from['forum_id']))                                  or sqlerr(__FILE__, __LINE__);
                 //=== update post counts... topic merged INTO
                 $res_to = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_to_merge_with) . ' ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
                 $arr_to = mysqli_fetch_assoc($res_to);
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_to['id']) . ', post_count = post_count + ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($topic_to_merge_with)) or sqlerr(__FILE__, __LINE__);
-                sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($arr_to['forum_id'])) or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($arr_to['forum_id']))                                             or sqlerr(__FILE__, __LINE__);
             } else {
                 stderr($lang['gl_error'], $lang['fe_posts_were_not_merged']);
             }
@@ -210,12 +210,12 @@ switch ($staff_action) {
                 $res_from = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
                 $arr_from = mysqli_fetch_assoc($res_from);
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_from['id']) . ', post_count = post_count - ' . sqlesc($count) . ' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-                sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($count) . ' WHERE id = ' . sqlesc($arr_from['forum_id'])) or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($count) . ' WHERE id = ' . sqlesc($arr_from['forum_id']))                                  or sqlerr(__FILE__, __LINE__);
                 //=== update post counts... topic apended to
                 $res_to = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_to_append_to) . ' ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
                 $arr_to = mysqli_fetch_assoc($res_to);
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_to['id']) . ', post_count = post_count + ' . sqlesc($count) . ' WHERE id = ' . sqlesc($topic_to_append_to)) or sqlerr(__FILE__, __LINE__);
-                sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($count) . ' WHERE id = ' . sqlesc($arr_to['forum_id'])) or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($count) . ' WHERE id = ' . sqlesc($arr_to['forum_id']))                                            or sqlerr(__FILE__, __LINE__);
             }
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_to_append_to);
             die();
@@ -330,7 +330,7 @@ switch ($staff_action) {
 
     case 'rename_topic':
         $new_topic_name = strip_tags((isset($_POST['new_topic_name']) ? trim($_POST['new_topic_name']) : ''));
-        if ('' == $new_topic_name) {
+        if ($new_topic_name === '') {
             stderr($lang['gl_error'], $lang['fe_if_you_want_to_ren_topic_must_sup_a_name']);
         }
         sql_query('UPDATE topics SET topic_name = ' . sqlesc($new_topic_name) . ' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
@@ -368,7 +368,7 @@ switch ($staff_action) {
         sql_query('UPDATE topics SET last_post = ' . sqlesc($arr['id']) . ', post_count = post_count + ' . sqlesc($count) . ' WHERE id = ' . sqlesc($topic_to_merge_with)) or sqlerr(__FILE__, __LINE__);
         //=== if topic merged with a topic in another forum
         if ($topic_arr['forum_id'] != $arr['forum_id']) {
-            sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($count) . ' WHERE id = ' . sqlesc($arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($count) . ' WHERE id = ' . sqlesc($arr['forum_id']))                                     or sqlerr(__FILE__, __LINE__);
             sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($count) . ', topic_count = topic_count -1 WHERE id = ' . sqlesc($topic_arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
         } else {
             sql_query('UPDATE forums SET topic_count = topic_count -1 WHERE id = ' . sqlesc($arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
@@ -381,9 +381,9 @@ switch ($staff_action) {
     //=== move to recylebin
 
     case 'move_to_recycle_bin':
-        $status = ('yes' == $_POST['status'] ? 'recycled' : 'ok');
+        $status = ($_POST['status'] === 'yes' ? 'recycled' : 'ok');
         sql_query('UPDATE topics SET status = \'' . $status . '\' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-        sql_query('DELETE FROM subscriptions WHERE topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM subscriptions WHERE topic_id = ' . sqlesc($topic_id))                or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
         //=== perhaps redirect to the bin lol
         header('Location: forums.php' . ('yes' == $_POST['status'] ? '?action=view_forum&forum_id=' . $forum_id : '?action=view_topic&topic_id=' . $topic_id));
@@ -414,11 +414,11 @@ switch ($staff_action) {
             $res_count = sql_query('SELECT post_count, forum_id, poll_id FROM topics WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
             $arr_count = mysqli_fetch_assoc($res_count);
             //=== delete all the stuff
-            sql_query('DELETE FROM subscriptions WHERE topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-            sql_query('DELETE FROM forum_poll WHERE id = ' . sqlesc($arr_count['poll_id'])) or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM subscriptions WHERE topic_id = ' . sqlesc($topic_id))              or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM forum_poll WHERE id = ' . sqlesc($arr_count['poll_id']))           or sqlerr(__FILE__, __LINE__);
             sql_query('DELETE FROM forum_poll_votes WHERE poll_id = ' . sqlesc($arr_count['poll_id']))or sqlerr(__FILE__, __LINE__);
-            sql_query('DELETE FROM topics WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-            sql_query('DELETE FROM posts WHERE topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM topics WHERE id = ' . sqlesc($topic_id))                           or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM posts WHERE topic_id = ' . sqlesc($topic_id))                      or sqlerr(__FILE__, __LINE__);
             clr_forums_cache($topic_id);
             //=== should I delete attachments? or let the members have a management page? or do it in cleanup?
             sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($arr_count['post_count']) . ', topic_count = topic_count - 1 WHERE id = ' . sqlesc($arr_count['forum_id'])) or sqlerr(__FILE__, __LINE__);

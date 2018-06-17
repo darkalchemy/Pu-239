@@ -94,6 +94,17 @@ $(function () {
         help_open.click(function () {
             $('#help').slideToggle(animate_duration, easing, function () {
             });
+            $("#help_open").hide();
+            $("#help_close").show();
+        });
+    }
+    var help_close = $('#help_close');
+    if (help_close.length) {
+        help_close.click(function () {
+            $('#help').slideToggle(animate_duration, easing, function () {
+            });
+            $("#help_close").hide();
+            $("#help_open").show();
         });
     }
     if (typeof Storage !== 'undefined') $('.flipper').click(function (e) {

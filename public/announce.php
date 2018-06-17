@@ -343,9 +343,9 @@ if (!isset($self)) {
         include CACHE_DIR . 'free_cache.php';
         if (isset($free)) {
             foreach ($free as $fl) {
-                $isfree = ($fl['modifier'] == 1 || $fl['modifier'] == 3) && $fl['expires'] > TIME_NOW;
-                $isdouble = ($fl['modifier'] == 2 || $fl['modifier'] == 3) && $fl['expires'] > TIME_NOW;
-                $issilver = ($fl['modifier'] == 4) && $fl['expires'] > TIME_NOW;
+                $isfree   = ($fl['modifier'] == 1 || $fl['modifier'] == 3) && $fl['expires']                         > TIME_NOW;
+                $isdouble = ($fl['modifier'] == 2 || $fl['modifier'] == 3) && $fl['expires']                         > TIME_NOW;
+                $issilver = ($fl['modifier'] == 4)                         && $fl['expires']                         > TIME_NOW;
             }
         }
         if ($torrent['silver'] != 0 || $issilver) {

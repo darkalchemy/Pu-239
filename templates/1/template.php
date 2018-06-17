@@ -12,7 +12,7 @@ function stdhead($title = '', $stdhead = null)
 {
     require_once INCL_DIR . 'bbcode_functions.php';
     global $CURUSER, $site_config, $lang, $free, $querytime, $BLOCKS, $CURBLOCK, $mood, $session;
-//  dd($GLOBALS);
+    //  dd($GLOBALS);
     if (!$site_config['site_online']) {
         die('Site is down for maintenance, please check back again later... thanks<br>');
     }
@@ -54,8 +54,8 @@ function stdhead($title = '', $stdhead = null)
             obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
         }
     </script>";
-$current_page = basename($_SERVER['PHP_SELF']);
-$captcha = [
+    $current_page = basename($_SERVER['PHP_SELF']);
+    $captcha      = [
     'login.php',
     'takelogin.php',
     'signup.php',
@@ -65,13 +65,14 @@ $captcha = [
     'resetpw.php',
     'recover.php',
 ];
-if (in_array($current_page, $captcha) && !empty($_ENV['RECAPTCHA_SITE_KEY'])) {
-    $htmlout .= "
+    if (in_array($current_page, $captcha) && !empty($_ENV['RECAPTCHA_SITE_KEY'])) {
+        $htmlout .= "
         <script src='https://www.google.com/recaptcha/api.js'></script>";
-}
-$htmlout .= "
+    }
+    $htmlout .= "
 </head>
 <body class='{$body_class}'>
+    <div id='body-overlay'>
     <script>
         var theme = localStorage.getItem('theme');
         if (theme) {
@@ -351,6 +352,7 @@ function stdfoot($stdfoot = false)
     }
 
     $htmlfoot .= '
+    </div>
 </body>
 </html>';
 

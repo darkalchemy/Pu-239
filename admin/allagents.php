@@ -8,7 +8,7 @@ global $lang;
 
 $lang    = array_merge($lang, load_language('ad_allagents'));
 $res     = sql_query('SELECT agent, HEX(peer_id) AS peer_id FROM peers GROUP BY agent') or sqlerr(__FILE__, __LINE__);
-$heading=  "
+$heading =  "
         <tr>
             <th>{$lang['allagents_client']}</th>
             <th>{$lang['allagents_peerid']}</th>
@@ -18,8 +18,8 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $body .= '
         <tr>
             <td>' . htmlsafechars($arr['agent']) . '</td>
-            <td>' . htmlsafechars($arr['peer_id']) . "</td>
-        </tr>";
+            <td>' . htmlsafechars($arr['peer_id']) . '</td>
+        </tr>';
 }
 $HTMLOUT = main_table($body, $heading);
 echo stdhead($lang['allagents_allclients']) . wrapper($HTMLOUT) . stdfoot();

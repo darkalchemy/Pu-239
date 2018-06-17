@@ -3,7 +3,6 @@
   cursor: pointer;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -18,12 +17,12 @@
   position: relative;
   z-index: 99;
   cursor: hand;
-  cursor: -moz-grab;
   cursor: -webkit-grab
 }
 .toggle-dark .toggle-slide {
   border-radius: 5px;
-  box-shadow: 0 0 0 1px #242529,0 1px 0 1px #666
+  -webkit-box-shadow: 0 0 0 1px #242529,0 1px 0 1px #666;
+          box-shadow: 0 0 0 1px #242529,0 1px 0 1px #666
 }
 .toggle-dark .toggle-slide .toggle-blob,
 .toggle-dark .toggle-slide .toggle-off,
@@ -33,38 +32,28 @@
 }
 .toggle-dark .toggle-select .toggle-inner .active,
 .toggle-dark .toggle-slide .toggle-on {
-  background: -webkit-gradient(linear,left top,left bottom,color-stop(0,#1a70be),color-stop(100%,#31a2e1));
-  background: -webkit-linear-gradient(top,#1a70be 0,#31a2e1 100%);
-  background: -moz-linear-gradient(top,#1a70be 0,#31a2e1 100%);
-  background: -ms-linear-gradient(top,#1a70be 0,#31a2e1 100%);
   background: -o-linear-gradient(top,#1a70be 0,#31a2e1 100%);
+  background: -webkit-gradient(linear,left top, left bottom,color-stop(0, #1a70be),to(#31a2e1));
   background: linear-gradient(top,#1a70be 0,#31a2e1 100%)
 }
 .toggle-dark .toggle-select .toggle-on,
 .toggle-dark .toggle-slide .toggle-off {
-  background: -webkit-gradient(linear,left top,left bottom,color-stop(0,#242529),color-stop(100%,#34363b));
-  background: -webkit-linear-gradient(top,#242529 0,#34363b 100%);
-  background: -moz-linear-gradient(top,#242529 0,#34363b 100%);
-  background: -ms-linear-gradient(top,#242529 0,#34363b 100%);
   background: -o-linear-gradient(top,#242529 0,#34363b 100%);
+  background: -webkit-gradient(linear,left top, left bottom,color-stop(0, #242529),to(#34363b));
   background: linear-gradient(top,#242529 0,#34363b 100%)
 }
 .toggle-dark .toggle-slide .toggle-blob {
   border-radius: 4px;
-  background: -webkit-gradient(linear,left top,left bottom,color-stop(0,#cfcfcf),color-stop(100%,#f5f5f5));
-  background: -webkit-linear-gradient(top,#cfcfcf 0,#f5f5f5 100%);
-  background: -moz-linear-gradient(top,#cfcfcf 0,#f5f5f5 100%);
-  background: -ms-linear-gradient(top,#cfcfcf 0,#f5f5f5 100%);
   background: -o-linear-gradient(top,#cfcfcf 0,#f5f5f5 100%);
+  background: -webkit-gradient(linear,left top, left bottom,color-stop(0, #cfcfcf),to(#f5f5f5));
   background: linear-gradient(top,#cfcfcf 0,#f5f5f5 100%);
-  box-shadow: inset 0 0 0 1px #888,inset 0 0 0 2px #fff
+  -webkit-box-shadow: inset 0 0 0 1px #888,inset 0 0 0 2px #fff;
+          box-shadow: inset 0 0 0 1px #888,inset 0 0 0 2px #fff
 }
 .toggle-dark .toggle-slide .toggle-blob:hover {
-  background: -webkit-gradient(linear,left top,left bottom,color-stop(0,#b4b4b4),color-stop(100%,#dadada));
-  background: -webkit-linear-gradient(top,silver 0,#dadada 100%);
-  background: -moz-linear-gradient(top,silver 0,#dadada 100%);
-  background: -ms-linear-gradient(top,silver 0,#dadada 100%);
   background: -o-linear-gradient(top,silver 0,#dadada 100%);
+  background: -webkit-gradient(linear,left top, left bottom,color-stop(0, silver),to(#dadada));
   background: linear-gradient(top,silver 0,#dadada 100%);
-  box-shadow: inset 0 0 0 1px #888,inset 0 0 0 2px #ddd
+  -webkit-box-shadow: inset 0 0 0 1px #888,inset 0 0 0 2px #ddd;
+          box-shadow: inset 0 0 0 1px #888,inset 0 0 0 2px #ddd
 }

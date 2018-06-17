@@ -396,7 +396,7 @@ if ($game) {
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
         }
         if ($points == 21 || $points > 21) {
-            $sql = "SELECT COUNT(userid) AS c FROM blackjack WHERE game_id = " . sqlesc($blackjack['gameid']) . " AND status = 'waiting' AND userid != " . sqlesc($CURUSER['id']);
+            $sql     = 'SELECT COUNT(userid) AS c FROM blackjack WHERE game_id = ' . sqlesc($blackjack['gameid']) . " AND status = 'waiting' AND userid != " . sqlesc($CURUSER['id']);
             $res     = sql_query($sql) or sqlerr(__FILE__, __LINE__);
             $waitarr = mysqli_fetch_assoc($res);
             $HTMLOUT .= "
@@ -873,7 +873,7 @@ if ($game) {
     $tot_wins         = (int) $User['bjwins'];
     $tot_losses       = (int) $User['bjlosses'];
     $tot_games        = $tot_wins + $tot_losses;
-    $win_perc = ($tot_losses == 0 ? ($tot_wins == 0 ? '---' : '100%') : ($tot_wins == 0 ? '0' : number_format(($tot_wins / $tot_games) * 100, 1)) . '%');
+    $win_perc         = ($tot_losses == 0 ? ($tot_wins == 0 ? '---' : '100%') : ($tot_wins == 0 ? '0' : number_format(($tot_wins / $tot_games) * 100, 1)) . '%');
     $plus_minus       = $tot_wins - abs($tot_losses);
     $sql              = 'SELECT * FROM blackjack WHERE game_id = ' . sqlesc($blackjack['gameid']) . ' ORDER BY date ASC LIMIT 1';
     $result           = sql_query($sql) or sqlerr(__FILE__, __LINE__);

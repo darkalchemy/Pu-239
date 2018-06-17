@@ -34,7 +34,7 @@ $stdhead = [
 $HTMLOUT = $count2 = $other_box_info = $maxpic = $maxbox = '';
 
 $maxbox   = 100 * ($CURUSER['class'] + 1);
-$maxboxes = 5 * ($CURUSER['class'] + 1);
+$maxboxes = 5   * ($CURUSER['class'] + 1);
 
 $returnto         = isset($_GET['returnto']) ? $_GET['returnto'] : isset($_POST['returnto']) ? $_POST['returnto'] : '/index.php';
 $possible_actions = [
@@ -62,8 +62,8 @@ $page             = (isset($_GET['page']) ? intval($_GET['page']) : 0);
 $perpage          = (isset($_GET['perpage']) ? intval($_GET['perpage']) : ($CURUSER['pms_per_page'] > 0 ? $CURUSER['pms_per_page'] : 20));
 $mailbox          = (isset($_GET['box']) ? intval($_GET['box']) : (isset($_POST['box']) ? intval($_POST['box']) : 1));
 $pm_id            = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
-$save = ((isset($_POST['save']) && $_POST['save'] === 1) ? '1' : '0');
-$urgent = ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? 'yes' : 'no');
+$save             = ((isset($_POST['save']) && $_POST['save'] === 1) ? '1' : '0');
+$urgent           = ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? 'yes' : 'no');
 $desc_asc         = (isset($_GET['ASC']) ? '&amp;DESC=1' : (isset($_GET['DESC']) ? '&amp;ASC=1' : ''));
 $desc_asc_2       = (isset($_GET['DESC']) ? 'ascending' : 'descending');
 $spacer           = '&#160;&#160;&#160;&#160;';

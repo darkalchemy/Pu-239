@@ -69,7 +69,7 @@ if ($action === 'add') {
 if ($action === 'confirm') {
     $targetid = (int) $_GET['targetid'];
     $sure     = isset($_GET['sure']) ? intval($_GET['sure']) : false;
-    $type = isset($_GET['type']) ? ($_GET['type'] === 'friend' ? 'friend' : 'block') : stderr($lang['friends_error'], 'LoL');
+    $type     = isset($_GET['type']) ? ($_GET['type'] === 'friend' ? 'friend' : 'block') : stderr($lang['friends_error'], 'LoL');
     if (!is_valid_id($targetid)) {
         stderr('Error', 'Invalid ID.');
     }
@@ -178,7 +178,7 @@ if (mysqli_num_rows($res) == 0) {
         $linktouser = format_username($friendp['id']) . " [$title]<br>{$lang['friends_last_seen']} " . ($friendp['perms'] < bt_options::PERMS_STEALTH ? get_date($friendp['last_access'], '') : 'Never');
         $confirm    = "<br><span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=friend&amp;targetid=" . (int) $friendp['id'] . "' class='has-text-black'>Confirm</a></span>";
         $block      = " <span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=" . (int) $friendp['id'] . "' class='has-text-black'>Block</a></span>";
-        $avatar = ($CURUSER['avatars'] === 'yes' ? htmlsafechars($friendp['avatar']) : '');
+        $avatar     = ($CURUSER['avatars'] === 'yes' ? htmlsafechars($friendp['avatar']) : '');
         if (!$avatar) {
             $avatar = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
         }
@@ -197,7 +197,7 @@ if (mysqli_num_rows($res) == 0) {
         if ($i % 6 == 0) {
             $friendreqs .= '<tr>';
         }
-        $friendreqs .= "<td>" . format_username($friendreq['id']) . '</td></tr>';
+        $friendreqs .= '<td>' . format_username($friendreq['id']) . '</td></tr>';
         if ($i % 6 == 5) {
             $friendreqs .= '</tr>';
         }
@@ -222,7 +222,7 @@ if (mysqli_num_rows($res) == 0) {
         $linktouser = format_username($friend['id']) . " [$title] [$ratio]<br>{$lang['friends_last_seen']} " . ($friend['perms'] < bt_options::PERMS_STEALTH ? get_date($friend['last_access'], '') : 'Never');
         $delete     = "<span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_remove']}</a></span>";
         $pm_link    = " <span class='button is-small'><a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int) $friend['id'] . "' class='has-text-black'>{$lang['friends_pm']}</a></span>";
-        $avatar = ($CURUSER['avatars'] === 'yes' ? htmlsafechars($friend['avatar']) : '');
+        $avatar     = ($CURUSER['avatars'] === 'yes' ? htmlsafechars($friend['avatar']) : '');
         if (!$avatar) {
             $avatar = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
         }
@@ -238,7 +238,7 @@ if (mysqli_num_rows($res) == 0) {
     while ($block = mysqli_fetch_assoc($res)) {
         $blocks .= '<div>';
         $blocks .= "<span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=block&amp;targetid=" . (int) $block['id'] . "' class='has-text-black'>{$lang['friends_delete']}</a></span><br>";
-        $blocks .= "<p>" . format_username($block['id']) . '</p></div><br>';
+        $blocks .= '<p>' . format_username($block['id']) . '</p></div><br>';
     }
 }
 

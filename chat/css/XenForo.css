@@ -181,7 +181,8 @@
 .ajax-chat .popup {
     background-color: #FFF;
     border: 1px solid #ababab;
-    box-shadow: 2px 2px 2px #777;
+    -webkit-box-shadow: 2px 2px 2px #777;
+            box-shadow: 2px 2px 2px #777;
 }
 
 #content #chatList .rowOdd.private {

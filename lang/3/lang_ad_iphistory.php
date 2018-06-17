@@ -30,7 +30,7 @@ $lang = [
     'iphistory_browse'       => 'Rasfoire: ',
     'iphistory_announce'     => 'Anunta: ',
     'iphistory_login'        => 'Autentificare: ',
-    'iphistory_wipe' => "Curata istorie:",
-    'iphistory_justwipe' => " tocmai a curatat IP-ul : ",
-    'iphistory_from' => " de la Istoria IP al utilizatorului (<a href='{$site_config['baseurl']}/userdetails.php?id=$id'><b>$username2</b></a>)"
+    'iphistory_wipe'         => 'Curata istorie:',
+    'iphistory_justwipe'     => ' tocmai a curatat IP-ul : ',
+    'iphistory_from'         => " de la Istoria IP al utilizatorului (<a href='{$site_config['baseurl']}/userdetails.php?id=$id'><b>$username2</b></a>)",
 ];

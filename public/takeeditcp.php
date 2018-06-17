@@ -45,8 +45,8 @@ $updateset = $curuser_cache = $user_cache = [];
 $setbits   = $clrbits   = 0;
 
 if ($action == 'avatar') {
-    $avatars = (isset($_POST['avatars']) && $_POST['avatars'] === 'yes' ? 'yes' : 'no');
-    $offensive_avatar = (isset($_POST['offensive_avatar']) && $_POST['offensive_avatar'] === 'yes' ? 'yes' : 'no');
+    $avatars               = (isset($_POST['avatars']) && $_POST['avatars'] === 'yes' ? 'yes' : 'no');
+    $offensive_avatar      = (isset($_POST['offensive_avatar']) && $_POST['offensive_avatar'] === 'yes' ? 'yes' : 'no');
     $view_offensive_avatar = (isset($_POST['view_offensive_avatar']) && $_POST['view_offensive_avatar'] === 'yes' ? 'yes' : 'no');
     if (!($CURUSER['avatarpos'] == 0 or $CURUSER['avatarpos'] != 1)) {
         $avatar = trim(urldecode($_POST['avatar']));
@@ -236,7 +236,7 @@ if ($action == 'avatar') {
     if (get_anonymous() != '0') {
         //if (isset($_POST['anonymous'])) $setbits|= user_options::ANONYMOUS;
         //else $clrbits|= user_options::ANONYMOUS;
-        $anonymous = (isset($_POST['anonymous']) && $_POST['anonymous'] != '' ? 'yes' : 'no');
+        $anonymous                  = (isset($_POST['anonymous']) && $_POST['anonymous'] != '' ? 'yes' : 'no');
         $updateset[]                = 'anonymous = ' . sqlesc($anonymous);
         $curuser_cache['anonymous'] = $anonymous;
         $user_cache['anonymous']    = $anonymous;
@@ -570,7 +570,7 @@ if ($action == 'avatar') {
     $user_cache['deletepms']    = $deletepms;
     //if (isset($_POST['deletepms'])) $setbits|= user_options::DELETEPMS;
     //else $clrbits|= user_options::DELETEPMS;
-    $savepms = (isset($_POST['savepms']) && $_POST['savepms'] != '' ? 'yes' : 'no');
+    $savepms                  = (isset($_POST['savepms']) && $_POST['savepms'] != '' ? 'yes' : 'no');
     $updateset[]              = "savepms = '$savepms'";
     $curuser_cache['savepms'] = $savepms;
     $user_cache['savepms']    = $savepms;

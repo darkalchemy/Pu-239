@@ -475,8 +475,8 @@ function format_username(int $user_id, $icons = true, $tooltipper = true)
         return 'unknown[' . $users_data['id'] . ']';
     }
 
-    $avatar = !empty($users_data['avatar']) ? "<img src='" . image_proxy($users_data['avatar']) . "' class='round10' />" : "<img src='{$site_config['pic_baseurl']}forumicons/default_avatar.gif' class='round10' />";
-    $tip = $tooltip = '';
+    $avatar = !empty($users_data['avatar']) ? "<img src='" . url_proxy($users_data['avatar'], true) . "' class='round10' />" : "<img src='{$site_config['pic_baseurl']}forumicons/default_avatar.gif' class='round10' />";
+    $tip    = $tooltip    = '';
     if ($tooltipper) {
         $tip = "
                 <div class='tooltip_templates'>
@@ -633,10 +633,13 @@ function get_user_ratio_image($ratio)
  *
  * @return string
  */
-function avatar_stuff($avatar, $width = 80)
+function avatar_stuff($avatar)
 {
     global $CURUSER, $site_config;
-    $avatar_show = ($CURUSER['avatars'] === 'no' ? '' : (!$avatar['avatar'] ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif" alt="avatar" />' : (($avatar['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_baseurl'] . 'fuzzybunny.gif" alt="avatar" />' : '<img style="max-width:' . $width . 'px;" src="' . htmlsafechars($avatar['avatar']) . '" alt="avatar" />')));
+    $avatar_show = ($CURUSER['avatars'] === 'no' ? '' : (!$avatar['avatar'] ? '
+        <img src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif" alt="avatar" class="avatar">' : (($avatar['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '
+        <img src="' . $site_config['pic_baseurl'] . 'fuzzybunny.gif" alt="avatar" class="avatar">' : '
+        <img src="' . htmlsafechars($avatar['avatar']) . '" alt="avatar" class="avatar">')));
 
     return $avatar_show;
 }

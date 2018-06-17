@@ -30,7 +30,7 @@ if ($count > 0) {
             $uploaded   = mksize($arr['uploaded']);
             $joindate   = get_date($arr['added'], '');
             $downloaded = mksize($arr['downloaded']);
-            $enabled = ($arr['enabled'] === 'no' ? '<span style="color:red;">No</span>' : '<span style="color:green;">Yes</span>');
+            $enabled    = ($arr['enabled'] === 'no' ? '<span style="color:red;">No</span>' : '<span style="color:green;">Yes</span>');
             $arr['id']  = $arr['userid'];
             $username   = format_username($arr['userid']);
             $HTMLOUT .= "<tr><td>$username</td>

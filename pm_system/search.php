@@ -11,7 +11,7 @@ $what_in_out     = ($mailbox >= 1 ? 'AND receiver = ' . sqlesc($CURUSER['id']) :
 $location        = (isset($_POST['all_boxes']) ? 'AND location != 0' : 'AND location = ' . $mailbox);
 $limit           = (isset($_POST['limit']) ? intval($_POST['limit']) : 25);
 $as_list_post    = (isset($_POST['as_list_post']) ? intval($_POST['as_list_post']) : 2);
-$desc_asc = (isset($_POST['ASC']) == 1 ? 'ASC' : 'DESC');
+$desc_asc        = (isset($_POST['ASC']) == 1 ? 'ASC' : 'DESC');
 $subject         = (isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '');
 $text            = (isset($_POST['text']) ? htmlsafechars($_POST['text']) : '');
 $member_sys      = (isset($_POST['system']) ? 'system' : '');
@@ -181,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </tr>";
 
         while ($row = mysqli_fetch_assoc($res_search)) {
-            $read = $row['unread'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}pn_inboxnew.gif' title='{$lang['pm_mailbox_unreadmsg']}' alt='{$lang['pm_mailbox_unread']}' class='tooltipper' />" : "<img src='{$site_config['pic_baseurl']}pn_inbox.gif title='{$lang['pm_mailbox_readmsg']}' alt='{$lang['pm_mailbox_read']}' class='tooltipper' />";
+            $read    = $row['unread'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}pn_inboxnew.gif' title='{$lang['pm_mailbox_unreadmsg']}' alt='{$lang['pm_mailbox_unread']}' class='tooltipper' />" : "<img src='{$site_config['pic_baseurl']}pn_inbox.gif title='{$lang['pm_mailbox_readmsg']}' alt='{$lang['pm_mailbox_read']}' class='tooltipper' />";
             $sender  = $row['sender'] > 0 ? format_username($row['sender']) : 'System';
             $date    = str_replace(', ', '<br>', get_date($row['added'], 'LONG'));
             $subject = str_ireplace($keywords, "<span style='background-color:yellow;font-weight:bold;color:black;'>{$keywords}</span>", htmlsafechars($row['subject']));

@@ -14,7 +14,7 @@ $exts = [
     'md',
     'json',
     'gz',
-    'example'
+    'example',
 ];
 
 $i = 0;
@@ -25,7 +25,7 @@ foreach ($paths as $path) {
             $ext = pathinfo($name, PATHINFO_EXTENSION);
             if (in_array($ext, $exts)) {
                 if (chmod($name, 0664)) {
-                    $i++;
+                    ++$i;
                 }
             }
         }

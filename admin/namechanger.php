@@ -16,7 +16,7 @@ if (isset($mode) && $mode == 'change') {
         stderr($lang['namechanger_err'], $lang['namechanger_missing']);
     }
 
-    if (strlen($_POST['uname']) < 3 || !valid_username($_POST['uname']) {
+    if (strlen($_POST['uname']) < 3 || !valid_username($_POST['uname'])) {
         stderr($lang['namechanger_err'], "<b>'{$_POST['uname']}'</b> {$lang['namechanger_invalid']}");
     }
 

@@ -78,12 +78,13 @@ function write_css($data)
     file_put_contents(ROOT_DIR . 'templates/1/css/classcolors.css', $classdata . PHP_EOL);
 }
 
-function write_classes($data) {
-    $text = "
+function write_classes($data)
+{
+    $text = '
 
 ajaxChat.getRoleClass = function(roleID) {
-    switch (parseInt(roleID)) {";
-    foreach($data as $class) {
+    switch (parseInt(roleID)) {';
+    foreach ($data as $class) {
         $text .= "
         case parseInt($class):
             return '" . strtolower(str_replace('UC_', '', $class)) . "';";
@@ -109,13 +110,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $c_classcolor = strtoupper($value['classcolor']);
             $c_classcolor = str_replace('#', '', "$c_classcolor");
             $c_classpic   = $value['classpic'];
-            $post_data  = $_POST[$c_name];
-            $value      = $post_data[0];
-            $classname  = !empty($post_data[1]) ? strtoupper($post_data[1]) : '';
-            $classcolor = !empty($post_data[2]) ? $post_data[2] : '';
-            $data[]     = ['className' => $classname, 'classColor' => $classcolor];
-            $classcolor = str_replace('#', '', "$classcolor");
-            $classpic   = !empty($post_data[3]) ? $post_data[3] : '';
+            $post_data    = $_POST[$c_name];
+            $value        = $post_data[0];
+            $classname    = !empty($post_data[1]) ? strtoupper($post_data[1]) : '';
+            $classcolor   = !empty($post_data[2]) ? $post_data[2] : '';
+            $data[]       = ['className' => $classname, 'classColor' => $classcolor];
+            $classcolor   = str_replace('#', '', "$classcolor");
+            $classpic     = !empty($post_data[3]) ? $post_data[3] : '';
             if (isset($_POST[$c_name][0]) && (($value != $c_value) || ($classname != $c_classname) || ($classcolor != $c_classcolor) || ($classpic != $c_classpic))) {
                 $update[$c_name] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($value) ? join('|', $value) : $value) . ',' . sqlesc(is_array($classname) ? join('|', $classname) : $classname) . ',' . sqlesc(is_array($classcolor) ? join('|', $classcolor) : $classcolor) . ',' . sqlesc(is_array($classpic) ? join('|', $classpic) : $classpic) . ')';
             }
@@ -132,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             unset($arr);
             $res       = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX') ORDER BY value ASC");
             $the_names = $the_colors = $the_images = '';
-            $classes[] = "var UC_MIN = 0;";
+            $classes[] = 'var UC_MIN = 0;';
             while ($arr = mysqli_fetch_assoc($res)) {
                 if ($arr['name'] !== 'UC_STAFF') {
                     $the_names  .= "{$arr['name']} => '{$arr['classname']}',";
@@ -140,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . " . 'class/{$arr['classpic']}',";
                     $js_classes[] = $arr['name'];
                 }
-                $val = $arr['value'];
+                $val       = $arr['value'];
                 $classes[] = "var {$arr['name']} = {$arr['value']};";
             }
             $classes[] = "var UC_MAX = {$val};";
@@ -231,7 +232,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
                         $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/{$arr['classpic']}',";
                         $js_classes[] = $arr['name'];
-                        $data[]     = ['className' => $arr['classname'], 'classColor' => '#' . strtolower($arr['classcolor'])];
+                        $data[]       = ['className' => $arr['classname'], 'classColor' => '#' . strtolower($arr['classcolor'])];
                     }
                     $classes[] = "var {$arr['name']} = {$arr['value']};";
                 }
@@ -305,7 +306,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
                     $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/{$arr['classpic']}',";
                     $js_classes[] = $arr['name'];
-                    $data[]     = ['className' => $arr['classname'], 'classColor' => '#' . strtolower($arr['classcolor'])];
+                    $data[]       = ['className' => $arr['classname'], 'classColor' => '#' . strtolower($arr['classcolor'])];
                 }
                 $classes[] = "var {$arr['name']} = {$arr['value']};";
             }

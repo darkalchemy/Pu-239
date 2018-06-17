@@ -23,7 +23,8 @@
 
 #content input, select, #content textarea, #loginButton {
     border: 0;
-    box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.5);
+            box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
 #content textarea {
@@ -55,7 +56,8 @@
 
 .ajax-chat #content .popup {
     padding: 5px;
-    box-shadow: 2px 2px 4px #000;
+    -webkit-box-shadow: 2px 2px 4px #000;
+            box-shadow: 2px 2px 4px #000;
     border-radius: 3px;
     background: rgba(225, 225, 225, 0.2);
     border-color: #9765A0;

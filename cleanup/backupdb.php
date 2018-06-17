@@ -33,16 +33,16 @@ function backupdb($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    $host = $_ENV['DB_HOST'];
-    $user = $_ENV['DB_USERNAME'];
-    $pass = $_ENV['DB_PASSWORD'];
-    $db   = $_ENV['DB_DATABASE'];
-    $dt   = TIME_NOW;
-    $bdir = $site_config['backup_dir'];
+    $host     = $_ENV['DB_HOST'];
+    $user     = $_ENV['DB_USERNAME'];
+    $pass     = $_ENV['DB_PASSWORD'];
+    $db       = $_ENV['DB_DATABASE'];
+    $dt       = TIME_NOW;
+    $bdir     = $site_config['backup_dir'];
     $filename = 'db_' . date('m_d_y_H', TIME_NOW) . '.sql';
 
     $c1 = "mysqldump -h $host -u{$user} -p{$pass} $db -d > $bdir/db_structure.sql";
-    $c2 = "mysqldump -h $host -u{$user} -p{$pass} $db " . tables('peers') . " | bzip2 -9 > $bdir/{$filename}.bzip";
+    $c2 = "mysqldump -h $host -u{$user} -p{$pass} $db " . tables('peers') . " | bzip2 -9 > $bdir/{$filename}.bz2";
 
     system($c1);
     exec($c2);
@@ -50,8 +50,8 @@ function backupdb($data)
     // table backup
     $tables = explode(' ', tables());
     foreach ($tables as $table) {
-        $filename = "tbl_{$table}_" . date("m_d_y_H", TIME_NOW) . ".sql";
-        $c2 = "mysqldump -h $host -u{$user} -p{$pass} $db $table | bzip2 -cq9 > $bdir/{$filename}.bzip";
+        $filename = "tbl_{$table}_" . date('m_d_y_H', TIME_NOW) . '.sql';
+        $c2       = "mysqldump -h $host -u{$user} -p{$pass} $db $table | bzip2 -cq9 > $bdir/{$filename}.bz2";
         system($c2);
     }
 

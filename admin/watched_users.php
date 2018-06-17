@@ -114,7 +114,7 @@ $good_stuff = [
     'invited_by',
 ];
 $ORDER_BY = ((isset($_GET['sort']) && in_array($_GET['sort'], $good_stuff, true)) ? $_GET['sort'] . ' ' : 'watched_user ');
-$ASC = (isset($_GET['ASC']) ? ($_GET['ASC'] === 'ASC' ? 'DESC' : 'ASC') : 'DESC');
+$ASC      = (isset($_GET['ASC']) ? ($_GET['ASC'] === 'ASC' ? 'DESC' : 'ASC') : 'DESC');
 $i        = 1;
 $HTMLOUT .= $H1_thingie . '<br>
         <form action="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;remove=1" method="post"  name="checkme" onsubmit="return ValidateForm(this,\'wu\')">

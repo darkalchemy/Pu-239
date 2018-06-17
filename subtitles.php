@@ -287,7 +287,7 @@ elseif ($mode === 'details') {
         $HTMLOUT .= begin_main_frame();
         $HTMLOUT .= "<table width='600' style='border-collapse:collapse;'>
 <tr><td width='150' rowspan='10'>
-<img src='" . image_proxy($arr['poster']) . "' width='150' height='195' alt='" . htmlsafechars($arr['name']) . "' />
+<img src='" . url_proxy($arr['poster'], true, 150, 195) . "' width='150' height='195' alt='" . htmlsafechars($arr['name']) . "' />
 <br><br>
 <form action='downloadsub.php' method='post'>
 <input type='hidden' name='sid' value='" . (int) $arr['id'] . "' />
@@ -302,10 +302,10 @@ elseif ($mode === 'details') {
         if (!empty($arr['comment'])) {
             $HTMLOUT .= '<tr><td><fieldset><legend><b>Comment</b></legend>&#160;' . htmlsafechars($arr['comment']) . '</fieldset></td></tr>';
         }
-        $HTMLOUT .= "<tr><td>FPS :&#160;<b>" . ($arr['fps'] == 0 ? 'Unknown' : htmlsafechars($arr['fps'])) . "</b></td></tr>
-<tr><td>Cd# :&#160;<b>" . ($arr['cds'] == 0 ? 'Unknown' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . "</b></td></tr>
-<tr><td>Hits :&#160;<b>" . (int)$arr['hits'] . "</b></td></tr>
-<tr><td>Uploader : " . format_username($arr['owner']);
+        $HTMLOUT .= '<tr><td>FPS :&#160;<b>' . ($arr['fps'] == 0 ? 'Unknown' : htmlsafechars($arr['fps'])) . '</b></td></tr>
+<tr><td>Cd# :&#160;<b>' . ($arr['cds'] == 0 ? 'Unknown' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . '</b></td></tr>
+<tr><td>Hits :&#160;<b>' . (int) $arr['hits'] . '</b></td></tr>
+<tr><td>Uploader : ' . format_username($arr['owner']);
         if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_STAFF) {
             $HTMLOUT .= "<a href='subtitles.php?mode=edit&amp;id=" . (int) $arr['id'] . "'><img src='{$site_config['pic_baseurl']}edit.png' alt='Edit Sub' title='Edit Sub' style='border:none;padding:2px;' /></a>
 <a href='subtitles.php?mode=delete&amp;id=" . (int) $arr['id'] . "'><img src='{$site_config['pic_baseurl']}drop.png' alt='Delete Sub' title='Delete Sub' style='border:none;padding:2px;' /></a>";
@@ -370,9 +370,9 @@ elseif ($mode === 'details') {
 <form action='subtitles.php' method='get'>
 <input size='50' value='" . $s . "' name='s' type='text' />
 <select name='w'>
-<option value='name' " . ($w === 'name' ? "selected" : '') . ">Name</option>
-<option value='imdb' " . ($w === 'imdb' ? "selected" : '') . ">IMDb</option>
-<option value='comment' " . ($w === 'comment' ? "selected" : '') . ">Comments</option>
+<option value='name' " . ($w === 'name' ? 'selected' : '') . ">Name</option>
+<option value='imdb' " . ($w === 'imdb' ? 'selected' : '') . ">IMDb</option>
+<option value='comment' " . ($w === 'comment' ? 'selected' : '') . ">Comments</option>
 </select>
 <input type='submit' value='Search' />&#160;<input type='button' onclick=\"window.location.href='subtitles.php?mode=upload'\" value='Upload' />
 </form></fieldset></td></tr>";
@@ -420,17 +420,17 @@ elseif ($mode === 'details') {
 <td>{$langs}</td>
 <td><a href='subtitles.php?mode=details&amp;id=" . (int) $arr['id'] . "' onmouseover=\"tip('<img src=\'" . htmlsafechars($arr['poster']) . "\' width=\'100\'>')\" onmouseout=\"untip()\">" . htmlsafechars($arr['name']) . "</a></td>
 <td><a href='" . htmlsafechars($arr['imdb']) . "'  target='_blank'><img src='{$site_config['pic_baseurl']}imdb.gif' alt='Imdb' title='Imdb' /></a></td>
-<td>" . get_date($arr['added'], 'LONG', 0, 1) . "</td>
-<td>" . htmlsafechars($arr['hits']) . "</td>
-<td>" . ($arr['fps'] == 0 ? 'Unknow' : htmlsafechars($arr['fps'])) . "</td>
-<td>" . ($arr['cds'] == 0 ? 'Unknow' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . '</td>';
+<td>" . get_date($arr['added'], 'LONG', 0, 1) . '</td>
+<td>' . htmlsafechars($arr['hits']) . '</td>
+<td>' . ($arr['fps'] == 0 ? 'Unknow' : htmlsafechars($arr['fps'])) . '</td>
+<td>' . ($arr['cds'] == 0 ? 'Unknow' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . '</td>';
             if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_STAFF) {
                 $HTMLOUT .= "<td nowrap='nowrap'>
 <a href='subtitles.php?mode=edit&amp;id=" . (int) $arr['id'] . "'><img src='{$site_config['pic_baseurl']}edit.png' alt='Edit Sub' title='Edit Sub' style='border:none;padding:2px;' /></a>
 <a href='subtitles.php?mode=delete&amp;id=" . (int) $arr['id'] . "'><img src='{$site_config['pic_baseurl']}drop.png' alt='Delete Sub' title='Delete Sub' style='border:none;padding:2px;' /></a>
 </td>";
             }
-            $HTMLOUT .= "<td>" . format_username($arr['owner']) . '</td></tr>';
+            $HTMLOUT .= '<td>' . format_username($arr['owner']) . '</td></tr>';
         }
         $HTMLOUT .= '</table>';
     }

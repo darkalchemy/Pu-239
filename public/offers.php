@@ -68,7 +68,7 @@ switch ($action) {
         $row_did_they_vote = mysqli_fetch_row($res_did_they_vote);
         if ($row_did_they_vote[0] == '') {
             $yes_or_no = ($vote == 1 ? 'yes' : 'no');
-            sql_query('INSERT INTO offer_votes (offer_id, user_id, vote) VALUES (' . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ', \'' . $yes_or_no . '\')') or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO offer_votes (offer_id, user_id, vote) VALUES (' . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ', \'' . $yes_or_no . '\')')                   or sqlerr(__FILE__, __LINE__);
             sql_query('UPDATE offers SET ' . ($yes_or_no === 'yes' ? 'vote_yes_count = vote_yes_count + 1' : 'vote_no_count = vote_no_count + 1') . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             header('Location: /offers.php?action=offer_details&voted=1&id=' . $id);
             die();
@@ -191,7 +191,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>image:</td>
-    <td><img src="' . strip_tags(image_proxy($arr['image'])) . '" alt="image" /></td>
+    <td><img src="' . strip_tags(url_proxy($arr['image'], true)) . '" alt="image" /></td>
     </tr>
     <tr>
     <td>description:</td>
@@ -234,7 +234,7 @@ switch ($action) {
             $perpage            = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
             list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'offers.php?action=offer_details&amp;id=' . $id, ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . '#comments');
             $subres             = sql_query('SELECT c.offer, c.id AS comment_id, c.text, c.added, c.editedby, c.editedat, u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.title, u.leechwarn, u.chatpost, u.pirate, u.king FROM comments AS c LEFT JOIN users AS u ON c.user = u.id WHERE c.offer = ' . sqlesc($id) . ' ORDER BY c.id ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
-            $allrows = [];
+            $allrows            = [];
             while ($subrow = mysqli_fetch_assoc($subres)) {
                 $allrows[] = $subrow;
             }
@@ -337,9 +337,9 @@ switch ($action) {
             stderr('Sanity check...', 'are you sure you would like to delete the offer <b>"' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"</b>? If so click
         <a class="altlink" href="offers.php?action=delete_offer&id=' . $id . '&amp;do_it=666" >HERE</a>.');
         } else {
-            sql_query('DELETE FROM offers WHERE id = ' . $id) or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM offers WHERE id = ' . $id)            or sqlerr(__FILE__, __LINE__);
             sql_query('DELETE FROM offer_votes WHERE offer_id = ' . $id) or sqlerr(__FILE__, __LINE__);
-            sql_query('DELETE FROM comments WHERE offer = ' . $id) or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM comments WHERE offer = ' . $id)       or sqlerr(__FILE__, __LINE__);
             header('Location: /offers.php?offer_deleted=1');
             die();
         }
@@ -395,7 +395,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>image:</td>
-    <td><img src="' . htmlsafechars(image_proxy($image), ENT_QUOTES) . '" alt="image" /></td>
+    <td><img src="' . strip_tags(url_proxy($image, true)) . '" alt="image" /></td>
     </tr>
     <tr>
     <td>description:</td>
@@ -590,7 +590,7 @@ switch ($action) {
             stderr('Sanity check...', 'are you sure you would like to delete this comment? If so click
         <a class="altlink" href="offers.php?action=delete_comment&amp;id=' . (int) $arr['offer'] . '&amp;comment_id=' . $comment_id . '&amp;do_it=666" >HERE</a>.');
         } else {
-            sql_query('DELETE FROM comments WHERE id = ' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM comments WHERE id = ' . sqlesc($comment_id))                        or sqlerr(__FILE__, __LINE__);
             sql_query('UPDATE offers SET comments = comments - 1 WHERE id = ' . sqlesc($arr['offer'])) or sqlerr(__FILE__, __LINE__);
             header('Location: /offers.php?action=offer_details&id=' . $id . '&comment_deleted=1');
             die();

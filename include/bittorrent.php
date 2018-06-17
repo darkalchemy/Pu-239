@@ -667,7 +667,6 @@ function create_moods($force = false)
 
     $mood = $cache->get('moods');
     if ($mood === false || is_null($mood) || $force === true) {
-
         $res_moods = sql_query('SELECT * FROM moods ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
         $mood      = [];
         if (mysqli_num_rows($res_moods)) {
@@ -2000,7 +1999,7 @@ function get_anonymous_name()
  *
  * @return string
  */
-function image_proxy($url, $width = null, $height = null)
+function url_proxy($url, $image = false, $width = null, $height = null)
 {
     global $site_config;
 
@@ -2008,11 +2007,15 @@ function image_proxy($url, $width = null, $height = null)
         return $url;
     }
 
+    if (!$image) {
+        return $site_config['anonymizer_url'] . $url;
+    }
+
     if (!empty($site_config['image_proxy'])) {
-        if (!empty($width) && !empty($height)) {
+        if (!empty($width)) {
             $url = "{$url}&width={$width}&height={$height}";
         }
-        $key = [key($site_config['image_proxy_key']), current($site_config['image_proxy_key'])];
+        $key       = [key($site_config['image_proxy_key']), current($site_config['image_proxy_key'])];
         $encrypted = CryptoJSAES::encrypt($url, $key[1]);
 
         return $site_config['image_proxy'] . base64_encode($encrypted . '&uid=' . $key[0]);
@@ -2179,9 +2182,9 @@ function insert_update_ip()
     if (empty($CURUSER)) {
         return;
     }
-    $id = (int) $CURUSER['id'];
-    $ip = getip();
-    $hash = hash('sha512', "{$id}_{$ip}");
+    $id       = (int) $CURUSER['id'];
+    $ip       = getip();
+    $hash     = hash('sha512', "{$id}_{$ip}");
     $user_ips = $cache->get('user_ips_' . $hash);
     if ($user_ips === false || is_null($user_ips)) {
         $added  = TIME_NOW;
@@ -2190,7 +2193,7 @@ function insert_update_ip()
                     ON DUPLICATE KEY UPDATE
                     ip = VALUES(ip), lastbrowse = VALUES(lastbrowse), type = VALUES(type)") or sqlerr(__FILE__, __LINE__);
         $cache->delete('ip_history_' . $id);
-        $cache->set('user_ips_' .  $hash, 300);
+        $cache->set('user_ips_' . $hash, 300);
     }
 }
 

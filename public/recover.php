@@ -29,30 +29,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error2']}");
             die();
         }
-        $ip = getip();
-        $url = 'https://www.google.com/recaptcha/api/siteverify';
+        $ip     = getip();
+        $url    = 'https://www.google.com/recaptcha/api/siteverify';
         $params = [
-            'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
+            'secret'   => $_ENV['RECAPTCHA_SECRET_KEY'],
             'response' => $response,
             'remoteip' => $ip,
         ];
-        $query = http_build_query($params);
+        $query       = http_build_query($params);
         $contextData = [
                     'method' => 'POST',
-                    'header' => "Content-Type: application/x-www-form-urlencoded\r\n".
-                                "Connection: close\r\n".
-                                'Content-Length: '.strlen($query)."\r\n",
-                    'content' => $query
+                    'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
+                                "Connection: close\r\n" .
+                                'Content-Length: ' . strlen($query) . "\r\n",
+                    'content' => $query,
         ];
         $context = stream_context_create(['http' => $contextData]);
-        $result = file_get_contents(
+        $result  = file_get_contents(
                       $url,
                       false,
                       $context
         );
         $responseKeys = json_decode($result, true);
         if (intval($responseKeys['success']) !== 1) {
-            stderr('Error', "reCAPTCHA Failed");
+            stderr('Error', 'reCAPTCHA Failed');
         }
     }
 

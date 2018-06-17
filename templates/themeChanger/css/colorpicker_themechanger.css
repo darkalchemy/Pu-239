@@ -165,8 +165,6 @@
   width: 178px;
   background-color: #1f1f1f;
   color: #3d3d3d;
-  -webkit-border-radius: 0 5px 5px 0;
-  -moz-border-radius: 0 5px 5px 0;
   border-radius: 0 5px 5px 0
 }
 #control_panel > div > span {
@@ -212,13 +210,11 @@
   -moz-border-radius: 0 5px 5px 0;
   -webkit-border-radius: 0 5px 5px 0;
   -webkit-transition: all .25s linear;
-  -moz-transition: all .25s linear;
   -o-transition: all .25s linear;
   transition: all .25s linear
 }
 #control_label:hover {
   -webkit-box-shadow: inset 0 0 10px #686868;
-  -moz-box-shadow: inset 0 0 10px #686868;
   box-shadow: inset 0 0 10px #686868
 }
 #control_panel #backgrounds a {

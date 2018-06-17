@@ -50,7 +50,7 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
         if ($Uid_ID !== $hit_and_run_arr['owner']) {
             $ratio_site               = member_ratio($hit_and_run_arr['up'], $site_config['ratio_free'] ? '0' : $hit_and_run_arr['down']);
             $ratio_torrent            = member_ratio($hit_and_run_arr['uload'], $site_config['ratio_free'] ? '0' : $hit_and_run_arr['dload']);
-            $avatar = ($CURUSER['avatars'] === 'yes' ? ($hit_and_run_arr['avatar'] == '' ? '<img src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif"  width="40" alt="default avatar" />' : '<img src="' . image_proxy($hit_and_run_arr['avatar']) . '" alt="avatar"  width="40" />') : '');
+            $avatar                   = ($CURUSER['avatars'] === 'yes' ? ($hit_and_run_arr['avatar'] == '' ? '<img src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif"  width="40" alt="default avatar" />' : '<img src="' . url_proxy($hit_and_run_arr['avatar'], true, 40, 'auto') . '" alt="avatar"  width="40" />') : '');
             $torrent_needed_seed_time = $hit_and_run_arr['seedtime'];
             //=== get times per class
             switch (true) {

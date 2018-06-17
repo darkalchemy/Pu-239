@@ -182,7 +182,7 @@ class CustomAJAXChat extends AJAXChat
                         $pms[] = '(0,' . $rid['id'] . ',' . TIME_NOW . ',' . sqlesc(str_replace('/announce ', '', $text)) . ", 'Site News')";
                     }
                     if (count($pms) > 0) {
-                        $r = sql_query('INSERT INTO messages(sender, receiver, added, msg, subject) VALUES '.implode(',', $pms)) or sqlerr(__FILE__, __LINE__);
+                        $r = sql_query('INSERT INTO messages(sender, receiver, added, msg, subject) VALUES ' . implode(',', $pms)) or sqlerr(__FILE__, __LINE__);
                     }
                     foreach ($ids as $rid) {
                         $cache->increment('inbox_' . $rid['id']);

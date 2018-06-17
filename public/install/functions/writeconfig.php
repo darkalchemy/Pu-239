@@ -131,7 +131,7 @@ function createblock($fo, $foo)
         } else {
             $type = 'text';
         }
-        $explain = !empty($bo['explain']) ? "<div class='info'>{$bo['explain']}</div>" : "";
+        $explain = !empty($bo['explain']) ? "<div class='info'>{$bo['explain']}</div>" : '';
         $out .= "
                 <td class='input_input'>
                     <input type='{$type}' name='{$bo['input']}' size='30' placeholder='{$bo['placeholder']}' title='{$bo['info']}' />$explain
@@ -288,4 +288,3 @@ function rrmdir($dir)
 
     return false;
 }
-

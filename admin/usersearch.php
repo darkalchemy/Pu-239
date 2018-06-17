@@ -817,8 +817,8 @@ if (!empty($_POST) && count($_POST) > 0) {
     $from_is            = isset($join_is) ? 'users AS u' . $join_is : 'users AS u';
     $distinct           = isset($distinct) ? $distinct : '';
     $where_is           = !empty($where_is) ? $where_is : '';
-    $queryc = 'SELECT COUNT(' . $distinct . 'u.id) FROM ' . $from_is . (($where_is == '') ? '' : " WHERE $where_is ");
-    $querypm = 'FROM ' . $from_is . (($where_is == '') ? ' ' : " WHERE $where_is ");
+    $queryc             = 'SELECT COUNT(' . $distinct . 'u.id) FROM ' . $from_is . (($where_is == '') ? '' : " WHERE $where_is ");
+    $querypm            = 'FROM ' . $from_is . (($where_is == '') ? ' ' : " WHERE $where_is ");
     $announcement_query = 'SELECT u.id FROM ' . $from_is . (($where_is == '') ? ' WHERE 1 = 1' : " WHERE $where_is");
     $select_is          = 'u.id, u.username, u.email, u.status, u.added, u.last_access, u.ip,
       u.class, u.uploaded, u.downloaded, u.donor, u.modcomment, u.enabled, u.warned';

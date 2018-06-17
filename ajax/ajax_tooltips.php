@@ -30,7 +30,7 @@ if ($id = $session->get('userID') && $session->validateToken($_POST['csrf_token'
                                 WHERE uid = ' . sqlesc($user['id']) . '
                                 GROUP BY `left`') or sqlerr(__LINE__, __FILE__);
             while ($a = mysqli_fetch_assoc($r)) {
-                $key = $a['left'] == 0 ? 'yes' : 'no';
+                $key          = $a['left'] == 0 ? 'yes' : 'no';
                 $seed[$key]   = number_format((int) $a['count']);
                 $seed['conn'] = $a['connectable'] == 0 ? 1 : 2;
             }
@@ -49,7 +49,7 @@ if ($id = $session->get('userID') && $session->validateToken($_POST['csrf_token'
                                 WHERE userid = ' . sqlesc($user['id']) . '
                                 GROUP BY seeder');
             while ($a = mysqli_fetch_assoc($r)) {
-                $key = $a['seeder'] === 'yes' ? 'yes' : 'no';
+                $key          = $a['seeder'] === 'yes' ? 'yes' : 'no';
                 $seed[$key]   = number_format((int) $a['count']);
                 $seed['conn'] = $a['connectable'] === 'no' ? 1 : 2;
             }
@@ -157,15 +157,13 @@ if ($id = $session->get('userID') && $session->validateToken($_POST['csrf_token'
     <div class='flex-user-stats'>
         <div class='left'>{$lang['gl_connectable']}</div>
         <div>{$connectable}</div>
-    </div>
-    " . ($user['class'] >= UC_STAFF || $user['got_blocks'] === 'yes' || $user['got_moods'] === 'yes' ? "
+    </div>" . ($user['class'] >= UC_STAFF || $user['got_blocks'] === 'yes' || $user['got_moods'] === 'yes' ? "
     <br>
     <div class='left'>{$lang['gl_userblocks']}</div>
     <div class='flex-user-stats'>
         <div class='left'>{$lang['gl_myblocks']}</div>
         <div><a href='{$site_config['baseurl']}/user_blocks.php'>{$lang['gl_click']}</a></div>" : '') . '
-    </div>
-    " . ($user['class'] >= UC_STAFF || $user['got_moods'] === 'yes' ? "
+    </div>' . ($user['class'] >= UC_STAFF || $user['got_moods'] === 'yes' ? "
     <div class='flex-user-stats'>
         <div class='left'>{$lang['gl_myunlocks']}</div>
         <div><a href='{$site_config['baseurl']}/user_unlocks.php'>{$lang['gl_click']}</a></div>" : '') . '

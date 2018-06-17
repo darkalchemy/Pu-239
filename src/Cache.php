@@ -1,4 +1,5 @@
 <?php
+
 namespace DarkAlchemy\Pu239;
 
 use MatthiasMullie\Scrapbook\Adapters\Couchbase;

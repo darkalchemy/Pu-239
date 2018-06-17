@@ -52,7 +52,7 @@ if (!$comments) {
 foreach ($comments as $comment) {
     $user = $torrent = $id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = '';
     extract($comment);
-    $user = $anonymous === 'yes' ? 'Anonymous' : format_username($user);
+    $user   = $anonymous === 'yes' ? 'Anonymous' : format_username($user);
     $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . htmlsafechars($poster) . "' class='tooltip-poster' />";
 
     $body .= "

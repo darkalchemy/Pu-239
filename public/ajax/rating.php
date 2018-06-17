@@ -13,9 +13,9 @@ if (empty($_POST)) {
 $id            = isset($_POST['id']) ? (int) $_POST['id'] : 0;
 $rate          = isset($_POST['rate']) ? (int) $_POST['rate'] : 0;
 $uid           = $CURUSER['id'];
-$ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
-$what = isset($_POST['what']) && $_POST['what'] === 'torrent' ? 'torrent' : 'topic';
-$ref = isset($_POST['ref']) ? $_POST['ref'] : ($what === 'torrent' ? 'details.php' : 'forums/view_topic.php');
+$ajax          = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
+$what          = isset($_POST['what']) && $_POST['what'] === 'torrent' ? 'torrent' : 'topic';
+$ref           = isset($_POST['ref']) ? $_POST['ref'] : ($what === 'torrent' ? 'details.php' : 'forums/view_topic.php');
 $completeres   = sql_query('SELECT * FROM ' . (XBT_TRACKER ? 'xbt_files_users' : 'snatched') . ' WHERE ' . (XBT_TRACKER ? 'completedtime !=0' : 'complete_date !=0') . ' AND ' . (XBT_TRACKER ? 'uid' : 'userid') . ' = ' . $CURUSER['id'] . ' AND ' . (XBT_TRACKER ? 'fid' : 'torrentid') . ' = ' . $id) or sqlerr(__FILE__, __LINE__);
 $completecount = mysqli_num_rows($completeres);
 if ($what === 'torrent' && $completecount == 0) {

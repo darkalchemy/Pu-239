@@ -31,7 +31,7 @@ $dt            = TIME_NOW;
 if (!isset($_GET['id']) || !is_valid_id($_GET['id'])) {
     stderr("{$lang['details_user_error']}", "{$lang['details_bad_id']}{$_GET['id']}");
 }
-$id = (int) $_GET['id'];
+$id                   = (int) $_GET['id'];
 $slot                 = make_freeslots($CURUSER['id'], 'fllslot_');
 $torrent['addedfree'] = $torrent['addedup'] = $free_slot = $double_slot = '';
 if (!empty($slot)) {
@@ -268,9 +268,9 @@ if ($l_a === false || is_null($l_a)) {
 $torrent_cache['seeders']         = $cache->get('torrents_seeds_' . $id);
 $torrent_cache['leechers']        = $cache->get('torrents_leechs_' . $id);
 $torrent_cache['times_completed'] = $cache->get('torrents_comps_' . $id);
-$torrents['seeders'] = ((!XBT_TRACKER || $torrent_cache['seeders'] === false || $torrent_cache['seeders'] === 0 || $torrent_cache['seeders'] === false) ? $torrents['seeders'] : $torrent_cache['seeders']);
-$torrents['leechers'] = ((!XBT_TRACKER || $torrent_cache['leechers'] === false || $torrent_cache['leechers'] === 0 || $torrent_cache['leechers'] === false) ? $torrents['leechers'] : $torrent_cache['leechers']);
-$torrents['times_completed'] = ((!XBT_TRACKER || $torrent_cache['times_completed'] === false || $torrent_cache['times_completed'] === 0 || $torrent_cache['times_completed'] === false) ? $torrents['times_completed'] : $torrent_cache['times_completed']);
+$torrents['seeders']              = ((!XBT_TRACKER || $torrent_cache['seeders'] === false || $torrent_cache['seeders'] === 0 || $torrent_cache['seeders'] === false) ? $torrents['seeders'] : $torrent_cache['seeders']);
+$torrents['leechers']             = ((!XBT_TRACKER || $torrent_cache['leechers'] === false || $torrent_cache['leechers'] === 0 || $torrent_cache['leechers'] === false) ? $torrents['leechers'] : $torrent_cache['leechers']);
+$torrents['times_completed']      = ((!XBT_TRACKER || $torrent_cache['times_completed'] === false || $torrent_cache['times_completed'] === 0 || $torrent_cache['times_completed'] === false) ? $torrents['times_completed'] : $torrent_cache['times_completed']);
 
 $torrent['addup']        = get_date($torrent['addedup'], 'DATE');
 $torrent['addfree']      = get_date($torrent['addedfree'], 'DATE');
@@ -385,11 +385,11 @@ $banner_image = "
 if (!empty($torrents['banner'])) {
     $banner_image = "
         <div id='banner'>
-            <img src='" . image_proxy($torrents['banner']) . "' class='w-100 round10' />
+            <img src='" . url_proxy($torrents['banner'], true, 1000, 185) . "' class='w-100 round10' />
         </div>
         <div id='overlay' class='container is-fluid bg-07 is-marginless round10'>";
 }
-$body_image = image_proxy($torrents['background']);
+$body_image = url_proxy($torrents['background'], true);
 $HTMLOUT .= "
         $banner_image
             <div class='has-text-centered margin20'>
@@ -469,7 +469,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] || $C
             <div class='img-polaroid round10 right10 column is-2'>";
 
     if (!empty($torrents['poster'])) {
-        $HTMLOUT .= "<img src='" . image_proxy($torrents['poster']) . "' class='round10' alt='Poster' />";
+        $HTMLOUT .= "<img src='" . url_proxy($torrents['poster'], 500, 'auto') . "' class='round10' alt='Poster' />";
     }
     if (empty($torrents['poster'])) {
         $HTMLOUT .= "<img src='{$site_config['pic_baseurl']}noposter.png' class='round10' alt='Poster' />";
@@ -785,7 +785,7 @@ if ($owned) {
 $HTMLOUT .= tr('Upped by', $uprow, 1);
 
 if ($CURUSER['class'] >= UC_STAFF) {
-        $HTMLOUT .= "<tr>
+    $HTMLOUT .= "<tr>
                 <td class='rowhead'>Clear Cache</td>
                 <td>
                     <div class='bottom10'>
@@ -879,7 +879,7 @@ $HTMLOUT .= '
 </div>';
 if (!empty($torrents_txt['descr'])) {
     if (!preg_match('/\[pre\].*\[\/pre\]/isU', $torrents_txt['descr'])) {
-        $torrents_txt["descr"] = '[pre]' . $torrents_txt["descr"] . '[/pre]';
+        $torrents_txt['descr'] = '[pre]' . $torrents_txt['descr'] . '[/pre]';
     }
     $HTMLOUT .= main_div(format_comment($torrents_txt['descr']), 'has-text-left bottom20');
 }
@@ -1015,8 +1015,8 @@ $HTMLOUT .= "
     <script>
     if (document.body.contains(document.getElementById('overlay'))) {
         document.getElementsByTagName('body')[0].style.backgroundColor = 'black';
-        document.getElementsByTagName('body')[0].style.backgroundImage = 'url($body_image)';
-        document.getElementsByTagName('body')[0].style.backgroundAttachment = 'fixed';
+        //document.getElementsByTagName('body')[0].style.backgroundImage = 'url($body_image)';
+        //document.getElementsByTagName('body')[0].style.backgroundAttachment = 'fixed';
         document.getElementsByTagName('body')[0].classList.remove('background-16');
         var width = document.getElementById('overlay').offsetWidth;
         var height = (width * 185 / 1000) + 3

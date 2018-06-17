@@ -28,10 +28,10 @@ $forums_res = sql_query('SELECT name AS forum_name, description AS forum_descrip
 while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
     //=== change colors
     $colour = (++$colour) % 2;
-    $class  = (0 == $colour ? 'one' : 'two');
+    $class  = ($colour == 0 ? 'one' : 'two');
     //=== Get last post info
     if (($last_post_arr = $cache->get('sv_last_post_' . $forums_arr['forum_id'] . '_' . $CURUSER['class'])) === false) {
-        $query = sql_query('SELECT t.last_post, t.topic_name, t.id AS topic_id, t.anonymous AS tan, p.user_id, p.added, p.anonymous AS pan, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.perms, u.offensive_avatar FROM topics AS t LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\' AND' : '')) . ' forum_id = ' . sqlesc($forums_arr['forum_id']) . ' ORDER BY last_post DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        $query         = sql_query('SELECT t.last_post, t.topic_name, t.id AS topic_id, t.anonymous AS tan, p.user_id, p.added, p.anonymous AS pan, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.perms, u.offensive_avatar FROM topics AS t LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\' AND' : '')) . ' forum_id = ' . sqlesc($forums_arr['forum_id']) . ' ORDER BY last_post DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $last_post_arr = mysqli_fetch_assoc($query);
         $cache->set('sv_last_post_' . $forums_arr['forum_id'] . '_' . $CURUSER['class'], $last_post_arr, $site_config['expires']['sv_last_post']);
     }
@@ -39,7 +39,7 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
     if ($last_post_arr['last_post'] > 0) {
         //=== get the last post read by CURUSER
         if (($last_read_post_arr = $cache->get('sv_last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'])) === false) {
-            $query = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($last_post_arr['topic_id'])) or sqlerr(__FILE__, __LINE__);
+            $query              = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($last_post_arr['topic_id'])) or sqlerr(__FILE__, __LINE__);
             $last_read_post_arr = mysqli_fetch_row($query);
             $cache->set('sv_last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'], $last_read_post_arr, $site_config['expires']['sv_last_read_post']);
         }
@@ -61,7 +61,7 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
             $cache->set($keys['child_boards'], $child_boards_cache, $site_config['expires']['sv_child_boards']);
         }
         $child_boards = $child_boards_cache['child_boards'];
-        if ('' !== $child_boards) {
+        if ($child_boards !== '') {
             $child_boards = '<hr><span style="font-size: xx-small;">' . $lang['sv_child_boards'] . ':</span> ' . $child_boards;
         }
         //=== now_viewing
@@ -83,10 +83,10 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
             $now_viewing_cache['now_viewing'] = $lang['fe_there_not_been_active_visit_15'];
         }
         $now_viewing = $now_viewing_cache['now_viewing'];
-        if ('' !== $now_viewing) {
+        if ($now_viewing !== '') {
             $now_viewing = '<hr><span style="font-size: xx-small;">' . $lang['sv_now_viewing'] . ':</span>' . $now_viewing;
         }
-        if ('yes' == $last_post_arr['tan']) {
+        if ($last_post_arr['tan'] === 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $last_post_arr['user_id'] != $CURUSER['id']) {
                 $last_post = '' . $lang['fe_last_post_by'] . ': ' . $lang['sv_anonymous_in'] . ' &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=p' . (int) $last_post_arr['last_post'] . '#' . (int) $last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '">
 		<span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>

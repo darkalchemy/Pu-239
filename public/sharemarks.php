@@ -105,7 +105,7 @@ function sharetable($res, $variant = 'index')
             $htmlout .= "</td>\n";
         }
         if ($row['type'] === 'single') {
-            $htmlout .= "<td>" . (int)$row['numfiles'] . "</td>\n";
+            $htmlout .= '<td>' . (int) $row['numfiles'] . "</td>\n";
         } else {
             if ($variant === 'index') {
                 $htmlout .= "<td><b><a href='filelist.php?id=$id'>" . (int) $row['numfiles'] . "</a></b></td>\n";
@@ -156,7 +156,7 @@ function sharetable($res, $variant = 'index')
             $htmlout .= "<td>0</td>\n";
         }
         if ($variant === 'index') {
-            $htmlout .= "<td>" . (isset($row['username']) ? ("<a href='userdetails.php?id=" . (int)$row['owner'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>') : '<i>(' . $lang['torrenttable_unknown_uploader'] . ')</i>') . "</td>\n";
+            $htmlout .= '<td>' . (isset($row['username']) ? ("<a href='userdetails.php?id=" . (int) $row['owner'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>') : '<i>(' . $lang['torrenttable_unknown_uploader'] . ')</i>') . "</td>\n";
         }
         $htmlout .= "</tr>\n";
     }

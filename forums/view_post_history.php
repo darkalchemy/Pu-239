@@ -13,12 +13,11 @@ $res_edited   = sql_query('SELECT id, username, class, donor, suspended, warned,
 $arr_edited   = mysqli_fetch_array($res_edited);
 $icon         = htmlsafechars($arr['icon']);
 $post_title   = htmlsafechars($arr['post_title'], ENT_QUOTES);
-$location_bar = '<h1><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums'] . '</a> <img src="' . $site_config['pic_baseurl'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
+$location_bar = '<h1><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums'] . '</a> <img src="' . $site_config['pic_baseurl'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" class="emoticon">
         <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</a>
-        <img src="' . $site_config['pic_baseurl'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
+        <img src="' . $site_config['pic_baseurl'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" class="emoticon">
         <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr['topic_name'], ENT_QUOTES) . '</a></h1>
         <span>' . $mini_menu . '</span><br><br>';
-$width = 100;
 $HTMLOUT .= $location_bar;
 $HTMLOUT .= '<h1>' . ($arr['anonymous'] === 'yes' ? '<i>' . $lang['fe_anonymous'] . '</>' : htmlsafechars($arr['username'])) . '\'s ' . $lang['vph_final_edit_post'] . '. ' . $lang['vph_last_edit_by'] . ': ' . ($arr['anonymous'] === 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($arr_edited['id'])) . '</h1>
     <table border="0" cellspacing="5" cellpadding="10" width="90%">
@@ -27,10 +26,10 @@ $HTMLOUT .= '<h1>' . ($arr['anonymous'] === 'yes' ? '<i>' . $lang['fe_anonymous'
     <span style="white-space:nowrap;">#' . $post_id . '
     <span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : htmlsafechars($arr['username'])) . '</span></span></td>
     <td class="forum_head" align="left" valign="middle">
-    <span style="white-space:nowrap;"> ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . '] GMT ' . ('' !== $post_title ? '&nbsp;&nbsp;&nbsp;&nbsp; ' . $lang['fe_title'] . ': <span style="font-weight: bold;">' . $post_title . '</span>' : '') . ('' !== $icon ? ' <img src="' . $site_config['pic_baseurl'] . 'smilies/' . $icon . '.gif" alt="' . $icon . '" title="' . $icon . '"/>' : '') . '</span>
+    <span style="white-space:nowrap;"> ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . '] GMT ' . ('' !== $post_title ? '&nbsp;&nbsp;&nbsp;&nbsp; ' . $lang['fe_title'] . ': <span style="font-weight: bold;">' . $post_title . '</span>' : '') . ('' !== $icon ? ' <img src="' . $site_config['pic_baseurl'] . 'smilies/' . $icon . '.gif" alt="' . $icon . '" title="' . $icon . '" class="emoticon">' : '') . '</span>
     </td></tr>
     <tr>
-    <td  width="120px" valign="top">' . ($arr['anonymous'] === 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_baseurl'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($arr)) . '<br>' . ('$arr['anonymous'] === 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($arr['id'])) . '</td>
+    <td  width="120px" valign="top">' . ($arr['anonymous'] === 'yes' ? '<img src="' . $site_config['pic_baseurl'] . 'anonymous_1.jpg" alt="avatar" class="avatar">' : avatar_stuff($arr)) . '<br>' . ($arr['anonymous'] === 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($arr['id'])) . '</td>
     <td align="left" valign="top" colspan="2">' . ('yes' == $arr['bbcode'] ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body'])) . '</td>
     </tr>
     </table><br><h1>' . $lang['fe_post_history'] . '</h1>[ ' . $lang['vph_all_post_edits_date'] . '. ]<br><br>' . htmlspecialchars_decode($arr['post_history']) . '<br>' . $location_bar;

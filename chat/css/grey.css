@@ -13,10 +13,14 @@
 #content #bbCodeContainer input, #content #logoutButton, #content #submitButton, #loginForm #loginButton {
     color: #fff;
     border: 1px solid #808080;
+    background: #8a8a8a -o-linear-gradient(top, #8a8a8a, #444);
+    background: #8a8a8a -webkit-gradient(linear, left top, left bottom, from(#8a8a8a), to(#444));
     background: #8a8a8a linear-gradient(to bottom, #8a8a8a, #444);
 }
 
 #content #bbCodeContainer input:hover, #content #logoutButton:hover, #content #submitButton:hover, #loginForm #loginButton:hover {
+    background-image: -o-linear-gradient(bottom, #8a8a8a, #444);
+    background-image: -webkit-gradient(linear, left bottom, left top, from(#8a8a8a), to(#444));
     background-image: linear-gradient(to top, #8a8a8a, #444);
 }
 

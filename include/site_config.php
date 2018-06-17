@@ -3,7 +3,7 @@
 global $site_config;
 
 const REQUIRED_PHP = 70000, REQUIRED_PHP_VERSION = '7.0.0';
-$site_settings = $paypal_settings = $hnr_settings = $staff_settings = [];
+$site_settings     = $paypal_settings     = $hnr_settings     = $staff_settings     = [];
 
 if (PHP_VERSION_ID < REQUIRED_PHP) {
     die('PHP ' . REQUIRED_PHP_VERSION . ' or higher is required.');
@@ -130,7 +130,7 @@ $site_config['expires']['book_info']              = 604800; //604800 = 1 week
 $site_config['max_torrent_size']      = 3     * 1024     * 1024;
 $site_config['announce_interval']     = 60    * 30;
 $site_config['signup_timeout']        = 86400 * 3;
-$site_config['sub_max_size']          = 500 * 1024;
+$site_config['sub_max_size']          = 500   * 1024;
 $site_config['minvotes']              = 1;
 $site_config['max_dead_torrent_time'] = 6 * 3600;
 $site_config['language']              = 1;
@@ -180,7 +180,7 @@ $site_config['report_alert']      = 1; // saves a query when off
 $site_config['staffmsg_alert']    = 1; // saves a query when off
 $site_config['uploadapp_alert']   = 1; // saves a query when off
 $site_config['bug_alert']         = 1; // saves a query when off
-$site_config['pic_baseurl']       = $site_config['baseurl'] . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
+$site_config['pic_baseurl']       = '.' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
 $site_config['stylesheet']        = 1;
 $site_config['categorie_icon']    = 1;
 $site_config['comment_min_class'] = 4; //min class to be checked when posting comments
@@ -219,7 +219,7 @@ $site_config['allowed_ext']    = [
     'image/gif',
     'image/jpg',
     'image/jpeg',
-    'image/png'
+    'image/png',
 ];
 // should match above
 $site_config['allowed_formats'] = [
@@ -230,7 +230,7 @@ $site_config['allowed_formats'] = [
 ];
 
 $upload_max_filesize                = ini_get('upload_max_filesize') !== null ? return_bytes(ini_get('upload_max_filesize')) : 0;
-$post_max_filesize                  = ini_get('post_max_filesize') !== null ? return_bytes(ini_get('post_max_filesize')) : 0;
+$post_max_filesize                  = ini_get('post_max_filesize')   !== null ? return_bytes(ini_get('post_max_filesize')) : 0;
 $site_config['bucket_maxsize']      = $upload_max_filesize >= $post_max_filesize ? $upload_max_filesize : $post_max_filesize;
 $site_config['site']['owner']       = 1;
 $site_config['adminer_allowed_ids'] = [
@@ -308,4 +308,4 @@ $site_config['notifications'] = [
     'is-link',
 ];
 
-$site_config['newsrss_on'] = true;
+$site_config['newsrss_on'] = false;

@@ -64,7 +64,7 @@ function commenttable($rows, $variant = 'torrent')
                 } else {
                     $title = htmlsafechars($title);
                 }
-                $avatar1 = ($row['anonymous'] == 'yes' ? "<img src='{$site_config['pic_baseurl']}anonymous_1.jpg' alt='Avatar' title='Avatar' class='avatar' />" : "<img src='" . image_proxy($row['avatar']) . "' alt='Avatar' title='Avatar' class='avatar' />");
+                $avatar1 = ($row['anonymous'] == 'yes' ? "<img src='{$site_config['pic_baseurl']}anonymous_1.jpg' alt='Avatar' title='Avatar' class='avatar' />" : "<img src='" . url_proxy($row['avatar'], true) . "' alt='Avatar' title='Avatar' class='avatar' />");
                 if (!$avatar1) {
                     $avatar1 = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
                 }
@@ -102,7 +102,7 @@ function commenttable($rows, $variant = 'torrent')
             <a id='comment_{$row['id']}'></a>
             <div class='columns'>
                 <div class='margin10 round10 bg-02 column is-one-fifth has-text-centered'>
-                    <img src='" . image_proxy($avatar) . "' alt='Avatar' class='avatar' /><br>" . get_reputation($row, 'comments') . "
+                    <img src='" . url_proxy($avatar, true) . "' alt='Avatar' class='avatar' /><br>" . get_reputation($row, 'comments') . "
                 </div>
                 <div class='margin10 left10 bg-02 round10 column'>
                     $text

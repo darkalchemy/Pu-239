@@ -94,11 +94,11 @@ switch ($action) {
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_name'] . '</span></td>
-                    <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . ' /></td>
+                    <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . '" /></td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_description'] . '</span></td>
-                    <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . ' /></td>
+                    <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . '" /></td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_over'] . '</span></td>
@@ -198,10 +198,21 @@ if (mysqli_num_rows($res) > 0) {
             <td>' . get_user_class_name($row['min_class_read']) . '</td>
             <td>' . get_user_class_name($row['min_class_write']) . '</td>
             <td>' . get_user_class_name($row['min_class_create']) . '</td>
-            <td><a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=forum_manage&amp;action=forum_manage&amp;action2=edit_forum_page&amp;id=' . (int) $row['id'] . '">
-            <span>' . $lang['fm_mp_edit'] . '</span></a>&#160;
-            <a href="javascript:confirm_delete(\'' . (int) $row['id'] . '\');"><span>' . $lang['fm_mp_delete'] . '</span></a>
-            </td></tr>';
+            <td class="has-text-centered">
+                <span class="level-center">
+                    <span class="left10">
+                        <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=forum_manage&amp;action=forum_manage&amp;action2=edit_forum_page&amp;id=' . (int) $row['id'] . '">
+                            <i class="icon-edit icon"></i>
+                        </a>
+                    </span>
+                    <span>
+                        <a href="javascript:confirm_delete(\'' . $row['id'] . '\');">
+                            <i class="icon-cancel icon"></i>
+                        </a>
+                    </span>
+                </span>
+            </td>
+        </tr>';
     }
 }
 $HTMLOUT .= '</table><br><br>

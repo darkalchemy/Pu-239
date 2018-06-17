@@ -419,7 +419,7 @@ function getclient($httpagent, $peer_id)
     if (preg_match('/^-U([TM])([0-9]{3})([0-9B])-(..)/s', $peer_id, $matches)) {
         $ver      = (int) $matches[2];
         $vere     = $matches[3];
-        $beta = $vere === 'B';
+        $beta     = $vere === 'B';
         $buildnum = $matches[4];
         $buildvar = unpack('v*', $buildnum);
         $buildv   = $buildvar[1];

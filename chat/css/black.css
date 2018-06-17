@@ -16,10 +16,14 @@
 #content #bbCodeContainer input, #content #logoutButton, #content #submitButton, #loginForm #loginButton {
     color: #f0f0f0;
     border: 1px solid #808080;
+    background: #000 -o-linear-gradient(top, #222, #000);
+    background: #000 -webkit-gradient(linear, left top, left bottom, from(#222), to(#000));
     background: #000 linear-gradient(to bottom, #222, #000);
 }
 
 #content #bbCodeContainer input:hover, #content #logoutButton:hover, #content #submitButton:hover, #loginForm #loginButton:hover {
+    background: #222 -o-linear-gradient(bottom, #222, #000);
+    background: #222 -webkit-gradient(linear, left bottom, left top, from(#222), to(#000));
     background: #222 linear-gradient(to top, #222, #000);
 }
 

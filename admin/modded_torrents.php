@@ -118,7 +118,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
         // IF ITS THE OTHER 2 CASES AS CHECKED BEFORE , NO NEED TO DO IT AGAIN
         $beginOfDay = strtotime('midnight', TIME_NOW);
         $endOfDay   = strtotime('tomorrow', $beginOfDay) - 1;
-        $_time = (($mode === 'yesterday') ? $endOfDay : $beginOfDay);
+        $_time      = (($mode === 'yesterday') ? $endOfDay : $beginOfDay);
         $res        = mysqli_fetch_row(sql_query("SELECT COUNT(*) FROM torrents WHERE checked_when >= $_time AND checked_by > 0"));
         $count      = $res[0];
         if ($count < 1) {
@@ -185,11 +185,11 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
             $title      = "$_POST[username] : " . $lang['mtor_modded_torrents'] . " on $day / $month / $year";
         } elseif ($whom && $when) {
             $query = "SELECT tor.*,user.id as uid FROM torrents as tor INNER JOIN users as user ON user.id = tor.checked_by $whom $when ORDER BY tor.checked_when DESC";
-            $text = "by <u>$_POST[username]</u> within the last " . ($_POST['time'] == 1 ? '<u>1 day.</u>' : '<u>' . $_POST['time'] . ' days.</u>');
+            $text  = "by <u>$_POST[username]</u> within the last " . ($_POST['time'] == 1 ? '<u>1 day.</u>' : '<u>' . $_POST['time'] . ' days.</u>');
             $title = "$_POST[username] : " . $lang['mtor_modded_torrents'] . ' ' . $lang['mtor_from'] . " $_POST[time] days ago";
         } elseif ($when) {
             $query = "SELECT tor.*,user.id as uid FROM torrents as tor INNER JOIN users as user ON user.id = tor.checked_by $when ORDER BY tor.checked_when DESC";
-            $text = 'from the past ' . ($_POST['time'] == 1 ? '<u>1 day.</u>' : '<u>' . $_POST['time'] . ' days.</u>');
+            $text  = 'from the past ' . ($_POST['time'] == 1 ? '<u>1 day.</u>' : '<u>' . $_POST['time'] . ' days.</u>');
             $title = "$_POST[username] : " . $lang['mtor_modded_torrents'] . ' ' . $lang['mtor_from'] . " $_POST[time] days ago";
         } elseif ($whom) {
             $query = "SELECT tor.*,user.id as uid FROM torrents as tor INNER JOIN users as user ON user.id = tor.checked_by $whom ORDER BY tor.checked_when DESC";

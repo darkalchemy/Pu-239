@@ -33,7 +33,7 @@ function karmavip_update($data)
         }
         $count = count($users_buffer);
         if ($count > 0) {
-            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer))                                                                                                                                                        or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, class, vip_added, vip_until, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE class = VALUES(class),vip_added = VALUES(vip_added),vip_until = VALUES(vip_until),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
         }
         if ($data['clean_log']) {

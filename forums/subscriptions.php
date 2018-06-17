@@ -14,6 +14,7 @@ if ($count == 0) {
         <p>{$lang['sub_you_have_yet_sub_forums']} {$lang['sub_subscrib_to_forum']} {$lang['sub_no_subscript_found_msg1']}.</p>
 		<p>{$lang['sub_to_be_notified_via_pm']} <a class='altlink has-text-lime' href='usercp.php?action=default'>{$lang['sub_profile']}</a>
 		{$lang['sub_page_and_set']} {$lang['sub_pm_on_subcript']} {$lang['sub_to_yes']}.</p>", 'bottom20');
+
     return;
 }
 //=== get stuff for the pager

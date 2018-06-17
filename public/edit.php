@@ -108,7 +108,7 @@ $HTMLOUT .= tr($lang['edit_visible'], "<input type='checkbox' name='visible'" . 
 if ($CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= tr($lang['edit_banned'], "<input type='checkbox' name='banned'" . (($row['banned']) === 'yes' ? ' checked' : '') . " value='1' /> {$lang['edit_banned']}", 1);
 }
-$HTMLOUT .= tr($lang['edit_recommend_torrent'], "<input type='radio' name='recommended' " . (($row['recommended'] === 'yes' ) ? 'checked' : '') . " value='yes' class='right5' />Yes!<input type='radio' name='recommended' " . ($row['recommended'] === 'no' ? 'checked' : '') . " value='no' class='right5' />No!<br><font class='small' >{$lang['edit_recommend']}</font>", 1);
+$HTMLOUT .= tr($lang['edit_recommend_torrent'], "<input type='radio' name='recommended' " . (($row['recommended'] === 'yes') ? 'checked' : '') . " value='yes' class='right5' />Yes!<input type='radio' name='recommended' " . ($row['recommended'] === 'no' ? 'checked' : '') . " value='no' class='right5' />No!<br><font class='small' >{$lang['edit_recommend']}</font>", 1);
 if ($CURUSER['class'] >= UC_UPLOADER) {
     $HTMLOUT .= tr('Nuked', "<input type='radio' name='nuked'" . ($row['nuked'] === 'yes' ? ' checked' : '') . " value='yes' class='right5' />Yes <input type='radio' name='nuked'" . ($row['nuked'] === 'no' ? ' checked' : '') . " value='no' class='right5' />No", 1);
     $HTMLOUT .= tr('Nuke Reason', "<input type='text' name='nukereason' value='" . htmlsafechars($row['nukereason']) . "' class='w-100' />", 1);

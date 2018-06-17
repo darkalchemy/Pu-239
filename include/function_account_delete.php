@@ -22,7 +22,7 @@ function account_delete($userid)
     foreach ($references as $field => $tablelist) {
         foreach ($tablelist as $table) {
             $tables[] = $tc = "t{$ctr}";
-            $joins[] = ($ctr == 1) ? "users as {$tc}" : "LEFT JOIN {$table} as {$tc} on t1.id={$tc}.{$field}";
+            $joins[]  = ($ctr == 1) ? "users as {$tc}" : "LEFT JOIN {$table} as {$tc} on t1.id={$tc}.{$field}";
             ++$ctr;
         }
     }

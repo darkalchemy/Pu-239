@@ -16,8 +16,6 @@ body {
 fieldset,
 legend {
     border: 1px solid #222;
-    -webkit-border-radius: .3125em;
-    -moz-border-radius: .3125em;
     border-radius: .3125em;
     border-bottom-width: 2px
 }
@@ -42,8 +40,6 @@ legend {
 }
 
 td.input_input input {
-    -webkit-border-radius: .3125em;
-    -moz-border-radius: .3125em;
     border-radius: .3125em;
     padding: 3px 10px;
     border: 1px solid #000;
@@ -65,8 +61,6 @@ tr:hover .input_info {
 .readable {
     padding: 10px;
     font-size: 12px;
-    -webkit-border-radius: .3125em;
-    -moz-border-radius: .3125em;
     border-radius: .3125em;
     font-weight: 700;
     margin: 4px 2px;
@@ -92,7 +86,11 @@ tr:hover .input_info {
 }
 
 .flex {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: space-between;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
 
 }

@@ -20,15 +20,15 @@ $icon       = htmlsafechars(isset($_POST['icon']) ? $_POST['icon'] : '');
 $body       = isset($_POST['body']) ? $_POST['body'] : '';
 $ip         = getip();
 $bb_code    = isset($_POST['bb_code'])     && $_POST['bb_code'] == 'no' ? 'no' : 'yes';
-$anonymous  = isset($_POST['anonymous']) && $_POST['anonymous'] != '' ? 'yes' : 'no';
+$anonymous  = isset($_POST['anonymous'])   && $_POST['anonymous'] != '' ? 'yes' : 'no';
 
 $poll_question = strip_tags(isset($_POST['poll_question']) ? trim($_POST['poll_question']) : '');
 $poll_answers  = strip_tags(isset($_POST['poll_answers']) ? trim($_POST['poll_answers']) : '');
 $poll_ends     = isset($_POST['poll_ends']) ? (($_POST['poll_ends'] > 168) ? 1356048000 : (TIME_NOW + $_POST['poll_ends'] * 86400)) : '';
 $poll_starts   = isset($_POST['poll_starts']) ? (($_POST['poll_starts'] === 0) ? TIME_NOW : (TIME_NOW + $_POST['poll_starts'] * 86400)) : '';
 $poll_starts   = $poll_starts > ($poll_ends + 1) ? TIME_NOW : $poll_starts;
-$change_vote   = isset($_POST['change_vote']) && $_POST['change_vote'] === 'yes' ? 'yes' : 'no';
-$subscribe     = isset($_POST['subscribe'])     && $_POST['subscribe'] === 'yes' ? 'yes' : 'no';
+$change_vote   = isset($_POST['change_vote'])   && $_POST['change_vote'] === 'yes' ? 'yes' : 'no';
+$subscribe     = isset($_POST['subscribe'])     && $_POST['subscribe']   === 'yes' ? 'yes' : 'no';
 if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     if (empty($body)) {
         stderr($lang['gl_error'], $lang['fe_no_body_txt']);
@@ -168,7 +168,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
                         $extension_error = ($extension_error + 1);
                         break;
 
-                    case 0 === $accepted_file_extension:
+                    case $accepted_file_extension === 0:
                         $extension_error = ($extension_error + 1);
                         break;
 
@@ -383,7 +383,7 @@ $HTMLOUT .= main_table('
                     <span class="level-center flex-vertical right10">
                         yes
                         <input type="radio" name="subscribe" value="yes"' . ('yes' === $subscribe ? ' checked' : '') . ' />
-                    </span> 
+                    </span>
                     <span class="level-center flex-vertical margin10">
                         no
                         <input type="radio" name="subscribe" value="no"' . ('no' === $subscribe ? ' checked' : '') . ' />

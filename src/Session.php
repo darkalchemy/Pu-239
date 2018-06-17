@@ -34,9 +34,9 @@ class Session
             // Set the session name:
             session_name($this->config['sessionName']);
 
-            $expires = $this->config['cookie_lifetime'] <= 1 ? 900 : $this->config['cookie_lifetime'] * 86400;
-            $secure_session = 'https' === get_scheme() ? true : false;
-            $domain = $this->config['cookie_domain'] === $this->config['domain'] ? '' : $this->config['cookie_domain'];
+            $expires        = $this->config['cookie_lifetime'] <= 1 ? 900 : $this->config['cookie_lifetime'] * 86400;
+            $secure_session = 'https'                        === get_scheme() ? true : false;
+            $domain         = $this->config['cookie_domain'] === $this->config['domain'] ? '' : $this->config['cookie_domain'];
 
             // Set session cookie parameters:
             session_set_cookie_params(
@@ -94,7 +94,6 @@ class Session
         }
 
         return true;
-
     }
 
     /**

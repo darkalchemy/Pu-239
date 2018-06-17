@@ -68,7 +68,7 @@ if ($_hash === $hash) {
         }
         $act['seed'] = $act['leech'] = 0;
         while ($a = mysqli_fetch_assoc($q)) {
-            $key = ($a['seeder'] === 'yes' ? 'seed' : 'leech');
+            $key       = ($a['seeder'] === 'yes' ? 'seed' : 'leech');
             $act[$key] = $a['count'];
             $agent     = $a['agent'];
             $port      = $a['port'];

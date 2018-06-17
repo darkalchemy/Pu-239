@@ -56,8 +56,8 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     $cache->delete('forum_posts_' . $CURUSER['id']);
     $post_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
     sql_query('UPDATE topics SET last_post=' . sqlesc($post_id) . ', post_count = post_count + 1 WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE `forums` SET post_count = post_count + 1 WHERE id =' . sqlesc($arr['real_forum_id'])) or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE usersachiev SET forumposts = forumposts + 1 WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE `forums` SET post_count = post_count + 1 WHERE id =' . sqlesc($arr['real_forum_id']))                      or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE usersachiev SET forumposts = forumposts + 1 WHERE userid = ' . sqlesc($CURUSER['id']))                     or sqlerr(__FILE__, __LINE__);
     if ($site_config['autoshout_on'] == 1) {
         $message = $CURUSER['username'] . ' ' . $lang['pr_replied_to_topic'] . " [url={$site_config['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last]{$topic_name}[/url]";
         if (!in_array($arr['real_forum_id'], $site_config['staff_forums'])) {
@@ -162,53 +162,53 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	<td align="left" >
 	<table>
   <tr>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/smile1.gif" alt="' . $lang['fe_smile'] . '" title="' . $lang['fe_smile'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/grin.gif" alt="' . $lang['fe_smilee_grin'] . '" title="' . $lang['fe_smilee_grin'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/tongue.gif" alt="' . $lang['fe_smilee_tongue'] . '" title="' . $lang['fe_smilee_tongue'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/cry.gif" alt="' . $lang['fe_smilee_cry'] . '" title="' . $lang['fe_smilee_cry'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/wink.gif" alt="' . $lang['fe_smilee_wink'] . '" title="' . $lang['fe_smilee_wink'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/rolleyes.gif" alt="' . $lang['fe_smilee_roll_eyes'] . '" title="' . $lang['fe_smilee_roll_eyes'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/blink.gif" alt="' . $lang['fe_smilee_blink'] . '" title="' . $lang['fe_smilee_blink'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/bow.gif" alt="' . $lang['fe_smilee_bow'] . '" title="' . $lang['fe_smilee_bow'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/clap2.gif" alt="' . $lang['fe_smilee_clap'] . '" title="' . $lang['fe_smilee_clap'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/hmmm.gif" alt="' . $lang['fe_smilee_hmm'] . '" title="' . $lang['fe_smilee_hmm'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/devil.gif" alt="' . $lang['fe_smilee_devil'] . '" title="' . $lang['fe_smilee_devil'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/angry.gif" alt="' . $lang['fe_smilee_angry'] . '" title="' . $lang['fe_smilee_angry'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="' . $lang['fe_smilee_shit'] . '" title="' . $lang['fe_smilee_shit'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/sick.gif" alt="' . $lang['fe_smilee_sick'] . '" title="' . $lang['fe_smilee_sick'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/tease.gif" alt="' . $lang['fe_smilee_tease'] . '" title="' . $lang['fe_smilee_tease'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/love.gif" alt="' . $lang['fe_smilee_love'] . '" title="' . $lang['fe_smilee_love'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/ohmy.gif" alt="' . $lang['fe_smilee_oh_my'] . '" title="' . $lang['fe_smilee_oh_my'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/yikes.gif" alt="' . $lang['fe_smilee_yikes'] . '" title="' . $lang['fe_smilee_yikes'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/spider.gif" alt="' . $lang['fe_smilee_spider'] . '" title="' . $lang['fe_smilee_spider'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/wall.gif" alt="' . $lang['fe_smilee_wall'] . '" title="' . $lang['fe_smilee_wall'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/idea.gif" alt="' . $lang['fe_smilee_idea'] . '" title="' . $lang['fe_smilee_idea'] . '" /></td>
-	<td  valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/question.gif" alt="' . $lang['fe_smilee_question'] . '" title="' . $lang['fe_smilee_question'] . '" /></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/smile1.gif" alt="' . $lang['fe_smile'] . '" title="' . $lang['fe_smile'] . '" class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/grin.gif" alt="' . $lang['fe_smilee_grin'] . '" title="' . $lang['fe_smilee_grin'] . '" /></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/tongue.gif" alt="' . $lang['fe_smilee_tongue'] . '" title="' . $lang['fe_smilee_tongue'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/cry.gif" alt="' . $lang['fe_smilee_cry'] . '" title="' . $lang['fe_smilee_cry'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/wink.gif" alt="' . $lang['fe_smilee_wink'] . '" title="' . $lang['fe_smilee_wink'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/rolleyes.gif" alt="' . $lang['fe_smilee_roll_eyes'] . '" title="' . $lang['fe_smilee_roll_eyes'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/blink.gif" alt="' . $lang['fe_smilee_blink'] . '" title="' . $lang['fe_smilee_blink'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/bow.gif" alt="' . $lang['fe_smilee_bow'] . '" title="' . $lang['fe_smilee_bow'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/clap2.gif" alt="' . $lang['fe_smilee_clap'] . '" title="' . $lang['fe_smilee_clap'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/hmmm.gif" alt="' . $lang['fe_smilee_hmm'] . '" title="' . $lang['fe_smilee_hmm'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/devil.gif" alt="' . $lang['fe_smilee_devil'] . '" title="' . $lang['fe_smilee_devil'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/angry.gif" alt="' . $lang['fe_smilee_angry'] . '" title="' . $lang['fe_smilee_angry'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="' . $lang['fe_smilee_shit'] . '" title="' . $lang['fe_smilee_shit'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/sick.gif" alt="' . $lang['fe_smilee_sick'] . '" title="' . $lang['fe_smilee_sick'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/tease.gif" alt="' . $lang['fe_smilee_tease'] . '" title="' . $lang['fe_smilee_tease'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/love.gif" alt="' . $lang['fe_smilee_love'] . '" title="' . $lang['fe_smilee_love'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/ohmy.gif" alt="' . $lang['fe_smilee_oh_my'] . '" title="' . $lang['fe_smilee_oh_my'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/yikes.gif" alt="' . $lang['fe_smilee_yikes'] . '" title="' . $lang['fe_smilee_yikes'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/spider.gif" alt="' . $lang['fe_smilee_spider'] . '" title="' . $lang['fe_smilee_spider'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/wall.gif" alt="' . $lang['fe_smilee_wall'] . '" title="' . $lang['fe_smilee_wall'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/idea.gif" alt="' . $lang['fe_smilee_idea'] . '" title="' . $lang['fe_smilee_idea'] . '"class="emoticon"></td>
+	<td valign="middle"><img src="' . $site_config['pic_baseurl'] . 'smilies/question.gif" alt="' . $lang['fe_smilee_question'] . '" title="' . $lang['fe_smilee_question'] . '"class="emoticon"></td>
 	</tr>
 
 	<tr>
-	<td  valign="middle"><input type="radio" name="icon" value="smile1"' . ('smile1' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="grin"' . ('grin' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="tongue"' . ('tongue' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="cry"' . ('cry' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="wink"' . ('wink' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="rolleyes"' . ('rolleyes' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="blink"' . ('blink' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="bow"' . ('bow' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="clap2"' . ('clap2' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="hmmm"' . ('hmmm' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="devil"' . ('devil' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="angry"' . ('angry' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="shit"' . ('shit' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="sick"' . ('sick' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="tease"' . ('tease' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="love"' . ('love' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="ohmy"' . ('ohmy' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="yikes"' . ('yikes' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="spider"' . ('spider' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="wall"' . ('wall' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="idea"' . ('idea' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td  valign="middle"><input type="radio" name="icon" value="question"' . ('question' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="smile1"' . ('smile1' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="grin"' . ('grin' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="tongue"' . ('tongue' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="cry"' . ('cry' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="wink"' . ('wink' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="rolleyes"' . ('rolleyes' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="blink"' . ('blink' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="bow"' . ('bow' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="clap2"' . ('clap2' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="hmmm"' . ('hmmm' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="devil"' . ('devil' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="angry"' . ('angry' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="shit"' . ('shit' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="sick"' . ('sick' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="tease"' . ('tease' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="love"' . ('love' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="ohmy"' . ('ohmy' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="yikes"' . ('yikes' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="spider"' . ('spider' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="wall"' . ('wall' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="idea"' . ('idea' == $icon ? ' checked="checked"' : '') . ' /></td>
+	<td valign="middle"><input type="radio" name="icon" value="question"' . ('question' == $icon ? ' checked="checked"' : '') . ' /></td>
 	</tr>
 	</table>
 	</td></tr>
@@ -224,7 +224,7 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	</td></tr>
 	<tr><td colspan="2" >
    Anonymous post : <input type="checkbox" name="anonymous" value="yes" /><br>
-   <img src="' . $site_config['pic_baseurl'] . 'forums/subscribe.gif" alt="+" title="+" /> ' . $lang['fe_subscrib_to_tread'] . ' 
+   <img src="' . $site_config['pic_baseurl'] . 'forums/subscribe.gif" alt="+" title="+" class="emoticon"> ' . $lang['fe_subscrib_to_tread'] . ' 
 	<input type="radio" name="subscribe" value="yes"' . ('yes' == $subscribe ? ' checked="checked"' : '') . ' />yes 
 	<input type="radio" name="subscribe" value="no"' . ('no' == $subscribe ? ' checked="checked"' : '') . ' />no<br>
 	<input type="submit" name="button" class="button is-small" value="' . $lang['fe_preview'] . '"  />
@@ -244,10 +244,9 @@ while ($arr = mysqli_fetch_assoc($res_posts)) {
     $HTMLOUT .= '<tr><td class="forum_head" align="left" width="100" valign="middle">#
 		<span style="font-weight: bold;">' . ('yes' == $arr['anonymous'] ? '<i>' . $lang['fe_anonymous'] . '</i>' : htmlsafechars($arr['username'])) . '</span></td>
 	   <td class="forum_head" align="left" valign="middle"><span style="white-space:nowrap;"> ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span></td></tr>';
-    $width = 100;
     if ($arr['anonymous'] === 'yes') {
         if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
-            $HTMLOUT .= '<tr><td class="' . $class_alt . '" width="100" valign="top"><img style="max-width:' . $width . 'px;" src="' . $site_config['pic_baseurl'] . 'anonymous_1.jpg" alt="avatar" /><br><i>' . $lang['fe_anonymous'] . '</i></td>';
+            $HTMLOUT .= '<tr><td class="' . $class_alt . '" width="100" valign="top"><img src="' . $site_config['pic_baseurl'] . 'anonymous_1.jpg" alt="avatar" class="avatar"><br><i>' . $lang['fe_anonymous'] . '</i></td>';
         } else {
             $HTMLOUT .= '<tr><td class="' . $class_alt . '" width="100" valign="top">' . avatar_stuff($arr) . '<br><i>' . $lang['fe_anonymous'] . '</i>[' . format_username($arr['user_id']) . ']</td>';
         }

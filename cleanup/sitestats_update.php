@@ -9,9 +9,9 @@ function sitestats_update($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    $query  = sql_query('SELECT IFNULL(sum(seeders), 0) AS seeders FROM torrents') or sqlerr(__FILE__, __LINE__);
+    $query   = sql_query('SELECT IFNULL(sum(seeders), 0) AS seeders FROM torrents') or sqlerr(__FILE__, __LINE__);
     $Seeder  = mysqli_fetch_assoc($query);
-    $query = sql_query('SELECT IFNULL(sum(leechers), 0) AS leechers FROM torrents') or sqlerr(__FILE__, __LINE__);
+    $query   = sql_query('SELECT IFNULL(sum(leechers), 0) AS leechers FROM torrents') or sqlerr(__FILE__, __LINE__);
     $Leecher = mysqli_fetch_assoc($query);
 
     $registered     = get_row_count('users');
@@ -36,7 +36,7 @@ function sitestats_update($data)
     $sysops         = get_row_count('users', "WHERE class = '" . UC_SYSOP . "'");
     $seeders        = (int) $Seeder['seeders'];
     $leechers       = (int) $Leecher['leechers'];
-    $sql = "UPDATE stats SET regusers = $registered, unconusers = $unverified, torrents = $torrents, seeders = $seeders, leechers = $leechers, unconnectables = $unconnectables,
+    $sql            = "UPDATE stats SET regusers = $registered, unconusers = $unverified, torrents = $torrents, seeders = $seeders, leechers = $leechers, unconnectables = $unconnectables,
             torrentstoday = $torrentstoday, donors = $donors, forumposts = $forumposts, forumtopics = $forumtopics, numactive = $numactive, torrentsmonth = $torrentsmonth, gender_na = $gender_na,
             gender_male = $gender_male, gender_female = $gender_female, powerusers = $powerusers, disabled = $disabled, uploaders = $uploaders, moderators = $moderators,
             administrators = $administrators, sysops = $sysops WHERE id = 1";

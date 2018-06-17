@@ -7,7 +7,7 @@ global $site_config, $lang;
 
 $lang = array_merge($lang, load_language('ad_mysql_overview'));
 //Do we wanna continue here, or skip to just the overview?
-if (isset($_GET['Do']) && isset($_GET['table'])) {
+if (isset($_GET['Do'], $_GET['table'])) {
     $Do = ($_GET['Do'] === 'T') ? sqlesc($_GET['Do']) : ''; //for later use!
     //Make sure the GET only has alpha letters and nothing else
     if (!ereg('[^A-Za-z_]+', $_GET['table'])) {

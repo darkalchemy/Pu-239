@@ -5,7 +5,7 @@ $site_config['sessionName']      = '#sessionName'; // A single word that identif
 $site_config['cookie_prefix']    = '#cookie_prefix_'; // This allows you to have multiple trackers, eg for demos, testing etc.
 $site_config['cookie_path']      = '#cookie_path'; // generally '/' is good
 $site_config['cookie_domain']    = '#cookie_domain'; // set to eg: .somedomain.com or is subdomain set to: .sub.somedomain.com
-$site_config['cookie_lifetime']  = #cookie_lifetime; // length of time cookies will be valid
+$site_config['cookie_lifetime']  = //cookie_lifetime; // length of time cookies will be valid
 $site_config['domain']           = '#domain';
 $site_config['sessionKeyPrefix'] = '#cookie_prefix_'; // useful if serving multiple sites
 $site_config['session_csrf']     = 'csrf_token'; // useful if serving multiple sites
@@ -39,7 +39,6 @@ $site_config['site_email'] = '#site_email';
 $site_config['site_name']  = '#site_name';
 
 $site_config['password_memory_cost'] = 2048;
-$site_config['password_time_cost'] = 12;
-$site_config['password_threads'] = 4;
-$site_config['password_cost'] = 12;
-
+$site_config['password_time_cost']   = 12;
+$site_config['password_threads']     = 4;
+$site_config['password_cost']        = 12;

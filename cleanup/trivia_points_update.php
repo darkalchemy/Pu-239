@@ -83,9 +83,9 @@ function trivia_points_update($data)
         $cache->delete('user' . $user_id);
     }
 
-    sql_query('UPDATE triviaq SET asked = 0, current = 0') or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE triviaq SET asked = 0, current = 0')                               or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE triviasettings SET gameon = 0, finished = NOW() WHERE gameon = 1') or sqlerr(__FILE__, __LINE__);
-    sql_query('INSERT INTO triviasettings (gameon, started) VALUES (1, NOW())') or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO triviasettings (gameon, started) VALUES (1, NOW())')          or sqlerr(__FILE__, __LINE__);
 
     if ($data['clean_log'] && $queries > 0) {
         write_log("Trivia Points Cleanup: Completed using $queries queries");

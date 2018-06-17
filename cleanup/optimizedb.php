@@ -24,6 +24,6 @@ function optimizedb($data)
         write_log("Auto Optimize DB Cleanup: Completed using $queries queries");
     }
     if ($data['clean_log'] && $oht != '') {
-        write_log("MySQL Optimized " . count($tables) . " table" . plural(count($tables)) . ": {$oht}");
+        write_log('MySQL Optimized ' . count($tables) . ' table' . plural(count($tables)) . ": {$oht}");
     }
 }

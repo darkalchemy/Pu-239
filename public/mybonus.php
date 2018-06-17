@@ -20,7 +20,7 @@ $HTMLOUT = '';
  */
 function I_smell_a_rat($var)
 {
-    if ((int)$var === 1) {
+    if ((int) $var === 1) {
         return (int) $var;
     } else {
         stderr('Error', 'I smell a rat!');

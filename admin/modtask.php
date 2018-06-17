@@ -173,7 +173,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         //$res = sql_query("SELECT class FROM users WHERE id = ".sqlesc($userid)) or sqlerr(__file__,__line__);
         //$arr = mysqli_fetch_assoc($res);
         if ($user['class'] < UC_UPLOADER) {
-            $updateset[] = 'class = ' . UC_VIP . '';
+            $updateset[]            = 'class = ' . UC_VIP . '';
             $curuser_cache['class'] = UC_VIP;
             $user_cache['class']    = UC_VIP;
         }
@@ -479,7 +479,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         $mpdown        = $_POST['downchange'];
         if ($uploadtoadd > 0) {
             if ($mpup === 'plus') {
-                $newupload = $user['uploaded'] + ($formatup === 'mb' ? ($uploadtoadd * 1048576) : ($uploadtoadd * 1073741824));
+                $newupload  = $user['uploaded'] + ($formatup === 'mb' ? ($uploadtoadd * 1048576) : ($uploadtoadd * 1073741824));
                 $modcomment = get_date(TIME_NOW, 'DATE', 1) . " {$lang['modtask_add_upload']} (" . $uploadtoadd . ' ' . $formatup . ") {$lang['modtask_by']} " . $CURUSER['username'] . "\n" . $modcomment;
             } else {
                 $newupload = $user['uploaded'] - ($formatup === 'mb' ? ($uploadtoadd * 1048576) : ($uploadtoadd * 1073741824));

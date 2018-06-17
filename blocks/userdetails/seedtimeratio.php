@@ -9,8 +9,8 @@ $What_User_String  = (XBT_TRACKER ? 'uid' : 'userid');
 $What_Expire       = (XBT_TRACKER ? $site_config['expires']['share_ratio_xbt'] : $site_config['expires']['share_ratio']);
 $cache_share_ratio = $cache->get($What_Cache . $id);
 if ($cache_share_ratio === false || is_null($cache_share_ratio)) {
-    $sql = sql_query("SELECT SUM(seedtime) AS seed_time_total, COUNT($What_String) AS total_number FROM $What_Table WHERE seedtime > '0' AND $What_User_String = " . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
-    $cache_share_ratio = mysqli_fetch_assoc($sql);
+    $sql                                  = sql_query("SELECT SUM(seedtime) AS seed_time_total, COUNT($What_String) AS total_number FROM $What_Table WHERE seedtime > '0' AND $What_User_String = " . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
+    $cache_share_ratio                    = mysqli_fetch_assoc($sql);
     $cache_share_ratio['total_number']    = (int) $cache_share_ratio['total_number'];
     $cache_share_ratio['seed_time_total'] = (int) $cache_share_ratio['seed_time_total'];
     $cache->set($What_Cache . $id, $cache_share_ratio, $What_Expire);

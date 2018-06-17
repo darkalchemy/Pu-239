@@ -109,7 +109,7 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
         <a id='site1'></a>
         <p>What is this bittorrent all about anyway? How do I get the files?</p>
-        <p>Check out <a href='{$site_config['anonymizer_url']}http://www.btfaq.com/'>Brian's BitTorrent FAQ and Guide.</a></p>
+        <p>Check out <a href='" . url_proxy('https://www.btfaq.com/') . "'>Brian's BitTorrent FAQ and Guide.</a></p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
         <a id='site2'>
@@ -119,7 +119,7 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
         <a id='site4'></a>
         <p>Where can I get a copy of the source code?</p>
-        <p>Pu-239 is an active open source project available for download via Github <a href='{$site_config['anonymizer_url']}https://github.com/darkalchemy/Pu-239'>Zip download</a>. Please note: We do not give any kind of support on the source code so please don't bug us about it. If it works, great, if not too bad. Use this software at your own risk!</p>
+        <p>Pu-239 is an active open source project available for download via Github <a href='" . url_proxy('https://github.com/darkalchemy/Pu-239') . "'>Zip download</a>. Please note: We do not give any kind of support on the source code so please don't bug us about it. If it works, great, if not too bad. Use this software at your own risk!</p>
     </div>",
 
     'faq_userinfo_body' => "
@@ -170,7 +170,7 @@ $lang = [
         <p>Why am I listed as not connectable? (And why should I care?)</p>
         <p>The tracker has determined that you are firewalled or NATed and cannot accept incoming connections.</p>
         <p>This means that other peers in the swarm will be unable to connect to you, only you to them. Even worse, if two peers are both in this state they will not be able to connect at all. This obviously has a detrimental effect on the overall speed.</p>
-        <p>The way to solve the problem involves opening the ports used for incoming connections (the same range you defined in your client) on the firewall and/or configuring your NAT server to use a basic form of NAT for that range instead of NAPT (the actual process differs widely between different router models. Check your router documentation and/or support forum. You will also find lots of information on the subject at <a href='{$site_config['anonymizer_url']}http://portforward.com/'>PortForward</a>).</p>
+        <p>The way to solve the problem involves opening the ports used for incoming connections (the same range you defined in your client) on the firewall and/or configuring your NAT server to use a basic form of NAT for that range instead of NAPT (the actual process differs widely between different router models. Check your router documentation and/or support forum. You will also find lots of information on the subject at <a href='" . url_proxy('https://portforward.com/') . "'>PortForward</a>).</p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
         <a id='user9'></a>
@@ -266,7 +266,7 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
         <a id='userd'></a>
         <p>How do I add an avatar to my profile?</p>
-        <p>First, find an image that you like, and that is within the <a href='{$site_config['baseurl']}/rules.php'>Rules</a>. Then you will have to find a place to host it, such as our own <a href='{$site_config['baseurl']}/bitbucket.php'>BitBucket</a>. (Other popular choices are <a href='{$site_config['anonymizer_url']}http://photobucket.com/'>Photobucket</a>, <a href='{$site_config['anonymizer_url']}http://uploadit.org/'>Upload-It!</a> or <a href='{$site_config['anonymizer_url']}http://www.imageshack.us/'>ImageShack</a>). All that is left to do is copy the URL you were given when uploading it to the avatar field in your <a href='{$site_config['baseurl']}/usercp.php?action=default'>profile</a>.</p>
+        <p>First, find an image that you like, and that is within the <a href='{$site_config['baseurl']}/rules.php'>Rules</a>. Then you will have to find a place to host it, such as our own <a href='{$site_config['baseurl']}/bitbucket.php'>BitBucket</a>. (Other popular choices are <a href='" . url_proxy('https://photobucket.com/') . "'>Photobucket</a>, <a href='" . url_proxy('https://uploadit.org/') . "'>Upload-It!</a> or <a href='" . url_proxy('https://www.imageshack.us/') . "'>ImageShack</a>). All that is left to do is copy the URL you were given when uploading it to the avatar field in your <a href='{$site_config['baseurl']}/usercp.php?action=default'>profile</a>.</p>
         <p>Please do not make a post just to test your avatar. If everything is allright you'll see it in your profile</p>
     </div>",
     'faq_details_page' => 'details page',
@@ -336,7 +336,7 @@ $lang = [
             <li class='padding10'>
                 <p><i>You are the single {$site_config['site_name']} user in the LAN</i></p>
                 <p>You should use the same {$site_config['site_name']} account in all the computers.</p>
-                <p>Note also that in the ICS case it is preferable to run the BT client on the ICS gateway. Clients running on the other computers will be unconnectable (they will be listed as such, as explained elsewhere in the FAQ) unless you specify the appropriate services in your ICS configuration (a good explanation of how to do this for Windows XP can be found <a href='{$site_config['anonymizer_url']}http://www.microsoft.com/downloads/details.aspx?FamilyID=1dcff3ce-f50f-4a34-ae67-cac31ccd7bc9&amp;displaylang=en'>here</a>). In the NAT case you should configure different ranges for clients on different computers and create appropriate NAT rules in the router. (Details vary widely from router to router and are outside the scope of this FAQ. Check your router documentation and/or support forum.)</p>
+                <p>Note also that in the ICS case it is preferable to run the BT client on the ICS gateway. Clients running on the other computers will be unconnectable (they will be listed as such, as explained elsewhere in the FAQ) unless you specify the appropriate services in your ICS configuration (a good explanation of how to do this for Windows XP can be found <a href='" . url_proxy('https://www.microsoft.com/downloads/details.aspx?FamilyID=1dcff3ce-f50f-4a34-ae67-cac31ccd7bc9&amp;displaylang=en') . "'>here</a>). In the NAT case you should configure different ranges for clients on different computers and create appropriate NAT rules in the router. (Details vary widely from router to router and are outside the scope of this FAQ. Check your router documentation and/or support forum.)</p>
             </li>            
             <li class='padding10'>
                 <p><i>There are multiple {$site_config['site_name']} users in the LAN</i></p>
@@ -365,7 +365,7 @@ $lang = [
                 include a proper NFO
             </li>
             <li class='padding10'>
-                are genuine scene releases. If it's not on <a href='{$site_config['anonymizer_url']}http://www.nforce.nl'>NFOrce</a> or <a href='{$site_config['anonymizer_url']}http://www.grokmusiq.com/'>grokMusiQ</a> then forget it!
+                are genuine scene releases. If it's not on <a href='" . url_proxy('https://www.nforce.nl') . "'>NFOrce</a> or <a href='" . url_proxy('https://www.grokmusiq.com/') . "'>grokMusiQ</a> then forget it!
             </li>
             <li class='padding10'>
                 are not older than seven (7) days
@@ -519,7 +519,7 @@ $lang = [
               <td class='rowhead'><div>6881 - 6889</div></td>
            </tr>"
         ) . "
-        <p>In order to use use our tracker you must configure your client to use any port range that does not contain those ports (a range within the region 49152 through 65535 is preferable, cf. <a href='{$site_config['anonymizer_url']}http://www.iana.org/assignments/port-numbers'>IANA</a>). Notice that some clients, like Azureus 2.0.7.0 or higher, use a single port for all torrents, while most others use one port per open torrent. The size of the range you choose should take this into account (typically less than 10 ports wide. There is no benefit whatsoever in choosing a wide range, and there are possible security implications).</p>
+        <p>In order to use use our tracker you must configure your client to use any port range that does not contain those ports (a range within the region 49152 through 65535 is preferable, cf. <a href='" . url_proxy('https://www.iana.org/assignments/port-numbers') . "'>IANA</a>). Notice that some clients, like Azureus 2.0.7.0 or higher, use a single port for all torrents, while most others use one port per open torrent. The size of the range you choose should take this into account (typically less than 10 ports wide. There is no benefit whatsoever in choosing a wide range, and there are possible security implications).</p>
         <p>These ports are used for connections between peers, not client to tracker. Therefore this change will not interfere with your ability to use other trackers (in fact it should <i>increase</i> your speed with torrents from any tracker, not just ours). Your client will also still be able to connect to peers that are using the standard ports. If your client does not allow custom ports to be used, you will have to switch to one that does.</p>
         <p>Do not ask us, or in the forums, which ports you should choose. The more random the choice is the harder it will be for ISPs to catch on to us and start limiting speeds on the ports we use. If we simply define another range ISPs will start throttling that range also.</p>
         <p>Finally, remember to forward the chosen ports in your router and/or open them in your firewall, should you have them. See the <i><a href='#user8'>Why am I listed as not connectable?</a></i>  section and links therein for more information on this.</p>
@@ -586,7 +586,7 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
         <a id='dlsp7'></a>
         <p>Why is my browsing so slow while leeching?</p>
-        <p>Your download speed is always finite. If you are a peer in a fast torrent it will almost certainly saturate your download bandwidth, and your browsing will suffer. At the moment there is no client that allows you to limit the download speed, only the upload. You will have to use a third-party solution, such as <a href='{$site_config['anonymizer_url']}http://www.netlimiter.com/'>NetLimiter</a>.</p>
+        <p>Your download speed is always finite. If you are a peer in a fast torrent it will almost certainly saturate your download bandwidth, and your browsing will suffer. At the moment there is no client that allows you to limit the download speed, only the upload. You will have to use a third-party solution, such as <a href='" . url_proxy('https://www.netlimiter.com/') . "'>NetLimiter</a>.</p>
         <p>Browsing was used just as an example, the same would apply to gaming, IMing, etc...</p>
     </div>",
     'faq_proxy_title' => '<h2>My ISP uses a transparent proxy. What should I do?</h2>',
@@ -626,7 +626,7 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
         <a id='prox2'></a>
         <p>How do I find out if I'm behind a (transparent/anonymous) proxy?</p>
-        <p>Try <a href='{$site_config['anonymizer_url']}http://proxyjudge.org'>ProxyJudge</a>. It lists the HTTP headers that the server where it is running received from you. The relevant ones are HTTP_CLIENT_IP, HTTP_X_FORWARDED_FOR and REMOTE_ADDR.</p>
+        <p>Try <a href='" . url_proxy('https://proxyjudge.org') . "'>ProxyJudge</a>. It lists the HTTP headers that the server where it is running received from you. The relevant ones are HTTP_CLIENT_IP, HTTP_X_FORWARDED_FOR and REMOTE_ADDR.</p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
         <a id='prox3'></a>
@@ -636,18 +636,18 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
         <a id='prox4'></a>
         <p>Can I bypass my ISP's proxy?</p>
-        <p>If your ISP only allows HTTP traffic through port 80 or blocks the usual proxy ports then you would need to use something like <a href='{$site_config['anonymizer_url']}http://www.socks.permeo.com'>socks</a> and that is outside the scope of this FAQ.</p>
+        <p>If your ISP only allows HTTP traffic through port 80 or blocks the usual proxy ports then you would need to use something like <a href='" . url_proxy('https://www.socks.permeo.com') . "'>socks</a> and that is outside the scope of this FAQ.</p>
         <p>The site accepts connections on port 81 besides the usual 80, and using them may be enough to fool some proxies. So the first thing to try should be connecting to {$site_config['baseurl']}:81. Note that even if this works your bt client will still try to connect to port 80 unless you edit the announce url in the .torrent file.</p>
         <p>Otherwise you may try the following:</p>
         <ul class='disc left20'>
             <li class='padding10'>
-                Choose any public non-anonymous proxy that does not use port 80 (e.g. from <a href='{$site_config['anonymizer_url']}http://tools.rosinstrument.com/proxy'>this</a>, <a href='{$site_config['anonymizer_url']}http://www.proxy4free.com/index.html'>this</a> or <a href='{$site_config['anonymizer_url']}http://www.samair.ru/proxy'>this</a> list).
+                Choose any public non-anonymous proxy that does not use port 80 (e.g. from <a href='" . url_proxy('https://tools.rosinstrument.com/proxy') . "'>this</a>, <a href='" . url_proxy('https://www.proxy4free.com/index.html') . "'>this</a> or <a href='" . url_proxy('https://www.samair.ru/proxy') . "'>this</a> list).
             </li>
             <li class='padding10'>
                 Configure your computer to use that proxy. For Windows XP, do <i>Start</i>, <i>Control Panel</i>, <i>Internet Options</i>, <i>Connections</i>, <i>LAN Settings</i>, <i>Use a Proxy server</i>, <i>Advanced</i> and type in the IP and port of your chosen proxy. Or from Internet Explorer use <i>Tools</i>, <i>Internet Options</i>, ...
             </li>
             <li class='padding10'>
-                (Facultative) Visit <a href='{$site_config['anonymizer_url']}http://proxyjudge.org'>ProxyJudge</a>. If you see an HTTP_X_FORWARDED_FOR in the list followed by your IP then everything should be ok, otherwise choose another proxy and try again.
+                (Facultative) Visit <a href='" . url_proxy('https://proxyjudge.org') . "'>ProxyJudge</a>. If you see an HTTP_X_FORWARDED_FOR in the list followed by your IP then everything should be ok, otherwise choose another proxy and try again.
             </li>
             <li class='padding10'>
                 Visit {$site_config['site_name']}. Hopefully the tracker will now pickup your real IP (check your profile to make sure).
@@ -679,7 +679,7 @@ $lang = [
     </div>
     <div class='top20 bg-02 padding20 round10'>
         <a id='conn2'></a>
-        <p>The site blocks addresses listed in the (former) <a href='{$site_config['anonymizer_url']}http://methlabs.org/'>PeerGuardian</a> database, as well as addresses of banned users. This works at Apache/PHP level, it's just a script that blocks <i>logins</i> from those addresses. It should not stop you from reaching the site. In particular it does not block lower level protocols, you should be able to ping/traceroute the server even if your address is blacklisted. If you cannot then the reason for the problem lies elsewhere.</p>
+        <p>The site blocks addresses listed in the (former) <a href='" . url_proxy('https://methlabs.org/') . "'>PeerGuardian</a> database, as well as addresses of banned users. This works at Apache/PHP level, it's just a script that blocks <i>logins</i> from those addresses. It should not stop you from reaching the site. In particular it does not block lower level protocols, you should be able to ping/traceroute the server even if your address is blacklisted. If you cannot then the reason for the problem lies elsewhere.</p>
         <p>If somehow your address is indeed blocked in the PG database do not contact us about it, it is not our policy to open <i>ad hoc</i> exceptions. You should clear your IP with the database maintainers instead.</p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
@@ -693,7 +693,7 @@ $lang = [
     'faq_alt_port_body' => "
     <div class='top20 bg-02 padding20 round10'>
         <a id='conn4'></a>
-        <p>Some of our torrents use ports other than the usual HTTP port 80. This may cause problems for some users, for instance those behind some firewall or proxy configurations. You can easily solve this by editing the .torrent file yourself with any torrent editor, e.g. <a href='{$site_config['anonymizer_url']}http://sourceforge.net/projects/burst/'>MakeTorrent</a>, and replacing the announce url {$site_config['baseurl']}:81 with {$site_config['site_name']}:80 or just {$site_config['site_name']}.</p>
+        <p>Some of our torrents use ports other than the usual HTTP port 80. This may cause problems for some users, for instance those behind some firewall or proxy configurations. You can easily solve this by editing the .torrent file yourself with any torrent editor, e.g. <a href='" . url_proxy('https://sourceforge.net/projects/burst/') . "'>MakeTorrent</a>, and replacing the announce url {$site_config['baseurl']}:81 with {$site_config['site_name']}:80 or just {$site_config['site_name']}.</p>
         <p>Editing the .torrent with Notepad is not recommended. It may look like a text file, but it is in fact a bencoded file. If for some reason you must use a plain text editor, change the announce url to {$site_config['site_name']}:80, not {$site_config['site_name']}. (If you're thinking about changing the number before the announce url instead, you know too much to be reading this.)</p>
     </div>",
     'faq_problem_title' => "<h2>What if I can't find the answer to my problem here?</h2>",

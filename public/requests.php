@@ -66,7 +66,7 @@ switch ($action) {
         $row_did_they_vote = mysqli_fetch_row($res_did_they_vote);
         if ($row_did_they_vote[0] == '') {
             $yes_or_no = ($vote == 1 ? 'yes' : 'no');
-            sql_query('INSERT INTO request_votes (request_id, user_id, vote) VALUES (' . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($yes_or_no) . ')') or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO request_votes (request_id, user_id, vote) VALUES (' . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($yes_or_no) . ')')             or sqlerr(__FILE__, __LINE__);
             sql_query('UPDATE requests SET ' . ($yes_or_no === 'yes' ? 'vote_yes_count = vote_yes_count + 1' : 'vote_no_count = vote_no_count + 1') . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             header('Location: /requests.php?action=request_details&voted=1&id=' . sqlesc($id));
             die();
@@ -172,7 +172,7 @@ switch ($action) {
   </tr>
   <tr>
   <td>image:</td>
-  <td><img src="' . strip_tags(image_proxy($arr['image'])) . '" alt="image" /></td>
+  <td><img src="' . strip_tags(url_proxy($arr['image']), true, 500, 'auto') . '" alt="image" /></td>
   </tr>
   <tr>
   <td>description:</td>
@@ -255,7 +255,7 @@ switch ($action) {
         }
         if (isset($_POST['button']) && $_POST['button'] == 'Submit') {
             sql_query('INSERT INTO requests (request_name, image, description, category, added, requested_by_user_id, link) VALUES (' . sqlesc($request_name) . ', ' . sqlesc($image) . ', ' . sqlesc($body) . ', ' . sqlesc($category) . ', ' . TIME_NOW . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($link) . ')') or sqlerr(__FILE__, __LINE__);
-            $new_request_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
+            $new_request_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
             header('Location: requests.php?action=request_details&new=1&id=' . $new_request_id);
             die();
         }
@@ -321,9 +321,9 @@ switch ($action) {
             stderr('Sanity check...', 'are you sure you would like to delete the request <b>"' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '"</b>? If so click
         <a class="altlink" href="requests.php?action=delete_request&amp;id=' . $id . '&amp;do_it=666" >HERE</a>.');
         } else {
-            sql_query('DELETE FROM requests WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM requests WHERE id = ' . sqlesc($id))             or sqlerr(__FILE__, __LINE__);
             sql_query('DELETE FROM request_votes WHERE request_id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-            sql_query('DELETE FROM comments WHERE request =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM comments WHERE request =' . sqlesc($id))         or sqlerr(__FILE__, __LINE__);
             header('Location: /requests.php?request_deleted=1');
             die();
         }
@@ -439,7 +439,7 @@ switch ($action) {
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
         $HTMLOUT .= $top_menu . '<form method="post" action="requests.php?action=add_comment">
     <input type="hidden" name="id" value="' . $id . '"/>';
-        $res = sql_query('SELECT c.request, c.id AS comment_id, c.text, c.added, c.editedby, c.editedat, u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.title, u.leechwarn, u.chatpost, u.pirate,  u.king FROM comments AS c LEFT JOIN users AS u ON c.user = u.id WHERE request = ' . sqlesc($id) . ' ORDER BY c.id DESC LIMIT 5') or sqlerr(__FILE__, __LINE__);
+        $res     = sql_query('SELECT c.request, c.id AS comment_id, c.text, c.added, c.editedby, c.editedat, u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.title, u.leechwarn, u.chatpost, u.pirate,  u.king FROM comments AS c LEFT JOIN users AS u ON c.user = u.id WHERE request = ' . sqlesc($id) . ' ORDER BY c.id DESC LIMIT 5') or sqlerr(__FILE__, __LINE__);
         $allrows = [];
         while ($row = mysqli_fetch_assoc($res)) {
             $allrows[] = $row;
@@ -528,7 +528,7 @@ switch ($action) {
         if (!isset($_GET['do_it'])) {
             stderr('Sanity check...', 'are you sure you would like to delete this comment? If so click <a class="altlink" href="requests.php?action=delete_comment&amp;id=' . (int) $arr['request'] . '&amp;comment_id=' . $comment_id . '&amp;do_it=666" >HERE</a>.');
         } else {
-            sql_query('DELETE FROM comments WHERE id = ' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM comments WHERE id = ' . sqlesc($comment_id))                            or sqlerr(__FILE__, __LINE__);
             sql_query('UPDATE requests SET comments = comments - 1 WHERE id = ' . sqlesc($arr['request'])) or sqlerr(__FILE__, __LINE__);
             header('Location: /requests.php?action=request_details&id=' . $id . '&comment_deleted=1');
             die();

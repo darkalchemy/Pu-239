@@ -98,7 +98,7 @@ function BBcode($body = '')
  */
 function validate_imgs($s)
 {
-    $start = '(http|https)://';
+    $start = 'https?://';
     $end   = "+\.(?:jpe?g|png|gif)";
     preg_match_all('!' . $start . '(.*)' . $end . '!Ui', $s, $result);
     $array = $result[0];
@@ -188,17 +188,11 @@ function islocal($link)
     global $site_config;
     $flag               = false;
     $limit              = 600;
-    $site_config['url'] = str_replace([
-                                          'http://',
-                                          'www',
-                                          'http://www',
-                                          'https://',
-                                          'https://www',
-                                      ], '', $site_config['baseurl']);
-    if (false !== stristr($link[0], '[url=')) {
+    //dd($link);
+    if (stristr($link[0], '[url=') !== false) {
         $url   = trim($link[1]);
         $title = trim($link[2]);
-        if (false !== stristr($title, '[img]')) {
+        if (stristr($title, '[img]') !== false) {
             $flag  = true;
             $title = preg_replace("/\[img](https?:\/\/[^\s'\"<>]+(\.(jpeg|jpg|gif|png)))\[\/img\]/i", '<img class="img-responsive" src="\\1" alt="" border="0" />', $title);
         }
@@ -216,7 +210,7 @@ function islocal($link)
     }
     $url = htmlsafechars($url);
 
-    return '<a href="' . ((stristr($url, $site_config['url']) !== false) ? '' : $site_config['anonymizer_url']) . $url . '" target="_blank">' . $lshort . '</a>';
+    return '<a href="' . url_proxy($url) . '" target="_blank">' . $lshort . '</a>';
 }
 
 /**
@@ -240,7 +234,7 @@ function format_urls($s)
 function format_comment($text, $strip_html = true, $urls = true, $images = true)
 {
     global $smilies, $staff_smilies, $customsmilies, $site_config, $CURUSER;
-    //$s = htmlspecialchars($text);
+    //dd($site_config);
     $s = $text;
     unset($text);
     $s                  = validate_imgs($s);
@@ -251,7 +245,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
                                           'https://',
                                           'https://www',
                                       ], '', $site_config['baseurl']);
-    if (isset($_SERVER['HTTPS']) && (bool)$_SERVER['HTTPS'] == true) {
+    if (isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] === true) {
         $s = preg_replace('/http:\/\/((?:www\.)?' . $site_config['url'] . ')/i', 'https://$1', $s);
     } else {
         $s = preg_replace('/https:\/\/((?:www\.)?' . $site_config['url'] . ')/i', 'http://$1', $s);
@@ -316,7 +310,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '/\[loop=https?:(\/\/.*\.mp4)\]/imsU',
         '/\[loop=https?:(\/\/.*\.webm)\]/imsU',
         '/\[loop=https?:(\/\/.*\.ogv)\]/imsU',
-        '/\[audio\](http:\/\/[^\s\'"<>]+(\.(mp3|aiff|wav)))\[\/audio\]/is',
+        '/\[audio\](https?:\/\/[^\s\'"<>]+(\.(mp3|aiff|wav)))\[\/audio\]/is',
         '/\[list=([0-9]+)\](.*?)\[\/list\]/is',
         '/\[list\](.*?)\[\/list\]/is',
         '/\[li\]\s?(.*?)\[\/li\]/is',
@@ -376,7 +370,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<span><video width="500" loop muted autoplay><source src="\1" /><source src="\1" type="video/mp4" />Your browser does not support the video tag.</video></span>',
         '<span><video width="500" loop muted autoplay><source src="\1" /><source src="\1" type="video/webm" />Your browser does not support the video tag.</video></span>',
         '<span><video width="500" loop muted autoplay><source src="\1" /><source src="\1" type="video/ogv" />Your browser does not support the video tag.</video></span>',
-        '<span class="has-text-centered"><p>Audio From: \1</p><embed type="application/x-shockwave-flash" src="http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=\\1" width="400" height="27" allowscriptaccess="never" quality="best" bgcolor="#fff" wmode="window" flashvars="playerMode=embedded" /></span>',
+        '<span class="has-text-centered"><p>Audio From: \1</p><embed type="application/x-shockwave-flash" src="https://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=\\1" width="400" height="27" allowscriptaccess="never" quality="best" bgcolor="#fff" wmode="window" flashvars="playerMode=embedded" /></span>',
         '<ol class="style" start="\1">\2</ol>',
         '<ul class="style">\1</ul>',
         '<li>\1</li>',
@@ -433,18 +427,14 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         $s = preg_replace("#\[media=(youtube|liveleak|GameTrailers|vimeo|imdb)\](.+?)\[/media\]#ies", "_MediaTag('\\2','\\1')", $s);
     }
     if (stripos($s, '[img') !== false && $images) {
-        // [img]http://www/image.gif[/img]
-        $s = preg_replace("/\[img\]((http|https):\/\/[^\s'\"<>]+(\.(jpeg|jpg|gif|png|bmp)))\[\/img\]/i", '<a href="\\1" data-lightbox="details"><img src="\\1" alt="" class="img-responsive" /></a>', $s);
-        // [img=http://www/image.gif]
-        $s = preg_replace("/\[img=((http|https):\/\/[^\s'\"<>]+(\.(gif|jpeg|jpg|png|bmp)))\]/i", '<a href="\\1" data-lightbox="details"><img src="\\1" alt="" class="img-responsive" /></a>', $s);
-        // [img=image services without extension
-        $s = preg_replace("/\[img=((http|https):\/\/[^\s'\"<>]*)\]/i", '<a href="\\1" data-lightbox="details" /><img src="\\1" alt="" class="img-responsive" /></a>', $s);
-        // [img=image services without extension
-        $s = preg_replace("/\[img\]((http|https):\/\/[^\s'\"<>]*)\[\/img\]/i", '<a href="\\1" data-lightbox="details" /><img src="\\1" alt="" class="img-responsive" /></a>', $s);
+        // [img=image services with or without extension
+        $s = preg_replace("/\[img=(https?:\/\/[^\s'\"<>]*)\]/i", '<a href="\\1" data-lightbox="details" /><img src="\\1" alt="" class="img-responsive" /></a>', $s);
+        // [img]image services with or without extension
+        $s = preg_replace("/\[img\](https?:\/\/[^\s'\"<>]*)\[\/img\]/i", '<a href="\\1" data-lightbox="details" /><img src="\\1" alt="" class="img-responsive" /></a>', $s);
 
         preg_match_all('/src="(.*)" alt/', $s, $matches);
         foreach ($matches[1] as $match) {
-            $s = str_replace($match, image_proxy($match), $s);
+            $s = str_replace($match, url_proxy($match, true), $s);
         }
     }
     // [mcom]Text[/mcom]
@@ -526,15 +516,17 @@ function format_code($s)
             if ($openval[$i] > $closeval[$i]) {
                 return $s;
             }
-        } // Cannot close before opening. Return raw string...
+        }
         $s = str_replace('[code]', "
-            <div class='round10 w-100 bg-00'>
+            <div class='round10 padding20'>
                 <span class='size_5 has-text-weight-bold'>
                     code:
                 </span>
-                <pre class='round10 margin10'>", $s);
+                <div class='round10 padding10 bg-light'>
+                    <code>", htmlspecialchars($s));
         $s = str_replace('[/code]', '
-                </pre>
+                    </code>
+                </div>
             </div>', $s);
         $s = html_entity_decode($s);
     }
@@ -589,7 +581,7 @@ function format_comment_no_bbcode($text, $strip_html = true)
         '/\[video=https?:(\/\/.*\.ogg)\]/ims',
         '/\[video=https?:(\/\/.*\.webm)\]/ims',
         '/\[loop=https?:(\/\/.*\.mp4)\]/ims',
-        '/\[audio\](http:\/\/[^\s\'"<>]+(\.(mp3|aiff|wav)))\[\/audio\]/i',
+        '/\[audio\](https?:\/\/[^\s\'"<>]+(\.(mp3|aiff|wav)))\[\/audio\]/i',
         '/\[list=([0-9]+)\]((\s|.)+?)\[\/list\]/i',
         '/\[list\]((\s|.)+?)\[\/list\]/i',
         '/\[\*\]\s?(.*?)\n/i',
@@ -666,26 +658,26 @@ function _MediaTag($content, $type)
     $return = '';
     switch ($type) {
         case 'youtube':
-            $return = preg_replace("#^http://(?:|www\.)youtube\.com/watch\?v=([a-zA-Z0-9\-]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.youtube.com/v/\\1'><param name='movie' value='http://www.youtube.com/v/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#fff' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
+            $return = preg_replace("#^https?://(?:|www\.)youtube\.com/watch\?v=([a-zA-Z0-9\-]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.youtube.com/v/\\1'><param name='movie' value='http://www.youtube.com/v/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#fff' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
             break;
 
         case 'liveleak':
-            $return = preg_replace("#^http://(?:|www\.)liveleak\.com/view\?i=([_a-zA-Z0-9\-]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.liveleak.com/e/\\1'><param name='movie' value='http://www.liveleak.com/e/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#fff' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
+            $return = preg_replace("#^https?://(?:|www\.)liveleak\.com/view\?i=([_a-zA-Z0-9\-]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.liveleak.com/e/\\1'><param name='movie' value='http://www.liveleak.com/e/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#fff' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
             break;
 
         case 'GameTrailers':
-            $return = preg_replace("#^http://(?:|www\.)gametrailers\.com/video/([\-_a-zA-Z0-9\-]+)+?/([0-9]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.gametrailers.com/remote_wrap.php?mid=\\2'><param name='movie' value='http://www.gametrailers.com/remote_wrap.php?mid=\\2' /><param name='allowScriptAccess' value='sameDomain' /> <param name='allowFullScreen' value='true' /><param name='quality' value='high' /></object>", $content);
+            $return = preg_replace("#^https?://(?:|www\.)gametrailers\.com/video/([\-_a-zA-Z0-9\-]+)+?/([0-9]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.gametrailers.com/remote_wrap.php?mid=\\2'><param name='movie' value='http://www.gametrailers.com/remote_wrap.php?mid=\\2' /><param name='allowScriptAccess' value='sameDomain' /> <param name='allowFullScreen' value='true' /><param name='quality' value='high' /></object>", $content);
             break;
 
         case 'imdb':
-            $return = preg_replace("#^http://(?:|www\.)imdb\.com/video/screenplay/([_a-zA-Z0-9\-]+)+?$#i", "<div class='\\1'><div style=\"padding: 3px; background-color: transparent; border: none; width:690px;\"><div style=\"text-transform: uppercase; border-bottom: 1px solid #CCCCCC; margin-bottom: 3px; font-size: 0.8em; font-weight: bold; display: block;\"><span onclick=\"if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerHTML = '<b>Imdb Trailer: </b><a href=\'#\' onclick=\'return false;\'>hide</a>'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerHTML = '<b>Imdb Trailer: </b><a href=\'#\' onclick=\'return false;\'>show</a>'; }\" ><b>Imdb Trailer: </b><a href=\"#\" onclick=\"return false;\">show</a></span></div><div class=\"quotecontent\"><div style=\"display: none;\"><iframe style='vertical-align: middle;' src='http://www.imdb.com/video/screenplay/\\1/player' scrolling='no' width='660' height='490' frameborder='0'></iframe></div></div></div></div>", $content);
+            $return = preg_replace("#^https?://(?:|www\.)imdb\.com/video/screenplay/([_a-zA-Z0-9\-]+)+?$#i", "<div class='\\1'><div style=\"padding: 3px; background-color: transparent; border: none; width:690px;\"><div style=\"text-transform: uppercase; border-bottom: 1px solid #CCCCCC; margin-bottom: 3px; font-size: 0.8em; font-weight: bold; display: block;\"><span onclick=\"if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerHTML = '<b>Imdb Trailer: </b><a href=\'#\' onclick=\'return false;\'>hide</a>'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerHTML = '<b>Imdb Trailer: </b><a href=\'#\' onclick=\'return false;\'>show</a>'; }\" ><b>Imdb Trailer: </b><a href=\"#\" onclick=\"return false;\">show</a></span></div><div class=\"quotecontent\"><div style=\"display: none;\"><iframe style='vertical-align: middle;' src='http://www.imdb.com/video/screenplay/\\1/player' scrolling='no' width='660' height='490' frameborder='0'></iframe></div></div></div></div>", $content);
             break;
 
         case 'vimeo':
-            $return = preg_replace("#^http://(?:|www\.)vimeo\.com/([0-9]+)+?$#i", "<object type='application/x-shockwave-flash' width='425' height='355' data='http://vimeo.com/moogaloop.swf?clip_id=\\1&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1'>
+            $return = preg_replace("#^https?://(?:|www\.)vimeo\.com/([0-9]+)+?$#i", "<object type='application/x-shockwave-flash' width='425' height='355' data='https://vimeo.com/moogaloop.swf?clip_id=\\1&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1'>
     <param name='allowFullScreen' value='true' />
     <param name='allowScriptAccess' value='sameDomain' />
-    <param name='movie' value='http://vimeo.com/moogaloop.swf?clip_id=\\1&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1' />
+    <param name='movie' value='https://vimeo.com/moogaloop.swf?clip_id=\\1&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1' />
     <param name='quality' value='high' />
     </object>", $content);
             break;

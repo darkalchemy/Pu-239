@@ -28,7 +28,7 @@ if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
                                 WHERE uid = ' . sqlesc($CURUSER['id']) . '
                                 GROUP BY `left`') or sqlerr(__LINE__, __FILE__);
             while ($a = mysqli_fetch_assoc($r)) {
-                $key = $a['left'] == 0 ? 'yes' : 'no';
+                $key          = $a['left'] == 0 ? 'yes' : 'no';
                 $seed[$key]   = number_format((int) $a['count']);
                 $seed['conn'] = $a['connectable'] == 0 ? 1 : 2;
             }
