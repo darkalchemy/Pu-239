@@ -1,8 +1,11 @@
 17 Jun 2018
+fix: achievementbonus.php
+fix: userhistory.php
 fix: admin/iphistory.php display
 
 16 Jun 2018
 fix: several admin pages issues
+change: pre to code to keep bbcode code block from breaking template
 
 14 Jun 2018
 fix: tvmaze lookup

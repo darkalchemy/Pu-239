@@ -499,4 +499,28 @@ $sql_updates = [
         'date'  => '9 Jun, 2018',
         'query' => 'ALTER TABLE `users` MODIFY `ssluse` int(1) NOT NULL DEFAULT 0',
     ],
+    [
+        'id'    => 82,
+        'info'  => 'Update ach_bonus table.',
+        'date'  => '17 Jun, 2018',
+        'query' => 'ALTER TABLE ach_bonus MODIFY `bonus_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL',
+    ],
+    [
+        'id'    => 83,
+        'info'  => 'Update ach_bonus table.',
+        'date'  => '17 Jun, 2018',
+        'query' => 'ALTER TABLE ach_bonus MODIFY `bonus_do` bigint(20) unsigned NOT NULL DEFAULT 0',
+    ],
+    [
+        'id'    => 84,
+        'info'  => 'Update ach_bonus table.',
+        'date'  => '17 Jun, 2018',
+        'query' => "INSERT INTO `ach_bonus` (bonus_desc, bonus_type, bonus_do) VALUES
+('Subtract 20GB From Your Download.', 1, 21474836480),
+('Add 20GB to your Upload.', 2, 21474836480),
+('Add 5000 Bonus Points to your total.', 4, 5000),
+('Add 10000 Bonus Points to your total.', 4, 10000),
+('Add 20000 Bonus Points to your total.', 4, 20000),
+('Add 50GB to your Upload.', 2, 53687091000)",
+    ],
 ];

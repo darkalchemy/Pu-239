@@ -94,7 +94,6 @@ git pull
 composer update
 composer dump-autoload -o
 npm install
-npm update
 [sudo] php bin/set_perms.php
 [sudo] php bin/uglify.php
 
