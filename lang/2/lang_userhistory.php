@@ -4,7 +4,7 @@ $lang = [
     //stderr
     'stderr_errorhead'   => 'Error',
     'stderr_histerrhead' => 'History Error',
-    'stderr_invalidid'   => 'Invalidid',
+    'stderr_invalidid'   => 'Invalid User ID',
     'stderr_perms'       => 'Permission denied',
     'stderr_unknownact'  => 'Unknown action.',
     'stderr_invalidq'    => 'Invalid or no query.',
