@@ -797,5 +797,3 @@ if ($CURUSER['class'] >= UC_STAFF) {
         </form>
     </div>';
 }
-
-$HTMLOUT .= wrapper($each);
