@@ -7,19 +7,19 @@ function get_file_name($file)
     $style = get_stylesheet();
     switch ($file) {
         case 'css':
-            return "{$site_config['baseurl']}/css/1/css_55ee9f43.css";
+            return "{$site_config['baseurl']}/css/1/css_6cfe5822.css";
         case 'chat_css_trans':
-            return "{$site_config['baseurl']}/css/1/chat_trans_70895ec7.css";
+            return "{$site_config['baseurl']}/css/1/chat_trans_c1c0cb82.css";
         case 'chat_css_uranium':
-            return "{$site_config['baseurl']}/css/1/chat_uranium_b2bdd383.css";
+            return "{$site_config['baseurl']}/css/1/chat_uranium_bd29633c.css";
         case 'checkport_js':
             return "{$site_config['baseurl']}/js/1/checkport_dd06d98b.js";
         case 'browse_js':
             return "{$site_config['baseurl']}/js/1/browse_09a435c8.js";
         case 'chat_js':
-            return "{$site_config['baseurl']}/js/1/chat_b3a23970.js";
+            return "{$site_config['baseurl']}/js/1/chat_c44785d8.js";
         case 'chat_log_js':
-            return "{$site_config['baseurl']}/js/1/chat_log_7a5bdc04.js";
+            return "{$site_config['baseurl']}/js/1/chat_log_5284a554.js";
         case 'index_js':
             return "{$site_config['baseurl']}/js/1/index_c73226cb.js";
         case 'captcha2_js':

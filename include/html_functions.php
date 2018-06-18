@@ -189,3 +189,103 @@ function wrapper($text, $class = '')
             </div>";
     }
 }
+
+/**
+ * @param $data
+ */
+function write_css($data)
+{
+    $classdata = '';
+    foreach ($data as $class) {
+        $cname  = str_replace(' ', '_', strtolower($class['className']));
+        $ccolor = strtolower($class['classColor']);
+        if (!empty($cname)) {
+            //$classdata .= "#content .{$cname} {
+            $classdata .= ".{$cname} {
+    color: $ccolor;
+}
+";
+        }
+    }
+    $classdata .= '#content .chatbot {
+    color: #ff8b49;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+';
+    foreach ($data as $class) {
+        $cname = str_replace(' ', '_', strtolower($class['className']));
+        if (!empty($cname)) {
+            $classdata .= "#content #chatList span.{$cname} {
+    font-weight: bold;
+}
+";
+        }
+    }
+    $classdata .= '#content #chatList span.chatbot {
+    font-weight: bold;
+    font-style: italic;
+}
+';
+    foreach ($data as $class) {
+        $cname  = str_replace(' ', '_', strtolower($class['className']));
+        $ccolor = strtolower($class['classColor']);
+        if (!empty($cname)) {
+            $classdata .= ".{$cname}_bk {
+    background-color: $ccolor;
+}
+";
+        }
+    }
+    file_put_contents(ROOT_DIR . 'chat/css/classcolors.css', $classdata . PHP_EOL);
+    file_put_contents(ROOT_DIR . 'templates/1/css/classcolors.css', $classdata . PHP_EOL);
+}
+
+function write_classes($data)
+{
+    $text = '
+
+ajaxChat.getRoleClass = function(roleID) {
+    switch (parseInt(roleID)) {';
+    foreach ($data as $class) {
+        $text .= "
+        case parseInt($class):
+            return '" . strtolower(str_replace('UC_', '', $class)) . "';";
+    }
+    $text .= "
+        case parseInt(ajaxChat.chatBotRole):
+            return 'chatbot';
+        default:
+            return 'user';
+    }
+};";
+
+    file_put_contents(ROOT_DIR . 'chat/js/classes.js', $text, FILE_APPEND);
+}
+
+function write_class_files()
+{
+    global $site_config;
+
+    $lang       = load_language('ad_class_config');
+    $t          = 'define(';
+    $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
+    $res        = sql_query('SELECT * FROM class_config ORDER BY value ASC');
+    $the_names  = $the_colors  = $the_images  = '';
+    while ($arr = mysqli_fetch_assoc($res)) {
+        $configfile .= '' . $t . "'{$arr['name']}', {$arr['value']});\n";
+        if ($arr['name'] !== 'UC_STAFF' && $arr['name'] !== 'UC_MIN' && $arr['name'] !== 'UC_MAX') {
+            $the_names  .= "{$arr['name']} => '{$arr['classname']}',";
+            $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
+            $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . " . 'class/{$arr['classpic']}',";
+            $js_classes[] = $arr['name'];
+            $data[]       = ['className' => $arr['classname'], 'classColor' => '#' . $arr['classcolor']];
+        }
+        $classes[] = "var {$arr['name']} = {$arr['value']};";
+    }
+
+    file_put_contents(ROOT_DIR . 'chat/js/classes.js', implode("\n", $classes));
+    write_classes($js_classes);
+    write_css($data);
+    $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
+    file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
+}

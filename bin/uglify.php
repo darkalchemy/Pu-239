@@ -1,10 +1,11 @@
 <?php
 
-if (!file_exists(dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'class_config.php')) {
-    copy(dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'class_config.php.example', dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'class_config.php');
-}
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 global $site_config;
+
+write_class_files();
 
 $purpose  = '--beautify';
 $short    = 'Beautified';
@@ -37,15 +38,8 @@ foreach ($dirs as $dir) {
 }
 
 copy(ROOT_DIR . 'node_modules/lightbox2/dist/css/lightbox.css', BIN_DIR . 'lightbox.css');
-//passthru("sed -i 's#..\/images\/#../../images/#g' " . BIN_DIR . "'lightbox.css'");
 passthru("sed -i 's#..\/images\/#/#g' " . BIN_DIR . "'lightbox.css'");
-if (!file_exists(CHAT_DIR . 'js/classes.js')) {
-    copy(CHAT_DIR . 'js/classes.js.example', CHAT_DIR . 'js/classes.js');
-}
-if (!file_exists(TEMPLATE_DIR . '1/css/classcolors.css')) {
-    copy(TEMPLATE_DIR . '1/css/classcolors.css.example', TEMPLATE_DIR . '1/css/classcolors.css');
-    copy(TEMPLATE_DIR . '1/css/classcolors.css.example', CHAT_DIR . 'css/classcolors.css');
-}
+
 $js_list = [
     'checkport_js' => [
         SCRIPTS_DIR . 'checkports.js',

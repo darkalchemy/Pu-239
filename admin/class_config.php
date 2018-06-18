@@ -1,6 +1,7 @@
 <?php
 
 require_once CLASS_DIR . 'class_check.php';
+require_once INCL_DIR . 'html_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang, $cache, $session;
@@ -26,78 +27,6 @@ $possible_modes = [
 $mode = (isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '');
 if (!in_array($mode, $possible_modes)) {
     stderr($lang['classcfg_error'], $lang['classcfg_error1']);
-}
-
-/**
- * @param $data
- */
-function write_css($data)
-{
-    $classdata = '';
-    foreach ($data as $class) {
-        $cname  = str_replace(' ', '_', strtolower($class['className']));
-        $ccolor = strtoupper($class['classColor']);
-        if (!empty($cname)) {
-            //$classdata .= "#content .{$cname} {
-            $classdata .= ".{$cname} {
-    color: $ccolor;
-}
-";
-        }
-    }
-    $classdata .= '#content .chatbot {
-    color: #ff8b49;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-}
-';
-    foreach ($data as $class) {
-        $cname = str_replace(' ', '_', strtolower($class['className']));
-        if (!empty($cname)) {
-            $classdata .= "#content #chatList span.{$cname} {
-    font-weight:bold;
-}
-";
-        }
-    }
-    $classdata .= '#content #chatList span.chatbot {
-    font-weight:bold;
-    font-style:italic;
-}
-';
-    foreach ($data as $class) {
-        $cname  = str_replace(' ', '_', strtolower($class['className']));
-        $ccolor = strtoupper($class['classColor']);
-        if (!empty($cname)) {
-            $classdata .= ".{$cname}_bk {
-    background: $ccolor;
-}
-";
-        }
-    }
-    file_put_contents(ROOT_DIR . 'chat/css/classcolors.css', $classdata . PHP_EOL);
-    file_put_contents(ROOT_DIR . 'templates/1/css/classcolors.css', $classdata . PHP_EOL);
-}
-
-function write_classes($data)
-{
-    $text = '
-
-ajaxChat.getRoleClass = function(roleID) {
-    switch (parseInt(roleID)) {';
-    foreach ($data as $class) {
-        $text .= "
-        case parseInt($class):
-            return '" . strtolower(str_replace('UC_', '', $class)) . "';";
-    }
-    $text .= "
-        case parseInt(ajaxChat.chatBotRole):
-            return 'chatbot';
-        default:
-            return 'user';
-    }
-};";
-
-    file_put_contents(ROOT_DIR . 'chat/js/classes.js', $text, FILE_APPEND);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
