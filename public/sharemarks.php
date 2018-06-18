@@ -8,7 +8,7 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER;
 
-$lang    = array_merge(load_language('global'), load_language('torrenttable_functions'));
+$lang = array_merge(load_language('global'), load_language('torrenttable_functions'));
 $htmlout = '';
 /**
  * @param        $res
@@ -54,15 +54,15 @@ function sharetable($res, $variant = 'index')
     $categories = genrelist();
     foreach ($categories as $key => $value) {
         $change[$value['id']] = [
-            'id'    => $value['id'],
-            'name'  => $value['name'],
+            'id' => $value['id'],
+            'name' => $value['name'],
             'image' => $value['image'],
         ];
     }
     while ($row = mysqli_fetch_assoc($res)) {
         $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
-        $row['cat_pic']  = htmlsafechars($change[$row['category']]['image']);
-        $id              = (int) $row['id'];
+        $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
+        $id = (int) $row['id'];
         $htmlout .= "<tr>\n";
         $htmlout .= '<td>';
         if (isset($row['cat_name'])) {
@@ -88,8 +88,8 @@ function sharetable($res, $variant = 'index')
         }
         $htmlout .= "'><b>$dispname</b></a>&#160;</td>";
         $htmlout .= ($variant === 'index' ? "<td><a href=\"download.php?torrent={$id}\"><img src='{$site_config['pic_baseurl']}zip.gif' alt='Download Bookmark!' title='Download Bookmark!' /></a></td>" : '');
-        $bm         = sql_query('SELECT * FROM bookmarks WHERE torrentid=' . sqlesc($id) . ' AND userid=' . sqlesc($CURUSER['id']));
-        $bms        = mysqli_fetch_assoc($bm);
+        $bm = sql_query('SELECT * FROM bookmarks WHERE torrentid=' . sqlesc($id) . ' AND userid=' . sqlesc($CURUSER['id']));
+        $bms = mysqli_fetch_assoc($bm);
         $bookmarked = (empty($bms) ? '<a href=\'bookmark.php?torrent=' . $id . '&amp;action=add\'><img src=\'' . $site_config['pic_baseurl'] . 'bookmark.gif\' border=\'0\' alt=\'Bookmark it!\' title=\'Bookmark it!\'></a>' : '<a href="bookmark.php?torrent=' . $id . '&amp;action=delete"><img src=\'' . $site_config['pic_baseurl'] . 'aff_cross.gif\' border=\'0\' alt=\'Delete Bookmark!\' title=\'Delete Bookmark!\' /></a>');
         $htmlout .= ($variant === 'index' ? "<td>{$bookmarked}</td>" : '');
         if ($variant === 'mytorrents') {
@@ -181,17 +181,17 @@ $htmlout .= '
             </ul>
         </div>
     </div>';
-$res             = sql_query('SELECT COUNT(id) FROM bookmarks WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-$row             = mysqli_fetch_array($res);
-$count           = $row[0];
+$res = sql_query('SELECT COUNT(id) FROM bookmarks WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+$row = mysqli_fetch_array($res);
+$count = $row[0];
 $torrentsperpage = $CURUSER['torrentsperpage'];
 if (!$torrentsperpage) {
     $torrentsperpage = 25;
 }
 if ($count) {
-    $pager  = pager($torrentsperpage, $count, 'sharemarks.php?&amp;');
+    $pager = pager($torrentsperpage, $count, 'sharemarks.php?&amp;');
     $query1 = 'SELECT bookmarks.id as bookmarkid, torrents.username, torrents.owner, torrents.id, torrents.name, torrents.type, torrents.comments, torrents.leechers, torrents.seeders, torrents.save_as, torrents.numfiles, torrents.added, torrents.filename, torrents.size, torrents.views, torrents.visible, torrents.hits, torrents.times_completed, torrents.category FROM bookmarks LEFT JOIN torrents ON bookmarks.torrentid = torrents.id WHERE bookmarks.userid = ' . sqlesc($userid) . " AND bookmarks.private = 'no' ORDER BY id DESC {$pager['limit']}";
-    $res    = sql_query($query1) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query($query1) or sqlerr(__FILE__, __LINE__);
 }
 if ($count) {
     $htmlout .= $pager['pagertop'] . sharetable($res, 'index') . $pager['pagerbottom'];

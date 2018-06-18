@@ -17,21 +17,21 @@ if ($id = $session->get('userID') && $session->validateToken($_POST['csrf_token'
         echo json_encode('failed...');
     }
 
-    $upped  = mksize($user['uploaded']);
+    $upped = mksize($user['uploaded']);
     $downed = mksize($user['downloaded']);
 
     if (XBT_TRACKER) {
         $MyPeersXbtCache = $cache->get('MyPeers_XBT_' . $user['id']);
         if ($MyPeersXbtCache === false || is_null($MyPeersXbtCache)) {
-            $seed['yes']  = $seed['no']  = 0;
+            $seed['yes'] = $seed['no'] = 0;
             $seed['conn'] = 3;
-            $r            = sql_query('SELECT COUNT(uid) AS count, `left`, active, connectable
+            $r = sql_query('SELECT COUNT(uid) AS count, `left`, active, connectable
                                 FROM xbt_files_users
                                 WHERE uid = ' . sqlesc($user['id']) . '
                                 GROUP BY `left`') or sqlerr(__LINE__, __FILE__);
             while ($a = mysqli_fetch_assoc($r)) {
-                $key          = $a['left'] == 0 ? 'yes' : 'no';
-                $seed[$key]   = number_format((int) $a['count']);
+                $key = $a['left'] == 0 ? 'yes' : 'no';
+                $seed[$key] = number_format((int) $a['count']);
                 $seed['conn'] = $a['connectable'] == 0 ? 1 : 2;
             }
             $cache->set('MyPeers_XBT_' . $user['id'], $seed, $site_config['expires']['MyPeers_xbt_']);
@@ -42,15 +42,15 @@ if ($id = $session->get('userID') && $session->validateToken($_POST['csrf_token'
     } else {
         $MyPeersCache = $cache->get('MyPeers_' . $user['id']);
         if ($MyPeersCache === false || is_null($MyPeersCache)) {
-            $seed['yes']  = $seed['no']  = 0;
+            $seed['yes'] = $seed['no'] = 0;
             $seed['conn'] = 3;
-            $r            = sql_query('SELECT COUNT(id) AS count, seeder, connectable
+            $r = sql_query('SELECT COUNT(id) AS count, seeder, connectable
                                 FROM peers
                                 WHERE userid = ' . sqlesc($user['id']) . '
                                 GROUP BY seeder');
             while ($a = mysqli_fetch_assoc($r)) {
-                $key          = $a['seeder'] === 'yes' ? 'yes' : 'no';
-                $seed[$key]   = number_format((int) $a['count']);
+                $key = $a['seeder'] === 'yes' ? 'yes' : 'no';
+                $seed[$key] = number_format((int) $a['count']);
                 $seed['conn'] = $a['connectable'] === 'no' ? 1 : 2;
             }
             $cache->set('MyPeers_' . $user['id'], $seed, $site_config['expires']['MyPeers_']);
@@ -83,9 +83,9 @@ if ($id = $session->get('userID') && $session->validateToken($_POST['csrf_token'
                             FROM users AS u
                             LEFT JOIN usersachiev AS a ON u.id = a.userid
                             WHERE u.id = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
-        $Achievement_Points                = mysqli_fetch_assoc($Sql);
-        $Achievement_Points['id']          = (int) $Achievement_Points['id'];
-        $Achievement_Points['achpoints']   = (int) $Achievement_Points['achpoints'];
+        $Achievement_Points = mysqli_fetch_assoc($Sql);
+        $Achievement_Points['id'] = (int) $Achievement_Points['id'];
+        $Achievement_Points['achpoints'] = (int) $Achievement_Points['achpoints'];
         $Achievement_Points['spentpoints'] = (int) $Achievement_Points['spentpoints'];
         $cache->set('user_achievement_points_' . $user['id'], $Achievement_Points, 0);
     }

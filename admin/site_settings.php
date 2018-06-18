@@ -5,7 +5,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $lang, $site_config, $cache, $session;
 
-$lang          = array_merge($lang, load_language('ad_sitesettings'));
+$lang = array_merge($lang, load_language('ad_sitesettings'));
 $site_settings = $current_site_settings = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
     $pconf = sql_query('SELECT * FROM site_config') or sqlerr(__FILE__, __LINE__);
@@ -44,7 +44,7 @@ foreach ($site_settings as $site_setting) {
     if (is_numeric($value)) {
         $value = (float) $value;
     }
-    $var   = $name . '[value]';
+    $var = $name . '[value]';
     $input = "
                         <input type='text' name='{$var}' value='" . htmlsafechars($value) . "' class='w-100' />";
     if (is_numeric($value) && ($value == 0 || $value == 1)) {
@@ -74,7 +74,7 @@ foreach ($site_settings as $site_setting) {
                     </tr>';
 }
 
-$name  = 'new[setting]';
+$name = 'new[setting]';
 $value = 'new[value]';
 $descr = 'new[description]';
 $HTMLOUT .= "

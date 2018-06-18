@@ -9,8 +9,8 @@ require_once ROOT_DIR . 'radio.php';
 global $CURUSER, $site_config;
 
 $body_class = 'background-16 h-style-9 text-9 skin-2';
-$HTMLOUT    = '';
-$HTMLOUT    = "<!doctype html>
+$HTMLOUT = '';
+$HTMLOUT = "<!doctype html>
 <html>
 <head>
     <meta charset='utf-8'>

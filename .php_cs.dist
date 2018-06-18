@@ -18,7 +18,6 @@ $config = PhpCsFixer\Config::create()
         'concat_space'                       => ["spacing" => "one"],
         'align_multiline_comment'            => ['comment_type' => 'phpdocs_like'],
         'array_syntax'                       => ['syntax' => 'short'],
-        'binary_operator_spaces'             => ['default' => 'align'],
         'cast_spaces'                        => ['space' => 'single'],
         'combine_consecutive_issets'         => true,
         'combine_consecutive_unsets'         => true,

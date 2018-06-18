@@ -34,8 +34,8 @@ function readMore($text, $char, $link)
 function torrenttable($res, $variant = 'index')
 {
     $htmlout = $prevdate = $nuked = $free_slot = $free_color = $slots_check = $double_slot = $private = '';
-    $Subs    = $subs    = '';
-    $link1   = $link2   = $link3   = $link4   = $link5   = $link6   = $link7   = $link8   = $link9   = '';
+    $Subs = $subs = '';
+    $link1 = $link2 = $link3 = $link4 = $link5 = $link6 = $link7 = $link8 = $link9 = '';
     $oldlink = [];
 
     global $site_config, $CURUSER, $lang, $free;
@@ -61,8 +61,8 @@ function torrenttable($res, $variant = 'index')
                 $free_display = '[Silver]';
                 break;
         }
-        $slot         = make_freeslots($CURUSER['id'], 'fllslot_');
-        $book         = make_bookmarks($CURUSER['id'], 'bookmm_');
+        $slot = make_freeslots($CURUSER['id'], 'fllslot_');
+        $book = make_bookmarks($CURUSER['id'], 'bookmm_');
         $all_free_tag = ($fl['modifier'] != 0 && ($fl['expires'] > TIME_NOW || $fl['expires'] == 1) ? ' <a class="info" href="#">
             <b>' . $free_display . '</b>
             <span>' . ($fl['expires'] != 1 ? '
@@ -85,7 +85,7 @@ function torrenttable($res, $variant = 'index')
         }
     }
     $oldlink = !empty($oldlink) ? join('&amp;', array_map('htmlsafechars', $oldlink)) . '&amp;' : '';
-    $links   = [
+    $links = [
         'link1',
         'link2',
         'link3',
@@ -147,8 +147,8 @@ function torrenttable($res, $variant = 'index')
     $categories = genrelist();
     foreach ($categories as $key => $value) {
         $change[$value['id']] = [
-            'id'    => $value['id'],
-            'name'  => $value['name'],
+            'id' => $value['id'],
+            'name' => $value['name'],
             'image' => $value['image'],
         ];
     }
@@ -165,7 +165,7 @@ function torrenttable($res, $variant = 'index')
             $prevdate = get_date($row['added'], 'DATE');
         }
         $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
-        $row['cat_pic']  = htmlsafechars($change[$row['category']]['image']);
+        $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
         /** Freeslot/doubleslot in Use **/
         $id = (int) $row['id'];
         foreach ($slot as $sl) {
@@ -186,9 +186,9 @@ function torrenttable($res, $variant = 'index')
             $htmlout .= '-';
         }
         $htmlout .= '</td>';
-        $dispname   = htmlsafechars($row['name']);
+        $dispname = htmlsafechars($row['name']);
         $smalldescr = (!empty($row['description']) ? '<i>[' . htmlsafechars($row['description']) . ']</i>' : '');
-        $poster     = empty($row['poster']) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' alt='Poster' />" : "<img src='" . url_proxy($row['poster'], true, 150, 'auto') . "' class='tooltip-poster' alt='Poster' />";
+        $poster = empty($row['poster']) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' alt='Poster' />" : "<img src='" . url_proxy($row['poster'], true, 150, 'auto') . "' class='tooltip-poster' alt='Poster' />";
         //$rating = empty($row["rating"]) ? "No votes yet":"".ratingpic($row["rating"])."";
         if (!empty($row['descr'])) {
             $descr = str_replace('"', '&quot;', readMore($row['descr'], 500, $site_config['baseurl'] . '/details.php?id=' . (int) $row['id'] . '&amp;hit=1'));
@@ -205,7 +205,7 @@ function torrenttable($res, $variant = 'index')
             $htmlout .= '&amp;hit=1';
         }
 
-        $icons   = [];
+        $icons = [];
         $icons[] = $row['added'] >= $CURUSER['last_browse'] ? "<img src='{$site_config['pic_baseurl']}newb.png' class='tooltipper icon' alt='New!' title='New!' />" : '';
         $icons[] = ($row['sticky'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}sticky.gif' class='tooltipper icon' alt='Sticky' title='Sticky!' />" : '');
         $icons[] = ($row['vip'] == 1 ? "<img src='{$site_config['pic_baseurl']}star.png' class='tooltipper icon' alt='VIP torrent' title='<div class=\"size_5 has-text-centered has-text-success\">VIP</div>This torrent is for VIP user only!' />" : '');
@@ -215,7 +215,7 @@ function torrenttable($res, $variant = 'index')
         $icons[] = (XBT_TRACKER && $row['freetorrent'] >= 1 ? "<img src='{$site_config['pic_baseurl']}freedownload.gif' class='tooltipper icon' alt='Free Torrent' title='Free Torrent' />" : '');
         $icons[] = ($row['free'] != 0 ? "<img src='{$site_config['pic_baseurl']}gold.png' class='tooltipper icon' alt='Free Torrent' title='<div class=\"has-text-centered size_5 has-text-success\">FREE Torrent</div><div class=\"has-text-centered\">" . ($row['free'] > 1 ? 'Expires: ' . get_date($row['free'], 'DATE') . '<br>(' . mkprettytime($row['free'] - TIME_NOW) . ' to go)</div>' : '<div class="has-text-centered">Unlimited</div>') . "' />" : '');
         $icons[] = ($row['silver'] != 0 ? "<img src='{$site_config['pic_baseurl']}silver.png' class='tooltipper icon' alt='Silver Torrent' title='<div class=\"has-text-centered size_5 has-text-success\">Silver Torrent</div><div class=\"has-text-centered\">" . ($row['silver'] > 1 ? 'Expires: ' . get_date($row['silver'], 'DATE') . '<br>(' . mkprettytime($row['silver'] - TIME_NOW) . ' to go)</div>' : '<div class="has-text-centered">Unlimited</div>') . "' />" : '');
-        $title   = "
+        $title = "
             <span class='dt-tooltipper-large' data-tooltip-content='#desc_{$row['id']}_tooltip'>
                 <img src='{$site_config['pic_baseurl']}forums/mg.gif' class='icon' alt='Preview' />
                 <div class='tooltip_templates'>
@@ -246,7 +246,7 @@ function torrenttable($res, $variant = 'index')
         $icons[] = ($row['bump'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}up.gif' class='tooltipper icon' alt='Re-Animated torrent' title='<div class=\"size_5 has-text-centered has-text-success\">Bumped</div><span class=\"has-text-centered\">This torrent was ReAnimated!</span>' />" : '');
 
         if (!empty($row['newgenre'])) {
-            $newgenre        = [];
+            $newgenre = [];
             $row['newgenre'] = explode(',', $row['newgenre']);
             foreach ($row['newgenre'] as $foo) {
                 $newgenre[] = "<a href='{$site_config['baseurl']}/browse.php?search=" . strtolower(trim($foo)) . "&amp;searchin=genre'>" . ucfirst(strtolower(trim($foo))) . '</a>';
@@ -345,7 +345,7 @@ function torrenttable($res, $variant = 'index')
         }
         $rm_status = (!$booked ? ' style="display:none;"' : ' style="display:inline;"');
         $bm_status = ($booked ? ' style="display:none;"' : ' style="display:inline;"');
-        $bookmark  = "
+        $bookmark = "
                     <span id='bookmark{$id}' {$bm_status}>
                         <div class='level-center'>
                             <div class='flex-inrow'>

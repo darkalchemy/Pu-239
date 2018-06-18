@@ -18,12 +18,12 @@ $stdfoot = [
         get_file_name('upload_js'),
     ],
 ];
-$locale       = 'torrent';
-$locale_link  = 'details';
-$extra_link   = '';
-$sql_1        = 'name, owner, comments, anonymous FROM torrents'; // , anonymous
-$name         = 'name';
-$table_type   = $locale . 's';
+$locale = 'torrent';
+$locale_link = 'details';
+$extra_link = '';
+$sql_1 = 'name, owner, comments, anonymous FROM torrents'; // , anonymous
+$name = 'name';
+$table_type = $locale . 's';
 $_GET['type'] = (isset($_GET['type']) ? $_GET['type'] : (isset($_POST['locale']) ? $_POST['locale'] : ''));
 if (isset($_GET['type'])) {
     $type_options = [
@@ -32,20 +32,20 @@ if (isset($_GET['type'])) {
     ];
     if (isset($type_options[$_GET['type']])) {
         $locale_link = $type_options[$_GET['type']];
-        $locale      = $_GET['type'];
+        $locale = $_GET['type'];
     }
     switch ($_GET['type']) {
         case 'request':
-            $sql_1      = 'request FROM requests';
-            $name       = 'request';
+            $sql_1 = 'request FROM requests';
+            $name = 'request';
             $extra_link = '&req_details';
             $table_type = $locale . 's';
             break;
 
         default:
             //case 'torrent':
-            $sql_1      = 'name, owner, comments, anonymous FROM torrents'; // , anonymous
-            $name       = 'name';
+            $sql_1 = 'name, owner, comments, anonymous FROM torrents'; // , anonymous
+            $name = 'name';
             $table_type = $locale . 's';
             break;
     }
@@ -66,9 +66,9 @@ if ($action === 'add') {
         if (!$body) {
             stderr("{$lang['comment_error']}", "{$lang['comment_body']}");
         }
-        $owner            = (isset($arr['owner']) ? $arr['owner'] : 0);
+        $owner = (isset($arr['owner']) ? $arr['owner'] : 0);
         $arr['anonymous'] = (isset($arr['anonymous']) && $arr['anonymous'] === 'yes' ? 'yes' : 'no');
-        $arr['comments']  = (isset($arr['comments']) ? $arr['comments'] : 0);
+        $arr['comments'] = (isset($arr['comments']) ? $arr['comments'] : 0);
         if ($CURUSER['id'] == $owner && $arr['anonymous'] === 'yes' || (isset($_POST['anonymous']) && $_POST['anonymous'] === 'yes')) {
             $anon = "'yes'";
         } else {
@@ -94,11 +94,11 @@ if ($action === 'add') {
             //===end
         }
         // --- pm if new comment mod---//
-        $cpm   = sql_query('SELECT commentpm FROM users WHERE id = ' . sqlesc($owner)) or sqlerr(__FILE__, __LINE__);
+        $cpm = sql_query('SELECT commentpm FROM users WHERE id = ' . sqlesc($owner)) or sqlerr(__FILE__, __LINE__);
         $cpm_r = mysqli_fetch_assoc($cpm);
         if ($cpm_r['commentpm'] === 'yes') {
-            $added  = TIME_NOW;
-            $subby  = sqlesc('Someone has left a comment');
+            $added = TIME_NOW;
+            $subby = sqlesc('Someone has left a comment');
             $notifs = sqlesc("You have received a comment on your torrent [url={$site_config['baseurl']}/details.php?id={$id}] " . htmlsafechars($arr['name']) . '[/url].');
             sql_query('INSERT INTO messages (sender, receiver, subject, msg, added) VALUES(0, ' . sqlesc($arr['owner']) . ", $subby, $notifs, $added)") or sqlerr(__FILE__, __LINE__);
             $cache->increment('inbox_' . $arr['owner']);
@@ -118,7 +118,7 @@ if ($action === 'add') {
         stderr("{$lang['comment_error']}", "No $locale with that ID.");
     }
     $HTMLOUT = '';
-    $body    = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
+    $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
     $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['comment_add']}'" . htmlsafechars($arr[$name]) . "'</h1>
       <br><form name='compose' method='post' action='comment.php?action=add'>
       <input type='hidden' name='tid' value='{$id}'/>
@@ -141,7 +141,7 @@ if ($action === 'add') {
                         WHERE $locale = " . sqlesc($id) . '
                         ORDER BY c.id DESC
                         LIMIT 5';
-    $res     = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $allrows = [];
     while ($row = mysqli_fetch_assoc($res)) {
         $allrows[] = $row;
@@ -174,7 +174,7 @@ if ($action === 'add') {
         if ($body == '') {
             stderr("{$lang['comment_error']}", "{$lang['comment_body']}");
         }
-        $text     = htmlsafechars($body);
+        $text = htmlsafechars($body);
         $editedat = TIME_NOW;
         if (isset($_POST['lasteditedby']) || $CURUSER['class'] < UC_STAFF) {
             sql_query('UPDATE comments SET text = ' . sqlesc($text) . ", editedat = $editedat, editedby = " . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
@@ -211,7 +211,7 @@ if ($action === 'add') {
         stderr("{$lang['comment_error']}", "{$lang['comment_denied']}");
     }
     $commentid = (isset($_GET['cid']) ? (int) $_GET['cid'] : 0);
-    $tid       = (isset($_GET['tid']) ? (int) $_GET['tid'] : 0);
+    $tid = (isset($_GET['tid']) ? (int) $_GET['tid'] : 0);
     if (!is_valid_id($commentid)) {
         stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
     }
@@ -222,7 +222,7 @@ if ($action === 'add') {
     }
     $res = sql_query("SELECT $locale FROM comments WHERE id = " . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
-    $id  = 0;
+    $id = 0;
     if ($arr) {
         $id = $arr[$locale];
     }
@@ -235,7 +235,7 @@ if ($action === 'add') {
         if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
             sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus_per_comment']) . ' WHERE id =' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         }
-        $arr['comments']    = (isset($arr['comments']) ? $arr['comments'] : 0);
+        $arr['comments'] = (isset($arr['comments']) ? $arr['comments'] : 0);
         $update['comments'] = ($arr['comments'] - 1);
         $cache->update_row('torrent_details_' . $id, [
             'comments' => $update['comments'],

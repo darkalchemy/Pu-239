@@ -214,16 +214,16 @@ class bencdec
     // follows specifications. You won't get any invalid data when not using this option,
     // so only specify it if you need to make sure the data is perfectly valid as it will
     // slightly hurt decoding performance
-    const TYPE_INT  = 1;
-    const TYPE_STR  = 2;
+    const TYPE_INT = 1;
+    const TYPE_STR = 2;
     const TYPE_LIST = 3;
     const TYPE_DICT = 4;
     // initialize required variables for b-decoding
-    private static $bdata          = '';
-    private static $bdata_length   = 0;
+    private static $bdata = '';
+    private static $bdata_length = 0;
     private static $bdata_position = 0;
-    private static $bdata_depth    = 0;
-    private static $ext_valid      = false;
+    private static $bdata_depth = 0;
+    private static $ext_valid = false;
 
     /**
      * @param     $fn
@@ -264,10 +264,10 @@ class bencdec
             return self::decode_error('Input string empty');
         }
         self::$bdata_position = 0;
-        self::$bdata_depth    = 0;
-        self::$ext_valid      = false;
-        self::$bdata_length   = strlen($str);
-        self::$bdata          = $str;
+        self::$bdata_depth = 0;
+        self::$ext_valid = false;
+        self::$bdata_length = strlen($str);
+        self::$bdata = $str;
         unset($str);
         if ($options & self::OPTION_EXTENDED_VALIDATION) {
             self::$ext_valid = true;
@@ -279,10 +279,10 @@ class bencdec
             }
         }
         self::$bdata_position = 0;
-        self::$bdata_length   = 0;
-        self::$bdata          = '';
-        self::$bdata_depth    = 0;
-        self::$ext_valid      = false;
+        self::$bdata_length = 0;
+        self::$bdata = '';
+        self::$bdata_depth = 0;
+        self::$ext_valid = false;
 
         return $data;
     }
@@ -296,10 +296,10 @@ class bencdec
     {
         trigger_error('Badly B-Encoded data at position ' . self::$bdata_position . ($msg != '' ? ': ' . $msg : ''), E_USER_WARNING);
         self::$bdata_position = 0;
-        self::$bdata_length   = 0;
-        self::$bdata          = '';
-        self::$bdata_depth    = 0;
-        self::$ext_valid      = false;
+        self::$bdata_length = 0;
+        self::$bdata = '';
+        self::$bdata_depth = 0;
+        self::$ext_valid = false;
 
         return false;
     }
@@ -374,10 +374,10 @@ class bencdec
             return self::decode_error('No ending "e" for integer');
         }
         $lenuptoep = $epos - self::$bdata_position;
-        $idata     = @substr(self::$bdata, self::$bdata_position, $lenuptoep++);
+        $idata = @substr(self::$bdata, self::$bdata_position, $lenuptoep++);
         if (self::$ext_valid) {
             $ndata = $idata[0] === '-' ? @substr($idata, 1) : $idata;
-            $len   = strlen($ndata);
+            $len = strlen($ndata);
             if (!$len) {
                 return self::decode_error('Empty integer');
             }
@@ -432,7 +432,7 @@ class bencdec
                 return false;
             }
             $dict[$name] = $data;
-            $last_key    = $name;
+            $last_key = $name;
             unset($name, $data);
         }
         ++self::$bdata_position;
@@ -452,7 +452,7 @@ class bencdec
         if ($colpos === false) {
             return self::decode_error('No ":" to separate string from length');
         }
-        $llen  = $colpos - self::$bdata_position;
+        $llen = $colpos - self::$bdata_position;
         $ldata = @substr(self::$bdata, self::$bdata_position, $llen++);
         if (self::$ext_valid) {
             if ($ldata[0] === '0' && strlen($ldata) > 1) {

@@ -7,27 +7,27 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
-$lang    = array_merge($lang, load_language('bonusmanager'));
+$lang = array_merge($lang, load_language('bonusmanager'));
 $HTMLOUT = $count = '';
-$res     = sql_query('SELECT * FROM bonus ORDER BY orderid, bonusname') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT * FROM bonus ORDER BY orderid, bonusname') or sqlerr(__FILE__, __LINE__);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['id']) || isset($_POST['orderid']) || isset($_POST['points']) || isset($_POST['pointspool']) || isset($_POST['minpoints']) || isset($_POST['description']) || isset($_POST['enabled']) || isset($_POST['minclass'])) {
-        $id         = (int) $_POST['id'];
-        $points     = (int) $_POST['bonuspoints'];
+        $id = (int) $_POST['id'];
+        $points = (int) $_POST['bonuspoints'];
         $pointspool = (int) $_POST['pointspool'];
-        $minpoints  = (int) $_POST['minpoints'];
-        $minclass   = (int) $_POST['minclass'];
-        $descr      = htmlsafechars($_POST['description']);
-        $enabled    = 'yes';
+        $minpoints = (int) $_POST['minpoints'];
+        $minclass = (int) $_POST['minclass'];
+        $descr = htmlsafechars($_POST['description']);
+        $enabled = 'yes';
         if (empty($_POST['enabled'])) {
             $enabled = 'no';
         }
         $orderid = (int) $_POST['orderid'];
-        $sql     = sql_query('UPDATE bonus SET orderid = ' . sqlesc($orderid) . ', points = ' . sqlesc($points) . ', pointspool=' . sqlesc($pointspool) . ', minpoints=' . sqlesc($minpoints) . ', minclass=' . sqlesc($minclass) . ', enabled = ' . sqlesc($enabled) . ', description = ' . sqlesc($descr) . ' WHERE id = ' . sqlesc($id))     or sqlerr(__FILE__, __LINE__);
-        sql_query("UPDATE bonus SET orderid = orderid + 1 WHERE orderid >= $orderid AND id != $id")                                                                                                                                                                                                                                             or sqlerr(__FILE__, __LINE__);
+        $sql = sql_query('UPDATE bonus SET orderid = ' . sqlesc($orderid) . ', points = ' . sqlesc($points) . ', pointspool=' . sqlesc($pointspool) . ', minpoints=' . sqlesc($minpoints) . ', minclass=' . sqlesc($minclass) . ', enabled = ' . sqlesc($enabled) . ', description = ' . sqlesc($descr) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE bonus SET orderid = orderid + 1 WHERE orderid >= $orderid AND id != $id") or sqlerr(__FILE__, __LINE__);
 
         $query = sql_query('SELECT id FROM bonus ORDER BY orderid, id');
-        $iter  = 0;
+        $iter = 0;
         while ($arr = mysqli_fetch_assoc($query)) {
             sql_query('UPDATE bonus SET orderid = ' . ++$iter . ' WHERE id = ' . $arr['id']) or sqlerr(__FILE__, __LINE__);
         }

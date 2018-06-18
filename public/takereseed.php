@@ -4,13 +4,13 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 check_user_status();
 global $CURUSER, $site_config, $cache, $session;
 
-$pm_what     = isset($_POST['pm_what']) && $_POST['pm_what'] === 'last10' ? 'last10' : 'owner';
-$reseedid    = (int) $_POST['reseedid'];
-$uploader    = (int) $_POST['uploader'];
+$pm_what = isset($_POST['pm_what']) && $_POST['pm_what'] === 'last10' ? 'last10' : 'owner';
+$reseedid = (int) $_POST['reseedid'];
+$uploader = (int) $_POST['uploader'];
 $use_subject = true;
-$subject     = 'Request reseed!';
-$pm_msg      = 'User ' . $CURUSER['username'] . ' asked for a reseed on torrent ' . $site_config['baseurl'] . '/details.php?id=' . $reseedid . " !\nThank You!";
-$pms         = [];
+$subject = 'Request reseed!';
+$pm_msg = 'User ' . $CURUSER['username'] . ' asked for a reseed on torrent ' . $site_config['baseurl'] . '/details.php?id=' . $reseedid . " !\nThank You!";
+$pms = [];
 if ($pm_what === 'last10') {
     $res = sql_query('SELECT s.userid, s.torrentid FROM snatched AS s WHERE s.torrentid =' . sqlesc($reseedid) . " AND s.seeder = 'yes' LIMIT 10") or sqlerr(__FILE__, __LINE__);
     while ($row = mysqli_fetch_assoc($res)) {

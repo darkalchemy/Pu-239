@@ -55,7 +55,7 @@ function deletetorrent_xbt($id)
 }
 
 $sql = sql_query('SELECT name, owner, info_hash FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$q   = mysqli_fetch_assoc($sql);
+$q = mysqli_fetch_assoc($sql);
 if (!$q) {
     stderr('Oops', 'Something went wrong - Contact admin!!');
 }

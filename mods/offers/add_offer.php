@@ -13,8 +13,8 @@ if ($CURUSER['class'] < $site_config['offer_min_class']) {
     die();
 }
 $gigsneeded = ($site_config['offer_gigs_upped'] * 1024 * 1024 * 1024);
-$gigsupped  = $CURUSER['uploaded'];
-$ratio      = (($CURUSER['downloaded'] > 0) ? ($CURUSER['uploaded'] / $CURUSER['downloaded']) : 0);
+$gigsupped = $CURUSER['uploaded'];
+$ratio = (($CURUSER['downloaded'] > 0) ? ($CURUSER['uploaded'] / $CURUSER['downloaded']) : 0);
 if ($CURUSER['class'] < UC_VIP) {
     $gigsdowned = $CURUSER['downloaded'];
     if ($gigsdowned >= $gigsneeded) {
@@ -57,7 +57,7 @@ Please search torrents before adding an offer!</td></tr><tr><td>
         $deadchkbox .= ' checked';
     }
     $deadchkbox .= " /> including dead torrents\n";
-    $HTMLOUT    .= ' ' . $catdropdown . ' </select> ' . $deadchkbox . " 
+    $HTMLOUT .= ' ' . $catdropdown . ' </select> ' . $deadchkbox . " 
 <input type='submit' value='Search!' class='button is-small' /></td></tr></table></form>
 <br>\n";
     $HTMLOUT .= "<form method='post' name='compose' action='viewoffers.php?new_offer'><a name='add' id='add'></a>
@@ -65,8 +65,8 @@ Please search torrents before adding an offer!</td></tr><tr><td>
 Offers are for Users with a good ratio who have uploaded at least " . $site_config['offer_gigs_upped'] . " gigs Only... Share and you shall recieve!</td></tr>
 <tr><td><b>Title</b></td><td><input type='text' size='40' name='offertitle' />
 <select name='category'><option value='0'>(Select a Category)</option>\n";
-    $res2         = sql_query('SELECT id, name FROM categories ORDER BY name');
-    $num          = mysqli_num_rows($res2);
+    $res2 = sql_query('SELECT id, name FROM categories ORDER BY name');
+    $num = mysqli_num_rows($res2);
     $catdropdown2 = '';
     for ($i = 0; $i < $num; ++$i) {
         $cats2 = mysqli_fetch_assoc($res2);
@@ -106,15 +106,15 @@ if (mysqli_num_rows($rescount) > 0) {
     <td class='colhead'>Offered By</td></tr>\n";
     foreach ($cats as $key => $value) {
         $change[$value['id']] = [
-            'id'    => $value['id'],
-            'name'  => $value['name'],
+            'id' => $value['id'],
+            'name' => $value['name'],
             'image' => $value['image'],
         ];
     }
     while ($arr = mysqli_fetch_assoc($res)) {
-        $addedby  = "<td style='padding: 0;'><b><a href='userdetails.php?id=$arr[offered_by_user_id]'>$arr[username]</a></b></td>";
-        $catname  = htmlspecialchars($change[$arr['cat']]['name']);
-        $catpic   = htmlspecialchars($change[$arr['cat']]['image']);
+        $addedby = "<td style='padding: 0;'><b><a href='userdetails.php?id=$arr[offered_by_user_id]'>$arr[username]</a></b></td>";
+        $catname = htmlspecialchars($change[$arr['cat']]['name']);
+        $catpic = htmlspecialchars($change[$arr['cat']]['image']);
         $catimage = "<img src='{$site_config['pic_baseurl']}caticons/" . $catpic . "' title='$catname' alt='$catname' />";
         $HTMLOUT .= '<tr>
     <td>' . $catimage . "</td>

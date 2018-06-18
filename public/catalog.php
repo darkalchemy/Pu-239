@@ -85,7 +85,7 @@ if (strlen($search) > 4) {
     $params = [
         ':name' => 'a%',
     ];
-    $p      = 'letter=a&amp;';
+    $p = 'letter=a&amp;';
     $letter = 'a';
 }
 
@@ -96,9 +96,9 @@ $count = $fluent->from('torrents')
     ->fetch('count');
 
 $perpage = 10;
-$pager   = pager($perpage, $count, $_SERVER['PHP_SELF'] . '?' . $p);
-$top     = $bottom     = '';
-$rows    = $tids    = [];
+$pager = pager($perpage, $count, $_SERVER['PHP_SELF'] . '?' . $p);
+$top = $bottom = '';
+$rows = $tids = [];
 
 $query = $fluent->from('torrents')
     ->select(null)
@@ -118,7 +118,7 @@ $query = $fluent->from('torrents')
 
 foreach ($query as $ta) {
     $rows[] = $ta;
-    $tid[]  = $ta['id'];
+    $tid[] = $ta['id'];
 }
 
 if (!empty($tid)) {

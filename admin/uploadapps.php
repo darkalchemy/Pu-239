@@ -7,7 +7,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang, $fluent, $cache;
 
-$lang             = array_merge($lang, load_language('uploadapps'));
+$lang = array_merge($lang, load_language('uploadapps'));
 $possible_actions = [
     'show',
     'viewapp',
@@ -25,7 +25,7 @@ $HTMLOUT = $where = $where1 = '';
 if ($action === 'app' || $action === 'show') {
     if ($action === 'show') {
         $hide = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'>{$lang['uploadapps_hide']}</a>";
-        $res  = $fluent->from('uploadapp')
+        $res = $fluent->from('uploadapp')
             ->select('users.uploaded')
             ->select('users.downloaded')
             ->select('users.added')
@@ -35,7 +35,7 @@ if ($action === 'app' || $action === 'show') {
             ->fetchAll();
     } else {
         $hide = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=show'>{$lang['uploadapps_show']}</a>";
-        $res  = $fluent->from('uploadapp')
+        $res = $fluent->from('uploadapp')
             ->select('users.uploaded')
             ->select('users.downloaded')
             ->select('users.added')
@@ -45,9 +45,9 @@ if ($action === 'app' || $action === 'show') {
             ->fetchAll();
     }
 
-    $count   = count($res);
+    $count = count($res);
     $perpage = 15;
-    $pager   = pager($perpage, $count, $site_config['baseurl'] . '/staffpanel.php?tool=uploadapps&amp;');
+    $pager = pager($perpage, $count, $site_config['baseurl'] . '/staffpanel.php?tool=uploadapps&amp;');
     $HTMLOUT .= "
         <div class='bottom20'>
             <ul class='level-center bg-06'>
@@ -85,7 +85,7 @@ if ($action === 'app' || $action === 'show') {
                 $status = "<span style='color: blue;'>{$lang['uploadapps_pending']}</span>";
             }
             $membertime = get_date($arr['added'], '', 0, 1);
-            $elapsed    = get_date($arr['applied'], '', 0, 1);
+            $elapsed = get_date($arr['applied'], '', 0, 1);
             $body .= "
             <tr>
                 <td>{$elapsed}</td>
@@ -111,7 +111,7 @@ if ($action === 'app' || $action === 'show') {
 }
 
 if ($action === 'viewapp') {
-    $id  = (int) $_GET['id'];
+    $id = (int) $_GET['id'];
     $arr = $fluent->from('uploadapp')
         ->select('users.uploaded')
         ->select('users.downloaded')
@@ -122,7 +122,7 @@ if ($action === 'viewapp') {
         ->fetch();
 
     $membertime = get_date($arr['added'], '', 0, 1);
-    $elapsed    = get_date($arr['applied'], '', 0, 1);
+    $elapsed = get_date($arr['applied'], '', 0, 1);
     $HTMLOUT .= '
     <h1>Uploader application</h1>';
     $table = "
@@ -241,16 +241,16 @@ if ($action === 'acceptapp') {
         ->where('uploadapp.id = ?', $id)
         ->fetch();
 
-    $note       = htmlsafechars($_POST['note']);
-    $subject    = sqlesc($lang['uploadapps_subject']);
-    $msg        = sqlesc("{$lang['uploadapps_msg']}\n\n{$lang['uploadapps_msg_note']} $note");
-    $msg1       = sqlesc("{$lang['uploadapps_msg_user']} [url={$site_config['baseurl']}/userdetails.php?id=" . (int) $arr['uid'] . "][b]{$arr['username']}[/b][/url] {$lang['uploadapps_msg_been']} {$CURUSER['username']}.");
+    $note = htmlsafechars($_POST['note']);
+    $subject = sqlesc($lang['uploadapps_subject']);
+    $msg = sqlesc("{$lang['uploadapps_msg']}\n\n{$lang['uploadapps_msg_note']} $note");
+    $msg1 = sqlesc("{$lang['uploadapps_msg_user']} [url={$site_config['baseurl']}/userdetails.php?id=" . (int) $arr['uid'] . "][b]{$arr['username']}[/b][/url] {$lang['uploadapps_msg_been']} {$CURUSER['username']}.");
     $modcomment = get_date(TIME_NOW, 'DATE', 1) . $lang['uploadapps_modcomment'] . $CURUSER['username'] . '.' . ($arr['modcomment'] != '' ? "\n" : '') . "{$arr['modcomment']}";
-    $dt         = TIME_NOW;
+    $dt = TIME_NOW;
     sql_query("UPDATE uploadapp SET status = 'accepted', comment = " . sqlesc($note) . ', moderator = ' . sqlesc($CURUSER['username']) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE users SET class = ' . UC_UPLOADER . ', modcomment = ' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($arr['uid']) . ' AND class < ' . UC_STAFF) or sqlerr(__FILE__, __LINE__);
     $cache->update_row('user' . $arr['uid'], [
-        'class'      => 3,
+        'class' => 3,
         'modcomment' => $modcomment,
     ], $site_config['expires']['user_cache']);
     sql_query('INSERT INTO messages(sender, receiver, added, msg, subject, poster) VALUES(0, ' . sqlesc($arr['uid']) . ", $dt, $msg, $subject, 0)") or sqlerr(__FILE__, __LINE__);
@@ -268,14 +268,14 @@ if ($action === 'rejectapp') {
     if (!is_valid_id($id)) {
         stderr($lang['uploadapps_error'], $lang['uploadapps_no_up']);
     }
-    $res     = sql_query('SELECT uploadapp.id, users.id AS uid FROM uploadapp INNER JOIN users ON uploadapp.userid = users.id WHERE uploadapp.id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $arr     = mysqli_fetch_assoc($res);
-    $reason  = htmlsafechars($_POST['reason']);
+    $res = sql_query('SELECT uploadapp.id, users.id AS uid FROM uploadapp INNER JOIN users ON uploadapp.userid = users.id WHERE uploadapp.id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    $arr = mysqli_fetch_assoc($res);
+    $reason = htmlsafechars($_POST['reason']);
     $subject = sqlesc($lang['uploadapps_subject']);
-    $msg     = sqlesc("{$lang['uploadapps_rej_no']}\n\n{$lang['uploadapps_rej_reason']} $reason");
-    $dt      = TIME_NOW;
+    $msg = sqlesc("{$lang['uploadapps_rej_no']}\n\n{$lang['uploadapps_rej_reason']} $reason");
+    $dt = TIME_NOW;
     sql_query("UPDATE uploadapp SET status = 'rejected', comment = " . sqlesc($reason) . ', moderator = ' . sqlesc($CURUSER['username']) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    sql_query("INSERT INTO messages(sender, receiver, added, msg, subject, poster) VALUES(0, {$arr['uid']}, $dt, $msg, $subject, 0)")                                  or sqlerr(__FILE__, __LINE__);
+    sql_query("INSERT INTO messages(sender, receiver, added, msg, subject, poster) VALUES(0, {$arr['uid']}, $dt, $msg, $subject, 0)") or sqlerr(__FILE__, __LINE__);
     $cache->delete('new_uploadapp_');
     stderr($lang['uploadapps_app_rej'], "{$lang['uploadapps_app_rejbeen']} {$lang['uploadapps_app_click']} <a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'><b>{$lang['uploadapps_app_here']}</b></a>{$lang['uploadapps_app_return']}");
 }

@@ -7,7 +7,7 @@ require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
 global $CURUSER, $site_config;
 
-$lang    = load_language('global');
+$lang = load_language('global');
 $HTMLOUT = '';
 if (!function_exists('htmlsafechars')) {
     /**
@@ -46,7 +46,7 @@ if (!function_exists('htmlsafechars')) {
 }
 
 $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : ''));
-$mode   = (isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '');
+$mode = (isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'upload' || $action === 'edit') {
         $langs = isset($_POST['language']) ? htmlsafechars($_POST['language']) : '';
@@ -62,9 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             stderr('Upload failed', 'You forgot to add the imdb link');
         }
         $comment = isset($_POST['comment']) ? htmlsafechars($_POST['comment']) : '';
-        $poster  = isset($_POST['poster']) ? htmlsafechars($_POST['poster']) : '';
-        $fps     = isset($_POST['fps']) ? htmlsafechars($_POST['fps']) : '';
-        $cd      = isset($_POST['cd']) ? htmlsafechars($_POST['cd']) : '';
+        $poster = isset($_POST['poster']) ? htmlsafechars($_POST['poster']) : '';
+        $fps = isset($_POST['fps']) ? htmlsafechars($_POST['fps']) : '';
+        $cd = isset($_POST['cd']) ? htmlsafechars($_POST['cd']) : '';
         if ($action === 'upload') {
             $file = $_FILES['sub'];
             if (!isset($file)) {
@@ -73,10 +73,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($file['size'] > $site_config['sub_max_size']) {
                 stderr('Upload failed', 'What the hell did you upload?');
             }
-            $fname     = $file['name'];
+            $fname = $file['name'];
             $temp_name = $file['tmp_name'];
-            $ext       = (substr($fname, -3));
-            $allowed   = [
+            $ext = (substr($fname, -3));
+            $allowed = [
                 'srt',
                 'sub',
                 'txt',
@@ -86,8 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $new_name = md5(TIME_NOW);
             $filename = "$new_name.$ext";
-            $date     = TIME_NOW;
-            $owner    = $CURUSER['id'];
+            $date = TIME_NOW;
+            $owner = $CURUSER['id'];
             sql_query('INSERT INTO subtitles (name , filename,imdb,comment, lang, fps, poster, cds, added, owner ) VALUES (' . implode(',', array_map('sqlesc', [
                           $releasename,
                           $filename,
@@ -326,7 +326,7 @@ elseif ($mode === 'details') {
         if (mysqli_num_rows($res) == 0) {
             stderr('Sorry', 'There is no subtitle with that id');
         }
-        $file        = $site_config['sub_up_dir'] . '/' . $arr['filename'];
+        $file = $site_config['sub_up_dir'] . '/' . $arr['filename'];
         $fileContent = file_get_contents($file);
         $HTMLOUT .= "<!doctype html>
 <html>
@@ -355,14 +355,14 @@ elseif ($mode === 'details') {
     } else {
         $where = '';
     }
-    $link  = ($s && $w ? "s=$s&amp;w=$w&amp;" : '');
+    $link = ($s && $w ? "s=$s&amp;w=$w&amp;" : '');
     $count = get_row_count('subtitles AS s', "$where");
     if ($count == 0 && !$s && !$w) {
         stdmsg('', 'There is no subtitle, go <a href="subtitles.php?mode=upload">here</a> and start uploading.', false);
     }
     $perpage = 5;
-    $pager   = pager($perpage, $count, 'subtitles.php?' . $link);
-    $res     = sql_query("SELECT s.id, s.name,s.lang, s.imdb,s.fps,s.poster,s.cds,s.hits,s.added,s.owner,s.comment, u.username FROM subtitles AS s LEFT JOIN users AS u ON s.owner=u.id $where ORDER BY s.added DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
+    $pager = pager($perpage, $count, 'subtitles.php?' . $link);
+    $res = sql_query("SELECT s.id, s.name,s.lang, s.imdb,s.fps,s.poster,s.cds,s.hits,s.added,s.owner,s.comment, u.username FROM subtitles AS s LEFT JOIN users AS u ON s.owner=u.id $where ORDER BY s.added DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
     $HTMLOUT .= "<table width='700' style='font-weight:bold'>
 <tr><td style='border:none'>
 <fieldset style='text-align:center; border:#0066CC solid 1px; background-color:#999999'>

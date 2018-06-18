@@ -29,8 +29,8 @@ class AJAXChatLanguage
     public function __construct($availableLangCodes, $defaultLangCode, $langCode = null, $strictMode = false)
     {
         $this->_regExpAcceptLangCode = '/^([a-z]{1,8}(?:-[a-z]{1,8})*)(?:;\s*q=(0(?:\.[0-9]{1,3})?|1(?:\.0{1,3})?))?$/i';
-        $this->_availableLangCodes   = $availableLangCodes;
-        $this->_defaultLangCode      = $defaultLangCode;
+        $this->_availableLangCodes = $availableLangCodes;
+        $this->_defaultLangCode = $defaultLangCode;
         if ($langCode && in_array($langCode, $availableLangCodes)) {
             $this->_langCode = $langCode;
         }
@@ -68,7 +68,7 @@ class AJAXChatLanguage
         // Split up the HTTP_ACCEPT_LANGUAGE header:
         $acceptedLanguages = preg_split('/,\s*/', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
 
-        $currentLangCode    = $this->_defaultLangCode;
+        $currentLangCode = $this->_defaultLangCode;
         $currentLangQuality = 0.0;
 
         foreach ($acceptedLanguages as $acceptedLanguage) {
@@ -98,7 +98,7 @@ class AJAXChatLanguage
                 if (in_array($langCode, $this->_availableLangCodes)) {
                     // Check the quality setting:
                     if ($langQuality > $currentLangQuality) {
-                        $currentLangCode    = $langCode;
+                        $currentLangCode = $langCode;
                         $currentLangQuality = $langQuality;
                         break;
                     }

@@ -30,7 +30,7 @@ function stdhead($title = '', $stdhead = null)
     }
 
     $body_class = 'background-16 h-style-9 text-9 skin-2';
-    $htmlout    = "<!doctype html>
+    $htmlout = "<!doctype html>
 <html>
 <head>
     <meta charset='utf-8'>
@@ -55,7 +55,7 @@ function stdhead($title = '', $stdhead = null)
         }
     </script>";
     $current_page = basename($_SERVER['PHP_SELF']);
-    $captcha      = [
+    $captcha = [
     'login.php',
     'takelogin.php',
     'signup.php',
@@ -181,10 +181,10 @@ function stdfoot($stdfoot = false)
     require_once INCL_DIR . 'bbcode_functions.php';
     global $CURUSER, $site_config, $starttime, $query_stat, $querytime, $lang, $cache, $session;
 
-    $header    = $uptime    = $htmlfoot    = '';
-    $debug     = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
-    $queries   = !empty($query_stat) ? count($query_stat) : 0;
-    $seconds   = microtime(true) - $starttime;
+    $header = $uptime = $htmlfoot = '';
+    $debug = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
+    $queries = !empty($query_stat) ? count($query_stat) : 0;
+    $seconds = microtime(true) - $starttime;
     $r_seconds = round($seconds, 5);
     $querytime = $querytime === null ? 0 : $querytime;
 
@@ -193,7 +193,7 @@ function stdfoot($stdfoot = false)
             $stats = apcu_cache_info();
             if ($stats) {
                 $stats['Hits'] = number_format($stats['num_hits'] / ($stats['num_hits'] + $stats['num_misses']) * 100, 3);
-                $header        = "{$lang['gl_stdfoot_querys_apcu1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['num_entries']) . "{$lang['gl_stdfoot_querys_mstat6']}" . human_filesize($stats['mem_size']);
+                $header = "{$lang['gl_stdfoot_querys_apcu1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['num_entries']) . "{$lang['gl_stdfoot_querys_mstat6']}" . human_filesize($stats['mem_size']);
             }
         } elseif ($_ENV['CACHE_DRIVER'] === 'redis' && extension_loaded('redis')) {
             $client = new \Redis();
@@ -218,7 +218,7 @@ function stdfoot($stdfoot = false)
             $stats = !empty($stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"]) ? $stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"] : null;
             if ($stats && !empty($stats['get_hits']) && !empty($stats['cmd_get'])) {
                 $stats['Hits'] = number_format(($stats['get_hits'] / $stats['cmd_get']) * 100, 3);
-                $header        = $lang['gl_stdfoot_querys_mstat3'] . $stats['Hits'] . $lang['gl_stdfoot_querys_mstat4'] . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['curr_items']) . "{$lang['gl_stdfoot_querys_mstat6']}" . human_filesize($stats['bytes']);
+                $header = $lang['gl_stdfoot_querys_mstat3'] . $stats['Hits'] . $lang['gl_stdfoot_querys_mstat4'] . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['curr_items']) . "{$lang['gl_stdfoot_querys_mstat6']}" . human_filesize($stats['bytes']);
             }
         } elseif ($_ENV['CACHE_DRIVER'] === 'files') {
             $header = "{$lang['gl_stdfoot_querys_fly1']}{$_ENV['FILES_PATH']} {$lang['gl_stdfoot_querys_fly2']}" . GetDirectorySize($_ENV['FILES_PATH']);

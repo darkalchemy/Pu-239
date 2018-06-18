@@ -9,8 +9,8 @@ $lang = load_language('global');
 /** Size of Pot**/
 $potsize = 10000;
 /** Site Pot **/
-$Pot_query = mysqli_query($GLOBALS['___mysqli_ston'], "SELECT value_s, value_i, value_u FROM avps WHERE arg = 'sitepot'")     or sqlerr(__FILE__, __LINE__);
-$SitePot   = mysqli_fetch_assoc($Pot_query)                                                                                   or stderr('ERROR', 'db error.');
+$Pot_query = mysqli_query($GLOBALS['___mysqli_ston'], "SELECT value_s, value_i, value_u FROM avps WHERE arg = 'sitepot'") or sqlerr(__FILE__, __LINE__);
+$SitePot = mysqli_fetch_assoc($Pot_query) or stderr('ERROR', 'db error.');
 if ($SitePot['value_u'] < TIME_NOW && $SitePot['value_s'] == '1') {
     mysqli_query($GLOBALS['___mysqli_ston'], "UPDATE avps SET value_i = 0, value_s = '0' WHERE arg = 'sitepot'") or sqlerr(__FILE__, __LINE__);
     header('Location: sitepot.php');
@@ -22,16 +22,16 @@ if ($SitePot['value_i'] == $potsize) {
 $want_pot = (isset($_POST['want_pot']) ? (int) $_POST['want_pot'] : '');
 /** Valid amounts can give **/
 $pot_options = [
-    1     => 1,
-    5     => 5,
-    10    => 10,
-    25    => 25,
-    50    => 50,
-    100   => 100,
-    500   => 500,
-    1000  => 1000,
-    2500  => 2500,
-    5000  => 5000,
+    1 => 1,
+    5 => 5,
+    10 => 10,
+    25 => 25,
+    50 => 50,
+    100 => 100,
+    500 => 500,
+    1000 => 1000,
+    2500 => 2500,
+    5000 => 5000,
     10000 => 10000,
     50000 => 50000,
 ];

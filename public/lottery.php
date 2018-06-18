@@ -6,21 +6,21 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config;
 
-$lang         = load_language('global');
-$html         = '';
+$lang = load_language('global');
+$html = '';
 $lottery_root = ROOT_DIR . 'lottery' . DIRECTORY_SEPARATOR;
-$valid        = [
+$valid = [
     'config' => [
         'minclass' => UC_STAFF,
-        'file'     => $lottery_root . 'config.php',
+        'file' => $lottery_root . 'config.php',
     ],
     'viewtickets' => [
         'minclass' => UC_STAFF,
-        'file'     => $lottery_root . 'viewtickets.php',
+        'file' => $lottery_root . 'viewtickets.php',
     ],
     'tickets' => [
         'minclass' => MIN_TO_PLAY,
-        'file'     => $lottery_root . 'tickets.php',
+        'file' => $lottery_root . 'tickets.php',
     ],
 ];
 $do = isset($_GET['action']) && in_array($_GET['action'], array_keys($valid)) ? $_GET['action'] : '';
@@ -58,9 +58,9 @@ switch (true) {
         //get last lottery data
         if (!empty($lottery_config['lottery_winners'])) {
             $html .= stdmsg('Last lottery', '' . get_date($lottery_config['lottery_winners_time'], 'LONG') . '');
-            $uids         = (strpos($lottery_config['lottery_winners'], '|') ? explode('|', $lottery_config['lottery_winners']) : $lottery_config['lottery_winners']);
+            $uids = (strpos($lottery_config['lottery_winners'], '|') ? explode('|', $lottery_config['lottery_winners']) : $lottery_config['lottery_winners']);
             $last_winners = [];
-            $qus          = sql_query('SELECT id, username FROM users WHERE ' . (is_array($uids) ? 'id IN (' . join(',', $uids) . ')' : 'id = ' . $uids)) or sqlerr(__FILE__, __LINE__);
+            $qus = sql_query('SELECT id, username FROM users WHERE ' . (is_array($uids) ? 'id IN (' . join(',', $uids) . ')' : 'id = ' . $uids)) or sqlerr(__FILE__, __LINE__);
             while ($aus = mysqli_fetch_assoc($qus)) {
                 $last_winners[] = format_username($aus['id']);
             }

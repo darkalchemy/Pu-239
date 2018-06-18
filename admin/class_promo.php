@@ -15,11 +15,11 @@ if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'] /*$allowed_ids
 }
 $pconf = sql_query('SELECT * FROM class_promo ORDER BY id ASC ') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($pconf)) {
-    $class_config[$ac['name']]['id']        = $ac['id'];
-    $class_config[$ac['name']]['name']      = $ac['name'];
+    $class_config[$ac['name']]['id'] = $ac['id'];
+    $class_config[$ac['name']]['name'] = $ac['name'];
     $class_config[$ac['name']]['min_ratio'] = $ac['min_ratio'];
-    $class_config[$ac['name']]['uploaded']  = $ac['uploaded'];
-    $class_config[$ac['name']]['time']      = $ac['time'];
+    $class_config[$ac['name']]['uploaded'] = $ac['uploaded'];
+    $class_config[$ac['name']]['time'] = $ac['time'];
     $class_config[$ac['name']]['low_ratio'] = $ac['low_ratio'];
 }
 $possible_modes = [
@@ -36,19 +36,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($mode === 'edit') {
         foreach ($class_config as $c_name => $value) {
             // handing from database
-            $c_value     = $value['id']; // $key is like 0, 1, 2 etc....
-            $c_name      = strtoupper($value['name']);
+            $c_value = $value['id']; // $key is like 0, 1, 2 etc....
+            $c_name = strtoupper($value['name']);
             $c_min_ratio = $value['min_ratio'];
-            $c_uploaded  = $value['uploaded'];
-            $c_time      = $value['time'];
+            $c_uploaded = $value['uploaded'];
+            $c_time = $value['time'];
             $c_low_ratio = $value['low_ratio'];
             // handling from posting of contents
             $post_data = $_POST[$c_name]; //    0=> name,1=>min_ratio,2=>uploaded,3=>time,4=>low_ratio
-            $value     = $post_data[0];
-            $name      = $post_data[1];
+            $value = $post_data[0];
+            $name = $post_data[1];
             $min_ratio = strtoupper($post_data[2]);
-            $uploaded  = $post_data[3];
-            $time      = $post_data[4];
+            $uploaded = $post_data[3];
+            $time = $post_data[4];
             $low_ratio = $post_data[5];
 
             if (isset($_POST[$c_name][0]) && (($value != $c_value) || ($name != $c_name) || ($min_ratio != $c_min_ratio) || ($uploaded != $c_uploaded) || ($time != $c_time) || ($low_ratio != $c_low_ratio))) {
@@ -66,10 +66,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //ADD CLASS
     if ($mode === 'add') {
         print_r($_POST, true);
-        $name      = isset($_POST['name']) ? htmlsafechars($_POST['name']) : stderr($lang['classpromo_error'], $lang['classpromo_err_clsname']);
+        $name = isset($_POST['name']) ? htmlsafechars($_POST['name']) : stderr($lang['classpromo_error'], $lang['classpromo_err_clsname']);
         $min_ratio = isset($_POST['min_ratio']) ? $_POST['min_ratio'] : stderr($lang['classpromo_error'], $lang['classpromo_err_minratio']);
-        $uploaded  = isset($_POST['uploaded']) ? (int) $_POST['uploaded'] : stderr($lang['classpromo_error'], $lang['classpromo_err_upl']);
-        $time      = isset($_POST['time']) ? (int) $_POST['time'] : stderr($lang['classpromo_error'], $lang['classpromo_err_time']);
+        $uploaded = isset($_POST['uploaded']) ? (int) $_POST['uploaded'] : stderr($lang['classpromo_error'], $lang['classpromo_err_upl']);
+        $time = isset($_POST['time']) ? (int) $_POST['time'] : stderr($lang['classpromo_error'], $lang['classpromo_err_time']);
         $low_ratio = isset($_POST['low_ratio']) ? $_POST['low_ratio'] : stderr($lang['classpromo_error'], $lang['classpromo_err_lowratio']);
 
         if (sql_query('INSERT INTO class_promo (name, min_ratio,uploaded,time,low_ratio) VALUES(' . sqlesc($name) . ',' . sqlesc($min_ratio) . ',' . sqlesc($uploaded) . ',' . sqlesc($time) . ',' . sqlesc($low_ratio) . ')')) {

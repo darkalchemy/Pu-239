@@ -1,9 +1,9 @@
 <?php
 
 global $lang;
-$post_id  = (isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0));
+$post_id = (isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0));
 $topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
-$mode     = (isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '');
+$mode = (isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '');
 if (!is_valid_id($post_id) || !is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }

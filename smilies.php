@@ -5,7 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'emoticons.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-$lang    = load_language('global');
+$lang = load_language('global');
 $HTMLOUT = stdhead();
 $HTMLOUT .= begin_main_frame();
 $HTMLOUT .= insert_smilies_frame();

@@ -6,14 +6,14 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $site_config, $fluent;
 
-$lang    = array_merge(load_language('global'), load_language('staff'));
+$lang = array_merge(load_language('global'), load_language('staff'));
 $stdhead = [
     'css' => [
     ],
 ];
 $support = $mods = $admin = $sysop = [];
 $htmlout = $firstline = '';
-$query   = $fluent->from('users')
+$query = $fluent->from('users')
     ->select(null)
     ->select('users.id')
     ->select('users.class')
@@ -55,14 +55,14 @@ function DoStaff($staff_array, $staffclass)
         return null;
     }
     $htmlout = $body = '';
-    $dt      = TIME_NOW - 180;
+    $dt = TIME_NOW - 180;
 
     $htmlout .= "
                 <h2 class='left10 top20'>{$staffclass}</h2>";
     foreach ($staff_array as $staff) {
         $body .= '
                     <tr>';
-        $flagpic  = !empty($staff['flagpic']) ? "{$site_config['pic_baseurl']}flag/{$staff['flagpic']}" : '';
+        $flagpic = !empty($staff['flagpic']) ? "{$site_config['pic_baseurl']}flag/{$staff['flagpic']}" : '';
         $flagname = !empty($staff['flagname']) ? $staff['flagname'] : '';
         $body .= '
                         <td>' . format_username($staff['id']) . "</td>
@@ -83,7 +83,7 @@ $dt = TIME_NOW - 180;
 if (!empty($support)) {
     $body = '';
     foreach ($support as $a) {
-        $flagpic  = !empty($staff['flagpic']) ? "{$site_config['pic_baseurl']}flag/{$staff['flagpic']}" : '';
+        $flagpic = !empty($staff['flagpic']) ? "{$site_config['pic_baseurl']}flag/{$staff['flagpic']}" : '';
         $flagname = !empty($staff['flagname']) ? $staff['flagname'] : '';
         $body .= '
                 <tr>

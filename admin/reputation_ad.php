@@ -7,18 +7,18 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $lang;
 
-$lang          = array_merge($lang, load_language('ad_rep_ad'));
-$input         = array_merge($_GET, $_POST);
+$lang = array_merge($lang, load_language('ad_rep_ad'));
+$input = array_merge($_GET, $_POST);
 $input['mode'] = isset($input['mode']) ? $input['mode'] : '';
-$now_date      = '';
-$reputationid  = 0;
-$time_offset   = 0;
-$a             = explode(',', gmdate('Y,n,j,G,i,s', TIME_NOW + $time_offset));
-$now_date      = [
-    'year'    => $a[0],
-    'mon'     => $a[1],
-    'mday'    => $a[2],
-    'hours'   => $a[3],
+$now_date = '';
+$reputationid = 0;
+$time_offset = 0;
+$a = explode(',', gmdate('Y,n,j,G,i,s', TIME_NOW + $time_offset));
+$now_date = [
+    'year' => $a[0],
+    'mon' => $a[1],
+    'mday' => $a[2],
+    'hours' => $a[3],
     'minutes' => $a[4],
     'seconds' => $a[5],
 ];
@@ -80,7 +80,7 @@ function show_level()
 {
     global $lang;
     $title = $lang['rep_ad_show_title'];
-    $html  = "<p>{$lang['rep_ad_show_html1']}<br>{$lang['rep_ad_show_html2']}</p><br>";
+    $html = "<p>{$lang['rep_ad_show_html1']}<br>{$lang['rep_ad_show_html2']}</p><br>";
     $query = sql_query('SELECT * FROM reputationlevel ORDER BY minimumreputation ASC');
     if (!mysqli_num_rows($query)) {
         do_update('new');
@@ -125,18 +125,18 @@ function show_form($type = 'edit')
         $title = $lang['rep_ad_form_title'];
         $html .= "<br><span style='font-weight:normal;'>" . htmlsafechars($res['level']) . " ({$lang['rep_ad_form_id']}{$res['reputationlevelid']})</span><br>";
         $button = $lang['rep_ad_form_btn'];
-        $extra  = "<input type='button' class='button is-small' value='{$lang['rep_ad_form_back']}' accesskey='b' class='button is-small' onclick='javascript:history.back(1)' />";
-        $mode   = 'doedit';
+        $extra = "<input type='button' class='button is-small' value='{$lang['rep_ad_form_back']}' accesskey='b' class='button is-small' onclick='javascript:history.back(1)' />";
+        $mode = 'doedit';
     } else {
-        $title  = $lang['rep_ad_form_add_title'];
+        $title = $lang['rep_ad_form_add_title'];
         $button = $lang['rep_ad_form_add_btn'];
-        $mode   = 'doadd';
-        $extra  = "<input type='button' value='{$lang['rep_ad_form_back']}' accesskey='b' class='button is-small' onclick='javascript:history.back(1)' />";
+        $mode = 'doadd';
+        $extra = "<input type='button' value='{$lang['rep_ad_form_back']}' accesskey='b' class='button is-small' onclick='javascript:history.back(1)' />";
     }
-    $css      = "style='font-weight: bold;color: #fff;background-color: #0055A4;padding: 5px;'";
+    $css = "style='font-weight: bold;color: #fff;background-color: #0055A4;padding: 5px;'";
     $replevid = isset($res['reputationlevelid']) ? $res['reputationlevelid'] : '';
     $replevel = isset($res['level']) ? $res['level'] : '';
-    $minrep   = isset($res['minimumreputation']) ? $res['minimumreputation'] : '';
+    $minrep = isset($res['minimumreputation']) ? $res['minimumreputation'] : '';
     $html .= "<form action='staffpanel.php?tool=reputation_ad' name='show_rep_form' method='post'>
                 <input name='reputationlevelid' value='{$replevid}' type='hidden' />
                 <input name='mode' value='{$mode}' type='hidden' />";
@@ -171,8 +171,8 @@ function do_update($type = '')
         if (strlen($input['level']) > 250) {
             stderr('', $lang['rep_ad_update_err2']);
         }
-        $level    = sqlesc($level);
-        $minrep   = sqlesc(intval($input['minimumreputation']));
+        $level = sqlesc($level);
+        $minrep = sqlesc(intval($input['minimumreputation']));
         $redirect = '' . $lang['rep_ad_update_saved'] . ' <i>' . htmlsafechars($input['level'], ENT_QUOTES) . '</i> ' . $lang['rep_ad_update_success'] . '';
     }
     // what we gonna do?
@@ -272,7 +272,7 @@ function view_list()
 {
     global $now_date, $time_offset, $input, $lang;
     $title = $lang['rep_ad_view_title'];
-    $html  = "<h2>{$lang['rep_ad_view_view']}</h2>";
+    $html = "<h2>{$lang['rep_ad_view_view']}</h2>";
     $html .= "<p>{$lang['rep_ad_view_page']}</p>";
     $html .= "<form action='staffpanel.php?tool=reputation_ad' name='list_form' method='post'>
                 <input name='mode' value='list' type='hidden' />
@@ -302,12 +302,12 @@ function view_list()
     // I hate work, but someone has to do it!
     if (isset($input['dolist'])) {
         $input['orderby'] = isset($input['orderby']) ? $input['orderby'] : '';
-        $who              = isset($input['who']) ? (int) $input['who'] : 0;
-        $user             = isset($input['user']) ? $input['user'] : 0;
-        $first            = isset($input['page']) ? intval($input['page']) : 0;
-        $cond             = $who ? 'r.whoadded=' . sqlesc($who) : '';
-        $start            = isset($input['startstamp']) ? intval($input['startstamp']) : mktime(0, 0, 0, $input['start']['month'], $input['start']['day'], $input['start']['year']) + $time_offset;
-        $end              = isset($input['endstamp']) ? intval($input['endstamp']) : mktime(0, 0, 0, $input['end']['month'], $input['end']['day'] + 1, $input['end']['year'])       + $time_offset;
+        $who = isset($input['who']) ? (int) $input['who'] : 0;
+        $user = isset($input['user']) ? $input['user'] : 0;
+        $first = isset($input['page']) ? intval($input['page']) : 0;
+        $cond = $who ? 'r.whoadded=' . sqlesc($who) : '';
+        $start = isset($input['startstamp']) ? intval($input['startstamp']) : mktime(0, 0, 0, $input['start']['month'], $input['start']['day'], $input['start']['year']) + $time_offset;
+        $end = isset($input['endstamp']) ? intval($input['endstamp']) : mktime(0, 0, 0, $input['end']['month'], $input['end']['day'] + 1, $input['end']['year']) + $time_offset;
         if (!$start) {
             $start = TIME_NOW - (3600 * 24 * 30);
         }
@@ -323,8 +323,8 @@ function view_list()
                 stderr($lang['rep_ad_view_err3'], $lang['rep_ad_view_err4'] . htmlsafechars($input['leftby'], ENT_QUOTES));
             }
             $leftby = mysqli_fetch_assoc($left_b);
-            $who    = $leftby['id'];
-            $cond   = 'r.whoadded=' . $who;
+            $who = $leftby['id'];
+            $cond = 'r.whoadded=' . $who;
         }
         if (!empty($input['leftfor'])) {
             $left_f = @sql_query('SELECT id FROM users WHERE username = ' . sqlesc($input['leftfor']));
@@ -332,7 +332,7 @@ function view_list()
                 stderr($lang['rep_ad_view_err3'], $lang['rep_ad_view_err4'] . htmlsafechars($input['leftfor'], ENT_QUOTES));
             }
             $leftfor = mysqli_fetch_assoc($left_f);
-            $user    = $leftfor['id'];
+            $user = $leftfor['id'];
             $cond .= ($cond ? ' AND' : '') . ' r.userid=' . $user;
         }
         if ($start) {
@@ -343,21 +343,21 @@ function view_list()
         }
         switch ($input['orderby']) {
             case 'leftbyuser':
-                $order   = 'leftby.username';
+                $order = 'leftby.username';
                 $orderby = 'leftbyuser';
                 break;
 
             case 'leftforuser':
-                $order   = 'leftfor.username';
+                $order = 'leftfor.username';
                 $orderby = 'leftforuser';
                 break;
 
             default:
-                $order   = 'r.dateadd';
+                $order = 'r.dateadd';
                 $orderby = 'dateadd';
         }
-        $css          = "style='font-weight: bold;color: #fff;background-color: #0055A4;padding: 5px;'";
-        $html         = "<h2>{$lang['rep_ad_view_cmts']}</h2>";
+        $css = "style='font-weight: bold;color: #fff;background-color: #0055A4;padding: 5px;'";
+        $html = "<h2>{$lang['rep_ad_view_cmts']}</h2>";
         $table_header = "<table width='80%' border='1'><tr $css>";
         $table_header .= "<td width='5%'>{$lang['rep_ad_view_id']}</td>";
         $table_header .= "<td width='20%'><a href='staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=leftbyuser&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_by']}</a></td>";
@@ -366,7 +366,7 @@ function view_list()
         $table_header .= "<td width='5%'>{$lang['rep_ad_view_point']}</td>";
         $table_header .= "<td width='23%'>{$lang['rep_ad_view_reason']}</td>";
         $table_header .= "<td width='10%'>{$lang['rep_ad_view_controls']}</td></tr>";
-        $html         .= $table_header;
+        $html .= $table_header;
         // do the count for pager etc
         $query = sql_query("SELECT COUNT(*) AS cnt FROM reputation r WHERE $cond");
         //echo_r($input); exit;
@@ -376,14 +376,14 @@ function view_list()
         }
         // do the pager thang!
         $deflimit = 10;
-        $links    = "<span style=\"background: #F0F5FA; border: 1px solid #072A66;padding: 1px 3px 1px 3px;\">{$total['cnt']}&#160;{$lang['rep_ad_view_records']}</span>";
+        $links = "<span style=\"background: #F0F5FA; border: 1px solid #072A66;padding: 1px 3px 1px 3px;\">{$total['cnt']}&#160;{$lang['rep_ad_view_records']}</span>";
         if ($total['cnt'] > $deflimit) {
             require_once INCL_DIR . 'pager_functions.php';
             $links = pager_rep([
-                                   'count'       => $total['cnt'],
-                                   'perpage'     => $deflimit,
+                                   'count' => $total['cnt'],
+                                   'perpage' => $deflimit,
                                    'start_value' => $first,
-                                   'url'         => 'staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=' . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=$orderby&amp;startstamp=$start&amp;endstamp=$end",
+                                   'url' => 'staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=' . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=$orderby&amp;startstamp=$start&amp;endstamp=$end",
                                ]);
         }
         // mofo query!
@@ -429,7 +429,7 @@ function do_delete_rep()
     if (($r = mysqli_fetch_assoc($query)) === false) {
         stderr($lang['rep_ad_delete_rep_err3'], $lang['rep_ad_delete_rep_err4']);
     }
-    $sql  = sql_query('SELECT reputation ' . 'FROM users ' . 'WHERE id = ' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
+    $sql = sql_query('SELECT reputation ' . 'FROM users ' . 'WHERE id = ' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     $User = mysqli_fetch_assoc($sql);
     // do the delete
     sql_query('DELETE FROM reputation WHERE reputationid=' . intval($r['reputationid']));
@@ -469,7 +469,7 @@ function do_edit_rep()
         if ($r['reason'] != $reason) {
             @sql_query('UPDATE reputation SET reputation = ' . intval($newrep) . ', reason = ' . sqlesc($reason) . ' WHERE reputationid = ' . intval($r['reputationid']));
         }
-        $sql  = sql_query('SELECT reputation ' . 'FROM users ' . 'WHERE id = ' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
+        $sql = sql_query('SELECT reputation ' . 'FROM users ' . 'WHERE id = ' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
         $User = mysqli_fetch_assoc($sql);
         $diff = $oldrep - $newrep;
         @sql_query("UPDATE users SET reputation = (reputation-{$diff}) WHERE id=" . intval($r['userid']));
@@ -549,7 +549,7 @@ function get_month_dropdown($i = 0)
 {
     global $now_date, $lang;
     $return = '';
-    $month  = [
+    $month = [
         '----',
         $lang['rep_ad_month_jan'],
         $lang['rep_ad_month_feb'],

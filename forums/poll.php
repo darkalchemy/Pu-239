@@ -38,9 +38,9 @@ switch ($action) {
         $arr_poll = mysqli_fetch_assoc($res_poll);
         //=== did they vote yet
         $res_poll_did_they_vote = sql_query('SELECT COUNT(id) FROM forum_poll_votes WHERE poll_id = ' . sqlesc($arr_poll['poll_id']) . ' AND user_id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-        $row                    = mysqli_fetch_row($res_poll_did_they_vote);
-        $vote_count             = number_format($row[0]);
-        $post_vote              = (isset($_POST['vote']) ? $_POST['vote'] : '');
+        $row = mysqli_fetch_row($res_poll_did_they_vote);
+        $vote_count = number_format($row[0]);
+        $post_vote = (isset($_POST['vote']) ? $_POST['vote'] : '');
         //=== let's do all the possible errors
         switch (true) {
             case !is_valid_id($arr_poll['poll_id']) || count($post_vote) > $arr_poll['multi_options']: //=== no poll or trying to vote with too many options
@@ -72,7 +72,7 @@ switch ($action) {
                 break;
         }
         //=== ok, all is good, lets enter the vote(s) into the DB
-        $ip    = sqlesc(($CURUSER['ip'] === '' ? htmlsafechars(getip()) : $CURUSER['ip']));
+        $ip = sqlesc(($CURUSER['ip'] === '' ? htmlsafechars(getip()) : $CURUSER['ip']));
         $added = TIME_NOW;
         //=== if they selected "I just want to see the results!" only enter that one... 666 is reserved for that :)
         if (in_array('666', $post_vote)) {
@@ -111,8 +111,8 @@ switch ($action) {
         $arr_poll = mysqli_fetch_assoc($res_poll);
         //=== did they vote yet
         $res_poll_did_they_vote = sql_query('SELECT COUNT(id) FROM forum_poll_votes WHERE poll_id = ' . sqlesc($arr_poll['poll_id']) . ' AND user_id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-        $row                    = mysqli_fetch_row($res_poll_did_they_vote);
-        $vote_count             = number_format($row[0]);
+        $row = mysqli_fetch_row($res_poll_did_they_vote);
+        $vote_count = number_format($row[0]);
         //=== let's do all the possible errors
         switch (true) {
             case !is_valid_id($arr_poll['poll_id']): //=== no poll
@@ -155,8 +155,8 @@ switch ($action) {
         //=== be sure there is no poll yet :P
         $res_poll = sql_query('SELECT poll_id, user_id, topic_name FROM topics WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_assoc($res_poll);
-        $poll_id  = (int) $arr_poll['poll_id'];
-        $user_id  = (int) $arr_poll['user_id'];
+        $poll_id = (int) $arr_poll['poll_id'];
+        $user_id = (int) $arr_poll['user_id'];
         if (is_valid_id($poll_id)) {
             stderr($lang['gl_error'], '' . $lang['poll_there_can_only_be_one_poll_per_topic'] . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
         }
@@ -167,11 +167,11 @@ switch ($action) {
         if (isset($_POST['add_the_poll']) && $_POST['add_the_poll'] == 1) {
             //=== post stuff
             $poll_question = (isset($_POST['poll_question']) ? htmlsafechars($_POST['poll_question']) : '');
-            $poll_answers  = (isset($_POST['poll_answers']) ? htmlsafechars($_POST['poll_answers']) : '');
-            $poll_ends     = ((isset($_POST['poll_ends']) && $_POST['poll_ends'] > 168) ? 1356048000 : (TIME_NOW + $_POST['poll_ends'] * 86400));
-            $poll_starts   = ((isset($_POST['poll_starts']) && 0 === $_POST['poll_starts']) ? TIME_NOW : (TIME_NOW + $_POST['poll_starts'] * 86400));
-            $poll_starts   = ($poll_starts > ($poll_ends + 1) ? TIME_NOW : $poll_starts);
-            $change_vote   = ((isset($_POST['change_vote']) && 'yes' === $_POST['change_vote']) ? 'yes' : 'no');
+            $poll_answers = (isset($_POST['poll_answers']) ? htmlsafechars($_POST['poll_answers']) : '');
+            $poll_ends = ((isset($_POST['poll_ends']) && $_POST['poll_ends'] > 168) ? 1356048000 : (TIME_NOW + $_POST['poll_ends'] * 86400));
+            $poll_starts = ((isset($_POST['poll_starts']) && 0 === $_POST['poll_starts']) ? TIME_NOW : (TIME_NOW + $_POST['poll_starts'] * 86400));
+            $poll_starts = ($poll_starts > ($poll_ends + 1) ? TIME_NOW : $poll_starts);
+            $change_vote = ((isset($_POST['change_vote']) && 'yes' === $_POST['change_vote']) ? 'yes' : 'no');
             if ($poll_answers === '' && $poll_question === '') {
                 stderr($lang['gl_error'], '' . $lang['poll_be_sure_to_fill_in_the_question'] . '.');
             }
@@ -294,7 +294,7 @@ switch ($action) {
         //=== be sure there is a poll to delete :P
         $res_poll = sql_query('SELECT poll_id FROM topics WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_row($res_poll);
-        $poll_id  = $arr_poll[0];
+        $poll_id = $arr_poll[0];
         if (!is_valid_id($poll_id)) {
             stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . '.. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
         } else {
@@ -323,7 +323,7 @@ switch ($action) {
         //=== be sure there is a poll to reset :P
         $res_poll = sql_query('SELECT poll_id FROM topics WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_row($res_poll);
-        $poll_id  = $arr_poll[0];
+        $poll_id = $arr_poll[0];
         if (!is_valid_id($poll_id)) {
             stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . '.. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
         } else {
@@ -348,7 +348,7 @@ switch ($action) {
         //=== be sure there is a poll to close :P
         $res_poll = sql_query('SELECT poll_id FROM topics WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_row($res_poll);
-        $poll_id  = $arr_poll[0];
+        $poll_id = $arr_poll[0];
         if (!is_valid_id($poll_id)) {
             stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . '.. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
         } else {
@@ -373,7 +373,7 @@ switch ($action) {
         //=== be sure there is a poll to open :P
         $res_poll = sql_query('SELECT poll_id FROM topics WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_row($res_poll);
-        $poll_id  = $arr_poll[0];
+        $poll_id = $arr_poll[0];
         if (!is_valid_id($poll_id)) {
             stderr($lang['gl_error'], '' . $lang['fe_bad_id'] . '.. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="altlink">' . $lang['fe_back_to_topic'] . '</a>.');
         } else {
@@ -398,7 +398,7 @@ switch ($action) {
         //=== be sure there is a poll to edit :P
         $res_poll = sql_query('SELECT poll_id, topic_name FROM topics WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $arr_poll = mysqli_fetch_assoc($res_poll);
-        $poll_id  = (int) $arr_poll['poll_id'];
+        $poll_id = (int) $arr_poll['poll_id'];
         if (!is_valid_id($poll_id)) {
             stderr($lang['gl_error'], $lang['gl_bad_id']);
         }
@@ -406,11 +406,11 @@ switch ($action) {
         if (isset($_POST['do_poll_edit']) && $_POST['do_poll_edit'] == 1) {
             //=== post stuff
             $poll_question = (isset($_POST['poll_question']) ? htmlsafechars($_POST['poll_question']) : '');
-            $poll_answers  = (isset($_POST['poll_answers']) ? htmlsafechars($_POST['poll_answers']) : '');
-            $poll_ends     = ((isset($_POST['poll_ends']) && 1356048000 == $_POST['poll_ends']) ? 1356048000 : (TIME_NOW + $_POST['poll_ends'] * 86400));
-            $poll_starts   = ((isset($_POST['poll_starts']) && 0 == $_POST['poll_starts']) ? TIME_NOW : (TIME_NOW + $_POST['poll_starts'] * 86400));
-            $poll_starts   = ($poll_starts > ($poll_ends + 1) ? TIME_NOW : $poll_starts);
-            $change_vote   = ((isset($_POST['change_vote']) && 'yes' == $_POST['change_vote']) ? 'yes' : 'no');
+            $poll_answers = (isset($_POST['poll_answers']) ? htmlsafechars($_POST['poll_answers']) : '');
+            $poll_ends = ((isset($_POST['poll_ends']) && 1356048000 == $_POST['poll_ends']) ? 1356048000 : (TIME_NOW + $_POST['poll_ends'] * 86400));
+            $poll_starts = ((isset($_POST['poll_starts']) && 0 == $_POST['poll_starts']) ? TIME_NOW : (TIME_NOW + $_POST['poll_starts'] * 86400));
+            $poll_starts = ($poll_starts > ($poll_ends + 1) ? TIME_NOW : $poll_starts);
+            $change_vote = ((isset($_POST['change_vote']) && 'yes' == $_POST['change_vote']) ? 'yes' : 'no');
             if ($poll_answers === '' || $poll_question === '') {
                 stderr($lang['gl_error'], '' . $lang['poll_be_sure_to_fill_in_the_question'] . '.');
             }
@@ -436,15 +436,15 @@ switch ($action) {
             die();
         } //=== end of posting poll to DB
         //=== get poll stuff to edit
-        $res_edit          = sql_query('SELECT * FROM forum_poll WHERE id = ' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
-        $arr_edit          = mysqli_fetch_assoc($res_edit);
-        $poll_question     = strip_tags($arr_edit['question']);
-        $poll_answers      = unserialize($arr_edit['poll_answers']);
+        $res_edit = sql_query('SELECT * FROM forum_poll WHERE id = ' . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
+        $arr_edit = mysqli_fetch_assoc($res_edit);
+        $poll_question = strip_tags($arr_edit['question']);
+        $poll_answers = unserialize($arr_edit['poll_answers']);
         $number_of_options = $arr_edit['number_of_options'];
-        $poll_starts       = (int) $arr_edit['poll_starts'];
-        $poll_ends         = (int) $arr_edit['poll_ends'];
-        $change_vote       = htmlsafechars($arr_edit['change_vote']);
-        $multi_options     = htmlsafechars($arr_edit['multi_options']);
+        $poll_starts = (int) $arr_edit['poll_starts'];
+        $poll_ends = (int) $arr_edit['poll_ends'];
+        $change_vote = htmlsafechars($arr_edit['change_vote']);
+        $multi_options = htmlsafechars($arr_edit['multi_options']);
         //=== make the answers all readable
         $poll_answers = implode("\n", $poll_answers);
         //=== options for amount of options lol

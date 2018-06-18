@@ -29,14 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error2']}");
             die();
         }
-        $ip     = getip();
-        $url    = 'https://www.google.com/recaptcha/api/siteverify';
+        $ip = getip();
+        $url = 'https://www.google.com/recaptcha/api/siteverify';
         $params = [
-            'secret'   => $_ENV['RECAPTCHA_SECRET_KEY'],
+            'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
             'response' => $response,
             'remoteip' => $ip,
         ];
-        $query       = http_build_query($params);
+        $query = http_build_query($params);
         $contextData = [
                     'method' => 'POST',
                     'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'content' => $query,
         ];
         $context = stream_context_create(['http' => $contextData]);
-        $result  = file_get_contents(
+        $result = file_get_contents(
                       $url,
                       false,
                       $context
@@ -68,12 +68,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_notfound']}");
     }
     $secret = make_password(30);
-    $token  = make_passhash($secret);
+    $token = make_passhash($secret);
     $alt_id = make_password(16);
     $values = [
         'email' => $email,
         'token' => $token,
-        'id'    => $alt_id,
+        'id' => $alt_id,
     ];
     $fluent->insertInto('tokens')
         ->values($values)
@@ -87,13 +87,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ->setSubject("{$site_config['site_name']} {$lang['email_subjreset']}")
         ->setHtmlBody($body);
 
-    $mailer              = new SendmailMailer();
+    $mailer = new SendmailMailer();
     $mailer->commandArgs = "-f{$site_config['site_email']}";
     $mailer->send($mail);
 
     stderr($lang['stderr_successhead'], $lang['stderr_confmailsent']);
 } elseif ($_GET) {
-    $id    = isset($_GET['id']) ? $_GET['id'] : 0;
+    $id = isset($_GET['id']) ? $_GET['id'] : 0;
     $token = isset($_GET['token']) ? $_GET['token'] : '';
     if (empty($id)) {
         stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_id']}");
@@ -116,10 +116,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die();
     }
 
-    $email       = $row['email'];
+    $email = $row['email'];
     $newpassword = make_password(16);
     $newpasshash = make_passhash($newpassword);
-    $set         = [
+    $set = [
         'passhash' => $newpasshash,
     ];
     $update = $fluent->update('users')
@@ -137,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ->setSubject("{$site_config['site_name']} {$lang['email_subjdetails']}")
         ->setHtmlBody($body);
 
-    $mailer              = new SendmailMailer();
+    $mailer = new SendmailMailer();
     $mailer->commandArgs = "-f{$site_config['site_email']}";
     $mailer->send($mail);
 

@@ -13,11 +13,11 @@ if ($topic_id > 0) {
 //=== delete stuff from subscriptions page stolen from pdq... thanks hun \o
 if (isset($_POST['remove'])) {
     $_POST['remove'] = (isset($_POST['remove']) ? $_POST['remove'] : '');
-    $post_delete     = [];
+    $post_delete = [];
     foreach ($_POST['remove'] as $somevar) {
         $post_delete[] = intval($somevar);
     }
-    $post_delete  = array_unique($post_delete);
+    $post_delete = array_unique($post_delete);
     $delete_count = count($post_delete);
     if ($delete_count > 0) {
         sql_query('DELETE FROM subscriptions WHERE id IN (' . implode(', ', $post_delete) . ') AND user_id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);

@@ -39,14 +39,14 @@ if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
         header('Location: login.php');
         exit();
     }
-    $ip     = getip();
-    $url    = 'https://www.google.com/recaptcha/api/siteverify';
+    $ip = getip();
+    $url = 'https://www.google.com/recaptcha/api/siteverify';
     $params = [
-        'secret'   => $_ENV['RECAPTCHA_SECRET_KEY'],
+        'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
         'response' => $response,
         'remoteip' => $ip,
     ];
-    $query       = http_build_query($params);
+    $query = http_build_query($params);
     $contextData = [
                 'method' => 'POST',
                 'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
@@ -55,7 +55,7 @@ if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
                 'content' => $query,
     ];
     $context = stream_context_create(['http' => $contextData]);
-    $result  = file_get_contents(
+    $result = file_get_contents(
                   $url,
                   false,
                   $context
@@ -110,7 +110,7 @@ if (!(isset($_POST['country']))) {
     stderr('Error', 'You have to set your country.');
 }
 $country = (((isset($_POST['country']) && is_valid_id($_POST['country'])) ? intval($_POST['country']) : 0));
-$gender  = isset($_POST['gender'], $_POST['gender']) ? htmlsafechars($_POST['gender']) : '';
+$gender = isset($_POST['gender'], $_POST['gender']) ? htmlsafechars($_POST['gender']) : '';
 if ($_POST['rulesverify'] != 'yes' || $_POST['faqverify'] != 'yes' || $_POST['ageverify'] != 'yes') {
     stderr($lang['takesignup_failed'], $lang['takesignup_qualify']);
 }
@@ -135,15 +135,15 @@ if (isset($_POST['user_timezone']) && preg_match('#^\-?\d{1,2}(?:\.\d{1,2})?$#',
 $dst_in_use = localtime(TIME_NOW + ($time_offset * 3600), true);
 
 $select_inv = sql_query('SELECT sender, receiver, status, email FROM invite_codes WHERE code = ' . sqlesc($invite)) or sqlerr(__FILE__, __LINE__);
-$rows       = mysqli_num_rows($select_inv);
-$assoc      = mysqli_fetch_assoc($select_inv);
+$rows = mysqli_num_rows($select_inv);
+$assoc = mysqli_fetch_assoc($select_inv);
 if ($rows == 0) {
     stderr('Error', "Invite not found.\nPlease request a invite from one of our members.");
 }
 if ($assoc['receiver'] != 0) {
     stderr('Error', "Invite already taken.\nPlease request a new one from your inviter.");
 }
-$email       = $assoc['email'];
+$email = $assoc['email'];
 $email_count = $fluent->from('users')
     ->select(null)
     ->select('COUNT(id) AS count')
@@ -153,12 +153,12 @@ if ($email_count != 0) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_email_used']);
     die();
 }
-$wantpasshash   = make_passhash($wantpassword);
+$wantpasshash = make_passhash($wantpassword);
 $wanthintanswer = make_passhash($hintanswer);
-$user_frees     = (XBT_TRACKER ? '0' : TIME_NOW + 14 * 86400);
-$torrent_pass   = make_password(32);
-$auth           = make_password(32);
-$apikey         = make_password(32);
+$user_frees = (XBT_TRACKER ? '0' : TIME_NOW + 14 * 86400);
+$torrent_pass = make_password(32);
+$auth = make_password(32);
+$apikey = make_password(32);
 check_banned_emails($email);
 
 $new_user = sql_query('INSERT INTO users (username, passhash, torrent_pass, auth, apikey, passhint, hintanswer, birthday, invitedby, email, added, last_access, last_login, time_offset, dst_in_use, free_switch, ip, status) VALUES (' . implode(',', array_map('sqlesc', [
@@ -186,7 +186,7 @@ while ($id == 0) {
     usleep(500);
     $id = get_one_row('users', 'id', 'WHERE username = ' . sqlesc($wantusername));
 }
-sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($id) . ')')                           or sqlerr(__FILE__, __LINE__);
+sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($id) . ')') or sqlerr(__FILE__, __LINE__);
 sql_query('UPDATE usersachiev SET invited = invited + 1 WHERE userid = ' . sqlesc($assoc['sender'])) or sqlerr(__FILE__, __LINE__);
 $msg = "Welcome New {$site_config['site_name']} Member : - [user]" . htmlsafechars($wantusername) . '[/user]';
 if (!$new_user) {
@@ -195,24 +195,24 @@ if (!$new_user) {
     }
 }
 
-$sender  = (int) $assoc['sender'];
-$added   = TIME_NOW;
-$msg     = sqlesc("Hey there [you] ! :wave:\nIt seems that someone you invited to {$site_config['site_name']} has arrived ! :clap2: \n\n Please go to your [url={$site_config['baseurl']}/invite.php]Invite page[/url] to confirm them so they can log in.\n\ncheers\n");
+$sender = (int) $assoc['sender'];
+$added = TIME_NOW;
+$msg = sqlesc("Hey there [you] ! :wave:\nIt seems that someone you invited to {$site_config['site_name']} has arrived ! :clap2: \n\n Please go to your [url={$site_config['baseurl']}/invite.php]Invite page[/url] to confirm them so they can log in.\n\ncheers\n");
 $subject = sqlesc('Someone you invited has arrived!');
 sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($sender) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
 $cache->increment('inbox_' . $sender);
 
 sql_query('UPDATE invite_codes SET receiver = ' . sqlesc($id) . ', status = "Confirmed" WHERE sender = ' . sqlesc((int) $assoc['sender']) . ' AND code = ' . sqlesc($invite)) or sqlerr(__FILE__, __LINE__);
-$latestuser_cache['id']        = (int) $id;
-$latestuser_cache['username']  = $wantusername;
-$latestuser_cache['class']     = '0';
-$latestuser_cache['donor']     = 'no';
-$latestuser_cache['warned']    = '0';
-$latestuser_cache['enabled']   = 'yes';
-$latestuser_cache['chatpost']  = '1';
+$latestuser_cache['id'] = (int) $id;
+$latestuser_cache['username'] = $wantusername;
+$latestuser_cache['class'] = '0';
+$latestuser_cache['donor'] = 'no';
+$latestuser_cache['warned'] = '0';
+$latestuser_cache['enabled'] = 'yes';
+$latestuser_cache['chatpost'] = '1';
 $latestuser_cache['leechwarn'] = '0';
-$latestuser_cache['pirate']    = '0';
-$latestuser_cache['king']      = '0';
+$latestuser_cache['pirate'] = '0';
+$latestuser_cache['king'] = '0';
 $cache->delete('all_users_');
 
 $cache->set('latestuser', $latestuser_cache, 0, $site_config['expires']['latestuser']);

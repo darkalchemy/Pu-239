@@ -7,7 +7,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang, $cache;
 
-$lang    = array_merge($lang, load_language('ad_hnrwarn'));
+$lang = array_merge($lang, load_language('ad_hnrwarn'));
 $HTMLOUT = '';
 /**
  * @param $x
@@ -20,9 +20,9 @@ function mkint($x)
 }
 
 $this_url = $_SERVER['SCRIPT_NAME'];
-$do       = isset($_GET['do']) && $_GET['do'] === 'disabled' ? 'disabled' : 'hnrwarn';
+$do = isset($_GET['do']) && $_GET['do'] === 'disabled' ? 'disabled' : 'hnrwarn';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $r     = isset($_POST['ref']) ? $_POST['ref'] : $this_url;
+    $r = isset($_POST['ref']) ? $_POST['ref'] : $this_url;
     $_uids = isset($_POST['users']) ? array_map('mkint', $_POST['users']) : 0;
     if ($_uids == 0 || count($_uids) == 0) {
         stderr($lang['hnrwarn_stderror'], $lang['hnrwarn_nouser']);
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $count = mysqli_num_rows($res_del);
             while ($arr_del = mysqli_fetch_assoc($res_del)) {
                 $userid = $arr_del['id'];
-                $res    = sql_query('DELETE FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                $res = sql_query('DELETE FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $cache->delete('user' . $userid);
                 write_log("User: {$arr_del['username']} Was deleted by " . $CURUSER['username'] . ' Via Hit And Run Page');
             }
@@ -64,9 +64,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             stderr($lang['hnrwarn_stderror'], $lang['hnrwarn_wrong3']);
         }
     } elseif ($act === 'unwarn') {
-        $sub  = $lang['hnrwarn_removed'];
+        $sub = $lang['hnrwarn_removed'];
         $body = $lang['hnrwarn_msg1'] . $CURUSER['username'] . $lang['hnrwarn_msg2'];
-        $pms  = [];
+        $pms = [];
         foreach ($_uids as $id) {
             $pms[] = '(0,' . $id . ',' . sqlesc($sub) . ',' . sqlesc($body) . ',' . sqlesc(TIME_NOW) . ')';
         }
@@ -74,8 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'hnrwarn' => 'no',
         ], $site_config['expires']['user_cache']);
         if (!empty($pms) && count($pms)) {
-            $g  = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . join(',', $pms))                                                                                                                              or sqlerr(__FILE__, __LINE__);
-            $q1 = sql_query("UPDATE users SET hnrwarn='no', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['hnrwarn_rem_log'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')')   or sqlerr(__FILE__, __LINE__);
+            $g = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . join(',', $pms)) or sqlerr(__FILE__, __LINE__);
+            $q1 = sql_query("UPDATE users SET hnrwarn='no', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['hnrwarn_rem_log'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')') or sqlerr(__FILE__, __LINE__);
             if ($g && $q1) {
                 header('Refresh: 2; url=' . $r);
                 stderr($lang['hnrwarn_success'], count($pms) . $lang['hnrwarn_user'] . (count($pms) > 1 ? 's' : '') . $lang['hnrwarn_rem_suc']);
@@ -90,16 +90,16 @@ switch ($do) {
     case 'disabled':
         $query = "SELECT id,username, class, downloaded, uploaded, IF(downloaded>0, round((uploaded/downloaded),2), '---') AS ratio, disable_reason, added, last_access FROM users WHERE enabled='no' ORDER BY last_access DESC ";
         $title = $lang['hnrwarn_disabled_title'];
-        $link  = "<a href=\"staffpanel.php?tool=hnrwarn&amp;action=hnrwarn&amp;?do=warned\">{$lang['hnrwarn_users']}</a>";
+        $link = "<a href=\"staffpanel.php?tool=hnrwarn&amp;action=hnrwarn&amp;?do=warned\">{$lang['hnrwarn_users']}</a>";
         break;
 
     case 'hnrwarn':
         $query = "SELECT id, username, class, downloaded, uploaded, IF(downloaded>0, round((uploaded/downloaded),2), '---') AS ratio, warn_reason, hnrwarn, added, last_access FROM users WHERE hnrwarn='yes' ORDER BY last_access DESC, hnrwarn DESC ";
         $title = $lang['hnrwarn_warned_title'];
-        $link  = "<a href=\"staffpanel.php?tool=hnrwarn&amp;action=hnrwarn&amp;do=disabled\">{$lang['hnrwarn_disabled_users']}</a>";
+        $link = "<a href=\"staffpanel.php?tool=hnrwarn&amp;action=hnrwarn&amp;do=disabled\">{$lang['hnrwarn_disabled_users']}</a>";
         break;
 }
-$g     = sql_query($query) or sqlerr(__FILE__, __LINE__);
+$g = sql_query($query) or sqlerr(__FILE__, __LINE__);
 $count = mysqli_num_rows($g);
 $HTMLOUT .= begin_main_frame();
 $HTMLOUT .= begin_frame($title . '&#160;[<font class="small">total - ' . $count . ' user' . ($count > 1 ? 's' : '') . '</font>] - ' . $link);

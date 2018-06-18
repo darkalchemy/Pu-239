@@ -9,7 +9,7 @@ function userhits_update($data)
     ignore_user_abort(true);
 
     $days = 14;
-    $dt   = TIME_NOW - ($days * 86400);
+    $dt = TIME_NOW - ($days * 86400);
     sql_query("DELETE FROM userhits WHERE added < $dt") or sqlerr(__FILE__, __LINE__);
     if ($data['clean_log'] && $queries > 0) {
         write_log("Userhits Updates Cleanup: Completed using $queries queries");

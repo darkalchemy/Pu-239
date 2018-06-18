@@ -3,7 +3,7 @@
 require_once INCL_DIR . 'html_functions.php';
 global $lang, $site_config, $CURUSER, $fluent;
 
-$posts    = $delete_me    = $rpic    = $content    = $child    = $parent_forum_name    = $first_post_arr    = $post_status_image    = $sub_forums    = $locked    = '';
+$posts = $delete_me = $rpic = $content = $child = $parent_forum_name = $first_post_arr = $post_status_image = $sub_forums = $locked = '';
 $forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));
 if (!is_valid_id($forum_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
@@ -12,9 +12,9 @@ $fluent->deleteFrom('now_viewing')
     ->where('user_id = ?', $CURUSER['id'])
     ->execute();
 $values = [
-    'user_id'  => $CURUSER['id'],
+    'user_id' => $CURUSER['id'],
     'forum_id' => $forum_id,
-    'added'    => TIME_NOW,
+    'added' => TIME_NOW,
 ];
 $fluent->insertInto('now_viewing')
     ->values($values)
@@ -26,7 +26,7 @@ $arr = $fluent->from('forums')
     ->limit(1)
     ->fetch();
 
-$forum_name      = htmlsafechars($arr['name'], ENT_QUOTES);
+$forum_name = htmlsafechars($arr['name'], ENT_QUOTES);
 
 $parent_forum_id = $arr['parent_forum'];
 if ($CURUSER['class'] < $arr['min_class_read']) {
@@ -54,7 +54,7 @@ foreach ($query as $sub_forums_arr) {
         die();
     }
 
-    $where    = $CURUSER['class'] < UC_STAFF ? 'posts.status = "ok" AND topics.status = "ok"' : $CURUSER['class'] < $min_delete_view_class ? 'posts.status != "deleted"  AND topics.status != "deleted"' : '';
+    $where = $CURUSER['class'] < UC_STAFF ? 'posts.status = "ok" AND topics.status = "ok"' : $CURUSER['class'] < $min_delete_view_class ? 'posts.status != "deleted"  AND topics.status != "deleted"' : '';
     $post_arr = $fluent->from('topics')
                 ->select(null)
                 ->select('topics.id AS topic_id')
@@ -77,7 +77,7 @@ foreach ($query as $sub_forums_arr) {
 
     if ($post_arr['last_post_id'] > 0) {
         $last_topic_id = (int) $post_arr['topic_id'];
-        $last_post_id  = (int) $post_arr['last_post_id'];
+        $last_post_id = (int) $post_arr['last_post_id'];
 
         $topic_status = htmlsafechars($post_arr['topic_status']);
         switch ($topic_status) {
@@ -116,12 +116,12 @@ foreach ($query as $sub_forums_arr) {
 
         $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($last_post_id)) or sqlerr(__FILE__, __LINE__);
         $last_unread_post_arr = mysqli_fetch_row($last_unread_post_res);
-        $last_unread_post_id  = ($last_unread_post_arr[0] >= 0 ? $last_unread_post_arr[0] : $first_post_arr['first_post_id']);
-        $image_to_use         = ($post_arr['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_unread_post_arr || $last_post_id > $last_unread_post_arr[0]) : 0;
-        $img                  = ($image_to_use ? 'unlockednew' : 'unlocked');
+        $last_unread_post_id = ($last_unread_post_arr[0] >= 0 ? $last_unread_post_arr[0] : $first_post_arr['first_post_id']);
+        $image_to_use = ($post_arr['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_unread_post_arr || $last_post_id > $last_unread_post_arr[0]) : 0;
+        $img = ($image_to_use ? 'unlockednew' : 'unlocked');
     } else {
         $last_post = $lang['fe_na'];
-        $img       = 'unlocked';
+        $img = 'unlocked';
     }
 
     $sub_forums_stuff .= "
@@ -171,18 +171,18 @@ foreach ($query as $sub_forums_arr) {
     $parent_forum_arr = mysqli_fetch_assoc($parent_forum_res);
 
     if ($arr['parent_forum'] > 0) {
-        $child             = "<span>[ {$lang['fe_child_board']} ]</span>";
+        $child = "<span>[ {$lang['fe_child_board']} ]</span>";
         $parent_forum_name = "
             <img src='{$site_config['pic_baseurl']}arrow_next.gif' alt='&#9658;' title='&#9658;' class='tooltipper icon' />
 		    <a class='altlink' href='{$site_config['baseurl']}/forums.php?action=view_forum&amp;forum_id={$parent_forum_id}'>" . htmlsafechars($parent_forum_arr['parent_forum_name'], ENT_QUOTES) . '</a>';
     }
 }
 
-$res   = sql_query('SELECT COUNT(id) FROM topics WHERE  ' . ($CURUSER['class'] < UC_STAFF ? ' status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? ' status != \'deleted\'  AND' : '')) . '  forum_id=' . sqlesc($forum_id)) or sqlerr(__FILE__, __LINE__);
-$row   = mysqli_fetch_row($res);
+$res = sql_query('SELECT COUNT(id) FROM topics WHERE  ' . ($CURUSER['class'] < UC_STAFF ? ' status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? ' status != \'deleted\'  AND' : '')) . '  forum_id=' . sqlesc($forum_id)) or sqlerr(__FILE__, __LINE__);
+$row = mysqli_fetch_row($res);
 $count = $posts = $row[0];
 
-$page    = isset($_GET['page']) ? (int) $_GET['page'] : 0;
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
 $perpage = $CURUSER['topicsperpage'] !== 0 ? $CURUSER['topicsperpage'] : (isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15);
 //$perpage = max(($CURUSER['topicsperpage'] !== 0 ? $CURUSER['topicsperpage'] :  (isset($_GET['perpage']) ? (int)$_GET['perpage'] : 15)), 15);
 list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'forums.php?action=view_forum&amp;forum_id=' . $forum_id . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
@@ -198,10 +198,10 @@ $topic_res = sql_query('SELECT t.id AS id, t.user_id AS user_id, t.topic_name AS
 
 if ($count > 0) {
     while ($topic_arr = mysqli_fetch_assoc($topic_res)) {
-        $topic_id     = (int) $topic_arr['id'];
-        $locked       = 'yes' == $topic_arr['locked'];
-        $sticky       = 'yes' == $topic_arr['sticky'];
-        $topic_poll   = (int) $topic_arr['poll_id'] > 0;
+        $topic_id = (int) $topic_arr['id'];
+        $locked = 'yes' == $topic_arr['locked'];
+        $sticky = 'yes' == $topic_arr['sticky'];
+        $topic_poll = (int) $topic_arr['poll_id'] > 0;
         $topic_status = htmlsafechars($topic_arr['status']);
         switch ($topic_status) {
             case 'ok':
@@ -240,7 +240,7 @@ if ($count > 0) {
                 break;
 
             case 'postlocked':
-                $post_status       = 'postlocked';
+                $post_status = 'postlocked';
                 $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/thread_locked.gif" alt="' . $lang['fe_locked'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_locked'] . '" width="18px" class="tooltipper icon" />';
                 break;
         }
@@ -275,16 +275,16 @@ if ($count > 0) {
             $thread_starter = ($first_post_arr['username'] !== '' ? format_username($first_post_arr['user_id']) : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
         }
 
-        $icon            = ($first_post_arr['icon'] === '' ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_thread_icon'] . '" title="' . $lang['fe_thread_icon'] . '" class="tooltipper icon" />' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" />');
+        $icon = ($first_post_arr['icon'] === '' ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_thread_icon'] . '" title="' . $lang['fe_thread_icon'] . '" class="tooltipper icon" />' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" />');
         $first_post_text = bubble('<img src="' . $site_config['pic_baseurl'] . 'forums/mg.gif" alt="' . $lang['fe_preview'] . '" class="icon" />', format_comment($first_post_arr['body'], true, false, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
 
         $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $last_unread_post_arr = mysqli_fetch_row($last_unread_post_res);
-        $last_unread_post_id  = ($last_unread_post_arr[0] > 0 ? $last_unread_post_arr[0] : $first_post_arr['first_post_id']);
-        $did_i_post_here      = sql_query('SELECT user_id FROM posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-        $posted               = (mysqli_num_rows($did_i_post_here) > 0 ? 1 : 0);
+        $last_unread_post_id = ($last_unread_post_arr[0] > 0 ? $last_unread_post_arr[0] : $first_post_arr['first_post_id']);
+        $did_i_post_here = sql_query('SELECT user_id FROM posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+        $posted = (mysqli_num_rows($did_i_post_here) > 0 ? 1 : 0);
 
-        $sub           = sql_query('SELECT user_id FROM subscriptions WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+        $sub = sql_query('SELECT user_id FROM subscriptions WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $subscriptions = (mysqli_num_rows($sub) > 0 ? 1 : 0);
 
         $total_pages = floor($posts / $perpage);
@@ -313,8 +313,8 @@ if ($count > 0) {
                 $multi_pages .= '</span>';
                 break;
         }
-        $new        = ($arr_post_stuff['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_unread_post_res || $last_post_id > $last_unread_post_id) : 0;
-        $topic_pic  = ($posts < 30 ? ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'topicnew' : 'topic')) : ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'hot_topic_new' : 'hot_topic')));
+        $new = ($arr_post_stuff['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_unread_post_res || $last_post_id > $last_unread_post_id) : 0;
+        $topic_pic = ($posts < 30 ? ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'topicnew' : 'topic')) : ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'hot_topic_new' : 'hot_topic')));
         $topic_name = ($sticky ? '<img src="' . $site_config['pic_baseurl'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" class="tooltipper icon" /> ' : ' ') . ($topic_poll ? '<img src="' . $site_config['pic_baseurl'] . 'forums/poll.gif" alt="Poll:" title="' . $lang['fe_poll'] . '" class="tooltipper icon" /> ' : ' ') . ' <a class="altlink" href="?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($topic_arr['topic_name'], ENT_QUOTES) . '</a> ' . ($posted ? '<img src="' . $site_config['pic_baseurl'] . 'forums/posted.gif" alt="Posted" title="Posted" class="tooltipper icon" /> ' : ' ') . ($subscriptions ? '<img src="' . $site_config['pic_baseurl'] . 'forums/subscriptions.gif" alt="' . $lang['fe_subscribed'] . '" title="Subcribed" class="tooltipper icon" /> ' : ' ') . ($new ? ' <img src="' . $site_config['pic_baseurl'] . 'forums/new.gif" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!" class="tooltipper icon" />' : '') . $multi_pages;
 
         $rpic = ($topic_arr['num_ratings'] != 0 ? ratingpic_forums(round($topic_arr['rating_sum'] / $topic_arr['num_ratings'], 1)) : '');

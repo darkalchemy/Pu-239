@@ -8,7 +8,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang, $cache;
 
-$lang    = array_merge($lang, load_language('ad_datareset'));
+$lang = array_merge($lang, load_language('ad_datareset'));
 $HTMLOUT = '';
 /**
  * @param $tid
@@ -62,10 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $q1 = sql_query('SELECT s.downloaded AS sd , t.id AS tid, t.name,t.size, u.username,u.id AS uid,u.downloaded AS ud FROM torrents AS t LEFT JOIN snatched AS s ON s.torrentid = t.id LEFT JOIN users AS u ON u.id = s.userid WHERE t.id =' . sqlesc($tid)) or sqlerr(__FILE__, __LINE__);
     while ($a = mysqli_fetch_assoc($q1)) {
-        $newd           = ($a['ud'] > 0 ? $a['ud'] - $a['sd'] : 0);
+        $newd = ($a['ud'] > 0 ? $a['ud'] - $a['sd'] : 0);
         $new_download[] = '(' . $a['uid'] . ',' . $newd . ')';
-        $tname          = htmlsafechars($a['name']);
-        $msg            = $lang['datareset_hey'] . htmlsafechars($a['username']) . "\n";
+        $tname = htmlsafechars($a['name']);
+        $msg = $lang['datareset_hey'] . htmlsafechars($a['username']) . "\n";
         $msg .= $lang['datareset_looks'] . htmlsafechars($a['name']) . $lang['datareset_nuked'];
         $msg .= $lang['datareset_down'] . mksize($a['sd']) . $lang['datareset_downbe'] . mksize($newd) . "\n";
         $pms[] = '(0,' . sqlesc($a['uid']) . ',' . TIME_NOW . ',' . sqlesc($msg) . ')';

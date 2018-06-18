@@ -6,7 +6,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
-$lang    = array_merge($lang, load_language('ad_index'));
+$lang = array_merge($lang, load_language('ad_index'));
 $HTMLOUT = '';
 /*
  *
@@ -45,26 +45,26 @@ function is_s($n)
 function uptime()
 {
     global $lang;
-    $res      = '';
+    $res = '';
     $filename = '/proc/uptime';
-    $fd       = fopen($filename, 'r');
+    $fd = fopen($filename, 'r');
     if ($fd === false) {
         $res = $lang['index_load_uptime'];
     } else {
         $uptime = fgets($fd, 64);
         fclose($fd);
         $mults = [
-            4  => $lang['index_load_month'],
-            7  => $lang['index_load_week'],
+            4 => $lang['index_load_month'],
+            7 => $lang['index_load_week'],
             24 => $lang['index_load_day'],
             60 => $lang['index_load_hour'],
-            1  => $lang['index_load_minute'],
+            1 => $lang['index_load_minute'],
         ];
-        $n       = 2419200;
+        $n = 2419200;
         $periods = [];
-        $shown   = false;
-        $uptime  = substr($uptime, 0, strpos($uptime, ' '));
-        $res     = '';
+        $shown = false;
+        $uptime = substr($uptime, 0, strpos($uptime, ' '));
+        $res = '';
         while (list($k, $v) = each($mults)) {
             $nmbr = floor($uptime / $n);
             $uptime -= ($nmbr * $n);
@@ -93,9 +93,9 @@ function uptime()
 function loadavg($return_all = false)
 {
     global $lang;
-    $res      = '';
+    $res = '';
     $filename = '/proc/loadavg';
-    $fd       = fopen($filename, 'r');
+    $fd = fopen($filename, 'r');
     if ($fd === false) {
         $res = $lang['index_load_average'];
     } else {
@@ -103,13 +103,13 @@ function loadavg($return_all = false)
         fclose($fd);
         $loadavg = explode(' ', $loadavg);
         if ($return_all) {
-            $res['last1']     = $loadavg[INTERVAL_1_MIN];
-            $res['last5']     = $loadavg[INTERVAL_5_MIN];
-            $res['last15']    = $loadavg[INTERVAL_15_MIN];
-            $active           = explode('/', $loadavg[3]);
-            $res['tasks']     = $active[0];
+            $res['last1'] = $loadavg[INTERVAL_1_MIN];
+            $res['last5'] = $loadavg[INTERVAL_5_MIN];
+            $res['last15'] = $loadavg[INTERVAL_15_MIN];
+            $active = explode('/', $loadavg[3]);
+            $res['tasks'] = $active[0];
             $res['processes'] = $active[1];
-            $res['lastpid']   = $loadavg[4];
+            $res['lastpid'] = $loadavg[4];
         } else {
             $res = $loadavg[DEFAULT_AVG];
         }

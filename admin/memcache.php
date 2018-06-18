@@ -67,9 +67,9 @@ function sendMemcacheCommands($command)
     global $MEMCACHE_SERVERS;
     $result = [];
     foreach ($MEMCACHE_SERVERS as $server) {
-        $strs            = explode(':', $server);
-        $host            = $strs[0];
-        $port            = $strs[1];
+        $strs = explode(':', $server);
+        $host = $strs[0];
+        $port = $strs[1];
         $result[$server] = sendMemcacheCommand($host, $port, $command);
     }
 
@@ -115,17 +115,17 @@ function sendMemcacheCommand($server, $port, $command)
  */
 function parseMemcacheResults($str)
 {
-    $res   = [];
+    $res = [];
     $lines = explode("\r\n", $str);
-    $cnt   = count($lines);
+    $cnt = count($lines);
     for ($i = 0; $i < $cnt; ++$i) {
         $line = $lines[$i];
-        $l    = explode(' ', $line, 3);
+        $l = explode(' ', $line, 3);
         if (count($l) == 3) {
             $res[$l[0]][$l[1]] = $l[2];
             if ($l[0] === 'VALUE') {
-                $res[$l[0]][$l[1]]         = [];
-                list($flag, $size)         = explode(' ', $l[2]);
+                $res[$l[0]][$l[1]] = [];
+                list($flag, $size) = explode(' ', $l[2]);
                 $res[$l[0]][$l[1]]['stat'] = [
                     'flag' => $flag,
                     'size' => $size,
@@ -150,7 +150,7 @@ function parseMemcacheResults($str)
 function dumpCacheSlab($server, $slabId, $limit)
 {
     list($host, $port) = explode(':', $server);
-    $resp              = sendMemcacheCommand($host, $port, 'stats cachedump ' . $slabId . ' ' . $limit);
+    $resp = sendMemcacheCommand($host, $port, 'stats cachedump ' . $slabId . ' ' . $limit);
 
     return $resp;
 }
@@ -163,7 +163,7 @@ function dumpCacheSlab($server, $slabId, $limit)
 function flushServer($server)
 {
     list($host, $port) = explode(':', $server);
-    $resp              = sendMemcacheCommand($host, $port, 'flush_all');
+    $resp = sendMemcacheCommand($host, $port, 'flush_all');
 
     return $resp;
 }
@@ -173,12 +173,12 @@ function flushServer($server)
  */
 function getCacheItems()
 {
-    $items       = sendMemcacheCommands('stats items');
+    $items = sendMemcacheCommands('stats items');
     $serverItems = [];
-    $totalItems  = [];
+    $totalItems = [];
     foreach ($items as $server => $itemlist) {
         $serverItems[$server] = [];
-        $totalItems[$server]  = 0;
+        $totalItems[$server] = 0;
         if (!isset($itemlist['STAT'])) {
             continue;
         }
@@ -194,7 +194,7 @@ function getCacheItems()
     }
 
     return [
-        'items'  => $serverItems,
+        'items' => $serverItems,
         'counts' => $totalItems,
     ];
 }
@@ -328,12 +328,12 @@ function duration($ts)
 {
     global $time;
     $years = (int) ((($time - $ts) / (7 * 86400)) / 52.177457);
-    $rem   = (int) (($time - $ts) - ($years * 52.177457 * 7 * 86400));
+    $rem = (int) (($time - $ts) - ($years * 52.177457 * 7 * 86400));
     $weeks = (int) (($rem) / (7 * 86400));
-    $days  = (int) (($rem) / 86400) - $weeks    * 7;
-    $hours = (int) (($rem) / 3600)  - $days     * 24  - $weeks     * 7     * 24;
-    $mins  = (int) (($rem) / 60)    - $hours    * 60    - $days    * 24    * 60    - $weeks    * 7    * 24    * 60;
-    $str   = '';
+    $days = (int) (($rem) / 86400) - $weeks * 7;
+    $hours = (int) (($rem) / 3600) - $days * 24 - $weeks * 7 * 24;
+    $mins = (int) (($rem) / 60) - $hours * 60 - $days * 24 * 60 - $weeks * 7 * 24 * 60;
+    $str = '';
     if ($years == 1) {
         $str .= "$years year, ";
     }
@@ -654,9 +654,9 @@ EOB;
 
 // TODO, AUTH
 $_GET['op'] = !isset($_GET['op']) ? '1' : $_GET['op'];
-$PHP_SELF   = isset($_SERVER['PHP_SELF']) ? htmlentities(strip_tags($_SERVER['PHP_SELF'], '')) : '';
-$PHP_SELF   = $PHP_SELF . '?';
-$time       = time();
+$PHP_SELF = isset($_SERVER['PHP_SELF']) ? htmlentities(strip_tags($_SERVER['PHP_SELF'], '')) : '';
+$PHP_SELF = $PHP_SELF . '?';
+$time = time();
 // sanitize _GET
 foreach ($_GET as $key => $g) {
     $_GET[$key] = htmlentities($g);
@@ -670,7 +670,7 @@ if (isset($_GET['singleout']) && $_GET['singleout'] >= 0 && $_GET['singleout'] <
 }
 // display images
 if (isset($_GET['IMG'])) {
-    $memcacheStats       = getMemcacheStats();
+    $memcacheStats = getMemcacheStats();
     $memcacheStatsSingle = getMemcacheStats(false);
     if (!graphics_avail()) {
         die();
@@ -708,11 +708,11 @@ if (isset($_GET['IMG'])) {
                     imagestring($im, 2, $px, $py - 6, $text, $color1);
                 } else {
                     if ($placeindex < 31) {
-                        $px = $x                                                                                                                                                                                                                                                                                                    + 40 * 2;
-                        $py = ($placeindex - 15)                                                                                                                                                                                                                                                                                         * 12 + 6;
+                        $px = $x + 40 * 2;
+                        $py = ($placeindex - 15) * 12 + 6;
                     } else {
-                        $px = $x                                                                                                                                                                                                                                                                                                    + 40 * 2                                                                                                                                                                                                                                                                                                    + 100 * intval(($placeindex - 15) / 15);
-                        $py = ($placeindex % 15)                                                                                                                                                                                                                                                                                         * 12 + 6;
+                        $px = $x + 40 * 2 + 100 * intval(($placeindex - 15) / 15);
+                        $py = ($placeindex % 15) * 12 + 6;
                     }
                     imagefilledrectangle($im, $px, $py + 3, $px - 4, $py - 3, $color2);
                     imageline($im, $x + $w, $y + $h / 2, $px, $py, $color2);
@@ -763,34 +763,34 @@ if (isset($_GET['IMG'])) {
         }
     }
 
-    $size      = GRAPH_SIZE; // image size
-    $image     = imagecreate($size + 50, $size + 10);
+    $size = GRAPH_SIZE; // image size
+    $image = imagecreate($size + 50, $size + 10);
     $col_white = imagecolorallocate($image, 0xFF, 0xFF, 0xFF);
-    $col_red   = imagecolorallocate($image, 0xD0, 0x60, 0x30);
+    $col_red = imagecolorallocate($image, 0xD0, 0x60, 0x30);
     $col_green = imagecolorallocate($image, 0x60, 0xF0, 0x60);
     $col_black = imagecolorallocate($image, 0, 0, 0);
     imagecolortransparent($image, $col_white);
     switch ($_GET['IMG']) {
         case 1: // pie chart
-            $tsize      = $memcacheStats['limit_maxbytes'];
-            $avail      = $tsize - $memcacheStats['bytes'];
-            $x          = $y          = $size / 2;
+            $tsize = $memcacheStats['limit_maxbytes'];
+            $avail = $tsize - $memcacheStats['bytes'];
+            $x = $y = $size / 2;
             $angle_from = 0;
-            $fuzz       = 0.000001;
+            $fuzz = 0.000001;
             foreach ($memcacheStatsSingle as $serv => $mcs) {
                 $free = $mcs['STAT']['limit_maxbytes'] - $mcs['STAT']['bytes'];
                 $used = $mcs['STAT']['bytes'];
                 if ($free > 0) {
                     // draw free
                     $angle_to = ($free * 360) / $tsize;
-                    $perc     = sprintf('%.2f%%', ($free * 100) / $tsize);
+                    $perc = sprintf('%.2f%%', ($free * 100) / $tsize);
                     fill_arc($image, $x, $y, $size, $angle_from, $angle_from + $angle_to, $col_black, $col_green, $perc);
                     $angle_from = $angle_from + $angle_to;
                 }
                 if ($used > 0) {
                     // draw used
                     $angle_to = ($used * 360) / $tsize;
-                    $perc     = sprintf('%.2f%%', ($used * 100) / $tsize);
+                    $perc = sprintf('%.2f%%', ($used * 100) / $tsize);
                     fill_arc($image, $x, $y, $size, $angle_from, $angle_from + $angle_to, $col_black, $col_red, '(' . $perc . ')');
                     $angle_from = $angle_from + $angle_to;
                 }
@@ -798,9 +798,9 @@ if (isset($_GET['IMG'])) {
             break;
 
         case 2: // hit miss
-            $hits   = ($memcacheStats['get_hits'] == 0) ? 1 : $memcacheStats['get_hits'];
+            $hits = ($memcacheStats['get_hits'] == 0) ? 1 : $memcacheStats['get_hits'];
             $misses = ($memcacheStats['get_misses'] == 0) ? 1 : $memcacheStats['get_misses'];
-            $total  = $hits + $misses;
+            $total = $hits + $misses;
             fill_box($image, 30, $size, 50, -$hits * ($size - 21) / $total, $col_black, $col_green, sprintf('%.1f%%', $hits * 100 / $total));
             fill_box($image, 130, $size, 50, -max(4, ($total - $hits) * ($size - 21) / $total), $col_black, $col_red, sprintf('%.1f%%', $misses * 100 / $total));
             break;
@@ -813,22 +813,22 @@ echo getHeader();
 echo getMenu();
 switch ($_GET['op']) {
     case 1: // host stats
-        $phpversion          = phpversion();
-        $memcacheStats       = getMemcacheStats();
+        $phpversion = phpversion();
+        $memcacheStats = getMemcacheStats();
         $memcacheStatsSingle = getMemcacheStats(false);
-        $mem_size            = $memcacheStats['limit_maxbytes'];
-        $mem_used            = $memcacheStats['bytes'];
-        $mem_avail           = $mem_size - $mem_used;
-        $startTime           = time()    - array_sum($memcacheStats['uptime']);
-        $curr_items          = $memcacheStats['curr_items'];
-        $total_items         = $memcacheStats['total_items'];
-        $hits                = ($memcacheStats['get_hits'] == 0) ? 1 : $memcacheStats['get_hits'];
-        $misses              = ($memcacheStats['get_misses'] == 0) ? 1 : $memcacheStats['get_misses'];
-        $sets                = $memcacheStats['cmd_set'];
-        $req_rate            = sprintf('%.2f', ($hits + $misses) / ($time - $startTime));
-        $hit_rate            = sprintf('%.2f', ($hits) / ($time - $startTime));
-        $miss_rate           = sprintf('%.2f', ($misses) / ($time - $startTime));
-        $set_rate            = sprintf('%.2f', ($sets) / ($time - $startTime));
+        $mem_size = $memcacheStats['limit_maxbytes'];
+        $mem_used = $memcacheStats['bytes'];
+        $mem_avail = $mem_size - $mem_used;
+        $startTime = time() - array_sum($memcacheStats['uptime']);
+        $curr_items = $memcacheStats['curr_items'];
+        $total_items = $memcacheStats['total_items'];
+        $hits = ($memcacheStats['get_hits'] == 0) ? 1 : $memcacheStats['get_hits'];
+        $misses = ($memcacheStats['get_misses'] == 0) ? 1 : $memcacheStats['get_misses'];
+        $sets = $memcacheStats['cmd_set'];
+        $req_rate = sprintf('%.2f', ($hits + $misses) / ($time - $startTime));
+        $hit_rate = sprintf('%.2f', ($hits) / ($time - $startTime));
+        $miss_rate = sprintf('%.2f', ($misses) / ($time - $startTime));
+        $set_rate = sprintf('%.2f', ($sets) / ($time - $startTime));
         echo <<< EOB
         <div class="info div1"><h2>General Cache Information</h2>
         <table><tbody>
@@ -898,11 +898,11 @@ EOB;
         break;
 
     case 2: // variables
-        $m          = 0;
+        $m = 0;
         $cacheItems = getCacheItems();
-        $items      = $cacheItems['items'];
-        $totals     = $cacheItems['counts'];
-        $maxDump    = MAX_ITEM_DUMP;
+        $items = $cacheItems['items'];
+        $totals = $cacheItems['counts'];
+        $maxDump = MAX_ITEM_DUMP;
         foreach ($items as $server => $entries) {
             echo <<< EOB
 
@@ -948,10 +948,10 @@ EOB;
         // I'm not doing anything to check the validity of the key string.
         // probably an exploit can be written to delete all the files in key=base64_encode("\n\r delete all").
         // somebody has to do a fix to this.
-        $theKey      = htmlentities(base64_decode($_GET['key']));
-        $theserver   = $MEMCACHE_SERVERS[(int) $_GET['server']];
+        $theKey = htmlentities(base64_decode($_GET['key']));
+        $theserver = $MEMCACHE_SERVERS[(int) $_GET['server']];
         list($h, $p) = explode(':', $theserver);
-        $r           = sendMemcacheCommand($h, $p, 'get ' . $theKey);
+        $r = sendMemcacheCommand($h, $p, 'get ' . $theKey);
         echo <<<EOB
         <div class="info"><table><tbody>
             <tr><th>Server<th>Key</th><th>Value</th><th>Delete</th></tr>
@@ -968,16 +968,16 @@ EOB;
             echo 'No key set!';
             break;
         }
-        $theKey      = htmlentities(base64_decode($_GET['key']));
-        $theserver   = $MEMCACHE_SERVERS[(int) $_GET['server']];
+        $theKey = htmlentities(base64_decode($_GET['key']));
+        $theserver = $MEMCACHE_SERVERS[(int) $_GET['server']];
         list($h, $p) = explode(':', $theserver);
-        $r           = sendMemcacheCommand($h, $p, 'delete ' . $theKey);
+        $r = sendMemcacheCommand($h, $p, 'delete ' . $theKey);
         echo 'Deleting ' . $theKey . ':' . $r;
         break;
 
     case 6: // flush server
         $theserver = $MEMCACHE_SERVERS[(int) $_GET['server']];
-        $r         = flushServer($theserver);
+        $r = flushServer($theserver);
         echo 'Flush  ' . $theserver . ':' . $r;
         break;
 }

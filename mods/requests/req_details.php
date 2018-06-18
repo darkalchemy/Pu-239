@@ -13,9 +13,9 @@ $res = sql_query('SELECT r.*, r.added AS utadded, u.username
 if (!mysqli_num_rows($res)) {
     stderr("{$lang['error_error']}", "{$lang['error_invalid']}");
 }
-$num   = mysqli_fetch_assoc($res);
+$num = mysqli_fetch_assoc($res);
 $added = get_date($num['utadded'], '');
-$s     = htmlspecialchars($num['request']);
+$s = htmlspecialchars($num['request']);
 $HTMLOUT .= "<h3>{$lang['details_details']}" . $s . '</h3>';
 $HTMLOUT .= "<table width='750px'><tr><td colspan='2'><h1>$s</h1></td></tr>";
 if ($num['descr']) {
@@ -26,7 +26,7 @@ if ($num['descr']) {
 $HTMLOUT .= "<tr><td><b>{$lang['req_added']}</b></td>
 <td>$added</td></tr>";
 if ($CURUSER['id'] == $num['userid'] || $CURUSER['class'] >= UC_STAFF) {
-    $edit   = " | <a class='altlink' href='viewrequests.php?id=" . $id . "&amp;edit_request'>{$lang['details_edit']}</a> |";
+    $edit = " | <a class='altlink' href='viewrequests.php?id=" . $id . "&amp;edit_request'>{$lang['details_edit']}</a> |";
     $delete = " <a class='altlink' href='viewrequests.php?id=" . $id . "&amp;del_req'>{$lang['details_delete']}</a> ";
     if ($num['torrentid'] != 0) {
         $reset = "| <a class='altlink' href='viewrequests.php?id=" . $id . "&amp;req_reset'>{$lang['details_reset']}</a>";
@@ -54,9 +54,9 @@ if ($num['torrentid'] == 0) {
 }
 $HTMLOUT .= "<tr><td class='embedded' colspan='2'><p><a name='startcomments'></a></p>\n";
 $commentbar = "<p><a class='index' href='comment.php?action=add&amp;tid=$id&amp;type=request'>{$lang['details_add_comment']}</a></p>\n";
-$subres     = sql_query("SELECT COUNT(*) FROM comments WHERE request = $id");
-$subrow     = mysqli_fetch_array($subres);
-$count      = $subrow[0];
+$subres = sql_query("SELECT COUNT(*) FROM comments WHERE request = $id");
+$subrow = mysqli_fetch_array($subres);
+$count = $subrow[0];
 $HTMLOUT .= '</td></tr></table>';
 if (!$count) {
     $HTMLOUT .= "<h2>{$lang['details_no_comment']}</h2>";

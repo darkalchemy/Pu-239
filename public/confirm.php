@@ -8,8 +8,8 @@ if (!$CURUSER) {
     get_template();
 }
 
-$lang  = array_merge(load_language('global'), load_language('confirm'));
-$id    = isset($_GET['id']) ? $_GET['id'] : 0;
+$lang = array_merge(load_language('global'), load_language('confirm'));
+$id = isset($_GET['id']) ? $_GET['id'] : 0;
 $token = isset($_GET['token']) ? $_GET['token'] : '';
 if (empty($id)) {
     stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_id']}");

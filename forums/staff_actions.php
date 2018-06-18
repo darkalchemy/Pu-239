@@ -31,7 +31,7 @@ if ($CURUSER['class'] < UC_STAFF) {
 if ($staff_action == 1) {
     stderr($lang['gl_error'], $lang['fe_no_action_selected']);
 }
-$post_id  = (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0);
+$post_id = (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0);
 $topic_id = (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0);
 $forum_id = (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0);
 //=== stop any rogue staff tomfoolery
@@ -52,12 +52,12 @@ switch ($staff_action) {
     case 'delete_posts':
         if (isset($_POST['post_to_mess_with'])) {
             $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
-            $post_to_mess_with          = [];
+            $post_to_mess_with = [];
             foreach ($_POST['post_to_mess_with'] as $var) {
                 $post_to_mess_with[] = intval($var);
             }
             $post_to_mess_with = array_unique($post_to_mess_with);
-            $posts_count       = count($post_to_mess_with);
+            $posts_count = count($post_to_mess_with);
             if ($posts_count > 0) {
                 //=== if you want the un-delete option (only admin and up can see "deleted" posts)
                 if ($delete_for_real < 1) {
@@ -70,7 +70,7 @@ switch ($staff_action) {
                     $res = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
                     $arr = mysqli_fetch_assoc($res);
                     sql_query('UPDATE topics SET last_post = ' . sqlesc($arr['id']) . ', post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-                    sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($arr['forum_id']))                                  or sqlerr(__FILE__, __LINE__);
+                    sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
                 }
             } else {
                 stderr($lang['gl_error'], $lang['fe_nothing_deleted']);
@@ -83,12 +83,12 @@ switch ($staff_action) {
     case 'un_delete_posts': //=== only if you don't actually delete posts in delete_posts
         if (isset($_POST['post_to_mess_with'])) {
             $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
-            $post_to_mess_with          = [];
+            $post_to_mess_with = [];
             foreach ($_POST['post_to_mess_with'] as $var) {
                 $post_to_mess_with[] = intval($var);
             }
             $post_to_mess_with = array_unique($post_to_mess_with);
-            $posts_count       = count($post_to_mess_with);
+            $posts_count = count($post_to_mess_with);
             if ($posts_count > 0) {
                 sql_query('UPDATE posts SET status = \'ok\' WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
                 clr_forums_cache($topic_id);
@@ -112,14 +112,14 @@ switch ($staff_action) {
         if (isset($_POST['post_to_mess_with'])) {
             //=== make the new topic:
             sql_query('INSERT INTO topics (topic_name, forum_id, topic_desc) VALUES (' . sqlesc($new_topic_name) . ', ' . sqlesc($forum_id) . ', ' . sqlesc($new_topic_desc) . ')') or sqlerr(__FILE__, __LINE__);
-            $new_topic_id               = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+            $new_topic_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
             $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
-            $post_to_mess_with          = [];
+            $post_to_mess_with = [];
             foreach ($_POST['post_to_mess_with'] as $var) {
                 $post_to_mess_with[] = intval($var);
             }
             $post_to_mess_with = array_unique($post_to_mess_with);
-            $posts_count       = count($post_to_mess_with);
+            $posts_count = count($post_to_mess_with);
             if ($posts_count > 0) {
                 //=== move posts to new topic
                 sql_query('UPDATE posts SET topic_id = ' . $new_topic_id . ' WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
@@ -154,12 +154,12 @@ switch ($staff_action) {
         }
         if (isset($_POST['post_to_mess_with'])) {
             $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
-            $post_to_mess_with          = [];
+            $post_to_mess_with = [];
             foreach ($_POST['post_to_mess_with'] as $var) {
                 $post_to_mess_with[] = intval($var);
             }
             $post_to_mess_with = array_unique($post_to_mess_with);
-            $posts_count       = count($post_to_mess_with);
+            $posts_count = count($post_to_mess_with);
             if ($posts_count > 0) {
                 sql_query('UPDATE posts SET topic_id = ' . $topic_to_merge_with . ' WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
                 clr_forums_cache($topic_id);
@@ -168,12 +168,12 @@ switch ($staff_action) {
                 $res_from = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
                 $arr_from = mysqli_fetch_assoc($res_from);
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_from['id']) . ', post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-                sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($arr_from['forum_id']))                                  or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($arr_from['forum_id'])) or sqlerr(__FILE__, __LINE__);
                 //=== update post counts... topic merged INTO
                 $res_to = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_to_merge_with) . ' ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
                 $arr_to = mysqli_fetch_assoc($res_to);
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_to['id']) . ', post_count = post_count + ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($topic_to_merge_with)) or sqlerr(__FILE__, __LINE__);
-                sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($arr_to['forum_id']))                                             or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($arr_to['forum_id'])) or sqlerr(__FILE__, __LINE__);
             } else {
                 stderr($lang['gl_error'], $lang['fe_posts_were_not_merged']);
             }
@@ -192,8 +192,8 @@ switch ($staff_action) {
         }
         if (isset($_POST['post_to_mess_with'])) {
             $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
-            $post_to_mess_with          = [];
-            $count                      = 0;
+            $post_to_mess_with = [];
+            $count = 0;
             foreach ($_POST['post_to_mess_with'] as $var) {
                 $post_to_mess_with = intval($var);
                 //=== get current post info
@@ -210,12 +210,12 @@ switch ($staff_action) {
                 $res_from = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
                 $arr_from = mysqli_fetch_assoc($res_from);
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_from['id']) . ', post_count = post_count - ' . sqlesc($count) . ' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-                sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($count) . ' WHERE id = ' . sqlesc($arr_from['forum_id']))                                  or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($count) . ' WHERE id = ' . sqlesc($arr_from['forum_id'])) or sqlerr(__FILE__, __LINE__);
                 //=== update post counts... topic apended to
                 $res_to = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_to_append_to) . ' ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
                 $arr_to = mysqli_fetch_assoc($res_to);
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_to['id']) . ', post_count = post_count + ' . sqlesc($count) . ' WHERE id = ' . sqlesc($topic_to_append_to)) or sqlerr(__FILE__, __LINE__);
-                sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($count) . ' WHERE id = ' . sqlesc($arr_to['forum_id']))                                            or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($count) . ' WHERE id = ' . sqlesc($arr_to['forum_id'])) or sqlerr(__FILE__, __LINE__);
             }
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_to_append_to);
             die();
@@ -225,12 +225,12 @@ switch ($staff_action) {
     case 'send_to_recycle_bin':
         if (isset($_POST['post_to_mess_with'])) {
             $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
-            $post_to_mess_with          = [];
+            $post_to_mess_with = [];
             foreach ($_POST['post_to_mess_with'] as $var) {
                 $post_to_mess_with[] = intval($var);
             }
             $post_to_mess_with = array_unique($post_to_mess_with);
-            $posts_count       = count($post_to_mess_with);
+            $posts_count = count($post_to_mess_with);
             if ($posts_count > 0) {
                 sql_query('UPDATE posts SET status = \'recycled\' WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
                 clr_forums_cache($topic_id);
@@ -245,12 +245,12 @@ switch ($staff_action) {
     case 'remove_from_recycle_bin':
         if (isset($_POST['post_to_mess_with'])) {
             $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
-            $post_to_mess_with          = [];
+            $post_to_mess_with = [];
             foreach ($_POST['post_to_mess_with'] as $var) {
                 $post_to_mess_with[] = intval($var);
             }
             $post_to_mess_with = array_unique($post_to_mess_with);
-            $posts_count       = count($post_to_mess_with);
+            $posts_count = count($post_to_mess_with);
             if ($posts_count > 0) {
                 sql_query('UPDATE posts SET status = \'ok\' WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
                 clr_forums_cache($topic_id);
@@ -269,14 +269,14 @@ switch ($staff_action) {
         }
         $subject = strip_tags(isset($_POST['subject']) ? trim($_POST['subject']) : '');
         $message = (isset($_POST['message']) ? htmlsafechars($_POST['message']) : '');
-        $from    = ((isset($_POST['pm_from']) && 0 == $_POST['pm_from']) ? 0 : $CURUSER['id']);
+        $from = ((isset($_POST['pm_from']) && 0 == $_POST['pm_from']) ? 0 : $CURUSER['id']);
         if ('' == $subject || '' == $message) {
             stderr($lang['gl_error'], $lang['fe_you_must_enter_both_a_subj_mes']);
         }
         if (isset($_POST['post_to_mess_with'])) {
             $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
-            $post_to_mess_with          = [];
-            $count                      = 0;
+            $post_to_mess_with = [];
+            $count = 0;
             foreach ($_POST['post_to_mess_with'] as $var) {
                 $post_to_mess_with = intval($var);
                 //=== get user id to send to
@@ -354,7 +354,7 @@ switch ($staff_action) {
         //=== make sure there is a topic to merge with & get post count
         $topic_res = sql_query('SELECT COUNT(p.id) AS count, t.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE t.id = ' . sqlesc($topic_id) . ' GROUP BY p.topic_id') or sqlerr(__FILE__, __LINE__);
         $topic_arr = mysqli_fetch_assoc($topic_res);
-        $count     = $topic_arr['count'];
+        $count = $topic_arr['count'];
         if (!is_valid_id($topic_arr['id'])) {
             stderr($lang['gl_error'], $lang['gl_bad_id']);
         }
@@ -368,7 +368,7 @@ switch ($staff_action) {
         sql_query('UPDATE topics SET last_post = ' . sqlesc($arr['id']) . ', post_count = post_count + ' . sqlesc($count) . ' WHERE id = ' . sqlesc($topic_to_merge_with)) or sqlerr(__FILE__, __LINE__);
         //=== if topic merged with a topic in another forum
         if ($topic_arr['forum_id'] != $arr['forum_id']) {
-            sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($count) . ' WHERE id = ' . sqlesc($arr['forum_id']))                                     or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($count) . ' WHERE id = ' . sqlesc($arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
             sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($count) . ', topic_count = topic_count -1 WHERE id = ' . sqlesc($topic_arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
         } else {
             sql_query('UPDATE forums SET topic_count = topic_count -1 WHERE id = ' . sqlesc($arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
@@ -383,7 +383,7 @@ switch ($staff_action) {
     case 'move_to_recycle_bin':
         $status = ($_POST['status'] === 'yes' ? 'recycled' : 'ok');
         sql_query('UPDATE topics SET status = \'' . $status . '\' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-        sql_query('DELETE FROM subscriptions WHERE topic_id = ' . sqlesc($topic_id))                or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM subscriptions WHERE topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
         //=== perhaps redirect to the bin lol
         header('Location: forums.php' . ('yes' == $_POST['status'] ? '?action=view_forum&forum_id=' . $forum_id : '?action=view_topic&topic_id=' . $topic_id));
@@ -414,11 +414,11 @@ switch ($staff_action) {
             $res_count = sql_query('SELECT post_count, forum_id, poll_id FROM topics WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
             $arr_count = mysqli_fetch_assoc($res_count);
             //=== delete all the stuff
-            sql_query('DELETE FROM subscriptions WHERE topic_id = ' . sqlesc($topic_id))              or sqlerr(__FILE__, __LINE__);
-            sql_query('DELETE FROM forum_poll WHERE id = ' . sqlesc($arr_count['poll_id']))           or sqlerr(__FILE__, __LINE__);
-            sql_query('DELETE FROM forum_poll_votes WHERE poll_id = ' . sqlesc($arr_count['poll_id']))or sqlerr(__FILE__, __LINE__);
-            sql_query('DELETE FROM topics WHERE id = ' . sqlesc($topic_id))                           or sqlerr(__FILE__, __LINE__);
-            sql_query('DELETE FROM posts WHERE topic_id = ' . sqlesc($topic_id))                      or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM subscriptions WHERE topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM forum_poll WHERE id = ' . sqlesc($arr_count['poll_id'])) or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM forum_poll_votes WHERE poll_id = ' . sqlesc($arr_count['poll_id'])) or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM topics WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM posts WHERE topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
             clr_forums_cache($topic_id);
             //=== should I delete attachments? or let the members have a management page? or do it in cleanup?
             sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($arr_count['post_count']) . ', topic_count = topic_count - 1 WHERE id = ' . sqlesc($arr_count['forum_id'])) or sqlerr(__FILE__, __LINE__);

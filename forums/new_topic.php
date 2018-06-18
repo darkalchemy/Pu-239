@@ -16,19 +16,19 @@ $topic_name = strip_tags(isset($_POST['topic_name']) ? $_POST['topic_name'] : ''
 $topic_desc = strip_tags(isset($_POST['topic_desc']) ? $_POST['topic_desc'] : '');
 
 $post_title = strip_tags(isset($_POST['post_title']) ? $_POST['post_title'] : '');
-$icon       = htmlsafechars(isset($_POST['icon']) ? $_POST['icon'] : '');
-$body       = isset($_POST['body']) ? $_POST['body'] : '';
-$ip         = getip();
-$bb_code    = isset($_POST['bb_code'])     && $_POST['bb_code'] == 'no' ? 'no' : 'yes';
-$anonymous  = isset($_POST['anonymous'])   && $_POST['anonymous'] != '' ? 'yes' : 'no';
+$icon = htmlsafechars(isset($_POST['icon']) ? $_POST['icon'] : '');
+$body = isset($_POST['body']) ? $_POST['body'] : '';
+$ip = getip();
+$bb_code = isset($_POST['bb_code']) && $_POST['bb_code'] == 'no' ? 'no' : 'yes';
+$anonymous = isset($_POST['anonymous']) && $_POST['anonymous'] != '' ? 'yes' : 'no';
 
 $poll_question = strip_tags(isset($_POST['poll_question']) ? trim($_POST['poll_question']) : '');
-$poll_answers  = strip_tags(isset($_POST['poll_answers']) ? trim($_POST['poll_answers']) : '');
-$poll_ends     = isset($_POST['poll_ends']) ? (($_POST['poll_ends'] > 168) ? 1356048000 : (TIME_NOW + $_POST['poll_ends'] * 86400)) : '';
-$poll_starts   = isset($_POST['poll_starts']) ? (($_POST['poll_starts'] === 0) ? TIME_NOW : (TIME_NOW + $_POST['poll_starts'] * 86400)) : '';
-$poll_starts   = $poll_starts > ($poll_ends + 1) ? TIME_NOW : $poll_starts;
-$change_vote   = isset($_POST['change_vote'])   && $_POST['change_vote'] === 'yes' ? 'yes' : 'no';
-$subscribe     = isset($_POST['subscribe'])     && $_POST['subscribe']   === 'yes' ? 'yes' : 'no';
+$poll_answers = strip_tags(isset($_POST['poll_answers']) ? trim($_POST['poll_answers']) : '');
+$poll_ends = isset($_POST['poll_ends']) ? (($_POST['poll_ends'] > 168) ? 1356048000 : (TIME_NOW + $_POST['poll_ends'] * 86400)) : '';
+$poll_starts = isset($_POST['poll_starts']) ? (($_POST['poll_starts'] === 0) ? TIME_NOW : (TIME_NOW + $_POST['poll_starts'] * 86400)) : '';
+$poll_starts = $poll_starts > ($poll_ends + 1) ? TIME_NOW : $poll_starts;
+$change_vote = isset($_POST['change_vote']) && $_POST['change_vote'] === 'yes' ? 'yes' : 'no';
+$subscribe = isset($_POST['subscribe']) && $_POST['subscribe'] === 'yes' ? 'yes' : 'no';
 if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     if (empty($body)) {
         stderr($lang['gl_error'], $lang['fe_no_body_txt']);
@@ -50,43 +50,43 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
         $multi_options = isset($_POST['multi_options']) && $_POST['multi_options'] <= $i ? intval($_POST['multi_options']) : 1;
 
         $poll_options = serialize($break_down_poll_options);
-        $values       = [
-            'user_id'           => $CURUSER['id'],
-            'question'          => $poll_question,
-            'poll_answers'      => $poll_options,
+        $values = [
+            'user_id' => $CURUSER['id'],
+            'question' => $poll_question,
+            'poll_answers' => $poll_options,
             'number_of_options' => $i,
-            'poll_starts'       => $poll_starts,
-            'poll_ends'         => $poll_ends,
-            'change_vote'       => $change_vote,
-            'multi_options'     => $multi_options,
+            'poll_starts' => $poll_starts,
+            'poll_ends' => $poll_ends,
+            'change_vote' => $change_vote,
+            'multi_options' => $multi_options,
         ];
         $poll_id = $fluent->insertInto('forum_poll')
             ->values($values)
             ->execute();
     }
     $values = [
-        'user_id'    => $CURUSER['id'],
+        'user_id' => $CURUSER['id'],
         'topic_name' => $topic_name,
-        'last_post'  => $CURUSER['id'],
-        'forum_id'   => $forum_id,
+        'last_post' => $CURUSER['id'],
+        'forum_id' => $forum_id,
         'topic_desc' => $topic_desc,
-        'poll_id'    => $poll_id,
-        'anonymous'  => $anonymous,
+        'poll_id' => $poll_id,
+        'anonymous' => $anonymous,
     ];
     $topic_id = $fluent->insertInto('topics')
         ->values($values)
         ->execute();
 
     $values = [
-        'topic_id'   => $topic_id,
-        'user_id'    => $CURUSER['id'],
-        'added'      => TIME_NOW,
-        'body'       => $body,
-        'icon'       => $icon,
+        'topic_id' => $topic_id,
+        'user_id' => $CURUSER['id'],
+        'added' => TIME_NOW,
+        'body' => $body,
+        'icon' => $icon,
         'post_title' => $post_title,
-        'bbcode'     => $bb_code,
-        'ip'         => inet_pton($ip),
-        'anonymous'  => $anonymous,
+        'bbcode' => $bb_code,
+        'ip' => inet_pton($ip),
+        'anonymous' => $anonymous,
     ];
 
     $post_id = $fluent->insertInto('posts')
@@ -107,7 +107,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
 
     $set = [
         'first_post' => $post_id,
-        'last_post'  => $post_id,
+        'last_post' => $post_id,
         'post_count' => 1,
     ];
     $fluent->update('topics')
@@ -116,7 +116,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
         ->execute();
 
     $set = [
-        'post_count'  => new Envms\FluentPDO\Literal('post_count + 1'),
+        'post_count' => new Envms\FluentPDO\Literal('post_count + 1'),
         'topic_count' => new Envms\FluentPDO\Literal('topic_count + 1'),
     ];
     $fluent->update('forums')
@@ -146,10 +146,10 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     if ($CURUSER['class'] >= $min_upload_class) {
         foreach ($_FILES['attachment']['name'] as $key => $name) {
             if (!empty($name)) {
-                $size                = intval($_FILES['attachment']['size'][$key]);
-                $type                = $_FILES['attachment']['type'][$key];
-                $extension_error     = $size_error     = 0;
-                $name                = str_replace(' ', '_', $name);
+                $size = intval($_FILES['attachment']['size'][$key]);
+                $type = $_FILES['attachment']['type'][$key];
+                $extension_error = $size_error = 0;
+                $name = str_replace(' ', '_', $name);
                 $accepted_file_types = [
                     'application/zip',
                     'application/x-zip',
@@ -157,8 +157,8 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
                     'application/x-rar',
                 ];
                 $accepted_file_extension = strrpos($name, '.');
-                $file_extension          = strtolower(substr($name, $accepted_file_extension));
-                $name                    = preg_replace('#[^a-zA-Z0-9_-]#', '', $name);
+                $file_extension = strtolower(substr($name, $accepted_file_extension));
+                $name = preg_replace('#[^a-zA-Z0-9_-]#', '', $name);
                 switch (true) {
                     case $size > $max_file_size:
                         $size_error = ($size_error + 1);
@@ -177,16 +177,16 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
                         break;
 
                     default:
-                        $name      = substr($name, 0, -strlen($file_extension));
+                        $name = substr($name, 0, -strlen($file_extension));
                         $upload_to = $upload_folder . $name . '(id-' . $post_id . ')' . $file_extension;
-                        $values    = [
-                            'post_id'   => $post_id,
-                            'user_id'   => $CURUSER['id'],
-                            'file'      => $name . '(id-' . $post_id . ')' . $file_extension,
+                        $values = [
+                            'post_id' => $post_id,
+                            'user_id' => $CURUSER['id'],
+                            'file' => $name . '(id-' . $post_id . ')' . $file_extension,
                             'file_name' => $name,
-                            'added'     => TIME_NOW,
+                            'added' => TIME_NOW,
                             'extension' => ltrim($file_extension, '.'),
-                            'size'      => $size,
+                            'size' => $size,
                         ];
                         $fluent->insertInto('attachments')
                             ->values($values)
@@ -199,7 +199,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     }
     if ($subscribe === 'yes') {
         $values = [
-            'user_id'  => $CURUSER['id'],
+            'user_id' => $CURUSER['id'],
             'topic_id' => $topic_id,
         ];
         $fluent->insertInto('subscriptions')

@@ -8,7 +8,7 @@ require_once CLASS_DIR . 'class.bencdec.php';
 dbconn();
 global $CURUSER, $site_config, $cache;
 
-$lang   = array_merge(load_language('global'), load_language('download'));
+$lang = array_merge(load_language('global'), load_language('download'));
 $T_Pass = isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) == 64 ? $_GET['torrent_pass'] : '';
 if (!empty($T_Pass)) {
     $q0 = sql_query('SELECT * FROM users WHERE torrent_pass = ' . sqlesc($T_Pass)) or sqlerr(__FILE__, __LINE__);
@@ -20,16 +20,16 @@ if (!empty($T_Pass)) {
 } else {
     check_user_status();
 }
-$id     = isset($_GET['torrent']) ? (int) $_GET['torrent'] : 0;
-$ssluse = isset($_GET['ssl'])  && $_GET['ssl'] >= 1 || $CURUSER['ssluse'] >= 1 ? 1 : 0;
-$zipuse = isset($_GET['zip'])  && $_GET['zip']   == 1 ? true : false;
-$text   = isset($_GET['text']) && $_GET['text']  == 1 ? true : false;
+$id = isset($_GET['torrent']) ? (int) $_GET['torrent'] : 0;
+$ssluse = isset($_GET['ssl']) && $_GET['ssl'] >= 1 || $CURUSER['ssluse'] >= 1 ? 1 : 0;
+$zipuse = isset($_GET['zip']) && $_GET['zip'] == 1 ? true : false;
+$text = isset($_GET['text']) && $_GET['text'] == 1 ? true : false;
 if (!is_valid_id($id)) {
     stderr($lang['download_user_error'], $lang['download_no_id']);
 }
 $res = sql_query('SELECT name, owner, vip, category, filename, info_hash FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res);
-$fn  = $site_config['torrent_dir'] . '/' . $id . '.torrent';
+$fn = $site_config['torrent_dir'] . '/' . $id . '.torrent';
 if (!$row || !is_file($fn) || !is_readable($fn)) {
     stderr('Err', 'There was an error with the file or with the query, please contact staff');
 }
@@ -57,16 +57,16 @@ if ($site_config['seedbonus_on'] == 1 && $row['owner'] != $CURUSER['id']) {
     ], $site_config['expires']['user_cache']);
 }
 sql_query('UPDATE torrents SET hits = hits + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$torrents       = $cache->get('torrent_details_' . $id);
+$torrents = $cache->get('torrent_details_' . $id);
 $update['hits'] = $torrents['hits'] + 1;
 $cache->update_row('torrent_details_' . $id, [
     'hits' => $update['hits'],
 ], $site_config['expires']['torrent_details']);
 
 if (isset($_GET['slot'])) {
-    $added     = (TIME_NOW + 14 * 86400);
+    $added = (TIME_NOW + 14 * 86400);
     $slots_sql = sql_query('SELECT * FROM freeslots WHERE torrentid = ' . sqlesc($id) . ' AND userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    $slot      = mysqli_fetch_assoc($slots_sql);
+    $slot = mysqli_fetch_assoc($slots_sql);
     $used_slot = $slot['torrentid'] == $id && $slot['userid'] == $CURUSER['id'];
     if ($_GET['slot'] === 'free') {
         if ($used_slot && $slot['free'] === 'yes') {
@@ -117,8 +117,8 @@ $cache->delete('top5_tor_');
 $cache->delete('last5_tor_');
 $cache->delete('scroll_tor_');
 if (!isset($CURUSER['torrent_pass']) || strlen($CURUSER['torrent_pass']) != 64) {
-    $passkey                 = make_password(16);
-    $uid                     = $CURUSER['id'];
+    $passkey = make_password(16);
+    $uid = $CURUSER['id'];
     $CURUSER['torrent_pass'] = $passkey;
     sql_query('UPDATE users SET torrent_pass = ' . sqlesc($CURUSER['torrent_pass']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $cache->update_row('user' . $CURUSER['id'], [
@@ -132,7 +132,7 @@ if (XBT_TRACKER) {
     $dict['announce'] = $site_config['announce_urls'][$ssluse] . '?torrent_pass=' . $CURUSER['torrent_pass'];
 }
 $dict['uid'] = (int) $CURUSER['id'];
-$tor         = bencdec::encode($dict);
+$tor = bencdec::encode($dict);
 if ($zipuse) {
     require_once INCL_DIR . 'phpzip.php';
     $row['name'] = str_replace([
@@ -142,7 +142,7 @@ if ($zipuse) {
                                ], '_', $row['name']);
     $file_name = $site_config['torrent_dir'] . '/' . $row['name'] . '.torrent';
     if (file_put_contents($file_name, $tor)) {
-        $zip   = new PHPZip();
+        $zip = new PHPZip();
         $files = [
             $file_name,
         ];

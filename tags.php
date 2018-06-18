@@ -18,7 +18,7 @@ $lang = array_merge(load_language('global'), load_language('tags'));
 function insert_tag($name, $description, $syntax, $example, $remarks)
 {
     global $lang;
-    $result  = format_comment($example);
+    $result = format_comment($example);
     $htmlout = '';
     $htmlout .= "<div class='sub'><b>$name</b></div>\n";
     $htmlout .= "<table class='main' width='100%' >\n";

@@ -7,8 +7,8 @@ $HTMLOUT .= "
     <fieldset id='latestforum' class='header'>
         <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['latestposts_title']}</legend>
         <div class='table-wrapper has-text-centered'>";
-$page   = 1;
-$num    = 0;
+$page = 1;
+$num = 0;
 $topics = $cache->get('last_posts_' . $CURUSER['class']);
 if ($topics === false || is_null($topics)) {
     $topicres = sql_query('SELECT t.id, t.user_id AS tuser_id, t.topic_name, t.locked, t.forum_id, t.last_post, t.sticky, t.views, t.anonymous AS tan,
@@ -44,15 +44,15 @@ if (!empty($topics) && count($topics) > 0) {
         if (!$perpage) {
             $perpage = 24;
         }
-        $posts   = (int) $topicarr['p_count'];
+        $posts = (int) $topicarr['p_count'];
         $replies = max(0, $posts - 1);
-        $first   = ($page * $perpage)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         - $perpage + 1;
-        $last    = $first                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          + $perpage - 1;
+        $first = ($page * $perpage) - $perpage + 1;
+        $last = $first + $perpage - 1;
         if ($last > $num) {
             $last = $num;
         }
         $pages = ceil($posts / $perpage);
-        $menu  = '';
+        $menu = '';
         for ($i = 1; $i <= $pages; ++$i) {
             if ($i == 1 && $i != $pages) {
                 $menu .= '[ ';
@@ -86,9 +86,9 @@ if (!empty($topics) && count($topics) > 0) {
         } else {
             $author = (!empty($topicarr['tuser_id']) ? format_username($topicarr['tuser_id']) : ($topicarr['tuser_id'] == '0' ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}[{$topicarr['tuser_id']}]</i>"));
         }
-        $staffimg   = ($topicarr['min_class_read'] >= UC_STAFF ? "<img src='" . $site_config['pic_baseurl'] . "staff.png' alt='Staff forum' title='Staff Forum' />" : '');
-        $stickyimg  = ($topicarr['sticky'] === 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "sticky.gif' alt='{$lang['index_fposts_sticky']}' title='{$lang['index_fposts_stickyt']}' />&#160;&#160;" : '');
-        $lockedimg  = ($topicarr['locked'] === 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "forumicons/locked.gif' alt='{$lang['index_fposts_locked']}' title='{$lang['index_fposts_lockedt']}' />&#160;" : '');
+        $staffimg = ($topicarr['min_class_read'] >= UC_STAFF ? "<img src='" . $site_config['pic_baseurl'] . "staff.png' alt='Staff forum' title='Staff Forum' />" : '');
+        $stickyimg = ($topicarr['sticky'] === 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "sticky.gif' alt='{$lang['index_fposts_sticky']}' title='{$lang['index_fposts_stickyt']}' />&#160;&#160;" : '');
+        $lockedimg = ($topicarr['locked'] === 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "forumicons/locked.gif' alt='{$lang['index_fposts_locked']}' title='{$lang['index_fposts_lockedt']}' />&#160;" : '');
         $topic_name = $lockedimg . $stickyimg . "<a href='{$site_config['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=last#" . (int) $topicarr['last_post'] . "'><b>" . htmlsafechars($topicarr['topic_name']) . "</b></a>&#160;&#160;$staffimg&#160;&#160;$menu<br><font class='small'>{$lang['index_fposts_in']}<a href='forums.php?action=view_forum&amp;forum_id=" . (int) $topicarr['forum_id'] . "'>" . htmlsafechars($topicarr['name']) . "</a>&#160;by&#160;$author&#160;&#160;($added)</font>";
         $HTMLOUT .= "
                     <tr>

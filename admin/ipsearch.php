@@ -8,7 +8,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
-$lang    = array_merge($lang, load_language('ad_ipsearch'));
+$lang = array_merge($lang, load_language('ad_ipsearch'));
 $HTMLOUT = $ip = $mask = '';
 $HTMLOUT .= begin_main_frame();
 $ip = isset($_GET['ip']) ? htmlsafechars(trim($_GET['ip'])) : '';
@@ -24,7 +24,7 @@ if ($ip) {
     if ($mask == '' || $mask === '255.255.255.255') {
         $where1 = "u.ip = '$ip'";
         $where2 = "ips.ip = '$ip'";
-        $dom    = @gethostbyaddr($ip);
+        $dom = @gethostbyaddr($ip);
         if ($dom == $ip || @gethostbyname($dom) != $ip) {
             $addr = '';
         } else {
@@ -49,7 +49,7 @@ if ($ip) {
         }
         $where1 = "INET_ATON(u.ip) & INET_ATON('$mask') = INET_ATON('$ip') & INET_ATON('$mask')";
         $where2 = "INET_ATON(ips.ip) & INET_ATON('$mask') = INET_ATON('$ip') & INET_ATON('$mask')";
-        $addr   = "{$lang['ipsearch_mask']} $mask";
+        $addr = "{$lang['ipsearch_mask']} $mask";
     }
     $queryc = "SELECT COUNT(id) FROM
            (
@@ -57,8 +57,8 @@ if ($ip) {
              UNION SELECT u.id FROM users AS u RIGHT JOIN ips ON u.id = ips.userid WHERE $where2
              GROUP BY u.id
            ) AS ipsearch";
-    $res   = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
-    $row   = mysqli_fetch_array($res);
+    $res = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
+    $row = mysqli_fetch_array($res);
     $count = $row[0];
     if ($count == 0) {
         $HTMLOUT .= "<br><b>No users found</b>\n";
@@ -66,10 +66,10 @@ if ($ip) {
         echo stdhead('IP sEARCH') . $HTMLOUT . stdfoot();
         die();
     }
-    $order   = isset($_GET['order'])   && $_GET['order'];
-    $page    = isset($_GET['page'])    && (int) $_GET['page'];
+    $order = isset($_GET['order']) && $_GET['order'];
+    $page = isset($_GET['page']) && (int) $_GET['page'];
     $perpage = 20;
-    $pager   = pager($perpage, $count, "staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=$order&amp;");
+    $pager = pager($perpage, $count, "staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=$order&amp;");
     if ($order === 'added') {
         $orderby = 'added DESC';
     } elseif ($order === 'username') {
@@ -111,8 +111,8 @@ if ($ip) {
             $user['last_access'] = '---';
         }
         if ($user['last_ip']) {
-            $nip   = ip2long($user['last_ip']);
-            $res1  = sql_query("SELECT COUNT(*) FROM bans WHERE $nip >= first AND $nip <= last") or sqlerr(__FILE__, __LINE__);
+            $nip = ip2long($user['last_ip']);
+            $res1 = sql_query("SELECT COUNT(*) FROM bans WHERE $nip >= first AND $nip <= last") or sqlerr(__FILE__, __LINE__);
             $array = mysqli_fetch_row($res1);
             if ($array[0] == 0) {
                 $ipstr = $user['last_ip'];
@@ -122,11 +122,11 @@ if ($ip) {
         } else {
             $ipstr = '---';
         }
-        $resip     = sql_query('SELECT ip FROM ips WHERE userid=' . sqlesc($user['id']) . ' GROUP BY ips.ip') or sqlerr(__FILE__, __LINE__);
+        $resip = sql_query('SELECT ip FROM ips WHERE userid=' . sqlesc($user['id']) . ' GROUP BY ips.ip') or sqlerr(__FILE__, __LINE__);
         $iphistory = mysqli_num_rows($resip);
         if ($user['invitedby'] > 0) {
-            $res2      = sql_query('SELECT username FROM users WHERE id=' . sqlesc($user['invitedby']) . '');
-            $array     = mysqli_fetch_assoc($res2);
+            $res2 = sql_query('SELECT username FROM users WHERE id=' . sqlesc($user['invitedby']) . '');
+            $array = mysqli_fetch_assoc($res2);
             $invitedby = $array['id'];
             if ($invitedby == '') {
                 $invitedby = "<i>[{$lang['ipsearch_deleted']}]</i>";

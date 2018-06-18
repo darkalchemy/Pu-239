@@ -26,7 +26,7 @@ if (isset($input['done'])) {
     rep_output($lang['info_reputation_added']);
 }
 
-$check   = isset($input['pid']) ? is_valid_id($input['pid']) : false;
+$check = isset($input['pid']) ? is_valid_id($input['pid']) : false;
 $locales = [
     'posts',
     'comments',
@@ -118,14 +118,14 @@ if (!$is_mod) {
         }
     }
 }
-$r                = sql_query("SELECT COUNT(*) FROM posts WHERE user_id = {$CURUSER['id']}") or sqlerr(__FILE__, __LINE__);
-$a                = mysqli_fetch_row($r);
+$r = sql_query("SELECT COUNT(*) FROM posts WHERE user_id = {$CURUSER['id']}") or sqlerr(__FILE__, __LINE__);
+$a = mysqli_fetch_row($r);
 $CURUSER['posts'] = $a[0];
 
 $reason = '';
 if (isset($input['reason']) && !empty($input['reason'])) {
     $reason = trim($input['reason']);
-    $temp   = stripslashes($input['reason']);
+    $temp = stripslashes($input['reason']);
     if ((strlen(trim($temp)) < 2) || ($reason == '')) {
         rep_output($lang['info_reason_too_short']);
     }
@@ -147,12 +147,12 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
     $cache->delete('user_rep_' . $res['userid']);
     $save = [
         'reputation' => $score,
-        'whoadded'   => $CURUSER['id'],
-        'reason'     => sqlesc($reason),
-        'dateadd'    => TIME_NOW,
-        'locale'     => sqlesc($rep_locale),
-        'postid'     => (int) $input['pid'],
-        'userid'     => $res['userid'],
+        'whoadded' => $CURUSER['id'],
+        'reason' => sqlesc($reason),
+        'dateadd' => TIME_NOW,
+        'locale' => sqlesc($rep_locale),
+        'postid' => (int) $input['pid'],
+        'userid' => $res['userid'],
     ];
 
     sql_query('INSERT INTO reputation (' . join(',', array_keys($save)) . ') VALUES (' . join(',', $save) . ')');
@@ -226,7 +226,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                 $rep_info = sprintf("Your reputation on <a href='{$site_config['baseurl']}/forums.php?action=viewtopic&amp;topicid=%d&amp;page=p%d#%d' target='_blank'>this Post</a> is %s<br>Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
         }
         $rep_points = sprintf('' . $lang['info_you_have'] . ' %d ' . $lang['info_reputation_points'] . '', $CURUSER['reputation']);
-        $html       = "
+        $html = "
                         <tr>
                             <td class='has-text-centered'>{$rep_info}</td>
                         </tr>
@@ -249,10 +249,10 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                         </tr>";
     } else {
         $res['anon'] = (isset($res['anon']) ? $res['anon'] : 'no');
-        $rep_text    = sprintf("What do you think of %s's " . $this_rep . '?', ($res['anon'] === 'yes' ? 'Anonymous' : htmlsafechars($res['username'])));
+        $rep_text = sprintf("What do you think of %s's " . $this_rep . '?', ($res['anon'] === 'yes' ? 'Anonymous' : htmlsafechars($res['username'])));
         $negativerep = ($is_mod || $GVARS['g_rep_negative']) ? true : false;
         $closewindow = false;
-        $html        = "
+        $html = "
                         <tr>
                             <td class='has-text-centered'>{$lang['info_add_rep']} <b>" . htmlsafechars($res['username']) . "</b></td>
                         </tr>

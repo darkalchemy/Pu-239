@@ -26,17 +26,17 @@ define('PM_SENTBOX', -1); // GET value for sent box
  *
  */
 define('PM_DRAFTS', -2); //  new drafts folder
-$lang    = array_merge(load_language('global'), load_language('takesignup'), load_language('pm'));
+$lang = array_merge(load_language('global'), load_language('takesignup'), load_language('pm'));
 $stdhead = [
     'css' => [
     ],
 ];
 $HTMLOUT = $count2 = $other_box_info = $maxpic = $maxbox = '';
 
-$maxbox   = 100 * ($CURUSER['class'] + 1);
-$maxboxes = 5   * ($CURUSER['class'] + 1);
+$maxbox = 100 * ($CURUSER['class'] + 1);
+$maxboxes = 5 * ($CURUSER['class'] + 1);
 
-$returnto         = isset($_GET['returnto']) ? $_GET['returnto'] : isset($_POST['returnto']) ? $_POST['returnto'] : '/index.php';
+$returnto = isset($_GET['returnto']) ? $_GET['returnto'] : isset($_POST['returnto']) ? $_POST['returnto'] : '/index.php';
 $possible_actions = [
     'view_mailbox',
     'use_draft',
@@ -58,16 +58,16 @@ if (!in_array($action, $possible_actions)) {
 }
 
 $change_pm_number = (isset($_GET['change_pm_number']) ? intval($_GET['change_pm_number']) : (isset($_POST['change_pm_number']) ? intval($_POST['change_pm_number']) : 0));
-$page             = (isset($_GET['page']) ? intval($_GET['page']) : 0);
-$perpage          = (isset($_GET['perpage']) ? intval($_GET['perpage']) : ($CURUSER['pms_per_page'] > 0 ? $CURUSER['pms_per_page'] : 20));
-$mailbox          = (isset($_GET['box']) ? intval($_GET['box']) : (isset($_POST['box']) ? intval($_POST['box']) : 1));
-$pm_id            = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
-$save             = ((isset($_POST['save']) && $_POST['save'] === 1) ? '1' : '0');
-$urgent           = ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? 'yes' : 'no');
-$desc_asc         = (isset($_GET['ASC']) ? '&amp;DESC=1' : (isset($_GET['DESC']) ? '&amp;ASC=1' : ''));
-$desc_asc_2       = (isset($_GET['DESC']) ? 'ascending' : 'descending');
-$spacer           = '&#160;&#160;&#160;&#160;';
-$good_order_by    = [
+$page = (isset($_GET['page']) ? intval($_GET['page']) : 0);
+$perpage = (isset($_GET['perpage']) ? intval($_GET['perpage']) : ($CURUSER['pms_per_page'] > 0 ? $CURUSER['pms_per_page'] : 20));
+$mailbox = (isset($_GET['box']) ? intval($_GET['box']) : (isset($_POST['box']) ? intval($_POST['box']) : 1));
+$pm_id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
+$save = ((isset($_POST['save']) && $_POST['save'] === 1) ? '1' : '0');
+$urgent = ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? 'yes' : 'no');
+$desc_asc = (isset($_GET['ASC']) ? '&amp;DESC=1' : (isset($_GET['DESC']) ? '&amp;ASC=1' : ''));
+$desc_asc_2 = (isset($_GET['DESC']) ? 'ascending' : 'descending');
+$spacer = '&#160;&#160;&#160;&#160;';
+$good_order_by = [
     'username',
     'added',
     'subject',
@@ -230,7 +230,7 @@ function insertJumpTo($mailbox)
 
     $insertJumpTo = $cache->get('insertJumpTo' . $CURUSER['id']);
     if ($insertJumpTo === false || is_null($insertJumpTo)) {
-        $res          = sql_query('SELECT boxnumber,name FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT boxnumber,name FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
         $insertJumpTo = '<form action="pm_system.php" method="get">
                                     <input type="hidden" name="action" value="view_mailbox" />
                                     <select name="box" onchange="location = this.options[this.selectedIndex].value;">

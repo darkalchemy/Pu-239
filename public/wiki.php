@@ -6,7 +6,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
 
-$lang    = array_merge(load_language('global'), load_language('wiki'));
+$lang = array_merge(load_language('global'), load_language('wiki'));
 $HTMLOUT = '';
 global $CURUSER, $fluent, $user_stuffs, $session;
 
@@ -56,8 +56,8 @@ function navmenu()
 function wikimenu()
 {
     global $lang, $site_config;
-    $res2          = sql_query('SELECT name FROM wiki ORDER BY id DESC LIMIT 1');
-    $latest        = mysqli_fetch_assoc($res2);
+    $res2 = sql_query('SELECT name FROM wiki ORDER BY id DESC LIMIT 1');
+    $latest = mysqli_fetch_assoc($res2);
     $latestarticle = htmlsafechars($latest['name']);
 
     return main_div("
@@ -70,20 +70,20 @@ function wikimenu()
 }
 
 $action = 'article';
-$mode   = $name   = '';
+$mode = $name = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['article-add'])) {
         $name = htmlsafechars(urldecode($_POST['article-name']));
         $body = htmlsafechars($_POST['body']);
-        $sql  = 'INSERT INTO `wiki` ( `name` , `body` , `userid`, `time` ) VALUES (' . sqlesc($name) . ', ' . sqlesc($body) . ', ' . sqlesc($CURUSER['id']) . ", '" . TIME_NOW . "')";
+        $sql = 'INSERT INTO `wiki` ( `name` , `body` , `userid`, `time` ) VALUES (' . sqlesc($name) . ', ' . sqlesc($body) . ', ' . sqlesc($CURUSER['id']) . ", '" . TIME_NOW . "')";
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $session->set('is-success', 'Wiki article added');
     } elseif (isset($_POST['article-edit'])) {
-        $id   = (int) $_POST['article-id'];
+        $id = (int) $_POST['article-id'];
         $name = htmlspecialchars(urldecode($_POST['article-name']));
         $body = htmlspecialchars($_POST['body']);
-        $sql  = 'UPDATE wiki SET name = ' . sqlesc($name) . ', body =' . sqlesc($body) . ", lastedit = '" . TIME_NOW . "', lastedituser =" . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($id);
+        $sql = 'UPDATE wiki SET name = ' . sqlesc($name) . ', body =' . sqlesc($body) . ", lastedit = '" . TIME_NOW . "', lastedituser =" . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($id);
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $session->set('is-success', 'Wiki article edited');
     } elseif (isset($_POST['wiki'])) {
@@ -110,7 +110,7 @@ if (isset($_GET['action'])) {
     }
     if (isset($_GET['id'])) {
         $mode = 'id';
-        $id   = (int) $_GET['id'];
+        $id = (int) $_GET['id'];
         if (!is_valid_id($id)) {
             die();
         }
@@ -162,7 +162,7 @@ if ($action === 'article') {
             <h2 class='has-text-centered'>Article search results for: <b>" . htmlsafechars($name) . '</b></h2>';
             while ($wiki = mysqli_fetch_array($res)) {
                 if ($wiki['userid'] !== 0) {
-                    $user     = $user_stuffs->getUserFromId($wiki['userid']);
+                    $user = $user_stuffs->getUserFromId($wiki['userid']);
                     $wikiname = $user['username'];
                 }
                 $HTMLOUT .= main_div('
@@ -188,7 +188,7 @@ if ($action === 'add') {
             </form>";
 }
 if ($action === 'edit') {
-    $sql    = sql_query('SELECT * FROM wiki WHERE id = ' . sqlesc($id));
+    $sql = sql_query('SELECT * FROM wiki WHERE id = ' . sqlesc($id));
     $result = mysqli_fetch_assoc($sql);
     if (($CURUSER['class'] >= UC_STAFF) || ($CURUSER['id'] == $result['userid'])) {
         $HTMLOUT .= navmenu() . "
@@ -212,7 +212,7 @@ if ($action === 'sort') {
         <div class='w-100 padding20 round10 bg-02'>";
         while ($wiki = mysqli_fetch_array($sortres)) {
             if ($wiki['userid'] !== 0) {
-                $user     = $user_stuffs->getUserFromId($wiki['userid']);
+                $user = $user_stuffs->getUserFromId($wiki['userid']);
                 $wikiname = $user['username'];
             }
             $HTMLOUT .= '

@@ -2,9 +2,9 @@
 
 global $site_config;
 
-$hash     = 'YXBwemZhbg';
-$_hash    = isset($_GET['hash']) ? $_GET['hash'] : '';
-$_user    = isset($_GET['u']) ? htmlspecialchars($_GET['u']) : '';
+$hash = 'YXBwemZhbg';
+$_hash = isset($_GET['hash']) ? $_GET['hash'] : '';
+$_user = isset($_GET['u']) ? htmlspecialchars($_GET['u']) : '';
 $valid_do = [
     'stats',
     'torrents',
@@ -35,7 +35,7 @@ function calctime($val)
 
 if (substr($_do, 0, 3) === 'top') {
     $_type = end(explode('_', $_do));
-    $_do   = 'top';
+    $_do = 'top';
 }
 //$_hash = "YXBwemZhbg";
 if ($_hash === $hash) {
@@ -47,7 +47,7 @@ if ($_hash === $hash) {
     if ($_do === 'stats') {
         $q = sql_query('SELECT id, username, last_access, downloaded, uploaded, added, status, warned, disable_reason, warn_reason FROM users WHERE username = ' . sqlesc($_user)) or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         if (mysqli_num_rows($q) == 1) {
-            $a   = mysqli_fetch_assoc($q);
+            $a = mysqli_fetch_assoc($q);
             $txt = $a['username'] . ' is ' . ((TIME_NOW - $a['last_access']) < 300 ? 'online' : 'offline') . "\nJoined - " . get_date($a['added'], 'LONG', 0, 1) . "\nLast seen - " . get_date($a['last_access'], 'DATE', 0, 1) . "\nDownloaded - " . mksize($a['downloaded']) . "\nUploaded - " . mksize($a['uploaded']) . "\n";
             if ($a['status'] === 'disabled') {
                 $txt .= 'This user is disabled. Reason ' . $a['disable_reason'] . "\n";
@@ -68,18 +68,18 @@ if ($_hash === $hash) {
         }
         $act['seed'] = $act['leech'] = 0;
         while ($a = mysqli_fetch_assoc($q)) {
-            $key       = ($a['seeder'] === 'yes' ? 'seed' : 'leech');
+            $key = ($a['seeder'] === 'yes' ? 'seed' : 'leech');
             $act[$key] = $a['count'];
-            $agent     = $a['agent'];
-            $port      = $a['port'];
-            $con       = $a['connectable'];
-            $user      = $a['username'];
+            $agent = $a['agent'];
+            $port = $a['port'];
+            $con = $a['connectable'];
+            $user = $a['username'];
         }
         $txt = $user . ' is ' . ($con === 'yes' ? 'connectable' : 'not connectable') . "\nActive torrents\n seeding - " . number_format($act['seed']) . ' | leeching - ' . number_format($act['leech']) . "\nAgent - " . $agent . ' | Port - ' . $port;
         echo $txt;
         unset($txt, $a, $q);
     } elseif ($_do === 'fls') {
-        $q   = sql_query("SELECT id,username,last_access ,supportfor FROM users WHERE support = 'yes' ORDER BY added DESC") or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+        $q = sql_query("SELECT id,username,last_access ,supportfor FROM users WHERE support = 'yes' ORDER BY added DESC") or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         $txt = '';
         while ($a = mysqli_fetch_assoc($q)) {
             $txt .= $a['username'] . ' - status ' . ((TIME_NOW - $a['last_access']) < 300 ? 'online' : 'offline') . ' | Support for ' . $a['supportfor'] . "\n";
@@ -92,29 +92,29 @@ if ($_hash === $hash) {
         if (mysqli_num_rows($q) == 0) {
             die('User "' . $_user . '" not found!');
         }
-        $a   = mysqli_fetch_assoc($q);
+        $a = mysqli_fetch_assoc($q);
         $txt = $a['username'] . ' ' . ($a['irctotal'] == 0 ? 'never been on irc' : 'has idled on irc ' . calctime($a['irctotal'])) . "\nAnd now he " . ($a['onirc'] === 'yes' ? 'is' : "isn't") . ' on irc';
         echo $txt;
         unset($a, $q, $txt);
     } elseif ($_do === 'top') {
         switch ($_type) {
             case 'idle':
-                $_q  = 'SELECT username,irctotal FROM users ORDER BY irctotal DESC LIMIT 10';
+                $_q = 'SELECT username,irctotal FROM users ORDER BY irctotal DESC LIMIT 10';
                 $txt = "Top 10 idle\n";
                 break;
 
             case 'uploaders':
-                $_q  = "SELECT username, uploaded FROM users WHERE status = 'confirmed' ORDER BY uploaded DESC LIMIT 10";
+                $_q = "SELECT username, uploaded FROM users WHERE status = 'confirmed' ORDER BY uploaded DESC LIMIT 10";
                 $txt = "Best uploaders (selected after uploaded amount)\n";
                 break;
 
             case 'torrents':
-                $_q  = "SELECT count(t.id) AS c, u.username FROM torrents AS t LEFT JOIN users AS u ON t.owner = u.id WHERE u.username <> '' GROUP  BY u.id ORDER BY c DESC LIMIT 10";
+                $_q = "SELECT count(t.id) AS c, u.username FROM torrents AS t LEFT JOIN users AS u ON t.owner = u.id WHERE u.username <> '' GROUP  BY u.id ORDER BY c DESC LIMIT 10";
                 $txt = "Best uploaders (selected after the torrents uploaded)\n";
                 break;
 
             case 'posters':
-                $_q  = "SELECT count(p.id) AS c, u.username FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE u.username <> '' GROUP  BY u.id ORDER BY c DESC LIMIT 10";
+                $_q = "SELECT count(p.id) AS c, u.username FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE u.username <> '' GROUP  BY u.id ORDER BY c DESC LIMIT 10";
                 $txt = "Best posters (selected after number of posts)\n";
                 break;
         }

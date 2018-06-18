@@ -27,7 +27,7 @@ function torrents_update($data)
     FROM torrents AS t
     ORDER BY t.id ASC';
     $updatetorrents = [];
-    $tq             = sql_query($tsql) or sqlerr(__FILE__, __LINE__);
+    $tq = sql_query($tsql) or sqlerr(__FILE__, __LINE__);
     while ($t = mysqli_fetch_assoc($tq)) {
         if ($t['seeders'] != $t['seeders_num'] || $t['leechers'] != $t['leechers_num'] || $t['comments'] != $t['comments_num']) {
             $updatetorrents[] = '(' . $t['id'] . ', ' . $t['seeders_num'] . ', ' . $t['leechers_num'] . ', ' . $t['comments_num'] . ')';

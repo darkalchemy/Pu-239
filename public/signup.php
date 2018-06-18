@@ -20,8 +20,8 @@ $stdfoot = [
 if (!$site_config['openreg']) {
     stderr('Sorry', 'Invite only - Signups are presently closed. If you have an invite code click <a href="' . $site_config['baseurl'] . '/invite_signup.php"><b>Here</b></a>');
 }
-$HTMLOUT     = $year     = $month     = $day     = $gender     = $country     = '';
-$lang        = array_merge(load_language('global'), load_language('signup'));
+$HTMLOUT = $year = $month = $day = $gender = $country = '';
+$lang = array_merge(load_language('global'), load_language('signup'));
 $signup_vars = $session->get('signup_variables');
 if (!empty($signup_vars)) {
     $signup_vars = unserialize($signup_vars);
@@ -36,7 +36,7 @@ if ($count >= $site_config['maxusers']) {
     stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $site_config['maxusers']));
 }
 
-$offset      = !empty($signup_vars['user_timezone']) ? $signup_vars['user_timezone'] : $site_config['time_offset'];
+$offset = !empty($signup_vars['user_timezone']) ? $signup_vars['user_timezone'] : $site_config['time_offset'];
 $time_select = "
     <select name='user_timezone' class='w-100'>";
 foreach ($TZ as $off => $words) {
@@ -154,30 +154,30 @@ $HTMLOUT .= "
                 <td>" . $year . $month . $day . '</td>
             </tr>';
 
-$passhint  = '';
+$passhint = '';
 $questions = [
     [
-        'id'       => '1',
+        'id' => '1',
         'question' => "{$lang['signup_q1']}",
     ],
     [
-        'id'       => '2',
+        'id' => '2',
         'question' => "{$lang['signup_q2']}",
     ],
     [
-        'id'       => '3',
+        'id' => '3',
         'question' => "{$lang['signup_q3']}",
     ],
     [
-        'id'       => '4',
+        'id' => '4',
         'question' => "{$lang['signup_q4']}",
     ],
     [
-        'id'       => '5',
+        'id' => '5',
         'question' => "{$lang['signup_q5']}",
     ],
     [
-        'id'       => '6',
+        'id' => '6',
         'question' => "{$lang['signup_q6']}",
     ],
 ];

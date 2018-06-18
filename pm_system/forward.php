@@ -2,15 +2,15 @@
 
 $body = '';
 //=== Get the info
-$res     = sql_query('SELECT * FROM messages WHERE id=' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT * FROM messages WHERE id=' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
 $message = mysqli_fetch_assoc($res);
 if ($message['sender'] == $CURUSER['id'] && $message['sender'] == $CURUSER['id'] || mysqli_num_rows($res) === 0) {
     stderr($lang['pm_error'], $lang['pm_forward_err']);
 }
 //=== if not from curuser then get who from
 if ($message['sender'] !== $CURUSER['id']) {
-    $res_forward        = sql_query('SELECT username FROM users WHERE id=' . sqlesc($message['sender'])) or sqlerr(__FILE__, __LINE__);
-    $arr_forward        = mysqli_fetch_assoc($res_forward);
+    $res_forward = sql_query('SELECT username FROM users WHERE id=' . sqlesc($message['sender'])) or sqlerr(__FILE__, __LINE__);
+    $arr_forward = mysqli_fetch_assoc($res_forward);
     $forwarded_username = ($message['sender'] === 0 ? $lang['pm_forward_system'] : (mysqli_num_rows($res_forward) === 0 ? $lang['pm_forward_unknow'] : $arr_forward['username']));
 } else {
     $forwarded_username = htmlsafechars($CURUSER['username']);

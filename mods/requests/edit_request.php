@@ -2,20 +2,20 @@
 
 global $CURUSER, $site_config, $lang;
 
-$rs   = sql_query("SELECT r.*, c.id AS catid, c.name AS catname FROM requests AS r LEFT JOIN categories AS c ON (c.id=r.cat) WHERE r.id = $id") or sqlerr(__FILE__, __LINE__);
+$rs = sql_query("SELECT r.*, c.id AS catid, c.name AS catname FROM requests AS r LEFT JOIN categories AS c ON (c.id=r.cat) WHERE r.id = $id") or sqlerr(__FILE__, __LINE__);
 $numz = mysqli_fetch_assoc($rs);
 if ($CURUSER['id'] != $numz['userid'] && $CURUSER['class'] < UC_STAFF) {
     stderr("{$lang['error_error']}", "{$lang['error_not_yours1']}");
 }
-$s       = htmlspecialchars($numz['request']);
-$catid   = $numz['catid'];
-$body    = htmlspecialchars($numz['descr']);
+$s = htmlspecialchars($numz['request']);
+$catid = $numz['catid'];
+$body = htmlspecialchars($numz['descr']);
 $catname = $numz['catname'];
-$s2      = "<select name='category'><option value='$catid'> $catname </option>\n";
+$s2 = "<select name='category'><option value='$catid'> $catname </option>\n";
 foreach ($cats as $row) {
     $s2 .= "<option value='" . $row['id'] . "'>" . htmlspecialchars($row['name']) . "</option>\n";
 }
-$s2      .= "</select>\n";
+$s2 .= "</select>\n";
 $HTMLOUT .= "<br>
 <form method='post' name='compose' action='viewrequests.php?id=$id&amp;take_req_edit'><a name='add' id='add'></a>
 <table ><tr><td colspan='2'>

@@ -25,7 +25,7 @@ function getTVImagesByImdb($thetvdb_id, $type = 'showbackground', $season = 0)
 
     $fanart = $cache->get('show_images_' . $thetvdb_id);
     if ($fanart === false || is_null($fanart)) {
-        $url    = 'http://webservice.fanart.tv/v3/tv/';
+        $url = 'http://webservice.fanart.tv/v3/tv/';
         $fanart = fetch($url . $thetvdb_id . '?api_key=' . $key);
         if ($fanart != null) {
             $fanart = json_decode($fanart, true);
@@ -77,7 +77,7 @@ function getMovieImagesByImdb($imdb, $type = 'moviebackground')
 
     $fanart = $cache->get('movie_images_' . $imdb);
     if ($fanart === false || is_null($fanart)) {
-        $url    = 'http://webservice.fanart.tv/v3/movies/';
+        $url = 'http://webservice.fanart.tv/v3/movies/';
         $fanart = fetch($url . $imdb . '?api_key=' . $key);
         if ($fanart != null) {
             $fanart = json_decode($fanart, true);
@@ -109,7 +109,7 @@ function getMovieImagesByImdb($imdb, $type = 'moviebackground')
 function fetch($url)
 {
     $client = new GuzzleHttp\Client(['http_errors' => false]);
-    $res    = $client->request('GET', $url);
+    $res = $client->request('GET', $url);
     if ($res->getStatusCode() === 200) {
         return $res->getBody();
     }

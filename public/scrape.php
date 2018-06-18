@@ -37,11 +37,11 @@ function check_bans($ip, &$reason = '')
     $key = 'bans_' . $ip;
     $ban = $cache->get($key);
     if ($ban === false || is_null($ban)) {
-        $nip     = sqlesc($ip);
+        $nip = sqlesc($ip);
         $ban_sql = sql_query('SELECT comment FROM bans WHERE (INET6_NTOA(first) <= ' . $nip . ' AND INET6_NTOA(last) >= ' . $nip . ') LIMIT 1') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($ban_sql)) {
             $comment = mysqli_fetch_row($ban_sql);
-            $reason  = 'Manual Ban (' . $comment[0] . ')';
+            $reason = 'Manual Ban (' . $comment[0] . ')';
             $cache->set($key, $reason, 86400); // 86400 // banned
 
             return true;
@@ -62,7 +62,7 @@ function check_bans($ip, &$reason = '')
 if (empty($_SERVER['QUERY_STRING'])) {
     die("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
 }
-$q    = explode('&', $_SERVER['QUERY_STRING']);
+$q = explode('&', $_SERVER['QUERY_STRING']);
 $_GET = [];
 foreach ($q as $p) {
     $ps = explode('=', $p, 2);
@@ -74,7 +74,7 @@ foreach ($q as $p) {
         } elseif (!is_array($_GET[$p1])) {
             $temp = $_GET[$p1];
             unset($_GET[$p1]);
-            $_GET[$p1]   = [];
+            $_GET[$p1] = [];
             $_GET[$p1][] = $temp;
             $_GET[$p1][] = $p2;
         } else {
@@ -91,8 +91,8 @@ if (isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) != 64) {
         if (!isset($_GET[$matches[2]])) {
             $_GET[$matches[2]] = $valget;
         } elseif (!is_array($_GET[$matches[2]])) {
-            $temp                = $_GET[$matches[2]];
-            $_GET[$matches[2]]   = [];
+            $temp = $_GET[$matches[2]];
+            $_GET[$matches[2]] = [];
             $_GET[$matches[2]][] = $temp;
             $_GET[$matches[2]][] = $valget;
         } else {

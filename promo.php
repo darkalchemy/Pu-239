@@ -10,11 +10,11 @@ global $CURUSER, $site_config;
 if (!$CURUSER) {
     get_template();
 }
-$lang    = array_merge(load_language('global'), load_language('signup'));
+$lang = array_merge(load_language('global'), load_language('signup'));
 $HTMLOUT = '';
 
-$do   = (isset($_GET['do']) ? $_GET['do'] : (isset($_POST['do']) ? $_POST['do'] : ''));
-$id   = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : '0'));
+$do = (isset($_GET['do']) ? $_GET['do'] : (isset($_POST['do']) ? $_POST['do'] : ''));
+$id = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : '0'));
 $link = (isset($_GET['link']) ? $_GET['link'] : (isset($_POST['link']) ? $_POST['link'] : ''));
 $sure = (isset($_GET['sure']) && $_GET['sure'] === 'yes' ? 'yes' : 'no');
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
@@ -30,14 +30,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     if ($max_users == 0) {
         stderr('Error', 'Max users cant be 0 i think you missed that!');
     }
-    $bonus_upload  = (isset($_POST['bonus_upload']) ? (int) $_POST['bonus_upload'] : 0);
+    $bonus_upload = (isset($_POST['bonus_upload']) ? (int) $_POST['bonus_upload'] : 0);
     $bonus_invites = (isset($_POST['bonus_invites']) ? (int) $_POST['bonus_invites'] : 0);
-    $bonus_karma   = (isset($_POST['bonus_karma']) ? (int) $_POST['bonus_karma'] : 0);
+    $bonus_karma = (isset($_POST['bonus_karma']) ? (int) $_POST['bonus_karma'] : 0);
     if ($bonus_upload == 0 && $bonus_invites == 0 && $bonus_karma == 0) {
         stderr('Error', 'No gift for the new users ?! :w00t: give them some gifts :D');
     }
     $link = md5('promo_link' . TIME_NOW);
-    $q    = sql_query('INSERT INTO promo (name,added,days_valid,max_users,link,creator,bonus_upload,bonus_invites,bonus_karma) VALUES (' . implode(',', array_map('sqlesc', [
+    $q = sql_query('INSERT INTO promo (name,added,days_valid,max_users,link,creator,bonus_upload,bonus_invites,bonus_karma) VALUES (' . implode(',', array_map('sqlesc', [
                        $promoname,
                        TIME_NOW,
                        $days_valid,
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
         if (strlen($username) < 4 || strlen($username) > 12) {
             stderr('Error', 'Your username is to long or to short (min 4 char , max 12 char)');
         }
-        $password      = (isset($_POST['password']) ? $_POST['password'] : '');
+        $password = (isset($_POST['password']) ? $_POST['password'] : '');
         $passwordagain = (isset($_POST['passwordagain']) ? $_POST['passwordagain'] : '');
         if (empty($password) || empty($passwordagain)) {
             stderr('Error', 'You have to type your passwords twice');
@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
         if ($res) {
             //==Updating promo table
             $userid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
-            $users  = (empty($ar_check['users']) ? $userid : $ar_check['users'] . ',' . $userid);
+            $users = (empty($ar_check['users']) ? $userid : $ar_check['users'] . ',' . $userid);
             sql_query('UPDATE promo SET accounts_made = accounts_made + 1 , users = ' . sqlesc($users) . ' WHERE id = ' . sqlesc($ar_check['id'])) or sqlerr(__FILE__, __LINE__);
             //==Email part :)
             $subject = $site_config['site_name'] . ' user registration confirmation';
@@ -135,12 +135,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
                         Welcome and enjoy your stay 
                         Staff at {$site_config['site_name']}";
             $headers = 'From: ' . $site_config['site_email'] . "\r\n" . 'Reply-To:' . $site_config['site_email'] . "\r\n" . 'X-Mailer: PHP/' . phpversion();
-            $mail    = @mail($email, $subject, $message, $headers);
+            $mail = @mail($email, $subject, $message, $headers);
 
             //==New member pm
-            $added   = TIME_NOW;
+            $added = TIME_NOW;
             $subject = sqlesc('Welcome');
-            $msg     = sqlesc('Hey there ' . htmlsafechars($username) . " ! Welcome to {$site_config['site_name']} ! :clap2: \n\n Please ensure your connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\ncheers {$site_config['site_name']} staff.\n");
+            $msg = sqlesc('Hey there ' . htmlsafechars($username) . " ! Welcome to {$site_config['site_name']} ! :clap2: \n\n Please ensure your connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\ncheers {$site_config['site_name']} staff.\n");
             sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($userid) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
             //==End new member pm
             write_log('User account ' . (int) $id . ' (' . htmlsafechars($username) . ') was created');
@@ -219,30 +219,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
             }
             $HTMLOUT .= begin_frame();
 
-            $passhint  = '';
+            $passhint = '';
             $questions = [
                 [
-                    'id'       => '1',
+                    'id' => '1',
                     'question' => "{$lang['signup_q1']}",
                 ],
                 [
-                    'id'       => '2',
+                    'id' => '2',
                     'question' => "{$lang['signup_q2']}",
                 ],
                 [
-                    'id'       => '3',
+                    'id' => '3',
                     'question' => "{$lang['signup_q3']}",
                 ],
                 [
-                    'id'       => '4',
+                    'id' => '4',
                     'question' => "{$lang['signup_q4']}",
                 ],
                 [
-                    'id'       => '5',
+                    'id' => '5',
                     'question' => "{$lang['signup_q5']}",
                 ],
                 [
-                    'id'       => '6',
+                    'id' => '6',
                     'question' => "{$lang['signup_q6']}",
                 ],
             ];

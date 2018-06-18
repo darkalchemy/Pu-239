@@ -9,7 +9,7 @@ while ($ac = mysqli_fetch_assoc($lconf)) {
     $lottery_config[$ac['name']] = $ac['value'];
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $fail    = false;
+    $fail = false;
     $tickets = isset($_POST['tickets']) ? (int) $_POST['tickets'] : '';
     if (!$tickets) {
         $session->set('is-warning', "How many tickets you wanna buy? [{$_POST['tickets']}]");
@@ -49,10 +49,10 @@ if (!(is_array($classes_allowed) ? in_array($CURUSER['class'], $classes_allowed)
     die();
 }
 //some default values
-$lottery['total_pot']               = 0;
-$lottery['current_user']            = [];
+$lottery['total_pot'] = 0;
+$lottery['current_user'] = [];
 $lottery['current_user']['tickets'] = [];
-$lottery['total_tickets']           = 0;
+$lottery['total_tickets'] = 0;
 //select the total amount of tickets
 $qt = sql_query('SELECT id,user FROM tickets ORDER BY id ASC ') or sqlerr(__FILE__, __LINE__);
 while ($at = mysqli_fetch_assoc($qt)) {

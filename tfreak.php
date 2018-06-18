@@ -9,10 +9,10 @@ function rsstfreakinfo()
     require_once INCL_DIR . 'html_functions.php';
     global $site_config, $cache;
 
-    $html      = '';
+    $html = '';
     $use_limit = true;
-    $limit     = 5;
-    $i         = 0;
+    $limit = 5;
+    $i = 0;
 
     $xml = $cache->get('tfreaknewsrss_');
     if ($xml === false || is_null($xml)) {

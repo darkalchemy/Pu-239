@@ -5,7 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
-$lang    = array_merge(load_language('global'), load_language('setclass'));
+$lang = array_merge(load_language('global'), load_language('setclass'));
 $HTMLOUT = '';
 if ($CURUSER['class'] < UC_STAFF || $CURUSER['override_class'] != 255) {
     stderr('Error', 'whats the story?');

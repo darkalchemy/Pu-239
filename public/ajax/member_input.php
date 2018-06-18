@@ -37,7 +37,7 @@ if ($action == '') {
             } //=== if it's staff flushing for a member
             elseif ($id !== $CURUSER['id'] && $CURUSER['class'] >= UC_STAFF) {
                 //=== it's a staff...
-                $res_get_info  = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($id));
+                $res_get_info = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($id));
                 $user_get_info = mysqli_fetch_assoc($res_get_info);
                 //=== catch any missed snatched stuff thingies to stop ghost leechers from getting peers (if the peers they have drop off)
                 sql_query('UPDATE snatched SET seeder="no" WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
@@ -53,7 +53,7 @@ if ($action == '') {
             if ($CURUSER['class'] < UC_STAFF) {
                 stderr('Error', 'How did you get here?');
             }
-            $id           = isset($_POST['id']) ? intval($_POST['id']) : 0;
+            $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
             $posted_notes = isset($_POST['new_staff_note']) ? htmlsafechars($_POST['new_staff_note']) : '';
             //=== make sure they are staff, not editing their own and playing nice :P
             $staff_notes_res = sql_query('SELECT staff_notes, class, username FROM users WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
@@ -74,7 +74,7 @@ if ($action == '') {
             if ($CURUSER['class'] < UC_STAFF) {
                 stderr('Error', 'How did you get here?');
             }
-            $id     = isset($_POST['id']) ? intval($_POST['id']) : 0;
+            $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
             $posted = isset($_POST['watched_reason']) ? htmlsafechars($_POST['watched_reason']) : '';
             //=== make sure they are staff, not editing their own and playing nice :P
             $watched_res = sql_query('SELECT watched_user, watched_user_reason, class, username FROM users WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);

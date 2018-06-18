@@ -6,7 +6,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang;
 
-$lang    = array_merge($lang, load_language('ad_freelech'));
+$lang = array_merge($lang, load_language('ad_freelech'));
 $HTMLOUT = '';
 if (isset($_GET['remove'])) {
     $configfile = '<' . $lang['freelech_thisfile'] . date('M d Y H:i:s');
@@ -17,15 +17,15 @@ if (isset($_GET['remove'])) {
     die();
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $configfile     = '<' . $lang['freelech_thisfile'] . date('M d Y H:i:s');
+    $configfile = '<' . $lang['freelech_thisfile'] . date('M d Y H:i:s');
     $fl['modifier'] = (isset($_POST['modifier']) ? (int) $_POST['modifier'] : false);
     if (isset($_POST['expires']) && $_POST['expires'] == 255) {
         $fl['expires'] = 1;
     } else {
         $fl['expires'] = (isset($_POST['expires']) ? ($_POST['expires'] * 86400 + TIME_NOW) : false);
     }
-    $fl['setby']   = (isset($_POST['setby']) ? htmlsafechars($_POST['setby']) : false);
-    $fl['title']   = (isset($_POST['title']) ? htmlsafechars($_POST['title']) : false);
+    $fl['setby'] = (isset($_POST['setby']) ? htmlsafechars($_POST['setby']) : false);
+    $fl['title'] = (isset($_POST['title']) ? htmlsafechars($_POST['title']) : false);
     $fl['message'] = (isset($_POST['message']) ? htmlsafechars($_POST['message']) : false);
     //echo_r($fl);
     if ($fl['modifier'] === false || $fl['expires'] === false || $fl['setby'] === false || $fl['title'] === false || $fl['message'] === false) {
@@ -55,21 +55,21 @@ if (isset($free) && (count($free) < 1)) {
         switch ($fl['modifier']) {
             case 1:
                 $checked1 = 'checked=\'checked\'';
-                $mode     = $lang['freelech_torr_free'];
+                $mode = $lang['freelech_torr_free'];
                 break;
 
             case 2:
-                $mode     = $lang['freelech_double_up'];
+                $mode = $lang['freelech_double_up'];
                 $checked2 = 'checked=\'checked\'';
                 break;
 
             case 3:
-                $mode     = $lang['freelech_free_double'];
+                $mode = $lang['freelech_free_double'];
                 $checked3 = 'checked=\'checked\'';
                 break;
 
             case 4:
-                $mode     = $lang['freelech_torr_silver'];
+                $mode = $lang['freelech_torr_silver'];
                 $checked4 = 'checked=\'checked\'';
                 break;
 

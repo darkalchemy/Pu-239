@@ -10,7 +10,7 @@ if ($mailbox > 1) {
     if (mysqli_num_rows($res_box_name) === 0) {
         stderr($lang['pm_error'], $lang['pm_mailbox_invalid']);
     }
-    $mailbox_name   = htmlsafechars($arr_box_name[0]);
+    $mailbox_name = htmlsafechars($arr_box_name[0]);
     $other_box_info = '<p><span style="color: red;">' . $lang['pm_mailbox_asterisc'] . '</span><span style="font-weight: bold;">' . $lang['pm_mailbox_note'] . '</span>
                                             ' . $lang['pm_mailbox_max'] . '<span style="font-weight: bold;">' . $maxbox . '</span>' . $lang['pm_mailbox_either'] . '
                                             <span style="font-weight: bold;">' . $lang['pm_mailbox_inbox'] . '</span>' . $lang['pm_mailbox_or'] . '<span style="font-weight: bold;">' . $lang['pm_mailbox_sentbox'] . '</span>' . $lang['pm_mailbox_dot'] . '</p>';
@@ -19,13 +19,13 @@ if ($mailbox > 1) {
 //=== get stuff for the pager
 $res_count = sql_query('SELECT COUNT(id) FROM messages WHERE ' . ($mailbox === PM_INBOX ? 'receiver = ' . sqlesc($CURUSER['id']) . ' AND location = 1' : ($mailbox === PM_SENTBOX ? 'sender = ' . sqlesc($CURUSER['id']) . ' AND (saved = \'yes\' || unread= \'yes\') AND draft = \'no\' ' : 'receiver = ' . sqlesc($CURUSER['id'])) . ' AND location = ' . sqlesc($mailbox))) or sqlerr(__FILE__, __LINE__);
 $arr_count = mysqli_fetch_row($res_count);
-$messages  = $arr_count[0];
+$messages = $arr_count[0];
 //==== get count from PM boxs & get image & % box full
 $filled = $messages > 0 ? (($messages / $maxbox) * 100) : 0;
 //$filled = (($messages / $maxbox) * 100);
-$mailbox_pic        = get_percent_completed_image(round($filled), $maxpic);
-$num_messages       = number_format($filled, 0);
-$link               = 'pm_system.php?action=view_mailbox&amp;box=' . $mailbox . ($perpage < $messages ? '&amp;page=' . $page : '') . '&amp;order_by=' . $order_by . $desc_asc;
+$mailbox_pic = get_percent_completed_image(round($filled), $maxpic);
+$num_messages = number_format($filled, 0);
+$link = 'pm_system.php?action=view_mailbox&amp;box=' . $mailbox . ($perpage < $messages ? '&amp;page=' . $page : '') . '&amp;order_by=' . $order_by . $desc_asc;
 list($menu, $LIMIT) = pager_new($messages, $perpage, $page, $link);
 //=== get message info we need to display then all nice and tidy like \o/
 $res = sql_query('SELECT m.id AS message_id, m.sender, m.receiver, m.added, m.subject, m.unread, m.urgent, u.id, u.username, u.uploaded, u.downloaded, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.opt1, u.opt2,  u.leechwarn, u.chatpost, u.pirate, u.king, f.id AS friend, b.id AS blocked FROM messages AS m
@@ -97,11 +97,11 @@ if (mysqli_num_rows($res) === 0) {
                                           ' . $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=block&amp;targetid=' . (int) $row['id'] . '">' . $lang['pm_mailbox_addb'] . '</a></span>' . $lang['pm_mailbox_char2'];
             }
         }
-        $subject     = !empty($row['subject']) ? htmlsafechars($row['subject']) : $lang['pm_search_nosubject'];
+        $subject = !empty($row['subject']) ? htmlsafechars($row['subject']) : $lang['pm_search_nosubject'];
         $who_sent_it = $row['id'] == 0 ? '<span style="font-weight: bold;">' . $lang['pm_forward_system'] . '</span>' : format_username($row['id']) . $friends;
         $read_unread = $row['unread'] === 'yes' ? '<img src="' . $site_config['pic_baseurl'] . 'pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '" />' : '<img src="' . $site_config['pic_baseurl'] . 'pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '" />';
-        $extra       = ($row['unread'] === 'yes' ? $lang['pm_mailbox_char1'] . '<span style="color: red;">' . $lang['pm_mailbox_unread'] . '</span>' . $lang['pm_mailbox_char2'] : '') . ($row['urgent'] === 'yes' ? '<span style="color: red;">' . $lang['pm_mailbox_urgent'] . '</span>' : '');
-        $avatar      = (!$CURUSER['opt1'] & user_options::AVATARS || !$CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR || $row['id'] == 0) ? '' : (empty($row['avatar']) ? '
+        $extra = ($row['unread'] === 'yes' ? $lang['pm_mailbox_char1'] . '<span style="color: red;">' . $lang['pm_mailbox_unread'] . '</span>' . $lang['pm_mailbox_char2'] : '') . ($row['urgent'] === 'yes' ? '<span style="color: red;">' . $lang['pm_mailbox_urgent'] . '</span>' : '');
+        $avatar = (!$CURUSER['opt1'] & user_options::AVATARS || !$CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR || $row['id'] == 0) ? '' : (empty($row['avatar']) ? '
                 <img width="40" src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($row['opt1'] & user_options::OFFENSIVE_AVATAR && !$CURUSER['opt1'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img width="40" src="' . $site_config['pic_baseurl'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<img width="40" src="' . htmlsafechars($row['avatar']) . '" alt="avatar" />'));
         $HTMLOUT .= '
                 <tr>
@@ -115,7 +115,7 @@ if (mysqli_num_rows($res) === 0) {
 }
 
 $per_page_drop_down = '<form action="pm_system.php" method="post"><select name="amount_per_page" onchange="location = this.options[this.selectedIndex].value;">';
-$i                  = 20;
+$i = 20;
 while ($i <= ($maxbox > 200 ? 200 : $maxbox)) {
     $per_page_drop_down .= '<option class="body" value="' . $link . '&amp;change_pm_number=' . $i . '"  ' . ($CURUSER['pms_per_page'] == $i ? ' selected' : '') . '>' . $i . $lang['pm_edmail_perpage'] . '</option>';
     $i = ($i < 100 ? $i = $i + 10 : $i = $i + 25);

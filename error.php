@@ -24,7 +24,7 @@ if ($string === '400') {
     $page = 'Bad Request - 400';
     $text = 'There has been an error with the page you are trying to view. Please try again later.';
 }
-$domain  = htmlsafechars($_SERVER['HTTP_HOST']);
+$domain = htmlsafechars($_SERVER['HTTP_HOST']);
 $htmlout = "<!doctype html>
 <html>
 <head>

@@ -24,13 +24,13 @@ if (isset($_GET['id']) && $CURUSER['class'] >= UC_STAFF) {
     $userid = $CURUSER['id'];
 }
 
-$query  = 'SELECT seedbonus, uploaded, downloaded, bonuscomment FROM users WHERE id = ' . sqlesc($userid);
-$res    = sql_query($query) or sqlerr(__FILE__, __LINE__);
+$query = 'SELECT seedbonus, uploaded, downloaded, bonuscomment FROM users WHERE id = ' . sqlesc($userid);
+$res = sql_query($query) or sqlerr(__FILE__, __LINE__);
 $result = mysqli_fetch_assoc($res);
 
-$upload       = $result['uploaded'];
-$download     = $result['downloaded'];
-$diff         = $upload - $download;
+$upload = $result['uploaded'];
+$download = $result['downloaded'];
+$diff = $upload - $download;
 $bonuscomment = $result['bonuscomment'];
 if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
     $bp = (int) $result['seedbonus'];
@@ -42,28 +42,28 @@ $cost = get_one_row('bonus', 'points', "WHERE bonusname = 'Ratio Fix'");
 unset($_GET['bytes']);
 
 if (isset($_GET['torrentid'])) {
-    $query  = 'SELECT seedbonus, uploaded, downloaded, bonuscomment FROM users WHERE id = ' . sqlesc($userid);
-    $res    = sql_query($query) or sqlerr(__FILE__, __LINE__);
+    $query = 'SELECT seedbonus, uploaded, downloaded, bonuscomment FROM users WHERE id = ' . sqlesc($userid);
+    $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
     $result = mysqli_fetch_assoc($res);
 
-    $upload       = $result['uploaded'];
-    $download     = $result['downloaded'];
-    $diff         = $upload - $download;
+    $upload = $result['uploaded'];
+    $download = $result['downloaded'];
+    $diff = $upload - $download;
     $bonuscomment = $result['bonuscomment'];
     if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
         $bp = (int) $result['seedbonus'];
     } else {
         $bp = 0;
     }
-    $cost      = get_one_row('bonus', 'points', "WHERE bonusname = 'Ratio Fix'");
+    $cost = get_one_row('bonus', 'points', "WHERE bonusname = 'Ratio Fix'");
     $seedbonus = $bp - $cost;
     if ($cost > $bp) {
         stderr('Error', "You do not have enough bonus points!<br><br>Back to your <a class='altlink' href='hnrs.php'>Hit and Runs</a> page.");
     }
     $torrent_number = (int) $_GET['torrentid'];
-    $res_snatched   = sql_query('SELECT s.uploaded, s.downloaded, t.name, t.size FROM snatched AS s LEFT JOIN torrents AS t ON t.id = s.torrentid WHERE s.userid = ' . sqlesc($userid) . ' AND torrentid = ' . sqlesc($torrent_number) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-    $arr_snatched   = mysqli_fetch_assoc($res_snatched);
-    $downloaded     = $site_config['ratio_free'] ? (int) $arr_snatched['size'] : (int) $arr_snatched['downloaded'];
+    $res_snatched = sql_query('SELECT s.uploaded, s.downloaded, t.name, t.size FROM snatched AS s LEFT JOIN torrents AS t ON t.id = s.torrentid WHERE s.userid = ' . sqlesc($userid) . ' AND torrentid = ' . sqlesc($torrent_number) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    $arr_snatched = mysqli_fetch_assoc($res_snatched);
+    $downloaded = $site_config['ratio_free'] ? (int) $arr_snatched['size'] : (int) $arr_snatched['downloaded'];
     if ($arr_snatched['name'] == '') {
         stderr('Error', "No torrent with that ID!<br>Back to your <a class='altlink' href='hnrs.php'>Hit and Runs</a> page.");
     }
@@ -72,7 +72,7 @@ if (isset($_GET['torrentid'])) {
     $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $cost . ' Points for 1 to 1 ratio on torrent: ' . htmlsafechars($arr_snatched['name']) . ' ' . $torrent_number . ".\n " . $bonuscomment;
     sql_query('UPDATE users SET bonuscomment = ' . sqlesc($bonuscomment) . ', seedbonus = ' . sqlesc($seedbonus) . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     $cache->update_row('user' . $userid, [
-        'seedbonus'    => $seedbonus,
+        'seedbonus' => $seedbonus,
         'bonuscomment' => $bonuscomment,
     ], $site_config['expires']['user_cache']);
     $cache->delete('userhnrs_' . $userid);
@@ -143,30 +143,30 @@ if (mysqli_num_rows($r) > 0) {
         </tr>";
     $body = '';
     while ($a = mysqli_fetch_assoc($r)) {
-        $What_Id                  = (XBT_TRACKER ? $a['tid'] : $a['id']);
+        $What_Id = (XBT_TRACKER ? $a['tid'] : $a['id']);
         $torrent_needed_seed_time = ($a['st'] - $a['torrent_added']);
         switch (true) {
             case $CURUSER['class'] <= $site_config['hnr_config']['firstclass']:
-                $days_3       = $site_config['hnr_config']['_3day_first']       * 3600;
-                $days_14      = $site_config['hnr_config']['_14day_first']      * 3600;
+                $days_3 = $site_config['hnr_config']['_3day_first'] * 3600;
+                $days_14 = $site_config['hnr_config']['_14day_first'] * 3600;
                 $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600;
                 break;
 
             case $CURUSER['class'] < $site_config['hnr_config']['secondclass']:
-                $days_3       = $site_config['hnr_config']['_3day_second']       * 3600;
-                $days_14      = $site_config['hnr_config']['_14day_second']      * 3600;
+                $days_3 = $site_config['hnr_config']['_3day_second'] * 3600;
+                $days_14 = $site_config['hnr_config']['_14day_second'] * 3600;
                 $days_over_14 = $site_config['hnr_config']['_14day_over_second'] * 3600;
                 break;
 
             case $CURUSER['class'] >= $site_config['hnr_config']['thirdclass']:
-                $days_3       = $site_config['hnr_config']['_3day_third']       * 3600;
-                $days_14      = $site_config['hnr_config']['_14day_third']      * 3600;
+                $days_3 = $site_config['hnr_config']['_3day_third'] * 3600;
+                $days_14 = $site_config['hnr_config']['_14day_third'] * 3600;
                 $days_over_14 = $site_config['hnr_config']['_14day_over_third'] * 3600;
                 break;
 
             default:
-                $days_3       = $site_config['hnr_config']['_3day_first']       * 3600; //== 1 days
-                $days_14      = $site_config['hnr_config']['_14day_first']      * 3600; //== 1 days
+                $days_3 = $site_config['hnr_config']['_3day_first'] * 3600; //== 1 days
+                $days_14 = $site_config['hnr_config']['_14day_first'] * 3600; //== 1 days
                 $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600; //== 1 day
         }
         switch (true) {
@@ -185,7 +185,7 @@ if (mysqli_num_rows($r) > 0) {
             default:
                 $minus_ratio = ($days_over_14 - $a['seedtime']);
         }
-        $color       = (($minus_ratio > 0 && $a['uploaded'] < $a['downloaded']) ? get_ratio_color($minus_ratio) : 'limegreen');
+        $color = (($minus_ratio > 0 && $a['uploaded'] < $a['downloaded']) ? get_ratio_color($minus_ratio) : 'limegreen');
         $minus_ratio = mkprettytime($minus_ratio);
 
         $dl_speed = $a['downloaded'] / ($a['c'] - $a['st'] + 1);
@@ -213,9 +213,9 @@ if (mysqli_num_rows($r) > 0) {
         $dl_speed = mksize($dl_speed);
         //=== mark of cain / hit and run
         $checkbox_for_delete = ($CURUSER['class'] >= UC_STAFF ? " [<a href='" . $site_config['baseurl'] . '/userdetails.php?id=' . $userid . '&amp;delete_hit_and_run=' . (int) $What_Id . "'>{$lang['userdetails_c_remove']}</a>]" : '');
-        $mark_of_cain        = ($a['mark_of_cain'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' title='{$lang['userdetails_c_tmofcain']}' />" . $checkbox_for_delete : '');
-        $hit_n_run           = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['pic_baseurl']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' title='{$lang['userdetails_c_hitrun1']}' />" : '');
-        $needs_seed          = $a['hit_and_run'] + 86400 > time() ? ' in ' . mkprettytime($a['hit_and_run'] + 86400 - time()) : '';
+        $mark_of_cain = ($a['mark_of_cain'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' title='{$lang['userdetails_c_tmofcain']}' />" . $checkbox_for_delete : '');
+        $hit_n_run = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['pic_baseurl']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' title='{$lang['userdetails_c_hitrun1']}' />" : '');
+        $needs_seed = $a['hit_and_run'] + 86400 > time() ? ' in ' . mkprettytime($a['hit_and_run'] + 86400 - time()) : '';
 
         if ($bp >= $cost && $a['size'] <= 6442450944) {
             $buyout = "<a href='hnrs.php?userid=" . $userid . '&amp;torrentid=' . (int) $a['tid'] . "'><span class='has-text-lime' title='Buyout with Bonus Points'>" . number_format($cost, 0) . ' bp</span></a>';
@@ -224,7 +224,7 @@ if (mysqli_num_rows($r) > 0) {
         }
 
         $a_downloaded = $site_config['ratio_free'] ? (int) $a['size'] : (int) $a['downloaded'];
-        $bytes        = $a_downloaded - (int) $a['uploaded'];
+        $bytes = $a_downloaded - (int) $a['uploaded'];
         if ($diff >= $bytes) {
             $buybytes = "<a href='hnrs.php?userid=" . $userid . '&amp;torrentid=' . (int) $a['tid'] . "&amp;bytes=$bytes'><span class='has-text-lime' title='Buyout with Upload Credit'>" . mksize($bytes) . '</span></a>';
         } else {

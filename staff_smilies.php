@@ -10,7 +10,7 @@ if ($CURUSER['class'] < UC_STAFF) {
     stderr('Error', 'Yer no tall enough');
     die();
 }
-$lang    = load_language('global');
+$lang = load_language('global');
 $htmlout = '';
 $htmlout = "<!doctype html>
 <html>
@@ -31,7 +31,7 @@ $htmlout = "<!doctype html>
     </script>
     <table class='list' width='100%'>";
 $count = 0;
-$ctr   = 0;
+$ctr = 0;
 global $staff_smilies;
 while ((list($code, $url) = each($staff_smilies))) {
     if ($count % 3 == 0) {

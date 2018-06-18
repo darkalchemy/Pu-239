@@ -12,8 +12,8 @@ function valid_path($root, $input)
 {
     $fullpath = $root . $input;
     $fullpath = realpath($fullpath);
-    $root     = realpath($root);
-    $rl       = strlen($root);
+    $root = realpath($root);
+    $rl = strlen($root);
 
     return ($root != substr($fullpath, 0, $rl)) ? null : $fullpath;
 }
@@ -25,9 +25,9 @@ if (isset($_SERVER['REQUEST_URI'])) {
     }
     $img['last_mod'] = filemtime($image);
     $img['date_fmt'] = 'D, d M Y H:i:s T';
-    $img['lm_date']  = date($img['date_fmt'], $img['last_mod']);
-    $img['ex_date']  = date($img['date_fmt'], time() + (86400 * 7));
-    $img['stop']     = false;
+    $img['lm_date'] = date($img['date_fmt'], $img['last_mod']);
+    $img['ex_date'] = date($img['date_fmt'], time() + (86400 * 7));
+    $img['stop'] = false;
     if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
         $img['since'] = explode(';', $_SERVER['HTTP_IF_MODIFIED_SINCE'], 2);
         $img['since'] = strtotime($img['since'][0]);

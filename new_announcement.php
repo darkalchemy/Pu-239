@@ -35,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ],
     ];
     //== Usersearch POST data...
-    $n_pms     = (isset($_POST['n_pms']) ? (int) $_POST['n_pms'] : 0);
+    $n_pms = (isset($_POST['n_pms']) ? (int) $_POST['n_pms'] : 0);
     $ann_query = (isset($_POST['ann_query']) ? rawurldecode(trim($_POST['ann_query'])) : '');
-    $ann_hash  = (isset($_POST['ann_hash']) ? trim($_POST['ann_hash']) : '');
+    $ann_hash = (isset($_POST['ann_hash']) ? trim($_POST['ann_hash']) : '');
     if (hashit($ann_query, $n_pms) != $ann_hash) {
         die();
     } // Validate POST...
@@ -48,9 +48,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         stderr('Error', 'No recipients');
     }
     //== Preview POST data ...
-    $body    = trim((isset($_POST['body']) ? $_POST['body'] : ''));
+    $body = trim((isset($_POST['body']) ? $_POST['body'] : ''));
     $subject = trim((isset($_POST['subject']) ? $_POST['subject'] : ''));
-    $expiry  = (int) (isset($_POST['expiry']) ? $_POST['expiry'] : 0);
+    $expiry = (int) (isset($_POST['expiry']) ? $_POST['expiry'] : 0);
     if ((isset($_POST['buttonval']) && $_POST['buttonval'] === 'Submit')) {
         //== Check values before inserting into row...
         if (empty($body)) {
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $expires = TIME_NOW + (86400 * $expiry); // 86400 seconds in one day.
         $created = TIME_NOW;
-        $query   = sprintf('INSERT INTO announcement_main (owner_id, created, expires, sql_query, subject, body) VALUES (%s, %s, %s, %s, %s, %s)', sqlesc($CURUSER['id']), sqlesc($created), sqlesc($expires), sqlesc($ann_query), sqlesc($subject), sqlesc($body));
+        $query = sprintf('INSERT INTO announcement_main (owner_id, created, expires, sql_query, subject, body) VALUES (%s, %s, %s, %s, %s, %s)', sqlesc($CURUSER['id']), sqlesc($created), sqlesc($expires), sqlesc($ann_query), sqlesc($subject), sqlesc($body));
         sql_query($query);
         if (mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
             stderr('Success', 'Announcement was successfully created');

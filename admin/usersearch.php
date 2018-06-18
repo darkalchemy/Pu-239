@@ -8,7 +8,7 @@ global $CURUSER, $site_config, $lang;
 
 // 0 - No debug; 1 - Show and run SQL query; 2 - Show SQL query only
 $DEBUG_MODE = 0;
-$lang       = array_merge($lang, load_language('ad_usersearch'));
+$lang = array_merge($lang, load_language('ad_usersearch'));
 /**
  * @param $param
  *
@@ -388,9 +388,9 @@ function haswildcard($text)
 
 if (!empty($_POST) && count($_POST) > 0) {
     // name
-    $name_is   = '';
+    $name_is = '';
     $names_exc = 0;
-    $names     = isset($_POST['n']) ? explode(' ', trim($_POST['n'])) : [
+    $names = isset($_POST['n']) ? explode(' ', trim($_POST['n'])) : [
         0 => '',
     ];
     if ($names[0] !== '') {
@@ -469,7 +469,7 @@ if (!empty($_POST) && count($_POST) > 0) {
                 }
             }
             $where_is .= $email_is . ')';
-            $q1       .= ($q1 ? '&amp;' : '') . 'em=' . urlencode(trim($_POST['em']));
+            $q1 .= ($q1 ? '&amp;' : '') . 'em=' . urlencode(trim($_POST['em']));
         }
     }
     //class
@@ -477,11 +477,11 @@ if (!empty($_POST) && count($_POST) > 0) {
     $class = is_set_not_empty('c') ? $_POST['c'] - 2 : -2;
     if (is_valid_id($class + 1)) {
         $where_is .= (!empty($where_is) ? ' AND ' : '') . "u.class=$class";
-        $q1       .= ($q1 ? '&amp;' : '') . 'c=' . ($class + 2);
+        $q1 .= ($q1 ? '&amp;' : '') . 'c=' . ($class + 2);
     }
     // IP
     if (is_set_not_empty('ip')) {
-        $ip    = trim($_POST['ip']);
+        $ip = trim($_POST['ip']);
         $regex = "/^(((1?\d{1,2})|(2[0-4]\d)|(25[0-5]))(\.\b|$)){4}$/";
         if (!preg_match($regex, $ip)) {
             stdmsg($lang['usersearch_error'], $lang['usersearch_badip']);
@@ -507,7 +507,7 @@ if (!empty($_POST) && count($_POST) > 0) {
                 die();
             }
             $where_is .= (!empty($where_is) ? ' AND ' : '') . "INET_ATON(u.ip) & INET_ATON('$mask') = INET_ATON('$ip') & INET_ATON('$mask')";
-            $q1       .= ($q1 ? '&amp;' : '') . "ma=$mask";
+            $q1 .= ($q1 ? '&amp;' : '') . "ma=$mask";
         }
         $q1 .= ($q1 ? '&amp;' : '') . "ip=$ip";
     }
@@ -545,7 +545,7 @@ if (!empty($_POST) && count($_POST) > 0) {
                     die();
                 }
                 $where_is .= " BETWEEN $ratio and $ratio2";
-                $q1       .= ($q1 ? '&amp;' : '') . "r2=$ratio2";
+                $q1 .= ($q1 ? '&amp;' : '') . "r2=$ratio2";
             } elseif ($ratiotype == '2') {
                 $where_is .= " < $ratio";
             } elseif ($ratiotype == '1') {
@@ -607,7 +607,7 @@ if (!empty($_POST) && count($_POST) > 0) {
                 }
                 $where_is .= $comment_is . ')';
             }
-            $q1       .= ($q1 ? '&amp;' : '') . 'co=' . urlencode(trim($_POST['co']));
+            $q1 .= ($q1 ? '&amp;' : '') . 'co=' . urlencode(trim($_POST['co']));
             $where_is .= (isset($where_is) ? ' AND ' : '') . 'u.class<' . $CURUSER['class'];
         }
     }
@@ -637,7 +637,7 @@ if (!empty($_POST) && count($_POST) > 0) {
                 die();
             }
             $where_is .= ' BETWEEN ' . $ul * $unit . ' and ' . $ul2 * $unit;
-            $q1       .= ($q1 ? '&amp;' : '') . "ul2=$ul2";
+            $q1 .= ($q1 ? '&amp;' : '') . "ul2=$ul2";
         } elseif ($ultype == '2') {
             $where_is .= ' < ' . $ul * $unit;
         } elseif ($ultype == '1') {
@@ -672,7 +672,7 @@ if (!empty($_POST) && count($_POST) > 0) {
                 die();
             }
             $where_is .= ' BETWEEN ' . $dl * $unit . ' and ' . $dl2 * $unit;
-            $q1       .= ($q1 ? '&amp;' : '') . "dl2=$dl2";
+            $q1 .= ($q1 ? '&amp;' : '') . "dl2=$dl2";
         } elseif ($dltype == '2') {
             $where_is .= ' < ' . $dl * $unit;
         } elseif ($dltype == '1') {
@@ -707,7 +707,7 @@ if (!empty($_POST) && count($_POST) > 0) {
                         stdfoot();
                         die();
                     }
-                    $q1       .= ($q1 ? '&amp;' : '') . "d2=$date2";
+                    $q1 .= ($q1 ? '&amp;' : '') . "d2=$date2";
                     $where_is .= " BETWEEN '$date' and '$date2'";
                 } else {
                     stdmsg($lang['usersearch_error'], $lang['usersearch_baddate']);
@@ -742,7 +742,7 @@ if (!empty($_POST) && count($_POST) > 0) {
                 $last2 = strtotime(trim($_POST['ls2']));
                 if ($last2) {
                     $where_is .= " BETWEEN '$last' and '$last2'";
-                    $q1       .= ($q1 ? '&amp;' : '') . "ls2=$last2";
+                    $q1 .= ($q1 ? '&amp;' : '') . "ls2=$last2";
                 } else {
                     stdmsg($lang['usersearch_error'], $lang['usersearch_baddate2']);
                     stdfoot();
@@ -803,24 +803,24 @@ if (!empty($_POST) && count($_POST) > 0) {
     $disabled = isset($_POST['dip']) ? (int) $_POST['dip'] : '';
     if (!empty($disabled)) {
         $distinct = 'DISTINCT ';
-        $join_is  .= ' LEFT JOIN users AS u2 ON u.ip = u2.ip';
+        $join_is .= ' LEFT JOIN users AS u2 ON u.ip = u2.ip';
         $where_is .= ((!empty($where_is)) ? ' AND ' : '') . "u2.enabled = 'no'";
-        $q1       .= ($q1 ? '&amp;' : '') . "dip=$disabled";
+        $q1 .= ($q1 ? '&amp;' : '') . "dip=$disabled";
     }
     // active
     $active = isset($_POST['ac']) ? $_POST['ac'] : '';
     if ($active == '1') {
         $distinct = 'DISTINCT ';
         $join_is .= ' LEFT JOIN peers AS p ON u.id = p.userid';
-        $q1      .= ($q1 ? '&amp;' : '') . "ac=$active";
+        $q1 .= ($q1 ? '&amp;' : '') . "ac=$active";
     }
-    $from_is            = isset($join_is) ? 'users AS u' . $join_is : 'users AS u';
-    $distinct           = isset($distinct) ? $distinct : '';
-    $where_is           = !empty($where_is) ? $where_is : '';
-    $queryc             = 'SELECT COUNT(' . $distinct . 'u.id) FROM ' . $from_is . (($where_is == '') ? '' : " WHERE $where_is ");
-    $querypm            = 'FROM ' . $from_is . (($where_is == '') ? ' ' : " WHERE $where_is ");
+    $from_is = isset($join_is) ? 'users AS u' . $join_is : 'users AS u';
+    $distinct = isset($distinct) ? $distinct : '';
+    $where_is = !empty($where_is) ? $where_is : '';
+    $queryc = 'SELECT COUNT(' . $distinct . 'u.id) FROM ' . $from_is . (($where_is == '') ? '' : " WHERE $where_is ");
+    $querypm = 'FROM ' . $from_is . (($where_is == '') ? ' ' : " WHERE $where_is ");
     $announcement_query = 'SELECT u.id FROM ' . $from_is . (($where_is == '') ? ' WHERE 1 = 1' : " WHERE $where_is");
-    $select_is          = 'u.id, u.username, u.email, u.status, u.added, u.last_access, u.ip,
+    $select_is = 'u.id, u.username, u.email, u.status, u.added, u.last_access, u.ip,
       u.class, u.uploaded, u.downloaded, u.donor, u.modcomment, u.enabled, u.warned';
     $query1 = 'SELECT ' . $distinct . ' ' . $select_is . ' ' . $querypm;
     //    <temporary>    /////////////////////////////////////////////////////
@@ -838,12 +838,12 @@ if (!empty($_POST) && count($_POST) > 0) {
         die();
     }
     //    </temporary>   /////////////////////////////////////////////////////
-    $res     = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
-    $arr     = mysqli_fetch_row($res);
-    $count   = $arr[0];
-    $q1      = isset($q1) ? ($q1 . '&amp;') : '';
+    $res = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
+    $arr = mysqli_fetch_row($res);
+    $count = $arr[0];
+    $q1 = isset($q1) ? ($q1 . '&amp;') : '';
     $perpage = 30;
-    $pager   = pager($perpage, $count, 'staffpanel.php?tool=usersearch&amp;action=usersearch&amp;' . $q1);
+    $pager = pager($perpage, $count, 'staffpanel.php?tool=usersearch&amp;action=usersearch&amp;' . $q1);
     $query1 .= $pager['limit'];
     $res = sql_query($query1) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {
@@ -864,9 +864,9 @@ if (!empty($_POST) && count($_POST) > 0) {
         $ids = '';
         while ($user = mysqli_fetch_array($res)) {
             if ($user['ip']) {
-                $nip    = ip2long($user['ip']);
+                $nip = ip2long($user['ip']);
                 $auxres = sql_query("SELECT COUNT(*) FROM bans WHERE $nip >= first AND $nip <= last") or sqlerr(__FILE__, __LINE__);
-                $array  = mysqli_fetch_row($auxres);
+                $array = mysqli_fetch_row($auxres);
                 if ($array[0] == 0) {
                     $ipstr = $user['ip'];
                 } else {
@@ -876,9 +876,9 @@ if (!empty($_POST) && count($_POST) > 0) {
                 $ipstr = '---';
             }
             $auxres = sql_query('SELECT SUM(uploaded) AS pul, SUM(downloaded) AS pdl FROM peers WHERE userid = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
-            $array  = mysqli_fetch_array($auxres);
-            $pul    = $array['pul'];
-            $pdl    = $array['pdl'];
+            $array = mysqli_fetch_array($auxres);
+            $pul = $array['pul'];
+            $pdl = $array['pdl'];
             if ($pdl > 0) {
                 $partial = ratios($pul, $pdl) . ' (' . mksize($pul) . '/' . mksize($pdl) . ')';
             } elseif ($pul > 0) {
@@ -890,12 +890,12 @@ if (!empty($_POST) && count($_POST) > 0) {
       FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id
       LEFT JOIN forums AS f ON t.forum_id = f.id
       WHERE p.user_id = ' . sqlesc($user['id']) . ' AND f.min_class_read <= ' . sqlesc($CURUSER['class'])) or sqlerr(__FILE__, __LINE__);
-            $n          = mysqli_fetch_row($auxres);
-            $n_posts    = $n[0];
-            $auxres     = sql_query('SELECT COUNT(id) FROM comments WHERE user = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
-            $n          = mysqli_fetch_row($auxres);
+            $n = mysqli_fetch_row($auxres);
+            $n_posts = $n[0];
+            $auxres = sql_query('SELECT COUNT(id) FROM comments WHERE user = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
+            $n = mysqli_fetch_row($auxres);
             $n_comments = $n[0];
-            $ids     .= (int) $user['id'] . ':';
+            $ids .= (int) $user['id'] . ':';
             $HTMLOUT .= "<tr><td><b><a href='userdetails.php?id=" . (int) $user['id'] . "'>" . htmlsafechars($user['username']) . '</a></b>' . ($user['donor'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}star.gif' alt=\"{$lang['usersearch_donor']}\" />" : '') . ($user['warned'] === 'yes' ? "<img src=\"./images/warned.gif\" alt=\"{$lang['usersearch_warned']}\" />" : '') . '</td>
           <td>' . ratios($user['uploaded'], $user['downloaded']) . '</td>
           <td>' . $ipstr . '</td><td>' . htmlsafechars($user['email']) . '</td>

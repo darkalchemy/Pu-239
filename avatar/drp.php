@@ -1,15 +1,15 @@
 <?php
 
-$_settings             = $_SERVER['DOCUMENT_ROOT'] . '/avatar/settings/';
-$op[1]                 = 'Posts';
-$op[2]                 = 'Stats';
-$op[3]                 = 'Irc';
-$op[4]                 = 'Reputation';
-$op[5]                 = 'Country';
-$op[6]                 = 'Comments';
-$op[7]                 = 'Browser';
-$op[8]                 = 'Profile hits';
-$op[9]                 = 'Online time';
+$_settings = $_SERVER['DOCUMENT_ROOT'] . '/avatar/settings/';
+$op[1] = 'Posts';
+$op[2] = 'Stats';
+$op[3] = 'Irc';
+$op[4] = 'Reputation';
+$op[5] = 'Country';
+$op[6] = 'Comments';
+$op[7] = 'Browser';
+$op[8] = 'Profile hits';
+$op[9] = 'Online time';
 $var['line1']['value'] = $var['line2']['value'] = $var['line3']['value'] = 0;
 if (isset($_POST['firstrun']) && $_POST['firstrun'] == 1) {
     $user = isset($_POST['user']) ? strtolower($_POST['user']) : '';

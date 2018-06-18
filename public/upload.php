@@ -7,7 +7,7 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once CACHE_DIR . 'subs.php';
 check_user_status();
 global $CURUSER, $site_config;
-$lang    = array_merge(load_language('global'), load_language('upload'));
+$lang = array_merge(load_language('global'), load_language('upload'));
 $stdfoot = [
     'js' => [
         get_file_name('upload_js'),
@@ -18,7 +18,7 @@ if ($CURUSER['class'] < UC_UPLOADER || $CURUSER['uploadpos'] === 0 || $CURUSER['
     stderr($lang['upload_sorry'], $lang['upload_no_auth']);
 }
 $res_request = sql_query('SELECT id, request_name FROM requests WHERE filled_by_user_id = 0 ORDER BY request_name ASC') or sqlerr(__FILE__, __LINE__);
-$request     = '
+$request = '
     <tr>
     <td><span>Request:</span></td>
     <td>
@@ -108,18 +108,18 @@ $HTMLOUT .= "<table class='table table-bordered table-striped top20 bottom20'>
     <td>" . BBcode() . "
     <br>({$lang['upload_html_bbcode']})</td>
     </tr>";
-$s    = "<select name='type'>\n<option value='0'>({$lang['upload_choose_one']})</option>\n";
+$s = "<select name='type'>\n<option value='0'>({$lang['upload_choose_one']})</option>\n";
 $cats = genrelist();
 foreach ($cats as $row) {
     $s .= "<option value='" . (int) $row['id'] . "'>" . htmlsafechars($row['name']) . "</option>\n";
 }
-$s       .= "</select>\n";
+$s .= "</select>\n";
 $HTMLOUT .= "<tr>
     <td class='rowhead'>{$lang['upload_type']}</td>
     <td>$s</td>
     </tr>";
-$HTMLOUT   .= $offers;
-$HTMLOUT   .= $request;
+$HTMLOUT .= $offers;
+$HTMLOUT .= $request;
 $subs_list .= "
         <div class='level-center'>";
 foreach ($subs as $s) {

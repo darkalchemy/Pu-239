@@ -6,7 +6,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
 global $session;
-$lang    = array_merge(load_language('global'), load_language('snatches'));
+$lang = array_merge(load_language('global'), load_language('snatches'));
 $HTMLOUT = '';
 if (empty($_GET['id'])) {
     $session->set('is-warning', 'Invalid Information');
@@ -22,11 +22,11 @@ $arr = mysqli_fetch_assoc($res);
 if (!$arr) {
     stderr('Error', 'It appears that there is no torrent with that id.');
 }
-$res     = sql_query('SELECT COUNT(id) FROM snatched WHERE complete_date !=0 AND torrentid =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$row     = mysqli_fetch_row($res);
-$count   = $row[0];
+$res = sql_query('SELECT COUNT(id) FROM snatched WHERE complete_date !=0 AND torrentid =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$row = mysqli_fetch_row($res);
+$count = $row[0];
 $perpage = 15;
-$pager   = pager($perpage, $count, "snatches.php?id=$id&amp;");
+$pager = pager($perpage, $count, "snatches.php?id=$id&amp;");
 if (!$count) {
     stderr('No snatches', "It appears that there are currently no snatches for the torrent <a href='{$site_config['baseurl']}/details.php?id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['name']) . '</a>.');
 }
@@ -63,12 +63,12 @@ $res = sql_query('
                  $pager['limit']) or sqlerr(__FILE__, __LINE__);
 $body = '';
 while ($arr = mysqli_fetch_assoc($res)) {
-    $upspeed    = ($arr['upspeed'] > 0 ? mksize($arr['upspeed']) : ($arr['seedtime'] > 0 ? mksize($arr['uploaded'] / ($arr['seedtime'] + $arr['leechtime'])) : mksize(0)));
-    $downspeed  = ($arr['downspeed'] > 0 ? mksize($arr['downspeed']) : ($arr['leechtime'] > 0 ? mksize($arr['downloaded'] / $arr['leechtime']) : mksize(0)));
-    $ratio      = ($arr['downloaded'] > 0 ? number_format($arr['uploaded'] / $arr['downloaded'], 3) : ($arr['uploaded'] > 0 ? 'Inf.' : '---'));
-    $completed  = sprintf('%.2f%%', 100 * (1 - ($arr['to_go'] / $arr['size'])));
+    $upspeed = ($arr['upspeed'] > 0 ? mksize($arr['upspeed']) : ($arr['seedtime'] > 0 ? mksize($arr['uploaded'] / ($arr['seedtime'] + $arr['leechtime'])) : mksize(0)));
+    $downspeed = ($arr['downspeed'] > 0 ? mksize($arr['downspeed']) : ($arr['leechtime'] > 0 ? mksize($arr['downloaded'] / $arr['leechtime']) : mksize(0)));
+    $ratio = ($arr['downloaded'] > 0 ? number_format($arr['uploaded'] / $arr['downloaded'], 3) : ($arr['uploaded'] > 0 ? 'Inf.' : '---'));
+    $completed = sprintf('%.2f%%', 100 * (1 - ($arr['to_go'] / $arr['size'])));
     $snatchuser = (isset($arr['userid']) ? format_username($arr['userid']) : "{$lang['snatches_unknown']}");
-    $username   = (($arr['anonymous2'] === 'yes' or $arr['paranoia'] >= 2) ? ($CURUSER['class'] < UC_STAFF && $arr['userid'] != $CURUSER['id'] ? '' : $snatchuser . ' - ') . "<i>{$lang['snatches_anon']}</i>" : $snatchuser);
+    $username = (($arr['anonymous2'] === 'yes' or $arr['paranoia'] >= 2) ? ($CURUSER['class'] < UC_STAFF && $arr['userid'] != $CURUSER['id'] ? '' : $snatchuser . ' - ') . "<i>{$lang['snatches_anon']}</i>" : $snatchuser);
     $body .= "
         <tr>
             <td class='has-text-left'>{$username}</td>

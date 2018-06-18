@@ -2,27 +2,27 @@
 
 global $CURUSER, $lang, $site_config;
 
-$num_result      = $and_member      = '';
-$keywords        = (isset($_POST['keywords']) ? htmlsafechars($_POST['keywords']) : '');
-$member          = (isset($_POST['member']) ? htmlsafechars($_POST['member']) : '');
-$all_boxes       = (isset($_POST['all_boxes']) ? intval($_POST['all_boxes']) : '');
+$num_result = $and_member = '';
+$keywords = (isset($_POST['keywords']) ? htmlsafechars($_POST['keywords']) : '');
+$member = (isset($_POST['member']) ? htmlsafechars($_POST['member']) : '');
+$all_boxes = (isset($_POST['all_boxes']) ? intval($_POST['all_boxes']) : '');
 $sender_reciever = ($mailbox >= 1 ? 'sender' : 'receiver');
-$what_in_out     = ($mailbox >= 1 ? 'AND receiver = ' . sqlesc($CURUSER['id']) : 'AND sender = ' . sqlesc($CURUSER['id']));
-$location        = (isset($_POST['all_boxes']) ? 'AND location != 0' : 'AND location = ' . $mailbox);
-$limit           = (isset($_POST['limit']) ? intval($_POST['limit']) : 25);
-$as_list_post    = (isset($_POST['as_list_post']) ? intval($_POST['as_list_post']) : 2);
-$desc_asc        = (isset($_POST['ASC']) == 1 ? 'ASC' : 'DESC');
-$subject         = (isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '');
-$text            = (isset($_POST['text']) ? htmlsafechars($_POST['text']) : '');
-$member_sys      = (isset($_POST['system']) ? 'system' : '');
-$possible_sort   = [
+$what_in_out = ($mailbox >= 1 ? 'AND receiver = ' . sqlesc($CURUSER['id']) : 'AND sender = ' . sqlesc($CURUSER['id']));
+$location = (isset($_POST['all_boxes']) ? 'AND location != 0' : 'AND location = ' . $mailbox);
+$limit = (isset($_POST['limit']) ? intval($_POST['limit']) : 25);
+$as_list_post = (isset($_POST['as_list_post']) ? intval($_POST['as_list_post']) : 2);
+$desc_asc = (isset($_POST['ASC']) == 1 ? 'ASC' : 'DESC');
+$subject = (isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '');
+$text = (isset($_POST['text']) ? htmlsafechars($_POST['text']) : '');
+$member_sys = (isset($_POST['system']) ? 'system' : '');
+$possible_sort = [
     'added',
     'subject',
     'sender',
     'receiver',
     'relevance',
 ];
-$box  = isset($_POST['box']) ? (int) $_POST['box'] : 1;
+$box = isset($_POST['box']) ? (int) $_POST['box'] : 1;
 $sort = (isset($_GET['sort']) ? htmlsafechars($_GET['sort']) : (isset($_POST['sort']) ? htmlsafechars($_POST['sort']) : 'relevance'));
 if (!in_array($sort, $possible_sort)) {
     stderr($lang['pm_error'], $lang['pm_error_ruffian']);
@@ -32,16 +32,16 @@ if (!in_array($sort, $possible_sort)) {
 
 if ($member) {
     $res_username = sql_query('SELECT id FROM users WHERE LOWER(username) = LOWER(' . sqlesc($member) . ') LIMIT 1') or sqlerr(__FILE__, __LINE__);
-    $arr_userid   = mysqli_fetch_assoc($res_username);
+    $arr_userid = mysqli_fetch_assoc($res_username);
     if (mysqli_num_rows($res_username) === 0) {
         stderr($lang['pm_error'], $lang['pm_forwardpm_nomember']);
     }
     //=== if searching by member...
-    $and_member   = ($mailbox >= 1 ? ' AND sender = ' . sqlesc($arr_userid['id']) : ' AND receiver = ' . sqlesc($arr_userid['id']));
+    $and_member = ($mailbox >= 1 ? ' AND sender = ' . sqlesc($arr_userid['id']) : ' AND receiver = ' . sqlesc($arr_userid['id']));
     $the_username = format_username($arr_userid['id']);
 }
 if ($member_sys) {
-    $and_member   = ' AND sender = 0 ';
+    $and_member = ' AND sender = 0 ';
     $the_username = '<span>System</span>';
 }
 
@@ -169,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
     }
     $num_result = mysqli_num_rows($res_search);
-    $table      = $table_header      = $table_body      = '';
+    $table = $table_header = $table_body = '';
     if ($as_list_post === 1) {
         $table_header = "
             <tr>
@@ -181,9 +181,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </tr>";
 
         while ($row = mysqli_fetch_assoc($res_search)) {
-            $read    = $row['unread'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}pn_inboxnew.gif' title='{$lang['pm_mailbox_unreadmsg']}' alt='{$lang['pm_mailbox_unread']}' class='tooltipper' />" : "<img src='{$site_config['pic_baseurl']}pn_inbox.gif title='{$lang['pm_mailbox_readmsg']}' alt='{$lang['pm_mailbox_read']}' class='tooltipper' />";
-            $sender  = $row['sender'] > 0 ? format_username($row['sender']) : 'System';
-            $date    = str_replace(', ', '<br>', get_date($row['added'], 'LONG'));
+            $read = $row['unread'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}pn_inboxnew.gif' title='{$lang['pm_mailbox_unreadmsg']}' alt='{$lang['pm_mailbox_unread']}' class='tooltipper' />" : "<img src='{$site_config['pic_baseurl']}pn_inbox.gif title='{$lang['pm_mailbox_readmsg']}' alt='{$lang['pm_mailbox_read']}' class='tooltipper' />";
+            $sender = $row['sender'] > 0 ? format_username($row['sender']) : 'System';
+            $date = str_replace(', ', '<br>', get_date($row['added'], 'LONG'));
             $subject = str_ireplace($keywords, "<span style='background-color:yellow;font-weight:bold;color:black;'>{$keywords}</span>", htmlsafechars($row['subject']));
             $table_body .= "
             <tr>
@@ -197,9 +197,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $table = main_table($table_body, $table_header);
     } else {
         while ($row = mysqli_fetch_assoc($res_search)) {
-            $sender  = $row['sender'] > 0 ? format_username($row['sender']) : 'System';
-            $date    = get_date($row['added'], 'LONG');
-            $body    = str_ireplace($keywords, "<span style='background-color:yellow;font-weight:bold;color:black;'>{$keywords}</span>", format_comment($row['msg']));
+            $sender = $row['sender'] > 0 ? format_username($row['sender']) : 'System';
+            $date = get_date($row['added'], 'LONG');
+            $body = str_ireplace($keywords, "<span style='background-color:yellow;font-weight:bold;color:black;'>{$keywords}</span>", format_comment($row['msg']));
             $subject = str_ireplace($keywords, "<span style='background-color:yellow;font-weight:bold;color:black;'>{$keywords}</span>", htmlsafechars($row['subject']));
             $table .= main_table("
             <tr>

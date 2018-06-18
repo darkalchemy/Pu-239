@@ -32,7 +32,7 @@ if (isset($_GET['act'])) {
             stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
         }
         $TEMPLATE = sql_query('SELECT * FROM stylesheets WHERE id = ' . sqlesc($ID) . ' LIMIT 1');
-        $TEM      = mysqli_fetch_array($TEMPLATE);
+        $TEM = mysqli_fetch_array($TEMPLATE);
         $HTML .= "
             <form action='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=4' method='post'>
          <input type='hidden' value='" . (int) $TEM['id'] . "' name='uri' />
@@ -94,14 +94,14 @@ if (isset($_GET['act'])) {
         if (!isset($_POST['title'])) {
             stderr("{$lang['themes_error']}", "{$lang['themes_inv_name']}");
         }
-        $ID   = (int) $_POST['id'];
-        $URI  = $_POST['uri'];
+        $ID = (int) $_POST['id'];
+        $URI = $_POST['uri'];
         $NAME = htmlsafechars($_POST['title']);
         if (!is_valid_id($ID)) {
             stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
         }
         $CURRENT = sql_query('SELECT * FROM stylesheets WHERE id = ' . sqlesc($ID));
-        $CUR     = mysqli_fetch_assoc($CURRENT);
+        $CUR = mysqli_fetch_assoc($CURRENT);
         if ($ID != $CUR['id']) {
             $EDIT[] = 'id = ' . sqlesc($ID);
         }
@@ -162,8 +162,8 @@ if (isset($_GET['act'])) {
         if (!isset($_GET['name'])) {
             stderr("{$lang['themes_error']}", "{$lang['themes_inv_name']}");
         }
-        $ID   = (int) $_GET['id'];
-        $URI  = $_GET['uri'];
+        $ID = (int) $_GET['id'];
+        $URI = $_GET['uri'];
         $NAME = htmlsafechars($_GET['name']);
         sql_query('INSERT INTO stylesheets(id, uri, name)VALUES(' . sqlesc($ID) . ', ' . sqlesc($URI) . ',  ' . sqlesc($NAME) . ')');
         header('Location: staffpanel.php?tool=themes&action=themes&msg=3');

@@ -13,7 +13,7 @@ if (!$res) {
 }
 $res_user_stuff = sql_query('SELECT id, username, uploaded, warned, suspended, enabled, donor, class, avatar, leechwarn, chatpost, pirate, king, opt1, opt2 FROM users WHERE id=' . ($message['sender'] === $CURUSER['id'] ? sqlesc($message['receiver']) : sqlesc($message['sender']))) or sqlerr(__FILE__, __LINE__);
 $arr_user_stuff = mysqli_fetch_assoc($res_user_stuff);
-$id             = (int) $arr_user_stuff['id'];
+$id = (int) $arr_user_stuff['id'];
 sql_query('UPDATE messages SET unread="no" WHERE id = ' . sqlesc($pm_id) . ' AND receiver = ' . sqlesc($CURUSER['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
 $cache->decrement('inbox_' . $CURUSER['id']);
 if ($message['friend'] > 0) {
@@ -39,7 +39,7 @@ if ($message['location'] > 1) {
     if (mysqli_num_rows($res) === 0) {
         stderr($lang['pm_error'], $lang['pm_mailbox_invalid']);
     }
-    $mailbox_name   = htmlsafechars($arr_box_name[0]);
+    $mailbox_name = htmlsafechars($arr_box_name[0]);
     $other_box_info = '<p><span style="color: red;">' . $lang['pm_mailbox_asterisc'] . '</span><span style="font-weight: bold;">' . $lang['pm_mailbox_note'] . '</span>
                                            ' . $lang['pm_mailbox_max'] . '<span style="font-weight: bold;">' . $maxbox . '</span>' . $lang['pm_mailbox_either'] . '
                                             <span style="font-weight: bold;">' . $lang['pm_mailbox_inbox'] . '</span>' . $lang['pm_mailbox_or'] . '<span style="font-weight: bold;">' . $lang['pm_mailbox_sentbox'] . '</span>.</p>';

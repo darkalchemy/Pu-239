@@ -20,7 +20,7 @@ define('AJAX_CHAT_CHATBOT', $site_config['chatBotRole']);
 $config = [];
 
 // javascript file
-$config['js']    = get_file_name('chat_js');
+$config['js'] = get_file_name('chat_js');
 $config['jslog'] = get_file_name('chat_log_js');
 
 // Database connection values:
@@ -39,10 +39,10 @@ $config['dbConnection']['type'] = null;
 $config['dbConnection']['link'] = null;
 
 // Database table names:
-$config['dbTableNames']                = [];
-$config['dbTableNames']['online']      = 'ajax_chat_online';
-$config['dbTableNames']['messages']    = 'ajax_chat_messages';
-$config['dbTableNames']['bans']        = 'ajax_chat_bans';
+$config['dbTableNames'] = [];
+$config['dbTableNames']['online'] = 'ajax_chat_online';
+$config['dbTableNames']['messages'] = 'ajax_chat_messages';
+$config['dbTableNames']['bans'] = 'ajax_chat_bans';
 $config['dbTableNames']['invitations'] = 'ajax_chat_invitations';
 
 // Available languages:

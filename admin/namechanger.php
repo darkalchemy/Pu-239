@@ -6,11 +6,11 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang, $cache;
 
-$lang    = array_merge($lang, load_language('ad_namechanger'));
+$lang = array_merge($lang, load_language('ad_namechanger'));
 $HTMLOUT = '';
-$mode    = (isset($_GET['mode']) && htmlsafechars($_GET['mode']));
+$mode = (isset($_GET['mode']) && htmlsafechars($_GET['mode']));
 if (isset($mode) && $mode == 'change') {
-    $uid   = (int) $_POST['uid'];
+    $uid = (int) $_POST['uid'];
     $uname = htmlsafechars($_POST['uname']);
     if ($_POST['uname'] == '' || $_POST['uid'] == '') {
         stderr($lang['namechanger_err'], $lang['namechanger_missing']);
@@ -30,7 +30,7 @@ if (isset($mode) && $mode == 'change') {
         $cache->update_row('user' . $uid, [
             'username' => $uname,
         ], $site_config['expires']['user_cache']);
-        $added   = TIME_NOW;
+        $added = TIME_NOW;
         $changed = sqlesc("{$lang['namechanger_changed_to']} $uname");
         $subject = sqlesc($lang['namechanger_changed']);
         if (!$change) {

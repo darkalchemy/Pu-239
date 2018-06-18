@@ -2,10 +2,10 @@
 
 global $CURUSER, $site_config;
 
-$is            = $fl            = '';
+$is = $fl = '';
 $isfree['yep'] = $isfree['expires'] = 0;
-$freeimg       = '<img src="' . $site_config['pic_baseurl'] . 'freedownload.gif" alt="Free download" class="tooltipper" title="Free download" />';
-$silverimg     = '<img src="' . $site_config['pic_baseurl'] . 'silverdownload.gif" alt="Silver Torrent" class="tooltipper" title="Silver Torrent" />';
+$freeimg = '<img src="' . $site_config['pic_baseurl'] . 'freedownload.gif" alt="Free download" class="tooltipper" title="Free download" />';
+$silverimg = '<img src="' . $site_config['pic_baseurl'] . 'silverdownload.gif" alt="Silver Torrent" class="tooltipper" title="Silver Torrent" />';
 if (isset($free)) {
     foreach ($free as $fl) {
         switch ($fl['modifier']) {
@@ -28,7 +28,7 @@ if (isset($free)) {
             default:
                 $mode = 0;
         }
-        $isfree['yep']     = ($fl['modifier'] != 0) && ($fl['expires'] > TIME_NOW || $fl['expires'] == 1);
+        $isfree['yep'] = ($fl['modifier'] != 0) && ($fl['expires'] > TIME_NOW || $fl['expires'] == 1);
         $isfree['expires'] = $fl['expires'];
     }
 }

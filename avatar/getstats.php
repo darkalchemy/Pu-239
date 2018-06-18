@@ -28,13 +28,13 @@ function calctime($val)
  */
 function time_return($stamp)
 {
-    $ysecs  = 365 * 24 * 60 * 60;
-    $mosecs = 31  * 24  * 60  * 60;
-    $wsecs  = 7   * 24   * 60   * 60;
-    $dsecs  = 24  * 60  * 60;
-    $hsecs  = 60  * 60;
-    $msecs  = 60;
-    $years  = floor($stamp / $ysecs);
+    $ysecs = 365 * 24 * 60 * 60;
+    $mosecs = 31 * 24 * 60 * 60;
+    $wsecs = 7 * 24 * 60 * 60;
+    $dsecs = 24 * 60 * 60;
+    $hsecs = 60 * 60;
+    $msecs = 60;
+    $years = floor($stamp / $ysecs);
     $stamp %= $ysecs;
     $months = floor($stamp / $mosecs);
     $stamp %= $mosecs;
@@ -107,7 +107,7 @@ function getStats($user, $forced = false)
     if (mysqli_num_rows($query) != 1) {
         die('Error Error Error! 2');
     }
-    $a   = mysqli_fetch_assoc($query);
+    $a = mysqli_fetch_assoc($query);
     $ops = [
         $var['line1']['value'],
         $var['line2']['value'],
@@ -126,7 +126,7 @@ function getStats($user, $forced = false)
                 break;
 
             case 3:
-                list($days, $hours, $mins)   = explode(',', calctime($a['irctotal']));
+                list($days, $hours, $mins) = explode(',', calctime($a['irctotal']));
                 $var['line' . $i]['value_p'] = "$days - $hours";
                 //$var['line'.$i]['value_p'] = "not yet";
                 break;

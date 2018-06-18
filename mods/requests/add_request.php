@@ -12,8 +12,8 @@ if ($CURUSER['class'] < $site_config['req_min_class']) {
     die();
 }
 $gigsneeded = ($site_config['req_gigs_upped'] * 1024 * 1024 * 1024);
-$gigsupped  = $CURUSER['uploaded'];
-$ratio      = (($CURUSER['downloaded'] > 0) ? ($CURUSER['uploaded'] / $CURUSER['downloaded']) : 0);
+$gigsupped = $CURUSER['uploaded'];
+$ratio = (($CURUSER['downloaded'] > 0) ? ($CURUSER['uploaded'] / $CURUSER['downloaded']) : 0);
 if ($CURUSER['class'] < UC_VIP) {
     $gigsdowned = $CURUSER['downloaded'];
     if ($gigsdowned >= $gigsneeded) {
@@ -56,7 +56,7 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
         $deadchkbox .= ' checked';
     }
     $deadchkbox .= " />{$lang['add_incl_dead']}\n";
-    $HTMLOUT    .= ' ' . $catdropdown . ' </select> ' . $deadchkbox . " 
+    $HTMLOUT .= ' ' . $catdropdown . ' </select> ' . $deadchkbox . " 
 <input type='submit' value='{$lang['req_search']}' class='button is-small' /></td></tr></table></form>
 <br>\n";
     $HTMLOUT .= "<form method='post' name='compose' action='viewrequests.php?new_request'><a name='add' id='add'></a>
@@ -64,8 +64,8 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
 {$lang['add_good_ratio']}" . $site_config['req_gigs_upped'] . "{$lang['add_share']}</td></tr>
 <tr><td><b>{$lang['add_title']}</b></td><td><input type='text' size='40' name='requesttitle' />
 <select name='category'><option value='0'>{$lang['add_select_cat']}</option>\n";
-    $res2         = sql_query('SELECT id, name FROM categories ORDER BY name');
-    $num          = mysqli_num_rows($res2);
+    $res2 = sql_query('SELECT id, name FROM categories ORDER BY name');
+    $num = mysqli_num_rows($res2);
     $catdropdown2 = '';
     for ($i = 0; $i < $num; ++$i) {
         $cats2 = mysqli_fetch_assoc($res2);
@@ -105,15 +105,15 @@ if (mysqli_num_rows($rescount) > 0) {
     <td class='colhead'>{$lang['req_req_by']}</td></tr>\n";
     foreach ($cats as $key => $value) {
         $change[$value['id']] = [
-            'id'    => $value['id'],
-            'name'  => $value['name'],
+            'id' => $value['id'],
+            'name' => $value['name'],
             'image' => $value['image'],
         ];
     }
     while ($arr = mysqli_fetch_assoc($res)) {
-        $addedby  = "<td style='padding: 0;'><b><a href='userdetails.php?id=$arr[requested_by_user_id]'>$arr[username]</a></b></td>";
-        $catname  = htmlspecialchars($change[$arr['category']]['name']);
-        $catpic   = htmlspecialchars($change[$arr['category']]['image']);
+        $addedby = "<td style='padding: 0;'><b><a href='userdetails.php?id=$arr[requested_by_user_id]'>$arr[username]</a></b></td>";
+        $catname = htmlspecialchars($change[$arr['category']]['name']);
+        $catpic = htmlspecialchars($change[$arr['category']]['image']);
         $catimage = "<img src='{$site_config['pic_baseurl']}caticons/" . $catpic . "' title='$catname' alt='$catname' />";
         $HTMLOUT .= '<tr>
     <td>' . $catimage . "</td>

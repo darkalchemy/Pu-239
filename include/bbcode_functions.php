@@ -41,7 +41,7 @@ function BBcode($body = '')
     global $CURUSER, $smilies, $customsmilies, $staff_smilies, $site_config;
     $emoticons_normal = smilies_frame($smilies, 3, ':hslocked:');
     $emoticons_custom = smilies_frame($customsmilies, 3, ':wink_skull:');
-    $emoticons_staff  = smilies_frame($staff_smilies, 1, ':dabunnies:');
+    $emoticons_staff = smilies_frame($staff_smilies, 1, ':dabunnies:');
 
     $bbcode = '
             <div>
@@ -99,7 +99,7 @@ function BBcode($body = '')
 function validate_imgs($s)
 {
     $start = 'https?://';
-    $end   = "+\.(?:jpe?g|png|gif)";
+    $end = "+\.(?:jpe?g|png|gif)";
     preg_match_all('!' . $start . '(.*)' . $end . '!Ui', $s, $result);
     $array = $result[0];
     for ($i = 0; $i < count($array); ++$i) {
@@ -156,13 +156,13 @@ function format_quotes($s)
     } // quote mismatch. Return raw string...
     // Get position of opening quotes
     $openval = [];
-    $pos     = -1;
+    $pos = -1;
     foreach ($openquote as $val) {
         $openval[] = $pos = strpos($s, $val, $pos + 1);
     }
     // Get position of closing quotes
     $closeval = [];
-    $pos      = -1;
+    $pos = -1;
     foreach ($closequote as $val) {
         $closeval[] = $pos = strpos($s, $val, $pos + 1);
     }
@@ -186,14 +186,14 @@ function format_quotes($s)
 function islocal($link)
 {
     global $site_config;
-    $flag               = false;
-    $limit              = 600;
+    $flag = false;
+    $limit = 600;
     //dd($link);
     if (stristr($link[0], '[url=') !== false) {
-        $url   = trim($link[1]);
+        $url = trim($link[1]);
         $title = trim($link[2]);
         if (stristr($title, '[img]') !== false) {
-            $flag  = true;
+            $flag = true;
             $title = preg_replace("/\[img](https?:\/\/[^\s'\"<>]+(\.(jpeg|jpg|gif|png)))\[\/img\]/i", '<img class="img-responsive" src="\\1" alt="" border="0" />', $title);
         }
     } elseif (false !== stristr($link[0], '[url]')) {
@@ -202,8 +202,8 @@ function islocal($link)
         $url = $title = trim($link[2]);
     }
     if (strlen($title) > $limit && $flag == false) {
-        $l[0]   = substr($title, 0, ($limit / 2));
-        $l[1]   = substr($title, strlen($title) - round($limit / 3));
+        $l[0] = substr($title, 0, ($limit / 2));
+        $l[1] = substr($title, strlen($title) - round($limit / 3));
         $lshort = $l[0] . '...' . $l[1];
     } else {
         $lshort = $title;
@@ -237,7 +237,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     //dd($site_config);
     $s = $text;
     unset($text);
-    $s                  = validate_imgs($s);
+    $s = validate_imgs($s);
     $site_config['url'] = str_replace([
                                           'http://',
                                           'www',
@@ -502,13 +502,13 @@ function format_code($s)
         } // quote mismatch. Return raw string...
         // Get position of opening quotes
         $openval = [];
-        $pos     = -1;
+        $pos = -1;
         foreach ($openquote as $val) {
             $openval[] = $pos = strpos($s, $val, $pos + 1);
         }
         // Get position of closing quotes
         $closeval = [];
-        $pos      = -1;
+        $pos = -1;
         foreach ($closequote as $val) {
             $closeval[] = $pos = strpos($s, $val, $pos + 1);
         }
@@ -724,15 +724,15 @@ function dynamic_user_vars($text)
     $zone = 0; // UTC
     //$zone = 3600 * -5; // EST
     $tim = TIME_NOW + $zone;
-    $cu  = $CURUSER;
+    $cu = $CURUSER;
     unset($cu['passhash'], $cu['torrent_pass'], $cu['modcomment']);
-    $bbkeys   = array_keys($cu);
+    $bbkeys = array_keys($cu);
     $bbkeys[] = 'curdate';
     $bbkeys[] = 'curtime';
-    $bbvals   = array_values($cu);
+    $bbvals = array_values($cu);
     $bbvals[] = gmdate('F jS, Y', $tim);
     $bbvals[] = gmdate('g:i A', $tim);
-    $bbkeys   = array_map('user_key_codes', $bbkeys);
+    $bbkeys = array_map('user_key_codes', $bbkeys);
 
     return @preg_replace($bbkeys, $bbvals, $text);
 }

@@ -21,20 +21,20 @@ function permissioncheck()
 {
     global $root, $public;
     $dirs = [
-        $root                      => 0,
-        $root . 'dir_list/'        => 0,
-        $root . 'cache/'           => 0,
-        $root . 'torrents/'        => 0,
-        $root . 'uploads/'         => 0,
-        $root . 'include/backup/'  => 0,
-        $root . 'sqlerr_logs/'     => 0,
-        $public . 'install/'       => 0,
+        $root => 0,
+        $root . 'dir_list/' => 0,
+        $root . 'cache/' => 0,
+        $root . 'torrents/' => 0,
+        $root . 'uploads/' => 0,
+        $root . 'include/backup/' => 0,
+        $root . 'sqlerr_logs/' => 0,
+        $public . 'install/' => 0,
         $public . 'install/extra/' => 0,
-        $root . 'include/'         => 0,
+        $root . 'include/' => 0,
     ];
     checkdir($dirs);
     $continue = true;
-    $out      = '<fieldset><legend>Directory check</legend>';
+    $out = '<fieldset><legend>Directory check</legend>';
     foreach ($dirs as $dir => $state) {
         if (!$state) {
             $continue = false;

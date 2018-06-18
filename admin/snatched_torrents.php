@@ -8,7 +8,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
-$lang    = array_merge($lang, load_language('ad_snatched_torrents'));
+$lang = array_merge($lang, load_language('ad_snatched_torrents'));
 $HTMLOUT = '';
 /**
  * @param $st
@@ -18,11 +18,11 @@ $HTMLOUT = '';
 function get_snatched_color($st)
 {
     global $lang;
-    $secs  = $st;
-    $mins  = floor($st / 60);
+    $secs = $st;
+    $mins = floor($st / 60);
     $hours = floor($mins / 60);
-    $days  = floor($hours / 24);
-    $week  = floor($days / 7);
+    $days = floor($hours / 24);
+    $week = floor($days / 7);
     $month = floor($week / 4);
     if ($month > 0) {
         $week_elapsed = floor(($st - ($month * 4 * 7 * 24 * 60 * 60)) / (7 * 24 * 60 * 60));
@@ -34,31 +34,31 @@ function get_snatched_color($st)
         return "<span style='color: lime;'><b>$month months.<br>$week_elapsed W. $days_elapsed D.</b></span>";
     }
     if ($week > 0) {
-        $days_elapsed  = floor(($st - ($week * 7 * 24 * 60 * 60)) / (24 * 60 * 60));
+        $days_elapsed = floor(($st - ($week * 7 * 24 * 60 * 60)) / (24 * 60 * 60));
         $hours_elapsed = floor(($st - ($days * 24 * 60 * 60)) / (60 * 60));
-        $mins_elapsed  = floor(($st - ($hours * 60 * 60)) / 60);
-        $secs_elapsed  = floor($st - $mins * 60);
+        $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
+        $secs_elapsed = floor($st - $mins * 60);
 
         return "<span style='color: lime;'><b>$week W. $days_elapsed D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></span>";
     }
     if ($days > 2) {
         $hours_elapsed = floor(($st - ($days * 24 * 60 * 60)) / (60 * 60));
-        $mins_elapsed  = floor(($st - ($hours * 60 * 60)) / 60);
-        $secs_elapsed  = floor($st - $mins * 60);
+        $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
+        $secs_elapsed = floor($st - $mins * 60);
 
         return "<span style='color: lime;'><b>$days D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></span>";
     }
     if ($days > 1) {
         $hours_elapsed = floor(($st - ($days * 24 * 60 * 60)) / (60 * 60));
-        $mins_elapsed  = floor(($st - ($hours * 60 * 60)) / 60);
-        $secs_elapsed  = floor($st - $mins * 60);
+        $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
+        $secs_elapsed = floor($st - $mins * 60);
 
         return "<span style='color: green;'><b>$days D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></span>";
     }
     if ($days > 0) {
         $hours_elapsed = floor(($st - ($days * 24 * 60 * 60)) / (60 * 60));
-        $mins_elapsed  = floor(($st - ($hours * 60 * 60)) / 60);
-        $secs_elapsed  = floor($st - $mins * 60);
+        $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
+        $secs_elapsed = floor($st - $mins * 60);
 
         return "<span style='color: #CCFFCC;'><b>$days D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></span>";
     }
@@ -88,17 +88,17 @@ function get_snatched_color($st)
 
 $What_Table = (XBT_TRACKER ? 'xbt_files_users' : 'snatched');
 $What_Value = (XBT_TRACKER ? 'WHERE completedtime != "0"' : 'WHERE complete_date != "0"');
-$count      = number_format(get_row_count($What_Table, $What_Value));
+$count = number_format(get_row_count($What_Table, $What_Value));
 $HTMLOUT .= "<h2>{$lang['ad_snatched_torrents_allsnatched']}</h2>
 <font class='small'>{$lang['ad_snatched_torrents_currently']}&#160;" . htmlsafechars($count) . "&#160;{$lang['ad_snatched_torrents_snatchedtor']}</font>";
 $HTMLOUT .= begin_main_frame();
-$Which_ID        = (XBT_TRACKER ? 'fid' : 'id');
-$Which_Table     = (XBT_TRACKER ? 'xbt_files_users' : 'snatched');
-$res             = sql_query("SELECT COUNT($Which_ID) FROM $Which_Table") or sqlerr(__FILE__, __LINE__);
-$row             = mysqli_fetch_row($res);
-$count           = $row[0];
+$Which_ID = (XBT_TRACKER ? 'fid' : 'id');
+$Which_Table = (XBT_TRACKER ? 'xbt_files_users' : 'snatched');
+$res = sql_query("SELECT COUNT($Which_ID) FROM $Which_Table") or sqlerr(__FILE__, __LINE__);
+$row = mysqli_fetch_row($res);
+$count = $row[0];
 $snatchedperpage = 15;
-$pager           = pager($snatchedperpage, $count, 'staffpanel.php?tool=snatched_torrents&amp;action=snatched_torrents&amp;');
+$pager = pager($snatchedperpage, $count, 'staffpanel.php?tool=snatched_torrents&amp;action=snatched_torrents&amp;');
 if ($count > $snatchedperpage) {
     $HTMLOUT .= $pager['pagertop'];
 }

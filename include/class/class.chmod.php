@@ -7,8 +7,8 @@ class Chmod
 {
     private $_dir;
     private $_modes = [
-        'owner'  => 0,
-        'group'  => 0,
+        'owner' => 0,
+        'group' => 0,
         'public' => 0,
     ];
 

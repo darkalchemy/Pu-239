@@ -1,18 +1,18 @@
 <?php
 
 $radio = [
-    'host'     => '',
-    'port'     => '',
+    'host' => '',
+    'port' => '',
     'password' => '',
 ];
 $langs = [
     'CURRENTLISTENERS' => 'Current listeners: <b>%d</b>',
-    'SERVERTITLE'      => 'Server: <b>%s</b>',
-    'SERVERURL'        => 'Server url: <b>%s:' . $radio['port'] . '</b>',
-    'SONGTITLE'        => 'Current song: <b>%s</b>',
-    'BITRATE'          => 'Bitrate: <b>%s kb</b>',
-    'BITRATE'          => 'Bitrate: <b>%s kb</b>',
-    'PEAKLISTENERS'    => 'Peak listeners: <b>%d</b>',
+    'SERVERTITLE' => 'Server: <b>%s</b>',
+    'SERVERURL' => 'Server url: <b>%s:' . $radio['port'] . '</b>',
+    'SONGTITLE' => 'Current song: <b>%s</b>',
+    'BITRATE' => 'Bitrate: <b>%s kb</b>',
+    'BITRATE' => 'Bitrate: <b>%s kb</b>',
+    'PEAKLISTENERS' => 'Peak listeners: <b>%d</b>',
 ];
 /**
  * @param $radio
@@ -50,7 +50,7 @@ function radioinfo($radio)
         } else {
             unset($data['STREAMSTATUS']);
             $md5_current_song = md5($data['SONGTITLE']);
-            $current_song     = $cache->get('current_radio_song');
+            $current_song = $cache->get('current_radio_song');
             if ($current_song === false || $current_song != $md5_current_song) {
                 //autoshout(str_replace(array('<','>'),array('[',']'),$data['SONGTITLE'].' playing on '.strtolower($data['SERVERTITLE']).' - '.strtolower($data['SERVERURL'])));
                 $cache->set('current_radio_song', $md5_current_song, 0);

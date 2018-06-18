@@ -4,12 +4,12 @@ global $site_config, $lang, $fluent, $cache;
 
 $active24 = $cache->get('last24_users_');
 if ($active24 === false || is_null($active24)) {
-    $list   = [];
+    $list = [];
     $record = $fluent->from('avps')
         ->where('arg = ?', 'last24')
         ->fetch();
 
-    $dt    = TIME_NOW - 86400;
+    $dt = TIME_NOW - 86400;
     $query = $fluent->from('users')
         ->select(null)
         ->select('id')
@@ -21,16 +21,16 @@ if ($active24 === false || is_null($active24)) {
     foreach ($query as $row) {
         $list[] = format_username($row['id']);
     }
-    $list[]                    = format_username(2);
-    $count                     = count($list);
+    $list[] = format_username(2);
+    $count = count($list);
     $active24['activeusers24'] = implode(',&nbsp;&nbsp;', $list);
     if ($count === 0) {
         $active24['activeusers24'] = $lang['index_last24_nousers'];
     }
     $active24['totalonline24'] = number_format($count);
-    $active24['last24']        = number_format($record['value_i']);
-    $active24['ss24']          = $lang['gl_member'] . plural($count);
-    $active24['record']        = get_date($record['value_u'], '');
+    $active24['last24'] = number_format($record['value_i']);
+    $active24['ss24'] = $lang['gl_member'] . plural($count);
+    $active24['record'] = get_date($record['value_u'], '');
     if ($count > $record['value_i']) {
         $set = [
             'value_s' => 0,

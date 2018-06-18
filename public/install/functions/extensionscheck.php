@@ -26,8 +26,8 @@ function extensionscheck()
     ];
 
     $missing = [];
-    $php     = true;
-    $out     = '
+    $php = true;
+    $out = '
         <fieldset>
             <legend>PHP Extensions Check</legend>';
 

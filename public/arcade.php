@@ -26,9 +26,9 @@ $list = $site_config['arcade_games_names'];
 sort($list);
 $i = 0;
 foreach ($list as $gamename) {
-    $id           = $i++;
-    $game_id      = array_search($gamename, $site_config['arcade_games_names']);
-    $game         = $site_config['arcade_games'][$game_id];
+    $id = $i++;
+    $game_id = array_search($gamename, $site_config['arcade_games_names']);
+    $game = $site_config['arcade_games'][$game_id];
     $fullgamename = $site_config['arcade_games_names'][$game_id];
     $HTMLOUT .= "
                 <div class='margin10 w-20'>

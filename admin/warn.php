@@ -7,7 +7,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang, $cache;
 
-$lang    = array_merge($lang, load_language('ad_warn'));
+$lang = array_merge($lang, load_language('ad_warn'));
 $HTMLOUT = '';
 /**
  * @param $x
@@ -24,9 +24,9 @@ $stdfoot = [
     ],
 ];
 $this_url = $_SERVER['SCRIPT_NAME'];
-$do       = isset($_GET['do']) && $_GET['do'] === 'disabled' ? 'disabled' : 'warned';
+$do = isset($_GET['do']) && $_GET['do'] === 'disabled' ? 'disabled' : 'warned';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $r     = isset($_POST['ref']) ? $_POST['ref'] : $this_url;
+    $r = isset($_POST['ref']) ? $_POST['ref'] : $this_url;
     $_uids = isset($_POST['users']) ? array_map('mkint', $_POST['users']) : 0;
     if ($_uids == 0 || count($_uids) == 0) {
         stderr($lang['warn_stderr'], $lang['warn_stderr_msg']);
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $count = mysqli_num_rows($res_del);
             while ($arr_del = mysqli_fetch_assoc($res_del)) {
                 $userid = $arr_del['id'];
-                $res    = sql_query('DELETE FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                $res = sql_query('DELETE FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $cache->delete('user' . $userid);
                 write_log("User: {$arr_del['username']} Was deleted by " . $CURUSER['username'] . ' Via Warn Page');
             }
@@ -68,9 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             stderr($lang['warn_stderr'], $lang['warn_stderr_msg3']);
         }
     } elseif ($act === 'unwarn') {
-        $sub  = $lang['warn_removed'];
+        $sub = $lang['warn_removed'];
         $body = $lang['warn_removed_msg'] . $CURUSER['username'] . $lang['warn_removed_msg1'];
-        $pms  = [];
+        $pms = [];
         foreach ($_uids as $id) {
             $cache->update_row('user' . $id, [
                 'warned' => 0,
@@ -79,8 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $cache->increment('inbox_' . $id);
         }
         if (!empty($pms) && count($pms)) {
-            $g  = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . join(',', $pms))                                                                                                                             or ($q_err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
-            $q1 = sql_query("UPDATE users SET warned='0', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['warn_removed_msg'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')')   or ($q2_err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            $g = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . join(',', $pms)) or ($q_err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            $q1 = sql_query("UPDATE users SET warned='0', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['warn_removed_msg'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')') or ($q2_err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
             if ($g && $q1) {
                 header('Refresh: 2; url=' . $r);
                 stderr($lang['warn_stdmsg_success'], count($pms) . $lang['warn_stdmsg_user'] . (count($pms) > 1 ? 's' : '') . $lang['warn_stdmsg_unwarned']);
@@ -95,16 +95,16 @@ switch ($do) {
     case 'disabled':
         $query = "SELECT id,username, class, downloaded, uploaded, IF(downloaded>0, round((uploaded/downloaded),2), '---') AS ratio, disable_reason, added, last_access FROM users WHERE enabled='no' ORDER BY last_access DESC ";
         $title = $lang['warn_disable_title'];
-        $link  = "<a href=\"staffpanel.php?tool=warn&amp;action=warn&amp;?do=warned\">{$lang['warn_warned_users']}</a>";
+        $link = "<a href=\"staffpanel.php?tool=warn&amp;action=warn&amp;?do=warned\">{$lang['warn_warned_users']}</a>";
         break;
 
     case 'warned':
         $query = "SELECT id, username, class, downloaded, uploaded, IF(downloaded>0, round((uploaded/downloaded),2), '---') AS ratio, warn_reason, warned, added, last_access FROM users WHERE warned>='1' ORDER BY last_access DESC, warned DESC ";
         $title = $lang['warn_warned_title'];
-        $link  = "<a href=\"staffpanel.php?tool=warn&amp;action=warn&amp;do=disabled\">{$lang['warn_disabled_users']}</a>";
+        $link = "<a href=\"staffpanel.php?tool=warn&amp;action=warn&amp;do=disabled\">{$lang['warn_disabled_users']}</a>";
         break;
 }
-$g     = sql_query($query) or print (is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false);
+$g = sql_query($query) or print (is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false);
 $count = mysqli_num_rows($g);
 $HTMLOUT .= begin_main_frame();
 $HTMLOUT .= begin_frame($title . "&#160;[<font class=\"small\">{$lang['warn_total']}" . $count . $lang['warn_total_user'] . ($count > 1 ? $lang['warn_total_user_plural'] : '') . '</font>] - ' . $link);

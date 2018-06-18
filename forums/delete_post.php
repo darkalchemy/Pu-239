@@ -1,8 +1,8 @@
 <?php
 
 global $lang;
-$post_id      = (isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0));
-$topic_id     = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
+$post_id = (isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0));
+$topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
 $sanity_check = (isset($_GET['sanity_check']) ? intval($_GET['sanity_check']) : 0);
 if (!is_valid_id($post_id) || !is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
@@ -43,9 +43,9 @@ if ($sanity_check > 0) {
         $res = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_assoc($res);
         sql_query('UPDATE topics SET last_post = ' . sqlesc($arr['id']) . ', post_count = post_count - 1 WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-        sql_query('UPDATE forums SET post_count = post_count - 1 WHERE id = ' . sqlesc($arr['forum_id']))                                  or sqlerr(__FILE__, __LINE__);
-        sql_query('DELETE FROM posts WHERE id = ' . sqlesc($post_id))                                                                      or sqlerr(__FILE__, __LINE__);
-        sql_query('UPDATE usersachiev SET forumposts = forumposts - 1 WHERE userid = ' . sqlesc($arr_post['user_id']))                     or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE forums SET post_count = post_count - 1 WHERE id = ' . sqlesc($arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM posts WHERE id = ' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usersachiev SET forumposts = forumposts - 1 WHERE userid = ' . sqlesc($arr_post['user_id'])) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($arr['forum_id']);
         clr_forums_cache($post_id);
     } else {

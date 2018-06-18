@@ -8,18 +8,18 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
-$lang    = array_merge($lang, load_language('ad_donations'));
+$lang = array_merge($lang, load_language('ad_donations'));
 $HTMLOUT = '';
 if (isset($_GET['total_donors'])) {
     $total_donors = (int) $_GET['total_donors'];
     if ($total_donors != '1') {
         stderr($lang['donate_err'], $lang['donate_err1']);
     }
-    $res     = sql_query("SELECT COUNT(*) FROM users WHERE total_donated != '0.00' AND enabled='yes'") or sqlerr(__FILE__, __LINE__);
-    $row     = mysqli_fetch_array($res);
-    $count   = $row[0];
+    $res = sql_query("SELECT COUNT(*) FROM users WHERE total_donated != '0.00' AND enabled='yes'") or sqlerr(__FILE__, __LINE__);
+    $row = mysqli_fetch_array($res);
+    $count = $row[0];
     $perpage = 15;
-    $pager   = pager($perpage, $count, 'staffpanel.php?tool=donations&amp;action=donations&amp;');
+    $pager = pager($perpage, $count, 'staffpanel.php?tool=donations&amp;action=donations&amp;');
     if (mysqli_num_rows($res) == 0) {
         stderr($lang['donate_sorry'], $lang['donate_nofound']);
     }
@@ -28,11 +28,11 @@ if (isset($_GET['total_donors'])) {
     $res = sql_query("SELECT id, username, email, added, donated, donoruntil, total_donated FROM users WHERE total_donated != '0.00' ORDER BY id DESC " . $pager['limit'] . '') or sqlerr(__FILE__, __LINE__);
 } // ===end total donors
 else {
-    $res     = sql_query("SELECT COUNT(id) FROM users WHERE donor='yes'") or sqlerr(__FILE__, __LINE__);
-    $row     = mysqli_fetch_array($res);
-    $count   = $row[0];
+    $res = sql_query("SELECT COUNT(id) FROM users WHERE donor='yes'") or sqlerr(__FILE__, __LINE__);
+    $row = mysqli_fetch_array($res);
+    $count = $row[0];
     $perpage = 15;
-    $pager   = pager($perpage, $count, 'staffpanel.php?tool=donations&amp;action=donations&amp;');
+    $pager = pager($perpage, $count, 'staffpanel.php?tool=donations&amp;action=donations&amp;');
     if (mysqli_num_rows($res) == 0) {
         stderr($lang['donate_sorry'], $lang['donate_nofound']);
     }

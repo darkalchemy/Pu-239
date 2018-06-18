@@ -34,14 +34,14 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
 
     if (user_exists($site_config['chatBotID'])) {
         $values = [
-            'userID'   => $site_config['chatBotID'],
+            'userID' => $site_config['chatBotID'],
             'userName' => $site_config['chatBotName'],
             'userRole' => 100,
-            'channel'  => $channel,
+            'channel' => $channel,
             'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
-            'ip'       => '127.0.0.1',
-            'text'     => $msg,
-            'ttl'      => $ttl,
+            'ip' => '127.0.0.1',
+            'text' => $msg,
+            'ttl' => $ttl,
         ];
 
         $stmt = $pdo->prepare(
@@ -92,16 +92,16 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
         //$rep_is_on = TRUE;
         //$CURUSER['g_rep_hide'] = FALSE;
         $rep_power = $user['reputation'];
-        $posneg    = '';
+        $posneg = '';
         if ($user['reputation'] == 0) {
-            $rep_img   = 'balance';
+            $rep_img = 'balance';
             $rep_power = $user['reputation'] * -1;
         } elseif ($user['reputation'] < 0) {
-            $rep_img   = 'neg';
+            $rep_img = 'neg';
             $rep_img_2 = 'highneg';
             $rep_power = $user['reputation'] * -1;
         } else {
-            $rep_img   = 'pos';
+            $rep_img = 'pos';
             $rep_img_2 = 'highpos';
         }
 
@@ -131,7 +131,7 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
             $rep_bar = 10;
         }
         if ($user['g_rep_hide']) { // can set this to a group option if required, via admin?
-            $posneg    = 'off';
+            $posneg = 'off';
             $rep_level = 'rep_off';
         } else { // it ain't off then, so get on with it! I wanna see shiny stuff!!
             $rep_level = $user_reputation ? $user_reputation : 'rep_undefined'; // just incase
@@ -466,8 +466,8 @@ function format_username(int $user_id, $icons = true, $tooltipper = true)
     global $site_config, $user_stuffs;
 
     $users_data = $user_stuffs->getUserFromId($user_id);
-    $peer       = new DarkAlchemy\Pu239\Peer();
-    $peers      = $peer->getPeersFromUserId($user_id);
+    $peer = new DarkAlchemy\Pu239\Peer();
+    $peers = $peer->getPeersFromUserId($user_id);
 
     if ($users_data['id'] === 0) {
         return 'System';
@@ -476,7 +476,7 @@ function format_username(int $user_id, $icons = true, $tooltipper = true)
     }
 
     $avatar = !empty($users_data['avatar']) ? "<img src='" . url_proxy($users_data['avatar'], true) . "' class='round10' />" : "<img src='{$site_config['pic_baseurl']}forumicons/default_avatar.gif' class='round10' />";
-    $tip    = $tooltip    = '';
+    $tip = $tooltip = '';
     if ($tooltipper) {
         $tip = "
                 <div class='tooltip_templates'>
@@ -668,9 +668,9 @@ function blacklist($fo)
 function get_server_load($windows = 0)
 {
     if (class_exists('COM')) {
-        $wmi  = new COM('WinMgmts:\\\\.');
+        $wmi = new COM('WinMgmts:\\\\.');
         $cpus = $wmi->InstancesOf('Win32_Processor');
-        $i    = 1;
+        $i = 1;
         // Use the while loop on PHP 4 and foreach on PHP 5
         //while ($cpu = $cpus->Next()) {
         foreach ($cpus as $cpu) {
@@ -693,7 +693,7 @@ function get_server_load($windows = 0)
 function get_cache_config_data($the_names, $the_colors, $the_images)
 {
     $configfile = '';
-    $the_names  = str_replace(',', ",\n  ", trim($the_names, ','));
+    $the_names = str_replace(',', ",\n  ", trim($the_names, ','));
     $the_colors = str_replace(',', ",\n  ", trim($the_colors, ','));
     $the_images = str_replace(',', ",\n  ", trim($the_images, ','));
     $configfile .= "\n\n\n" . '$class_names = [

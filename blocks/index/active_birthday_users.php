@@ -4,9 +4,9 @@ global $site_config, $lang, $fluent, $cache;
 
 $birthday = $cache->get('birthdayusers_');
 if ($birthday === false || is_null($birthday)) {
-    $birthday     = $list     = [];
+    $birthday = $list = [];
     $current_date = getdate();
-    $query        = $fluent->from('users')
+    $query = $fluent->from('users')
         ->select(null)
         ->select('id')
         ->where('MONTH(birthday) = ?', $current_date['mon'])
@@ -18,7 +18,7 @@ if ($birthday === false || is_null($birthday)) {
         $list[] = format_username($row['id']);
     }
     $birthday['birthdayusers'] = implode(',&nbsp;&nbsp;', $list);
-    $birthday['count']         = count($list);
+    $birthday['count'] = count($list);
     if ($birthday['count'] === 0) {
         $birthday['birthdayusers'] = $lang['index_birthday_no'];
     }

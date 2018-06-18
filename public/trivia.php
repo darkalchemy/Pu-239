@@ -7,12 +7,12 @@ global $CURUSER, $site_config, $session;
 
 $lang = array_merge(load_language('global'), load_language('trivia'));
 
-$sql     = 'SELECT qid FROM triviaq WHERE current = 1 AND asked = 1';
-$res     = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-$result  = mysqli_fetch_assoc($res);
-$qid     = (int) $result['qid'];
+$sql = 'SELECT qid FROM triviaq WHERE current = 1 AND asked = 1';
+$res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+$result = mysqli_fetch_assoc($res);
+$qid = (int) $result['qid'];
 $display = $answered = '';
-$csrf    = $site_config['session_csrf'];
+$csrf = $site_config['session_csrf'];
 
 /**
  * @param $data
@@ -30,12 +30,12 @@ function clean_data($data)
 
 if (!empty($_POST) && (int) $_POST['qid'] === $qid) {
     if (!empty($_POST['qid']) && !empty($_POST['user_id']) && !empty($_POST['ans']) && !empty($_POST['gamenum'])) {
-        $qid     = (int) $_POST['qid'];
+        $qid = (int) $_POST['qid'];
         $user_id = (int) $_POST['user_id'];
-        $answer  = $_POST['ans'];
+        $answer = $_POST['ans'];
         $gamenum = $_POST['gamenum'];
-        $date    = date('Y-m-d H:i:s');
-        $ip      = getip();
+        $date = date('Y-m-d H:i:s');
+        $ip = getip();
 
         if (empty($_POST['token']) || !$session->validateToken($_POST['token'])) {
             $username = get_one_row('users', 'username', 'WHERE id = ' . sqlesc($user_id));
@@ -44,9 +44,9 @@ if (!empty($_POST) && (int) $_POST['qid'] === $qid) {
             $rowcount = get_row_count('triviausers', 'WHERE user_id = ' . sqlesc($user_id) . ' AND qid = ' . sqlesc($qid) . ' AND gamenum = ' . sqlesc($gamenum));
 
             if ($rowcount === 0) {
-                $sql     = 'SELECT canswer FROM triviaq WHERE qid = ' . sqlesc($qid);
-                $res     = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-                $result  = mysqli_fetch_assoc($res);
+                $sql = 'SELECT canswer FROM triviaq WHERE qid = ' . sqlesc($qid);
+                $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                $result = mysqli_fetch_assoc($res);
                 $canswer = $result['canswer'];
                 if ($user_id === 0) {
                     if (function_exists('write_log')) {
@@ -54,7 +54,7 @@ if (!empty($_POST) && (int) $_POST['qid'] === $qid) {
                     }
                 } else {
                     $is_correct = $answer == $canswer ? 1 : 0;
-                    $sql        = 'INSERT INTO triviausers (user_id, gamenum, qid, correct, date) VALUES (' . sqlesc($user_id) . ', ' . sqlesc($gamenum) . ', ' . sqlesc($qid) . ', ' . sqlesc($is_correct) . ', ' . sqlesc($date) . ')';
+                    $sql = 'INSERT INTO triviausers (user_id, gamenum, qid, correct, date) VALUES (' . sqlesc($user_id) . ', ' . sqlesc($gamenum) . ', ' . sqlesc($qid) . ', ' . sqlesc($is_correct) . ', ' . sqlesc($date) . ')';
                     sql_query($sql) or sqlerr(__FILE__, __LINE__);
                 }
             }
@@ -67,22 +67,22 @@ global $site_config;
 $HTMLOUT = '';
 $user_id = $CURUSER['id'];
 
-$sql             = "SELECT clean_time - unix_timestamp(NOW()) AS round_remaining FROM cleanup WHERE clean_file = 'trivia_update.php'";
-$res             = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-$result          = mysqli_fetch_assoc($res);
+$sql = "SELECT clean_time - unix_timestamp(NOW()) AS round_remaining FROM cleanup WHERE clean_file = 'trivia_update.php'";
+$res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+$result = mysqli_fetch_assoc($res);
 $round_remaining = (int) $result['round_remaining'];
 
-$sql            = "SELECT clean_time - unix_timestamp(NOW()) AS game_remaining FROM cleanup WHERE clean_file = 'trivia_points_update.php'";
-$res            = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-$result         = mysqli_fetch_assoc($res);
+$sql = "SELECT clean_time - unix_timestamp(NOW()) AS game_remaining FROM cleanup WHERE clean_file = 'trivia_points_update.php'";
+$res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+$result = mysqli_fetch_assoc($res);
 $game_remaining = (int) $result['game_remaining'];
 
-$num_totalq     = get_row_count('triviaq');
+$num_totalq = get_row_count('triviaq');
 $num_remainingq = get_row_count('triviaq', 'WHERE asked = 0');
 
-$sql     = 'SELECT gamenum FROM triviasettings WHERE gameon = 1 LIMIT 1';
-$res     = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-$result  = mysqli_fetch_assoc($res);
+$sql = 'SELECT gamenum FROM triviasettings WHERE gameon = 1 LIMIT 1';
+$res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+$result = mysqli_fetch_assoc($res);
 $gamenum = (int) $result['gamenum'];
 
 $time_refresh = 600;
@@ -145,14 +145,14 @@ if (empty($gamenum) || empty($qid)) {
         $row = mysqli_fetch_assoc($res);
         $row = clean_data($row);
 
-        $sql      = 'SELECT * FROM triviausers WHERE user_id = ' . sqlesc($user_id) . ' AND qid = ' . sqlesc($qid) . ' AND gamenum = ' . sqlesc($gamenum);
-        $res      = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        $row2     = mysqli_fetch_assoc($res);
+        $sql = 'SELECT * FROM triviausers WHERE user_id = ' . sqlesc($user_id) . ' AND qid = ' . sqlesc($qid) . ' AND gamenum = ' . sqlesc($gamenum);
+        $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        $row2 = mysqli_fetch_assoc($res);
         $num_rows = !empty($row2) ? count($row2) : 0;
 
         if ($num_rows != 0) {
             $table = '';
-            $sql   = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username,
+            $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username,
                             (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE gamenum = ' . sqlesc($gamenum) . ' AND correct = 0 AND user_id = t.user_id) AS incorrect
                         FROM triviausers AS t
                         INNER JOIN users AS u ON u.id = t.user_id

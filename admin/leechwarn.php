@@ -7,7 +7,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang, $cache;
 
-$lang    = array_merge($lang, load_language('ad_leechwarn'));
+$lang = array_merge($lang, load_language('ad_leechwarn'));
 $HTMLOUT = '';
 /**
  * @param $x
@@ -20,9 +20,9 @@ function mkint($x)
 }
 
 $this_url = $_SERVER['SCRIPT_NAME'];
-$do       = isset($_GET['do']) && $_GET['do'] === 'disabled' ? 'disabled' : 'leechwarn';
+$do = isset($_GET['do']) && $_GET['do'] === 'disabled' ? 'disabled' : 'leechwarn';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $r     = isset($_POST['ref']) ? $_POST['ref'] : $this_url;
+    $r = isset($_POST['ref']) ? $_POST['ref'] : $this_url;
     $_uids = isset($_POST['users']) ? array_map('mkint', $_POST['users']) : 0;
     if ($_uids == 0 || count($_uids) == 0) {
         stderr($lang['leechwarn_stderror'], $lang['leechwarn_nouser']);
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $count = mysqli_num_rows($res_del);
             while ($arr_del = mysqli_fetch_assoc($res_del)) {
                 $userid = $arr_del['id'];
-                $res    = sql_query('DELETE FROM users WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                $res = sql_query('DELETE FROM users WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $cache->delete('user' . $userid);
                 write_log("User: {$arr_del['username']} Was deleted by " . $CURUSER['username'] . ' Via Leech Warn Page');
             }
@@ -64,9 +64,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             stderr($lang['leechwarn_stderror'], $lang['leechwarn_wrong3']);
         }
     } elseif ($act === 'unwarn') {
-        $sub  = $lang['leechwarn_removed'];
+        $sub = $lang['leechwarn_removed'];
         $body = $lang['leechwarn_removed_msg1'] . $CURUSER['username'] . $lang['leechwarn_removed_msg2'];
-        $pms  = [];
+        $pms = [];
         foreach ($_uids as $uid) {
             $cache->update_row('user' . $uid, [
                 'leechwarn' => 0,
@@ -74,8 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pms[] = '(0,' . $uid . ',' . sqlesc($sub) . ',' . sqlesc($body) . ',' . sqlesc(TIME_NOW) . ')';
         }
         if (!empty($pms) && count($pms)) {
-            $g  = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . join(',', $pms))                                                                                                                             or ($q_err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
-            $q1 = sql_query("UPDATE users SET leechwarn='0', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['leechwarn_mod'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')')   or ($q2_err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            $g = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . join(',', $pms)) or ($q_err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            $q1 = sql_query("UPDATE users SET leechwarn='0', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['leechwarn_mod'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')') or ($q2_err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
             if ($g && $q1) {
                 header('Refresh: 2; url=' . $r);
                 stderr($lang['leechwarn_success'], count($pms) . $lang['leechwarn_user'] . (count($pms) > 1 ? $lang['leechwarn_s'] : '') . $lang['leechwarn_removed_success']);
@@ -90,16 +90,16 @@ switch ($do) {
     case 'disabled':
         $query = "SELECT id,username, class, downloaded, uploaded, IF(downloaded>0, round((uploaded/downloaded),2), '---') AS ratio, disable_reason, added, last_access FROM users WHERE enabled='no' ORDER BY last_access DESC ";
         $title = $lang['leechwarn_disabled_title'];
-        $link  = "<a href=\"staffpanel.php?tool=leechwarn&amp;action=leechwarn&amp;?do=warned\">{$lang['leechwarn_warned_link']}</a>";
+        $link = "<a href=\"staffpanel.php?tool=leechwarn&amp;action=leechwarn&amp;?do=warned\">{$lang['leechwarn_warned_link']}</a>";
         break;
 
     case 'leechwarn':
         $query = "SELECT id, username, class, downloaded, uploaded, IF(downloaded>0, round((uploaded/downloaded),2), '---') AS ratio, warn_reason, leechwarn, added, last_access FROM users WHERE leechwarn>='1' ORDER BY last_access DESC, leechwarn DESC ";
         $title = $lang['leechwarn_leechwarn_title'];
-        $link  = "<a href=\"staffpanel.php?tool=leechwarn&amp;action=leechwarn&amp;do=disabled\">{$lang['leechwarn_disabled_link']}</a>";
+        $link = "<a href=\"staffpanel.php?tool=leechwarn&amp;action=leechwarn&amp;do=disabled\">{$lang['leechwarn_disabled_link']}</a>";
         break;
 }
-$g     = sql_query($query) or print (is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false);
+$g = sql_query($query) or print (is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false);
 $count = mysqli_num_rows($g);
 $HTMLOUT .= begin_main_frame();
 $HTMLOUT .= begin_frame($title . "&#160;[<font class=\"small\">{$lang['leechwarn_total']}" . $count . $lang['leechwarn_user'] . ($count > 1 ? $lang['leechwarn_s'] : '') . '</font>] - ' . $link);

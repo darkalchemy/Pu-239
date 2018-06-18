@@ -9,10 +9,10 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $lang, $site_config, $cache;
 
-$lang    = array_merge($lang, load_language('ad_cloudview'));
+$lang = array_merge($lang, load_language('ad_cloudview'));
 $HTMLOUT = '';
 if (isset($_POST['delcloud'])) {
-    $do  = 'DELETE FROM searchcloud WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['delcloud'])) . ')';
+    $do = 'DELETE FROM searchcloud WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['delcloud'])) . ')';
     $res = sql_query($do);
     $cache->delete('searchcloud');
     header('Refresh: 3; url=staffpanel.php?tool=cloudview&action=cloudview');
@@ -37,10 +37,10 @@ $HTMLOUT .= '
     }
 </script>';
 $search_count = sql_query('SELECT COUNT(id) FROM searchcloud');
-$row          = mysqli_fetch_array($search_count);
-$count        = $row[0];
-$perpage      = 15;
-$pager        = pager($perpage, $count, 'staffpanel.php?tool=cloudview&amp;action=cloudview&amp;');
+$row = mysqli_fetch_array($search_count);
+$count = $row[0];
+$perpage = 15;
+$pager = pager($perpage, $count, 'staffpanel.php?tool=cloudview&amp;action=cloudview&amp;');
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
@@ -56,8 +56,8 @@ $HTMLOUT .= "
 <td class='colhead' width='1%'>{$lang['cloudview_del']}</td></tr>\n";
 while ($arr = mysqli_fetch_assoc($search_q)) {
     $search_phrase = htmlsafechars($arr['searchedfor']);
-    $hits          = (int) $arr['howmuch'];
-    $ip            = htmlsafechars(ipToStorageFormat($arr['ip']));
+    $hits = (int) $arr['howmuch'];
+    $ip = htmlsafechars(ipToStorageFormat($arr['ip']));
     $HTMLOUT .= "<tr>
 <td >$search_phrase</td>
 <td>$hits</td>

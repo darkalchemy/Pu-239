@@ -8,7 +8,7 @@ dbconn();
 global $site_config;
 
 $HTMLOUT = '';
-$lang    = array_merge(load_language('global'), load_language('takesignup'));
+$lang = array_merge(load_language('global'), load_language('takesignup'));
 /**
  * @param $username
  *
@@ -22,9 +22,9 @@ if ($is_valid !== true) {
 }
 
 $checkname = sqlesc($_GET['wantusername']);
-$sql       = "SELECT username FROM users WHERE username = $checkname";
-$result    = sql_query($sql);
-$numbers   = mysqli_num_rows($result);
+$sql = "SELECT username FROM users WHERE username = $checkname";
+$result = sql_query($sql);
+$numbers = mysqli_num_rows($result);
 if ($numbers > 0) {
     while ($namecheck = mysqli_fetch_assoc($result)) {
         $HTMLOUT .= "<span style='color: #cc0000;'><img src='{$site_config['pic_baseurl']}cross.png' alt='Cross' title='Username Not Available' /><b>Sorry... Username - " . htmlsafechars($namecheck['username']) . ' is already in use.</b></span>';

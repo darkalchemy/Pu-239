@@ -6,8 +6,8 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $lang;
 
-$lang           = array_merge($lang, load_language('ad_categories'));
-$params         = array_merge($_GET, $_POST);
+$lang = array_merge($lang, load_language('ad_categories'));
+$params = array_merge($_GET, $_POST);
 $params['mode'] = isset($params['mode']) ? $params['mode'] : '';
 switch ($params['mode']) {
     case 'takemove_cat':
@@ -83,7 +83,7 @@ function move_cat_form()
     if (false == mysqli_num_rows($q)) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     }
-    $r      = mysqli_fetch_assoc($q);
+    $r = mysqli_fetch_assoc($q);
     $select = "
             <select name='new_cat_id'>
                 <option value='0'>{$lang['categories_select']}</option>";
@@ -129,8 +129,8 @@ function add_cat()
     if (!preg_match("/^cat_[A-Za-z0-9_]+\.(?:gif|jpg|jpeg|png)$/i", $params['new_cat_image'])) {
         stderr($lang['categories_error'], $lang['categories_add_error2']);
     }
-    $cat_name  = sqlesc($params['new_cat_name']);
-    $cat_desc  = sqlesc($params['new_cat_desc']);
+    $cat_name = sqlesc($params['new_cat_name']);
+    $cat_desc = sqlesc($params['new_cat_desc']);
     $cat_image = sqlesc($params['new_cat_image']);
     sql_query("INSERT INTO categories (name, cat_desc, image)
                   VALUES($cat_name, $cat_desc, $cat_image)");
@@ -154,7 +154,7 @@ function delete_cat()
     if (false == mysqli_num_rows($q)) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     }
-    $r          = mysqli_fetch_assoc($q);
+    $r = mysqli_fetch_assoc($q);
     $old_cat_id = intval($r['id']);
     if (isset($params['new_cat_id'])) {
         if (!is_valid_id($params['new_cat_id']) || ($r['id'] == $params['new_cat_id'])) {
@@ -162,7 +162,7 @@ function delete_cat()
         }
         $new_cat_id = intval($params['new_cat_id']);
 
-        $q     = sql_query('SELECT COUNT(*) FROM categories WHERE id = ' . sqlesc($new_cat_id));
+        $q = sql_query('SELECT COUNT(*) FROM categories WHERE id = ' . sqlesc($new_cat_id));
         $count = mysqli_fetch_array($q, MYSQLI_NUM);
         if (!$count[0]) {
             stderr($lang['categories_error'], $lang['categories_exist_error']);
@@ -189,9 +189,9 @@ function delete_cat_form()
     if (false == mysqli_num_rows($q)) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     }
-    $r      = mysqli_fetch_assoc($q);
-    $q      = sql_query('SELECT COUNT(*) AS count FROM torrents WHERE category = ' . intval($r['id']));
-    $count  = mysqli_fetch_array($q, MYSQLI_NUM);
+    $r = mysqli_fetch_assoc($q);
+    $q = sql_query('SELECT COUNT(*) AS count FROM torrents WHERE category = ' . intval($r['id']));
+    $count = mysqli_fetch_array($q, MYSQLI_NUM);
     $select = '';
     if ($count['count'] > 0) {
         $select = "
@@ -247,16 +247,16 @@ function edit_cat()
     if (!preg_match("/^cat_[A-Za-z0-9_]+\.(?:gif|jpg|jpeg|png)$/i", $params['cat_image'])) {
         stderr($lang['categories_error'], $lang['categories_edit_error2']);
     }
-    $cat_name  = sqlesc($params['cat_name']);
-    $cat_desc  = sqlesc($params['cat_desc']);
+    $cat_name = sqlesc($params['cat_name']);
+    $cat_desc = sqlesc($params['cat_desc']);
     $cat_image = sqlesc($params['cat_image']);
-    $order_id  = intval($params['order_id']);
-    $cat_id    = intval($params['id']);
+    $order_id = intval($params['order_id']);
+    $cat_id = intval($params['id']);
     sql_query("UPDATE categories SET ordered = $order_id, name = $cat_name, cat_desc = $cat_desc, image = $cat_image WHERE id = $cat_id");
     sql_query("UPDATE categories SET ordered = ordered + 1 WHERE ordered >= $order_id AND id != $cat_id") or sqlerr(__FILE__, __LINE__);
 
     $query = sql_query('SELECT id FROM categories ORDER BY ordered, name') or sqlerr(__FILE__, __LINE__);
-    $iter  = 0;
+    $iter = 0;
     while ($arr = mysqli_fetch_assoc($query)) {
         sql_query('UPDATE categories SET ordered = ' . ++$iter . ' WHERE id = ' . $arr['id']) or sqlerr(__FILE__, __LINE__);
     }
@@ -277,17 +277,17 @@ function edit_cat_form()
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
     $htmlout = '';
-    $q       = sql_query('SELECT * FROM categories WHERE id = ' . intval($params['id']));
+    $q = sql_query('SELECT * FROM categories WHERE id = ' . intval($params['id']));
     if (false == mysqli_num_rows($q)) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     }
-    $r       = mysqli_fetch_assoc($q);
-    $path    = IMAGES_DIR . 'caticons/1/';
+    $r = mysqli_fetch_assoc($q);
+    $path = IMAGES_DIR . 'caticons/1/';
     $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
-    $files   = [];
+    $files = [];
     foreach ($objects as $name => $object) {
         $basename = pathinfo($name, PATHINFO_BASENAME);
-        $files[]  = $basename;
+        $files[] = $basename;
     }
 
     if (is_array($files) && count($files)) {
@@ -330,12 +330,12 @@ function show_categories()
 {
     global $site_config, $lang;
 
-    $path    = IMAGES_DIR . 'caticons/1/';
+    $path = IMAGES_DIR . 'caticons/1/';
     $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
-    $files   = [];
+    $files = [];
     foreach ($objects as $name => $object) {
         $basename = pathinfo($name, PATHINFO_BASENAME);
-        $files[]  = $basename;
+        $files[] = $basename;
     }
 
     if (is_array($files) && count($files)) {
@@ -379,7 +379,7 @@ function show_categories()
 
     $htmlout .= "
         <h2 class='has-text-centered top20'>{$lang['categories_show_head']}</h2>";
-    $body    = '';
+    $body = '';
     $heading = "
         <tr>
             <th>{$lang['categories_show_id']}</th>

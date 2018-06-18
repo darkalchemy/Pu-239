@@ -7,21 +7,21 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $lang;
 
-$lang    = array_merge($lang, load_language('ad_userhits'));
+$lang = array_merge($lang, load_language('ad_userhits'));
 $HTMLOUT = '';
-$id      = (int) $_GET['id'];
+$id = (int) $_GET['id'];
 if (!is_valid_id($id) || $CURUSER['id'] != $id && $CURUSER['class'] < UC_STAFF) {
     $id = $CURUSER['id'];
 }
-$res     = sql_query('SELECT COUNT(id) FROM userhits WHERE hitid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$row     = mysqli_fetch_row($res);
-$count   = $row[0];
+$res = sql_query('SELECT COUNT(id) FROM userhits WHERE hitid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$row = mysqli_fetch_row($res);
+$count = $row[0];
 $perpage = 15;
-$pager   = pager($perpage, $count, "staffpanel.php?tool=user_hits&amp;id=$id&amp;");
+$pager = pager($perpage, $count, "staffpanel.php?tool=user_hits&amp;id=$id&amp;");
 if (!$count) {
     stderr($lang['userhits_stderr'], $lang['userhits_stderr1']);
 }
-$res  = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $user = mysqli_fetch_assoc($res);
 $HTMLOUT .= "<h1>{$lang['userhits_profile']}<a href=\"userdetails.php?id=" . $id . '">' . htmlsafechars($user['username']) . "</a></h1>
 <h2>{$lang['userhits_total']}" . htmlsafechars($count) . "{$lang['userhits_views']}</h2>";

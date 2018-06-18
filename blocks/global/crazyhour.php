@@ -10,16 +10,16 @@ if (!XBT_TRACKER and $site_config['crazy_hour'] == true) {
     {
         global $CURUSER, $site_config, $lang, $cache;
 
-        $htmlout                = $cz                = '';
-        $crazy_hour             = (TIME_NOW + 3600);
+        $htmlout = $cz = '';
+        $crazy_hour = (TIME_NOW + 3600);
         $crazyhour['crazyhour'] = $cache->get('crazyhour');
         if ($crazyhour['crazyhour'] === false || is_null($crazyhour['crazyhour'])) {
             $crazyhour['crazyhour_sql'] = sql_query('SELECT var, amount FROM freeleech WHERE type = "crazyhour"') or sqlerr(__FILE__, __LINE__);
-            $crazyhour['crazyhour']     = [];
+            $crazyhour['crazyhour'] = [];
             if (mysqli_num_rows($crazyhour['crazyhour_sql']) !== 0) {
                 $crazyhour['crazyhour'] = mysqli_fetch_assoc($crazyhour['crazyhour_sql']);
             } else {
-                $crazyhour['crazyhour']['var']    = random_int(TIME_NOW, (TIME_NOW + 86400));
+                $crazyhour['crazyhour']['var'] = random_int(TIME_NOW, (TIME_NOW + 86400));
                 $crazyhour['crazyhour']['amount'] = 0;
                 sql_query('UPDATE freeleech SET var = ' . $crazyhour['crazyhour']['var'] . ', amount = ' . $crazyhour['crazyhour']['amount'] . ' WHERE type = "crazyhour"') or sqlerr(__FILE__, __LINE__);
             }
@@ -29,10 +29,10 @@ if (!XBT_TRACKER and $site_config['crazy_hour'] == true) {
         if ($crazyhour['crazyhour']['var'] < TIME_NOW) { // if crazyhour over
             $cz_lock = $cache->add('crazyhour_lock', 1, 10);
             if ($cz_lock !== false) {
-                $crazyhour['crazyhour_new']       = mktime(23, 59, 59, date('m'), date('d'), date('y'));
-                $crazyhour['crazyhour']['var']    = random_int($crazyhour['crazyhour_new'], ($crazyhour['crazyhour_new'] + 86400));
+                $crazyhour['crazyhour_new'] = mktime(23, 59, 59, date('m'), date('d'), date('y'));
+                $crazyhour['crazyhour']['var'] = random_int($crazyhour['crazyhour_new'], ($crazyhour['crazyhour_new'] + 86400));
                 $crazyhour['crazyhour']['amount'] = 0;
-                $crazyhour['remaining']           = ($crazyhour['crazyhour']['var'] - TIME_NOW);
+                $crazyhour['remaining'] = ($crazyhour['crazyhour']['var'] - TIME_NOW);
                 sql_query('UPDATE freeleech SET var = ' . $crazyhour['crazyhour']['var'] . ', amount = ' . $crazyhour['crazyhour']['amount'] . ' WHERE type = "crazyhour"') or sqlerr(__FILE__, __LINE__);
                 $cache->set('crazyhour', $crazyhour['crazyhour'], 0);
                 write_log('Next [color=#FFCC00][b]Crazyhour[/b][/color] is at ' . get_date($crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'LONG') . '');
@@ -42,7 +42,7 @@ if (!XBT_TRACKER and $site_config['crazy_hour'] == true) {
         } elseif (($crazyhour['crazyhour']['var'] < $crazy_hour) && ($crazyhour['crazyhour']['var'] >= TIME_NOW)) { // if crazyhour
             if ($crazyhour['crazyhour']['amount'] !== 1) {
                 $crazyhour['crazyhour']['amount'] = 1;
-                $cz_lock                          = $cache->add('crazyhour_lock', 1, 10);
+                $cz_lock = $cache->add('crazyhour_lock', 1, 10);
                 if ($cz_lock !== false) {
                     sql_query('UPDATE freeleech SET amount = ' . $crazyhour['crazyhour']['amount'] . ' WHERE type = "crazyhour"') or sqlerr(__FILE__, __LINE__);
                     $cache->set('crazyhour', $crazyhour['crazyhour'], 0);
@@ -52,8 +52,8 @@ if (!XBT_TRACKER and $site_config['crazy_hour'] == true) {
                 }
             }
             $crazyhour['remaining'] = ($crazyhour['crazyhour']['var'] - TIME_NOW);
-            $crazytitle             = $lang['gl_crazy_title'];
-            $crazymessage           = $lang['gl_crazy_message'] . ' <b> ' . $lang['gl_crazy_message1'] . '</b> ' . $lang['gl_crazy_message2'] . ' <strong> ' . $lang['gl_crazy_message3'] . '</strong>!';
+            $crazytitle = $lang['gl_crazy_title'];
+            $crazymessage = $lang['gl_crazy_message'] . ' <b> ' . $lang['gl_crazy_message1'] . '</b> ' . $lang['gl_crazy_message2'] . ' <strong> ' . $lang['gl_crazy_message3'] . '</strong>!';
             $htmlout .= '<li>
 <a class="tooltip" href="#"><b class="button is-success is-small">' . $lang['gl_crazy_on'] . '<span class="custom info alert alert-success"><em>' . $lang['gl_crazy_'] . '</em>
 ' . $crazytitle . '...' . $crazymessage . ' ' . ' ' . $lang['gl_crazy_ends'] . ' ' . mkprettytime($crazyhour['remaining']) . '&#160;' . $lang['gl_crazy_at'] . ' ' . get_date($crazyhour['crazyhour']['var'], 'LONG') . '</span></b></a></li>';

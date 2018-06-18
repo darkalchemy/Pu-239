@@ -6,13 +6,13 @@
  */
 function time_return($stamp)
 {
-    $ysecs  = 365 * 24 * 60 * 60;
-    $mosecs = 31  * 24  * 60  * 60;
-    $wsecs  = 7   * 24   * 60   * 60;
-    $dsecs  = 24  * 60  * 60;
-    $hsecs  = 60  * 60;
-    $msecs  = 60;
-    $years  = floor($stamp / $ysecs);
+    $ysecs = 365 * 24 * 60 * 60;
+    $mosecs = 31 * 24 * 60 * 60;
+    $wsecs = 7 * 24 * 60 * 60;
+    $dsecs = 24 * 60 * 60;
+    $hsecs = 60 * 60;
+    $msecs = 60;
+    $years = floor($stamp / $ysecs);
     $stamp %= $ysecs;
     $months = floor($stamp / $mosecs);
     $stamp %= $mosecs;

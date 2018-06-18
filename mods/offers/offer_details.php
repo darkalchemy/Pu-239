@@ -13,9 +13,9 @@ $res = sql_query('SELECT o.*, o.added AS utadded, u.username
 if (!mysqli_num_rows($res)) {
     stderr('Error', 'Invalid Offer ID');
 }
-$num   = mysqli_fetch_assoc($res);
+$num = mysqli_fetch_assoc($res);
 $added = get_date($num['utadded'], '');
-$s     = htmlspecialchars($num['offer']);
+$s = htmlspecialchars($num['offer']);
 $HTMLOUT .= '<h3>Details Of Offer: ' . $s . '</h3>';
 $HTMLOUT .= "<table width='750px'><tr><td colspan='2'><h1>$s</h1></td></tr>";
 if ($num['descr']) {
@@ -26,7 +26,7 @@ if ($num['descr']) {
 $HTMLOUT .= "<tr><td><b>Added</b></td>
 <td>$added</td></tr>";
 if ($CURUSER['id'] == $num['userid'] || $CURUSER['class'] >= UC_STAFF) {
-    $edit   = " | <a class='altlink' href='viewoffers.php?id=" . $id . "&amp;edit_offer'>Edit Offer</a> |";
+    $edit = " | <a class='altlink' href='viewoffers.php?id=" . $id . "&amp;edit_offer'>Edit Offer</a> |";
     $delete = " <a class='altlink' href='viewoffers.php?id=" . $id . "&amp;del_offer'>Delete offer</a> ";
     if ($num['torrentid'] != 0) {
         $reset = "| <a class='altlink' href='viewoffers.php?id=" . $id . "&amp;offer_reset'>Re-set Offer</a>";
@@ -54,9 +54,9 @@ if ($num['torrentid'] == 0) {
 }
 $HTMLOUT .= "<tr><td class='embedded' colspan='2'><p><a name='startcomments'></a></p>\n";
 $commentbar = "<p><a class='index' href='comment.php?action=add&amp;tid=$id&amp;type=offer'>Add Comment</a></p>\n";
-$subres     = sql_query("SELECT COUNT(*) FROM comments WHERE offer = $id");
-$subrow     = mysqli_fetch_array($subres);
-$count      = $subrow[0];
+$subres = sql_query("SELECT COUNT(*) FROM comments WHERE offer = $id");
+$subrow = mysqli_fetch_array($subres);
+$count = $subrow[0];
 $HTMLOUT .= '</td></tr></table>';
 if (!$count) {
     $HTMLOUT .= '<h2>No comments</h2>';

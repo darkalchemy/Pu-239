@@ -13,7 +13,7 @@ if (!isset($_POST['keyword']) || strlen($_POST['keyword']) < 5) {
     return false;
 }
 $keyword = $_POST['keyword'];
-$hash    = hash('sha256', $keyword);
+$hash = hash('sha256', $keyword);
 
 $results = $cache->get('suggest_torrents_' . $hash);
 if ($results === false || is_null($results)) {
@@ -54,8 +54,8 @@ if (!empty($results)) {
         <hr class='top5 bottom20'>";
     $i = 1;
     foreach ($results as $result) {
-        $color      = $result['visible'] === 'yes' ? 'has-text-green' : 'has-text-red';
-        $background = $i++ % 2           === 0 ? 'bg-04' : 'bg-03';
+        $color = $result['visible'] === 'yes' ? 'has-text-green' : 'has-text-red';
+        $background = $i++ % 2 === 0 ? 'bg-04' : 'bg-03';
         $temp .= "
         <ul class='columns level w-100 padding10 round5 $background'>
             <li class='column is-three-fifth is-paddingless'>

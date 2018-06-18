@@ -6,7 +6,7 @@ check_user_status();
 global $site_config, $cache;
 
 $HTMLOUT = '';
-$lang    = load_language('global');
+$lang = load_language('global');
 $HTMLOUT .= '<table class="table table-bordered table-striped">
       <tr>
       <td class="embedded">
@@ -20,7 +20,7 @@ $abba = '<h2>Top Moods</h2>
          <td class="colhead">Mood</td>
          <td class="colhead">Icon</td>
          </tr>';
-$key      = 'topmoods';
+$key = 'topmoods';
 $topmoods = $cache->get($key);
 if ($topmoods === false || is_null($topmoods)) {
     $res = sql_query('SELECT moods.*, users.mood, COUNT(users.mood) as moodcount ' . 'FROM users LEFT JOIN moods ON (users.mood = moods.id) GROUP BY users.mood ' . 'ORDER BY moodcount DESC, moods.id ASC') or sqlerr(__FILE__, __LINE__);

@@ -8,7 +8,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang, $fluent, $cache;
 
-$lang    = array_merge($lang, load_language('ad_acp'));
+$lang = array_merge($lang, load_language('ad_acp'));
 $stdfoot = [
     'js' => [
         get_file_name('acp_js'),
@@ -42,7 +42,7 @@ if (isset($_POST['ids'])) {
         if (mysqli_num_rows($res_del) != 0) {
             while ($arr_del = mysqli_fetch_assoc($res_del)) {
                 $userid = $arr_del['id'];
-                $res    = sql_query('DELETE FROM users WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+                $res = sql_query('DELETE FROM users WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $cache->delete('user' . $userid);
                 write_log("User: {$arr_del['username']} Was deleted by " . $CURUSER['username']);
             }
@@ -55,11 +55,11 @@ if (isset($_POST['ids'])) {
     }
 }
 $disabled = number_format(get_row_count('users', "WHERE enabled = 'no'"));
-$pending  = number_format(get_row_count('users', "WHERE status = 'pending'"));
-$count    = number_format(get_row_count('users', "WHERE enabled = 'no' OR status = 'pending' ORDER BY username DESC"));
-$perpage  = 25;
-$pager    = pager($perpage, $count, 'staffpanel.php?tool=acpmanage&amp;action=acpmanage&amp;');
-$res      = sql_query("SELECT id, username, added, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE enabled = 'no' OR status = 'pending' ORDER BY username DESC {$pager['limit']}");
+$pending = number_format(get_row_count('users', "WHERE status = 'pending'"));
+$count = number_format(get_row_count('users', "WHERE enabled = 'no' OR status = 'pending' ORDER BY username DESC"));
+$perpage = 25;
+$pager = pager($perpage, $count, 'staffpanel.php?tool=acpmanage&amp;action=acpmanage&amp;');
+$res = sql_query("SELECT id, username, added, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE enabled = 'no' OR status = 'pending' ORDER BY username DESC {$pager['limit']}");
 $HTMLOUT .= begin_main_frame($lang['text_du'] . " [$disabled] | " . $lang['text_pu'] . "[$pending]");
 if (mysqli_num_rows($res) != 0) {
     if ($count > $perpage) {
@@ -80,19 +80,19 @@ if (mysqli_num_rows($res) != 0) {
       <td class='colhead' style='white-space: nowrap;'>{$lang['text_enabled']}</td>
       </tr>";
     while ($arr = mysqli_fetch_assoc($res)) {
-        $uploaded   = mksize($arr['uploaded']);
+        $uploaded = mksize($arr['uploaded']);
         $downloaded = mksize($arr['downloaded']);
-        $ratio      = $arr['downloaded'] > 0 ? $arr['uploaded'] / $arr['downloaded'] : 0;
-        $ratio      = number_format($ratio, 2);
-        $color      = get_ratio_color($ratio);
+        $ratio = $arr['downloaded'] > 0 ? $arr['uploaded'] / $arr['downloaded'] : 0;
+        $ratio = number_format($ratio, 2);
+        $color = get_ratio_color($ratio);
         if ($color) {
             $ratio = "<span style='color: $color;'>$ratio</span>";
         }
-        $added       = get_date($arr['added'], 'LONG', 0, 1);
+        $added = get_date($arr['added'], 'LONG', 0, 1);
         $last_access = get_date($arr['last_access'], 'LONG', 0, 1);
-        $class       = get_user_class_name($arr['class']);
-        $status      = htmlsafechars($arr['status']);
-        $enabled     = htmlsafechars($arr['enabled']);
+        $class = get_user_class_name($arr['class']);
+        $status = htmlsafechars($arr['status']);
+        $enabled = htmlsafechars($arr['enabled']);
         $HTMLOUT .= '<tr><td><input type="checkbox" name="ids[]" value="' . (int) $arr['id'] . "\" /></td><td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $arr['id'] . "'><b>" . htmlsafechars($arr['username']) . '</b></a>' . ($arr['donor'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}star.gif' alt='" . $lang['text_donor'] . "' />" : '') . ($arr['warned'] >= 1 ? "<img src='{$site_config['pic_baseurl']}warned.gif' alt='" . $lang['text_warned'] . "' />" : '') . "</td>
         <td style='white-space: nowrap;'>{$added}</td>
         <td style='white-space: nowrap;'>{$last_access}</td>

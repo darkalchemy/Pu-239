@@ -14,22 +14,22 @@ if (!$site_config['bucket_allowed']) {
 }
 use Blocktrail\CryptoJSAES\CryptoJSAES;
 
-$lang    = array_merge(load_language('global'), load_language('bitbucket'));
+$lang = array_merge(load_language('global'), load_language('bitbucket'));
 $HTMLOUT = '';
 
-$SaLt    = $site_config['site']['salt'];
-$SaLty   = $site_config['site']['salty'];
-$skey    = $site_config['site']['skey'];
+$SaLt = $site_config['site']['salt'];
+$SaLty = $site_config['site']['salty'];
+$skey = $site_config['site']['skey'];
 $maxsize = $site_config['bucket_maxsize'];
 $folders = date('Y/m');
 $formats = $site_config['allowed_formats'];
-$str     = implode('|', $formats);
-$str     = str_replace('.', '', $str);
+$str = implode('|', $formats);
+$str = str_replace('.', '', $str);
 
-$bucketdir  = (isset($_POST['avy']) ? AVATAR_DIR : BITBUCKET_DIR . $folders . '/');
+$bucketdir = (isset($_POST['avy']) ? AVATAR_DIR : BITBUCKET_DIR . $folders . '/');
 $bucketlink = ((isset($_POST['avy']) || (isset($_GET['images']) && $_GET['images'] == 2)) ? 'avatar/' : $folders . '/');
-$PICSALT    = $SaLt . $CURUSER['username'];
-$USERSALT   = substr(md5($SaLty . $CURUSER['id']), 0, 6);
+$PICSALT = $SaLt . $CURUSER['username'];
+$USERSALT = substr(md5($SaLty . $CURUSER['id']), 0, 6);
 make_year(BITBUCKET_DIR);
 make_month(BITBUCKET_DIR);
 if (!isset($_FILES['file'])) {
@@ -47,7 +47,7 @@ if (!isset($_FILES['file'])) {
             stderr($lang['bitbucket_hey'], "{$lang['bitbucket_imagenf']}");
         }
         $folder_m = (!isset($_GET['month']) ? '&month=' . date('m') : '&month=' . (int) $_GET['month']);
-        $yea      = (!isset($_GET['year']) ? '&year=' . date('Y') : '&year=' . (int) $_GET['year']);
+        $yea = (!isset($_GET['year']) ? '&year=' . date('Y') : '&year=' . (int) $_GET['year']);
         if (isset($_GET['type']) && $_GET['type'] == 2) {
             header("Refresh: 2; url={$site_config['baseurl']}/bitbucket.php?images=2");
         } else {
@@ -103,7 +103,7 @@ if (!isset($_FILES['file'])) {
             </script>";
     if (isset($_GET['images']) && $_GET['images'] == 1) {
         $folder_month = (!isset($_GET['month']) ? date('m') : ($_GET['month'] < 10 ? '0' : '') . (int) $_GET['month']);
-        $year         = (!isset($_GET['year']) ? '&amp;year=' . date('Y') : '&amp;year=' . (int) $_GET['year']);
+        $year = (!isset($_GET['year']) ? '&amp;year=' . date('Y') : '&amp;year=' . (int) $_GET['year']);
         $HTMLOUT .= "
             <div>
                 <ul class='level-center bg-06 padding10'>
@@ -186,14 +186,14 @@ if (!isset($_FILES['file'])) {
     }
     if (isset($_GET['images'])) {
         $folder_month = (!isset($_GET['month']) ? date('m') : ($_GET['month'] < 10 ? '0' : '') . (int) $_GET['month']);
-        $folder_name  = (!isset($_GET['year']) ? date('Y') . '/' : (int) $_GET['year'] . '/') . $folder_month;
-        $bucketlink2  = ((isset($_POST['avy']) || (isset($_GET['images']) && $_GET['images'] == 2)) ? 'avatar/' : $folder_name . '/');
+        $folder_name = (!isset($_GET['year']) ? date('Y') . '/' : (int) $_GET['year'] . '/') . $folder_month;
+        $bucketlink2 = ((isset($_POST['avy']) || (isset($_GET['images']) && $_GET['images'] == 2)) ? 'avatar/' : $folder_name . '/');
         foreach ((array) glob(($_GET['images'] == 2 ? AVATAR_DIR . $USERSALT : BITBUCKET_DIR . $folder_name . '/' . $USERSALT) . '_*') as $filename) {
             if (!empty($filename)) {
-                $filename          = basename($filename);
-                $filename          = $bucketlink2 . $filename;
+                $filename = basename($filename);
+                $filename = $bucketlink2 . $filename;
                 $encryptedfilename = urlencode(encrypt($filename));
-                $eid               = md5($filename);
+                $eid = md5($filename);
                 $HTMLOUT .= "
             <div class='bitbucket'>
                 <div class='margin20'>
@@ -237,7 +237,7 @@ if ($_FILES['file']['size'] == 0) {
 if ($_FILES['file']['size'] > $maxsize) {
     stderr($lang['bitbucket_error'], $lang['bitbucket_to_large']);
 }
-$file  = preg_replace('`[^a-z0-9\-\_\.]`i', '', $_FILES['file']['name']);
+$file = preg_replace('`[^a-z0-9\-\_\.]`i', '', $_FILES['file']['name']);
 $allow = ',' . join(',', $formats);
 if (stristr($allow, ',' . substr($file, -4)) === false) {
     stderr($lang['bitbucket_err'], $lang['bitbucket_invalid']);
@@ -263,9 +263,9 @@ if ($it1 != IMAGETYPE_GIF && $it1 != IMAGETYPE_JPEG && $it1 != IMAGETYPE_PNG) {
         <h1>{$lang['bitbucket_upfail']}{$lang['bitbucket_sorry']}</h1>";
     die();
 }
-$file     = strtolower($file);
-$randb    = make_password();
-$path     = $bucketdir . $USERSALT . '_' . $randb . $file;
+$file = strtolower($file);
+$randb = make_password();
+$path = $bucketdir . $USERSALT . '_' . $randb . $file;
 $pathlink = $bucketlink . $USERSALT . '_' . $randb . $file;
 
 if (!move_uploaded_file($_FILES['file']['tmp_name'], $path)) {
@@ -358,8 +358,8 @@ function valid_path($root, $input)
 {
     $fullpath = $root . $input;
     $fullpath = realpath($fullpath);
-    $root     = realpath($root);
-    $rl       = strlen($root);
+    $root = realpath($root);
+    $rl = strlen($root);
 
     return ($root != substr($fullpath, 0, $rl)) ? null : $fullpath;
 }

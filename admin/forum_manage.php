@@ -6,21 +6,21 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $lang;
 
-$lang    = array_merge($lang, load_language('ad_forum_manage'));
-$HTMLOUT = $options = $options_2 = $options_3 = $options_4 = $options_5 = $options_6 = $option_7 = $option_8 = $option_9 = $option_10 = $option_11= $option_12 = $count = $forums_stuff = '';
-$row     = 0;
+$lang = array_merge($lang, load_language('ad_forum_manage'));
+$HTMLOUT = $options = $options_2 = $options_3 = $options_4 = $options_5 = $options_6 = $option_7 = $option_8 = $option_9 = $option_10 = $option_11 = $option_12 = $count = $forums_stuff = '';
+$row = 0;
 //=== defaults:
-$maxclass         = $CURUSER['class'];
-$id               = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
-$name             = strip_tags(isset($_POST['name']) ? htmlsafechars($_POST['name']) : '');
-$desc             = strip_tags(isset($_POST['desc']) ? htmlsafechars($_POST['desc']) : '');
-$sort             = (isset($_POST['sort']) ? intval($_POST['sort']) : 0);
-$parent_forum     = (isset($_POST['parent_forum']) ? intval($_POST['parent_forum']) : 0);
-$over_forums      = (isset($_POST['over_forums']) ? intval($_POST['over_forums']) : 0);
-$min_class_read   = (isset($_POST['min_class_read']) ? intval($_POST['min_class_read']) : 0);
-$min_class_write  = (isset($_POST['min_class_write']) ? intval($_POST['min_class_write']) : 0);
+$maxclass = $CURUSER['class'];
+$id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
+$name = strip_tags(isset($_POST['name']) ? htmlsafechars($_POST['name']) : '');
+$desc = strip_tags(isset($_POST['desc']) ? htmlsafechars($_POST['desc']) : '');
+$sort = (isset($_POST['sort']) ? intval($_POST['sort']) : 0);
+$parent_forum = (isset($_POST['parent_forum']) ? intval($_POST['parent_forum']) : 0);
+$over_forums = (isset($_POST['over_forums']) ? intval($_POST['over_forums']) : 0);
+$min_class_read = (isset($_POST['min_class_read']) ? intval($_POST['min_class_read']) : 0);
+$min_class_write = (isset($_POST['min_class_write']) ? intval($_POST['min_class_write']) : 0);
 $min_class_create = (isset($_POST['min_class_create']) ? intval($_POST['min_class_create']) : 0);
-$main_links       = "
+$main_links = "
             <div class='bottom20'>
                 <ul class='level-center bg-06'>
                     <li class='altlink margin20'>
@@ -105,7 +105,7 @@ switch ($action) {
                     <td >
                     <select name="over_forums">';
             $forum_id = (int) $row['forum_id'];
-            $res      = sql_query('SELECT * FROM over_forums');
+            $res = sql_query('SELECT * FROM over_forums');
             while ($arr = mysqli_fetch_array($res)) {
                 $i = (int) $arr['id'];
                 $options .= '<option class="body" value="' . $i . '"' . ($forum_id == $i ? ' selected' : '') . '>' . htmlsafechars($arr['name'], ENT_QUOTES) . '</option>';
@@ -146,8 +146,8 @@ switch ($action) {
             <td><span>' . $lang['fm_efp_rank'] . '</span></td>
             <td>
             <select name="sort">';
-            $res      = sql_query('SELECT sort FROM forums');
-            $nr       = mysqli_num_rows($res);
+            $res = sql_query('SELECT sort FROM forums');
+            $nr = mysqli_num_rows($res);
             $maxclass = $nr + 1;
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $options_6 .= '<option class="body" value="' . htmlsafechars($i) . '"' . ($row['sort'] == $i ? ' selected' : '') . '>' . htmlsafechars($i) . '</option>';
@@ -179,13 +179,13 @@ $res = sql_query('SELECT * FROM forums ORDER BY forum_id ASC');
 if (mysqli_num_rows($res) > 0) {
     while ($row = mysqli_fetch_array($res)) {
         $forum_id = (int) $row['forum_id'];
-        $res2     = sql_query('SELECT name FROM over_forums WHERE id=' . sqlesc($forum_id));
-        $arr2     = mysqli_fetch_assoc($res2);
-        $name     = htmlsafechars($arr2['name'], ENT_QUOTES);
+        $res2 = sql_query('SELECT name FROM over_forums WHERE id=' . sqlesc($forum_id));
+        $arr2 = mysqli_fetch_assoc($res2);
+        $name = htmlsafechars($arr2['name'], ENT_QUOTES);
         $subforum = (int) $row['parent_forum'];
         if ($subforum) {
-            $res3          = sql_query('SELECT name FROM forums WHERE id=' . sqlesc($subforum));
-            $arr3          = mysqli_fetch_assoc($res3);
+            $res3 = sql_query('SELECT name FROM forums WHERE id=' . sqlesc($subforum));
+            $arr3 = mysqli_fetch_assoc($res3);
             $subforum_name = htmlsafechars($arr3['name'], ENT_QUOTES);
         } else {
             $subforum_name = '';
@@ -234,7 +234,7 @@ $HTMLOUT .= '</table><br><br>
             <td>
             <select name="over_forums">';
 $forum_id = (int) $row['forum_id'];
-$res      = sql_query('SELECT * FROM over_forums');
+$res = sql_query('SELECT * FROM over_forums');
 while ($arr = mysqli_fetch_array($res)) {
     $i = (int) $arr['id'];
     $option_7 .= '<option class="body" value="' . htmlsafechars($i) . '"' . ($forum_id == $i ? ' selected' : '') . '>' . htmlsafechars($arr['name'], ENT_QUOTES) . '</option>';
@@ -246,7 +246,7 @@ $HTMLOUT .= $option_7 . '</select></td></tr>
             <select name="parent_forum">
             <option class="body" value="0">' . $lang['fm_mp_none'] . '</option>';
 $forum_id = (int) $row['forum_id'];
-$res      = sql_query('SELECT * FROM forums');
+$res = sql_query('SELECT * FROM forums');
 while ($arr = mysqli_fetch_array($res)) {
     $i = (int) $arr['id'];
     $option_8 .= '<option class="body" value="' . htmlsafechars($i) . '"' . ($forum_id == $i ? ' selected' : '') . '>' . htmlsafechars($arr['name'], ENT_QUOTES) . '</option>';
@@ -279,8 +279,8 @@ $HTMLOUT .= $option_11 . '</select></td></tr>
             <td><span>' . $lang['fm_mp_rank'] . '</span></td>
             <td>
             <select name="sort">';
-$res      = sql_query('SELECT sort FROM forums');
-$nr       = mysqli_num_rows($res);
+$res = sql_query('SELECT sort FROM forums');
+$nr = mysqli_num_rows($res);
 $maxclass = $nr + 1;
 for ($i = 0; $i <= $maxclass; ++$i) {
     $option_12 .= '<option class="body" value="' . htmlsafechars($i) . '">' . htmlsafechars($i) . '</option>';

@@ -8,7 +8,7 @@ if ($CURUSER['id'] != $num['userid'] && $CURUSER['class'] < UC_STAFF) {
     stderr("{$lang['error_error']}", "{$lang['error_denied']}");
 }
 $request = (isset($_POST['requesttitle']) ? htmlspecialchars($_POST['requesttitle']) : '');
-$pic     = '';
+$pic = '';
 if (!empty($_POST['picture'])) {
     if (!preg_match('/^https?:\/\/([a-zA-Z0-9\-\_]+\.)+([a-zA-Z]{1,5}[^\.])(\/[^<>]+)+\.(jpg|jpeg|gif|png|tif|tiff|bmp)$/i', $_POST['picture'])) {
         stderr("{$lang['error_error']}", "{$lang['error_image']}");
@@ -29,10 +29,10 @@ $cat = (isset($_POST['category']) ? (int) $_POST['category'] : ($num['cat'] != '
 if (!is_valid_id($cat)) {
     stderr("{$lang['error_error']}", "{$lang['error_cat']}");
 }
-$request   = sqlesc($request);
-$descr     = sqlesc($descr);
-$filledby  = isset($_POST['filledby']) ? (int) $_POST['filledby'] : 0;
-$filled    = isset($_POST['filled']) ? $_POST['filled'] : 0;
+$request = sqlesc($request);
+$descr = sqlesc($descr);
+$filledby = isset($_POST['filledby']) ? (int) $_POST['filledby'] : 0;
+$filled = isset($_POST['filled']) ? $_POST['filled'] : 0;
 $torrentid = isset($_POST['torrentid']) ? (int) $_POST['torrentid'] : 0;
 if ($filled) {
     if (!is_valid_id($torrentid)) {

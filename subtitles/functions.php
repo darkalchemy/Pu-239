@@ -96,7 +96,7 @@ function get_base($array)
  */
 function get_results($array)
 {
-    return ['items'      => $array['@items'],
+    return ['items' => $array['@items'],
             'itemsfound' => $array['@itemsfound'],
             'searchtime' => $array['@searchtime'],
     ];
@@ -143,8 +143,8 @@ function build_result($array, $pager)
 
     //define some vars
     $result = $array['search']['results']['subtitle'];
-    $base   = get_base($array['search']['base']);
-    $time   = get_results($array['search']['results']);
+    $base = get_base($array['search']['base']);
+    $time = get_results($array['search']['results']);
     //print the content
     if (count($result) == 0) {
         echo '<div><h2>No result found</h2></div>';

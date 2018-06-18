@@ -4,11 +4,11 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-$html      = '';
-$lang      = load_language('global');
+$html = '';
+$lang = load_language('global');
 $use_limit = true;
-$limit     = 15;
-$icount    = 1;
+$limit = 15;
+$icount = 1;
 
 $xml = $cache->get('tfreaknewsrss_');
 if ($xml === false || is_null($xml)) {

@@ -6,7 +6,7 @@ dbconn();
 if (empty($_POST['ip']) || empty($_POST['port'])) {
     return false;
 }
-$ip   = $_POST['ip'];
+$ip = $_POST['ip'];
 $port = $_POST['port'];
 
 $connection = @fsockopen($ip, $port, $errno, $errstr, 10);

@@ -4,8 +4,8 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 global $site_config, $fluent, $cache, $session;
 
-$lang  = array_merge(load_language('global'), load_language('confirmemail'));
-$id    = isset($_GET['id']) ? $_GET['id'] : 0;
+$lang = array_merge(load_language('global'), load_language('confirmemail'));
+$id = isset($_GET['id']) ? $_GET['id'] : 0;
 $token = isset($_GET['token']) ? $_GET['token'] : '';
 if (empty($id)) {
     stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_id']}");

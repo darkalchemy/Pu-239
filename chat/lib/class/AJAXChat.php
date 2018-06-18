@@ -42,10 +42,10 @@ class AJAXChat
         global $site_config, $fluent, $session, $cache, $user_stuffs;
 
         $this->_siteConfig = $site_config;
-        $this->_session    = $session;
-        $this->_cache      = $cache;
-        $this->_fluent     = $fluent;
-        $this->_user       = $user_stuffs;
+        $this->_session = $session;
+        $this->_cache = $cache;
+        $this->_fluent = $fluent;
+        $this->_user = $user_stuffs;
         $this->initialize();
     }
 
@@ -116,27 +116,27 @@ class AJAXChat
 
     public function initRequestVars()
     {
-        $this->_requestVars                = [];
-        $this->_requestVars['ajax']        = isset($_REQUEST['ajax']) ? true : false;
-        $this->_requestVars['userID']      = isset($_REQUEST['userID']) ? (int) $_REQUEST['userID'] : null;
-        $this->_requestVars['userName']    = isset($_REQUEST['userName']) ? $_REQUEST['userName'] : null;
-        $this->_requestVars['channelID']   = isset($_REQUEST['channelID']) ? (int) $_REQUEST['channelID'] : null;
+        $this->_requestVars = [];
+        $this->_requestVars['ajax'] = isset($_REQUEST['ajax']) ? true : false;
+        $this->_requestVars['userID'] = isset($_REQUEST['userID']) ? (int) $_REQUEST['userID'] : null;
+        $this->_requestVars['userName'] = isset($_REQUEST['userName']) ? $_REQUEST['userName'] : null;
+        $this->_requestVars['channelID'] = isset($_REQUEST['channelID']) ? (int) $_REQUEST['channelID'] : null;
         $this->_requestVars['channelName'] = isset($_REQUEST['channelName']) ? $_REQUEST['channelName'] : null;
-        $this->_requestVars['text']        = isset($_POST['text']) ? $_POST['text'] : null;
-        $this->_requestVars['lastID']      = isset($_REQUEST['lastID']) ? (int) $_REQUEST['lastID'] : 0;
-        $this->_requestVars['login']       = isset($_REQUEST['login']) ? true : false;
-        $this->_requestVars['logout']      = isset($_REQUEST['logout']) ? true : false;
-        $this->_requestVars['password']    = isset($_REQUEST['password']) ? $_REQUEST['password'] : null;
-        $this->_requestVars['view']        = isset($_REQUEST['view']) ? $_REQUEST['view'] : null;
-        $this->_requestVars['year']        = isset($_REQUEST['year']) ? (int) $_REQUEST['year'] : null;
-        $this->_requestVars['month']       = isset($_REQUEST['month']) ? (int) $_REQUEST['month'] : null;
-        $this->_requestVars['day']         = isset($_REQUEST['day']) ? (int) $_REQUEST['day'] : null;
-        $this->_requestVars['hour']        = isset($_REQUEST['hour']) ? (int) $_REQUEST['hour'] : null;
-        $this->_requestVars['search']      = isset($_REQUEST['search']) ? $_REQUEST['search'] : null;
-        $this->_requestVars['getInfos']    = isset($_REQUEST['getInfos']) ? $_REQUEST['getInfos'] : null;
-        $this->_requestVars['lang']        = isset($_REQUEST['lang']) ? $_REQUEST['lang'] : null;
-        $this->_requestVars['delete']      = isset($_REQUEST['delete']) ? (int) $_REQUEST['delete'] : null;
-        $this->_requestVars['token']       = isset($_REQUEST['token']) ? $_REQUEST['token'] : null;
+        $this->_requestVars['text'] = isset($_POST['text']) ? $_POST['text'] : null;
+        $this->_requestVars['lastID'] = isset($_REQUEST['lastID']) ? (int) $_REQUEST['lastID'] : 0;
+        $this->_requestVars['login'] = isset($_REQUEST['login']) ? true : false;
+        $this->_requestVars['logout'] = isset($_REQUEST['logout']) ? true : false;
+        $this->_requestVars['password'] = isset($_REQUEST['password']) ? $_REQUEST['password'] : null;
+        $this->_requestVars['view'] = isset($_REQUEST['view']) ? $_REQUEST['view'] : null;
+        $this->_requestVars['year'] = isset($_REQUEST['year']) ? (int) $_REQUEST['year'] : null;
+        $this->_requestVars['month'] = isset($_REQUEST['month']) ? (int) $_REQUEST['month'] : null;
+        $this->_requestVars['day'] = isset($_REQUEST['day']) ? (int) $_REQUEST['day'] : null;
+        $this->_requestVars['hour'] = isset($_REQUEST['hour']) ? (int) $_REQUEST['hour'] : null;
+        $this->_requestVars['search'] = isset($_REQUEST['search']) ? $_REQUEST['search'] : null;
+        $this->_requestVars['getInfos'] = isset($_REQUEST['getInfos']) ? $_REQUEST['getInfos'] : null;
+        $this->_requestVars['lang'] = isset($_REQUEST['lang']) ? $_REQUEST['lang'] : null;
+        $this->_requestVars['delete'] = isset($_REQUEST['delete']) ? (int) $_REQUEST['delete'] : null;
+        $this->_requestVars['token'] = isset($_REQUEST['token']) ? $_REQUEST['token'] : null;
 
         $this->initCustomRequestVars();
     }
@@ -294,7 +294,7 @@ class AJAXChat
      */
     public function isUserOnline($userID = null)
     {
-        $userID        = ($userID === null) ? $this->getUserID() : $userID;
+        $userID = ($userID === null) ? $this->getUserID() : $userID;
         $userDataArray = $this->getOnlineUsersData(null, 'userID', $userID);
         if ($userDataArray && count($userDataArray) > 0) {
             return true;
@@ -471,14 +471,14 @@ class AJAXChat
         }
 
         $values = [
-            'userID'   => $userID,
+            'userID' => $userID,
             'userName' => $userName,
             'userRole' => $userRole,
-            'channel'  => $channelID,
+            'channel' => $channelID,
             'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
-            'ip'       => inet_pton(getip()),
-            'text'     => $text,
-            'ttl'      => $ttl,
+            'ip' => inet_pton(getip()),
+            'text' => $text,
+            'ttl' => $ttl,
         ];
 
         $lastInsertId = $this->_fluent->insertInto($this->getDataBaseTable('messages'))
@@ -486,10 +486,10 @@ class AJAXChat
             ->execute();
 
         $set = [
-            'dailyshouts'   => new \Envms\FluentPDO\Literal('dailyshouts + 1'),
-            'weeklyshouts'  => new \Envms\FluentPDO\Literal('weeklyshouts + 1'),
+            'dailyshouts' => new \Envms\FluentPDO\Literal('dailyshouts + 1'),
+            'weeklyshouts' => new \Envms\FluentPDO\Literal('weeklyshouts + 1'),
             'monthlyshouts' => new \Envms\FluentPDO\Literal('monthlyshouts + 1'),
-            'totalshouts'   => new \Envms\FluentPDO\Literal('totalshouts + 1'),
+            'totalshouts' => new \Envms\FluentPDO\Literal('totalshouts + 1'),
         ];
 
         $this->_fluent->update('usersachiev')
@@ -573,7 +573,7 @@ class AJAXChat
     {
         // Get the online users for the given channels:
         $onlineUsersData = $this->getOnlineUsersData($channelIDs);
-        $xml             = '<users>';
+        $xml = '<users>';
         foreach ($onlineUsersData as $onlineUserData) {
             $xml .= '<user';
             $xml .= ' userID="' . $onlineUserData['userID'] . '"';
@@ -963,7 +963,7 @@ class AJAXChat
      */
     public function isUserNameInUse($userName = null)
     {
-        $userName      = ($userName === null) ? $this->getUserName() : $userName;
+        $userName = ($userName === null) ? $this->getUserName() : $userName;
         $userDataArray = $this->getOnlineUsersData(null, 'userName', $userName);
         if ($userDataArray && count($userDataArray) > 0) {
             return true;
@@ -1224,7 +1224,7 @@ class AJAXChat
      */
     public function initChannel()
     {
-        $channelID   = $this->getRequestVar('channelID');
+        $channelID = $this->getRequestVar('channelID');
         $channelName = $this->getRequestVar('channelName');
         if ($channelID !== null) {
             $this->switchChannel($this->getChannelNameFromChannelID($channelID));
@@ -1288,8 +1288,8 @@ class AJAXChat
             return $this->getPrivateChannelID();
         }
         $strlenChannelName = $this->stringLength($channelName);
-        $strlenPrefix      = $this->stringLength($this->getConfig('privateChannelPrefix'));
-        $strlenSuffix      = $this->stringLength($this->getConfig('privateChannelSuffix'));
+        $strlenPrefix = $this->stringLength($this->getConfig('privateChannelPrefix'));
+        $strlenSuffix = $this->stringLength($this->getConfig('privateChannelSuffix'));
         if ($this->subString($channelName, 0, $strlenPrefix) == $this->getConfig('privateChannelPrefix')
             && $this->subString($channelName, $strlenChannelName - $strlenSuffix) == $this->getConfig('privateChannelSuffix')) {
             $userName = $this->subString(
@@ -1614,7 +1614,7 @@ class AJAXChat
      */
     public function getValidRequestChannelID()
     {
-        $channelID   = $this->getRequestVar('channelID');
+        $channelID = $this->getRequestVar('channelID');
         $channelName = $this->getRequestVar('channelName');
         if ($channelID === null) {
             if ($channelName !== null) {
@@ -1642,24 +1642,24 @@ class AJAXChat
      */
     public function addToOnlineList()
     {
-        $key           = 'ajaxchat_online_' . $this->getChannel() . '_' . $this->getUserID();
+        $key = 'ajaxchat_online_' . $this->getChannel() . '_' . $this->getUserID();
         $active_online = $this->_cache->get($key);
         if ($active_online === false || is_null($active_online)) {
             $values = [
-                'userID'   => $this->getUserID(),
+                'userID' => $this->getUserID(),
                 'userName' => $this->getUserName(),
                 'userRole' => $this->getUserRole(),
-                'channel'  => $this->getChannel(),
+                'channel' => $this->getChannel(),
                 'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
-                'ip'       => inet_pton(getip()),
+                'ip' => inet_pton(getip()),
             ];
 
             $set = [
                 'userName' => $this->getUserName(),
                 'userRole' => $this->getUserRole(),
-                'channel'  => $this->getChannel(),
+                'channel' => $this->getChannel(),
                 'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
-                'ip'       => inet_pton(getip()),
+                'ip' => inet_pton(getip()),
             ];
 
             $lastInsertID = $this->_fluent->insertInto($this->getDataBaseTable('online'))
@@ -1722,7 +1722,7 @@ class AJAXChat
     public function getLangCode()
     {
         $langCodeCookie = isset($_COOKIE[$this->getConfig('sessionKeyPrefix') . 'lang']) ? $_COOKIE[$this->getConfig('sessionKeyPrefix') . 'lang'] : null;
-        $langCode       = $this->getRequestVar('lang') ? $this->getRequestVar('lang') : $langCodeCookie;
+        $langCode = $this->getRequestVar('lang') ? $this->getRequestVar('lang') : $langCodeCookie;
         if (!in_array($langCode, $this->getConfig('langAvailable'))) {
             $language = new AJAXChatLanguage($this->getConfig('langAvailable'), $this->getConfig('langDefault'));
             $langCode = $language->getLangCode();
@@ -2270,7 +2270,7 @@ class AJAXChat
         $this->removeExpiredInvitations();
 
         $channelID = ($channelID === null) ? $this->getChannel() : $channelID;
-        $sql       = 'INSERT INTO ' . $this->getDataBaseTable('invitations') . '(
+        $sql = 'INSERT INTO ' . $this->getDataBaseTable('invitations') . '(
                     userID,
                     channel,
                     dateTime
@@ -2428,7 +2428,7 @@ class AJAXChat
                             '/error KickNotAllowed ' . $textParts[1]
                         );
                     } else {
-                        $channel    = $this->getChannelFromID($kickUserID);
+                        $channel = $this->getChannelFromID($kickUserID);
                         $banMinutes = (count($textParts) > 2) ? $textParts[2] : null;
                         $this->kickUser($textParts[1], $banMinutes, $kickUserID);
                         if ($channel !== null) {
@@ -2706,7 +2706,7 @@ class AJAXChat
             }
         } else {
             $channelName = $textParts[1];
-            $channelID   = $this->getChannelIDFromChannelName($channelName);
+            $channelID = $this->getChannelIDFromChannelName($channelName);
             if (!$this->validateChannel($channelID)) {
                 $this->insertChatBotMessage(
                     $this->getPrivateMessageID(),
@@ -2871,10 +2871,10 @@ class AJAXChat
             $diceParts = explode('d', $textParts[1]);
             if (count($diceParts) == 2) {
                 $number = (int) $diceParts[0];
-                $sides  = (int) $diceParts[1];
+                $sides = (int) $diceParts[1];
                 $number = ($number > 0 && $number <= 100) ? $number : 1;
-                $sides  = ($sides > 0 && $sides <= 100) ? $sides : 6;
-                $text   = '/roll ' . $this->getUserName() . ' ' . $number . 'd' . $sides . ' ';
+                $sides = ($sides > 0 && $sides <= 100) ? $sides : 6;
+                $text = '/roll ' . $this->getUserName() . ' ' . $number . 'd' . $sides . ' ';
                 for ($i = 0; $i < $number; ++$i) {
                     if ($i != 0) {
                         $text .= ',';
@@ -2985,7 +2985,7 @@ class AJAXChat
         $row = mysqli_fetch_row($res);
         if ($row) {
             $whereisRoleClass = get_user_class_name($row[0], true);
-            $userNameClass    = $whereisRoleClass != null ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
+            $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
             $msg .= $userNameClass . ' [color=#00FF00]is the biggest winner with ' . mksize($row[3]) . '. [/color]';
         }
 
@@ -2994,7 +2994,7 @@ class AJAXChat
         $row = mysqli_fetch_row($res);
         if ($row) {
             $whereisRoleClass = get_user_class_name($row[0], true);
-            $userNameClass    = $whereisRoleClass != null ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
+            $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
             $msg .= $userNameClass . ' [color=#00FF00]is the biggest loser with ' . mksize($row[3]) . '. [/color]';
         }
 
@@ -3049,15 +3049,15 @@ class AJAXChat
                         LEFT JOIN casino AS c ON c.userid = u.id
                         WHERE id = ' . $whereisUserID;
 
-                $result      = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-                $stats       = mysqli_fetch_assoc($result);
+                $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                $stats = mysqli_fetch_assoc($result);
                 $stats['bj'] = $stats['bj'] * 1024 * 1024 * 1024;
-                $bj          = $stats['bj'] > 0 ? '[color=#00FF00]' . mksize($stats['bj']) . '[/color]' : '[color=#CC0000]' . mksize($stats['bj']) . '[/color]';
-                $uploaded    = '[color=#00FF00]' . human_filesize($stats['uploaded']) . '[/color]';
-                $downloaded  = '[color=#00FF00]' . human_filesize($stats['downloaded']) . '[/color]';
-                $userClass   = get_user_class_name($stats['class']);
-                $enabled     = $stats['enabled']                                                                                                                                                                                                                                                              === 'yes' && $stats['downloadpos'] == 1 ? '[color=#00FF00](Enabled)[/color]' : '[color=#CC0000](Disabled)[/color]';
-                $invites     = $stats['invites'] > 0                                                                                                                                                                                                                                                                    && $stats['invite_rights'] === 'yes' ? '[color=#00FF00]' . number_format($stats['invites']) . '[/color]' : '[color=#CC0000]0[/color]';
+                $bj = $stats['bj'] > 0 ? '[color=#00FF00]' . mksize($stats['bj']) . '[/color]' : '[color=#CC0000]' . mksize($stats['bj']) . '[/color]';
+                $uploaded = '[color=#00FF00]' . human_filesize($stats['uploaded']) . '[/color]';
+                $downloaded = '[color=#00FF00]' . human_filesize($stats['downloaded']) . '[/color]';
+                $userClass = get_user_class_name($stats['class']);
+                $enabled = $stats['enabled'] === 'yes' && $stats['downloadpos'] == 1 ? '[color=#00FF00](Enabled)[/color]' : '[color=#CC0000](Disabled)[/color]';
+                $invites = $stats['invites'] > 0 && $stats['invite_rights'] === 'yes' ? '[color=#00FF00]' . number_format($stats['invites']) . '[/color]' : '[color=#CC0000]0[/color]';
                 switch (true) {
                     case $stats['downloaded'] > 0 && $stats['uploaded'] > 0:
                         $ratio = '[color=#00FF00]' . number_format($stats['uploaded'] / $stats['downloaded'], 3) . '[/color]';
@@ -3072,24 +3072,24 @@ class AJAXChat
                         $ratio = '---';
                 }
 
-                $casino     = $stats['casino'] > 0 ? '[color=#00FF00]' . mksize($stats['casino']) . '[/color]' : '[color=#CC0000]' . mksize($stats['casino']) . '[/color]';
-                $seedbonus  = '[color=#00FF00]' . number_format($stats['seedbonus']) . '[/color]';
-                $freeslots  = '[color=#00FF00]' . number_format($stats['freeslots']) . '[/color]';
-                $ircidle    = $stats['irctotal'] > 0 ? '[color=#00FF00]' . get_date($stats['irctotal'], 'LONG', false, false, true) . '[/color]' : '[color=#CC0000]' . get_date($stats['irctotal'], 'LONG', false, false, true) . '[/color]';
+                $casino = $stats['casino'] > 0 ? '[color=#00FF00]' . mksize($stats['casino']) . '[/color]' : '[color=#CC0000]' . mksize($stats['casino']) . '[/color]';
+                $seedbonus = '[color=#00FF00]' . number_format($stats['seedbonus']) . '[/color]';
+                $freeslots = '[color=#00FF00]' . number_format($stats['freeslots']) . '[/color]';
+                $ircidle = $stats['irctotal'] > 0 ? '[color=#00FF00]' . get_date($stats['irctotal'], 'LONG', false, false, true) . '[/color]' : '[color=#CC0000]' . get_date($stats['irctotal'], 'LONG', false, false, true) . '[/color]';
                 $reputation = '[color=#00FF00]' . number_format($stats['reputation']) . '[/color]';
-                $free       = get_date($stats['free_switch'], 'LONG')       > date('Y-m-d H:i:s') ? '[color=#00FF00]' . get_date($stats['free_switch'], 'LONG') . '[/color]' : '[color=#CC0000]Expired[/color]';
-                $double     = get_date($stats['double_switch'], 'LONG')     > date('Y-m-d H:i:s') ? '[color=#00FF00]' . get_date($stats['double_switch'], 'LONG') . '[/color]' : '[color=#CC0000]Expired[/color]';
-                $joined     = '[color=#00FF00]' . get_date($stats['added'], 'LONG') . '[/color]';
-                $seen       = '[color=#00FF00]' . get_date($stats['last_access'], 'LONG') . '[/color]';
-                $seeder     = (int) get_row_count('peers', 'WHERE seeder = "yes" and userid = ' . sqlesc($whereisUserID));
-                $seeding    = '[color=#00FF00]' . number_format($seeder) . '[/color]';
-                $leeching   = '[color=#00FF00]' . number_format((int) get_row_count('peers', 'WHERE seeder != "yes" and userid = ' . sqlesc($whereisUserID))) . '[/color]';
-                $uploads    = '[color=#00FF00]' . number_format((int) get_row_count('torrents', 'WHERE owner = ' . sqlesc($whereisUserID))) . '[/color]';
-                $snatched   = '[color=#00FF00]' . number_format((int) get_row_count('snatched', 'WHERE userid = ' . sqlesc($whereisUserID))) . '[/color]';
-                $hnrs       = (int) get_row_count('snatched', 'WHERE mark_of_cain = "yes" AND userid = ' . sqlesc($whereisUserID));
-                $hnrs       = $hnrs == 0 ? '[color=#00FF00]' . '0[/color]' : '[color=#CC0000]' . number_format($hnrs) . '[/color]';
+                $free = get_date($stats['free_switch'], 'LONG') > date('Y-m-d H:i:s') ? '[color=#00FF00]' . get_date($stats['free_switch'], 'LONG') . '[/color]' : '[color=#CC0000]Expired[/color]';
+                $double = get_date($stats['double_switch'], 'LONG') > date('Y-m-d H:i:s') ? '[color=#00FF00]' . get_date($stats['double_switch'], 'LONG') . '[/color]' : '[color=#CC0000]Expired[/color]';
+                $joined = '[color=#00FF00]' . get_date($stats['added'], 'LONG') . '[/color]';
+                $seen = '[color=#00FF00]' . get_date($stats['last_access'], 'LONG') . '[/color]';
+                $seeder = (int) get_row_count('peers', 'WHERE seeder = "yes" and userid = ' . sqlesc($whereisUserID));
+                $seeding = '[color=#00FF00]' . number_format($seeder) . '[/color]';
+                $leeching = '[color=#00FF00]' . number_format((int) get_row_count('peers', 'WHERE seeder != "yes" and userid = ' . sqlesc($whereisUserID))) . '[/color]';
+                $uploads = '[color=#00FF00]' . number_format((int) get_row_count('torrents', 'WHERE owner = ' . sqlesc($whereisUserID))) . '[/color]';
+                $snatched = '[color=#00FF00]' . number_format((int) get_row_count('snatched', 'WHERE userid = ' . sqlesc($whereisUserID))) . '[/color]';
+                $hnrs = (int) get_row_count('snatched', 'WHERE mark_of_cain = "yes" AND userid = ' . sqlesc($whereisUserID));
+                $hnrs = $hnrs == 0 ? '[color=#00FF00]' . '0[/color]' : '[color=#CC0000]' . number_format($hnrs) . '[/color]';
                 $connectyes = (int) get_row_count('peers', 'WHERE seeder = "yes" and connectable = "yes" and userid = ' . sqlesc($whereisUserID));
-                $connectno  = (int) get_row_count('peers', 'WHERE seeder = "yes" and connectable = "no" and userid = ' . sqlesc($whereisUserID));
+                $connectno = (int) get_row_count('peers', 'WHERE seeder = "yes" and connectable = "no" and userid = ' . sqlesc($whereisUserID));
                 if ($connectyes === 0 && $connectno === 0 || $connectno === $seeder) {
                     $connectable = '[color=#CC0000]no[/color]';
                 } elseif ($connectyes != 0 && $connectno === 0) {
@@ -3103,18 +3103,18 @@ class AJAXChat
                         INNER JOIN torrents t ON s.torrentid = t.id
                         INNER JOIN categories c ON t.category = c.id
                         WHERE t.owner != ' . sqlesc($whereisUserID) . ' AND s.downloaded > 0 AND s.seedtime < 259200 AND s.userid = ' . sqlesc($whereisUserID);
-                $res              = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-                $row              = mysqli_fetch_row($res);
+                $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                $row = mysqli_fetch_row($res);
                 $count_incomplete = $row[0] > 0 ? "[color=#CC0000]{$row[0]}[/color]" : "[color=#00FF00]{$row[0]}[/color]";
 
-                $ircbonus         = $stats['onirc'] == 'yes' ? .45 : 0;
-                $allbonus         = number_format(($connectyes * $bpt * 2) + $ircbonus, 2);
-                $earns            = $connectyes > 0 ? '[color=#00FF00]' . $allbonus . 'bph[/color]' : '[color=#CC0000]' . $allbonus . 'bph[/color]';
-                $seedsize         = get_one_row('peers AS p INNER JOIN torrents AS t ON t.id = p.torrent', 'SUM(t.size)', "WHERE p.seeder = 'yes' AND p.connectable = 'yes' AND p.userid = " . $whereisUserID);
-                $volume           = '[color=#00FF00]' . human_filesize($seedsize) . '[/color]';
+                $ircbonus = $stats['onirc'] == 'yes' ? .45 : 0;
+                $allbonus = number_format(($connectyes * $bpt * 2) + $ircbonus, 2);
+                $earns = $connectyes > 0 ? '[color=#00FF00]' . $allbonus . 'bph[/color]' : '[color=#CC0000]' . $allbonus . 'bph[/color]';
+                $seedsize = get_one_row('peers AS p INNER JOIN torrents AS t ON t.id = p.torrent', 'SUM(t.size)', "WHERE p.seeder = 'yes' AND p.connectable = 'yes' AND p.userid = " . $whereisUserID);
+                $volume = '[color=#00FF00]' . human_filesize($seedsize) . '[/color]';
                 $whereisRoleClass = get_user_class_name($stats['class'], true);
-                $userNameClass    = $whereisRoleClass != null ? '[' . $whereisRoleClass . '][url=' . $this->_siteConfig['baseurl'] . '/userdetails.php?id=' . $whereisUserID . '&hit=1]' . $stats['username'] . '[/url][/' . $whereisRoleClass . ']' : '@' . $textParts[1];
-                $str              = '';
+                $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . '][url=' . $this->_siteConfig['baseurl'] . '/userdetails.php?id=' . $whereisUserID . '&hit=1]' . $stats['username'] . '[/url][/' . $whereisRoleClass . ']' : '@' . $textParts[1];
+                $str = '';
                 $str .= (isset($stats['donor']) && $stats['donor'] === 'yes' && isset($stats['show_donor']) && $stats['show_donor'] === 'yes' ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/star.png[/img]' : '');
                 $str .= (isset($stats['warned']) && $stats['warned'] >= 1 ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/alertred.png[/img]' : '');
                 $str .= (isset($stats['leechwarn']) && $stats['leechwarn'] >= 1 ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/alertblue.png[/img]' : '');
@@ -3152,7 +3152,7 @@ class AJAXChat
             return false;
         } else {
             $userName = $textParts[1];
-            $userID   = $this->getIDFromName($userName);
+            $userID = $this->getIDFromName($userName);
             if (!$userID) {
                 $this->insertChatBotMessage(
                     $this->getPrivateMessageID(),
@@ -3162,10 +3162,10 @@ class AJAXChat
                 return false;
             }
 
-            $user_data   = $this->_user->getUserFromId($userID);
+            $user_data = $this->_user->getUserFromId($userID);
             $isRoleClass = get_user_class_name($user_data['class'], true);
-            $user        = '[' . $isRoleClass . ']' . $userName . '[/' . $isRoleClass . ']';
-            $seen        = $this->_fluent->from($this->getDataBaseTable('messages'))
+            $user = '[' . $isRoleClass . ']' . $userName . '[/' . $isRoleClass . ']';
+            $seen = $this->_fluent->from($this->getDataBaseTable('messages'))
                 ->select('UNIX_TIMESTAMP(dateTime) AS dateTime')
                 ->where('userID = ?', $userID)
                 ->where('channel = 0')
@@ -3175,7 +3175,7 @@ class AJAXChat
 
             if ($seen) {
                 $gender = $user_data['it'];
-                $msg    = "$user was last seen " . get_date($seen['dateTime'], '') . ", where $gender said: [quote]" . $seen['text'] . '[/quote]';
+                $msg = "$user was last seen " . get_date($seen['dateTime'], '') . ", where $gender said: [quote]" . $seen['text'] . '[/quote]';
             } else {
                 $msg = "$user has not been seen in many days.";
             }
@@ -3197,10 +3197,10 @@ class AJAXChat
      */
     public function insertParsedMessageMentions($textParts)
     {
-        $userName         = $this->getUserName();
-        $whereisUserID    = $this->getUserID();
+        $userName = $this->getUserName();
+        $whereisUserID = $this->getUserID();
         $whereisRoleClass = get_user_class_name($this->getRoleFromID($whereisUserID), true);
-        $user             = '[' . $whereisRoleClass . ']' . $userName . '[/' . $whereisRoleClass . ']';
+        $user = '[' . $whereisRoleClass . ']' . $userName . '[/' . $whereisRoleClass . ']';
 
         $sql = "SELECT dateTime, userName, userID, text
                     FROM ajax_chat_messages
@@ -3209,13 +3209,13 @@ class AJAXChat
                         AND userName != " . sqlesc($userName) . '
                         AND userID != ' . $this->getConfig('chatBotID') . '
                     ORDER BY id DESC LIMIT 25';
-        $res      = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $messages = [];
         while ($mentions = mysqli_fetch_array($res)) {
             $posterClass = get_user_class_name($mentions['userID'], true);
-            $posterName  = '[' . $posterClass . ']' . $mentions['userName'] . '[/' . $posterClass . ']';
-            $mention     = str_replace('/privmsgto ', '[PM] ', $mentions['text']);
-            $messages[]  = "{$mentions['dateTime']}: " . $posterName . " => {$mention}";
+            $posterName = '[' . $posterClass . ']' . $mentions['userName'] . '[/' . $posterClass . ']';
+            $mention = str_replace('/privmsgto ', '[PM] ', $mentions['text']);
+            $messages[] = "{$mentions['dateTime']}: " . $posterName . " => {$mention}";
         }
 
         if (count($messages) === 0) {
@@ -3271,9 +3271,9 @@ class AJAXChat
             return false;
         }
 
-        $gift          = $textParts[2];
+        $gift = $textParts[2];
         $cur_user_data = $this->_user->getUserFromId($this->getUserID());
-        $fromrep       = $cur_user_data['reputation'];
+        $fromrep = $cur_user_data['reputation'];
         if ((int) $gift > (int) $fromrep) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
@@ -3283,16 +3283,16 @@ class AJAXChat
             return false;
         }
 
-        $toRoleClass  = get_user_class_name($this->getRoleFromID($toUserID), true);
-        $user         = '[' . $toRoleClass . ']' . $textParts[1] . '[/' . $toRoleClass . ']';
-        $text         = $user . ' has been given ' . number_format($gift) . ' Reputation Points from ' . $cur_user_data['username'] . '.';
-        $user_data    = $this->_user->getUserFromId($toUserID);
+        $toRoleClass = get_user_class_name($this->getRoleFromID($toUserID), true);
+        $user = '[' . $toRoleClass . ']' . $textParts[1] . '[/' . $toRoleClass . ']';
+        $text = $user . ' has been given ' . number_format($gift) . ' Reputation Points from ' . $cur_user_data['username'] . '.';
+        $user_data = $this->_user->getUserFromId($toUserID);
         $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . " - given reputation gift of $gift by " . $cur_user_data['username'] . ".\n" . $user_data['bonuscomment'];
-        $recrep       = $user_data['reputation'];
+        $recrep = $user_data['reputation'];
 
         if ($this->_user->update($cur_user_data['id'], ['reputation' => $fromrep - $gift])) {
             $this->_user->update($toUserID, [
-                'reputation'   => $recrep + $gift,
+                'reputation' => $recrep + $gift,
                 'bonuscomment' => $bonuscomment,
             ]);
 
@@ -3347,7 +3347,7 @@ class AJAXChat
             return false;
         }
 
-        $gift          = $textParts[2];
+        $gift = $textParts[2];
         $cur_user_data = $this->_user->getUserFromId($this->getUserID());
 
         $frombonus = $cur_user_data['seedbonus'];
@@ -3360,16 +3360,16 @@ class AJAXChat
             return false;
         }
 
-        $toRoleClass  = get_user_class_name($this->getRoleFromID($toUserID), true);
-        $user         = '[' . $toRoleClass . ']' . $textParts[1] . '[/' . $toRoleClass . ']';
-        $text         = $user . ' has been given a Karma gift of ' . number_format($gift) . ' points from ' . $cur_user_data['username'] . '.';
-        $user_data    = $this->_user->getUserFromId($toUserID);
+        $toRoleClass = get_user_class_name($this->getRoleFromID($toUserID), true);
+        $user = '[' . $toRoleClass . ']' . $textParts[1] . '[/' . $toRoleClass . ']';
+        $text = $user . ' has been given a Karma gift of ' . number_format($gift) . ' points from ' . $cur_user_data['username'] . '.';
+        $user_data = $this->_user->getUserFromId($toUserID);
         $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . " - given karma gift of $gift by " . $cur_user_data['username'] . ".\n" . $user_data['bonuscomment'];
-        $recbonus     = $user_data['seedbonus'];
+        $recbonus = $user_data['seedbonus'];
 
         if ($this->_user->update($cur_user_data['id'], ['seedbonus' => $frombonus - $gift])) {
             $this->_user->update($toUserID, [
-                'seedbonus'    => $recbonus + $gift,
+                'seedbonus' => $recbonus + $gift,
                 'bonuscomment' => $bonuscomment,
             ]);
 
@@ -3750,10 +3750,10 @@ class AJAXChat
                 }
         }
 
-        $hour  = ($this->getRequestVar('hour') === null || $this->getRequestVar('hour') > 23 || $this->getRequestVar('hour') < 0) ? null : $this->getRequestVar('hour');
-        $day   = ($this->getRequestVar('day') === null || $this->getRequestVar('day') > 31 || $this->getRequestVar('day') < 1) ? null : $this->getRequestVar('day');
+        $hour = ($this->getRequestVar('hour') === null || $this->getRequestVar('hour') > 23 || $this->getRequestVar('hour') < 0) ? null : $this->getRequestVar('hour');
+        $day = ($this->getRequestVar('day') === null || $this->getRequestVar('day') > 31 || $this->getRequestVar('day') < 1) ? null : $this->getRequestVar('day');
         $month = ($this->getRequestVar('month') === null || $this->getRequestVar('month') > 12 || $this->getRequestVar('month') < 1) ? null : $this->getRequestVar('month');
-        $year  = ($this->getRequestVar('year') === null || $this->getRequestVar('year') > date('Y') || $this->getRequestVar('year') < $this->getConfig('logsFirstYear')) ? null : $this->getRequestVar('year');
+        $year = ($this->getRequestVar('year') === null || $this->getRequestVar('year') > date('Y') || $this->getRequestVar('year') < $this->getConfig('logsFirstYear')) ? null : $this->getRequestVar('year');
 
         if ($hour !== null) {
             if ($day === null) {
@@ -3782,11 +3782,11 @@ class AJAXChat
         } elseif ($hour === null) {
             // Define the given day as period:
             $periodStart = mktime(0, 0, 0, $month, $day, $year);
-            $periodEnd   = mktime(23, 59, 59, $month, $day, $year);
+            $periodEnd = mktime(23, 59, 59, $month, $day, $year);
         } else {
             // Define the given hour as period:
             $periodStart = mktime($hour, 0, 0, $month, $day, $year);
-            $periodEnd   = mktime($hour, 59, 59, $month, $day, $year);
+            $periodEnd = mktime($hour, 59, 59, $month, $day, $year);
         }
 
         if (isset($periodStart)) {

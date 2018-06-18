@@ -8,8 +8,8 @@ function optimizedb($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    $sql    = sql_query("SHOW TABLE STATUS FROM {$_ENV['DB_DATABASE']} WHERE Data_free > 1000") or sqlerr(__FILE__, __LINE__);
-    $oht    = '';
+    $sql = sql_query("SHOW TABLE STATUS FROM {$_ENV['DB_DATABASE']} WHERE Data_free > 1000") or sqlerr(__FILE__, __LINE__);
+    $oht = '';
     $tables = [];
 
     while ($row = mysqli_fetch_assoc($sql)) {

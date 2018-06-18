@@ -7,7 +7,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $CURUSER, $lang, $cache;
 
-$lang    = array_merge($lang, load_language('ad_bonus_for_members'));
+$lang = array_merge($lang, load_language('ad_bonus_for_members'));
 $stdhead = [
     'css' => [
     ],
@@ -22,7 +22,7 @@ $stdfoot = [
 ];
 $h1_thingie = $HTMLOUT = '';
 //=== check if action_2 is sent ($_POST) if so make sure it's what you want it to be
-$action_2   = (isset($_POST['action_2']) ? htmlsafechars($_POST['action_2']) : 'no_action');
+$action_2 = (isset($_POST['action_2']) ? htmlsafechars($_POST['action_2']) : 'no_action');
 $good_stuff = [
     'upload_credit',
     'karma',
@@ -36,7 +36,7 @@ if (isset($_POST['all_or_selected_classes'])) {
     $free_for_classes = 1;
 } else {
     $free_for_classes = 0;
-    $free_for         = (isset($_POST['free_for_classes']) ? htmlsafechars($_POST['free_for_classes']) : '');
+    $free_for = (isset($_POST['free_for_classes']) ? htmlsafechars($_POST['free_for_classes']) : '');
 }
 //=== switch for the actions \\o\o/o//
 switch ($action) {
@@ -48,27 +48,27 @@ switch ($action) {
         $bonus_added = ($GB / 1073741824);
         //=== if for all classes
         if ($free_for_classes === 1) {
-            $res_GB    = sql_query('SELECT id, uploaded, modcomment FROM users WHERE enabled = \'yes\' AND suspended = \'no\'') or sqlerr(__FILE__, __LINE__);
+            $res_GB = sql_query('SELECT id, uploaded, modcomment FROM users WHERE enabled = \'yes\' AND suspended = \'no\'') or sqlerr(__FILE__, __LINE__);
             $pm_buffer = $users_buffer = [];
             if (mysqli_num_rows($res_GB) > 0) {
                 $subject = sqlesc($lang['bonusmanager_up_added']);
-                $msg     = sqlesc($lang['bonusmanager_up_addedmsg'] . $bonus_added . $lang['bonusmanager_up_addedmsg1'] . $site_config['site_name'] . "{$lang['bonusmanager_up_addedmsg2']}{$lang['bonusmanager_up_addedmsg22']}" . $GB . ' ' . $GB_new . '');
+                $msg = sqlesc($lang['bonusmanager_up_addedmsg'] . $bonus_added . $lang['bonusmanager_up_addedmsg1'] . $site_config['site_name'] . "{$lang['bonusmanager_up_addedmsg2']}{$lang['bonusmanager_up_addedmsg22']}" . $GB . ' ' . $GB_new . '');
                 while ($arr_GB = mysqli_fetch_assoc($res_GB)) {
-                    $GB_new         = ($arr_GB['uploaded'] + $GB);
-                    $modcomment     = $arr_GB['modcomment'];
-                    $modcomment     = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $bonus_added . $lang['bonusmanager_up_modcomment'] . $modcomment;
-                    $modcom         = sqlesc($modcomment);
-                    $pm_buffer[]    = '(0, ' . $arr_GB['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
+                    $GB_new = ($arr_GB['uploaded'] + $GB);
+                    $modcomment = $arr_GB['modcomment'];
+                    $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $bonus_added . $lang['bonusmanager_up_modcomment'] . $modcomment;
+                    $modcom = sqlesc($modcomment);
+                    $pm_buffer[] = '(0, ' . $arr_GB['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                     $users_buffer[] = '(' . $arr_GB['id'] . ', ' . $GB_new . ', ' . $modcom . ')';
                     $cache->update_row('user' . $arr_GB['id'], [
-                        'uploaded'   => $GB_new,
+                        'uploaded' => $GB_new,
                         'modcomment' => $modcomment,
                     ], $site_config['expires']['user_cache']);
                     $cache->increment('inbox_' . $arr_GB['id']);
                 }
                 $count = count($users_buffer);
                 if ($count > 0) {
-                    sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer))                                                                                 or sqlerr(__FILE__, __LINE__);
+                    sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer)) or sqlerr(__FILE__, __LINE__);
                     sql_query('INSERT INTO users (id, uploaded, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE uploaded = VALUES(uploaded),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
                     write_log($lang['bonusmanager_up_writelog'] . $count . $lang['bonusmanager_up_writelog1'] . $CURUSER['username']);
                 }
@@ -79,27 +79,27 @@ switch ($action) {
         } elseif ($free_for_classes === 0) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
-                    $res_GB    = sql_query('SELECT id, uploaded, modcomment FROM users WHERE enabled = \'yes\' AND suspended = \'no\' AND class = ' . $class);
+                    $res_GB = sql_query('SELECT id, uploaded, modcomment FROM users WHERE enabled = \'yes\' AND suspended = \'no\' AND class = ' . $class);
                     $pm_buffer = $users_buffer = [];
                     if (mysqli_num_rows($res_GB) > 0) {
                         $subject = sqlesc($lang['bonusmanager_up_added']);
-                        $msg     = sqlesc($lang['bonusmanager_up_addedmsg'] . $bonus_added . $lang['bonusmanager_up_addedmsg3'] . $site_config['site_name'] . $lang['bonusmanager_up_addedmsg2']);
+                        $msg = sqlesc($lang['bonusmanager_up_addedmsg'] . $bonus_added . $lang['bonusmanager_up_addedmsg3'] . $site_config['site_name'] . $lang['bonusmanager_up_addedmsg2']);
                         while ($arr_GB = mysqli_fetch_assoc($res_GB)) {
-                            $GB_new         = ($arr_GB['uploaded'] + $GB);
-                            $modcomment     = $arr_GB['modcomment'];
-                            $modcomment     = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $bonus_added . $lang['bonusmanager_up_modcomment'] . $modcomment;
-                            $modcom         = sqlesc($modcomment);
-                            $pm_buffer[]    = '(0, ' . $arr_GB['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
+                            $GB_new = ($arr_GB['uploaded'] + $GB);
+                            $modcomment = $arr_GB['modcomment'];
+                            $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $bonus_added . $lang['bonusmanager_up_modcomment'] . $modcomment;
+                            $modcom = sqlesc($modcomment);
+                            $pm_buffer[] = '(0, ' . $arr_GB['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                             $users_buffer[] = '(' . $arr_GB['id'] . ', ' . $GB_new . ', ' . $modcom . ')';
                             $cache->update_row('user' . $arr_GB['id'], [
-                                'uploaded'   => $GB_new,
+                                'uploaded' => $GB_new,
                                 'modcomment' => $modcomment,
                             ], $site_config['expires']['user_cache']);
                             $cache->increment('inbox_' . $arr_GB['id']);
                         }
                         $count = count($users_buffer);
                         if ($count > 0) {
-                            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer))                                                                                 or sqlerr(__FILE__, __LINE__);
+                            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer)) or sqlerr(__FILE__, __LINE__);
                             sql_query('INSERT INTO users (id, uploaded, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE uploaded = VALUES(uploaded),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
                             write_log($lang['bonusmanager_up_writelog'] . $count . $lang['bonusmanager_up_writelog2'] . $CURUSER['username']);
                         }
@@ -123,23 +123,23 @@ switch ($action) {
             $pm_buffer = $users_buffer = [];
             if (mysqli_num_rows($res_karma) > 0) {
                 $subject = sqlesc($lang['bonusmanager_karma_added']);
-                $msg     = sqlesc($lang['bonusmanager_karma_addedmsg'] . $karma . $lang['bonusmanager_karma_addedmsg1'] . $site_config['site_name'] . $lang['bonusmanager_karma_addedmsg2']);
+                $msg = sqlesc($lang['bonusmanager_karma_addedmsg'] . $karma . $lang['bonusmanager_karma_addedmsg1'] . $site_config['site_name'] . $lang['bonusmanager_karma_addedmsg2']);
                 while ($arr_karma = mysqli_fetch_assoc($res_karma)) {
-                    $karma_new      = ($arr_karma['seedbonus'] + $karma);
-                    $modcomment     = $arr_karma['modcomment'];
-                    $modcomment     = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $karma . $lang['bonusmanager_karma_modcomment'] . $modcomment;
-                    $modcom         = sqlesc($modcomment);
-                    $pm_buffer[]    = '(0, ' . $arr_karma['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
+                    $karma_new = ($arr_karma['seedbonus'] + $karma);
+                    $modcomment = $arr_karma['modcomment'];
+                    $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $karma . $lang['bonusmanager_karma_modcomment'] . $modcomment;
+                    $modcom = sqlesc($modcomment);
+                    $pm_buffer[] = '(0, ' . $arr_karma['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                     $users_buffer[] = '(' . $arr_karma['id'] . ', ' . $karma_new . ', ' . $modcom . ')';
                     $cache->update_row('user' . $arr_karma['id'], [
-                        'seedbonus'  => $karma_new,
+                        'seedbonus' => $karma_new,
                         'modcomment' => $modcomment,
                     ], $site_config['expires']['user_cache']);
                     $cache->increment('inbox_' . $arr_karma['id']);
                 }
                 $count = count($users_buffer);
                 if ($count > 0) {
-                    sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer))                                                                                    or sqlerr(__FILE__, __LINE__);
+                    sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer)) or sqlerr(__FILE__, __LINE__);
                     sql_query('INSERT INTO users (id, seedbonus, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE seedbonus = VALUES(seedbonus),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
                     write_log($lang['bonusmanager_karma_writelog'] . $count . $lang['bonusmanager_karma_writelog1'] . $CURUSER['username']);
                 }
@@ -154,23 +154,23 @@ switch ($action) {
                     $pm_buffer = $users_buffer = [];
                     if (mysqli_num_rows($res_karma) > 0) {
                         $subject = sqlesc($lang['bonusmanager_karma_added']);
-                        $msg     = sqlesc($lang['bonusmanager_karma_addedmsg'] . $karma . $lang['bonusmanager_karma_addedmsg3'] . $site_config['site_name'] . $lang['bonusmanager_karma_addedmsg2']);
+                        $msg = sqlesc($lang['bonusmanager_karma_addedmsg'] . $karma . $lang['bonusmanager_karma_addedmsg3'] . $site_config['site_name'] . $lang['bonusmanager_karma_addedmsg2']);
                         while ($arr_karma = mysqli_fetch_assoc($res_karma)) {
-                            $karma_new      = ($arr_karma['seedbonus'] + $karma);
-                            $modcomment     = $arr_karma['modcomment'];
-                            $modcomment     = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $karma . $lang['bonusmanager_karma_modcomment'] . $modcomment;
-                            $modcom         = sqlesc($modcomment);
-                            $pm_buffer[]    = '(0, ' . $arr_karma['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
+                            $karma_new = ($arr_karma['seedbonus'] + $karma);
+                            $modcomment = $arr_karma['modcomment'];
+                            $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $karma . $lang['bonusmanager_karma_modcomment'] . $modcomment;
+                            $modcom = sqlesc($modcomment);
+                            $pm_buffer[] = '(0, ' . $arr_karma['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                             $users_buffer[] = '(' . $arr_karma['id'] . ', ' . $karma_new . ', ' . $modcom . ')';
                             $cache->update_row('user' . $arr_karma['id'], [
-                                'seedbonus'  => $karma_new,
+                                'seedbonus' => $karma_new,
                                 'modcomment' => $modcomment,
                             ], $site_config['expires']['user_cache']);
                             $cache->increment('inbox_' . $arr_karma['id']);
                         }
                         $count = count($users_buffer);
                         if ($count > 0) {
-                            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer))                                                                                    or sqlerr(__FILE__, __LINE__);
+                            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer)) or sqlerr(__FILE__, __LINE__);
                             sql_query('INSERT INTO users (id, seedbonus, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE seedbonus = VALUES(seedbonus),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
                             write_log($lang['bonusmanager_karma_writelog'] . $count . $lang['bonusmanager_karma_writelog2'] . $CURUSER['username']);
                         }
@@ -191,26 +191,26 @@ switch ($action) {
         //=== if for all classes
         if ($free_for_classes === 1) {
             $res_freeslots = sql_query('SELECT id, freeslots, modcomment FROM users WHERE enabled = \'yes\' AND suspended = \'no\'') or sqlerr(__FILE__, __LINE__);
-            $pm_buffer     = $users_buffer     = [];
+            $pm_buffer = $users_buffer = [];
             if (mysqli_num_rows($res_freeslots) > 0) {
                 $subject = sqlesc($lang['bonusmanager_freeslots_added']);
-                $msg     = sqlesc($lang['bonusmanager_freeslots_addedmsg'] . $freeslots . $lang['bonusmanager_freeslots_addedmsg1'] . $site_config['site_name'] . $lang['bonusmanager_freeslots_addedmsg2']);
+                $msg = sqlesc($lang['bonusmanager_freeslots_addedmsg'] . $freeslots . $lang['bonusmanager_freeslots_addedmsg1'] . $site_config['site_name'] . $lang['bonusmanager_freeslots_addedmsg2']);
                 while ($arr_freeslots = mysqli_fetch_assoc($res_freeslots)) {
-                    $freeslots_new  = ($arr_freeslots['freeslots'] + $freeslots);
-                    $modcomment     = $arr_freeslots['modcomment'];
-                    $modcomment     = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $freeslots . $lang['bonusmanager_freeslots_modcomment'] . $modcomment;
-                    $modcom         = sqlesc($modcomment);
-                    $pm_buffer[]    = '(0, ' . $arr_freeslots['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
+                    $freeslots_new = ($arr_freeslots['freeslots'] + $freeslots);
+                    $modcomment = $arr_freeslots['modcomment'];
+                    $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $freeslots . $lang['bonusmanager_freeslots_modcomment'] . $modcomment;
+                    $modcom = sqlesc($modcomment);
+                    $pm_buffer[] = '(0, ' . $arr_freeslots['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                     $users_buffer[] = '(' . $arr_freeslots['id'] . ', ' . $freeslots_new . ', ' . $modcom . ')';
                     $cache->update_row('user' . $arr_freeslots['id'], [
-                        'freeslots'  => $freeslots_new,
+                        'freeslots' => $freeslots_new,
                         'modcomment' => $modcomment,
                     ], $site_config['expires']['user_cache']);
                     $cache->increment('inbox_' . $arr_freeslots['id']);
                 }
                 $count = count($users_buffer);
                 if ($count > 0) {
-                    sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer))                                                                                    or sqlerr(__FILE__, __LINE__);
+                    sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer)) or sqlerr(__FILE__, __LINE__);
                     sql_query('INSERT INTO users (id, freeslots, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE freeslots = VALUES(freeslots),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
                     write_log($lang['bonusmanager_freeslots_writelog'] . $count . $lang['bonusmanager_freeslots_writelog1'] . $CURUSER['username']);
                 }
@@ -222,26 +222,26 @@ switch ($action) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
                     $res_freeslots = sql_query('SELECT id, freeslots, modcomment FROM users WHERE enabled = \'yes\' AND suspended = \'no\' AND class = ' . $class);
-                    $pm_buffer     = $users_buffer     = [];
+                    $pm_buffer = $users_buffer = [];
                     if (mysqli_num_rows($res_freeslots) > 0) {
                         $subject = sqlesc($lang['bonusmanager_freeslots_added']);
-                        $msg     = sqlesc($lang['bonusmanager_freeslots_addedmsg'] . $freeslots . $lang['bonusmanager_freeslots_addedmsg3'] . $site_config['site_name'] . $lang['bonusmanager_freeslots_addedmsg2']);
+                        $msg = sqlesc($lang['bonusmanager_freeslots_addedmsg'] . $freeslots . $lang['bonusmanager_freeslots_addedmsg3'] . $site_config['site_name'] . $lang['bonusmanager_freeslots_addedmsg2']);
                         while ($arr_freeslots = mysqli_fetch_assoc($res_freeslots)) {
-                            $freeslots_new  = ($arr_freeslots['freeslots'] + $freeslots);
-                            $modcomment     = $arr_freeslots['modcomment'];
-                            $modcomment     = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $freeslots . $lang['bonusmanager_freeslots_modcomment'] . $modcomment;
-                            $modcom         = sqlesc($modcomment);
-                            $pm_buffer[]    = '(0, ' . $arr_freeslots['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
+                            $freeslots_new = ($arr_freeslots['freeslots'] + $freeslots);
+                            $modcomment = $arr_freeslots['modcomment'];
+                            $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $freeslots . $lang['bonusmanager_freeslots_modcomment'] . $modcomment;
+                            $modcom = sqlesc($modcomment);
+                            $pm_buffer[] = '(0, ' . $arr_freeslots['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                             $users_buffer[] = '(' . $arr_freeslots['id'] . ', ' . $freeslots_new . ', ' . $modcom . ')';
                             $cache->update_row('user' . $arr_freeslots['id'], [
-                                'freeslots'  => $freeslots_new,
+                                'freeslots' => $freeslots_new,
                                 'modcomment' => $modcomment,
                             ], $site_config['expires']['user_cache']);
                             $cache->increment('inbox_' . $arr_freeslots['id']);
                         }
                         $count = count($users_buffer);
                         if ($count > 0) {
-                            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer))                                                                                    or sqlerr(__FILE__, __LINE__);
+                            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer)) or sqlerr(__FILE__, __LINE__);
                             sql_query('INSERT INTO users (id, freeslots, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE freeslots = VALUES(freeslots),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
                             write_log($lang['bonusmanager_freeslots_writelog'] . $count . $lang['bonusmanager_freeslots_writelog2'] . $CURUSER['username']);
                         }
@@ -262,26 +262,26 @@ switch ($action) {
         //=== if for all classes
         if ($free_for_classes === 1) {
             $res_invites = sql_query('SELECT id, invites, modcomment FROM users WHERE enabled = \'yes\' AND suspended = \'no\' AND invite_on = \'yes\'');
-            $pm_buffer   = $users_buffer   = [];
+            $pm_buffer = $users_buffer = [];
             if (mysqli_num_rows($res_invites) > 0) {
                 $subject = sqlesc($lang['bonusmanager_invite_added']);
-                $msg     = sqlesc($lang['bonusmanager_invite_addedmsg'] . $invites . $lang['bonusmanager_invite_addedmsg1'] . $site_config['site_name'] . $lang['bonusmanager_invite_addedmsg2']);
+                $msg = sqlesc($lang['bonusmanager_invite_addedmsg'] . $invites . $lang['bonusmanager_invite_addedmsg1'] . $site_config['site_name'] . $lang['bonusmanager_invite_addedmsg2']);
                 while ($arr_invites = mysqli_fetch_assoc($res_invites)) {
-                    $invites_new    = ($arr_invites['invites'] + $invites);
-                    $modcomment     = $arr_invites['modcomment'];
-                    $modcomment     = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $invites . $lang['bonusmanager_invite_modcomment'] . $modcomment;
-                    $modcom         = sqlesc($modcomment);
-                    $pm_buffer[]    = '(0, ' . $arr_invites['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
+                    $invites_new = ($arr_invites['invites'] + $invites);
+                    $modcomment = $arr_invites['modcomment'];
+                    $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $invites . $lang['bonusmanager_invite_modcomment'] . $modcomment;
+                    $modcom = sqlesc($modcomment);
+                    $pm_buffer[] = '(0, ' . $arr_invites['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                     $users_buffer[] = '(' . $arr_invites['id'] . ', ' . $invites_new . ', ' . $modcom . ')';
                     $cache->update_row('user' . $arr_invites['id'], [
-                        'invites'    => $invites_new,
+                        'invites' => $invites_new,
                         'modcomment' => $modcomment,
                     ], $site_config['expires']['user_cache']);
                     $cache->increment('inbox_' . $arr_invites['id']);
                 }
                 $count = count($users_buffer);
                 if ($count > 0) {
-                    sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer))                                                                              or sqlerr(__FILE__, __LINE__);
+                    sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer)) or sqlerr(__FILE__, __LINE__);
                     sql_query('INSERT INTO users (id, invites, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE invites = VALUES(invites),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
                     write_log($lang['bonusmanager_invite_writelog'] . $count . $lang['bonusmanager_invite_writelog1'] . $CURUSER['username']);
                 }
@@ -293,26 +293,26 @@ switch ($action) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
                     $res_invites = sql_query('SELECT id, invites, modcomment FROM users WHERE enabled = \'yes\' AND suspended = \'no\' AND invite_on = \'yes\' AND class = ' . $class);
-                    $pm_buffer   = $users_buffer   = [];
+                    $pm_buffer = $users_buffer = [];
                     if (mysqli_num_rows($res_invites) > 0) {
                         $subject = sqlesc($lang['bonusmanager_invite_added']);
-                        $msg     = sqlesc($lang['bonusmanager_invite_addedmsg'] . $invites . $lang['bonusmanager_invite_addedmsg3'] . $site_config['site_name'] . $lang['bonusmanager_invite_addedmsg2']);
+                        $msg = sqlesc($lang['bonusmanager_invite_addedmsg'] . $invites . $lang['bonusmanager_invite_addedmsg3'] . $site_config['site_name'] . $lang['bonusmanager_invite_addedmsg2']);
                         while ($arr_invites = mysqli_fetch_assoc($res_invites)) {
-                            $invites_new    = ($arr_invites['invites'] + $invites);
-                            $modcomment     = $arr_invites['modcomment'];
-                            $modcomment     = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $invites . $lang['bonusmanager_invite_modcomment'] . $modcomment;
-                            $modcom         = sqlesc($modcomment);
-                            $pm_buffer[]    = '(0, ' . $arr_invites['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
+                            $invites_new = ($arr_invites['invites'] + $invites);
+                            $modcomment = $arr_invites['modcomment'];
+                            $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $invites . $lang['bonusmanager_invite_modcomment'] . $modcomment;
+                            $modcom = sqlesc($modcomment);
+                            $pm_buffer[] = '(0, ' . $arr_invites['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                             $users_buffer[] = '(' . $arr_invites['id'] . ', ' . $invites_new . ', ' . $modcom . ')';
                             $cache->update_row('user' . $arr_invites['id'], [
-                                'invites'    => $invites_new,
+                                'invites' => $invites_new,
                                 'modcomment' => $modcomment,
                             ], $site_config['expires']['user_cache']);
                             $cache->increment('inbox_' . $arr_invites['id']);
                         }
                         $count = count($users_buffer);
                         if ($count > 0) {
-                            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer))                                                                              or sqlerr(__FILE__, __LINE__);
+                            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer)) or sqlerr(__FILE__, __LINE__);
                             sql_query('INSERT INTO users (id, invites, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE invites = VALUES(invites),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
                             write_log($lang['bonusmanager_invite_writelog'] . $count . $lang['bonusmanager_invite_writelog2'] . $CURUSER['username']);
                         }
@@ -333,11 +333,11 @@ switch ($action) {
         }
         //=== if for all classes
         if ($free_for_classes === 1) {
-            $res_pms   = sql_query('SELECT id FROM users WHERE enabled = \'yes\' AND suspended = \'no\'');
+            $res_pms = sql_query('SELECT id FROM users WHERE enabled = \'yes\' AND suspended = \'no\'');
             $pm_buffer = [];
             if (mysqli_num_rows($res_pms) > 0) {
                 $subject = sqlesc(htmlsafechars($_POST['subject']));
-                $body    = sqlesc(htmlsafechars($_POST['body']));
+                $body = sqlesc(htmlsafechars($_POST['body']));
                 while ($arr_pms = mysqli_fetch_assoc($res_pms)) {
                     $pm_buffer[] = '(0, ' . $arr_pms['id'] . ', ' . TIME_NOW . ', ' . $body . ', ' . $subject . ')';
                     $cache->increment('inbox_' . $arr_pms['id']);
@@ -354,11 +354,11 @@ switch ($action) {
         } elseif ($free_for_classes === 0) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
-                    $res_pms   = sql_query('SELECT id FROM users WHERE enabled = \'yes\' AND suspended = \'no\' AND class = ' . $class);
+                    $res_pms = sql_query('SELECT id FROM users WHERE enabled = \'yes\' AND suspended = \'no\' AND class = ' . $class);
                     $pm_buffer = [];
                     if (mysqli_num_rows($res_pms) > 0) {
                         $subject = sqlesc(htmlsafechars($_POST['subject']));
-                        $body    = sqlesc(htmlsafechars($_POST['body']));
+                        $body = sqlesc(htmlsafechars($_POST['body']));
                         while ($arr_pms = mysqli_fetch_assoc($res_pms)) {
                             $pm_buffer[] = '(0, ' . $arr_pms['id'] . ', ' . TIME_NOW . ', ' . $body . ', ' . $subject . ')';
                             $cache->increment('inbox_' . $arr_pms['id']);
@@ -378,7 +378,7 @@ switch ($action) {
         break;
 } //=== end switch
 //=== make the class based selection thingie bit here :D
-$count                   = 1;
+$count = 1;
 $all_classes_check_boxes = '<table border="0"><tr>';
 for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
     $all_classes_check_boxes .= '<td>
@@ -436,8 +436,8 @@ while ($i <= 50) {
 }
 $invites_drop_down .= '</select>' . $lang['bonusmanager_invite_amount'] . '';
 //== pms \0/ (*)(*)
-$subject      = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : $lang['bonusmanager_pm_masspm'];
-$body         = isset($_POST['body']) ? htmlsafechars($_POST['body']) : $lang['bonusmanager_pm_texthere'];
+$subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : $lang['bonusmanager_pm_masspm'];
+$body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : $lang['bonusmanager_pm_texthere'];
 $pm_drop_down = '<form name="compose" method="post" action="mass_bonus_for_members.php">
                  <input type="hidden" name="pm" value="pm" />
                  <table border="0" style="max-width: 800px;">
@@ -469,8 +469,8 @@ $h1_thingie .= (isset($_GET['karma']) ? ($_GET['karma'] === 1 ? '<h2>' . $lang['
 $h1_thingie .= (isset($_GET['freeslots']) ? ($_GET['freeslots'] === 1 ? '<h2>' . $lang['bonusmanager_h1_freeslot'] . '<h2>' : '<h2>' . $lang['bonusmanager_h1_freeslot1'] . '</h2>') : '');
 $h1_thingie .= (isset($_GET['invites']) ? ($_GET['invites'] === 1 ? '<h2>' . $lang['bonusmanager_h1_invite'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_invite1'] . '</h2>') : '');
 $h1_thingie .= (isset($_GET['pm']) ? ($_GET['pm'] === 1 ? '<h2>' . $lang['bonusmanager_h1_pm'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_pm1'] . '</h2>') : '');
-$HTMLOUT    .= '<h1>' . $site_config['site_name'] . ' ' . $lang['bonusmanager_mass_bonus'] . '</h1>' . $h1_thingie;
-$HTMLOUT    .= '<form name="inputform" method="post" action="' . $site_config['baseurl'] . '/staffpanel.php?tool=mass_bonus_for_members&amp;action=mass_bonus_for_members" enctype="multipart/form-data">
+$HTMLOUT .= '<h1>' . $site_config['site_name'] . ' ' . $lang['bonusmanager_mass_bonus'] . '</h1>' . $h1_thingie;
+$HTMLOUT .= '<form name="inputform" method="post" action="' . $site_config['baseurl'] . '/staffpanel.php?tool=mass_bonus_for_members&amp;action=mass_bonus_for_members" enctype="multipart/form-data">
         <input type="hidden" id="action_2" name="action_2" value="" />
     <table width="80%" border="0">
     <tr>

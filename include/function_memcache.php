@@ -11,10 +11,10 @@ function remove_torrent_peers($id)
     if (!is_int($id) || $id < 1) {
         return false;
     }
-    $delete    = 0;
-    $seed_key  = 'torrents_seeds_' . $id;
+    $delete = 0;
+    $seed_key = 'torrents_seeds_' . $id;
     $leech_key = 'torrents_leechs_' . $id;
-    $comp_key  = 'torrents_comps_' . $id;
+    $comp_key = 'torrents_comps_' . $id;
     $delete += $cache->delete($seed_key);
     $delete += $cache->delete($leech_key);
     $delete += $cache->delete($comp_key);
@@ -34,7 +34,7 @@ function remove_torrent($infohash)
     if (strlen($infohash) != 20 || !bin2hex($infohash)) {
         return false;
     }
-    $key     = 'torrent_hash_' . bin2hex($infohash);
+    $key = 'torrent_hash_' . bin2hex($infohash);
     $torrent = $cache->get($key);
     if ($torrent === false || is_null($torrent)) {
         $cache->delete($key);

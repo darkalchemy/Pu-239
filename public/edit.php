@@ -25,7 +25,7 @@ if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $CURUSER['class'] >= UC_
     header("Refresh: 1; url=$returl");
     die();
 }
-$lang    = array_merge(load_language('global'), load_language('edit'));
+$lang = array_merge(load_language('global'), load_language('edit'));
 $stdhead = [
     'css' => [
     ],
@@ -75,7 +75,7 @@ if ((strpos($row['ori_descr'], '<') === false) || (strpos($row['ori_descr'], '&l
     $c = ' checked';
 }
 $HTMLOUT .= tr($lang['edit_description'], '' . BBcode($row['ori_descr']) . "<br>({$lang['edit_tags']})", 1);
-$s    = "<select name='type'>\n";
+$s = "<select name='type'>\n";
 $cats = genrelist();
 foreach ($cats as $subrow) {
     $s .= "<option value='" . (int) $subrow['id'] . "'";
@@ -84,7 +84,7 @@ foreach ($cats as $subrow) {
     }
     $s .= '>' . htmlsafechars($subrow['name']) . "</option>\n";
 }
-$s       .= "</select>\n";
+$s .= "</select>\n";
 $HTMLOUT .= tr($lang['edit_type'], $s, 1);
 
 $subs_list .= "

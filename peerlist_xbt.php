@@ -8,7 +8,7 @@ check_user_status();
 global $site_config;
 
 $lang = array_merge(load_language('global'), load_language('peerlist'));
-$id   = (int) $_GET['id'];
+$id = (int) $_GET['id'];
 if (!isset($id) || !is_valid_id($id)) {
     stderr($lang['peerslist_user_error'], $lang['peerslist_invalid_id']);
 }
@@ -60,7 +60,7 @@ function dltable($name, $arr, $torrent)
     $mod = $CURUSER['class'] >= UC_STAFF;
     foreach ($arr as $e) {
         $htmlout .= "<tr>\n";
-        $upspeed   = ($e['upspeed'] > 0 ? mksize($e['upspeed']) : ($e['seedtime'] > 0 ? mksize($e['uploaded'] / ($e['seedtime'] + $e['leechtime'])) : mksize(0)));
+        $upspeed = ($e['upspeed'] > 0 ? mksize($e['upspeed']) : ($e['seedtime'] > 0 ? mksize($e['uploaded'] / ($e['seedtime'] + $e['leechtime'])) : mksize(0)));
         $downspeed = ($e['downspeed'] > 0 ? mksize($e['downspeed']) : ($e['leechtime'] > 0 ? mksize($e['downloaded'] / $e['leechtime']) : mksize(0)));
         if ($e['username']) {
             if (($e['tanonymous'] === 'yes' && $e['owner'] == $e['uid'] || $e['anonymous'] === 'yes' || $e['paranoia'] >= 2 && $CURUSER['id'] != $e['uid']) && $CURUSER['class'] < UC_STAFF) {
@@ -90,10 +90,10 @@ $res = sql_query('SELECT * FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(_
 if (mysqli_num_rows($res) == 0) {
     stderr("{$lang['peerslist_error']}", "{$lang['peerslist_nothing']}");
 }
-$row         = mysqli_fetch_assoc($res);
+$row = mysqli_fetch_assoc($res);
 $downloaders = [];
-$seeders     = [];
-$subres      = sql_query("SELECT u.username, u.anonymous, u.paranoia, t.owner, t.anonymous AS tanonymous, t.seeders, t.leechers, x.fid, x.uploaded, x.downloaded, x.left, x.active, x.mtime AS la, x.uid, x.leechtime, x.seedtime, x.peer_id, x.upspeed, x.downspeed, x.ipa
+$seeders = [];
+$subres = sql_query("SELECT u.username, u.anonymous, u.paranoia, t.owner, t.anonymous AS tanonymous, t.seeders, t.leechers, x.fid, x.uploaded, x.downloaded, x.left, x.active, x.mtime AS la, x.uid, x.leechtime, x.seedtime, x.peer_id, x.upspeed, x.downspeed, x.ipa
     FROM xbt_files_users x
     LEFT JOIN users u ON x.uid = u.id
     LEFT JOIN torrents AS t ON t.id = x.fid

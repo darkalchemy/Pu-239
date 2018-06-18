@@ -9,7 +9,7 @@ global $CURUSER, $site_config, $cache, $session;
 if (!$CURUSER) {
     get_template();
 }
-$lang    = array_merge(load_language('global'), load_language('passhint'));
+$lang = array_merge(load_language('global'), load_language('passhint'));
 $stdfoot = [
     'js' => [
     ],
@@ -31,14 +31,14 @@ if ($step == '1') {
                 stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error2']}");
                 die();
             }
-            $ip     = getip();
-            $url    = 'https://www.google.com/recaptcha/api/siteverify';
+            $ip = getip();
+            $url = 'https://www.google.com/recaptcha/api/siteverify';
             $params = [
-                'secret'   => $_ENV['RECAPTCHA_SECRET_KEY'],
+                'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
                 'response' => $response,
                 'remoteip' => $ip,
             ];
-            $query       = http_build_query($params);
+            $query = http_build_query($params);
             $contextData = [
                         'method' => 'POST',
                         'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
@@ -47,7 +47,7 @@ if ($step == '1') {
                         'content' => $query,
             ];
             $context = stream_context_create(['http' => $contextData]);
-            $result  = file_get_contents(
+            $result = file_get_contents(
                           $url,
                           false,
                           $context
@@ -65,7 +65,7 @@ if ($step == '1') {
             stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_invalidemail1']}");
         }
         $check = sql_query('SELECT id, status, passhint, hintanswer FROM users WHERE email = ' . sqlesc($email)) or sqlerr(__FILE__, __LINE__);
-        $assoc = mysqli_fetch_assoc($check)                                                                      or stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_notfound']}");
+        $assoc = mysqli_fetch_assoc($check) or stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_notfound']}");
         if (empty($assoc['passhint']) || empty($assoc['hintanswer'])) {
             stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error3']}");
         }
@@ -78,19 +78,19 @@ if ($step == '1') {
                     <table class='table table-bordered top20 bottom20'>
                         <tr class='no_hover'>
                             <td class='rowhead'>{$lang['main_question']}</td>";
-            $id[1]       = '/1/';
-            $id[2]       = '/2/';
-            $id[3]       = '/3/';
-            $id[4]       = '/4/';
-            $id[5]       = '/5/';
-            $id[6]       = '/6/';
+            $id[1] = '/1/';
+            $id[2] = '/2/';
+            $id[3] = '/3/';
+            $id[4] = '/4/';
+            $id[5] = '/5/';
+            $id[6] = '/6/';
             $question[1] = "{$lang['main_question1']}";
             $question[2] = "{$lang['main_question2']}";
             $question[3] = "{$lang['main_question3']}";
             $question[4] = "{$lang['main_question4']}";
             $question[5] = "{$lang['main_question5']}";
             $question[6] = "{$lang['main_question6']}";
-            $passhint    = preg_replace($id, $question, (int) $assoc['passhint']);
+            $passhint = preg_replace($id, $question, (int) $assoc['passhint']);
             $HTMLOUT .= "
                             <td><i><b>{$passhint}?</b></i><input type='hidden' name='id' value='" . (int) $assoc['id'] . "' class='w-100' /></td>
                         </tr>
@@ -116,7 +116,7 @@ if ($step == '1') {
         die();
     }
     $select = sql_query('SELECT id, username, hintanswer FROM users WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $fetch  = mysqli_fetch_assoc($select);
+    $fetch = mysqli_fetch_assoc($select);
     if (!$fetch) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error5']}");
     }
@@ -124,10 +124,10 @@ if ($step == '1') {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error6']}");
     }
     if (!password_verify($answer, $fetch['hintanswer'])) {
-        $ip        = getip();
+        $ip = getip();
         $useragent = $_SERVER['HTTP_USER_AGENT'];
-        $msg       = '' . htmlsafechars($fetch['username']) . ', on ' . get_date(TIME_NOW, '', 1, 0) . ", {$lang['main_message']}" . "\n\n{$lang['main_message1']} " . $ip . ' (' . @gethostbyaddr($ip) . ')' . "\n {$lang['main_message2']} " . $useragent . "\n\n {$lang['main_message3']}\n {$lang['main_message4']}\n";
-        $subject   = 'Failed password reset';
+        $msg = '' . htmlsafechars($fetch['username']) . ', on ' . get_date(TIME_NOW, '', 1, 0) . ", {$lang['main_message']}" . "\n\n{$lang['main_message1']} " . $ip . ' (' . @gethostbyaddr($ip) . ')' . "\n {$lang['main_message2']} " . $useragent . "\n\n {$lang['main_message3']}\n {$lang['main_message4']}\n";
+        $subject = 'Failed password reset';
         sql_query('INSERT INTO messages (receiver, msg, subject, added) VALUES (' . sqlesc((int) $fetch['id']) . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ', ' . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error7']}");
     } else {
@@ -162,8 +162,8 @@ if ($step == '1') {
     if (!mkglobal('id:newpass:newpassagain:hash')) {
         die();
     }
-    $select = sql_query('SELECT id, hintanswer FROM users WHERE id = ' . sqlesc($id))   or sqlerr(__FILE__, __LINE__);
-    $fetch  = mysqli_fetch_assoc($select)                                               or stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error8']}");
+    $select = sql_query('SELECT id, hintanswer FROM users WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    $fetch = mysqli_fetch_assoc($select) or stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error8']}");
     if (empty($newpass)) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error9']}");
     }

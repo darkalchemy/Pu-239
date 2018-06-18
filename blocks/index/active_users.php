@@ -4,8 +4,8 @@ global $site_config, $lang, $fluent, $cache;
 
 $active = $cache->get('activeusers_');
 if ($active === false || is_null($active)) {
-    $list  = [];
-    $dt    = TIME_NOW - 900;
+    $list = [];
+    $dt = TIME_NOW - 900;
     $query = $fluent->from('users')
         ->select(null)
         ->select('id')
@@ -17,9 +17,9 @@ if ($active === false || is_null($active)) {
     foreach ($query as $row) {
         $list[] = format_username($row['id']);
     }
-    $list[]                = format_username(2);
+    $list[] = format_username(2);
     $active['activeusers'] = implode(',&nbsp;&nbsp;', $list);
-    $active['actcount']    = count($list);
+    $active['actcount'] = count($list);
     if ($active['actcount'] === 0) {
         $active['activeusers'] = $lang['index_active_users_no'];
     }

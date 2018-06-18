@@ -6,7 +6,7 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $site_config, $CURUSER, $lang;
 
-$lang    = array_merge(load_language('global'), load_language('userdetails'));
+$lang = array_merge(load_language('global'), load_language('userdetails'));
 $stdfoot = [
     'js' => [
         get_file_name('checkport_js'),

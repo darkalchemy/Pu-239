@@ -9,7 +9,7 @@ function crazyhour_announce()
 {
     global $fluent, $site_config, $cache;
 
-    $crazy_hour      = (TIME_NOW + 3600);
+    $crazy_hour = (TIME_NOW + 3600);
     $cz['crazyhour'] = $cache->get('crazyhour');
     if ($cz['crazyhour'] === false || is_null($cz['crazyhour'])) {
         $cz['crazyhour'] = $fluent->from('freeleech')
@@ -20,11 +20,11 @@ function crazyhour_announce()
             ->fetch();
 
         if ($cz['crazyhour'] === false) {
-            $cz['crazyhour']['var']    = random_int(TIME_NOW, (TIME_NOW + 86400));
+            $cz['crazyhour']['var'] = random_int(TIME_NOW, (TIME_NOW + 86400));
             $cz['crazyhour']['amount'] = 0;
             $fluent->update('freeleech')
                 ->set([
-                          'var'    => $cz['crazyhour']['var'],
+                          'var' => $cz['crazyhour']['var'],
                           'amount' => $cz['crazyhour']['amount'],
                       ])
                 ->where('type = ?', 'crazyhour')
@@ -35,13 +35,13 @@ function crazyhour_announce()
 
     if ($cz['crazyhour']['var'] < TIME_NOW) {
         if (($cz_lock = $cache->add('crazyhour_lock', 1, 10)) !== false) {
-            $cz['crazyhour_new']       = mktime(23, 59, 59, date('m'), date('d'), date('y'));
-            $cz['crazyhour']['var']    = random_int($cz['crazyhour_new'], ($cz['crazyhour_new'] + 86400));
+            $cz['crazyhour_new'] = mktime(23, 59, 59, date('m'), date('d'), date('y'));
+            $cz['crazyhour']['var'] = random_int($cz['crazyhour_new'], ($cz['crazyhour_new'] + 86400));
             $cz['crazyhour']['amount'] = 0;
-            $cz['remaining']           = ($cz['crazyhour']['var'] - TIME_NOW);
+            $cz['remaining'] = ($cz['crazyhour']['var'] - TIME_NOW);
 
             $set = [
-                'var'    => $cz['crazyhour']['var'],
+                'var' => $cz['crazyhour']['var'],
                 'amount' => $cz['crazyhour']['amount'],
             ];
             $fluent->update('freeleech')
@@ -54,10 +54,10 @@ function crazyhour_announce()
             $msg = 'Next [color=orange][b]Crazyhour[/b][/color] is at ' . date('F j, g:i a', $cz['crazyhour']['var']);
             autoshout($msg);
 
-            $text   = 'Next <span style="font-weight:bold;color:orange;">Crazyhour</span> is at ' . date('F j, g:i a', $cz['crazyhour']['var']);
+            $text = 'Next <span style="font-weight:bold;color:orange;">Crazyhour</span> is at ' . date('F j, g:i a', $cz['crazyhour']['var']);
             $values = [
                 'added' => TIME_NOW,
-                'txt'   => $text,
+                'txt' => $text,
             ];
             $fluent->insertInto('sitelog')
                 ->values($values)
@@ -80,10 +80,10 @@ function crazyhour_announce()
                 $msg = 'w00t! It\'s [color=orange][b]Crazyhour[/b][/color] :w00t:';
                 autoshout($msg);
 
-                $text   = 'w00t! It\'s <span style="font-weight:bold;color:orange;">Crazyhour</span> <img src="./images/smilies/w00t.gif" alt=":w00t:" />';
+                $text = 'w00t! It\'s <span style="font-weight:bold;color:orange;">Crazyhour</span> <img src="./images/smilies/w00t.gif" alt=":w00t:" />';
                 $values = [
                     'added' => TIME_NOW,
-                    'txt'   => $text,
+                    'txt' => $text,
                 ];
                 $fluent->insertInto('sitelog')
                     ->values($values)
@@ -152,8 +152,8 @@ function get_torrent_from_hash($info_hash)
 {
     global $fluent, $site_config, $cache;
 
-    $key     = 'torrent_hash_' . bin2hex($info_hash);
-    $ttl     = 21600;
+    $key = 'torrent_hash_' . bin2hex($info_hash);
+    $ttl = 21600;
     $torrent = $cache->get($key);
     if ($torrent === false || is_null($torrent) || !is_array($torrent)) {
         $torrent = $fluent->from('torrents')
@@ -174,9 +174,9 @@ function get_torrent_from_hash($info_hash)
             ->fetch();
         if ($torrent !== false) {
             $cache->set($key, $torrent, $ttl);
-            $seed_key  = 'torrents_seeds_' . $torrent['id'];
+            $seed_key = 'torrents_seeds_' . $torrent['id'];
             $leech_key = 'torrents_leechs_' . $torrent['id'];
-            $comp_key  = 'torrents_comps_' . $torrent['id'];
+            $comp_key = 'torrents_comps_' . $torrent['id'];
             $cache->add($seed_key, $torrent['seeders'], $ttl);
             $cache->add($leech_key, $torrent['leechers'], $ttl);
             $cache->add($comp_key, $torrent['times_completed'], $ttl);
@@ -186,11 +186,11 @@ function get_torrent_from_hash($info_hash)
             return false;
         }
     } else {
-        $seed_key                   = 'torrents_seeds_' . $torrent['id'];
-        $leech_key                  = 'torrents_leechs_' . $torrent['id'];
-        $comp_key                   = 'torrents_comps_' . $torrent['id'];
-        $torrent['seeders']         = $cache->get($seed_key);
-        $torrent['leechers']        = $cache->get($leech_key);
+        $seed_key = 'torrents_seeds_' . $torrent['id'];
+        $leech_key = 'torrents_leechs_' . $torrent['id'];
+        $comp_key = 'torrents_comps_' . $torrent['id'];
+        $torrent['seeders'] = $cache->get($seed_key);
+        $torrent['leechers'] = $cache->get($leech_key);
         $torrent['times_completed'] = $cache->get($comp_key);
         if (
             $torrent['seeders'] === false ||
@@ -242,10 +242,10 @@ function adjust_torrent_peers($id, $seeds = 0, $leechers = 0, $completed = 0)
     if (!$seeds && !$leechers && !$completed) {
         return false;
     }
-    $adjust    = 0;
-    $seed_key  = 'torrents_seeds_' . $id;
+    $adjust = 0;
+    $seed_key = 'torrents_seeds_' . $id;
     $leech_key = 'torrents_leechs_' . $id;
-    $comp_key  = 'torrents_comps_' . $id;
+    $comp_key = 'torrents_comps_' . $id;
     if ($seeds > 0) {
         $adjust += (bool) $cache->increment($seed_key, $seeds);
     } elseif ($seeds < 0) {
@@ -274,7 +274,7 @@ function get_happy($torrentid, $userid)
     global $fluent, $site_config, $cache;
 
     $keys['happyhour'] = $userid . '_happy';
-    $happy             = $cache->get($keys['happyhour']);
+    $happy = $cache->get($keys['happyhour']);
     if ($happy === false || is_null($happy)) {
         $res = $fluent->from('happyhour')
             ->where('userid = ?', $userid)
@@ -303,9 +303,9 @@ function get_slots($torrentid, $userid)
 {
     global $fluent, $site_config, $cache;
 
-    $ttl_slot            = 86400;
+    $ttl_slot = 86400;
     $torrent['freeslot'] = $torrent['doubleslot'] = 0;
-    $slot                = $cache->get('fllslot_' . $userid);
+    $slot = $cache->get('fllslot_' . $userid);
     if ($slot === false || is_null($slot)) {
         $slot = $fluent->from('freeslots')
             ->where('userid = ?', $userid)
@@ -343,14 +343,14 @@ function auto_enter_abnormal_upload($userid, $rate, $upthis, $diff, $torrentid, 
     global $fluent;
 
     $values = [
-        'added'     => TIME_NOW,
-        'userid'    => $userid,
-        'client'    => $client,
-        'rate'      => $rate,
-        'beforeup'  => $last_up,
-        'upthis'    => $upthis,
-        'timediff'  => $diff,
-        'userip'    => inet_pton($realip),
+        'added' => TIME_NOW,
+        'userid' => $userid,
+        'client' => $client,
+        'rate' => $rate,
+        'beforeup' => $last_up,
+        'upthis' => $upthis,
+        'timediff' => $diff,
+        'userip' => inet_pton($realip),
         'torrentid' => $torrentid,
     ];
     $fluent->insertInto('cheaters')
@@ -365,7 +365,7 @@ function err($msg)
 {
     benc_resp([
                   'failure reason' => [
-                      'type'  => 'string',
+                      'type' => 'string',
                       'value' => $msg,
                   ],
               ]);
@@ -378,7 +378,7 @@ function err($msg)
 function benc_resp($d)
 {
     benc_resp_raw(benc([
-                           'type'  => 'dictionary',
+                           'type' => 'dictionary',
                            'value' => $d,
                        ]));
 }
@@ -461,7 +461,7 @@ function benc_list($a)
  */
 function benc_dict($d)
 {
-    $s    = 'd';
+    $s = 'd';
     $keys = array_keys($d);
     sort($keys);
     foreach ($keys as $k) {

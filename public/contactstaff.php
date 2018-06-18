@@ -8,7 +8,7 @@ require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $session;
 
-$lang    = array_merge(load_language('global'), load_language('contactstaff'));
+$lang = array_merge(load_language('global'), load_language('contactstaff'));
 $stdhead = [
     'css' => [
     ],
@@ -21,10 +21,10 @@ $stdfoot = [
 
 $msg = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $msg      = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
-    $subject  = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '';
+    $msg = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
+    $subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '';
     $returnto = isset($_POST['returnto']) ? htmlsafechars($_POST['returnto']) : $_SERVER['PHP_SELF'];
-    $fail     = false;
+    $fail = false;
     if (empty($msg)) {
         $session->set('is-warning', $lang['contactstaff_no_msg']);
         $fail = true;

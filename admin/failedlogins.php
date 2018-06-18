@@ -9,9 +9,9 @@ class_check($class);
 global $site_config, $lang, $session;
 
 $HTMLOUT = '';
-$lang    = array_merge($lang, load_language('failedlogins'));
-$mode    = (isset($_GET['mode']) ? $_GET['mode'] : '');
-$id      = isset($_GET['id']) ? (int) $_GET['id'] : '';
+$lang = array_merge($lang, load_language('failedlogins'));
+$mode = (isset($_GET['mode']) ? $_GET['mode'] : '');
+$id = isset($_GET['id']) ? (int) $_GET['id'] : '';
 /**
  * @param $id
  *
@@ -46,7 +46,7 @@ if ($mode === 'delete') {
     unset($_POST);
 }
 
-$where  = '';
+$where = '';
 $search = isset($_POST['search']) ? strip_tags($_POST['search']) : '';
 if (isset($_GET['search'])) {
     $search = strip_tags($_GET['search']);
@@ -57,12 +57,12 @@ if (!$search) {
     $where = 'WHERE INET6_NTOA(f.ip) = ' . sqlesc($search);
 }
 
-$sql     = "SELECT COUNT(id) AS count FROM failedlogins AS f $where";
-$res     = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-$row     = mysqli_fetch_assoc($res);
-$count   = $row['count'];
+$sql = "SELECT COUNT(id) AS count FROM failedlogins AS f $where";
+$res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+$row = mysqli_fetch_assoc($res);
+$count = $row['count'];
 $perpage = 15;
-$pager   = pager($perpage, $count, $site_config['baseurl'] . '/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;' . (!empty($search) ? "search=$search&amp;" : '') . '');
+$pager = pager($perpage, $count, $site_config['baseurl'] . '/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;' . (!empty($search) ? "search=$search&amp;" : '') . '');
 if (!$where && $count === 0) {
     stderr($lang['failed_main_nofail'], $lang['failed_main_nofail_msg']);
 }

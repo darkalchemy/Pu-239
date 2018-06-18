@@ -10,8 +10,8 @@ if (!$CURUSER) {
 }
 dbconn();
 
-$lang    = array_merge(load_language('global'), load_language('ok'));
-$type    = isset($_GET['type']) ? $_GET['type'] : '';
+$lang = array_merge(load_language('global'), load_language('ok'));
+$type = isset($_GET['type']) ? $_GET['type'] : '';
 $HTMLOUT = '';
 if ($type === 'signup' && isset($_GET['email'])) {
     stderr("{$lang['ok_success']}", sprintf((!$site_config['email_confirm'] ? $lang['ok_email'] : $lang['ok_email_confirm']), htmlsafechars($_GET['email'], ENT_QUOTES)));
@@ -25,8 +25,8 @@ if ($type === 'signup' && isset($_GET['email'])) {
         die();
     }
     $HTMLOUT = stdhead("{$lang['ok_sysop_account']}");
-    $text1   = $lang['ok_sysop_activated'];
-    $text2   = main_div($lang['ok_account_login']);
+    $text1 = $lang['ok_sysop_activated'];
+    $text2 = main_div($lang['ok_account_login']);
     $HTMLOUT .= wrapper($text1 . $text2, 'has-text-centered');
     $HTMLOUT .= stdfoot();
     echo $HTMLOUT;

@@ -21,9 +21,9 @@ $list = $site_config['arcade_games_names'];
 sort($list);
 foreach ($list as $gname) {
     $game_id = array_search($gname, $site_config['arcade_games_names']);
-    $game    = $site_config['arcade_games'][$game_id];
+    $game = $site_config['arcade_games'][$game_id];
     //=== get high score (5)
-    $sql       = 'SELECT * FROM flashscores WHERE game = ' . sqlesc($game) . ' ORDER BY score DESC LIMIT 25';
+    $sql = 'SELECT * FROM flashscores WHERE game = ' . sqlesc($game) . ' ORDER BY score DESC LIMIT 25';
     $score_res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($score_res) !== 0) {
         $HTMLOUT .= "
@@ -43,7 +43,7 @@ foreach ($list as $gname) {
                     </tr>
                 </thead>
                 <tbody>';
-        $sql          = 'SELECT * FROM highscores WHERE game = ' . sqlesc($game) . ' ORDER BY score DESC LIMIT 1';
+        $sql = 'SELECT * FROM highscores WHERE game = ' . sqlesc($game) . ' ORDER BY score DESC LIMIT 1';
         $at_score_res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         while ($at_score_arr = mysqli_fetch_assoc($at_score_res)) {
             $at_username = format_username($at_score_arr['user_id']);
@@ -61,9 +61,9 @@ foreach ($list as $gname) {
 
         while ($score_arr = mysqli_fetch_assoc($score_res)) {
             $username = format_username($score_arr['user_id']);
-            $sql      = 'SELECT COUNT(id) FROM flashscores WHERE game = ' . sqlesc($game) . ' AND score > ' . sqlesc($score_arr['score']);
-            $ranking  = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-            $rankrow  = mysqli_fetch_row($ranking);
+            $sql = 'SELECT COUNT(id) FROM flashscores WHERE game = ' . sqlesc($game) . ' AND score > ' . sqlesc($score_arr['score']);
+            $ranking = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+            $rankrow = mysqli_fetch_row($ranking);
 
             $HTMLOUT .= '
                     <tr' . ($score_arr['user_id'] == $CURUSER['id'] ? ' class="has-text-primary text-shadow"' : '') . '>
@@ -74,11 +74,11 @@ foreach ($list as $gname) {
                     </tr>';
         }
         //=== get members high score if any
-        $sql              = 'SELECT score FROM flashscores WHERE game = ' . sqlesc($game) . ' AND user_id = ' . sqlesc($CURUSER['id']) . ' ORDER BY score DESC LIMIT 1';
+        $sql = 'SELECT score FROM flashscores WHERE game = ' . sqlesc($game) . ' AND user_id = ' . sqlesc($CURUSER['id']) . ' ORDER BY score DESC LIMIT 1';
         $member_score_res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
         if (mysqli_num_rows($member_score_res) != 0) {
-            $score_arr       = mysqli_fetch_row($member_score_res);
+            $score_arr = mysqli_fetch_row($member_score_res);
             $member_rank_res = sql_query('SELECT COUNT(id) FROM flashscores WHERE game = ' . sqlesc($game) . ' AND score > ' . sqlesc($score_arr[0])) or sqlerr(__FILE__, __LINE__);
             $member_rank_arr = mysqli_fetch_row($member_rank_res);
 
@@ -96,8 +96,8 @@ foreach ($list as $gname) {
 }
 
 //=== total games played:
-$sql           = 'SELECT COUNT(id) AS count, SUM(score) AS score FROM flashscores WHERE user_id = ' . $CURUSER['id'];
-$result        = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+$sql = 'SELECT COUNT(id) AS count, SUM(score) AS score FROM flashscores WHERE user_id = ' . $CURUSER['id'];
+$result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $member_totals = mysqli_fetch_assoc($result);
 
 $sql = 'SELECT COUNT(id) AS count, user_id
@@ -105,7 +105,7 @@ $sql = 'SELECT COUNT(id) AS count, user_id
             GROUP BY user_id
             ORDER BY COUNT(id) DESC
             LIMIT 1';
-$result                   = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+$result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $member_played_most_games = mysqli_fetch_assoc($result);
 
 $sql = 'SELECT SUM(score) AS score, COUNT(id) AS count, user_id
@@ -113,7 +113,7 @@ $sql = 'SELECT SUM(score) AS score, COUNT(id) AS count, user_id
             GROUP BY user_id
             ORDER BY score DESC
             LIMIT 1';
-$result            = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+$result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $member_high_score = mysqli_fetch_assoc($result);
 if (!empty($member_played_most_games) && !empty($member_high_score)) {
     $HTMLOUT .= '

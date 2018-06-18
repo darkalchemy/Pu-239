@@ -8,7 +8,7 @@ if ($CURUSER['id'] != $num['userid'] && $CURUSER['class'] < UC_STAFF) {
     stderr('Error', 'Access denied.');
 }
 $offer = (isset($_POST['offertitle']) ? htmlspecialchars($_POST['offertitle']) : '');
-$pic   = '';
+$pic = '';
 if (!empty($_POST['picture'])) {
     if (!preg_match('/^https?:\/\/([a-zA-Z0-9\-\_]+\.)+([a-zA-Z]{1,5}[^\.])(\/[^<>]+)+\.(jpg|jpeg|gif|png|tif|tiff|bmp)$/i', $_POST['picture'])) {
         stderr('Error', 'Picture MUST be in jpg, gif or png format. Make sure you include http:// in the URL.');
@@ -29,11 +29,11 @@ $cat = (isset($_POST['category']) ? (int) $_POST['category'] : ($num['cat'] != '
 if (!is_valid_id($cat)) {
     stderr('Error', 'You must select a category to put the request in!');
 }
-$offer      = sqlesc($offer);
-$descr      = sqlesc($descr);
+$offer = sqlesc($offer);
+$descr = sqlesc($descr);
 $acceptedby = isset($_POST['acceptedby']) ? (int) $_POST['acceptedby'] : 0;
-$filled     = isset($_POST['filled']) ? $_POST['filled'] : 0;
-$torrentid  = isset($_POST['torrentid']) ? (int) $_POST['torrentid'] : 0;
+$filled = isset($_POST['filled']) ? $_POST['filled'] : 0;
+$torrentid = isset($_POST['torrentid']) ? (int) $_POST['torrentid'] : 0;
 if ($filled) {
     if (!is_valid_id($torrentid)) {
         stderr('Error', 'Not a valid torrent ID!');

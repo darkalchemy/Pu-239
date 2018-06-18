@@ -18,7 +18,7 @@ if (isset($_POST['move'])) {
 if (isset($_POST['delete'])) {
     $pm_messages = $_POST['pm'];
     foreach ($pm_messages as $id) {
-        $res     = sql_query('SELECT * FROM messages WHERE id = ' . sqlesc($id));
+        $res = sql_query('SELECT * FROM messages WHERE id = ' . sqlesc($id));
         $message = mysqli_fetch_assoc($res);
         if ($message['receiver'] == $CURUSER['id'] && $message['urgent'] === 'yes' && $message['unread'] === 'yes') {
             stderr($lang['pm_error'], '' . $lang['pm_delete_err'] . '<a class="altlink" href="' . $site_config['baseurl'] . '/pm_system.php?action=view_message&id=' . $pm_id . '">' . $lang['pm_delete_back'] . '</a>' . $lang['pm_delete_msg'] . '');

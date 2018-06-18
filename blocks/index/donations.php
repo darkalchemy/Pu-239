@@ -3,7 +3,7 @@
 global $site_config, $lang, $fluent, $cache;
 
 $progress = '';
-$funds    = $cache->get('totalfunds_');
+$funds = $cache->get('totalfunds_');
 if ($funds === false || is_null($funds)) {
     $funds = $fluent->from('funds')
         ->select(null)
@@ -15,7 +15,7 @@ if ($funds === false || is_null($funds)) {
 }
 
 $funds_difference = $site_config['totalneeded'] - $funds;
-$progress         = number_format($funds / $site_config['totalneeded'] * 100, 1);
+$progress = number_format($funds / $site_config['totalneeded'] * 100, 1);
 if ($progress >= 100) {
     $progress = 100;
 }

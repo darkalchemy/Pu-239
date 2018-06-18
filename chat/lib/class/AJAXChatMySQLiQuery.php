@@ -15,10 +15,10 @@
 class AJAXChatMySQLiQuery
 {
     protected $_connectionID;
-    protected $_sql    = '';
+    protected $_sql = '';
     protected $_result = 0;
-    protected $_errno  = 0;
-    protected $_error  = '';
+    protected $_errno = 0;
+    protected $_error = '';
 
     // Constructor:
 
@@ -30,9 +30,9 @@ class AJAXChatMySQLiQuery
      */
     public function __construct($sql, $connectionID)
     {
-        $this->_sql          = trim($sql);
+        $this->_sql = trim($sql);
         $this->_connectionID = $connectionID;
-        $this->_result       = $this->_connectionID->query($this->_sql);
+        $this->_result = $this->_connectionID->query($this->_sql);
         if (!$this->_result) {
             $this->_errno = $this->_connectionID->errno;
             $this->_error = $this->_connectionID->error;

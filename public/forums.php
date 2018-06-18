@@ -10,7 +10,7 @@ require_once CLASS_DIR . 'class_user_options.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $fluent;
 
-$lang    = array_merge(load_language('global'), load_language('forums'), load_language('forums_global'));
+$lang = array_merge(load_language('global'), load_language('forums'), load_language('forums_global'));
 $stdhead = [
     'css' => [
         'forums',
@@ -36,15 +36,15 @@ $fluent->update('users')
     ->where('id = ?', $CURUSER['id'])
     ->execute();
 
-$config_id  = 1;
+$config_id = 1;
 $config_arr = $fluent->from('forum_config')
     ->where('id = ?', $config_id)
     ->fetch();
 
-$delete_for_real         = ($config_arr['delete_for_real'] == 1 ? 1 : 0);
-$min_delete_view_class   = htmlsafechars($config_arr['min_delete_view_class']);
-$readpost_expiry         = ((int) $config_arr['readpost_expiry'] * 86400);
-$min_upload_class        = htmlsafechars($config_arr['min_upload_class']);
+$delete_for_real = ($config_arr['delete_for_real'] == 1 ? 1 : 0);
+$min_delete_view_class = htmlsafechars($config_arr['min_delete_view_class']);
+$readpost_expiry = ((int) $config_arr['readpost_expiry'] * 86400);
+$min_upload_class = htmlsafechars($config_arr['min_upload_class']);
 $accepted_file_extension = [
     $config_arr['accepted_file_extension'],
 ];
@@ -190,9 +190,9 @@ $legend = main_table("
         <td></td>
 	</tr>");
 
-$poll_starts   = (isset($_POST['poll_starts']) ? intval($_POST['poll_starts']) : 0);
-$poll_ends     = (isset($_POST['poll_ends']) ? intval($_POST['poll_ends']) : 1356048000);
-$change_vote   = ((isset($_POST['change_vote']) && 'yes' === $_POST['change_vote']) ? 'yes' : 'no');
+$poll_starts = (isset($_POST['poll_starts']) ? intval($_POST['poll_starts']) : 0);
+$poll_ends = (isset($_POST['poll_ends']) ? intval($_POST['poll_ends']) : 1356048000);
+$change_vote = ((isset($_POST['change_vote']) && 'yes' === $_POST['change_vote']) ? 'yes' : 'no');
 $multi_options = (isset($_POST['multi_options']) ? intval($_POST['multi_options']) : 1);
 //$can_add_poll = (isset($_GET['action']) && $_GET['action'] == 'new_topic' ? 1 : 0);
 //=== options for amount of options lol
@@ -428,27 +428,27 @@ switch ($action) {
 	                </a>
 	            </h2>' : '');
             if ($arr_forums['forum_id'] === $arr_forums['over_forum_id']) {
-                $forum_id          = $arr_forums['real_forum_id'];
-                $forum_name        = htmlsafechars($arr_forums['name'], ENT_QUOTES);
+                $forum_id = $arr_forums['real_forum_id'];
+                $forum_name = htmlsafechars($arr_forums['name'], ENT_QUOTES);
                 $forum_description = htmlsafechars($arr_forums['description'], ENT_QUOTES);
-                $topic_count       = number_format($arr_forums['topic_count']);
-                $post_count        = number_format($arr_forums['post_count']);
+                $topic_count = number_format($arr_forums['topic_count']);
+                $post_count = number_format($arr_forums['post_count']);
 
                 $last_post_arr = $cache->get('last_post_' . $forum_id . '_' . $CURUSER['class']);
                 if ($last_post_arr === false || is_null($last_post_arr)) {
-                    $query         = sql_query('SELECT t.id AS topic_id, t.topic_name, t.last_post, t.anonymous AS tan, p.added, p.anonymous AS pan, p.user_id, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.avatar_rights FROM topics AS t LEFT JOIN posts AS p ON p.topic_id = t.id RIGHT JOIN users AS u ON u.id = p.user_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? ' t.status != \'deleted\' AND p.status != \'deleted\' AND' : '')) . ' t.forum_id = ' . sqlesc($forum_id) . ' ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+                    $query = sql_query('SELECT t.id AS topic_id, t.topic_name, t.last_post, t.anonymous AS tan, p.added, p.anonymous AS pan, p.user_id, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.avatar_rights FROM topics AS t LEFT JOIN posts AS p ON p.topic_id = t.id RIGHT JOIN users AS u ON u.id = p.user_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? ' t.status != \'deleted\' AND p.status != \'deleted\' AND' : '')) . ' t.forum_id = ' . sqlesc($forum_id) . ' ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
                     $last_post_arr = mysqli_fetch_assoc($query);
                     $cache->set('last_post_' . $forum_id . '_' . $CURUSER['class'], $last_post_arr, $site_config['expires']['last_post']);
                 }
                 if ($last_post_arr['last_post'] > 0) {
                     $last_post_id = (int) $last_post_arr['last_post'];
                     if (($last_read_post_arr = $cache->get('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'])) === false) {
-                        $query              = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($last_post_arr['topic_id'])) or sqlerr(__FILE__, __LINE__);
+                        $query = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($last_post_arr['topic_id'])) or sqlerr(__FILE__, __LINE__);
                         $last_read_post_arr = mysqli_fetch_row($query);
                         $cache->set('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'], $last_read_post_arr, $site_config['expires']['last_read_post']);
                     }
                     $image_to_use = ($last_post_arr['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_read_post_arr or $last_post_id > $last_read_post_arr[0]) : 0;
-                    $img          = ($image_to_use ? 'unlockednew' : 'unlocked');
+                    $img = ($image_to_use ? 'unlockednew' : 'unlocked');
                     if ('yes' == $last_post_arr['tan']) {
                         if ($CURUSER['class'] < UC_STAFF && $last_post_arr['user_id'] != $CURUSER['id']) {
                             $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . $lang['fe_anonymous'] . '</i> in &#9658; <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
@@ -460,9 +460,9 @@ switch ($action) {
                     }
                     $keys['child_boards'] = 'child_boards_' . $last_post_id . '_' . $CURUSER['class'];
                     if (($child_boards_cache = $cache->get($keys['child_boards'])) === false) {
-                        $child_boards       = '';
+                        $child_boards = '';
                         $child_boards_cache = [];
-                        $res                = sql_query('SELECT name, id FROM forums WHERE parent_forum = ' . sqlesc($arr_forums['real_forum_id']) . ' AND min_class_read <= ' . sqlesc($CURUSER['class']) . ' ORDER BY sort ASC') or sqlerr(__FILE__, __LINE__);
+                        $res = sql_query('SELECT name, id FROM forums WHERE parent_forum = ' . sqlesc($arr_forums['real_forum_id']) . ' AND min_class_read <= ' . sqlesc($CURUSER['class']) . ' ORDER BY sort ASC') or sqlerr(__FILE__, __LINE__);
                         while ($arr = mysqli_fetch_assoc($res)) {
                             if ($child_boards) {
                                 $child_boards .= ', ';
@@ -477,7 +477,7 @@ switch ($action) {
                         $child_boards = '<hr><span style="font-size: xx-small;">' . $lang['sv_child_boards'] . ':</span> ' . $child_boards;
                     }
                 } else {
-                    $img       = 'unlocked';
+                    $img = 'unlocked';
                     $last_post = 'N/A';
                 }
                 $body .= '
@@ -513,18 +513,18 @@ switch ($action) {
                     </tr>';
             }
             $over_forum_id = $arr_forums['over_forum_id'];
-            $child_boards  = '';
+            $child_boards = '';
 
             $HTMLOUT .= wrapper(main_table($body));
         }
         $body = insert_quick_jump_menu();
 
-        $list              = [];
+        $list = [];
         $forum_users_cache = $cache->get('now_viewing');
         if ($forum_users_cache === false || is_null($forum_users_cache)) {
-            $forumusers        = '';
+            $forumusers = '';
             $forum_users_cache = [];
-            $query             = $fluent->from('now_viewing')
+            $query = $fluent->from('now_viewing')
                 ->where('users.perms < ?', bt_options::PERMS_STEALTH)
                 ->innerJoin('users ON now_viewing.user_id = users.id');
 
@@ -535,7 +535,7 @@ switch ($action) {
             $forumusers = implode(',&nbsp;&nbsp;', $list);
 
             $forum_users_cache['forum_users'] = $forumusers;
-            $forum_users_cache['actcount']    = count($list);
+            $forum_users_cache['actcount'] = count($list);
             $cache->set('now_viewing', $forum_users_cache, $site_config['expires']['forum_users']);
         }
         if (!$forum_users_cache['forum_users']) {
@@ -557,7 +557,7 @@ function highlightWords($text, $words)
     if (!$m) {
         return $text;
     }
-    $re     = '~\\b(' . implode('|', $m[0]) . ')~i';
+    $re = '~\\b(' . implode('|', $m[0]) . ')~i';
     $string = preg_replace($re, '<span style="color: black; background-color: yellow;font-weight: bold;">$0</span>', $text);
 
     return $string;
@@ -579,7 +579,7 @@ function insert_quick_jump_menu($current_forum = 0, $staff = false)
     global $CURUSER, $site_config, $cache, $lang, $fluent;
 
     $cachename = 'f_insertJumpTo_' . $CURUSER['id'] . ($staff ? '' : '_staff' === false);
-    $qjcache   = $cache->get($cachename);
+    $qjcache = $cache->get($cachename);
     if ($qjcache === false || is_null($qjcache)) {
         $qjcache = $fluent->from('forums')
             ->select(null)
@@ -598,7 +598,7 @@ function insert_quick_jump_menu($current_forum = 0, $staff = false)
     }
 
     $switch = '';
-    $body   = ($staff === false ? '
+    $body = ($staff === false ? '
     <div class="has-text-centered bottom20">
         <form method="get" action="' . $site_config['baseurl'] . '/forums.php" name="jump">
             <span>

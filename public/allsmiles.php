@@ -6,9 +6,9 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER;
 
-$lang       = load_language('global');
+$lang = load_language('global');
 $body_class = 'background-16 h-style-9 text-9 skin-2';
-$htmlout    = "<!doctype html>
+$htmlout = "<!doctype html>
 <html>
 <head>
     <meta charset='utf-8'>

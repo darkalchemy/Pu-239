@@ -154,7 +154,7 @@ class AJAXChatEncoding
             $str = preg_replace('~&#x([0-9a-f]+);~ei', 'AJAXChatEncoding::unicodeChar(hexdec("\\1"))', $str);
             // Replace literal entities:
             $htmlEntitiesMap = $htmlEntitiesMap ? $htmlEntitiesMap : array_flip(get_html_translation_table(HTML_ENTITIES, ENT_QUOTES));
-            $str             = strtr($str, $htmlEntitiesMap);
+            $str = strtr($str, $htmlEntitiesMap);
         }
 
         return $str;

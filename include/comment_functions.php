@@ -10,8 +10,8 @@ function commenttable($rows, $variant = 'torrent')
     require_once INCL_DIR . 'html_functions.php';
     global $CURUSER, $site_config, $mood, $cache;
 
-    $lang            = load_language('torrenttable_functions');
-    $count           = 0;
+    $lang = load_language('torrenttable_functions');
+    $count = 0;
     $variant_options = [
         'torrent' => 'details',
         'request' => 'viewrequests',
@@ -22,12 +22,12 @@ function commenttable($rows, $variant = 'torrent')
         return;
     }
     $extra_link = ($variant === 'request' ? '&type=request' : ($variant === 'offer' ? '&type=offer' : ''));
-    $htmlout    = '';
-    $i          = 0;
+    $htmlout = '';
+    $i = 0;
     foreach ($rows as $row) {
         $this_text = '';
-        $moodname  = (isset($mood['name'][$row['mood']]) ? htmlsafechars($mood['name'][$row['mood']]) : 'is feeling neutral');
-        $moodpic   = (isset($mood['image'][$row['mood']]) ? htmlsafechars($mood['image'][$row['mood']]) : 'noexpression.gif');
+        $moodname = (isset($mood['name'][$row['mood']]) ? htmlsafechars($mood['name'][$row['mood']]) : 'is feeling neutral');
+        $moodpic = (isset($mood['image'][$row['mood']]) ? htmlsafechars($mood['image'][$row['mood']]) : 'noexpression.gif');
         $this_text .= "
             <div class='bottom20'>
                 <span class='level-left'>#{$row['id']} {$lang['commenttable_by']} ";

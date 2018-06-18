@@ -13,9 +13,9 @@ $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
 $out = '';
 while ($curip = mysqli_fetch_assoc($res)) {
-    $uip        = $curip['ip'];
-    $uport      = $curip['port'];
-    $uagent     = $curip['agent'];
+    $uip = $curip['ip'];
+    $uport = $curip['port'];
+    $uagent = $curip['agent'];
     $connection = @fsockopen($uip, $uport, $errno, $errstr, 10);
     if (is_resource($connection)) {
         $msg = "<span class='has-text-lime'> OPEN</span>";

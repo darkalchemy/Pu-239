@@ -24,11 +24,11 @@ class User
     {
         global $site_config, $session, $cache;
 
-        $this->fluent  = $fluent;
+        $this->fluent = $fluent;
         $this->session = $session;
-        $this->cache   = $cache;
+        $this->cache = $cache;
         $this->cookies = new Cookie('remember');
-        $this->config  = $site_config;
+        $this->config = $site_config;
     }
 
     /**
@@ -100,7 +100,7 @@ class User
         if (!$id) {
             $cookie = $this->cookies->getToken();
             if ($cookie) {
-                $stashed   = $this->cache->get('remember_' . $cookie[0]);
+                $stashed = $this->cache->get('remember_' . $cookie[0]);
                 $validator = $cookie[1];
                 if (empty($stashed)) {
                     $this->session->destroy();

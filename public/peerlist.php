@@ -8,7 +8,7 @@ check_user_status();
 global $site_config, $lang;
 
 $lang = array_merge(load_language('global'), load_language('peerlist'));
-$id   = (int) $_GET['id'];
+$id = (int) $_GET['id'];
 if (!isset($id) || !is_valid_id($id)) {
     stderr($lang['peerslist_user_error'], $lang['peerslist_invalid_id']);
 }
@@ -40,8 +40,8 @@ function dltable($name, $arr, $torrent)
             <th>{$lang['peerslist_idle']}</th>
             <th>{$lang['peerslist_client']}</th>
         </tr>";
-    $now  = TIME_NOW;
-    $mod  = $CURUSER['class'] >= UC_STAFF;
+    $now = TIME_NOW;
+    $mod = $CURUSER['class'] >= UC_STAFF;
     $body = '';
     foreach ($arr as $e) {
         $body .= '
@@ -85,10 +85,10 @@ $res = sql_query('SELECT * FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(_
 if (mysqli_num_rows($res) == 0) {
     stderr("{$lang['peerslist_error']}", "{$lang['peerslist_nothing']}");
 }
-$row         = mysqli_fetch_assoc($res);
+$row = mysqli_fetch_assoc($res);
 $downloaders = [];
-$seeders     = [];
-$subres      = sql_query('SELECT u.username, u.anonymous, u.paranoia, t.owner, t.anonymous AS tanonymous, p.seeder, p.finishedat, p.downloadoffset, p.uploadoffset, p.ip, p.port, p.uploaded, p.downloaded, p.to_go, p.started AS st, p.connectable, p.agent, p.last_action AS la, p.userid, p.peer_id
+$seeders = [];
+$subres = sql_query('SELECT u.username, u.anonymous, u.paranoia, t.owner, t.anonymous AS tanonymous, p.seeder, p.finishedat, p.downloadoffset, p.uploadoffset, p.ip, p.port, p.uploaded, p.downloaded, p.to_go, p.started AS st, p.connectable, p.agent, p.last_action AS la, p.userid, p.peer_id
     FROM peers p
     LEFT JOIN users u ON p.userid = u.id
     LEFT JOIN torrents AS t ON t.id = p.torrent

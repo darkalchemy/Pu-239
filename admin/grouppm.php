@@ -15,12 +15,12 @@ $stdhead = [
     ],
 ];
 
-$HTMLOUT      = '';
-$err          = [];
-$FSCLASS      = UC_STAFF; //== First staff class;
-$LSCLASS      = UC_MAX; //== Last staff class;
-$FUCLASS      = UC_MIN; //== First users class;
-$LUCLASS      = UC_STAFF - 1; //== Last users class;
+$HTMLOUT = '';
+$err = [];
+$FSCLASS = UC_STAFF; //== First staff class;
+$LSCLASS = UC_MAX; //== Last staff class;
+$FUCLASS = UC_MIN; //== First users class;
+$LUCLASS = UC_STAFF - 1; //== Last users class;
 $sent2classes = [];
 /**
  * @param $min
@@ -48,9 +48,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $groups = isset($_POST['groups']) ? $_POST['groups'] : '';
     //$groups = isset($_POST["groups"]) ? array_map('mkint',$_POST["groups"]) : ""; //no need for this kind of check because every value its checked inside the switch also the array contains no integer values so that will be a problem
     $subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '';
-    $msg     = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
-    $msg     = str_replace('&amp', '&', $_POST['body']);
-    $sender  = isset($_POST['system']) && $_POST['system'] === 'yes' ? 0 : $CURUSER['id'];
+    $msg = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
+    $msg = str_replace('&amp', '&', $_POST['body']);
+    $sender = isset($_POST['system']) && $_POST['system'] === 'yes' ? 0 : $CURUSER['id'];
     if (empty($subject)) {
         $err[] = $lang['grouppm_nosub'];
     }
@@ -77,12 +77,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         break;
 
                     case 'fls':
-                        $where[]        = "u.support='yes'";
+                        $where[] = "u.support='yes'";
                         $sent2classes[] = '' . $lang['grouppm_fls'] . '';
                         break;
 
                     case 'donor':
-                        $where[]        = "u.donor = 'yes'";
+                        $where[] = "u.donor = 'yes'";
                         $sent2classes[] = '' . $lang['grouppm_donor'] . '';
                         break;
 
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             if (is_numeric($group + 0) && $group + 0 > 0) {
-                $classes[]      = $group;
+                $classes[] = $group;
                 $sent2classes[] = get_user_class_name($group);
             }
         }
@@ -132,25 +132,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$groups          = [];
-$groups['staff'] = ['opname'   => $lang['grouppm_staff'],
+$groups = [];
+$groups['staff'] = ['opname' => $lang['grouppm_staff'],
                     'minclass' => UC_MIN, ];
 for ($i = $FSCLASS; $i <= $LSCLASS; ++$i) {
     $groups['staff']['ops'][$i] = get_user_class_name($i);
 }
-$groups['staff']['ops']['fls']       = $lang['grouppm_fls'];
+$groups['staff']['ops']['fls'] = $lang['grouppm_fls'];
 $groups['staff']['ops']['all_staff'] = $lang['grouppm_allstaff'];
-$groups['members']                   = [];
-$groups['members']                   = ['opname' => $lang['grouppm_mem'],
-                      'minclass'                 => UC_STAFF, ];
+$groups['members'] = [];
+$groups['members'] = ['opname' => $lang['grouppm_mem'],
+                      'minclass' => UC_STAFF, ];
 for ($i = $FUCLASS; $i <= $LUCLASS; ++$i) {
     $groups['members']['ops'][$i] = get_user_class_name($i);
 }
-$groups['members']['ops']['donor']     = $lang['grouppm_donor'];
+$groups['members']['ops']['donor'] = $lang['grouppm_donor'];
 $groups['members']['ops']['all_users'] = $lang['grouppm_allusers'];
-$groups['friends']                     = ['opname' => $lang['grouppm_related'],
-                      'minclass'                   => UC_MIN,
-                      'ops'                        => ['all_friends' => $lang['grouppm_friends']], ];
+$groups['friends'] = ['opname' => $lang['grouppm_related'],
+                      'minclass' => UC_MIN,
+                      'ops' => ['all_friends' => $lang['grouppm_friends']], ];
 
 /**
  * @return string
@@ -179,7 +179,7 @@ function dropdown()
 $HTMLOUT .= begin_main_frame();
 if (count($err) > 0) {
     $class = (stristr($err[0], 'sent!') == true ? 'sent' : 'notsent');
-    $errs  = '<ul><li>' . join('</li><li>', $err) . '</li></ul>';
+    $errs = '<ul><li>' . join('</li><li>', $err) . '</li></ul>';
     $HTMLOUT .= '<div class="' . $class . "\">$errs</div>";
 }
 $HTMLOUT .= "<fieldset style='border:1px solid #333333; padding:5px;'>

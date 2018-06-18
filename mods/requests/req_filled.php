@@ -17,17 +17,17 @@ if ($CURUSER['id'] == $arr['userid']) {
     stderr("{$lang['error_error']}", "{$lang['error_own_id']}");
 }
 $msg = "{$lang['filled_your']}[b]" . htmlspecialchars($arr['request']) . "[/b]{$lang['filled_by']}[b]" . $CURUSER['username'] . "[/b]{$lang['filled_dl']}[b][url=details.php?id=" . $torrentid . ']' . $site_config['baseurl'] . '/details.php?id=' . $torrentid . "[/url][/b]{$lang['filled_thx']}{$lang['filled_wrong']}[b][url=" . $site_config['baseurl'] . "/viewrequests.php?id=$id&req_reset]{$lang['filled_this']}[/url][/b]{$lang['filled_link']}";
-sql_query('UPDATE requests SET torrentid = ' . $torrentid . ", filledby = $CURUSER[id] WHERE id = $id")                                                                             or sqlerr(__FILE__, __LINE__);
+sql_query('UPDATE requests SET torrentid = ' . $torrentid . ", filledby = $CURUSER[id] WHERE id = $id") or sqlerr(__FILE__, __LINE__);
 sql_query("INSERT INTO messages (poster, sender, receiver, added, msg, subject, location) VALUES(0, 0, $arr[userid], " . TIME_NOW . ', ' . sqlesc($msg) . ", 'Request Filled', 1)") or sqlerr(__FILE__, __LINE__);
 $cache->increment('inbox_' . $arr['userid']);
 if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
     sql_query('UPDATE users SET seedbonus = seedbonus+' . $site_config['req_comment_bonus'] . " WHERE id = $CURUSER[id]") or sqlerr(__FILE__, __LINE__);
 }
-$res         = sql_query("SELECT `userid` FROM `voted_requests` WHERE `requestid` = $id AND userid != $arr[userid]") or sqlerr(__FILE__, __LINE__);
+$res = sql_query("SELECT `userid` FROM `voted_requests` WHERE `requestid` = $id AND userid != $arr[userid]") or sqlerr(__FILE__, __LINE__);
 $msgs_buffer = [];
 if (mysqli_num_rows($res) > 0) {
     $pn_subject = sqlesc("{$lang['add_request']} " . $arr['request'] . "{$lang['filled_upl']}");
-    $pn_msg     = sqlesc("{$lang['filled_voted']}[b]" . $arr['request'] . "[/b]{$lang['filled_by']}[b]" . $CURUSER['username'] . "[/b]{$lang['filled_dl']}
+    $pn_msg = sqlesc("{$lang['filled_voted']}[b]" . $arr['request'] . "[/b]{$lang['filled_by']}[b]" . $CURUSER['username'] . "[/b]{$lang['filled_dl']}
     [b][url=details.php?id=" . $torrentid . ']' . $site_config['baseurl'] . '/details.php?id=' . $torrentid . "[/url][/b].
       {$lang['filled_thx']}");
     while ($row = mysqli_fetch_assoc($res)) {

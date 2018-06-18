@@ -12,8 +12,8 @@ $lang = array_merge(load_language('global'), load_language('invite_code'));
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
 
-$HTMLOUT       = $sure       = '';
-$do            = (isset($_GET['do']) ? htmlsafechars($_GET['do']) : (isset($_POST['do']) ? htmlsafechars($_POST['do']) : ''));
+$HTMLOUT = $sure = '';
+$do = (isset($_GET['do']) ? htmlsafechars($_GET['do']) : (isset($_POST['do']) ? htmlsafechars($_POST['do']) : ''));
 $valid_actions = [
     'create_invite',
     'delete_invite',
@@ -87,8 +87,8 @@ if ($do === 'view_page') {
     }
 
     $HTMLOUT .= main_table($body, $heading);
-    $body    = $heading    = '';
-    $select  = sql_query('SELECT * FROM invite_codes WHERE sender = ' . sqlesc($CURUSER['id']) . " AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
+    $body = $heading = '';
+    $select = sql_query('SELECT * FROM invite_codes WHERE sender = ' . sqlesc($CURUSER['id']) . " AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
     $num_row = mysqli_num_rows($select);
     $HTMLOUT .= "<h1 class='has-text-centered top20'>{$lang['invites_codes']}</h1>";
     if (!$num_row) {
@@ -143,7 +143,7 @@ if ($do === 'view_page') {
     if ($CURUSER['invites'] <= 0) {
         stderr($lang['invites_error'], $lang['invites_noinvite']);
     }
-    if ($CURUSER['invite_rights'] ==='no' || $CURUSER['suspended'] === 'yes') {
+    if ($CURUSER['invite_rights'] === 'no' || $CURUSER['suspended'] === 'yes') {
         stderr($lang['invites_deny'], $lang['invites_disabled']);
     }
     $res = sql_query('SELECT COUNT(id) FROM users') or sqlerr(__FILE__, __LINE__);
@@ -155,8 +155,8 @@ if ($do === 'view_page') {
 
     $values = [
         'sender' => $CURUSER['id'],
-        'code'   => $token,
-        'added'  => TIME_NOW,
+        'code' => $token,
+        'added' => TIME_NOW,
     ];
     $fluent->insertInto('invite_codes')
         ->values($values)
@@ -177,7 +177,7 @@ if ($do === 'view_page') {
     header('Location: ?do=view_page');
 } elseif ($do === 'send_email') {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $email  = (isset($_POST['email']) ? htmlsafechars($_POST['email']) : '');
+        $email = (isset($_POST['email']) ? htmlsafechars($_POST['email']) : '');
         $invite = (isset($_POST['code']) ? htmlsafechars($_POST['code']) : '');
         $secret = (isset($_POST['secret']) ? htmlsafechars($_POST['secret']) : '');
         if (!$email) {
@@ -200,7 +200,7 @@ if ($do === 'view_page') {
             ->execute();
 
         $inviter = htmlsafechars($CURUSER['username']);
-        $body    = "<html>
+        $body = "<html>
 <head>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
     <title>{$site_config['site_name']} Invitation</title>
@@ -229,7 +229,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
             ->setSubject("You have been invited to {$site_config['site_name']}")
             ->setHtmlBody($body);
 
-        $mailer              = new SendmailMailer();
+        $mailer = new SendmailMailer();
         $mailer->commandArgs = "-f{$site_config['site_email']}";
         $mailer->send($mail);
 
@@ -273,7 +273,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
         </div>";
     echo stdhead('Invites') . $HTMLOUT . stdfoot();
 } elseif ($do === 'delete_invite') {
-    $id    = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : ''));
+    $id = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : ''));
     $query = sql_query('SELECT * FROM invite_codes WHERE id = ' . sqlesc($id) . ' AND sender = ' . sqlesc($CURUSER['id']) . ' AND status = "pending"') or sqlerr(__FILE__, __LINE__);
     $assoc = mysqli_fetch_assoc($query);
     if (!$assoc) {
@@ -310,7 +310,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
     }
 
     $select = sql_query('SELECT id, username FROM users WHERE id = ' . sqlesc($userid) . ' AND invitedby = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    $assoc  = mysqli_fetch_assoc($select);
+    $assoc = mysqli_fetch_assoc($select);
     if (!$assoc) {
         stderr($lang['invites_error'], $lang['invites_errorid']);
     }
@@ -335,9 +335,9 @@ Just for kicks, we've started you out with 200.0 Karma Bonus Points, and a coupl
 so, enjoy\n  
 cheers,\n 
 {$site_config['site_name']} Staff.\n");
-    $id      = (int) $assoc['id'];
+    $id = (int) $assoc['id'];
     $subject = sqlesc("Welcome to {$site_config['site_name']} !");
-    $added   = TIME_NOW;
+    $added = TIME_NOW;
     sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($id) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
     ///////////////////end////////////
     header('Location: ?do=view_page');

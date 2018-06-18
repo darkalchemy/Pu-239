@@ -8,9 +8,9 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $userid;
 
-$lang    = load_language('global');
+$lang = load_language('global');
 $HTMLOUT = $user = '';
-$action  = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
+$action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
 $stdhead = [
     'css' => [
         'style',
@@ -134,7 +134,7 @@ if ($action === 'add') {
         stderr('Error', 'Permission denied.');
     }
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $body     = htmlsafechars($_POST['body']);
+        $body = htmlsafechars($_POST['body']);
         $returnto = htmlsafechars($_POST['returnto']);
         if ($body == '') {
             stderr('Error', 'Comment body cannot be empty!');

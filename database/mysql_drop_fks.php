@@ -8,7 +8,7 @@ define('SOCKET', true);
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'database.php';
 
 $fluent = new DarkAlchemy\Pu239\Database();
-$query  = $fluent->from('INFORMATION_SCHEMA.TABLE_CONSTRAINTS')
+$query = $fluent->from('INFORMATION_SCHEMA.TABLE_CONSTRAINTS')
     ->select('null')
     ->select('TABLE_NAME')
     ->select('CONSTRAINT_NAME')

@@ -417,12 +417,12 @@ function getagent($httpagent, $peer_id = '')
 function getclient($httpagent, $peer_id)
 {
     if (preg_match('/^-U([TM])([0-9]{3})([0-9B])-(..)/s', $peer_id, $matches)) {
-        $ver      = (int) $matches[2];
-        $vere     = $matches[3];
-        $beta     = $vere === 'B';
+        $ver = (int) $matches[2];
+        $vere = $matches[3];
+        $beta = $vere === 'B';
         $buildnum = $matches[4];
         $buildvar = unpack('v*', $buildnum);
-        $buildv   = $buildvar[1];
+        $buildv = $buildvar[1];
         if ($matches[1] === 'M' || $ver > 180) {
             $build = $buildv;
         } elseif ($ver < 180) {

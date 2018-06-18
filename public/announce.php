@@ -43,12 +43,12 @@ foreach ([
     }
 }
 unset($x);
-$realip     = $ip     = $_SERVER['REMOTE_ADDR'];
-$port       = (int) $port;
+$realip = $ip = $_SERVER['REMOTE_ADDR'];
+$port = (int) $port;
 $downloaded = (int) $downloaded;
-$uploaded   = (int) $uploaded;
-$left       = (int) $left;
-$rsize      = 30;
+$uploaded = (int) $uploaded;
+$left = (int) $left;
+$rsize = 30;
 foreach ([
              'num want',
              'numwant',
@@ -75,27 +75,27 @@ if (!isset($event)) {
     $event = '';
 }
 $seeder = $left === 0 ? 'yes' : 'no';
-$user   = get_user_from_torrent_pass($torrent_pass);
+$user = get_user_from_torrent_pass($torrent_pass);
 if (!$user) {
     err('Invalid torrent_pass. Please redownload the torrent from ' . $site_config['baseurl']);
 }
-$userid        = (int) $user['id'];
+$userid = (int) $user['id'];
 $user['perms'] = (int) $user['perms'];
 if ($user['enabled'] === 'no') {
     err("Permission denied, you're account is disabled");
 }
 $connectable = 'yes';
-$conn_ttl    = 900;
+$conn_ttl = 900;
 if (portblacklisted($port)) {
     err("Port $port is blacklisted.");
 } elseif ($site_config['connectable_check']) {
-    $connkey     = 'connectable_' . $realip . '_' . $port;
+    $connkey = 'connectable_' . $realip . '_' . $port;
     $connectable = $cache->get($connkey);
     if ($connectable === false || is_null($connectable)) {
         $sockres = @fsockopen($ip, $port, $errno, $errstr, 5);
         if (!$sockres) {
             $connectable = 'no';
-            $conn_ttl    = 15;
+            $conn_ttl = 15;
         } else {
             $connectable = 'yes';
             @fclose($sockres);
@@ -112,18 +112,18 @@ if (IP_LOGGING) {
     $no_log_ip = ($user['perms'] & bt_options::PERMS_NO_IP);
     if ($no_log_ip) {
         $connectable = 'no';
-        $ip          = '127.0.0.1';
+        $ip = '127.0.0.1';
     }
     if (!$no_log_ip) {
         $values = [
-            'userid'       => $userid,
-            'ip'           => inet_pton($ip),
+            'userid' => $userid,
+            'ip' => inet_pton($ip),
             'lastannounce' => TIME_NOW,
-            'type'         => 'announce',
+            'type' => 'announce',
         ];
         $update_values = [
             'lastannounce' => TIME_NOW,
-            'type'         => 'announce',
+            'type' => 'announce',
         ];
         $announce_ip = $cache->get('announce_ip_' . $userid . '_' . $ip);
         if ($announce_ip === false || is_null($announce_ip)) {
@@ -140,11 +140,11 @@ if (!$torrent) {
     err('torrent not registered with this tracker');
 }
 
-$torrentid             = (int) $torrent['id'];
-$torrent_modifier      = get_slots($torrentid, $userid);
-$torrent['freeslot']   = $torrent_modifier['freeslot'];
+$torrentid = (int) $torrent['id'];
+$torrent_modifier = get_slots($torrentid, $userid);
+$torrent['freeslot'] = $torrent_modifier['freeslot'];
 $torrent['doubleslot'] = $torrent_modifier['doubleslot'];
-$happy_multiplier      = $site_config['happy_hour'] ? get_happy($torrentid, $userid) : 0;
+$happy_multiplier = $site_config['happy_hour'] ? get_happy($torrentid, $userid) : 0;
 
 $wantseeds = '';
 if ($seeder === 'yes') {
@@ -177,7 +177,7 @@ if ($compact != 1) {
     $resp = 'd' . benc_str('interval') . 'i' . $site_config['announce_interval'] . 'e' . benc_str('private') . 'i1e' . benc_str('min interval') . 'i' . 300 . 'e5:' . 'peers';
 }
 
-$peer     = [];
+$peer = [];
 $peer_num = 0;
 foreach ($res as $row) {
     if ($compact != 1) {
@@ -192,14 +192,14 @@ foreach ($res as $row) {
         }
         $resp .= benc_str('port') . 'i' . $row['port'] . 'e' . 'e';
     } else {
-        $peer_ip   = explode('.', $row['ip']);
-        $peer_ip   = pack('C*', $peer_ip[0], $peer_ip[1], $peer_ip[2], $peer_ip[3]);
+        $peer_ip = explode('.', $row['ip']);
+        $peer_ip = pack('C*', $peer_ip[0], $peer_ip[1], $peer_ip[2], $peer_ip[3]);
         $peer_port = pack('n*', (int) $row['port']);
-        $time      = intval((TIME_NOW % 7680) / 60);
+        $time = intval((TIME_NOW % 7680) / 60);
         if ($_GET['left'] == 0) {
             $time += 128;
         }
-        $time   = pack('C', $time);
+        $time = pack('C', $time);
         $peer[] = $time . $peer_ip . $peer_port;
         ++$peer_num;
     }
@@ -235,10 +235,10 @@ if (!isset($self)) {
 
     if ($row) {
         $userid = (int) $row['userid'];
-        $self   = $row;
+        $self = $row;
     }
 }
-$useragent  = substr($peer_id, 0, 8);
+$useragent = substr($peer_id, 0, 8);
 $agentarray = [
     'R34',
     '-AZ21',
@@ -295,10 +295,10 @@ if (!isset($self)) {
         err('Connection limit exceeded!');
     }
 } else {
-    $upthis   = max(0, $uploaded - $self['uploaded']);
+    $upthis = max(0, $uploaded - $self['uploaded']);
     $downthis = max(0, $downloaded - $self['downloaded']);
     if ($happy_multiplier) {
-        $upthis   = $upthis * $happy_multiplier;
+        $upthis = $upthis * $happy_multiplier;
         $downthis = 0;
     }
     $contribution = $cache->get('freecontribution_');
@@ -331,7 +331,7 @@ if (!isset($self)) {
             $downthis = 0;
         }
         if ($contribution['duploadEnabled'] == 1) {
-            $upthis   = $upthis * 2;
+            $upthis = $upthis * 2;
             $downthis = 0;
         }
         if ($contribution['hdownEnabled'] == 1) {
@@ -343,9 +343,9 @@ if (!isset($self)) {
         include CACHE_DIR . 'free_cache.php';
         if (isset($free)) {
             foreach ($free as $fl) {
-                $isfree   = ($fl['modifier'] == 1 || $fl['modifier'] == 3) && $fl['expires']                         > TIME_NOW;
-                $isdouble = ($fl['modifier'] == 2 || $fl['modifier'] == 3) && $fl['expires']                         > TIME_NOW;
-                $issilver = ($fl['modifier'] == 4)                         && $fl['expires']                         > TIME_NOW;
+                $isfree = ($fl['modifier'] == 1 || $fl['modifier'] == 3) && $fl['expires'] > TIME_NOW;
+                $isdouble = ($fl['modifier'] == 2 || $fl['modifier'] == 3) && $fl['expires'] > TIME_NOW;
+                $issilver = ($fl['modifier'] == 4) && $fl['expires'] > TIME_NOW;
             }
         }
         if ($torrent['silver'] != 0 || $issilver) {
@@ -353,7 +353,7 @@ if (!isset($self)) {
         }
 
         $RatioFreeCondition = ($site_config['ratio_free'] ? 'downloaded + 0' : "downloaded + $downthis");
-        $crazyhour_on       = ($site_config['crazy_hour'] ? crazyhour_announce() : false);
+        $crazyhour_on = ($site_config['crazy_hour'] ? crazyhour_announce() : false);
         if ($downthis > 0) {
             if (!($crazyhour_on || $isfree || $user['free_switch'] != 0 || $torrent['free'] != 0 || $torrent['vip'] != 0 || ($torrent['freeslot'] != 0))) {
                 $user_updateset['downloaded'] = $RatioFreeCondition;
@@ -368,8 +368,8 @@ if (!isset($self)) {
         }
     }
     if ($user['highspeed'] === 'no' && $upthis > 103872) {
-        $diff    = (TIME_NOW - $self['ts']);
-        $rate    = ($upthis / ($diff + 1));
+        $diff = (TIME_NOW - $self['ts']);
+        $rate = ($upthis / ($diff + 1));
         $last_up = (int) $user['uploaded'];
         //=== about 5 MB/s
         if ($rate > 503872) {
@@ -390,19 +390,19 @@ $a = $fluent->from('snatched')
 
 if (empty($a)) {
     $values = [
-        'torrentid'   => $torrentid,
-        'userid'      => $userid,
-        'peer_id'     => $peer_id,
-        'ip'          => inet_pton($realip),
-        'port'        => $port,
+        'torrentid' => $torrentid,
+        'userid' => $userid,
+        'peer_id' => $peer_id,
+        'ip' => inet_pton($realip),
+        'port' => $port,
         'connectable' => $connectable,
-        'uploaded'    => $uploaded,
-        'downloaded'  => $site_config['ratio_free'] ? 0 : $downloaded,
-        'to_go'       => $left,
-        'start_date'  => TIME_NOW,
+        'uploaded' => $uploaded,
+        'downloaded' => $site_config['ratio_free'] ? 0 : $downloaded,
+        'to_go' => $left,
+        'start_date' => TIME_NOW,
         'last_action' => TIME_NOW,
-        'seeder'      => $seeder,
-        'agent'       => $agent,
+        'seeder' => $seeder,
+        'agent' => $agent,
     ];
 
     if ($seeder === 'no') {
@@ -410,9 +410,9 @@ if (empty($a)) {
             ->execute();
     } else {
         $values1 = [
-            'seeder'        => 'yes',
+            'seeder' => 'yes',
             'complete_date' => TIME_NOW,
-            'finished'      => 'yes',
+            'finished' => 'yes',
         ];
         $values = array_merge($values, $values1);
         $fluent->insertInto('snatched', $values)
@@ -420,7 +420,7 @@ if (empty($a)) {
     }
 }
 if (isset($self) && $event === 'stopped') {
-    $seeder       = 'no';
+    $seeder = 'no';
     $delete_count = $fluent->deleteFrom('peers')
         ->where('torrent = ?', $torrentid)
         ->where('(peer_id = ? OR peer_id = ?)', $peer_id, preg_replace('/ *$/s', '', $peer_id))
@@ -432,26 +432,26 @@ if (isset($self) && $event === 'stopped') {
         $HnR_time_seeded = ($a['seedtime'] + $self['announcetime']);
         switch (true) {
             case $user['class'] <= $site_config['hnr_config']['firstclass']:
-                $days_3       = $site_config['hnr_config']['_3day_first']       * 3600;
-                $days_14      = $site_config['hnr_config']['_14day_first']      * 3600;
+                $days_3 = $site_config['hnr_config']['_3day_first'] * 3600;
+                $days_14 = $site_config['hnr_config']['_14day_first'] * 3600;
                 $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600;
                 break;
 
             case $user['class'] < $site_config['hnr_config']['secondclass']:
-                $days_3       = $site_config['hnr_config']['_3day_second']       * 3600;
-                $days_14      = $site_config['hnr_config']['_14day_second']      * 3600;
+                $days_3 = $site_config['hnr_config']['_3day_second'] * 3600;
+                $days_14 = $site_config['hnr_config']['_14day_second'] * 3600;
                 $days_over_14 = $site_config['hnr_config']['_14day_over_second'] * 3600;
                 break;
 
             case $user['class'] >= $site_config['hnr_config']['thirdclass']:
-                $days_3       = $site_config['hnr_config']['_3day_third']       * 3600;
-                $days_14      = $site_config['hnr_config']['_14day_third']      * 3600;
+                $days_3 = $site_config['hnr_config']['_3day_third'] * 3600;
+                $days_14 = $site_config['hnr_config']['_14day_third'] * 3600;
                 $days_over_14 = $site_config['hnr_config']['_14day_over_third'] * 3600;
                 break;
 
             default:
-                $days_3       = 0;
-                $days_14      = 0;
+                $days_3 = 0;
+                $days_14 = 0;
                 $days_over_14 = 0;
         }
         switch (true) {
@@ -472,7 +472,7 @@ if (isset($self) && $event === 'stopped') {
         }
         if ($site_config['hnr_config']['hnr_online'] == 1 && $minus_ratio > 0 && ($a['uploaded'] + $upthis) < ($a['downloaded'] + $downthis)) {
             $hit_and_run = TIME_NOW;
-            $seeder      = 'no';
+            $seeder = 'no';
         } else {
             $hit_and_run = 0;
         }
@@ -491,22 +491,22 @@ if (isset($self) && $event === 'stopped') {
             $torrent_updateset['leechers'] = new Envms\FluentPDO\Literal('leechers - 1');
         }
         if ($a) {
-            $snatch_updateset['ip']          = inet_pton($realip);
-            $snatch_updateset['port']        = $port;
+            $snatch_updateset['ip'] = inet_pton($realip);
+            $snatch_updateset['port'] = $port;
             $snatch_updateset['connectable'] = $connectable;
-            $snatch_updateset['uploaded']    = new Envms\FluentPDO\Literal("uploaded + $upthis");
-            $snatch_updateset['downloaded']  = new Envms\FluentPDO\Literal($site_config['ratio_free'] ? 'downloaded + 0' : "downloaded + $downthis");
-            $snatch_updateset['to_go']       = $left;
-            $snatch_updateset['upspeed']     = $upthis   > 0 ? "$upthis / {$self['announcetime']}" : 0;
-            $snatch_updateset['downspeed']   = $downthis > 0 ? "$downthis / {$self['announcetime']}" : 0;
+            $snatch_updateset['uploaded'] = new Envms\FluentPDO\Literal("uploaded + $upthis");
+            $snatch_updateset['downloaded'] = new Envms\FluentPDO\Literal($site_config['ratio_free'] ? 'downloaded + 0' : "downloaded + $downthis");
+            $snatch_updateset['to_go'] = $left;
+            $snatch_updateset['upspeed'] = $upthis > 0 ? "$upthis / {$self['announcetime']}" : 0;
+            $snatch_updateset['downspeed'] = $downthis > 0 ? "$downthis / {$self['announcetime']}" : 0;
             if ($self['seeder'] == 'yes') {
                 $snatch_updateset['seedtime'] = new Envms\FluentPDO\Literal("seedtime + {$self['announcetime']}");
             } else {
                 $snatch_updateset['leechtime'] = new Envms\FluentPDO\Literal("leechtime + {$self['announcetime']}");
             }
             $snatch_updateset['last_action'] = TIME_NOW;
-            $snatch_updateset['seeder']      = $seeder;
-            $snatch_updateset['agent']       = $agent;
+            $snatch_updateset['seeder'] = $seeder;
+            $snatch_updateset['agent'] = $agent;
             $snatch_updateset['hit_and_run'] = $hit_and_run;
         }
     }
@@ -515,24 +515,24 @@ if (isset($self) && $event === 'stopped') {
     if ($event === 'completed') {
         if ($a) {
             $snatch_updateset['complete_date'] = TIME_NOW;
-            $snatch_updateset['finished']      = 'yes';
+            $snatch_updateset['finished'] = 'yes';
         }
         $torrent_updateset['times_completed'] = new Envms\FluentPDO\Literal('times_completed + 1');
-        $set                                  = [
+        $set = [
             'finishedat' => TIME_NOW,
         ];
         adjust_torrent_peers($torrentid, 0, 0, 1);
     }
     $prev_action = $self['ts'];
-    $set         = array_merge($set, [
+    $set = array_merge($set, [
         'connectable' => $connectable,
-        'uploaded'    => $uploaded,
-        'to_go'       => $left,
+        'uploaded' => $uploaded,
+        'to_go' => $left,
         'last_action' => TIME_NOW,
         'prev_action' => $prev_action,
-        'seeder'      => $seeder,
-        'agent'       => $agent,
-        'downloaded'  => $site_config['ratio_free'] ? 0 : $downloaded,
+        'seeder' => $seeder,
+        'agent' => $agent,
+        'downloaded' => $site_config['ratio_free'] ? 0 : $downloaded,
     ]);
 
     $updated = $fluent->update('peers')
@@ -547,32 +547,32 @@ if (isset($self) && $event === 'stopped') {
         if ($seeder != $self['seeder']) {
             if ($seeder === 'yes') {
                 adjust_torrent_peers($torrentid, 1, -1, 0);
-                $torrent_updateset['seeders']  = new Envms\FluentPDO\Literal('seeders + 1');
+                $torrent_updateset['seeders'] = new Envms\FluentPDO\Literal('seeders + 1');
                 $torrent_updateset['leechers'] = new Envms\FluentPDO\Literal('leechers - 1');
             } else {
                 adjust_torrent_peers($torrentid, -1, 1, 0);
-                $torrent_updateset['seeders']  = new Envms\FluentPDO\Literal('seeders - 1');
+                $torrent_updateset['seeders'] = new Envms\FluentPDO\Literal('seeders - 1');
                 $torrent_updateset['leechers'] = new Envms\FluentPDO\Literal('leechers + 1');
             }
         }
         if ($a) {
-            $snatch_updateset['ip']          = inet_pton($realip);
-            $snatch_updateset['port']        = $port;
+            $snatch_updateset['ip'] = inet_pton($realip);
+            $snatch_updateset['port'] = $port;
             $snatch_updateset['connectable'] = $connectable;
-            $snatch_updateset['uploaded']    = new Envms\FluentPDO\Literal("uploaded + $upthis");
-            $snatch_updateset['downloaded']  = new Envms\FluentPDO\Literal($site_config['ratio_free'] ? 'downloaded + 0' : "downloaded + $downthis");
-            $snatch_updateset['to_go']       = $left;
-            $snatch_updateset['upspeed']     = $upthis   > 0 ? "$upthis / {$self['announcetime']}" : 0;
-            $snatch_updateset['downspeed']   = $downthis > 0 ? "$downthis / {$self['announcetime']}" : 0;
+            $snatch_updateset['uploaded'] = new Envms\FluentPDO\Literal("uploaded + $upthis");
+            $snatch_updateset['downloaded'] = new Envms\FluentPDO\Literal($site_config['ratio_free'] ? 'downloaded + 0' : "downloaded + $downthis");
+            $snatch_updateset['to_go'] = $left;
+            $snatch_updateset['upspeed'] = $upthis > 0 ? "$upthis / {$self['announcetime']}" : 0;
+            $snatch_updateset['downspeed'] = $downthis > 0 ? "$downthis / {$self['announcetime']}" : 0;
             if ($self['seeder'] == 'yes') {
                 $snatch_updateset['seedtime'] = new Envms\FluentPDO\Literal("seedtime + {$self['announcetime']}");
             } else {
                 $snatch_updateset['leechtime'] = new Envms\FluentPDO\Literal("leechtime + {$self['announcetime']}");
             }
             $snatch_updateset['last_action'] = TIME_NOW;
-            $snatch_updateset['seeder']      = $seeder;
-            $snatch_updateset['agent']       = $agent;
-            $snatch_updateset['timesann']    = new Envms\FluentPDO\Literal('timesann + 1');
+            $snatch_updateset['seeder'] = $seeder;
+            $snatch_updateset['agent'] = $agent;
+            $snatch_updateset['timesann'] = new Envms\FluentPDO\Literal('timesann + 1');
         }
     }
 } else {
@@ -582,34 +582,34 @@ if (isset($self) && $event === 'stopped') {
         err('Your downloading privileges have been disabled! (Read the rules)');
     }
     $values = [
-        'torrent'        => $torrentid,
-        'userid'         => $userid,
-        'peer_id'        => $peer_id,
-        'ip'             => inet_pton($realip),
-        'port'           => $port,
-        'connectable'    => $connectable,
-        'uploaded'       => $uploaded,
-        'downloaded'     => ($site_config['ratio_free'] ? 0 : $downloaded),
-        'to_go'          => $left,
-        'started'        => TIME_NOW,
-        'last_action'    => TIME_NOW,
-        'seeder'         => $seeder,
-        'agent'          => $agent,
+        'torrent' => $torrentid,
+        'userid' => $userid,
+        'peer_id' => $peer_id,
+        'ip' => inet_pton($realip),
+        'port' => $port,
+        'connectable' => $connectable,
+        'uploaded' => $uploaded,
+        'downloaded' => ($site_config['ratio_free'] ? 0 : $downloaded),
+        'to_go' => $left,
+        'started' => TIME_NOW,
+        'last_action' => TIME_NOW,
+        'seeder' => $seeder,
+        'agent' => $agent,
         'downloadoffset' => ($site_config['ratio_free'] ? 0 : $downloaded),
-        'uploadoffset'   => $uploaded,
-        'torrent_pass'   => $torrent_pass,
+        'uploadoffset' => $uploaded,
+        'torrent_pass' => $torrent_pass,
     ];
 
     $update_values = [
-        'userid'      => $userid,
-        'port'        => $port,
+        'userid' => $userid,
+        'port' => $port,
         'connectable' => $connectable,
-        'uploaded'    => $uploaded,
-        'downloaded'  => ($site_config['ratio_free'] ? 0 : $downloaded),
-        'to_go'       => $left,
+        'uploaded' => $uploaded,
+        'downloaded' => ($site_config['ratio_free'] ? 0 : $downloaded),
+        'to_go' => $left,
         'last_action' => TIME_NOW,
-        'seeder'      => $seeder,
-        'agent'       => $agent,
+        'seeder' => $seeder,
+        'agent' => $agent,
     ];
 
     $insert_peers = $fluent->insertInto('peers', $values)
@@ -630,15 +630,15 @@ if (isset($self) && $event === 'stopped') {
             $torrent_updateset['leechers'] = new Envms\FluentPDO\Literal('leechers + 1');
         }
         if ($a) {
-            $snatch_updateset['ip']           = inet_pton($realip);
-            $snatch_updateset['port']         = $port;
-            $snatch_updateset['connectable']  = $connectable;
-            $snatch_updateset['to_go']        = $left;
-            $snatch_updateset['last_action']  = TIME_NOW;
-            $snatch_updateset['seeder']       = $seeder;
-            $snatch_updateset['agent']        = $agent;
-            $snatch_updateset['hit_and_run']  = 0;
-            $snatch_updateset['timesann']     = new Envms\FluentPDO\Literal('timesann + 1');
+            $snatch_updateset['ip'] = inet_pton($realip);
+            $snatch_updateset['port'] = $port;
+            $snatch_updateset['connectable'] = $connectable;
+            $snatch_updateset['to_go'] = $left;
+            $snatch_updateset['last_action'] = TIME_NOW;
+            $snatch_updateset['seeder'] = $seeder;
+            $snatch_updateset['agent'] = $agent;
+            $snatch_updateset['hit_and_run'] = 0;
+            $snatch_updateset['timesann'] = new Envms\FluentPDO\Literal('timesann + 1');
             $snatch_updateset['mark_of_cain'] = 'no';
         }
     }

@@ -40,7 +40,7 @@ $month = [
 ];
 // See http://www.php.net/manual/en/function.strftime.php to define the
 // variable below
-$datefmt     = '%B %d, %Y at %I:%M %p';
+$datefmt = '%B %d, %Y at %I:%M %p';
 $timespanfmt = '%s days, %s hours, %s minutes and %s seconds';
 ////////////////// FUNCTION LIST /////////////////////////
 /**
@@ -52,14 +52,14 @@ $timespanfmt = '%s days, %s hours, %s minutes and %s seconds';
  */
 function byteformat($value, $limes = 2, $comma = 0)
 {
-    $dh           = pow(10, $comma);
-    $li           = pow(10, $limes);
+    $dh = pow(10, $comma);
+    $li = pow(10, $limes);
     $return_value = $value;
-    $unit         = $GLOBALS['byteUnits'][0];
+    $unit = $GLOBALS['byteUnits'][0];
     for ($d = 6, $ex = 15; $d >= 1; $d--, $ex -= 3) {
         if (isset($GLOBALS['byteUnits'][$d]) && $value >= $li * pow(10, $ex)) {
             $value = round($value / (pow(1024, $d) / $dh)) / $dh;
-            $unit  = $GLOBALS['byteUnits'][$d];
+            $unit = $GLOBALS['byteUnits'][$d];
             break 1;
         } // end if
     } // end for
@@ -83,7 +83,7 @@ function timespanFormat($seconds)
 {
     global $lang;
     $return_string = '';
-    $days          = floor($seconds / 86400);
+    $days = floor($seconds / 86400);
     if ($days > 0) {
         $seconds -= $days * 86400;
     }
@@ -144,7 +144,7 @@ unset($res, $row);
 
 //Get query statistics
 $queryStats = [];
-$tmp_array  = $serverStatus;
+$tmp_array = $serverStatus;
 foreach ($tmp_array as $name => $value) {
     if (substr($name, 0, 4) === 'Com_') {
         $queryStats[str_replace('_', ' ', substr($name, 4))] = $value;
@@ -152,7 +152,7 @@ foreach ($tmp_array as $name => $value) {
     }
 }
 unset($tmp_array);
-$TRAFFIC_STATS      = '';
+$TRAFFIC_STATS = '';
 $TRAFFIC_STATS_HEAD = "<!-- Server Traffic -->
         <b>{$lang['mysql_stats_traffic_per_hour']}</b>{$lang['mysql_stats_tables']}";
 $TRAFFIC_STATS .= "<table class='torrenttable' width='100%' border='0'>
@@ -223,7 +223,7 @@ $QUERY_STATS .= "<table class='torrenttable' width='100%' border='0'>
             <td bgcolor='grey'>&#160;%&#160;</td>
         </tr>";
 $useBgcolorOne = true;
-$countRows     = 0;
+$countRows = 0;
 foreach ($queryStats as $name => $value) {
     // For the percentage column, use Questions - Connections, because
     // the number of connections is not an item of the Query types
@@ -252,7 +252,7 @@ if (!empty($serverStatus)) {
               <td bgcolor='grey'>{$lang['mysql_stats_value']}</td>
           </tr>";
     $useBgcolorOne = true;
-    $countRows     = 0;
+    $countRows = 0;
     foreach ($serverStatus as $name => $value) {
         $STATUS_TABLE .= '<tr>
             <td>&#160;' . htmlsafechars(str_replace('_', ' ', $name)) . '&#160;</td>

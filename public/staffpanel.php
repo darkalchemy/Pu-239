@@ -7,13 +7,13 @@ check_user_status();
 global $site_config, $CURUSER, $cache, $session;
 
 $HTMLOUT = '';
-$lang    = array_merge(load_language('global'), load_language('staff_panel'));
+$lang = array_merge(load_language('global'), load_language('staff_panel'));
 
 $staff_classes1['name'] = $page_name = $file_name = $navbar = '';
-$staff                  = sqlesc(UC_STAFF);
-$staff_classes          = $cache->get('is_staffs_');
+$staff = sqlesc(UC_STAFF);
+$staff_classes = $cache->get('is_staffs_');
 if ($staff_classes === false || is_null($staff_classes)) {
-    $res           = sql_query("SELECT value FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX') AND value >= '$staff' ORDER BY value ASC");
+    $res = sql_query("SELECT value FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX') AND value >= '$staff' ORDER BY value ASC");
     $staff_classes = [];
     while (($row = mysqli_fetch_assoc($res))) {
         $staff_classes[] = $row['value'];
@@ -30,20 +30,20 @@ if ($site_config['staffpanel_online'] == 0) {
 }
 require_once CLASS_DIR . 'class_check.php';
 class_check(UC_STAFF);
-$action      = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : null));
-$id          = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : null));
+$action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : null));
+$id = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : null));
 $class_color = (function_exists('get_user_class_color') ? true : false);
-$tool        = (isset($_GET['tool']) ? $_GET['tool'] : (isset($_POST['tool']) ? $_POST['tool'] : null));
-$tool        = isset($_GET['tool']) ? $_GET['tool'] : '';
+$tool = (isset($_GET['tool']) ? $_GET['tool'] : (isset($_POST['tool']) ? $_POST['tool'] : null));
+$tool = isset($_GET['tool']) ? $_GET['tool'] : '';
 
-$staff_tools['modtask']   = 'modtask';
+$staff_tools['modtask'] = 'modtask';
 $staff_tools['iphistory'] = 'iphistory';
-$staff_tools['ipsearch']  = 'ipsearch';
+$staff_tools['ipsearch'] = 'ipsearch';
 $staff_tools['shit_list'] = 'shit_list';
 
 $sql = sql_query('SELECT file_name FROM staffpanel') or sqlerr(__FILE__, __LINE__);
 while ($list = mysqli_fetch_assoc($sql)) {
-    $item               = str_replace(['staffpanel.php?tool=', '.php', '&mode=news', '&action=app'], '', $list['file_name']);
+    $item = str_replace(['staffpanel.php?tool=', '.php', '&mode=news', '&action=app'], '', $list['file_name']);
     $staff_tools[$item] = $item;
 }
 
@@ -52,8 +52,8 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
 } else {
     if ($action === 'delete' && is_valid_id($id) && $CURUSER['class'] == UC_MAX) {
         $sure = ((isset($_GET['sure']) ? $_GET['sure'] : '') === 'yes');
-        $res  = sql_query('SELECT navbar, added_by, av_class' . (!$sure || $CURUSER['class'] <= UC_MAX ? ', page_name' : '') . ' FROM staffpanel WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $arr  = mysqli_fetch_assoc($res);
+        $res = sql_query('SELECT navbar, added_by, av_class' . (!$sure || $CURUSER['class'] <= UC_MAX ? ', page_name' : '') . ' FROM staffpanel WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $arr = mysqli_fetch_assoc($res);
         if ($CURUSER['class'] < $arr['av_class']) {
             stderr($lang['spanel_error'], $lang['spanel_you_not_allow_del_page']);
         }
@@ -343,7 +343,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
 
                 if (!in_array($arr['av_class'], $unique_classes)) {
                     $unique_classes[] = $arr['av_class'];
-                    $table            = "
+                    $table = "
             <h1 class='has-text-centered top20 text-shadow'>" . ($class_color ? '<font color="#' . get_user_class_color($arr['av_class']) . '">' : '') . get_user_class_name($arr['av_class']) . '\'s Panel' . ($class_color ? '</font>' : '') . "</h1>
             {$add_button}";
                 }

@@ -12,7 +12,7 @@ if (!$session->get('LoggedIn')) {
     check_user_status();
 }
 
-$lang    = array_merge(load_language('global'), load_language('faq'));
+$lang = array_merge(load_language('global'), load_language('faq'));
 $HTMLOUT = "
             <div class='bordered'>
                 <div class='alt_bordered bg-00'>
@@ -118,7 +118,7 @@ $next_para = "
                             {$lang['faq_downloading_body']}";
 if ($CURUSER) {
     $byratio = 0;
-    $byul    = 0;
+    $byul = 0;
     function format_ratio($up, $down, $color = true)
     {
         if ($down > 0) {
@@ -136,7 +136,7 @@ if ($CURUSER) {
     }
 
     if ($CURUSER['class'] < UC_VIP) {
-        $gigs  = $CURUSER['uploaded'] / (1024 * 1024 * 1024);
+        $gigs = $CURUSER['uploaded'] / (1024 * 1024 * 1024);
         $ratio = (($CURUSER['downloaded'] > 0) ? ($CURUSER['uploaded'] / $CURUSER['downloaded']) : 0);
         if ((0 < $ratio && $ratio < 0.5) || $gigs < 5) {
             $wait = 48;

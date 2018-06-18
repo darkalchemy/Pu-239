@@ -7,17 +7,17 @@ function freeleech_countdown()
 {
     global $CURUSER, $lang, $site_config, $cache;
 
-    $htmlout                          = $freetitle                          = '';
-    $cimg                             = '<img src="' . $site_config['pic_baseurl'] . 'cat_free.gif" alt="FREE!" />';
+    $htmlout = $freetitle = '';
+    $cimg = '<img src="' . $site_config['pic_baseurl'] . 'cat_free.gif" alt="FREE!" />';
     $freeleech['freeleech_countdown'] = $cache->get('freeleech_countdown');
     if ($freeleech['freeleech_countdown'] === false || is_null($freeleech['freeleech_countdown'])) {
-        $freeleech['freeleech_sql']       = sql_query('SELECT var, amount FROM freeleech WHERE type = "countdown"') or sqlerr(__FILE__, __LINE__);
+        $freeleech['freeleech_sql'] = sql_query('SELECT var, amount FROM freeleech WHERE type = "countdown"') or sqlerr(__FILE__, __LINE__);
         $freeleech['freeleech_countdown'] = [];
         if (mysqli_num_rows($freeleech['freeleech_sql']) !== 0) {
             $freeleech['freeleech_countdown'] = mysqli_fetch_assoc($freeleech['freeleech_sql']);
         } else {
             //$freeleech_sunday = strtotime('next Sunday');
-            $freeleech['freeleech_countdown']['var']    = 0;
+            $freeleech['freeleech_countdown']['var'] = 0;
             $freeleech['freeleech_countdown']['amount'] = strtotime('next Monday'); // timestamp sunday
             sql_query('UPDATE freeleech SET var = ' . $freeleech['freeleech']['var'] . ', amount = ' . $freeleech['freeleech_countdown']['amount'] . '
                        WHERE type = "countdown"') or sqlerr(__FILE__, __LINE__);
@@ -25,18 +25,18 @@ function freeleech_countdown()
         $cache->set('freeleech_countdown', $freeleech['freeleech_countdown'], 0);
     }
     if (($freeleech['freeleech_countdown']['var'] !== 0) && (TIME_NOW > ($freeleech['freeleech_countdown']['var']))) { // end of freeleech sunday
-        $freeleech['freeleech_countdown']['var']    = 0;
+        $freeleech['freeleech_countdown']['var'] = 0;
         $freeleech['freeleech_countdown']['amount'] = strtotime('next Monday'); // timestamp sunday
         sql_query('UPDATE freeleech SET var = ' . $freeleech['freeleech_countdown']['var'] . ', amount = ' . $freeleech['freeleech_countdown']['amount'] . ' 
                        WHERE type = "countdown"') or sqlerr(__FILE__, __LINE__);
         $cache->update_row('freeleech_countdown', [
-            'var'    => $freeleech['freeleech_countdown']['var'],
+            'var' => $freeleech['freeleech_countdown']['var'],
             'amount' => $freeleech['freeleech_countdown']['amount'],
         ], 0);
     } elseif (TIME_NOW > ($freeleech['freeleech_countdown']['amount'])) { // freeleech sunday!
         if ($freeleech['freeleech_countdown']['var'] == 0) {
             $freeleech['freeleech_countdown']['var'] = strtotime('next Monday');
-            $ahead_by                                = readable_time(($freeleech['freeleech_countdown']['var'] - 86400) - $freeleech['freeleech_countdown']['amount']);
+            $ahead_by = readable_time(($freeleech['freeleech_countdown']['var'] - 86400) - $freeleech['freeleech_countdown']['amount']);
             //'.$ahead_by.'
             sql_query('UPDATE freeleech SET var = ' . $freeleech['freeleech_countdown']['var'] . ' 
                        WHERE type = "countdown"') or sqlerr(__FILE__, __LINE__);
@@ -47,8 +47,8 @@ function freeleech_countdown()
             //== log shoutbot ircbot
             require_once INCL_DIR . 'bbcode_functions.php';
         }
-        $freetitle              = 'Freeleech in effect!';
-        $freemessage            = '<img src="' . $site_config['pic_baseurl'] . 'smilies/w00t.gif" alt="" /> ' . 'All Torrents <b>FREE</b> till ' . date('D F j, g:i a', $freeleech['freeleech_countdown']['var'] + (($CURUSER['time_offset'] + $CURUSER['dst_in_use']) * 60)) . '</span> ' . '<img src="' . $site_config['pic_baseurl'] . 'smilies/w00t.gif" alt="" />';
+        $freetitle = 'Freeleech in effect!';
+        $freemessage = '<img src="' . $site_config['pic_baseurl'] . 'smilies/w00t.gif" alt="" /> ' . 'All Torrents <b>FREE</b> till ' . date('D F j, g:i a', $freeleech['freeleech_countdown']['var'] + (($CURUSER['time_offset'] + $CURUSER['dst_in_use']) * 60)) . '</span> ' . '<img src="' . $site_config['pic_baseurl'] . 'smilies/w00t.gif" alt="" />';
         $freeleech['remaining'] = ($freeleech['freeleech_countdown']['var'] - TIME_NOW);
         $htmlout .= '
          <li>

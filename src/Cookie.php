@@ -22,8 +22,8 @@ class Cookie
     {
         global $site_config;
         $this->config = $site_config;
-        $this->cache  = new Cache();
-        $this->key    = $key;
+        $this->cache = new Cache();
+        $this->key = $key;
     }
 
     /**
@@ -38,7 +38,7 @@ class Cookie
             return false;
         }
 
-        $params    = session_get_cookie_params();
+        $params = session_get_cookie_params();
         $encrypted = CryptoJSAES::encrypt($value, $this->config['site']['salt']);
         setcookie(
             $this->config['cookie_prefix'] . $this->key,

@@ -21,13 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (mysqli_num_rows($res) != 1) {
         stderr("{$lang['text_error']}", "{$lang['text_bad']}");
     }
-    $arr          = mysqli_fetch_assoc($res);
+    $arr = mysqli_fetch_assoc($res);
     $wantpasshash = make_passhash($password);
     if ($arr['passhash'] != $wantpasshash) {
         stderr("{$lang['text_error']}", "{$lang['text_bad']}");
     }
     $userid = (int) $arr['id'];
-    $res    = sql_query(account_delete($userid)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query(account_delete($userid)) or sqlerr(__FILE__, __LINE__);
     //$res = sql_query("DELETE FROM users WHERE id=" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) !== false) {
         $cache->delete('user' . $userid);

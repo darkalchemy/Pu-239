@@ -25,7 +25,7 @@ function nodecheck()
     ];
     checkdir($dirs);
     $continue = true;
-    $out      = '<fieldset><legend>Nodejs check</legend>';
+    $out = '<fieldset><legend>Nodejs check</legend>';
     foreach ($dirs as $dir => $state) {
         if (!$state) {
             $continue = false;

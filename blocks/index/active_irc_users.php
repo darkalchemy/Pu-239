@@ -4,7 +4,7 @@ global $site_config, $lang, $fluent, $cache;
 
 $irc = $cache->get('ircusers_');
 if ($irc === false || is_null($irc)) {
-    $irc   = $list   = [];
+    $irc = $list = [];
     $query = $fluent->from('users')
         ->select(null)
         ->select('id')
@@ -16,9 +16,9 @@ if ($irc === false || is_null($irc)) {
     foreach ($query as $row) {
         $list[] = format_username($row['id']);
     }
-    $list[]          = format_username(2);
+    $list[] = format_username(2);
     $irc['ircusers'] = implode(',&nbsp;&nbsp;', $list);
-    $irc['count']    = count($list);
+    $irc['count'] = count($list);
     if ($irc['count'] === 0) {
         $irc['ircusers'] = $lang['index_irc_nousers'];
     }

@@ -16,8 +16,8 @@ function get_book_info($torrent)
         $search = $torrent['isbn'];
     }
     $api_hits = $cache->get('google_api_limits_');
-    $hash     = hash('sha256', $search);
-    $ebook    = $cache->get('book_info_' . $hash);
+    $hash = hash('sha256', $search);
+    $ebook = $cache->get('book_info_' . $hash);
     if ($ebook === false || is_null($ebook)) {
         $api_limit = 100;
         if (!empty($_ENV['GOOGLE_API_KEY'])) {
@@ -54,14 +54,14 @@ function get_book_info($torrent)
         } else {
             $book = $books->volumes->firstOrNull($torrent['name']);
         }
-        $keys           = $ebook['authors']           = $categories           = [];
+        $keys = $ebook['authors'] = $categories = [];
         $ebook['title'] = $book->title;
         foreach ($book->authors as $author) {
             $ebook['authors'][] = $author;
         }
-        $ebook['publisher']     = $book->publisher;
+        $ebook['publisher'] = $book->publisher;
         $ebook['publishedDate'] = $book->publishedDate;
-        $ebook['description']   = $book->description;
+        $ebook['description'] = $book->description;
         foreach ($book->industryIdentifiers as $industryIdentifier) {
             foreach ($industryIdentifier as $key => $value) {
                 $keys[] = $value;
@@ -73,7 +73,7 @@ function get_book_info($torrent)
             $ebook['categories'][] = $category;
         }
         $ebook['pageCount'] = $book->pageCount;
-        $ebook['poster']    = $book->imageLinks->thumbnail;
+        $ebook['poster'] = $book->imageLinks->thumbnail;
 
         if (!empty($book)) {
             $cache->set('book_info_' . $hash, $ebook, $site_config['expires']['book_info']);

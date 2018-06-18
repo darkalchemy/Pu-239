@@ -1,4 +1,5 @@
 18 Jun 2018
+remove: binary_operator_spaces from php_cs_fixer
 update: function_imdb.php to handle failure
 update: uglify.php to create all needed files, instead of copy example files
 

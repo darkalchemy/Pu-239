@@ -7,21 +7,21 @@ global $site_config;
 
 write_class_files();
 
-$purpose  = '--beautify';
-$short    = 'Beautified';
+$purpose = '--beautify';
+$short = 'Beautified';
 $spurpose = '-O2 --skip-rebase --format beautify';
-$css_ext  = '.css';
-$js_ext   = '.js';
-$update   = INCL_DIR . 'files.php';
-$jstmp    = BIN_DIR . 'temp.js';
-$csstmp   = BIN_DIR . 'temp.css';
+$css_ext = '.css';
+$js_ext = '.js';
+$update = INCL_DIR . 'files.php';
+$jstmp = BIN_DIR . 'temp.js';
+$csstmp = BIN_DIR . 'temp.css';
 
 if ($site_config['in_production']) {
-    $purpose  = '--compress --mangle';
-    $short    = 'Minified';
+    $purpose = '--compress --mangle';
+    $short = 'Minified';
     $spurpose = "--skip-rebase -O2 'all:on;restructureRules:on'";
-    $css_ext  = '.min.css';
-    $js_ext   = '.min.js';
+    $css_ext = '.min.css';
+    $js_ext = '.min.js';
 }
 $dirs = [
     PUBLIC_DIR . 'js/1/' . '*',
@@ -182,13 +182,13 @@ function process_js($key, $list)
         die("$key array can not be empty\n");
     }
     $list = implode(' ', $list);
-    $cmd  = ROOT_DIR . "node_modules/uglify-js/bin/uglifyjs $list $purpose -o $jstmp";
+    $cmd = ROOT_DIR . "node_modules/uglify-js/bin/uglifyjs $list $purpose -o $jstmp";
     passthru($cmd);
     if (file_exists($jstmp)) {
         $lkey = str_replace('_js', '', $key);
         $hash = substr(hash_file('sha256', $jstmp), 0, 8);
         $data = file_get_contents($jstmp);
-        $fp   = gzopen(PUBLIC_DIR . "js/1/{$lkey}_{$hash}{$js_ext}.gz", 'w9');
+        $fp = gzopen(PUBLIC_DIR . "js/1/{$lkey}_{$hash}{$js_ext}.gz", 'w9');
         gzwrite($fp, $data);
         gzclose($fp);
         chmod(PUBLIC_DIR . "js/1/{$lkey}_{$hash}{$js_ext}.gz", 0664);
@@ -205,7 +205,7 @@ function process_js($key, $list)
 function pre_process_css($list)
 {
     foreach ($list as $css) {
-        $name    = basename($css);
+        $name = basename($css);
         $exclude = ['fonts.css', 'fontello.css'];
         if ($name === 'default.css' || $name === 'themeChanger.css' || $name === 'colorpicker.css' || $name === 'iCarousel.css') {
             $cmd = 'node --no-warnings ' . ROOT_DIR . "node_modules/base64-css/bin/cli.js -f $css -p " . PUBLIC_DIR . 'css/1/';
@@ -232,13 +232,13 @@ function process_css($key, $list)
     $i = 0;
 
     $list = implode(' ', $list);
-    $cmd  = ROOT_DIR . "node_modules/clean-css-cli/bin/cleancss $spurpose -o $csstmp $list";
+    $cmd = ROOT_DIR . "node_modules/clean-css-cli/bin/cleancss $spurpose -o $csstmp $list";
     passthru($cmd);
     if (file_exists($csstmp)) {
         $lkey = str_replace('_css', '', $key);
         $hash = substr(hash_file('sha256', $csstmp), 0, 8);
         $data = file_get_contents($csstmp);
-        $fp   = gzopen(PUBLIC_DIR . "css/1/{$lkey}_{$hash}{$css_ext}.gz", 'w9');
+        $fp = gzopen(PUBLIC_DIR . "css/1/{$lkey}_{$hash}{$css_ext}.gz", 'w9');
         gzwrite($fp, $data);
         gzclose($fp);
         chmod(PUBLIC_DIR . "css/1/{$lkey}_{$hash}{$css_ext}.gz", 0664);

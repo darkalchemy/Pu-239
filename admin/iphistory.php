@@ -18,9 +18,9 @@ if (!is_valid_id($id)) {
 }
 /// Custom function....
 if (isset($_GET['remove'])) {
-    $remove    = htmlsafechars($_GET['remove']);
+    $remove = htmlsafechars($_GET['remove']);
     $username2 = htmlsafechars($_GET['username2']);
-    $deleteip  = htmlsafechars($_GET['deleteip']);
+    $deleteip = htmlsafechars($_GET['deleteip']);
     //write_logs("<span style='color: #FA5858;'><b>{$lang['stderr_wipe']}</b></span> (<a href='{$site_config['baseurl']}/userdetails.php?id=$CURUSER[id]'><b>$CURUSER[username]</b></a>){$lang['stderr_justwipe']}(<b>$deleteip</b>) {$lang['stderr_from']}(<a href='{$site_config['baseurl']}/userdetails.php?id=$id'><b>$username2</b></a>)'s Ip History.", 'log');
     sql_query('DELETE FROM ips WHERE id = ' . sqlesc($remove)) or sqlerr(__FILE__, __LINE__);
 }
@@ -37,11 +37,11 @@ if (isset($_GET['setseedbox2'])) {
     }
 }
 
-$user     = $user_stuffs->getUserFromId($id);
+$user = $user_stuffs->getUserFromId($id);
 $username = htmlsafechars($user['username']);
-$resip    = sql_query('SELECT *, INET6_NTOA(ip) AS ip FROM ips WHERE userid = ' . sqlesc($id) . ' GROUP BY ip') or sqlerr(__FILE__, __LINE__);
-$ipcount  = mysqli_num_rows($resip);
-$HTMLOUT  = '';
+$resip = sql_query('SELECT *, INET6_NTOA(ip) AS ip FROM ips WHERE userid = ' . sqlesc($id) . ' GROUP BY ip') or sqlerr(__FILE__, __LINE__);
+$ipcount = mysqli_num_rows($resip);
+$HTMLOUT = '';
 $HTMLOUT .= "
         <h1 class='has-text-centered'>{$lang['iphistory_usedby']}" . format_username($id) . "</h1>
         <p class='has-text-centered'>{$lang['iphistory_total_unique']} <b>$username</b> {$lang['iphistory_total_logged']} <b><u>$ipcount</u></b>.</p>
@@ -66,14 +66,14 @@ while ($iphistory = mysqli_fetch_array($resip)) {
     if (!filter_var($iphistory['ip'], FILTER_VALIDATE_IP)) {
         continue;
     }
-    $host   = gethostbyaddr($iphistory['ip']); //Hostname
+    $host = gethostbyaddr($iphistory['ip']); //Hostname
     $userip = htmlsafechars($iphistory['ip']); //Users Ip
-    $ipid   = (int) $iphistory['id']; // IP ID
+    $ipid = (int) $iphistory['id']; // IP ID
     if ($host == $userip) {
         $host = "<span class='has-text-danger'><b>{$lang['iphistory_notfound']}</b></span>";
     }
     $seedboxdetected = 'no';
-    $seedboxes       = ['kimsufi.com', 'leaseweb.com', 'ovh.net', 'powserv.com', 'server.lu', 'xirvik.com', 'feralhosting.com'];
+    $seedboxes = ['kimsufi.com', 'leaseweb.com', 'ovh.net', 'powserv.com', 'server.lu', 'xirvik.com', 'feralhosting.com'];
     foreach ($seedboxes as $seedbox) {
         if (stripos($host, $seedbox) !== false) {
             $seedboxdetected = 'yes';
@@ -82,16 +82,16 @@ while ($iphistory = mysqli_fetch_array($resip)) {
     if ($seedboxdetected === 'yes') {
         sql_query('UPDATE ips SET seedbox = 1 WHERE id =' . sqlesc($ipid)) or sqlerr(__FILE__, __LINE__);
     }
-    $lastbrowse   = (int) $iphistory['lastbrowse'];
-    $lastlogin    = (int) $iphistory['lastlogin'];
+    $lastbrowse = (int) $iphistory['lastbrowse'];
+    $lastlogin = (int) $iphistory['lastlogin'];
     $lastannounce = (int) $iphistory['lastannounce'];
-    $iptype       = htmlsafechars($iphistory['type']);
-    $queryc       = 'SELECT COUNT(id) FROM (SELECT u.id FROM users AS u WHERE u.ip = ' . ipToStorageFormat($iphistory['ip']) . ' UNION SELECT u.id FROM users AS u RIGHT JOIN ips ON u.id= ips.userid WHERE ips.ip =' . ipToStorageFormat($iphistory['ip']) . ' GROUP BY u.id) AS ipsearch';
-    $resip2       = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
-    $arrip2       = mysqli_fetch_row($resip2);
-    $ipcount      = $arrip2[0];
-    $banres       = sql_query('SELECT COUNT(*) FROM bans WHERE ' . ipToStorageFormat($iphistory['ip']) . ' >= first AND ' . ipToStorageFormat($iphistory['ip']) . ' <= last') or sqlerr(__FILE__, __LINE__);
-    $banarr       = mysqli_fetch_row($banres);
+    $iptype = htmlsafechars($iphistory['type']);
+    $queryc = 'SELECT COUNT(id) FROM (SELECT u.id FROM users AS u WHERE u.ip = ' . ipToStorageFormat($iphistory['ip']) . ' UNION SELECT u.id FROM users AS u RIGHT JOIN ips ON u.id= ips.userid WHERE ips.ip =' . ipToStorageFormat($iphistory['ip']) . ' GROUP BY u.id) AS ipsearch';
+    $resip2 = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
+    $arrip2 = mysqli_fetch_row($resip2);
+    $ipcount = $arrip2[0];
+    $banres = sql_query('SELECT COUNT(*) FROM bans WHERE ' . ipToStorageFormat($iphistory['ip']) . ' >= first AND ' . ipToStorageFormat($iphistory['ip']) . ' <= last') or sqlerr(__FILE__, __LINE__);
+    $banarr = mysqli_fetch_row($banres);
     if ($banarr[0] == 0) {
         if ($ipcount > 1) {
             $ipshow = "<b><a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><span class='has-text-lime'>" . htmlsafechars($iphistory['ip']) . ' </span></a ></b > ';
@@ -102,15 +102,15 @@ while ($iphistory = mysqli_fetch_array($resip)) {
         $ipshow = "<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><span class='has-text-red'><b>" . htmlsafechars($iphistory['ip']) . ' </b ></span></a > ';
     }
     // User IP listed for GeoIP tracing
-    $gi          = geoip_open(ROOT_DIR . 'GeoIP' . DIRECTORY_SEPARATOR . 'GeoIP.dat', GEOIP_STANDARD);
+    $gi = geoip_open(ROOT_DIR . 'GeoIP' . DIRECTORY_SEPARATOR . 'GeoIP.dat', GEOIP_STANDARD);
     $countrybyip = geoip_country_name_by_addr($gi, $userip);
     $listcountry = $countrybyip;
     geoip_close($gi);
     // end fetch geoip code
     // User IP listed for GeoIP tracing
-    $gi         = geoip_open(ROOT_DIR . 'GeoIP' . DIRECTORY_SEPARATOR . 'GeoLiteCity.dat', GEOIP_STANDARD);
-    $citybyip   = geoip_record_by_addr($gi, $userip);
-    $listcity   = @$citybyip->city;
+    $gi = geoip_open(ROOT_DIR . 'GeoIP' . DIRECTORY_SEPARATOR . 'GeoLiteCity.dat', GEOIP_STANDARD);
+    $citybyip = geoip_record_by_addr($gi, $userip);
+    $listcity = @$citybyip->city;
     $listregion = @$citybyip->region;
     geoip_close($gi);
     // end fetch geoip code

@@ -2,20 +2,20 @@
 
 global $CURUSER, $site_config;
 
-$rs   = sql_query("SELECT o.*, c.id AS catid, c.name AS catname FROM offers AS o LEFT JOIN categories AS c ON (c.id=o.cat) WHERE o.id = $id") or sqlerr(__FILE__, __LINE__);
+$rs = sql_query("SELECT o.*, c.id AS catid, c.name AS catname FROM offers AS o LEFT JOIN categories AS c ON (c.id=o.cat) WHERE o.id = $id") or sqlerr(__FILE__, __LINE__);
 $numz = mysqli_fetch_assoc($rs);
 if ($CURUSER['id'] != $numz['userid'] && $CURUSER['class'] < UC_STAFF) {
     stderr('Error!', 'This is not your offer to edit.');
 }
-$s       = htmlspecialchars($numz['offer']);
-$catid   = $numz['catid'];
-$body    = htmlspecialchars($numz['descr']);
+$s = htmlspecialchars($numz['offer']);
+$catid = $numz['catid'];
+$body = htmlspecialchars($numz['descr']);
 $catname = $numz['catname'];
-$s2      = "<select name='category'><option value='$catid'> $catname </option>\n";
+$s2 = "<select name='category'><option value='$catid'> $catname </option>\n";
 foreach ($cats as $row) {
     $s2 .= "<option value='" . $row['id'] . "'>" . htmlspecialchars($row['name']) . "</option>\n";
 }
-$s2      .= "</select>\n";
+$s2 .= "</select>\n";
 $HTMLOUT .= "<br>
 <form method='post' name='compose' action='viewoffers.php?id=$id&amp;take_offer_edit'><a name='add' id='add'></a>
 <table ><tr><td colspan='2'>

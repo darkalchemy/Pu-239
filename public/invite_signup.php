@@ -24,8 +24,8 @@ if (strlen($_GET['code']) != 64) {
 }
 
 $HTMLOUT = $year = $month = $day = $gender = $country = '';
-$lang    = array_merge(load_language('global'), load_language('signup'));
-$count   = $fluent->from('users')
+$lang = array_merge(load_language('global'), load_language('signup'));
+$count = $fluent->from('users')
     ->select(null)
     ->select('COUNT(*) AS count')
     ->fetch('count');
@@ -34,7 +34,7 @@ if ($count >= $site_config['maxusers']) {
     stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $site_config['maxusers']));
 }
 
-$offset      = (string) $site_config['time_offset'];
+$offset = (string) $site_config['time_offset'];
 $time_select = "<select name='user_timezone' class='w-100'>";
 foreach ($TZ as $off => $words) {
     if (preg_match("/^time_(-?[\d\.]+)$/", $off, $match)) {
@@ -104,7 +104,7 @@ while ($i >= 1920) {
     $year .= '<option value="' . $i . '">' . $i . '</option>';
     --$i;
 }
-$year  .= '</select>';
+$year .= '</select>';
 $month .= "<select name='month' class='w-100 bottom10'>
     <option value='00'>{$lang['signup_month']}</option>
     <option value='01'>{$lang['signup_jan']}</option>
@@ -131,36 +131,36 @@ while ($i <= 31) {
     }
     ++$i;
 }
-$day     .= '</select>';
+$day .= '</select>';
 $HTMLOUT .= "
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_birth']}<span>*</span></td>
                 <td>" . $year . $month . $day . '</td>
             </tr>';
-$passhint  = '';
+$passhint = '';
 $questions = [
     [
-        'id'       => '1',
+        'id' => '1',
         'question' => "{$lang['signup_q1']}",
     ],
     [
-        'id'       => '2',
+        'id' => '2',
         'question' => "{$lang['signup_q2']}",
     ],
     [
-        'id'       => '3',
+        'id' => '3',
         'question' => "{$lang['signup_q3']}",
     ],
     [
-        'id'       => '4',
+        'id' => '4',
         'question' => "{$lang['signup_q4']}",
     ],
     [
-        'id'       => '5',
+        'id' => '5',
         'question' => "{$lang['signup_q5']}",
     ],
     [
-        'id'       => '6',
+        'id' => '6',
         'question' => "{$lang['signup_q6']}",
     ],
 ];

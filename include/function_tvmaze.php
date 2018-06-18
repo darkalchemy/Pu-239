@@ -9,18 +9,18 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
 {
     global $site_config;
 
-    $cast                   = !empty($tvmaze_data['_embedded']['cast']) ? $tvmaze_data['_embedded']['cast'] : [];
+    $cast = !empty($tvmaze_data['_embedded']['cast']) ? $tvmaze_data['_embedded']['cast'] : [];
     $tvmaze_display['show'] = [
-        'name'      => line_by_line('Title', '%s'),
-        'url'       => line_by_line('Link', "<a href='{$site_config['anonymizer_url']}%s'>TVMaze Lookup</a>"),
+        'name' => line_by_line('Title', '%s'),
+        'url' => line_by_line('Link', "<a href='{$site_config['anonymizer_url']}%s'>TVMaze Lookup</a>"),
         'premiered' => line_by_line('Started', '%s'),
-        'airtime'   => line_by_line('Airs', '%s'),
-        'origin'    => line_by_line('Origin: Language', '%s'),
-        'status'    => line_by_line('Status', '%s'),
-        'runtime'   => line_by_line('Runtime', '%s min'),
-        'genres2'   => line_by_line('Genres', '%s'),
-        'rated'     => line_by_line('Rating', '%s'),
-        'summary'   => line_by_line('Summary', '%s'),
+        'airtime' => line_by_line('Airs', '%s'),
+        'origin' => line_by_line('Origin: Language', '%s'),
+        'status' => line_by_line('Status', '%s'),
+        'runtime' => line_by_line('Runtime', '%s min'),
+        'genres2' => line_by_line('Genres', '%s'),
+        'rated' => line_by_line('Rating', '%s'),
+        'summary' => line_by_line('Summary', '%s'),
     ];
 
     foreach ($tvmaze_display[$tvmaze_type] as $key => $value) {
@@ -34,12 +34,12 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
     $persons = $roles = [];
     foreach ($cast as $person) {
         $roles[] = [
-            'name'      => $person['person']['name'],
+            'name' => $person['person']['name'],
             'character' => $person['character']['name'],
-            'thumb'     => $person['character']['image']['medium'],
-            'photo'     => $person['character']['image']['original'],
-            'url'       => $person['character']['url'],
-            'id'        => $person['character']['id'],
+            'thumb' => $person['character']['image']['medium'],
+            'photo' => $person['character']['image']['original'],
+            'url' => $person['character']['url'],
+            'id' => $person['character']['id'],
         ];
     }
 
@@ -81,11 +81,11 @@ function episode_format($tvmaze_data, $tvmaze_type)
     global $site_config;
 
     $tvmaze_display['episode'] = [
-        'name'      => line_by_line('Episode Title', '%s'),
-        'url'       => line_by_line('Link', "<a href='{$site_config['anonymizer_url']}%s'>TVMaze Lookup</a>"),
+        'name' => line_by_line('Episode Title', '%s'),
+        'url' => line_by_line('Link', "<a href='{$site_config['anonymizer_url']}%s'>TVMaze Lookup</a>"),
         'timestamp' => line_by_line('Aired', '%s'),
-        'runtime'   => line_by_line('Runtime', '%s min'),
-        'summary'   => line_by_line('Summary', '%s'),
+        'runtime' => line_by_line('Runtime', '%s min'),
+        'summary' => line_by_line('Summary', '%s'),
     ];
 
     foreach ($tvmaze_display[$tvmaze_type] as $key => $value) {
@@ -115,7 +115,7 @@ function get_episode($tvmaze_id, $season, $episode)
 
     $episode_info = $cache->get('tvshow_episode_info_' . $tvmaze_id . $season . $episode);
     if ($episode_info === false || is_null($episode_info)) {
-        $tvmaze_link  = "http://api.tvmaze.com/shows/{$tvmaze_id}/episodebynumber?season={$season}&number={$episode}";
+        $tvmaze_link = "http://api.tvmaze.com/shows/{$tvmaze_id}/episodebynumber?season={$season}&number={$episode}";
         $episode_info = json_decode(file_get_contents($tvmaze_link), true);
         if (!empty($episode_info['summary'])) {
             $episode_info['timestamp'] = strtotime($episode_info['airstamp']);
@@ -142,7 +142,7 @@ function get_episode($tvmaze_id, $season, $episode)
 function tvmaze($tvmaze_id, $id)
 {
     global $fluent, $cache;
-    $set            = [];
+    $set = [];
     if (empty($tvmaze_id)) {
         return null;
     }
@@ -154,30 +154,30 @@ function tvmaze($tvmaze_id, $id)
 
     $tvmaze_show_data = $cache->get('tvmaze_' . $tvmaze_id);
     if ($force_update || $tvmaze_show_data === false || is_null($tvmaze_show_data)) {
-        $tvmaze_link                 = "http://api.tvmaze.com/shows/{$tvmaze_id}?embed=cast";
-        $tvmaze_show_data            = json_decode(file_get_contents($tvmaze_link), true);
-        $tvmaze_show_data['rated']   = $tvmaze_show_data['rating']['average'];
-        $airedtime                   = explode(':', $tvmaze_show_data['schedule']['time']);
-        $days                        = implode(', ', $tvmaze_show_data['schedule']['days']);
+        $tvmaze_link = "http://api.tvmaze.com/shows/{$tvmaze_id}?embed=cast";
+        $tvmaze_show_data = json_decode(file_get_contents($tvmaze_link), true);
+        $tvmaze_show_data['rated'] = $tvmaze_show_data['rating']['average'];
+        $airedtime = explode(':', $tvmaze_show_data['schedule']['time']);
+        $days = implode(', ', $tvmaze_show_data['schedule']['days']);
         $tvmaze_show_data['airtime'] = $days . ' at ' . time24to12($airedtime[0], $airedtime[1]) . " on {$tvmaze_show_data['network']['name']}. <span class='has-text-primary'>(Time zone: {$tvmaze_show_data['network']['country']['timezone']})</span>";
-        $tvmaze_show_data['origin']  = "{$tvmaze_show_data['network']['country']['name']}: {$tvmaze_show_data['language']}";
+        $tvmaze_show_data['origin'] = "{$tvmaze_show_data['network']['country']['name']}: {$tvmaze_show_data['language']}";
         if (count($tvmaze_show_data['genres']) > 0) {
-            $temp                        = implode(', ', array_map('strtolower', $tvmaze_show_data['genres']));
-            $temp                        = explode(', ', $temp);
+            $temp = implode(', ', array_map('strtolower', $tvmaze_show_data['genres']));
+            $temp = explode(', ', $temp);
             $tvmaze_show_data['genres2'] = implode(', ', array_map('ucwords', $temp));
         }
         $cache->set('tvmaze_' . $tvmaze_id, $tvmaze_show_data, 604800);
     }
     if (empty($torrents['newgenre'])) {
         $torrents['newgenre'] = $tvmaze_show_data['genres2'];
-        $set['newgenre']      = ucwords($tvmaze_show_data['genres2']);
+        $set['newgenre'] = ucwords($tvmaze_show_data['genres2']);
         $cache->update_row('torrent_details_' . $id, [
             'newgenre' => ucwords($tvmaze_show_data['genres2']),
         ], 0);
     }
     if (empty($torrents['poster'])) {
         $torrents['poster'] = $tvmaze_show_data['image']['original'];
-        $set['poster']      = $tvmaze_show_data['image']['original'];
+        $set['poster'] = $tvmaze_show_data['image']['original'];
         $cache->update_row('torrent_details_' . $id, [
             'poster' => $tvmaze_show_data['image']['original'],
         ], 0);

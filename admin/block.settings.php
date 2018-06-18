@@ -77,9 +77,9 @@ $list = [
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     global $lang;
     unset($_POST['submit']);
-    $updated         = [];
+    $updated = [];
     $block_set_cache = CACHE_DIR . 'block_settings_cache.php';
-    $block_out       = '<' . "?php\n\n\$BLOCKS = [\n";
+    $block_out = '<' . "?php\n\n\$BLOCKS = [\n";
     foreach ($_POST as $k => $v) {
         $updated[] = $k;
         $block_out .= ($k === 'block_undefined') ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => " . intval($v) . ",\n";
@@ -307,7 +307,7 @@ $HTMLOUT .= "
             <div>
                 <div class='level-center is-inline-flex'>";
 
-$contents   = [];
+$contents = [];
 $contents[] = "
                              <div class='w-100'>{$lang['block_freelech']}</div>
                             <div class='slideThree'>

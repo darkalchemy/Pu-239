@@ -53,7 +53,7 @@ function bjtable($res, $frame_caption)
     return $htmlout;
 }
 
-$HTMLOUT  = '';
+$HTMLOUT = '';
 $mingames = 10;
 $HTMLOUT .= '<br>';
 $res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games FROM users WHERE bjwins + bjlosses > ' . sqlesc($mingames) . ' ORDER BY games DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);

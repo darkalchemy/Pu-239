@@ -8,7 +8,7 @@ require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
 global $CURUSER;
 
-$lang    = array_merge(load_language('global'), load_language('torrenttable_functions'), load_language('bookmark'));
+$lang = array_merge(load_language('global'), load_language('torrenttable_functions'), load_language('bookmark'));
 $htmlout = '';
 /**
  * @param        $res
@@ -62,15 +62,15 @@ function bookmarktable($res, $variant = 'index')
     $categories = genrelist();
     foreach ($categories as $key => $value) {
         $change[$value['id']] = [
-            'id'    => $value['id'],
-            'name'  => $value['name'],
+            'id' => $value['id'],
+            'name' => $value['name'],
             'image' => $value['image'],
         ];
     }
     while ($row = mysqli_fetch_assoc($res)) {
         $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
-        $row['cat_pic']  = htmlsafechars($change[$row['category']]['image']);
-        $id              = (int) $row['id'];
+        $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
+        $id = (int) $row['id'];
         $htmlout .= "
                     <tr>
                         <td class='has-text-centered'>";
@@ -112,7 +112,7 @@ function bookmarktable($res, $variant = 'index')
                                 <img src='{$site_config['pic_baseurl']}zip.gif' alt='{$lang['bookmarks_down3']}' class='tooltipper' title='{$lang['bookmarks_down3']}' />
                             </a>
                         </td>" : '');
-        $bm  = sql_query('SELECT * FROM bookmarks WHERE torrentid=' . sqlesc($id) . ' && userid=' . sqlesc($CURUSER['id']));
+        $bm = sql_query('SELECT * FROM bookmarks WHERE torrentid=' . sqlesc($id) . ' && userid=' . sqlesc($CURUSER['id']));
         $bms = mysqli_fetch_assoc($bm);
         if ($bms['private'] === 'yes' && $bms['userid'] == $CURUSER['id']) {
             $makepriv = "<a href='{$site_config['baseurl']}/bookmark.php?torrent={$id}&amp;action=public'>
@@ -242,21 +242,21 @@ $htmlout .= '
         </div>
     </div>';
 
-$res             = sql_query('SELECT COUNT(id) FROM bookmarks WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-$row             = mysqli_fetch_array($res);
-$count           = $row[0];
+$res = sql_query('SELECT COUNT(id) FROM bookmarks WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+$row = mysqli_fetch_array($res);
+$count = $row[0];
 $torrentsperpage = $CURUSER['torrentsperpage'];
 if (!$torrentsperpage) {
     $torrentsperpage = 25;
 }
 if ($count) {
-    $pager  = pager($torrentsperpage, $count, 'bookmarks.php?&amp;');
+    $pager = pager($torrentsperpage, $count, 'bookmarks.php?&amp;');
     $query1 = 'SELECT b.id as bookmarkid, t.owner, t.id, t.name, t.comments, t.leechers, t.seeders, t.save_as, t.numfiles, t.added, t.filename, t.size, t.views, t.visible, t.hits, t.times_completed, t.category
                 FROM bookmarks AS b
                 LEFT JOIN torrents AS t ON b.torrentid = t.id
                 WHERE b.userid =' . sqlesc($userid) . "
                 ORDER BY t.id DESC {$pager['limit']}" or sqlerr(__FILE__, __LINE__);
-    $res = sql_query($query1)                         or sqlerr(__FILE__, __LINE__);
+    $res = sql_query($query1) or sqlerr(__FILE__, __LINE__);
 }
 if ($count) {
     $htmlout .= $pager['pagertop'];

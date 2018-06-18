@@ -24,11 +24,11 @@ class CustomAJAXChat extends AJAXChat
     {
         $user = $this->_user->getUserFromId($this->getUserID());
         if (!empty($user) && $user['enabled'] === 'yes' && $user['chatpost'] === 1) {
-            $userData['userID']    = $user['id'];
-            $userData['userName']  = $this->trimUserName($user['username']);
+            $userData['userID'] = $user['id'];
+            $userData['userName'] = $this->trimUserName($user['username']);
             $userData['userClass'] = get_user_class_name($user['class']);
-            $userData['userRole']  = $user['class'];
-            $userData['channels']  = [
+            $userData['userRole'] = $user['class'];
+            $userData['channels'] = [
                 0,
                 1,
                 2,

@@ -6,14 +6,14 @@
  */
 function account_delete($userid)
 {
-    $secs       = 350 * 86400;
-    $maxclass   = UC_STAFF;
+    $secs = 350 * 86400;
+    $maxclass = UC_STAFF;
     $references = [
-        'id'     => ['users', 'likes'], // Do Not move this line
+        'id' => ['users', 'likes'], // Do Not move this line
         'userid' => ['usersachiev', 'blackjack', 'blocks', 'bookmarks', 'casino', 'coins', 'freeslots', 'friends', 'happyhour', 'happylog', 'ips', 'peers', 'pmboxes', 'reputation', 'snatched', 'uploadapp', 'user_blocks', 'ustatus', 'userhits', 'usercomments',
         ],
-        'uid'      => ['xbt_files_users', 'thankyou'],
-        'user_id'  => ['poll_voters', 'posts', 'topics', 'subscriptions', 'read_posts'],
+        'uid' => ['xbt_files_users', 'thankyou'],
+        'user_id' => ['poll_voters', 'posts', 'topics', 'subscriptions', 'read_posts'],
         'friendid' => [
             'friends',
         ],
@@ -22,7 +22,7 @@ function account_delete($userid)
     foreach ($references as $field => $tablelist) {
         foreach ($tablelist as $table) {
             $tables[] = $tc = "t{$ctr}";
-            $joins[]  = ($ctr == 1) ? "users as {$tc}" : "LEFT JOIN {$table} as {$tc} on t1.id={$tc}.{$field}";
+            $joins[] = ($ctr == 1) ? "users as {$tc}" : "LEFT JOIN {$table} as {$tc} on t1.id={$tc}.{$field}";
             ++$ctr;
         }
     }

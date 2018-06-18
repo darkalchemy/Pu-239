@@ -10,8 +10,8 @@ require_once CACHE_DIR . 'timezones.php';
 check_user_status();
 global $CURUSER, $site_config, $session;
 
-$lang      = array_merge(load_language('global'), load_language('usercp'));
-$HTMLOUT   = $stylesheets   = $wherecatina   = '';
+$lang = array_merge(load_language('global'), load_language('usercp'));
+$HTMLOUT = $stylesheets = $wherecatina = '';
 $templates = sql_query('SELECT id, name FROM stylesheets ORDER BY id');
 while ($templ = mysqli_fetch_assoc($templates)) {
     if (file_exists(ROOT_DIR . "templates/$templ[id]/template.php")) {
@@ -19,11 +19,11 @@ while ($templ = mysqli_fetch_assoc($templates)) {
     }
 }
 $countries = "<option value='0'>---- {$lang['usercp_none']} ----</option>\n";
-$ct_r      = sql_query('SELECT id,name FROM countries ORDER BY name') or sqlerr(__FILE__, __LINE__);
+$ct_r = sql_query('SELECT id,name FROM countries ORDER BY name') or sqlerr(__FILE__, __LINE__);
 while ($ct_a = mysqli_fetch_assoc($ct_r)) {
     $countries .= "<option value='" . (int) $ct_a['id'] . "'" . ($CURUSER['country'] == $ct_a['id'] ? ' selected' : '') . '>' . htmlsafechars($ct_a['name']) . "</option>\n";
 }
-$offset      = ($CURUSER['time_offset'] != '') ? (string) $CURUSER['time_offset'] : (string) $site_config['time_offset'];
+$offset = ($CURUSER['time_offset'] != '') ? (string) $CURUSER['time_offset'] : (string) $site_config['time_offset'];
 $time_select = "
             <select name='user_timezone' style='min-width: 400px'>";
 foreach ($TZ as $off => $words) {
@@ -451,30 +451,30 @@ if ($action === 'avatar') {
                                         <input type='password' name='passagain' class='w-100 top20' placeholder='{$lang['usercp_pass_again']}' />
                                         <p class='top20 bottom10'>You must enter your current password.</p>
                                         <input type='password' name='current_pass' class='w-100' placeholder='Current Password' />", 1);
-    $secretqs  = "<option value='0'>{$lang['usercp_none_select']}</option>";
+    $secretqs = "<option value='0'>{$lang['usercp_none_select']}</option>";
     $questions = [
         [
-            'id'       => '1',
+            'id' => '1',
             'question' => "{$lang['usercp_q1']}",
         ],
         [
-            'id'       => '2',
+            'id' => '2',
             'question' => "{$lang['usercp_q2']}",
         ],
         [
-            'id'       => '3',
+            'id' => '3',
             'question' => "{$lang['usercp_q3']}",
         ],
         [
-            'id'       => '4',
+            'id' => '4',
             'question' => "{$lang['usercp_q4']}",
         ],
         [
-            'id'       => '5',
+            'id' => '5',
             'question' => "{$lang['usercp_q5']}",
         ],
         [
-            'id'       => '6',
+            'id' => '6',
             'question' => "{$lang['usercp_q6']}",
         ],
     ];
@@ -511,7 +511,7 @@ if ($action === 'avatar') {
                                 </thead>
                                 <tbody>";
     $categories = '';
-    $r          = sql_query('SELECT id, image, name FROM categories ORDER BY name') or sqlerr(__FILE__, __LINE__);
+    $r = sql_query('SELECT id, image, name FROM categories ORDER BY name') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($r) > 0) {
         $categories .= "
                                             <div id='cat-container' class='level-center'>";
@@ -653,9 +653,9 @@ if ($action === 'avatar') {
                                                 </span>
                                             </div>", 1);
 
-    $day                         = $month                         = $year                         = '';
-    $birthday                    = $CURUSER['birthday'];
-    $birthday                    = date('Y-m-d', strtotime($birthday));
+    $day = $month = $year = '';
+    $birthday = $CURUSER['birthday'];
+    $birthday = date('Y-m-d', strtotime($birthday));
     list($year1, $month1, $day1) = explode('-', $birthday);
     if ($CURUSER['birthday'] != '0000-00-00') {
         $year .= "

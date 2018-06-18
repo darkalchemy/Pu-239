@@ -8,7 +8,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang;
 
-$lang    = array_merge($lang, load_language('ad_invite_tree'));
+$lang = array_merge($lang, load_language('ad_invite_tree'));
 $HTMLOUT = '';
 //=== if we got here from a members page, get their info... if not, ask for a username to get the info...
 $id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
@@ -99,9 +99,9 @@ if ($id !== 0) {
     $id = '';
     //=== search members
     $search = isset($_GET['search']) ? strip_tags(trim($_GET['search'])) : '';
-    $class  = isset($_GET['class']) ? $_GET['class'] : '-';
+    $class = isset($_GET['class']) ? $_GET['class'] : '-';
     $letter = '';
-    $q      = '';
+    $q = '';
     if ($class == '-' || !ctype_digit($class)) {
         $class = '';
     }
@@ -119,11 +119,11 @@ if ($id !== 0) {
             $letter = '';
         }
         $query = 'username LIKE ' . sqlesc("$letter%") . ' AND status=\'confirmed\'';
-        $q     = 'letter=' . $letter;
+        $q = 'letter=' . $letter;
     }
     if (ctype_digit($class)) {
         $query .= ' AND class=' . sqlesc($class);
-        $q     .= ($q ? '&amp;' : '') . 'class=' . $class;
+        $q .= ($q ? '&amp;' : '') . 'class=' . $class;
     }
     //=== start the page
     $HTMLOUT .= '<h1>' . $lang['invite_search'] . '</h1>
@@ -160,11 +160,11 @@ if ($id !== 0) {
     }
     $HTMLOUT .= '</div><br>';
     //=== get stuff for the pager
-    $page               = isset($_GET['page']) ? (int) $_GET['page'] : 0;
-    $perpage            = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
-    $res_count          = sql_query('SELECT COUNT(id) FROM users WHERE ' . $query);
-    $arr_count          = mysqli_fetch_row($res_count);
-    $count              = ($arr_count[0] > 0 ? $arr_count[0] : 0);
+    $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
+    $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
+    $res_count = sql_query('SELECT COUNT(id) FROM users WHERE ' . $query);
+    $arr_count = mysqli_fetch_row($res_count);
+    $count = ($arr_count[0] > 0 ? $arr_count[0] : 0);
     list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'staffpanel.php?tool=invite_tree&amp;action=invite_tree');
     $HTMLOUT .= ($arr_count[0] > $perpage) ? '' . $menu . '<br><br>' : '<br><br>';
     if ($arr_count[0] > 0) {

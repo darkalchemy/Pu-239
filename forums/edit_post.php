@@ -2,9 +2,9 @@
 
 global $lang;
 
-$post_id  = (isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0));
+$post_id = (isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0));
 $topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
-$page     = (isset($_GET['page']) ? intval($_GET['page']) : (isset($_POST['page']) ? intval($_POST['page']) : 0));
+$page = (isset($_GET['page']) ? intval($_GET['page']) : (isset($_POST['page']) ? intval($_POST['page']) : 0));
 if (!is_valid_id($post_id) || !is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
@@ -53,22 +53,22 @@ if ($arr_post['staff_lock'] === 1) {
 }
 $edited_by = $CURUSER['id'];
 $edit_date = TIME_NOW;
-$body      = (isset($_POST['body']) ? $_POST['body'] : $arr_post['body']);
+$body = (isset($_POST['body']) ? $_POST['body'] : $arr_post['body']);
 if ($can_edit) {
     $topic_name = strip_tags(isset($_POST['topic_name']) ? $_POST['topic_name'] : $arr_post['topic_name']);
     $topic_desc = strip_tags(isset($_POST['topic_desc']) ? $_POST['topic_desc'] : $arr_post['topic_desc']);
 }
-$post_title     = strip_tags(isset($_POST['post_title']) ? $_POST['post_title'] : $arr_post['post_title']);
-$icon           = (isset($_POST['icon']) ? htmlsafechars($_POST['icon']) : htmlsafechars($arr_post['icon']));
-$show_bbcode    = (isset($_POST['show_bbcode']) ? $_POST['show_bbcode'] : $arr_post['bbcode']);
-$edit_reason    = strip_tags(isset($_POST['edit_reason']) ? ($_POST['edit_reason']) : '');
+$post_title = strip_tags(isset($_POST['post_title']) ? $_POST['post_title'] : $arr_post['post_title']);
+$icon = (isset($_POST['icon']) ? htmlsafechars($_POST['icon']) : htmlsafechars($arr_post['icon']));
+$show_bbcode = (isset($_POST['show_bbcode']) ? $_POST['show_bbcode'] : $arr_post['bbcode']);
+$edit_reason = strip_tags(isset($_POST['edit_reason']) ? ($_POST['edit_reason']) : '');
 $show_edited_by = ((isset($_POST['show_edited_by']) && $_POST['show_edited_by'] === 'no' && $CURUSER['class'] == UC_MAX && $CURUSER['id'] == $arr_post['id']) ? 'no' : 'yes');
 if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
     if (empty($body)) {
         stderr($lang['gl_error'], $lang['fe_body_text_can_not_be_empty']);
     }
-    $changed      = '<span style="color:red;">' . $lang['fe_changed'] . '</span>';
-    $not_changed  = '<span style="color:green;">' . $lang['fe_not_changed'] . '</span>';
+    $changed = '<span style="color:red;">' . $lang['fe_changed'] . '</span>';
+    $not_changed = '<span style="color:green;">' . $lang['fe_not_changed'] . '</span>';
     $post_history = '<table border="0" cellspacing="5" cellpadding="10" width="90%">
 	<tr>
 	<td class="forum_head" align="left" valign="middle" width="120px">#' . $post_id . '  ' . format_username($arr_post['user_id']) . '</td>
@@ -81,9 +81,9 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
 	</table><br>' . $arr_post['post_history'];
     //=== let the sysop have the power to not show they edited their own post if they wish...
     if ($show_edited_by === 'no' && $CURUSER['class'] == UC_MAX) {
-        $edit_reason  = htmlsafechars($arr_post['edit_reason']);
-        $edited_by    = htmlsafechars($arr_post['edited_by']);
-        $edit_date    = (int) $arr_post['edit_date'];
+        $edit_reason = htmlsafechars($arr_post['edit_reason']);
+        $edited_by = htmlsafechars($arr_post['edited_by']);
+        $edit_date = (int) $arr_post['edit_date'];
         $post_history = htmlsafechars($arr_post['post_history']);
     }
     sql_query('UPDATE posts SET body = ' . sqlesc($body) . ', icon = ' . sqlesc($icon) . ', post_title = ' . sqlesc($post_title) . ', bbcode = ' . sqlesc($show_bbcode) . ', edit_reason = ' . sqlesc($edit_reason) . ', edited_by = ' . sqlesc($edited_by) . ', edit_date = ' . sqlesc($edit_date) . ', post_history = ' . sqlesc($post_history) . ' WHERE id = ' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
@@ -109,8 +109,8 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
                 $extension_error = $size_error = 0;
                 //=== allowed file types (2 checks) but still can't really trust it
                 $the_file_extension = strrpos($name, '.');
-                $file_extension     = strtolower(substr($name, $the_file_extension)); //===  make sure the name is only alphanumeric or _ or -
-                $name               = preg_replace('#[^a-zA-Z0-9_-]#', '', $name); // hell, it could even be 0_0 if it wanted to!
+                $file_extension = strtolower(substr($name, $the_file_extension)); //===  make sure the name is only alphanumeric or _ or -
+                $name = preg_replace('#[^a-zA-Z0-9_-]#', '', $name); // hell, it could even be 0_0 if it wanted to!
                 switch (true) {
                     case $size > $max_file_size:
                         $size_error = ($size_error + 1);
@@ -131,7 +131,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
                     default:
                         //=== woohoo passed all our silly tests but just to be sure, let's mess it up a bit ;)
                         //=== get rid of the file extension
-                        $name      = substr($name, 0, -strlen($file_extension));
+                        $name = substr($name, 0, -strlen($file_extension));
                         $upload_to = $upload_folder . $name . '(id-' . $post_id . ')' . $file_extension;
                         //===plop it into the DB all safe and snuggly
                         sql_query('INSERT INTO `attachments` (`post_id`, `user_id`, `file`, `file_name`, `added`, `extension`, `size`) VALUES ( ' . sqlesc($post_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($name . '(id-' . $post_id . ')' . $file_extension) . ', ' . sqlesc($name) . ', ' . TIME_NOW . ', ' . ('.zip' === $file_extension ? '\'zip\'' : '\'rar\'') . ', ' . $size . ')') or sqlerr(__FILE__, __LINE__);
@@ -144,7 +144,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
     //=== now to delete any atachments if selected:
     if (isset($_POST['attachment_to_delete'])) {
         $_POST['attachment_to_delete'] = (isset($_POST['attachment_to_delete']) ? $_POST['attachment_to_delete'] : '');
-        $attachment_to_delete          = [];
+        $attachment_to_delete = [];
         foreach ($_POST['attachment_to_delete'] as $var) {
             $attachment_to_delete = intval($var);
             //=== get attachment info

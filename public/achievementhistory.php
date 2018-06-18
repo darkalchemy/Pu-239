@@ -7,9 +7,9 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config;
 
-$lang    = array_merge(load_language('global'), load_language('achievement_history'));
+$lang = array_merge(load_language('global'), load_language('achievement_history'));
 $HTMLOUT = '';
-$id      = (int) $_GET['id'];
+$id = (int) $_GET['id'];
 if (!is_valid_id($id)) {
     stderr($lang['achievement_history_err'], $lang['achievement_history_err1']);
 }
@@ -18,12 +18,12 @@ $arr = mysqli_fetch_assoc($res);
 if (!$arr) {
     stderr($lang['achievement_history_err'], $lang['achievement_history_err1']);
 }
-$achpoints   = (int) $arr['achpoints'];
+$achpoints = (int) $arr['achpoints'];
 $spentpoints = (int) $arr['spentpoints'];
-$res         = sql_query('SELECT COUNT(*) FROM achievements WHERE userid =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$row         = mysqli_fetch_row($res);
-$count       = $row[0];
-$perpage     = 15;
+$res = sql_query('SELECT COUNT(*) FROM achievements WHERE userid =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$row = mysqli_fetch_row($res);
+$count = $row[0];
+$perpage = 15;
 if (!$count) {
     stderr($lang['achievement_history_no'], "{$lang['achievement_history_err2']}<a class='altlink' href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['username']) . "</a>{$lang['achievement_history_err3']}");
 }
@@ -65,7 +65,7 @@ $heading = "
                         <th>{$lang['achievement_history_descr']}</th>
                         <th>{$lang['achievement_history_date']}</th>
                     </tr>";
-$res  = sql_query('SELECT * FROM achievements WHERE userid=' . sqlesc($id) . " ORDER BY date DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT * FROM achievements WHERE userid=' . sqlesc($id) . " ORDER BY date DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
 $body = '';
 while ($arr = mysqli_fetch_assoc($res)) {
     $body .= "

@@ -20,9 +20,9 @@ function trivia_update($data)
 
     if ($count > 0) {
         // update trivia to get next question
-        $sql     = 'SELECT gamenum FROM triviasettings WHERE gameon = 1';
-        $res     = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        $result  = mysqli_fetch_assoc($res);
+        $sql = 'SELECT gamenum FROM triviasettings WHERE gameon = 1';
+        $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        $result = mysqli_fetch_assoc($res);
         $gamenum = $result['gamenum'];
 
         if ($gamenum >= 1) {

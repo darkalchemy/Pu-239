@@ -13,23 +13,23 @@ if ($action === 'download') {
     if ($id == 0) {
         stderr($lang['gl_error'], $lang['gl_not_a_valid_id']);
     } else {
-        $res      = sql_query('SELECT id, name, filename FROM subtitles WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $arr      = mysqli_fetch_assoc($res);
-        $ext      = (substr($arr['filename'], -3));
+        $res = sql_query('SELECT id, name, filename FROM subtitles WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $arr = mysqli_fetch_assoc($res);
+        $ext = (substr($arr['filename'], -3));
         $fileName = str_replace([
                                     ' ',
                                     '.',
                                     '-',
                                 ], '_', $arr['name']) . '.' . $ext;
-        $file        = $site_config['sub_up_dir'] . '/' . $arr['filename'];
+        $file = $site_config['sub_up_dir'] . '/' . $arr['filename'];
         $fileContent = file_get_contents($file);
-        $newFile     = fopen("{$site_config['sub_up_dir']}/$fileName", 'w');
+        $newFile = fopen("{$site_config['sub_up_dir']}/$fileName", 'w');
         @fwrite($newFile, $fileContent);
         @fclose($newFile);
-        $file   = [];
-        $zip    = new PHPZip();
+        $file = [];
+        $zip = new PHPZip();
         $file[] = "{$site_config['sub_up_dir']}/$fileName";
-        $fName  = "{$site_config['sub_up_dir']}/" . str_replace([
+        $fName = "{$site_config['sub_up_dir']}/" . str_replace([
                                                                    ' ',
                                                                    '.',
                                                                    '-',

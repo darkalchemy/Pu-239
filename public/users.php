@@ -6,11 +6,11 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $site_config;
 
-$lang   = array_merge(load_language('global'), load_language('users'));
+$lang = array_merge(load_language('global'), load_language('users'));
 $search = isset($_GET['search']) ? strip_tags(trim($_GET['search'])) : '';
-$class  = isset($_GET['class']) ? $_GET['class'] : '-';
+$class = isset($_GET['class']) ? $_GET['class'] : '-';
 $letter = '';
-$q1     = '';
+$q1 = '';
 if ($class === '-' || !ctype_digit($class)) {
     $class = '';
 }
@@ -28,11 +28,11 @@ if ($search != '' || $class) {
         $letter = '';
     }
     $query1 = "username LIKE '$letter%' AND status = 'confirmed' AND anonymous_until = 0";
-    $q1     = "letter=$letter";
+    $q1 = "letter=$letter";
 }
 if (ctype_digit($class)) {
     $query1 .= " AND class=$class";
-    $q1     .= ($q1 ? '&amp;' : '') . "class=$class";
+    $q1 .= ($q1 ? '&amp;' : '') . "class=$class";
 }
 $HTMLOUT = '';
 $HTMLOUT .= "
@@ -82,12 +82,12 @@ foreach ($cc as $aa) {
 
 $HTMLOUT .= main_div($div, 'bottom20');
 
-$page       = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-$perpage    = 25;
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+$perpage = 25;
 $browsemenu = '';
-$pagemenu   = '';
-$res        = sql_query('SELECT COUNT(*) FROM users WHERE ' . $query1) or sqlerr(__FILE__, __LINE__);
-$arr        = mysqli_fetch_row($res);
+$pagemenu = '';
+$res = sql_query('SELECT COUNT(*) FROM users WHERE ' . $query1) or sqlerr(__FILE__, __LINE__);
+$arr = mysqli_fetch_row($res);
 if ($arr[0] > $perpage) {
     $pages = floor($arr[0] / $perpage);
     if ($pages * $perpage < $arr[0]) {

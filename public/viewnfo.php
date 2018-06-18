@@ -14,7 +14,7 @@ if ($CURUSER['class'] === UC_MIN || !is_valid_id($id)) {
     die();
 }
 $r = sql_query('SELECT name, nfo FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$a = mysqli_fetch_assoc($r)                                                or die("{$lang['text_puke']}");
+$a = mysqli_fetch_assoc($r) or die("{$lang['text_puke']}");
 
 $HTMLOUT = "
         <h1>{$lang['text_nfofor']}<a href='{$site_config['baseurl']}/details.php?id=$id'>" . htmlsafechars($a['name']) . "</a></h1>

@@ -29,7 +29,7 @@ if (!empty($_POST['picture'])) {
 $descr = "$pic";
 $descr .= "$descrmain";
 $request2 = sqlesc($request);
-$descr    = sqlesc($descr);
+$descr = sqlesc($descr);
 sql_query("INSERT INTO requests (hits, userid, cat, request, descr, added) VALUES(1,$CURUSER[id], $cat, $request2, $descr, " . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
 $id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
 sql_query("INSERT INTO voted_requests VALUES(0, $id, $CURUSER[id])") or sqlerr(__FILE__, __LINE__);

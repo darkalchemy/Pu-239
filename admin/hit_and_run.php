@@ -17,11 +17,11 @@ if (!XBT_TRACKER) {
 }
 $HTMLOUT = '';
 //=== get stuff for the pager
-$page               = isset($_GET['page']) ? (int) $_GET['page'] : 0;
-$perpage            = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
-$res_count          = sql_query($query) or sqlerr(__FILE__, __LINE__);
-$arr_count          = mysqli_fetch_row($res_count);
-$count              = ($arr_count[0] > 0 ? $arr_count[0] : 0);
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
+$perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
+$res_count = sql_query($query) or sqlerr(__FILE__, __LINE__);
+$arr_count = mysqli_fetch_row($res_count);
+$count = ($arr_count[0] > 0 ? $arr_count[0] : 0);
 list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'staffpanel.php?tool=hit_and_run');
 if (!XBT_TRACKER) {
     $query_2 = (isset($_GET['really_bad']) ? "SELECT s.torrentid, s.userid, s.hit_and_run, s.downloaded AS dload, s.uploaded AS uload, s.seedtime, s.start_date, s.complete_date, p.id, p.torrent, p.seeder, u.id, u.avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM snatched AS s LEFT JOIN users AS u ON u.id = s.userid LEFT JOIN peers AS p ON p.torrent=s.torrentid AND p.userid=s.userid LEFT JOIN torrents AS t ON t.id = s.torrentid WHERE finished = 'yes' AND hit_and_run > 0 AND u.hit_and_run_total > 2 ORDER BY userid $LIMIT" : "SELECT s.torrentid, s.userid, s.hit_and_run, s.downloaded AS dload, s.uploaded AS uload, s.seedtime, s.start_date, s.complete_date, p.id, p.torrent, p.seeder, u.id, u.avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM snatched AS s LEFT JOIN users AS u ON u.id = s.userid LEFT JOIN peers AS p ON p.torrent=s.torrentid AND p.userid=s.userid LEFT JOIN torrents AS t ON t.id=s.torrentid WHERE `finished` = 'yes' AND `hit_and_run` > 0 ORDER BY `userid` $LIMIT");
@@ -41,40 +41,40 @@ $HTMLOUT .= '<h2>' . (!isset($_GET['really_bad']) ? $lang['hitnrun_chance'] : $l
 while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
     //=== Xbt Tracker or Default Announce
     $Xbt_Seed = (XBT_TRACKER === true ? $hit_and_run_arr['active'] !== 1 : $hit_and_run_arr['seeder'] !== 'yes');
-    $Uid_ID   = (XBT_TRACKER === true ? $hit_and_run_arr['uid'] : $hit_and_run_arr['userid']);
-    $S_date   = (XBT_TRACKER === true ? $hit_and_run_arr['started'] : $hit_and_run_arr['start_date']);
-    $T_ID     = (XBT_TRACKER === true ? $hit_and_run_arr['fid'] : $hit_and_run_arr['torrentid']);
-    $C_Date   = (XBT_TRACKER === true ? $hit_and_run_arr['completedtime'] : $hit_and_run_arr['complete_date']);
+    $Uid_ID = (XBT_TRACKER === true ? $hit_and_run_arr['uid'] : $hit_and_run_arr['userid']);
+    $S_date = (XBT_TRACKER === true ? $hit_and_run_arr['started'] : $hit_and_run_arr['start_date']);
+    $T_ID = (XBT_TRACKER === true ? $hit_and_run_arr['fid'] : $hit_and_run_arr['torrentid']);
+    $C_Date = (XBT_TRACKER === true ? $hit_and_run_arr['completedtime'] : $hit_and_run_arr['complete_date']);
     //=== if really seeding list them
     if ($Xbt_Seed) {
         if ($Uid_ID !== $hit_and_run_arr['owner']) {
-            $ratio_site               = member_ratio($hit_and_run_arr['up'], $site_config['ratio_free'] ? '0' : $hit_and_run_arr['down']);
-            $ratio_torrent            = member_ratio($hit_and_run_arr['uload'], $site_config['ratio_free'] ? '0' : $hit_and_run_arr['dload']);
-            $avatar                   = ($CURUSER['avatars'] === 'yes' ? ($hit_and_run_arr['avatar'] == '' ? '<img src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif"  width="40" alt="default avatar" />' : '<img src="' . url_proxy($hit_and_run_arr['avatar'], true, 40, 'auto') . '" alt="avatar"  width="40" />') : '');
+            $ratio_site = member_ratio($hit_and_run_arr['up'], $site_config['ratio_free'] ? '0' : $hit_and_run_arr['down']);
+            $ratio_torrent = member_ratio($hit_and_run_arr['uload'], $site_config['ratio_free'] ? '0' : $hit_and_run_arr['dload']);
+            $avatar = ($CURUSER['avatars'] === 'yes' ? ($hit_and_run_arr['avatar'] == '' ? '<img src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif"  width="40" alt="default avatar" />' : '<img src="' . url_proxy($hit_and_run_arr['avatar'], true, 40, 'auto') . '" alt="avatar"  width="40" />') : '');
             $torrent_needed_seed_time = $hit_and_run_arr['seedtime'];
             //=== get times per class
             switch (true) {
                 case $hit_and_run_arr['class'] <= $site_config['hnr_config']['firstclass']:
-                    $days_3       = $site_config['hnr_config']['_3day_first']       * 3600;
-                    $days_14      = $site_config['hnr_config']['_14day_first']      * 3600;
+                    $days_3 = $site_config['hnr_config']['_3day_first'] * 3600;
+                    $days_14 = $site_config['hnr_config']['_14day_first'] * 3600;
                     $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600;
                     break;
 
                 case $hit_and_run_arr['class'] < $site_config['hnr_config']['secondclass']:
-                    $days_3       = $site_config['hnr_config']['_3day_second']       * 3600;
-                    $days_14      = $site_config['hnr_config']['_14day_second']      * 3600;
+                    $days_3 = $site_config['hnr_config']['_3day_second'] * 3600;
+                    $days_14 = $site_config['hnr_config']['_14day_second'] * 3600;
                     $days_over_14 = $site_config['hnr_config']['_14day_over_second'] * 3600;
                     break;
 
                 case $hit_and_run_arr['class'] >= $site_config['hnr_config']['thirdclass']:
-                    $days_3       = $site_config['hnr_config']['_3day_third']       * 3600;
-                    $days_14      = $site_config['hnr_config']['_14day_third']      * 3600;
+                    $days_3 = $site_config['hnr_config']['_3day_third'] * 3600;
+                    $days_14 = $site_config['hnr_config']['_14day_third'] * 3600;
                     $days_over_14 = $site_config['hnr_config']['_14day_over_third'] * 3600;
                     break;
 
                 default:
-                    $days_3       = $site_config['hnr_config']['_3day_first']       * 3600; //== 1 days
-                    $days_14      = $site_config['hnr_config']['_14day_first']      * 3600; //== 1 days
+                    $days_3 = $site_config['hnr_config']['_3day_first'] * 3600; //== 1 days
+                    $days_14 = $site_config['hnr_config']['_14day_first'] * 3600; //== 1 days
                     $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600; //== 1 day
             }
             switch (true) {
@@ -94,8 +94,8 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
                     $minus_ratio = ($days_over_14 - $torrent_needed_seed_time);
             }
             $minus_ratio = (preg_match('/-/i', $minus_ratio) ? 0 : $minus_ratio);
-            $color       = ($minus_ratio > 0 ? get_ratio_color($minus_ratio) : 'limegreen');
-            $users       = $hit_and_run_arr;
+            $color = ($minus_ratio > 0 ? get_ratio_color($minus_ratio) : 'limegreen');
+            $users = $hit_and_run_arr;
             $users['id'] = (int) $Uid_ID;
             $HTMLOUT .= '<tr><td>' . $avatar . '</td>
             <td><a class="altlink" href="' . $site_config['baseurl'] . '/userdetails.php?id=' . (int) $Uid_ID . '&amp;completed=1#completed">' . htmlsafechars($users['username']) . '</a>  [ ' . get_user_class_name($hit_and_run_arr['class']) . ' ]

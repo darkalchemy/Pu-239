@@ -25,7 +25,7 @@ function composercheck()
     ];
     checkdir($dirs);
     $continue = true;
-    $out      = '<fieldset><legend>Composer check</legend>';
+    $out = '<fieldset><legend>Composer check</legend>';
     foreach ($dirs as $dir => $state) {
         if (!$state) {
             $continue = false;

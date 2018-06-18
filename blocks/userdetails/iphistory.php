@@ -6,7 +6,7 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
     $iphistory = $cache->get('ip_history_' . $id);
     if ($iphistory === false || is_null($iphistory)) {
         $ipuse['yes'] = $ipuse['no'] = 0;
-        $ipsinuse     = $fluent->from('users')
+        $ipsinuse = $fluent->from('users')
             ->select(null)
             ->select('COUNT(*) AS count')
             ->select('enabled')
@@ -23,17 +23,17 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
         if (($ipuse['yes'] == 1 && $ipuse['no'] == 0) || ($ipuse['no'] == 1 && $ipuse['yes'] == 0)) {
             $iphistory['use'] = '';
         } else {
-            $ipcheck          = $user['ip'];
-            $enbl             = $ipuse['yes'] ? $ipuse['yes'] . ' enabled ' : '';
-            $dbl              = $ipuse['no'] ? $ipuse['no'] . ' disabled ' : '';
-            $mid              = $enbl && $dbl ? ' and ' : '';
+            $ipcheck = $user['ip'];
+            $enbl = $ipuse['yes'] ? $ipuse['yes'] . ' enabled ' : '';
+            $dbl = $ipuse['no'] ? $ipuse['no'] . ' disabled ' : '';
+            $mid = $enbl && $dbl ? ' and ' : '';
             $iphistory['use'] = "
         <span class='has-text-danger'>{$lang['userdetails_ip_warn']}</span>
         <a href='{$site_config['baseurl']}/staffpanel.php?tool=usersearch&amp;action=usersearch&amp;ip=$ipcheck'>
             {$lang['userdetails_ip_used']}{$enbl}{$mid}{$dbl}{$lang['userdetails_ip_users']}
         </a>";
         }
-        $resip            = sql_query('SELECT INET6_NTOA(ip) FROM ips WHERE userid = ' . sqlesc($id) . ' GROUP BY ip') or sqlerr(__FILE__, __LINE__);
+        $resip = sql_query('SELECT INET6_NTOA(ip) FROM ips WHERE userid = ' . sqlesc($id) . ' GROUP BY ip') or sqlerr(__FILE__, __LINE__);
         $iphistory['ips'] = mysqli_num_rows($resip);
         $cache->set('ip_history_' . $id, $iphistory, $site_config['expires']['iphistory']);
     }

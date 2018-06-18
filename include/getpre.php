@@ -6,18 +6,18 @@
  */
 function get_pretime($st)
 {
-    $secs          = $st;
-    $mins          = floor($st / 60);
-    $hours         = floor($mins / 60);
-    $days          = floor($hours / 24);
-    $week          = floor($days / 7);
-    $month         = floor($week / 4);
-    $week_elapsed  = floor(($st - ($month * 4 * 7 * 24 * 60 * 60)) / (7 * 24 * 60 * 60));
-    $days_elapsed  = floor(($st - ($week * 7 * 24 * 60 * 60)) / (24 * 60 * 60));
+    $secs = $st;
+    $mins = floor($st / 60);
+    $hours = floor($mins / 60);
+    $days = floor($hours / 24);
+    $week = floor($days / 7);
+    $month = floor($week / 4);
+    $week_elapsed = floor(($st - ($month * 4 * 7 * 24 * 60 * 60)) / (7 * 24 * 60 * 60));
+    $days_elapsed = floor(($st - ($week * 7 * 24 * 60 * 60)) / (24 * 60 * 60));
     $hours_elapsed = floor(($st - ($days * 24 * 60 * 60)) / (60 * 60));
-    $mins_elapsed  = floor(($st - ($hours * 60 * 60)) / 60);
-    $secs_elapsed  = floor($st - $mins * 60);
-    $pretime       = '';
+    $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
+    $secs_elapsed = floor($st - $mins * 60);
+    $pretime = '';
     if ($secs_elapsed > 0) {
         $pretime = "$secs_elapsed Secs. " . $pretime;
     }

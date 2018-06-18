@@ -7,27 +7,27 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $lang;
 
-$lang    = array_merge($lang, load_language('ad_traceroute'));
+$lang = array_merge($lang, load_language('ad_traceroute'));
 $HTMLOUT = '';
 if (strtoupper(substr(PHP_OS, 0, 3) === 'WIN')) {
     $windows = 1;
-    $unix    = 0;
+    $unix = 0;
 } else {
     $windows = 0;
-    $unix    = 1;
+    $unix = 1;
 }
 $register_globals = (bool) ini_get('register_gobals');
-$system           = ini_get('system');
-$unix             = (bool) $unix;
-$win              = (bool) $windows;
+$system = ini_get('system');
+$unix = (bool) $unix;
+$win = (bool) $windows;
 if ($register_globals) {
-    $ip   = getenv($_SERVER['REMOTE_ADDR']);
+    $ip = getenv($_SERVER['REMOTE_ADDR']);
     $self = $PHP_SELF;
 } else {
     $action = isset($_POST['action']) ? $_POST['action'] : '';
-    $host   = isset($_POST['host']) ? $_POST['host'] : '';
-    $ip     = getip();
-    $self   = $_SERVER['SCRIPT_NAME'];
+    $host = isset($_POST['host']) ? $_POST['host'] : '';
+    $ip = getip();
+    $self = $_SERVER['SCRIPT_NAME'];
 }
 if ($action === 'do') {
     $host = preg_replace('/[^A-Za-z0-9.]/', '', $host);

@@ -67,7 +67,7 @@ function end_frame()
 function begin_table($striped = false)
 {
     $htmlout = '';
-    $stripe  = $striped === true ? ' table-striped' : '';
+    $stripe = $striped === true ? ' table-striped' : '';
     $htmlout .= "<table class='sucks table table-bordered{$stripe}'>\n";
 
     return $htmlout;
@@ -197,7 +197,7 @@ function write_css($data)
 {
     $classdata = '';
     foreach ($data as $class) {
-        $cname  = str_replace(' ', '_', strtolower($class['className']));
+        $cname = str_replace(' ', '_', strtolower($class['className']));
         $ccolor = strtolower($class['classColor']);
         if (!empty($cname)) {
             //$classdata .= "#content .{$cname} {
@@ -227,7 +227,7 @@ function write_css($data)
 }
 ';
     foreach ($data as $class) {
-        $cname  = str_replace(' ', '_', strtolower($class['className']));
+        $cname = str_replace(' ', '_', strtolower($class['className']));
         $ccolor = strtolower($class['classColor']);
         if (!empty($cname)) {
             $classdata .= ".{$cname}_bk {
@@ -266,19 +266,19 @@ function write_class_files()
 {
     global $site_config;
 
-    $lang       = load_language('ad_class_config');
-    $t          = 'define(';
+    $lang = load_language('ad_class_config');
+    $t = 'define(';
     $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
-    $res        = sql_query('SELECT * FROM class_config ORDER BY value ASC');
-    $the_names  = $the_colors  = $the_images  = '';
+    $res = sql_query('SELECT * FROM class_config ORDER BY value ASC');
+    $the_names = $the_colors = $the_images = '';
     while ($arr = mysqli_fetch_assoc($res)) {
         $configfile .= '' . $t . "'{$arr['name']}', {$arr['value']});\n";
         if ($arr['name'] !== 'UC_STAFF' && $arr['name'] !== 'UC_MIN' && $arr['name'] !== 'UC_MAX') {
-            $the_names  .= "{$arr['name']} => '{$arr['classname']}',";
+            $the_names .= "{$arr['name']} => '{$arr['classname']}',";
             $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
             $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . " . 'class/{$arr['classpic']}',";
             $js_classes[] = $arr['name'];
-            $data[]       = ['className' => $arr['classname'], 'classColor' => '#' . $arr['classcolor']];
+            $data[] = ['className' => $arr['classname'], 'classColor' => '#' . $arr['classcolor']];
         }
         $classes[] = "var {$arr['name']} = {$arr['value']};";
     }

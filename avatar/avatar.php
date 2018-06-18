@@ -2,7 +2,7 @@
 
 require_once 'getstats.php';
 $_settings = $_SERVER['DOCUMENT_ROOT'] . '/avatar/settings/';
-$flag_xy   = [
+$flag_xy = [
     1 => [
         121,
         111,
@@ -42,9 +42,9 @@ if (!$_fromCache) {
     $var['use_country'] = false;
     for ($i = 1; $i <= 3; ++$i) {
         if (isset($var['line' . $i]['value_p']) && is_array($var['line' . $i]['value_p'])) {
-            $var['use_country']          = true;
-            $_flag_xy                    = $flag_xy[$i];
-            $_flag                       = $var['line' . $i]['value_p']['iso'];
+            $var['use_country'] = true;
+            $_flag_xy = $flag_xy[$i];
+            $_flag = $var['line' . $i]['value_p']['iso'];
             $var['line' . $i]['value_p'] = $var['line' . $i]['value_p']['name'];
         }
     }
@@ -60,19 +60,19 @@ if (!$_fromCache) {
     //define colors
     //border color
     list($br, $bg, $bb) = hex2rgb($var['bColor']);
-    $bColor             = imagecolorallocate($im, $br, $bg, $bb);
+    $bColor = imagecolorallocate($im, $br, $bg, $bb);
     //background color
     list($bgr, $bgg, $bgb) = hex2rgb($var['bgColor']);
-    $bgColor               = imagecolorallocate($im, $bgr, $bgg, $bgb);
+    $bgColor = imagecolorallocate($im, $bgr, $bgg, $bgb);
     //font color
     list($fr, $fg, $fb) = hex2rgb($var['fontColor']);
-    $fontColor          = imagecolorallocate($im, $fr, $fg, $fb);
+    $fontColor = imagecolorallocate($im, $fr, $fg, $fb);
     //fill avatar body with the background color
     imagefilledrectangle($im, 0, 0, 150, 190, $bgColor);
     //draw border
     imagerectangle($im, 0, 0, 149, 189, $bColor);
     //add smile
-    $smile     = imagecreatefrompng('templates/pack' . $var['pack'] . '/' . ($var['smile'] == 225 ? random_int(1, 20) : $var['smile']) . '.png');
+    $smile = imagecreatefrompng('templates/pack' . $var['pack'] . '/' . ($var['smile'] == 225 ? random_int(1, 20) : $var['smile']) . '.png');
     $smile_pos = [
         1 => [
             'x' => '-15',

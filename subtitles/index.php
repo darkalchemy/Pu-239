@@ -4,7 +4,7 @@ require_once 'function_menu.php';
 require_once 'functions.php';
 
 $pager = '';
-$name  = (isset($_GET['sub_name']) ? $_GET['sub_name'] : '');
+$name = (isset($_GET['sub_name']) ? $_GET['sub_name'] : '');
 if ($name) {
     $pager = 'sub_name=' . $name . '&amp;';
 }

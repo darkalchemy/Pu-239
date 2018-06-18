@@ -8,7 +8,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
-$lang    = array_merge($lang, load_language('ad_viewpeers'));
+$lang = array_merge($lang, load_language('ad_viewpeers'));
 $HTMLOUT = $count = '';
 /**
  * @param $ip
@@ -20,12 +20,12 @@ function my_inet_ntop($ip)
     if (strlen($ip) == 4) {
         // ipv4
         list(, $ip) = unpack('N', $ip);
-        $ip         = long2ip($ip);
+        $ip = long2ip($ip);
     } elseif (strlen($ip) == 16) {
         // ipv6
-        $ip  = bin2hex($ip);
-        $ip  = substr(chunk_split($ip, 4, ':'), 0, -1);
-        $ip  = explode(':', $ip);
+        $ip = bin2hex($ip);
+        $ip = substr(chunk_split($ip, 4, ':'), 0, -1);
+        $ip = explode(':', $ip);
         $res = '';
         foreach ($ip as $seg) {
             while ($seg[0] == '0') {
@@ -76,11 +76,11 @@ function XBT_IP_CONVERT($a)
     return $d;
 }
 
-$Which_ID     = (XBT_TRACKER ? 'fid' : 'id');
-$Which_Table  = (XBT_TRACKER ? 'xbt_files_users' : 'peers');
-$res          = sql_query("SELECT COUNT($Which_ID) FROM $Which_Table") or sqlerr(__FILE__, __LINE__);
-$row          = mysqli_fetch_row($res);
-$count        = $row[0];
+$Which_ID = (XBT_TRACKER ? 'fid' : 'id');
+$Which_Table = (XBT_TRACKER ? 'xbt_files_users' : 'peers');
+$res = sql_query("SELECT COUNT($Which_ID) FROM $Which_Table") or sqlerr(__FILE__, __LINE__);
+$row = mysqli_fetch_row($res);
+$count = $row[0];
 $peersperpage = 15;
 $HTMLOUT .= "<h2>{$lang['wpeers_h2']}</h2>
 <font class='small'>{$lang['wpeers_there']}" . htmlsafechars($count) . "{$lang['wpeers_peer']}" . ($count > 1 ? $lang['wpeers_ps'] : '') . "{$lang['wpeers_curr']}</font>";
@@ -136,7 +136,7 @@ if (mysqli_num_rows($result) != 0) {
             $smallname .= '...';
         }
         if (XBT_TRACKER) {
-            $upspeed   = ($row['upspeed'] > 0 ? mksize($row['upspeed']) : ($row['seedtime'] > 0 ? mksize($row['uploaded'] / ($row['seedtime'] + $row['leechtime'])) : mksize(0)));
+            $upspeed = ($row['upspeed'] > 0 ? mksize($row['upspeed']) : ($row['seedtime'] > 0 ? mksize($row['uploaded'] / ($row['seedtime'] + $row['leechtime'])) : mksize(0)));
             $downspeed = ($row['downspeed'] > 0 ? mksize($row['downspeed']) : ($row['leechtime'] > 0 ? mksize($row['downloaded'] / $row['leechtime']) : mksize(0)));
         }
         if (XBT_TRACKER) {

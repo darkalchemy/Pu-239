@@ -17,7 +17,7 @@ if (!in_array($CURUSER['id'], $allowed_ids)) {
 
 $lang = array_merge($lang, load_language('ad_backup'));
 
-$HTMLOUT        = '';
+$HTMLOUT = '';
 $required_class = UC_MAX;
 
 if (is_array($required_class)) {
@@ -149,9 +149,9 @@ if (empty($mode)) {
     $mysql_host = $_ENV['DB_HOST'];
     $mysql_user = $_ENV['DB_USERNAME'];
     $mysql_pass = $_ENV['DB_PASSWORD'];
-    $mysql_db   = $_ENV['DB_DATABASE'];
-    $ext        = $mysql_db . '-' . date('d') . '-' . date('m') . '-' . date('Y') . '_' . date('H') . '-' . date('i') . '-' . date('s') . '_' . date('D') . '.sql';
-    $filepath   = $site_config['backup_dir'] . '/' . $ext;
+    $mysql_db = $_ENV['DB_DATABASE'];
+    $ext = $mysql_db . '-' . date('d') . '-' . date('m') . '-' . date('Y') . '_' . date('H') . '-' . date('i') . '-' . date('s') . '_' . date('D') . '.sql';
+    $filepath = $site_config['backup_dir'] . '/' . $ext;
     exec("{$site_config['db_backup_mysqldump_path']} -h $mysql_host -u $mysql_user -p$mysql_pass $mysql_db > $filepath");
     if ($site_config['db_backup_use_gzip']) {
         exec("{$site_config['db_backup_gzip_path']} --best $filepath");
@@ -159,7 +159,7 @@ if (empty($mode)) {
     sql_query('INSERT INTO dbbackup (name, added, userid) VALUES (' . sqlesc($ext . ($site_config['db_backup_use_gzip'] ? '.gz' : '')) . ', ' . TIME_NOW . ', ' . sqlesc($CURUSER['id']) . ')') or sqlerr(__FILE__, __LINE__);
     $location = 'mode=backup';
     if ($site_config['db_backup_auto_download']) {
-        $id       = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+        $id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
         $location = 'mode=download&id=' . $id;
     }
     if ($site_config['db_backup_write_to_log']) {
@@ -172,8 +172,8 @@ if (empty($mode)) {
     if (!is_valid_id($id)) {
         stderr($lang['backup_stderr'], $lang['backup_id']);
     }
-    $res      = sql_query('SELECT name FROM dbbackup WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $arr      = mysqli_fetch_assoc($res);
+    $res = sql_query('SELECT name FROM dbbackup WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    $arr = mysqli_fetch_assoc($res);
     $filename = $site_config['backup_dir'] . '/' . $arr['name'];
 
     if (!is_file($filename)) {
@@ -216,7 +216,7 @@ if (empty($mode)) {
                 stderr($lang['backup_stderr'], $lang['backup_id']);
             }
         }
-        $res   = sql_query('SELECT name FROM dbbackup WHERE id IN (' . implode(', ', array_map('sqlesc', $ids)) . ')') or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT name FROM dbbackup WHERE id IN (' . implode(', ', array_map('sqlesc', $ids)) . ')') or sqlerr(__FILE__, __LINE__);
         $count = mysqli_num_rows($res);
         if ($count > 0) {
             while ($arr = mysqli_fetch_assoc($res)) {

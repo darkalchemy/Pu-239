@@ -20,9 +20,9 @@ require_once INCL_DIR . 'files.php';
 require_once CACHE_DIR . 'free_cache.php';
 require_once CACHE_DIR . 'class_config.php';
 require_once INCL_DIR . 'password_functions.php';
-$cache       = new DarkAlchemy\Pu239\Cache();
-$session     = new DarkAlchemy\Pu239\Session();
-$fluent      = new DarkAlchemy\Pu239\Database();
+$cache = new DarkAlchemy\Pu239\Cache();
+$session = new DarkAlchemy\Pu239\Session();
+$fluent = new DarkAlchemy\Pu239\Database();
 $user_stuffs = new DarkAlchemy\Pu239\User($fluent);
 define('MIN_TO_PLAY', UC_POWER_USER);
 
@@ -209,11 +209,11 @@ function check_bans($ip, &$reason = '')
     $key = 'bans_' . $ip;
     $ban = $cache->get($key);
     if ($ban === false || is_null($ban)) {
-        $nip     = sqlesc($ip);
+        $nip = sqlesc($ip);
         $ban_sql = sql_query('SELECT comment FROM bans WHERE (INET6_NTOA(first) <= ' . $nip . ' AND INET6_NTOA(last) >= ' . $nip . ') LIMIT 1') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($ban_sql)) {
             $comment = mysqli_fetch_row($ban_sql);
-            $reason  = 'Manual Ban (' . $comment[0] . ')';
+            $reason = 'Manual Ban (' . $comment[0] . ')';
             $cache->set($key, $reason, 86400); // 86400 // banned
 
             return true;
@@ -318,7 +318,7 @@ function userlogin()
             sql_query("UPDATE users SET enabled = 'no', class = 0 WHERE id =" . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user' . $users_data['id'], [
                 'enabled' => 'no',
-                'class'   => 0,
+                'class' => 0,
             ], $site_config['expires']['user_cache']);
             write_log($msg);
             header("Location: {$site_config['baseurl']}/logout.php");
@@ -335,14 +335,14 @@ function userlogin()
             $ustatus = [
                 'last_status' => '',
                 'last_update' => 0,
-                'archive'     => '',
+                'archive' => '',
             ];
         }
         $cache->add('userstatus_' . $id, $ustatus, $site_config['expires']['u_status']); // 30 days
     }
     $users_data['last_status'] = $ustatus['last_status'];
     $users_data['last_update'] = $ustatus['last_update'];
-    $users_data['archive']     = $ustatus['archive'];
+    $users_data['archive'] = $ustatus['archive'];
     if ($users_data['ssluse'] >= 1 && !isset($_SERVER['HTTPS']) && !defined('NO_FORCE_SSL')) {
         $site_config['baseurl'] = str_replace('http', 'https', $site_config['baseurl']);
         header('Location: ' . $site_config['baseurl'] . $_SERVER['REQUEST_URI']);
@@ -354,42 +354,42 @@ function userlogin()
     if ($CURBLOCK === false || is_null($CURBLOCK)) {
         $c_sql = sql_query('SELECT * FROM user_blocks WHERE userid = ' . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($c_sql) == 0) {
-            sql_query('INSERT INTO user_blocks(userid) VALUES (' . sqlesc($users_data['id']) . ')')     or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO user_blocks(userid) VALUES (' . sqlesc($users_data['id']) . ')') or sqlerr(__FILE__, __LINE__);
             $c_sql = sql_query('SELECT * FROM user_blocks WHERE userid = ' . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
         }
-        $CURBLOCK                     = mysqli_fetch_assoc($c_sql);
-        $CURBLOCK['index_page']       = (int) $CURBLOCK['index_page'];
-        $CURBLOCK['global_stdhead']   = (int) $CURBLOCK['global_stdhead'];
+        $CURBLOCK = mysqli_fetch_assoc($c_sql);
+        $CURBLOCK['index_page'] = (int) $CURBLOCK['index_page'];
+        $CURBLOCK['global_stdhead'] = (int) $CURBLOCK['global_stdhead'];
         $CURBLOCK['userdetails_page'] = (int) $CURBLOCK['userdetails_page'];
         $cache->set($blocks_key, $CURBLOCK, 0);
     }
     $where_is['username'] = htmlsafechars($users_data['username']);
-    $whereis_array        = [
-        'index'            => '%s is viewing the <a href="%s">home page</a>',
-        'browse'           => '%s is viewing the <a href="%s">torrents page</a>',
-        'requests'         => '%s is viewing the <a href="%s">requests page</a>',
-        'upload'           => '%s is viewing the <a href="%s">upload page</a>',
-        'casino'           => '%s is viewing the <a href="%s">casino page</a>',
-        'blackjack'        => '%s is viewing the <a href="%s">blackjack page</a>',
-        'bet'              => '%s is viewing the <a href="%s">bet page</a>',
-        'forums'           => '%s is viewing the <a href="%s">forums page</a>',
-        'chat'             => '%s is viewing the <a href="%s">irc page</a>',
-        'topten'           => '%s is viewing the <a href="%s">statistics page</a>',
-        'faq'              => '%s is viewing the <a href="%s">faq page</a>',
-        'rules'            => '%s is viewing the <a href="%s">rules page</a>',
-        'staff'            => '%s is viewing the <a href="%s">staff page</a>',
-        'announcement'     => '%s is viewing the <a href="%s">announcements page</a>',
-        'usercp'           => '%s is viewing the <a href="%s">usercp page</a>',
-        'offers'           => '%s is viewing the <a href="%s">offers page</a>',
-        'pm_system'        => '%s is viewing the <a href="%s">mailbox page</a>',
-        'userdetails'      => '%s is viewing the <a href="%s">personal profile page</a>',
-        'details'          => '%s is viewing the <a href="%s">torrents details page</a>',
-        'games'            => '%s is viewing the <a href="%s">games page</a>',
-        'arcade'           => '%s is viewing the <a href="%s">arcade page</a>',
-        'flash'            => '%s is playing a <a href="%s">flash game</a>',
+    $whereis_array = [
+        'index' => '%s is viewing the <a href="%s">home page</a>',
+        'browse' => '%s is viewing the <a href="%s">torrents page</a>',
+        'requests' => '%s is viewing the <a href="%s">requests page</a>',
+        'upload' => '%s is viewing the <a href="%s">upload page</a>',
+        'casino' => '%s is viewing the <a href="%s">casino page</a>',
+        'blackjack' => '%s is viewing the <a href="%s">blackjack page</a>',
+        'bet' => '%s is viewing the <a href="%s">bet page</a>',
+        'forums' => '%s is viewing the <a href="%s">forums page</a>',
+        'chat' => '%s is viewing the <a href="%s">irc page</a>',
+        'topten' => '%s is viewing the <a href="%s">statistics page</a>',
+        'faq' => '%s is viewing the <a href="%s">faq page</a>',
+        'rules' => '%s is viewing the <a href="%s">rules page</a>',
+        'staff' => '%s is viewing the <a href="%s">staff page</a>',
+        'announcement' => '%s is viewing the <a href="%s">announcements page</a>',
+        'usercp' => '%s is viewing the <a href="%s">usercp page</a>',
+        'offers' => '%s is viewing the <a href="%s">offers page</a>',
+        'pm_system' => '%s is viewing the <a href="%s">mailbox page</a>',
+        'userdetails' => '%s is viewing the <a href="%s">personal profile page</a>',
+        'details' => '%s is viewing the <a href="%s">torrents details page</a>',
+        'games' => '%s is viewing the <a href="%s">games page</a>',
+        'arcade' => '%s is viewing the <a href="%s">arcade page</a>',
+        'flash' => '%s is playing a <a href="%s">flash game</a>',
         'arcade_top_score' => '%s is viewing the <a href="%s">arcade top scores page</a>',
-        'staffpanel'       => '%s is viewing the <a href="%s">Staff Panel</a>',
-        'unknown'          => '%s location is unknown',
+        'staffpanel' => '%s is viewing the <a href="%s">Staff Panel</a>',
+        'unknown' => '%s location is unknown',
     ];
     if (preg_match('/\/(.*?)\.php/is', $_SERVER['REQUEST_URI'], $whereis_temp)) {
         if (isset($whereis_array[$whereis_temp[1]])) {
@@ -401,7 +401,7 @@ function userlogin()
         $whereis = sprintf($whereis_array['unknown'], $where_is['username']);
     }
     $userupdate0 = 'onlinetime = onlinetime + 0';
-    $new_time    = TIME_NOW - $users_data['last_access_numb'];
+    $new_time = TIME_NOW - $users_data['last_access_numb'];
     $update_time = 0;
     if ($new_time < 300) {
         $userupdate0 = 'onlinetime = onlinetime + ' . $new_time;
@@ -414,10 +414,10 @@ function userlogin()
                     SET where_is =' . sqlesc($whereis) . ', last_access=' . TIME_NOW . ", $userupdate0, $userupdate1
                     WHERE id = " . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user' . $users_data['id'], [
-            'last_access'      => TIME_NOW,
-            'onlinetime'       => $update_time,
+            'last_access' => TIME_NOW,
+            'onlinetime' => $update_time,
             'last_access_numb' => TIME_NOW,
-            'where_is'         => $whereis,
+            'where_is' => $whereis,
         ], $site_config['expires']['user_cache']);
     }
     if ($users_data['override_class'] < $users_data['class']) {
@@ -599,7 +599,7 @@ function make_freeslots($userid, $key)
     $slot = $cache->get($key . $userid);
     if ($slot === false || is_null($slot)) {
         $res_slots = sql_query('SELECT * FROM freeslots WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-        $slot      = [];
+        $slot = [];
         if (mysqli_num_rows($res_slots)) {
             while ($rowslot = mysqli_fetch_assoc($res_slots)) {
                 $slot[] = $rowslot;
@@ -624,7 +624,7 @@ function make_bookmarks($userid, $key)
     $book = $cache->get($key . $userid);
     if ($book === false || is_null($book)) {
         $res_books = sql_query('SELECT * FROM bookmarks WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-        $book      = [];
+        $book = [];
         if (mysqli_num_rows($res_books)) {
             while ($rowbook = mysqli_fetch_assoc($res_books)) {
                 $book[] = $rowbook;
@@ -668,11 +668,11 @@ function create_moods($force = false)
     $mood = $cache->get('moods');
     if ($mood === false || is_null($mood) || $force === true) {
         $res_moods = sql_query('SELECT * FROM moods ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
-        $mood      = [];
+        $mood = [];
         if (mysqli_num_rows($res_moods)) {
             while ($rmood = mysqli_fetch_assoc($res_moods)) {
                 $mood['image'][$rmood['id']] = $rmood['image'];
-                $mood['name'][$rmood['id']]  = $rmood['name'];
+                $mood['name'][$rmood['id']] = $rmood['name'];
             }
         }
         $cache->set('moods', $mood, 86400);
@@ -924,7 +924,7 @@ function get_row_count($table, $suffix = '')
         $suffix = " $suffix";
     }
     ($r = sql_query("SELECT COUNT(*) FROM $table$suffix")) or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
-    ($a = mysqli_fetch_row($r))                            or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+    ($a = mysqli_fetch_row($r)) or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
 
     return (int) $a[0];
 }
@@ -939,8 +939,8 @@ function get_row_count($table, $suffix = '')
 function get_one_row($table, $suffix, $where)
 {
     $sql = "SELECT $suffix FROM $table $where";
-    $r   = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    $a   = mysqli_fetch_row($r);
+    $r = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+    $a = mysqli_fetch_row($r);
     if (isset($a[0])) {
         return $a[0];
     } else {
@@ -966,7 +966,7 @@ function stderr($heading, $text, $class = null)
 function sqlerr($file = '', $line = '')
 {
     global $site_config, $CURUSER;
-    $the_error    = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
+    $the_error = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
     $the_error_no = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false));
     if (SQL_DEBUG == 0) {
         die();
@@ -1016,7 +1016,7 @@ function get_dt_num()
  */
 function write_log($text)
 {
-    $text  = sqlesc($text);
+    $text = sqlesc($text);
     $added = TIME_NOW;
     sql_query("INSERT INTO sitelog (added, txt) VALUES ($added, $text)") or sqlerr(__FILE__, __LINE__);
 }
@@ -1038,17 +1038,17 @@ function sql_timestamp_to_unix_timestamp($s)
  */
 function unixstamp_to_human($unix = 0)
 {
-    $offset                                       = get_time_offset();
-    $tmp                                          = gmdate('j,n,Y,G,i,A', $unix + $offset);
+    $offset = get_time_offset();
+    $tmp = gmdate('j,n,Y,G,i,A', $unix + $offset);
     list($day, $month, $year, $hour, $min, $ampm) = explode(',', $tmp);
 
     return [
-        'day'    => $day,
-        'month'  => $month,
-        'year'   => $year,
-        'hour'   => $hour,
+        'day' => $day,
+        'month' => $month,
+        'year' => $year,
+        'hour' => $hour,
         'minute' => $min,
-        'ampm'   => $ampm,
+        'ampm' => $ampm,
     ];
 }
 
@@ -1082,15 +1082,15 @@ function get_time_offset()
 function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = false)
 {
     global $site_config;
-    static $offset_set     = 0;
-    static $today_time     = 0;
+    static $offset_set = 0;
+    static $today_time = 0;
     static $yesterday_time = 0;
-    $time_options          = [
+    $time_options = [
         'JOINED' => $site_config['time_joined'],
-        'SHORT'  => $site_config['time_short'],
-        'LONG'   => $site_config['time_long'],
-        'TINY'   => $site_config['time_tiny'] ? $site_config['time_tiny'] : 'j M Y - G:i',
-        'DATE'   => $site_config['time_date'] ? $site_config['time_date'] : 'j M Y',
+        'SHORT' => $site_config['time_short'],
+        'LONG' => $site_config['time_long'],
+        'TINY' => $site_config['time_tiny'] ? $site_config['time_tiny'] : 'j M Y - G:i',
+        'DATE' => $site_config['time_date'] ? $site_config['time_date'] : 'j M Y',
     ];
     if (!$date) {
         return '--';
@@ -1101,7 +1101,7 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
     if ($offset_set == 0) {
         $GLOBALS['offset'] = get_time_offset();
         if ($site_config['time_use_relative']) {
-            $today_time     = gmdate('d,m,Y', (TIME_NOW + $GLOBALS['offset']));
+            $today_time = gmdate('d,m,Y', (TIME_NOW + $GLOBALS['offset']));
             $yesterday_time = gmdate('d,m,Y', ((TIME_NOW - 86400) + $GLOBALS['offset']));
         }
         $offset_set = 1;
@@ -1270,7 +1270,7 @@ function flood_limit($table)
         return;
     }
     $tb = [
-        'posts'    => 'posts.userid',
+        'posts' => 'posts.userid',
         'comments' => 'comments.user',
         'messages' => 'messages.sender',
     ];
@@ -1294,11 +1294,11 @@ function sql_query($query, $log = true)
     if (SQL_DEBUG) {
         $query_start_time = microtime(true);
 
-        $result         = mysqli_query($GLOBALS['___mysqli_ston'], $query);
+        $result = mysqli_query($GLOBALS['___mysqli_ston'], $query);
         $query_end_time = microtime(true);
-        $query_stat[]   = [
+        $query_stat[] = [
             'seconds' => number_format($query_end_time - $query_start_time, 6),
-            'query'   => formatQuery($query),
+            'query' => formatQuery($query),
         ];
         $queries = count($query_stat);
     } else {
@@ -1368,9 +1368,9 @@ function referer()
 {
     $http_referer = getenv('HTTP_REFERER');
     if (!empty($_SERVER['HTTP_HOST']) && strstr($http_referer, $_SERVER['HTTP_HOST']) === false && $http_referer != '') {
-        $ip         = getip();
+        $ip = getip();
         $http_agent = $_SERVER['HTTP_USER_AGENT'];
-        $http_page  = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
+        $http_page = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
         if (!empty($_SERVER['QUERY_STRING'])) {
             $http_page .= '?' . $_SERVER['QUERY_STRING'];
         }
@@ -1387,7 +1387,7 @@ function referer()
  */
 function mysql_fetch_all($query, $default_value = [])
 {
-    $r      = @sql_query($query);
+    $r = @sql_query($query);
     $result = [];
     if ($err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))) {
         return $err;
@@ -1411,7 +1411,7 @@ function mysql_fetch_all($query, $default_value = [])
  */
 function write_bonus_log($userid, $amount, $type)
 {
-    $added         = TIME_NOW;
+    $added = TIME_NOW;
     $donation_type = $type;
     sql_query('INSERT INTO bonuslog (id, donation, type, added_at)
                 VALUES(' . sqlesc($userid) . ', ' . sqlesc($amount) . ', ' . sqlesc($donation_type) . ", $added)") or sqlerr(__FILE__, __LINE__);
@@ -1485,8 +1485,8 @@ function getPmCount($userid)
 
     $pmCount = $cache->get('inbox_' . $userid);
     if ($pmCount === false || is_null($pmCount)) {
-        $res     = sql_query('SELECT COUNT(id) FROM messages WHERE receiver = ' . sqlesc($userid) . " AND unread = 'yes' AND location = 1") or sqlerr(__LINE__, __FILE__);
-        $result  = mysqli_fetch_row($res);
+        $res = sql_query('SELECT COUNT(id) FROM messages WHERE receiver = ' . sqlesc($userid) . " AND unread = 'yes' AND location = 1") or sqlerr(__LINE__, __FILE__);
+        $result = mysqli_fetch_row($res);
         $pmCount = (int) $result[0];
         $cache->set('inbox_' . $userid, $pmCount, $site_config['expires']['unread']);
     }
@@ -1498,7 +1498,7 @@ function parked()
 {
     global $CURUSER;
 
-    if ($CURUSER['parked']  == 'yes') {
+    if ($CURUSER['parked'] == 'yes') {
         stderr('Error', '<b>Your account is currently parked.</b>');
     }
 }
@@ -1569,8 +1569,8 @@ function user_exists($user_id)
     $userlist = $cache->get('userlist_' . $user_id);
     if ($userlist === false || is_null($userlist)) {
         $query = 'SELECT id FROM users WHERE id = ' . sqlesc($user_id);
-        $res   = sql_query($query) or sqlerr(__FILE__, __LINE__);
-        $res   = mysqli_fetch_assoc($res);
+        $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
+        $res = mysqli_fetch_assoc($res);
         if (empty($res)) {
             return false;
         }
@@ -1604,10 +1604,10 @@ function get_poll()
             ->limit('1')
             ->fetch();
         if (!empty($poll_data)) {
-            $poll_data['ip']        = $vote_data['ip'];
-            $poll_data['user_id']   = $vote_data['user_id'];
+            $poll_data['ip'] = $vote_data['ip'];
+            $poll_data['user_id'] = $vote_data['user_id'];
             $poll_data['vote_date'] = $vote_data['vote_date'];
-            $poll_data['time']      = TIME_NOW;
+            $poll_data['time'] = TIME_NOW;
 
             $cache->set('poll_data_' . $CURUSER['id'], $poll_data, $site_config['expires']['poll_data']);
         }
@@ -1716,13 +1716,13 @@ function breadcrumbs($separator = '', $home = 'Home')
 {
     global $site_config, $session;
 
-    $path        = array_filter(explode('/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)));
-    $query       = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
-    $base        = $site_config['baseurl'] . '/';
+    $path = array_filter(explode('/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)));
+    $query = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+    $base = $site_config['baseurl'] . '/';
     $breadcrumbs = ["<li><a href='$base'>$home</a></li>"];
-    $keys        = array_keys($path);
-    $last        = end($keys);
-    $action      = [];
+    $keys = array_keys($path);
+    $last = end($keys);
+    $action = [];
 
     if (!empty($query)) {
         $action = explode('=', $query);
@@ -1820,7 +1820,7 @@ function breadcrumbs($separator = '', $home = 'Home')
  */
 function bubble($link, $text, $title = false)
 {
-    $id     = uniqid('id_');
+    $id = uniqid('id_');
     $bubble = "
         <span class='dt-tooltipper-large size_5 has-text-primary' data-tooltip-content='#{$id}'>
             $link
@@ -1866,9 +1866,9 @@ function return_bytes($val)
     if ($val == '') {
         return 0;
     }
-    $val  = strtolower(trim($val));
+    $val = strtolower(trim($val));
     $last = $val[strlen($val) - 1];
-    $val  = rtrim($val, $last);
+    $val = rtrim($val, $last);
 
     switch ($last) {
         case 'g':
@@ -1955,7 +1955,7 @@ function Christmas($celebrate = true)
 {
     $upperBound = new DateTime('Dec 31');
     $lowerBound = new DateTime('Dec 1');
-    $checkDate  = new DateTime(date('M d', strtotime('Today')));
+    $checkDate = new DateTime(date('M d', strtotime('Today')));
 
     if ($celebrate && $checkDate >= $lowerBound && $checkDate <= $upperBound) {
         return true;
@@ -1987,7 +1987,7 @@ function get_anonymous_name()
     $names = str_replace(', ', ',', $site_config['anonymous_names']);
     $array = explode(',', $names);
     $index = array_rand($array);
-    $anon  = $array[$index];
+    $anon = $array[$index];
 
     return $anon;
 }
@@ -2015,7 +2015,7 @@ function url_proxy($url, $image = false, $width = null, $height = null)
         if (!empty($width)) {
             $url = "{$url}&width={$width}&height={$height}";
         }
-        $key       = [key($site_config['image_proxy_key']), current($site_config['image_proxy_key'])];
+        $key = [key($site_config['image_proxy_key']), current($site_config['image_proxy_key'])];
         $encrypted = CryptoJSAES::encrypt($url, $key[1]);
 
         return $site_config['image_proxy'] . base64_encode($encrypted . '&uid=' . $key[0]);
@@ -2055,8 +2055,8 @@ function get_show_id(string $name)
     if (empty($name)) {
         return null;
     }
-    $name     = get_show_name($name);
-    $hash     = hash('sha512', $name);
+    $name = get_show_name($name);
+    $hash = hash('sha512', $name);
     $id_array = $cache->get('tvshow_ids_' . $hash);
     if ($id_array === false || is_null($id_array)) {
         $items = $fluent->from('tvmaze')
@@ -2123,7 +2123,7 @@ function time24to12($h24, $min)
 function GetDirectorySize($path)
 {
     $bytestotal = 0;
-    $path       = realpath($path);
+    $path = realpath($path);
     if ($path !== false && $path != '' && file_exists($path)) {
         foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)) as $object) {
             $bytestotal += $object->getSize();
@@ -2182,12 +2182,12 @@ function insert_update_ip()
     if (empty($CURUSER)) {
         return;
     }
-    $id       = (int) $CURUSER['id'];
-    $ip       = getip();
-    $hash     = hash('sha512', "{$id}_{$ip}");
+    $id = (int) $CURUSER['id'];
+    $ip = getip();
+    $hash = hash('sha512', "{$id}_{$ip}");
     $user_ips = $cache->get('user_ips_' . $hash);
     if ($user_ips === false || is_null($user_ips)) {
-        $added  = TIME_NOW;
+        $added = TIME_NOW;
         sql_query('INSERT INTO ips (userid, ip, lastbrowse, type)
                     VALUES (' . sqlesc($id) . ', ' . ipToStorageFormat($ip) . ", $added, 'Browse')
                     ON DUPLICATE KEY UPDATE

@@ -9,11 +9,11 @@ function backup_update($data)
     ignore_user_abort(true);
 
     $days = 3;
-    $res  = sql_query('SELECT id, name FROM dbbackup WHERE added < ' . sqlesc(TIME_NOW - ($days * 86400))) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT id, name FROM dbbackup WHERE added < ' . sqlesc(TIME_NOW - ($days * 86400))) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $ids = [];
         while ($arr = mysqli_fetch_assoc($res)) {
-            $ids[]    = (int) $arr['id'];
+            $ids[] = (int) $arr['id'];
             $filename = $site_config['backup_dir'] . '/' . $arr['name'];
             if (is_file($filename)) {
                 unlink($filename);

@@ -60,8 +60,8 @@ class Xml2Array
             return false;
         }
 
-        $this->xml_array                         = [];
-        $root_element                            = $this->xml_dom->firstChild;
+        $this->xml_array = [];
+        $root_element = $this->xml_dom->firstChild;
         $this->xml_array[$root_element->tagName] = $this->node_2_array($root_element);
 
         return $this->xml_array;
@@ -134,7 +134,7 @@ class Xml2Array
 
         if ($dom_element->hasAttributes()) {
             foreach ($dom_element->attributes as $attrib) {
-                $prefix                                    = ($attrib->prefix) ? $attrib->prefix . ':' : '';
+                $prefix = ($attrib->prefix) ? $attrib->prefix . ':' : '';
                 $result['@' . $prefix . $attrib->nodeName] = $attrib->nodeValue;
             }
         }

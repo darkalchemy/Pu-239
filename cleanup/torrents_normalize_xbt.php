@@ -10,9 +10,9 @@ function torrents_normalize_xbt($data)
 
     do {
         $res = sql_query('SELECT id FROM torrents') or sqlerr(__FILE__, __LINE__);
-        $ar  = [];
+        $ar = [];
         while ($row = mysqli_fetch_array($res, MYSQLI_NUM)) {
-            $id      = $row[0];
+            $id = $row[0];
             $ar[$id] = 1;
         }
         if (!count($ar)) {
@@ -29,7 +29,7 @@ function torrents_normalize_xbt($data)
             if (!preg_match('/^(\d+)\.torrent$/', $file, $m)) {
                 continue;
             }
-            $id       = $m[1];
+            $id = $m[1];
             $ar2[$id] = 1;
             if (isset($ar[$id]) && $ar[$id]) {
                 continue;

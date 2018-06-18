@@ -8,9 +8,9 @@ check_user_status();
 global $CURUSER, $site_config, $cache;
 
 $HTMLOUT = '';
-$lang    = array_merge(load_language('global'), load_language('index'), load_language('announcement'));
-$dt      = TIME_NOW;
-$res     = sql_query('
+$lang = array_merge(load_language('global'), load_language('index'), load_language('announcement'));
+$dt = TIME_NOW;
+$res = sql_query('
         SELECT u.id, u.curr_ann_id, u.curr_ann_last_check, u.last_access, ann_main.subject AS curr_ann_subject, ann_main.body AS curr_ann_body
         FROM users AS u
         LEFT JOIN announcement_main AS ann_main ON ann_main.main_id = u.curr_ann_id
@@ -18,7 +18,7 @@ $res     = sql_query('
 $row = mysqli_fetch_assoc($res);
 
 if (($row['curr_ann_id'] > 0) && ($row['curr_ann_body'] == null)) {
-    $row['curr_ann_id']         = 0;
+    $row['curr_ann_id'] = 0;
     $row['curr_ann_last_check'] = 0;
 }
 // If elapsed > 3 minutes, force a announcement refresh.
@@ -36,7 +36,7 @@ if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Forc
     $result = sql_query($query) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($result)) { // Main Result set exists
         $ann_row = mysqli_fetch_assoc($result);
-        $query   = $ann_row['sql_query'];
+        $query = $ann_row['sql_query'];
         // Ensure it only selects...
         if (!preg_match('/\\ASELECT.+?FROM.+?WHERE.+?\\z/', $query)) {
             die();
@@ -49,7 +49,7 @@ if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Forc
             $row['curr_ann_id'] = (int) $ann_row['main_id'];
             // Create two row elements to hold announcement subject and body.
             $row['curr_ann_subject'] = $ann_row['subject'];
-            $row['curr_ann_body']    = $ann_row['body'];
+            $row['curr_ann_body'] = $ann_row['body'];
             // Create additional set for main UPDATE query.
             $add_set = 'curr_ann_id = ' . sqlesc($ann_row['main_id']);
             $cache->update_row('user' . $CURUSER['id'], [
@@ -90,7 +90,7 @@ if ((!empty($add_set))) {
 
 // Announcement Code...
 $ann_subject = trim($row['curr_ann_subject']);
-$ann_body    = trim($row['curr_ann_body']);
+$ann_body = trim($row['curr_ann_body']);
 if ((!empty($ann_subject)) && (!empty($ann_body))) {
     $HTMLOUT .= "
     <div class='article'>

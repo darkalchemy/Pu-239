@@ -22,19 +22,19 @@ if (!$arr) {
     stderr('Error', 'Torrent not found');
 }
 $res1 = sql_query('SELECT 1 FROM thankyou WHERE torid=' . sqlesc($id) . ' AND uid =' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-$row  = mysqli_fetch_assoc($res1);
+$row = mysqli_fetch_assoc($res1);
 if ($row) {
     stderr('Error', 'You already thanked.');
 }
-$text  = ':thankyou:';
+$text = ':thankyou:';
 $newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
-sql_query('INSERT INTO thankyou (uid, torid, thank_date) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ", '" . TIME_NOW . "')")                                                            or sqlerr(__FILE__, __LINE__);
+sql_query('INSERT INTO thankyou (uid, torid, thank_date) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ", '" . TIME_NOW . "')") or sqlerr(__FILE__, __LINE__);
 sql_query('INSERT INTO comments (user, torrent, added, text, ori_text) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ", '" . TIME_NOW . "', " . sqlesc($text) . ',' . sqlesc($text) . ')') or sqlerr(__FILE__, __LINE__);
-sql_query('UPDATE torrents SET thanks = thanks + 1, comments = comments + 1 WHERE id = ' . sqlesc($id))                                                                                                or sqlerr(__FILE__, __LINE__);
-$update['thanks']   = ($arr['thanks'] + 1);
+sql_query('UPDATE torrents SET thanks = thanks + 1, comments = comments + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$update['thanks'] = ($arr['thanks'] + 1);
 $update['comments'] = ($arr['comments'] + 1);
 $cache->update_row('torrent_details_' . $id, [
-    'thanks'   => $update['thanks'],
+    'thanks' => $update['thanks'],
     'comments' => $update['comments'],
 ], $site_config['expires']['torrent_details']);
 $cache->delete('latest_comments_');

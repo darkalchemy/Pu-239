@@ -7,17 +7,17 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang, $pdo, $fluent;
 
-$lang    = array_merge($lang, load_language('ad_mega_search'));
+$lang = array_merge($lang, load_language('ad_mega_search'));
 $stdhead = [
     'css' => [
     ],
 ];
 
 $msg_to_analyze = (isset($_POST['msg_to_analyze']) ? htmlsafechars($_POST['msg_to_analyze']) : '');
-$invite_code    = (isset($_POST['invite_code']) ? htmlsafechars($_POST['invite_code']) : '');
-$user_names     = (isset($_POST['user_names']) ? $_POST['user_names'] : '');
-$HTMLOUT        = $found        = $not_found        = $count        = $no_matches_for_this_email        = $matches_for_email        = $no_matches_for_this_ip        = $matches_for_ip        = '';
-$number         = 0;
+$invite_code = (isset($_POST['invite_code']) ? htmlsafechars($_POST['invite_code']) : '');
+$user_names = (isset($_POST['user_names']) ? $_POST['user_names'] : '');
+$HTMLOUT = $found = $not_found = $count = $no_matches_for_this_email = $matches_for_email = $no_matches_for_this_ip = $matches_for_ip = '';
+$number = 0;
 $HTMLOUT .= '
         <div class="has-text-centered top20">
             <h1>' . $lang['mega_heading'] . '</h1>
@@ -57,10 +57,10 @@ $HTMLOUT .= main_div('
 
 if (!empty($user_names)) {
     $searched_users = explode(',', preg_replace('/\s+/s', ',', $user_names));
-    $body           = '';
-    $failed         = [];
+    $body = '';
+    $failed = [];
     foreach ($searched_users as $search_users) {
-        $users   = [];
+        $users = [];
         $results = $fluent->from('users')
             ->select(null)
             ->select('id')
@@ -140,15 +140,15 @@ if (!empty($user_names)) {
 }
 
 if (isset($_POST['msg_to_analyze'])) {
-    $email_search      = $_POST['msg_to_analyze'];
-    $regex             = '/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i';
-    $email_to_test     = [];
+    $email_search = $_POST['msg_to_analyze'];
+    $regex = '/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i';
+    $email_to_test = [];
     $number_of_matches = preg_match_all($regex, $email_search, $email_to_test);
     $matches_for_email .= '<h1>' . $lang['mega_emails'] . '</h1>';
-    $body   = '';
+    $body = '';
     $failed = [];
     foreach ($email_to_test[0] as $tested_email) {
-        $users   = [];
+        $users = [];
         $results = $fluent->from('users')
             ->select(null)
             ->select('id')
@@ -224,13 +224,13 @@ if (isset($_POST['msg_to_analyze'])) {
            </tr>";
     $HTMLOUT .= main_table($body, $heading, 'top20');
 
-    $regex                  = '/[\._a-zA-Z0-9-]+@/i';
-    $email_to_test_like     = $users     = [];
+    $regex = '/[\._a-zA-Z0-9-]+@/i';
+    $email_to_test_like = $users = [];
     $number_of_matches_like = preg_match_all($regex, $email_search, $email_to_test_like);
-    $number                 = 0;
-    $similar_emails         = '';
+    $number = 0;
+    $similar_emails = '';
     foreach ($email_to_test_like[0] as $tested_email_like) {
-        $users   = [];
+        $users = [];
         $results = $fluent->from('users')
             ->select(null)
             ->select('id')
@@ -261,14 +261,14 @@ if (isset($_POST['msg_to_analyze'])) {
         $HTMLOUT .= main_table($body, $heading, 'top20');
     }
 
-    $ip_history        = $_POST['msg_to_analyze'];
-    $regex             = '/(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/';
-    $failed            = $ip_to_test            = [];
+    $ip_history = $_POST['msg_to_analyze'];
+    $regex = '/(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/';
+    $failed = $ip_to_test = [];
     $number_of_matches = preg_match_all($regex, $ip_history, $ip_to_test);
-    $heading           = $body           = '';
+    $heading = $body = '';
 
     foreach ($ip_to_test[0] as $tested_ip) {
-        $users   = [];
+        $users = [];
         $results = $fluent->from('users')
             ->select(null)
             ->select('id')
@@ -306,7 +306,7 @@ if (isset($_POST['msg_to_analyze'])) {
                     if ($arr['invitedby'] > 0) {
                         $res_inviter = sql_query('SELECT id, username, class, donor, suspended, leechwarn, chatpost, pirate, king, warned, enabled FROM users WHERE id = ' . sqlesc($arr['invitedby'])) or sqlerr(__FILE__, __LINE__);
                         $arr_inviter = mysqli_fetch_array($res_inviter);
-                        $inviter     = ($arr_inviter['username'] !== '' ? format_username($arr_inviter['id']) : $lang['mega_open']);
+                        $inviter = ($arr_inviter['username'] !== '' ? format_username($arr_inviter['id']) : $lang['mega_open']);
                     } else {
                         $inviter = $lang['mega_open'];
                     }
@@ -350,7 +350,7 @@ if (isset($_POST['msg_to_analyze'])) {
 
 if (isset($_POST['invite_code'])) {
     $heading = $body = $user = '';
-    $user    = $fluent->from('users')
+    $user = $fluent->from('users')
         ->select(null)
         ->select('users.id')
         ->select('users.email')
@@ -399,7 +399,7 @@ if (isset($_POST['invite_code'])) {
     }
 
     $user_invited = [];
-    $heading      = $body      = $users      = '';
+    $heading = $body = $users = '';
     $user_invited = $fluent->from('users')
         ->select(null)
         ->select('users.id')

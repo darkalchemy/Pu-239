@@ -2,7 +2,7 @@
 
 global $lang;
 
-$dt                  = (TIME_NOW - $readpost_expiry);
+$dt = (TIME_NOW - $readpost_expiry);
 $last_posts_read_res = sql_query('SELECT t.id, t.last_post FROM topics AS t LEFT JOIN posts AS p ON p.id = t.last_post AND p.added > ' . $dt) or sqlerr(__FILE__, __LINE__);
 while ($last_posts_read_arr = mysqli_fetch_assoc($last_posts_read_res)) {
     $members_last_posts_read_res = sql_query('SELECT id, last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($last_posts_read_arr['id'])) or sqlerr(__FILE__, __LINE__);

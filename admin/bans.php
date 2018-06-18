@@ -8,7 +8,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global  $CURUSER, $site_config, $lang, $pdo, $fluent, $cache, $session;
 
-$lang   = array_merge($lang, load_language('ad_bans'));
+$lang = array_merge($lang, load_language('ad_bans'));
 $remove = isset($_GET['remove']) ? (int) $_GET['remove'] : 0;
 if ($remove > 0) {
     $res = $fluent->from('bans')
@@ -35,14 +35,14 @@ if ($remove > 0) {
     }
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] == UC_MAX) {
-    $first   = trim($_POST['first']);
-    $last    = trim($_POST['last']);
+    $first = trim($_POST['first']);
+    $last = trim($_POST['last']);
     $comment = htmlsafechars(trim($_POST['comment']));
     if (!$first || !$last || !$comment) {
         stderr("{$lang['stderr_error']}", "{$lang['text_missing']}");
     }
     $test_first = ip2long($first);
-    $test_last  = ip2long($last);
+    $test_last = ip2long($last);
     if ($test_first == -1 || $test_first === false || $test_last == -1 || $test_last === false) {
         stderr("{$lang['stderr_error']}", "{$lang['text_badip']}");
     }
@@ -52,10 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] == UC_MAX) {
     }
 
     $values = [
-        'added'   => $added,
+        'added' => $added,
         'addedby' => $CURUSER['id'],
-        'first'   => $first,
-        'last'    => $last,
+        'first' => $first,
+        'last' => $last,
         'comment' => $comment,
     ];
 
@@ -71,8 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] == UC_MAX) {
 }
 
 $perpage = 15;
-$pager   = pager($perpage, $count, 'staffpanel.php?tool=bans&amp;');
-$res     = $fluent->from('bans')
+$pager = pager($perpage, $count, 'staffpanel.php?tool=bans&amp;');
+$res = $fluent->from('bans')
     ->select('INET6_NTOA(first) AS first')
     ->select('INET6_NTOA(last) AS last')
     ->orderBy('added DESC');
@@ -80,7 +80,7 @@ $res     = $fluent->from('bans')
 foreach ($res as $arr) {
     $bans[] = $arr;
 }
-$count   = count($bans);
+$count = count($bans);
 $HTMLOUT = "
         <h1 class='has-text-centered'>Bans</h1>
         <div class='top20 bg-00 round10'>

@@ -6,7 +6,7 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config;
 
-$lang    = load_language('global');
+$lang = load_language('global');
 $stdhead = [
     'css' => [
     ],
@@ -21,11 +21,11 @@ if ($CURUSER['class'] == UC_MIN) {
     stderr('Error!', 'Sorry, you need to rank up!');
 }
 //=== possible stuff to be $_GETting lol
-$id            = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
-$comment_id    = (isset($_GET['comment_id']) ? intval($_GET['comment_id']) : (isset($_POST['comment_id']) ? intval($_POST['comment_id']) : 0));
-$category      = (isset($_GET['category']) ? intval($_GET['category']) : (isset($_POST['category']) ? intval($_POST['category']) : 0));
+$id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
+$comment_id = (isset($_GET['comment_id']) ? intval($_GET['comment_id']) : (isset($_POST['comment_id']) ? intval($_POST['comment_id']) : 0));
+$category = (isset($_GET['category']) ? intval($_GET['category']) : (isset($_POST['category']) ? intval($_POST['category']) : 0));
 $offered_by_id = isset($_GET['offered_by_id']) ? intval($_GET['offered_by_id']) : 0;
-$vote          = isset($_POST['vote']) ? intval($_POST['vote']) : 0;
+$vote = isset($_POST['vote']) ? intval($_POST['vote']) : 0;
 $posted_action = strip_tags((isset($_GET['action']) ? $_GET['action'] : (isset($_POST['action']) ? $_POST['action'] : '')));
 //=== add all possible actions here and check them to be sure they are ok
 $valid_actions = [
@@ -68,7 +68,7 @@ switch ($action) {
         $row_did_they_vote = mysqli_fetch_row($res_did_they_vote);
         if ($row_did_they_vote[0] == '') {
             $yes_or_no = ($vote == 1 ? 'yes' : 'no');
-            sql_query('INSERT INTO offer_votes (offer_id, user_id, vote) VALUES (' . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ', \'' . $yes_or_no . '\')')                   or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO offer_votes (offer_id, user_id, vote) VALUES (' . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ', \'' . $yes_or_no . '\')') or sqlerr(__FILE__, __LINE__);
             sql_query('UPDATE offers SET ' . ($yes_or_no === 'yes' ? 'vote_yes_count = vote_yes_count + 1' : 'vote_no_count = vote_no_count + 1') . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             header('Location: /offers.php?action=offer_details&voted=1&id=' . $id);
             die();
@@ -84,13 +84,13 @@ switch ($action) {
         require_once INCL_DIR . 'bbcode_functions.php';
         require_once INCL_DIR . 'pager_new.php';
         //=== get stuff for the pager
-        $count_query        = sql_query('SELECT COUNT(id) FROM offers') or sqlerr(__FILE__, __LINE__);
-        $count_arr          = mysqli_fetch_row($count_query);
-        $count              = $count_arr[0];
-        $page               = isset($_GET['page']) ? (int) $_GET['page'] : 0;
-        $perpage            = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
+        $count_query = sql_query('SELECT COUNT(id) FROM offers') or sqlerr(__FILE__, __LINE__);
+        $count_arr = mysqli_fetch_row($count_query);
+        $count = $count_arr[0];
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
+        $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
         list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'offers.php?' . ($perpage == 20 ? '' : '&amp;perpage=' . $perpage));
-        $main_query_res     = sql_query('SELECT o.id AS offer_id, o.offer_name, o.category, o.added, o.offered_by_user_id, o.vote_yes_count, o.vote_no_count, o.comments, o.status,
+        $main_query_res = sql_query('SELECT o.id AS offer_id, o.offer_name, o.category, o.added, o.offered_by_user_id, o.vote_yes_count, o.vote_no_count, o.comments, o.status,
                                                     u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class,  u.leechwarn, u.chatpost, u.pirate, u.king,
                                                     c.id AS cat_id, c.name AS cat_name, c.image AS cat_image
                                                     FROM offers AS o
@@ -168,8 +168,8 @@ switch ($action) {
                     </form> ~ you are being a stick in the mud.';
             $your_vote_was = '';
         } else {
-            $vote_yes      = '';
-            $vote_no       = '';
+            $vote_yes = '';
+            $vote_no = '';
             $your_vote_was = ' your vote: ' . $row_did_they_vote[0] . ' ';
         }
         $status_drop_down = ($CURUSER['class'] < UC_STAFF ? '' : '<br><form method="post" action="offers.php">
@@ -225,16 +225,16 @@ switch ($action) {
     </table>';
         $HTMLOUT .= '<h1>Comments for ' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '</h1><p><a name="startcomments"></a></p>';
         $commentbar = '<p><a class="index" href="offers.php?action=add_comment&amp;id=' . $id . '">Add a comment</a></p>';
-        $count      = (int) $arr['comments'];
+        $count = (int) $arr['comments'];
         if (!$count) {
             $HTMLOUT .= '<h2>No comments yet</h2>';
         } else {
             //=== get stuff for the pager
-            $page               = isset($_GET['page']) ? (int) $_GET['page'] : 0;
-            $perpage            = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
+            $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
+            $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
             list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'offers.php?action=offer_details&amp;id=' . $id, ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . '#comments');
-            $subres             = sql_query('SELECT c.offer, c.id AS comment_id, c.text, c.added, c.editedby, c.editedat, u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.title, u.leechwarn, u.chatpost, u.pirate, u.king FROM comments AS c LEFT JOIN users AS u ON c.user = u.id WHERE c.offer = ' . sqlesc($id) . ' ORDER BY c.id ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
-            $allrows            = [];
+            $subres = sql_query('SELECT c.offer, c.id AS comment_id, c.text, c.added, c.editedby, c.editedat, u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.title, u.leechwarn, u.chatpost, u.pirate, u.king FROM comments AS c LEFT JOIN users AS u ON c.user = u.id WHERE c.offer = ' . sqlesc($id) . ' ORDER BY c.id ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
+            $allrows = [];
             while ($subrow = mysqli_fetch_assoc($subres)) {
                 $allrows[] = $subrow;
             }
@@ -253,21 +253,21 @@ switch ($action) {
     case 'add_new_offer':
         require_once INCL_DIR . 'bbcode_functions.php';
         $offer_name = strip_tags(isset($_POST['offer_name']) ? trim($_POST['offer_name']) : '');
-        $image      = strip_tags(isset($_POST['image']) ? trim($_POST['image']) : '');
-        $body       = (isset($_POST['body']) ? trim($_POST['body']) : '');
-        $link       = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : '');
+        $image = strip_tags(isset($_POST['image']) ? trim($_POST['image']) : '');
+        $body = (isset($_POST['body']) ? trim($_POST['body']) : '');
+        $link = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : '');
         //=== do the cat list :D
         $category_drop_down = '<select name="category" class="required"><option class="body" value="">Select Offer Category</option>';
-        $cats               = genrelist();
+        $cats = genrelist();
         foreach ($cats as $row) {
             $category_drop_down .= '<option class="body" value="' . (int) $row['id'] . '"' . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($row['name'], ENT_QUOTES) . '</option>';
         }
         $category_drop_down .= '</select>';
         if (isset($_POST['category'])) {
-            $cat_res   = sql_query('SELECT id AS cat_id, name AS cat_name, image AS cat_image FROM categories WHERE id = ' . sqlesc($category)) or sqlerr(__FILE__, __LINE__);
-            $cat_arr   = mysqli_fetch_assoc($cat_res);
+            $cat_res = sql_query('SELECT id AS cat_id, name AS cat_name, image AS cat_image FROM categories WHERE id = ' . sqlesc($category)) or sqlerr(__FILE__, __LINE__);
+            $cat_arr = mysqli_fetch_assoc($cat_res);
             $cat_image = htmlsafechars($cat_arr['cat_image'], ENT_QUOTES);
-            $cat_name  = htmlsafechars($cat_arr['cat_name'], ENT_QUOTES);
+            $cat_name = htmlsafechars($cat_arr['cat_name'], ENT_QUOTES);
         }
         //=== if posted and not preview, process it :D
         if (isset($_POST['button']) && $_POST['button'] === 'Submit') {
@@ -337,9 +337,9 @@ switch ($action) {
             stderr('Sanity check...', 'are you sure you would like to delete the offer <b>"' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"</b>? If so click
         <a class="altlink" href="offers.php?action=delete_offer&id=' . $id . '&amp;do_it=666" >HERE</a>.');
         } else {
-            sql_query('DELETE FROM offers WHERE id = ' . $id)            or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM offers WHERE id = ' . $id) or sqlerr(__FILE__, __LINE__);
             sql_query('DELETE FROM offer_votes WHERE offer_id = ' . $id) or sqlerr(__FILE__, __LINE__);
-            sql_query('DELETE FROM comments WHERE offer = ' . $id)       or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM comments WHERE offer = ' . $id) or sqlerr(__FILE__, __LINE__);
             header('Location: /offers.php?offer_deleted=1');
             die();
         }
@@ -360,21 +360,21 @@ switch ($action) {
             stderr('Error!', 'This is not your offer to edit!');
         }
         $offer_name = strip_tags(isset($_POST['offer_name']) ? trim($_POST['offer_name']) : $edit_arr['offer_name']);
-        $image      = strip_tags(isset($_POST['image']) ? trim($_POST['image']) : $edit_arr['image']);
-        $body       = (isset($_POST['body']) ? trim($_POST['body']) : $edit_arr['description']);
-        $link       = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : $edit_arr['link']);
-        $category   = (isset($_POST['category']) ? intval($_POST['category']) : $edit_arr['category']);
+        $image = strip_tags(isset($_POST['image']) ? trim($_POST['image']) : $edit_arr['image']);
+        $body = (isset($_POST['body']) ? trim($_POST['body']) : $edit_arr['description']);
+        $link = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : $edit_arr['link']);
+        $category = (isset($_POST['category']) ? intval($_POST['category']) : $edit_arr['category']);
         //=== do the cat list :D
         $category_drop_down = '<select name="category" class="required"><option class="body" value="">Select Offer Category</option>';
-        $cats               = genrelist();
+        $cats = genrelist();
         foreach ($cats as $row) {
             $category_drop_down .= '<option class="body" value="' . (int) $row['id'] . '"' . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($row['name'], ENT_QUOTES) . '</option>';
         }
         $category_drop_down .= '</select>';
-        $cat_res   = sql_query('SELECT id AS cat_id, name AS cat_name, image AS cat_image FROM categories WHERE id = ' . sqlesc($category)) or sqlerr(__FILE__, __LINE__);
-        $cat_arr   = mysqli_fetch_assoc($cat_res);
+        $cat_res = sql_query('SELECT id AS cat_id, name AS cat_name, image AS cat_image FROM categories WHERE id = ' . sqlesc($category)) or sqlerr(__FILE__, __LINE__);
+        $cat_arr = mysqli_fetch_assoc($cat_res);
         $cat_image = htmlsafechars($cat_arr['cat_image'], ENT_QUOTES);
-        $cat_name  = htmlsafechars($cat_arr['cat_name'], ENT_QUOTES);
+        $cat_name = htmlsafechars($cat_arr['cat_name'], ENT_QUOTES);
         //=== if posted and not preview, process it :D
         if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
             sql_query('UPDATE offers SET offer_name = ' . sqlesc($offer_name) . ', image = ' . sqlesc($image) . ', description = ' . sqlesc($body) . ', category = ' . sqlesc($category) . ', link = ' . sqlesc($link) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
@@ -499,7 +499,7 @@ switch ($action) {
     <input name="button" type="submit" class="button is-small" value="Save" /></td>
     </tr>
      </table></form>';
-        $res     = sql_query('SELECT c.offer, c.id AS comment_id, c.text, c.added, c.editedby, c.editedat, u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.title, u.leechwarn, u.chatpost, u.pirate, u.king FROM comments AS c LEFT JOIN users AS u ON c.user = u.id WHERE offer = ' . sqlesc($id) . ' ORDER BY c.id DESC LIMIT 5') or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT c.offer, c.id AS comment_id, c.text, c.added, c.editedby, c.editedat, u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.title, u.leechwarn, u.chatpost, u.pirate, u.king FROM comments AS c LEFT JOIN users AS u ON c.user = u.id WHERE offer = ' . sqlesc($id) . ' ORDER BY c.id DESC LIMIT 5') or sqlerr(__FILE__, __LINE__);
         $allrows = [];
         while ($row = mysqli_fetch_assoc($res)) {
             $allrows[] = $row;
@@ -541,7 +541,7 @@ switch ($action) {
         } else {
             $res_user = sql_query('SELECT avatar, offensive_avatar, view_offensive_avatar FROM users WHERE id=' . sqlesc($arr['user'])) or sqlerr(__FILE__, __LINE__);
             $arr_user = mysqli_fetch_assoc($res_user);
-            $avatar   = avatar_stuff($arr_user);
+            $avatar = avatar_stuff($arr_user);
         }
         $HTMLOUT .= $top_menu . '<form method="post" action="offers.php?action=edit_comment">
     <input type="hidden" name="id" value="' . $arr['offer'] . '"/>
@@ -590,7 +590,7 @@ switch ($action) {
             stderr('Sanity check...', 'are you sure you would like to delete this comment? If so click
         <a class="altlink" href="offers.php?action=delete_comment&amp;id=' . (int) $arr['offer'] . '&amp;comment_id=' . $comment_id . '&amp;do_it=666" >HERE</a>.');
         } else {
-            sql_query('DELETE FROM comments WHERE id = ' . sqlesc($comment_id))                        or sqlerr(__FILE__, __LINE__);
+            sql_query('DELETE FROM comments WHERE id = ' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
             sql_query('UPDATE offers SET comments = comments - 1 WHERE id = ' . sqlesc($arr['offer'])) or sqlerr(__FILE__, __LINE__);
             header('Location: /offers.php?action=offer_details&id=' . $id . '&comment_deleted=1');
             die();

@@ -9,7 +9,7 @@ function validator($context)
     global $CURUSER;
 
     $timestamp = time();
-    $hash      = hash_hmac('sha256', $CURUSER['auth'], $context . $timestamp);
+    $hash = hash_hmac('sha256', $CURUSER['auth'], $context . $timestamp);
 
     return substr($hash, 0, 20) . dechex($timestamp);
 }

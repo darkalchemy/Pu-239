@@ -27,7 +27,7 @@ class AJAXChatDataBaseMySQL
     public function __construct(&$dbConnectionConfig)
     {
         $this->_connectionID = $dbConnectionConfig['link'];
-        $this->_dbName       = $dbConnectionConfig['name'];
+        $this->_dbName = $dbConnectionConfig['name'];
     }
 
     // Method to connect to the DataBase server:

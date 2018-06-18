@@ -9,11 +9,11 @@ global $CURUSER, $lang;
 
 $lang = array_merge($lang, load_language('ad_reset'));
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username    = trim(htmlsafechars($_POST['username']));
-    $uid         = (int) $_POST['uid'];
+    $username = trim(htmlsafechars($_POST['username']));
+    $uid = (int) $_POST['uid'];
     $newpassword = make_password();
-    $passhash    = make_passhash($newpassword);
-    $postkey     = PostKey([
+    $passhash = make_passhash($newpassword);
+    $postkey = PostKey([
                            $uid,
                            $CURUSER['id'],
                        ]);

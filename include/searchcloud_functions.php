@@ -40,8 +40,8 @@ function searchcloud_insert($word)
     global $cache;
 
     $searchcloud = searchcloud();
-    $ip          = getip();
-    $howmuch     = isset($searchcloud[$word]) ? $searchcloud[$word] + 1 : 1;
+    $ip = getip();
+    $howmuch = isset($searchcloud[$word]) ? $searchcloud[$word] + 1 : 1;
     if (!count($searchcloud) || !isset($searchcloud[$word])) {
         $searchcloud[$word] = $howmuch;
         $cache->set('searchcloud', $searchcloud, 0);
@@ -61,22 +61,22 @@ function cloud()
     global $site_config;
 
     $small = 14;
-    $big   = 40;
-    $tags  = searchcloud();
+    $big = 40;
+    $tags = searchcloud();
 
     if (!empty($tags)) {
         $minimum_count = min(array_values($tags));
         $maximum_count = max(array_values($tags));
-        $spread        = $maximum_count - $minimum_count;
+        $spread = $maximum_count - $minimum_count;
         if ($spread == 0) {
             $spread = 1;
         }
         $cloud_html = '';
         $cloud_tags = [];
-        $tags       = shuffle_assoc($tags, 3);
+        $tags = shuffle_assoc($tags, 3);
         foreach ($tags as $tag => $count) {
-            $size         = floor($small + round(($count - $minimum_count) * ($big - $small) / $spread, 0, PHP_ROUND_HALF_UP));
-            $color        = random_color(100, 200);
+            $size = floor($small + round(($count - $minimum_count) * ($big - $small) / $spread, 0, PHP_ROUND_HALF_UP));
+            $color = random_color(100, 200);
             $cloud_tags[] = "
                             <a class='tooltipper tag_cloud' style='color:{$color}; font-size: {$size}px' href='{$site_config['baseurl']}/browse.php?search=" . urlencode($tag) . "&amp;searchin=all&amp;incldead=1' title='<div class=\"size_5 has-text-primary has-text-centered\">\"" . htmlsafechars($tag) . "\"</div><br>has been searched for {$count} times.'>
                                 <span class='padding10 has-no-wrap'>" . htmlsafechars(stripslashes($tag)) . '</span>

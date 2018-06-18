@@ -30,7 +30,7 @@ $htmlout = "<!doctype html>
     </script>
     <table class='list' width='100%'>";
 $count = 0;
-$ctr   = 0;
+$ctr = 0;
 global $customsmilies;
 while ((list($code, $url) = each($customsmilies))) {
     if ($count % 3 == 0) {

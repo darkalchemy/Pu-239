@@ -4,7 +4,7 @@ global $site_config, $CURUSER, $cache;
 
 //====  make sure name is what you expect or error... add or remove to match your site
 if (isset($_POST['gname'])) {
-    $gname         = htmlspecialchars($_POST['gname']);
+    $gname = htmlspecialchars($_POST['gname']);
     $all_our_games = $site_config['arcade_games'];
     if (!in_array($gname, $all_our_games)) {
         stderr('Error', 'I smell a fat rat!');
@@ -12,7 +12,7 @@ if (isset($_POST['gname'])) {
 }
 //====  make sure level name is what you expect or error... add or remove to match your site
 if (isset($_POST['levelName'])) {
-    $levelName  = htmlspecialchars($_POST['levelName']);
+    $levelName = htmlspecialchars($_POST['levelName']);
     $all_levels = [
         'LEVEL: SLUG',
         'LEVEL: WORM',
@@ -32,18 +32,18 @@ $highScore = get_one_row('flashscores', 'score', 'WHERE game = ' . sqlesc($gname
 
 sql_query('INSERT INTO flashscores (game, user_id, level, score) VALUES (' . sqlesc($gname) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($level) . ', ' . sqlesc($score) . ')') or sqlerr(__FILE__, __LINE__);
 $game_id = array_search($gname, $site_config['arcade_games']);
-$game    = $site_config['arcade_games_names'][$game_id];
-$link    = '[url=' . $site_config['baseurl'] . '/flash.php?gameURI=' . $gname . '.swf&gamename=' . $gname . '&game_id=' . $game_id . ']' . $game . '[/url]';
+$game = $site_config['arcade_games_names'][$game_id];
+$link = '[url=' . $site_config['baseurl'] . '/flash.php?gameURI=' . $gname . '.swf&gamename=' . $gname . '&game_id=' . $game_id . ']' . $game . '[/url]';
 //$link = '[url=' . $site_config['baseurl'] . '/arcade.php]' . $game . '[/url]';
 $classColor = get_user_class_color($CURUSER['class']);
 if ($highScore < $score) {
-    $message      = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just set a new high score of " . number_format($score) . " in $link and earned {$site_config['top_score_points']} karma points.";
+    $message = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just set a new high score of " . number_format($score) . " in $link and earned {$site_config['top_score_points']} karma points.";
     $bonuscomment = get_one_row('users', 'bonuscomment', 'WHERE id = ' . $CURUSER['id']);
     $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . " - {$site_config['top_score_points']} Points for setting a new high score in $game.\n " . $bonuscomment;
     sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['top_score_points']) . ', bonuscomment = ' . sqlesc($bonuscomment) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $seedbonus = get_one_row('users', 'seedbonus', 'WHERE id = ' . $CURUSER['id']);
     $cache->update_row('user' . $CURUSER['id'], [
-        'seedbonus'    => $seedbonus,
+        'seedbonus' => $seedbonus,
         'bonuscomment' => $bonuscomment,
     ], $site_config['expires']['user_cache']);
 } elseif ($score >= .9 * $highScore) {

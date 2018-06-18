@@ -5,7 +5,7 @@ require_once CLASS_DIR . 'class_check.php';
 class_check(UC_MAX, true, true);
 global $site_config, $lang;
 
-$lang    = array_merge($lang, load_language('ad_systemview'));
+$lang = array_merge($lang, load_language('ad_systemview'));
 $htmlout = '';
 if (isset($_GET['phpinfo']) && $_GET['phpinfo']) {
     @ob_start();
@@ -27,7 +27,7 @@ if (isset($_GET['phpinfo']) && $_GET['phpinfo']) {
     // PREVENT WRAP: Cookie %2C split
     $php_body = str_replace('%2C', '%2C<br>', $php_body);
     // PREVENT WRAP: Cookie , split
-    $php_body  = preg_replace("#,(\d+),#", ',<br>\\1,', $php_body);
+    $php_body = preg_replace("#,(\d+),#", ',<br>\\1,', $php_body);
     $php_style = "<style>
 .center {text-align: center;}
 .center table { margin-left: auto; margin-right: auto; text-align: left; }
@@ -53,30 +53,30 @@ function sql_get_version()
     $query = sql_query('SELECT VERSION() AS version');
     if (!$row = mysqli_fetch_assoc($query)) {
         unset($row);
-        $query          = sql_query("SHOW VARIABLES LIKE 'version'");
-        $row            = mysqli_fetch_row($query);
+        $query = sql_query("SHOW VARIABLES LIKE 'version'");
+        $row = mysqli_fetch_row($query);
         $row['version'] = $row[1];
     }
-    $true_version  = $row['version'];
-    $tmp           = explode('.', preg_replace("#[^\d\.]#", '\\1', $row['version']));
+    $true_version = $row['version'];
+    $tmp = explode('.', preg_replace("#[^\d\.]#", '\\1', $row['version']));
     $mysql_version = sprintf('%d%02d%02d', $tmp[0], $tmp[1], $tmp[2]);
 
     return $mysql_version . ' (' . $true_version . ')';
 }
 
-$php_version     = phpversion() . ' (' . @php_sapi_name() . ") ( <a href='{$site_config['baseurl']}/staffpanel.php?tool=system_view&amp;action=system_view&amp;phpinfo=1'>{$lang['system_phpinfo']}</a> )";
+$php_version = phpversion() . ' (' . @php_sapi_name() . ") ( <a href='{$site_config['baseurl']}/staffpanel.php?tool=system_view&amp;action=system_view&amp;phpinfo=1'>{$lang['system_phpinfo']}</a> )";
 $server_software = php_uname();
 // print $php_version ." ".$server_software;
-$load_limit        = '--';
+$load_limit = '--';
 $server_load_found = 0;
-$using_cache       = 0;
-$avp               = @sql_query("SELECT value_s FROM avps WHERE arg = 'loadlimit'");
+$using_cache = 0;
+$avp = @sql_query("SELECT value_s FROM avps WHERE arg = 'loadlimit'");
 if (false !== $row = mysqli_fetch_assoc($avp)) {
     $loadinfo = explode('-', $row['value_s']);
     if (intval($loadinfo[1]) > (time() - 20)) {
         $server_load_found = 1;
-        $using_cache       = 1;
-        $load_limit        = $loadinfo[0];
+        $using_cache = 1;
+        $load_limit = $loadinfo[0];
     }
 }
 if (!$server_load_found) {
@@ -84,16 +84,16 @@ if (!$server_load_found) {
         if ($fh = @fopen('/proc/loadavg', 'r')) {
             $data = @fread($fh, 6);
             @fclose($fh);
-            $load_avg   = explode(' ', $data);
+            $load_avg = explode(' ', $data);
             $load_limit = trim($load_avg[0]);
         }
     } elseif (strstr(strtolower(PHP_OS), 'win')) {
         $serverstats = @shell_exec("typeperf \"Processor(_Total)\% Processor Time\" -sc 1");
         if ($serverstats) {
             $server_reply = explode("\n", str_replace("\r", '', $serverstats));
-            $serverstats  = array_slice($server_reply, 2, 1);
-            $statline     = explode(',', str_replace('"', '', $serverstats[0]));
-            $load_limit   = round($statline[1], 4);
+            $serverstats = array_slice($server_reply, 2, 1);
+            $statline = explode(',', str_replace('"', '', $serverstats[0]));
+            $load_limit = round($statline[1], 4);
         }
     } else {
         if ($serverstats = @exec('uptime')) {
@@ -122,10 +122,10 @@ if (strstr(strtolower(PHP_OS), 'win')) {
         }
     }
 } else {
-    $mem          = @shell_exec('free -m');
+    $mem = @shell_exec('free -m');
     $server_reply = explode("\n", str_replace("\r", '', $mem));
-    $mem          = array_slice($server_reply, 1, 1);
-    $mem          = preg_split("#\s+#", $mem[0]);
+    $mem = array_slice($server_reply, 1, 1);
+    $mem = preg_split("#\s+#", $mem[0]);
     $total_memory = $mem[1] . ' MB';
     $avail_memory = $mem[3] . ' MB';
 }
@@ -143,7 +143,7 @@ if (!$tasks) {
     $tasks = '<pre>' . $tasks . '</pre>';
 }
 $load_limit = $load_limit . " ({$lang['system_fromcache']}" . ($using_cache == 1 ? "<span style='color:green;font-weight:bold;'>{$lang['system_true']})</span>" : "<span style='color:red;font-weight:bold;'>{$lang['system_false']})</span>");
-$html[]     = [
+$html[] = [
     $lang['system_mysql'],
     sql_get_version(),
 ];

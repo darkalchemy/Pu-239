@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $table_exists = $cache->get('table_exists_database_updates');
 if ($table_exists === false || is_null($table_exists)) {
-    $sql    = "SHOW tables LIKE 'database_updates'";
+    $sql = "SHOW tables LIKE 'database_updates'";
     $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($result) != 1) {
         sql_query(
@@ -77,13 +77,13 @@ if (file_exists(DATABASE_DIR)) {
 
     $results = !empty($results) ? $results : [0 => '2017-12-06 14:43:22'];
 
-    $count    = count($sql_updates);
+    $count = count($sql_updates);
     $per_page = 15;
-    $pager    = pager($per_page, $count, "{$site_config['baseurl']}/staffpanel.php?tool=upgrade_database&amp;");
+    $pager = pager($per_page, $count, "{$site_config['baseurl']}/staffpanel.php?tool=upgrade_database&amp;");
     preg_match('/LIMIT (\d*),(\d*)/i', $pager['limit'], $match);
     $first = isset($match[1]) ? $match[1] : 0;
-    $last  = isset($match[2]) ? $match[1] + $per_page : end($sql_updates)['id'];
-    $page  = !empty($_GET['page']) ? "&page={$_GET['page']}" : '';
+    $last = isset($match[2]) ? $match[1] + $per_page : end($sql_updates)['id'];
+    $page = !empty($_GET['page']) ? "&page={$_GET['page']}" : '';
 
     $body = '';
     foreach ($sql_updates as $update) {

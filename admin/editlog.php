@@ -6,17 +6,17 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $lang, $session;
 
-$lang      = array_merge($lang, load_language('editlog'));
-$HTMLOUT   = '';
+$lang = array_merge($lang, load_language('editlog'));
+$HTMLOUT = '';
 $file_data = ROOT_DIR . 'dir_list' . DIRECTORY_SEPARATOR . 'data_' . $CURUSER['username'] . '.txt';
 if (file_exists($file_data)) {
-    $data  = unserialize(file_get_contents($file_data));
+    $data = unserialize(file_get_contents($file_data));
     $exist = true;
 } else {
     $exist = false;
 }
-$fetch_set   = [];
-$i           = 0;
+$fetch_set = [];
+$i = 0;
 $directories = [ROOT_DIR];
 global $site_config;
 
@@ -29,10 +29,10 @@ foreach ($directories as $path) {
             $ext = pathinfo($name, PATHINFO_EXTENSION);
             if (in_array($ext, $included_extentions)) {
                 $fetch_set[$i]['modify'] = filemtime($name);
-                $fetch_set[$i]['size']   = filesize($name);
-                $fetch_set[$i]['hash']   = hash_file('sha256', $name);
-                $fetch_set[$i]['name']   = $name;
-                $fetch_set[$i]['key']    = $i;
+                $fetch_set[$i]['size'] = filesize($name);
+                $fetch_set[$i]['hash'] = hash_file('sha256', $name);
+                $fetch_set[$i]['name'] = $name;
+                $fetch_set[$i]['key'] = $i;
                 ++$i;
             }
         }
@@ -51,7 +51,7 @@ if (!$exist || (isset($_POST['update']) && ($_POST['update'] === 'Update'))) {
 reset($fetch_set);
 reset($data);
 $current = $fetch_set;
-$last    = $data;
+$last = $data;
 foreach ($current as $x) {
     foreach ($last as $y) {
         if ($x['name'] == $y['name']) {
@@ -90,7 +90,7 @@ $HTMLOUT .= "
                 </tr>
             </thead>";
 reset($current);
-$count   = 0;
+$count = 0;
 $current = array_msort($current, ['name' => SORT_ASC]);
 foreach ($current as $x) {
     if ($x['status'] === 'new') {

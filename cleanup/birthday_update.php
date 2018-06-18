@@ -14,7 +14,7 @@ function birthday_update($data)
     ignore_user_abort(true);
 
     $current_date = getdate();
-    $dt           = TIME_NOW;
+    $dt = TIME_NOW;
 
     $query = $fluent->from('users')
         ->select(null)
@@ -27,9 +27,9 @@ function birthday_update($data)
 
     $msgs_buffer = $users_buffer = $values = [];
     foreach ($query as $arr) {
-        $msg                = 'Hey there <span class="' . get_user_class_name($arr['class'], true) . '">' . htmlsafechars($arr['username']) . "</span> happy birthday, hope you have a good day. We awarded you 10 gig...Njoi.\n";
-        $subject            = 'Its your birthday!!';
-        $msgs_buffer[]      = '(0,' . $arr['id'] . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+        $msg = 'Hey there <span class="' . get_user_class_name($arr['class'], true) . '">' . htmlsafechars($arr['username']) . "</span> happy birthday, hope you have a good day. We awarded you 10 gig...Njoi.\n";
+        $subject = 'Its your birthday!!';
+        $msgs_buffer[] = '(0,' . $arr['id'] . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
         $update['uploaded'] = ($arr['uploaded'] + 10737418240);
         $cache->update_row('user' . $arr['id'], [
             'uploaded' => $update['uploaded'],
@@ -45,11 +45,11 @@ function birthday_update($data)
             ->execute();
 
         $values[] = [
-            'sender'   => 0,
+            'sender' => 0,
             'receiver' => $arr['id'],
-            'added'    => $dt,
-            'msg'      => $msg,
-            'subject'  => $subject,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
         ];
         $cache->increment('inbox_' . $arr['id']);
     }

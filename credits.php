@@ -37,12 +37,12 @@ if (!function_exists('CutName')) {
 }
 
 if (isset($_POST['action']) === 'add' && $CURUSER['class'] >= UC_SYSOP) {
-    $name        = ($_POST['name']);
+    $name = ($_POST['name']);
     $description = ($_POST['description']);
-    $category    = ($_POST['category']);
-    $link        = ($_POST['link']);
-    $status      = ($_POST['status']);
-    $credit      = ($_POST['credit']);
+    $category = ($_POST['category']);
+    $link = ($_POST['link']);
+    $status = ($_POST['status']);
+    $credit = ($_POST['credit']);
     sql_query('INSERT INTO modscredits (name, description,  category,  pu239lnk,  status, credit) VALUES(' . sqlesc($name) . ', ' . sqlesc($description) . ', ' . sqlesc($category) . ', ' . sqlesc($link) . ', ' . sqlesc($status) . ', ' . sqlesc($credit) . ')') or sqlerr(__FILE__, __LINE__);
     header("Location: {$site_config['baseurl']}/credits.php");
     die();
@@ -58,7 +58,7 @@ if ($action === 'delete' && $CURUSER['class'] >= UC_SYSOP) {
 }
 
 if ($action === 'edit' && $CURUSER['class'] >= UC_SYSOP) {
-    $id  = (int) $_GET['id'];
+    $id = (int) $_GET['id'];
     $res = sql_query('SELECT name, description, category, pu239lnk, status, credit FROM modscredits WHERE id =' . $id . '') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {
         stderr("{$lang['credits_error']}", "{$lang['credits_nocr']}");
@@ -119,12 +119,12 @@ if ($action === 'edit' && $CURUSER['class'] >= UC_SYSOP) {
         stderr("{$lang['credits_error']}", "{$lang['credits_nocr']}");
     }
 
-    $name        = $_POST['name'];
+    $name = $_POST['name'];
     $description = $_POST['description'];
-    $category    = $_POST['category'];
-    $link        = $_POST['link'];
-    $modstatus   = $_POST['modstatus'];
-    $credit      = $_POST['credits'];
+    $category = $_POST['category'];
+    $link = $_POST['link'];
+    $modstatus = $_POST['modstatus'];
+    $credit = $_POST['credits'];
 
     if (empty($name)) {
         stderr("{$lang['credits_error']}", "{$lang['credits_error3']}");
@@ -175,17 +175,17 @@ $HTMLOUT .= "<table width='80%' border='1'>
 
 if ($row = mysqli_fetch_array($res)) {
     do {
-        $id       = $row['id'];
-        $name     = $row['name'];
+        $id = $row['id'];
+        $name = $row['name'];
         $category = $row['category'];
         if ($row['status'] === 'In-Progress') {
             $status = '[b][color=#ff0000]' . $row['status'] . '[/color][/b]';
         } else {
             $status = '[b][color=#018316]' . $row['status'] . '[/color][/b]';
         }
-        $link   = $row['pu239lnk'];
+        $link = $row['pu239lnk'];
         $credit = $row['credit'];
-        $descr  = $row['description'];
+        $descr = $row['description'];
 
         $HTMLOUT .= "<tr><td><a target='_blank' class='altlink' href='" . $link . "'>" . htmlsafechars(CutName($name, 60)) . '</a>';
         if ($CURUSER['class'] >= UC_ADMINISTRATOR) {

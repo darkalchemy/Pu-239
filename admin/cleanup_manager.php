@@ -7,8 +7,8 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $lang;
 
-$lang           = array_merge($lang, load_language('ad_cleanup_manager'));
-$params         = array_merge($_GET, $_POST);
+$lang = array_merge($lang, load_language('ad_cleanup_manager'));
+$params = array_merge($_GET, $_POST);
 $params['mode'] = isset($params['mode']) ? $params['mode'] : '';
 switch ($params['mode']) {
     case 'unlock':
@@ -76,8 +76,8 @@ function manualclean()
         stderr($lang['cleanup_stderr'], $lang['cleanup_stderr2']);
     }
     $params['cid'] = sqlesc($params['cid']);
-    $sql           = sql_query('SELECT * FROM cleanup WHERE clean_id = ' . sqlesc($params['cid'])) or sqlerr(__FILE__, __LINE__);
-    $row           = mysqli_fetch_assoc($sql);
+    $sql = sql_query('SELECT * FROM cleanup WHERE clean_id = ' . sqlesc($params['cid'])) or sqlerr(__FILE__, __LINE__);
+    $row = mysqli_fetch_assoc($sql);
     if ($row['clean_id']) {
         $next_clean = ceil($row['clean_time'] / $row['clean_increment']) * $row['clean_increment'] + $row['clean_increment'];
         sql_query('UPDATE cleanup SET clean_time = ' . sqlesc($next_clean) . ' WHERE clean_id = ' . sqlesc($row['clean_id'])) or sqlerr(__FILE__, __LINE__);
@@ -96,9 +96,9 @@ function manualclean()
 function cleanup_show_main()
 {
     global $site_config, $lang;
-    $count1  = get_row_count('cleanup');
+    $count1 = get_row_count('cleanup');
     $perpage = 15;
-    $pager   = pager($perpage, $count1, $site_config['baseurl'] . '/staffpanel.php?tool=cleanup_manager&amp;');
+    $pager = pager($perpage, $count1, $site_config['baseurl'] . '/staffpanel.php?tool=cleanup_manager&amp;');
     $htmlout = "
     <div class='container is-fluid portlet'>
         <h2 class='has-text-centered top20'>{$lang['cleanup_head']}</h2>
@@ -120,11 +120,11 @@ function cleanup_show_main()
         stderr($lang['cleanup_stderr'], $lang['cleanup_panic']);
     }
     while ($row = mysqli_fetch_assoc($sql)) {
-        $row['_clean_time']     = get_date($row['clean_time'], 'LONG');
+        $row['_clean_time'] = get_date($row['clean_time'], 'LONG');
         $row['clean_increment'] = (int) $row['clean_increment'];
-        $row['_class']          = $row['clean_on'] != 1 ? " style='color:red'" : '';
-        $row['_title']          = $row['clean_on'] != 1 ? " {$lang['cleanup_lock']}" : '';
-        $row['_clean_time']     = $row['clean_on'] != 1 ? "<span style='color:red'>{$row['_clean_time']}</span>" : $row['_clean_time'];
+        $row['_class'] = $row['clean_on'] != 1 ? " style='color:red'" : '';
+        $row['_title'] = $row['clean_on'] != 1 ? " {$lang['cleanup_lock']}" : '';
+        $row['_clean_time'] = $row['clean_on'] != 1 ? "<span style='color:red'>{$row['_clean_time']}</span>" : $row['_clean_time'];
         $htmlout .= "
         <tr>
             <td{$row['_class']}>{$row['clean_title']}{$row['_title']}<br><span class='size_3'>{$row['clean_desc']}</span></td>
@@ -172,17 +172,17 @@ function cleanup_show_edit()
     if (!mysqli_num_rows($sql)) {
         stderr($lang['cleanup_stderr'], $lang['cleanup_stderr3']);
     }
-    $row                  = mysqli_fetch_assoc($sql);
-    $row['clean_title']   = htmlsafechars($row['clean_title'], ENT_QUOTES);
-    $row['clean_desc']    = htmlsafechars($row['clean_desc'], ENT_QUOTES);
-    $row['clean_file']    = htmlsafechars($row['clean_file'], ENT_QUOTES);
-    $row['clean_title']   = htmlsafechars($row['clean_title'], ENT_QUOTES);
+    $row = mysqli_fetch_assoc($sql);
+    $row['clean_title'] = htmlsafechars($row['clean_title'], ENT_QUOTES);
+    $row['clean_desc'] = htmlsafechars($row['clean_desc'], ENT_QUOTES);
+    $row['clean_file'] = htmlsafechars($row['clean_file'], ENT_QUOTES);
+    $row['clean_title'] = htmlsafechars($row['clean_title'], ENT_QUOTES);
     $row['function_name'] = htmlsafechars($row['function_name'], ENT_QUOTES);
-    $logyes               = $row['clean_log'] ? 'checked' : '';
-    $logno                = !$row['clean_log'] ? 'checked' : '';
-    $cleanon              = $row['clean_on'] ? 'checked' : '';
-    $cleanoff             = !$row['clean_on'] ? 'checked' : '';
-    $htmlout              = "<h2>{$lang['cleanup_show_head']} {$row['clean_title']}</h2>
+    $logyes = $row['clean_log'] ? 'checked' : '';
+    $logno = !$row['clean_log'] ? 'checked' : '';
+    $cleanon = $row['clean_on'] ? 'checked' : '';
+    $cleanoff = !$row['clean_on'] ? 'checked' : '';
+    $htmlout = "<h2>{$lang['cleanup_show_head']} {$row['clean_title']}</h2>
     <div style='width: 800px; text-align: left; padding: 10px; margin: 0 auto;border-style: solid; border-color: #333333; border-width: 5px 2px;'>
     <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager'>
     <input type='hidden' name='mode' value='takeedit' />
@@ -296,7 +296,7 @@ function cleanup_show_new()
     global $lang;
 
     $clean_time = strtotime('today midnight');
-    $htmlout    = "<h2>{$lang['cleanup_new_head']}</h2>
+    $htmlout = "<h2>{$lang['cleanup_new_head']}</h2>
     <div style='width: 800px; text-align: left; padding: 10px; margin: 0 auto;border-style: solid; border-color: #333333; border-width: 5px 2px;'>
     <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager'>
     <input type='hidden' name='mode' value='takenew' />
@@ -460,7 +460,7 @@ function cleanup_take_unlock()
         }
     }
     unset($opts);
-    $params['cid']      = sqlesc($params['cid']);
+    $params['cid'] = sqlesc($params['cid']);
     $params['clean_on'] = ($params['clean_on'] === 1 ? sqlesc($params['clean_on'] - 1) : sqlesc($params['clean_on'] + 1));
     sql_query("UPDATE cleanup SET clean_on = {$params['clean_on']} WHERE clean_id = {$params['cid']}");
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 1) {

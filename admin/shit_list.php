@@ -7,10 +7,10 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang, $cache;
 
-$lang    = array_merge($lang, load_language('ad_shitlist'));
+$lang = array_merge($lang, load_language('ad_shitlist'));
 $HTMLOUT = $message = $title = '';
 //=== check if action2 is sent (either $_POST or $_GET) if so make sure it's what you want it to be
-$action2    = (isset($_POST['action2']) ? htmlsafechars($_POST['action2']) : (isset($_GET['action2']) ? htmlsafechars($_GET['action2']) : ''));
+$action2 = (isset($_POST['action2']) ? htmlsafechars($_POST['action2']) : (isset($_GET['action2']) ? htmlsafechars($_GET['action2']) : ''));
 $good_stuff = [
     'new',
     'add',
@@ -23,7 +23,7 @@ switch ($action2) {
 
     case 'new':
         $shit_list_id = (isset($_GET['shit_list_id']) ? intval($_GET['shit_list_id']) : 0);
-        $return_to    = str_replace('&amp;', '&', htmlsafechars($_GET['return_to']));
+        $return_to = str_replace('&amp;', '&', htmlsafechars($_GET['return_to']));
         $cache->delete('shit_list_' . $CURUSER['id']);
         if ($shit_list_id == $CURUSER['id']) {
             stderr($lang['shitlist_stderr'], $lang['shitlist_stderr1']);
@@ -31,8 +31,8 @@ switch ($action2) {
         if (!is_valid_id($shit_list_id)) {
             stderr($lang['shitlist_stderr'], $lang['shitlist_stderr2']);
         }
-        $res_name       = sql_query('SELECT username FROM users WHERE id=' . sqlesc($shit_list_id));
-        $arr_name       = mysqli_fetch_assoc($res_name);
+        $res_name = sql_query('SELECT username FROM users WHERE id=' . sqlesc($shit_list_id));
+        $arr_name = mysqli_fetch_assoc($res_name);
         $check_if_there = sql_query('SELECT suspect FROM shit_list WHERE userid=' . sqlesc($CURUSER['id']) . ' AND suspect=' . sqlesc($shit_list_id));
         if (mysqli_num_rows($check_if_there) == 1) {
             stderr($lang['shitlist_stderr'], $lang['shitlist_already1'] . htmlsafechars($arr_name['username']) . $lang['shitlist_already2']);
@@ -45,7 +45,7 @@ switch ($action2) {
             ++$i;
         }
         $level_of_shittyness .= '</select>';
-        $HTMLOUT             .= '<h1><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" />' . $lang['shitlist_add1'] . '' . htmlsafechars($arr_name['username']) . '' . $lang['shitlist_add2'] . '<img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /></h1>
+        $HTMLOUT .= '<h1><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" />' . $lang['shitlist_add1'] . '' . htmlsafechars($arr_name['username']) . '' . $lang['shitlist_add2'] . '<img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /></h1>
       <form method="post" action="staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=add">
    <table border="0">
    <tr>
@@ -74,8 +74,8 @@ switch ($action2) {
 
     case 'add':
         $shit_list_id = (isset($_POST['shit_list_id']) ? intval($_POST['shit_list_id']) : 0);
-        $shittyness   = (isset($_POST['shittyness']) ? intval($_POST['shittyness']) : 0);
-        $return_to    = str_replace('&amp;', '&', htmlsafechars($_POST['return_to']));
+        $shittyness = (isset($_POST['shittyness']) ? intval($_POST['shittyness']) : 0);
+        $return_to = str_replace('&amp;', '&', htmlsafechars($_POST['return_to']));
         if (!is_valid_id($shit_list_id) || !is_valid_id($shittyness)) {
             stderr($lang['shitlist_stderr'], $lang['shitlist_stderr2']);
         }
@@ -91,7 +91,7 @@ switch ($action2) {
 
     case 'delete':
         $shit_list_id = (isset($_GET['shit_list_id']) ? intval($_GET['shit_list_id']) : 0);
-        $sure         = (isset($_GET['sure']) ? intval($_GET['sure']) : '');
+        $sure = (isset($_GET['sure']) ? intval($_GET['sure']) : '');
         if (!is_valid_id($shit_list_id)) {
             stderr($lang['shitlist_stderr'], $lang['shitlist_stderr2']);
         }

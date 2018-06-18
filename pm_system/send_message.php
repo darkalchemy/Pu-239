@@ -10,11 +10,11 @@ flood_limit('messages');
 
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     $receiver = sqlesc(isset($_POST['receiver']) ? intval($_POST['receiver']) : 0);
-    $subject  = sqlesc(htmlsafechars($_POST['subject']));
-    $body     = sqlesc(trim($_POST['body']));
-    $save     = isset($_POST['save']) && $_POST['save'] === 1 ? 'yes' : 'no';
-    $delete   = sqlesc((isset($_POST['delete']) && $_POST['delete'] !== 0) ? intval($_POST['delete']) : 0);
-    $urgent   = sqlesc((isset($_POST['urgent']) && $_POST['urgent'] === 'yes' && $CURUSER['class'] >= UC_STAFF) ? 'yes' : 'no');
+    $subject = sqlesc(htmlsafechars($_POST['subject']));
+    $body = sqlesc(trim($_POST['body']));
+    $save = isset($_POST['save']) && $_POST['save'] === 1 ? 'yes' : 'no';
+    $delete = sqlesc((isset($_POST['delete']) && $_POST['delete'] !== 0) ? intval($_POST['delete']) : 0);
+    $urgent = sqlesc((isset($_POST['urgent']) && $_POST['urgent'] === 'yes' && $CURUSER['class'] >= UC_STAFF) ? 'yes' : 'no');
     $returnto = htmlsafechars(isset($_POST['returnto']) ? $_POST['returnto'] : '');
     //$returnto = htmlsafechars($_POST['returnto']);
 
@@ -43,7 +43,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
         $should_i_send_this = ($arr_receiver['acceptpms'] === 'yes' ? 'yes' : ($arr_receiver['acceptpms'] === 'no' ? 'no' : ($arr_receiver['acceptpms'] === 'friends' ? 'friends' : '')));
         switch ($should_i_send_this) {
             case 'yes':
-                $r     = sql_query('SELECT id FROM blocks WHERE userid = ' . sqlesc($receiver) . ' AND blockid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+                $r = sql_query('SELECT id FROM blocks WHERE userid = ' . sqlesc($receiver) . ' AND blockid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                 $block = mysqli_fetch_row($r);
                 if ($block[0] > 0) {
                     stderr($lang['pm_forwardpm_refused'], htmlsafechars($arr_receiver['username']) . $lang['pm_send_blocked']);
@@ -51,7 +51,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
                 break;
 
             case 'friends':
-                $r      = sql_query('SELECT id FROM friends WHERE userid = ' . sqlesc($receiver) . ' AND friendid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+                $r = sql_query('SELECT id FROM friends WHERE userid = ' . sqlesc($receiver) . ' AND friendid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                 $friend = mysqli_fetch_row($r);
                 if ($friend[0] == 0) {
                     stderr('Refused', htmlsafechars($arr_receiver['username']) . ' only accepts PMs from members in their friends list.');
@@ -80,7 +80,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     }
     if (strpos($arr_receiver['notifs'], '[pm]') !== false) {
         $username = htmlsafechars($CURUSER['username']);
-        $body     = "<html>
+        $body = "<html>
 <head>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
     <title>{$site_config['site_name']} PM received</title>
@@ -100,7 +100,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
             ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username!")
             ->setHtmlBody($body);
 
-        $mailer              = new SendmailMailer();
+        $mailer = new SendmailMailer();
         $mailer->commandArgs = "-f{$site_config['site_email']}";
         $mailer->send($mail);
     }
@@ -127,7 +127,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
 }
 
 $receiver = (isset($_GET['receiver']) ? intval($_GET['receiver']) : (isset($_POST['receiver']) ? intval($_POST['receiver']) : null));
-$replyto  = (isset($_GET['replyto']) ? intval($_GET['replyto']) : (isset($_POST['replyto']) ? intval($_POST['replyto']) : 0));
+$replyto = (isset($_GET['replyto']) ? intval($_GET['replyto']) : (isset($_POST['replyto']) ? intval($_POST['replyto']) : 0));
 $returnto = htmlsafechars(isset($_POST['returnto']) ? $_POST['returnto'] : '');
 if (!$receiver) {
     $all_users = $cache->get('all_users_');
@@ -168,7 +168,7 @@ if ($replyto != 0) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subject = trim($_POST['subject']);
-    $body    = trim($_POST['body']);
+    $body = trim($_POST['body']);
 }
 
 $avatar = (($CURUSER['avatars'] === 'no') ? '' : (empty($CURUSER['avatar']) ? '

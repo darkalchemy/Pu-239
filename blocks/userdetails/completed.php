@@ -26,32 +26,32 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
         </tr>";
         $body = '';
         while ($a = mysqli_fetch_assoc($r)) {
-            $What_Id                  = (XBT_TRACKER ? $a['tid'] : $a['id']);
+            $What_Id = (XBT_TRACKER ? $a['tid'] : $a['id']);
             $torrent_needed_seed_time = ($a['st'] - $a['torrent_added']);
             switch (true) {
                 case $user['class'] <= $site_config['hnr_config']['firstclass']:
-                    $days_3       = $site_config['hnr_config']['_3day_first']       * 3600;
-                    $days_14      = $site_config['hnr_config']['_14day_first']      * 3600;
+                    $days_3 = $site_config['hnr_config']['_3day_first'] * 3600;
+                    $days_14 = $site_config['hnr_config']['_14day_first'] * 3600;
                     $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600;
                     break;
                 case $user['class'] < $site_config['hnr_config']['secondclass']:
-                    $days_3       = $site_config['hnr_config']['_3day_second']       * 3600;
-                    $days_14      = $site_config['hnr_config']['_14day_second']      * 3600;
+                    $days_3 = $site_config['hnr_config']['_3day_second'] * 3600;
+                    $days_14 = $site_config['hnr_config']['_14day_second'] * 3600;
                     $days_over_14 = $site_config['hnr_config']['_14day_over_second'] * 3600;
                     break;
                 case $user['class'] >= $site_config['hnr_config']['secondclass'] && $user['class'] < $site_config['hnr_config']['thirdclass']:
-                    $days_3       = $site_config['hnr_config']['_3day_second']       * 3600;
-                    $days_14      = $site_config['hnr_config']['_14day_second']      * 3600;
+                    $days_3 = $site_config['hnr_config']['_3day_second'] * 3600;
+                    $days_14 = $site_config['hnr_config']['_14day_second'] * 3600;
                     $days_over_14 = $site_config['hnr_config']['_14day_over_second'] * 3600;
                     break;
                 case $user['class'] >= $site_config['hnr_config']['thirdclass']:
-                    $days_3       = $site_config['hnr_config']['_3day_third']       * 3600;
-                    $days_14      = $site_config['hnr_config']['_14day_third']      * 3600;
+                    $days_3 = $site_config['hnr_config']['_3day_third'] * 3600;
+                    $days_14 = $site_config['hnr_config']['_14day_third'] * 3600;
                     $days_over_14 = $site_config['hnr_config']['_14day_over_third'] * 3600;
                     break;
                 default:
-                    $days_3       = 0;
-                    $days_14      = 0;
+                    $days_3 = 0;
+                    $days_14 = 0;
                     $days_over_14 = 0;
             }
             $foo = $a['downloaded'] > 0 ? $a['uploaded'] / $a['downloaded'] : 0;
@@ -82,7 +82,7 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
                     $minus_ratio = ($days_over_14 - $a['seedtime']) - ($foo * 86400);
                     break;
             }
-            $color       = (($minus_ratio > 0 && $a['uploaded'] < $a['downloaded']) ? get_ratio_color($minus_ratio) : 'limegreen');
+            $color = (($minus_ratio > 0 && $a['uploaded'] < $a['downloaded']) ? get_ratio_color($minus_ratio) : 'limegreen');
             $minus_ratio = mkprettytime($minus_ratio);
             if ($a['downspeed'] > 0) {
                 $dl_speed = ($a['downspeed'] > 0 ? mksize($a['downspeed']) : ($a['leechtime'] > 0 ? mksize($a['downloaded'] / $a['leechtime']) : mksize(0)));
@@ -107,8 +107,8 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
                     break;
             }
             $checkbox_for_delete = ($CURUSER['class'] >= UC_STAFF ? " [<a href='" . $site_config['baseurl'] . '/userdetails.php?id=' . $id . '&amp;delete_hit_and_run=' . (int) $What_Id . "'>{$lang['userdetails_c_remove']}</a>]" : '');
-            $mark_of_cain        = ($a['mark_of_cain'] == 'yes' ? "<img src='{$site_config['pic_baseurl']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' title='{$lang['userdetails_c_tmofcain']}' />" . $checkbox_for_delete : '');
-            $hit_n_run           = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['pic_baseurl']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' title='{$lang['userdetails_c_hitrun1']}' />" : '');
+            $mark_of_cain = ($a['mark_of_cain'] == 'yes' ? "<img src='{$site_config['pic_baseurl']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' title='{$lang['userdetails_c_tmofcain']}' />" . $checkbox_for_delete : '');
+            $hit_n_run = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['pic_baseurl']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' title='{$lang['userdetails_c_hitrun1']}' />" : '');
             if (!XBT_TRACKER) {
                 $body .= "
             <tr>

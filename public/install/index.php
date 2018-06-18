@@ -2,7 +2,7 @@
 
 $step = isset($_GET['step']) ? (int) $_GET['step'] : 0;
 
-$root   = dirname(__FILE__, 3) . DIRECTORY_SEPARATOR;
+$root = dirname(__FILE__, 3) . DIRECTORY_SEPARATOR;
 $public = $root . 'public';
 
 if ($public[strlen($public) - 1] != DIRECTORY_SEPARATOR) {
@@ -14,9 +14,9 @@ function return_bytes($val)
     if ($val == '') {
         return 0;
     }
-    $val  = strtolower(trim($val));
+    $val = strtolower(trim($val));
     $last = $val[strlen($val) - 1];
-    $val  = rtrim($val, $last);
+    $val = rtrim($val, $last);
 
     switch ($last) {
         case 'g':
@@ -59,7 +59,7 @@ function get_scheme()
     <?php
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $valid_do = [
-            'write'     => 1,
+            'write' => 1,
             'db_insert' => 1,
         ];
         $do = isset($_POST['do'], $valid_do[$_POST['do']]) ? $_POST['do'] : false;

@@ -48,7 +48,7 @@ function delete_torrent($delete_array, $page)
         $delete[] = (int) $remove;
     }
     $delete = array_unique($delete);
-    $count  = count($delete);
+    $count = count($delete);
     if (!$count) {
         return false;
     }
@@ -60,9 +60,9 @@ function delete_torrent($delete_array, $page)
         if (!(($CURUSER['id'] == $row['owner'] || $CURUSER['class'] >= UC_STAFF) && 0 == $row['seeders'])) {
             continue;
         }
-        $ids[]   = $row['id'];
+        $ids[] = $row['id'];
         $names[] = htmlsafechars($row['name']);
-        $id      = (int) $row['id'];
+        $id = (int) $row['id'];
         /* unlink() **/
         unlink("{$site_config['torrent_dir']}/$id.torrent");
         // announce
@@ -85,7 +85,7 @@ function delete_torrent($delete_array, $page)
         }
     }
     $unique_ids = array_unique($ids);
-    $countids   = count($unique_ids);
+    $countids = count($unique_ids);
     if ($countids > 0) {
         sql_query('DELETE FROM torrents WHERE id IN (' . implode(', ', $ids) . ')');
         foreach (explode('.', 'bookmarks.snatched.thanks.thankyou.coins') as $y) {
@@ -94,9 +94,9 @@ function delete_torrent($delete_array, $page)
         foreach (explode('.', 'peers.files.comments.rating') as $x) {
             sql_query('DELETE FROM ' . $x . ' WHERE torrent IN (' . implode(', ', $ids) . ')');
         }
-        sql_query('DELETE FROM deathrow WHERE tid IN (' . implode(', ', $ids) . ')')     or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM deathrow WHERE tid IN (' . implode(', ', $ids) . ')') or sqlerr(__FILE__, __LINE__);
         sql_query('DELETE FROM thanks WHERE torrentid IN (' . implode(', ', $ids) . ')') or sqlerr(__FILE__, __LINE__);
-        sql_query('DELETE FROM thankyou WHERE torid IN (' . implode(', ', $ids) . ')')   or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM thankyou WHERE torid IN (' . implode(', ', $ids) . ')') or sqlerr(__FILE__, __LINE__);
         write_log(' ' . $lang['deathrow_torr'] . ' (' . implode(', ', $names) . '.)  ' . $lang['deathrow_were'] . ' ' . $CURUSER['username'] . ' (' . $page . ')' . "\n");
 
         return $countids;
@@ -117,7 +117,7 @@ $x_time = 604800; // Delete Routine 1 // 5 days
 // Give 'em 7 days to seed back their torrent (no peers, not snatched in x days)
 $y_time = 2419200; // Delete Routine 2 // 28 days
 // Give 'em 2 days to seed back their torrent (no seeder activity within x hours of torrent upload)
-$z_time  = 2 * 86400; // Delete Routine 3 // 2 days
+$z_time = 2 * 86400; // Delete Routine 3 // 2 days
 $dx_time = sqlesc(TIME_NOW - $x_time);
 $dy_time = sqlesc(TIME_NOW - $y_time);
 $dz_time = sqlesc(TIME_NOW - $z_time);
@@ -125,12 +125,12 @@ if ($CURUSER['class'] >= UC_STAFF) {
     $uploaders = [];
     // Deathrow Routine 1
     $query = 'SELECT t.id AS tid, t.name, t.owner, (t.seeders + t.leechers) AS peers, t.last_action, u.username, u.id AS uid FROM torrents AS t INNER JOIN users AS u ON t.owner = u.id LEFT JOIN peers AS p ON t.id = p.torrent WHERE t.last_action < ' . $dx_time . ' HAVING peers = 0';
-    $res   = sql_query($query) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
     while ($arr = mysqli_fetch_assoc($res)) {
         $uploaders[$arr['uid'] . '|' . $arr['username']][] = [
-            'tid'          => $arr['tid'],
+            'tid' => $arr['tid'],
             'torrent_name' => $arr['name'],
-            'reason'       => 1,
+            'reason' => 1,
         ];
     }
     /*
@@ -144,12 +144,12 @@ if ($CURUSER['class'] >= UC_STAFF) {
     */
     // Deathrow Routine 3
     $query = 'SELECT t.id, t.name, t.owner, t.added, t.last_action, u.id AS uid, u.username FROM torrents AS t INNER JOIN users AS u ON t.owner = u.id LEFT JOIN peers AS p ON t.id = p.torrent WHERE t.last_action < ' . (TIME_NOW - 1 * 86400) . ' AND t.added < ' . $dz_time . ' GROUP BY t.id HAVING(SUM(p.seeder) = 0)';
-    $res   = sql_query($query) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
     while ($arr = mysqli_fetch_assoc($res)) {
         $uploaders[$arr['uid'] . '|' . $arr['username']][] = [
-            'tid'          => $arr['id'],
+            'tid' => $arr['id'],
             'torrent_name' => $arr['name'],
-            'reason'       => 3,
+            'reason' => 3,
         ];
     }
     foreach ($uploaders as $user_info => $torrent_array) {
@@ -160,8 +160,8 @@ if ($CURUSER['class'] >= UC_STAFF) {
     }
     unset($res);
 }
-$res   = sql_query('SELECT COUNT(tid) FROM deathrow') or sqlerr(__FILE__, __LINE__);
-$row   = mysqli_fetch_array($res, MYSQLI_NUM);
+$res = sql_query('SELECT COUNT(tid) FROM deathrow') or sqlerr(__FILE__, __LINE__);
+$row = mysqli_fetch_array($res, MYSQLI_NUM);
 $count = $row[0];
 if ($count) {
     $perpage = 25;
@@ -188,8 +188,8 @@ if ($count) {
     ]);
 
     $query = "SELECT * FROM deathrow {$orderby} {$pager['limit']}";
-    $res   = sql_query($query) or sqlerr(__FILE__, __LINE__);
-    $b     = "<p><b>$count {$lang['deathrow_title']}</b>" . "</p><form action='' method='post'><table width='95%' id='deathtable'>" . "<thead><tr><th class='colhead'>{$lang['deathrow_uname']}</th><th class='colhead'>{$lang['deathrow_tname']}</th><th class='colhead'>{$lang['deathrow_del_resn']}</th><th class='colhead'>{$lang['deathrow_del_torr']}</th></tr></thead>\n";
+    $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
+    $b = "<p><b>$count {$lang['deathrow_title']}</b>" . "</p><form action='' method='post'><table width='95%' id='deathtable'>" . "<thead><tr><th class='colhead'>{$lang['deathrow_uname']}</th><th class='colhead'>{$lang['deathrow_tname']}</th><th class='colhead'>{$lang['deathrow_del_resn']}</th><th class='colhead'>{$lang['deathrow_del_torr']}</th></tr></thead>\n";
     while ($queued = mysqli_fetch_assoc($res)) {
         if ($queued['reason'] == 1) {
             $reason = $lang['deathrow_nopeer'] . calctime($x_time);

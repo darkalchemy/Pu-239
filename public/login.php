@@ -27,7 +27,7 @@ function left()
 {
     global $site_config, $fluent;
 
-    $ip    = getip();
+    $ip = getip();
     $count = $fluent->from('failedlogins')
         ->select(null)
         ->select('COUNT(*) AS count')

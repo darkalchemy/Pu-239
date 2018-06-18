@@ -5,12 +5,12 @@ dbconn();
 global $site_config;
 
 $torrent_pass = (isset($_GET['torrent_pass']) ? htmlsafechars($_GET['torrent_pass']) : '');
-$feed         = (isset($_GET['type']) && $_GET['type'] === 'dl' ? 'dl' : 'web');
-$cats         = (isset($_GET['cats']) ? $_GET['cats'] : '');
+$feed = (isset($_GET['type']) && $_GET['type'] === 'dl' ? 'dl' : 'web');
+$cats = (isset($_GET['cats']) ? $_GET['cats'] : '');
 if ($cats) {
     $validate_cats = explode(',', $cats);
-    $cats          = implode(', ', array_map('intval', $validate_cats));
-    $cats          = implode(', ', array_map('sqlesc', $validate_cats));
+    $cats = implode(', ', array_map('intval', $validate_cats));
+    $cats = implode(', ', array_map('sqlesc', $validate_cats));
 }
 if (!empty($torrent_pass)) {
     if (strlen($torrent_pass) != 64) {
@@ -27,9 +27,9 @@ if (!empty($torrent_pass)) {
     die("Your link doesn't have a passkey");
 }
 $site_config['rssdescr'] = $site_config['site_name'] . ' RSS Feed - Please Donate';
-$where                   = [];
-$join                    = $limit                    = '';
-$where[]                 = "t.visible != 'yes'";
+$where = [];
+$join = $limit = '';
+$where[] = "t.visible != 'yes'";
 if (!empty($cats)) {
     $where[] = "t.category IN ($cats)";
 }
@@ -79,8 +79,8 @@ $sql = "SELECT t.id, t.name, t.descr, t.size, t.category, t.seeders, t.leechers,
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
 while ($a = mysqli_fetch_assoc($res)) {
-    $link     = $site_config['baseurl'] . ($feed === 'dl' ? '/download.php?torrent=' . (int) $a['id'] . '&amp;torrent_pass=' . $torrent_pass : '/details.php?id=' . (int) $a['id'] . '&amp;hit=1');
-    $br       = '&lt;br/&gt;';
+    $link = $site_config['baseurl'] . ($feed === 'dl' ? '/download.php?torrent=' . (int) $a['id'] . '&amp;torrent_pass=' . $torrent_pass : '/details.php?id=' . (int) $a['id'] . '&amp;hit=1');
+    $br = '&lt;br/&gt;';
     $guidlink = $site_config['baseurl'] . '/details.php?id=' . (int) $a['id'];
     $HTMLOUT .= '
         <item>

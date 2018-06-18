@@ -10,13 +10,13 @@ if (empty($_POST)) {
     return null;
 }
 
-$id            = isset($_POST['id']) ? (int) $_POST['id'] : 0;
-$rate          = isset($_POST['rate']) ? (int) $_POST['rate'] : 0;
-$uid           = $CURUSER['id'];
-$ajax          = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
-$what          = isset($_POST['what']) && $_POST['what'] === 'torrent' ? 'torrent' : 'topic';
-$ref           = isset($_POST['ref']) ? $_POST['ref'] : ($what === 'torrent' ? 'details.php' : 'forums/view_topic.php');
-$completeres   = sql_query('SELECT * FROM ' . (XBT_TRACKER ? 'xbt_files_users' : 'snatched') . ' WHERE ' . (XBT_TRACKER ? 'completedtime !=0' : 'complete_date !=0') . ' AND ' . (XBT_TRACKER ? 'uid' : 'userid') . ' = ' . $CURUSER['id'] . ' AND ' . (XBT_TRACKER ? 'fid' : 'torrentid') . ' = ' . $id) or sqlerr(__FILE__, __LINE__);
+$id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
+$rate = isset($_POST['rate']) ? (int) $_POST['rate'] : 0;
+$uid = $CURUSER['id'];
+$ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
+$what = isset($_POST['what']) && $_POST['what'] === 'torrent' ? 'torrent' : 'topic';
+$ref = isset($_POST['ref']) ? $_POST['ref'] : ($what === 'torrent' ? 'details.php' : 'forums/view_topic.php');
+$completeres = sql_query('SELECT * FROM ' . (XBT_TRACKER ? 'xbt_files_users' : 'snatched') . ' WHERE ' . (XBT_TRACKER ? 'completedtime !=0' : 'complete_date !=0') . ' AND ' . (XBT_TRACKER ? 'uid' : 'userid') . ' = ' . $CURUSER['id'] . ' AND ' . (XBT_TRACKER ? 'fid' : 'torrentid') . ' = ' . $id) or sqlerr(__FILE__, __LINE__);
 $completecount = mysqli_num_rows($completeres);
 if ($what === 'torrent' && $completecount == 0) {
     return false;
@@ -28,13 +28,13 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
         sql_query('UPDATE ' . $table . ' SET num_ratings = num_ratings + 1, rating_sum = rating_sum+' . sqlesc($rate) . ' WHERE id = ' . sqlesc($id));
         $cache->delete('rating_' . $what . '_' . $id . '_' . $CURUSER['id']);
         if ($what === 'torrent') {
-            $f_r                   = sql_query('SELECT num_ratings, rating_sum FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-            $r_f                   = mysqli_fetch_assoc($f_r);
+            $f_r = sql_query('SELECT num_ratings, rating_sum FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+            $r_f = mysqli_fetch_assoc($f_r);
             $update['num_ratings'] = ($r_f['num_ratings'] + 1);
-            $update['rating_sum']  = ($r_f['rating_sum'] + $rate);
+            $update['rating_sum'] = ($r_f['rating_sum'] + $rate);
             $cache->update_row('torrent_details_' . $id, [
                 'num_ratings' => $update['num_ratings'],
-                'rating_sum'  => $update['rating_sum'],
+                'rating_sum' => $update['rating_sum'],
             ], $site_config['expires']['torrent_details']);
         }
         if ($site_config['seedbonus_on'] == 1) {
@@ -46,7 +46,7 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
             ], $site_config['expires']['user_cache']);
         }
         $keys['rating'] = 'rating_' . $what . '_' . $id . '_' . $CURUSER['id'];
-        $qy1            = $fluent->from('rating')
+        $qy1 = $fluent->from('rating')
             ->select(null)
             ->select('SUM(rating) AS sum')
             ->select('COUNT(*) AS count')
@@ -61,7 +61,7 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
             ->fetchAll();
 
         $rating_cache = array_merge($qy1[0], $qy2[0]);
-        $ratings      = $cache->get('ratings_' . $id);
+        $ratings = $cache->get('ratings_' . $id);
         if (!empty($ratings)) {
             foreach ($ratings as $rater) {
                 $cache->delete('rating_' . $what . '_' . $id . '_' . $rater);

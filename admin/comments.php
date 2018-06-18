@@ -18,7 +18,7 @@ switch ($view) {
             'ORDER BY c.id DESC';
 
         $query = sql_query("{$sql}");
-        $rows  = mysqli_num_rows($query);
+        $rows = mysqli_num_rows($query);
 
         $Row_Count = 0;
 
@@ -46,14 +46,14 @@ switch ($view) {
         while ($comment = mysqli_fetch_assoc($query)) {
             //==== Begin an array that will sanitize all the variables from the MySQLI query
             $comment = [
-                'user'     => (int) $comment['user'],
-                'torrent'  => (int) $comment['torrent'],
-                'id'       => (int) $comment['id'],
-                'text'     => htmlsafechars($comment['text']),
+                'user' => (int) $comment['user'],
+                'torrent' => (int) $comment['torrent'],
+                'id' => (int) $comment['id'],
+                'text' => htmlsafechars($comment['text']),
                 'ori_text' => htmlsafechars($comment['ori_text']),
                 'username' => htmlsafechars($comment['username']),
-                'name'     => htmlsafechars($comment['name']),
-                'added'    => (int) $comment['added'],
+                'name' => htmlsafechars($comment['name']),
+                'added' => (int) $comment['added'],
             ];
             //==== Alternate colors in table rows generated using MySQLI
             $Row_Class = $Row_Count % 2 ? 'regular' : 'alternate';
@@ -117,7 +117,7 @@ switch ($view) {
             'ORDER BY c.added DESC';
 
         $query = sql_query("{$sql}") or sqlerr(__FILE__, __LINE__);
-        $rows  = mysqli_num_rows($query);
+        $rows = mysqli_num_rows($query);
 
         $Row_Count = 0;
 
@@ -138,12 +138,12 @@ switch ($view) {
         while ($comment = mysqli_fetch_assoc($query)) {
             //==== Begin an array that will sanitize all variables from the MySQLI query
             $comment = [
-                'id'       => (int) $comment['id'],
-                'user'     => (int) $comment['user'],
-                'torrent'  => (int) $comment['torrent'],
-                'text'     => htmlsafechars($comment['text']),
-                'added'    => (int) $comment['added'],
-                'name'     => htmlsafechars($comment['name']),
+                'id' => (int) $comment['id'],
+                'user' => (int) $comment['user'],
+                'torrent' => (int) $comment['torrent'],
+                'text' => htmlsafechars($comment['text']),
+                'added' => (int) $comment['added'],
+                'name' => htmlsafechars($comment['name']),
                 'username' => htmlsafechars($comment['username']),
             ];
 
@@ -181,8 +181,8 @@ $sql = 'SELECT c.id, c.user, c.torrent, c.text, c.ori_text, c.added, c.checked_b
     'ORDER BY c.id DESC ' .
     'LIMIT 10';
 
-$query     = sql_query("{$sql}");
-$rows      = mysqli_num_rows($query);
+$query = sql_query("{$sql}");
+$rows = mysqli_num_rows($query);
 $Row_Count = 0;
 
 //==== HTML Output
@@ -209,14 +209,14 @@ $HTMLOUT = "<h3><a href='staffpanel.php?tool=comments'>{$lang['text_overview']}<
 while ($comment = mysqli_fetch_assoc($query)) {
     //==== Begin an array that will sanitize all the variables from the MySQLI query
     $comment = [
-        'user'     => (int) $comment['user'],
-        'torrent'  => (int) $comment['torrent'],
-        'id'       => (int) $comment['id'],
-        'text'     => htmlsafechars($comment['text']),
+        'user' => (int) $comment['user'],
+        'torrent' => (int) $comment['torrent'],
+        'id' => (int) $comment['id'],
+        'text' => htmlsafechars($comment['text']),
         'ori_text' => htmlsafechars($comment['ori_text']),
         'username' => htmlsafechars($comment['username']),
-        'name'     => htmlsafechars($comment['name']),
-        'added'    => (int) $comment['added'],
+        'name' => htmlsafechars($comment['name']),
+        'added' => (int) $comment['added'],
     ];
     //==== Alternate colors in table rows generated using MySQLI
     $Row_Class = $Row_Count % 2 ? 'regular' : 'alternate';

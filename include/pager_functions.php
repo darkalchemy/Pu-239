@@ -32,7 +32,7 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
     } else {
         $page = $pagedefault;
     }
-    $mp    = $pages - 1;
+    $mp = $pages - 1;
     $pager = $pager2 = '';
     if ($page >= 1) {
         $pager = "
@@ -43,11 +43,11 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
                         <a href='{$href}page=" . ($page + 1) . "' class='pagination-next button $class tooltipper is_hidden-mobile' title='Goto Page " . ($page + 2) . "'>Next</a>";
     }
     if ($count) {
-        $pagerarr[]  = "<ul class='pagination-list'>";
-        $dotted      = 0;
-        $dotspace    = 3;
-        $dotend      = $pages - $dotspace;
-        $curdotend   = $page  - $dotspace;
+        $pagerarr[] = "<ul class='pagination-list'>";
+        $dotted = 0;
+        $dotspace = 3;
+        $dotend = $pages - $dotspace;
+        $curdotend = $page - $dotspace;
         $curdotstart = $page + $dotspace;
         for ($i = 0; $i < $pages; ++$i) {
             if (($i >= $dotspace && $i <= $curdotend) || ($i >= $curdotstart && $i < $dotend)) {
@@ -59,8 +59,8 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
                 continue;
             }
             $dotted = 0;
-            $start  = $i * $rpp + 1;
-            $end    = $start    + $rpp - 1;
+            $start = $i * $rpp + 1;
+            $end = $start + $rpp - 1;
             if ($end > $count) {
                 $end = $count;
             }
@@ -85,15 +85,15 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
                         $pagerstr
                     </nav>";
     } else {
-        $pagertop    = $pager;
+        $pagertop = $pager;
         $pagerbottom = $pagertop;
     }
     $start = $page * $rpp;
 
     return [
-        'pagertop'    => $pagertop,
+        'pagertop' => $pagertop,
         'pagerbottom' => $pagerbottom,
-        'limit'       => "LIMIT $start,$rpp",
+        'limit' => "LIMIT $start,$rpp",
     ];
 }
 
@@ -105,28 +105,28 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
 function pager_rep($data)
 {
     $pager = [
-        'pages'     => 0,
+        'pages' => 0,
         'page_span' => '',
-        'start'     => '',
-        'end'       => '',
+        'start' => '',
+        'end' => '',
     ];
-    $section   = $data['span']   = isset($data['span']) ? $data['span'] : 2;
+    $section = $data['span'] = isset($data['span']) ? $data['span'] : 2;
     $parameter = isset($data['parameter']) ? $data['parameter'] : 'page';
-    $mini      = isset($data['mini']) ? 'mini' : '';
+    $mini = isset($data['mini']) ? 'mini' : '';
     if ($data['count'] > 0) {
         $pager['pages'] = ceil($data['count'] / $data['perpage']);
     }
-    $pager['pages']        = $pager['pages'] ? $pager['pages'] : 1;
-    $pager['total_page']   = $pager['pages'];
+    $pager['pages'] = $pager['pages'] ? $pager['pages'] : 1;
+    $pager['total_page'] = $pager['pages'];
     $pager['current_page'] = $data['start_value'] > 0 ? ($data['start_value'] / $data['perpage']) + 1 : 1;
-    $previous_link         = '';
-    $next_link             = '';
+    $previous_link = '';
+    $next_link = '';
     if ($pager['current_page'] > 1) {
-        $start         = $data['start_value'] - $data['perpage'];
+        $start = $data['start_value'] - $data['perpage'];
         $previous_link = "<a href='{$data['url']}&amp;$parameter=$start' class='tooltipper' title='Previous'><span class='{$mini}pagelink'>&lt;</span></a>";
     }
     if ($pager['current_page'] < $pager['pages']) {
-        $start     = $data['start_value'] + $data['perpage'];
+        $start = $data['start_value'] + $data['perpage'];
         $next_link = "&#160;<a href='{$data['url']}&amp;$parameter=$start' class='tooltipper' title='Next'><span class='{$mini}pagelink'>&gt;</span></a>";
     }
     if ($pager['pages'] > 1) {
@@ -152,7 +152,7 @@ function pager_rep($data)
                 $pager['page_span'] .= "&#160;<a href='{$data['url']}&amp;$parameter={$RealNo}' class='tooltipper' title='$PageNo'><span  class='{$mini}pagelink'>$PageNo</span></a>";
             }
         }
-        $float           = $mini ? '' : ' fleft';
+        $float = $mini ? '' : ' fleft';
         $pager['return'] = "<div class='pager{$float}'>{$pager['first_page']}{$pager['start']}{$previous_link}{$pager['page_span']}{$next_link}{$pager['end']}
             </div>";
     } else {

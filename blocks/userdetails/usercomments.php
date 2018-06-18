@@ -55,7 +55,7 @@ $commentbar = "
         <a href='{$site_config['baseurl']}/usercomment.php?action=add&amp;userid={$id}'>Add a comment</a>";
 $subres = sql_query('SELECT COUNT(id) FROM usercomments WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $subrow = mysqli_fetch_array($subres, MYSQLI_NUM);
-$count  = $subrow[0];
+$count = $subrow[0];
 if (!$count) {
     $text .= "
         <h2>{$lang['userdetails_comm_yet']}</h2>\n";
@@ -64,7 +64,7 @@ if (!$count) {
     $pager = pager(5, $count, "userdetails.php?id=$id&amp;", [
         'lastpagedefault' => 1,
     ]);
-    $subres  = sql_query("SELECT usercomments.id, text, user, usercomments.added, editedby, editedat, avatar, warned, username, title, class, leechwarn, chatpost, pirate, king, donor FROM usercomments LEFT JOIN users ON usercomments.user = users.id WHERE userid = {$id} ORDER BY usercomments.id {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
+    $subres = sql_query("SELECT usercomments.id, text, user, usercomments.added, editedby, editedat, avatar, warned, username, title, class, leechwarn, chatpost, pirate, king, donor FROM usercomments LEFT JOIN users ON usercomments.user = users.id WHERE userid = {$id} ORDER BY usercomments.id {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
     $allrows = [];
     while ($subrow = mysqli_fetch_assoc($subres)) {
         $allrows[] = $subrow;

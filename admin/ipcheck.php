@@ -7,7 +7,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
-$lang    = array_merge($lang, load_language('ad_ipcheck'));
+$lang = array_merge($lang, load_language('ad_ipcheck'));
 $HTMLOUT = '';
 $HTMLOUT .= begin_frame('', true);
 $HTMLOUT .= begin_table();
@@ -29,7 +29,7 @@ while ($ras = mysqli_fetch_assoc($res)) {
     }
 
     if ($ip != $ras['ip']) {
-        $ros  = sql_query('SELECT id, username, class, email, chatpost, pirate, king, leechwarn, added, last_access, downloaded, uploaded, ip, warned, donor, enabled FROM users WHERE ip=' . sqlesc($ras['ip']) . ' ORDER BY id') or sqlerr(__FILE__, __LINE__);
+        $ros = sql_query('SELECT id, username, class, email, chatpost, pirate, king, leechwarn, added, last_access, downloaded, uploaded, ip, warned, donor, enabled FROM users WHERE ip=' . sqlesc($ras['ip']) . ' ORDER BY id') or sqlerr(__FILE__, __LINE__);
         $num2 = mysqli_num_rows($ros);
         if ($num2 > 1) {
             ++$uc;
@@ -40,9 +40,9 @@ while ($ras = mysqli_fetch_assoc($res)) {
                 if ($arr['last_access'] == '0') {
                     $arr['last_access'] = '-';
                 }
-                $uploaded    = mksize($arr['uploaded']);
-                $downloaded  = mksize($arr['downloaded']);
-                $added       = get_date($arr['added'], 'DATE', 1, 0);
+                $uploaded = mksize($arr['uploaded']);
+                $downloaded = mksize($arr['downloaded']);
+                $added = get_date($arr['added'], 'DATE', 1, 0);
                 $last_access = get_date($arr['last_access'], '', 1, 0);
                 if ($uc % 2 == 0) {
                     $utc = '';

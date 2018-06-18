@@ -7,7 +7,7 @@ global $CURUSER, $site_config, $cache, $session;
 
 $lang = array_merge(load_language('global'), load_language('coins'));
 
-$id     = (int) $_GET['id'];
+$id = (int) $_GET['id'];
 $points = (int) $_GET['points'];
 if (!is_valid_id($id) || !is_valid_id($points)) {
     die();
@@ -35,8 +35,8 @@ if ($asdd) {
     header("Location: $returnto");
     die();
 }
-$res    = sql_query('SELECT owner,name,points FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$row    = mysqli_fetch_assoc($res)                                                      or stderr($lang['gl_error'], $lang['coins_torrent_was_not_found']);
+$res = sql_query('SELECT owner,name,points FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$row = mysqli_fetch_assoc($res) or stderr($lang['gl_error'], $lang['coins_torrent_was_not_found']);
 $userid = (int) $row['owner'];
 if ($userid == $CURUSER['id']) {
     $session->set('is-warning', $lang['coins_you_cant_give_your_self_points']);
@@ -48,18 +48,18 @@ if ($CURUSER['seedbonus'] < $points) {
     header("Location: $returnto");
     die();
 }
-$sql  = sql_query('SELECT seedbonus FROM users WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+$sql = sql_query('SELECT seedbonus FROM users WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 $User = mysqli_fetch_assoc($sql);
 sql_query('INSERT INTO coins (userid, torrentid, points) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . sqlesc($points) . ')') or sqlerr(__FILE__, __LINE__);
-sql_query('UPDATE users SET seedbonus=seedbonus+' . sqlesc($points) . ' WHERE id=' . sqlesc($userid))                                            or sqlerr(__FILE__, __LINE__);
-sql_query('UPDATE users SET seedbonus=seedbonus-' . sqlesc($points) . ' WHERE id=' . sqlesc($CURUSER['id']))                                     or sqlerr(__FILE__, __LINE__);
-sql_query('UPDATE torrents SET points=points+' . sqlesc($points) . ' WHERE id=' . sqlesc($id))                                                   or sqlerr(__FILE__, __LINE__);
-$msg     = sqlesc("{$lang['coins_you_have_been_given']} " . htmlspecialchars($points) . " {$lang['coins_points_by']} " . $CURUSER['username'] . " {$lang['coins_for_torrent']} [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlspecialchars($row['name']) . '[/url].');
+sql_query('UPDATE users SET seedbonus=seedbonus+' . sqlesc($points) . ' WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+sql_query('UPDATE users SET seedbonus=seedbonus-' . sqlesc($points) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+sql_query('UPDATE torrents SET points=points+' . sqlesc($points) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$msg = sqlesc("{$lang['coins_you_have_been_given']} " . htmlspecialchars($points) . " {$lang['coins_points_by']} " . $CURUSER['username'] . " {$lang['coins_for_torrent']} [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlspecialchars($row['name']) . '[/url].');
 $subject = sqlesc($lang['coins_you_have_been_given_a_gift']);
 sql_query('INSERT INTO messages (sender, receiver, msg, added, subject) VALUES(0, ' . sqlesc($userid) . ", $msg, " . TIME_NOW . ", $subject)") or sqlerr(__FILE__, __LINE__);
-$update['points']             = ($row['points'] + $points);
+$update['points'] = ($row['points'] + $points);
 $update['seedbonus_uploader'] = ($User['seedbonus'] + $points);
-$update['seedbonus_donator']  = ($CURUSER['seedbonus'] - $points);
+$update['seedbonus_donator'] = ($CURUSER['seedbonus'] - $points);
 //==The torrent
 $cache->update_row('torrent_details_' . $id, [
     'points' => $update['points'],

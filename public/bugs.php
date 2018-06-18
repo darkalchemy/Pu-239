@@ -7,8 +7,8 @@ require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $session;
 
-$HTMLOUT          = '';
-$lang             = array_merge(load_language('global'), load_language('bugs'));
+$HTMLOUT = '';
+$lang = array_merge(load_language('global'), load_language('bugs'));
 $possible_actions = [
     'viewbug',
     'bugs',
@@ -23,7 +23,7 @@ if ($action === 'viewbug') {
         if ($CURUSER['class'] < UC_MAX) {
             stderr("{$lang['stderr_error']}", "{$lang['stderr_only_coder']}");
         }
-        $id     = isset($_POST['id']) ? (int) $_POST['id'] : '';
+        $id = isset($_POST['id']) ? (int) $_POST['id'] : '';
         $status = isset($_POST['status']) ? htmlsafechars($_POST['status']) : '';
         if ($status === 'na') {
             stderr("{$lang['stderr_error']}", "{$lang['stderr_no_na']}");
@@ -35,8 +35,8 @@ if ($action === 'viewbug') {
         while ($q1 = mysqli_fetch_assoc($query1)) {
             switch ($status) {
                 case 'fixed':
-                    $msg                = sqlesc('Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been treated by one of our coder, and is done.\n\nWe would to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site_name']}'s coders.\n");
-                    $uq                 = 'UPDATE users SET uploaded = uploaded +' . 1024 * 1024 * 1024 * 2 . ' WHERE id = ' . sqlesc($q1['sender']);
+                    $msg = sqlesc('Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been treated by one of our coder, and is done.\n\nWe would to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site_name']}'s coders.\n");
+                    $uq = 'UPDATE users SET uploaded = uploaded +' . 1024 * 1024 * 1024 * 2 . ' WHERE id = ' . sqlesc($q1['sender']);
                     $update['uploaded'] = ($q1['uploaded'] + 1024 * 1024 * 1024 * 2);
                     $cache->update_row('user' . $q1['sender'], [
                         'uploaded' => $update['uploaded'],
@@ -45,12 +45,12 @@ if ($action === 'viewbug') {
 
                 case 'ignored':
                     $msg = sqlesc('Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$site_config['site_name']}'s coders.\n");
-                    $uq  = '';
+                    $uq = '';
                     break;
             }
-            sql_query($uq)                                                                                                                       or sqlerr(__FILE__, __LINE__);
+            sql_query($uq) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (0, ' . sqlesc($q1['sender']) . ', ' . TIME_NOW . ", {$msg})") or sqlerr(__FILE__, __LINE__);
-            sql_query('UPDATE bugs SET status=' . sqlesc($status) . ', staff=' . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($id))          or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE bugs SET status=' . sqlesc($status) . ', staff=' . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             $cache->increment('inbox_' . $q1['sender']);
             $cache->delete('bug_mess_');
         }
@@ -65,8 +65,8 @@ if ($action === 'viewbug') {
     }
     $as = sql_query('SELECT b.*, u.username, u.class, staff.username AS st, staff.class AS stclass FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id LEFT JOIN users AS staff ON b.staff = staff.id WHERE b.id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     while ($a = mysqli_fetch_assoc($as)) {
-        $title   = htmlsafechars($a['title']);
-        $added   = get_date($a['added'], '', 0, 1);
+        $title = htmlsafechars($a['title']);
+        $added = get_date($a['added'], '', 0, 1);
         $addedby = "<a href='userdetails.php?id=" . (int) $a['sender'] . "'>" . htmlsafechars($a['username']) . '</a> <i>(' . get_user_class_name($a['class']) . ')</i>';
         switch ($a['priority']) {
             case 'low':
@@ -125,12 +125,12 @@ if ($action === 'viewbug') {
         stderr("{$lang['stderr_error']}", "{$lang['stderr_only_staff_can_view']}");
     }
     $search_count = sql_query('SELECT COUNT(id) FROM bugs');
-    $row          = mysqli_fetch_array($search_count);
-    $count        = $row[0];
-    $perpage      = 10;
-    $pager        = pager($perpage, $count, 'bugs.php?action=bugs&amp;');
-    $res          = sql_query("SELECT b.*, u.username, staff.username AS staffusername FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id LEFT JOIN users AS staff ON b.staff = staff.id ORDER BY b.id DESC {$pager['limit']}")     or sqlerr(__FILE__, __LINE__);
-    $r            = sql_query("SELECT * FROM bugs WHERE status = 'na'")                                                                                                                                                                 or sqlerr(__FILE__, __LINE__);
+    $row = mysqli_fetch_array($search_count);
+    $count = $row[0];
+    $perpage = 10;
+    $pager = pager($perpage, $count, 'bugs.php?action=bugs&amp;');
+    $res = sql_query("SELECT b.*, u.username, staff.username AS staffusername FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id LEFT JOIN users AS staff ON b.staff = staff.id ORDER BY b.id DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
+    $r = sql_query("SELECT * FROM bugs WHERE status = 'na'") or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $count = mysqli_num_rows($r);
         $HTMLOUT .= $pager['pagertop'];
@@ -189,9 +189,9 @@ if ($action === 'viewbug') {
     }
 } elseif ($action === 'add') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $title    = htmlsafechars($_POST['title']);
+        $title = htmlsafechars($_POST['title']);
         $priority = htmlsafechars($_POST['priority']);
-        $problem  = htmlsafechars($_POST['problem']);
+        $problem = htmlsafechars($_POST['problem']);
         if (empty($title) || empty($priority) || empty($problem)) {
             stderr("{$lang['stderr_error']}", "{$lang['stderr_missing']}");
         }

@@ -16,18 +16,18 @@ $arr = mysqli_fetch_assoc($res);
 $msg = 'Your Offer, [b]' . htmlspecialchars($arr['request']) . '[/b] has been accepted by [b]' . $CURUSER['username'] . '[/b]. You can download the offer from [b][url=details.php?id=' . $torrentid . ']' . $site_config['baseurl'] . '/details.php?id=' . $torrentid . '[/url][/b].  Please do not forget to leave thanks where due.  
 
 If for some reason this is not what you offered, please reset your offer so someone else can fill it by following [b][url=' . $site_config['baseurl'] . "/viewoffers.php?id=$id&offer_reset]this[/url][/b] link.  Do [b]NOT[/b] follow this link unless you are sure that this does not match your offer.";
-sql_query('UPDATE offers SET torrentid = ' . $torrentid . ", acceptedby = $CURUSER[id] WHERE id = $id")                                                                             or sqlerr(__FILE__, __LINE__);
+sql_query('UPDATE offers SET torrentid = ' . $torrentid . ", acceptedby = $CURUSER[id] WHERE id = $id") or sqlerr(__FILE__, __LINE__);
 sql_query("INSERT INTO messages (poster, sender, receiver, added, msg, subject, location) VALUES(0, 0, $arr[userid], " . TIME_NOW . ', ' . sqlesc($msg) . ", 'Request Filled', 1)") or sqlerr(__FILE__, __LINE__);
 $cache->increment('inbox_' . $arr['userid']);
 
 if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
     sql_query('UPDATE users SET seedbonus = seedbonus+' . $site_config['offer_comment_bonus'] . " WHERE id = $CURUSER[id]") or sqlerr(__FILE__, __LINE__);
 }
-$res         = mysqli_query($GLOBALS['___mysqli_ston'], "SELECT `userid` FROM `voted_offers` WHERE `offerid` = $id AND userid != $arr[userid]") or sqlerr(__FILE__, __LINE__);
+$res = mysqli_query($GLOBALS['___mysqli_ston'], "SELECT `userid` FROM `voted_offers` WHERE `offerid` = $id AND userid != $arr[userid]") or sqlerr(__FILE__, __LINE__);
 $msgs_buffer = [];
 if (mysqli_num_rows($res) > 0) {
     $pn_subject = sqlesc('offer ' . $arr['offer'] . ' was just uploaded');
-    $pn_msg     = sqlesc('The Offer you voted for [b]' . $arr['offer'] . '[/b] has been accepted by [b]' . $CURUSER['username'] . '[/b]. You can download your offer from 
+    $pn_msg = sqlesc('The Offer you voted for [b]' . $arr['offer'] . '[/b] has been accepted by [b]' . $CURUSER['username'] . '[/b]. You can download your offer from 
     [b][url=details.php?id=' . $torrentid . ']' . $site_config['baseurl'] . '/details.php?id=' . $torrentid . '[/url][/b].
       Please do not forget to leave thanks where due.');
     while ($row = mysqli_fetch_assoc($res)) {

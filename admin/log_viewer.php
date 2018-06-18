@@ -15,7 +15,7 @@ define('LOG_PATH', '/var/log/nginx');
 define('DISPLAY_REVERSE', true); // true = displays log entries starting with the most recent
 //define('DIRECTORY_SEPARATOR', '/');
 
-$log   = (!isset($_GET['p'])) ? '' : urldecode($_GET['p']);
+$log = (!isset($_GET['p'])) ? '' : urldecode($_GET['p']);
 $lines = (!isset($_GET['lines'])) ? 50 : $_GET['lines'];
 
 $files = get_log_files(LOG_PATH);
@@ -25,7 +25,7 @@ foreach ($files as $dir_name => $file_array) {
     ksort($file_array);
 }
 $filename = $log;
-$title    = substr($log, (strrpos($log, '/')+1));
+$title = substr($log, (strrpos($log, '/') + 1));
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -337,11 +337,11 @@ ol li pre{
             <input type="hidden" name="p" value="<?php echo $log; ?>">
             <label>How many lines to display?
             <select name="lines" onchange="this.form.submit()">
-                <option value="10" <?php echo ($lines=='10') ? 'selected' : ''; ?>>10</option>
-                <option value="50" <?php echo ($lines=='50') ? 'selected' : ''; ?>>50</option>
-                <option value="100" <?php echo ($lines=='100') ? 'selected' : ''; ?>>100</option>
-                <option value="500" <?php echo ($lines=='500') ? 'selected' : ''; ?>>500</option>
-                <option value="1000" <?php echo ($lines=='1000') ? 'selected' : ''; ?>>1000</option>
+                <option value="10" <?php echo ($lines == '10') ? 'selected' : ''; ?>>10</option>
+                <option value="50" <?php echo ($lines == '50') ? 'selected' : ''; ?>>50</option>
+                <option value="100" <?php echo ($lines == '100') ? 'selected' : ''; ?>>100</option>
+                <option value="500" <?php echo ($lines == '500') ? 'selected' : ''; ?>>500</option>
+                <option value="1000" <?php echo ($lines == '1000') ? 'selected' : ''; ?>>1000</option>
             </select>
             </label>
     </form>
@@ -433,7 +433,7 @@ if ($output) {
 function get_log_files($dir, &$results = [])
 {
     $dirs_list = [];
-    $files     = scandir($dir);
+    $files = scandir($dir);
     if ($files) {
         foreach ($files as $key => $value) {
             $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
@@ -447,10 +447,10 @@ function get_log_files($dir, &$results = [])
 
         foreach ($files_list as $path) {
             preg_match("/^.*\/(\S+)$/", $path, $matches);
-            $name                 = $matches[1];
+            $name = $matches[1];
             $results[$dir][$name] = ['name' => $name, 'path' => $path];
         }
-        if (count($dirs_list)>0) {
+        if (count($dirs_list) > 0) {
             foreach ($dirs_list as $path) {
                 get_log_files($path, $results);
             }
@@ -484,7 +484,7 @@ function tail($filename, $lines = 50, $buffer = 4096)
 
     // Start reading
     $output = '';
-    $chunk  = '';
+    $chunk = '';
 
     // While we would like more
     while (ftell($f) > 0 && $lines >= 0) {
@@ -517,7 +517,7 @@ function tail($filename, $lines = 50, $buffer = 4096)
     return $output;
 }
 
-function show_list_of_files($files, $lines  = 50)
+function show_list_of_files($files, $lines = 50)
 {
     global $log;
 
@@ -529,7 +529,7 @@ function show_list_of_files($files, $lines  = 50)
     foreach ($files as $dir => $files_array) {
         //echo '<li>'.dirname($dir).'</li>';
         echo '<ul>';
-        foreach ($files_array as $k=>$f) {
+        foreach ($files_array as $k => $f) {
             if (!is_file($f['path'])) {
                 // File does not exist, remove it from the array, so it does not appear in the menu.
                 unset($files_array[$k]);

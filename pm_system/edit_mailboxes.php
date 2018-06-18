@@ -11,7 +11,7 @@ if (isset($_POST['action2'])) {
         'message_settings',
     ];
     $action2 = (isset($_POST['action2']) ? strip_tags($_POST['action2']) : '');
-    $worked  = $deleted  = '';
+    $worked = $deleted = '';
     if (!in_array($action2, $good_actions)) {
         stderr($lang['pm_error'], $lang['pm_edmail_error']);
     }
@@ -31,9 +31,9 @@ if (isset($_POST['action2'])) {
             if ($_POST['new'] === '') {
                 stderr($lang['pm_error'], $lang['pm_edmail_err']);
             }
-            $res     = sql_query('SELECT boxnumber FROM pmboxes WHERE userid = ' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber  DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+            $res = sql_query('SELECT boxnumber FROM pmboxes WHERE userid = ' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber  DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
             $box_arr = mysqli_fetch_row($res);
-            $box     = ($box_arr[0] < 2 ? 2 : ($box_arr[0] + 1));
+            $box = ($box_arr[0] < 2 ? 2 : ($box_arr[0] + 1));
             $new_box = $_POST['new'];
             foreach ($new_box as $key => $add_it) {
                 if (valid_username($add_it) && $add_it !== '') {
@@ -78,33 +78,33 @@ if (isset($_POST['action2'])) {
             break;
 
         case 'message_settings':
-            $updateset                       = [];
-            $change_pm_number                = (isset($_POST['change_pm_number']) ? intval($_POST['change_pm_number']) : 20);
-            $updateset[]                     = 'pms_per_page = ' . sqlesc($change_pm_number);
-            $curuser_cache['pms_per_page']   = $change_pm_number;
-            $user_cache['pms_per_page']      = $change_pm_number;
-            $show_pm_avatar                  = ((isset($_POST['show_pm_avatar']) && $_POST['show_pm_avatar'] === 'yes') ? 'yes' : 'no');
-            $updateset[]                     = 'show_pm_avatar = ' . sqlesc($show_pm_avatar);
+            $updateset = [];
+            $change_pm_number = (isset($_POST['change_pm_number']) ? intval($_POST['change_pm_number']) : 20);
+            $updateset[] = 'pms_per_page = ' . sqlesc($change_pm_number);
+            $curuser_cache['pms_per_page'] = $change_pm_number;
+            $user_cache['pms_per_page'] = $change_pm_number;
+            $show_pm_avatar = ((isset($_POST['show_pm_avatar']) && $_POST['show_pm_avatar'] === 'yes') ? 'yes' : 'no');
+            $updateset[] = 'show_pm_avatar = ' . sqlesc($show_pm_avatar);
             $curuser_cache['show_pm_avatar'] = $show_pm_avatar;
-            $user_cache['show_pm_avatar']    = $show_pm_avatar;
-            $acceptpms                       = ((isset($_POST['acceptpms']) && $_POST['acceptpms'] === 'yes') ? 'yes' : ((isset($_POST['acceptpms']) && $_POST['acceptpms'] === 'friends') ? 'friends' : 'no'));
-            $updateset[]                     = 'acceptpms = ' . sqlesc($acceptpms);
-            $curuser_cache['acceptpms']      = $acceptpms;
-            $user_cache['acceptpms']         = $acceptpms;
-            $save_pms                        = ((isset($_POST['save_pms'])) ? 'yes' : 'no');
-            $updateset[]                     = 'savepms = ' . sqlesc($save_pms);
-            $curuser_cache['savepms']        = $save_pms;
-            $user_cache['savepms']           = $save_pms;
-            $deletepms                       = ((isset($_POST['deletepms']) && $_POST['deletepms'] == 'yes') ? 'yes' : 'no');
-            $updateset[]                     = 'deletepms = ' . sqlesc($deletepms);
-            $curuser_cache['deletepms']      = $deletepms;
-            $user_cache['deletepms']         = $deletepms;
-            $pmnotif                         = (isset($_POST['pmnotif']) ? $_POST['pmnotif'] : '');
-            $emailnotif                      = (isset($_POST['emailnotif']) ? $_POST['emailnotif'] : '');
-            $notifs                          = ($pmnotif == 'yes' ? $lang['pm_edmail_pm_1'] : '');
+            $user_cache['show_pm_avatar'] = $show_pm_avatar;
+            $acceptpms = ((isset($_POST['acceptpms']) && $_POST['acceptpms'] === 'yes') ? 'yes' : ((isset($_POST['acceptpms']) && $_POST['acceptpms'] === 'friends') ? 'friends' : 'no'));
+            $updateset[] = 'acceptpms = ' . sqlesc($acceptpms);
+            $curuser_cache['acceptpms'] = $acceptpms;
+            $user_cache['acceptpms'] = $acceptpms;
+            $save_pms = ((isset($_POST['save_pms'])) ? 'yes' : 'no');
+            $updateset[] = 'savepms = ' . sqlesc($save_pms);
+            $curuser_cache['savepms'] = $save_pms;
+            $user_cache['savepms'] = $save_pms;
+            $deletepms = ((isset($_POST['deletepms']) && $_POST['deletepms'] == 'yes') ? 'yes' : 'no');
+            $updateset[] = 'deletepms = ' . sqlesc($deletepms);
+            $curuser_cache['deletepms'] = $deletepms;
+            $user_cache['deletepms'] = $deletepms;
+            $pmnotif = (isset($_POST['pmnotif']) ? $_POST['pmnotif'] : '');
+            $emailnotif = (isset($_POST['emailnotif']) ? $_POST['emailnotif'] : '');
+            $notifs = ($pmnotif == 'yes' ? $lang['pm_edmail_pm_1'] : '');
             $notifs .= ($emailnotif == 'yes' ? $lang['pm_edmail_email_1'] : '');
             $cats = genrelist();
-            $r    = sql_query('SELECT id FROM categories') or sqlerr(__FILE__, __LINE__);
+            $r = sql_query('SELECT id FROM categories') or sqlerr(__FILE__, __LINE__);
             $rows = mysqli_num_rows($r);
             for ($i = 0; $i < $rows; ++$i) {
                 $a = mysqli_fetch_assoc($r);
@@ -112,9 +112,9 @@ if (isset($_POST['action2'])) {
                     $notifs .= "[cat{$a['id']}]";
                 }
             }
-            $updateset[]             = 'notifs = ' . sqlesc($notifs) . '';
+            $updateset[] = 'notifs = ' . sqlesc($notifs) . '';
             $curuser_cache['notifs'] = $notifs;
-            $user_cache['notifs']    = $notifs;
+            $user_cache['notifs'] = $notifs;
             if ($user_cache) {
                 $cache->update_row('user' . $CURUSER['id'], $user_cache, $site_config['expires']['user_cache']);
             }
@@ -131,7 +131,7 @@ if (mysqli_num_rows($res) > 0) {
     while ($row = mysqli_fetch_assoc($res)) {
         $res_count = sql_query('SELECT COUNT(id) FROM messages WHERE  location = ' . sqlesc($row['boxnumber']) . ' AND receiver = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $arr_count = mysqli_fetch_row($res_count);
-        $messages  = (int) $arr_count[0];
+        $messages = (int) $arr_count[0];
         $all_my_boxes .= '
                     <tr>
                         <td>
@@ -168,7 +168,7 @@ if (mysqli_num_rows($res) > 0) {
 }
 //=== per page drop down
 $per_page_drop_down = '<select name="change_pm_number">';
-$i                  = 20;
+$i = 20;
 while ($i <= ($maxbox > 200 ? 200 : $maxbox)) {
     $per_page_drop_down .= '<option class="body" value="' . $i . '" ' . ($CURUSER['pms_per_page'] == $i ? ' selected' : '') . '>' . $i . '' . $lang['pm_edmail_perpage'] . '</option>';
     $i = ($i < 100 ? $i = $i + 10 : $i = $i + 25);

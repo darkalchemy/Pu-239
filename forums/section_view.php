@@ -2,7 +2,7 @@
 
 global $lang;
 $child_boards = $now_viewing = $colour = '';
-$forum_id     = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));
+$forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));
 if (!is_valid_id($forum_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
@@ -28,10 +28,10 @@ $forums_res = sql_query('SELECT name AS forum_name, description AS forum_descrip
 while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
     //=== change colors
     $colour = (++$colour) % 2;
-    $class  = ($colour == 0 ? 'one' : 'two');
+    $class = ($colour == 0 ? 'one' : 'two');
     //=== Get last post info
     if (($last_post_arr = $cache->get('sv_last_post_' . $forums_arr['forum_id'] . '_' . $CURUSER['class'])) === false) {
-        $query         = sql_query('SELECT t.last_post, t.topic_name, t.id AS topic_id, t.anonymous AS tan, p.user_id, p.added, p.anonymous AS pan, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.perms, u.offensive_avatar FROM topics AS t LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\' AND' : '')) . ' forum_id = ' . sqlesc($forums_arr['forum_id']) . ' ORDER BY last_post DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        $query = sql_query('SELECT t.last_post, t.topic_name, t.id AS topic_id, t.anonymous AS tan, p.user_id, p.added, p.anonymous AS pan, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.perms, u.offensive_avatar FROM topics AS t LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\' AND' : '')) . ' forum_id = ' . sqlesc($forums_arr['forum_id']) . ' ORDER BY last_post DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $last_post_arr = mysqli_fetch_assoc($query);
         $cache->set('sv_last_post_' . $forums_arr['forum_id'] . '_' . $CURUSER['class'], $last_post_arr, $site_config['expires']['sv_last_post']);
     }
@@ -39,18 +39,18 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
     if ($last_post_arr['last_post'] > 0) {
         //=== get the last post read by CURUSER
         if (($last_read_post_arr = $cache->get('sv_last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'])) === false) {
-            $query              = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($last_post_arr['topic_id'])) or sqlerr(__FILE__, __LINE__);
+            $query = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($last_post_arr['topic_id'])) or sqlerr(__FILE__, __LINE__);
             $last_read_post_arr = mysqli_fetch_row($query);
             $cache->set('sv_last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'], $last_read_post_arr, $site_config['expires']['sv_last_read_post']);
         }
         $image_and_link = ($last_post_arr['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_read_post_arr || $last_post_arr['last_post'] > $last_read_post_arr[0]) : 0;
-        $img            = ($image_and_link ? 'unlockednew' : 'unlocked');
+        $img = ($image_and_link ? 'unlockednew' : 'unlocked');
         //=== get '.$lang['sv_child_boards'].' if any
         $keys['child_boards'] = 'sv_child_boards_' . $forums_arr['forum_id'] . '_' . $CURUSER['class'];
         if (($child_boards_cache = $cache->get($keys['child_boards'])) === false) {
-            $child_boards       = '';
+            $child_boards = '';
             $child_boards_cache = [];
-            $res                = sql_query('SELECT name, id FROM forums WHERE parent_forum = ' . sqlesc($forums_arr['forum_id']) . ' ORDER BY sort ASC') or sqlerr(__FILE__, __LINE__);
+            $res = sql_query('SELECT name, id FROM forums WHERE parent_forum = ' . sqlesc($forums_arr['forum_id']) . ' ORDER BY sort ASC') or sqlerr(__FILE__, __LINE__);
             while ($arr = mysqli_fetch_assoc($res)) {
                 if ($child_boards) {
                     $child_boards .= ', ';
@@ -67,9 +67,9 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
         //=== now_viewing
         $keys['now_viewing'] = 'now_viewing_section_view';
         if (($now_viewing_cache = $cache->get($keys['now_viewing'])) === false) {
-            $nowviewing        = '';
+            $nowviewing = '';
             $now_viewing_cache = [];
-            $res               = sql_query('SELECT n_v.user_id, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.perms FROM now_viewing AS n_v LEFT JOIN users AS u ON n_v.user_id = u.id WHERE forum_id = ' . sqlesc($forums_arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
+            $res = sql_query('SELECT n_v.user_id, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.perms FROM now_viewing AS n_v LEFT JOIN users AS u ON n_v.user_id = u.id WHERE forum_id = ' . sqlesc($forums_arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
             while ($arr = mysqli_fetch_assoc($res)) {
                 if ($nowviewing) {
                     $nowviewing .= ",\n";
@@ -104,9 +104,9 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
 		' . get_date($last_post_arr['added'], '') . '<br>';
         }
     } else {
-        $img         = 'unlocked';
+        $img = 'unlocked';
         $now_viewing = '';
-        $last_post   = $lang['fe_na'];
+        $last_post = $lang['fe_na'];
     }
     $HTMLOUT .= '<tr>
 		<td class="' . $class . '" valign="middle" width="30"><img src="' . $site_config['pic_baseurl'] . 'forums/' . $img . '.gif" alt="' . $site_config['pic_baseurl'] . 'forums/' . $img . '.gif" title="' . $site_config['pic_baseurl'] . 'forums/' . $img . '.gif" /></td>

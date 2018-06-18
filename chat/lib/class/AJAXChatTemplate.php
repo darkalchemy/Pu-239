@@ -31,10 +31,10 @@ class AJAXChatTemplate
      */
     public function __construct(&$ajaxChat, $templateFile, $contentType = null)
     {
-        $this->ajaxChat            = $ajaxChat;
+        $this->ajaxChat = $ajaxChat;
         $this->_regExpTemplateTags = '/\[(\w+?)(?:(?:\/)|(?:\](.+?)\[\/\1))\]/s';
-        $this->_templateFile       = $templateFile;
-        $this->_contentType        = $contentType;
+        $this->_templateFile = $templateFile;
+        $this->_contentType = $contentType;
     }
 
     /**
@@ -251,7 +251,7 @@ class AJAXChatTemplate
      */
     public function getChannelOptionTags()
     {
-        $channelOptions  = '';
+        $channelOptions = '';
         $channelSelected = false;
         foreach ($this->ajaxChat->getChannels() as $name => $id) {
             if ($this->ajaxChat->isLoggedIn() && $this->ajaxChat->getChannel()) {
@@ -266,7 +266,7 @@ class AJAXChatTemplate
         }
         if ($this->ajaxChat->isLoggedIn() && $this->ajaxChat->isAllowedToCreatePrivateChannel()) {
             if (!$channelSelected && $this->ajaxChat->getPrivateChannelID() == $this->ajaxChat->getChannel()) {
-                $selected        = ' selected="selected"';
+                $selected = ' selected="selected"';
                 $channelSelected = true;
             } else {
                 $selected = '';
@@ -306,7 +306,7 @@ class AJAXChatTemplate
     public function getLanguageOptionTags()
     {
         $languageOptions = '';
-        $languageNames   = $this->ajaxChat->getConfig('langNames');
+        $languageNames = $this->ajaxChat->getConfig('langNames');
         foreach ($this->ajaxChat->getConfig('langAvailable') as $langCode) {
             $selected = ($langCode == $this->ajaxChat->getLangCode()) ? ' selected="selected"' : '';
             $languageOptions .= '<option value="' . $this->ajaxChat->htmlEncode($langCode) . '"' . $selected . '>' . $languageNames[$langCode] . '</option>';

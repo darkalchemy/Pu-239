@@ -10,7 +10,7 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $CURUSER, $site_config, $fluent, $cache, $session;
 
-$lang         = array_merge(load_language('global'), load_language('userdetails'));
+$lang = array_merge(load_language('global'), load_language('userdetails'));
 $edit_profile = $friend_links = $shitty_link = $sharemark_link = '';
 
 $stdhead = [
@@ -49,7 +49,7 @@ if ($user_status === false || is_null($user_status)) {
         $user_status = [
             'last_status' => '',
             'last_update' => 0,
-            'archive'     => '',
+            'archive' => '',
         ];
     }
     $cache->add('userstatus_' . $id, $user_status, $site_config['expires']['user_status']); // 30 days
@@ -78,7 +78,7 @@ if (isset($_GET['delete_hit_and_run']) && $CURUSER['class'] >= UC_STAFF) {
     die();
 }
 if ($user['ip'] && ($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id'])) {
-    $dom  = @gethostbyaddr($user['ip']);
+    $dom = @gethostbyaddr($user['ip']);
     $addr = ($dom == $user['ip'] || @gethostbyname($dom) != $user['ip']) ? $user['ip'] : $user['ip'] . ' (' . $dom . ')';
 }
 if ($user['added'] == 0 || $user['perms'] & bt_options::PERMS_STEALTH) {
@@ -113,7 +113,7 @@ if ((($user['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) || ($user['cl
     }
 }
 
-$country   = '';
+$country = '';
 $countries = countries();
 foreach ($countries as $cntry) {
     if ($cntry['id'] == $user['country']) {
@@ -181,10 +181,10 @@ if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
 if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
     $watched_user .= ($user['watched_user'] == 0 ? '' : '  <img src="' . $site_config['pic_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '" /> <b>' . $lang['userdetails_watchlist1'] . ' <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users" >' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $site_config['pic_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '" />');
 }
-$perms   .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_NO_IP) ? '  <img src="' . $site_config['pic_baseurl'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  class="tooltipper" title="' . $lang['userdetails_invincible'] . '" />' : '') : '');
+$perms .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_NO_IP) ? '  <img src="' . $site_config['pic_baseurl'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  class="tooltipper" title="' . $lang['userdetails_invincible'] . '" />' : '') : '');
 $stealth .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? '  <img src="' . $site_config['pic_baseurl'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stelth'] . '"  class="tooltipper" title="' . $lang['userdetails_stelth'] . '" />' : '') : '');
 $enabled = $user['enabled'] === 'yes';
-$parked  = $user['opt1'] & user_options::PARKED ? $lang['userdetails_parked'] : '';
+$parked = $user['opt1'] & user_options::PARKED ? $lang['userdetails_parked'] : '';
 
 $h1 = "
                 <h1 class='has-text-centered'>" . format_username($user['id']) . "$country$stealth$watched_user$suspended$h1_thingie$perms$parked</h1>";
@@ -193,13 +193,13 @@ if (!$enabled) {
 } elseif ($CURUSER['id'] != $user['id']) {
     $friends = $cache->get('Friends_' . $id);
     if ($friends === false || is_null($friends)) {
-        $r3      = sql_query('SELECT id FROM friends WHERE userid = ' . sqlesc($user['id']) . ' AND friendid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $r3 = sql_query('SELECT id FROM friends WHERE userid = ' . sqlesc($user['id']) . ' AND friendid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $friends = mysqli_num_rows($r3);
         $cache->set('Friends_' . $id, $friends, $site_config['expires']['user_friends']);
     }
     $blocks = $cache->get('Blocks_' . $id);
     if ($blocks === false || is_null($blocks)) {
-        $r4     = sql_query('SELECT id FROM blocks WHERE userid = ' . sqlesc($user['id']) . ' AND blockid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $r4 = sql_query('SELECT id FROM blocks WHERE userid = ' . sqlesc($user['id']) . ' AND blockid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $blocks = mysqli_num_rows($r4);
         $cache->set('Blocks_' . $id, $blocks, $site_config['expires']['user_blocks']);
     }
@@ -216,11 +216,11 @@ if (!$enabled) {
 }
 
 if ($CURUSER['class'] >= UC_STAFF) {
-    $shitty    = '';
+    $shitty = '';
     $shit_list = $cache->get('shit_list_' . $id);
     if ($shit_list === false || is_null($shit_list)) {
         $check_if_theyre_shitty = sql_query('SELECT suspect FROM shit_list WHERE userid = ' . sqlesc($user['id']) . ' AND suspect = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        list($shit_list)        = mysqli_fetch_row($check_if_theyre_shitty);
+        list($shit_list) = mysqli_fetch_row($check_if_theyre_shitty);
         $cache->set('shit_list_' . $id, $shit_list, $site_config['expires']['shit_list']);
     }
     if ($shit_list > 0) {
@@ -424,7 +424,7 @@ if (!empty($user['where_is'])) {
 }
 
 $moodname = (isset($mood['name'][$user['mood']]) ? htmlsafechars($mood['name'][$user['mood']]) : $lang['userdetails_neutral']);
-$moodpic  = (isset($mood['image'][$user['mood']]) ? htmlsafechars($mood['image'][$user['mood']]) : 'noexpression.gif');
+$moodpic = (isset($mood['image'][$user['mood']]) ? htmlsafechars($mood['image'][$user['mood']]) : 'noexpression.gif');
 $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_currentmood'] . '</td><td class="has-text-left"><span class="tool">
        <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'' . $lang['userdetails_mood'] . '\',530,500,1,1);">
        <img src="' . $site_config['pic_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" border="0" />

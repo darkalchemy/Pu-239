@@ -1,13 +1,13 @@
 <?php
 
 global $lang;
-$colour    = $post_status_image    = $option    = $next    = '';
-$ASC_DESC  = ((isset($_GET['ASC_DESC']) && $_GET['ASC_DESC'] === 'ASC') ? 'ASC ' : 'DESC ');
+$colour = $post_status_image = $option = $next = '';
+$ASC_DESC = ((isset($_GET['ASC_DESC']) && $_GET['ASC_DESC'] === 'ASC') ? 'ASC ' : 'DESC ');
 $member_id = (isset($_GET['id']) ? intval($_GET['id']) : 0);
 if (!isset($member_id) || !is_valid_id($member_id)) {
     //=== search members
     $search = isset($_GET['search']) ? strip_tags(trim($_GET['search'])) : '';
-    $class  = isset($_GET['class']) ? $_GET['class'] : '-';
+    $class = isset($_GET['class']) ? $_GET['class'] : '-';
     $letter = $q = '';
     if ($class === '-' || !ctype_digit($class)) {
         $class = '';
@@ -26,11 +26,11 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
             $letter = '';
         }
         $query = 'username LIKE ' . sqlesc("$letter%") . ' AND status = \'confirmed\'';
-        $q     = 'letter = ' . $letter;
+        $q = 'letter = ' . $letter;
     }
     if (ctype_digit($class)) {
         $query .= ' AND class = ' . sqlesc($class);
-        $q     .= ($q ? '&amp;' : '') . 'class = ' . $class;
+        $q .= ($q ? '&amp;' : '') . 'class = ' . $class;
     }
     $HTMLOUT .= $mini_menu . '<h1>' . $lang['fmp_search_members'] . '</h1>
 			<form method="get" action="forums.php?">
@@ -66,11 +66,11 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     }
     $HTMLOUT .= $next . '</div>';
     //=== get stuff for the pager
-    $page               = isset($_GET['page']) ? (int) $_GET['page'] : 0;
-    $perpage            = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
-    $res_count          = sql_query('SELECT COUNT(id) FROM users WHERE ' . $query) or sqlerr(__FILE__, __LINE__);
-    $arr_count          = mysqli_fetch_row($res_count);
-    $count              = ($arr_count[0] > 0 ? $arr_count[0] : 0);
+    $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
+    $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
+    $res_count = sql_query('SELECT COUNT(id) FROM users WHERE ' . $query) or sqlerr(__FILE__, __LINE__);
+    $arr_count = mysqli_fetch_row($res_count);
+    $count = ($arr_count[0] > 0 ? $arr_count[0] : 0);
     list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'forums.php?action=member_post_history&amp;letter=' . $letter);
     $HTMLOUT .= ($arr_count[0] > $perpage) ? '' . $menu . '<br>' : '<br>';
     if ($arr_count[0] > 0) {
@@ -84,8 +84,8 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 			<td>' . $lang['fe_view'] . '</td></tr>';
         while ($row = mysqli_fetch_assoc($res)) {
             //=== change colors
-            $colour  = (++$colour) % 2;
-            $class   = $colour == 0 ? 'one' : 'two';
+            $colour = (++$colour) % 2;
+            $class = $colour == 0 ? 'one' : 'two';
             $country = ($row['name'] != null) ? '<td class="' . $class . '"><img src="' . $site_config['pic_baseurl'] . 'flag/' . $row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" class="emoticon"></td>' : '<td class="' . $class . '">---</td>';
             $HTMLOUT .= '<tr>
    <td class="' . $class . '" align="left">' . format_username($row['id']) . '</td>
@@ -106,13 +106,13 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 } else {
     $res_count = sql_query('SELECT COUNT(p.id) AS count FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON f.id = t.forum_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' p.user_id = ' . sqlesc($member_id) . ' AND f.min_class_read <= ' . $CURUSER['class']) or sqlerr(__FILE__, __LINE__);
     $arr_count = mysqli_fetch_row($res_count);
-    $count     = $arr_count[0];
+    $count = $arr_count[0];
     //=== get stuff for the pager
-    $page                = isset($_GET['page']) ? (int) $_GET['page'] : 0;
-    $perpage             = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
+    $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
+    $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
     $subscription_on_off = (isset($_GET['s']) ? (1 == $_GET['s'] ? '<br><div style="font-weight: bold;">' . $lang['fe_sub_to_topic'] . ' <img src="' . $site_config['pic_baseurl'] . 'forums/subscribe.gif" alt="" class="emoticon"></div>' : '<br><div style="font-weight: bold;">' . $lang['fe_unsub_to_topic'] . ' <img src="' . $site_config['pic_baseurl'] . 'forums/unsubscribe.gif" alt="" class="emoticon"></div>') : '');
-    list($menu, $LIMIT)  = pager_new($count, $perpage, $page, 'forums.php?action=member_post_history&amp;id=' . $member_id . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
-    $res                 = sql_query('SELECT p.id AS post_id, p.topic_id, p.user_id, p.added, p.body, p.edited_by, p.edit_date, p.icon, p.post_title, p.bbcode, p.post_history, p.edit_reason, p.ip, p.status AS post_status, p.anonymous, t.id AS topic_id, t.topic_name, t.forum_id, t.sticky, t.locked, t.poll_id, t.status AS topic_status, f.name AS forum_name, f.description FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON f.id = t.forum_id WHERE  ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' p.user_id = ' . sqlesc($member_id) . ' AND f.min_class_read <= ' . $CURUSER['class'] . ' ORDER BY p.id ' . $ASC_DESC . $LIMIT) or sqlerr(__FILE__, __LINE__);
+    list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'forums.php?action=member_post_history&amp;id=' . $member_id . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
+    $res = sql_query('SELECT p.id AS post_id, p.topic_id, p.user_id, p.added, p.body, p.edited_by, p.edit_date, p.icon, p.post_title, p.bbcode, p.post_history, p.edit_reason, p.ip, p.status AS post_status, p.anonymous, t.id AS topic_id, t.topic_name, t.forum_id, t.sticky, t.locked, t.poll_id, t.status AS topic_status, f.name AS forum_name, f.description FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON f.id = t.forum_id WHERE  ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' p.user_id = ' . sqlesc($member_id) . ' AND f.min_class_read <= ' . $CURUSER['class'] . ' ORDER BY p.id ' . $ASC_DESC . $LIMIT) or sqlerr(__FILE__, __LINE__);
     //== get user info
     if ($count == 0) {
         stderr($lang['gl_sorry'], (!empty($member_id) ? format_username($member_id) . ' ' . $lang['vmp_has_no_posts_look'] . '!' : $lang['fe_no_mem_with_id']));
@@ -125,8 +125,8 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     //=== lets start the loop \o/
     while ($arr = mysqli_fetch_assoc($res)) {
         //=== change colors
-        $colour    = (++$colour) % 2;
-        $class     = ($colour == 0 ? 'one' : 'two');
+        $colour = (++$colour) % 2;
+        $class = ($colour == 0 ? 'one' : 'two');
         $class_alt = ($colour == 0 ? 'two' : 'one');
         //=== topic status
         $topic_status = htmlsafechars($arr['topic_status']);
@@ -147,28 +147,28 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         $post_status = htmlsafechars($arr['post_status']);
         switch ($post_status) {
         case 'ok':
-            $post_status       = $class;
+            $post_status = $class;
             $post_status_image = '';
             break;
 
         case 'recycled':
-            $post_status       = 'recycled';
+            $post_status = 'recycled';
             $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" class="emoticon">';
             break;
 
         case 'deleted':
-            $post_status       = 'deleted';
+            $post_status = 'deleted';
             $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_deleted'] . '" class="emoticon">';
             break;
 
         case 'postlocked':
-            $post_status       = 'postlocked';
+            $post_status = 'postlocked';
             $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/thread_locked.gif" alt="' . $lang['fe_locked'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_locked'] . '" class="emoticon">';
             break;
     }
-        $post_icon  = ($arr['icon'] !== '' ? '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" class="emoticon"> ' : '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="icon" class="emoticon"> ');
+        $post_icon = ($arr['icon'] !== '' ? '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" class="emoticon"> ' : '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="icon" class="emoticon"> ');
         $post_title = ($arr['post_title'] !== '' ? ' <span style="font-weight: bold; font-size: x-small;">' . htmlsafechars($arr['post_title'], ENT_QUOTES) . '</span>' : '' . $lang['fe_link_to_post'] . '');
-        $edited_by  = '';
+        $edited_by = '';
         if ($arr['edit_date'] > 0) {
             $res_edited = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr['edited_by'])) or sqlerr(__FILE__, __LINE__);
             $arr_edited = mysqli_fetch_assoc($res_edited);
@@ -190,7 +190,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
             }
             //==
         }
-        $body    = ($arr['bbcode'] === 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body']));
+        $body = ($arr['bbcode'] === 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body']));
         $post_id = (int) $arr['post_id'];
         $HTMLOUT .= '<tr>
 		<td colspan="3" align="left">' . $lang['fe_forum'] . ':

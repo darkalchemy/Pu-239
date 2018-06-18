@@ -5,12 +5,12 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 
 if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
-    $modes   = ['torrent', 'forum'];
+    $modes = ['torrent', 'forum'];
     $htmlout = $att = '';
 
     if (isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['qsearch']) && in_array($_POST['qsearch'], $modes)) {
         $cleansearchstr = searchfield(sqlesc($_POST['search']));
-        $i              = 1;
+        $i = 1;
         if ($_POST['qsearch'] === 'torrent') {
             $query = sql_query("SELECT * FROM torrents WHERE name LIKE '%$cleansearchstr%' AND visible = 'yes' AND banned = 'no' AND nuked = 'no' ORDER BY id LIMIT 5");
             $count = $query->num_rows;

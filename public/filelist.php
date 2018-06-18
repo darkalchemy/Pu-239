@@ -8,7 +8,7 @@ check_user_status();
 global $CURUSER, $site_config;
 
 $lang = array_merge(load_language('global'), load_language('filelist'));
-$id   = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if (!is_valid_id($id)) {
     stderr('USER ERROR', 'Bad id');
 }
@@ -18,10 +18,10 @@ $res = sql_query(
     WHERE torrent = ' . sqlesc($id)
 ) or sqlerr(__FILE__, __LINE__);
 
-$row     = mysqli_fetch_row($res);
-$count   = $row[0];
+$row = mysqli_fetch_row($res);
+$count = $row[0];
 $perpage = 50;
-$pager   = pager($perpage, $count, "{$site_config['baseurl']}/filelist.php?id=$id&amp;");
+$pager = pager($perpage, $count, "{$site_config['baseurl']}/filelist.php?id=$id&amp;");
 $HTMLOUT = '';
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];

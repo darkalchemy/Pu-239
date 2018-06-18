@@ -1,6 +1,6 @@
 <?php
 
-$preview      = '';
+$preview = '';
 $save_or_edit = (isset($_POST['edit']) ? 'edit' : (isset($_GET['edit']) ? 'edit' : 'save'));
 if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'save as draft') {
     //=== make sure they wrote something :P
@@ -10,7 +10,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'save as draft') {
     if (empty($_POST['body'])) {
         stderr($lang['pm_error'], $lang['pm_draft_err1']);
     }
-    $body    = sqlesc($_POST['body']);
+    $body = sqlesc($_POST['body']);
     $subject = sqlesc(strip_tags($_POST['subject']));
     if ($save_or_edit === 'save') {
         sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, location, draft, unread, saved) VALUES  
@@ -29,7 +29,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'save as draft') {
 }
 if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'preview') {
     $subject = htmlsafechars(trim($_POST['subject']));
-    $draft   = trim($_POST['body']);
+    $draft = trim($_POST['body']);
     $preview = '
     <table class="table table-bordered">
     <tr>
@@ -42,10 +42,10 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'preview') {
     </table><br>';
 } else {
     //=== Get the info
-    $res     = sql_query('SELECT * FROM messages WHERE id=' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT * FROM messages WHERE id=' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
     $message = mysqli_fetch_assoc($res);
     $subject = htmlsafechars($message['subject']);
-    $draft   = $message['msg'];
+    $draft = $message['msg'];
 }
 //=== print out the page
 //echo stdhead('Save / Edit Draft');

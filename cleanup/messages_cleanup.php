@@ -10,8 +10,8 @@ function pms_cleanup($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    $secs  = 90 * 86400;
-    $dt    = sqlesc(TIME_NOW - $secs);
+    $secs = 90 * 86400;
+    $dt = sqlesc(TIME_NOW - $secs);
     $query = sql_query("SELECT id, receiver FROM messages WHERE saved != 'yes' AND added <= $dt") or sqlerr(__FILE__, __LINE__);
     while ($row = mysqli_fetch_assoc($query)) {
         $cache->delete('inbox_' . $row['receiver']);

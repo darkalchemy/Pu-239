@@ -5,7 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $site_config, $session;
-$lang    = array_merge(load_language('global'), load_language('report'));
+$lang = array_merge(load_language('global'), load_language('report'));
 $stdhead = [
     'css' => [
         'forums',
@@ -17,7 +17,7 @@ $id = ($_GET['id'] ? (int) $_GET['id'] : (int) $_POST['id']);
 if (!is_valid_id($id)) {
     stderr("{$lang['report_error']}", "{$lang['report_error1']}");
 }
-$type         = (isset($_GET['type']) ? htmlsafechars($_GET['type']) : htmlsafechars($_POST['type']));
+$type = (isset($_GET['type']) ? htmlsafechars($_GET['type']) : htmlsafechars($_POST['type']));
 $typesallowed = [
     'User',
     'Comment',
@@ -41,7 +41,7 @@ if ((isset($_GET['id_2'])) || (isset($_POST['id_2']))) {
     $id_2b = "&amp;id_2=$id_2";
 }
 if ((isset($_GET['do_it'])) || (isset($_POST['do_it']))) {
-    $id_2  = ($_GET['id_2b'] ? (int) $_GET['id_2b'] : (int) $_POST['id_2']);
+    $id_2 = ($_GET['id_2b'] ? (int) $_GET['id_2b'] : (int) $_POST['id_2']);
     $do_it = ($_GET['do_it'] ? (int) $_GET['do_it'] : (int) $_POST['do_it']);
     if (!is_valid_id($do_it)) {
         stderr("{$lang['report_error']}", "{$lang['report_error3']}");

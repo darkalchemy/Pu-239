@@ -11,7 +11,7 @@ $lang = array_merge(load_language('global'), load_language('achievementlist'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $CURUSER['class'] >= UC_MAX) {
     $clienticon = htmlsafechars(trim($_POST['clienticon']));
     $achievname = htmlsafechars(trim($_POST['achievname']));
-    $notes      = htmlsafechars($_POST['notes']);
+    $notes = htmlsafechars($_POST['notes']);
     $clienticon = htmlsafechars($clienticon);
     $achievname = htmlsafechars($achievname);
     sql_query('INSERT INTO achievementist (achievname, notes, clienticon) VALUES(' . sqlesc($achievname) . ', ' . sqlesc($notes) . ', ' . sqlesc($clienticon) . ')') or sqlerr(__FILE__, __LINE__);
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $CURUSER['class'] >= UC_MAX) {
     //autoshout($message);
     //$doUpdate = true;
 }
-$res     = sql_query('SELECT a1.*, (SELECT COUNT(a2.id) FROM achievements AS a2 WHERE a2.achievement = a1.achievname) AS count FROM achievementist AS a1 ORDER BY a1.id') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT a1.*, (SELECT COUNT(a2.id) FROM achievements AS a2 WHERE a2.achievement = a1.achievname) AS count FROM achievementist AS a1 ORDER BY a1.id') or sqlerr(__FILE__, __LINE__);
 $HTMLOUT = '';
 $HTMLOUT .= "<h1>{$lang['achlst_std_head']}</h1>\n";
 if (mysqli_num_rows($res) === 0) {
@@ -33,7 +33,7 @@ if (mysqli_num_rows($res) === 0) {
             </tr>";
     $body = '';
     while ($arr = mysqli_fetch_assoc($res)) {
-        $notes      = htmlsafechars($arr['notes']);
+        $notes = htmlsafechars($arr['notes']);
         $clienticon = '';
         if ($arr['clienticon'] != '') {
             $clienticon = "<img src='" . $site_config['pic_baseurl'] . 'achievements/' . htmlsafechars($arr['clienticon']) . "' title='" . htmlsafechars($arr['achievname']) . "' alt='" . htmlsafechars($arr['achievname']) . "' />";

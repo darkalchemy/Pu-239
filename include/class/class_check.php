@@ -57,17 +57,17 @@ function class_check($class = 0, $staff = true, $pin = false)
                 //make_bans($ip, getip(), 'Bad Class. Join IRC for assistance.');
 
                 /** auto post to forums**/
-                $body    = sqlesc('User ' . $CURUSER['username'] . ' - ' . $ip . "\n Class " . $CURUSER['class'] . "\n Current page: " . $_SERVER['PHP_SELF'] . ', Previous page: ' . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . ', Action: ' . $_SERVER['REQUEST_URI'] . "\n Member has been disabled and demoted by class check system.");
+                $body = sqlesc('User ' . $CURUSER['username'] . ' - ' . $ip . "\n Class " . $CURUSER['class'] . "\n Current page: " . $_SERVER['PHP_SELF'] . ', Previous page: ' . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . ', Action: ' . $_SERVER['REQUEST_URI'] . "\n Member has been disabled and demoted by class check system.");
                 $topicid = (int) $site_config['staff']['forumid'];
-                $added   = TIME_NOW;
-                $icon    = 'topic_normal';
-                $sip     = ipToStorageFormat($ip, true);
+                $added = TIME_NOW;
+                $icon = 'topic_normal';
+                $sip = ipToStorageFormat($ip, true);
                 if (user_exists($site_config['chatBotID'])) {
                     sql_query('INSERT INTO posts (topic_id, user_id, added, body, icon, ip) ' . "VALUES ($topicid , {$site_config['chatBotID']}, {$added}, {$body}, " . sqlesc($icon) . ", {$sip})") or sqlerr(__FILE__, __LINE__);
                     /** get mysql_insert_id(); **/
                     $res = sql_query("SELECT id FROM posts WHERE topic_id = $topicid
-                                        ORDER BY id DESC LIMIT 1")       or sqlerr(__FILE__, __LINE__);
-                    $arr    = mysqli_fetch_row($res)                     or die('No staff post found');
+                                        ORDER BY id DESC LIMIT 1") or sqlerr(__FILE__, __LINE__);
+                    $arr = mysqli_fetch_row($res) or die('No staff post found');
                     $postid = $arr[0];
                     sql_query("UPDATE topics SET last_post = $postid WHERE id = $topicid") or sqlerr(__FILE__, __LINE__);
                     /** PM Owner **/
@@ -126,8 +126,8 @@ function get_access($script)
     global $cache;
 
     $ending = parse_url($script, PHP_URL_QUERY);
-    $count  = substr_count($ending, '&');
-    $i      = 0;
+    $count = substr_count($ending, '&');
+    $i = 0;
     while ($i <= $count) {
         if (strpos($ending, '&')) {
             $ending = substr($ending, 0, strrpos($ending, '&'));
@@ -138,7 +138,7 @@ function get_access($script)
     if ($class === false || is_null($class)) {
         $classid = sql_query("SELECT av_class FROM staffpanel WHERE file_name LIKE '%$ending%'") or sqlerr(__FILE__, __LINE__);
         $classid = mysqli_fetch_assoc($classid);
-        $class   = (int) $classid['av_class'];
+        $class = (int) $classid['av_class'];
         $cache->set('av_class_' . $ending, $class, 0);
     }
 

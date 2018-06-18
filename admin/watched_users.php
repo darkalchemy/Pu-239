@@ -9,13 +9,13 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang, $cache;
 
-$lang    = array_merge($lang, load_language('ad_watchedusers'));
+$lang = array_merge($lang, load_language('ad_watchedusers'));
 $stdfoot = [
     'js' => [
     ],
 ];
 
-$HTMLOUT         = $H1_thingie         = $count2         = '';
+$HTMLOUT = $H1_thingie = $count2 = '';
 $div_link_number = $count = 0;
 //=== to delete members from the watched user list... admin and up only!
 if (isset($_GET['remove'])) {
@@ -23,33 +23,33 @@ if (isset($_GET['remove'])) {
         stderr($lang['watched_stderr'], $lang['watched_stderr1']);
     }
     $remove_me_Ive_been_good = (isset($_POST['wu']) ? $_POST['wu'] : $_GET['wu']);
-    $removed_log             = '';
+    $removed_log = '';
     //=== if single delete use
     if (isset($_GET['wu'])) {
         if (is_valid_id($remove_me_Ive_been_good)) {
             //=== get mod comments for member
-            $res        = sql_query('SELECT username, modcomment FROM users WHERE id=' . sqlesc($remove_me_Ive_been_good)) or sqlerr(__FILE__, __LINE__);
-            $user       = mysqli_fetch_assoc($res);
+            $res = sql_query('SELECT username, modcomment FROM users WHERE id=' . sqlesc($remove_me_Ive_been_good)) or sqlerr(__FILE__, __LINE__);
+            $user = mysqli_fetch_assoc($res);
             $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - {$lang['watched_removed']} $CURUSER[username].\n" . $user['modcomment'];
             sql_query('UPDATE users SET watched_user = \'0\', modcomment=' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($remove_me_Ive_been_good)) or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user' . $remove_me_Ive_been_good, [
                 'watched_user' => 0,
-                'modcomment'   => $modcomment,
+                'modcomment' => $modcomment,
             ], $site_config['expires']['user_cache']);
-            $count       = 1;
+            $count = 1;
             $removed_log = '<a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $remove_me_Ive_been_good . '" class="altlink">' . htmlsafechars($user['username']) . '</a>';
         }
     } else {
         foreach ($remove_me_Ive_been_good as $id) {
             if (is_valid_id($id)) {
                 //=== get mod comments for member
-                $res        = sql_query('SELECT username, modcomment FROM users WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-                $user       = mysqli_fetch_assoc($res);
+                $res = sql_query('SELECT username, modcomment FROM users WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+                $user = mysqli_fetch_assoc($res);
                 $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - {$lang['watched_removed']} $CURUSER[username].\n" . $user['modcomment'];
                 sql_query('UPDATE users SET watched_user = \'0\', modcomment=' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user' . $id, [
                     'watched_user' => 0,
-                    'modcomment'   => $modcomment,
+                    'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
                 $count = (++$count);
                 $removed_log .= '<a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $id . '" class="altlink">' . htmlsafechars($user['username']) . '</a> ';
@@ -69,7 +69,7 @@ if (isset($_GET['add'])) {
     $member_whos_been_bad = (int) $_GET['id'];
     if (is_valid_id($member_whos_been_bad)) {
         //=== make sure they are not being watched...
-        $res  = sql_query('SELECT modcomment, watched_user, watched_user_reason, username FROM users WHERE id = ' . sqlesc($member_whos_been_bad)) or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT modcomment, watched_user, watched_user_reason, username FROM users WHERE id = ' . sqlesc($member_whos_been_bad)) or sqlerr(__FILE__, __LINE__);
         $user = mysqli_fetch_assoc($res);
         if ($user['watched_user'] > 0) {
             stderr($lang['watched_stderr'], htmlsafechars($user['username']) . ' ' . $lang['watched_already'] . '<a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $member_whos_been_bad . '" >' . $lang['watched_backto'] . ' ' . htmlsafechars($user['username']) . '\'s ' . $lang['watched_profile'] . '</a>');
@@ -91,12 +91,12 @@ if (isset($_GET['add'])) {
         }
         //=== all is good, let's enter them \o/
         $watched_user_reason = htmlsafechars($_POST['reason']);
-        $modcomment          = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $lang['watched_addedwu'] . " $CURUSER[username].\n" . $user['modcomment'];
+        $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $lang['watched_addedwu'] . " $CURUSER[username].\n" . $user['modcomment'];
         sql_query('UPDATE users SET watched_user = ' . TIME_NOW . ', modcomment=' . sqlesc($modcomment) . ', watched_user_reason = ' . sqlesc($watched_user_reason) . ' WHERE id=' . sqlesc($member_whos_been_bad)) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user' . $member_whos_been_bad, [
-            'watched_user'        => TIME_NOW,
+            'watched_user' => TIME_NOW,
             'watched_user_reason' => $watched_user_reason,
-            'modcomment'          => $modcomment,
+            'modcomment' => $modcomment,
         ], $site_config['expires']['user_cache']);
     }
     //=== Check if member was added
@@ -114,14 +114,14 @@ $good_stuff = [
     'invited_by',
 ];
 $ORDER_BY = ((isset($_GET['sort']) && in_array($_GET['sort'], $good_stuff, true)) ? $_GET['sort'] . ' ' : 'watched_user ');
-$ASC      = (isset($_GET['ASC']) ? ($_GET['ASC'] === 'ASC' ? 'DESC' : 'ASC') : 'DESC');
-$i        = 1;
+$ASC = (isset($_GET['ASC']) ? ($_GET['ASC'] === 'ASC' ? 'DESC' : 'ASC') : 'DESC');
+$i = 1;
 $HTMLOUT .= $H1_thingie . '<br>
         <form action="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;remove=1" method="post"  name="checkme" onsubmit="return ValidateForm(this,\'wu\')">
         <h1>' . $lang['watched_users'] . '[ ' . $watched_users . ' ]</h1>
     <table border="0" class="has-text-centered" style="max-width: 800px;">';
 
-$res      = sql_query('SELECT id, username, added, watched_user_reason, watched_user, uploaded, downloaded, warned, suspended, enabled, donor, class, leechwarn, chatpost, pirate, king, invitedby FROM users WHERE watched_user != \'0\' ORDER BY ' . $ORDER_BY . $ASC) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT id, username, added, watched_user_reason, watched_user, uploaded, downloaded, warned, suspended, enabled, donor, class, leechwarn, chatpost, pirate, king, invitedby FROM users WHERE watched_user != \'0\' ORDER BY ' . $ORDER_BY . $ASC) or sqlerr(__FILE__, __LINE__);
 $how_many = mysqli_num_rows($res);
 if ($how_many > 0) {
     $div_link_number = 1;

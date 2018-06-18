@@ -7,7 +7,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
-$lang      = array_merge($lang, load_language('ad_nameblacklist'));
+$lang = array_merge($lang, load_language('ad_nameblacklist'));
 $blacklist = file_exists($site_config['nameblacklist']) && is_array(unserialize(file_get_contents($site_config['nameblacklist']))) ? unserialize(file_get_contents($site_config['nameblacklist'])) : [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $badnames = isset($_POST['badnames']) && !empty($_POST['badnames']) ? trim($_POST['badnames']) : '';

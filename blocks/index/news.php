@@ -4,7 +4,7 @@ global $CURUSER, $site_config, $lang, $fluent, $cache;
 
 $news = $cache->get('latest_news_');
 if ($news === false || is_null($news)) {
-    $dt   = TIME_NOW - (86400 * 45);
+    $dt = TIME_NOW - (86400 * 45);
     $news = $fluent->from('news')
         ->where('added > ?', $dt)
         ->orderBy('sticky')
@@ -32,9 +32,9 @@ $i = 0;
 if ($news) {
     foreach ($news as $array) {
         $padding = ++$i >= count($news) ? '' : ' bottom20';
-        $button  = '';
+        $button = '';
         if ($CURUSER['class'] >= UC_STAFF) {
-            $hash   = hash('sha256', $site_config['site']['salt'] . $array['id'] . 'add');
+            $hash = hash('sha256', $site_config['site']['salt'] . $array['id'] . 'add');
             $button = "
                 <div class='is-pulled-right'>
                     <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int) $array['id'] . "'>

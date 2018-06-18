@@ -27,10 +27,10 @@ function snatchtable($torrents)
         </tr>";
     $body = '';
     foreach ($torrents as $torrent) {
-        $upspeed         = ($torrent['upspeed'] > 0 ? mksize($torrent['upspeed']) : ($torrent['seedtime'] > 0 ? mksize($torrent['uploaded'] / ($torrent['seedtime'] + $torrent['leechtime'])) : mksize(0)));
-        $downspeed       = ($torrent['downspeed'] > 0 ? mksize($torrent['downspeed']) : ($torrent['leechtime'] > 0 ? mksize($torrent['downloaded'] / $torrent['leechtime']) : mksize(0)));
-        $ratio           = ($torrent['downloaded'] > 0 ? number_format($torrent['uploaded'] / $torrent['downloaded'], 3) : ($torrent['uploaded'] > 0 ? 'Inf.' : '---'));
-        $XBT_or_PHP      = (XBT_TRACKER ? $torrent['fid'] : $torrent['torrentid']);
+        $upspeed = ($torrent['upspeed'] > 0 ? mksize($torrent['upspeed']) : ($torrent['seedtime'] > 0 ? mksize($torrent['uploaded'] / ($torrent['seedtime'] + $torrent['leechtime'])) : mksize(0)));
+        $downspeed = ($torrent['downspeed'] > 0 ? mksize($torrent['downspeed']) : ($torrent['leechtime'] > 0 ? mksize($torrent['downloaded'] / $torrent['leechtime']) : mksize(0)));
+        $ratio = ($torrent['downloaded'] > 0 ? number_format($torrent['uploaded'] / $torrent['downloaded'], 3) : ($torrent['uploaded'] > 0 ? 'Inf.' : '---'));
+        $XBT_or_PHP = (XBT_TRACKER ? $torrent['fid'] : $torrent['torrentid']);
         $XBT_or_PHP_TIME = (XBT_TRACKER ? $torrent['completedtime'] : $torrent['complete_date']);
         $body .= "
         <tr>
@@ -87,14 +87,14 @@ function maketable($torrents)
         } else {
             $ratio = '---';
         }
-        $catimage   = "{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$torrent['image']}";
-        $catname    = htmlsafechars($torrent['catname']);
-        $catimage   = "<img src='$catimage' title='$catname' alt='$catname' width='42' height='42' class='tooltipper' />";
-        $size       = str_replace(' ', '<br>', mksize($torrent['size']));
-        $uploaded   = str_replace(' ', '<br>', mksize($torrent['uploaded']));
+        $catimage = "{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$torrent['image']}";
+        $catname = htmlsafechars($torrent['catname']);
+        $catimage = "<img src='$catimage' title='$catname' alt='$catname' width='42' height='42' class='tooltipper' />";
+        $size = str_replace(' ', '<br>', mksize($torrent['size']));
+        $uploaded = str_replace(' ', '<br>', mksize($torrent['uploaded']));
         $downloaded = str_replace(' ', '<br>', mksize($torrent['downloaded']));
-        $seeders    = number_format($torrent['seeders']);
-        $leechers   = number_format($torrent['leechers']);
+        $seeders = number_format($torrent['seeders']);
+        $leechers = number_format($torrent['leechers']);
         $XBT_or_PHP = (XBT_TRACKER ? $torrent['fid'] : $torrent['torrentid']);
         $body .= "
         <tr>

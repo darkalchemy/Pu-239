@@ -111,8 +111,8 @@ if ($site_config['seedbonus_on'] == 1) {
 }
 $message = "Torrent $id (" . htmlsafechars($row['name']) . ") has been deleted.\n  Reason: $reasonstr";
 if ($CURUSER['id'] != $row['owner'] && $CURUSER['pm_on_delete'] === 'yes') {
-    $added   = TIME_NOW;
-    $pm_on   = (int) $row['owner'];
+    $added = TIME_NOW;
+    $pm_on = (int) $row['owner'];
     $subject = 'Torrent Deleted';
     sql_query('INSERT INTO messages (subject, sender, receiver, msg, added) VALUES(' . sqlesc($subject) . ', 0, ' . sqlesc($pm_on) . ',' . sqlesc($message) . ", $added)") or sqlerr(__FILE__, __LINE__);
     $cache->increment('inbox_' . $pm_on);

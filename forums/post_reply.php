@@ -2,7 +2,7 @@
 
 global $lang;
 
-$page     = $colour     = $arr_quote     = $extension_error     = $size_error     = '';
+$page = $colour = $arr_quote = $extension_error = $size_error = '';
 $topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
 if (!is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
@@ -19,15 +19,15 @@ if ($CURUSER['class'] < $arr['min_class_read'] || $CURUSER['class'] < $arr['min_
 if ($CURUSER['forum_post'] === 'no' || $CURUSER['suspended'] === 'yes') {
     stderr($lang['gl_error'], $lang['fe_your_no_post_right']);
 }
-$quote      = (isset($_GET['quote_post']) ? intval($_GET['quote_post']) : 0);
-$key        = (isset($_GET['key']) ? intval($_GET['key']) : 0);
-$body       = (isset($_POST['body']) ? $_POST['body'] : '');
+$quote = (isset($_GET['quote_post']) ? intval($_GET['quote_post']) : 0);
+$key = (isset($_GET['key']) ? intval($_GET['key']) : 0);
+$body = (isset($_POST['body']) ? $_POST['body'] : '');
 $post_title = strip_tags((isset($_POST['post_title']) ? $_POST['post_title'] : ''));
-$icon       = htmlsafechars((isset($_POST['icon']) ? $_POST['icon'] : ''));
-$bb_code    = (isset($_POST['bb_code']) && 'no' == $_POST['bb_code'] ? 'no' : 'yes');
-$subscribe  = ((isset($_POST['subscribe']) && 'yes' == $_POST['subscribe']) ? 'yes' : ((!isset($_POST['subscribe']) && $arr['subscribed_id'] > 0) ? 'yes' : 'no'));
+$icon = htmlsafechars((isset($_POST['icon']) ? $_POST['icon'] : ''));
+$bb_code = (isset($_POST['bb_code']) && 'no' == $_POST['bb_code'] ? 'no' : 'yes');
+$subscribe = ((isset($_POST['subscribe']) && 'yes' == $_POST['subscribe']) ? 'yes' : ((!isset($_POST['subscribe']) && $arr['subscribed_id'] > 0) ? 'yes' : 'no'));
 $topic_name = htmlsafechars($arr['topic_name']);
-$anonymous  = (isset($_POST['anonymous']) && '' != $_POST['anonymous'] ? 'yes' : 'no');
+$anonymous = (isset($_POST['anonymous']) && '' != $_POST['anonymous'] ? 'yes' : 'no');
 //== if it's a quote
 if (quote !== 0 && $body === '') {
     $res_quote = sql_query('SELECT p.body, p.staff_lock, p.anonymous, p.user_id, u.username FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE p.id=' . sqlesc($quote)) or sqlerr(__FILE__, __LINE__);
@@ -56,8 +56,8 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     $cache->delete('forum_posts_' . $CURUSER['id']);
     $post_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
     sql_query('UPDATE topics SET last_post=' . sqlesc($post_id) . ', post_count = post_count + 1 WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE `forums` SET post_count = post_count + 1 WHERE id =' . sqlesc($arr['real_forum_id']))                      or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE usersachiev SET forumposts = forumposts + 1 WHERE userid = ' . sqlesc($CURUSER['id']))                     or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE `forums` SET post_count = post_count + 1 WHERE id =' . sqlesc($arr['real_forum_id'])) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE usersachiev SET forumposts = forumposts + 1 WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     if ($site_config['autoshout_on'] == 1) {
         $message = $CURUSER['username'] . ' ' . $lang['pr_replied_to_topic'] . " [url={$site_config['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last]{$topic_name}[/url]";
         if (!in_array($arr['real_forum_id'], $site_config['staff_forums'])) {
@@ -85,7 +85,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     while ($row = mysqli_fetch_assoc($res_sub)) {
         $res_yes = sql_query('SELECT subscription_pm, username FROM users WHERE id = ' . sqlesc($row['user_id'])) or sqlerr(__FILE__, __LINE__);
         $arr_yes = mysqli_fetch_array($res_yes);
-        $msg     = '' . $lang['pr_hey_there'] . "!!! \n " . $lang['pr_a_thread_you_subscribed_to'] . ': ' . htmlsafechars($arr['topic_name']) . ' ' . $lang['pr_has_had_a_new_post'] . "!\n click [url={$site_config['baseurl']}/forums.php?action=view_topic&amp;topic_id={$topic_id}&page=last][b]" . $lang['pr_here'] . '[/b][/url] ' . $lang['pr_to_read_it'] . "!\n\n" . $lang['pr_to_view_your_subscriptions_or_unsubscribe'] . " [url={$site_config['baseurl']}/forums.php?action=subscriptions][b]" . $lang['pr_here'] . "[/b][/url].\n\nCheers.";
+        $msg = '' . $lang['pr_hey_there'] . "!!! \n " . $lang['pr_a_thread_you_subscribed_to'] . ': ' . htmlsafechars($arr['topic_name']) . ' ' . $lang['pr_has_had_a_new_post'] . "!\n click [url={$site_config['baseurl']}/forums.php?action=view_topic&amp;topic_id={$topic_id}&page=last][b]" . $lang['pr_here'] . '[/b][/url] ' . $lang['pr_to_read_it'] . "!\n\n" . $lang['pr_to_view_your_subscriptions_or_unsubscribe'] . " [url={$site_config['baseurl']}/forums.php?action=subscriptions][b]" . $lang['pr_here'] . "[/b][/url].\n\nCheers.";
         if ($arr_yes['subscription_pm'] === 'yes' && $row['user_id'] != $CURUSER['id']) {
             sql_query("INSERT INTO messages (sender, subject, receiver, added, msg) VALUES(0, '" . $lang['pr_new_post_in_subscribed_thread'] . "!', " . sqlesc($row['user_id']) . ", '" . TIME_NOW . "', " . sqlesc($msg) . ')') or sqlerr(__FILE__, __LINE__);
         }
@@ -110,7 +110,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
                     'application/x-rar',
                 ];
                 $accepted_file_extension = strrpos($name, '.');
-                $file_extension          = strtolower(substr($name, $accepted_file_extension));
+                $file_extension = strtolower(substr($name, $accepted_file_extension));
                 //===  make sure the name is only alphanumeric or _ or -
                 $name = preg_replace('#[^a-zA-Z0-9_-]#', '', $name); // hell, it could even be 0_0 if it wanted to!
                 switch (true) {
@@ -133,7 +133,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
                     default:
                         //=== woohoo passed all our silly tests but just to be sure, let's mess it up a bit ;)
                         //=== get rid of the file extension
-                        $name      = substr($name, 0, -strlen($file_extension));
+                        $name = substr($name, 0, -strlen($file_extension));
                         $upload_to = $upload_folder . $name . '(id-' . $post_id . ')' . $file_extension;
                         //===plop it into the DB all safe and snuggly
                         sql_query('INSERT INTO `attachments` (`post_id`, `user_id`, `file`, `file_name`, `added`, `extension`, `size`) VALUES ( ' . sqlesc($post_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($name . '(id-' . $post_id . ')' . $file_extension) . ', ' . sqlesc($name) . ', ' . TIME_NOW . ', ' . ('.zip' === $file_extension ? '\'zip\'' : '\'rar\'') . ', ' . $size . ')') or sqlerr(__FILE__, __LINE__);
@@ -238,8 +238,8 @@ $HTMLOUT .= '<br><span>' . $lang['fe_last_ten_posts_in_reverse_order'] . '</span
 //=== lets start the loop \o/
 while ($arr = mysqli_fetch_assoc($res_posts)) {
     //=== change colors
-    $colour    = (++$colour) % 2;
-    $class     = ($colour == 0 ? 'one' : 'two');
+    $colour = (++$colour) % 2;
+    $class = ($colour == 0 ? 'one' : 'two');
     $class_alt = ($colour == 0 ? 'two' : 'one');
     $HTMLOUT .= '<tr><td class="forum_head" align="left" width="100" valign="middle">#
 		<span style="font-weight: bold;">' . ('yes' == $arr['anonymous'] ? '<i>' . $lang['fe_anonymous'] . '</i>' : htmlsafechars($arr['username'])) . '</span></td>

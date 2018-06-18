@@ -28,13 +28,13 @@ $stdfoot = [
     ],
 ];
 
-$lang        = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'));
-$HTMLOUT     = $searchin     = $select_searchin     = $where     = $addparam     = $new_button     = $vip_box     = $only_free     = $searchstr     = $join     = '';
+$lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'));
+$HTMLOUT = $searchin = $select_searchin = $where = $addparam = $new_button = $vip_box = $only_free = $searchstr = $join = '';
 $searchincrt = [];
 
 $catids = genrelist();
 if (isset($_GET['search'])) {
-    $searchstr      = unesc($_GET['search']);
+    $searchstr = unesc($_GET['search']);
     $cleansearchstr = searchfield($searchstr);
     if (empty($cleansearchstr)) {
         unset($cleansearchstr);
@@ -61,12 +61,12 @@ $valid_searchin = [
     ],
 ];
 if (isset($_GET['searchin'], $valid_searchin[$_GET['searchin']])) {
-    $searchin        = $valid_searchin[$_GET['searchin']];
+    $searchin = $valid_searchin[$_GET['searchin']];
     $select_searchin = $_GET['searchin'];
     $addparam .= sprintf('search=%s&amp;searchin=%s&amp;', $searchstr, $select_searchin);
 }
 if (isset($_GET['sort'], $_GET['type'])) {
-    $column      = $ascdesc      = '';
+    $column = $ascdesc = '';
     $_valid_sort = [
         'id',
         'name',
@@ -82,29 +82,29 @@ if (isset($_GET['sort'], $_GET['type'])) {
     $column = isset($_GET['sort'], $_valid_sort[(int) $_GET['sort']]) ? $_valid_sort[(int) $_GET['sort']] : $_valid_sort[0];
     switch (htmlsafechars($_GET['type'])) {
         case 'asc':
-            $ascdesc     = 'ASC';
+            $ascdesc = 'ASC';
             $linkascdesc = 'asc';
             break;
 
         case 'desc':
-            $ascdesc     = 'DESC';
+            $ascdesc = 'DESC';
             $linkascdesc = 'desc';
             break;
 
         default:
-            $ascdesc     = 'DESC';
+            $ascdesc = 'DESC';
             $linkascdesc = 'desc';
             break;
     }
-    $orderby   = "ORDER BY {$column} " . $ascdesc;
+    $orderby = "ORDER BY {$column} " . $ascdesc;
     $pagerlink = 'sort=' . intval($_GET['sort']) . "&amp;type={$linkascdesc}&amp;";
 } else {
-    $orderby   = 'ORDER BY sticky ASC, id DESC';
+    $orderby = 'ORDER BY sticky ASC, id DESC';
     $pagerlink = '';
 }
 
 $wherea = $wherecatina = [];
-$today  = 0;
+$today = 0;
 if (!empty($_GET['today']) && $_GET['today']) {
     $wherea[] = 't.added >= ' . strtotime('today midnight');
     $addparam .= 'today=1&amp;';
@@ -196,7 +196,7 @@ if (isset($cleansearchstr)) {
             foreach ($searchin as $boo) {
                 if ($boo === 'owner') {
                     $wherea[] = 'u.username = ' . sqlesc($searchstr);
-                    $join     = 'LEFT JOIN users AS u ON u.id = t.owner';
+                    $join = 'LEFT JOIN users AS u ON u.id = t.owner';
                 } elseif ($boo === 'newgenre') {
                     $wherea[] = 'newgenre = ' . sqlesc($searchstr);
                 } elseif ($boo === 'descr') {
@@ -216,12 +216,12 @@ if (isset($cleansearchstr)) {
     }
 }
 
-$where     = count($wherea) ? 'WHERE ' . join(' OR ', $wherea) : '';
+$where = count($wherea) ? 'WHERE ' . join(' OR ', $wherea) : '';
 $where_key = 'where_' . hash('sha256', $where);
-$count     = $cache->get($where_key);
+$count = $cache->get($where_key);
 if ($count === false || is_null($count)) {
-    $res   = sql_query("SELECT COUNT(*) FROM torrents AS t $join $where") or sqlerr(__FILE__, __LINE__);
-    $row   = mysqli_fetch_row($res);
+    $res = sql_query("SELECT COUNT(*) FROM torrents AS t $join $where") or sqlerr(__FILE__, __LINE__);
+    $row = mysqli_fetch_row($res);
     $count = (int) $row[0];
     $cache->set($where_key, $count, $site_config['expires']['browse_where']);
 }
@@ -319,7 +319,7 @@ if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     ], $site_config['expires']['user_cache']);
 }
 
-$vip     = ((isset($_GET['vip'])) ? intval($_GET['vip']) : '');
+$vip = ((isset($_GET['vip'])) ? intval($_GET['vip']) : '');
 $vip_box = "
                     <select name='vip' class='w-100'>
                         <option value='0'>VIP Torrents Included</option>
@@ -327,7 +327,7 @@ $vip_box = "
                         <option value='2'" . ($vip == 2 ? ' selected' : '') . '>VIP Torrents Only</option>
                     </select>';
 
-$selected  = (isset($_GET['incldead'])) ? (int) $_GET['incldead'] : '';
+$selected = (isset($_GET['incldead'])) ? (int) $_GET['incldead'] : '';
 $deadcheck = "
                     <select name='incldead' class='w-100'>
                         <option value='0'>{$lang['browse_active']}</option>
@@ -335,7 +335,7 @@ $deadcheck = "
                         <option value='2'" . ($selected == 2 ? ' selected' : '') . ">{$lang['browse_dead']}</option>
                     </select>";
 
-$only_free     = ((isset($_GET['only_free'])) ? intval($_GET['only_free']) : '');
+$only_free = ((isset($_GET['only_free'])) ? intval($_GET['only_free']) : '');
 $only_free_box = "
                     <select name='only_free' class='w-100'>
                         <option value='0'>Include Non Free Torrents</option>

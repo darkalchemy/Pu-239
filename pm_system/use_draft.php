@@ -5,7 +5,7 @@ global $CURUSER;
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
 
-$preview      = '';
+$preview = '';
 $save_or_edit = (isset($_POST['edit']) ? 'edit' : (isset($_GET['edit']) ? 'edit' : 'save'));
 $save_or_edit = (isset($_POST['send']) ? 'send' : (isset($_GET['send']) ? 'send' : $save_or_edit));
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
@@ -16,9 +16,9 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
         stderr($lang['pm_error'], $lang['pm_draft_err1']);
     }
 
-    $body    = sqlesc(trim($_POST['body']));
+    $body = sqlesc(trim($_POST['body']));
     $subject = sqlesc(strip_tags(trim($_POST['subject'])));
-    $urgent  = sqlesc((isset($_POST['urgent']) && $_POST['urgent'] === 'yes' && $CURUSER['class'] >= UC_STAFF) ? 'yes' : 'no');
+    $urgent = sqlesc((isset($_POST['urgent']) && $_POST['urgent'] === 'yes' && $CURUSER['class'] >= UC_STAFF) ? 'yes' : 'no');
     if ($save_or_edit === 'save') {
         sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, location, draft, unread, saved) VALUES  
                                                                         (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($CURUSER['id']) . ',' . TIME_NOW . ', ' . $body . ', ' . $subject . ', \'-2\', \'yes\',\'no\',\'yes\')') or sqlerr(__FILE__, __LINE__);
@@ -47,7 +47,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
             $should_i_send_this = ($arr_receiver['acceptpms'] === 'yes' ? 'yes' : ($arr_receiver['acceptpms'] === 'no' ? 'no' : ($arr_receiver['acceptpms'] === 'friends' ? 'friends' : '')));
             switch ($should_i_send_this) {
                 case 'yes':
-                    $r     = sql_query('SELECT id FROM blocks WHERE userid = ' . sqlesc($receiver) . ' AND blockid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+                    $r = sql_query('SELECT id FROM blocks WHERE userid = ' . sqlesc($receiver) . ' AND blockid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                     $block = mysqli_fetch_row($r);
                     if ($block[0] > 0) {
                         stderr($lang['pm_forwardpm_refused'], htmlsafechars($arr_receiver['username']) . $lang['pm_send_blocked']);
@@ -55,7 +55,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
                     break;
 
                 case 'friends':
-                    $r      = sql_query('SELECT id FROM friends WHERE userid = ' . sqlesc($receiver) . ' AND friendid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+                    $r = sql_query('SELECT id FROM friends WHERE userid = ' . sqlesc($receiver) . ' AND friendid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                     $friend = mysqli_fetch_row($r);
                     if ($friend[0] > 0) {
                         stderr($lang['pm_forwardpm_refused'], htmlsafechars($arr_receiver['username']) . $lang['pm_send_onlyf']);
@@ -76,7 +76,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
 
         if (strpos($arr_receiver['notifs'], '[pm]') !== false) {
             $username = htmlsafechars($CURUSER['username']);
-            $body     = "<html>
+            $body = "<html>
 <head>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
     <title>{$site_config['site_name']} PM received</title>
@@ -96,7 +96,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
                 ->setSubject("{$lang['pm_forwardpm_pmfrom']} $username {$lang['pm_forwardpm_exc']}")
                 ->setHtmlBody($body);
 
-            $mailer              = new SendmailMailer();
+            $mailer = new SendmailMailer();
             $mailer->commandArgs = "-f{$site_config['site_email']}";
             $mailer->send($mail);
         }
@@ -116,7 +116,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
 
 if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'preview') {
     $subject = htmlsafechars(trim($_POST['subject']));
-    $draft   = trim($_POST['body']);
+    $draft = trim($_POST['body']);
     $preview = '
     <table class="table table-bordered">
     <tr>
@@ -129,10 +129,10 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'preview') {
     </table><br>';
 } else {
     //=== Get the info
-    $res     = sql_query('SELECT * FROM messages WHERE id=' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT * FROM messages WHERE id=' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
     $message = mysqli_fetch_assoc($res);
     $subject = htmlsafechars($message['subject']);
-    $draft   = $message['msg'];
+    $draft = $message['msg'];
 }
 //=== print out the page
 //echo stdhead('Use Draft');

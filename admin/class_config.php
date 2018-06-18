@@ -13,10 +13,10 @@ if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'])) {
 }
 $pconf = sql_query('SELECT * FROM class_config ORDER BY value ASC') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($pconf)) {
-    $class_config[$ac['name']]['value']      = $ac['value'];
-    $class_config[$ac['name']]['classname']  = $ac['classname'];
+    $class_config[$ac['name']]['value'] = $ac['value'];
+    $class_config[$ac['name']]['classname'] = $ac['classname'];
     $class_config[$ac['name']]['classcolor'] = $ac['classcolor'];
-    $class_config[$ac['name']]['classpic']   = $ac['classpic'];
+    $class_config[$ac['name']]['classpic'] = $ac['classpic'];
 }
 $possible_modes = [
     'add',
@@ -34,43 +34,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cache->delete('is_staffs_');
     if ($mode === 'edit') {
         foreach ($class_config as $c_name => $value) {
-            $c_value      = $value['value']; // $key is like UC_USER etc....
-            $c_classname  = strtoupper($value['classname']);
+            $c_value = $value['value']; // $key is like UC_USER etc....
+            $c_classname = strtoupper($value['classname']);
             $c_classcolor = strtoupper($value['classcolor']);
             $c_classcolor = str_replace('#', '', "$c_classcolor");
-            $c_classpic   = $value['classpic'];
-            $post_data    = $_POST[$c_name];
-            $value        = $post_data[0];
-            $classname    = !empty($post_data[1]) ? strtoupper($post_data[1]) : '';
-            $classcolor   = !empty($post_data[2]) ? $post_data[2] : '';
-            $data[]       = ['className' => $classname, 'classColor' => $classcolor];
-            $classcolor   = str_replace('#', '', "$classcolor");
-            $classpic     = !empty($post_data[3]) ? $post_data[3] : '';
+            $c_classpic = $value['classpic'];
+            $post_data = $_POST[$c_name];
+            $value = $post_data[0];
+            $classname = !empty($post_data[1]) ? strtoupper($post_data[1]) : '';
+            $classcolor = !empty($post_data[2]) ? $post_data[2] : '';
+            $data[] = ['className' => $classname, 'classColor' => $classcolor];
+            $classcolor = str_replace('#', '', "$classcolor");
+            $classpic = !empty($post_data[3]) ? $post_data[3] : '';
             if (isset($_POST[$c_name][0]) && (($value != $c_value) || ($classname != $c_classname) || ($classcolor != $c_classcolor) || ($classpic != $c_classpic))) {
                 $update[$c_name] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($value) ? join('|', $value) : $value) . ',' . sqlesc(is_array($classname) ? join('|', $classname) : $classname) . ',' . sqlesc(is_array($classcolor) ? join('|', $classcolor) : $classcolor) . ',' . sqlesc(is_array($classpic) ? join('|', $classpic) : $classpic) . ')';
             }
         }
         write_css($data);
         if (sql_query('INSERT INTO class_config(name, value, classname, classcolor, classpic) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value), classname = VALUES(classname), classcolor = VALUES(classcolor), classpic = VALUES(classpic)')) { // need to change strut
-            $t          = 'define(';
+            $t = 'define(';
             $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
-            $res        = sql_query('SELECT * FROM class_config ORDER BY value  ASC');
-            $the_names  = $the_colors  = $the_images  = '';
+            $res = sql_query('SELECT * FROM class_config ORDER BY value  ASC');
+            $the_names = $the_colors = $the_images = '';
             while ($arr = mysqli_fetch_assoc($res)) {
                 $configfile .= '' . $t . "'{$arr['name']}', {$arr['value']});\n";
             }
             unset($arr);
-            $res       = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX') ORDER BY value ASC");
+            $res = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX') ORDER BY value ASC");
             $the_names = $the_colors = $the_images = '';
             $classes[] = 'var UC_MIN = 0;';
             while ($arr = mysqli_fetch_assoc($res)) {
                 if ($arr['name'] !== 'UC_STAFF') {
-                    $the_names  .= "{$arr['name']} => '{$arr['classname']}',";
+                    $the_names .= "{$arr['name']} => '{$arr['classname']}',";
                     $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
                     $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . " . 'class/{$arr['classpic']}',";
                     $js_classes[] = $arr['name'];
                 }
-                $val       = $arr['value'];
+                $val = $arr['value'];
                 $classes[] = "var {$arr['name']} = {$arr['value']};";
             }
             $classes[] = "var UC_MAX = {$val};";
@@ -87,12 +87,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($mode === 'add') {
         if (!empty($_POST['name']) && !empty($_POST['value']) && !empty($_POST['cname']) && !empty($_POST['color'])) {
-            $name   = isset($_POST['name']) ? htmlsafechars($_POST['name']) : stderr($lang['classcfg_error'], $lang['classcfg_error_class_name']);
-            $value  = isset($_POST['value']) ? (int) $_POST['value'] : stderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
+            $name = isset($_POST['name']) ? htmlsafechars($_POST['name']) : stderr($lang['classcfg_error'], $lang['classcfg_error_class_name']);
+            $value = isset($_POST['value']) ? (int) $_POST['value'] : stderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
             $r_name = isset($_POST['cname']) ? htmlsafechars($_POST['cname']) : stderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
-            $color  = isset($_POST['color']) ? htmlsafechars($_POST['color']) : '';
-            $color  = str_replace('#', '', "$color");
-            $pic    = isset($_POST['pic']) ? htmlsafechars($_POST['pic']) : '';
+            $color = isset($_POST['color']) ? htmlsafechars($_POST['color']) : '';
+            $color = str_replace('#', '', "$color");
+            $pic = isset($_POST['pic']) ? htmlsafechars($_POST['pic']) : '';
 
             $res = sql_query("SELECT * FROM class_config WHERE name IN ('UC_MAX') ");
             while ($arr = mysqli_fetch_array($res)) {
@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $result = sql_query('SELECT id, class FROM users');
                 $result = sql_query('SELECT id, class FROM users');
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $row1   = [];
+                    $row1 = [];
                     $row1[] = $row;
                     foreach ($row1 as $row2) {
                         $cache->update_row('user' . $row2['id'], [
@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $result = sql_query('SELECT id, class FROM users');
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $row1   = [];
+                    $row1 = [];
                     $row1[] = $row;
                     foreach ($row1 as $row2) {
                         $cache->update_row('user' . $row2['id'], [
@@ -145,23 +145,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             if (sql_query('INSERT INTO class_config (name, value, classname, classcolor, classpic) VALUES (' . sqlesc($name) . ',' . sqlesc($value) . ',' . sqlesc($r_name) . ',' . sqlesc($color) . ',' . sqlesc($pic) . ')')) {
-                $t          = 'define(';
+                $t = 'define(';
                 $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
-                $res        = sql_query('SELECT * FROM class_config ORDER BY value  ASC');
-                $the_names  = $the_colors  = $the_images  = '';
+                $res = sql_query('SELECT * FROM class_config ORDER BY value  ASC');
+                $the_names = $the_colors = $the_images = '';
                 while ($arr = mysqli_fetch_assoc($res)) {
                     $configfile .= '' . $t . "'{$arr['name']}', {$arr['value']});\n";
                 }
                 unset($arr);
-                $res       = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX') ORDER BY value  ASC");
+                $res = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX') ORDER BY value  ASC");
                 $the_names = $the_colors = $the_images = '';
                 while ($arr = mysqli_fetch_assoc($res)) {
                     if ($arr['name'] !== 'UC_STAFF') {
-                        $the_names  .= "{$arr['name']} => '{$arr['classname']}',";
+                        $the_names .= "{$arr['name']} => '{$arr['classname']}',";
                         $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
                         $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/{$arr['classpic']}',";
                         $js_classes[] = $arr['name'];
-                        $data[]       = ['className' => $arr['classname'], 'classColor' => '#' . strtolower($arr['classcolor'])];
+                        $data[] = ['className' => $arr['classname'], 'classColor' => '#' . strtolower($arr['classcolor'])];
                     }
                     $classes[] = "var {$arr['name']} = {$arr['value']};";
                 }
@@ -180,7 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($mode === 'remove') {
         $name = isset($_POST['remove']) ? htmlsafechars($_POST['remove']) : stderr($lang['classcfg_error'], $lang['classcfg_error_required']);
-        $res  = sql_query("SELECT value from class_config WHERE name = '$name' ");
+        $res = sql_query("SELECT value from class_config WHERE name = '$name' ");
         while ($arr = mysqli_fetch_array($res)) {
             $value = $arr['value'];
         }
@@ -210,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $result = sql_query('SELECT id, class FROM users');
         while ($row = mysqli_fetch_assoc($result)) {
-            $row1   = [];
+            $row1 = [];
             $row1[] = $row;
             foreach ($row1 as $row2) {
                 $cache->update_row('user' . $row2['id'], [
@@ -219,23 +219,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         if (sql_query('DELETE FROM class_config WHERE name = ' . sqlesc($name))) {
-            $t          = 'define(';
+            $t = 'define(';
             $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
-            $res        = sql_query('SELECT * FROM class_config ORDER BY value  ASC');
-            $the_names  = $the_colors  = $the_images  = '';
+            $res = sql_query('SELECT * FROM class_config ORDER BY value  ASC');
+            $the_names = $the_colors = $the_images = '';
             while ($arr = mysqli_fetch_assoc($res)) {
                 $configfile .= '' . $t . "'{$arr['name']}', {$arr['value']});\n";
             }
             unset($arr);
-            $res       = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX') ORDER BY value  ASC");
+            $res = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX') ORDER BY value  ASC");
             $the_names = $the_colors = $the_images = '';
             while ($arr = mysqli_fetch_assoc($res)) {
                 if ($arr['name'] !== 'UC_STAFF') {
-                    $the_names  .= "{$arr['name']} => '{$arr['classname']}',";
+                    $the_names .= "{$arr['name']} => '{$arr['classname']}',";
                     $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
                     $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/{$arr['classpic']}',";
                     $js_classes[] = $arr['name'];
-                    $data[]       = ['className' => $arr['classname'], 'classColor' => '#' . strtolower($arr['classcolor'])];
+                    $data[] = ['className' => $arr['classname'], 'classColor' => '#' . strtolower($arr['classcolor'])];
                 }
                 $classes[] = "var {$arr['name']} = {$arr['value']};";
             }

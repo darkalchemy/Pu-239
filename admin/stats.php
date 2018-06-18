@@ -7,16 +7,16 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $lang;
 
-$lang    = array_merge($lang, load_language('ad_stats'));
+$lang = array_merge($lang, load_language('ad_stats'));
 $HTMLOUT = '';
 $HTMLOUT .= begin_main_frame();
-$res      = sql_query('SELECT COUNT(id) FROM torrents') or sqlerr(__FILE__, __LINE__);
-$n        = mysqli_fetch_row($res);
-$n_tor    = $n[0];
-$res      = sql_query('SELECT COUNT(id) FROM peers') or sqlerr(__FILE__, __LINE__);
-$n        = mysqli_fetch_row($res);
-$n_peers  = $n[0];
-$uporder  = isset($_GET['uporder']) ? $_GET['uporder'] : '';
+$res = sql_query('SELECT COUNT(id) FROM torrents') or sqlerr(__FILE__, __LINE__);
+$n = mysqli_fetch_row($res);
+$n_tor = $n[0];
+$res = sql_query('SELECT COUNT(id) FROM peers') or sqlerr(__FILE__, __LINE__);
+$n = mysqli_fetch_row($res);
+$n_peers = $n[0];
+$uporder = isset($_GET['uporder']) ? $_GET['uporder'] : '';
 $catorder = isset($_GET['catorder']) ? $_GET['catorder'] : '';
 if ($uporder === 'lastul') {
     $orderby = 'last DESC, name';

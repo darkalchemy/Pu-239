@@ -7,7 +7,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $lang;
 
-$lang    = array_merge($lang, load_language('non_con'));
+$lang = array_merge($lang, load_language('non_con'));
 $HTMLOUT = '';
 if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'list') {
     $res2 = sql_query("SELECT userid, seeder, torrent, agent FROM peers WHERE connectable='no' ORDER BY userid DESC") or sqlerr(__FILE__, __LINE__);
@@ -16,7 +16,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'list') {
     <h1>{$lang['non_con_peers']}</h1>
     {$lang['non_con_this']}<br><p><span class='has-text-danger'>*</span> {$lang['non_con_means']}<br>";
     $result = sql_query("SELECT DISTINCT userid FROM peers WHERE connectable = 'no'");
-    $count  = mysqli_num_rows($result);
+    $count = mysqli_num_rows($result);
     $HTMLOUT .= "$count {$lang['non_con_unique']}</p>";
     @((mysqli_free_result($result) || (is_object($result) && (get_class($result) === 'mysqli_result'))) ? true : false);
     if (mysqli_num_rows($res2) == 0) {
@@ -37,7 +37,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'list') {
     }
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $dt  = TIME_NOW;
+    $dt = TIME_NOW;
     $msg = htmlsafechars($_POST['msg']);
     if (!$msg) {
         stderr('Error', 'Please Type In Some Text');
@@ -93,8 +93,8 @@ if (isset($_GET['action1']) == '') {
     <tr><td class='colhead'>{$lang['non_con_by']}</td>
     <td class='colhead'>{$lang['non_con_date']}</td><td class='colhead'>{$lang['non_con_elapsed']}</td></tr>";
     while ($arr2 = mysqli_fetch_assoc($getlog)) {
-        $r2      = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr2['user'])) or sqlerr(__FILE__, __LINE__);
-        $a2      = mysqli_fetch_assoc($r2);
+        $r2 = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr2['user'])) or sqlerr(__FILE__, __LINE__);
+        $a2 = mysqli_fetch_assoc($r2);
         $elapsed = get_date($arr2['date'], '', 0, 1);
         $HTMLOUT .= "<tr><td class='colhead'><a href='userdetails.php?id=" . (int) $arr2['user'] . "'>" . htmlsafechars($a2['username']) . "</a></td><td class='colhead'>" . get_date($arr2['date'], '') . "</td><td>$elapsed</td></tr>";
     }

@@ -13,7 +13,7 @@ function autoclean()
     global $site_config, $cache, $fluent;
 
     $cache->set('cleanup_check_', 'running', 90);
-    $now   = TIME_NOW;
+    $now = TIME_NOW;
     $query = $fluent->from('cleanup')
         ->where('clean_on = 1')
         ->where('clean_time < ?', $now)
@@ -23,7 +23,7 @@ function autoclean()
     foreach ($query as $row) {
         if ($row['clean_id']) {
             $next_clean = ceil(TIME_NOW / $row['clean_increment']) * $row['clean_increment'];
-            $set        = [
+            $set = [
                 'clean_time' => $next_clean,
             ];
             $fluent->update('cleanup')

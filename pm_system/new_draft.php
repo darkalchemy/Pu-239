@@ -9,8 +9,8 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'save draft') {
     if (empty($_POST['body'])) {
         stderr($lang['pm_error'], $lang['pm_draft_err1']);
     }
-    $body      = sqlesc($_POST['body']);
-    $subject   = sqlesc(strip_tags($_POST['subject']));
+    $body = sqlesc($_POST['body']);
+    $subject = sqlesc(strip_tags($_POST['subject']));
     $go_for_it = sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, location, draft, unread, saved) VALUES  
                                                                         (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($CURUSER['id']) . ',' . TIME_NOW . ', ' . $body . ', ' . $subject . ', \'-2\', \'yes\',\'no\',\'yes\')') or sqlerr(__FILE__, __LINE__);
     $cache->increment('inbox_' . $CURUSER['id']);

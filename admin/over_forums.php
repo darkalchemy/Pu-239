@@ -6,8 +6,8 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $lang;
 
-$lang       = array_merge($lang, load_language('ad_over_forums'));
-$HTMLOUT    = $over_forums    = $count    = $min_class_viewer    = $sorted    = '';
+$lang = array_merge($lang, load_language('ad_over_forums'));
+$HTMLOUT = $over_forums = $count = $min_class_viewer = $sorted = '';
 $main_links = "
             <div class='bottom20'>
                 <ul class='level-center bg-06'>
@@ -21,11 +21,11 @@ $main_links = "
             </div>
             <h1 class='has-text-centered'>{$lang['ad_over_forum']}</h1>";
 
-$id             = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
-$maxclass       = $CURUSER['class'];
-$name           = strip_tags(isset($_POST['name']) ? htmlsafechars($_POST['name']) : '');
-$desc           = strip_tags(isset($_POST['desc']) ? htmlsafechars($_POST['desc']) : '');
-$sort           = (isset($_POST['sort']) ? intval($_POST['sort']) : 0);
+$id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
+$maxclass = $CURUSER['class'];
+$name = strip_tags(isset($_POST['name']) ? htmlsafechars($_POST['name']) : '');
+$desc = strip_tags(isset($_POST['desc']) ? htmlsafechars($_POST['desc']) : '');
+$sort = (isset($_POST['sort']) ? intval($_POST['sort']) : 0);
 $min_class_view = (isset($_POST['min_class_view']) ? intval($_POST['min_class_view']) : 0);
 //=== post / get action posted so we know what to do :P
 $posted_action = (isset($_GET['action2']) ? htmlsafechars($_GET['action2']) : (isset($_POST['action2']) ? htmlsafechars($_POST['action2']) : ''));
@@ -108,8 +108,8 @@ switch ($action) {
             <td><span style="font-weight: bold;">' . $lang['ad_over_sort'] . '</span></td>
             <td>
             <select name="sort">';
-            $res      = mysqli_query($GLOBALS['___mysqli_ston'], 'SELECT sort FROM over_forums');
-            $nr       = mysqli_num_rows($res);
+            $res = mysqli_query($GLOBALS['___mysqli_ston'], 'SELECT sort FROM over_forums');
+            $nr = mysqli_num_rows($res);
             $maxclass = $nr + 1;
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $sorted .= '<option class="body" value="' . $i . '"' . ($row['sort'] == $i ? ' selected' : '') . '>' . $i . '</option>';
@@ -195,8 +195,8 @@ switch ($action) {
                     <td><span>' . $lang['ad_over_sort'] . '</span></td>
                     <td>
                         <select name="sort">';
-        $res      = sql_query('SELECT sort FROM over_forums') or sqlerr(__FILE__, __LINE__);
-        $nr       = mysqli_num_rows($res);
+        $res = sql_query('SELECT sort FROM over_forums') or sqlerr(__FILE__, __LINE__);
+        $nr = mysqli_num_rows($res);
         $maxclass = $nr + 1;
         for ($i = 0; $i <= $maxclass; ++$i) {
             $sorted .= '
