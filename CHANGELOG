@@ -1,3 +1,7 @@
+18 Jun 2018
+update: function_imdb.php to handle failure
+update: uglify.php to create all needed files, instead of copy example files
+
 17 Jun 2018
 remove: unneeded var
 update: forums display, still incomplete but much better

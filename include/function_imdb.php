@@ -16,7 +16,13 @@ function get_imdb_info($imdb_id)
         $config           = new Config();
         $config->language = 'en-US';
         $config->cachedir = IMDB_CACHE_DIR;
+        $config->throwHttpExceptions = 0;
+        $config->default_agent = get_random_useragent();
+
         $movie            = new \Imdb\Title($imdb_id, $config);
+        if (!$movie->isReady) {
+            return null;
+        }
 
         $imdb_data['title']       = $movie->title();
         $imdb_data['director']    = array_slice($movie->director(), 0, 30);
@@ -136,4 +142,25 @@ function get_imdb_info($imdb_id)
         $imdb_info,
         $poster,
     ];
+}
+
+function get_random_useragent()
+{
+    global $fluent, $cache;
+
+    $browser = $cache->get('browser_user_agents_');
+    if ($browser === false || is_null($browser)) {
+        $browser = $fluent->from('users')
+            ->select(null)
+            ->select('browser')
+            ->where('browser IS NOT NULL')
+            ->orderBy('RAND()')
+            ->limit(1000)
+            ->fetchAll();
+
+        $cache->set('browser_user_agents_', $browser, $site_config['expires']['browser_user_agent']);
+    }
+
+    shuffle($browser);
+    return $browser[0];
 }

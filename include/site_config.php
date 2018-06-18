@@ -126,6 +126,7 @@ $site_config['expires']['browse_where']           = 60; // 60 = 60 seconds
 $site_config['expires']['torrent_xbt_data']       = 300; // 300 = 5 min
 $site_config['expires']['ismoddin']               = 0; // 0 = infinite
 $site_config['expires']['book_info']              = 604800; //604800 = 1 week
+$site_config['expires']['browser_user_agent']     = 86400;
 // Tracker configs
 $site_config['max_torrent_size']      = 3     * 1024     * 1024;
 $site_config['announce_interval']     = 60    * 30;
