@@ -11,9 +11,9 @@ function foxnews_shout($links = [])
 
     $feeds = [
         'Tech' => 'http://feeds.foxnews.com/foxnews/tech',
-        'World' => 'http://feeds.foxnews.com/foxnews/world',
-        'Entertainment' => 'http://feeds.foxnews.com/foxnews/entertainment',
-        'Sports' => 'http://feeds.foxnews.com/foxnews/sports',
+        //'World' => 'http://feeds.foxnews.com/foxnews/world',
+        //'Entertainment' => 'http://feeds.foxnews.com/foxnews/entertainment',
+        //'Sports' => 'http://feeds.foxnews.com/foxnews/sports',
     ];
 
     if ($site_config['autoshout_on'] == 1) {
