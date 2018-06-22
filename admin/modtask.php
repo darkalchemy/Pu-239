@@ -1075,7 +1075,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         'opt1' => $row['opt1'],
         'opt2' => $row['opt2'],
     ], $site_config['expires']['user_cache']);
-    write_info("{$lang['modtask_sysop_user_acc']} $userid (<a href='userdetails.php?id=$userid'>" . htmlsafechars($user['username']) . "</a>)\n{$lang['modtask_sysop_thing']}" . join(', ', $useredit['update']) . "{$lang['modtask_gl_by']}<a href='userdetails.php?id={$CURUSER['id']}'>{$CURUSER['username']}</a>");
+    write_info("{$lang['modtask_sysop_user_acc']} $userid (" . format_username($userid) . ")\n{$lang['modtask_sysop_thing']}" . join(', ', $useredit['update']) . "{$lang['modtask_gl_by']}" . format_username($CURUSER['id']));
     $returnto = htmlsafechars($_POST['returnto']);
     header("Location: {$site_config['baseurl']}/$returnto");
     stderr("{$lang['modtask_user_error']}", "{$lang['modtask_try_again']}");

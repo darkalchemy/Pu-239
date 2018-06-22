@@ -1,5 +1,7 @@
 In no particular order
 
+fix subtitles folder
+fix avatar folder
 fix happy hour
 replace mysql full text search with elasticsearch
 add language to staff.php

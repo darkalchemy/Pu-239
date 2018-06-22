@@ -23,7 +23,7 @@ if (!$count) {
 }
 $res = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $user = mysqli_fetch_assoc($res);
-$HTMLOUT .= "<h1>{$lang['userhits_profile']}<a href=\"userdetails.php?id=" . $id . '">' . htmlsafechars($user['username']) . "</a></h1>
+$HTMLOUT .= "<h1>{$lang['userhits_profile']}" . format_username($id) . "</h1>
 <h2>{$lang['userhits_total']}" . htmlsafechars($count) . "{$lang['userhits_views']}</h2>";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
@@ -39,7 +39,7 @@ $res = sql_query('SELECT uh.*, username, users.id AS uid FROM userhits uh LEFT J
 while ($arr = mysqli_fetch_assoc($res)) {
     $HTMLOUT .= '
 <tr><td>' . number_format($arr['number']) . '</td>
-<td><b><a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . (int) $arr['uid'] . '">' . htmlsafechars($arr['username']) . '</a></b></td>
+<td>' . format_username($arr['uid']) . '</td>
 <td>' . get_date($arr['added'], 'DATE', 0, 1) . "</td>
 </tr>\n";
 }

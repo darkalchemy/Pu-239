@@ -208,7 +208,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     }
 } else {
     //== Get user stats
-    $betsp = sql_query('SELECT challenged FROM casino_bets WHERE proposed =' . sqlesc($CURUSER['username'])) or sqlerr(__FILE__, __LINE__);
+    $betsp = sql_query('SELECT challenged FROM casino_bets WHERE proposed = ' . sqlesc($CURUSER['username'])) or sqlerr(__FILE__, __LINE__);
     $openbet = 0;
     while ($tbet2 = mysqli_fetch_assoc($betsp)) {
         if ($tbet2['challenged'] === 'empty') {
@@ -277,7 +277,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             if ($delold == 1) {
                 sql_query('DELETE FROM casino_bets WHERE id =' . sqlesc($tbet['id'])) or sqlerr(__FILE__, __LINE__);
             }
-            stderr($lang['casino_you_got_it'], "<h2>{$lang['casino_you_won_the_bet']}, " . htmlsafechars($nogb) . " {$lang['casino_has_been_credited_to_your_account']}, at <a href='userdetails.php?id=" . (int) $tbet['userid'] . "'>" . htmlsafechars($tbet['proposed']) . "'s</a> {$lang['casino_expense']}!</h2>&#160;&#160;&#160;$goback");
+            stderr($lang['casino_you_got_it'], "<h2>{$lang['casino_you_won_the_bet']}, " . htmlsafechars($nogb) . " {$lang['casino_has_been_credited_to_your_account']}, at " . format_username($tbet['userid']) . "</a> {$lang['casino_expense']}!</h2>&#160;&#160;&#160;$goback");
             die();
         } else {
             if (empty($newup)) {
@@ -318,12 +318,12 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             if ($delold == 1) {
                 sql_query('DELETE FROM casino_bets WHERE id =' . sqlesc($tbet['id'])) or sqlerr(__FILE__, __LINE__);
             }
-            stderr($lang['casino_damn_it'], "<h2>{$lang['casino_you_lost_the_bet']} <a href='userdetails.php?id=" . (int) $tbet['userid'] . "'>" . htmlsafechars($tbet['proposed']) . "</a> {$lang['casino_has_won']} " . htmlsafechars($nogb) . " {$lang['casino_of_your_hard_earnt_upload_credit']}!</h2> &#160;&#160;&#160;$goback");
+            stderr($lang['casino_damn_it'], "<h2>{$lang['casino_you_lost_the_bet']} " . format_username($tbet['userid']) . " {$lang['casino_has_won']} " . htmlsafechars($nogb) . " {$lang['casino_of_your_hard_earnt_upload_credit']}!</h2> &#160;&#160;&#160;$goback");
         }
         die();
     }
     //== Add a new bet
-    $loca = sql_query("SELECT * FROM casino_bets WHERE challenged ='empty'") or sqlerr(__FILE__, __LINE__);
+    $loca = sql_query("SELECT * FROM casino_bets WHERE challenged = 'empty'") or sqlerr(__FILE__, __LINE__);
     $totbets = mysqli_num_rows($loca);
     if (isset($_POST['unit'])) {
         if ((int) $_POST['unit'] === 1) {

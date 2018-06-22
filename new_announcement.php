@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$n_pms) {
         stderr('Error', 'No recipients');
     }
-    //== Preview POST data ...
+    //== POST data ...
     $body = trim((isset($_POST['body']) ? $_POST['body'] : ''));
     $subject = trim((isset($_POST['subject']) ? $_POST['subject'] : ''));
     $expiry = (int) (isset($_POST['expiry']) ? $_POST['expiry'] : 0);
@@ -101,7 +101,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $HTMLOUT .= "</select>
 
-     <input type='submit' name='buttonval' value='Preview' class='button is-small' />
      <input type='submit' name='buttonval' value='Submit' class='button is-small' />
      </td></tr></table>
      <input type='hidden' name='n_pms' value='" . $n_pms . "' />

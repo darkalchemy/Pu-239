@@ -135,7 +135,7 @@ if ($action === 'add') {
             <input type='submit' class='button is-small top20' value='{$lang['comment_doit']}' />
         </div>
     </form>";
-    $sql = "SELECT c.id, c.text, c.added, c.$locale, c.anonymous, c.editedby, c.editedat, c.user, u.id as user, u.title, u.avatar, u.offavatar, u.av_w, u.av_h, u.class, u.reputation, u.mood, u.donor, u.warned
+    $sql = "SELECT c.id, c.text, c.added, c.$locale, c.anonymous, c.editedby, c.editedat, c.user, u.id as user, u.title, u.avatar, u.offensive_avatar, u.av_w, u.av_h, u.class, u.reputation, u.mood, u.donor, u.warned
                         FROM comments AS c
                         LEFT JOIN users AS u ON c.user = u.id
                         WHERE $locale = " . sqlesc($id) . '

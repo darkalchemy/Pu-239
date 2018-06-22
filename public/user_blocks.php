@@ -269,11 +269,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $clrbits_userdetails_page |= block_userdetails::CONNECTABLE_PORT;
     }
-    if (isset($_POST['userdetails_avatar'])) {
-        $setbits_userdetails_page |= block_userdetails::AVATAR;
-    } else {
-        $clrbits_userdetails_page |= block_userdetails::AVATAR;
-    }
     if (isset($_POST['userdetails_userclass'])) {
         $setbits_userdetails_page |= block_userdetails::USERCLASS;
     } else {
@@ -371,6 +366,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($updateset) && count($updateset)) {
         sql_query('UPDATE user_blocks SET ' . implode(',', $updateset) . ' WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('blocks_' . $id);
+//        $cache->update_row('user' . $id, [
+//            'opt1' => $row['opt1'],
+//        ], $site_config['expires']['user_cache']);
+
+//        $cache->update_row('user' . $id,
         $session->set('is-success', 'User Blocks Successfully Updated');
         unset($_POST);
         header('Location: ' . $site_config['baseurl'] . '/user_blocks.php');
@@ -429,7 +429,6 @@ $checkbox_userdetails_seedtime_ratio = ((curuser::$blocks['userdetails_page'] & 
 $checkbox_userdetails_seedbonus = ((curuser::$blocks['userdetails_page'] & block_userdetails::SEEDBONUS) ? ' checked' : '');
 $checkbox_userdetails_irc_stats = ((curuser::$blocks['userdetails_page'] & block_userdetails::IRC_STATS) ? ' checked' : '');
 $checkbox_userdetails_connectable = ((curuser::$blocks['userdetails_page'] & block_userdetails::CONNECTABLE_PORT) ? ' checked' : '');
-$checkbox_userdetails_avatar = ((curuser::$blocks['userdetails_page'] & block_userdetails::AVATAR) ? ' checked' : '');
 $checkbox_userdetails_userclass = ((curuser::$blocks['userdetails_page'] & block_userdetails::USERCLASS) ? ' checked' : '');
 $checkbox_userdetails_gender = ((curuser::$blocks['userdetails_page'] & block_userdetails::GENDER) ? ' checked' : '');
 $checkbox_userdetails_freestuffs = ((curuser::$blocks['userdetails_page'] & block_userdetails::FREESTUFFS) ? ' checked' : '');
@@ -862,12 +861,6 @@ $contents[] = "
                 <div class='slideThree'> <input type='checkbox' id='userdetails_connectable_port' name='userdetails_connectable_port' value='yes' $checkbox_userdetails_connectable />
                 <label for='userdetails_connectable_port'></label></div>
                 <div class='w-100'>Enable connectable and port</div>";
-
-$contents[] = "
-                 <div class='w-100'>Avatar?</div>
-                <div class='slideThree'> <input type='checkbox' id='userdetails_avatar' name='userdetails_avatar' value='yes' $checkbox_userdetails_avatar />
-                <label for='userdetails_avatar'></label></div>
-                 <div class='w-100'>Enable avatar</div>";
 
 $contents[] = "
                  <div class='w-100'>Userclass?</div>

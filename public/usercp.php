@@ -70,6 +70,7 @@ if (isset($_GET['edited'])) {
     $session->set('is-success', "[h2]{$lang['usercp_emailch']}![/h2]");
 }
 
+$avatar = get_avatar($CURUSER);
 $HTMLOUT .= "
         <div>
             <div class='w-100'>
@@ -89,20 +90,21 @@ $HTMLOUT .= "
                         </ul>
                     </div>
                     <h1 class='has-text-centered'>Welcome " . format_username($CURUSER['id']) . "!</h1>
-                    <div class='level has-text-centered flex-top'>
-                        <span class='margin20'>";
-if (!empty($CURUSER['avatar']) && $CURUSER['av_w'] > 5 && $CURUSER['av_h'] > 5) {
+                    <div class='level has-text-centered flex-top'>";
+if (!empty($avatar)) {
     $HTMLOUT .= "
-                            <img class='img-polaroid' src='{$CURUSER['avatar']}' width='{$CURUSER['av_w']}' height='{$CURUSER['av_h']}' alt='' />
+                        <span class='margin20'>
+                            $avatar
                         </span>";
-} else {
-    $HTMLOUT .= "
-                            <img class='img-polaroid' src='{$site_config['pic_baseurl']}forumicons/default_avatar.gif' alt='' /></td>
-                        </span>";
+}
+
+$width = 'w-100';
+if ($CURUSER['avatars'] === 'yes') {
+    $width = 'w-75';
 }
 if ($action === 'avatar') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75'>
+                        <div class='table-wrapper $width shit'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -113,7 +115,7 @@ if ($action === 'avatar') {
                                     </tr>
                                 </thead>
                                 <tbody>";
-    if (!($CURUSER['avatarpos'] == 0 or $CURUSER['avatarpos'] != 1)) {
+    if (!($CURUSER['avatarpos'] == 0 || $CURUSER['avatarpos'] != 1)) {
         $HTMLOUT .= "
                                     <tr>
                                         <td class='rowhead'>{$lang['usercp_avatar']}</td>
@@ -158,7 +160,7 @@ if ($action === 'avatar') {
                                 </tbody>";
 } elseif ($action === 'signature') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75'>
+                        <div class='table-wrapper $width'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -187,7 +189,7 @@ if ($action === 'avatar') {
                                 </tbody>";
 } elseif ($action === 'api') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75'>
+                        <div class='table-wrapper $width'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -205,7 +207,7 @@ if ($action === 'avatar') {
                                 </tbody>';
 } elseif ($action === 'social') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75'>
+                        <div class='table-wrapper $width'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -240,7 +242,7 @@ if ($action === 'avatar') {
 } elseif ($action === 'location') {
     $datetime = unixstamp_to_human(TIME_NOW);
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75'>
+                        <div class='table-wrapper $width'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -360,7 +362,7 @@ if ($action === 'avatar') {
     }
 } elseif ($action === 'security') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75'>
+                        <div class='table-wrapper $width'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -499,7 +501,7 @@ if ($action === 'avatar') {
                                 </tbody>";
 } elseif ($action === 'torrents') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75'>
+                        <div class='table-wrapper $width'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -562,7 +564,7 @@ if ($action === 'avatar') {
                                 </tbody>";
 } elseif ($action === 'personal') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75'>
+                        <div class='table-wrapper $width'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -725,7 +727,7 @@ if ($action === 'avatar') {
 } else {
     if ($action === 'default') {
         $HTMLOUT .= "
-                        <div class='table-wrapper w-75'>
+                        <div class='table-wrapper $width'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>

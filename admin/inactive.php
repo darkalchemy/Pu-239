@@ -138,8 +138,8 @@ if ($count_inactive > 0) {
         $ratio = (member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']));
         $last_seen = (($arr['last_access'] == '0') ? 'never' : '' . get_date($arr['last_access'], 'DATE') . '&#160;');
         $class = get_user_class_name($arr['class']);
-        $HTMLOUT .= "<tr>
-        <td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $arr['id'] . "'>" . htmlsafechars($arr['username']) . '</a></td>
+        $HTMLOUT .= '<tr>
+        <td>' . format_username($arr['id']) . '</td>
         <td>' . $class . "</td>
         <td style='max-width:130px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;'><a href='mailto:" . htmlsafechars($arr['email']) . "'>" . htmlsafechars($arr['email']) . '</a></td>
         <td>' . $ratio . '</td>
@@ -158,7 +158,7 @@ if ($count_inactive > 0) {
         $ress = sql_query("SELECT avps.value_s AS userid, avps.value_i AS last_mail, avps.value_u AS mails, users.username FROM avps LEFT JOIN users ON avps.value_s=users.id WHERE avps.arg='inactivemail' LIMIT 1");
         $date = mysqli_fetch_assoc($ress);
         if ($date['last_mail'] > 0) {
-            $HTMLOUT .= "<tr><td colspan='6' class='colhead' style='color:red;'>{$lang['inactive_lastmail']} <a href='{$site_config['baseurl']}/userdetails.php?id=" . htmlsafechars($date['userid']) . "'>" . htmlsafechars($date['username']) . "</a> {$lang['inactive_on']} <b>" . get_date($date['last_mail'], 'DATE') . ' -  ' . $date['mails'] . "</b>{$lang['inactive_email']} " . ($date['mails'] > 1 ? 's' : '') . "  {$lang['inactive_sent']}</td></tr>";
+            $HTMLOUT .= "<tr><td colspan='6' class='colhead' style='color:red;'>{$lang['inactive_lastmail']} " . format_username($date['userid']) . " {$lang['inactive_on']} <b>" . get_date($date['last_mail'], 'DATE') . ' -  ' . $date['mails'] . "</b>{$lang['inactive_email']} " . ($date['mails'] > 1 ? 's' : '') . "  {$lang['inactive_sent']}</td></tr>";
         }
     }
     $HTMLOUT .= '</table></form>';

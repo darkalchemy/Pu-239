@@ -32,7 +32,7 @@ function print_list()
     $hadTh = false;
     if (mysqli_num_rows($qt) > 0) {
         while ($a = mysqli_fetch_assoc($qt)) {
-            $list[] = '<a href=\'userdetails.php?id=' . (int) $a['userid'] . '\' target=\'' . $target . '\'>' . htmlsafechars($a['username']) . '</a>';
+            $list[] = format_username($a['userid']);
             $ids[] = (int) $a['userid'];
         }
         $hadTh = in_array($uid, $ids) ? true : false;

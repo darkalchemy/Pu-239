@@ -70,7 +70,7 @@ if (!isset($_FILES['file'])) {
     if (isset($_GET['updated']) && $_GET['updated'] === 'avatar') {
         $HTMLOUT .= "
         <h3>{$lang['bitbucket_updated']}
-            <img src='" . url_proxy($CURUSER['avatar'], true, 500, 'auto') . "' width='50%' height='auto' alt='' />
+            <img src='" . url_proxy($CURUSER['avatar'], true, 500, null) . "' width='50%' height='auto' alt='' />
         </h3>";
     }
     $HTMLOUT .= "

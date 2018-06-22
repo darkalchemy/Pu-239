@@ -32,21 +32,21 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
     $locked = $topic_arr['locked'] === 'yes';
     $sticky = $topic_arr['sticky'] === 'yes';
     $topic_poll = $topic_arr['poll_id'] > 0;
-    $last_post_username = ($topic_arr['pan'] === 'no' && $topic_arr['username'] !== '' ? format_username($topic_arr['id']) : '[<i>' . $lang['fe_anonymous'] . '</i>]');
+    $last_post_username = ($topic_arr['pan'] === 'no' && !empty($topic_arr['username']) ? format_username($topic_arr['id']) : '[<i>' . get_anonymous_name() . '</i>]');
     $last_post_id = (int) $topic_arr['last_post'];
     //=== Get author / first post info
     $first_post_res = sql_query('SELECT p.added, p.icon, p.body, p.user_id, p.anonymous, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND' : '')) . ' topic_id = ' . sqlesc($topic_id) . ' ORDER BY id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $first_post_arr = mysqli_fetch_assoc($first_post_res);
     if ($topic_arr['tan'] === 'yes') {
         if ($CURUSER['class'] < UC_STAFF && $first_post_arr['user_id'] != $CURUSER['id']) {
-            $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+            $thread_starter = (!empty($first_post_arr['username']) ? '<i>' . get_anonymous_name() . '</i>' : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
         } else {
-            $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($first_post_arr['id']) . ']' : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+            $thread_starter = (!empty($first_post_arr['username']) ? '<i>' . get_anonymous_name() . '</i> [' . format_username($first_post_arr['id']) . ']' : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
         }
     } else {
-        $thread_starter = ($first_post_arr['username'] !== '' ? format_username($first_post_arr['id']) : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+        $thread_starter = (!empty($first_post_arr['username']) ? format_username($first_post_arr['id']) : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
     }
-    $icon = ($first_post_arr['icon'] === '' ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" title="' . htmlsafechars($first_post_arr['icon']) . '" />');
+    $icon = (empty($first_post_arr['icon']) ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" title="' . htmlsafechars($first_post_arr['icon']) . '" />');
     $first_post_text = bubble(' <img src="' . $site_config['pic_baseurl'] . 'forums/mg.gif" height="14" alt="' . $lang['fe_preview'] . '" />', format_comment($first_post_arr['body'], true, false, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
     //=== last post read in topic
     $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
@@ -94,7 +94,7 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
 		<td align="right">' . $rpic . '</td>
 		</tr>
 		</table>
-		' . ($topic_arr['topic_desc'] !== '' ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($topic_arr['topic_desc'], ENT_QUOTES) . '</span>' : '') . '</td>
+		' . (!empty($topic_arr['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($topic_arr['topic_desc'], ENT_QUOTES) . '</span>' : '') . '</td>
 		<td>' . $thread_starter . '</td>
 		<td>' . number_format($topic_arr['post_count'] - 1) . '</td>
 		<td>' . number_format($topic_arr['views']) . '</td>

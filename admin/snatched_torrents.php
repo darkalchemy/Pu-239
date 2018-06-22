@@ -146,7 +146,7 @@ if (mysqli_num_rows($result) != 0) {
             $smallname .= '...';
         }
         if (XBT_TRACKER) {
-            $HTMLOUT .= "<tr><td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $row['uid'] . "'><b>" . htmlsafechars($row['username']) . "</b></a></td>
+            $HTMLOUT .= '<tr><td>' . format_username($row['uid']) . "</td>
 <td><a href='{$site_config['baseurl']}/details.php?id=" . (int) $row['fid'] . "'><b>" . $smallname . '</b></a></td>
 <td><b>' . htmlsafechars($row['announced']) . '</b></td>
 <td><b>' . mksize($row['uploaded']) . '</b></td>
@@ -160,7 +160,7 @@ if (mysqli_num_rows($result) != 0) {
             }
             $HTMLOUT .= '<td>' . ($row['seeders'] >= 1 ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['ad_snatched_torrents_yes']}' title='{$lang['ad_snatched_torrents_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['ad_snatched_torrents_no']}' title='{$lang['ad_snatched_torrents_no']}' />") . '</td></tr>';
         } else {
-            $HTMLOUT .= "<tr><td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $row['userid'] . "'><b>" . htmlsafechars($row['username']) . "</b></a></td>
+            $HTMLOUT .= '<tr><td>' . format_username($row['userid']) . "</td>
 <td><a href='{$site_config['baseurl']}/details.php?id=" . (int) $row['torrentid'] . "'><b>" . $smallname . '</b></a></td>
 <td><b>' . get_date($row['hit_and_run'], 'LONG', 0, 1) . '</b></td>
 <td><b>' . htmlsafechars($row['mark_of_cain']) . '</b></td>

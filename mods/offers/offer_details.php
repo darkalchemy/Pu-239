@@ -32,9 +32,9 @@ if ($CURUSER['id'] == $num['userid'] || $CURUSER['class'] >= UC_STAFF) {
         $reset = "| <a class='altlink' href='viewoffers.php?id=" . $id . "&amp;offer_reset'>Re-set Offer</a>";
     }
 }
-$HTMLOUT .= "<tr>
+$HTMLOUT .= '<tr>
 <td><b>offered&#160;By</b></td><td>
-<a class='altlink' href='userdetails.php?id=$num[userid]'>{$num['username']}</a>  $edit  $delete $reset  |
+' . format_username($num[userid]) . " $edit  $delete $reset  |
 <a class='altlink' href='viewoffers.php'><b>All offers</b></a> </td></tr><tr><td>
 <b>Vote for this offer</b></td><td><a href='viewoffers.php?id=" . $id . "&amp;offer_vote'><b>Vote</b></a>
 </td></tr>
@@ -66,7 +66,7 @@ if (!$count) {
     ]);
     $subres = sql_query("SELECT comments.id, comments.text, comments.user, comments.editedat, 
                       comments.editedby, comments.ori_text, comments.offer AS offer, 
-                      comments.added, comments.anonymous, users.avatar, users.av_w ,users.av_h,
+                      comments.added, comments.anonymous, users.avatar, users.offensive_avatar, users.av_w ,users.av_h,
                       users.warned, users.username, users.title, users.class, users.last_access, 
                       users.enabled, users.reputation, users.donor, users.downloaded, users.uploaded 
                       FROM comments LEFT JOIN users ON comments.user = users.id 

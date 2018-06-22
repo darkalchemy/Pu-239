@@ -403,6 +403,10 @@ span {
     padding       : .75em
 }
 
+.simple_border {
+    border: 1px solid black;
+}
+
 .bg-none {
     background-color : transparent
 }
@@ -448,6 +452,10 @@ span {
 
 .bg-07 {
     background-color : rgba(75, 75, 125, .65)
+}
+
+.bg-08 {
+    background-color: rgba(255,228,181, .5);
 }
 
 .bordered {
@@ -499,7 +507,7 @@ span {
     padding-right : 0
 }
 
-.column:first-child:not(.img-polaroid) {
+.column:first-child:not(.img-avatar, .img-polaroid) {
     padding-left : 0
 }
 
@@ -1125,6 +1133,10 @@ vertical_center {
 .avatar {
     width: 100%;
     height: auto;
+}
+
+code a {
+    color: lime; 
 }
 
 @media (max-width : 1200px) {

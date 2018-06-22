@@ -65,7 +65,7 @@ if ($search) {
     $order_by = ((isset($_GET['sort_by']) && $_GET['sort_by'] === 'date') ? 'p.added ' : 'relevance ');
     $ASC_DESC = ((isset($_GET['asc_desc']) && $_GET['asc_desc'] === 'ASC') ? ' ASC ' : ' DESC ');
     //=== main search... could split it up for list / post thing, but it's only a couple of things so it seems pointless...
-    $res = sql_query('SELECT p.id AS post_id, p.body, p.post_title, p.added, p.icon, p.edited_by, p.edit_reason, p.edit_date, p.bbcode, p.anonymous AS pan, t.anonymous AS tan, t.id AS topic_id, t.topic_name AS topic_title, t.topic_desc, t.post_count, t.views, t.locked, t.sticky, t.poll_id, t.num_ratings, t.rating_sum, f.id AS forum_id, f.name AS forum_name, f.description AS forum_desc, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king,  u.title, u.avatar, u.offensive_avatar, MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . ' IN BOOLEAN MODE) AS relevance FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON t.forum_id = f.id LEFT JOIN users AS u ON p.user_id = u.id WHERE MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . ' IN BOOLEAN MODE) AND ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class'] . $AND . ' HAVING relevance > 0.2 ORDER BY ' . $order_by . $ASC_DESC . $LIMIT) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT p.id AS post_id, p.body, p.post_title, p.added, p.icon, p.edited_by, p.edit_reason, p.edit_date, p.bbcode, p.anonymous AS pan, t.anonymous AS anonymous, t.id AS topic_id, t.topic_name AS topic_title, t.topic_desc, t.post_count, t.views, t.locked, t.sticky, t.poll_id, t.num_ratings, t.rating_sum, f.id AS forum_id, f.name AS forum_name, f.description AS forum_desc, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king,  u.title, u.avatar, u.offensive_avatar, MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . ' IN BOOLEAN MODE) AS relevance FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON t.forum_id = f.id LEFT JOIN users AS u ON p.user_id = u.id WHERE MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . ' IN BOOLEAN MODE) AND ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class'] . $AND . ' HAVING relevance > 0.2 ORDER BY ' . $order_by . $ASC_DESC . $LIMIT) or sqlerr(__FILE__, __LINE__);
     //=== top and bottom stuff
     $the_top_and_bottom = '<table border="0" cellspacing="0" cellpadding="0" width="90%">
 	<tr><td  valign="middle">' . (($count > $perpage) ? $menu : '') . '</td>
@@ -128,7 +128,7 @@ if ($search) {
 		</tr>
 		<tr>
 		<td  class="' . $class . '" align="right"><span style="font-style: italic;">by: </span></td>
-		<td  class="' . $class . '" align="left">' . ($arr['pan'] === 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($arr['id'])) . '</td>
+		<td  class="' . $class . '" align="left">' . ($arr['pan'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($arr['id'])) . '</td>
 		<td class="' . $class . '" align="right"></td>
 		</tr>
 		<tr>
@@ -212,7 +212,7 @@ if ($show_as === 'posts') {
 	<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="' . $site_config['pic_baseurl'] . 'forums/down.gif" alt="' . $lang['fe_bottom'] . '" title="' . $lang['fe_bottom'] . '" class="emoticon"></a>
 	</span></td>
 	</tr>
-	<tr><td class="' . $class_alt . '" width="100px" valign="top">' . ($arr['tan'] === 'yes' ? '<img src="' . $site_config['pic_baseurl'] . 'anonymous_1.jpg" alt="avatar" class="avatar">' : avatar_stuff($arr)) . '<br>' . ($arr['tan'] === 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($arr['id'])) . ($arr['anonymous'] === 'yes' || $arr['title'] === '' ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($arr['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['tan'] === 'yes' ? '' : get_user_class_name($arr['class'])) . '</span><br>
+	<tr><td class="' . $class_alt . '" width="100px" valign="top">' . get_avatar($arr) . '<br>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($arr['id'])) . ($arr['anonymous'] === 'yes' || $arr['title'] === '' ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($arr['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name($arr['class'])) . '</span><br>
 	</td><td class="' . $class . '" align="left" valign="top" colspan="2">' . $body . $edited_by . '</td></tr>
 	<tr><td class="' . $class_alt . '" align="right" valign="middle" colspan="3"></td></tr>';
     } //=== end of while loop

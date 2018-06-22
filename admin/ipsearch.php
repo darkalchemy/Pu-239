@@ -136,8 +136,8 @@ if ($ip) {
         } else {
             $invitedby = '--';
         }
-        $HTMLOUT .= "<tr>
-           <td><b><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $user['id'] . "'></a></b>" . format_username($user) . '</td>' . '<td>' . member_ratio($user['uploaded'], $user['downloaded']) . '</td>
+        $HTMLOUT .= '<tr>
+           <td>' . format_username($user['id']) . '</td>' . '<td>' . member_ratio($user['uploaded'], $user['downloaded']) . '</td>
           <td>' . $user['email'] . '</td><td>' . $ipstr . '</td>
           <td><div>' . get_date($user['last_access'], 'DATE', 1, 0) . "</div></td>
           <td><div><b><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=" . (int) $user['id'] . "'>" . htmlsafechars($iphistory) . '</a></b></div></td>

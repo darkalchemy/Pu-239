@@ -1,6 +1,7 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $cache;
+require_once INCL_DIR . 'user_functions.php';
+global $CURUSER, $site_config, $lang, $cache, $user_stuffs;
 
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
@@ -17,9 +18,8 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     $urgent = sqlesc((isset($_POST['urgent']) && $_POST['urgent'] === 'yes' && $CURUSER['class'] >= UC_STAFF) ? 'yes' : 'no');
     $returnto = htmlsafechars(isset($_POST['returnto']) ? $_POST['returnto'] : '');
     //$returnto = htmlsafechars($_POST['returnto']);
+    $arr_receiver = $user_stuffs->getUserFromId($receiver);
 
-    $res_receiver = sql_query('SELECT id, acceptpms, notifs, email, class, username FROM users WHERE id=' . sqlesc($receiver)) or sqlerr(__FILE__, __LINE__);
-    $arr_receiver = mysqli_fetch_assoc($res_receiver);
     if (!is_valid_id(intval($_POST['receiver'])) || !is_valid_id($arr_receiver['id'])) {
         stderr($lang['pm_error'], $lang['pm_send_not_found']);
     }
@@ -27,8 +27,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
         stderr($lang['pm_error'], $lang['pm_send_nobody']);
     }
     if ($CURUSER['suspended'] === 'yes') {
-        $res = sql_query('SELECT class FROM users WHERE id = ' . sqlesc($receiver)) or sqlerr(__FILE__, __LINE__);
-        $row = mysqli_fetch_assoc($res);
+        $row = $user_stuffs->getUserFromId($receiver);
         if ($row['class'] < UC_STAFF) {
             stderr($lang['pm_error'], $lang['pm_send_your_acc']);
         }
@@ -145,12 +144,11 @@ if ($receiver && !is_valid_id($receiver)) {
     stderr($lang['pm_error'], $lang['pm_send_mid']);
 }
 if ($receiver) {
-    $res_member = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($receiver)) or sqlerr(__FILE__, __LINE__);
-    $arr_member = mysqli_fetch_row($res_member);
+    $arr_member = $user_stuffs->getUserFromId($receiver);
 }
 
 if ($replyto != 0) {
-    if (!valid_username($arr_member[0])) {
+    if (!valid_username($arr_member['username'])) {
         stderr($lang['pm_error'], $lang['pm_send_mid']);
     }
 
@@ -161,7 +159,7 @@ if ($replyto != 0) {
         stderr($lang['pm_error'], $lang['pm_send_slander']);
     }
     if ($arr_old_message['receiver'] == $CURUSER['id']) {
-        $body .= "\n\n\n{$lang['pm_send_wrote0']}$arr_member[0]{$lang['pm_send_wrote']}\n$arr_old_message[msg]\n";
+        $body .= "\n\n\n{$lang['pm_send_wrote0']}{$arr_member['username']}{$lang['pm_send_wrote']}\n{$arr_old_message[msg]}\n";
         $subject = $lang['pm_send_re'] . htmlsafechars($arr_old_message['subject']);
     }
 }
@@ -171,9 +169,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $body = trim($_POST['body']);
 }
 
-$avatar = (($CURUSER['avatars'] === 'no') ? '' : (empty($CURUSER['avatar']) ? '
-        <img width="80" src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($CURUSER['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '<img width="80" src="' . $site_config['pic_baseurl'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<img width="80" src="' . htmlsafechars($CURUSER['avatar']) . '" alt="avatar" />')));
-
 $HTMLOUT .= $top_links . '
     <form name="compose" method="post" action="pm_system.php">
         <input type="hidden" name="action" value="send_message" />';
@@ -182,7 +177,7 @@ if ($receiver) {
         <input type="hidden" name="returnto" value="' . $returnto . '" />
         <input type="hidden" name="replyto" value="' . $replyto . '" />
         <input type="hidden" name="receiver" value="' . $receiver . '" />
-        <h1>' . $lang['pm_send_msgto'] . '<a class="altlink" href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $receiver . '">' . $arr_member[0] . '</a></h1>';
+        <h1>' . $lang['pm_send_msgto'] . ' ' . format_username($receiver) . '</h1>';
 } else {
     $HTMLOUT .= "
         <input type='hidden' name='returnto' value='$returnto' />

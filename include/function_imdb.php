@@ -20,7 +20,7 @@ function get_imdb_info($imdb_id)
         $config->default_agent = get_random_useragent();
 
         $movie = new \Imdb\Title($imdb_id, $config);
-        if (!$movie->isReady) {
+        if (empty($movie->title())) {
             return null;
         }
 
@@ -82,7 +82,7 @@ function get_imdb_info($imdb_id)
                                             <span id='cast_{$pp['imdb']}_tooltip'>
                                                 <span class='is-flex'>
                                                     <span class='has-text-centered'>
-                                                        <img src='" . url_proxy(strip_tags($pp['photo']), true, 150, 'auto') . "' class='tooltip-poster' />
+                                                        <img src='" . url_proxy(strip_tags($pp['photo']), true, 150, null) . "' class='tooltip-poster' />
                                                         <p class='top10'>{$pp['name']}</p>
                                                         <p>{$pp['role']}</p>
                                                     </span>
@@ -146,7 +146,7 @@ function get_imdb_info($imdb_id)
 
 function get_random_useragent()
 {
-    global $fluent, $cache;
+    global $fluent, $cache, $site_config;
 
     $browser = $cache->get('browser_user_agents_');
     if ($browser === false || is_null($browser)) {

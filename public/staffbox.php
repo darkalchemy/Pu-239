@@ -179,9 +179,9 @@ switch ($do) {
                 $body .= "
                         <tr>
                             <td><a href='" . $_SERVER['PHP_SELF'] . '?do=view&amp;id=' . (int) $a['id'] . "'>" . htmlsafechars($a['subject']) . '</a></td>
-                            <td><b>' . ($a['username'] ? "<a href='userdetails.php?id=" . (int) $a['sender'] . "'>" . htmlsafechars($a['username']) . '</a>' : 'Unknown[' . (int) $a['sender'] . ']') . '</b></td>
+                            <td><b>' . ($a['username'] ? format_username($a['sender']) : 'Unknown[' . (int) $a['sender'] . ']') . '</b></td>
                             <td>' . get_date($a['added'], 'DATE', 1) . "<br><span class='small'>" . get_date($a['added'], 0, 1) . '</span></td>
-                            <td><b>' . ($a['answeredby'] > 0 ? "by <a href='userdetails.php?id=" . (int) $a['answeredby'] . "'>" . htmlsafechars($a['username2']) . '</a>' : '<span>No</span>') . "</b></td>
+                            <td><b>' . ($a['answeredby'] > 0 ? 'by ' . format_username($a['answeredby']) : '<span>No</span>') . "</b></td>
                             <td><input type='checkbox' name='id[]' value='" . (int) $a['id'] . "' /></td>
                         </tr>";
             }

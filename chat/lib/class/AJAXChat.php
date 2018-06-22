@@ -3508,6 +3508,11 @@ class AJAXChat
         $messages = '';
 
         while ($row = mysqli_fetch_array($result)) {
+            preg_match_all('/\[img\](.*)\[\/img\]/s', $row['text'], $matches);
+            foreach ($matches[1] as $match) {
+                $row['text'] = str_replace($match, url_proxy($match, true), $row['text']);
+            }
+
             $message = $this->getChatViewMessageXML(
                 $row['id'],
                 $row['timeStamp'],
@@ -3609,6 +3614,11 @@ class AJAXChat
         $messages = '';
 
         while ($row = mysqli_fetch_array($result)) {
+            preg_match_all('/\[img\](.*)\[\/img\]/s', $row['text'], $matches);
+            foreach ($matches[1] as $match) {
+                $row['text'] = str_replace($match, url_proxy($match, true), $row['text']);
+            }
+
             $message = '';
             $message .= '<message';
             $message .= ' id="' . $row['id'] . '"';
@@ -3686,6 +3696,10 @@ class AJAXChat
 
         $xml = '<messages>';
         while ($row = mysqli_fetch_array($result)) {
+            preg_match_all('/<img.*?src=["|\'](.*?)["|\'].*?>/s', $row['text'], $matches);
+            foreach ($matches[1] as $match) {
+                $row['text'] = str_replace($match, url_proxy($match, true), $row['text']);
+            }
             $xml .= '<message';
             $xml .= ' id="' . $row['id'] . '"';
             $xml .= ' dateTime="' . date('r', $row['timeStamp']) . '"';

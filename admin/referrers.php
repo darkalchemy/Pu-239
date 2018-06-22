@@ -51,7 +51,7 @@ if ($count > 0) {
             <td>' . get_date($data['date'], '') . '</td>
             <td>' . $browser . '</td>
             <td>' . htmlsafechars($data['ip']) . '</td>
-            <td>' . htmlsafechars($data['ip']) . ' ' . ((int) $data['uid'] ? "<a href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $data['uid'] . "'>" : '') . '' . (htmlsafechars($data['username']) ? '&#160;[' . htmlsafechars($data['username']) . ']</a>' : "{$lang['ref_guest']}") . "
+            <td>' . htmlsafechars($data['ip']) . ' ' . ((int) $data['uid'] ? format_username($data['uid']) : $lang['ref_guest']) . "
 </td><td><a href='" . htmlsafechars($data['referer']) . "'>" . htmlsafechars(CutName($data['referer'], '50')) . "</a></td><!--<td><a href='" . htmlsafechars($data['page']) . "'>{$lang['ref_view']}</a></td>--></tr>";
             $browser = '';
         }

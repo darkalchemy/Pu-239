@@ -50,7 +50,7 @@ if ($action == 'avatar') {
     $view_offensive_avatar = (isset($_POST['view_offensive_avatar']) && $_POST['view_offensive_avatar'] === 'yes' ? 'yes' : 'no');
     if (!($CURUSER['avatarpos'] == 0 or $CURUSER['avatarpos'] != 1)) {
         $avatar = trim(urldecode($_POST['avatar']));
-        if (preg_match("/^http:\/\/$/i", $avatar) || preg_match('/[?&;]/', $avatar) || preg_match('#javascript:#is', $avatar) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $avatar)) {
+        if (preg_match("/^https?:\/\/$/i", $avatar) || preg_match('/[?&;]/', $avatar) || preg_match('#javascript:#is', $avatar) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $avatar)) {
             $avatar = '';
         }
     }
@@ -62,7 +62,7 @@ if ($action == 'avatar') {
         if ($img_size[0] < 5 || $img_size[1] < 5) {
             stderr($lang['takeeditcp_user_error'], $lang['takeeditcp_small_image']);
         }
-        sql_query('UPDATE usersachiev SET avatarset = avatarset+1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND avatarset = '0'") or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usersachiev SET avatarset = avatarset + 1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND avatarset = '0'") or sqlerr(__FILE__, __LINE__);
         if (($img_size[0] > $site_config['av_img_width']) || ($img_size[1] > $site_config['av_img_height'])) {
             $image = resize_image([
                                       'max_width' => $site_config['av_img_width'],
@@ -110,7 +110,7 @@ if ($action == 'avatar') {
     }
     $signatures = (isset($_POST['signatures']) && $_POST['signatures'] === 'yes' ? 'yes' : 'no');
     $signature = trim(urldecode($_POST['signature']));
-    if (preg_match("/^http:\/\/$/i", $signature) || preg_match('/[?&;]/', $signature) || preg_match('#javascript:#is', $signature) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $signature)) {
+    if (preg_match("/^https?:\/\/$/i", $signature) || preg_match('/[?&;]/', $signature) || preg_match('#javascript:#is', $signature) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $signature)) {
         $signature = '';
     }
     if (!empty($signature)) {

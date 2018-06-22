@@ -110,11 +110,11 @@ switch ($action2) {
         break;
 } //=== end switch
 //=== get stuff ready for page
-$res = sql_query('SELECT s.suspect AS suspect_id, s.text, s.shittyness, s.added AS shit_list_added, 
+$res = sql_query('SELECT s.suspect AS suspect_id, s.text, s.shittyness, s.added AS shit_list_added,
                   u.username, u.id, u.added, u.class, u.leechwarn, u.chatpost, u.pirate, u.king, u.avatar, u.donor, u.warned, u.enabled, u.suspended, u.last_access, u.offensive_avatar, u.avatar_rights
-                  FROM shit_list AS s 
-                  LEFT JOIN users AS u ON s.suspect = u.id 
-                  WHERE s.userid=' . sqlesc($CURUSER['id']) . ' 
+                  FROM shit_list AS s
+                  LEFT JOIN users AS u ON s.suspect = u.id
+                  WHERE s.userid=' . sqlesc($CURUSER['id']) . '
                   ORDER BY shittyness DESC');
 //=== default page
 $HTMLOUT .= $message . '
@@ -138,7 +138,7 @@ if (mysqli_num_rows($res) == 0) {
             $shit .= ' <img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" title="' . (int) $shit_list['shittyness'] . '' . $lang['shitlist_scale'] . '" alt="*" />';
         }
         $HTMLOUT .= (($i % 2 == 1) ? '<tr>' : '') . '
-      <td class="' . (($i % 2 == 0) ? 'one' : 'two') . '" width="80">' . avatar_stuff($shit_list) . '<br>
+      <td class="' . (($i % 2 == 0) ? 'one' : 'two') . '" width="80">' . get_avatar($shit_list) . '<br>
 
       ' . format_username($shit_list['id']) . '<br>
 

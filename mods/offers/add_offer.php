@@ -22,8 +22,8 @@ if ($CURUSER['class'] < UC_VIP) {
     }
 }
 $HTMLOUT .= '<h3>Offer Rules</h3>';
-$HTMLOUT .= 'To make an offer you must have a ratio of at least<b> ' . $site_config['offer_min_ratio'] . '</b> AND have uploaded at least <b>' . $site_config['offer_gigs_upped'] . ' GB</b>.<br>' . ($site_config['karma'] ? " A offer will also cost you <b><a class='altlink' href='mybonus.php'>" . $site_config['offer_cost_bonus'] . ' Karma Points</a></b>....<br><br>' : '') . " 
-In your particular case <a class='altlink' href='userdetails.php?id=" . $CURUSER['id'] . "'>" . $CURUSER['username'] . '</a>, ';
+$HTMLOUT .= 'To make an offer you must have a ratio of at least<b> ' . $site_config['offer_min_ratio'] . '</b> AND have uploaded at least <b>' . $site_config['offer_gigs_upped'] . ' GB</b>.<br>' . ($site_config['karma'] ? " A offer will also cost you <b><a class='altlink' href='mybonus.php'>" . $site_config['offer_cost_bonus'] . ' Karma Points</a></b>....<br><br>' : '') . ' 
+In your particular case ' . format_username($CURUSER['id']) . ', ';
 if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus'] < $site_config['offer_cost_bonus']) {
     $HTMLOUT .= "you do not have enough <a class='altlink' href='mybonus.php'>Karma Points</a> ...
         you can not make offers.<p>To view all offers, click 
@@ -112,7 +112,7 @@ if (mysqli_num_rows($rescount) > 0) {
         ];
     }
     while ($arr = mysqli_fetch_assoc($res)) {
-        $addedby = "<td style='padding: 0;'><b><a href='userdetails.php?id=$arr[offered_by_user_id]'>$arr[username]</a></b></td>";
+        $addedby = "<td style='padding: 0;'>" . format_username($arr[offered_by_user_id]) . '</td>';
         $catname = htmlspecialchars($change[$arr['cat']]['name']);
         $catpic = htmlspecialchars($change[$arr['cat']]['image']);
         $catimage = "<img src='{$site_config['pic_baseurl']}caticons/" . $catpic . "' title='$catname' alt='$catname' />";

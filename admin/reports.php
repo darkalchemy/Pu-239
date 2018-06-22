@@ -130,7 +130,7 @@ if ($count == '0') {
         if ($arr_info['delt_with']) {
             $res_who = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr_info['who_delt_with_it']));
             $arr_who = mysqli_fetch_assoc($res_who);
-            $dealtwith = "<span style='color: {$solved_color};'><b>{$lang['reports_yes']}</b> </font> {$lang['reports_by']} <a class='altlink' href='userdetails.php?id=" . (int) $arr_info['who_delt_with_it'] . "'><b>" . htmlsafechars($arr_who['username']) . "</b></a><br> {$lang['reports_in']} <font color='{$solved_color};'>{$solved_in}</span>";
+            $dealtwith = "<span style='color: {$solved_color};'><b>{$lang['reports_yes']}</b> </span> {$lang['reports_by']} " . format_username($arr_info['who_delt_with_it']) . "<br>{$lang['reports_in']} <span style='color: {$solved_color};'>{$solved_in}</span>";
             $checkbox = "<input type='radio' name='id' value='" . (int) $arr_info['id'] . "' disabled />";
         } else {
             $dealtwith = "<span class='has-text-danger'><b>{$lang['reports_no']}</b></span>";
@@ -182,7 +182,7 @@ if ($count == '0') {
                 case 'Hit_And_Run':
                     $res_who2 = sql_query('SELECT users.username, torrents.name, r.2nd_value FROM users, torrents LEFT JOIN reports AS r ON r.2nd_value = torrents.id WHERE users.id=' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<b>{$lang['reports_user']}</b> <a class='altlink' href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $arr_info['reporting_what'] . "&amp;completed=1'><b>{$arr_who2['username']}</b></a><br>{$lang['reports_hit']}<br> <a class='altlink' href='{$site_config['baseurl']}/details.php?id=" . (int) $arr_info['2nd_value'] . "&amp;page=0#snatched'><b>" . htmlsafechars($arr_who2['name']) . '</b></a>';
+                    $link_to_thing = "<b>{$lang['reports_user']}</b> " . format_username($arr_info['reporting_what']) . "<br>{$lang['reports_hit']}<br> <a class='altlink' href='{$site_config['baseurl']}/details.php?id=" . (int) $arr_info['2nd_value'] . "&amp;page=0#snatched'><b>" . htmlsafechars($arr_who2['name']) . '</b></a>';
                     break;
 
                 case 'Post':
@@ -194,8 +194,8 @@ if ($count == '0') {
         }
         $body .= '
         <tr>
-            <td>' . get_date($arr_info['added'], 'DATE', 0, 1) . "</td>
-            <td><a class='altlink' href='userdetails.php?id=" . (int) $arr_info['reported_by'] . "'>" . '<b>' . htmlsafechars($arr_info['username']) . "</b></a></td>
+            <td>' . get_date($arr_info['added'], 'DATE', 0, 1) . '</td>
+            <td>' . format_username($arr_info['reported_by']) . "</td>
             <td>{$link_to_thing}</td>
             <td><b>" . str_replace('_', ' ', $arr_info['reporting_type']) . '</b>' . '</td>
             <td>' . htmlsafechars($arr_info['reason']) . "</td>

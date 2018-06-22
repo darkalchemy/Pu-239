@@ -23,7 +23,6 @@ class user_options
     const SUBSCRIPTION_PM = 0x8000; // 32768 exclude
     const VIEWSCLOUD = 0x10000; // 65536
     const TENPERCENT = 0x20000; // 131072
-    const AVATARS = 0x40000; // 262144
     const OFFAVATAR = 0x80000; // 524288 exclude
     const HIDECUR = 0x100000; // 1048576 exclude
     const SIGNATURE_POST = 0x200000; // 2097152

@@ -48,7 +48,12 @@ $HTMLOUT .= "<tr><td colspan='9'><a class='altlink' href='{$site_config['baseurl
 $HTMLOUT .= "<tr><td class='colhead'>{$lang['donate_id']}</td><td class='colhead'>{$lang['donate_username']}</td><td class='colhead'>{$lang['donate_email']}</td>" . "<td class='colhead'>{$lang['donate_joined']}</td><td class='colhead'>{$lang['donate_until']}</td><td class='colhead'>" . "{$lang['donate_current']}</td><td class='colhead'>{$lang['donate_total']}</td><td class='colhead'>{$lang['donate_pm']}</td></tr>";
 while ($arr = mysqli_fetch_assoc($res)) {
     // =======end
-    $HTMLOUT .= "<tr><td><a class='altlink' href='{$site_config['baseurl']}/userdetails.php?id=" . htmlsafechars($arr['id']) . "'>" . htmlsafechars($arr['id']) . '</a></td>' . "<td><a class='altlink' href='{$site_config['baseurl']}/userdetails.php?id=" . htmlsafechars($arr['id']) . "'><b>" . htmlsafechars($arr['username']) . '</b></a>' . "</td><td><a class='altlink' href='mailto:" . htmlsafechars($arr['email']) . "'>" . htmlsafechars($arr['email']) . '</a>' . '</td><td><font size="-3"> ' . get_date($arr['added'], 'DATE') . '</font>' . '</td><td>';
+    $HTMLOUT .= '
+        <tr>
+            <td>' . format_username($arr['id']) . "</td>
+            <td><a class='altlink' href='mailto:" . htmlsafechars($arr['email']) . "'>" . htmlsafechars($arr['email']) . '</a>' . '</td>
+            <td><span class="size_3">' . get_date($arr['added'], 'DATE') . '</span></td>
+            <td>';
     $donoruntil = (int) $arr['donoruntil'];
     if ($donoruntil == '0') {
         $HTMLOUT .= 'n/a';

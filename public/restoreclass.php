@@ -9,5 +9,6 @@ sql_query("UPDATE users SET override_class = '255' WHERE id = " . sqlesc($CURUSE
 $cache->update_row('user' . $CURUSER['id'], [
     'override_class' => 255,
 ], $site_config['expires']['user_cache']);
+
 header("Location: {$site_config['baseurl']}/index.php");
 die();

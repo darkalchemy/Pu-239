@@ -7,6 +7,7 @@
  */
 function commenttable($rows, $variant = 'torrent')
 {
+    require_once INCL_DIR . 'user_functions.php';
     require_once INCL_DIR . 'html_functions.php';
     global $CURUSER, $site_config, $mood, $cache;
 
@@ -64,10 +65,6 @@ function commenttable($rows, $variant = 'torrent')
                 } else {
                     $title = htmlsafechars($title);
                 }
-                $avatar1 = ($row['anonymous'] == 'yes' ? "<img src='{$site_config['pic_baseurl']}anonymous_1.jpg' alt='Avatar' title='Avatar' class='avatar' />" : "<img src='" . url_proxy($row['avatar'], true) . "' alt='Avatar' title='Avatar' class='avatar' />");
-                if (!$avatar1) {
-                    $avatar1 = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
-                }
                 $this_text .= format_username($row['user']);
                 $this_text .= '
                     <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'Mood\',530,500,1,1);">
@@ -88,21 +85,18 @@ function commenttable($rows, $variant = 'torrent')
                     <span class='tot-{$row['id']}' data-tot='" . (!empty($likes) && count(array_unique($likes)) > 0 ? count(array_unique($likes)) : '') . "'>&#160;{$att_str}</span>
                 </span>
             </div>";
-        $avatar = ($row['anonymous'] === 'yes' ? "{$site_config['pic_baseurl']}anonymous_1.jpg" : htmlsafechars($row['avatar']));
-        if (!$avatar) {
-            $avatar = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
-        }
+        $avatar = get_avatar($row);
         $text = format_comment($row['text']);
         if ($row['editedby']) {
-            $text .= "<p><font size='1' class='small'>" . $lang['commenttable_last_edited_by'] . " <a href='userdetails.php?id=" . (int) $row['editedby'] . "'>" . format_username($row['editby']) . '</a> ' . $lang['commenttable_last_edited_at'] . ' ' . get_date($row['editedat'], 'DATE') . "</font></p>\n";
+            $text .= "<p class='size_3'>{$lang['commenttable_last_edited_by']}" . format_username($row['editedby']) . " {$lang['commenttable_last_edited_at']} " . get_date($row['editedat'], 'DATE') . "</p>\n";
         }
         $top = $i++ >= 1 ? 'top20' : '';
         $htmlout .= main_div("
             $this_text
             <a id='comment_{$row['id']}'></a>
             <div class='columns'>
-                <div class='margin10 round10 bg-02 column is-one-fifth has-text-centered'>
-                    <img src='" . url_proxy($avatar, true) . "' alt='Avatar' class='avatar' /><br>" . get_reputation($row, 'comments') . "
+                <div class='margin10 round10 bg-02 column is-one-fifth has-text-centered img-avatar'>
+                    {$avatar}" . get_reputation($row, 'comments') . "
                 </div>
                 <div class='margin10 left10 bg-02 round10 column'>
                     $text

@@ -119,7 +119,7 @@ if ($count == 0) {
     while ($a = mysqli_fetch_assoc($g)) {
         $tip = ($do === 'leechwarn' ? $lang['leechwarn_warned_for'] . htmlsafechars($a['warn_reason']) . '<br>' . $lang['leechwarn_warned_till'] . get_date($a['leechwarn'], 'DATE', 1) . ' - ' . mkprettytime($a['leechwarn'] - TIME_NOW) : $lang['leechwarn_disabled_for'] . htmlsafechars($a['disable_reason']));
         $HTMLOUT .= "<tr>
-                  <td width='100%'><a href='userdetails.php?id=" . (int) $a['id'] . "' onmouseover=\"Tip('($tip)')\" onmouseout=\"UnTip()\">" . htmlsafechars($a['username']) . "</a></td>
+                  <td width='100%'><a href='userdetails.php?id=" . (int) $a['id'] . "' class='tooltipper' title='$tip'>" . htmlsafechars($a['username']) . "</a></td>
                   <td nowrap='nowrap'>" . (float) $a['ratio'] . "<br><font class='small'><b>{$lang['leechwarn_d']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['leechwarn_u']}</b> " . mksize($a['uploaded']) . "</font></td>
                   <td nowrap='nowrap'>" . get_user_class_name($a['class']) . "</td>
                   <td nowrap='nowrap'>" . get_date($a['last_access'], 'LONG', 0, 1) . "</td>

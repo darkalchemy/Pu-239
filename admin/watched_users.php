@@ -37,7 +37,7 @@ if (isset($_GET['remove'])) {
                 'modcomment' => $modcomment,
             ], $site_config['expires']['user_cache']);
             $count = 1;
-            $removed_log = '<a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $remove_me_Ive_been_good . '" class="altlink">' . htmlsafechars($user['username']) . '</a>';
+            $removed_log = format_username($remove_me_Ive_been_good);
         }
     } else {
         foreach ($remove_me_Ive_been_good as $id) {
@@ -52,7 +52,7 @@ if (isset($_GET['remove'])) {
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
                 $count = (++$count);
-                $removed_log .= '<a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $id . '" class="altlink">' . htmlsafechars($user['username']) . '</a> ';
+                $removed_log .= format_username($id);
             }
         }
     }
@@ -72,7 +72,7 @@ if (isset($_GET['add'])) {
         $res = sql_query('SELECT modcomment, watched_user, watched_user_reason, username FROM users WHERE id = ' . sqlesc($member_whos_been_bad)) or sqlerr(__FILE__, __LINE__);
         $user = mysqli_fetch_assoc($res);
         if ($user['watched_user'] > 0) {
-            stderr($lang['watched_stderr'], htmlsafechars($user['username']) . ' ' . $lang['watched_already'] . '<a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $member_whos_been_bad . '" >' . $lang['watched_backto'] . ' ' . htmlsafechars($user['username']) . '\'s ' . $lang['watched_profile'] . '</a>');
+            stderr($lang['watched_stderr'], htmlsafechars($user['username']) . ' ' . $lang['watched_already'] . ' ' . $lang['watched_backto'] . ' ' . format_username($user['id']) . ' ' . $lang['watched_profile']);
         }
         //== ok they are not watched yet let's add the info part 1
         if ($_GET['add'] && $_GET['add'] == 1) {
@@ -102,7 +102,7 @@ if (isset($_GET['add'])) {
     //=== Check if member was added
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) > 0) {
         $H1_thingie = '<h1>' . $lang['watched_success'] . '!' . htmlsafechars($user['username']) . ' ' . $lang['watched_isadded'] . '!</h1>';
-        write_log('[b]' . $CURUSER['username'] . '[/b] ' . $lang['watched_isadded'] . ' <a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $member_whos_been_bad . '" class="altlink">' . htmlsafechars($user['username']) . '</a> ' . $lang['watched_tothe'] . ' <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users" class="altlink">' . $lang['watched_users_list'] . '</a>.');
+        write_log('[b]' . $CURUSER['username'] . '[/b] ' . $lang['watched_isadded'] . ' ' . format_username($member_whos_been_bad) . ' ' . $lang['watched_tothe'] . ' <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users" class="altlink">' . $lang['watched_users_list'] . '</a>.');
     }
 }
 //=== get number of watched members

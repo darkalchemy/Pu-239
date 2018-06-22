@@ -23,6 +23,7 @@ class CustomAJAXChat extends AJAXChat
     public function getValidLoginUserData()
     {
         $user = $this->_user->getUserFromId($this->getUserID());
+
         if (!empty($user) && $user['enabled'] === 'yes' && $user['chatpost'] === 1) {
             $userData['userID'] = $user['id'];
             $userData['userName'] = $this->trimUserName($user['username']);

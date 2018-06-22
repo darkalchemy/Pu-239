@@ -49,7 +49,7 @@ while ($ras = mysqli_fetch_assoc($res)) {
                 } else {
                     $utc = ' bgcolor="333333"';
                 }
-                $HTMLOUT .= "<tr$utc><td><a href='userdetails.php?id=" . (int) $arr['id'] . "'>" . format_username($arr['id']) . '</a></td>
+                $HTMLOUT .= "<tr$utc><td>" . format_username($arr['id']) . '</td>
                                   <td>' . htmlsafechars($arr['email']) . "</td>
                                   <td>$added</td>
                                   <td>$last_access</td>

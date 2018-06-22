@@ -168,7 +168,7 @@ $site_config['sub_up_dir'] = ROOT_DIR . 'uploadsub'; // must be writable for htt
 $site_config['flood_file'] = INCL_DIR . 'settings' . DIRECTORY_SEPARATOR . 'limitfile.txt';
 $site_config['nameblacklist'] = ROOT_DIR . 'Cache' . DIRECTORY_SEPARATOR . 'nameblacklist.txt';
 $site_config['happyhour'] = CACHE_DIR . 'happyhour' . DIRECTORY_SEPARATOR . 'happyhour.txt';
-$site_config['sql_error_log'] = SQLERROR_LOGS_DIR . 'sql_err_' . date('M_D_Y') . '.log';
+$site_config['sql_error_log'] = SQLERROR_LOGS_DIR . 'sql_err_' . date('Y_m_d', TIME_NOW) . '.log';
 
 if (empty($_SERVER['HTTP_HOST'])) {
     $_SERVER['HTTP_HOST'] = !empty($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $site_config['domain'];

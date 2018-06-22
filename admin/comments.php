@@ -66,7 +66,7 @@ switch ($view) {
                 "<td>{$comment['torrent']}</td>" .
                 "<td>{$comment['text']}</td>" .
                 "<td>{$comment['ori_text']}</td>" .
-                "<td><a href='{$site_config['baseurl']}/userdetails.php?id={$comment['user']}'>{$comment['username']}</a>" .
+                '<td>' . format_username($comment['user']) .
                 " [<a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver={$comment['user']}'>{$lang['text_msg']}</a>]</td>" .
                 "<td><a href='{$site_config['baseurl']}/details.php?id={$comment['torrent']}'>{$comment['name']}</a></td>" .
                 '<td>' . get_date($comment['added'], 'DATE') . '</td>' .
@@ -156,7 +156,7 @@ switch ($view) {
                 "<td>{$comment['user']}</td>" .
                 "<td>{$comment['torrent']}</td>" .
                 "<td>{$comment['text']}</td>" .
-                "<td><a href='{$site_config['baseurl']}/userdetails.php?id={$comment['user']}'>{$comment['username']}</a></td>" .
+                '<td>' . format_username($comment['user']) .
                 "<td><a href='{$site_config['baseurl']}/details.php?id={$comment['torrent']}'>{$comment['name']}</a></td>" .
                 '<td>' . get_date($comment['added'], 'DATE') . '</td>' .
                 "<td><a href='{$site_config['baseurl']}/comment.php?action=edit&amp;cid={$comment['id']}'>{$lang['text_edit']}</a>" .
@@ -229,7 +229,7 @@ while ($comment = mysqli_fetch_assoc($query)) {
         "<td>{$comment['torrent']}</td>" .
         "<td>{$comment['text']}</td>" .
         "<td>{$comment['ori_text']}</td>" .
-        "<td><a href='{$site_config['baseurl']}/userdetails.php?id={$comment['user']}'>{$comment['username']}</a> " .
+        '<td>' . format_username($comment['user']) .
         "[<a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver={$comment['user']}'>{$lang['text_msg']}</a>]</td>" .
         "<td><a href='{$site_config['baseurl']}/details.php?id={$comment['torrent']}'>{$comment['name']}</a></td>" .
         '<td>' . get_date($comment['added'], 'DATE') . '</td>' .

@@ -76,7 +76,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
 	<tr>
 	<td  align="left" valign="top" width="120px">' . (empty($arr_post['post_history']) ? ($can_edit ? '<span style="white-space:nowrap;">Desc: ' . ('' !== $arr_post['topic_desc'] ? 'yes' : 'none') . '</span><br>' : '') . '<span style="white-space:nowrap;">' . $lang['fe_title'] . ': ' . ('' !== $arr_post['post_title'] ? 'yes' : 'none') . '</span><br><span style="white-space:nowrap;">' . $lang['fe_icon'] . ': ' . ('' !== $arr_post['icon'] ? 'yes' : 'none') . '</span><br><span style="white-space:nowrap;">' . $lang['ep_bb_code'] . ': ' . ('yes' !== $arr_post['bbcode'] ? 'off' : 'on') . '</span><br>' : ($can_edit ? '<span style="white-space:nowrap;">Topic Name: ' . ((isset($_POST['topic_name']) && $_POST['topic_name'] !== $arr_post['topic_name']) ? $changed : $not_changed) . '</span><br><span style="white-space:nowrap;">Desc: ' . ((isset($_POST['topic_desc']) && $_POST['topic_desc'] !== $arr_post['topic_desc']) ? $changed : $not_changed) . '</span><br>' : '') . '<span style="white-space:nowrap;">' . $lang['fe_title'] . ': ' . ((isset($_POST['post_title']) && $_POST['post_title'] !== $arr_post['post_title']) ? $changed : $not_changed) . '</span><br><span style="white-space:nowrap;">' . $lang['fe_icon'] . ': ' . ((isset($_POST['icon']) && $_POST['icon'] !== $arr_post['icon']) ? $changed : $not_changed) . '</span><br><span style="white-space:nowrap;">' . $lang['ep_bb_code'] . ': ' . ((isset($_POST['show_bbcode']) && $_POST['show_bbcode'] !== $arr_post['bbcode']) ? $changed : $not_changed) . '</span><br><span style="white-space:nowrap;">' . $lang['fe_body'] . ': ' . ((isset($_POST['body']) && $_POST['body'] !== $arr_post['body']) ? $changed : $not_changed) . '</span><br>') . '
 	</td>
-	<td align="left" valign="top">' . ('yes' == $arr_post['bbcode'] ? format_comment($arr_post['body']) : format_comment_no_bbcode($arr_post['body'])) . '</td>
+	<td align="left" valign="top">' . ($arr_post['bbcode'] === 'yes' ? format_comment($arr_post['body']) : format_comment_no_bbcode($arr_post['body'])) . '</td>
 	</tr>
 	</table><br>' . $arr_post['post_history'];
     //=== let the sysop have the power to not show they edited their own post if they wish...
@@ -169,12 +169,6 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	<h1>' . $lang['ep_edit_post_by'] . ':' . format_username($arr_post['user_id']) . ' ' . $lang['ep_in_topic'] . ' 
 	"<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_post['topic_name'], ENT_QUOTES) . '</a>"</h1>
 	<form method="post" action="' . $site_config['baseurl'] . '/forums.php?action=edit_post&amp;topic_id=' . $topic_id . '&amp;post_id=' . $post_id . '&amp;page=' . $page . '" enctype="multipart/form-data">
-	' . (isset($_POST['button']) && $_POST['button'] == '' . $lang['fe_preview'] . '' ? '<br>
-	<table width="80%" border="0" cellspacing="5" cellpadding="5">
-	<tr><td class="forum_head" colspan="2"><span style="color: black; font-weight: bold;">' . $lang['fe_preview'] . '</span></td></tr>
-	<tr><td width="80" valign="top">' . avatar_stuff($CURUSER) . '</td>
-	<td valign="top" align="left" >' . ('yes' === $show_bbcode ? format_comment($body) : format_comment_no_bbcode($body)) . '</td>
-	</tr></table><br>' : '') . '
 	<table width="80%" border="0" cellspacing="0" cellpadding="5">
 	<tr><td align="left" colspan="2">' . $lang['fe_compose'] . '</td></tr>
 	<tr><td align="right" ><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_icon'] . '</span></td>
@@ -238,8 +232,8 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	<td align="left" ><input type="text" maxlength="120" name="post_title" value="' . trim(strip_tags($post_title)) . '" class="w-100" /> [ optional ]</td></tr>
 	<tr><td align="right" ><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_bbcode'] . '</span></td>
 	<td align="left" >
-	<input type="radio" name="show_bbcode" value="yes" ' . ('yes' == $show_bbcode ? 'checked="checked"' : '') . ' /> ' . $lang['fe_yes_enable'] . ' ' . $lang['fe_bbcode_in_post'] . ' 
-	<input type="radio" name="show_bbcode" value="no" ' . ('no' == $show_bbcode ? 'checked="checked"' : '') . ' /> ' . $lang['fe_no_disable'] . ' ' . $lang['fe_bbcode_in_post'] . ' 
+	<input type="radio" name="show_bbcode" value="yes" ' . ($show_bbcode === 'yes' ? 'checked="checked"' : '') . ' /> ' . $lang['fe_yes_enable'] . ' ' . $lang['fe_bbcode_in_post'] . ' 
+	<input type="radio" name="show_bbcode" value="no" ' . ($show_bbcode === 'no' ? 'checked="checked"' : '') . ' /> ' . $lang['fe_no_disable'] . ' ' . $lang['fe_bbcode_in_post'] . ' 
 	</td></tr>
 	<tr><td align="right" ><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_reason'] . '</span></td>
 	<td align="left" ><input type="text" maxlength="20" name="edit_reason" value="' . trim(strip_tags($edit_reason)) . '" class="w-100" /> [ optional ] 
@@ -247,14 +241,13 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	</td></tr>
 	' . (($CURUSER['class'] == UC_MAX || $CURUSER['id'] == $arr_post['id']) ? '<tr><td align="right" ><span style="white-space:nowrap; font-weight: bold;">Edit By</span></td>
 	<td align="left" >
-	<input type="radio" name="show_edited_by" value="yes"' . ('yes' == $show_edited_by ? ' checked="checked"' : '') . ' /> yes
-	<input type="radio" name="show_edited_by" value="no"' . ('no' == $show_edited_by ? ' checked="checked"' : '') . ' /> no
+	<input type="radio" name="show_edited_by" value="yes"' . ($show_edited_by === 'yes' ? ' checked="checked"' : '') . ' /> yes
+	<input type="radio" name="show_edited_by" value="no"' . ($show_edited_by === 'no' ? ' checked="checked"' : '') . ' /> no
 	</td></tr>' : '') . $attachments . '
 	<tr><td align="right" valign="top" ><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_body'] . '</span></td>
 	<td align="left" >' . BBcode($body) . $more_options . '
 	</td></tr>
 	<tr><td colspan="2" >
-	<input type="submit" name="button" class="button is-small" value="' . $lang['fe_preview'] . '"  />
 	<input type="submit" name="button" class="button is-small" value="Edit" />
 	</td></tr>
 	</table></form>';
@@ -266,16 +259,16 @@ $HTMLOUT .= '<br><span>' . $lang['fe_last_ten_posts_in_reverse_order'] . '</span
 while ($arr = mysqli_fetch_assoc($res_posts)) {
     $HTMLOUT .= '<tr><td class="forum_head" align="left" width="100" valign="middle"><a name="' . (int) $arr['post_id'] . '"></a>
 		<span style="white-space:nowrap;">#' . (int) $arr['post_id'] . '
-		<span style="font-weight: bold;">' . ('yes' == $arr['anonymous'] ? '<i>' . $lang['fe_anonymous'] . '</i>' : htmlsafechars($arr['username'])) . '</span></span></td>
+		<span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : htmlsafechars($arr['username'])) . '</span></span></td>
 		<td class="forum_head" align="left" valign="middle"><span style="white-space:nowrap;"> ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span></td></tr>';
     if ($arr['anonymous'] === 'yes') {
         if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
-            $HTMLOUT .= '<tr><td><img src="' . $site_config['pic_baseurl'] . 'anonymous_1.jpg" alt="avatar" class="avatar"><br><i>' . $lang['fe_anonymous'] . '</i></td>';
+            $HTMLOUT .= '<tr><td>' . get_avatar($arr) . '<br><i>' . get_anonymous_name() . '</i></td>';
         } else {
-            $HTMLOUT .= '<tr><td>' . avatar_stuff($arr) . '<br><i>Anonymous </i>[' . format_username($arr['user_id']) . ']</td>';
+            $HTMLOUT .= '<tr><td>' . get_avatar($arr) . '<br><i>' . get_anonymous_name() . '</i>[' . format_username($arr['user_id']) . ']</td>';
         }
     } else {
-        $HTMLOUT .= '<tr><td>' . avatar_stuff($arr) . '<br>' . format_username($arr['user_id']) . '</td>';
+        $HTMLOUT .= '<tr><td>' . get_avatar($arr) . '<br>' . format_username($arr['user_id']) . '</td>';
     }
     $HTMLOUT .= '<td colspan="2">' . ($arr['bbcode'] == 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body'])) . '</td></tr>';
 }

@@ -156,7 +156,7 @@ function sharetable($res, $variant = 'index')
             $htmlout .= "<td>0</td>\n";
         }
         if ($variant === 'index') {
-            $htmlout .= '<td>' . (isset($row['username']) ? ("<a href='userdetails.php?id=" . (int) $row['owner'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>') : '<i>(' . $lang['torrenttable_unknown_uploader'] . ')</i>') . "</td>\n";
+            $htmlout .= '<td>' . (isset($row['username']) ? format_username($row['owner']) : '<i>(' . get_anonymous_name() . ')</i>') . "</td>\n";
         }
         $htmlout .= "</tr>\n";
     }

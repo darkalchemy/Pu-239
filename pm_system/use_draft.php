@@ -5,7 +5,6 @@ global $CURUSER;
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
 
-$preview = '';
 $save_or_edit = (isset($_POST['edit']) ? 'edit' : (isset($_GET['edit']) ? 'edit' : 'save'));
 $save_or_edit = (isset($_POST['send']) ? 'send' : (isset($_GET['send']) ? 'send' : $save_or_edit));
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
@@ -114,29 +113,16 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
     die();
 }
 
-if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'preview') {
-    $subject = htmlsafechars(trim($_POST['subject']));
-    $draft = trim($_POST['body']);
-    $preview = '
-    <table class="table table-bordered">
-    <tr>
-        <td colspan="2" class="colhead"><span style="font-weight: bold;">' . $lang['pm_draft_subject'] . '</span>' . htmlsafechars($subject) . '</td>
-    </tr>
-    <tr>
-        <td width="80px" id="photocol">' . avatar_stuff($CURUSER) . '</td>
-        <td style="min-width:400px;padding:10px;vertical-align: top;text-align: left;">' . format_comment($draft) . '</td>
-    </tr>
-    </table><br>';
-} else {
+if (isset($_POST['buttonval'])) {
     //=== Get the info
-    $res = sql_query('SELECT * FROM messages WHERE id=' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT * FROM messages WHERE id = ' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
     $message = mysqli_fetch_assoc($res);
     $subject = htmlsafechars($message['subject']);
     $draft = $message['msg'];
 }
 //=== print out the page
 //echo stdhead('Use Draft');
-$HTMLOUT .= '<h1>' . $lang['pm_usedraft'] . '' . $subject . '</h1>' . $top_links . $preview . '
+$HTMLOUT .= '<h1>' . $lang['pm_usedraft'] . '' . $subject . '</h1>' . $top_links . '
         <form name="compose" action="pm_system.php" method="post">
         <input type="hidden" name="id" value="' . $pm_id . '" />
         <input type="hidden" name="' . $save_or_edit . '" value="1" />
@@ -162,7 +148,6 @@ $HTMLOUT .= '<h1>' . $lang['pm_usedraft'] . '' . $subject . '</h1>' . $top_links
         <td colspan="2">' . ($CURUSER['class'] >= UC_STAFF ? '
         <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? ' checked' : '') . ' /> 
         <span style="font-weight: bold;color:red;">' . $lang['pm_send_mark'] . '</span>' : '') . '
-        <input type="submit" class="button is-small" name="buttonval" value="' . $lang['pm_send_preview'] . '" />
         <input type="submit" class="button is-small" name="buttonval" value="' . $save_or_edit . '" /></td>
     </tr>
     </table></form>';

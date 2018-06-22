@@ -21,25 +21,23 @@ function usercommenttable($rows)
             } else {
                 $title = htmlsafechars($title);
             }
-            $htmlout .= "<a name='comm" . (int) $row['id'] . "' href='userdetails.php?id=" . (int) $row['user'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] === 'yes' ? "<img src=\"{$site_config['pic_baseurl']}star.gif\" alt='{$lang['userdetails_donor']}' />" : '') . ($row['warned'] >= '1' ? '<img src=' . "\"{$site_config['pic_baseurl']}warned.gif\" alt=\"{$lang['userdetails_warned']}\" />" : '') . " ($title)\n";
+            $htmlout .= format_username($row['user']) . "<br> ($title)\n";
         } else {
             $htmlout .= '<a name="comm' . (int) $row['id'] . "\"><i>{$lang['userdetails_orphaned']}</i></a>\n";
         }
         $htmlout .= ' ' . get_date($row['added'], 'DATE', 0, 1) . '' . ($userid == $CURUSER['id'] || $row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=edit&amp;cid=" . (int) $row['id'] . "'>{$lang['userdetails_comm_edit']}</a>]" : '') . ($userid == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=delete&amp;cid=" . (int) $row['id'] . "'>{$lang['userdetails_comm_delete']}</a>]" : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=vieworiginal&amp;cid=" . (int) $row['id'] . "'>{$lang['userdetails_comm_voriginal']}</a>]" : '') . "</p>\n";
-        $avatar = ($user['avatars'] === 'yes' ? htmlsafechars($row['avatar']) : '');
-        if (!$avatar) {
-            $avatar = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
-        }
+        $avatar = get_avatar($row);
         $text = format_comment($row['text']);
         if ($row['editedby']) {
-            $text .= "<font size='1' class='small'><br><br>{$lang['userdetails_comm_ledited']}<a href='userdetails.php?id=" . (int) $row['editedby'] . "'><b>" . htmlsafechars($row['username']) . '</b></a> ' . get_date($row['editedat'], 'DATE', 0, 1) . "</font>\n";
+            $text .= "<span class='size_2'>" . format_username($row['editedby']) . ' ' . get_date($row['editedat'], 'DATE', 0, 1) . "</span>\n";
         }
-        $htmlout .= "<table width='100%' >";
-        $htmlout .= "<tr>\n";
-        $htmlout .= "<td width='150' style='padding:0;'><img width='150' src=\"{$avatar}\" alt=\"Avatar\" /></td>\n";
-        $htmlout .= "<td class='text'>$text</td>\n";
-        $htmlout .= "</tr>\n";
-        $htmlout .= '</table>';
+        $htmlout .= "
+            <table width='100%' >
+                <tr>
+                    <td class='w-15'>{$avatar}</td>
+                    <td class='text'>$text</td>
+                </tr>
+            </table>";
     }
     $htmlout .= end_frame();
     $htmlout .= '</td></tr></table>';
@@ -64,7 +62,7 @@ if (!$count) {
     $pager = pager(5, $count, "userdetails.php?id=$id&amp;", [
         'lastpagedefault' => 1,
     ]);
-    $subres = sql_query("SELECT usercomments.id, text, user, usercomments.added, editedby, editedat, avatar, warned, username, title, class, leechwarn, chatpost, pirate, king, donor FROM usercomments LEFT JOIN users ON usercomments.user = users.id WHERE userid = {$id} ORDER BY usercomments.id {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
+    $subres = sql_query("SELECT usercomments.id, text, user, usercomments.added, editedby, editedat, avatar, offensive_avatar, anonymous, warned, username, title, class, leechwarn, chatpost, pirate, king, donor FROM usercomments LEFT JOIN users ON usercomments.user = users.id WHERE userid = {$id} ORDER BY usercomments.id {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
     $allrows = [];
     while ($subrow = mysqli_fetch_assoc($subres)) {
         $allrows[] = $subrow;

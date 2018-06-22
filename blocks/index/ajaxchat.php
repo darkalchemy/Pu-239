@@ -1,6 +1,6 @@
 <?php
 
-global $CURUSER, $lang;
+global $CURUSER, $lang, $site_config;
 
 $height = 600;
 if (!empty($CURUSER['ajaxchat_height'])) {
@@ -13,7 +13,7 @@ $HTMLOUT .= "
         <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['index_ajaxchat']}</legend>
         <div class='bordered'>
             <div class='alt_bordered iframe-container bg-none has-text-centered is-paddingless'>
-                <iframe src='./ajaxchat.php' height='$height' id='iframe_ajaxchat' name='iframe_ajaxchat'></iframe>
+                <iframe src='{$site_config['baseurl']}/ajaxchat.php' height='$height' id='iframe_ajaxchat' name='iframe_ajaxchat'></iframe>
             </div>
         </div>
     </fieldset>";

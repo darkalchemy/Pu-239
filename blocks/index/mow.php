@@ -53,7 +53,7 @@ foreach ($motw as $m_w) {
     if (strlen($torrname) > 75) {
         $torrname = substr($torrname, 0, 50) . '...';
     }
-    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . url_proxy($poster, true, 150, 'auto') . "' class='tooltip-poster' />";
+    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster' />";
 
     if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';

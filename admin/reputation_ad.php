@@ -401,8 +401,8 @@ function view_list()
         while ($r = mysqli_fetch_assoc($query)) {
             $r['dateadd'] = date('M j, Y, g:i a', $r['dateadd']);
             $html .= "<tr><td>#{$r['reputationid']}</td>";
-            $html .= "<td><a href='userdetails.php?id={$r['leftby_id']}' target='_blank'>{$r['leftby_name']}</a></td>";
-            $html .= "<td><a href='userdetails.php?id={$r['leftfor_id']}' target='_blank'>{$r['leftfor_name']}</a></td>";
+            $html .= '<td>' . format_username($r['leftby_id']) . '</td>';
+            $html .= '<td>' . format_username($r['leftfor_id']) . '</td>';
             $html .= "<td>{$r['dateadd']}</td>";
             $html .= "<td>{$r['reputation']}</td>";
             $html .= "<td><a href='forums.php?action=viewtopic&amp;topicid={$r['topic_id']}&amp;page=p{$r['postid']}#{$r['postid']}' target='_blank'>" . htmlsafechars($r['reason']) . '</a></td>';

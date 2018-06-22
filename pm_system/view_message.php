@@ -11,10 +11,10 @@ $message = mysqli_fetch_assoc($res);
 if (!$res) {
     stderr($lang['pm_error'], $lang['pm_viewmsg_err']);
 }
-$res_user_stuff = sql_query('SELECT id, username, uploaded, warned, suspended, enabled, donor, class, avatar, leechwarn, chatpost, pirate, king, opt1, opt2 FROM users WHERE id=' . ($message['sender'] === $CURUSER['id'] ? sqlesc($message['receiver']) : sqlesc($message['sender']))) or sqlerr(__FILE__, __LINE__);
+$res_user_stuff = sql_query('SELECT id, username, uploaded, warned, suspended, enabled, donor, class, avatar, offensive_avatar, leechwarn, chatpost, pirate, king, opt1, opt2 FROM users WHERE id = ' . ($message['sender'] === $CURUSER['id'] ? sqlesc($message['receiver']) : sqlesc($message['sender']))) or sqlerr(__FILE__, __LINE__);
 $arr_user_stuff = mysqli_fetch_assoc($res_user_stuff);
 $id = (int) $arr_user_stuff['id'];
-sql_query('UPDATE messages SET unread="no" WHERE id = ' . sqlesc($pm_id) . ' AND receiver = ' . sqlesc($CURUSER['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+sql_query('UPDATE messages SET unread = "no" WHERE id = ' . sqlesc($pm_id) . ' AND receiver = ' . sqlesc($CURUSER['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
 $cache->decrement('inbox_' . $CURUSER['id']);
 if ($message['friend'] > 0) {
     $friends = $lang['pm_mailbox_char1'] . '<span class="size_2"><a href="' . $site_config['baseurl'] . '/friends.php?action=delete&amp;type=friend&amp;targetid=' . $id . '">' . $lang['pm_mailbox_removef'] . '</a></span>' . $lang['pm_mailbox_char2'];
@@ -24,13 +24,7 @@ if ($message['friend'] > 0) {
     $friends = $lang['pm_mailbox_char1'] . '<span class="size_2"><a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=friend&amp;targetid=' . $id . '">' . $lang['pm_mailbox_addf'] . '</a></span>' . $lang['pm_mailbox_char2'] . '
                                ' . $lang['pm_mailbox_char1'] . '<span class="size_2"><a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=block&amp;targetid=' . $id . '">' . $lang['pm_mailbox_addb'] . '</a></span>' . $lang['pm_mailbox_char2'];
 }
-/*
-    $avatar = ($CURUSER['avatars'] === 'no' ? '' : (empty($arr_user_stuff['avatar']) ? '
-    <img width="80" src="' .$site_config['pic_baseurl'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($arr_user_stuff['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ?
-    '<img width="80" src="' .$site_config['pic_baseurl'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<a href="'.htmlsafechars($arr_user_stuff['avatar']).'"><img width="80" src="'.htmlsafechars($arr_user_stuff['avatar']).'" alt="avatar" /></a>')));
-*/
-$avatar = (!$CURUSER['opt1'] & user_options::AVATARS ? '' : (empty($arr_user_stuff['avatar']) ? '
-    <img width="80" src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($arr_user_stuff['opt1'] & user_options::OFFENSIVE_AVATAR && !$CURUSER['opt1'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img width="80" src="' . $site_config['pic_baseurl'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<a href="' . htmlsafechars($arr_user_stuff['avatar']) . '"><img width="80" src="' . htmlsafechars($arr_user_stuff['avatar']) . '" alt="avatar" /></a>')));
+$avatar = get_avatar($arr_user_stuff);
 
 if ($message['location'] > 1) {
     //== get name of PM box if not in or out
@@ -65,7 +59,7 @@ $HTMLOUT .= "
                 </td>
             </tr>
             <tr class='no_hover'>
-                <td id='photocol'>{$avatar}</td>
+                <td>{$avatar}</td>
                 <td>" . format_comment($message['msg'], false) . "</td>
             </tr>
             <tr class='no_hover'>

@@ -1,6 +1,5 @@
 <?php
 
-$preview = '';
 $save_or_edit = (isset($_POST['edit']) ? 'edit' : (isset($_GET['edit']) ? 'edit' : 'save'));
 if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'save as draft') {
     //=== make sure they wrote something :P
@@ -27,20 +26,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'save as draft') {
     header('Location: /pm_system.php?action=view_mailbox&box=-2&new_draft=1');
     die();
 }
-if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'preview') {
-    $subject = htmlsafechars(trim($_POST['subject']));
-    $draft = trim($_POST['body']);
-    $preview = '
-    <table class="table table-bordered">
-    <tr>
-        <td colspan="2" class="colhead"><span style="font-weight: bold;">' . $lang['pm_draft_subject'] . '</span>' . htmlsafechars($subject) . '</td>
-    </tr>
-    <tr>
-        <td width="80px" id="photocol">' . avatar_stuff($CURUSER) . '</td>
-        <td style="min-width:400px;padding:10px;vertical-align: top;text-align: left;">' . format_comment($draft) . '</td>
-    </tr>
-    </table><br>';
-} else {
+if (isset($_POST['buttonval'])) {
     //=== Get the info
     $res = sql_query('SELECT * FROM messages WHERE id=' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
     $message = mysqli_fetch_assoc($res);
@@ -49,7 +35,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'preview') {
 }
 //=== print out the page
 //echo stdhead('Save / Edit Draft');
-$HTMLOUT .= '<legend>' . $lang['pm_draft_save_edit'] . '' . $subject . '</legend>' . $top_links . $preview . '
+$HTMLOUT .= '<legend>' . $lang['pm_draft_save_edit'] . '' . $subject . '</legend>' . $top_links . '
         <form name="compose" action="pm_system.php" method="post">
         <input type="hidden" name="id" value="' . $pm_id . '" />
         <input type="hidden" name="' . $save_or_edit . '" value="1" />
@@ -68,7 +54,6 @@ $HTMLOUT .= '<legend>' . $lang['pm_draft_save_edit'] . '' . $subject . '</legend
     </tr>
     <tr>
         <td colspan="2">
-        <input type="submit" class="button is-small" name="buttonval" value="' . $lang['pm_draft_preview'] . '"/>
         <input type="submit" class="button is-small" name="buttonval" value="' . $lang['pm_draft_save_as'] . '" /></td>
     </tr>
     </table></form>';

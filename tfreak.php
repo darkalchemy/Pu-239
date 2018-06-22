@@ -8,7 +8,6 @@ function rsstfreakinfo()
 {
     require_once INCL_DIR . 'html_functions.php';
     global $site_config, $cache;
-
     $html = '';
     $use_limit = true;
     $limit = 5;

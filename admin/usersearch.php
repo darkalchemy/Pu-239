@@ -848,10 +848,6 @@ if (!empty($_POST) && count($_POST) > 0) {
     $res = sql_query($query1) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {
         stdmsg($lang['usersearch_warn'], $lang['usersearch_nouser']);
-//    else if (mysqli_num_rows($res) == 1) {
-//        $usertt = mysqli_fetch_array($res);
-//        header('Location:userdetails.php?id=' . $usertt['id']);
-//        die();
     } else {
         if ($count > $perpage) {
             $HTMLOUT .= $pager['pagertop'];
@@ -896,7 +892,7 @@ if (!empty($_POST) && count($_POST) > 0) {
             $n = mysqli_fetch_row($auxres);
             $n_comments = $n[0];
             $ids .= (int) $user['id'] . ':';
-            $HTMLOUT .= "<tr><td><b><a href='userdetails.php?id=" . (int) $user['id'] . "'>" . htmlsafechars($user['username']) . '</a></b>' . ($user['donor'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}star.gif' alt=\"{$lang['usersearch_donor']}\" />" : '') . ($user['warned'] === 'yes' ? "<img src=\"./images/warned.gif\" alt=\"{$lang['usersearch_warned']}\" />" : '') . '</td>
+            $HTMLOUT .= '<tr><td><b>' . format_username($user['id']) . '</td>
           <td>' . ratios($user['uploaded'], $user['downloaded']) . '</td>
           <td>' . $ipstr . '</td><td>' . htmlsafechars($user['email']) . '</td>
           <td><div>' . get_date($user['added'], '') . '</div></td>

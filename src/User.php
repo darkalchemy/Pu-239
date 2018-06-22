@@ -60,6 +60,10 @@ class User
             }
         }
 
+        if (!empty($user) && $user['override_class'] < $user['class']) {
+            $user['class'] = $user['override_class'];
+        }
+
         return $user;
     }
 

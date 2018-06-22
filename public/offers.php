@@ -4,7 +4,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $CURUSER, $site_config;
+global $CURUSER, $site_config, $user_stuffs;
 
 $lang = load_language('global');
 $stdhead = [
@@ -269,7 +269,7 @@ switch ($action) {
             $cat_image = htmlsafechars($cat_arr['cat_image'], ENT_QUOTES);
             $cat_name = htmlsafechars($cat_arr['cat_name'], ENT_QUOTES);
         }
-        //=== if posted and not preview, process it :D
+        //=== if posted process it :D
         if (isset($_POST['button']) && $_POST['button'] === 'Submit') {
             sql_query('INSERT INTO offers (offer_name, image, description, category, added, offered_by_user_id, link) VALUES (' . sqlesc($offer_name) . ', ' . sqlesc($image) . ', ' . sqlesc($body) . ', ' . sqlesc($category) . ', ' . TIME_NOW . ', ' . sqlesc($CURUSER['id']) . ',  ' . sqlesc($link) . ');') or sqlerr(__FILE__, __LINE__);
             $new_offer_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
@@ -375,7 +375,7 @@ switch ($action) {
         $cat_arr = mysqli_fetch_assoc($cat_res);
         $cat_image = htmlsafechars($cat_arr['cat_image'], ENT_QUOTES);
         $cat_name = htmlsafechars($cat_arr['cat_name'], ENT_QUOTES);
-        //=== if posted and not preview, process it :D
+        //=== if posted process it :D
         if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
             sql_query('UPDATE offers SET offer_name = ' . sqlesc($offer_name) . ', image = ' . sqlesc($image) . ', description = ' . sqlesc($body) . ', category = ' . sqlesc($category) . ', link = ' . sqlesc($link) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             header('Location: offers.php?action=offer_details&edited=1&id=' . $id);
@@ -388,29 +388,6 @@ switch ($action) {
     <h1>Edit Offer</h1>' . $top_menu . '
     <form method="post" action="offers.php?action=edit_offer" name="offer_form" id="offer_form">
     <input type="hidden" name="id" value="' . $id . '" />
-    ' . (isset($_POST['button']) && $_POST['button'] === 'Preview' ? '<br>
-     <table class="table table-bordered table-striped">
-    <tr>
-    <td class="colhead" colspan="2"><h1>' . htmlsafechars($offer_name, ENT_QUOTES) . '</h1></td>
-    </tr>
-    <tr>
-    <td>image:</td>
-    <td><img src="' . strip_tags(url_proxy($image, true)) . '" alt="image" /></td>
-    </tr>
-    <tr>
-    <td>description:</td>
-    <td>' . format_comment($body) . '</td>
-    </tr>
-    <tr>
-    <td>category:</td>
-    <td><img border="0" src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($cat_image, ENT_QUOTES) . '" alt="' . htmlsafechars($cat_name, ENT_QUOTES) . '" /></td>
-    </tr>
-    <tr>
-    <td>link:</td>
-    <td><a class="altlink" href="' . htmlsafechars($link, ENT_QUOTES) . '" target="_blank">' . htmlsafechars($link, ENT_QUOTES) . '</a></td>
-    </tr>
-    </table>
-    <br>' : '') . '
     <table class="table table-bordered table-striped">
     <tr>
     <td class="colhead" colspan="2"><h1>Edit Offer</h1></td>
@@ -440,7 +417,6 @@ switch ($action) {
     </tr>
     <tr>
     <td colspan="2">
-    <input type="submit" name="button" class="button is-small" value="Preview" />
     <input type="submit" name="button" class="button is-small" value="Edit" /></td>
     </tr>
     </table></form>
@@ -476,15 +452,7 @@ switch ($action) {
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
         $HTMLOUT .= $top_menu . '<form method="post" action="offers.php?action=add_comment">
-    <input type="hidden" name="id" value="' . $id . '"/>' . (isset($_POST['button']) && $_POST['button'] === 'Preview' ? '
-    <table class="table table-bordered table-striped">
-    <tr>
-    <td class="colhead" colspan="2"><h1>Preview</h1></td>
-    </tr>
-     <tr>
-    <td>' . avatar_stuff($CURUSER) . '</td>
-    <td>' . format_comment($body) . '</td>
-    </tr></table><br>' : '') . '
+    <input type="hidden" name="id" value="' . $id . '"/>
      <table class="table table-bordered table-striped">
      <tr>
     <td class="colhead" colspan="2"><h1>Add a comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"</h1></td>
@@ -495,7 +463,6 @@ switch ($action) {
     </tr>
      <tr>
     <td colspan="2">
-    <input name="button" type="submit" class="button is-small" value="Preview" />
     <input name="button" type="submit" class="button is-small" value="Save" /></td>
     </tr>
      </table></form>';
@@ -537,23 +504,14 @@ switch ($action) {
             die();
         }
         if ($CURUSER['id'] == $arr['user']) {
-            $avatar = avatar_stuff($CURUSER);
+            $avatar = get_avatar($CURUSER);
         } else {
-            $res_user = sql_query('SELECT avatar, offensive_avatar, view_offensive_avatar FROM users WHERE id=' . sqlesc($arr['user'])) or sqlerr(__FILE__, __LINE__);
-            $arr_user = mysqli_fetch_assoc($res_user);
-            $avatar = avatar_stuff($arr_user);
+            $arr_user = $user_stuffs->getUserFromId($arr['user']);
+            $avatar = get_avatar($arr_user);
         }
         $HTMLOUT .= $top_menu . '<form method="post" action="offers.php?action=edit_comment">
     <input type="hidden" name="id" value="' . $arr['offer'] . '"/>
     <input type="hidden" name="comment_id" value="' . $comment_id . '"/>
-     ' . (isset($_POST['button']) && $_POST['button'] === 'Preview' ? '<table class="table table-bordered table-striped">
-    <tr>
-    <td class="colhead" colspan="2"><h1>Preview</h1></td>
-    </tr>
-     <tr>
-    <td>' . $avatar . '</td>
-    <td>' . format_comment($body) . '</td>
-    </tr></table><br>' : '') . '
     <table class="table table-bordered table-striped">
      <tr>
     <td class="colhead" colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"</h1></td>
@@ -564,7 +522,6 @@ switch ($action) {
     </tr>
      <tr>
     <td colspan="2">
-    <input name="button" type="submit" class="button is-small" value="Preview" />
     <input name="button" type="submit" class="button is-small" value="Edit" /></td>
     </tr>
      </table></form>';
@@ -643,18 +600,16 @@ switch ($action) {
  */
 function comment_table($rows)
 {
-    global $CURUSER, $site_config;
+    global $CURUSER, $site_config, $user_stuffs;
+
     $comment_table = '<table class="table table-bordered table-striped">
     <tr>
     <td >';
     foreach ($rows as $row) {
         //=======change colors
         $text = format_comment($row['text']);
-        if ($row['editedby']) {
-            $res_user = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($row['editedby'])) or sqlerr(__FILE__, __LINE__);
-            $arr_user = mysqli_fetch_assoc($res_user);
-            $text .= '<p>Last edited by <a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . (int) $row['editedby'] . '">
-        <b>' . htmlsafechars($arr_user['username']) . '</b></a> at ' . get_date($row['editedat'], 'DATE') . '</p>';
+        if (!empty($row['editedby'])) {
+            $text .= '<p>Last edited by ' . format_username($row['editedby']) . ' at ' . get_date($row['editedat'], 'DATE') . '</p>';
         }
         $top_comment_stuff = $row['comment_id'] . ' by ' . (isset($row['username']) ? format_username($row['id']) . ($row['title'] !== '' ? ' [ ' . htmlsafechars($row['title']) . ' ] ' : ' [ ' . get_user_class_name($row['class']) . ' ]  ') : ' M.I.A. ') . get_date($row['added'], '') . ($row['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? '
      - [<a href="offers.php?action=edit_comment&amp;id=' . (int) $row['offer'] . '&amp;comment_id=' . (int) $row['comment_id'] . '">Edit</a>]' : '') . ($CURUSER['class'] >= UC_STAFF ? '
@@ -667,7 +622,7 @@ function comment_table($rows)
     <td colspan="2" class="colhead"># ' . $top_comment_stuff . '</td>
     </tr>
     <tr>
-    <td>' . avatar_stuff($row) . '</td>
+    <td>' . get_avatar($row) . '</td>
     <td>' . $text . '</td>
     </tr>
     </table><br>';

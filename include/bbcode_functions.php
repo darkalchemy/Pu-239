@@ -210,7 +210,7 @@ function islocal($link)
     }
     $url = htmlsafechars($url);
 
-    return '<a href="' . url_proxy($url) . '" target="_blank">' . $lshort . '</a>';
+    return '<a href="' . $url . '" target="_blank">' . $lshort . '</a>';
 }
 
 /**
@@ -321,6 +321,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '/\[h2\]\s?(.*?)\[\/h2\]/is',
         '/\[h3\]\s?(.*?)\[\/h3\]/is',
         '/\[h4\]\s?(.*?)\[\/h4\]/is',
+        '/\[class=(.*?)\](.*?)\[\/class\]/is',
     ];
     // And replace them by...
     $bb_code_out = [
@@ -381,6 +382,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<h2>\1</h2>',
         '<h3>\1</h3>',
         '<h4>\1</h4>',
+        '<div class="\1">\2</div>',
     ];
     $s = preg_replace($bb_code_in, $bb_code_out, $s);
 
@@ -432,7 +434,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         // [img]image services with or without extension
         $s = preg_replace("/\[img\](https?:\/\/[^\s'\"<>]*)\[\/img\]/i", '<a href="\\1" data-lightbox="details" /><img src="\\1" alt="" class="img-responsive" /></a>', $s);
 
-        preg_match_all('/src="(.*)" alt/', $s, $matches);
+        preg_match_all('/<img.*?src=["|\'](.*?)["|\'].*?>/s', $s, $matches);
         foreach ($matches[1] as $match) {
             $s = str_replace($match, url_proxy($match, true), $s);
         }
@@ -658,19 +660,19 @@ function _MediaTag($content, $type)
     $return = '';
     switch ($type) {
         case 'youtube':
-            $return = preg_replace("#^https?://(?:|www\.)youtube\.com/watch\?v=([a-zA-Z0-9\-]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.youtube.com/v/\\1'><param name='movie' value='http://www.youtube.com/v/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#fff' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
+            $return = preg_replace("#^https?://(?:|www\.)youtube\.com/watch\?v=([a-zA-Z0-9\-]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='https://www.youtube.com/v/\\1'><param name='movie' value='https://www.youtube.com/v/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#fff' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
             break;
 
         case 'liveleak':
-            $return = preg_replace("#^https?://(?:|www\.)liveleak\.com/view\?i=([_a-zA-Z0-9\-]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.liveleak.com/e/\\1'><param name='movie' value='http://www.liveleak.com/e/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#fff' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
+            $return = preg_replace("#^https?://(?:|www\.)liveleak\.com/view\?i=([_a-zA-Z0-9\-]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='https://www.liveleak.com/e/\\1'><param name='movie' value='https://www.liveleak.com/e/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#fff' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
             break;
 
         case 'GameTrailers':
-            $return = preg_replace("#^https?://(?:|www\.)gametrailers\.com/video/([\-_a-zA-Z0-9\-]+)+?/([0-9]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.gametrailers.com/remote_wrap.php?mid=\\2'><param name='movie' value='http://www.gametrailers.com/remote_wrap.php?mid=\\2' /><param name='allowScriptAccess' value='sameDomain' /> <param name='allowFullScreen' value='true' /><param name='quality' value='high' /></object>", $content);
+            $return = preg_replace("#^https?://(?:|www\.)gametrailers\.com/video/([\-_a-zA-Z0-9\-]+)+?/([0-9]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='https://www.gametrailers.com/remote_wrap.php?mid=\\2'><param name='movie' value='https://www.gametrailers.com/remote_wrap.php?mid=\\2' /><param name='allowScriptAccess' value='sameDomain' /> <param name='allowFullScreen' value='true' /><param name='quality' value='high' /></object>", $content);
             break;
 
         case 'imdb':
-            $return = preg_replace("#^https?://(?:|www\.)imdb\.com/video/screenplay/([_a-zA-Z0-9\-]+)+?$#i", "<div class='\\1'><div style=\"padding: 3px; background-color: transparent; border: none; width:690px;\"><div style=\"text-transform: uppercase; border-bottom: 1px solid #CCCCCC; margin-bottom: 3px; font-size: 0.8em; font-weight: bold; display: block;\"><span onclick=\"if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerHTML = '<b>Imdb Trailer: </b><a href=\'#\' onclick=\'return false;\'>hide</a>'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerHTML = '<b>Imdb Trailer: </b><a href=\'#\' onclick=\'return false;\'>show</a>'; }\" ><b>Imdb Trailer: </b><a href=\"#\" onclick=\"return false;\">show</a></span></div><div class=\"quotecontent\"><div style=\"display: none;\"><iframe style='vertical-align: middle;' src='http://www.imdb.com/video/screenplay/\\1/player' scrolling='no' width='660' height='490' frameborder='0'></iframe></div></div></div></div>", $content);
+            $return = preg_replace("#^https?://(?:|www\.)imdb\.com/video/screenplay/([_a-zA-Z0-9\-]+)+?$#i", "<div class='\\1'><div style=\"padding: 3px; background-color: transparent; border: none; width:690px;\"><div style=\"text-transform: uppercase; border-bottom: 1px solid #CCCCCC; margin-bottom: 3px; font-size: 0.8em; font-weight: bold; display: block;\"><span onclick=\"if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerHTML = '<b>Imdb Trailer: </b><a href=\'#\' onclick=\'return false;\'>hide</a>'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerHTML = '<b>Imdb Trailer: </b><a href=\'#\' onclick=\'return false;\'>show</a>'; }\" ><b>Imdb Trailer: </b><a href=\"#\" onclick=\"return false;\">show</a></span></div><div class=\"quotecontent\"><div style=\"display: none;\"><iframe style='vertical-align: middle;' src='https://www.imdb.com/video/screenplay/\\1/player' scrolling='no' width='660' height='490' frameborder='0'></iframe></div></div></div></div>", $content);
             break;
 
         case 'vimeo':

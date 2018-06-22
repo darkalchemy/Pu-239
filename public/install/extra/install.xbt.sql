@@ -2958,7 +2958,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `viewscloud` enum('yes','no') CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT 'yes',
   `tenpercent` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `avatars` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
-  `offavatar` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `pirate` int(11) unsigned NOT NULL DEFAULT '0',
   `king` int(11) unsigned NOT NULL DEFAULT '0',
   `hidecur` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',

@@ -27,7 +27,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'list') {
         while ($arr2 = mysqli_fetch_assoc($res2)) {
             $r2 = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr2['userid'])) or sqlerr(__FILE__, __LINE__);
             $a2 = mysqli_fetch_assoc($r2);
-            $HTMLOUT .= "<tr><td><a href='userdetails.php?id=" . (int) $arr2['userid'] . "'>" . htmlsafechars($a2['username']) . "</a></td><td><a href='details.php?id=" . (int) $arr2['torrent'] . "&amp;dllist=1#seeders'>" . (int) $arr2['torrent'] . '</a>';
+            $HTMLOUT .= '<tr><td>' . format_username($arr2['userid']) . "</td><td><a href='details.php?id=" . (int) $arr2['torrent'] . "&amp;dllist=1#seeders'>" . (int) $arr2['torrent'] . '</a>';
             if ($arr2['seeder'] === 'yes') {
                 $HTMLOUT .= "<span class='has-text-danger'>*</span>";
             }
@@ -96,7 +96,7 @@ if (isset($_GET['action1']) == '') {
         $r2 = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr2['user'])) or sqlerr(__FILE__, __LINE__);
         $a2 = mysqli_fetch_assoc($r2);
         $elapsed = get_date($arr2['date'], '', 0, 1);
-        $HTMLOUT .= "<tr><td class='colhead'><a href='userdetails.php?id=" . (int) $arr2['user'] . "'>" . htmlsafechars($a2['username']) . "</a></td><td class='colhead'>" . get_date($arr2['date'], '') . "</td><td>$elapsed</td></tr>";
+        $HTMLOUT .= "<tr><td class='colhead'>" . format_username($arr2['user']) . "</td><td class='colhead'>" . get_date($arr2['date'], '') . "</td><td>$elapsed</td></tr>";
     }
     $HTMLOUT .= '</table>';
 }

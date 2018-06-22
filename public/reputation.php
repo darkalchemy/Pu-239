@@ -179,7 +179,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                     $posneg = 'balance';
                 }
                 if ($GVARS['g_rep_seeown']) {
-                    $postrep['reason'] = $postrep['reason'] . " <span class='desc'>{$lang['rep_left_by']} <a href=\"{$site_config['baseurl']}/userdetails.php?id={$postrep['leftby_id']}\" target='_blank'>{$postrep['leftby_name']}</a></span>";
+                    $postrep['reason'] = $postrep['reason'] . " <span class='desc'>{$lang['rep_left_by']} " . format_username($postrep['leftby_id']) . '</span>';
                 }
                 $reasonbits .= "<tr>
     <td class='row2' width='1%'><img src='{$site_config['pic_baseurl']}rep/reputation_$posneg.gif' alt='' /></td>

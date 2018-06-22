@@ -119,7 +119,7 @@ if ($count == 0) {
     while ($a = mysqli_fetch_assoc($g)) {
         $tip = ($do === 'hnrwarn' ? $lang['hnrwarn_tip1'] . htmlsafechars($a['warn_reason']) . '<br>' : $lang['hnrwarn_tip2'] . htmlsafechars($a['disable_reason']));
         $HTMLOUT .= "<tr>
-                  <td width='100%'><a href='userdetails.php?id=" . (int) $a['id'] . "' onmouseover=\"Tip('($tip)')\" onmouseout=\"UnTip()\">" . htmlsafechars($a['username']) . "</a></td>
+                  <td width='100%'><a href='userdetails.php?id=" . (int) $a['id'] . "' class='tooltipper' title='$tip'>" . htmlsafechars($a['username']) . "</a></td>
                   <td nowrap='nowrap'>" . (float) $a['ratio'] . "<br><font class='small'><b>{$lang['hnrwarn_d']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['hnrwarn_u']}</b> " . mksize($a['uploaded']) . "</font></td>
                   <td nowrap='nowrap'>" . get_user_class_name($a['class']) . "</td>
                   <td nowrap='nowrap'>" . get_date($a['last_access'], 'LONG', 0, 1) . "</td>

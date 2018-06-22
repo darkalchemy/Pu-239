@@ -124,7 +124,7 @@ if ($count == 0) {
     while ($a = mysqli_fetch_assoc($g)) {
         $tip = ($do === 'warned' ? $lang['warn_for'] . $a['warn_reason'] . '<br>' . $lang['warn_till'] . get_date($a['warned'], 'DATE', 1) . ' - ' . mkprettytime($a['warned'] - TIME_NOW) : $lang['warn_disabled_for'] . $a['disable_reason']);
         $HTMLOUT .= "<tr>
-                                  <td width='100%'><a href='userdetails.php?id=" . (int) $a['id'] . "' onmouseover=\"Tip('($tip)')\" onmouseout=\"UnTip()\">" . htmlsafechars($a['username']) . "</a></td>
+                                  <td width='100%'><a href='userdetails.php?id=" . (int) $a['id'] . "' class='tooltipper' title='$tip'>" . htmlsafechars($a['username']) . "</a></td>
                                   <td nowrap='nowrap'>" . (float) $a['ratio'] . "<br><font class='small'><b>{$lang['warn_down']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['warn_upl']}</b> " . mksize($a['uploaded']) . "</font></td>
                                   <td nowrap='nowrap'>" . get_user_class_name($a['class']) . "</td>
                                   <td nowrap='nowrap'>" . get_date($a['last_access'], 'LONG', 0, 1) . "</td>

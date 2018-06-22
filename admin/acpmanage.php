@@ -93,16 +93,21 @@ if (mysqli_num_rows($res) != 0) {
         $class = get_user_class_name($arr['class']);
         $status = htmlsafechars($arr['status']);
         $enabled = htmlsafechars($arr['enabled']);
-        $HTMLOUT .= '<tr><td><input type="checkbox" name="ids[]" value="' . (int) $arr['id'] . "\" /></td><td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $arr['id'] . "'><b>" . htmlsafechars($arr['username']) . '</b></a>' . ($arr['donor'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}star.gif' alt='" . $lang['text_donor'] . "' />" : '') . ($arr['warned'] >= 1 ? "<img src='{$site_config['pic_baseurl']}warned.gif' alt='" . $lang['text_warned'] . "' />" : '') . "</td>
-        <td style='white-space: nowrap;'>{$added}</td>
-        <td style='white-space: nowrap;'>{$last_access}</td>
-        <td>{$class}</td>
-        <td>{$downloaded}</td>
-        <td>{$uploaded}</td>
-        <td>{$ratio}</td>
-        <td>{$status}</td>
-        <td>{$enabled}</td>
-        </tr>\n";
+        $HTMLOUT .= "
+        <tr>
+            <td>
+                <input type='checkbox' name='ids[]' value='{$arr['id']}' />
+            </td>
+            <td>" . format_username($arr['id']) . "</td>
+            <td style='white-space: nowrap;'>{$added}</td>
+            <td style='white-space: nowrap;'>{$last_access}</td>
+            <td>{$class}</td>
+            <td>{$downloaded}</td>
+            <td>{$uploaded}</td>
+            <td>{$ratio}</td>
+            <td>{$status}</td>
+            <td>{$enabled}</td>
+        </tr>";
     }
     if (($CURUSER['class'] >= UC_SYSOP)) {
         $HTMLOUT .= "<tr><td colspan='10'><select name='do'><option value='enabled' disabled selected>{$lang['text_wtd']}</option><option value='enabled'>{$lang['text_es']}</option><option value='confirm'>{$lang['text_cs']}</option><option value='delete'>{$lang['text_ds']}</option></select><input type='submit' value='" . $lang['text_submit'] . "' /></td></tr>";

@@ -44,10 +44,7 @@ function usercommenttable($rows)
             $htmlout .= '<a name="comm' . (int) $row['id'] . "\"><i>(orphaned)</i></a>\n";
         }
         $htmlout .= ' ' . get_date($row['added'], 'DATE', 0, 1) . '' . ($userid == $CURUSER['id'] || $row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=edit&amp;cid=" . (int) $row['id'] . "'>Edit</a>]" : '') . ($userid == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=delete&amp;cid=" . (int) $row['id'] . "'>Delete</a>]" : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=vieworiginal&amp;cid=" . (int) $row['id'] . "'>View original</a>]" : '') . "</p>\n";
-        $avatar = ($CURUSER['avatars'] === 'yes' ? htmlsafechars($row['avatar']) : '');
-        if (!$avatar) {
-            $avatar = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
-        }
+        $avatar = get_avatar($row);
         $text = format_comment($row['text']);
         if ($row['editedby']) {
             $text .= "<font size='1' class='small'><br><br>Last edited by " . format_username($row['editedby']) . ' ' . get_date($row['editedat'], 'DATE', 0, 1) . "</font>\n";
@@ -56,7 +53,7 @@ function usercommenttable($rows)
         $htmlout .= "
                     <tr>
                         <td class='has-text-centered' width='150'>
-                            <img src='" . url_proxy($avatar, true, 150, auto) . "' alt='Avatar' class='avatar' />
+                            $avatar
                         </td>
                         <td class='text'>{$text}</td>
                     </tr>";
@@ -105,7 +102,7 @@ if ($action === 'add') {
     <div class='has-text-centered margin20'>
     <input type='submit' class='button is-small' value='Do it!' />
     </div></form>";
-    $res = sql_query('SELECT c.id, c.text, c.editedby, c.editedat, c.added, c.username, users.id AS user, u.avatar, u.title, u.anonymous, u.class, u.donor, u.warned, u.leechwarn, u.chatpost
+    $res = sql_query('SELECT c.id, c.text, c.editedby, c.editedat, c.added, c.username, u.id AS user, u.avatar, u.offensive_avatar, u.title, u.anonymous, u.class, u.donor, u.warned, u.leechwarn, u.chatpost
                         FROM usercomments AS c
                         LEFT JOIN users AS u ON c.user = u.id
                         WHERE user = ' . sqlesc($userid) . '

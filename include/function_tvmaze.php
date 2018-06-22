@@ -55,7 +55,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
                                             <span id='cast_{$role['id']}_tooltip'>
                                                 <span class='is-flex'>
                                                     <span class='has-text-centered'>
-                                                        <img src='" . url_proxy(strip_tags($role['photo']), true, 150, 'auto') . "' class='tooltip-poster' />
+                                                        <img src='" . url_proxy(strip_tags($role['photo']), true, 150, null) . "' class='tooltip-poster' />
                                                         <p class='top10'>{$role['name']}</p>
                                                         <p>{$role['character']}</p>
                                                     </span>

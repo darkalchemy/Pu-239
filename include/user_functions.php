@@ -474,8 +474,7 @@ function format_username(int $user_id, $icons = true, $tooltipper = true)
     } elseif (empty($users_data['username'])) {
         return 'unknown[' . $users_data['id'] . ']';
     }
-
-    $avatar = !empty($users_data['avatar']) ? "<img src='" . url_proxy($users_data['avatar'], true) . "' class='round10' />" : "<img src='{$site_config['pic_baseurl']}forumicons/default_avatar.gif' class='round10' />";
+    $avatar = get_avatar($users_data);
     $tip = $tooltip = '';
     if ($tooltipper) {
         $tip = "
@@ -633,15 +632,29 @@ function get_user_ratio_image($ratio)
  *
  * @return string
  */
-function avatar_stuff($avatar)
+function get_avatar($avatar)
 {
-    global $CURUSER, $site_config;
-    $avatar_show = ($CURUSER['avatars'] === 'no' ? '' : (!$avatar['avatar'] ? '
-        <img src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif" alt="avatar" class="avatar">' : (($avatar['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '
-        <img src="' . $site_config['pic_baseurl'] . 'fuzzybunny.gif" alt="avatar" class="avatar">' : '
-        <img src="' . htmlsafechars($avatar['avatar']) . '" alt="avatar" class="avatar">')));
+    require_once CLASS_DIR . 'class_user_options.php';
+    global $CURUSER, $site_config, $user_stuffs;
 
-    return $avatar_show;
+    $avatar['anonymous'] = !empty($avatar['anonymous']) ? $avatar['anonymous'] : 'no';
+    $avatar['offensive_avatar'] = !empty($avatar['offensive_avatar']) ? $avatar['offensive_avatar'] : 'no';
+
+    if ($CURUSER['avatars'] === 'yes') {
+        if ($avatar['anonymous'] === 'yes') {
+            $avatar = "{$site_config['pic_baseurl']}anonymous_1.jpg";
+        } elseif ($avatar['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') {
+            $avatar = "<img src='{$site_config['pic_baseurl']}fuzzybunny.gif' alt='avatar' class='avatar'>";
+        } elseif (empty($avatar['avatar'])) {
+            $avatar = "<img src='{$site_config['pic_baseurl']}forumicons/default_avatar.gif' alt='avatar' class='avatar'>";
+        } else {
+            $avatar = "<img src='" . htmlsafechars($avatar['avatar']) . "' alt='avatar' class='avatar'>";
+        }
+
+        return $avatar;
+    }
+
+    return null;
 }
 
 /**

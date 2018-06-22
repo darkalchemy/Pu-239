@@ -45,8 +45,8 @@ if (mysqli_num_rows($res) > 0) {
 $HTMLOUT .= "<table class='main' width='750px' >" . "<tr><td class='embedded'>\n";
 $HTMLOUT .= "<h1>Success!</h1>
 <table>
-<tr><td>Offer $id (" . htmlspecialchars($arr['offer']) . ") successfully accepted with <a class='altlink' href='details.php?id=" . $torrentid . "'>" . $site_config['baseurl'] . '/details.php?id=' . $torrentid . "</a>.  
-<br><br>User <a class='altlink' href='userdetails.php?id=$arr[userid]'><b>$arr[username]</b></a> automatically PMd.  <br><br>
+<tr><td>Offer $id (" . htmlspecialchars($arr['offer']) . ") successfully accepted with <a class='altlink' href='details.php?id=" . $torrentid . "'>" . $site_config['baseurl'] . '/details.php?id=' . $torrentid . '</a>.  
+<br><br>User ' . format_username($arr[userid]) . " automatically PM'd.  <br><br>
 If you have made a mistake in filling in the URL or have realised that your torrent does not actually satisfy this offer
 , please reset the offer so someone else can fill it by clicking <a class='altlink' href='viewoffers.php?id=$id&amp;offer_reset'>HERE</a> 
 <br><br>Do <b>NOT</b> follow this link unless you are sure there is a problem.<br><br>

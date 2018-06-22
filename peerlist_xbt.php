@@ -66,7 +66,7 @@ function dltable($name, $arr, $torrent)
             if (($e['tanonymous'] === 'yes' && $e['owner'] == $e['uid'] || $e['anonymous'] === 'yes' || $e['paranoia'] >= 2 && $CURUSER['id'] != $e['uid']) && $CURUSER['class'] < UC_STAFF) {
                 $htmlout .= "<td><b>Kezer Soze</b></td>\n";
             } else {
-                $htmlout .= "<td><a href='userdetails.php?id=" . (int) $e['uid'] . "'><b>" . htmlsafechars($e['username']) . "</b></a></td>\n";
+                $htmlout .= '<td>' . format_username($e['uid']) . "</td>\n";
             }
         } else {
             $htmlout .= '<td>' . ($mod ? XBT_IP_CONVERT($e['ipa']) : preg_replace('/\.\d+$/', '.xxx', XBT_IP_CONVERT($e['ipa']))) . "</td>\n";

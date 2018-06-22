@@ -70,12 +70,12 @@ if (0 == $count) {
             $first_unread_poster_arr = mysqli_fetch_row($first_unread_poster);
             if ($arr_unread['tan'] === 'yes') {
                 if ($CURUSER['class'] < UC_STAFF && $arr_unread['user_id'] != $CURUSER['id']) {
-                    $thread_starter = ('' !== $arr_unread['username'] ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
+                    $thread_starter = (!empty($arr_unread['username']) ? '<i>' . get_anonymous_name() . '</i>' : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
                 } else {
-                    $thread_starter = ('' !== $arr_unread['username'] ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($arr_unread['id']) . ']' : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
+                    $thread_starter = (!empty($arr_unread['username']) ? '<i>' . get_anonymous_name() . '</i> [' . format_username($arr_unread['id']) . ']' : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
                 }
             } else {
-                $thread_starter = ('' !== $arr_unread['username'] ? format_username($arr_unread['id']) : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
+                $thread_starter = (!empty($arr_unread['username']) ? format_username($arr_unread['id']) : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
             }
             $topicpic = ($arr_unread['post_count'] < 30 ? ($locked ? 'lockednew' : 'topicnew') : ($locked ? 'lockednew' : 'hot_topic_new'));
             $rpic = (0 != $arr_unread['num_ratings'] ? ratingpic_forums(round($arr_unread['rating_sum'] / $arr_unread['num_ratings'], 1)) : '');
@@ -95,9 +95,9 @@ if (0 == $count) {
 		<td class="' . $class . '" align="right">' . $rpic . '</td>
 		</tr>
 		</table>
-		' . ('' !== $arr_unread['topic_desc'] ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($arr_unread['topic_desc'], ENT_QUOTES) . '</span>' : '') . '  
+		' . (!empty($arr_unread['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($arr_unread['topic_desc'], ENT_QUOTES) . '</span>' : '') . '  
 		<hr>in: <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr_unread['forum_id'] . '">' . htmlsafechars($arr_unread['forum_name'], ENT_QUOTES) . '</a>
-		' . ('' !== $arr_unread['topic_desc'] ? ' [ <span style="font-size: x-small;">' . htmlsafechars($arr_unread['topic_desc'], ENT_QUOTES) . '</span> ]' : '') . '</td>
+		' . (!empty($arr_unread['topic_desc']) ? ' [ <span style="font-size: x-small;">' . htmlsafechars($arr_unread['topic_desc'], ENT_QUOTES) . '</span> ]' : '') . '</td>
 		<td class="' . $class . '">' . number_format($arr_unread['post_count'] - 1) . '</td>
 		<td class="' . $class . '">' . number_format($arr_unread['views']) . '</td>
 		<td class="' . $class . '">' . $thread_starter . '</td>

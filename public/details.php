@@ -469,7 +469,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] || $C
             <div class='img-polaroid round10 right10 column is-2'>";
 
     if (!empty($torrents['poster'])) {
-        $HTMLOUT .= "<img src='" . url_proxy($torrents['poster'], 500, 'auto') . "' class='round10' alt='Poster' />";
+        $HTMLOUT .= "<img src='" . url_proxy($torrents['poster'], 500, null) . "' class='round10' alt='Poster' />";
     }
     if (empty($torrents['poster'])) {
         $HTMLOUT .= "<img src='{$site_config['pic_baseurl']}noposter.png' class='round10' alt='Poster' />";
@@ -480,7 +480,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] || $C
     $HTMLOUT .= "
             </div>
             <div class='table-wrapper column'>
-                <table class='table table-bordered crap'>
+                <table class='table table-bordered'>
                     <tr>
                         <td class='rowhead' width='3%'>{$lang['details_download']}</td>
                         <td>
@@ -891,7 +891,7 @@ if (!empty($torrents['youtube'])) {
         $HTMLOUT .= main_div("
                     <a id='youtube-hash'></a>
                     <div class='responsive-container'>
-                        <iframe width='1920px' height='1080px' src='//youtube.com/embed/{$youtube_id}?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen></iframe>
+                        <iframe width='1920px' height='1080px' src='https://youtube.com/embed/{$youtube_id}?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen></iframe>
                     </div>", 'bottom20');
     }
 }
@@ -983,7 +983,7 @@ if (!$count) {
     $pager = pager($perpage, $count, "details.php?id=$id&amp;", [
         'lastpagedefault' => 1,
     ]);
-    $subres = sql_query('SELECT c.id, c.text, c.user_likes, c.user, c.torrent, c.added, c.anonymous, c.editedby, c.editedat, u.avatar, u.av_w, u.av_h, u.offavatar, u.warned, u.reputation, u.opt1, u.opt2, u.mood, u.username, u.title, u.class, u.donor
+    $subres = sql_query('SELECT c.id, c.text, c.user_likes, c.user, c.torrent, c.added, c.anonymous, c.editedby, c.editedat, u.avatar, u.offensive_avatar, u.av_w, u.av_h, u.warned, u.reputation, u.opt1, u.opt2, u.mood, u.username, u.title, u.class, u.donor
                             FROM comments AS c
                             LEFT JOIN users AS u ON c.user = u.id
                             WHERE torrent = ' . sqlesc($id) . ' ORDER BY c.id ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
@@ -1021,7 +1021,7 @@ $HTMLOUT .= "
         var width = document.getElementById('overlay').offsetWidth;
         var height = (width * 185 / 1000) + 3
         document.getElementById('overlay').style.height = height + 'px';
-        document.getElementById('body-overlay')[0].classList.add('body-overlay');
+        document.getElementById('body-overlay').classList.add('body-overlay');
     }
     </script>";
 

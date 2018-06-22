@@ -34,7 +34,7 @@ if ($CURUSER['id'] == $num['userid'] || $CURUSER['class'] >= UC_STAFF) {
 }
 $HTMLOUT .= "<tr>
 <td><b>{$lang['req_req_by']}</b></td><td>
-<a class='altlink' href='userdetails.php?id=$num[userid]'>{$num['username']}</a>  $edit  $delete $reset  |
+" . format_username($num[userid]) . " $edit  $delete $reset  |
 <a class='altlink' href='viewrequests.php'><b>{$lang['details_all_req']}</b></a> </td></tr><tr><td>
 <b>{$lang['details_vote_req']}</b></td><td><a href='viewrequests.php?id=" . $id . "&amp;req_vote'><b>{$lang['details_vote']}</b></a>
 </td></tr>
@@ -66,7 +66,7 @@ if (!$count) {
     ]);
     $subres = sql_query("SELECT comments.id, comments.text, comments.user, comments.editedat, 
                       comments.editedby, comments.ori_text, comments.request AS request, 
-                      comments.added, comments.anonymous, users.avatar, users.av_w ,users.av_h,
+                      comments.added, comments.anonymous, users.avatar, users.offensive_avatar, users.av_w ,users.av_h,
                       users.warned, users.username, users.title, users.class, users.last_access, 
                       users.enabled, users.reputation, users.donor, users.downloaded, users.uploaded 
                       FROM comments LEFT JOIN users ON comments.user = users.id 

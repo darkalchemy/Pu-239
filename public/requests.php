@@ -4,7 +4,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $CURUSER, $site_config;
+global $CURUSER, $site_config, $user_stuffs;
 
 $lang = load_language('global');
 $stdhead = [
@@ -172,7 +172,7 @@ switch ($action) {
   </tr>
   <tr>
   <td>image:</td>
-  <td><img src="' . strip_tags(url_proxy($arr['image']), true, 500, 'auto') . '" alt="image" /></td>
+  <td><img src="' . strip_tags(url_proxy($arr['image']), true, 500, null) . '" alt="image" /></td>
   </tr>
   <tr>
   <td>description:</td>
@@ -477,24 +477,14 @@ switch ($action) {
             die();
         }
         if ($CURUSER['id'] == $arr['user']) {
-            $avatar = avatar_stuff($CURUSER);
+            $avatar = get_avatar($CURUSER);
         } else {
-            $res_user = sql_query('SELECT avatar, offensive_avatar, view_offensive_avatar FROM users WHERE id=' . $arr['user']) or sqlerr(__FILE__, __LINE__);
-            $arr_user = mysqli_fetch_assoc($res_user);
-            $avatar = avatar_stuff($arr_user);
+            $arr_user = $user_stuffs->getUserFromId($arr['user']);
+            $avatar = get_avatar($arr_user);
         }
         $HTMLOUT .= $top_menu . '<form method="post" action="requests.php?action=edit_comment">
     <input type="hidden" name="id" value="' . $arr['request'] . '"/>
     <input type="hidden" name="comment_id" value="' . $comment_id . '"/>
-     ' . (isset($_POST['button']) && $_POST['button'] === 'Preview' ? '
-    <table class="table table-bordered table-striped">
-    <tr>
-    <td colspan="2"><h1>Preview</h1></td>
-    </tr>
-     <tr>
-    <td>' . $avatar . '</td>
-    <td>' . format_comment($body) . '</td>
-    </tr></table><br>' : '') . '
     <table class="table table-bordered table-striped">
      <tr>
     <td colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '"</h1></td>
@@ -552,9 +542,9 @@ function comment_table($rows)
         //=======change colors
         $text = format_comment($row['text']);
         if ($row['editedby']) {
-            $res_user = sql_query('SELECT username FROM users WHERE id=' . sqlesc($row['editedby'])) or sqlerr(__FILE__, __LINE__);
+            $res_user = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($row['editedby'])) or sqlerr(__FILE__, __LINE__);
             $arr_user = mysqli_fetch_assoc($res_user);
-            $text .= '<p>Last edited by <a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . (int) $row['editedby'] . '"><b>' . htmlsafechars($arr_user['username']) . '</b></a> at ' . get_date($row['editedat'], 'DATE') . '</p>';
+            $text .= '<p>Last edited by ' . format_username($row['editedby']) . ' at ' . get_date($row['editedat'], 'DATE') . '</p>';
         }
         $top_comment_stuff = $row['comment_id'] . ' by ' . (isset($row['username']) ? format_username($row['id']) . ($row['title'] !== '' ? ' [ ' . htmlsafechars($row['title']) . ' ] ' : ' [ ' . get_user_class_name($row['class']) . ' ]  ') : ' M.I.A. ') . get_date($row['added'], '') . ($row['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? '
      - [<a href="requests.php?action=edit_comment&amp;id=' . (int) $row['request'] . '&amp;comment_id=' . (int) $row['comment_id'] . '">Edit</a>]' : '') . ($CURUSER['class'] >= UC_STAFF ? '
@@ -567,7 +557,7 @@ function comment_table($rows)
     <td colspan="2"># ' . $top_comment_stuff . '</td>
     </tr>
     <tr>
-    <td>' . avatar_stuff($row) . '</td>
+    <td>' . get_avatar($row) . '</td>
     <td>' . $text . '</td>
     </tr>
     </table><br>';

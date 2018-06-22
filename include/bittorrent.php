@@ -2012,8 +2012,14 @@ function url_proxy($url, $image = false, $width = null, $height = null)
     }
 
     if (!empty($site_config['image_proxy'])) {
+        $url = $url;
         if (!empty($width)) {
-            $url = "{$url}&width={$width}&height={$height}";
+            $url .= "?width={$width}";
+        }
+        if (!empty($height) && !empty($width)) {
+            $url .= "&height={$height}";
+        } elseif (!empty($height)) {
+            $url .= "?height={$height}";
         }
         $key = [key($site_config['image_proxy_key']), current($site_config['image_proxy_key'])];
         $encrypted = CryptoJSAES::encrypt($url, $key[1]);

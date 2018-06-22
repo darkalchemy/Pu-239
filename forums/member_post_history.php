@@ -179,12 +179,12 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 				 at ' . get_date($arr['edit_date'], '') . ' GMT ' . ('' !== $arr['edit_reason'] ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '') . '
 				 ' . (($CURUSER['class'] >= UC_STAFF && '' !== $arr['post_history']) ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . (int) $arr['forum_id'] . '&amp;topic_id=' . (int) $arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
                 } else {
-                    $edited_by = '<br><br><br><span style="font-weight: bold; font-size: x-small;">' . $lang['vmp_last_edit_by_anony'] . ' [<a class="altlink" href="userdetails.php?id=' . (int) $arr['edited_by'] . '">' . htmlsafechars($arr_edited['username']) . '</a>]
+                    $edited_by = '<br><br><br><span style="font-weight: bold; font-size: x-small;">' . $lang['vmp_last_edit_by_anony'] . ' [' . format_username($arr['edited_by']) . ']
 				 at ' . get_date($arr['edit_date'], '') . ' GMT ' . ('' !== $arr['edit_reason'] ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '') . '
 				 ' . (($CURUSER['class'] >= UC_STAFF && '' !== $arr['post_history']) ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . (int) $arr['forum_id'] . '&amp;topic_id=' . (int) $arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
                 }
             } else {
-                $edited_by = '<br><br><br><span style="font-weight: bold; font-size: x-small;">' . $lang['fe_last_edited_by'] . ' <a class="altlink" href="userdetails.php?id=' . (int) $arr['edited_by'] . '">' . htmlsafechars($arr_edited['username']) . '</a>
+                $edited_by = '<br><br><br><span style="font-weight: bold; font-size: x-small;">' . $lang['fe_last_edited_by'] . ' ' . format_username($arr['edited_by']) . '
 				 at ' . get_date($arr['edit_date'], '') . ' GMT ' . ('' !== $arr['edit_reason'] ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '') . '
 				 ' . (($CURUSER['class'] >= UC_STAFF && '' !== $arr['post_history']) ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . (int) $arr['forum_id'] . '&amp;topic_id=' . (int) $arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
             }
@@ -209,7 +209,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 		<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="' . $site_config['pic_baseurl'] . 'forums/down.gif" alt="' . $lang['fe_bottom'] . '" class="emoticon"></a></span></td>
 		</tr>
 		<tr>
-		<td class="' . $class_alt . '" width="100px" valign="top">' . ($arr['anonymous'] === 'yes' ? '<img src="' . $site_config['pic_baseurl'] . 'anonymous_1.jpg" alt="avatar" class="avatar">' : avatar_stuff($arr)) . '<br>' . ($arr['anonymous'] === 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($member_id)) . ($arr['anonymous'] === 'yes' || $user_arr['title'] === '' ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($user_arr['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name($user_arr['class'])) . '</span><br></td>
+		<td class="' . $class_alt . '" width="100px" valign="top">' . get_avatar($arr) . '<br>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymouse_name() . '</i>' : format_username($member_id)) . ($arr['anonymous'] === 'yes' || $user_arr['title'] === '' ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($user_arr['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name($user_arr['class'])) . '</span><br></td>
 		<td class="' . $post_status . '" align="left" valign="top" colspan="2">' . $body . $edited_by . '</td>
 		</tr>
 		<tr>

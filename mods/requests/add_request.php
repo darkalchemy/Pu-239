@@ -22,7 +22,7 @@ if ($CURUSER['class'] < UC_VIP) {
 }
 $HTMLOUT .= "<h3>{$lang['add_rules']}</h3>";
 $HTMLOUT .= "{$lang['add_rules1']}<b> " . $site_config['req_min_ratio'] . "</b>{$lang['add_rules2']}<b>" . $site_config['req_gigs_upped'] . ' GB</b>.<br>' . ($site_config['karma'] ? "{$lang['add_rules3']}<b><a class='altlink' href='mybonus.php'>" . $site_config['req_cost_bonus'] . ' Karma Points</a></b>....<br><br>' : '') . " 
-{$lang['add_rules4']}<a class='altlink' href='userdetails.php?id=" . $CURUSER['id'] . "'>" . $CURUSER['username'] . '</a>, ';
+{$lang['add_rules4']}" . format_username($CURUSER['id']) . ', ';
 if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus'] < $site_config['req_cost_bonus']) {
     $HTMLOUT .= "{$lang['add_rules7']}<a class='altlink' href='mybonus.php'>Karma Points</a> ...
         {$lang['add_rules8']}<p>{$lang['add_rules9']}
@@ -111,7 +111,7 @@ if (mysqli_num_rows($rescount) > 0) {
         ];
     }
     while ($arr = mysqli_fetch_assoc($res)) {
-        $addedby = "<td style='padding: 0;'><b><a href='userdetails.php?id=$arr[requested_by_user_id]'>$arr[username]</a></b></td>";
+        $addedby = "<td style='padding: 0;'>" . get_username($arr[requested_by_user_id]) . '</td>';
         $catname = htmlspecialchars($change[$arr['category']]['name']);
         $catpic = htmlspecialchars($change[$arr['category']]['image']);
         $catimage = "<img src='{$site_config['pic_baseurl']}caticons/" . $catpic . "' title='$catname' alt='$catname' />";

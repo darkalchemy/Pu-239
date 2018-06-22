@@ -1,3 +1,11 @@
+22 Jun 2018
+fix: image proxy when using width/height
+add: image proxy in AJAX Chat
+fix: almost all formating of usernames is format_username()
+remove: preview buttons
+fix: AJAX Chat not using override_class
+replace: log viewer to allow reading gzipped files and sqlerr_log files
+
 18 Jun 2018
 disable: additional newsfeeds
 remove: binary_operator_spaces from php_cs_fixer

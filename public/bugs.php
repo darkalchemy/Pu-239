@@ -67,7 +67,7 @@ if ($action === 'viewbug') {
     while ($a = mysqli_fetch_assoc($as)) {
         $title = htmlsafechars($a['title']);
         $added = get_date($a['added'], '', 0, 1);
-        $addedby = "<a href='userdetails.php?id=" . (int) $a['sender'] . "'>" . htmlsafechars($a['username']) . '</a> <i>(' . get_user_class_name($a['class']) . ')</i>';
+        $addedby = format_username($a['sender']) . '<i>(' . get_user_class_name($a['class']) . ')</i>';
         switch ($a['priority']) {
             case 'low':
                 $priority = "<span style='color: green;'>{$lang['low']}</span>";
@@ -104,7 +104,7 @@ if ($action === 'viewbug') {
                 break;
 
             default:
-                $by = "<a href='userdetails.php?id=" . (int) $a['staff'] . "'>" . htmlsafechars($a['st']) . '</a> <i>(' . get_user_class_name($a['stclass']) . ')</i>';
+                $by = format_username($a['staff']) . ' <i>(' . get_user_class_name($a['stclass']) . ')</i>';
                 break;
         }
         $HTMLOUT .= "<form method='post' action='{$_SERVER['PHP_SELF']}?action=viewbug'>
@@ -174,10 +174,10 @@ if ($action === 'viewbug') {
             }
             $HTMLOUT .= "<tr>
           <td><a href='?action=viewbug&amp;id=" . (int) $q1['id'] . "'>" . htmlsafechars($q1['title']) . "</a></td>
-          <td nowrap='nowrap'>" . get_date($q1['added'], 'TINY') . " / <a href='userdetails.php?id=" . (int) $q1['sender'] . "'>" . htmlsafechars($q1['username']) . "</a></td>
+          <td nowrap='nowrap'>" . get_date($q1['added'], 'TINY') . ' / ' . format_username($q1['sender']) . "</td>
           <td>{$priority}</td>
           <td>{$status}</td>
-      <td>" . ($q1['status'] != 'na' ? "<a href='userdetails.php?id=" . (int) $q1['staff'] . "'>" . htmlsafechars($q1['staffusername']) . '</a>' : '---') . '</td>
+      <td>" . ($q1['status'] != 'na' ? format_username($q1['staff']) : '---') . '</td>
       </tr>';
         }
         $HTMLOUT .= '</table>';

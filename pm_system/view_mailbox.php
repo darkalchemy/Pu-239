@@ -1,5 +1,6 @@
 <?php
 
+require_once INCL_DIR . 'user_functions.php';
 global $h1_thingie, $lang;
 
 //=== get mailbox name
@@ -28,7 +29,7 @@ $num_messages = number_format($filled, 0);
 $link = 'pm_system.php?action=view_mailbox&amp;box=' . $mailbox . ($perpage < $messages ? '&amp;page=' . $page : '') . '&amp;order_by=' . $order_by . $desc_asc;
 list($menu, $LIMIT) = pager_new($messages, $perpage, $page, $link);
 //=== get message info we need to display then all nice and tidy like \o/
-$res = sql_query('SELECT m.id AS message_id, m.sender, m.receiver, m.added, m.subject, m.unread, m.urgent, u.id, u.username, u.uploaded, u.downloaded, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.opt1, u.opt2,  u.leechwarn, u.chatpost, u.pirate, u.king, f.id AS friend, b.id AS blocked FROM messages AS m
+$res = sql_query('SELECT m.id AS message_id, m.sender, m.receiver, m.added, m.subject, m.unread, m.urgent, u.id, u.username, u.uploaded, u.downloaded, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.opt1, u.opt2,  u.leechwarn, u.chatpost, u.pirate, u.king, f.id AS friend, b.id AS blocked FROM messages AS m
                             LEFT JOIN users AS u ON u.id=m.' . ($mailbox === PM_SENTBOX ? 'receiver' : 'sender') . '
                             LEFT JOIN friends AS f ON f.userid = ' . $CURUSER['id'] . ' AND f.friendid = m.sender
                             LEFT JOIN blocks AS b ON b.userid = ' . $CURUSER['id'] . ' AND b.blockid = m.sender
@@ -101,8 +102,7 @@ if (mysqli_num_rows($res) === 0) {
         $who_sent_it = $row['id'] == 0 ? '<span style="font-weight: bold;">' . $lang['pm_forward_system'] . '</span>' : format_username($row['id']) . $friends;
         $read_unread = $row['unread'] === 'yes' ? '<img src="' . $site_config['pic_baseurl'] . 'pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '" />' : '<img src="' . $site_config['pic_baseurl'] . 'pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '" />';
         $extra = ($row['unread'] === 'yes' ? $lang['pm_mailbox_char1'] . '<span style="color: red;">' . $lang['pm_mailbox_unread'] . '</span>' . $lang['pm_mailbox_char2'] : '') . ($row['urgent'] === 'yes' ? '<span style="color: red;">' . $lang['pm_mailbox_urgent'] . '</span>' : '');
-        $avatar = (!$CURUSER['opt1'] & user_options::AVATARS || !$CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR || $row['id'] == 0) ? '' : (empty($row['avatar']) ? '
-                <img width="40" src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($row['opt1'] & user_options::OFFENSIVE_AVATAR && !$CURUSER['opt1'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img width="40" src="' . $site_config['pic_baseurl'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<img width="40" src="' . htmlsafechars($row['avatar']) . '" alt="avatar" />'));
+        $avatar = get_avatar($row);
         $HTMLOUT .= '
                 <tr>
                     <td class="has-text-centered">' . $read_unread . '</td>

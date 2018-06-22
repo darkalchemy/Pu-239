@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file was created on Jun 18 2018 14:25:41.
+ * This file was created on Jun 22 2018 22:08:28.
  * User Class Config.
  **/
 define('UC_USER', 0);

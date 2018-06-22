@@ -53,8 +53,8 @@ if (mysqli_num_rows($res) == 0) {
     $HTMLOUT .= "<tr><td class='colhead'>{$lang['ad_banemail_add1']}</td><td class='colhead'>{$lang['ad_banemail_email']}</td>" . "<td class='colhead'>{$lang['ad_banemail_by']}</td><td class='colhead'>{$lang['ad_banemail_comment']}</td><td class='colhead'>{$lang['ad_banemail_remove']}</td></tr>\n";
     while ($arr = mysqli_fetch_assoc($res)) {
         $HTMLOUT .= '<tr><td>' . get_date($arr['added'], '') . '</td>
-            <td>' . htmlsafechars($arr['email']) . "</td>
-            <td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int) $arr['addedby'] . "'>" . htmlsafechars($arr['username']) . '</a></td>
+            <td>' . htmlsafechars($arr['email']) . '</td>
+            <td>' . format_username($arr['addedby']) . '</td>
             <td>' . htmlsafechars($arr['comment']) . "</td>
             <td><a href='staffpanel.php?tool=bannedemails&amp;remove=" . (int) $arr['id'] . "'>{$lang['ad_banemail_remove1']}</a></td></tr>\n";
     }

@@ -96,11 +96,11 @@ foreach ($query as $sub_forums_arr) {
 
         if ($post_arr['tan'] == 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $post_arr['user_id'] != $CURUSER['id']) {
-                $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . $lang['fe_anonymous'] . '</i> in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
+                $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
 						<span style="font-weight: bold;">' . CutName(htmlsafechars($post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a>' . $topic_status_image . '<br>
 						' . get_date($post_arr['added'], '') . '<br></span>';
             } else {
-                $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . $lang['fe_anonymous'] . '</i> [' . format_username($post_arr['user_id']) . ']
+                $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> [' . format_username($post_arr['user_id']) . ']
 						<span style="font-size: x-small;"> [ ' . get_user_class_name($post_arr['class']) . ' ] </span><br>
 						in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
 						<span style="font-weight: bold;">' . CutName(htmlsafechars($post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a>' . $topic_status_image . '<br>
@@ -247,9 +247,9 @@ if ($count > 0) {
 
         if ($arr_post_stuff['anonymous'] == 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $arr_post_stuff['user_id'] != $CURUSER['id']) {
-                $last_post_username = ($arr_post_stuff['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . (int) $arr_post_stuff['id'] . ']');
+                $last_post_username = ($arr_post_stuff['username'] !== '' ? '<i>' . get_anonymous_name() . '</i>' : '' . $lang['fe_lost'] . ' [' . (int) $arr_post_stuff['id'] . ']');
             } else {
-                $last_post_username = ($arr_post_stuff['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($arr_post_stuff['user_id']) . ']' : '' . $lang['fe_lost'] . ' [' . (int) $arr_post_stuff['id'] . ']');
+                $last_post_username = ($arr_post_stuff['username'] !== '' ? '<i>' . get_anonymous_name() . '</i> [' . format_username($arr_post_stuff['user_id']) . ']' : '' . $lang['fe_lost'] . ' [' . (int) $arr_post_stuff['id'] . ']');
             }
         } else {
             $last_post_username = ($arr_post_stuff['username'] !== '' ? format_username($arr_post_stuff['user_id']) : '' . $lang['fe_lost'] . ' [' . (int) $arr_post_stuff['id'] . ']');
@@ -267,9 +267,9 @@ if ($count > 0) {
 
         if ($first_post_arr['anonymous'] === 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $first_post_arr['user_id'] != $CURUSER['id']) {
-                $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+                $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . get_anonymous_name() . '</i>' : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
             } else {
-                $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($first_post_arr['user_id']) . ']' : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+                $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . get_anonymous_name() . '</i> [' . format_username($first_post_arr['user_id']) . ']' : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
             }
         } else {
             $thread_starter = ($first_post_arr['username'] !== '' ? format_username($first_post_arr['user_id']) : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');

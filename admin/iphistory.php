@@ -21,7 +21,6 @@ if (isset($_GET['remove'])) {
     $remove = htmlsafechars($_GET['remove']);
     $username2 = htmlsafechars($_GET['username2']);
     $deleteip = htmlsafechars($_GET['deleteip']);
-    //write_logs("<span style='color: #FA5858;'><b>{$lang['stderr_wipe']}</b></span> (<a href='{$site_config['baseurl']}/userdetails.php?id=$CURUSER[id]'><b>$CURUSER[username]</b></a>){$lang['stderr_justwipe']}(<b>$deleteip</b>) {$lang['stderr_from']}(<a href='{$site_config['baseurl']}/userdetails.php?id=$id'><b>$username2</b></a>)'s Ip History.", 'log');
     sql_query('DELETE FROM ips WHERE id = ' . sqlesc($remove)) or sqlerr(__FILE__, __LINE__);
 }
 if (isset($_GET['setseedbox'])) {

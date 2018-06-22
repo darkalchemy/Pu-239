@@ -47,8 +47,8 @@ if (mysqli_num_rows($res) == 0) {
       <td class='colhead'>Perc.</td>
       </tr>\n";
     while ($uper = mysqli_fetch_assoc($res)) {
-        $HTMLOUT .= "<tr>
-        <td><a href='userdetails.php?id=" . (int) $uper['id'] . "'><b>" . htmlsafechars($uper['name']) . '</b></a></td>
+        $HTMLOUT .= '<tr>
+        <td>' . format_username($uper['id']) . '</td>
         <td ' . ($uper['last'] ? ('>' . get_date($uper['last'], '') . ' (' . get_date($uper['last'], '', 0, 1) . ')') : "align='center'>---") . "</td>
         <td>{$uper['n_t']}</td>
         <td>" . ($n_tor > 0 ? number_format(100 * $uper['n_t'] / $n_tor, 1) . '%' : '---') . '</td>

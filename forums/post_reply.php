@@ -24,8 +24,8 @@ $key = (isset($_GET['key']) ? intval($_GET['key']) : 0);
 $body = (isset($_POST['body']) ? $_POST['body'] : '');
 $post_title = strip_tags((isset($_POST['post_title']) ? $_POST['post_title'] : ''));
 $icon = htmlsafechars((isset($_POST['icon']) ? $_POST['icon'] : ''));
-$bb_code = (isset($_POST['bb_code']) && 'no' == $_POST['bb_code'] ? 'no' : 'yes');
-$subscribe = ((isset($_POST['subscribe']) && 'yes' == $_POST['subscribe']) ? 'yes' : ((!isset($_POST['subscribe']) && $arr['subscribed_id'] > 0) ? 'yes' : 'no'));
+$bb_code = (isset($_POST['bb_code']) && $_POST['bb_code'] === 'no' ? 'no' : 'yes');
+$subscribe = ((isset($_POST['subscribe']) && $_POST['subscribe'] === 'yes') ? 'yes' : ((!isset($_POST['subscribe']) && $arr['subscribed_id'] > 0) ? 'yes' : 'no'));
 $topic_name = htmlsafechars($arr['topic_name']);
 $anonymous = (isset($_POST['anonymous']) && '' != $_POST['anonymous'] ? 'yes' : 'no');
 //== if it's a quote
@@ -35,7 +35,7 @@ if (quote !== 0 && $body === '') {
     //=== if member exists, then add username, and then link back to post that was quoted with date :-D
     //==Anonymous
     if ($arr_quote['anonymous'] === 'yes') {
-        $quoted_member = ('' == $arr_quote['username'] ? '' . $lang['pr_lost_member'] . '' : '' . $lang['fe_anonymous'] . '');
+        $quoted_member = ('' == $arr_quote['username'] ? '' . $lang['pr_lost_member'] . '' : '' . get_anonymous_name() . '');
     } else {
         $quoted_member = ('' == $arr_quote['username'] ? '' . $lang['pr_lost_member'] . '' : htmlsafechars($arr_quote['username']));
     }
@@ -149,12 +149,6 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
 $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpadding="0">
    	 <tr><td class="embedded">
 	<h1>' . $lang['pr_reply_in_topic'] . ' "<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr['topic_name'], ENT_QUOTES) . '</a>"</h1>
-	 ' . (isset($_POST['button']) && $_POST['button'] == '' . $lang['fe_preview'] . '' ? '
-	<table width="80%" border="0" cellspacing="5" cellpadding="5">
-	<tr><td class="forum_head" colspan="2"><span style="font-weight: bold;">' . $lang['fe_preview'] . '</span></td></tr>
-	<tr><td width="80" valign="top">' . avatar_stuff($CURUSER) . '</td>
-	<td valign="top" align="left" >' . ('yes' == $bb_code ? format_comment($body) : format_comment_no_bbcode($body)) . '</td>
-	</tr></table><br><br>' : '') . '
 	<form method="post" action="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '" enctype="multipart/form-data">
 	<table width="80%" border="0" cellspacing="0" cellpadding="5">
 	<tr><td align="left" colspan="2">' . $lang['fe_compose'] . '</td></tr>
@@ -216,8 +210,8 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	<td align="left" ><input type="text" maxlength="120" name="post_title" value="' . $post_title . '" class="w-100" /> [ optional ]</td></tr>
 	<tr><td align="right" ><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_bbcode'] . '</span></td>
 	<td align="left" >
-	<input type="radio" name="bb_code" value="yes"' . ('yes' == $bb_code ? ' checked="checked"' : '') . ' /> ' . $lang['fe_yes_enable'] . ' ' . $lang['fe_bbcode_in_post'] . ' 
-	<input type="radio" name="bb_code" value="no"' . ('no' == $bb_code ? ' checked="checked"' : '') . ' /> ' . $lang['fe_no_disable'] . ' ' . $lang['fe_bbcode_in_post'] . ' 
+	<input type="radio" name="bb_code" value="yes"' . ($bb_code === 'yes' ? ' checked="checked"' : '') . ' /> ' . $lang['fe_yes_enable'] . ' ' . $lang['fe_bbcode_in_post'] . ' 
+	<input type="radio" name="bb_code" value="no"' . ($bb_code === 'no' ? ' checked="checked"' : '') . ' /> ' . $lang['fe_no_disable'] . ' ' . $lang['fe_bbcode_in_post'] . ' 
 	</td></tr>
 	<tr><td align="right" valign="top" ><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_body'] . '</span></td>
 	<td align="left" >' . BBcode($body) . $more_options . '
@@ -225,9 +219,8 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	<tr><td colspan="2" >
    Anonymous post : <input type="checkbox" name="anonymous" value="yes" /><br>
    <img src="' . $site_config['pic_baseurl'] . 'forums/subscribe.gif" alt="+" title="+" class="emoticon"> ' . $lang['fe_subscrib_to_tread'] . ' 
-	<input type="radio" name="subscribe" value="yes"' . ('yes' == $subscribe ? ' checked="checked"' : '') . ' />yes 
-	<input type="radio" name="subscribe" value="no"' . ('no' == $subscribe ? ' checked="checked"' : '') . ' />no<br>
-	<input type="submit" name="button" class="button is-small" value="' . $lang['fe_preview'] . '"  />
+	<input type="radio" name="subscribe" value="yes"' . ($subscribe === 'yes' ? ' checked="checked"' : '') . ' />yes 
+	<input type="radio" name="subscribe" value="no"' . ($subscribe === 'no' ? ' checked="checked"' : '') . ' />no<br>
 	<input type="submit" name="button" class="button is-small" value="' . $lang['fe_post'] . '" />
 	</td></tr>
 	</table></form>';
@@ -242,18 +235,19 @@ while ($arr = mysqli_fetch_assoc($res_posts)) {
     $class = ($colour == 0 ? 'one' : 'two');
     $class_alt = ($colour == 0 ? 'two' : 'one');
     $HTMLOUT .= '<tr><td class="forum_head" align="left" width="100" valign="middle">#
-		<span style="font-weight: bold;">' . ('yes' == $arr['anonymous'] ? '<i>' . $lang['fe_anonymous'] . '</i>' : htmlsafechars($arr['username'])) . '</span></td>
+		<span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name . '</i>' : htmlsafechars($arr['username'])) . '</span></td>
 	   <td class="forum_head" align="left" valign="middle"><span style="white-space:nowrap;"> ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span></td></tr>';
+
     if ($arr['anonymous'] === 'yes') {
         if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
-            $HTMLOUT .= '<tr><td class="' . $class_alt . '" width="100" valign="top"><img src="' . $site_config['pic_baseurl'] . 'anonymous_1.jpg" alt="avatar" class="avatar"><br><i>' . $lang['fe_anonymous'] . '</i></td>';
+            $HTMLOUT .= '<tr><td class="' . $class_alt . '" width="100" valign="top">' . get_avatar($arr) . '<br><i>' . get_anonymous_name() . '</i></td>';
         } else {
-            $HTMLOUT .= '<tr><td class="' . $class_alt . '" width="100" valign="top">' . avatar_stuff($arr) . '<br><i>' . $lang['fe_anonymous'] . '</i>[' . format_username($arr['user_id']) . ']</td>';
+            $HTMLOUT .= '<tr><td class="' . $class_alt . '" width="100" valign="top">' . get_avatar($arr) . '<br><i>' . get_anonymous_name() . '</i>[' . format_username($arr['user_id']) . ']</td>';
         }
     } else {
-        $HTMLOUT .= '<tr><td class="' . $class_alt . '" width="100" valign="top">' . avatar_stuff($arr) . '<br>' . format_username($arr['user_id']) . '</td>';
+        $HTMLOUT .= '<tr><td class="' . $class_alt . '" width="100" valign="top">' . get_avatar($arr) . '<br>' . format_username($arr['user_id']) . '</td>';
     }
-    $HTMLOUT .= '<td class="' . $class . '" align="left" valign="top" colspan="2">' . ('yes' == $arr['bbcode'] ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body'])) . '</td></tr>';
+    $HTMLOUT .= '<td class="' . $class . '" align="left" valign="top" colspan="2">' . ($arr['bbcode'] === 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body'])) . '</td></tr>';
 }
 $HTMLOUT .= '</table>
 			</td></tr></table><br><br>';

@@ -240,7 +240,7 @@ if ($user['donor'] && $CURUSER['id'] == $user['id'] || $CURUSER['class'] >= UC_S
         $HTMLOUT .= '';
     } else {
         $h1 .= "<br><b>{$lang['userdetails_donatedtill']} - " . get_date($user['donoruntil'], 'DATE') . '';
-        $h1 .= ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ] {$lang['userdetails_togo']}...</b><font size='-2'> {$lang['userdetails_renew']} <a class='altlink' href='{$site_config['baseurl']}/donate.php'>{$lang['userdetails_here']}</a>.</font><br><br>";
+        $h1 .= ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ] {$lang['userdetails_togo']}...</b><br><span class='size_4'> {$lang['userdetails_renew']} <a class='altlink' href='{$site_config['baseurl']}/donate.php'>{$lang['userdetails_here']}</a>.</span><br><br>";
     }
 }
 if ($CURUSER['id'] == $user['id']) {
