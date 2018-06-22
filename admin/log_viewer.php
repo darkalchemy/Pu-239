@@ -67,6 +67,8 @@ foreach ($paths as $label => $path) {
     }
 }
 
+natsort($files);
+
 if (!empty($files)) {
     $heading = '
         <tr>
