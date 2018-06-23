@@ -231,7 +231,7 @@ if (isset($_GET['search'])) {
     $search = htmlsafechars($_GET['search']);
     $topic_name = highlightWords($topic_name, $search);
 }
-$forum_desc = ($arr['topic_desc'] !== '' ? '<span >' . htmlsafechars($arr['topic_desc'], ENT_QUOTES) . '</span>' : '');
+$forum_desc = (!empty($arr['topic_desc']) ? '<span >' . htmlsafechars($arr['topic_desc'], ENT_QUOTES) . '</span>' : '');
 $locked = ($arr['locked'] === 'yes' ? 'yes' : 'no');
 $sticky = ($arr['sticky'] === 'yes' ? 'yes' : 'no');
 $views = number_format($arr['views']);
@@ -314,7 +314,7 @@ $res = sql_query('SELECT p.id AS post_id, p.topic_id, p.user_id, p.staff_lock, p
 
 $may_post = ($CURUSER['class'] >= $arr['min_class_write'] && $CURUSER['forum_post'] === 'yes' && $CURUSER['suspended'] === 'no');
 
-$locked_or_reply_button = ($locked === 'yes' ? '<span><img src="' . $site_config['pic_baseurl'] . 'forums/thread_locked.gif" alt="' . $lang['fe_thread_locked'] . '" title="' . $lang['fe_thread_locked'] . '" class="tooltipper emoticon" />' . $lang['fe_this_topic_is_locked'] . ', you may not post in this thread.</span>' : ('no' == $CURUSER['forum_post'] ? '<span>Your posting rights have been removed. You may not post.</span>' : '<a href="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '" class="button is-small margin10">Add Reply</a>'));
+$locked_or_reply_button = ($locked === 'yes' ? '<span><img src="' . $site_config['pic_baseurl'] . 'forums/thread_locked.gif" alt="' . $lang['fe_thread_locked'] . '" title="' . $lang['fe_thread_locked'] . '" class="tooltipper emoticon" />' . $lang['fe_this_topic_is_locked'] . ', you may not post in this thread.</span>' : ($CURUSER['forum_post'] === 'no' ? '<span>Your posting rights have been removed. You may not post.</span>' : '<a href="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '" class="button is-small margin10">Add Reply</a>'));
 
 if ($arr['parent_forum'] > 0) {
     $parent_forum_res = sql_query('SELECT name AS parent_forum_name FROM forums WHERE id = ' . sqlesc($arr['parent_forum'])) or sqlerr(__FILE__, __LINE__);
@@ -360,26 +360,26 @@ $HTMLOUT .= ($upload_errors_size > 0 ? ($upload_errors_size === 1 ? '
 while ($arr = mysqli_fetch_assoc($res)) {
     $moodname = isset($mood['name'][$arr['mood']]) ? htmlsafechars($mood['name'][$arr['mood']]) : 'is feeling neutral';
     $moodpic = isset($mood['image'][$arr['mood']]) ? htmlsafechars($mood['image'][$arr['mood']]) : 'noexpression.gif';
-    $post_icon = $arr['icon'] !== '' ? '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" class="tooltipper emoticon" /> ' : '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="icon" title="icon" class="tooltipper emoticon" /> ';
-    $post_title = $arr['post_title'] !== '' ? ' <span>' . htmlsafechars($arr['post_title'], ENT_QUOTES) . '</span>' : '';
+    $post_icon = !empty($arr['icon']) ? '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" class="tooltipper emoticon" /> ' : '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="icon" title="icon" class="tooltipper emoticon" /> ';
+    $post_title = !empty($arr['post_title']) ? ' <span>' . htmlsafechars($arr['post_title'], ENT_QUOTES) . '</span>' : '';
     $stafflocked = $arr['staff_lock'] === 1 ? "<img src='{$site_config['pic_baseurl']}locked.gif' alt='" . $lang['fe_post_locked'] . "' title='" . $lang['fe_post_locked'] . "' class='tooltipper emoticon' />" : '';
-    $member_reputation = $arr['username'] != '' ? get_reputation($arr, 'posts', true, $arr['post_id']) : '';
+    $member_reputation = !empty($arr['username']) ? get_reputation($arr, 'posts', true, $arr['post_id']) : '';
     $edited_by = '';
     if ($arr['edit_date'] > 0) {
         if ($arr['anonymous'] == 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
                 $edited_by = '<span>' . $lang['vmp_last_edit_by_anony'] . '
-				 at ' . get_date($arr['edit_date'], '') . ' UTC ' . ('' !== $arr['edit_reason'] ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
-				 ' . (($CURUSER['class'] >= UC_STAFF && '' !== $arr['post_history']) ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
+				 at ' . get_date($arr['edit_date'], '') . ' UTC ' . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
+				 ' . (($CURUSER['class'] >= UC_STAFF && !empty($arr['post_history'])) ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
             } else {
                 $edited_by = '<span>' . $lang['vmp_last_edit_by_anony'] . ' [' . format_username($arr['edited_by']) . ']
-				 at ' . get_date($arr['edit_date'], '') . ' UTC ' . ('' !== $arr['edit_reason'] ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
-				 ' . (($CURUSER['class'] >= UC_STAFF && '' !== $arr['post_history']) ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
+				 at ' . get_date($arr['edit_date'], '') . ' UTC ' . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
+				 ' . (($CURUSER['class'] >= UC_STAFF && !empty($arr['post_history'])) ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
             }
         } else {
             $edited_by = '<span>' . $lang['fe_last_edited_by'] . ' ' . format_username($arr['edited_by']) . '
-				 at ' . get_date($arr['edit_date'], '') . ' UTC ' . ('' !== $arr['edit_reason'] ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
-				 ' . (($CURUSER['class'] >= UC_STAFF && '' !== $arr['post_history']) ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
+				 at ' . get_date($arr['edit_date'], '') . ' UTC ' . (!empty($arr['edit_reason']) ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
+				 ' . (($CURUSER['class'] >= UC_STAFF && !empty($arr['post_history'])) ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int) $arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
         }
     }
     $body = ($arr['bbcode'] === 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body']));
@@ -400,7 +400,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
         $attachments .= '</td></tr></table>';
     }
 
-    $signature = (($CURUSER['opt1'] & user_options::SIGNATURES) ? '' : ($arr['signature'] == '' ? '' : ($arr['anonymous'] == 'yes' || $arr['perms'] & bt_options::PERMS_STEALTH ? '<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr><td><hr><img class="avatar" src="' . $site_config['pic_baseurl'] . 'anonymous_2.jpg" alt="Signature" /></td></tr></table>' : '<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr><td ><hr>' . format_comment($arr['signature']) . '</td></tr></table>')));
+    $signature = (($CURUSER['opt1'] & user_options::SIGNATURES) ? '' : (empty($arr['signature']) ? '' : ($arr['anonymous'] == 'yes' || $arr['perms'] & bt_options::PERMS_STEALTH ? '<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr><td><hr><img class="avatar" src="' . $site_config['pic_baseurl'] . 'anonymous_2.jpg" alt="Signature" /></td></tr></table>' : '<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr><td ><hr>' . format_comment($arr['signature']) . '</td></tr></table>')));
 
     $post_status = htmlsafechars($arr['post_status']);
     switch ($post_status) {
@@ -421,11 +421,11 @@ while ($arr = mysqli_fetch_assoc($res)) {
             break;
     }
 
-    $HTMLOUT .= "<a href='#{$arr['post_id']}'></a>" . main_table('
+    $HTMLOUT .= "<a id='{$arr['post_id']}'></a>" . main_table('
         <tr>
             <td colspan="3">
                 <div class="columns is-marginless level level-center">
-                    <div class="column is-one-third is-marginless level">
+                    <div class="column is-one-quarter is-marginless level">
                         <a name="' . $post_id . '"></a>
                         ' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" name="post_to_mess_with[]" value="' . $post_id . '" />' : '') . '
                         <a href="javascript:window.prompt(\'' . $lang['fe_direct_link_to_this_post'] . ':\', \'' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '#' . $post_id . '\');">
@@ -438,8 +438,8 @@ while ($arr = mysqli_fetch_assoc($res)) {
                         </span>' . (($arr['paranoia'] >= 2 && $CURUSER['class'] < UC_STAFF) ? '
                         <img src="' . $site_config['pic_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" title="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" class="tooltipper emoticon" />' : get_user_ratio_image($arr['uploaded'], ($site_config['ratio_free'] ? '0' : $arr['downloaded']))) . '
                     </div>
-                    <div class="column is-one-third is-marginless">
-                        <span>' . $post_icon . $post_title . ' ' . $lang['fe_posted_on'] . ':<br>' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span>
+                    <div class="column is-one-quarter is-marginless has-text-centered">
+                        <span>' . $post_icon . $post_title . ' ' . $lang['fe_posted_on'] . ':<br>' . get_date($arr['added'], '') . '</span>
                     </div>
                     <div class="column is-marginless">
                         <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '&amp;quote_post=' . $post_id . '&amp;key=' . $arr['added'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/quote.gif" alt="' . $lang['fe_quote'] . '" title="' . $lang['fe_quote'] . '" class="tooltipper emoticon" /> ' . $lang['fe_quote'] . '</a>
@@ -456,19 +456,23 @@ while ($arr = mysqli_fetch_assoc($res)) {
             </td>
         </tr>
 		<tr>
-         <td class="w-25">' . get_avatar($arr) . '<br>
-			' . ($arr['anonymous'] == 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($arr['user_id'])) . ($arr['anonymous'] == 'yes' || $arr['title'] == '' ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($arr['title']) . ']</span>') . '<br>
+         <td class="has-text-centered w-25">' . get_avatar($arr) . '<br>
+			' . ($arr['anonymous'] == 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($arr['user_id'])) . ($arr['anonymous'] == 'yes' || empty($arr['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($arr['title']) . ']</span>') . '<br>
 			<span >' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name($arr['class'])) . '</span><br>
-			' . ($arr['last_access'] > (TIME_NOW - 300) && $arr['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper emoticon" /> Online' : ' <img src="' . $site_config['pic_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper emoticon" /> ' . $lang['fe_offline'] . '') . '<br>
-			' . $lang['fe_karma'] . ': ' . number_format($arr['seedbonus']) . $member_reputation . '<br>' . ($arr['google_talk'] !== '' ? ' <a href="http://talkgadget.google.com/talkgadget/popout?member=' . htmlsafechars($arr['google_talk']) . '" title="' . $lang['fe_click_for_google_talk_gadget'] . '"  target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/google_talk.gif" alt="' . $lang['fe_google_talk'] . '" class="tooltipper emoticon" /></a> ' : '') . ('' !== $arr['icq'] ? ' <a href="http://people.icq.com/people/&amp;uin=' . htmlsafechars($arr['icq']) . '" title="' . $lang['fe_click_to_open_icq_page'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/icq.gif" alt="icq" class="tooltipper emoticon" /></a> ' : '') . ('' !== $arr['msn'] ? ' <a href="http://members.msn.com/' . htmlsafechars($arr['msn']) . '" target="_blank" title="' . $lang['fe_click_to_see_msn_details'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/msn.gif" alt="msn" title="msn" class="tooltipper emoticon" /></a> ' : '') . ('' !== $arr['aim'] ? ' <a href="http://aim.search.aol.com/aol/search?s_it=searchbox.webhome&amp;q=' . htmlsafechars($arr['aim']) . '" target="_blank" title="' . $lang['fe_click_to_search_on_aim'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/aim.gif" alt="AIM" title="AIM" class="tooltipper emoticon" /></a> ' : '') . ('' !== $arr['yahoo'] ? ' <a href="http://webmessenger.yahoo.com/?im=' . htmlsafechars($arr['yahoo']) . '" target="_blank" title="' . $lang['fe_click_to_open_yahoo'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/yahoo.gif" alt="yahoo" title="Yahoo!" class="tooltipper emoticon" /></a> ' : '') . ($arr['website'] !== '' ? ' <a href="' . htmlsafechars($arr['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/website.gif" alt="website" /></a> ' : '') . ($arr['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($arr['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'email.gif" alt="email" title="email" class="tooltipper emoticon" /> </a>' : '') . '
-			' . ($CURUSER['class'] >= UC_STAFF ? '
-			<ul class="makeMenu">
-				<li>' . htmlsafechars($arr['ip']) . '
-					<ul>
-					<li><a href="' . url_proxy('https://ws.arin.net/?queryinput=' . htmlsafechars($arr['ip'])) . '" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank">' . $lang['vt_ip_whois'] . '</a></li>
-					<li><a href="' . url_proxy('https://www.infosniper.net/index.php?ip_address=' . htmlsafechars($arr['ip'])) . '" title="' . $lang['vt_ip_to_map_using_infosniper'] . '!" target="_blank">' . $lang['vt_ip_to_map'] . '</a></li>
-				</ul>
-				</li>
+			' . ($arr['last_access'] > (TIME_NOW - 300) && $arr['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper emoticon" /> Online' : ' <img src="' . $site_config['pic_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper emoticon" /> ' . $lang['fe_offline'] . '') . '<br>' .
+            $lang['fe_karma'] . ': ' . number_format($arr['seedbonus']) . '<br>' . $member_reputation . '<br>' .
+            (!empty($arr['google_talk']) ? ' <a href="http://talkgadget.google.com/talkgadget/popout?member=' . htmlsafechars($arr['google_talk']) . '" title="' . $lang['fe_click_for_google_talk_gadget'] . '"  target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/google_talk.gif" alt="' . $lang['fe_google_talk'] . '" class="tooltipper emoticon" /></a> ' : '') .
+            (!empty($arr['icq']) ? ' <a href="http://people.icq.com/people/&amp;uin=' . htmlsafechars($arr['icq']) . '" title="' . $lang['fe_click_to_open_icq_page'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/icq.gif" alt="icq" class="tooltipper emoticon" /></a> ' : '') .
+            (!empty($arr['msn']) ? ' <a href="http://members.msn.com/' . htmlsafechars($arr['msn']) . '" target="_blank" title="' . $lang['fe_click_to_see_msn_details'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/msn.gif" alt="msn" title="msn" class="tooltipper emoticon" /></a> ' : '') .
+            (!empty($arr['aim']) ? ' <a href="http://aim.search.aol.com/aol/search?s_it=searchbox.webhome&amp;q=' . htmlsafechars($arr['aim']) . '" target="_blank" title="' . $lang['fe_click_to_search_on_aim'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/aim.gif" alt="AIM" title="AIM" class="tooltipper emoticon" /></a> ' : '') .
+            (!empty($arr['yahoo']) ? ' <a href="http://webmessenger.yahoo.com/?im=' . htmlsafechars($arr['yahoo']) . '" target="_blank" title="' . $lang['fe_click_to_open_yahoo'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/yahoo.gif" alt="yahoo" title="Yahoo!" class="tooltipper emoticon" /></a> ' : '') .
+            (!empty($arr['website']) ? ' <a href="' . htmlsafechars($arr['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/website.gif" alt="website" /></a> ' : '') .
+            ($arr['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($arr['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'email.gif" alt="email" title="email" class="tooltipper emoticon" /> </a>' : '') .
+            ($CURUSER['class'] >= UC_STAFF && !empty($arr['ip']) ? '
+            <h2 class="bg-06 round10">' . htmlsafechars($arr['ip']) . '</h2>
+			<ul class="level-center">
+			    <li><a href="' . url_proxy('https://ws.arin.net/?queryinput=' . htmlsafechars($arr['ip'])) . '" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank" class="button is-small">' . $lang['vt_ip_whois'] . '</a></li>
+				<li><a href="' . url_proxy('https://www.infosniper.net/index.php?ip_address=' . htmlsafechars($arr['ip'])) . '" title="' . $lang['vt_ip_to_map_using_infosniper'] . '!" target="_blank" class="button is-small">' . $lang['vt_ip_to_map'] . '</a></li>
 			</ul>' : '') . '
 			</td>
 			<td class="' . $post_status . '"   colspan="2">' . $body . $edited_by . '</td></tr>' . (!empty($signature) ? '
@@ -549,7 +553,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 <input type="radio" name="action_2" value="split_topic" />' . $lang['vt_split_topic'] . '
             </td>
             <td>
-                ' . $lang['fe_new_topic_name'] . ':<input type="text" size="20" maxlength="120" name="new_topic_name" value="' . ('' !== $topic_name ? $topic_name : '') . '" /> [required]<br>
+                ' . $lang['fe_new_topic_name'] . ':<input type="text" size="20" maxlength="120" name="new_topic_name" value="' . (!empty($topic_name) ? $topic_name : '') . '" /> [required]<br>
                 ' . $lang['fe_new_topic_desc'] . ':<input type="text" size="20" maxlength="120" name="new_topic_desc" value="" />
             </td>
             <td class="has-text-centered">
@@ -668,7 +672,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                         <form action="' . $site_config['baseurl'] . '/forums.php?action=staff_actions" method="post">
                             <input type="hidden" name="action_2" value="rename_topic" />
                             <input type="hidden" name="topic_id" value="' . $topic_id . '" />
-                            <input type="text" size="40" maxlength="120" name="new_topic_name" value="' . ('' !== $topic_name ? $topic_name : '') . '" />
+                            <input type="text" size="40" maxlength="120" name="new_topic_name" value="' . (!empty($topic_name) ? $topic_name : '') . '" />
                     </td>
                     <td class="has-text-centered">
                             <input type="submit" name="button" class="button is-small w-100" value="' . $lang['vt_rename_topic'] . '"  />
@@ -686,7 +690,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                         <form action="' . $site_config['baseurl'] . '/forums.php?action=staff_actions" method="post">
                             <input type="hidden" name="action_2" value="change_topic_desc" />
                             <input type="hidden" name="topic_id" value="' . $topic_id . '" />
-                            <input type="text" size="40" maxlength="120" name="new_topic_desc" value="' . ('' !== $topic_desc1 ? $topic_desc1 : '') . '" /></td>
+                            <input type="text" size="40" maxlength="120" name="new_topic_desc" value="' . (!empty($topic_desc1) ? $topic_desc1 : '') . '" /></td>
                     <td class="has-text-centered">
                             <input type="submit" name="button" class="button is-small w-100" value="' . $lang['vt_change_desc'] . '"  />
                         </form>

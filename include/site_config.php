@@ -41,8 +41,8 @@ $site_config['time_offset'] = '0';
 $site_config['time_use_relative'] = 1;
 $site_config['time_use_relative_format'] = '{--}, h:i:s A';
 $site_config['time_joined'] = 'j-F y';
-$site_config['time_short'] = 'jS F Y - h:i:s A';
-$site_config['time_long'] = 'M j Y, h:i:s A';
+$site_config['time_short'] = 'jS F Y - g:i:s A';
+$site_config['time_long'] = 'M j Y, g:i:s A';
 $site_config['time_tiny'] = '';
 $site_config['time_date'] = '';
 

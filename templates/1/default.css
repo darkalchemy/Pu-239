@@ -356,6 +356,10 @@ span {
     font-size : 20px !important;
 }
 
+.emoticon + .2x {
+    height: 40px;
+}
+
 .icon + .icon {
     margin-right : .3125em
 }
@@ -603,6 +607,12 @@ textarea {
 
 .level-right li:not(:first-child) {
     margin-left : 5px
+}
+
+.level-center-center {
+    align-items       : center;
+    justify-content   : center;
+    display           : flex;
 }
 
 .module {

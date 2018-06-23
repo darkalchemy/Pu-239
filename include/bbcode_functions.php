@@ -188,7 +188,7 @@ function islocal($link)
     global $site_config;
     $flag = false;
     $limit = 600;
-    //dd($link);
+
     if (stristr($link[0], '[url=') !== false) {
         $url = trim($link[1]);
         $title = trim($link[2]);
@@ -234,7 +234,7 @@ function format_urls($s)
 function format_comment($text, $strip_html = true, $urls = true, $images = true)
 {
     global $smilies, $staff_smilies, $customsmilies, $site_config, $CURUSER;
-    //dd($site_config);
+
     $s = $text;
     unset($text);
     $s = validate_imgs($s);
@@ -438,6 +438,9 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         foreach ($matches[1] as $match) {
             $s = str_replace($match, url_proxy($match, true), $s);
         }
+
+        // [img] local images
+        $s = preg_replace("#\[img\](.*" . preg_quote($site_config['pic_baseurl']) . ".*)\[/img\]#i", '<img src="\\1" alt="" class="emoticon 2x" /></a>', $s);
     }
     // [mcom]Text[/mcom]
     if (stripos($s, '[mcom]') !== false) {

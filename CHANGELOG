@@ -1,3 +1,7 @@
+23 Jun 2018
+cleanup: avatar and icon display
+fix: forums scroll to post
+
 22 Jun 2018
 fix: image proxy when using width/height
 add: image proxy in AJAX Chat

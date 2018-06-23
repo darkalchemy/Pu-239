@@ -90,12 +90,12 @@ $HTMLOUT .= "
                         </ul>
                     </div>
                     <h1 class='has-text-centered'>Welcome " . format_username($CURUSER['id']) . "!</h1>
-                    <div class='level has-text-centered flex-top'>";
+                    <div class='level has-text-centered'>";
 if (!empty($avatar)) {
     $HTMLOUT .= "
-                        <span class='margin20'>
+                        <div class='level-center-center has-text-centered'>
                             $avatar
-                        </span>";
+                        </div>";
 }
 
 $width = 'w-100';
