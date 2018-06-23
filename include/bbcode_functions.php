@@ -440,7 +440,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         }
 
         // [img] local images
-        $s = preg_replace("#\[img\](.*" . preg_quote($site_config['pic_baseurl']) . ".*)\[/img\]#i", '<img src="\\1" alt="" class="emoticon 2x" /></a>', $s);
+        $s = preg_replace("#\[img\](.*" . preg_quote($site_config['pic_baseurl']) . ".*)\[/img\]#i", '<img src="\\1" alt="" class="emoticon is-2x" /></a>', $s);
     }
     // [mcom]Text[/mcom]
     if (stripos($s, '[mcom]') !== false) {

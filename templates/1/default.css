@@ -356,7 +356,7 @@ span {
     font-size : 20px !important;
 }
 
-.emoticon + .2x {
+.emoticon.is-2x {
     height: 40px;
 }
 
