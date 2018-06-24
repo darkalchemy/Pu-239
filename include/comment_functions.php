@@ -72,7 +72,7 @@ function commenttable($rows, $variant = 'torrent')
                     </a>';
             }
         } else {
-            $this_text .= "<a name='comm" . (int) $row['id'] . "'><i>(" . $lang['commenttable_orphaned'] . ")</i></a>\n";
+            $this_text .= "<a id='comm" . (int) $row['id'] . "'><i>(" . $lang['commenttable_orphaned'] . ")</i></a>\n";
         }
         $this_text .= get_date($row['added'], '');
         $row['id'] = (int) $row['id'];

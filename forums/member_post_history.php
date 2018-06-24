@@ -121,7 +121,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     $HTMLOUT .= $mini_menu . '<h1>' . $count . ' ' . $lang['fe_posts_by'] . ' ' . format_username($member_id) . '</h1>
 	<div><a class="altlink" href="forums.php?action=member_post_history&amp;id=' . $member_id . '" title="' . $lang['vmp_view_posts_new_to_old'] . '">' . $lang['vmp_sort_by_newest_posts_1st'] . '</a> || 
 	<a class="altlink" href="forums.php?action=member_post_history&amp;id=' . $member_id . '&amp;ASC_DESC=ASC" title="' . $lang['vmp_view_posts_old_to_new'] . '">' . $lang['vmp_sort_by_oldest_posts_1st'] . '</a></div><br>';
-    $HTMLOUT .= '<a name="top"></a><table border="0" cellspacing="5" cellpadding="10" width="90%">' . $the_top_and_bottom;
+    $HTMLOUT .= '<a id="top"></a><table border="0" cellspacing="5" cellpadding="10" width="90%">' . $the_top_and_bottom;
     //=== lets start the loop \o/
     while ($arr = mysqli_fetch_assoc($res)) {
         //=== change colors
@@ -200,7 +200,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 		<span style="color: white;font-weight: bold;">' . htmlsafechars($arr['topic_name'], ENT_QUOTES) . '</span></a>' . $topic_status_image . '</td>
 		</tr>
 		<tr>
-		<td class="forum_head" align="left" width="100" valign="middle"><a name="' . $post_id . '"></a></td>
+		<td class="forum_head" align="left" width="100" valign="middle"><a id="' . $post_id . '"></a></td>
 		<td class="forum_head" align="left" valign="middle"> <span style="white-space:nowrap;">' . $post_icon . '
 		<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . (int) $arr['topic_id'] . '&amp;page=' . $page . '#' . (int) $arr['post_id'] . '" title="' . $lang['fe_link_to_post'] . '">
 		' . $post_title . '</a>&nbsp;&nbsp;' . $post_status_image . ' &nbsp;&nbsp; ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span></td>
@@ -216,5 +216,5 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 		<td class="' . $class_alt . '" align="right" valign="middle" colspan="3"></td>
 		</tr>';
     } //=== end while loop
-    $HTMLOUT .= $the_top_and_bottom . '</table><a name="bottom"></a>';
+    $HTMLOUT .= $the_top_and_bottom . '</table><a id="bottom"></a>';
 }

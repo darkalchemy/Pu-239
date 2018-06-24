@@ -961,13 +961,13 @@ $HTMLOUT .= "
 
 if ($torrents['allow_comments'] === 'yes' || $CURUSER['class'] >= UC_STAFF && $CURUSER['class'] <= UC_MAX) {
     $HTMLOUT .= "
-            <p><a name='startcomments'></a></p>";
+            <p><a id='startcomments'></a></p>";
 } else {
     $HTMLOUT .= "
         <div class='table-wrapper'>
             <table class='table table-bordered'>
                 <tr>
-                    <td><a name='startcomments'> </a><b>{$lang['details_com_disabled']}</b></td>
+                    <td><a id='startcomments'> </a><b>{$lang['details_com_disabled']}</b></td>
                 </tr>
             </table>
         </div>";

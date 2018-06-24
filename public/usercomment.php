@@ -41,7 +41,7 @@ function usercommenttable($rows)
             }
             $htmlout .= format_username($row['id']);
         } else {
-            $htmlout .= '<a name="comm' . (int) $row['id'] . "\"><i>(orphaned)</i></a>\n";
+            $htmlout .= '<a id="comm' . (int) $row['id'] . "\"><i>(orphaned)</i></a>\n";
         }
         $htmlout .= ' ' . get_date($row['added'], 'DATE', 0, 1) . '' . ($userid == $CURUSER['id'] || $row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=edit&amp;cid=" . (int) $row['id'] . "'>Edit</a>]" : '') . ($userid == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=delete&amp;cid=" . (int) $row['id'] . "'>Delete</a>]" : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=vieworiginal&amp;cid=" . (int) $row['id'] . "'>View original</a>]" : '') . "</p>\n";
         $avatar = get_avatar($row);

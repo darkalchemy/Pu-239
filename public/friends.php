@@ -250,10 +250,10 @@ $HTMLOUT .= "
             <thead>
                 <tr>
                     <th class='w-50'>
-                        <h2><a name='friends'>{$lang['friends_friends_list']}</a></h2>
+                        <h2><a id='friends'>{$lang['friends_friends_list']}</a></h2>
                     </th>
                     <th>
-                        <h2><a name='blocks'>{$lang['friends_blocks_list']}</a></h2>
+                        <h2><a id='blocks'>{$lang['friends_blocks_list']}</a></h2>
                     </th>
                 </tr>
             </thead>
@@ -267,8 +267,8 @@ $HTMLOUT .= "
         <table class='table table-bordered table-striped top20 bottom20'>
             <thead>
                 <tr>
-                    <th class='w-50'><h2><a name='friendsp'>{$lang['friends_pending_list']}</a></h2></th>
-                    <th><h2><a name='friendreqs'>{$lang['friends_await_list']}</a></h2></th>
+                    <th class='w-50'><h2><a id='friendsp'>{$lang['friends_pending_list']}</a></h2></th>
+                    <th><h2><a id='friendreqs'>{$lang['friends_await_list']}</a></h2></th>
                 </tr>
             </thead>
             <tbody>

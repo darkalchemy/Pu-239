@@ -28,7 +28,7 @@ $HTMLOUT = "
                             <ul>
                                 <li>{$lang['rules_general_body']}</li>
                                 <li>{$lang['rules_general_body1']}</li>
-                                <li><a name='warning'></a>{$lang['rules_general_body2']}</li>
+                                <li><a id='warning'></a>{$lang['rules_general_body2']}</li>
                             </ul>
                         </div>
                         <p class='accordion-toggle has-text-black'>

@@ -207,7 +207,7 @@ switch ($action) {
   For breaking the <a class="altlink" href="rules.php">rules</a></form></td>
   </tr>
   </table>';
-        $HTMLOUT .= '<h1>Comments for ' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '</h1><p><a name="startcomments"></a></p>';
+        $HTMLOUT .= '<h1>Comments for ' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '</h1><p><a id="startcomments"></a></p>';
         $commentbar = '<p><a class="index" href="requests.php?action=add_comment&amp;id=' . $id . '">Add a comment</a></p>';
         $count = (int) $arr['comments'];
         if (!$count) {
@@ -222,7 +222,7 @@ switch ($action) {
             while ($subrow = mysqli_fetch_assoc($subres)) {
                 $allrows[] = $subrow;
             }
-            $HTMLOUT .= $commentbar . '<a name="comments"></a>';
+            $HTMLOUT .= $commentbar . '<a id="comments"></a>';
             $HTMLOUT .= ($count > $perpage) ? '' . $menu . '<br>' : '<br>';
             $HTMLOUT .= comment_table($allrows);
             $HTMLOUT .= ($count > $perpage) ? '' . $menu . '<br>' : '<br>';

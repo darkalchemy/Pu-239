@@ -72,7 +72,7 @@ if ($search) {
 	</tr></table>';
     //=== nothing here? kill the page
     if ($count == 0) {
-        $content .= '<br><a name="results"></a><br><table border="0" cellspacing="10" cellpadding="10" width="800px">
+        $content .= '<br><a id="results"></a><br><table border="0" cellspacing="10" cellpadding="10" width="800px">
 	<tr><td align="center">
 	' . $lang['sea_nothing_found'] . '
 	</td></tr>
@@ -83,7 +83,7 @@ if ($search) {
         //=== if show as list:
         if ($show === 'list') {
             $content .= ($count > 0 ? '<div style="font-weight: bold;">' . $lang['sea_search_results'] . ' ' . $count . ' </div>' : '') . '<br>' . $the_top_and_bottom . '
-	<a name="results"></a>
+	<a id="results"></a>
 	<table border="0" cellspacing="10" cellpadding="10" width="90%">
 	<tr>
 	<td valign="middle" width="10"><img src="' . $site_config['pic_baseurl'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="emoticon"></td>
@@ -170,7 +170,7 @@ if ($search) {
 if ($show_as === 'posts') {
     //=== the top
     $content .= ($count > 0 ? '<div style="font-weight: bold;">' . $lang['sea_search_results'] . ' ' . $count . ' </div>' : '') . '<br>' . $the_top_and_bottom . '
-   <a name="results"></a>
+   <a id="results"></a>
 	<table border="0" cellspacing="10" cellpadding="10" width="90%">';
     //=== lets do the loop
     while ($arr = mysqli_fetch_assoc($res)) {
@@ -203,7 +203,7 @@ if ($show_as === 'posts') {
 	<span style="color: white;font-weight: bold;">' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</span></a> in:
 	<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . (int) $arr['topic_id'] . '" title="' . sprintf($lang['sea_link_to_x'], 'topic') . '"><span style="color: white;font-weight: bold;">
 	' . $topic_title . '</span></a></td></tr>
-	<tr><td class="forum_head" align="left" width="100" valign="middle"><a name="' . $post_id . '"></a>
+	<tr><td class="forum_head" align="left" width="100" valign="middle"><a id="' . $post_id . '"></a>
 	<span style="font-weight: bold;">' . $lang['sea_relevance'] . ': ' . round($arr['relevance'], 3) . '</span></td>
 	<td class="forum_head" align="left" valign="middle">
 	<span style="white-space:nowrap;">' . $post_icon . '<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '&amp;page=' . $page . '#' . (int) $arr['post_id'] . '" title="Link to Post">' . $post_title . '</a>&nbsp;&nbsp;&nbsp;&nbsp; ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span></td>

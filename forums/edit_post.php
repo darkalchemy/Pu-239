@@ -257,7 +257,7 @@ $HTMLOUT .= '<br><span>' . $lang['fe_last_ten_posts_in_reverse_order'] . '</span
 	<table border="0" cellspacing="5" cellpadding="10" width="90%">';
 
 while ($arr = mysqli_fetch_assoc($res_posts)) {
-    $HTMLOUT .= '<tr><td class="forum_head" align="left" width="100" valign="middle"><a name="' . (int) $arr['post_id'] . '"></a>
+    $HTMLOUT .= '<tr><td class="forum_head" align="left" width="100" valign="middle"><a id="' . (int) $arr['post_id'] . '"></a>
 		<span style="white-space:nowrap;">#' . (int) $arr['post_id'] . '
 		<span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : htmlsafechars($arr['username'])) . '</span></span></td>
 		<td class="forum_head" align="left" valign="middle"><span style="white-space:nowrap;"> ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span></td></tr>';

@@ -23,7 +23,7 @@ function usercommenttable($rows)
             }
             $htmlout .= format_username($row['user']) . "<br> ($title)\n";
         } else {
-            $htmlout .= '<a name="comm' . (int) $row['id'] . "\"><i>{$lang['userdetails_orphaned']}</i></a>\n";
+            $htmlout .= '<a id="comm' . (int) $row['id'] . "\"><i>{$lang['userdetails_orphaned']}</i></a>\n";
         }
         $htmlout .= ' ' . get_date($row['added'], 'DATE', 0, 1) . '' . ($userid == $CURUSER['id'] || $row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=edit&amp;cid=" . (int) $row['id'] . "'>{$lang['userdetails_comm_edit']}</a>]" : '') . ($userid == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=delete&amp;cid=" . (int) $row['id'] . "'>{$lang['userdetails_comm_delete']}</a>]" : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=vieworiginal&amp;cid=" . (int) $row['id'] . "'>{$lang['userdetails_comm_voriginal']}</a>]" : '') . "</p>\n";
         $avatar = get_avatar($row);
@@ -46,7 +46,7 @@ function usercommenttable($rows)
 }
 
 $text = "
-    <a name='startcomments'></a>
+    <a id='startcomments'></a>
     <div class='has-text-centered'>
         <h1>{$lang['userdetails_comm_left']}" . format_username($id) . '</a></h1>';
 $commentbar = "

@@ -52,7 +52,7 @@ if ($num['torrentid'] == 0) {
 } else {
     $HTMLOUT .= "<tr><td><b>{$lang['details_filled']}</b></td><td><a class='altlink' href='details.php?id=" . $num['torrentid'] . "'><b>" . $site_config['baseurl'] . '/details.php?id=' . $num['torrentid'] . '</b></a></td></tr>';
 }
-$HTMLOUT .= "<tr><td class='embedded' colspan='2'><p><a name='startcomments'></a></p>\n";
+$HTMLOUT .= "<tr><td class='embedded' colspan='2'><p><a id='startcomments'></a></p>\n";
 $commentbar = "<p><a class='index' href='comment.php?action=add&amp;tid=$id&amp;type=request'>{$lang['details_add_comment']}</a></p>\n";
 $subres = sql_query("SELECT COUNT(*) FROM comments WHERE request = $id");
 $subrow = mysqli_fetch_array($subres);

@@ -146,7 +146,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     header('Location: forums.php?action=view_topic&topic_id=' . $topic_id . ('' === $extension_error ? '' : '&ee=' . $extension_error) . ('' === $size_error ? '' : '&se=' . $size_error) . '&page=' . $post_id . '#' . $post_id);
     die();
 }
-$HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpadding="0">
+$htmlout = '<table class="main" width="750px" border="0" cellspacing="0" cellpadding="0">
    	 <tr><td class="embedded">
 	<h1>' . $lang['pr_reply_in_topic'] . ' "<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr['topic_name'], ENT_QUOTES) . '</a>"</h1>
 	<form method="post" action="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '" enctype="multipart/form-data">
@@ -226,7 +226,7 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	</table></form>';
 //=== get last ten posts
 $res_posts = sql_query('SELECT p.id AS post_id, p.user_id, p.added, p.body, p.icon, p.post_title, p.bbcode, p.anonymous, u.id, u.username, u.class, u.donor, u.suspended, u.chatpost, u.leechwarn, u.pirate, u.king, u.warned, u.enabled, u.avatar, u.offensive_avatar FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 0, 10') or sqlerr(__FILE__, __LINE__);
-$HTMLOUT .= '<br><span>' . $lang['fe_last_ten_posts_in_reverse_order'] . '</span>
+$htmlout .= '<br><span>' . $lang['fe_last_ten_posts_in_reverse_order'] . '</span>
 	<table border="0" cellspacing="5" cellpadding="10" width="90%">';
 //=== lets start the loop \o/
 while ($arr = mysqli_fetch_assoc($res_posts)) {
@@ -234,20 +234,22 @@ while ($arr = mysqli_fetch_assoc($res_posts)) {
     $colour = (++$colour) % 2;
     $class = ($colour == 0 ? 'one' : 'two');
     $class_alt = ($colour == 0 ? 'two' : 'one');
-    $HTMLOUT .= '<tr><td class="forum_head" align="left" width="100" valign="middle">#
+    $htmlout .= '<tr><td class="forum_head" align="left" width="100" valign="middle">#
 		<span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name . '</i>' : htmlsafechars($arr['username'])) . '</span></td>
 	   <td class="forum_head" align="left" valign="middle"><span style="white-space:nowrap;"> ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span></td></tr>';
 
     if ($arr['anonymous'] === 'yes') {
         if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
-            $HTMLOUT .= '<tr><td class="' . $class_alt . '" width="100" valign="top">' . get_avatar($arr) . '<br><i>' . get_anonymous_name() . '</i></td>';
+            $htmlout .= '<tr><td class="' . $class_alt . '" width="100" valign="top">' . get_avatar($arr) . '<br><i>' . get_anonymous_name() . '</i></td>';
         } else {
-            $HTMLOUT .= '<tr><td class="' . $class_alt . '" width="100" valign="top">' . get_avatar($arr) . '<br><i>' . get_anonymous_name() . '</i>[' . format_username($arr['user_id']) . ']</td>';
+            $htmlout .= '<tr><td class="' . $class_alt . '" width="100" valign="top">' . get_avatar($arr) . '<br><i>' . get_anonymous_name() . '</i>[' . format_username($arr['user_id']) . ']</td>';
         }
     } else {
-        $HTMLOUT .= '<tr><td class="' . $class_alt . '" width="100" valign="top">' . get_avatar($arr) . '<br>' . format_username($arr['user_id']) . '</td>';
+        $htmlout .= '<tr><td class="' . $class_alt . '" width="100" valign="top">' . get_avatar($arr) . '<br>' . format_username($arr['user_id']) . '</td>';
     }
-    $HTMLOUT .= '<td class="' . $class . '" align="left" valign="top" colspan="2">' . ($arr['bbcode'] === 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body'])) . '</td></tr>';
+    $htmlout .= '<td class="' . $class . '" align="left" valign="top" colspan="2">' . ($arr['bbcode'] === 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body'])) . '</td></tr>';
 }
-$HTMLOUT .= '</table>
+$htmlout .= '</table>
 			</td></tr></table><br><br>';
+
+$HTMLOUT .= main_div($htmlout);

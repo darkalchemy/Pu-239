@@ -28,7 +28,7 @@ foreach ($list as $gname) {
     if (mysqli_num_rows($score_res) !== 0) {
         $HTMLOUT .= "
         <div class='bg-02 has-text-centered padtop10 round5'>
-            <a name='{$game}'></a>
+            <a id='{$game}'></a>
             <a href='{$site_config['baseurl']}/flash.php?gameURI={$game}.swf&amp;gamename={$game}&amp;game_id={$game_id}'>
                 <img src='{$site_config['pic_baseurl']}games/{$game}.png' alt='{$gname}' class='round5' />
             </a>";

@@ -1,4 +1,4 @@
-<?php
+x<?php
 
 global $CURUSER, $site_config, $lang;
 
@@ -17,7 +17,7 @@ foreach ($cats as $row) {
 }
 $s2 .= "</select>\n";
 $HTMLOUT .= "<br>
-<form method='post' name='compose' action='viewrequests.php?id=$id&amp;take_req_edit'><a name='add' id='add'></a>
+<form method='post' name='compose' action='viewrequests.php?id=$id&amp;take_req_edit'><a id='add'></a>
 <table ><tr><td colspan='2'>
 <h1>{$lang['details_edit']} $s</h1>
 </td></tr>

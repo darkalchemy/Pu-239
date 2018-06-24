@@ -40,7 +40,7 @@ $lang = [
     'rules_uploading_header' => 'Uploading rules -',
     'rules_uploading_header_sub' => ' Torrents violating these rules may be deleted without notice',
     'rules_uploading_body' => 'All uploads must include a proper NFO.',
-    'rules_uploading_body1' => "Only scene releases. If it's not on <a href='" . url_proxy('https://www.nforce.nl') . "' class='altlink'>NFOrce</a> or <a href='" . url('https://www.grokmusiq.com/') . "' class='altlink'>grokMusiQ</a> then forget it!",
+    'rules_uploading_body1' => "Only scene releases. If it's not on <a href='" . url_proxy('https://www.nforce.nl') . "' class='altlink'>NFOrce</a> or <a href='" . url_proxy('https://www.grokmusiq.com/') . "' class='altlink'>grokMusiQ</a> then forget it!",
     'rules_uploading_body2' => 'The stuff must not be older than seven (7) days.',
     'rules_uploading_body3' => 'All files must be in original format (usually 14.3 MB RARs).',
     'rules_uploading_body4' => 'Pre-release stuff should be labeled with an *ALPHA* or *BETA* tag.',

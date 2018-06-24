@@ -20,7 +20,7 @@ $the_top_and_bottom = '<tr><td  colspan="3">' . (($count > $perpage) ? $menu : '
 $HTMLOUT .= $mini_menu . '<h1>' . $count . ' ' . $lang['fe_posts_by'] . ' ' . format_username($CURUSER['id']) . '</h1>
 			  <div><a class="altlink" href="forums.php?action=view_my_posts" title="' . $lang['vmp_view_posts_new_to_old'] . '">' . $lang['vmp_sort_by_newest_posts_1st'] . '</a> || 
 			  <a class="altlink" href="forums.php?action=view_my_posts&amp;ASC_DESC=ASC" title="' . $lang['vmp_view_posts_old_to_new'] . '">' . $lang['vmp_sort_by_oldest_posts_1st'] . '</a></div><br>';
-$HTMLOUT .= '<a name="top"></a><table border="0" cellspacing="5" cellpadding="10" width="90%">' . $the_top_and_bottom;
+$HTMLOUT .= '<a id="top"></a><table border="0" cellspacing="5" cellpadding="10" width="90%">' . $the_top_and_bottom;
 //=== lets start the loop \o/
 while ($arr = mysqli_fetch_assoc($res)) {
     //=== change colors
@@ -88,7 +88,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
 			<span style="color: white;font-weight: bold;">' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
 			' . $lang['fe_topic'] . ': <a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . (int) $arr['topic_id'] . '" title="' . $lang['fe_link_to_forum'] . '">
 			<span style="color: white;font-weight: bold;">' . htmlsafechars($arr['topic_name'], ENT_QUOTES) . '</span></a>' . $topic_status_image . '</td></tr>
-			<tr><td class="forum_head" align="left" width="100" valign="middle"><a name="' . $post_id . '"></a></td>
+			<tr><td class="forum_head" align="left" width="100" valign="middle"><a id="' . $post_id . '"></a></td>
 			<td class="forum_head" align="left" valign="middle">
 			<span style="white-space:nowrap;">' . $post_icon . '
 			<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . (int) $arr['topic_id'] . '&amp;page=' . $page . '#' . $arr['post_id'] . '" title="' . $lang['fe_link_to_post'] . '">
@@ -105,4 +105,4 @@ while ($arr = mysqli_fetch_assoc($res)) {
 		</tr>
 			<tr><td class="' . $class_alt . '" align="right" valign="middle" colspan="3"></td></tr>';
 } //=== end while loop
-$HTMLOUT .= $the_top_and_bottom . '</table><a name="bottom"></a>';
+$HTMLOUT .= $the_top_and_bottom . '</table><a id="bottom"></a>';

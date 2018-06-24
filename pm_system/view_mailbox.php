@@ -41,7 +41,7 @@ $res = sql_query('SELECT m.id AS message_id, m.sender, m.receiver, m.added, m.su
 $HTMLOUT .= "
     $h1_thingie
     $top_links
-    <a name='pm'></a>
+    <a id='pm'></a>
         <h3 class='has-text-centered top20'>
             <span class='size_1'>{$messages} / {$maxbox}</span>
             <span class='size_5'> {$mailbox_name} </span>

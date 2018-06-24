@@ -60,7 +60,7 @@ Please search torrents before adding an offer!</td></tr><tr><td>
     $HTMLOUT .= ' ' . $catdropdown . ' </select> ' . $deadchkbox . " 
 <input type='submit' value='Search!' class='button is-small' /></td></tr></table></form>
 <br>\n";
-    $HTMLOUT .= "<form method='post' name='compose' action='viewoffers.php?new_offer'><a name='add' id='add'></a>
+    $HTMLOUT .= "<form method='post' name='compose' action='viewoffers.php?new_offer'><a id='add'></a>
 <table width='750px'><tr><td class='colhead' colspan='2'>
 Offers are for Users with a good ratio who have uploaded at least " . $site_config['offer_gigs_upped'] . " gigs Only... Share and you shall recieve!</td></tr>
 <tr><td><b>Title</b></td><td><input type='text' size='40' name='offertitle' />

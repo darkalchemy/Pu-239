@@ -59,7 +59,7 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
     $HTMLOUT .= ' ' . $catdropdown . ' </select> ' . $deadchkbox . " 
 <input type='submit' value='{$lang['req_search']}' class='button is-small' /></td></tr></table></form>
 <br>\n";
-    $HTMLOUT .= "<form method='post' name='compose' action='viewrequests.php?new_request'><a name='add' id='add'></a>
+    $HTMLOUT .= "<form method='post' name='compose' action='viewrequests.php?new_request'><a id='add'></a>
 <table width='750px'><tr><td class='colhead' colspan='2'>
 {$lang['add_good_ratio']}" . $site_config['req_gigs_upped'] . "{$lang['add_share']}</td></tr>
 <tr><td><b>{$lang['add_title']}</b></td><td><input type='text' size='40' name='requesttitle' />

@@ -421,12 +421,11 @@ while ($arr = mysqli_fetch_assoc($res)) {
             break;
     }
 
-    $HTMLOUT .= "<a id='{$arr['post_id']}'></a>" . main_table('
+    $HTMLOUT .= "<a id='$post_id'></a>" . main_table('
         <tr>
             <td colspan="3">
                 <div class="columns is-marginless level level-center">
                     <div class="column is-one-quarter is-marginless level">
-                        <a name="' . $post_id . '"></a>
                         ' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" name="post_to_mess_with[]" value="' . $post_id . '" />' : '') . '
                         <a href="javascript:window.prompt(\'' . $lang['fe_direct_link_to_this_post'] . ':\', \'' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '#' . $post_id . '\');">
                         <img src="' . $site_config['pic_baseurl'] . 'forums/link.gif" alt="' . $lang['fe_direct_link_to_this_post'] . '" title="' . $lang['fe_direct_link_to_this_post'] . '" class="tooltipper emoticon left5 right5" /></a>
@@ -514,7 +513,7 @@ $cache->delete('last_read_post_' . $topic_id . '_' . $CURUSER['id']);
 $cache->delete('sv_last_read_post_' . $topic_id . '_' . $CURUSER['id']);
 $HTMLOUT .= '
     </table>
-    <a name="bottom"></a>
+    <a id="bottom"></a>
     <br>';
 
 if ($CURUSER['class'] >= UC_STAFF) {
