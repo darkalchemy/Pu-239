@@ -31,8 +31,8 @@ if (XBT_TRACKER) {
     $site_config['announce_urls'][] = '#announce_urls:2710/announce';
 } else {
     $site_config['announce_urls'] = [];
-    $site_config['announce_urls'][] = '#announce_urls';
-    $site_config['announce_urls'][] = '#announce_https';
+    $site_config['announce_urls'][] = '#announce_urls/announce.php';
+    $site_config['announce_urls'][] = '#announce_https/announce.php';
 }
 // Email for sender/return path.
 $site_config['site_email'] = '#site_email';
