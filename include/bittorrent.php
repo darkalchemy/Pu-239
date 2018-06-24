@@ -2182,6 +2182,6 @@ function insert_update_ip()
     }
 }
 
-if (!empty($CURUSER) && $CURUSER['class'] >= UC_STAFF && file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {
+if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {
     $session->set('is-danger', '[h1]This site is vulnerable until you delete the install directory[/h1][p]rm -r ' . ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR . '[/p]');
 }

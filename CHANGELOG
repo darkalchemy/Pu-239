@@ -1,4 +1,5 @@
 24 Jun 2018
+fix: check for empty pm ids before attempting to delete them
 change: anchor tags to id from name for uniformity
 fix: incorrect url for announce
 update: resetpw.php when importing from U-232 allow compare hintanswer with md5

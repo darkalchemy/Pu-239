@@ -2,6 +2,11 @@
 
 global $CURUSER, $site_config, $lang, $cache;
 
+if (empty($_POST['pm'])) {
+    header("Location: {$_SERVER['HTTP_REFERER']}");
+    die();
+}
+
 $pm_messages = $_POST['pm'];
 if (isset($_POST['move'])) {
     if (is_valid_id($pm_messages)) {
@@ -16,7 +21,6 @@ if (isset($_POST['move'])) {
     die();
 }
 if (isset($_POST['delete'])) {
-    $pm_messages = $_POST['pm'];
     foreach ($pm_messages as $id) {
         $res = sql_query('SELECT * FROM messages WHERE id = ' . sqlesc($id));
         $message = mysqli_fetch_assoc($res);
