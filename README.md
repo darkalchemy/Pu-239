@@ -114,6 +114,8 @@ reCAPTCHA V2 needs both the site key and secret key set in .env
 
 Fanart.tv needs api key set in .inv
 
+TMDB API key allows upcoming movies
+
 Google API key allows up to 1000 api hits instead of 100 per day, set in .env
 
 IMDb no key needed

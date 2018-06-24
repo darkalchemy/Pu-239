@@ -2,7 +2,9 @@
 
 $lang = [
     //Mod admin link
-    'gl_admin' => 'AdminCP',
+    'gl_movies_tv' => 'Movies & TV',
+    'gl_movies_by_date' => 'Movies By Release Date',
+    'gl_tv_today' => 'TV Airing Today',
     'gl_userblocks' => 'User Blocks',
     'gl_profile' => 'Profile',
     'gl_logout' => 'Logout',

@@ -2003,7 +2003,7 @@ function url_proxy($url, $image = false, $width = null, $height = null)
 {
     global $site_config;
 
-    if (empty($url) || preg_match('#' . $site_config['domain'] . '#', $url)) {
+    if (empty($url) || preg_match('#' . $site_config['domain'] . '#', $url) || preg_match('#' . $site_config['pic_baseurl'] . '#', $url)) {
         return $url;
     }
 
@@ -2190,7 +2190,7 @@ function insert_update_ip()
     }
     $id = (int) $CURUSER['id'];
     $ip = getip();
-    $hash = hash('sha512', "{$id}_{$ip}");
+    $hash = hash('sha256', "{$id}_{$ip}");
     $user_ips = $cache->get('user_ips_' . $hash);
     if ($user_ips === false || is_null($user_ips)) {
         $added = TIME_NOW;

@@ -462,6 +462,10 @@ span {
     background-color: rgba(255,228,181, .5);
 }
 
+.bg-09 {
+    background-color : rgba(0, 0, 0, .5)
+}
+
 .bordered {
     border-top           : 2px solid red;
     border-bottom        : 2px solid red;
@@ -838,8 +842,14 @@ textarea {
     border-radius : .625em
 }
 
+.tooltip-background {
+    background-size        : cover;
+    background-position    : center center;
+    background-repeat      : no-repeat;
+}
+
 .tooltip-torrent {
-    height : 245px
+    max-height : 500px;
 }
 
 .tooltip {
@@ -987,6 +997,13 @@ textarea {
 
 .w-25 {
     width            : 25%;
+    -webkit-box-flex : 0;
+    -ms-flex         : none;
+    flex             : none
+}
+
+.w-40 {
+    width            : 40%;
     -webkit-box-flex : 0;
     -ms-flex         : none;
     flex             : none

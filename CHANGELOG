@@ -1,4 +1,6 @@
 23 Jun 2018
+add: tv.php use TMDb to get a list of tv showings airing today
+add: movies.php use TMDb to get a list of movies released any particular week
 fix: emoticon size
 cleanup: avatar and icon display
 fix: forums scroll to post

@@ -1,0 +1,73 @@
+<?php
+
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'function_tmdb.php';
+check_user_status();
+global $CURUSER, $site_config, $fluent, $cache, $session;
+
+$lang = array_merge(load_language('global'), load_language('details'));
+
+$today = date('Y-m-d');
+
+$HTMLOUT = "
+    <h1 class='has-text-centered'>TV Airing Today</h1>";
+
+$tvs = get_tv_by_day($today);
+if (!empty($tvs)) {
+    $titles = $body = [];
+    foreach ($tvs as $tv) {
+        if (!empty($tv['name']) && !in_array(strtolower($tv['name']), $titles)) {
+            $poster = !empty($tv['poster_path']) ? "https://image.tmdb.org/t/p/w185{$tv['poster_path']}" : $site_config['pic_baseurl'] . 'noposter.png';
+            $backdrop = !empty($tv['backdrop_path']) ? "https://image.tmdb.org/t/p/w500{$tv['backdrop_path']}" : '';
+
+            $body[] = [
+                'poster' => url_proxy($poster, true),
+                'backdrop' => url_proxy($backdrop, true),
+                'title' => $tv['name'],
+                'vote_count' => $tv['vote_count'],
+                'id' => $tv['id'],
+                'vote_average' => $tv['vote_average'],
+                'popularity' => $tv['popularity'],
+                'overview' => $tv['overview'],
+            ];
+            $titles[] = strtolower($tv['name']);
+        }
+    }
+
+    $div = "
+        <div class='level-center'>";
+    foreach ($body as $tv) {
+        $div .= "
+            <div class='padding10 round10 bg-00 margin10'>
+                <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$tv['id']}_tooltip'>
+                    <img src='{$tv['poster']}' alt='Poster' class='tooltip-poster'>
+                    <div class='has-text-centered top10'>{$tv['title']}</div>
+                    <div class='tooltip_templates'>
+                        <div id='movie_{$tv['id']}_tooltip' class='round10 tooltip-background' style='background-image: url({$tv['backdrop']});'>
+                            <div class='is-flex tooltip-torrent bg-09'>
+                                <span class='padding10 w-40'>
+                                    <img src='{$tv['poster']}' alt='Poster' class='tooltip-poster'>
+                                </span>
+                                <span class='padding10'>
+                                    <p><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($tv['title']) . "</span></p>
+                                    <p><span class='size_4 right10 has-text-primary'>Popularity: </span><span>" . htmlsafechars($tv['popularity']) . "</span></p>
+                                    <p><span class='size_4 right10 has-text-primary'>Votes: </span><span>" . htmlsafechars($tv['vote_average']) . "</span></p>
+                                    <p><span class='size_4 right10 has-text-primary'>Overview: </span><span>" . htmlsafechars($tv['overview']) . '</span></p>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>';
+    }
+
+    $div .= '
+        </div>';
+
+    $HTMLOUT .= main_div($div);
+} else {
+    $HTMLOUT = main_div("<h1 class='has-text-centered'>TMDb may be down, check back later</h1>");
+}
+echo stdhead('TV Shows Today') . wrapper($HTMLOUT) . stdfoot();
