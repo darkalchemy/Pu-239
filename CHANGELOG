@@ -1,3 +1,8 @@
+24 Jun 2018
+update: tv.php function_tmdb.php to get tv listing by date, pretty limited set
+update: use internal cache flush method
+update: limit AJAX Chat images to 50% height 50% width
+
 23 Jun 2018
 add: tv.php use TMDb to get a list of tv showings airing today
 add: movies.php use TMDb to get a list of movies released any particular week

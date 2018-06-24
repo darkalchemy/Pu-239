@@ -2900,8 +2900,8 @@ var ajaxChat = {
                 return url;
             }
             url = this.stripTags(url.replace(/\s/gm, this.encodeText(' ')));
-            maxWidth = this.dom['chatList'].offsetWidth - 50;
-            maxHeight = this.dom['chatList'].offsetHeight - 50;
+            maxWidth = this.dom['chatList'].offsetWidth / 2;
+            maxHeight = this.dom['chatList'].offsetHeight / 2;
             link = '<img class="bbCodeImage" style="max-width:'
                 + maxWidth
                 + 'px; max-height:'

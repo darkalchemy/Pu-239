@@ -9,10 +9,24 @@ global $CURUSER, $site_config, $fluent, $cache, $session;
 
 $lang = array_merge(load_language('global'), load_language('details'));
 
-$today = date('Y-m-d');
+$base = $today = date('Y-m-d');
+if (!empty($_GET['date'])) {
+    $today = $_GET['date'];
+}
+$date = new DateTime($today);
+$yesterday = $date->modify('-1 day')->format('Y-m-d');
+$date = new DateTime($today);
+$tomorrow = $date->modify('+1 day')->format('Y-m-d');
+$date = new DateTime($today);
+$display = $date->format('l Y-m-d');
 
 $HTMLOUT = "
-    <h1 class='has-text-centered'>TV Airing Today</h1>";
+    <h1 class='has-text-centered'>TV Airing By Date</h1>
+    <div class='level-center top20'>
+        <a href='{$_SERVER['PHP_SELF']}?date={$yesterday}' class='tooltipper' title='{$yesterday}'>{$yesterday}</a>
+        <a href='{$_SERVER['PHP_SELF']}?date={$base}' class='tooltipper' title='GoTo {$base}'><h2>{$display}</h2></a>
+        <a href='{$_SERVER['PHP_SELF']}?date={$tomorrow}' class='tooltipper' title='{$tomorrow}'>{$tomorrow}</a>
+    </div>";
 
 $tvs = get_tv_by_day($today);
 if (!empty($tvs)) {
@@ -70,4 +84,5 @@ if (!empty($tvs)) {
 } else {
     $HTMLOUT = main_div("<h1 class='has-text-centered'>TMDb may be down, check back later</h1>");
 }
+
 echo stdhead('TV Shows Today') . wrapper($HTMLOUT) . stdfoot();

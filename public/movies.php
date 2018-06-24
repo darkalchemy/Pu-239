@@ -10,7 +10,7 @@ global $CURUSER, $site_config, $fluent, $cache, $session;
 $lang = array_merge(load_language('global'), load_language('details'));
 
 $year = date('Y');
-$week = date('W');
+$base = $week = date('W');
 if (!empty($_GET['week'])) {
     $year = date('Y');
     $week = $_GET['week'];
@@ -23,7 +23,7 @@ $HTMLOUT = "
     <h1 class='has-text-centered'>Movies by Release Date</h1>
     <div class='level-center top20'>
         <a href='{$_SERVER['PHP_SELF']}?week={$previous_week}' class='tooltipper' title='Week #{$previous_week}'>Previous Week</a>
-        <h2 class='tooltipper' title='Week #{$week}'>{$dates[0]} - {$dates[1]}</h2>
+        <a href='{$_SERVER['PHP_SELF']}?week={$base}' class='tooltipper' title='GoTo {$base}'><h2>{$dates[0]} - {$dates[1]}</h2></a>
         <a href='{$_SERVER['PHP_SELF']}?week={$next_week}' class='tooltipper' title='Week #{$next_week}'>Next Week</a>
     </div>";
 

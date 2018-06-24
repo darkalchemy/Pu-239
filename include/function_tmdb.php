@@ -7,7 +7,7 @@ function get_tv_by_day($dates)
     $tmdb_data = $cache->get('tmdb_tv_' . $dates);
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $_ENV['TMDB_API_KEY'];
-        $url = "https://api.themoviedb.org/3/tv/airing_today?api_key=$apikey";
+        $url = "https://api.themoviedb.org/3/discover/tv?air_date.gte={$dates}&air_date.lte={$dates}&api_key=$apikey";
         $content = fetch($url);
         if (!$content) {
             return false;
@@ -35,7 +35,7 @@ function get_movies_by_week($dates)
     $tmdb_data = $cache->get('tmdb_movies_' . $dates[0]);
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $_ENV['TMDB_API_KEY'];
-        $url = "https://api.themoviedb.org/3/discover/movie?primary_release_date.gte={$dates[0]}&primary_release_date.lte={$dates[1]}&api_key=$apikey&sort_by=release_date.asc&include_adult=false";
+        $url = "https://api.themoviedb.org/3/discover/movie?primary_release_date.gte={$dates[0]}&primary_release_date.lte={$dates[1]}&api_key=$apikey&sort_by=release_date.asc&include_adult=false&include_video=false";
         $content = fetch($url);
         if (!$content) {
             return false;
