@@ -29,7 +29,7 @@ $subscribe = ((isset($_POST['subscribe']) && $_POST['subscribe'] === 'yes') ? 'y
 $topic_name = htmlsafechars($arr['topic_name']);
 $anonymous = (isset($_POST['anonymous']) && '' != $_POST['anonymous'] ? 'yes' : 'no');
 //== if it's a quote
-if (quote !== 0 && $body === '') {
+if ($quote !== 0 && $body === '') {
     $res_quote = sql_query('SELECT p.body, p.staff_lock, p.anonymous, p.user_id, u.username FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE p.id=' . sqlesc($quote)) or sqlerr(__FILE__, __LINE__);
     $arr_quote = mysqli_fetch_array($res_quote);
     //=== if member exists, then add username, and then link back to post that was quoted with date :-D

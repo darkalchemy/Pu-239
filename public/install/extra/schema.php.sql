@@ -1381,6 +1381,7 @@ CREATE TABLE `over_forums` (
   `name` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `min_class_view` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `forum_id` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;

@@ -1,4 +1,10 @@
 24 Jun 2018
+update: resetpw.php when importing from U-232 allow compare hintanswer with md5
+add: forum_id column to over_forums
+remove: unused css links in forums.php
+remove: direct link to Pu-239.pw/forums.php
+fix: staff forums id
+fix: over_forums.php edit forum with same sort number
 update: tv.php function_tmdb.php to get tv listing by date, pretty limited set
 update: use internal cache flush method
 update: limit AJAX Chat images to 50% height 50% width

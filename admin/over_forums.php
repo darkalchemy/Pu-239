@@ -55,7 +55,7 @@ switch ($action) {
         if (!$name && !$desc && !$id) {
             stderr($lang['std_error'], $lang['std_error_form']);
         }
-        $res = sql_query('SELECT sort FROM over_forums WHERE sort = ' . sqlesc($sort)) or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT sort FROM over_forums WHERE name != ' . sqlesc($name) . ' AND sort = ' . sqlesc($sort)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
             stderr($lang['std_error'], $lang['std_error_select_another']);
         }

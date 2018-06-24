@@ -591,7 +591,6 @@ function navbar()
                             <li>
                                 <a href='#'>{$lang['gl_forums']}</a>
                                 <ul class='ddFade ddFadeSlow'>
-                                    <li class='iss_hidden'><a href='http://pu-239.pw'>{$lang['gl_tforums']}</a></li>
                                     <li class='iss_hidden'><a href='{$site_config['baseurl']}/forums.php'>{$lang['gl_forums']}</a></li>
                                 </ul>
                             </li>

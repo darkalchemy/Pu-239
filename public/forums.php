@@ -11,16 +11,6 @@ check_user_status();
 global $CURUSER, $site_config, $cache, $fluent;
 
 $lang = array_merge(load_language('global'), load_language('forums'), load_language('forums_global'));
-$stdhead = [
-    'css' => [
-        'forums',
-        'jquery.lightbox-0.5',
-        'style',
-        'style2',
-        'bbcode',
-        'rating_style',
-    ],
-];
 $stdfoot = [
     'js' => [
         get_file_name('forums_js'),
@@ -355,7 +345,6 @@ switch ($action) {
 
     case 'member_post_history':
         require_once FORUM_DIR . 'member_post_history.php';
-//dd($HTMLOUT);
         $HTMLOUT .= $the_bottom_of_the_page;
         break;
 
@@ -627,4 +616,4 @@ function insert_quick_jump_menu($current_forum = 0, $staff = false)
     return $body;
 }
 
-echo stdhead($lang['fe_forums'], true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($lang['fe_forums']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
