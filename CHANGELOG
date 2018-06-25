@@ -1,3 +1,6 @@
+25 Jun 2018
+fix: allowed staff and missing lang reference in backup.php
+
 24 Jun 2018
 fix: check for empty pm ids before attempting to delete them
 change: anchor tags to id from name for uniformity

@@ -2003,7 +2003,7 @@ function url_proxy($url, $image = false, $width = null, $height = null)
 {
     global $site_config;
 
-    if (empty($url) || preg_match('#' . $site_config['domain'] . '#', $url) || preg_match('#' . $site_config['pic_baseurl'] . '#', $url)) {
+    if (empty($url) || preg_match('#img\.php#', $url) || preg_match('#' . preg_quote($site_config['domain']) . '#', $url) || preg_match('#' . preg_quote($site_config['pic_baseurl']) . '#', $url)) {
         return $url;
     }
 

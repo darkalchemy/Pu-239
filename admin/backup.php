@@ -7,11 +7,8 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang;
 
-/* add your ids and uncomment this check*/
-$allowed_ids = [
-    1,
-];
-if (!in_array($CURUSER['id'], $allowed_ids)) {
+$lang = array_merge($lang, load_language('ad_backup'));
+if (!in_array($CURUSER['id'], $staff_settings['is_staff']['allowed'])) {
     stderr($lang['backup_stderr'], $lang['backup_stderr1']);
 }
 

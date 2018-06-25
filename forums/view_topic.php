@@ -279,9 +279,9 @@ if ($topic_users_cache === false || is_null($topic_users_cache)) {
         $list[] = format_username($row['user_id']);
     }
 
-    $topicusers = implode(',&nbsp;&nbsp;', $list);
+    $topicusers = empty($list) ? '' : implode(',&nbsp;&nbsp;', $list);
     $topic_users_cache['topic_users'] = $topicusers;
-    $topic_users_cache['actcount'] = count($list);
+    $topic_users_cache['actcount'] = empty($list) ? 0 : count($list);
     $cache->set('now_viewing_topic', $topic_users_cache, $site_config['expires']['forum_users']);
 }
 if (!$topic_users_cache['topic_users']) {

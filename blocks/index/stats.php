@@ -18,7 +18,7 @@ $HTMLOUT .= "
     <fieldset id='stats' class='header'>
         <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['index_stats_title']}</legend>
         <div class='w-100'>
-            <div class='columns'>
+            <div class='columns is-gapless'>
                 <div class='column'>
                     <div class='table-wrapper has-text-centered'>
                         <table class='table table-bordered table-striped'>

@@ -7,7 +7,7 @@ check_user_status();
 global $site_config, $CURUSER, $cache, $session;
 
 $HTMLOUT = '';
-$lang = array_merge(load_language('global'), load_language('staff_panel'));
+$lang = array_merge(load_language('global'), load_language('index'), load_language('staff_panel'));
 
 $staff_classes1['name'] = $page_name = $file_name = $navbar = '';
 $staff = sqlesc(UC_STAFF);
