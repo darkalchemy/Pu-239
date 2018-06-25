@@ -83,13 +83,41 @@ function stdhead($title = '', $stdhead = null)
         <div class='page-wrapper'>";
     if ($CURUSER) {
         $htmlout .= navbar();
-        $htmlout .= "
+        if (empty($site_config['video_banners'])) {
+            if (empty($site_config['banners'])) {
+                $banner = "
+                    <div class='left50'>
+                        <h1>" . $site_config['variant'] . " Code</h1>
+                        <p class='description left20'><i>Making progress, 1 day at a time...</i></p>
+                    </div>";
+            } else {
+                $banner = "
+                    <img src='" . $site_config['pic_baseurl'] . '/' . $site_config['banners'][array_rand($site_config['banners'])] . "' />";
+            }
+            $htmlout .= "
             <div id='logo' class='logo columns level is-marginless'>
-                <div class='column'>
-                    <h1>" . $site_config['variant'] . " Code</h1>
-                    <p class='description left20'><i>Making progress, 1 day at a time...</i></p>
+                <div class='column is-paddingless'>
+                    $banner
                 </div>
             </div>";
+        } else {
+            $banner = $site_config['video_banners'][array_rand($site_config['video_banners'])];
+            $htmlout .= "
+            <div id='base_contents_video'>
+                <div class='base_header_video'>
+                    <video class='object-fit-video' loop muted autoplay>
+                        <source src='{$site_config['pic_baseurl']}{$banner}.mp4'>
+                        <source src='{$site_config['pic_baseurl']}{$banner}.ogv'>
+                        <source src='{$site_config['pic_baseurl']}{$banner}.webm'>
+                        <source src='{$site_config['pic_baseurl']}{$banner}.mp4' type='video/mp4'>
+                        <source src='{$site_config['pic_baseurl']}{$banner}.ogv' type='video/ogg'>
+                        <source src='{$site_config['pic_baseurl']}{$banner}.webm' type='video/webm'>
+                        <img src='{$site_config['pic_baseurl']}banner.png' title='Your browser does not support the <video> tag' alt='Logo' />
+                    </video>
+                </div>
+            </div>";
+        }
+
         $htmlout .= platform_menu();
         $htmlout .= "
             <div id='base_globelmessage'>

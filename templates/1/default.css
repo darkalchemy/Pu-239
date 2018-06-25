@@ -595,6 +595,10 @@ textarea {
     margin-left : 1.25em
 }
 
+.left50 {
+    margin-left : 3.125em
+}
+
 .level-center {
     -webkit-box-align : center;
     -ms-flex-align    : center;
@@ -1164,6 +1168,28 @@ vertical_center {
 
 code a {
     color: lime; 
+}
+
+#base_contents_video {
+    height: 0;
+    padding-top: 18.5%;
+    width: 100%;
+    background: rgb(40, 40, 40);
+    background: rgba(40, 40, 40, .5);
+}
+
+.base_header_video {
+    width: calc(100% + 1px);
+    height: 0;
+    z-index: 1;
+    margin-top: -18.5%;
+}
+
+.object-fit-video {
+    object-fit: fill;
+    width: 100% !important;
+    background: transparent;
+    visibility: hidden;
 }
 
 @media (max-width : 1200px) {

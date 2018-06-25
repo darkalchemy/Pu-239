@@ -309,3 +309,5 @@ $site_config['notifications'] = [
 ];
 
 $site_config['newsrss_on'] = false;
+$site_config['video_banners'] = [];
+$site_config['banners'] = [];

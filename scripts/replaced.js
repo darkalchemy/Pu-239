@@ -308,3 +308,8 @@ $(function () {
         }, animate_duration, 'swing');
     }
 });
+
+var vidWidth = $('.object-fit-video').width();
+$('.object-fit-video').height(vidWidth * .184);
+$('.object-fit-video').css('visibility', 'visible');
+
