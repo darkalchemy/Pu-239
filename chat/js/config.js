@@ -190,6 +190,8 @@ var ajaxChatConfig = {
         ":baby:",
         ":hi2:",
         ":pmsl:",
+        ':gm:',
+        ':hiya:',
         ":-)",
         ":smile:",
         ":-D",
@@ -623,6 +625,8 @@ var ajaxChatConfig = {
         "baby.gif",
         "hi2.gif",
         "hysterical.gif",
+        'gm.gif',
+        'hiya.gif',
         "smile1.gif",
         "smile2.gif",
         "grin.gif",
@@ -1029,6 +1033,8 @@ var ajaxChatConfig = {
     ],
 
     emoticonDisplay: [
+        2,
+        2,
         2,
         2,
         2,
