@@ -1015,8 +1015,8 @@ $HTMLOUT .= "
     <script>
     if (document.body.contains(document.getElementById('overlay'))) {
         document.getElementsByTagName('body')[0].style.backgroundColor = 'black';
-        //document.getElementsByTagName('body')[0].style.backgroundImage = 'url($body_image)';
-        //document.getElementsByTagName('body')[0].style.backgroundAttachment = 'fixed';
+        document.getElementsByTagName('body')[0].style.backgroundImage = 'url($body_image)';
+        document.getElementsByTagName('body')[0].style.backgroundAttachment = 'fixed';
         document.getElementsByTagName('body')[0].classList.remove('background-16');
         var width = document.getElementById('overlay').offsetWidth;
         var height = (width * 185 / 1000) + 3
