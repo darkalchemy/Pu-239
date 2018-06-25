@@ -92,7 +92,7 @@ function stdhead($title = '', $stdhead = null)
                     </div>";
             } else {
                 $banner = "
-                    <img src='" . $site_config['pic_baseurl'] . '/' . $site_config['banners'][array_rand($site_config['banners'])] . "' />";
+                    <img src='" . $site_config['pic_baseurl'] . '/' . $site_config['banners'][array_rand($site_config['banners'])] . "' class='w-100' />";
             }
             $htmlout .= "
             <div id='logo' class='logo columns level is-marginless'>
