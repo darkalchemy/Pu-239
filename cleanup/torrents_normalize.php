@@ -52,9 +52,9 @@ function torrents_normalize($data)
         }
         if (!empty($delids) && count($delids)) {
             $ids = join(',', $delids);
-            sql_query("DELETE torrents t, peers p, files f FROM torrents t
-                  left join files f on f.torrent=t.id
-                  left join peers p on p.torrent=t.id
+            sql_query("DELETE t.*, p.*, f.* FROM torrents AS t
+                  LEFT JOIN files AS f ON f.torrent = t.id
+                  LEFT JOIN peers AS p ON p.torrent = t.id
                   WHERE f.torrent IN ($ids)
                   OR p.torrent IN ($ids)
                   OR t.id IN ($ids)") or sqlerr(__FILE__, __LINE__);

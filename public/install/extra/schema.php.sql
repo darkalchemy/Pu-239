@@ -2480,6 +2480,7 @@ CREATE TABLE `users` (
   `viewscloud` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `tenpercent` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `avatars` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `offavatar` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `pirate` int(11) unsigned NOT NULL DEFAULT '0',
   `king` int(11) unsigned NOT NULL DEFAULT '0',
   `hidecur` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
@@ -2654,4 +2655,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-17 20:42:37
+-- Dump completed on 2018-06-25 11:08:56

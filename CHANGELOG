@@ -1,4 +1,5 @@
 25 Jun 2018
+fix: missing initial site statitics data
 fix: allowed staff and missing lang reference in backup.php
 
 24 Jun 2018
