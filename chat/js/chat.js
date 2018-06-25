@@ -2824,11 +2824,14 @@ var ajaxChat = {
             return str;
         }
         switch (p1) {
+            case 'video':
+                return ajaxChat.replaceBBCodeVideo(p3);
             case 'color':
                 return ajaxChat.replaceBBCodeColor(p3, p2);
             case 'url':
                 return ajaxChat.replaceBBCodeUrl(p3, p2);
             case 'img':
+            case 'IMG':
                 return ajaxChat.replaceBBCodeImage(p3);
             case 'quote':
                 return ajaxChat.replaceBBCodeQuote(p3, p2);
@@ -2840,9 +2843,43 @@ var ajaxChat = {
                 return ajaxChat.replaceBBCodeBold(p3);
             case 'i':
                 return ajaxChat.replaceBBCodeItalic(p3);
+            case 'updown':
+                return ajaxChat.replaceBBCodeUpDown(p3);
             default:
                 return ajaxChat.replaceCustomBBCode(p1, p2, p3);
         }
+    },
+
+    replaceBBCodeVideo: function(content) {
+        var width = 500;
+        var height = width / 1.85;
+
+        if (!content) {
+            return content;
+        }
+        var doLoop = 'controls="controls"';
+        rex = new RegExp('\\.([^/#?]+)([#?][^/]*)?$');
+        rex.test(content)
+        if (RegExp.$1 === 'mp4') {
+            return '<span><video style="vertical-align: text-top; width" ' + dim + ' ' + doLoop + '><source src="' + content + '" type="video/mp4" />Your browser does not support the video tag.</video></span>';
+        }
+        if (RegExp.$1 === 'ogg') {
+            return '<span><video style="vertical-align: text-top;" ' + dim + ' ' + doLoop + '><source src="' + content + '" type="video/ogg" />Your browser does not support the video tag.</video></span>';
+        }
+        if (RegExp.$1 === 'webm') {
+            return '<span><video style="vertical-align: text-top;" ' + dim + ' ' + doLoop + '><source src="' + content + '" type="video/webm" />Your browser does not support the video tag.</video></span>';
+        }
+        if (RegExp.$1 === 'gifv') {
+            content = content.replace('gifv', '');
+            return '<span><video style="vertical-align: text-top;" ' + dim + ' ' + doLoop + '><source src="' + content + 'webm" type="video/webm" />Your browser does not support the video tag.</video></span>';
+        }
+
+        var regExpUrl = new RegExp("(?:youtu\\.be\\/|youtube.com\\/(?:watch\\?.*\\bv=|embed\\/|v\\/)|ytimg\\.com\\/vi\\/)(.+?)(?:[^-a-zA-Z0-9]|$)", "i");
+        var result = regExpUrl.exec(content);
+        if (result[1]) {
+            return '<div class="youtube-embed has-text-centered" style="height: ' + height + 'px; width: ' + width + 'px;"><iframe width="1920" height="1080" src="//www.youtube.com/embed/' + result[1] + '?vq=hd1080" autoplay="false" frameborder="0" /></div>';
+        }
+        return content;
     },
 
     replaceBBCodeColor: function (content, attribute) {
@@ -2956,6 +2993,12 @@ var ajaxChat = {
         return '<span style="font-style: italic;">'
             + this.replaceBBCode(content)
             + '</span>';
+    },
+
+    replaceBBCodeUpDown: function(content) {
+        return  '<span class="txtUpsideDown">'
+                + this.replaceBBCode(content)
+                + '</span>';
     },
 
     replaceHyperLinks: function (text) {

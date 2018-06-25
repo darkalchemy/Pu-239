@@ -124,3 +124,7 @@ $lang['logsTime'] = 'Idő';
 $lang['logsSearch'] = 'Keresés';
 $lang['logsPrivateChannels'] = 'Privát szobák';
 $lang['logsPrivateMessages'] = 'Privát üzenetek';
+$lang['bbCodeLabelUpsideDown'] = 'up';
+$lang['bbCodeTitleVideo'] = 'Insert Video: [video]http://youtbue.com/watch?=videoid[/video]';
+$lang['bbCodeTitleUpsideDown'] = 'Upside Down text: [updown]text[/updown]';
+

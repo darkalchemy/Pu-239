@@ -124,3 +124,7 @@ $lang['logsTime'] = 'Uhrzeit';
 $lang['logsSearch'] = 'Suche';
 $lang['logsPrivateChannels'] = 'Private Räume';
 $lang['logsPrivateMessages'] = 'Private Nachrichten';
+$lang['bbCodeLabelUpsideDown'] = 'up';
+$lang['bbCodeTitleVideo'] = 'Insert Video: [video]http://youtbue.com/watch?=videoid[/video]';
+$lang['bbCodeTitleUpsideDown'] = 'Upside Down text: [updown]text[/updown]';
+

@@ -9,17 +9,17 @@ function get_file_name($file)
         case 'css':
             return "{$site_config['baseurl']}/css/1/css_10e31615.css";
         case 'chat_css_trans':
-            return "{$site_config['baseurl']}/css/1/chat_trans_c1c0cb82.css";
+            return "{$site_config['baseurl']}/css/1/chat_trans_05cbf5e6.css";
         case 'chat_css_uranium':
-            return "{$site_config['baseurl']}/css/1/chat_uranium_bd29633c.css";
+            return "{$site_config['baseurl']}/css/1/chat_uranium_48e62e46.css";
         case 'checkport_js':
             return "{$site_config['baseurl']}/js/1/checkport_dd06d98b.js";
         case 'browse_js':
             return "{$site_config['baseurl']}/js/1/browse_09a435c8.js";
         case 'chat_js':
-            return "{$site_config['baseurl']}/js/1/chat_ed8698a4.js";
+            return "{$site_config['baseurl']}/js/1/chat_993c53b3.js";
         case 'chat_log_js':
-            return "{$site_config['baseurl']}/js/1/chat_log_5f323c04.js";
+            return "{$site_config['baseurl']}/js/1/chat_log_dc2c4046.js";
         case 'index_js':
             return "{$site_config['baseurl']}/js/1/index_c73226cb.js";
         case 'captcha2_js':
