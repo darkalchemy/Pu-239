@@ -69,7 +69,6 @@ function delete_cleanup($users, $using_foreign_keys = true)
         sql_query("DELETE FROM announcement_main WHERE owner_id IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM announcement_process WHERE user_id IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM attachments WHERE user_id IN ({$users})") or sqlerr(__FILE__, __LINE__);
-        //sql_query("DELETE FROM bans WHERE addedby IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM blackjack WHERE userid IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM blackjack_history WHERE player1_userid IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM blackjack_history WHERE player2_userid IN ({$users})") or sqlerr(__FILE__, __LINE__);

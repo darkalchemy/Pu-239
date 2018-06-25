@@ -141,7 +141,7 @@ if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
         <div class='navbar-start'>{$lang['gl_connectable']}</div>
         <div>{$connectable}</div>
     </div>
-    " . ($CURUSER['class'] >= UC_STAFF || $CURUSER['got_blocks'] === 'yes' || $CURUSER['got_moods'] === 'yes' ? "
+    " . ($CURUSER['class'] >= UC_STAFF || $CURUSER['got_blocks'] === 'yes' ? "
     <br>
     <div class='navbar-start'>{$lang['gl_userblocks']}</div>
     <div class='level is-marginless'>

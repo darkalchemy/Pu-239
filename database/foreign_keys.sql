@@ -33,13 +33,6 @@ ALTER TABLE announcement_process ADD FOREIGN KEY (user_id) REFERENCES users(id) 
 ## attachments
 ALTER TABLE attachments ADD FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
-## bannedemails
-ALTER TABLE bannedemails ADD FOREIGN KEY (addedby) REFERENCES users(id);
-
-## bans
-## do you want to remove bans from staff that are not here
-ALTER TABLE bans ADD FOREIGN KEY (addedby) REFERENCES users(id);
-
 ## blackjack tables
 ALTER TABLE blackjack MODIFY `userid` int(10) UNSIGNED NOT NULL DEFAULT 0;
 ALTER TABLE blackjack ADD FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
