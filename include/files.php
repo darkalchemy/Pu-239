@@ -9,9 +9,9 @@ function get_file_name($file)
         case 'css':
             return "{$site_config['baseurl']}/css/1/css_10e31615.css";
         case 'chat_css_trans':
-            return "{$site_config['baseurl']}/css/1/chat_trans_7aee3b2a.css";
+            return "{$site_config['baseurl']}/css/1/chat_trans_cb71184e.css";
         case 'chat_css_uranium':
-            return "{$site_config['baseurl']}/css/1/chat_uranium_ae60f71c.css";
+            return "{$site_config['baseurl']}/css/1/chat_uranium_cc7e7299.css";
         case 'checkport_js':
             return "{$site_config['baseurl']}/js/1/checkport_dd06d98b.js";
         case 'browse_js':
