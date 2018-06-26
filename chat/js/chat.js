@@ -2851,12 +2851,28 @@ var ajaxChat = {
     },
 
     replaceBBCodeVideo: function(content) {
-        var width = 500;
-        var height = width / 1.85;
-
         if (!content) {
             return content;
         }
+        var container = document.getElementById('chatList');
+        var width = container.offsetWidth;
+        var height = container.offsetHeight;
+        if (height > width) {
+            width = width / 3 * 2;
+            if (width >= 500) {
+                width = 500;
+            }
+            var dim = 'height="auto" width="' + width + 'px"';
+            var height = width / 1.85;
+        } else {
+            height = height / 2;
+            if (height >= 270) {
+                height = 270;
+            }
+            var dim = 'height="' + height + 'px" width="auto"';
+            var width = height * 1.85;
+        }
+
         var doLoop = 'controls="controls"';
         rex = new RegExp('\\.([^/#?]+)([#?][^/]*)?$');
         rex.test(content)

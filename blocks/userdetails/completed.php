@@ -10,7 +10,7 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
         $r = sql_query("SELECT torrents.name, torrents.added AS torrent_added, xbt_files_users.started AS st, xbt_files_users.completedtime AS c, xbt_files_users.downspeed, xbt_files_users.seedtime, xbt_files_users.active, xbt_files_users.left, xbt_files_users.fid AS tid, categories.id AS category, categories.image, categories.name AS catname, xbt_files_users.uploaded, xbt_files_users.downloaded, xbt_files_users.hit_and_run, xbt_files_users.mark_of_cain, xbt_files_users.completedtime, xbt_files_users.mtime, xbt_files_users.uid, torrents.seeders, torrents.leechers, torrents.owner FROM xbt_files_users JOIN torrents ON torrents.id = xbt_files_users.fid JOIN categories ON categories.id = torrents.category WHERE xbt_files_users.completed >= '1' AND uid = " . sqlesc($id) . ' AND torrents.owner != ' . sqlesc($id) . ' ORDER BY xbt_files_users.fid DESC') or sqlerr(__FILE__, __LINE__);
     }
     if (mysqli_num_rows($r) > 0) {
-        $heading .= "
+        $heading = "
         <tr>
             <th>{$lang['userdetails_type']}</th>
             <th>{$lang['userdetails_name']}</th>
