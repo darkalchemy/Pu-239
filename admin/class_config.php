@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             write_classes($js_classes);
             $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
             file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
-            $session->set('is-success', $lang['classcfg_success_save']);
+            $session->set('is-success', "{$lang['classcfg_success_save']}\n\n{$lang['classcfg_success_uglify']}");
         } else {
             $session->set('is-warning', $lang['classcfg_error_query1']);
         }
@@ -170,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 write_classes($js_classes);
                 $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
                 file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
-                $session->set('is-success', $lang['classcfg_success_save']);
+                $session->set('is-success', "{$lang['classcfg_success_save']}\n\n{$lang['classcfg_success_uglify']}");
             } else {
                 $session->set('is-warning', $lang['classcfg_error_query2']);
             }
@@ -244,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             write_classes($js_classes);
             $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
             file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
-            $session->set('is-success', $lang['classcfg_success_reset']);
+            $session->set('is-success', "{$lang['classcfg_success_reset']}\n\n{$lang['classcfg_success_uglify']}");
         } else {
             $session->set('is-warning', $lang['classcfg_error_query2']);
         }
