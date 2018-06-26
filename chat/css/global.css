@@ -537,7 +537,7 @@ body.ajax-chat {
         border-right-width: 0;
     }
 
-    #content #bbCodeContainer #bbCodeIMG, #content #bbCodeContainer #bbCodeURL {
+    #content #bbCodeContainer #bbCodeIMG, #content #bbCodeContainer #bbCodeURL #bbCodeVideo {
         display: none;
     }
 
