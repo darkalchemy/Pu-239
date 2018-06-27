@@ -23,6 +23,7 @@ function extensionscheck()
         'exif',
         'mbstring',
         'gd',
+        'bz2',
     ];
 
     $missing = [];

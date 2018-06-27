@@ -523,4 +523,10 @@ $sql_updates = [
 ('Add 20000 Bonus Points to your total.', 4, 20000),
 ('Add 50GB to your Upload.', 2, 53687091000)",
     ],
+    [
+        'id' => 85,
+        'info' => 'Add TVMaze TV Schedule Cleanup.',
+        'date' => '27 Jun, 2018',
+        'query' => "INSERT INTO cleanup (clean_title, clean_file, clean_time, clean_increment, clean_log, clean_desc, clean_on, function_name) VALUES ('TVMaze TV Schedule', 'tvmaze_schedule_update.php', 1530144000, 86400, 1, 'Update TVMaze TV Schedule', 1, 'tvmaze_schedule_update')",
+    ],
 ];

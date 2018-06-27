@@ -7,7 +7,7 @@ require_once INCL_DIR . 'function_tmdb.php';
 check_user_status();
 global $CURUSER, $site_config, $fluent, $cache, $session;
 
-$lang = array_merge(load_language('global'), load_language('details'));
+$lang = array_merge(load_language('global'), load_language('index'), load_language('details'));
 
 $base = $today = date('Y-m-d');
 if (!empty($_GET['date'])) {

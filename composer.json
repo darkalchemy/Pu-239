@@ -9,6 +9,7 @@
     "ext-simplexml": "*",
     "ext-curl": "*",
     "ext-exif": "*",
+    "ext-bz2": "*",
     "vlucas/phpdotenv": "^2.4",
     "matthiasmullie/scrapbook": "^1.4",
     "league/flysystem": "^1.0",

@@ -550,18 +550,15 @@ function navbar()
                                     <i class='icon-home size_6'></i>
                                     <span class='home'>{$site_config['site_name']}</span>
                                 </a>
-                            </li>";
-        if (!empty($_ENV['TMDB_API_KEY'])) {
-            $navbar .= "
+                            </li>
                             <li id='movies_links' class='clickable'>
                                 <a href='#'>{$lang['gl_movies_tv']}</a>
                                 <ul class='ddFade ddFadeSlow'>
                                     <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php'>{$lang['gl_movies_by_date']}</a></li>
                                     <li class='iss_hidden'><a href='{$site_config['baseurl']}/tv.php'>{$lang['gl_tv_today']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/tvmaze.php'>{$lang['gl_tvmaze_today']}</a></li>
                                 </ul>
-                            </li>";
-        }
-        $navbar .= "
+                            </li>
                             <li id='torrents_links' class='clickable'>
                                 <a href='#'>{$lang['gl_torrent']}</a>
                                 <ul class='ddFade ddFadeSlow'>

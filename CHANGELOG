@@ -1,3 +1,7 @@
+27 Jun 2018
+add: TVMaze TV Schedule
+add: php-bz2 requirement for TVMaze TV Schedule
+
 26 Jun 2018
 update: hide video butto in AJAX Chat on small screen
 add: notice to run uglify.php when changing classes info

@@ -1,10 +1,12 @@
 <?php
+
 /**
  * @param $data
  */
 function cheatclean_update($data)
 {
     global $queries;
+
     set_time_limit(1200);
     ignore_user_abort(true);
 

@@ -266,8 +266,7 @@ CREATE TABLE `bannedemails` (
   `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
-  KEY `addedby` (`addedby`),
-  CONSTRAINT `bannedemails_ibfk_1` FOREIGN KEY (`addedby`) REFERENCES `users` (`id`)
+  KEY `addedby` (`addedby`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -287,8 +286,7 @@ CREATE TABLE `bans` (
   `last` varbinary(16) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `first_last` (`first`),
-  KEY `addedby` (`addedby`),
-  CONSTRAINT `bans_ibfk_1` FOREIGN KEY (`addedby`) REFERENCES `users` (`id`)
+  KEY `addedby` (`addedby`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2655,4 +2653,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-25 11:08:56
+-- Dump completed on 2018-06-27 17:14:53

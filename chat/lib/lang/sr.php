@@ -128,4 +128,3 @@ $lang['logsPrivateMessages'] = 'Privatne poruke';
 $lang['bbCodeLabelUpsideDown'] = 'up';
 $lang['bbCodeTitleVideo'] = 'Insert Video: [video]http://youtbue.com/watch?=videoid[/video]';
 $lang['bbCodeTitleUpsideDown'] = 'Upside Down text: [updown]text[/updown]';
-

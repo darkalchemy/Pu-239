@@ -116,7 +116,11 @@ function get_episode($tvmaze_id, $season, $episode)
     $episode_info = $cache->get('tvshow_episode_info_' . $tvmaze_id . $season . $episode);
     if ($episode_info === false || is_null($episode_info)) {
         $tvmaze_link = "http://api.tvmaze.com/shows/{$tvmaze_id}/episodebynumber?season={$season}&number={$episode}";
-        $episode_info = json_decode(file_get_contents($tvmaze_link), true);
+        $content = get($tvmaze_link);
+        if (empty($content)) {
+            return false;
+        }
+        $episode_info = json_decode($content, true);
         if (!empty($episode_info['summary'])) {
             $episode_info['timestamp'] = strtotime($episode_info['airstamp']);
             $cache->set('tvshow_episode_info_' . $tvmaze_id . $season . $episode, $episode_info, 604800);
@@ -155,7 +159,11 @@ function tvmaze($tvmaze_id, $id)
     $tvmaze_show_data = $cache->get('tvmaze_' . $tvmaze_id);
     if ($force_update || $tvmaze_show_data === false || is_null($tvmaze_show_data)) {
         $tvmaze_link = "http://api.tvmaze.com/shows/{$tvmaze_id}?embed=cast";
-        $tvmaze_show_data = json_decode(file_get_contents($tvmaze_link), true);
+        $content = get($tvmaze_link);
+        if (empty($content)) {
+            return false;
+        }
+        $tvmaze_show_data = json_decode($content, true);
         $tvmaze_show_data['rated'] = $tvmaze_show_data['rating']['average'];
         $airedtime = explode(':', $tvmaze_show_data['schedule']['time']);
         $days = implode(', ', $tvmaze_show_data['schedule']['days']);
@@ -195,6 +203,31 @@ function tvmaze($tvmaze_id, $id)
     return null;
 }
 
+function get_schedule($use_cache = true)
+{
+    global $cache;
+
+    $url = 'https://api.tvmaze.com/schedule/full';
+    $tvmaze_data = $cache->get('tvmaze_schedule_');
+
+    if (!$use_cache || $tvmaze_data === false || is_null($tvmaze_data)) {
+        $content = fetch($url);
+        if (!$content) {
+            return false;
+        }
+        $tvmaze_data = bzcompress($content, 9);
+        $cache->set('tvmaze_schedule_', $tvmaze_data, 0);
+    }
+
+    if (!empty($tvmaze_data)) {
+        $data = bzdecompress($tvmaze_data);
+
+        return json_decode($data, true);
+    }
+
+    return false;
+}
+
 /**
  * @param $heading
  * @param $body
@@ -208,4 +241,20 @@ function line_by_line($heading, $body)
                         <div class='has-text-red column is-2 size_5 padding5'>$heading: </div>
                         <span class='column padding5'>$body</span>
                     </div>";
+}
+
+function fetch($url)
+{
+    $client = new GuzzleHttp\Client(['http_errors' => false]);
+    $res = $client->request('GET', $url);
+    if ($res->getStatusCode() === 200) {
+        return $res->getBody()->getContents();
+    }
+
+    return null;
+}
+
+function timeSort($a, $b)
+{
+    return strcmp($a['airtime'], $b['airtime']);
 }

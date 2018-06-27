@@ -1,10 +1,12 @@
 <?php
+
 /**
  * @param $data
  */
 function backup_update($data)
 {
     global $site_config, $queries;
+
     set_time_limit(1200);
     ignore_user_abort(true);
 

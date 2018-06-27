@@ -4,7 +4,8 @@ $lang = [
     //Mod admin link
     'gl_movies_tv' => 'Movies & TV',
     'gl_movies_by_date' => 'Movies By Release Date',
-    'gl_tv_today' => 'TV Airing Today',
+    'gl_tv_today' => 'TV Airing [TMDb]',
+    'gl_tvmaze_today' => 'TV Airing [TVMaze]',
     'gl_userblocks' => 'User Blocks',
     'gl_profile' => 'Profil',
     'gl_logout' => 'Deconectare',
