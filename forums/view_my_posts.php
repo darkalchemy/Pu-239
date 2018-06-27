@@ -100,7 +100,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
 			</span></td>
 			</tr>
 			<tr>
-		   <td class="' . $class_alt . '" width="100px" valign="top">' . get_avatar($CURUSER) . '<br>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($CURUSER['id'])) . ($arr['anonymous'] === 'yes' || $CURUSER['title'] === '' ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($CURUSER['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name($CURUSER['class'])) . '</span><br></td>
+		   <td class="has-text-centered w-25 mw-150 ' . $class_alt . '" valign="top">' . get_avatar($CURUSER) . '<br>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($CURUSER['id'])) . ($arr['anonymous'] === 'yes' || $CURUSER['title'] === '' ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($CURUSER['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name($CURUSER['class'])) . '</span><br></td>
 		<td class="' . $post_status . '" align="left" valign="top" colspan="2">' . $body . $edited_by . '</td>
 		</tr>
 			<tr><td class="' . $class_alt . '" align="right" valign="middle" colspan="3"></td></tr>';

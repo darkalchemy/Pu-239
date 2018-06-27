@@ -503,12 +503,6 @@ switch ($action) {
             header('Location: /offers.php?action=offer_details&id=' . $id . '&viewcomm=' . $comment_id . '#comm' . $comment_id);
             die();
         }
-        if ($CURUSER['id'] == $arr['user']) {
-            $avatar = get_avatar($CURUSER);
-        } else {
-            $arr_user = $user_stuffs->getUserFromId($arr['user']);
-            $avatar = get_avatar($arr_user);
-        }
         $HTMLOUT .= $top_menu . '<form method="post" action="offers.php?action=edit_comment">
     <input type="hidden" name="id" value="' . $arr['offer'] . '"/>
     <input type="hidden" name="comment_id" value="' . $comment_id . '"/>
@@ -622,7 +616,7 @@ function comment_table($rows)
     <td colspan="2" class="colhead"># ' . $top_comment_stuff . '</td>
     </tr>
     <tr>
-    <td>' . get_avatar($row) . '</td>
+    <td class="has-text-centered w-25 mw-150">' . $avatar . '</td>
     <td>' . $text . '</td>
     </tr>
     </table><br>';

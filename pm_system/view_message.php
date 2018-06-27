@@ -59,7 +59,7 @@ $HTMLOUT .= "
                 </td>
             </tr>
             <tr class='no_hover'>
-                <td class='has-text-centered w-15'>{$avatar}</td>
+                <td class='has-text-centered w-25 mw-150'>{$avatar}</td>
                 <td>" . format_comment($message['msg'], false) . "</td>
             </tr>
             <tr class='no_hover'>

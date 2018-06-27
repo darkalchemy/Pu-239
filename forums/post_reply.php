@@ -240,12 +240,12 @@ while ($arr = mysqli_fetch_assoc($res_posts)) {
 
     if ($arr['anonymous'] === 'yes') {
         if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
-            $htmlout .= '<tr><td class="' . $class_alt . '" width="100" valign="top">' . get_avatar($arr) . '<br><i>' . get_anonymous_name() . '</i></td>';
+            $htmlout .= '<tr><td class="has-text-centered w-25 mw-150 ' . $class_alt . '" valign="top">' . get_avatar($arr) . '<br><i>' . get_anonymous_name() . '</i></td>';
         } else {
-            $htmlout .= '<tr><td class="' . $class_alt . '" width="100" valign="top">' . get_avatar($arr) . '<br><i>' . get_anonymous_name() . '</i>[' . format_username($arr['user_id']) . ']</td>';
+            $htmlout .= '<tr><td class="has-text-centered w-25 mw-150 ' . $class_alt . '" valign="top">' . get_avatar($arr) . '<br><i>' . get_anonymous_name() . '</i>[' . format_username($arr['user_id']) . ']</td>';
         }
     } else {
-        $htmlout .= '<tr><td class="' . $class_alt . '" width="100" valign="top">' . get_avatar($arr) . '<br>' . format_username($arr['user_id']) . '</td>';
+        $htmlout .= '<tr><td class="has-text-centered w-25 mw-150 ' . $class_alt . '" valign="top">' . get_avatar($arr) . '<br>' . format_username($arr['user_id']) . '</td>';
     }
     $htmlout .= '<td class="' . $class . '" align="left" valign="top" colspan="2">' . ($arr['bbcode'] === 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body'])) . '</td></tr>';
 }

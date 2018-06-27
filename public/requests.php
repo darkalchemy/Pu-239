@@ -557,7 +557,7 @@ function comment_table($rows)
     <td colspan="2"># ' . $top_comment_stuff . '</td>
     </tr>
     <tr>
-    <td>' . get_avatar($row) . '</td>
+    <td class="has-text-centered w-25 mw-150">' . $avatar . '</td>
     <td>' . $text . '</td>
     </tr>
     </table><br>';

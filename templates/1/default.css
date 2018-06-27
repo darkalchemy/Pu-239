@@ -967,6 +967,10 @@ textarea {
     display : block !important
 }
 
+.mw-150 {
+    max-width: 150px;
+}
+
 .mw-50 {
     max-width : 50%
 }

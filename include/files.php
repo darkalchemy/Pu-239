@@ -7,7 +7,7 @@ function get_file_name($file)
     $style = get_stylesheet();
     switch ($file) {
         case 'css':
-            return "{$site_config['baseurl']}/css/1/css_10e31615.css";
+            return "{$site_config['baseurl']}/css/1/css_e8367f9d.css";
         case 'chat_css_trans':
             return "{$site_config['baseurl']}/css/1/chat_trans_cb71184e.css";
         case 'chat_css_uranium':

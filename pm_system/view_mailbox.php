@@ -107,7 +107,7 @@ if (mysqli_num_rows($res) === 0) {
                 <tr>
                     <td class="has-text-centered">' . $read_unread . '</td>
                     <td><a class="altlink"  href="' . $site_config['baseurl'] . '/pm_system.php?action=view_message&amp;id=' . (int) $row['message_id'] . '">' . $subject . '</a> ' . $extra . '</td>
-                    <td class="has-text-centered w-10">' . $avatar . $who_sent_it . '</td>
+                    <td class="has-text-centered w-25 mw-150">' . $avatar . $who_sent_it . '</td>
                     <td class="has-text-centered">' . get_date($row['added'], '') . '</td>
                     <td class="has-text-centered"><input type="checkbox" name="pm[]" value="' . (int) $row['message_id'] . '" /></td>
                 </tr>';
