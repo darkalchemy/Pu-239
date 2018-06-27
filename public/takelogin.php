@@ -16,7 +16,7 @@ function failedloginscheck()
 {
     global $site_config;
 
-    $ip = getip();
+    $ip = getip(true);
     $res = sql_query('SELECT SUM(attempts), ip FROM failedlogins WHERE ip = ' . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
     list($total) = mysqli_fetch_row($res);
     if ($total >= $site_config['failedlogins']) {
@@ -55,7 +55,7 @@ if (empty($user_id)) {
             header('Location: login.php');
             exit();
         }
-        $ip = getip();
+        $ip = getip(true);
         $url = 'https://www.google.com/recaptcha/api/siteverify';
         $params = [
             'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
@@ -90,13 +90,13 @@ function bark($text = 'Username or password incorrect')
 {
     global $lang, $site_config, $cache;
 
-    $sha = hash('sha256', getip());
+    $sha = hash('sha256', getip(true));
     $dict_key = 'dictbreaker_' . $sha;
     $flood = $cache->get($dict_key);
     if ($flood === false || is_null($flood)) {
-        $cache->set($dict_key, 'flood_check', 20);
+        $cache->set($dict_key, 'flood_check', 10);
     } else {
-        die('Minimum 8 seconds between login attempts :)');
+        die('Minimum 10 seconds between login attempts :)');
     }
     stderr($lang['tlogin_failed'], $text);
 }
@@ -115,7 +115,7 @@ $row = $fluent->from('users')
     ->fetch();
 
 $userid = $row['id'];
-$ip_escaped = ipToStorageFormat(getip());
+$ip_escaped = ipToStorageFormat(getip(true));
 $ip = getip();
 $added = TIME_NOW;
 if ($row === false) {

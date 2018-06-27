@@ -141,13 +141,13 @@ function validip($ip)
 /**
  * @return mixed
  */
-function getip()
+function getip($login = false)
 {
     global $CURUSER;
 
     $no_log_ip = $CURUSER['perms'] & bt_options::PERMS_NO_IP;
 
-    if (IP_LOGGING && !$no_log_ip) {
+    if ($login || (IP_LOGGING && !$no_log_ip)) {
         return $_SERVER['REMOTE_ADDR'];
     }
 
