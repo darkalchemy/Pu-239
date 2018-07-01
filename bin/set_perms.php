@@ -30,6 +30,7 @@ $folders = [
     CHAT_DIR . 'css/',
     CHAT_DIR . 'js/',
     TEMPLATE_DIR . '1/css/',
+    PUBLIC_DIR . 'images/proxy/',
 ];
 
 $i = 0;

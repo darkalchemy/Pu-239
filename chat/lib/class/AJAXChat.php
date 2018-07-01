@@ -3485,6 +3485,8 @@ class AJAXChat
      */
     public function getChatViewMessagesXML()
     {
+        global $site_config;
+
         $sql = 'SELECT
                     id,
                     userID,
@@ -3510,7 +3512,7 @@ class AJAXChat
         while ($row = mysqli_fetch_array($result)) {
             preg_match_all('/\[img\](.*)\[\/img\]/s', $row['text'], $matches);
             foreach ($matches[1] as $match) {
-                $row['text'] = str_replace($match, url_proxy($match, true), $row['text']);
+                $row['text'] = str_replace($match, str_replace($site_config['pic_baseurl'], $site_config['pic_baseurl_chat'], url_proxy($match, true)), $row['text']);
             }
 
             $message = $this->getChatViewMessageXML(

@@ -30,6 +30,7 @@ function permissioncheck()
         $root . 'sqlerr_logs/' => 0,
         $public . 'install/' => 0,
         $public . 'install/extra/' => 0,
+        $public . 'images/proxy/' => 0,
         $root . 'logs/' => 0,
         $root . 'chat/css/',
         $root . 'chat/js/',
