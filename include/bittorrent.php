@@ -1290,6 +1290,7 @@ function flood_limit($table)
 function sql_query($query, $log = true)
 {
     global $query_stat, $queries;
+    dbconn();
 
     if (SQL_DEBUG) {
         $query_start_time = microtime(true);
@@ -2209,6 +2210,9 @@ function get_body_image($details)
         $sql = $pdo->prepare('SELECT DISTINCT background FROM torrents WHERE background IS NOT NULL');
         $sql->execute();
         $result = $sql->fetch();
+        if (!$result) {
+            return false;
+        }
         foreach ($result as $background) {
             $backgrounds[] = $background;
         }

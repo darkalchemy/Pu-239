@@ -37,6 +37,7 @@ $lang = [
     'fm_mp_min_c' => 'Permisiune minimă pentru creare subiecte:',
     'fm_mp_rank' => 'Rang forum:',
     'fm_mp_btn' => 'Creează forum',
+    'fm_mp_remove' => 'Delete forum?',
     'fm_mp_confirm' => 'Eşti sigur că vrei să ştergi acest forum?',
     'fm_stdhead' => 'Administrare Forumuri',
 ];

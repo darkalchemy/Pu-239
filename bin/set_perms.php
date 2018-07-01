@@ -17,6 +17,21 @@ $exts = [
     'example',
 ];
 
+$folders = [
+    ROOT_DIR . 'dir_list/',
+    ROOT_DIR . 'cache/',
+    ROOT_DIR . 'torrents/',
+    ROOT_DIR . 'uploads/',
+    ROOT_DIR . 'include/backup/',
+    ROOT_DIR . 'sqlerr_logs/',
+    PUBLIC_DIR . 'install/',
+    PUBLIC_DIR . 'install/extra/',
+    ROOT_DIR . 'logs/',
+    CHAT_DIR . 'css/',
+    CHAT_DIR . 'js/',
+    TEMPLATE_DIR . '1/css/',
+];
+
 $i = 0;
 foreach ($paths as $path) {
     $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
@@ -28,6 +43,20 @@ foreach ($paths as $path) {
                     ++$i;
                 }
             }
+        }
+    }
+}
+
+foreach ($folders as $folder) {
+    chmod_r($folder);
+}
+
+function chmod_r($path) {
+    $dir = new DirectoryIterator($path);
+    foreach ($dir as $item) {
+        chmod($item->getPathname(), 0777);
+        if ($item->isDir() && !$item->isDot()) {
+            chmod_r($item->getPathname());
         }
     }
 }

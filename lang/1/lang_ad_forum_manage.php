@@ -37,6 +37,7 @@ $lang = [
     'fm_mp_min_c' => 'Minimun create topic permission:',
     'fm_mp_rank' => 'Forum rank:',
     'fm_mp_btn' => 'Make forum',
+    'fm_mp_remove' => 'Delete forum?',
     'fm_mp_confirm' => 'Are you sure you want to delete this forum?',
     'fm_stdhead' => 'Forum Management Tools',
 ];

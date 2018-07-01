@@ -4,14 +4,12 @@ namespace DarkAlchemy\Pu239;
 
 use Spatie\Image\Image;
 use Intervention\Image\ImageManager;
-//use Spatie\ImageOptimizer\OptimizerChainFactory AS Image;
 
 class ImageProxy
 {
     public function get_image($url, $image, $width, $height, $quality)
     {
         if (empty($url)) {
-            //dd('url is empty');
             return null;
         }
 
@@ -22,18 +20,15 @@ class ImageProxy
             $this->store_image($url, $path);
         }
         if (!file_exists($path)) {
-            //dd('could not save image ' . $url);
             return null;
         }
 
         if (!empty($quality)) {
             $hash = $this->convert_image($url, $path, $quality);
-            //dd($hash);
         } elseif ($width || $height) {
             $hash = $this->resize_image($url, $path, $width, $height);
-            //dd($hash);
         }
-        //dd($hash);
+
         return $hash;
     }
 
@@ -62,20 +57,17 @@ class ImageProxy
         if (file_exists($new_path)) {
             return $hash;
         }
-        echo 'convert';
         if (mime_content_type($path) != "image/jpeg") {
             Image::load($new_path)
                 ->format(Manipulations::FORMAT_JPG)
-                //->quality(50)
-                //->blur(75)
                 ->quality($quality)
+                ->blur(50)
                 ->optimize()
                 ->save($new_path);
         } else {
             Image::load($path)
-                //->quality(50)
-                //->blur(75)
                 ->quality($quality)
+                ->blur(50)
                 ->optimize()
                 ->save($new_path);
         }
@@ -99,7 +91,6 @@ class ImageProxy
         if (file_exists($new_path)) {
             return $hash;
         }
-        echo 'resize';
         $image = $manager->make($path)->resize($width, $height, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();

@@ -292,14 +292,14 @@ $HTMLOUT .= $option_12 . '
     </table>
     <div class="has-text-centered margin20">
         <input type="hidden" name="action2" value="add_forum" />
-        <input type="submit" name="button" class="button is-small margin20" value="' . $lang['fm_mp_btn'] . '" />
+        <input type="submit" name="button" class="button is-small margin20" value="' . $lang['fm_mp_remove'] . '" />
     </div>
     </form>
           <script>
             /*<![CDATA[*/
             function confirm_delete(id)
             {
-               if (confirm(\'' . $lang['fm_mp_btn'] . '\'))
+               if (confirm(\'' . $lang['fm_mp_remove'] . '\'))
                {
                   self.location.href=\'staffpanel.php?tool=forum_manage&amp;action=forum_manage&action2=delete&id=\'+id;
                }

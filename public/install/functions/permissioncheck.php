@@ -21,7 +21,7 @@ function permissioncheck()
 {
     global $root, $public;
     $dirs = [
-        $root => 0,
+        //$root => 0,
         $root . 'dir_list/' => 0,
         $root . 'cache/' => 0,
         $root . 'torrents/' => 0,
@@ -30,7 +30,10 @@ function permissioncheck()
         $root . 'sqlerr_logs/' => 0,
         $public . 'install/' => 0,
         $public . 'install/extra/' => 0,
-        $root . 'include/' => 0,
+        $root . 'logs/' => 0,
+        $root . 'chat/css/',
+        $root . 'chat/js/',
+        $root . 'templates/1/css/',
     ];
     checkdir($dirs);
     $continue = true;

@@ -11,7 +11,7 @@ function is_installed($ext)
 
 function extensionscheck()
 {
-    $php_min_vers = '7.0';
+    $php_min_vers = '7.2';
 
     $extensions = [
         'zip',

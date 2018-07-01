@@ -1,4 +1,8 @@
 1 Jul 2018
+remove: unused gzip directory
+add: logs folder
+fix: permissions
+update: README to correct install directions
 remove: redundant fetch() functions
 replace: remote image proxy with local image proxy, enable only if you have the space for it
 purged: database_updates, rethinking the process

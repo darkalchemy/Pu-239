@@ -51,11 +51,9 @@ git clone https://github.com/darkalchemy/Pu-239.git
 cd Pu-239
 composer install
 npm install
-[sudo] php bin/set_perms.php
-[sudo] php bin/uglify.php
 
 # set ownership
-chown -R www-data:www-data Pu-239
+sudo chown -R www-data:www-data Pu-239
 
 # set webroot to path Pu-239/public
 
@@ -76,20 +74,24 @@ CREATE DATABASE Pu-239;
 
 # goto website and complete install, all fields must be completed and each fields includes an example and tooltip explanation when hovered
 
+# set permissions and create necessary files
+sudo php bin/set_perms.php
+sudo php bin/uglify.php
+
 # delete public/install folder once directed to
-rm -r Pu-239/public/install/
+sudo rm -r public/install/
+
+# insert trivia questions if desired
+mysql database < database/trivia.php.sql
+
+# insert tvmaze ids
+mysql database < database/tvmaze.php.sql
 
 # create your first user and login
 
 # goto admin and create your bot/system user
 
 # goto admin cleanup and activate/deactivate scripts, they are initially set to yesterday midnight
-
-# insert trivia questions if desired
-mysql database < Pu-239/database/trivia.php.sql
-
-# insert tvmaze ids
-mysql database < Pu-239/database/tvmaze.php.sql
 
 # add cron job to root cron for running cleanup, please change path as needed
 sudo crontab -e
@@ -109,14 +111,14 @@ git pull
 composer update
 composer dump-autoload -o
 npm install
-[sudo] php bin/set_perms.php
-[sudo] php bin/uglify.php
+sudo php bin/set_perms.php
+sudo php bin/uglify.php
 
 # update trivia questions if desired
-mysql database < Pu-239/database/trivia.php.sql
+mysql database < database/trivia.php.sql
 
 # insert tvmaze ids 
-mysql database < Pu-239/database/tvmaze.php.sql
+mysql database < database/tvmaze.php.sql
 
 # update database:
 goto admin/upgrade_database to check/update the database

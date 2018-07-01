@@ -30,15 +30,15 @@ $foo = [
     'Tracker' => [
         [
             'text' => 'Announce Url',
-            'input' => 'config[announce_urls]',
-            'info' => 'Your announce url. ie. http://pu-239.pw/announce.php',
-            'placeholder' => 'http://Pu-239.pw/announce.pw',
+            'input' => 'config[announce_http]',
+            'info' => 'Your announce url. ie. http://pu-239.pw',
+            'placeholder' => 'http://Pu-239.pw',
         ],
         [
             'text' => 'HTTPS Announce Url',
             'input' => 'config[announce_https]',
-            'info' => 'Your HTTPS announce url. ie. https://pu-239.pw/announce.php',
-            'placeholder' => 'https://Pu-239.pw/announce.pw',
+            'info' => 'Your HTTPS announce url. ie. https://pu-239.pw',
+            'placeholder' => 'https://Pu-239.pw',
         ],
         [
             'text' => 'Site Email',

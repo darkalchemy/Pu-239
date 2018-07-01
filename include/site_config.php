@@ -2,7 +2,7 @@
 
 global $site_config;
 
-const REQUIRED_PHP = 70000, REQUIRED_PHP_VERSION = '7.0.0';
+const REQUIRED_PHP = 70200, REQUIRED_PHP_VERSION = '7.2.0';
 $site_settings = $paypal_settings = $hnr_settings = $staff_settings = [];
 
 if (PHP_VERSION_ID < REQUIRED_PHP) {
