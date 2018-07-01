@@ -4,6 +4,7 @@ replace: remote image proxy with local image proxy, enable only if you have the 
 purged: database_updates, rethinking the process
 updated: README to include required apps and php extensions
 add: option to show random background on every page
+add: lazy load most images
 
 27 Jun 2018
 update: adjust avatar display size for consistency
