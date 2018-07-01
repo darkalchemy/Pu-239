@@ -968,7 +968,7 @@ textarea {
 }
 
 .mw-150 {
-    max-width: 150px;
+    max-width: 150px !important;
 }
 
 .mw-50 {
@@ -1246,7 +1246,7 @@ code a {
     .spacer {
         height : 50px
     }
-
+/*
     .w-15 {
         width : 25%
     }
@@ -1257,7 +1257,7 @@ code a {
     .w-75 {
         width : 100%
     }
-
+*/
     .page-wrapper {
         margin-left  : .625em;
         margin-right : .625em

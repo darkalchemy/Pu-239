@@ -29,7 +29,8 @@ $HTMLOUT = "
     </div>";
 
 $tvs = get_tv_by_day($today);
-if (!empty($tvs)) {
+
+if ($tvs) {
     $titles = $body = [];
     foreach ($tvs as $tv) {
         if (!empty($tv['name']) && !in_array(strtolower($tv['name']), $titles)) {
@@ -37,7 +38,8 @@ if (!empty($tvs)) {
             $backdrop = !empty($tv['backdrop_path']) ? "https://image.tmdb.org/t/p/w500{$tv['backdrop_path']}" : '';
 
             $body[] = [
-                'poster' => url_proxy($poster, true),
+                'poster' => url_proxy($poster, true, 150),
+                'placeholder' => url_proxy($poster, true, null, null, 20),
                 'backdrop' => url_proxy($backdrop, true),
                 'title' => $tv['name'],
                 'vote_count' => $tv['vote_count'],
@@ -56,13 +58,13 @@ if (!empty($tvs)) {
         $div .= "
             <div class='padding10 round10 bg-00 margin10'>
                 <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$tv['id']}_tooltip'>
-                    <img src='{$tv['poster']}' alt='Poster' class='tooltip-poster'>
+                    <img src='{$tv['placeholder']}' data-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
                     <div class='has-text-centered top10'>{$tv['title']}</div>
                     <div class='tooltip_templates'>
                         <div id='movie_{$tv['id']}_tooltip' class='round10 tooltip-background' style='background-image: url({$tv['backdrop']});'>
                             <div class='is-flex tooltip-torrent bg-09'>
                                 <span class='padding10 w-40'>
-                                    <img src='{$tv['poster']}' alt='Poster' class='tooltip-poster'>
+                                    <img data-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
                                 </span>
                                 <span class='padding10'>
                                     <p><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($tv['title']) . "</span></p>

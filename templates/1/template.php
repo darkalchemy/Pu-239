@@ -12,7 +12,7 @@ function stdhead($title = '', $stdhead = null)
 {
     require_once INCL_DIR . 'bbcode_functions.php';
     global $CURUSER, $site_config, $lang, $free, $querytime, $BLOCKS, $CURBLOCK, $mood, $session;
-    //  dd($GLOBALS);
+
     if (!$site_config['site_online']) {
         die('Site is down for maintenance, please check back again later... thanks<br>');
     }
@@ -105,12 +105,8 @@ function stdhead($title = '', $stdhead = null)
             $htmlout .= "
             <div id='base_contents_video'>
                 <div class='base_header_video'>
-                    <video class='object-fit-video' loop muted autoplay>
-                        <source src='{$site_config['pic_baseurl']}{$banner}.mp4'>
-                        <source src='{$site_config['pic_baseurl']}{$banner}.ogv'>
-                        <source src='{$site_config['pic_baseurl']}{$banner}.webm'>
+                    <video class='object-fit-video' loop muted autoplay playsinline poster='{$site_config['pic_baseurl']}banner.png'>
                         <source src='{$site_config['pic_baseurl']}{$banner}.mp4' type='video/mp4'>
-                        <source src='{$site_config['pic_baseurl']}{$banner}.ogv' type='video/ogg'>
                         <source src='{$site_config['pic_baseurl']}{$banner}.webm' type='video/webm'>
                         <img src='{$site_config['pic_baseurl']}banner.png' title='Your browser does not support the <video> tag' alt='Logo' />
                     </video>
@@ -319,12 +315,19 @@ function stdfoot($stdfoot = false)
             </div>
         </div>";
     }
+    $bg_image = "var body_image = ''";
+    $details = basename($_SERVER['PHP_SELF']) === 'details.php';
+    if ($site_config['backgrounds_on_all_pages'] || $details) {
+        $background = get_body_image($details);
+        $bg_image = "var body_image = '" . url_proxy($background, true) . "'";
+    }
     $htmlfoot .= "
     </div>
     <a href='#' class='back-to-top'>
         <i class='icon-angle-circled-up' style='font-size:48px'></i>
     </a>
     <script>
+        $bg_image
         var cookie_prefix = '{$site_config['cookie_prefix']}';
         var cookie_path = '{$site_config['cookie_path']}';
         var cookie_lifetime = '{$site_config['cookie_lifetime']}';

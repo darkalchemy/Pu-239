@@ -103,6 +103,7 @@ $js_list = [
     ],
     'js' => [
         ROOT_DIR . 'node_modules/jquery/dist/jquery.js',
+        SCRIPTS_DIR . 'yall.js',
         TEMPLATE_DIR . 'themeChanger/js/colorpicker.js',
         TEMPLATE_DIR . 'themeChanger/js/themeChanger.js',
         SCRIPTS_DIR . 'popup.js',

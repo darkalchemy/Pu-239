@@ -264,14 +264,16 @@ ajaxChat.getRoleClass = function(roleID) {
 
 function write_class_files()
 {
-    global $site_config;
+    global $site_config, $fluent;
 
     $lang = load_language('ad_class_config');
+
     $t = 'define(';
     $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
-    $res = sql_query('SELECT * FROM class_config ORDER BY value ASC');
+    $res = $fluent->from('class_config')
+        ->orderBy('value ASC');
     $the_names = $the_colors = $the_images = '';
-    while ($arr = mysqli_fetch_assoc($res)) {
+    foreach ($res as $arr) {
         $configfile .= '' . $t . "'{$arr['name']}', {$arr['value']});\n";
         if ($arr['name'] !== 'UC_STAFF' && $arr['name'] !== 'UC_MIN' && $arr['name'] !== 'UC_MAX') {
             $the_names .= "{$arr['name']} => '{$arr['classname']}',";

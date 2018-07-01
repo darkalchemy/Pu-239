@@ -150,7 +150,6 @@ $site_config['happy_hour'] = false; //== Off for XBT
 $site_config['mods']['slots'] = true;
 $site_config['votesrequired'] = 15;
 $site_config['catsperrow'] = 7;
-$site_config['maxwidth'] = '90%';
 //== Latest posts limit
 $site_config['latest_posts_limit'] = 5; //query limit for latest forum posts on index
 //latest torrents limit

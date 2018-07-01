@@ -68,17 +68,6 @@ function get_movies($json)
     return $movies;
 }
 
-function fetch($url)
-{
-    $client = new GuzzleHttp\Client(['http_errors' => false]);
-    $res = $client->request('GET', $url);
-    if ($res->getStatusCode() === 200) {
-        return $res->getBody()->getContents();
-    }
-
-    return null;
-}
-
 function nameSort($a, $b)
 {
     return strcmp($a['name'], $b['name']);

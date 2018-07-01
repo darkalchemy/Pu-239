@@ -52,6 +52,7 @@ class Session
             ini_set('session.use_trans_sid', 0);
             ini_set('default_charset', $this->config['char_set']);
             ini_set('session.lazy_write', 0);
+            ini_set('max_execution_time', 300);
             if (ini_get('session.save_handler') != 'files') {
                 ini_set('session.sid_length', 256);
             } else {

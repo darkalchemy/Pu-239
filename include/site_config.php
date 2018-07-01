@@ -37,7 +37,7 @@ if (!function_exists('sys_getloadavg')) {
 date_default_timezone_set('UTC');
 
 $site_config['time_adjust'] = 0;
-$site_config['time_offset'] = '0';
+$site_config['time_offset'] = 0;
 $site_config['time_use_relative'] = 1;
 $site_config['time_use_relative_format'] = '{--}, h:i:s A';
 $site_config['time_joined'] = 'j-F y';
@@ -145,7 +145,6 @@ $site_config['happy_hour'] = false; // Off for XBT
 $site_config['mods']['slots'] = true;
 $site_config['votesrequired'] = 15;
 $site_config['catsperrow'] = 7;
-$site_config['maxwidth'] = '90%';
 // Latest posts limit
 $site_config['latest_posts_limit'] = 5; //query limit for latest forum posts on index
 //latest torrents limit
@@ -215,7 +214,6 @@ $site_config['sig_img_height'] = 100;
 $site_config['sig_img_width'] = 500;
 
 // Image uploads
-$site_config['bucket_allowed'] = 1;
 $site_config['allowed_ext'] = [
     'image/gif',
     'image/jpg',
@@ -308,6 +306,5 @@ $site_config['notifications'] = [
     'is-link',
 ];
 
-$site_config['newsrss_on'] = false;
 $site_config['video_banners'] = [];
 $site_config['banners'] = [];

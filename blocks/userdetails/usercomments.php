@@ -34,7 +34,7 @@ function usercommenttable($rows)
         $htmlout .= "
             <table width='100%' >
                 <tr>
-                    <td class='has-text-centered w-25 mw-150'>{$avatar}</td>
+                    <td class='has-text-centered w-15 mw-150'>{$avatar}</td>
                     <td class='text'>$text</td>
                 </tr>
             </table>";

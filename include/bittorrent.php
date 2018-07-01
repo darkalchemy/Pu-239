@@ -1999,7 +1999,7 @@ function get_anonymous_name()
  *
  * @return string
  */
-function url_proxy($url, $image = false, $width = null, $height = null)
+function url_proxy($url, $image = false, $width = null, $height = null, $quality = null)
 {
     global $site_config;
 
@@ -2011,20 +2011,9 @@ function url_proxy($url, $image = false, $width = null, $height = null)
         return $site_config['anonymizer_url'] . $url;
     }
 
-    if (!empty($site_config['image_proxy'])) {
-        $url = $url;
-        if (!empty($width)) {
-            $url .= "?width={$width}";
-        }
-        if (!empty($height) && !empty($width)) {
-            $url .= "&height={$height}";
-        } elseif (!empty($height)) {
-            $url .= "?height={$height}";
-        }
-        $key = [key($site_config['image_proxy_key']), current($site_config['image_proxy_key'])];
-        $encrypted = CryptoJSAES::encrypt($url, $key[1]);
-
-        return $site_config['image_proxy'] . base64_encode($encrypted . '&uid=' . $key[0]);
+    if ($site_config['image_proxy']) {
+        $image_proxy = new DarkAlchemy\Pu239\ImageProxy();
+        return $site_config['pic_baseurl'] . 'proxy/' . $image_proxy->get_image($url, $image, $width, $height, $quality);
     }
 
     return $url;
@@ -2182,6 +2171,58 @@ function insert_update_ip()
     }
 }
 
+function fetch($url)
+{
+    $sockres = @fsockopen('google.com', 443);
+    if (!$sockres) {
+        return false;
+    } else {
+        fclose($sockres);
+    }
+
+    $client = new GuzzleHttp\Client([
+        'synchronous' => true,
+        'http_errors' => false,
+        'headers' => [
+            'User-Agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
+        ],
+    ]);
+    $res = $client->request('GET', $url);
+    if ($res->getStatusCode() === 200) {
+        return $res->getBody()->getContents();
+    }
+
+    return null;
+}
+
+function get_body_image($details)
+{
+    global $cache, $fluent, $torrents;
+
+    if ($details) {
+        return $torrents['background'];
+    }
+
+    $backgrounds = $cache->get('backgrounds_');
+    if ($backgrounds === false || is_null($backgrounds)) {
+        $pdo = $fluent->getPdo();
+        $sql = $pdo->prepare('SELECT DISTINCT background FROM torrents WHERE background IS NOT NULL');
+        $sql->execute();
+        $result = $sql->fetch();
+        foreach ($result as $background) {
+            $backgrounds[] = $background;
+        }
+        $cache->set('backgrounds_', $backgrounds, 86400);
+    }
+
+    if (empty($backgrounds)) {
+        return false;
+    }
+
+    return $backgrounds[array_rand($backgrounds)];
+}
+
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {
     $session->set('is-danger', '[h1]This site is vulnerable until you delete the install directory[/h1][p]rm -r ' . ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR . '[/p]');
 }
+

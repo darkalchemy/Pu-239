@@ -73,8 +73,8 @@ function do_rate(rate, id, what) {
             el.addClass('star-ratings-css').removeClass('rating');
             el.html(data);
             $('.star-ratings-css-top').tooltipster({
-                theme: "tooltipster-borderless",
-                side: "top",
+                theme: 'tooltipster-borderless',
+                side: 'top',
                 animation: animation,
                 animationDuration: animate_duration,
                 arrow: true,
@@ -94,8 +94,8 @@ $(function () {
         help_open.click(function () {
             $('#help').slideToggle(animate_duration, easing, function () {
             });
-            $("#help_open").hide();
-            $("#help_close").show();
+            $('#help_open').hide();
+            $('#help_close').show();
         });
     }
     var help_close = $('#help_close');
@@ -103,8 +103,8 @@ $(function () {
         help_close.click(function () {
             $('#help').slideToggle(animate_duration, easing, function () {
             });
-            $("#help_close").hide();
-            $("#help_open").show();
+            $('#help_close').hide();
+            $('#help_open').show();
         });
     }
     if (typeof Storage !== 'undefined') $('.flipper').click(function (e) {
@@ -307,9 +307,28 @@ $(function () {
             scrollTop: scrollToPosition
         }, animate_duration, 'swing');
     }
+
+    if (body_image && document.body.contains(document.getElementById('body-overlay'))) {
+        document.getElementsByTagName('body')[0].style.backgroundColor = 'black';
+        document.getElementsByTagName('body')[0].style.backgroundImage = 'url(' + body_image + ')';
+        document.getElementsByTagName('body')[0].style.backgroundAttachment = 'fixed';
+        document.getElementsByTagName('body')[0].classList.remove('background-16');
+    }
+
+    if (document.body.contains(document.getElementById('overlay'))) {
+        var width = document.getElementById('overlay').offsetWidth;
+        var height = (width * 185 / 1000) + 4
+        document.getElementById('overlay').style.height = height + 'px';
+        document.getElementById('body-overlay').classList.add('body-overlay');
+    }
 });
 
 var vidWidth = $('.object-fit-video').width();
 $('.object-fit-video').height(vidWidth * .184);
 $('.object-fit-video').css('visibility', 'visible');
 
+document.addEventListener('DOMContentLoaded', function() {
+    yall({
+        observeChanges: true
+    });
+});

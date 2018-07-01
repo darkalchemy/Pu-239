@@ -36,7 +36,7 @@ $HTMLOUT .= "
 
 $tvmaze_data = get_schedule();
 
-if (!empty($tvmaze_data)) {
+if ($tvmaze_data) {
     $base = $today = date('Y-m-d');
     if (!empty($_GET['date'])) {
         $today = $_GET['date'];
@@ -47,21 +47,23 @@ if (!empty($tvmaze_data)) {
     $tomorrow = $date->modify('+1 day')->format('Y-m-d');
     $date = new DateTime($today);
     $display = $date->format('l Y-m-d');
+    $shows = [];
     foreach ($tvmaze_data as $listing) {
         if ($listing['airdate'] === $today && $listing['_embedded']['show']['language'] === 'English') {
             $shows[] = $listing;
         }
     }
-    usort($shows, 'timeSort');
 
     if (!empty($shows)) {
+        usort($shows, 'timeSort');
         $titles = $body = [];
         foreach ($shows as $tv) {
             if (!empty($tv['name']) && !in_array(strtolower($tv['name']), $titles)) {
                 $poster = !empty($tv['image']['original']) ? $tv['image']['original'] : !empty($tv['_embedded']['show']['image']['original']) ? $tv['_embedded']['show']['image']['original'] : $site_config['pic_baseurl'] . 'noposter.png';
                 $airtime = explode(':', $tv['airtime']);
                 $body[] = [
-                    'poster' => url_proxy($poster, true),
+                    'poster' => url_proxy($poster, true, 150),
+                    'placeholder' => url_proxy($poster, true, null, null, 20),
                     'title' => $tv['_embedded']['show']['name'],
                     'ep_title' => $tv['name'],
                     'season' => $tv['season'],
@@ -82,14 +84,14 @@ if (!empty($tvmaze_data)) {
             $div .= "
             <div class='padding10 round10 bg-00 margin10'>
                 <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$tv['id']}_tooltip'>
-                    <img src='{$tv['poster']}' alt='Poster' class='tooltip-poster'>
+                    <img src='{$tv['placeholder']}' data-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
                     <div class='has-text-centered top10'>{$tv['title']}</div>
                     <div class='has-text-centered top10'>{$tv['airtime']}</div>
                     <div class='tooltip_templates'>
                         <div id='movie_{$tv['id']}_tooltip'>
                             <div class='is-flex tooltip-torrent bg-09'>
                                 <span class='padding10 w-40'>
-                                    <img src='{$tv['poster']}' alt='Poster' class='tooltip-poster'>
+                                    <img data-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
                                 </span>
                                 <span class='padding10'>
                                     <p><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($tv['title']) . "</span></p>
@@ -111,9 +113,9 @@ if (!empty($tvmaze_data)) {
         </div>';
 
         $HTMLOUT .= main_div($div);
-    } else {
-        $HTMLOUT .= main_div("<h1 class='has-text-centered'>TMDb may be down, check back later</h1>");
     }
+} else {
+    $HTMLOUT = main_div("<h1 class='has-text-centered'>TVMaze may be down, check back later</h1>");
 }
-file_put_contents('/var/log/nginx/tvmaze.log', wrapper($HTMLOUT));
+
 echo stdhead('TV Shows Today') . wrapper($HTMLOUT) . stdfoot();

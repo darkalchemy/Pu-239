@@ -2854,9 +2854,8 @@ var ajaxChat = {
         if (!content) {
             return content;
         }
-        var container = document.getElementById('chatList');
-        var width = container.offsetWidth;
-        var height = container.offsetHeight;
+        var width = this.dom['chatList'].offsetWidth;
+        var height = this.dom['chatList'].offsetHeight;
         if (height > width) {
             width = width / 3 * 2;
             if (width >= 500) {
@@ -2955,6 +2954,13 @@ var ajaxChat = {
             url = this.stripTags(url.replace(/\s/gm, this.encodeText(' ')));
             maxWidth = this.dom['chatList'].offsetWidth / 2;
             maxHeight = this.dom['chatList'].offsetHeight / 2;
+            if (maxWidth >= 500) {
+                maxWidth = 500;
+            }
+            if (maxHeight >= 270) {
+                maxHeight = 270;
+            }
+
             link = '<img class="bbCodeImage" style="max-width:'
                 + maxWidth
                 + 'px; max-height:'

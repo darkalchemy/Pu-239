@@ -212,7 +212,7 @@ if ($show_as === 'posts') {
 	<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="' . $site_config['pic_baseurl'] . 'forums/down.gif" alt="' . $lang['fe_bottom'] . '" title="' . $lang['fe_bottom'] . '" class="emoticon"></a>
 	</span></td>
 	</tr>
-	<tr><td class="has-text-centered w-25 mw-150 ' . $class_alt . '" valign="top">' . get_avatar($arr) . '<br>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($arr['id'])) . ($arr['anonymous'] === 'yes' || $arr['title'] === '' ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($arr['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name($arr['class'])) . '</span><br>
+	<tr><td class="has-text-centered w-15 mw-150 ' . $class_alt . '" valign="top">' . get_avatar($arr) . '<br>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($arr['id'])) . ($arr['anonymous'] === 'yes' || $arr['title'] === '' ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($arr['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name($arr['class'])) . '</span><br>
 	</td><td class="' . $class . '" align="left" valign="top" colspan="2">' . $body . $edited_by . '</td></tr>
 	<tr><td class="' . $class_alt . '" align="right" valign="middle" colspan="3"></td></tr>';
     } //=== end of while loop

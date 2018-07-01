@@ -155,6 +155,7 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
                 ->where('id = ?', $id)
                 ->execute();
             $torrents['background'] = $background;
+            $cache->delete('backgrounds_');
         }
     }
     if (!empty($match[1]) && !empty($match[1]) && !empty($tvmaze_id)) {
@@ -219,6 +220,7 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
                     ->where('id = ?', $id)
                     ->execute();
                 $torrents['background'] = $background;
+                $cache->delete('backgrounds_');
             }
         }
         $movie_info = get_imdb_info($imdb_id);
@@ -891,7 +893,7 @@ if (!empty($torrents['youtube'])) {
         $HTMLOUT .= main_div("
                     <a id='youtube-hash'></a>
                     <div class='responsive-container'>
-                        <iframe width='1920px' height='1080px' src='https://youtube.com/embed/{$youtube_id}?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen></iframe>
+                        <iframe width='1920px' height='1080px' data-src='https://youtube.com/embed/{$youtube_id}?vq=hd1080' controls autoplay='false' frameborder='0' allowfullscreen class='lazy'></iframe>
                     </div>", 'bottom20');
     }
 }
@@ -1010,7 +1012,7 @@ if (!$count) {
                     </fieldset>
                 </div>';
 }
-
+/*
 $HTMLOUT .= "
     <script>
     if (document.body.contains(document.getElementById('overlay'))) {
@@ -1024,5 +1026,5 @@ $HTMLOUT .= "
         document.getElementById('body-overlay').classList.add('body-overlay');
     }
     </script>";
-
+*/
 echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

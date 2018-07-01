@@ -455,7 +455,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
             </td>
         </tr>
 		<tr>
-         <td class="has-text-centered w-25 mw-150">' . get_avatar($arr) . '<br>
+         <td class="has-text-centered w-15 mw-150">' . get_avatar($arr) . '<br>
 			' . ($arr['anonymous'] == 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($arr['user_id'])) . ($arr['anonymous'] == 'yes' || empty($arr['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($arr['title']) . ']</span>') . '<br>
 			<span >' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name($arr['class'])) . '</span><br>
 			' . ($arr['last_access'] > (TIME_NOW - 300) && $arr['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper emoticon" /> Online' : ' <img src="' . $site_config['pic_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper emoticon" /> ' . $lang['fe_offline'] . '') . '<br>' .

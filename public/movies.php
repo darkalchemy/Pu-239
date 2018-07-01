@@ -29,15 +29,15 @@ $HTMLOUT = "
 
 $movies = get_movies_by_week($dates);
 
-if (!empty($movies)) {
+if ($movies) {
     $titles = $body = [];
     foreach ($movies as $movie) {
         if (!empty($movie['title']) && !in_array(strtolower($movie['title']), $titles)) {
             $poster = !empty($movie['poster_path']) ? "https://image.tmdb.org/t/p/w185{$movie['poster_path']}" : $site_config['pic_baseurl'] . 'noposter.png';
             $backdrop = !empty($movie['backdrop_path']) ? "https://image.tmdb.org/t/p/w500{$movie['backdrop_path']}" : '';
-
             $body[] = [
-                'poster' => url_proxy($poster, true),
+                'poster' => url_proxy($poster, true, 150),
+                'placeholder' => url_proxy($poster, true, null, null, 20),
                 'backdrop' => url_proxy($backdrop, true),
                 'title' => $movie['title'],
                 'vote_count' => $movie['vote_count'],
@@ -57,14 +57,14 @@ if (!empty($movies)) {
         $div .= "
             <div class='padding10 round10 bg-00 margin10'>
                 <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$movie['id']}_tooltip'>
-                    <img src='{$movie['poster']}' alt='Poster' class='tooltip-poster'>
+                    <img src='{$movie['placeholder']}' data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
                     <div class='has-text-centered top10'>{$movie['title']}</div>
                     <div class='has-text-centered'>{$movie['release_date']}</div>
                     <div class='tooltip_templates'>
                         <div id='movie_{$movie['id']}_tooltip' clss='round10 tooltip-background' style='background-image: url({$movie['backdrop']});'>
                             <div class='is-flex tooltip-torrent bg-09'>
                                 <span class='padding10 w-40'>
-                                    <img src='{$movie['poster']}' alt='Poster' class='tooltip-poster'>
+                                    <img data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
                                 </span>
                                 <span class='padding10'>
                                     <p><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($movie['title']) . "</span></p>

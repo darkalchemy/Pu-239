@@ -138,7 +138,7 @@ if (mysqli_num_rows($res) == 0) {
             $shit .= ' <img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" title="' . (int) $shit_list['shittyness'] . '' . $lang['shitlist_scale'] . '" alt="*" />';
         }
         $HTMLOUT .= (($i % 2 == 1) ? '<tr>' : '') . '
-      <td class="has-text-centered w-25 mw-150 ' . (($i % 2 == 0) ? 'one' : 'two') . '">' . get_avatar($shit_list) . '<br>
+      <td class="has-text-centered w-15 mw-150 ' . (($i % 2 == 0) ? 'one' : 'two') . '">' . get_avatar($shit_list) . '<br>
 
       ' . format_username($shit_list['id']) . '<br>
 

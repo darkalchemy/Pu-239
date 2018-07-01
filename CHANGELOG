@@ -1,3 +1,10 @@
+1 Jul 2018
+remove: redundant fetch() functions
+replace: remote image proxy with local image proxy, enable only if you have the space for it
+purged: database_updates, rethinking the process
+updated: README to include required apps and php extensions
+add: option to show random background on every page
+
 27 Jun 2018
 update: adjust avatar display size for consistency
 update: use real ip when logging failed logins

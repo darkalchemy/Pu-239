@@ -24,6 +24,7 @@ function extensionscheck()
         'mbstring',
         'gd',
         'bz2',
+        'imagick',
     ];
 
     $missing = [];

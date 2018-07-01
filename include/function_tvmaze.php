@@ -243,17 +243,6 @@ function line_by_line($heading, $body)
                     </div>";
 }
 
-function fetch($url)
-{
-    $client = new GuzzleHttp\Client(['http_errors' => false]);
-    $res = $client->request('GET', $url);
-    if ($res->getStatusCode() === 200) {
-        return $res->getBody()->getContents();
-    }
-
-    return null;
-}
-
 function timeSort($a, $b)
 {
     return strcmp($a['airtime'], $b['airtime']);

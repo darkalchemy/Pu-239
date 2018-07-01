@@ -29,7 +29,7 @@ $HTMLOUT .= '<h1>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name()
     <span style="white-space:nowrap;"> ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . '] GMT ' . (!empty($post_title) ? '&nbsp;&nbsp;&nbsp;&nbsp; ' . $lang['fe_title'] . ': <span style="font-weight: bold;">' . $post_title . '</span>' : '') . (!empty($icon) ? ' <img src="' . $site_config['pic_baseurl'] . 'smilies/' . $icon . '.gif" alt="' . $icon . '" title="' . $icon . '" class="emoticon">' : '') . '</span>
     </td></tr>
     <tr>
-    <td class="has-text-centered w-25 mw-150" valign="top">' . get_avatar($arr) . '<br>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($arr['id'])) . '</td>
+    <td class="has-text-centered w-15 mw-150" valign="top">' . get_avatar($arr) . '<br>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($arr['id'])) . '</td>
     <td align="left" valign="top" colspan="2">' . ($arr['bbcode'] === 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body'])) . '</td>
     </tr>
     </table><br><h1>' . $lang['fe_post_history'] . '</h1>[ ' . $lang['vph_all_post_edits_date'] . '. ]<br><br>' . htmlspecialchars_decode($arr['post_history']) . '<br>' . $location_bar;

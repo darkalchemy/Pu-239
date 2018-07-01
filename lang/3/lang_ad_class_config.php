@@ -1,7 +1,7 @@
 <?php
 
 $lang = [
-    'classcfg_success_uglify' => "Run '[sudo] php bin/uglify.php to make the changes effective",
+    'classcfg_success_uglify' => "Run '[sudo] php " . ROOT_DIR . "bin/uglify.php' to make the changes effective",
     'classcfg_error' => 'Eroare',
     'classcfg_denied' => 'Acces Refuzat!',
     'classcfg_error1' => 'Tu nu ai ce c&#259;uta aici, ai &#238;ncercat s&#259; intri direct la acest fisier.',

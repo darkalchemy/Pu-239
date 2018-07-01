@@ -60,7 +60,7 @@ if ($news) {
                         <i class='fa icon-up-open size_3' aria-hidden='true'></i><small>" . htmlsafechars($array['title']) . "</small>
                     </legend>
                     <div class='bg-02 round5 padding10'>
-                        <div class='bottom20 size_3'>" . get_date($array['added'], 'DATE') . "{$lang['index_news_added']} {$username}{$button}</div>
+                        <div class='bottom20 size_4'>" . get_date($array['added'], 'DATE') . "{$lang['index_news_added']} {$username}{$button}</div>
                         <div class='has-text-white'>
                             " . format_comment($array['body'], 0) . '
                         </div>

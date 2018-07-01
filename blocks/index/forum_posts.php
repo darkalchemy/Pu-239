@@ -30,9 +30,9 @@ $HTMLOUT .= "
                 <thead>
                     <tr>
                         <th>{$lang['latestposts_topic_title']}</th>
-                        <th>{$lang['latestposts_replies']}</th>
-                        <th>{$lang['latestposts_views']}</th>
-                        <th>{$lang['latestposts_last_post']}</th>
+                        <th class='has-text-centered'>{$lang['latestposts_replies']}</th>
+                        <th class='has-text-centered'>{$lang['latestposts_views']}</th>
+                        <th class='has-text-centered'>{$lang['latestposts_last_post']}</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -93,9 +93,9 @@ if (!empty($topics) && count($topics) > 0) {
         $HTMLOUT .= "
                     <tr>
                         <td>{$topic_name}</td>
-                        <td>{$replies}</td>
-                        <td>" . number_format($topicarr['views']) . "</td>
-                        <td>{$username}</td>
+                        <td class='has-text-centered'>{$replies}</td>
+                        <td class='has-text-centered'>" . number_format($topicarr['views']) . "</td>
+                        <td class='has-text-centered'>{$username}</td>
                     </tr>";
     }
     $HTMLOUT .= '

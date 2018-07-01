@@ -11,7 +11,7 @@
 8. Optimize all images for web - Done
 9. Remove js from head and relocate to body
 10. REplace Simple Captcha with reCAPTCHA V2 - Done
-10. Fully responsive and mobile ready
+11. Fully responsive and mobile ready
 
 This is a fork of U-232 V4.
 
@@ -29,6 +29,21 @@ A working site with this code is at https://pu-239.pw/
 
 ### To Install:
 ```
+# required apps
+jpegoptim, optipng, pngquant, gifsicle
+
+# required php extensions
+php-gd, php-xml, php-json, php-mbstring, php-mysqli, php-zip, php-simplexml, php-curl, php-exif, php-bz2, php-imagick
+
+# cache repositories(optional)
+redis, php-redis
+memchached, php-memcached
+APCu
+couchbase
+
+# data storage
+MySQL or MariaDB or Percona MySQL
+
 # get the files
 git clone https://github.com/darkalchemy/Pu-239.git
 
