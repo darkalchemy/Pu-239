@@ -1,4 +1,5 @@
 1 Jul 2018
+update: max image size in AJAX Chat
 fix: images in AJAX Chat
 remove: unused gzip directory
 add: logs folder

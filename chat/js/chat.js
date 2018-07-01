@@ -2952,7 +2952,7 @@ var ajaxChat = {
                 return url;
             }
             url = this.stripTags(url.replace(/\s/gm, this.encodeText(' ')));
-            maxWidth = this.dom['chatList'].offsetWidth / 2;
+            maxWidth = this.dom['chatList'].offsetWidth / 3 * 2;
             maxHeight = this.dom['chatList'].offsetHeight / 2;
             if (maxWidth >= 500) {
                 maxWidth = 500;
