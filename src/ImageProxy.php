@@ -57,7 +57,7 @@ class ImageProxy
         if (file_exists($new_path)) {
             return $hash;
         }
-        if (mime_content_type($path) != "image/jpeg") {
+        if (mime_content_type($path) != 'image/jpeg') {
             Image::load($new_path)
                 ->format(Manipulations::FORMAT_JPG)
                 ->quality($quality)

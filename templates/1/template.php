@@ -577,7 +577,7 @@ function navbar()
                             <li id='general_links' class='clickable'>
                                 <a href='#'>{$lang['gl_general']}</a>
                                 <ul class='ddFade ddFadeSlow'>";
-        if ($site_config['bucket_allowed'] === 1) {
+        if ($site_config['bucket_allowed']) {
             $navbar .= "
                                     <li class='iss_hidden'><a href='{$site_config['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>";
         }

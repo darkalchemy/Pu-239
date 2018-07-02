@@ -32,9 +32,10 @@ function permissioncheck()
         $public . 'install/extra/' => 0,
         $public . 'images/proxy/' => 0,
         $root . 'logs/' => 0,
-        $root . 'chat/css/',
-        $root . 'chat/js/',
-        $root . 'templates/1/css/',
+        $root . 'chat/css/' => 0,
+        $root . 'chat/js/' => 0,
+        $root . 'templates/1/css/' => 0,
+        $root . 'bucket/' => 0.,
     ];
     checkdir($dirs);
     $continue = true;

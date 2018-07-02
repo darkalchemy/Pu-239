@@ -10,6 +10,9 @@ if ($site_settings === false || is_null($site_settings)) {
         ->select('value');
 
     foreach ($sql as $res) {
+        if (is_int($res['value'])) {
+            $res['value'] = (int) $res['value'];
+        }
         $site_settings[$res['name']] = $res['value'];
     }
     $cache->set('site_settings_', $site_settings, 86400);

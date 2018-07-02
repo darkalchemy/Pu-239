@@ -53,7 +53,7 @@ composer install
 npm install
 
 # set ownership
-sudo chown -R www-data:www-data Pu-239
+sudo chown -R www-data:www-data ../Pu-239
 
 # set webroot to path Pu-239/public
 
@@ -77,6 +77,9 @@ CREATE DATABASE Pu-239;
 # set permissions and create necessary files
 sudo php bin/set_perms.php
 sudo php bin/uglify.php
+
+# set ownership
+sudo chown -R www-data:www-data ../Pu-239
 
 # delete public/install folder once directed to
 sudo rm -r public/install/
@@ -114,6 +117,9 @@ npm install
 sudo php bin/set_perms.php
 sudo php bin/uglify.php
 
+# set ownership
+sudo chown -R www-data:www-data ../Pu-239
+
 # update trivia questions if desired
 mysql database < database/trivia.php.sql
 
@@ -129,9 +135,9 @@ note: if that does exist, check the changelog for 6 Dec, 2017
 
 reCAPTCHA V2 needs both the site key and secret key set in .env
 
-Fanart.tv needs api key set in .inv
+Fanart.tv needs api key set in .env
 
-TMDB API key allows upcoming movies
+TMDb API key allows upcoming movies
 
 Google API key allows up to 1000 api hits instead of 100 per day, set in .env
 
@@ -141,7 +147,8 @@ TVMaze no key needed
 
 
 ### Making Changes to css/js files
-Make any edits or changes to the files in templates and scripts folder, then run php bin/uglify.php to concatenate, minify and gzip the files for use
+
+Make any edits or changes to the files in templates and scripts folder, then run sudo php bin/uglify.php to concatenate, minify and gzip the files for use
 
 ### Cache Engines
 
@@ -150,7 +157,7 @@ couchbase, apcu, memcached, redis or file. file is set as default set in .env
 
 ### Image Proxy:
 
-A simple image proxy for hot linked images: https://github.com/darkalchemy/Simple-Image-Proxy
+An image proxy for hot linked images is built in, disabled by default, enable in staff panel => site settings, this allows for browser caching
 
 
 ### Credits:

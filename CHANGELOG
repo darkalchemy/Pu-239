@@ -1,4 +1,7 @@
 1 Jul 2018
+fix: install folder check
+fix: incorrect file permissions in 775 folders
+fix: bit bucket link not showing
 update: max image size in AJAX Chat
 fix: images in AJAX Chat
 remove: unused gzip directory

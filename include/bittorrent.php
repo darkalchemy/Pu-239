@@ -13,8 +13,6 @@ require_once VENDOR_DIR . 'autoload.php';
 $dotenv = new Dotenv\Dotenv(ROOT_DIR);
 $dotenv->load();
 
-use Blocktrail\CryptoJSAES\CryptoJSAES;
-
 require_once INCL_DIR . 'files.php';
 
 require_once CACHE_DIR . 'free_cache.php';
@@ -2014,6 +2012,7 @@ function url_proxy($url, $image = false, $width = null, $height = null, $quality
 
     if ($site_config['image_proxy']) {
         $image_proxy = new DarkAlchemy\Pu239\ImageProxy();
+
         return $site_config['pic_baseurl'] . 'proxy/' . $image_proxy->get_image($url, $image, $width, $height, $quality);
     }
 
@@ -2229,4 +2228,3 @@ function get_body_image($details)
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {
     $session->set('is-danger', '[h1]This site is vulnerable until you delete the install directory[/h1][p]rm -r ' . ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR . '[/p]');
 }
-
