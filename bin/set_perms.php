@@ -59,6 +59,9 @@ foreach ($paths as $path) {
 
 function chmod_r($path)
 {
+    if (!file_exists($path) && is_dir($path)) {
+        return;
+    }
     $dir = new DirectoryIterator($path);
     foreach ($dir as $item) {
         chmod($item->getPathname(), 0775);
