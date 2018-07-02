@@ -75,8 +75,8 @@ CREATE DATABASE Pu-239;
 # goto website and complete install, all fields must be completed and each fields includes an example and tooltip explanation when hovered
 
 # set permissions and create necessary files
-sudo php bin/set_perms.php
 sudo php bin/uglify.php
+sudo php bin/set_perms.php
 
 # set ownership
 sudo chown -R www-data:www-data ../Pu-239
@@ -114,8 +114,8 @@ git pull
 composer update
 composer dump-autoload -o
 npm install
-sudo php bin/set_perms.php
 sudo php bin/uglify.php
+sudo php bin/set_perms.php
 
 # set ownership
 sudo chown -R www-data:www-data ../Pu-239

@@ -210,9 +210,9 @@ $HTMLOUT .= "
             <tr class='no_hover'>
                 <td class='rowhead'></td>
                 <td>
-                    <input type='checkbox' name='rulesverify' value='yes'" . ($signup_vars['rulesverify'] === 'yes' ? ' checked ' : '') . "/> {$lang['signup_rules']}<br>
-                    <input type='checkbox' name='faqverify' value='yes'" . ($signup_vars['faqverify'] === 'yes' ? ' checked ' : '') . "/> {$lang['signup_faq']}<br>
-                    <input type='checkbox' name='ageverify' value='yes'" . ($signup_vars['ageverify'] === 'yes' ? ' checked ' : '') . "/> {$lang['signup_age']}
+                    <input type='checkbox' name='rulesverify' value='yes'" . (!empty($signup_vars['rulesverify']) && $signup_vars['rulesverify'] === 'yes' ? ' checked ' : '') . "/> {$lang['signup_rules']}<br>
+                    <input type='checkbox' name='faqverify' value='yes'" . (!empty($signup_vars['faqverify']) && $signup_vars['faqverify'] === 'yes' ? ' checked ' : '') . "/> {$lang['signup_faq']}<br>
+                    <input type='checkbox' name='ageverify' value='yes'" . (!empty($signup_vars['ageverify']) && $signup_vars['ageverify'] === 'yes' ? ' checked ' : '') . "/> {$lang['signup_age']}
                 </td>
             </tr>";
 if (!empty($_ENV['RECAPTCHA_SITE_KEY'])) {

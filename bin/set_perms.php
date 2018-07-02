@@ -1,6 +1,8 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+$user = get_current_user();
+$group = posix_getgrgid(filegroup(__FILE__))['name'];
 
 $paths = [
     ROOT_DIR,
@@ -46,6 +48,8 @@ foreach ($paths as $path) {
             $ext = pathinfo($name, PATHINFO_EXTENSION);
             if (in_array($ext, $exts)) {
                 if (chmod($name, 0664)) {
+                    chown($name, $user);
+                    chgrp($name, $group);
                     ++$i;
                 }
             }

@@ -1,4 +1,6 @@
 1 Jul 2018
+update: set new/updated files owner:group according to current owner:group set_perms.php
+fix: check for empty vars before using them signup.php
 fix: install folder check
 fix: incorrect file permissions in 775 folders
 fix: bit bucket link not showing
