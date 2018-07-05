@@ -33,3 +33,4 @@ define('IP_LOGGING', false);
 define('XBT_TRACKER', false);
 define('REQUIRE_CONNECTABLE', false);
 define('SOCKET', false);
+define('NFO_SIZE', 1048576);

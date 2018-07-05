@@ -1,4 +1,5 @@
 5 Jul 2018
+fix: remove invalid chars from uploaded nfo before db insert
 fix: typo in bittorrent.php
 fit: incorrect method name
 

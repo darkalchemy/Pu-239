@@ -5,14 +5,6 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_memcache.php';
 global $CURUSER, $site_config, $cache, $session;
 
-/*
- *
- */
-define('MIN_CLASS', UC_STAFF);
-/*
- *
- */
-define('NFO_SIZE', 65535);
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('takeedit'), load_language('details'));
 $torrent_cache = $torrent_txt_cache = '';
@@ -76,7 +68,7 @@ $nfoaction = '';
 $select_torrent = sql_query('SELECT name, descr, category, visible, vip, release_group, poster, url, newgenre, description, anonymous, sticky, owner, allow_comments, nuked, nukereason, filename, save_as, youtube, tags, info_hash, freetorrent FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $fetch_assoc = mysqli_fetch_assoc($select_torrent) or stderr('Error', 'No torrent with this ID!');
 $infohash = $fetch_assoc['info_hash'];
-if ($CURUSER['id'] != $fetch_assoc['owner'] && $CURUSER['class'] < MIN_CLASS) {
+if ($CURUSER['id'] != $fetch_assoc['owner'] && $CURUSER['class'] < UC_STAFF) {
     $session->set('is-danger', "You're not the owner of this torrent.");
     header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
@@ -107,10 +99,11 @@ if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] === 'update')) {
         header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }
-    if (@is_uploaded_file($_FILES['nfo']['tmp_name']) && @filesize($_FILES['nfo']['tmp_name']) > 0) {
-        $updateset[] = 'nfo = ' . sqlesc(str_replace("\x0d\x0d\x0a", "\x0d\x0a", file_get_contents($_FILES['nfo']['tmp_name'])));
+    if (is_uploaded_file($_FILES['nfo']['tmp_name']) && filesize($_FILES['nfo']['tmp_name']) > 0) {
+        $nfo_content = str_ireplace(["\x0d\x0d\x0a", "\xb0"], ["\x0d\x0a", ''], file_get_contents($_FILES['nfo']['tmp_name']));
+        $updateset[] = 'nfo = ' . sqlesc($nfo_content);
+        $torrent_cache['nfo'] = $nfo_content;
     }
-    $torrent_cache['nfo'] = str_replace("\x0d\x0d\x0a", "\x0d\x0a", file_get_contents($_FILES['nfo']['tmp_name']));
 } elseif ($nfoaction === 'remove') {
     $updateset[] = "nfo = ''";
     $torrent_cache['nfo'] = '';
@@ -127,11 +120,15 @@ foreach ([
         die();
     }
 }
-if (isset($_POST['youtube']) && (preg_match($youtube_pattern, $_POST['youtube'], $temp_youtube) || $_POST['youtube'] === '')) {
-    if ($temp_youtube[0] != $fetch_assoc['youtube']) {
+if (!empty($_POST['youtube'])) {
+    preg_match($youtube_pattern, $_POST['youtube'], $temp_youtube);
+    if (isset($temp_youtube[0]) && $temp_youtube[0] != $fetch_assoc['youtube']) {
         $updateset[] = 'youtube = ' . sqlesc($temp_youtube[0]);
+        $torrent_cache['youtube'] = $temp_youtube[0];
     }
-    $torrent_cache['youtube'] = $temp_youtube[0];
+} else {
+    $updateset[] = "youtube = ''";
+    $torrent_cache['youtube'] = '';
 }
 if (isset($_POST['name']) && (($name = $_POST['name']) != $fetch_assoc['name']) && valid_torrent_name($name)) {
     $updateset[] = 'name = ' . sqlesc($name);

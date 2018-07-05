@@ -94,7 +94,7 @@ if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
         header("Location: {$site_config['baseurl']}/upload.php");
         die();
     }
-    if ($nfofile['size'] > 65535) {
+    if ($nfofile['size'] > NFO_SIZE) {
         $session->set('is-warning', $lang['takeupload_nfo_big']);
         header("Location: {$site_config['baseurl']}/upload.php");
         die();
@@ -105,7 +105,8 @@ if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
         header("Location: {$site_config['baseurl']}/upload.php");
         die();
     }
-    $nfo = sqlesc(str_replace("\x0d\x0d\x0a", "\x0d\x0a", @file_get_contents($nfofilename)));
+    $nfo_content = str_ireplace(["\x0d\x0d\x0a", "\xb0"], ["\x0d\x0a", ''], file_get_contents($nfofilename));
+    $nfo = sqlesc($nfo_content);
 }
 
 $free2 = 0;

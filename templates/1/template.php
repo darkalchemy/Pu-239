@@ -30,6 +30,7 @@ function stdhead($title = '', $stdhead = null)
     }
 
     $body_class = 'background-16 h-style-9 text-9 skin-2';
+    $current_page = basename($_SERVER['PHP_SELF']);
     $htmlout = "<!doctype html>
 <html>
 <head>
@@ -54,17 +55,16 @@ function stdhead($title = '', $stdhead = null)
             obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
         }
     </script>";
-    $current_page = basename($_SERVER['PHP_SELF']);
     $captcha = [
-    'login.php',
-    'takelogin.php',
-    'signup.php',
-    'takesignup.php',
-    'invite_signup.php',
-    'take_invite_signup.php',
-    'resetpw.php',
-    'recover.php',
-];
+        'login.php',
+        'takelogin.php',
+        'signup.php',
+        'takesignup.php',
+        'invite_signup.php',
+        'take_invite_signup.php',
+        'resetpw.php',
+        'recover.php',
+    ];
     if (in_array($current_page, $captcha) && !empty($_ENV['RECAPTCHA_SITE_KEY'])) {
         $htmlout .= "
         <script src='https://www.google.com/recaptcha/api.js'></script>";

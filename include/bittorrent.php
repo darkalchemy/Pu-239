@@ -1293,6 +1293,7 @@ function sql_query($query, $log = true)
     if (SQL_DEBUG) {
         $query_start_time = microtime(true);
 
+        mysqli_set_charset($GLOBALS['___mysqli_ston'], 'utf8');
         $result = mysqli_query($GLOBALS['___mysqli_ston'], $query);
         $query_end_time = microtime(true);
         $query_stat[] = [

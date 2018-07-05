@@ -68,7 +68,10 @@ $HTMLOUT .= tr($lang['edit_youtube'], "<input type='text' name='youtube' value='
 $HTMLOUT .= tr($lang['edit_torrent_name'], "<input type='text' name='name' value='" . htmlsafechars($row['name']) . "' class='w-100' />", 1);
 $HTMLOUT .= tr($lang['edit_torrent_tags'], "<input type='text' name='tags' value='" . htmlsafechars($row['tags']) . "' class='w-100' /><br>({$lang['edit_tags_info']})\n", 1);
 $HTMLOUT .= tr($lang['edit_torrent_description'], "<input type='text' name='description' value='" . htmlsafechars($row['description']) . "' class='w-100' />", 1);
-$HTMLOUT .= tr($lang['edit_nfo'], "<input type='radio' name='nfoaction' value='keep' checked class='right5' />{$lang['edit_keep_current']}<br><input type='radio' name='nfoaction' value='update' class='right5' />{$lang['edit_update']}<br><input type='file' name='nfo' class='w-100' />", 1);
+$HTMLOUT .= tr($lang['edit_nfo'], "
+    <input type='radio' name='nfoaction' value='keep' checked class='right5' />{$lang['edit_keep_current']}<br>
+    <input type='radio' name='nfoaction' value='update' class='right5' />{$lang['edit_update']}<br>
+    <input type='file' name='nfo' class='w-100' />", 1);
 if ((strpos($row['ori_descr'], '<') === false) || (strpos($row['ori_descr'], '&lt;') !== false)) {
     $c = '';
 } else {
