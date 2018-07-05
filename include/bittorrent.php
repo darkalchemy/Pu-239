@@ -299,7 +299,7 @@ function userlogin()
 </head>
 <body>
     <h1>403 Forbidden</h1>
-    <h1>Unauthorized IP address!</h1>h1>
+    <h1>Unauthorized IP address!</h1>
     <p>Reason: <strong>' . htmlsafechars($reason) . '</strong></p>
 </body>
 </html>";

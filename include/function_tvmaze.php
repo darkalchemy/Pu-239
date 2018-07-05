@@ -116,7 +116,7 @@ function get_episode($tvmaze_id, $season, $episode)
     $episode_info = $cache->get('tvshow_episode_info_' . $tvmaze_id . $season . $episode);
     if ($episode_info === false || is_null($episode_info)) {
         $tvmaze_link = "http://api.tvmaze.com/shows/{$tvmaze_id}/episodebynumber?season={$season}&number={$episode}";
-        $content = get($tvmaze_link);
+        $content = fetch($tvmaze_link);
         if (empty($content)) {
             return false;
         }
@@ -159,7 +159,7 @@ function tvmaze($tvmaze_id, $id)
     $tvmaze_show_data = $cache->get('tvmaze_' . $tvmaze_id);
     if ($force_update || $tvmaze_show_data === false || is_null($tvmaze_show_data)) {
         $tvmaze_link = "http://api.tvmaze.com/shows/{$tvmaze_id}?embed=cast";
-        $content = get($tvmaze_link);
+        $content = fetch($tvmaze_link);
         if (empty($content)) {
             return false;
         }

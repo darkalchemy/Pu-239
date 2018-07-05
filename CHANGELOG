@@ -1,3 +1,7 @@
+5 Jul 2018
+fix: typo in bittorrent.php
+fit: incorrect method name
+
 1 Jul 2018
 fix: check if folder exists before setting perms set_perms.php
 update: set new/updated files owner:group according to current owner:group set_perms.php
