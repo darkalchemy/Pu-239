@@ -87,6 +87,10 @@ if (file_exists(DATABASE_DIR)) {
 
     $body = '';
     foreach ($sql_updates as $update) {
+        if (array_key_exists($update['id'], $results)) {
+            continue;
+        }
+
         if ($update['id'] > $first && $update['id'] <= $last) {
             $button = "
                 <form action='{$site_config['baseurl']}/staffpanel.php?tool=upgrade_database{$page}' method='post'>
@@ -112,6 +116,14 @@ if (file_exists(DATABASE_DIR)) {
             </td>
         </tr>';
         }
+    }
+    if (empty($body)) {
+        $body = "
+        <tr>
+            <td colspan='5'>
+                There are no updates available!
+            </td>
+        </tr>";
     }
 } else {
     $body = "

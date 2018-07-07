@@ -91,7 +91,7 @@ function episode_format($tvmaze_data, $tvmaze_type)
     foreach ($tvmaze_display[$tvmaze_type] as $key => $value) {
         if (isset($tvmaze_data[$key])) {
             if ($key === 'timestamp') {
-                $tvmaze_data[$key] = get_date($tvmaze_data[$key], 'LONG');
+                $tvmaze_data[$key] = get_date($tvmaze_data[$key], 'WITHOUT_SEC');
             }
             $tvmaze_display[$tvmaze_type][$key] = sprintf($value, $tvmaze_data[$key]);
         } else {
@@ -145,7 +145,8 @@ function get_episode($tvmaze_id, $season, $episode)
  */
 function tvmaze($tvmaze_id, $id)
 {
-    global $fluent, $cache;
+    global $fluent, $cache, $site_config;
+
     $set = [];
     if (empty($tvmaze_id)) {
         return null;
@@ -158,6 +159,7 @@ function tvmaze($tvmaze_id, $id)
 
     $tvmaze_show_data = $cache->get('tvmaze_' . $tvmaze_id);
     if ($force_update || $tvmaze_show_data === false || is_null($tvmaze_show_data)) {
+        $timestamp = strtotime('today midnight');
         $tvmaze_link = "http://api.tvmaze.com/shows/{$tvmaze_id}?embed=cast";
         $content = fetch($tvmaze_link);
         if (empty($content)) {
@@ -165,9 +167,13 @@ function tvmaze($tvmaze_id, $id)
         }
         $tvmaze_show_data = json_decode($content, true);
         $tvmaze_show_data['rated'] = $tvmaze_show_data['rating']['average'];
-        $airedtime = explode(':', $tvmaze_show_data['schedule']['time']);
+        $airtime = explode(':', $tvmaze_show_data['schedule']['time']);
+        if (!empty($airtime)) {
+            $airtime = $timestamp + $airtime[0] * 3600 + $airtime[1] * 60;
+        }
+
         $days = implode(', ', $tvmaze_show_data['schedule']['days']);
-        $tvmaze_show_data['airtime'] = $days . ' at ' . time24to12($airedtime[0], $airedtime[1]) . " on {$tvmaze_show_data['network']['name']}. <span class='has-text-primary'>(Time zone: {$tvmaze_show_data['network']['country']['timezone']})</span>";
+        $tvmaze_show_data['airtime'] = $days . ' at ' . ($site_config['12_hour'] ? time24to12($airtime) : get_date($airtime, 'WITHOUT_SEC', 1, 1)) . " on {$tvmaze_show_data['network']['name']}. <span class='has-text-primary'>(Time zone: {$tvmaze_show_data['network']['country']['timezone']})</span>";
         $tvmaze_show_data['origin'] = "{$tvmaze_show_data['network']['country']['name']}: {$tvmaze_show_data['language']}";
         if (count($tvmaze_show_data['genres']) > 0) {
             $temp = implode(', ', array_map('strtolower', $tvmaze_show_data['genres']));

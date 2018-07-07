@@ -287,8 +287,14 @@ function stdfoot($stdfoot = false)
         }
         $uptime = $cache->get('uptime');
         if ($uptime === false || is_null($uptime)) {
-            $uptime = `uptime`;
-            $cache->set('uptime', $uptime, 25);
+            $uptime = explode('up', `uptime`);
+            if ($site_config['12_hour']) {
+                $server_time = explode(':', trim($uptime[0]));
+                $uptime = time24to12($server_time[0], $server_time[1], $server_time[2]) . "<br>{$lang['gl_stdfoot_uptime']} " . str_replace('  ', ' ', $uptime[1]);
+            } else {
+                $uptime = trim($uptime[0]) . "<br>{$lang['gl_stdfoot_uptime']} " . str_replace('  ', ' ', $uptime[1]);
+            }
+            $cache->set('uptime', $uptime, 30);
         }
     }
     $htmlfoot .= '
@@ -302,7 +308,7 @@ function stdfoot($stdfoot = false)
                     <div class='size_4 top10 bottom10'>
                         <p class='is-marginless'>{$lang['gl_stdfoot_querys_page']} " . mksize(memory_get_peak_usage()) . " in $r_seconds {$lang['gl_stdfoot_querys_seconds']}</p>
                         <p class='is-marginless'>{$lang['gl_stdfoot_querys_server']} $queries {$lang['gl_stdfoot_querys_time']}" . plural($queries) . '</p>
-                        ' . ($debug ? "<p class='is-marginless'>$header</p><p class='is-marginless'>{$lang['gl_stdfoot_uptime']} $uptime</p>" : '') . "
+                        ' . ($debug ? "<p class='is-marginless'>$header</p><p class='is-marginless'>$uptime</p>" : '') . "
                     </div>
                     <div class='size_4 top10 bottom10'>
                         <p class='is-marginless'>{$lang['gl_stdfoot_powered']}{$site_config['variant']}</p>
@@ -315,7 +321,6 @@ function stdfoot($stdfoot = false)
             </div>
         </div>";
     }
-    $bg_image = "var body_image = ''";
     $details = basename($_SERVER['PHP_SELF']) === 'details.php';
     if ($site_config['backgrounds_on_all_pages'] || $details) {
         $background = get_body_image($details);
@@ -328,6 +333,7 @@ function stdfoot($stdfoot = false)
     </a>
     <script>
         $bg_image
+        var is_12_hour = {$site_config['12_hour']};
         var cookie_prefix = '{$site_config['cookie_prefix']}';
         var cookie_path = '{$site_config['cookie_path']}';
         var cookie_lifetime = '{$site_config['cookie_lifetime']}';

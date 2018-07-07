@@ -210,7 +210,6 @@ class AJAXChatTemplate
                 return 'write_allowed';
             case 'TOKEN':
                 return session_id();
-
             case 'ANON_LINK':
                 return $this->ajaxChat->getConfig('anonymous_link');
 

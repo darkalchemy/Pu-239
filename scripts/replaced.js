@@ -49,13 +49,22 @@ function refrClock() {
     if (m < 10) {
         m = '0' + m;
     }
-    if (h > 12) {
-        h -= 12;
-        am_pm = 'pm';
+    if (is_12_hour) {
+        if (h > 12) {
+            h -= 12;
+            am_pm = ' pm';
+        } else {
+            am_pm = ' am';
+        }
     } else {
-        am_pm = 'am';
+        if (h < 10) {
+            h = '0' + h;
+            am_pm = '';
+        } else {
+            am_pm = '';
+        }
     }
-    document.getElementById('clock').innerHTML = h + ':' + m + ':' + s + ' ' + am_pm;
+    document.getElementById('clock').innerHTML = h + ':' + m + ':' + s + am_pm;
     setTimeout('refrClock()', 1e3);
 }
 
@@ -308,7 +317,7 @@ $(function () {
         }, animate_duration, 'swing');
     }
 
-    if (body_image && document.body.contains(document.getElementById('body-overlay'))) {
+    if (typeof body_image !== 'undefined' && document.body.contains(document.getElementById('body-overlay'))) {
         document.getElementsByTagName('body')[0].style.backgroundColor = 'black';
         document.getElementsByTagName('body')[0].style.backgroundImage = 'url(' + body_image + ')';
         document.getElementsByTagName('body')[0].style.backgroundAttachment = 'fixed';

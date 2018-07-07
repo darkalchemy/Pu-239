@@ -17,9 +17,9 @@ function get_file_name($file)
         case 'browse_js':
             return "{$site_config['baseurl']}/js/1/browse_09a435c8.js";
         case 'chat_js':
-            return "{$site_config['baseurl']}/js/1/chat_2f2540fc.js";
+            return "{$site_config['baseurl']}/js/1/chat_b64cc1d4.js";
         case 'chat_log_js':
-            return "{$site_config['baseurl']}/js/1/chat_log_ad710fde.js";
+            return "{$site_config['baseurl']}/js/1/chat_log_687388a4.js";
         case 'index_js':
             return "{$site_config['baseurl']}/js/1/index_c73226cb.js";
         case 'captcha2_js':
@@ -39,7 +39,7 @@ function get_file_name($file)
         case 'staffpanel_js':
             return "{$site_config['baseurl']}/js/1/staffpanel_801ab346.js";
         case 'js':
-            return "{$site_config['baseurl']}/js/1/js_9493cb77.js";
+            return "{$site_config['baseurl']}/js/1/js_bc40bf80.js";
         default:
             return null;
     }

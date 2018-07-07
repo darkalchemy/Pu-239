@@ -1,3 +1,7 @@
+7 Jul 2018
+fix: plural question(s) in trivia points pm
+add: option to use 12 or 24 hour clock everywhere except AJAX Chat(working on it)
+
 5 Jul 2018
 fix: remove invalid chars from uploaded nfo before db insert
 fix: typo in bittorrent.php

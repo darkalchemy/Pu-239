@@ -1803,10 +1803,10 @@ var ajaxChat = {
         var month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         return format
             .replace(/%Y/g, date.getFullYear())
-            .replace(/%m/g, this.addLeadingZero(date.getMonth() + 1))
+            .replace(/%m/g, date.getMonth() + 1)
             .replace(/%F/g, month[date.getMonth()])
             .replace(/%l/g, week[date.getDay()])
-            .replace(/%d/g, this.addLeadingZero(date.getDate()))
+            .replace(/%d/g, date.getDate())
             .replace(/%H/g, this.addLeadingZero(date.getHours()))
             .replace(/%i/g, this.addLeadingZero(date.getMinutes()))
             .replace(/%s/g, this.addLeadingZero(date.getSeconds()));

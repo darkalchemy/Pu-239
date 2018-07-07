@@ -59,3 +59,18 @@ if ($staff_settings === false || is_null($staff_settings)) {
 }
 
 $site_config = array_merge($site_settings, $site_config, $paypal_settings, $hnr_settings, $staff_settings);
+
+$time_string = $site_config['12_hour'] ? 'g:i:s a' : 'H:i:s';
+$time_string_without_seconds = $site_config['12_hour'] ? 'g:i a' : 'H:i';
+$site_config['time_adjust'] = 0;
+$site_config['time_offset'] = 0;
+$site_config['time_use_relative'] = 1;
+$site_config['time_use_relative_format'] = '{--}, ' . $time_string;
+$site_config['time_use_relative_format_without_seconds'] = '{--}, ' . $time_string_without_seconds;
+$site_config['time_joined'] = 'j-F y';
+$site_config['time_short'] = 'jS F Y - ' . $time_string;
+$site_config['time_long'] = 'M j Y, ' . $time_string;
+$site_config['time_tiny'] = '';
+$site_config['time_date'] = '';
+$site_config['time_with_seconds'] = $time_string;
+$site_config['time_without_seconds'] = $time_string_without_seconds;

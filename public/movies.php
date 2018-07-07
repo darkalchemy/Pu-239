@@ -32,7 +32,7 @@ $movies = get_movies_by_week($dates);
 if ($movies) {
     $titles = $body = [];
     foreach ($movies as $movie) {
-        if (!empty($movie['title']) && !in_array(strtolower($movie['title']), $titles)) {
+        if (!empty($movie['title']) && !preg_match('/FORMULA 1/i', $movie['title']) && !in_array(strtolower($movie['title']), $titles)) {
             $poster = !empty($movie['poster_path']) ? "https://image.tmdb.org/t/p/w185{$movie['poster_path']}" : $site_config['pic_baseurl'] . 'noposter.png';
             $backdrop = !empty($movie['backdrop_path']) ? "https://image.tmdb.org/t/p/w500{$movie['backdrop_path']}" : '';
             $body[] = [

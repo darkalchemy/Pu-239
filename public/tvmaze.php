@@ -20,6 +20,7 @@ $date = new DateTime($today);
 $tomorrow = $date->modify('+1 day')->format('Y-m-d');
 $date = new DateTime($today);
 $display = $date->format('l Y-m-d');
+$timestamp = strtotime($display);
 
 $HTMLOUT = "
     <h1 class='has-text-centered'>TV Airing By Date</h1>
@@ -60,7 +61,10 @@ if ($tvmaze_data) {
         foreach ($shows as $tv) {
             if (!empty($tv['name']) && !in_array(strtolower($tv['name']), $titles)) {
                 $poster = !empty($tv['image']['original']) ? $tv['image']['original'] : !empty($tv['_embedded']['show']['image']['original']) ? $tv['_embedded']['show']['image']['original'] : $site_config['pic_baseurl'] . 'noposter.png';
-                $airtime = explode(':', $tv['airtime']);
+                $airtime = !empty($tv['airtime']) ? explode(':', $tv['airtime']) : '';
+                if (!empty($airtime)) {
+                    $airtime = $timestamp + $airtime[0] * 3600 + $airtime[1] * 60;
+                }
                 $body[] = [
                     'poster' => url_proxy($poster, true, 150),
                     'placeholder' => url_proxy($poster, true, null, null, 20),
@@ -70,7 +74,7 @@ if ($tvmaze_data) {
                     'episode' => $tv['number'],
                     'runtime' => !empty($tv['runtime']) ? "{$tv['runtime']} minutes" : '',
                     'type' => $tv['_embedded']['show']['type'],
-                    'airtime' => !empty($tv['airtime']) ? time24to12($airtime[0], $airtime[1]) : '',
+                    'airtime' => !empty($tv['airtime']) ? $site_config['12_hour'] ? time24to12($airtime) : get_date($airtime, 'WITHOUT_SEC') : '',
                     'id' => $tv['_embedded']['show']['id'],
                     'overview' => str_replace(['<p>', '</p>', '<b>', '</b>', '<i>', '</i>'], '', $tv['_embedded']['show']['summary']),
                 ];

@@ -79,7 +79,6 @@ var ajaxChatConfig = {
 
         // Defines the format of the date and time displayed for each chat message:
         dateFormat: '%H:%i:%s',
-
         // Defines the format of the date displayed for each chat message tooltip:
         dateFormatTooltip: '%H:%i:%s on %l, %F %d, %Y',
 

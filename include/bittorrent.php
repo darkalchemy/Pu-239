@@ -4,7 +4,7 @@ $starttime = microtime(true);
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'define.php';
 if (!@include_once(INCL_DIR . 'config.php')) {
-    header('Location: /install/index.php');
+    header('Location: ./install/index.php');
     die();
 }
 require_once INCL_DIR . 'site_config.php';
@@ -1057,9 +1057,9 @@ function get_time_offset()
 {
     global $CURUSER, $site_config;
 
-    $r = (($CURUSER['time_offset'] != '') ? $CURUSER['time_offset'] : $site_config['time_offset']) * 3600;
+    $r = !empty($CURUSER['time_offset']) ? $CURUSER['time_offset'] * 3600 : $site_config['time_offset'] * 3600;
     if ($site_config['time_adjust']) {
-        $r += ($site_config['time_adjust'] * 60);
+        $r += $site_config['time_adjust'] * 60;
     }
     if ($CURUSER['dst_in_use']) {
         $r += 3600;
@@ -1080,14 +1080,18 @@ function get_time_offset()
 function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = false)
 {
     global $site_config;
+
     static $offset_set = 0;
     static $today_time = 0;
     static $yesterday_time = 0;
+    static $tomorrow_time = 0;
     $time_options = [
         'JOINED' => $site_config['time_joined'],
         'SHORT' => $site_config['time_short'],
         'LONG' => $site_config['time_long'],
         'TINY' => $site_config['time_tiny'] ? $site_config['time_tiny'] : 'j M Y - G:i',
+        'WITH_SEC' => $site_config['time_with_seconds'],
+        'WITHOUT_SEC' => $site_config['time_without_seconds'],
         'DATE' => $site_config['time_date'] ? $site_config['time_date'] : 'j M Y',
     ];
     if (!$date) {
@@ -1101,10 +1105,10 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
         if ($site_config['time_use_relative']) {
             $today_time = gmdate('d,m,Y', (TIME_NOW + $GLOBALS['offset']));
             $yesterday_time = gmdate('d,m,Y', ((TIME_NOW - 86400) + $GLOBALS['offset']));
+            $tomorrow_time = gmdate('d,m,Y', ((TIME_NOW + 86400) + $GLOBALS['offset']));
         }
         $offset_set = 1;
     }
-
     if ($site_config['time_use_relative'] == 3) {
         $full_relative = 1;
     }
@@ -1144,9 +1148,23 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
             }
         }
         if ($this_time == $today_time) {
+            if ($method === 'WITHOUT_SEC') {
+                return str_replace('{--}', 'Today', gmdate($site_config['time_use_relative_format_without_seconds'], ($date + $GLOBALS['offset'])));
+            }
+
             return str_replace('{--}', 'Today', gmdate($site_config['time_use_relative_format'], ($date + $GLOBALS['offset'])));
         } elseif ($this_time == $yesterday_time) {
+            if ($method === 'WITHOUT_SEC') {
+                return str_replace('{--}', 'Yesterday', gmdate($site_config['time_use_relative_format_without_seconds'], ($date + $GLOBALS['offset'])));
+            }
+
             return str_replace('{--}', 'Yesterday', gmdate($site_config['time_use_relative_format'], ($date + $GLOBALS['offset'])));
+        } elseif ($this_time == $tomorrow_time) {
+            if ($method === 'WITHOUT_SEC') {
+                return str_replace('{--}', 'Tomorrow', gmdate($site_config['time_use_relative_format_without_seconds'], ($date + $GLOBALS['offset'])));
+            }
+
+            return str_replace('{--}', 'Tomorrow', gmdate($site_config['time_use_relative_format'], ($date + $GLOBALS['offset'])));
         } else {
             return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
         }
@@ -2098,17 +2116,13 @@ function get_show_id_by_imdb(string $imdbid)
  *
  * @return string
  */
-function time24to12($h24, $min)
+function time24to12($timestamp, $sec = false)
 {
-    if ($h24 === 0) {
-        $newhour = 12;
-    } elseif ($h24 <= 12) {
-        $newhour = $h24;
-    } elseif ($h24 > 12) {
-        $newhour = $h24 - 12;
+    if ($sec) {
+        return get_date($timestamp, 'WITH_SEC');
     }
 
-    return ($h24 < 12) ? $newhour . ":$min am" : $newhour . ":$min pm";
+    return get_date($timestamp, 'WITHOUT_SEC');
 }
 
 /**

@@ -63,7 +63,7 @@ function trivia_points_update($data)
                     break;
             }
 
-            $msg = 'You answered ' . number_format($correct) . " trivia question correctly and were awarded $points Bonus Points!!\n";
+            $msg = 'You answered ' . number_format($correct) . ' trivia question' . plural($correct) . " correctly and were awarded $points Bonus Points!!\n";
             $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - Awarded Bonus Points for Trivia.\n" . $modcomment;
             $msgs_buffer[] = '(0,' . sqlesc($user_id) . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
             $users[] = $user_id;
