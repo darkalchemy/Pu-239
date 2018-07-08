@@ -205,18 +205,28 @@ $site_config['sig_img_height'] = 100;
 $site_config['sig_img_width'] = 500;
 
 // Image uploads
+$site_config['allowed_exif_types'] = [
+    IMAGETYPE_GIF,
+    IMAGETYPE_JPEG,
+    IMAGETYPE_PNG,
+    IMAGETYPE_WEBP,
+]; // one for each allowed_ext below
+
 $site_config['allowed_ext'] = [
     'image/gif',
     'image/jpg',
     'image/jpeg',
     'image/png',
+    'image/webp',
 ];
+
 // should match above
 $site_config['allowed_formats'] = [
     '.gif',
     '.jpg',
     '.jpeg',
     '.png',
+    '.webp',
 ];
 
 $upload_max_filesize = ini_get('upload_max_filesize') !== null ? return_bytes(ini_get('upload_max_filesize')) : 0;

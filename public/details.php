@@ -70,6 +70,12 @@ if ($torrents === false || is_null($torrents)) {
     $cache->set('torrent_details_' . $id, $torrents, $site_config['expires']['torrent_details']);
 }
 
+$torrents['imdb'] = '';
+if (!empty($torrents['url'])) {
+    preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $torrents['url'], $imdb_tmp);
+    $torrents['imdb'] = !empty($imdb_tmp[2]) ? $imdb_tmp[2] : '';
+}
+
 $tvmaze_episode_info = $tvmaze_info = $imdb_info = $ebook_info = '';
 if (in_array($torrents['category'], $site_config['ebook_cats'])) {
     $ebooks_info = get_book_info($torrents);
@@ -88,16 +94,16 @@ if (in_array($torrents['category'], $site_config['ebook_cats'])) {
 }
 
 if (in_array($torrents['category'], $site_config['tv_cats'])) {
-    preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $torrents['url'], $imdb_tmp);
-    $imdb_id = !empty($imdb_tmp[2]) ? $imdb_tmp[2] : '';
+    $imdb_id = $torrents['imdb'];
+    //dd($torrents);
     if (!empty($imdb_id)) {
         $ids = get_show_id_by_imdb($imdb_id);
     } else {
-        $ids = get_show_id($torrents['name'], $imdb_id);
+        $ids = get_show_id($torrents['name']);
     }
     extract($ids);
-
-    if (empty($torrents['url']) && !empty($imdb_id)) {
+    //dd($torrents['name']);
+    if (empty($torrents['imdb']) && !empty($imdb_id)) {
         $url = 'https://www.imdb.com/title/' . $imdb_id;
         $set = [
             'url' => $url,
@@ -108,13 +114,14 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
             ->where('id = ?', $id)
             ->execute();
         $torrents['url'] = $url;
+        $torrents['imdb'] = $imdb_id;
     }
 
     preg_match('/S(\d+)E(\d+)/i', $torrents['name'], $match);
     $season = !empty($match[1]) ? $match[1] : 0;
 
     if (empty($torrents['poster']) && !empty($thetvdb_id)) {
-        $poster = getTVImagesByImdb($thetvdb_id, 'poster', $season);
+        $poster = getTVImagesByTVDb($thetvdb_id, 'poster', $season);
         if (!empty($poster)) {
             $set = [
                 'poster' => $poster,
@@ -129,7 +136,7 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
     }
 
     if (empty($torrents['banner']) && !empty($thetvdb_id)) {
-        $banner = getTVImagesByImdb($thetvdb_id, 'banner', $season);
+        $banner = getTVImagesByTVDb($thetvdb_id, 'banner', $season);
         if (!empty($banner)) {
             $set = [
                 'banner' => $banner,
@@ -144,7 +151,7 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
     }
 
     if (empty($torrents['background']) && !empty($thetvdb_id)) {
-        $background = getTVImagesByImdb($thetvdb_id, 'showbackground', $season);
+        $background = getTVImagesByTVDb($thetvdb_id, 'showbackground', $season);
         if (!empty($background)) {
             $set = [
                 'background' => $background,
@@ -158,28 +165,31 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
             $cache->delete('backgrounds_');
         }
     }
+
     if (!empty($match[1]) && !empty($match[1]) && !empty($tvmaze_id)) {
         $tvmaze_episode_info = get_episode($tvmaze_id, $match[1], $match[2]);
     }
+
     if (!empty($tvmaze_id)) {
         $tvmaze_info = tvmaze($tvmaze_id, $id);
     }
 
-    if (!empty($imdb_id)) {
+    if (!empty($torrents['imdb'])) {
+        $movie_info = get_imdb_info($torrents['imdb']);
+            $imdb_info = $movie_info[0];
+    }
+
+    if (empty($imdb_info) && !empty($imdb_id)) {
         $movie_info = get_imdb_info($imdb_id);
         $imdb_info = $movie_info[0];
     }
 }
 
 if (in_array($torrents['category'], $site_config['movie_cats'])) {
-    preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/tt([\d]{7})/i', $torrents['url'], $imdb_tmp);
-    if (!empty($imdb_tmp[2])) {
-        $imdb_id = $imdb_tmp[2];
-
-        $imdb = 'tt' . $imdb_id;
-        unset($imdb_tmp);
+    $imdb_id = $torrents['imdb'];
+    if (!empty($imdb_id)) {
         if (empty($torrents['poster'])) {
-            $poster = getMovieImagesByImdb($imdb, 'movieposter');
+            $poster = getMovieImagesByImdb($imdb_id, 'movieposter');
             if (!empty($poster)) {
                 $set = [
                     'poster' => $poster,
@@ -194,7 +204,7 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
         }
 
         if (empty($torrents['banner'])) {
-            $banner = getMovieImagesByImdb($imdb, 'moviebanner');
+            $banner = getMovieImagesByImdb($imdb_id, 'moviebanner');
             if (!empty($banner)) {
                 $set = [
                     'banner' => $banner,
@@ -209,7 +219,7 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
         }
 
         if (empty($torrents['background'])) {
-            $background = getMovieImagesByImdb($imdb, 'moviebackground');
+            $background = getMovieImagesByImdb($imdb_id, 'moviebackground');
             if (!empty($background)) {
                 $set = [
                     'background' => $background,
@@ -317,8 +327,6 @@ if (empty($torrents['tags'])) {
     }
     $keywords = substr($keywords, 0, (strlen($keywords) - 1));
 }
-//dd($_POST);
-//dd($id);
 if ($CURUSER['class'] >= UC_STAFF) {
     if (isset($_POST['checked']) && $_POST['checked'] == $id) {
         sql_query('UPDATE torrents SET checked_by = ' . sqlesc($CURUSER['id']) . ', checked_when = ' . $dt . ' WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
@@ -472,8 +480,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] || $C
 
     if (!empty($torrents['poster'])) {
         $HTMLOUT .= "<img src='" . url_proxy($torrents['poster'], 500, null) . "' class='round10' alt='Poster' />";
-    }
-    if (empty($torrents['poster'])) {
+    } else {
         $HTMLOUT .= "<img src='{$site_config['pic_baseurl']}noposter.png' class='round10' alt='Poster' />";
     }
     $Free_Slot = (XBT_TRACKER ? '' : $freeslot);
@@ -898,18 +905,22 @@ if (!empty($torrents['youtube'])) {
     }
 }
 
-if ($tvmaze_info) {
-    $HTMLOUT .= main_div($tvmaze_info, 'bottom20');
-}
-if ($tvmaze_episode_info) {
-    $HTMLOUT .= main_div($tvmaze_episode_info, 'bottom20');
-}
-if (!empty($ebook_info)) {
-    $HTMLOUT .= main_div($ebook_info, 'bottom20');
-}
 if (!empty($imdb_info)) {
     $HTMLOUT .= main_div($imdb_info, 'bottom20');
 }
+
+if ($tvmaze_info) {
+    $HTMLOUT .= main_div($tvmaze_info, 'bottom20');
+}
+
+if ($tvmaze_episode_info) {
+    $HTMLOUT .= main_div($tvmaze_episode_info, 'bottom20');
+}
+
+if (!empty($ebook_info)) {
+    $HTMLOUT .= main_div($ebook_info, 'bottom20');
+}
+
 $HTMLOUT .= "
     <a name = 'startcomments' ></a >
     <form name = 'comment' method = 'post' action = '{$site_config['baseurl']}/comment.php?action=add&amp;tid=$id' >
@@ -1012,19 +1023,5 @@ if (!$count) {
                     </fieldset>
                 </div>';
 }
-/*
-$HTMLOUT .= "
-    <script>
-    if (document.body.contains(document.getElementById('overlay'))) {
-        document.getElementsByTagName('body')[0].style.backgroundColor = 'black';
-        document.getElementsByTagName('body')[0].style.backgroundImage = 'url($body_image)';
-        document.getElementsByTagName('body')[0].style.backgroundAttachment = 'fixed';
-        document.getElementsByTagName('body')[0].classList.remove('background-16');
-        var width = document.getElementById('overlay').offsetWidth;
-        var height = (width * 185 / 1000) + 3
-        document.getElementById('overlay').style.height = height + 'px';
-        document.getElementById('body-overlay').classList.add('body-overlay');
-    }
-    </script>";
-*/
+
 echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

@@ -127,7 +127,7 @@ function get_episode($tvmaze_id, $season, $episode)
         }
     }
     if (!empty($episode_info)) {
-        return "<div class='padding10'>" . episode_format($episode_info, 'episode') . '</div>';
+        return "<div class='padding10'><div class='has-text-centered size_6 bottom20'>TVMaze Episode</div>" . episode_format($episode_info, 'episode') . '</div>';
     }
 
     return null;
@@ -145,7 +145,7 @@ function get_episode($tvmaze_id, $season, $episode)
  */
 function tvmaze($tvmaze_id, $id)
 {
-    global $fluent, $cache, $site_config, $CURUSER;
+    global $fluent, $cache, $site_config, $CURUSER, $torrents;
 
     $set = [];
     if (empty($tvmaze_id)) {
@@ -206,7 +206,7 @@ function tvmaze($tvmaze_id, $id)
             ->execute();
     }
     if (!empty($tvmaze_show_data)) {
-        return "<div class='padding10'>" . tvmaze_format($tvmaze_show_data, 'show') . '</div>';
+        return "<div class='padding10'><div class='has-text-centered size_6 bottom20'>TVMaze</div>" . tvmaze_format($tvmaze_show_data, 'show') . '</div>';
     }
 
     return null;

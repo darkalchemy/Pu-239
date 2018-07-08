@@ -100,4 +100,24 @@ class ImageProxy
 
         return $hash;
     }
+
+    public function optimize_image($path, $width = null, $height = null)
+    {
+        $manager = new ImageManager();
+
+        if (!file_exists($path)) {
+            return false;
+        }
+
+        if ($width || $height) {
+            $image = $manager->make($path)->resize($width, $height, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+            $image->save($path);
+        }
+        $this->optimize($path);
+
+        return true;
+    }
 }

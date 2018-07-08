@@ -70,7 +70,9 @@ if (!isset($_FILES['file'])) {
     if (isset($_GET['updated']) && $_GET['updated'] === 'avatar') {
         $HTMLOUT .= "
         <h3>{$lang['bitbucket_updated']}
-            <img src='" . url_proxy($CURUSER['avatar'], true, 500, null) . "' width='50%' height='auto' alt='' />
+            <a href='" . url_proxy($CURUSER['avatar'], true, 500, null) . "' data-lightbox='bitbucket' />
+                <img src='" . url_proxy($CURUSER['avatar'], true, 500, null) . "' class='avatar' alt='' />
+            </a>
         </h3>";
     }
     $HTMLOUT .= "
@@ -197,8 +199,8 @@ if (!isset($_FILES['file'])) {
                 $HTMLOUT .= "
             <div class='bitbucket'>
                 <div class='margin20'>
-                    <a href='{$site_config['baseurl']}/img.php?{$filename}'>
-                        <img src='{$site_config['baseurl']}/img.php?{$filename}' width='50%' height='auto' alt='' />
+                    <a href='{$site_config['baseurl']}/img.php?{$filename}' data-lightbox='bitbucket' />
+                        <img src='{$site_config['baseurl']}/img.php?{$filename}' class='w-50 img-responsive' alt='' />
                     </a>
                 </div>
                 <h3>{$lang['bitbucket_directlink']}</h3>
@@ -242,23 +244,8 @@ $allow = ',' . join(',', $formats);
 if (stristr($allow, ',' . substr($file, -4)) === false) {
     stderr($lang['bitbucket_err'], $lang['bitbucket_invalid']);
 }
-if (!function_exists('exif_imagetype')) {
-    /**
-     * @param $filename
-     *
-     * @return bool
-     */
-    function exif_imagetype($filename)
-    {
-        if ((list($width, $height, $type, $attr) = getimagesize($filename)) !== false) {
-            return $type;
-        }
-
-        return false;
-    }
-}
 $it1 = exif_imagetype($_FILES['file']['tmp_name']);
-if ($it1 != IMAGETYPE_GIF && $it1 != IMAGETYPE_JPEG && $it1 != IMAGETYPE_PNG) {
+if (!in_array($it1, $site_config['allowed_exif_types'])) {
     $HTMLOUT .= "
         <h1>{$lang['bitbucket_upfail']}{$lang['bitbucket_sorry']}</h1>";
     die();
@@ -274,6 +261,9 @@ if (!move_uploaded_file($_FILES['file']['tmp_name'], $path)) {
 if (!file_exists($path)) {
     stderr($lang['bitbucket_error'], 'path not exists ' . $lang['bitbucket_upfail']);
 }
+$image_proxy = new DarkAlchemy\Pu239\ImageProxy();
+$image_proxy->optimize_image($path);
+
 if (isset($_POST['from']) && $_POST['from'] === 'upload') {
     echo "
         <div>
@@ -291,7 +281,9 @@ $HTMLOUT .= "
             </div>
             <h3 class='has-text-lime'>{$lang['bitbucket_thefile']}</h3>
             <div>
-                <img src='{$site_config['baseurl']}/img.php?{$pathlink}' width='50%' height='auto' alt='' />
+                <a href='{$site_config['baseurl']}/img.php?{$pathlink}' data-lightbox='bitbucket' />
+                    <img src='{$site_config['baseurl']}/img.php?{$pathlink}' class='w-50 img-responsive' alt='' />
+                </a>
             </div>
             <h3>{$lang['bitbucket_directlink']}</h3>
             <div class='bottom10'>

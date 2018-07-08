@@ -1,6 +1,6 @@
 <?php
 
-function getTVImagesByImdb($thetvdb_id, $type = 'showbackground', $season = 0)
+function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
 {
     global $cache;
 

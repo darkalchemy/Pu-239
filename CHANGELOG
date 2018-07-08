@@ -1,4 +1,9 @@
 8 Jul 2018
+update: clean up get_show_name() for better search results
+fix: emoticons.php
+update: bitbucket.php allow webp images, optimize images after upload
+update: details.php to show which api lookup results are showing
+update: composer
 fix: background art not showing when enabled
 add: user option to use 12 or 24 hour clock everywhere except AJAX Chat(working on it)
 update: database update process

@@ -11,6 +11,7 @@ function get_imdb_info($imdb_id)
 {
     global $site_config, $cache;
 
+    $imdb_id = str_replace('tt', '', $imdb_id);
     $imdb_data = $cache->get('imdb_' . $imdb_id);
     if ($imdb_data === false || is_null($imdb_data)) {
         $config = new Config();
@@ -136,7 +137,7 @@ function get_imdb_info($imdb_id)
     }
 
     $imdb_info = preg_replace('/&(?![A-Za-z0-9#]{1,7};)/', '&amp;', $imdb_info);
-    $imdb_info = "<div class='padding10'>$imdb_info</div>";
+    $imdb_info = "<div class='padding10'><div class='has-text-centered size_6 bottom20'>IMDb</div>$imdb_info</div>";
 
     return [
         $imdb_info,
@@ -150,18 +151,25 @@ function get_random_useragent()
 
     $browser = $cache->get('browser_user_agents_');
     if ($browser === false || is_null($browser)) {
-        $browser = $fluent->from('users')
+        $results = $fluent->from('users')
             ->select(null)
-            ->select('browser')
-            ->where('browser IS NOT NULL')
-            ->orderBy('RAND()')
-            ->limit(1000)
-            ->fetchAll();
-
+            ->select('DISTINCT browser')
+            ->limit(100);
+        $browser = [];
+        foreach ($results as $result) {
+            preg_match('/Agent : (.*)/', $result['browser'], $match);
+            if (!empty($match[1])) {
+                $browser[] = $match[1];
+            }
+        }
         $cache->set('browser_user_agents_', $browser, $site_config['expires']['browser_user_agent']);
     }
 
-    shuffle($browser);
+    if (!empty($browser)) {
+        shuffle($browser);
+    } else {
+        $browser[] = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36";
+    }
 
     return $browser[0];
 }

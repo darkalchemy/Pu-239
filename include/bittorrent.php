@@ -2047,16 +2047,20 @@ function url_proxy($url, $image = false, $width = null, $height = null, $quality
 function get_show_name(string $name)
 {
     if (preg_match("/^(.*)S\d+(E\d+)?/i", $name, $tmp)) {
-        return trim(str_replace([
+        $name = trim(str_replace([
                                     '.',
                                     '_',
+                                    '-',
                                 ], ' ', $tmp[1]));
     } else {
-        return trim(str_replace([
+        $name = trim(str_replace([
                                     '.',
                                     '_',
+                                    '-',
                                 ], ' ', $name));
     }
+
+    return preg_replace('/\s+/', ' ', $name);
 }
 
 /**
@@ -2088,7 +2092,11 @@ function get_show_id(string $name)
         }
     }
 
-    return $id_array;
+    if (!empty($id_array)) {
+        return $id_array;
+    }
+
+    return false;
 }
 
 function get_show_id_by_imdb(string $imdbid)
@@ -2108,7 +2116,11 @@ function get_show_id_by_imdb(string $imdbid)
         }
     }
 
-    return $id_array;
+    if (!empty($id_array)) {
+        return $id_array;
+    }
+
+    return false;
 }
 
 /**

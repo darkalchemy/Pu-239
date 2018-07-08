@@ -264,13 +264,13 @@ if (($freetorrent = (!empty($_POST['freetorrent']) ? '1' : '0')) != $fetch_assoc
     $torrent_cache['freetorrent'] = $freetorrent;
 }
 //==09 Imdb mod
-if (isset($_POST['url']) && (($url = $_POST['url']) != $fetch_assoc['url'] && !empty($url))) {
-    if (!preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url)) {
-        //if (!preg_match("/^(http|https):\/\/[^\s'\"<>]+\.(jpg|gif|png)$/i", $url))
+if (isset($_POST['url']) && $url = $_POST['url'] != $fetch_assoc['url']) {
+    if (!empty($_url) && !preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url)) {
         $session->set('is-warning', 'Make sure you include http:// in the URL.');
         header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }
+    $url = !empty($_POST['url']) ? $url : '';
     $updateset[] = 'url = ' . sqlesc($url);
     $torrent_cache['url'] = $url;
 }
