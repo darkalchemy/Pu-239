@@ -644,11 +644,11 @@ function get_avatar($avatar)
         if ($avatar['anonymous'] === 'yes') {
             $avatar = "{$site_config['pic_baseurl']}anonymous_1.jpg";
         } elseif ($avatar['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') {
-            $avatar = "<img src='{$site_config['pic_baseurl']}fuzzybunny.gif' alt='avatar' class='avatar'>";
+            $avatar = "<img src='{$site_config['pic_baseurl']}fuzzybunny.gif' alt='avatar' class='avatar mw-150'>";
         } elseif (empty($avatar['avatar'])) {
-            $avatar = "<img src='{$site_config['pic_baseurl']}forumicons/default_avatar.gif' alt='avatar' class='avatar'>";
+            $avatar = "<img src='{$site_config['pic_baseurl']}forumicons/default_avatar.gif' alt='avatar' class='avatar mw-150'>";
         } else {
-            $avatar = "<img src='" . htmlsafechars($avatar['avatar']) . "' alt='avatar' class='avatar'>";
+            $avatar = "<img src='" . htmlsafechars($avatar['avatar']) . "' alt='avatar' class='avatar mw-150'>";
         }
 
         return $avatar;
