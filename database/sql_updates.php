@@ -10,9 +10,24 @@
 */
 $sql_updates = [
     [
-        'id' => 1,
+        'id' => 1530957741,
+        'info' => 'Truncate database_updates table',
+        'date' => '07 Jul, 2018',
+        'query' => 'TRUNCATE TABLE `database_updates`',
+        'flush' => false,
+    ],
+    [
+        'id' => 1530957742,
         'info' => 'Add 12 Hour Time Format to site_config',
         'date' => '07 Jul, 2018',
         'query' => "INSERT INTO `site_config` (name, value, description) VALUES ('12_hour', 1, '12 hour time format(true), 24 hour time format (false)')",
+        'flush' => 'site_settings_',
+    ],
+    [
+        'id' => 1531044142,
+        'info' => 'Add 12 Hour Time Format to users table',
+        'date' => '08 Jul, 2018',
+        'query' => "ALTER TABLE users ADD COLUMN `12_hour` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes'",
+        'flush' => true,
     ],
 ];

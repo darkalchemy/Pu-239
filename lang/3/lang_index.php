@@ -135,7 +135,7 @@ Este obliga&#355;ia dumneavoastra s&#259; v&#259; conforma&#355;i acestor termen
     'index_ie_bhappy' => 'ca s&#259; ai o navigare c&#226;t mai pl&#259;cut&#259;',
     'index_ie_consider' => ' s&#259; schimbi browserul cu unul din alternative.',
     'index_ie_firefox' => 'Ob&#355;ine Firefox!',
-    'index_ie_get' => 'Ob&#355;ine un browser mai sigur !',
+    'index_ie_get' => 'Ob&#355;ine un browser mai sigur!',
     ///Latest Torrents
     'index_ltst_name' => 'Nume:',
     'index_ltst_added' => 'Added:',

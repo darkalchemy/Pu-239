@@ -145,7 +145,7 @@ function get_episode($tvmaze_id, $season, $episode)
  */
 function tvmaze($tvmaze_id, $id)
 {
-    global $fluent, $cache, $site_config;
+    global $fluent, $cache, $site_config, $CURUSER;
 
     $set = [];
     if (empty($tvmaze_id)) {
@@ -159,29 +159,32 @@ function tvmaze($tvmaze_id, $id)
 
     $tvmaze_show_data = $cache->get('tvmaze_' . $tvmaze_id);
     if ($force_update || $tvmaze_show_data === false || is_null($tvmaze_show_data)) {
-        $timestamp = strtotime('today midnight');
         $tvmaze_link = "http://api.tvmaze.com/shows/{$tvmaze_id}?embed=cast";
         $content = fetch($tvmaze_link);
         if (empty($content)) {
             return false;
         }
         $tvmaze_show_data = json_decode($content, true);
-        $tvmaze_show_data['rated'] = $tvmaze_show_data['rating']['average'];
-        $airtime = explode(':', $tvmaze_show_data['schedule']['time']);
-        if (!empty($airtime)) {
-            $airtime = $timestamp + $airtime[0] * 3600 + $airtime[1] * 60;
-        }
-
-        $days = implode(', ', $tvmaze_show_data['schedule']['days']);
-        $tvmaze_show_data['airtime'] = $days . ' at ' . ($site_config['12_hour'] ? time24to12($airtime) : get_date($airtime, 'WITHOUT_SEC', 1, 1)) . " on {$tvmaze_show_data['network']['name']}. <span class='has-text-primary'>(Time zone: {$tvmaze_show_data['network']['country']['timezone']})</span>";
-        $tvmaze_show_data['origin'] = "{$tvmaze_show_data['network']['country']['name']}: {$tvmaze_show_data['language']}";
-        if (count($tvmaze_show_data['genres']) > 0) {
-            $temp = implode(', ', array_map('strtolower', $tvmaze_show_data['genres']));
-            $temp = explode(', ', $temp);
-            $tvmaze_show_data['genres2'] = implode(', ', array_map('ucwords', $temp));
-        }
         $cache->set('tvmaze_' . $tvmaze_id, $tvmaze_show_data, 604800);
     }
+
+    $tvmaze_show_data['rated'] = $tvmaze_show_data['rating']['average'];
+    $airtime = explode(':', $tvmaze_show_data['schedule']['time']);
+    if (!empty($airtime)) {
+        $timestamp = strtotime('today midnight');
+        $airtime = $timestamp + $airtime[0] * 3600 + $airtime[1] * 60;
+    }
+
+    $days = implode(', ', $tvmaze_show_data['schedule']['days']);
+    $use_12_hour = !empty($CURUSER['12_hour']) ? $CURUSER['12_hour'] === 'yes' ? 1 : 0 : $site_config['12_hour'];
+    $tvmaze_show_data['airtime'] = $days . ' at ' . ($use_12_hour ? time24to12($airtime) : get_date($airtime, 'WITHOUT_SEC', 1, 1)) . " on {$tvmaze_show_data['network']['name']}. <span class='has-text-primary'>(Time zone: {$tvmaze_show_data['network']['country']['timezone']})</span>";
+    $tvmaze_show_data['origin'] = "{$tvmaze_show_data['network']['country']['name']}: {$tvmaze_show_data['language']}";
+    if (count($tvmaze_show_data['genres']) > 0) {
+        $temp = implode(', ', array_map('strtolower', $tvmaze_show_data['genres']));
+        $temp = explode(', ', $temp);
+        $tvmaze_show_data['genres2'] = implode(', ', array_map('ucwords', $temp));
+    }
+
     if (empty($torrents['newgenre'])) {
         $torrents['newgenre'] = $tvmaze_show_data['genres2'];
         $set['newgenre'] = ucwords($tvmaze_show_data['genres2']);

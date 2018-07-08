@@ -6,7 +6,7 @@ require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER, $site_config, $fluent, $cache;
+global $CURUSER, $site_config, $fluent, $cache, $session;
 
 $lang = array_merge(load_language('global'), load_language('takeeditcp'));
 
@@ -95,12 +95,6 @@ if ($action == 'avatar') {
     $user_cache['avatar'] = $avatar;
     $curuser_cache['avatars'] = $avatars;
     $user_cache['avatars'] = $avatars;
-    //if (isset($_POST['offensive_avatar'])) $setbits|= user_options::OFFENSIVE_AVATAR;
-    // else $clrbits|= user_options::OFFENSIVE_AVATAR;
-    //if (isset($_POST['view_offensive_avatar'])) $setbits|= user_options::VIEW_OFFENSIVE_AVATAR;
-    //else $clrbits|= user_options::VIEW_OFFENSIVE_AVATAR;
-    //if (isset($_POST['avatars'])) $setbits|= user_options::AVATARS;
-    //else $clrbits|= user_options::AVATARS;
     $action = 'avatar';
 } elseif ($action === 'signature') {
     if (isset($_POST['info']) && (($info = $_POST['info']) != $CURUSER['info'])) {
@@ -146,8 +140,6 @@ if ($action == 'avatar') {
     $updateset[] = "signatures = '$signatures'";
     $curuser_cache['signatures'] = $signatures;
     $user_cache['signatures'] = $signatures;
-    //if (isset($_POST['signatures'])) $setbits|= user_options::SIGNATURES;
-    //else $clrbits|= user_options::SIGNATURES;
     $action = 'signature';
 } elseif ($action === 'security') {
     if (isset($_POST['ssluse']) && ($ssluse = (int) $_POST['ssluse']) && ($ssluse != $CURUSER['ssluse'])) {
@@ -225,8 +217,6 @@ if ($action == 'avatar') {
         $user_cache['hintanswer'] = $new_secret_answer;
     }
     if (get_parked() == '1') {
-        //if (isset($_POST['parked'])) $setbits|= user_options::PARKED;
-        //else $clrbits|= user_options::PARKED;
         if (isset($_POST['parked']) && ($parked = $_POST['parked']) != $CURUSER['parked']) {
             $updateset[] = 'parked = ' . sqlesc($parked);
             $curuser_cache['parked'] = $parked;
@@ -234,29 +224,21 @@ if ($action == 'avatar') {
         }
     }
     if (get_anonymous() != '0') {
-        //if (isset($_POST['anonymous'])) $setbits|= user_options::ANONYMOUS;
-        //else $clrbits|= user_options::ANONYMOUS;
         $anonymous = (isset($_POST['anonymous']) && $_POST['anonymous'] != '' ? 'yes' : 'no');
         $updateset[] = 'anonymous = ' . sqlesc($anonymous);
         $curuser_cache['anonymous'] = $anonymous;
         $user_cache['anonymous'] = $anonymous;
     }
-    //if (isset($_POST['hidecur'])) $setbits|= user_options::HIDECUR;
-    //else $clrbits|= user_options::HIDECUR;
     if (isset($_POST['hidecur']) && ($hidecur = $_POST['hidecur']) != $CURUSER['hidecur']) {
         $updateset[] = 'hidecur = ' . sqlesc($hidecur);
         $curuser_cache['hidecur'] = $hidecur;
         $user_cache['hidecur'] = $hidecur;
     }
-
-    //if (isset($_POST['show_email'])) $setbits|= user_options::SHOW_EMAIL;
-    //else $clrbits|= user_options::SHOW_EMAIL;
     if (isset($_POST['show_email']) && ($show_email = $_POST['show_email']) != $CURUSER['show_email']) {
         $updateset[] = 'show_email= ' . sqlesc($show_email);
         $curuser_cache['show_email'] = $show_email;
         $user_cache['show_email'] = $show_email;
     }
-
     if (isset($_POST['paranoia']) && ($paranoia = $_POST['paranoia']) != $CURUSER['paranoia']) {
         $updateset[] = 'paranoia= ' . sqlesc($paranoia);
         $curuser_cache['paranoia'] = $paranoia;
@@ -348,49 +330,21 @@ if ($action == 'avatar') {
     } else {
         $clrbits |= user_options::VIEWSCLOUD;
     }
-    /*
-    $viewscloud = (isset($_POST['viewscloud']) && $_POST["viewscloud"] != "" ? "yes" : "no");{
-    $updateset[] = "viewscloud = ".sqlesc($viewscloud);
-    $curuser_cache['viewscloud'] = $viewscloud;
-    $user_cache['viewscloud'] = $viewscloud;
-    }
-    */
     if (isset($_POST['clear_new_tag_manually'])) {
         $setbits |= user_options::CLEAR_NEW_TAG_MANUALLY;
     } else {
         $clrbits |= user_options::CLEAR_NEW_TAG_MANUALLY;
     }
-    /*
-    $clear_new_tag_manually = (isset($_POST['clear_new_tag_manually']) && $_POST["clear_new_tag_manually"] != "" ? "yes" : "no");{
-    $updateset[] = "clear_new_tag_manually = " . sqlesc($clear_new_tag_manually);
-    $curuser_cache['clear_new_tag_manually'] = $clear_new_tag_manually;
-    $user_cache['clear_new_tag_manually'] = $clear_new_tag_manually;
-    }
-    */
     if (isset($_POST['split'])) {
         $setbits |= user_options_2::SPLIT;
     } else {
         $clrbits |= user_options_2::SPLIT;
     }
-    /*
-    $split = ($_POST["split"] == "yes" ? "yes" : "no");{
-    $updateset[] = "split = " . sqlesc($split);
-    $curuser_cache['split'] = $split;
-    $user_cache['split'] = $split;
-    }
-    */
     if (isset($_POST['browse_icons'])) {
         $setbits |= user_options_2::BROWSE_ICONS;
     } else {
         $clrbits |= user_options_2::BROWSE_ICONS;
     }
-    /*
-    $browse_icons = ($_POST["browse_icons"] == "yes" ? "yes" : "no");{
-    $updateset[] = "browse_icons = " . sqlesc($browse_icons);
-    $curuser_cache['browse_icons'] = $browse_icons;
-    $user_cache['browse_icons'] = $browse_icons;
-    }
-    */
     if (isset($_POST['categorie_icon']) && (($categorie_icon = (int) $_POST['categorie_icon']) != $CURUSER['categorie_icon']) && is_valid_id($categorie_icon)) {
         $updateset[] = 'categorie_icon = ' . sqlesc($categorie_icon);
         $curuser_cache['categorie_icon'] = $categorie_icon;
@@ -398,7 +352,6 @@ if ($action == 'avatar') {
     }
     $action = 'torrents';
 } elseif ($action === 'personal') {
-    //custom-title check
     if (isset($_POST['title']) && $CURUSER['class'] >= UC_VIP && ($title = $_POST['title']) != $CURUSER['title']) {
         $notallow = [
             'sysop',
@@ -416,7 +369,6 @@ if ($action == 'avatar') {
         $curuser_cache['title'] = $title;
         $user_cache['title'] = $title;
     }
-    //status update
     if (isset($_POST['status']) && ($status = $_POST['status']) && !empty($status)) {
         $status_archive = ((isset($CURUSER['archive']) && is_array(unserialize($CURUSER['archive']))) ? unserialize($CURUSER['archive']) : []);
         if (!empty($CURUSER['last_status'])) {
@@ -428,7 +380,6 @@ if ($action == 'avatar') {
         sql_query('INSERT INTO ustatus(userid,last_status,last_update,archive) VALUES(' . sqlesc($CURUSER['id']) . ',' . sqlesc($status) . ',' . TIME_NOW . ',' . sqlesc(serialize($status_archive)) . ') ON DUPLICATE KEY UPDATE last_status = VALUES(last_status),last_update = VALUES(last_update),archive = VALUES(archive)') or sqlerr(__FILE__, __LINE__);
         $cache->delete('userstatus_' . $CURUSER['id']);
     }
-    //end status update;
     if (isset($_POST['stylesheet']) && (($stylesheet = (int) $_POST['stylesheet']) != $CURUSER['stylesheet']) && is_valid_id($stylesheet)) {
         $updateset[] = 'stylesheet = ' . sqlesc($stylesheet);
         $curuser_cache['stylesheet'] = $stylesheet;
@@ -454,12 +405,17 @@ if ($action == 'avatar') {
         $curuser_cache['forum_sort'] = $forum_sort;
         $user_cache['forum_sort'] = $forum_sort;
     }
+    if (isset($_POST['12_hour']) && ($is_12_hour = $_POST['12_hour']) != $CURUSER['12_hour']) {
+        $updateset[] = '12_hour = ' . sqlesc($is_12_hour);
+        $curuser_cache['12_hour'] = $is_12_hour;
+        $user_cache['12_hour'] = $is_12_hour;
+        $session->set('12_hour', $is_12_hour);
+    }
     if (isset($_POST['gender']) && ($gender = $_POST['gender']) != $CURUSER['gender']) {
         $updateset[] = 'gender = ' . sqlesc($gender);
         $curuser_cache['gender'] = $gender;
         $user_cache['gender'] = $gender;
     }
-
     if ($CURUSER['birthday'] === '0000-00-00') {
         $year = isset($_POST['year']) ? (int) $_POST['year'] : 0;
         $month = isset($_POST['month']) ? (int) $_POST['month'] : 0;
@@ -568,35 +524,25 @@ if ($action == 'avatar') {
     $updateset[] = "deletepms = '$deletepms'";
     $curuser_cache['deletepms'] = $deletepms;
     $user_cache['deletepms'] = $deletepms;
-    //if (isset($_POST['deletepms'])) $setbits|= user_options::DELETEPMS;
-    //else $clrbits|= user_options::DELETEPMS;
     $savepms = (isset($_POST['savepms']) && $_POST['savepms'] != '' ? 'yes' : 'no');
     $updateset[] = "savepms = '$savepms'";
     $curuser_cache['savepms'] = $savepms;
     $user_cache['savepms'] = $savepms;
-    //if (isset($_POST['savepms'])) $setbits|= user_options::SAVEPMS;
-    //else $clrbits|= user_options::SAVEPMS;
     if (isset($_POST['subscription_pm']) && ($subscription_pm = $_POST['subscription_pm']) != $CURUSER['subscription_pm']) {
         $updateset[] = 'subscription_pm = ' . sqlesc($subscription_pm);
         $curuser_cache['subscription_pm'] = $subscription_pm;
         $user_cache['subscription_pm'] = $subscription_pm;
     }
-    //if (isset($_POST['subscription_pm'])) $setbits|= user_options::SUBSCRIPTION_PM;
-    //else $clrbits|= user_options::SUBSCRIPTION_PM;
     if (isset($_POST['pm_on_delete']) && ($pm_on_delete = $_POST['pm_on_delete']) != $CURUSER['pm_on_delete']) {
         $updateset[] = 'pm_on_delete = ' . sqlesc($pm_on_delete);
         $curuser_cache['pm_on_delete'] = $pm_on_delete;
         $user_cache['pm_on_delete'] = $pm_on_delete;
     }
-    //if (isset($_POST['pm_on_delete'])) $setbits|= user_options_2::PM_ON_DELETE;
-    //else $clrbits|= user_options_2::PM_ON_DELETE;
     if (isset($_POST['commentpm']) && ($commentpm = $_POST['commentpm']) != $CURUSER['commentpm']) {
         $updateset[] = 'commentpm = ' . sqlesc($commentpm);
         $curuser_cache['commentpm'] = $commentpm;
         $user_cache['commentpm'] = $commentpm;
     }
-    //if (isset($_POST['commentpm'])) $setbits|= user_options_2::COMMENTPM;
-    //else $clrbits|= user_options_2::COMMENTPM;
     $action = 'default';
 }
 

@@ -421,6 +421,7 @@ function userlogin()
     if ($users_data['override_class'] < $users_data['class']) {
         $users_data['class'] = $users_data['override_class'];
     }
+    $session->set('12_hour', $users_data['12_hour']);
     $GLOBALS['CURUSER'] = $users_data;
     get_template();
     $mood = create_moods();
@@ -2119,10 +2120,10 @@ function get_show_id_by_imdb(string $imdbid)
 function time24to12($timestamp, $sec = false)
 {
     if ($sec) {
-        return get_date($timestamp, 'WITH_SEC');
+        return get_date($timestamp, 'WITH_SEC', 1, 1);
     }
 
-    return get_date($timestamp, 'WITHOUT_SEC');
+    return get_date($timestamp, 'WITHOUT_SEC', 1, 1);
 }
 
 /**

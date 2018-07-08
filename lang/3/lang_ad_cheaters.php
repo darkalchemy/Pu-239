@@ -4,7 +4,7 @@ $lang = [
     //cheaters
     'cheaters_uname' => 'Nume de utilizator',
     'cheaters_error' => 'Eroare',
-    'cheaters_rc' => 'Ra&#355;ia Tri&#351;orilor - Nosey Cunt !',
+    'cheaters_rc' => 'Ra&#355;ia Tri&#351;orilor - Nosey Cunt!',
     'cheaters_upped' => 'Inc&#259;rcat',
     'cheaters_d' => 'D',
     'cheaters_downspeed' => 'Vitez&#259; desc&#259;rcare',

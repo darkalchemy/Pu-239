@@ -7,7 +7,7 @@ $lang = [
     'themes_id' => 'ID',
     'themes_name' => 'Name',
     'themes_uri' => 'Uri',
-    'themes_is_folder' => 'Folder Exists ?',
+    'themes_is_folder' => 'Folder Exists?',
     'themes_e_d' => 'Edit/Delete',
     'themes_edit' => 'Edit',
     'themes_delete' => 'Delete',
@@ -54,7 +54,7 @@ $lang = [
     'themes_inv_uri' => 'Invalid Uri',
     'themes_inv_name' => 'Invalid Name',
     'themes_nofile' => 'Template file does not exist',
-    'themes_inv_file' => 'Continue ?',
+    'themes_inv_file' => 'Continue?',
     //Credits
     'themes_credits' => 'Credits to AronTh for making this template mananger and the template system',
 ];

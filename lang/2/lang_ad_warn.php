@@ -2,7 +2,7 @@
 
 $lang = [
     'warn_stderr' => 'Error',
-    'warn_stderr_msg' => "Looks like you didn't select any user !",
+    'warn_stderr_msg' => "Looks like you didn't select any user!",
     'warn_stderr_msg1' => 'Something went wrong!',
     'warn_stderr_msg2' => 'Something went wrong 2!',
     'warn_stderr_msg3' => 'Something went wrong 3!',

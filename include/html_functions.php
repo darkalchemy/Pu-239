@@ -102,7 +102,7 @@ function tr($x, $y, $noesc = 0)
             <td class='rowhead'>
                 $x
             </td>
-            <td class='break_word'>
+            <td>
                 $a
             </td>
         </tr>";

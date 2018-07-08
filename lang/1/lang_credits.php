@@ -2,12 +2,12 @@
 
 $lang = [
     'credits_error' => 'Error',
-    'credits_error2' => 'Fuck something went Pete Tong !',
+    'credits_error2' => 'Fuck something went Pete Tong!',
     'credits_error3' => 'You must specify a name for this credit.',
     'credits_error4' => 'You must provide a description for this credit.',
     'credits_error5' => 'You must provide a link for this credit.',
     'credits_error6' => 'You must provide a credit for the author(s) of this credit.',
-    'credits_nocr' => 'No credit mod found with that ID !',
+    'credits_nocr' => 'No credit mod found with that ID!',
     'credits_edit' => '[Edit]',
     'credits_delete' => '[Delete]',
     'credits_mod' => 'Mod name',

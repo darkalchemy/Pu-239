@@ -72,7 +72,6 @@ if (isset($_GET['edited'])) {
 
 $avatar = get_avatar($CURUSER);
 $HTMLOUT .= "
-        <div>
             <div class='w-100'>
                 <form method='post' action='takeeditcp.php'>
                     <div class='bottom20'>
@@ -93,7 +92,7 @@ $HTMLOUT .= "
                     <div class='level has-text-centered'>";
 if (!empty($avatar)) {
     $HTMLOUT .= "
-                        <div class='level-center-center has-text-centered'>
+                        <div class='has-text-centered'>
                             $avatar
                         </div>";
 }
@@ -104,7 +103,7 @@ if ($CURUSER['avatars'] === 'yes') {
 }
 if ($action === 'avatar') {
     $HTMLOUT .= "
-                        <div class='table-wrapper $width shit'>
+                        <div class='table-wrapper $width'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -157,7 +156,9 @@ if ($action === 'avatar') {
                                             </div>
                                         </td>
                                     </tr>
-                                </tbody>";
+                                </tbody>
+                            </table>
+                        </div>";
 } elseif ($action === 'signature') {
     $HTMLOUT .= "
                         <div class='table-wrapper $width'>
@@ -172,8 +173,8 @@ if ($action === 'avatar') {
                                 </thead>
                                 <tbody>";
     $HTMLOUT .= tr('View Signatures', '
-                                            <input type="radio" name="signatures" ' . ('yes' == $CURUSER['signatures'] ? 'checked' : '') . ' value="yes" /> Yes
-                                            <input type="radio" name="signatures" ' . ('no' == $CURUSER['signatures'] ? 'checked' : '') . ' value="no" /> No', 1);
+                                            <input type="radio" name="signatures" ' . ($CURUSER['signatures'] === 'yes' ? 'checked' : '') . ' value="yes" /> Yes
+                                            <input type="radio" name="signatures" ' . ($CURUSER['signatures'] !== 'yes' ? 'checked' : '') . ' value="no" /> No', 1);
     $HTMLOUT .= tr('Signature', '
                                             <textarea name="signature" class="w-100" rows="4">' . htmlsafechars($CURUSER['signature'], ENT_QUOTES) . '</textarea><br>BBcode can be used', 1);
     $HTMLOUT .= tr($lang['usercp_info'], "
@@ -186,7 +187,9 @@ if ($action === 'avatar') {
                                             </div>
                                         </td>
                                     </tr>
-                                </tbody>";
+                                </tbody>
+                            </table>
+                        </div>";
 } elseif ($action === 'api') {
     $HTMLOUT .= "
                         <div class='table-wrapper $width'>
@@ -204,7 +207,9 @@ if ($action === 'avatar') {
     $HTMLOUT .= tr('Auth', '<input type="text" class="w-100" name="auth"  value="' . htmlsafechars($CURUSER['auth']) . '" readonly onClick="this.select();" /><div class="left10 top10">This is only used by an upload script, msg any staff member for the details.</div>', 1);
     $HTMLOUT .= tr('API Key', '<input type="text" class="w-100" name="auth"  value="' . htmlsafechars($CURUSER['apikey']) . '" readonly onClick="this.select();" /><div class="left10 top10">This is only used by auto downloaders, such as CouchPotato, SickRage and others. (API not implemented, yet)</div>', 1);
     $HTMLOUT .= '
-                                </tbody>';
+                                </tbody>
+                            </table>
+                        </div>';
 } elseif ($action === 'social') {
     $HTMLOUT .= "
                         <div class='table-wrapper $width'>
@@ -238,7 +243,9 @@ if ($action === 'avatar') {
                                             </div>
                                         </td>
                                     </tr>
-                                </tbody>";
+                                </tbody>
+                            </table>
+                        </div>";
 } elseif ($action === 'location') {
     $datetime = unixstamp_to_human(TIME_NOW);
     $HTMLOUT .= "
@@ -278,87 +285,95 @@ if ($action === 'avatar') {
                                             </div>
                                         </td>
                                     </tr>
-                                </tbody>";
-} elseif ($action === 'links') {
-    $HTMLOUT .= "
-                        <div class='table-wrapper w-25'>
-                            <table class='table table-bordered table-striped top20 bottom20 w-100'>
-                                <thead>
-                                    <tr>
-                                        <th colspan='2'>
-                                            <input type='hidden' name='action' value='links' />
-                                            " . htmlsafechars($CURUSER['username'], ENT_QUOTES) . "'s Menu
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <a href='{$site_config['baseurl']}/mytorrents.php'>{$lang['usercp_edit_torrents']}</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href='{$site_config['baseurl']}/friends.php'>{$lang['usercp_edit_friends']}</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href='{$site_config['baseurl']}/users.php'>{$lang['usercp_search']}</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href='{$site_config['baseurl']}/invite.php'>Invites</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href='{$site_config['baseurl']}/tenpercent.php'>Lifesaver</a>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
-                        </div>
-                        <div class='table-wrapper w-25'>
-                            <table class='table table-bordered table-striped top20 bottom20 w-100'>
-                                <thead>
-                                    <tr>
-                                        <th colspan='2'>" . htmlsafechars($CURUSER['username'], ENT_QUOTES) . "'s Entertainment</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><a href='{$site_config['baseurl']}/topmoods.php'>Top Member Mood's</a></td>
-                                    </tr>";
+                        </div>";
+} elseif ($action === 'links') {
+    $HTMLOUT .= "
+                        <div class='table-wrapper $width level'>
+                            <div class='table-wrapper w-50 right20'>
+                                <table class='table table-bordered table-striped top20 bottom20 w-100'>
+                                    <thead>
+                                        <tr>
+                                            <th colspan='2' class='has-text-centered size_6'>
+                                                <input type='hidden' name='action' value='links' />
+                                                " . htmlsafechars($CURUSER['username'], ENT_QUOTES) . "'s Menu
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <a href='{$site_config['baseurl']}/mytorrents.php'><div>{$lang['usercp_edit_torrents']}</div></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href='{$site_config['baseurl']}/friends.php'><div>{$lang['usercp_edit_friends']}</div></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href='{$site_config['baseurl']}/users.php'><div>{$lang['usercp_search']}</div></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href='{$site_config['baseurl']}/invite.php'><div>Invites</div></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href='{$site_config['baseurl']}/tenpercent.php'><div>Lifesaver</div></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class='table-wrapper w-50'>
+                                <table class='table table-bordered table-striped top20 bottom20 w-100'>
+                                    <thead>
+                                        <tr>
+                                            <th colspan='2' class='has-text-centered size_6'>" . htmlsafechars($CURUSER['username'], ENT_QUOTES) . "'s Entertainment</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <a href='{$site_config['baseurl']}/topmoods.php'><div>Top Member Mood's</div></a>
+                                            </td>
+                                        </tr>";
     if ($CURUSER['class'] >= MIN_TO_PLAY) {
         $HTMLOUT .= "
-                                    <tr>
-                                        <td>
-                                            <a href='{$site_config['baseurl']}/games.php'>{$site_config['site_name']} Games</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href='{$site_config['baseurl']}/blackjack.php'>{$site_config['site_name']} Blackjack</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href='{$site_config['baseurl']}/casino.php'>{$site_config['site_name']} Casino</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href='{$site_config['baseurl']}/arcade.php'>{$site_config['site_name']} Arcade</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href='{$site_config['baseurl']}/lottery.php'>{$site_config['site_name']} Lottery</a>
-                                        </td>
-                                    </tr>
-                                </tbody>";
+                                        <tr>
+                                            <td>
+                                                <a href='{$site_config['baseurl']}/games.php'><div>{$site_config['site_name']} Games</div></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href='{$site_config['baseurl']}/blackjack.php'><div>{$site_config['site_name']} Blackjack</div></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href='{$site_config['baseurl']}/casino.php'><div>{$site_config['site_name']} Casino</div></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href='{$site_config['baseurl']}/arcade.php'><div>{$site_config['site_name']} Arcade</div></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href='{$site_config['baseurl']}/lottery.php'><div>{$site_config['site_name']} Lottery</div></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>";
     }
 } elseif ($action === 'security') {
     $HTMLOUT .= "
@@ -373,17 +388,19 @@ if ($action === 'avatar') {
                                     </tr>
                                 </thead>
                                 <tbody>";
-    if (get_scheme() === 'https') {
-        $HTMLOUT .= tr('SSL options', "
-                                        <select name='ssluse' class='w-100'>
-                                            <option value='1' " . ($CURUSER['ssluse'] == 1 ? 'selected' : '') . ">SSL for Nothing</option>
-                                            <option value='2' " . ($CURUSER['ssluse'] == 2 ? 'selected' : '') . ">SSL only for site browsing</option>
-                                            <option value='3' " . ($CURUSER['ssluse'] == 3 ? 'selected' : '') . ">SSL for site browsing and downloading (recommended)</option>
-                                        </select>
-                                        <div class='top10'>
-                                            <span class='size_2'>SSL (Secure Socket Layer) is a network layer security protocol which is reponsible for ensuring security of data</span>
-                                        </div>", 1);
-    }
+    /*
+        if (get_scheme() === 'https') {
+            $HTMLOUT .= tr('SSL options', "
+                                            <select name='ssluse' class='w-100'>
+                                                <option value='1' " . ($CURUSER['ssluse'] == 1 ? 'selected' : '') . ">SSL for Nothing</option>
+                                                <option value='2' " . ($CURUSER['ssluse'] == 2 ? 'selected' : '') . ">SSL only for site browsing</option>
+                                                <option value='3' " . ($CURUSER['ssluse'] == 3 ? 'selected' : '') . ">SSL for site browsing and downloading (recommended)</option>
+                                            </select>
+                                            <div class='top10'>
+                                                <span class='size_2'>SSL (Secure Socket Layer) is a network layer security protocol which is reponsible for ensuring security of data</span>
+                                            </div>", 1);
+        }
+    */
     if (get_parked() == '1') {
         $HTMLOUT .= tr($lang['usercp_acc_parked'], "
                                         <input type='radio' name='parked'" . ($CURUSER['parked'] === 'yes' ? ' checked' : '') . " value='yes' /> Yes
@@ -410,27 +427,27 @@ if ($action === 'avatar') {
                                         </select>
                                         <div class='mw-100'>
                                             <div class='flipper has-text-primary top10'>
-                                                <a id='paranoia_open'>Paranoia Levels explained! <i class='fa icon-down-open size_3' aria-hidden='true'></i></a>
+                                                <a id='paranoia_open'>Paranoia Levels explained <i class='fa icon-down-open size_3' aria-hidden='true'></i></a>
                                             </div>
                                             <div id='paranoia_info' class='is_hidden wrap padding20'>
                                                 <p>
-                                                    I'm totally relaxed<br>
+                                                    <span class='has-text-lime has-text-weight-bold'>I'm totally relaxed</span><br>
                                                     Default setting, nothing is hidden except your IP, passkey, email. the same as any tracker.
                                                 </p>
                                                 <p>
-                                                    I'm a little paranoid<br>
+                                                    <span class='has-text-lime has-text-weight-bold'>I'm a little paranoid</span><br>
                                                     All info about torrents are hidden from other members except your share ratio, join date, last seen and PM button if you accept PMs. Your comments are not hidden, and though your actual stats (up and down) are hidden on the forums, your actual ratio isn't, also, you will appear on snatched lists.
                                                 </p>
                                                 <p>
-                                                    I'm paranoid<br>
+                                                    <span class='has-text-lime has-text-weight-bold'>I'm paranoid</span><br>
                                                     Same as 'a little paranoid' except your name will not appear on snatched lists, your ratio and stats as well as anything to do with actual filesharing will not be visible to other members. You will appear as 'anonymous' on torrent comments, snatched lists et al. The member ratings and comments on your details page will also be disabled.
                                                 </p>
                                                 <p>
-                                                    I wear a tin-foil hat<br>
+                                                    <span class='has-text-lime has-text-weight-bold'>I wear a tin-foil hat</span><br>
                                                     No information will be available to other members on your details page. Your comments and thank you(s) on torrents will be anonymous, your userdetails page will not be accessible, your stats will not appear at all, including your share ratio.
                                                 </p>
                                                 <p>
-                                                    Please remember!<br>
+                                                    <span class='has-text-lime has-text-weight-bold'>Please remember!</span><br>
                                                     All of the above will not apply to staff... staff see all and know all... <br>Even at the highest level of paranoia, you can still be reported (though they won't know who they are reporting) and you are not immune to our auto scripts...
                                                 </p>
                                             </div>
@@ -449,7 +466,7 @@ if ($action === 'avatar') {
                                         <input type="radio" name="show_email" ' . ($CURUSER['show_email'] === 'no' ? ' checked' : '') . ' value="no" /> No
                                         <p>Do you wish to have your email address visible on the forums?</p>', 1);
     $HTMLOUT .= tr($lang['usercp_chpass'], "
-                                        <input type='password' name='chpassword' class='w-100' placeholder='New Password' />    
+                                        <input type='password' name='chpassword' class='w-100' placeholder='New Password' />
                                         <input type='password' name='passagain' class='w-100 top20' placeholder='{$lang['usercp_pass_again']}' />
                                         <p class='top20 bottom10'>You must enter your current password.</p>
                                         <input type='password' name='current_pass' class='w-100' placeholder='Current Password' />", 1);
@@ -498,7 +515,9 @@ if ($action === 'avatar') {
                                             </div>
                                         </td>
                                     </tr>
-                                </tbody>";
+                                </tbody>
+                            </table>
+                        </div>";
 } elseif ($action === 'torrents') {
     $HTMLOUT .= "
                         <div class='table-wrapper $width'>
@@ -519,7 +538,7 @@ if ($action === 'avatar') {
                                             <div id='cat-container' class='level-center'>";
         while ($a = mysqli_fetch_assoc($r)) {
             $categories .= "
-                                                <span class='margin20 bordered tooltipper' title='" . htmlsafechars($a['name']) . "'>
+                                                <span class='margin10 bordered level-center bg-02 tooltipper' title='" . htmlsafechars($a['name']) . "'>
                                                     <input name='cat{$a['id']}' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? ' checked' : '') . " value='yes' />
                                                     <span class='cat-image left10'>
                                                         <a href='{$site_config['baseurl']}/browse.php?c" . (int) $a['id'] . "'>
@@ -540,9 +559,9 @@ if ($action === 'avatar') {
     $HTMLOUT .= tr($lang['usercp_scloud'], "
                                             <input type='checkbox' name='viewscloud' value='yes'" . (($CURUSER['opt1'] & user_options::VIEWSCLOUD) ? ' checked' : '') . " /> {$lang['usercp_scloud1']}", 1);
     $HTMLOUT .= tr($lang['usercp_split'], "
-                                            <input type='checkbox' name='split'" . (($CURUSER['opt2'] & user_options_2::SPLIT) ? ' checked' : '') . " value='yes' />(Split torrents uploaded by days)", 1);
+                                            <input type='checkbox' name='split'" . (($CURUSER['opt2'] & user_options_2::SPLIT) ? ' checked' : '') . " value='yes' /> (Split torrents uploaded by days)", 1);
     $HTMLOUT .= tr($lang['usercp_icons'], "
-                                            <input type='checkbox' name='browse_icons'" . (($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) ? ' checked' : '') . " value='yes' />(View categories as icons)", 1);
+                                            <input type='checkbox' name='browse_icons'" . (($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) ? ' checked' : '') . " value='yes' /> (View categories as icons)", 1);
     $HTMLOUT .= tr($lang['usercp_cats_sets'], "
                                             <select name='categorie_icon'>
                                                 <option value='1'" . (get_category_icons() == 1 ? ' selected' : '') . ">Default</option>
@@ -561,7 +580,9 @@ if ($action === 'avatar') {
                                             </div>
                                         </td>
                                     </tr>
-                                </tbody>";
+                                </tbody>
+                            </table>
+                        </div>";
 } elseif ($action === 'personal') {
     $HTMLOUT .= "
                         <div class='table-wrapper $width'>
@@ -631,19 +652,24 @@ if ($action === 'avatar') {
     $HTMLOUT .= '                       </td>
                                     </tr>';
     $HTMLOUT .= tr($lang['usercp_top_perpage'], "
-                                            <input type='text' class='w-100' name='topicsperpage' value='$CURUSER[topicsperpage]' /> {$lang['usercp_default']}", 1);
+                                            <input type='text' class='w-100' name='topicsperpage' value='{$CURUSER['topicsperpage']}' /> {$lang['usercp_default']}", 1);
     $HTMLOUT .= tr($lang['usercp_post_perpage'], "
-                                            <input type='text' class='w-100' name='postsperpage' value='$CURUSER[postsperpage]' /> {$lang['usercp_default']}", 1);
+                                            <input type='text' class='w-100' name='postsperpage' value='{$CURUSER['postsperpage']}' /> {$lang['usercp_default']}", 1);
     $HTMLOUT .= tr('Forum Sort Order', "
-                                            <input type='radio' name='forum_sort' " . ($CURUSER['forum_sort'] === 'ASC' ? ' checked' : '') . " value='ASC' />At Bottom <input type='radio' name='forum_sort' " . ('ASC' != $CURUSER['forum_sort'] ? ' checked' : '') . " value='DESC' />At Top<br>What order you want the posts to be listed in.", 1);
+                                            <input type='radio' name='forum_sort' " . ($CURUSER['forum_sort'] === 'ASC' ? ' checked' : '') . " value='ASC' /> At Bottom 
+                                            <input type='radio' name='forum_sort' " . ($CURUSER['forum_sort'] !== 'ASC' ? ' checked' : '') . " value='DESC' /> At Top<br>What order you want the posts to be listed in.", 1);
+    $HTMLOUT .= tr('12 Hour Time', "
+                                            <input type='radio' name='12_hour' " . ($CURUSER['12_hour'] === 'yes' ? ' checked' : '') . " value='yes' /> Yes 
+                                            <input type='radio' name='12_hour' " . ($CURUSER['12_hour'] !== 'yes' ? ' checked' : '') . " value='no' /> No", 1);
+
     $HTMLOUT .= tr($lang['usercp_stylesheet'], "
                                             <select name='stylesheet'>
                                                 $stylesheets
                                             </select>", 1);
     $HTMLOUT .= tr($lang['usercp_ajaxchat_height'], "
-                                            <input type='text' class='w-100' name='ajaxchat_height' value='$CURUSER[ajaxchat_height]' /> {$lang['usercp_default']}", 1);
+                                            <input type='text' class='w-100' name='ajaxchat_height' value='{$CURUSER['ajaxchat_height']}' /> {$lang['usercp_default']}", 1);
     $HTMLOUT .= tr($lang['usercp_gender'], "
-                                            <div class='level-center'>
+                                            <div class='level'>
                                                 <span>
                                                     <input type='radio' name='gender'" . ($CURUSER['gender'] === 'Male' ? ' checked' : '') . " value='Male' /> {$lang['usercp_male']}
                                                 </span>
@@ -711,19 +737,21 @@ if ($action === 'avatar') {
         $day .= '
                                             </select>';
         $HTMLOUT .= tr('Birthday', "
-                                            <div class='level-center'>
+                                            <div class='level'>
                                                 {$year}{$month}{$day}
                                             </div>", 1);
     }
     $HTMLOUT .= "
-                    <tr>
-                        <td colspan='2'>
-                            <div class='has-text-centered'>
-                                <input class='button is-small' type='submit' value='Submit changes!' />
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>";
+                                    <tr>
+                                        <td colspan='2'>
+                                            <div class='has-text-centered'>
+                                                <input class='button is-small' type='submit' value='Submit changes!' />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>";
 } else {
     if ($action === 'default') {
         $HTMLOUT .= "
@@ -741,7 +769,7 @@ if ($action === 'avatar') {
         $HTMLOUT .= tr($lang['usercp_email_notif'], "
                                             <input type='checkbox' name='pmnotif'" . (strpos($CURUSER['notifs'], '[pm]') !== false ? ' checked' : '') . " value='yes' /> {$lang['usercp_notify_pm']}", 1);
         $HTMLOUT .= tr($lang['usercp_accept_pm'], "
-                                            <div class='level-center'>
+                                            <div class='level'>
                                                 <span>
                                                     <input type='radio' name='acceptpms'" . ($CURUSER['acceptpms'] === 'yes' ? ' checked' : '') . " value='yes' /> {$lang['usercp_except_blocks']}
                                                 </span>
@@ -773,15 +801,15 @@ if ($action === 'avatar') {
                                             </div>
                                         </td>
                                     </tr>
-                                </tbody>";
+                                </tbody>
+                            </table>
+                        </div>";
     }
 }
+
 $HTMLOUT .= '
-                            </table>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>';
+                    </div>
+                </form>
+            </div>';
 
 echo stdhead(htmlsafechars($CURUSER['username'], ENT_QUOTES) . "{$lang['usercp_stdhead']} ") . wrapper($HTMLOUT) . stdfoot();

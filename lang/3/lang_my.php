@@ -59,7 +59,7 @@ $lang = [
     'my_submit' => 'Submit changes!',
     'my_revert' => 'Revert changes!',
     'my_clearnewtagmanually' => 'Manually Clear New Tag',
-    'my_default_clearnewtagmanually' => '(Check to use - Default value is no !)',
+    'my_default_clearnewtagmanually' => '(Check to use - Default value is no!)',
     'my_side' => 'Side Menu',
     'my_side1' => '(Check to turn Side Menu on!)',
     'my_revert' => 'Revert changes!',
@@ -82,7 +82,7 @@ $lang = [
     'my_female' => 'Female',
     'my_na' => 'Not Sure',
     'my_scloud' => 'Search Cloud',
-    'my_scloud1' => '(Enable/Disable searchcloud on browse !)',
+    'my_scloud1' => '(Enable/Disable searchcloud on browse!)',
     //my stdhead
     'my_stdhead' => "'s private page",
 ];

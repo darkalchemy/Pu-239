@@ -18,11 +18,26 @@ if (!defined('DATABASE_DIR')) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     extract($_POST);
     unset($_POST);
-    if ($id >= 1 && $submit === 'Run Query') {
-        $sql = $sql_updates[$id - 1]['query'];
+    $qid = array_search($id, array_column($sql_updates, 'id'));
+
+    if (isset($qid) && $submit === 'Run Query') {
+        $sql = $sql_updates[$qid]['query'];
+        $flush = $sql_updates[$qid]['flush'];
         if (sql_query($sql)) {
             $sql = 'INSERT INTO database_updates (id, query) VALUES (' . sqlesc($id) . ', ' . sqlesc($sql) . ')';
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
+            if ($flush === true) {
+                $cache->flush();
+                $session->set('is-success', 'You flushed the ' . ucfirst($_ENV['CACHE_DRIVER']) . ' cache');
+            } elseif ($flush === false) {
+                // do nothing
+            } else {
+                $items = explode(', ', $flush);
+                foreach ($items as $item) {
+                    $cache->delete($item);
+                    $session->set('is-success', "You flushed $item cache");
+                }
+            }
             $session->set('is-success', "Query #$id ran without error");
         } else {
             $session->set('is-danger', "[p]Query #$id failed to run, try to run manually[/p][p]" . htmlsafechars($sql) . '[/p]');
@@ -77,27 +92,18 @@ if (file_exists(DATABASE_DIR)) {
 
     $results = !empty($results) ? $results : [0 => '2017-12-06 14:43:22'];
 
-    $count = count($sql_updates);
-    $per_page = 15;
-    $pager = pager($per_page, $count, "{$site_config['baseurl']}/staffpanel.php?tool=upgrade_database&amp;");
-    preg_match('/LIMIT (\d*),(\d*)/i', $pager['limit'], $match);
-    $first = isset($match[1]) ? $match[1] : 0;
-    $last = isset($match[2]) ? $match[1] + $per_page : end($sql_updates)['id'];
-    $page = !empty($_GET['page']) ? "&page={$_GET['page']}" : '';
-
     $body = '';
     foreach ($sql_updates as $update) {
         if (array_key_exists($update['id'], $results)) {
             continue;
         }
 
-        if ($update['id'] > $first && $update['id'] <= $last) {
-            $button = "
-                <form action='{$site_config['baseurl']}/staffpanel.php?tool=upgrade_database{$page}' method='post'>
+        $button = "
+                <form action='{$site_config['baseurl']}/staffpanel.php?tool=upgrade_database' method='post'>
                     <input type='hidden' name='id' value={$update['id']}>
                     <input class='button is-small' type='submit' name='submit' value='Run Query' />
                 </form>";
-            $body .= "
+        $body .= "
         <tr>
             <td class='has-text-centered'>
                 {$update['id']}
@@ -115,8 +121,8 @@ if (file_exists(DATABASE_DIR)) {
                 " . (array_key_exists($update['id'], $results) ? 'Completed' : $button) . '
             </td>
         </tr>';
-        }
     }
+
     if (empty($body)) {
         $body = "
         <tr>
@@ -134,6 +140,6 @@ if (file_exists(DATABASE_DIR)) {
         </tr>';
 }
 
-$HTMLOUT = wrapper(($count > $per_page ? $pager['pagertop'] : '') . main_table($body, $heading) . ($count > $per_page ? $pager['pagerbottom'] : ''));
+$HTMLOUT = wrapper(main_table($body, $heading));
 
 echo stdhead('Update Database') . $HTMLOUT . stdfoot();

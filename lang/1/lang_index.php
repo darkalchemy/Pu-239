@@ -135,7 +135,7 @@ It is your own responsibility to adhere to these terms.",
     'index_ie_bhappy' => 'browse happy',
     'index_ie_consider' => ' and consider switching to one of the many better alternatives.',
     'index_ie_firefox' => 'Get Firefox!',
-    'index_ie_get' => 'Get a SAFER browser !',
+    'index_ie_get' => 'Get a SAFER browser!',
     ///Latest Torrents
     'index_ltst_name' => 'Name:',
     'index_ltst_added' => 'Added:',

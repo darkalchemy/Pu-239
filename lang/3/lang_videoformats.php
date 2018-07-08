@@ -2,7 +2,7 @@
 
 $lang = [
     //VIDEOFORMATS
-    'videoformats_body' => 'Ai descarcat un film si nu stii ce inseamna CAM/TS/TC/SCR ?',
+    'videoformats_body' => 'Ai descarcat un film si nu stii ce inseamna CAM/TS/TC/SCR?',
 
     'videoformats_cam' => 'CAM -',
     'videoformats_cam1' => 'Este un rip filmat in sala de cinema cu o camera digitala. Un trepied este adesea folosit, dar de multe ori acest lucru nu este posibil, asadar imaginea este pe alocuri tremuranda. De asemenea, locatia nu este intotdeauna cea mai fericita, fiind uneori filmat dintr-o parte. Daca este taiat corespunzator, atunci este mai greu de detectat, dar se observa daca este text pe ecran, dar de multe ori aceste release-uri sunt lasate cu benzi negre la marginile ecranului. Sunetul este luat    de la microfonul camerei video si, in special la comedii, se pot auzi rasetele audientei. Datorita acestor factori,    imaginea si sunetul sunt slabe, dar uneri cinematograful este gol si se poate vedea si auzi decent.',

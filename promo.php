@@ -169,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     }
 } elseif ($do === 'addpromo') {
     if ($CURUSER['class'] < UC_STAFF) {
-        stderr('Error', 'There is nothing for you here! Go play somewere else');
+        stderr('Error', 'There is nothing for you here! Go play somewhere else');
     }
     $HTMLOUT .= begin_frame('Add Promo Link');
     $HTMLOUT .= "<form action='" . ($_SERVER['PHP_SELF']) . "' method='post' >
@@ -328,7 +328,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     }
 } else {
     if ($CURUSER['class'] < UC_STAFF) {
-        stderr('Error', 'There is nothing for you here! Go play somewere else');
+        stderr('Error', 'There is nothing for you here! Go play somewhere else');
     }
     $r = sql_query('SELECT p.*,u.username FROM promo AS p LEFT JOIN users AS u ON p.creator=u.id ORDER BY p.added,p.days_valid DESC') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($r) == 0) {

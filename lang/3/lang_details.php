@@ -12,7 +12,7 @@ $lang = [
     'details_freepoll_fvote' => 'Free vote',
     'details_freepoll_mess3' => 'Your ratio is poor, you have to wait an extra',
     'details_freepoll_hours' => 'Hours',
-    'details_freepoll_mess4' => 'before voting is allowed !',
+    'details_freepoll_mess4' => 'before voting is allowed!',
     'details_freepoll_mess5' => 'This torrent is currently free leech',
     'details_freepoll_mess6' => 'This torrent is not free leech',
     //Details
@@ -28,7 +28,7 @@ $lang = [
     'details_whence' => 'whence you came',
     'details_rating_added' => 'Rating added!',
     'details_download' => 'Download',
-    'details_dloadpos' => 'You are not allowed to download !',
+    'details_dloadpos' => 'You are not allowed to download!',
     'details_zip' => 'Zip',
     'details_text' => 'Text',
     'details_info_hash' => 'Info hash',

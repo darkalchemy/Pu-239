@@ -1,3 +1,9 @@
+8 Jul 2018
+fix: background art not showing when enabled
+add: user option to use 12 or 24 hour clock everywhere except AJAX Chat(working on it)
+update: database update process
+remove: some extraneous spaces in lang files
+
 7 Jul 2018
 fix: plural question(s) in trivia points pm
 add: option to use 12 or 24 hour clock everywhere except AJAX Chat(working on it)

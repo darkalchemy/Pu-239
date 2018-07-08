@@ -2,7 +2,7 @@
 
 $lang = [
     'watched_stderr' => 'Error',
-    'watched_stderr1' => 'Doar cei care au o clasa mai mare sau egala cu Administratori pot sterge membrii din aceasta lista !',
+    'watched_stderr1' => 'Doar cei care au o clasa mai mare sau egala cu Administratori pot sterge membrii din aceasta lista!',
     'watched_removed' => 'Sters din lista cu utilizatori urmariti de',
     'watched_add' => 'Adauga',
     'watched_addtowu' => 'la lista cu utilizatori urmariti',

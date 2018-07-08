@@ -2,7 +2,7 @@
 
 $lang = [
     'warn_stderr' => 'Eroare',
-    'warn_stderr_msg' => 'Nu ai selectat nici un utilizator !',
+    'warn_stderr_msg' => 'Nu ai selectat nici un utilizator!',
     'warn_stderr_msg1' => 'Ceva nu a mers bine!',
     'warn_stderr_msg2' => 'Ceva nu a mers bine! 2!',
     'warn_stderr_msg3' => 'Ceva nu a mers bine! 3!',

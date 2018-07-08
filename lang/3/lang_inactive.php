@@ -3,11 +3,11 @@
 $lang = [
     //inactive errors
     'inactive_error' => 'Eroare',
-    'inactive_usersnoacc' => 'Utilizatori inactivi !',
+    'inactive_usersnoacc' => 'Utilizatori inactivi!',
     'inactive_selectuser' => 'Pentru ca aceasta sa functioneze, trebuie sa selectati cel putin un utilizator!',
     'inactive_success' => 'Succes',
-    'inactive_deleted' => 'Ati sters cu succes conturile selectate !',
-    'inactive_disabled' => 'Ati dezactivat cu succes conturile selectate !',
+    'inactive_deleted' => 'Ati sters cu succes conturile selectate!',
+    'inactive_disabled' => 'Ati dezactivat cu succes conturile selectate!',
     'inactive_msgsent' => 'Mesaje trimise.',
     'inactive_tryagain' => 'Incearca din nou',
     'inactive_accounts' => ' conturi inactive pentru mai mult de',
@@ -40,6 +40,6 @@ $lang = [
     'inactive_lastmail' => 'Ultimul email a fost trimis de ',
     'inactive_email' => ' Email',
     'inactive_on' => 'pe',
-    'inactive_sent' => 'trimis !',
+    'inactive_sent' => 'trimis!',
     'inactive_noaccounts' => 'Nici un cont inactiv mai mult de',
 ];

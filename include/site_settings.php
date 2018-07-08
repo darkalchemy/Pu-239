@@ -1,6 +1,6 @@
 <?php
 
-global $site_config, $cache, $fluent;
+global $site_config, $cache, $fluent, $CURUSER, $session;
 
 $site_settings = $cache->get('site_settings_');
 if ($site_settings === false || is_null($site_settings)) {
@@ -60,8 +60,9 @@ if ($staff_settings === false || is_null($staff_settings)) {
 
 $site_config = array_merge($site_settings, $site_config, $paypal_settings, $hnr_settings, $staff_settings);
 
-$time_string = $site_config['12_hour'] ? 'g:i:s a' : 'H:i:s';
-$time_string_without_seconds = $site_config['12_hour'] ? 'g:i a' : 'H:i';
+$use_12_hour = !empty($session->get('12_hour')) ? $session->get('12_hour') === 'yes' ? 1 : 0 : $site_config['12_hour'];
+$time_string = $use_12_hour ? 'g:i:s a' : 'H:i:s';
+$time_string_without_seconds = $use_12_hour ? 'g:i a' : 'H:i';
 $site_config['time_adjust'] = 0;
 $site_config['time_offset'] = 0;
 $site_config['time_use_relative'] = 1;

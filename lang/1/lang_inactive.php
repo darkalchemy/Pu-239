@@ -3,8 +3,8 @@
 $lang = [
     //inactive errors
     'inactive_error' => 'Error',
-    'inactive_usersnoacc' => 'Inactive Users - Nosey Cunt !',
-    'inactive_selectuser' => 'For this to work you must select at least a user !',
+    'inactive_usersnoacc' => 'Inactive Users - Nosey Cunt!',
+    'inactive_selectuser' => 'For this to work you must select at least a user!',
     'inactive_success' => 'Success',
     'inactive_deleted' => 'You have successfully deleted the selected accounts!',
     'inactive_disabled' => 'You have successfully disabled the selected accounts!',
@@ -40,6 +40,6 @@ $lang = [
     'inactive_lastmail' => 'Last Email sent by',
     'inactive_email' => ' Email',
     'inactive_on' => 'on',
-    'inactive_sent' => 'sent !',
+    'inactive_sent' => 'sent!',
     'inactive_noaccounts' => 'No account inactive for longer than',
 ];

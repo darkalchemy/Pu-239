@@ -65,6 +65,7 @@ if ($tvmaze_data) {
                 if (!empty($airtime)) {
                     $airtime = $timestamp + $airtime[0] * 3600 + $airtime[1] * 60;
                 }
+                $use_12_hour = !empty($CURUSER['12_hour']) ? $CURUSER['12_hour'] === 'yes' ? 1 : 0 : $site_config['12_hour'];
                 $body[] = [
                     'poster' => url_proxy($poster, true, 150),
                     'placeholder' => url_proxy($poster, true, null, null, 20),
@@ -74,7 +75,7 @@ if ($tvmaze_data) {
                     'episode' => $tv['number'],
                     'runtime' => !empty($tv['runtime']) ? "{$tv['runtime']} minutes" : '',
                     'type' => $tv['_embedded']['show']['type'],
-                    'airtime' => !empty($tv['airtime']) ? $site_config['12_hour'] ? time24to12($airtime) : get_date($airtime, 'WITHOUT_SEC') : '',
+                    'airtime' => !empty($tv['airtime']) ? $use_12_hour ? time24to12($airtime) : get_date($airtime, 'WITHOUT_SEC', 1, 1) : '',
                     'id' => $tv['_embedded']['show']['id'],
                     'overview' => str_replace(['<p>', '</p>', '<b>', '</b>', '<i>', '</i>'], '', $tv['_embedded']['show']['summary']),
                 ];

@@ -2537,6 +2537,7 @@ CREATE TABLE `users` (
   `peers_limit` int(11) DEFAULT '1000',
   `torrents_limit` int(11) DEFAULT '1000',
   `ajaxchat_height` int(10) unsigned NOT NULL DEFAULT '600',
+  `12_hour` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `torrent_pass` (`torrent_pass`),
@@ -2653,4 +2654,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-07 11:45:46
+-- Dump completed on 2018-07-08 12:24:20

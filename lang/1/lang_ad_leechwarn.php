@@ -2,7 +2,7 @@
 
 $lang = [
     'leechwarn_stderror' => 'Err',
-    'leechwarn_nouser' => "Looks like you didn't select any user !",
+    'leechwarn_nouser' => "Looks like you didn't select any user!",
     'leechwarn_wrong' => 'Something went wrong!',
     'leechwarn_success' => 'Success',
     'leechwarn_user' => ' user',

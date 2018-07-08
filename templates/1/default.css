@@ -1196,6 +1196,11 @@ code a {
     visibility: hidden;
 }
 
+.table-wrapper.w-50.right20,
+.table-wrapper.w-50.left20 {
+    width: calc(50% - 1.25em);
+}
+
 @media (max-width : 1200px) {
     .w-20 {
         width : 45%;
@@ -1246,18 +1251,7 @@ code a {
     .spacer {
         height : 50px
     }
-/*
-    .w-15 {
-        width : 25%
-    }
 
-    .w-20,
-    .w-25,
-    .w-50,
-    .w-75 {
-        width : 100%
-    }
-*/
     .page-wrapper {
         margin-left  : .625em;
         margin-right : .625em
@@ -1265,6 +1259,18 @@ code a {
 
     .img-polaroid {
         margin-right : 0
+    }
+
+    .avatar {
+        width: 33%;
+        height: auto;
+    }
+
+    .table-wrapper.w-75,
+    .table-wrapper.w-50,
+    .table-wrapper.w-50.right20,
+    .table-wrapper.w-25 {
+        width: 100%;
     }
 }
 

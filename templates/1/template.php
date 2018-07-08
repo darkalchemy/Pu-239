@@ -205,6 +205,7 @@ function stdfoot($stdfoot = false)
     require_once INCL_DIR . 'bbcode_functions.php';
     global $CURUSER, $site_config, $starttime, $query_stat, $querytime, $lang, $cache, $session;
 
+    $use_12_hour = !empty($CURUSER['12_hour']) ? $CURUSER['12_hour'] === 'yes' ? 1 : 0 : $site_config['12_hour'];
     $header = $uptime = $htmlfoot = '';
     $debug = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
     $queries = !empty($query_stat) ? count($query_stat) : 0;
@@ -288,7 +289,7 @@ function stdfoot($stdfoot = false)
         $uptime = $cache->get('uptime');
         if ($uptime === false || is_null($uptime)) {
             $uptime = explode('up', `uptime`);
-            if ($site_config['12_hour']) {
+            if ($use_12_hour) {
                 $server_time = explode(':', trim($uptime[0]));
                 $uptime = time24to12($server_time[0], $server_time[1], $server_time[2]) . "<br>{$lang['gl_stdfoot_uptime']} " . str_replace('  ', ' ', $uptime[1]);
             } else {
@@ -322,9 +323,12 @@ function stdfoot($stdfoot = false)
         </div>";
     }
     $details = basename($_SERVER['PHP_SELF']) === 'details.php';
-    if ($site_config['backgrounds_on_all_pages'] || $details) {
+    $bg_image = '';
+    if ($CURUSER && ($site_config['backgrounds_on_all_pages'] || $details)) {
         $background = get_body_image($details);
-        $bg_image = "var body_image = '" . url_proxy($background, true) . "'";
+        if ($background) {
+            $bg_image = "var body_image = '" . url_proxy($background, true) . "'";
+        }
     }
     $htmlfoot .= "
     </div>
@@ -333,7 +337,7 @@ function stdfoot($stdfoot = false)
     </a>
     <script>
         $bg_image
-        var is_12_hour = {$site_config['12_hour']};
+        var is_12_hour = {$use_12_hour};
         var cookie_prefix = '{$site_config['cookie_prefix']}';
         var cookie_path = '{$site_config['cookie_path']}';
         var cookie_lifetime = '{$site_config['cookie_lifetime']}';

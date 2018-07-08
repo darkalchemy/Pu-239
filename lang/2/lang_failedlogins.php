@@ -9,7 +9,7 @@ $lang = [
     'failed_message_ban' => 'Member banned',
     'failed_message_unban' => 'Ip ban Removed',
     'failed_message_deleted' => 'Entry deleted',
-    'failed_message_nothing' => 'Nothing found !',
+    'failed_message_nothing' => 'Nothing found!',
     //failedlogin main
     'failed_main_ip' => 'Ip Address',
     'failed_main_added' => 'Added',

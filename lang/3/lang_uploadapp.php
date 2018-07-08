@@ -31,5 +31,5 @@ $lang = [
     'uploadapp_seeding' => 'I understand that I have to keep seeding my torrents until there are at least two other seeders',
     'uploadapp_send' => 'Send',
     'uploadapp_appsent' => 'Application sent',
-    'uploadapp_success' => 'Your application has succesfully been sent to the staff.',
+    'uploadapp_success' => 'Your application has successfully been sent to the staff.',
 ];

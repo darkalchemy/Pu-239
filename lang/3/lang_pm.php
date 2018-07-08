@@ -11,7 +11,7 @@ $lang = [
     //=== some get stuff to display messages
     'pm_deleted' => 'Message deleted!',
     'pm_avatar' => 'Avatars settings changed!',
-    'pm_changed' => 'Setari mesaje private pe pagina schimbate !',
+    'pm_changed' => 'Setari mesaje private pe pagina schimbate!',
     'pm_moved' => 'Mesaj mutat!',
     'pm_moved_s' => 'Mesaje mutate!',
     'pm_deleted_s' => 'Mesaje sterse!',
