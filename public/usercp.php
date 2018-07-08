@@ -685,7 +685,7 @@ if ($action === 'avatar') {
     $birthday = $CURUSER['birthday'];
     $birthday = date('Y-m-d', strtotime($birthday));
     list($year1, $month1, $day1) = explode('-', $birthday);
-    if ($CURUSER['birthday'] != '0000-00-00') {
+    if ($CURUSER['birthday'] === '1970-01-01') {
         $year .= "
                                             <select name='year' class='w-25 bottom10'>
                                                 <option value='0000'>--</option>";

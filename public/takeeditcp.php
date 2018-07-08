@@ -416,7 +416,7 @@ if ($action == 'avatar') {
         $curuser_cache['gender'] = $gender;
         $user_cache['gender'] = $gender;
     }
-    if ($CURUSER['birthday'] === '0000-00-00') {
+    if ($CURUSER['birthday'] === '1970-01-01') {
         $year = isset($_POST['year']) ? (int) $_POST['year'] : 0;
         $month = isset($_POST['month']) ? (int) $_POST['month'] : 0;
         $day = isset($_POST['day']) ? (int) $_POST['day'] : 0;
