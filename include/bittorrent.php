@@ -2234,7 +2234,7 @@ function get_body_image($details)
     $backgrounds = $cache->get('backgrounds_');
     if ($backgrounds === false || is_null($backgrounds)) {
         $pdo = $fluent->getPdo();
-        $sql = $pdo->prepare('SELECT DISTINCT background FROM torrents WHERE background IS NOT NULL');
+        $sql = $pdo->prepare("SELECT DISTINCT background FROM torrents WHERE background IS NOT NULL AND background != ''");
         $sql->execute();
         $result = $sql->fetchAll();
         if (!$result) {

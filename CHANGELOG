@@ -1,4 +1,5 @@
 8 Jul 2018
+fix: get empty image get_body_image()
 fix: avatar max-width
 fix: update user birthday when birthday not set
 fix: get random image get_body_image()
