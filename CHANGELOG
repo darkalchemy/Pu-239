@@ -1,4 +1,5 @@
 8 Jul 2018
+fix: url getting deleted when edit takeedit.php
 update: remove banner and background when torrent poster is changed
 update: clean up get_show_name() for better search results
 fix: emoticons.php

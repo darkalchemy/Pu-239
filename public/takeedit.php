@@ -23,15 +23,7 @@ if (!is_valid_id($id)) {
     header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
-/**
- * @Function valid_torrent_name
- * @Notes    only safe characters are allowed..
- * @Begin
- *
- * @param $torrent_name
- *
- * @return bool
- */
+
 function valid_torrent_name($torrent_name)
 {
     $allowedchars = 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-_[]*()';
@@ -44,26 +36,6 @@ function valid_torrent_name($torrent_name)
     return true;
 }
 
-/*
- *
- * @Function is_valid_url
- * @Begin
- */
-if (!function_exists('is_valid_url')) {
-    /**
-     * @param $link
-     *
-     * @return int
-     */
-    function is_valid_url($link)
-    {
-        return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $link);
-    }
-}
-/**
- * @Function is_valid_url
- * @End
- */
 $nfoaction = '';
 $select_torrent = sql_query('SELECT name, descr, category, visible, vip, release_group, poster, url, newgenre, description, anonymous, sticky, owner, allow_comments, nuked, nukereason, filename, save_as, youtube, tags, info_hash, freetorrent FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $fetch_assoc = mysqli_fetch_assoc($select_torrent) or stderr('Error', 'No torrent with this ID!');
@@ -108,7 +80,7 @@ if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] === 'update')) {
     $updateset[] = "nfo = ''";
     $torrent_cache['nfo'] = '';
 }
-//== Make sure they do not forget to fill these fields :D
+
 foreach ([
              $type,
              $body,
@@ -169,30 +141,25 @@ if ($CURUSER['class'] > UC_STAFF) {
     }
     $torrent_cache['banned'] = 'no';
 }
-/*
- *
- * @Custom Mods
- *
- */
-//== Subs
+
 if (in_array($category, $site_config['movie_cats'])) {
     $subs = isset($_POST['subs']) ? implode(',', $_POST['subs']) : '';
     $updateset[] = 'subs = ' . sqlesc($subs);
     $torrent_cache['subs'] = $subs;
 }
-// ==09 Sticky torrents
+
 if (($sticky = (!empty($_POST['sticky']) ? 'yes' : 'no')) != $fetch_assoc['sticky']) {
     $updateset[] = 'sticky = ' . sqlesc($sticky);
     if ($sticky === 'yes') {
         sql_query('UPDATE usersachiev SET stickyup = stickyup + 1 WHERE userid = ' . sqlesc($fetch_assoc['owner'])) or sqlerr(__FILE__, __LINE__);
     }
-    //$torrent_cache['sticky'] = $sticky;
 }
 
 if (isset($_POST['nuked']) && ($nuked = $_POST['nuked']) != $fetch_assoc['nuked']) {
     $updateset[] = 'nuked = ' . sqlesc($nuked);
     $torrent_cache['nuked'] = $nuked;
 }
+
 if (isset($_POST['nukereason']) && ($nukereason = $_POST['nukereason']) != $fetch_assoc['nukereason']) {
     $updateset[] = 'nukereason = ' . sqlesc($nukereason);
     $torrent_cache['nukereason'] = $nukereason;
@@ -238,8 +205,7 @@ if (isset($_POST['fl']) && ($_POST['fl'] == 1)) {
     $torrent_cache['free'] = '0';
     write_log("Torrent $id ($name) No Longer Free. Removed by $CURUSER[username]");
 }
-/// end freeleech mod
-//==09 Set Silver on Torrent Time Based
+
 if (isset($_POST['half_length']) && ($half_length = (int) $_POST['half_length'])) {
     if ($half_length == 255) {
         $silver = 1;
@@ -257,48 +223,58 @@ if (isset($_POST['slvr']) && ($_POST['slvr'] == 1)) {
     $torrent_cache['silver'] = '0';
     write_log("Torrent $id ($name) No Longer Half leech. Removed by $CURUSER[username]");
 }
-/// end silver torrent mod
-// ===09 Allowcomments
+
 if ((isset($_POST['allow_comments'])) && (($allow_comments = $_POST['allow_comments']) != $fetch_assoc['allow_comments'])) {
     if ($CURUSER['class'] >= UC_STAFF) {
         $updateset[] = 'allow_comments = ' . sqlesc($allow_comments);
     }
     $torrent_cache['allow_comments'] = $allow_comments;
 }
-// ===end
-//==Xbt freetorrent
+
 if (($freetorrent = (!empty($_POST['freetorrent']) ? '1' : '0')) != $fetch_assoc['freetorrent']) {
     $updateset[] = 'freetorrent = ' . sqlesc($freetorrent);
     $torrent_cache['freetorrent'] = $freetorrent;
 }
-//==09 Imdb mod
-if (isset($_POST['url']) && $url = $_POST['url'] != $fetch_assoc['url']) {
-    if (!empty($_url) && !preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url)) {
-        $session->set('is-warning', 'Make sure you include http:// in the URL.');
-        header("Location: {$_SERVER['HTTP_REFERER']}");
-        die();
+
+if (isset($_POST['url']) && (($url = $_POST['url']) != $fetch_assoc['url'])) {
+    if (!empty($_POST['url'])) {
+        if (!preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url)) {
+            $session->set('is-warning', 'Make sure you include http:// in the URL.');
+            header("Location: {$_SERVER['HTTP_REFERER']}");
+            die();
+        }
+        $updateset[] = 'url = ' . sqlesc($url);
+        $updateset[] = "banner = ''";
+        $updateset[] = "background = ''";
+        $torrent_cache['url'] = $url;
+        $torrent_cache['banner'] = '';
+        $torrent_cache['background'] = '';
+    } else {
+        $updateset[] = "url = ''";
+        $updateset[] = "banner = ''";
+        $updateset[] = "background = ''";
+        $torrent_cache['url'] = '';
+        $torrent_cache['banner'] = '';
+        $torrent_cache['background'] = '';
     }
-    $url = !empty($_POST['url']) ? $url : '';
-    $updateset[] = 'url = ' . sqlesc($url);
-    $torrent_cache['url'] = $url;
 }
+
 if (!empty($_POST['isbn']) && $_POST['isbn'] != $fetch_assoc['isbn']) {
     $isbn = $_POST['isbn'];
     $updateset[] = 'isbn = ' . sqlesc($isbn);
     $torrent_cache['isbn'] = $isbn;
 }
 
-//==09 Anonymous torrents
 if (($anonymous = (!empty($_POST['anonymous']) ? 'yes' : 'no')) != $fetch_assoc['anonymous']) {
     $updateset[] = 'anonymous = ' . sqlesc($anonymous);
     $torrent_cache['anonymous'] = $anonymous;
 }
-//==09 vip tor
+
 if (($vip = (!empty($_POST['vip']) ? '1' : '0')) != $fetch_assoc['vip']) {
     $updateset[] = 'vip = ' . sqlesc($vip);
     $torrent_cache['vip'] = $vip;
 }
-//==Release group
+
 $release_group_choices = [
     'scene' => 1,
     'p2p' => 2,
@@ -345,7 +321,6 @@ if ($torrent_txt_cache) {
 remove_torrent($infohash);
 write_log('torrent edited - ' . htmlsafechars($name) . ' was edited by ' . (($fetch_assoc['anonymous'] == 'yes') ? 'Anonymous' : htmlsafechars($CURUSER['username'])) . '');
 $cache->delete('editedby_' . $id);
-//$returl = (isset($_POST['returnto']) ? '&returnto=' . urlencode($_POST['returnto']) : 'details.php?id=' . $id);
 
 $session->set('is-success', $lang['details_success_edit']);
 header("Location: {$site_config['baseurl']}/details.php?id=$id");
