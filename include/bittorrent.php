@@ -2236,12 +2236,13 @@ function get_body_image($details)
         $pdo = $fluent->getPdo();
         $sql = $pdo->prepare('SELECT DISTINCT background FROM torrents WHERE background IS NOT NULL');
         $sql->execute();
-        $result = $sql->fetch();
+        $result = $sql->fetchAll();
         if (!$result) {
             return false;
         }
+        $backgrounds = [];
         foreach ($result as $background) {
-            $backgrounds[] = $background;
+            $backgrounds[] = $background['background'];
         }
         $cache->set('backgrounds_', $backgrounds, 86400);
     }

@@ -1,4 +1,6 @@
 8 Jul 2018
+fix: get random image get_body_image()
+update: delete get_body_image() cache on new upload
 fix: url getting deleted when edit takeedit.php
 update: remove banner and background when torrent poster is changed
 update: clean up get_show_name() for better search results
