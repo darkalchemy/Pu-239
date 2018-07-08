@@ -1,4 +1,5 @@
 8 Jul 2018
+update: remove banner and background when torrent poster is changed
 update: clean up get_show_name() for better search results
 fix: emoticons.php
 update: bitbucket.php allow webp images, optimize images after upload

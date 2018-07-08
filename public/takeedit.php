@@ -205,12 +205,20 @@ if (!empty($_POST['poster']) && (($poster = $_POST['poster']) != $fetch_assoc['p
         die();
     }
     $updateset[] = 'poster = ' . sqlesc($poster);
+    $updateset[] = "banner = ''";
+    $updateset[] = "background = ''";
     $torrent_cache['poster'] = $poster;
+    $torrent_cache['banner'] = '';
+    $torrent_cache['background'] = '';
 }
 
 if (empty($_POST['poster']) && !empty($fetch_assoc['poster'])) {
     $updateset[] = "poster = ''";
+    $updateset[] = "banner = ''";
+    $updateset[] = "background = ''";
     $torrent_cache['poster'] = '';
+    $torrent_cache['banner'] = '';
+    $torrent_cache['background'] = '';
 }
 
 if (isset($_POST['free_length']) && ($free_length = (int) $_POST['free_length'])) {

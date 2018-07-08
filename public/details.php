@@ -176,7 +176,7 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
 
     if (!empty($torrents['imdb'])) {
         $movie_info = get_imdb_info($torrents['imdb']);
-            $imdb_info = $movie_info[0];
+        $imdb_info = $movie_info[0];
     }
 
     if (empty($imdb_info) && !empty($imdb_id)) {
