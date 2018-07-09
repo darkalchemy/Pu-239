@@ -289,13 +289,12 @@ function stdfoot($stdfoot = false)
         $uptime = $cache->get('uptime');
         if ($uptime === false || is_null($uptime)) {
             $uptime = explode('up', `uptime`);
-            if ($use_12_hour) {
-                $server_time = explode(':', trim($uptime[0]));
-                $uptime = time24to12($server_time[0], $server_time[1], $server_time[2]) . "<br>{$lang['gl_stdfoot_uptime']} " . str_replace('  ', ' ', $uptime[1]);
-            } else {
-                $uptime = trim($uptime[0]) . "<br>{$lang['gl_stdfoot_uptime']} " . str_replace('  ', ' ', $uptime[1]);
-            }
             $cache->set('uptime', $uptime, 10);
+        }
+        if ($use_12_hour) {
+            $uptime = time24to12(TIME_NOW, true) . "<br>{$lang['gl_stdfoot_uptime']} " . str_replace('  ', ' ', $uptime[1]);
+        } else {
+            $uptime = get_date(TIME_NOW, 'WITH_SEC', 1, 1) . "<br>{$lang['gl_stdfoot_uptime']} " . str_replace('  ', ' ', $uptime[1]);
         }
     }
     $htmlfoot .= '

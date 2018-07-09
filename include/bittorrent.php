@@ -1078,7 +1078,7 @@ function get_time_offset()
  *
  * @return false|mixed|string
  */
-function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = false)
+function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc = false)
 {
     global $site_config;
 
@@ -2123,12 +2123,6 @@ function get_show_id_by_imdb(string $imdbid)
     return false;
 }
 
-/**
- * @param $h24
- * @param $min
- *
- * @return string
- */
 function time24to12($timestamp, $sec = false)
 {
     if ($sec) {

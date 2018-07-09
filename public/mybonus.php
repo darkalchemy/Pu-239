@@ -1574,7 +1574,7 @@ $HTMLOUT .= "
 $res = sql_query("SELECT *
                     FROM bonus
                     WHERE enabled = 'yes'
-                    ORDER BY id ASC") or sqlerr(__FILE__, __LINE__);
+                    ORDER BY orderid ASC") or sqlerr(__FILE__, __LINE__);
 while ($gets = mysqli_fetch_assoc($res)) {
     $otheroption = "
             <div><b>Username:</b>
