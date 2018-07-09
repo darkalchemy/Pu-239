@@ -2,10 +2,7 @@
 
 global $site_config;
 
-if (!XBT_TRACKER and $site_config['crazy_hour'] == true) {
-    /**
-     * @return string
-     */
+if (!XBT_TRACKER && $site_config['crazy_hour']) {
     function crazyhour()
     {
         global $CURUSER, $site_config, $lang, $cache;
@@ -54,16 +51,42 @@ if (!XBT_TRACKER and $site_config['crazy_hour'] == true) {
             $crazyhour['remaining'] = ($crazyhour['crazyhour']['var'] - TIME_NOW);
             $crazytitle = $lang['gl_crazy_title'];
             $crazymessage = $lang['gl_crazy_message'] . ' <b> ' . $lang['gl_crazy_message1'] . '</b> ' . $lang['gl_crazy_message2'] . ' <strong> ' . $lang['gl_crazy_message3'] . '</strong>!';
-            $htmlout .= '<li>
-<a class="tooltip" href="#"><b class="button is-success is-small">' . $lang['gl_crazy_on'] . '<span class="custom info alert alert-success"><em>' . $lang['gl_crazy_'] . '</em>
-' . $crazytitle . '...' . $crazymessage . ' ' . ' ' . $lang['gl_crazy_ends'] . ' ' . mkprettytime($crazyhour['remaining']) . '&#160;' . $lang['gl_crazy_at'] . ' ' . get_date($crazyhour['crazyhour']['var'], 'LONG') . '</span></b></a></li>';
+            $htmlout .= "
+    <li>
+        <a href='#'>
+            <span class='button tag is-success dt-tooltipper-small' data-tooltip-content='#crazy_tooltip'>{$lang['gl_crazy_on']}</span>
+            <div class='tooltip_templates'>
+                <span id='crazy_tooltip'>
+                    <div class='size_4 has-text-centered has-text-success has-text-weight-bold bottom10'>
+                        {$lang['gl_crazy_']} {$crazytitle} {$crazymessage} {$lang['gl_crazy_ends']}<br>" . mkprettytime($crazyhour['remaining']) .
+                        "<br>{$lang['gl_crazy_at']} " . get_date($crazyhour['crazyhour']['var'], 'WITHOUT_SEC', 1, 1) . "
+                    </div>
+                </span>
+            </div>
+        </a>
+    </li>";
 
             return $htmlout;
         }
-        $htmlout .= '<li>
-<a class="tooltip" href="#"><b class="button is-info is-small">' . $lang['gl_crazy_'] . '</b>
-<span class="custom info alert alert-info"><em>' . $lang['gl_crazy_'] . '</em>
-' . $lang['gl_crazy_message4'] . '<br>' . $lang['gl_crazy_message5'] . '<br> ' . '' . $lang['gl_crazy_message6'] . ' ' . mkprettytime($crazyhour['crazyhour']['var'] - 3600 - TIME_NOW) . '&#160;' . $lang['gl_crazy_at'] . ' ' . get_date($crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'LONG') . '</span></a></li>';
+        $htmlout .= "
+    <li>
+        <a href='#'>
+            <span class='button tag is-success dt-tooltipper-small' data-tooltip-content='#crazy_tooltip'>{$lang['gl_crazy_']}</span>
+            <div class='tooltip_templates'>
+                <span id='crazy_tooltip'>
+                    <div class='size_4 has-text-centered has-text-success has-text-weight-bold bottom10'>
+                        <span class='size_6 '>{$lang['gl_crazy_']}</span>
+                    </div>
+                    <div class='has-text-centered has-text-white'>
+                        {$lang['gl_crazy_message4']}<br>
+                        {$lang['gl_crazy_message5']}<br>
+                        {$lang['gl_crazy_message6']} " . mkprettytime($crazyhour['crazyhour']['var'] - 3600 - TIME_NOW) . " {$lang['gl_crazy_at']}<br>" .
+                        get_date($crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'LONG') . "
+                    </div>
+                </span>
+            </div>
+        </a>
+    </li>";
 
         return $htmlout;
     }

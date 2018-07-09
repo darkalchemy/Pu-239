@@ -295,7 +295,7 @@ function stdfoot($stdfoot = false)
             } else {
                 $uptime = trim($uptime[0]) . "<br>{$lang['gl_stdfoot_uptime']} " . str_replace('  ', ' ', $uptime[1]);
             }
-            $cache->set('uptime', $uptime, 30);
+            $cache->set('uptime', $uptime, 10);
         }
     }
     $htmlfoot .= '
