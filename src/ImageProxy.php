@@ -45,7 +45,7 @@ class ImageProxy
 
         $response = $client->request('GET', $url);
         if ($response->getStatusCode() == 200) {
-            $this->optimize($path);
+//            $this->optimize($path);
         }
     }
 
@@ -57,19 +57,21 @@ class ImageProxy
         if (file_exists($new_path)) {
             return $hash;
         }
-        if (mime_content_type($path) != 'image/jpeg') {
-            Image::load($new_path)
-                ->format(Manipulations::FORMAT_JPG)
-                ->quality($quality)
-                ->blur(50)
-                ->optimize()
-                ->save($new_path);
-        } else {
-            Image::load($path)
-                ->quality($quality)
-                ->blur(50)
-                ->optimize()
-                ->save($new_path);
+        if (mime_content_type($path) !== 'image/gif') {
+            if (mime_content_type($path) !== 'image/jpeg') {
+                Image::load($new_path)
+                    ->format(Manipulations::FORMAT_JPG)
+                    ->quality($quality)
+                    ->blur(50)
+                    ->optimize()
+                    ->save($new_path);
+            } else {
+                Image::load($path)
+                    ->quality($quality)
+                    ->blur(50)
+                    ->optimize()
+                    ->save($new_path);
+            }
         }
 
         return $hash;

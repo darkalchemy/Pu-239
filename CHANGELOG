@@ -1,4 +1,5 @@
 11 Jul 2018
+remove: optimize/blur gifs ImageProxy.php
 fix: check if empty beofre use details.php
 update: README innodb_autoinc_lock_mode = 0
 fix: undefined $count admin/bans.php
