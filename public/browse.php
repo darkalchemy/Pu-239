@@ -150,7 +150,7 @@ if (!$_GET && $CURUSER['notifs']) {
     if (!is_valid_id($category)) {
         stderr("{$lang['browse_error']}", "{$lang['browse_invalid_cat']}");
     }
-    $wherecatina[] = $cat['id'];
+    $wherecatina[] = $category;
     $addparam .= "cat=$category&amp;";
 } else {
     foreach ($catids as $cat) {
@@ -160,11 +160,10 @@ if (!$_GET && $CURUSER['notifs']) {
         }
     }
 }
-
 if (count($wherecatina) > 1) {
     $wherea[] = 'category IN (' . join(', ', $wherecatina) . ') ';
 } elseif (count($wherecatina) == 1) {
-    $wherea[] = 'category =' . $wherecatina[0];
+    $wherea[] = 'category = ' . $wherecatina[0];
 }
 if (isset($cleansearchstr)) {
     if ($searchstr != '') {
@@ -216,7 +215,7 @@ if (isset($cleansearchstr)) {
     }
 }
 
-$where = count($wherea) ? 'WHERE ' . join(' OR ', $wherea) : '';
+$where = count($wherea) ? 'WHERE ' . join(' AND ', $wherea) : '';
 $where_key = 'where_' . hash('sha256', $where);
 $count = $cache->get($where_key);
 if ($count === false || is_null($count)) {
