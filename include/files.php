@@ -39,7 +39,7 @@ function get_file_name($file)
         case 'staffpanel_js':
             return "{$site_config['baseurl']}/js/1/staffpanel_801ab346.js";
         case 'js':
-            return "{$site_config['baseurl']}/js/1/js_fc5fa7ff.js";
+            return "{$site_config['baseurl']}/js/1/js_2ad1ee6a.js";
         default:
             return null;
     }

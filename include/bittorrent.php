@@ -2222,7 +2222,9 @@ function get_body_image($details, $portrait = false)
     global $cache, $fluent, $torrents;
 
     if ($details) {
-        return $torrents['background'];
+        return [
+            'background' => $torrents['background'],
+        ];
     }
 
     $images_table = $cache->get('images_table_');
@@ -2267,14 +2269,15 @@ function get_body_image($details, $portrait = false)
         }
     }
 
-    if (empty($backgrounds) && empty($posters)) {
-        return false;
+    if (!empty($backgrounds)) {
+        $images['background'] = $backgrounds[array_rand($backgrounds)];
     }
 
-    return [
-        'background' => $backgrounds[array_rand($backgrounds)],
-        'poster' => $posters[array_rand($posters)],
-    ];
+    if (!empty($posters)) {
+        $images['poster'] = $posters[array_rand($posters)];
+    }
+
+    return $images;
 }
 
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {
