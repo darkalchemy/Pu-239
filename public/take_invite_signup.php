@@ -80,16 +80,13 @@ if (!blacklist($wantusername)) {
 if (strlen($wantusername) > 64) {
     stderr('Error', 'Sorry, username is too long (max is 64 chars)');
 }
-if ($wantpassword != $passagain) {
+if ($wantpassword !== $passagain) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_nomatch']);
 }
 if (strlen($wantpassword) < 6) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_pass_short']);
 }
-if (strlen($wantpassword) > 100) {
-    stderr($lang['takesignup_user_error'], $lang['takesignup_pass_long']);
-}
-if ($wantpassword == $wantusername) {
+if ($wantpassword === $wantusername) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_same']);
 }
 if (!valid_username($wantusername)) {

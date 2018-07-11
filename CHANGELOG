@@ -1,4 +1,5 @@
 11 Jul 2018
+fix: error on valid empty post contents takesignup.php
 remove: optimize/blur gifs ImageProxy.php
 fix: check if empty beofre use details.php
 update: README innodb_autoinc_lock_mode = 0

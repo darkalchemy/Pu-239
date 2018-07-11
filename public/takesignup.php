@@ -36,17 +36,13 @@ if ($users_count >= $site_config['maxusers']) {
 $lang = array_merge(load_language('global'), load_language('takesignup'));
 
 $required = [
-    'wantusername',
-    'wantpassword',
     'passagain',
     'email',
-    'user_timezone',
     'year',
     'month',
     'day',
     'passhint',
     'hintanswer',
-    'country',
     'gender',
     'rulesverify',
     'faqverify',
@@ -56,7 +52,7 @@ $required = [
 
 foreach ($required as $field) {
     if (empty($$field)) {
-        $session->set('is-warning', "[h2]{$lang['takesignup_form_data']}[/h2][p]All fields must be completed[/p]");
+        $session->set('is-warning', "[h2]{$lang['takesignup_form_data']}[/h2][p]All fields must be completed [{$field}][/p]");
         header("Location: {$site_config['baseurl']}/signup.php");
         die();
     }
@@ -117,7 +113,7 @@ if (strlen($wantusername) > 64) {
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
-if ($wantpassword != $passagain) {
+if ($wantpassword !== $passagain) {
     $session->set('is-warning', "[h2]{$lang['takesignup_nomatch']}[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
@@ -127,12 +123,7 @@ if (strlen($wantpassword) < 6) {
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
-if (strlen($wantpassword) > 72) {
-    $session->set('is-warning', "[h2]{$lang['takesignup_pass_long']}[/h2]");
-    header("Location: {$site_config['baseurl']}/signup.php");
-    die();
-}
-if ($wantpassword == $wantusername) {
+if ($wantpassword === $wantusername) {
     $session->set('is-warning', "[h2]{$lang['takesignup_same']}[/h2]");
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
