@@ -1,4 +1,5 @@
 11 Jul 2018
+fix: query non existent table
 add: TMDb Top 100 Movies
 add: images table to store image urls
 update: API get images to store urls
