@@ -1,4 +1,5 @@
 11 Jul 2018
+update: normalize relative urls in js files
 remove: Atlantis from countries signup.php invite_signup.php
 fix: error on valid empty post contents takesignup.php
 remove: optimize/blur gifs ImageProxy.php

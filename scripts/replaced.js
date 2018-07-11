@@ -70,7 +70,7 @@ function refrClock() {
 
 function do_rate(rate, id, what) {
     $.ajax({
-        url: '/ajax/rating.php',
+        url: './ajax/rating.php',
         type: 'POST',
         data: {
             rate: rate,

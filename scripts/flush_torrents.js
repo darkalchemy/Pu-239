@@ -10,7 +10,7 @@ $(function() {
             }
             $("#flush").fadeOut();
             $("#flush_button").hide();
-            $.post("ajax/member_input.php", {
+            $.post("./ajax/member_input.php", {
                 action: "flush_torrents",
                 id: id
             });

@@ -14,7 +14,7 @@ function autosearch(key) {
         var lastChar = keyword.slice(-1);
         if (lastChar != " " && keyword.length >= min_length) {
             $.ajax({
-                url: "/ajax/autocomplete.php",
+                url: "./ajax/autocomplete.php",
                 type: "POST",
                 data: {
                     keyword: keyword

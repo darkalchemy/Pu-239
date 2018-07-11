@@ -3,7 +3,7 @@ $(function() {
         return false;
     }
     $.ajax({
-        url: "ajax/checkports.php",
+        url: "./ajax/checkports.php",
         data: {
             uid: uid
         },
@@ -20,7 +20,7 @@ $("#portcheck").click(function() {
     var port = $("#userport").val();
     $("#ipport").val("Checking Status of Port " + port);
     $.ajax({
-        url: "ajax/checkport.php",
+        url: "./ajax/checkport.php",
         data: {
             ip: ip,
             port: port
