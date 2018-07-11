@@ -51,7 +51,7 @@ $time_select .= '
 
 $countries = countries();
 $country .= "
-        <option value='999999'" . (empty($CURUSER['country']) ? ' selected' : '') . '>Atlantis</option>';
+        <option value='999999'" . (empty($CURUSER['country']) ? ' selected' : '') . '>Select your Country</option>';
 
 foreach ($countries as $cntry) {
     $country .= "
