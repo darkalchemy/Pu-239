@@ -70,8 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] == UC_MAX) {
     unset($_POST);
 }
 
-$perpage = 15;
-$pager = pager($perpage, $count, 'staffpanel.php?tool=bans&amp;');
 $res = $fluent->from('bans')
     ->select('INET6_NTOA(first) AS first')
     ->select('INET6_NTOA(last) AS last')
@@ -80,7 +78,10 @@ $res = $fluent->from('bans')
 foreach ($res as $arr) {
     $bans[] = $arr;
 }
-$count = count($bans);
+$count = !empty($bans) ? count($bans) : 0;
+$perpage = 15;
+$pager = pager($perpage, $count, 'staffpanel.php?tool=bans&amp;');
+
 $HTMLOUT = "
         <h1 class='has-text-centered'>Bans</h1>
         <div class='top20 bg-00 round10'>

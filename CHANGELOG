@@ -1,4 +1,5 @@
 11 Jul 2018
+fix: undefined $count admin/bans.php
 fix: search by category browse.php
 fix: missing require thanks.php
 fix: missing require bookmark.php
