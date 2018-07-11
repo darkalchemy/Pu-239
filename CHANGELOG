@@ -1,4 +1,5 @@
 11 Jul 2018
+update: README innodb_autoinc_lock_mode = 0
 fix: undefined $count admin/bans.php
 fix: search by category browse.php
 fix: missing require thanks.php
