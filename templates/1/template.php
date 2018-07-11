@@ -322,11 +322,14 @@ function stdfoot($stdfoot = false)
         </div>";
     }
     $details = basename($_SERVER['PHP_SELF']) === 'details.php';
-    $bg_image = '';
+    $bg_image = $poster_image = '';
     if ($CURUSER && ($site_config['backgrounds_on_all_pages'] || $details)) {
         $background = get_body_image($details);
-        if ($background) {
-            $bg_image = "var body_image = '" . url_proxy($background, true) . "'";
+        if (!empty($background['background'])) {
+            $bg_image = "var body_bg_image = '" . url_proxy($background['background'], true) . "'";
+        }
+        if (!empty($background['poster'])) {
+            $poster_image = "var body_poster_image = '" . url_proxy($background['poster'], true) . "'";
         }
     }
     $htmlfoot .= "
@@ -336,6 +339,7 @@ function stdfoot($stdfoot = false)
     </a>
     <script>
         $bg_image
+        $poster_image
         var is_12_hour = {$use_12_hour};
         var cookie_prefix = '{$site_config['cookie_prefix']}';
         var cookie_path = '{$site_config['cookie_path']}';
@@ -566,6 +570,7 @@ function navbar()
                             <li id='movies_links' class='clickable'>
                                 <a href='#'>{$lang['gl_movies_tv']}</a>
                                 <ul class='ddFade ddFadeSlow'>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies_top100.php'>{$lang['gl_movies_top_100']}</a></li>
                                     <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php'>{$lang['gl_movies_by_date']}</a></li>
                                     <li class='iss_hidden'><a href='{$site_config['baseurl']}/tv.php'>{$lang['gl_tv_today']}</a></li>
                                     <li class='iss_hidden'><a href='{$site_config['baseurl']}/tvmaze.php'>{$lang['gl_tvmaze_today']}</a></li>

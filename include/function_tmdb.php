@@ -7,7 +7,7 @@ function get_tv_by_day($dates)
     $tmdb_data = $cache->get('tmdb_tv_' . $dates);
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $_ENV['TMDB_API_KEY'];
-        $url = "https://api.themoviedb.org/3/discover/tv?air_date.gte={$dates}&air_date.lte={$dates}&api_key=$apikey";
+        $url = "https://api.themoviedb.org/3/discover/tv?air_date.gte={$dates}&air_date.lte={$dates}&api_key=$apikey&with_original_language=en";
         $content = fetch($url);
         if (!$content) {
             return false;
@@ -17,7 +17,7 @@ function get_tv_by_day($dates)
         $tmdb_data = get_movies($json);
         for ($i = 2; $i <= $pages; ++$i) {
             $purl = "$url&page=$i";
-            $content = fetch($url);
+            $content = fetch($purl);
             $json = json_decode($content, true);
             $tmdb_data = array_merge($tmdb_data, get_movies($json));
         }
@@ -35,7 +35,7 @@ function get_movies_by_week($dates)
     $tmdb_data = $cache->get('tmdb_movies_' . $dates[0]);
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $_ENV['TMDB_API_KEY'];
-        $url = "https://api.themoviedb.org/3/discover/movie?primary_release_date.gte={$dates[0]}&primary_release_date.lte={$dates[1]}&api_key=$apikey&sort_by=release_date.asc&include_adult=false&include_video=false";
+        $url = "https://api.themoviedb.org/3/discover/movie?primary_release_date.gte={$dates[0]}&primary_release_date.lte={$dates[1]}&api_key=$apikey&sort_by=release_date.asc&include_adult=false&include_video=false&with_original_language=en";
         $content = fetch($url);
         if (!$content) {
             return false;
@@ -46,7 +46,7 @@ function get_movies_by_week($dates)
 
         for ($i = 2; $i <= $pages; ++$i) {
             $purl = "$url&page=$i";
-            $content = fetch($url);
+            $content = fetch($purl);
             $json = json_decode($content, true);
             $tmdb_data = array_merge($tmdb_data, get_movies($json));
         }
@@ -57,10 +57,55 @@ function get_movies_by_week($dates)
     return $tmdb_data;
 }
 
+function get_movies_by_vote_average($count)
+{
+    global $cache;
+
+    $page = $count / 20;
+    $tmdb_data = $cache->get('tmdb_movies_vote_average_' . $count);
+    if ($tmdb_data === false || is_null($tmdb_data)) {
+        $apikey = $_ENV['TMDB_API_KEY'];
+        $url = "https://api.themoviedb.org/3/discover/movie?api_key=$apikey&with_original_language=en&language=en-US&sort_by=vote_average.desc&include_adult=false&include_video=false&vote_count.gte=1000";
+        $content = fetch($url);
+        if (!$content) {
+            return false;
+        }
+        $json = json_decode($content, true);
+        $pages = $json['total_pages'] <= $page ? $json['total_pages'] : $page;
+        $tmdb_data = get_movies($json);
+
+        for ($i = 2; $i <= $pages; ++$i) {
+            $purl = "$url&page=$i";
+            $content = fetch($purl);
+            $json = json_decode($content, true);
+            $tmdb_data = array_merge($tmdb_data, get_movies($json));
+        }
+        $cache->set('tmdb_movies_vote_average_' . $count, $tmdb_data, 86400);
+    }
+
+    return $tmdb_data;
+}
+
 function get_movies($json)
 {
     foreach ($json['results'] as $movie) {
         if ($movie['original_language'] === 'en') {
+            if (!empty($movie['id'])) {
+                $images = '';
+                if (!empty($movie['poster_path'])) {
+                    $images .= "({$movie['id']}, 'https://image.tmdb.org/t/p/original{$movie['poster_path']}', 'poster')";
+                }
+                if (!empty($movie['backdrop_path'])) {
+                    $images .= (empty($images) ? '' : ', ') . "({$movie['id']}, 'https://image.tmdb.org/t/p/original{$movie['backdrop_path']}', 'background')";
+                }
+                if (!empty($images)) {
+                    $sql = "INSERT IGNORE INTO images (tmdb_id, url, type) VALUES $images";
+                    //dd($sql);
+                    sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                }
+            } else {
+                dd($movie);
+            }
             $movies[] = $movie;
         }
     }

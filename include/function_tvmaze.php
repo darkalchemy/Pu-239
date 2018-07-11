@@ -198,6 +198,9 @@ function tvmaze($tvmaze_id, $id)
         $cache->update_row('torrent_details_' . $id, [
             'poster' => $tvmaze_show_data['image']['original'],
         ], 0);
+        $sql = "INSERT IGNORE INTO images (tvmaze_id, url, type) VALUES ($tvmaze_id, {$tvmaze_show_data['image']['original']}, 'poster')";
+        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+
     }
     if (!empty($set)) {
         $fluent->update('torrents')

@@ -1,9 +1,10 @@
 <?php
 
 /**
- * This file was created on Jul 08 2018 12:08:57.
- * User Class Config.
- **/
+This file was created on Jul 11 2018 20:37:42.
+User Class Config.
+**/
+
 define('UC_USER', 0);
 define('UC_MIN', 0);
 define('UC_POWER_USER', 1);
@@ -15,6 +16,8 @@ define('UC_ADMINISTRATOR', 5);
 define('UC_SYSOP', 6);
 define('UC_MAX', 6);
 
+
+
 $class_names = [
   UC_USER => 'USER',
   UC_POWER_USER => 'POWER USER',
@@ -22,8 +25,9 @@ $class_names = [
   UC_UPLOADER => 'UPLOADER',
   UC_MODERATOR => 'MODERATOR',
   UC_ADMINISTRATOR => 'ADMINISTRATOR',
-  UC_SYSOP => 'SYSOP',
+  UC_SYSOP => 'SYSOP'
 ];
+
 
 $class_colors = [
   UC_USER => '8e35ef',
@@ -32,8 +36,9 @@ $class_colors = [
   UC_UPLOADER => '0000ff',
   UC_MODERATOR => 'fe2e2e',
   UC_ADMINISTRATOR => 'b000b0',
-  UC_SYSOP => '61df00',
+  UC_SYSOP => '61df00'
 ];
+
 
 $class_images = [
   UC_USER => $site_config['pic_baseurl'] . 'class/user.gif',
@@ -42,5 +47,5 @@ $class_images = [
   UC_UPLOADER => $site_config['pic_baseurl'] . 'class/uploader.gif',
   UC_MODERATOR => $site_config['pic_baseurl'] . 'class/moderator.gif',
   UC_ADMINISTRATOR => $site_config['pic_baseurl'] . 'class/administrator.gif',
-  UC_SYSOP => $site_config['pic_baseurl'] . 'class/sysop.gif',
+  UC_SYSOP => $site_config['pic_baseurl'] . 'class/sysop.gif'
 ];

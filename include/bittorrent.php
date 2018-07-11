@@ -2217,7 +2217,7 @@ function fetch($url)
     return null;
 }
 
-function get_body_image($details)
+function get_body_image($details, $portrait = false)
 {
     global $cache, $fluent, $torrents;
 
@@ -2227,25 +2227,43 @@ function get_body_image($details)
 
     $backgrounds = $cache->get('backgrounds_');
     if ($backgrounds === false || is_null($backgrounds)) {
-        $pdo = $fluent->getPdo();
-        $sql = $pdo->prepare("SELECT DISTINCT background FROM torrents WHERE background IS NOT NULL AND background != ''");
-        $sql->execute();
-        $result = $sql->fetchAll();
-        if (!$result) {
-            return false;
-        }
+        $results = $fluent->from('images')
+            ->select(null)
+            ->select('url')
+            ->where('type = ?', 'background');
+
         $backgrounds = [];
-        foreach ($result as $background) {
-            $backgrounds[] = $background['background'];
+        foreach ($results as $background) {
+            $backgrounds[] = $background['url'];
         }
-        $cache->set('backgrounds_', $backgrounds, 86400);
+        if (!empty($backgrounds)) {
+            $cache->set('backgrounds_', $backgrounds, 86400);
+        }
+    }
+    $posters = $cache->get('posters_');
+    if ($posters === false || is_null($posters)) {
+        $results = $fluent->from('images')
+            ->select(null)
+            ->select('url')
+            ->where('type = ?', 'poster');
+
+        $posters = [];
+        foreach ($results as $poster) {
+            $posters[] = $poster['url'];
+        }
+        if (!empty($posters)) {
+            $cache->set('posters_', $posters, 86400);
+        }
     }
 
-    if (empty($backgrounds)) {
+    if (empty($backgrounds) && empty($posters)) {
         return false;
     }
 
-    return $backgrounds[array_rand($backgrounds)];
+    return [
+        'background' => $backgrounds[array_rand($backgrounds)],
+        'poster' => $posters[array_rand($posters)],
+    ];
 }
 
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {

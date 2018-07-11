@@ -391,6 +391,7 @@ $cache->delete('top5_tor_');
 $cache->delete('scroll_tor_');
 $cache->delete('torrent_poster_count_');
 $cache->delete('backgrounds_');
+$cache->delete('posters_');
 $hashes = $cache->get('hashes_');
 if (!empty($hashes)) {
     foreach ($hashes as $hash) {

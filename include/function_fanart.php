@@ -22,7 +22,6 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
     if (empty($key) || empty($thetvdb_id) || !in_array($type, $types)) {
         return null;
     }
-
     $fanart = $cache->get('show_images_' . $thetvdb_id);
     if ($fanart === false || is_null($fanart)) {
         $url = 'http://webservice.fanart.tv/v3/tv/';

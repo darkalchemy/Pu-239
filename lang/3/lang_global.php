@@ -4,6 +4,7 @@ $lang = [
     //Mod admin link
     'gl_movies_tv' => 'Movies & TV',
     'gl_movies_by_date' => 'Movies By Release Date',
+    'gl_movies_top_100' => 'TMDb Top 100',
     'gl_tv_today' => 'TV Airing [TMDb]',
     'gl_tvmaze_today' => 'TV Airing [TVMaze]',
     'gl_userblocks' => 'User Blocks',

@@ -1,4 +1,8 @@
 11 Jul 2018
+add: TMDb Top 100 Movies
+add: images table to store image urls
+update: API get images to store urls
+update: get_body_image to get from images table and get poster or background depending on screen orientation
 update: normalize relative urls in js files
 remove: Atlantis from countries signup.php invite_signup.php
 fix: error on valid empty post contents takesignup.php

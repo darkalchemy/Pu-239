@@ -50,6 +50,11 @@ function get_imdb_info($imdb_id)
     }
     $poster = !empty($imdb_data['poster']) ? $imdb_data['poster'] : '';
 
+    if (!empty($poster)) {
+        $sql = "INSERT IGNORE INTO images (imdb_id, url, type) VALUES ($imdb_id, '{$imdb_data['poster']}', 'poster')";
+        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+    }
+
     $imdb = [
         'title' => 'Title',
         'country' => 'Country',

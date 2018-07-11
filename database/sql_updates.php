@@ -30,4 +30,20 @@ $sql_updates = [
         'query' => "ALTER TABLE users ADD COLUMN `12_hour` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes'",
         'flush' => true,
     ],
+    [
+        'id' => 1531336627,
+        'info' => 'Add Images Table',
+        'date' => '11 Jul, 2018',
+        'query' => "CREATE TABLE IF NOT EXISTS `images` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tmdb_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `tvmaze_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `imdb_id` char(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `dbid_url_type` (`url`,`type`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC",
+        'flush' => false,
+    ],
 ];

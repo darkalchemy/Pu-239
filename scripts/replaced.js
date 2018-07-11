@@ -316,11 +316,19 @@ $(function () {
             scrollTop: scrollToPosition
         }, animate_duration, 'swing');
     }
+    if (typeof body_bg_image !== 'undefined' && document.body.contains(document.getElementById('body-overlay'))) {
+        if (typeof body_poster_image !== 'undefined') {
+            var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+            var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+            if (w >= h) {
+                var image = body_bg_image;
+            } else {
+                var image = body_poster_image;
+            }
+        }
 
-    if (typeof body_image !== 'undefined' && document.body.contains(document.getElementById('body-overlay'))) {
         document.getElementsByTagName('body')[0].style.backgroundColor = 'black';
-        document.getElementsByTagName('body')[0].style.backgroundImage = 'url(' + body_image + ')';
-        document.getElementsByTagName('body')[0].style.backgroundAttachment = 'fixed';
+        document.getElementsByTagName('body')[0].style.backgroundImage = 'url(' + image + ')';
         document.getElementsByTagName('body')[0].classList.remove('background-16');
     }
 
