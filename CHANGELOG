@@ -1,3 +1,6 @@
+12 Jul 2018
+fix: check if dir exists before traverse it log_viewer.php
+
 11 Jul 2018
 fix: background not displaying details.php
 fix: query non existent table

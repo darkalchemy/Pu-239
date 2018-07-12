@@ -51,18 +51,22 @@ if (!empty($_GET['action']) && $_GET['action'] === 'edit') {
 }
 
 $paths = [
+    '/var/log/apache2',
     '/var/log/nginx/',
     SQLERROR_LOGS_DIR,
+    ROOT_DIR . 'logs',
 ];
 
 $files = [];
-foreach ($paths as $label => $path) {
-    $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
-    $exts = ['log', 'gz'];
-    foreach ($objects as $name => $object) {
-        $ext = pathinfo($name, PATHINFO_EXTENSION);
-        if (in_array($ext, $exts)) {
-            $files[] = $name;
+foreach ($paths as $path) {
+    if (file_exists($path)) {
+        $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
+        $exts = ['log', 'gz'];
+        foreach ($objects as $name => $object) {
+            $ext = pathinfo($name, PATHINFO_EXTENSION);
+            if (in_array($ext, $exts)) {
+                $files[] = $name;
+            }
         }
     }
 }
