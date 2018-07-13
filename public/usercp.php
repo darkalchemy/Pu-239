@@ -57,7 +57,7 @@ $possible_actions = [
     'personal',
     'default',
 ];
-$action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
+$action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : 'default';
 if (!in_array($action, $possible_actions)) {
     $session->set('is-warning', '[h2]Error! Change a few things up and try submitting again.[/h2]');
 }
