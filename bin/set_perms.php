@@ -37,20 +37,24 @@ $folders = [
 ];
 
 foreach ($folders as $folder) {
-    chmod_r($folder);
+    if (file_exists($folder)) {
+        chmod_r($folder);
+    }
 }
 
 $i = 0;
 foreach ($paths as $path) {
-    $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
-    foreach ($objects as $name => $object) {
-        if (is_file($name)) {
-            $ext = pathinfo($name, PATHINFO_EXTENSION);
-            if (in_array($ext, $exts)) {
-                if (chmod($name, 0664)) {
-                    chown($name, $user);
-                    chgrp($name, $group);
-                    ++$i;
+    if (file_exists($path)) {
+        $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
+        foreach ($objects as $name => $object) {
+            if (is_file($name)) {
+                $ext = pathinfo($name, PATHINFO_EXTENSION);
+                if (in_array($ext, $exts)) {
+                    if (chmod($name, 0664)) {
+                        chown($name, $user);
+                        chgrp($name, $group);
+                        ++$i;
+                    }
                 }
             }
         }

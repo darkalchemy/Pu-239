@@ -1,4 +1,5 @@
 15 Jul 2018
+update: check file/folder exists before processing
 fix: images cleanup
 update: composer require PHP >= 7.2.0
 update: increase font size slightly
