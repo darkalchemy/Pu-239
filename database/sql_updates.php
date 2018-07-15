@@ -61,6 +61,13 @@ $sql_updates = [
         'flush' => false,
     ],
     [
+        'id' => 1531531985,
+        'info' => 'Modify comments.user_likes to int',
+        'date' => '14 Jul, 2018',
+        'query' => "UPDATE `comments` SET `user_likes` = 0",
+        'flush' => false,
+    ],
+    [
         'id' => 1531531986,
         'info' => 'Modify comments.user_likes to int',
         'date' => '14 Jul, 2018',

@@ -644,15 +644,14 @@ CREATE TABLE `comments` (
   `anonymous` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `request` int(10) unsigned NOT NULL DEFAULT '0',
   `offer` int(10) unsigned NOT NULL DEFAULT '0',
-  `user_likes` mediumtext COLLATE utf8mb4_unicode_ci,
+  `user_likes` int(10) unsigned NOT NULL DEFAULT '0',
   `checked_by` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `checked_when` int(10) unsigned NOT NULL DEFAULT '0',
   `checked` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `user` (`user`),
   KEY `torrent` (`torrent`),
-  CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`torrent`) REFERENCES `torrents` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1154,12 +1153,13 @@ DROP TABLE IF EXISTS `likes`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `likes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `likes` int(11) NOT NULL,
-  `post_id` int(11) NOT NULL,
-  `comment_id` int(11) NOT NULL,
-  `user_comment_id` int(11) NOT NULL,
+  `post_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `comment_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `topic_id` int(10) unsigned NOT NULL DEFAULT '0',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `userip` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `usercomment_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `request_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `offer_id` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -1543,6 +1543,7 @@ CREATE TABLE `posts` (
   `status` enum('deleted','recycled','postlocked','ok') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ok',
   `staff_lock` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `anonymous` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `user_likes` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `topicid` (`topic_id`),
   KEY `userid` (`user_id`),
@@ -2112,6 +2113,7 @@ CREATE TABLE `topics` (
   `status` enum('deleted','recycled','ok') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ok',
   `main_forum_id` int(10) unsigned NOT NULL DEFAULT '0',
   `anonymous` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `user_likes` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `userid` (`user_id`),
   KEY `subject` (`topic_name`),
@@ -2352,6 +2354,7 @@ CREATE TABLE `usercomments` (
   `ori_text` mediumtext COLLATE utf8mb4_unicode_ci,
   `editedby` int(10) unsigned NOT NULL DEFAULT '0',
   `editedat` int(10) unsigned NOT NULL DEFAULT '0',
+  `user_likes` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `user` (`user`),
   KEY `userid` (`userid`),
@@ -2656,4 +2659,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-11 21:01:22
+-- Dump completed on 2018-07-15  4:18:03
