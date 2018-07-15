@@ -33,23 +33,71 @@ class AJAXChatEncoding
             case 'ISO-8859-15':
                 // Encode special chars and all extended characters above ISO-8859-1 charset as entities, then convert to content charset:
                 return self::convertEncoding(self::encodeEntities($str, 'UTF-8', [
-                    0x26, 0x26, 0, 0xFFFF,    // &
-                    0x3C, 0x3C, 0, 0xFFFF,    // <
-                    0x3E, 0x3E, 0, 0xFFFF,    // >
-                    0x27, 0x27, 0, 0xFFFF,    // '
-                    0x22, 0x22, 0, 0xFFFF,    // "
-                    0x100, 0x2FFFF, 0, 0xFFFF,    // above ISO-8859-1
+                    0x26,
+                    0x26,
+                    0,
+                    0xFFFF,
+                    // &
+                    0x3C,
+                    0x3C,
+                    0,
+                    0xFFFF,
+                    // <
+                    0x3E,
+                    0x3E,
+                    0,
+                    0xFFFF,
+                    // >
+                    0x27,
+                    0x27,
+                    0,
+                    0xFFFF,
+                    // '
+                    0x22,
+                    0x22,
+                    0,
+                    0xFFFF,
+                    // "
+                    0x100,
+                    0x2FFFF,
+                    0,
+                    0xFFFF,
+                    // above ISO-8859-1
                 ]), 'UTF-8', $contentCharset);
                 break;
             default:
                 // Encode special chars and all characters above ASCII charset as entities, then convert to content charset:
                 return self::convertEncoding(self::encodeEntities($str, 'UTF-8', [
-                    0x26, 0x26, 0, 0xFFFF,    // &
-                    0x3C, 0x3C, 0, 0xFFFF,    // <
-                    0x3E, 0x3E, 0, 0xFFFF,    // >
-                    0x27, 0x27, 0, 0xFFFF,    // '
-                    0x22, 0x22, 0, 0xFFFF,    // "
-                    0x80, 0x2FFFF, 0, 0xFFFF,    // above ASCII
+                    0x26,
+                    0x26,
+                    0,
+                    0xFFFF,
+                    // &
+                    0x3C,
+                    0x3C,
+                    0,
+                    0xFFFF,
+                    // <
+                    0x3E,
+                    0x3E,
+                    0,
+                    0xFFFF,
+                    // >
+                    0x27,
+                    0x27,
+                    0,
+                    0xFFFF,
+                    // '
+                    0x22,
+                    0x22,
+                    0,
+                    0xFFFF,
+                    // "
+                    0x80,
+                    0x2FFFF,
+                    0,
+                    0xFFFF,
+                    // above ASCII
                 ]), 'UTF-8', $contentCharset);
         }
     }
@@ -74,7 +122,13 @@ class AJAXChatEncoding
         static $specialChars;
         if (!$specialChars) {
             // As &apos; is not supported by IE, we use &#39; as replacement for "'":
-            $specialChars = ['&' => '&amp;', '<' => '&lt;', '>' => '&gt;', "'" => '&#39;', '"' => '&quot;'];
+            $specialChars = [
+                '&' => '&amp;',
+                '<' => '&lt;',
+                '>' => '&gt;',
+                "'" => '&#39;',
+                '"' => '&quot;',
+            ];
         }
 
         return $specialChars;

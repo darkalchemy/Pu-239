@@ -143,7 +143,7 @@ function get_scheme()
     }
     ?>
     <script>
-        window.addEventListener("load", clear_storage());
+        window.addEventListener('load', clear_storage());
 
         function clear_storage() {
             //localStorage.clear();
@@ -161,7 +161,7 @@ function get_scheme()
         function onClick(step) {
             localStorage.setItem('step', step++);
             var step = parseInt(localStorage.getItem('step'));
-            window.location.href = 'index.php?step=' + step + '&xbt=0'
+            window.location.href = 'index.php?step=' + step + '&xbt=0';
         }
     </script>
 </div>

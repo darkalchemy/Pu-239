@@ -16,7 +16,8 @@ $lang = [
     //Other Stuff
     'themes_use_temp' => 'Use this template',
     'themes_addnew' => 'Add a template',
-    'themes_edit_tem' => 'Edit Template', //---' <Template Name>' added in source
+    'themes_edit_tem' => 'Edit Template',
+    //---' <Template Name>' added in source
     'themes_edit_uri' => 'Edit Uri',
     'themes_save' => 'Save',
     'themes_add' => 'Add',

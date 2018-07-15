@@ -1,4 +1,8 @@
 15 Jul 2018
+fix: images cleanup
+update: composer require PHP >= 7.2.0
+update: increase font size slightly
+cleanup: general code cleanup, phpstorm
 update: database files
 fix: all like buttons
 add: additional like buttons

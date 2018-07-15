@@ -15,13 +15,13 @@ ajaxChat.replaceCustomCommands = function(text, textParts) {
 }
  */
 
-ajaxChat.replaceCustomCommands = function(e, a) {
+ajaxChat.replaceCustomCommands = function (e, a) {
     switch (a[0]) {
-        case "/announce":
-            e = e.replace("/announce", " ");
-        case "/takeover":
-            return e = e.replace("/takeover", " "), e = this.replaceBBCode(e), e = this.replaceHyperLinks(e), e = this.replaceEmoticons(e), '<span class="chatBotMessage">' + e + "</span>";
+        case '/announce':
+            e = e.replace('/announce', ' ');
+        case '/takeover':
+            return e = e.replace('/takeover', ' '), e = this.replaceBBCode(e), e = this.replaceHyperLinks(e), e = this.replaceEmoticons(e), '<span class="chatBotMessage">' + e + '</span>';
         default:
-            return e
+            return e;
     }
 };

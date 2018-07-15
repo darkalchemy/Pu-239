@@ -105,7 +105,13 @@ if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
         header("Location: {$site_config['baseurl']}/upload.php");
         die();
     }
-    $nfo_content = str_ireplace(["\x0d\x0d\x0a", "\xb0"], ["\x0d\x0a", ''], file_get_contents($nfofilename));
+    $nfo_content = str_ireplace([
+                                    "\x0d\x0d\x0a",
+                                    "\xb0",
+                                ], [
+                                    "\x0d\x0a",
+                                    '',
+                                ], file_get_contents($nfofilename));
     $nfo = sqlesc($nfo_content);
 }
 

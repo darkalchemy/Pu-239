@@ -39,7 +39,12 @@ if ($CURUSER['class'] < UC_VIP) {
 if (isset($_POST['bm']) && is_int($_POST['bm']) && $_POST['bm'] == 1) {
     $join = 'LEFT JOIN bookmarks AS b ON b.torrentid = t.id';
 }
-$counts = [15, 30, 50, 100];
+$counts = [
+    15,
+    30,
+    50,
+    100,
+];
 if (!empty($_GET['count']) && in_array((int) $_GET['count'], $counts)) {
     $limit = 'LIMIT ' . (int) $_GET['count'];
 } else {

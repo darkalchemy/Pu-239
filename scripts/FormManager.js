@@ -1,18 +1,18 @@
-var FORM_MANAGER_CONDITION_SEPARATOR = " AND ";
+var FORM_MANAGER_CONDITION_SEPARATOR = ' AND ';
 
-var FORM_MANAGER_POSSIBILITY_SEPARATOR = " OR ";
+var FORM_MANAGER_POSSIBILITY_SEPARATOR = ' OR ';
 
-var FORM_MANAGER_NAME_VALUE_SEPARATOR = " BEING ";
+var FORM_MANAGER_NAME_VALUE_SEPARATOR = ' BEING ';
 
-var FORM_MANAGER_DEPENDS = "DEPENDS ON ";
+var FORM_MANAGER_DEPENDS = 'DEPENDS ON ';
 
-var FORM_MANAGER_CONFLICTS = "CONFLICTS WITH ";
+var FORM_MANAGER_CONFLICTS = 'CONFLICTS WITH ';
 
-var FORM_MANAGER_EMPTY = "EMPTY";
+var FORM_MANAGER_EMPTY = 'EMPTY';
 
 function addEvent(el, ev, f) {
     if (el.addEventListener) el.addEventListener(ev, f, false); else if (el.attachEvent) {
-        var t = function() {
+        var t = function () {
             f.apply(el);
         };
         addEvent.events.push({
@@ -20,8 +20,8 @@ function addEvent(el, ev, f) {
             event: ev,
             handler: f
         });
-        el.attachEvent("on" + ev, t);
-    } else el["on" + ev] = f;
+        el.attachEvent('on' + ev, t);
+    } else el['on' + ev] = f;
 }
 
 function addEvents(els, evs, f) {
@@ -30,8 +30,8 @@ function addEvents(els, evs, f) {
 
 addEvent.events = [];
 
-if (typeof window.event !== "undefined") addEvent(window, "unload", function() {
-    for (var i = 0, e = addEvent.events; i < e.length; ++i) e[i].element.detachEvent("on" + e[i].event, e[i].handler);
+if (typeof window.event !== 'undefined') addEvent(window, 'unload', function () {
+    for (var i = 0, e = addEvent.events; i < e.length; ++i) e[i].element.detachEvent('on' + e[i].event, e[i].handler);
 });
 
 function getRadioValue(el) {
@@ -41,31 +41,31 @@ function getRadioValue(el) {
 }
 
 function getSelectValue(el) {
-    if (!el.tagName || el.tagName.toLowerCase() !== "select") return null;
+    if (!el.tagName || el.tagName.toLowerCase() !== 'select') return null;
     return el.options[el.selectedIndex].value;
 }
 
 function isElementValue(el, v) {
-    if (v === FORM_MANAGER_EMPTY) v = "";
-    return getRadioValue(el) == v || getSelectValue(el) == v || el.tagName && el.tagName.toLowerCase() !== "select" && el.value == v;
+    if (v === FORM_MANAGER_EMPTY) v = '';
+    return getRadioValue(el) == v || getSelectValue(el) == v || el.tagName && el.tagName.toLowerCase() !== 'select' && el.value == v;
 }
 
 function setupDependencies() {
-    var showEl = function() {
-        this.style.display = "";
-        if (this.parentNode.tagName.toLowerCase() == "label") {
-            this.parentNode.style.display = "";
+    var showEl = function () {
+        this.style.display = '';
+        if (this.parentNode.tagName.toLowerCase() == 'label') {
+            this.parentNode.style.display = '';
         }
     };
-    var hideEl = function() {
-        this.style.display = "none";
-        if (typeof this.checked !== "undefined") this.checked = false; else this.value = "";
-        if (this.parentNode.tagName.toLowerCase() == "label") {
-            this.parentNode.style.display = "none";
+    var hideEl = function () {
+        this.style.display = 'none';
+        if (typeof this.checked !== 'undefined') this.checked = false; else this.value = '';
+        if (this.parentNode.tagName.toLowerCase() == 'label') {
+            this.parentNode.style.display = 'none';
         }
         this.hidden = true;
     };
-    var calcDeps = function() {
+    var calcDeps = function () {
         for (var i = 0, e = this.elements; i < e.length; ++i) {
             e[i].hidden = false;
             for (var j = 0, f = e[i].className.split(FORM_MANAGER_CONDITION_SEPARATOR); j < f.length; ++j) if (f[j].indexOf(FORM_MANAGER_DEPENDS) === 0) {
@@ -83,7 +83,8 @@ function setupDependencies() {
                         break;
                     }
                 } else {
-                    var n = f[j].substr(FORM_MANAGER_CONFLICTS.length).split(FORM_MANAGER_NAME_VALUE_SEPARATOR), v = n[1];
+                    var n = f[j].substr(FORM_MANAGER_CONFLICTS.length).split(FORM_MANAGER_NAME_VALUE_SEPARATOR),
+                        v = n[1];
                     n = n[0];
                     if (e[n]) {
                         if (isElementValue(e[n], v)) {
@@ -96,13 +97,13 @@ function setupDependencies() {
             if (!e[i].hidden) e[i].show();
         }
     };
-    var changeHandler = function() {
+    var changeHandler = function () {
         this.form.calculateDependencies();
         return true;
     };
     for (var i = 0; i < arguments.length; ++i) {
         for (var j = 0, e = window.document.forms[arguments[i]].elements; j < e.length; ++j) {
-            addEvents([ e[j] ], [ "change", "keyup", "focus", "click", "keydown" ], changeHandler);
+            addEvents([e[j]], ['change', 'keyup', 'focus', 'click', 'keydown'], changeHandler);
             e[j].hide = hideEl;
             e[j].show = showEl;
         }

@@ -130,7 +130,9 @@ function dateSort($a, $b)
 function getStartAndEndDate($year, $week)
 {
     return [
-      (new DateTime())->setISODate($year, $week, 0)->format('Y-m-d'), // Sunday
-      (new DateTime())->setISODate($year, $week, 6)->format('Y-m-d'),  // Saturday
-   ];
+        (new DateTime())->setISODate($year, $week, 0)->format('Y-m-d'),
+        // Sunday
+        (new DateTime())->setISODate($year, $week, 6)->format('Y-m-d'),
+        // Saturday
+    ];
 }

@@ -88,5 +88,5 @@ var ajaxChatLang = {
     errorSocketSecurity: 'Pogreška: Povezivanje s priključkom poslužitelja nije uspjelo (Flash sigurnosna pogreška).',
     errorDOMSyntax: 'Pogreška: Nepravilna DOM sintaksa (DOM ID: %s).',
     errorNotEnoughRep: 'Error: Not enough reputaion points.',
-    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.',
+    errorNotEnoughKarma: 'Error: Not enough karma(seedbonus) points.'
 };

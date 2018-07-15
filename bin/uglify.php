@@ -140,6 +140,8 @@ $css_list = [
         TEMPLATE_DIR . '1/custom.css',
     ],
     'chat_css_trans' => [
+        TEMPLATE_DIR . '1/css/reset.css',
+        ROOT_DIR . 'node_modules/normalize.css/normalize.css',
         CHAT_DIR . 'css/global.css',
         CHAT_DIR . 'css/fonts.css',
         CHAT_DIR . 'css/print.css',
@@ -148,6 +150,8 @@ $css_list = [
         CHAT_DIR . 'css/transparent.css',
     ],
     'chat_css_uranium' => [
+        TEMPLATE_DIR . '1/css/reset.css',
+        ROOT_DIR . 'node_modules/normalize.css/normalize.css',
         CHAT_DIR . 'css/global.css',
         CHAT_DIR . 'css/fonts.css',
         CHAT_DIR . 'css/print.css',
@@ -207,7 +211,10 @@ function pre_process_css($list)
 {
     foreach ($list as $css) {
         $name = basename($css);
-        $exclude = ['fonts.css', 'fontello.css'];
+        $exclude = [
+            'fonts.css',
+            'fontello.css',
+        ];
         if ($name === 'default.css' || $name === 'themeChanger.css' || $name === 'colorpicker.css' || $name === 'iCarousel.css') {
             $cmd = 'node --no-warnings ' . ROOT_DIR . "node_modules/base64-css/bin/cli.js -f $css -p " . PUBLIC_DIR . 'css/1/';
         } elseif ($name === 'Uranium.css' || $name === 'global.css' || $name === 'transparent.css') {

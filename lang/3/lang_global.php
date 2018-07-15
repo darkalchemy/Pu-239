@@ -117,14 +117,19 @@ $lang = [
     'gl_happyhour4' => 'r&#259;mas din aceast&#259; or&#259; vesel&#259;!',
     'gl_newpriv' => 'Mesaj Privat Nou',
     'gl_newmess' => '',
-    'gl_newprivs' => 'Mesaje Private Noi ',    //////for singular&plural
-    'gl_newmesss' => ' Messages',                    //////for singular&plural
+    'gl_newprivs' => 'Mesaje Private Noi ',
+    //////for singular&plural
+    'gl_newmesss' => ' Messages',
+    //////for singular&plural
     'gl_reports' => 'Raport nou. ',
     'gl_reports_new' => '',
-    'gl_reportss' => 'Rapoarte noi. ',        //////for singular&plural
-    'gl_reports_news' => '',                //////for singular&plural
+    'gl_reportss' => 'Rapoarte noi. ',
+    //////for singular&plural
+    'gl_reports_news' => '',
+    //////for singular&plural
     'gl_reports_report' => 'raport',
-    'gl_reports_reports' => 's',            //////for singular&plural
+    'gl_reports_reports' => 's',
+    //////for singular&plural
     'gl_reports_dealt' => 'Pentru a te ocupa de acesta, ',
     'gl_reports_click' => 'click pe titlul de mai sus pentru a vedea rapoartele',
     'gl_uploadapp_new' => 'Aplica&#355;ie upload &#238;n a&#351;teptare',

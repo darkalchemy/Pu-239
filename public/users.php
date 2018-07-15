@@ -61,7 +61,10 @@ $div .= "
 
 $aa = range('0', '9');
 $bb = range('a', 'z');
-$cc = [$aa, $bb];
+$cc = [
+    $aa,
+    $bb,
+];
 foreach ($cc as $aa) {
     $div .= "
     <div class='tabs is-small is-centered top20'>

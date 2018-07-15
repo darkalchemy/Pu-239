@@ -72,7 +72,13 @@ if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] === 'update')) {
         die();
     }
     if (is_uploaded_file($_FILES['nfo']['tmp_name']) && filesize($_FILES['nfo']['tmp_name']) > 0) {
-        $nfo_content = str_ireplace(["\x0d\x0d\x0a", "\xb0"], ["\x0d\x0a", ''], file_get_contents($_FILES['nfo']['tmp_name']));
+        $nfo_content = str_ireplace([
+                                        "\x0d\x0d\x0a",
+                                        "\xb0",
+                                    ], [
+                                        "\x0d\x0a",
+                                        '',
+                                    ], file_get_contents($_FILES['nfo']['tmp_name']));
         $updateset[] = 'nfo = ' . sqlesc($nfo_content);
         $torrent_cache['nfo'] = $nfo_content;
     }

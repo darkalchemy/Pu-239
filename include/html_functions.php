@@ -280,7 +280,10 @@ function write_class_files()
             $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
             $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . " . 'class/{$arr['classpic']}',";
             $js_classes[] = $arr['name'];
-            $data[] = ['className' => $arr['classname'], 'classColor' => '#' . $arr['classcolor']];
+            $data[] = [
+                'className' => $arr['classname'],
+                'classColor' => '#' . $arr['classcolor'],
+            ];
         }
         $classes[] = "var {$arr['name']} = {$arr['value']};";
     }

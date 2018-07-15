@@ -43,7 +43,12 @@ $staff_tools['shit_list'] = 'shit_list';
 
 $sql = sql_query('SELECT file_name FROM staffpanel') or sqlerr(__FILE__, __LINE__);
 while ($list = mysqli_fetch_assoc($sql)) {
-    $item = str_replace(['staffpanel.php?tool=', '.php', '&mode=news', '&action=app'], '', $list['file_name']);
+    $item = str_replace([
+                            'staffpanel.php?tool=',
+                            '.php',
+                            '&mode=news',
+                            '&action=app',
+                        ], '', $list['file_name']);
     $staff_tools[$item] = $item;
 }
 

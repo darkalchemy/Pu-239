@@ -10,9 +10,9 @@ function make_passhash($pass)
 
     if (PHP_VERSION_ID >= 70200 && @password_hash('secret_password', PASSWORD_ARGON2I)) {
         $options = [
-                'memory_cost' => !empty($site_config['password_memory_cost']) ? $site_config['password_memory_cost'] : 2048,
-                'time_cost' => !empty($site_config['password_time_cost']) ? $site_config['password_time_cost'] : 12,
-                'threads' => !empty($site_config['password_threads']) ? $site_config['password_threads'] : 4,
+            'memory_cost' => !empty($site_config['password_memory_cost']) ? $site_config['password_memory_cost'] : 2048,
+            'time_cost' => !empty($site_config['password_time_cost']) ? $site_config['password_time_cost'] : 12,
+            'threads' => !empty($site_config['password_threads']) ? $site_config['password_threads'] : 4,
         ];
 
         return password_hash($pass, PASSWORD_ARGON2I, $options);

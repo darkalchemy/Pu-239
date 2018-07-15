@@ -96,9 +96,10 @@ function get_base($array)
  */
 function get_results($array)
 {
-    return ['items' => $array['@items'],
-            'itemsfound' => $array['@itemsfound'],
-            'searchtime' => $array['@searchtime'],
+    return [
+        'items' => $array['@items'],
+        'itemsfound' => $array['@itemsfound'],
+        'searchtime' => $array['@searchtime'],
     ];
 }
 
@@ -161,11 +162,14 @@ function build_result($array, $pager)
             <tr>
                 <td colspan="4" width="100%">Movie name</td>
                 <td nowrap="nowrap">Added</td>
-                <td nowrap="nowrap"><img src="' . $site_config['baseurl']. '/imgs/icon-files.gif" width="12" height="12" alt=" "
+                <td nowrap="nowrap"><img src="' . $site_config['baseurl']. '/imgs/icon-files.gif" width="12" height="12"
+                                         alt=" "
                                          title="CDs"/></td>
-                <td nowrap="nowrap"><img src="' . $site_config['baseurl']. '/imgs/icon-format.gif" width="12" height="13" alt=" "
+                <td nowrap="nowrap"><img src="' . $site_config['baseurl']. '/imgs/icon-format.gif" width="12"
+                                         height="13" alt=" "
                                          title="Format"/></td>
-                <td nowrap="nowrap"><img src="' . $site_config['baseurl']. '/imgs/icon-upper.gif" width="15" height="17" alt=" "
+                <td nowrap="nowrap"><img src="' . $site_config['baseurl']. '/imgs/icon-upper.gif" width="15" height="17"
+                                         alt=" "
                                          title="Uploader"/></td>
             </tr>
             <?php
@@ -173,10 +177,11 @@ function build_result($array, $pager)
         for ($i = 0; $i < $count; ++$i) {
             $movie = ($count == 1 ? get_details($result) : get_details($result[$i])); ?>
                 <tr>
-                    <td nowrap="nowrap"><img src="' . $site_config['baseurl']. '/flag/<?php echo $movie['iso639']; ?>.gif" width="18"
-                                             height="12" border="0"
-                                             alt="<?php echo $movie['language']; ?>"
-                                             title="<?php echo $movie['language']; ?>"/></td>
+                    <td nowrap="nowrap"><img
+                                src="' . $site_config['baseurl']. '/flag/<?php echo $movie['iso639']; ?>.gif" width="18"
+                                height="12" border="0"
+                                alt="<?php echo $movie['language']; ?>"
+                                title="<?php echo $movie['language']; ?>"/></td>
                     <td colspan="2" width="100%"><a href="<?php echo $base . $movie['detail']; ?>"
                                                     target="_blank">
                             <?php echo $movie['movie']; ?>
@@ -184,9 +189,10 @@ function build_result($array, $pager)
                         <?php echo $movie['releasename'] ? '<br><font class="releasename">' . $movie['releasename'] . '</font>' : ''; ?>
                     </td>
                     <td nowrap="nowrap"><a href="<?php echo $base . $movie['download']; ?>"
-                                           target="blank"><img src="' . $site_config['baseurl']. '/imgs/icon-download.gif" width="12"
-                                                               height="12" border="0" alt=" "
-                                                               title="download"/></a></td>
+                                           target="blank"><img
+                                    src="' . $site_config['baseurl']. '/imgs/icon-download.gif" width="12"
+                                    height="12" border="0" alt=" "
+                                    title="download"/></a></td>
                     <td nowrap="nowrap"
                     ><?php echo str_replace(' ', '<br>', $movie['subadddate']); ?></td>
                     <td nowrap="nowrap"><?php echo $movie['files']; ?></td>

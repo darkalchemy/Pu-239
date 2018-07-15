@@ -54,15 +54,69 @@ $config['langAvailable'] = ['en'];
 $config['langDefault'] = 'en';
 // Language names (each languge code in available languages must have a display name assigned here):
 $config['langNames'] = [
-    'ar' => 'عربي', 'bg' => 'Български', 'ca' => 'Català', 'cy' => 'Cymraeg', 'cz' => 'Česky', 'da' => 'Dansk', 'de' => 'Deutsch', 'el' => 'Ελληνικα', 'en' => 'English',
-    'es' => 'Español', 'et' => 'Eesti', 'fa' => 'فارسی', 'fi' => 'Suomi', 'fr' => 'Français', 'gl' => 'Galego', 'he' => 'עברית', 'hr' => 'Hrvatski', 'hu' => 'Magyar', 'in' => 'Bahasa Indonesia', 'it' => 'Italiano',
-    'ja' => '日本語', 'ka' => 'ქართული', 'kr' => '한 글', 'mk' => 'Македонски', 'nl' => 'Nederlands', 'nl-be' => 'Nederlands (België)', 'no' => 'Norsk', 'pl' => 'Polski', 'pt-br' => 'Português (Brasil)', 'pt-pt' => 'Português (Portugal)',
-    'ro' => 'România', 'ru' => 'Русский', 'sk' => 'Slovenčina', 'sl' => 'Slovensko', 'sr' => 'Srpski', 'sv' => 'Svenska', 'th' => '&#x0e20;&#x0e32;&#x0e29;&#x0e32;&#x0e44;&#x0e17;&#x0e22;',
-    'tr' => 'Türkçe', 'uk' => 'Українська', 'zh' => '中文 (简体)', 'zh-tw' => '中文 (繁體)',
+    'ar' => 'عربي',
+    'bg' => 'Български',
+    'ca' => 'Català',
+    'cy' => 'Cymraeg',
+    'cz' => 'Česky',
+    'da' => 'Dansk',
+    'de' => 'Deutsch',
+    'el' => 'Ελληνικα',
+    'en' => 'English',
+    'es' => 'Español',
+    'et' => 'Eesti',
+    'fa' => 'فارسی',
+    'fi' => 'Suomi',
+    'fr' => 'Français',
+    'gl' => 'Galego',
+    'he' => 'עברית',
+    'hr' => 'Hrvatski',
+    'hu' => 'Magyar',
+    'in' => 'Bahasa Indonesia',
+    'it' => 'Italiano',
+    'ja' => '日本語',
+    'ka' => 'ქართული',
+    'kr' => '한 글',
+    'mk' => 'Македонски',
+    'nl' => 'Nederlands',
+    'nl-be' => 'Nederlands (België)',
+    'no' => 'Norsk',
+    'pl' => 'Polski',
+    'pt-br' => 'Português (Brasil)',
+    'pt-pt' => 'Português (Portugal)',
+    'ro' => 'România',
+    'ru' => 'Русский',
+    'sk' => 'Slovenčina',
+    'sl' => 'Slovensko',
+    'sr' => 'Srpski',
+    'sv' => 'Svenska',
+    'th' => '&#x0e20;&#x0e32;&#x0e29;&#x0e32;&#x0e44;&#x0e17;&#x0e22;',
+    'tr' => 'Türkçe',
+    'uk' => 'Українська',
+    'zh' => '中文 (简体)',
+    'zh-tw' => '中文 (繁體)',
 ];
 
 // Available styles:
-$config['styleAvailable'] = ['transparent', 'beige', 'black', 'grey', 'Oxygen', 'Lithium', 'Sulfur', 'Cobalt', 'Mercury', 'Uranium', 'Pine', 'Plum', 'prosilver', 'Core', 'MyBB', 'vBulletin', 'XenForo'];
+$config['styleAvailable'] = [
+    'transparent',
+    'beige',
+    'black',
+    'grey',
+    'Oxygen',
+    'Lithium',
+    'Sulfur',
+    'Cobalt',
+    'Mercury',
+    'Uranium',
+    'Pine',
+    'Plum',
+    'prosilver',
+    'Core',
+    'MyBB',
+    'vBulletin',
+    'XenForo',
+];
 // Default style:
 $config['styleDefault'] = 'transparent';
 
@@ -124,7 +178,15 @@ $config['openingHour'] = 0;
 // Defines the hour of the day the chat is closed (openingHour - 24):
 $config['closingHour'] = 24;
 // Defines the weekdays the chat is opened (0=Sunday to 6=Saturday):
-$config['openingWeekDays'] = [0, 1, 2, 3, 4, 5, 6];
+$config['openingWeekDays'] = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+];
 
 // Enable/Disable guest logins:
 $config['allowGuestLogins'] = false;

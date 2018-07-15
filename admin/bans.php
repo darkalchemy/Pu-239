@@ -6,7 +6,7 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'html_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global  $CURUSER, $site_config, $lang, $pdo, $fluent, $cache, $session;
+global $CURUSER, $site_config, $lang, $pdo, $fluent, $cache, $session;
 
 $lang = array_merge($lang, load_language('ad_bans'));
 $remove = isset($_GET['remove']) ? (int) $_GET['remove'] : 0;

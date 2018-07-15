@@ -66,8 +66,8 @@ if ($action === 'add') {
         ->fetchAll();
 
     if ($allrows) {
-        $HTMLOUT .= "
-            <h2>Most recent comments, in reverse order</h2>" . commenttable($allrows);
+        $HTMLOUT .= '
+            <h2>Most recent comments, in reverse order</h2>' . commenttable($allrows);
     }
     echo stdhead('Add a comment for "' . htmlsafechars($arr['username']) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
 } elseif ($action === 'edit') {
@@ -90,7 +90,7 @@ if ($action === 'add') {
         if ($body == '') {
             stderr('Error', 'Comment body cannot be empty!');
         }
-        sql_query('UPDATE usercomments SET text = ' . sqlesc($body) . ', editedat = ' . sqlesc(TIME_NOW). ', editedby = ' . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usercomments SET text = ' . sqlesc($body) . ', editedat = ' . sqlesc(TIME_NOW) . ', editedby = ' . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
         if ($returnto) {
             header("Location: $returnto");
         } else {
@@ -156,8 +156,8 @@ if ($action === 'add') {
         stderr('Error', 'Invalid ID');
     }
     $HTMLOUT = "
-        <h1 class='has-text-centered'>{$lang['comment_original_content']}#$commentid</h1>" . 
-        main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . "</div>");
+        <h1 class='has-text-centered'>{$lang['comment_original_content']}#$commentid</h1>" .
+        main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
 
     $returnto = (isset($_SERVER['HTTP_REFERER']) ? htmlsafechars($_SERVER['HTTP_REFERER']) : 0);
     if ($returnto) {

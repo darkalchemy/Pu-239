@@ -14,105 +14,105 @@
 
 /* Buttons */
 #content #bbCodeContainer input, #content #logoutButton, #content #submitButton, #loginForm #loginButton {
-    background-color: #1a1a1a;
-    color: #ababab;
-    border: 0;
+    background-color : #1a1a1a;
+    color            : #ababab;
+    border           : 0;
 }
 
 #content #bbCodeContainer input:hover, #content #logoutButton:hover, #content #submitButton:hover, #loginForm #loginButton:hover {
-    background-color: #1D68E0;
-    color: #000;
+    background-color : #1d68e0;
+    color            : #000;
 }
 
 #content select, #loginForm select, #loginForm input, #content textarea {
-    background-color: #383838;
-    color: #ababab;
-    border: 1px solid #565656;
+    background-color : #383838;
+    color            : #ababab;
+    border           : 1px solid #565656;
 }
 
 /* Status Icon */
 #content #statusIconContainer {
-    background: url('../../images/loading-sprite.png') no-repeat 0 0;
+    background : url('../../images/loading-sprite.png') no-repeat 0 0;
 }
 
 #content #statusIconContainer.waiting {
-    background-position: 0 -22px;
+    background-position : 0 -22px;
 }
 
 #content #statusIconContainer.retrying {
-    background-position: 0 -44px;
+    background-position : 0 -44px;
 }
 
 /* Other Theme Elements */
 .ajax-chat {
-    background-color: #2A2A2A;
-    color: #D4D4D4;
+    background-color : #2a2a2a;
+    color            : #d4d4d4;
 }
 
 .ajax-chat h1 {
-    color: #D4D4D4;
+    color : #d4d4d4;
 }
 
 .ajax-chat a {
-    color: #60A0DC;
+    color : #60a0dc;
 }
 
 #loginContent #loginButton {
-    background-color: #424242;
-    color: #D4D4D4;
+    background-color : #424242;
+    color            : #d4d4d4;
 }
 
 #loginContent #errorContainer {
-    color: red;
+    color : red;
 }
 
 #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer, #content #colorCodesContainer {
-    border: 1px solid #565656;
-    background-color: #383838;
+    border           : 1px solid #565656;
+    background-color : #383838;
 }
 
 .ajax-chat .popup {
-    background-color: #383838;
-    padding: 5px;
+    background-color : #383838;
+    padding          : 5px;
 }
 
 #content #colorCodesContainer a {
-    border-color: black;
+    border-color : black;
 }
 
 #content #optionsContainer input {
-    background-color: transparent;
+    background-color : transparent;
 }
 
 #content .rowEven, #helpList dl:nth-child(even), #settingsList dl:nth-child(even) {
-    background-color: #565656;
+    background-color : #565656;
 }
 
 #content .rowOdd, #helpList dl:nth-child(odd), #settingsList dl:nth-child(odd) {
-    background-color: #484848;
+    background-color : #484848;
 }
 
 #content #chatList .rowOdd.private {
-    background-color: #B83C1D;
+    background-color : #b83c1d;
 }
 
 #content #chatList .rowEven.private {
-    background-color: #C84A24;
+    background-color : #c84a24;
 }
 
 #content #chatList .chatBotErrorMessage {
-    color: red;
+    color : red;
 }
 
 #content #chatList a {
-    color: #60A0DC;
+    color : #60a0dc;
 }
 
 #content #chatList .deleteSelected {
-    border-color: red;
+    border-color : red;
 }
 
 #content #onlineListContainer h3, #content #helpContainer h3, #content #settingsContainer h3 {
-    background-color: #383838;
-    color: #D4D4D4;
+    background-color : #383838;
+    color            : #d4d4d4;
 }

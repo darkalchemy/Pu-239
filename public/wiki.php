@@ -144,7 +144,7 @@ if ($action === 'article') {
                         <div class='left10 bottom20'>{$lang['wiki_added_by_art']}: " . format_username($wiki['userid']) . '</div>' : '') . '
                         <div class="w-100 padding20 round10 bg-02">' . format_comment($wiki['body']) . '</div>
                     </div>' .
-                    $edit);
+                                 $edit);
             $HTMLOUT .= ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $wiki['userid'] ? '
                     <div class="has-text-centered">
                         <a href="' . $site_config['baseurl'] . '/wiki.php?action=edit&amp;id=' . (int) $wiki['id'] . '" class="button is-small margin20">' . $lang['wiki_edit'] . '</a>

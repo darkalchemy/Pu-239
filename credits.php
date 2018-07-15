@@ -13,7 +13,13 @@ $HTMLOUT = '';
 
 $action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
 
-$act_validation = ['', 'add', 'edit', 'delete', 'update'];
+$act_validation = [
+    '',
+    'add',
+    'edit',
+    'delete',
+    'update',
+];
 
 $id = (isset($_GET['id']) ? (int) $_GET['id'] : '');
 

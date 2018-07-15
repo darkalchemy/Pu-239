@@ -1,4 +1,4 @@
-var form = "checkme";
+var form = 'checkme';
 
 function SetChecked(val, chkName) {
     dml = document.forms[form];

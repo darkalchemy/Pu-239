@@ -60,7 +60,10 @@ class AJAXChatTemplate
             }
         }
 
-        $this->_parsedContent = preg_replace_callback($this->_regExpTemplateTags, [$this, 'replaceTemplateTags'], $this->_parsedContent);
+        $this->_parsedContent = preg_replace_callback($this->_regExpTemplateTags, [
+            $this,
+            'replaceTemplateTags',
+        ], $this->_parsedContent);
     }
 
     /**

@@ -10,9 +10,9 @@
 
 <body class="ajax-chat text-9">
 <script>
-    var theme = localStorage.getItem("theme");
+    var theme = localStorage.getItem('theme');
     if (theme) {
-        document.body.className = "ajax-chat " + theme;
+        document.body.className = 'ajax-chat ' + theme;
     }
 </script>
 
@@ -361,14 +361,16 @@
         <input id="bbCodeUnderline" type="button" value="[LANG]bbCodeLabelUnderline[/LANG]"
                title="[LANG]bbCodeTitleUnderline[/LANG]" onclick="ajaxChat.insertBBCode('u');"
                style="text-decoration:underline;"/>
-        <input class="txtUpsideDown" id="bbCodeUpsideDown" type="button" value="[LANG]bbCodeLabelUpsideDown[/LANG]" title="[LANG]bbCodeTitleUpsideDown[/LANG]" onclick="ajaxChat.insertBBCode('updown');" />
+        <input class="txtUpsideDown" id="bbCodeUpsideDown" type="button" value="[LANG]bbCodeLabelUpsideDown[/LANG]"
+               title="[LANG]bbCodeTitleUpsideDown[/LANG]" onclick="ajaxChat.insertBBCode('updown');"/>
         <input id="bbCodeQuote" type="button" value="[LANG]bbCodeLabelQuote[/LANG]"
                title="[LANG]bbCodeTitleQuote[/LANG]" onclick="ajaxChat.insertBBCode('quote');"/>
         <input id="bbCodeCode" type="button" value="[LANG]bbCodeLabelCode[/LANG]" title="[LANG]bbCodeTitleCode[/LANG]"
                onclick="ajaxChat.insertBBCode('code');"/>
         <input id="bbCodeURL" type="button" value="[LANG]bbCodeLabelURL[/LANG]" title="[LANG]bbCodeTitleURL[/LANG]"
                onclick="ajaxChat.insertBBCode('url');"/>
-        <input id="bbCodeVideo" type="button" value="Video" title="[LANG]bbCodeTitleVideo[/LANG]" onclick="ajaxChat.insertBBCode('video');"/>
+        <input id="bbCodeVideo" type="button" value="Video" title="[LANG]bbCodeTitleVideo[/LANG]"
+               onclick="ajaxChat.insertBBCode('video');"/>
         <input id="bbCodeIMG" type="button" value="[LANG]bbCodeLabelImg[/LANG]" title="[LANG]bbCodeTitleImg[/LANG]"
                onclick="ajaxChat.insertBBCode('img');"/>
         <input id="bbCodeColor" type="button" value="[LANG]bbCodeLabelColor[/LANG]"

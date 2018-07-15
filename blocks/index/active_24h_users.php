@@ -51,11 +51,11 @@ $HTMLOUT .= "
             <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['index_active24']} <small>{$lang['index_last24_list']}</small></legend>
             <div class='bordered'>
                 <div class='alt_bordered bg-00 has-text-centered'>
-                    <div><b>{$active24['totalonline24']}{$active24['ss24']}{$lang['index_last24_during']}</b></div>
+                    <div>{$active24['totalonline24']}{$active24['ss24']}{$lang['index_last24_during']}</div>
                     <div class='top20 bottom20 level-item is-wrapped'>
                         {$active24['activeusers24']}
                     </div>
-                    <div><b>{$lang['index_last24_most']}{$active24['last24']}{$active24['ss24']}{$lang['index_last24_on']}{$active24['record']}</b></div>
+                    <div>{$lang['index_last24_most']}{$active24['last24']}{$active24['ss24']}{$lang['index_last24_on']}{$active24['record']}</div>
                 </div>
             </div>
         </fieldset>";

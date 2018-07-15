@@ -82,9 +82,6 @@ foreach ($top5torrents as $top5torrentarr) {
     extract($top5torrentarr);
 
     $torrname = htmlsafechars($name);
-    if (strlen($torrname) > 50) {
-        $torrname = substr($torrname, 0, 50) . '...';
-    }
     $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster' />";
 
     if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
@@ -156,9 +153,6 @@ foreach ($last5torrents as $last5torrent) {
     $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
     extract($last5torrent);
     $torrname = htmlsafechars($name);
-    if (strlen($torrname) > 50) {
-        $torrname = substr($torrname, 0, 50) . '...';
-    }
     $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster' />";
 
     if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {

@@ -64,17 +64,17 @@ if (empty($user_id)) {
         ];
         $query = http_build_query($params);
         $contextData = [
-                    'method' => 'POST',
-                    'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
-                                "Connection: close\r\n" .
-                                'Content-Length: ' . strlen($query) . "\r\n",
-                    'content' => $query,
+            'method' => 'POST',
+            'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
+                "Connection: close\r\n" .
+                'Content-Length: ' . strlen($query) . "\r\n",
+            'content' => $query,
         ];
         $context = stream_context_create(['http' => $contextData]);
         $result = file_get_contents(
-                      $url,
-                      false,
-                      $context
+            $url,
+            false,
+            $context
         );
         $responseKeys = json_decode($result, true);
         if (intval($responseKeys['success']) !== 1) {
@@ -145,9 +145,9 @@ if (!password_verify($password, $row['passhash'])) {
     if (PHP_VERSION_ID >= 70200 && @password_hash('secret_password', PASSWORD_ARGON2I)) {
         $algo = PASSWORD_ARGON2I;
         $options = [
-                'memory_cost' => !empty($site_config['password_memory_cost']) ? $site_config['password_memory_cost'] : 2048,
-                'time_cost' => !empty($site_config['password_time_cost']) ? $site_config['password_time_cost'] : 12,
-                'threads' => !empty($site_config['password_threads']) ? $site_config['password_threads'] : 4,
+            'memory_cost' => !empty($site_config['password_memory_cost']) ? $site_config['password_memory_cost'] : 2048,
+            'time_cost' => !empty($site_config['password_time_cost']) ? $site_config['password_time_cost'] : 12,
+            'threads' => !empty($site_config['password_threads']) ? $site_config['password_threads'] : 4,
         ];
     } else {
         $algo = PASSWORD_BCRYPT;

@@ -30,8 +30,15 @@ foreach ($items as $item) {
     }
 }
 
-$html = str_replace(['“', '”'], '"', $html);
-$html = str_replace(['’', '‘', '‘'], "'", $html);
+$html = str_replace([
+                        '“',
+                        '”',
+                    ], '"', $html);
+$html = str_replace([
+                        '’',
+                        '‘',
+                        '‘',
+                    ], "'", $html);
 $html = str_replace('–', '-', $html);
 $html = str_replace('="/images/', '="http://torrentfreak.com/images/', $html);
 $html = main_div($html);

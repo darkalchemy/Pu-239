@@ -19,20 +19,20 @@ check_user_status();
         /*<![CDATA[*/
         $(document).ready(function () {
             $('#colorSelector').ColorPicker({
-                color: "#" + $('#bgColor').val(),
+                color: '#' + $('#bgColor').val(),
                 onChange: function (hsb, hex, rgb) {
                     $('#bgColor').val(hex);
                 }
             });
             $('#colorSelector1').ColorPicker({
-                color: "#" + $('#fColor').val() + "",
+                color: '#' + $('#fColor').val() + '',
                 onChange: function (hsb, hex, rgb) {
                     $('#fColor').val(hex);
                     //update();
                 }
             });
             $('#colorSelector2').ColorPicker({
-                color: "#" + $('#bColor').val() + "",
+                color: '#' + $('#bColor').val() + '',
                 onChange: function (hsb, hex, rgb) {
                     $('#bColor').val(hex);
                     //update();

@@ -1,49 +1,49 @@
-(function($) {
-    $.fn.markItUp = function(settings, extraSettings) {
+(function ($) {
+    $.fn.markItUp = function (settings, extraSettings) {
         var method, params, options, ctrlKey, shiftKey, altKey;
         ctrlKey = shiftKey = altKey = false;
-        if (typeof settings == "string") {
+        if (typeof settings == 'string') {
             method = settings;
             params = extraSettings;
         }
         options = {
-            id: "",
-            nameSpace: "",
-            root: "",
+            id: '',
+            nameSpace: '',
+            root: '',
             previewHandler: false,
-            previewInWindow: "",
-            previewInElement: "",
+            previewInWindow: '',
+            previewInElement: '',
             previewAutoRefresh: true,
-            previewPosition: "after",
-            previewTemplatePath: "~/templates/preview.html",
+            previewPosition: 'after',
+            previewTemplatePath: '~/templates/preview.html',
             previewParser: false,
-            previewParserPath: "",
-            previewParserVar: "data",
-            previewParserAjaxType: "POST",
+            previewParserPath: '',
+            previewParserVar: 'data',
+            previewParserAjaxType: 'POST',
             resizeHandle: true,
-            beforeInsert: "",
-            afterInsert: "",
+            beforeInsert: '',
+            afterInsert: '',
             onEnter: {},
             onShiftEnter: {},
             onCtrlEnter: {},
             onTab: {},
-            markupSet: [ {} ]
+            markupSet: [{}]
         };
         $.extend(options, settings, extraSettings);
         if (!options.root) {
-            $("script").each(function(a, tag) {
+            $('script').each(function (a, tag) {
                 miuScript = $(tag).get(0).src.match(/(.*)jquery\.markitup(\.pack)?\.js$/);
                 if (miuScript !== null) {
                     options.root = miuScript[1];
                 }
             });
         }
-        var uaMatch = function(ua) {
+        var uaMatch = function (ua) {
             ua = ua.toLowerCase();
-            var match = /(chrome)[ \/]([\w.]+)/.exec(ua) || /(webkit)[ \/]([\w.]+)/.exec(ua) || /(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) || /(msie) ([\w.]+)/.exec(ua) || ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) || [];
+            var match = /(chrome)[ \/]([\w.]+)/.exec(ua) || /(webkit)[ \/]([\w.]+)/.exec(ua) || /(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) || /(msie) ([\w.]+)/.exec(ua) || ua.indexOf('compatible') < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) || [];
             return {
-                browser: match[1] || "",
-                version: match[2] || "0"
+                browser: match[1] || '',
+                version: match[2] || '0'
             };
         };
         var matched = uaMatch(navigator.userAgent);
@@ -57,8 +57,9 @@
         } else if (browser.webkit) {
             browser.safari = true;
         }
-        return this.each(function() {
-            var $$, textarea, levels, scrollPosition, caretPosition, caretOffset, clicked, hash, header, footer, previewWindow, template, iFrame, abort;
+        return this.each(function () {
+            var $$, textarea, levels, scrollPosition, caretPosition, caretOffset, clicked, hash, header, footer,
+                previewWindow, template, iFrame, abort;
             $$ = $(this);
             textarea = this;
             levels = [];
@@ -69,60 +70,62 @@
             options.previewTemplatePath = localize(options.previewTemplatePath);
             if (method) {
                 switch (method) {
-                  case "remove":
-                    remove();
-                    break;
+                    case 'remove':
+                        remove();
+                        break;
 
-                  case "insert":
-                    markup(params);
-                    break;
+                    case 'insert':
+                        markup(params);
+                        break;
 
-                  default:
-                    $.error("Method " + method + " does not exist on jQuery.markItUp");
+                    default:
+                        $.error('Method ' + method + ' does not exist on jQuery.markItUp');
                 }
                 return;
             }
+
             function localize(data, inText) {
                 if (inText) {
-                    return data.replace(/("|')~\//g, "$1" + options.root);
+                    return data.replace(/("|')~\//g, '$1' + options.root);
                 }
                 return data.replace(/^~\//, options.root);
             }
+
             function init() {
-                id = "";
-                nameSpace = "";
+                id = '';
+                nameSpace = '';
                 if (options.id) {
                     id = 'id="' + options.id + '"';
-                } else if ($$.attr("id")) {
-                    id = 'id="markItUp' + $$.attr("id").substr(0, 1).toUpperCase() + $$.attr("id").substr(1) + '"';
+                } else if ($$.attr('id')) {
+                    id = 'id="markItUp' + $$.attr('id').substr(0, 1).toUpperCase() + $$.attr('id').substr(1) + '"';
                 }
                 if (options.nameSpace) {
                     nameSpace = 'id="' + options.nameSpace + '" class="' + options.nameSpace + '"';
                 }
-                $$.wrap("<div " + nameSpace + "></div>");
-                $$.wrap("<div " + id + ' class="markItUp"></div>');
+                $$.wrap('<div ' + nameSpace + '></div>');
+                $$.wrap('<div ' + id + ' class="markItUp"></div>');
                 $$.wrap('<div class="markItUpContainer"></div>');
-                $$.addClass("markItUpEditor");
+                $$.addClass('markItUpEditor');
                 header = $('<div class="markItUpHeader"></div>').insertBefore($$);
                 $(dropMenus(options.markupSet)).appendTo(header);
                 footer = $('<div class="markItUpFooter"></div>').insertAfter($$);
                 if (options.resizeHandle === true && browser.safari !== true) {
-                    resizeHandle = $('<div class="markItUpResizeHandle"></div>').insertAfter($$).bind("mousedown.markItUp", function(e) {
+                    resizeHandle = $('<div class="markItUpResizeHandle"></div>').insertAfter($$).bind('mousedown.markItUp', function (e) {
                         var h = $$.height(), y = e.clientY, mouseMove, mouseUp;
-                        mouseMove = function(e) {
-                            $$.css("height", Math.max(20, e.clientY + h - y) + "px");
+                        mouseMove = function (e) {
+                            $$.css('height', Math.max(20, e.clientY + h - y) + 'px');
                             return false;
                         };
-                        mouseUp = function(e) {
-                            $("html").unbind("mousemove.markItUp", mouseMove).unbind("mouseup.markItUp", mouseUp);
+                        mouseUp = function (e) {
+                            $('html').unbind('mousemove.markItUp', mouseMove).unbind('mouseup.markItUp', mouseUp);
                             return false;
                         };
-                        $("html").bind("mousemove.markItUp", mouseMove).bind("mouseup.markItUp", mouseUp);
+                        $('html').bind('mousemove.markItUp', mouseMove).bind('mouseup.markItUp', mouseUp);
                     });
                     footer.append(resizeHandle);
                 }
-                $$.bind("keydown.markItUp", keyPressed).bind("keyup", keyPressed);
-                $$.bind("insertion.markItUp", function(e, settings) {
+                $$.bind('keydown.markItUp', keyPressed).bind('keyup', keyPressed);
+                $$.bind('insertion.markItUp', function (e, settings) {
                     if (settings.target !== false) {
                         get();
                     }
@@ -130,86 +133,88 @@
                         markup(settings);
                     }
                 });
-                $$.bind("focus.markItUp", function() {
+                $$.bind('focus.markItUp', function () {
                     $.markItUp.focused = this;
                 });
                 if (options.previewInElement) {
                     refreshPreview();
                 }
             }
+
             function dropMenus(markupSet) {
-                var ul = $("<ul></ul>"), i = 0;
-                $("li:hover > ul", ul).css("display", "block");
-                $.each(markupSet, function() {
-                    var button = this, t = "", title, li, j;
-                    button.title ? title = button.key ? (button.title || "") + " [Ctrl+" + button.key + "]" : button.title || "" : title = button.key ? (button.name || "") + " [Ctrl+" + button.key + "]" : button.name || "";
-                    key = button.key ? 'accesskey="' + button.key + '"' : "";
+                var ul = $('<ul></ul>'), i = 0;
+                $('li:hover > ul', ul).css('display', 'block');
+                $.each(markupSet, function () {
+                    var button = this, t = '', title, li, j;
+                    button.title ? title = button.key ? (button.title || '') + ' [Ctrl+' + button.key + ']' : button.title || '' : title = button.key ? (button.name || '') + ' [Ctrl+' + button.key + ']' : button.name || '';
+                    key = button.key ? 'accesskey="' + button.key + '"' : '';
                     if (button.separator) {
-                        li = $('<li class="markItUpSeparator">' + (button.separator || "") + "</li>").appendTo(ul);
+                        li = $('<li class="markItUpSeparator">' + (button.separator || '') + '</li>').appendTo(ul);
                     } else {
                         i++;
                         for (j = levels.length - 1; j >= 0; j--) {
-                            t += levels[j] + "-";
+                            t += levels[j] + '-';
                         }
                         var setTitle = ' title="' + title + '"';
-                        var addClass = "";
-                        if (typeof button.className !== "undefined") {
+                        var addClass = '';
+                        if (typeof button.className !== 'undefined') {
                             var str = button.className;
-                            if (str.includes("font_") || str.includes("text-") || str.includes("size") || str.includes("colors")) {
-                                setTitle = "";
+                            if (str.includes('font_') || str.includes('text-') || str.includes('size') || str.includes('colors')) {
+                                setTitle = '';
                             }
-                            if (str.includes("text-")) {
-                                addClass = " " + str;
+                            if (str.includes('text-')) {
+                                addClass = ' ' + str;
                             }
                         }
-                        li = $('<li class="tooltipper markItUpButton markItUpButton' + t + i + " " + (button.className || "") + '"' + setTitle + '><a href="#" ' + key + ">" + (button.showName || "") + "</a></li>").bind("contextmenu.markItUp", function() {
+                        li = $('<li class="tooltipper markItUpButton markItUpButton' + t + i + ' ' + (button.className || '') + '"' + setTitle + '><a href="#" ' + key + '>' + (button.showName || '') + '</a></li>').bind('contextmenu.markItUp', function () {
                             return false;
-                        }).bind("click.markItUp", function(e) {
+                        }).bind('click.markItUp', function (e) {
                             e.preventDefault();
-                        }).bind("focusin.markItUp", function() {
+                        }).bind('focusin.markItUp', function () {
                             $$.focus();
-                        }).bind("mouseup", function(e) {
+                        }).bind('mouseup', function (e) {
                             if (button.call) {
                                 eval(button.call)(e);
                             }
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 markup(button);
                             }, 1);
                             return false;
-                        }).bind("mouseenter.markItUp", function() {
-                            $("> ul", this).show();
-                            $(document).one("click", function() {
-                                $("ul ul", header).hide();
+                        }).bind('mouseenter.markItUp', function () {
+                            $('> ul', this).show();
+                            $(document).one('click', function () {
+                                $('ul ul', header).hide();
                             });
-                        }).bind("mouseleave.markItUp", function() {
-                            $("> ul", this).hide();
+                        }).bind('mouseleave.markItUp', function () {
+                            $('> ul', this).hide();
                         }).appendTo(ul);
                         if (button.dropMenu) {
                             levels.push(i);
-                            $(li).addClass("markItUpDropMenu").append(dropMenus(button.dropMenu));
+                            $(li).addClass('markItUpDropMenu').append(dropMenus(button.dropMenu));
                         }
                     }
                 });
                 levels.pop();
                 return ul;
             }
+
             function magicMarkups(string) {
                 if (string) {
                     string = string.toString();
-                    string = string.replace(/\(\!\(([\s\S]*?)\)\!\)/g, function(x, a) {
-                        var b = a.split("|!|");
+                    string = string.replace(/\(\!\(([\s\S]*?)\)\!\)/g, function (x, a) {
+                        var b = a.split('|!|');
                         if (altKey === true) {
                             return b[1] !== undefined ? b[1] : b[0];
                         } else {
-                            return b[1] === undefined ? "" : b[0];
+                            return b[1] === undefined ? '' : b[0];
                         }
                     });
-                    string = string.replace(/\[\!\[([\s\S]*?)\]\!\]/g, function(x, a) {
-                        var b = a.split(":!:");
+                    string = string.replace(/\[\!\[([\s\S]*?)\]\!\]/g, function (x, a) {
+                        var b = a.split(':!:');
                         if (abort === true) {
                             return false;
                         }
-                        value = prompt(b[0], b[1] ? b[1] : "");
+                        value = prompt(b[0], b[1] ? b[1] : '');
                         if (value === null) {
                             abort = true;
                         }
@@ -217,14 +222,16 @@
                     });
                     return string;
                 }
-                return "";
+                return '';
             }
+
             function prepare(action) {
                 if ($.isFunction(action)) {
                     action = action(hash);
                 }
                 return magicMarkups(action);
             }
+
             function build(string) {
                 var openWith = prepare(clicked.openWith);
                 var placeHolder = prepare(clicked.placeHolder);
@@ -233,13 +240,13 @@
                 var openBlockWith = prepare(clicked.openBlockWith);
                 var closeBlockWith = prepare(clicked.closeBlockWith);
                 var multiline = clicked.multiline;
-                if (replaceWith !== "") {
+                if (replaceWith !== '') {
                     block = openWith + replaceWith + closeWith;
-                } else if (selection === "" && placeHolder !== "") {
+                } else if (selection === '' && placeHolder !== '') {
                     block = openWith + placeHolder + closeWith;
                 } else {
                     string = string || selection;
-                    var lines = [ string ], blocks = [];
+                    var lines = [string], blocks = [];
                     if (multiline === true) {
                         lines = string.split(/\r?\n/);
                     }
@@ -247,12 +254,12 @@
                         line = lines[l];
                         var trailingSpaces;
                         if (trailingSpaces = line.match(/ *$/)) {
-                            blocks.push(openWith + line.replace(/ *$/g, "") + closeWith + trailingSpaces);
+                            blocks.push(openWith + line.replace(/ *$/g, '') + closeWith + trailingSpaces);
                         } else {
                             blocks.push(openWith + line + closeWith);
                         }
                     }
-                    block = blocks.join("\n");
+                    block = blocks.join('\n');
                 }
                 block = openBlockWith + block + closeBlockWith;
                 return {
@@ -265,15 +272,16 @@
                     closeBlockWith: closeBlockWith
                 };
             }
+
             function markup(button) {
                 var len, j, n, i;
                 hash = clicked = button;
                 get();
                 $.extend(hash, {
-                    line: "",
+                    line: '',
                     root: options.root,
                     textarea: textarea,
-                    selection: selection || "",
+                    selection: selection || '',
                     caretPosition: caretPosition,
                     ctrlKey: ctrlKey,
                     shiftKey: shiftKey,
@@ -290,18 +298,18 @@
                 if (ctrlKey === true && shiftKey === true) {
                     lines = selection.split(/\r?\n/);
                     for (j = 0, n = lines.length, i = 0; i < n; i++) {
-                        if ($.trim(lines[i]) !== "") {
+                        if ($.trim(lines[i]) !== '') {
                             $.extend(hash, {
                                 line: ++j,
                                 selection: lines[i]
                             });
                             lines[i] = build(lines[i]).block;
                         } else {
-                            lines[i] = "";
+                            lines[i] = '';
                         }
                     }
                     string = {
-                        block: lines.join("\n")
+                        block: lines.join('\n')
                     };
                     start = caretPosition;
                     len = string.block.length + (browser.opera ? n - 1 : 0);
@@ -322,7 +330,7 @@
                     len = 0;
                     start -= fixIeBug(string.block);
                 }
-                if (selection === "" && string.replaceWith === "") {
+                if (selection === '' && string.replaceWith === '') {
                     caretOffset += fixOperaBug(string.block);
                     start = caretPosition + string.openBlockWith.length + string.openWith.length;
                     len = string.block.length - string.openBlockWith.length - string.openWith.length - string.closeWith.length - string.closeBlockWith.length;
@@ -341,7 +349,7 @@
                 }
                 get();
                 $.extend(hash, {
-                    line: "",
+                    line: '',
                     selection: selection
                 });
                 if (ctrlKey === true && shiftKey === true || button.multiline === true) {
@@ -354,18 +362,21 @@
                 }
                 shiftKey = altKey = ctrlKey = abort = false;
             }
+
             function fixOperaBug(string) {
                 if (browser.opera) {
-                    return string.length - string.replace(/\n*/g, "").length;
+                    return string.length - string.replace(/\n*/g, '').length;
                 }
                 return 0;
             }
+
             function fixIeBug(string) {
                 if (browser.msie) {
-                    return string.length - string.replace(/\r*/g, "").length;
+                    return string.length - string.replace(/\r*/g, '').length;
                 }
                 return 0;
             }
+
             function insert(block) {
                 if (document.selection) {
                     var newSelection = document.selection.createRange();
@@ -374,6 +385,7 @@
                     textarea.value = textarea.value.substring(0, caretPosition) + block + textarea.value.substring(caretPosition + selection.length, textarea.value.length);
                 }
             }
+
             function set(start, len) {
                 if (textarea.createTextRange) {
                     if (browser.opera && browser.version >= 9.5 && len == 0) {
@@ -381,8 +393,8 @@
                     }
                     range = textarea.createTextRange();
                     range.collapse(true);
-                    range.moveStart("character", start);
-                    range.moveEnd("character", len);
+                    range.moveStart('character', start);
+                    range.moveEnd('character', len);
                     range.select();
                 } else if (textarea.setSelectionRange) {
                     textarea.setSelectionRange(start, start + len);
@@ -390,6 +402,7 @@
                 textarea.scrollTop = scrollPosition;
                 textarea.focus();
             }
+
             function get() {
                 textarea.focus();
                 scrollPosition = textarea.scrollTop;
@@ -400,7 +413,7 @@
                         rangeCopy.moveToElementText(textarea);
                         caretPosition = -1;
                         while (rangeCopy.inRange(range)) {
-                            rangeCopy.moveStart("character");
+                            rangeCopy.moveStart('character');
                             caretPosition++;
                         }
                     } else {
@@ -412,22 +425,23 @@
                 }
                 return selection;
             }
+
             function preview() {
-                if (typeof options.previewHandler === "function") {
+                if (typeof options.previewHandler === 'function') {
                     previewWindow = true;
                 } else if (options.previewInElement) {
                     previewWindow = $(options.previewInElement);
-                    var parent = $("#" + options.previewInElement).parent().parent().attr("id");
-                    $("#" + parent).slideToggle(1250);
+                    var parent = $('#' + options.previewInElement).parent().parent().attr('id');
+                    $('#' + parent).slideToggle(1250);
                 } else if (!previewWindow || previewWindow.closed) {
                     if (options.previewInWindow) {
-                        previewWindow = window.open("", "preview", options.previewInWindow);
-                        $(window).unload(function() {
+                        previewWindow = window.open('', 'preview', options.previewInWindow);
+                        $(window).unload(function () {
                             previewWindow.close();
                         });
                     } else {
                         iFrame = $('<iframe class="markItUpPreviewFrame"></iframe>');
-                        if (options.previewPosition == "after") {
+                        if (options.previewPosition == 'after') {
                             iFrame.insertAfter(footer);
                         } else {
                             iFrame.insertBefore(header);
@@ -449,18 +463,20 @@
                     previewWindow.focus();
                 }
             }
+
             function refreshPreview() {
                 renderPreview();
             }
+
             function renderPreview() {
                 var parsedData = $$.val();
-                if (options.previewParser && typeof options.previewParser === "function") {
+                if (options.previewParser && typeof options.previewParser === 'function') {
                     parsedData = options.previewParser(parsedData);
                 }
                 if (parsedData.length > 1) {
-                    if (options.previewInElement != "") {
-                        var parent = $("#" + options.previewInElement).parent().parent().attr("id");
-                        if ($("#" + parent).is(":visible")) {
+                    if (options.previewInElement != '') {
+                        var parent = $('#' + options.previewInElement).parent().parent().attr('id');
+                        if ($('#' + parent).is(':visible')) {
                             getAjax(parsedData);
                         }
                     } else {
@@ -470,17 +486,18 @@
                     return false;
                 }
             }
+
             function getAjax(parsedData) {
-                if (options.previewHandler && typeof options.previewHandler === "function") {
+                if (options.previewHandler && typeof options.previewHandler === 'function') {
                     options.previewHandler(parsedData);
-                } else if (options.previewParserPath !== "") {
+                } else if (options.previewParserPath !== '') {
                     $.ajax({
                         type: options.previewParserAjaxType,
-                        dataType: "text",
+                        dataType: 'text',
                         global: false,
                         url: options.previewParserPath,
-                        data: options.previewParserVar + "=" + encodeURIComponent(parsedData),
-                        success: function(data) {
+                        data: options.previewParserVar + '=' + encodeURIComponent(parsedData),
+                        success: function (data) {
                             writeInPreview(localize(data, 1));
                         }
                     });
@@ -488,9 +505,9 @@
                     if (!template) {
                         $.ajax({
                             url: options.previewTemplatePath,
-                            dataType: "text",
+                            dataType: 'text',
                             global: false,
-                            success: function(data) {
+                            success: function (data) {
                                 writeInPreview(localize(data, 1).replace(/<!-- content -->/g, parsedData));
                             }
                         });
@@ -498,9 +515,10 @@
                 }
                 return false;
             }
+
             function writeInPreview(data) {
                 if (options.previewInElement) {
-                    $("#" + options.previewInElement).html(data);
+                    $('#' + options.previewInElement).html(data);
                 } else if (previewWindow && previewWindow.document) {
                     try {
                         sp = previewWindow.document.documentElement.scrollTop;
@@ -513,17 +531,18 @@
                     previewWindow.document.documentElement.scrollTop = sp;
                 }
             }
+
             function keyPressed(e) {
                 shiftKey = e.shiftKey;
                 altKey = e.altKey;
                 ctrlKey = !(e.altKey && e.ctrlKey) ? e.ctrlKey || e.metaKey : false;
-                if (e.type === "keydown") {
+                if (e.type === 'keydown') {
                     if (ctrlKey === true) {
-                        li = $('a[accesskey="' + (e.keyCode == 13 ? "\\n" : String.fromCharCode(e.keyCode)) + '"]', header).parent("li");
+                        li = $('a[accesskey="' + (e.keyCode == 13 ? '\\n' : String.fromCharCode(e.keyCode)) + '"]', header).parent('li');
                         if (li.length !== 0) {
                             ctrlKey = false;
-                            setTimeout(function() {
-                                li.triggerHandler("mouseup");
+                            setTimeout(function () {
+                                li.triggerHandler('mouseup');
                             }, 1);
                             return false;
                         }
@@ -559,35 +578,37 @@
                     }
                 }
             }
+
             function remove() {
-                $$.unbind(".markItUp").removeClass("markItUpEditor");
-                $$.parent("div").parent("div.markItUp").parent("div").replaceWith($$);
-                var relativeRef = $$.parent("div").parent("div.markItUp").parent("div");
+                $$.unbind('.markItUp').removeClass('markItUpEditor');
+                $$.parent('div').parent('div.markItUp').parent('div').replaceWith($$);
+                var relativeRef = $$.parent('div').parent('div.markItUp').parent('div');
                 if (relativeRef.length) {
                     relativeRef.replaceWith($$);
                 }
-                $$.data("markItUp", null);
+                $$.data('markItUp', null);
             }
+
             init();
         });
     };
-    $.fn.markItUpRemove = function() {
-        return this.each(function() {
-            $(this).markItUp("remove");
+    $.fn.markItUpRemove = function () {
+        return this.each(function () {
+            $(this).markItUp('remove');
         });
     };
-    $.markItUp = function(settings) {
+    $.markItUp = function (settings) {
         var options = {
             target: false
         };
         $.extend(options, settings);
         if (options.target) {
-            return $(options.target).each(function() {
+            return $(options.target).each(function () {
                 $(this).focus();
-                $(this).trigger("insertion", [ options ]);
+                $(this).trigger('insertion', [options]);
             });
         } else {
-            $("textarea").trigger("insertion", [ options ]);
+            $('textarea').trigger('insertion', [options]);
         }
     };
 })(jQuery);

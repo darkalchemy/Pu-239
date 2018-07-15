@@ -37,7 +37,7 @@ crir = {
                     inputElementType = inputElement.getAttributeNode('type').value;
 
                     // add the appropriate event listener to the input element
-                    if (inputElementType == "checkbox") {
+                    if (inputElementType == 'checkbox') {
                         inputElement.onclick = crir.toggleCheckboxLabel;
                     }
                     else {
@@ -47,18 +47,18 @@ crir = {
                     // set the initial label state
                     if (inputElement.checked) {
                         if (inputElementType == 'checkbox') {
-                            arrLabels[i].className = 'checkbox_checked'
+                            arrLabels[i].className = 'checkbox_checked';
                         }
                         else {
-                            arrLabels[i].className = 'radio_checked'
+                            arrLabels[i].className = 'radio_checked';
                         }
                     }
                     else {
                         if (inputElementType == 'checkbox') {
-                            arrLabels[i].className = 'checkbox_unchecked'
+                            arrLabels[i].className = 'checkbox_unchecked';
                         }
                         else {
-                            arrLabels[i].className = 'radio_unchecked'
+                            arrLabels[i].className = 'radio_unchecked';
                         }
                     }
                 }
@@ -84,10 +84,10 @@ crir = {
         labelElement = crir.findLabel(this.getAttributeNode('id').value);
 
         if (labelElement.className == 'checkbox_checked') {
-            labelElement.className = "checkbox_unchecked";
+            labelElement.className = 'checkbox_unchecked';
         }
         else {
-            labelElement.className = "checkbox_checked";
+            labelElement.className = 'checkbox_checked';
         }
     },
 
@@ -120,4 +120,4 @@ crir = {
             clickedLabelElement.className = 'radio_checked';
         }
     }
-}
+};

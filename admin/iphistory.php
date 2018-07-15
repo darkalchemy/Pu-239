@@ -72,7 +72,15 @@ while ($iphistory = mysqli_fetch_array($resip)) {
         $host = "<span class='has-text-danger'><b>{$lang['iphistory_notfound']}</b></span>";
     }
     $seedboxdetected = 'no';
-    $seedboxes = ['kimsufi.com', 'leaseweb.com', 'ovh.net', 'powserv.com', 'server.lu', 'xirvik.com', 'feralhosting.com'];
+    $seedboxes = [
+        'kimsufi.com',
+        'leaseweb.com',
+        'ovh.net',
+        'powserv.com',
+        'server.lu',
+        'xirvik.com',
+        'feralhosting.com',
+    ];
     foreach ($seedboxes as $seedbox) {
         if (stripos($host, $seedbox) !== false) {
             $seedboxdetected = 'yes';

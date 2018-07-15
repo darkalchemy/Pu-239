@@ -56,24 +56,24 @@ foreach ($query as $sub_forums_arr) {
 
     $where = $CURUSER['class'] < UC_STAFF ? 'posts.status = "ok" AND topics.status = "ok"' : $CURUSER['class'] < $min_delete_view_class ? 'posts.status != "deleted"  AND topics.status != "deleted"' : '';
     $post_arr = $fluent->from('topics')
-                ->select(null)
-                ->select('topics.id AS topic_id')
-                ->select('topics.topic_name')
-                ->select('topics.status AS topic_status')
-                ->select('topics.anonymous AS tan')
-                ->select('posts.id AS last_post_id')
-                ->select('posts.topic_id')
-                ->select('posts.added')
-                ->select('posts.anonymous AS pan')
-                ->select('posts.id as post_id')
-                ->select('users.id AS user_id')
-                ->innerJoin('posts ON topics.id = posts.topic_id')
-                ->leftJoin('users ON posts.user_id = users.id')
-                ->where($where)
-                ->where('topics.forum_id = ?', $sub_forums_arr['sub_forum_id'])
-                ->orderBy('posts.id DESC')
-                ->limit(1)
-                ->fetch();
+        ->select(null)
+        ->select('topics.id AS topic_id')
+        ->select('topics.topic_name')
+        ->select('topics.status AS topic_status')
+        ->select('topics.anonymous AS tan')
+        ->select('posts.id AS last_post_id')
+        ->select('posts.topic_id')
+        ->select('posts.added')
+        ->select('posts.anonymous AS pan')
+        ->select('posts.id as post_id')
+        ->select('users.id AS user_id')
+        ->innerJoin('posts ON topics.id = posts.topic_id')
+        ->leftJoin('users ON posts.user_id = users.id')
+        ->where($where)
+        ->where('topics.forum_id = ?', $sub_forums_arr['sub_forum_id'])
+        ->orderBy('posts.id DESC')
+        ->limit(1)
+        ->fetch();
 
     if ($post_arr['last_post_id'] > 0) {
         $last_topic_id = (int) $post_arr['topic_id'];

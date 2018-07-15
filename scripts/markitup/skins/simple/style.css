@@ -1,114 +1,135 @@
 .markItUp * {
-  margin: 0;
-  padding: 0;
-  outline: 0
+    margin  : 0;
+    padding : 0;
+    outline : 0
 }
+
 .markItUp a:link,
 .markItUp a:visited {
-  color: #000;
-  text-decoration: none
+    color           : #000;
+    text-decoration : none
 }
+
 .markItUp {
-  width: 700px;
-  margin: 5px 0
+    width  : 700px;
+    margin : 5px 0
 }
+
 .markItUpContainer {
-  font: 11px Verdana,Arial,Helvetica,sans-serif
+    font : 11px Verdana, Arial, Helvetica, sans-serif
 }
+
 .markItUpEditor {
-  font: 12px/18px 'Courier New',Courier,monospace;
-  padding: 5px;
-  width: 690px;
-  height: 320px;
-  clear: both;
-  overflow: auto
+    font     : 12px/18px 'Courier New', Courier, monospace;
+    padding  : 5px;
+    width    : 690px;
+    height   : 320px;
+    clear    : both;
+    overflow : auto
 }
+
 .markItUpPreviewFrame {
-  overflow: auto;
-  background-color: #fff;
-  width: 99.9%;
-  height: 300px;
-  margin: 5px 0
+    overflow         : auto;
+    background-color : #fff;
+    width            : 99.9%;
+    height           : 300px;
+    margin           : 5px 0
 }
+
 .markItUpFooter {
-  width: 100%
+    width : 100%
 }
+
 .markItUpResizeHandle {
-  overflow: hidden;
-  width: 22px;
-  height: 5px;
-  margin-left: auto;
-  margin-right: auto;
-  background-image: url(images/handle.png);
-  cursor: n-resize
+    overflow         : hidden;
+    width            : 22px;
+    height           : 5px;
+    margin-left      : auto;
+    margin-right     : auto;
+    background-image : url(images/handle.png);
+    cursor           : n-resize
 }
+
 .markItUpHeader ul li {
-  list-style: none;
-  float: left;
-  position: relative
+    list-style : none;
+    float      : left;
+    position   : relative
 }
+
 .markItUpHeader ul li:hover > ul {
-  display: block
+    display : block
 }
+
 .markItUpHeader ul .markItUpDropMenu {
-  background: url(images/menu.png) 115% 50% no-repeat;
-  margin-right: 5px
+    background   : url(images/menu.png) 115% 50% no-repeat;
+    margin-right : 5px
 }
+
 .markItUpHeader ul .markItUpDropMenu li {
-  margin-right: 0
+    margin-right : 0
 }
+
 .markItUpHeader ul ul {
-  display: none;
-  position: absolute;
-  top: 18px;
-  left: 0;
-  background: #fff;
-  border: 1px solid #000
+    display    : none;
+    position   : absolute;
+    top        : 18px;
+    left       : 0;
+    background : #fff;
+    border     : 1px solid #000
 }
+
 .markItUpHeader ul ul li {
-  float: none;
-  border-bottom: 1px solid #000
+    float         : none;
+    border-bottom : 1px solid #000
 }
+
 .markItUpHeader ul ul .markItUpDropMenu {
-  background: url(images/submenu.png) 100% 50% no-repeat #fff
+    background : url(images/submenu.png) 100% 50% no-repeat #fff
 }
+
 .markItUpHeader ul .markItUpSeparator {
-  margin: 0 10px;
-  width: 1px;
-  height: 16px;
-  overflow: hidden;
-  background-color: #ccc
+    margin           : 0 10px;
+    width            : 1px;
+    height           : 16px;
+    overflow         : hidden;
+    background-color : #ccc
 }
+
 .markItUpHeader ul ul .markItUpSeparator {
-  width: auto;
-  height: 1px;
-  margin: 0
+    width  : auto;
+    height : 1px;
+    margin : 0
 }
+
 .markItUpHeader ul ul ul {
-  position: absolute;
-  top: -1px;
-  left: 150px
+    position : absolute;
+    top      : -1px;
+    left     : 150px
 }
+
 .markItUpHeader ul ul ul li {
-  float: none
+    float : none
 }
+
 .markItUpHeader ul a {
-  display: block;
-  width: 16px;
-  height: 16px;
-  text-indent: -10000px;
-  background-repeat: no-repeat;
-  padding: 3px;
-  margin: 0
+    display           : block;
+    width             : 16px;
+    height            : 16px;
+    text-indent       : -10000px;
+    background-repeat : no-repeat;
+    padding           : 3px;
+    margin            : 0
 }
+
 .markItUpHeader ul ul a {
-  display: block;
-  text-indent: 0;
-  width: 120px;
-  padding: 5px 5px 5px 25px;
-  background-position: 2px 50%
+    display             : block;
+    text-indent         : 0;
+    width               : 120px;
+    padding             : 5px 5px 5px 25px;
+    background-position : 2px 50%
 }
+
 .markItUpHeader ul ul a:hover {
-  color: #fff;
-  background-color: #000
+    color            : #fff;
+    background-color : #000
 }

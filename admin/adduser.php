@@ -43,10 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (sql_query(sprintf('INSERT INTO users
                 (username, email, passhash, status, added, last_access, torrent_pass, auth, apikey, ip)
                 VALUES (%s)',
-                      join(', ', array_map(
-                          'sqlesc',
-                          $insert
-                      ))
+                          join(', ', array_map(
+                              'sqlesc',
+                              $insert
+                          ))
                   ))) {
         $user_id = 0;
         while ($user_id == 0) {

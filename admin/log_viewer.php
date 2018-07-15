@@ -61,7 +61,10 @@ $files = [];
 foreach ($paths as $path) {
     if (file_exists($path)) {
         $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
-        $exts = ['log', 'gz'];
+        $exts = [
+            'log',
+            'gz',
+        ];
         foreach ($objects as $name => $object) {
             $ext = pathinfo($name, PATHINFO_EXTENSION);
             if (in_array($ext, $exts)) {

@@ -1,58 +1,70 @@
 @font-face {
-  font-family: fontello;
-  src: url(../../fonts/fontello.eot?9448161);
-  src: url(../../fonts/fontello.eot?9448161#iefix) format('embedded-opentype'),url(../../fonts/fontello.woff2?9448161) format('woff2'),url(../../fonts/fontello.woff?9448161) format('woff'),url(../../fonts/fontello.ttf?9448161) format('truetype'),url(../../fonts/fontello.svg?9448161#fontello) format('svg');
-  font-weight: 400;
-  font-style: normal
+    font-family : fontello;
+    src         : url(../../fonts/fontello.eot?9448161);
+    src         : url(../../fonts/fontello.eot?9448161#iefix) format('embedded-opentype'), url(../../fonts/fontello.woff2?9448161) format('woff2'), url(../../fonts/fontello.woff?9448161) format('woff'), url(../../fonts/fontello.ttf?9448161) format('truetype'), url(../../fonts/fontello.svg?9448161#fontello) format('svg');
+    font-weight : 400;
+    font-style  : normal
 }
+
 [class*=" icon-"]:before,
 [class^=icon-]:before {
-  font-family: fontello;
-  font-style: normal;
-  font-weight: 400;
-  speak: none;
-  display: inline-block;
-  text-decoration: inherit;
-  width: 1em;
-  margin-right: .2em;
-  text-align: center;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1em;
-  margin-left: .2em;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale
+    font-family             : fontello;
+    font-style              : normal;
+    font-weight             : 400;
+    speak                   : none;
+    display                 : inline-block;
+    text-decoration         : inherit;
+    width                   : 1em;
+    margin-right            : .2em;
+    text-align              : center;
+    font-variant            : normal;
+    text-transform          : none;
+    line-height             : 1em;
+    margin-left             : .2em;
+    -webkit-font-smoothing  : antialiased;
+    -moz-osx-font-smoothing : grayscale
 }
+
 .icon-up-open:before {
-  content: '\e800'
+    content : '\e800'
 }
+
 .icon-down-open:before {
-  content: '\e801'
+    content : '\e801'
 }
+
 .icon-logout:before {
-  content: '\e802'
+    content : '\e802'
 }
+
 .icon-home:before {
-  content: '\e803'
+    content : '\e803'
 }
+
 .icon-edit:before {
-  content: '\e804'
+    content : '\e804'
 }
+
 .icon-cancel:before {
-  content: '\e805'
+    content : '\e805'
 }
+
 .icon-mail:before {
-  content: '\e806'
+    content : '\e806'
 }
+
 .icon-download:before {
-  content: '\e808'
+    content : '\e808'
 }
+
 .icon-ok:before {
-  content: '\e809'
+    content : '\e809'
 }
+
 .icon-menu:before {
-  content: '\f0c9'
+    content : '\f0c9'
 }
+
 .icon-angle-circled-up:before {
-  content: '\f139'
+    content : '\f139'
 }

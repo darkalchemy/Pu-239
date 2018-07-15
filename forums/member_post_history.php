@@ -131,41 +131,41 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         //=== topic status
         $topic_status = htmlsafechars($arr['topic_status']);
         switch ($topic_status) {
-        case 'ok':
-            $topic_status_image = '';
-            break;
+            case 'ok':
+                $topic_status_image = '';
+                break;
 
-        case 'recycled':
-            $topic_status_image = '<img src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" class="emoticon">';
-            break;
+            case 'recycled':
+                $topic_status_image = '<img src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" class="emoticon">';
+                break;
 
-        case 'deleted':
-            $topic_status_image = '<img src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_deleted'] . '" class="emoticon">';
-            break;
-    }
+            case 'deleted':
+                $topic_status_image = '<img src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_deleted'] . '" class="emoticon">';
+                break;
+        }
         //=== post status
         $post_status = htmlsafechars($arr['post_status']);
         switch ($post_status) {
-        case 'ok':
-            $post_status = $class;
-            $post_status_image = '';
-            break;
+            case 'ok':
+                $post_status = $class;
+                $post_status_image = '';
+                break;
 
-        case 'recycled':
-            $post_status = 'recycled';
-            $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" class="emoticon">';
-            break;
+            case 'recycled':
+                $post_status = 'recycled';
+                $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" class="emoticon">';
+                break;
 
-        case 'deleted':
-            $post_status = 'deleted';
-            $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_deleted'] . '" class="emoticon">';
-            break;
+            case 'deleted':
+                $post_status = 'deleted';
+                $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_deleted'] . '" class="emoticon">';
+                break;
 
-        case 'postlocked':
-            $post_status = 'postlocked';
-            $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/thread_locked.gif" alt="' . $lang['fe_locked'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_locked'] . '" class="emoticon">';
-            break;
-    }
+            case 'postlocked':
+                $post_status = 'postlocked';
+                $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/thread_locked.gif" alt="' . $lang['fe_locked'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_locked'] . '" class="emoticon">';
+                break;
+        }
         $post_icon = ($arr['icon'] !== '' ? '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" class="emoticon"> ' : '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="icon" class="emoticon"> ');
         $post_title = ($arr['post_title'] !== '' ? ' <span style="font-weight: bold; font-size: x-small;">' . htmlsafechars($arr['post_title'], ENT_QUOTES) . '</span>' : '' . $lang['fe_link_to_post'] . '');
         $edited_by = '';

@@ -118,14 +118,19 @@ $lang = [
     'gl_happyhour4' => 'remaining from this happy hour!',
     'gl_newpriv' => 'New Private',
     'gl_newmess' => ' message',
-    'gl_newprivs' => 'New Private',        //////for singular&plural
-    'gl_newmesss' => ' Messages',        //////for singular&plural
+    'gl_newprivs' => 'New Private',
+    //////for singular&plural
+    'gl_newmesss' => ' Messages',
+    //////for singular&plural
     'gl_reports' => 'New ',
     'gl_reports_new' => 'Report ',
-    'gl_reportss' => 'New ',            //////for singular&plural
-    'gl_reports_news' => 'Reports ',      //////for singular&plural
+    'gl_reportss' => 'New ',
+    //////for singular&plural
+    'gl_reports_news' => 'Reports ',
+    //////for singular&plural
     'gl_reports_report' => 'report',
-    'gl_reports_reports' => 's',        //////for singular&plural
+    'gl_reports_reports' => 's',
+    //////for singular&plural
     'gl_reports_dealt' => 'to be dealt with',
     'gl_reports_click' => 'click headline above to view reports',
     'gl_uploadapp_new' => 'New Uploader App Waiting',

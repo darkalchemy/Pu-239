@@ -12,7 +12,6 @@ function images_update($data)
     require_once INCL_DIR . 'function_imdb.php';
     global $fluent;
 
-
     set_time_limit(1200);
     ignore_user_abort(true);
 
@@ -41,7 +40,7 @@ function images_update($data)
     $links = $fluent->from('torrents')
         ->select(null)
         ->select('url')
-        ->where('url != NULL')
+        ->where('url != NULL');
 
     foreach ($links as $link) {
         if (!empty($link['url'])) {
@@ -54,7 +53,7 @@ function images_update($data)
     $links = $fluent->from('offers')
         ->select(null)
         ->select('link as url')
-        ->where('link != NULL')
+        ->where('link != NULL');
 
     foreach ($links as $link) {
         if (!empty($link['url'])) {
@@ -67,7 +66,7 @@ function images_update($data)
     $links = $fluent->from('requests')
         ->select(null)
         ->select('link as url')
-        ->where('link != NULL')
+        ->where('link != NULL');
 
     foreach ($links as $link) {
         if (!empty($link['url'])) {
@@ -91,6 +90,6 @@ function images_update($data)
     }
 
     if ($data['clean_log']) {
-        write_log("Images Cleanup: Completed using 1 query");
+        write_log('Images Cleanup: Completed using 1 query');
     }
 }

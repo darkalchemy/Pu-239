@@ -2400,7 +2400,7 @@ var ajaxChat = {
                 case '/nick':
                     return this.replaceCommandNick(textParts);
                 //case '/error':
-                    //return this.replaceCommandError(textParts);
+                //return this.replaceCommandError(textParts);
                 default:
                     return this.replaceCustomCommands(text, textParts);
             }
@@ -2850,7 +2850,7 @@ var ajaxChat = {
         }
     },
 
-    replaceBBCodeVideo: function(content) {
+    replaceBBCodeVideo: function (content) {
         if (!content) {
             return content;
         }
@@ -2874,7 +2874,7 @@ var ajaxChat = {
 
         var doLoop = 'controls="controls"';
         rex = new RegExp('\\.([^/#?]+)([#?][^/]*)?$');
-        rex.test(content)
+        rex.test(content);
         if (RegExp.$1 === 'mp4') {
             return '<span><video style="vertical-align: text-top; width" ' + dim + ' ' + doLoop + '><source src="' + content + '" type="video/mp4" />Your browser does not support the video tag.</video></span>';
         }
@@ -2889,7 +2889,7 @@ var ajaxChat = {
             return '<span><video style="vertical-align: text-top;" ' + dim + ' ' + doLoop + '><source src="' + content + 'webm" type="video/webm" />Your browser does not support the video tag.</video></span>';
         }
 
-        var regExpUrl = new RegExp("(?:youtu\\.be\\/|youtube.com\\/(?:watch\\?.*\\bv=|embed\\/|v\\/)|ytimg\\.com\\/vi\\/)(.+?)(?:[^-a-zA-Z0-9]|$)", "i");
+        var regExpUrl = new RegExp('(?:youtu\\.be\\/|youtube.com\\/(?:watch\\?.*\\bv=|embed\\/|v\\/)|ytimg\\.com\\/vi\\/)(.+?)(?:[^-a-zA-Z0-9]|$)', 'i');
         var result = regExpUrl.exec(content);
         if (result[1]) {
             return '<div class="youtube-embed has-text-centered" style="height: ' + height + 'px; width: ' + width + 'px;"><iframe width="1920" height="1080" src="//www.youtube.com/embed/' + result[1] + '?vq=hd1080" autoplay="false" frameborder="0" /></div>';
@@ -3017,10 +3017,10 @@ var ajaxChat = {
             + '</span>';
     },
 
-    replaceBBCodeUpDown: function(content) {
-        return  '<span class="txtUpsideDown">'
-                + this.replaceBBCode(content)
-                + '</span>';
+    replaceBBCodeUpDown: function (content) {
+        return '<span class="txtUpsideDown">'
+            + this.replaceBBCode(content)
+            + '</span>';
     },
 
     replaceHyperLinks: function (text) {

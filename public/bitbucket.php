@@ -12,6 +12,7 @@ if (!$site_config['bucket_allowed']) {
     header("Location: {$site_config['baseurl']}/index.php");
     die();
 }
+
 use Blocktrail\CryptoJSAES\CryptoJSAES;
 
 $lang = array_merge(load_language('global'), load_language('bitbucket'));

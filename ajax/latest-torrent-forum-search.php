@@ -5,7 +5,10 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 
 if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
-    $modes = ['torrent', 'forum'];
+    $modes = [
+        'torrent',
+        'forum',
+    ];
     $htmlout = $att = '';
 
     if (isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['qsearch']) && in_array($_POST['qsearch'], $modes)) {

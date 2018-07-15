@@ -2037,6 +2037,7 @@ function url_proxy($url, $image = false, $width = null, $height = null, $quality
         if (!empty($image)) {
             return $site_config['pic_baseurl'] . 'proxy/' . $image;
         }
+
         return $url;
     }
 
@@ -2052,16 +2053,16 @@ function get_show_name(string $name)
 {
     if (preg_match("/^(.*)S\d+(E\d+)?/i", $name, $tmp)) {
         $name = trim(str_replace([
-                                    '.',
-                                    '_',
-                                    '-',
-                                ], ' ', $tmp[1]));
+                                     '.',
+                                     '_',
+                                     '-',
+                                 ], ' ', $tmp[1]));
     } else {
         $name = trim(str_replace([
-                                    '.',
-                                    '_',
-                                    '-',
-                                ], ' ', $name));
+                                     '.',
+                                     '_',
+                                     '-',
+                                 ], ' ', $name));
     }
 
     return preg_replace('/\s+/', ' ', $name);
@@ -2207,12 +2208,12 @@ function fetch($url)
     }
 
     $client = new GuzzleHttp\Client([
-        'synchronous' => true,
-        'http_errors' => false,
-        'headers' => [
-            'User-Agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
-        ],
-    ]);
+                                        'synchronous' => true,
+                                        'http_errors' => false,
+                                        'headers' => [
+                                            'User-Agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
+                                        ],
+                                    ]);
     $res = $client->request('GET', $url);
     if ($res->getStatusCode() === 200) {
         return $res->getBody()->getContents();

@@ -9,11 +9,44 @@ function account_delete($userid)
     $secs = 350 * 86400;
     $maxclass = UC_STAFF;
     $references = [
-        'id' => ['users', 'likes'], // Do Not move this line
-        'userid' => ['usersachiev', 'blackjack', 'blocks', 'bookmarks', 'casino', 'coins', 'freeslots', 'friends', 'happyhour', 'happylog', 'ips', 'peers', 'pmboxes', 'reputation', 'snatched', 'uploadapp', 'user_blocks', 'ustatus', 'userhits', 'usercomments',
+        'id' => [
+            'users',
+            'likes',
         ],
-        'uid' => ['xbt_files_users', 'thankyou'],
-        'user_id' => ['poll_voters', 'posts', 'topics', 'subscriptions', 'read_posts'],
+        // Do Not move this line
+        'userid' => [
+            'usersachiev',
+            'blackjack',
+            'blocks',
+            'bookmarks',
+            'casino',
+            'coins',
+            'freeslots',
+            'friends',
+            'happyhour',
+            'happylog',
+            'ips',
+            'peers',
+            'pmboxes',
+            'reputation',
+            'snatched',
+            'uploadapp',
+            'user_blocks',
+            'ustatus',
+            'userhits',
+            'usercomments',
+        ],
+        'uid' => [
+            'xbt_files_users',
+            'thankyou',
+        ],
+        'user_id' => [
+            'poll_voters',
+            'posts',
+            'topics',
+            'subscriptions',
+            'read_posts',
+        ],
         'friendid' => [
             'friends',
         ],

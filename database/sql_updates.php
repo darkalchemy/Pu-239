@@ -64,7 +64,7 @@ $sql_updates = [
         'id' => 1531531985,
         'info' => 'Modify comments.user_likes to int',
         'date' => '14 Jul, 2018',
-        'query' => "UPDATE `comments` SET `user_likes` = 0",
+        'query' => 'UPDATE `comments` SET `user_likes` = 0',
         'flush' => false,
     ],
     [
@@ -99,7 +99,7 @@ $sql_updates = [
         'id' => 1531574990,
         'info' => 'Drop columm likes',
         'date' => '14 Jul, 2018',
-        'query' => "ALTER TABLE `likes` DROP `likes`",
+        'query' => 'ALTER TABLE `likes` DROP `likes`',
         'flush' => false,
     ],
     [
@@ -120,7 +120,7 @@ $sql_updates = [
         'id' => 1531593995,
         'info' => 'Drop constraint',
         'date' => '14 Jul, 2018',
-        'query' => "ALTER TABLE `comments` DROP FOREIGN KEY `comments_ibfk_2`",
+        'query' => 'ALTER TABLE `comments` DROP FOREIGN KEY `comments_ibfk_2`',
         'flush' => false,
     ],
     [

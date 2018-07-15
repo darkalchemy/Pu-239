@@ -14,150 +14,150 @@
 
 /* Firefox button padding fix */
 #content #bbCodeContainer input::-moz-focus-inner, #content #logoutButton::-moz-focus-inner, #content #submitButton::-moz-focus-inner {
-    border: 0;
-    padding: 0;
+    border  : 0;
+    padding : 0;
 }
 
 /* Buttons */
 #content #bbCodeContainer input, #content #logoutButton, #content #submitButton, #loginForm #loginButton {
-    background-color: #F7F5F1;
-    color: #333333;
-    border: 1px solid #8a8a8a;
-    background-image: -o-linear-gradient(top, #fafafa, #cdcdcd);
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#cdcdcd));
-    background-image: linear-gradient(to bottom, #fafafa, #cdcdcd);
-    background-image: -webkit-linear-gradient(top, #fafafa, #cdcdcd);
+    background-color : #f7f5f1;
+    color            : #333;
+    border           : 1px solid #8a8a8a;
+    background-image : -o-linear-gradient(top, #fafafa, #cdcdcd);
+    background-image : -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#cdcdcd));
+    background-image : linear-gradient(to bottom, #fafafa, #cdcdcd);
+    background-image : -webkit-linear-gradient(top, #fafafa, #cdcdcd);
 }
 
 #content select, #loginForm select, #loginForm input, #content textarea {
-    background-color: #FFF;
-    color: #333333;
-    border: 1px solid #ababab;
+    background-color : #fff;
+    color            : #333;
+    border           : 1px solid #ababab;
 }
 
 /* Status Icon */
 #content #statusIconContainer {
-    background: url('../../images/loading-sprite.png') no-repeat 0 0;
+    background : url('../../images/loading-sprite.png') no-repeat 0 0;
 }
 
 #content #statusIconContainer.waiting {
-    background-position: 0 -22px;
+    background-position : 0 -22px;
 }
 
 #content #statusIconContainer.retrying {
-    background-position: 0 -44px;
+    background-position : 0 -44px;
 }
 
 /* Headers */
 #loginContent h1 {
-    color: #333333;
+    color : #333;
 }
 
 #content #headline {
-    left: 0;
-    right: 0;
-    background: #0c95d9;
-    color: #fff;
+    left       : 0;
+    right      : 0;
+    background : #0c95d9;
+    color      : #fff;
 }
 
 #content #onlineListContainer h3, #content #helpContainer h3, #content #settingsContainer h3 {
-    background-color: #0c95d9;
-    color: #fff;
-    height: 25px;
+    background-color : #0c95d9;
+    color            : #fff;
+    height           : 25px;
 }
 
 /* Other Theme Elements */
 .ajax-chat {
-    background-color: #F9F9F9;
-    color: #28313F;
+    background-color : #f9f9f9;
+    color            : #28313f;
 }
 
 #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {
-    border-color: #ababab;
+    border-color : #ababab;
 }
 
 .ajax-chat .popup {
-    background-color: #FFF;
-    border: 1px solid #ababab;
-    -webkit-box-shadow: 2px 2px 2px #777;
-            box-shadow: 2px 2px 2px #777;
+    background-color   : #fff;
+    border             : 1px solid #ababab;
+    -webkit-box-shadow : 2px 2px 2px #777;
+    box-shadow         : 2px 2px 2px #777;
 }
 
 #content #chatList .deleteSelected {
-    border: 1px dotted;
+    border : 1px dotted;
 }
 
 #content #helpContainer #helpList table, #content #settingsContainer #settingsList table {
-    border-collapse: collapse;
+    border-collapse : collapse;
 }
 
 #loginContent a {
-    color: #333333;
+    color : #333;
 }
 
 #loginContent input, #loginContent select {
-    background-color: #FFF;
-    color: #333333;
+    background-color : #fff;
+    color            : #333;
 }
 
 #loginContent #loginButton {
-    background-color: #F7F5F1;
-    color: #333333;
+    background-color : #f7f5f1;
+    color            : #333;
 }
 
 #loginContent #errorContainer {
-    color: red;
+    color : red;
 }
 
 #content #copyright, #content #copyright a {
-    color: #fff;
+    color : #fff;
 }
 
 #content a {
-    color: #333333;
+    color : #333;
 }
 
 #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer, #content #colorCodesContainer, #content #emoticonsContainer {
-    background-color: #FFF;
+    background-color : #fff;
 }
 
 #content #colorCodesContainer {
-    -webkit-box-shadow: 2px 2px 2px #777;
-            box-shadow: 2px 2px 2px #777;
+    -webkit-box-shadow : 2px 2px 2px #777;
+    box-shadow         : 2px 2px 2px #777;
 }
 
 #content #colorCodesContainer a {
-    border-color: black;
+    border-color : black;
 }
 
 #content #optionsContainer input {
-    background-color: transparent;
+    background-color : transparent;
 }
 
 #content .rowEven, #helpList dl:nth-child(even), #settingsList dl:nth-child(even) {
-    background-color: #eaf1f6;
+    background-color : #eaf1f6;
 }
 
 #content .rowOdd, #helpList dl:nth-child(odd), #settingsList dl:nth-child(odd) {
-    background-color: #e1eaf2;
+    background-color : #e1eaf2;
 }
 
 #content #chatList .rowOdd.private {
-    background-color: #F8D0D0;
+    background-color : #f8d0d0;
 }
 
 #content #chatList .rowEven.private {
-    background-color: #F8D9D0;
+    background-color : #f8d9d0;
 }
 
 #content #chatList .chatBotErrorMessage {
-    color: red;
+    color : red;
 }
 
 #content #chatList a {
-    color: #D31141;
+    color : #d31141;
 }
 
 #content #chatList .deleteSelected {
-    border-color: red;
+    border-color : red;
 }

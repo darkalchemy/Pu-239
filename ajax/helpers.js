@@ -3,7 +3,7 @@ $(function () {
     function do_update_sidebar() {
 
         $('.lforums,.ltorrents').fadeOut(1000, function () {
-            $('.lforums,.ltorrents').empty().html("<div style='margin:0 auto;text-align:center;'><img src='http://i.imgur.com/LHLpA6r.gif'/></div>").fadeIn(1000, function () {
+            $('.lforums,.ltorrents').empty().html('<div style=\'margin:0 auto;text-align:center;\'><img src=\'http://i.imgur.com/LHLpA6r.gif\'/></div>').fadeIn(1000, function () {
                 $.ajax({
                     type: 'post',
                     url: '/ajax/auto_loaders.php',
@@ -69,9 +69,9 @@ $(function () {
 $('.ajaxform').live('submit', function (e) {
     e.preventDefault();
     var fos = $(this);
-    var val = fos.find("input[name='search']");
+    var val = fos.find('input[name=\'search\']');
     var res = fos.find('input.results').data('result');
-    $(res).hide().html("<div style='margin:0 auto;text-align:center;'><img src='http://i.imgur.com/LHLpA6r.gif'/></div>").fadeIn(1000);
+    $(res).hide().html('<div style=\'margin:0 auto;text-align:center;\'><img src=\'http://i.imgur.com/LHLpA6r.gif\'/></div>').fadeIn(1000);
 
     if (val.val().length <= 0) {
         $(res).html('Search Cannot Be empty now can it.');
@@ -84,8 +84,8 @@ $('.ajaxform').live('submit', function (e) {
             data: fos.serialize(),
             success: function (data) {
 
-                $(res).animate({"opacity": "0"}, 2000, function () {
-                    $(res).html(data).animate({"opacity": "1"}, 2000);
+                $(res).animate({'opacity': '0'}, 2000, function () {
+                    $(res).html(data).animate({'opacity': '1'}, 2000);
                 });
 
             }

@@ -1,5 +1,5 @@
 var v_offset = 250;
-var animate_duration = 1000;
+var animate_duration = 1250;
 var easing = 'swing';
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
@@ -70,7 +70,7 @@ function refrClock() {
     setTimeout('refrClock()', 1e3);
 }
 
-$('.mlike').on('click', function() {
+$('.mlike').on('click', function () {
     $.ajax({
         url: './ajax/like.php',
         type: 'POST',
@@ -80,7 +80,7 @@ $('.mlike').on('click', function() {
             type: this.dataset.type,
             id: this.dataset.id,
             csrf: this.dataset.csrf,
-            current: $(this).html(),
+            current: $(this).html()
         },
         success: function (data) {
             $(this).html(data['label']);
@@ -346,7 +346,7 @@ $(function () {
 
     if (document.body.contains(document.getElementById('overlay'))) {
         var width = document.getElementById('overlay').offsetWidth;
-        var height = (width * 185 / 1000) + 4
+        var height = (width * 185 / 1000) + 4;
         document.getElementById('overlay').style.height = height + 'px';
         document.getElementById('body-overlay').classList.add('body-overlay');
     }
@@ -356,7 +356,7 @@ var vidWidth = $('.object-fit-video').width();
 $('.object-fit-video').height(vidWidth * .184);
 $('.object-fit-video').css('visibility', 'visible');
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     yall({
         observeChanges: true
     });

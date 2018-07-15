@@ -133,24 +133,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $groups = [];
-$groups['staff'] = ['opname' => $lang['grouppm_staff'],
-                    'minclass' => UC_MIN, ];
+$groups['staff'] = [
+    'opname' => $lang['grouppm_staff'],
+    'minclass' => UC_MIN,
+];
 for ($i = $FSCLASS; $i <= $LSCLASS; ++$i) {
     $groups['staff']['ops'][$i] = get_user_class_name($i);
 }
 $groups['staff']['ops']['fls'] = $lang['grouppm_fls'];
 $groups['staff']['ops']['all_staff'] = $lang['grouppm_allstaff'];
 $groups['members'] = [];
-$groups['members'] = ['opname' => $lang['grouppm_mem'],
-                      'minclass' => UC_STAFF, ];
+$groups['members'] = [
+    'opname' => $lang['grouppm_mem'],
+    'minclass' => UC_STAFF,
+];
 for ($i = $FUCLASS; $i <= $LUCLASS; ++$i) {
     $groups['members']['ops'][$i] = get_user_class_name($i);
 }
 $groups['members']['ops']['donor'] = $lang['grouppm_donor'];
 $groups['members']['ops']['all_users'] = $lang['grouppm_allusers'];
-$groups['friends'] = ['opname' => $lang['grouppm_related'],
-                      'minclass' => UC_MIN,
-                      'ops' => ['all_friends' => $lang['grouppm_friends']], ];
+$groups['friends'] = [
+    'opname' => $lang['grouppm_related'],
+    'minclass' => UC_MIN,
+    'ops' => ['all_friends' => $lang['grouppm_friends']],
+];
 
 /**
  * @return string

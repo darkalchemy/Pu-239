@@ -1,105 +1,105 @@
 @media print {
     #content {
-        position: static;
+        position : static;
     }
 
     #content #copyright {
-        display: none;
+        display : none;
     }
 
     #content #headline {
-        display: none;
+        display : none;
     }
 
     #content #logoutChannelContainer {
-        display: none;
+        display : none;
     }
 
     #content #statusIconContainer {
-        display: none;
+        display : none;
     }
 
     #content #chatList {
-        position: static;
-        overflow: visible;
+        position : static;
+        overflow : visible;
     }
 
     #content #inputFieldContainer {
-        display: none;
+        display : none;
     }
 
     #content #submitButtonContainer {
-        display: none;
+        display : none;
     }
 
     #content #onlineListContainer {
-        display: none;
+        display : none;
     }
 
     #content #helpContainer {
-        display: none;
+        display : none;
     }
 
     #content #settingsContainer {
-        display: none;
+        display : none;
     }
 
     #content #bbCodeContainer {
-        display: none;
+        display : none;
     }
 
     #content #colorCodesContainer {
-        display: none;
+        display : none;
     }
 
     #content #emoticonsContainer {
-        display: none;
+        display : none;
     }
 
     #content #optionsContainer {
-        display: none;
+        display : none;
     }
 
     #content #chatList div {
-        padding-bottom: 5px;
+        padding-bottom : 5px;
     }
 
     #content #chatList img {
-        vertical-align: middle;
-        margin-bottom: 2px;
+        vertical-align : middle;
+        margin-bottom  : 2px;
     }
 
     #content #chatList cite {
-        margin-right: 5px;
+        margin-right : 5px;
     }
 
     #content #chatList .delete {
-        display: none;
+        display : none;
     }
 
     #content #chatList {
-        border: none;
+        border : none;
     }
 
     #content {
-        font-family: 'times new roman', times, serif;
-        font-size: 1.0em;
-        text-align: justify;
+        font-family : 'times new roman', times, serif;
+        font-size   : 1.0em;
+        text-align  : justify;
     }
 
     #content #chatList code {
-        font-size: 0.8em;
+        font-size : 0.8em;
     }
 
     #content {
-        color: #000;
+        color : #000;
     }
 
     #content #chatList .chatBotErrorMessage {
-        color: red;
+        color : red;
     }
 
     #content #chatList a {
-        color: #1E90FF;
+        color : #1e90ff;
     }
 }

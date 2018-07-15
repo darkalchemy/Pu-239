@@ -42,8 +42,8 @@ function commenttable($rows, $variant = 'torrent')
         $likes = $att_str = '';
         $likers = $user_likes = [];
         if ($row['user_likes'] > 0) {
-            //$user_likes = $cache->get("{$type}_user_likes_" . $cid);
-            //if ($user_likes === false || is_null($user_likes)) {
+            $user_likes = $cache->get("{$type}_user_likes_" . $cid);
+            if ($user_likes === false || is_null($user_likes)) {
                 $query = $fluent->from('likes')
                     ->select(null)
                     ->select('user_id')
@@ -52,8 +52,8 @@ function commenttable($rows, $variant = 'torrent')
                 foreach ($query as $userid) {
                     $user_likes[] = $userid['user_id'];
                 }
-                //$cache->set("{$type}_user_likes_" . $cid, $user_likes, 86400);
-            //}
+                $cache->set("{$type}_user_likes_" . $cid, $user_likes, 86400);
+            }
             if ($user_likes) {
                 foreach ($user_likes as $userid) {
                     $likers[] = format_username($userid);
@@ -88,16 +88,16 @@ function commenttable($rows, $variant = 'torrent')
                 } else {
                     $title = htmlsafechars($title);
                 }
-                $this_text .= "<span class='left5'>" . format_username($row['user']) . "</span>";
+                $this_text .= "<span class='left5'>" . format_username($row['user']) . '</span>';
                 $this_text .= '
                     <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'Mood\',530,500,1,1);" class="left5">
                         <img src="' . $site_config['pic_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" class="tooltipper" title="' . ($row['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : htmlsafechars($usersdata['username'])) . ' ' . $moodname . '!" />
                     </a>';
             }
         } else {
-            $this_text .= "<a id='comm" . (int) $row['id'] . "' class='left5'><i>(" . $lang['commenttable_orphaned'] . ")</i></a>";
+            $this_text .= "<a id='comm" . (int) $row['id'] . "' class='left5'><i>(" . $lang['commenttable_orphaned'] . ')</i></a>';
         }
-        $this_text .= "<span class='left5'>" . get_date($row['added'], '') . "</span>";
+        $this_text .= "<span class='left5'>" . get_date($row['added'], '') . '</span>';
         $row['id'] = (int) $row['id'];
         $tid = !empty($row['variant']) ? "&amp;tid={$row['variant']}" : '';
         $this_text .= ($row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? "
@@ -115,8 +115,8 @@ function commenttable($rows, $variant = 'torrent')
             $text = "
             <div class='flex-vertical comments h-100'>
                 <div>$text</div>
-                <div class='size_3'>{$lang['commenttable_last_edited_by']} " . format_username($row['editedby']) . " {$lang['commenttable_last_edited_at']} " . get_date($row['editedat'], 'DATE') . "</div>
-            </div>";
+                <div class='size_3'>{$lang['commenttable_last_edited_by']} " . format_username($row['editedby']) . " {$lang['commenttable_last_edited_at']} " . get_date($row['editedat'], 'DATE') . '</div>
+            </div>';
         }
         $top = $i++ >= 1 ? 'top20' : '';
         $htmlout .= main_div("

@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
     var iCarousel;
     iCarousel = function (el, slides, options) {
         var ic = this;
@@ -198,8 +198,9 @@
         rightOutItem: null,
         leftOutItem: null,
         support: {
-            transform3d: function() {
-                var props = [ "perspectiveProperty", "WebkitPerspective", "MozPerspective", "OPerspective", "msPerspective" ], i = 0, support = false, form = document.createElement("form");
+            transform3d: function () {
+                var props = ['perspectiveProperty', 'WebkitPerspective', 'MozPerspective', 'OPerspective', 'msPerspective'],
+                    i = 0, support = false, form = document.createElement('form');
                 while (props[i]) {
                     if (props[i] in form.style) {
                         support = true;
@@ -209,8 +210,9 @@
                 }
                 return support;
             },
-            transform2d: function() {
-                var props = [ "transformProperty", "WebkitTransform", "MozTransform", "OTransform", "msTransform" ], i = 0, support = false, form = document.createElement("form");
+            transform2d: function () {
+                var props = ['transformProperty', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'],
+                    i = 0, support = false, form = document.createElement('form');
                 while (props[i]) {
                     if (props[i] in form.style) {
                         support = true;
@@ -220,8 +222,9 @@
                 }
                 return support;
             },
-            transition: function() {
-                var props = [ "transitionProperty", "WebkitTransition", "MozTransition", "OTransition", "msTransition" ], i = 0, support = false, form = document.createElement("form");
+            transition: function () {
+                var props = ['transitionProperty', 'WebkitTransition', 'MozTransition', 'OTransition', 'msTransition'],
+                    i = 0, support = false, form = document.createElement('form');
                 while (props[i]) {
                     if (props[i] in form.style) {
                         support = true;
@@ -231,22 +234,22 @@
                 }
                 return support;
             },
-            touch: function() {
-                return ("ontouchstart" in window);
+            touch: function () {
+                return ('ontouchstart' in window);
             }
         },
-        init: function() {
+        init: function () {
             var ic = this;
             if (ic.options.directionNav) ic.setButtons();
             ic.layout();
             ic.events();
-            ic.iCarouselTimer.attr("title", ic.options.playLabel).addClass("paused").show();
+            ic.iCarouselTimer.attr('title', ic.options.playLabel).addClass('paused').show();
             if (ic.options.autoPlay && ic.defs.total > 1) {
                 ic.setTimer();
-                ic.iCarouselTimer.attr("title", ic.options.pauseLabel).removeClass("paused");
+                ic.iCarouselTimer.attr('title', ic.options.pauseLabel).removeClass('paused');
             }
         },
-        goSlide: function(index, motionless, fastchange) {
+        goSlide: function (index, motionless, fastchange) {
             var ic = this;
             if (ic.defs && ic.defs.slide === ic.defs.total - 1) {
                 ic.options.onLastSlide.call(this);
@@ -258,70 +261,70 @@
                 ic.options.onSlideShowEnd.call(this);
             }
             ic.defs.currentSlide = ic.slides.eq(ic.defs.slide);
-            ic.defs.easing = ic.defs.currentSlide.data("easing") ? ic.setEasing($.trim(ic.defs.currentSlide.data("easing"))) : ic.setEasing(ic.options.easing);
-            ic.defs.time = ic.defs.currentSlide.data("pausetime") ? ic.defs.currentSlide.data("pausetime") : ic.options.pauseTime;
+            ic.defs.easing = ic.defs.currentSlide.data('easing') ? ic.setEasing($.trim(ic.defs.currentSlide.data('easing'))) : ic.setEasing(ic.options.easing);
+            ic.defs.time = ic.defs.currentSlide.data('pausetime') ? ic.defs.currentSlide.data('pausetime') : ic.options.pauseTime;
             var animSpeed = fastchange ? ic.options.animationSpeed / fastchange : false;
-            ic.slides.removeClass("current");
+            ic.slides.removeClass('current');
             ic.defs.lock = true;
             ic.layout(true, animSpeed);
             if (fastchange) return false;
             ic.resetTimer();
-            setTimeout(function() {
+            setTimeout(function () {
                 ic.animationEnd(ic);
             }, ic.options.animationSpeed);
         },
-        goFar: function(index) {
+        goFar: function (index) {
             var ic = this, diff = index === ic.defs.total - 1 && ic.defs.slide === 0 ? -1 : index - ic.defs.slide;
             if (ic.defs.slide === ic.defs.total - 1 && index === 0) diff = 1;
             var diff2 = diff < 0 ? -diff : diff, timeBuff = 0;
             for (var i = 0; i < diff2; i++) {
                 var timeout = diff2 === 1 ? 0 : timeBuff;
-                setTimeout(function() {
+                setTimeout(function () {
                     diff < 0 ? ic.goPrev(diff2) : ic.goNext(diff2);
                 }, timeout);
                 timeBuff += ic.options.animationSpeed / diff2;
             }
-            setTimeout(function() {
+            setTimeout(function () {
                 ic.animationEnd(ic);
             }, ic.options.animationSpeed);
             ic.resetTimer();
         },
-        animationEnd: function(ic) {
+        animationEnd: function (ic) {
             ic.defs.lock = false;
             ic.defs.degree = 0;
             if (ic.defs.interval === null && !ic.defs.pause) ic.setTimer();
             ic.options.onAfterChange.call(this);
         },
-        processTimer: function() {
+        processTimer: function () {
             var ic = this;
             var degree;
-            if (ic.defs.timer === "360bar") {
+            if (ic.defs.timer === '360bar') {
                 degree = ic.defs.degree === 0 ? 0 : ic.defs.degree - .9;
                 ic.timerPath.attr({
-                    arc: [ degree, ic.R ]
+                    arc: [degree, ic.R]
                 });
-            } else if (ic.defs.timer === "pie") {
+            } else if (ic.defs.timer === 'pie') {
                 degree = ic.defs.degree === 0 ? 0 : ic.defs.degree - .9;
                 ic.pieTimer.attr({
-                    segment: [ degree, ic.R ]
+                    segment: [degree, ic.R]
                 });
             } else {
                 ic.barTimer.css({
-                    width: ic.defs.degree / 360 * 100 + "%"
+                    width: ic.defs.degree / 360 * 100 + '%'
                 });
             }
             ic.defs.degree += 4;
         },
-        resetTimer: function() {
+        resetTimer: function () {
             var ic = this;
             if (ic.defs.total > 1) {
-                if (ic.defs.timer === "360bar") {
+                if (ic.defs.timer === '360bar') {
                     ic.timerPath.animate({
-                        arc: [ 0, ic.R ]
+                        arc: [0, ic.R]
                     }, ic.options.animationSpeed);
-                } else if (ic.defs.timer === "pie") {
+                } else if (ic.defs.timer === 'pie') {
                     ic.pieTimer.animate({
-                        segment: [ 0, ic.R ]
+                        segment: [0, ic.R]
                     }, ic.options.animationSpeed);
                 } else {
                     ic.barTimer.animate({
@@ -330,25 +333,25 @@
                 }
             }
         },
-        timerCall: function(ic) {
+        timerCall: function (ic) {
             ic.processTimer();
             if (ic.defs.degree > 360) {
                 ic.goNext();
             }
         },
-        setTimer: function() {
+        setTimer: function () {
             var ic = this;
-            ic.defs.interval = setInterval(function() {
+            ic.defs.interval = setInterval(function () {
                 ic.timerCall(ic);
             }, ic.defs.time / 90);
         },
-        clearTimer: function() {
+        clearTimer: function () {
             var ic = this;
             clearInterval(ic.defs.interval);
             ic.defs.interval = null;
             ic.defs.degree = 0;
         },
-        layout: function(animate, speedTime) {
+        layout: function (animate, speedTime) {
             var opacity;
             var slide;
             var ic = this;
@@ -429,12 +432,13 @@
                 }
                 slide.css({
                     opacity: opacity,
-                    visibility: "visible",
+                    visibility: 'visible',
                     zIndex: zIndex
                 });
             }
             if (ic.defs.total > ic.options.slides) {
-                var rCSS = ic.CSS(ic.rightOutItem, ic.leftItems.length - .5, ic.leftItems.length - 1, true), lCSS = ic.CSS(ic.leftOutItem, ic.leftItems.length - .5, ic.leftItems.length - 1);
+                var rCSS = ic.CSS(ic.rightOutItem, ic.leftItems.length - .5, ic.leftItems.length - 1, true),
+                    lCSS = ic.CSS(ic.leftOutItem, ic.leftItems.length - .5, ic.leftItems.length - 1);
                 if (ic.support.transition()) {
                     ic.rightOutItem.css(rCSS);
                     ic.leftOutItem.css(lCSS);
@@ -442,7 +446,7 @@
                     if (animate) {
                         ic.leftOutItem.css({
                             opacity: 1,
-                            visibility: "visible"
+                            visibility: 'visible'
                         });
                         ic.rightOutItem.css(rCSS);
                         lCSS.opacity = 0;
@@ -454,27 +458,27 @@
                 }
             }
         },
-        setItems: function() {
+        setItems: function () {
             var ic = this, num = Math.floor(ic.options.slides / 2) + 1;
             ic.leftItems = [];
             ic.rightItems = [];
             for (var i = 1; i < num; i++) {
-                var eq = ic.defs.dir === "ltr" ? (ic.defs.slide + i) % ic.defs.total : (ic.defs.slide - i) % ic.defs.total;
+                var eq = ic.defs.dir === 'ltr' ? (ic.defs.slide + i) % ic.defs.total : (ic.defs.slide - i) % ic.defs.total;
                 ic.leftItems.push(ic.slides.eq(eq));
             }
             for (var i = 1; i < num; i++) {
-                var eq = ic.defs.dir === "ltr" ? (ic.defs.slide - i) % ic.defs.total : (ic.defs.slide + i) % ic.defs.total;
+                var eq = ic.defs.dir === 'ltr' ? (ic.defs.slide - i) % ic.defs.total : (ic.defs.slide + i) % ic.defs.total;
                 ic.rightItems.push(ic.slides.eq(eq));
             }
             ic.leftOutItem = ic.slides.eq(ic.defs.slide - num);
             ic.rightOutItem = ic.defs.total - ic.defs.slide - num <= 0 ? ic.slides.eq(-parseInt(ic.defs.total - ic.defs.slide - num)) : ic.slides.eq(ic.defs.slide + num);
             var leftOut = ic.leftOutItem, rightOut = ic.rightOutItem;
-            if (ic.defs.dir === "ltr") {
+            if (ic.defs.dir === 'ltr') {
                 ic.leftOutItem = rightOut;
                 ic.rightOutItem = leftOut;
             }
         },
-        newDimenstions: function(width, height, width_old, height_old) {
+        newDimenstions: function (width, height, width_old, height_old) {
             var factor;
             if (width === 0) {
                 factor = height / height_old;
@@ -494,7 +498,7 @@
                 ratio: factor
             };
         },
-        CSS: function(slide, i, zIndex, positive) {
+        CSS: function (slide, i, zIndex, positive) {
             var wDiff, hDiff, dims, leftRemain, transform, left, width, height, center, top, overflow;
             var transform, left, top, width, height, overflow;
             var transform, left, top, width, height, overflow;
@@ -529,10 +533,10 @@
                 overflow = 'hidden';
             }
             if (ic.support.transition()) css = {
-                "-webkit-transform": transform,
-                "-moz-transform": transform,
-                "-o-transform": transform,
-                "-ms-transform": transform,
+                '-webkit-transform': transform,
+                '-moz-transform': transform,
+                '-o-transform': transform,
+                '-ms-transform': transform,
                 transform: transform,
                 left: left,
                 top: top,
@@ -549,180 +553,180 @@
             };
             return css;
         },
-        setEasing: function(easing) {
+        setEasing: function (easing) {
             var ic = this, ease;
             easing = $.trim(easing), ease = easing;
             switch (ease) {
-              case "linear":
-                ease = "cubic-bezier(0.250, 0.250, 0.750, 0.750)";
-                break;
+                case 'linear':
+                    ease = 'cubic-bezier(0.250, 0.250, 0.750, 0.750)';
+                    break;
 
-              case "ease":
-                ease = "cubic-bezier(0.250, 0.100, 0.250, 1.000)";
-                break;
+                case 'ease':
+                    ease = 'cubic-bezier(0.250, 0.100, 0.250, 1.000)';
+                    break;
 
-              case "ease-in":
-                ease = "cubic-bezier(0.420, 0.000, 1.000, 1.000)";
-                break;
+                case 'ease-in':
+                    ease = 'cubic-bezier(0.420, 0.000, 1.000, 1.000)';
+                    break;
 
-              case "ease-out":
-                ease = "cubic-bezier(0.000, 0.000, 0.580, 1.000)";
-                break;
+                case 'ease-out':
+                    ease = 'cubic-bezier(0.000, 0.000, 0.580, 1.000)';
+                    break;
 
-              case "ease-in-out":
-                ease = "cubic-bezier(0.420, 0.000, 0.580, 1.000)";
-                break;
+                case 'ease-in-out':
+                    ease = 'cubic-bezier(0.420, 0.000, 0.580, 1.000)';
+                    break;
 
-              case "ease-out-in":
-                ease = "cubic-bezier(0.000, 0.420, 1.000, 0.580)";
-                break;
+                case 'ease-out-in':
+                    ease = 'cubic-bezier(0.000, 0.420, 1.000, 0.580)';
+                    break;
 
-              case "easeInQuad":
-                ease = "cubic-bezier(0.550, 0.085, 0.680, 0.530)";
-                break;
+                case 'easeInQuad':
+                    ease = 'cubic-bezier(0.550, 0.085, 0.680, 0.530)';
+                    break;
 
-              case "easeInCubic":
-                ease = "cubic-bezier(0.550, 0.055, 0.675, 0.190)";
-                break;
+                case 'easeInCubic':
+                    ease = 'cubic-bezier(0.550, 0.055, 0.675, 0.190)';
+                    break;
 
-              case "easeInQuart":
-                ease = "cubic-bezier(0.895, 0.030, 0.685, 0.220)";
-                break;
+                case 'easeInQuart':
+                    ease = 'cubic-bezier(0.895, 0.030, 0.685, 0.220)';
+                    break;
 
-              case "easeInQuint":
-                ease = "cubic-bezier(0.755, 0.050, 0.855, 0.060)";
-                break;
+                case 'easeInQuint':
+                    ease = 'cubic-bezier(0.755, 0.050, 0.855, 0.060)';
+                    break;
 
-              case "easeInSine":
-                ease = "cubic-bezier(0.470, 0.000, 0.745, 0.715)";
-                break;
+                case 'easeInSine':
+                    ease = 'cubic-bezier(0.470, 0.000, 0.745, 0.715)';
+                    break;
 
-              case "easeInExpo":
-                ease = "cubic-bezier(0.950, 0.050, 0.795, 0.035)";
-                break;
+                case 'easeInExpo':
+                    ease = 'cubic-bezier(0.950, 0.050, 0.795, 0.035)';
+                    break;
 
-              case "easeInCirc":
-                ease = "cubic-bezier(0.600, 0.040, 0.980, 0.335)";
-                break;
+                case 'easeInCirc':
+                    ease = 'cubic-bezier(0.600, 0.040, 0.980, 0.335)';
+                    break;
 
-              case "easeInBack":
-                ease = "cubic-bezier(0.600, -0.280, 0.735, 0.045)";
-                break;
+                case 'easeInBack':
+                    ease = 'cubic-bezier(0.600, -0.280, 0.735, 0.045)';
+                    break;
 
-              case "easeOutQuad":
-                ease = "cubic-bezier(0.250, 0.460, 0.450, 0.940)";
-                break;
+                case 'easeOutQuad':
+                    ease = 'cubic-bezier(0.250, 0.460, 0.450, 0.940)';
+                    break;
 
-              case "easeOutCubic":
-                ease = "cubic-bezier(0.215, 0.610, 0.355, 1.000)";
-                break;
+                case 'easeOutCubic':
+                    ease = 'cubic-bezier(0.215, 0.610, 0.355, 1.000)';
+                    break;
 
-              case "easeOutQuart":
-                ease = "cubic-bezier(0.165, 0.840, 0.440, 1.000)";
-                break;
+                case 'easeOutQuart':
+                    ease = 'cubic-bezier(0.165, 0.840, 0.440, 1.000)';
+                    break;
 
-              case "easeOutQuint":
-                ease = "cubic-bezier(0.230, 1.000, 0.320, 1.000)";
-                break;
+                case 'easeOutQuint':
+                    ease = 'cubic-bezier(0.230, 1.000, 0.320, 1.000)';
+                    break;
 
-              case "easeOutSine":
-                ease = "cubic-bezier(0.390, 0.575, 0.565, 1.000)";
-                break;
+                case 'easeOutSine':
+                    ease = 'cubic-bezier(0.390, 0.575, 0.565, 1.000)';
+                    break;
 
-              case "easeOutExpo":
-                ease = "cubic-bezier(0.190, 1.000, 0.220, 1.000)";
-                break;
+                case 'easeOutExpo':
+                    ease = 'cubic-bezier(0.190, 1.000, 0.220, 1.000)';
+                    break;
 
-              case "easeOutCirc":
-                ease = "cubic-bezier(0.075, 0.820, 0.165, 1.000)";
-                break;
+                case 'easeOutCirc':
+                    ease = 'cubic-bezier(0.075, 0.820, 0.165, 1.000)';
+                    break;
 
-              case "easeOutBack":
-                ease = "cubic-bezier(0.175, 0.885, 0.320, 1.275)";
-                break;
+                case 'easeOutBack':
+                    ease = 'cubic-bezier(0.175, 0.885, 0.320, 1.275)';
+                    break;
 
-              case "easeInOutQuad":
-                ease = "cubic-bezier(0.455, 0.030, 0.515, 0.955)";
-                break;
+                case 'easeInOutQuad':
+                    ease = 'cubic-bezier(0.455, 0.030, 0.515, 0.955)';
+                    break;
 
-              case "easeInOutCubic":
-                ease = "cubic-bezier(0.645, 0.045, 0.355, 1.000)";
-                break;
+                case 'easeInOutCubic':
+                    ease = 'cubic-bezier(0.645, 0.045, 0.355, 1.000)';
+                    break;
 
-              case "easeInOutQuart":
-                ease = "cubic-bezier(0.770, 0.000, 0.175, 1.000)";
-                break;
+                case 'easeInOutQuart':
+                    ease = 'cubic-bezier(0.770, 0.000, 0.175, 1.000)';
+                    break;
 
-              case "easeInOutQuint":
-                ease = "cubic-bezier(0.860, 0.000, 0.070, 1.000)";
-                break;
+                case 'easeInOutQuint':
+                    ease = 'cubic-bezier(0.860, 0.000, 0.070, 1.000)';
+                    break;
 
-              case "easeInOutSine":
-                ease = "cubic-bezier(0.445, 0.050, 0.550, 0.950)";
-                break;
+                case 'easeInOutSine':
+                    ease = 'cubic-bezier(0.445, 0.050, 0.550, 0.950)';
+                    break;
 
-              case "easeInOutExpo":
-                ease = "cubic-bezier(1.000, 0.000, 0.000, 1.000)";
-                break;
+                case 'easeInOutExpo':
+                    ease = 'cubic-bezier(1.000, 0.000, 0.000, 1.000)';
+                    break;
 
-              case "easeInOutCirc":
-                ease = "cubic-bezier(0.785, 0.135, 0.150, 0.860)";
-                break;
+                case 'easeInOutCirc':
+                    ease = 'cubic-bezier(0.785, 0.135, 0.150, 0.860)';
+                    break;
 
-              case "easeInOutBack":
-                ease = "cubic-bezier(0.680, 0, 0.265, 1)";
-                break;
+                case 'easeInOutBack':
+                    ease = 'cubic-bezier(0.680, 0, 0.265, 1)';
+                    break;
             }
             if (ic.support.transition()) return ease; else {
-                if (easing === "ease" || easing === "ease-in" || easing === "ease-out" || easing === "ease-in-out" || easing === "ease-out-in") easing = "";
+                if (easing === 'ease' || easing === 'ease-in' || easing === 'ease-out' || easing === 'ease-in-out' || easing === 'ease-out-in') easing = '';
                 return easing;
             }
         },
-        goNext: function(fastchange) {
+        goNext: function (fastchange) {
             var ic = this;
             fastchange = fastchange ? fastchange : false;
             if (!fastchange && ic.defs.lock) return false;
             ic.defs.slide === ic.defs.total ? ic.goSlide(0, false, fastchange) : ic.goSlide(ic.defs.slide + 1, false, fastchange);
         },
-        goPrev: function(fastchange) {
+        goPrev: function (fastchange) {
             var ic = this;
             fastchange = fastchange ? fastchange : false;
             if (!fastchange && ic.defs.lock) return false;
             ic.defs.slide === 0 ? ic.goSlide(ic.defs.total - 1, false, fastchange) : ic.goSlide(ic.defs.slide - 1, false, fastchange);
         },
-        events: function() {
+        events: function () {
             var ic = this;
-            if (ic.options.keyboardNav) $(document).bind("keyup.iCarousel", function(event) {
+            if (ic.options.keyboardNav) $(document).bind('keyup.iCarousel', function (event) {
                 switch (event.keyCode) {
-                  case 33:
+                    case 33:
                     case 37:
                     case 38:
-                    ic.goPrev();
-                    break;
+                        ic.goPrev();
+                        break;
 
-                  case 34:
+                    case 34:
                     case 39:
                     case 40:
-                    ic.goNext();
-                    break;
+                        ic.goNext();
+                        break;
                 }
             });
-            $("a#iCarouselPrev", ic.el).click(function() {
+            $('a#iCarouselPrev', ic.el).click(function () {
                 ic.goPrev();
             });
-            $("a#iCarouselNext", ic.el).click(function() {
+            $('a#iCarouselNext', ic.el).click(function () {
                 ic.goNext();
             });
-            ic.iCarouselTimer.click(function() {
-                if (ic.iCarouselTimer.hasClass("paused")) {
-                    ic.iCarouselTimer.removeClass("paused").attr("title", ic.options.pauseLabel);
+            ic.iCarouselTimer.click(function () {
+                if (ic.iCarouselTimer.hasClass('paused')) {
+                    ic.iCarouselTimer.removeClass('paused').attr('title', ic.options.pauseLabel);
                     ic.defs.pause = false;
                     if (ic.defs.interval === null) {
                         ic.setTimer();
                         ic.options.onPlay.call(this);
                     }
                 } else {
-                    ic.iCarouselTimer.addClass("paused").attr("title", ic.options.playLabel);
+                    ic.iCarouselTimer.addClass('paused').attr('title', ic.options.playLabel);
                     ic.defs.pause = true;
                     clearInterval(ic.defs.interval);
                     ic.defs.interval = null;
@@ -730,12 +734,12 @@
                 }
             });
             if (ic.options.pauseOnHover) {
-                ic.el.hover(function() {
+                ic.el.hover(function () {
                     if (!ic.defs.pause) {
                         clearInterval(ic.defs.interval);
                         ic.defs.interval = null;
                     }
-                }, function() {
+                }, function () {
                     if (!ic.defs.lock && !ic.defs.pause && ic.defs.interval === null && ic.defs.degree <= 359) {
                         ic.setTimer();
                     }
@@ -743,60 +747,60 @@
             }
             if (ic.options.touchNav && ic.support.touch()) {
                 ic.el.bind({
-                    swipeleft: function() {
-                        ic.defs.dir === "ltr" ? ic.goPrev() : ic.goNext();
+                    swipeleft: function () {
+                        ic.defs.dir === 'ltr' ? ic.goPrev() : ic.goNext();
                     },
-                    swiperight: function() {
-                        ic.defs.dir === "ltr" ? ic.goNext() : ic.goPrev();
+                    swiperight: function () {
+                        ic.defs.dir === 'ltr' ? ic.goNext() : ic.goPrev();
                     }
                 });
             }
-            ic.el.bind("iCarousel:pause", function() {
-                ic.iCarouselTimer.addClass("paused").attr("title", ic.options.playLabel);
+            ic.el.bind('iCarousel:pause', function () {
+                ic.iCarouselTimer.addClass('paused').attr('title', ic.options.playLabel);
                 ic.defs.pause = true;
                 clearInterval(ic.defs.interval);
                 ic.defs.interval = null;
                 ic.options.onPause.call(this);
             });
-            ic.el.bind("iCarousel:play", function() {
-                ic.iCarouselTimer.removeClass("paused").attr("title", ic.options.pauseLabel);
+            ic.el.bind('iCarousel:play', function () {
+                ic.iCarouselTimer.removeClass('paused').attr('title', ic.options.pauseLabel);
                 ic.defs.pause = false;
                 if (ic.defs.interval === null) {
                     ic.setTimer();
                     ic.options.onPlay.call(this);
                 }
             });
-            ic.el.bind("iCarousel:goSlide", function(event, slide) {
+            ic.el.bind('iCarousel:goSlide', function (event, slide) {
                 if (ic.defs.slide !== slide) ic.goFar(slide);
             });
-            ic.el.bind("iCarousel:next", function() {
+            ic.el.bind('iCarousel:next', function () {
                 ic.goNext();
             });
-            ic.el.bind("iCarousel:previous", function() {
+            ic.el.bind('iCarousel:previous', function () {
                 ic.goPrev();
             });
-            if (ic.el.mousewheel && ic.options.mouseWheel) ic.el.mousewheel(function(event, delta) {
+            if (ic.el.mousewheel && ic.options.mouseWheel) ic.el.mousewheel(function (event, delta) {
                 event.preventDefault();
                 if (delta < 0) ic.goNext(); else ic.goPrev();
             });
-            ic.slides.click(function() {
-                var slide = $(this), index = slide.attr("index");
+            ic.slides.click(function () {
+                var slide = $(this), index = slide.attr('index');
                 if (ic.defs.slide !== index) ic.goFar(index);
             });
         },
-        setButtons: function() {
-            this.el.append('<a class="iCarouselNav" id="iCarouselPrev" title="' + this.options.previousLabel + '">' + this.options.previousLabel + '</a><a class="iCarouselNav" id="iCarouselNext" title="' + this.options.nextLabel + '">' + this.options.nextLabel + "</a>");
+        setButtons: function () {
+            this.el.append('<a class="iCarouselNav" id="iCarouselPrev" title="' + this.options.previousLabel + '">' + this.options.previousLabel + '</a><a class="iCarouselNav" id="iCarouselNext" title="' + this.options.nextLabel + '">' + this.options.nextLabel + '</a>');
         },
-        disableSelection: function(target) {
-            if (typeof target.onselectstart !== "undefined") target.onselectstart = function() {
+        disableSelection: function (target) {
+            if (typeof target.onselectstart !== 'undefined') target.onselectstart = function () {
                 return false;
-            }; else if (typeof target.style.MozUserSelect !== "undefined") target.style.MozUserSelect = "none"; else if (typeof target.style.webkitUserSelect !== "undefined") target.style.webkitUserSelect = "none"; else if (typeof target.style.userSelect != "undefined") target.style.userSelect = "none"; else target.onmousedown = function() {
+            }; else if (typeof target.style.MozUserSelect !== 'undefined') target.style.MozUserSelect = 'none'; else if (typeof target.style.webkitUserSelect !== 'undefined') target.style.webkitUserSelect = 'none'; else if (typeof target.style.userSelect != 'undefined') target.style.userSelect = 'none'; else target.onmousedown = function () {
                 return false;
             };
-            target.unselectable = "on";
+            target.unselectable = 'on';
         }
     };
-    var ImagePreload = function(p_aImages, p_pfnPercent, p_pfnFinished) {
+    var ImagePreload = function (p_aImages, p_pfnPercent, p_pfnFinished) {
         this.m_pfnPercent = p_pfnPercent;
         this.m_pfnFinished = p_pfnFinished;
         this.m_nLoaded = 0;
@@ -806,7 +810,7 @@
         for (var i = 0; i < p_aImages.length; i++) this.Preload(p_aImages[i]);
     };
     ImagePreload.prototype = {
-        Preload: function(p_oImage) {
+        Preload: function (p_oImage) {
             var oImage = new Image();
             this.m_aImages.push(oImage);
             oImage.onload = ImagePreload.prototype.OnLoad;
@@ -817,27 +821,27 @@
             oImage.source = p_oImage;
             oImage.src = p_oImage;
         },
-        OnComplete: function() {
+        OnComplete: function () {
             this.m_nProcessed++;
             if (this.m_nProcessed === this.m_nICount) this.m_pfnFinished(); else this.m_pfnPercent(Math.round(this.m_nProcessed / this.m_nICount * 10));
         },
-        OnLoad: function() {
+        OnLoad: function () {
             this.bLoaded = true;
             this.oImagePreload.m_nLoaded++;
             this.oImagePreload.OnComplete();
         },
-        OnError: function() {
+        OnError: function () {
             this.bError = true;
             this.oImagePreload.OnComplete();
         },
-        OnAbort: function() {
+        OnAbort: function () {
             this.bAbort = true;
             this.oImagePreload.OnComplete();
         }
     };
-    $.fn.iCarousel = function(options) {
+    $.fn.iCarousel = function (options) {
         options = jQuery.extend({
-            easing: "easeInOutBack",
+            easing: 'easeInOutBack',
             slides: 13,
             make3D: false,
             perspective: 15,
@@ -850,55 +854,65 @@
             touchNav: true,
             mouseWheel: true,
             pauseOnHover: true,
-            nextLabel: "Next",
-            previousLabel: "Previous",
-            playLabel: "Play",
-            pauseLabel: "Pause",
+            nextLabel: 'Next',
+            previousLabel: 'Previous',
+            playLabel: 'Play',
+            pauseLabel: 'Pause',
             randomStart: false,
-            slidesSpace: "200",
-            slidesTopSpace: "auto",
-            direction: "rtl",
-            timer: "Pie",
-            timerBg: "#000",
-            timerColor: "#00FF00",
+            slidesSpace: '200',
+            slidesTopSpace: 'auto',
+            direction: 'rtl',
+            timer: 'Pie',
+            timerBg: '#000',
+            timerColor: '#00FF00',
             timerOpacity: .4,
             timerDiameter: 35,
             timerPadding: 4,
             timerStroke: 3,
             timerBarStroke: 1,
-            timerBarStrokeColor: "#00FF00",
-            timerBarStrokeStyle: "solid",
+            timerBarStrokeColor: '#00FF00',
+            timerBarStrokeStyle: 'solid',
             timerBarStrokeRadius: 4,
-            timerPosition: "top-right",
+            timerPosition: 'top-right',
             timerX: 10,
             timerY: 10,
-            onBeforeChange: function() {},
-            onAfterChange: function() {},
-            onAfterLoad: function() {},
-            onLastSlide: function() {},
-            onSlideShowEnd: function() {},
-            onPause: function() {},
-            onPlay: function() {}
+            onBeforeChange: function () {
+            },
+            onAfterChange: function () {
+            },
+            onAfterLoad: function () {
+            },
+            onLastSlide: function () {
+            },
+            onSlideShowEnd: function () {
+            },
+            onPause: function () {
+            },
+            onPlay: function () {
+            }
         }, options);
-        $(this).each(function() {
+        $(this).each(function () {
             var el = $(this), slides = el.children();
             new iCarousel(el, slides, options);
         });
     };
-    var supportTouch = ("ontouchstart" in window), touchStartEvent = supportTouch ? "touchstart" : "mousedown", touchStopEvent = supportTouch ? "touchend" : "mouseup", touchMoveEvent = supportTouch ? "touchmove" : "mousemove";
+    var supportTouch = ('ontouchstart' in window), touchStartEvent = supportTouch ? 'touchstart' : 'mousedown',
+        touchStopEvent = supportTouch ? 'touchend' : 'mouseup',
+        touchMoveEvent = supportTouch ? 'touchmove' : 'mousemove';
     $.event.special.swipe = {
         scrollSupressionThreshold: 10,
         durationThreshold: 1e3,
         horizontalDistanceThreshold: 30,
         verticalDistanceThreshold: 75,
-        setup: function() {
+        setup: function () {
             var thisObject = this, $this = $(thisObject);
-            $this.bind(touchStartEvent, function(event) {
+            $this.bind(touchStartEvent, function (event) {
                 var data = event.originalEvent.touches ? event.originalEvent.touches[0] : event, start = {
                     time: new Date().getTime(),
-                    coords: [ data.pageX, data.pageY ],
+                    coords: [data.pageX, data.pageY],
                     origin: $(event.target)
                 }, stop;
+
                 function moveHandler(event) {
                     if (!start) {
                         return;
@@ -906,17 +920,18 @@
                     var data = event.originalEvent.touches ? event.originalEvent.touches[0] : event;
                     stop = {
                         time: new Date().getTime(),
-                        coords: [ data.pageX, data.pageY ]
+                        coords: [data.pageX, data.pageY]
                     };
                     if (Math.abs(start.coords[0] - stop.coords[0]) > $.event.special.swipe.scrollSupressionThreshold) {
                         event.preventDefault();
                     }
                 }
-                $this.bind(touchMoveEvent, moveHandler).one(touchStopEvent, function(event) {
+
+                $this.bind(touchMoveEvent, moveHandler).one(touchStopEvent, function (event) {
                     $this.unbind(touchMoveEvent, moveHandler);
                     if (start && stop) {
                         if (stop.time - start.time < $.event.special.swipe.durationThreshold && Math.abs(start.coords[0] - stop.coords[0]) > $.event.special.swipe.horizontalDistanceThreshold && Math.abs(start.coords[1] - stop.coords[1]) < $.event.special.swipe.verticalDistanceThreshold) {
-                            start.origin.trigger("swipe").trigger(start.coords[0] > stop.coords[0] ? "swipeleft" : "swiperight");
+                            start.origin.trigger('swipe').trigger(start.coords[0] > stop.coords[0] ? 'swipeleft' : 'swiperight');
                         }
                     }
                     start = stop = undefined;
@@ -925,11 +940,11 @@
         }
     };
     $.each({
-        swipeleft: "swipe",
-        swiperight: "swipe"
-    }, function(event, sourceEvent) {
+        swipeleft: 'swipe',
+        swiperight: 'swipe'
+    }, function (event, sourceEvent) {
         $.event.special[event] = {
-            setup: function() {
+            setup: function () {
                 $(this).bind(sourceEvent, $.noop);
             }
         };

@@ -103,7 +103,6 @@ function get_imdb_info($imdb_id, $title = true)
                                     </span>
                                 </a>
                             </span>";
-
         }
     }
 

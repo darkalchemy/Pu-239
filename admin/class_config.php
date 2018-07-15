@@ -43,7 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $value = $post_data[0];
             $classname = !empty($post_data[1]) ? strtoupper($post_data[1]) : '';
             $classcolor = !empty($post_data[2]) ? $post_data[2] : '';
-            $data[] = ['className' => $classname, 'classColor' => $classcolor];
+            $data[] = [
+                'className' => $classname,
+                'classColor' => $classcolor,
+            ];
             $classcolor = str_replace('#', '', "$classcolor");
             $classpic = !empty($post_data[3]) ? $post_data[3] : '';
             if (isset($_POST[$c_name][0]) && (($value != $c_value) || ($classname != $c_classname) || ($classcolor != $c_classcolor) || ($classpic != $c_classpic))) {
@@ -161,7 +164,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
                         $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/{$arr['classpic']}',";
                         $js_classes[] = $arr['name'];
-                        $data[] = ['className' => $arr['classname'], 'classColor' => '#' . strtolower($arr['classcolor'])];
+                        $data[] = [
+                            'className' => $arr['classname'],
+                            'classColor' => '#' . strtolower($arr['classcolor']),
+                        ];
                     }
                     $classes[] = "var {$arr['name']} = {$arr['value']};";
                 }
@@ -235,7 +241,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
                     $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/{$arr['classpic']}',";
                     $js_classes[] = $arr['name'];
-                    $data[] = ['className' => $arr['classname'], 'classColor' => '#' . strtolower($arr['classcolor'])];
+                    $data[] = [
+                        'className' => $arr['classname'],
+                        'classColor' => '#' . strtolower($arr['classcolor']),
+                    ];
                 }
                 $classes[] = "var {$arr['name']} = {$arr['value']};";
             }

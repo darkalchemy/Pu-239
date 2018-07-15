@@ -1697,15 +1697,18 @@ function _geoip_seek_country_v6($gi, $ipnum)
         } elseif ($gi->flags & GEOIP_SHARED_MEMORY) {
             $buf = _sharedMemRead(
                 $gi,
-                                  2 * $gi->record_length * $offset,
-                                  2 * $gi->record_length
+                2 * $gi->record_length * $offset,
+                2 * $gi->record_length
             );
         } else {
             fseek($gi->filehandle, 2 * $gi->record_length * $offset, SEEK_SET) == 0
             or trigger_error("GeoIP API: fseek failed", E_USER_ERROR);
             $buf = fread($gi->filehandle, 2 * $gi->record_length);
         }
-        $x = [0, 0];
+        $x = [
+            0,
+            0,
+        ];
         for ($i = 0; $i < 2; ++$i) {
             for ($j = 0; $j < $gi->record_length; ++$j) {
                 $x[$i] += ord($buf[$gi->record_length * $i + $j]) << ($j * 8);
@@ -1752,7 +1755,10 @@ function _geoip_seek_country($gi, $ipnum)
             or trigger_error("GeoIP API: fseek failed", E_USER_ERROR);
             $buf = fread($gi->filehandle, 2 * $gi->record_length);
         }
-        $x = [0, 0];
+        $x = [
+            0,
+            0,
+        ];
         for ($i = 0; $i < 2; ++$i) {
             for ($j = 0; $j < $gi->record_length; ++$j) {
                 $x[$i] += ord($buf[$gi->record_length * $i + $j]) << ($j * 8);
@@ -1840,7 +1846,10 @@ function _get_region($gi, $ipnum)
             $country_code = $gi->GEOIP_COUNTRY_CODES[$seek_region];
             $region = "";
         }
-        return [$country_code, $region];
+        return [
+            $country_code,
+            $region,
+        ];
     } elseif ($gi->databaseType == GEOIP_REGION_EDITION_REV1) {
         $seek_region = _geoip_seek_country($gi, $ipnum) - GEOIP_STATE_BEGIN_REV1;
         if ($seek_region < US_OFFSET) {
@@ -1856,7 +1865,10 @@ function _get_region($gi, $ipnum)
             $country_code = $gi->GEOIP_COUNTRY_CODES[(int)(($seek_region - WORLD_OFFSET) / FIPS_RANGE)];
             $region = "";
         }
-        return [$country_code, $region];
+        return [
+            $country_code,
+            $region,
+        ];
     }
     return null;
 }

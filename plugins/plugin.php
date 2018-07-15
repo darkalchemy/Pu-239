@@ -43,7 +43,7 @@ class AdminerPlugin extends Adminer
     {
         return call_user_func_array([
                                         'parent',
-                                        $function
+                                        $function,
                                     ], $args);
     }
 
@@ -91,7 +91,7 @@ class AdminerPlugin extends Adminer
             if (method_exists($plugin, $function)) {
                 $return += call_user_func_array([
                                                     $plugin,
-                                                    $function
+                                                    $function,
                                                 ], $args);
             }
         }

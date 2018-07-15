@@ -11,10 +11,16 @@ $port = $_POST['port'];
 
 $connection = @fsockopen($ip, $port, $errno, $errstr, 10);
 if (is_resource($connection)) {
-    $msg = ['class' => 'has-text-success', 'text' => 'OPEN'];
+    $msg = [
+        'class' => 'has-text-success',
+        'text' => 'OPEN',
+    ];
     fclose($connection);
 } else {
-    $msg = ['class' => 'has-text-danger', 'text' => "CLOSED => $errstr"];
+    $msg = [
+        'class' => 'has-text-danger',
+        'text' => "CLOSED => $errstr",
+    ];
 }
 $status = ['data' => $msg];
 header('content-type: application/json');

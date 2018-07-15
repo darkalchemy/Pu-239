@@ -251,7 +251,8 @@ function get_schedule($use_cache = true)
     return false;
 }
 
-function insert_images_from_schedule($schedule, $date) {
+function insert_images_from_schedule($schedule, $date)
+{
     global $cache;
 
     foreach ($schedule as $listing) {

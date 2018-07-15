@@ -303,7 +303,7 @@ if (!empty($topic_users)) {
 }
 
 $set = [
-        'views' => new Envms\FluentPDO\Literal('views + 1'),
+    'views' => new Envms\FluentPDO\Literal('views + 1'),
 ];
 $fluent->update('topics')
     ->set($set)
@@ -327,8 +327,8 @@ $likes = $att_str = '';
 $likers = $user_likes = [];
 $count = 0;
 if ($arr['user_likes'] > 0) {
-    //$user_likes = $cache->get('topics_user_likes_' . $arr['topic_id']);
-    //if ($user_likes === false || is_null($user_likes)) {
+    $user_likes = $cache->get('topics_user_likes_' . $arr['topic_id']);
+    if ($user_likes === false || is_null($user_likes)) {
         $query = $fluent->from('likes')
             ->select(null)
             ->select('user_id')
@@ -336,8 +336,8 @@ if ($arr['user_likes'] > 0) {
         foreach ($query as $userid) {
             $user_likes[] = $userid['user_id'];
         }
-        //$cache->set('topics_user_likes_' . $arr['topic_id'], $user_likes, 86400);
-    //}
+        $cache->set('topics_user_likes_' . $arr['topic_id'], $user_likes, 86400);
+    }
     if ($user_likes) {
         foreach ($user_likes as $userid) {
             $likers[] = format_username($userid);
@@ -366,8 +366,8 @@ $wht = $count > 0 && in_array($CURUSER['id'], $user_likes) ? 'unlike' : 'like';
 $like_button = "
                 <div class='has-text-right margin10 level'>
                     <span class='tot-{$arr['topic_id']} left10'>{$att_str}</span>
-                    <span data-id='{$arr['topic_id']}' data-type='topic' data-csrf='" . $session->get('csrf_token') . "' class='mlike button is-small left10'>" . ucfirst($wht) . "</span>
-                </div>";
+                    <span data-id='{$arr['topic_id']}' data-type='topic' data-csrf='" . $session->get('csrf_token') . "' class='mlike button is-small left10'>" . ucfirst($wht) . '</span>
+                </div>';
 
 $locked_or_reply_button = ($locked === 'yes' ? '<span><img src="' . $site_config['pic_baseurl'] . 'forums/thread_locked.gif" alt="' . $lang['fe_thread_locked'] . '" title="' . $lang['fe_thread_locked'] . '" class="tooltipper emoticon" />' . $lang['fe_this_topic_is_locked'] . ', you may not post in this thread.</span>' : ($CURUSER['forum_post'] === 'no' ? '<span>Your posting rights have been removed. You may not post.</span>' : '<a href="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '" class="button is-small margin10">Add Reply</a>'));
 
@@ -481,8 +481,8 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $likers = $user_likes = [];
     $count = 0;
     if ($arr['user_likes'] > 0) {
-        //$user_likes = $cache->get('posts_user_likes_' . $arr['post_id']);
-        //if ($user_likes === false || is_null($user_likes)) {
+        $user_likes = $cache->get('posts_user_likes_' . $arr['post_id']);
+        if ($user_likes === false || is_null($user_likes)) {
             $query = $fluent->from('likes')
                 ->select(null)
                 ->select('user_id')
@@ -490,8 +490,8 @@ while ($arr = mysqli_fetch_assoc($res)) {
             foreach ($query as $userid) {
                 $user_likes[] = $userid['user_id'];
             }
-            //$cache->set('posts_user_likes_' . $arr['post_id'], $user_likes, 86400);
-        //}
+            $cache->set('posts_user_likes_' . $arr['post_id'], $user_likes, 86400);
+        }
         if ($user_likes) {
             foreach ($user_likes as $userid) {
                 $likers[] = format_username($userid);
@@ -554,15 +554,15 @@ while ($arr = mysqli_fetch_assoc($res)) {
 			' . ($arr['anonymous'] == 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($arr['user_id'])) . ($arr['anonymous'] == 'yes' || empty($usersdata['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($usersdata['title']) . ']</span>') . '<br>
 			<span >' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name($usersdata['class'])) . '</span><br>
 			' . ($usersdata['last_access'] > (TIME_NOW - 300) && $usersdata['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper emoticon" /> Online' : ' <img src="' . $site_config['pic_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper emoticon" /> ' . $lang['fe_offline'] . '') . '<br>' .
-            $lang['fe_karma'] . ': ' . number_format($usersdata['seedbonus']) . '<br>' . $member_reputation . '<br>' .
-            (!empty($usersdata['google_talk']) ? ' <a href="http://talkgadget.google.com/talkgadget/popout?member=' . htmlsafechars($usersdata['google_talk']) . '" title="' . $lang['fe_click_for_google_talk_gadget'] . '"  target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/google_talk.gif" alt="' . $lang['fe_google_talk'] . '" class="tooltipper emoticon" /></a> ' : '') .
-            (!empty($usersdata['icq']) ? ' <a href="http://people.icq.com/people/&amp;uin=' . htmlsafechars($usersdata['icq']) . '" title="' . $lang['fe_click_to_open_icq_page'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/icq.gif" alt="icq" class="tooltipper emoticon" /></a> ' : '') .
-            (!empty($usersdata['msn']) ? ' <a href="http://members.msn.com/' . htmlsafechars($usersdata['msn']) . '" target="_blank" title="' . $lang['fe_click_to_see_msn_details'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/msn.gif" alt="msn" title="msn" class="tooltipper emoticon" /></a> ' : '') .
-            (!empty($usersdata['aim']) ? ' <a href="http://aim.search.aol.com/aol/search?s_it=searchbox.webhome&amp;q=' . htmlsafechars($usersdata['aim']) . '" target="_blank" title="' . $lang['fe_click_to_search_on_aim'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/aim.gif" alt="AIM" title="AIM" class="tooltipper emoticon" /></a> ' : '') .
-            (!empty($usersdata['yahoo']) ? ' <a href="http://webmessenger.yahoo.com/?im=' . htmlsafechars($usersdata['yahoo']) . '" target="_blank" title="' . $lang['fe_click_to_open_yahoo'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/yahoo.gif" alt="yahoo" title="Yahoo!" class="tooltipper emoticon" /></a> ' : '') .
-            (!empty($usersdata['website']) ? ' <a href="' . htmlsafechars($usersdata['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/website.gif" alt="website" /></a> ' : '') .
-            ($usersdata['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($usersdata['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'email.gif" alt="email" title="email" class="tooltipper emoticon" /> </a>' : '') .
-            ($CURUSER['class'] >= UC_STAFF && !empty($usersdata['ip']) ? '
+                                                     $lang['fe_karma'] . ': ' . number_format($usersdata['seedbonus']) . '<br>' . $member_reputation . '<br>' .
+                                                     (!empty($usersdata['google_talk']) ? ' <a href="http://talkgadget.google.com/talkgadget/popout?member=' . htmlsafechars($usersdata['google_talk']) . '" title="' . $lang['fe_click_for_google_talk_gadget'] . '"  target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/google_talk.gif" alt="' . $lang['fe_google_talk'] . '" class="tooltipper emoticon" /></a> ' : '') .
+                                                     (!empty($usersdata['icq']) ? ' <a href="http://people.icq.com/people/&amp;uin=' . htmlsafechars($usersdata['icq']) . '" title="' . $lang['fe_click_to_open_icq_page'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/icq.gif" alt="icq" class="tooltipper emoticon" /></a> ' : '') .
+                                                     (!empty($usersdata['msn']) ? ' <a href="http://members.msn.com/' . htmlsafechars($usersdata['msn']) . '" target="_blank" title="' . $lang['fe_click_to_see_msn_details'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/msn.gif" alt="msn" title="msn" class="tooltipper emoticon" /></a> ' : '') .
+                                                     (!empty($usersdata['aim']) ? ' <a href="http://aim.search.aol.com/aol/search?s_it=searchbox.webhome&amp;q=' . htmlsafechars($usersdata['aim']) . '" target="_blank" title="' . $lang['fe_click_to_search_on_aim'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/aim.gif" alt="AIM" title="AIM" class="tooltipper emoticon" /></a> ' : '') .
+                                                     (!empty($usersdata['yahoo']) ? ' <a href="http://webmessenger.yahoo.com/?im=' . htmlsafechars($usersdata['yahoo']) . '" target="_blank" title="' . $lang['fe_click_to_open_yahoo'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/yahoo.gif" alt="yahoo" title="Yahoo!" class="tooltipper emoticon" /></a> ' : '') .
+                                                     (!empty($usersdata['website']) ? ' <a href="' . htmlsafechars($usersdata['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/website.gif" alt="website" /></a> ' : '') .
+                                                     ($usersdata['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($usersdata['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'email.gif" alt="email" title="email" class="tooltipper emoticon" /> </a>' : '') .
+                                                     ($CURUSER['class'] >= UC_STAFF && !empty($usersdata['ip']) ? '
             <h2 class="bg-06 round10">' . htmlsafechars($usersdata['ip']) . '</h2>
 			<ul class="level-center">
 			    <li class="margin10"><a href="' . url_proxy('https://ws.arin.net/?queryinput=' . htmlsafechars($usersdata['ip'])) . '" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank" class="button is-small">' . $lang['vt_ip_whois'] . '</a></li>

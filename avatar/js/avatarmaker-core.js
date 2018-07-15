@@ -11,10 +11,10 @@ function update() {
     var line = new Array(3);
     var drp = new Array(3);
     for (i = 1; i <= 3; i++) {
-        line[i] = $("#line" + i).val();
-        drp[i] = $("#drp" + i).val();
+        line[i] = $('#line' + i).val();
+        drp[i] = $('#drp' + i).val();
     }
-    $(".loader").fadeIn();
+    $('.loader').fadeIn();
     $.post('save.php', {
         user: user,
         bColor: bColor,
@@ -32,10 +32,10 @@ function update() {
         showuser: showuser
     }, function (r) {
         if (r == 1) {
-            $("#preview").attr('src', 'avatar.php?user=' + user + '&r=' + Math.random());
+            $('#preview').attr('src', 'avatar.php?user=' + user + '&r=' + Math.random());
             get_drp(true);
-            $("#preview").bind("load", function () {
-                $(".loader").fadeOut();
+            $('#preview').bind('load', function () {
+                $('.loader').fadeOut();
             });
         }
     });
@@ -59,13 +59,13 @@ function get_drp(firstrun) {
     var drp1 = 0 + parseInt($('#drp1').val());
     var drp2 = 0 + parseInt($('#drp2').val());
     var drp3 = 0 + parseInt($('#drp3').val());
-    $.post("drp.php", {user: user, firstrun: foo, drp1: drp1, drp2: drp2, drp3: drp3}, function (r) {
-        $('#drp1').empty().append(r.op1)
-        $('#drp2').empty().append(r.op2)
-        $('#drp3').empty().append(r.op3)
-        $('#line1').empty().val(r.line1)
-        $('#line2').empty().val(r.line2)
-        $('#line3').empty().val(r.line3)
+    $.post('drp.php', {user: user, firstrun: foo, drp1: drp1, drp2: drp2, drp3: drp3}, function (r) {
+        $('#drp1').empty().append(r.op1);
+        $('#drp2').empty().append(r.op2);
+        $('#drp3').empty().append(r.op3);
+        $('#line1').empty().val(r.line1);
+        $('#line2').empty().val(r.line2);
+        $('#line3').empty().val(r.line3);
         if (r.showuser == 1)
             $('#suser').attr('checked', 'checked');
         else

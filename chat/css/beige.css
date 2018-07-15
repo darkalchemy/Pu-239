@@ -11,107 +11,109 @@
 
 /* Buttons */
 #content #bbCodeContainer input, #content #logoutButton, #content #submitButton, #loginForm #loginButton {
-    color: #333333;
-    border: 1px solid #c8b360;
-    background: #d9ce72 -o-linear-gradient(top, #d9ce72, #e1d995);
-    background: #d9ce72 -webkit-gradient(linear, left top, left bottom, from(#d9ce72), to(#e1d995));
-    background: #d9ce72 linear-gradient(to bottom, #d9ce72, #e1d995);
+    color      : #333;
+    border     : 1px solid #c8b360;
+    background : #d9ce72 -o-linear-gradient(top, #d9ce72, #e1d995);
+    background : #d9ce72 -webkit-gradient(linear, left top, left bottom, from(#d9ce72), to(#e1d995));
+    background : #d9ce72 -webkit-linear-gradient(top, #d9ce72, #e1d995);
+    background : #d9ce72 linear-gradient(to bottom, #d9ce72, #e1d995);
 }
 
 #content #bbCodeContainer input:hover, #content #logoutButton:hover, #content #submitButton:hover, #loginForm #loginButton:hover {
-    background-image: -o-linear-gradient(top, #C1B022, #C8BD66);
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#C1B022), to(#C8BD66));
-    background-image: linear-gradient(to bottom, #C1B022, #C8BD66);
+    background-image : -o-linear-gradient(top, #c1b022, #c8bd66);
+    background-image : -webkit-gradient(linear, left top, left bottom, from(#c1b022), to(#c8bd66));
+    background-image : -webkit-linear-gradient(top, #c1b022, #c8bd66);
+    background-image : linear-gradient(to bottom, #c1b022, #c8bd66);
 }
 
 #content select, #loginForm select, #loginForm input, #content textarea {
-    color: #333333;
-    border: 1px solid #c8b360;
+    color  : #333;
+    border : 1px solid #c8b360;
 }
 
 /* Status Icon */
 #content #statusIconContainer {
-    background: url('../../images/loading-sprite.png') no-repeat 0 0;
+    background : url('../../images/loading-sprite.png') no-repeat 0 0;
 }
 
 #content #statusIconContainer.waiting {
-    background-position: 0 -22px;
+    background-position : 0 -22px;
 }
 
 #content #statusIconContainer.retrying {
-    background-position: 0 -44px;
+    background-position : 0 -44px;
 }
 
 /* Other Theme Elements */
 .ajax-chat {
-    background-color: #F7F5DC;
-    color: #000;
+    background-color : #f7f5dc;
+    color            : #000;
 }
 
 .ajax-chat a {
-    color: #000;
+    color : #000;
 }
 
 .ajax-chat h1 {
-    color: #000;
+    color : #000;
 }
 
 #loginContent input, #loginContent select {
-    background-color: #FFF;
-    color: #000;
+    background-color : #fff;
+    color            : #000;
 }
 
 #loginContent #errorContainer {
-    color: red;
+    color : red;
 }
 
 #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer, #content textarea {
-    border-color: gray;
-    background-color: #FFF;
+    border-color     : gray;
+    background-color : #fff;
 }
 
 .ajax-chat .popup {
-    background-color: #F7F5DC;
-    border: 1px solid #808080;
+    background-color : #f7f5dc;
+    border           : 1px solid #808080;
 }
 
 #content #colorCodesContainer a {
-    border-color: black;
+    border-color : black;
 }
 
 #content #optionsContainer input {
-    background-color: transparent;
+    background-color : transparent;
 }
 
 #content .rowEven, #helpList dl:nth-child(even), #settingsList dl:nth-child(even) {
-    background-color: #FFFFF0;
+    background-color : #fffff0;
 }
 
 #content .rowOdd, #helpList dl:nth-child(odd), #settingsList dl:nth-child(odd) {
-    background-color: #F7F5DC;
+    background-color : #f7f5dc;
 }
 
 #content #chatList .rowOdd.private {
-    background-color: #F8D0D0;
+    background-color : #f8d0d0;
 }
 
 #content #chatList .rowEven.private {
-    background-color: #F8D9D0;
+    background-color : #f8d9d0;
 }
 
 #content #chatList .chatBotErrorMessage {
-    color: red;
+    color : red;
 }
 
 #content #chatList a {
-    color: #1E90FF;
+    color : #1e90ff;
 }
 
 #content #chatList .deleteSelected {
-    border-color: red;
+    border-color : red;
 }
 
 #content #onlineListContainer h3, #content #helpContainer h3, #content #settingsContainer h3 {
-    background-color: #FFFFF0;
-    color: #000;
+    background-color : #fffff0;
+    color            : #000;
 }

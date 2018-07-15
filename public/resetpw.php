@@ -40,17 +40,17 @@ if ($step == '1') {
             ];
             $query = http_build_query($params);
             $contextData = [
-                        'method' => 'POST',
-                        'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
-                                    "Connection: close\r\n" .
-                                    'Content-Length: ' . strlen($query) . "\r\n",
-                        'content' => $query,
+                'method' => 'POST',
+                'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
+                    "Connection: close\r\n" .
+                    'Content-Length: ' . strlen($query) . "\r\n",
+                'content' => $query,
             ];
             $context = stream_context_create(['http' => $contextData]);
             $result = file_get_contents(
-                          $url,
-                          false,
-                          $context
+                $url,
+                false,
+                $context
             );
             $responseKeys = json_decode($result, true);
             if (intval($responseKeys['success']) !== 1) {

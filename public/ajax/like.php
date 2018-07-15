@@ -16,7 +16,7 @@ $fields = [
     'post' => 'posts',
     'usercomment' => 'usercomments',
     'request' => 'requests',
-    'offer' =>'offers',
+    'offer' => 'offers',
 ];
 
 extract($_POST);
@@ -41,7 +41,7 @@ function comment_like_unlike()
         die();
     }
 
-    $sql = "SELECT COUNT(id) AS count FROM likes WHERE user_id = " . sqlesc($CURUSER['id']) . " AND {$type}_id = " . sqlesc($id);
+    $sql = 'SELECT COUNT(id) AS count FROM likes WHERE user_id = ' . sqlesc($CURUSER['id']) . " AND {$type}_id = " . sqlesc($id);
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $data = mysqli_fetch_assoc($res);
     $table = 'comments';
@@ -50,19 +50,21 @@ function comment_like_unlike()
     }
 
     if ($data['count'] == 0 && $current === 'Like') {
-        $sql = "INSERT INTO likes ({$type}_id, user_id) VALUES (" . sqlesc($id) . ", " . sqlesc($CURUSER['id']) . ")";
+        $sql = "INSERT INTO likes ({$type}_id, user_id) VALUES (" . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ')';
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $sql = "UPDATE $table SET user_likes = user_likes + 1 WHERE id = " . sqlesc($id);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        //$cache->increment("{$fields[$type]}_user_likes_" . $id);
+        $cache->increment("{$fields[$type]}_user_likes_" . $id);
+        $cache->delete('latest_comments_');
         $data['label'] = 'Unlike';
         $data['list'] = 'You like this';
     } elseif ($data['count'] == 1 && $current === 'Unlike') {
-        $sql = "DELETE FROM likes WHERE {$type}_id = " . sqlesc($id) . " AND user_id = " . sqlesc($CURUSER['id']);
+        $sql = "DELETE FROM likes WHERE {$type}_id = " . sqlesc($id) . ' AND user_id = ' . sqlesc($CURUSER['id']);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $sql = "UPDATE $table SET user_likes = user_likes - 1 WHERE id = " . sqlesc($id);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        //$cache->decrement("{$fields[$type]}_user_likes_" . $id);
+        $cache->decrement("{$fields[$type]}_user_likes_" . $id);
+        $cache->delete('latest_comments_');
         $data['label'] = 'Like';
         $data['list'] = '';
     } elseif ($data['count'] == 1 && $current === 'Like') {
