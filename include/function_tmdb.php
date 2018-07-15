@@ -80,7 +80,7 @@ function get_movies_in_theaters()
             return false;
         }
         $json = json_decode($content, true);
-        $pages = $json['total_pages'] <= $page ? $json['total_pages'] : $page;
+        $pages = $json['total_pages'];
         $tmdb_data = get_movies($json);
 
         for ($i = 2; $i <= $pages; ++$i) {

@@ -1,4 +1,5 @@
 15 Jul 2018
+fix: missing var
 add: OMDb API
 add: upcoming movies from imdb
 merged: all lists into 1 file
