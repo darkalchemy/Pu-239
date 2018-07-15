@@ -15,10 +15,6 @@ check_user_status();
 global $CURUSER, $site_config, $fluent, $session, $cache, $user_stuffs;
 
 $lang = array_merge(load_language('global'), load_language('details'));
-$stdhead = [
-    'css' => [
-    ],
-];
 $stdfoot = [
     'js' => [
         get_file_name('details_js'),
@@ -95,14 +91,12 @@ if (in_array($torrents['category'], $site_config['ebook_cats'])) {
 
 if (in_array($torrents['category'], $site_config['tv_cats'])) {
     $imdb_id = $torrents['imdb'];
-    //dd($torrents);
     if (!empty($imdb_id)) {
         $ids = get_show_id_by_imdb($imdb_id);
     } else {
         $ids = get_show_id($torrents['name']);
     }
     extract($ids);
-    //dd($torrents['name']);
     if (empty($torrents['imdb']) && !empty($imdb_id)) {
         $url = 'https://www.imdb.com/title/' . $imdb_id;
         $set = [
@@ -996,14 +990,12 @@ if (!$count) {
     $pager = pager($perpage, $count, "details.php?id=$id&amp;", [
         'lastpagedefault' => 1,
     ]);
-    $subres = sql_query('SELECT c.id, c.text, c.user_likes, c.user, c.torrent, c.added, c.anonymous, c.editedby, c.editedat, u.avatar, u.offensive_avatar, u.av_w, u.av_h, u.warned, u.reputation, u.opt1, u.opt2, u.mood, u.username, u.title, u.class, u.donor
-                            FROM comments AS c
-                            LEFT JOIN users AS u ON c.user = u.id
-                            WHERE torrent = ' . sqlesc($id) . ' ORDER BY c.id ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
-    $allrows = [];
-    while ($subrow = mysqli_fetch_assoc($subres)) {
-        $allrows[] = $subrow;
-    }
+    $allrows = $fluent->from('comments')
+        ->where('torrent = ?', $id)
+        ->orderBy('id DESC')
+        ->limit('?, ?', $pager['pdo'][0], $pager['pdo'][1])
+        ->fetchAll();
+
     $HTMLOUT .= "
                 <div class='container is-fluid portlet is-marginless'>
                     <a id='comments-hash'></a>
@@ -1014,7 +1006,8 @@ if (!$count) {
     if (count($allrows) > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
     }
-    $HTMLOUT .= commenttable($allrows);
+
+    $HTMLOUT .= commenttable($allrows, 'torrent');
     if (count($allrows) > $perpage) {
         $HTMLOUT .= $pager['pagerbottom'];
     }
@@ -1024,4 +1017,4 @@ if (!$count) {
                 </div>';
 }
 
-echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);

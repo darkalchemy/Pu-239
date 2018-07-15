@@ -145,7 +145,7 @@ if (mysqli_num_rows($res) == 0) {
       <b> [ ' . get_user_class_name($shit_list['class']) . ' ]</b><br>
 
       <a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . (int) $shit_list['suspect_id'] . '" title="' . $lang['shitlist_remove1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['pic_baseurl'] . 'polls/p_delete.gif">' . $lang['shitlist_remove2'] . '</span></a>
-      <a class="altlink" href="pm_system.php?action=send_message&receiver=' . (int) $shit_list['suspect_id'] . '" title="' . $lang['shitlist_send1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['pic_baseurl'] . 'message.gif">' . $lang['shitlist_send2'] . '</span></a></td>
+      <a class="altlink" href="messages.php?action=send_message&receiver=' . (int) $shit_list['suspect_id'] . '" title="' . $lang['shitlist_send1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['pic_baseurl'] . 'message.gif">' . $lang['shitlist_send2'] . '</span></a></td>
       <td class="' . (($i % 2 == 0) ? 'one' : 'two') . '">' . $shit . '
       <b>' . $lang['shitlist_joined'] . '</b> ' . get_date($shit_list['added'], '') . '
       [ ' . get_date($shit_list['added'], '', 0, 1) . ' ]

@@ -1,3 +1,18 @@
+15 Jul 2018
+fix: all like buttons
+add: additional like buttons
+update: all comments displayed in same manner
+add: imdb info in requests and offers
+add: cleanup script to download anf optimize images if using image proxy
+remove: poster from image background
+add: try/catch ImageProxy
+fix: time sort in tvmaze.php
+update: tmdb image sizes for better quality
+add: min-width to index page blocks titles
+rename: pm_system messages
+update: pager_new.php pager_functions.php to return limits for fluentPDO
+remove: manage_likes table
+
 13 Jul 2018
 fix: make action 'default' usercp.php
 

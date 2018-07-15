@@ -19,10 +19,10 @@ if ($movies) {
     foreach ($movies as $movie) {
         if (!empty($movie['title']) && !in_array(strtolower($movie['title']), $titles)) {
             $poster = !empty($movie['poster_path']) ? "https://image.tmdb.org/t/p/w185{$movie['poster_path']}" : $site_config['pic_baseurl'] . 'noposter.png';
-            $backdrop = !empty($movie['backdrop_path']) ? "https://image.tmdb.org/t/p/w500{$movie['backdrop_path']}" : '';
+            $backdrop = !empty($movie['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$movie['backdrop_path']}" : '';
             $body[] = [
                 'poster' => url_proxy($poster, true, 150),
-                'placeholder' => url_proxy($poster, true, null, null, 20),
+                'placeholder' => url_proxy($poster, true, 150, null, 10),
                 'backdrop' => url_proxy($backdrop, true),
                 'title' => $movie['title'],
                 'vote_count' => $movie['vote_count'],

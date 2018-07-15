@@ -1,6 +1,8 @@
 var v_offset = 250;
 var animate_duration = 1000;
 var easing = 'swing';
+var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
 function themes() {
     PopUp('take_theme.php', 'My themes', 300, 150, 1, 0);
@@ -67,6 +69,25 @@ function refrClock() {
     document.getElementById('clock').innerHTML = h + ':' + m + ':' + s + am_pm;
     setTimeout('refrClock()', 1e3);
 }
+
+$('.mlike').on('click', function() {
+    $.ajax({
+        url: './ajax/like.php',
+        type: 'POST',
+        dataType: 'json',
+        context: this,
+        data: {
+            type: this.dataset.type,
+            id: this.dataset.id,
+            csrf: this.dataset.csrf,
+            current: $(this).html(),
+        },
+        success: function (data) {
+            $(this).html(data['label']);
+            $('.' + data['class']).html(data['list']);
+        }
+    });
+});
 
 function do_rate(rate, id, what) {
     $.ajax({
@@ -316,16 +337,10 @@ $(function () {
             scrollTop: scrollToPosition
         }, animate_duration, 'swing');
     }
-    if (typeof body_bg_image !== 'undefined' && document.body.contains(document.getElementById('body-overlay'))) {
+
+    if (w >= h && typeof body_image !== 'undefined' && document.body.contains(document.getElementById('body-overlay'))) {
         document.getElementsByTagName('body')[0].style.backgroundColor = 'black';
-        document.getElementsByTagName('body')[0].style.backgroundImage = 'url(' + body_bg_image + ')';
-        if (typeof body_poster_image !== 'undefined') {
-            var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-            var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-            if (w >= h) {
-                document.getElementsByTagName('body')[0].style.backgroundImage = 'url(' + body_poster_image + ')';
-            }
-        }
+        document.getElementsByTagName('body')[0].style.backgroundImage = 'url(' + body_image + ')';
         document.getElementsByTagName('body')[0].classList.remove('background-16');
     }
 

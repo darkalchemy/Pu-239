@@ -23,7 +23,7 @@ if (isset($_POST['action2'])) {
             $cache->update_row('user' . $CURUSER['id'], [
                 'pms_per_page' => $change_pm_number,
             ], $site_config['expires']['user_cache']);
-            header('Location: pm_system.php?action=edit_mailboxes&pm=1');
+            header('Location: messages.php?action=edit_mailboxes&pm=1');
             die();
             break;
 
@@ -45,7 +45,7 @@ if (isset($_POST['action2'])) {
                 ++$box;
                 $worked = '&boxes=1';
             }
-            header('Location: pm_system.php?action=edit_mailboxes' . $worked);
+            header('Location: messages.php?action=edit_mailboxes' . $worked);
             die();
             break;
 
@@ -73,7 +73,7 @@ if (isset($_POST['action2'])) {
                     $deleted = '&box_delete=1';
                 }
             }
-            header('Location: pm_system.php?action=edit_mailboxes' . $deleted . $worked);
+            header('Location: messages.php?action=edit_mailboxes' . $deleted . $worked);
             die();
             break;
 
@@ -120,7 +120,7 @@ if (isset($_POST['action2'])) {
             }
             sql_query('UPDATE users SET ' . implode(', ', $updateset) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
             $worked = '&pms=1';
-            header('Location: pm_system.php?action=edit_mailboxes' . $worked);
+            header('Location: messages.php?action=edit_mailboxes' . $worked);
             die();
             break;
     }
@@ -135,7 +135,7 @@ if (mysqli_num_rows($res) > 0) {
         $all_my_boxes .= '
                     <tr>
                         <td>
-                        <form action="pm_system.php" method="post">
+                        <form action="messages.php" method="post">
                         <input type="hidden" name="action" value="edit_mailboxes" />
                         <input type="hidden" name="action2" value="edit_boxes" />' . $lang['pm_edmail_box'] . '' . ((int) $row['boxnumber'] - 1) . ' <span style="font-weight: bold;">' . htmlsafechars($row['name']) . ':</span></td>
                         <td colspan="2"><input type="text" name="edit' . ((int) $row['id']) . '" value="' . htmlsafechars($row['name']) . '" class="w-100" />' . $lang['pm_edmail_contain'] . '' . htmlsafechars($messages) . '' . $lang['pm_edmail_messages'] . '</td>
@@ -152,7 +152,7 @@ if (mysqli_num_rows($res) > 0) {
                         <td colspan="2"><span style="font-weight: bold;">' . $lang['pm_edmail_note'] . '</span>
                         <ul>
                             <li>' . $lang['pm_edmail_if1'] . '</li>
-                            <li>' . $lang['pm_edmail_if2'] . '<a class="altlink" href="pm_system.php?action=view_mailbox">' . $lang['pm_edmail_main'] . '</a>.</li>
+                            <li>' . $lang['pm_edmail_if2'] . '<a class="altlink" href="messages.php?action=view_mailbox">' . $lang['pm_edmail_main'] . '</a>.</li>
                         </ul></td>
                     </tr>
                     <tr>
@@ -201,7 +201,7 @@ $("#cat_open").click(function() {
 /*]]>*/
 </script>';
 $HTMLOUT .= $top_links . '<h1>' . $lang['pm_edmail_title'] . '</h1>' . $h1_thingie . '
-        <form action="pm_system.php" method="post">
+        <form action="messages.php" method="post">
         <input type="hidden" name="action" value="edit_mailboxes" />
         <input type="hidden" name="action2" value="add" />
     <table class="table table-bordered">
@@ -239,7 +239,7 @@ $HTMLOUT .= '
     <tr>
         <td><span style="font-weight: bold;">' . $lang['pm_edmail_pm_page'] . '</span></td>
         <td>
-        <form action="pm_system.php" method="post">
+        <form action="messages.php" method="post">
         <input type="hidden" name="action" value="edit_mailboxes" />
         <input type="hidden" name="action2" value="message_settings" />
         ' . $per_page_drop_down . '' . $lang['pm_edmail_s_how_many'] . '</td>

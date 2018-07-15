@@ -69,7 +69,7 @@ if (strpos($to_username['notifs'], '[pm]') !== false) {
 <body>
 <p>{$lang['pm_forwardpm_pmfrom']} $username{$lang['pm_forwardpm_exc']}</p>
 <p>{$lang['pm_forwardpm_url']}</p>
-<p>{$site_config['baseurl']}/pm_system.php</p>
+<p>{$site_config['baseurl']}/messages.php</p>
 <p>--{$site_config['site_name']}</p>
 </body>
 </html>";
@@ -85,5 +85,5 @@ if (strpos($to_username['notifs'], '[pm]') !== false) {
     $mailer->commandArgs = "-f{$site_config['site_email']}";
     $mailer->send($mail);
 }
-header('Location: pm_system.php?action=view_mailbox&forwarded=1');
+header('Location: messages.php?action=view_mailbox&forwarded=1');
 die();

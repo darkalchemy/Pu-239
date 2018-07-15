@@ -29,7 +29,7 @@ $HTMLOUT .= "
             <table class='table table-bordered table-striped'>
                 <thead>
                     <tr>
-                        <th>{$lang['latestposts_topic_title']}</th>
+                        <th class='m-50 minw-150'>{$lang['latestposts_topic_title']}</th>
                         <th class='has-text-centered'>{$lang['latestposts_replies']}</th>
                         <th class='has-text-centered'>{$lang['latestposts_views']}</th>
                         <th class='has-text-centered'>{$lang['latestposts_last_post']}</th>

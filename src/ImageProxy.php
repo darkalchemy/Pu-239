@@ -19,6 +19,7 @@ class ImageProxy
         if (!file_exists($path)) {
             $this->store_image($url, $path);
         }
+
         if (!file_exists($path)) {
             return null;
         }
@@ -45,7 +46,7 @@ class ImageProxy
 
         $response = $client->request('GET', $url);
         if ($response->getStatusCode() == 200) {
-//            $this->optimize($path);
+            $this->optimize($path);
         }
     }
 
@@ -93,10 +94,14 @@ class ImageProxy
         if (file_exists($new_path)) {
             return $hash;
         }
-        $image = $manager->make($path)->resize($width, $height, function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        });
+        try {
+            $image = $manager->make($path)->resize($width, $height, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+        } catch (\Exception $e) {
+            return null;
+        }
         $image->save($new_path);
         $this->optimize($new_path);
 

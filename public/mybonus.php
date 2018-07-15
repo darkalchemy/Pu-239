@@ -409,7 +409,7 @@ Click to go back to your <a class="altlink" href="mybonus.php">Karma Points</a> 
 <div class='has-text-centered'><img src='{$site_config['pic_baseurl']}smilies/karma.gif' alt='good_karma' title='Good karma' class='tooltipper' /></div></td><td><b>Congratulations! " . $CURUSER['username'] . ' </b>
 you have spread the Karma well.<br><br>Member <b>' . htmlsafechars($_GET['usernamegift']) . '</b> will be pleased with your kindness!<br><br>This is the message that was sent:<br>
 <b>Subject:</b> Someone Loves you!<br> <p>You have been given a gift of <b>' . ((int) $_GET['gift_amount_points']) . '</b> Karma points by ' . $CURUSER['username'] . "</p><br>
-You may also <a class='altlink' href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . ((int) $_GET['gift_id']) . "'>send " . htmlsafechars($_GET['usernamegift']) . " a message as well</a>, or go back to your <a class='altlink' href='mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+You may also <a class='altlink' href='{$site_config['baseurl']}/messages.php?action=send_message&amp;receiver=" . ((int) $_GET['gift_id']) . "'>send " . htmlsafechars($_GET['usernamegift']) . " a message as well</a>, or go back to your <a class='altlink' href='mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
         die();
 

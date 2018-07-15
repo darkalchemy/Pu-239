@@ -9,7 +9,7 @@ define('BIN_DIR', ROOT_DIR . 'bin' . DIRECTORY_SEPARATOR);
 define('SCRIPTS_DIR', ROOT_DIR . 'scripts' . DIRECTORY_SEPARATOR);
 define('FORUM_DIR', ROOT_DIR . 'forums' . DIRECTORY_SEPARATOR);
 define('CHAT_DIR', ROOT_DIR . 'chat' . DIRECTORY_SEPARATOR);
-define('PM_DIR', ROOT_DIR . 'pm_system' . DIRECTORY_SEPARATOR);
+define('PM_DIR', ROOT_DIR . 'messages' . DIRECTORY_SEPARATOR);
 define('CACHE_DIR', ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR);
 define('MODS_DIR', ROOT_DIR . 'mods' . DIRECTORY_SEPARATOR);
 define('LANG_DIR', ROOT_DIR . 'lang' . DIRECTORY_SEPARATOR);

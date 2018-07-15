@@ -8,6 +8,7 @@ if ($torrentcomments === false || is_null($torrentcomments)) {
     list($torrentcomments) = mysqli_fetch_row($res);
     $cache->set('torrent_comments_' . $id, $torrentcomments, $site_config['expires']['torrent_comments']);
 }
+
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comments']}</td>";
     if ($torrentcomments && (($user['class'] >= (UC_MIN + 1) && $user['id'] == $CURUSER['id']) || $CURUSER['class'] >= UC_STAFF)) {

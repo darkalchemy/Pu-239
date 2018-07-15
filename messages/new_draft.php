@@ -19,12 +19,12 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'save draft') {
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
         stderr($lang['pm_error'], $lang['pm_draft_err2']);
     }
-    header('Location: pm_system.php?action=view_message&new_draft=1&id=' . $new_draft_id);
+    header('Location: messages.php?action=view_message&new_draft=1&id=' . $new_draft_id);
     die();
 }
 
 $HTMLOUT .= $top_links . '<h1>' . $lang['pm_draft_new'] . '</h1>' . '
-        <form name="compose" action="pm_system.php" method="post">
+        <form name="compose" action="messages.php" method="post">
         <input type="hidden" name="id" value="' . $pm_id . '" />
         <input type="hidden" name="action" value="new_draft" />
     <table class="table table-bordered">

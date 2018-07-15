@@ -167,7 +167,7 @@ class Session
      */
     public function validateToken($token, $key = null, $regen = false)
     {
-        if (null === $key) {
+        if ($key === null) {
             $key = $this->config['session_csrf'];
         }
         if (empty($token)) {

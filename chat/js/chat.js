@@ -1236,7 +1236,7 @@ var ajaxChat = {
                 + ' \');" title="Private Message this user in AJAX Chat.">'
                 + this.lang['userMenuSendPrivateMessage']
                 + '</a></li>'
-                + '<li class="disc"><a target="_blank" href="../pm_system.php?action=send_message&amp;receiver='
+                + '<li class="disc"><a target="_blank" href="../messages.php?action=send_message&amp;receiver='
                 + userID
                 + '" title="Private Message this user using site messages.">'
                 + 'PM User '
@@ -1306,7 +1306,7 @@ var ajaxChat = {
                     + '</a></li>';
             }
         } else {
-            menu = '<li class="disc"><a target="_blank" href="../pm_system.php" title="How many unread site PMs you have.">'
+            menu = '<li class="disc"><a target="_blank" href="../messages.php" title="How many unread site PMs you have.">'
                 + 'Unread PM (<span id="pmcount">0</span>)</a></li>'
                 + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/who\');">'
                 + this.lang['userMenuWho']

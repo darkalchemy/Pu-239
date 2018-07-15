@@ -7,10 +7,11 @@ use Imdb\Config;
  *
  * @return array
  */
-function get_imdb_info($imdb_id)
+function get_imdb_info($imdb_id, $title = true)
 {
     global $site_config, $cache;
 
+    $imdbid = $imdb_id;
     $imdb_id = str_replace('tt', '', $imdb_id);
     $imdb_data = $cache->get('imdb_' . $imdb_id);
     if ($imdb_data === false || is_null($imdb_data)) {
@@ -51,8 +52,12 @@ function get_imdb_info($imdb_id)
     $poster = !empty($imdb_data['poster']) ? $imdb_data['poster'] : '';
 
     if (!empty($poster)) {
-        $sql = "INSERT IGNORE INTO images (imdb_id, url, type) VALUES ($imdb_id, '{$imdb_data['poster']}', 'poster')";
-        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        $insert = $cache->get('insert_imdb_imdbid_' . $imdbid);
+        if ($insert === false || is_null($insert)) {
+            $sql = "INSERT IGNORE INTO images (imdb_id, url, type) VALUES ('$imdbid', '{$imdb_data['poster']}', 'poster')";
+            sql_query($sql) or sqlerr(__FILE__, __LINE__);
+            $cache->set('insert_imdb_imdbid_' . $imdbid, 0, 604800);
+        }
     }
 
     $imdb = [
@@ -98,6 +103,7 @@ function get_imdb_info($imdb_id)
                                     </span>
                                 </a>
                             </span>";
+
         }
     }
 
@@ -142,7 +148,11 @@ function get_imdb_info($imdb_id)
     }
 
     $imdb_info = preg_replace('/&(?![A-Za-z0-9#]{1,7};)/', '&amp;', $imdb_info);
-    $imdb_info = "<div class='padding10'><div class='has-text-centered size_6 bottom20'>IMDb</div>$imdb_info</div>";
+    if ($title) {
+        $imdb_info = "<div class='padding10'><div class='has-text-centered size_6 bottom20'>IMDb</div>$imdb_info</div>";
+    } else {
+        $imdb_info = "<div class='padding10'>$imdb_info</div>";
+    }
 
     return [
         $imdb_info,

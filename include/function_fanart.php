@@ -91,6 +91,19 @@ function getMovieImagesByImdb($imdb, $type = 'moviebackground')
             }
         }
         if (!empty($images)) {
+            $insert = $cache->get('insert_fanart_imdb_' . $imdb);
+            if ($insert === false || is_null($insert)) {
+                $insert = '';
+                foreach ($images as $image) {
+                    $type = str_replace('movie', '', $type);
+                    $insert .= (empty($insert) ? '' : ', ') . "('$imdb', '$image', '$type')";
+                }
+                if (!empty($insert)) {
+                    $sql = "INSERT IGNORE INTO images (imdb_id, url, type) VALUES $insert";
+                    sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                }
+                $cache->set('insert_fanart_imdb_' . $imdb, 0, 604800);
+            }
             shuffle($images);
 
             return $images[0];

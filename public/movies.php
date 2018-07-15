@@ -34,10 +34,10 @@ if ($movies) {
     foreach ($movies as $movie) {
         if (!empty($movie['title']) && !preg_match('/FORMULA 1/i', $movie['title']) && !in_array(strtolower($movie['title']), $titles)) {
             $poster = !empty($movie['poster_path']) ? "https://image.tmdb.org/t/p/w185{$movie['poster_path']}" : $site_config['pic_baseurl'] . 'noposter.png';
-            $backdrop = !empty($movie['backdrop_path']) ? "https://image.tmdb.org/t/p/w500{$movie['backdrop_path']}" : '';
+            $backdrop = !empty($movie['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$movie['backdrop_path']}" : '';
             $body[] = [
                 'poster' => url_proxy($poster, true, 150),
-                'placeholder' => url_proxy($poster, true, null, null, 20),
+                'placeholder' => url_proxy($poster, true, 150, null, 10),
                 'backdrop' => url_proxy($backdrop, true),
                 'title' => $movie['title'],
                 'vote_count' => $movie['vote_count'],
@@ -61,7 +61,7 @@ if ($movies) {
                     <div class='has-text-centered top10'>{$movie['title']}</div>
                     <div class='has-text-centered'>{$movie['release_date']}</div>
                     <div class='tooltip_templates'>
-                        <div id='movie_{$movie['id']}_tooltip' clss='round10 tooltip-background' style='background-image: url({$movie['backdrop']});'>
+                        <div id='movie_{$movie['id']}_tooltip' class='round10 tooltip-background' style='background-image: url({$movie['backdrop']});'>
                             <div class='is-flex tooltip-torrent bg-09'>
                                 <span class='padding10 w-40'>
                                     <img data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>

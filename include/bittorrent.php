@@ -379,7 +379,7 @@ function userlogin()
         'announcement' => '%s is viewing the <a href="%s">announcements page</a>',
         'usercp' => '%s is viewing the <a href="%s">usercp page</a>',
         'offers' => '%s is viewing the <a href="%s">offers page</a>',
-        'pm_system' => '%s is viewing the <a href="%s">mailbox page</a>',
+        'messages' => '%s is viewing the <a href="%s">mailbox page</a>',
         'userdetails' => '%s is viewing the <a href="%s">personal profile page</a>',
         'details' => '%s is viewing the <a href="%s">torrents details page</a>',
         'games' => '%s is viewing the <a href="%s">games page</a>',
@@ -2032,8 +2032,12 @@ function url_proxy($url, $image = false, $width = null, $height = null, $quality
 
     if ($site_config['image_proxy']) {
         $image_proxy = new DarkAlchemy\Pu239\ImageProxy();
+        $image = @$image_proxy->get_image($url, $image, $width, $height, $quality);
 
-        return $site_config['pic_baseurl'] . 'proxy/' . $image_proxy->get_image($url, $image, $width, $height, $quality);
+        if (!empty($image)) {
+            return $site_config['pic_baseurl'] . 'proxy/' . $image;
+        }
+        return $url;
     }
 
     return $url;
@@ -2253,28 +2257,9 @@ function get_body_image($details, $portrait = false)
             $cache->set('backgrounds_', $backgrounds, 86400);
         }
     }
-    $posters = $cache->get('posters_');
-    if ($posters === false || is_null($posters)) {
-        $results = $fluent->from('images')
-            ->select(null)
-            ->select('url')
-            ->where('type = ?', 'poster');
-
-        $posters = [];
-        foreach ($results as $poster) {
-            $posters[] = $poster['url'];
-        }
-        if (!empty($posters)) {
-            $cache->set('posters_', $posters, 86400);
-        }
-    }
 
     if (!empty($backgrounds)) {
         $images['background'] = $backgrounds[array_rand($backgrounds)];
-    }
-
-    if (!empty($posters)) {
-        $images['poster'] = $posters[array_rand($posters)];
     }
 
     return $images;

@@ -83,7 +83,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
 <body>
 <p>{$lang['pm_forwardpm_pmfrom']} $username!</p>
 <p>{$lang['pm_forwardpm_url']}</p>
-<p>{$site_config['baseurl']}/pm_system.php</p>
+<p>{$site_config['baseurl']}/messages.php</p>
 <p>--{$site_config['site_name']}</p>
 </body>
 </html>";
@@ -102,14 +102,14 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
         if ($returnto) {
             header('Location: ' . $returnto);
         } else {
-            header('Location: pm_system.php?action=view_mailbox&sent=1');
+            header('Location: messages.php?action=view_mailbox&sent=1');
         }
         die();
     }
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
         stderr($lang['pm_error'], $lang['pm_draft_wasnt']);
     }
-    header('Location: /pm_system.php?action=view_mailbox&box=-2&new_draft=1');
+    header('Location: messages.php?action=view_mailbox&box=-2&new_draft=1');
     die();
 }
 
@@ -123,7 +123,7 @@ if (isset($_POST['buttonval'])) {
 //=== print out the page
 //echo stdhead('Use Draft');
 $HTMLOUT .= '<h1>' . $lang['pm_usedraft'] . '' . $subject . '</h1>' . $top_links . '
-        <form name="compose" action="pm_system.php" method="post">
+        <form name="compose" action="messages.php" method="post">
         <input type="hidden" name="id" value="' . $pm_id . '" />
         <input type="hidden" name="' . $save_or_edit . '" value="1" />
         <input type="hidden" name="action" value="use_draft" />

@@ -23,7 +23,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'save as draft') {
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
         stderr($lang['pm_error'], $lang['pm_draft_wasnt']);
     }
-    header('Location: /pm_system.php?action=view_mailbox&box=-2&new_draft=1');
+    header('Location: messages.php?action=view_mailbox&box=-2&new_draft=1');
     die();
 }
 if (isset($_POST['buttonval'])) {
@@ -36,7 +36,7 @@ if (isset($_POST['buttonval'])) {
 //=== print out the page
 //echo stdhead('Save / Edit Draft');
 $HTMLOUT .= '<legend>' . $lang['pm_draft_save_edit'] . '' . $subject . '</legend>' . $top_links . '
-        <form name="compose" action="pm_system.php" method="post">
+        <form name="compose" action="messages.php" method="post">
         <input type="hidden" name="id" value="' . $pm_id . '" />
         <input type="hidden" name="' . $save_or_edit . '" value="1" />
         <input type="hidden" name="action" value="save_or_edit_draft" />

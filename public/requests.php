@@ -3,14 +3,13 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'comment_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
+require_once INCL_DIR . 'function_imdb.php';
 check_user_status();
-global $CURUSER, $site_config, $user_stuffs;
+global $CURUSER, $site_config, $user_stuffs, $fluent;
 
-$lang = load_language('global');
-$stdhead = [
-    'css' => [
-    ],
-];
+$lang = array_merge(load_language('global'), load_language('comment'));
 $stdfoot = [
     'js' => [
         get_file_name('request_js'),
@@ -20,17 +19,13 @@ $HTMLOUT = $count2 = '';
 if ($CURUSER['class'] < (UC_MIN + 1)) {
     stderr('Error!', 'Sorry, you need to rank up!');
 }
-//=== possible stuff to be $_GETting lol
 $id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
-$comment_id = (isset($_GET['comment_id']) ? intval($_GET['comment_id']) : (isset($_POST['comment_id']) ? intval($_POST['comment_id']) : 0));
+$comment_id = (isset($_GET['cid']) ? intval($_GET['cid']) : (isset($_POST['cid']) ? intval($_POST['cid']) : 0));
 $category = (isset($_GET['category']) ? intval($_GET['category']) : (isset($_POST['category']) ? intval($_POST['category']) : 0));
 $requested_by_id = isset($_GET['requested_by_id']) ? intval($_GET['requested_by_id']) : 0;
 $vote = isset($_POST['vote']) ? intval($_POST['vote']) : 0;
 $posted_action = strip_tags((isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : '')));
-//===========================================================================================//
-//==================================    let them vote on it!    ==========================================//
-//===========================================================================================//
-//=== add all possible actions here and check them to be sure they are ok
+
 $valid_actions = [
     'add_new_request',
     'delete_request',
@@ -38,12 +33,11 @@ $valid_actions = [
     'request_details',
     'vote',
     'add_comment',
-    'edit_comment',
-    'delete_comment',
+    'edit',
+    'delete',
+    'vieworiginal',
 ];
-//=== check posted action, and if no action was posted, show the default page
 $action = (in_array($posted_action, $valid_actions) ? $posted_action : 'default');
-//=== top menu :D
 $top_menu = '
     <div>
         <ul class="level-center bg-06 bottom20">
@@ -57,11 +51,9 @@ $top_menu = '
     </div>';
 switch ($action) {
     case 'vote':
-        //=== kill if nasty
         if (!isset($id) || !is_valid_id($id) || !isset($vote) || !is_valid_id($vote)) {
             stderr('USER ERROR', 'Bad id / bad vote');
         }
-        //=== see if they voted yet
         $res_did_they_vote = sql_query('SELECT vote FROM request_votes WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND request_id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $row_did_they_vote = mysqli_fetch_row($res_did_they_vote);
         if ($row_did_they_vote[0] == '') {
@@ -74,14 +66,10 @@ switch ($action) {
             stderr('USER ERROR', 'You have voted on this request before.');
         }
         break;
-    //===========================================================================================//
-    //=======================    the default page listing all the requests w/ pager         ===============================//
-    //===========================================================================================//
 
     case 'default':
         require_once INCL_DIR . 'bbcode_functions.php';
         require_once INCL_DIR . 'pager_new.php';
-        //=== get stuff for the pager
         $count_query = sql_query('SELECT COUNT(id) FROM requests') or sqlerr(__FILE__, __LINE__);
         $count_arr = mysqli_fetch_row($count_query);
         $count = $count_arr[0];
@@ -104,11 +92,10 @@ switch ($action) {
         <td>Filled</td>
     </tr>';
         while ($main_query_arr = mysqli_fetch_assoc($main_query_res)) {
-            //=======change colors
             $HTMLOUT .= '
     <tr>
         <td><img src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '" /></td>
-        <td><a class="altlink" href="requests.php?action=request_details&amp;id=' . (int) $main_query_arr['request_id'] . '">' . htmlsafechars($main_query_arr['request_name'], ENT_QUOTES) . '</a></td>
+        <td><a class="altlink" href="' . $site_config['baseurl'] . '/requests.php?action=request_details&amp;id=' . (int) $main_query_arr['request_id'] . '">' . htmlsafechars($main_query_arr['request_name'], ENT_QUOTES) . '</a></td>
         <td>' . get_date($main_query_arr['added'], 'LONG') . '</td>
         <td>' . number_format($main_query_arr['comments']) . '</td>
         <td>yes: ' . number_format($main_query_arr['vote_yes_count']) . '<br>
@@ -119,32 +106,37 @@ switch ($action) {
         }
         $HTMLOUT .= '</table>';
         $HTMLOUT .= '' . $menu . '<br>';
-        echo stdhead('Requests', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Requests', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
-    //===========================================================================================//
-    //==============================the details page for the request! ========================================//
-    //===========================================================================================//
 
     case 'request_details':
         require_once INCL_DIR . 'bbcode_functions.php';
         require_once INCL_DIR . 'pager_new.php';
-        //=== kill if nasty
         if (!isset($id) || !is_valid_id($id)) {
             stderr('USER ERROR', 'Bad id');
         }
-        $res = sql_query('SELECT r.id AS request_id, r.request_name, r.category, r.added, r.requested_by_user_id, r.filled_by_user_id, r.filled_torrent_id, r.vote_yes_count,
-                            r.vote_no_count, r.image, r.link, r.description, r.comments,
-                            u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.uploaded, u.downloaded, u.leechwarn, u.chatpost, u.pirate, u.king,
-                            c.name AS cat_name, c.image AS cat_image
-                            FROM requests AS r
-                            LEFT JOIN categories AS c ON r.category = c.id
-                            LEFT JOIN users AS u ON r.requested_by_user_id = u.id
-                            WHERE r.id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $arr = mysqli_fetch_assoc($res);
-        //=== see if they voted yet
-        $res_did_they_vote = sql_query('SELECT vote FROM request_votes WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND request_id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $row_did_they_vote = mysqli_fetch_row($res_did_they_vote);
-        if ($row_did_they_vote[0] == '') {
+        $arr = $fluent->from('requests AS r')
+            ->select('r.id AS request_id')
+            ->select('c.name AS cat_name')
+            ->select('c.image AS cat_image')
+            ->join('categories AS c ON r.category = c.id')
+            ->where('r.id = ?', $id)
+            ->fetch();
+
+        if (!empty($arr['link'])) {
+            preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $arr['link'], $imdb);
+            $imdb = !empty($imdb[2]) ? $imdb[2] : '';
+        }
+        $movie_info = get_imdb_info($imdb, false);
+
+        $row_did_they_vote = $fluent->from('request_votes')
+            ->select(null)
+            ->select('vote')
+            ->where('user_id = ?', $CURUSER['id'])
+            ->where('request_id = ?', $id)
+            ->fetch();
+
+        if (!$row_did_they_vote) {
             $vote_yes = '<form method="post" action="requests.php">
                     <input type="hidden" name="action" value="vote" />
                     <input type="hidden" name="id" value="' . $id . '" />
@@ -163,7 +155,7 @@ switch ($action) {
             $vote_no = '';
             $your_vote_was = ' your vote: ' . $row_did_they_vote[0] . ' ';
         }
-        //=== start page
+        $usersdata = $user_stuffs->getUserFromId($arr['requested_by_user_id']);
         $HTMLOUT .= (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . '
   <table class="table table-bordered table-striped">
   <tr>
@@ -172,7 +164,7 @@ switch ($action) {
   </tr>
   <tr>
   <td>image:</td>
-  <td><img src="' . strip_tags(url_proxy($arr['image']), true, 500, null) . '" alt="image" /></td>
+  <td><img src="' . strip_tags(url_proxy($arr['image'], true, 500, null)) . '" alt="image" /></td>
   </tr>
   <tr>
   <td>description:</td>
@@ -186,6 +178,10 @@ switch ($action) {
   <td>link:</td>
   <td><a class="altlink" href="' . htmlsafechars($arr['link'], ENT_QUOTES) . '"  target="_blank">' . htmlsafechars($arr['link'], ENT_QUOTES) . '</a></td>
   </tr>
+    <tr>
+        <td>IMDb</td>
+        <td>' . $movie_info[0] . '</td>
+    </tr>
   <tr>
   <td>votes:</td>
   <td>
@@ -194,45 +190,51 @@ switch ($action) {
   </tr>
   <tr>
   <td>requested by:</td>
-  <td>' . format_username($arr['id']) . ' [ ' . get_user_class_name($arr['class']) . ' ]
-  ratio: ' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . get_user_ratio_image(($site_config['ratio_free'] ? 1 : $arr['uploaded'] / $arr['downloaded'])) . '</td>
+  <td>' . format_username($usersdata['id']) . ' [ ' . get_user_class_name($usersdata['class']) . ' ]
+  ratio: ' . member_ratio($usersdata['uploaded'], $site_config['ratio_free'] ? '0' : $usersdata['downloaded']) . 
+    get_user_ratio_image(($site_config['ratio_free'] ? 1 : $usersdata['uploaded'] / ($usersdata['downloaded'] == 0 ? 1 : $usersdata['downloaded']))) . '</td>
   </tr>' . ($arr['filled_torrent_id'] > 0 ? '<tr>
   <td>filled:</td>
   <td><a class="altlink" href="details.php?id=' . $arr['filled_torrent_id'] . '">yes, click to view torrent!</a></td>
   </tr>' : '') . '
   <tr>
   <td>Report Request</td>
-  <td><form action="report.php?type=Request&amp;id=' . $id . '" method="post">
-  <input type="submit" class="button is-small" value="Report This Request" />
-  For breaking the <a class="altlink" href="rules.php">rules</a></form></td>
+  <td>
+    <form action="report.php?type=Request&amp;id=' . $id . '" method="post">
+        <div class="has-text-centered margin20">
+            <input type="submit" class="button is-small" value="Report This Request" />
+        </div>
+        For breaking the <a class="altlink" href="rules.php">rules</a>
+    </form>
+    </td>
   </tr>
   </table>';
-        $HTMLOUT .= '<h1>Comments for ' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '</h1><p><a id="startcomments"></a></p>';
-        $commentbar = '<p><a class="index" href="requests.php?action=add_comment&amp;id=' . $id . '">Add a comment</a></p>';
+        $HTMLOUT .= '
+            <h1 class="has-text-centered">Comments for ' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '</h1>
+            <a id="startcomments"></a>
+            <div class="has-text-centered margin20">
+                <a class="button is-small" href="requests.php?action=add_comment&amp;id=' . $id . '">Add a comment</a>
+            </div>';
         $count = (int) $arr['comments'];
         if (!$count) {
-            $HTMLOUT .= '<h2>No comments yet</h2>';
+            $HTMLOUT .= main_div('<h2>No comments yet</h2>', 'top20 has-text-centered');
         } else {
-            //=== get stuff for the pager
             $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
             $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
-            list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'requests.php?action=request_details&amp;id=' . $id, ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . '#comments');
-            $subres = sql_query('SELECT c.request, c.id AS comment_id, c.text, c.added, c.editedby, c.editedat, u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.leechwarn, u.chatpost, u.pirate, u.king, u.title FROM comments AS c LEFT JOIN users AS u ON c.user = u.id WHERE c.request = ' . sqlesc($id) . ' ORDER BY c.id ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
-            $allrows = [];
-            while ($subrow = mysqli_fetch_assoc($subres)) {
-                $allrows[] = $subrow;
-            }
-            $HTMLOUT .= $commentbar . '<a id="comments"></a>';
-            $HTMLOUT .= ($count > $perpage) ? '' . $menu . '<br>' : '<br>';
-            $HTMLOUT .= comment_table($allrows);
-            $HTMLOUT .= ($count > $perpage) ? '' . $menu . '<br>' : '<br>';
+            list($menu, $LIMIT, $pdo) = pager_new($count, $perpage, $page, 'requests.php?action=request_details&amp;id=' . $id, ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . '#comments');
+            $allrows = $fluent->from('comments')
+                ->select('id AS comment_id')
+                ->where('request = ?', $id)
+                ->orderBy('id DESC')
+                ->limit('?, ?', $pdo[0], $pdo[1])
+                ->fetchAll();
+
+            $HTMLOUT .= '<a id="comments"></a>';
+            $HTMLOUT .= ($count > $perpage) ? $menu . '<br>' : '<br>';
+            $HTMLOUT .= commenttable($allrows, 'request');
         }
-        $HTMLOUT .= $commentbar;
-        echo stdhead('Request details for: ' . htmlsafechars($arr['request_name'], ENT_QUOTES), true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Request details for: ' . htmlsafechars($arr['request_name'], ENT_QUOTES), true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
-    //===========================================================================================//
-    //====================================    add new request      ========================================//
-    //===========================================================================================//
 
     case 'add_new_request':
         require_once INCL_DIR . 'bbcode_functions.php';
@@ -240,7 +242,6 @@ switch ($action) {
         $image = strip_tags(isset($_POST['image']) ? trim($_POST['image']) : '');
         $body = (isset($_POST['body']) ? trim($_POST['body']) : '');
         $link = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : '');
-        //=== do the cat list :D
         $category_drop_down = '<select name="category" class="required"><option class="body" value="">Select Request Category</option>';
         $cats = genrelist();
         foreach ($cats as $row) {
@@ -260,7 +261,6 @@ switch ($action) {
             die();
         }
 
-        //=== start page
         $HTMLOUT .= $top_menu . '
     <h1 class="has-text-centered">New Request</h1>
     <form method="post" action="requests.php?action=add_new_request" name="request_form" id="request_form">
@@ -294,16 +294,16 @@ switch ($action) {
     <td>' . BBcode($body) . '</td>
     </tr>
     <tr>
-    <td colspan="2" class="has-text-centered">
-    <input type="submit" name="button" class="button is-small" value="Submit" /></td>
+    <td colspan="2">
+    <div class="has-text-centered margin20">
+        <input type="submit" name="button" class="button is-small" value="Submit" />
+    </div>
+    </td>
     </tr>
     </tbody>
     </table></form><br>';
-        echo stdhead('Add new request.', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Add new request.', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
-    //===========================================================================================//
-    //====================================      delete  request      ========================================//
-    //===========================================================================================//
 
     case 'delete_request':
         if (!isset($id) || !is_valid_id($id)) {
@@ -327,11 +327,8 @@ switch ($action) {
             header('Location: /requests.php?request_deleted=1');
             die();
         }
-        echo stdhead('Delete Request.', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Delete Request.', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
-    //===========================================================================================//
-    //====================================          edit request      ========================================//
-    //===========================================================================================//
 
     case 'edit_request':
         require_once INCL_DIR . 'bbcode_functions.php';
@@ -352,7 +349,6 @@ switch ($action) {
         $body = (isset($_POST['body']) ? trim($_POST['body']) : $edit_arr['description']);
         $link = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : $edit_arr['link']);
         $category = (isset($_POST['category']) ? intval($_POST['category']) : $edit_arr['category']);
-        //=== do the cat list :D
         $category_drop_down = '<select name="category" class="required"><option class="body" value="">Select Request Category</option>';
         $cats = genrelist();
         foreach ($cats as $row) {
@@ -363,7 +359,6 @@ switch ($action) {
         $cat_arr = mysqli_fetch_assoc($cat_res);
         $cat_image = htmlsafechars($cat_arr['cat_image'], ENT_QUOTES);
         $cat_name = htmlsafechars($cat_arr['cat_name'], ENT_QUOTES);
-        //=== start page
         $HTMLOUT .= '<table class="table table-bordered table-striped">
    <tr>
    <td class="embedded">
@@ -403,25 +398,28 @@ switch ($action) {
    </tr>') . '
    <tr>
    <td colspan="2">
-   <input type="submit" name="button" class="button is-small" value="Edit" /></td>
+    <div class="has-text-centered margin20">
+        <input type="submit" name="button" class="button is-small" value="Edit" />
+    </div>
+    </td>
    </tr>
    </table></form>
     </td></tr></table><br>';
-        echo stdhead('Edit request.', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Edit Request.', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
-    //===========================================================================================//
-    //====================================    add comment          ========================================//
-    //===========================================================================================//
 
     case 'add_comment':
         require_once INCL_DIR . 'bbcode_functions.php';
         require_once INCL_DIR . 'pager_new.php';
-        //=== kill if nasty
         if (!isset($id) || !is_valid_id($id)) {
             stderr('USER ERROR', 'Bad id');
         }
-        $res = sql_query('SELECT request_name FROM requests WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $arr = mysqli_fetch_assoc($res);
+        $arr = $fluent->from('requests')
+            ->select(null)
+            ->select('request_name')
+            ->where('id = ?', $id)
+            ->fetch();
+
         if (!$arr) {
             stderr('Error', 'No request with that ID.');
         }
@@ -437,29 +435,47 @@ switch ($action) {
             die();
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
-        $HTMLOUT .= $top_menu . '<form method="post" action="requests.php?action=add_comment">
-    <input type="hidden" name="id" value="' . $id . '"/>';
-        $res = sql_query('SELECT c.request, c.id AS comment_id, c.text, c.added, c.editedby, c.editedat, u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.title, u.leechwarn, u.chatpost, u.pirate,  u.king FROM comments AS c LEFT JOIN users AS u ON c.user = u.id WHERE request = ' . sqlesc($id) . ' ORDER BY c.id DESC LIMIT 5') or sqlerr(__FILE__, __LINE__);
-        $allrows = [];
-        while ($row = mysqli_fetch_assoc($res)) {
-            $allrows[] = $row;
-        }
-        if (!empty($allrows) && count($allrows)) {
-            $HTMLOUT .= '<h2>Most recent comments, in reverse order</h2>';
-            $HTMLOUT .= comment_table($allrows);
-        }
-        echo stdhead('Add a comment to "' . $arr['request_name'] . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-        break;
-    //===========================================================================================//
-    //==================================    edit comment    =============================================//
-    //===========================================================================================//
+        $HTMLOUT .= $top_menu . '
+    <form method="post" action="requests.php?action=add_comment">
+        <input type="hidden" name="id" value="' . $id . '"/>
+        <table class="table table-bordered table-striped">
+            <tr>
+                <td class="colhead" colspan="2"><h1>Add a comment to "' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '"</h1></td>
+            </tr>
+            <tr>
+                <td><b>Comment:</b></td>
+                <td>' . BBcode($body) . '   </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="has-text-centered margin20">
+                        <input name="button" type="submit" class="button is-small" value="Save" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>';
 
-    case 'edit_comment':
+        $allrows = $fluent->from('comments')
+            ->select('id AS comment_id')
+            ->where('request = ?', $id)
+            ->orderBy('id DESC')
+            ->limit(5)
+            ->fetchAll();
+
+        if ($allrows) {
+            $HTMLOUT .= '<h2>Most recent comments, in reverse order</h2>';
+            $HTMLOUT .= commenttable($allrows, 'request');
+        }
+        echo stdhead('Add a comment to "' . $arr['request_name'] . '"', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        break;
+
+    case 'edit':
         require_once INCL_DIR . 'bbcode_functions.php';
         if (!isset($comment_id) || !is_valid_id($comment_id)) {
             stderr('Error', 'Bad ID.');
         }
-        $res = sql_query('SELECT c.*, r.request_name FROM comments AS c LEFT JOIN requests AS r ON c.request = r.id WHERE c.i d =' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT c.*, r.request_name FROM comments AS c LEFT JOIN requests AS r ON c.request = r.id WHERE c.id =' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_assoc($res);
         if (!$arr) {
             stderr('Error', 'Invalid ID.');
@@ -482,9 +498,9 @@ switch ($action) {
             $arr_user = $user_stuffs->getUserFromId($arr['user']);
             $avatar = get_avatar($arr_user);
         }
-        $HTMLOUT .= $top_menu . '<form method="post" action="requests.php?action=edit_comment">
+        $HTMLOUT .= $top_menu . '<form method="post" action="requests.php?action=edit">
     <input type="hidden" name="id" value="' . $arr['request'] . '"/>
-    <input type="hidden" name="comment_id" value="' . $comment_id . '"/>
+    <input type="hidden" name="cid" value="' . $comment_id . '"/>
     <table class="table table-bordered table-striped">
      <tr>
     <td colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '"</h1></td>
@@ -493,21 +509,21 @@ switch ($action) {
     <td><b>Comment:</b></td><td>' . BBcode($body) . '</td>
     </tr>
      <tr>
-    <td colspan="2">
-    <input name="button" type="submit" class="button is-small" value="Edit" /></td>
+        <td colspan="2">
+            <div class="has-text-centered margin20">
+                <input name="button" type="submit" class="button is-small" value="Edit" />
+            </div>
+        </td>
     </tr>
      </table></form>';
-        echo stdhead('Edit comment to "' . $arr['request_name'] . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Edit comment to "' . $arr['request_name'] . '"', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
-    //===========================================================================================//
-    //==================================    delete comment    =============================================//
-    //===========================================================================================//
 
     case 'delete_comment':
         if (!isset($comment_id) || !is_valid_id($comment_id)) {
             stderr('Error', 'Bad ID.');
         }
-        $res = sql_query('SELECT user, request FROM comments WHERE id=' . $comment_id) or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT user, request FROM comments WHERE id = ' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_assoc($res);
         if (!$arr) {
             stderr('Error', 'Invalid ID.');
@@ -524,45 +540,33 @@ switch ($action) {
             die();
         }
         break;
-} //=== end all actions / switch
-//=== functions n' stuff \o/
-/**
- * @param $rows
- *
- * @return string
- */
-function comment_table($rows)
-{
-    $count2 = '';
-    global $CURUSER, $site_config;
-    $comment_table = '<table class="table table-bordered table-striped">
-    <tr>
-    <td >';
-    foreach ($rows as $row) {
-        //=======change colors
-        $text = format_comment($row['text']);
-        if ($row['editedby']) {
-            $res_user = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($row['editedby'])) or sqlerr(__FILE__, __LINE__);
-            $arr_user = mysqli_fetch_assoc($res_user);
-            $text .= '<p>Last edited by ' . format_username($row['editedby']) . ' at ' . get_date($row['editedat'], 'DATE') . '</p>';
-        }
-        $top_comment_stuff = $row['comment_id'] . ' by ' . (isset($row['username']) ? format_username($row['id']) . ($row['title'] !== '' ? ' [ ' . htmlsafechars($row['title']) . ' ] ' : ' [ ' . get_user_class_name($row['class']) . ' ]  ') : ' M.I.A. ') . get_date($row['added'], '') . ($row['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? '
-     - [<a href="requests.php?action=edit_comment&amp;id=' . (int) $row['request'] . '&amp;comment_id=' . (int) $row['comment_id'] . '">Edit</a>]' : '') . ($CURUSER['class'] >= UC_STAFF ? '
-     - [<a href="requests.php?action=delete_comment&amp;id=' . (int) $row['request'] . '&amp;comment_id=' . (int) $row['comment_id'] . '">Delete</a>]' : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? '
-     - [<a href="comment.php?action=vieworiginal&amp;cid=' . (int) $row['id'] . '">View original</a>]' : '') . '
-    - [<a href="report.php?type=Request_Comment&amp;id_2=' . (int) $row['request'] . '&amp;id=' . (int) $row['comment_id'] . '">Report</a>]';
-        $comment_table .= '
-    <table class="table table-bordered table-striped">
-    <tr>
-    <td colspan="2"># ' . $top_comment_stuff . '</td>
-    </tr>
-    <tr>
-    <td class="has-text-centered w-15 mw-150">' . $avatar . '</td>
-    <td>' . $text . '</td>
-    </tr>
-    </table><br>';
-    }
-    $comment_table .= '</td></tr></table>';
 
-    return $comment_table;
+    case 'vieworiginal':
+        if ($CURUSER['class'] < UC_STAFF) {
+            stderr("{$lang['comment_error']}", "{$lang['comment_denied']}");
+        }
+        if (!is_valid_id($comment_id)) {
+            stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
+        }
+        $arr = $fluent->from('comments')
+            ->where('id = ?', $comment_id)
+            ->fetch();
+
+        if (!$arr) {
+            stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']} $commentid.");
+        }
+        $HTMLOUT = "
+            <h1 class='has-text-centered'>{$lang['comment_original_content']}#$comment_id</h1>" .
+            main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . "</div>");
+
+        $returnto = (isset($_SERVER['HTTP_REFERER']) ? htmlsafechars($_SERVER['HTTP_REFERER']) : 0);
+        if ($returnto) {
+            $HTMLOUT .= "
+                <div class='has-text-centered margin20'>
+                    <a href='$returnto' class='button is-small has-text-black'>back</a>
+                </div>";
+        }
+        echo stdhead("{$lang['comment_original']}", true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        die();
+        break;
 }

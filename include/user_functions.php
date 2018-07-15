@@ -64,7 +64,12 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
  */
 function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
 {
-    global $site_config, $CURUSER;
+    global $site_config, $CURUSER, $user_stuffs;
+
+    if (empty($user['username'])) {
+        $user = $user_stuffs->getUserFromId($user);
+    }
+
     $member_reputation = '';
     if ($rep_is_on) {
         include CACHE_DIR . 'rep_cache.php';
@@ -567,7 +572,7 @@ function member_ratio($up, $down)
             break;
 
         case $down == 0 && $up > 0:
-            $ratio = '<span style="color: ' . get_ratio_color($up / 1) . ';">Inf</span>';
+            $ratio = '<span style="color: ' . get_ratio_color($up) . ';">Inf</span>';
             break;
 
         default:
@@ -585,41 +590,42 @@ function member_ratio($up, $down)
 function get_user_ratio_image($ratio)
 {
     global $site_config;
+
     switch ($ratio) {
         case $ratio == 0:
             return;
             break;
 
         case $ratio < 0.6:
-            return ' <img data-src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt=" Bad ratio :("  title=" Bad ratio :(" class="lazy tooltipper icon" />';
+            return ' <img data-src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt=" Bad ratio :("  title=" Bad ratio :(" class="lazy tooltipper emoticon" />';
             break;
 
         case $ratio <= 0.7:
-            return ' <img data-src="' . $site_config['pic_baseurl'] . 'smilies/weep.gif" alt=" Could be better"  title=" Could be better" class="lazy tooltipper icon" />';
+            return ' <img data-src="' . $site_config['pic_baseurl'] . 'smilies/weep.gif" alt=" Could be better"  title=" Could be better" class="lazy tooltipper emoticon" />';
             break;
 
         case $ratio <= 0.8:
-            return ' <img data-src="' . $site_config['pic_baseurl'] . 'smilies/cry.gif" alt=" Getting there!" title=" Getting there!" class="lazy tooltipper icon" />';
+            return ' <img data-src="' . $site_config['pic_baseurl'] . 'smilies/cry.gif" alt=" Getting there!" title=" Getting there!" class="lazy tooltipper emoticon" />';
             break;
 
         case $ratio <= 1.5:
-            return ' <img data-src="' . $site_config['pic_baseurl'] . 'smilies/smile1.gif" alt=" Good Ratio :)" title=" Good Ratio :)" class="lazy tooltipper icon" />';
+            return ' <img data-src="' . $site_config['pic_baseurl'] . 'smilies/smile1.gif" alt=" Good Ratio :)" title=" Good Ratio :)" class="lazy tooltipper emoticon" />';
             break;
 
         case $ratio <= 2.0:
-            return ' <img data-src="' . $site_config['pic_baseurl'] . 'smilies/grin.gif" alt=" Great Ratio :)" title=" Great Ratio :)" class="lazy tooltipper icon" />';
+            return ' <img data-src="' . $site_config['pic_baseurl'] . 'smilies/grin.gif" alt=" Great Ratio :)" title=" Great Ratio :)" class="lazy tooltipper emoticon" />';
             break;
 
         case $ratio <= 3.0:
-            return ' <img data-src="' . $site_config['pic_baseurl'] . 'smilies/w00t.gif" alt=" Wow! :D" title=" Wow! :D" class="lazy tooltipper icon" />';
+            return ' <img data-src="' . $site_config['pic_baseurl'] . 'smilies/w00t.gif" alt=" Wow! :D" title=" Wow! :D" class="lazy tooltipper emoticon" />';
             break;
 
         case $ratio <= 4.0:
-            return ' <img data-src="' . $site_config['pic_baseurl'] . 'smilies/pimp.gif" alt=" Fa-boo Ratio!" title=" Fa-boo Ratio!" class="lazy tooltipper icon" />';
+            return ' <img data-src="' . $site_config['pic_baseurl'] . 'smilies/pimp.gif" alt=" Fa-boo Ratio!" title=" Fa-boo Ratio!" class="lazy tooltipper emoticon" />';
             break;
 
         case $ratio > 4.0:
-            return ' <img data-src="' . $site_config['pic_baseurl'] . 'smilies/yahoo.gif" alt=" Great ratio :-D" title=" Great ratio :-D" class="lazy tooltipper icon" />';
+            return ' <img data-src="' . $site_config['pic_baseurl'] . 'smilies/yahoo.gif" alt=" Great ratio :-D" title=" Great ratio :-D" class="lazy tooltipper emoticon" />';
             break;
     }
 

@@ -262,15 +262,16 @@ if ($action === 'add') {
     if (!$arr) {
         stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']} $commentid.");
     }
-    $HTMLOUT = '';
-    $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['comment_original_content']}#$commentid</h1>
-      <table width='500' >
-      <tr><td class='comment'>
-      " . htmlsafechars($arr['ori_text']) . '
-      </td></tr></table>';
+    $HTMLOUT = "
+        <h1 class='has-text-centered'>{$lang['comment_original_content']}#$commentid</h1>" .
+        main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . "</div>");
+
     $returnto = (isset($_SERVER['HTTP_REFERER']) ? htmlsafechars($_SERVER['HTTP_REFERER']) : 0);
     if ($returnto) {
-        $HTMLOUT .= "<p>(<a href='$returnto'>back</a>)</p>\n";
+        $HTMLOUT .= "
+            <div class='has-text-centered margin20'>
+                <a href='$returnto' class='button is-small has-text-black'>back</a>
+            </div>  ";
     }
     echo stdhead("{$lang['comment_original']}", true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();

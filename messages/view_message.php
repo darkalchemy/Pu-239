@@ -65,7 +65,7 @@ $HTMLOUT .= "
             <tr class='no_hover'>
                 <td colspan='2'>
                     <div class='has-text-centered flex flex-justify-center'>
-                        <form action='./pm_system.php' method='post'>
+                        <form action='./messages.php' method='post'>
                             <input type='hidden' name='id' value='{$pm_id}' />
                             <input type='hidden' name='action' value='{$lang['pm_viewmsg_to']}' />
                             <span class='right10'>{$lang['pm_search_move_to']}</span>
@@ -74,22 +74,22 @@ $HTMLOUT .= "
                         </form>
                     </div>
                     <div class='has-text-centered flex flex-center top20'>
-                        <a href='{$site_config['baseurl']}/pm_system.php?action=delete&amp;id={$pm_id}'>
+                        <a href='{$site_config['baseurl']}/messages.php?action=delete&amp;id={$pm_id}'>
                             <input type='submit' class='button is-small' value='{$lang['pm_viewmsg_delete']}' />
                         </a>" . ($message['draft'] === 'no' ? "
-                        <a href='{$site_config['baseurl']}/pm_system.php?action=save_or_edit_draft&amp;id={$pm_id}'>
+                        <a href='{$site_config['baseurl']}/messages.php?action=save_or_edit_draft&amp;id={$pm_id}'>
                             <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_sdraft']}' />
                         </a>" . (($id < 1 || $message['sender'] === $CURUSER['id']) ? '' : "
-                        <a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver={$message['sender']}&amp;replyto={$pm_id}'>
+                        <a href='{$site_config['baseurl']}/messages.php?action=send_message&amp;receiver={$message['sender']}&amp;replyto={$pm_id}'>
                             <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_reply']}' />
                         </a>
-                        <a href='{$site_config['baseurl']}/pm_system.php?action=forward&amp;id={$pm_id}'>
+                        <a href='{$site_config['baseurl']}/messages.php?action=forward&amp;id={$pm_id}'>
                             <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_fwd']}' />
                         </a>") : "
-                        <a href='{$site_config['baseurl']}/pm_system.php?action=save_or_edit_draft&amp;edit=1&amp;id={$pm_id}'>
+                        <a href='{$site_config['baseurl']}/messages.php?action=save_or_edit_draft&amp;edit=1&amp;id={$pm_id}'>
                             <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_dedit']}' />
                         </a>
-                        <a href='{$site_config['baseurl']}/pm_system.php?action=use_draft&amp;send=1&amp;id={$pm_id}'>
+                        <a href='{$site_config['baseurl']}/messages.php?action=use_draft&amp;send=1&amp;id={$pm_id}'>
                             <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_duse']}' />
                         </a>") . "
                     </div>

@@ -5,7 +5,7 @@ global $CURUSER, $site_config, $lang, $cache;
 $res = sql_query('SELECT receiver, sender, urgent, unread, saved, location FROM messages WHERE id = ' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
 $message = mysqli_fetch_assoc($res);
 if ($message['receiver'] == $CURUSER['id'] && $message['urgent'] === 'yes' && $message['unread'] === 'yes') {
-    stderr($lang['pm_error'], '' . $lang['pm_delete_err'] . '<a class="altlink" href="pm_system.php?action=view_message&id=' . $pm_id . '">' . $lang['pm_delete_msg'] . '</a> to message.');
+    stderr($lang['pm_error'], '' . $lang['pm_delete_err'] . '<a class="altlink" href="messages.php?action=view_message&id=' . $pm_id . '">' . $lang['pm_delete_msg'] . '</a> to message.');
 }
 if ($message['receiver'] == $CURUSER['id'] || $message['sender'] == $CURUSER['id'] && $message['location'] == PM_DELETED) {
     sql_query('DELETE FROM messages WHERE id = ' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
@@ -18,7 +18,7 @@ if ($message['receiver'] == $CURUSER['id'] || $message['sender'] == $CURUSER['id
     $cache->delete('inbox_' . $CURUSER['id']);
 }
 if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
-    stderr($lang['pm_error'], '' . $lang['pm_error'] . '<a class="altlink" href="' . $site_config['baseurl'] . '/pm_system.php?action=view_message&id=' . $pm_id . '>' . $lang['pm_delete_back'] . '</a>' . $lang['pm_delete_msg'] . '');
+    stderr($lang['pm_error'], '' . $lang['pm_error'] . '<a class="altlink" href="' . $site_config['baseurl'] . '/messages.php?action=view_message&id=' . $pm_id . '>' . $lang['pm_delete_back'] . '</a>' . $lang['pm_delete_msg'] . '');
 }
-header('Location: pm_system.php?action=view_mailbox&deleted=1');
+header('Location: messages.php?action=view_mailbox&deleted=1');
 die();

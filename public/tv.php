@@ -35,11 +35,11 @@ if ($tvs) {
     foreach ($tvs as $tv) {
         if (!empty($tv['name']) && !in_array(strtolower($tv['name']), $titles)) {
             $poster = !empty($tv['poster_path']) ? "https://image.tmdb.org/t/p/w185{$tv['poster_path']}" : $site_config['pic_baseurl'] . 'noposter.png';
-            $backdrop = !empty($tv['backdrop_path']) ? "https://image.tmdb.org/t/p/w500{$tv['backdrop_path']}" : '';
+            $backdrop = !empty($tv['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$tv['backdrop_path']}" : '';
 
             $body[] = [
                 'poster' => url_proxy($poster, true, 150),
-                'placeholder' => url_proxy($poster, true, null, null, 20),
+                'placeholder' => url_proxy($poster, true, 150, null, 10),
                 'backdrop' => url_proxy($backdrop, true),
                 'title' => $tv['name'],
                 'vote_count' => $tv['vote_count'],

@@ -87,7 +87,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
 <body>
 <p>{$lang['pm_forwardpm_pmfrom']} $username!</p>
 <p>{$lang['pm_forwardpm_url']}</p>
-<p>{$site_config['baseurl']}/pm_system.php</p>
+<p>{$site_config['baseurl']}/messages.php</p>
 <p>--{$site_config['site_name']}</p>
 </body>
 </html>";
@@ -120,7 +120,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     if ($returnto) {
         header('Location: ' . $returnto);
     } else {
-        header('Location: pm_system.php?action=view_mailbox&sent=1');
+        header('Location: messages.php?action=view_mailbox&sent=1');
     }
     die();
 }
@@ -170,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $HTMLOUT .= $top_links . '
-    <form name="compose" method="post" action="pm_system.php">
+    <form name="compose" method="post" action="messages.php">
         <input type="hidden" name="action" value="send_message" />';
 if ($receiver) {
     $HTMLOUT .= '

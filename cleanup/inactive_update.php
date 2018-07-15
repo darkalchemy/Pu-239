@@ -97,7 +97,6 @@ function delete_cleanup($users, $using_foreign_keys = true)
         sql_query("DELETE FROM invite_codes WHERE sender IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM ips WHERE userid IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM likes WHERE user_id IN ({$users})") or sqlerr(__FILE__, __LINE__);
-        sql_query("DELETE FROM manage_likes WHERE user_id IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM news WHERE userid IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM notconnectablepmlog WHERE user IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM now_viewing WHERE user_id IN ({$users})") or sqlerr(__FILE__, __LINE__);

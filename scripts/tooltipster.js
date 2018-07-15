@@ -1,6 +1,6 @@
 var animate_duration = 1e3;
-
 var animation = "fade";
+var delay = 500;
 
 $(function() {
     $(".tooltipper").tooltipster({
@@ -8,6 +8,7 @@ $(function() {
         side: "top",
         animation: animation,
         animationDuration: animate_duration,
+        delay: delay,
         arrow: true,
         contentAsHTML: true,
         maxWidth: 500
@@ -19,10 +20,10 @@ function initAll() {
     $(".dt-tooltipper.tooltipstered").tooltipster("destroy");
     $(".dt-tooltipper-large").tooltipster({
         theme: "tooltipster-borderless",
-        side: "top",
         interactive: true,
         animation: animation,
         animationDuration: animate_duration,
+        delay: delay,
         arrow: true,
         contentAsHTML: true,
         maxWidth: 500,
@@ -46,6 +47,7 @@ function initAll() {
         interactive: false,
         animation: animation,
         animationDuration: animate_duration,
+        delay: delay,
         arrow: true,
         contentAsHTML: true,
         maxWidth: 250
@@ -70,6 +72,7 @@ function initAll() {
         interactive: true,
         animation: animation,
         animationDuration: animate_duration,
+        delay: delay,
         updateAnimation: animation,
         arrow: true,
         minWidth: 250,

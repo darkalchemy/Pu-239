@@ -37,7 +37,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
             'name' => $person['person']['name'],
             'character' => $person['character']['name'],
             'thumb' => $person['character']['image']['medium'],
-            'photo' => $person['character']['image']['original'],
+            'photo' => $person['character']['image']['medium'],
             'url' => $person['character']['url'],
             'id' => $person['character']['id'],
         ];
@@ -193,14 +193,25 @@ function tvmaze($tvmaze_id, $id)
         ], 0);
     }
     if (empty($torrents['poster'])) {
-        $torrents['poster'] = $tvmaze_show_data['image']['original'];
-        $set['poster'] = $tvmaze_show_data['image']['original'];
-        $cache->update_row('torrent_details_' . $id, [
-            'poster' => $tvmaze_show_data['image']['original'],
-        ], 0);
-        $sql = "INSERT IGNORE INTO images (tvmaze_id, url, type) VALUES ($tvmaze_id, {$tvmaze_show_data['image']['original']}, 'poster')";
-        sql_query($sql) or sqlerr(__FILE__, __LINE__);
-
+        $poster = '';
+        if (!empty($tvmaze_show_data['image']['medium'])) {
+            $poster = $tvmaze_show_data['image']['medium'];
+        } elseif (!empty($tvmaze_show_data['_embedded']['show']) && !empty($tvmaze_show_data['_embedded']['show']['image']['medium'])) {
+            $poster = $tvmaze_show_data['_embedded']['show']['image']['medium'];
+        }
+        if (!empty($poster)) {
+            $torrents['poster'] = $poster;
+            $set['poster'] = $tposter;
+            $cache->update_row('torrent_details_' . $id, [
+                'poster' => $poster,
+            ], 0);
+            $insert = $cache->get('insert_tvmaze_tvmazeid_' . $tvmaze_id);
+            if ($insert === false || is_null($insert)) {
+                $sql = "INSERT IGNORE INTO images (tvmaze_id, url, type) VALUES ($tvmaze_id, '$poster', 'poster')";
+                sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                $cache->set('insert_tvmaze_tvmazeid_' . $tvmaze_id, 0, 604800);
+            }
+        }
     }
     if (!empty($set)) {
         $fluent->update('torrents')
@@ -240,6 +251,22 @@ function get_schedule($use_cache = true)
     return false;
 }
 
+function insert_images_from_schedule($schedule, $date) {
+    global $cache;
+
+    foreach ($schedule as $listing) {
+        $poster = !empty($listing['image']['medium']) ? $listing['image']['medium'] : !empty($listing['_embedded']['show']['image']['medium']) ? $listing['_embedded']['show']['image']['medium'] : '';
+        if ($listing['airdate'] === $date && $listing['_embedded']['show']['language'] === 'English' && !empty($poster)) {
+            $insert = $cache->get('insert_tvmaze_tvmazeid_' . $listing['id']);
+            if ($insert === false || is_null($insert)) {
+                $sql = "INSERT IGNORE INTO images (tvmaze_id, url, type) VALUES ({$listing['id']}, '$poster', 'poster')";
+                sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                $cache->set('insert_tvmaze_tvmazeid_' . $listing['id'], 0, 604800);
+            }
+        }
+    }
+}
+
 /**
  * @param $heading
  * @param $body
@@ -257,5 +284,5 @@ function line_by_line($heading, $body)
 
 function timeSort($a, $b)
 {
-    return strcmp($a['airtime'], $b['airtime']);
+    return strcmp($a['airstamp'], $b['airstamp']);
 }

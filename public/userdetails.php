@@ -7,16 +7,14 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'function_onlinetime.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
+require_once INCL_DIR . 'comment_functions.php';
+
 check_user_status();
 global $CURUSER, $site_config, $fluent, $cache, $session;
 
 $lang = array_merge(load_language('global'), load_language('userdetails'));
 $edit_profile = $friend_links = $shitty_link = $sharemark_link = '';
 
-$stdhead = [
-    'css' => [
-    ],
-];
 $stdfoot = [
     'js' => [
         get_file_name('userdetails_js'),
@@ -161,7 +159,7 @@ if (($user['opt1'] & user_options::ANONYMOUS) && ($CURUSER['class'] < UC_STAFF &
     $HTMLOUT .= "
             <tr>
                 <td colspan='3' class='has-text-centered'>
-                    <form method='get' action='{$site_config['baseurl']}/pm_system.php?action=send_message'>
+                    <form method='get' action='{$site_config['baseurl']}/messages.php?action=send_message'>
                         <input type='hidden' name='receiver' value='" . (int) $user['id'] . "' />
                         <input type='submit' value='{$lang['userdetails_sendmess']}' />
                     </form>";
@@ -965,4 +963,4 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
 }
 $HTMLOUT .= '</div></div></div>';
 
-echo stdhead("{$lang['userdetails_details']} " . $user['username'], true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead("{$lang['userdetails_details']} " . $user['username'], true) . wrapper($HTMLOUT) . stdfoot($stdfoot);

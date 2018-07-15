@@ -94,6 +94,10 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
         'pagertop' => $pagertop,
         'pagerbottom' => $pagerbottom,
         'limit' => "LIMIT $start,$rpp",
+        'pdo' => [
+            (int) $start,
+            (int) $rpp,
+        ],
     ];
 }
 

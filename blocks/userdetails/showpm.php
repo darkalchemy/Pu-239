@@ -16,7 +16,7 @@ if ($CURUSER['id'] != $user['id']) {
 if (isset($showpmbutton)) {
     $HTMLOUT .= "<tr>
       <td colspan='2'>
-      <form method='get' action='pm_system.php?'>
+      <form method='get' action='messages.php?'>
         <input type='hidden' name='action' value='send_message' />
         <input type='hidden' name='receiver' value='" . (int) $user['id'] . "' />
         <input type='hidden' name='returnto' value='" . urlencode($_SERVER['REQUEST_URI']) . "' />

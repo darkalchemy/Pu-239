@@ -67,7 +67,7 @@ switch ($view) {
                 "<td>{$comment['text']}</td>" .
                 "<td>{$comment['ori_text']}</td>" .
                 '<td>' . format_username($comment['user']) .
-                " [<a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver={$comment['user']}'>{$lang['text_msg']}</a>]</td>" .
+                " [<a href='{$site_config['baseurl']}/messages.php?action=send_message&amp;receiver={$comment['user']}'>{$lang['text_msg']}</a>]</td>" .
                 "<td><a href='{$site_config['baseurl']}/details.php?id={$comment['torrent']}'>{$comment['name']}</a></td>" .
                 '<td>' . get_date($comment['added'], 'DATE') . '</td>' .
                 "<td><a href='{$site_config['baseurl']}/comment.php?action=edit&amp;cid={$comment['id']}'>{$lang['text_edit']}</a>" .
@@ -230,7 +230,7 @@ while ($comment = mysqli_fetch_assoc($query)) {
         "<td>{$comment['text']}</td>" .
         "<td>{$comment['ori_text']}</td>" .
         '<td>' . format_username($comment['user']) .
-        "[<a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver={$comment['user']}'>{$lang['text_msg']}</a>]</td>" .
+        "[<a href='{$site_config['baseurl']}/messages.php?action=send_message&amp;receiver={$comment['user']}'>{$lang['text_msg']}</a>]</td>" .
         "<td><a href='{$site_config['baseurl']}/details.php?id={$comment['torrent']}'>{$comment['name']}</a></td>" .
         '<td>' . get_date($comment['added'], 'DATE') . '</td>' .
         "<td><a href='{$site_config['baseurl']}/comment.php?action=edit&amp;cid={$comment['id']}'>{$lang['text_edit']}</a>" .

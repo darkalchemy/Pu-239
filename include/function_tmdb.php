@@ -88,23 +88,27 @@ function get_movies_by_vote_average($count)
 
 function get_movies($json)
 {
+    global $cache;
+
     foreach ($json['results'] as $movie) {
         if ($movie['original_language'] === 'en') {
             if (!empty($movie['id'])) {
-                $images = '';
-                if (!empty($movie['poster_path'])) {
-                    $images .= "({$movie['id']}, 'https://image.tmdb.org/t/p/original{$movie['poster_path']}', 'poster')";
+                $insert = $cache->get('insert_tmdb_tmdbid_' . $movie['id']);
+                if ($insert === false || is_null($insert)) {
+                    $images = '';
+                    if (!empty($movie['poster_path'])) {
+                        $images .= "({$movie['id']}, 'https://image.tmdb.org/t/p/w185{$movie['poster_path']}', 'poster')";
+                    }
+                    if (!empty($movie['backdrop_path'])) {
+                        $images .= (empty($images) ? '' : ', ') . "({$movie['id']}, 'https://image.tmdb.org/t/p/w1280{$movie['backdrop_path']}', 'background')";
+                    }
+                    if (!empty($images)) {
+                        $sql = "INSERT IGNORE INTO images (tmdb_id, url, type) VALUES $images";
+                        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                    }
+
+                    $cache->set('insert_tmdb_tmdbid_' . $movie['id'], 0, 604800);
                 }
-                if (!empty($movie['backdrop_path'])) {
-                    $images .= (empty($images) ? '' : ', ') . "({$movie['id']}, 'https://image.tmdb.org/t/p/original{$movie['backdrop_path']}', 'background')";
-                }
-                if (!empty($images)) {
-                    $sql = "INSERT IGNORE INTO images (tmdb_id, url, type) VALUES $images";
-                    //dd($sql);
-                    sql_query($sql) or sqlerr(__FILE__, __LINE__);
-                }
-            } else {
-                dd($movie);
             }
             $movies[] = $movie;
         }

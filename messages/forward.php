@@ -17,13 +17,13 @@ if ($message['sender'] !== $CURUSER['id']) {
 }
 //=== print out the forwarding page
 $HTMLOUT .= '<h1>' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subject']) . '</h1>
-        <form action="pm_system.php" method="post">
+        <form action="messages.php" method="post">
         <input type="hidden" name="id" value="' . $pm_id . '" />
         <input type="hidden" name="action" value="forward_pm" />
     <table class="table table-bordered">
     <tr>
         <td colspan="2" class="colhead"><h1>' . $lang['pm_forward_fwd_msg'] . '
-        <img src="' . $site_config['pic_baseurl'] . 'forums/arrow_next.gif" alt=":" />' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subject']) . '</h1></td>
+        <img src="' . $site_config['pic_baseurl'] . 'arrow_next.gif" alt=":" />' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subject']) . '</h1></td>
     </tr>
     <tr>
         <td><span style="font-weight: bold;">' . $lang['pm_forward_to'] . '</span></td>

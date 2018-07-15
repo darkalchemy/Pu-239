@@ -322,14 +322,11 @@ function stdfoot($stdfoot = false)
         </div>";
     }
     $details = basename($_SERVER['PHP_SELF']) === 'details.php';
-    $bg_image = $poster_image = '';
+    $bg_image = '';
     if ($CURUSER && ($site_config['backgrounds_on_all_pages'] || $details)) {
         $background = get_body_image($details);
         if (!empty($background['background'])) {
-            $bg_image = "var body_bg_image = '" . url_proxy($background['background'], true) . "'";
-        }
-        if (!empty($background['poster'])) {
-            $poster_image = "var body_poster_image = '" . url_proxy($background['poster'], true) . "'";
+            $bg_image = "var body_image = '" . url_proxy($background['background'], true) . "'";
         }
     }
     $htmlfoot .= "
@@ -339,7 +336,6 @@ function stdfoot($stdfoot = false)
     </a>
     <script>
         $bg_image
-        $poster_image
         var is_12_hour = {$use_12_hour};
         var cookie_prefix = '{$site_config['cookie_prefix']}';
         var cookie_path = '{$site_config['cookie_path']}';
@@ -624,7 +620,7 @@ function navbar()
                                     <li class='iss_hidden'><a href='{$site_config['baseurl']}/bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
                                     <li class='iss_hidden'><a href='{$site_config['baseurl']}/friends.php'>{$lang['gl_friends']}</a></li>
                                     <li class='iss_hidden'><a href='#' onclick='language_select();'>{$lang['gl_language_select']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/pm_system.php'>{$lang['gl_pms']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/messages.php'>{$lang['gl_pms']}</a></li>
                                     <li class='iss_hidden'><a href='{$site_config['baseurl']}/users.php'>Search Users</a></li>
                                     <li class='iss_hidden'><a href='#' onclick='themes();'>{$lang['gl_theme']}</a></li>
                                     <li class='iss_hidden'><a href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['gl_usercp']}</a></li>

@@ -27,6 +27,7 @@ if ($comments === false || is_null($comments)) {
         ->leftJoin('torrents ON torrents.id = comments.torrent')
         ->leftJoin('users ON users.id = comments.user')
         ->leftJoin('categories ON categories.id = torrents.category')
+        ->where('torrent > 0')
         ->orderBy('comments.id DESC')
         ->limit(5)
         ->fetchAll();
@@ -36,7 +37,7 @@ if ($comments === false || is_null($comments)) {
 $header = "
                         <tr>
                             <th class='has-text-centered w-10'>Type</th>
-                            <th class='w-50'>Last 5 Comments</th>
+                            <th class='w-50 minw-150'>Last 5 Comments</th>
                             <th class='has-text-centered'>User</th>
                             <th class='has-text-centered'>When</th>
                             <th class='has-text-centered'>Likes</th>

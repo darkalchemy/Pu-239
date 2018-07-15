@@ -49,7 +49,7 @@ $res = sql_query('SELECT boxnumber, name FROM pmboxes WHERE userid = ' . sqlesc(
 
 $HTMLOUT .= $top_links . '
         <h1>' . $lang['pm_search_title'] . '</h1>
-        <form action="pm_system.php?action=search" method="post">
+        <form action="messages.php?action=search" method="post">
             <input type="hidden" name="action"  value="' . $lang['pm_search_btn'] . '" />';
 $header = '
                 <tr>
@@ -188,7 +188,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $table_body .= "
             <tr>
                 <td class='w-10 has-text-centered'>$read</td>
-                <td><a href='{$site_config['baseurl']}/pm_system.php?id={$row['id']}'>{$subject}</a></td>
+                <td><a href='{$site_config['baseurl']}/messages.php?id={$row['id']}'>{$subject}</a></td>
                 <td class='w-10 has-text-centered'>$sender</td>
                 <td class='has-text-centered'>$date</td>
                 <td class='w-1 has-text-centered'><input type='checkbox' name='pm[]' value='" . (int) $row['id'] . "' /></td>
@@ -204,7 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $table .= main_table("
             <tr>
                 <td class='w-10'>{$lang['pm_search_subject']}</td>
-                <td><a href='{$site_config['baseurl']}/pm_system.php?id={$row['id']}'>$subject</a></td>
+                <td><a href='{$site_config['baseurl']}/messages.php?id={$row['id']}'>$subject</a></td>
                 <td class='w-1'><input type='checkbox' name='pm[]' value='" . (int) $row['id'] . "' /></td>
             </tr>
             <tr>
@@ -229,7 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </h3>';
     if ($num_result > 0) {
         $results .= "
-    <form action='pm_system.php' method='post' name='messages'>
+    <form action='messages.php' method='post' name='messages'>
         <input type='hidden' name='action' value='move_or_delete_multi' />
         <input type='hidden' name='returnto' value='search' />
         $table

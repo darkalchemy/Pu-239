@@ -25,7 +25,7 @@ if (isset($_POST['delete'])) {
         $res = sql_query('SELECT * FROM messages WHERE id = ' . sqlesc($id));
         $message = mysqli_fetch_assoc($res);
         if ($message['receiver'] == $CURUSER['id'] && $message['urgent'] === 'yes' && $message['unread'] === 'yes') {
-            stderr($lang['pm_error'], '' . $lang['pm_delete_err'] . '<a class="altlink" href="' . $site_config['baseurl'] . '/pm_system.php?action=view_message&id=' . $pm_id . '">' . $lang['pm_delete_back'] . '</a>' . $lang['pm_delete_msg'] . '');
+            stderr($lang['pm_error'], '' . $lang['pm_delete_err'] . '<a class="altlink" href="' . $site_config['baseurl'] . '/messages.php?action=view_message&id=' . $pm_id . '">' . $lang['pm_delete_back'] . '</a>' . $lang['pm_delete_msg'] . '');
         }
         if ($message['receiver'] == $CURUSER['id'] || $message['sender'] == $CURUSER['id'] && $message['location'] == PM_DELETED) {
             sql_query('DELETE FROM messages WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
@@ -41,11 +41,11 @@ if (isset($_POST['delete'])) {
         stderr($lang['pm_error'], $lang['pm_delete_err_multi']);
     }
     if (isset($_POST['returnto'])) {
-        header('Location: pm_system.php?action=' . $_POST['returnto'] . '&multi_delete=1');
+        header('Location: messages.php?action=' . $_POST['returnto'] . '&multi_delete=1');
     } elseif (isset($_POST['draft_section'])) {
-        header('Location: pm_system.php?action=viewdrafts&multi_delete=1');
+        header('Location: messages.php?action=viewdrafts&multi_delete=1');
     } else {
-        header('Location: pm_system.php?action=view_mailbox&multi_delete=1&box=' . $mailbox);
+        header('Location: messages.php?action=view_mailbox&multi_delete=1&box=' . $mailbox);
     }
     die();
 }
