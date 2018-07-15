@@ -15,6 +15,9 @@ function images_update($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
+    get_upcoming();
+    get_movies_in_theaters();
+
     $today = date('Y-m-d');
     $date = new DateTime($today);
     $tomorrow = $date->modify('+1 day')->format('Y-m-d');

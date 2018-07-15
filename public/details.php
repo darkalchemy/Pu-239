@@ -10,6 +10,7 @@ require_once INCL_DIR . 'function_rating.php';
 require_once INCL_DIR . 'function_tvmaze.php';
 require_once INCL_DIR . 'function_books.php';
 require_once INCL_DIR . 'function_imdb.php';
+require_once INCL_DIR . 'function_omdb.php';
 require_once INCL_DIR . 'function_fanart.php';
 check_user_status();
 global $CURUSER, $site_config, $fluent, $session, $cache, $user_stuffs;
@@ -177,6 +178,16 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
         $movie_info = get_imdb_info($imdb_id);
         $imdb_info = $movie_info[0];
     }
+
+    if (!empty($torrents['imdb'])) {
+        $movie_info = get_omdb_info($torrents['imdb']);
+        $omdb_info = $movie_info;
+    }
+
+    if (empty($omdb_info) && !empty($imdb_id)) {
+        $movie_info = get_imdb_info($imdb_id);
+        $omdb_info = $movie_info;
+    }
 }
 
 if (in_array($torrents['category'], $site_config['movie_cats'])) {
@@ -229,6 +240,9 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
         }
         $movie_info = get_imdb_info($imdb_id);
         $imdb_info = $movie_info[0];
+
+        $movie_omdb = get_omdb_info($imdb_id);
+        $omdb_info = $movie_omdb;
 
         if (empty($torrents['poster']) && !empty($movie_info[1])) {
             $set = [
@@ -901,6 +915,10 @@ if (!empty($torrents['youtube'])) {
 
 if (!empty($imdb_info)) {
     $HTMLOUT .= main_div($imdb_info, 'bottom20');
+}
+
+if (!empty($omdb_info)) {
+    $HTMLOUT .= main_div($omdb_info, 'bottom20');
 }
 
 if ($tvmaze_info) {

@@ -142,11 +142,13 @@ Fanart.tv needs api key set in .env
 
 TMDb API key allows upcoming movies and many images
 
+OMDb API key allows movies and tv lookup
+
 Google API key allows up to 1000 api hits instead of 100 per day, set in .env
 
-IMDb no key needed
+IMDb no key needed, allow movies and tv lookup
 
-TVMaze no key needed
+TVMaze no key needed, allows tv lookup
 
 
 ### Making Changes to css/js files

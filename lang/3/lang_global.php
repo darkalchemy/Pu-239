@@ -2,11 +2,15 @@
 
 $lang = [
     //Mod admin link
+    'gl_imdb' => 'IMDb',
+    'gl_tmdb' => 'TMDb',
+    'gl_tvmaze' => 'TVMaze',
     'gl_movies_tv' => 'Movies & TV',
-    'gl_movies_by_date' => 'Movies By Release Date',
-    'gl_movies_top_100' => 'TMDb Top 100',
-    'gl_tv_today' => 'TV Airing [TMDb]',
-    'gl_tvmaze_today' => 'TV Airing [TVMaze]',
+    'gl_movies_upcoming' => 'Upcoming Movies',
+    'gl_movies_theaters' => 'In Theaters',
+    'gl_movies_top_100' => 'Top 100',
+    'gl_tv_today' => 'TV Airing',
+    'gl_tvmaze_today' => 'TV Airing',
     'gl_userblocks' => 'User Blocks',
     'gl_profile' => 'Profil',
     'gl_logout' => 'Deconectare',

@@ -7,6 +7,9 @@ function get_tv_by_day($dates)
     $tmdb_data = $cache->get('tmdb_tv_' . $dates);
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $_ENV['TMDB_API_KEY'];
+        if (empty($apikey)) {
+            return null;
+        }
         $url = "https://api.themoviedb.org/3/discover/tv?air_date.gte={$dates}&air_date.lte={$dates}&api_key=$apikey&with_original_language=en";
         $content = fetch($url);
         if (!$content) {
@@ -35,7 +38,11 @@ function get_movies_by_week($dates)
     $tmdb_data = $cache->get('tmdb_movies_' . $dates[0]);
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $_ENV['TMDB_API_KEY'];
+        if (empty($apikey)) {
+            return null;
+        }
         $url = "https://api.themoviedb.org/3/discover/movie?primary_release_date.gte={$dates[0]}&primary_release_date.lte={$dates[1]}&api_key=$apikey&sort_by=release_date.asc&include_adult=false&include_video=false&with_original_language=en";
+        dd($url);
         $content = fetch($url);
         if (!$content) {
             return false;
@@ -57,6 +64,37 @@ function get_movies_by_week($dates)
     return $tmdb_data;
 }
 
+function get_movies_in_theaters()
+{
+    global $cache;
+
+    $tmdb_data = $cache->get('tmdb_movies_in_theaters_');
+    if ($tmdb_data === false || is_null($tmdb_data)) {
+        $apikey = $_ENV['TMDB_API_KEY'];
+        if (empty($apikey)) {
+            return null;
+        }
+        $url = "https://api.themoviedb.org/3/movie/now_playing?api_key=$apikey&language=en-US&region=US";
+        $content = fetch($url);
+        if (!$content) {
+            return false;
+        }
+        $json = json_decode($content, true);
+        $pages = $json['total_pages'] <= $page ? $json['total_pages'] : $page;
+        $tmdb_data = get_movies($json);
+
+        for ($i = 2; $i <= $pages; ++$i) {
+            $purl = "$url&page=$i";
+            $content = fetch($purl);
+            $json = json_decode($content, true);
+            $tmdb_data = array_merge($tmdb_data, get_movies($json));
+        }
+        $cache->set('tmdb_movies_in_theaters_', $tmdb_data, 86400);
+    }
+
+    return $tmdb_data;
+}
+
 function get_movies_by_vote_average($count)
 {
     global $cache;
@@ -65,7 +103,11 @@ function get_movies_by_vote_average($count)
     $tmdb_data = $cache->get('tmdb_movies_vote_average_' . $count);
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $_ENV['TMDB_API_KEY'];
-        $url = "https://api.themoviedb.org/3/discover/movie?api_key=$apikey&with_original_language=en&language=en-US&sort_by=vote_average.desc&include_adult=false&include_video=false&vote_count.gte=1000";
+        if (empty($apikey)) {
+            return null;
+        }
+        $min_votes = 10000;
+        $url = "https://api.themoviedb.org/3/discover/movie?api_key=$apikey&with_original_language=en&language=en-US&sort_by=vote_average.desc&include_adult=false&include_video=false&vote_count.gte=$min_votes";
         $content = fetch($url);
         if (!$content) {
             return false;
@@ -130,9 +172,9 @@ function dateSort($a, $b)
 function getStartAndEndDate($year, $week)
 {
     return [
-        (new DateTime())->setISODate($year, $week, 0)->format('Y-m-d'),
         // Sunday
-        (new DateTime())->setISODate($year, $week, 6)->format('Y-m-d'),
+        (new DateTime())->setISODate($year, $week, 0)->format('Y-m-d'),
         // Saturday
+        (new DateTime())->setISODate($year, $week, 6)->format('Y-m-d'),
     ];
 }

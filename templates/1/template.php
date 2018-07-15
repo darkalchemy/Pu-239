@@ -566,10 +566,14 @@ function navbar()
                             <li id='movies_links' class='clickable'>
                                 <a href='#'>{$lang['gl_movies_tv']}</a>
                                 <ul class='ddFade ddFadeSlow'>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies_top100.php'>{$lang['gl_movies_top_100']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php'>{$lang['gl_movies_by_date']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/tv.php'>{$lang['gl_tv_today']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/tvmaze.php'>{$lang['gl_tvmaze_today']}</a></li>
+                                    <li class='iss_hidden'><span class='left10'>{$lang['gl_imdb']}</span></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=upcoming'>{$lang['gl_movies_upcoming']}</a></li>
+                                    <li class='iss_hidden'><span class='left10'>{$lang['gl_tmdb']}</span></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=top100'>{$lang['gl_movies_top_100']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=theaters'>{$lang['gl_movies_theaters']}</a></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=tv'>{$lang['gl_tv_today']}</a></li>
+                                    <li class='iss_hidden'><span class='left10'>{$lang['gl_tvmaze']}</span></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=tvmaze'>{$lang['gl_tvmaze_today']}</a></li>
                                 </ul>
                             </li>
                             <li id='torrents_links' class='clickable'>

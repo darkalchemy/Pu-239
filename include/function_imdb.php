@@ -9,7 +9,7 @@ use Imdb\Config;
  */
 function get_imdb_info($imdb_id, $title = true)
 {
-    global $site_config, $cache;
+    global $cache;
 
     $imdbid = $imdb_id;
     $imdb_id = str_replace('tt', '', $imdb_id);
@@ -25,26 +25,27 @@ function get_imdb_info($imdb_id, $title = true)
         if (empty($movie->title())) {
             return null;
         }
+        $imdb_data = [
+            'title'       => $movie->title(),
+            'director'    => array_slice($movie->director(), 0, 30),
+            'writing'     => array_slice($movie->writing(), 0, 30),
+            'producer'    => array_slice($movie->producer(), 0, 30),
+            'composer'    => array_slice($movie->composer(), 0, 30),
+            'cast'        => array_slice($movie->cast(), 0, 30),
+            'genres'      => $movie->genres(),
+            'plotoutline' => $movie->plotoutline(true),
+            'trailers'    => $movie->trailers(true, true),
+            'language'    => $movie->language(),
+            'rating'      => $movie->rating(),
+            'year'        => $movie->year(),
+            'runtime'     => $movie->runtime(),
+            'votes'       => $movie->votes(),
+            'critics'     => $movie->metacriticRating(),
+            'poster'      => $movie->photo(false),
+            'country'     => $movie->country(),
+        ];
 
-        $imdb_data['title'] = $movie->title();
-        $imdb_data['director'] = array_slice($movie->director(), 0, 30);
-        $imdb_data['writing'] = array_slice($movie->writing(), 0, 30);
-        $imdb_data['producer'] = array_slice($movie->producer(), 0, 30);
-        $imdb_data['composer'] = array_slice($movie->composer(), 0, 30);
-        $imdb_data['cast'] = array_slice($movie->cast(), 0, 30);
-        $imdb_data['genres'] = $movie->genres();
-        $imdb_data['plotoutline'] = $movie->plotoutline(true);
-        $imdb_data['trailers'] = $movie->trailers(true, true);
-        $imdb_data['language'] = $movie->language();
-        $imdb_data['rating'] = $movie->rating();
-        $imdb_data['year'] = $movie->year();
-        $imdb_data['runtime'] = $movie->runtime();
-        $imdb_data['votes'] = $movie->votes();
-        $imdb_data['critics'] = $movie->metacriticRating();
-        $imdb_data['poster'] = $movie->photo(false);
-        $imdb_data['country'] = $movie->country();
-
-        $cache->add('imdb_' . $imdb_id, $imdb_data, 604800);
+        $cache->set('imdb_' . $imdb_id, $imdb_data, 604800);
     }
     if (empty($imdb_data)) {
         return null;
@@ -61,23 +62,23 @@ function get_imdb_info($imdb_id, $title = true)
     }
 
     $imdb = [
-        'title' => 'Title',
-        'country' => 'Country',
-        'director' => 'Directors',
-        'writing' => 'Writers',
-        'producer' => 'Producer',
-        'plot' => 'Description',
-        'composer' => 'Music',
+        'title'       => 'Title',
+        'country'     => 'Country',
+        'director'    => 'Directors',
+        'writing'     => 'Writers',
+        'producer'    => 'Producer',
+        'plot'        => 'Description',
+        'composer'    => 'Music',
         'plotoutline' => 'Plot outline',
-        'trailers' => 'Trailers',
-        'genres' => 'All genres',
-        'language' => 'Language',
-        'rating' => 'Rating',
-        'year' => 'Year',
-        'runtime' => 'Runtime',
-        'votes' => 'Votes',
-        'critics' => 'Critic Rating',
-        'cast' => 'Cast',
+        'trailers'    => 'Trailers',
+        'genres'      => 'All genres',
+        'language'    => 'Language',
+        'rating'      => 'Rating',
+        'year'        => 'Year',
+        'runtime'     => 'Runtime',
+        'votes'       => 'Votes',
+        'critics'     => 'Critic Rating',
+        'cast'        => 'Cast',
     ];
 
     foreach ($imdb_data['cast'] as $pp) {
@@ -157,6 +158,158 @@ function get_imdb_info($imdb_id, $title = true)
         $imdb_info,
         $poster,
     ];
+}
+
+function get_imdb_info_short($imdb_id)
+{
+    global $cache;
+
+    $imdbid = $imdb_id;
+    $imdb_id = str_replace('tt', '', $imdb_id);
+    $imdb_data = $cache->get('imdb_short_' . $imdb_id);
+    if ($imdb_data === false || is_null($imdb_data)) {
+        $config = new Config();
+        $config->language = 'en-US';
+        $config->cachedir = IMDB_CACHE_DIR;
+        $config->throwHttpExceptions = 0;
+        $config->default_agent = get_random_useragent();
+
+        $movie = new \Imdb\Title($imdb_id, $config);
+        if (empty($movie->title())) {
+            return null;
+        }
+        $imdb_data = [
+            'orig_poster' => $movie->photo(false),
+            'poster'      => url_proxy($movie->photo(false), true, 150),
+            'placeholder' => url_proxy($movie->photo(false), true, 150, null, 10),
+            'title'       => $movie->title(),
+            'vote_count'  => $movie->votes(),
+            'critic'      => $movie->metacriticRating(),
+            'rating'      => $movie->rating(),
+            'overview'    => $movie->plotoutline(true),
+            'mpaa'        => $movie->mpaa(),
+            'mpaa_reason' => $movie->mpaa_reason(),
+            'id'          => $imdbid,
+        ];
+        $cache->set('imdb_short_' . $imdb_id, $imdb_data, 604800);
+    }
+
+    if (empty($imdb_data)) {
+        return null;
+    }
+
+    if (!empty($imdb_data['critic'])) {
+        $imdb_data['critic'] .= '%';
+    } else {
+        $imdb_data['critic'] = '?';
+    }
+    if (empty($imdb_data['vote_count'])) {
+        $imdb_data['vote_count'] = '?';
+    }
+    if (empty($imdb_data['rating'])) {
+        $imdb_data['rating'] = '?';
+    }
+    if (empty($imdb_data['mpaa_reason']) && !empty($imdb_data['mpaa']['United States'])) {
+        $imdb_data['mpaa_reason'] = $imdb_data['mpaa']['United States'];
+    }
+
+    if (!empty($imdb_data['orig_poster'])) {
+        $insert = $cache->get('insert_imdb_imdbid_' . $imdbid);
+        if ($insert === false || is_null($insert)) {
+            $sql = "INSERT IGNORE INTO images (imdb_id, url, type) VALUES ('$imdbid', '{$imdb_data['orig_poster']}', 'poster')";
+            sql_query($sql) or sqlerr(__FILE__, __LINE__);
+            $cache->set('insert_imdb_imdbid_' . $imdbid, 0, 604800);
+        }
+    }
+
+    $imdb_info = "
+            <div class='padding10 round10 bg-00 margin10'>
+                <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$imdb_data['id']}_tooltip'>
+                    <img src='{$imdb_data['placeholder']}' data-src='{$imdb_data['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                    <div class='has-text-centered top10'>{$imdb_data['title']}</div>
+                    <div class='tooltip_templates'>
+                        <div id='movie_{$imdb_data['id']}_tooltip' class='round10 tooltip-background'>
+                            <div class='is-flex tooltip-torrent bg-09'>
+                                <span class='padding10 w-40'>
+                                    <img data-src='{$imdb_data['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                                </span>
+                                <span class='padding10'>
+                                    <p>
+                                        <span class='size_4 right10 has-text-primary has-text-bold'>Title: </span>
+                                        <span>" . htmlsafechars($imdb_data['title']) . "</span>
+                                    </p>
+                                    <p>
+                                        <span class='size_4 right10 has-text-primary'>MPAA: </span>
+                                        <span>" . htmlsafechars($imdb_data['mpaa_reason']) . "</span>
+                                    </p>
+                                    <p>
+                                        <span class='size_4 right10 has-text-primary'>Critics: </span>
+                                        <span>" . htmlsafechars($imdb_data['critic']) . "</span>
+                                    </p>
+                                    <p>
+                                        <span class='size_4 right10 has-text-primary'>Rating: </span>
+                                        <span>" . htmlsafechars($imdb_data['rating']) . "</span>
+                                    </p>
+                                    <p>
+                                        <span class='size_4 right10 has-text-primary'>Votes: </span>
+                                        <span>" . htmlsafechars($imdb_data['vote_count']) . "</span>
+                                    </p>
+                                    <p>
+                                        <span class='size_4 right10 has-text-primary'>Overview: </span>
+                                        <span>" . htmlsafechars(strip_tags($imdb_data['overview'])) . '</span>
+                                    </p>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>';
+
+    $imdb_info = preg_replace('/&(?![A-Za-z0-9#]{1,7};)/', '&amp;', $imdb_info);
+
+    return $imdb_info;
+}
+
+function get_upcoming()
+{
+    global $cache;
+
+    $imdb_data = $cache->get('imdb_upcoming_');
+    if ($imdb_data === false || is_null($imdb_data)) {
+        $url = "https://www.imdb.com/movies-coming-soon/";
+        $imdb_data = fetch($url);
+        $cache->set('imdb_upcoming_', $imdb_data, 86400);
+    }
+
+    preg_match_all('/<h4.*<a name=.*>(.*)&nbsp;/i', $imdb_data, $timestamp);
+    $dates = $timestamp[1];
+    $regex = '';
+    foreach ($dates as $date) {
+        $regex .= '<a name(.*)';
+    }
+    $regex .= 'see-more';
+    preg_match("/$regex/isU", $imdb_data, $datemovies);
+    $temp = [];
+    foreach ($datemovies as $key => $value) {
+        preg_match_all('/<table(.*)<\/table/isU', $value, $out);
+        if ($key != 0) {
+            $temp[$dates[$key - 1]] = $out[1];
+        }
+    }
+    $imdbs = [];
+    foreach ($dates as $date) {
+        foreach ($temp[$date] as $code) {
+            preg_match('/title\/(tt[\d]{7})/i', $code, $imdb);
+            if (!empty($imdb[1])) {
+                $imdbs[$date][] = $imdb[1];
+            }
+        }
+    }
+    if (!empty($imdbs)) {
+        return $imdbs;
+    }
+
+    return false;
 }
 
 function get_random_useragent()

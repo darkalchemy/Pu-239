@@ -1,4 +1,7 @@
 15 Jul 2018
+add: OMDb API
+add: upcoming movies from imdb
+merged: all lists into 1 file
 update: check file/folder exists before processing
 fix: images cleanup
 update: composer require PHP >= 7.2.0
