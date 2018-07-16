@@ -51,6 +51,7 @@ function images_update($data)
             $imdb = !empty($imdb[2]) ? $imdb[2] : '';
         }
         get_imdb_info($imdb, false);
+        get_omdb_info($imdb, false);
     }
 
     $links = $fluent->from('offers')
@@ -64,6 +65,7 @@ function images_update($data)
             $imdb = !empty($imdb[2]) ? $imdb[2] : '';
         }
         get_imdb_info($imdb, false);
+        get_omdb_info($imdb, false);
     }
 
     $links = $fluent->from('requests')
@@ -77,6 +79,7 @@ function images_update($data)
             $imdb = !empty($imdb[2]) ? $imdb[2] : '';
         }
         get_imdb_info($imdb, false);
+        get_omdb_info($imdb, false);
     }
 
     $images = $fluent->from('images')
