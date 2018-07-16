@@ -126,13 +126,13 @@ if ($user_win < $user_everytimewin_mb) {
         $cheat_value = $cheat_value_max;
     }
     if ($casino_ratio_global < $cheat_ratio_global) {
-        $cheat_value = random_int($cheat_value, $cheat_value_max);
+        $cheat_value = random_int(min($cheat_value, $cheat_value_max), max($cheat_value, $cheat_value_max));
     }
     if (($user_win - $user_lost) > ($max_download_user / $cheat_breakpoint)) {
         $cheat_value = $cheat_value_max;
     }
     if ($casino_ratio_user < $cheat_ratio_user) {
-        $cheat_value = random_int($cheat_value, $cheat_value_max);
+        $cheat_value = random_int(min($cheat_value, $cheat_value_max), max($cheat_value, $cheat_value_max));
     }
 }
 if ($global_down > $max_download_global) {

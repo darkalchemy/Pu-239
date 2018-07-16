@@ -1,3 +1,6 @@
+16 Jul 2018
+fix: random_int larger int listed before smaller int casino.php
+
 15 Jul 2018
 fix: missing var
 add: OMDb API
