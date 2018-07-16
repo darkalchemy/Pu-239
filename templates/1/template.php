@@ -566,6 +566,8 @@ function navbar()
                             <li id='movies_links' class='clickable'>
                                 <a href='#'>{$lang['gl_movies_tv']}</a>
                                 <ul class='ddFade ddFadeSlow'>
+                                    <li class='iss_hidden'><span class='left10'>{$lang['gl_bluray']}</span></li>
+                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=bluray'>{$lang['gl_bluray_releases']}</a></li>
                                     <li class='iss_hidden'><span class='left10'>{$lang['gl_imdb']}</span></li>
                                     <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=upcoming'>{$lang['gl_movies_upcoming']}</a></li>
                                     <li class='iss_hidden'><span class='left10'>{$lang['gl_tmdb']}</span></li>

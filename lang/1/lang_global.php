@@ -1,7 +1,8 @@
 <?php
 
 $lang = [
-    //Mod admin link
+    'gl_bluray' => 'Blu-Ray.com',
+    'gl_bluray_releases' => 'Bluray Releases',
     'gl_imdb' => 'IMDb',
     'gl_tmdb' => 'TMDb',
     'gl_tvmaze' => 'TVMaze',

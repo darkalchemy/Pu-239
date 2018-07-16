@@ -7,6 +7,9 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_tmdb.php';
 require_once INCL_DIR . 'function_tvmaze.php';
+require_once INCL_DIR . 'function_omdb.php';
+require_once INCL_DIR . 'function_bluray.php';
+require_once INCL_DIR . 'function_fanart.php';
 check_user_status();
 global $CURUSER, $site_config, $fluent, $cache, $session;
 
@@ -20,6 +23,7 @@ $lists = [
     'theaters',
     'tv',
     'tvmaze',
+    'bluray',
 ];
 
 extract($_GET);
@@ -28,6 +32,85 @@ if (empty($list) || !in_array($list, $lists)) {
 }
 
 switch ($list) {
+    case 'bluray':
+        $title = 'Bluray Releases';
+        $xml = get_bluray_info();
+        $doc = new DOMDocument();
+        $doc->loadXML($xml);
+        $items = $doc->getElementsByTagName('item');
+        $pubs = [];
+        $i = 10000;
+        foreach ($items as $item) {
+            $i++;
+            $movie = empty($item->getElementsByTagName('title')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')->item(0)->nodeValue;
+            $movie = trim(replace_unicode_strings(str_replace('(Blu-ray)', '', $movie)));
+            $pubDate = empty($item->getElementsByTagName('pubDate')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('pubDate')->item(0)->nodeValue;
+            $description = empty($item->getElementsByTagName('description')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('description')->item(0)->nodeValue;
+            $description = explode(' | ' , strip_tags(str_replace('<br><br>', ' | ', $description)));
+            $imdb_info = search_omdb_by_title($movie, replace_unicode_strings($description[1]));
+            $poster = !empty($imdb_info['Poster']) && preg_match('/http/', $imdb_info['Poster']) ? url_proxy($imdb_info['Poster'], true, 150) : '';
+            $placeholder = !empty($imdb_info['Poster']) && preg_match('/http/', $imdb_info['Poster']) ? url_proxy($imdb_info['Poster'], true, 150, null, 10) : '';
+            $imdbid = !empty($imdb_info['imdbID']) ? $imdb_info['imdbID'] : $i;
+
+            if (empty($poster) && !empty($imdbid)) {
+                $poster = getMovieImagesByImdb($imdbid, 'movieposter');
+                $poster = !empty($poster) ? url_proxy($poster, true, 150) : $site_config['pic_baseurl'] . 'noposter.png';
+                $placeholder = !empty($poster) ? url_proxy($poster, true, 150, null, 10) : $site_config['pic_baseurl'] . 'noposter.png';
+            }
+
+            $pubs[] = [
+                'title' => $movie,
+                'pubDate' => replace_unicode_strings($pubDate),
+                'genre' => replace_unicode_strings($description[0]),
+                'year' => replace_unicode_strings($description[1]),
+                'runtime' => replace_unicode_strings($description[2]),
+                'mpaa' => replace_unicode_strings($description[3]),
+                'release_date' => replace_unicode_strings($description[4]),
+                'description' => replace_unicode_strings($description[5]),
+                'poster' => $poster,
+                'placeholder' => $placeholder,
+                'imdbid' => $imdbid,
+            ];
+        }
+
+        $div = "
+        <div class='level-center'>";
+        foreach ($pubs as $movie) {
+            $div .= "
+            <div class='padding10 round10 bg-00 margin10'>
+                <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$movie['imdbid']}_tooltip'>
+                    <img src='{$movie['placeholder']}' data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                    <div class='has-text-centered top10'>{$movie['title']} ({$movie['year']})</div>
+                    <div class='has-text-centered'>{$movie['release_date']}</div>
+                    <div class='tooltip_templates'>
+                        <div id='movie_{$movie['imdbid']}_tooltip' class='round10 tooltip-background'>
+                            <div class='is-flex tooltip-torrent bg-09'>
+                                <span class='padding10 w-40'>
+                                    <img data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                                </span>
+                                <span class='padding10'>
+                                    <p><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($movie['title']) . "</span></p>
+                                    <p><span class='size_4 right10 has-text-primary'>Release Date: </span><span>" . htmlsafechars($movie['release_date']) . "</span></p>
+                                    <p><span class='size_4 right10 has-text-primary'>Genre: </span><span>" . htmlsafechars($movie['genre']) . "</span></p>
+                                    <p><span class='size_4 right10 has-text-primary'>Rating: </span><span>" . htmlsafechars($movie['mpaa']) . "</span></p>
+                                    <p><span class='size_4 right10 has-text-primary'>Runtime: </span>" . htmlsafechars($movie['runtime']) . "</span></p>
+                                    <p><span class='size_4 right10 has-text-primary'>Overview: </span><span>" . htmlsafechars($movie['description']) . '</span></p>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>';
+        }
+
+        $div .= '
+        </div>';
+
+        $HTMLOUT = "
+        <h1 class='has-text-centered'>Blu-ray Releases</h1>" . main_div($div);
+
+        break;
+
     case 'tvmaze':
         $title = 'TV Schedule';
         $tvmaze_data = get_schedule();

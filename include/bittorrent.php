@@ -2208,11 +2208,15 @@ function fetch($url)
     }
 
     $client = new GuzzleHttp\Client([
+                                        'curl' => [
+                                            CURLOPT_SSL_VERIFYHOST => 0,
+                                        ],
                                         'synchronous' => true,
                                         'http_errors' => false,
                                         'headers' => [
                                             'User-Agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
                                         ],
+                                        'verify' => false,
                                     ]);
     $res = $client->request('GET', $url);
     if ($res->getStatusCode() === 200) {

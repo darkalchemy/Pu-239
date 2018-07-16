@@ -22,7 +22,7 @@ function foxnews_shout($links = [])
             $hash = md5($feed);
             $xml = $cache->get('foxnewsrss_' . $hash);
             if ($xml === false || is_null($xml)) {
-                $xml = file_get_contents($feed);
+                $xml = fetch($feed);
                 $cache->set('foxnewsrss_' . $hash, $xml, 300);
             }
             $doc = new DOMDocument();
@@ -86,7 +86,7 @@ function tfreak_shout($links = [])
         include_once INCL_DIR . 'user_functions.php';
         $xml = $cache->get('tfreaknewsrss_');
         if ($xml === false || is_null($xml)) {
-            $xml = file_get_contents('http://feed.torrentfreak.com/Torrentfreak/');
+            $xml = fetch('http://feed.torrentfreak.com/Torrentfreak/');
             $cache->set('tfreaknewsrss_', $xml, 300);
         }
         $doc = new DOMDocument();
@@ -151,7 +151,7 @@ function github_shout($links = [])
             $hash = md5($feed);
             $rss = $cache->get('githubcommitrss_' . $hash);
             if ($rss === false || is_null($rss)) {
-                $rss = file_get_contents($feed);
+                $rss = fetch($feed);
                 $cache->set('githubcommitrss_' . $hash, $rss, 300);
             }
             $xml = simplexml_load_string($rss);

@@ -1,4 +1,6 @@
 16 Jul 2018
+add: bluray.com new releases page
+replace: file_get_contents() with fetch()
 add: omdb lookup to images_cleanup.php
 fix: random_int larger int listed before smaller int casino.php
 
