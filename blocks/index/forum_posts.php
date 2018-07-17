@@ -6,6 +6,7 @@ $HTMLOUT .= "
     <a id='latestforum-hash'></a>
     <fieldset id='latestforum' class='header'>
         <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['latestposts_title']}</legend>
+        <div class='grid-wrapper'>
         <div class='table-wrapper has-text-centered'>";
 $page = 1;
 $num = 0;
@@ -102,6 +103,7 @@ if (!empty($topics) && count($topics) > 0) {
                 </tbody>
             </table>
         </div>
+        </div>
     </fieldset>';
 } else {
     $HTMLOUT .= "
@@ -110,6 +112,7 @@ if (!empty($topics) && count($topics) > 0) {
                     </tr>
                 </tbody>
             </table>
+        </div>
         </div>
     </fieldset>";
 }

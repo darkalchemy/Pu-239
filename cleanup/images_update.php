@@ -10,13 +10,15 @@ function images_update($data)
     require_once INCL_DIR . 'function_tmdb.php';
     require_once INCL_DIR . 'function_tvmaze.php';
     require_once INCL_DIR . 'function_imdb.php';
-    global $fluent;
+    require_once INCL_DIR . 'function_bluray.php';
+    global $fluent, $cache;
 
     set_time_limit(1200);
     ignore_user_abort(true);
 
     get_upcoming();
     get_movies_in_theaters();
+    get_bluray_info();
 
     $today = date('Y-m-d');
     $date = new DateTime($today);
@@ -94,6 +96,8 @@ function images_update($data)
             url_proxy($image['url'], true, 150, null, 10);
         }
     }
+
+    $cache->delete('backgrounds_');
 
     if ($data['clean_log']) {
         write_log('Images Cleanup: Completed using 1 query');

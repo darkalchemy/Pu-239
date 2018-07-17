@@ -34,56 +34,20 @@ if (empty($list) || !in_array($list, $lists)) {
 switch ($list) {
     case 'bluray':
         $title = 'Bluray Releases';
-        $xml = get_bluray_info();
-        $doc = new DOMDocument();
-        $doc->loadXML($xml);
-        $items = $doc->getElementsByTagName('item');
-        $pubs = [];
-        $i = 10000;
-        foreach ($items as $item) {
-            $i++;
-            $movie = empty($item->getElementsByTagName('title')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')->item(0)->nodeValue;
-            $movie = trim(replace_unicode_strings(str_replace('(Blu-ray)', '', $movie)));
-            $pubDate = empty($item->getElementsByTagName('pubDate')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('pubDate')->item(0)->nodeValue;
-            $description = empty($item->getElementsByTagName('description')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('description')->item(0)->nodeValue;
-            $description = explode(' | ' , strip_tags(str_replace('<br><br>', ' | ', $description)));
-            $imdb_info = search_omdb_by_title($movie, replace_unicode_strings($description[1]));
-            $poster = !empty($imdb_info['Poster']) && preg_match('/http/', $imdb_info['Poster']) ? url_proxy($imdb_info['Poster'], true, 150) : '';
-            $placeholder = !empty($imdb_info['Poster']) && preg_match('/http/', $imdb_info['Poster']) ? url_proxy($imdb_info['Poster'], true, 150, null, 10) : '';
-            $imdbid = !empty($imdb_info['imdbID']) ? $imdb_info['imdbID'] : $i;
+        $pubs = get_bluray_info();
 
-            if (empty($poster) && !empty($imdbid)) {
-                $poster = getMovieImagesByImdb($imdbid, 'movieposter');
-                $poster = !empty($poster) ? url_proxy($poster, true, 150) : $site_config['pic_baseurl'] . 'noposter.png';
-                $placeholder = !empty($poster) ? url_proxy($poster, true, 150, null, 10) : $site_config['pic_baseurl'] . 'noposter.png';
-            }
-
-            $pubs[] = [
-                'title' => $movie,
-                'pubDate' => replace_unicode_strings($pubDate),
-                'genre' => replace_unicode_strings($description[0]),
-                'year' => replace_unicode_strings($description[1]),
-                'runtime' => replace_unicode_strings($description[2]),
-                'mpaa' => replace_unicode_strings($description[3]),
-                'release_date' => replace_unicode_strings($description[4]),
-                'description' => replace_unicode_strings($description[5]),
-                'poster' => $poster,
-                'placeholder' => $placeholder,
-                'imdbid' => $imdbid,
-            ];
-        }
-
-        $div = "
+        if (!empty($pubs)) {
+            $div = "
         <div class='level-center'>";
-        foreach ($pubs as $movie) {
-            $div .= "
+            foreach ($pubs as $movie) {
+                $div .= "
             <div class='padding10 round10 bg-00 margin10'>
                 <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$movie['imdbid']}_tooltip'>
                     <img src='{$movie['placeholder']}' data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
                     <div class='has-text-centered top10'>{$movie['title']} ({$movie['year']})</div>
                     <div class='has-text-centered'>{$movie['release_date']}</div>
                     <div class='tooltip_templates'>
-                        <div id='movie_{$movie['imdbid']}_tooltip' class='round10 tooltip-background'>
+                        <div id='movie_{$movie['imdbid']}_tooltip' class='round10 tooltip-background' style='background-image: url({$movie['background']});'>
                             <div class='is-flex tooltip-torrent bg-09'>
                                 <span class='padding10 w-40'>
                                     <img data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
@@ -101,10 +65,13 @@ switch ($list) {
                     </div>
                 </div>
             </div>';
-        }
+            }
 
-        $div .= '
+            $div .= '
         </div>';
+        } else {
+            $div = "<h1 class='has-text-centered'>Blu-ray.com may be down, check back later</h1>";
+        }
 
         $HTMLOUT = "
         <h1 class='has-text-centered'>Blu-ray Releases</h1>" . main_div($div);
@@ -230,15 +197,15 @@ switch ($list) {
                     $backdrop = !empty($tv['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$tv['backdrop_path']}" : '';
 
                     $body[] = [
-                        'poster'       => url_proxy($poster, true, 150),
-                        'placeholder'  => url_proxy($poster, true, 150, null, 10),
-                        'backdrop'     => url_proxy($backdrop, true),
-                        'title'        => $tv['name'],
-                        'vote_count'   => $tv['vote_count'],
-                        'id'           => $tv['id'],
+                        'poster' => url_proxy($poster, true, 150),
+                        'placeholder' => url_proxy($poster, true, 150, null, 10),
+                        'backdrop' => url_proxy($backdrop, true),
+                        'title' => $tv['name'],
+                        'vote_count' => $tv['vote_count'],
+                        'id' => $tv['id'],
                         'vote_average' => $tv['vote_average'],
-                        'popularity'   => $tv['popularity'],
-                        'overview'     => $tv['overview'],
+                        'popularity' => $tv['popularity'],
+                        'overview' => $tv['overview'],
                     ];
                     $titles[] = strtolower($tv['name']);
                 }
@@ -295,15 +262,15 @@ switch ($list) {
                     $poster = !empty($movie['poster_path']) ? "https://image.tmdb.org/t/p/w185{$movie['poster_path']}" : $site_config['pic_baseurl'] . 'noposter.png';
                     $backdrop = !empty($movie['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$movie['backdrop_path']}" : '';
                     $body[] = [
-                        'poster'       => url_proxy($poster, true, 150),
-                        'placeholder'  => url_proxy($poster, true, 150, null, 10),
-                        'backdrop'     => url_proxy($backdrop, true),
-                        'title'        => $movie['title'],
-                        'vote_count'   => $movie['vote_count'],
-                        'id'           => $movie['id'],
+                        'poster' => url_proxy($poster, true, 150),
+                        'placeholder' => url_proxy($poster, true, 150, null, 10),
+                        'backdrop' => url_proxy($backdrop, true),
+                        'title' => $movie['title'],
+                        'vote_count' => $movie['vote_count'],
+                        'id' => $movie['id'],
                         'vote_average' => $movie['vote_average'],
-                        'popularity'   => $movie['popularity'],
-                        'overview'     => $movie['overview'],
+                        'popularity' => $movie['popularity'],
+                        'overview' => $movie['overview'],
                         'release_date' => $movie['release_date'],
                     ];
                     $titles[] = strtolower($movie['title']);
@@ -363,15 +330,15 @@ switch ($list) {
                     $poster = !empty($movie['poster_path']) ? "https://image.tmdb.org/t/p/w185{$movie['poster_path']}" : $site_config['pic_baseurl'] . 'noposter.png';
                     $backdrop = !empty($movie['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$movie['backdrop_path']}" : '';
                     $body[] = [
-                        'poster'       => url_proxy($poster, true, 150),
-                        'placeholder'  => url_proxy($poster, true, 150, null, 10),
-                        'backdrop'     => url_proxy($backdrop, true),
-                        'title'        => $movie['title'],
-                        'vote_count'   => $movie['vote_count'],
-                        'id'           => $movie['id'],
+                        'poster' => url_proxy($poster, true, 150),
+                        'placeholder' => url_proxy($poster, true, 150, null, 10),
+                        'backdrop' => url_proxy($backdrop, true),
+                        'title' => $movie['title'],
+                        'vote_count' => $movie['vote_count'],
+                        'id' => $movie['id'],
                         'vote_average' => $movie['vote_average'],
-                        'popularity'   => $movie['popularity'],
-                        'overview'     => $movie['overview'],
+                        'popularity' => $movie['popularity'],
+                        'overview' => $movie['overview'],
                         'release_date' => $movie['release_date'],
                     ];
                     $titles[] = strtolower($movie['title']);
@@ -434,11 +401,10 @@ switch ($list) {
                 }
             }
 
-            $body .= "
-        </div>";
+            $body .= '
+        </div>';
 
             $HTMLOUT .= main_div($body);
         }
 }
 echo stdhead($title) . wrapper($HTMLOUT) . stdfoot();
-

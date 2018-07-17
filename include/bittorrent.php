@@ -2209,7 +2209,8 @@ function fetch($url)
 
     $client = new GuzzleHttp\Client([
                                         'curl' => [
-                                            CURLOPT_SSL_VERIFYHOST => 0,
+                                            CURLOPT_SSL_VERIFYPEER => false,
+                                            CURLOPT_SSL_VERIFYHOST => false,
                                         ],
                                         'synchronous' => true,
                                         'http_errors' => false,

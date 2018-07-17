@@ -1,3 +1,6 @@
+17 Jul 2018
+fix: blu-ray releases getting incorrect imdbid
+
 16 Jul 2018
 add: bluray.com new releases page
 replace: file_get_contents() with fetch()
