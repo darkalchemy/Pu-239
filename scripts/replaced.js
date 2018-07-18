@@ -342,6 +342,7 @@ $(function () {
         document.getElementsByTagName('body')[0].classList.remove('background-16');
         document.getElementsByTagName('body')[0].style.backgroundColor = 'black';
         document.getElementsByTagName('body')[0].style.backgroundImage = 'url(' + body_image + ')';
+        document.getElementsByTagName('body')[0].style.backgroundSize = 'cover';
     }
 
     if (document.body.contains(document.getElementById('overlay'))) {

@@ -7,11 +7,11 @@ function get_file_name($file)
     $style = get_stylesheet();
     switch ($file) {
         case 'css':
-            return "{$site_config['baseurl']}/css/1/css_dbd197eb.css";
+            return "{$site_config['baseurl']}/css/1/css_1a759efc.css";
         case 'chat_css_trans':
-            return "{$site_config['baseurl']}/css/1/chat_trans_7fba78f1.css";
+            return "{$site_config['baseurl']}/css/1/chat_trans_ee2913d3.css";
         case 'chat_css_uranium':
-            return "{$site_config['baseurl']}/css/1/chat_uranium_8ec176ad.css";
+            return "{$site_config['baseurl']}/css/1/chat_uranium_4ba45a60.css";
         case 'checkport_js':
             return "{$site_config['baseurl']}/js/1/checkport_9f985589.js";
         case 'browse_js':
@@ -39,7 +39,7 @@ function get_file_name($file)
         case 'staffpanel_js':
             return "{$site_config['baseurl']}/js/1/staffpanel_801ab346.js";
         case 'js':
-            return "{$site_config['baseurl']}/js/1/js_1c6ec6de.js";
+            return "{$site_config['baseurl']}/js/1/js_7733095f.js";
         default:
             return null;
     }

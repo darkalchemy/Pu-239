@@ -16,13 +16,7 @@ body {
     min-height             : 100vh;
     -webkit-font-smoothing : antialiased;
     text-rendering         : optimizeLegibility;
-    top                    : 0;
-    bottom                 : 0;
-    left                   : 0;
-    right                  : 0;
-    background-size        : cover;
-    z-index                : -10;
-    background             : no-repeat fixed center center;
+    background             : no-repeat center center fixed;
 }
 
 ::-webkit-scrollbar-track {
