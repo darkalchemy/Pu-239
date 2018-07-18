@@ -155,7 +155,14 @@ $sql_updates = [
         'id' => 1531623888,
         'info' => 'Add images download cleanup',
         'date' => '15 Jul, 2018',
-        'query' => "INSERT INTO cleanup (clean_title, clean_file, clean_time, clean_increment, clean_log, clean_desc, clean_on, function_name) VALUES ('Images Update', 'images_update.php', 1531625400, 1800, 1, 'Download Images using Image Proxy', 1, 'images_update')",
+        'query' => "INSERT INTO `cleanup` (clean_title, clean_file, clean_time, clean_increment, clean_log, clean_desc, clean_on, function_name) VALUES ('Images Update', 'images_update.php', 1531625400, 1800, 1, 'Download Images using Image Proxy', 1, 'images_update')",
+        'flush' => false,
+    ],
+    [
+        'id' => 1531951023,
+        'info' => 'Add LATEST_TORRENTS_SLIDER to user_blocks',
+        'date' => '18 Jul, 2018',
+        'query' => "ALTER TABLE `user_blocks` MODIFY `index_page` int(10) unsigned NOT NULL DEFAULT 16777215",
         'flush' => false,
     ],
 ];

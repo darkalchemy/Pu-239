@@ -1187,6 +1187,11 @@ code a {
     object-fit    : fill;
     width         : 100% !important;
     background    : transparent;
+}
+
+.noshow,
+.slider,
+.object-fit-video {
     visibility    : hidden;
 }
 

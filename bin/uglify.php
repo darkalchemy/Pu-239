@@ -69,6 +69,8 @@ $js_list = [
         ROOT_DIR . 'node_modules/raphael/raphael.js',
         SCRIPTS_DIR . 'jquery.mousewheel.js',
         SCRIPTS_DIR . 'icarousel.js',
+        SCRIPTS_DIR . 'jquery.flexslider.js',
+        SCRIPTS_DIR . 'flexslider.js',
     ],
     'captcha2_js' => [
         SCRIPTS_DIR . 'check.js',
@@ -137,6 +139,7 @@ $css_list = [
         TEMPLATE_DIR . '1/css/iCarousel.css',
         TEMPLATE_DIR . '1/css/markitup.css',
         BIN_DIR . 'lightbox.css',
+        TEMPLATE_DIR . '1/css/flexslider.css',
         TEMPLATE_DIR . '1/custom.css',
     ],
     'chat_css_trans' => [

@@ -97,6 +97,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $clrbits_index_page |= block_index::LATEST_TORRENTS_SCROLL;
     }
+    if (isset($_POST['latest_torrents_slider'])) {
+        $setbits_index_page |= block_index::LATEST_TORRENTS_SLIDER;
+    } else {
+        $clrbits_index_page |= block_index::LATEST_TORRENTS_SLIDER;
+    }
     if (isset($_POST['announcement'])) {
         $setbits_index_page |= block_index::ANNOUNCEMENT;
     } else {
@@ -394,6 +399,7 @@ $checkbox_index_latest_comments = ((curuser::$blocks['index_page'] & block_index
 $checkbox_index_latest_forumposts = ((curuser::$blocks['index_page'] & block_index::FORUMPOSTS) ? ' checked' : '');
 $checkbox_index_latest_torrents = ((curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS) ? ' checked' : '');
 $checkbox_index_latest_torrents_scroll = ((curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SCROLL) ? ' checked' : '');
+$checkbox_index_latest_torrents_slider = ((curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SLIDER) ? ' checked' : '');
 $checkbox_index_announcement = ((curuser::$blocks['index_page'] & block_index::ANNOUNCEMENT) ? ' checked' : '');
 $checkbox_index_donation_progress = ((curuser::$blocks['index_page'] & block_index::DONATION_PROGRESS) ? ' checked' : '');
 $checkbox_index_ads = ((curuser::$blocks['index_page'] & block_index::ADVERTISEMENTS) ? ' checked' : '');
@@ -575,6 +581,14 @@ $contents[] = "
                     <label for='latest_torrents_scroll'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable latest torrents marquee.</div>";
+
+$contents[] = "
+                <div class='w-100'>Enable Latest torrents slider?</div>
+                <div class='slideThree'> 
+                    <input type='checkbox' id='latest_torrents_slider' name='latest_torrents_slider' value='yes' $checkbox_index_latest_torrents_slider />
+                    <label for='latest_torrents_slider'></label>
+                </div>
+                <div class='w-100'>Check this option if you want to enable latest torrents banner slider.</div>";
 
 $contents[] = "
                 <div class='w-100'>Enable Announcement?</div>

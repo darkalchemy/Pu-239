@@ -55,9 +55,10 @@ $site_config['expires']['announcement'] = 600; // 600 = 10 min
 $site_config['expires']['forum_posts'] = 86400;
 $site_config['expires']['torrent_comments'] = 900; // 900 = 15 min
 $site_config['expires']['latestposts'] = 300; // 300 = 5 min
-$site_config['expires']['top5_torrents'] = 300; // 300 = 5 min
-$site_config['expires']['last5_torrents'] = 300; // 300 = 5 min
-$site_config['expires']['scroll_torrents'] = 300; // 300 = 5 min
+$site_config['expires']['top5_torrents'] = 3600; // 3600 = 60 min
+$site_config['expires']['last5_torrents'] = 3600; // 3600 = 60 min
+$site_config['expires']['scroll_torrents'] = 3600; // 3600 = 60 min
+$site_config['expires']['slider_torrents'] = 3600; // 3600 = 60 min
 $site_config['expires']['torrent_details'] = 2591999; // 30 days
 $site_config['expires']['torrent_details_text'] = 2591999; // 30 days
 $site_config['expires']['insertJumpTo'] = 2591999; // 30 days
@@ -141,6 +142,7 @@ $site_config['latest_posts_limit'] = 5; //query limit for latest forum posts on 
 $site_config['latest_torrents_limit'] = 5;
 $site_config['latest_torrents_limit_2'] = 5;
 $site_config['latest_torrents_limit_scroll'] = 25;
+$site_config['latest_torrents_limit_slider'] = 25;
 /* Settings **/
 $site_config['reports'] = 1; // 1/0 on/off
 $site_config['karma'] = 1; // 1/0 on/off

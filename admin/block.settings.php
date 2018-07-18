@@ -23,6 +23,7 @@ $list = [
     'forum_posts_on',
     'latest_torrents_on',
     'latest_torrents_scroll_on',
+    'latest_torrents_slider_on',
     'announcement_on',
     'donation_progress_on',
     'ads_on',
@@ -221,6 +222,13 @@ $contents[] = "
                                 <#latest_torrents_scroll_on#>
                             </div>
                             <div class='w-100'>{$lang['block_torrents_scroll_set']}</div>";
+
+$contents[] = "
+                            <div class='w-100'>{$lang['block_torrents_slider']}</div>
+                            <div class='slideThree'>
+                                <#latest_torrents_slider_on#>
+                            </div>
+                            <div class='w-100'>{$lang['block_torrents_slider_set']}</div>";
 
 $contents[] = "
                             <div class='w-100'>{$lang['block_announcement']}</div>

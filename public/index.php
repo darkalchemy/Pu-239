@@ -120,6 +120,23 @@ if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SCROLL && $BLO
     }
 }
 
+if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SLIDER && $BLOCKS['latest_torrents_slider_on']) {
+    $count = $cache->get('torrent_banner_count_');
+    if ($count === false || is_null($count)) {
+        $count = $fluent->from('torrents')
+            ->select(null)
+            ->select('COUNT(*) AS count')
+            ->where('banner != ""')
+            ->fetch('count');
+        $cache->set('torrent_banner_count_', $count, 86400);
+    }
+    if ($count > 10) {
+        $HTMLOUT .= "<div class='container is-fluid portlet' id='LATEST_TORRENTS_SLIDER'>";
+        include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_torrents_slider.php';
+        $HTMLOUT .= '</div>';
+    }
+}
+
 if (curuser::$blocks['index_page'] & block_index::STATS && $BLOCKS['stats_on']) {
     $HTMLOUT .= "<div class='container is-fluid portlet' id='STATS'>";
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'stats.php';
