@@ -162,7 +162,7 @@ $sql_updates = [
         'id' => 1531951023,
         'info' => 'Add LATEST_TORRENTS_SLIDER to user_blocks',
         'date' => '18 Jul, 2018',
-        'query' => "ALTER TABLE `user_blocks` MODIFY `index_page` int(10) unsigned NOT NULL DEFAULT 16777215",
+        'query' => 'ALTER TABLE `user_blocks` MODIFY `index_page` int(10) unsigned NOT NULL DEFAULT 16777215',
         'flush' => false,
     ],
 ];

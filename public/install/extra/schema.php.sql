@@ -2330,7 +2330,7 @@ DROP TABLE IF EXISTS `user_blocks`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_blocks` (
   `userid` int(10) unsigned NOT NULL,
-  `index_page` int(10) unsigned NOT NULL DEFAULT '8388607',
+  `index_page` int(10) unsigned NOT NULL DEFAULT '16777215',
   `global_stdhead` int(10) unsigned NOT NULL DEFAULT '1023',
   `userdetails_page` int(10) unsigned NOT NULL DEFAULT '2147483647',
   UNIQUE KEY `userid` (`userid`),
@@ -2659,4 +2659,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-15 21:07:58
+-- Dump completed on 2018-07-18 22:35:21
