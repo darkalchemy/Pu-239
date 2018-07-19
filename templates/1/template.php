@@ -47,7 +47,10 @@ function stdhead($title = '', $stdhead = null)
     <link rel='mask-icon' href='{$site_config['baseurl']}/safari-pinned-tab.svg' color='#5bbad5' />
     <meta name='theme-color' content='#fff'>
     <link rel='stylesheet' href='" . get_file_name('css') . "' />
-    {$css_incl}
+    {$css_incl}";
+
+    if ($CURUSER) {
+        $htmlout .= "
     <style>#mlike{cursor:pointer;}</style>
     <script>
         function resizeIframe(obj) {
@@ -55,6 +58,8 @@ function stdhead($title = '', $stdhead = null)
             obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
         }
     </script>";
+    }
+
     $captcha = [
         'login.php',
         'takelogin.php',

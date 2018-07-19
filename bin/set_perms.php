@@ -36,6 +36,11 @@ $folders = [
     BITBUCKET_DIR,
 ];
 
+$excludes = [
+    ROOT_DIR . 'vendor',
+    ROOT_DIR . 'node_modules',
+];
+
 foreach ($folders as $folder) {
     if (file_exists($folder)) {
         chmod_r($folder);
@@ -49,7 +54,14 @@ foreach ($paths as $path) {
         foreach ($objects as $name => $object) {
             if (is_file($name)) {
                 $ext = pathinfo($name, PATHINFO_EXTENSION);
-                if (in_array($ext, $exts)) {
+                $parent = dirname($name);
+                $continue = true;
+                foreach ($excludes as $exclude) {
+                    if (preg_match('#' . $exclude . '#', $parent)) {
+                        $continue = false;
+                    }
+                }
+                if ($continue && in_array($ext, $exts)) {
                     if (chmod($name, 0664)) {
                         chown($name, $user);
                         chgrp($name, $group);

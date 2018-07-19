@@ -339,7 +339,6 @@ $(function () {
     }
 
     if (w >= h && typeof body_image !== 'undefined' && document.body.contains(document.getElementById('body-overlay'))) {
-        document.getElementsByTagName('body')[0].classList.remove('background-16');
         document.getElementsByTagName('body')[0].style.backgroundColor = 'black';
         document.getElementsByTagName('body')[0].style.backgroundImage = 'url(' + body_image + ')';
         document.getElementsByTagName('body')[0].style.backgroundSize = 'cover';

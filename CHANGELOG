@@ -1,3 +1,7 @@
+19 Jul 2018
+fix: latest comments poster not using url_proxy
+fix: removal of background
+
 18 Jul 2018
 update: database files
 add: latest torrents slider using flexslider and torrent banners
