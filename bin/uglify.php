@@ -115,6 +115,7 @@ $js_list = [
         ROOT_DIR . 'node_modules/lightbox2/dist/js/lightbox.js',
         SCRIPTS_DIR . 'tooltipster.bundle.js',
         SCRIPTS_DIR . 'tooltipster.js',
+        SCRIPTS_DIR . 'copy_to_clipboard.js',
         SCRIPTS_DIR . 'replaced.js',
     ],
 ];

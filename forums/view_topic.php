@@ -522,8 +522,10 @@ while ($arr = mysqli_fetch_assoc($res)) {
                 <div class="columns is-marginless level level-center">
                     <div class="column is-one-quarter is-marginless level">
                         ' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" name="post_to_mess_with[]" value="' . $post_id . '" />' : '') . '
-                        <a href="javascript:window.prompt(\'' . $lang['fe_direct_link_to_this_post'] . ':\', \'' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '#' . $post_id . '\');">
-                        <img src="' . $site_config['pic_baseurl'] . 'forums/link.gif" alt="' . $lang['fe_direct_link_to_this_post'] . '" title="' . $lang['fe_direct_link_to_this_post'] . '" class="tooltipper emoticon left5 right5" /></a>
+                        <input id="dLink" type="hidden" value="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '#' . $post_id . '">
+                        <span onclick="copy_to_clipboard(\'dLink\')">
+                            <img src="' . $site_config['pic_baseurl'] . 'forums/link.gif" alt="' . $lang['fe_direct_link_to_this_post'] . '" title="' . $lang['fe_direct_link_to_this_post'] . '" class="tooltipper icon left5 right5" />
+                        </span>
                         <span>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : htmlsafechars($usersdata['username'])) . '</span>
                         <span class="tool left5 right5">
                             <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'Mood\',530,500,1,1);">
