@@ -1,4 +1,6 @@
 19 Jul 2018
+fix: trivia results on index page not showing scrollbar
+update: log vierer better messages splitting
 fix: direct link to post button
 fix: latest comments poster not using url_proxy
 fix: removal of background

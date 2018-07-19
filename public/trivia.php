@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $session;
 
@@ -151,7 +152,6 @@ if (empty($gamenum) || empty($qid)) {
         $num_rows = !empty($row2) ? count($row2) : 0;
 
         if ($num_rows != 0) {
-            $table = '';
             $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username,
                             (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE gamenum = ' . sqlesc($gamenum) . ' AND correct = 0 AND user_id = t.user_id) AS incorrect
                         FROM triviausers AS t
@@ -162,20 +162,17 @@ if (empty($gamenum) || empty($qid)) {
                         LIMIT 10';
             $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
             if (mysqli_num_rows($res) > 0) {
-                $table = "
-                <table class='table table-bordered table-striped'>
-                    <thead>
+                $heading = "
                         <tr>
                             <th class='has-text-left' width='5%'>Username</th>
                             <th class='has-text-centered' width='5%'>Ratio</th>
                             <th class='has-text-centered' width='5%'>Correct</th>
                             <th class='has-text-centered' width='5%'>Incorrect</th>
-                        </tr>
-                    </thead>
-                    <tbody>";
+                        </tr>";
+                $body = '';
                 while ($result = mysqli_fetch_assoc($res)) {
                     extract($result);
-                    $table .= "
+                    $body .= "
                         <tr>
                             <td width='5%'><div class='is-pulled-left'>" . format_username($user_id) . "</div></td>
                             <td class='has-text-centered' width='5%'>" . sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100) . "</td>
@@ -183,9 +180,7 @@ if (empty($gamenum) || empty($qid)) {
                             <td class='has-text-centered' width='5%'>$incorrect</td>
                         </tr>";
                 }
-                $table .= '
-                    </tbody>
-                </table>';
+                $table = main_table($body, $heading);
             }
             if ($row2['correct'] == 1) {
                 $answered = "<h2 class='has-text-success'>{$lang['trivia_correct']}</h2>";

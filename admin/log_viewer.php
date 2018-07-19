@@ -26,7 +26,12 @@ if (!empty($_GET['action']) && $_GET['action'] === 'edit') {
     }
     $content = trim($content);
     if (!preg_match('/sqlerr_logs/i', $file)) {
-        $contents = explode("\n", $content);
+        preg_match_all('!(\d{4}/\d{2}/\d{2}\s+\d{2}:\d{2}:\d{2}.*?)!iU', $content, $matches);
+        if (!empty($matches[1])) {
+            $contents = $matches[1];
+        } else {
+            $contents = explode("\n", $content);
+        }
     } else {
         $contents = explode('===================================================', $content);
     }
@@ -35,7 +40,7 @@ if (!empty($_GET['action']) && $_GET['action'] === 'edit') {
     $content = [];
     foreach ($contents as $line) {
         if (!empty($line)) {
-            $class = $i++ % 2 === 0 ? 'bg-08 simple_border round10 padding20 has-text-black' : 'bg-03 simple_border round10 padding20 has-text-black';
+            $class = $i++ % 2 === 0 ? 'bg-01 simple_border round10 padding20 has-text-black' : 'bg-light simple_border round10 padding20 has-text-black';
             $line = trim($line);
             $content[] = "[class={$class}]{$line}[/class]";
         }
