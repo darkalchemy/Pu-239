@@ -1,4 +1,5 @@
 19 Jul 2018
+fix: youtube link on upload
 update: database files
 add: php-cs-fixer and postcss to uglify.php
 add: auto download torrent after upload

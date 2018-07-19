@@ -30,7 +30,7 @@ if (!isset($_GET['id']) || !is_valid_id($_GET['id'])) {
 }
 $id = (int) $_GET['id'];
 if (isset($_GET['uploaded'])) {
-    $HTMLOUT.= "<meta http-equiv='refresh' content='1;url=download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "' />";
+    $HTMLOUT .= "<meta http-equiv='refresh' content='1;url=download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "' />";
 }
 $slot = make_freeslots($CURUSER['id'], 'fllslot_');
 $torrent['addedfree'] = $torrent['addedup'] = $free_slot = $double_slot = '';
