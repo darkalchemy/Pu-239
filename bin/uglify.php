@@ -7,6 +7,15 @@ global $site_config;
 
 write_class_files();
 
+foreach ($argv as $arg) {
+    if ($arg === 'fix' || $arg === 'all') {
+        passthru('php-cs-fixer fix --show-progress=dots -vvv');
+    } elseif ($arg === 'postcss' || $arg === 'all') {
+        passthru('find ' . TEMPLATE_DIR . ' -name "*.css" -exec sudo npx postcss {} --use autoprefixer --no-map --replace \;');
+    }
+}
+//exit;
+
 $purpose = '--beautify';
 $short = 'Beautified';
 $spurpose = '-O2 --skip-rebase --format beautify';
@@ -288,5 +297,5 @@ $output .= '
     }
 }';
 
-file_put_contents($update, $output);
+file_put_contents($update, $output . PHP_EOL);
 echo "All CSS and Javascript files processed\n";

@@ -178,7 +178,7 @@ switch (true) {
         $HTMLOUT .= "<table class='table table-bordered bottom20'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>
 <td><div class='has-text-centered'><img src='{$site_config['pic_baseurl']}smilies/karma.gif' alt='good_karma' title='Good karma' class='tooltipper' /></div></td>
 <td><b>Congratulations! </b>" . $CURUSER['username'] . ' you have just increased your upload amount by ' . $amt . "!
-<img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br><br><br><br> click to go back to your
+<img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='w00t' title='w00t' class='left10 tooltipper' /><br><br><br><br> click to go back to your
 <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
         die();

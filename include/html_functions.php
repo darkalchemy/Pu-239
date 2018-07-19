@@ -272,6 +272,7 @@ function write_class_files()
 
     $t = 'define(';
     $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
+    $configfile = "<?php\n\n";
     $res = $fluent->from('class_config')
         ->orderBy('value ASC');
     $the_names = $the_colors = $the_images = '';
@@ -290,9 +291,9 @@ function write_class_files()
         $classes[] = "var {$arr['name']} = {$arr['value']};";
     }
 
-    file_put_contents(ROOT_DIR . 'chat/js/classes.js', implode("\n", $classes));
+    file_put_contents(ROOT_DIR . 'chat/js/classes.js', implode("\n", $classes) . PHP_EOL);
     write_classes($js_classes);
     write_css($data);
     $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
-    file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
+    file_put_contents(CACHE_DIR . 'class_config.php', $configfile . PHP_EOL);
 }

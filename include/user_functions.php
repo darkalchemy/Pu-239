@@ -716,15 +716,15 @@ function get_cache_config_data($the_names, $the_colors, $the_images)
     $the_colors = str_replace(',', ",\n  ", trim($the_colors, ','));
     $the_images = str_replace(',', ",\n  ", trim($the_images, ','));
     $configfile .= "\n\n\n" . '$class_names = [
-  ' . $the_names . '
+  ' . $the_names . ',
 ];';
     // adding class colors like in user_functions
     $configfile .= "\n\n\n" . '$class_colors = [
-  ' . $the_colors . '
+  ' . $the_colors . ',
 ];';
     // adding class pics like in user_functions
     $configfile .= "\n\n\n" . '$class_images = [
-  ' . $the_images . '
+  ' . $the_images . ',
 ];';
 
     return $configfile;
