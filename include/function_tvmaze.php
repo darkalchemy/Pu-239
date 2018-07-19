@@ -201,7 +201,7 @@ function tvmaze($tvmaze_id, $id)
         }
         if (!empty($poster)) {
             $torrents['poster'] = $poster;
-            $set['poster'] = $tposter;
+            $set['poster'] = $poster;
             $cache->update_row('torrent_details_' . $id, [
                 'poster' => $poster,
             ], 0);
