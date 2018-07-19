@@ -487,4 +487,4 @@ if ($filled == 0) {
 }
 
 $session->set('is-success', $lang['takeupload_success']);
-header("Location: {$site_config['baseurl']}/details.php?id=$id");
+header("Location: {$site_config['baseurl']}/details.php?id=$id&uploaded=1");

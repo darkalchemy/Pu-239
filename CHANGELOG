@@ -1,4 +1,5 @@
 19 Jul 2018
+add: auto download torrent after upload
 fix: typo in function_tvmaze.php
 fix: trivia results on index page not showing scrollbar
 update: log vierer better messages splitting
