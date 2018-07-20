@@ -284,7 +284,7 @@ if ($action === 'takeappdelete') {
     if (empty($_POST['deleteapp'])) {
         stderr($lang['uploadapps_silly'], $lang['uploadapps_twix']);
     } else {
-        sql_query('DELETE FROM uploadapp WHERE id IN (' . join(',', $_POST['deleteapp']) . ') ') or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM uploadapp WHERE id IN (' . implode(', ', $_POST['deleteapp']) . ') ') or sqlerr(__FILE__, __LINE__);
         $cache->delete('new_uploadapp_');
         stderr($lang['uploadapps_deleted'], "{$lang['uploadapps_deletedsuc']} {$lang['uploadapps_app_click']} <a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'><b>{$lang['uploadapps_app_here']}</b></a>{$lang['uploadapps_app_return']}");
     }

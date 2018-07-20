@@ -82,7 +82,7 @@ function cloud()
                                 <span class='padding10 has-no-wrap'>" . htmlsafechars(stripslashes($tag)) . '</span>
                             </a>';
         }
-        $cloud_html = join("\n", $cloud_tags) . "\n";
+        $cloud_html = implode("\n", $cloud_tags) . "\n";
 
         return $cloud_html;
     }

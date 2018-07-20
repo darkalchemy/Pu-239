@@ -38,16 +38,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     }
     $link = md5('promo_link' . TIME_NOW);
     $q = sql_query('INSERT INTO promo (name,added,days_valid,max_users,link,creator,bonus_upload,bonus_invites,bonus_karma) VALUES (' . implode(',', array_map('sqlesc', [
-                       $promoname,
-                       TIME_NOW,
-                       $days_valid,
-                       $max_users,
-                       $link,
-                       $CURUSER['id'],
-                       $bonus_upload,
-                       $bonus_invites,
-                       $bonus_karma,
-                   ])) . ') ') or sqlerr(__FILE__, __LINE__);
+            $promoname,
+            TIME_NOW,
+            $days_valid,
+            $max_users,
+            $link,
+            $CURUSER['id'],
+            $bonus_upload,
+            $bonus_invites,
+            $bonus_karma,
+        ])) . ') ') or sqlerr(__FILE__, __LINE__);
     if (!$q) {
         stderr('Error', 'Something wrong happned, please retry');
     } else {
@@ -109,16 +109,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
         $wanthintanswer = make_passhash($hintanswer);
 
         $res = sql_query('INSERT INTO users(username, passhash, email, added, uploaded, invites, seedbonus, passhint, hintanswer) VALUES (' . implode(',', array_map('sqlesc', [
-                             $username,
-                             $passhash,
-                             $email,
-                             TIME_NOW,
-                             ($ar_check['bonus_upload'] * 1073741824),
-                             $ar_check['bonus_invites'],
-                             $ar_check['bonus_karma'],
-                             $passhint,
-                             $wanthintanswer,
-                         ])) . ') ') or sqlerr(__FILE__, __LINE__);
+                $username,
+                $passhash,
+                $email,
+                TIME_NOW,
+                ($ar_check['bonus_upload'] * 1073741824),
+                $ar_check['bonus_invites'],
+                $ar_check['bonus_karma'],
+                $passhint,
+                $wanthintanswer,
+            ])) . ') ') or sqlerr(__FILE__, __LINE__);
         if ($res) {
             //==Updating promo table
             $userid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
@@ -285,7 +285,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
             if (!empty($a1['users'])) {
                 $users = explode(',', $a1['users']);
                 if (!empty($users)) {
-                    $q2 = sql_query('SELECT id, username, added FROM users WHERE id IN (' . join(',', $users) . ')') or sqlerr(__FILE__, __LINE__);
+                    $q2 = sql_query('SELECT id, username, added FROM users WHERE id IN (' . implode(', ', $users) . ')') or sqlerr(__FILE__, __LINE__);
                 }
                 $HTMLOUT = "<!doctype html>
 <html>

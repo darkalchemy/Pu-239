@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $t[] = '(' . $CURUSER['id'] . ')';
     }
     if (!$fail) {
-        if (sql_query('INSERT INTO tickets(user) VALUES ' . join(', ', $t))) {
+        if (sql_query('INSERT INTO tickets(user) VALUES ' . implode(', ', $t))) {
             sql_query('UPDATE users SET seedbonus = seedbonus - ' . ($tickets * $lottery_config['ticket_amount']) . ' WHERE id = ' . $CURUSER['id']);
             $seedbonus_new = $CURUSER['seedbonus'] - ($tickets * $lottery_config['ticket_amount']);
             $cache->update_row('user' . $CURUSER['id'], [
@@ -100,7 +100,7 @@ if (!$lottery_config['use_prize_fund']) {
 }
 if (!empty($lottery['current_user']['tickets']) && count($lottery['current_user']['tickets'])) {
     $html .= '
-                    <li>You own ticket numbers : <b>' . join('</b>, <b>', $lottery['current_user']['tickets']) . '</b></li>';
+                    <li>You own ticket numbers : <b>' . implode('</b>, <b>', $lottery['current_user']['tickets']) . '</b></li>';
 }
 $html .= "
                 </ul>

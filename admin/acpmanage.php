@@ -24,21 +24,21 @@ if (isset($_POST['ids'])) {
     }
     $do = isset($_POST['do']) ? htmlsafechars(trim($_POST['do'])) : '';
     if ($do == 'enabled') {
-        sql_query("UPDATE users SET enabled = 'yes' WHERE ID IN (" . join(', ', array_map('sqlesc', $ids)) . ") AND enabled = 'no'") or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE users SET enabled = 'yes' WHERE ID IN (" . implode(', ', array_map('sqlesc', $ids)) . ") AND enabled = 'no'") or sqlerr(__FILE__, __LINE__);
     }
     $cache->update_row('user' . $id, [
         'enabled' => 'yes',
     ], $site_config['expires']['user_cache']);
     //else
     if ($do == 'confirm') {
-        sql_query("UPDATE users SET status = 'confirmed' WHERE ID IN (" . join(', ', array_map('sqlesc', $ids)) . ") AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE users SET status = 'confirmed' WHERE ID IN (" . implode(', ', array_map('sqlesc', $ids)) . ") AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
     }
     $cache->update_row('user' . $id, [
         'status' => 'confirmed',
     ], $site_config['expires']['user_cache']);
     //else
     if ($do == 'delete' && ($CURUSER['class'] >= UC_SYSOP)) {
-        $res_del = sql_query('SELECT id, username, added, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE ID IN(' . join(', ', array_map('sqlesc', $ids)) . ') AND class < 3 ORDER BY username DESC');
+        $res_del = sql_query('SELECT id, username, added, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE ID IN(' . implode(', ', array_map('sqlesc', $ids)) . ') AND class < 3 ORDER BY username DESC');
         if (mysqli_num_rows($res_del) != 0) {
             while ($arr_del = mysqli_fetch_assoc($res_del)) {
                 $userid = $arr_del['id'];

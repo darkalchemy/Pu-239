@@ -60,7 +60,7 @@ function lotteryclean($data)
             '(\'enable\',0)',
             '(\'lottery_winners_time\',' . $dt . ')',
             '(\'lottery_winners_amount\',' . $lottery['user_pot'] . ')',
-            '(\'lottery_winners\',\'' . join('|', array_keys($lottery['winners'])) . '\')',
+            '(\'lottery_winners\',\'' . implode('|', array_keys($lottery['winners'])) . '\')',
         ];
         if (!empty($_userq) && count($_userq)) {
             foreach ($_userq as $update) {
@@ -68,7 +68,7 @@ function lotteryclean($data)
             }
         }
         if (!empty($_pms) && count($_pms)) {
-            sql_query('INSERT INTO messages(sender, receiver, subject, msg, added) VALUES ' . join(',', $_pms)) or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO messages(sender, receiver, subject, msg, added) VALUES ' . implode(', ', $_pms)) or sqlerr(__FILE__, __LINE__);
         }
         foreach ($uids as $user_id) {
             $cache->increment('inbox_' . $user_id);
@@ -76,7 +76,7 @@ function lotteryclean($data)
             $cache->delete('user' . $user_id);
         }
         sql_query('INSERT INTO lottery_config(name,value)
-                    VALUES ' . join(',', $lconfig_update) . '
+                    VALUES ' . implode(', ', $lconfig_update) . '
                     ON DUPLICATE KEY UPDATE value=VALUES(value)') or sqlerr(__FILE__, __LINE__);
         sql_query('DELETE FROM tickets') or sqlerr(__FILE__, __LINE__);
         $cache->delete('lottery_info_');

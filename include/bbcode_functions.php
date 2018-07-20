@@ -239,12 +239,12 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     unset($text);
     $s = validate_imgs($s);
     $site_config['url'] = str_replace([
-                                          'http://',
-                                          'www',
-                                          'http://www',
-                                          'https://',
-                                          'https://www',
-                                      ], '', $site_config['baseurl']);
+        'http://',
+        'www',
+        'http://www',
+        'https://',
+        'https://www',
+    ], '', $site_config['baseurl']);
     if (isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] === true) {
         $s = preg_replace('/http:\/\/((?:www\.)?' . $site_config['url'] . ')/i', 'https://$1', $s);
     } else {
@@ -481,11 +481,11 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     $s = format_code($s);
     $s = check_BBcode($s);
     $s = str_replace([
-                         "\r\n",
-                         "\r",
-                         "\n",
-                         '&lt;br&gt;',
-                     ], '<br>', $s);
+        "\r\n",
+        "\r",
+        "\n",
+        '&lt;br&gt;',
+    ], '<br>', $s);
 
     return $s;
 }

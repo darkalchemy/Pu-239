@@ -67,7 +67,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
                             </span>";
     }
 
-    return join('', $tvmaze_display[$tvmaze_type]) . line_by_line('Cast', join('', $persons));
+    return implode('', $tvmaze_display[$tvmaze_type]) . line_by_line('Cast', implode('', $persons));
 }
 
 /**
@@ -99,7 +99,7 @@ function episode_format($tvmaze_data, $tvmaze_type)
         }
     }
 
-    return join('', $tvmaze_display[$tvmaze_type]);
+    return implode('', $tvmaze_display[$tvmaze_type]);
 }
 
 /**

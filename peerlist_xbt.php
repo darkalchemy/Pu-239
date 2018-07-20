@@ -34,7 +34,7 @@ function XBT_IP_CONVERT($a)
         $b[$i] = $k;
         $c /= 256.0;
     }
-    $d = join('.', $b);
+    $d = implode('.', $b);
 
     return $d;
 }

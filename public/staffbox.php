@@ -39,7 +39,7 @@ $HTMLOUT = '';
 switch ($do) {
     case 'delete':
         if ($id > 0) {
-            if (sql_query('DELETE FROM staffmessages WHERE id IN (' . join(',', $id) . ')')) {
+            if (sql_query('DELETE FROM staffmessages WHERE id IN (' . implode(', ', $id) . ')')) {
                 $cache->delete('staff_mess_');
                 header('Refresh: 2; url=' . $_SERVER['PHP_SELF']);
                 $session->set('is-success', $lang['staffbox_delete_ids']);
@@ -64,13 +64,13 @@ switch ($do) {
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             }
-            $q1 = sql_query('SELECT s.msg,s.sender,s.subject,u.username FROM staffmessages AS s LEFT JOIN users AS u ON s.sender=u.id WHERE s.id IN (' . join(',', $id) . ')') or sqlerr(__FILE__, __LINE__);
+            $q1 = sql_query('SELECT s.msg,s.sender,s.subject,u.username FROM staffmessages AS s LEFT JOIN users AS u ON s.sender=u.id WHERE s.id IN (' . implode(', ', $id) . ')') or sqlerr(__FILE__, __LINE__);
             $a = mysqli_fetch_assoc($q1);
             $response = htmlsafechars($message) . "\n---" . htmlsafechars($a['username']) . " wrote ---\n" . htmlsafechars($a['msg']);
             sql_query('INSERT INTO messages(sender,receiver,added,subject,msg) VALUES(' . sqlesc($CURUSER['id']) . ',' . sqlesc($a['sender']) . ',' . TIME_NOW . ',' . sqlesc('RE: ' . $a['subject']) . ',' . sqlesc($response) . ')') or sqlerr(__FILE__, __LINE__);
             $cache->increment('inbox_' . $a['sender']);
             $message = ', answer=' . sqlesc($message);
-            if (sql_query('UPDATE staffmessages SET answered=\'1\', answeredby=' . sqlesc($CURUSER['id']) . ' ' . $message . ' WHERE id IN (' . join(',', $id) . ')')) {
+            if (sql_query('UPDATE staffmessages SET answered=\'1\', answeredby=' . sqlesc($CURUSER['id']) . ' ' . $message . ' WHERE id IN (' . implode(', ', $id) . ')')) {
                 $cache->delete('staff_mess_');
                 $session->set('is-success', $lang['staffbox_setanswered_ids']);
                 header("Location: {$_SERVER['PHP_SELF']}");
@@ -101,7 +101,7 @@ switch ($do) {
                             <div>{$lang['staffbox_pm_answered']}: " . ($a['answeredby'] > 0 ? format_username($a['answeredby']) : '<span>No</span>') . "</div>
                         </div>
                         <div class='bordered top20 bottom20 bg-00'>" .
-                                                                                                                           format_comment($a['msg']) . "
+                        format_comment($a['msg']) . "
                         </div>
                         <div class='bordered top20 bottom20 bg-00'>
                             {$lang['staffbox_pm_answer']} " . ($a['answeredby'] == 0 ? "
@@ -133,7 +133,7 @@ switch ($do) {
 
     case 'restart':
         if ($id > 0) {
-            if (sql_query("UPDATE staffmessages SET answered='0', answeredby='0' WHERE id IN (" . join(',', $id) . ')')) {
+            if (sql_query("UPDATE staffmessages SET answered='0', answeredby='0' WHERE id IN (" . implode(', ', $id) . ')')) {
                 $cache->delete('staff_mess_');
                 header('Refresh: 2; url=' . $_SERVER['PHP_SELF']);
                 $session->set('is-success', $lang['staffbox_restart_ids']);

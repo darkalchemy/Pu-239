@@ -411,12 +411,12 @@ if (!empty($_POST) && count($_POST) > 0) {
                     $name_is .= (!empty($name_is) ? ' OR ' : '') . 'u.username = ' . sqlesc($name);
                 } else {
                     $name = str_replace([
-                                            '?',
-                                            '*',
-                                        ], [
-                                            '_',
-                                            '%',
-                                        ], $name);
+                        '?',
+                        '*',
+                    ], [
+                        '_',
+                        '%',
+                    ], $name);
                     $name_is .= (!empty($name_is) ? ' OR ' : '') . 'u.username LIKE ' . sqlesc($name);
                 }
             }
@@ -431,12 +431,12 @@ if (!empty($_POST) && count($_POST) > 0) {
                     $name_is .= (isset($name_is) ? ' OR ' : '') . 'u.username = ' . sqlesc($name);
                 } else {
                     $name = str_replace([
-                                            '?',
-                                            '*',
-                                        ], [
-                                            '_',
-                                            '%',
-                                        ], $name);
+                        '?',
+                        '*',
+                    ], [
+                        '_',
+                        '%',
+                    ], $name);
                     $name_is .= (isset($name_is) ? ' OR ' : '') . 'u.username LIKE ' . sqlesc($name);
                 }
             }
@@ -459,12 +459,12 @@ if (!empty($_POST) && count($_POST) > 0) {
                     $email_is .= (!empty($email_is) ? ' OR ' : '') . 'u.email =' . sqlesc($email);
                 } else {
                     $sql_email = str_replace([
-                                                 '?',
-                                                 '*',
-                                             ], [
-                                                 '_',
-                                                 '%',
-                                             ], $email);
+                        '?',
+                        '*',
+                    ], [
+                        '_',
+                        '%',
+                    ], $email);
                     $email_is .= (!empty($email_is) ? ' OR ' : '') . 'u.email LIKE ' . sqlesc($sql_email);
                 }
             }
@@ -577,12 +577,12 @@ if (!empty($_POST) && count($_POST) > 0) {
                         $comment_is .= (!empty($comment_is) ? ' OR ' : '') . 'u.modcomment LIKE ' . sqlesc('%' . $comment . '%');
                     } else {
                         $comment = str_replace([
-                                                   '?',
-                                                   '*',
-                                               ], [
-                                                   '_',
-                                                   '%',
-                                               ], $comment);
+                            '?',
+                            '*',
+                        ], [
+                            '_',
+                            '%',
+                        ], $comment);
                         $comment_is .= (!empty($comment_is) ? ' OR ' : '') . 'u.modcomment LIKE ' . sqlesc($comment);
                     }
                 }
@@ -596,12 +596,12 @@ if (!empty($_POST) && count($_POST) > 0) {
                         $comment_is .= (isset($comment_is) ? ' OR ' : '') . 'u.modcomment LIKE ' . sqlesc('%' . $comment . '%');
                     } else {
                         $comment = str_replace([
-                                                   '?',
-                                                   '*',
-                                               ], [
-                                                   '_',
-                                                   '%',
-                                               ], $comment);
+                            '?',
+                            '*',
+                        ], [
+                            '_',
+                            '%',
+                        ], $comment);
                         $comment_is .= (isset($comment_is) ? ' OR ' : '') . 'u.modcomment LIKE ' . sqlesc($comment);
                     }
                 }

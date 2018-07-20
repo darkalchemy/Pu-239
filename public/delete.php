@@ -94,13 +94,13 @@ if (XBT_TRACKER) {
     remove_torrent_peers($id);
 }
 $cache->deleteMulti([
-                        'lastest_tor_',
-                        'top5_tor_',
-                        'last5_tor_',
-                        'scroll_tor_',
-                        'torrent_details_' . $id,
-                        'torrent_details_text' . $id,
-                    ]);
+    'lastest_tor_',
+    'top5_tor_',
+    'last5_tor_',
+    'scroll_tor_',
+    'torrent_details_' . $id,
+    'torrent_details_text' . $id,
+]);
 write_log("{$lang['delete_torrent']} $id ({$row['name']}){$lang['delete_deleted_by']}{$CURUSER['username']} ($reasonstr)\n");
 if ($site_config['seedbonus_on'] == 1) {
     sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus_per_delete']) . ' WHERE id = ' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);

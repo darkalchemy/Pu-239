@@ -53,7 +53,7 @@ function torrents_normalize($data)
             unset($ar[$k]);
         }
         if (!empty($delids) && count($delids)) {
-            $ids = join(',', $delids);
+            $ids = implode(', ', $delids);
             sql_query("DELETE t.*, p.*, f.* FROM torrents AS t
                   LEFT JOIN files AS f ON f.torrent = t.id
                   LEFT JOIN peers AS p ON p.torrent = t.id

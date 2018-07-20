@@ -126,7 +126,7 @@ function get_imdb_info($imdb_id, $title = true)
                 ])) {
                 foreach ($imdb_data[$foo] as $pp) {
                     if ($foo === 'cast' && !empty($cast)) {
-                        $imdb_tmp[] = join(' ', $cast);
+                        $imdb_tmp[] = implode(' ', $cast);
                         unset($cast);
                     }
                     if ($foo != 'cast' && $foo === 'trailers') {
@@ -140,7 +140,7 @@ function get_imdb_info($imdb_id, $title = true)
                 $imdb_info .= "
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>$boo: </div>
-                        <div class='column padding5'>" . join(', ', $imdb_tmp) . '</div>
+                        <div class='column padding5'>" . implode(', ', $imdb_tmp) . '</div>
                     </div>';
                 unset($imdb_tmp);
             }

@@ -149,9 +149,9 @@ function search_text_in_db($searchstr, $base_sql, $where_search, $add_where = []
     $result_list = [];
     for ($i = 0; $i < count($split_search); ++$i) {
         if (strlen(str_replace([
-                                   '*',
-                                   '%',
-                               ], '', trim($split_search[$i]))) < $config['search_min_chars'] && !in_array($split_search[$i], $match_types)) {
+                '*',
+                '%',
+            ], '', trim($split_search[$i]))) < $config['search_min_chars'] && !in_array($split_search[$i], $match_types)) {
             $split_search[$i] = '';
             continue;
         }

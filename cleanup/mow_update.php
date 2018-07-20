@@ -12,7 +12,7 @@ function mow_update($data)
 
     $res_tor = sql_query('SELECT id, name
                             FROM torrents
-                            WHERE times_completed > 0 AND category IN (' . join(', ', $site_config['movie_cats']) . ')
+                            WHERE times_completed > 0 AND category IN (' . implode(', ', $site_config['movie_cats']) . ')
                             ORDER BY times_completed DESC
                             LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res_tor);

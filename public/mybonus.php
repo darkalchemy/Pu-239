@@ -774,7 +774,7 @@ if (isset($_GET['exchange'])) {
                     'receiver' => $thief_id,
                     'added' => TIME_NOW,
                     'subject' => $pm['subject_thief'],
-                    'msg' => sprintf($pm['message_thief'], $thief_name, join("\n", $robbed_users), $new_rep, $points),
+                    'msg' => sprintf($pm['message_thief'], $thief_name, implode("\n", $robbed_users), $new_rep, $points),
                 ];
                 $fluent->insertInto('messages')
                     ->values($values)

@@ -21,7 +21,7 @@ function tables($no_data = '')
         $tables[] = $tn;
     }
 
-    return join(' ', $tables);
+    return implode(' ', $tables);
 }
 
 /**

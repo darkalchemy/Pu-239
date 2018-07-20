@@ -174,7 +174,7 @@ function mk_update_query($amount, $user_id)
         $query[] = sprintf('%s = %s', $field, $value);
     }
 
-    return sprintf('UPDATE users SET %s WHERE id = %d', join(', ', $query), $user_id);
+    return sprintf('UPDATE users SET %s WHERE id = %d', implode(', ', $query), $user_id);
 }
 
 /**
@@ -216,8 +216,8 @@ if ($hand = fsockopen('ssl://www.paypal.com', 443, $errno, $errstr, 30)) {
             sql_query(sprintf('INSERT INTO funds(cash,user,added) VALUES (%d,%d,%d)', $vars['amount'], $vars['uid'], TIME_NOW)) or paypallog(mysqli_error($GLOBALS['___mysqli_ston']));
             //clear the cache for the funds
             $cache->delete('totalfunds_');
-            $msg[] = '(' . $vars['uid'] . ',0,' . sqlesc('Donation - processed') . ',' . sqlesc("Your donation was processed by paypal and our system\nWe remind you that you donated " . $vars['amount'] . $site_config['paypal_config']['currency'] . "\nIf you forgot what you'll get check the donation page again\nStaff from " . $site_config['site_name'] . " is grateful for your donation\nIf you have any question's feel free to contact someone from staff") . ',' . TIME_NOW . ')';
-            $msg[] = '(' . $site_config['paypal_config']['staff'] . ',0,' . sqlesc('Donation - made') . ',' . sqlesc('This [url=' . $site_config['baseurl'] . '/userdetails.php?id=' . (int) $vars['uid'] . ']user[/url] - donated ' . $vars['amount'] . $site_config['paypal_config']['currency'] . (!empty($vars['memo']) ? "\nUser sent a message with his donation:\n[b]" . $vars['memo'] . '[/b]' : '')) . ',' . TIME_NOW . ')';
+            $msg[] = '(' . $vars['uid'] . ',0,' . sqlesc('Donation - processed') . ', ' . sqlesc("Your donation was processed by paypal and our system\nWe remind you that you donated " . $vars['amount'] . $site_config['paypal_config']['currency'] . "\nIf you forgot what you'll get check the donation page again\nStaff from " . $site_config['site_name'] . " is grateful for your donation\nIf you have any question's feel free to contact someone from staff") . ', ' . TIME_NOW . ')';
+            $msg[] = '(' . $site_config['paypal_config']['staff'] . ',0,' . sqlesc('Donation - made') . ', ' . sqlesc('This [url=' . $site_config['baseurl'] . '/userdetails.php?id=' . (int) $vars['uid'] . ']user[/url] - donated ' . $vars['amount'] . $site_config['paypal_config']['currency'] . (!empty($vars['memo']) ? "\nUser sent a message with his donation:\n[b]" . $vars['memo'] . '[/b]' : '')) . ', ' . TIME_NOW . ')';
         } else {
             paypallog('Could not find user with id = ' . $vars['uid']);
         }
@@ -225,10 +225,10 @@ if ($hand = fsockopen('ssl://www.paypal.com', 443, $errno, $errstr, 30)) {
         //something went wrong log data
         paypallog('Paypal didn\'t like the transaction and it rejected it. _POST = ' . print_r($_POST, 1));
         //make some nice messages to let everyone know about the problem
-        $msg[] = '(' . $vars['uid'] . ',0,' . sqlesc('Donation - problem') . ',' . sqlesc("We are sorry to announce you that paypal rejected the donation please contact the staff\n" . $site_config['site_name'] . "'s staff") . ',' . TIME_NOW . ')';
-        $msg[] = '(' . $site_config['paypal_config']['staff'] . ',0,' . sqlesc('Donation - problem') . ',' . sqlesc('This [url=' . $site_config['baseurl'] . '/userdetails.php?id=' . (int) $vars['uid'] . ']user[/url] - donated but there was a problem with paypal. Check paypal log!') . ',' . TIME_NOW . ')';
+        $msg[] = '(' . $vars['uid'] . ',0,' . sqlesc('Donation - problem') . ', ' . sqlesc("We are sorry to announce you that paypal rejected the donation please contact the staff\n" . $site_config['site_name'] . "'s staff") . ', ' . TIME_NOW . ')';
+        $msg[] = '(' . $site_config['paypal_config']['staff'] . ',0,' . sqlesc('Donation - problem') . ', ' . sqlesc('This [url=' . $site_config['baseurl'] . '/userdetails.php?id=' . (int) $vars['uid'] . ']user[/url] - donated but there was a problem with paypal. Check paypal log!') . ', ' . TIME_NOW . ')';
     }
-    sql_query('INSERT INTO messages(receiver,sender,subject,msg,added) VALUES ' . join(',', $msg)) or paypallog(mysqli_error($GLOBALS['___mysqli_ston']));
+    sql_query('INSERT INTO messages(receiver,sender,subject,msg,added) VALUES ' . implode(', ', $msg)) or paypallog(mysqli_error($GLOBALS['___mysqli_ston']));
     //clear memcache for staff
     $cache->increment('inbox_' . $site_config['paypal_config']['staff']);
     //and for the user that donated

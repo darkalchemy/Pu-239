@@ -20,11 +20,11 @@ function adminer_object()
 
     $plugins = [
         new AdminerDatabaseHide([
-                                    'mysql',
-                                    'sys',
-                                    'performance_schema',
-                                    'information_schema',
-                                ]),
+            'mysql',
+            'sys',
+            'performance_schema',
+            'information_schema',
+        ]),
         new AdminerFrames(),
     ];
 

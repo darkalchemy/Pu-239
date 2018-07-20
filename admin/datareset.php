@@ -74,9 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ], $site_config['expires']['curuser']);
     }
     //==Send the pm !!
-    sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES ' . join(',', array_map('sqlesc', $pms))) or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES ' . implode(', ', array_map('sqlesc', $pms))) or sqlerr(__FILE__, __LINE__);
     //==Update user download amount
-    sql_query('INSERT INTO users (id,downloaded) VALUES ' . join(',', array_map('sqlesc', $new_download)) . ' ON DUPLICATE KEY UPDATE downloaded = VALUES(downloaded)') or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO users (id,downloaded) VALUES ' . implode(', ', array_map('sqlesc', $new_download)) . ' ON DUPLICATE KEY UPDATE downloaded = VALUES(downloaded)') or sqlerr(__FILE__, __LINE__);
     if (XBT_TRACKER) {
         deletetorrent_xbt($tid);
     } else {

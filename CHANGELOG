@@ -1,3 +1,6 @@
+20 Jul 2018
+cleanup: formatting, alignment, replace join with implode
+
 19 Jul 2018
 fix: youtube link on upload
 update: database files

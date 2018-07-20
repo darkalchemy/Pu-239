@@ -102,10 +102,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         if (count($classes) > 0) {
-            $where[] = 'u.class IN (' . join(',', $classes) . ')';
+            $where[] = 'u.class IN (' . implode(', ', $classes) . ')';
         }
         if (count($where) > 0) {
-            $q1 = sql_query('SELECT u.id FROM users AS u WHERE ' . join(' OR ', $where)) or sqlerr(__FILE__, __LINE__);
+            $q1 = sql_query('SELECT u.id FROM users AS u WHERE ' . implode(' OR ', $where)) or sqlerr(__FILE__, __LINE__);
             if (mysqli_num_rows($q1) > 0) {
                 while ($a = mysqli_fetch_row($q1)) {
                     $ids[] = $a[0];
@@ -115,12 +115,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $ids = array_unique($ids);
         if (count($ids) > 0) {
             $pms = [];
-            $msg .= "\n[p]" . $lang['grouppm_this'] . join(', ', $sent2classes) . '[/p]';
+            $msg .= "\n[p]" . $lang['grouppm_this'] . implode(', ', $sent2classes) . '[/p]';
             foreach ($ids as $rid) {
                 $pms[] = '(' . $sender . ',' . $rid . ',' . TIME_NOW . ',' . sqlesc($msg) . ',' . sqlesc($subject) . ')';
             }
             if (count($pms) > 0) {
-                $r = sql_query('INSERT INTO messages(sender,receiver,added,msg,subject) VALUES ' . join(',', $pms)) or sqlerr(__FILE__, __LINE__);
+                $r = sql_query('INSERT INTO messages(sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pms)) or sqlerr(__FILE__, __LINE__);
             }
             foreach ($ids as $rid) {
                 $cache->increment('inbox_' . $rid);
@@ -185,7 +185,7 @@ function dropdown()
 $HTMLOUT .= begin_main_frame();
 if (count($err) > 0) {
     $class = (stristr($err[0], 'sent!') == true ? 'sent' : 'notsent');
-    $errs = '<ul><li>' . join('</li><li>', $err) . '</li></ul>';
+    $errs = '<ul><li>' . implode('</li><li>', $err) . '</li></ul>';
     $HTMLOUT .= '<div class="' . $class . "\">$errs</div>";
 }
 $HTMLOUT .= "<fieldset style='border:1px solid #333333; padding:5px;'>

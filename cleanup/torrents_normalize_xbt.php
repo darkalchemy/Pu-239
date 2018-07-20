@@ -53,7 +53,7 @@ function torrents_normalize_xbt($data)
             unset($ar[$k]);
         }
         if (!empty($delids) && count($delids)) {
-            $ids = join(',', $delids);
+            $ids = implode(', ', $delids);
             sql_query("DELETE torrents t, xbt_files_users x, files f FROM torrents t
                   left join files f on f.torrent=t.id
                   left join xbt_files_users x on x.fid=t.id

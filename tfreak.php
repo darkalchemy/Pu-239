@@ -34,20 +34,20 @@ function rsstfreakinfo()
                     <div class='bg-02 round5 padding10'>
                         <div class='bottom20 size_3 has-text-primary'>
                             by " . str_replace([
-                                                                                                                                                                                                                                                                              '<![CDATA[',
-                                                                                                                                                                                                                                                                              ']]>',
-                                                                                                                                                                                                                                                                          ], '', htmlsafechars($item->getElementsByTagName('creator')->item(0)->nodeValue)) . ' on ' . htmlsafechars($item->getElementsByTagName('pubDate')->item(0)->nodeValue) . '
+                '<![CDATA[',
+                ']]>',
+            ], '', htmlsafechars($item->getElementsByTagName('creator')->item(0)->nodeValue)) . ' on ' . htmlsafechars($item->getElementsByTagName('pubDate')->item(0)->nodeValue) . '
                         </div>
                         <div>
                             ' . str_replace([
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   '<![CDATA[',
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ']]>',
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   'href="',
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ], [
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   '',
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   '',
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   'href="' . $site_config['anonymizer_url'],
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ], preg_replace('/<p>/', "<p class='has-text-white'>", $item->getElementsByTagName('description')->item(0)->nodeValue, 1)) . "
+                '<![CDATA[',
+                ']]>',
+                'href="',
+            ], [
+                '',
+                '',
+                'href="' . $site_config['anonymizer_url'],
+            ], preg_replace('/<p>/', "<p class='has-text-white'>", $item->getElementsByTagName('description')->item(0)->nodeValue, 1)) . "
                             <a href='{$site_config['anonymizer_url']}" . $item->getElementsByTagName('link')->item(0)->nodeValue . "' target='_blank'>
                                 <span class='size_3 has-text-primary'>
                                     Read more
@@ -62,14 +62,14 @@ function rsstfreakinfo()
         }
     }
     $html = str_replace([
-                            '“',
-                            '”',
-                        ], '"', $html);
+        '“',
+        '”',
+    ], '"', $html);
     $html = str_replace([
-                            '’',
-                            '‘',
-                            '‘',
-                        ], "'", $html);
+        '’',
+        '‘',
+        '‘',
+    ], "'", $html);
     $html = str_replace('–', '-', $html);
 
     return $html;

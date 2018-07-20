@@ -136,10 +136,10 @@ $tor = bencdec::encode($dict);
 if ($zipuse) {
     require_once INCL_DIR . 'phpzip.php';
     $row['name'] = str_replace([
-                                   ' ',
-                                   '.',
-                                   '-',
-                               ], '_', $row['name']);
+        ' ',
+        '.',
+        '-',
+    ], '_', $row['name']);
     $file_name = $site_config['torrent_dir'] . '/' . $row['name'] . '.torrent';
     if (file_put_contents($file_name, $tor)) {
         $zip = new PHPZip();

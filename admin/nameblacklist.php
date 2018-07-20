@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } else {
     $out = begin_main_frame();
-    $out .= stdmsg($lang['name_curr'], count($blacklist) ? join(', ', array_keys($blacklist)) : $lang['name_no']);
+    $out .= stdmsg($lang['name_curr'], count($blacklist) ? implode(', ', array_keys($blacklist)) : $lang['name_no']);
     $out .= stdmsg($lang['name_add'], '<form action="staffpanel.php?tool=nameblacklist&amp;action=nameblacklist" method="post"><table width="90%" style="border-collapse:separate">
     <tr><td><textarea rows="3" cols="100" name="badnames"></textarea></td></tr>
     <tr><td>' . $lang['name_note'] . '</td></tr>

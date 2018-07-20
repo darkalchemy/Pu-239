@@ -80,7 +80,7 @@ if (!isset($_FILES['file'])) {
         <div class='container is-fluid portlet has-text-centered'>
             <form action='{$_SERVER['PHP_SELF']}' method='post' enctype='multipart/form-data'>
                 <div>
-                    <h2>{$lang['bitbucket_invalid_extension']}" . join(', ', $formats) . "</h2>
+                    <h2>{$lang['bitbucket_invalid_extension']}" . implode(', ', $formats) . "</h2>
                 </div>
                 <div>
                     <h3>{$lang['bitbucket_max']}" . mksize($maxsize) . "</h3>
@@ -241,7 +241,7 @@ if ($_FILES['file']['size'] > $maxsize) {
     stderr($lang['bitbucket_error'], $lang['bitbucket_to_large']);
 }
 $file = preg_replace('`[^a-z0-9\-\_\.]`i', '', $_FILES['file']['name']);
-$allow = ',' . join(',', $formats);
+$allow = ',' . implode(',', $formats);
 if (stristr($allow, ',' . substr($file, -4)) === false) {
     stderr($lang['bitbucket_err'], $lang['bitbucket_invalid']);
 }

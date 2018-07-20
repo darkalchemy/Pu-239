@@ -161,18 +161,18 @@ $TRAFFIC_STATS .= "<table class='torrenttable' width='100%' border='0'>
             </tr>
             <tr>
                 <td>{$lang['mysql_stats_received']}</td>
-                <td >&#160;" . join(' ', byteformat($serverStatus['Bytes_received'])) . '&#160;</td>
-                <td >&#160;' . join(' ', byteformat($serverStatus['Bytes_received'] * 3600 / $serverStatus['Uptime'])) . "&#160;</td>
+                <td >&#160;" . implode(' ', byteformat($serverStatus['Bytes_received'])) . '&#160;</td>
+                <td >&#160;' . implode(' ', byteformat($serverStatus['Bytes_received'] * 3600 / $serverStatus['Uptime'])) . "&#160;</td>
             </tr>
             <tr>
                 <td>{$lang['mysql_stats_sent']}</td>
-                <td >&#160;" . join(' ', byteformat($serverStatus['Bytes_sent'])) . '&#160;</td>
-                <td >&#160;' . join(' ', byteformat($serverStatus['Bytes_sent'] * 3600 / $serverStatus['Uptime'])) . "&#160;</td>
+                <td >&#160;" . implode(' ', byteformat($serverStatus['Bytes_sent'])) . '&#160;</td>
+                <td >&#160;' . implode(' ', byteformat($serverStatus['Bytes_sent'] * 3600 / $serverStatus['Uptime'])) . "&#160;</td>
             </tr>
             <tr>
                 <td bgcolor='grey'>&{$lang['mysql_stats_total']}</td>
-                <td bgcolor='grey'>&#160;" . join(' ', byteformat($serverStatus['Bytes_received'] + $serverStatus['Bytes_sent'])) . "&#160;</td>
-                <td bgcolor='grey'>&#160;" . join(' ', byteformat(($serverStatus['Bytes_received'] + $serverStatus['Bytes_sent']) * 3600 / $serverStatus['Uptime'])) . '&#160;</td>
+                <td bgcolor='grey'>&#160;" . implode(' ', byteformat($serverStatus['Bytes_received'] + $serverStatus['Bytes_sent'])) . "&#160;</td>
+                <td bgcolor='grey'>&#160;" . implode(' ', byteformat(($serverStatus['Bytes_received'] + $serverStatus['Bytes_sent']) * 3600 / $serverStatus['Uptime'])) . '&#160;</td>
             </tr>
         </table>';
 $TRAFFIC_STATS2 = "<table class='torrenttable' width='100%' border='0'>

@@ -464,9 +464,9 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
     require_once CLASS_DIR . 'validator.php';
     $HTMLOUT .= validatorForm('ModTask_' . $user['id']);
     $postkey = PostKey([
-                           $user['id'],
-                           $CURUSER['id'],
-                       ]);
+        $user['id'],
+        $CURUSER['id'],
+    ]);
     $HTMLOUT .= "<input type='hidden' name='action' value='edituser' />";
     $HTMLOUT .= "<input type='hidden' name='userid' value='$id' />";
     $HTMLOUT .= "<input type='hidden' name='postkey' value='$postkey' />";

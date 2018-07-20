@@ -9,10 +9,10 @@ $lang = array_merge($lang, load_language('ad_hit_and_run_settings'));
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($site_config['hnr_config'] as $c_name => $c_value) {
         if (isset($_POST[$c_name]) && $_POST[$c_name] != $c_value) {
-            $update[] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($_POST[$c_name]) ? join('|', $_POST[$c_name]) : $_POST[$c_name]) . ')';
+            $update[] = '(' . sqlesc($c_name) . ', ' . sqlesc(is_array($_POST[$c_name]) ? implode('|', $_POST[$c_name]) : $_POST[$c_name]) . ')';
         }
     }
-    if (sql_query('INSERT INTO hit_and_run_settings(name,value) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value)')) {
+    if (sql_query('INSERT INTO hit_and_run_settings(name,value) VALUES ' . implode(', ', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value)')) {
         $cache->delete('hnr_settings_');
         $session->set('is-success', 'Update Successful');
     } else {

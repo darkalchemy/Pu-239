@@ -84,7 +84,7 @@ function torrenttable($res, $variant = 'index')
             $oldlink[] = sprintf('%s=%s', urlencode($key), urlencode($var));
         }
     }
-    $oldlink = !empty($oldlink) ? join('&amp;', array_map('htmlsafechars', $oldlink)) . '&amp;' : '';
+    $oldlink = !empty($oldlink) ? implode('&amp;', array_map('htmlsafechars', $oldlink)) . '&amp;' : '';
     $links = [
         'link1',
         'link2',

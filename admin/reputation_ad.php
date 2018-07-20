@@ -380,11 +380,11 @@ function view_list()
         if ($total['cnt'] > $deflimit) {
             require_once INCL_DIR . 'pager_functions.php';
             $links = pager_rep([
-                                   'count' => $total['cnt'],
-                                   'perpage' => $deflimit,
-                                   'start_value' => $first,
-                                   'url' => 'staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=' . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=$orderby&amp;startstamp=$start&amp;endstamp=$end",
-                               ]);
+                'count' => $total['cnt'],
+                'perpage' => $deflimit,
+                'start_value' => $first,
+                'url' => 'staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=' . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=$orderby&amp;startstamp=$start&amp;endstamp=$end",
+            ]);
         }
         // mofo query!
         $query = sql_query("SELECT r.*, p.topic_id, leftfor.id as leftfor_id, 

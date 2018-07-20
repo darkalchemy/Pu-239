@@ -78,16 +78,16 @@ function htmlsafechars($txt = '')
 {
     $txt = preg_replace('/&(?!#[0-9]+;)(?:amp;)?/s', '&amp;', $txt);
     $txt = str_replace([
-                           '<',
-                           '>',
-                           '"',
-                           "'",
-                       ], [
-                           '&lt;',
-                           '&gt;',
-                           '&quot;',
-                           '&#039;',
-                       ], $txt);
+        '<',
+        '>',
+        '"',
+        "'",
+    ], [
+        '&lt;',
+        '&gt;',
+        '&quot;',
+        '&#039;',
+    ], $txt);
 
     return $txt;
 }
@@ -104,7 +104,7 @@ function PostKey($ids = [])
         return false;
     }
 
-    return hash('sha256', $site_config['tracker_post_key'] . join('', $ids) . $site_config['tracker_post_key']);
+    return hash('sha256', $site_config['tracker_post_key'] . implode('', $ids) . $site_config['tracker_post_key']);
 }
 
 /**
@@ -120,7 +120,7 @@ function CheckPostKey($ids, $key)
         return false;
     }
 
-    return $key == hash('sha256', $site_config['tracker_post_key'] . join('', $ids) . $site_config['tracker_post_key']);
+    return $key == hash('sha256', $site_config['tracker_post_key'] . implode('', $ids) . $site_config['tracker_post_key']);
 }
 
 /**
@@ -872,12 +872,12 @@ function sqlesc_noquote($x)
 function sqlwildcardesc($x)
 {
     return str_replace([
-                           '%',
-                           '_',
-                       ], [
-                           '\\%',
-                           '\\_',
-                       ], mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $x));
+        '%',
+        '_',
+    ], [
+        '\\%',
+        '\\_',
+    ], mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $x));
 }
 
 /**
@@ -899,16 +899,16 @@ function httperr($code = 404)
 function searchfield($s)
 {
     return preg_replace([
-                            '/[^a-z0-9]/si',
-                            '/^\s*/s',
-                            '/\s*$/s',
-                            '/\s+/s',
-                        ], [
-                            ' ',
-                            '',
-                            '',
-                            ' ',
-                        ], $s);
+        '/[^a-z0-9]/si',
+        '/^\s*/s',
+        '/\s*$/s',
+        '/\s+/s',
+    ], [
+        ' ',
+        '',
+        '',
+        ' ',
+    ], $s);
 }
 
 /**
@@ -1468,26 +1468,26 @@ function human_filesize($bytes, $dec = 2)
 function replace_unicode_strings($text)
 {
     $text = str_replace([
-                            '“',
-                            '”',
-                        ], '"', $text);
+        '“',
+        '”',
+    ], '"', $text);
     $text = str_replace([
-                            '&quot;',
-                            '&lsquo;',
-                            '‘',
-                            '&rsquo;',
-                            '’',
-                        ], "'", $text);
+        '&quot;',
+        '&lsquo;',
+        '‘',
+        '&rsquo;',
+        '’',
+    ], "'", $text);
     $text = str_replace([
-                            '&ldquo;',
-                            '“',
-                            '&rdquo;',
-                            '”',
-                        ], '"', $text);
+        '&ldquo;',
+        '“',
+        '&rdquo;',
+        '”',
+    ], '"', $text);
     $text = str_replace([
-                            '&#8212;',
-                            '–',
-                        ], '-', $text);
+        '&#8212;',
+        '–',
+    ], '-', $text);
     $text = str_replace('&amp;', '&#38;', $text);
 
     return html_entity_decode(htmlentities($text, ENT_QUOTES));
@@ -1752,12 +1752,12 @@ function breadcrumbs($separator = '', $home = 'Home')
 
     foreach ($path as $x => $crumb) {
         $title = ucwords(str_replace([
-                                         '.php',
-                                         '_',
-                                     ], [
-                                         '',
-                                         ' ',
-                                     ], $crumb));
+            '.php',
+            '_',
+        ], [
+            '',
+            ' ',
+        ], $crumb));
         if ($x != $last) {
             $breadcrumbs[] = "<li><a href='$base$crumb'>$title</a></li>";
         } else {
@@ -1767,9 +1767,9 @@ function breadcrumbs($separator = '', $home = 'Home')
 
     if (!empty($action[0]) && $action[0] === 'action') {
         $type = explode('&', str_replace([
-                                             '-',
-                                             '_',
-                                         ], ' ', $action[1]));
+            '-',
+            '_',
+        ], ' ', $action[1]));
         $breadcrumbs[] = ucwords($type[0]);
     }
 
@@ -2053,16 +2053,16 @@ function get_show_name(string $name)
 {
     if (preg_match("/^(.*)S\d+(E\d+)?/i", $name, $tmp)) {
         $name = trim(str_replace([
-                                     '.',
-                                     '_',
-                                     '-',
-                                 ], ' ', $tmp[1]));
+            '.',
+            '_',
+            '-',
+        ], ' ', $tmp[1]));
     } else {
         $name = trim(str_replace([
-                                     '.',
-                                     '_',
-                                     '-',
-                                 ], ' ', $name));
+            '.',
+            '_',
+            '-',
+        ], ' ', $name));
     }
 
     return preg_replace('/\s+/', ' ', $name);
@@ -2208,17 +2208,17 @@ function fetch($url)
     }
 
     $client = new GuzzleHttp\Client([
-                                        'curl' => [
-                                            CURLOPT_SSL_VERIFYPEER => false,
-                                            CURLOPT_SSL_VERIFYHOST => false,
-                                        ],
-                                        'synchronous' => true,
-                                        'http_errors' => false,
-                                        'headers' => [
-                                            'User-Agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
-                                        ],
-                                        'verify' => false,
-                                    ]);
+        'curl' => [
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ],
+        'synchronous' => true,
+        'http_errors' => false,
+        'headers' => [
+            'User-Agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
+        ],
+        'verify' => false,
+    ]);
     $res = $client->request('GET', $url);
     if ($res->getStatusCode() === 200) {
         return $res->getBody()->getContents();

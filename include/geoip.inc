@@ -1862,7 +1862,7 @@ function _get_region($gi, $ipnum)
             $country_code = "CA";
             $region = chr(($seek_region - CANADA_OFFSET) / 26 + 65) . chr(($seek_region - CANADA_OFFSET) % 26 + 65);
         } else {
-            $country_code = $gi->GEOIP_COUNTRY_CODES[(int)(($seek_region - WORLD_OFFSET) / FIPS_RANGE)];
+            $country_code = $gi->GEOIP_COUNTRY_CODES[(int) (($seek_region - WORLD_OFFSET) / FIPS_RANGE)];
             $region = "";
         }
         return [

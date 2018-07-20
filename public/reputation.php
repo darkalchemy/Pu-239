@@ -155,7 +155,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
         'userid' => $res['userid'],
     ];
 
-    sql_query('INSERT INTO reputation (' . join(',', array_keys($save)) . ') VALUES (' . join(',', $save) . ')');
+    sql_query('INSERT INTO reputation (' . implode(', ', array_keys($save)) . ') VALUES (' . implode(', ', $save) . ')');
     header("Location: {$site_config['baseurl']}/reputation.php?pid={$input['pid']}&done=1");
 } else {
     if ($res['userid'] == $CURUSER['id']) { // same as him!

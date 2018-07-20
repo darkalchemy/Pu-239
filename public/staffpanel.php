@@ -44,11 +44,11 @@ $staff_tools['shit_list'] = 'shit_list';
 $sql = sql_query('SELECT file_name FROM staffpanel') or sqlerr(__FILE__, __LINE__);
 while ($list = mysqli_fetch_assoc($sql)) {
     $item = str_replace([
-                            'staffpanel.php?tool=',
-                            '.php',
-                            '&mode=news',
-                            '&action=app',
-                        ], '', $list['file_name']);
+        'staffpanel.php?tool=',
+        '.php',
+        '&mode=news',
+        '&action=app',
+    ], '', $list['file_name']);
     $staff_tools[$item] = $item;
 }
 
@@ -142,15 +142,15 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 if ($action === 'add') {
                     $res = sql_query('INSERT INTO staffpanel (page_name, file_name, description, type, av_class, added_by, added, navbar)
                                       VALUES (' . implode(', ', array_map('sqlesc', [
-                                         $page_name,
-                                         $file_name,
-                                         $description,
-                                         $type,
-                                         (int) $_POST['av_class'],
-                                         (int) $CURUSER['id'],
-                                         TIME_NOW,
-                                         $navbar,
-                                     ])) . ')');
+                            $page_name,
+                            $file_name,
+                            $description,
+                            $type,
+                            (int) $_POST['av_class'],
+                            (int) $CURUSER['id'],
+                            TIME_NOW,
+                            $navbar,
+                        ])) . ')');
                     $cache->delete('is_staffs_');
                     $cache->delete('av_class_');
                     $cache->delete('staff_panels_6');

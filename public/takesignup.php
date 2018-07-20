@@ -290,16 +290,16 @@ if ($user_id > 2 && $site_config['autoshout_on'] == 1) {
 
 if ($users_count > 0 && $site_config['email_confirm']) {
     $body = str_replace([
-                            '<#SITENAME#>',
-                            '<#USEREMAIL#>',
-                            '<#IP_ADDRESS#>',
-                            '<#REG_LINK#>',
-                        ], [
-                            $site_config['site_name'],
-                            $email,
-                            $ip,
-                            "{$site_config['baseurl']}/confirm.php?id=$alt_id$psecret",
-                        ], $lang['takesignup_email_body']);
+        '<#SITENAME#>',
+        '<#USEREMAIL#>',
+        '<#IP_ADDRESS#>',
+        '<#REG_LINK#>',
+    ], [
+        $site_config['site_name'],
+        $email,
+        $ip,
+        "{$site_config['baseurl']}/confirm.php?id=$alt_id$psecret",
+    ], $lang['takesignup_email_body']);
 
     $mail = new Message();
     $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")

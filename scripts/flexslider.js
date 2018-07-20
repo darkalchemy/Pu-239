@@ -11,7 +11,7 @@ $('.flexslider').flexslider({
     animationLoop: true,
     slideshowSpeed: 6000,
     animationSpeed: 2000,
-    initDelay: 0,
+    initDelay: 0
 });
 $('.noshow').css('visibility', 'visible');
 $('.slider').css('visibility', 'visible');

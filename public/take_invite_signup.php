@@ -159,25 +159,25 @@ $apikey = make_password(32);
 check_banned_emails($email);
 
 $new_user = sql_query('INSERT INTO users (username, passhash, torrent_pass, auth, apikey, passhint, hintanswer, birthday, invitedby, email, added, last_access, last_login, time_offset, dst_in_use, free_switch, ip, status) VALUES (' . implode(',', array_map('sqlesc', [
-                          $wantusername,
-                          $wantpasshash,
-                          $torrent_pass,
-                          $auth,
-                          $apikey,
-                          $passhint,
-                          $wanthintanswer,
-                          $birthday,
-                          (int) $assoc['sender'],
-                          $email,
-                          TIME_NOW,
-                          TIME_NOW,
-                          TIME_NOW,
-                          $time_offset,
-                          $dst_in_use['tm_isdst'],
-                          $user_frees,
-                          $ip,
-                          'confirmed',
-                      ])) . ')');
+        $wantusername,
+        $wantpasshash,
+        $torrent_pass,
+        $auth,
+        $apikey,
+        $passhint,
+        $wanthintanswer,
+        $birthday,
+        (int) $assoc['sender'],
+        $email,
+        TIME_NOW,
+        TIME_NOW,
+        TIME_NOW,
+        $time_offset,
+        $dst_in_use['tm_isdst'],
+        $user_frees,
+        $ip,
+        'confirmed',
+    ])) . ')');
 $id = 0;
 while ($id == 0) {
     usleep(500);

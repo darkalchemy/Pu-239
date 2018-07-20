@@ -18,30 +18,30 @@ if (!function_exists('htmlsafechars')) {
     function htmlsafechars($var)
     {
         return str_replace([
-                               '&',
-                               '>',
-                               '<',
-                               '"',
-                               '\'',
-                           ], [
-                               '&amp;',
-                               '&gt;',
-                               '&lt;',
-                               '&quot;',
-                               '&#039;',
-                           ], str_replace([
-                                              '&gt;',
-                                              '&lt;',
-                                              '&quot;',
-                                              '&#039;',
-                                              '&amp;',
-                                          ], [
-                                              '>',
-                                              '<',
-                                              '"',
-                                              '\'',
-                                              '&',
-                                          ], $var));
+            '&',
+            '>',
+            '<',
+            '"',
+            '\'',
+        ], [
+            '&amp;',
+            '&gt;',
+            '&lt;',
+            '&quot;',
+            '&#039;',
+        ], str_replace([
+            '&gt;',
+            '&lt;',
+            '&quot;',
+            '&#039;',
+            '&amp;',
+        ], [
+            '>',
+            '<',
+            '"',
+            '\'',
+            '&',
+        ], $var));
     }
 }
 
@@ -89,17 +89,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $date = TIME_NOW;
             $owner = $CURUSER['id'];
             sql_query('INSERT INTO subtitles (name , filename,imdb,comment, lang, fps, poster, cds, added, owner ) VALUES (' . implode(',', array_map('sqlesc', [
-                          $releasename,
-                          $filename,
-                          $imdb,
-                          $comment,
-                          $langs,
-                          $fps,
-                          $poster,
-                          $cd,
-                          $date,
-                          $owner,
-                      ])) . ')') or sqlerr(__FILE__, __LINE__);
+                    $releasename,
+                    $filename,
+                    $imdb,
+                    $comment,
+                    $langs,
+                    $fps,
+                    $poster,
+                    $cd,
+                    $date,
+                    $owner,
+                ])) . ')') or sqlerr(__FILE__, __LINE__);
             move_uploaded_file($temp_name, "{$site_config['sub_up_dir']}/$filename");
             $id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
             header("Refresh: 0; url=subtitles.php?mode=details&id=$id");
@@ -140,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $updateset[] = 'comment = ' . sqlesc($comment);
                 }
                 if (count($updateset) > 0) {
-                    sql_query('UPDATE subtitles SET ' . join(',', $updateset) . ' WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+                    sql_query('UPDATE subtitles SET ' . implode(', ', $updateset) . ' WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
                 }
                 header("Refresh: 0; url=subtitles.php?mode=details&id=$id");
             }

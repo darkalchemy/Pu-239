@@ -24,9 +24,9 @@ function crazyhour_announce()
             $cz['crazyhour']['amount'] = 0;
             $fluent->update('freeleech')
                 ->set([
-                          'var' => $cz['crazyhour']['var'],
-                          'amount' => $cz['crazyhour']['amount'],
-                      ])
+                    'var' => $cz['crazyhour']['var'],
+                    'amount' => $cz['crazyhour']['amount'],
+                ])
                 ->where('type = ?', 'crazyhour')
                 ->execute();
         }
@@ -364,11 +364,11 @@ function auto_enter_abnormal_upload($userid, $rate, $upthis, $diff, $torrentid, 
 function err($msg)
 {
     benc_resp([
-                  'failure reason' => [
-                      'type' => 'string',
-                      'value' => $msg,
-                  ],
-              ]);
+        'failure reason' => [
+            'type' => 'string',
+            'value' => $msg,
+        ],
+    ]);
     exit();
 }
 
@@ -378,9 +378,9 @@ function err($msg)
 function benc_resp($d)
 {
     benc_resp_raw(benc([
-                           'type' => 'dictionary',
-                           'value' => $d,
-                       ]));
+        'type' => 'dictionary',
+        'value' => $d,
+    ]));
 }
 
 /**

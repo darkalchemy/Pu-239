@@ -161,7 +161,7 @@ if (!$_GET && $CURUSER['notifs']) {
     }
 }
 if (count($wherecatina) > 1) {
-    $wherea[] = 'category IN (' . join(', ', $wherecatina) . ') ';
+    $wherea[] = 'category IN (' . implode(', ', $wherecatina) . ') ';
 } elseif (count($wherecatina) == 1) {
     $wherea[] = 'category = ' . $wherecatina[0];
 }
@@ -169,10 +169,10 @@ if (isset($cleansearchstr)) {
     if ($searchstr != '') {
         $addparam .= 'search=' . rawurlencode($searchstr) . '&amp;searchin=' . htmlsafechars($_GET['searchin']) . '&amp;incldead=' . intval($_GET['incldead']) . '&amp;';
         $searchstring = str_replace([
-                                        '_',
-                                        '.',
-                                        '-',
-                                    ], ' ', $searchstr);
+            '_',
+            '.',
+            '-',
+        ], ' ', $searchstr);
         $s = [
             '*',
             '?',
@@ -208,14 +208,14 @@ if (isset($cleansearchstr)) {
             }
         }
         if (count($searchincrt) > 1) {
-            $wherea[] = '(' . join(' OR ', $searchincrt) . ')';
+            $wherea[] = '(' . implode(' OR ', $searchincrt) . ')';
         } elseif (count($searchincrt) === 1) {
-            $wherea[] = join(' OR ', $searchincrt);
+            $wherea[] = implode(' OR ', $searchincrt);
         }
     }
 }
 
-$where = count($wherea) ? 'WHERE ' . join(' AND ', $wherea) : '';
+$where = count($wherea) ? 'WHERE ' . implode(' AND ', $wherea) : '';
 $where_key = 'where_' . hash('sha256', $where);
 $count = $cache->get($where_key);
 if ($count === false || is_null($count)) {

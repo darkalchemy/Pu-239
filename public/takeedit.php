@@ -61,8 +61,8 @@ if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] === 'update')) {
         header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }
-    if (!preg_match('/^(.+)\.[' . join(']|[', $possible_extensions) . ']$/si', $_FILES['nfo']['name'])) {
-        $session->set('is-warning', 'Invalid extension. <b>' . join(', ', $possible_extensions) . '</b> only!');
+    if (!preg_match('/^(.+)\.[' . implode(']|[', $possible_extensions) . ']$/si', $_FILES['nfo']['name'])) {
+        $session->set('is-warning', 'Invalid extension. <b>' . implode(', ', $possible_extensions) . '</b> only!');
         header("Location: {$_SERVER['HTTP_REFERER']}");
         die();
     }
@@ -73,12 +73,12 @@ if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] === 'update')) {
     }
     if (is_uploaded_file($_FILES['nfo']['tmp_name']) && filesize($_FILES['nfo']['tmp_name']) > 0) {
         $nfo_content = str_ireplace([
-                                        "\x0d\x0d\x0a",
-                                        "\xb0",
-                                    ], [
-                                        "\x0d\x0a",
-                                        '',
-                                    ], file_get_contents($_FILES['nfo']['tmp_name']));
+            "\x0d\x0d\x0a",
+            "\xb0",
+        ], [
+            "\x0d\x0a",
+            '',
+        ], file_get_contents($_FILES['nfo']['tmp_name']));
         $updateset[] = 'nfo = ' . sqlesc($nfo_content);
         $torrent_cache['nfo'] = $nfo_content;
     }

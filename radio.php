@@ -43,7 +43,7 @@ function radioinfo($radio)
         }
         preg_match_all('/\<HOSTNAME>(.*?)<\/HOSTNAME>/', $xml, $temph);
         if (!empty($temph[1]) && count($temph[1])) {
-            $users_ip = join(', ', array_map('sqlesc', $temph[1]));
+            $users_ip = implode(', ', array_map('sqlesc', $temph[1]));
         }
         if ($data['STREAMSTATUS'] == 0) {
             return 'Sorry ' . $CURUSER['username'] . '... : Server ' . $radio['host'] . ' is online but there is no stream';
@@ -60,7 +60,7 @@ function radioinfo($radio)
             foreach ($data as $d) {
                 $html .= '<li><b>' . $d . '</b></li>';
             }
-            $html .= '<li><b>Playlist history: </b> ' . (count($history) > 0 ? join(', ', $history) : 'No playlist history') . '</li>';
+            $html .= '<li><b>Playlist history: </b> ' . (count($history) > 0 ? implode(', ', $history) : 'No playlist history') . '</li>';
             if (empty($users_ip) === false) {
                 $q1 = sql_query('SELECT id, username FROM users WHERE ip IN (' . $users_ip . ') ORDER BY username ASC') or sqlerr(__FILE__, __LINE__);
                 if (mysqli_num_rows($q1) == 0) {
@@ -70,7 +70,7 @@ function radioinfo($radio)
                     while ($a1 = mysqli_fetch_assoc($q1)) {
                         $users[] = format_username($a1['id']);
                     }
-                    $html .= '<li><b>Listeners</b>: ' . join(', ', $users) . '</li>';
+                    $html .= '<li><b>Listeners</b>: ' . implode(', ', $users) . '</li>';
                 }
             }
             $html .= '</ul></fieldset>';

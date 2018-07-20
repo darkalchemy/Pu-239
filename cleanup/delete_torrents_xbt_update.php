@@ -28,7 +28,7 @@ function delete_torrents_xbt_update($data)
         @unlink("{$site_config['torrent_dir']}/{$arr['id']}.torrent");
         $msg = 'Torrent ' . (int) $arr['id'] . ' (' . htmlsafechars($arr['name']) . ") was deleted by system (older than $days days and no seeders)";
         sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, saved, location) VALUES (0, ' . (int) $arr['owner'] . ', ' .
-                  TIME_NOW . ', ' . sqlesc($msg) . ", 'Torrent Deleted', 'yes', 1)") or sqlerr(__FILE__, __LINE__);
+            TIME_NOW . ', ' . sqlesc($msg) . ", 'Torrent Deleted', 'yes', 1)") or sqlerr(__FILE__, __LINE__);
         $cache->increment('inbox_' . (int) $arr['owner']);
         if ($data['clean_log']) {
             write_log($msg);

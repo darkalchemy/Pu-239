@@ -35,7 +35,7 @@ function tvrage_format($tvrage_data, $tvrage_type)
         unset($tvrage_display[$tvrage_type]['ended']);
     }
 
-    return join('<br><br>', $tvrage_display[$tvrage_type]);
+    return implode('<br><br>', $tvrage_display[$tvrage_type]);
 }
 
 /**
@@ -67,7 +67,6 @@ function tvrage(&$torrents)
     $memkey = 'tvrage_' . strtolower($tvrage['name']);
     $tvrage_id = $cache->get($memkey);
     if ($tvrage_id === false || is_null($tvrage_id)) {
-        //get tvrage id
         $tvrage_link = sprintf('http://services.tvrage.com/myfeeds/search.php?key=%s&show=%s', $site_config['tvrage_api'], urlencode($tvrage['name']));
         $tvrage_xml = file_get_contents($tvrage_link);
         if (preg_match('/\<showid\>(\d+)<\/showid\>/', $tvrage_xml, $tmp)) {
@@ -95,39 +94,33 @@ function tvrage(&$torrents)
         }
         preg_match_all('/\<genre\>(.*?)\<\/genre>/', $tvrage_xml, $tmp);
         if (!empty($tmp[1]) && count($tmp[1])) {
-            $tvrage_showinfo['genres'] = join(', ', array_map('strtolower', $tmp[1]));
+            $tvrage_showinfo['genres'] = implode(', ', array_map('strtolower', $tmp[1]));
         }
         if (empty($torrents['newgenre'])) {
             $row_update[] = 'newgenre = ' . sqlesc(ucwords($tvrage_showinfo['genres']));
         }
-        //==The torrent cache
         $cache->update_row('torrent_details_' . $torrents['id'], [
             'newgenre' => ucwords($tvrage_showinfo['genres']),
         ], 0);
         if (empty($torrents['poster'])) {
             $row_update[] = 'poster = ' . sqlesc($tvrage_showinfo['image']);
         }
-        //==The torrent cache
         $cache->update_row('torrent_details_' . $torrents['id'], [
             'poster' => $tvrage_showinfo['image'],
         ], 0);
         if (!empty($row_update) && count($row_update)) {
-            sql_query('UPDATE torrents SET ' . join(', ', $row_update) . ' WHERE id = ' . $torrents['id']) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE torrents SET ' . implode(', ', $row_update) . ' WHERE id = ' . $torrents['id']) or sqlerr(__FILE__, __LINE__);
         }
         $tvrage_showinfo = tvrage_format($tvrage_showinfo, 'show') . '<br>';
         $cache->set($memkey, $tvrage_showinfo, 0);
         $tvrage_data .= $tvrage_showinfo;
     } else {
-        //var_dump('Show from mem'); //debug
         $tvrage_data .= $tvrage_showinfo;
     }
-    //check to see if its a show its an episode
     if ($tvrage['season'] > 0 && $tvrage['episode'] > 0) {
         $memkey = 'tvrage_' . $tvrage_id . '::' . $tvrage['season'] . 'x' . $tvrage['episode'];
         $tvrage_epinfo = $cache->get($memkey);
         if ($tvrage_epinfo === false || is_null($tvrage_epinfo)) {
-            //var_dump('Ep from tvrage'); //debug
-            //get episode info
             $tvrage_link = sprintf('http://services.tvrage.com/myfeeds/episodeinfo.php?key=%s&sid=%d&ep=%dx%d', $site_config['tvrage_api'], $tvrage_id, $tvrage['season'], $tvrage['episode']);
             $tvrage_xml = file_get_contents($tvrage_link);
             preg_match_all('/\<(episode|nextepisode)\>(.*?)\<\/\\1\>/', $tvrage_xml, $tmp, PREG_SET_ORDER);
@@ -141,7 +134,6 @@ function tvrage(&$torrents)
             $cache->set($memkey, $tvrage_epinfo, 0);
             $tvrage_data .= $tvrage_epinfo;
         } else {
-            //var_dump('Ep from mem'); //debug
             $tvrage_data .= $tvrage_epinfo;
         }
     }

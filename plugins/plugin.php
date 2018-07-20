@@ -42,9 +42,9 @@ class AdminerPlugin extends Adminer
     public function _callParent($function, $args)
     {
         return call_user_func_array([
-                                        'parent',
-                                        $function,
-                                    ], $args);
+            'parent',
+            $function,
+        ], $args);
     }
 
     public function _applyPlugin($function, $args)
@@ -90,9 +90,9 @@ class AdminerPlugin extends Adminer
         foreach ($this->plugins as $plugin) {
             if (method_exists($plugin, $function)) {
                 $return += call_user_func_array([
-                                                    $plugin,
-                                                    $function,
-                                                ], $args);
+                    $plugin,
+                    $function,
+                ], $args);
             }
         }
         return $return;

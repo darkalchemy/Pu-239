@@ -106,12 +106,12 @@ if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
         die();
     }
     $nfo_content = str_ireplace([
-                                    "\x0d\x0d\x0a",
-                                    "\xb0",
-                                ], [
-                                    "\x0d\x0a",
-                                    '',
-                                ], file_get_contents($nfofilename));
+        "\x0d\x0d\x0a",
+        "\xb0",
+    ], [
+        "\x0d\x0a",
+        '',
+    ], file_get_contents($nfofilename));
     $nfo = sqlesc($nfo_content);
 }
 
@@ -187,9 +187,9 @@ if (empty($isbn)) {
     $isbn = '';
 } else {
     $isbn = str_replace([
-                            '-',
-                            ' ',
-                        ], '', $isbn);
+        '-',
+        ' ',
+    ], '', $isbn);
 }
 
 if (!preg_match('/^(.+)\.torrent$/si', $fname, $matches)) {
@@ -430,7 +430,7 @@ function file_list($arr, $id)
         $new[] = "($id," . sqlesc($v[0]) . ',' . $v[1] . ')';
     }
 
-    return join(',', $new);
+    return implode(',', $new);
 }
 
 sql_query('INSERT INTO files (torrent, filename, size) VALUES ' . file_list($filelist, $id)) or sqlerr(__FILE__, __LINE__);

@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
             $update[] = '(' . sqlesc(strtolower(str_replace(' ', '_', trim($setting)))) . ', ' . sqlesc(trim($value)) . ', ' . sqlesc(trim($description)) . ')';
         }
     }
-    if (!empty($update) && sql_query('INSERT INTO site_config(name, value, description) VALUES ' . join(', ', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value), description = VALUES(description)')) {
+    if (!empty($update) && sql_query('INSERT INTO site_config(name, value, description) VALUES ' . implode(', ', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value), description = VALUES(description)')) {
         $cache->delete('site_settings_');
         $session->set('is-success', 'Update Successful');
     } else {

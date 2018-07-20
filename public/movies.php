@@ -111,13 +111,13 @@ switch ($list) {
                             'airtime' => !empty($tv['airtime']) ? $use_12_hour ? time24to12($airtime) : get_date($airtime, 'WITHOUT_SEC', 1, 1) : '',
                             'id' => $tv['_embedded']['show']['id'],
                             'overview' => str_replace([
-                                                          '<p>',
-                                                          '</p>',
-                                                          '<b>',
-                                                          '</b>',
-                                                          '<i>',
-                                                          '</i>',
-                                                      ], '', $tv['_embedded']['show']['summary']),
+                                '<p>',
+                                '</p>',
+                                '<b>',
+                                '</b>',
+                                '<i>',
+                                '</i>',
+                            ], '', $tv['_embedded']['show']['summary']),
                         ];
                         $titles[] = strtolower($tv['_embedded']['show']['name']);
                     }

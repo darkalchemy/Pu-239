@@ -50,11 +50,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $classcolor = str_replace('#', '', "$classcolor");
             $classpic = !empty($post_data[3]) ? $post_data[3] : '';
             if (isset($_POST[$c_name][0]) && (($value != $c_value) || ($classname != $c_classname) || ($classcolor != $c_classcolor) || ($classpic != $c_classpic))) {
-                $update[$c_name] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($value) ? join('|', $value) : $value) . ',' . sqlesc(is_array($classname) ? join('|', $classname) : $classname) . ',' . sqlesc(is_array($classcolor) ? join('|', $classcolor) : $classcolor) . ',' . sqlesc(is_array($classpic) ? join('|', $classpic) : $classpic) . ')';
+                $update[$c_name] = '(' . sqlesc($c_name) . ', ' . sqlesc(is_array($value) ? implode('|', $value) : $value) . ', ' . sqlesc(is_array($classname) ? implode('|', $classname) : $classname) . ', ' . sqlesc(is_array($classcolor) ? implode('|', $classcolor) : $classcolor) . ', ' . sqlesc(is_array($classpic) ? implode('|', $classpic) : $classpic) . ')';
             }
         }
         write_css($data);
-        if (sql_query('INSERT INTO class_config(name, value, classname, classcolor, classpic) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value), classname = VALUES(classname), classcolor = VALUES(classcolor), classpic = VALUES(classpic)')) { // need to change strut
+        if (sql_query('INSERT INTO class_config(name, value, classname, classcolor, classpic) VALUES ' . implode(', ', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value), classname = VALUES(classname), classcolor = VALUES(classcolor), classpic = VALUES(classpic)')) { // need to change strut
             $t = 'define(';
             $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
             $res = sql_query('SELECT * FROM class_config ORDER BY value  ASC');
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $configfile .= '' . $t . "'{$arr['name']}', {$arr['value']});\n";
             }
             unset($arr);
-            $res = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX') ORDER BY value ASC");
+            $res = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_MAX') ORDER BY value ASC");
             $the_names = $the_colors = $the_images = '';
             $classes[] = 'var UC_MIN = 0;';
             while ($arr = mysqli_fetch_assoc($res)) {
@@ -147,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
             }
-            if (sql_query('INSERT INTO class_config (name, value, classname, classcolor, classpic) VALUES (' . sqlesc($name) . ',' . sqlesc($value) . ',' . sqlesc($r_name) . ',' . sqlesc($color) . ',' . sqlesc($pic) . ')')) {
+            if (sql_query('INSERT INTO class_config (name, value, classname, classcolor, classpic) VALUES (' . sqlesc($name) . ', ' . sqlesc($value) . ', ' . sqlesc($r_name) . ', ' . sqlesc($color) . ', ' . sqlesc($pic) . ')')) {
                 $t = 'define(';
                 $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
                 $res = sql_query('SELECT * FROM class_config ORDER BY value  ASC');
@@ -156,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $configfile .= '' . $t . "'{$arr['name']}', {$arr['value']});\n";
                 }
                 unset($arr);
-                $res = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX') ORDER BY value  ASC");
+                $res = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_MAX') ORDER BY value  ASC");
                 $the_names = $the_colors = $the_images = '';
                 while ($arr = mysqli_fetch_assoc($res)) {
                     if ($arr['name'] !== 'UC_STAFF') {
@@ -233,7 +233,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $configfile .= '' . $t . "'{$arr['name']}', {$arr['value']});\n";
             }
             unset($arr);
-            $res = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX') ORDER BY value  ASC");
+            $res = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_MAX') ORDER BY value  ASC");
             $the_names = $the_colors = $the_images = '';
             while ($arr = mysqli_fetch_assoc($res)) {
                 if ($arr['name'] !== 'UC_STAFF') {
@@ -276,7 +276,7 @@ $HTMLOUT .= "
                     </tr>
                 </thead>
                 <tbody>";
-$res = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
+$res = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_MAX', 'UC_STAFF') ORDER BY value  ASC");
 while ($arr = mysqli_fetch_assoc($res)) {
     $cname = str_replace(' ', '_', strtolower($arr['classname'])) . '_bk';
     $HTMLOUT .= "
@@ -316,7 +316,7 @@ $HTMLOUT .= "
                     </tr>
                 </thead>
                 <tbody>";
-$res1 = sql_query("SELECT * FROM class_config WHERE name IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
+$res1 = sql_query("SELECT * FROM class_config WHERE name IN ('UC_MIN', 'UC_MAX', 'UC_STAFF') ORDER BY value  ASC");
 while ($arr1 = mysqli_fetch_assoc($res1)) {
     $HTMLOUT .= '
                     <tr>

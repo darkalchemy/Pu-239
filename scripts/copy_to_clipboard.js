@@ -1,5 +1,4 @@
-function copy_to_clipboard(elem)
-{
+function copy_to_clipboard(elem) {
     var text = document.getElementById(elem);
     var el = document.createElement('textarea');
     el.value = text.value;
@@ -10,6 +9,6 @@ function copy_to_clipboard(elem)
     el.select();
     document.execCommand('copy');
     document.body.removeChild(el);
-    alert(text.value + "\n\nCopied to clipboard.");
+    alert(text.value + '\n\nCopied to clipboard.');
 }
 

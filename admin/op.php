@@ -113,9 +113,9 @@ $data = array_merge(
     [
         'total_memory_size' => memsize($opcache_config['directives']['opcache.memory_consumption']),
         'used_memory_percentage' => round(100 * (
-                                              ($opcache_status['memory_usage']['used_memory'] + $opcache_status['memory_usage']['wasted_memory'])
-                                              / $opcache_config['directives']['opcache.memory_consumption']
-                                          )),
+                ($opcache_status['memory_usage']['used_memory'] + $opcache_status['memory_usage']['wasted_memory'])
+                / $opcache_config['directives']['opcache.memory_consumption']
+            )),
         'hit_rate_percentage' => round($opcache_status['opcache_statistics']['opcache_hit_rate']),
         'wasted_percentage' => round($opcache_status['memory_usage']['current_wasted_percentage'], 2),
         'used_memory_size' => memsize($opcache_status['memory_usage']['used_memory']),
@@ -455,12 +455,12 @@ empty($_SERVER['SERVER_NAME'])
                     <tr class="<?php rc(); ?>">
                         <td>
                             <span title="<?php echo $d; ?>"><?php echo str_replace([
-                                                                                       'opcache.',
-                                                                                       '_',
-                                                                                   ], [
-                                                                                       '',
-                                                                                       ' ',
-                                                                                   ], $d); ?></span>
+                                    'opcache.',
+                                    '_',
+                                ], [
+                                    '',
+                                    ' ',
+                                ], $d); ?></span>
                         </td>
                         <td><?php echo is_bool($v)
                                 ? ($v ? '<i>true</i>' : '<i>false</i>')
@@ -537,9 +537,9 @@ empty($_SERVER['SERVER_NAME'])
                             $parts = array_filter(explode(DIRECTORY_SEPARATOR, dirname($s['full_path'])));
                             if (!empty($settings['compress_path_threshold'])) {
                                 echo '<span class="showmore"><span class="button is-small">…</span><span class="text" style="display:none;">' . DIRECTORY_SEPARATOR;
-                                echo join(DIRECTORY_SEPARATOR, array_slice($parts, 0, $settings['compress_path_threshold'])) . DIRECTORY_SEPARATOR;
+                                echo implode(DIRECTORY_SEPARATOR, array_slice($parts, 0, $settings['compress_path_threshold'])) . DIRECTORY_SEPARATOR;
                                 echo '</span>';
-                                echo join(DIRECTORY_SEPARATOR, array_slice($parts, $settings['compress_path_threshold']));
+                                echo implode(DIRECTORY_SEPARATOR, array_slice($parts, $settings['compress_path_threshold']));
                                 if (count($parts) > $settings['compress_path_threshold']) {
                                     echo DIRECTORY_SEPARATOR;
                                 }

@@ -20,7 +20,7 @@ if ($pm_what === 'last10') {
     $pms[] = "(0, $uploader, " . TIME_NOW . ', ' . sqlesc($pm_msg) . ($use_subject ? ', ' . sqlesc($subject) : '') . ')';
 }
 if (count($pms) > 0) {
-    sql_query('INSERT INTO messages (sender, receiver, added, msg ' . ($use_subject ? ', subject' : '') . ' ) VALUES ' . join(',', $pms)) or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO messages (sender, receiver, added, msg ' . ($use_subject ? ', subject' : '') . ' ) VALUES ' . implode(', ', $pms)) or sqlerr(__FILE__, __LINE__);
     $session->set('is-success', 'PM was sent! Now wait for a seeder!');
 } else {
     $session->set('is-warning', 'There were no users to PM!');

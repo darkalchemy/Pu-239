@@ -75,7 +75,7 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
         }
         $pagerarr[] = '
                         </ul>';
-        $pagerstr = join('', $pagerarr);
+        $pagerstr = implode('', $pagerarr);
         $pagertop = "<nav class='pagination is-centered is-marginless is-small' role='navigation' aria-label='pagination'>{$pager}{$pager2}
                         $pagerstr
                     </nav>";

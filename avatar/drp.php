@@ -37,7 +37,7 @@ for ($i = 1; $i <= count($op); ++$i) {
     $drp['op3'][] = '<option value="' . $i . '" ' . ($_POST['drp3'] == $i || $var['line3']['value'] == $i ? 'selected' : '') . '>' . $op[$i] . '</option>';
 }
 foreach ($drp as $key => $ops) {
-    $temp[$key] = join('', $ops);
+    $temp[$key] = implode('', $ops);
 }
 for ($i = 1; $i <= 3; ++$i) {
     $temp['line' . $i] = isset($var['line' . $i]['title']) ? $var['line' . $i]['title'] : '';

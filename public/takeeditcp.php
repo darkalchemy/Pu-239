@@ -65,11 +65,11 @@ if ($action == 'avatar') {
         sql_query('UPDATE usersachiev SET avatarset = avatarset + 1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND avatarset = '0'") or sqlerr(__FILE__, __LINE__);
         if (($img_size[0] > $site_config['av_img_width']) || ($img_size[1] > $site_config['av_img_height'])) {
             $image = resize_image([
-                                      'max_width' => $site_config['av_img_width'],
-                                      'max_height' => $site_config['av_img_height'],
-                                      'cur_width' => $img_size[0],
-                                      'cur_height' => $img_size[1],
-                                  ]);
+                'max_width' => $site_config['av_img_width'],
+                'max_height' => $site_config['av_img_height'],
+                'cur_width' => $img_size[0],
+                'cur_height' => $img_size[1],
+            ]);
         } else {
             $image['img_width'] = $img_size[0];
             $image['img_height'] = $img_size[1];
@@ -118,11 +118,11 @@ if ($action == 'avatar') {
         sql_query('UPDATE usersachiev SET sigset = sigset+1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND sigset = '0'") or sqlerr(__FILE__, __LINE__);
         if (($img_size[0] > $site_config['sig_img_width']) || ($img_size[1] > $site_config['sig_img_height'])) {
             $image = resize_image([
-                                      'max_width' => $site_config['sig_img_width'],
-                                      'max_height' => $site_config['sig_img_height'],
-                                      'cur_width' => $img_size[0],
-                                      'cur_height' => $img_size[1],
-                                  ]);
+                'max_width' => $site_config['sig_img_width'],
+                'max_height' => $site_config['sig_img_height'],
+                'cur_width' => $img_size[0],
+                'cur_height' => $img_size[1],
+            ]);
         } else {
             $image['img_width'] = $img_size[0];
             $image['img_height'] = $img_size[1];
@@ -264,18 +264,18 @@ if ($action == 'avatar') {
             ->execute();
 
         $body = str_replace([
-                                '<#USERNAME#>',
-                                '<#SITENAME#>',
-                                '<#USEREMAIL#>',
-                                '<#IP_ADDRESS#>',
-                                '<#CHANGE_LINK#>',
-                            ], [
-                                $CURUSER['username'],
-                                $site_config['site_name'],
-                                $email,
-                                getip(),
-                                "{$site_config['baseurl']}/confirmemail.php?id={$alt_id}&token=$secret",
-                            ], $lang['takeeditcp_email_body']);
+            '<#USERNAME#>',
+            '<#SITENAME#>',
+            '<#USEREMAIL#>',
+            '<#IP_ADDRESS#>',
+            '<#CHANGE_LINK#>',
+        ], [
+            $CURUSER['username'],
+            $site_config['site_name'],
+            $email,
+            getip(),
+            "{$site_config['baseurl']}/confirmemail.php?id={$alt_id}&token=$secret",
+        ], $lang['takeeditcp_email_body']);
 
         $mail = new Message();
         $mail->setFrom("{$site_config['site_email']}", "{$site_config['chatBotName']}")

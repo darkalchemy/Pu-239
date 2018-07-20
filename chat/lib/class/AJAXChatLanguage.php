@@ -93,7 +93,7 @@ class AJAXChatLanguage
             //  Go through it until the language code is empty:
             while (count($langCodeParts)) {
                 // Join the current langCodeParts:
-                $langCode = strtolower(join('-', $langCodeParts));
+                $langCode = strtolower(implode('-', $langCodeParts));
                 // Check if the langCode is in the available list:
                 if (in_array($langCode, $this->_availableLangCodes)) {
                     // Check the quality setting:

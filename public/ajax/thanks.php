@@ -40,13 +40,13 @@ function print_list()
     }
     if ($ajax) {
         return json_encode([
-                               'list' => (count($list) > 0 ? join(', ', $list) : 'Not yet'),
-                               'hadTh' => $hadTh,
-                               'status' => true,
-                           ]);
+            'list' => (count($list) > 0 ? implode(', ', $list) : 'Not yet'),
+            'hadTh' => $hadTh,
+            'status' => true,
+        ]);
     } else {
         $form = !$hadTh ? "<br><form action='./ajax/thanks.php' method='post'><input type='submit' class='button is-small' name='submit' value='Say thanks' /><input type='hidden' name='torrentid' value='{$tid}' /><input type='hidden' name='action' value='add' /></form>" : '';
-        $out = (count($list) > 0 ? join(', ', $list) : 'Not yet');
+        $out = (count($list) > 0 ? implode(', ', $list) : 'Not yet');
 
         return <<<IFRAME
 <!doctype html>
@@ -106,9 +106,9 @@ switch ($do) {
                 } else {
                     $msg = 'There was an error with the query,contact the staff. Mysql error ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
                     echo $ajax ? json_encode([
-                                                 'status' => false,
-                                                 'err' => $msg,
-                                             ]) : $msg;
+                        'status' => false,
+                        'err' => $msg,
+                    ]) : $msg;
                 }
             }
         }
