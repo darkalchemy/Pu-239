@@ -113,11 +113,11 @@ if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SCROLL && $BLO
             ->fetch('count');
         $cache->set('torrent_poster_count_', $count, 86400);
     }
-    if ($count > 10) {
+//    if ($count > 10) {
         $HTMLOUT .= "<div class='container is-fluid portlet' id='LATEST_TORRENTS_SCROLL'>";
         include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_torrents_scroll.php';
         $HTMLOUT .= '</div>';
-    }
+//    }
 }
 
 if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SLIDER && $BLOCKS['latest_torrents_slider_on']) {
@@ -227,4 +227,4 @@ if (curuser::$blocks['index_page'] & block_index::DONATION_PROGRESS && $BLOCKS['
     $HTMLOUT .= '</div>';
 }
 
-echo stdhead('Home', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead('Home', $stdhead) . $HTMLOUT . stdfoot($stdfoot);

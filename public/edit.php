@@ -307,4 +307,4 @@ $body .= "
 $HTMLOUT .= main_table($body, null, 'top20') . '
     </form>';
 
-echo stdhead("{$lang['edit_stdhead']} '{$row['name']}'", true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead("{$lang['edit_stdhead']} '{$row['name']}'", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

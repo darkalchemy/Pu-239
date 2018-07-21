@@ -1,3 +1,8 @@
+21 Jul 2018
+update: bitbucket.php using ajax drag and drop
+remove: incorrect method parameter stdhead()
+remove: avatar path from bitbucket
+
 20 Jul 2018
 cleanup: formatting, alignment, replace join with implode
 

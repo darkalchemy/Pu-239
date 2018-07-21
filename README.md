@@ -1,7 +1,7 @@
 # Pu-239
 
 ## Goals:
-1. Updated to PHP7 - default settings - Done
+1. Updated to PHP 7.2 - default settings - Done
 2. Error free with MySQL 5.7 strict mode - default settings - Done
 3. Remove merged bootstrap - Done
 4. Update jquery - Done
@@ -12,6 +12,7 @@
 9. Remove js from head and relocate to body
 10. REplace Simple Captcha with reCAPTCHA V2 - Done
 11. Fully responsive and mobile ready
+12. Drag and Drop Image Upload - Done
 
 This is a fork of U-232 V4.
 

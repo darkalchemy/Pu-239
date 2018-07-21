@@ -176,5 +176,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </table>
         </form>
     </div>";
-    echo stdhead($lang['head_recover'], true) . $HTMLOUT . stdfoot($stdfoot);
+    echo stdhead($lang['head_recover']) . $HTMLOUT . stdfoot($stdfoot);
 }

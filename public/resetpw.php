@@ -220,5 +220,5 @@ if ($step == '1') {
             </table>
         </form>
     </div>";
-    echo stdhead('Reset Lost Password', true) . $HTMLOUT . stdfoot($stdfoot);
+    echo stdhead('Reset Lost Password') . $HTMLOUT . stdfoot($stdfoot);
 }

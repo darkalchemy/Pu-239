@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         stderr('Error', 'Contact an administrator');
     }
-    echo stdhead('Create Announcement', false);
+    echo stdhead('Create Announcement');
     $HTMLOUT = '';
     $HTMLOUT .= "<table class='main' width='750' >
      <tr>
@@ -126,4 +126,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo $HTMLOUT;
     die();
 }
-echo stdhead('New Announcement', true) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead('New Announcement') . wrapper($HTMLOUT) . stdfoot();

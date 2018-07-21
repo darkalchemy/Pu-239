@@ -97,6 +97,9 @@ $js_list = [
     'acp_js' => [
         SCRIPTS_DIR . 'acp.js',
     ],
+    'dragndrop_js' => [
+        SCRIPTS_DIR . 'dragndrop.js',
+    ],
     'userdetails_js' => [
         SCRIPTS_DIR . 'flush_torrents.js',
         SCRIPTS_DIR . 'jquery.tabcontrol.js',
@@ -122,6 +125,7 @@ $js_list = [
         SCRIPTS_DIR . 'markitup/sets/default/set.js',
         SCRIPTS_DIR . 'markitup.js',
         ROOT_DIR . 'node_modules/lightbox2/dist/js/lightbox.js',
+        SCRIPTS_DIR . 'lightbox.js',
         SCRIPTS_DIR . 'tooltipster.bundle.js',
         SCRIPTS_DIR . 'tooltipster.js',
         SCRIPTS_DIR . 'copy_to_clipboard.js',

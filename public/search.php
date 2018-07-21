@@ -47,4 +47,4 @@ $HTMLOUT = "
         </div>
     </form>$table";
 
-echo stdhead('Bot Search Torrents', true) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead('Bot Search Torrents') . wrapper($HTMLOUT) . stdfoot();

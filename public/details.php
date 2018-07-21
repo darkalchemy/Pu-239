@@ -999,7 +999,7 @@ if ($torrents['allow_comments'] === 'yes' || $CURUSER['class'] >= UC_STAFF && $C
                 </tr>
             </table>
         </div>";
-    echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+    echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', $stdhead) . $HTMLOUT . stdfoot($stdfoot);
     die();
 }
 $count = (int) $torrents['comments'];
@@ -1038,4 +1038,4 @@ if (!$count) {
                 </div>';
 }
 
-echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"') . wrapper($HTMLOUT) . stdfoot($stdfoot);

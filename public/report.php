@@ -77,5 +77,5 @@ $HTMLOUT .= main_div("
         <textarea name='reason' class='w-100' rows='5'></textarea> [ {$lang['report_req']} ]<br>
         <input type='submit' class='button is-small margin20' value='{$lang['report_confirm']}' />
     </form>");
-echo stdhead('Report', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead('Report', $stdhead) . wrapper($HTMLOUT) . stdfoot();
 die();

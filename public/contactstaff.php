@@ -88,5 +88,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $HTMLOUT .= '
             </form>';
 
-    echo stdhead($lang['contactstaff_header'], true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+    echo stdhead($lang['contactstaff_header'], $stdhead) . $HTMLOUT . stdfoot($stdfoot);
 }

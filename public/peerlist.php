@@ -152,4 +152,4 @@ $HTMLOUT .= "
     <h1 class='has-text-centered'>Peerlist for <a href='{$site_config['baseurl']}/details.php?id=$id'>" . htmlsafechars($row['name']) . '</a></h1>';
 $HTMLOUT .= dltable("{$lang['peerslist_seeders']}<a id='seeders'></a>", $seeders, $row);
 $HTMLOUT .= '<br>' . dltable("{$lang['peerslist_leechers']}<a id='leechers'></a>", $downloaders, $row);
-echo stdhead($lang['peerslist_stdhead'], true) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($lang['peerslist_stdhead']) . wrapper($HTMLOUT) . stdfoot();

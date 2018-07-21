@@ -248,4 +248,4 @@ function insertJumpTo($mailbox)
     return $insertJumpTo;
 }
 
-echo stdhead($lang['pm_stdhead'], true, $stdhead) . wrapper($HTMLOUT, 'has-text-centered') . stdfoot();
+echo stdhead($lang['pm_stdhead'], $stdhead) . wrapper($HTMLOUT, 'has-text-centered') . stdfoot();

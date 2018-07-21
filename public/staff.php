@@ -109,4 +109,4 @@ if (!empty($support)) {
                     </tr>";
     $htmlout .= main_table($body, $heading);
 }
-echo stdhead('Staff', true, $stdhead) . wrapper($htmlout) . stdfoot();
+echo stdhead('Staff', $stdhead) . wrapper($htmlout) . stdfoot();

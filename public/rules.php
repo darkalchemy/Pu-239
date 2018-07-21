@@ -171,4 +171,4 @@ $HTMLOUT .= '
         </div>
     </fieldset>';
 
-echo stdhead('Rules', true) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead('Rules') . wrapper($HTMLOUT) . stdfoot();

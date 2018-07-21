@@ -996,4 +996,4 @@ $form .= '
     </form>';
 
 $HTMLOUT = wrapper($form);
-echo stdhead('User Blocks Config', true) . $HTMLOUT . stdfoot();
+echo stdhead('User Blocks Config') . $HTMLOUT . stdfoot();

@@ -154,7 +154,7 @@ if ($action === 'add') {
         $HTMLOUT = wrapper($HTMLOUT);
         $HTMLOUT .= wrapper("<h2 class='has-text-centered'>{$lang['comment_recent']}</h2>" . commenttable($allrows, $locale));
     }
-    echo stdhead("{$lang['comment_add']}'" . $arr[$name] . "'", true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+    echo stdhead("{$lang['comment_add']}'" . $arr[$name] . "'") . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
 } elseif ($action === 'edit') {
     $commentid = (isset($_GET['cid']) ? (int) $_GET['cid'] : 0);
@@ -204,7 +204,7 @@ if ($action === 'add') {
             <input type="submit" class="button is-small" value="' . $lang['comment_doit'] . '" />
         </div>
     </form>';
-    echo stdhead("{$lang['comment_edit']}'" . $arr[$name] . "'", true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+    echo stdhead("{$lang['comment_edit']}'" . $arr[$name] . "'") . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
 } elseif ($action === 'delete') {
     if ($CURUSER['class'] < UC_STAFF) {
@@ -273,7 +273,7 @@ if ($action === 'add') {
                 <a href='$returnto' class='button is-small has-text-black'>back</a>
             </div>  ";
     }
-    echo stdhead("{$lang['comment_original']}", true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+    echo stdhead("{$lang['comment_original']}") . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
 } else {
     stderr("{$lang['comment_error']}", "{$lang['comment_unknown']}");

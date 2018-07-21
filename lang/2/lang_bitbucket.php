@@ -2,6 +2,7 @@
 
 $lang = [
     //Userimages
+    'bitbucket_dragndrop' => 'Drop images or click here to select images.',
     'bitbucket_umm' => 'Umm',
     'bitbucket_wayd' => 'what are you doing?',
     'bitbucket_hey' => 'Hey',
@@ -30,9 +31,9 @@ $lang = [
     'bitbucket_bitbucket' => 'Bitbucket',
     'bitbucket_error' => 'Error',
     'bitbucket_disclaimer' => "<b>Disclaimer:</b> Do not upload unauthorized or illegal pictures. Uploaded pictures should be considered \"Public Domain\". Do not upload pictures you wouldn't want a stranger to have access to.",
-    'bitbucket_deleting' => 'Deleting Image (',
+    'bitbucket_deleting' => 'Deleted Image (',
     'bitbucket_redir' => '), Redirecting...',
-    'bitbucket_hideimgs' => 'Hide this months images',
+    'bitbucket_hideimgs' => 'Hide My Images',
     'bitbucket_previosimg' => 'Previous Months Images',
     'bitbucket_last' => 'Last',
     'bitbucket_year' => 'Year',
@@ -50,5 +51,5 @@ $lang = [
     'bitbucket_dec' => 'December',
     'bitbucket_invalid' => 'Invalid file extension. jpg, gif and png only.',
     'bitbucket_err' => 'Error:',
-    'bitbucket_viewmonths' => 'View this months images',
+    'bitbucket_viewmonths' => 'View My Images',
 ];

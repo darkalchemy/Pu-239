@@ -69,7 +69,7 @@ if ($action === 'add') {
         $HTMLOUT .= '
             <h2>Most recent comments, in reverse order</h2>' . commenttable($allrows);
     }
-    echo stdhead('Add a comment for "' . htmlsafechars($arr['username']) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
+    echo stdhead('Add a comment for "' . htmlsafechars($arr['username']) . '"', $stdhead) . wrapper($HTMLOUT) . stdfoot();
 } elseif ($action === 'edit') {
     $userid = (int) $_GET['userid'];
     $commentid = (int) $_GET['cid'];
@@ -106,7 +106,7 @@ if ($action === 'add') {
     <div class='has-text-centered margin20'>
         <input type='submit' class='button is-small' value='Do it!' />
     </div></form>";
-    echo stdhead('Edit comment for "' . htmlsafechars($arr['username']) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
+    echo stdhead('Edit comment for "' . htmlsafechars($arr['username']) . '"', $stdhead) . wrapper($HTMLOUT) . stdfoot();
     stdfoot();
     die();
 } elseif ($action === 'delete') {
@@ -166,7 +166,7 @@ if ($action === 'add') {
                 <a href='$returnto#comments' class='button is-small has-text-black'>back</a>
             </div>  ";
     }
-    echo stdhead("{$lang['comment_original']}", true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+    echo stdhead("{$lang['comment_original']}") . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
 } else {
     stderr('Error', 'Unknown action');

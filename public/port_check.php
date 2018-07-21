@@ -38,4 +38,4 @@ $completed .= main_div(
     </script>"
 );
 
-echo stdhead('Check My Ports', true) . wrapper($completed) . stdfoot($stdfoot);
+echo stdhead('Check My Ports') . wrapper($completed) . stdfoot($stdfoot);

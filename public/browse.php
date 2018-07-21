@@ -405,4 +405,4 @@ if ($count) {
     }
 }
 
-echo stdhead($title, true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($title) . wrapper($HTMLOUT) . stdfoot($stdfoot);

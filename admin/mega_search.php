@@ -448,4 +448,4 @@ if (isset($_POST['invite_code'])) {
     }
 }
 
-echo stdhead($lang['mega_stdhead'], true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($lang['mega_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot();

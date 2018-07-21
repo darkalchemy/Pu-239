@@ -8,4 +8,4 @@ global $site_config, $CURUSER;
 $lang = load_language('global');
 
 $html = "<iframe src='{$site_config['baseurl']}/ajax/view_sql.php?username={$CURUSER['username']}&db={$_ENV['DB_DATABASE']}' id='iframe_adminer' name='iframe_adminer' scrolling='no' onload='resizeIframe(this)'></iframe>";
-echo stdhead('Adminer', true) . wrapper($html) . stdfoot();
+echo stdhead('Adminer') . wrapper($html) . stdfoot();

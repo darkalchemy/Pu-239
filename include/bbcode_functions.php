@@ -61,7 +61,7 @@ function BBcode($body = '')
                         <div class="scroll_wrapper">
                             <div class="scroll" id="box_0" style="display: none;">
                                 <div class="smilies_frame">
-                                    <img data-src="' . $site_config['pic_baseurl'] . 'forums/updating.gif" alt="Loading..." class="lazy" />
+                                    <img data-src="' . $site_config['pic_baseurl'] . 'forums/updating.svg" alt="Loading..." class="lazy" />
                                 </div>
                             </div>
                             <div class="scroll" id="box_1" style="display: none;">

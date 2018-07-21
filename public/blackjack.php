@@ -1213,7 +1213,7 @@ function output($blackjack, $HTMLOUT, $debugout)
         $HTMLOUT = $HTMLOUT . $debugout;
     }
 
-    echo stdhead($blackjack['title'], true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
+    echo stdhead($blackjack['title'], $stdhead) . wrapper($HTMLOUT) . stdfoot();
     die();
 }
 

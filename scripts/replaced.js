@@ -4,6 +4,11 @@ var easing = 'swing';
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
+function SelectAll(id) {
+    document.getElementById(id).focus();
+    document.getElementById(id).select();
+}
+
 function themes() {
     PopUp('take_theme.php', 'My themes', 300, 150, 1, 0);
 }

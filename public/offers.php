@@ -116,7 +116,7 @@ switch ($action) {
         }
         $HTMLOUT .= '</table>';
         $HTMLOUT .= '' . $menu . '<br></div>';
-        echo stdhead('Offers', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Offers') . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'offer_details':
@@ -246,7 +246,7 @@ switch ($action) {
             $HTMLOUT .= ($count > $perpage) ? $menu . '<br>' : '<br>';
             $HTMLOUT .= commenttable($allrows, 'offer');
         }
-        echo stdhead('Offer details for: ' . htmlsafechars($arr['offer_name'], ENT_QUOTES), true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Offer details for: ' . htmlsafechars($arr['offer_name'], ENT_QUOTES)) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'add_new_offer':
@@ -313,7 +313,7 @@ switch ($action) {
     </tbody>
     </table></form>
      </td></tr></table><br>';
-        echo stdhead('Add new offer.', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Add new offer.') . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'delete_offer':
@@ -338,7 +338,7 @@ switch ($action) {
             header('Location: /offers.php?offer_deleted=1');
             die();
         }
-        echo stdhead('Delete Offer.', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Delete Offer.') . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'edit_offer':
@@ -410,7 +410,7 @@ switch ($action) {
     </tr>
     </table></form>
      </td></tr></table><br>';
-        echo stdhead('Edit Offer.', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Edit Offer.') . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'add_comment':
@@ -472,7 +472,7 @@ switch ($action) {
             $HTMLOUT .= '<h2>Most recent comments, in reverse order</h2>';
             $HTMLOUT .= commenttable($allrows, 'offer');
         }
-        echo stdhead('Add a comment to "' . htmlsafechars($arr['offer_name']) . '"', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Add a comment to "' . htmlsafechars($arr['offer_name']) . '"') . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'edit':
@@ -523,7 +523,7 @@ switch ($action) {
         </td>
     </tr>
      </table></form>';
-        echo stdhead('Edit comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Edit comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"') . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'delete_comment':
@@ -605,7 +605,7 @@ switch ($action) {
                     <a href='$returnto' class='button is-small has-text-black'>back</a>
                 </div>";
         }
-        echo stdhead("{$lang['comment_original']}", true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead("{$lang['comment_original']}") . wrapper($HTMLOUT) . stdfoot($stdfoot);
         die();
         break;
 }

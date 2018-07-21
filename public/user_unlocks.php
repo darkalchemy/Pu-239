@@ -81,4 +81,4 @@ $HTMLOUT = '
                 </form>
             </div>';
 
-echo stdhead('User unlocks', true) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead('User unlocks') . wrapper($HTMLOUT) . stdfoot();

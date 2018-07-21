@@ -163,4 +163,4 @@ else {
         </table>";
 }
 
-echo stdhead('Old School Arcade', true) . wrapper($HTMLOUT, 'has-text-centered') . stdfoot();
+echo stdhead('Old School Arcade') . wrapper($HTMLOUT, 'has-text-centered') . stdfoot();

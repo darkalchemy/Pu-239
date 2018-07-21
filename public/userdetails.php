@@ -963,4 +963,4 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
 }
 $HTMLOUT .= '</div></div></div>';
 
-echo stdhead("{$lang['userdetails_details']} " . $user['username'], true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead("{$lang['userdetails_details']} " . $user['username']) . wrapper($HTMLOUT) . stdfoot($stdfoot);

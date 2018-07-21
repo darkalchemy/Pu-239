@@ -106,7 +106,7 @@ switch ($action) {
         }
         $HTMLOUT .= '</table>';
         $HTMLOUT .= '' . $menu . '<br>';
-        echo stdhead('Requests', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Requests') . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'request_details':
@@ -233,7 +233,7 @@ switch ($action) {
             $HTMLOUT .= ($count > $perpage) ? $menu . '<br>' : '<br>';
             $HTMLOUT .= commenttable($allrows, 'request');
         }
-        echo stdhead('Request details for: ' . htmlsafechars($arr['request_name'], ENT_QUOTES), true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Request details for: ' . htmlsafechars($arr['request_name'], ENT_QUOTES)) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'add_new_request':
@@ -302,7 +302,7 @@ switch ($action) {
     </tr>
     </tbody>
     </table></form><br>';
-        echo stdhead('Add new request.', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Add new request.') . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'delete_request':
@@ -327,7 +327,7 @@ switch ($action) {
             header('Location: /requests.php?request_deleted=1');
             die();
         }
-        echo stdhead('Delete Request.', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Delete Request.') . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'edit_request':
@@ -405,7 +405,7 @@ switch ($action) {
    </tr>
    </table></form>
     </td></tr></table><br>';
-        echo stdhead('Edit Request.', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Edit Request.') . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'add_comment':
@@ -467,7 +467,7 @@ switch ($action) {
             $HTMLOUT .= '<h2>Most recent comments, in reverse order</h2>';
             $HTMLOUT .= commenttable($allrows, 'request');
         }
-        echo stdhead('Add a comment to "' . $arr['request_name'] . '"', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Add a comment to "' . $arr['request_name'] . '"') . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'edit':
@@ -516,7 +516,7 @@ switch ($action) {
         </td>
     </tr>
      </table></form>';
-        echo stdhead('Edit comment to "' . $arr['request_name'] . '"', true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Edit comment to "' . $arr['request_name'] . '"') . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'delete_comment':
@@ -566,7 +566,7 @@ switch ($action) {
                     <a href='$returnto' class='button is-small has-text-black'>back</a>
                 </div>";
         }
-        echo stdhead("{$lang['comment_original']}", true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead("{$lang['comment_original']}") . wrapper($HTMLOUT) . stdfoot($stdfoot);
         die();
         break;
 }

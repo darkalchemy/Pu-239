@@ -275,4 +275,4 @@ if (mysqli_num_rows($r) > 0) {
 } else {
     $session->set('is-success', format_username($userid) . " {$lang['userdetails_no_hnrs']}");
 }
-echo stdhead('HnRs', true) . wrapper($completed) . stdfoot();
+echo stdhead('HnRs') . wrapper($completed) . stdfoot();

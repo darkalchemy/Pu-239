@@ -7,10 +7,11 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once CACHE_DIR . 'subs.php';
 check_user_status();
 global $CURUSER, $site_config;
-$lang = array_merge(load_language('global'), load_language('upload'));
+$lang = array_merge(load_language('global'), load_language('upload'), load_language('bitbucket'));
 $stdfoot = [
     'js' => [
         get_file_name('upload_js'),
+        get_file_name('dragndrop_js'),
     ],
 ];
 $HTMLOUT = $offers = $subs_list = $request = $descr = '';
@@ -68,7 +69,7 @@ $HTMLOUT .= "<table class='table table-bordered table-striped top20 bottom20'>
     </tr>
     <tr>
     <td class='rowhead'>{$lang['upload_poster']}</td>
-    <td><input type='text' name='poster' class='w-100' /><br>{$lang['upload_poster1']}</td>
+    <td><input id='poster' type='text' name='poster' class='w-100' /><br>{$lang['upload_poster1']}</td>
     </tr>
     <tr>
     <td class='rowhead'>{$lang['upload_youtube']}</td>
@@ -76,9 +77,14 @@ $HTMLOUT .= "<table class='table table-bordered table-striped top20 bottom20'>
     </tr>
     <tr>
     <td class='rowhead'><b>{$lang['upload_bitbucket']}</b></td>
-    <td>
-    <iframe src='imgup.html'></iframe>
-    <br>{$lang['upload_bitbucket_1']}
+    <td class='has-text-centered'>
+        <div id='droppable' class='droppable bg-03'>
+            <span id='comment'>{$lang['bitbucket_dragndrop']}</span>
+            <div id='loader' class='is-hidden'>
+                <img src='{$site_config['pic_baseurl']}forums/updating.svg' alt='Loading...' />
+            </div>
+        </div>
+        <div class='output-wrapper output'></div>
     </td>
     </tr>
     <tr>
@@ -285,4 +291,4 @@ $HTMLOUT .= "
         </table>
         </form>";
 
-echo stdhead($lang['upload_stdhead'], true) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($lang['upload_stdhead']) . wrapper($HTMLOUT) . stdfoot($stdfoot);

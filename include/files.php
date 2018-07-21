@@ -7,7 +7,7 @@ function get_file_name($file)
     $style = get_stylesheet();
     switch ($file) {
         case 'css':
-            return "{$site_config['baseurl']}/css/1/css_3d9b4ba9.css";
+            return "{$site_config['baseurl']}/css/1/css_9a340ecb.css";
         case 'chat_css_trans':
             return "{$site_config['baseurl']}/css/1/chat_trans_ee2913d3.css";
         case 'chat_css_uranium':
@@ -30,6 +30,8 @@ function get_file_name($file)
             return "{$site_config['baseurl']}/js/1/request_4bbb71bf.js";
         case 'acp_js':
             return "{$site_config['baseurl']}/js/1/acp_22d19c79.js";
+        case 'dragndrop_js':
+            return "{$site_config['baseurl']}/js/1/dragndrop_f58b2571.js";
         case 'userdetails_js':
             return "{$site_config['baseurl']}/js/1/userdetails_9985f40a.js";
         case 'details_js':
@@ -39,7 +41,7 @@ function get_file_name($file)
         case 'staffpanel_js':
             return "{$site_config['baseurl']}/js/1/staffpanel_801ab346.js";
         case 'js':
-            return "{$site_config['baseurl']}/js/1/js_61197afc.js";
+            return "{$site_config['baseurl']}/js/1/js_ab37d353.js";
         default:
             return null;
     }

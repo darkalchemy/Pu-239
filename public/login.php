@@ -121,4 +121,4 @@ $HTMLOUT .= "           </td>
             </form>
         </div>";
 
-echo stdhead("{$lang['login_login_btn']}", true) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead("{$lang['login_login_btn']}") . $HTMLOUT . stdfoot($stdfoot);
