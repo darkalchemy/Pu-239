@@ -721,6 +721,10 @@ textarea {
     padding-top : .625em;
 }
 
+.padright5 {
+    padding-right : .3125em;
+}
+
 .platform-wrapper {
     height    : 30px;
     font-size : 1.25em;

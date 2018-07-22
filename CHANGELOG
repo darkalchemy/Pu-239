@@ -1,3 +1,9 @@
+22 Jul 2018
+update: only show block in user_blocks if block is enabled by site
+remove: redundant columns from users table
+fix: bitwise for opt2
+remove: imacss and postcss-font-base64
+
 21 Jul 2018
 update: bitbucket.php using ajax drag and drop
 remove: incorrect method parameter stdhead()

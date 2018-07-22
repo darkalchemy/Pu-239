@@ -3,6 +3,8 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_memcache.php';
+require_once CLASS_DIR . 'class_user_options_2.php';
+
 check_user_status();
 global $CURUSER, $site_config, $cache, $session;
 
@@ -110,7 +112,7 @@ if ($site_config['seedbonus_on'] == 1) {
     ], $site_config['expires']['user_cache']);
 }
 $message = "Torrent $id (" . htmlsafechars($row['name']) . ") has been deleted.\n  Reason: $reasonstr";
-if ($CURUSER['id'] != $row['owner'] && $CURUSER['pm_on_delete'] === 'yes') {
+if ($CURUSER['id'] != $row['owner'] && ($CURUSER['opt2'] & user_options_2::PM_ON_DELETE) === user_options_2::PM_ON_DELETE) {
     $added = TIME_NOW;
     $pm_on = (int) $row['owner'];
     $subject = 'Torrent Deleted';

@@ -2332,7 +2332,7 @@ CREATE TABLE `user_blocks` (
   `userid` int(10) unsigned NOT NULL,
   `index_page` int(10) unsigned NOT NULL DEFAULT '16777215',
   `global_stdhead` int(10) unsigned NOT NULL DEFAULT '1023',
-  `userdetails_page` int(10) unsigned NOT NULL DEFAULT '2147483647',
+  `userdetails_page` int(11) NOT NULL DEFAULT '2147418111',
   UNIQUE KEY `userid` (`userid`),
   CONSTRAINT `user_blocks_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -2513,30 +2513,25 @@ CREATE TABLE `users` (
   `got_blocks` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `last_access_numb` bigint(30) NOT NULL DEFAULT '0',
   `onlinetime` bigint(30) NOT NULL DEFAULT '0',
-  `pm_on_delete` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `commentpm` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `split` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `browser` mediumtext COLLATE utf8mb4_unicode_ci,
   `hits` int(10) NOT NULL DEFAULT '0',
   `comments` int(10) unsigned NOT NULL DEFAULT '0',
   `categorie_icon` int(10) DEFAULT '1',
   `perms` int(11) NOT NULL DEFAULT '0',
   `mood` int(10) NOT NULL DEFAULT '1',
-  `got_moods` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `pms_per_page` tinyint(3) unsigned DEFAULT '20',
-  `show_pm_avatar` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `watched_user` int(11) NOT NULL DEFAULT '0',
   `watched_user_reason` mediumtext COLLATE utf8mb4_unicode_ci,
   `staff_notes` mediumtext COLLATE utf8mb4_unicode_ci,
   `game_access` int(11) NOT NULL DEFAULT '1',
   `where_is` mediumtext COLLATE utf8mb4_unicode_ci,
-  `show_staffshout` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `request_uri` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `browse_icons` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `numuploads` int(10) NOT NULL DEFAULT '0',
   `corrupt` int(10) NOT NULL DEFAULT '0',
   `opt1` int(11) NOT NULL DEFAULT '182927957',
-  `opt2` int(11) NOT NULL DEFAULT '224',
+  `opt2` int(11) NOT NULL DEFAULT '128',
   `can_leech` tinyint(4) NOT NULL DEFAULT '1',
   `wait_time` int(11) NOT NULL DEFAULT '0',
   `peers_limit` int(11) DEFAULT '1000',
@@ -2659,4 +2654,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-19 21:54:05
+-- Dump completed on 2018-07-22  7:39:25

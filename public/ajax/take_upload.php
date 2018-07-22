@@ -29,8 +29,7 @@ $USERSALT = substr(md5($SaLty . $CURUSER['id']), 0, 6);
 make_year(BITBUCKET_DIR);
 make_month(BITBUCKET_DIR);
 
-
-for ($i = 0; $i < $_POST['nbr_files']; $i++) {
+for ($i = 0; $i < $_POST['nbr_files']; ++$i) {
     $file = preg_replace('`[^a-z0-9\-\_\.]`i', '', $_FILES['file_' . $i]['name']);
     $it1 = exif_imagetype($_FILES['file_' . $i]['tmp_name']);
     if (!in_array($it1, $site_config['allowed_exif_types'])) {
@@ -57,7 +56,7 @@ for ($i = 0; $i < $_POST['nbr_files']; $i++) {
 
 if (!empty($images)) {
     echo json_encode([
-        'msg'  => $lang['bitbucket_success'],
+        'msg' => $lang['bitbucket_success'],
         'urls' => $images,
     ]);
     die();

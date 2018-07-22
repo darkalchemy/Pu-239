@@ -143,7 +143,6 @@ function main_table($body, $header = null, $class = null, $wrapper_class = null)
                         </thead>" : '';
 
     return "
-            <div class='grid-wrapper'>
                 <div class='table-wrapper $wrapper_class'>
                     <table class='table table-bordered table-striped $class'>
                         $thead
@@ -151,8 +150,7 @@ function main_table($body, $header = null, $class = null, $wrapper_class = null)
                             $body
                         </tbody>
                     </table>
-                </div>
-            </div>";
+                </div>";
 }
 
 /**

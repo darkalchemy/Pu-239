@@ -161,6 +161,7 @@ if (empty($gamenum) || empty($qid)) {
                         ORDER BY correct DESC, incorrect ASC
                         LIMIT 10';
             $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+            $table = '';
             if (mysqli_num_rows($res) > 0) {
                 $heading = "
                         <tr>

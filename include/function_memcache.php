@@ -51,6 +51,20 @@ function remove_torrent($infohash)
     $cache->delete('scroll_tor_');
     $cache->delete('torrent_details_' . $torrent['id']);
     $cache->delete('torrent_details_text' . $torrent['id']);
+    $cache->delete('MyPeers_' . $torrent['owner']);
+    $cache->delete('lastest_tor_');
+    $cache->delete('slider_tor_');
+    $cache->delete('torrent_poster_count_');
+    $cache->delete('torrent_banner_count_');
+    $cache->delete('backgrounds_');
+    $cache->delete('posters_');
+    $hashes = $cache->get('hashes_');
+    if (!empty($hashes)) {
+        foreach ($hashes as $hash) {
+            $cache->delete('suggest_torrents_' . $hash);
+        }
+        $cache->delete('hashes_');
+    }
 
     return true;
 }

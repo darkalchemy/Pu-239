@@ -23,7 +23,7 @@ $curuser_cache = $user_cache = $urladd = $changedemail = $birthday = '';
 function resize_image($in)
 {
     $out = [
-        'img_width' => $in['cur_width'],
+        'img_width'  => $in['cur_width'],
         'img_height' => $in['cur_height'],
     ];
     if ($in['cur_width'] > $in['max_width']) {
@@ -42,7 +42,7 @@ function resize_image($in)
 
 $action = isset($_POST['action']) ? htmlsafechars(trim($_POST['action'])) : '';
 $updateset = $curuser_cache = $user_cache = [];
-$setbits = $clrbits = 0;
+$setbits = $clrbits = $setbits2 = $clrbits2 = 0;
 
 if ($action == 'avatar') {
     $avatars = (isset($_POST['avatars']) && $_POST['avatars'] === 'yes' ? 'yes' : 'no');
@@ -65,9 +65,9 @@ if ($action == 'avatar') {
         sql_query('UPDATE usersachiev SET avatarset = avatarset + 1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND avatarset = '0'") or sqlerr(__FILE__, __LINE__);
         if (($img_size[0] > $site_config['av_img_width']) || ($img_size[1] > $site_config['av_img_height'])) {
             $image = resize_image([
-                'max_width' => $site_config['av_img_width'],
+                'max_width'  => $site_config['av_img_width'],
                 'max_height' => $site_config['av_img_height'],
-                'cur_width' => $img_size[0],
+                'cur_width'  => $img_size[0],
                 'cur_height' => $img_size[1],
             ]);
         } else {
@@ -118,9 +118,9 @@ if ($action == 'avatar') {
         sql_query('UPDATE usersachiev SET sigset = sigset+1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND sigset = '0'") or sqlerr(__FILE__, __LINE__);
         if (($img_size[0] > $site_config['sig_img_width']) || ($img_size[1] > $site_config['sig_img_height'])) {
             $image = resize_image([
-                'max_width' => $site_config['sig_img_width'],
+                'max_width'  => $site_config['sig_img_width'],
                 'max_height' => $site_config['sig_img_height'],
-                'cur_width' => $img_size[0],
+                'cur_width'  => $img_size[0],
                 'cur_height' => $img_size[1],
             ]);
         } else {
@@ -254,10 +254,10 @@ if ($action == 'avatar') {
         $token = make_passhash($secret);
         $alt_id = make_password(16);
         $values = [
-            'email' => $CURUSER['email'],
+            'email'     => $CURUSER['email'],
             'new_email' => $email,
-            'token' => $token,
-            'id' => $alt_id,
+            'token'     => $token,
+            'id'        => $alt_id,
         ];
         $fluent->insertInto('tokens')
             ->values($values)
@@ -336,15 +336,16 @@ if ($action == 'avatar') {
         $clrbits |= user_options::CLEAR_NEW_TAG_MANUALLY;
     }
     if (isset($_POST['split'])) {
-        $setbits |= user_options_2::SPLIT;
+        $setbits2 |= user_options_2::SPLIT;
     } else {
-        $clrbits |= user_options_2::SPLIT;
+        $clrbits2 |= user_options_2::SPLIT;
     }
     if (isset($_POST['browse_icons'])) {
-        $setbits |= user_options_2::BROWSE_ICONS;
+        $setbits2 |= user_options_2::BROWSE_ICONS;
     } else {
-        $clrbits |= user_options_2::BROWSE_ICONS;
+        $clrbits2 |= user_options_2::BROWSE_ICONS;
     }
+
     if (isset($_POST['categorie_icon']) && (($categorie_icon = (int) $_POST['categorie_icon']) != $CURUSER['categorie_icon']) && is_valid_id($categorie_icon)) {
         $updateset[] = 'categorie_icon = ' . sqlesc($categorie_icon);
         $curuser_cache['categorie_icon'] = $categorie_icon;
@@ -374,7 +375,7 @@ if ($action == 'avatar') {
         if (!empty($CURUSER['last_status'])) {
             $status_archive[] = [
                 'status' => $CURUSER['last_status'],
-                'date' => $CURUSER['last_update'],
+                'date'   => $CURUSER['last_update'],
             ];
         }
         sql_query('INSERT INTO ustatus(userid,last_status,last_update,archive) VALUES(' . sqlesc($CURUSER['id']) . ',' . sqlesc($status) . ',' . TIME_NOW . ',' . sqlesc(serialize($status_archive)) . ') ON DUPLICATE KEY UPDATE last_status = VALUES(last_status),last_update = VALUES(last_update),archive = VALUES(archive)') or sqlerr(__FILE__, __LINE__);
@@ -496,6 +497,18 @@ if ($action == 'avatar') {
 
     $action = 'location';
 } elseif ($action === 'default') {
+    //dd($_POST);
+    if (isset($_POST['pm_on_delete']) && $_POST['pm_on_delete'] === 'yes') {
+        $setbits2 |= user_options_2::PM_ON_DELETE;
+    } elseif (isset($_POST['pm_on_delete']) && $_POST['pm_on_delete'] === 'no') {
+        $clrbits2 |= user_options_2::PM_ON_DELETE;
+    }
+    if (isset($_POST['commentpm']) && $_POST['commentpm'] === 'yes') {
+        $setbits2 |= user_options_2::COMMENTPM;
+    } elseif (isset($_POST['commentpm']) && $_POST['commentpm'] === 'no') {
+        $clrbits2 |= user_options_2::COMMENTPM;
+    }
+
     $pmnotif = isset($_POST['pmnotif']) ? $_POST['pmnotif'] : '';
     $emailnotif = 'no';
     if (strpos($CURUSER['notifs'], '[email]') !== false) {
@@ -510,9 +523,9 @@ if ($action == 'avatar') {
     $user_cache['notifs'] = $notifs;
 
     $acceptpms_choices = [
-        'yes' => 1,
+        'yes'     => 1,
         'friends' => 2,
-        'no' => 3,
+        'no'      => 3,
     ];
     $acceptpms = (isset($_POST['acceptpms']) ? $_POST['acceptpms'] : 'all');
     if (isset($acceptpms_choices[$acceptpms])) {
@@ -533,16 +546,6 @@ if ($action == 'avatar') {
         $curuser_cache['subscription_pm'] = $subscription_pm;
         $user_cache['subscription_pm'] = $subscription_pm;
     }
-    if (isset($_POST['pm_on_delete']) && ($pm_on_delete = $_POST['pm_on_delete']) != $CURUSER['pm_on_delete']) {
-        $updateset[] = 'pm_on_delete = ' . sqlesc($pm_on_delete);
-        $curuser_cache['pm_on_delete'] = $pm_on_delete;
-        $user_cache['pm_on_delete'] = $pm_on_delete;
-    }
-    if (isset($_POST['commentpm']) && ($commentpm = $_POST['commentpm']) != $CURUSER['commentpm']) {
-        $updateset[] = 'commentpm = ' . sqlesc($commentpm);
-        $curuser_cache['commentpm'] = $commentpm;
-        $user_cache['commentpm'] = $commentpm;
-    }
     $action = 'default';
 }
 
@@ -550,20 +553,27 @@ if ($user_cache) {
     $cache->update_row('user' . $CURUSER['id'], $user_cache, $site_config['expires']['user_cache']);
 }
 
-if (count($updateset) > 0) {
+if (!empty($updateset)) {
     sql_query('UPDATE users SET ' . implode(',', $updateset) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 }
 if ($setbits || $clrbits) {
-    sql_query('UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . '), opt2 = ((opt2 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    $sql = 'UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id = ' . sqlesc($CURUSER['id']);
+    sql_query($sql) or sqlerr(__FILE__, __LINE__);
+}
+if ($setbits2 || $clrbits2) {
+    $sql = 'UPDATE users SET opt2 = ((opt2 | ' . $setbits2 . ') & ~' . $clrbits2 . ') WHERE id = ' . sqlesc($CURUSER['id']);
+    sql_query($sql) or sqlerr(__FILE__, __LINE__);
 }
 
-$res = sql_query('SELECT opt1, opt2 FROM users
-                     WHERE id = ' . sqlesc($CURUSER['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-$row = mysqli_fetch_assoc($res);
-$row['opt1'] = (int) $row['opt1'];
-$row['opt2'] = (int) $row['opt2'];
+$opt = $fluent->from('users')
+    ->select(null)
+    ->select('opt1')
+    ->select('opt2')
+    ->where('id = ?', $CURUSER['id'])
+    ->fetch();
+
 $cache->update_row('user' . $CURUSER['id'], [
-    'opt1' => $row['opt1'],
-    'opt2' => $row['opt2'],
+    'opt1' => $opt['opt1'],
+    'opt2' => $opt['opt2'],
 ], $site_config['expires']['user_cache']);
 header("Location: {$site_config['baseurl']}/usercp.php?edited=1&action=$action" . $urladd);

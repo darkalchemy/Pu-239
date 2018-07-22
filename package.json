@@ -19,12 +19,10 @@
     "bulma": "^0.6.2",
     "clean-css": "^4.1.11",
     "clean-css-cli": "^4.1.11",
-    "imacss": "^1.0.0",
     "jquery": "^3.3.1",
     "lightbox2": "^2.10.0",
     "normalize.css": "^7.0.0",
     "postcss-cli": "^5.0.1",
-    "postcss-font-base64": "^1.0.5",
     "raphael": "^2.2.7",
     "uglify-js": "^3.4.5"
   },

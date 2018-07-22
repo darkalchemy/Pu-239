@@ -103,7 +103,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         stderr($lang['modtask_error'], $lang['modtask_user_immune']);
     }
     $updateset = $curuser_cache = $user_cache = $useredit['update'] = [];
-    $setbits = $clrbits = 0;
+    $setbits = $clrbits = $setbits2 = $clearbits2 = 0;
     $username = ($CURUSER['perms'] & bt_options::PERMS_STEALTH ? 'System' : htmlsafechars($CURUSER['username']));
     $modcomment = (isset($_POST['modcomment']) && $CURUSER['class'] == UC_MAX) ? $_POST['modcomment'] : $user['modcomment'];
     //== Set class
@@ -1066,7 +1066,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         $cache->delete('staff_settings_');
     }
     if (!empty($setbits) || !empty($countbits)) {
-        sql_query('UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . '), opt2 = ((opt2 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . '), opt2 = ((opt2 | ' . $setbits2 . ') & ~' . $clrbits2 . ') WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     }
 
     $res = sql_query('SELECT opt1, opt2 FROM users WHERE id = ' . sqlesc($userid) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);

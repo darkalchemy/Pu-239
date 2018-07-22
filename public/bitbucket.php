@@ -73,8 +73,8 @@ if (!empty($_GET['updated']) && $_GET['updated'] === 'avatar') {
     $session->set('is-info', "
         [h3]{$lang['bitbucket_updated']}[/h3]
         [class=mw-150 has-text-centered]
-            [img]" . url_proxy($CURUSER['avatar'], true, 150, null) . "[/img]
-        [/class]");
+            [img]" . url_proxy($CURUSER['avatar'], true, 150, null) . '[/img]
+        [/class]');
 }
 
 $htmlout = "
@@ -82,10 +82,10 @@ $htmlout = "
         <ul class='level-center bg-06 padding10'>
             <li>" . (empty($_GET['images']) ? "
                 <a href='{$site_config['baseurl']}/bitbucket.php?images=1'>{$lang['bitbucket_viewmonths']}</a>" : "
-                <a href='{$site_config['baseurl']}/bitbucket.php'>{$lang['bitbucket_hideimgs']}</a>") . "
+                <a href='{$site_config['baseurl']}/bitbucket.php'>{$lang['bitbucket_hideimgs']}</a>") . '
             </li>
         </ul>
-    </div>";
+    </div>';
 
 $htmlout .= "
     <h1>BitBucket Image Uploader</h1>
@@ -101,7 +101,6 @@ $htmlout .= main_div("
 
 $htmlout .= main_div("
     <div class='output'></div>", 'output-wrapper is-hidden');
-
 
 $folder_month = empty($_GET['month']) ? date('m') : ($_GET['month'] < 10 ? '0' : '') . (int) $_GET['month'];
 
@@ -152,7 +151,6 @@ if (isset($_GET['images']) && $_GET['images'] == 1) {
                     </li>
                 </ul>
             </div>";
-
 }
 
 if (isset($_GET['images'])) {
@@ -196,7 +194,6 @@ if (isset($_GET['images'])) {
         $htmlout .= main_div("
                 {$lang['bitbucket_noimages']}", 'top20');
     }
-
 }
 
 echo stdhead('Bitbucket Image Uploader') . wrapper($htmlout, 'has-text-centered') . stdfoot($stdfoot);

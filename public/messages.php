@@ -8,7 +8,7 @@ require_once INCL_DIR . 'pager_new.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session;
+global $CURUSER, $site_config, $cache, $session, $fluent;
 
 /*
  *
@@ -104,11 +104,27 @@ if (isset($_GET['change_pm_number'])) {
 }
 
 if (isset($_GET['show_pm_avatar'])) {
-    $show_pm_avatar = ($_GET['show_pm_avatar'] === 'yes' ? 'yes' : 'no');
-    sql_query('UPDATE users SET show_pm_avatar = ' . sqlesc($show_pm_avatar) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    $setbits = $clrbits = 0;
+    if ($_GET['show_pm_avatar'] === 'yes') {
+        $setbits |= user_options_2::SHOW_PM_AVATAR;
+    } else {
+        $clrbits |= user_options_2::SHOW_PM_AVATAR;
+    }
+
+    if ($setbits || $clrbits) {
+        $sql = 'UPDATE users SET opt2 = ((opt2 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id = ' . sqlesc($CURUSER['id']);
+        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+    }
+    $opt2 = $fluent->from('users')
+        ->select(null)
+        ->select('opt2')
+        ->where('id = ?', $CURUSER['id'])
+        ->fetch('opt2');
+
     $cache->update_row('user' . $CURUSER['id'], [
-        'show_pm_avatar' => $show_pm_avatar,
+        'opt2' => $opt2,
     ], $site_config['expires']['user_cache']);
+
     if (isset($_GET['edit_mail_boxes'])) {
         header('Location: messages.php?action=edit_mailboxes&avatar=1');
     } else {

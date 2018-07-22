@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $site_config, $cache, $session;
 
@@ -128,6 +129,7 @@ if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
     </div>";
     }
 
+    $got_moods = ($CURUSER['opt2'] & user_options_2::GOT_MOODS) === user_options_2::GOT_MOODS;
     $StatusBar .= "
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_seed_torrents']}</div>
@@ -148,7 +150,7 @@ if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
         <div class='navbar-start'>{$lang['gl_myblocks']}</div>
         <div><a href='{$site_config['baseurl']}/user_blocks.php'>{$lang['gl_click']}</a></div>" : '') . '
     </div>
-    ' . ($CURUSER['class'] >= UC_STAFF || $CURUSER['got_moods'] === 'yes' ? "
+    ' . ($CURUSER['class'] >= UC_STAFF || $got_moods ? "
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_myunlocks']}</div>
         <div><a href='{$site_config['baseurl']}/user_unlocks.php'>{$lang['gl_click']}</a></div>" : '') . '

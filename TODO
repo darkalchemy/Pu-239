@@ -7,7 +7,6 @@ replace mysql full text search with elasticsearch
 add language to staff.php
 replace current authentication system
 replace current session handler
-replace php join with implode
 add ip login/seedbox restrictions
 finish/update/replace breadcrumbs
 replace page refresh with ajax for clickable items

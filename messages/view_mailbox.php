@@ -3,6 +3,8 @@
 require_once INCL_DIR . 'user_functions.php';
 global $h1_thingie, $lang;
 
+$show_pm_avatar = ($CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR) === user_options_2::SHOW_PM_AVATAR;
+
 //=== get mailbox name
 if ($mailbox > 1) {
     //== get name of PM box if not in or out
@@ -102,7 +104,7 @@ if (mysqli_num_rows($res) === 0) {
         $who_sent_it = $row['id'] == 0 ? '<span style="font-weight: bold;">' . $lang['pm_forward_system'] . '</span>' : format_username($row['id']) . $friends;
         $read_unread = $row['unread'] === 'yes' ? '<img src="' . $site_config['pic_baseurl'] . 'pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '" />' : '<img src="' . $site_config['pic_baseurl'] . 'pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '" />';
         $extra = ($row['unread'] === 'yes' ? $lang['pm_mailbox_char1'] . '<span style="color: red;">' . $lang['pm_mailbox_unread'] . '</span>' . $lang['pm_mailbox_char2'] : '') . ($row['urgent'] === 'yes' ? '<span style="color: red;">' . $lang['pm_mailbox_urgent'] . '</span>' : '');
-        $avatar = get_avatar($row);
+        $avatar = $show_pm_avatar ? get_avatar($row) : '';
         $HTMLOUT .= '
                 <tr>
                     <td class="has-text-centered">' . $read_unread . '</td>
@@ -125,8 +127,8 @@ $per_page_drop_down .= '</select><input type="hidden" name="box" value="' . $mai
 $show_pm_avatar_drop_down = '
     <form method="post" action="messages.php">
         <select name="show_pm_avatar" onchange="location = this.options[this.selectedIndex].value;">
-            <option value="' . $link . '&amp;show_pm_avatar=yes" ' . (($CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR) ? ' selected' : '') . '>show avatars on PM list</option>
-            <option value="' . $link . '&amp;show_pm_avatar=no" ' . (($CURUSER['opt2'] | user_options_2::SHOW_PM_AVATAR) ? ' selected' : '') . '>' . $lang['pm_mailbox_dontav'] . '</option>
+            <option value="' . $link . '&amp;show_pm_avatar=yes" ' . ($show_pm_avatar ? ' selected' : '') . '>' . $lang['pm_edmail_show_av'] . '</option>
+            <option value="' . $link . '&amp;show_pm_avatar=no" ' . (!$show_pm_avatar ? ' selected' : '') . '>' . $lang['pm_mailbox_dontav'] . '</option>
         </select>
             <input type="hidden" name="box" value="' . $mailbox . '" /></form>';
 

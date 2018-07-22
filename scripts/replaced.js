@@ -303,6 +303,13 @@ $(function () {
             }
         });
     }
+    var defcat = $('#defcat');
+    if (defcat.length) {
+        $("#cat_open").click(function() {
+            $("#defcat").slideToggle(animate_duration, function() {
+            });
+        });
+    }
     var notification = $('.notification');
     if (notification.length) {
         setTimeout(function () {

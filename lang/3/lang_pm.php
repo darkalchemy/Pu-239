@@ -61,11 +61,10 @@ $lang = [
     'pm_edmail_currently' => 'In prezent aveti ',
     'pm_edmail_custom' => ' cutii predefinite. ',
     'pm_edmail_custom_es' => '',
-    'pm_edmail_may_add' => 'Poti adauga pana la ',
+    'pm_edmail_may_add' => '. Poti adauga pana la ',
     'pm_edmail_more_extra' => ' cutii postale suplimentare.',
     'pm_edmail_following' => 'Pot fi folosite urmatoarele caractere: ',
-    'pm_edmail_chars' => ' a-z, A-Z, 1-9, - si _ 
-        [ celelalte caratere vor fi ignorate ] ',
+    'pm_edmail_chars' => ' a-z, A-Z, 1-9, - si _ [ celelalte caratere vor fi ignorate ] ',
     'pm_edmail_only_fill' => 'Only fill in add as many boxes that you would like to add and click "Add"',
     'pm_edmail_blank' => 'Intrarile goale vor fi ignorate.',
     'pm_edmail_add' => 'Adauga',

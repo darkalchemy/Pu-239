@@ -558,10 +558,15 @@ if ($action === 'avatar') {
                                             <input type='checkbox' name='clear_new_tag_manually' value='yes'" . (($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) ? ' checked' : '') . " /> {$lang['usercp_default_clearnewtagmanually']}", 1);
     $HTMLOUT .= tr($lang['usercp_scloud'], "
                                             <input type='checkbox' name='viewscloud' value='yes'" . (($CURUSER['opt1'] & user_options::VIEWSCLOUD) ? ' checked' : '') . " /> {$lang['usercp_scloud1']}", 1);
+
+    $split = ($CURUSER['opt2'] & user_options_2::SPLIT) === user_options_2::SPLIT;
     $HTMLOUT .= tr($lang['usercp_split'], "
-                                            <input type='checkbox' name='split'" . (($CURUSER['opt2'] & user_options_2::SPLIT) ? ' checked' : '') . " value='yes' /> (Split torrents uploaded by days)", 1);
+                                            <input type='checkbox' name='split'" . ($split ? ' checked' : '') . " value='yes' /> (Split torrents uploaded by days)", 1);
+
+    $browse_icons = ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) === user_options_2::BROWSE_ICONS;
     $HTMLOUT .= tr($lang['usercp_icons'], "
-                                            <input type='checkbox' name='browse_icons'" . (($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) ? ' checked' : '') . " value='yes' /> (View categories as icons)", 1);
+                                            <input type='checkbox' name='browse_icons'" . ($browse_icons ? ' checked' : '') . " value='yes' /> (View categories as icons)", 1);
+
     $HTMLOUT .= tr($lang['usercp_cats_sets'], "
                                             <select name='categorie_icon'>
                                                 <option value='1'" . (get_category_icons() == 1 ? ' selected' : '') . ">Default</option>
@@ -787,12 +792,16 @@ if ($action === 'avatar') {
         $HTMLOUT .= tr('Forum Subscribe PM', "
                                             <input type='radio' name='subscription_pm' " . ($CURUSER['subscription_pm'] === 'yes' ? ' checked' : '') . " value='yes' /> Yes
                                             <input type='radio' name='subscription_pm' " . ($CURUSER['subscription_pm'] === 'no' ? ' checked' : '') . " value='no' /> No<br>When someone posts in a subscribed thread, you will be PMed.", 1);
+
+        $pm_on_delete = ($CURUSER['opt2'] & user_options_2::PM_ON_DELETE) === user_options_2::PM_ON_DELETE;
         $HTMLOUT .= tr('Torrent deletion PM', "
-                                            <input type='radio' name='pm_on_delete' " . ($CURUSER['pm_on_delete'] === 'yes' ? ' checked' : '') . " value='yes' /> Yes
-                                            <input type='radio' name='pm_on_delete' " . ($CURUSER['pm_on_delete'] === 'no' ? ' checked' : '') . " value='no' /> No<br>When any of your uploaded torrents are deleted, you will be PMed.", 1);
+                                            <input type='radio' name='pm_on_delete' " . ($pm_on_delete ? ' checked' : '') . " value='yes' /> Yes
+                                            <input type='radio' name='pm_on_delete' " . (!$pm_on_delete ? ' checked' : '') . " value='no' /> No<br>When any of your uploaded torrents are deleted, you will be PMed.", 1);
+
+        $commentpm = ($CURUSER['opt2'] & user_options_2::COMMENTPM) === user_options_2::COMMENTPM;
         $HTMLOUT .= tr('Torrent comment PM', "
-                                            <input type='radio' name='commentpm' " . ($CURUSER['commentpm'] === 'yes' ? ' checked' : '') . " value='yes' /> Yes
-                                            <input type='radio' name='commentpm' " . ($CURUSER['commentpm'] === 'no' ? ' checked' : '') . " value='no' /> No<br>When any of your uploaded torrents are commented on, you will be PMed.", 1);
+                                            <input type='radio' name='commentpm' " . ($commentpm ? ' checked' : '') . " value='yes' /> Yes
+                                            <input type='radio' name='commentpm' " . (!$commentpm ? ' checked' : '') . " value='no' /> No<br>When any of your uploaded torrents are commented on, you will be PMed.", 1);
         $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>

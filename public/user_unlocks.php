@@ -11,7 +11,8 @@ $id = (isset($_GET['id']) ? $_GET['id'] : $CURUSER['id']);
 if (!is_valid_id($id) || $CURUSER['class'] < UC_STAFF) {
     $id = $CURUSER['id'];
 }
-if ($CURUSER['class'] < UC_STAFF && $CURUSER['got_moods'] === 'no') {
+$got_moods = ($CURUSER['opt2'] & user_options_2::GOT_MOODS) === user_options_2::GOT_MOODS;
+if ($CURUSER['class'] < UC_STAFF && $got_moods) {
     stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.... Yer simply no tall enough.");
     die();
 }
