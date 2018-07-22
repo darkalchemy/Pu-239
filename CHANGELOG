@@ -1,4 +1,5 @@
 22 Jul 2018
+fix: view_mailbox.php breaking template
 fix: log_viewer.php not displaying all files correctly
 fix: incorrect use of $cache->add
 update: only show block in user_blocks if block is enabled by site

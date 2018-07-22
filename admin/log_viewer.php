@@ -47,7 +47,7 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
         $contents = explode('===================================================', $content);
     }
     rsort($contents);
-    $i = 1;
+    $i = 0;
     $content = [];
     foreach ($contents as $line) {
         if (!empty($line)) {

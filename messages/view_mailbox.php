@@ -53,6 +53,7 @@ $HTMLOUT .= "
             " . insertJumpTo($mailbox) . $other_box_info . ($perpage < $messages ? $menu : '') . "
         </h3>
         <form action='messages.php' method='post' name='checkme' onsubmit='return ValidateForm(this,\"pm\")'>
+            <div class='table-wrapper'>
             <table class='table table-bordered table-striped top20 bottom20'>
                 <thead>
                     <tr>
@@ -154,5 +155,6 @@ $HTMLOUT .= (mysqli_num_rows($res) > 0 ? "
         </td>
     </tr>" : '') . '
     </table>
+    </div>
         ' . ($perpage < $messages ? $menu . '<br>' : '') . '
     </form>';
