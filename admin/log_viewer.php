@@ -9,11 +9,13 @@ class_check($class);
 global $site_config, $lang;
 
 $HTMLOUT = '';
-if (!empty($_GET['action']) && $_GET['action'] === 'edit') {
+if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     $file = $_GET['file'];
     $ext = pathinfo($file, PATHINFO_EXTENSION);
+    $name = basename($file);
     $uncompress = $ext === 'gz' ? 'compress.zlib://' : '';
-    $maxsize = 1048576; // 1MB
+    $maxpieces = !empty($_GET['maxpieces']) ? $_GET['maxpieces'] : 50;
+    $maxsize = 2 * 1048576; // 2MB
     $offset = filesize($file) - $maxsize;
     $offset = $offset <= 0 ? 0 : $offset;
 
@@ -24,9 +26,17 @@ if (!empty($_GET['action']) && $_GET['action'] === 'edit') {
     } else {
         $content = '[b]' . $file . '[/b] does not exist';
     }
+
     $content = trim($content);
-    if (!preg_match('/sqlerr_logs/i', $file)) {
+    if (!preg_match('/sqlerr_logs/i', $file) && !preg_match('/access\.log/', $name)) {
         preg_match_all('!(\d{4}/\d{2}/\d{2}\s+\d{2}:\d{2}:\d{2}.*?)!iU', $content, $matches);
+        if (!empty($matches[1])) {
+            $contents = $matches[1];
+        } else {
+            $contents = explode("\n", $content);
+        }
+    } elseif (preg_match('/access\.log/', $name)) {
+        preg_match_all('!(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}.*?)!iU', $content, $matches);
         if (!empty($matches[1])) {
             $contents = $matches[1];
         } else {
@@ -43,6 +53,9 @@ if (!empty($_GET['action']) && $_GET['action'] === 'edit') {
             $class = $i++ % 2 === 0 ? 'bg-01 simple_border round10 padding20 has-text-black' : 'bg-light simple_border round10 padding20 has-text-black';
             $line = trim($line);
             $content[] = "[class={$class}]{$line}[/class]";
+            if ($i >= $maxpieces) {
+                break;
+            }
         }
     }
 
@@ -51,7 +64,8 @@ if (!empty($_GET['action']) && $_GET['action'] === 'edit') {
 
     $HTMLOUT = main_div("
         <div class='bg-00 round10'>
-            <h1 class='has-text-centered'>Viewing Error Log: $file</h1>" . format_comment($content) . '
+            <h1 class='has-text-centered'>Viewing Error Log: $file</h1>
+            <h3 class='has-text-centered'>Showing the last $i entries, in reverse order</h3>" . format_comment($content) . '
         </div>', 'bottom20');
 }
 
@@ -93,7 +107,7 @@ if (!empty($files)) {
         $body .= "
         <tr>
             <td>
-                <a href='{$_SERVER['PHP_SELF']}?tool=log_viewer&action=edit&file=" . urlencode($file) . "'>$file</a>
+                <a href='{$_SERVER['PHP_SELF']}?tool=log_viewer&action=view&maxpieces=500&file=" . urlencode($file) . "'>$file</a>
             </td>
             <td>
                 " . get_date(filemtime($file), 'LONG') . "
