@@ -24,7 +24,7 @@ if (!XBT_TRACKER && $site_config['crazy_hour']) {
         }
         $cimg = '<img src="' . $site_config['pic_baseurl'] . 'cat_free.gif" alt="FREE!" />';
         if ($crazyhour['crazyhour']['var'] < TIME_NOW) { // if crazyhour over
-            $cz_lock = $cache->add('crazyhour_lock', 1, 10);
+            $cz_lock = $cache->set('crazyhour_lock', 1, 10);
             if ($cz_lock !== false) {
                 $crazyhour['crazyhour_new'] = mktime(23, 59, 59, date('m'), date('d'), date('y'));
                 $crazyhour['crazyhour']['var'] = random_int($crazyhour['crazyhour_new'], ($crazyhour['crazyhour_new'] + 86400));
@@ -39,7 +39,7 @@ if (!XBT_TRACKER && $site_config['crazy_hour']) {
         } elseif (($crazyhour['crazyhour']['var'] < $crazy_hour) && ($crazyhour['crazyhour']['var'] >= TIME_NOW)) { // if crazyhour
             if ($crazyhour['crazyhour']['amount'] !== 1) {
                 $crazyhour['crazyhour']['amount'] = 1;
-                $cz_lock = $cache->add('crazyhour_lock', 1, 10);
+                $cz_lock = $cache->set('crazyhour_lock', 1, 10);
                 if ($cz_lock !== false) {
                     sql_query('UPDATE freeleech SET amount = ' . $crazyhour['crazyhour']['amount'] . ' WHERE type = "crazyhour"') or sqlerr(__FILE__, __LINE__);
                     $cache->set('crazyhour', $crazyhour['crazyhour'], 0);

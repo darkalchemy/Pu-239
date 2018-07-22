@@ -49,7 +49,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     $mod_cache_name = $cache->get('editedby_' . $id);
     if ($mod_cache_name === false || is_null($mod_cache_name)) {
         $mod_cache_name = $CURUSER['username'];
-        $cache->add('editedby_' . $id, $mod_cache_name, $site_config['expires']['ismoddin']);
+        $cache->set('editedby_' . $id, $mod_cache_name, $site_config['expires']['ismoddin']);
     }
     $HTMLOUT .= '<h1 class="has-text-centered"><span class="has-text-red">' . $mod_cache_name . '</span> is currently editing this torrent!</h1>';
 }

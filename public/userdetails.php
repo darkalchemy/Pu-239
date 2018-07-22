@@ -50,7 +50,7 @@ if ($user_status === false || is_null($user_status)) {
             'archive' => '',
         ];
     }
-    $cache->add('userstatus_' . $id, $user_status, $site_config['expires']['user_status']); // 30 days
+    $cache->set('userstatus_' . $id, $user_status, $site_config['expires']['user_status']); // 30 days
 }
 
 if ($user['paranoia'] == 3 && $CURUSER['class'] < UC_STAFF && $CURUSER['id'] != $id) {

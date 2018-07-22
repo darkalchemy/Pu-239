@@ -1,4 +1,5 @@
 22 Jul 2018
+fix: incorrect use of $cache->add
 update: only show block in user_blocks if block is enabled by site
 remove: redundant columns from users table
 fix: bitwise for opt2

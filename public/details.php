@@ -285,12 +285,13 @@ $l_a = $cache->get($What_String_Key . $id);
 if ($l_a === false || is_null($l_a)) {
     $l_a = mysqli_fetch_assoc(sql_query('SELECT ' . $What_String . ' AS lastseed ' . 'FROM torrents ' . 'WHERE id = ' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
     $l_a['lastseed'] = (int) $l_a['lastseed'];
-    $cache->add('last_action_' . $id, $l_a, 1800);
+    $cache->set('last_action_' . $id, $l_a, 1800);
 }
 
 $torrent_cache['seeders'] = $cache->get('torrents_seeds_' . $id);
 $torrent_cache['leechers'] = $cache->get('torrents_leechs_' . $id);
 $torrent_cache['times_completed'] = $cache->get('torrents_comps_' . $id);
+
 $torrents['seeders'] = ((!XBT_TRACKER || $torrent_cache['seeders'] === false || $torrent_cache['seeders'] === 0 || $torrent_cache['seeders'] === false) ? $torrents['seeders'] : $torrent_cache['seeders']);
 $torrents['leechers'] = ((!XBT_TRACKER || $torrent_cache['leechers'] === false || $torrent_cache['leechers'] === 0 || $torrent_cache['leechers'] === false) ? $torrents['leechers'] : $torrent_cache['leechers']);
 $torrents['times_completed'] = ((!XBT_TRACKER || $torrent_cache['times_completed'] === false || $torrent_cache['times_completed'] === 0 || $torrent_cache['times_completed'] === false) ? $torrents['times_completed'] : $torrent_cache['times_completed']);
@@ -308,7 +309,7 @@ if ($torrent_cache['rep'] === false || is_null($torrent_cache['rep'])) {
     $us = sql_query('SELECT reputation FROM users WHERE id =' . sqlesc($torrents['owner'])) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($us)) {
         $torrent_cache['rep'] = mysqli_fetch_assoc($us);
-        $cache->add('user_rep_' . $torrents['owner'], $torrent_cache['rep'], 14 * 86400);
+        $cache->set('user_rep_' . $torrents['owner'], $torrent_cache['rep'], 14 * 86400);
     }
 }
 $owned = $moderator = 0;
@@ -539,7 +540,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] || $C
                 $torrent['torrent_points_'][$points_cache['userid']] = $points_cache['points'];
             }
         }
-        $cache->add('coin_points_' . $id, $torrent['torrent_points_'], 0);
+        $cache->set('coin_points_' . $id, $torrent['torrent_points_'], 0);
     }
     $my_points = (isset($torrent['torrent_points_'][$CURUSER['id']]) ? (int) $torrent['torrent_points_'][$CURUSER['id']] : 0);
     $HTMLOUT .= '
@@ -862,9 +863,9 @@ if (!isset($_GET['filelist'])) {
 }
 
 if (XBT_TRACKER) {
-    $HTMLOUT .= tr("{$lang['details_peers']}", (int) $torrents_xbt['seeders'] . ' seeder(s), ' . (int) $torrents_xbt['leechers'] . ' leecher(s) = ' . ((int) $torrents_xbt['seeders'] + (int) $torrents_xbt['leechers']) . "{$lang['details_peer_total']}<br><a href='{$site_config['baseurl']}/peerlist.php?id=$id#seeders' class='button is-small'>{$lang['details_list']}</a>", 1);
+    $HTMLOUT .= tr("{$lang['details_peers']}", (int) $torrents_xbt['seeders'] . ' seeder' . plural($torrents['seeders']) . ', ' . (int) $torrents_xbt['leechers'] . ' leecher' . plural($torrents['leechers']) . ' = ' . ((int) $torrents_xbt['seeders'] + (int) $torrents_xbt['leechers']) . "{$lang['details_peer_total']}<br><a href='{$site_config['baseurl']}/peerlist.php?id=$id#seeders' class='button is-small'>{$lang['details_list']}</a>", 1);
 } else {
-    $HTMLOUT .= tr("{$lang['details_peers']}", (int) $torrents['seeders'] . ' seeder(s), ' . (int) $torrents['leechers'] . ' leecher(s) = ' . ((int) $torrents['seeders'] + (int) $torrents['leechers']) . "{$lang['details_peer_total']}<br><a href='{$site_config['baseurl']}/peerlist.php?id=$id#seeders' class='button is-small'>{$lang['details_list']}</a>", 1);
+    $HTMLOUT .= tr("{$lang['details_peers']}", (int) $torrents['seeders'] . ' seeder' . plural($torrents['seeders']) . ', ' . (int) $torrents['leechers'] . ' leecher' . plural($torrents['leechers']) . ' = ' . ((int) $torrents['seeders'] + (int) $torrents['leechers']) . "{$lang['details_peer_total']}<br><a href='{$site_config['baseurl']}/peerlist.php?id=$id#seeders' class='button is-small'>{$lang['details_list']}</a>", 1);
 }
 
 $HTMLOUT .= tr($lang['details_thanks'], '

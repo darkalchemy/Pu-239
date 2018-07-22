@@ -30,7 +30,7 @@ if ($topmoods === false || is_null($topmoods)) {
                  <td><img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt="" /></td>
                  </tr>';
     }
-    $cache->add($key, $topmoods, 0);
+    $cache->set($key, $topmoods, 0);
 }
 $HTMLOUT .= $abba . $topmoods . '</table>';
 echo stdhead('Top Moods') . $HTMLOUT . stdfoot();

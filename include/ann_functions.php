@@ -34,7 +34,7 @@ function crazyhour_announce()
     }
 
     if ($cz['crazyhour']['var'] < TIME_NOW) {
-        if (($cz_lock = $cache->add('crazyhour_lock', 1, 10)) !== false) {
+        if (($cz_lock = $cache->set('crazyhour_lock', 1, 10)) !== false) {
             $cz['crazyhour_new'] = mktime(23, 59, 59, date('m'), date('d'), date('y'));
             $cz['crazyhour']['var'] = random_int($cz['crazyhour_new'], ($cz['crazyhour_new'] + 86400));
             $cz['crazyhour']['amount'] = 0;
@@ -68,7 +68,7 @@ function crazyhour_announce()
     } elseif (($cz['crazyhour']['var'] < $crazy_hour) && ($cz['crazyhour']['var'] >= TIME_NOW)) { // if crazyhour
         if ($cz['crazyhour']['amount'] !== 1) {
             $cz['crazyhour']['amount'] = 1;
-            if (($cz_lock = $cache->add('crazyhour_lock', 1, 10)) !== false) {
+            if (($cz_lock = $cache->set('crazyhour_lock', 1, 10)) !== false) {
                 $set = ['amount' => $cz['crazyhour']['amount']];
                 $fluent->update('freeleech')
                     ->set($set)
@@ -177,9 +177,9 @@ function get_torrent_from_hash($info_hash)
             $seed_key = 'torrents_seeds_' . $torrent['id'];
             $leech_key = 'torrents_leechs_' . $torrent['id'];
             $comp_key = 'torrents_comps_' . $torrent['id'];
-            $cache->add($seed_key, $torrent['seeders'], $ttl);
-            $cache->add($leech_key, $torrent['leechers'], $ttl);
-            $cache->add($comp_key, $torrent['times_completed'], $ttl);
+            $cache->set($seed_key, $torrent['seeders'], $ttl);
+            $cache->set($leech_key, $torrent['leechers'], $ttl);
+            $cache->set($comp_key, $torrent['times_completed'], $ttl);
         } else {
             $cache->set($key, 0, 900);
 
@@ -209,9 +209,9 @@ function get_torrent_from_hash($info_hash)
                 ->fetch();
 
             if ($res !== false) {
-                $cache->add($seed_key, $res['seeders'], $ttl);
-                $cache->add($leech_key, $res['leechers'], $ttl);
-                $cache->add($comp_key, $res['times_completed'], $ttl);
+                $cache->set($seed_key, $res['seeders'], $ttl);
+                $cache->set($leech_key, $res['leechers'], $ttl);
+                $cache->set($comp_key, $res['times_completed'], $ttl);
                 $torrent = array_merge($torrent, $res);
                 $cache->set($key, $torrent, $ttl);
             } else {
@@ -284,7 +284,7 @@ function get_happy($torrentid, $userid)
         foreach ($res as $row) {
             $happy[$row['torrentid']] = $row['multiplier'];
         }
-        $cache->add($userid . '_happy', $happy, 0);
+        $cache->set($userid . '_happy', $happy, 0);
     }
     if (!empty($happy) && isset($happy[$torrentid])) {
         return $happy[$torrentid];
@@ -310,7 +310,7 @@ function get_slots($torrentid, $userid)
         $slot = $fluent->from('freeslots')
             ->where('userid = ?', $userid)
             ->fetchAll();
-        $cache->add('fllslot_' . $userid, $slot, $ttl_slot);
+        $cache->set('fllslot_' . $userid, $slot, $ttl_slot);
     }
     if (!empty($slot)) {
         foreach ($slot as $sl) {

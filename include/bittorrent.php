@@ -336,7 +336,7 @@ function userlogin()
                 'archive' => '',
             ];
         }
-        $cache->add('userstatus_' . $id, $ustatus, $site_config['expires']['u_status']); // 30 days
+        $cache->set('userstatus_' . $id, $ustatus, $site_config['expires']['u_status']); // 30 days
     }
     $users_data['last_status'] = $ustatus['last_status'];
     $users_data['last_update'] = $ustatus['last_update'];
