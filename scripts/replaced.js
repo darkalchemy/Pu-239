@@ -305,8 +305,8 @@ $(function () {
     }
     var defcat = $('#defcat');
     if (defcat.length) {
-        $("#cat_open").click(function() {
-            $("#defcat").slideToggle(animate_duration, function() {
+        $('#cat_open').click(function () {
+            $('#defcat').slideToggle(animate_duration, function () {
             });
         });
     }

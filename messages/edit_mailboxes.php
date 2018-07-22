@@ -207,7 +207,6 @@ if (mysqli_num_rows($r) > 0) {
     }
     $categories .= '
             </div>';
-
 }
 $HTMLOUT .= $top_links . '<h1>' . $lang['pm_edmail_title'] . '</h1>' . $h1_thingie . '
         <form action="messages.php" method="post">
