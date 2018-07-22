@@ -9,12 +9,13 @@ class_check($class);
 global $site_config, $lang;
 
 $HTMLOUT = '';
+$maxpieces = !empty($_GET['maxpieces']) ? $_GET['maxpieces'] : 50;
+
 if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     $file = $_GET['file'];
     $ext = pathinfo($file, PATHINFO_EXTENSION);
     $name = basename($file);
     $uncompress = $ext === 'gz' ? 'compress.zlib://' : '';
-    $maxpieces = !empty($_GET['maxpieces']) ? $_GET['maxpieces'] : 50;
     $maxsize = 2 * 1048576; // 2MB
     $offset = filesize($file) - $maxsize;
     $offset = $offset <= 0 ? 0 : $offset;
@@ -46,7 +47,7 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
         $contents = explode('===================================================', $content);
     }
     rsort($contents);
-    $i = 0;
+    $i = 1;
     $content = [];
     foreach ($contents as $line) {
         if (!empty($line)) {
@@ -107,7 +108,7 @@ if (!empty($files)) {
         $body .= "
         <tr>
             <td>
-                <a href='{$_SERVER['PHP_SELF']}?tool=log_viewer&action=view&maxpieces=500&file=" . urlencode($file) . "'>$file</a>
+                <a href='{$_SERVER['PHP_SELF']}?tool=log_viewer&action=view&maxpieces=$maxpieces&file=" . urlencode($file) . "'>$file</a>
             </td>
             <td>
                 " . get_date(filemtime($file), 'LONG') . "
