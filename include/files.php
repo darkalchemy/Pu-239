@@ -31,7 +31,7 @@ function get_file_name($file)
         case 'acp_js':
             return "{$site_config['baseurl']}/js/1/acp_22d19c79.js";
         case 'dragndrop_js':
-            return "{$site_config['baseurl']}/js/1/dragndrop_f58b2571.js";
+            return "{$site_config['baseurl']}/js/1/dragndrop_0ce076dd.js";
         case 'userdetails_js':
             return "{$site_config['baseurl']}/js/1/userdetails_9985f40a.js";
         case 'details_js':

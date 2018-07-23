@@ -439,6 +439,9 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
             $s = str_replace($match, url_proxy($match, true), $s);
         }
 
+        // [img] proxied local images
+        $s = preg_replace("#\[img\](.*" . preg_quote($site_config['pic_baseurl']) . "proxy/.*)\[/img\]#i", '<img data-src="\\1" alt="" class="lazy" /></a>', $s);
+
         // [img] local images
         $s = preg_replace("#\[img\](.*" . preg_quote($site_config['pic_baseurl']) . ".*)\[/img\]#i", '<img data-src="\\1" alt="" class="lazy emoticon is-2x" /></a>', $s);
     }

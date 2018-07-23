@@ -1,5 +1,6 @@
 In no particular order
 
+user blocks AVATAR is only used in userdetails.php, check to see if useful elsewhere in code
 fix subtitles folder
 fix avatar folder
 fix happy hour

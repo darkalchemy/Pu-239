@@ -25,9 +25,13 @@ if (!empty($users_friends) && count($users_friends) > 0) {
         }
         $user_friends .= '</table>';
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_friends']}</td><td width='99%'><a href=\"javascript: klappe_news('a6')\"><img src='{$site_config['pic_baseurl']}plus.png' id='pica6" . (int) $a['uid'] . "' alt='{$lang['userdetails_hide_show']}' title='{$lang['userdetails_hide_show']}' /></a><div id='ka6' style='display: none;'><br>$user_friends</div></td></tr>";
-    } else {
-        if (empty($users_friends)) {
-            $HTMLOUT .= "<tr><td colspan='2'>{$lang['userdetails_no_friends']}</td></tr>";
-        }
+    }
+} else {
+    if (empty($users_friends)) {
+        $HTMLOUT .= "
+        <tr>
+            <td>{$lang['userdetails_friends']}</td>
+            <td>{$lang['userdetails_no_friends']}</td>
+        </tr>";
     }
 }

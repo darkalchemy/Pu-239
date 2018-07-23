@@ -206,4 +206,11 @@ $sql_updates = [
         'query' => 'ALTER TABLE `user_blocks` MODIFY COLUMN `userdetails_page` int(11) NOT NULL DEFAULT "2147418111"',
         'flush' => true,
     ],
+    [
+        'id' => 1532377300,
+        'info' => 'Drop unneeded columns from users table',
+        'date' => '23 Jul, 2018',
+        'query' => 'ALTER TABLE `users` DROP COLUMN `av_w`, DROP COLUMN `av_h`',
+        'flush' => true,
+    ],
 ];

@@ -239,6 +239,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $clrbits_userdetails_page |= block_userdetails::CONTACT_INFO;
     }
+    // used only in userdetails.php
+    if (isset($_POST['userdetails_avatar'])) {
+        $setbits_userdetails_page |= block_userdetails::AVATAR;
+    } else {
+        $clrbits_userdetails_page |= block_userdetails::AVATAR;
+    }
     if (isset($_POST['userdetails_iphistory'])) {
         $setbits_userdetails_page |= block_userdetails::IPHISTORY;
     } else {
@@ -435,6 +441,7 @@ $checkbox_userdetails_reputation = ((curuser::$blocks['userdetails_page'] & bloc
 $checkbox_userdetails_userhits = ((curuser::$blocks['userdetails_page'] & block_userdetails::PROFILE_HITS) ? ' checked' : '');
 $checkbox_userdetails_birthday = ((curuser::$blocks['userdetails_page'] & block_userdetails::BIRTHDAY) ? ' checked' : '');
 $checkbox_userdetails_contact_info = ((curuser::$blocks['userdetails_page'] & block_userdetails::CONTACT_INFO) ? ' checked' : '');
+$checkbox_userdetails_avatar = ((curuser::$blocks['userdetails_page'] & block_userdetails::AVATAR) ? ' checked' : '');
 $checkbox_userdetails_iphistory = ((curuser::$blocks['userdetails_page'] & block_userdetails::IPHISTORY) ? ' checked' : '');
 $checkbox_userdetails_traffic = ((curuser::$blocks['userdetails_page'] & block_userdetails::TRAFFIC) ? ' checked' : '');
 $checkbox_userdetails_shareratio = ((curuser::$blocks['userdetails_page'] & block_userdetails::SHARE_RATIO) ? ' checked' : '');
@@ -922,6 +929,14 @@ if ($BLOCKS['userdetails_contact_info_on']) {
                 <div class='slideThree'> <input type='checkbox' id='userdetails_contact_info' name='userdetails_contact_info' value='yes' $checkbox_userdetails_contact_info />
                 <label for='userdetails_contact_info'></label></div>
                 <div class='w-100'>Enable contact infos</div>";
+}
+
+if ($BLOCKS['userdetails_avatar_on']) {
+    $contents[] = "
+                <div class='w-100'>Avatar?</div>
+                <div class='slideThree'> <input type='checkbox' id='userdetails_avatar' name='userdetails_avatar' value='yes' $checkbox_userdetails_avatar />
+                <label for='userdetails_avatar'></label></div>
+                <div class='w-100'>Enable Avatar</div>";
 }
 
 if ($BLOCKS['userdetails_iphistory_on']) {
