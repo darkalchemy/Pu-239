@@ -40,12 +40,12 @@ function foxnews_shout($links = [])
             $pubs = array_reverse($pubs);
             foreach ($pubs as $pub) {
                 $link = hash('sha256', $pub['link']);
-                if (in_array($link, $links)) {
+                if (empty($link) || in_array($link, $links)) {
                     continue;
                 }
                 $links[] = $link;
                 $link = sqlesc($link);
-                $cache->set('tfreak_news_links_', $links, 86400);
+                $cache->set('tfreak_news_links_', $links, 3600);
                 sql_query(
                     "INSERT INTO newsrss (link)
                         SELECT $link
@@ -104,12 +104,12 @@ function tfreak_shout($links = [])
         $pubs = array_reverse($pubs);
         foreach ($pubs as $pub) {
             $link = hash('sha256', $pub['link']);
-            if (in_array($link, $links)) {
+            if (empty($link) || in_array($link, $links)) {
                 continue;
             }
             $links[] = $link;
             $link = sqlesc($link);
-            $cache->set('tfreak_news_links_', $links, 86400);
+            $cache->set('tfreak_news_links_', $links, 3600);
             sql_query(
                 "INSERT INTO newsrss (link)
                         SELECT $link
@@ -173,12 +173,12 @@ function github_shout($links = [])
             $pubs = array_reverse($pubs);
             foreach ($pubs as $pub) {
                 $link = hash('sha256', $pub['link']);
-                if (in_array($link, $links)) {
+                if (empty($link) || in_array($link, $links)) {
                     continue;
                 }
                 $links[] = $link;
                 $link = sqlesc($link);
-                $cache->set('tfreak_news_links_', $links, 86400);
+                $cache->set('tfreak_news_links_', $links, 3600);
                 sql_query(
                     "INSERT INTO newsrss (link)
                         SELECT $link

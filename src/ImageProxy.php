@@ -80,9 +80,11 @@ class ImageProxy
 
     protected function optimize($path)
     {
-        Image::load($path)
-            ->optimize()
-            ->save();
+        if (mime_content_type($path) !== 'image/gif') {
+            Image::load($path)
+                ->optimize()
+                ->save();
+        }
     }
 
     protected function resize_image($url, $path, $width = null, $height = null)

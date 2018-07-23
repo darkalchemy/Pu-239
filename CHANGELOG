@@ -1,4 +1,5 @@
 23 Jul 2018
+fix: gifs no longer optimized on the fly by image proxy
 fix: display no friends when friends list is empty userdetails.php
 add: missing Avatar toggle in user blocks, currently only used in userdetails.php
 fix: bbcode image class 
