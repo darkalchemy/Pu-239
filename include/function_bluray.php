@@ -4,6 +4,8 @@ function get_bluray_info()
 {
     global $cache, $site_config;
 
+    require_once INCL_DIR . 'function_omdb.php';
+    require_once INCL_DIR . 'function_fanart.php';
     $bluray_data = $cache->get('bluray_');
     if ($bluray_data === false || is_null($bluray_data)) {
         $url = 'http://www.blu-ray.com/rss/newreleasesfeed.xml';

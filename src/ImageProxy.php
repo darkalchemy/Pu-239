@@ -35,17 +35,7 @@ class ImageProxy
 
     protected function store_image($url, $path)
     {
-        $client = new \GuzzleHttp\Client([
-            'synchronous' => true,
-            'http_errors' => false,
-            'sink' => $path,
-            'headers' => [
-                'User-Agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
-            ],
-        ]);
-
-        $response = $client->request('GET', $url);
-        if ($response->getStatusCode() == 200) {
+        if (fetch($url)) {
             $this->optimize($path);
         }
     }

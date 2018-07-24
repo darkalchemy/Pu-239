@@ -1,9 +1,18 @@
 23 Jul 2018
+fix: remove dd($url) from function_tmdb.php
+update: add try/catch to fetch()
+fix: typo in newsrss.php
+update: cleanup_manager.php replace edit/delete icons
+update: Image Proxy to use fetch()
+fix: function_bluray.php missing requires
+add: Newsrss cleanup to remove news entries older than 30 days
+update: only post newest nrewrss item when starting for the first time
+fix: newsrss initial cache
 fix: gifs no longer optimized on the fly by image proxy
 fix: display no friends when friends list is empty userdetails.php
 add: missing Avatar toggle in user blocks, currently only used in userdetails.php
 fix: bbcode image class 
-fix: type in dragndrop.js
+fix: typo in dragndrop.js
 
 22 Jul 2018
 fix: view_mailbox.php breaking template

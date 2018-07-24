@@ -2218,13 +2218,24 @@ function fetch($url)
             'User-Agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
         ],
         'verify' => false,
+        'force_ip_resolve' => 'v4',
+        'connect_timeout' => 10,
+        'read_timeout' => 10,
+        'timeout' => 10,
     ]);
-    $res = $client->request('GET', $url);
-    if ($res->getStatusCode() === 200) {
-        return $res->getBody()->getContents();
+    try {
+        if ($res = $client->request('GET', $url)) {
+            if ($res->getStatusCode() === 200) {
+                return $res->getBody()->getContents();
+            }
+        } else {
+            return false;
+        }
+    } catch (GuzzleHttp\Exception\GuzzleException $e) {
+        return false;
     }
 
-    return null;
+    return false;
 }
 
 function get_body_image($details, $portrait = false)

@@ -7,8 +7,9 @@
  */
 function foxnews_shout($links = [])
 {
-    global $site_config, $cache;
+    global $site_config, $cache, $fluent;
 
+    $empty = empty($links);
     $feeds = [
         'Tech' => 'http://feeds.foxnews.com/foxnews/tech',
         //'World' => 'http://feeds.foxnews.com/foxnews/world',
@@ -38,31 +39,31 @@ function foxnews_shout($links = [])
                 ];
             }
             $pubs = array_reverse($pubs);
+            $count = count($pubs);
+            $i = 1;
             foreach ($pubs as $pub) {
+                if (empty($pub['link'])) {
+                    continue;
+                }
                 $link = hash('sha256', $pub['link']);
-                if (empty($link) || in_array($link, $links)) {
+                if (in_array($link, $links)) {
                     continue;
                 }
                 $links[] = $link;
-                $link = sqlesc($link);
-                $cache->set('tfreak_news_links_', $links, 3600);
-                sql_query(
-                    "INSERT INTO newsrss (link)
-                        SELECT $link
-                        FROM DUAL
-                        WHERE NOT EXISTS(
-                            SELECT 1
-                            FROM newsrss
-                            WHERE link = $link
-                        )
-                        LIMIT 1"
-                ) or sqlerr(__FILE__, __LINE__);
-                $newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+                $values = [
+                    'link' => $link,
+                ];
+                $query = $fluent->insertInto('newsrss')
+                    ->values($values);
+                $newid = $query->execute();
                 if ($newid) {
-                    $msg = "[color=yellow]In $key News:[/color] [url={$pub['link']}]{$pub['title']}[/url]";
-                    autoshout($msg, 0, 1800);
-                    autoshout($msg, 3, 0);
-                    break;
+                    $cache->set('tfreak_news_links_', $links, 86400);
+                    if (!$empty || $count === $i++) {
+                        $msg = "[color=yellow]In $key News:[/color] [url={$pub['link']}]{$pub['title']}[/url]";
+                        autoshout($msg, 0, 1800);
+                        autoshout($msg, 3, 0);
+                        break;
+                    }
                 }
             }
         }
@@ -80,8 +81,9 @@ function foxnews_shout($links = [])
  */
 function tfreak_shout($links = [])
 {
-    global $site_config, $cache;
+    global $site_config, $cache, $fluent;
 
+    $empty = empty($links);
     if ($site_config['autoshout_on'] == 1) {
         include_once INCL_DIR . 'user_functions.php';
         $xml = $cache->get('tfreaknewsrss_');
@@ -102,31 +104,31 @@ function tfreak_shout($links = [])
             ];
         }
         $pubs = array_reverse($pubs);
+        $count = count($pubs);
+        $i = 1;
         foreach ($pubs as $pub) {
+            if (empty($pub['link'])) {
+                continue;
+            }
             $link = hash('sha256', $pub['link']);
-            if (empty($link) || in_array($link, $links)) {
+            if (in_array($link, $links)) {
                 continue;
             }
             $links[] = $link;
-            $link = sqlesc($link);
-            $cache->set('tfreak_news_links_', $links, 3600);
-            sql_query(
-                "INSERT INTO newsrss (link)
-                        SELECT $link
-                        FROM DUAL
-                        WHERE NOT EXISTS(
-                            SELECT 1
-                            FROM newsrss
-                            WHERE link = $link
-                        )
-                        LIMIT 1"
-            ) or sqlerr(__FILE__, __LINE__);
-            $newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+            $values = [
+                'link' => $link,
+            ];
+            $query = $fluent->insertInto('newsrss')
+                ->values($values);
+            $newid = $query->execute();
             if ($newid) {
-                $msg = "[color=yellow]TFreak News:[/color] [url={$pub['link']}]{$pub['title']}[/url]";
-                autoshout($msg, 0, 1800);
-                autoshout($msg, 3, 0);
-                break;
+                $cache->set('tfreak_news_links_', $links, 86400);
+                if (!$empty || $count === $i++) {
+                    $msg = "[color=yellow]TFreak News:[/color] [url={$pub['link']}]{$pub['title']}[/url]";
+                    autoshout($msg, 0, 1800);
+                    autoshout($msg, 3, 0);
+                    break;
+                }
             }
         }
     }
@@ -139,8 +141,9 @@ function tfreak_shout($links = [])
  */
 function github_shout($links = [])
 {
-    global $site_config, $cache;
+    global $site_config, $cache, $fluent;
 
+    $empty = empty($links);
     $feeds = [
         //'dev'    => 'https://github.com/darkalchemy/Pu-239/commits/dev.atom',
         'master' => 'https://github.com/darkalchemy/Pu-239/commits/master.atom',
@@ -171,31 +174,31 @@ function github_shout($links = [])
                 ];
             }
             $pubs = array_reverse($pubs);
+            $count = count($pubs);
+            $i = 1;
             foreach ($pubs as $pub) {
+                if (empty($pub['link'])) {
+                    continue;
+                }
                 $link = hash('sha256', $pub['link']);
-                if (empty($link) || in_array($link, $links)) {
+                if (in_array($link, $links)) {
                     continue;
                 }
                 $links[] = $link;
-                $link = sqlesc($link);
-                $cache->set('tfreak_news_links_', $links, 3600);
-                sql_query(
-                    "INSERT INTO newsrss (link)
-                        SELECT $link
-                        FROM DUAL
-                        WHERE NOT EXISTS(
-                            SELECT 1
-                            FROM newsrss
-                            WHERE link = $link
-                        )
-                        LIMIT 1"
-                ) or sqlerr(__FILE__, __LINE__);
-                $newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+                $values = [
+                    'link' => $link,
+                ];
+                $query = $fluent->insertInto('newsrss')
+                    ->values($values);
+                $newid = $query->execute();
                 if ($newid) {
-                    $msg = "[color=yellow]Git Commit [$key branch]:[/color] [url={$pub['link']}]{$pub['title']}[/url] => {$pub['commit']}";
-                    autoshout($msg, 0, 1800);
-                    autoshout($msg, 4, 0);
-                    break;
+                    $cache->set('tfreak_news_links_', $links, 86400);
+                    if (!$empty || $count === $i++) {
+                        $msg = "[color=yellow]Git Commit [$key branch]:[/color] [url={$pub['link']}]{$pub['title']}[/url] => {$pub['commit']}";
+                        autoshout($msg, 0, 1800);
+                        autoshout($msg, 4, 0);
+                        break;
+                    }
                 }
             }
         }

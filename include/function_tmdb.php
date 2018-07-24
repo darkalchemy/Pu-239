@@ -42,7 +42,6 @@ function get_movies_by_week($dates)
             return null;
         }
         $url = "https://api.themoviedb.org/3/discover/movie?primary_release_date.gte={$dates[0]}&primary_release_date.lte={$dates[1]}&api_key=$apikey&sort_by=release_date.asc&include_adult=false&include_video=false&with_original_language=en";
-        dd($url);
         $content = fetch($url);
         if (!$content) {
             return false;

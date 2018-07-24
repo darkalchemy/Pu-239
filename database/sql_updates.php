@@ -213,4 +213,11 @@ $sql_updates = [
         'query' => 'ALTER TABLE `users` DROP COLUMN `av_w`, DROP COLUMN `av_h`',
         'flush' => true,
     ],
+    [
+        'id' => 1532390193,
+        'info' => 'Add Newsrss Cleanup',
+        'date' => '23 Jul, 2018',
+        'query' => "INSERT INTO `cleanup` (clean_title, clean_file, clean_time, clean_increment, clean_log, clean_desc, clean_on, function_name) VALUES ('Newsrss AutoClean', 'newsrss_cleanup.php', 1532390400, 86400, 1, 'Purge news entries older than 30 days', 1, 'newsrss_cleanup')",
+        'flush' => false,
+    ],
 ];

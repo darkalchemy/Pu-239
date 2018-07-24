@@ -5,6 +5,8 @@ global $cache;
 
 if (!empty($argv[1]) && $argv[1] === 'force') {
     $cache->delete('cleanup_check_');
+    $cache->delete('tfreak_cron_');
+    $cache->delete('tfreak_news_links_');
 }
 
 $cleanup_check = $cache->get('cleanup_check_');
@@ -61,7 +63,7 @@ function autoclean()
             if ($tfreak_news === false || is_null($tfreak_news)) {
                 $query = $fluent->from('newsrss')
                     ->select(null)
-                    ->select(link);
+                    ->select('link');
 
                 foreach ($query as $tfreak_new) {
                     $tfreak_news[] = $tfreak_new['link'];
