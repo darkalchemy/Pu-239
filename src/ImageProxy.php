@@ -33,7 +33,7 @@ class ImageProxy
         return $hash;
     }
 
-    protected function store_image($url)
+    protected function store_image($url, $path)
     {
         if ($image = fetch($url)) {
             if (file_put_contents($path, $image)) {
