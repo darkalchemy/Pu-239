@@ -159,7 +159,7 @@ if ($replyto != 0) {
         stderr($lang['pm_error'], $lang['pm_send_slander']);
     }
     if ($arr_old_message['receiver'] == $CURUSER['id']) {
-        $body .= "\n\n\n{$lang['pm_send_wrote0']}{$arr_member['username']}{$lang['pm_send_wrote']}\n{$arr_old_message[msg]}\n";
+        $body .= "\n\n\n{$lang['pm_send_wrote0']}{$arr_member['username']}{$lang['pm_send_wrote']}\n{$arr_old_message['msg']}\n";
         $subject = $lang['pm_send_re'] . htmlsafechars($arr_old_message['subject']);
     }
 }
