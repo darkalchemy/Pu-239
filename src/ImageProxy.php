@@ -33,11 +33,16 @@ class ImageProxy
         return $hash;
     }
 
-    protected function store_image($url, $path)
+    protected function store_image($url)
     {
-        if (fetch($url)) {
-            $this->optimize($path);
+        if ($image = fetch($url)) {
+            if (file_put_contents($path, $image)) {
+                $this->optimize($path);
+                return true;
+            }
         }
+
+        return false;
     }
 
     protected function convert_image($url, $path, $quality)

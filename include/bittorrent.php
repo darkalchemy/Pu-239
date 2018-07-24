@@ -2200,13 +2200,6 @@ function insert_update_ip()
 
 function fetch($url)
 {
-    $sockres = @fsockopen('google.com', 443);
-    if (!$sockres) {
-        return false;
-    } else {
-        fclose($sockres);
-    }
-
     $client = new GuzzleHttp\Client([
         'curl' => [
             CURLOPT_SSL_VERIFYPEER => false,
@@ -2218,7 +2211,6 @@ function fetch($url)
             'User-Agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
         ],
         'verify' => false,
-        'force_ip_resolve' => 'v4',
         'connect_timeout' => 10,
         'read_timeout' => 10,
         'timeout' => 10,
