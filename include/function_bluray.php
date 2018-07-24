@@ -54,7 +54,7 @@ function get_bluray_info()
             $background = '';
             if (!empty($imdbid)) {
                 $background = getMovieImagesByImdb($imdbid, 'moviebackground');
-                $background = !empty($background) ? $background : '';
+                $background = !empty($background) ? url_proxy($background, true) : '';
             }
 
             $imdbid = !empty($imdbid) ? $imdbid : $i;
@@ -71,7 +71,7 @@ function get_bluray_info()
                 'description' => replace_unicode_strings($description[5]),
                 'poster' => $poster,
                 'placeholder' => $placeholder,
-                'background' => url_proxy($background, true),
+                'background' => $background,
                 'imdbid' => $imdbid,
             ];
         }
