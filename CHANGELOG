@@ -1,4 +1,5 @@
 24 Jul 2018
+remove: timeout from fetch guzzle config
 fix: save image to path store_image()
 fix: get backgrounds when url is empty function_bluray.php
 fix: unquoted key send_message.php
