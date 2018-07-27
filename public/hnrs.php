@@ -22,9 +22,11 @@ if (isset($_GET['id']) && $CURUSER['class'] >= UC_STAFF) {
     $userid = (int) $_GET['id'];
     $user_stuff = $user_stuffs->getUserFromId($userid);
     $username = $user_stuff['username'];
+    $class = $user_stuff['class']
 } else {
     $userid = $CURUSER['id'];
     $username = $CURUSER['username'];
+    $class = $CURUSER['class'];
 }
 
 $query = 'SELECT seedbonus, uploaded, downloaded, bonuscomment FROM users WHERE id = ' . sqlesc($userid);
@@ -276,6 +278,6 @@ if (mysqli_num_rows($r) > 0) {
     }
     $completed .= main_table($body, $header);
 } else {
-    $session->set('is-success', "[color=#" . get_user_class_color($userid) . "]" .  $username . "[/color] {$lang['userdetails_no_hnrs']}");
+    $session->set('is-success', "[color=#" . get_user_class_color($class) . "]" .  $username . "[/color] {$lang['userdetails_no_hnrs']}");
 }
 echo stdhead('HnRs') . wrapper($completed, 'has-text-centered') . stdfoot();
