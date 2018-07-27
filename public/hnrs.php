@@ -276,6 +276,6 @@ if (mysqli_num_rows($r) > 0) {
     }
     $completed .= main_table($body, $header);
 } else {
-    $session->set('is-success', $username . " {$lang['userdetails_no_hnrs']}");
+    $session->set('is-success', "[color=#" . get_user_class_color($userid) . "]" .  $username . "[/color] {$lang['userdetails_no_hnrs']}");
 }
 echo stdhead('HnRs') . wrapper($completed, 'has-text-centered') . stdfoot();
