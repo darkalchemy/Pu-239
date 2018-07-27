@@ -516,14 +516,15 @@ while ($arr = mysqli_fetch_assoc($res)) {
         }
     }
     $wht = $count > 0 && in_array($CURUSER['id'], $user_likes) ? 'unlike' : 'like';
+    $dlink = "dLink_{$topic_id}_{$post_id}";
     $HTMLOUT .= "<a id='$post_id'></a>" . main_table('
         <tr>
             <td colspan="3">
                 <div class="columns is-marginless level level-center">
                     <div class="column is-one-quarter is-marginless level">
                         ' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" name="post_to_mess_with[]" value="' . $post_id . '" />' : '') . '
-                        <input id="dLink" type="hidden" value="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '#' . $post_id . '">
-                        <span onclick="copy_to_clipboard(\'dLink\')">
+                        <input id="' . $dlink . '" type="hidden" value="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '#' . $post_id . '">
+                        <span onclick="copy_to_clipboard(\'' . $dlink . '\')">
                             <img src="' . $site_config['pic_baseurl'] . 'forums/link.gif" alt="' . $lang['fe_direct_link_to_this_post'] . '" title="' . $lang['fe_direct_link_to_this_post'] . '" class="tooltipper icon left5 right5" />
                         </span>
                         <span>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : htmlsafechars($usersdata['username'])) . '</span>

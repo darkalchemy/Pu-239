@@ -1,4 +1,5 @@
 27 Jul 2018
+fix: direct link to post view_topic.php
 replace: file_get_contents() with fetch() tfreak.php
 update: use global $fluent instead of passing it User.php
 add: delete_by_id() Torrent.php
