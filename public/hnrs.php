@@ -8,7 +8,7 @@ require_once INCL_DIR . 'function_onlinetime.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $site_config, $CURUSER, $lang, $cache, $session;
+global $site_config, $CURUSER, $lang, $cache, $session, $user_stuffs;
 
 $HTMLOUT = '';
 
@@ -20,8 +20,11 @@ if ($CURUSER['class'] < UC_MIN) {
 
 if (isset($_GET['id']) && $CURUSER['class'] >= UC_STAFF) {
     $userid = (int) $_GET['id'];
+    $user_stuff = $user_stuffs->getUserFromId($userid);
+    $username = $user_stuff['username'];
 } else {
     $userid = $CURUSER['id'];
+    $username = $CURUSER['username'];
 }
 
 $query = 'SELECT seedbonus, uploaded, downloaded, bonuscomment FROM users WHERE id = ' . sqlesc($userid);
@@ -273,6 +276,6 @@ if (mysqli_num_rows($r) > 0) {
     }
     $completed .= main_table($body, $header);
 } else {
-    $session->set('is-success', format_username($userid) . " {$lang['userdetails_no_hnrs']}");
+    $session->set('is-success', $username . " {$lang['userdetails_no_hnrs']}");
 }
-echo stdhead('HnRs') . wrapper($completed) . stdfoot();
+echo stdhead('HnRs') . wrapper($completed, 'has-text-centered') . stdfoot();
