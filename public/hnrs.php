@@ -22,7 +22,7 @@ if (isset($_GET['id']) && $CURUSER['class'] >= UC_STAFF) {
     $userid = (int) $_GET['id'];
     $user_stuff = $user_stuffs->getUserFromId($userid);
     $username = $user_stuff['username'];
-    $class = $user_stuff['class']
+    $class = $user_stuff['class'];
 } else {
     $userid = $CURUSER['id'];
     $username = $CURUSER['username'];
