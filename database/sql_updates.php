@@ -220,4 +220,18 @@ $sql_updates = [
         'query' => "INSERT INTO `cleanup` (clean_title, clean_file, clean_time, clean_increment, clean_log, clean_desc, clean_on, function_name) VALUES ('Newsrss AutoClean', 'newsrss_cleanup.php', 1532390400, 86400, 1, 'Purge news entries older than 30 days', 1, 'newsrss_cleanup')",
         'flush' => false,
     ],
+    [
+        'id' => 1532654151,
+        'info' => 'Drop index',
+        'date' => '27 Jul, 2018',
+        'query' => 'ALTER TABLE torrents DROP INDEX `newgenre`',
+        'flush' => false,
+    ],
+    [
+        'id' => 1532654152,
+        'info' => 'Add fulltext index',
+        'date' => '27 Jul, 2018',
+        'query' => 'ALTER TABLE torrents ADD FULLTEXT INDEX `newgenre`(`newgenre`)',
+        'flush' => false,
+    ],
 ];

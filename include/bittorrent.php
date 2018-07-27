@@ -21,7 +21,9 @@ require_once INCL_DIR . 'password_functions.php';
 $cache = new DarkAlchemy\Pu239\Cache();
 $session = new DarkAlchemy\Pu239\Session();
 $fluent = new DarkAlchemy\Pu239\Database();
-$user_stuffs = new DarkAlchemy\Pu239\User($fluent);
+$user_stuffs = new DarkAlchemy\Pu239\User();
+$torrent_stuffs = new DarkAlchemy\Pu239\Torrent();
+
 define('MIN_TO_PLAY', UC_POWER_USER);
 
 $session->start();
@@ -846,7 +848,6 @@ function sqlesc($x)
     if (is_integer($x)) {
         return (int) $x;
     }
-
     return sprintf('\'%s\'', mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $x));
 }
 

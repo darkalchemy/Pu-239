@@ -197,7 +197,7 @@ if (isset($cleansearchstr)) {
                     $wherea[] = 'u.username = ' . sqlesc($searchstr);
                     $join = 'LEFT JOIN users AS u ON u.id = t.owner';
                 } elseif ($boo === 'newgenre') {
-                    $wherea[] = 'newgenre = ' . sqlesc($searchstr);
+                    $searchincrt[] = 'MATCH (`newgenre`) AGAINST (' . sqlesc($searchstr) . ' IN NATURAL LANGUAGE MODE)';
                 } elseif ($boo === 'descr') {
                     $searchincrt[] = 'MATCH (`search_text`, `descr`) AGAINST (' . sqlesc($searchstr) . ' IN NATURAL LANGUAGE MODE)';
                 } elseif ($boo === 'name') {

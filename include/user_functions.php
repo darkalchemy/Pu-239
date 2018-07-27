@@ -753,7 +753,7 @@ function clearUserCache($userid)
 {
     global $cache;
 
-    $cache->delete('MyPeers_' . $userid);
+    $cache->delete('peers_' . $userid);
     $cache->delete('user' . $userid);
     $cache->delete('useravatar_' . $userid);
     $cache->delete('inbox_' . $userid);

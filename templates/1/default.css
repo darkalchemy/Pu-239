@@ -775,7 +775,9 @@ textarea {
     border-radius : .625em;
 }
 
-.has-text-lime {
+code a,
+.has-text-lime,
+.altlink {
     color : #0f0;
 }
 
@@ -1165,10 +1167,6 @@ option.head {
 .avatar {
     width  : 100%;
     height : auto;
-}
-
-code a {
-    color : lime;
 }
 
 #base_contents_video {

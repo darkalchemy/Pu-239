@@ -27,6 +27,7 @@ define('AVATAR_DIR', BITBUCKET_DIR . 'avatar' . DIRECTORY_SEPARATOR);
 define('SQLERROR_LOGS_DIR', ROOT_DIR . 'sqlerr_logs' . DIRECTORY_SEPARATOR);
 define('PLUGINS_DIR', ROOT_DIR . 'plugins' . DIRECTORY_SEPARATOR);
 define('IMDB_CACHE_DIR', CACHE_DIR . 'imdb' . DIRECTORY_SEPARATOR);
+define('LOGS_DIR', ROOT_DIR . 'logs' . DIRECTORY_SEPARATOR);
 
 define('SQL_DEBUG', true);
 define('IP_LOGGING', false);

@@ -112,7 +112,7 @@ if (isset($_GET['slot'])) {
     ], $site_config['expires']['user_cache']);
 }
 /* end **/
-$cache->delete('MyPeers_' . $CURUSER['id']);
+$cache->delete('peers_' . $CURUSER['id']);
 $cache->delete('top5_tor_');
 $cache->delete('last5_tor_');
 $cache->delete('scroll_tor_');

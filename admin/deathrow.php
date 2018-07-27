@@ -63,25 +63,12 @@ function delete_torrent($delete_array, $page)
         $ids[] = $row['id'];
         $names[] = htmlsafechars($row['name']);
         $id = (int) $row['id'];
-        /* unlink() **/
         unlink("{$site_config['torrent_dir']}/$id.torrent");
-        // announce
-        remove_torrent_peers($id);
         remove_torrent($row['info_hash']);
-        // index_last5_posters
-        $cache->delete('last5_tor_');
-        $cache->delete('top5_tor_');
-        $cache->delete('scroll_tor_');
-        // torrent_details
-        $cache->delete('torrent_details_' . $id);
-        $cache->delete('torrent_xbt_data_' . $id);
-        $cache->delete('torrent_details_txt_' . $id);
-        $cache->delete('coin_points_' . $id);
 
-        $cache->delete('similiar_tor_' . $id);
         $dt = sqlesc(TIME_NOW - (14 * 86400)); // lose karma if deleted within 2 weeks
-        if ($row['added'] < $dt) {
-            sql_query('UPDATE users SET seedbonus = seedbonus-15.0 WHERE id = ' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);
+        if ($row['added'] > $dt) {
+            sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus_per_delete']) . ' WHERE id = ' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);
         }
     }
     $unique_ids = array_unique($ids);

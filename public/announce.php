@@ -426,7 +426,7 @@ if (isset($self) && $event === 'stopped') {
         ->where('(peer_id = ? OR peer_id = ?)', $peer_id, preg_replace('/ *$/s', '', $peer_id))
         ->execute();
 
-    $cache->delete('MyPeers_' . $userid);
+    $cache->delete('peers_' . $userid);
 
     if (($a['uploaded'] + $upthis) < ($a['downloaded'] + $downthis) && $a['finished'] === 'yes') {
         $HnR_time_seeded = ($a['seedtime'] + $self['announcetime']);
@@ -541,7 +541,7 @@ if (isset($self) && $event === 'stopped') {
         ->where('(peer_id = ? OR peer_id = ?)', $peer_id, preg_replace('/ *$/s', '', $peer_id))
         ->execute();
 
-    $cache->delete('MyPeers_' . $userid);
+    $cache->delete('peers_' . $userid);
 
     if ($updated >= 1) {
         if ($seeder != $self['seeder']) {
@@ -642,7 +642,7 @@ if (isset($self) && $event === 'stopped') {
             $snatch_updateset['mark_of_cain'] = 'no';
         }
     }
-    $cache->delete('MyPeers_' . $userid);
+    $cache->delete('peers_' . $userid);
 }
 
 if ($seeder === 'yes') {

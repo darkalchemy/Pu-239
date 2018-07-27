@@ -20,9 +20,9 @@ class User
      * @throws \MatthiasMullie\Scrapbook\Exception\Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
      */
-    public function __construct(Query $fluent)
+    public function __construct()
     {
-        global $site_config, $session, $cache;
+        global $site_config, $session, $cache, $fluent;
 
         $this->fluent = $fluent;
         $this->session = $session;

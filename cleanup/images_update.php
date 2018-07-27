@@ -32,7 +32,6 @@ function images_update($data)
 
     $dates = getStartAndEndDate($year, $next_week);
     get_movies_by_week($dates);
-
     get_movies_by_vote_average(100);
     get_tv_by_day($today);
     get_tv_by_day($tomorrow);
@@ -87,6 +86,7 @@ function images_update($data)
     $images = $fluent->from('images')
         ->select(null)
         ->select('url')
+        ->where('url IS NOT null')
         ->select('type');
 
     foreach ($images as $image) {

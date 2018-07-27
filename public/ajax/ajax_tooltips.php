@@ -19,29 +19,8 @@ if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
     $upped = mksize($CURUSER['uploaded']);
     $downed = mksize($CURUSER['downloaded']);
 
-    if (XBT_TRACKER) {
-        $MyPeersXbtCache = $cache->get('MyPeers_XBT_' . $CURUSER['id']);
-        if ($MyPeersXbtCache === false || is_null($MyPeersXbtCache)) {
-            $seed['yes'] = $seed['no'] = 0;
-            $seed['conn'] = 3;
-            $r = sql_query('SELECT COUNT(uid) AS count, `left`, active, connectable
-                                FROM xbt_files_users
-                                WHERE uid = ' . sqlesc($CURUSER['id']) . '
-                                GROUP BY `left`') or sqlerr(__LINE__, __FILE__);
-            while ($a = mysqli_fetch_assoc($r)) {
-                $key = $a['left'] == 0 ? 'yes' : 'no';
-                $seed[$key] = number_format((int) $a['count']);
-                $seed['conn'] = $a['connectable'] == 0 ? 1 : 2;
-            }
-            $cache->set('MyPeers_XBT_' . $CURUSER['id'], $seed, $site_config['expires']['MyPeers_xbt_']);
-            unset($r, $a);
-        } else {
-            $seed = $MyPeersXbtCache;
-        }
-    } else {
-        $peer = new DarkAlchemy\Pu239\Peer();
-        $seed = $peer->getPeersFromUserId($CURUSER['id']);
-    }
+    $peer = new DarkAlchemy\Pu239\Peer();
+    $seed = $peer->getPeersFromUserId($CURUSER['id']);
 
     if (!empty($seed['conn'])) {
         switch ($seed['conn']) {

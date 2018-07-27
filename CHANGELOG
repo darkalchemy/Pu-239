@@ -1,3 +1,15 @@
+27 Jul 2018
+replace: file_get_contents() with fetch() tfreak.php
+update: use global $fluent instead of passing it User.php
+add: delete_by_id() Torrent.php
+replace: MyPeers_ with peers_
+fix: first db connection error takeupload.php
+update: search.php bot use only
+fix: delete torrent not deleting all caches and all likes to comments, only remove bp if torrent newer than 14 days
+fix: tfreak block if no results
+fix: only grab urls that are not empty images_cleanup.php
+update: browse.php search by genre full text search
+
 24 Jul 2018
 remove: timeout from fetch guzzle config
 fix: save image to path store_image()

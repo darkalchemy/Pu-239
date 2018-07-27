@@ -2195,10 +2195,10 @@ CREATE TABLE `torrents` (
   KEY `owner` (`owner`),
   KEY `visible` (`visible`),
   KEY `category_visible` (`category`),
-  KEY `newgenre` (`newgenre`),
   KEY `free` (`free`),
   FULLTEXT KEY `search_descr` (`search_text`,`descr`),
-  FULLTEXT KEY `name` (`name`)
+  FULLTEXT KEY `name` (`name`),
+  FULLTEXT KEY `newgenre` (`newgenre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2413,8 +2413,6 @@ CREATE TABLE `users` (
   `override_class` tinyint(3) unsigned NOT NULL DEFAULT '255',
   `language` int(11) NOT NULL DEFAULT '1',
   `avatar` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `av_w` smallint(3) unsigned NOT NULL DEFAULT '0',
-  `av_h` smallint(3) unsigned NOT NULL DEFAULT '0',
   `uploaded` bigint(20) unsigned NOT NULL DEFAULT '0',
   `downloaded` bigint(20) unsigned NOT NULL DEFAULT '0',
   `title` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -2654,4 +2652,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-22 10:36:06
+-- Dump completed on 2018-07-27 21:28:07

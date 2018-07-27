@@ -22,7 +22,7 @@ class Peer
 
     public function getPeersFromUserId($user_id)
     {
-        $peers = $this->cache->get('MyPeers_' . $user_id);
+        $peers = $this->cache->get('peers_' . $user_id);
         if ($peers === false || is_null($peers)) {
             $peers['yes'] = $peers['no'] = $peers['conn_yes'] = $peers['conn_no'] = $peers['count'] = 0;
             $peers['conn'] = 3;
@@ -52,7 +52,7 @@ class Peer
                     $peers['percentage'] = ceil(($peers['conn_yes'] / $peers['count']) * 100);
                 }
             }
-            $this->cache->set('MyPeers_' . $user_id, $peers, $this->config['expires']['MyPeers_']);
+            $this->cache->set('peers_' . $user_id, $peers, $this->config['expires']['peers_']);
         }
 
         return $peers;

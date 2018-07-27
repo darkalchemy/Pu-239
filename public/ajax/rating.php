@@ -68,7 +68,7 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
             }
             $cache->delete('ratings_' . $id);
         }
-        $cache->set($keys['rating'], $rating_cache, 0);
+        $cache->set($keys['rating'], $rating_cache, 86400);
 
         $rated = number_format($rating_cache['sum'] / $rating_cache['count'] / 5 * 100, 0) . '%';
         echo "

@@ -76,7 +76,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 echo $seen;
             } elseif (isset($_GET['func']) && $_GET['func'] === 'flushtorrents') {
                 sql_query('DELETE FROM peers WHERE userid = ' . $id) or sqlerr(__FILE__, __LINE__);
-                $cache->delete('MyPeers_' . $id);
+                $cache->delete('peers_' . $id);
                 echo $username . 's torrents have been flushed';
             }
         }

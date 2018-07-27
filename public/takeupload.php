@@ -4,6 +4,8 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class.bencdec.php';
 require_once INCL_DIR . 'function_memcache.php';
+require_once INCL_DIR . 'ann_functions.php';
+dbconn();
 global $site_config, $fluent, $session, $user_stuffs, $cache;
 
 $torrent_pass = $auth = $bot = $owner_id = '';
@@ -80,7 +82,7 @@ if (isset($music)) {
     $genre = '';
 }
 
-$nfo = sqlesc('');
+$nfo = '';
 
 if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
     $nfofile = $_FILES['nfo'];
@@ -112,7 +114,7 @@ if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
         "\x0d\x0a",
         '',
     ], file_get_contents($nfofilename));
-    $nfo = sqlesc($nfo_content);
+    $nfo = $nfo_content;
 }
 
 $free2 = 0;
@@ -137,7 +139,7 @@ if (isset($half_length) && ($half_length = (int) $half_length)) {
     }
 }
 
-$freetorrent = (((isset($freetorrent) && is_valid_id($freetorrent)) ? intval($freetorrent) : 0));
+$freetorrent = isset($freetorrent) && is_valid_id($freetorrent) ? intval($freetorrent) : 0;
 $descr = strip_tags(isset($body) ? trim($body) : '');
 
 if (!$descr) {
@@ -229,7 +231,6 @@ if (!isset($dict['info'])) {
 }
 $info = &$dict['info'];
 $infohash = pack('H*', sha1(bencdec::encode($info)));
-
 if (get_row_count('torrents', 'WHERE info_hash = ' . sqlesc($infohash)) > 0) {
     $session->set('is-warning', 'This torrent has already been uploaded! Please use the search function before uploading.');
     header("Location: {$site_config['baseurl']}/upload.php");
@@ -337,70 +338,80 @@ if ($num_pieces != $expected_pieces) {
     die();
 }
 
-$tmaker = (isset($dict['created by']) && !empty($dict['created by'])) ? sqlesc($dict['created by']) : sqlesc($lang['takeupload_unkown']);
+$tmaker = (isset($dict['created by']) && !empty($dict['created by'])) ? $dict['created by'] : $lang['takeupload_unkown'];
 $dict['comment'] = ("In using this torrent you are bound by the {$site_config['site_name']} Confidentiality Agreement By Law"); // change torrent comment
 
 $visible = (XBT_TRACKER ? 'yes' : 'no');
 $torrent = str_replace('_', ' ', $torrent);
 $vip = (isset($vip) ? '1' : '0');
 
-$sql = 'INSERT INTO torrents (isbn, search_text, filename, owner, visible, vip, release_group, newgenre, poster, anonymous, allow_comments, info_hash, name, size, numfiles, offer, request, url, subs, descr, ori_descr, description, category, free, silver, save_as, youtube, tags, added, last_action, mtime, ctime, freetorrent, nfo, client_created_by) VALUES (' . implode(',', array_map('sqlesc', [
-        $isbn,
-        searchfield("$shortfname $dname $torrent"),
-        $fname,
-        $owner_id,
-        $visible,
-        $vip,
-        $release_group,
-        $genre,
-        $poster,
-        $anonymous,
-        $allow_comments,
-        $infohash,
-        $torrent,
-        $totallen,
-        count($filelist),
-        $offer,
-        $request,
-        $url,
-        $subs,
-        $descr,
-        $descr,
-        $description,
-        (int) $type,
-        $free2,
-        $silver,
-        $dname,
-        $youtube,
-        $tags,
-    ])) . ', ' . TIME_NOW . ', ' . TIME_NOW . ', ' . TIME_NOW . ', ' . TIME_NOW . ", $freetorrent, $nfo, $tmaker)";
+$values = [
+    'isbn' => $isbn,
+    'search_text' => searchfield("$shortfname $dname $torrent"),
+    'filename' => $fname,
+    'owner' => $owner_id,
+    'visible' => $visible,
+    'vip' => $vip,
+    'release_group' => $release_group,
+    'newgenre' => $genre,
+    'poster' => $poster,
+    'anonymous' => $anonymous,
+    'allow_comments' => $allow_comments,
+    'info_hash' => $infohash,
+    'name' => $torrent,
+    'size' => $totallen,
+    'numfiles' => count($filelist),
+    'offer' => $offer,
+    'request' => $request,
+    'url' => $url,
+    'subs' => $subs,
+    'descr' => $descr,
+    'ori_descr' => $descr,
+    'description' => $description,
+    'category' => $type,
+    'free' => $free2,
+    'silver' => $silver,
+    'save_as' => $dname,
+    'youtube' => $youtube,
+    'tags' => $tags,
+    'added' => TIME_NOW,
+    'last_action' => TIME_NOW,
+    'mtime' => TIME_NOW,
+    'ctime' => TIME_NOW,
+    'freetorrent' => $freetorrent,
+    'nfo' => $nfo,
+    'client_created_by' => $tmaker,
+];
+$id = $fluent->insertInto('torrents')
+        ->values($values)
+        ->execute();
 
-$ret = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-
-if (!$ret) {
-    if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
-        $session->set('is-warning', $lang['takeupload_already']);
-        header("Location: {$site_config['baseurl']}/upload.php");
-        die();
-    }
-    $session->set('is-warning', 'mysql puked: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+if (!$id) {
+    $session->set('is-warning', 'upload failed');
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
 if (!XBT_TRACKER) {
     remove_torrent($infohash);
 }
-$id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
-$cache->delete('MyPeers_' . $owner_id);
-$cache->delete('lastest_tor_');
-$cache->delete('last5_tor_');
-$cache->delete('top5_tor_');
-$cache->delete('scroll_tor_');
-$cache->delete('slider_tor_');
-$cache->delete('torrent_poster_count_');
-$cache->delete('torrent_banner_count_');
-$cache->delete('backgrounds_');
-$cache->delete('posters_');
+
+get_torrent_from_hash($infohash);
+
+$cache->delete('peers_' . $owner_id);
+$peer = new DarkAlchemy\Pu239\Peer();
+$peer->getPeersFromUserId($owner_id);
+
+$cache->deleteMulti([
+    'lastest_tor_',
+    'last5_tor_',
+    'top5_tor_',
+    'scroll_tor_',
+    'slider_tor_',
+    'torrent_poster_count_',
+    'torrent_banner_count_',
+    'backgrounds_',
+    'posters_',
+]);
 $hashes = $cache->get('hashes_');
 if (!empty($hashes)) {
     foreach ($hashes as $hash) {

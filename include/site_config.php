@@ -42,7 +42,7 @@ date_default_timezone_set('UTC');
 // 2592000 and over = absolute time, unix timestamp
 $site_config['expires']['latestuser'] = 3600; // 3600 = 1 hour
 $site_config['expires']['motw'] = 3600; // 3600 = 1 hour
-$site_config['expires']['MyPeers_'] = 120; // 60 = 60 seconds
+$site_config['expires']['peers_'] = 120; // 120 = 2 minutes
 $site_config['expires']['unread'] = 86400; // 86400 = 1 day
 $site_config['expires']['alerts'] = 86400; // 86400 = 1 day
 $site_config['expires']['searchcloud'] = 86400; // 86400 = 1 day
@@ -50,7 +50,6 @@ $site_config['expires']['user_cache'] = 2591999; // 30 days
 $site_config['expires']['curuser'] = 2591999; // 30 days
 $site_config['expires']['u_status'] = 2591999; // 30 days
 $site_config['expires']['user_status'] = 2591999; // 30 days
-$site_config['expires']['MyPeers_xbt_'] = 30;
 $site_config['expires']['announcement'] = 600; // 600 = 10 min
 $site_config['expires']['forum_posts'] = 86400;
 $site_config['expires']['torrent_comments'] = 900; // 900 = 15 min
@@ -160,6 +159,7 @@ $site_config['flood_file'] = INCL_DIR . 'settings' . DIRECTORY_SEPARATOR . 'limi
 $site_config['nameblacklist'] = ROOT_DIR . 'Cache' . DIRECTORY_SEPARATOR . 'nameblacklist.txt';
 $site_config['happyhour'] = CACHE_DIR . 'happyhour' . DIRECTORY_SEPARATOR . 'happyhour.txt';
 $site_config['sql_error_log'] = SQLERROR_LOGS_DIR . 'sql_err_' . date('Y_m_d', TIME_NOW) . '.log';
+$site_config['php_error_log'] = LOGS_DIR . 'err_' . date('Y_m_d', TIME_NOW) . '.log';
 
 if (empty($_SERVER['HTTP_HOST'])) {
     $_SERVER['HTTP_HOST'] = !empty($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $site_config['domain'];

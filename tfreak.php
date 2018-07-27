@@ -8,6 +8,7 @@ function rsstfreakinfo()
 {
     require_once INCL_DIR . 'html_functions.php';
     global $site_config, $cache;
+
     $html = '';
     $use_limit = true;
     $limit = 5;
@@ -15,7 +16,7 @@ function rsstfreakinfo()
 
     $xml = $cache->get('tfreaknewsrss_');
     if ($xml === false || is_null($xml)) {
-        $xml = file_get_contents('http://feed.torrentfreak.com/Torrentfreak/');
+        $xml = fetch('http://feed.torrentfreak.com/Torrentfreak/');
         $cache->set('tfreaknewsrss_', $xml, 300);
     }
 

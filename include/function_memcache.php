@@ -1,4 +1,7 @@
 <?php
+
+require_once INCL_DIR . 'ann_functions.php';
+
 /**
  * @param $id
  *
@@ -34,36 +37,35 @@ function remove_torrent($infohash)
     if (strlen($infohash) != 20 || !bin2hex($infohash)) {
         return false;
     }
-    $key = 'torrent_hash_' . bin2hex($infohash);
-    $torrent = $cache->get($key);
-    if ($torrent === false || is_null($torrent)) {
-        $cache->delete($key);
-
-        return false;
-    }
-    $cache->delete($key);
+    $torrent = get_torrent_from_hash($infohash);
     if (is_array($torrent)) {
         remove_torrent_peers($torrent['id']);
-    }
-
-    $cache->delete('top5_tor_');
-    $cache->delete('last5_tor_');
-    $cache->delete('scroll_tor_');
-    $cache->delete('torrent_details_' . $torrent['id']);
-    $cache->delete('torrent_details_text' . $torrent['id']);
-    $cache->delete('MyPeers_' . $torrent['owner']);
-    $cache->delete('lastest_tor_');
-    $cache->delete('slider_tor_');
-    $cache->delete('torrent_poster_count_');
-    $cache->delete('torrent_banner_count_');
-    $cache->delete('backgrounds_');
-    $cache->delete('posters_');
-    $hashes = $cache->get('hashes_');
-    if (!empty($hashes)) {
-        foreach ($hashes as $hash) {
-            $cache->delete('suggest_torrents_' . $hash);
+        $key = 'torrent_hash_' . bin2hex($infohash);
+        $cache->deleteMulti([
+            $key,
+            'peers_' . $torrent['owner'],
+            'coin_points_' . $torrent['id'],
+            'latest_comments_',
+            'top5_tor_',
+            'last5_tor_',
+            'scroll_tor_',
+            'torrent_details_' . $torrent['id'],
+            'torrent_details_txt_' . $torrent['id'],
+            'lastest_tor_',
+            'slider_tor_',
+            'torrent_poster_count_',
+            'torrent_banner_count_',
+            'backgrounds_',
+            'posters_',
+            'similiar_tor_' . $torrent['id'],
+        ]);
+        $hashes = $cache->get('hashes_');
+        if (!empty($hashes)) {
+            foreach ($hashes as $hash) {
+                $cache->delete('suggest_torrents_' . $hash);
+            }
+            $cache->delete('hashes_');
         }
-        $cache->delete('hashes_');
     }
 
     return true;

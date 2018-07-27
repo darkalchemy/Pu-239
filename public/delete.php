@@ -4,9 +4,8 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_memcache.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
-
 check_user_status();
-global $CURUSER, $site_config, $cache, $session;
+global $CURUSER, $site_config, $cache, $session, $fluent;
 
 $lang = array_merge(load_language('global'), load_language('delete'));
 if (!mkglobal('id')) {
@@ -20,47 +19,27 @@ if (!is_valid_id($id)) {
 /**
  * @param $id
  */
-function deletetorrent($id)
+function deletetorrent($tid)
 {
-    global $site_config, $CURUSER, $cache;
+    global $torrent_stuffs, $site_config;
 
-    sql_query('DELETE peers.*, files.*, comments.*, snatched.*, thanks.*, bookmarks.*, coins.*, rating.*, torrents.* FROM torrents 
-                 LEFT JOIN peers ON peers.torrent = torrents.id
-                 LEFT JOIN files ON files.torrent = torrents.id
-                 LEFT JOIN comments ON comments.torrent = torrents.id
-                 LEFT JOIN thanks ON thanks.torrentid = torrents.id
-                 LEFT JOIN bookmarks ON bookmarks.torrentid = torrents.id
-                 LEFT JOIN coins ON coins.torrentid = torrents.id
-                 LEFT JOIN rating ON rating.torrent = torrents.id
-                 LEFT JOIN snatched ON snatched.torrentid = torrents.id
-                 WHERE torrents.id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    unlink("{$site_config['torrent_dir']}/$id.torrent");
-    $cache->delete('MyPeers_' . $CURUSER['id']);
+    $torrent_stuffs->delete_by_id($tid);
+    unlink("{$site_config['torrent_dir']}/{$tid['id']}.torrent");
 }
 
-/**
- * @param $id
- */
-function deletetorrent_xbt($id)
-{
-    global $site_config, $CURUSER, $lang, $cache;
+$row = $fluent->from('torrents AS t')
+    ->select(null)
+    ->select('t.id')
+    ->select('t.info_hash')
+    ->select('t.owner')
+    ->select('t.name')
+    ->select('t.seeders')
+    ->select('t.added')
+    ->select('u.seedbonus')
+    ->leftJoin('users AS u ON u.id = t.owner')
+    ->where('t.id = ?', $id)
+    ->fetch();
 
-    sql_query('UPDATE torrents SET flags = 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    sql_query('DELETE files.*, comments.*, thankyou.*, thanks.*, bookmarks.*, coins.*, rating.*, xbt_files_users.* FROM xbt_files_users
-                                 LEFT JOIN files ON files.torrent = xbt_files_users.fid
-                                 LEFT JOIN comments ON comments.torrent = xbt_files_users.fid
-                                 LEFT JOIN thankyou ON thankyou.torid = xbt_files_users.fid
-                                 LEFT JOIN thanks ON thanks.torrentid = xbt_files_users.fid
-                                 LEFT JOIN bookmarks ON bookmarks.torrentid = xbt_files_users.fid
-                                 LEFT JOIN coins ON coins.torrentid = xbt_files_users.fid
-                                 LEFT JOIN rating ON rating.torrent = xbt_files_users.fid
-                                 WHERE xbt_files_users.fid =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    unlink("{$site_config['torrent_dir']}/$id.torrent");
-    $cache->delete('MyPeers_XBT_' . $CURUSER['id']);
-}
-
-$res = sql_query('SELECT name, owner, seeders FROM torrents WHERE id =' . sqlesc($id));
-$row = mysqli_fetch_assoc($res);
 if (!$row) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_not_exist']}");
 }
@@ -89,27 +68,20 @@ if ($rt == 1) {
     }
     $reasonstr = trim($reason[3]);
 }
-if (XBT_TRACKER) {
-    deletetorrent_xbt($id);
-} else {
-    deletetorrent($id);
-    remove_torrent_peers($id);
-}
-$cache->deleteMulti([
-    'lastest_tor_',
-    'top5_tor_',
-    'last5_tor_',
-    'scroll_tor_',
-    'torrent_details_' . $id,
-    'torrent_details_text' . $id,
-]);
+
+deletetorrent($row);
+remove_torrent($row['info_hash']);
+
 write_log("{$lang['delete_torrent']} $id ({$row['name']}){$lang['delete_deleted_by']}{$CURUSER['username']} ($reasonstr)\n");
 if ($site_config['seedbonus_on'] == 1) {
-    sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus_per_delete']) . ' WHERE id = ' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);
-    $update['seedbonus'] = ($CURUSER['seedbonus'] - $site_config['bonus_per_delete']);
-    $cache->update_row('user' . $row['owner'], [
-        'seedbonus' => $update['seedbonus'],
-    ], $site_config['expires']['user_cache']);
+    $dt = sqlesc(TIME_NOW - (14 * 86400));
+    if ($row['added'] > $dt) {
+        sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus_per_delete']) . ' WHERE id = ' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);
+        $update['seedbonus'] = ($row['seedbonus'] - $site_config['bonus_per_delete']);
+        $cache->update_row('user' . $row['owner'], [
+            'seedbonus' => $update['seedbonus'],
+        ], $site_config['expires']['user_cache']);
+    }
 }
 $message = "Torrent $id (" . htmlsafechars($row['name']) . ") has been deleted.\n  Reason: $reasonstr";
 if ($CURUSER['id'] != $row['owner'] && ($CURUSER['opt2'] & user_options_2::PM_ON_DELETE) === user_options_2::PM_ON_DELETE) {
