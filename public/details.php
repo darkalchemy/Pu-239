@@ -25,7 +25,13 @@ $torrent_cache = [];
 $HTMLOUT = '';
 $dt = TIME_NOW;
 
-if (!isset($_GET['id']) || !is_valid_id($_GET['id'])) {
+if (!isset($_GET['id'])) {
+    $session->set('is-warning', "[h3]{$lang['details_user_error']}[/h3] {$lang['details_missing_id']}");
+    header("Location: {$site_config['baseurl']}/index.php");
+    die();
+}
+
+if (!is_valid_id($_GET['id'])) {
     $session->set('is-warning', "[h3]{$lang['details_user_error']}[/h3] {$lang['details_bad_id']}{$_GET['id']}");
     header("Location: {$site_config['baseurl']}/index.php");
     die();
@@ -72,7 +78,7 @@ if ($torrents === false || is_null($torrents)) {
     $cache->set('torrent_details_' . $id, $torrents, $site_config['expires']['torrent_details']);
 }
 if (empty($torrents)) {
-    $session->set('is-warning', "[h3]{$lang['details_user_error']}[/h3] {$lang['details_bad_id']}{$_GET['id']}");
+    $session->set('is-warning', "[h3]{$lang['details_user_error']}[/h3] {$lang['details_torrent_id']} {$_GET['id']}");
     header("Location: {$site_config['baseurl']}/index.php");
     die();
 }

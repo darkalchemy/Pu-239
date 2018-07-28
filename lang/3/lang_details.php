@@ -18,9 +18,10 @@ $lang = [
     //Details
     'details_user_error' => 'USER ERROR',
     'details_bad_id' => 'Bad ID',
+    'details_missing_id' => 'Missing ID',
     'details_error' => 'Error',
     'details_none' => 'None',
-    'details_torrent_id' => 'No torrent with ID.',
+    'details_torrent_id' => 'No torrent with ID:',
     'details_success' => 'Successfully uploaded!',
     'details_start_seeding' => "You can start seeding now. <b>Note</b> that the torrent won't be visible until you do that!",
     'details_success_edit' => 'Successfully edited!',

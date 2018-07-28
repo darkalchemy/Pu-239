@@ -1,4 +1,5 @@
 28 Jul 2018
+update: test for bad id details.php
 fix: redirect to index page and show flash message when torrent not exist details.php
 fix: upload description removing characters such as ë, è, é, and ê
 fix: upload stripping ascii from description instead of nfo
