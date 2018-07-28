@@ -115,6 +115,11 @@ if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
         '',
     ], file_get_contents($nfofilename));
     $nfo = $nfo_content;
+    if (isset($strip) && $strip) {
+        require_once INCL_DIR . 'strip.php';
+        $nfo = preg_replace('/[^\\x20-\\x7e\\x0a\\x0d]/', ' ', $nfo);
+        strip($nfo);
+    }
 }
 
 $free2 = 0;
@@ -152,11 +157,6 @@ if (!$descr) {
     }
 }
 $description = strip_tags(isset($description) ? trim($description) : '');
-if (isset($strip) && $strip) {
-    require_once INCL_DIR . 'strip.php';
-    $descr = preg_replace('/[^\\x20-\\x7e\\x0a\\x0d]/', ' ', $descr);
-    strip($descr);
-}
 $catid = (int) $type;
 if (!is_valid_id($catid)) {
     $session->set('is-warning', $lang['takeupload_no_cat']);

@@ -22,7 +22,6 @@ if ($scroll_torrents === false || is_null($scroll_torrents)) {
         ->orderBy('torrents.added DESC')
         ->limit($site_config['latest_torrents_limit_scroll'])
         ->fetchAll();
-
     $cache->set('scroll_tor_', $scroll_torrents, $site_config['expires']['scroll_torrents']);
 }
 

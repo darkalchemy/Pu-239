@@ -148,7 +148,7 @@ $HTMLOUT .= tr("{$lang['upload_anonymous']}", "<div class='flex'><input type='ch
 if ($CURUSER['class'] === UC_MAX) {
     $HTMLOUT .= tr("{$lang['upload_comment']}", "<div class='flex'><input type='checkbox' name='allow_commentd' value='yes' /><span>{$lang['upload_discom1']}</span></div>", 1);
 }
-$HTMLOUT .= tr('Strip ASCII', "<div class='flex'><input type='checkbox' name='strip' value='strip' checked /><span><a href='http://en.wikipedia.org/wiki/ASCII_art' target='_blank'>What is this ?</a></span></div>", 1);
+$HTMLOUT .= tr('Strip ASCII', "<div class='flex'><input type='checkbox' name='strip' value='strip' /><span><a href='https://en.wikipedia.org/wiki/ASCII_art' target='_blank'>What is this?</a></span></div>", 1);
 if ($CURUSER['class'] >= UC_UPLOADER && !XBT_TRACKER) {
     $HTMLOUT .= "<tr>
     <td class='rowhead'>Free Leech</td>

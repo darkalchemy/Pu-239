@@ -491,8 +491,7 @@ span {
     padding-right : 0;
 }
 
-.column:first-child:not(.img-avatar),
-.column:first-child:not(.img-polaroid) {
+.column:first-child:not(.img-avatar):not(.img-polaroid) {
     padding-left : 0;
 }
 

@@ -1,3 +1,7 @@
+28 Jul 2018
+fix: upload description removing characters such as ë, è, é, and ê
+fix: upload stripping ascii from description instead of nfo
+
 27 Jul 2018
 update: add class color to flash message hnrs.php
 fix: format_username can't be used with flash messages hnrs.php

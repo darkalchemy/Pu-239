@@ -123,12 +123,15 @@ function commenttable($rows, $variant = 'torrent')
             $this_text
             <a id='{$type}_{$row['id']}'></a>
             <div class='columns'>
-                <div class='mw-150 margin10 round10 bg-02 column is-one-fifth has-text-centered img-avatar'>
-                    {$avatar}" . get_reputation($row['user'], 'comments') . "
-                </div>
-                <div class='margin10 bg-02 round10 column'>
-                    $text
-                </div>
+                <span class='margin10 round10 bg-02 column is-one-fifth has-text-centered img-avatar'>
+                    {$avatar}
+                    <div>" . get_reputation($row['user'], 'comments') . "</div>
+                </span>
+                <span class='margin10 bg-02 round10 column'>
+                    <span class='padding10'>
+                        $text
+                    </span>
+                </span>
             </div>", $top);
     }
 
