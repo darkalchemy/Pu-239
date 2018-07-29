@@ -1,4 +1,5 @@
 29 Jul 2018
+update: drop fk constraint on bannedemails
 update: site_config
 fix: redis flush cache flushing all databases instead of just redis site db
 update: site_config

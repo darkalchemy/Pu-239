@@ -276,4 +276,11 @@ $sql_updates = [
         'query' => "INSERT INTO `site_config` (name, value, description) VALUES ('backgrounds_on_all_pages', 0, 'Display a random background image on all pages, not just details.php')",
         'flush' => 'site_settings_',
     ],
+    [
+        'id'    => 1532859807,
+        'info'  => 'Drop FK Constraint on bannedemails',
+        'date'  => '29 Jul, 2018',
+        'query' => 'ALTER TABLE `bannedemails` DROP FOREIGN KEY IF EXISTS `bannedemails_ibfk_1`',
+        'flush' => false,
+    ],
 ];
