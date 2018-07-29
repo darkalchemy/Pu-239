@@ -12,7 +12,7 @@ function torrents_update($data)
     set_time_limit(1200);
     ignore_user_abort(true);
     $i = 1;
-    $torrents = $fluent->from('torrent')
+    $torrents = $fluent->from('torrents')
         ->select(null)
         ->select('seeders')
         ->select('leechers')
