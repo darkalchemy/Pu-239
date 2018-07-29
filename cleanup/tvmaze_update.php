@@ -26,11 +26,11 @@ function tvmaze_update($data)
         if ($shows) {
             foreach ($shows as $show) {
                 $values[] = [
-                    'name'       => htmlsafechars($show['name']),
-                    'tvmaze_id'  => $show['id'],
-                    'tvrage_id'  => $show['externals']['tvrage'],
+                    'name' => htmlsafechars($show['name']),
+                    'tvmaze_id' => $show['id'],
+                    'tvrage_id' => $show['externals']['tvrage'],
                     'thetvdb_id' => $show['externals']['thetvdb'],
-                    'imdb_id'    => $show['externals']['imdb'],
+                    'imdb_id' => $show['externals']['imdb'],
                 ];
             }
         }

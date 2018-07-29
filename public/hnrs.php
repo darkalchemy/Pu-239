@@ -77,7 +77,7 @@ if (isset($_GET['torrentid'])) {
     $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $cost . ' Points for 1 to 1 ratio on torrent: ' . htmlsafechars($arr_snatched['name']) . ' ' . $torrent_number . ".\n " . $bonuscomment;
     sql_query('UPDATE users SET bonuscomment = ' . sqlesc($bonuscomment) . ', seedbonus = ' . sqlesc($seedbonus) . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     $cache->update_row('user' . $userid, [
-        'seedbonus'    => $seedbonus,
+        'seedbonus' => $seedbonus,
         'bonuscomment' => $bonuscomment,
     ], $site_config['expires']['user_cache']);
     $cache->delete('userhnrs_' . $userid);

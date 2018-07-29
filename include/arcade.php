@@ -43,7 +43,7 @@ if ($highScore < $score) {
     sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['top_score_points']) . ', bonuscomment = ' . sqlesc($bonuscomment) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $seedbonus = get_one_row('users', 'seedbonus', 'WHERE id = ' . $CURUSER['id']);
     $cache->update_row('user' . $CURUSER['id'], [
-        'seedbonus'    => $seedbonus,
+        'seedbonus' => $seedbonus,
         'bonuscomment' => $bonuscomment,
     ], $site_config['expires']['user_cache']);
 } elseif ($score >= .9 * $highScore) {

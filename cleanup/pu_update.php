@@ -55,8 +55,8 @@ function pu_update($data)
                 $users_buffer[] = '(' . $arr['id'] . ', ' . $class_value . ', 1, ' . $modcom . ')';
                 $update['invites'] = ($arr['invites'] + 1);
                 $cache->update_row('user' . $arr['id'], [
-                    'class'      => $class_value,
-                    'invites'    => $update['invites'],
+                    'class' => $class_value,
+                    'invites' => $update['invites'],
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
                 $cache->increment('inbox_' . $arr['id']);

@@ -23,7 +23,7 @@ $curuser_cache = $user_cache = $urladd = $changedemail = $birthday = '';
 function resize_image($in)
 {
     $out = [
-        'img_width'  => $in['cur_width'],
+        'img_width' => $in['cur_width'],
         'img_height' => $in['cur_height'],
     ];
     if ($in['cur_width'] > $in['max_width']) {
@@ -65,9 +65,9 @@ if ($action == 'avatar') {
         sql_query('UPDATE usersachiev SET avatarset = avatarset + 1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND avatarset = '0'") or sqlerr(__FILE__, __LINE__);
         if (($img_size[0] > $site_config['av_img_width']) || ($img_size[1] > $site_config['av_img_height'])) {
             $image = resize_image([
-                'max_width'  => $site_config['av_img_width'],
+                'max_width' => $site_config['av_img_width'],
                 'max_height' => $site_config['av_img_height'],
-                'cur_width'  => $img_size[0],
+                'cur_width' => $img_size[0],
                 'cur_height' => $img_size[1],
             ]);
         } else {
@@ -118,9 +118,9 @@ if ($action == 'avatar') {
         sql_query('UPDATE usersachiev SET sigset = sigset+1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND sigset = '0'") or sqlerr(__FILE__, __LINE__);
         if (($img_size[0] > $site_config['sig_img_width']) || ($img_size[1] > $site_config['sig_img_height'])) {
             $image = resize_image([
-                'max_width'  => $site_config['sig_img_width'],
+                'max_width' => $site_config['sig_img_width'],
                 'max_height' => $site_config['sig_img_height'],
-                'cur_width'  => $img_size[0],
+                'cur_width' => $img_size[0],
                 'cur_height' => $img_size[1],
             ]);
         } else {
@@ -254,10 +254,10 @@ if ($action == 'avatar') {
         $token = make_passhash($secret);
         $alt_id = make_password(16);
         $values = [
-            'email'     => $CURUSER['email'],
+            'email' => $CURUSER['email'],
             'new_email' => $email,
-            'token'     => $token,
-            'id'        => $alt_id,
+            'token' => $token,
+            'id' => $alt_id,
         ];
         $fluent->insertInto('tokens')
             ->values($values)
@@ -375,7 +375,7 @@ if ($action == 'avatar') {
         if (!empty($CURUSER['last_status'])) {
             $status_archive[] = [
                 'status' => $CURUSER['last_status'],
-                'date'   => $CURUSER['last_update'],
+                'date' => $CURUSER['last_update'],
             ];
         }
         sql_query('INSERT INTO ustatus(userid,last_status,last_update,archive) VALUES(' . sqlesc($CURUSER['id']) . ',' . sqlesc($status) . ',' . TIME_NOW . ',' . sqlesc(serialize($status_archive)) . ') ON DUPLICATE KEY UPDATE last_status = VALUES(last_status),last_update = VALUES(last_update),archive = VALUES(archive)') or sqlerr(__FILE__, __LINE__);
@@ -523,9 +523,9 @@ if ($action == 'avatar') {
     $user_cache['notifs'] = $notifs;
 
     $acceptpms_choices = [
-        'yes'     => 1,
+        'yes' => 1,
         'friends' => 2,
-        'no'      => 3,
+        'no' => 3,
     ];
     $acceptpms = (isset($_POST['acceptpms']) ? $_POST['acceptpms'] : 'all');
     if (isset($acceptpms_choices[$acceptpms])) {

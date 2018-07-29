@@ -100,7 +100,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's name was changed from: ' . $who . ' to ' . $newusername . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET username = $newname, modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user' . $nsetusername['id'], [
-                    'username'   => $newname,
+                    'username' => $newname,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
                 echo $who . 's name was changed from: ' . $who . ' to ' . $newusername . ' by ' . $modd;
@@ -456,7 +456,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's uploadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET uploadpos = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user' . $upos['id'], [
-                    'uploadpos'  => $toggle,
+                    'uploadpos' => $toggle,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
                 echo $who . 's uploadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
@@ -478,7 +478,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 sql_query("UPDATE users SET downloadpos = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user' . $dpos['id'], [
                     'downloadpos' => $toggle,
-                    'modcomment'  => $modcomment,
+                    'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
                 echo $who . 's downloadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
@@ -519,7 +519,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's chatpost changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET chatpost = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user' . $cpos['id'], [
-                    'chatpost'   => $toggle,
+                    'chatpost' => $toggle,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
                 echo $who . 's chatpost changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
@@ -540,7 +540,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's avatarpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET avatarpos = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user' . $apos['id'], [
-                    'avatarpos'  => $toggle,
+                    'avatarpos' => $toggle,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
                 echo $who . 's avatarpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
@@ -562,7 +562,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 sql_query("UPDATE users SET invite_rights = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user' . $ipos['id'], [
                     'invite_rights' => $toggle,
-                    'modcomment'    => $modcomment,
+                    'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
                 echo $who . 's invite rights changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
@@ -582,7 +582,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's enabled changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET enabled = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user' . $epos['id'], [
-                    'enabled'    => $toggle,
+                    'enabled' => $toggle,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
                 echo $who . 's enabled changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
@@ -604,7 +604,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's support changed by ' . $modd . "\n");
             sql_query("UPDATE users SET support = 'yes', supportfor ='$supportfors', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user' . $support['id'], [
-                'support'    => 'yes',
+                'support' => 'yes',
                 'supportfor' => $supportfors,
                 'modcomment' => $modcomment,
             ], $site_config['expires']['user_cache']);

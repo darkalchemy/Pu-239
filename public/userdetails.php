@@ -47,7 +47,7 @@ if ($user_status === false || is_null($user_status)) {
         $user_status = [
             'last_status' => '',
             'last_update' => 0,
-            'archive'     => '',
+            'archive' => '',
         ];
     }
     $cache->set('userstatus_' . $id, $user_status, $site_config['expires']['user_status']); // 30 days

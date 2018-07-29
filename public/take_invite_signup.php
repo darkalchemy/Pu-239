@@ -42,14 +42,14 @@ if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
     $ip = getip();
     $url = 'https://www.google.com/recaptcha/api/siteverify';
     $params = [
-        'secret'   => $_ENV['RECAPTCHA_SECRET_KEY'],
+        'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
         'response' => $response,
         'remoteip' => $ip,
     ];
     $query = http_build_query($params);
     $contextData = [
-        'method'  => 'POST',
-        'header'  => "Content-Type: application/x-www-form-urlencoded\r\n" . "Connection: close\r\n" . 'Content-Length: ' . strlen($query) . "\r\n",
+        'method' => 'POST',
+        'header' => "Content-Type: application/x-www-form-urlencoded\r\n" . "Connection: close\r\n" . 'Content-Length: ' . strlen($query) . "\r\n",
         'content' => $query,
     ];
     $context = stream_context_create(['http' => $contextData]);

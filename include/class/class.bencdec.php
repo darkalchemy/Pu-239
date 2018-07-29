@@ -214,16 +214,16 @@ class bencdec
     // follows specifications. You won't get any invalid data when not using this option,
     // so only specify it if you need to make sure the data is perfectly valid as it will
     // slightly hurt decoding performance
-    const TYPE_INT  = 1;
-    const TYPE_STR  = 2;
+    const TYPE_INT = 1;
+    const TYPE_STR = 2;
     const TYPE_LIST = 3;
     const TYPE_DICT = 4;
     // initialize required variables for b-decoding
-    private static $bdata          = '';
-    private static $bdata_length   = 0;
+    private static $bdata = '';
+    private static $bdata_length = 0;
     private static $bdata_position = 0;
-    private static $bdata_depth    = 0;
-    private static $ext_valid      = false;
+    private static $bdata_depth = 0;
+    private static $ext_valid = false;
 
     /**
      * @param     $fn

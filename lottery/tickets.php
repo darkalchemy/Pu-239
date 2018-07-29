@@ -76,7 +76,6 @@ $lottery['current_user']['could_buy'] = $lottery['current_user']['can_buy'] = $l
 //if he has less bonus points calculate how many tickets can he buy with what he has
 if ($CURUSER['seedbonus'] < ($lottery['current_user']['could_buy'] * $lottery_config['ticket_amount'])) {
     for ($lottery['current_user']['can_buy']; $CURUSER['seedbonus'] < ($lottery_config['ticket_amount'] * $lottery['current_user']['can_buy']); --$lottery['current_user']['can_buy']) {
-        ;
     }
 }
 //check if the lottery ended if the lottery ended don't allow the user to buy more tickets or if he has already bought the max tickets

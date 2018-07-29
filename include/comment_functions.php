@@ -15,9 +15,9 @@ function commenttable($rows, $variant = 'torrent')
     $lang = load_language('torrenttable_functions');
     $count = 0;
     $variant_options = [
-        'torrent'     => 'details',
-        'request'     => 'requests',
-        'offer'       => 'offers',
+        'torrent' => 'details',
+        'request' => 'requests',
+        'offer' => 'offers',
         'usercomment' => 'usercomments',
     ];
     if (isset($variant_options[$variant])) {

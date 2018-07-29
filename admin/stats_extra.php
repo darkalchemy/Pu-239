@@ -110,8 +110,8 @@ function show_views()
     $human_from_date = getdate($from_time);
     $sql = [
         'from_time' => $from_time,
-        'to_time'   => $to_time,
-        'sortby'    => $inbound['sortby'],
+        'to_time' => $to_time,
+        'sortby' => $inbound['sortby'],
     ];
     $q = sql_query("SELECT SUM(t.views) as result_count, t.forumid, f.name as result_name
                     FROM topics AS t
@@ -147,7 +147,7 @@ function show_views()
             }
             $running_total += $row['result_count'];
             $results[] = [
-                'result_name'  => $row['result_name'],
+                'result_name' => $row['result_name'],
                 'result_count' => $row['result_count'],
             ];
         }
@@ -249,11 +249,11 @@ function result_screen($mode = 'reg')
     $sort_by = ($inbound['sortby'] === 'DESC') ? 'DESC' : 'ASC';
     $sql = [
         'from_time' => $from_time,
-        'to_time'   => $to_time,
-        'sortby'    => $sort_by,
+        'to_time' => $to_time,
+        'sortby' => $sort_by,
         'sql_field' => $sql_field,
         'sql_table' => $sql_table,
-        'sql_date'  => $sql_date,
+        'sql_date' => $sql_date,
     ];
     $q1 = sql_query("SELECT MAX({$sql['sql_field']}) as result_maxdate,
                  COUNT(*) as result_count,
@@ -291,8 +291,8 @@ function result_screen($mode = 'reg')
             $running_total += $row['result_count'];
             $results[] = [
                 'result_maxdate' => $row['result_maxdate'],
-                'result_count'   => $row['result_count'],
-                'result_time'    => $row['result_time'],
+                'result_count' => $row['result_count'],
+                'result_time' => $row['result_time'],
             ];
         }
         foreach ($results as $data) {

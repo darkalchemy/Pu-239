@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $update['uploaded'] = ($CURUSER['uploaded'] * 1.1);
     $cache->update_row('user' . $CURUSER['id'], [
         'tenpercent' => 'yes',
-        'uploaded'   => $update['uploaded'],
+        'uploaded' => $update['uploaded'],
     ], $site_config['expires']['user_cache']);
     $res1 = sql_query('INSERT INTO messages (sender, poster, receiver, subject, msg, added) VALUES (0, 0, ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($subject) . ', ' . sqlesc($msg) . ", '" . TIME_NOW . "')") or sqlerr(__FILE__, __LINE__);
     $cache->increment('inbox_' . $CURUSER['id']);

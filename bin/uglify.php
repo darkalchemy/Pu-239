@@ -9,7 +9,7 @@ write_class_files();
 
 $purpose = '--beautify';
 $short = 'Beautified';
-$spurpose = "-O2 --skip-rebase --format beautify";
+$spurpose = '-O2 --skip-rebase --format beautify';
 $css_ext = '.css';
 $js_ext = '.js';
 $update = INCL_DIR . 'files.php';
@@ -19,7 +19,7 @@ $csstmp = BIN_DIR . 'temp.css';
 if ($site_config['in_production']) {
     $purpose = '--compress --mangle';
     $short = 'Minified';
-    $spurpose = "--skip-rebase -O2";
+    $spurpose = '--skip-rebase -O2';
     $css_ext = '.min.css';
     $js_ext = '.min.js';
 }
@@ -38,16 +38,16 @@ foreach ($dirs as $dir) {
 }
 
 copy(ROOT_DIR . 'node_modules/lightbox2/dist/css/lightbox.css', BIN_DIR . 'lightbox.css');
-passthru("sed -i 's#../images/#../../images/#g' " . BIN_DIR . "lightbox.css");
+passthru("sed -i 's#../images/#../../images/#g' " . BIN_DIR . 'lightbox.css');
 
 $js_list = [
-    'checkport_js'   => [
+    'checkport_js' => [
         SCRIPTS_DIR . 'checkports.js',
     ],
-    'browse_js'      => [
+    'browse_js' => [
         SCRIPTS_DIR . 'autocomplete.js',
     ],
-    'chat_js'        => [
+    'chat_js' => [
         CHAT_DIR . 'js/chat.js',
         CHAT_DIR . 'js/custom.js',
         CHAT_DIR . 'js/classes.js',
@@ -56,7 +56,7 @@ $js_list = [
         CHAT_DIR . 'js/FABridge.js',
         SCRIPTS_DIR . 'ajaxchat.js',
     ],
-    'chat_log_js'    => [
+    'chat_log_js' => [
         CHAT_DIR . 'js/chat.js',
         CHAT_DIR . 'js/logs.js',
         CHAT_DIR . 'js/custom.js',
@@ -65,48 +65,48 @@ $js_list = [
         CHAT_DIR . 'js/config.js',
         CHAT_DIR . 'js/FABridge.js',
     ],
-    'index_js'       => [
+    'index_js' => [
         ROOT_DIR . 'node_modules/raphael/raphael.js',
         SCRIPTS_DIR . 'jquery.mousewheel.js',
         SCRIPTS_DIR . 'icarousel.js',
         SCRIPTS_DIR . 'jquery.flexslider.js',
         SCRIPTS_DIR . 'flexslider.js',
     ],
-    'captcha2_js'    => [
+    'captcha2_js' => [
         SCRIPTS_DIR . 'check.js',
         SCRIPTS_DIR . 'pStrength.jquery.js',
         SCRIPTS_DIR . 'pstrength.js',
     ],
-    'upload_js'      => [
+    'upload_js' => [
         SCRIPTS_DIR . 'FormManager.js',
         SCRIPTS_DIR . 'getname.js',
     ],
-    'request_js'     => [
+    'request_js' => [
         SCRIPTS_DIR . 'jquery.validate.js',
         SCRIPTS_DIR . 'check_selected.js',
     ],
-    'acp_js'         => [
+    'acp_js' => [
         SCRIPTS_DIR . 'acp.js',
     ],
-    'dragndrop_js'   => [
+    'dragndrop_js' => [
         SCRIPTS_DIR . 'dragndrop.js',
     ],
     'userdetails_js' => [
         SCRIPTS_DIR . 'flush_torrents.js',
         SCRIPTS_DIR . 'jquery.tabcontrol.js',
     ],
-    'details_js'     => [
+    'details_js' => [
         SCRIPTS_DIR . 'jquery.thanks.js',
     ],
-    'forums_js'      => [
+    'forums_js' => [
         SCRIPTS_DIR . 'check_selected.js',
         SCRIPTS_DIR . 'jquery.trilemma.js',
         SCRIPTS_DIR . '/forums.js',
     ],
-    'staffpanel_js'  => [
+    'staffpanel_js' => [
         SCRIPTS_DIR . 'polls.js',
     ],
-    'js'             => [
+    'js' => [
         ROOT_DIR . 'node_modules/jquery/dist/jquery.js',
         SCRIPTS_DIR . 'yall.js',
         TEMPLATE_DIR . 'themeChanger/js/colorpicker.js',
@@ -125,7 +125,7 @@ $js_list = [
 ];
 
 $css_list = [
-    'css'              => [
+    'css' => [
         ROOT_DIR . 'node_modules/normalize.css/normalize.css',
         ROOT_DIR . 'node_modules/bulma/css/bulma.css',
         TEMPLATE_DIR . '1/css/fonts.css',
@@ -146,7 +146,7 @@ $css_list = [
         TEMPLATE_DIR . '1/css/flexslider.css',
         TEMPLATE_DIR . '1/custom.css',
     ],
-    'chat_css_trans'   => [
+    'chat_css_trans' => [
         ROOT_DIR . 'node_modules/normalize.css/normalize.css',
         CHAT_DIR . 'css/global.css',
         CHAT_DIR . 'css/fonts.css',

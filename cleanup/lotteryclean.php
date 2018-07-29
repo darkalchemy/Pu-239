@@ -49,8 +49,8 @@ function lotteryclean($data)
         foreach ($lottery['winners'] as $winner) {
             $mod_comment = sqlesc("User won the lottery: {$lottery['user_pot']} at " . get_date($dt, 'LONG') . (!empty($winner['modcomment']) ? "\n" . $winner['modcomment'] : ''));
             $_userq[] = [
-                'id'         => (int) $winner['uid'],
-                'seedbonus'  => (float) $winner['seedbonus'] + $lottery['user_pot'],
+                'id' => (int) $winner['uid'],
+                'seedbonus' => (float) $winner['seedbonus'] + $lottery['user_pot'],
                 'modcomment' => $mod_comment,
             ];
             $_pms[] = '(0,' . $winner['uid'] . ',' . $msg['subject'] . ',' . $msg['body'] . ',' . $dt . ')';

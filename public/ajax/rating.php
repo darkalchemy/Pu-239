@@ -34,7 +34,7 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
             $update['rating_sum'] = ($r_f['rating_sum'] + $rate);
             $cache->update_row('torrent_details_' . $id, [
                 'num_ratings' => $update['num_ratings'],
-                'rating_sum'  => $update['rating_sum'],
+                'rating_sum' => $update['rating_sum'],
             ], $site_config['expires']['torrent_details']);
         }
         if ($site_config['seedbonus_on'] == 1) {

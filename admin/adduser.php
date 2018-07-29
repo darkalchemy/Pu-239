@@ -14,16 +14,16 @@ $cache->delete('chat_users_list');
 $lang = array_merge($lang, load_language('ad_adduser'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $insert = [
-        'username'     => '',
-        'email'        => '',
-        'passhash'     => '',
-        'status'       => 'confirmed',
-        'added'        => TIME_NOW,
-        'last_access'  => TIME_NOW,
+        'username' => '',
+        'email' => '',
+        'passhash' => '',
+        'status' => 'confirmed',
+        'added' => TIME_NOW,
+        'last_access' => TIME_NOW,
         'torrent_pass' => make_password(32),
-        'auth'         => make_password(32),
-        'apikey'       => make_password(32),
-        'ip'           => ipToStorageFormat('127.0.0.1'),
+        'auth' => make_password(32),
+        'apikey' => make_password(32),
+        'ip' => ipToStorageFormat('127.0.0.1'),
     ];
     if (isset($_POST['username']) && strlen($_POST['username']) >= 3 && valid_username($_POST['username'])) {
         $insert['username'] = $_POST['username'];

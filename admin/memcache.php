@@ -186,7 +186,7 @@ function getCacheItems()
     }
 
     return [
-        'items'  => $serverItems,
+        'items' => $serverItems,
         'counts' => $totalItems,
     ];
 }
@@ -830,7 +830,7 @@ EOB;
         $i = 0;
         if (!isset($_GET['singleout']) && count($MEMCACHE_SERVERS) > 1) {
             foreach ($MEMCACHE_SERVERS as $server) {
-                echo ($i + 1) . '. <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=memcache&amp;singleout=' . $i++ . '">' . $server . '</a><br>';
+                echo($i + 1) . '. <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=memcache&amp;singleout=' . $i++ . '">' . $server . '</a><br>';
             }
         } else {
             echo '1.' . $MEMCACHE_SERVERS[0];

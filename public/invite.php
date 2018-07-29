@@ -155,8 +155,8 @@ if ($do === 'view_page') {
 
     $values = [
         'sender' => $CURUSER['id'],
-        'code'   => $token,
-        'added'  => TIME_NOW,
+        'code' => $token,
+        'added' => TIME_NOW,
     ];
     $fluent->insertInto('invite_codes')
         ->values($values)

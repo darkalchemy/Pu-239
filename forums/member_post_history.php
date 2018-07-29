@@ -38,7 +38,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 			<input type="text" size="30" name="search" value="' . $search . '" />
 			<select name="class">
 			<option value="-">(' . $lang['fmp_any_class'] . ')</option>';
-    for ($i = 0; ; ++$i) {
+    for ($i = 0;; ++$i) {
         if ($c = get_user_class_name($i)) {
             $option .= '<option value="' . $i . '"' . (ctype_digit($class) && $class == $i ? ' selected="selected"' : '') . '>' . $c . '</option>';
         } else {
@@ -101,7 +101,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         $HTMLOUT .= $lang['vph_sorry_no_mem_found'];
     }
     $HTMLOUT .= $arr_count[0] > $perpage ? '<br>' . $menu : '';
-    //echo stdhead() . $HTMLOUT . stdfoot();
+//echo stdhead() . $HTMLOUT . stdfoot();
     //die();
 } else {
     $res_count = sql_query('SELECT COUNT(p.id) AS count FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON f.id = t.forum_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' p.user_id = ' . sqlesc($member_id) . ' AND f.min_class_read <= ' . $CURUSER['class']) or sqlerr(__FILE__, __LINE__);

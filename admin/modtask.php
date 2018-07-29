@@ -51,7 +51,7 @@ function write_info($text)
 function resize_image($in)
 {
     $out = [
-        'img_width'  => $in['cur_width'],
+        'img_width' => $in['cur_width'],
         'img_height' => $in['cur_height'],
     ];
     if ($in['cur_width'] > $in['max_width']) {
@@ -581,9 +581,9 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
             }
             if (($img_size[0] > $site_config['av_img_width']) || ($img_size[1] > $site_config['av_img_height'])) {
                 $image = resize_image([
-                    'max_width'  => $site_config['av_img_width'],
+                    'max_width' => $site_config['av_img_width'],
                     'max_height' => $site_config['av_img_height'],
-                    'cur_width'  => $img_size[0],
+                    'cur_width' => $img_size[0],
                     'cur_height' => $img_size[1],
                 ]);
             } else {
@@ -615,9 +615,9 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
             }
             if (($img_size[0] > $site_config['sig_img_width']) || ($img_size[1] > $site_config['sig_img_height'])) {
                 $image = resize_image([
-                    'max_width'  => $site_config['sig_img_width'],
+                    'max_width' => $site_config['sig_img_width'],
                     'max_height' => $site_config['sig_img_height'],
-                    'cur_width'  => $img_size[0],
+                    'cur_width' => $img_size[0],
                     'cur_height' => $img_size[1],
                 ]);
             } else {

@@ -6,8 +6,8 @@ use Blocktrail\CryptoJSAES\CryptoJSAES;
 
 class Cookie
 {
-    private   $config;
-    private   $cache;
+    private $config;
+    private $cache;
     protected $key;
 
     /**

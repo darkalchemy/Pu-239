@@ -30,7 +30,7 @@ echo "<h1>{$lang['usersearch_title']}</h1>\n";
 $HTMLOUT = $where_is = $join_is = $q1 = $comment_is = $comments_exc = $email_is = '';
 if (isset($_GET['h'])) {
     echo $lang['usersearch_instructions'];
-    //$HTMLOUT .= $lang['usersearch_instructions'];
+//$HTMLOUT .= $lang['usersearch_instructions'];
 } else {
     $HTMLOUT .= "<p>(<a href='staffpanel.php?tool=usersearch&amp;action=usersearch&amp;h=1'>{$lang['usersearch_inlink']}</a>)";
     $HTMLOUT .= "&#160;-&#160;(<a href='staffpanel.php?tool=usersearch'>{$lang['usersearch_reset']}</a>)</p>\n";
@@ -176,7 +176,7 @@ $highlight = " bgcolor='lightgrey'";
                         if (!is_valid_id($class)) {
                             $class = '';
                         }
-                        for ($i = 2; ; ++$i) {
+                        for ($i = 2;; ++$i) {
                             if ($c = get_user_class_name($i - 2)) {
                                 echo "<option value='" . $i . "'" . ((isset($class) ? $class : 0) == $i ? ' selected' : '') . ">$c</option>\n";
                             } else {

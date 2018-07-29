@@ -51,9 +51,9 @@ if (!$_POST['nullvote']) {
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $votes = $poll_data['votes'] + 1;
     $cache->update_row('poll_data_' . $CURUSER['id'], [
-        'votes'     => $votes,
-        'ip'        => $CURUSER['ip'],
-        'user_id'   => $CURUSER['id'],
+        'votes' => $votes,
+        'ip' => $CURUSER['ip'],
+        'user_id' => $CURUSER['id'],
         'vote_date' => TIME_NOW,
     ], $site_config['expires']['poll_data']);
     if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
@@ -78,9 +78,9 @@ if (!$_POST['nullvote']) {
                 ({$CURUSER['id']}, " . ipToStorageFormat($CURUSER['ip']) . ", {$poll_data['pid']}, " . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
     $votes = $poll_data['votes'] + 1;
     $cache->update_row('poll_data_' . $CURUSER['id'], [
-        'votes'     => $votes,
-        'ip'        => $CURUSER['ip'],
-        'user_id'   => $CURUSER['id'],
+        'votes' => $votes,
+        'ip' => $CURUSER['ip'],
+        'user_id' => $CURUSER['id'],
         'vote_date' => TIME_NOW,
     ], $site_config['expires']['poll_data']);
     if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {

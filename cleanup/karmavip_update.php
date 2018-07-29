@@ -25,9 +25,9 @@ function karmavip_update($data)
             $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
             $users_buffer[] = '(' . $arr['id'] . ',1, \'no\', \'0\' , ' . $modcom . ')';
             $cache->update_row('user' . $arr['id'], [
-                'class'      => 1,
-                'vip_added'  => 'no',
-                'vip_until'  => 0,
+                'class' => 1,
+                'vip_added' => 'no',
+                'vip_until' => 0,
                 'modcomment' => $modcomment,
             ], $site_config['expires']['user_cache']);
             $cache->increment('inbox_' . $arr['id']);

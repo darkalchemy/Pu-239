@@ -21,7 +21,7 @@ function torrents_update($data)
         ->orderBy('id');
 
     foreach ($torrents as $torrent) {
-        $i++;
+        ++$i;
         $seeders = $fluent->from('peers')
             ->select(null)
             ->select('COUNT(*) AS count')
@@ -30,7 +30,7 @@ function torrents_update($data)
             ->fetch('count');
         $torrent['seeders_num'] = $seeders;
 
-        $i++;
+        ++$i;
         $leechers = $fluent->from('peers')
             ->select(null)
             ->select('COUNT(*) AS count')
@@ -39,7 +39,7 @@ function torrents_update($data)
             ->fetch('count');
         $torrent['leechers_num'] = $leechers;
 
-        $i++;
+        ++$i;
         $comments = $fluent->from('comments')
             ->select(null)
             ->select('COUNT(*) AS count')
@@ -48,7 +48,7 @@ function torrents_update($data)
         $torrent['comments_num'] = $comments;
 
         if ($torrent['seeders'] != $torrent['seeders_num'] || $torrent['leechers'] != $torrent['leechers_num'] || $torrent['comments'] != $torrent['comments_num']) {
-            $i++;
+            ++$i;
             $set = [
                 'seeders' => $torrent['seeders_num'],
                 'leechers' => $torrent['leechers_num'],
@@ -60,7 +60,6 @@ function torrents_update($data)
                 ->execute();
         }
     }
-
 
     if ($data['clean_log'] && $i > 0) {
         write_log("Torrent Cleanup: Complete using $i queries");

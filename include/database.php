@@ -32,7 +32,7 @@ if (SQL_DEBUG && $_SERVER['PHP_SELF'] != '/announce.php') {
         if (!empty($query)) {
             $query_stat[] = [
                 'seconds' => number_format($time, 6),
-                'query'   => trim($query) . '<br>[color=red]PDO: time may not be accurate[/color]',
+                'query' => trim($query) . '<br>[color=red]PDO: time may not be accurate[/color]',
             ];
         }
     };

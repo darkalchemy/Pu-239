@@ -38,7 +38,7 @@ function customsmilie_update($data)
             'smile_until' => 0,
             'modcomment' => $modcomment,
         ];
-        $i++;
+        ++$i;
         $fluent->update('users')
             ->set($set)
             ->where('id = ?', $arr['id'])
@@ -46,14 +46,14 @@ function customsmilie_update($data)
 
         $cache->update_row('user' . $arr['id'], [
             'smile_until' => 0,
-            'modcomment'  => $modcomment,
+            'modcomment' => $modcomment,
         ], $site_config['expires']['user_cache']);
         $cache->increment('inbox_' . $arr['id']);
     }
 
     $count = count($values);
     if ($count > 0) {
-        $i++;
+        ++$i;
         $fluent->insertInto('messages')
             ->values($values)
             ->execute();

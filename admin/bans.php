@@ -52,10 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] == UC_MAX) {
     }
 
     $values = [
-        'added'   => $added,
+        'added' => $added,
         'addedby' => $CURUSER['id'],
-        'first'   => $first,
-        'last'    => $last,
+        'first' => $first,
+        'last' => $last,
         'comment' => $comment,
     ];
 

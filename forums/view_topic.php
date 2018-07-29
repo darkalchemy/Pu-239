@@ -263,10 +263,10 @@ $fluent->deleteFrom('now_viewing')
     ->execute();
 
 $values = [
-    'user_id'  => $CURUSER['id'],
+    'user_id' => $CURUSER['id'],
     'forum_id' => $forum_id,
     'topic_id' => $topic_id,
-    'added'    => TIME_NOW,
+    'added' => TIME_NOW,
 ];
 $fluent->insertInto('now_viewing')
     ->values($values)
@@ -592,8 +592,8 @@ $fluent->deleteFrom('read_posts')
     ->execute();
 
 $values = [
-    'user_id'        => $CURUSER['id'],
-    'topic_id'       => $topic_id,
+    'user_id' => $CURUSER['id'],
+    'topic_id' => $topic_id,
     'last_post_read' => $post_id,
 ];
 $fluent->insertInto('read_posts')

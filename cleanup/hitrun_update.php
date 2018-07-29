@@ -41,9 +41,9 @@ function hitrun_update($data)
                 $update['hit_and_run_total'] = ($arr_fuckers['hit_and_run_total'] + $arr_fuckers['poop']);
                 $cache->update_row('user' . $arr_fuckers['userid'], [
                     'hit_and_run_total' => $update['hit_and_run_total'],
-                    'downloadpos'       => 0,
-                    'hnrwarn'           => 'yes',
-                    'modcomment'        => $modcomment,
+                    'downloadpos' => 0,
+                    'hnrwarn' => 'yes',
+                    'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
                 $cache->increment('inbox_' . $arr_fuckers['userid']);
             }
@@ -69,8 +69,8 @@ function hitrun_update($data)
                 unset($_pms, $_users);
                 $cache->update_row('user' . $arr_good_boy['id'], [
                     'downloadpos' => 1,
-                    'hnrwarn'     => 'no',
-                    'modcomment'  => $modcomment,
+                    'hnrwarn' => 'no',
+                    'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
             }
         }

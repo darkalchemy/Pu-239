@@ -26,7 +26,7 @@ function gameaccess_update($data)
             $users_buffer[] = '(' . $arr['id'] . ', \'1\', ' . $modcom . ')';
             $cache->update_row('user' . $arr['id'], [
                 'game_access' => 1,
-                'modcomment'  => $modcomment,
+                'modcomment' => $modcomment,
             ], $site_config['expires']['user_cache']);
             $cache->increment('inbox_' . $arr['id']);
         }

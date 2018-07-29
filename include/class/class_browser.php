@@ -67,9 +67,9 @@ function getBrowser()
 
     return [
         'userAgent' => $u_agent,
-        'name'      => $bname,
-        'version'   => $version,
-        'platform'  => $platform,
-        'pattern'   => $pattern,
+        'name' => $bname,
+        'version' => $version,
+        'platform' => $platform,
+        'pattern' => $pattern,
     ];
 }

@@ -24,8 +24,8 @@ function anonymous_update($data)
             $users_buffer[] = '(' . $arr['id'] . ', \'0\', \'no\', ' . $modcom . ')';
             $cache->update_row('user' . $arr['id'], [
                 'anonymous_until' => 0,
-                'anonymous'       => 'no',
-                'modcomment'      => $modcomment,
+                'anonymous' => 'no',
+                'modcomment' => $modcomment,
             ], $site_config['expires']['user_cache']);
             $cache->increment('inbox_' . $arr['id']);
         }

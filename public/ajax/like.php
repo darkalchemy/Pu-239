@@ -11,12 +11,12 @@ file_put_contents('/var/log/nginx/likes.log', json_encode($_POST) . PHP_EOL, FIL
 
 $check = isset($_POST['type']) ? $_POST['type'] : '';
 $fields = [
-    'comment'     => 'comments',
-    'topic'       => 'topics',
-    'post'        => 'posts',
+    'comment' => 'comments',
+    'topic' => 'topics',
+    'post' => 'posts',
     'usercomment' => 'usercomments',
-    'request'     => 'requests',
-    'offer'       => 'offers',
+    'request' => 'requests',
+    'offer' => 'offers',
 ];
 
 extract($_POST);

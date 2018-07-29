@@ -34,7 +34,7 @@ sql_query('UPDATE torrents SET thanks = thanks + 1, comments = comments + 1 WHER
 $update['thanks'] = ($arr['thanks'] + 1);
 $update['comments'] = ($arr['comments'] + 1);
 $cache->update_row('torrent_details_' . $id, [
-    'thanks'   => $update['thanks'],
+    'thanks' => $update['thanks'],
     'comments' => $update['comments'],
 ], $site_config['expires']['torrent_details']);
 $cache->delete('latest_comments_');

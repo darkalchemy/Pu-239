@@ -60,8 +60,8 @@ if (!empty($slot)) {
 $categorie = genrelist();
 foreach ($categorie as $key => $value) {
     $change[$value['id']] = [
-        'id'    => $value['id'],
-        'name'  => $value['name'],
+        'id' => $value['id'],
+        'name' => $value['name'],
         'image' => $value['image'],
     ];
 }
@@ -362,7 +362,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     if (isset($_POST['checked']) && $_POST['checked'] == $id) {
         sql_query('UPDATE torrents SET checked_by = ' . sqlesc($CURUSER['id']) . ', checked_when = ' . $dt . ' WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('torrent_details_' . $id, [
-            'checked_by'   => $CURUSER['id'],
+            'checked_by' => $CURUSER['id'],
             'checked_when' => $dt,
         ], $site_config['expires']['torrent_details']);
         $torrents['checked_by'] = $CURUSER['id'];
@@ -373,7 +373,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     } elseif (isset($_POST['rechecked']) && $_POST['rechecked'] == $id) {
         sql_query('UPDATE torrents SET checked_by = ' . sqlesc($CURUSER['id']) . ', checked_when = ' . $dt . ' WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('torrent_details_' . $id, [
-            'checked_by'   => $CURUSER['id'],
+            'checked_by' => $CURUSER['id'],
             'checked_when' => $dt,
         ], $site_config['expires']['torrent_details']);
         $torrents['checked_by'] = $CURUSER['id'];
@@ -384,7 +384,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     } elseif (isset($_POST['clearchecked']) && $_POST['clearchecked'] == $id) {
         sql_query('UPDATE torrents SET checked_by = 0, checked_when = 0 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('torrent_details_' . $id, [
-            'checked_by'   => 0,
+            'checked_by' => 0,
             'checked_when' => 0,
         ], $site_config['expires']['torrent_details']);
         $torrents['checked_by'] = 0;

@@ -106,8 +106,8 @@ if (mysqli_num_rows($rescount) > 0) {
     <td class='colhead'>Offered By</td></tr>\n";
     foreach ($cats as $key => $value) {
         $change[$value['id']] = [
-            'id'    => $value['id'],
-            'name'  => $value['name'],
+            'id' => $value['id'],
+            'name' => $value['name'],
             'image' => $value['image'],
         ];
     }

@@ -16,10 +16,10 @@
  */
 class PHPZip
 {
-    public $datasec      = [];
-    public $ctrl_dir     = [];
+    public $datasec = [];
+    public $ctrl_dir = [];
     public $eof_ctrl_dir = "\x50\x4b\x05\x06\x00\x00\x00\x00";
-    public $old_offset   = 0;
+    public $old_offset = 0;
 
     /**
      * @param $dir

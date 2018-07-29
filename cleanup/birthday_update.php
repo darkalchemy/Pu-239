@@ -45,11 +45,11 @@ function birthday_update($data)
             ->execute();
 
         $values[] = [
-            'sender'   => 0,
+            'sender' => 0,
             'receiver' => $arr['id'],
-            'added'    => $dt,
-            'msg'      => $msg,
-            'subject'  => $subject,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
         ];
         $cache->increment('inbox_' . $arr['id']);
     }

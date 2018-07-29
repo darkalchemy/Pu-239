@@ -6,12 +6,12 @@
 function ircbot($messages)
 {
     $bot = [
-        'ip'      => '127.0.0.1',
-        'port'    => 3458,
-        'pass'    => 'bWFtYWFyZW1lcmU',
+        'ip' => '127.0.0.1',
+        'port' => 3458,
+        'pass' => 'bWFtYWFyZW1lcmU',
         'pidfile' => '/home/ircbot/ion/pid.IoN',
         //path to the pid. file
-        'sleep'   => 5,
+        'sleep' => 5,
     ];
     if (empty($messages)) {
         return;

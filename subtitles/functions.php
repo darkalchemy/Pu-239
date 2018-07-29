@@ -97,7 +97,7 @@ function get_base($array)
 function get_results($array)
 {
     return [
-        'items'      => $array['@items'],
+        'items' => $array['@items'],
         'itemsfound' => $array['@itemsfound'],
         'searchtime' => $array['@searchtime'],
     ];
@@ -175,8 +175,8 @@ function build_result($array, $pager)
             <?php
 
             $count = ($time['itemsfound'] == 1 ? 1 : count($result));
-            for ($i = 0; $i < $count; ++$i) {
-                $movie = ($count == 1 ? get_details($result) : get_details($result[$i])); ?>
+        for ($i = 0; $i < $count; ++$i) {
+            $movie = ($count == 1 ? get_details($result) : get_details($result[$i])); ?>
                 <tr>
                     <td nowrap="nowrap"><img
                                 src="' . $site_config['baseurl']. '/flag/<?php echo $movie['iso639']; ?>.gif" width="18"
@@ -202,11 +202,9 @@ function build_result($array, $pager)
                     ><?php echo $movie['user'] == '' ? 'Unknown' : $movie['user']; ?></td>
                 </tr>
                 <?php
-
-            } ?>
+        } ?>
         </table>
         <?php echo $time['itemsfound'] > 40 ? '<br><div>' . pager($time['itemsfound'], $pager) . '</div>' : ''; ?>
         <?php
-
     }
 }

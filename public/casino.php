@@ -141,7 +141,7 @@ if ($global_down > $max_download_global) {
 
 $goback = "<a href='$casino'>{$lang['casino_go_back']}</a>";
 $color_options = [
-    'red'   => 1,
+    'red' => 1,
     'black' => 2,
 ];
 $number_options = [

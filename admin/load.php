@@ -42,11 +42,11 @@ function uptime()
         $uptime = fgets($fd, 64);
         fclose($fd);
         $mults = [
-            4  => $lang['index_load_month'],
-            7  => $lang['index_load_week'],
+            4 => $lang['index_load_month'],
+            7 => $lang['index_load_week'],
             24 => $lang['index_load_day'],
             60 => $lang['index_load_hour'],
-            1  => $lang['index_load_minute'],
+            1 => $lang['index_load_minute'],
         ];
         $n = 2419200;
         $periods = [];

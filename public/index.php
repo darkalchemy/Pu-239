@@ -26,7 +26,7 @@ $unread = getPmCount($CURUSER['id']);
 if ($unread >= 1) {
     $session->set('is-link', [
         'message' => "You have $unread unread message" . plural($unread) . ' in your Inbox',
-        'link'    => "{$site_config['baseurl']}/messages.php",
+        'link' => "{$site_config['baseurl']}/messages.php",
     ]);
 }
 

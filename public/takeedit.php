@@ -287,8 +287,8 @@ if (($vip = (!empty($_POST['vip']) ? '1' : '0')) != $fetch_assoc['vip']) {
 
 $release_group_choices = [
     'scene' => 1,
-    'p2p'   => 2,
-    'none'  => 3,
+    'p2p' => 2,
+    'none' => 3,
 ];
 
 $release_group = (isset($_POST['release_group']) ? $_POST['release_group'] : 'none');
@@ -325,7 +325,7 @@ if ($torrent_cache) {
         'torrent_xbt_data_' . $id,
         'torrent_details_txt_' . $id,
         'similiar_tor_' . $id,
-    ];
+    ]);
 }
 if ($torrent_txt_cache) {
     $cache->update_row('torrent_details_txt_' . $id, $torrent_txt_cache, $site_config['expires']['torrent_details_text']);

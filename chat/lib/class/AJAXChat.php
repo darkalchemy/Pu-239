@@ -457,14 +457,14 @@ class AJAXChat
         }
 
         $values = [
-            'userID'   => $userID,
+            'userID' => $userID,
             'userName' => $userName,
             'userRole' => $userRole,
-            'channel'  => $channelID,
+            'channel' => $channelID,
             'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
-            'ip'       => inet_pton(getip()),
-            'text'     => $text,
-            'ttl'      => $ttl,
+            'ip' => inet_pton(getip()),
+            'text' => $text,
+            'ttl' => $ttl,
         ];
 
         $lastInsertId = $this->_fluent->insertInto($this->getDataBaseTable('messages'))
@@ -472,10 +472,10 @@ class AJAXChat
             ->execute();
 
         $set = [
-            'dailyshouts'   => new \Envms\FluentPDO\Literal('dailyshouts + 1'),
-            'weeklyshouts'  => new \Envms\FluentPDO\Literal('weeklyshouts + 1'),
+            'dailyshouts' => new \Envms\FluentPDO\Literal('dailyshouts + 1'),
+            'weeklyshouts' => new \Envms\FluentPDO\Literal('weeklyshouts + 1'),
             'monthlyshouts' => new \Envms\FluentPDO\Literal('monthlyshouts + 1'),
-            'totalshouts'   => new \Envms\FluentPDO\Literal('totalshouts + 1'),
+            'totalshouts' => new \Envms\FluentPDO\Literal('totalshouts + 1'),
         ];
 
         $this->_fluent->update('usersachiev')
@@ -1579,20 +1579,20 @@ class AJAXChat
         $active_online = $this->_cache->get($key);
         if ($active_online === false || is_null($active_online)) {
             $values = [
-                'userID'   => $this->getUserID(),
+                'userID' => $this->getUserID(),
                 'userName' => $this->getUserName(),
                 'userRole' => $this->getUserRole(),
-                'channel'  => $this->getChannel(),
+                'channel' => $this->getChannel(),
                 'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
-                'ip'       => inet_pton(getip()),
+                'ip' => inet_pton(getip()),
             ];
 
             $set = [
                 'userName' => $this->getUserName(),
                 'userRole' => $this->getUserRole(),
-                'channel'  => $this->getChannel(),
+                'channel' => $this->getChannel(),
                 'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
-                'ip'       => inet_pton(getip()),
+                'ip' => inet_pton(getip()),
             ];
 
             $lastInsertID = $this->_fluent->insertInto($this->getDataBaseTable('online'))
@@ -2978,7 +2978,7 @@ class AJAXChat
 
         if ($this->_user->update($cur_user_data['id'], ['reputation' => $fromrep - $gift])) {
             $this->_user->update($toUserID, [
-                'reputation'   => $recrep + $gift,
+                'reputation' => $recrep + $gift,
                 'bonuscomment' => $bonuscomment,
             ]);
 
@@ -3036,7 +3036,7 @@ class AJAXChat
 
         if ($this->_user->update($cur_user_data['id'], ['seedbonus' => $frombonus - $gift])) {
             $this->_user->update($toUserID, [
-                'seedbonus'    => $recbonus + $gift,
+                'seedbonus' => $recbonus + $gift,
                 'bonuscomment' => $bonuscomment,
             ]);
 

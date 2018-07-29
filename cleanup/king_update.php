@@ -25,7 +25,7 @@ function king_update($data)
             $msgs_buffer[] = '(0,' . $arr['id'] . ',' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ' )';
             $users_buffer[] = '(' . $arr['id'] . ', \'0\', ' . $modcom . ')';
             $cache->update_row('user' . $arr['id'], [
-                'king'       => 0,
+                'king' => 0,
                 'modcomment' => $modcomment,
             ], $site_config['expires']['user_cache']);
             $cache->increment('inbox_' . $arr['id']);

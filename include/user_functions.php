@@ -34,14 +34,14 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
 
     if (user_exists($site_config['chatBotID'])) {
         $values = [
-            'userID'   => $site_config['chatBotID'],
+            'userID' => $site_config['chatBotID'],
             'userName' => $site_config['chatBotName'],
             'userRole' => 100,
-            'channel'  => $channel,
+            'channel' => $channel,
             'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
-            'ip'       => inet_pton('127.0.0.1'),
-            'text'     => $msg,
-            'ttl'      => $ttl,
+            'ip' => inet_pton('127.0.0.1'),
+            'text' => $msg,
+            'ttl' => $ttl,
         ];
 
         $fluent->insertInto('ajax_chat_messages')

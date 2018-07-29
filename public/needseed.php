@@ -20,8 +20,8 @@ if (!in_array($needed, $possible_actions)) {
 $categorie = genrelist();
 foreach ($categorie as $key => $value) {
     $change[$value['id']] = [
-        'id'    => $value['id'],
-        'name'  => $value['name'],
+        'id' => $value['id'],
+        'name' => $value['name'],
         'image' => $value['image'],
     ];
 }

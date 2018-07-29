@@ -115,9 +115,9 @@ if ($CURUSER['class'] >= UC_STAFF) {
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
     while ($arr = mysqli_fetch_assoc($res)) {
         $uploaders[$arr['uid'] . '|' . $arr['username']][] = [
-            'tid'          => $arr['tid'],
+            'tid' => $arr['tid'],
             'torrent_name' => $arr['name'],
-            'reason'       => 1,
+            'reason' => 1,
         ];
     }
     /*
@@ -134,9 +134,9 @@ if ($CURUSER['class'] >= UC_STAFF) {
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
     while ($arr = mysqli_fetch_assoc($res)) {
         $uploaders[$arr['uid'] . '|' . $arr['username']][] = [
-            'tid'          => $arr['id'],
+            'tid' => $arr['id'],
             'torrent_name' => $arr['name'],
-            'reason'       => 3,
+            'reason' => 3,
         ];
     }
     foreach ($uploaders as $user_info => $torrent_array) {

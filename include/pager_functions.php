@@ -92,10 +92,10 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
     $start = $page * $rpp;
 
     return [
-        'pagertop'    => $pagertop,
+        'pagertop' => $pagertop,
         'pagerbottom' => $pagerbottom,
-        'limit'       => "LIMIT $start,$rpp",
-        'pdo'         => [
+        'limit' => "LIMIT $start,$rpp",
+        'pdo' => [
             (int) $start,
             (int) $rpp,
         ],
@@ -110,10 +110,10 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
 function pager_rep($data)
 {
     $pager = [
-        'pages'     => 0,
+        'pages' => 0,
         'page_span' => '',
-        'start'     => '',
-        'end'       => '',
+        'start' => '',
+        'end' => '',
     ];
     $section = $data['span'] = isset($data['span']) ? $data['span'] : 2;
     $parameter = isset($data['parameter']) ? $data['parameter'] : 'page';

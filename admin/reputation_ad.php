@@ -15,10 +15,10 @@ $reputationid = 0;
 $time_offset = 0;
 $a = explode(',', gmdate('Y,n,j,G,i,s', TIME_NOW + $time_offset));
 $now_date = [
-    'year'    => $a[0],
-    'mon'     => $a[1],
-    'mday'    => $a[2],
-    'hours'   => $a[3],
+    'year' => $a[0],
+    'mon' => $a[1],
+    'mday' => $a[2],
+    'hours' => $a[3],
     'minutes' => $a[4],
     'seconds' => $a[5],
 ];
@@ -380,10 +380,10 @@ function view_list()
         if ($total['cnt'] > $deflimit) {
             require_once INCL_DIR . 'pager_functions.php';
             $links = pager_rep([
-                'count'       => $total['cnt'],
-                'perpage'     => $deflimit,
+                'count' => $total['cnt'],
+                'perpage' => $deflimit,
                 'start_value' => $first,
-                'url'         => 'staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=' . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=$orderby&amp;startstamp=$start&amp;endstamp=$end",
+                'url' => 'staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=' . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=$orderby&amp;startstamp=$start&amp;endstamp=$end",
             ]);
         }
         // mofo query!

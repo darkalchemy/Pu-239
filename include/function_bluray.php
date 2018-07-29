@@ -66,19 +66,19 @@ function get_bluray_info()
             $imdbid = !empty($imdbid) ? $imdbid : $i;
 
             $pubs[] = [
-                'title'        => $movie,
-                'omdb_title'   => $omdb_title,
-                'pubDate'      => replace_unicode_strings($pubDate),
-                'genre'        => replace_unicode_strings($description[0]),
-                'year'         => replace_unicode_strings($description[1]),
-                'runtime'      => replace_unicode_strings($description[2]),
-                'mpaa'         => replace_unicode_strings($description[3]),
+                'title' => $movie,
+                'omdb_title' => $omdb_title,
+                'pubDate' => replace_unicode_strings($pubDate),
+                'genre' => replace_unicode_strings($description[0]),
+                'year' => replace_unicode_strings($description[1]),
+                'runtime' => replace_unicode_strings($description[2]),
+                'mpaa' => replace_unicode_strings($description[3]),
                 'release_date' => replace_unicode_strings($description[4]),
-                'description'  => replace_unicode_strings($description[5]),
-                'poster'       => $poster,
-                'placeholder'  => $placeholder,
-                'background'   => $background,
-                'imdbid'       => $imdbid,
+                'description' => replace_unicode_strings($description[5]),
+                'poster' => $poster,
+                'placeholder' => $placeholder,
+                'background' => $background,
+                'imdbid' => $imdbid,
             ];
         }
 
