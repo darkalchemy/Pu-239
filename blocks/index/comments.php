@@ -24,7 +24,7 @@ if ($comments === false || is_null($comments)) {
         ->select('users.class')
         ->select('torrents:categories.name AS cat')
         ->select('torrents:categories.image')
-        ->leftJoin('torrents ON torrents.id = comments.torrent')
+        ->innerJoin('torrents ON torrents.id = comments.torrent')
         ->leftJoin('users ON users.id = comments.user')
         ->leftJoin('categories ON categories.id = torrents.category')
         ->where('torrent > 0')
