@@ -22,7 +22,8 @@ function images_update($data)
 
     $today = date('Y-m-d');
     $date = new DateTime($today);
-    $tomorrow = $date->modify('+1 day')->format('Y-m-d');
+    $tomorrow = $date->modify('+1 day')
+        ->format('Y-m-d');
 
     $year = date('Y');
     $week = date('W');

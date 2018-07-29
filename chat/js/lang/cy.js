@@ -7,7 +7,6 @@
  * @translation Alan Davies, ardavies@tiscali.co.uk
  * @language: Welsh (Cymraeg)
  */
-
 // Ajax Chat language Object:
 var ajaxChatLang = {
     login: 'Mae %s wedi mewngofnodi.',

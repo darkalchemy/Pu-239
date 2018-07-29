@@ -77,7 +77,7 @@ if (isset($_GET['torrentid'])) {
     $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $cost . ' Points for 1 to 1 ratio on torrent: ' . htmlsafechars($arr_snatched['name']) . ' ' . $torrent_number . ".\n " . $bonuscomment;
     sql_query('UPDATE users SET bonuscomment = ' . sqlesc($bonuscomment) . ', seedbonus = ' . sqlesc($seedbonus) . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     $cache->update_row('user' . $userid, [
-        'seedbonus' => $seedbonus,
+        'seedbonus'    => $seedbonus,
         'bonuscomment' => $bonuscomment,
     ], $site_config['expires']['user_cache']);
     $cache->delete('userhnrs_' . $userid);
@@ -87,8 +87,7 @@ if (isset($_GET['torrentid'])) {
 
 $completed = $count2 = $dlc = '';
 if (!XBT_TRACKER) {
-    $r = sql_query(
-        "SELECT
+    $r = sql_query("SELECT
                 t.name,
                 t.added AS torrent_added,
                 s.complete_date AS c,
@@ -116,8 +115,7 @@ if (!XBT_TRACKER) {
                 JOIN torrents AS t ON t.id = s.torrentid
                 JOIN categories AS c ON c.id = t.category
                 WHERE (hit_and_run != 0 OR mark_of_cain = 'yes') AND s.seeder='no' AND s.finished='yes' AND userid=" . sqlesc($userid) . ' AND t.owner != ' . sqlesc($userid) . '
-                ORDER BY s.id DESC'
-    ) or sqlerr(__FILE__, __LINE__);
+                ORDER BY s.id DESC') or sqlerr(__FILE__, __LINE__);
 } else {
     $r = sql_query("SELECT torrents.name, torrents.added AS torrent_added, xbt_files_users.started AS st, xbt_files_users.completedtime AS c, xbt_files_users.downspeed, xbt_files_users.seedtime, xbt_files_users.active,
                             xbt_files_users.left, xbt_files_users.fid AS tid, categories.id AS category, categories.image, categories.name AS catname, xbt_files_users.uploaded, xbt_files_users.downloaded, xbt_files_users.hit_and_run,
@@ -278,6 +276,6 @@ if (mysqli_num_rows($r) > 0) {
     }
     $completed .= main_table($body, $header);
 } else {
-    $session->set('is-success', "[color=#" . get_user_class_color($class) . "]" .  $username . "[/color] {$lang['userdetails_no_hnrs']}");
+    $session->set('is-success', '[color=#' . get_user_class_color($class) . ']' . $username . "[/color] {$lang['userdetails_no_hnrs']}");
 }
 echo stdhead('HnRs') . wrapper($completed, 'has-text-centered') . stdfoot();

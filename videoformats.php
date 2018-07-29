@@ -143,7 +143,7 @@ $HTMLOUT .= "
                         <br>{$lang['videoformats_dupe1']}<br>
                     </td>
                 </tr>
-            </tbody>    
+            </tbody>
         </table>
     </div>
 </fieldset>";

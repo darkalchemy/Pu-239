@@ -2,19 +2,19 @@
 
 $lang = [
     //takeinvites
-    'takeinvites_error' => 'Error',
-    'takeinvites_limit' => 'Sorry, user limit reached. Please try again later.',
-    'takeinvites_sorry' => 'Sorry',
-    'takeinvites_removed' => 'Your invite previlages has been removed.',
-    'takeinvites_user_error' => 'Invite Failed',
-    'takeinvites_noinvites' => 'No Invites!',
+    'takeinvites_error'        => 'Error',
+    'takeinvites_limit'        => 'Sorry, user limit reached. Please try again later.',
+    'takeinvites_sorry'        => 'Sorry',
+    'takeinvites_removed'      => 'Your invite previlages has been removed.',
+    'takeinvites_user_error'   => 'Invite Failed',
+    'takeinvites_noinvites'    => 'No Invites!',
     'takeinvites_entermessage' => 'You must enter a message!',
     'takeinvites_invalidemail' => 'Invalid Email Address!',
-    'takeinvites_email_used' => 'The e-mail address is already in use.',
-    'takeinvites_user_exists' => 'Username already exists!',
-    'takeinvites_fatal_error' => 'Fatal Error!',
-    'takeinvites_confirm' => 'New membership request',
-    'takeinvites_from' => 'From:',
+    'takeinvites_email_used'   => 'The e-mail address is already in use.',
+    'takeinvites_user_exists'  => 'Username already exists!',
+    'takeinvites_fatal_error'  => 'Fatal Error!',
+    'takeinvites_confirm'      => 'New membership request',
+    'takeinvites_from'         => 'From:',
 ];
 
 $lang['takeinvites_email_body'] = <<<EOD

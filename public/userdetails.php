@@ -47,7 +47,7 @@ if ($user_status === false || is_null($user_status)) {
         $user_status = [
             'last_status' => '',
             'last_update' => 0,
-            'archive' => '',
+            'archive'     => '',
         ];
     }
     $cache->set('userstatus_' . $id, $user_status, $site_config['expires']['user_status']); // 30 days
@@ -331,8 +331,7 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
                         <tr>
                             <td class='rowhead'>{$lang['userdetails_watched']}</td>
                             <td class='has-text-left'>" . ($user['watched_user'] > 0 ? "
-                                {$lang['userdetails_watched_since']} " . get_date($user['watched_user'], '') :
-            $lang['userdetails_not_watched']) . "
+                                {$lang['userdetails_watched_since']} " . get_date($user['watched_user'], '') : $lang['userdetails_not_watched']) . "
                                 $the_flip_box
                                 <div class='has-text-left' id='box_3'>
                                     <form method='post' action='ajax/member_input.php' name='notes_for_staff'>

@@ -1,4 +1,5 @@
 <?php
+
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 check_user_status();
 ?>
@@ -57,9 +58,11 @@ check_user_status();
                 <legend>Preview</legend>
                 <div class="has-text-centered">
                     <input type="hidden" value="<?php
+
                     global $CURUSER;
                     echo $CURUSER['username']; ?>" id="user"/>
                     <img id="preview" src="avatar.php?user=<?php
+
                     global $CURUSER;
                     echo $CURUSER['username']; ?>" width="150" height="190" alt="Avatar"/></div>
             </fieldset>
@@ -144,8 +147,10 @@ check_user_status();
                     <tr>
                         <td nowrap="nowrap" class="info"><input style="width:150px;" type="text" onclick="select();"
                                                                 value="<?php
+
                                                                 global $CURUSER, $site_config;
                                                                 echo $site_config['baseurl']; ?>/avatar/settings/<?php
+
                                                                 echo strtolower($CURUSER['username']); ?>.png"
                                                                 readonly="readonly"/>
                         </td>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @return string
  */
@@ -282,7 +283,7 @@ function write_class_files()
             $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . " . 'class/{$arr['classpic']}',";
             $js_classes[] = $arr['name'];
             $data[] = [
-                'className' => $arr['classname'],
+                'className'  => $arr['classname'],
                 'classColor' => '#' . $arr['classcolor'],
             ];
         }
@@ -294,4 +295,21 @@ function write_class_files()
     write_css($data);
     $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
     file_put_contents(CACHE_DIR . 'class_config.php', $configfile . PHP_EOL);
+}
+
+function clear_image_cache()
+{
+    global $cache;
+
+    $cache->deleteMulti([
+        'lastest_tor_',
+        'last5_tor_',
+        'top5_tor_',
+        'scroll_tor_',
+        'slider_tor_',
+        'torrent_poster_count_',
+        'torrent_banner_count_',
+        'backgrounds_',
+        'posters_',
+    ]);
 }

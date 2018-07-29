@@ -38,9 +38,9 @@ switch ($params['mode']) {
         edit_cat_form();
         break;
 
-//    case 'cat_form':
-//        show_cat_form();
-//        break;
+    //    case 'cat_form':
+    //        show_cat_form();
+    //        break;
 
     default:
         show_categories();

@@ -143,8 +143,7 @@ if ($action === 'article') {
                     <div id="bg-02 padding10 round10">' . ($wiki['userid'] > 0 ? "
                         <div class='left10 bottom20'>{$lang['wiki_added_by_art']}: " . format_username($wiki['userid']) . '</div>' : '') . '
                         <div class="w-100 padding20 round10 bg-02">' . format_comment($wiki['body']) . '</div>
-                    </div>' .
-                $edit);
+                    </div>' . $edit);
             $HTMLOUT .= ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $wiki['userid'] ? '
                     <div class="has-text-centered">
                         <a href="' . $site_config['baseurl'] . '/wiki.php?action=edit&amp;id=' . (int) $wiki['id'] . '" class="button is-small margin20">' . $lang['wiki_edit'] . '</a>
@@ -180,8 +179,7 @@ $wiki = 0;
 if ($action === 'add') {
     $HTMLOUT .= navmenu() . "
             <form method='post' action='wiki.php'>
-                <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' placeholder='Article Title' />" .
-        BBcode() . "
+                <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' placeholder='Article Title' />" . BBcode() . "
                 <div class='has-text-centered margin20'>
                     <input type='submit' class='button is-small' name='article-add' value='{$lang['wiki_ok']}' />
                 </div>
@@ -194,8 +192,7 @@ if ($action === 'edit') {
         $HTMLOUT .= navmenu() . "
             <form method='post' action='wiki.php'>
                 <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' value='" . htmlsafechars($result['name']) . "' />
-                <input type='hidden' name='article-id' value='$id' />" .
-            BBcode(htmlsafechars($result['body'])) . "
+                <input type='hidden' name='article-id' value='$id' />" . BBcode(htmlsafechars($result['body'])) . "
                 <div class='has-text-centered margin20'>
                     <input type='submit' class='button is-small' name='article-edit' value='{$lang['wiki_ok']}' />
                 </div>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @param $userid
  *
@@ -9,12 +10,12 @@ function account_delete($userid)
     $secs = 350 * 86400;
     $maxclass = UC_STAFF;
     $references = [
-        'id' => [
+        'id'       => [
             'users',
             'likes',
         ],
         // Do Not move this line
-        'userid' => [
+        'userid'   => [
             'usersachiev',
             'blackjack',
             'blocks',
@@ -36,11 +37,11 @@ function account_delete($userid)
             'userhits',
             'usercomments',
         ],
-        'uid' => [
+        'uid'      => [
             'xbt_files_users',
             'thankyou',
         ],
-        'user_id' => [
+        'user_id'  => [
             'poll_voters',
             'posts',
             'topics',

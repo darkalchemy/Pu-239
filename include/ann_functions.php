@@ -7,7 +7,7 @@
  */
 function crazyhour_announce()
 {
-    global $fluent, $site_config, $cache;
+    global $fluent, $cache;
 
     $crazy_hour = (TIME_NOW + 3600);
     $cz['crazyhour'] = $cache->get('crazyhour');
@@ -24,7 +24,7 @@ function crazyhour_announce()
             $cz['crazyhour']['amount'] = 0;
             $fluent->update('freeleech')
                 ->set([
-                    'var' => $cz['crazyhour']['var'],
+                    'var'    => $cz['crazyhour']['var'],
                     'amount' => $cz['crazyhour']['amount'],
                 ])
                 ->where('type = ?', 'crazyhour')
@@ -41,7 +41,7 @@ function crazyhour_announce()
             $cz['remaining'] = ($cz['crazyhour']['var'] - TIME_NOW);
 
             $set = [
-                'var' => $cz['crazyhour']['var'],
+                'var'    => $cz['crazyhour']['var'],
                 'amount' => $cz['crazyhour']['amount'],
             ];
             $fluent->update('freeleech')
@@ -57,7 +57,7 @@ function crazyhour_announce()
             $text = 'Next <span style="font-weight:bold;color:orange;">Crazyhour</span> is at ' . date('F j, g:i a', $cz['crazyhour']['var']);
             $values = [
                 'added' => TIME_NOW,
-                'txt' => $text,
+                'txt'   => $text,
             ];
             $fluent->insertInto('sitelog')
                 ->values($values)
@@ -83,7 +83,7 @@ function crazyhour_announce()
                 $text = 'w00t! It\'s <span style="font-weight:bold;color:orange;">Crazyhour</span> <img src="./images/smilies/w00t.gif" alt=":w00t:" />';
                 $values = [
                     'added' => TIME_NOW,
-                    'txt' => $text,
+                    'txt'   => $text,
                 ];
                 $fluent->insertInto('sitelog')
                     ->values($values)
@@ -193,14 +193,7 @@ function get_torrent_from_hash($info_hash)
         $torrent['seeders'] = $cache->get($seed_key);
         $torrent['leechers'] = $cache->get($leech_key);
         $torrent['times_completed'] = $cache->get($comp_key);
-        if (
-            $torrent['seeders'] === false ||
-            $torrent['leechers'] === false ||
-            $torrent['times_completed'] === false ||
-            is_null($torrent['seeders']) ||
-            is_null($torrent['leechers']) ||
-            is_null($torrent['times_completed'])
-        ) {
+        if ($torrent['seeders'] === false || $torrent['leechers'] === false || $torrent['times_completed'] === false || is_null($torrent['seeders']) || is_null($torrent['leechers']) || is_null($torrent['times_completed'])) {
             $res = $fluent->from('torrents')
                 ->select(null)
                 ->select('seeders')
@@ -344,14 +337,14 @@ function auto_enter_abnormal_upload($userid, $rate, $upthis, $diff, $torrentid, 
     global $fluent;
 
     $values = [
-        'added' => TIME_NOW,
-        'userid' => $userid,
-        'client' => $client,
-        'rate' => $rate,
-        'beforeup' => $last_up,
-        'upthis' => $upthis,
-        'timediff' => $diff,
-        'userip' => inet_pton($realip),
+        'added'     => TIME_NOW,
+        'userid'    => $userid,
+        'client'    => $client,
+        'rate'      => $rate,
+        'beforeup'  => $last_up,
+        'upthis'    => $upthis,
+        'timediff'  => $diff,
+        'userip'    => inet_pton($realip),
         'torrentid' => $torrentid,
     ];
     $fluent->insertInto('cheaters')
@@ -366,7 +359,7 @@ function err($msg)
 {
     benc_resp([
         'failure reason' => [
-            'type' => 'string',
+            'type'  => 'string',
             'value' => $msg,
         ],
     ]);
@@ -379,7 +372,7 @@ function err($msg)
 function benc_resp($d)
 {
     benc_resp_raw(benc([
-        'type' => 'dictionary',
+        'type'  => 'dictionary',
         'value' => $d,
     ]));
 }

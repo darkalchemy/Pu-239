@@ -6,7 +6,7 @@ if ($user['info']) {
     $HTMLOUT .= "<tr><td>Info</td><td>User Info is empty</td></tr>\n";
 }
 if ($user['signature']) {
-    $HTMLOUT .= "<tr><td>Signature</td><td>" . format_comment($user['signature']) . "</td></tr>\n";
+    $HTMLOUT .= '<tr><td>Signature</td><td>' . format_comment($user['signature']) . "</td></tr>\n";
 } else {
     $HTMLOUT .= "<tr><td>Signature</td><td>Signature is empty</td></tr>\n";
 }

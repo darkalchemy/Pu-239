@@ -14,7 +14,8 @@ function tvmaze_schedule_update($data)
 
     $start = date('Y-m-d');
     $date = new DateTime($start);
-    $end = $date->modify('+1 week')->format('Y-m-d');
+    $end = $date->modify('+1 week')
+        ->format('Y-m-d');
 
     if (!empty($tvmaze_data)) {
         foreach ($tvmaze_data as $tv) {

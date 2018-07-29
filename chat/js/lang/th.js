@@ -6,7 +6,6 @@
  * @link https://blueimp.net/ajax/
  * @Translate by Charge01 @ http://www.thaira2lovers.co.cc
  */
-
 // Ajax Chat language Object:
 var ajaxChatLang = {
     login: '%s เข้าสู่ห้องแชท',

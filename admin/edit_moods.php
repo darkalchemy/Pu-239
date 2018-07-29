@@ -75,8 +75,7 @@ $HTMLOUT .= "<table width='85%'>
       <td class='colhead'>{$lang['moods_name']}</td>
       <td class='colhead'>{$lang['moods_image']}</td>
       <td class='colhead'>{$lang['moods_bonus']}</td>
-      <td class='colhead'>{$lang['moods_edit1']}</td>" .
-//<td class='colhead'>{$lang['moods_remove']}</td>
+      <td class='colhead'>{$lang['moods_edit1']}</td>" . //<td class='colhead'>{$lang['moods_remove']}</td>
     '</tr>';
 $res = sql_query('SELECT * FROM moods ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($res)) {
@@ -87,8 +86,7 @@ if (mysqli_num_rows($res)) {
       <td>' . htmlsafechars($arr['name']) . '</td>
       <td>' . htmlsafechars($arr['image']) . '</td>
       <td>' . ($arr['bonus'] != 0 ? '' . $lang['moods_yes'] . '' : '' . $lang['moods_no'] . '') . '</td>
-      <td><a style="color:#FF0000" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=edit_moods&amp;id=' . (int) $arr['id'] . '&amp;action=edit">' . $lang['moods_edit1'] . '</a></td></tr>' .
-            //<td><a style="color:#FF0000" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=edit_moods&amp;action=remove$amp;id='.$arr['id'].'&amp;hash='.$form_hash.'>'.$lang['moods_remove'].'</a></td></tr>
+      <td><a style="color:#FF0000" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=edit_moods&amp;id=' . (int) $arr['id'] . '&amp;action=edit">' . $lang['moods_edit1'] . '</a></td></tr>' . //<td><a style="color:#FF0000" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=edit_moods&amp;action=remove$amp;id='.$arr['id'].'&amp;hash='.$form_hash.'>'.$lang['moods_remove'].'</a></td></tr>
             '';
     }
     $HTMLOUT .= '</table>';

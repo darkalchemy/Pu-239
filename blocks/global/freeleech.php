@@ -30,7 +30,7 @@ function freeleech_countdown()
         sql_query('UPDATE freeleech SET var = ' . $freeleech['freeleech_countdown']['var'] . ', amount = ' . $freeleech['freeleech_countdown']['amount'] . ' 
                        WHERE type = "countdown"') or sqlerr(__FILE__, __LINE__);
         $cache->update_row('freeleech_countdown', [
-            'var' => $freeleech['freeleech_countdown']['var'],
+            'var'    => $freeleech['freeleech_countdown']['var'],
             'amount' => $freeleech['freeleech_countdown']['amount'],
         ], 0);
     } elseif (TIME_NOW > ($freeleech['freeleech_countdown']['amount'])) { // freeleech sunday!

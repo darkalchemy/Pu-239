@@ -51,42 +51,42 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
 
         $poll_options = serialize($break_down_poll_options);
         $values = [
-            'user_id' => $CURUSER['id'],
-            'question' => $poll_question,
-            'poll_answers' => $poll_options,
+            'user_id'           => $CURUSER['id'],
+            'question'          => $poll_question,
+            'poll_answers'      => $poll_options,
             'number_of_options' => $i,
-            'poll_starts' => $poll_starts,
-            'poll_ends' => $poll_ends,
-            'change_vote' => $change_vote,
-            'multi_options' => $multi_options,
+            'poll_starts'       => $poll_starts,
+            'poll_ends'         => $poll_ends,
+            'change_vote'       => $change_vote,
+            'multi_options'     => $multi_options,
         ];
         $poll_id = $fluent->insertInto('forum_poll')
             ->values($values)
             ->execute();
     }
     $values = [
-        'user_id' => $CURUSER['id'],
+        'user_id'    => $CURUSER['id'],
         'topic_name' => $topic_name,
-        'last_post' => $CURUSER['id'],
-        'forum_id' => $forum_id,
+        'last_post'  => $CURUSER['id'],
+        'forum_id'   => $forum_id,
         'topic_desc' => $topic_desc,
-        'poll_id' => $poll_id,
-        'anonymous' => $anonymous,
+        'poll_id'    => $poll_id,
+        'anonymous'  => $anonymous,
     ];
     $topic_id = $fluent->insertInto('topics')
         ->values($values)
         ->execute();
 
     $values = [
-        'topic_id' => $topic_id,
-        'user_id' => $CURUSER['id'],
-        'added' => TIME_NOW,
-        'body' => $body,
-        'icon' => $icon,
+        'topic_id'   => $topic_id,
+        'user_id'    => $CURUSER['id'],
+        'added'      => TIME_NOW,
+        'body'       => $body,
+        'icon'       => $icon,
         'post_title' => $post_title,
-        'bbcode' => $bb_code,
-        'ip' => inet_pton($ip),
-        'anonymous' => $anonymous,
+        'bbcode'     => $bb_code,
+        'ip'         => inet_pton($ip),
+        'anonymous'  => $anonymous,
     ];
 
     $post_id = $fluent->insertInto('posts')
@@ -107,7 +107,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
 
     $set = [
         'first_post' => $post_id,
-        'last_post' => $post_id,
+        'last_post'  => $post_id,
         'post_count' => 1,
     ];
     $fluent->update('topics')
@@ -116,7 +116,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
         ->execute();
 
     $set = [
-        'post_count' => new Envms\FluentPDO\Literal('post_count + 1'),
+        'post_count'  => new Envms\FluentPDO\Literal('post_count + 1'),
         'topic_count' => new Envms\FluentPDO\Literal('topic_count + 1'),
     ];
     $fluent->update('forums')
@@ -180,13 +180,13 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
                         $name = substr($name, 0, -strlen($file_extension));
                         $upload_to = $upload_folder . $name . '(id-' . $post_id . ')' . $file_extension;
                         $values = [
-                            'post_id' => $post_id,
-                            'user_id' => $CURUSER['id'],
-                            'file' => $name . '(id-' . $post_id . ')' . $file_extension,
+                            'post_id'   => $post_id,
+                            'user_id'   => $CURUSER['id'],
+                            'file'      => $name . '(id-' . $post_id . ')' . $file_extension,
                             'file_name' => $name,
-                            'added' => TIME_NOW,
+                            'added'     => TIME_NOW,
                             'extension' => ltrim($file_extension, '.'),
-                            'size' => $size,
+                            'size'      => $size,
                         ];
                         $fluent->insertInto('attachments')
                             ->values($values)
@@ -199,7 +199,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     }
     if ($subscribe === 'yes') {
         $values = [
-            'user_id' => $CURUSER['id'],
+            'user_id'  => $CURUSER['id'],
             'topic_id' => $topic_id,
         ];
         $fluent->insertInto('subscriptions')

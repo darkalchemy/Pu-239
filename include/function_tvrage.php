@@ -10,19 +10,19 @@ $site_config['tvrage_api'] = 'NxDOrw2uadOgyLuDtmaR';
 function tvrage_format($tvrage_data, $tvrage_type)
 {
     $tvrage_display['show'] = [
-        'showname' => '<b>%s</b>',
-        'showlink' => '%s',
-        'startdate' => 'Started: %s',
-        'ended' => 'Ended: %s',
+        'showname'       => '<b>%s</b>',
+        'showlink'       => '%s',
+        'startdate'      => 'Started: %s',
+        'ended'          => 'Ended: %s',
         'origin_country' => 'Country: %s',
-        'status' => 'Status: %s',
+        'status'         => 'Status: %s',
         'classification' => 'Classification: %s',
-        'summary' => 'Summary:<br> %s',
-        'runtime' => 'Runtime %s min',
-        'genres' => 'Genres: %s',
+        'summary'        => 'Summary:<br> %s',
+        'runtime'        => 'Runtime %s min',
+        'genres'         => 'Genres: %s',
     ];
     $tvrage_display['episode'] = [
-        'episode' => 'This week episode: %s "%s" on %s<br>%s<br>Summary: %s',
+        'episode'     => 'This week episode: %s "%s" on %s<br>%s<br>Summary: %s',
         'nextepisode' => 'Next episode: %s "%s" on %s %s %s',
     ];
     foreach ($tvrage_data as $key => $data) {
@@ -53,14 +53,14 @@ function tvrage(&$torrents)
     $row_update = [];
     if (preg_match("/^(.*)S(\d+)(E(\d+))?/", $torrents['name'], $tmp)) {
         $tvrage = [
-            'name' => str_replace('.', ' ', $tmp[1]),
-            'season' => (int) $tmp[2],
+            'name'    => str_replace('.', ' ', $tmp[1]),
+            'season'  => (int) $tmp[2],
             'episode' => (int) (isset($tmp[4]) ? $tmp[4] : 0),
         ];
     } else {
         $tvrage = [
-            'name' => str_replace('.', ' ', $torrents['name']),
-            'season' => 0,
+            'name'    => str_replace('.', ' ', $torrents['name']),
+            'season'  => 0,
             'episode' => 0,
         ];
     }

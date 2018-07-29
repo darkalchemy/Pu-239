@@ -84,8 +84,7 @@ if (isset($_GET['slot'])) {
         } else {
             sql_query('INSERT INTO freeslots (torrentid, userid, free, addedfree) VALUES (' . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ', "yes", ' . $added . ')') or sqlerr(__FILE__, __LINE__);
         }
-    } /* doubleslot **/
-    elseif ($_GET['slot'] === 'double') {
+    } /* doubleslot **/ elseif ($_GET['slot'] === 'double') {
         if ($used_slot && $slot['doubleup'] === 'yes') {
             stderr('Doh!', 'Doubleseed slot already in use.');
         }

@@ -1,4 +1,5 @@
 <?php
+
 /*
   +----------------------------------------------------------------------+
   | PHP Version 5                                                        |
@@ -15,7 +16,7 @@
   +----------------------------------------------------------------------+
   | Author:  Harun Yayli <harunyayli at gmail.com>                       |
   +----------------------------------------------------------------------+
-*/
+ */
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
@@ -25,17 +26,8 @@ global $site_config;
 $VERSION = '$Id: memcache.php,v 1.1.2.3 2008/08/28 18:07:54 mikl Exp $';
 //define('ADMIN_USERNAME','memcache_stats');     // Admin Username
 //define('ADMIN_PASSWORD','richmond1');      // Admin Password
-/*
- *
- */
 define('DATE_FORMAT', 'Y/m/d H:i:s');
-/*
- *
- */
 define('GRAPH_SIZE', 200);
-/*
- *
- */
 define('MAX_ITEM_DUMP', 50);
 $MEMCACHE_SERVERS[] = "{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"; // add more as an array
 //$MEMCACHE_SERVERS[] = 'mymemcache-server2:11211'; // add more as an array
@@ -194,7 +186,7 @@ function getCacheItems()
     }
 
     return [
-        'items' => $serverItems,
+        'items'  => $serverItems,
         'counts' => $totalItems,
     ];
 }
@@ -838,7 +830,7 @@ EOB;
         $i = 0;
         if (!isset($_GET['singleout']) && count($MEMCACHE_SERVERS) > 1) {
             foreach ($MEMCACHE_SERVERS as $server) {
-                echo($i + 1) . '. <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=memcache&amp;singleout=' . $i++ . '">' . $server . '</a><br>';
+                echo ($i + 1) . '. <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=memcache&amp;singleout=' . $i++ . '">' . $server . '</a><br>';
             }
         } else {
             echo '1.' . $MEMCACHE_SERVERS[0];

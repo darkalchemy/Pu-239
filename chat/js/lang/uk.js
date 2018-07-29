@@ -6,7 +6,6 @@
  * @license Modified MIT License
  * @link https://blueimp.net/ajax/
  */
-
 // Ajax Chat language Object:
 var ajaxChatLang = {
     login: '%s заходить до Чату.',

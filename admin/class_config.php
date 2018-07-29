@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $classname = !empty($post_data[1]) ? strtoupper($post_data[1]) : '';
             $classcolor = !empty($post_data[2]) ? $post_data[2] : '';
             $data[] = [
-                'className' => $classname,
+                'className'  => $classname,
                 'classColor' => $classcolor,
             ];
             $classcolor = str_replace('#', '', "$classcolor");
@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/{$arr['classpic']}',";
                         $js_classes[] = $arr['name'];
                         $data[] = [
-                            'className' => $arr['classname'],
+                            'className'  => $arr['classname'],
                             'classColor' => '#' . strtolower($arr['classcolor']),
                         ];
                     }
@@ -242,7 +242,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/{$arr['classpic']}',";
                     $js_classes[] = $arr['name'];
                     $data[] = [
-                        'className' => $arr['classname'],
+                        'className'  => $arr['classname'],
                         'classColor' => '#' . strtolower($arr['classcolor']),
                     ];
                 }

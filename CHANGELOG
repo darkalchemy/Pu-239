@@ -1,5 +1,13 @@
 28 Jul 2018
-update: test for bad id details.php
+fix: card table background
+add: copyright to files
+fix: nfo display viewnfo.php
+update: clean image caches when poster added to torrent
+remove: XBT Cleanup Items
+update: Adminer 4.6.3
+revert: css image to base64
+fix: postcss css cleanup
+update: text for bad id details.php
 fix: redirect to index page and show flash message when torrent not exist details.php
 fix: upload description removing characters such as ë, è, é, and ê
 fix: upload stripping ascii from description instead of nfo

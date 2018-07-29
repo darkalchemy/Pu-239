@@ -15,6 +15,6 @@ function newsrss_cleanup($data)
         ->execute();
 
     if ($data['clean_log']) {
-        write_log("NewsRSS Cleanup: Completed using 1 queries");
+        write_log('NewsRSS Cleanup: Completed using 1 queries');
     }
 }

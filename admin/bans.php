@@ -52,19 +52,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] == UC_MAX) {
     }
 
     $values = [
-        'added' => $added,
+        'added'   => $added,
         'addedby' => $CURUSER['id'],
-        'first' => $first,
-        'last' => $last,
+        'first'   => $first,
+        'last'    => $last,
         'comment' => $comment,
     ];
 
-    $stmt = $pdo->prepare(
-        'INSERT INTO bans
+    $stmt = $pdo->prepare('INSERT INTO bans
                         (added, addedby, first, last, comment)
                       VALUES
-                        (:added, :addedby, INET6_ATON(:first), INET6_ATON(:last), :comment)'
-    );
+                        (:added, :addedby, INET6_ATON(:first), INET6_ATON(:last), :comment)');
     $stmt->execute($values);
     $session->set('is-success', "IPs: $first to $last added to Bans");
     unset($_POST);

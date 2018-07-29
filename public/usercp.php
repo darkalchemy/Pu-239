@@ -473,27 +473,27 @@ if ($action === 'avatar') {
     $secretqs = "<option value='0'>{$lang['usercp_none_select']}</option>";
     $questions = [
         [
-            'id' => '1',
+            'id'       => '1',
             'question' => "{$lang['usercp_q1']}",
         ],
         [
-            'id' => '2',
+            'id'       => '2',
             'question' => "{$lang['usercp_q2']}",
         ],
         [
-            'id' => '3',
+            'id'       => '3',
             'question' => "{$lang['usercp_q3']}",
         ],
         [
-            'id' => '4',
+            'id'       => '4',
             'question' => "{$lang['usercp_q4']}",
         ],
         [
-            'id' => '5',
+            'id'       => '5',
             'question' => "{$lang['usercp_q5']}",
         ],
         [
-            'id' => '6',
+            'id'       => '6',
             'question' => "{$lang['usercp_q6']}",
         ],
     ];

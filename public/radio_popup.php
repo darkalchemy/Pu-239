@@ -37,8 +37,7 @@ $HTMLOUT = "<!doctype html>
         <a href='http://{$radio['host']}:{$radio['port']}/listen.asx' onmouseover=\"roll_over('wmp', '{$site_config['pic_baseurl']}wmp_over.png')\" onmouseout=\"roll_over('wmp', '{$site_config['pic_baseurl']}wmp.png')\">
             <img src='{$site_config['pic_baseurl']}wmp.png' name='wmp' alt='Click here to listen with Windows Media Player' title='Click here to listen with Windows Media Player' />
         </a>
-    </div>" .
-    radioinfo($radio) . "
+    </div>" . radioinfo($radio) . "
     <div class='has-text-centered'>
         <a class='altlink' href='javascript: window.close()'><b>[ Close window ]</b></a>
     </div>

@@ -21,8 +21,7 @@ if (XBT_TRACKER) {
 
     if (is_array($scheduled_events)) {
         foreach ($scheduled_events as $scheduled_event) {
-            if (is_array($scheduled_event) && array_key_exists('startTime', $scheduled_event) &&
-                array_key_exists('endTime', $scheduled_event)) {
+            if (is_array($scheduled_event) && array_key_exists('startTime', $scheduled_event) && array_key_exists('endTime', $scheduled_event)) {
                 $startTime = 0;
                 $endTime = 0;
                 $startTime = $scheduled_event['startTime'];

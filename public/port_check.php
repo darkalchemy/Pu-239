@@ -22,8 +22,7 @@ $user = format_username($id);
 
 $completed = "
     <h1 class='text-center'>$user Port Status</h1>";
-$completed .= main_div(
-    "
+$completed .= main_div("
     <section id='ipports'></section>
     <section>
         <input class='has-text-centered w-25' type='text' id='userip' placeholder='Your Torrent Client IP [" . getip() . "]' />
@@ -35,7 +34,6 @@ $completed .= main_div(
     </section>
     <script>
         var uid = '{$id}';
-    </script>"
-);
+    </script>");
 
 echo stdhead('Check My Ports') . wrapper($completed) . stdfoot($stdfoot);

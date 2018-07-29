@@ -5,7 +5,6 @@
  * @license Modified MIT License
  * @link https://blueimp.net/ajax/
  */
-
 // Overriding client side functionality:
 
 /*

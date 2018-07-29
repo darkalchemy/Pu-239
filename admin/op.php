@@ -1,4 +1,5 @@
 <?php
+
 /**
  * OPcache GUI.
  *
@@ -15,10 +16,10 @@ if (!function_exists('opcache_get_status')) {
 }
 
 $settings = [
-    'compress_path_threshold' => 2,
+    'compress_path_threshold'               => 2,
     'used_memory_percentage_high_threshold' => 80,
-    'used_memory_percentage_mid_threshold' => 60,
-    'allow_invalidate' => true,
+    'used_memory_percentage_mid_threshold'  => 60,
+    'allow_invalidate'                      => true,
 ];
 
 $validPages = [
@@ -27,11 +28,7 @@ $validPages = [
     'reset',
     'invalidate',
 ];
-$page = (
-empty($_GET['page']) || !in_array($_GET['page'], $validPages)
-    ? 'overview'
-    : strtolower($_GET['page'])
-);
+$page = (empty($_GET['page']) || !in_array($_GET['page'], $validPages) ? 'overview' : strtolower($_GET['page']));
 
 if ($page === 'reset') {
     opcache_reset();
@@ -86,12 +83,7 @@ function memsize($size, $precision = 3, $space = false)
         ++$i;
     }
 
-    return sprintf(
-        "%.{$precision}f%s%s",
-        $size,
-        (($space && $i) ? ' ' : ''),
-        $val[$i]
-    );
+    return sprintf("%.{$precision}f%s%s", $size, (($space && $i) ? ' ' : ''), $val[$i]);
 }
 
 /**
@@ -107,28 +99,21 @@ function rc($at = null)
     }
 }
 
-$data = array_merge(
-    $opcache_status['memory_usage'],
-    $opcache_status['opcache_statistics'],
-    [
-        'total_memory_size' => memsize($opcache_config['directives']['opcache.memory_consumption']),
-        'used_memory_percentage' => round(100 * (
-                ($opcache_status['memory_usage']['used_memory'] + $opcache_status['memory_usage']['wasted_memory'])
-                / $opcache_config['directives']['opcache.memory_consumption']
-            )),
-        'hit_rate_percentage' => round($opcache_status['opcache_statistics']['opcache_hit_rate']),
-        'wasted_percentage' => round($opcache_status['memory_usage']['current_wasted_percentage'], 2),
-        'used_memory_size' => memsize($opcache_status['memory_usage']['used_memory']),
-        'free_memory_size' => memsize($opcache_status['memory_usage']['free_memory']),
-        'wasted_memory_size' => memsize($opcache_status['memory_usage']['wasted_memory']),
-        'files_cached' => number_format($opcache_status['opcache_statistics']['num_cached_scripts']),
-        'hits_size' => number_format($opcache_status['opcache_statistics']['hits']),
-        'miss_size' => number_format($opcache_status['opcache_statistics']['misses']),
-        'blacklist_miss_size' => number_format($opcache_status['opcache_statistics']['blacklist_misses']),
-        'num_cached_keys_size' => number_format($opcache_status['opcache_statistics']['num_cached_keys']),
-        'max_cached_keys_size' => number_format($opcache_status['opcache_statistics']['max_cached_keys']),
-    ]
-);
+$data = array_merge($opcache_status['memory_usage'], $opcache_status['opcache_statistics'], [
+    'total_memory_size'      => memsize($opcache_config['directives']['opcache.memory_consumption']),
+    'used_memory_percentage' => round(100 * (($opcache_status['memory_usage']['used_memory'] + $opcache_status['memory_usage']['wasted_memory']) / $opcache_config['directives']['opcache.memory_consumption'])),
+    'hit_rate_percentage'    => round($opcache_status['opcache_statistics']['opcache_hit_rate']),
+    'wasted_percentage'      => round($opcache_status['memory_usage']['current_wasted_percentage'], 2),
+    'used_memory_size'       => memsize($opcache_status['memory_usage']['used_memory']),
+    'free_memory_size'       => memsize($opcache_status['memory_usage']['free_memory']),
+    'wasted_memory_size'     => memsize($opcache_status['memory_usage']['wasted_memory']),
+    'files_cached'           => number_format($opcache_status['opcache_statistics']['num_cached_scripts']),
+    'hits_size'              => number_format($opcache_status['opcache_statistics']['hits']),
+    'miss_size'              => number_format($opcache_status['opcache_statistics']['misses']),
+    'blacklist_miss_size'    => number_format($opcache_status['opcache_statistics']['blacklist_misses']),
+    'num_cached_keys_size'   => number_format($opcache_status['opcache_statistics']['num_cached_keys']),
+    'max_cached_keys_size'   => number_format($opcache_status['opcache_statistics']['max_cached_keys']),
+]);
 
 $threshold = '';
 if ($data['used_memory_percentage'] >= $settings['used_memory_percentage_high_threshold']) {
@@ -142,18 +127,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
     exit;
 }
 
-$host = (
-function_exists('gethostname')
-    ? gethostname()
-    : (
-php_uname('n')
-    ?: (
-empty($_SERVER['SERVER_NAME'])
-    ? $_SERVER['HOST_NAME']
-    : $_SERVER['SERVER_NAME']
-)
-)
-);
+$host = (function_exists('gethostname') ? gethostname() : (php_uname('n') ? : (empty($_SERVER['SERVER_NAME']) ? $_SERVER['HOST_NAME'] : $_SERVER['SERVER_NAME'])));
 
 ?>
 <!doctype html>
@@ -165,185 +139,185 @@ empty($_SERVER['SERVER_NAME'])
     <link href="//fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <style>
         html {
-            font-family : sans-serif;
-            font-size   : 100%;
-            line-height : 1.2;
-            padding     : 2em;
+            font-family: sans-serif;
+            font-size: 100%;
+            line-height: 1.2;
+            padding: 2em;
         }
 
         body {
-            font-size : 75%;
+            font-size: 75%;
         }
 
         .container {
-            overflow : auto;
-            width    : 100%;
-            position : relative;
+            overflow: auto;
+            width: 100%;
+            position: relative;
         }
 
         #info {
-            margin-right : 290px;
+            margin-right: 290px;
         }
 
         #counts {
-            position : absolute;
-            top      : 0;
-            right    : 0;
-            width    : 280px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 280px;
         }
 
         #counts div {
-            padding          : 1em;
-            margin-bottom    : 1em;
-            border-radius    : 5px;
-            background-image : linear-gradient(bottom, #B7C8CC 21%, #D5DEE0 60%, #E0ECEF 80%);
-            background-image : -webkit-gradient(linear, left bottom, left top, color-stop(0.21, #B7C8CC), color-stop(0.6, #D5DEE0), color-stop(0.8, #E0ECEF));
+            padding: 1em;
+            margin-bottom: 1em;
+            border-radius: 5px;
+            background-image: linear-gradient(bottom, #B7C8CC 21%, #D5DEE0 60%, #E0ECEF 80%);
+            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.21, #B7C8CC), color-stop(0.6, #D5DEE0), color-stop(0.8, #E0ECEF));
         }
 
         #counts p {
-            text-align : center;
+            text-align: center;
         }
 
         #counts div.values p {
-            text-align : left;
+            text-align: left;
         }
 
         #counts p span {
-            font-family : 'Roboto', sans-serif;
+            font-family: 'Roboto', sans-serif;
         }
 
         #counts p span.large {
-            display     : block;
-            line-height : 90%;
-            font-size   : 800%;
+            display: block;
+            line-height: 90%;
+            font-size: 800%;
         }
 
         table {
-            margin          : 0 0 1em 0;
-            border-collapse : collapse;
-            border-color    : #fff;
-            width           : 100%;
+            margin: 0 0 1em 0;
+            border-collapse: collapse;
+            border-color: #fff;
+            width: 100%;
         }
 
         table caption {
-            text-align : left;
-            font-size  : 1.5em;
+            text-align: left;
+            font-size: 1.5em;
         }
 
         table tr {
-            background-color : #99D0DF;
-            border-color     : #fff;
+            background-color: #99D0DF;
+            border-color: #fff;
         }
 
         table th {
-            text-align       : left;
-            padding          : 6px;
-            background-color : #0BA0C8;
-            color            : #fff;
-            border-color     : #fff;
+            text-align: left;
+            padding: 6px;
+            background-color: #0BA0C8;
+            color: #fff;
+            border-color: #fff;
         }
 
         table td {
-            padding        : 4px 6px;
-            line-height    : 1.4em;
-            vertical-align : top;
-            border-color   : #fff;
+            padding: 4px 6px;
+            line-height: 1.4em;
+            vertical-align: top;
+            border-color: #fff;
         }
 
         table tr.odd {
-            background-color : #EFFEFF;
+            background-color: #EFFEFF;
         }
 
         table tr.even {
-            background-color : #E0ECEF;
+            background-color: #E0ECEF;
         }
 
         table tr.highlight {
-            background-color : #61C4DF;
+            background-color: #61C4DF;
         }
 
         td.pathname p {
-            margin-bottom : 0.25em;
+            margin-bottom: 0.25em;
         }
 
         .wsnw {
-            white-space : nowrap;
+            white-space: nowrap;
         }
 
         .low {
-            color : #000000;
+            color: #000000;
         }
 
         .mid {
-            color : #550000;
+            color: #550000;
         }
 
         .high {
-            color : #FF0000;
+            color: #FF0000;
         }
 
         .invalid {
-            color : #FF4545;
+            color: #FF4545;
         }
 
         span.showmore span.button {
-            display        : inline-block;
-            margin-right   : 5px;
-            position       : relative;
-            top            : -1px;
-            color          : #333333;
-            background     : none repeat scroll 0 0 #DDDDDD;
-            border-radius  : 2px 2px 2px 2px;
-            font-size      : 12px;
-            font-weight    : bold;
-            height         : 12px;
-            line-height    : 6px;
-            padding        : 0 5px;
-            vertical-align : middle;
-            cursor         : pointer;
+            display: inline-block;
+            margin-right: 5px;
+            position: relative;
+            top: -1px;
+            color: #333333;
+            background: none repeat scroll 0 0 #DDDDDD;
+            border-radius: 2px 2px 2px 2px;
+            font-size: 12px;
+            font-weight: bold;
+            height: 12px;
+            line-height: 6px;
+            padding: 0 5px;
+            vertical-align: middle;
+            cursor: pointer;
         }
 
         a.button {
-            text-decoration       : none;
-            font-size             : 110%;
-            color                 : #292929;
-            padding               : 10px 26px;
-            background            : -moz-linear-gradient(top, #fff 0%, #b4b7b8);
-            background            : -webkit-gradient(linear, left top, left bottom, from(#fff), to(#b4b7b8));
-            -moz-border-radius    : 6px;
-            -webkit-border-radius : 6px;
-            border-radius         : 6px;
-            border                : 1px solid #a1a1a1;
-            text-shadow           : 0 -1px 0 rgba(000, 000, 000, 0), 0 1px 0 rgba(255, 255, 255, 0.4);
-            margin                : 0 1em;
-            white-space           : nowrap;
+            text-decoration: none;
+            font-size: 110%;
+            color: #292929;
+            padding: 10px 26px;
+            background: -moz-linear-gradient(top, #fff 0%, #b4b7b8);
+            background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#b4b7b8));
+            -moz-border-radius: 6px;
+            -webkit-border-radius: 6px;
+            border-radius: 6px;
+            border: 1px solid #a1a1a1;
+            text-shadow: 0 -1px 0 rgba(000, 000, 000, 0), 0 1px 0 rgba(255, 255, 255, 0.4);
+            margin: 0 1em;
+            white-space: nowrap;
         }
 
         span.showmore span.button:hover {
-            background-color : #CCCCCC;
+            background-color: #CCCCCC;
         }
 
-        @media screen and (max-width : 700px) {
+        @media screen and (max-width: 700px) {
             #info {
-                margin-right : auto;
+                margin-right: auto;
             }
 
             #counts {
-                position      : relative;
-                display       : block;
-                margin-bottom : 2em;
-                width         : 100%;
+                position: relative;
+                display: block;
+                margin-bottom: 2em;
+                width: 100%;
             }
         }
 
-        @media screen and (max-width : 550px) {
+        @media screen and (max-width: 550px) {
             a.button {
-                display       : block;
-                margin-bottom : 2px;
+                display: block;
+                margin-bottom: 2px;
             }
 
             #frmFilter {
-                width : 99% !important;
+                width: 99% !important;
             }
         }
     </style>
@@ -439,9 +413,7 @@ empty($_SERVER['SERVER_NAME'])
                 </tr>
                 <tr class="<?php rc(); ?>">
                     <td>Last reset</td>
-                    <td><?php echo $data['last_restart_time'] == 0
-                            ? '<em>never</em>'
-                            : date_format(date_create("@{$data['last_restart_time']}"), 'Y-m-d H:i:s'); ?></td>
+                    <td><?php echo $data['last_restart_time'] == 0 ? '<em>never</em>' : date_format(date_create("@{$data['last_restart_time']}"), 'Y-m-d H:i:s'); ?></td>
                 </tr>
             </table>
 
@@ -462,9 +434,7 @@ empty($_SERVER['SERVER_NAME'])
                                     ' ',
                                 ], $d); ?></span>
                         </td>
-                        <td><?php echo is_bool($v)
-                                ? ($v ? '<i>true</i>' : '<i>false</i>')
-                                : (empty($v) ? '<i>no value</i>' : $v); ?></td>
+                        <td><?php echo is_bool($v) ? ($v ? '<i>true</i>' : '<i>false</i>') : (empty($v) ? '<i>no value</i>' : $v); ?></td>
                     </tr>
                 <?php endforeach; ?>
             </table>
@@ -533,6 +503,7 @@ empty($_SERVER['SERVER_NAME'])
             foreach ($opcache_status['scripts'] as $s): ?>
                 <tr class="<?php rc(); ?>">
                     <td class="pathname"><p><?php
+
                             $base = basename($s['full_path']);
                             $parts = array_filter(explode(DIRECTORY_SEPARATOR, dirname($s['full_path'])));
                             if (!empty($settings['compress_path_threshold'])) {

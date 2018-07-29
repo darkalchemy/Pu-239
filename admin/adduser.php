@@ -14,16 +14,16 @@ $cache->delete('chat_users_list');
 $lang = array_merge($lang, load_language('ad_adduser'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $insert = [
-        'username' => '',
-        'email' => '',
-        'passhash' => '',
-        'status' => 'confirmed',
-        'added' => TIME_NOW,
-        'last_access' => TIME_NOW,
+        'username'     => '',
+        'email'        => '',
+        'passhash'     => '',
+        'status'       => 'confirmed',
+        'added'        => TIME_NOW,
+        'last_access'  => TIME_NOW,
         'torrent_pass' => make_password(32),
-        'auth' => make_password(32),
-        'apikey' => make_password(32),
-        'ip' => ipToStorageFormat('127.0.0.1'),
+        'auth'         => make_password(32),
+        'apikey'       => make_password(32),
+        'ip'           => ipToStorageFormat('127.0.0.1'),
     ];
     if (isset($_POST['username']) && strlen($_POST['username']) >= 3 && valid_username($_POST['username'])) {
         $insert['username'] = $_POST['username'];
@@ -42,12 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (sql_query(sprintf('INSERT INTO users
                 (username, email, passhash, status, added, last_access, torrent_pass, auth, apikey, ip)
-                VALUES (%s)',
-        implode(', ', array_map(
-            'sqlesc',
-            $insert
-        ))
-    ))) {
+                VALUES (%s)', implode(', ', array_map('sqlesc', $insert))))) {
         $user_id = 0;
         while ($user_id == 0) {
             usleep(500);
@@ -72,8 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
             $res = sql_query('SELECT id 
                         FROM users
-                        WHERE username = ' . sqlesc($insert['username'])
-            ) or sqlerr(__FILE__, __LINE__);
+                        WHERE username = ' . sqlesc($insert['username'])) or sqlerr(__FILE__, __LINE__);
             if (mysqli_num_rows($res)) {
                 $arr = mysqli_fetch_assoc($res);
                 header(sprintf('refresh:3; url=userdetails.php?id=%d', $arr['id']));

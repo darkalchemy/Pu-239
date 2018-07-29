@@ -6,7 +6,6 @@
  * @license Modified MIT License
  * @link https://blueimp.net/ajax/
  */
-
 // Class to manage HTTP header
 
 /**

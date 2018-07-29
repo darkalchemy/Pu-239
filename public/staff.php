@@ -7,10 +7,6 @@ check_user_status();
 global $site_config, $fluent;
 
 $lang = array_merge(load_language('global'), load_language('staff'));
-$stdhead = [
-    'css' => [
-    ],
-];
 $support = $mods = $admin = $sysop = [];
 $htmlout = $firstline = '';
 $query = $fluent->from('users')
@@ -109,4 +105,4 @@ if (!empty($support)) {
                     </tr>";
     $htmlout .= main_table($body, $heading);
 }
-echo stdhead('Staff', $stdhead) . wrapper($htmlout) . stdfoot();
+echo stdhead('Staff') . wrapper($htmlout) . stdfoot();

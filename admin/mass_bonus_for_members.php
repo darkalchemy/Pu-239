@@ -8,18 +8,6 @@ class_check($class);
 global $site_config, $CURUSER, $lang, $cache;
 
 $lang = array_merge($lang, load_language('ad_bonus_for_members'));
-$stdhead = [
-    'css' => [
-    ],
-];
-$stdfoot = [
-    'js' => [
-//        'browse',
-//        'jquery.lightbox-0.5.min',
-//        'lightbox',
-//        'check_selected',
-    ],
-];
 $h1_thingie = $HTMLOUT = '';
 //=== check if action_2 is sent ($_POST) if so make sure it's what you want it to be
 $action_2 = (isset($_POST['action_2']) ? htmlsafechars($_POST['action_2']) : 'no_action');
@@ -61,7 +49,7 @@ switch ($action) {
                     $pm_buffer[] = '(0, ' . $arr_GB['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                     $users_buffer[] = '(' . $arr_GB['id'] . ', ' . $GB_new . ', ' . $modcom . ')';
                     $cache->update_row('user' . $arr_GB['id'], [
-                        'uploaded' => $GB_new,
+                        'uploaded'   => $GB_new,
                         'modcomment' => $modcomment,
                     ], $site_config['expires']['user_cache']);
                     $cache->increment('inbox_' . $arr_GB['id']);
@@ -92,7 +80,7 @@ switch ($action) {
                             $pm_buffer[] = '(0, ' . $arr_GB['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                             $users_buffer[] = '(' . $arr_GB['id'] . ', ' . $GB_new . ', ' . $modcom . ')';
                             $cache->update_row('user' . $arr_GB['id'], [
-                                'uploaded' => $GB_new,
+                                'uploaded'   => $GB_new,
                                 'modcomment' => $modcomment,
                             ], $site_config['expires']['user_cache']);
                             $cache->increment('inbox_' . $arr_GB['id']);
@@ -132,7 +120,7 @@ switch ($action) {
                     $pm_buffer[] = '(0, ' . $arr_karma['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                     $users_buffer[] = '(' . $arr_karma['id'] . ', ' . $karma_new . ', ' . $modcom . ')';
                     $cache->update_row('user' . $arr_karma['id'], [
-                        'seedbonus' => $karma_new,
+                        'seedbonus'  => $karma_new,
                         'modcomment' => $modcomment,
                     ], $site_config['expires']['user_cache']);
                     $cache->increment('inbox_' . $arr_karma['id']);
@@ -163,7 +151,7 @@ switch ($action) {
                             $pm_buffer[] = '(0, ' . $arr_karma['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                             $users_buffer[] = '(' . $arr_karma['id'] . ', ' . $karma_new . ', ' . $modcom . ')';
                             $cache->update_row('user' . $arr_karma['id'], [
-                                'seedbonus' => $karma_new,
+                                'seedbonus'  => $karma_new,
                                 'modcomment' => $modcomment,
                             ], $site_config['expires']['user_cache']);
                             $cache->increment('inbox_' . $arr_karma['id']);
@@ -203,7 +191,7 @@ switch ($action) {
                     $pm_buffer[] = '(0, ' . $arr_freeslots['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                     $users_buffer[] = '(' . $arr_freeslots['id'] . ', ' . $freeslots_new . ', ' . $modcom . ')';
                     $cache->update_row('user' . $arr_freeslots['id'], [
-                        'freeslots' => $freeslots_new,
+                        'freeslots'  => $freeslots_new,
                         'modcomment' => $modcomment,
                     ], $site_config['expires']['user_cache']);
                     $cache->increment('inbox_' . $arr_freeslots['id']);
@@ -234,7 +222,7 @@ switch ($action) {
                             $pm_buffer[] = '(0, ' . $arr_freeslots['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                             $users_buffer[] = '(' . $arr_freeslots['id'] . ', ' . $freeslots_new . ', ' . $modcom . ')';
                             $cache->update_row('user' . $arr_freeslots['id'], [
-                                'freeslots' => $freeslots_new,
+                                'freeslots'  => $freeslots_new,
                                 'modcomment' => $modcomment,
                             ], $site_config['expires']['user_cache']);
                             $cache->increment('inbox_' . $arr_freeslots['id']);
@@ -274,7 +262,7 @@ switch ($action) {
                     $pm_buffer[] = '(0, ' . $arr_invites['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                     $users_buffer[] = '(' . $arr_invites['id'] . ', ' . $invites_new . ', ' . $modcom . ')';
                     $cache->update_row('user' . $arr_invites['id'], [
-                        'invites' => $invites_new,
+                        'invites'    => $invites_new,
                         'modcomment' => $modcomment,
                     ], $site_config['expires']['user_cache']);
                     $cache->increment('inbox_' . $arr_invites['id']);
@@ -305,7 +293,7 @@ switch ($action) {
                             $pm_buffer[] = '(0, ' . $arr_invites['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                             $users_buffer[] = '(' . $arr_invites['id'] . ', ' . $invites_new . ', ' . $modcom . ')';
                             $cache->update_row('user' . $arr_invites['id'], [
-                                'invites' => $invites_new,
+                                'invites'    => $invites_new,
                                 'modcomment' => $modcomment,
                             ], $site_config['expires']['user_cache']);
                             $cache->increment('inbox_' . $arr_invites['id']);
@@ -502,4 +490,4 @@ $HTMLOUT .= '<form name="inputform" method="post" action="' . $site_config['base
         <input type="submit" class="button is-small" name="button" value="' . $lang['bonusmanager_doit'] . '"  /></td>
     </tr>
     </table></form>';
-echo stdhead($lang['bonusmanager_h1_upload'], $stdhead) . $HTMLOUT . stdfoot();
+echo stdhead($lang['bonusmanager_h1_upload']) . $HTMLOUT . stdfoot();

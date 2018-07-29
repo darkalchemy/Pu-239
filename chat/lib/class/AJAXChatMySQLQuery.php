@@ -6,7 +6,6 @@
  * @license Modified MIT License
  * @link https://blueimp.net/ajax/
  */
-
 // Class to perform SQL (MySQL) queries:
 
 /**
@@ -15,10 +14,10 @@
 class AJAXChatMySQLQuery
 {
     protected $_connectionID;
-    protected $_sql = '';
+    protected $_sql    = '';
     protected $_result = 0;
-    protected $_errno = 0;
-    protected $_error = '';
+    protected $_errno  = 0;
+    protected $_error  = '';
 
     // Constructor:
 

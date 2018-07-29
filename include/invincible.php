@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @param      $id
  * @param bool $invincible
@@ -48,14 +49,14 @@ function invincible($id, $invincible = true, $bypass_bans = true)
               WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 
     $cache->update_row('user' . $id, [
-        'ip' => $ip,
-        'perms' => $row['perms'],
+        'ip'         => $ip,
+        'perms'      => $row['perms'],
         'modcomment' => $modcomment,
     ], $site_config['expires']['user_cache']);
     if ($id == $CURUSER['id']) {
         $cache->update_row('user' . $CURUSER['id'], [
-            'ip' => $ip,
-            'perms' => $row['perms'],
+            'ip'         => $ip,
+            'perms'      => $row['perms'],
             'modcomment' => $modcomment,
         ], $site_config['expires']['user_cache']);
     }

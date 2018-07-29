@@ -116,14 +116,14 @@ if (IP_LOGGING) {
     }
     if (!$no_log_ip) {
         $values = [
-            'userid' => $userid,
-            'ip' => inet_pton($ip),
+            'userid'       => $userid,
+            'ip'           => inet_pton($ip),
             'lastannounce' => TIME_NOW,
-            'type' => 'announce',
+            'type'         => 'announce',
         ];
         $update_values = [
             'lastannounce' => TIME_NOW,
-            'type' => 'announce',
+            'type'         => 'announce',
         ];
         $announce_ip = $cache->get('announce_ip_' . $userid . '_' . $ip);
         if ($announce_ip === false || is_null($announce_ip)) {
@@ -390,19 +390,19 @@ $a = $fluent->from('snatched')
 
 if (empty($a)) {
     $values = [
-        'torrentid' => $torrentid,
-        'userid' => $userid,
-        'peer_id' => $peer_id,
-        'ip' => inet_pton($realip),
-        'port' => $port,
+        'torrentid'   => $torrentid,
+        'userid'      => $userid,
+        'peer_id'     => $peer_id,
+        'ip'          => inet_pton($realip),
+        'port'        => $port,
         'connectable' => $connectable,
-        'uploaded' => $uploaded,
-        'downloaded' => $site_config['ratio_free'] ? 0 : $downloaded,
-        'to_go' => $left,
-        'start_date' => TIME_NOW,
+        'uploaded'    => $uploaded,
+        'downloaded'  => $site_config['ratio_free'] ? 0 : $downloaded,
+        'to_go'       => $left,
+        'start_date'  => TIME_NOW,
         'last_action' => TIME_NOW,
-        'seeder' => $seeder,
-        'agent' => $agent,
+        'seeder'      => $seeder,
+        'agent'       => $agent,
     ];
 
     if ($seeder === 'no') {
@@ -410,9 +410,9 @@ if (empty($a)) {
             ->execute();
     } else {
         $values1 = [
-            'seeder' => 'yes',
+            'seeder'        => 'yes',
             'complete_date' => TIME_NOW,
-            'finished' => 'yes',
+            'finished'      => 'yes',
         ];
         $values = array_merge($values, $values1);
         $fluent->insertInto('snatched', $values)
@@ -526,13 +526,13 @@ if (isset($self) && $event === 'stopped') {
     $prev_action = $self['ts'];
     $set = array_merge($set, [
         'connectable' => $connectable,
-        'uploaded' => $uploaded,
-        'to_go' => $left,
+        'uploaded'    => $uploaded,
+        'to_go'       => $left,
         'last_action' => TIME_NOW,
         'prev_action' => $prev_action,
-        'seeder' => $seeder,
-        'agent' => $agent,
-        'downloaded' => $site_config['ratio_free'] ? 0 : $downloaded,
+        'seeder'      => $seeder,
+        'agent'       => $agent,
+        'downloaded'  => $site_config['ratio_free'] ? 0 : $downloaded,
     ]);
 
     $updated = $fluent->update('peers')
@@ -582,34 +582,34 @@ if (isset($self) && $event === 'stopped') {
         err('Your downloading privileges have been disabled! (Read the rules)');
     }
     $values = [
-        'torrent' => $torrentid,
-        'userid' => $userid,
-        'peer_id' => $peer_id,
-        'ip' => inet_pton($realip),
-        'port' => $port,
-        'connectable' => $connectable,
-        'uploaded' => $uploaded,
-        'downloaded' => ($site_config['ratio_free'] ? 0 : $downloaded),
-        'to_go' => $left,
-        'started' => TIME_NOW,
-        'last_action' => TIME_NOW,
-        'seeder' => $seeder,
-        'agent' => $agent,
+        'torrent'        => $torrentid,
+        'userid'         => $userid,
+        'peer_id'        => $peer_id,
+        'ip'             => inet_pton($realip),
+        'port'           => $port,
+        'connectable'    => $connectable,
+        'uploaded'       => $uploaded,
+        'downloaded'     => ($site_config['ratio_free'] ? 0 : $downloaded),
+        'to_go'          => $left,
+        'started'        => TIME_NOW,
+        'last_action'    => TIME_NOW,
+        'seeder'         => $seeder,
+        'agent'          => $agent,
         'downloadoffset' => ($site_config['ratio_free'] ? 0 : $downloaded),
-        'uploadoffset' => $uploaded,
-        'torrent_pass' => $torrent_pass,
+        'uploadoffset'   => $uploaded,
+        'torrent_pass'   => $torrent_pass,
     ];
 
     $update_values = [
-        'userid' => $userid,
-        'port' => $port,
+        'userid'      => $userid,
+        'port'        => $port,
         'connectable' => $connectable,
-        'uploaded' => $uploaded,
-        'downloaded' => ($site_config['ratio_free'] ? 0 : $downloaded),
-        'to_go' => $left,
+        'uploaded'    => $uploaded,
+        'downloaded'  => ($site_config['ratio_free'] ? 0 : $downloaded),
+        'to_go'       => $left,
         'last_action' => TIME_NOW,
-        'seeder' => $seeder,
-        'agent' => $agent,
+        'seeder'      => $seeder,
+        'agent'       => $agent,
     ];
 
     $insert_peers = $fluent->insertInto('peers', $values)

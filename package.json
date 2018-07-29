@@ -10,21 +10,23 @@
   "author": "",
   "license": "ISC",
   "browserslist": [
-    "> 10%",
-    "last 5 versions"
+    "last 2 versions",
+    "> 1%",
+    "not dead"
   ],
   "devDependencies": {
-    "autoprefixer": "^8.6.5",
-    "base64-css": "0.0.2",
-    "bulma": "^0.6.2",
+    "browserslist": "^4.0.1",
+    "bulma": "^0.7.1",
     "clean-css": "^4.1.11",
     "clean-css-cli": "^4.1.11",
     "jquery": "^3.3.1",
     "lightbox2": "^2.10.0",
-    "normalize.css": "^7.0.0",
-    "postcss-cli": "^5.0.1",
+    "normalize.css": "^8.0.0",
+    "postcss-cli": "^6.0.0",
+    "postcss-font-family-system-ui": "^3.0.0",
+    "postcss-preset-env": "^5.3.0",
     "raphael": "^2.2.7",
-    "uglify-js": "^3.4.5"
+    "uglify-js": "^3.4.6"
   },
   "dependencies": {
     "svgo": "^1.0.5"

@@ -19,10 +19,6 @@ function mkint($x)
     return (int) $x;
 }
 
-$stdfoot = [
-    'js' => [
-    ],
-];
 $this_url = $_SERVER['SCRIPT_NAME'];
 $do = isset($_GET['do']) && $_GET['do'] === 'disabled' ? 'disabled' : 'warned';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -149,4 +145,4 @@ if ($count == 0) {
 }
 $HTMLOUT .= end_frame();
 $HTMLOUT .= end_main_frame();
-echo stdhead($title) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead($title) . $HTMLOUT . stdfoot();

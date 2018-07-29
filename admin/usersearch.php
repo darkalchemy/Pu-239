@@ -1,4 +1,5 @@
 <?php
+
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
@@ -29,7 +30,7 @@ echo "<h1>{$lang['usersearch_title']}</h1>\n";
 $HTMLOUT = $where_is = $join_is = $q1 = $comment_is = $comments_exc = $email_is = '';
 if (isset($_GET['h'])) {
     echo $lang['usersearch_instructions'];
-//$HTMLOUT .= $lang['usersearch_instructions'];
+    //$HTMLOUT .= $lang['usersearch_instructions'];
 } else {
     $HTMLOUT .= "<p>(<a href='staffpanel.php?tool=usersearch&amp;action=usersearch&amp;h=1'>{$lang['usersearch_inlink']}</a>)";
     $HTMLOUT .= "&#160;-&#160;(<a href='staffpanel.php?tool=usersearch'>{$lang['usersearch_reset']}</a>)</p>\n";
@@ -44,18 +45,24 @@ $highlight = " bgcolor='lightgrey'";
             <tr>
 
                 <td class='rowhead'><?php
+
                     echo $lang['usersearch_name']; ?></td>
                 <td <?php
+
                 echo (isset($_POST['n']) && !empty($_POST['n'])) ? $highlight : ''; ?>><input name="n" type="text"
                                                                                               value=""<?php
+
                     echo isset($_POST['n']) ? htmlsafechars($_POST['n']) : ''; ?>" size='25' />
                 </td>
 
                 <td class='rowhead'><?php
+
                     echo $lang['usersearch_ratio']; ?></td>
                 <td <?php
+
                 echo (isset($_POST['r']) && !empty($_POST['r'])) ? $highlight : ''; ?>><select name="rt">
                         <?php
+
                         $options = [
                             $lang['usersearch_equal'],
                             $lang['usersearch_above'],
@@ -68,16 +75,21 @@ $highlight = " bgcolor='lightgrey'";
                         ?>
                     </select>
                     <input name="r" type="text" value=""<?php
+
                     echo isset($_POST['r']) ? $_POST['r'] : ''; ?>" size="5" maxlength="4" />
                     <input name="r2" type="text" value=""<?php
+
                     echo isset($_POST['r2']) ? $_POST['r2'] : ''; ?>" size="5" maxlength="4" />
                 </td>
 
                 <td class='rowhead'><?php
+
                     echo $lang['usersearch_status']; ?></td>
                 <td <?php
+
                 echo (isset($_POST['st']) && !empty($_POST['st'])) ? $highlight : ''; ?>><select name="st">
                         <?php
+
                         $options = [
                             $lang['usersearch_any'],
                             $lang['usersearch_confirmed'],
@@ -91,25 +103,34 @@ $highlight = " bgcolor='lightgrey'";
             </tr>
             <tr>
                 <td class='rowhead'><?php
+
                     echo $lang['usersearch_email']; ?></td>
                 <td <?php
+
                 echo (isset($_POST['em']) && !empty($_POST['em'])) ? $highlight : ''; ?>><input name="em" type="text"
                                                                                                 value=""<?php
+
                     echo isset($_POST['em']) ? $_POST['em'] : ''; ?>" size="25" />
                 </td>
                 <td class='rowhead'><?php
+
                     echo $lang['usersearch_ip']; ?></td>
                 <td <?php
+
                 echo (isset($_POST['ip']) && !empty($_POST['ip'])) ? $highlight : ''; ?>><input name="ip" type="text"
                                                                                                 value=""<?php
+
                     echo isset($_POST['ip']) ? $_POST['ip'] : ''; ?>" maxlength="17" />
                 </td>
 
                 <td class='rowhead'><?php
+
                     echo $lang['usersearch_acstatus']; ?></td>
                 <td <?php
+
                 echo (isset($_POST['as']) && !empty($_POST['as'])) ? $highlight : ''; ?>><select name="as">
                         <?php
+
                         $options = [
                             $lang['usersearch_any'],
                             $lang['usersearch_enabled'],
@@ -123,30 +144,39 @@ $highlight = " bgcolor='lightgrey'";
             </tr>
             <tr>
                 <td class='rowhead'><?php
+
                     echo $lang['usersearch_comments']; ?></td>
                 <td <?php
+
                 echo (isset($_POST['co']) && !empty($_POST['co'])) ? $highlight : ''; ?>><input name="co" type="text"
                                                                                                 value=""<?php
+
                     echo isset($_POST['co']) ? $_POST['co'] : ''; ?>" size="25" />
                 </td>
                 <td class='rowhead'><?php
+
                     echo $lang['usersearch_mask']; ?></td>
                 <td <?php
+
                 echo (isset($_POST['ma']) && !empty($_POST['ma'])) ? $highlight : ''; ?>><input name="ma" type="text"
                                                                                                 value=""<?php
+
                     echo isset($_POST['ma']) ? $_POST['ma'] : ''; ?>" maxlength="17" />
                 </td>
                 <td class='rowhead'><?php
+
                     echo $lang['usersearch_class']; ?></td>
                 <td <?php
+
                 echo (isset($_POST['c']) && !empty($_POST['c'])) ? $highlight : ''; ?>><select name="c">
                         <option value=''><?php $lang['usersearch_any']; ?></option>
                         <?php
+
                         $class = isset($_POST['c']) ? (int) $_POST['c'] : '';
                         if (!is_valid_id($class)) {
                             $class = '';
                         }
-                        for ($i = 2;; ++$i) {
+                        for ($i = 2; ; ++$i) {
                             if ($c = get_user_class_name($i - 2)) {
                                 echo "<option value='" . $i . "'" . ((isset($class) ? $class : 0) == $i ? ' selected' : '') . ">$c</option>\n";
                             } else {
@@ -159,11 +189,14 @@ $highlight = " bgcolor='lightgrey'";
             <tr>
 
                 <td class='rowhead'><?php
+
                     echo $lang['usersearch_joined']; ?></td>
 
                 <td <?php
+
                 echo (isset($_POST['d']) && !empty($_POST['d'])) ? $highlight : ''; ?>><select name="dt">
                         <?php
+
                         $options = [
                             $lang['usersearch_on'],
                             $lang['usersearch_before'],
@@ -177,18 +210,23 @@ $highlight = " bgcolor='lightgrey'";
                     </select>
 
                     <input name="d" type="text" value=""<?php
+
                     echo isset($_POST['d']) ? $_POST['d'] : ''; ?>" size="12" maxlength="10" />
 
                     <input name="d2" type="text" value=""<?php
+
                     echo isset($_POST['d2']) ? $_POST['d2'] : ''; ?>" size="12" maxlength="10" />
                 </td>
 
                 <td class='rowhead'><?php
+
                     echo $lang['usersearch_uploaded']; ?></td>
 
                 <td <?php
+
                 echo (isset($_POST['ult']) && !empty($_POST['ult'])) ? $highlight : ''; ?>><select name="ult" id="ult">
                         <?php
+
                         $options = [
                             $lang['usersearch_equal'],
                             $lang['usersearch_above'],
@@ -202,17 +240,22 @@ $highlight = " bgcolor='lightgrey'";
                     </select>
 
                     <input name="ul" type="text" id="ul" size="8" maxlength="7" value=""<?php
+
                     echo isset($_POST['ul']) ? $_POST['ul'] : ''; ?>" />
 
                     <input name="ul2" type="text" id="ul2" size="8" maxlength="7" value=""<?php
+
                     echo isset($_POST['ul2']) ? $_POST['ul2'] : ''; ?>" />
                 </td>
                 <td class="rowhead"><?php
+
                     echo $lang['usersearch_donor']; ?></td>
 
                 <td <?php
+
                 echo (isset($_POST['do']) && !empty($_POST['do'])) ? $highlight : ''; ?>><select name="do">
                         <?php
+
                         $options = [
                             $lang['usersearch_any'],
                             $lang['usersearch_yes'],
@@ -227,11 +270,14 @@ $highlight = " bgcolor='lightgrey'";
             <tr>
 
                 <td class='rowhead'><?php
+
                     echo $lang['usersearch_lastseen']; ?></td>
 
                 <td <?php
+
                 echo (isset($_POST['ls']) && !empty($_POST['ls'])) ? $highlight : ''; ?>><select name="lst">
                         <?php
+
                         $options = [
                             $lang['usersearch_on'],
                             $lang['usersearch_before'],
@@ -245,17 +291,22 @@ $highlight = " bgcolor='lightgrey'";
                     </select>
 
                     <input name="ls" type="text" value=""<?php
+
                     echo isset($_POST['ls']) ? $_POST['ls'] : ''; ?>" size="12" maxlength="10" />
 
                     <input name="ls2" type="text" value=""<?php
+
                     echo isset($_POST['ls2']) ? $_POST['ls2'] : ''; ?>" size="12" maxlength="10" />
                 </td>
                 <td class='rowhead'><?php
+
                     echo $lang['usersearch_downloaded']; ?></td>
 
                 <td <?php
+
                 echo (isset($_POST['dl']) && !empty($_POST['dl'])) ? $highlight : ''; ?>><select name="dlt" id="dlt">
                         <?php
+
                         $options = [
                             $lang['usersearch_equal'],
                             $lang['usersearch_above'],
@@ -269,18 +320,23 @@ $highlight = " bgcolor='lightgrey'";
                     </select>
 
                     <input name="dl" type="text" id="dl" size="8" maxlength="7" value=""<?php
+
                     echo isset($_POST['dl']) ? $_POST['dl'] : ''; ?>" />
 
                     <input name="dl2" type="text" id="dl2" size="8" maxlength="7" value=""<?php
+
                     echo isset($_POST['dl2']) ? $_POST['dl2'] : ''; ?>" />
                 </td>
 
                 <td class='rowhead'><?php
+
                     echo $lang['usersearch_warned']; ?></td>
 
                 <td <?php
+
                 echo (isset($_POST['w']) && !empty($_POST['w'])) ? $highlight : ''; ?>><select name="w">
                         <?php
+
                         $options = [
                             $lang['usersearch_any'],
                             $lang['usersearch_yes'],
@@ -297,18 +353,24 @@ $highlight = " bgcolor='lightgrey'";
                 <td class="rowhead"></td>
                 <td></td>
                 <td class='rowhead'><?php
+
                     echo $lang['usersearch_active']; ?></td>
                 <td <?php
+
                 echo (isset($_POST['ac']) && !empty($_POST['ac'])) ? $highlight : ''; ?>><input name="ac"
                                                                                                 type="checkbox"
                                                                                                 value="1" <?php
+
                     echo (isset($_POST['ac'])) ? 'checked' : ''; ?> /></td>
                 <td class='rowhead'><?php
+
                     echo $lang['usersearch_banned']; ?></td>
                 <td <?php
+
                 echo (isset($_POST['dip']) && !empty($_POST['dip'])) ? $highlight : ''; ?>><input name="dip"
                                                                                                   type="checkbox"
                                                                                                   value="1" <?php
+
                     echo (isset($_POST['dip'])) ? 'checked' : ''; ?> /></td>
             </tr>
             <tr>

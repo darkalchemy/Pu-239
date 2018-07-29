@@ -1,5 +1,4 @@
 /*
-/*
 Copyright 2006 Adobe Systems Incorporated
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
@@ -15,7 +14,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OU
 OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 */
-
 
 /*
  * The Bridge class, responsible for navigating AS instances

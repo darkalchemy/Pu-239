@@ -22,20 +22,20 @@ function permissioncheck()
     global $root, $public;
     $dirs = [
         //$root => 0,
-        $root . 'dir_list/' => 0,
-        $root . 'cache/' => 0,
-        $root . 'torrents/' => 0,
-        $root . 'uploads/' => 0,
-        $root . 'include/backup/' => 0,
-        $root . 'sqlerr_logs/' => 0,
-        $public . 'install/' => 0,
+        $root . 'dir_list/'        => 0,
+        $root . 'cache/'           => 0,
+        $root . 'torrents/'        => 0,
+        $root . 'uploads/'         => 0,
+        $root . 'include/backup/'  => 0,
+        $root . 'sqlerr_logs/'     => 0,
+        $public . 'install/'       => 0,
         $public . 'install/extra/' => 0,
-        $public . 'images/proxy/' => 0,
-        $root . 'logs/' => 0,
-        $root . 'chat/css/' => 0,
-        $root . 'chat/js/' => 0,
+        $public . 'images/proxy/'  => 0,
+        $root . 'logs/'            => 0,
+        $root . 'chat/css/'        => 0,
+        $root . 'chat/js/'         => 0,
         $root . 'templates/1/css/' => 0,
-        $root . 'bucket/' => 0.,
+        $root . 'bucket/'          => 0.,
     ];
     checkdir($dirs);
     $continue = true;

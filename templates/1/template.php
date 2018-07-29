@@ -675,8 +675,7 @@ function platform_menu()
                 <ul class='level-left'>" . (!$site_config['in_production'] ? "
                     <li class='left10 has-text-primary'>Pu-239 v{$site_config['version']}</li>" : '') . "
                 </ul>
-                <ul class='level-right'>" .
-        StatusBar() . '
+                <ul class='level-right'>" . StatusBar() . '
                 </ul>
             </div>
         </div>';

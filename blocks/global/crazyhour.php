@@ -58,8 +58,7 @@ if (!XBT_TRACKER && $site_config['crazy_hour']) {
             <div class='tooltip_templates'>
                 <span id='crazy_tooltip'>
                     <div class='size_4 has-text-centered has-text-success has-text-weight-bold bottom10'>
-                        {$lang['gl_crazy_']} {$crazytitle} {$crazymessage} {$lang['gl_crazy_ends']}<br>" . mkprettytime($crazyhour['remaining']) .
-                "<br>{$lang['gl_crazy_at']} " . get_date($crazyhour['crazyhour']['var'], 'WITHOUT_SEC', 1, 1) . '
+                        {$lang['gl_crazy_']} {$crazytitle} {$crazymessage} {$lang['gl_crazy_ends']}<br>" . mkprettytime($crazyhour['remaining']) . "<br>{$lang['gl_crazy_at']} " . get_date($crazyhour['crazyhour']['var'], 'WITHOUT_SEC', 1, 1) . '
                     </div>
                 </span>
             </div>
@@ -80,8 +79,7 @@ if (!XBT_TRACKER && $site_config['crazy_hour']) {
                     <div class='has-text-centered has-text-white'>
                         {$lang['gl_crazy_message4']}<br>
                         {$lang['gl_crazy_message5']}<br>
-                        {$lang['gl_crazy_message6']} " . mkprettytime($crazyhour['crazyhour']['var'] - 3600 - TIME_NOW) . " {$lang['gl_crazy_at']}<br>" .
-            get_date($crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'LONG') . '
+                        {$lang['gl_crazy_message6']} " . mkprettytime($crazyhour['crazyhour']['var'] - 3600 - TIME_NOW) . " {$lang['gl_crazy_at']}<br>" . get_date($crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'LONG') . '
                     </div>
                 </span>
             </div>

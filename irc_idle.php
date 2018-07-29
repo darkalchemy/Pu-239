@@ -2,10 +2,10 @@
 
 $key = 'VGhlIE1vemlsbGEgZmFtaWx5IGFwcG';
 $vars = [
-    'ircidle' => '',
+    'ircidle'  => '',
     'username' => '',
-    'key' => '',
-    'do' => '',
+    'key'      => '',
+    'do'       => '',
 ];
 foreach ($vars as $k => $v) {
     $vars[$k] = isset($_GET[$k]) ? $_GET[$k] : '';

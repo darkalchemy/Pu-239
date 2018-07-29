@@ -149,11 +149,7 @@ class User
             ->execute();
 
         if ($result) {
-            $this->cache->update_row(
-                'user' . $user_id,
-                $set,
-                $this->config['expires']['user_cache']
-            );
+            $this->cache->update_row('user' . $user_id, $set, $this->config['expires']['user_cache']);
         }
 
         return $result;

@@ -18,7 +18,8 @@ $query = $fluent->from('INFORMATION_SCHEMA.TABLE_CONSTRAINTS')
     ->execute();
 
 foreach ($query as $row) {
-    $fluent->getPdo()->query("ALTER TABLE {$_ENV['DB_DATABASE']}.{$row['TABLE_NAME']} DROP FOREIGN KEY {$row['CONSTRAINT_NAME']}");
+    $fluent->getPdo()
+        ->query("ALTER TABLE {$_ENV['DB_DATABASE']}.{$row['TABLE_NAME']} DROP FOREIGN KEY {$row['CONSTRAINT_NAME']}");
     echo "Dropped foreign key '{$row['CONSTRAINT_NAME']}'\n";
 }
 echo "All default foreign keys have been removed. To recreate them import foreign_keys.sql.\n\n";

@@ -22,8 +22,10 @@ $items = $doc->getElementsByTagName('item');
 foreach ($items as $item) {
     $html .= "
         <div class='bordered has-text-left bottom20'>
-            <h2>" . $item->getElementsByTagName('title')->item(0)->nodeValue . '</h2>
-            <hr>' . preg_replace("/<p>Source\:(.*?)width=\"1\"\/>/is", '', $item->getElementsByTagName('encoded')->item(0)->nodeValue) . '<hr>
+            <h2>" . $item->getElementsByTagName('title')
+            ->item(0)->nodeValue . '</h2>
+            <hr>' . preg_replace("/<p>Source\:(.*?)width=\"1\"\/>/is", '', $item->getElementsByTagName('encoded')
+            ->item(0)->nodeValue) . '<hr>
         </div>';
     if ($use_limit && $icount++ >= $limit) {
         break;

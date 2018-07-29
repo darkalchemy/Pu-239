@@ -263,8 +263,7 @@ if ($action === 'add') {
         stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']} $commentid.");
     }
     $HTMLOUT = "
-        <h1 class='has-text-centered'>{$lang['comment_original_content']}#$commentid</h1>" .
-        main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
+        <h1 class='has-text-centered'>{$lang['comment_original_content']}#$commentid</h1>" . main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
 
     $returnto = (isset($_SERVER['HTTP_REFERER']) ? htmlsafechars($_SERVER['HTTP_REFERER']) : 0);
     if ($returnto) {

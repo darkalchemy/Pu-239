@@ -14,8 +14,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OU
 OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 */
-
-
 /*
  * The Bridge class, responsible for navigating JS instances
  */
@@ -348,7 +346,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject {
                 result.newRefs[objRef] = className;
                 //trace("serializing new reference: " + className + " with value" + value);
 
-                //the result is a getProperty / invokeMethod call. How can we know how much you will need the object ? 
+                //the result is a getProperty / invokeMethod call. How can we know how much you will need the object ?
                 if (keep_refs && should_keep_ref) {
                     incRef(objRef);
                 }

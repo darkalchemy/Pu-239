@@ -56,7 +56,7 @@ for ($i = 0; $i < $_POST['nbr_files']; ++$i) {
 
 if (!empty($images)) {
     echo json_encode([
-        'msg' => $lang['bitbucket_success'],
+        'msg'  => $lang['bitbucket_success'],
         'urls' => $images,
     ]);
     die();

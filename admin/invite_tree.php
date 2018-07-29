@@ -132,7 +132,7 @@ if ($id !== 0) {
             <input type="text" size="30" name="search" value="' . $search . '"/>
             <select name="class">
             <option value="-">' . $lang['invite_any'] . '</option>';
-    for ($i = 0;; ++$i) {
+    for ($i = 0; ; ++$i) {
         if ($c = get_user_class_name($i)) {
             $HTMLOUT .= '<option value="' . $i . '"' . (ctype_digit($class) && $class == $i ? ' selected' : '') . '>' . $c . '</option>';
         } else {

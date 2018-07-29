@@ -45,7 +45,7 @@ $div = "
             <select name='class' class='left10 top20'>";
 $div .= "
                 <option value='-'>(any class)</option>";
-for ($i = 0;; ++$i) {
+for ($i = 0; ; ++$i) {
     if ($c = get_user_class_name($i)) {
         $div .= "
                 <option value='$i'" . (ctype_digit($class) && $class == $i ? ' selected' : '') . ">$c</option>";

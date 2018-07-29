@@ -53,7 +53,7 @@ $valid_searchin = [
     'genre' => [
         'newgenre',
     ],
-    'all' => [
+    'all'   => [
         'name',
         'newgenre',
         'descr',
@@ -348,7 +348,7 @@ foreach ([
              'descr' => 'Description',
              'genre' => 'Genre',
              'owner' => 'Uploader',
-             'all' => 'All',
+             'all'   => 'All',
          ] as $k => $v) {
     $searchin .= '
                         <option value="' . $k . '"' . ($select_searchin == $k ? ' selected' : '') . '>' . $v . '</option>';

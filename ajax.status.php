@@ -42,15 +42,15 @@ function jsonmsg($arr)
     $cache->delete('userstatus_' . $CURUSER['id']);
 
     return json_encode([
-        'msg' => $arr[0],
+        'msg'    => $arr[0],
         'status' => $arr[1],
     ]);
 }
 
 $vdo = [
-    'edit' => 1,
+    'edit'   => 1,
     'delete' => 1,
-    'new' => 1,
+    'new'    => 1,
 ];
 $do = isset($_POST['action'], $vdo[$_POST['action']]) ? $_POST['action'] : '';
 $id = isset($_POST['id']) ? (int) $_POST['id'] : '';
@@ -105,7 +105,7 @@ switch ($do) {
         if (!empty($CURUSER['last_status'])) {
             $status_archive[] = [
                 'status' => $CURUSER['last_status'],
-                'date' => $CURUSER['last_update'],
+                'date'   => $CURUSER['last_update'],
             ];
         }
         if (sql_query('INSERT INTO ustatus(userid,last_status,last_update,archive) VALUES(' . sqlesc($CURUSER['id']) . ',' . sqlesc(url2short($ss)) . ',' . TIME_NOW . ',' . sqlesc(serialize($status_archive)) . ') ON DUPLICATE KEY UPDATE last_status = VALUES(last_status),last_update = VALUES(last_update),archive = VALUES(archive)')) {

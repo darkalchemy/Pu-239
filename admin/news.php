@@ -9,10 +9,6 @@ class_check($class);
 global $CURUSER, $lang, $site_config, $cache;
 
 $HTMLOUT = '';
-$stdhead = [
-    'css' => [
-    ],
-];
 $stdfoot = [
     'js' => [
         get_file_name('upload_js'),
@@ -238,5 +234,5 @@ if ($mode === 'news') {
         $HTMLOUT .= '<br>';
     }
 }
-echo stdhead($lang['news_stdhead'], $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead($lang['news_stdhead']) . $HTMLOUT . stdfoot($stdfoot);
 die();

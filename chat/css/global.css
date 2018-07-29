@@ -8,48 +8,47 @@
  */
 
 body {
-    font-family            : BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-    font-size              : 85%;
-    line-height            : 125%;
-    -webkit-font-smoothing : antialiased;
-    text-rendering         : optimizeLegibility;
+    font: 85%/1.5 system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Droid Sans, Helvetica Neue, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Droid Sans, Helvetica Neue;
+    line-height: 125%;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
 
 /* Positioning */
 body.ajax-chat {
-    padding : 0;
-    margin  : 0;
+    padding: 0;
+    margin: 0;
 }
 
 #loginContent {
-    margin      : 0 auto 0;
-    padding-top : 20px;
+    margin: 0 auto 0;
+    padding-top: 20px;
 }
 
 #loginContent #loginHeadline {
-    margin      : 0;
-    line-height : 35px;
+    margin: 0;
+    line-height: 35px;
 }
 
 #loginContent #loginForm div {
-    margin : 5px 0;
+    margin: 5px 0;
 }
 
 #loginContent #loginRegisteredUsers {
-    padding-top : 5px;
+    padding-top: 5px;
 }
 
 #loginContent #copyright {
-    margin     : 20px 0 0 0;
-    text-align : right;
+    margin: 20px 0 0 0;
+    text-align: right;
 }
 
 #content {
-    position      : absolute;
-    width         : 100%;
-    height        : 100%;
-    border-radius : .625em;
-    background    : rgba(255, 255, 255, .1);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: .625em;
+    background: rgba(255, 255, 255, .1);
 }
 
 #content #chatList,
@@ -57,544 +56,535 @@ body.ajax-chat {
 #content #settingsContainer,
 #content #onlineListContainer,
 #content #inputFieldContainer #inputField {
-    background-color : rgba(0, 0, 0, .2);
+    background-color: rgba(0, 0, 0, .2);
 }
 
 #content #copyright {
-    position : absolute;
-    right    : 20px;
-    top      : 20px;
+    position: absolute;
+    right: 20px;
+    top: 20px;
 }
 
 #content #headline {
-    position    : absolute;
-    left        : 0;
-    right       : 0;
-    top         : 0;
-    padding     : 0 0 0 20px;
-    line-height : 45px;
-    margin      : 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    padding: 0 0 0 20px;
+    line-height: 45px;
+    margin: 0;
 }
 
 #content #logoutChannelContainer {
-    position : absolute;
-    z-index  : 2;
-    left     : 5px;
-    top      : 10px;
+    position: absolute;
+    z-index: 2;
+    left: 5px;
+    top: 10px;
 }
 
 #content #logoutChannelContainer select {
-    width  : 105px;
-    height : 22px;
+    width: 105px;
+    height: 22px;
 }
 
 #content #statusIconContainer {
-    position : absolute;
-    right    : 5px;
-    top      : 10px;
-    width    : 22px;
-    height   : 22px;
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    width: 22px;
+    height: 22px;
 }
 
 #content #chatList {
-    height   : 100%;
-    overflow : auto;
+    height: 100%;
+    overflow: auto;
 }
 
 #content #mainPanelContainer {
-    position : absolute;
-    left     : 5px;
-    right    : 5px;
-    top      : 45px;
-    bottom   : 120px;
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    top: 45px;
+    bottom: 120px;
 }
 
 #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {
-    float       : right;
-    height      : 100%;
-    overflow    : auto;
-    margin-left : 5px;
-    position    : relative;
+    float: right;
+    height: 100%;
+    overflow: auto;
+    margin-left: 5px;
+    position: relative;
 }
 
 #content #onlineListContainer h3, #content #helpContainer h3, #content #settingsContainer h3 {
-    line-height : 25px;
-    padding     : 0 10px;
-    margin      : 0;
-    text-align  : center;
+    line-height: 25px;
+    padding: 0 10px;
+    margin: 0;
+    text-align: center;
 }
 
 #content #onlineListContainer {
-    width : 200px;
+    width: 200px;
 }
 
 #content #helpContainer, #content #settingsContainer {
-    width : 360px;
+    width: 360px;
 }
 
 #content #onlineListContainer #onlineList, #content #helpContainer #helpList, #content #settingsContainer #settingsList {
-    position : absolute;
-    left     : 0;
-    right    : 0;
-    top      : 25px;
-    bottom   : 0;
-    overflow : auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 25px;
+    bottom: 0;
+    overflow: auto;
 }
 
 #content #helpContainer #helpList dl, #content #settingsContainer #settingsList dl {
-    overflow : hidden;
-    padding  : 5px;
-    margin   : 0;
+    overflow: hidden;
+    padding: 5px;
+    margin: 0;
 }
 
 #content #helpContainer #helpList dt, #content #settingsContainer #settingsList dt {
-    float   : left;
-    width   : 55%;
-    padding : 0 2% 0 0;
-    margin  : 0;
-    clear   : left;
+    float: left;
+    width: 55%;
+    padding: 0 2% 0 0;
+    margin: 0;
+    clear: left;
 }
 
 #content #helpContainer #helpList dd, #content #settingsContainer #settingsList dd {
-    width   : 43%;
-    float   : left;
-    margin  : 0;
-    padding : 0;
+    width: 43%;
+    float: left;
+    margin: 0;
+    padding: 0;
 }
 
 #content #inputFieldContainer {
-    position      : absolute;
-    left          : 5px;
-    right         : 5px;
-    bottom        : 65px;
-    padding-right : 2px;
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    bottom: 65px;
+    padding-right: 2px;
 }
 
 #content #inputFieldContainer #inputField {
-    width   : 100%;
-    height  : 30px;
-    padding : 0;
+    width: 100%;
+    height: 30px;
+    padding: 0;
 }
 
 #content #submitButtonContainer {
-    position : absolute;
-    right    : 5px;
-    bottom   : 35px;
+    position: absolute;
+    right: 5px;
+    bottom: 35px;
 }
 
 #content #bbCodeContainer {
-    position : absolute;
-    left     : 5px;
-    bottom   : 5px;
-    padding  : 3px;
+    position: absolute;
+    left: 5px;
+    bottom: 5px;
+    padding: 3px;
 }
 
 #content #bbCodeContainer input {
-    display      : block;
-    float        : left;
-    margin-right : 2px;
+    display: block;
+    float: left;
+    margin-right: 2px;
 }
 
 #content #bbCodeContainer #bbCodeEmoticon {
-    display : none;
+    display: none;
 }
 
 #content #colorCodesContainer, #content #emoticonsContainer {
-    position : absolute;
-    left     : 5px;
-    bottom   : 30px;
-    padding  : 3px;
-    z-index  : 1;
+    position: absolute;
+    left: 5px;
+    bottom: 30px;
+    padding: 3px;
+    z-index: 1;
 }
 
 #content #colorCodesContainer {
-    background-color : rgba(0, 0, 0, .9);
-    bottom           : 40px;
-    padding          : 10px;
-    border-radius    : .625em;
+    background-color: rgba(0, 0, 0, .9);
+    bottom: 40px;
+    padding: 10px;
+    border-radius: .625em;
 }
 
 #content #emoticonsContainer a {
-    margin-left  : 1px;
-    margin-right : 1px;
-    z-index      : 1;
+    margin-left: 1px;
+    margin-right: 1px;
+    z-index: 1;
 }
 
 #content #emoticonsContainer img {
-    vertical-align : middle;
-    margin-bottom  : 2px;
+    vertical-align: middle;
+    margin-bottom: 2px;
 }
 
 #content #colorCodesContainer a {
-    display : block;
-    float   : left;
-    width   : 20px;
-    height  : 20px;
+    display: block;
+    float: left;
+    width: 20px;
+    height: 20px;
 }
 
 #content #optionsContainer {
-    position : absolute;
-    right    : 5px;
-    bottom   : 5px;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
 }
 
 #content #optionsContainer input {
-    vertical-align : middle;
+    vertical-align: middle;
 }
 
 #content #bbCodeContainer input, #content #logoutButton, #content #submitButton, #loginContent #loginButton {
-    padding : 4px 10px;
+    padding: 4px 10px;
 }
 
 #content #logoutButton {
-    display : block;
-    float   : left;
-    margin  : 0 5px 5px 0;
+    display: block;
+    float: left;
+    margin: 0 5px 5px 0;
 }
 
 #content #chatList div {
-    padding : 2px 5px;
+    padding: 2px 5px;
 }
 
 #content #chatList img {
-    vertical-align : middle;
-    margin-bottom  : 2px;
+    vertical-align: middle;
+    margin-bottom: 2px;
 }
 
 #content #chatList cite {
-    margin-right : 5px;
+    margin-right: 5px;
 }
 
 #content #chatList .bbCodeImage {
-    vertical-align : top;
-    overflow       : auto;
-    margin         : 5px;
+    vertical-align: top;
+    overflow: auto;
+    margin: 5px;
 }
 
 #content #chatList .delete {
-    display      : block;
-    float        : right;
-    width        : 10px;
-    height       : 10px;
-    margin-top   : 2px;
-    padding-left : 5px;
-    background   : url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKBAMAAAB/HNKOAAAAAXNSR0IArs4c6QAAABhQTFRFdXZ1fX59hISEdXZ1goOClJWU3Nzc////AfxlgQAAAAN0Uk5Tf4+dl36AzgAAAAFiS0dEBxZhiOsAAAAvSURBVAgdY2A2NjY2ZDBxDQ1xZjBJC01zZjBNTysLZjANK0+Fk2ARiCxEpTJIFwC09Q6/1mw7qwAAAABJRU5ErkJggg==') no-repeat right;
+    display: block;
+    float: right;
+    width: 10px;
+    height: 10px;
+    margin-top: 2px;
+    padding-left: 5px;
+    background: url('../../images/delete.png') no-repeat right;
 }
 
 #content #onlineListContainer #onlineList div {
-    padding : 2px 5px;
+    padding: 2px 5px;
 }
 
 #content #onlineListContainer #onlineList a {
-    display : block;
+    display: block;
 }
 
 #content #onlineListContainer #onlineList ul {
-    margin       : 5px 0;
-    padding-left : 20px;
+    margin: 5px 0;
+    padding-left: 20px;
 }
 
 #content #settingsContainer #settingsList select.left {
-    text-align : right;
+    text-align: right;
 }
 
 /* Buttons */
 #content #optionsContainer input, #content #settingsContainer #settingsList input.button, #content #showChannelsButton {
-    background     : url('data:image/png;base64,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') no-repeat;
-    vertical-align : middle;
-    width          : 22px;
-    height         : 22px;
-    padding        : 0;
+    background: url('../../images/buttons-sprite.png') no-repeat;
+    vertical-align: middle;
+    width: 22px;
+    height: 22px;
+    padding: 0;
 }
 
 #content #optionsContainer #helpButton {
-    background-position : -69px -22px;
+    background-position: -69px -22px;
 }
 
 #content #optionsContainer #settingsButton {
-    background-position : -92px 0;
+    background-position: -92px 0;
 }
 
 #content #optionsContainer #onlineListButton {
-    background-position : -69px 0;
+    background-position: -69px 0;
 }
 
 #content #optionsContainer #audioButton {
-    background-position : 0 0;
+    background-position: 0 0;
 }
 
 #content #optionsContainer #audioButton.off {
-    background-position : 0 -22px;
+    background-position: 0 -22px;
 }
 
 #content #optionsContainer #autoScrollButton {
-    background-position : -23px 0;
+    background-position: -23px 0;
 }
 
 #content #optionsContainer #autoScrollButton.off {
-    background-position : -23px -22px;
+    background-position: -23px -22px;
 }
 
 #content #settingsContainer #settingsList input.playback {
-    background-position : -92px -22px;
-    margin-bottom       : 3px;
+    background-position: -92px -22px;
+    margin-bottom: 3px;
 }
 
 #content #logoutChannelContainer #showChannelsButton {
-    background-position : -46px 0;
-    display             : none;
+    background-position: -46px 0;
+    display: none;
 }
 
 #content #logoutChannelContainer #showChannelsButton.off {
-    background-position : -46px -22px;
+    background-position: -46px -22px;
 }
 
 /* Borders */
 #content img {
-    border : none;
+    border: none;
 }
 
 #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer, #content #colorCodesContainer a, #content textarea {
-    border : 1px solid;
+    border: 1px solid;
 }
 
 #content #chatList .deleteSelected {
-    border : 1px dotted;
+    border: 1px dotted;
 }
 
 /* Misc */
 #content #bbCodeContainer input, #content #optionsContainer input.button, #content #settingsContainer #settingsList input.button, #content #logoutButton, #content #submitButton, #loginContent #loginButton {
-    cursor : pointer;
+    cursor: pointer;
 }
 
 #content #chatList .code {
-    -o-tab-size   : 4;
-    tab-size      : 4;
-    -moz-tab-size : 4;
-    white-space   : pre-wrap;
-    font-family   : "Lucida Console", Monaco, monospace;
-    font-size     : .9em !important;
-    line-height   : 1.1em;
-    border        : 1px solid #808080;
-    background    : #000 -o-linear-gradient(top, #222, #000);
-    background    : #000 -webkit-gradient(linear, left top, left bottom, from(#222), to(#000));
-    background    : #000 -webkit-linear-gradient(top, #222, #000);
-    background    : #000 linear-gradient(to bottom, #222, #000);
-    border-radius : .625em;
-    padding       : 10px;
-    margin        : 10px;
+    -o-tab-size: 4;
+    tab-size: 4;
+    -moz-tab-size: 4;
+    white-space: pre-wrap;
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: .9em !important;
+    line-height: 1.1em;
+    border: 1px solid #808080;
+    background: #000 linear-gradient(to bottom, #222, #000);
+    border-radius: .625em;
+    padding: 10px;
+    margin: 10px;
 }
 
 .txtUpsideDown {
-    -webkit-transition : all 0.4s ease !important;
-    -o-transition      : all 0.4s ease !important;
-    transition         : all 0.4s ease !important;
-    display            : inline-block;
-    -webkit-transform  : scaleY(-1) !important;
-    -ms-transform      : scaleY(-1) !important;
-    transform          : scaleY(-1) !important;
-    -webkit-filter     : FlipH !important;
-    filter             : FlipH !important;
+    transition: all 0.4s ease !important;
+    display: inline-block;
+    -webkit-transform: scaleY(-1) !important;
+    transform: scaleY(-1) !important;
+    -webkit-filter: FlipH !important;
+    filter: FlipH !important;
 }
 
 .txtUpsideDown:hover {
-    -webkit-transition : all 0.4s ease !important;
-    -o-transition      : all 0.4s ease !important;
-    transition         : all 0.4s ease !important;
-    display            : inline-block;
-    -webkit-transform  : scaleY(1) !important;
-    -ms-transform      : scaleY(1) !important;
-    transform          : scaleY(1) !important;
-    -webkit-filter     : FlipH !important;
-    filter             : FlipH !important;
+    transition: all 0.4s ease !important;
+    display: inline-block;
+    -webkit-transform: scaleY(1) !important;
+    transform: scaleY(1) !important;
+    -webkit-filter: FlipH !important;
+    filter: FlipH !important;
 }
 
 .youtube-embed {
-    width  : 740px;
-    height : 400px;
+    width: 740px;
+    height: 400px;
 }
 
 .youtube-embed iframe {
-    width  : 100%;
-    height : 100%;
+    width: 100%;
+    height: 100%;
 }
 
 .has-text-centered {
-    margin-left  : auto;
-    margin-right : auto
+    margin-left: auto;
+    margin-right: auto
 }
 
-@media (max-width : 700px) {
+@media (max-width: 700px) {
     #mainPanelContainer #onlineListContainer,
     #mainPanelContainer #settingsContainer,
     #mainPanelContainer #helpContainer {
-        background-color : rgba(0, 0, 0, .9);
-        z-index          : 5;
+        background-color: rgba(0, 0, 0, .9);
+        z-index: 5;
     }
 
     #content #mainPanelContainer {
-        top              : 35px;
-        left             : 5px;
-        right            : 5px;
-        bottom           : 105px;
-        background-color : rgba(0, 0, 0, .1);
+        top: 35px;
+        left: 5px;
+        right: 5px;
+        bottom: 105px;
+        background-color: rgba(0, 0, 0, .1);
     }
 
     #content #headline {
-        margin      : 0;
-        padding     : 0 0 0 5px;
-        line-height : 25px;
+        margin: 0;
+        padding: 0 0 0 5px;
+        line-height: 25px;
     }
 
     #content #statusIconContainer {
-        top   : 2px;
-        right : 2px;
+        top: 2px;
+        right: 2px;
     }
 
     #content #copyright {
-        top         : 0;
-        right       : 30px;
-        line-height : 25px;
+        top: 0;
+        right: 30px;
+        line-height: 25px;
     }
 
     #content #logoutChannelContainer {
-        top   : 5px;
-        left  : 5px;
-        right : 0;
+        top: 5px;
+        left: 5px;
+        right: 0;
     }
 
     #content #logoutChannelContainer label {
-        display : none;
+        display: none;
     }
 
     #content #emoticonsContainer, #content #submitButtonContainer {
-        display : none;
+        display: none;
     }
 
     #content #bbCodeContainer {
-        bottom  : 30px;
-        left    : 3px;
-        padding : 0;
+        bottom: 30px;
+        left: 3px;
+        padding: 0;
     }
 
     #content #bbCodeContainer #bbCodeEmoticon {
-        display : block;
+        display: block;
     }
 
     #content #bbCodeContainer #bbCodeQuote, #content #bbCodeContainer #bbCodeCode {
-        display : none;
+        display: none;
     }
 
     #content #optionsContainer {
-        bottom : 0;
-        right  : 0;
+        bottom: 0;
+        right: 0;
     }
 
     #content #chatList {
-        left      : 5px;
-        right     : 150px;
-        bottom    : 115px;
-        font-size : 12px;
+        left: 5px;
+        right: 150px;
+        bottom: 115px;
+        font-size: 12px;
     }
 
     #content #inputFieldContainer #inputField {
-        height : 20px;
+        height: 20px;
     }
 
     #content #inputFieldContainer {
-        left   : 3px;
-        right  : 3px;
-        bottom : 60px;
+        left: 3px;
+        right: 3px;
+        bottom: 60px;
     }
 
     #content #colorCodesContainer, #content #emoticonsContainer {
-        bottom : 55px;
-        left   : 5px;
+        bottom: 55px;
+        left: 5px;
     }
 
     #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {
-        margin-left       : 0;
-        border-left-width : 0;
-        display           : none;
+        margin-left: 0;
+        border-left-width: 0;
+        display: none;
     }
 }
 
-@media (max-width : 480px) {
+@media (max-width: 480px) {
     #content #logoutChannelContainer select {
-        left     : 40px;
-        position : absolute;
-        top      : 0;
+        left: 40px;
+        position: absolute;
+        top: 0;
     }
 
     #content #mainPanelContainer {
-        top    : 30px;
-        left   : 3px;
-        right  : 3px;
-        bottom : 100px;
+        top: 30px;
+        left: 3px;
+        right: 3px;
+        bottom: 100px;
     }
 
     #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {
-        border-right-width : 0;
-        position           : absolute;
-        width              : auto;
-        top                : 0;
-        right              : 0;
-        bottom             : 0;
-        left               : 0;
+        border-right-width: 0;
+        position: absolute;
+        width: auto;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
     }
 
     #content #chatList {
-        border-left-width  : 0;
-        border-right-width : 0;
+        border-left-width: 0;
+        border-right-width: 0;
     }
 
     #content #bbCodeContainer #bbCodeBold,
     #content #bbCodeContainer #bbCodeItalic,
     #content #bbCodeContainer #bbCodeUnderline,
     #content #bbCodeContainer #bbCodeUpsideDown {
-        display : none;
+        display: none;
     }
 
     #content #bbCodeContainer {
-        padding : 0;
+        padding: 0;
     }
 
     #content #emoticonsContainer {
-        bottom : 80px;
-        left   : 5px;
+        bottom: 80px;
+        left: 5px;
     }
 
     #content #logoutChannelInner {
-        display    : none;
-        clear      : left;
-        padding    : 5px;
-        text-align : right;
+        display: none;
+        clear: left;
+        padding: 5px;
+        text-align: right;
     }
 
     #content #logoutChannelContainer #showChannelsButton {
-        display  : block;
-        position : absolute;
-        left     : 5px;
-        top      : 0;
+        display: block;
+        position: absolute;
+        left: 5px;
+        top: 0;
     }
 }
 
-@media (max-height : 300px) {
+@media (max-height: 300px) {
     #content #inputFieldContainer #inputField {
-        height : 20px;
+        height: 20px;
     }
 
     #content #bbCodeContainer, #content #optionsContainer, #content #emoticonsContainer, #content #submitButtonContainer,
     #content #statusIconContainer, #content #logoutChannelContainer {
-        display : none;
+        display: none;
     }
 
     #content #inputFieldContainer {
-        bottom : 5px;
+        bottom: 5px;
     }
 
     #content #mainPanelContainer {
-        bottom : 40px;
-        top    : 35px;
+        bottom: 40px;
+        top: 35px;
     }
 }

@@ -96,11 +96,9 @@ foreach ($current as $x) {
     if ($x['status'] === 'new') {
         $HTMLOUT .= '
                 <tr>
-                    <td>' .
-            htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . '
+                    <td>' . htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . '
                     </td>
-                    <td>' .
-            get_date($x['modify'], 'DATE', 0, 1) . '
+                    <td>' . get_date($x['modify'], 'DATE', 0, 1) . '
                     </td>
                 </tr>';
         ++$count;
@@ -129,11 +127,9 @@ foreach ($current as $x) {
     if ($x['status'] === 'modified') {
         $HTMLOUT .= '
                 <tr>
-                    <td>' .
-            htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . '
+                    <td>' . htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . '
                     </td>
-                    <td>' .
-            get_date($x['modify'], 'DATE', 0, 1) . '
+                    <td>' . get_date($x['modify'], 'DATE', 0, 1) . '
                     </td>
                 </tr>';
         ++$count;
@@ -162,11 +158,9 @@ foreach ($current as $x) {
     if ($x['status'] === 'deleted') {
         $HTMLOUT .= '
                 <tr>
-                    <td>' .
-            htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . '
+                    <td>' . htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . '
                     </td>
-                    <td>' .
-            get_date($x['modify'], 'DATE', 0, 1) . '
+                    <td>' . get_date($x['modify'], 'DATE', 0, 1) . '
                     </td>
                 </tr>';
         ++$count;

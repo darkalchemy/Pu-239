@@ -147,12 +147,12 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
     $cache->delete('user_rep_' . $res['userid']);
     $save = [
         'reputation' => $score,
-        'whoadded' => $CURUSER['id'],
-        'reason' => sqlesc($reason),
-        'dateadd' => TIME_NOW,
-        'locale' => sqlesc($rep_locale),
-        'postid' => (int) $input['pid'],
-        'userid' => $res['userid'],
+        'whoadded'   => $CURUSER['id'],
+        'reason'     => sqlesc($reason),
+        'dateadd'    => TIME_NOW,
+        'locale'     => sqlesc($rep_locale),
+        'postid'     => (int) $input['pid'],
+        'userid'     => $res['userid'],
     ];
 
     sql_query('INSERT INTO reputation (' . implode(', ', array_keys($save)) . ') VALUES (' . implode(', ', $save) . ')');

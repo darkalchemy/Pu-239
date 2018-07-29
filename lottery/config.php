@@ -14,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ([
                  'ticket_amount' => 0,
                  'class_allowed' => 1,
-                 'user_tickets' => 0,
-                 'end_date' => 0,
+                 'user_tickets'  => 0,
+                 'end_date'      => 0,
              ] as $key => $type) {
         if (isset($_POST[$key]) && ($type == 0 && $_POST[$key] == 0 || $type == 1 && count($_POST[$key]) == 0)) {
             $session->set('is-warning', 'You forgot to fill some data');

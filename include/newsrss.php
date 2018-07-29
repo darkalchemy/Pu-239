@@ -31,11 +31,15 @@ function foxnews_shout($links = [])
             $items = $doc->getElementsByTagName('item');
             $pubs = [];
             foreach ($items as $item) {
-                $title = empty($item->getElementsByTagName('title')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')->item(0)->nodeValue;
-                $link = empty($item->getElementsByTagName('link')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')->item(0)->nodeValue;
+                $title = empty($item->getElementsByTagName('title')
+                    ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
+                    ->item(0)->nodeValue;
+                $link = empty($item->getElementsByTagName('link')
+                    ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
+                    ->item(0)->nodeValue;
                 $pubs[] = [
                     'title' => replace_unicode_strings($title),
-                    'link' => replace_unicode_strings($link),
+                    'link'  => replace_unicode_strings($link),
                 ];
             }
             $pubs = array_reverse($pubs);
@@ -96,11 +100,15 @@ function tfreak_shout($links = [])
         $items = $doc->getElementsByTagName('item');
         $pubs = [];
         foreach ($items as $item) {
-            $title = empty($item->getElementsByTagName('title')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')->item(0)->nodeValue;
-            $link = empty($item->getElementsByTagName('link')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')->item(0)->nodeValue;
+            $title = empty($item->getElementsByTagName('title')
+                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
+                ->item(0)->nodeValue;
+            $link = empty($item->getElementsByTagName('link')
+                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
+                ->item(0)->nodeValue;
             $pubs[] = [
                 'title' => replace_unicode_strings($title),
-                'link' => replace_unicode_strings($link),
+                'link'  => replace_unicode_strings($link),
             ];
         }
         $pubs = array_reverse($pubs);
@@ -168,8 +176,8 @@ function github_shout($links = [])
                 $link = trim($devices['link']['@attributes']['href']);
 
                 $pubs[] = [
-                    'title' => replace_unicode_strings($title),
-                    'link' => replace_unicode_strings($link),
+                    'title'  => replace_unicode_strings($title),
+                    'link'   => replace_unicode_strings($link),
                     'commit' => replace_unicode_strings($commit),
                 ];
             }

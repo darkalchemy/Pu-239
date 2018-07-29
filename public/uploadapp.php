@@ -168,17 +168,17 @@ if (isset($_POST['form']) != 1) {
     }
 
     $values = [
-        'userid' => (int) $_POST['userid'],
-        'applied' => TIME_NOW,
+        'userid'      => (int) $_POST['userid'],
+        'applied'     => TIME_NOW,
         'connectable' => htmlsafechars($_POST['connectable']),
-        'speed' => htmlsafechars($_POST['speed']),
-        'offer' => htmlsafechars($_POST['offer']),
-        'reason' => htmlsafechars($_POST['reason']),
-        'sites' => htmlsafechars($_POST['sites']),
-        'sitenames' => htmlsafechars($_POST['sitenames']),
-        'scene' => htmlsafechars($_POST['scene']),
-        'creating' => htmlsafechars($_POST['creating']),
-        'seeding' => htmlsafechars($_POST['seeding']),
+        'speed'       => htmlsafechars($_POST['speed']),
+        'offer'       => htmlsafechars($_POST['offer']),
+        'reason'      => htmlsafechars($_POST['reason']),
+        'sites'       => htmlsafechars($_POST['sites']),
+        'sitenames'   => htmlsafechars($_POST['sitenames']),
+        'scene'       => htmlsafechars($_POST['scene']),
+        'creating'    => htmlsafechars($_POST['creating']),
+        'seeding'     => htmlsafechars($_POST['seeding']),
     ];
     $res = $fluent->insertInto('uploadapp')
         ->values($values)
@@ -198,12 +198,12 @@ if (isset($_POST['form']) != 1) {
 
         foreach ($subres as $arr) {
             $values = [
-                'sender' => 0,
+                'sender'   => 0,
                 'receiver' => $arr['id'],
-                'added' => TIME_NOW,
-                'msg' => $msg,
-                'subject' => $subject,
-                'poster' => 0,
+                'added'    => TIME_NOW,
+                'msg'      => $msg,
+                'subject'  => $subject,
+                'poster'   => 0,
             ];
             $fluent->insertInto('messages')
                 ->values($values)

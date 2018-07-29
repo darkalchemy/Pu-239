@@ -115,7 +115,7 @@ cd Pu-239
 git pull
 
 # update dependancies:
-composer update
+composer install
 composer dump-autoload -o
 npm install
 sudo php bin/uglify.php

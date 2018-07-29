@@ -125,7 +125,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
             $HTMLOUT .= '<h3>' . $lang['mtor_no_torrents_have_been_modded'] . ' ' . $mode . '.</h3>';
             //echo stdhead("".$lang['mtor_no_torrents_modded']."") . $HTMLOUT . stdfoot();
             $title = '' . $lang['mtor_no_torrents_modded'] . " $mode";
-        //die();
+            //die();
         } else {
             $perpage = 15;
             $pager = pager($perpage, $count, "{$_SERVER['PHP_SELF']}?tool=modded_torrents&type={$mode}&");

@@ -58,24 +58,18 @@ if (empty($user_id)) {
         $ip = getip(true);
         $url = 'https://www.google.com/recaptcha/api/siteverify';
         $params = [
-            'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
+            'secret'   => $_ENV['RECAPTCHA_SECRET_KEY'],
             'response' => $response,
             'remoteip' => $ip,
         ];
         $query = http_build_query($params);
         $contextData = [
-            'method' => 'POST',
-            'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
-                "Connection: close\r\n" .
-                'Content-Length: ' . strlen($query) . "\r\n",
+            'method'  => 'POST',
+            'header'  => "Content-Type: application/x-www-form-urlencoded\r\n" . "Connection: close\r\n" . 'Content-Length: ' . strlen($query) . "\r\n",
             'content' => $query,
         ];
         $context = stream_context_create(['http' => $contextData]);
-        $result = file_get_contents(
-            $url,
-            false,
-            $context
-        );
+        $result = file_get_contents($url, false, $context);
         $responseKeys = json_decode($result, true);
         if (intval($responseKeys['success']) !== 1) {
             stderr('Error', 'reCAPTCHA Failed');
@@ -146,8 +140,8 @@ if (!password_verify($password, $row['passhash'])) {
         $algo = PASSWORD_ARGON2I;
         $options = [
             'memory_cost' => !empty($site_config['password_memory_cost']) ? $site_config['password_memory_cost'] : 2048,
-            'time_cost' => !empty($site_config['password_time_cost']) ? $site_config['password_time_cost'] : 12,
-            'threads' => !empty($site_config['password_threads']) ? $site_config['password_threads'] : 4,
+            'time_cost'   => !empty($site_config['password_time_cost']) ? $site_config['password_time_cost'] : 12,
+            'threads'     => !empty($site_config['password_threads']) ? $site_config['password_threads'] : 4,
         ];
     } else {
         $algo = PASSWORD_BCRYPT;
@@ -194,11 +188,11 @@ $browser = 'Browser: ' . $ua['name'] . ' ' . $ua['version'] . '. Os: ' . $ua['pl
 
 sql_query('UPDATE users SET browser = ' . sqlesc($browser) . ', ssluse = ' . sqlesc($ssluse) . ", ip = $ip_escaped, last_access = " . TIME_NOW . ', last_login = ' . TIME_NOW . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 $cache->update_row('user' . $userid, [
-    'browser' => $browser,
-    'ip' => $ip,
-    'ssluse' => $ssluse,
+    'browser'     => $browser,
+    'ip'          => $ip,
+    'ssluse'      => $ssluse,
     'last_access' => TIME_NOW,
-    'last_login' => TIME_NOW,
+    'last_login'  => TIME_NOW,
 ], $site_config['expires']['user_cache']);
 
 $session->set('userID', $userid);
@@ -211,7 +205,7 @@ $selector = make_password(16);
 $validator = make_password(32);
 $values = [
     'hash' => hash('sha512', $validator),
-    'uid' => $userid,
+    'uid'  => $userid,
 ];
 
 $cache->set('remember_' . $selector, $values, TIME_NOW + $expires);

@@ -63,16 +63,8 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
         }
     }
     sql_query('INSERT INTO messages (poster, sender, receiver, added, msg, subject, saved, location, urgent) VALUES 
-                            (' .
-        sqlesc($CURUSER['id']) . ', ' .
-        sqlesc($CURUSER['id']) . ', ' .
-        sqlesc($receiver) . ', ' .
-        TIME_NOW . ', ' .
-        $body . ', ' .
-        $subject . ', ' .
-        sqlesc($save) . ', 
-        1,' .
-        $urgent . ')') or sqlerr(__FILE__, __LINE__);
+                            (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($receiver) . ', ' . TIME_NOW . ', ' . $body . ', ' . $subject . ', ' . sqlesc($save) . ', 
+        1,' . $urgent . ')') or sqlerr(__FILE__, __LINE__);
     $cache->increment('inbox_' . $receiver);
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
         stderr($lang['pm_error'], $lang['pm_send_wasnt']);

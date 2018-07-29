@@ -6,7 +6,6 @@
  * @license Modified MIT License
  * @link https://blueimp.net/ajax/
  */
-
 // Class to initialize the MySQL DataBase connection:
 
 /**
@@ -39,11 +38,7 @@ class AJAXChatDataBaseMySQLi
      */
     public function connect(&$dbConnectionConfig)
     {
-        @$this->_connectionID = new mysqli(
-            $dbConnectionConfig['host'],
-            $dbConnectionConfig['user'],
-            $dbConnectionConfig['pass']
-        );
+        @$this->_connectionID = new mysqli($dbConnectionConfig['host'], $dbConnectionConfig['user'], $dbConnectionConfig['pass']);
         if ($this->_connectionID->connect_errno) {
             $this->_errno = mysqli_connect_errno();
             $this->_error = mysqli_connect_error();

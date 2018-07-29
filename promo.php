@@ -222,27 +222,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
             $passhint = '';
             $questions = [
                 [
-                    'id' => '1',
+                    'id'       => '1',
                     'question' => "{$lang['signup_q1']}",
                 ],
                 [
-                    'id' => '2',
+                    'id'       => '2',
                     'question' => "{$lang['signup_q2']}",
                 ],
                 [
-                    'id' => '3',
+                    'id'       => '3',
                     'question' => "{$lang['signup_q3']}",
                 ],
                 [
-                    'id' => '4',
+                    'id'       => '4',
                     'question' => "{$lang['signup_q4']}",
                 ],
                 [
-                    'id' => '5',
+                    'id'       => '5',
                     'question' => "{$lang['signup_q5']}",
                 ],
                 [
-                    'id' => '6',
+                    'id'       => '6',
                     'question' => "{$lang['signup_q6']}",
                 ],
             ];

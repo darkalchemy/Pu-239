@@ -72,13 +72,9 @@ if ($action === 'edit' && $CURUSER['class'] >= UC_SYSOP) {
     while ($mod = mysqli_fetch_assoc($res)) {
         $HTMLOUT .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . '?action=update&amp;id=' . $id . "'>
   <table width='50%' border='1'>
-    <tr><td class='rowhead'>{$lang['credits_mod']}</td>" .
-            "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='name' " . "value='" . htmlsafechars($mod['name']) . "' /></td></tr>\n" .
-            "<tr>
-    <td class='rowhead'>{$lang['credits_description']}</td>" .
-            "<td style='padding: 0'>
-    <input type='text' size='60' maxlength='120' name='description' value='" . htmlsafechars($mod['description']) . "' /></td></tr>\n" .
-            "<tr>
+    <tr><td class='rowhead'>{$lang['credits_mod']}</td>" . "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='name' " . "value='" . htmlsafechars($mod['name']) . "' /></td></tr>\n" . "<tr>
+    <td class='rowhead'>{$lang['credits_description']}</td>" . "<td style='padding: 0'>
+    <input type='text' size='60' maxlength='120' name='description' value='" . htmlsafechars($mod['description']) . "' /></td></tr>\n" . "<tr>
     <td class='rowhead'>{$lang['credits_category']}</td>
   <td style='padding: 0'>
   <select name='category'>";
@@ -92,9 +88,7 @@ if ($action === 'edit' && $CURUSER['class'] >= UC_SYSOP) {
 
         $HTMLOUT .= '</select></td></tr>';
 
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['credits_link']}</td>" .
-            "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='link' " . "value='" . htmlsafechars($mod['pu239lnk']) . "' /></td></tr>\n" .
-            "<tr>
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['credits_link']}</td>" . "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='link' " . "value='" . htmlsafechars($mod['pu239lnk']) . "' /></td></tr>\n" . "<tr>
   <td class='rowhead'>{$lang['credits_status']}</td>
   <td style='padding: 0'>
   <select name='modstatus'>";

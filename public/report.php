@@ -58,10 +58,8 @@ if ((isset($_GET['do_it'])) || (isset($_POST['do_it']))) {
     }
 
     $dt = TIME_NOW;
-    sql_query(
-        'INSERT into reports (reported_by, reporting_what, reporting_type, reason, added, 2nd_value) 
-        VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . sqlesc($type) . ', ' . sqlesc($reason) . ", $dt, " . sqlesc($id_2) . ')'
-    ) or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT into reports (reported_by, reporting_what, reporting_type, reason, added, 2nd_value) 
+        VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . sqlesc($type) . ', ' . sqlesc($reason) . ", $dt, " . sqlesc($id_2) . ')') or sqlerr(__FILE__, __LINE__);
     $cache->delete('new_report_');
     $session->set('is-success', '[h3]' . str_replace('_', ' ', $type) . " {$lang['report_id']} {$id} report sent.[/h3][p]{$lang['report_reason']} {$reason}[/p]");
     header("Location: {$site_config['baseurl']}");

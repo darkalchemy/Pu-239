@@ -30,27 +30,23 @@ function get_parked()
  */
 function autoshout($msg, $channel = 0, $ttl = 7200)
 {
-    global $site_config, $pdo;
+    global $site_config, $fluent;
 
     if (user_exists($site_config['chatBotID'])) {
         $values = [
-            'userID' => $site_config['chatBotID'],
+            'userID'   => $site_config['chatBotID'],
             'userName' => $site_config['chatBotName'],
             'userRole' => 100,
-            'channel' => $channel,
+            'channel'  => $channel,
             'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
-            'ip' => '127.0.0.1',
-            'text' => $msg,
-            'ttl' => $ttl,
+            'ip'       => inet_pton('127.0.0.1'),
+            'text'     => $msg,
+            'ttl'      => $ttl,
         ];
 
-        $stmt = $pdo->prepare(
-            'INSERT INTO ajax_chat_messages
-                        (userID, userName, userRole, channel, dateTime, ip, text, ttl)
-                      VALUES
-                        (:userID, :userName, :userRole, :channel, :dateTime, INET6_ATON(:ip), :text, :ttl)'
-        );
-        $stmt->execute($values);
+        $fluent->insertInto('ajax_chat_messages')
+            ->values($values)
+            ->execute();
     }
 }
 

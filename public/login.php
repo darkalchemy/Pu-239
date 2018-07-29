@@ -13,10 +13,6 @@ if (!$CURUSER) {
     header("Location: {$site_config['baseurl']}/index.php");
     die();
 }
-$stdfoot = [
-    'js' => [
-    ],
-];
 $lang = array_merge(load_language('global'), load_language('login'));
 $left = $total = '';
 
@@ -121,4 +117,4 @@ $HTMLOUT .= "           </td>
             </form>
         </div>";
 
-echo stdhead("{$lang['login_login_btn']}") . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead("{$lang['login_login_btn']}") . $HTMLOUT . stdfoot();

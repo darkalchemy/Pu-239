@@ -12,11 +12,9 @@ $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if (!is_valid_id($id)) {
     stderr('USER ERROR', 'Bad id');
 }
-$res = sql_query(
-    'SELECT COUNT(id)
+$res = sql_query('SELECT COUNT(id)
     FROM files 
-    WHERE torrent = ' . sqlesc($id)
-) or sqlerr(__FILE__, __LINE__);
+    WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 
 $row = mysqli_fetch_row($res);
 $count = $row[0];
@@ -27,12 +25,10 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
 
-$subres = sql_query(
-    'SELECT * FROM files 
+$subres = sql_query('SELECT * FROM files 
     WHERE torrent = ' . sqlesc($id) . " 
     ORDER BY id
-    {$pager['limit']}"
-);
+    {$pager['limit']}");
 
 $header = "
             <tr>

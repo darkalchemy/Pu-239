@@ -1,65 +1,65 @@
 @font-face {
-    font-family : 'PT Sans Narrow';
-    font-style  : normal;
-    font-weight : 400;
-    src         : url(../../fonts/pt-sans-narrow-v8-latin-regular.eot);
-    src         : local('PT Sans Narrow'), local('PTSans-Narrow'), url(../../fonts/pt-sans-narrow-v8-latin-regular.eot?#iefix) format('embedded-opentype'), url(../../fonts/pt-sans-narrow-v8-latin-regular.woff2) format('woff2'), url(../../fonts/pt-sans-narrow-v8-latin-regular.woff) format('woff'), url(../../fonts/pt-sans-narrow-v8-latin-regular.ttf) format('truetype'), url(../../fonts/pt-sans-narrow-v8-latin-regular.svg#PTSansNarrow) format('svg')
+    font-family: 'PT Sans Narrow';
+    font-style: normal;
+    font-weight: 400;
+    src: url(../../fonts/pt-sans-narrow-v8-latin-regular.eot);
+    src: local('PT Sans Narrow'), local('PTSans-Narrow'), url(../../fonts/pt-sans-narrow-v8-latin-regular.eot?#iefix) format('embedded-opentype'), url(../../fonts/pt-sans-narrow-v8-latin-regular.woff2) format('woff2'), url(../../fonts/pt-sans-narrow-v8-latin-regular.woff) format('woff'), url(../../fonts/pt-sans-narrow-v8-latin-regular.ttf) format('truetype'), url(../../fonts/pt-sans-narrow-v8-latin-regular.svg#PTSansNarrow) format('svg');
 }
 
 @font-face {
-    font-family : Oswald;
-    font-style  : normal;
-    font-weight : 400;
-    src         : url(../../fonts/oswald-v16-latin-regular.eot);
-    src         : local('Oswald Regular'), local('Oswald-Regular'), url(../../fonts/oswald-v16-latin-regular.eot?#iefix) format('embedded-opentype'), url(../../fonts/oswald-v16-latin-regular.woff2) format('woff2'), url(../../fonts/oswald-v16-latin-regular.woff) format('woff'), url(../../fonts/oswald-v16-latin-regular.ttf) format('truetype'), url(../../fonts/oswald-v16-latin-regular.svg#Oswald) format('svg')
+    font-family: Oswald;
+    font-style: normal;
+    font-weight: 400;
+    src: url(../../fonts/oswald-v16-latin-regular.eot);
+    src: local('Oswald Regular'), local('Oswald-Regular'), url(../../fonts/oswald-v16-latin-regular.eot?#iefix) format('embedded-opentype'), url(../../fonts/oswald-v16-latin-regular.woff2) format('woff2'), url(../../fonts/oswald-v16-latin-regular.woff) format('woff'), url(../../fonts/oswald-v16-latin-regular.ttf) format('truetype'), url(../../fonts/oswald-v16-latin-regular.svg#Oswald) format('svg');
 }
 
 @font-face {
-    font-family : 'Open Sans';
-    font-style  : normal;
-    font-weight : 400;
-    src         : url(../../fonts/open-sans-v15-latin-regular.eot);
-    src         : local('Open Sans Regular'), local('OpenSans-Regular'), url(../../fonts/open-sans-v15-latin-regular.eot?#iefix) format('embedded-opentype'), url(../../fonts/open-sans-v15-latin-regular.woff2) format('woff2'), url(../../fonts/open-sans-v15-latin-regular.woff) format('woff'), url(../../fonts/open-sans-v15-latin-regular.ttf) format('truetype'), url(../../fonts/open-sans-v15-latin-regular.svg#OpenSans) format('svg')
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: url(../../fonts/open-sans-v15-latin-regular.eot);
+    src: local('Open Sans Regular'), local('OpenSans-Regular'), url(../../fonts/open-sans-v15-latin-regular.eot?#iefix) format('embedded-opentype'), url(../../fonts/open-sans-v15-latin-regular.woff2) format('woff2'), url(../../fonts/open-sans-v15-latin-regular.woff) format('woff'), url(../../fonts/open-sans-v15-latin-regular.ttf) format('truetype'), url(../../fonts/open-sans-v15-latin-regular.svg#OpenSans) format('svg');
 }
 
 @font-face {
-    font-family : 'Nova Square';
-    font-style  : normal;
-    font-weight : 400;
-    src         : url(../../fonts/nova-square-v9-latin-regular.eot);
-    src         : local('Nova Square'), local('NovaSquare'), url(../../fonts/nova-square-v9-latin-regular.eot?#iefix) format('embedded-opentype'), url(../../fonts/nova-square-v9-latin-regular.woff2) format('woff2'), url(../../fonts/nova-square-v9-latin-regular.woff) format('woff'), url(../../fonts/nova-square-v9-latin-regular.ttf) format('truetype'), url(../../fonts/nova-square-v9-latin-regular.svg#NovaSquare) format('svg')
+    font-family: 'Nova Square';
+    font-style: normal;
+    font-weight: 400;
+    src: url(../../fonts/nova-square-v9-latin-regular.eot);
+    src: local('Nova Square'), local('NovaSquare'), url(../../fonts/nova-square-v9-latin-regular.eot?#iefix) format('embedded-opentype'), url(../../fonts/nova-square-v9-latin-regular.woff2) format('woff2'), url(../../fonts/nova-square-v9-latin-regular.woff) format('woff'), url(../../fonts/nova-square-v9-latin-regular.ttf) format('truetype'), url(../../fonts/nova-square-v9-latin-regular.svg#NovaSquare) format('svg');
 }
 
 @font-face {
-    font-family : Lobster;
-    font-style  : normal;
-    font-weight : 400;
-    src         : url(../../fonts/lobster-v20-latin-regular.eot);
-    src         : local('Lobster Regular'), local('Lobster-Regular'), url(../../fonts/lobster-v20-latin-regular.eot?#iefix) format('embedded-opentype'), url(../../fonts/lobster-v20-latin-regular.woff2) format('woff2'), url(../../fonts/lobster-v20-latin-regular.woff) format('woff'), url(../../fonts/lobster-v20-latin-regular.ttf) format('truetype'), url(../../fonts/lobster-v20-latin-regular.svg#Lobster) format('svg')
+    font-family: Lobster;
+    font-style: normal;
+    font-weight: 400;
+    src: url(../../fonts/lobster-v20-latin-regular.eot);
+    src: local('Lobster Regular'), local('Lobster-Regular'), url(../../fonts/lobster-v20-latin-regular.eot?#iefix) format('embedded-opentype'), url(../../fonts/lobster-v20-latin-regular.woff2) format('woff2'), url(../../fonts/lobster-v20-latin-regular.woff) format('woff'), url(../../fonts/lobster-v20-latin-regular.ttf) format('truetype'), url(../../fonts/lobster-v20-latin-regular.svg#Lobster) format('svg');
 }
 
 @font-face {
-    font-family : 'Encode Sans Condensed';
-    font-style  : normal;
-    font-weight : 400;
-    src         : url(../../fonts/encode-sans-condensed-v2-latin-regular.eot);
-    src         : local('Encode Sans Condensed Regular'), local('EncodeSansCondensed-Regular'), url(../../fonts/encode-sans-condensed-v2-latin-regular.eot?#iefix) format('embedded-opentype'), url(../../fonts/encode-sans-condensed-v2-latin-regular.woff2) format('woff2'), url(../../fonts/encode-sans-condensed-v2-latin-regular.woff) format('woff'), url(../../fonts/encode-sans-condensed-v2-latin-regular.ttf) format('truetype'), url(../../fonts/encode-sans-condensed-v2-latin-regular.svg#EncodeSansCondensed) format('svg')
+    font-family: 'Encode Sans Condensed';
+    font-style: normal;
+    font-weight: 400;
+    src: url(../../fonts/encode-sans-condensed-v2-latin-regular.eot);
+    src: local('Encode Sans Condensed Regular'), local('EncodeSansCondensed-Regular'), url(../../fonts/encode-sans-condensed-v2-latin-regular.eot?#iefix) format('embedded-opentype'), url(../../fonts/encode-sans-condensed-v2-latin-regular.woff2) format('woff2'), url(../../fonts/encode-sans-condensed-v2-latin-regular.woff) format('woff'), url(../../fonts/encode-sans-condensed-v2-latin-regular.ttf) format('truetype'), url(../../fonts/encode-sans-condensed-v2-latin-regular.svg#EncodeSansCondensed) format('svg');
 }
 
 @font-face {
-    font-family : 'Baloo Bhaijaan';
-    font-style  : normal;
-    font-weight : 400;
-    src         : url(../../fonts/baloo-bhaijaan-v2-latin-regular.eot);
-    src         : local('Baloo Bhaijaan Regular'), local('BalooBhaijaan-Regular'), url(../../fonts/baloo-bhaijaan-v2-latin-regular.eot?#iefix) format('embedded-opentype'), url(../../fonts/baloo-bhaijaan-v2-latin-regular.woff2) format('woff2'), url(../../fonts/baloo-bhaijaan-v2-latin-regular.woff) format('woff'), url(../../fonts/baloo-bhaijaan-v2-latin-regular.ttf) format('truetype'), url(../../fonts/baloo-bhaijaan-v2-latin-regular.svg#BalooBhaijaan) format('svg')
+    font-family: 'Baloo Bhaijaan';
+    font-style: normal;
+    font-weight: 400;
+    src: url(../../fonts/baloo-bhaijaan-v2-latin-regular.eot);
+    src: local('Baloo Bhaijaan Regular'), local('BalooBhaijaan-Regular'), url(../../fonts/baloo-bhaijaan-v2-latin-regular.eot?#iefix) format('embedded-opentype'), url(../../fonts/baloo-bhaijaan-v2-latin-regular.woff2) format('woff2'), url(../../fonts/baloo-bhaijaan-v2-latin-regular.woff) format('woff'), url(../../fonts/baloo-bhaijaan-v2-latin-regular.ttf) format('truetype'), url(../../fonts/baloo-bhaijaan-v2-latin-regular.svg#BalooBhaijaan) format('svg');
 }
 
 @font-face {
-    font-family : Acme;
-    font-style  : normal;
-    font-weight : 400;
-    src         : url(../../fonts/acme-v7-latin-regular.eot);
-    src         : local('Acme Regular'), local('Acme-Regular'), url(../../fonts/acme-v7-latin-regular.eot?#iefix) format('embedded-opentype'), url(../../fonts/acme-v7-latin-regular.woff2) format('woff2'), url(../../fonts/acme-v7-latin-regular.woff) format('woff'), url(../../fonts/acme-v7-latin-regular.ttf) format('truetype'), url(../../fonts/acme-v7-latin-regular.svg#Acme) format('svg')
+    font-family: Acme;
+    font-style: normal;
+    font-weight: 400;
+    src: url(../../fonts/acme-v7-latin-regular.eot);
+    src: local('Acme Regular'), local('Acme-Regular'), url(../../fonts/acme-v7-latin-regular.eot?#iefix) format('embedded-opentype'), url(../../fonts/acme-v7-latin-regular.woff2) format('woff2'), url(../../fonts/acme-v7-latin-regular.woff) format('woff'), url(../../fonts/acme-v7-latin-regular.ttf) format('truetype'), url(../../fonts/acme-v7-latin-regular.svg#Acme) format('svg');
 }
 
 .h-style-1 #logo h1,
@@ -71,7 +71,7 @@
 .h-style-1 h6,
 .markItUp .text-1,
 .text-1 {
-    font-family : Oswald, sans-serif
+    font-family: Oswald, sans-serif;
 }
 
 .h-style-2 #logo h1,
@@ -83,7 +83,7 @@
 .h-style-2 h6,
 .markItUp .text-2,
 .text-2 {
-    font-family : 'PT Sans Narrow', sans-serif
+    font-family: 'PT Sans Narrow', sans-serif;
 }
 
 .h-style-3 #logo h1,
@@ -95,7 +95,7 @@
 .h-style-3 h6,
 .markItUp .text-3,
 .text-3 {
-    font-family : 'Nova Square', cursive
+    font-family: 'Nova Square', cursive;
 }
 
 .h-style-4 #logo h1,
@@ -107,7 +107,7 @@
 .h-style-4 h6,
 .markItUp .text-4,
 .text-4 {
-    font-family : Lobster, cursive
+    font-family: Lobster, cursive;
 }
 
 .h-style-5 #logo h1,
@@ -119,7 +119,7 @@
 .h-style-5 h6,
 .markItUp .text-5,
 .text-5 {
-    font-family : 'Open Sans', sans-serif
+    font-family: 'Open Sans', sans-serif;
 }
 
 .h-style-6 #logo h1,
@@ -131,7 +131,7 @@
 .h-style-6 h6,
 .markItUp .text-6,
 .text-6 {
-    font-family : 'Encode Sans Condensed', sans-serif
+    font-family: 'Encode Sans Condensed', sans-serif;
 }
 
 .h-style-7 #logo h1,
@@ -143,7 +143,7 @@
 .h-style-7 h6,
 .markItUp .text-7,
 .text-7 {
-    font-family : 'Baloo Bhaijaan', cursive
+    font-family: 'Baloo Bhaijaan', cursive;
 }
 
 .h-style-8 #logo h1,
@@ -155,5 +155,5 @@
 .h-style-8 h6,
 .markItUp .text-8,
 .text-8 {
-    font-family : Acme, sans-serif
+    font-family: Acme, sans-serif;
 }

@@ -53,7 +53,7 @@ function pu_demote_update($data)
                 $users_buffer[] = '(' . $arr['id'] . ', ' . $prev_class . ', ' . $modcom . ')';
 
                 $cache->update_row('user' . $arr['id'], [
-                    'class' => $prev_class,
+                    'class'      => $prev_class,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
                 $cache->increment('inbox_' . $arr['id']);

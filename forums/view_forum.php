@@ -12,9 +12,9 @@ $fluent->deleteFrom('now_viewing')
     ->where('user_id = ?', $CURUSER['id'])
     ->execute();
 $values = [
-    'user_id' => $CURUSER['id'],
+    'user_id'  => $CURUSER['id'],
     'forum_id' => $forum_id,
-    'added' => TIME_NOW,
+    'added'    => TIME_NOW,
 ];
 $fluent->insertInto('now_viewing')
     ->values($values)

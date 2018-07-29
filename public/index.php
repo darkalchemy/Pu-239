@@ -9,23 +9,13 @@ require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $CURUSER, $site_config, $BLOCKS, $fluent, $cache, $session;
-
-$stdhead = [
-    'css' => [
-    ],
-];
-
 $stdfoot = [
     'js' => [
         get_file_name('index_js'),
     ],
 ];
 
-$lang = array_merge(
-    load_language('global'),
-    load_language('index'),
-    load_language('trivia')
-);
+$lang = array_merge(load_language('global'), load_language('index'), load_language('trivia'));
 
 if (isset($_GET['act']) && $_GET['act'] === 'Arcade' && isset($_POST['gname'])) {
     include_once INCL_DIR . 'arcade.php';
@@ -34,13 +24,10 @@ $HTMLOUT = '';
 
 $unread = getPmCount($CURUSER['id']);
 if ($unread >= 1) {
-    $session->set(
-        'is-link',
-        [
-            'message' => "You have $unread unread message" . plural($unread) . ' in your Inbox',
-            'link' => "{$site_config['baseurl']}/messages.php",
-        ]
-    );
+    $session->set('is-link', [
+        'message' => "You have $unread unread message" . plural($unread) . ' in your Inbox',
+        'link'    => "{$site_config['baseurl']}/messages.php",
+    ]);
 }
 
 if (curuser::$blocks['index_page'] & block_index::IE_ALERT && $BLOCKS['ie_user_alert']) {
@@ -113,11 +100,11 @@ if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SCROLL && $BLO
             ->fetch('count');
         $cache->set('torrent_poster_count_', $count, 86400);
     }
-//    if ($count > 10) {
+    //    if ($count > 10) {
     $HTMLOUT .= "<div class='container is-fluid portlet' id='LATEST_TORRENTS_SCROLL'>";
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_torrents_scroll.php';
     $HTMLOUT .= '</div>';
-//    }
+    //    }
 }
 
 if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SLIDER && $BLOCKS['latest_torrents_slider_on']) {
@@ -227,4 +214,4 @@ if (curuser::$blocks['index_page'] & block_index::DONATION_PROGRESS && $BLOCKS['
     $HTMLOUT .= '</div>';
 }
 
-echo stdhead('Home', $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead('Home') . $HTMLOUT . stdfoot($stdfoot);

@@ -77,8 +77,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 <td>
                     <a class='altlink' href='{$site_config['baseurl']}/details.php?id=" . (int) $arr['torrentid'] . "'><b>" . htmlsafechars($arr['torrent_name']) . '</b></a>' . ($arr['complete_date'] != '0' ? "<br>
                     <span class='has-text-yellow'>{$lang['userdetails_s_started']}" . get_date($arr['start_date'], 0, 1) . "</span><br>
-                    <span class='has-text-orange'>{$lang['userdetails_s_laction']} " . get_date($arr['last_action'], 0, 1) . '</span>' .
-                    ($arr['complete_date'] == '0' ? ($arr['owner'] == $id ? '' : '[ ' . mksize($arr['size'] - $arr['downloaded']) . "{$lang['userdetails_s_still']}]") : '') : '') . '<br>' . $lang['userdetails_s_finished'] . get_date($arr['complete_date'], 0, 1) . '' . ($arr['complete_date'] != '0' ? "<br>
+                    <span class='has-text-orange'>{$lang['userdetails_s_laction']} " . get_date($arr['last_action'], 0, 1) . '</span>' . ($arr['complete_date'] == '0' ? ($arr['owner'] == $id ? '' : '[ ' . mksize($arr['size'] - $arr['downloaded']) . "{$lang['userdetails_s_still']}]") : '') : '') . '<br>' . $lang['userdetails_s_finished'] . get_date($arr['complete_date'], 0, 1) . '' . ($arr['complete_date'] != '0' ? "<br>
                     <span style='color: silver;'>{$lang['userdetails_s_ttod']}" . ($arr['leechtime'] != '0' ? mkprettytime($arr['leechtime']) : mkprettytime($arr['c'] - $arr['s']) . '') . "</span>
                     <span style='color: $dlc'>[ {$lang['userdetails_s_dled']} $dl_speed ]</span><br>" : '<br>') . "
                     <span class='has-text-lightblue'>" . ($arr['seedtime'] != '0' ? $lang['userdetails_s_tseed'] . mkprettytime($arr['seedtime']) . " </span>

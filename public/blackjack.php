@@ -292,13 +292,7 @@ if ($game) {
                 $dealer_cardids2[] = $dealer_cardid;
             }
 
-            $sql = 'INSERT INTO blackjack (userid, points, cards, date, dealer_cards, game_id) VALUES (' .
-                sqlesc($CURUSER['id']) . ', ' .
-                sqlesc($points) . ', ' .
-                sqlesc(implode(' ', $cardids2)) . ', ' .
-                sqlesc($now) . ', ' .
-                sqlesc(implode(' ', $dealer_cardids2)) . ', ' .
-                sqlesc($blackjack['gameid']) . ')';
+            $sql = 'INSERT INTO blackjack (userid, points, cards, date, dealer_cards, game_id) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($points) . ', ' . sqlesc(implode(' ', $cardids2)) . ', ' . sqlesc($now) . ', ' . sqlesc(implode(' ', $dealer_cardids2)) . ', ' . sqlesc($blackjack['gameid']) . ')';
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
             if ($points < 21) {
                 $HTMLOUT .= "
@@ -465,7 +459,7 @@ if ($game) {
                     // winner $CURUSER
                     $cache->update_row('user' . $CURUSER['id'], [
                         'uploaded' => $update['uploaded'],
-                        'bjwins' => $update['bjwins'],
+                        'bjwins'   => $update['bjwins'],
                     ], $site_config['expires']['user_cache']);
                     // loser $a
                     $cache->update_row('user' . $a['userid'], [
@@ -570,7 +564,7 @@ if ($game) {
                     // winner $a
                     $cache->update_row('user' . $a['userid'], [
                         'uploaded' => $update['uploaded'],
-                        'bjwins' => $update['bjwins'],
+                        'bjwins'   => $update['bjwins'],
                     ], $site_config['expires']['user_cache']);
 
                     // loser $CURUSER
@@ -779,7 +773,7 @@ if ($game) {
                     $update['winnerid'] = $playerarr['userid'];
                     $update['loserid'] = $a['userid'];
                     $outcome = "{$dbl_text}and won";
-                // loser $CURUSER
+                    // loser $CURUSER
                 } elseif (($a['points'] > $playerarr['points'] && $a['points'] < 21) || $a['points'] == 21 || ($a['points'] < $playerarr['points'] && $a['points'] > 21)) {
                     $subject = sqlesc($lang['bj_blackjack_results']);
                     $won_str = str_replace('10GB', mksize($blackjack['mb'], 0), $lang['bj_you_beat_10']);
@@ -805,7 +799,7 @@ if ($game) {
                 //==stats
                 $cache->update_row('user' . $update['winnerid'], [
                     'uploaded' => $update['uploaded'],
-                    'bjwins' => $update['bjwins'],
+                    'bjwins'   => $update['bjwins'],
                 ], $site_config['expires']['user_cache']);
 
                 $cache->update_row('user' . $update['loserid'], [
@@ -1189,8 +1183,7 @@ function output($blackjack, $HTMLOUT, $debugout)
 {
     global $CURUSER;
     $stdhead = [
-        'css' => [
-        ],
+        'css' => [],
     ];
 
     $debugout = "

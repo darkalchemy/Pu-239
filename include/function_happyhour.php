@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @param $action
  *
@@ -94,15 +95,15 @@ function happyFile($act)
     $happy = unserialize(file_get_contents($file));
     if ($act === 'set') {
         $array_happy = [
-            'time' => happyHour('generate'),
+            'time'   => happyHour('generate'),
             'status' => '1',
-            'catid' => happyHour('todo'),
+            'catid'  => happyHour('todo'),
         ];
     } elseif ($act === 'reset') {
         $array_happy = [
-            'time' => $happy['time'],
+            'time'   => $happy['time'],
             'status' => '0',
-            'catid' => $happy['catid'],
+            'catid'  => $happy['catid'],
         ];
     }
     $array_happy = serialize($array_happy);

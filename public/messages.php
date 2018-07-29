@@ -10,26 +10,13 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $session, $fluent;
 
-/*
- *
- */
 define('PM_DELETED', 0); // Message was deleted
-/*
- *
- */
 define('PM_INBOX', 1); // Message located in Inbox for reciever
-/*
- *
- */
 define('PM_SENTBOX', -1); // GET value for sent box
-/*
- *
- */
 define('PM_DRAFTS', -2); //  new drafts folder
 $lang = array_merge(load_language('global'), load_language('takesignup'), load_language('pm'));
 $stdhead = [
-    'css' => [
-    ],
+    'css' => [],
 ];
 $HTMLOUT = $count2 = $other_box_info = $maxpic = $maxbox = '';
 

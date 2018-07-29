@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @param int  $class
  * @param bool $staff

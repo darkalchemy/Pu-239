@@ -1,12 +1,6 @@
 <?php
 
 global $CURUSER, $site_config;
-
-$stdfoot = [
-    'js' => [
-//        'popup',
-    ],
-];
 $res = sql_query('SELECT o.*, o.added AS utadded, u.username 
                   FROM offers AS o LEFT JOIN users AS u ON (u.id=o.userid) 
                   WHERE o.id = ' . $id) or sqlerr(__FILE__, __LINE__);
@@ -82,5 +76,5 @@ if (!$count) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
 $HTMLOUT .= $commentbar;
-/////////////////////// HTML OUTPUT //////////////////////////////
-echo stdhead('Offer Details') . $HTMLOUT . stdfoot($stdfoot);
+
+echo stdhead('Offer Details') . $HTMLOUT . stdfoot();

@@ -10,10 +10,6 @@ if (!$CURUSER) {
     get_template();
 }
 $lang = array_merge(load_language('global'), load_language('passhint'));
-$stdfoot = [
-    'js' => [
-    ],
-];
 $HTMLOUT = '';
 global $CURUSER;
 if ($CURUSER) {
@@ -34,24 +30,18 @@ if ($step == '1') {
             $ip = getip();
             $url = 'https://www.google.com/recaptcha/api/siteverify';
             $params = [
-                'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
+                'secret'   => $_ENV['RECAPTCHA_SECRET_KEY'],
                 'response' => $response,
                 'remoteip' => $ip,
             ];
             $query = http_build_query($params);
             $contextData = [
-                'method' => 'POST',
-                'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
-                    "Connection: close\r\n" .
-                    'Content-Length: ' . strlen($query) . "\r\n",
+                'method'  => 'POST',
+                'header'  => "Content-Type: application/x-www-form-urlencoded\r\n" . "Connection: close\r\n" . 'Content-Length: ' . strlen($query) . "\r\n",
                 'content' => $query,
             ];
             $context = stream_context_create(['http' => $contextData]);
-            $result = file_get_contents(
-                $url,
-                false,
-                $context
-            );
+            $result = file_get_contents($url, false, $context);
             $responseKeys = json_decode($result, true);
             if (intval($responseKeys['success']) !== 1) {
                 stderr('Error', 'reCAPTCHA Failed');
@@ -220,5 +210,5 @@ if ($step == '1') {
             </table>
         </form>
     </div>";
-    echo stdhead('Reset Lost Password') . $HTMLOUT . stdfoot($stdfoot);
+    echo stdhead('Reset Lost Password') . $HTMLOUT . stdfoot();
 }

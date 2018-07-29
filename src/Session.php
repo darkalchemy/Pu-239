@@ -39,13 +39,7 @@ class Session
             $domain = $this->config['cookie_domain'] === $this->config['domain'] ? '' : $this->config['cookie_domain'];
 
             // Set session cookie parameters:
-            session_set_cookie_params(
-                $expires,
-                $this->config['cookie_path'],
-                $domain,
-                $secure_session,
-                true
-            );
+            session_set_cookie_params($expires, $this->config['cookie_path'], $domain, $secure_session, true);
 
             // enforce php settings before start session
             ini_set('session.use_strict_mode', 1);
@@ -205,25 +199,9 @@ class Session
 
         if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
-            setcookie(
-                $this->config['cookie_prefix'] . 'remember',
-                '',
-                TIME_NOW - 86400,
-                $params['path'],
-                $params['domain'],
-                $params['secure'],
-                $params['httponly']
-            );
+            setcookie($this->config['cookie_prefix'] . 'remember', '', TIME_NOW - 86400, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
 
-            setcookie(
-                session_name(),
-                '',
-                TIME_NOW - 86400,
-                $params['path'],
-                $params['domain'],
-                $params['secure'],
-                $params['httponly']
-            );
+            setcookie(session_name(), '', TIME_NOW - 86400, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
         }
 
         session_unset();

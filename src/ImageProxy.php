@@ -38,6 +38,7 @@ class ImageProxy
         if ($image = fetch($url)) {
             if (file_put_contents($path, $image)) {
                 $this->optimize($path);
+
                 return true;
             }
         }
@@ -92,10 +93,11 @@ class ImageProxy
             return $hash;
         }
         try {
-            $image = $manager->make($path)->resize($width, $height, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
+            $image = $manager->make($path)
+                ->resize($width, $height, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
         } catch (\Exception $e) {
             return null;
         }
@@ -114,10 +116,11 @@ class ImageProxy
         }
 
         if ($width || $height) {
-            $image = $manager->make($path)->resize($width, $height, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
+            $image = $manager->make($path)
+                ->resize($width, $height, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
             $image->save($path);
         }
         $this->optimize($path);

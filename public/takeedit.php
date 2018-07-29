@@ -183,6 +183,7 @@ if (!empty($_POST['poster']) && (($poster = $_POST['poster']) != $fetch_assoc['p
     $torrent_cache['poster'] = $poster;
     $torrent_cache['banner'] = '';
     $torrent_cache['background'] = '';
+    clear_image_cache();
 }
 
 if (empty($_POST['poster']) && !empty($fetch_assoc['poster'])) {
@@ -192,6 +193,7 @@ if (empty($_POST['poster']) && !empty($fetch_assoc['poster'])) {
     $torrent_cache['poster'] = '';
     $torrent_cache['banner'] = '';
     $torrent_cache['background'] = '';
+    clear_image_cache();
 }
 
 if (isset($_POST['free_length']) && ($free_length = (int) $_POST['free_length'])) {
@@ -255,6 +257,7 @@ if (isset($_POST['url']) && (($url = $_POST['url']) != $fetch_assoc['url'])) {
         $torrent_cache['url'] = $url;
         $torrent_cache['banner'] = '';
         $torrent_cache['background'] = '';
+        clear_image_cache();
     } else {
         $updateset[] = "url = ''";
         $updateset[] = "banner = ''";
@@ -262,6 +265,7 @@ if (isset($_POST['url']) && (($url = $_POST['url']) != $fetch_assoc['url'])) {
         $torrent_cache['url'] = '';
         $torrent_cache['banner'] = '';
         $torrent_cache['background'] = '';
+        clear_image_cache();
     }
 }
 
@@ -283,8 +287,8 @@ if (($vip = (!empty($_POST['vip']) ? '1' : '0')) != $fetch_assoc['vip']) {
 
 $release_group_choices = [
     'scene' => 1,
-    'p2p' => 2,
-    'none' => 3,
+    'p2p'   => 2,
+    'none'  => 3,
 ];
 
 $release_group = (isset($_POST['release_group']) ? $_POST['release_group'] : 'none');
@@ -315,11 +319,13 @@ if (count($updateset) > 0) {
 }
 if ($torrent_cache) {
     $cache->update_row('torrent_details_' . $id, $torrent_cache, $site_config['expires']['torrent_details']);
-    $cache->delete('top5_tor_');
-    $cache->delete('last5_tor_');
-    $cache->delete('torrent_xbt_data_' . $id);
-    $cache->delete('torrent_details_txt_' . $id);
-    $cache->delete('similiar_tor_' . $id);
+    $cache->deleteMulti([
+        'top5_tor_',
+        'last5_tor_',
+        'torrent_xbt_data_' . $id,
+        'torrent_details_txt_' . $id,
+        'similiar_tor_' . $id,
+    ];
 }
 if ($torrent_txt_cache) {
     $cache->update_row('torrent_details_txt_' . $id, $torrent_txt_cache, $site_config['expires']['torrent_details_text']);

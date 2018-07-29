@@ -9,7 +9,6 @@
  * http://selfhtml.org
  *
  */
-
 // AJAX Chat client side logic:
 var ajaxChat = {
     settingsInitiated: null,

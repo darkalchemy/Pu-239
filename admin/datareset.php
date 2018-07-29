@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ->leftJoin('snatched as s ON s.torrentid = t.id')
         ->where('t.id = ?', $id);
 
-    foreach($row as $a) {
+    foreach ($row as $a) {
         $newd = ($a['ud'] > 0 ? $a['ud'] - $a['sd'] : 0);
         $new_download[] = '(' . $a['uid'] . ',' . $newd . ')';
         $tname = htmlsafechars($a['name']);

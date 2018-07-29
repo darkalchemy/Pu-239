@@ -105,8 +105,8 @@ if (mysqli_num_rows($rescount) > 0) {
     <td class='colhead'>{$lang['req_req_by']}</td></tr>\n";
     foreach ($cats as $key => $value) {
         $change[$value['id']] = [
-            'id' => $value['id'],
-            'name' => $value['name'],
+            'id'    => $value['id'],
+            'name'  => $value['name'],
             'image' => $value['image'],
         ];
     }

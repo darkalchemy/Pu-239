@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @return string
  */
@@ -11,8 +12,8 @@ function parse_poll()
     $poll_footer = '';
     $GVARS = [
         'allow_creator_vote' => 1,
-        'allow_result_view' => 1,
-        'allow_poll_tags' => 1,
+        'allow_result_view'  => 1,
+        'allow_poll_tags'    => 1,
     ];
     $poll_data = get_poll();
 

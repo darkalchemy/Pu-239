@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @param $num
  *
@@ -147,8 +148,8 @@ function torrenttable($res, $variant = 'index')
     $categories = genrelist();
     foreach ($categories as $key => $value) {
         $change[$value['id']] = [
-            'id' => $value['id'],
-            'name' => $value['name'],
+            'id'    => $value['id'],
+            'name'  => $value['name'],
             'image' => $value['image'],
         ];
     }

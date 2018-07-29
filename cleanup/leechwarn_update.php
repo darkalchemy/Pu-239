@@ -31,9 +31,9 @@ function leechwarn_update($data)
             $users_buffer[] = '(' . $arr['id'] . ',' . $leechwarn . ',\'0\', ' . $modcom . ')';
             $update['leechwarn'] = ($leechwarn);
             $cache->update_row('user' . $arr['id'], [
-                'leechwarn' => $update['leechwarn'],
+                'leechwarn'   => $update['leechwarn'],
                 'downloadpos' => 0,
-                'modcomment' => $modcomment,
+                'modcomment'  => $modcomment,
             ], $site_config['expires']['user_cache']);
             $cache->increment('inbox_' . $arr['id']);
         }
@@ -58,9 +58,9 @@ function leechwarn_update($data)
             $msgs_buffer[] = '(0,' . $arr['id'] . ',' . $dt . ', ' . sqlesc($msg) . ',  ' . sqlesc($subject) . ')';
             $users_buffer[] = '(' . $arr['id'] . ', \'0\', \'1\', ' . $modcom . ')';
             $cache->update_row('user' . $arr['id'], [
-                'leechwarn' => 0,
+                'leechwarn'   => 0,
                 'downloadpos' => 1,
-                'modcomment' => $modcomment,
+                'modcomment'  => $modcomment,
             ], $site_config['expires']['user_cache']);
             $cache->increment('inbox_' . $arr['id']);
         }
@@ -83,8 +83,8 @@ function leechwarn_update($data)
             $modcom = sqlesc($modcomment);
             $users_buffer[] = '(' . $arr['id'] . ' , \'0\', \'no\', ' . $modcom . ')';
             $cache->update_row('user' . $arr['id'], [
-                'leechwarn' => 0,
-                'enabled' => 'no',
+                'leechwarn'  => 0,
+                'enabled'    => 'no',
                 'modcomment' => $modcomment,
             ], $site_config['expires']['user_cache']);
         }

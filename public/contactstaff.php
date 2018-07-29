@@ -9,10 +9,6 @@ check_user_status();
 global $CURUSER, $site_config, $cache, $session;
 
 $lang = array_merge(load_language('global'), load_language('contactstaff'));
-$stdhead = [
-    'css' => [
-    ],
-];
 $stdfoot = [
     'js' => [
         get_file_name('upload_js'),
@@ -67,8 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $body = "
                     <tr>
-                        <td colspan='2'>" .
-        BBcode($msg) . "
+                        <td colspan='2'>" . BBcode($msg) . "
                        </td>
                     </tr>
                     <tr>
@@ -88,5 +83,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $HTMLOUT .= '
             </form>';
 
-    echo stdhead($lang['contactstaff_header'], $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+    echo stdhead($lang['contactstaff_header']) . $HTMLOUT . stdfoot($stdfoot);
 }

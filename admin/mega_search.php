@@ -8,10 +8,6 @@ class_check($class);
 global $site_config, $lang, $pdo, $fluent;
 
 $lang = array_merge($lang, load_language('ad_mega_search'));
-$stdhead = [
-    'css' => [
-    ],
-];
 
 $msg_to_analyze = (isset($_POST['msg_to_analyze']) ? htmlsafechars($_POST['msg_to_analyze']) : '');
 $invite_code = (isset($_POST['invite_code']) ? htmlsafechars($_POST['invite_code']) : '');
@@ -448,4 +444,4 @@ if (isset($_POST['invite_code'])) {
     }
 }
 
-echo stdhead($lang['mega_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($lang['mega_stdhead']) . wrapper($HTMLOUT) . stdfoot();

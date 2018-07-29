@@ -5,7 +5,6 @@
  * @license Modified MIT License
  * @link https://blueimp.net/ajax/
  */
-
 // Overrides client-side functionality for the logs view:
 
 ajaxChat.logsMonitorMode = null;
@@ -125,4 +124,4 @@ ajaxChat.socketUpdate = function (data) {
         }
     }
 };
-	
+

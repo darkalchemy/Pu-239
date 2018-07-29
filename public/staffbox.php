@@ -100,8 +100,7 @@ switch ($do) {
                             <div>{$lang['staffbox_pm_subject']}: " . htmlsafechars($a['subject']) . "</div>
                             <div>{$lang['staffbox_pm_answered']}: " . ($a['answeredby'] > 0 ? format_username($a['answeredby']) : '<span>No</span>') . "</div>
                         </div>
-                        <div class='bordered top20 bottom20 bg-00'>" .
-                        format_comment($a['msg']) . "
+                        <div class='bordered top20 bottom20 bg-00'>" . format_comment($a['msg']) . "
                         </div>
                         <div class='bordered top20 bottom20 bg-00'>
                             {$lang['staffbox_pm_answer']} " . ($a['answeredby'] == 0 ? "

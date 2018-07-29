@@ -50,15 +50,13 @@ if ($table_exists === false || is_null($table_exists)) {
     $sql = "SHOW tables LIKE 'database_updates'";
     $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($result) != 1) {
-        sql_query(
-            "CREATE TABLE `database_updates` (
+        sql_query("CREATE TABLE `database_updates` (
               `id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
               `info` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
               `query` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
               `added` DATETIME DEFAULT CURRENT_TIMESTAMP,
               PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;"
-        ) or sqlerr(__FILE__, __LINE__);
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;") or sqlerr(__FILE__, __LINE__);
     }
 
     $cache->set('table_exists_database_updates', 1, 0);

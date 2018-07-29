@@ -6,7 +6,6 @@
  * @license Modified MIT License
  * @link https://blueimp.net/ajax/
  */
-
 // Class to provide static encoding methods
 
 /**
@@ -226,12 +225,9 @@ class AJAXChatEncoding
         } elseif ($c <= 0x7FF) {
             return chr(0xC0 | $c >> 6) . chr(0x80 | $c & 0x3F);
         } elseif ($c <= 0xFFFF) {
-            return chr(0xE0 | $c >> 12) . chr(0x80 | $c >> 6 & 0x3F)
-                . chr(0x80 | $c & 0x3F);
+            return chr(0xE0 | $c >> 12) . chr(0x80 | $c >> 6 & 0x3F) . chr(0x80 | $c & 0x3F);
         } elseif ($c <= 0x10FFFF) {
-            return chr(0xF0 | $c >> 18) . chr(0x80 | $c >> 12 & 0x3F)
-                . chr(0x80 | $c >> 6 & 0x3F)
-                . chr(0x80 | $c & 0x3F);
+            return chr(0xF0 | $c >> 18) . chr(0x80 | $c >> 12 & 0x3F) . chr(0x80 | $c >> 6 & 0x3F) . chr(0x80 | $c & 0x3F);
         } else {
             return null;
         }

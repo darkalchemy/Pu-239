@@ -94,10 +94,10 @@ function db_insert()
     }
 
     $sources = [
-        'schema' => "source {$public}install/extra/schema.php.sql",
-        'data' => "source {$public}install/extra/data.php.sql",
+        'schema'     => "source {$public}install/extra/schema.php.sql",
+        'data'       => "source {$public}install/extra/data.php.sql",
         'timestamps' => "UPDATE cleanup SET clean_time = $timestamp",
-        'stats' => 'INSERT INTO stats (regusers) VALUES (1)',
+        'stats'      => 'INSERT INTO stats (regusers) VALUES (1)',
     ];
 
     if (empty($fail)) {

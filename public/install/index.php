@@ -57,9 +57,10 @@ function get_scheme()
 <div id='wrapper'>
     <div id='logo'></div>
     <?php
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $valid_do = [
-            'write' => 1,
+            'write'     => 1,
             'db_insert' => 1,
         ];
         $do = isset($_POST['do'], $valid_do[$_POST['do']]) ? $_POST['do'] : false;

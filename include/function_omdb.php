@@ -12,7 +12,7 @@ function search_omdb_by_title($title, int $year)
 
     $hash = hash('sha256', $title . $year);
     $omdb_data = $cache->get('omdb_' . $hash);
-//    if ($omdb_data === false || is_null($omdb_data)) {
+    //    if ($omdb_data === false || is_null($omdb_data)) {
     $url = "http://www.omdbapi.com/?apikey=$apikey&t=" . urlencode(strtolower($title)) . '&y=' . urlencode($year) . '&plot=full';
     $content = fetch($url);
     if (!$content) {
@@ -32,7 +32,7 @@ function search_omdb_by_title($title, int $year)
         }
         $cache->set('omdb_' . $hash, $omdb_data, 604800);
     }
-//    }
+    //    }
 
     return $omdb_data;
 }

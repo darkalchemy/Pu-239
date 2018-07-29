@@ -134,12 +134,9 @@ class CustomAJAXChat extends AJAXChat
                 // Add the default channel as first array element to the channel list
                 // First remove it in case it appeard under a different ID
                 unset($this->_allChannels[$this->getConfig('defaultChannelName')]);
-                $this->_allChannels = array_merge(
-                    [
-                        $this->trimChannelName($this->getConfig('defaultChannelName'), $this->getConfig('contentEncoding')) => $this->getConfig('defaultChannelID'),
-                    ],
-                    $this->_allChannels
-                );
+                $this->_allChannels = array_merge([
+                    $this->trimChannelName($this->getConfig('defaultChannelName'), $this->getConfig('contentEncoding')) => $this->getConfig('defaultChannelID'),
+                ], $this->_allChannels);
             }
         }
 

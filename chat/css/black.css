@@ -14,116 +14,110 @@
 
 /* Buttons */
 #content #bbCodeContainer input, #content #logoutButton, #content #submitButton, #loginForm #loginButton {
-    color      : #f0f0f0;
-    border     : 1px solid #808080;
-    background : #000 -o-linear-gradient(top, #222, #000);
-    background : #000 -webkit-gradient(linear, left top, left bottom, from(#222), to(#000));
-    background : #000 -webkit-linear-gradient(top, #222, #000);
-    background : #000 linear-gradient(to bottom, #222, #000);
+    color: #f0f0f0;
+    border: 1px solid #808080;
+    background: #000 linear-gradient(to bottom, #222, #000);
 }
 
 #content #bbCodeContainer input:hover, #content #logoutButton:hover, #content #submitButton:hover, #loginForm #loginButton:hover {
-    background : #222 -o-linear-gradient(bottom, #222, #000);
-    background : #222 -webkit-gradient(linear, left bottom, left top, from(#222), to(#000));
-    background : #222 -webkit-linear-gradient(bottom, #222, #000);
-    background : #222 linear-gradient(to top, #222, #000);
+    background: #222 linear-gradient(to top, #222, #000);
 }
 
 #content select, #loginForm select, #loginForm input, #content textarea {
-    background-color : #000;
-    color            : #fafafa;
-    border           : 1px solid #808080;
+    background-color: #000;
+    color: #fafafa;
+    border: 1px solid #808080;
 }
 
 /* Status Icon */
 #content #statusIconContainer {
-    background : url('../../images/loading-sprite.png') no-repeat 0 0;
+    background: url('../../images/loading-sprite.png') no-repeat 0 0;
 }
 
 #content #statusIconContainer.waiting {
-    background-position : 0 -22px;
+    background-position: 0 -22px;
 }
 
 #content #statusIconContainer.retrying {
-    background-position : 0 -44px;
+    background-position: 0 -44px;
 }
 
 /* Other Theme Elements */
 .ajax-chat {
-    background-color : #000;
-    color            : #fff;
+    background-color: #000;
+    color: #fff;
 }
 
 .ajax-chat a {
-    color : #fff;
+    color: #fff;
 }
 
 .ajax-chat h1 {
-    color : #fff;
+    color: #fff;
 }
 
 #loginContent input, #loginContent select {
-    background-color : #212121;
-    color            : #fff;
+    background-color: #212121;
+    color: #fff;
 }
 
 #loginContent #errorContainer {
-    color : red;
+    color: red;
 }
 
 #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer, #content textarea {
-    border-color     : gray;
-    background-color : #000;
+    border-color: gray;
+    background-color: #000;
 }
 
 .ajax-chat .popup {
-    background-color : #000;
-    border           : 1px solid gray;
+    background-color: #000;
+    border: 1px solid gray;
 }
 
 #content #colorCodesContainer a {
-    border-color : black;
+    border-color: black;
 }
 
 #content #optionsContainer input {
-    background-color : transparent;
+    background-color: transparent;
 }
 
 #content .rowEven, #helpList dl:nth-child(even), #settingsList dl:nth-child(even) {
-    background-color : #212121;
+    background-color: #212121;
 }
 
 #content .rowOdd, #helpList dl:nth-child(odd), #settingsList dl:nth-child(odd) {
-    background-color : #000;
+    background-color: #000;
 }
 
 #content #chatList .rowOdd.private {
-    background-color : #b83c1d;
+    background-color: #b83c1d;
 }
 
 #content #chatList .rowEven.private {
-    background-color : #c84a24;
+    background-color: #c84a24;
 }
 
 #content #chatList .chatBotErrorMessage {
-    color : red;
+    color: red;
 }
 
 #content #chatList a {
-    color : #1e90ff;
+    color: #1e90ff;
 }
 
 #content #chatList .deleteSelected {
-    border-color : red;
+    border-color: red;
 }
 
 #content #onlineListContainer h3, #content #helpContainer h3, #content #settingsContainer h3 {
-    background-color : #212121;
-    color            : #fff;
+    background-color: #212121;
+    color: #fff;
 }
 
 #content #chatList span.dateTime {
-    font-family : "Lucida Console", Monaco, monospace;
-    font-size   : .7em;
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: .7em;
 }
 

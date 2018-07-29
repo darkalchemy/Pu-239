@@ -6,8 +6,8 @@ use Blocktrail\CryptoJSAES\CryptoJSAES;
 
 class Cookie
 {
-    private $config;
-    private $cache;
+    private   $config;
+    private   $cache;
     protected $key;
 
     /**
@@ -40,15 +40,7 @@ class Cookie
 
         $params = session_get_cookie_params();
         $encrypted = CryptoJSAES::encrypt($value, $this->config['site']['salt']);
-        setcookie(
-            $this->config['cookie_prefix'] . $this->key,
-            base64_encode($encrypted),
-            $expires,
-            $params['path'],
-            $params['domain'],
-            $params['secure'],
-            $params['httponly']
-        );
+        setcookie($this->config['cookie_prefix'] . $this->key, base64_encode($encrypted), $expires, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
     }
 
     /**

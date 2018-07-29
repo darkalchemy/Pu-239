@@ -20,7 +20,7 @@ function irc_update($data)
             $update['seedbonus'] = ($arr['seedbonus'] + $site_config['bonus_irc_per_duration']);
             $update['irctotal'] = ($arr['irctotal'] + $site_config['autoclean_interval']);
             $cache->update_row('user' . $arr['id'], [
-                'irctotal' => $update['irctotal'],
+                'irctotal'  => $update['irctotal'],
                 'seedbonus' => $update['seedbonus'],
             ], $site_config['expires']['user_cache']);
         }

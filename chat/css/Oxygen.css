@@ -14,112 +14,103 @@
 
 /* Buttons */
 #content #bbCodeContainer input, #content #logoutButton, #content #submitButton, #loginForm #loginButton {
-    background : #0066b9 -o-linear-gradient(top, #4795cc 0, #2a6ab8 100%);
-    background : #0066b9 -webkit-gradient(linear, left top, left bottom, color-stop(0, #4795cc), to(#2a6ab8));
-    background : #0066b9 -webkit-linear-gradient(top, #4795cc 0, #2a6ab8 100%);
-    background : #0066b9 linear-gradient(to bottom, #4795cc 0, #2a6ab8 100%);
-    color      : #fff;
-    border     : 1px solid #0066b9;
+    background: #0066b9 linear-gradient(to bottom, #4795cc 0, #2a6ab8 100%);
+    color: #fff;
+    border: 1px solid #0066b9;
 }
 
 #content #bbCodeContainer input:hover, #content #logoutButton:hover, #content #submitButton:hover, #loginForm #loginButton:hover {
-    background-image : -o-linear-gradient(bottom, #4795cc 0, #2a6ab8 100%);
-    background-image : -webkit-gradient(linear, left bottom, left top, color-stop(0, #4795cc), to(#2a6ab8));
-    background-image : -webkit-linear-gradient(bottom, #4795cc 0, #2a6ab8 100%);
-    background-image : linear-gradient(to top, #4795cc 0, #2a6ab8 100%);
+    background-image: linear-gradient(to top, #4795cc 0, #2a6ab8 100%);
 }
 
 #content select, #loginForm select, #loginForm input, #content textarea {
-    color  : #333;
-    border : 1px solid #0066b9;
+    color: #333;
+    border: 1px solid #0066b9;
 }
 
 /* Status Icon */
 #content #statusIconContainer {
-    background : url('../../images/loading-sprite.png') no-repeat 0 0;
+    background: url('../../images/loading-sprite.png') no-repeat 0 0;
 }
 
 #content #statusIconContainer.waiting {
-    background-position : 0 -22px;
+    background-position: 0 -22px;
 }
 
 #content #statusIconContainer.retrying {
-    background-position : 0 -44px;
+    background-position: 0 -44px;
 }
 
 /* Other Theme Elements */
 .ajax-chat {
-    background-color : #f1f1f1;
-    color            : #333;
+    background-color: #f1f1f1;
+    color: #333;
 }
 
 .ajax-chat h1 {
-    color : #333;
+    color: #333;
 }
 
 .ajax-chat a {
-    color : #0066b9;
+    color: #0066b9;
 }
 
 #loginContent input, #loginContent select {
-    background-color : #fff;
-    color            : #333;
+    background-color: #fff;
+    color: #333;
 }
 
 #loginContent #errorContainer {
-    color : red;
+    color: red;
 }
 
 #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer, #content textarea {
-    border-color     : #0066b9;
-    background-color : #fff;
+    border-color: #0066b9;
+    background-color: #fff;
 }
 
 .ajax-chat .popup {
-    background-color : #fff;
-    border           : 1px solid #0066b9;
+    background-color: #fff;
+    border: 1px solid #0066b9;
 }
 
 #content #colorCodesContainer a {
-    border-color : black;
+    border-color: black;
 }
 
 #content #optionsContainer input {
-    background-color : transparent;
+    background-color: transparent;
 }
 
 #content .rowEven, #helpList dl:nth-child(even), #settingsList dl:nth-child(even) {
-    background-color : #f1f1f1;
+    background-color: #f1f1f1;
 }
 
 #content .rowOdd, #helpList dl:nth-child(odd), #settingsList dl:nth-child(odd) {
-    background-color : #e6e7e7;
+    background-color: #e6e7e7;
 }
 
 #content #chatList .rowOdd.private {
-    background-color : #bcc5ff;
+    background-color: #bcc5ff;
 }
 
 #content #chatList .rowEven.private {
-    background-color : #c7d1fc;
+    background-color: #c7d1fc;
 }
 
 #content #chatList .chatBotErrorMessage {
-    color : red;
+    color: red;
 }
 
 #content #chatList a {
-    color : #0066b9;
+    color: #0066b9;
 }
 
 #content #chatList .deleteSelected {
-    border-color : red;
+    border-color: red;
 }
 
 #content #onlineListContainer h3, #content #helpContainer h3, #content #settingsContainer h3 {
-    background : #0066b9 -o-linear-gradient(top, #2a6ab8 0, #4795cc 100%);
-    background : #0066b9 -webkit-gradient(linear, left top, left bottom, color-stop(0, #2a6ab8), to(#4795cc));
-    background : #0066b9 -webkit-linear-gradient(top, #2a6ab8 0, #4795cc 100%);
-    background : #0066b9 linear-gradient(to bottom, #2a6ab8 0, #4795cc 100%);
-    color      : #fff;
+    background: #0066b9 linear-gradient(to bottom, #2a6ab8 0, #4795cc 100%);
+    color: #fff;
 }

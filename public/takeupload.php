@@ -5,6 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class.bencdec.php';
 require_once INCL_DIR . 'function_memcache.php';
 require_once INCL_DIR . 'ann_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 dbconn();
 global $site_config, $fluent, $session, $user_stuffs, $cache;
 
@@ -168,8 +169,8 @@ $offer = (((isset($offer) && is_valid_id($offer)) ? intval($offer) : 0));
 $subs = isset($subs) ? implode(',', $subs) : '';
 $release_group_array = [
     'scene' => 1,
-    'p2p' => 1,
-    'none' => 1,
+    'p2p'   => 1,
+    'none'  => 1,
 ];
 $release_group = isset($release_group, $release_group_array[$release_group]) ? $release_group : 'none';
 if (isset($youtube) && preg_match($youtube_pattern, $youtube, $temp_youtube)) {
@@ -346,45 +347,45 @@ $torrent = str_replace('_', ' ', $torrent);
 $vip = (isset($vip) ? '1' : '0');
 
 $values = [
-    'isbn' => $isbn,
-    'search_text' => searchfield("$shortfname $dname $torrent"),
-    'filename' => $fname,
-    'owner' => $owner_id,
-    'visible' => $visible,
-    'vip' => $vip,
-    'release_group' => $release_group,
-    'newgenre' => $genre,
-    'poster' => $poster,
-    'anonymous' => $anonymous,
-    'allow_comments' => $allow_comments,
-    'info_hash' => $infohash,
-    'name' => $torrent,
-    'size' => $totallen,
-    'numfiles' => count($filelist),
-    'offer' => $offer,
-    'request' => $request,
-    'url' => $url,
-    'subs' => $subs,
-    'descr' => $descr,
-    'ori_descr' => $descr,
-    'description' => $description,
-    'category' => $type,
-    'free' => $free2,
-    'silver' => $silver,
-    'save_as' => $dname,
-    'youtube' => $youtube,
-    'tags' => $tags,
-    'added' => TIME_NOW,
-    'last_action' => TIME_NOW,
-    'mtime' => TIME_NOW,
-    'ctime' => TIME_NOW,
-    'freetorrent' => $freetorrent,
-    'nfo' => $nfo,
+    'isbn'              => $isbn,
+    'search_text'       => searchfield("$shortfname $dname $torrent"),
+    'filename'          => $fname,
+    'owner'             => $owner_id,
+    'visible'           => $visible,
+    'vip'               => $vip,
+    'release_group'     => $release_group,
+    'newgenre'          => $genre,
+    'poster'            => $poster,
+    'anonymous'         => $anonymous,
+    'allow_comments'    => $allow_comments,
+    'info_hash'         => $infohash,
+    'name'              => $torrent,
+    'size'              => $totallen,
+    'numfiles'          => count($filelist),
+    'offer'             => $offer,
+    'request'           => $request,
+    'url'               => $url,
+    'subs'              => $subs,
+    'descr'             => $descr,
+    'ori_descr'         => $descr,
+    'description'       => $description,
+    'category'          => $type,
+    'free'              => $free2,
+    'silver'            => $silver,
+    'save_as'           => $dname,
+    'youtube'           => $youtube,
+    'tags'              => $tags,
+    'added'             => TIME_NOW,
+    'last_action'       => TIME_NOW,
+    'mtime'             => TIME_NOW,
+    'ctime'             => TIME_NOW,
+    'freetorrent'       => $freetorrent,
+    'nfo'               => $nfo,
     'client_created_by' => $tmaker,
 ];
 $id = $fluent->insertInto('torrents')
-        ->values($values)
-        ->execute();
+    ->values($values)
+    ->execute();
 
 if (!$id) {
     $session->set('is-warning', 'upload failed');
@@ -400,18 +401,7 @@ get_torrent_from_hash($infohash);
 $cache->delete('peers_' . $owner_id);
 $peer = new DarkAlchemy\Pu239\Peer();
 $peer->getPeersFromUserId($owner_id);
-
-$cache->deleteMulti([
-    'lastest_tor_',
-    'last5_tor_',
-    'top5_tor_',
-    'scroll_tor_',
-    'slider_tor_',
-    'torrent_poster_count_',
-    'torrent_banner_count_',
-    'backgrounds_',
-    'posters_',
-]);
+clear_image_cache();
 $hashes = $cache->get('hashes_');
 if (!empty($hashes)) {
     foreach ($hashes as $hash) {

@@ -9,7 +9,7 @@ global $site_config, $lang;
 
 $lang = array_merge($lang, load_language('referrers'));
 $HTMLOUT = '';
-if (!isset($_GET['page']) ? $_GET['page'] = 0 : (int) $_GET['page']);
+$_GET['page'] = !isset($_GET['page']) ? 0 : (int) $_GET['page'];
 $res = sql_query('SELECT * FROM referrers') or sqlerr(__FILE__, __LINE__);
 $count = mysqli_num_rows($res);
 if ($count > 0) {
@@ -61,5 +61,5 @@ if ($count > 0) {
 } else {
     $HTMLOUT .= $lang['ref_nothing'];
 }
-////////////////////////// HTML OUTPUT //////////////////////////
+
 echo stdhead($lang['ref_stdhead']) . $HTMLOUT . stdfoot();

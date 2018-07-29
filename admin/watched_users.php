@@ -10,10 +10,6 @@ class_check($class);
 global $CURUSER, $site_config, $lang, $cache;
 
 $lang = array_merge($lang, load_language('ad_watchedusers'));
-$stdfoot = [
-    'js' => [
-    ],
-];
 
 $HTMLOUT = $H1_thingie = $count2 = '';
 $div_link_number = $count = 0;
@@ -34,7 +30,7 @@ if (isset($_GET['remove'])) {
             sql_query('UPDATE users SET watched_user = \'0\', modcomment=' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($remove_me_Ive_been_good)) or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user' . $remove_me_Ive_been_good, [
                 'watched_user' => 0,
-                'modcomment' => $modcomment,
+                'modcomment'   => $modcomment,
             ], $site_config['expires']['user_cache']);
             $count = 1;
             $removed_log = format_username($remove_me_Ive_been_good);
@@ -49,7 +45,7 @@ if (isset($_GET['remove'])) {
                 sql_query('UPDATE users SET watched_user = \'0\', modcomment=' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
                 $cache->update_row('user' . $id, [
                     'watched_user' => 0,
-                    'modcomment' => $modcomment,
+                    'modcomment'   => $modcomment,
                 ], $site_config['expires']['user_cache']);
                 $count = (++$count);
                 $removed_log .= format_username($id);
@@ -94,9 +90,9 @@ if (isset($_GET['add'])) {
         $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $lang['watched_addedwu'] . " $CURUSER[username].\n" . $user['modcomment'];
         sql_query('UPDATE users SET watched_user = ' . TIME_NOW . ', modcomment=' . sqlesc($modcomment) . ', watched_user_reason = ' . sqlesc($watched_user_reason) . ' WHERE id=' . sqlesc($member_whos_been_bad)) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user' . $member_whos_been_bad, [
-            'watched_user' => TIME_NOW,
+            'watched_user'        => TIME_NOW,
             'watched_user_reason' => $watched_user_reason,
-            'modcomment' => $modcomment,
+            'modcomment'          => $modcomment,
         ], $site_config['expires']['user_cache']);
     }
     //=== Check if member was added
@@ -166,4 +162,4 @@ $HTMLOUT .= '
         <input type="submit" class="button_big" value="remove selected' . $lang['watched_removedfrom'] . '" /></td></tr></table>
         </form>';
 
-echo stdhead('' . $lang['watched_users'] . '') . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead('' . $lang['watched_users'] . '') . $HTMLOUT . stdfoot();

@@ -10,17 +10,17 @@ $lang = load_language('global');
 $html = '';
 $lottery_root = ROOT_DIR . 'lottery' . DIRECTORY_SEPARATOR;
 $valid = [
-    'config' => [
+    'config'      => [
         'minclass' => UC_STAFF,
-        'file' => $lottery_root . 'config.php',
+        'file'     => $lottery_root . 'config.php',
     ],
     'viewtickets' => [
         'minclass' => UC_STAFF,
-        'file' => $lottery_root . 'viewtickets.php',
+        'file'     => $lottery_root . 'viewtickets.php',
     ],
-    'tickets' => [
+    'tickets'     => [
         'minclass' => MIN_TO_PLAY,
-        'file' => $lottery_root . 'tickets.php',
+        'file'     => $lottery_root . 'tickets.php',
     ],
 ];
 $do = isset($_GET['action']) && in_array($_GET['action'], array_keys($valid)) ? $_GET['action'] : '';

@@ -10,13 +10,10 @@ global $CURUSER;
 $lang = array_merge(load_language('global'), load_language('announce_history'));
 $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : '');
 $HTMLOUT = "<h2><span class='size_6'>{$lang['annhistory_ann']}</span></h2>";
-$query1 = sprintf(
-    'SELECT m.main_id, m.subject, m.body
+$query1 = sprintf('SELECT m.main_id, m.subject, m.body
             FROM announcement_main AS m 
             LEFT JOIN announcement_process AS p ON m.main_id = p.main_id AND p.user_id = %s 
-            WHERE p.status = 2',
-    sqlesc($CURUSER['id'])
-);
+            WHERE p.status = 2', sqlesc($CURUSER['id']));
 $result = sql_query($query1);
 $ann_list = [];
 while ($x = mysqli_fetch_array($result)) {

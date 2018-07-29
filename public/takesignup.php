@@ -72,24 +72,18 @@ if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
     $ip = getip();
     $url = 'https://www.google.com/recaptcha/api/siteverify';
     $params = [
-        'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
+        'secret'   => $_ENV['RECAPTCHA_SECRET_KEY'],
         'response' => $response,
         'remoteip' => $ip,
     ];
     $query = http_build_query($params);
     $contextData = [
-        'method' => 'POST',
-        'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
-            "Connection: close\r\n" .
-            'Content-Length: ' . strlen($query) . "\r\n",
+        'method'  => 'POST',
+        'header'  => "Content-Type: application/x-www-form-urlencoded\r\n" . "Connection: close\r\n" . 'Content-Length: ' . strlen($query) . "\r\n",
         'content' => $query,
     ];
     $context = stream_context_create(['http' => $contextData]);
-    $result = file_get_contents(
-        $url,
-        false,
-        $context
-    );
+    $result = file_get_contents($url, false, $context);
     $responseKeys = json_decode($result, true);
     if (intval($responseKeys['success']) !== 1) {
         $session->set('is-warning', '[h2]reCAPTCHA was incorrect.[/h2]');
@@ -202,26 +196,26 @@ $dst_in_use = localtime(TIME_NOW + ($time_offset * 3600), true);
 check_banned_emails($email);
 
 $values = [
-    'username' => $wantusername,
+    'username'     => $wantusername,
     'torrent_pass' => make_password(32),
-    'auth' => make_password(32),
-    'apikey' => make_password(32),
-    'passhash' => make_passhash($wantpassword),
-    'birthday' => $birthday,
-    'country' => $country,
-    'gender' => $gender,
-    'stylesheet' => $site_config['stylesheet'],
-    'passhint' => $passhint,
-    'hintanswer' => make_passhash($hintanswer),
-    'email' => $email,
-    'added' => TIME_NOW,
-    'last_access' => TIME_NOW,
-    'time_offset' => $time_offset,
-    'dst_in_use' => $dst_in_use['tm_isdst'],
-    'free_switch' => XBT_TRACKER ? '0' : TIME_NOW + 14 * 86400,
-    'ip' => inet_pton($ip),
-    'status' => $users_count === 0 || (!$site_config['email_confirm'] && $site_config['auto_confirm']) ? 'confirmed' : 'pending',
-    'class' => $users_count === 0 ? UC_MAX : UC_MIN,
+    'auth'         => make_password(32),
+    'apikey'       => make_password(32),
+    'passhash'     => make_passhash($wantpassword),
+    'birthday'     => $birthday,
+    'country'      => $country,
+    'gender'       => $gender,
+    'stylesheet'   => $site_config['stylesheet'],
+    'passhint'     => $passhint,
+    'hintanswer'   => make_passhash($hintanswer),
+    'email'        => $email,
+    'added'        => TIME_NOW,
+    'last_access'  => TIME_NOW,
+    'time_offset'  => $time_offset,
+    'dst_in_use'   => $dst_in_use['tm_isdst'],
+    'free_switch'  => XBT_TRACKER ? '0' : TIME_NOW + 14 * 86400,
+    'ip'           => inet_pton($ip),
+    'status'       => $users_count === 0 || (!$site_config['email_confirm'] && $site_config['auto_confirm']) ? 'confirmed' : 'pending',
+    'class'        => $users_count === 0 ? UC_MAX : UC_MIN,
 ];
 
 if ($users_count === 0) {
@@ -251,7 +245,7 @@ if ($users_count > 0 && $site_config['email_confirm']) {
     $values = [
         'email' => $email,
         'token' => $token,
-        'id' => $alt_id,
+        'id'    => $alt_id,
     ];
     $fluent->insertInto('tokens')
         ->values($values)
@@ -268,11 +262,11 @@ $added = TIME_NOW;
 $subject = 'Welcome';
 $msg = 'Hey there ' . htmlsafechars($wantusername) . "!\n\n Welcome to {$site_config['site_name']}! :clap2: \n\n Please ensure you're connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\ncheers {$site_config['site_name']} staff.\n";
 $values = [
-    'sender' => 0,
-    'subject' => $subject,
+    'sender'   => 0,
+    'subject'  => $subject,
     'receiver' => $user_id,
-    'msg' => $msg,
-    'added' => $added,
+    'msg'      => $msg,
+    'added'    => $added,
 ];
 
 $fluent->insertInto('messages')

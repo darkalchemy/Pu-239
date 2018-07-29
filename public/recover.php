@@ -14,10 +14,6 @@ $lang = array_merge(load_language('global'), load_language('recover'), load_lang
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
 
-$stdfoot = [
-    'js' => [
-    ],
-];
 $HTMLOUT = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!mkglobal('email')) {
@@ -32,24 +28,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $ip = getip();
         $url = 'https://www.google.com/recaptcha/api/siteverify';
         $params = [
-            'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
+            'secret'   => $_ENV['RECAPTCHA_SECRET_KEY'],
             'response' => $response,
             'remoteip' => $ip,
         ];
         $query = http_build_query($params);
         $contextData = [
-            'method' => 'POST',
-            'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
-                "Connection: close\r\n" .
-                'Content-Length: ' . strlen($query) . "\r\n",
+            'method'  => 'POST',
+            'header'  => "Content-Type: application/x-www-form-urlencoded\r\n" . "Connection: close\r\n" . 'Content-Length: ' . strlen($query) . "\r\n",
             'content' => $query,
         ];
         $context = stream_context_create(['http' => $contextData]);
-        $result = file_get_contents(
-            $url,
-            false,
-            $context
-        );
+        $result = file_get_contents($url, false, $context);
         $responseKeys = json_decode($result, true);
         if (intval($responseKeys['success']) !== 1) {
             stderr('Error', 'reCAPTCHA Failed');
@@ -73,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $values = [
         'email' => $email,
         'token' => $token,
-        'id' => $alt_id,
+        'id'    => $alt_id,
     ];
     $fluent->insertInto('tokens')
         ->values($values)
@@ -176,5 +166,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </table>
         </form>
     </div>";
-    echo stdhead($lang['head_recover']) . $HTMLOUT . stdfoot($stdfoot);
+    echo stdhead($lang['head_recover']) . $HTMLOUT . stdfoot();
 }

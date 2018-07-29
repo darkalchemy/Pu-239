@@ -26,10 +26,6 @@ if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $CURUSER['class'] >= UC_
     die();
 }
 $lang = array_merge(load_language('global'), load_language('edit'));
-$stdhead = [
-    'css' => [
-    ],
-];
 $stdfoot = [
     'js' => [
         get_file_name('upload_js'),
@@ -307,4 +303,4 @@ $body .= "
 $HTMLOUT .= main_table($body, null, 'top20') . '
     </form>';
 
-echo stdhead("{$lang['edit_stdhead']} '{$row['name']}'", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead("{$lang['edit_stdhead']} '{$row['name']}'") . wrapper($HTMLOUT) . stdfoot($stdfoot);
