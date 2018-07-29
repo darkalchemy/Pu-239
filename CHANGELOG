@@ -1,9 +1,10 @@
 29 Jul 2018
+fix: customsmilie_update.php
 update: drop fk constraint on bannedemails
 update: site_config
 fix: redis flush cache flushing all databases instead of just redis site db
 update: site_config
-fix: update_torrents.php
+fix: torrents_update.php
 update: database files
 
 28 Jul 2018

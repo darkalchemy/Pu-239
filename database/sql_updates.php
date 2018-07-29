@@ -280,7 +280,7 @@ $sql_updates = [
         'id'    => 1532859807,
         'info'  => 'Drop FK Constraint on bannedemails',
         'date'  => '29 Jul, 2018',
-        'query' => 'ALTER TABLE `bannedemails` DROP FOREIGN KEY IF EXISTS `bannedemails_ibfk_1`',
+        'query' => 'ALTER TABLE `bannedemails` DROP FOREIGN KEY `bannedemails_ibfk_1`',
         'flush' => false,
     ],
 ];
