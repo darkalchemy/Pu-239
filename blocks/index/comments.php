@@ -48,15 +48,14 @@ if (!$comments) {
                         <tr>
                             <td colspan="5">No Comments Found</td>
                         </tr>';
-}
+} else {
+    foreach ($comments as $comment) {
+        $user = $torrent = $id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = '';
+        extract($comment);
+        $user = $anonymous === 'yes' ? 'Anonymous' : format_username($user);
+        $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster' />";
 
-foreach ($comments as $comment) {
-    $user = $torrent = $id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = '';
-    extract($comment);
-    $user = $anonymous === 'yes' ? 'Anonymous' : format_username($user);
-    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster' />";
-
-    $body .= "
+        $body .= "
                         <tr>
                             <td class='has-text-centered'>
                                 <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/$image' class='tooltipper' alt='$cat' title='$cat' />
@@ -89,6 +88,7 @@ foreach ($comments as $comment) {
                             <td class='has-text-centered'>" . get_date($added, 'LONG') . "</td>
                             <td class='has-text-centered'>" . number_format($user_likes) . '</td>
                         </tr>';
+    }
 }
 
 $text = main_table($body, $header);
