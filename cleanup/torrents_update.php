@@ -2,45 +2,66 @@
 
 /**
  * @param $data
+ *
+ * @throws Exception
  */
 function torrents_update($data)
 {
-    global $queries;
+    global $fluent;
 
     set_time_limit(1200);
     ignore_user_abort(true);
+    $i = 1;
+    $torrents = $fluent->from('torrent')
+        ->select(null)
+        ->select('seeders')
+        ->select('leechers')
+        ->select('comments')
+        ->orderBy('id');
 
-    $tsql = 'SELECT t.id, t.seeders, (
-    SELECT COUNT(*)
-    FROM peers
-    WHERE torrent = t.id AND seeder = "yes"
-    ) AS seeders_num,
-    t.leechers, (
-    SELECT COUNT(*)
-    FROM peers
-    WHERE torrent = t.id
-    AND seeder = "no"
-    ) AS leechers_num,
-    t.comments, (
-    SELECT COUNT(*)
-    FROM comments
-    WHERE torrent = t.id
-    ) AS comments_num
-    FROM torrents AS t
-    ORDER BY t.id ASC';
-    $updatetorrents = [];
-    $tq = sql_query($tsql) or sqlerr(__FILE__, __LINE__);
-    while ($t = mysqli_fetch_assoc($tq)) {
-        if ($t['seeders'] != $t['seeders_num'] || $t['leechers'] != $t['leechers_num'] || $t['comments'] != $t['comments_num']) {
-            $updatetorrents[] = '(' . $t['id'] . ', ' . $t['seeders_num'] . ', ' . $t['leechers_num'] . ', ' . $t['comments_num'] . ')';
+    foreach ($torrents as $torrent) {
+        $i++;
+        $seeders = $fluent->from('peers')
+            ->select(null)
+            ->select('COUNT(*) AS count')
+            ->where('seeder = ?', 'yes')
+            ->where('torrent = ?', $torrent['id'])
+            ->fetch('count');
+        $torrent['seeders_num'] = $seeders;
+
+        $i++;
+        $leechers = $fluent->from('peers')
+            ->select(null)
+            ->select('COUNT(*) AS count')
+            ->where('seeder = ?', 'no')
+            ->where('torrent = ?', $torrent['id'])
+            ->fetch('count');
+        $torrent['leechers_num'] = $leechers;
+
+        $i++;
+        $comments = $fluent->from('comments')
+            ->select(null)
+            ->select('COUNT(*) AS count')
+            ->where('torrent = ?', $torrent['id'])
+            ->fetch('count');
+        $torrent['comments_num'] = $comments;
+
+        if ($torrent['seeders'] != $torrent['seeders_num'] || $torrent['leechers'] != $torrent['leechers_num'] || $torrent['comments'] != $torrent['comments_num']) {
+            $i++;
+            $set = [
+                'seeders' => $torrent['seeders_num'],
+                'leechers' => $torrent['leechers_num'],
+                'comments' => $torrent['comments_num'],
+            ];
+            $fluent->update('torrents')
+                ->set($set)
+                ->where('id = ?', $torrent['id'])
+                ->execute();
         }
     }
-    ((mysqli_free_result($tq) || (is_object($tq) && (get_class($tq) === 'mysqli_result'))) ? true : false);
-    if (!empty($updatetorrents) && count($updatetorrents)) {
-        sql_query('INSERT INTO torrents (id, seeders, leechers, comments) VALUES ' . implode(', ', $updatetorrents) . ' ON DUPLICATE KEY UPDATE seeders = VALUES(seeders), leechers = VALUES(leechers), comments = VALUES(comments)') or sqlerr(__FILE__, __LINE__);
-    }
-    unset($updatetorrents);
-    if ($data['clean_log'] && $queries > 0) {
-        write_log("Torrent Cleanup: Complete using $queries queries");
+
+
+    if ($data['clean_log'] && $i > 0) {
+        write_log("Torrent Cleanup: Complete using $i queries");
     }
 }

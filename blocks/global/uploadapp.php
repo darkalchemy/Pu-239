@@ -5,13 +5,12 @@ global $CURUSER, $site_config, $lang, $fluent, $cache;
 if ($site_config['uploadapp_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $newapp = $cache->get('new_uploadapp_');
     if ($newapp === false || is_null($newapp)) {
-        $res = $fluent->from('uploadapp')
+        $newapp = $fluent->from('uploadapp')
             ->select(null)
             ->select('COUNT(id) AS count')
             ->where('status = ?', 'pending')
-            ->fetch();
+            ->fetch('count');
 
-        $newapp = $res['count'];
         $cache->set('new_uploadapp_', $newapp, $site_config['expires']['alerts']);
     }
     if ($newapp > 0) {

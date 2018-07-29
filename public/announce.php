@@ -284,14 +284,14 @@ if ($left > 0 && $torrent['vip'] == 1 && $user['class'] < UC_VIP) {
 }
 
 if (!isset($self)) {
-    $row = $fluent->from('peers')
+    $count = $fluent->from('peers')
         ->select(null)
         ->select('COUNT(*) AS count')
         ->where('torrent = ?', $torrentid)
         ->where('torrent_pass = ?', $torrent_pass)
-        ->fetch();
+        ->fetch('count');
 
-    if ($row['count'] >= 3) {
+    if ($count >= 3) {
         err('Connection limit exceeded!');
     }
 } else {

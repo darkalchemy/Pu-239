@@ -200,10 +200,10 @@ $sql_updates = [
         'flush' => false,
     ],
     [
-        'id'    => 1532232562,
+        'id'    => 1532232563,
         'info'  => 'Update initial value',
         'date'  => '22 Jul, 2018',
-        'query' => 'ALTER TABLE `user_blocks` MODIFY COLUMN `userdetails_page` int(11) NOT NULL DEFAULT "2147418111"',
+        'query' => 'ALTER TABLE `user_blocks` MODIFY COLUMN `userdetails_page` int(11) unsigned NOT NULL DEFAULT "2147418111"',
         'flush' => true,
     ],
     [
@@ -242,4 +242,3 @@ $sql_updates = [
         'flush' => false,
     ],
 ];
-

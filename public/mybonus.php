@@ -1651,8 +1651,8 @@ $at = $fluent->from('peers')
     ->where('seeder = ?', 'yes')
     ->where('connectable = ?', 'yes')
     ->where('userid = ?', $CURUSER['id'])
-    ->fetch();
-$at = $at['count'];
+    ->fetch('count');
+
 $at = $at >= $bmt ? $bmt : $at;
 
 $atform = number_format($at);

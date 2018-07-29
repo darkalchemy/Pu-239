@@ -1,6 +1,9 @@
+29 Jul 2018
+fix: update_torrents.php
+update: database files
+
 28 Jul 2018
 fix: card table background
-add: copyright to files
 fix: nfo display viewnfo.php
 update: clean image caches when poster added to torrent
 remove: XBT Cleanup Items

@@ -5,13 +5,12 @@ global $CURUSER, $site_config, $lang, $fluent, $cache;
 if ($site_config['staffmsg_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $answeredby = $cache->get('staff_mess_');
     if ($answeredby === false || is_null($answeredby)) {
-        $res = $fluent->from('staffmessages')
+        $answeredby = $fluent->from('staffmessages')
             ->select(null)
             ->select('COUNT(id) AS count')
             ->where('answeredby = 0')
-            ->fetch();
+            ->fetch('count');
 
-        $answeredby = $res['count'];
         $cache->set('staff_mess_', $answeredby, $site_config['expires']['alerts']);
     }
     if ($answeredby > 0) {

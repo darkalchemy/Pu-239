@@ -2332,7 +2332,7 @@ CREATE TABLE `user_blocks` (
   `userid` int(10) unsigned NOT NULL,
   `index_page` int(10) unsigned NOT NULL DEFAULT '16777215',
   `global_stdhead` int(10) unsigned NOT NULL DEFAULT '1023',
-  `userdetails_page` int(11) NOT NULL DEFAULT '2147418111',
+  `userdetails_page` int(11) unsigned NOT NULL DEFAULT '2147418111',
   UNIQUE KEY `userid` (`userid`),
   CONSTRAINT `user_blocks_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -2652,4 +2652,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-27 21:28:07
+-- Dump completed on 2018-07-29 10:09:10

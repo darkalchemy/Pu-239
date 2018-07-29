@@ -5,13 +5,12 @@ global $CURUSER, $site_config, $lang, $fluent, $cache;
 if ($site_config['bug_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $bugs = $cache->get('bug_mess_');
     if ($bugs === false || is_null($bugs)) {
-        $res = $fluent->from('bugs')
+        $bugs = $fluent->from('bugs')
             ->select(null)
             ->select('COUNT(id) AS count')
             ->where('status = ?', 'na')
-            ->fetch();
+            ->fetch('count');
 
-        $bugs = $res['count'];
         $cache->set('bug_mess_', $bugs, $site_config['expires']['alerts']);
     }
     if ($bugs > 0) {
