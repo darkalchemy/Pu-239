@@ -241,4 +241,18 @@ $sql_updates = [
         'query' => "DELETE FROM cleanup WHERE clean_title LIKE '%xbt%'",
         'flush' => false,
     ],
+    [
+        'id'    => 1532859802,
+        'info'  => 'Add time_adjust to site_config',
+        'date'  => '29 Jul, 2018',
+        'query' => "INSERT INTO `site_config` (name, value, description) VALUES ('time_adjust', 0, 'The number of minutes to adjust site from server time. Default 0: site time === server time')",
+        'flush' => false,
+    ],
+    [
+        'id'    => 1532859803,
+        'info'  => 'Add time_offset to site_config',
+        'date'  => '29 Jul, 2018',
+        'query' => "INSERT INTO `site_config` (name, value, description) VALUES ('time_offset', 0, 'The number of hours to adjust site from server time. Default 0: site time === server time')",
+        'flush' => 'site_config',
+    ],
 ];

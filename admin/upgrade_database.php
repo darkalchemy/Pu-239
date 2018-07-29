@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $session->set('is-success', "Query #$id ran without error");
         } else {
-            $session->set('is-danger', "[p]Query #$id failed to run, try to run manually[/p][p]" . htmlsafechars($sql) . '[/p]');
+            $session->set('is-danger', "[p]Query #$id failed to run, try to run manually[/p][p]" . htmlspecialchars($sql) . '[/p]');
         }
     }
 }
