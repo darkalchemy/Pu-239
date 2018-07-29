@@ -16,7 +16,6 @@ function customsmilie_update($data)
     $res = $fluent->from('users')
         ->select(null)
         ->select('id')
-        ->select('name')
         ->select('modcomment')
         ->where('smile_until < ?', $dt)
         ->where('smile_until != 0');
