@@ -27,8 +27,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sql = 'INSERT INTO database_updates (id, query) VALUES (' . sqlesc($id) . ', ' . sqlesc($sql) . ')';
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
             if ($flush === true) {
-                $cache->flush();
-                $session->set('is-success', 'You flushed the ' . ucfirst($_ENV['CACHE_DRIVER']) . ' cache');
+                if (extension_loaded('redis') && $_ENV['CACHE_DRIVER'] === 'redis') {
+                    $client = new \Redis();
+                    $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
+                    $client->select($_ENV['REDIS_DATABASE']);
+                    $client->flushDB();
+                    $session->set('is-success', 'You flushed the Redis db' . $_ENV['REDIS_DATABASE'] . ' cache');
+                } else {
+                    $cache->flush();
+                    $session->set('is-success', 'You flushed the ' . ucfirst($_ENV['CACHE_DRIVER']) . ' cache');
+                }
             } elseif ($flush === false) {
                 // do nothing
             } else {
