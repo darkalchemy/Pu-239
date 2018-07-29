@@ -35,7 +35,7 @@ function customsmilie_update($data)
         ];
         $set = [
             'smile_until' => 0,
-            'modcomment' => $modcom,
+            'modcomment' => $modcomment,
         ];
         $i++;
         $fluent->update('users')
