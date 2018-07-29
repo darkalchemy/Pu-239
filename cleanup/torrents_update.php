@@ -14,6 +14,7 @@ function torrents_update($data)
     $i = 1;
     $torrents = $fluent->from('torrents')
         ->select(null)
+        ->select('id')
         ->select('seeders')
         ->select('leechers')
         ->select('comments')
