@@ -23,6 +23,7 @@ function customsmilie_update($data)
     $subject = 'Custom smilies expired.';
     $msg = "Your Custom smilies have timed out and has been auto-removed by the system. If you would like to have them again, exchange some Karma Bonus Points again. Cheers!\n";
     $i = 0;
+    $values = [];
     foreach ($res as $arr) {
         $modcomment = $arr['modcomment'];
         $modcomment = get_date($dt, 'DATE', 1) . " - Custom smilies Automatically Removed By System.\n" . $modcomment;

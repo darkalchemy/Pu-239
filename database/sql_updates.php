@@ -290,4 +290,11 @@ $sql_updates = [
         'query' => 'ALTER TABLE `bans` DROP FOREIGN KEY `bans_ibfk_1`',
         'flush' => false,
     ],
+    [
+        'id'    => 1532859809,
+        'info'  => 'Drop FK Constraint on dbbackup',
+        'date'  => '29 Jul, 2018',
+        'query' => 'ALTER TABLE `dbbackup` DROP FOREIGN KEY `dbbackup_ibfk_1`',
+        'flush' => false,
+    ],
 ];

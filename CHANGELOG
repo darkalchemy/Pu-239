@@ -1,4 +1,5 @@
 29 Jul 2018
+update: drop fk contstaint on dbbackup
 update: drop fk constraint on bans
 fix: customsmilie_update.php
 update: drop fk constraint on bannedemails
