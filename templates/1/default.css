@@ -181,7 +181,6 @@ pre {
     -o-tab-size: 4;
     tab-size: 4;
     overflow: auto;
-    width: calc(100vw - 1.25em);
     margin-left: auto !important;
     margin-right: auto !important;
 }
@@ -190,8 +189,6 @@ pre {
     display: block;
     unicode-bidi: embed;
     white-space: pre-wrap;
-    white-space: -moz-pre-wrap;
-    white-space: -o-pre-wrap;
     font-family: "Lucida Console", Monaco, monospace;
 }
 

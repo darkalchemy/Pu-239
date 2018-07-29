@@ -311,4 +311,18 @@ $sql_updates = [
         'query' => "UPDATE `site_config` SET `value` = 0, `description` = 'Proxy hot-linked images locally? Optimize and store external images locally? This allows external images to be cached in users browser.' WHERE `name` =  'image_proxy'",
         'flush' => 'site_settings_',
     ],
+    [
+        'id' => 1532859812,
+        'info' => 'Remove time_adjust from site_config',
+        'date' => '29 Jul, 2018',
+        'query' => "DELETE FROM `site_config` WHERE `name`  = 'time_adjust'",
+        'flush' => false,
+    ],
+    [
+        'id' => 1532859813,
+        'info' => 'Remove time_offset from site_config',
+        'date' => '29 Jul, 2018',
+        'query' => "DELETE FROM `site_config` WHERE `name` = 'time_offset'",
+        'flush' => 'site_settings_',
+    ],
 ];

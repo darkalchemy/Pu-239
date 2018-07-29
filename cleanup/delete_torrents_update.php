@@ -47,7 +47,7 @@ function delete_torrents_update($data)
 
     $count = count($values);
     if ($count > 0) {
-        $i++;
+        ++$i;
         $fluent->insertInto('messages')
             ->values($values)
             ->execute();

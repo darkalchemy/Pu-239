@@ -1,4 +1,5 @@
 29 Jul 2018
+remove: time_adjust and time_offest from site_config
 update: inner join on torrents comments.php
 fix: when empty array comments.php 
 update: site_config
