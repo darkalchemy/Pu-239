@@ -5,6 +5,7 @@
  */
 function userhits_update($data)
 {
+    dbconn();
     global $queries;
 
     set_time_limit(1200);

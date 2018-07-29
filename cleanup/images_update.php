@@ -11,6 +11,7 @@ function images_update($data)
     require_once INCL_DIR . 'function_tvmaze.php';
     require_once INCL_DIR . 'function_imdb.php';
     require_once INCL_DIR . 'function_bluray.php';
+    dbconn();
     global $fluent, $cache;
 
     set_time_limit(1200);

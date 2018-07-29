@@ -5,6 +5,7 @@
  */
 function happyhour_update($data)
 {
+    dbconn();
     global $site_config, $queries;
 
     set_time_limit(1200);

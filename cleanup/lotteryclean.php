@@ -5,6 +5,7 @@
  */
 function lotteryclean($data)
 {
+    dbconn();
     global $queries, $cache;
 
     set_time_limit(1200);

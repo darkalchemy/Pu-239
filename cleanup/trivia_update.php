@@ -5,6 +5,7 @@
  */
 function trivia_update($data)
 {
+    dbconn();
     global $queries, $fluent, $cache;
 
     set_time_limit(1200);

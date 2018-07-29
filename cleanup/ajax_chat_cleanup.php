@@ -5,6 +5,7 @@
  */
 function ajax_chat_cleanup($data)
 {
+    dbconn();
     global $site_config, $queries;
 
     require_once INCL_DIR . 'user_functions.php';

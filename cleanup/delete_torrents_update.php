@@ -6,6 +6,7 @@
 function delete_torrents_update($data)
 {
     require_once INCL_DIR . 'function_memcache.php';
+    dbconn();
     global $site_config, $cache, $fluent, $torrent_stuffs;
 
     set_time_limit(1200);

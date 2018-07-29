@@ -7,6 +7,7 @@
  */
 function tvmaze_update($data)
 {
+    dbconn();
     global $fluent;
 
     $max = $fluent->from('tvmaze')

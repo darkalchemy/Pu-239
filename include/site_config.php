@@ -310,4 +310,4 @@ $site_config['notifications'] = [
 ];
 
 $site_config['video_banners'] = [];
-$site_config['banners'] = [];
+$site_config['banners'] = ['banner.png'];

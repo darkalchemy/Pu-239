@@ -5,6 +5,7 @@
  */
 function torrents_normalize($data)
 {
+    dbconn();
     global $site_config, $queries;
 
     set_time_limit(1200);

@@ -7,6 +7,7 @@
  */
 function customsmilie_update($data)
 {
+    dbconn();
     global $site_config, $cache, $fluent;
 
     set_time_limit(1200);

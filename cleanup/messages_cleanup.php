@@ -5,6 +5,7 @@
  */
 function pms_cleanup($data)
 {
+    dbconn();
     global $site_config, $queries, $cache;
 
     require_once INCL_DIR . 'user_functions.php';

@@ -1,4 +1,6 @@
 29 Jul 2018
+add: default banner.jpp
+add: dbconn() to all cleanup scripts
 remove: time_adjust and time_offest from site_config
 update: inner join on torrents comments.php
 fix: when empty array comments.php 

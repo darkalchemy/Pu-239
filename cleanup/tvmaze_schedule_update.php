@@ -8,6 +8,7 @@
 function tvmaze_schedule_update($data)
 {
     require_once INCL_DIR . 'function_tvmaze.php';
+    dbconn();
     global $cache;
 
     $tvmaze_data = get_schedule(false);
