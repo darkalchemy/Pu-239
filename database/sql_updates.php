@@ -301,7 +301,14 @@ $sql_updates = [
         'id' => 1532859810,
         'info' => 'Update Optimize DB Cleanup',
         'date' => '29 Jul, 2018',
-        'query' => "UPDATE cleanup SET clean_increment = 2592000, clean_title = 'Optimize DB' WHERE function_name = 'optimizedb'",
+        'query' => "UPDATE `cleanup` SET `clean_increment` = 2592000, `clean_title` = 'Optimize DB' WHERE `function_name` = 'optimizedb'",
         'flush' => false,
+    ],
+    [
+        'id' => 1532859811,
+        'info' => 'Update site_config',
+        'date' => '29 Jul, 2018',
+        'query' => "UPDATE `site_config` SET `value` = 0, `description` = 'Proxy hot-linked images locally? Optimize and store external images locally? This allows external images to be cached in users browser.'",
+        'flush' => 'site_settings_',
     ],
 ];
