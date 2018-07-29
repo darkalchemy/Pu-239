@@ -308,7 +308,7 @@ $sql_updates = [
         'id' => 1532859811,
         'info' => 'Update site_config',
         'date' => '29 Jul, 2018',
-        'query' => "UPDATE `site_config` SET `value` = 0, `description` = 'Proxy hot-linked images locally? Optimize and store external images locally? This allows external images to be cached in users browser.'",
+        'query' => "UPDATE `site_config` SET `value` = 0, `description` = 'Proxy hot-linked images locally? Optimize and store external images locally? This allows external images to be cached in users browser.' WHERE `name` =  'image_proxy'",
         'flush' => 'site_settings_',
     ],
 ];
