@@ -36,7 +36,7 @@ $foo = [
         ],
         [
             'text' => 'HTTPS Announce Url',
-            'input' => 'config[announce_https]',
+            'input' => 'config[https_announce]',
             'info' => 'Your HTTPS announce url. ie. https://pu-239.pw',
             'placeholder' => 'https://Pu-239.pw',
         ],

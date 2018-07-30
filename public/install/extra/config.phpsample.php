@@ -24,16 +24,10 @@ $site_config['image_proxy_key'] = [
 // Site Bot
 $site_config['chatBotName'] = '#bot_username';
 
-// XBT or PHP announce
-if (XBT_TRACKER) {
-    $site_config['xbt_prefix'] = '#announce_urls:2710/';
-    $site_config['xbt_suffix'] = '/announce';
-    $site_config['announce_urls'][] = '#announce_urls:2710/announce';
-} else {
-    $site_config['announce_urls'] = [];
-    $site_config['announce_urls'][] = '#announce_http/announce.php';
-    $site_config['announce_urls'][] = '#announce_https/announce.php';
-}
+$site_config['announce_urls'] = [];
+$site_config['announce_urls'][] = '#announce_http/announce.php';
+$site_config['announce_urls'][] = '#https_announce/announce.php';
+
 // Email for sender/return path.
 $site_config['site_email'] = '#site_email';
 $site_config['site_name'] = '#site_name';
