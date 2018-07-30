@@ -5,6 +5,7 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'pager_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+dbconn();
 global $CURUSER, $lang, $fluent, $site_config, $cache, $session;
 
 $lang = array_merge($lang);
