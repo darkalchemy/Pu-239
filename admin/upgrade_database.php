@@ -50,6 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $session->set('is-danger', "[p]Query #$id failed to run, try to run manually[/p][p]" . htmlspecialchars($sql) . '[/p]');
         }
+    } elseif (isset($qid) && $submit === 'Ignore Query') {
+        $sql = 'INSERT INTO database_updates (id, query) VALUES (' . sqlesc($id) . ', ' . sqlesc($sql) . ')';
+        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        $session->set('is-success', "Query #$id has been ignored");
     }
 }
 
@@ -106,8 +110,16 @@ if (file_exists(DATABASE_DIR)) {
 
         $button = "
                 <form action='{$site_config['baseurl']}/staffpanel.php?tool=upgrade_database' method='post'>
-                    <input type='hidden' name='id' value={$update['id']}>
-                    <input class='button is-small' type='submit' name='submit' value='Run Query' />
+                    <div class='level-center'>
+                        <span class='margin10'>
+                            <input type='hidden' name='id' value={$update['id']}>
+                            <input class='button is-small' type='submit' name='submit' value='Run Query' />
+                        </span>
+                        <span class='margin10'>
+                            <input type='hidden' name='id' value={$update['id']}>
+                            <input class='button is-small' type='submit' name='submit' value='Ignore Query' />
+                        </span
+                    </div>
                 </form>";
         $body .= "
         <tr>
