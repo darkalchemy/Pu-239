@@ -1,4 +1,5 @@
 30 Jul 2018
+fix: ignore query upgrade_database.php
 update: delete session for disabled users
 add: button to ignore query on database update
 update: allow staff site access when site set offline

@@ -5,7 +5,6 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'pager_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-dbconn();
 global $CURUSER, $lang, $fluent, $site_config, $cache, $session;
 
 $lang = array_merge($lang);
@@ -52,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $session->set('is-danger', "[p]Query #$id failed to run, try to run manually[/p][p]" . htmlspecialchars($sql) . '[/p]');
         }
     } elseif (isset($qid) && $submit === 'Ignore Query') {
+        $sql = $sql_updates[$qid]['query'];
         $sql = 'INSERT INTO database_updates (id, query) VALUES (' . sqlesc($id) . ', ' . sqlesc($sql) . ')';
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $session->set('is-success', "Query #$id has been ignored");
