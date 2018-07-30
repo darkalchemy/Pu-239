@@ -43,8 +43,8 @@ function backupdb($data)
     $bdir = $site_config['backup_dir'];
     $filename = 'db_' . date('m_d_y_H', TIME_NOW) . '.sql';
 
-    $c1 = "mysqldump -h $host -u{$user} -p{$pass} $db -d > $bdir/db_structure.sql";
-    $c2 = "mysqldump -h $host -u{$user} -p{$pass} $db " . tables('peers') . " | bzip2 -9 > $bdir/{$filename}.bz2";
+    $c1 = "mysqldump -h $host -u{$user} -p" . quotemeta($pass) . " $db -d > $bdir/db_structure.sql";
+    $c2 = "mysqldump -h $host -u{$user} -p" . quotemeta($pass) . " $db " . tables('peers') . " | bzip2 -9 > $bdir/{$filename}.bz2";
 
     system($c1);
     exec($c2);
@@ -53,7 +53,7 @@ function backupdb($data)
     $tables = explode(' ', tables());
     foreach ($tables as $table) {
         $filename = "tbl_{$table}_" . date('m_d_y_H', TIME_NOW) . '.sql';
-        $c2 = "mysqldump -h $host -u{$user} -p{$pass} $db $table | bzip2 -cq9 > $bdir/{$filename}.bz2";
+        $c2 = "mysqldump -h $host -u{$user} -p" . quotemeta($pass) . " $db $table | bzip2 -cq9 > $bdir/{$filename}.bz2";
         system($c2);
     }
 
