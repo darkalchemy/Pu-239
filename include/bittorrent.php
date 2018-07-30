@@ -256,11 +256,6 @@ function userlogin()
     if (isset($CURUSER)) {
         return true;
     }
-    if (!$site_config['site_online']) {
-        $session->destroy();
-        header('Location: login.php');
-        die();
-    }
 
     $id = $user_stuffs->getUserId();
     if (!$id) {
@@ -277,6 +272,12 @@ function userlogin()
         $session->destroy();
         $returnto = !empty($_SERVER['REQUEST_URI']) ? '?returnto=' . urlencode($_SERVER['REQUEST_URI']) : '';
         header('Location: login.php' . $returnto);
+        die();
+    }
+
+    if (!$site_config['site_online'] && $users_data['class'] < UC_STAFF) {
+        $session->destroy();
+        header('Location: login.php');
         die();
     }
 

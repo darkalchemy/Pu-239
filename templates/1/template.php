@@ -14,8 +14,13 @@ function stdhead($title = '', $stdhead = null)
     global $CURUSER, $site_config, $lang, $free, $querytime, $BLOCKS, $CURBLOCK, $mood, $session;
 
     if (!$site_config['site_online']) {
-        die('Site is down for maintenance, please check back again later... thanks<br>');
+        if (!empty($CURUSER) && $CURUSER['class'] < UC_STAFF) {
+            die('Site is down for maintenance, please check back again later... thanks<br>');
+        } elseif (!empty($CURUSER) && $CURUSER['class'] >= UC_STAFF) {
+            $session->set('is-danger', 'Site is currently offline, only staff can access site.');
+        }
     }
+
     if (empty($title)) {
         $title = $site_config['site_name'];
     } else {

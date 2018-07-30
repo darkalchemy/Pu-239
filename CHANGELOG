@@ -1,4 +1,6 @@
 30 Jul 2018
+update: allow staff site access when site set offline
+remove: bad banner
 fix: get lang before use of lang
 fix: install set correct announce https url
 fix: left join when no topic forum_posts.php
