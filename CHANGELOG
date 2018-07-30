@@ -1,4 +1,6 @@
 30 Jul 2018
+move: breadcrumbs() to its own file
+update: several cleanup scripts to fluentPDO
 fix: incorrect lang variable name used modtask.php
 fix: typo delete_torrents_update.php
 update: return query ip ajax chat

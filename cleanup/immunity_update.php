@@ -5,43 +5,58 @@
  *
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
-function hitrun_xbt_update($data)
+function immunity_update($data)
 {
-    dbconn();
-    global $site_config, $queries, $cache;
+    global $site_config, $cache, $fluent;
 
     set_time_limit(1200);
     ignore_user_abort(true);
+    $dt = TIME_NOW;
 
-    $res = sql_query('SELECT id, modcomment FROM users WHERE immunity > 1 AND immunity < ' . TIME_NOW) or sqlerr(__FILE__, __LINE__);
-    $msgs_buffer = $users_buffer = [];
-    if (mysqli_num_rows($res) > 0) {
-        $dt = TIME_NOW;
-        $subject = 'Immunity expired.';
-        $msg = "Your immunity has expired and has been auto-removed by the system.\n";
-        while ($arr = mysqli_fetch_assoc($res)) {
-            $modcomment = $arr['modcomment'];
-            $modcomment = get_date($dt, 'DATE', 1) . " - Immunity Removed By System.\n" . $modcomment;
-            $modcom = sqlesc($modcomment);
-            $msgs_buffer[] = '(0,' . $arr['id'] . ',' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ' )';
-            $users_buffer[] = '(' . $arr['id'] . ', \'0\', ' . $modcom . ')';
-            $cache->update_row('user' . $arr['id'], [
-                'immunity' => 0,
-                'modcomment' => $modcomment,
-            ], $site_config['expires']['user_cache']);
-            $cache->increment('inbox_' . $arr['id']);
-        }
-        $count = count($users_buffer);
-        if ($count > 0) {
-            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
-            sql_query('INSERT INTO users (id, immunity, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE immunity = VALUES(immunity), modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
-        }
-        if ($data['clean_log']) {
-            write_log('Cleanup - Removed Immunity from ' . $count . ' members');
-        }
-        unset($users_buffer, $msgs_buffer, $count);
+    $res = $fluent->from('users')
+        ->select(null)
+        ->select('id')
+        ->select('modcomment')
+        ->where('immunity < ?', $dt)
+        ->where('immunity > 1');
+
+    $subject = 'Immunity status expired.';
+    $msg = "Your Immunity status has timed out and has been auto-removed by the system. If you would like to have it again, exchange some Karma Bonus Points again. Cheers!\n";
+    $i = 0;
+    $values = [];
+    foreach ($res as $arr) {
+        $modcomment = $arr['modcomment'];
+        $modcomment = get_date($dt, 'DATE', 1) . " - Immunity Status Automatically Removed By System.\n" . $modcomment;
+        $values[] = [
+            'sender' => 0,
+            'receiver,' => $arr['id'],
+            'added,' => $dt,
+            'msg,' => $msg,
+            'subject' => $subject,
+        ];
+        $set = [
+            'immunity' => 0,
+            'modcomment' => $modcomment,
+        ];
+        ++$i;
+        $fluent->update('users')
+            ->set($set)
+            ->where('id = ?', $arr['id'])
+            ->execute();
+
+        $cache->update_row('user' . $arr['id'], $set, $site_config['expires']['user_cache']);
+        $cache->increment('inbox_' . $arr['id']);
     }
-    if ($data['clean_log'] && $queries > 0) {
-        write_log("Immunity Cleanup: Completed using $queries queries");
+
+    $count = count($values);
+    if ($count > 0) {
+        ++$i;
+        $fluent->insertInto('messages')
+            ->values($values)
+            ->execute();
+    }
+    if ($data['clean_log'] && $i > 0) {
+        write_log('Cleanup - Removed Immunity status from ' . $count . ' members');
+        write_log("Immunity Status Cleanup: Completed using $i queries");
     }
 }

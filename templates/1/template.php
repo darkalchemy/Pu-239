@@ -11,6 +11,7 @@
 function stdhead($title = '', $stdhead = null)
 {
     require_once INCL_DIR . 'bbcode_functions.php';
+    require_once INCL_DIR . 'function_breadcrumbs.php';
     global $CURUSER, $site_config, $lang, $free, $querytime, $BLOCKS, $CURBLOCK, $mood, $session;
 
     if (!$site_config['site_online']) {

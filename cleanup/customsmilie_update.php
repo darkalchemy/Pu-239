@@ -7,13 +7,12 @@
  */
 function customsmilie_update($data)
 {
-    dbconn();
     global $site_config, $cache, $fluent;
 
     set_time_limit(1200);
     ignore_user_abort(true);
-
     $dt = TIME_NOW;
+
     $res = $fluent->from('users')
         ->select(null)
         ->select('id')
@@ -45,10 +44,7 @@ function customsmilie_update($data)
             ->where('id = ?', $arr['id'])
             ->execute();
 
-        $cache->update_row('user' . $arr['id'], [
-            'smile_until' => 0,
-            'modcomment' => $modcomment,
-        ], $site_config['expires']['user_cache']);
+        $cache->update_row('user' . $arr['id'], $set, $site_config['expires']['user_cache']);
         $cache->increment('inbox_' . $arr['id']);
     }
 
