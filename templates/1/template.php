@@ -20,7 +20,11 @@ function stdhead($title = '', $stdhead = null)
             $session->set('is-danger', 'Site is currently offline, only staff can access site.');
         }
     }
-
+    if (!empty($CURUSER) && $CURUSER['enabled'] !== 'yes') {
+        $session->destroy();
+        header('Location: login.php');
+        die();
+    }
     if (empty($title)) {
         $title = $site_config['site_name'];
     } else {

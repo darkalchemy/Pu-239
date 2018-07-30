@@ -6,6 +6,7 @@ require_once INCL_DIR . 'function_autopost.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 class_check(UC_STAFF);
+dbconn();
 global $CURUSER, $site_config, $lang, $cache;
 
 $lang = array_merge($lang, load_language('modtask'));
@@ -1061,6 +1062,10 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
     if (!empty($updateset)) {
         sql_query('UPDATE users SET ' . implode(', ', $updateset) . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     }
+    if ($_POST['enabled'] !== 'yes') {
+        $cache->delete('user_' . $userid);
+    }
+
     status_change($userid);
     if ((isset($_POST['class'])) && (($class = $_POST['class']) != $user['class'])) {
         $cache->delete('staff_settings_');
