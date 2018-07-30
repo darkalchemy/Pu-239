@@ -11,6 +11,7 @@ function images_update($data)
     require_once INCL_DIR . 'function_tvmaze.php';
     require_once INCL_DIR . 'function_imdb.php';
     require_once INCL_DIR . 'function_bluray.php';
+    require_once INCL_DIR . 'function_books.php';
     dbconn();
     global $fluent, $cache;
 
@@ -45,16 +46,27 @@ function images_update($data)
 
     $links = $fluent->from('torrents')
         ->select(null)
+        ->select('name')
+        ->select('isbn')
+        ->select('poster')
+        ->where('isbn != NULL');
+
+    foreach ($links as $link) {
+        get_book_info($links);
+    }
+
+    $links = $fluent->from('torrents')
+        ->select(null)
         ->select('url')
         ->where('url != NULL');
 
     foreach ($links as $link) {
-        if (!empty($link['url'])) {
-            preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $link['url'], $imdb);
-            $imdb = !empty($imdb[2]) ? $imdb[2] : '';
+        preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $link['url'], $imdb);
+        $imdb = !empty($imdb[2]) ? $imdb[2] : '';
+        if (!empty($imdb)) {
+            get_imdb_info($imdb, false);
+            get_omdb_info($imdb, false);
         }
-        get_imdb_info($imdb, false);
-        get_omdb_info($imdb, false);
     }
 
     $links = $fluent->from('offers')
@@ -63,12 +75,12 @@ function images_update($data)
         ->where('link != NULL');
 
     foreach ($links as $link) {
-        if (!empty($link['url'])) {
-            preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $link['url'], $imdb);
-            $imdb = !empty($imdb[2]) ? $imdb[2] : '';
+        preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $link['url'], $imdb);
+        $imdb = !empty($imdb[2]) ? $imdb[2] : '';
+        if (!empty($imdb)) {
+            get_imdb_info($imdb, false);
+            get_omdb_info($imdb, false);
         }
-        get_imdb_info($imdb, false);
-        get_omdb_info($imdb, false);
     }
 
     $links = $fluent->from('requests')
@@ -77,12 +89,12 @@ function images_update($data)
         ->where('link != NULL');
 
     foreach ($links as $link) {
-        if (!empty($link['url'])) {
-            preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $link['url'], $imdb);
-            $imdb = !empty($imdb[2]) ? $imdb[2] : '';
+        preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $link['url'], $imdb);
+        $imdb = !empty($imdb[2]) ? $imdb[2] : '';
+        if (!empty($imdb)) {
+            get_imdb_info($imdb, false);
+            get_omdb_info($imdb, false);
         }
-        get_imdb_info($imdb, false);
-        get_omdb_info($imdb, false);
     }
 
     $images = $fluent->from('images')

@@ -1,4 +1,5 @@
 30 Jul 2018
+add: book update to images update cleanup
 fix: ignore query upgrade_database.php
 update: delete session for disabled users
 add: button to ignore query on database update
