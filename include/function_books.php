@@ -55,13 +55,18 @@ function get_book_info($torrent)
             $book = $books->volumes->firstOrNull($torrent['name']);
         }
         $keys = $ebook['authors'] = $categories = [];
+        if (empty($book->title)) {
+            $cache->set('book_info_' . $hash, 0, 86400);
+
+            return false;
+        }
         $ebook['title'] = $book->title;
         foreach ($book->authors as $author) {
             $ebook['authors'][] = $author;
         }
-        $ebook['publisher'] = $book->publisher;
-        $ebook['publishedDate'] = $book->publishedDate;
-        $ebook['description'] = $book->description;
+        $ebook['publisher'] = get_or_null($book->publisher);
+        $ebook['publishedDate'] = get_or_null($book->publishedDate);
+        $ebook['description'] = get_or_null($book->description);
         foreach ($book->industryIdentifiers as $industryIdentifier) {
             foreach ($industryIdentifier as $key => $value) {
                 $keys[] = $value;
@@ -72,15 +77,17 @@ function get_book_info($torrent)
         foreach ($book->categories as $category) {
             $ebook['categories'][] = $category;
         }
-        $ebook['pageCount'] = $book->pageCount;
-        $ebook['poster'] = $book->imageLinks->thumbnail;
+        $ebook['pageCount'] = get_or_null($book->pageCount);
+        $ebook['poster'] = get_or_null($book->imageLinks->thumbnail);
 
-        if (!empty($book)) {
+        if (!empty($ebook)) {
             $cache->set('book_info_' . $hash, $ebook, $site_config['expires']['book_info']);
         }
     }
 
     if (empty($ebook)) {
+        $cache->set('book_info_' . $hash, 0, 86400);
+
         return false;
     }
 
@@ -147,4 +154,13 @@ function get_book_info($torrent)
         "<div class='padding10'>$ebook_info</div>",
         $poster,
     ];
+}
+
+function get_or_null($content)
+{
+    if (empty($content)) {
+        return null;
+    } else {
+        return $content;
+    }
 }
