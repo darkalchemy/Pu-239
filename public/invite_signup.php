@@ -5,6 +5,7 @@ require_once CACHE_DIR . 'timezones.php';
 dbconn();
 global $CURUSER, $site_config, $fluent;
 
+$lang = array_merge(load_language('global'), load_language('signup'));
 if (!$CURUSER) {
     get_template();
 } else {
@@ -19,7 +20,6 @@ if (strlen($_GET['code']) != 64) {
 }
 
 $HTMLOUT = $year = $month = $day = $gender = $country = '';
-$lang = array_merge(load_language('global'), load_language('signup'));
 $count = $fluent->from('users')
     ->select(null)
     ->select('COUNT(*) AS count')
