@@ -40,9 +40,9 @@ function leechwarn_update($data)
         $modcomment = get_date($dt, 'DATE', 1) . " - Automatically Leech warned and downloads disabled By System.\n" . $modcomment;
         $values[] = [
             'sender' => 0,
-            'receiver,' => $arr['id'],
-            'added,' => $dt,
-            'msg,' => $msg,
+            'receiver' => $arr['id'],
+            'added' => $dt,
+            'msg' => $msg,
             'subject' => $subject,
         ];
         $set = [
@@ -84,9 +84,9 @@ function leechwarn_update($data)
         $modcomment = get_date($dt, 'DATE', 1) . " - Leech warn removed and download enabled By System.\n" . $modcomment;
         $values[] = [
             'sender' => 0,
-            'receiver,' => $arr['id'],
-            'added,' => $dt,
-            'msg,' => $msg,
+            'receiver' => $arr['id'],
+            'added' => $dt,
+            'msg' => $msg,
             'subject' => $subject,
         ];
         $set = [

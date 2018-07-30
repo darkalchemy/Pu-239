@@ -34,9 +34,9 @@ function delete_torrents_update($data)
         $msg = 'Torrent ' . (int) $$torrent['id'] . ' (' . htmlsafechars($$torrent['name']) . ") was deleted by system (older than $days days and no seeders)";
         $values[] = [
             'sender' => 0,
-            'receiver,' => $torrent['id'],
-            'added,' => TIME_NOW,
-            'msg,' => $msg,
+            'receiver' => $torrent['id'],
+            'added' => TIME_NOW,
+            'msg' => $msg,
             'subject' => 'Torrent Deleted',
         ];
         $cache->increment('inbox_' . (int) $$torrent['owner']);

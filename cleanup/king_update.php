@@ -29,9 +29,9 @@ function king_update($data)
         $modcomment = get_date($dt, 'DATE', 1) . " - King Status Automatically Removed By System.\n" . $modcomment;
         $values[] = [
             'sender' => 0,
-            'receiver,' => $arr['id'],
-            'added,' => $dt,
-            'msg,' => $msg,
+            'receiver' => $arr['id'],
+            'added' => $dt,
+            'msg' => $msg,
             'subject' => $subject,
         ];
         $set = [

@@ -29,9 +29,9 @@ function avatarpos_update($data)
         $modcomment = get_date($dt, 'DATE', 1) . " - Avatar ban Automatically Removed By System.\n" . $modcomment;
         $values[] = [
             'sender' => 0,
-            'receiver,' => $arr['id'],
-            'added,' => $dt,
-            'msg,' => $msg,
+            'receiver' => $arr['id'],
+            'added' => $dt,
+            'msg' => $msg,
             'subject' => $subject,
         ];
         $set = [

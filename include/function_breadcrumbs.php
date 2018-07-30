@@ -105,5 +105,3 @@ function breadcrumbs($separator = '', $home = 'Home')
 
     return implode($separator, $breadcrumbs);
 }
-
-
