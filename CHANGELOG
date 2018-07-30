@@ -1,3 +1,6 @@
+30 Jul 2018
+fix: left join when no topic forum_posts.php
+
 29 Jul 2018
 add: default banner.jpp
 add: dbconn() to all cleanup scripts

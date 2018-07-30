@@ -16,8 +16,8 @@ if ($topics === false || is_null($topics)) {
                             f.min_class_read, f.name,
                             (SELECT COUNT(id) FROM posts WHERE topic_id = t.id) AS p_count, p.user_id AS puser_id, p.added, p.anonymous AS pan
                             FROM topics AS t
-                            LEFT JOIN forums AS f ON f.id = t.forum_id
-                            LEFT JOIN posts AS p ON p.id = (SELECT MAX(id) FROM posts WHERE topic_id = t.id)
+                            INNER JOIN forums AS f ON f.id = t.forum_id
+                            INNER JOIN posts AS p ON p.id = (SELECT MAX(id) FROM posts WHERE topic_id = t.id)
                             WHERE f.min_class_read <= ' . $CURUSER['class'] . "
                             ORDER BY t.last_post DESC
                             LIMIT {$site_config['latest_posts_limit']}") or sqlerr(__FILE__, __LINE__);
