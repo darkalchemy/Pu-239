@@ -60,9 +60,13 @@ class CustomAJAXChat extends AJAXChat
             return $userData;
         }
 
-        if ($user['enabled'] === 'no' || $user['chatpost'] !== 1) {
+        if ($user['chatpost'] !== 1) {
             $this->_session->unset('Channel');
             $this->addInfoMessage('errorBanned');
+        }
+
+        if ($user['enabled'] !== 'yes') {
+            $this->_session->destroy();
         }
 
         return false;

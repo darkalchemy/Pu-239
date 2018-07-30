@@ -188,6 +188,21 @@ class Session
      */
     public function destroy()
     {
+        global $CURUSER, $cache;
+
+        if (!empty($CURUSER)) {
+            $cache->delete('inbox_' . $CURUSER['id']);
+            $cache->delete('peers_' . $CURUSER['id']);
+            $cache->delete('port_data_' . $CURUSER['id']);
+            $cache->delete('shitlist_' . $CURUSER['id']);
+            $cache->delete('user' . $CURUSER['id']);
+            $cache->delete('user_friends_' . $CURUSER['id']);
+            $cache->delete('userlist_' . $CURUSER['id']);
+            $cache->delete('user_rep_' . $CURUSER['id']);
+            $cache->delete('user_snatches_data_' . $CURUSER['id']);
+            $cache->delete('userstatus_' . $CURUSER['id']);
+            $cache->delete('is_staffs');
+        }
         $cookies = new Cookie('remember');
         $cookie = $cookies->getToken();
         if (!empty($cookie[0])) {

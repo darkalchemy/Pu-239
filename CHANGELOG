@@ -1,4 +1,6 @@
 30 Jul 2018
+update: delete user caches when set disabled
+update: chat destroy session when user is disabled
 add: missing require takeedit.php
 update: check if var is empty before using it function_books.php
 add: book update to images update cleanup

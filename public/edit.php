@@ -87,10 +87,10 @@ $s .= "</select>\n";
 $HTMLOUT .= tr($lang['edit_type'], $s, 1);
 
 $subs_list .= "
-        <div class='flex-grid'>";
+        <div class='level-center'>";
 foreach ($subs as $s) {
     $subs_list .= "
-            <div class='flex_cell_5'>
+            <div class='w-15 margin10 tooltipper bordered level-center tooltipstered'>
                 <input name='subs[]' type='checkbox' class='reset' value='{$s['id']}' />
                 <image class='sub_flag left5' src='{$s['pic']}' alt='{$s['name']}' title='" . htmlsafechars($s['name']) . "' />
                 <span class='left5'>" . htmlsafechars($s['name']) . '</span>

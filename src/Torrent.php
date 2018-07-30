@@ -17,15 +17,19 @@ class Torrent
 
     public function delete_by_id(array $tid)
     {
+        if (empty($tid) || !is_array($tid)) {
+            return false;
+        }
+
         $this->fluent->deleteFrom('torrents')
             ->where('id = ?', $tid['id'])
             ->execute();
 
         $query = $this->fluent->getPdo()
             ->prepare('DELETE likes, comments
-                                                    FROM likes
-                                                    LEFT JOIN comments ON comments.id = likes.comment_id
-                                                    WHERE comments.torrent = ?');
+                       FROM likes
+                       LEFT JOIN comments ON comments.id = likes.comment_id
+                       WHERE comments.torrent = ?');
         $query->bindParam(1, $tid['id']);
         $query->execute();
 
