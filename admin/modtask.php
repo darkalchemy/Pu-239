@@ -348,7 +348,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         $subject = sqlesc($lang['modtask_gl_notification']);
         $added = sqlesc(TIME_NOW);
         if ($chatpost == 255) {
-            $modcomment = get_date($added, 'DATE', 1) . $lang['modtask_shout_dis_by'] . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $chatdisable_pm\n" . $modcomment;
+            $modcomment = get_date($added, 'DATE', 1) . $lang['modtask_ajaxchat_dis_by'] . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $chatdisable_pm\n" . $modcomment;
             $msg = sqlesc($lang['modtask_shout_dis_right'] . $username . ($chatdisable_pm ? "\n\n{$lang['modtask_gl_reason']} $chatdisable_pm" : ''));
             $updateset[] = 'chatpost = 0';
             $useredit['update'][] = $lang['modtask_shout_pos_no'];

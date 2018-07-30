@@ -1,4 +1,7 @@
 30 Jul 2018
+fix: incorrect lang variable name used modtask.php
+fix: typo delete_torrents_update.php
+update: return query ip ajax chat
 update: delete user caches when set disabled
 update: chat destroy session when user is disabled
 add: missing require takeedit.php

@@ -23,7 +23,7 @@ function delete_torrents_update($data)
         ->select('info_hash')
         ->where('last_action < ?', $dt)
         ->where('seeders = 0')
-        ->where('lechers = 0');
+        ->where('leechers = 0');
 
     $values = [];
     foreach ($torrents as $torrent) {

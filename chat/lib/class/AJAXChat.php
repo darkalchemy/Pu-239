@@ -316,7 +316,7 @@ class AJAXChat
                 ->select('userRole')
                 ->select('channel')
                 ->select('UNIX_TIMESTAMP(dateTime) AS timeStamp')
-                ->select('INET6_NTOA(ip)')
+                ->select('INET6_NTOA(ip) AS ip')
                 ->orderBy('userRole DESC')
                 ->orderBy('LOWER(userName) ASC');
 
@@ -1031,7 +1031,7 @@ class AJAXChat
                 ->select(null)
                 ->select('userID')
                 ->select('userName')
-                ->select('INET6_NTOA(ip)')
+                ->select('INET6_NTOA(ip) AS ip')
                 ->where('dateTime > NOW()');
 
             foreach ($res as $row) {
@@ -3334,7 +3334,7 @@ class AJAXChat
                     userRole,
                     channel AS channelID,
                     UNIX_TIMESTAMP(dateTime) AS timeStamp,
-                    INET6_NTOA(ip),
+                    INET6_NTOA(ip) AS ip,
                     text
                 FROM
                     ' . $this->getDataBaseTable('messages') . '
