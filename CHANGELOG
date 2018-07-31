@@ -1,3 +1,7 @@
+31 Jul 2018
+fix: typo takeedit.php
+fix: return false if $image is empty bittorent.php
+
 30 Jul 2018
 fix: comments avatar details.php
 fix: allow special chars for db password backupdb.php

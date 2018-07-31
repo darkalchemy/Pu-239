@@ -2156,7 +2156,11 @@ function get_body_image($details, $portrait = false)
         $images['background'] = $backgrounds[array_rand($backgrounds)];
     }
 
-    return $images;
+    if (!empty($images)) {
+        return $images;
+    }
+
+    return false;
 }
 
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {
