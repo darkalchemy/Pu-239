@@ -347,7 +347,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<span style="tab-size: 4; -moz-tab-size: 4;-o-tab-size: 4; white-space: pre-wrap; font-family: \'Courier New\', Courier, monospace;">\1</span>',
         '<marquee class="style">\1</marquee>',
         '<div style="padding-top: 2px; white-space: nowrap;"><span style="cursor: pointer; border-bottom: 1px dotted;" onclick="if (document.getElementById(\'collapseobj\1\').style.display==\'block\') {document.getElementById(\'collapseobj\1\').style.display=\'none\' } else { document.getElementById(\'collapseobj\1\').style.display=\'block\' }">\1</span></div><div id="collapseobj\1" style="display:none; padding-top: 2px; padding-left: 14px; margin-bottom:10px; padding-bottom: 2px; background-color: #FEFEF4;">\2</div>',
-        '<span class="size\1">\2</span>',
+        '<span class="size_\1">\2</span>',
         '<span style="color: \1;">\2</span>',
         '<span style="color: \1;">\2</span>',
         '<span style="font-family:\'\1\';">\2</span>',

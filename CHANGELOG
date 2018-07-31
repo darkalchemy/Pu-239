@@ -1,4 +1,5 @@
 31 Jul 2018
+fix: typo bbcode_functions.php and anatomy.php
 fix: typo takeedit.php
 fix: return false if $image is empty bittorent.php
 

@@ -93,4 +93,4 @@ Let's dissect this:
 
 $HTMLOUT = wrapper($HTMLOUT, 'has-text-left');
 
-echo stdhead('FAQ') . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead('FAQ') . $HTMLOUT . stdfoot();
