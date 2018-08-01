@@ -54,7 +54,7 @@ $lang = [
     'torrenttable_sep' => 'September',
     'torrenttable_oct' => 'October',
     'torrenttable_nov' => 'November',
-    'torrenttable_dec' => 'Decemeber',
+    'torrenttable_dec' => 'December',
     'torrenttable_health' => 'Health',
     //commenttable
     'commenttable_by' => 'by',
