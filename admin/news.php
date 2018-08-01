@@ -223,7 +223,7 @@ if ($mode === 'news') {
         $body = $arr['body'];
         $title = $arr['title'];
         $added = get_date($arr['added'], 'LONG', 0, 1);
-        $by = '<b>' . format_username($arr['id']) . '</b>';
+        $by = '<b>' . format_username($arr['userid']) . '</b>';
         $hash = hash('sha256', $site_config['site']['salt'] . $newsid . 'add');
         $HTMLOUT .= "<table ><tr><td class='embedded'>
         $added{$lang['news_created_by']}
