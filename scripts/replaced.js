@@ -34,8 +34,10 @@ function togglepic(bu, picid, formid) {
 }
 
 $('.delete').on('click', function () {
-    $(this).parent().slideUp(animate_duration, function () {
-        $(this).remove();
+    $(this).parent().fadeTo(animate_duration, .01, function() {
+        $(this).slideUp(125, function () {
+            $(this).remove();
+        });
     });
 });
 
@@ -313,8 +315,10 @@ $(function () {
     var notification = $('.notification');
     if (notification.length) {
         setTimeout(function () {
-            notification.slideUp(animate_duration, function () {
-                notification.remove();
+            notification.fadeTo(animate_duration, .01, function() {
+                notification.slideUp(125, function () {
+                    notification.remove();
+                });
             });
         }, 15e3);
     }
