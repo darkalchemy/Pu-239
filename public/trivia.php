@@ -277,6 +277,7 @@ $HTMLOUT .= "
 
 if (!empty($gamenum) && !empty($qid)) {
     $HTMLOUT .= "
+<script src='" . get_file_name('js') . "'></script>
 <script>
     <!-- https://www.sitepoint.com/build-javascript-countdown-timer-no-dependencies/ -->
     function getTimeRemaining(endtime){

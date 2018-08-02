@@ -639,7 +639,6 @@ function get_avatar($avatar)
     require_once CLASS_DIR . 'class_user_options.php';
     global $CURUSER, $site_config, $user_stuffs;
 
-
     if (!isset($avatar['avatar']) && !empty($avatar['user'])) {
         $user = $user_stuffs->getUserFromId($avatar['user']);
         $avatar['avatar'] = $user['avatar'];
