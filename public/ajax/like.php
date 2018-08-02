@@ -7,8 +7,6 @@ global $CURUSER, $site_config;
 
 $lang = array_merge(load_language('global'), load_language('ajax_like'));
 
-file_put_contents('/var/log/nginx/likes.log', json_encode($_POST) . PHP_EOL, FILE_APPEND);
-
 $check = isset($_POST['type']) ? $_POST['type'] : '';
 $fields = [
     'comment' => 'comments',
