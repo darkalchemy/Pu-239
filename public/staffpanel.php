@@ -83,16 +83,8 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             stderr($lang['spanel_error'], $lang['spanel_db_error_msg']);
         }
     } elseif (($action === 'flush' && $CURUSER['class'] >= UC_SYSOP)) {
-        if (extension_loaded('redis') && $_ENV['CACHE_DRIVER'] === 'redis') {
-            $client = new \Redis();
-            $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
-            $client->select($_ENV['REDIS_DATABASE']);
-            $client->flushDB();
-            $session->set('is-success', 'You flushed the Redis db' . $_ENV['REDIS_DATABASE'] . ' cache');
-        } else {
-            $cache->flush();
-            $session->set('is-success', 'You flushed the ' . ucfirst($_ENV['CACHE_DRIVER']) . ' cache');
-        }
+        $cache->flush();
+        $session->set('is-success', 'You flushed the ' . ucfirst($_ENV['CACHE_DRIVER']) . ' cache');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif (($action === 'add' && $CURUSER['class'] == UC_MAX) || ($action === 'edit' && is_valid_id($id) && $CURUSER['class'] == UC_MAX)) {

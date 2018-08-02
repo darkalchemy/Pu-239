@@ -104,21 +104,21 @@ class User
         if (!$id) {
             $cookie = $this->cookies->getToken();
             if ($cookie) {
-                $stashed = $this->cache->get('remember_' . $cookie[0]);
+                $selector = $cookie[0];
                 $validator = $cookie[1];
+                $stashed = $this->get_remember($selector);
                 if (empty($stashed)) {
                     $this->session->destroy();
 
                     return false;
                 }
-                if (hash_equals($stashed['hash'], hash('sha512', $validator))) {
-                    $id = $stashed['uid'];
+                if (hash_equals($stashed['hashedValidator'], hash('sha256', $validator))) {
+                    $id = $stashed['userid'];
                     $this->session->set('userID', $id);
                     $this->session->set('remembered_by_cookie', true);
 
                     return (int) $id;
                 } else {
-                    $this->cache->delete('remember_' . $cookie[0]);
                     $this->session->destroy();
 
                     return false;
@@ -153,5 +153,50 @@ class User
         }
 
         return $result;
+    }
+
+    public function get_remember($selector)
+    {
+        $remember = $this->cache->get('remembered_' . $selector);
+        if ($remember === false || is_null($remember)) {
+            $remember = $this->fluent->from('auth_tokens')
+                ->where('selector = ?', $selector)
+                ->where('expires >= ?', TIME_NOW)
+                ->fetch();
+            if ($remember) {
+                $this->cache->set('remembered_' . $selector, $remember, $remember['expires']);
+            }
+        }
+
+        return $remember;
+    }
+
+    public function set_remember($userid, $expires)
+    {
+        $selector = make_password(16);
+        $validator = make_password(32);
+        $hashedValidator = hash('sha256', $validator);
+
+        $values = [
+            'hash' => $hashedValidator,
+            'uid' => $userid,
+        ];
+
+        $this->cookies->set("$selector:$validator", TIME_NOW + $expires);
+
+        $this->fluent->deleteFrom('auth_tokens')
+            ->where('userid = ?', $userid)
+            ->execute();
+
+        $values = [
+            'selector' => $selector,
+            'hashedValidator' => $hashedValidator,
+            'userid' => $userid,
+            'expires' => TIME_NOW + $expires,
+
+        ];
+        $this->fluent->insertInto('auth_tokens')
+            ->values($values)
+            ->execute();
     }
 }

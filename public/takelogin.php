@@ -5,7 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class_browser.php';
 dbconn();
-global $CURUSER, $site_config, $fluent, $cache, $session;
+global $CURUSER, $site_config, $fluent, $cache, $session, $user_stuffs;
 
 if (!$CURUSER) {
     get_template();
@@ -201,16 +201,7 @@ $session->set('remembered_by_cookie', false);
 logincookie($userid);
 
 $expires = !empty($remember) ? 365 * 86400 : 900;
-$selector = make_password(16);
-$validator = make_password(32);
-$values = [
-    'hash' => hash('sha512', $validator),
-    'uid' => $userid,
-];
-
-$cache->set('remember_' . $selector, $values, TIME_NOW + $expires);
-$cookies = new DarkAlchemy\Pu239\Cookie('remember');
-$cookies->set("$selector:$validator", TIME_NOW + $expires);
+$user_stuffs->set_remember($userid, $expires);
 
 if (isset($returnto)) {
     header("Location: {$site_config['baseurl']}" . urldecode($returnto));
