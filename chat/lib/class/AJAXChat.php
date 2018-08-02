@@ -169,9 +169,6 @@ class AJAXChat
         } elseif ($this->getView() == 'logs') {
             $this->initLogsViewSession();
         }
-        if (!$this->getRequestVar('ajax') && !headers_sent()) {
-            //$this->setPostDirectionCookie();
-        }
 
         $this->initCustomSession();
     }
@@ -628,6 +625,13 @@ class AJAXChat
      */
     public function hasAccessTo($view)
     {
+        if ($this->getUserRole() < UC_MAX && $this->isUserBanned($this->getUserName())) {
+            $this->_session->unset('Channel');
+            $this->addInfoMessage('errorBanned');
+
+            return false;
+        }
+
         switch ($view) {
             case 'chat':
             case 'teaser':
@@ -734,7 +738,7 @@ class AJAXChat
             }
         }
 
-        if ($userData['userRole'] < UC_MAX && $this->isUserBanned($userData['userName'], $userData['userID'], getip())) {
+        if ($userData['userRole'] < UC_MAX && $this->isUserBanned($userData['userName'])) {
             $this->_session->unset('Channel');
             $this->addInfoMessage('errorBanned');
 
@@ -1002,7 +1006,7 @@ class AJAXChat
                 return true;
             }
         }
-        if ($ip !== null) {
+        if (IP_LOGGING && $ip !== null) {
             $bannedUserDataArray = $this->getBannedUsersData('ip', $ip);
             if ($bannedUserDataArray && isset($bannedUserDataArray[0])) {
                 return true;
@@ -2269,6 +2273,11 @@ class AJAXChat
                         $this->kickUser($textParts[1], $banMinutes, $kickUserID);
                         if ($channel !== null) {
                             $this->insertChatBotMessage($channel, '/kick ' . $textParts[1], null, 1);
+                            if ($banMinutes != 0) {
+                                $whereisRoleClass = get_user_class_name($kickUserRole, true);
+                                $user = '[' . $whereisRoleClass . ']' . $textParts[1] . '[/' . $whereisRoleClass . ']';
+                                $this->insertChatBotMessage($channel, "$user has been kicked/banned from Chat for $banMinutes minute" . plural($banMinutes) . ". [color=red]Bye, Felicia[/color]", null, 1);
+                            }
                             if ($channel != $this->getChannel()) {
                                 $this->insertChatBotMessage($this->getPrivateMessageID(), '/kick ' . $textParts[1], null, 1);
                             }
@@ -2321,7 +2330,7 @@ class AJAXChat
             return;
         }
 
-        $banMinutes = ($banMinutes !== null) ? $banMinutes : $this->getConfig('defaultBanTime');
+        $banMinutes = $banMinutes !== null ? $banMinutes : $this->getConfig('defaultBanTime');
 
         if ($banMinutes) {
             $this->banUser($userName, $banMinutes, $userID);
@@ -2352,21 +2361,21 @@ class AJAXChat
             $banMinutes = $this->getConfig('defaultBanTime');
         }
 
-        $sql = 'INSERT INTO ' . $this->getDataBaseTable('bans') . '(
-                    userID,
-                    userName,
-                    dateTime,
-                    ip
-                )
-                VALUES (
-                    ' . sqlesc($userID) . ',
-                    ' . sqlesc($userName) . ',
-                    DATE_ADD(NOW(), INTERVAL ' . sqlesc($banMinutes) . ' MINUTE),
-                    ' . ipToStorageFormat($ip) . '
-                );';
+        $this->_cache->delete('user' . $userID);
 
-        // Create a new SQL query:
-        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        $now = gmdate('Y-m-d H:i:s', TIME_NOW);
+        $future = strtotime($now . ' + ' . $banMinutes . ' minute');
+        $expires = date('Y-m-d H:i:s', $future);
+
+        $values = [
+            'userID' => $userID,
+            'userName' => $userName,
+            'dateTime' => $expires,
+            'ip' => inet_pton($ip),
+        ];
+        $this->_fluent->insertInto($this->getDataBaseTable('bans'))
+            ->values($values)
+            ->execute();
     }
 
     /**
@@ -3145,8 +3154,6 @@ class AJAXChat
      */
     public function getChatViewMessagesXML()
     {
-        global $site_config;
-
         $sql = 'SELECT
                     id,
                     userID,
@@ -3172,7 +3179,7 @@ class AJAXChat
         while ($row = mysqli_fetch_array($result)) {
             preg_match_all('/\[img\](.*)\[\/img\]/s', $row['text'], $matches);
             foreach ($matches[1] as $match) {
-                $row['text'] = str_replace($match, str_replace($site_config['pic_baseurl'], $site_config['pic_baseurl_chat'], url_proxy($match, true)), $row['text']);
+                $row['text'] = str_replace($match, str_replace($this->_siteConfig['pic_baseurl'], $this->_siteConfig['pic_baseurl_chat'], url_proxy($match, true)), $row['text']);
             }
 
             $message = $this->getChatViewMessageXML($row['id'], $row['timeStamp'], $row['userID'], $row['userName'], $row['userRole'], $row['channelID'], $row['text']);
