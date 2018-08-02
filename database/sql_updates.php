@@ -325,4 +325,11 @@ $sql_updates = [
         'query' => "DELETE FROM `site_config` WHERE `name` = 'time_offset'",
         'flush' => 'site_settings_',
     ],
+    [
+        'id' => 1533202293,
+        'info' => 'Update userip for cheaters table',
+        'date' => '02 Aug, 2018',
+        'query' => "ALTER TABLE `cheaters` MODIFY `userip` varbinary(16) NOT NULL",
+        'flush' => false,
+    ],
 ];
