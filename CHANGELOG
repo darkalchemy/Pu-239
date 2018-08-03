@@ -1,3 +1,6 @@
+03 Aug 2018
+fix: adminer
+
 02 Aug 2018
 fix: invalid date birthday.php
 fix: remember token getting deleted when flush cache
