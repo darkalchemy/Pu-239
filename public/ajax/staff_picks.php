@@ -13,7 +13,7 @@ if (!$session->validateToken($csrf)) {
     die();
 }
 
-if (!is_set($pick) || empty($id)) {
+if (!isset($pick) || empty($id)) {
     echo json_encode(['pick' => 'invalid']);
     die();
 }
