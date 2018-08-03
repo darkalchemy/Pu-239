@@ -117,6 +117,7 @@ $site_config['expires']['torrent_xbt_data'] = 300; // 300 = 5 min
 $site_config['expires']['ismoddin'] = 0; // 0 = infinite
 $site_config['expires']['book_info'] = 604800; //604800 = 1 week
 $site_config['expires']['browser_user_agent'] = 86400;
+$site_config['expires']['staff_picks'] = 86400;
 // Tracker configs
 $site_config['max_torrent_size'] = 3 * 1024 * 1024;
 $site_config['announce_interval'] = 60 * 30;
@@ -140,6 +141,7 @@ $site_config['latest_posts_limit'] = 5; //query limit for latest forum posts on 
 //latest torrents limit
 $site_config['latest_torrents_limit'] = 5;
 $site_config['latest_torrents_limit_2'] = 5;
+$site_config['staff_picks_limit'] = 5;
 $site_config['latest_torrents_limit_scroll'] = 25;
 $site_config['latest_torrents_limit_slider'] = 25;
 /* Settings **/

@@ -193,7 +193,6 @@ class User
             'hashedValidator' => $hashedValidator,
             'userid' => $userid,
             'expires' => TIME_NOW + $expires,
-
         ];
         $this->fluent->insertInto('auth_tokens')
             ->values($values)

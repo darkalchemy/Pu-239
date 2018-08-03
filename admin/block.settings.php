@@ -21,6 +21,7 @@ $list = [
     'latest_user_on',
     'latest_comments_on',
     'forum_posts_on',
+    'staff_picks_on',
     'latest_torrents_on',
     'latest_torrents_scroll_on',
     'latest_torrents_slider_on',
@@ -208,6 +209,13 @@ $contents[] = "
                                 <#forum_posts_on#>
                             </div>
                             <div class='w-100'>{$lang['block_forum_post_set']}</div>";
+
+$contents[] = "
+                            <div class='w-100'>{$lang['block_staff_picks']}</div>
+                            <div class='slideThree'>
+                                <#staff_picks_on#>
+                            </div>
+                            <div class='w-100'>{$lang['block_staff_picks_set']}</div>";
 
 $contents[] = "
                             <div class='w-100'>{$lang['block_torrents']}</div>

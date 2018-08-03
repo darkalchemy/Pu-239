@@ -39,7 +39,7 @@ function torrenttable($res, $variant = 'index')
     $link1 = $link2 = $link3 = $link4 = $link5 = $link6 = $link7 = $link8 = $link9 = '';
     $oldlink = [];
 
-    global $site_config, $CURUSER, $lang, $free;
+    global $site_config, $CURUSER, $lang, $free, $session;
     include_once INCL_DIR . 'bbcode_functions.php';
     include_once CLASS_DIR . 'class_user_options_2.php';
     include_once CACHE_DIR . 'subs.php';
@@ -432,14 +432,28 @@ function torrenttable($res, $variant = 'index')
             $del_link = ($CURUSER['class'] === UC_MAX ? "
                 <span>
                     <a href='{$site_config['baseurl']}/fastdelete.php?id=" . (int) $row['id'] . "{$returnto}' class='tooltipper' title='Fast Delete'>
-                        <i class='icon-cancel icon'></i>
+                        <i class='icon-cancel icon has-text-red'></i>
                     </a>
                 </span>" : '');
+            $staff_pick = '';
+            if ($CURUSER['class'] === UC_MAX && (int) $row['staff_picks'] > 0) {
+                $staff_pick = "
+                <span data-id='{$row['id']}' data-pick='{$row['staff_picks']}' . data-csrf='" . $session->get('csrf_token') . "' class='staff_pick tooltipper' title='Remove from Staff Picks'>
+                    <i class='icon-minus icon has-text-red'></i>
+                </span>";
+            } elseif ($CURUSER['class'] === UC_MAX) {
+                $staff_pick = "
+                <span data-id='{$row['id']}' data-pick='{$row['staff_picks']}' . data-csrf='" . $session->get('csrf_token') . "' class='staff_pick tooltipper' title='Add to Staff Picks'>
+                    <i class='icon-plus icon has-text-lime'></i>
+                </span>";
+            }
+
             $htmlout .= "
                         <td>
                             <div class='level-center'>
                                 {$edit_link}
                                 {$del_link}
+                                {$staff_pick}
                             </div>
                         </td>";
         }

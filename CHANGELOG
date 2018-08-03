@@ -1,4 +1,7 @@
 03 Aug 2018
+update: set cache for failed apis to limit retries
+add: Staff Picks
+fix: delete cache when updating bonus
 fix: adminer
 
 02 Aug 2018

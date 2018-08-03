@@ -13,6 +13,8 @@ function get_tv_by_day($dates)
         $url = "https://api.themoviedb.org/3/discover/tv?air_date.gte={$dates}&air_date.lte={$dates}&api_key=$apikey&with_original_language=en";
         $content = fetch($url);
         if (!$content) {
+            $cache->set('tmdb_tv_' . $dates, 0, 900);
+
             return false;
         }
         $json = json_decode($content, true);
@@ -44,6 +46,8 @@ function get_movies_by_week($dates)
         $url = "https://api.themoviedb.org/3/discover/movie?primary_release_date.gte={$dates[0]}&primary_release_date.lte={$dates[1]}&api_key=$apikey&sort_by=release_date.asc&include_adult=false&include_video=false&with_original_language=en";
         $content = fetch($url);
         if (!$content) {
+            $cache->set('tmdb_movies_' . $dates[0], 0, 900);
+
             return false;
         }
         $json = json_decode($content, true);
@@ -76,6 +80,8 @@ function get_movies_in_theaters()
         $url = "https://api.themoviedb.org/3/movie/now_playing?api_key=$apikey&language=en-US&region=US";
         $content = fetch($url);
         if (!$content) {
+            $cache->set('tmdb_movies_in_theaters_', 0, 900);
+
             return false;
         }
         $json = json_decode($content, true);
@@ -109,6 +115,8 @@ function get_movies_by_vote_average($count)
         $url = "https://api.themoviedb.org/3/discover/movie?api_key=$apikey&with_original_language=en&language=en-US&sort_by=vote_average.desc&include_adult=false&include_video=false&vote_count.gte=$min_votes";
         $content = fetch($url);
         if (!$content) {
+            $cache->set('tmdb_movies_vote_average_' . $count, 0, 900);
+
             return false;
         }
         $json = json_decode($content, true);
@@ -150,8 +158,8 @@ function get_movies($json)
 
                     $cache->set('insert_tmdb_tmdbid_' . $movie['id'], 0, 604800);
                 }
+                $movies[] = $movie;
             }
-            $movies[] = $movie;
         }
     }
 

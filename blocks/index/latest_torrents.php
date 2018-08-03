@@ -23,7 +23,7 @@ if ($top5torrents === false || is_null($top5torrents)) {
         ->select('categories.name AS cat')
         ->select('categories.image')
         ->orderBy('torrents.seeders + torrents.leechers DESC')
-        ->limit(5)
+        ->limit($site_config['latest_torrents_limit'])
         ->fetchAll();
 
     $cache->set('top5_tor_', $top5torrents, $site_config['expires']['top5_torrents']);
@@ -50,7 +50,7 @@ if ($last5torrents === false || is_null($last5torrents)) {
         ->select('categories.name AS cat')
         ->select('categories.image')
         ->orderBy('torrents.added DESC')
-        ->limit(5)
+        ->limit($site_config['latest_torrents_limit'])
         ->fetchAll();
 
     $cache->set('last5_tor_', $last5torrents, $site_config['expires']['last5_torrents']);

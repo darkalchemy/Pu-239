@@ -2276,7 +2276,7 @@ class AJAXChat
                             if ($banMinutes != 0) {
                                 $whereisRoleClass = get_user_class_name($kickUserRole, true);
                                 $user = '[' . $whereisRoleClass . ']' . $textParts[1] . '[/' . $whereisRoleClass . ']';
-                                $this->insertChatBotMessage($channel, "$user has been kicked/banned from Chat for $banMinutes minute" . plural($banMinutes) . ". [color=red]Bye, Felicia[/color]", null, 1);
+                                $this->insertChatBotMessage($channel, "$user has been kicked/banned from Chat for $banMinutes minute" . plural($banMinutes) . '. [color=red]Bye, Felicia[/color]', null, 1);
                             }
                             if ($channel != $this->getChannel()) {
                                 $this->insertChatBotMessage($this->getPrivateMessageID(), '/kick ' . $textParts[1], null, 1);

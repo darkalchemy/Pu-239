@@ -13,6 +13,6 @@ if ($user['birthday'] != '1970-01-01') {
         </tr>
         <tr>
             <td class='rowhead'>{$lang['userdetails_birthday']}</td>
-            <td>" . htmlsafechars($user['birthday']) . "</td>
-        </tr>";
+            <td>" . htmlsafechars($user['birthday']) . '</td>
+        </tr>';
 }

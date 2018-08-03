@@ -39,6 +39,7 @@ function smilies_frame($smilies_set)
 function BBcode($body = '')
 {
     global $CURUSER, $smilies, $customsmilies, $staff_smilies, $site_config;
+
     $emoticons_normal = smilies_frame($smilies, 3, ':hslocked:');
     $emoticons_custom = smilies_frame($customsmilies, 3, ':wink_skull:');
     $emoticons_staff = smilies_frame($staff_smilies, 1, ':dabunnies:');

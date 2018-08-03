@@ -48,6 +48,8 @@ function get_imdb_info($imdb_id, $title = true)
         $cache->set('imdb_' . $imdb_id, $imdb_data, 604800);
     }
     if (empty($imdb_data)) {
+        $cache->set('imdb_' . $imdb_id, 0, 86400);
+
         return null;
     }
     $poster = !empty($imdb_data['poster']) ? $imdb_data['poster'] : '';
@@ -195,6 +197,8 @@ function get_imdb_info_short($imdb_id)
     }
 
     if (empty($imdb_data)) {
+        $cache->set('imdb_short_' . $imdb_id, 0, 86400);
+
         return null;
     }
 
@@ -279,6 +283,10 @@ function get_upcoming()
         $url = 'https://www.imdb.com/movies-coming-soon/';
         $imdb_data = fetch($url);
         $cache->set('imdb_upcoming_', $imdb_data, 86400);
+    } else {
+        $cache->set('imdb_upcoming_', 0, 3600);
+
+        return null;
     }
 
     preg_match_all('/<h4.*<a name=.*>(.*)&nbsp;/i', $imdb_data, $timestamp);

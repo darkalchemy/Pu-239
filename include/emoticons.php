@@ -204,6 +204,7 @@ $smilies = [
     ':maxlocked:' => 'maxlocked.gif',
     ':hslocked:' => 'hslocked.gif',
     ':thankyou:' => 'thankyou.gif',
+    ':woot:' => 'w00t.gif',
 ];
 $staff_smilies = [
     ':Boozer:' => 'alcoholic.gif',

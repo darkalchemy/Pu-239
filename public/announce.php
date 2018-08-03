@@ -680,4 +680,3 @@ if (!empty($user_updateset)) {
 }
 
 benc_resp_raw($resp);
-

@@ -46,6 +46,7 @@ $js_list = [
     ],
     'browse_js' => [
         SCRIPTS_DIR . 'autocomplete.js',
+        SCRIPTS_DIR . 'staff_picks.js',
     ],
     'chat_js' => [
         CHAT_DIR . 'js/chat.js',

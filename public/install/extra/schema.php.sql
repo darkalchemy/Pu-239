@@ -538,7 +538,7 @@ CREATE TABLE `cheaters` (
   `beforeup` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `upthis` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `timediff` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `userip` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `userip` varbinary(16) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
   CONSTRAINT `cheaters_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -2189,6 +2189,7 @@ CREATE TABLE `torrents` (
   `ctime` int(10) unsigned NOT NULL DEFAULT '0',
   `freetorrent` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `isbn` varchar(13) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `staff_picks` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `info_hash` (`info_hash`),
   KEY `owner` (`owner`),
@@ -2329,7 +2330,7 @@ DROP TABLE IF EXISTS `user_blocks`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_blocks` (
   `userid` int(10) unsigned NOT NULL,
-  `index_page` int(10) unsigned NOT NULL DEFAULT '16777215',
+  `index_page` int(10) unsigned NOT NULL DEFAULT '33554431',
   `global_stdhead` int(10) unsigned NOT NULL DEFAULT '1023',
   `userdetails_page` int(11) unsigned NOT NULL DEFAULT '2147418111',
   UNIQUE KEY `userid` (`userid`),
@@ -2651,4 +2652,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-30 19:50:43
+-- Dump completed on 2018-08-03 22:32:32

@@ -16,6 +16,8 @@ function get_bluray_info()
         $bluray_data = $content;
         if (!empty($bluray_content)) {
             $cache->set('bluray_', $bluray_data, 86400);
+        } else {
+            $cache->set('bluray_', 0, 3600);
         }
     }
 
@@ -84,6 +86,8 @@ function get_bluray_info()
 
         if (!empty($pubs)) {
             $cache->set('bluray_pubs_', $pubs, 1800);
+        } else {
+            $cache->set('bluray_pubs_', $pubs, 900);
         }
     }
 

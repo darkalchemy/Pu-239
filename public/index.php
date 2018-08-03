@@ -78,6 +78,12 @@ if (curuser::$blocks['index_page'] & block_index::LATESTCOMMENTS && $BLOCKS['lat
     $HTMLOUT .= '</div>';
 }
 
+if (curuser::$blocks['index_page'] & block_index::STAFF_PICKS && $BLOCKS['staff_picks_on']) {
+    $HTMLOUT .= "<div class='container is-fluid portlet' id='STAFF_PICKS'>";
+    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'staff_picks.php';
+    $HTMLOUT .= '</div>';
+}
+
 if (curuser::$blocks['index_page'] & block_index::MOVIEOFWEEK && $BLOCKS['movie_ofthe_week_on']) {
     $HTMLOUT .= "<div class='container is-fluid portlet' id='MOVIEOFWEEK'>";
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'mow.php';

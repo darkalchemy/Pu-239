@@ -17,8 +17,8 @@
   "devDependencies": {
     "browserslist": "^4.0.1",
     "bulma": "^0.7.1",
-    "clean-css": "^4.1.11",
-    "clean-css-cli": "^4.1.11",
+    "clean-css": "^4.2.0",
+    "clean-css-cli": "^4.2.0",
     "jquery": "^3.3.1",
     "lightbox2": "^2.10.0",
     "normalize.css": "^8.0.0",

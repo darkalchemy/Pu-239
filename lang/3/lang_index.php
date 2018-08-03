@@ -27,6 +27,9 @@ $lang = [
     'news_link' => 'Pagin&#259; cu &#351;tiri',
     'news_edit' => 'Editeaz&#259;',
     'news_delete' => '&#350;terge',
+    // staff_picks
+    'staff_picks' => 'Staff Picks',
+    'staff_picks_no_torrents' => 'No torrents Found',
     //latest torrents
     'latesttorrents_title' => $site_config['latest_torrents_limit'] . ' ultimele torente',
     'latesttorrents_type' => 'Tip',

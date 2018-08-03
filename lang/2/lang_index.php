@@ -27,6 +27,9 @@ $lang = [
     'news_link' => 'News Page',
     'news_edit' => 'Edit',
     'news_delete' => 'Delete',
+    // staff_picks
+    'staff_picks' => 'Staff Picks',
+    'staff_picks_no_torrents' => 'No torrents Found',
     //latest torrents
     'latesttorrents_title' => $site_config['latest_torrents_limit'] . ' latest torrents',
     'latesttorrents_type' => 'Type',

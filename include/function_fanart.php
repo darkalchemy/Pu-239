@@ -29,6 +29,10 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
         if ($fanart != null) {
             $fanart = json_decode($fanart, true);
             $cache->set('show_images_' . $thetvdb_id, $fanart, 604800);
+        } else {
+            $cache->set('show_images_' . $thetvdb_id, 0, 86400);
+
+            return null;
         }
     }
     if (!empty($fanart[$type])) {
@@ -81,6 +85,10 @@ function getMovieImagesByImdb($imdb, $type = 'moviebackground')
         if ($fanart != null) {
             $fanart = json_decode($fanart, true);
             $cache->set('movie_images_' . $imdb, $fanart, 604800);
+        } else {
+            $cache->set('movie_images_' . $imdb, 0, 86400);
+
+            return null;
         }
     }
     if (!empty($fanart[$type])) {

@@ -29,4 +29,5 @@ class block_index
     const MOVIEOFWEEK = 0x200000; // 2097152
     const LATESTCOMMENTS = 0x400000; // 4194304
     const LATEST_TORRENTS_SLIDER = 0x800000; // 8388608
+    const STAFF_PICKS = 0x1000000; // 16777216
 }

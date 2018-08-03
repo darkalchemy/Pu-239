@@ -125,6 +125,8 @@ function get_episode($tvmaze_id, $season, $episode)
         if (!empty($episode_info['summary'])) {
             $episode_info['timestamp'] = strtotime($episode_info['airstamp']);
             $cache->set('tvshow_episode_info_' . $tvmaze_id . $season . $episode, $episode_info, 604800);
+        } else {
+            $cache->set('tvshow_episode_info_' . $tvmaze_id . $season . $episode, 0, 86400);
         }
     }
     if (!empty($episode_info)) {
@@ -163,6 +165,8 @@ function tvmaze($tvmaze_id, $id)
         $tvmaze_link = "http://api.tvmaze.com/shows/{$tvmaze_id}?embed=cast";
         $content = fetch($tvmaze_link);
         if (empty($content)) {
+            $cache->set('tvmaze_' . $tvmaze_id, 0, 86400);
+
             return false;
         }
         $tvmaze_show_data = json_decode($content, true);
@@ -211,6 +215,8 @@ function tvmaze($tvmaze_id, $id)
                 $sql = "INSERT IGNORE INTO images (tvmaze_id, url, type) VALUES ($tvmaze_id, '$poster', 'poster')";
                 sql_query($sql) or sqlerr(__FILE__, __LINE__);
                 $cache->set('insert_tvmaze_tvmazeid_' . $tvmaze_id, 0, 604800);
+            } else {
+                $cache->set('insert_tvmaze_tvmazeid_' . $tvmaze_id, 0, 86400);
             }
         }
     }
@@ -237,6 +243,8 @@ function get_schedule($use_cache = true)
     if (!$use_cache || $tvmaze_data === false || is_null($tvmaze_data)) {
         $content = fetch($url);
         if (!$content) {
+            $cache->set('insert_tvmaze_tvmazeid_' . $tvmaze_id, 0, 900);
+
             return false;
         }
         $tvmaze_data = bzcompress($content, 9);

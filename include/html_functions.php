@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @return string
  */
@@ -227,7 +226,16 @@ function write_css($data)
     font-style: italic;
 }
 ';
-
+    foreach ($data as $class) {
+        $cname = str_replace(' ', '_', strtolower($class['className']));
+        $ccolor = strtolower($class['classColor']);
+        if (!empty($cname)) {
+            $classdata .= ".{$cname}_bk {
+    background-color: $ccolor;
+}
+";
+        }
+    }
     file_put_contents(ROOT_DIR . 'chat/css/classcolors.css', $classdata . PHP_EOL);
     file_put_contents(ROOT_DIR . 'templates/1/css/classcolors.css', $classdata . PHP_EOL);
 }

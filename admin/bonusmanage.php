@@ -5,7 +5,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang;
+global $site_config, $lang, $cache;
 
 $lang = array_merge($lang, load_language('bonusmanager'));
 $HTMLOUT = $count = '';
@@ -23,7 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $enabled = 'no';
         }
         $orderid = (int) $_POST['orderid'];
-        $sql = sql_query('UPDATE bonus SET orderid = ' . sqlesc($orderid) . ', points = ' . sqlesc($points) . ', pointspool=' . sqlesc($pointspool) . ', minpoints=' . sqlesc($minpoints) . ', minclass=' . sqlesc($minclass) . ', enabled = ' . sqlesc($enabled) . ', description = ' . sqlesc($descr) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $cache->delete('bonus_points_' . $id);
+        $sql = sql_query('UPDATE bonus SET orderid = ' . sqlesc($orderid) . ', points = ' . sqlesc($points) . ', pointspool = ' . sqlesc($pointspool) . ', minpoints = ' . sqlesc($minpoints) . ', minclass = ' . sqlesc($minclass) . ', enabled = ' . sqlesc($enabled) . ', description = ' . sqlesc($descr) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         sql_query("UPDATE bonus SET orderid = orderid + 1 WHERE orderid >= $orderid AND id != $id") or sqlerr(__FILE__, __LINE__);
 
         $query = sql_query('SELECT id FROM bonus ORDER BY orderid, id');
@@ -70,7 +71,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
         <td><textarea name='description' rows='4' cols='10'>" . htmlsafechars($arr['description']) . '</textarea></td>
         <td>' . htmlsafechars($arr['art']) . '</td>
         <td>' . (($arr['art'] === 'traffic' || $arr['art'] === 'traffic2' || $arr['art'] === 'gift_1' || $arr['art'] === 'gift_2') ? (htmlsafechars($arr['menge']) / 1024 / 1024 / 1024) . ' GB' : htmlsafechars($arr['menge'])) . "</td>
-        <td><input type='submit' value='{$lang['bonusmanager_submit']}' /></td>
+        <td><input class='button is-small' type='submit' value='{$lang['bonusmanager_submit']}' /></td>
         </tr></table></div></form>";
 }
 echo stdhead($lang['bonusmanager_stdhead']) . $HTMLOUT . stdfoot();
