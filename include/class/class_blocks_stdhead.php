@@ -15,4 +15,6 @@ class block_stdhead
     const STDHEAD_CRAZYHOUR = 0x80; // 128
     const STDHEAD_BUG_MESSAGE = 0x100; // 256
     const STDHEAD_FREELEECH_CONTRIBUTION = 0x200; // 512
+    const STDHEAD_STAFF_MENU = 0x400; // 1024
+    const STDHEAD_FLASH_MESSAGES = 0x800; // 2048
 }

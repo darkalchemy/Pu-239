@@ -15,7 +15,7 @@ if (empty($_POST)) {
 }
 
 header('Content-Type: application/json');
-if (!empty($CURUSER) && $session->validateToken($_POST['csrf_token'])) {
+if (!empty($CURUSER)) {
     $upped = mksize($CURUSER['uploaded']);
     $downed = mksize($CURUSER['downloaded']);
 

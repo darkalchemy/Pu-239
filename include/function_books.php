@@ -9,7 +9,11 @@ use Scriptotek\GoogleBooks\GoogleBooks;
  */
 function get_book_info($torrent)
 {
-    global $site_config, $CURUSER, $cache;
+    global $site_config, $CURUSER, $cache, $BLOCKS;
+
+    if (!$BLOCKS['google_books_api_on']) {
+        return false;
+    }
 
     $search = $torrent['name'];
     if (!empty($torrent['isbn'])) {

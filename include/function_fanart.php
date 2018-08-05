@@ -1,8 +1,19 @@
 <?php
 
+/**
+ * @param        $thetvdb_id
+ * @param string $type
+ * @param int    $season
+ *
+ * @return bool|mixed
+ */
 function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
 {
-    global $cache;
+    global $cache, $BLOCKS;
+
+    if (!$BLOCKS['fanart_api_on']) {
+        return false;
+    }
 
     $types = [
         'showbackground',
@@ -20,11 +31,11 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
 
     $key = $_ENV['FANART_API_KEY'];
     if (empty($key) || empty($thetvdb_id) || !in_array($type, $types)) {
-        return null;
+        return false;
     }
     $fanart = $cache->get('show_images_' . $thetvdb_id);
     if ($fanart === false || is_null($fanart)) {
-        $url = 'http://webservice.fanart.tv/v3/tv/';
+        $url = 'https://webservice.fanart.tv/v3/tv/';
         $fanart = fetch($url . $thetvdb_id . '?api_key=' . $key);
         if ($fanart != null) {
             $fanart = json_decode($fanart, true);
@@ -32,7 +43,7 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
         } else {
             $cache->set('show_images_' . $thetvdb_id, 0, 86400);
 
-            return null;
+            return false;
         }
     }
     if (!empty($fanart[$type])) {
@@ -55,18 +66,24 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
         }
     }
 
-    return null;
+    return false;
 }
 
 /**
- * @param        $imdb
+ * @param        $id
  * @param string $type
  *
- * @return null|string
+ * @return bool|mixed
+ *
+ * @throws Exception
  */
-function getMovieImagesByImdb($imdb, $type = 'moviebackground')
+function getMovieImagesByID($id, $type = 'moviebackground')
 {
-    global $cache;
+    global $cache, $BLOCKS, $fluent;
+
+    if (!$BLOCKS['fanart_api_on']) {
+        return false;
+    }
 
     $types = [
         'moviebackground',
@@ -74,23 +91,24 @@ function getMovieImagesByImdb($imdb, $type = 'moviebackground')
         'moviebanner',
     ];
     $key = $_ENV['FANART_API_KEY'];
-    if (empty($key) || empty($imdb) || !in_array($type, $types)) {
-        return null;
+    if (empty($key) || empty($id) || !in_array($type, $types)) {
+        return false;
     }
 
-    $fanart = $cache->get('movie_images_' . $imdb);
+    $fanart = $cache->get('movie_images_' . $id);
     if ($fanart === false || is_null($fanart)) {
-        $url = 'http://webservice.fanart.tv/v3/movies/';
-        $fanart = fetch($url . $imdb . '?api_key=' . $key);
-        if ($fanart != null) {
+        $url = 'https://webservice.fanart.tv/v3/movies/';
+        $fanart = fetch($url . $id . '?api_key=' . $key);
+        if ($fanart) {
             $fanart = json_decode($fanart, true);
-            $cache->set('movie_images_' . $imdb, $fanart, 604800);
+            $cache->set('movie_images_' . $id, $fanart, 604800);
         } else {
-            $cache->set('movie_images_' . $imdb, 0, 86400);
+            $cache->set('movie_images_' . $id, 0, 86400);
 
-            return null;
+            return false;
         }
     }
+
     if (!empty($fanart[$type])) {
         $images = [];
         foreach ($fanart[$type] as $image) {
@@ -99,18 +117,30 @@ function getMovieImagesByImdb($imdb, $type = 'moviebackground')
             }
         }
         if (!empty($images)) {
-            $insert = $cache->get('insert_fanart_imdb_' . $imdb);
+            $insert = $cache->get('insert_fanart_id_' . $id);
             if ($insert === false || is_null($insert)) {
-                $insert = '';
                 foreach ($images as $image) {
                     $type = str_replace('movie', '', $type);
-                    $insert .= (empty($insert) ? '' : ', ') . "('$imdb', '$image', '$type')";
+                    if (!preg_match('/^tt/', $id)) {
+                        $values = [
+                            'tmdb_id' => $id,
+                            'url' => $image,
+                            'type' => $type,
+                        ];
+                    } else {
+                        $values = [
+                            'imdb_id' => $id,
+                            'url' => $image,
+                            'type' => $type,
+                        ];
+                    }
+                    $fluent->insertInto('images')
+                        ->values($values)
+                        ->ignore()
+                        ->execute();
+
+                    $cache->set('insert_fanart_imdb_' . $id, 0, 604800);
                 }
-                if (!empty($insert)) {
-                    $sql = "INSERT IGNORE INTO images (imdb_id, url, type) VALUES $insert";
-                    sql_query($sql) or sqlerr(__FILE__, __LINE__);
-                }
-                $cache->set('insert_fanart_imdb_' . $imdb, 0, 604800);
             }
             shuffle($images);
 
@@ -118,5 +148,5 @@ function getMovieImagesByImdb($imdb, $type = 'moviebackground')
         }
     }
 
-    return null;
+    return false;
 }

@@ -30,7 +30,7 @@ if ($scroll_torrents) {
     <a id='scroller-hash'></a>
     <fieldset id='scroller' class='header'>
         <legend class='flipper has-text-primary'>
-            <i class='fa icon-up-open size_3' aria-hidden='true'></i>
+            <i class='icon-down-open size_3' aria-hidden='true'></i>
             {$lang['index_latest']} Scroller
         </legend>
         <div class='bordered'>
@@ -80,7 +80,7 @@ if ($scroll_torrents) {
     <a id='scroller-hash'></a>
     <fieldset id='scroller' class='header'>
         <legend class='flipper has-text-primary'>
-            <i class='fa icon-up-open size_3' aria-hidden='true'></i>
+            <i class='icon-down-open size_3' aria-hidden='true'></i>
             {$lang['index_latest']} Scroller
         </legend>
         <div class='bordered'>

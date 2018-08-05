@@ -6,7 +6,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once CACHE_DIR . 'subs.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config, $cache, $fluent;
 
 if (!mkglobal('id')) {
     die();
@@ -31,8 +31,11 @@ $stdfoot = [
         get_file_name('upload_js'),
     ],
 ];
-$res = sql_query('SELECT * FROM torrents WHERE id = ' . sqlesc($id));
-$row = mysqli_fetch_assoc($res);
+
+$row = $fluent->from('torrents')
+    ->where('id = ?', $id)
+    ->fetch();
+
 if (!$row) {
     stderr($lang['edit_user_error'], $lang['edit_no_torrent']);
 }

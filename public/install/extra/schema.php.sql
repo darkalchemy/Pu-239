@@ -1,8 +1,8 @@
--- MySQL dump 10.16  Distrib 10.1.29-MariaDB, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.16  Distrib 10.1.34-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: silly
 -- ------------------------------------------------------
--- Server version	10.1.29-MariaDB-6
+-- Server version	10.1.34-MariaDB-0ubuntu0.18.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -231,7 +231,9 @@ CREATE TABLE `auth_tokens` (
   `userid` int(10) unsigned NOT NULL,
   `expires` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `selector` (`selector`)
+  UNIQUE KEY `selector` (`selector`),
+  KEY `userid` (`userid`),
+  CONSTRAINT `auth_tokens_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2652,4 +2654,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-03 22:32:32
+-- Dump completed on 2018-08-05 21:13:47

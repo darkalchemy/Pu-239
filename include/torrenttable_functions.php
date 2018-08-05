@@ -244,7 +244,7 @@ function torrenttable($res, $variant = 'index')
         $icons[] = ($free_slot == 1 ? '<img src="' . $site_config['pic_baseurl'] . 'freedownload.gif" class="tooltipper icon" alt="Free Slot" title="Free Slot in Use" />' : '');
         $icons[] = ($double_slot == 1 ? '<img src="' . $site_config['pic_baseurl'] . 'doubleseed.gif" class="tooltipper icon" alt="Double Upload Slot" title="Double Upload Slot in Use" />' : '');
         $icons[] = ($row['nuked'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}nuked.gif' class='tooltipper icon' alt='Nuked'  class='has-text-centered' title='<div class=\"size_5 has-text-centered has-text-danger\">Nuked</div><span class=\"right10\">Reason: </span>" . htmlsafechars($row['nukereason']) . "' />" : '');
-        $icons[] = ($row['bump'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}up.gif' class='tooltipper icon' alt='Re-Animated torrent' title='<div class=\"size_5 has-text-centered has-text-success\">Bumped</div><span class=\"has-text-centered\">This torrent was ReAnimated!</span>' />" : '');
+        $icons[] = ($row['bump'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}forums/up.gif' class='tooltipper icon' alt='Re-Animated torrent' title='<div class=\"size_5 has-text-centered has-text-success\">Bumped</div><span class=\"has-text-centered\">This torrent was ReAnimated!</span>' />" : '');
 
         if (!empty($row['newgenre'])) {
             $newgenre = [];

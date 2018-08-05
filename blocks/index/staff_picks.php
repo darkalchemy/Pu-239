@@ -33,7 +33,7 @@ if ($staff_picks === false || is_null($staff_picks)) {
 $HTMLOUT .= "
     <a id='staffpicks-hash'></a>
     <fieldset id='staffpicks' class='header'>
-        <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['staff_picks']}</legend>
+        <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['staff_picks']}</legend>
         <div class='has-text-centered'>";
 
 $HTMLOUT .= "

@@ -8,7 +8,7 @@ $site_config['cookie_domain'] = '#cookie_domain'; // set to eg: .somedomain.com 
 $site_config['cookie_lifetime'] = //cookie_lifetime; // length of time cookies will be valid
 $site_config['domain'] = '#domain';
 $site_config['sessionKeyPrefix'] = '#cookie_prefix_'; // useful if serving multiple sites
-$site_config['session_csrf'] = 'csrf_token'; // useful if serving multiple sites
+$site_config['session_csrf'] = 'csrf_token'; // Cross-Site Request Forgery token name
 
 // keys
 $site_config['site']['salt'] = '#pass1'; // random generated during install

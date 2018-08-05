@@ -33,6 +33,9 @@ ALTER TABLE announcement_process ADD FOREIGN KEY (user_id) REFERENCES users(id) 
 ## attachments
 ALTER TABLE attachments ADD FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
+## attachments
+ALTER TABLE auth_tokens ADD FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
+
 ## blackjack tables
 ALTER TABLE blackjack MODIFY `userid` int(10) UNSIGNED NOT NULL DEFAULT 0;
 ALTER TABLE blackjack ADD FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;

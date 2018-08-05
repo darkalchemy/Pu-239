@@ -7,7 +7,7 @@ use Intervention\Image\ImageManager;
 
 class ImageProxy
 {
-    public function get_image($url, $image, $width, $height, $quality)
+    public function get_image($url, $width, $height, $quality)
     {
         if (empty($url)) {
             return null;
@@ -16,11 +16,23 @@ class ImageProxy
         $hash = hash('sha512', $url);
         $path = PROXY_IMAGES_DIR . $hash;
 
+        if (file_exists($path)) {
+            if (!@is_array(getimagesize($path))) {
+                unlink($path);
+            }
+        }
+
         if (!file_exists($path)) {
             $this->store_image($url, $path);
         }
 
         if (!file_exists($path)) {
+            return null;
+        }
+
+        if (!is_array(getimagesize($path))) {
+            unlink($path);
+
             return null;
         }
 

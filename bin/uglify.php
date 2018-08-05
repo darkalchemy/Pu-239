@@ -3,7 +3,11 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
-global $site_config;
+global $site_config, $BLOCKS;
+
+if (empty($BLOCKS)) {
+    die('BLOCKS are empty');
+}
 
 write_class_files();
 
@@ -40,38 +44,101 @@ foreach ($dirs as $dir) {
 copy(ROOT_DIR . 'node_modules/lightbox2/dist/css/lightbox.css', BIN_DIR . 'lightbox.css');
 passthru("sed -i 's#../images/#../../images/#g' " . BIN_DIR . 'lightbox.css');
 
-$js_list = [
+$js_list = [];
+$js_list['index_js'] = $js_list['js'] = [];
+if ($BLOCKS['ajaxchat_on']) {
+    $js_list = array_merge($js_list, [
+        'chat_js' => [
+            CHAT_DIR . 'js/chat.js',
+            CHAT_DIR . 'js/custom.js',
+            CHAT_DIR . 'js/classes.js',
+            CHAT_DIR . 'js/lang/en.js',
+            CHAT_DIR . 'js/config.js',
+            CHAT_DIR . 'js/FABridge.js',
+            SCRIPTS_DIR . 'ajaxchat.js',
+        ],
+        'chat_log_js' => [
+            CHAT_DIR . 'js/chat.js',
+            CHAT_DIR . 'js/logs.js',
+            CHAT_DIR . 'js/custom.js',
+            CHAT_DIR . 'js/classes.js',
+            CHAT_DIR . 'js/lang/en.js',
+            CHAT_DIR . 'js/config.js',
+            CHAT_DIR . 'js/FABridge.js',
+        ],
+    ]);
+}
+
+if ($BLOCKS['staff_picks_on']) {
+    $js_list += [
+        'browse_js' => [
+            SCRIPTS_DIR . 'autocomplete.js',
+            SCRIPTS_DIR . 'staff_picks.js',
+        ],
+    ];
+} else {
+    $js_list += [
+        'browse_js' => [
+            SCRIPTS_DIR . 'autocomplete.js',
+        ],
+    ];
+}
+
+if ($BLOCKS['latest_torrents_scroll_on']) {
+    $js_list['index_js'] = array_merge($js_list['index_js'], [
+        ROOT_DIR . 'node_modules/raphael/raphael.js',
+        SCRIPTS_DIR . 'jquery.mousewheel.js',
+        SCRIPTS_DIR . 'icarousel.js',
+    ]);
+}
+if ($BLOCKS['latest_torrents_slider_on']) {
+    $js_list['index_js'] = array_merge($js_list['index_js'], [
+        SCRIPTS_DIR . 'jquery.flexslider.js',
+        SCRIPTS_DIR . 'flexslider.js',
+    ]);
+}
+
+$js_list['userdetails_js'] = [
+    SCRIPTS_DIR . 'jquery.tabcontrol.js',
+];
+if ($BLOCKS['userdetails_flush_on']) {
+    $js_list['userdetails_js'] = array_merge($js_list['userdetails_js'], [
+        SCRIPTS_DIR . 'flush_torrents.js',
+    ]);
+}
+
+$js_list['js'] = array_merge($js_list['js'], [
+    ROOT_DIR . 'node_modules/jquery/dist/jquery.js',
+]);
+
+if ($BLOCKS['global_themechanger_on']) {
+    $js_list['js'] = array_merge($js_list['js'], [
+        TEMPLATE_DIR . 'themeChanger/js/colorpicker.js',
+        TEMPLATE_DIR . 'themeChanger/js/themeChanger.js',
+    ]);
+}
+
+$js_list['js'] = array_merge($js_list['js'], [
+    SCRIPTS_DIR . 'yall.js',
+    SCRIPTS_DIR . 'popup.js',
+    SCRIPTS_DIR . 'markitup/jquery.markitup.js',
+    SCRIPTS_DIR . 'markitup/sets/default/set.js',
+    SCRIPTS_DIR . 'markitup.js',
+    ROOT_DIR . 'node_modules/lightbox2/dist/js/lightbox.js',
+    SCRIPTS_DIR . 'lightbox.js',
+    SCRIPTS_DIR . 'tooltipster.bundle.js',
+    SCRIPTS_DIR . 'tooltipster.js',
+    SCRIPTS_DIR . 'copy_to_clipboard.js',
+    SCRIPTS_DIR . 'flipper.js',
+    SCRIPTS_DIR . 'replaced.js',
+]);
+
+$js_list = array_merge($js_list, [
     'checkport_js' => [
         SCRIPTS_DIR . 'checkports.js',
     ],
     'browse_js' => [
         SCRIPTS_DIR . 'autocomplete.js',
-        SCRIPTS_DIR . 'staff_picks.js',
-    ],
-    'chat_js' => [
-        CHAT_DIR . 'js/chat.js',
-        CHAT_DIR . 'js/custom.js',
-        CHAT_DIR . 'js/classes.js',
-        CHAT_DIR . 'js/lang/en.js',
-        CHAT_DIR . 'js/config.js',
-        CHAT_DIR . 'js/FABridge.js',
-        SCRIPTS_DIR . 'ajaxchat.js',
-    ],
-    'chat_log_js' => [
-        CHAT_DIR . 'js/chat.js',
-        CHAT_DIR . 'js/logs.js',
-        CHAT_DIR . 'js/custom.js',
-        CHAT_DIR . 'js/classes.js',
-        CHAT_DIR . 'js/lang/en.js',
-        CHAT_DIR . 'js/config.js',
-        CHAT_DIR . 'js/FABridge.js',
-    ],
-    'index_js' => [
-        ROOT_DIR . 'node_modules/raphael/raphael.js',
-        SCRIPTS_DIR . 'jquery.mousewheel.js',
-        SCRIPTS_DIR . 'icarousel.js',
-        SCRIPTS_DIR . 'jquery.flexslider.js',
-        SCRIPTS_DIR . 'flexslider.js',
     ],
     'captcha2_js' => [
         SCRIPTS_DIR . 'check.js',
@@ -92,80 +159,82 @@ $js_list = [
     'dragndrop_js' => [
         SCRIPTS_DIR . 'dragndrop.js',
     ],
-    'userdetails_js' => [
-        SCRIPTS_DIR . 'flush_torrents.js',
-        SCRIPTS_DIR . 'jquery.tabcontrol.js',
-    ],
     'details_js' => [
         SCRIPTS_DIR . 'jquery.thanks.js',
     ],
     'forums_js' => [
         SCRIPTS_DIR . 'check_selected.js',
         SCRIPTS_DIR . 'jquery.trilemma.js',
-        SCRIPTS_DIR . '/forums.js',
+        SCRIPTS_DIR . 'forums.js',
     ],
     'staffpanel_js' => [
         SCRIPTS_DIR . 'polls.js',
     ],
-    'js' => [
-        ROOT_DIR . 'node_modules/jquery/dist/jquery.js',
-        SCRIPTS_DIR . 'yall.js',
-        TEMPLATE_DIR . 'themeChanger/js/colorpicker.js',
-        TEMPLATE_DIR . 'themeChanger/js/themeChanger.js',
-        SCRIPTS_DIR . 'popup.js',
-        SCRIPTS_DIR . 'markitup/jquery.markitup.js',
-        SCRIPTS_DIR . 'markitup/sets/default/set.js',
-        SCRIPTS_DIR . 'markitup.js',
-        ROOT_DIR . 'node_modules/lightbox2/dist/js/lightbox.js',
-        SCRIPTS_DIR . 'lightbox.js',
-        SCRIPTS_DIR . 'tooltipster.bundle.js',
-        SCRIPTS_DIR . 'tooltipster.js',
-        SCRIPTS_DIR . 'copy_to_clipboard.js',
-        SCRIPTS_DIR . 'replaced.js',
-    ],
+]);
+
+$css_list = [];
+$css_list['css'] = [
+    ROOT_DIR . 'node_modules/normalize.css/normalize.css',
+    ROOT_DIR . 'node_modules/bulma/css/bulma.css',
 ];
 
-$css_list = [
-    'css' => [
-        ROOT_DIR . 'node_modules/normalize.css/normalize.css',
-        ROOT_DIR . 'node_modules/bulma/css/bulma.css',
-        TEMPLATE_DIR . '1/css/fonts.css',
-        TEMPLATE_DIR . '1/css/fontello.css',
-        TEMPLATE_DIR . '1/default.css',
-        TEMPLATE_DIR . '1/css/navbar.css',
-        TEMPLATE_DIR . '1/css/tables.css',
-        TEMPLATE_DIR . '1/css/cards.css',
-        TEMPLATE_DIR . '1/css/tooltipster.bundle.css',
-        TEMPLATE_DIR . '1/css/tooltipster-sideTip-borderless.css',
+if ($BLOCKS['global_themechanger_on']) {
+    $css_list['css'] = array_merge([
         TEMPLATE_DIR . 'themeChanger/css/themeChanger.css',
         TEMPLATE_DIR . 'themeChanger/css/colorpicker.css',
-        TEMPLATE_DIR . '1/css/classcolors.css',
-        TEMPLATE_DIR . '1/css/skins.css',
+    ], $css_list['css']);
+}
+
+if ($BLOCKS['latest_torrents_scroll_on']) {
+    $css_list['css'] = array_merge($css_list['css'], [
         TEMPLATE_DIR . '1/css/iCarousel.css',
-        TEMPLATE_DIR . '1/css/markitup.css',
-        BIN_DIR . 'lightbox.css',
+    ]);
+}
+
+if ($BLOCKS['latest_torrents_slider_on']) {
+    $css_list['css'] = array_merge($css_list['css'], [
         TEMPLATE_DIR . '1/css/flexslider.css',
-        TEMPLATE_DIR . '1/custom.css',
-    ],
-    'chat_css_trans' => [
-        ROOT_DIR . 'node_modules/normalize.css/normalize.css',
-        CHAT_DIR . 'css/global.css',
-        CHAT_DIR . 'css/fonts.css',
-        CHAT_DIR . 'css/print.css',
-        CHAT_DIR . 'css/custom.css',
-        CHAT_DIR . 'css/classcolors.css',
-        CHAT_DIR . 'css/transparent.css',
-    ],
-    'chat_css_uranium' => [
-        ROOT_DIR . 'node_modules/normalize.css/normalize.css',
-        CHAT_DIR . 'css/global.css',
-        CHAT_DIR . 'css/fonts.css',
-        CHAT_DIR . 'css/print.css',
-        CHAT_DIR . 'css/custom.css',
-        CHAT_DIR . 'css/classcolors.css',
-        CHAT_DIR . 'css/Uranium.css',
-    ],
-];
+    ]);
+}
+
+$css_list['css'] = array_merge($css_list['css'], [
+    TEMPLATE_DIR . '1/css/fonts.css',
+    TEMPLATE_DIR . '1/css/fontello.css',
+    TEMPLATE_DIR . '1/default.css',
+    TEMPLATE_DIR . '1/css/navbar.css',
+    TEMPLATE_DIR . '1/css/tables.css',
+    TEMPLATE_DIR . '1/css/cards.css',
+    TEMPLATE_DIR . '1/css/tooltipster.bundle.css',
+    TEMPLATE_DIR . '1/css/tooltipster-sideTip-borderless.css',
+    TEMPLATE_DIR . '1/css/classcolors.css',
+    TEMPLATE_DIR . '1/css/skins.css',
+    TEMPLATE_DIR . '1/css/markitup.css',
+    BIN_DIR . 'lightbox.css',
+    TEMPLATE_DIR . '1/custom.css',
+]);
+
+if ($BLOCKS['ajaxchat_on']) {
+    $css_list = array_merge([
+        'chat_css_trans' => [
+            ROOT_DIR . 'node_modules/normalize.css/normalize.css',
+            CHAT_DIR . 'css/global.css',
+            CHAT_DIR . 'css/fonts.css',
+            CHAT_DIR . 'css/print.css',
+            CHAT_DIR . 'css/custom.css',
+            CHAT_DIR . 'css/classcolors.css',
+            CHAT_DIR . 'css/transparent.css',
+        ],
+        'chat_css_uranium' => [
+            ROOT_DIR . 'node_modules/normalize.css/normalize.css',
+            CHAT_DIR . 'css/global.css',
+            CHAT_DIR . 'css/fonts.css',
+            CHAT_DIR . 'css/print.css',
+            CHAT_DIR . 'css/custom.css',
+            CHAT_DIR . 'css/classcolors.css',
+            CHAT_DIR . 'css/Uranium.css',
+        ],
+    ], $css_list);
+}
 
 $css_files = [];
 foreach ($css_list as $key => $css) {
@@ -177,11 +246,15 @@ foreach ($css_list as $key => $css) {
 }
 
 foreach ($css_list as $key => $css) {
-    $pages[] = process_css($key, $css);
+    if (!empty($css)) {
+        $pages[] = process_css($key, $css);
+    }
 }
 
 foreach ($js_list as $key => $js) {
-    $pages[] = process_js($key, $js);
+    if (!empty($js)) {
+        $pages[] = process_js($key, $js);
+    }
 }
 
 function process_js($key, $list)

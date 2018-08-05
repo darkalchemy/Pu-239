@@ -3,7 +3,7 @@
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang, $BLOCKS, $session;
+global $site_config, $lang, $session, $cache;
 
 $lang = array_merge($lang, load_language('ad_block_settings'));
 
@@ -43,6 +43,9 @@ $list = [
     'global_crazyhour_on',
     'global_bug_message_on',
     'global_freeleech_contribution_on',
+    'global_staff_menu_on',
+    'global_themechanger_on',
+    'global_flash_messages_on',
     'userdetails_flush_on',
     'userdetails_joined_on',
     'userdetails_online_time_on',
@@ -74,13 +77,18 @@ $list = [
     'userdetails_user_status_on',
     'userdetails_user_comments_on',
     'userdetails_showfriends_on',
+    'fanart_api_on',
+    'tmdb_api_on',
+    'imdb_api_on',
+    'omdb_api_on',
+    'bluray_com_api_on',
+    'google_books_api_on',
+    'tvmaze_api_on',
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    global $lang;
-    unset($_POST['submit']);
     $updated = [];
-    $block_set_cache = CACHE_DIR . 'block_settings_cache.php';
+    $filename = CACHE_DIR . 'block_settings_cache.php';
     $block_out = '<' . "?php\n\n\$BLOCKS = [\n";
     foreach ($_POST as $k => $v) {
         $updated[] = $k;
@@ -91,36 +99,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $block_out .= ($k === 'block_undefined') ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => 0,\n";
     }
     $block_out .= '];';
-    file_put_contents(CACHE_DIR . 'block_settings_cache.php', $block_out);
+    file_put_contents($filename, $block_out);
+    clearstatcache(true, $filename);
 
     $session->set('is-success', $lang['block_updated']);
-    unset($_POST);
+    $session->set('is-success', "Don't forget to run\n\nphp bin/uglify.php\n\nto update the css/js files.");
+    unset($_POST, $block_out, $block_set_cache);
+    $cache->delete('site_blocks_');
     sleep(3);
     header('Location: ' . $site_config['baseurl'] . '/staffpanel.php?tool=block.settings');
     die();
-}
-
-clearstatcache();
-if (!is_file(CACHE_DIR . 'block_settings_cache.php')) {
-    $BLOCKS = [];
-} else {
-    include CACHE_DIR . 'block_settings_cache.php';
-    if (!is_array($BLOCKS)) {
-        $BLOCKS = [];
-    }
 }
 
 $HTMLOUT = "
     <form action='./staffpanel.php?tool=block.settings' method='post'>
         <h1 class='has-text-centered'>{$lang['block_global']}</h1>
         <div class='bg-02'>
-        <fieldset id='user_blocks_home' class='header'>
-            <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-is_hidden='true'></i>{$lang['block_index']}</legend>
+        <fieldset id='user_blocks_index' class='header'>
+            <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['block_index']}</legend>
             <div>
-                <div class='level-center is-inline-flex'>";
+                <div class='level-center'>";
 
 $contents[] = "
-                             <div class='w-100'>{$lang['block_iealert']}</div>
+                            <div class='w-100'>{$lang['block_iealert']}</div>
                             <div class='slideThree'>
                                 <#ie_user_alert#>
                             </div>
@@ -295,11 +296,11 @@ $contents[] = "
                             <div class='w-100'>{$lang['block_movie_set']}</div>";
 
 $level1 = "
-                <div class='level-center is-inline-flex'>";
+                <div class='level-center'>";
 
 foreach ($contents as $content) {
     $level1 .= "
-                    <div class='margin10 w-20'>
+                    <div class='margin10 w-20 min-150'>
                         <span class='bordered level-center bg-02'>
                             $content
                         </span>
@@ -318,14 +319,14 @@ $HTMLOUT .= "
         </fieldset>
     </div>
     <div class='bg-02 top20'>
-        <fieldset id='user_blocks_home' class='header'>
-            <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-is_hidden='true'></i>{$lang['block_stdhead_settings']}</legend>
+        <fieldset id='user_blocks_stdhead' class='header'>
+            <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['block_stdhead_settings']}</legend>
             <div>
-                <div class='level-center is-inline-flex'>";
+                <div class='level-center'>";
 
 $contents = [];
 $contents[] = "
-                             <div class='w-100'>{$lang['block_freelech']}</div>
+                            <div class='w-100'>{$lang['block_freelech']}</div>
                             <div class='slideThree'>
                                 <#global_freeleech_on#>
                             </div>
@@ -393,12 +394,34 @@ $contents[] = "
                                 <#global_freeleech_contribution_on#>
                             </div>
                             <div class='w-100'>{$lang['block_karma_contributions_set']}</div>";
+
+$contents[] = "
+                            <div class='w-100'>{$lang['block_staff_menu']}</div>
+                            <div class='slideThree'>
+                                <#global_staff_menu_on#>
+                            </div>
+                            <div class='w-100'>{$lang['block_staff_menu_set']}</div>";
+
+$contents[] = "
+                            <div class='w-100'>{$lang['block_themechanger']}</div>
+                            <div class='slideThree'>
+                                <#global_themechanger_on#>
+                            </div>
+                            <div class='w-100'>{$lang['block_themechanger_set']}</div>";
+
+$contents[] = "
+                            <div class='w-100'>{$lang['block_flash_messages']}</div>
+                            <div class='slideThree'>
+                                <#global_flash_messages_on#>
+                            </div>
+                            <div class='w-100'>{$lang['block_flash_messages_set']}</div>";
+
 $level2 = "
-                <div class='level-center is-inline-flex'>";
+                <div class='level-center'>";
 
 foreach ($contents as $content) {
     $level2 .= "
-                    <div class='margin10 w-20'>
+                    <div class='margin10 w-20 min-150'>
                         <span class='bordered level-center bg-02'>
                             $content
                         </span>
@@ -417,10 +440,10 @@ $HTMLOUT .= "
         </fieldset>
         </div>
         <div class='bg-02 top20'>
-        <fieldset id='user_blocks_home' class='header'>
-            <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-is_hidden='true'></i>{$lang['block_userdetails']}</legend>
+        <fieldset id='user_blocks_userdetails' class='header'>
+            <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['block_userdetails']}</legend>
             <div>
-                <div class='level-center is-inline-flex'>";
+                <div class='level-center'>";
 
 $contents = [];
 
@@ -641,19 +664,12 @@ $contents[] = "
                             </div>
                             <div class='w-100'>{$lang['block_user_comments_set']}</div>";
 
-$contents[] = "
-                            <div class='w-100'>{$lang['block_user_comments']}</div>
-                            <div class='slideThree'>
-                                <#userdetails_user_comments_on#>
-                            </div>
-                            <div class='w-100'>{$lang['block_user_comments_set']}</div>";
-
 $level3 = "
-                <div class='level-center is-inline-flex'>";
+                <div class='level-center'>";
 
 foreach ($contents as $content) {
     $level3 .= "
-                    <div class='margin10 w-20'>
+                    <div class='margin10 w-20 min-150'>
                         <span class='bordered level-center bg-02'>
                             $content
                         </span>
@@ -664,6 +680,85 @@ $level3 .= '
                 </div>';
 
 $HTMLOUT .= main_div($level3);
+$HTMLOUT .= "
+                </div>
+            <div class='has-text-centered margin20'>
+                <input class='button is-small' type='submit' name='submit' value='{$lang['block_submit']}' />
+            </div>
+        </fieldset>
+    </div>
+    <div class='bg-02 top20'>
+        <fieldset id='user_blocks_apis' class='header'>
+            <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['block_apis_settings']}</legend>
+            <div>
+                <div class='level-center'>";
+
+$contents = [];
+$contents[] = "
+                            <div class='w-100'>{$lang['fanart_api']}</div>
+                            <div class='slideThree'>
+                                <#fanart_api_on#>
+                            </div>
+                            <div class='w-100'>{$lang['fanart_api_set']}</div>";
+
+$contents[] = "
+                            <div class='w-100'>{$lang['tmdb_api']}</div>
+                            <div class='slideThree'>
+                                <#tmdb_api_on#>
+                            </div>
+                            <div class='w-100'>{$lang['tmdb_api_set']}</div>";
+
+$contents[] = "
+                            <div class='w-100'>{$lang['imdb_api']}</div>
+                            <div class='slideThree'>
+                                <#imdb_api_on#>
+                            </div>
+                            <div class='w-100'>{$lang['imdb_api_set']}</div>";
+
+$contents[] = "
+                            <div class='w-100'>{$lang['omdb_api']}</div>
+                            <div class='slideThree'>
+                                <#omdb_api_on#>
+                            </div>
+                            <div class='w-100'>{$lang['omdb_api_set']}</div>";
+
+$contents[] = "
+                            <div class='w-100'>{$lang['bluray_com_api']}</div>
+                            <div class='slideThree'>
+                                <#bluray_com_api_on#>
+                            </div>
+                            <div class='w-100'>{$lang['bluray_com_api_set']}</div>";
+
+$contents[] = "
+                            <div class='w-100'>{$lang['google_books_api']}</div>
+                            <div class='slideThree'>
+                                <#google_books_api_on#>
+                            </div>
+                            <div class='w-100'>{$lang['google_books_api_set']}</div>";
+
+$contents[] = "
+                            <div class='w-100'>{$lang['tvmaze_api']}</div>
+                            <div class='slideThree'>
+                                <#tvmaze_api_on#>
+                            </div>
+                            <div class='w-100'>{$lang['tvmaze_api_set']}</div>";
+
+$level4 = "
+                <div class='level-center'>";
+
+foreach ($contents as $content) {
+    $level4 .= "
+                    <div class='margin10 w-20 min-150'>
+                        <span class='bordered level-center bg-02'>
+                            $content
+                        </span>
+                    </div>";
+}
+
+$level4 .= '
+                </div>';
+
+$HTMLOUT .= main_div($level4);
 $HTMLOUT .= "
                     </div>
                 <div class='has-text-centered margin20'>
@@ -684,7 +779,15 @@ echo stdhead($lang['block_stdhead']), $HTMLOUT, stdfoot();
  */
 function template_out($matches)
 {
-    global $BLOCKS;
+    $BLOCKS = [];
+    if (!is_file(CACHE_DIR . 'block_settings_cache.php')) {
+        $BLOCKS = [];
+    } else {
+        include CACHE_DIR . 'block_settings_cache.php';
+        if (!is_array($BLOCKS)) {
+            $BLOCKS = [];
+        }
+    }
 
     return "
     <input type='checkbox' id='{$matches[1]}' name='{$matches[1]}' value='1'" . ($BLOCKS[$matches[1]] == 1 ? ' checked' : '') . " /> 

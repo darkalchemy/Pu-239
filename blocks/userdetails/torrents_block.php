@@ -208,7 +208,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
             <td>
                 <a id='torrents-hash'></a>
                 <fieldset id='torrents' class='header'>
-                    <legend class='flipper size_4'><i class='fa icon-down-open' aria-hidden='true'></i>View Torrents you uploaded</legend>
+                    <legend class='flipper size_4'><i class='icon-down-open' aria-hidden='true'></i>View Torrents you uploaded</legend>
                     " . maketable($torrents) . '
                 </fieldset>
             </td>
@@ -222,7 +222,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
             <td>
                 <a id='seeding-hash'></a>
                 <fieldset id='seeding' class='header'>
-                    <legend class='flipper size_4'><i class='fa icon-down-open' aria-hidden='true'></i>View Torrents you are currently seeding</legend>
+                    <legend class='flipper size_4'><i class='icon-down-open' aria-hidden='true'></i>View Torrents you are currently seeding</legend>
                     " . maketable($seeding) . '
                 </fieldset>
             </td>
@@ -236,7 +236,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
             <td>
                 <a id='leeching-hash'></a>
                 <fieldset id='leeching' class='header'>
-                    <legend class='flipper size_4'><i class='fa icon-down-open' aria-hidden='true'></i>View Torrents you are currently leeching</legend>
+                    <legend class='flipper size_4'><i class='icon-down-open' aria-hidden='true'></i>View Torrents you are currently leeching</legend>
                 " . maketable($leeching) . '
                 </fieldset>
             </td>
@@ -250,7 +250,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
             <td>
                 <a id='snatched-hash'></a>
                 <fieldset id='snatched' class='header'>
-                    <legend class='flipper size_4'><i class='fa icon-down-open' aria-hidden='true'></i>View Torrents you have snatched</legend>
+                    <legend class='flipper size_4'><i class='icon-down-open' aria-hidden='true'></i>View Torrents you have snatched</legend>
                 " . snatchtable($user_snatches_data) . '
                 </fieldset>
             </td>

@@ -8,7 +8,11 @@
 function tvmaze_update($data)
 {
     dbconn();
-    global $fluent;
+    global $fluent, $BLOCKS;
+
+    if (!$BLOCKS['tvmaze_api_on']) {
+        return;
+    }
 
     $max = $fluent->from('tvmaze')
         ->select(null)

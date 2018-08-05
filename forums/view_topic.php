@@ -312,15 +312,29 @@ $fluent->update('topics')
 
 $res_count = sql_query('SELECT COUNT(id) AS count FROM posts WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'status != \'deleted\' AND' : '')) . ' topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
 $arr_count = mysqli_fetch_row($res_count);
-$count = $arr_count[0];
-
-$page = isset($_GET['page']) ? intval($_GET['page']) : 0;
+$posts_count = $arr_count[0];
 $perpage = isset($_GET['perpage']) ? intval($_GET['perpage']) : 15;
+$page = 0;
+if (isset($_GET['page']) && $_GET['page'] === 'last') {
+    $page = ceil($posts_count / $perpage);
+} elseif (isset($_GET['page'])) {
+    $page = intval($_GET['page']);
+}
 $subscription_on_off = (isset($_GET['s']) ? (1 == $_GET['s'] ? '<br><div>' . $lang['fe_sub_to_topic'] . ' <img src="' . $site_config['pic_baseurl'] . 'forums/subscribe.gif" alt="' . $lang['fe_subscribed'] . '" title="' . $lang['fe_subscribed'] . '" class="tooltipper emoticon" /></div>' : '<br><div >' . $lang['fe_unsub_to_topic'] . ' <img src="' . $site_config['pic_baseurl'] . 'forums/unsubscribe.gif" alt="' . $lang['fe_unsubscribe'] . '" title="' . $lang['fe_unsubscribe'] . '" class="tooltipper emoticon" /></div>') : '');
-list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'forums.php?action=view_topic&amp;topic_id=' . $topic_id . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
+list($menu, $LIMIT) = pager_new($posts_count, $perpage, $page, 'forums.php?action=view_topic&amp;topic_id=' . $topic_id . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
+$sql = 'SELECT p.id AS post_id, p.topic_id, p.user_id, p.user_likes, p.staff_lock, p.added, p.body, p.edited_by, p.edit_date, p.icon, p.post_title, p.bbcode, p.post_history, p.edit_reason,
+            INET6_NTOA(p.ip) AS ip, p.status AS post_status, p.anonymous
+            FROM posts AS p WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = "ok" AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != "deleted" AND' : '')) . '
+            topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id ' . $LIMIT;
 
-$res = sql_query('SELECT p.id AS post_id, p.topic_id, p.user_id, p.user_likes, p.staff_lock, p.added, p.body, p.edited_by, p.edit_date, p.icon, p.post_title, p.bbcode, p.post_history, p.edit_reason, INET6_NTOA(p.ip) AS ip, p.status AS post_status, p.anonymous FROM posts AS p WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = "ok" AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != "deleted" AND' : '')) . ' topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id ' . $_forum_sort . ' ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
-
+$res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+$posts = [];
+while ($post = mysqli_fetch_assoc($res)) {
+    $posts[] = $post;
+}
+if ($_forum_sort === 'DESC') {
+    $posts = array_reverse($posts);
+}
 $may_post = ($CURUSER['class'] >= $arr['min_class_write'] && $CURUSER['forum_post'] === 'yes' && $CURUSER['suspended'] === 'no');
 
 $likes = $att_str = '';
@@ -381,7 +395,7 @@ if ($arr['parent_forum'] > 0) {
 
 $the_top_and_bottom = '
     <tr>
-        <td' . ($count <= $perpage ? ' class="w-50" colspan=2' : '') . '>' . $subscriptions . '</td>' . ($count > $perpage ? '
+        <td' . ($posts_count <= $perpage ? ' class="w-50" colspan=2' : '') . '>' . $subscriptions . '</td>' . ($posts_count > $perpage ? '
 		<td>$menu</td>' : '') . '
 		<td class="has-text-right">' . ($may_post ? $locked_or_reply_button : '
             <span>
@@ -413,7 +427,7 @@ $HTMLOUT .= ($upload_errors_size > 0 ? ($upload_errors_size === 1 ? '
                 </tr>
             </table>';
 
-while ($arr = mysqli_fetch_assoc($res)) {
+foreach ($posts as $arr) {
     $usersdata = $user_stuffs->getUserFromId($arr['user_id']);
     $moodname = isset($mood['name'][$usersdata['mood']]) ? htmlsafechars($mood['name'][$usersdata['mood']]) : 'is feeling neutral';
     $moodpic = isset($mood['image'][$usersdata['mood']]) ? htmlsafechars($mood['image'][$usersdata['mood']]) : 'noexpression.gif';

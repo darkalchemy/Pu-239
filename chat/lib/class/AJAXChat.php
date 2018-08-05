@@ -2769,11 +2769,11 @@ class AJAXChat
             if ($whereisUserID === null) {
                 $this->insertChatBotMessage($this->getPrivateMessageID(), '/error UserNameNotFound ' . $textParts[1]);
             } else {
-                $sql = 'SELECT u.onirc, u.irctotal, u.donor, u.warned, u.leechwarn, u.pirate, u.king, u.enabled, 
+                $sql = 'SELECT u.onirc, u.irctotal, u.donor, u.warned, u.leechwarn, u.pirate, u.king, u.enabled,
                             u.downloadpos, u.last_access, u.username, u.reputation, u.class, u.bjwins - u.bjlosses AS bj,
                             u.uploaded, u.downloaded, u.seedbonus, u.freeslots, u.free_switch, u.added, u.invite_rights,
                             u.invites, c.win - c.lost AS casino
-                        FROM users AS u 
+                        FROM users AS u
                         LEFT JOIN casino AS c ON c.userid = u.id
                         WHERE id = ' . $whereisUserID;
 
@@ -2806,7 +2806,6 @@ class AJAXChat
                 $ircidle = $stats['irctotal'] > 0 ? '[color=#00FF00]' . get_date($stats['irctotal'], 'LONG', false, false, true) . '[/color]' : '[color=#CC0000]' . get_date($stats['irctotal'], 'LONG', false, false, true) . '[/color]';
                 $reputation = '[color=#00FF00]' . number_format($stats['reputation']) . '[/color]';
                 $free = get_date($stats['free_switch'], 'LONG') > date('Y-m-d H:i:s') ? '[color=#00FF00]' . get_date($stats['free_switch'], 'LONG') . '[/color]' : '[color=#CC0000]Expired[/color]';
-                $double = get_date($stats['double_switch'], 'LONG') > date('Y-m-d H:i:s') ? '[color=#00FF00]' . get_date($stats['double_switch'], 'LONG') . '[/color]' : '[color=#CC0000]Expired[/color]';
                 $joined = '[color=#00FF00]' . get_date($stats['added'], 'LONG') . '[/color]';
                 $seen = '[color=#00FF00]' . get_date($stats['last_access'], 'LONG') . '[/color]';
                 $seeder = (int) get_row_count('peers', 'WHERE seeder = "yes" and userid = ' . sqlesc($whereisUserID));

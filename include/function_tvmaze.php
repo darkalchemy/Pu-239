@@ -8,7 +8,11 @@
  */
 function tvmaze_format($tvmaze_data, $tvmaze_type)
 {
-    global $site_config;
+    global $site_config, $BLOCKS;
+
+    if (!$BLOCKS['tvmaze_api_on']) {
+        return;
+    }
 
     $cast = !empty($tvmaze_data['_embedded']['cast']) ? $tvmaze_data['_embedded']['cast'] : [];
     $tvmaze_display['show'] = [
@@ -79,7 +83,11 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
  */
 function episode_format($tvmaze_data, $tvmaze_type)
 {
-    global $site_config;
+    global $site_config, $BLOCKS;
+
+    if (!$BLOCKS['tvmaze_api_on']) {
+        return false;
+    }
 
     $tvmaze_display['episode'] = [
         'name' => line_by_line('Episode Title', '%s'),
@@ -108,11 +116,15 @@ function episode_format($tvmaze_data, $tvmaze_type)
  * @param $season
  * @param $episode
  *
- * @return null|string
+ * @return bool|null|string
  */
 function get_episode($tvmaze_id, $season, $episode)
 {
-    global $cache;
+    global $cache, $BLOCKS;
+
+    if (!$BLOCKS['tvmaze_api_on']) {
+        return false;
+    }
 
     $episode_info = $cache->get('tvshow_episode_info_' . $tvmaze_id . $season . $episode);
     if ($episode_info === false || is_null($episode_info)) {
@@ -137,22 +149,24 @@ function get_episode($tvmaze_id, $season, $episode)
 }
 
 /**
- * @param $torrents
+ * @param $tvmaze_id
+ * @param $id
  *
- * @return string
+ * @return bool|string
  *
- * @throws Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function tvmaze($tvmaze_id, $id)
 {
-    global $fluent, $cache, $site_config, $CURUSER, $torrents;
+    global $fluent, $cache, $site_config, $CURUSER, $torrents, $BLOCKS;
+
+    if (!$BLOCKS['tvmaze_api_on']) {
+        return false;
+    }
 
     $set = [];
     if (empty($tvmaze_id)) {
-        return null;
+        return false;
     }
 
     $force_update = false;
@@ -212,8 +226,16 @@ function tvmaze($tvmaze_id, $id)
             ], 0);
             $insert = $cache->get('insert_tvmaze_tvmazeid_' . $tvmaze_id);
             if ($insert === false || is_null($insert)) {
-                $sql = "INSERT IGNORE INTO images (tvmaze_id, url, type) VALUES ($tvmaze_id, '$poster', 'poster')";
-                sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                $values = [
+                    'tvmaze_id' => $tvmaze_id,
+                    'url' => $poster,
+                    'type' => 'poster',
+                ];
+                $fluent->insertInto('images')
+                    ->values($values)
+                    ->ignore()
+                    ->execute();
+
                 $cache->set('insert_tvmaze_tvmazeid_' . $tvmaze_id, 0, 604800);
             } else {
                 $cache->set('insert_tvmaze_tvmazeid_' . $tvmaze_id, 0, 86400);
@@ -230,12 +252,21 @@ function tvmaze($tvmaze_id, $id)
         return "<div class='padding10'><div class='has-text-centered size_6 bottom20'>TVMaze</div>" . tvmaze_format($tvmaze_show_data, 'show') . '</div>';
     }
 
-    return null;
+    return false;
 }
 
+/**
+ * @param bool $use_cache
+ *
+ * @return bool|mixed
+ */
 function get_schedule($use_cache = true)
 {
-    global $cache;
+    global $cache, $BLOCKS;
+
+    if (!$BLOCKS['tvmaze_api_on']) {
+        return false;
+    }
 
     $url = 'https://api.tvmaze.com/schedule/full';
     $tvmaze_data = $cache->get('tvmaze_schedule_');
@@ -243,7 +274,7 @@ function get_schedule($use_cache = true)
     if (!$use_cache || $tvmaze_data === false || is_null($tvmaze_data)) {
         $content = fetch($url);
         if (!$content) {
-            $cache->set('insert_tvmaze_tvmazeid_' . $tvmaze_id, 0, 900);
+            $cache->set('tvmaze_schedule_', 0, 900);
 
             return false;
         }
@@ -260,9 +291,19 @@ function get_schedule($use_cache = true)
     return false;
 }
 
+/**
+ * @param $schedule
+ * @param $date
+ *
+ * @return bool
+ */
 function insert_images_from_schedule($schedule, $date)
 {
-    global $cache;
+    global $cache, $BLOCKS;
+
+    if (!$BLOCKS['tvmaze_api_on']) {
+        return false;
+    }
 
     foreach ($schedule as $listing) {
         $poster = !empty($listing['image']['medium']) ? $listing['image']['medium'] : !empty($listing['_embedded']['show']['image']['medium']) ? $listing['_embedded']['show']['image']['medium'] : '';

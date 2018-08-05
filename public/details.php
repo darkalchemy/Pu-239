@@ -12,6 +12,7 @@ require_once INCL_DIR . 'function_books.php';
 require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_omdb.php';
 require_once INCL_DIR . 'function_fanart.php';
+require_once INCL_DIR . 'function_get_images.php';
 check_user_status();
 global $CURUSER, $site_config, $fluent, $session, $cache, $user_stuffs;
 
@@ -94,16 +95,7 @@ if (in_array($torrents['category'], $site_config['ebook_cats'])) {
     $ebooks_info = get_book_info($torrents);
     $ebook_info = $ebooks_info[0];
     if (empty($torrents['poster']) && !empty($ebooks_info[1])) {
-        $set = [
-            'poster' => $ebooks_info[1],
-        ];
-        $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
-        $fluent->update('torrents')
-            ->set($set)
-            ->where('id = ?', $id)
-            ->execute();
-        $torrents['poster'] = $ebooks_info[1];
-        clear_image_cache();
+        save_changes($id, 'poster', $ebooks_info[1]);
     }
 }
 
@@ -131,52 +123,15 @@ if (in_array($torrents['category'], $site_config['tv_cats'])) {
 
     preg_match('/S(\d+)E(\d+)/i', $torrents['name'], $match);
     $season = !empty($match[1]) ? $match[1] : 0;
-
-    if (empty($torrents['poster']) && !empty($thetvdb_id)) {
-        $poster = getTVImagesByTVDb($thetvdb_id, 'poster', $season);
-        if (!empty($poster)) {
-            $set = [
-                'poster' => $poster,
-            ];
-            $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
-            $fluent->update('torrents')
-                ->set($set)
-                ->where('id = ?', $id)
-                ->execute();
-            $torrents['poster'] = $poster;
-            clear_image_cache();
+    if (!empty($thetvdb_id)) {
+        if (empty($torrents['poster'])) {
+            get_image_by_id('tv', $id, $thetvdb_id, 'poster', $season);
         }
-    }
-
-    if (empty($torrents['banner']) && !empty($thetvdb_id)) {
-        $banner = getTVImagesByTVDb($thetvdb_id, 'banner', $season);
-        if (!empty($banner)) {
-            $set = [
-                'banner' => $banner,
-            ];
-            $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
-            $fluent->update('torrents')
-                ->set($set)
-                ->where('id = ?', $id)
-                ->execute();
-            $torrents['banner'] = $banner;
-            clear_image_cache();
+        if (empty($torrents['banner'])) {
+            get_image_by_id('tv', $id, $thetvdb_id, 'banner', $season);
         }
-    }
-
-    if (empty($torrents['background']) && !empty($thetvdb_id)) {
-        $background = getTVImagesByTVDb($thetvdb_id, 'showbackground', $season);
-        if (!empty($background)) {
-            $set = [
-                'background' => $background,
-            ];
-            $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
-            $fluent->update('torrents')
-                ->set($set)
-                ->where('id = ?', $id)
-                ->execute();
-            $torrents['background'] = $background;
-            $cache->delete('backgrounds_');
+        if (empty($torrents['background'])) {
+            get_image_by_id('tv', $id, $thetvdb_id, 'background', $season);
         }
     }
 
@@ -213,69 +168,30 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
     $imdb_id = $torrents['imdb'];
     if (!empty($imdb_id)) {
         if (empty($torrents['poster'])) {
-            $poster = getMovieImagesByImdb($imdb_id, 'movieposter');
-            if (!empty($poster)) {
-                $set = [
-                    'poster' => $poster,
-                ];
-                $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
-                $fluent->update('torrents')
-                    ->set($set)
-                    ->where('id = ?', $id)
-                    ->execute();
-                $torrents['poster'] = $poster;
-                clear_image_cache();
-            }
+            get_image_by_id('movie', $id, $imdb_id, 'movieposter');
         }
-
         if (empty($torrents['banner'])) {
-            $banner = getMovieImagesByImdb($imdb_id, 'moviebanner');
-            if (!empty($banner)) {
-                $set = [
-                    'banner' => $banner,
-                ];
-                $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
-                $fluent->update('torrents')
-                    ->set($set)
-                    ->where('id = ?', $id)
-                    ->execute();
-                $torrents['banner'] = $banner;
-                clear_image_cache();
-            }
+            get_image_by_id('movie', $id, $imdb_id, 'moviebanner');
         }
-
         if (empty($torrents['background'])) {
-            $background = getMovieImagesByImdb($imdb_id, 'moviebackground');
-            if (!empty($background)) {
-                $set = [
-                    'background' => $background,
-                ];
-                $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
-                $fluent->update('torrents')
-                    ->set($set)
-                    ->where('id = ?', $id)
-                    ->execute();
-                $torrents['background'] = $background;
-                $cache->delete('backgrounds_');
-            }
+            get_image_by_id('movie', $id, $imdb_id, 'moviebackground');
+        }
+        if (empty($torrents['poster'])) {
+            get_image_by_id('tmdb_id', $id, $imdb_id, 'movieposter');
+        }
+        if (empty($torrents['banner'])) {
+            get_image_by_id('tmdb_id', $id, $imdb_id, 'moviebanner');
+        }
+        if (empty($torrents['background'])) {
+            get_image_by_id('tmdb_id', $id, $imdb_id, 'moviebackground');
         }
         $movie_info = get_imdb_info($imdb_id);
         $imdb_info = $movie_info[0];
 
         $movie_omdb = get_omdb_info($imdb_id);
         $omdb_info = $movie_omdb;
-
         if (empty($torrents['poster']) && !empty($movie_info[1])) {
-            $set = [
-                'poster' => $movie_info[1],
-            ];
-            $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
-            $fluent->update('torrents')
-                ->set($set)
-                ->where('id = ?', $id)
-                ->execute();
-            $torrents['poster'] = $movie_info[1];
-            clear_image_cache();
+            save_changes($id, 'poster', $movie_info[1]);
         }
     }
 }
@@ -717,7 +633,7 @@ if (!empty($sim_torrents) && count($sim_torrents) > 0) {
                 <tr class='no_hover'>
                     <td class='rowhead'>
                         <span class='flipper has-text-primary'>
-                            <i class='fa icon-down-open size_3' aria-hidden='true'></i>{$lang['details_similiar']}
+                            <i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['details_similiar']}
                         </span>
                         <div class='is_hidden'>$sim_torrent</div>
                     </td>
@@ -1040,7 +956,7 @@ if (!$count) {
                 <div class='container is-fluid portlet is-marginless'>
                     <a id='comments-hash'></a>
                     <fieldset id='comments' class='header'>
-                        <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>Comments</legend>
+                        <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>Comments</legend>
                         <div>";
 
     if (count($allrows) > $perpage) {

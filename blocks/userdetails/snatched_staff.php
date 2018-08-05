@@ -13,7 +13,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 <td>
                     <a id='snatched-staff-hash'></a>
                     <fieldset id='snatched-staff' class='header'>
-                        <legend class='flipper size_4'><i class='fa icon-down-open' aria-hidden='true'></i><span class='has-text-red'>*Staff Only*</span> View Snatched Torrents</legend>";
+                        <legend class='flipper size_4'><i class='icon-down-open' aria-hidden='true'></i><span class='has-text-red'>*Staff Only*</span> View Snatched Torrents</legend>";
     if (!XBT_TRACKER) {
         $res = sql_query('SELECT sn.start_date AS s, sn.complete_date AS c, sn.last_action AS l_a, sn.seedtime AS s_t, sn.seedtime, sn.leechtime AS l_t, sn.leechtime, sn.downspeed, sn.upspeed, sn.uploaded, sn.downloaded, sn.torrentid, sn.start_date, sn.complete_date, sn.seeder, sn.last_action, sn.connectable, sn.agent, sn.seedtime, sn.port, cat.name, cat.image, t.size, t.seeders, t.leechers, t.owner, t.name AS torrent_name ' . 'FROM snatched AS sn ' . 'LEFT JOIN torrents AS t ON t.id = sn.torrentid ' . 'LEFT JOIN categories AS cat ON cat.id = t.category ' . 'WHERE sn.userid = ' . sqlesc($id) . ' ORDER BY sn.start_date DESC LIMIT 0, 15') or sqlerr(__FILE__, __LINE__);
     } else {

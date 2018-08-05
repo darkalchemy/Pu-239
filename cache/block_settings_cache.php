@@ -1,7 +1,6 @@
 <?php
 
 $BLOCKS = [
-    'ie_user_alert' => 1,
     'news_on' => 1,
     'ajaxchat_on' => 1,
     'trivia_on' => 1,
@@ -36,6 +35,9 @@ $BLOCKS = [
     'global_crazyhour_on' => 1,
     'global_bug_message_on' => 1,
     'global_freeleech_contribution_on' => 1,
+    'global_staff_menu_on' => 1,
+    'global_flash_messages_on' => 1,
+    'submit' => 1,
     'userdetails_showfriends_on' => 1,
     'userdetails_flush_on' => 1,
     'userdetails_joined_on' => 1,
@@ -67,4 +69,13 @@ $BLOCKS = [
     'userdetails_report_user_on' => 1,
     'userdetails_user_status_on' => 1,
     'userdetails_user_comments_on' => 1,
+    'fanart_api_on' => 1,
+    'tmdb_api_on' => 1,
+    'imdb_api_on' => 1,
+    'omdb_api_on' => 1,
+    'bluray_com_api_on' => 1,
+    'google_books_api_on' => 1,
+    'tvmaze_api_on' => 1,
+    'ie_user_alert' => 1,
+    'global_themechanger_on' => 1,
 ];

@@ -33,7 +33,7 @@ if ($slider_torrents) {
     <a id='slider-hash'></a>
     <fieldset id='slider' class='header'>
         <legend class='flipper has-text-primary'>
-            <i class='fa icon-up-open size_3' aria-hidden='true'></i>
+            <i class='icon-down-open size_3' aria-hidden='true'></i>
             {$lang['index_latest']} Slider
         </legend>
         <div class='bordered'>
@@ -91,7 +91,7 @@ if ($slider_torrents) {
     <a id='slider-hash'></a>
     <fieldset id='slider' class='header'>
         <legend class='flipper has-text-primary'>
-            <i class='fa icon-up-open size_3' aria-hidden='true'></i>
+            <i class='icon-down-open size_3' aria-hidden='true'></i>
             {$lang['index_latest']} Slider
         </legend>
         <div class='bordered'>

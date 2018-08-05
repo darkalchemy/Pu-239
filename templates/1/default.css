@@ -930,6 +930,10 @@ code a,
     max-width: 50%;
 }
 
+.min-150 {
+    min-width: 150px;
+}
+
 .w-1 {
     width: 1%;
     flex: none;
@@ -983,6 +987,10 @@ code a,
 
 .h-100 {
     height: 100%;
+}
+
+.line-40 {
+    line-height: 40px;
 }
 
 .tabs {
@@ -1152,6 +1160,28 @@ option.head {
 
 .droppable.dragover {
     background: #737dff;
+}
+
+.rotate {
+    transition: all .5s ease;
+    transform: rotate(0deg);
+    display: inline-block;
+}
+
+.rotate-hover {
+    transform: rotate(180deg);
+}
+
+.limited.background-16 {
+    background: radial-gradient(black 15%, transparent 16%) 8px 8px 0 1px 8px 9px #282828;
+    background-size: 16px 16px;
+}
+
+body.background-16 {
+    background: radial-gradient(black 15%, transparent 16%), radial-gradient(black 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255, 255, 255, .1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255, 255, 255, .1) 15%, transparent 20%) 8px 9px;
+    background-color: #282828;
+    background-size: 16px 16px;
+    background-attachment: fixed;
 }
 
 @media (max-width: 1200px) {

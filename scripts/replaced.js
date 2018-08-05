@@ -34,7 +34,7 @@ function togglepic(bu, picid, formid) {
 }
 
 $('.delete').on('click', function () {
-    $(this).parent().fadeTo(animate_duration, .01, function() {
+    $(this).parent().fadeTo(animate_duration, .01, function () {
         $(this).slideUp(125, function () {
             $(this).remove();
         });
@@ -144,19 +144,6 @@ $(function () {
             $('#help_open').show();
         });
     }
-    if (typeof Storage !== 'undefined') $('.flipper').click(function (e) {
-        $(this).next().slideToggle(animate_duration, easing, function () {
-            var id = $(this).parent().attr('id');
-            if (!$(this).is(':visible')) {
-                localStorage.setItem(id, 'closed');
-                $(this).parent().addClass('no-margin no-padding');
-            } else {
-                localStorage.setItem(id, 'open');
-                $(this).parent().removeClass('no-margin no-padding');
-            }
-        });
-        $(this).parent().find('.fa').toggleClass('icon-up-open icon-down-open');
-    });
     var backtotop = $('.back-to-top');
     $(window).scroll(function () {
         if ($(this).scrollTop() > v_offset) {
@@ -315,7 +302,7 @@ $(function () {
     var notification = $('.notification');
     if (notification.length) {
         setTimeout(function () {
-            notification.fadeTo(animate_duration, .01, function() {
+            notification.fadeTo(animate_duration, .01, function () {
                 notification.slideUp(125, function () {
                     notification.remove();
                 });

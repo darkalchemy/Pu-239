@@ -1,13 +1,25 @@
 <?php
 
+/**
+ * @param     $title
+ * @param int $year
+ *
+ * @return bool|mixed
+ *
+ * @throws Exception
+ */
 function search_omdb_by_title($title, int $year)
 {
-    global $cache;
+    global $cache, $BLOCKS, $fluent;
+
+    if (!$BLOCKS['omdb_api_on']) {
+        return false;
+    }
 
     $apikey = $_ENV['OMDB_API_KEY'];
 
     if (empty($apikey)) {
-        return null;
+        return false;
     }
 
     $hash = hash('sha256', $title . $year);
@@ -26,8 +38,15 @@ function search_omdb_by_title($title, int $year)
                 $imdbid = $omdb_data['imdbID'];
                 $insert = $cache->get('insert_imdb_imdbid_' . $imdbid);
                 if ($insert === false || is_null($insert)) {
-                    $sql = "INSERT IGNORE INTO images (imdb_id, url, type) VALUES ('$imdbid', '{$omdb_data['Poster']}', 'poster')";
-                    sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                    $values = [
+                        'imdb_id' => $imdbid,
+                        'url' => $omdb_data['Poster'],
+                        'type' => 'poster',
+                    ];
+                    $fluent->insertInto('images')
+                        ->values($values)
+                        ->ignore()
+                        ->execute();
                     $cache->set('insert_imdb_imdbid_' . $imdbid, 0, 604800);
                 }
             }
@@ -38,14 +57,26 @@ function search_omdb_by_title($title, int $year)
     return $omdb_data;
 }
 
+/**
+ * @param      $imdbid
+ * @param bool $title
+ *
+ * @return bool|string
+ *
+ * @throws Exception
+ */
 function get_omdb_info($imdbid, $title = true)
 {
-    global $cache;
+    global $cache, $BLOCKS, $fluent;
+
+    if (!$BLOCKS['omdb_api_on']) {
+        return false;
+    }
 
     $apikey = $_ENV['OMDB_API_KEY'];
 
     if (empty($apikey)) {
-        return null;
+        return false;
     }
 
     $omdb_data = $cache->get('omdb_' . $imdbid);
@@ -67,7 +98,6 @@ function get_omdb_info($imdbid, $title = true)
         return false;
     }
 
-    $poster = '';
     $body = '';
     $exclude = [
         'Type',
@@ -82,8 +112,15 @@ function get_omdb_info($imdbid, $title = true)
             if (!empty($poster)) {
                 $insert = $cache->get('insert_imdb_imdbid_' . $imdbid);
                 if ($insert === false || is_null($insert)) {
-                    $sql = "INSERT IGNORE INTO images (imdb_id, url, type) VALUES ('$imdbid', '{$poster}', 'poster')";
-                    sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                    $values = [
+                        'imdb_id' => $imdbid,
+                        'url' => $poster,
+                        'type' => 'poster',
+                    ];
+                    $fluent->insertInto('images')
+                        ->values($values)
+                        ->ignore()
+                        ->execute();
                     $cache->set('insert_imdb_imdbid_' . $imdbid, 0, 604800);
                 }
             }

@@ -46,7 +46,6 @@ if ($quote !== 0 && $body === '') {
     }
 }
 if (isset($_POST['button']) && $_POST['button'] === 'Post') {
-    //=== make sure they are posting something
     if ($body === '') {
         stderr($lang['gl_error'], $lang['fe_no_body_txt']);
     }
@@ -55,18 +54,17 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     clr_forums_cache($arr['real_forum_id']);
     $cache->delete('forum_posts_' . $CURUSER['id']);
     $post_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
-    sql_query('UPDATE topics SET last_post=' . sqlesc($post_id) . ', post_count = post_count + 1 WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE topics SET last_post = ' . sqlesc($post_id) . ', post_count = post_count + 1 WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE `forums` SET post_count = post_count + 1 WHERE id =' . sqlesc($arr['real_forum_id'])) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE usersachiev SET forumposts = forumposts + 1 WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     if ($site_config['autoshout_on'] == 1) {
-        $message = $CURUSER['username'] . ' ' . $lang['pr_replied_to_topic'] . " [url={$site_config['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last]{$topic_name}[/url]";
+        $message = $CURUSER['username'] . ' ' . $lang['pr_replied_to_topic'] . " [url={$site_config['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last#{$post_id}]{$topic_name}[/url]";
         if (!in_array($arr['real_forum_id'], $site_config['staff_forums'])) {
             autoshout($message);
-            $cache->delete('shoutbox_');
         }
     }
     if ($site_config['seedbonus_on'] == 1) {
-        sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($site_config['bonus_per_post']) . ' WHERE id = ' . sqlesc($CURUSER['id']) . '') or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_post']) . ' WHERE id = ' . sqlesc($CURUSER['id']) . '') or sqlerr(__FILE__, __LINE__);
         $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus_per_post']);
         $cache->update_row('userstats_' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus'],
@@ -80,29 +78,23 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     } elseif ($subscribe === 'no' && $arr['subscribed_id'] > 0) {
         sql_query('DELETE FROM `subscriptions` WHERE `user_id`= ' . sqlesc($CURUSER['id']) . ' AND  `topic_id` = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     }
-    // === PM subscribed members
     $res_sub = sql_query('SELECT user_id FROM subscriptions WHERE topic_id =' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     while ($row = mysqli_fetch_assoc($res_sub)) {
         $res_yes = sql_query('SELECT subscription_pm, username FROM users WHERE id = ' . sqlesc($row['user_id'])) or sqlerr(__FILE__, __LINE__);
         $arr_yes = mysqli_fetch_array($res_yes);
-        $msg = '' . $lang['pr_hey_there'] . "!!! \n " . $lang['pr_a_thread_you_subscribed_to'] . ': ' . htmlsafechars($arr['topic_name']) . ' ' . $lang['pr_has_had_a_new_post'] . "!\n click [url={$site_config['baseurl']}/forums.php?action=view_topic&amp;topic_id={$topic_id}&page=last][b]" . $lang['pr_here'] . '[/b][/url] ' . $lang['pr_to_read_it'] . "!\n\n" . $lang['pr_to_view_your_subscriptions_or_unsubscribe'] . " [url={$site_config['baseurl']}/forums.php?action=subscriptions][b]" . $lang['pr_here'] . "[/b][/url].\n\nCheers.";
+        $msg = '' . $lang['pr_hey_there'] . "!!! \n " . $lang['pr_a_thread_you_subscribed_to'] . ': ' . htmlsafechars($arr['topic_name']) . ' ' . $lang['pr_has_had_a_new_post'] . "!\n click [url={$site_config['baseurl']}/forums.php?action=view_topic&amp;topic_id={$topic_id}&page=last#{$post_id}][b]" . $lang['pr_here'] . '[/b][/url] ' . $lang['pr_to_read_it'] . "!\n\n" . $lang['pr_to_view_your_subscriptions_or_unsubscribe'] . " [url={$site_config['baseurl']}/forums.php?action=subscriptions][b]" . $lang['pr_here'] . "[/b][/url].\n\nCheers.";
         if ($arr_yes['subscription_pm'] === 'yes' && $row['user_id'] != $CURUSER['id']) {
             sql_query("INSERT INTO messages (sender, subject, receiver, added, msg) VALUES(0, '" . $lang['pr_new_post_in_subscribed_thread'] . "!', " . sqlesc($row['user_id']) . ", '" . TIME_NOW . "', " . sqlesc($msg) . ')') or sqlerr(__FILE__, __LINE__);
         }
     }
-    // ===end
     //=== stuff for file uploads
     if ($CURUSER['class'] >= $min_upload_class) {
-        //=== make sure file is kosher
         foreach ($_FILES['attachment']['name'] as $key => $name) {
             if (!empty($name)) {
                 $size = intval($_FILES['attachment']['size'][$key]);
                 $type = $_FILES['attachment']['type'][$key];
-                //=== make sure file is kosher
                 $extension_error = $size_error = 0;
-                //=== get rid of spaces
                 $name = str_replace(' ', '_', $name);
-                //=== allowed file types (2 checks) but still can't really trust it
                 $accepted_file_types = [
                     'application/zip',
                     'application/x-zip',
@@ -111,7 +103,6 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
                 ];
                 $accepted_file_extension = strrpos($name, '.');
                 $file_extension = strtolower(substr($name, $accepted_file_extension));
-                //===  make sure the name is only alphanumeric or _ or -
                 $name = preg_replace('#[^a-zA-Z0-9_-]#', '', $name); // hell, it could even be 0_0 if it wanted to!
                 switch (true) {
                     case $size > $max_file_size:
@@ -131,19 +122,16 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
                         break;
 
                     default:
-                        //=== woohoo passed all our silly tests but just to be sure, let's mess it up a bit ;)
-                        //=== get rid of the file extension
                         $name = substr($name, 0, -strlen($file_extension));
                         $upload_to = $upload_folder . $name . '(id-' . $post_id . ')' . $file_extension;
-                        //===plop it into the DB all safe and snuggly
                         sql_query('INSERT INTO `attachments` (`post_id`, `user_id`, `file`, `file_name`, `added`, `extension`, `size`) VALUES ( ' . sqlesc($post_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($name . '(id-' . $post_id . ')' . $file_extension) . ', ' . sqlesc($name) . ', ' . TIME_NOW . ', ' . ('.zip' === $file_extension ? '\'zip\'' : '\'rar\'') . ', ' . $size . ')') or sqlerr(__FILE__, __LINE__);
                         copy($_FILES['attachment']['tmp_name'][$key], $upload_to);
                         chmod($upload_to, 0777);
                 }
             }
         }
-    } //=== end attachment stuff
-    header('Location: forums.php?action=view_topic&topic_id=' . $topic_id . ('' === $extension_error ? '' : '&ee=' . $extension_error) . ('' === $size_error ? '' : '&se=' . $size_error) . '&page=' . $post_id . '#' . $post_id);
+    }
+    header('Location: forums.php?action=view_topic&topic_id=' . $topic_id . ($extension_error === '' ? '' : '&ee=' . $extension_error) . ($size_error === '' ? '' : '&se=' . $size_error) . '&page=last#' . $post_id);
     die();
 }
 $htmlout = '<table class="main" width="750px" border="0" cellspacing="0" cellpadding="0">
@@ -227,7 +215,7 @@ $htmlout = '<table class="main" width="750px" border="0" cellspacing="0" cellpad
 //=== get last ten posts
 $res_posts = sql_query('SELECT p.id AS post_id, p.user_id, p.added, p.body, p.icon, p.post_title, p.bbcode, p.anonymous, u.id, u.username, u.class, u.donor, u.suspended, u.chatpost, u.leechwarn, u.pirate, u.king, u.warned, u.enabled, u.avatar, u.offensive_avatar FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 0, 10') or sqlerr(__FILE__, __LINE__);
 $htmlout .= '<br><span>' . $lang['fe_last_ten_posts_in_reverse_order'] . '</span>
-	<table border="0" cellspacing="5" cellpadding="10" width="90%">';
+	<table class="table table-bordered table-striped">';
 //=== lets start the loop \o/
 while ($arr = mysqli_fetch_assoc($res_posts)) {
     //=== change colors

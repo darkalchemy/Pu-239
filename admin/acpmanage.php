@@ -4,18 +4,19 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
+require_once INCL_DIR . 'function_account_delete.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $site_config, $lang, $fluent, $cache;
 
-$lang = array_merge($lang, load_language('ad_acp'));
+$lang = array_merge($lang, load_language('ad_acp'), load_language('ad_delacct'));
 $stdfoot = [
     'js' => [
         get_file_name('acp_js'),
     ],
 ];
 $HTMLOUT = '';
-if (isset($_POST['ids'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ids'])) {
     $ids = $_POST['ids'];
     foreach ($ids as $id) {
         if (!is_valid_id($id)) {
@@ -25,34 +26,28 @@ if (isset($_POST['ids'])) {
     $do = isset($_POST['do']) ? htmlsafechars(trim($_POST['do'])) : '';
     if ($do == 'enabled') {
         sql_query("UPDATE users SET enabled = 'yes' WHERE ID IN (" . implode(', ', array_map('sqlesc', $ids)) . ") AND enabled = 'no'") or sqlerr(__FILE__, __LINE__);
-    }
-    $cache->update_row('user' . $id, [
-        'enabled' => 'yes',
-    ], $site_config['expires']['user_cache']);
-    //else
-    if ($do == 'confirm') {
+        $cache->update_row('user' . $id, [
+            'enabled' => 'yes',
+        ], $site_config['expires']['user_cache']);
+    } elseif ($do == 'confirm') {
         sql_query("UPDATE users SET status = 'confirmed' WHERE ID IN (" . implode(', ', array_map('sqlesc', $ids)) . ") AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
-    }
-    $cache->update_row('user' . $id, [
-        'status' => 'confirmed',
-    ], $site_config['expires']['user_cache']);
-    //else
-    if ($do == 'delete' && ($CURUSER['class'] >= UC_SYSOP)) {
-        $res_del = sql_query('SELECT id, username, added, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE ID IN(' . implode(', ', array_map('sqlesc', $ids)) . ') AND class < 3 ORDER BY username DESC');
-        if (mysqli_num_rows($res_del) != 0) {
-            while ($arr_del = mysqli_fetch_assoc($res_del)) {
-                $userid = $arr_del['id'];
-                $res = sql_query('DELETE FROM users WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-                $cache->delete('user' . $userid);
-                write_log("User: {$arr_del['username']} Was deleted by " . $CURUSER['username']);
+        $cache->update_row('user' . $id, [
+            'status' => 'confirmed',
+        ], $site_config['expires']['user_cache']);
+    } elseif ($do == 'delete' && ($CURUSER['class'] === UC_MAX)) {
+        foreach ($ids as $id) {
+            $username = account_delete($id);
+            if ($username) {
+                write_log("User: $username Was deleted by {$CURUSER['username']}");
+                $session->set('is-success', $lang['text_success']);
+            } else {
+                stderr($lang['text_error'], $lang['text_unable']);
             }
-        } else {
-            header('Location: staffpanel.php?tool=acpmanage&amp;action=acpmanage');
         }
-    } else {
-        header('Location: staffpanel.php?tool=acpmanage&amp;action=acpmanage');
-        exit;
+        $session->set('is-success', $lang['text_success']);
     }
+    header('Location: staffpanel.php?tool=acpmanage&amp;action=acpmanage');
+    exit;
 }
 $disabled = number_format(get_row_count('users', "WHERE enabled = 'no'"));
 $pending = number_format(get_row_count('users', "WHERE status = 'pending'"));
@@ -60,7 +55,6 @@ $count = number_format(get_row_count('users', "WHERE enabled = 'no' OR status = 
 $perpage = 25;
 $pager = pager($perpage, $count, 'staffpanel.php?tool=acpmanage&amp;action=acpmanage&amp;');
 $res = sql_query("SELECT id, username, added, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE enabled = 'no' OR status = 'pending' ORDER BY username DESC {$pager['limit']}");
-$HTMLOUT .= begin_main_frame($lang['text_du'] . " [$disabled] | " . $lang['text_pu'] . "[$pending]");
 if (mysqli_num_rows($res) != 0) {
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
@@ -109,10 +103,10 @@ if (mysqli_num_rows($res) != 0) {
             <td>{$enabled}</td>
         </tr>";
     }
-    if (($CURUSER['class'] >= UC_SYSOP)) {
-        $HTMLOUT .= "<tr><td colspan='10'><select name='do'><option value='enabled' disabled selected>{$lang['text_wtd']}</option><option value='enabled'>{$lang['text_es']}</option><option value='confirm'>{$lang['text_cs']}</option><option value='delete'>{$lang['text_ds']}</option></select><input type='submit' value='" . $lang['text_submit'] . "' /></td></tr>";
+    if (($CURUSER['class'] === UC_MAX)) {
+        $HTMLOUT .= "<tr><td colspan='10' class='has-text-centered'><select name='do'><option value='enabled' disabled selected>{$lang['text_wtd']}</option><option value='enabled'>{$lang['text_es']}</option><option value='confirm'>{$lang['text_cs']}</option><option value='delete'>{$lang['text_ds']}</option></select><br><input type='submit' class='margin20 button is-small' value='" . $lang['text_submit'] . "' /></td></tr>";
     } else {
-        $HTMLOUT .= "<tr><td colspan='10'><select name='do'><option value='enabled' disabled selected>{$lang['text_wtd']}</option><option value='enabled'>{$lang['text_es']}</option><option value='confirm'>{$lang['text_cs']}</option></select><input type='submit' value='" . $lang['text_submit'] . "' /></td></tr>";
+        $HTMLOUT .= "<tr><td colspan='10' class='has-text-centered'><select name='do'><option value='enabled' disabled selected>{$lang['text_wtd']}</option><option value='enabled'>{$lang['text_es']}</option><option value='confirm'>{$lang['text_cs']}</option></select><br><input type='submit' class='margin20 button is-small' value='" . $lang['text_submit'] . "' /></td></tr>";
     }
 
     $HTMLOUT .= end_table();
@@ -120,8 +114,9 @@ if (mysqli_num_rows($res) != 0) {
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagerbottom'];
     }
+    $HTMLOUT = wrapper($HTMLOUT);
 } else {
-    $HTMLOUT .= stdmsg($lang['std_sorry'], $lang['std_nf']);
+    $HTMLOUT = stdmsg($lang['std_sorry'], $lang['std_nf']);
 }
-$HTMLOUT .= end_main_frame();
+
 echo stdhead($lang['text_stdhead']) . $HTMLOUT . stdfoot($stdfoot);

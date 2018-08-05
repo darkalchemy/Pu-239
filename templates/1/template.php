@@ -12,7 +12,8 @@ function stdhead($title = '', $stdhead = null)
 {
     require_once INCL_DIR . 'bbcode_functions.php';
     require_once INCL_DIR . 'function_breadcrumbs.php';
-    global $CURUSER, $site_config, $lang, $free, $querytime, $BLOCKS, $CURBLOCK, $mood, $session;
+    require_once 'navbar.php';
+    global $CURUSER, $site_config, $BLOCKS, $session;
 
     if (!$site_config['site_online']) {
         if (!empty($CURUSER) && $CURUSER['class'] < UC_STAFF) {
@@ -40,10 +41,10 @@ function stdhead($title = '', $stdhead = null)
     }
 
     $body_class = 'background-16 h-style-9 text-9 skin-2';
-    $current_page = basename($_SERVER['PHP_SELF']);
     $htmlout = "<!doctype html>
 <html>
 <head>
+    <!--[if lt IE 9]><script language='javascript' type='text/javascript' src='//html5shim.googlecode.com/svn/trunk/html5.js'></script><![endif]-->
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
@@ -80,9 +81,9 @@ function stdhead($title = '', $stdhead = null)
         'resetpw.php',
         'recover.php',
     ];
-    if (in_array($current_page, $captcha) && !empty($_ENV['RECAPTCHA_SITE_KEY'])) {
+    if (in_array(basename($_SERVER['PHP_SELF']), $captcha) && !empty($_ENV['RECAPTCHA_SITE_KEY'])) {
         $htmlout .= "
-        <script src='https://www.google.com/recaptcha/api.js'></script>";
+        <script src='//www.google.com/recaptcha/api.js'></script>";
     }
     $htmlout .= "
 </head>
@@ -197,13 +198,15 @@ function stdhead($title = '', $stdhead = null)
     foreach ($site_config['notifications'] as $notif) {
         if (($messages = $session->get($notif)) != false) {
             foreach ($messages as $message) {
-                $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>" . format_comment($message['message']) . '</a>';
-                $htmlout .= "
+                if ($CURUSER && $BLOCKS['global_flash_messages_on']) {
+                    $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>" . format_comment($message['message']) . '</a>';
+                    $htmlout .= "
                 <div class='notification $notif has-text-centered size_6'>
                     <button class='delete'></button>$message
                 </div>";
+                }
+                $session->unset($notif);
             }
-            $session->unset($notif);
         }
     }
 
@@ -222,13 +225,14 @@ function stdfoot($stdfoot = false)
 
     $use_12_hour = !empty($CURUSER['12_hour']) ? $CURUSER['12_hour'] === 'yes' ? 1 : 0 : $site_config['12_hour'];
     $header = $uptime = $htmlfoot = '';
-    $debug = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
+    $debug = SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0;
     $queries = !empty($query_stat) ? count($query_stat) : 0;
     $seconds = microtime(true) - $starttime;
     $r_seconds = round($seconds, 5);
-    $querytime = $querytime === null ? 0 : $querytime;
 
     if ($CURUSER['class'] >= UC_STAFF && $debug) {
+        $querytime = $querytime === null ? 0 : $querytime;
+
         if ($_ENV['CACHE_DRIVER'] === 'apcu' && extension_loaded('apcu')) {
             $stats = apcu_cache_info();
             if ($stats) {
@@ -271,7 +275,7 @@ function stdfoot($stdfoot = false)
                 <div class='container is-fluid portlet'>
                     <a id='queries-hash'></a>
                     <fieldset id='queries' class='header'>
-                        <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['gl_stdfoot_querys']}</legend>
+                        <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['gl_stdfoot_querys']}</legend>
                         <div class='has-text-centered'>
                             <table class='table table-bordered table-striped bottom10'>
                                 <thead>
@@ -356,44 +360,6 @@ function stdfoot($stdfoot = false)
         var cookie_path = '{$site_config['cookie_path']}';
         var cookie_lifetime = '{$site_config['cookie_lifetime']}';
         var cookie_domain = '{$site_config['cookie_domain']}';
-        var csrf_token = '" . $session->get('csrf_token') . "';
-        var x = document.getElementsByClassName('flipper');
-        var i;
-        for (i = 0; i < x.length; i++) {
-            var id = x[i].parentNode.id;
-            var el = document.getElementById(id);
-            if (id && localStorage[id] === 'closed') {
-                el.classList.add('no-margin');
-                el.classList.add('no-padding');
-                var nextSibling = x[i].nextSibling, child;
-                while (nextSibling && nextSibling.nodeType !== 1) {
-                    nextSibling = nextSibling.nextSibling;
-                }
-                nextSibling.style.display = 'none';
-                child = x[i].children[0];
-                child.classList.add('icon-down-open');
-                child.classList.remove('icon-up-open');
-            } else if (id && localStorage[id] === 'open') {
-                var nextSibling = x[i].nextSibling, child;
-                while (nextSibling && nextSibling.nodeType !== 1) {
-                    nextSibling = nextSibling.nextSibling;
-                }
-                nextSibling.style.display = 'block';
-                child = x[i].children[0];
-                child.classList.add('icon-up-open');
-                child.classList.remove('icon-down-open');
-            } else {
-                if (el && document.getElementById(el.children[0]) && document.getElementById(el.children[0].children[0]) && el.children[0].children[0].className === 'fa icon-down-open') {
-                    el.classList.add('no-margin');
-                    el.classList.add('no-padding');
-                    var nextSibling = x[i].nextSibling;
-                    while (nextSibling && nextSibling.nodeType !== 1) {
-                        nextSibling = nextSibling.nextSibling;
-                    }
-                    nextSibling.style.display = 'none';
-                }
-            }
-        }
     </script>";
 
     $htmlfoot .= "
@@ -455,221 +421,6 @@ function StatusBar()
                     </div>';
 
     return $StatusBar;
-}
-
-/**
- * @return string
- *
- * @throws Exception
- */
-function navbar()
-{
-    global $site_config, $CURUSER, $lang, $fluent, $cache;
-
-    $navbar = $panel = $user_panel = $settings_panel = $stats_panel = $other_panel = '';
-
-    if ($CURUSER['class'] >= UC_STAFF) {
-        $staff_panel = $cache->get('staff_panels_' . $CURUSER['class']);
-        if ($staff_panel === false || is_null($staff_panel)) {
-            $staff_panel = $fluent->from('staffpanel')
-                ->where('navbar = 1')
-                ->where('av_class <= ?', $CURUSER['class'])
-                ->orderBy('page_name')
-                ->fetchAll();
-            $cache->set('staff_panels_' . $CURUSER['class'], $staff_panel, 0);
-        }
-
-        if ($staff_panel) {
-            foreach ($staff_panel as $key => $value) {
-                if ($value['av_class'] <= $CURUSER['class'] && $value['type'] === 'user') {
-                    $user_panel .= "
-                        <li class='iss_hidden'>
-                            <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . '</a>
-                        </li>';
-                } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] === 'settings') {
-                    $settings_panel .= "
-                        <li class='iss_hidden'>
-                            <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . '</a>
-                        </li>';
-                } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] === 'stats') {
-                    $stats_panel .= "
-                        <li class='iss_hidden'>
-                            <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . '</a>
-                        </li>';
-                } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] === 'other') {
-                    $other_panel .= "
-                        <li class='iss_hidden'>
-                            <a href='{$site_config['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . '</a>
-                        </li>';
-                }
-            }
-
-            if (!empty($user_panel)) {
-                $panel .= "
-                    <li class='clickable'>
-                        <a id='staff_users' href='#'>[Users]</a>
-                        <ul class='ddFade ddFadeSlow'>
-                            <li class='iss_hidden'>
-                                <a href='{$site_config['baseurl']}/staffpanel.php'>Staff Panel</a>
-                            </li>
-                            $user_panel
-                        </ul>
-                   </li>";
-            }
-            if (!empty($settings_panel)) {
-                $panel .= "
-                   <li class='clickable'>
-                        <a id='staff_settings' href='#'>[Settings]</a>
-                        <ul class='ddFade ddFadeSlow'>
-                            <li class='iss_hidden'>
-                                <a href='{$site_config['baseurl']}/staffpanel.php'>Staff Panel</a>
-                            </li>
-                            $settings_panel
-                        </ul>
-                    </li>";
-            }
-            if (!empty($stats_panel)) {
-                $panel .= "
-                    <li class='clickable'>
-                        <a id='staff_stats' href='#'>[Stats]</a>
-                        <ul class='ddFade ddFadeSlow'>
-                            <li class='iss_hidden'>
-                                <a href='{$site_config['baseurl']}/staffpanel.php'>Staff Panel</a>
-                            </li>
-                            $stats_panel
-                        </ul>
-                   </li>";
-            }
-            if (!empty($other_panel)) {
-                $panel .= "
-                    <li class='clickable'>
-                        <a id='staff_other' href='#'>[Other]</a>
-                        <ul class='ddFade ddFadeSlow'>
-                            <li class='iss_hidden'>
-                                <a href='{$site_config['baseurl']}/staffpanel.php'>Staff Panel</a>
-                            </li>";
-                if ($CURUSER['class'] === UC_MAX) {
-                    $panel .= "
-                            <li class='iss_hidden'>
-                                <a href='{$site_config['baseurl']}/view_sql.php'>Adminer</a>
-                            </li>";
-                }
-                $panel .= "
-                            $other_panel
-                        </ul>
-                   </li>";
-            }
-        }
-    }
-
-    if ($CURUSER) {
-        $navbar .= "
-    <div class='spacer'>
-        <header id='navbar' class='container'>
-            <div class='contained'>
-                <div class='nav_container'>
-                    <div id='hamburger'><i class='icon-menu size_6 has-text-white' aria-hidden='true'></i></div>
-                    <div id='close' class='top10 right10'><i class='icon-cancel size_7 has-text-white' aria-hidden='true'></i></div>
-                    <div id='menuWrapper'>
-                        <ul class='level'>
-                            <li>
-                                <a href='{$site_config['baseurl']}' class='is-flex'>
-                                    <i class='icon-home size_6'></i>
-                                    <span class='home'>{$site_config['site_name']}</span>
-                                </a>
-                            </li>
-                            <li id='movies_links' class='clickable'>
-                                <a href='#'>{$lang['gl_movies_tv']}</a>
-                                <ul class='ddFade ddFadeSlow'>
-                                    <li class='iss_hidden'><span class='left10'>{$lang['gl_bluray']}</span></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=bluray'>{$lang['gl_bluray_releases']}</a></li>
-                                    <li class='iss_hidden'><span class='left10'>{$lang['gl_imdb']}</span></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=upcoming'>{$lang['gl_movies_upcoming']}</a></li>
-                                    <li class='iss_hidden'><span class='left10'>{$lang['gl_tmdb']}</span></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=top100'>{$lang['gl_movies_top_100']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=theaters'>{$lang['gl_movies_theaters']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=tv'>{$lang['gl_tv_today']}</a></li>
-                                    <li class='iss_hidden'><span class='left10'>{$lang['gl_tvmaze']}</span></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/movies.php?list=tvmaze'>{$lang['gl_tvmaze_today']}</a></li>
-                                </ul>
-                            </li>
-                            <li id='torrents_links' class='clickable'>
-                                <a href='#'>{$lang['gl_torrent']}</a>
-                                <ul class='ddFade ddFadeSlow'>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/browse.php'>Browse {$lang['gl_torrents']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/catalog.php'>Catalog</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/needseed.php?needed=seeders'><span class='is-danger'>{$lang['gl_nseeds']}</span></a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/browse.php?today=1'>{$lang['gl_newtor']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/offers.php'>{$lang['gl_offers']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/requests.php'>{$lang['gl_requests']}</a></li>
-                                    " . ($CURUSER['class'] <= UC_VIP ? "<li class='iss_hidden'><a href='{$site_config['baseurl']}/uploadapp.php'>{$lang['gl_uapp']}</a></li>" : "<li class='iss_hidden'><a href='{$site_config['baseurl']}/upload.php'>{$lang['gl_upload']}</a></li>") . "
-                                </ul>
-                            </li>
-                            <li id='general_links' class='clickable'>
-                                <a href='#'>{$lang['gl_general']}</a>
-                                <ul class='ddFade ddFadeSlow'>";
-        if ($site_config['bucket_allowed']) {
-            $navbar .= "
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>";
-        }
-        $navbar .= "
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/faq.php'>{$lang['gl_faq']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/chat.php'>{$lang['gl_irc']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/mybonus.php'>Karma Store</a></li>
-                                    <li class='iss_hidden'><a href='#' onclick='radio();'>{$lang['gl_radio']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/getrss.php'>RSS</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/rules.php'>{$lang['gl_rules']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/announcement.php'>{$lang['gl_announcements']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/staff.php'>{$lang['gl_staff']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/topten.php'>{$lang['gl_stats']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/rsstfreak.php'>{$lang['gl_tfreak']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/wiki.php'>{$lang['gl_wiki']}</a></li>
-                                </ul>
-                            </li>
-                            <li id='games_links' class='clickable'>
-                                <a href='#'>{$lang['gl_games']}</a>
-                                <ul class='ddFade ddFadeSlow'>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/arcade.php'>{$lang['gl_arcade']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/games.php'>{$lang['gl_games']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/lottery.php'>{$lang['gl_lottery']}</a></li>
-                                </ul>
-                            </li>
-                            <li><a href='{$site_config['baseurl']}/donate.php'>{$lang['gl_donate']}</a></li>
-                            <li id='user_links' class='clickable'>
-                                <a href='#'>User</a>
-                                <ul class='ddFade ddFadeSlow'>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/friends.php'>{$lang['gl_friends']}</a></li>
-                                    <li class='iss_hidden'><a href='#' onclick='language_select();'>{$lang['gl_language_select']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/messages.php'>{$lang['gl_pms']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/users.php'>Search Users</a></li>
-                                    <li class='iss_hidden'><a href='#' onclick='themes();'>{$lang['gl_theme']}</a></li>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href='#'>{$lang['gl_forums']}</a>
-                                <ul class='ddFade ddFadeSlow'>
-                                    <li class='iss_hidden'><a href='{$site_config['baseurl']}/forums.php'>{$lang['gl_forums']}</a></li>
-                                </ul>
-                            </li>
-                            <li>" . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/bugs.php?action=add'>{$lang['gl_breport']}</a>" : "<a href='{$site_config['baseurl']}/bugs.php?action=bugs'>[Bugs]</a>") . '</li>
-                            <li>' . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/contactstaff.php'>{$lang['gl_cstaff']}</a>" : "<a href='{$site_config['baseurl']}/staffbox.php'>[Messages]</a>") . "</li>
-                            $panel
-                            <li>
-                                <a href='{$site_config['baseurl']}/logout.php' class='is-flex'>
-                                    <i class='icon-logout size_6' aria-hidden='true'></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </header>
-    </div>";
-    }
-
-    return $navbar;
 }
 
 /**

@@ -29,7 +29,7 @@ function rsstfreakinfo()
                 <div id='" . md5($item->getElementsByTagName('title')
                 ->item(0)->nodeValue) . "' class='header alt_bordered bg-00 has-text-left'>
                     <legend class='flipper has-text-primary flex flex-left'>
-                        <i class='fa icon-up-open size_3' aria-hidden='true'></i>
+                        <i class='icon-down-open size_3' aria-hidden='true'></i>
                         <small>" . htmlsafechars($item->getElementsByTagName('title')
                 ->item(0)->nodeValue) . "</small>
                     </legend>

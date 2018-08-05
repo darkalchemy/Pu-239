@@ -2,19 +2,17 @@
 
 function get_bluray_info()
 {
-    global $cache, $site_config;
+    global $cache, $site_config, $BLOCKS;
 
-    require_once INCL_DIR . 'function_omdb.php';
-    require_once INCL_DIR . 'function_fanart.php';
+    if (!$BLOCKS['bluray_com_api_on']) {
+        return false;
+    }
+
     $bluray_data = $cache->get('bluray_');
     if ($bluray_data === false || is_null($bluray_data)) {
         $url = 'http://www.blu-ray.com/rss/newreleasesfeed.xml';
-        $content = fetch($url);
-        if (!$content) {
-            return false;
-        }
-        $bluray_data = $content;
-        if (!empty($bluray_content)) {
+        $bluray_data = fetch($url);
+        if (!empty($bluray_data)) {
             $cache->set('bluray_', $bluray_data, 86400);
         } else {
             $cache->set('bluray_', 0, 3600);
@@ -37,6 +35,7 @@ function get_bluray_info()
             $movie = empty($item->getElementsByTagName('title')
                 ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
                 ->item(0)->nodeValue;
+            $movie = trim(replace_unicode_strings(str_replace('(Blu-rdelete', '', $movie)));
             $movie = trim(replace_unicode_strings(str_replace('(Blu-ray)', '', $movie)));
             $pubDate = empty($item->getElementsByTagName('pubDate')
                 ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('pubDate')
@@ -45,31 +44,29 @@ function get_bluray_info()
                 ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('description')
                 ->item(0)->nodeValue;
             $description = explode(' | ', strip_tags(str_replace('<br><br>', ' | ', $description)));
-            $imdb_info = search_omdb_by_title(str_replace(' 4K', '', $movie), replace_unicode_strings($description[1]));
-            $poster = !empty($imdb_info['Poster']) && preg_match('/http/', $imdb_info['Poster']) ? url_proxy($imdb_info['Poster'], true, 150) : '';
-            $placeholder = !empty($imdb_info['Poster']) && preg_match('/http/', $imdb_info['Poster']) ? url_proxy($imdb_info['Poster'], true, 150, null, 10) : '';
-            $imdbid = !empty($imdb_info['imdbID']) ? $imdb_info['imdbID'] : '';
-            $omdb_title = !empty($imdb_info['Title']) ? $imdb_info['Title'] : '';
-            if (empty($poster) && !empty($imdbid)) {
-                $poster = getMovieImagesByImdb($imdbid, 'movieposter');
-                $poster = !empty($poster) ? url_proxy($poster, true, 150) : $site_config['pic_baseurl'] . 'noposter.png';
-                $placeholder = !empty($poster) ? url_proxy($poster, true, 150, null, 10) : $site_config['pic_baseurl'] . 'noposter.png';
-            }
-            if (empty($poster)) {
-                $poster = $site_config['pic_baseurl'] . 'noposter.png';
-                $placeholder = $site_config['pic_baseurl'] . 'noposter.png';
-            }
-            $background = '';
-            if (!empty($imdbid)) {
-                $background = getMovieImagesByImdb($imdbid, 'moviebackground');
-                $background = !empty($background) ? url_proxy($background, true) : '';
+            $link = empty($item->getElementsByTagName('link')
+                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
+                ->item(0)->nodeValue;
+            $poster_link = '';
+            if ($link) {
+                preg_match('#http://www.blu-ray.com/movies/.*/(.*)/#', $link, $match);
+                if (!empty($match[1])) {
+                    $poster_link = "https://images4.static-bluray.com/movies/covers/{$match[1]}_large.jpg";
+                }
             }
 
-            $imdbid = !empty($imdbid) ? $imdbid : $i;
+            $poster = $placeholder = $site_config['pic_baseurl'] . 'noposter.png';
+
+            if (!empty($poster_link)) {
+                $image = url_proxy($poster_link, true, 150);
+                if ($image) {
+                    $poster = $image;
+                    $placeholder = url_proxy($poster_link, true, 150, null, 10);
+                }
+            }
 
             $pubs[] = [
                 'title' => $movie,
-                'omdb_title' => $omdb_title,
                 'pubDate' => replace_unicode_strings($pubDate),
                 'genre' => replace_unicode_strings($description[0]),
                 'year' => replace_unicode_strings($description[1]),
@@ -79,8 +76,7 @@ function get_bluray_info()
                 'description' => replace_unicode_strings($description[5]),
                 'poster' => $poster,
                 'placeholder' => $placeholder,
-                'background' => $background,
-                'imdbid' => $imdbid,
+                'imdbid' => $i,
             ];
         }
 

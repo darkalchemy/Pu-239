@@ -162,7 +162,6 @@ var ajaxChat = {
 
     initDirectories: function () {
         this.dirs = {};
-        //alert(this.baseURL);
         this.dirs['emoticons'] = './images/smilies/';
         this.dirs['sounds'] = './media/sounds/';
         this.dirs['flash'] = './media/flash/';
@@ -309,14 +308,7 @@ var ajaxChat = {
         if (this.dom['inputField'] && this.settings['autoFocus']) {
             this.dom['inputField'].focus();
         }
-        this.checkFlashSounds();
-
-        if (this.socketServerEnabled || this.flashSounds) {
-            this.loadFlashInterface();
-        } else {
-            this.initializeHTML5Sounds();
-        }
-
+        this.initializeHTML5Sounds();
         this.startChatUpdate();
     },
 
@@ -485,31 +477,7 @@ var ajaxChat = {
 
     setAudioBackend: function (audioBackend) {
         this.setSetting('audioBackend', audioBackend);
-        this.checkFlashSounds();
-        if (this.flashSounds) {
-            this.loadFlashInterface();
-        } else {
-            this.initializeHTML5Sounds();
-        }
-    },
-
-    checkFlashSounds: function () {
-        if (this.settings['audioBackend'] < 0) {
-            // autodetect if flash is supported, and default to flash.
-            if (navigator.appVersion.indexOf('MSIE') !== -1) {
-                var hasFlash = false;
-                try {
-                    hasFlash = Boolean(new ActiveXObject('ShockwaveFlash.ShockwaveFlash'));
-                } catch (exception) {
-                    hasFlash = ('undefined' !== typeof navigator.mimeTypes['application/x-shockwave-flash']);
-                }
-                this.flashSounds = hasFlash;
-            } else if ((navigator.plugins && !navigator.plugins['Shockwave Flash']) || (navigator.mimeTypes && !navigator.mimeTypes['application/x-shockwave-flash'])) {
-                this.flashSounds = false;
-            }
-        } else {
-            this.flashSounds = this.settings['audioBackend'] === 1;
-        }
+        this.initializeHTML5Sounds();
     },
 
     flashInterfaceLoadCompleteHandler: function () {
@@ -521,7 +489,6 @@ var ajaxChat = {
             this.socketTimerRate = (this.inactiveTimeout - 1) * 60 * 1000;
             this.socketConnect();
         }
-        this.loadFlashSounds();
         this.initializeCustomFlashInterface();
     },
 
@@ -704,26 +671,6 @@ var ajaxChat = {
         }
     },
 
-    loadFlashSounds: function () {
-        var sound, urlRequest;
-        if (this.flashSounds) {
-            try {
-                this.setAudioVolume(this.settings['audioVolume']);
-                this.sounds = {};
-                for (var key in this.soundFiles) {
-                    sound = FABridge.ajaxChat.create('flash.media.Sound');
-                    sound.addEventListener('complete', this.soundLoadCompleteHandler);
-                    sound.addEventListener('ioError', this.soundIOErrorHandler);
-                    urlRequest = FABridge.ajaxChat.create('flash.net.URLRequest');
-                    urlRequest.setUrl(this.dirs['sounds'] + this.soundFiles[key]);
-                    sound.load(urlRequest);
-                }
-            } catch (e) {
-                this.debugMessage('loadFlashSounds', e);
-            }
-        }
-    },
-
     soundLoadCompleteHandler: function (event) {
         var sound = event.getTarget();
         for (var key in ajaxChat.soundFiles) {
@@ -749,11 +696,15 @@ var ajaxChat = {
 
     playSound: function (soundID) {
         if (this.sounds && this.sounds[soundID]) {
-            try {
-                this.sounds[soundID].currentTime = 0;
-                return this.sounds[soundID].play();
-            } catch (e) {
-                this.debugMessage('playSound', e);
+            this.sounds[soundID].currentTime = 0;
+            var promise = this.sounds[soundID].play();
+            if (promise !== undefined) {
+                promise.then(function() {
+                    return promise;
+                }).
+                catch(function(error) {
+                    return null;
+                });
             }
         }
         return null;

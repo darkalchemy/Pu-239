@@ -353,4 +353,18 @@ $sql_updates = [
         'query' => 'UPDATE `user_blocks` SET `index_page` = `index_page` + 16777216',
         'flush' => true,
     ],
+    [
+        'id' => 1533283242,
+        'info' => 'Add fk constraint to auth_tokens',
+        'date' => '03 Aug, 2018',
+        'query' => 'ALTER TABLE auth_tokens ADD FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE',
+        'flush' => false,
+    ],
+    [
+        'id' => 1533283244,
+        'info' => 'Update delete account',
+        'date' => '03 Aug, 2018',
+        'query' => "UPDATE `staffpanel` SET `page_name` = 'Delete User', `av_class` = " . UC_MAX . " WHERE `page_name` = 'Delete'",
+        'flush' => false,
+    ],
 ];

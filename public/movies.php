@@ -15,8 +15,6 @@ global $CURUSER, $site_config, $fluent, $cache, $session;
 
 $lang = load_language('global');
 
-$imdbs = get_upcoming();
-
 $lists = [
     'upcoming',
     'top100',
@@ -47,7 +45,7 @@ switch ($list) {
                     <div class='has-text-centered top10'>{$movie['title']} ({$movie['year']})</div>
                     <div class='has-text-centered'>{$movie['release_date']}</div>
                     <div class='tooltip_templates'>
-                        <div id='movie_{$movie['imdbid']}_tooltip' class='round10 tooltip-background' style='background-image: url({$movie['background']});'>
+                        <div id='movie_{$movie['imdbid']}_tooltip' class='round10 tooltip-background'>
                             <div class='is-flex tooltip-torrent bg-09'>
                                 <span class='padding10 w-40'>
                                     <img data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
@@ -389,24 +387,27 @@ switch ($list) {
         $title = 'Upcoming';
         $HTMLOUT = '';
 
-        foreach ($imdbs as $key => $imdb) {
-            $body = '';
-            $HTMLOUT .= "
+        $imdbs = get_upcoming();
+        if ($imdbs) {
+            foreach ($imdbs as $key => $imdb) {
+                $body = '';
+                $HTMLOUT .= "
         <h1 class='has-text-centered'>Upcoming Movies $key</h1>";
 
-            $body .= "
+                $body .= "
         <div class='level-center'>";
-            foreach ($imdb as $item) {
-                $movie = get_imdb_info_short($item);
-                if (!empty($movie)) {
-                    $body .= $movie;
+                foreach ($imdb as $item) {
+                    $movie = get_imdb_info_short($item);
+                    if (!empty($movie)) {
+                        $body .= $movie;
+                    }
                 }
-            }
 
-            $body .= '
+                $body .= '
         </div>';
 
-            $HTMLOUT .= main_div($body);
+                $HTMLOUT .= main_div($body);
+            }
         }
 }
 echo stdhead($title) . wrapper($HTMLOUT) . stdfoot();

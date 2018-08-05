@@ -40,6 +40,7 @@ $CURBLOCK = &curuser::$blocks;
 require_once CLASS_DIR . 'class_blocks_index.php';
 require_once CLASS_DIR . 'class_blocks_stdhead.php';
 require_once CLASS_DIR . 'class_blocks_userdetails.php';
+require_once CLASS_DIR . 'class_blocks_apis.php';
 require_once CLASS_DIR . 'class_bt_options.php';
 require_once CACHE_DIR . 'block_settings_cache.php';
 require_once INCL_DIR . 'site_settings.php';
@@ -1906,8 +1907,10 @@ function get_anonymous_name()
 
 /**
  * @param      $url
+ * @param bool $image
  * @param null $width
  * @param null $height
+ * @param null $quality
  *
  * @return string
  */
@@ -1925,13 +1928,13 @@ function url_proxy($url, $image = false, $width = null, $height = null, $quality
 
     if ($site_config['image_proxy']) {
         $image_proxy = new DarkAlchemy\Pu239\ImageProxy();
-        $image = @$image_proxy->get_image($url, $image, $width, $height, $quality);
+        $image = @$image_proxy->get_image($url, $width, $height, $quality);
 
         if (!empty($image)) {
             return $site_config['pic_baseurl'] . 'proxy/' . $image;
         }
 
-        return $url;
+        return null;
     }
 
     return $url;

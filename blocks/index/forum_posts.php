@@ -5,7 +5,7 @@ global $CURUSER, $site_config, $lang, $cache;
 $HTMLOUT .= "
     <a id='latestforum-hash'></a>
     <fieldset id='latestforum' class='header'>
-        <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['latestposts_title']}</legend>
+        <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['latestposts_title']}</legend>
         <div class='grid-wrapper'>
         <div class='table-wrapper has-text-centered'>";
 $page = 1;

@@ -158,11 +158,6 @@
     background-position: -120px -60px;
 }
 
-.limited.background-16 {
-    background: radial-gradient(black 15%, transparent 16%) 8px 8px 0 1px 8px 9px #282828;
-    background-size: 16px 16px;
-}
-
 .style_block {
     padding: 1em 0;
     border-bottom: 1px dotted #4c4c4c;
@@ -288,11 +283,4 @@ body.background-14 {
 
 body.background-15 {
     background-image: url(themeChanger/images/bgs/bg-15.jpg);
-}
-
-body.background-16 {
-    background: radial-gradient(black 15%, transparent 16%), radial-gradient(black 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255, 255, 255, .1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255, 255, 255, .1) 15%, transparent 20%) 8px 9px;
-    background-color: #282828;
-    background-size: 16px 16px;
-    background-attachment: fixed;
 }

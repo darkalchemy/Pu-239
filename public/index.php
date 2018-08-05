@@ -9,6 +9,7 @@ require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $CURUSER, $site_config, $BLOCKS, $fluent, $cache, $session;
+
 $stdfoot = [
     'js' => [
         get_file_name('index_js'),

@@ -427,7 +427,7 @@ if ($action === 'avatar') {
                                         </select>
                                         <div class='mw-100'>
                                             <div class='flipper has-text-primary top10'>
-                                                <a id='paranoia_open'>Paranoia Levels explained <i class='fa icon-down-open size_3' aria-hidden='true'></i></a>
+                                                <a id='paranoia_open'>Paranoia Levels explained <i class='icon-down-open size_3' aria-hidden='true'></i></a>
                                             </div>
                                             <div id='paranoia_info' class='is_hidden wrap padding20'>
                                                 <p>

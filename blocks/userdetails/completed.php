@@ -155,7 +155,7 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
                 <td>
                 <a id='completed-torrents-hash'></a>
                 <fieldset id='completed-torrents' class='header'>
-                    <legend class='flipper size_4'><i class='fa icon-down-open' aria-hidden='true'></i>View Completed Torrents</legend>
+                    <legend class='flipper size_4'><i class='icon-down-open' aria-hidden='true'></i>View Completed Torrents</legend>
                     $completed
                 </fieldset>
                 </td>

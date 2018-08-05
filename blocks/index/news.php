@@ -23,7 +23,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
 $HTMLOUT .= "
     <a id='news-hash'></a>
     <fieldset id='news' class='header'>
-        <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['news_title']}
+        <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['news_title']}
             <span class='news'>{$adminbutton}</span>
         </legend>
         <div>";
@@ -57,7 +57,7 @@ if ($news) {
             <div class='bordered{$padding}'>
                 <div id='{$array['id']}' class='header alt_bordered bg-00 has-text-left'>
                     <legend class='flipper has-text-primary'>
-                        <i class='fa icon-up-open size_3' aria-hidden='true'></i><small>" . htmlsafechars($array['title']) . "</small>
+                        <i class='icon-down-open size_3' aria-hidden='true'></i><small>" . htmlsafechars($array['title']) . "</small>
                     </legend>
                     <div class='bg-02 round5 padding10'>
                         <div class='bottom20 size_4'>" . get_date($array['added'], 'DATE') . "{$lang['index_news_added']} {$username}{$button}</div>

@@ -10,10 +10,10 @@ if (!empty($CURUSER['ajaxchat_height'])) {
 $HTMLOUT .= "
     <a id='ajaxchat-hash'></a>
     <fieldset id='ajaxchat' class='header'>
-        <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['index_ajaxchat']}</legend>
+        <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['index_ajaxchat']}</legend>
         <div class='bordered'>
             <div class='alt_bordered iframe-container bg-none has-text-centered is-paddingless'>
-                <iframe src='{$site_config['baseurl']}/ajaxchat.php' height='$height' id='iframe_ajaxchat' name='iframe_ajaxchat'></iframe>
+                <iframe src='{$site_config['baseurl']}/ajaxchat.php' height='$height' id='iframe_ajaxchat' name='iframe_ajaxchat' allow='autoplay'></iframe>
             </div>
         </div>
     </fieldset>";

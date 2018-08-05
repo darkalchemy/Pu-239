@@ -13,6 +13,7 @@ $possible_extensions = [
     'nfo',
     'txt',
 ];
+//dd($_POST);
 if (!mkglobal('id:name:body:type')) {
     $session->set('is-warning', 'Id, descr, name or type is missing');
     header("Location: {$_SERVER['HTTP_REFERER']}");
@@ -27,7 +28,7 @@ if (!is_valid_id($id)) {
 
 function valid_torrent_name($torrent_name)
 {
-    $allowedchars = 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-_[]*()';
+    $allowedchars = 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-_[]*():';
     for ($i = 0; $i < strlen($torrent_name); ++$i) {
         if (strpos($allowedchars, $torrent_name[$i]) === false) {
             return false;
@@ -40,6 +41,7 @@ function valid_torrent_name($torrent_name)
 $nfoaction = '';
 $select_torrent = sql_query('SELECT name, descr, category, visible, vip, release_group, poster, url, newgenre, description, anonymous, sticky, owner, allow_comments, nuked, nukereason, filename, save_as, youtube, tags, info_hash, freetorrent FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $fetch_assoc = mysqli_fetch_assoc($select_torrent) or stderr('Error', 'No torrent with this ID!');
+//dd($fetch_assoc);
 $infohash = $fetch_assoc['info_hash'];
 if ($CURUSER['id'] != $fetch_assoc['owner'] && $CURUSER['class'] < UC_STAFF) {
     $session->set('is-danger', "You're not the owner of this torrent.");
@@ -316,7 +318,9 @@ if ($genreaction != 'keep') {
     $torrent_cache['newgenre'] = $genre;
 }
 if (count($updateset) > 0) {
-    sql_query('UPDATE torrents SET ' . implode(',', $updateset) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    $sql = 'UPDATE torrents SET ' . implode(', ', $updateset) . ' WHERE id = ' . sqlesc($id);
+    //dd($sql);
+    sql_query($sql) or sqlerr(__FILE__, __LINE__);
 }
 if ($torrent_cache) {
     $cache->update_row('torrent_details_' . $id, $torrent_cache, $site_config['expires']['torrent_details']);

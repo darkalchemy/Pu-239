@@ -477,11 +477,11 @@ $form .= "
     <form action='' method='post'>
         <div class='bg-02'>
         <fieldset id='user_blocks_home' class='header'>
-            <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-is_hidden='true'></i>Home Page Settings</legend>
+            <legend class='flipper has-text-primary'><i class='icon-up-open size_3' aria-is_hidden='true'></i>Home Page Settings</legend>
             <div>";
 
 $level1 .= "
-                <div class='level-center is-inline-flex'>";
+                <div class='level-center'>";
 if ($BLOCKS['ie_user_alert']) {
     $contents[] = "
                 <div class='w-100'>Enable IE alert?</div>
@@ -733,7 +733,7 @@ if ($BLOCKS['movie_ofthe_week_on']) {
 
 foreach ($contents as $content) {
     $level1 .= "
-                <div class='margin10 w-20'>
+                <div class='margin10 w-20 min-150'>
                     <span class='bordered level-center bg-02'>
                         $content
                     </span>
@@ -750,11 +750,11 @@ $form .= "
         </div>
         <div class='bg-02 top20'>
         <fieldset id='user_blocks_site' class='header'>
-            <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-is_hidden='true'></i>Site Alert Settings</legend>
+            <legend class='flipper has-text-primary'><i class='icon-up-open size_3' aria-is_hidden='true'></i>Site Alert Settings</legend>
             <div>";
 
 $level2 .= "
-                <div class='level-center is-inline-flex'>";
+                <div class='level-center'>";
 
 $contents = [];
 if ($BLOCKS['global_freeleech_on']) {
@@ -858,7 +858,7 @@ if ($BLOCKS['global_freeleech_contribution_on']) {
 }
 foreach ($contents as $content) {
     $level2 .= "
-                <div class='margin10 w-20'>
+                <div class='margin10 w-20 min-150'>
                     <span class='bordered level-center bg-02'>
                         $content
                     </span>
@@ -875,11 +875,11 @@ $form .= "
         </div>
         <div class='bg-02 top20'>
         <fieldset id='user_blocks_user' class='header'>
-            <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-is_hidden='true'></i>Userdetails Page Settings</legend>
+            <legend class='flipper has-text-primary'><i class='icon-up-open size_3' aria-is_hidden='true'></i>Userdetails Page Settings</legend>
             <div>";
 
 $level3 = "
-                <div class='level-center is-inline-flex'>";
+                <div class='level-center'>";
 
 $contents = [];
 
@@ -1139,12 +1139,13 @@ if ($CURUSER['class'] >= UC_STAFF) {
 
 foreach ($contents as $content) {
     $level3 .= "
-                <div class='margin10 w-20'>
+                <div class='margin10 w-20 min-150'>
                     <span class='bordered level-center bg-02'>
                         $content
                     </span>
                 </div>";
 }
+
 $contents = [];
 $level3 .= '
             </div>';

@@ -1,14 +1,23 @@
 <?php
 
+/**
+ * @param $dates
+ *
+ * @return array|bool|mixed
+ */
 function get_tv_by_day($dates)
 {
-    global $cache;
+    global $cache, $BLOCKS;
+
+    if (!$BLOCKS['tmdb_api_on']) {
+        return false;
+    }
 
     $tmdb_data = $cache->get('tmdb_tv_' . $dates);
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $_ENV['TMDB_API_KEY'];
         if (empty($apikey)) {
-            return null;
+            return false;
         }
         $url = "https://api.themoviedb.org/3/discover/tv?air_date.gte={$dates}&air_date.lte={$dates}&api_key=$apikey&with_original_language=en";
         $content = fetch($url);
@@ -33,15 +42,24 @@ function get_tv_by_day($dates)
     return $tmdb_data;
 }
 
+/**
+ * @param $dates
+ *
+ * @return array|bool|mixed
+ */
 function get_movies_by_week($dates)
 {
-    global $cache;
+    global $cache, $BLOCKS;
+
+    if (!$BLOCKS['tmdb_api_on']) {
+        return false;
+    }
 
     $tmdb_data = $cache->get('tmdb_movies_' . $dates[0]);
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $_ENV['TMDB_API_KEY'];
         if (empty($apikey)) {
-            return null;
+            return false;
         }
         $url = "https://api.themoviedb.org/3/discover/movie?primary_release_date.gte={$dates[0]}&primary_release_date.lte={$dates[1]}&api_key=$apikey&sort_by=release_date.asc&include_adult=false&include_video=false&with_original_language=en";
         $content = fetch($url);
@@ -67,15 +85,22 @@ function get_movies_by_week($dates)
     return $tmdb_data;
 }
 
+/**
+ * @return array|bool|mixed
+ */
 function get_movies_in_theaters()
 {
-    global $cache;
+    global $cache, $BLOCKS;
+
+    if (!$BLOCKS['tmdb_api_on']) {
+        return false;
+    }
 
     $tmdb_data = $cache->get('tmdb_movies_in_theaters_');
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $_ENV['TMDB_API_KEY'];
         if (empty($apikey)) {
-            return null;
+            return false;
         }
         $url = "https://api.themoviedb.org/3/movie/now_playing?api_key=$apikey&language=en-US&region=US";
         $content = fetch($url);
@@ -100,18 +125,27 @@ function get_movies_in_theaters()
     return $tmdb_data;
 }
 
+/**
+ * @param $count
+ *
+ * @return array|bool|mixed
+ */
 function get_movies_by_vote_average($count)
 {
-    global $cache;
+    global $cache, $BLOCKS;
+
+    if (!$BLOCKS['tmdb_api_on']) {
+        return false;
+    }
 
     $page = $count / 20;
     $tmdb_data = $cache->get('tmdb_movies_vote_average_' . $count);
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $_ENV['TMDB_API_KEY'];
         if (empty($apikey)) {
-            return null;
+            return false;
         }
-        $min_votes = 10000;
+        $min_votes = 5000;
         $url = "https://api.themoviedb.org/3/discover/movie?api_key=$apikey&with_original_language=en&language=en-US&sort_by=vote_average.desc&include_adult=false&include_video=false&vote_count.gte=$min_votes";
         $content = fetch($url);
         if (!$content) {
@@ -135,10 +169,91 @@ function get_movies_by_vote_average($count)
     return $tmdb_data;
 }
 
+/**
+ * @param $imdbid
+ * @param $type
+ *
+ * @return bool|mixed
+ *
+ * @throws Exception
+ */
+function get_movie_id($imdbid, $type)
+{
+    global $cache, $BLOCKS, $fluent;
+
+    if (!$BLOCKS['tmdb_api_on']) {
+        return false;
+    }
+
+    $id = $cache->get('tmdb_imdbid_tmdbid_' . $imdbid);
+    if ($id === false || is_null($id)) {
+        $id = $fluent->from('images')
+            ->select(null)
+            ->select($type)
+            ->where('imdb_id = ?', $imdbid)
+            ->limit(1)
+            ->fetch($type);
+
+        if ($id) {
+            $cache->set('tmdb_imdbid_tmdbid_' . $imdbid, $id, 86400);
+        } else {
+            $cache->set('tmdb_imdbid_tmdbid_' . $imdbid, 0, 86400);
+        }
+    }
+
+    if ($id) {
+        return $id;
+    }
+    if (!$BLOCKS['tmdb_api_on']) {
+        return false;
+    }
+
+    $apikey = $_ENV['TMDB_API_KEY'];
+    if (empty($apikey)) {
+        return false;
+    }
+
+    $json = $cache->get('tmdb_movie_' . $id);
+    if ($json === false || is_null($json)) {
+        $url = "https://api.themoviedb.org/3/movie/{$imdbid}?api_key={$apikey}&language=en-US";
+        $content = fetch($url);
+        if (!$content) {
+            $cache->set('tmdb_movies_by_id_' . $imdbid, 0, 86400);
+
+            return false;
+        }
+        $json = json_decode($content, true);
+        $cache->set('tmdb_movie_' . $imdbid, $json, 86400);
+    }
+    if (!empty($json['id'])) {
+        if ($type === 'tmdb_id') {
+            $set = [
+                'tmdb_id' => $json['id'],
+            ];
+            $fluent->update('images')
+                ->set($set)
+                ->where('imdb_id = ?', $imdbid)
+                ->execute();
+        }
+
+        return $json['id'];
+    }
+}
+
+/**
+ * @param $json
+ *
+ * @return array|bool
+ */
 function get_movies($json)
 {
-    global $cache;
+    global $cache, $BLOCKS;
 
+    if (!$BLOCKS['tmdb_api_on']) {
+        return false;
+    }
+
+    $movies = [];
     foreach ($json['results'] as $movie) {
         if ($movie['original_language'] === 'en') {
             if (!empty($movie['id'])) {
@@ -166,16 +281,34 @@ function get_movies($json)
     return $movies;
 }
 
+/**
+ * @param $a
+ * @param $b
+ *
+ * @return int
+ */
 function nameSort($a, $b)
 {
     return strcmp($a['name'], $b['name']);
 }
 
+/**
+ * @param $a
+ * @param $b
+ *
+ * @return int
+ */
 function dateSort($a, $b)
 {
     return strcmp($a['release_date'], $b['release_date']);
 }
 
+/**
+ * @param $year
+ * @param $week
+ *
+ * @return array
+ */
 function getStartAndEndDate($year, $week)
 {
     return [

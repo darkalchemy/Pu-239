@@ -252,7 +252,7 @@ $config['logoutData'] = '';
 $config['ipCheck'] = false;
 
 // Defines the max time difference in hours for logs when no period or search condition is given:
-$config['logsRequestMessagesTimeDiff'] = 1;
+$config['logsRequestMessagesTimeDiff'] = 12;
 // Defines how many logs are returned on each logs request:
 $config['logsRequestMessagesLimit'] = 10;
 

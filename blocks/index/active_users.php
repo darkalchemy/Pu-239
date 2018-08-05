@@ -30,9 +30,9 @@ if ($active === false || is_null($active)) {
 $HTMLOUT .= "
         <a id='activeusers-hash'></a>
         <fieldset id='activeusers' class='header'>
-            <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['index_active']} ({$active['actcount']})</legend>
+            <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['index_active']} ({$active['actcount']})</legend>
             <div class='bordered'>
-                <div class='alt_bordered bg-00 level-item is-wrapped'>
+                <div class='alt_bordered bg-00 level-item is-wrapped top10 bottom10 line-40'>
                     {$active['activeusers']}
                 </div>
             </div>

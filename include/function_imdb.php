@@ -3,13 +3,20 @@
 use Imdb\Config;
 
 /**
- * @param $imdb_id
+ * @param      $imdb_id
+ * @param bool $title
  *
- * @return array
+ * @return array|bool
+ *
+ * @throws Exception
  */
 function get_imdb_info($imdb_id, $title = true)
 {
-    global $cache;
+    global $cache, $BLOCKS, $fluent;
+
+    if (!$BLOCKS['imdb_api_on']) {
+        return false;
+    }
 
     $imdbid = $imdb_id;
     $imdb_id = str_replace('tt', '', $imdb_id);
@@ -23,7 +30,9 @@ function get_imdb_info($imdb_id, $title = true)
 
         $movie = new \Imdb\Title($imdb_id, $config);
         if (empty($movie->title())) {
-            return null;
+            $cache->set('imdb_' . $imdb_id, 0, 86400);
+
+            return false;
         }
         $imdb_data = [
             'title' => $movie->title(),
@@ -50,15 +59,23 @@ function get_imdb_info($imdb_id, $title = true)
     if (empty($imdb_data)) {
         $cache->set('imdb_' . $imdb_id, 0, 86400);
 
-        return null;
+        return false;
     }
     $poster = !empty($imdb_data['poster']) ? $imdb_data['poster'] : '';
 
     if (!empty($poster)) {
         $insert = $cache->get('insert_imdb_imdbid_' . $imdbid);
         if ($insert === false || is_null($insert)) {
-            $sql = "INSERT IGNORE INTO images (imdb_id, url, type) VALUES ('$imdbid', '{$imdb_data['poster']}', 'poster')";
-            sql_query($sql) or sqlerr(__FILE__, __LINE__);
+            $values = [
+                'imdb_id' => $imdbid,
+                'url' => $imdb_data['poster'],
+                'type' => 'poster',
+            ];
+            $fluent->insertInto('images')
+                ->values($values)
+                ->ignore()
+                ->execute();
+
             $cache->set('insert_imdb_imdbid_' . $imdbid, 0, 604800);
         }
     }
@@ -162,9 +179,20 @@ function get_imdb_info($imdb_id, $title = true)
     ];
 }
 
+/**
+ * @param $imdb_id
+ *
+ * @return bool|null|string|string[]
+ *
+ * @throws Exception
+ */
 function get_imdb_info_short($imdb_id)
 {
-    global $cache;
+    global $cache, $BLOCKS, $fluent;
+
+    if (!$BLOCKS['imdb_api_on']) {
+        return false;
+    }
 
     $imdbid = $imdb_id;
     $imdb_id = str_replace('tt', '', $imdb_id);
@@ -178,12 +206,22 @@ function get_imdb_info_short($imdb_id)
 
         $movie = new \Imdb\Title($imdb_id, $config);
         if (empty($movie->title())) {
-            return null;
+            return false;
         }
+        $poster = $placeholder = '';
+
+        if (!empty($movie->photo(false))) {
+            $image = url_proxy($movie->photo(true), true, 150);
+            if ($image) {
+                $poster = $image;
+                $placeholder = url_proxy($movie->photo(true), true, 150, null, 10);
+            }
+        }
+
         $imdb_data = [
             'orig_poster' => $movie->photo(false),
-            'poster' => url_proxy($movie->photo(false), true, 150),
-            'placeholder' => url_proxy($movie->photo(false), true, 150, null, 10),
+            'poster' => $poster,
+            'placeholder' => $placeholder,
             'title' => $movie->title(),
             'vote_count' => $movie->votes(),
             'critic' => $movie->metacriticRating(),
@@ -199,7 +237,7 @@ function get_imdb_info_short($imdb_id)
     if (empty($imdb_data)) {
         $cache->set('imdb_short_' . $imdb_id, 0, 86400);
 
-        return null;
+        return false;
     }
 
     if (!empty($imdb_data['critic'])) {
@@ -220,8 +258,16 @@ function get_imdb_info_short($imdb_id)
     if (!empty($imdb_data['orig_poster'])) {
         $insert = $cache->get('insert_imdb_imdbid_' . $imdbid);
         if ($insert === false || is_null($insert)) {
-            $sql = "INSERT IGNORE INTO images (imdb_id, url, type) VALUES ('$imdbid', '{$imdb_data['orig_poster']}', 'poster')";
-            sql_query($sql) or sqlerr(__FILE__, __LINE__);
+            $values = [
+                'imdb_id' => $imdbid,
+                'url' => $imdb_data['orig_poster'],
+                'type' => 'poster',
+            ];
+            $fluent->insertInto('images')
+                ->values($values)
+                ->ignore()
+                ->execute();
+
             $cache->set('insert_imdb_imdbid_' . $imdbid, 0, 604800);
         }
     }
@@ -274,19 +320,30 @@ function get_imdb_info_short($imdb_id)
     return $imdb_info;
 }
 
+/**
+ * @return array|bool
+ */
 function get_upcoming()
 {
-    global $cache;
+    global $cache, $BLOCKS;
+
+    if (!$BLOCKS['imdb_api_on']) {
+        return false;
+    }
 
     $imdb_data = $cache->get('imdb_upcoming_');
     if ($imdb_data === false || is_null($imdb_data)) {
         $url = 'https://www.imdb.com/movies-coming-soon/';
         $imdb_data = fetch($url);
-        $cache->set('imdb_upcoming_', $imdb_data, 86400);
-    } else {
-        $cache->set('imdb_upcoming_', 0, 3600);
+        if ($imdb_data) {
+            $cache->set('imdb_upcoming_', $imdb_data, 86400);
+        } else {
+            $cache->set('imdb_upcoming_', 0, 3600);
+        }
+    }
 
-        return null;
+    if (empty($imdb_data)) {
+        return false;
     }
 
     preg_match_all('/<h4.*<a name=.*>(.*)&nbsp;/i', $imdb_data, $timestamp);
@@ -313,6 +370,7 @@ function get_upcoming()
             }
         }
     }
+
     if (!empty($imdbs)) {
         return $imdbs;
     }
@@ -320,9 +378,16 @@ function get_upcoming()
     return false;
 }
 
+/**
+ * @return bool|mixed
+ */
 function get_random_useragent()
 {
-    global $fluent, $cache, $site_config;
+    global $fluent, $cache, $site_config, $BLOCKS;
+
+    if (!$BLOCKS['imdb_api_on']) {
+        return false;
+    }
 
     $browser = $cache->get('browser_user_agents_');
     if ($browser === false || is_null($browser)) {
