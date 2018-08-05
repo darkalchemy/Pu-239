@@ -1,4 +1,5 @@
 05 Aug 2018
+fix: countable AJAX Chat
 fix: path to up.gif torrenttable_functions.php
 move: find images in details.php to function_get_images.php
 update: allow : in torrent name
