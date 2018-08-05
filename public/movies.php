@@ -98,17 +98,17 @@ switch ($list) {
                         $airtime = strtotime($tv['airstamp']);
                         $use_12_hour = !empty($CURUSER['12_hour']) ? $CURUSER['12_hour'] === 'yes' ? 1 : 0 : $site_config['12_hour'];
                         $body[] = [
-                            'poster' => url_proxy($poster, true, 150),
+                            'poster'      => url_proxy($poster, true, 150),
                             'placeholder' => url_proxy($poster, true, 150, null, 10),
-                            'title' => $tv['_embedded']['show']['name'],
-                            'ep_title' => $tv['name'],
-                            'season' => $tv['season'],
-                            'episode' => $tv['number'],
-                            'runtime' => !empty($tv['runtime']) ? "{$tv['runtime']} minutes" : '',
-                            'type' => $tv['_embedded']['show']['type'],
-                            'airtime' => !empty($tv['airtime']) ? $use_12_hour ? time24to12($airtime) : get_date($airtime, 'WITHOUT_SEC', 1, 1) : '',
-                            'id' => $tv['_embedded']['show']['id'],
-                            'overview' => str_replace([
+                            'title'       => $tv['_embedded']['show']['name'],
+                            'ep_title'    => $tv['name'],
+                            'season'      => $tv['season'],
+                            'episode'     => $tv['number'],
+                            'runtime'     => !empty($tv['runtime']) ? "{$tv['runtime']} minutes" : '',
+                            'type'        => $tv['_embedded']['show']['type'],
+                            'airtime'     => !empty($tv['airtime']) ? $use_12_hour ? time24to12($airtime) : get_date($airtime, 'WITHOUT_SEC', 1, 1) : '',
+                            'id'          => $tv['_embedded']['show']['id'],
+                            'overview'    => str_replace([
                                 '<p>',
                                 '</p>',
                                 '<b>',
@@ -197,15 +197,15 @@ switch ($list) {
                     $backdrop = !empty($tv['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$tv['backdrop_path']}" : '';
 
                     $body[] = [
-                        'poster' => url_proxy($poster, true, 150),
-                        'placeholder' => url_proxy($poster, true, 150, null, 10),
-                        'backdrop' => url_proxy($backdrop, true),
-                        'title' => $tv['name'],
-                        'vote_count' => $tv['vote_count'],
-                        'id' => $tv['id'],
+                        'poster'       => url_proxy($poster, true, 150),
+                        'placeholder'  => url_proxy($poster, true, 150, null, 10),
+                        'backdrop'     => url_proxy($backdrop, true),
+                        'title'        => $tv['name'],
+                        'vote_count'   => $tv['vote_count'],
+                        'id'           => $tv['id'],
                         'vote_average' => $tv['vote_average'],
-                        'popularity' => $tv['popularity'],
-                        'overview' => $tv['overview'],
+                        'popularity'   => $tv['popularity'],
+                        'overview'     => $tv['overview'],
                     ];
                     $titles[] = strtolower($tv['name']);
                 }
@@ -262,15 +262,15 @@ switch ($list) {
                     $poster = !empty($movie['poster_path']) ? "https://image.tmdb.org/t/p/w185{$movie['poster_path']}" : $site_config['pic_baseurl'] . 'noposter.png';
                     $backdrop = !empty($movie['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$movie['backdrop_path']}" : '';
                     $body[] = [
-                        'poster' => url_proxy($poster, true, 150),
-                        'placeholder' => url_proxy($poster, true, 150, null, 10),
-                        'backdrop' => url_proxy($backdrop, true),
-                        'title' => $movie['title'],
-                        'vote_count' => $movie['vote_count'],
-                        'id' => $movie['id'],
+                        'poster'       => url_proxy($poster, true, 150),
+                        'placeholder'  => url_proxy($poster, true, 150, null, 10),
+                        'backdrop'     => url_proxy($backdrop, true),
+                        'title'        => $movie['title'],
+                        'vote_count'   => $movie['vote_count'],
+                        'id'           => $movie['id'],
                         'vote_average' => $movie['vote_average'],
-                        'popularity' => $movie['popularity'],
-                        'overview' => $movie['overview'],
+                        'popularity'   => $movie['popularity'],
+                        'overview'     => $movie['overview'],
                         'release_date' => $movie['release_date'],
                     ];
                     $titles[] = strtolower($movie['title']);
@@ -330,15 +330,15 @@ switch ($list) {
                     $poster = !empty($movie['poster_path']) ? "https://image.tmdb.org/t/p/w185{$movie['poster_path']}" : $site_config['pic_baseurl'] . 'noposter.png';
                     $backdrop = !empty($movie['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$movie['backdrop_path']}" : '';
                     $body[] = [
-                        'poster' => url_proxy($poster, true, 150),
-                        'placeholder' => url_proxy($poster, true, 150, null, 10),
-                        'backdrop' => url_proxy($backdrop, true),
-                        'title' => $movie['title'],
-                        'vote_count' => $movie['vote_count'],
-                        'id' => $movie['id'],
+                        'poster'       => url_proxy($poster, true, 150),
+                        'placeholder'  => url_proxy($poster, true, 150, null, 10),
+                        'backdrop'     => url_proxy($backdrop, true),
+                        'title'        => $movie['title'],
+                        'vote_count'   => $movie['vote_count'],
+                        'id'           => $movie['id'],
                         'vote_average' => $movie['vote_average'],
-                        'popularity' => $movie['popularity'],
-                        'overview' => $movie['overview'],
+                        'popularity'   => $movie['popularity'],
+                        'overview'     => $movie['overview'],
                         'release_date' => $movie['release_date'],
                     ];
                     $titles[] = strtolower($movie['title']);

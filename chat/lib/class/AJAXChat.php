@@ -2717,7 +2717,7 @@ class AJAXChat
             $msg .= '[color=#00FF00]There are no Casino bets in play. [/color]';
         } else {
             $count = !empty($row[0]) ? $count($row[0]) : 0;
-            $msg .= '[color=#00FF00]' . $row[0] . ' bet' . plural($count)) . ' in the [url=' . $this->_siteConfig['baseurl'] . '/casino.php]Casino[/url] for ' . mksize($row[1]) . '. [/color]';
+            $msg .= '[color=#00FF00]' . $row[0] . ' bet' . plural($count) . ' in the [url=' . $this->_siteConfig['baseurl'] . '/casino.php]Casino[/url] for ' . mksize($row[1]) . '. [/color]';
         }
 
         unset($row);
