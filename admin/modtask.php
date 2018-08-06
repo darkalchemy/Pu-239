@@ -1080,6 +1080,13 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         'opt1' => $row['opt1'],
         'opt2' => $row['opt2'],
     ], $site_config['expires']['user_cache']);
+    $cache->deleteMulti([
+        'last24_users_',
+        'birthdayusers_',
+        'ircusers_',
+        'activeusers_',
+    ]);
+
     write_info("{$lang['modtask_sysop_user_acc']} $userid (" . format_username($userid) . ")\n{$lang['modtask_sysop_thing']}" . implode(', ', $useredit['update']) . "{$lang['modtask_gl_by']}" . format_username($CURUSER['id']));
     $returnto = htmlsafechars($_POST['returnto']);
     header("Location: {$site_config['baseurl']}/$returnto");
