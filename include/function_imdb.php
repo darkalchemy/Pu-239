@@ -148,13 +148,14 @@ function get_imdb_info($imdb_id, $title = true)
                         $imdb_tmp[] = implode(' ', $cast);
                         unset($cast);
                     }
-                    if ($foo != 'cast' && $foo === 'trailers') {
+                    if ($foo === 'trailers') {
                         $imdb_tmp[] = "<a href='" . url_proxy($pp['url']) . "' target='_blank'>{$pp['title']}</a>";
                     } elseif ($foo != 'cast') {
                         $imdb_tmp[] = "<a href='" . url_proxy("https://www.imdb.com/name/nm{$pp['imdb']}") . "' target='_blank' class='tooltipper' title='" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . "'>" . $pp['name'] . '</a>';
                     }
                 }
             }
+
             if (!empty($imdb_tmp)) {
                 $imdb_info .= "
                     <div class='columns'>

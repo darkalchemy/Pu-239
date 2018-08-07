@@ -139,6 +139,8 @@ $js_list = array_merge($js_list, [
     'upload_js' => [
         SCRIPTS_DIR . 'FormManager.js',
         SCRIPTS_DIR . 'getname.js',
+        SCRIPTS_DIR . 'imdb.js',
+        SCRIPTS_DIR . 'isbn.js',
     ],
     'request_js' => [
         SCRIPTS_DIR . 'jquery.validate.js',

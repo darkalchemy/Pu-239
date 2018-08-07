@@ -27,9 +27,8 @@ function delete_torrents_update($data)
 
     $values = [];
     foreach ($torrents as $torrent) {
-        remove_torrent($torrent['info_hash']);
         $torrent_stuffs->delete_by_id($torrent['id']);
-        unlink("{$site_config['torrent_dir']}/{$torrent['id']}.torrent");
+        remove_torrent($torrent['info_hash']);
 
         $msg = 'Torrent ' . (int) $$torrent['id'] . ' (' . htmlsafechars($$torrent['name']) . ") was deleted by system (older than $days days and no seeders)";
         $values[] = [

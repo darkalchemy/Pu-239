@@ -1,4 +1,7 @@
 07 Aut 2018
+move: all delete torrent functions to Torrents Class
+add: IMDb lookup on upload.php
+add: ISBN lookup on upload.php
 remove: unneeded link to google fonts AJAXChatTemplate.php
 fix: Tooltips
 fix: overwrite key browse_js uglify.php

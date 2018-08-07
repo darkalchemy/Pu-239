@@ -5,7 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'function_memcache.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session, $fluent;
+global $CURUSER, $site_config, $cache, $session, $fluent, $torrent_stuffs;
 
 $lang = array_merge(load_language('global'), load_language('fastdelete'));
 if ($CURUSER['class'] < UC_STAFF) {
@@ -17,17 +17,6 @@ if (!isset($_GET['id']) || !is_valid_id($_GET['id'])) {
 }
 
 $id = (int) $_GET['id'];
-
-/**
- * @param $id
- */
-function deletetorrent($tid)
-{
-    global $torrent_stuffs, $site_config;
-
-    $torrent_stuffs->delete_by_id($tid);
-    unlink("{$site_config['torrent_dir']}/{$tid['id']}.torrent");
-}
 
 $tid = $fluent->from('torrents AS t')
     ->select(null)
@@ -51,7 +40,7 @@ if (!$sure) {
     stderr("{$lang['fastdelete_sure']}", sprintf($lang['fastdelete_sure_msg'], $returnto));
 }
 
-deletetorrent($tid);
+$torrent_stuffs->delete_by_id($tid['id']);
 remove_torrent($tid['info_hash']);
 
 if ($CURUSER['id'] != $tid['owner']) {

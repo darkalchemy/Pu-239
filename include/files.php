@@ -29,7 +29,7 @@ function get_file_name($file)
         case 'captcha2_js':
             return "{$site_config['baseurl']}/js/1/captcha2_2c3de5ae.js";
         case 'upload_js':
-            return "{$site_config['baseurl']}/js/1/upload_10ca99a2.js";
+            return "{$site_config['baseurl']}/js/1/upload_b8901909.js";
         case 'request_js':
             return "{$site_config['baseurl']}/js/1/request_4bbb71bf.js";
         case 'acp_js':

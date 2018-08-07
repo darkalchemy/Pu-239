@@ -5,7 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_memcache.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session, $fluent;
+global $CURUSER, $site_config, $cache, $session, $fluent, $torrent_stuffs;
 
 $lang = array_merge(load_language('global'), load_language('delete'));
 if (!mkglobal('id')) {
@@ -14,17 +14,6 @@ if (!mkglobal('id')) {
 $id = (int) $id;
 if (!is_valid_id($id)) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_missing_data']}");
-}
-
-/**
- * @param $id
- */
-function deletetorrent($tid)
-{
-    global $torrent_stuffs, $site_config;
-
-    $torrent_stuffs->delete_by_id($tid);
-    unlink("{$site_config['torrent_dir']}/{$tid['id']}.torrent");
 }
 
 $row = $fluent->from('torrents AS t')
@@ -69,7 +58,7 @@ if ($rt == 1) {
     $reasonstr = trim($reason[3]);
 }
 
-deletetorrent($row);
+$torrent_stuffs->delete_by_id($row['id']);
 remove_torrent($row['info_hash']);
 
 write_log("{$lang['delete_torrent']} $id ({$row['name']}){$lang['delete_deleted_by']}{$CURUSER['username']} ($reasonstr)\n");

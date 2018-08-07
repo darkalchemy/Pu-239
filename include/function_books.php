@@ -65,21 +65,27 @@ function get_book_info($torrent)
             return false;
         }
         $ebook['title'] = $book->title;
-        foreach ($book->authors as $author) {
-            $ebook['authors'][] = $author;
+        if (!empty($book->authors)) {
+            foreach ($book->authors as $author) {
+                $ebook['authors'][] = $author;
+            }
         }
         $ebook['publisher'] = get_or_null($book->publisher);
         $ebook['publishedDate'] = get_or_null($book->publishedDate);
         $ebook['description'] = get_or_null($book->description);
-        foreach ($book->industryIdentifiers as $industryIdentifier) {
-            foreach ($industryIdentifier as $key => $value) {
-                $keys[] = $value;
+        if (!empty($book->industryIdentifiers)) {
+            foreach ($book->industryIdentifiers as $industryIdentifier) {
+                foreach ($industryIdentifier as $key => $value) {
+                    $keys[] = $value;
+                }
             }
         }
         $ebook['isbn10'] = !empty($keys[1]) && strlen($keys[1]) === 10 ? $keys[1] : !empty($keys[3]) ? $keys[3] : '';
         $ebook['isbn13'] = !empty($keys[3]) && strlen($keys[3]) === 13 ? $keys[3] : !empty($keys[1]) ? $keys[1] : '';
-        foreach ($book->categories as $category) {
-            $ebook['categories'][] = $category;
+        if (!empty($book->categories)) {
+            foreach ($book->categories as $category) {
+                $ebook['categories'][] = $category;
+            }
         }
         $ebook['pageCount'] = get_or_null($book->pageCount);
         $ebook['poster'] = get_or_null($book->imageLinks->thumbnail);

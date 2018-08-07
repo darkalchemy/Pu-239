@@ -173,11 +173,13 @@ $release_group_array = [
     'none' => 1,
 ];
 $release_group = isset($release_group, $release_group_array[$release_group]) ? $release_group : 'none';
+
 if (isset($youtube) && preg_match($youtube_pattern, $youtube, $temp_youtube)) {
     $youtube = $temp_youtube[0];
 } else {
     $youtube = '';
 }
+
 $tags = strip_tags(isset($tags) ? trim($tags) : '');
 
 if (!validfilename($fname)) {

@@ -6,20 +6,10 @@ require_once INCL_DIR . 'function_memcache.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $cache, $fluent;
+global $CURUSER, $site_config, $lang, $cache, $fluent, $torrent_stuffs;
 
 $lang = array_merge($lang, load_language('ad_datareset'));
 $HTMLOUT = '';
-/**
- * @param $tid
- */
-function deletetorrent($tid)
-{
-    global $torrent_stuffs, $site_config;
-
-    $torrent_stuffs->delete_by_id($tid);
-    unlink("{$site_config['torrent_dir']}/{$tid['tid']}.torrent");
-}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tid = (isset($_POST['tid']) ? (int) $_POST['tid'] : 0);
@@ -59,8 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES ' . implode(', ', array_map('sqlesc', $pms))) or sqlerr(__FILE__, __LINE__);
     sql_query('INSERT INTO users (id,downloaded) VALUES ' . implode(', ', array_map('sqlesc', $new_download)) . ' ON DUPLICATE KEY UPDATE downloaded = VALUES(downloaded)') or sqlerr(__FILE__, __LINE__);
-    deletetorrent($tid);
-    remove_torrent($tid['info_hash']);
+    $torrent_stuffs->delete_by_id($a['id']);
+    remove_torrent($a['info_hash']);
 
     write_log($lang['datareset_torr'] . $tname . $lang['datareset_wdel'] . htmlsafechars($CURUSER['username']) . $lang['datareset_allusr']);
     header('Refresh: 3; url=staffpanel.php?tool=datareset');
