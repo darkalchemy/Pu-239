@@ -360,6 +360,7 @@ function stdfoot($stdfoot = false)
         var cookie_path = '{$site_config['cookie_path']}';
         var cookie_lifetime = '{$site_config['cookie_lifetime']}';
         var cookie_domain = '{$site_config['cookie_domain']}';
+        var csrf_token = '" . $session->get('csrf_token') . "';
     </script>";
 
     $htmlfoot .= "
