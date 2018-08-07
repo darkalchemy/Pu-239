@@ -1,4 +1,5 @@
 07 Aut 2018
+remove: unneeded link to google fonts AJAXChatTemplate.php
 fix: Tooltips
 fix: overwrite key browse_js uglify.php
 update: write_classes() to write chat/js/config bbCodeTags

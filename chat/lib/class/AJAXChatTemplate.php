@@ -242,7 +242,6 @@ class AJAXChatTemplate
     public function getStyleSheetLinkTags()
     {
         return '
-        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Acme|Baloo+Bhaijaan|Encode+Sans+Condensed|Lobster|Nova+Square|Open+Sans|Oswald|PT+Sans+Narrow" />
         <link rel="stylesheet" href="' . get_file_name('chat_css_trans') . '" title="transparent" />
         <link rel="alternate stylesheet" href="' . get_file_name('chat_css_uranium') . '" title="Uranium" />';
     }
