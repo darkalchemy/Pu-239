@@ -72,13 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
                     $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . " . 'class/{$arr['classpic']}',";
                     $js_classes[] = $arr['name'];
+                    $config_classes[] = strtolower(str_replace(' ', '_', $arr['classname']));
                 }
                 $val = $arr['value'];
                 $classes[] = "var {$arr['name']} = {$arr['value']};";
             }
             $classes[] = "var UC_MAX = {$val};";
             file_put_contents(ROOT_DIR . 'chat/js/classes.js', implode("\n", $classes));
-            write_classes($js_classes);
+            write_classes($js_classes, $config_classes);
             $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
             file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
             $session->set('is-success', "{$lang['classcfg_success_save']}\n\n{$lang['classcfg_success_uglify']}");
