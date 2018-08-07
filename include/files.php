@@ -21,7 +21,7 @@ function get_file_name($file)
         case 'chat_log_js':
             return "{$site_config['baseurl']}/js/1/chat_log_0ba1bd21.js";
         case 'browse_js':
-            return "{$site_config['baseurl']}/js/1/browse_55efe0c1.js";
+            return "{$site_config['baseurl']}/js/1/browse_74f9954e.js";
         case 'userdetails_js':
             return "{$site_config['baseurl']}/js/1/userdetails_01fabb92.js";
         case 'checkport_js':

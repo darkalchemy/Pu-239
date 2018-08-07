@@ -68,22 +68,16 @@ if ($BLOCKS['ajaxchat_on']) {
         ],
     ]);
 }
-
 if ($BLOCKS['staff_picks_on']) {
-    $js_list += [
-        'browse_js' => [
-            SCRIPTS_DIR . 'autocomplete.js',
-            SCRIPTS_DIR . 'staff_picks.js',
-        ],
+    $js_list['browse_js'] = [
+        SCRIPTS_DIR . 'autocomplete.js',
+        SCRIPTS_DIR . 'staff_picks.js',
     ];
 } else {
-    $js_list += [
-        'browse_js' => [
-            SCRIPTS_DIR . 'autocomplete.js',
-        ],
+    $js_list['browse_js'] = [
+        SCRIPTS_DIR . 'autocomplete.js',
     ];
 }
-
 if ($BLOCKS['latest_torrents_scroll_on']) {
     $js_list['index_js'] = array_merge($js_list['index_js'], [
         ROOT_DIR . 'node_modules/raphael/raphael.js',
@@ -136,9 +130,6 @@ $js_list['js'] = array_merge($js_list['js'], [
 $js_list = array_merge($js_list, [
     'checkport_js' => [
         SCRIPTS_DIR . 'checkports.js',
-    ],
-    'browse_js' => [
-        SCRIPTS_DIR . 'autocomplete.js',
     ],
     'captcha2_js' => [
         SCRIPTS_DIR . 'check.js',
