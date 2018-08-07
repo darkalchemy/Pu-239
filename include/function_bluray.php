@@ -66,17 +66,17 @@ function get_bluray_info()
             }
 
             $pubs[] = [
-                'title'        => $movie,
-                'pubDate'      => replace_unicode_strings($pubDate),
-                'genre'        => replace_unicode_strings($description[0]),
-                'year'         => replace_unicode_strings($description[1]),
-                'runtime'      => replace_unicode_strings($description[2]),
-                'mpaa'         => replace_unicode_strings($description[3]),
+                'title' => $movie,
+                'pubDate' => replace_unicode_strings($pubDate),
+                'genre' => replace_unicode_strings($description[0]),
+                'year' => replace_unicode_strings($description[1]),
+                'runtime' => replace_unicode_strings($description[2]),
+                'mpaa' => replace_unicode_strings($description[3]),
                 'release_date' => replace_unicode_strings($description[4]),
-                'description'  => replace_unicode_strings($description[5]),
-                'poster'       => $poster,
-                'placeholder'  => $placeholder,
-                'imdbid'       => $i,
+                'description' => replace_unicode_strings($description[5]),
+                'poster' => $poster,
+                'placeholder' => $placeholder,
+                'imdbid' => $i,
             ];
         }
 

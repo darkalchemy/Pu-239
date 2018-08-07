@@ -1,3 +1,6 @@
+07 Aut 2018
+update: write_classes() to write chat/js/config bbCodeTags
+
 06 Aug 2018
 fix: clear index page user blocks when edit any user
 fix: missing staff_picks mytorrents.php

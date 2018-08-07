@@ -240,8 +240,13 @@ function write_css($data)
     file_put_contents(ROOT_DIR . 'templates/1/css/classcolors.css', $classdata . PHP_EOL);
 }
 
-function write_classes($data)
+function write_classes($data, $classes)
 {
+    $html = file_get_contents(CHAT_DIR . 'js/config.js');
+    $classes = "bbCodeTags: [\n        'b',\n        'i',\n        'u',\n        'quote',\n        'code',\n        'color',\n        'url',\n        'img',\n        'chatbot',\n        'updown',\n        'video'," . "\n        '" . implode("',\n        '", $classes) . "'\n    ],";
+    $html = preg_replace('/(bbCodeTags:\s+\[.*?\],)/s', $classes, $html);
+    file_put_contents(CHAT_DIR . 'js/config.js', $html);
+
     $text = '
 
 ajaxChat.getRoleClass = function(roleID) {
@@ -281,6 +286,7 @@ function write_class_files()
             $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
             $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . " . 'class/{$arr['classpic']}',";
             $js_classes[] = $arr['name'];
+            $config_classes[] = strtolower(str_replace(' ', '_', $arr['classname']));
             $data[] = [
                 'className' => $arr['classname'],
                 'classColor' => '#' . $arr['classcolor'],
@@ -290,7 +296,7 @@ function write_class_files()
     }
 
     file_put_contents(ROOT_DIR . 'chat/js/classes.js', implode("\n", $classes) . PHP_EOL);
-    write_classes($js_classes);
+    write_classes($js_classes, $config_classes);
     write_css($data);
     $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
     file_put_contents(CACHE_DIR . 'class_config.php', $configfile . PHP_EOL);

@@ -17,9 +17,9 @@ function get_file_name($file)
         case 'index_js':
             return "{$site_config['baseurl']}/js/1/index_3479219a.js";
         case 'chat_js':
-            return "{$site_config['baseurl']}/js/1/chat_1027cae6.js";
+            return "{$site_config['baseurl']}/js/1/chat_c640e6ae.js";
         case 'chat_log_js':
-            return "{$site_config['baseurl']}/js/1/chat_log_76499727.js";
+            return "{$site_config['baseurl']}/js/1/chat_log_0ba1bd21.js";
         case 'browse_js':
             return "{$site_config['baseurl']}/js/1/browse_55efe0c1.js";
         case 'userdetails_js':

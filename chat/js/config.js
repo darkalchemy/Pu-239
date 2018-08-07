@@ -131,15 +131,15 @@ var ajaxChatConfig = {
         'url',
         'img',
         'chatbot',
+        'updown',
+        'video',
         'user',
         'power_user',
         'vip',
         'uploader',
         'moderator',
         'administrator',
-        'sysop',
-        'updown',
-        'video'
+        'sysop'
     ],
 
     // Defines the list of allowed color codes:
