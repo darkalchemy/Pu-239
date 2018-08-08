@@ -1,4 +1,5 @@
 08 Aug 2018
+fix: allow anything class UC_UPLOADER and above to upload
 fix: after upload multiple images to bitbucket, you can select any link correctly
 
 07 Aug 2018

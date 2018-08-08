@@ -35,7 +35,7 @@ if (!empty($bot) && !empty($auth)) {
     $user_id = $fluent->from('users')
         ->select(null)
         ->select('id')
-        ->where('class > ? AND username = ? AND auth = ? AND uploadpos = 1 AND suspended = "no"', UC_UPLOADER, $bot, $auth)
+        ->where('class >= ? AND username = ? AND auth = ? AND uploadpos = 1 AND suspended = "no"', UC_UPLOADER, $bot, $auth)
         ->fetch('id');
 }
 

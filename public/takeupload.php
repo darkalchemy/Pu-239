@@ -18,7 +18,7 @@ if (!empty($bot) && !empty($auth)) {
     $owner_id = $fluent->from('users')
         ->select(null)
         ->select('id')
-        ->where('class > ? AND username = ? AND auth = ? AND torrent_pass = ? AND uploadpos = 1 AND suspended = "no"', UC_UPLOADER, $bot, $auth, $torrent_pass)
+        ->where('class >= ? AND username = ? AND auth = ? AND torrent_pass = ? AND uploadpos = 1 AND suspended = "no"', UC_UPLOADER, $bot, $auth, $torrent_pass)
         ->fetch('id');
 } else {
     check_user_status();
