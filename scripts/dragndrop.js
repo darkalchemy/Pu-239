@@ -86,9 +86,9 @@ function callback(files) {
                         '<img src="' + response.urls[i] + '" class="w-50 img-responsive" alt="" />' +
                         '</a>' +
                         '<h2>Direct link to image</h2>' +
-                        '<input class="w-100" id="direct" onclick="SelectAll(\'direct\')" type="text" value="' + response.urls[i] + '" readonly>' +
+                        '<input class="w-100" id="direct_' + i + '" onclick="SelectAll(\'direct_' + i + '\')" type="text" value="' + response.urls[i] + '" readonly>' +
                         '<h3>Tag for forums or comments</h3>' +
-                        '<input class="w-100" id="comments" onclick="SelectAll(\'comments\')" type="text" value="[img]' + response.urls[i] + '[/img]" readonly>' +
+                        '<input class="w-100" id="comments_' + i + '" onclick="SelectAll(\'comments_' + i + '\')" type="text" value="[img]' + response.urls[i] + '[/img]" readonly>' +
                         '</div>';
                 }
             }

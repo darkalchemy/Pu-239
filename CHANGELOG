@@ -1,4 +1,7 @@
-07 Aut 2018
+08 Aug 2018
+fix: after upload multiple images to bitbucket, you can select any link correctly
+
+07 Aug 2018
 fix: write_css_class()
 move: all delete torrent functions to Torrents Class
 add: IMDb lookup on upload.php
