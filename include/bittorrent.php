@@ -2129,17 +2129,6 @@ function get_body_image($details, $portrait = false)
         ];
     }
 
-    $images_table = $cache->get('images_table_');
-    if ($images_table === false || is_null($images_table)) {
-        $sql = "SELECT COUNT(*) AS count FROM information_schema.TABLES WHERE (TABLE_SCHEMA = '{$_ENV['DB_DATABASE']}') AND (TABLE_NAME = 'images')";
-        $query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        $images_table = mysqli_fetch_assoc($query);
-        if ($images_table['count'] == 0) {
-            return null;
-        }
-        $cache->set('images_table_', $images_table['count'], 0);
-    }
-
     $backgrounds = $cache->get('backgrounds_');
     if ($backgrounds === false || is_null($backgrounds)) {
         $results = $fluent->from('images')
