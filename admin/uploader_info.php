@@ -18,7 +18,7 @@ $res = sql_query('SELECT COUNT(t.id) AS how_many_torrents, t.owner, t.added, u.u
 if ($count1 > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$HTMLOUT .= '<table border="0">
+$HTMLOUT .= '<table class="table table-bordered table-striped">
    <tr><td class="colhead">' . $lang['upinfo_rank'] . '</td><td class="colhead">' . $lang['upinfo_torrent'] . '</td><td class="colhead">' . $lang['upinfo_member'] . '</td><td class="colhead">' . $lang['upinfo_class'] . '</td><td class="colhead">' . $lang['upinfo_ratio'] . '</td><td class="colhead">' . $lang['upinfo_ltupload'] . '</td><td class="colhead">' . $lang['upinfo_sendpm'] . '</td></tr>';
 $i = 0;
 while ($arr = mysqli_fetch_assoc($res)) {
@@ -31,11 +31,12 @@ while ($arr = mysqli_fetch_assoc($res)) {
 <td>' . get_user_class_name($arr['class']) . '</td>
 <td>' . $ratio . '</td>
 <td>' . get_date($arr['added'], 'DATE', 0, 1) . '</td>
-<td><a href="messages.php?action=send_message&amp;receiver=' . (int) $arr['id'] . '"><img src="' . $site_config['pic_baseurl'] . 'button_pm.gif" alt="' . $lang['upinfo_pm'] . '" title="' . $lang['upinfo_pm'] . '" border="0" /></a></td>
+<td>
+    <a href="messages.php?action=send_message&amp;receiver=' . (int) $arr['id'] . '" class="button is-small tooltipper" title="' . $lang['upinfo_sendpm'] . '">' . $lang['upinfo_sendpm'] . '</a></td>
 </tr>';
 }
 $HTMLOUT .= '</table>';
 if ($count1 > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($lang['upinfo_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['upinfo_stdhead']) . wrapper($HTMLOUT) . stdfoot();
