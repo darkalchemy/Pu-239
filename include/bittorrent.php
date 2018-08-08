@@ -99,6 +99,7 @@ function htmlsafechars($txt = '')
 function PostKey($ids = [])
 {
     global $site_config;
+
     if (!is_array($ids)) {
         return false;
     }

@@ -145,6 +145,7 @@ $js_list = array_merge($js_list, [
     'request_js' => [
         SCRIPTS_DIR . 'jquery.validate.js',
         SCRIPTS_DIR . 'check_selected.js',
+        SCRIPTS_DIR . 'imdb.js',
     ],
     'acp_js' => [
         SCRIPTS_DIR . 'acp.js',

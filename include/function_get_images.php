@@ -7,7 +7,7 @@ require_once INCL_DIR . 'function_omdb.php';
 require_once INCL_DIR . 'function_tmdb.php';
 require_once INCL_DIR . 'function_fanart.php';
 
-function get_image_by_id($media, $tid, $id, $type, $season = null)
+function get_image_by_id($media, $tid, $id, $type, $season = null, $save = true)
 {
     if ($media === 'tv') {
         $image = getTVImagesByTVDb($id, $type, $season);
@@ -18,8 +18,10 @@ function get_image_by_id($media, $tid, $id, $type, $season = null)
         $image = getMovieImagesByID($id, $type);
     }
 
-    if (!empty($image)) {
+    if (!empty($image) && $save) {
         save_changes($tid, $type, $image);
+    } elseif (!empty($image)) {
+        return $image;
     }
 }
 

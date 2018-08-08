@@ -466,13 +466,17 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         $user['id'],
         $CURUSER['id'],
     ]);
-    $HTMLOUT .= "<input type='hidden' name='action' value='edituser' />";
-    $HTMLOUT .= "<input type='hidden' name='userid' value='$id' />";
-    $HTMLOUT .= "<input type='hidden' name='postkey' value='$postkey' />";
-    $HTMLOUT .= "<input type='hidden' name='returnto' value='userdetails.php?id=$id' />";
     $HTMLOUT .= "
-         <table class='table table-bordered table-striped bottom20 seven'>";
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_title']}</td><td colspan='3' class='has-text-left'><input type='text' class='w-100' name='title' value='" . htmlsafechars($user['title']) . "' /></td></tr>";
+        <input type='hidden' name='action' value='edituser' />
+        <input type='hidden' name='userid' value='$id' />
+        <input type='hidden' name='postkey' value='$postkey' />
+        <input type='hidden' name='returnto' value='userdetails.php?id=$id' />
+        <table class='table table-bordered table-striped bottom20 seven'>
+        <tr>
+            <td class='rowhead'>{$lang['userdetails_title']}</td><td colspan='3' class='has-text-left'>
+                <input type='text' class='w-100' name='title' value='" . htmlsafechars($user['title']) . "' />
+            </td>
+        </tr>";
     $avatar = htmlsafechars($user['avatar']);
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_avatar_url']}</td><td colspan='3' class='has-text-left'><input type='text' class='w-100' name='avatar' value='$avatar' /></td></tr>";
 

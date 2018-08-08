@@ -262,6 +262,7 @@ switch ($action) {
 
         $HTMLOUT .= $top_menu . '
     <h1 class="has-text-centered">New Request</h1>
+    <div class="banner_container has-text-centered w-100"></div>
     <form method="post" action="requests.php?action=add_new_request" name="request_form" id="request_form">
     <table class="table table-bordered table-striped">
     <tbody>
@@ -277,12 +278,21 @@ switch ($action) {
     <td><input type="text" name="request_name" value="' . htmlsafechars($request_name, ENT_QUOTES) . '" class="required w-100" /></td>
     </tr>
     <tr>
-    <td>image:</td>
-    <td><input type="text" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required w-100" /></td>
+    <td>link:</td>
+    <td>
+        <input type="text" id="url" name="link" class="w-100" data-csrf="' . $session->get('csrf_token') . '" value="' . htmlsafechars($link, ENT_QUOTES) . '" />
+        <div class="imdb_outer">
+            <div class="imdb_inner">
+            </div>
+        </div>
+    </td>
     </tr>
     <tr>
-    <td>link:</td>
-    <td><input type="text" name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="required w-100" /></td>
+    <td>image:</td>
+    <td>
+        <input type="text" id="poster" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required w-100" />
+        <div class="poster_container has-text-centered"></div>
+    </td>
     </tr>
     <tr>
     <td>category:</td>

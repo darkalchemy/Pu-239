@@ -29,9 +29,9 @@ function get_file_name($file)
         case 'captcha2_js':
             return "{$site_config['baseurl']}/js/1/captcha2_2c3de5ae.js";
         case 'upload_js':
-            return "{$site_config['baseurl']}/js/1/upload_b8901909.js";
+            return "{$site_config['baseurl']}/js/1/upload_cbc14d14.js";
         case 'request_js':
-            return "{$site_config['baseurl']}/js/1/request_4bbb71bf.js";
+            return "{$site_config['baseurl']}/js/1/request_f8d97b92.js";
         case 'acp_js':
             return "{$site_config['baseurl']}/js/1/acp_22d19c79.js";
         case 'dragndrop_js':

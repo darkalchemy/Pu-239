@@ -57,7 +57,8 @@ $HTMLOUT .= "
     <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='./takeupload.php' method='post'>
     <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['max_torrent_size']}' />
     <h1 class='has-text-centered'>Upload a Torrent</h1>
-    <p class='top10 has-text-centered'>{$lang['upload_announce_url']}:<br><input type='text' class='has-text-centered w-100 top10' readonly='readonly' value='{$site_config['announce_urls'][0]}' onclick='select()' /></p>";
+    <p class='top10 has-text-centered'>{$lang['upload_announce_url']}:<br><input type='text' class='has-text-centered w-100 top10' readonly='readonly' value='{$site_config['announce_urls'][0]}' onclick='select()' /></p>
+    <div class='banner_container has-text-centered w-100'></div>";
 $HTMLOUT .= "<table class='table table-bordered table-striped top20 bottom20'>
     <tr>
     <td class='rowhead'>{$lang['upload_imdb_url']}</td>
@@ -86,6 +87,7 @@ $HTMLOUT .= "<table class='table table-bordered table-striped top20 bottom20'>
     <td>
         <input type='text' id='poster' name='poster' class='w-100' />
         <br>{$lang['upload_poster1']}
+        <div class='poster_container has-text-centered'></div>
     </td>
     </tr>
     <tr>

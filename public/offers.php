@@ -274,11 +274,14 @@ switch ($action) {
         }
         $HTMLOUT .= $top_menu . '
     <h1 class="has-text-centered">New Offer</h1>
+    <div class="banner_container has-text-centered w-100"></div>
     <form method="post" action="offers.php?action=add_new_offer" name="offer_form" id="offer_form">
     <table class="table table-bordered table-striped">
     <tbody>
     <tr>
-    <td colspan="2"><h1>Making a Offer</h1></td>
+    <td colspan="2">
+        <h1>Making a Offer</h1>
+    </td>
     </tr>
     <tr>
     <td colspan="2">Before you make an offer, <a class="altlink" href="search.php">Search</a>
@@ -287,15 +290,24 @@ switch ($action) {
     </tr>
     <tr>
     <td>name:</td>
-    <td><input type="text"  name="offer_name" value="' . htmlsafechars($offer_name, ENT_QUOTES) . '" class="required w-100" /></td>
-    </tr>
-    <tr>
-    <td>image:</td>
-    <td><input type="text"  name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required w-100" /></td>
+    <td><input type="text" name="offer_name" value="' . htmlsafechars($offer_name, ENT_QUOTES) . '" class="required w-100" /></td>
     </tr>
     <tr>
     <td>link:</td>
-    <td><input type="text"  name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="required w-100" /></td>
+    <td>
+        <input type="text" id="url" name="link" class="w-100" data-csrf="' . $session->get('csrf_token') . '" value="' . htmlsafechars($link, ENT_QUOTES) . '" />
+        <div class="imdb_outer">
+            <div class="imdb_inner">
+            </div>
+        </div>
+    </td>
+    </tr>
+    <tr>
+    <td>image:</td>
+    <td>
+        <input type="text" id="poster" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required w-100" />
+        <div class="poster_container has-text-centered"></div>
+    </td>
     </tr>
     <tr>
     <td>category:</td>
@@ -385,15 +397,15 @@ switch ($action) {
     </tr>
     <tr>
     <td>name:</td>
-    <td><input type="text"  name="offer_name" value="' . htmlsafechars($offer_name, ENT_QUOTES) . '" class="required" /></td>
+    <td><input type="text" name="offer_name" value="' . htmlsafechars($offer_name, ENT_QUOTES) . '" class="required" /></td>
     </tr>
     <tr>
     <td>image:</td>
-    <td><input type="text"  name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required" /></td>
+    <td><input type="text" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required" /></td>
     </tr>
     <tr>
     <td>link:</td>
-    <td><input type="text"  name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="required" /></td>
+    <td><input type="text" name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="required" /></td>
     </tr>
     <tr>
     <td>category:</td>

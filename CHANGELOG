@@ -1,4 +1,5 @@
 08 Aug 2018
+update: show poster, banner, background images, IMDb info in requests.php, offers.php, upload.php when using valid IMDb url and images are available
 fix: allow anything class UC_UPLOADER and above to upload
 fix: after upload multiple images to bitbucket, you can select any link correctly
 
