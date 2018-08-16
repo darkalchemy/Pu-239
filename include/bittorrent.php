@@ -13,8 +13,6 @@ require_once VENDOR_DIR . 'autoload.php';
 $dotenv = new Dotenv\Dotenv(ROOT_DIR);
 $dotenv->load();
 
-require_once INCL_DIR . 'files.php';
-
 require_once CACHE_DIR . 'free_cache.php';
 require_once CACHE_DIR . 'class_config.php';
 require_once INCL_DIR . 'password_functions.php';
@@ -230,17 +228,6 @@ function check_bans($ip, &$reason = '')
 }
 
 /**
- * @param      $id
- * @param bool $updatedb
- */
-function logincookie($id, $updatedb = true)
-{
-    if ($updatedb) {
-        sql_query('UPDATE users SET last_login = ' . TIME_NOW . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    }
-}
-
-/**
  * @return bool
  *
  * @throws Exception
@@ -267,7 +254,7 @@ function userlogin()
         die();
     }
 
-    $ip = getip();
+    $ip = getip(true);
 
     $users_data = $user_stuffs->getUserFromId($id);
     if (empty($users_data)) {
@@ -312,14 +299,18 @@ function userlogin()
     if ($users_data['class'] >= UC_STAFF) {
         $allowed_ID = $site_config['is_staff']['allowed'];
         if (!in_array(((int) $users_data['id']), $allowed_ID, true)) {
+            require_once INCL_DIR . 'function_autopost.php';
             $msg = 'Fake Account Detected: Username: ' . htmlsafechars($users_data['username']) . ' - userID: ' . (int) $users_data['id'] . ' - UserIP : ' . getip();
-            // Demote and disable
             sql_query("UPDATE users SET enabled = 'no', class = 0 WHERE id =" . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user' . $users_data['id'], [
                 'enabled' => 'no',
                 'class' => 0,
             ], $site_config['expires']['user_cache']);
             write_log($msg);
+            $body = "User: [url={$site_config['baseurl']}/userdetails.php?id={$users_data['id']}][class=user]{$users_data['username']}[/class][/url] - {$ip}[br]Class {$users_data['class']}[br]Current page: {$_SERVER['PHP_SELF']}[br]Previous page: " . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . "[br]Action: " . $_SERVER['REQUEST_URI'] . "[br] Member has been disabled and demoted by class check system.";
+            $subject = 'Fake Account Detected!';
+            auto_post($subject, $body);
+            $session->set('is-danger', 'This account has been banned');
             header("Location: {$site_config['baseurl']}/logout.php");
             die();
         }
@@ -447,14 +438,16 @@ function get_charset()
     }
 }
 
-/**
- * @return mixed
- */
 function get_stylesheet()
 {
-    global $site_config, $CURUSER;
+    global $site_config, $user_stuffs, $session;
 
-    return isset($CURUSER['stylesheet']) ? $CURUSER['stylesheet'] : $site_config['stylesheet'];
+    $user = '';
+    if (!empty($_SESSION)) {
+        $user = $user_stuffs->getUserFromId($session->get('userID'));
+    }
+
+    return isset($user['stylesheet']) ? (int) $user['stylesheet'] : (int) $site_config['stylesheet'];
 }
 
 /**
@@ -504,84 +497,6 @@ function get_template()
             require_once TEMPLATE_DIR . "{$site_config['stylesheet']}/template.php";
         } else {
             echo 'Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.';
-        }
-    }
-    if (!function_exists('stdhead')) {
-        /**
-         * @param string $title
-         * @param null   $stdhead
-         *
-         * @return string
-         */
-        function stdhead($title = '', $stdhead = null)
-        {
-            $css_incl = '';
-            if (!empty($stdhead['css'])) {
-                foreach ($stdhead['css'] as $CSS) {
-                    $css_incl .= "
-                <link rel='stylesheet' href='{$CSS}' />";
-                }
-            }
-            $html = "
-            <html>
-            <head>
-            <title>$title</title>$css_incl
-            </head>
-            <body>";
-
-            return $html;
-        }
-    }
-    if (!function_exists('stdfoot')) {
-        function stdfoot($stdfoot = false)
-        {
-            $htmlfoot = '';
-            if (!empty($stdfoot['js'])) {
-                foreach ($stdfoot['js'] as $JS) {
-                    $htmlfoot .= "
-                <script src='{$JS}'></script>";
-                }
-            }
-
-            $htmlfoot .= '
-            </body>
-            </html>';
-
-            return $htmlfoot;
-        }
-    }
-    if (!function_exists('stdmsg')) {
-        /**
-         * @param      $heading
-         * @param      $text
-         * @param null $class
-         *
-         * @return string|void
-         */
-        function stdmsg($heading, $text, $class = null)
-        {
-            require_once INCL_DIR . 'html_functions.php';
-
-            $htmlout = '';
-            if ($heading) {
-                $htmlout .= "
-                <h2>$heading</h2>";
-            }
-            $htmlout .= "
-                <p>$text</p>";
-
-            return main_div($htmlout, "$class bottom20");
-        }
-    }
-    if (!function_exists('StatusBar')) {
-        /**
-         * @return string
-         */
-        function StatusBar()
-        {
-            global $CURUSER, $lang;
-
-            return "{$lang['gl_msg_welcome']}, {$CURUSER['username']}";
         }
     }
 }
@@ -834,7 +749,12 @@ function validfilename($name)
  */
 function validemail($email)
 {
-    return preg_match('/^[\w.-]+@([\w.-]+\.)+[a-z]{2,6}$/is', $email);
+    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return null;
+    }
+
+    return $email;
 }
 
 /**
@@ -1935,7 +1855,7 @@ function url_proxy($url, $image = false, $width = null, $height = null, $quality
             return $site_config['pic_baseurl'] . 'proxy/' . $image;
         }
 
-        return null;
+        return $url;
     }
 
     return $url;
@@ -2156,6 +2076,20 @@ function get_body_image($details, $portrait = false)
     return false;
 }
 
+function validate_url($url) {
+    $url = filter_var($url, FILTER_SANITIZE_URL);
+    if (!filter_var($url, FILTER_VALIDATE_URL)) {
+        return null;
+    }
+
+    if (preg_match("/^https?:\/\/$/i", $url) || preg_match('/[&;]/', $url) || preg_match('#javascript:#is', $url) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $url)) {
+        return null;
+    }
+    return $url;
+}
+
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {
     $session->set('is-danger', '[h1]This site is vulnerable until you delete the install directory[/h1][p]rm -r ' . ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR . '[/p]');
 }
+
+require_once TEMPLATE_DIR . get_stylesheet() . DIRECTORY_SEPARATOR . 'files.php';

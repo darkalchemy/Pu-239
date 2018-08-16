@@ -1,3 +1,19 @@
+16 Aug 2018
+fix: check downloaded file is actually an image before optimizing it
+update: composer imported classes
+add: wrapper() to all admin/files
+add: [br] to format_comment()
+fix: take_theme.php incorrect comparison
+fix: staff allowed fail post to correct forum/topic
+remove: pager_new.php
+remove: resize_image()
+update: validemail() to use filter_var
+fix: get_stylesheet()
+fix: allow avatar/signature with '?' in the url
+fix: AJAX Chat View Logs
+update: AJAX Chat polling timer to 45 seconds after 10 min inactive
+update: uglify.php to update all templates within templates folder
+
 08 Aug 2018
 fix: missing image uploader_info.php
 fix: missing require user_unlocks.php

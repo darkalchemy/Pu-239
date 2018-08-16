@@ -10,7 +10,7 @@ class ImageProxy
     public function get_image($url, $width, $height, $quality)
     {
         if (empty($url)) {
-            return null;
+            return false;
         }
 
         $hash = hash('sha512', $url);
@@ -27,13 +27,13 @@ class ImageProxy
         }
 
         if (!file_exists($path)) {
-            return null;
+            return false;
         }
 
         if (!is_array(getimagesize($path))) {
             unlink($path);
 
-            return null;
+            return false;
         }
 
         if (!empty($quality)) {
@@ -47,12 +47,21 @@ class ImageProxy
 
     protected function store_image($url, $path)
     {
-        if ($image = fetch($url)) {
-            if (file_put_contents($path, $image)) {
-                $this->optimize($path);
-
-                return true;
-            }
+        $image = fetch($url);
+        if (!$image) {
+            return false;
+        }
+        file_put_contents($path, $image);
+        if (!file_exists($path)) {
+            return false;
+        }
+        if (!is_array(getimagesize($path))) {
+            unlink($path);
+            return false;
+        }
+        chmod($path, 0775);
+        if ($this->optimize($path)) {
+            return true;
         }
 
         return false;
@@ -66,6 +75,7 @@ class ImageProxy
         if (file_exists($new_path)) {
             return $hash;
         }
+dd($path);
         if (mime_content_type($path) !== 'image/gif') {
             if (mime_content_type($path) !== 'image/jpeg') {
                 Image::load($new_path)
@@ -111,7 +121,7 @@ class ImageProxy
                     $constraint->upsize();
                 });
         } catch (\Exception $e) {
-            return null;
+            return false;
         }
         $image->save($new_path);
         $this->optimize($new_path);

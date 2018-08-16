@@ -371,4 +371,4 @@ $HTMLOUT .= "
             </table>
         </form>
     </div>";
-echo stdhead($lang['classcfg_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['classcfg_stdhead']) . wrapper($HTMLOUT) . stdfoot();

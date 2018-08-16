@@ -146,4 +146,4 @@ if ($count == 0) {
 }
 $HTMLOUT .= end_frame();
 $HTMLOUT .= end_main_frame();
-echo stdhead($title) . $HTMLOUT . stdfoot();
+echo stdhead($title) . wrapper($HTMLOUT) . stdfoot();

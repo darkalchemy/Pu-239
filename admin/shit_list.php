@@ -159,4 +159,4 @@ if (mysqli_num_rows($res) == 0) {
 } //=== end while
 $HTMLOUT .= (($i % 2 == 0) ? '<td class="one" colspan="2"></td></tr>' : '');
 $HTMLOUT .= '</table><p><span class="button is-small" style="padding:3px;"><img style="vertical-align:middle;" src="' . $site_config['pic_baseurl'] . 'btn_search.gif" /><a class="altlink" href="' . $site_config['baseurl'] . '/users.php">' . $lang['shitlist_find'] . '</span></a></p>';
-echo stdhead($lang['shitlist_stdhead'] . htmlsafechars($CURUSER['username'])) . $HTMLOUT . stdfoot();
+echo stdhead($lang['shitlist_stdhead'] . htmlsafechars($CURUSER['username'])) . wrapper($HTMLOUT) . stdfoot();

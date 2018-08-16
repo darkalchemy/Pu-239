@@ -52,4 +52,4 @@ $HTMLOUT .= "
     <tr><td colspan='2'>{$lang['namechanger_if']}<input type='submit' value='{$lang['namechanger_change_name']}' class='button is-small' /></td></tr>
     </table>
     </form>";
-echo stdhead($lang['namechanger_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['namechanger_stdhead']) . wrapper($HTMLOUT) . stdfoot();

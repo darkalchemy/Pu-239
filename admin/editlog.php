@@ -181,4 +181,4 @@ $HTMLOUT .= "
             </div>
         </form>
     </div>";
-echo stdhead($lang['editlog_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['editlog_stdhead']) . wrapper($HTMLOUT) . stdfoot();

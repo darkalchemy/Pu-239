@@ -51,4 +51,4 @@ if ($action === 'do') {
     $HTMLOUT .= '<br><b>' . $system . '</b>';
     $HTMLOUT .= '</body></html>';
 }
-echo stdhead($lang['trace_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['trace_stdhead']) . wrapper($HTMLOUT) . stdfoot();

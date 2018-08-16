@@ -1,5 +1,7 @@
 <?php
 
+require_once INCL_DIR . 'function_autopost.php';
+
 /**
  * @param int  $class
  * @param bool $staff
@@ -50,44 +52,19 @@ function class_check($class = 0, $staff = true, $pin = false)
         if ($staff) {
             if (($CURUSER['class'] > UC_MAX) || (!in_array($CURUSER['id'], $site_config['is_staff']['allowed']))) {
                 $ip = getip();
-                /** file ban them **/
-                // @fclose(@fopen(INCL_DIR.'bans/'.$ip, 'w'));
-
-                /** SQL ban them **/
-                //require_once(INCL_DIR.'bans.php');
-                //make_bans($ip, getip(), 'Bad Class. Join IRC for assistance.');
-
-                /** auto post to forums**/
-                $body = sqlesc('User ' . $CURUSER['username'] . ' - ' . $ip . "\n Class " . $CURUSER['class'] . "\n Current page: " . $_SERVER['PHP_SELF'] . ', Previous page: ' . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . ', Action: ' . $_SERVER['REQUEST_URI'] . "\n Member has been disabled and demoted by class check system.");
-                $topicid = (int) $site_config['staff']['forumid'];
+                $body = "User: [url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=user]{$CURUSER['username']}[/color][/url] - {$ip}[br]Class {$CURUSER['class']}[br]Current page: {$_SERVER['PHP_SELF']}[br]Previous page: " . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . "[br]Action: " . $_SERVER['REQUEST_URI'] . "[br] Member has been disabled and demoted by class check system.";
+                $subject = 'Warning Class Check System!';
                 $added = TIME_NOW;
-                $icon = 'topic_normal';
                 $sip = ipToStorageFormat($ip, true);
                 if (user_exists($site_config['chatBotID'])) {
-                    sql_query('INSERT INTO posts (topic_id, user_id, added, body, icon, ip) ' . "VALUES ($topicid , {$site_config['chatBotID']}, {$added}, {$body}, " . sqlesc($icon) . ", {$sip})") or sqlerr(__FILE__, __LINE__);
-                    /** get mysql_insert_id(); **/
-                    $res = sql_query("SELECT id FROM posts WHERE topic_id = $topicid
-                                        ORDER BY id DESC LIMIT 1") or sqlerr(__FILE__, __LINE__);
-                    $arr = mysqli_fetch_row($res) or die('No staff post found');
-                    $postid = $arr[0];
-                    sql_query("UPDATE topics SET last_post = $postid WHERE id = $topicid") or sqlerr(__FILE__, __LINE__);
-                    /** PM Owner **/
-                    $subject = sqlesc('Warning Class Check System!');
-                    sql_query('INSERT INTO messages (sender, receiver, added, subject, msg)
-                                VALUES (0, ' . $site_config['site']['owner'] . ", $added, $subject, $body)") or sqlerr(__FILE__, __LINE__);
-                    /* punishments **/
-                    //sql_query("UPDATE users SET enabled = 'no', class = 1 WHERE id = {$CURUSER['id']}") or sqlerr(__file__, __line__);
-                    sql_query("UPDATE users SET class = 1 WHERE id = {$CURUSER['id']}") or sqlerr(__FILE__, __LINE__);
-                    /* remove caches **/
+                    auto_post($subject, $body);
+                    sql_query("UPDATE users SET class = " . UC_MIN . " WHERE id = {$CURUSER['id']}") or sqlerr(__FILE__, __LINE__);
                     $cache->update_row('user' . $CURUSER['id'], [
-                        'class' => 1,
+                        'class' => 0,
+                        'enabled' => 'no'
                     ], $site_config['expires']['user_cache']);
-                    //==
 
-                    /* log **/
-                    //write_log("<span style='color:#FA0606;'>Class Check System Initialized</span><a href='forums.php?action=viewtopic&amp;topicid=$topicid&amp;page=last#$postid'>VIEW</a>", UC_SYSOP, false);
                     write_log('Class Check System Initialized [url=' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topicid . '&amp;page=last#' . $postid . ']VIEW[/url]');
-                    //require_once(INCL_DIR.'user_functions.php');
                     $HTMLOUT = '';
                     $HTMLOUT .= "
 <!doctype html>

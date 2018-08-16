@@ -4,28 +4,76 @@
  * @param string $subject
  * @param string $body
  */
-function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Body') // Function to use the special system message forum
+function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Body')
 {
-    global $CURUSER, $site_config, $cache;
+    global $CURUSER, $site_config, $cache, $fluent;
 
     if (user_exists($site_config['chatBotID'])) {
-        $res = sql_query("SELECT id FROM topics WHERE forum_id = {$site_config['staff']['forumid']} AND topic_name = " . sqlesc($subject));
-        if (mysqli_num_rows($res) == 1) {
-            $arr = mysqli_fetch_assoc($res);
-            $topicid = (int) $arr['id'];
-        } else { // Create new topic.
-            sql_query("INSERT INTO topics (user_id, forum_id, topic_name) VALUES({$site_config['chatBotID']}, {$site_config['staff']['forumid']}, $subject)") or sqlerr(__FILE__, __LINE__);
-            $topicid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
-            $cache->delete('last_posts_' . $CURUSER['class']);
-            $cache->delete('forum_posts_' . $CURUSER['id']);
+        $topicid = $fluent->from('topics')
+                ->select(null)
+                ->select('id')
+                ->where('forum_id = ?', $site_config['staff']['forumid'])
+                ->where('topic_name = ?', $subject)
+                ->fetch('id');
+        if (!$topicid) {
+            $values = [
+                'user_id' => $site_config['chatBotID'],
+                'forum_id' =>$site_config['staff']['forumid'],
+                'topic_name' => $subject,
+            ];
+            $topicid = $fluent->insertInto('topics')
+                ->values($values)
+                ->execute();
+
+            $set = [
+                'topic_count' => new Envms\FluentPDO\Literal('topic_count + 1'),
+            ];
+            $fluent->update('forums')
+                ->set($set)
+                ->where('id = ?', $site_config['staff']['forumid'])
+                ->execute();
         }
-        $added = TIME_NOW;
-        sql_query('INSERT INTO posts (topic_id, user_id, added, body) ' . 'VALUES(' . sqlesc($topicid) . ", {$site_config['chatBotID']}, $added, " . sqlesc($body) . ')') or sqlerr(__FILE__, __LINE__);
-        $res = sql_query('SELECT id FROM posts WHERE topic_id=' . sqlesc($topicid) . ' ORDER BY id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
-        $arr = mysqli_fetch_row($res) or die('No post found');
-        $postid = $arr[0];
-        sql_query('UPDATE topics SET last_post=' . sqlesc($postid) . ' WHERE id=' . sqlesc($topicid)) or sqlerr(__FILE__, __LINE__);
+
+        $values = [
+            'topic_id' => $topicid,
+            'user_id' => $site_config['chatBotID'],
+            'added' => TIME_NOW,
+            'body' => $body,
+        ];
+        $postid = $fluent->insertInto('posts')
+            ->values($values)
+            ->execute();
+
+        $set = [
+            'last_post' => $postid,
+        ];
+        $fluent->update('topics')
+            ->set($set)
+            ->where('id = ?', $topicid)
+            ->execute();
+
+        $set = [
+            'post_count' => new Envms\FluentPDO\Literal('post_count + 1'),
+        ];
+        $fluent->update('forums')
+            ->set($set)
+            ->where('id = ?', $site_config['staff']['forumid'])
+            ->execute();
+
         $cache->delete('last_posts_' . $CURUSER['class']);
         $cache->delete('forum_posts_' . $CURUSER['id']);
+
+        $values = [
+            'sender' => 0,
+            'receiver' => $site_config['site']['owner'],
+            'added' => TIME_NOW,
+            'subject' => $subject,
+            'msg' => $body,
+        ];
+        $fluent->insertInto('messages')
+            ->values($values)
+            ->execute();
+
+        $cache->delete('inbox_' . $site_config['site']['owner']);
     }
 }

@@ -172,7 +172,7 @@ function show_views()
         $htmlout .= "<tr><td colspan='3'>{$lang['stats_ex_noresult']}</td></tr>";
     }
     $htmlout .= '</table></div></div>';
-    echo stdhead($page_title) . $htmlout . stdfoot();
+    echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
 }
 
 /**
@@ -321,7 +321,7 @@ function result_screen($mode = 'reg')
         $htmlout .= "<tr><td colspan='3'>{$lang['stats_ex_noresult']}</td></tr>";
     }
     $htmlout .= '</table></div></div>';
-    echo stdhead($page_title) . $htmlout . stdfoot();
+    echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
 }
 
 /**
@@ -418,7 +418,7 @@ function main_screen($mode = 'reg')
         </div>
     
     </form></div>";
-    echo stdhead($page_title) . $htmlout . stdfoot();
+    echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
 }
 
 /**

@@ -1,7 +1,6 @@
 <?php
 
 require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'pager_new.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once CLASS_DIR . 'class_check.php';
@@ -162,4 +161,4 @@ $HTMLOUT .= '
         <input type="submit" class="button_big" value="remove selected' . $lang['watched_removedfrom'] . '" /></td></tr></table>
         </form>';
 
-echo stdhead('' . $lang['watched_users'] . '') . $HTMLOUT . stdfoot();
+echo stdhead('' . $lang['watched_users'] . '') . wrapper($HTMLOUT) . stdfoot();

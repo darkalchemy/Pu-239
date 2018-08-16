@@ -59,12 +59,12 @@ if (!$count) {
     $pager = pager(25, $count, "viewrequests.php?id=$id&amp;req_details&amp;", [
         'lastpagedefault' => 1,
     ]);
-    $subres = sql_query("SELECT comments.id, comments.text, comments.user, comments.editedat, 
-                      comments.editedby, comments.ori_text, comments.request AS request, 
-                      comments.added, comments.anonymous, users.avatar, users.offensive_avatar, users.av_w ,users.av_h,
-                      users.warned, users.username, users.title, users.class, users.last_access, 
-                      users.enabled, users.reputation, users.donor, users.downloaded, users.uploaded 
-                      FROM comments LEFT JOIN users ON comments.user = users.id 
+    $subres = sql_query("SELECT comments.id, comments.text, comments.user, comments.editedat,
+                      comments.editedby, comments.ori_text, comments.request AS request,
+                      comments.added, comments.anonymous, users.avatar, users.offensive_avatar,
+                      users.warned, users.username, users.title, users.class, users.last_access,
+                      users.enabled, users.reputation, users.donor, users.downloaded, users.uploaded
+                      FROM comments LEFT JOIN users ON comments.user = users.id
                       WHERE request = $id ORDER BY comments.id") or sqlerr(__FILE__, __LINE__);
     $allrows = [];
     while ($subrow = mysqli_fetch_assoc($subres)) {

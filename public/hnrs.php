@@ -125,7 +125,6 @@ if (!XBT_TRACKER) {
                         WHERE xbt_files_users.completed>='1' AND uid=" . sqlesc($userid) . ' AND torrents.owner != ' . sqlesc($userid) . ' ORDER BY xbt_files_users.fid DESC') or sqlerr(__FILE__, __LINE__);
 }
 
-//=== completed
 $completed .= '<h1>Hit and Runs for: ' . format_username($userid) . '</h1>';
 if (mysqli_num_rows($r) > 0) {
     $header = "

@@ -64,4 +64,4 @@ if ($count1 > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
 $HTMLOUT .= end_frame();
-echo stdhead("{$lang['ad_banemail_head']}") . $HTMLOUT . stdfoot();
+echo stdhead("{$lang['ad_banemail_head']}") . wrapper($HTMLOUT) . stdfoot();

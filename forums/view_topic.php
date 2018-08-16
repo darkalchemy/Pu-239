@@ -1,6 +1,6 @@
 <?php
 
-global $lang, $fluent, $CURUSER, $site_config, $user_stuffs;
+global $lang, $fluent, $CURUSER, $site_config, $user_stuffs, $session;
 
 $attachments = $members_votes = $status = $topic_poll = $stafflocked = $child = $parent_forum_name = $math_image = $math_text = $staff_tools = $now_viewing = '';
 $topic_id = isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0);
@@ -243,30 +243,32 @@ if (0 != $arr['num_ratings']) {
     $rating = round($arr['rating_sum'] / $arr['num_ratings'], 1);
 }
 
-$subscriptions = $fluent->from('subscriptions')
+$subscribed = $fluent->from('subscriptions')
     ->select(null)
     ->select('id')
     ->where('topic_id = ?', $topic_id)
     ->where('user_id = ?', $CURUSER['id'])
-    ->fetch();
+    ->fetch('id');
 
-if ($subscriptions) {
-    $subscriptions = $subscriptions['id'];
-}
-$subscriptions > 0 ? '
-        <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=delete_subscription&amp;topic_id=' . $topic_id . '"> 
-		<img src="' . $site_config['pic_baseurl'] . 'forums/unsubscribe.gif" alt="+" title="+" class="tooltipper emoticon" /> ' . $lang['fe_unsubscribe_from_this_topic'] . '</a>' : '<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=add_subscription&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">
-		<img src="' . $site_config['pic_baseurl'] . 'forums/subscribe.gif" alt="+" title="+" class="tooltipper emoticon" /> ' . $lang['fe_subscribe_to_this_topic'] . '</a>';
+
+$subscriptions = $subscribed ? "
+        <a class='altlink' href='{$site_config['baseurl']}/forums.php?action=delete_subscription&amp;topic_id={$topic_id}'> 
+		    <img src='{$site_config['pic_baseurl']}forums/unsubscribe.gif' alt='+' title='+' class='tooltipper emoticon' />
+		     {$lang['fe_unsubscribe_from_this_topic']}
+        </a>" : "<a class='altlink' href='{$site_config['baseurl']}/forums.php?action=add_subscription&amp;forum_id={$forum_id}&amp;topic_id={$topic_id}'>
+            <img src='{$site_config['pic_baseurl']}forums/subscribe.gif' alt='+' title='+' class='tooltipper emoticon' />
+             {$lang['fe_subscribe_to_this_topic']}
+        </a>";
 
 $fluent->deleteFrom('now_viewing')
     ->where('user_id = ?', $CURUSER['id'])
     ->execute();
 
 $values = [
-    'user_id' => $CURUSER['id'],
+    'user_id'  => $CURUSER['id'],
     'forum_id' => $forum_id,
     'topic_id' => $topic_id,
-    'added' => TIME_NOW,
+    'added'    => TIME_NOW,
 ];
 $fluent->insertInto('now_viewing')
     ->values($values)
@@ -314,14 +316,27 @@ $res_count = sql_query('SELECT COUNT(id) AS count FROM posts WHERE ' . ($CURUSER
 $arr_count = mysqli_fetch_row($res_count);
 $posts_count = $arr_count[0];
 $perpage = isset($_GET['perpage']) ? intval($_GET['perpage']) : 15;
+
 $page = 0;
 if (isset($_GET['page']) && $_GET['page'] === 'last') {
-    $page = ceil($posts_count / $perpage);
+    $page = (int) floor($posts_count / $perpage);
 } elseif (isset($_GET['page'])) {
-    $page = intval($_GET['page']);
+    $page = (int) $_GET['page'];
 }
-$subscription_on_off = (isset($_GET['s']) ? (1 == $_GET['s'] ? '<br><div>' . $lang['fe_sub_to_topic'] . ' <img src="' . $site_config['pic_baseurl'] . 'forums/subscribe.gif" alt="' . $lang['fe_subscribed'] . '" title="' . $lang['fe_subscribed'] . '" class="tooltipper emoticon" /></div>' : '<br><div >' . $lang['fe_unsub_to_topic'] . ' <img src="' . $site_config['pic_baseurl'] . 'forums/unsubscribe.gif" alt="' . $lang['fe_unsubscribe'] . '" title="' . $lang['fe_unsubscribe'] . '" class="tooltipper emoticon" /></div>') : '');
-list($menu, $LIMIT) = pager_new($posts_count, $perpage, $page, 'forums.php?action=view_topic&amp;topic_id=' . $topic_id . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
+if (isset($_GET['s'])) {
+    if ($_GET['s'] == 1) {
+        $session->set('is-success', $lang['fe_sub_to_topic']);
+    } else {
+        $session->set('is-success', $lang['fe_unsub_to_topic']);
+    }
+}
+
+$link = $site_config['baseurl'] . "/forums.php?action=view_topic&amp;topic_id={$topic_id}&amp;" . (isset($_GET['perpage']) ? "perpage={$perpage}&amp;" : '');
+$pager = pager($perpage, $posts_count, $link);
+$menu_top = $pager['pagertop'];
+$menu_bottom = $pager['pagerbottom'];
+$LIMIT = $pager['limit'];
+
 $sql = 'SELECT p.id AS post_id, p.topic_id, p.user_id, p.user_likes, p.staff_lock, p.added, p.body, p.edited_by, p.edit_date, p.icon, p.post_title, p.bbcode, p.post_history, p.edit_reason,
             INET6_NTOA(p.ip) AS ip, p.status AS post_status, p.anonymous
             FROM posts AS p WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = "ok" AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != "deleted" AND' : '')) . '
@@ -329,8 +344,12 @@ $sql = 'SELECT p.id AS post_id, p.topic_id, p.user_id, p.user_likes, p.staff_loc
 
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $posts = [];
+$postid = 0;
 while ($post = mysqli_fetch_assoc($res)) {
     $posts[] = $post;
+    if ($post['post_id'] > $postid) {
+        $postid = $post['post_id'];
+    }
 }
 if ($_forum_sort === 'DESC') {
     $posts = array_reverse($posts);
@@ -395,8 +414,7 @@ if ($arr['parent_forum'] > 0) {
 
 $the_top_and_bottom = '
     <tr>
-        <td' . ($posts_count <= $perpage ? ' class="w-50" colspan=2' : '') . '>' . $subscriptions . '</td>' . ($posts_count > $perpage ? '
-		<td>$menu</td>' : '') . '
+        <td class="w-50" colspan=2>' . $subscriptions . '</td>
 		<td class="has-text-right">' . ($may_post ? $locked_or_reply_button : '
             <span>
 		        You are not permitted to post in this thread.
@@ -406,12 +424,12 @@ $the_top_and_bottom = '
 
 $HTMLOUT .= ($upload_errors_size > 0 ? ($upload_errors_size === 1 ? '
         <div>One file was not uploaded. The maximum file size allowed is. ' . mksize($max_file_size) . '.</div>' : '
-        <div>' . $upload_errors_size . ' file were not uploaded. The maximum file size allowed is. ' . mksize($max_file_size) . '.</div>') : '') . ($upload_errors_type > 0 ? (1 === $upload_errors_type ? '<div>One file was not uploaded. The accepted formats are zip and rar.</div>' : '<div>' . $upload_errors_type . ' files were not uploaded. The accepted formats are zip and rar.</div>') : '') . $mini_menu . $topic_poll . '<br>' . $subscription_on_off . '<br>
+        <div>' . $upload_errors_size . ' file were not uploaded. The maximum file size allowed is. ' . mksize($max_file_size) . '.</div>') : '') . ($upload_errors_type > 0 ? (1 === $upload_errors_type ? '<div>One file was not uploaded. The accepted formats are zip and rar.</div>' : '<div>' . $upload_errors_type . ' files were not uploaded. The accepted formats are zip and rar.</div>') : '') . $mini_menu . $topic_poll . '
 		' . ($CURUSER['class'] < UC_STAFF ? '' : '
         <form action="' . $site_config['baseurl'] . '/forums.php?action=staff_actions" method="post" name="checkme" onsubmit="return SetChecked(this,\'post_to_mess_with\')" enctype="multipart/form-data">') . (isset($_GET['count']) ? '
             <div>' . intval($_GET['count']) . ' PMs Sent</div>' : '') . '
     		<table class="table table-bordered table-striped">
-                ' . $the_top_and_bottom . '
+                ' . ($posts_count > $perpage ? "<div class='bottom20'>$menu_top</div>" : '') . $the_top_and_bottom . '
 		        <tr>
 		            <td class="w-25">
 		                <img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="tooltipper emoticon" />' . $lang['fe_author'] . '
@@ -567,10 +585,10 @@ foreach ($posts as $arr) {
             </td>
         </tr>
 		<tr>
-         <td class="has-text-centered w-15 mw-150">' . get_avatar($usersdata) . '<br>
+         <td class="has-text-centered w-15 min-150">' . get_avatar($usersdata) . '<br>
 			' . ($arr['anonymous'] == 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($arr['user_id'])) . ($arr['anonymous'] == 'yes' || empty($usersdata['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($usersdata['title']) . ']</span>') . '<br>
 			<span >' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name($usersdata['class'])) . '</span><br>
-			' . ($usersdata['last_access'] > (TIME_NOW - 300) && $usersdata['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper emoticon" /> Online' : ' <img src="' . $site_config['pic_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper emoticon" /> ' . $lang['fe_offline'] . '') . '<br>' . $lang['fe_karma'] . ': ' . number_format($usersdata['seedbonus']) . '<br>' . $member_reputation . '<br>' . (!empty($usersdata['google_talk']) ? ' <a href="http://talkgadget.google.com/talkgadget/popout?member=' . htmlsafechars($usersdata['google_talk']) . '" title="' . $lang['fe_click_for_google_talk_gadget'] . '"  target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/google_talk.gif" alt="' . $lang['fe_google_talk'] . '" class="tooltipper emoticon" /></a> ' : '') . (!empty($usersdata['icq']) ? ' <a href="http://people.icq.com/people/&amp;uin=' . htmlsafechars($usersdata['icq']) . '" title="' . $lang['fe_click_to_open_icq_page'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/icq.gif" alt="icq" class="tooltipper emoticon" /></a> ' : '') . (!empty($usersdata['msn']) ? ' <a href="http://members.msn.com/' . htmlsafechars($usersdata['msn']) . '" target="_blank" title="' . $lang['fe_click_to_see_msn_details'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/msn.gif" alt="msn" title="msn" class="tooltipper emoticon" /></a> ' : '') . (!empty($usersdata['aim']) ? ' <a href="http://aim.search.aol.com/aol/search?s_it=searchbox.webhome&amp;q=' . htmlsafechars($usersdata['aim']) . '" target="_blank" title="' . $lang['fe_click_to_search_on_aim'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/aim.gif" alt="AIM" title="AIM" class="tooltipper emoticon" /></a> ' : '') . (!empty($usersdata['yahoo']) ? ' <a href="http://webmessenger.yahoo.com/?im=' . htmlsafechars($usersdata['yahoo']) . '" target="_blank" title="' . $lang['fe_click_to_open_yahoo'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/yahoo.gif" alt="yahoo" title="Yahoo!" class="tooltipper emoticon" /></a> ' : '') . (!empty($usersdata['website']) ? ' <a href="' . htmlsafechars($usersdata['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/website.gif" alt="website" /></a> ' : '') . ($usersdata['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($usersdata['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'email.gif" alt="email" title="email" class="tooltipper emoticon" /> </a>' : '') . ($CURUSER['class'] >= UC_STAFF && !empty($usersdata['ip']) ? '
+			' . ($usersdata['last_access'] > (TIME_NOW - 300) && $usersdata['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper icon is-small" /> Online' : ' <img src="' . $site_config['pic_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper icon is-small" /> ' . $lang['fe_offline'] . '') . '<br>' . $lang['fe_karma'] . ': ' . number_format($usersdata['seedbonus']) . '<br>' . $member_reputation . '<br>' . (!empty($usersdata['google_talk']) ? ' <a href="http://talkgadget.google.com/talkgadget/popout?member=' . htmlsafechars($usersdata['google_talk']) . '" title="' . $lang['fe_click_for_google_talk_gadget'] . '"  target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/google_talk.gif" alt="' . $lang['fe_google_talk'] . '" class="tooltipper emoticon" /></a> ' : '') . (!empty($usersdata['icq']) ? ' <a href="http://people.icq.com/people/&amp;uin=' . htmlsafechars($usersdata['icq']) . '" title="' . $lang['fe_click_to_open_icq_page'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/icq.gif" alt="icq" class="tooltipper emoticon" /></a> ' : '') . (!empty($usersdata['msn']) ? ' <a href="http://members.msn.com/' . htmlsafechars($usersdata['msn']) . '" target="_blank" title="' . $lang['fe_click_to_see_msn_details'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/msn.gif" alt="msn" title="msn" class="tooltipper emoticon" /></a> ' : '') . (!empty($usersdata['aim']) ? ' <a href="http://aim.search.aol.com/aol/search?s_it=searchbox.webhome&amp;q=' . htmlsafechars($usersdata['aim']) . '" target="_blank" title="' . $lang['fe_click_to_search_on_aim'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/aim.gif" alt="AIM" title="AIM" class="tooltipper emoticon" /></a> ' : '') . (!empty($usersdata['yahoo']) ? ' <a href="http://webmessenger.yahoo.com/?im=' . htmlsafechars($usersdata['yahoo']) . '" target="_blank" title="' . $lang['fe_click_to_open_yahoo'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/yahoo.gif" alt="yahoo" title="Yahoo!" class="tooltipper emoticon" /></a> ' : '') . (!empty($usersdata['website']) ? ' <a href="' . htmlsafechars($usersdata['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/website.gif" alt="website" /></a> ' : '') . ($usersdata['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($usersdata['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'email.gif" alt="email" title="email" class="tooltipper emoticon" /> </a>' : '') . ($CURUSER['class'] >= UC_STAFF && !empty($usersdata['ip']) ? '
             <h2 class="bg-06 round10">' . htmlsafechars($usersdata['ip']) . '</h2>
 			<ul class="level-center">
 			    <li class="margin10"><a href="' . url_proxy('https://ws.arin.net/?queryinput=' . htmlsafechars($usersdata['ip'])) . '" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank" class="button is-small">' . $lang['vt_ip_whois'] . '</a></li>
@@ -606,9 +624,9 @@ $fluent->deleteFrom('read_posts')
     ->execute();
 
 $values = [
-    'user_id' => $CURUSER['id'],
-    'topic_id' => $topic_id,
-    'last_post_read' => $post_id,
+    'user_id'        => $CURUSER['id'],
+    'topic_id'       => $topic_id,
+    'last_post_read' => $postid,
 ];
 $fluent->insertInto('read_posts')
     ->values($values)
@@ -617,7 +635,7 @@ $fluent->insertInto('read_posts')
 $cache->delete('last_read_post_' . $topic_id . '_' . $CURUSER['id']);
 $cache->delete('sv_last_read_post_' . $topic_id . '_' . $CURUSER['id']);
 $HTMLOUT .= '
-    </table>
+    </table>' . ($posts_count > $perpage ? $menu_bottom : '') . '
     <a id="bottom"></a>
     <br>';
 

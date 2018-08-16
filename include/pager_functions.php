@@ -1,32 +1,33 @@
 <?php
 
 /**
- * @param       $rpp
+ * @param       $perpage
  * @param       $count
  * @param       $href
  * @param array $opts
+ * @param null  $class
  *
  * @return array
  */
-function pager($rpp, $count, $href, $opts = [], $class = null)
+function pager($perpage, $count, $href, $opts = [], $class = null)
 {
-    // $rpp = results per page
-    // $count = total number to process
-    // $href = the link
-    // $ops = unkonwn
-
-    $pages = ceil($count / $rpp);
+    $pages = ceil($count / $perpage);
 
     if (!isset($opts['lastpagedefault'])) {
         $pagedefault = 0;
     } else {
-        $pagedefault = floor(($count - 1) / $rpp);
+        $pagedefault = floor(($count - 1) / $perpage);
         if ($pagedefault < 0) {
             $pagedefault = 0;
         }
     }
+
     if (isset($_GET['page'])) {
-        $page = (int) $_GET['page'];
+        if ($_GET['page'] === 'last') {
+            $page = (int) floor($count / $perpage);
+        } else {
+            $page = (int) $_GET['page'];
+        }
         if ($page < 0) {
             $page = $pagedefault;
         }
@@ -34,15 +35,21 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
         $page = $pagedefault;
     }
     $mp = $pages - 1;
-    $pager = $pager2 = '';
     if ($page >= 1) {
         $pager = "
-                        <a href='{$href}page=" . ($page - 1) . "' class='pagination-previous button $class tooltipper is_hidden-mobile'  title='Goto Page $page'>Previous</a>";
+                        <a href='{$href}page=" . ($page - 1) . "' class='pagination-previous button $class tooltipper is_hidden-mobile'title='Goto Page $page'>Previous</a>";
+    } else {
+        $pager = "
+                        <a class='pagination-previous button $class is_hidden-mobile' disabled>Previous</a>";
     }
     if ($page < $mp && $mp >= 0) {
         $pager2 = "
+                        <a class='pagination-next button $class is_hidden-mobile'>Next</a>";
+    } else {
+        $pager2 = "
                         <a href='{$href}page=" . ($page + 1) . "' class='pagination-next button $class tooltipper is_hidden-mobile' title='Goto Page " . ($page + 2) . "'>Next</a>";
     }
+
     if ($count) {
         $pagerarr[] = "<ul class='pagination-list'>";
         $dotted = 0;
@@ -60,13 +67,8 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
                 continue;
             }
             $dotted = 0;
-            $start = $i * $rpp + 1;
-            $end = $start + $rpp - 1;
-            if ($end > $count) {
-                $end = $count;
-            }
             $text = $i + 1;
-            if ($i != $page) {
+            if ($page != $i) {
                 $pagerarr[] = "
                             <li><a href='{$href}page=$i' class='pagination-link button $class' aria-label='Goto page $text'>$text</a></li>";
             } else {
@@ -81,7 +83,7 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
                         $pagerstr
                     </nav>";
         $pagerbottom = "
-                    <div class='has-text-centered bottom10'>Overall $count items in " . ($i) . ' page' . ($i > 1 ? '\'s' : '') . ", showing $rpp per page.</div>
+                    <div class='has-text-centered top20 bottom10'>Overall $count items in " . ($i) . ' page' . plural($i) . ", showing $perpage per page.</div>
                     <nav class='pagination is-centered is-marginless is-small' role='navigation' aria-label='pagination'>{$pager}{$pager2}
                         $pagerstr
                     </nav>";
@@ -89,15 +91,16 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
         $pagertop = $pager;
         $pagerbottom = $pagertop;
     }
-    $start = $page * $rpp;
+
+    $start = $page * $perpage;
 
     return [
-        'pagertop' => $pagertop,
+        'pagertop'    => $pagertop,
         'pagerbottom' => $pagerbottom,
-        'limit' => "LIMIT $start,$rpp",
-        'pdo' => [
+        'limit'       => "LIMIT $start, $perpage",
+        'pdo'         => [
             (int) $start,
-            (int) $rpp,
+            (int) $perpage,
         ],
     ];
 }
@@ -109,11 +112,13 @@ function pager($rpp, $count, $href, $opts = [], $class = null)
  */
 function pager_rep($data)
 {
+    global $site_config;
+
     $pager = [
-        'pages' => 0,
+        'pages'     => 0,
         'page_span' => '',
-        'start' => '',
-        'end' => '',
+        'start'     => '',
+        'end'       => '',
     ];
     $section = $data['span'] = isset($data['span']) ? $data['span'] : 2;
     $parameter = isset($data['parameter']) ? $data['parameter'] : 'page';

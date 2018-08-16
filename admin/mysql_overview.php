@@ -135,4 +135,4 @@ $HTMLOUT .= "<tr>
 
     <!-- End table -->
     </table>";
-echo stdhead($lang['mysql_over_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['mysql_over_stdhead']) . wrapper($HTMLOUT) . stdfoot();

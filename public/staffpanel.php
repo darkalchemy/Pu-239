@@ -8,7 +8,6 @@ global $site_config, $CURUSER, $cache, $session;
 
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('index'), load_language('staff_panel'));
-
 $staff_classes1['name'] = $page_name = $file_name = $navbar = '';
 $staff = sqlesc(UC_STAFF);
 $staff_classes = $cache->get('is_staffs_');
@@ -20,11 +19,9 @@ if ($staff_classes === false || is_null($staff_classes)) {
     }
     $cache->set('is_staffs_', $staff_classes, 0);
 }
-
 if (!$CURUSER) {
     stderr($lang['spanel_error'], $lang['spanel_access_denied']);
 }
-
 if ($site_config['staffpanel_online'] == 0) {
     stderr($lang['spanel_information'], $lang['spanel_panel_cur_offline']);
 }

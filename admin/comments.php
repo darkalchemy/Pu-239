@@ -51,7 +51,7 @@ switch ($view) {
         $HTMLOUT .= '</table>';
 
         //==== Display Everything
-        echo stdhead("{$lang['text_all_comm']}") . $HTMLOUT . stdfoot();
+        echo stdhead("{$lang['text_all_comm']}") . wrapper($HTMLOUT) . stdfoot();
         die();
         break;
 
@@ -60,7 +60,7 @@ switch ($view) {
         $HTMLOUT = "<form method='post' action='staffpanel.php?tool=comments&amp;view=results'>" . '<table>' . '<tr>' . "<td class='colhead' colspan='2'>{$lang['text_search']}</td>" . '</tr>' . "<tr><td>{$lang['text_keywords']}</td><td><input type='text' name='keywords' size='40' /></td></tr>" . "<tr><td colspan='2'><input type='submit' value='{$lang['text_submit']}' /></td></tr>" . '</table>' . '</form>';
 
         //==== Display Everything
-        echo stdhead("{$lang['text_search']}") . $HTMLOUT . stdfoot();
+        echo stdhead("{$lang['text_search']}") . wrapper($HTMLOUT) . stdfoot();
         die();
         break;
 
@@ -99,7 +99,7 @@ switch ($view) {
         $HTMLOUT .= '</table>';
 
         //==== Display Everything
-        echo stdhead("{$lang['text_results']}{$_POST['keywords']}") . $HTMLOUT . stdfoot();
+        echo stdhead("{$lang['text_results']}{$_POST['keywords']}") . wrapper($HTMLOUT) . stdfoot();
         die();
         break;
 }
@@ -144,4 +144,4 @@ if ($rows == 0) {
 $HTMLOUT .= '</table>';
 
 //==== Display Everything
-echo stdhead("{$lang['text_overview']}") . $HTMLOUT . stdfoot();
+echo stdhead("{$lang['text_overview']}") . wrapper($HTMLOUT) . stdfoot();

@@ -180,5 +180,5 @@ if ($count > $peersperpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
 $HTMLOUT .= end_main_frame();
-echo stdhead($lang['wpeers_peerover']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['wpeers_peerover']) . wrapper($HTMLOUT) . stdfoot();
 die();

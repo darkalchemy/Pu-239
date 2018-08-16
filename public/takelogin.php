@@ -177,7 +177,7 @@ if (!$no_log_ip) {
         sql_query('INSERT INTO ips (userid, ip, lastlogin, type) VALUES (' . sqlesc($userid) . ", $ip_escaped , $added, 'Login')") or sqlerr(__FILE__, __LINE__);
         $cache->delete('ip_history_' . $userid);
     } else {
-        sql_query("UPDATE ips SET lastlogin=$added WHERE ip = $ip_escaped AND userid = " . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE ips SET lastlogin = $added WHERE ip = $ip_escaped AND userid = " . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('ip_history_' . $userid);
     }
 }
@@ -198,7 +198,6 @@ $cache->update_row('user' . $userid, [
 $session->set('userID', $userid);
 $session->set('username', $username);
 $session->set('remembered_by_cookie', false);
-logincookie($userid);
 
 $expires = !empty($remember) ? 365 * 86400 : 900;
 $user_stuffs->set_remember($userid, $expires);

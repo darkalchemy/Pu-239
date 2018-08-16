@@ -32,5 +32,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $out .= '<tr><td colspan=\'2\'>' . $lang['floodlimit_note'] . '</td></tr><tr><td colspan=\'2\' class=\'colhead\'><input type=\'submit\' value=\'' . $lang['floodlimit_save'] . '\' /></td></tr>';
     $out .= '</table></form>' . end_frame() . end_main_frame();
-    echo stdhead($lang['floodlimit_std']) . $out . stdfoot();
+    echo stdhead($lang['floodlimit_std']) . wrapper($out) . stdfoot();
 }

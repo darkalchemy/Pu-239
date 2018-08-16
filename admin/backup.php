@@ -140,7 +140,7 @@ if (empty($mode)) {
     } elseif (isset($_GET['noselection'])) {
         $HTMLOUT .= stdmsg($lang['backup_stderr'], $lang['backup_selectb']);
     }
-    echo stdhead($lang['backup_stdhead']) . $HTMLOUT . stdfoot();
+    echo stdhead($lang['backup_stdhead']) . wrapper($HTMLOUT) . stdfoot();
 } elseif ($mode === 'backup') {
     global $site_config;
     $mysql_host = $_ENV['DB_HOST'];

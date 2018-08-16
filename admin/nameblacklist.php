@@ -36,5 +36,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <tr> <td><input type="submit" value="' . $lang['name_update'] . '"/></td></tr>
     </table></form>');
     $out .= end_main_frame();
-    echo stdhead($lang['name_stdhead']) . $out . stdfoot();
+    echo stdhead($lang['name_stdhead']) . wrapper($out) . stdfoot();
 }

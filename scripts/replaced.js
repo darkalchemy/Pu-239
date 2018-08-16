@@ -334,8 +334,7 @@ $(function () {
     });
     if (window.location.hash) {
         var headerHeight = navbar.outerHeight() + 10;
-        var target = $(window.location.hash);
-        var scrollToPosition = $(target).offset().top - headerHeight;
+        var scrollToPosition = $(window.location.hash).offset().top - headerHeight;
         $('html, body').animate({
             scrollTop: scrollToPosition
         }, animate_duration, 'swing');

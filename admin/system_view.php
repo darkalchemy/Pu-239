@@ -184,4 +184,4 @@ foreach ($html as $key => $value) {
     $htmlout .= '<tr><td>' . $value[0] . '</td><td>' . $value[1] . '</td></tr>';
 }
 $htmlout .= '</table>';
-echo stdhead($lang['system_stdhead']) . $htmlout . stdfoot();
+echo stdhead($lang['system_stdhead']) . wrapper($htmlout) . stdfoot();

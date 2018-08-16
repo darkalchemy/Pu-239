@@ -323,6 +323,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '/\[h3\]\s?(.*?)\[\/h3\]/is',
         '/\[h4\]\s?(.*?)\[\/h4\]/is',
         '/\[class=(.*?)\](.*?)\[\/class\]/is',
+        '/\[br\]/is',
     ];
     // And replace them by...
     $bb_code_out = [
@@ -383,7 +384,8 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<h2>\1</h2>',
         '<h3>\1</h3>',
         '<h4>\1</h4>',
-        '<div class="\1">\2</div>',
+        '<span class="\1">\2</span>',
+        '<br>',
     ];
     $s = preg_replace($bb_code_in, $bb_code_out, $s);
 

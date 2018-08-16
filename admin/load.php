@@ -157,4 +157,4 @@ $HTMLOUT .= "<br>
     </td></tr></table></td></tr></table></div><br>';
 //==End
 
-echo stdhead($lang['index_serverload']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['index_serverload']) . wrapper($HTMLOUT) . stdfoot();

@@ -153,4 +153,4 @@ if (file_exists(DATABASE_DIR)) {
 
 $HTMLOUT = wrapper(main_table($body, $heading));
 
-echo stdhead('Update Database') . $HTMLOUT . stdfoot();
+echo stdhead('Update Database') . wrapper($HTMLOUT) . stdfoot();

@@ -193,7 +193,7 @@ if ($count) {
     $HTMLOUT .= ($pager['pagertop']);
     $HTMLOUT = $b;
     $HTMLOUT .= ($pager['pagerbottom']);
-    echo stdhead($lang['deathrow_stdhead']) . $HTMLOUT . stdfoot();
+    echo stdhead($lang['deathrow_stdhead']) . wrapper($HTMLOUT) . stdfoot();
 } else {
     $HTMLOUT .= '<br><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg1'] . '
     <br><br><br><strong>' . $lang['deathrow_msg2'] . '</strong>' . $lang['deathrow_msg3'] . ' ' . $CURUSER['username'] . '' . $lang['deathrow_msg4'] . '.
@@ -204,5 +204,5 @@ if ($count) {
     <br><br><br><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg8'] . '
     <br><br><br><strong>' . $lang['deathrow_msg2'] . '</strong>' . $lang['deathrow_msg9'] . '
     <br><br><br><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg0'] . ' ';
-    echo stdhead($lang['deathrow_stdhead0']) . $HTMLOUT . stdfoot();
+    echo stdhead($lang['deathrow_stdhead0']) . wrapper($HTMLOUT) . stdfoot();
 }

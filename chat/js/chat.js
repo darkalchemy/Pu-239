@@ -893,9 +893,9 @@ var ajaxChat = {
         }
         var timediff = new Date() - this.timeStamp;
 
-        // change polling timer to maximum of 30 sec
-        // if quiet for more than 15 minutes
-        if (timediff > 900000 && this.timerRate < 30000) {
+        // change polling timer to maximum of 45 sec
+        // if quiet for more than 10 minutes
+        if (timediff > 600000 && this.timerRate < 45000) {
             this.timerRate = this.timerRate + 250;
         }
 
@@ -1434,11 +1434,11 @@ var ajaxChat = {
             + dateTime
             + '<span class="'
             + userClass
-            + '" title="Click to use@' + userName + ':"'
+            + '"'
             + this.getChatListUserNameTitle(userID, userName, userRole, ip)
             + ' dir="'
             + this.baseDirection
-            + '" onclick="ajaxChat.insertText(\'[' + this.getRoleClass(userRole) + ']@\' + this.firstChild.nodeValue + \'[/' + this.getRoleClass(userRole) + '] \');">'
+            + '" onclick="ajaxChat.insertText(\'[' + this.getRoleClass(userRole) + ']@\' + this.firstChild.nodeValue + \'[/' + this.getRoleClass(userRole) + '] \') ">'
             + userName
             + '</span>'
             + colon
@@ -1447,7 +1447,7 @@ var ajaxChat = {
     },
 
     getChatListUserNameTitle: function (userID, userName, userRole, ip) {
-        return (ip !== null) ? ' title="IP: ' + ip + '"' : '';
+        return this.userRole >= UC_ADMINISTRATOR && ip !== '127.0.0.1' && ip !== null ? ' title="IP: ' + ip + '"' : ' title="Click to @mention "';
     },
 
     getMessageDocumentID: function (messageID) {
@@ -2151,7 +2151,6 @@ var ajaxChat = {
                 }
             }
         }
-        return false;
     },
 
     setPersistFontColor: function (bool) {
@@ -2265,7 +2264,7 @@ var ajaxChat = {
                 text = this.replaceEmoticons(text);
             }
             text = this.breakLongWords(text);
-            //text = this.replaceCustomText(text);
+            text = this.replaceCustomText(text);
             if (text.toLowerCase().indexOf(this.userName.toLowerCase()) !== -1) {
                 this.playSound(this.settings['soundPrivate']);
                 text = '<span class="mentioned">' + text + '</span>';
@@ -2350,8 +2349,8 @@ var ajaxChat = {
                     return this.replaceCommandRoll(textParts);
                 case '/nick':
                     return this.replaceCommandNick(textParts);
-                //case '/error':
-                //return this.replaceCommandError(textParts);
+                case '/error':
+                    return this.replaceCommandError(textParts);
                 default:
                     return this.replaceCustomCommands(text, textParts);
             }
@@ -2984,8 +2983,6 @@ var ajaxChat = {
             'gm'
         );
 
-        var anon = this.anonymizer;
-
         return text.replace(
             regExp,
             // Specifying an anonymous function as second parameter:
@@ -2999,7 +2996,7 @@ var ajaxChat = {
                 if (res) {
                     url = p2;
                 } else {
-                    url = anon + p2;
+                    url = this.anonymizer + p2;
                 }
                 return p1
                     + '<a href="'

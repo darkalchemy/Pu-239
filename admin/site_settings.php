@@ -100,4 +100,4 @@ $HTMLOUT .= "
             </form>
         </div>";
 
-echo stdhead($lang['sitesettings_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['sitesettings_stdhead']) . wrapper($HTMLOUT) . stdfoot();

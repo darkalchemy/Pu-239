@@ -119,4 +119,4 @@ if (mysqli_num_rows($res) != 0) {
     $HTMLOUT = stdmsg($lang['std_sorry'], $lang['std_nf']);
 }
 
-echo stdhead($lang['text_stdhead']) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead($lang['text_stdhead']) . wrapper($HTMLOUT) . stdfoot($stdfoot);

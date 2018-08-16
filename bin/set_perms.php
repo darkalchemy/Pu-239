@@ -1,9 +1,8 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-$user = get_current_user();
+$user = trim(`logname`);
 $group = posix_getgrgid(filegroup(__FILE__))['name'];
-
 $paths = [
     ROOT_DIR,
 ];
@@ -20,6 +19,8 @@ $exts = [
 ];
 
 $folders = [
+    ROOT_DIR . 'bin/',
+    ROOT_DIR . '.git',
     ROOT_DIR . 'dir_list/',
     ROOT_DIR . 'cache/',
     ROOT_DIR . 'torrents/',
@@ -32,6 +33,7 @@ $folders = [
     CHAT_DIR . 'css/',
     CHAT_DIR . 'js/',
     TEMPLATE_DIR . '1/css/',
+    TEMPLATE_DIR . '2/css/',
     PUBLIC_DIR . 'images/proxy/',
     BITBUCKET_DIR,
 ];

@@ -110,4 +110,4 @@ $HTMLOUT .= "<h2><b><i>{$lang['paypal_global_title']}</i></b></h2>
 <tr><td colspan='2' class='table'><input type='submit' value='{$lang['paypal_apply']}'' /></td></tr>
 </table>
 </form>";
-echo stdhead($lang['paypal_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['paypal_stdhead']) . wrapper($HTMLOUT) . stdfoot();

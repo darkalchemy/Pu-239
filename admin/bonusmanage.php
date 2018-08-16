@@ -74,4 +74,4 @@ while ($arr = mysqli_fetch_assoc($res)) {
         <td><input class='button is-small' type='submit' value='{$lang['bonusmanager_submit']}' /></td>
         </tr></table></div></form>";
 }
-echo stdhead($lang['bonusmanager_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['bonusmanager_stdhead']) . wrapper($HTMLOUT) . stdfoot();

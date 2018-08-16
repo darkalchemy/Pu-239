@@ -230,6 +230,7 @@ function get_torrent_from_hash($info_hash)
 function adjust_torrent_peers($id, $seeds = 0, $leechers = 0, $completed = 0)
 {
     global $cache;
+
     if (!is_int($id) || $id < 1) {
         return false;
     }
@@ -335,6 +336,10 @@ function get_slots($torrentid, $userid)
 function auto_enter_abnormal_upload($userid, $rate, $upthis, $diff, $torrentid, $client, $realip, $last_up)
 {
     global $fluent;
+
+    if (!filter_var($realip, FILTER_VALIDATE_IP)) {
+        return false;
+    }
 
     $values = [
         'added' => TIME_NOW,

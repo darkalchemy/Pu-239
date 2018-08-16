@@ -17,7 +17,7 @@ if ($ip) {
     if (!preg_match($regex, $ip)) {
         $HTMLOUT .= stdmsg($lang['ipsearch_error'], $lang['ipsearch_invalid']);
         $HTMLOUT .= end_main_frame();
-        echo stdhead('IP Search') . $HTMLOUT . stdfoot();
+        echo stdhead('IP Search') . wrapper($HTMLOUT) . stdfoot();
         die();
     }
     $mask = isset($_GET['mask']) ? htmlsafechars(trim($_GET['mask'])) : '';
@@ -36,7 +36,7 @@ if ($ip) {
             if (!is_numeric($n) || $n < 0 || $n > 32) {
                 $HTMLOUT .= stdmsg($lang['ipsearch_error'], $lang['ipsearch_subnet']);
                 $HTMLOUT .= end_main_frame();
-                echo stdhead('IP Search') . $HTMLOUT . stdfoot();
+                echo stdhead('IP Search') . wrapper($HTMLOUT) . stdfoot();
                 die();
             } else {
                 $mask = long2ip(pow(2, 32) - pow(2, 32 - $n));
@@ -44,7 +44,7 @@ if ($ip) {
         } elseif (!preg_match($regex, $mask)) {
             $HTMLOUT .= stdmsg($lang['ipsearch_error'], $lang['ipsearch_subnet']);
             $HTMLOUT .= end_main_frame();
-            echo stdhead('IP Search') . $HTMLOUT . stdfoot();
+            echo stdhead('IP Search') . wrapper($HTMLOUT) . stdfoot();
             die();
         }
         $where1 = "INET_ATON(u.ip) & INET_ATON('$mask') = INET_ATON('$ip') & INET_ATON('$mask')";
@@ -63,7 +63,7 @@ if ($ip) {
     if ($count == 0) {
         $HTMLOUT .= "<br><b>No users found</b>\n";
         $HTMLOUT .= end_main_frame();
-        echo stdhead('IP sEARCH') . $HTMLOUT . stdfoot();
+        echo stdhead('IP sEARCH') . wrapper($HTMLOUT) . stdfoot();
         die();
     }
     $order = isset($_GET['order']) && $_GET['order'];
@@ -153,5 +153,5 @@ if ($ip) {
     $HTMLOUT .= end_frame();
 }
 $HTMLOUT .= end_main_frame();
-echo stdhead($lang['ipsearch_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['ipsearch_stdhead']) . wrapper($HTMLOUT) . stdfoot();
 die();

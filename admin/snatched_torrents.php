@@ -186,5 +186,5 @@ if ($count > $snatchedperpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
 $HTMLOUT .= end_main_frame();
-echo stdhead($lang['ad_snatched_torrents_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['ad_snatched_torrents_stdhead']) . wrapper($HTMLOUT) . stdfoot();
 die();

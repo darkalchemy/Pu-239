@@ -990,5 +990,5 @@ if (!empty($_POST) && count($_POST) > 0) {
 if (isset($pagemenu)) {
     $HTMLOUT .= ("<p>$pagemenu<br>$browsemenu</p>");
 }
-echo $HTMLOUT . stdfoot();
+echo stdhead() . wrapper($HTMLOUT) . stdfoot();
 die();

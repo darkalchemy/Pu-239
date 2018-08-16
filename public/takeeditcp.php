@@ -15,31 +15,6 @@ use Nette\Mail\SendmailMailer;
 
 $curuser_cache = $user_cache = $urladd = $changedemail = $birthday = '';
 
-/**
- * @param $in
- *
- * @return array
- */
-function resize_image($in)
-{
-    $out = [
-        'img_width' => $in['cur_width'],
-        'img_height' => $in['cur_height'],
-    ];
-    if ($in['cur_width'] > $in['max_width']) {
-        $out['img_width'] = $in['max_width'];
-        $out['img_height'] = ceil(($in['cur_height'] * (($in['max_width'] * 100) / $in['cur_width'])) / 100);
-        $in['cur_height'] = $out['img_height'];
-        $in['cur_width'] = $out['img_width'];
-    }
-    if ($in['cur_height'] > $in['max_height']) {
-        $out['img_height'] = $in['max_height'];
-        $out['img_width'] = ceil(($in['cur_width'] * (($in['max_height'] * 100) / $in['cur_height'])) / 100);
-    }
-
-    return $out;
-}
-
 $action = isset($_POST['action']) ? htmlsafechars(trim($_POST['action'])) : '';
 $updateset = $curuser_cache = $user_cache = [];
 $setbits = $clrbits = $setbits2 = $clrbits2 = 0;
@@ -48,11 +23,8 @@ if ($action == 'avatar') {
     $avatars = (isset($_POST['avatars']) && $_POST['avatars'] === 'yes' ? 'yes' : 'no');
     $offensive_avatar = (isset($_POST['offensive_avatar']) && $_POST['offensive_avatar'] === 'yes' ? 'yes' : 'no');
     $view_offensive_avatar = (isset($_POST['view_offensive_avatar']) && $_POST['view_offensive_avatar'] === 'yes' ? 'yes' : 'no');
-    if (!($CURUSER['avatarpos'] == 0 or $CURUSER['avatarpos'] != 1)) {
-        $avatar = trim(urldecode($_POST['avatar']));
-        if (preg_match("/^https?:\/\/$/i", $avatar) || preg_match('/[?&;]/', $avatar) || preg_match('#javascript:#is', $avatar) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $avatar)) {
-            $avatar = '';
-        }
+    if (!($CURUSER['avatarpos'] == 0 || $CURUSER['avatarpos'] != 1)) {
+        $avatar = validate_url($_POST['avatar']);
     }
     if (!empty($avatar)) {
         $img_size = @getimagesize($avatar);
@@ -62,24 +34,7 @@ if ($action == 'avatar') {
         if ($img_size[0] < 5 || $img_size[1] < 5) {
             stderr($lang['takeeditcp_user_error'], $lang['takeeditcp_small_image']);
         }
-        sql_query('UPDATE usersachiev SET avatarset = avatarset + 1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND avatarset = '0'") or sqlerr(__FILE__, __LINE__);
-        if (($img_size[0] > $site_config['av_img_width']) || ($img_size[1] > $site_config['av_img_height'])) {
-            $image = resize_image([
-                'max_width' => $site_config['av_img_width'],
-                'max_height' => $site_config['av_img_height'],
-                'cur_width' => $img_size[0],
-                'cur_height' => $img_size[1],
-            ]);
-        } else {
-            $image['img_width'] = $img_size[0];
-            $image['img_height'] = $img_size[1];
-        }
-        $updateset[] = 'av_w = ' . sqlesc($image['img_width']);
-        $updateset[] = 'av_h = ' . sqlesc($image['img_height']);
-        $curuser_cache['av_w'] = ($image['img_width']);
-        $user_cache['av_w'] = ($image['img_width']);
-        $curuser_cache['av_h'] = ($image['img_height']);
-        $user_cache['av_h'] = ($image['img_height']);
+        sql_query('UPDATE usersachiev SET avatarset = avatarset + 1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND avatarset = 0") or sqlerr(__FILE__, __LINE__);
     }
     $updateset[] = 'offensive_avatar = ' . sqlesc($offensive_avatar);
     $updateset[] = 'view_offensive_avatar = ' . sqlesc($view_offensive_avatar);
@@ -103,10 +58,7 @@ if ($action == 'avatar') {
         $user_cache['info'] = $info;
     }
     $signatures = (isset($_POST['signatures']) && $_POST['signatures'] === 'yes' ? 'yes' : 'no');
-    $signature = trim(urldecode($_POST['signature']));
-    if (preg_match("/^https?:\/\/$/i", $signature) || preg_match('/[?&;]/', $signature) || preg_match('#javascript:#is', $signature) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $signature)) {
-        $signature = '';
-    }
+    $signature = validate_url($_POST['signature']);
     if (!empty($signature)) {
         $img_size = @getimagesize($signature);
         if ($img_size == false || !in_array($img_size['mime'], $site_config['allowed_ext'])) {
@@ -115,24 +67,7 @@ if ($action == 'avatar') {
         if ($img_size[0] < 5 || $img_size[1] < 5) {
             stderr($lang['takeeditcp_uerr'], $lang['takeeditcp_img_to_small']);
         }
-        sql_query('UPDATE usersachiev SET sigset = sigset+1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND sigset = '0'") or sqlerr(__FILE__, __LINE__);
-        if (($img_size[0] > $site_config['sig_img_width']) || ($img_size[1] > $site_config['sig_img_height'])) {
-            $image = resize_image([
-                'max_width' => $site_config['sig_img_width'],
-                'max_height' => $site_config['sig_img_height'],
-                'cur_width' => $img_size[0],
-                'cur_height' => $img_size[1],
-            ]);
-        } else {
-            $image['img_width'] = $img_size[0];
-            $image['img_height'] = $img_size[1];
-        }
-        $updateset[] = 'sig_w = ' . sqlesc($image['img_width']);
-        $updateset[] = 'sig_h = ' . sqlesc($image['img_height']);
-        $curuser_cache['sig_w'] = ($image['img_width']);
-        $user_cache['sig_w'] = ($image['img_width']);
-        $curuser_cache['sig_h'] = ($image['img_height']);
-        $user_cache['sig_h'] = ($image['img_height']);
+        sql_query('UPDATE usersachiev SET sigset = sigset+1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND sigset = 0") or sqlerr(__FILE__, __LINE__);
         $updateset[] = 'signature = ' . sqlesc('[img]' . $signature . "[/img]\n");
         $curuser_cache['signature'] = ('[img]' . $signature . "[/img]\n");
         $user_cache['signature'] = ('[img]' . $signature . "[/img]\n");
@@ -188,7 +123,8 @@ if ($action == 'avatar') {
     }
 
     if ($email != $CURUSER['email']) {
-        if (!validemail($email)) {
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_not_valid_email']);
         }
         $r = sql_query('SELECT id FROM users WHERE email = ' . sqlesc($email)) or sqlerr(__FILE__, __LINE__);

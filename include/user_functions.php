@@ -515,10 +515,11 @@ function format_username(int $user_id, $icons = true, $tooltipper = true)
         $tooltip = "class='" . get_user_class_name(($users_data['override_class'] != 255 ? $users_data['override_class'] : $users_data['class']), true) . "'";
     }
 
+    $username = $users_data['enabled'] != 'yes' ? '<strike>' . htmlsafechars($users_data['username']) . '</strike>' : htmlsafechars($users_data['username']);
     $str = "
                 <span>
                 $tip
-                <a href='{$site_config['baseurl']}/userdetails.php?id={$users_data['id']}' target='_blank'><span {$tooltip}>" . htmlsafechars($users_data['username']) . '</span></a>';
+                <a href='{$site_config['baseurl']}/userdetails.php?id={$users_data['id']}' target='_blank'><span {$tooltip}>{$username}</span></a>";
 
     if ($icons != false) {
         $str .= (isset($users_data['king']) && $users_data['king'] >= TIME_NOW ? '<img class="lazy tooltipper icon left5" data-src="' . $site_config['pic_baseurl'] . 'king.png" alt="King" title="King" />' : '');

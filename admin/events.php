@@ -275,5 +275,5 @@ if (!is_array($scheduled_events)) {
 if ($count1 > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($lang['events_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['events_stdhead']) . wrapper($HTMLOUT) . stdfoot();
 die();

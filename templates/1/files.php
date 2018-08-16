@@ -4,22 +4,21 @@ function get_file_name($file)
 {
     global $site_config;
 
-    $style = get_stylesheet();
     switch ($file) {
         case 'chat_css_trans':
             return "{$site_config['baseurl']}/css/1/chat_trans_bc9ac054.css";
         case 'chat_css_uranium':
             return "{$site_config['baseurl']}/css/1/chat_uranium_7253eb89.css";
         case 'css':
-            return "{$site_config['baseurl']}/css/1/css_10a6c69a.css";
+            return "{$site_config['baseurl']}/css/1/css_929a7595.css";
         case 'js':
-            return "{$site_config['baseurl']}/js/1/js_16cbe589.js";
+            return "{$site_config['baseurl']}/js/1/js_bf9dc7b4.js";
         case 'index_js':
             return "{$site_config['baseurl']}/js/1/index_3479219a.js";
         case 'chat_js':
-            return "{$site_config['baseurl']}/js/1/chat_c640e6ae.js";
+            return "{$site_config['baseurl']}/js/1/chat_d28a2667.js";
         case 'chat_log_js':
-            return "{$site_config['baseurl']}/js/1/chat_log_0ba1bd21.js";
+            return "{$site_config['baseurl']}/js/1/chat_log_fca523cf.js";
         case 'browse_js':
             return "{$site_config['baseurl']}/js/1/browse_74f9954e.js";
         case 'userdetails_js':

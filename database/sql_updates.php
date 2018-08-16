@@ -357,7 +357,7 @@ $sql_updates = [
         'id' => 1533283242,
         'info' => 'Add fk constraint to auth_tokens',
         'date' => '03 Aug, 2018',
-        'query' => 'ALTER TABLE auth_tokens ADD FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE',
+        'query' => 'ALTER TABLE `auth_tokens` ADD FOREIGN KEY (`userid`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE',
         'flush' => false,
     ],
     [
@@ -365,6 +365,20 @@ $sql_updates = [
         'info' => 'Update delete account',
         'date' => '03 Aug, 2018',
         'query' => "UPDATE `staffpanel` SET `page_name` = 'Delete User', `av_class` = " . UC_MAX . " WHERE `page_name` = 'Delete'",
+        'flush' => false,
+    ],
+    [
+        'id' => 1533942374,
+        'info' => 'Update stylesheets id column',
+        'date' => '10 Aug, 2018',
+        'query' => "ALTER TABLE `stylesheets` MODIFY `id` int(10) NOT NULL DEFAULT 0",
+        'flush' => false,
+    ],
+    [
+        'id' => 1534309301,
+        'info' => 'Remove unneeded columns from users',
+        'date' => '15 Aug, 2018',
+        'query' => "ALTER TABLE `users` DROP `sig_w`, DROP `sig_h`",
         'flush' => false,
     ],
 ];

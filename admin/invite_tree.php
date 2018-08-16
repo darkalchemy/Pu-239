@@ -2,7 +2,7 @@
 
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
-require_once INCL_DIR . 'pager_new.php';
+require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
@@ -10,19 +10,16 @@ global $CURUSER, $site_config, $lang;
 
 $lang = array_merge($lang, load_language('ad_invite_tree'));
 $HTMLOUT = '';
-//=== if we got here from a members page, get their info... if not, ask for a username to get the info...
 $id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
 if ($id !== 0) {
     $rez_user = sql_query('SELECT username, warned, suspended, enabled, donor, invitedby FROM users WHERE id = ' . sqlesc($id));
     $arr_user = mysqli_fetch_assoc($rez_user);
-    //=== start the page
     $HTMLOUT .= '<h1>' . htmlsafechars($arr_user['username']) . (substr($arr_user['username'], -1) === 's' ? '\'' : '\'s') . ' ' . $lang['invite_head'] . '</h1>
         <p>' . ($arr_user['invitedby'] == 0 ? '<a title="' . htmlsafechars($arr_user['username']) . ' ' . $lang['invite_open'] . '">' . $lang['invite_up'] . '</a>' : '<a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;really_deep=1&amp;id=' . (int) $arr_user['invitedby'] . '" title="go up one level">' . $lang['invite_up'] . '</a>') . ' | 
         | <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree' . (isset($_GET['deeper']) ? '' : '&amp;deeper=1') . '&amp;id=' . $id . '" title=" ' . $lang['invite_click'] . ' ' . (isset($_GET['deeper']) ? $lang['invite_shrink'] : $lang['invite_expand']) . ' ' . $lang['invite_this'] . ' ">' . $lang['invite_expand_tree'] . '</a> | 
         | <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;really_deep=1&amp;id=' . $id . '" title="' . $lang['invite_click_more'] . '">' . $lang['invite_expand_more'] . '</a></p>';
     $HTMLOUT .= '<table class="main" width="750px" border="0">
         <tr><td class="embedded">';
-    //=== members invites
     $rez_invited = sql_query('SELECT id, username, email, uploaded, downloaded, status, warned, suspended, enabled, donor, email, ip, class, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($id) . ' ORDER BY added');
     if (mysqli_num_rows($rez_invited) < 1) {
         $HTMLOUT .= $lang['invite_none'];
@@ -36,7 +33,6 @@ if ($id !== 0) {
         <td class="colhead"><span style="font-weight: bold;">' . $lang['invite_status'] . '</span></td></tr>';
         while ($arr_invited = mysqli_fetch_assoc($rez_invited)) {
             $deeper = '';
-            //=== if  deeper get the invitees invitees
             if (isset($_GET['deeper']) || isset($_GET['really_deep'])) {
                 $rez_invited_deeper = sql_query('SELECT id, username, email, uploaded, downloaded, status, warned, suspended, enabled, donor, email, ip, class, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($arr_invited['id']) . ' ORDER BY added');
                 if (mysqli_num_rows($rez_invited_deeper) > 0) {
@@ -50,7 +46,6 @@ if ($id !== 0) {
                         <td class="colhead"><span style="font-weight: bold;">' . $lang['invite_status'] . '</span></td></tr>';
                     while ($arr_invited_deeper = mysqli_fetch_assoc($rez_invited_deeper)) {
                         $really_deep = '';
-                        //=== if  really_deep get the invitees invitees invitees
                         if (isset($_GET['really_deep'])) {
                             $rez_invited_really_deep = sql_query('SELECT id, username, email, uploaded, downloaded, status, warned, suspended, enabled, donor, email, ip, class, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($arr_invited_deeper['id']) . ' ORDER BY added');
                             if (mysqli_num_rows($rez_invited_really_deep) > 0) {
@@ -95,9 +90,7 @@ if ($id !== 0) {
     }
     $HTMLOUT .= '</td></tr></table>';
 } else {
-    //=== ok, that was fun, but if no ID we can search members to see their invite trees \\o\o/o//
     $id = '';
-    //=== search members
     $search = isset($_GET['search']) ? strip_tags(trim($_GET['search'])) : '';
     $class = isset($_GET['class']) ? $_GET['class'] : '-';
     $letter = '';
@@ -125,7 +118,6 @@ if ($id !== 0) {
         $query .= ' AND class=' . sqlesc($class);
         $q .= ($q ? '&amp;' : '') . 'class=' . $class;
     }
-    //=== start the page
     $HTMLOUT .= '<h1>' . $lang['invite_search'] . '</h1>
             <form method="get" action="staffpanel.php?tool=invite_tree&amp;search=1&amp;">
             <input type="hidden" name="action" value="invite_tree"/>
@@ -159,15 +151,19 @@ if ($id !== 0) {
         ++$count;
     }
     $HTMLOUT .= '</div><br>';
-    //=== get stuff for the pager
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
     $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
     $res_count = sql_query('SELECT COUNT(id) FROM users WHERE ' . $query);
     $arr_count = mysqli_fetch_row($res_count);
     $count = ($arr_count[0] > 0 ? $arr_count[0] : 0);
-    list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'staffpanel.php?tool=invite_tree&amp;action=invite_tree');
-    $HTMLOUT .= ($arr_count[0] > $perpage) ? '' . $menu . '<br><br>' : '<br><br>';
-    if ($arr_count[0] > 0) {
+    $link = $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree';
+    $pager = pager($perpage, $count, $link);
+    $menu_top = $pager['pagertop'];
+    $menu_bottom = $pager['pagerbottom'];
+    $LIMIT = $pager['limit'];
+
+    $HTMLOUT .= $count > $perpage ? $menu_top: '';
+    if ($count > 0) {
         $res = sql_query('SELECT users.*, countries.name, countries.flagpic FROM users FORCE INDEX ( username ) LEFT JOIN countries ON country = countries.id WHERE ' . $query . ' ORDER BY username ' . $LIMIT);
         $HTMLOUT .= '<table border="1">
 
@@ -190,6 +186,6 @@ if ($id !== 0) {
     } else {
         $HTMLOUT .= $lang['invite_search_none'];
     }
-    $HTMLOUT .= ($arr_count[0] > $perpage) ? '<br>' . $menu . '' : '<br><br>';
+    $HTMLOUT .= $count > $perpage ? $menu_bottom : '';
 }
-echo stdhead($lang['invite_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['invite_stdhead']) . wrapper($HTMLOUT) . stdfoot();

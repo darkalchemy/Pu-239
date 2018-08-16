@@ -87,4 +87,4 @@ $HTMLOUT .= "<p>{$lang['text_times']}</p>";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead("{$lang['stdhead_log']}") . $HTMLOUT . stdfoot();
+echo stdhead("{$lang['stdhead_log']}") . wrapper($HTMLOUT) . stdfoot();

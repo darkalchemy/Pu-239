@@ -273,4 +273,4 @@ $HTMLOUT .= "<table class='torrenttable' width='80%'>
       <td width='50%'>$QUERY_STATS</td><td >$STATUS_TABLE</td>
     </tr>
     </table>";
-echo stdhead($lang['mysql_stats_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['mysql_stats_stdhead']) . wrapper($HTMLOUT) . stdfoot();

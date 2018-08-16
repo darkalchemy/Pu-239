@@ -206,4 +206,4 @@ $HTMLOUT .= "<fieldset style='border:1px solid #333333; padding:5px;'>
     </form>
     </fieldset>";
 $HTMLOUT .= end_main_frame();
-echo stdhead($lang['grouppm_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['grouppm_stdhead']) . wrapper($HTMLOUT) . stdfoot();

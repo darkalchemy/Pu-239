@@ -497,7 +497,7 @@ function html_out($html = '', $title = '')
     if (empty($html)) {
         stderr($lang['rep_ad_html_error'], $lang['rep_ad_html_nothing']);
     }
-    echo stdhead($title) . $html . stdfoot();
+    echo stdhead($title) . wrapper($html) . stdfoot();
     die();
 }
 

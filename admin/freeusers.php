@@ -62,5 +62,5 @@ if ($count == 0) {
     }
     $HTMLOUT .= '</table>';
 }
-echo stdhead($lang['freeusers_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['freeusers_stdhead']) . wrapper($HTMLOUT) . stdfoot();
 die();

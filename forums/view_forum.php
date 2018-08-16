@@ -184,8 +184,11 @@ $count = $posts = $row[0];
 
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
 $perpage = $CURUSER['topicsperpage'] !== 0 ? $CURUSER['topicsperpage'] : (isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15);
-//$perpage = max(($CURUSER['topicsperpage'] !== 0 ? $CURUSER['topicsperpage'] :  (isset($_GET['perpage']) ? (int)$_GET['perpage'] : 15)), 15);
-list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'forums.php?action=view_forum&amp;forum_id=' . $forum_id . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
+$link = $site_config['baseurl'] .  "/forums.php?action=view_forum&amp;forum_id=$forum_id&amp;" . (isset($_GET['perpage']) ? "perpage={$perpage}&amp;" : '');
+$pager = pager($perpage, $count, $link);
+$menu_top = $pager['pagertop'];
+$menu_bottom = $pager['pagerbottom'];
+$LIMIT = $pager['limit'];
 
 $topic_res = sql_query('SELECT t.id AS id, t.user_id AS user_id, t.topic_name AS topic_name, t.locked AS locked, t.forum_id AS forum_id,
 			t.last_post AS last_post,t.sticky AS sticky, t.views AS views,t.poll_id AS poll_id,t.num_ratings AS num_ratings,
@@ -275,8 +278,8 @@ if ($count > 0) {
             $thread_starter = ($first_post_arr['username'] !== '' ? format_username($first_post_arr['user_id']) : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
         }
 
-        $icon = ($first_post_arr['icon'] === '' ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_thread_icon'] . '" title="' . $lang['fe_thread_icon'] . '" class="tooltipper icon" />' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" />');
-        $first_post_text = bubble('<img src="' . $site_config['pic_baseurl'] . 'forums/mg.gif" alt="' . $lang['fe_preview'] . '" class="icon" />', format_comment($first_post_arr['body'], true, false, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
+        $icon = (empty($first_post_arr['icon']) ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_thread_icon'] . '" title="' . $lang['fe_thread_icon'] . '" class="tooltipper icon" />' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" />');
+        $first_post_text = bubble('<img src="' . $site_config['pic_baseurl'] . 'forums/mg.gif" alt="' . $lang['fe_preview'] . '" class="icon" />', format_comment($first_post_arr['body'], true, true, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
 
         $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $last_unread_post_arr = mysqli_fetch_row($last_unread_post_res);
@@ -341,7 +344,7 @@ if ($count > 0) {
 		    <div>
 		    ' . $rpic . '
 		    </div>
-		</td>' . ($topic_arr['topic_desc'] !== '' ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($topic_arr['topic_desc'], ENT_QUOTES) . '</span>' : '') . '</td>
+		</td>' . (!empty($topic_arr['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($topic_arr['topic_desc'], ENT_QUOTES) . '</span>' : '') . '</td>
 		<td>' . $thread_starter . '</td>
 		<td>' . number_format($topic_arr['post_count']) . '</td>
 		<td>' . number_format($topic_arr['views']) . '</td>
@@ -351,7 +354,7 @@ if ($count > 0) {
 		<img src="' . $site_config['pic_baseurl'] . 'forums/last_post.gif" alt="' . $lang['fe_last_post'] . '" title="' . $lang['fe_last_unread_post_in_this_thread'] . '" class="tooltipper icon" /></a></td>
 		</tr>';
     }
-    $the_top_and_bottom = ($count > $perpage ? $menu : '') . ($locked == 'yes' && $_GET['action'] == 'view_topic' ? '
+    $the_top_and_bottom = ($locked == 'yes' && $_GET['action'] == 'view_topic' ? '
                     <span>' . $lang['fe_this_topic_is_locked'] . '... ' . $lang['fe_no_new_posts_are_allowed'] . '</span>' : '');
 } else {
     $content .= '
@@ -362,7 +365,7 @@ if ($count > 0) {
 		</tr>';
     $the_top_and_bottom = '';
 }
-$HTMLOUT .= $mini_menu . $sub_forums . "<h1 class='has-text-centered'>$forum_name</h1>";
+$HTMLOUT .= $mini_menu . $sub_forums . "<h1 class='has-text-centered'>$forum_name</h1>" . ($count > $perpage ? $menu_top : '');
 $heading = $body = '';
 if (!empty($content)) {
     $heading = '
@@ -385,4 +388,4 @@ $HTMLOUT .= $table . ($may_post ? '
 		                    <input type="hidden" name="forum_id" value="' . $forum_id . '" />
 		                    <input type="submit" name="button" class="button is-small" value="' . $lang['fe_new_topic'] . '"  />
 		                </form>
-		            </div>' : '<span>' . $lang['fe_you_are_not_permitted_to_post_in_this_forum.'] . '</span>') . $the_top_and_bottom;
+		            </div>' : '<span>' . $lang['fe_you_are_not_permitted_to_post_in_this_forum.'] . '</span>') . $the_top_and_bottom . ($count > $perpage ? $menu_bottom : '');

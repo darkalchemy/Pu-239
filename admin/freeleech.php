@@ -133,5 +133,5 @@ $HTMLOUT .= "<h2>{$lang['freelech_set_free']}</h2>
     <input type='hidden' name='cacheit' value='{$lang['freelech_cache']}' class='button is-small' />
     </td></tr>
     </table></form>";
-echo stdhead($lang['freelech_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['freelech_stdhead']) . wrapper($HTMLOUT) . stdfoot();
 die();

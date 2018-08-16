@@ -62,4 +62,4 @@ if ($count > 0) {
     $HTMLOUT .= $lang['ref_nothing'];
 }
 
-echo stdhead($lang['ref_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['ref_stdhead']) . wrapper($HTMLOUT) . stdfoot();

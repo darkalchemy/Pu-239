@@ -158,4 +158,4 @@ $HTMLOUT .= "</select></td>
                 </tr>
 <tr><td colspan='5' class='table'><input type='submit' value='{$lang['classpromo_add_new']}' /></td></tr>
 </table></form>";
-echo stdhead($lang['classpromo_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['classpromo_stdhead']) . wrapper($HTMLOUT) . stdfoot();

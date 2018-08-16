@@ -67,4 +67,4 @@ $HTMLOUT .= end_frame();
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($lang['donate_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['donate_stdhead']) . wrapper($HTMLOUT) . stdfoot();

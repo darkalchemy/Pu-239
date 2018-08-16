@@ -54,7 +54,7 @@ if ($mode === 'delete') {
     $HTMLOUT .= deletenewsid($newsid);
     header('Refresh: 3; url=staffpanel.php?tool=news&mode=news');
     stderr($lang['news_success'], "<h2>{$lang['news_del_redir']}</h2>");
-    echo stdhead($lang['news_del_stdhead'], $stdhead) . $HTMLOUT . stdfoot();
+    echo stdhead($lang['news_del_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot();
     die();
 }
 //==Add news
@@ -159,7 +159,7 @@ if ($mode === 'edit') {
                 </table>
             </form>
         </div>";
-        echo stdhead($lang['news_stdhead'], $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+        echo stdhead($lang['news_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         die();
     }
 }
@@ -234,5 +234,5 @@ if ($mode === 'news') {
         $HTMLOUT .= '<br>';
     }
 }
-echo stdhead($lang['news_stdhead']) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead($lang['news_stdhead']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 die();

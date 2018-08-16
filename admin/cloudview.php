@@ -72,4 +72,4 @@ $HTMLOUT .= end_main_frame();
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($lang['cloudview_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['cloudview_stdhead']) . wrapper($HTMLOUT) . stdfoot();

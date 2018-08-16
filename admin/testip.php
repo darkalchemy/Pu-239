@@ -46,4 +46,4 @@ $HTMLOUT .= "
     <tr><td colspan='2'><input type='submit' class='button is-small' value='{$lang['testip_ok']}' /></td></tr>
     </table>
     </form>";
-echo stdhead($lang['testip_windows_title']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['testip_windows_title']) . wrapper($HTMLOUT) . stdfoot();

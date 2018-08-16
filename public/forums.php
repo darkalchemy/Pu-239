@@ -5,7 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_rating.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
-require_once INCL_DIR . 'pager_new.php';
+require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $fluent;
@@ -588,7 +588,7 @@ function insert_quick_jump_menu($current_forum = 0, $staff = false)
 
     $switch = '';
     $body = ($staff === false ? '
-    <div class="has-text-centered bottom20">
+    <div class="has-text-centered margin20">
         <form method="get" action="' . $site_config['baseurl'] . '/forums.php" name="jump">
             <span>
                 <input type="hidden" name="action" value="view_forum" /> 

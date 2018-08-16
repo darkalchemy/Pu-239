@@ -11,8 +11,8 @@ $lang = [
     'themes_e_d' => 'Edit/Delete',
     'themes_edit' => 'Edit',
     'themes_delete' => 'Delete',
-    'themes_file_exists' => "<span style='color: green;'>Yes</span>",
-    'themes_not_exists' => "<span class='has-text-danger'>No</span>",
+    'themes_file_exists' => "<span class='has-text-lime'> Yes </span>",
+    'themes_not_exists' => "<span class='has-text-danger'> No </span>",
     //Other Stuff
     'themes_use_temp' => 'Use this template',
     'themes_addnew' => 'Add a template',
@@ -23,28 +23,29 @@ $lang = [
     'themes_add' => 'Add',
     'themes_some_wrong' => 'Something Went Wrong',
     'themes_delete_sure_q' => 'Are you sure you want to delete this template?',
-    'themes_delete_sure_q2' => 'Click here',
+    'themes_delete_sure_q2' => "Click <span class='has-text-lime'>here</span>",
     'themes_delete_sure_q3' => 'if you are sure',
     'themes_delete_q' => 'Delete Template',
-    'themes_takenids' => "Taken Id's: ",
+    'themes_takenids' => "Taken ID's: ",
     //Messages
     'themes_msg' => 'Succesfully Edited',
     'themes_msg1' => 'Succesfully Saved',
     'themes_msg2' => 'Succesfully Deleted',
     'themes_msg3' => 'Succesfully Added',
     //Guide/Explains
-    'themes_guide' => '<ul>
-<li>Make a folder in Templates dir</li>
-<li>Make a php file called template.php inside of the folder made in step 1</li>
-<li>In template.php there shall be minimum 4 functions
-<ul>
-<li>stdhead</li>
-<li>stdfoot</li>
-<li>stdmsg</li>
-<li>StatusBar</li>
-</ul></li>
-</ul>
-',
+    'themes_guide' => '
+<ul class="left20">
+    <li class="bullet">Make a folder in Templates dir</li>
+    <li class="bullet">Make a php file called template.php inside of the folder made in step 1</li>
+    <li class="bullet">In template.php there shall be minimum 4 functions
+        <ul>
+            <li class="bullet">stdhead</li>
+            <li class="bullet">stdfoot</li>
+            <li class="bullet">stdmsg</li>
+            <li class="bullet">StatusBar</li>
+        </ul>
+    </li>
+</ul>',
     'themes_explain_id' => 'This shall be the same as the folder name',
     //Errors
     'themes_error' => 'Error',

@@ -6,6 +6,8 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'comment_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'function_imdb.php';
+require_once INCL_DIR . 'pager_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $user_stuffs, $fluent;
 
@@ -70,15 +72,17 @@ switch ($action) {
         break;
 
     case 'default':
-        require_once INCL_DIR . 'bbcode_functions.php';
-        require_once INCL_DIR . 'pager_new.php';
-
         $count_query = sql_query('SELECT COUNT(id) FROM offers') or sqlerr(__FILE__, __LINE__);
         $count_arr = mysqli_fetch_row($count_query);
         $count = $count_arr[0];
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
-        $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
-        list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'offers.php?' . ($perpage == 20 ? '' : '&amp;perpage=' . $perpage));
+        $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
+        $link = $site_config['baseurl'] . '/offers.php?' . (isset($_GET['perpage']) ? "perpage={$perpage}&amp;" : '');
+        $pager = pager($perpage, $count, $link);
+        $menu_top = $pager['pagertop'];
+        $menu_bottom = $pager['pagerbottom'];
+        $LIMIT = $pager['limit'];
+
         $main_query_res = sql_query('SELECT o.id AS offer_id, o.offer_name, o.category, o.added, o.offered_by_user_id, o.vote_yes_count, o.vote_no_count, o.comments, o.status,
                                                     u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class,  u.leechwarn, u.chatpost, u.pirate, u.king,
                                                     c.id AS cat_id, c.name AS cat_name, c.image AS cat_image
@@ -86,10 +90,10 @@ switch ($action) {
                                                     LEFT JOIN categories AS c ON o.category = c.id
                                                     LEFT JOIN users AS u ON o.offered_by_user_id = u.id
                                                     ORDER BY o.added DESC ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
-        if ($count = 0) {
+        if ($count === 0) {
             stderr('Error!', 'Sorry, there are no current offers!');
         }
-        $HTMLOUT .= (isset($_GET['new']) ? '<h1>Offer Added!</h1>' : '') . (isset($_GET['offer_deleted']) ? '<h1>Offer Deleted!</h1>' : '') . $top_menu . '' . $menu . '<br>';
+        $HTMLOUT .= (isset($_GET['new']) ? '<h1>Offer Added!</h1>' : '') . (isset($_GET['offer_deleted']) ? '<h1>Offer Deleted!</h1>' : '') . $top_menu . '' . ($count > $perpage ? $menu_top : '') . '<br>';
         $HTMLOUT .= '<table class="table table-bordered table-striped">
        <tr>
         <td class="colhead">Type</td>
@@ -115,14 +119,11 @@ switch ($action) {
     </tr>';
         }
         $HTMLOUT .= '</table>';
-        $HTMLOUT .= '' . $menu . '<br></div>';
+        $HTMLOUT .= ($count > $perpage ? $menu_bottom : '') . '<br>';
         echo stdhead('Offers') . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'offer_details':
-        require_once INCL_DIR . 'bbcode_functions.php';
-        require_once INCL_DIR . 'pager_new.php';
-
         if (!isset($id) || !is_valid_id($id)) {
             stderr('USER ERROR', 'Bad id');
         }
@@ -177,7 +178,7 @@ switch ($action) {
                     <input type="submit" class="button is-small" value="change status!" />
                     </form> ');
         $usersdata = $user_stuffs->getUserFromId($arr['offered_by_user_id']);
-        $HTMLOUT .= (isset($_GET['status_changed']) ? '<h1>Offer Status Updated!</h1>' : '') . (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . ($arr['status'] === 'approved' ? '<span>status: approved!</span>' : ($arr['status'] === 'pending' ? '<span>status: pending...</span>' : '<span>status: denied</span>')) . $status_drop_down . '<br><br>
+        $HTMLOUT .= '<div class="has-text-centered">' . (isset($_GET['status_changed']) ? '<h1>Offer Status Updated!</h1>' : '') . (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . ($arr['status'] === 'approved' ? '<span>status: approved!</span>' : ($arr['status'] === 'pending' ? '<span>status: pending...</span>' : '<span>status: denied</span>')) . $status_drop_down . '</div><br><br>
     <table class="table table-bordered table-striped">
     <tr>
     <td class="colhead" colspan="2"><h1>' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="offers.php?action=edit_offer&amp;id=' . $id . '">edit</a> ]
@@ -232,18 +233,23 @@ switch ($action) {
             $HTMLOUT .= main_div('<h2>No comments yet</h2>', 'top20 has-text-centered');
         } else {
             $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
-            $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
-            list($menu, $LIMIT, $pdo) = pager_new($count, $perpage, $page, 'offers.php?action=offer_details&amp;id=' . $id, ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . '#comments');
+            $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
+            $link = $site_config['baseurl'] . "/offers.php?action=offer_details&amp;id=$id" . (isset($_GET['perpage']) ? "perpage={$perpage}&amp;" : '');
+            $pager = pager($perpage, $count, $link);
+            $menu_top = $pager['pagertop'];
+            $menu_bottom = $pager['pagerbottom'];
+            $LIMIT = $pager['pdo'];
+
             $allrows = $fluent->from('comments')
                 ->select('id AS comment_id')
                 ->where('offer = ?', $id)
                 ->orderBy('id DESC')
-                ->limit('?, ?', $pdo[0], $pdo[1])
+                ->limit('?, ?', $LIMIT[0], $LIMIT[1])
                 ->fetchAll();
-
             $HTMLOUT .= '<a id="comments"></a>';
-            $HTMLOUT .= ($count > $perpage) ? $menu . '<br>' : '<br>';
+            $HTMLOUT .= ($count > $perpage ? $menu_top : '') . '<br>';
             $HTMLOUT .= commenttable($allrows, 'offer');
+            $HTMLOUT .= ($count > $perpage ? $menu_bottom : '');
         }
         echo stdhead('Offer details for: ' . htmlsafechars($arr['offer_name'], ENT_QUOTES)) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
@@ -425,8 +431,6 @@ switch ($action) {
         break;
 
     case 'add_comment':
-        require_once INCL_DIR . 'bbcode_functions.php';
-        require_once INCL_DIR . 'pager_new.php';
         if (!isset($id) || !is_valid_id($id)) {
             stderr('USER ERROR', 'Bad id');
         }

@@ -74,5 +74,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </fieldset>
     </form>";
     $HTMLOUT .= end_frame();
-    echo stdhead($lang['datareset_stdhead']) . $HTMLOUT . stdfoot();
+    echo stdhead($lang['datareset_stdhead']) . wrapper($HTMLOUT) . stdfoot();
 }

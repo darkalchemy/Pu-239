@@ -58,4 +58,4 @@ $HTMLOUT .= "
 
 <tr><td colspan='2' class='table'><input type='submit' value='{$lang['hnr_settings_apply']}' /></td></tr>
 </table></form>";
-echo stdhead($lang['hnr_settings_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['hnr_settings_stdhead']) . wrapper($HTMLOUT) . stdfoot();

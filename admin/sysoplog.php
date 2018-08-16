@@ -109,4 +109,4 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
 $HTMLOUT .= "<p>{$lang['sysoplog_times']}</p>\n";
-echo stdhead($lang['sysoplog_sys']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['sysoplog_sys']) . wrapper($HTMLOUT) . stdfoot();

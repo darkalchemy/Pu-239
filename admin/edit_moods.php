@@ -91,4 +91,4 @@ if (mysqli_num_rows($res)) {
     }
     $HTMLOUT .= '</table>';
 }
-echo stdhead($lang['moods_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['moods_stdhead']) . wrapper($HTMLOUT) . stdfoot();

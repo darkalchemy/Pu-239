@@ -768,9 +768,8 @@ $HTMLOUT .= "
         </div>
     </form>";
 
-$HTMLOUT = wrapper($HTMLOUT);
 $HTMLOUT = preg_replace_callback('|<#(.*?)#>|', 'template_out', $HTMLOUT);
-echo stdhead($lang['block_stdhead']), $HTMLOUT, stdfoot();
+echo stdhead($lang['block_stdhead']). wrapper($HTMLOUT) . stdfoot();
 
 /**
  * @param $matches

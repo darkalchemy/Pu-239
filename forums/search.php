@@ -1,16 +1,19 @@
 <?php
 
-global $lang;
-$author_error = $content = $count = $count2 = $edited_by = $row_count = $over_forum_id = $selected_forums = $author_id = $content = '';
-//=== get all the search stuff
+global $lang, $site_config;
+
+$author_error = $content = $count = $count2 = $edited_by = $row_count = $over_forum_id = $author_id = $content = '';
+$selected_forums = [];
 $search = isset($_GET['search']) ? strip_tags(trim($_GET['search'])) : '';
 $author = isset($_GET['author']) ? trim(htmlsafechars($_GET['author'])) : '';
-$search_what = isset($_GET['search_what']) && $_GET['search_what'] === 'body' ? 'body' : isset($_GET['search_what']) && $_GET['search_what'] === 'title' ? 'title' : 'all';
+$search_what = 'all';
+if (!empty($_GET['search_what'])) {
+    $search_what = $_GET['search_what'] === 'body' ? 'body' : ($_GET['search_what'] === 'title' ? 'title' : 'all');
+}
 $search_when = isset($_GET['search_when']) ? intval($_GET['search_when']) : 0;
 $sort_by = isset($_GET['sort_by']) && $_GET['sort_by'] === 'date' ? 'date' : 'relevance';
 $asc_desc = isset($_GET['asc_desc']) && $_GET['asc_desc'] === 'ASC' ? 'ASC' : 'DESC';
 $show_as = isset($_GET['show_as']) && $_GET['show_as'] === 'posts' ? 'posts' : 'list';
-//=== get links for pager... must think of a better way to do this
 $pager_links = '';
 $pager_links .= $search ? '&amp;search=' . $search : '';
 $pager_links .= $author ? '&amp;author=' . $author : '';
@@ -20,31 +23,25 @@ $pager_links .= $sort_by ? '&amp;sort_by=' . $sort_by : '';
 $pager_links .= $asc_desc ? '&amp;asc_desc=' . $asc_desc : '';
 $pager_links .= $show_as ? '&amp;show_as=' . $show_as : '';
 if ($author) {
-    //=== get member info
     $res_member = sql_query('SELECT id FROM users WHERE username LIKE ' . sqlesc($author)) or sqlerr(__FILE__, __LINE__);
     $arr_member = mysqli_fetch_assoc($res_member);
     $author_id = (int) $arr_member['id'];
-    //=== if no member found
     $author_error = (0 == $author_id ? '<h1>' . $lang['sea_sorry_no_member_found_with_that_username.'] . '</h1>' . $lang['sea_please_check_the_spelling.'] . '<br>' : '');
 }
-//=== if searched
 if ($search) {
-    $search_where = ($search_what === 'body' ? 'p.body' : ('title' === $search_what ? 't.topic_name, p.post_title' : 'p.post_title, p.body, t.topic_name'));
-    //=== get the forum id list to check if any were selected
+    $search_where = $search_what === 'body' ? 'p.body' : ($search_what === 'title' ? 't.topic_name, p.post_title' : 'p.post_title, p.body, t.topic_name');
     $res_forum_ids = sql_query('SELECT id FROM forums') or sqlerr(__FILE__, __LINE__);
     while ($arr_forum_ids = mysqli_fetch_assoc($res_forum_ids)) {
-        //$selected_forums[] = (isset($_GET["f$arr_forum_ids[id]"]) ? $arr_forum_ids['id'] : '');
+        $temp[] = $arr_forum_ids['id'];
         if (isset($_GET["f$arr_forum_ids[id]"])) {
             $selected_forums[] = $arr_forum_ids['id'];
         }
     }
-    if (count($selected_forums) == 1) {
-        $selected_forums_undone = implode(' ', $selected_forums);
-        $selected_forums_undone = ' AND t.forum_id =' . $selected_forums_undone;
-    } elseif (count($selected_forums) > 1) {
-        $selected_forums_undone = implode(' OR t.forum_id=', $selected_forums);
-        $selected_forums_undone = ' AND t.forum_id =' . $selected_forums_undone;
+    if (empty($selected_forums)) {
+        $selected_forums = $temp;
     }
+    $selected_forums_undone = ' AND t.forum_id IN (' . implode(', ', $selected_forums) . ')';
+  //  dd($selected_forums_undone);
     $AND = '';
     if ($author_id) {
         $AND .= ' AND p.user_id = ' . $author_id;
@@ -56,23 +53,29 @@ if ($search) {
         $AND .= $selected_forums_undone;
     }
     //=== just do the minimum to get the count
-    $res_count = sql_query('SELECT p.id, MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . ' IN BOOLEAN MODE) AS relevance FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON t.forum_id = f.id WHERE MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . 'IN BOOLEAN MODE) AND ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class'] . $AND . ' HAVING relevance > 0.2') or sqlerr(__FILE__, __LINE__);
+    $sql = 'SELECT p.id, MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . ' IN BOOLEAN MODE) AS relevance FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON t.forum_id = f.id WHERE MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . ' IN BOOLEAN MODE) AND ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class'] . $AND . ' HAVING relevance > 0.2';
+    dd($sql);
+    $res_count = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $count = mysqli_num_rows($res_count);
     //=== get stuff for the pager
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
     $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 10;
-    list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'forums.php?action=search' . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : '') . $pager_links);
+    $link = $site_config['baseurl'] . '/forums.php?action=search' . $pager_links . (isset($_GET['perpage']) ? "&amp;perpage={$perpage}&amp;" : '');
+    $pager = pager($perpage, $posts_count, $link);
+    $menu = $pager['pagertop'];
+    $LIMIT = $pager['limit'];
+
     $order_by = ((isset($_GET['sort_by']) && $_GET['sort_by'] === 'date') ? 'p.added ' : 'relevance ');
     $ASC_DESC = ((isset($_GET['asc_desc']) && $_GET['asc_desc'] === 'ASC') ? ' ASC ' : ' DESC ');
     //=== main search... could split it up for list / post thing, but it's only a couple of things so it seems pointless...
     $res = sql_query('SELECT p.id AS post_id, p.body, p.post_title, p.added, p.icon, p.edited_by, p.edit_reason, p.edit_date, p.bbcode, p.anonymous AS pan, t.anonymous AS anonymous, t.id AS topic_id, t.topic_name AS topic_title, t.topic_desc, t.post_count, t.views, t.locked, t.sticky, t.poll_id, t.num_ratings, t.rating_sum, f.id AS forum_id, f.name AS forum_name, f.description AS forum_desc, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king,  u.title, u.avatar, u.offensive_avatar, MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . ' IN BOOLEAN MODE) AS relevance FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON t.forum_id = f.id LEFT JOIN users AS u ON p.user_id = u.id WHERE MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . ' IN BOOLEAN MODE) AND ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class'] . $AND . ' HAVING relevance > 0.2 ORDER BY ' . $order_by . $ASC_DESC . $LIMIT) or sqlerr(__FILE__, __LINE__);
     //=== top and bottom stuff
-    $the_top_and_bottom = '<table border="0" cellspacing="0" cellpadding="0" width="90%">
+    $the_top_and_bottom = '<table class="table table-bordered table-striped">
 	<tr><td  valign="middle">' . (($count > $perpage) ? $menu : '') . '</td>
 	</tr></table>';
     //=== nothing here? kill the page
     if ($count == 0) {
-        $content .= '<br><a id="results"></a><br><table border="0" cellspacing="10" cellpadding="10" width="800px">
+        $content .= '<br><a id="results"></a><br><table class="table table-bordered table-striped">
 	<tr><td align="center">
 	' . $lang['sea_nothing_found'] . '
 	</td></tr>
@@ -84,7 +87,7 @@ if ($search) {
         if ($show === 'list') {
             $content .= ($count > 0 ? '<div style="font-weight: bold;">' . $lang['sea_search_results'] . ' ' . $count . ' </div>' : '') . '<br>' . $the_top_and_bottom . '
 	<a id="results"></a>
-	<table border="0" cellspacing="10" cellpadding="10" width="90%">
+	<table class="table table-bordered table-striped">
 	<tr>
 	<td valign="middle" width="10"><img src="' . $site_config['pic_baseurl'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="emoticon"></td>
 	<td valign="middle" width="10"><img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_thread_icon'] . '" title="' . $lang['fe_thread_icon'] . '" class="emoticon"></td>
@@ -119,7 +122,7 @@ if ($search) {
 		<td class="' . $class . '"><img src="' . $site_config['pic_baseurl'] . 'forums/' . ($posts < 30 ? ($arr['locked'] === 'yes' ? 'locked' : 'topic') : 'hot_topic') . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="emoticon"></td>
 		<td class="' . $class . '">' . ($arr['icon'] === '' ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="emoticon">' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="' . htmlsafechars($arr['icon']) . '" title="' . htmlsafechars($arr['icon']) . '" class="emoticon">') . '</td>
 		<td align="left" valign="middle" class="' . $class . '">
-		<table border="0" cellspacing="2" cellpadding="2">
+		<table class="table table-bordered table-striped">
 		<tr>
 		<td  class="' . $class . '" align="right"><span style="font-weight: bold;">' . $lang['fe_post'] . ': </span></td>
 		<td  class="' . $class . '" align="left">
@@ -171,7 +174,7 @@ if ($show_as === 'posts') {
     //=== the top
     $content .= ($count > 0 ? '<div style="font-weight: bold;">' . $lang['sea_search_results'] . ' ' . $count . ' </div>' : '') . '<br>' . $the_top_and_bottom . '
    <a id="results"></a>
-	<table border="0" cellspacing="10" cellpadding="10" width="90%">';
+	<table class="table table-bordered table-striped">';
     //=== lets do the loop
     while ($arr = mysqli_fetch_assoc($res)) {
         //=== change colors
@@ -236,7 +239,7 @@ $search__help_boolean = '<div id="help" style="display:none"><h1>' . $lang['sea_
    <span style="font-weight: bold;">> <</span> ' . $lang['sea_help_msg6'] . '<br><br>
    <span style="font-weight: bold;">~</span> ' . $lang['sea_help_msg7'] . '<br><br>
    <span style="font-weight: bold;">" "</span> ' . $lang['sea_help_msg8'] . ' <br><br><span style="font-weight: bold;">( )</span> ' . $lang['sea_help_msg9'] . '<br><br></div>';
-$search_in_forums = '<table width="100%">';
+$search_in_forums = '<table class="table-striped">';
 $row_count = 0;
 $res_forums = sql_query('SELECT o_f.name AS over_forum_name, o_f.id AS over_forum_id, f.id AS real_forum_id, f.name, f.description,  f.forum_id FROM over_forums AS o_f JOIN forums AS f WHERE o_f.min_class_view <= ' . $CURUSER['class'] . ' AND f.min_class_read <=  ' . $CURUSER['class'] . ' ORDER BY o_f.sort, f.sort ASC') or sqlerr(__FILE__, __LINE__);
 //=== well... let's do the loop and make the damned forum thingie!
@@ -249,19 +252,19 @@ while ($arr_forums = mysqli_fetch_assoc($res_forums)) {
         }
     }
     $search_in_forums .= ($arr_forums['over_forum_id'] != $over_forum_id ? '<tr>
-	<td align="left" colspan="3"><span style="color: white;">' . htmlsafechars($arr_forums['over_forum_name'], ENT_QUOTES) . '</span></td></tr>' : '');
+	<td class="has-no-border" colspan="3"><span style="color: white;">' . htmlsafechars($arr_forums['over_forum_name'], ENT_QUOTES) . '</span></td></tr>' : '');
     if ($arr_forums['forum_id'] === $arr_forums['over_forum_id']) {
         $row_count = ($row_count == 3 ? 0 : $row_count);
         $search_in_forums .= ($row_count == 0 ? '' : '');
         ++$row_count;
-        $search_in_forums .= '<tr><td align="left"><input name="f' . $arr_forums['real_forum_id'] . '" type="checkbox" ' . ($selected_forums ? 'checked="checked"' : '') . ' value="1" /><a href="forums.php?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '" class="altlink" title="' . htmlsafechars($arr_forums['description'], ENT_QUOTES) . '">' . htmlsafechars($arr_forums['name'], ENT_QUOTES) . '</a></td></tr> ' . (3 == $row_count ? '</td></tr>' : '');
+        $search_in_forums .= '<tr><td class="has-no-border"><input name="f' . $arr_forums['real_forum_id'] . '" type="checkbox" ' . ($selected_forums ? 'checked="checked"' : '') . ' value="1" /><a href="forums.php?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '" class="altlink" title="' . htmlsafechars($arr_forums['description'], ENT_QUOTES) . '">' . htmlsafechars($arr_forums['name'], ENT_QUOTES) . '</a></td></tr> ' . ($row_count == 3 ? '</td></tr>' : '');
     }
     $over_forum_id = $arr_forums['over_forum_id'];
 }
 for ($row_count = $row_count; $row_count < 3; ++$row_count) {
     $search_in_forums .= '';
 }
-$search_in_forums .= '<tr><td  colspan="3"><span style="font-weight: bold;">' . $lang['sea_if_none_are_selected_all_are_searched.'] . '</span></td></tr></table>';
+$search_in_forums .= '<tr><td class="has-no-border"><span style="font-weight: bold;">' . $lang['sea_if_none_are_selected_all_are_searched.'] . '</span></td></tr></table>';
 /*
     //=== well... let's do the loop and make the damned forum thingie!
     while ($arr_forums = mysqli_fetch_assoc($res_forums))
@@ -321,8 +324,8 @@ $sort_by_drop_down = '<select name="sort_by">
 	<option class="body" value="relevance"' . ('relevance' === $sort_by ? ' selected="selected"' : '') . '>' . $lang['sea_relevance'] . ' [default]</option>
 	<option class="body" value="date"' . ('date' === $sort_by ? ' selected="selected"' : '') . '>' . $lang['sea_post_date'] . '</option>
 	</select>';
-$HTMLOUT .= $mini_menu . '<h1>' . $lang['sea_forums'] . '</h1>' . ($count > 0 ? '<h1>' . $count . ' ' . $lang['sea_search_results'] . ' ' . $lang['sea_below'] . '</h1>' : ($search ? $content : '<br>')) . '
-	<form method="get" action="forums.php?"><input type="hidden" name="action" value="search" /><table border="0" cellspacing="10" cellpadding="10" width="800px">
+$HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">' . $lang['sea_forums'] . '</h1>' . ($count > 0 ? '<h1>' . $count . ' ' . $lang['sea_search_results'] . ' ' . $lang['sea_below'] . '</h1>' : ($search ? $content : '<br>')) . '
+	<form method="get" action="forums.php?"><input type="hidden" name="action" value="search" /><table class="table table-bordered table-striped">
 	<tr>
 	<td align="center" colspan="2"><span style="color: white; font-weight: bold;">' . $site_config['site_name'] . ' ' . $lang['sea_forums_search'] . '</span></td>
 	</tr>
@@ -375,7 +378,7 @@ $HTMLOUT .= $mini_menu . '<h1>' . $lang['sea_forums'] . '</h1>' . ($count > 0 ? 
 	</td>
 	</tr>
 	<tr>
-	<td  width="30px" colspan="2">
+	<td colspan="2" class="has-text-centered">
 	<input type="radio" name="show_as" value="list" ' . ('list' === $show_as ? 'checked="checked"' : '') . ' /> <span style="font-weight: bold;">' . $lang['sea_results_as_list'] . '</span>  
 	<input type="radio" name="show_as" value="posts" ' . ('posts' === $show_as ? 'checked="checked"' : '') . ' /> <span style="font-weight: bold;">' . $lang['sea_results_as_posts'] . '</span>  
 	<input type="submit" name="button" class="button is-small" value="' . $lang['gl_search'] . '"  />

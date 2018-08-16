@@ -6,6 +6,8 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'comment_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'function_imdb.php';
+require_once INCL_DIR . 'pager_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $user_stuffs, $fluent;
 
@@ -68,19 +70,22 @@ switch ($action) {
         break;
 
     case 'default':
-        require_once INCL_DIR . 'bbcode_functions.php';
-        require_once INCL_DIR . 'pager_new.php';
         $count_query = sql_query('SELECT COUNT(id) FROM requests') or sqlerr(__FILE__, __LINE__);
         $count_arr = mysqli_fetch_row($count_query);
         $count = $count_arr[0];
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
-        $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
-        list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'requests.php?' . ($perpage == 20 ? '' : '&amp;perpage=' . $perpage));
+        $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
+        $link = $site_config['baseurl'] . '/requests.php?' . (isset($_GET['perpage']) ? "perpage={$perpage}&amp;" : '');
+        $pager = pager($perpage, $count, $link);
+        $menu_top = $pager['pagertop'];
+        $menu_bottom = $pager['pagerbottom'];
+        $LIMIT = $pager['limit'];
+
         $main_query_res = sql_query('SELECT r.id AS request_id, r.request_name, r.category, r.added, r.requested_by_user_id, r.filled_by_user_id, r.filled_torrent_id, r.vote_yes_count, r.vote_no_count, r.comments, u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.leechwarn, u.chatpost, u.pirate, u.king, c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT JOIN categories AS c ON r.category = c.id LEFT JOIN users AS u ON r.requested_by_user_id = u.id ORDER BY r.added DESC ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
-        if ($count = 0) {
+        if ($count === 0) {
             stderr('Error!', 'Sorry, there are no current requests!');
         }
-        $HTMLOUT .= (isset($_GET['new']) ? '<h1>Request Added!</h1>' : '') . (isset($_GET['request_deleted']) ? '<h1>Request Deleted!</h1>' : '') . $top_menu . '' . $menu . '<br>';
+        $HTMLOUT .= (isset($_GET['new']) ? '<h1>Request Added!</h1>' : '') . (isset($_GET['request_deleted']) ? '<h1>Request Deleted!</h1>' : '') . $top_menu . '' . ($count > $perpage ? $menu_top : '') . '<br>';
         $HTMLOUT .= '<table class="table table-bordered table-striped">
     <tr>
         <td>Type</td>
@@ -105,13 +110,11 @@ switch ($action) {
     </tr>';
         }
         $HTMLOUT .= '</table>';
-        $HTMLOUT .= '' . $menu . '<br>';
+        $HTMLOUT .= ($count > $perpage ? $menu_bottom : '') . '<br>';
         echo stdhead('Requests') . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'request_details':
-        require_once INCL_DIR . 'bbcode_functions.php';
-        require_once INCL_DIR . 'pager_new.php';
         if (!isset($id) || !is_valid_id($id)) {
             stderr('USER ERROR', 'Bad id');
         }
@@ -219,18 +222,24 @@ switch ($action) {
             $HTMLOUT .= main_div('<h2>No comments yet</h2>', 'top20 has-text-centered');
         } else {
             $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
-            $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
-            list($menu, $LIMIT, $pdo) = pager_new($count, $perpage, $page, 'requests.php?action=request_details&amp;id=' . $id, ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . '#comments');
+            $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
+            $link = $site_config['baseurl'] . "/requests.php?action=request_details&amp;id=$id" . (isset($_GET['perpage']) ? "perpage={$perpage}&amp;" : '');
+            $pager = pager($perpage, $count, $link);
+            $menu_top = $pager['pagertop'];
+            $menu_bottom = $pager['pagerbottom'];
+            $LIMIT = $pager['pdo'];
+
             $allrows = $fluent->from('comments')
                 ->select('id AS comment_id')
                 ->where('request = ?', $id)
                 ->orderBy('id DESC')
-                ->limit('?, ?', $pdo[0], $pdo[1])
+                ->limit('?, ?', $LIMIT[0], $LIMIT[1])
                 ->fetchAll();
 
             $HTMLOUT .= '<a id="comments"></a>';
-            $HTMLOUT .= ($count > $perpage) ? $menu . '<br>' : '<br>';
+            $HTMLOUT .= ($count > $perpage ? $menu_top : '') . '<br>';
             $HTMLOUT .= commenttable($allrows, 'request');
+            $HTMLOUT .= ($count > $perpage ? $menu_bottom : '');
         }
         echo stdhead('Request details for: ' . htmlsafechars($arr['request_name'], ENT_QUOTES)) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
@@ -418,8 +427,6 @@ switch ($action) {
         break;
 
     case 'add_comment':
-        require_once INCL_DIR . 'bbcode_functions.php';
-        require_once INCL_DIR . 'pager_new.php';
         if (!isset($id) || !is_valid_id($id)) {
             stderr('USER ERROR', 'Bad id');
         }

@@ -64,4 +64,4 @@ while ($ras = mysqli_fetch_assoc($res)) {
 }
 $HTMLOUT .= end_table();
 $HTMLOUT .= end_frame();
-echo stdhead($lang['ipcheck_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['ipcheck_stdhead']) . wrapper($HTMLOUT) . stdfoot();

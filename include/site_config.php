@@ -201,12 +201,6 @@ $site_config['ebook_cats'] = [
 ];
 
 $youtube_pattern = "/^http(s)?\:\/\/www\.youtube\.com\/watch\?v\=[\w-]{11}/i";
-// set this to size of user avatars
-$site_config['av_img_height'] = 100;
-$site_config['av_img_width'] = 100;
-// set this to size of user signatures
-$site_config['sig_img_height'] = 100;
-$site_config['sig_img_width'] = 500;
 
 // Image uploads
 $site_config['allowed_exif_types'] = [

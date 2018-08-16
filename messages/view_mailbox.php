@@ -28,8 +28,12 @@ $filled = $messages > 0 ? (($messages / $maxbox) * 100) : 0;
 //$filled = (($messages / $maxbox) * 100);
 $mailbox_pic = get_percent_completed_image(round($filled), $maxpic);
 $num_messages = number_format($filled, 0);
-$link = 'messages.php?action=view_mailbox&amp;box=' . $mailbox . ($perpage < $messages ? '&amp;page=' . $page : '') . '&amp;order_by=' . $order_by . $desc_asc;
-list($menu, $LIMIT) = pager_new($messages, $perpage, $page, $link);
+$link = 'messages.php?action=view_mailbox&amp;box=' . $mailbox . '&amp;order_by=' . $order_by . $desc_asc . '&amp;';
+$pager = pager($perpage, $messages, $link);
+$menu_top = $pager['pagertop'];
+$menu_bottom = $pager['pagerbottom'];
+$LIMIT = $pager['limit'];
+
 //=== get message info we need to display then all nice and tidy like \o/
 $res = sql_query('SELECT m.id AS message_id, m.sender, m.receiver, m.added, m.subject, m.unread, m.urgent, u.id, u.username, u.uploaded, u.downloaded, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.opt1, u.opt2,  u.leechwarn, u.chatpost, u.pirate, u.king, f.id AS friend, b.id AS blocked FROM messages AS m
                             LEFT JOIN users AS u ON u.id=m.' . ($mailbox === PM_SENTBOX ? 'receiver' : 'sender') . '
@@ -50,8 +54,8 @@ $HTMLOUT .= "
             <span class='size_1'>{$lang['pm_mailbox_full']}{$num_messages}{$lang['pm_mailbox_full1']}</span>
             <br>
             <div class='bottom20'>$mailbox_pic</div>
-            " . insertJumpTo($mailbox) . $other_box_info . ($perpage < $messages ? $menu : '') . "
-        </h3>
+            " . insertJumpTo($mailbox) . $other_box_info . "
+        </h3>" . ($messages > $perpage ? $menu_top : '') . "
         <form action='messages.php' method='post' name='checkme' onsubmit='return ValidateForm(this,\"pm\")'>
             <div class='table-wrapper'>
             <table class='table table-bordered table-striped top20 bottom20'>
@@ -153,5 +157,5 @@ $HTMLOUT .= (mysqli_num_rows($res) > 0 ? "
     </tr>" : '') . '
     </table>
     </div>
-        ' . ($perpage < $messages ? $menu . '<br>' : '') . '
+        ' . ($messages > $perpage ? $menu_bottom . '<br>' : '') . '
     </form>';

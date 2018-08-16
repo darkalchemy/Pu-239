@@ -490,4 +490,4 @@ $HTMLOUT .= '<form name="inputform" method="post" action="' . $site_config['base
         <input type="submit" class="button is-small" name="button" value="' . $lang['bonusmanager_doit'] . '"  /></td>
     </tr>
     </table></form>';
-echo stdhead($lang['bonusmanager_h1_upload']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['bonusmanager_h1_upload']) . wrapper($HTMLOUT) . stdfoot();

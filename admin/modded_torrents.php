@@ -111,7 +111,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
             $HTMLOUT .= $pager['pagertop'];
             $title = $put;
         }
-        //echo stdhead("".$lang['mtor_no_torrents_modded']."") . $HTMLOUT . stdfoot();
+        //echo stdhead("".$lang['mtor_no_torrents_modded']."") . wrapper($HTMLOUT) . stdfoot();
         //die();
         // ENDS ALL UNMODDED TORRENTS
     } else {
@@ -123,7 +123,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
         $count = $res[0];
         if ($count < 1) {
             $HTMLOUT .= '<h3>' . $lang['mtor_no_torrents_have_been_modded'] . ' ' . $mode . '.</h3>';
-            //echo stdhead("".$lang['mtor_no_torrents_modded']."") . $HTMLOUT . stdfoot();
+            //echo stdhead("".$lang['mtor_no_torrents_modded']."") . wrapper($HTMLOUT) . stdfoot();
             $title = '' . $lang['mtor_no_torrents_modded'] . " $mode";
         //die();
         } else {
@@ -159,7 +159,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
             $title = "$count " . $lang['mtor_modded_torrents'] . " $mode";
         }
     }
-    echo stdhead($title) . $HTMLOUT . stdfoot();
+    echo stdhead($title) . wrapper($HTMLOUT) . stdfoot();
     die();
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $where = false;
@@ -231,7 +231,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
     } else {
         stderr($lang['mtor_error'], '' . $lang['mtor_empty_data_supplied'] . ' ! ' . $lang['mtor_please_try_again'] . '');
     }
-    echo stdhead($title) . $HTMLOUT . stdfoot();
+    echo stdhead($title) . wrapper($HTMLOUT) . stdfoot();
     die();
 }
 $HTMLOUT = '';
@@ -278,4 +278,4 @@ $HTMLOUT .= "
 
   </div>
   </div>';
-echo stdhead($lang['mtor_modded_torrents_panel']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['mtor_modded_torrents_panel']) . wrapper($HTMLOUT) . stdfoot();

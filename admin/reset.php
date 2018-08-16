@@ -46,4 +46,4 @@ $HTMLOUT .= "<h1>{$lang['reset_title']}</h1>
 </td>
 </tr>
 </table></form>";
-echo stdhead($lang['reset_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['reset_stdhead']) . wrapper($HTMLOUT) . stdfoot();

@@ -35,6 +35,7 @@ function validatorForm($context)
 function validate($validator, $context, $seconds = 0)
 {
     global $CURUSER;
+
     $timestamp = hexdec(substr($validator, 20));
     if ($seconds && time() > $timestamp + $seconds) {
         return false;

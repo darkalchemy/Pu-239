@@ -199,7 +199,7 @@ $HTMLOUT = '<div>
 </form>
 </div>';
 $HTMLOUT = preg_replace_callback('|<#(.*?)#>|', 'template_out', $HTMLOUT);
-echo stdhead($lang['repset_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['repset_stdhead']) . wrapper($HTMLOUT) . stdfoot();
 /**
  * @param $matches
  *
