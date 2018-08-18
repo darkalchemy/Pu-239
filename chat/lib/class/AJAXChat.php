@@ -306,16 +306,18 @@ class AJAXChat
         if ($this->_onlineUsersData === null) {
             $this->_onlineUsersData = [];
 
-            $sql = $this->_fluent->from($this->getDataBaseTable('online'))
+            $sql = $this->_fluent->from($this->getDataBaseTable('online') . ' AS o')
                 ->select(null)
-                ->select('userID')
-                ->select('userName')
-                ->select('userRole')
-                ->select('channel')
-                ->select('UNIX_TIMESTAMP(dateTime) AS timeStamp')
-                ->select('INET6_NTOA(ip) AS ip')
-                ->orderBy('userRole DESC')
-                ->orderBy('LOWER(userName) ASC');
+                ->select('o.userID')
+                ->select('o.userName')
+                ->select('o.userRole')
+                ->select('o.channel')
+                ->select('UNIX_TIMESTAMP(o.dateTime) AS timeStamp')
+                ->select('INET6_NTOA(o.ip) AS ip')
+                ->leftJoin('users AS u ON o.userID = u.id')
+                ->where('(u.anonymous = "no" AND u.anonymous_until = 0) OR o.userID = ?', $this->getUserID())
+                ->orderBy('o.userRole DESC')
+                ->orderBy('LOWER(o.userName) ASC');
 
             foreach ($sql as $row) {
                 $row['pmCount'] = getPMCount($row['userID']);

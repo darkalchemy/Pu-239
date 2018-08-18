@@ -1,4 +1,5 @@
 18 Aug 2018
+update: hide anonymous users from showing in AJAX Chat Online list
 fix: last post link forums.php
 update: database files
 fix: comments edit/delete
