@@ -22,7 +22,7 @@ function ajax_chat_cleanup($data)
         sql_query('DELETE FROM ajax_chat_messages WHERE id = ' . $row['id']) or sqlerr(__FILE__, __LINE__);
     }
 
-    sql_query('UPDATE ajax_chat_messages SET text = REPLACE(REPLACE(text, '[/img]', ''), '[img]', '') WHERE text LIKE '%[img]%[/img]%' AND dateTime <= NOW() - INTERVAL 1 DAY;') or sqlerr(__FILE__, __LINE__);
+    sql_query("UPDATE ajax_chat_messages SET text = REPLACE(REPLACE(text, '[/img]', '[/url]'), '[img]', '[url]') WHERE text LIKE '%[img]%[/img]%' AND dateTime <= NOW() - INTERVAL 1 DAY;") or sqlerr(__FILE__, __LINE__);
 
     if ($data['clean_log'] && $queries > 0) {
         write_log("AJAX Chat Cleanup: Autoshout posts Deleted using $queries queries");

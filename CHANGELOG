@@ -1,4 +1,6 @@
 18 Aug 2018
+fix: typo ajax_chat_cleanup.php
+add: missing pirate.png
 fix: AJAX Chat disabled gif
 fix: incorrect lang key for AJAX Chat messages
 update: show users message when banned from AJAX Chat
