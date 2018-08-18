@@ -47,4 +47,4 @@ if ($CURUSER['class'] >= UC_STAFF) {
 }
 $HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='Edit Offer' class='button is-small' /></td></tr></table></form><br>\n";
 /////////////////////// HTML OUTPUT //////////////////////////////
-echo stdhead('Edit Offer') . $HTMLOUT . stdfoot();
+echo stdhead('Edit Offer') . wrapper($HTMLOUT) . stdfoot();

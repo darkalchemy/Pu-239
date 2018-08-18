@@ -7,18 +7,11 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'comment_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $userid, $fluent, $user_stuffs;
+global $CURUSER, $site_config, $userid, $fluent, $user_stuffs, $session;
 
 $lang = load_language('global');
 $HTMLOUT = $user = '';
 $action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
-$stdhead = [
-    'css' => [
-        'style',
-        'style2',
-        'bbcode',
-    ],
-];
 
 if ($action === 'add') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -50,7 +43,7 @@ if ($action === 'add') {
         }
     }
     $HTMLOUT .= "
-    <h1 class='has-text-centered'>Add a comment for " . format_username($arr['id']) . "</h1>
+    <h1 class='has-text-centered'>Add a comment for " . format_username($arr['userid']) . "</h1>
     <form method='post' action='usercomment.php?action=add'>
         <input type='hidden' name='userid' value='$userid' />
         <div>" . BBcode() . "</div>
@@ -67,12 +60,18 @@ if ($action === 'add') {
 
     if ($allrows) {
         $HTMLOUT .= '
-            <h2>Most recent comments, in reverse order</h2>' . commenttable($allrows);
+            <h2>Most recent comments, in reverse order</h2>' . commenttable($allrows, 'userdetails');
     }
-    echo stdhead('Add a comment for "' . htmlsafechars($arr['username']) . '"', $stdhead) . wrapper($HTMLOUT) . stdfoot();
+    echo stdhead('Add a comment for ' . htmlsafechars($arr['username'])) . wrapper($HTMLOUT) . stdfoot();
+    die();
 } elseif ($action === 'edit') {
-    $userid = (int) $_GET['userid'];
-    $commentid = (int) $_GET['cid'];
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $userid = (int) $_POST['userid'];
+        $commentid = (int) $_POST['cid'];
+    } else {
+        $userid = (int) $_GET['userid'];
+        $commentid = (int) $_GET['cid'];
+    }
     if (!is_valid_id($commentid)) {
         stderr('Error', 'Invalid ID.');
     }
@@ -98,16 +97,16 @@ if ($action === 'add') {
         }
         die();
     }
-    $HTMLOUT .= '<h1>Edit comment for "' . htmlsafechars($arr['username']) . "\"</h1>
+    $referer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+    $HTMLOUT .= '<h1 class="has-text-centered">Edit comment for ' . format_username($arr['userid']) . "</h1>
     <form method='post' action='usercomment.php?action=edit&amp;cid={$commentid}'>
-    <input type='hidden' name='returnto' value='{$_SERVER['HTTP_REFERER']}' />
+    <input type='hidden' name='returnto' value='{$referer}' />
     <input type=\"hidden\" name=\"cid\" value='" . (int) $commentid . "' />
-    <textarea name='body' rows='10' cols='60'>" . htmlsafechars($arr['text']) . "</textarea>
+    <textarea name='body' rows='10' class='w-100'>" . htmlsafechars($arr['text']) . "</textarea>
     <div class='has-text-centered margin20'>
         <input type='submit' class='button is-small' value='Do it!' />
     </div></form>";
-    echo stdhead('Edit comment for "' . htmlsafechars($arr['username']) . '"', $stdhead) . wrapper($HTMLOUT) . stdfoot();
-    stdfoot();
+    echo stdhead('Edit comment for ' . htmlsafechars($arr['username'])) . wrapper($HTMLOUT) . stdfoot();
     die();
 } elseif ($action === 'delete') {
     $commentid = (int) $_GET['cid'];
@@ -117,7 +116,7 @@ if ($action === 'add') {
     $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : false;
     if (!$sure) {
         $referer = $_SERVER['HTTP_REFERER'];
-        stderr('Delete comment', "You are about to delete a comment. Click\n" . "<a href='usercomment.php?action=delete&amp;cid=$commentid&amp;sure=1" . ($referer ? '&amp;returnto=' . urlencode($referer) : '') . "'>here</a> if you are sure.");
+        stderr('Delete comment', "You are about to delete a comment. Click\n" . "<a href='usercomment.php?action=delete&amp;cid=$commentid&amp;sure=1" . ($referer ? '&amp;returnto=' . urlencode($referer) : '') . "'><span class='has-text-lime'>here</span></a> if you are sure.");
     }
     $arr = $fluent->from('usercomments')
         ->where('id = ?', $commentid)
@@ -133,9 +132,9 @@ if ($action === 'add') {
     if ($userid && mysqli_affected_rows($GLOBALS['___mysqli_ston']) > 0) {
         sql_query('UPDATE users SET comments = comments - 1 WHERE id = ' . sqlesc($userid));
     }
-    $returnto = htmlsafechars($_GET['returnto']);
-    if ($returnto) {
-        header("Location: $returnto");
+    $session->set('is-success', 'User Comment has been deleted.');
+    if ($_GET['returnto']) {
+        header('Location: ' . htmlsafechars($_GET['returnto']));
     } else {
         header("Location: {$site_config['baseurl']}/userdetails.php?id={$userid}#comments");
     }
@@ -158,14 +157,14 @@ if ($action === 'add') {
     $HTMLOUT = "
         <h1 class='has-text-centered'>{$lang['comment_original_content']}#$commentid</h1>" . main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
 
-    $returnto = (isset($_SERVER['HTTP_REFERER']) ? htmlsafechars($_SERVER['HTTP_REFERER']) : 0);
+    $returnto = (isset($_SERVER['HTTP_REFERER']) ? htmlsafechars($_SERVER['HTTP_REFERER']) : '');
     if ($returnto) {
         $HTMLOUT .= "
             <div class='has-text-centered margin20'>
                 <a href='$returnto#comments' class='button is-small has-text-black'>back</a>
             </div>  ";
     }
-    echo stdhead("{$lang['comment_original']}") . wrapper($HTMLOUT) . stdfoot($stdfoot);
+    echo stdhead("{$lang['comment_original']}") . wrapper($HTMLOUT) . stdfoot();
     die();
 } else {
     stderr('Error', 'Unknown action');

@@ -934,6 +934,10 @@ code a,
     min-width: 150px;
 }
 
+.min-200 {
+    min-width: 200px;
+}
+
 .w-1 {
     width: 1%;
     flex: none;

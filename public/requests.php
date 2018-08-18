@@ -23,6 +23,11 @@ if ($CURUSER['class'] < (UC_MIN + 1)) {
 }
 $id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
 $comment_id = (isset($_GET['cid']) ? intval($_GET['cid']) : (isset($_POST['cid']) ? intval($_POST['cid']) : 0));
+if (isset($_GET['comment_id']) && $comment_id === 0) {
+    $comment_id = $_GET['comment_id'];
+} elseif (isset($_POST['comment_id']) && $comment_id === 0) {
+    $comment_id = $_POST['comment_id'];
+}
 $category = (isset($_GET['category']) ? intval($_GET['category']) : (isset($_POST['category']) ? intval($_POST['category']) : 0));
 $requested_by_id = isset($_GET['requested_by_id']) ? intval($_GET['requested_by_id']) : 0;
 $vote = isset($_POST['vote']) ? intval($_POST['vote']) : 0;
@@ -38,6 +43,8 @@ $valid_actions = [
     'edit',
     'delete',
     'vieworiginal',
+    'edit_comment',
+    'delete_comment',
 ];
 $action = (in_array($posted_action, $valid_actions) ? $posted_action : 'default');
 $top_menu = '
@@ -533,6 +540,24 @@ switch ($action) {
     </tr>
      </table></form>';
         echo stdhead('Edit comment to "' . $arr['request_name'] . '"') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        break;
+
+    case 'edit_comment':
+        if (!isset($comment_id) || !is_valid_id($comment_id)) {
+            stderr('Error', 'Bad ID.');
+        }
+        $res = sql_query('SELECT user, request FROM requests WHERE id = ' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
+        $arr = mysqli_fetch_assoc($res);
+        if (!$arr) {
+            stderr('Error', 'Invalid ID.');
+        }
+        if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+            stderr('Error', 'Permission denied.');
+        }
+        sql_query('UPDATE comments set editedby = ' . sqlesc($CURUSER['id']) . ', editedat = ' . sqlesc(TIME_NOW) . ', ori_text = text, text = ' . sqlesc($_POST['body']) . ' WHERE id = ' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
+        $session->set('is-success', 'Comment Edited Successfully.');
+        header('Location: /requests.php?action=request_details&id=' . $id . '#comm' . $comment_id);
+        die();
         break;
 
     case 'delete_comment':

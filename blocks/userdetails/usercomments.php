@@ -17,7 +17,8 @@ if (!$count) {
         <h2>{$lang['userdetails_comm_yet']}</h2>\n";
 } else {
     require_once INCL_DIR . 'pager_functions.php';
-    $pager = pager(5, $count, "userdetails.php?id=$id&amp;", [
+    $perpage = 5;
+    $pager = pager($perpage, $count, "userdetails.php?id=$id&amp;", [
         'lastpagedefault' => 1,
     ]);
 
@@ -31,8 +32,9 @@ if (!$count) {
         $row['anonymous'] = false;
         $allrows[] = $row;
     }
-    $text .= ($pager['pagertop']);
+    $text .= $count > $perpage ? $pager['pagertop'] : '';
     $text .= commenttable($allrows, 'usercomment');
+    $text .= $count > $perpage ? $pager['pagerbottom'] : '';
 }
 $text .= '</div>';
 

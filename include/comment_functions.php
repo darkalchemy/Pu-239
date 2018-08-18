@@ -15,23 +15,24 @@ function commenttable($rows, $variant = 'torrent')
     $lang = load_language('torrenttable_functions');
     $count = 0;
     $variant_options = [
-        'torrent' => 'details',
+        'torrent' => 'comment',
         'request' => 'requests',
         'offer' => 'offers',
-        'usercomment' => 'usercomments',
+        'usercomment' => 'usercomment',
     ];
     if (isset($variant_options[$variant])) {
         $type = $variant_options[$variant];
     } else {
         return;
     }
-    $extra_link = ($variant === 'request' ? '&type=request' : ($variant === 'offer' ? '&type=offer' : ''));
+    $extra_link = ($variant === 'request' ? '&amp;type=request' : ($variant === 'offer' ? '&amp;type=offer' : ''));
+    $delete = ($variant === 'request' || $variant === 'offer') ? 'action=delete_comment' : 'action=delete';
     $htmlout = '';
     $i = 0;
     foreach ($rows as $row) {
         $cid = $row['id'];
         if ($variant === 'torrent') {
-            $variant = 'comment';
+            $variantc = 'comment';
         }
         $usersdata = $user_stuffs->getUserFromId($row['user']);
         $this_text = '';
@@ -48,7 +49,7 @@ function commenttable($rows, $variant = 'torrent')
                 $query = $fluent->from('likes')
                     ->select(null)
                     ->select('user_id')
-                    ->where("{$variant}_id = ?", $cid);
+                    ->where("{$variantc}_id = ?", $cid);
 
                 foreach ($query as $userid) {
                     $user_likes[] = $userid['user_id'];
@@ -96,15 +97,16 @@ function commenttable($rows, $variant = 'torrent')
                     </a>';
             }
         } else {
-            $this_text .= "<a id='comm" . (int) $row['id'] . "' class='left5'><i>(" . $lang['commenttable_orphaned'] . ')</i></a>';
+            $this_text .= "<i>(" . $lang['commenttable_orphaned'] . ')</i></a>';
         }
         $this_text .= "<span class='left5'>" . get_date($row['added'], '') . '</span>';
         $row['id'] = (int) $row['id'];
-        $tid = !empty($row['variant']) ? "&amp;tid={$row['variant']}" : '';
+        $tid = !empty($row[$variant]) ? "&amp;tid={$row[$variant]}" : '';
+
         $this_text .= ($row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? "
                     <a href='{$site_config['baseurl']}/{$type}.php?action=edit&amp;cid={$row['id']}{$extra_link}{$tid}' class='button is-small left10'>{$lang['commenttable_edit']}</a>" : '') . ($CURUSER['class'] >= UC_VIP ? "
                     <a href='{$site_config['baseurl']}/report.php?type=Comment&amp;id={$row['id']}' class='button is-small left10'>Report this Comment</a>" : '') . ($CURUSER['class'] >= UC_STAFF ? "
-                    <a href='{$site_config['baseurl']}/{$type}.php?action=delete&amp;cid={$row['id']}{$extra_link}{$tid}' class='button is-small left10'>{$lang['commenttable_delete']}</a>" : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? "
+                    <a href='{$site_config['baseurl']}/{$type}.php?{$delete}&amp;cid={$row['id']}{$extra_link}{$tid}' class='button is-small left10'>{$lang['commenttable_delete']}</a>" : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? "
                     <a href='{$site_config['baseurl']}/{$type}.php?action=vieworiginal&amp;cid={$row['id']}{$extra_link}{$tid}' class='button is-small left10'>{$lang['commenttable_view_original']}</a>" : '') . "
                     <span data-id='{$cid}' data-type='{$variant}' data-csrf='" . $session->get('csrf_token') . "' class='mlike button is-small left10'>" . ucfirst($wht) . "</span>
                     <span class='tot-{$cid} left10'>{$att_str}</span>
@@ -121,17 +123,15 @@ function commenttable($rows, $variant = 'torrent')
         }
         $top = $i++ >= 1 ? 'top20' : '';
         $htmlout .= main_div("
+            <a id='comm{$row['id']}'></a>
             $this_text
-            <a id='{$type}_{$row['id']}'></a>
             <div class='columns'>
                 <span class='margin10 round10 bg-02 column is-one-fifth has-text-centered img-avatar'>
                     {$avatar}
                     <div>" . get_reputation($row['user'], 'comments') . "</div>
                 </span>
                 <span class='margin10 bg-02 round10 column'>
-                    <span class='padding10'>
-                        $text
-                    </span>
+                    $text
                 </span>
             </div>", $top);
     }

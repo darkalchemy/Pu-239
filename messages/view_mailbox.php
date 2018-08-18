@@ -65,7 +65,7 @@ $HTMLOUT .= "
                             <input type='hidden' name='action' value='move_or_delete_multi' />
                             Mailbox
                         </th>
-                        <th>
+                        <th class='min-150'>
                             <a href='{$site_config['baseurl']}/messages.php?action=view_mailbox&amp;box={$mailbox}" . ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=subject{$desc_asc}#pm' class='tooltipper' title='{$lang['pm_mailbox_sorder']}{$desc_asc_2}'>{$lang['pm_mailbox_subject']}
                             </a>
                         </th>

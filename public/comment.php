@@ -11,8 +11,6 @@ global $CURUSER, $site_config, $cache, $session;
 $lang = array_merge(load_language('global'), load_language('comment'), load_language('capprove'));
 flood_limit('comments');
 $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : 0);
-//$vaction = array('add','delete','edit','approve','disapprove','vieworiginal','');
-//$action = (isset($_POST['action']) && in_array($_POST['action'],$vaction) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) && in_array($_GET['action'],$vaction) ? htmlsafechars($_GET['action']) : ''));
 $stdfoot = [
     'js' => [
         get_file_name('upload_js'),
@@ -93,7 +91,6 @@ if ($action === 'add') {
             ], $site_config['expires']['user_cache']);
             //===end
         }
-        // --- pm if new comment mod---//
         $cpm = sql_query('SELECT commentpm FROM users WHERE id = ' . sqlesc($owner)) or sqlerr(__FILE__, __LINE__);
         $cpm_r = mysqli_fetch_assoc($cpm);
         if ($cpm_r['commentpm'] === 'yes') {
@@ -103,7 +100,6 @@ if ($action === 'add') {
             sql_query('INSERT INTO messages (sender, receiver, subject, msg, added) VALUES(0, ' . sqlesc($arr['owner']) . ", $subby, $notifs, $added)") or sqlerr(__FILE__, __LINE__);
             $cache->increment('inbox_' . $arr['owner']);
         }
-        // ---end---//
         $session->set('is-success', 'Your comment has been posted');
         header("Refresh: 0; url=$locale_link.php?id=$id$extra_link&viewcomm=$newid#comm$newid");
         die();
@@ -126,7 +122,7 @@ if ($action === 'add') {
     if ($site_config['BBcode'] && function_exists('BBcode')) {
         $HTMLOUT .= BBcode($body);
     } else {
-        $HTMLOUT .= "<textarea name='text' rows='10' cols='60'></textarea>";
+        $HTMLOUT .= "<textarea name='text' rows='10' class='w-100'></textarea>";
     }
     $HTMLOUT .= "
         <div class='has-text-centered margin20'>
@@ -161,7 +157,7 @@ if ($action === 'add') {
     if (!is_valid_id($commentid)) {
         stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}");
     }
-    $res = sql_query("SELECT c.*, t.$name, t.id as tid FROM comments AS c LEFT JOIN $table_type AS t ON c.$locale = t.id WHERE c.id=" . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query("SELECT c.*, t.$name, t.id as tid FROM comments AS c LEFT JOIN $table_type AS t ON c.$locale = t.id WHERE c.id = " . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
     if (!$arr) {
         stderr("{$lang['comment_error']}", "{$lang['comment_invalid_id']}.");
@@ -196,7 +192,7 @@ if ($action === 'add') {
     if ($site_config['BBcode'] && function_exists('BBcode')) {
         $HTMLOUT .= BBcode($arr['text']);
     } else {
-        $HTMLOUT .= "<textarea name='text' rows='10' cols='60'>" . htmlsafechars($arr['text']) . '</textarea>';
+        $HTMLOUT .= "<textarea name='text' rows='10' class='w-100'>" . htmlsafechars($arr['text']) . '</textarea>';
     }
     $HTMLOUT .= '
       <br>' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" value="lasteditedby" checked name="lasteditedby" id="lasteditedby" /> Show Last Edited By<br><br>' : '') . '
@@ -218,7 +214,7 @@ if ($action === 'add') {
     $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : false;
     if (!$sure) {
         stderr("{$lang['comment_delete']}", "{$lang['comment_about_delete']}\n" . "<a href='comment.php?action=delete&amp;cid=$commentid&amp;tid=$tid&amp;sure=1" . ($locale === 'request' ? '&amp;type=request' : '') . "'>
-          here</a> {$lang['comment_delete_sure']}");
+          <span class='has-text-lime'>here</span></a> {$lang['comment_delete_sure']}");
     }
     $res = sql_query("SELECT $locale FROM comments WHERE id = " . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
@@ -244,7 +240,6 @@ if ($action === 'add') {
         $cache->update_row('user' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus'],
         ], $site_config['expires']['user_cache']);
-        //===end
     }
     $session->set('is-success', 'The comment has been deleted');
     header("Refresh: 0; url=$locale_link.php?id=$tid$extra_link");
@@ -265,11 +260,13 @@ if ($action === 'add') {
     $HTMLOUT = "
         <h1 class='has-text-centered'>{$lang['comment_original_content']}#$commentid</h1>" . main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
 
-    $returnto = (isset($_SERVER['HTTP_REFERER']) ? htmlsafechars($_SERVER['HTTP_REFERER']) : 0);
+    $returnto = (isset($_SERVER['HTTP_REFERER']) ? htmlsafechars($_SERVER['HTTP_REFERER']) : false);
     if ($returnto) {
+        preg_match('/viewcomm=(\d+)/', $returnto, $match);
+        $hashtag = !empty($match[1]) ? '#comm' . $match[1] : '';
         $HTMLOUT .= "
             <div class='has-text-centered margin20'>
-                <a href='$returnto' class='button is-small has-text-black'>back</a>
+                <a href='$returnto{$hashtag}' class='button is-small has-text-black'>back</a>
             </div>  ";
     }
     echo stdhead("{$lang['comment_original']}") . wrapper($HTMLOUT) . stdfoot($stdfoot);

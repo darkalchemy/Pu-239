@@ -75,7 +75,6 @@ class ImageProxy
         if (file_exists($new_path)) {
             return $hash;
         }
-dd($path);
         if (mime_content_type($path) !== 'image/gif') {
             if (mime_content_type($path) !== 'image/jpeg') {
                 Image::load($new_path)

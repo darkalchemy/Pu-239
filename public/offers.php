@@ -23,6 +23,11 @@ if ($CURUSER['class'] < (UC_MIN + 1)) {
 }
 $id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
 $comment_id = (isset($_GET['cid']) ? intval($_GET['cid']) : (isset($_POST['cid']) ? intval($_POST['cid']) : 0));
+if (isset($_GET['comment_id']) && $comment_id === 0) {
+    $comment_id = $_GET['comment_id'];
+} elseif (isset($_POST['comment_id']) && $comment_id === 0) {
+    $comment_id = $_POST['comment_id'];
+}
 $category = (isset($_GET['category']) ? intval($_GET['category']) : (isset($_POST['category']) ? intval($_POST['category']) : 0));
 $offered_by_id = isset($_GET['offered_by_id']) ? intval($_GET['offered_by_id']) : 0;
 $vote = isset($_POST['vote']) ? intval($_POST['vote']) : 0;
@@ -39,6 +44,8 @@ $valid_actions = [
     'delete',
     'vieworiginal',
     'alter_status',
+    'edit_comment',
+    'delete_comment',
 ];
 $action = (in_array($posted_action, $valid_actions) ? $posted_action : 'default');
 $top_menu = '
@@ -495,7 +502,7 @@ switch ($action) {
         if (!isset($comment_id) || !is_valid_id($comment_id)) {
             stderr('Error', 'Bad ID.');
         }
-        $res = sql_query('SELECT c.*, o.offer_name FROM comments AS c LEFT JOIN offers AS o ON c.offer = o.id WHERE c.id=' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT c.*, o.offer_name FROM comments AS c LEFT JOIN offers AS o ON c.offer = o.id WHERE c.id = ' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_assoc($res);
         if (!$arr) {
             stderr('Error', 'Invalid ID.');
@@ -508,7 +515,7 @@ switch ($action) {
             if ($body == '') {
                 stderr('Error', 'Comment body cannot be empty!');
             }
-            sql_query('UPDATE comments SET text=' . sqlesc($body) . ', editedat=' . TIME_NOW . ', editedby=' . sqlesc($CURUSER['id']) . ' WHERE id=' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE comments SET text = ' . sqlesc($body) . ', editedat = ' . TIME_NOW . ', editedby = ' . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
             header('Location: /offers.php?action=offer_details&id=' . $id . '&viewcomm=' . $comment_id . '#comm' . $comment_id);
             die();
         }
@@ -541,11 +548,29 @@ switch ($action) {
         echo stdhead('Edit comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"') . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
+    case 'edit_comment':
+        if (!isset($comment_id) || !is_valid_id($comment_id)) {
+            stderr('Error', 'Bad ID.');
+        }
+        $res = sql_query('SELECT user, offer FROM comments WHERE id = ' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
+        $arr = mysqli_fetch_assoc($res);
+        if (!$arr) {
+            stderr('Error', 'Invalid ID.');
+        }
+        if ($arr['user'] != $CURUSER['id'] && $CURUSER['class'] < UC_STAFF) {
+            stderr('Error', 'Permission denied.');
+        }
+        sql_query('UPDATE comments set editedby = ' . sqlesc($CURUSER['id']) . ', editedat = ' . sqlesc(TIME_NOW) . ', ori_text = text, text = ' . sqlesc($_POST['body']) . ' WHERE id = ' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
+        $session->set('is-success', 'Comment Edited Successfully.');
+        header('Location: /offers.php?action=offer_details&id=' . $id . '#comm' . $comment_id);
+        die();
+        break;
+
     case 'delete_comment':
         if (!isset($comment_id) || !is_valid_id($comment_id)) {
             stderr('Error', 'Bad ID.');
         }
-        $res = sql_query('SELECT user, offer FROM comments WHERE id=' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT user, offer FROM comments WHERE id = ' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_assoc($res);
         if (!$arr) {
             stderr('Error', 'Invalid ID.');
@@ -559,6 +584,7 @@ switch ($action) {
         } else {
             sql_query('DELETE FROM comments WHERE id = ' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
             sql_query('UPDATE offers SET comments = comments - 1 WHERE id = ' . sqlesc($arr['offer'])) or sqlerr(__FILE__, __LINE__);
+            $session->set('is-success', 'Comment Deleted');
             header('Location: /offers.php?action=offer_details&id=' . $id . '&comment_deleted=1');
             die();
         }
