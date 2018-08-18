@@ -96,20 +96,20 @@ foreach ($query as $sub_forums_arr) {
 
         if ($post_arr['tan'] == 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $post_arr['user_id'] != $CURUSER['id']) {
-                $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
+                $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
 						<span style="font-weight: bold;">' . CutName(htmlsafechars($post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a>' . $topic_status_image . '<br>
 						' . get_date($post_arr['added'], '') . '<br></span>';
             } else {
                 $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> [' . format_username($post_arr['user_id']) . ']
 						<span style="font-size: x-small;"> [ ' . get_user_class_name($post_arr['class']) . ' ] </span><br>
-						in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
+						in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
 						<span style="font-weight: bold;">' . CutName(htmlsafechars($post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a>' . $topic_status_image . '<br>
 						' . get_date($post_arr['added'], '') . '<br></span>';
             }
         } else {
             $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . format_username($post_arr['user_id']) . '
 						<span style="font-size: x-small;"> [ ' . get_user_class_name($post_arr['class']) . ' ] </span><br>
-						in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
+						in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
 						<span style="font-weight: bold;">' . CutName(htmlsafechars($post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a>' . $topic_status_image . '<br>
 						' . get_date($post_arr['added'], '') . '<br></span>';
         }
@@ -349,8 +349,8 @@ if ($count > 0) {
 		<td>' . number_format($topic_arr['post_count']) . '</td>
 		<td>' . number_format($topic_arr['views']) . '</td>
 		<td><span style="white-space:nowrap;">' . get_date($arr_post_stuff['added'], '') . '</span><br>
-		<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . $lang['fe_go_to_the_last_post_in_this_thread'] . '">' . $lang['fe_last_post'] . '</a> by&nbsp;' . $last_post_username . '</td>
-		<td>' . $post_status_image . ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $last_unread_post_id . '#' . $last_unread_post_id . '">
+		<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=last#' . $last_post_id . '" title="' . $lang['fe_go_to_the_last_post_in_this_thread'] . '">' . $lang['fe_last_post'] . '</a> by&nbsp;' . $last_post_username . '</td>
+		<td>' . $post_status_image . ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=last#' . $last_unread_post_id . '">
 		<img src="' . $site_config['pic_baseurl'] . 'forums/last_post.gif" alt="' . $lang['fe_last_post'] . '" title="' . $lang['fe_last_unread_post_in_this_thread'] . '" class="tooltipper icon" /></a></td>
 		</tr>';
     }

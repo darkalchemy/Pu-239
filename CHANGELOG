@@ -1,4 +1,5 @@
 18 Aug 2018
+fix: last post link forums.php
 update: database files
 fix: comments edit/delete
 fix: invalid Cache dir site_config.php
