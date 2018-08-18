@@ -1,4 +1,7 @@
 18 Aug 2018
+fix: AJAX Chat disabled gif
+fix: incorrect lang key for AJAX Chat messages
+update: show users message when banned from AJAX Chat
 update: remove img tags from AJAX Chat messages after 24 hours
 update: hide anonymous users from showing in AJAX Chat Online list
 fix: last post link forums.php

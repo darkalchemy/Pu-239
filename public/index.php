@@ -47,6 +47,10 @@ if (curuser::$blocks['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_
     $HTMLOUT .= "<div class='container is-fluid portlet' id='AJAXCHAT'>";
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'ajaxchat.php';
     $HTMLOUT .= '</div>';
+} elseif (curuser::$blocks['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_on'] && $CURUSER['chatpost'] != 1) {
+    $HTMLOUT .= "<div class='container is-fluid portlet' id='AJAXCHAT'>";
+    $HTMLOUT .= main_div("<div class='has-text-centered padding20 bg-02 round5'>You have been banned from AJAX Chat!</div>", 'bg-00');
+    $HTMLOUT .= '</div>';
 }
 
 if (curuser::$blocks['index_page'] & block_index::TRIVIA && $BLOCKS['trivia_on']) {

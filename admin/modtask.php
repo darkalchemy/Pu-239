@@ -306,25 +306,25 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         $added = sqlesc(TIME_NOW);
         if ($chatpost == 255) {
             $modcomment = get_date($added, 'DATE', 1) . $lang['modtask_ajaxchat_dis_by'] . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $chatdisable_pm\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_shout_dis_right'] . $username . ($chatdisable_pm ? "\n\n{$lang['modtask_gl_reason']} $chatdisable_pm" : ''));
+            $msg = sqlesc($lang['modtask_ajaxchat_dis_right'] . $username . ($chatdisable_pm ? "\n\n{$lang['modtask_gl_reason']} $chatdisable_pm" : ''));
             $updateset[] = 'chatpost = 0';
-            $useredit['update'][] = $lang['modtask_shout_pos_no'];
+            $useredit['update'][] = $lang['modtask_ajaxchat_pos_no'];
             $curuser_cache['chatpost'] = '0';
             $user_cache['chatpost'] = '0';
         } elseif ($chatpost == 42) {
-            $modcomment = get_date($added, 'DATE', 1) . $lang['modtask_shout_dis_status'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_shout_res_by'] . $username);
+            $modcomment = get_date($added, 'DATE', 1) . $lang['modtask_ajaxchat_dis_status'] . $CURUSER['username'] . ".\n" . $modcomment;
+            $msg = sqlesc($lang['modtask_ajaxchat_res_by'] . $username);
             $updateset[] = 'chatpost = 1';
-            $useredit['update'][] = $lang['modtask_shout_pos_yes'];
+            $useredit['update'][] = $lang['modtask_ajaxchat_pos_yes'];
             $curuser_cache['chatpost'] = '1';
             $user_cache['chatpost'] = '1';
         } else {
             $chatpost_until = ($added + $chatpost * 604800);
             $dur = $chatpost . $lang['modtask_gl_week'] . ($chatpost > 1 ? $lang['modtask_gl_weeks'] : '');
-            $msg = sqlesc("{$lang['modtask_gl_received']} $dur {$lang['modtask_shout_dis_from']}" . $username . ($chatdisable_pm ? "\n\n{$lang['modtask_gl_reason']} $chatdisable_pm" : ''));
-            $modcomment = get_date($added, 'DATE', 1) . "{$lang['modtask_shout_dis_for']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $chatdisable_pm\n" . $modcomment;
+            $msg = sqlesc("{$lang['modtask_gl_received']} $dur {$lang['modtask_ajaxchat_dis_from']}" . $username . ($chatdisable_pm ? "\n\n{$lang['modtask_gl_reason']} $chatdisable_pm" : ''));
+            $modcomment = get_date($added, 'DATE', 1) . "{$lang['modtask_ajaxchat_dis_for']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $chatdisable_pm\n" . $modcomment;
             $updateset[] = 'chatpost = ' . $chatpost_until;
-            $useredit['update'][] = $lang['modtask_shout_disabled'] . $chatpost_until . '';
+            $useredit['update'][] = $lang['modtask_ajaxchat_disabled'] . $chatpost_until . '';
             $curuser_cache['chatpost'] = $chatpost_until;
             $user_cache['chatpost'] = $chatpost_until;
         }
