@@ -276,7 +276,7 @@ $lang = [
     'pm_mailbox_readmsgs' => ' Read Messages.',
     'pm_mailbox_unreadmsgs' => ' Unread Messages.',
     //view msg
-    'pm_viewmsg_errr' => 'You do not have permission to view this message.',
+    'pm_viewmsg_err' => 'You do not have permission to view this message.',
     'pm_viewmsg_sdraft' => 'save as draft',
     'pm_viewmsg_reply' => 'reply',
     'pm_viewmsg_delete' => 'delete',

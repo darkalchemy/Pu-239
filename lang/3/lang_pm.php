@@ -276,7 +276,7 @@ $lang = [
     'pm_mailbox_readmsgs' => ' Mesaje citite.',
     'pm_mailbox_unreadmsgs' => ' Mesaje necitite.',
     //view msg
-    'pm_viewmsg_errr' => 'Nu ai permisiunea de a vedea acest mesaj.',
+    'pm_viewmsg_err' => 'Nu ai permisiunea de a vedea acest mesaj.',
     'pm_viewmsg_sdraft' => 'salveaza ca schita',
     'pm_viewmsg_reply' => 'raspunde',
     'pm_viewmsg_delete' => 'sterge',

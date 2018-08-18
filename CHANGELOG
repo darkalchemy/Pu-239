@@ -1,4 +1,6 @@
 18 Aug 2018
+fix: typo lang_pm.php
+fix: check incorrect var view_message.php
 fix: typo ajax_chat_cleanup.php
 add: missing pirate.png
 fix: AJAX Chat disabled gif
