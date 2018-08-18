@@ -16,6 +16,7 @@ $exts = [
     'json',
     'gz',
     'example',
+    'sql'
 ];
 
 $folders = [

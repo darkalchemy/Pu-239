@@ -1549,6 +1549,7 @@ CREATE TABLE `posts` (
   KEY `topicid` (`topic_id`),
   KEY `userid` (`user_id`),
   KEY `body` (`post_title`),
+  FULLTEXT KEY `ft_body` (`body`),
   CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1966,7 +1967,7 @@ DROP TABLE IF EXISTS `stylesheets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stylesheets` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) NOT NULL DEFAULT '0',
   `uri` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -2453,8 +2454,6 @@ CREATE TABLE `users` (
   `disable_reason` mediumtext COLLATE utf8mb4_unicode_ci,
   `clear_new_tag_manually` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `last_browse` int(11) NOT NULL DEFAULT '0',
-  `sig_w` smallint(3) unsigned NOT NULL DEFAULT '0',
-  `sig_h` smallint(3) unsigned NOT NULL DEFAULT '0',
   `signatures` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `signature` varchar(225) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `forum_access` int(11) NOT NULL DEFAULT '0',
@@ -2654,4 +2653,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-05 21:13:47
+-- Dump completed on 2018-08-18  1:24:59
