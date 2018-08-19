@@ -99,4 +99,21 @@ class Cache extends TransactionalStore
         }
         $this->commit();
     }
+
+    public function flushDB()
+    {
+        if ($_ENV['CACHE_DRIVER'] === 'redis') {
+            $client = new \Redis();
+            if (!SOCKET) {
+                $client->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
+            } else {
+                $client->connect($_ENV['REDIS_SOCKET']);
+            }
+            $client->select($_ENV['REDIS_DATABASE']);
+
+            return $client->flushDB();
+        } else {
+            return $this->flush();
+        }
+    }
 }

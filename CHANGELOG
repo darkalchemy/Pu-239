@@ -1,4 +1,5 @@
 19 Aug 2018
+add: flushDB() to flush only the site specific db when using redis as cache driver
 update: imdbphp class
 
 18 Aug 2018

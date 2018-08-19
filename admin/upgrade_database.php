@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sql = 'INSERT INTO database_updates (id, query) VALUES (' . sqlesc($id) . ', ' . sqlesc($sql) . ')';
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
             if ($flush) {
-                $cache->flush();
+                $cache->flushDB();
                 $session->set('is-success', 'You flushed the ' . ucfirst($_ENV['CACHE_DRIVER']) . ' cache');
             } elseif (!$flush) {
                 // do nothing

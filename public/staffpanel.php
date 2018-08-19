@@ -80,7 +80,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             stderr($lang['spanel_error'], $lang['spanel_db_error_msg']);
         }
     } elseif (($action === 'flush' && $CURUSER['class'] >= UC_SYSOP)) {
-        $cache->flush();
+        $cache->flushDB();
         $session->set('is-success', 'You flushed the ' . ucfirst($_ENV['CACHE_DRIVER']) . ' cache');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
