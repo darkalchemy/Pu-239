@@ -114,8 +114,10 @@ class User
                 }
                 if (hash_equals($stashed['hashedValidator'], hash('sha256', $validator))) {
                     $id = $stashed['userid'];
+                    $this->session->start();
                     $this->session->set('userID', $id);
                     $this->session->set('remembered_by_cookie', true);
+                    $this->set_remember($id, $stashed['set_time']);
 
                     return (int) $id;
                 } else {
@@ -171,8 +173,8 @@ class User
     {
         global $session;
 
-        $selector = make_password(16);
-        $validator = make_password(32);
+        $selector = bin2hex(random_bytes(16));
+        $validator = bin2hex(random_bytes(32));
         $hashedValidator = hash('sha256', $validator);
 
         $values = [

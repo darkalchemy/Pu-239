@@ -1,4 +1,8 @@
 19 Aug 2018
+update: use random_bytes() instead of make_password() to generate auth tokens
+add: change remember me tokens once used
+add: additional user whereis locations
+update: explicitly start session when using remember me token
 update: remember me fuction to update expires time while user is active on site
 add: flushDB() to flush only the site specific db when using redis as cache driver
 update: imdbphp class
