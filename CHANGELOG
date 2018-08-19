@@ -1,4 +1,5 @@
 18 Aug 2018
+update: tooltip formatting movies.php
 update: imdb_info_short to find images on fanart or omdb, when imdb image not found
 add: create_image() to create dummy src images for lazy loading
 update: additional images lazy loaded

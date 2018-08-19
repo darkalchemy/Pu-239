@@ -52,12 +52,12 @@ switch ($list) {
                                     <img src='{$movie['placeholder']}' data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
                                 </span>
                                 <span class='padding10'>
-                                    <p><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($movie['title']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary'>Release Date: </span><span>" . htmlsafechars($movie['release_date']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary'>Genre: </span><span>" . htmlsafechars($movie['genre']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary'>Rating: </span><span>" . htmlsafechars($movie['mpaa']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary'>Runtime: </span>" . htmlsafechars($movie['runtime']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary'>Overview: </span><span>" . htmlsafechars($movie['description']) . '</span></p>
+                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($movie['title']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary'>Release Date: </span><span>" . htmlsafechars($movie['release_date']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary'>Genre: </span><span>" . htmlsafechars($movie['genre']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary'>Rating: </span><span>" . htmlsafechars($movie['mpaa']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary'>Runtime: </span>" . htmlsafechars($movie['runtime']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary'>Overview: </span><span>" . htmlsafechars($movie['description']) . '</span></div>
                                 </span>
                             </div>
                         </div>
@@ -139,13 +139,13 @@ switch ($list) {
                                     <img src='{$tv['placeholder']}' data-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
                                 </span>
                                 <span class='padding10'>
-                                    <p><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($tv['title']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary has-text-bold'>Episode Title: </span><span>" . htmlsafechars($tv['ep_title']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary has-text-bold'>Season: </span><span>" . htmlsafechars($tv['season']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary has-text-bold'>Episode: </span><span>" . htmlsafechars($tv['episode']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary has-text-bold'>Runtime: </span><span>" . htmlsafechars($tv['runtime']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary has-text-bold'>Type: </span><span>" . htmlsafechars($tv['type']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary'>Overview: </span><span>" . htmlsafechars($tv['overview']) . '</span></p>
+                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($tv['title']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Episode Title: </span><span>" . htmlsafechars($tv['ep_title']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Season: </span><span>" . htmlsafechars($tv['season']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Episode: </span><span>" . htmlsafechars($tv['episode']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Runtime: </span><span>" . htmlsafechars($tv['runtime']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Type: </span><span>" . htmlsafechars($tv['type']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary'>Overview: </span><span>" . htmlsafechars($tv['overview']) . '</span></div>
                                 </span>
                             </div>
                         </div>
@@ -227,10 +227,10 @@ switch ($list) {
                                     <img src='{$tv['placeholder']}' data-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
                                 </span>
                                 <span class='padding10'>
-                                    <p><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($tv['title']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary'>Popularity: </span><span>" . htmlsafechars($tv['popularity']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary'>Votes: </span><span>" . htmlsafechars($tv['vote_average']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary'>Overview: </span><span>" . htmlsafechars($tv['overview']) . '</span></p>
+                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($tv['title']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary'>Popularity: </span><span>" . htmlsafechars($tv['popularity']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary'>Votes: </span><span>" . htmlsafechars($tv['vote_average']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary'>Overview: </span><span>" . htmlsafechars($tv['overview']) . '</span></div>
                                 </span>
                             </div>
                         </div>
@@ -294,11 +294,11 @@ switch ($list) {
                                     <img src='{$movie['placeholder']}' data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
                                 </span>
                                 <span class='padding10'>
-                                    <p><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($movie['title']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary'>Release Date: </span><span>" . htmlsafechars($movie['release_date']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary'>Popularity: </span><span>" . htmlsafechars($movie['popularity']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary'>Votes: </span><span>" . htmlsafechars($movie['vote_average']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary'>Overview: </span><span>" . htmlsafechars($movie['overview']) . '</span></p>
+                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($movie['title']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary'>Release Date: </span><span>" . htmlsafechars($movie['release_date']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary'>Popularity: </span><span>" . htmlsafechars($movie['popularity']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary'>Votes: </span><span>" . htmlsafechars($movie['vote_average']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary'>Overview: </span><span>" . htmlsafechars($movie['overview']) . '</span></div>
                                 </span>
                             </div>
                         </div>
@@ -362,11 +362,11 @@ switch ($list) {
                                     <img src='{$movie['placeholder']}' data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
                                 </span>
                                 <span class='padding10'>
-                                    <p><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($movie['title']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary'>Release Date: </span><span>" . htmlsafechars($movie['release_date']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary'>Popularity: </span><span>" . htmlsafechars($movie['popularity']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary'>Votes: </span><span>" . htmlsafechars($movie['vote_average']) . "</span></p>
-                                    <p><span class='size_4 right10 has-text-primary'>Overview: </span><span>" . htmlsafechars($movie['overview']) . '</span></p>
+                                    <div><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($movie['title']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary'>Release Date: </span><span>" . htmlsafechars($movie['release_date']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary'>Popularity: </span><span>" . htmlsafechars($movie['popularity']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary'>Votes: </span><span>" . htmlsafechars($movie['vote_average']) . "</span></div>
+                                    <div><span class='size_4 right10 has-text-primary'>Overview: </span><span>" . htmlsafechars($movie['overview']) . '</span></div>
                                 </span>
                             </div>
                         </div>
