@@ -1,4 +1,5 @@
 19 Aug 2018
+fix: undefined index get_date()
 update: add required fields to signup.php, invite_signup.php, requests.php, offers.php
 fix: null referer when url not wrapped in url tags AJAX Chat
 update: jquery.validate.js
