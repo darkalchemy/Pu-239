@@ -4,7 +4,6 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'comment_functions.php';
-require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
@@ -262,7 +261,6 @@ switch ($action) {
         break;
 
     case 'add_new_offer':
-        require_once INCL_DIR . 'bbcode_functions.php';
         $offer_name = strip_tags(isset($_POST['offer_name']) ? trim($_POST['offer_name']) : '');
         $image = strip_tags(isset($_POST['image']) ? trim($_POST['image']) : '');
         $body = (isset($_POST['body']) ? trim($_POST['body']) : '');
@@ -288,7 +286,7 @@ switch ($action) {
         $HTMLOUT .= $top_menu . '
     <h1 class="has-text-centered">New Offer</h1>
     <div class="banner_container has-text-centered w-100"></div>
-    <form method="post" action="offers.php?action=add_new_offer" name="offer_form" id="offer_form">
+    <form method="post" action="offers.php?action=add_new_offer" name="validate_form" id="validate_form">
     <table class="table table-bordered table-striped">
     <tbody>
     <tr>
@@ -299,7 +297,9 @@ switch ($action) {
     <tr>
     <td colspan="2">Before you make an offer, <a class="altlink" href="search.php">Search</a>
     to be sure it has not yet been requested, offered, or uploaded!<br><br>
-    Be sure to fill in all fields!</td>
+    Be sure to fill in all fields!
+    <div class="has-text-centered error size_6 margin20"><span></span></div>
+    </td>
     </tr>
     <tr>
     <td>name:</td>
@@ -308,7 +308,7 @@ switch ($action) {
     <tr>
     <td>link:</td>
     <td>
-        <input type="text" id="url" name="link" class="w-100" data-csrf="' . $session->get('csrf_token') . '" value="' . htmlsafechars($link, ENT_QUOTES) . '" />
+        <input type="text" id="url" name="link" class="w-100 required" data-csrf="' . $session->get('csrf_token') . '" value="' . htmlsafechars($link, ENT_QUOTES) . '" />
         <div class="imdb_outer">
             <div class="imdb_inner">
             </div>
@@ -328,7 +328,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>description:</td>
-    <td>' . BBcode($body) . '</td>
+    <td>' . BBcode($body, 'required') . '</td>
     </tr>
     <tr>
     <td colspan="2" class="has-text-centered">

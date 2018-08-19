@@ -18,7 +18,7 @@ $stdfoot = [
 ];
 
 if (!$site_config['openreg']) {
-    stderr('Sorry', 'Invite only - Signups are presently closed. If you have an invite code click <a href="' . $site_config['baseurl'] . '/invite_signup.php"><b>Here</b></a>');
+    stderr('Sorry', 'Invite only - Signups are presently closed. If you have an invite code click <a href="' . $site_config['baseurl'] . '/invite_signup.php"><span class="has-text-lime">Here</span></a>');
 }
 $HTMLOUT = $year = $month = $day = $gender = $country = '';
 $lang = array_merge(load_language('global'), load_language('signup'));
@@ -36,13 +36,12 @@ if ($count >= $site_config['maxusers']) {
     stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $site_config['maxusers']));
 }
 
-$offset = !empty($signup_vars['user_timezone']) ? $signup_vars['user_timezone'] : $site_config['time_offset'];
 $time_select = "
-    <select name='user_timezone' class='w-100'>";
+    <select name='user_timezone' class='w-100 required'>
+        <option value=''>Select Your Timezone</option>";
 foreach ($TZ as $off => $words) {
     if (preg_match("/^time_(-?[\d\.]+)$/", $off, $match)) {
-        $time_select .= $match[1] == $offset ? "
-        <option value='{$match[1]}' selected>$words</option>" : "
+        $time_select .= "
         <option value='{$match[1]}'>$words</option>";
     }
 }
@@ -51,7 +50,7 @@ $time_select .= '
 
 $countries = countries();
 $country .= "
-        <option value='999999'" . (empty($CURUSER['country']) ? ' selected' : '') . '>Select your Country</option>';
+        <option value=''>Select your Country</option>";
 
 foreach ($countries as $cntry) {
     $country .= "
@@ -59,7 +58,8 @@ foreach ($countries as $cntry) {
 }
 
 $gender .= "
-    <select name='gender' class='w-100'>
+    <select name='gender' class='w-100 required'>
+        <option value=''>Select Your Gender</option>
         <option value='Male'" . ($signup_vars['gender'] == 'Male' ? ' selected ' : '') . ">{$lang['signup_male']}</option>
         <option value='Female'" . ($signup_vars['gender'] == 'Female' ? ' selected ' : '') . ">{$lang['signup_female']}</option>
         <option value='NA'" . ($signup_vars['gender'] == 'NA' ? ' selected ' : '') . ">{$lang['signup_na']}</option>
@@ -78,29 +78,33 @@ $value[random_int(1, count($value) - 1)] = 'X';
 $HTMLOUT .= "
     <div class='half-container has-text-centered portlet'>
     <p class='left10 top10'>{$lang['signup_cookies']}</p>
-    <form id='signup' method='post' action='{$site_config['baseurl']}/takesignup.php' autocomplete='on'>
+    <form id='validate_form' method='post' action='{$site_config['baseurl']}/takesignup.php' autocomplete='on'>
+        <div class='has-text-centered error size_6 margin20'><span></span></div>
         <table class='table table-bordered bottom20'>
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_uname']}</td>
-                <td><input type='text' name='wantusername' id='wantusername' class='w-100' onblur='checkit();' value='{$signup_vars['wantusername']}' /><div id='namecheck'></div></td>
+                <td>
+                    <input type='text' name='wantusername' id='wantusername' class='w-100 required' onblur='checkit();' value='{$signup_vars['wantusername']}' minlength='3' />
+                    <div id='namecheck'></div>
+                </td>
             </tr>
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_pass']}</td>
                 <td>
-                    <input type='password' name='wantpassword' id='myElement1' class='password w-100 left' data-display='myDisplayElement1' /> <div class='left' id='myDisplayElement1'></div>
+                    <input type='password' name='wantpassword' id='myElement1' class='required password w-100 left' data-display='myDisplayElement1' /> <div class='left' id='myDisplayElement1'></div>
                     <div class='clear'></div>
                 </td>
             </tr>
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_passa']}</td>
                 <td>
-                    <input type='password' name='passagain' id='myElement2' class='password w-100 left' data-display='myDisplayElement2' /> <div class='left' id='myDisplayElement2'></div>
+                    <input type='password' name='passagain' id='myElement2' class='required password w-100 left' data-display='myDisplayElement2' /> <div class='left' id='myDisplayElement2'></div>
                 </td>
             </tr>
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_email']}</td>
                 <td>
-                    <input type='text' name='email' class='w-100' value='{$signup_vars['email']}' />
+                    <input type='text' name='email' class='w-100 required' value='{$signup_vars['email']}' />
                     <div class='alt_bordered top10'>{$lang['signup_valemail']}</div>
                 </td>
             </tr>
@@ -110,8 +114,8 @@ $HTMLOUT .= "
             </tr>";
 
 $year .= "
-    <select name='year' class='w-100 bottom10'>
-        <option value='0000'>{$lang['signup_year']}</option>";
+    <select name='year' class='w-100 bottom10 required'>
+        <option value=''>{$lang['signup_year']}</option>";
 $i = date('Y');
 while ($i >= 1920) {
     $year .= "
@@ -121,8 +125,8 @@ while ($i >= 1920) {
 $year .= '
     </select>';
 $month .= "
-    <select name='month' class='w-100 bottom10'>
-        <option value='00'>{$lang['signup_month']}</option>
+    <select name='month' class='w-100 bottom10 required'>
+        <option value=''>{$lang['signup_month']}</option>
         <option value='01'" . ($signup_vars['month'] == '01' ? ' selected ' : '') . ">{$lang['signup_jan']}</option>
         <option value='02'" . ($signup_vars['month'] == '02' ? ' selected ' : '') . ">{$lang['signup_feb']}</option>
         <option value='03'" . ($signup_vars['month'] == '03' ? ' selected ' : '') . ">{$lang['signup_mar']}</option>
@@ -137,9 +141,9 @@ $month .= "
         <option value='12'" . ($signup_vars['month'] == '12' ? ' selected ' : '') . ">{$lang['signup_dec']}</option>
     </select>";
 $day .= '
-    <select name="day" class="w-100 bottom10">';
+    <select name="day" class="w-100 bottom10 required">';
 $day .= "
-        <option value='00'>{$lang['signup_day']}</option>";
+        <option value=''>{$lang['signup_day']}</option>";
 $i = 1;
 while ($i <= 31) {
     $day .= "
@@ -187,12 +191,17 @@ foreach ($questions as $sph) {
 $HTMLOUT .= "
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_select']}</td>
-                <td><select name='passhint' class='w-100'>\n$passhint\n</select></td>
+                <td>
+                    <select name='passhint' class='w-100 required'>
+                        <option value=''>Select a Hint Question</option>
+                        $passhint
+                    </select>
+                </td>
             </tr>
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_enter']}</td>
                 <td>
-                    <input type='text' name='hintanswer' class='w-100' value='{$signup_vars['hintanswer']}'     /><br>
+                    <input type='text' name='hintanswer' class='w-100 required' value='{$signup_vars['hintanswer']}'     /><br>
                     <span>
                         {$lang['signup_this_answer']}<br>
                         {$lang['signup_this_answer1']}
@@ -201,7 +210,11 @@ $HTMLOUT .= "
             </tr>
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_country']}</td>
-                <td><select name='country' class='w-100'>\n$country\n</select></td>
+                <td>
+                    <select name='country' class='w-100 required'>
+                        $country
+                    </select>
+                </td>
             </tr>
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_gender']}</td>
@@ -210,9 +223,9 @@ $HTMLOUT .= "
             <tr class='no_hover'>
                 <td class='rowhead'></td>
                 <td>
-                    <input type='checkbox' name='rulesverify' value='yes'" . (!empty($signup_vars['rulesverify']) && $signup_vars['rulesverify'] === 'yes' ? ' checked ' : '') . "/> {$lang['signup_rules']}<br>
-                    <input type='checkbox' name='faqverify' value='yes'" . (!empty($signup_vars['faqverify']) && $signup_vars['faqverify'] === 'yes' ? ' checked ' : '') . "/> {$lang['signup_faq']}<br>
-                    <input type='checkbox' name='ageverify' value='yes'" . (!empty($signup_vars['ageverify']) && $signup_vars['ageverify'] === 'yes' ? ' checked ' : '') . "/> {$lang['signup_age']}
+                    <input type='checkbox' name='rulesverify' class='required' value='yes'" . (!empty($signup_vars['rulesverify']) && $signup_vars['rulesverify'] === 'yes' ? ' checked ' : '') . "/> {$lang['signup_rules']}<br>
+                    <input type='checkbox' name='faqverify' class='required' value='yes'" . (!empty($signup_vars['faqverify']) && $signup_vars['faqverify'] === 'yes' ? ' checked ' : '') . "/> {$lang['signup_faq']}<br>
+                    <input type='checkbox' name='ageverify' class='required' value='yes'" . (!empty($signup_vars['ageverify']) && $signup_vars['ageverify'] === 'yes' ? ' checked ' : '') . "/> {$lang['signup_age']}
                 </td>
             </tr>";
 if (!empty($_ENV['RECAPTCHA_SITE_KEY'])) {
@@ -235,7 +248,7 @@ $HTMLOUT .= "
                     <span class='tabs is-marginless'>";
 for ($i = 0; $i < count($value); ++$i) {
     $HTMLOUT .= '
-                        <input name="submitme" type="submit" value="' . $value[$i] . '" class="button is-small" />';
+                        <input name="submitme" type="submit" value="' . $value[$i] . '" class="button is-small" disabled />';
 }
 $HTMLOUT .= '
                     </span>

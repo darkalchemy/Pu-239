@@ -89,6 +89,7 @@ var ajaxChat = {
     inUrlBBCode: null,
     flashSounds: null,
     debug: null,
+    anonymizer: null,
 
     init: function (config, lang, initSettings, initStyle, initialize, initializeFunction, finalizeFunction) {
         this.httpRequest = {};
@@ -2974,6 +2975,7 @@ var ajaxChat = {
     },
 
     replaceHyperLinks: function (text) {
+        var anon = this.anonymizer;
         var regExp;
         if (!this.settings['hyperLinks']) {
             return text;
@@ -2996,7 +2998,7 @@ var ajaxChat = {
                 if (res) {
                     url = p2;
                 } else {
-                    url = this.anonymizer + p2;
+                    url = anon + p2;
                 }
                 return p1
                     + '<a href="'

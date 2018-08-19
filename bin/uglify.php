@@ -143,6 +143,7 @@ foreach ($folders as $folder) {
         ],
         'captcha2_js'   => [
             SCRIPTS_DIR . 'check.js',
+            ROOT_DIR . 'node_modules/jquery-validation/dist/jquery.validate.js',
             SCRIPTS_DIR . 'pStrength.jquery.js',
             SCRIPTS_DIR . 'pstrength.js',
         ],
@@ -153,7 +154,7 @@ foreach ($folders as $folder) {
             SCRIPTS_DIR . 'isbn.js',
         ],
         'request_js'    => [
-            SCRIPTS_DIR . 'jquery.validate.js',
+            ROOT_DIR . 'node_modules/jquery-validation/dist/jquery.validate.js',
             SCRIPTS_DIR . 'check_selected.js',
             SCRIPTS_DIR . 'imdb.js',
         ],

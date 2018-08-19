@@ -65,7 +65,7 @@ if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
 if (empty($wantusername) || empty($wantpassword) || empty($invite) || empty($passhint) || empty($hintanswer) || empty($country)) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_blank']);
 }
-if ($country == 999999) {
+if (empty($country)) {
     stderr($lang['takesignup_user_error'], 'Please select your country');
 }
 if (!blacklist($wantusername)) {

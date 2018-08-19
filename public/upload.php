@@ -7,6 +7,7 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once CACHE_DIR . 'subs.php';
 check_user_status();
 global $CURUSER, $site_config;
+
 $lang = array_merge(load_language('global'), load_language('upload'), load_language('bitbucket'));
 $stdfoot = [
     'js' => [

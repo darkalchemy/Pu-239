@@ -92,7 +92,7 @@ if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
     }
 }
 
-if ($country == 999999) {
+if (empty($country)) {
     $session->set('is-warning', '[h2]Please select your country[/h2]');
     header("Location: {$site_config['baseurl']}/signup.php");
     die();

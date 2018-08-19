@@ -1,4 +1,8 @@
 19 Aug 2018
+update: add required fields to signup.php, invite_signup.php, requests.php, offers.php
+fix: null referer when url not wrapped in url tags AJAX Chat
+update: jquery.validate.js
+remove: mods folder, not used
 update: use php date() instead of mysql NOW() for search
 update: use random_bytes() instead of make_password() to generate auth tokens
 add: change remember me tokens once used

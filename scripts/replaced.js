@@ -160,13 +160,22 @@ $(function () {
         backtotop.blur();
         return false;
     });
-    var request_form = $('#request_form');
-    if (request_form.length) {
-        request_form.validate();
-    }
-    var offer_form = $('#offer_form');
-    if (offer_form.length) {
-        offer_form.validate();
+    var validate_form = $('#validate_form');
+    if (validate_form.length) {
+        validate_form.validate({
+            invalidHandler: function(event, validator) {
+                var errors = validator.numberOfInvalids();
+                if (errors) {
+                    var message = errors == 1
+                        ? 'You missed 1 field. It has been highlighted'
+                        : 'You missed ' + errors + ' fields. They have been highlighted';
+                    $("div.error span").html(message);
+                    $("div.error").show();
+                } else {
+                    $("div.error").hide();
+                }
+            }
+        });
     }
     if ($('#upload_form').length) {
         setupDependencies('upload_form');

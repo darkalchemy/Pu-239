@@ -17,6 +17,7 @@ $(function () {
                     $('#' + $(this).data('display')).html($('#' + $(this).data('display')).html() + '<br>Passwords do not match!');
                 } else {
                     $('#' + $(this).data('display')).html($('#' + $(this).data('display')).html() + '<br>Great, now you can continue to register!');
+                    $('.button').removeAttr('disabled');
                 }
             }
         }

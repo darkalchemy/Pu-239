@@ -19,6 +19,7 @@
     "bulma": "^0.7.1",
     "clean-css": "^4.2.1",
     "clean-css-cli": "^4.2.1",
+    "jquery-validation": "^1.17.0",
     "lightbox2": "^2.10.0",
     "normalize.css": "^8.0.0",
     "postcss-cli": "^6.0.0",

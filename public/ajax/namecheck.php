@@ -1,7 +1,7 @@
 <?php
 
 if (empty($_GET['wantusername'])) {
-    die('Silly Rabbit - Twix are for kids - You cant post nothing please enter a username !');
+    die('Silly Rabbit - Twix are for kids - You cant post nothing please enter a username!');
 }
 require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 dbconn();

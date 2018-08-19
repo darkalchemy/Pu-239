@@ -38,7 +38,7 @@ function smilies_frame($smilies_set)
  *
  * @return string
  */
-function BBcode($body = '')
+function BBcode($body = '', $class = null)
 {
     global $CURUSER, $smilies, $customsmilies, $staff_smilies, $site_config;
 
@@ -81,7 +81,7 @@ function BBcode($body = '')
                 </div>
                 <div id="tblDefects" class="w-100">
                     <div class="table-wrapper">
-                    <textarea id="bbcode_editor" name="body" rows="20">' . $body . '</textarea>
+                    <textarea id="bbcode_editor" name="body" rows="20" ' . (!empty($class) ? 'class="' . $class . '"' : '') . '>' . $body . '</textarea>
                     <div id="outer-preview" class="outer-preview">
                         <div class="inner-preview">
                             <div id="preview-window" class="preview-window has-text-left">
