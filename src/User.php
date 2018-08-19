@@ -163,7 +163,7 @@ class User
 
         $remember = $this->fluent->from('auth_tokens')
             ->where('selector = ?', $selector)
-            ->where('expires >= ?', new \Envms\FluentPDO\Literal('NOW()'))
+            ->where('expires >= ?', date('Y-m-d H:i:s', TIME_NOW))
             ->fetch();
 
         return $remember;

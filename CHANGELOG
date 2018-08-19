@@ -1,4 +1,5 @@
 19 Aug 2018
+update: use php date() instead of mysql NOW() for search
 update: use random_bytes() instead of make_password() to generate auth tokens
 add: change remember me tokens once used
 add: additional user whereis locations
