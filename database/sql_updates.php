@@ -382,6 +382,13 @@ $sql_updates = [
         'flush' => false,
     ],
     [
+        'id' => 1534657712,
+        'info' => 'Truncate auth_tokens',
+        'date' => '19 Aug, 2018',
+        'query' => "TRUNCATE TABLE `auth_tokens`",
+        'flush' => false,
+    ],
+    [
         'id' => 1534657713,
         'info' => 'Modify column expires',
         'date' => '19 Aug, 2018',
