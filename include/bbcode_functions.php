@@ -1,6 +1,7 @@
 <?php
 
 require_once 'emoticons.php';
+require_once INCL_DIR . 'html_functions.php';
 
 /**
  * @param $smilies_set
@@ -11,13 +12,14 @@ function smilies_frame($smilies_set)
 {
     global $site_config;
 
+    $image = placeholder_image();
     $list = $emoticons = '';
     foreach ($smilies_set as $code => $url) {
         $list .= "
             <span class='margin10 mw-50 is-flex tooltipper' title='{$code}'>
                 <span class='bordered bg-03'>
                     <a href='#' alt='{$code}'>
-                        <img data-src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='{$code}' class='lazy' />
+                        <img src='{$image}' data-src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='{$code}' class='lazy w-100' />
                     </a>
                 </span>
             </span>";
@@ -40,6 +42,7 @@ function BBcode($body = '')
 {
     global $CURUSER, $smilies, $customsmilies, $staff_smilies, $site_config;
 
+    $image = placeholder_image();
     $emoticons_normal = smilies_frame($smilies, 3, ':hslocked:');
     $emoticons_custom = smilies_frame($customsmilies, 3, ':wink_skull:');
     $emoticons_staff = smilies_frame($staff_smilies, 1, ':dabunnies:');
@@ -62,7 +65,7 @@ function BBcode($body = '')
                         <div class="scroll_wrapper">
                             <div class="scroll" id="box_0" style="display: none;">
                                 <div class="smilies_frame">
-                                    <img data-src="' . $site_config['pic_baseurl'] . 'forums/updating.svg" alt="Loading..." class="lazy" />
+                                    <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/updating.svg" alt="Loading..." class="lazy" />
                                 </div>
                             </div>
                             <div class="scroll" id="box_1" style="display: none;">
@@ -236,6 +239,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
 {
     global $smilies, $staff_smilies, $customsmilies, $site_config, $CURUSER;
 
+    $image = placeholder_image();
     $s = $text;
     unset($text);
     $s = validate_imgs($s);
@@ -363,8 +367,8 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<span class="text-8">\1</span>',
         "<div style='margin-bottom: 5px;'><span class='flip button'>Show Spoiler!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
         "<div style='margin-bottom: 5px;'><span class='flip button'>Show Hide!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
-        "<div class='responsive-container'><iframe width='1920px' height='1080px' data-src='//youtube.com/embed/\\1?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen class='lazy'></iframe></div>",
-        "<div class='responsive-container'><iframe width='1920px' height='1080px' data-src='//youtube.com/embed/\\1?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen class='lazy'></iframe></div>",
+        "<div class='responsive-container'><iframe width='1920px' height='1080px' src='{$image}' data-src='//youtube.com/embed/\\1?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen class='lazy'></iframe></div>",
+        "<div class='responsive-container'><iframe width='1920px' height='1080px' src='{$image}' data-src='//youtube.com/embed/\\1?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen class='lazy'></iframe></div>",
         '<embed style="width:500px; height:410px;" id="VideoPlayback" align="middle" type="application/x-shockwave-flash" src="//video.google.com/googleplayer.swf?docId=\\1" allowScriptAccess="sameDomain" quality="best" bgcolor="#fff" scale="noScale" wmode="window" salign="TL"  FlashVars="playerMode=embedded"> </embed>',
         '<span><video width="500" loop muted autoplay><source src="//i.imgur.com/\1.webm" type="video/webm" /><source src="//i.imgur.com/\1.mp4" type="video/mp4" />Your browser does not support the video tag.</video></span>',
         '<span><video width="500" controls preload="none"><source src="\1" /><source src="\1" type="video/mp4" />Your browser does not support the video tag.</video></span>',
@@ -443,10 +447,10 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         }
 
         // [img] proxied local images
-        $s = preg_replace("#\[img\](.*" . preg_quote($site_config['pic_baseurl']) . "proxy/.*)\[/img\]#i", '<img data-src="\\1" alt="" class="lazy" /></a>', $s);
+        $s = preg_replace("#\[img\](.*" . preg_quote($site_config['pic_baseurl']) . "proxy/.*)\[/img\]#i", '<img src="' . $image . '" data-src="\\1" alt="" class="lazy" /></a>', $s);
 
         // [img] local images
-        $s = preg_replace("#\[img\](.*" . preg_quote($site_config['pic_baseurl']) . ".*)\[/img\]#i", '<img data-src="\\1" alt="" class="lazy emoticon is-2x" /></a>', $s);
+        $s = preg_replace("#\[img\](.*" . preg_quote($site_config['pic_baseurl']) . ".*)\[/img\]#i", '<img src="' . $image . '" data-src="\\1" alt="" class="lazy emoticon is-2x" /></a>', $s);
     }
     // [mcom]Text[/mcom]
     if (stripos($s, '[mcom]') !== false) {
@@ -469,17 +473,17 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     $s = str_replace('  ', '&#160;&#160;', $s);
     if (isset($smilies)) {
         foreach ($smilies as $code => $url) {
-            $s = str_replace($code, "<img data-src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' class='lazy' />", $s);
+            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' class='lazy' />", $s);
         }
     }
     if (isset($staff_smilies)) {
         foreach ($staff_smilies as $code => $url) {
-            $s = str_replace($code, "<img data-src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' class='lazy' />", $s);
+            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' class='lazy' />", $s);
         }
     }
     if (isset($customsmilies)) {
         foreach ($customsmilies as $code => $url) {
-            $s = str_replace($code, "<img data-src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' class='lazy' />", $s);
+            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' class='lazy' />", $s);
         }
     }
 

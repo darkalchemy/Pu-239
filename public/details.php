@@ -841,12 +841,13 @@ if (!empty($torrents_txt['descr'])) {
 
 if (!empty($torrents['youtube'])) {
     preg_match('/(watch\?v=|watch\?.+&v=)(.{11})/i', $torrents['youtube'], $match);
+    $image = placeholder_image();
     if (isset($match[2])) {
         $youtube_id = $match[2];
         $HTMLOUT .= main_div("
                     <a id='youtube-hash'></a>
                     <div class='responsive-container'>
-                        <iframe width='1920px' height='1080px' data-src='https://youtube.com/embed/{$youtube_id}?vq=hd1080' controls autoplay='false' frameborder='0' allowfullscreen class='lazy'></iframe>
+                        <iframe width='1920px' height='1080px' src='{$image}' data-src='https://youtube.com/embed/{$youtube_id}?vq=hd1080' controls autoplay='false' frameborder='0' allowfullscreen class='lazy'></iframe>
                     </div>", 'bottom20');
     }
 }

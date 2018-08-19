@@ -10,6 +10,7 @@ require_once CLASS_DIR . 'class_user_options.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $fluent;
 
+$image = placeholder_image();
 $lang = array_merge(load_language('global'), load_language('forums'), load_language('forums_global'));
 $stdfoot = [
     'js' => [
@@ -140,41 +141,41 @@ $legend = main_table("
         <td colspan='8'>{$lang['fm_legend']}</td>
     </tr>
     <tr>
-        <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}forums/unlockednew.gif' alt='unlockednew' title='{$lang['fm_unlocked_new']}' class='tooltipper emoticon'></td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/unlockednew.gif' alt='unlockednew' title='{$lang['fm_unlocked_new']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fm_unread_forum']}</td>
-        <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}forums/unlocked.gif' alt='unlocked' title='{$lang['fm_unlocked']}' class='tooltipper emoticon'></td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/unlocked.gif' alt='unlocked' title='{$lang['fm_unlocked']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fm_read_forum']}</td>
-        <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}forums/topicnew.gif' alt='topicnew' title='{$lang['fe_new_topic']}' class='tooltipper emoticon'></td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/topicnew.gif' alt='topicnew' title='{$lang['fe_new_topic']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fm_unread_post']}</td>
-        <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}forums/topic.gif' alt='topic' title='{$lang['fe_topic']}' class='tooltipper emoticon'></td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/topic.gif' alt='topic' title='{$lang['fe_topic']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fm_read_post']}</td>
     </tr>
 	<tr>
-        <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}forums/hot_topic_new.gif' alt='hot_topic_new' title='{$lang['fm_hot_topic_new']}' class='tooltipper emoticon'></td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/hot_topic_new.gif' alt='hot_topic_new' title='{$lang['fm_hot_topic_new']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fm_hot_topic_unread']}</td>
-        <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}forums/hot_topic.gif' alt='hot_topic' title='{$lang['fm_hot_topic']}' class='tooltipper emoticon'></td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/hot_topic.gif' alt='hot_topic' title='{$lang['fm_hot_topic']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fm_hot_topic_more_than_30_replies']}<br></td>
-        <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}forums/lockednew.gif' alt='lockednew' title='{$lang['fm_locked_new']}' class='tooltipper emoticon'></td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/lockednew.gif' alt='lockednew' title='{$lang['fm_locked_new']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fm_locked_un-read']}</td>
-        <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}forums/locked.gif' alt='locked' title='{$lang['fe_locked']}' class='tooltipper emoticon'></td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/locked.gif' alt='locked' title='{$lang['fe_locked']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fe_locked']}<br></td>
 	</tr>
 	<tr>
-        <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}forums/poll.gif' alt='poll' title='{$lang['fe_poll']}' class='tooltipper emoticon'></td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/poll.gif' alt='poll' title='{$lang['fe_poll']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fe_poll']}</td>
-        <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}forums/pinned.gif' alt='pinned' title='{$lang['fe_pinned']}' class='tooltipper emoticon'></td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/pinned.gif' alt='pinned' title='{$lang['fe_pinned']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fe_pinned']}<br></td>
-        <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}forums/subscriptions.gif' alt='{$lang['fe_subscribed']} title='{$lang['fe_subscribed']}' class='tooltipper emoticon'></td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/subscriptions.gif' alt='{$lang['fe_subscribed']} title='{$lang['fe_subscribed']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fm_subscribed_to_thread']}</td>
-        <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}forums/posted.gif' alt='posted' title='{$lang['fm_posted']}' class='tooltipper emoticon'></td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/posted.gif' alt='posted' title='{$lang['fm_posted']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fm_you_have_posted_here']}<br></td>
 	</tr>
 	<tr>
-        <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}forums/mg.gif' height='20' alt='{$lang['fm_1st_post_preview']} title='{$lang['fm_1st_post_preview']}' class='tooltipper emoticon'></td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/mg.gif' height='20' alt='{$lang['fm_1st_post_preview']} title='{$lang['fm_1st_post_preview']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fm_1st_post_preview']}<br></td>
-        <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}forums/last_post.gif' alt='last post' title='{$lang['fe_last_post']}' class='tooltipper emoticon'></td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/last_post.gif' alt='last post' title='{$lang['fe_last_post']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fe_last_post']}</td>
-        <td class='has-text-centered'><img src='{$site_config['pic_baseurl']}forums/topic_normal.gif' alt='{$lang['fe_thread_icon']}' title='{$lang['fe_thread_icon']}' class='tooltipper emoticon'></td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/topic_normal.gif' alt='{$lang['fe_thread_icon']}' title='{$lang['fe_thread_icon']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fe_thread_icon']}</td>
         <td></td>
         <td></td>
@@ -196,12 +197,12 @@ $more_options = '
 <tr>
 <td colspan="3">' . $lang['fm_additional_options'] . '}...</td>
 </tr>' . ($CURUSER['class'] < $min_upload_class ? '' : '<tr>
-<td><img src="' . $site_config['pic_baseurl'] . 'forums/attach.gif" alt="' . $lang['fm_attach'] . '" class="emoticon"></td>
+<td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/attach.gif" alt="' . $lang['fm_attach'] . '" class="emoticon lazy"></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['fe_attachments'] . ':</span></td>
 <td>
 <input type="file" size="30" name="attachment[]" /> <a title="' . $lang['fm_add_more_attachments'] . '"  id="more" style="white-space:nowrap;font-weight:bold;cursor:pointer;">' . $lang['fm_add_more_attachments'] . '</a>
-<img src="' . $site_config['pic_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '}" class="emoticon">
-<img src="' . $site_config['pic_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" class="emoticon"><br>
+<img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '}" class="emoticon lazy">
+<img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" class="emoticon lazy"><br>
 <div id="attach_more" style="display:none">
 <input type="file" size="30" name="attachment[]" /><br>
 <input type="file" size="30" name="attachment[]" /><br>
@@ -211,21 +212,21 @@ $more_options = '
 </tr>') . ((isset($_GET['action']) && 'new_topic' != $_GET['action']) ? '' : '<tr>
 <td></td>
 <td></td>
-<td><span style="white-space:nowrap;font-weight: bold;"> <img src="' . $site_config['pic_baseurl'] . 'forums/poll.gif" alt="" class="emoticon">' . $lang['poll_add_poll_to_topic'] . '</span>
+<td><span style="white-space:nowrap;font-weight: bold;"> <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/poll.gif" alt="" class="emoticon lazy">' . $lang['poll_add_poll_to_topic'] . '</span>
 </td>
 </tr>
 <tr>
-<td><img src="' . $site_config['pic_baseurl'] . 'forums/question.png" alt="Question" class="emoticon"></td>
+<td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/question.png" alt="Question" class="emoticon lazy"></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_question'] . ':</span></td>
 <td><input type="text" name="poll_question" class="w-100" value="' . (isset($_POST['poll_question']) ? strip_tags($_POST['poll_question']) : '') . '" /></td>
 </tr>
 <tr>
-<td><img src="' . $site_config['pic_baseurl'] . 'forums/options.gif" alt="' . $lang['poll_answers'] . '" class="emoticon"></td>
+<td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/options.gif" alt="' . $lang['poll_answers'] . '" class="emoticon lazy"></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_answers'] . ':</span></td>
 <td><textarea cols="30" rows="4" name="poll_answers" class="text_area_small">' . (isset($_POST['poll_answers']) ? strip_tags($_POST['poll_answers']) : '') . '</textarea><br>' . $lang['poll_one_option_per_line_min_2_op_max_20_options_bbcode_is_enabled.'] . '</td>
 </tr>
 <tr>
-<td><img src="' . $site_config['pic_baseurl'] . 'forums/clock.png" alt=' . $lang['poll_starts'] . ' class="emoticon"></td>
+<td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/clock.png" alt=' . $lang['poll_starts'] . ' class="emoticon lazy"></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_starts'] . ':</span></td>
 <td><select name="poll_starts">
 <option value="0" ' . (0 === $poll_starts ? 'selected="selected"' : '') . '>' . $lang['poll_start_now'] . '!</option>
@@ -239,7 +240,7 @@ $more_options = '
 </select>' . $lang['fm_when_to_start_the_poll'] . ' ' . $lang['poll_start_now'] . '!</td>
 </tr>
 <tr>
-<td><img src="' . $site_config['pic_baseurl'] . 'forums/stop.png" alt=' . $lang['poll_ends'] . ' class="emoticon"></td>
+<td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/stop.png" alt=' . $lang['poll_ends'] . ' class="emoticon lazy"></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_ends'] . ':</span></td>
 <td><select name="poll_ends">
 <option value="1356048000" ' . (1356048000 === $poll_ends ? 'selected="selected"' : '') . '>' . $lang['poll_run_forever'] . '</option>
@@ -258,7 +259,7 @@ $more_options = '
 </select> How long should this poll run? Default is "run forever"</td>
 </tr>
 <tr>
-<td><img src="' . $site_config['pic_baseurl'] . 'forums/multi.gif" alt=' . $lang['poll_multi_options'] . ' class="emoticon"/></td>
+<td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/multi.gif" alt=' . $lang['poll_multi_options'] . ' class="emoticon lazy"/></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_multi_options'] . ':</span></td>
 <td><select name="multi_options">
 <option value="1" ' . (1 === $multi_options ? 'selected="selected"' : '') . '>' . $lang['poll_single_option'] . '!</option>
@@ -474,7 +475,7 @@ switch ($action) {
                         <td class="w-25">
                             <div class="level">
                                 <span class="level-left">
-                                    <img src="' . $site_config['pic_baseurl'] . 'forums/' . $img . '.gif" alt="' . $img . '" title=' . $lang['fm_unlocked'] . ' class="tooltipper emoticon right10" />
+                                    <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/' . $img . '.gif" alt="' . $img . '" title=' . $lang['fm_unlocked'] . ' class="tooltipper emoticon lazy right10" />
                                     ' . bubble('
                                     <span>
                                         <a href="?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '">' . $forum_name . '</a>
@@ -555,12 +556,14 @@ function highlightWords($text, $words)
 function ratingpic_forums($num)
 {
     global $site_config;
+
+    $image = placeholder_image();
     $r = round($num * 2) / 2;
     if ($r < 1 || $r > 5) {
         return;
     }
 
-    return '<img src="' . $site_config['pic_baseurl'] . 'forums/rating/' . $r . '.gif" alt="rating: ' . $num . ' / 5" class="emoticon">';
+    return '<img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/rating/' . $r . '.gif" alt="rating: ' . $num . ' / 5" class="emoticon lazy">';
 }
 
 function insert_quick_jump_menu($current_forum = 0, $staff = false)

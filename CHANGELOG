@@ -1,4 +1,7 @@
 18 Aug 2018
+update: imdb_info_short to find images on fanart or omdb, when imdb image not found
+add: create_image() to create dummy src images for lazy loading
+update: additional images lazy loaded
 fix: typo lang_pm.php
 fix: check incorrect var view_message.php
 fix: typo ajax_chat_cleanup.php

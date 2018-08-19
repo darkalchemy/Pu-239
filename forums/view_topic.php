@@ -2,6 +2,7 @@
 
 global $lang, $fluent, $CURUSER, $site_config, $user_stuffs, $session;
 
+$image = placeholder_image();
 $attachments = $members_votes = $status = $topic_poll = $stafflocked = $child = $parent_forum_name = $math_image = $math_text = $staff_tools = $now_viewing = '';
 $topic_id = isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0);
 if (!is_valid_id($topic_id)) {
@@ -51,12 +52,12 @@ switch ($status) {
 
     case 'recycled':
         $status = 'recycled';
-        $status_image = '<img src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" class="tooltipper emoticon" />';
+        $status_image = '<img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" class="tooltipper emoticon lazy" />';
         break;
 
     case 'deleted':
         $status = 'deleted';
-        $status_image = '<img src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_deleted'] . '" class="tooltipper emoticon" />';
+        $status_image = '<img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_deleted'] . '" class="tooltipper emoticon lazy" />';
         break;
 }
 
@@ -124,7 +125,7 @@ if ($arr['poll_id'] > 0) {
 	        <table border="0" cellspacing="5" cellpadding="5">
 	            <tr>
 	                <td colspan="2">
-	                    <img src="' . $site_config['pic_baseurl'] . 'forums/poll.gif" alt="" class="tooltipper emoticon" />
+	                    <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/poll.gif" alt="" class="tooltipper emoticon lazy" />
 	                    <span>Poll' . ($arr_poll['poll_closed'] === 'yes' ? '
                             closed
                         </span>' : ($arr_poll['poll_starts'] > TIME_NOW ? '
@@ -137,21 +138,21 @@ if ($arr['poll_id'] > 0) {
 	                </td>
 	                <td colspan="3">' . ($CURUSER['class'] < UC_STAFF ? '' : '
 	                    <a href="' . $site_config['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_edit&amp;topic_id=' . $topic_id . '" class="altlink">
-	                        <img src="' . $site_config['pic_baseurl'] . 'forums/modify.gif" alt="" class="tooltipper emoticon" /> ' . $lang['fe_edit'] . '
+	                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/modify.gif" alt="" class="tooltipper emoticon lazy" /> ' . $lang['fe_edit'] . '
 	                    </a>
                     	<a href="' . $site_config['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_reset&amp;topic_id=' . $topic_id . '" class="altlink">
-                    	    <img src="' . $site_config['pic_baseurl'] . 'forums/stop_watch.png" alt=" " class="tooltipper emoticon" /> ' . $lang['fe_reset'] . '
+                    	    <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/stop_watch.png" alt=" " class="tooltipper emoticon lazy" /> ' . $lang['fe_reset'] . '
                     	</a>' . (($arr_poll['poll_ends'] > TIME_NOW || $arr_poll['poll_closed'] === 'no') ? '
                     	<a href="' . $site_config['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_close&amp;topic_id=' . $topic_id . '" class="altlink">
-                    	    <img src="' . $site_config['pic_baseurl'] . 'forums/clock.png" alt="" width="20px" /> close</a>' : '<a href="' . $site_config['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_open&amp;topic_id=' . $topic_id . '" class="altlink"><img src="' . $site_config['pic_baseurl'] . 'forums/clock.png" alt="" width="20px" /> ' . $lang['fe_start'] . '
+                    	    <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/clock.png" alt="" class="emoticon lazy" /> close</a>' : '<a href="' . $site_config['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_open&amp;topic_id=' . $topic_id . '" class="altlink"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/clock.png" alt="" class="emoticon lazy" /> ' . $lang['fe_start'] . '
                         </a>') . '
 	                    <a href="' . $site_config['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_delete&amp;topic_id=' . $topic_id . '" class="altlink">
-	                        <img src="' . $site_config['pic_baseurl'] . 'forums/delete.gif" alt="" class="tooltipper emoticon" /> ' . $lang['fe_delete'] . '
+	                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/delete.gif" alt="" class="tooltipper emoticon lazy" /> ' . $lang['fe_delete'] . '
 	                    </a>') . '
 	                </td>
 	            </tr>
 	            <tr>
-                    <td><img src="' . $site_config['pic_baseurl'] . 'forums/poll_question.png" alt="" class="tooltipper emoticon" /></td>
+                    <td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/poll_question.png" alt="" class="tooltipper emoticon lazy" /></td>
                     <td colspan="5">' . format_comment($arr_poll['question']) . '</td>
             	</tr>
 	            <tr>
@@ -175,7 +176,7 @@ if ($arr['poll_id'] > 0) {
             <table border="0" width="200px">
 		        <tr>
 		            <td style="padding: 0px; background-image: url(' . $site_config['pic_baseurl'] . 'forums/vote_img_bg.gif); background-repeat: repeat-x">
-                	   <img src="' . $site_config['pic_baseurl'] . 'forums/vote_img.gif" width="' . $math . '%" height="8" alt="' . $math_text . '" title="' . $math_text . '" class="tooltipper" />
+                	   <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/vote_img.gif" width="' . $math . '%" height="8" alt="' . $math_text . '" title="' . $math_text . '" class="tooltipper lazy" />
                 	</td>
         	   </tr>
         	</table>';
@@ -191,7 +192,7 @@ if ($arr['poll_id'] > 0) {
 		        <td>' . $math_image . '</td>
 		        <td><span>' . $math_text . '</span></td>
 		        <td>' . (in_array($i, $members_votes) ? '
-		            <img src="' . $site_config['pic_baseurl'] . 'forums/check.gif" alt=" " class="tooltipper emoticon" />
+		            <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/check.gif" alt=" " class="tooltipper emoticon lazy" />
 		            <span>' . $lang['fe_your_vote'] . '!</span>' : '') . '
 		        </td>
 		    </tr>';
@@ -199,7 +200,7 @@ if ($arr['poll_id'] > 0) {
     $topic_poll .= (($change_vote === 1 && $voted) ? '
             <tr>
                 <td colspan="5">
-			        <a href="' . $site_config['baseurl'] . '/forums.php?action=poll&amp;action_2=reset_vote&amp;topic_id=' . $topic_id . '" class="altlink"><img src="' . $site_config['pic_baseurl'] . 'forums/stop_watch.png" alt="" class="tooltipper emoticon" /> ' . $lang['fe_reset_your_vote'] . '!</a> 
+			        <a href="' . $site_config['baseurl'] . '/forums.php?action=poll&amp;action_2=reset_vote&amp;topic_id=' . $topic_id . '" class="altlink"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/stop_watch.png" alt="" class="tooltipper emoticon lazy" /> ' . $lang['fe_reset_your_vote'] . '!</a> 
 			</td>
 			</tr>' : '') . ($voted ? '
 	        <tr>
@@ -253,10 +254,10 @@ $subscribed = $fluent->from('subscriptions')
 
 $subscriptions = $subscribed ? "
         <a class='altlink' href='{$site_config['baseurl']}/forums.php?action=delete_subscription&amp;topic_id={$topic_id}'> 
-		    <img src='{$site_config['pic_baseurl']}forums/unsubscribe.gif' alt='+' title='+' class='tooltipper emoticon' />
+		    <img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/unsubscribe.gif' alt='+' title='+' class='tooltipper emoticon lazy' />
 		     {$lang['fe_unsubscribe_from_this_topic']}
         </a>" : "<a class='altlink' href='{$site_config['baseurl']}/forums.php?action=add_subscription&amp;forum_id={$forum_id}&amp;topic_id={$topic_id}'>
-            <img src='{$site_config['pic_baseurl']}forums/subscribe.gif' alt='+' title='+' class='tooltipper emoticon' />
+            <img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/subscribe.gif' alt='+' title='+' class='tooltipper emoticon lazy' />
              {$lang['fe_subscribe_to_this_topic']}
         </a>";
 
@@ -402,13 +403,13 @@ $like_button = "
                     <span data-id='{$arr['topic_id']}' data-type='topic' data-csrf='" . $session->get('csrf_token') . "' class='mlike button is-small left10'>" . ucfirst($wht) . '</span>
                 </div>';
 
-$locked_or_reply_button = ($locked === 'yes' ? '<span><img src="' . $site_config['pic_baseurl'] . 'forums/thread_locked.gif" alt="' . $lang['fe_thread_locked'] . '" title="' . $lang['fe_thread_locked'] . '" class="tooltipper emoticon" />' . $lang['fe_this_topic_is_locked'] . ', you may not post in this thread.</span>' : ($CURUSER['forum_post'] === 'no' ? '<span>Your posting rights have been removed. You may not post.</span>' : '<a href="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '" class="button is-small margin10">Add Reply</a>'));
+$locked_or_reply_button = ($locked === 'yes' ? '<span><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/thread_locked.gif" alt="' . $lang['fe_thread_locked'] . '" title="' . $lang['fe_thread_locked'] . '" class="tooltipper emoticon lazy" />' . $lang['fe_this_topic_is_locked'] . ', you may not post in this thread.</span>' : ($CURUSER['forum_post'] === 'no' ? '<span>Your posting rights have been removed. You may not post.</span>' : '<a href="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '" class="button is-small margin10">Add Reply</a>'));
 
 if ($arr['parent_forum'] > 0) {
     $parent_forum_res = sql_query('SELECT name AS parent_forum_name FROM forums WHERE id = ' . sqlesc($arr['parent_forum'])) or sqlerr(__FILE__, __LINE__);
     $parent_forum_arr = mysqli_fetch_row($parent_forum_res);
     $child = ($arr['parent_forum'] > 0 ? '<span> [ ' . $lang['fe_child_board'] . ' ]</span>' : '');
-    $parent_forum_name = '<img src="' . $site_config['pic_baseurl'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" class="tooltipper emoticon" /> 
+    $parent_forum_name = '<img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" class="tooltipper emoticon lazy" /> 
 		<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . htmlsafechars($parent_forum_arr[0], ENT_QUOTES) . '</a>';
 }
 
@@ -432,7 +433,7 @@ $HTMLOUT .= ($upload_errors_size > 0 ? ($upload_errors_size === 1 ? '
                 ' . ($posts_count > $perpage ? "<div class='bottom20'>$menu_top</div>" : '') . $the_top_and_bottom . '
 		        <tr>
 		            <td class="w-25">
-		                <img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="tooltipper emoticon" />' . $lang['fe_author'] . '
+		                <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="tooltipper emoticon lazy" />' . $lang['fe_author'] . '
 		            </td>
 		            <td class="w-25">' . $lang['fe_topic'] . ': ' . $topic_name . '  [ ' . $lang['fe_read'] . ' ' . $views . ' ' . $lang['fe_times'] . ' ]</td>
                     <td>' . $like_button . '</td>
@@ -449,9 +450,9 @@ foreach ($posts as $arr) {
     $usersdata = $user_stuffs->getUserFromId($arr['user_id']);
     $moodname = isset($mood['name'][$usersdata['mood']]) ? htmlsafechars($mood['name'][$usersdata['mood']]) : 'is feeling neutral';
     $moodpic = isset($mood['image'][$usersdata['mood']]) ? htmlsafechars($mood['image'][$usersdata['mood']]) : 'noexpression.gif';
-    $post_icon = !empty($arr['icon']) ? '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" class="tooltipper emoticon" /> ' : '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="icon" title="icon" class="tooltipper emoticon" /> ';
+    $post_icon = !empty($arr['icon']) ? '<img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" class="tooltipper emoticon lazy" /> ' : '<img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="icon" title="icon" class="tooltipper emoticon lazy" /> ';
     $post_title = !empty($arr['post_title']) ? ' <span>' . htmlsafechars($arr['post_title'], ENT_QUOTES) . '</span>' : '';
-    $stafflocked = $arr['staff_lock'] === 1 ? "<img src='{$site_config['pic_baseurl']}locked.gif' alt='" . $lang['fe_post_locked'] . "' title='" . $lang['fe_post_locked'] . "' class='tooltipper emoticon' />" : '';
+    $stafflocked = $arr['staff_lock'] === 1 ? "<img src='{$image}' data-src='{$site_config['pic_baseurl']}locked.gif' alt='" . $lang['fe_post_locked'] . "' title='" . $lang['fe_post_locked'] . "' class='tooltipper emoticon lazy' />" : '';
     $member_reputation = !empty($usersdata['username']) ? get_reputation($usersdata, 'posts', true, $arr['post_id']) : '';
     $edited_by = '';
     if ($arr['edit_date'] > 0) {
@@ -481,14 +482,14 @@ foreach ($posts as $arr) {
     if (mysqli_num_rows($attachments_res) > 0) {
         $attachments = '<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr><td><span >' . $lang['fe_attachments'] . ':</span><hr>';
         while ($attachments_arr = mysqli_fetch_assoc($attachments_res)) {
-            $attachments .= '<span>' . ($attachments_arr['extension'] === 'zip' ? ' <img src="' . $site_config['pic_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '" title="' . $lang['fe_zip'] . '" class="tooltipper emoticon" /> ' : ' <img src="' . $site_config['pic_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" title="' . $lang['fe_rar'] . '" class="tooltipper emoticon" /> ') . ' 
+            $attachments .= '<span>' . ($attachments_arr['extension'] === 'zip' ? ' <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '" title="' . $lang['fe_zip'] . '" class="tooltipper emoticon lazy" /> ' : ' <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" title="' . $lang['fe_rar'] . '" class="tooltipper emoticon lazy" /> ') . ' 
 					<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=download_attachment&amp;id=' . (int) $attachments_arr['id'] . '" title="' . $lang['fe_download_attachment'] . '" target="_blank">
 					' . htmlsafechars($attachments_arr['file_name']) . '</a> <span style="font-weight: bold; font-size: xx-small;">[' . mksize($attachments_arr['size']) . ']</span></span>';
         }
         $attachments .= '</td></tr></table>';
     }
 
-    $signature = (($CURUSER['opt1'] & user_options::SIGNATURES) ? '' : (empty($usersdata['signature']) ? '' : ($arr['anonymous'] == 'yes' || $usersdata['perms'] & bt_options::PERMS_STEALTH ? '<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr><td><hr><img class="avatar" src="' . $site_config['pic_baseurl'] . 'anonymous_2.jpg" alt="Signature" /></td></tr></table>' : '<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr><td ><hr>' . format_comment($usersdata['signature']) . '</td></tr></table>')));
+    $signature = (($CURUSER['opt1'] & user_options::SIGNATURES) ? '' : (empty($usersdata['signature']) ? '' : ($arr['anonymous'] == 'yes' || $usersdata['perms'] & bt_options::PERMS_STEALTH ? '<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr><td><hr><img class="avatar lazy" rc="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'anonymous_2.jpg" alt="Signature" /></td></tr></table>' : '<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr><td ><hr>' . format_comment($usersdata['signature']) . '</td></tr></table>')));
 
     $post_status = htmlsafechars($arr['post_status']);
     switch ($post_status) {
@@ -557,29 +558,29 @@ foreach ($posts as $arr) {
                         ' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" name="post_to_mess_with[]" value="' . $post_id . '" />' : '') . '
                         <input id="' . $dlink . '" type="hidden" value="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '#' . $post_id . '">
                         <span onclick="copy_to_clipboard(\'' . $dlink . '\')">
-                            <img src="' . $site_config['pic_baseurl'] . 'forums/link.gif" alt="' . $lang['fe_direct_link_to_this_post'] . '" title="' . $lang['fe_direct_link_to_this_post'] . '" class="tooltipper icon left5 right5" />
+                            <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/link.gif" alt="' . $lang['fe_direct_link_to_this_post'] . '" title="' . $lang['fe_direct_link_to_this_post'] . '" class="tooltipper icon left5 right5 lazy" />
                         </span>
                         <span>' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : htmlsafechars($usersdata['username'])) . '</span>
                         <span class="tool left5 right5">
                             <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'Mood\',530,500,1,1);">
-                                <img src="' . $site_config['pic_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" title="' . ($arr['anonymous'] === 'yes' ? get_anonymous_name() : htmlsafechars($usersdata['username'])) . ' ' . $moodname . '!" class="tooltipper emoticon" />
+                                <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" title="' . ($arr['anonymous'] === 'yes' ? get_anonymous_name() : htmlsafechars($usersdata['username'])) . ' ' . $moodname . '!" class="tooltipper emoticon lazy" />
                             </a>
                         </span>' . (($usersdata['paranoia'] >= 2 && $CURUSER['class'] < UC_STAFF) ? '
-                        <img src="' . $site_config['pic_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" title="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" class="tooltipper emoticon" />' : get_user_ratio_image($usersdata['uploaded'], ($site_config['ratio_free'] ? '0' : $usersdata['downloaded']))) . '
+                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'smilies/tinfoilhat.gif" alt="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" title="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" class="tooltipper emoticon lazy" />' : get_user_ratio_image($usersdata['uploaded'], ($site_config['ratio_free'] ? '0' : $usersdata['downloaded']))) . '
                     </div>
                     <div class="column is-one-quarter is-marginless has-text-centered">
                         <span>' . $post_icon . $post_title . ' ' . $lang['fe_posted_on'] . ':<br>' . get_date($arr['added'], '') . '</span>
                     </div>
                     <div class="column is-marginless">
-                        <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '&amp;quote_post=' . $post_id . '&amp;key=' . $arr['added'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/quote.gif" alt="' . $lang['fe_quote'] . '" title="' . $lang['fe_quote'] . '" class="tooltipper emoticon" /> ' . $lang['fe_quote'] . '</a>
-                        ' . (($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $usersdata['id']) ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=edit_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '"><img src="' . $site_config['pic_baseurl'] . 'forums/modify.gif" alt="' . $lang['fe_modify'] . '" title="' . $lang['fe_modify'] . '" class="tooltipper emoticon" /> ' . $lang['fe_modify'] . '</a> 
-                        <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=delete_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '"><img src="' . $site_config['pic_baseurl'] . 'forums/delete.gif" alt="' . $lang['fe_delete'] . '" title="' . $lang['fe_delete'] . '" class="tooltipper emoticon" /> ' . $lang['fe_remove'] . '</a>' : '') . '
-                        <!--<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=report_post&amp;topic_id=' . $topic_id . '&amp;post_id=' . $post_id . '"><img src="' . $site_config['pic_baseurl'] . 'forums/report.gif" alt="' . $lang['fe_report'] . '" title="' . $lang['fe_report'] . '" class="tooltipper emoticon" /> ' . $lang['fe_report'] . '</a>-->
-                        <a href="' . $site_config['baseurl'] . '/report.php?type=Post&amp;id=' . $post_id . '&amp;id_2=' . $topic_id . '"><img src="' . $site_config['pic_baseurl'] . 'forums/report.gif" alt="' . $lang['fe_report'] . '" title="' . $lang['fe_report'] . '" class="tooltipper emoticon" /> ' . $lang['fe_report'] . '</a>
-                        ' . ($CURUSER['class'] == UC_MAX && $arr['staff_lock'] == 1 ? '<a href="' . $site_config['baseurl'] . '/forums.php?action=staff_lock&amp;mode=unlock&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '"><img src="' . $site_config['pic_baseurl'] . 'key.gif" alt="' . $lang['fe_un_lock'] . '" title="' . $lang['fe_un_lock'] . '" class="tooltipper emoticon" /> ' . $lang['fe_unlock_post'] . '</a>' : '') . '
-                        ' . ($CURUSER['class'] == UC_MAX && $arr['staff_lock'] == 0 ? '<a href="' . $site_config['baseurl'] . '/forums.php?action=staff_lock&amp;mode=lock&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '"><img src="' . $site_config['pic_baseurl'] . 'key.gif" alt="' . $lang['fe_lock'] . '" title="' . $lang['fe_lock'] . '" class="tooltipper emoticon" /> ' . $lang['fe_lock_post'] . '</a>' : '') . $stafflocked . '
-                        <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '#top"><img src="' . $site_config['pic_baseurl'] . 'forums/up.gif" alt="' . $lang['fe_top'] . '" title="' . $lang['fe_top'] . '" class="tooltipper emoticon" /></a> 
-                        <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '#bottom"><img src="' . $site_config['pic_baseurl'] . 'forums/down.gif" alt="' . $lang['fe_bottom'] . '" title="' . $lang['fe_bottom'] . '" class="tooltipper emoticon" /></a> 
+                        <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '&amp;quote_post=' . $post_id . '&amp;key=' . $arr['added'] . '"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/quote.gif" alt="' . $lang['fe_quote'] . '" title="' . $lang['fe_quote'] . '" class="tooltipper emoticon lazy" /> ' . $lang['fe_quote'] . '</a>
+                        ' . (($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $usersdata['id']) ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=edit_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/modify.gif" alt="' . $lang['fe_modify'] . '" title="' . $lang['fe_modify'] . '" class="tooltipper emoticon lazy" /> ' . $lang['fe_modify'] . '</a> 
+                        <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=delete_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/delete.gif" alt="' . $lang['fe_delete'] . '" title="' . $lang['fe_delete'] . '" class="tooltipper emoticon lazy" /> ' . $lang['fe_remove'] . '</a>' : '') . '
+                        <!--<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=report_post&amp;topic_id=' . $topic_id . '&amp;post_id=' . $post_id . '"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/report.gif" alt="' . $lang['fe_report'] . '" title="' . $lang['fe_report'] . '" class="tooltipper emoticon lazy" /> ' . $lang['fe_report'] . '</a>-->
+                        <a href="' . $site_config['baseurl'] . '/report.php?type=Post&amp;id=' . $post_id . '&amp;id_2=' . $topic_id . '"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/report.gif" alt="' . $lang['fe_report'] . '" title="' . $lang['fe_report'] . '" class="tooltipper emoticon lazy" /> ' . $lang['fe_report'] . '</a>
+                        ' . ($CURUSER['class'] == UC_MAX && $arr['staff_lock'] == 1 ? '<a href="' . $site_config['baseurl'] . '/forums.php?action=staff_lock&amp;mode=unlock&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'key.gif" alt="' . $lang['fe_un_lock'] . '" title="' . $lang['fe_un_lock'] . '" class="tooltipper emoticon lazy" /> ' . $lang['fe_unlock_post'] . '</a>' : '') . '
+                        ' . ($CURUSER['class'] == UC_MAX && $arr['staff_lock'] == 0 ? '<a href="' . $site_config['baseurl'] . '/forums.php?action=staff_lock&amp;mode=lock&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'key.gif" alt="' . $lang['fe_lock'] . '" title="' . $lang['fe_lock'] . '" class="tooltipper emoticon lazy" /> ' . $lang['fe_lock_post'] . '</a>' : '') . $stafflocked . '
+                        <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '#top"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/up.gif" alt="' . $lang['fe_top'] . '" title="' . $lang['fe_top'] . '" class="tooltipper emoticon lazy" /></a> 
+                        <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '#bottom"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/down.gif" alt="' . $lang['fe_bottom'] . '" title="' . $lang['fe_bottom'] . '" class="tooltipper emoticon lazy" /></a> 
                     </div>
                 </div>
             </td>
@@ -588,7 +589,7 @@ foreach ($posts as $arr) {
          <td class="has-text-centered w-15 min-200">' . get_avatar($usersdata) . '<br>
 			' . ($arr['anonymous'] == 'yes' ? '<i>' . get_anonymous_name() . '</i>' : format_username($arr['user_id'])) . ($arr['anonymous'] == 'yes' || empty($usersdata['title']) ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($usersdata['title']) . ']</span>') . '<br>
 			<span >' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name($usersdata['class'])) . '</span><br>
-			' . ($usersdata['last_access'] > (TIME_NOW - 300) && $usersdata['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper icon is-small" /> Online' : ' <img src="' . $site_config['pic_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper icon is-small" /> ' . $lang['fe_offline'] . '') . '<br>' . $lang['fe_karma'] . ': ' . number_format($usersdata['seedbonus']) . '<br>' . $member_reputation . '<br>' . (!empty($usersdata['google_talk']) ? ' <a href="http://talkgadget.google.com/talkgadget/popout?member=' . htmlsafechars($usersdata['google_talk']) . '" title="' . $lang['fe_click_for_google_talk_gadget'] . '"  target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/google_talk.gif" alt="' . $lang['fe_google_talk'] . '" class="tooltipper emoticon" /></a> ' : '') . (!empty($usersdata['icq']) ? ' <a href="http://people.icq.com/people/&amp;uin=' . htmlsafechars($usersdata['icq']) . '" title="' . $lang['fe_click_to_open_icq_page'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'forums/icq.gif" alt="icq" class="tooltipper emoticon" /></a> ' : '') . (!empty($usersdata['msn']) ? ' <a href="http://members.msn.com/' . htmlsafechars($usersdata['msn']) . '" target="_blank" title="' . $lang['fe_click_to_see_msn_details'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/msn.gif" alt="msn" title="msn" class="tooltipper emoticon" /></a> ' : '') . (!empty($usersdata['aim']) ? ' <a href="http://aim.search.aol.com/aol/search?s_it=searchbox.webhome&amp;q=' . htmlsafechars($usersdata['aim']) . '" target="_blank" title="' . $lang['fe_click_to_search_on_aim'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/aim.gif" alt="AIM" title="AIM" class="tooltipper emoticon" /></a> ' : '') . (!empty($usersdata['yahoo']) ? ' <a href="http://webmessenger.yahoo.com/?im=' . htmlsafechars($usersdata['yahoo']) . '" target="_blank" title="' . $lang['fe_click_to_open_yahoo'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/yahoo.gif" alt="yahoo" title="Yahoo!" class="tooltipper emoticon" /></a> ' : '') . (!empty($usersdata['website']) ? ' <a href="' . htmlsafechars($usersdata['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/website.gif" alt="website" /></a> ' : '') . ($usersdata['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($usersdata['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><img src="' . $site_config['pic_baseurl'] . 'email.gif" alt="email" title="email" class="tooltipper emoticon" /> </a>' : '') . ($CURUSER['class'] >= UC_STAFF && !empty($usersdata['ip']) ? '
+			' . ($usersdata['last_access'] > (TIME_NOW - 300) && $usersdata['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/online.gif" alt="Online" title="Online" class="tooltipper icon is-small lazy" /> Online' : ' <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/offline.gif" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" class="tooltipper icon is-small lazy" /> ' . $lang['fe_offline'] . '') . '<br>' . $lang['fe_karma'] . ': ' . number_format($usersdata['seedbonus']) . '<br>' . $member_reputation . '<br>' . (!empty($usersdata['google_talk']) ? ' <a href="http://talkgadget.google.com/talkgadget/popout?member=' . htmlsafechars($usersdata['google_talk']) . '" title="' . $lang['fe_click_for_google_talk_gadget'] . '"  target="_blank"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/google_talk.gif" alt="' . $lang['fe_google_talk'] . '" class="tooltipper emoticon lazy" /></a> ' : '') . (!empty($usersdata['icq']) ? ' <a href="http://people.icq.com/people/&amp;uin=' . htmlsafechars($usersdata['icq']) . '" title="' . $lang['fe_click_to_open_icq_page'] . '" target="_blank"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/icq.gif" alt="icq" class="tooltipper emoticon lazy" /></a> ' : '') . (!empty($usersdata['msn']) ? ' <a href="http://members.msn.com/' . htmlsafechars($usersdata['msn']) . '" target="_blank" title="' . $lang['fe_click_to_see_msn_details'] . '"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/msn.gif" alt="msn" title="msn" class="tooltipper emoticon lazy" /></a> ' : '') . (!empty($usersdata['aim']) ? ' <a href="http://aim.search.aol.com/aol/search?s_it=searchbox.webhome&amp;q=' . htmlsafechars($usersdata['aim']) . '" target="_blank" title="' . $lang['fe_click_to_search_on_aim'] . '"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/aim.gif" alt="AIM" title="AIM" class="tooltipper emoticon lazy" /></a> ' : '') . (!empty($usersdata['yahoo']) ? ' <a href="http://webmessenger.yahoo.com/?im=' . htmlsafechars($usersdata['yahoo']) . '" target="_blank" title="' . $lang['fe_click_to_open_yahoo'] . '"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/yahoo.gif" alt="yahoo" title="Yahoo!" class="tooltipper emoticon lazy" /></a> ' : '') . (!empty($usersdata['website']) ? ' <a href="' . htmlsafechars($usersdata['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/website.gif" alt="website" class="tooltipper emoticon lazy" /></a> ' : '') . ($usersdata['show_email'] === 'yes' ? ' <a href="mailto:' . htmlsafechars($usersdata['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'email.gif" alt="email" title="email" class="tooltipper emoticon lazy" /> </a>' : '') . ($CURUSER['class'] >= UC_STAFF && !empty($usersdata['ip']) ? '
             <h2 class="bg-06 round10">' . htmlsafechars($usersdata['ip']) . '</h2>
 			<ul class="level-center">
 			    <li class="margin10"><a href="' . url_proxy('https://ws.arin.net/?queryinput=' . htmlsafechars($usersdata['ip'])) . '" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank" class="button is-small">' . $lang['vt_ip_whois'] . '</a></li>
@@ -615,11 +616,11 @@ foreach ($posts as $arr) {
 			</tr>' : '') . '
 			<tr>
 			    <td colspan="3">' . (($usersdata['paranoia'] >= 1 && $CURUSER['class'] < UC_STAFF) ? '' : '
-                    <span><img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['vt_uploaded'] . '" title="' . $lang['vt_uploaded'] . '" class="tooltipper emoticon" /> ' . mksize($usersdata['uploaded']) . '</span>  
-                    ' . ($site_config['ratio_free'] ? '' : '<span style="color: red;"><img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['vt_downloaded'] . '" title="' . $lang['vt_downloaded'] . '" class="tooltipper emoticon" /> ' . mksize($usersdata['downloaded']) . '</span>') . '') . (($usersdata['paranoia'] >= 2 && $CURUSER['class'] < UC_STAFF) ? '' : '' . $lang['vt_ratio'] . ': ' . member_ratio($usersdata['uploaded'], $site_config['ratio_free'] ? '0' : $usersdata['downloaded']) . '
-                    ' . ($usersdata['hit_and_run_total'] == 0 ? '<img src="' . $site_config['pic_baseurl'] . 'forums/no_hit_and_runs2.gif"  alt="' . ($usersdata['anonymous'] == 'yes' ? '' . get_anonymous_name() . '' : htmlsafechars($usersdata['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" title="' . ($usersdata['anonymous'] == 'yes' ? get_anonymous_name() : htmlsafechars($usersdata['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" class="tooltipper emoticon" />' : '') . '
+                    <span><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['vt_uploaded'] . '" title="' . $lang['vt_uploaded'] . '" class="tooltipper emoticon lazy" /> ' . mksize($usersdata['uploaded']) . '</span>  
+                    ' . ($site_config['ratio_free'] ? '' : '<span style="color: red;"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['vt_downloaded'] . '" title="' . $lang['vt_downloaded'] . '" class="tooltipper emoticon lazy" /> ' . mksize($usersdata['downloaded']) . '</span>') . '') . (($usersdata['paranoia'] >= 2 && $CURUSER['class'] < UC_STAFF) ? '' : '' . $lang['vt_ratio'] . ': ' . member_ratio($usersdata['uploaded'], $site_config['ratio_free'] ? '0' : $usersdata['downloaded']) . '
+                    ' . ($usersdata['hit_and_run_total'] == 0 ? '<img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/no_hit_and_runs2.gif"  alt="' . ($usersdata['anonymous'] == 'yes' ? '' . get_anonymous_name() . '' : htmlsafechars($usersdata['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" title="' . ($usersdata['anonymous'] == 'yes' ? get_anonymous_name() : htmlsafechars($usersdata['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" class="tooltipper emoticon lazy" />' : '') . '
                     ') . '
-                    <a class="altlink" href="' . $site_config['baseurl'] . '/messages.php?action=send_message&amp;receiver=' . $usersdata['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . '"><img src="' . $site_config['pic_baseurl'] . 'forums/send_pm.png" alt="' . $lang['vt_send_pm'] . '" title="' . $lang['vt_send_pm'] . '" class="tooltipper emoticon" /> ' . $lang['vt_send_message'] . "</a>
+                    <a class="altlink" href="' . $site_config['baseurl'] . '/messages.php?action=send_message&amp;receiver=' . $usersdata['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . '"><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/send_pm.png" alt="' . $lang['vt_send_pm'] . '" title="' . $lang['vt_send_pm'] . '" class="tooltipper emoticon lazy" /> ' . $lang['vt_send_message'] . "</a>
                     <span data-id='{$arr['post_id']}' data-type='post' data-csrf='" . $session->get('csrf_token') . "' class='mlike button is-small left10'>" . ucfirst($wht) . "</span>
                     <span class='tot-{$arr['post_id']} left10'>{$att_str}</span>
                 </td>
@@ -652,16 +653,16 @@ if ($CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= '
     <div class="level-center margin20">
         <span class="level-center">
-            <img src="' . $site_config['pic_baseurl'] . 'forums/tools.png" alt="' . $lang['vt_tools'] . '" title="' . $lang['vt_tools'] . '" class="tooltipper emoticon right10" />
+            <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/tools.png" alt="' . $lang['vt_tools'] . '" title="' . $lang['vt_tools'] . '" class="tooltipper emoticon right10 lazy" />
                 <a class="altlink"  title="' . $lang['fe_staff_tools'] . '" id="staff_tools_open">' . $lang['fe_staff_tools'] . '</a>
-            <img src="' . $site_config['pic_baseurl'] . 'forums/tools.png" alt="' . $lang['vt_tools'] . '" title="' . $lang['vt_tools'] . '" class="tooltipper emoticon left10" />
+            <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/tools.png" alt="' . $lang['vt_tools'] . '" title="' . $lang['vt_tools'] . '" class="tooltipper emoticon left10 lazy" />
         </span>
     </div>
     <div id="staff_tools" style="display:none" class="bottom20">';
     $table = '
         <tr>
             <td>
-                <img src="' . $site_config['pic_baseurl'] . 'forums/merge.gif" alt="' . $lang['vt_merge'] . '" title="' . $lang['vt_merge'] . '" class="tooltipper emoticon" />
+                <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/merge.gif" alt="' . $lang['vt_merge'] . '" title="' . $lang['vt_merge'] . '" class="tooltipper emoticon lazy" />
             </td>
             <td>
                 <input type="radio" name="action_2" value="merge_posts" />' . $lang['vt_merge_with'] . '<br>
@@ -678,7 +679,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
         </tr>
         <tr>
             <td>
-                <img src="' . $site_config['pic_baseurl'] . 'forums/split.gif" alt="' . $lang['vt_split'] . '" title="' . $lang['vt_split'] . '" class="tooltipper emoticon" />
+                <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/split.gif" alt="' . $lang['vt_split'] . '" title="' . $lang['vt_split'] . '" class="tooltipper emoticon lazy" />
             </td>
             <td>
                 <input type="radio" name="action_2" value="split_topic" />' . $lang['vt_split_topic'] . '
@@ -693,7 +694,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
         </tr>
         <tr>
             <td>
-                <img src="' . $site_config['pic_baseurl'] . 'forums/send_pm.png" alt="' . $lang['vt_send_message'] . '" title="' . $lang['vt_send_message'] . '" class="tooltipper emoticon" />
+                <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/send_pm.png" alt="' . $lang['vt_send_message'] . '" title="' . $lang['vt_send_message'] . '" class="tooltipper emoticon lazy" />
             </td>
             <td colspan="2">
                 <div id="pm" style="display:none">' . main_table('
@@ -735,7 +736,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
         </tr>
                 <tr>
                     <td>
-                        <img src="' . $site_config['pic_baseurl'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" class="tooltipper emoticon" />
+                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" class="tooltipper emoticon lazy" />
                     </td>
                     <td>
                         <span >' . $lang['vt_pin'] . ' ' . $lang['fe_topic'] . ':</span>
@@ -754,7 +755,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 </tr>
                 <tr>
                     <td>
-                        <img src="' . $site_config['pic_baseurl'] . 'forums/thread_locked.gif" alt="' . $lang['fe_locked'] . '" title="' . $lang['fe_locked'] . '" class="tooltipper emoticon" />
+                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/thread_locked.gif" alt="' . $lang['fe_locked'] . '" title="' . $lang['fe_locked'] . '" class="tooltipper emoticon lazy" />
                     </td>
                     <td>
                         <span>' . $lang['fe_lock'] . ' ' . $lang['fe_topic'] . ':</span>
@@ -774,7 +775,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 <tr>
                     <td>
 
-                        <img src="' . $site_config['pic_baseurl'] . 'forums/move.gif" alt="' . $lang['vt_move'] . '" title="' . $lang['vt_move'] . '" class="tooltipper emoticon" />
+                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/move.gif" alt="' . $lang['vt_move'] . '" title="' . $lang['vt_move'] . '" class="tooltipper emoticon lazy" />
                     </td>
                     <td>
                         <span>' . $lang['vt_move'] . ' ' . $lang['fe_topic'] . ':</span>
@@ -794,7 +795,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 </tr>
                 <tr>
                     <td>
-                        <img src="' . $site_config['pic_baseurl'] . 'forums/modify.gif" alt="' . $lang['fe_modify'] . '" title="' . $lang['fe_modify'] . '" class="tooltipper emoticon" />
+                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/modify.gif" alt="' . $lang['fe_modify'] . '" title="' . $lang['fe_modify'] . '" class="tooltipper emoticon lazy" />
                     </td>
                     <td>
                         <span>' . $lang['vt_rename'] . ' ' . $lang['fe_topic'] . ':</span>
@@ -812,7 +813,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 </tr>
                 <tr>
                     <td>
-                        <img src="' . $site_config['pic_baseurl'] . 'forums/modify.gif" alt="' . $lang['fe_modify'] . '" title="' . $lang['fe_modify'] . '" class="tooltipper emoticon" />
+                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/modify.gif" alt="' . $lang['fe_modify'] . '" title="' . $lang['fe_modify'] . '" class="tooltipper emoticon lazy" />
                     </td>
                     <td>
                         <span>' . $lang['vt_change_topic_desc'] . ':</span>
@@ -829,7 +830,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 </tr>
                 <tr>
                     <td>
-                        <img src="' . $site_config['pic_baseurl'] . 'forums/merge.gif" alt="' . $lang['vt_merge'] . '" title="' . $lang['vt_merge_topic'] . '" class="tooltipper emoticon" />
+                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/merge.gif" alt="' . $lang['vt_merge'] . '" title="' . $lang['vt_merge_topic'] . '" class="tooltipper emoticon lazy" />
                     </td>
                     <td>
                         <span >' . $lang['vt_merge'] . ' ' . $lang['fe_topic'] . ':</span>
@@ -850,7 +851,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 </tr>
                 <tr>
                     <td>
-                        <img src="' . $site_config['pic_baseurl'] . 'forums/merge.gif" alt="' . $lang['vt_append'] . '" title="' . $lang['vt_append_topic'] . '" class="tooltipper emoticon" />
+                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/merge.gif" alt="' . $lang['vt_append'] . '" title="' . $lang['vt_append_topic'] . '" class="tooltipper emoticon lazy" />
                     </td>
                     <td>
                         <span>' . $lang['vt_append'] . ' ' . $lang['fe_topic'] . ':</span>
@@ -871,7 +872,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 </tr>
                 <tr>
                     <td>
-                        <img src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" alt="' . $lang['vt_recycle'] . '" title="' . $lang['vt_recycle'] . '" class="tooltipper emoticon" /></td>
+                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" alt="' . $lang['vt_recycle'] . '" title="' . $lang['vt_recycle'] . '" class="tooltipper emoticon lazy" /></td>
                     <td>
                         <span>' . $lang['vt_move_to_recycle_bin'] . ':</span>
                     </td>
@@ -892,7 +893,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 </tr>
                 <tr>
                     <td>
-                        <img src="' . $site_config['pic_baseurl'] . 'forums/delete.gif" alt="' . $lang['fe_delete'] . '" title="' . $lang['fe_delete'] . '" class="tooltipper emoticon" /></td>
+                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/delete.gif" alt="' . $lang['fe_delete'] . '" title="' . $lang['fe_delete'] . '" class="tooltipper emoticon lazy" /></td>
                     <td>
                         <span >' . $lang['fe_del_topic'] . ':</span>
                     </td>
@@ -907,7 +908,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 </tr>' . ($CURUSER['class'] < $min_delete_view_class ? '' : '
                 <tr>
                     <td>
-                        <img src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_undel_topic'] . '" title="' . $lang['fe_undel_topic'] . '" class="tooltipper emoticon" />
+                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_undel_topic'] . '" title="' . $lang['fe_undel_topic'] . '" class="tooltipper emoticon lazy" />
                     </td>
                     <td>
                         <span>

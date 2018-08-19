@@ -148,4 +148,12 @@ class ImageProxy
 
         return true;
     }
+
+    public function create_image($width = 1000, $height = 1000, $color = null)
+    {
+        $manager = new ImageManager();
+        $img = $manager->canvas($width, $height, $color)->encode('jpg', 50);
+
+        return $img;
+    }
 }

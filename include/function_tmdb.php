@@ -184,7 +184,6 @@ function get_movie_id($imdbid, $type)
     if (!$BLOCKS['tmdb_api_on']) {
         return false;
     }
-
     $id = $cache->get('tmdb_imdbid_tmdbid_' . $imdbid);
     if ($id === false || is_null($id)) {
         $id = $fluent->from('images')

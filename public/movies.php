@@ -14,6 +14,7 @@ check_user_status();
 global $CURUSER, $site_config, $fluent, $cache, $session;
 
 $lang = load_language('global');
+$image = placeholder_image();
 
 $lists = [
     'upcoming',
@@ -41,14 +42,14 @@ switch ($list) {
                 $div .= "
             <div class='padding10 round10 bg-00 margin10'>
                 <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$movie['imdbid']}_tooltip'>
-                    <img src='{$movie['placeholder']}' data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                    <img src='{$movie['placeholder']}' ata-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
                     <div class='has-text-centered top10'>{$movie['title']} ({$movie['year']})</div>
                     <div class='has-text-centered'>{$movie['release_date']}</div>
                     <div class='tooltip_templates'>
                         <div id='movie_{$movie['imdbid']}_tooltip' class='round10 tooltip-background'>
                             <div class='is-flex tooltip-torrent bg-09'>
                                 <span class='padding10 w-40'>
-                                    <img data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                                    <img src='{$movie['placeholder']}' ata-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
                                 </span>
                                 <span class='padding10'>
                                     <p><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($movie['title']) . "</span></p>
@@ -128,14 +129,14 @@ switch ($list) {
                     $div .= "
             <div class='padding10 round10 bg-00 margin10'>
                 <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$tv['id']}_tooltip'>
-                    <img src='{$tv['placeholder']}' data-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                    <img src='{$tv['placeholder']}' ata-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
                     <div class='has-text-centered top10'>{$tv['title']}</div>
                     <div class='has-text-centered top10'>{$tv['airtime']}</div>
                     <div class='tooltip_templates'>
                         <div id='movie_{$tv['id']}_tooltip'>
                             <div class='is-flex tooltip-torrent bg-09'>
                                 <span class='padding10 w-40'>
-                                    <img data-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                                    <img src='{$tv['placeholder']}' ata-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
                                 </span>
                                 <span class='padding10'>
                                     <p><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($tv['title']) . "</span></p>
@@ -217,13 +218,13 @@ switch ($list) {
                 $div .= "
             <div class='padding10 round10 bg-00 margin10'>
                 <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$tv['id']}_tooltip'>
-                    <img src='{$tv['placeholder']}' data-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                    <img src='{$tv['placeholder']}' ata-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
                     <div class='has-text-centered top10'>{$tv['title']}</div>
                     <div class='tooltip_templates'>
                         <div id='movie_{$tv['id']}_tooltip' class='round10 tooltip-background' style='background-image: url({$tv['backdrop']});'>
                             <div class='is-flex tooltip-torrent bg-09'>
                                 <span class='padding10 w-40'>
-                                    <img data-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                                    <img src='{$tv['placeholder']}' ata-src='{$tv['poster']}' alt='Poster' class='lazy tooltip-poster'>
                                 </span>
                                 <span class='padding10'>
                                     <p><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($tv['title']) . "</span></p>
@@ -283,14 +284,14 @@ switch ($list) {
                 $div .= "
             <div class='padding10 round10 bg-00 margin10'>
                 <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$movie['id']}_tooltip'>
-                    <img src='{$movie['placeholder']}' data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                    <img src='{$movie['placeholder']}' ata-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
                     <div class='has-text-centered top10'>{$movie['title']}</div>
                     <div class='has-text-centered'>{$movie['release_date']}</div>
                     <div class='tooltip_templates'>
                         <div id='movie_{$movie['id']}_tooltip' clss='round10 tooltip-background' style='background-image: url({$movie['backdrop']});'>
                             <div class='is-flex tooltip-torrent bg-09'>
                                 <span class='padding10 w-40'>
-                                    <img data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                                    <img src='{$movie['placeholder']}' ata-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
                                 </span>
                                 <span class='padding10'>
                                     <p><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($movie['title']) . "</span></p>
@@ -351,14 +352,14 @@ switch ($list) {
                 $div .= "
             <div class='padding10 round10 bg-00 margin10'>
                 <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$movie['id']}_tooltip'>
-                    <img src='{$movie['placeholder']}' data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                    <img src='{$movie['placeholder']}' ata-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
                     <div class='has-text-centered top10'>{$movie['title']}</div>
                     <div class='has-text-centered'>{$movie['release_date']}</div>
                     <div class='tooltip_templates'>
                         <div id='movie_{$movie['id']}_tooltip' clss='round10 tooltip-background' style='background-image: url({$movie['backdrop']});'>
                             <div class='is-flex tooltip-torrent bg-09'>
                                 <span class='padding10 w-40'>
-                                    <img data-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                                    <img src='{$movie['placeholder']}' ata-src='{$movie['poster']}' alt='Poster' class='lazy tooltip-poster'>
                                 </span>
                                 <span class='padding10'>
                                     <p><span class='size_4 right10 has-text-primary has-text-bold'>Title: </span><span>" . htmlsafechars($movie['title']) . "</span></p>

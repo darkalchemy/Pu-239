@@ -10,7 +10,7 @@ use Imdb\Config;
  *
  * @throws Exception
  */
-function get_imdb_info($imdb_id, $title = true)
+function get_imdb_info($imdb_id, $title = true, $data_only = false)
 {
     global $cache, $BLOCKS, $fluent;
 
@@ -52,6 +52,11 @@ function get_imdb_info($imdb_id, $title = true)
             'critics' => $movie->metacriticRating(),
             'poster' => $movie->photo(false),
             'country' => $movie->country(),
+            'vote_count' => $movie->votes(),
+            'overview' => $movie->plotoutline(true),
+            'mpaa' => $movie->mpaa(),
+            'mpaa_reason' => $movie->mpaa_reason(),
+            'id' => $imdbid,
         ];
 
         $cache->set('imdb_' . $imdb_id, $imdb_data, 604800);
@@ -60,6 +65,9 @@ function get_imdb_info($imdb_id, $title = true)
         $cache->set('imdb_' . $imdb_id, 0, 86400);
 
         return false;
+    }
+    if ($data_only) {
+        return $imdb_data;
     }
     $poster = !empty($imdb_data['poster']) ? $imdb_data['poster'] : '';
 
@@ -189,7 +197,10 @@ function get_imdb_info($imdb_id, $title = true)
  */
 function get_imdb_info_short($imdb_id)
 {
-    global $cache, $BLOCKS, $fluent;
+    require_once INCL_DIR . 'function_fanart.php';
+    require_once INCL_DIR . 'function_tmdb.php';
+    require_once INCL_DIR . 'function_imdb.php';
+    global $cache, $BLOCKS, $fluent, $site_config;
 
     if (!$BLOCKS['imdb_api_on']) {
         return false;
@@ -197,54 +208,45 @@ function get_imdb_info_short($imdb_id)
 
     $imdbid = $imdb_id;
     $imdb_id = str_replace('tt', '', $imdb_id);
-    $imdb_data = $cache->get('imdb_short_' . $imdb_id);
-    if ($imdb_data === false || is_null($imdb_data)) {
-        $config = new Config();
-        $config->language = 'en-US';
-        $config->cachedir = IMDB_CACHE_DIR;
-        $config->throwHttpExceptions = 0;
-        $config->default_agent = get_random_useragent();
-
-        $movie = new \Imdb\Title($imdb_id, $config);
-        if (empty($movie->title())) {
-            return false;
-        }
-        $poster = $placeholder = '';
-
-        if (!empty($movie->photo(false))) {
-            $image = url_proxy($movie->photo(true), true, 150);
-            if ($image) {
-                $poster = $image;
-                $placeholder = url_proxy($movie->photo(true), true, 150, null, 10);
-            }
-        }
-
-        $imdb_data = [
-            'orig_poster' => $movie->photo(false),
-            'poster' => $poster,
-            'placeholder' => $placeholder,
-            'title' => $movie->title(),
-            'vote_count' => $movie->votes(),
-            'critic' => $movie->metacriticRating(),
-            'rating' => $movie->rating(),
-            'overview' => $movie->plotoutline(true),
-            'mpaa' => $movie->mpaa(),
-            'mpaa_reason' => $movie->mpaa_reason(),
-            'id' => $imdbid,
-        ];
-        $cache->set('imdb_short_' . $imdb_id, $imdb_data, 604800);
-    }
-
+    $imdb_data = get_imdb_info($imdb_id, true, true);
     if (empty($imdb_data)) {
-        $cache->set('imdb_short_' . $imdb_id, 0, 86400);
-
         return false;
     }
+    $poster = $placeholder = '';
 
-    if (!empty($imdb_data['critic'])) {
-        $imdb_data['critic'] .= '%';
+    if (empty($imdb_data['poster'])) {
+        $poster = getMovieImagesByID($imdbid, 'movieposter');
+        $imdb_data['poster'] = $poster;
+    }
+    if (empty($imdb_data['poster'])) {
+        $tmid = get_movie_id($imdbid, 'tmdb_id');
+        if (!empty($tmdbid)) {
+            $poster = getMovieImagesByID($tmdbid, 'movieposter');
+            $imdb_data['poster'] = $poster;
+        }
+    }
+    if (empty($imdb_data['poster'])) {
+        $omdb = get_omdb_info($imdbid, true, true);
+        if (!empty($omdb['Poster']) && $omdb['Poster'] != 'N/A') {
+            $imdb_data['poster'] = $omdb['Poster'];
+        }
+    }
+    if (!empty($imdb_data['poster'])) {
+        $image = url_proxy($imdb_data['poster'], true, 150);
+        if ($image) {
+            $imdb_data['poster'] = $image;
+            $imdb_data['placeholder'] = url_proxy($imdb_data['poster'], true, 150, null, 10);
+        }
+    }
+    if (empty($imdb_data['poster'])) {
+        $poster = $site_config['pic_baseurl'] . 'noposter.png';
+        $imdb_data['poster'] = $poster;
+        $imdb_data['placeholder'] = $poster;
+    }
+    if (!empty($imdb_data['critics'])) {
+        $imdb_data['critics'] .= '%';
     } else {
-        $imdb_data['critic'] = '?';
+        $imdb_data['critics'] = '?';
     }
     if (empty($imdb_data['vote_count'])) {
         $imdb_data['vote_count'] = '?';
@@ -256,23 +258,6 @@ function get_imdb_info_short($imdb_id)
         $imdb_data['mpaa_reason'] = $imdb_data['mpaa']['United States'];
     }
 
-    if (!empty($imdb_data['orig_poster'])) {
-        $insert = $cache->get('insert_imdb_imdbid_' . $imdbid);
-        if ($insert === false || is_null($insert)) {
-            $values = [
-                'imdb_id' => $imdbid,
-                'url' => $imdb_data['orig_poster'],
-                'type' => 'poster',
-            ];
-            $fluent->insertInto('images')
-                ->values($values)
-                ->ignore()
-                ->execute();
-
-            $cache->set('insert_imdb_imdbid_' . $imdbid, 0, 604800);
-        }
-    }
-
     $imdb_info = "
             <div class='padding10 round10 bg-00 margin10'>
                 <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$imdb_data['id']}_tooltip'>
@@ -282,33 +267,33 @@ function get_imdb_info_short($imdb_id)
                         <div id='movie_{$imdb_data['id']}_tooltip' class='round10 tooltip-background'>
                             <div class='is-flex tooltip-torrent bg-09'>
                                 <span class='padding10 w-40'>
-                                    <img data-src='{$imdb_data['poster']}' alt='Poster' class='lazy tooltip-poster'>
+                                    <img src='{$imdb_data['placeholder']}' data-src='{$imdb_data['poster']}' alt='Poster' class='lazy tooltip-poster'>
                                 </span>
                                 <span class='padding10'>
-                                    <p>
+                                    <div>
                                         <span class='size_4 right10 has-text-primary has-text-bold'>Title: </span>
                                         <span>" . htmlsafechars($imdb_data['title']) . "</span>
-                                    </p>
-                                    <p>
+                                    </div>
+                                    <div>
                                         <span class='size_4 right10 has-text-primary'>MPAA: </span>
                                         <span>" . htmlsafechars($imdb_data['mpaa_reason']) . "</span>
-                                    </p>
-                                    <p>
+                                    </div>
+                                    <div>
                                         <span class='size_4 right10 has-text-primary'>Critics: </span>
                                         <span>" . htmlsafechars($imdb_data['critic']) . "</span>
-                                    </p>
-                                    <p>
+                                    </div>
+                                    <div>
                                         <span class='size_4 right10 has-text-primary'>Rating: </span>
                                         <span>" . htmlsafechars($imdb_data['rating']) . "</span>
-                                    </p>
-                                    <p>
+                                    </div>
+                                    <div>
                                         <span class='size_4 right10 has-text-primary'>Votes: </span>
                                         <span>" . htmlsafechars($imdb_data['vote_count']) . "</span>
-                                    </p>
-                                    <p>
+                                    </div>
+                                    <div>
                                         <span class='size_4 right10 has-text-primary'>Overview: </span>
                                         <span>" . htmlsafechars(strip_tags($imdb_data['overview'])) . '</span>
-                                    </p>
+                                    </div>
                                 </span>
                             </div>
                         </div>

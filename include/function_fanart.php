@@ -139,7 +139,7 @@ function getMovieImagesByID($id, $type = 'moviebackground')
                         ->ignore()
                         ->execute();
 
-                    $cache->set('insert_fanart_imdb_' . $id, 0, 604800);
+                    $cache->set('insert_fanart_dib_' . $id, 0, 604800);
                 }
             }
             shuffle($images);

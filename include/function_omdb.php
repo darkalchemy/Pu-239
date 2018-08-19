@@ -65,7 +65,7 @@ function search_omdb_by_title($title, int $year)
  *
  * @throws Exception
  */
-function get_omdb_info($imdbid, $title = true)
+function get_omdb_info($imdbid, $title = true, $data_only = false)
 {
     global $cache, $BLOCKS, $fluent;
 
@@ -97,7 +97,9 @@ function get_omdb_info($imdbid, $title = true)
     if (empty($omdb_data)) {
         return false;
     }
-
+    if ($data_only) {
+        return $omdb_data;
+    }
     $body = '';
     $exclude = [
         'Type',

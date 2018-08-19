@@ -1844,7 +1844,7 @@ function url_proxy($url, $image = false, $width = null, $height = null, $quality
     }
 
     if (!$image) {
-        return $site_config['anonymizer_url'] . $url;
+        return (!empty($site_config['anonymizer_url']) ? $site_config['anonymizer_url'] : '') . $url;
     }
 
     if ($site_config['image_proxy']) {

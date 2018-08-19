@@ -318,3 +318,18 @@ function clear_image_cache()
         'posters_',
     ]);
 }
+
+function placeholder_image()
+{
+    global $cache;
+
+    $image = $cache->get('placeholder_image_');
+    if ($image === false || is_null($image)) {
+        $image_proxy = new DarkAlchemy\Pu239\ImageProxy();
+        $image = $image_proxy->create_image(10, 10, '#0f0');
+        $image = 'data:image/jpeg;base64, ' . base64_encode($image);
+        $cache->set('placeholder_image_', $image, 0);
+    }
+
+    return $image;
+}

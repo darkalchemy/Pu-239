@@ -6,6 +6,7 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $site_config, $fluent;
 
+$image = placeholder_image();
 $lang = array_merge(load_language('global'), load_language('staff'));
 $support = $mods = $admin = $sysop = [];
 $htmlout = $firstline = '';
@@ -47,6 +48,7 @@ function DoStaff($staff_array, $staffclass)
 {
     global $site_config;
 
+    $image = placeholder_image();
     if (empty($staff_array)) {
         return null;
     }
@@ -62,9 +64,9 @@ function DoStaff($staff_array, $staffclass)
         $flagname = !empty($staff['flagname']) ? $staff['flagname'] : '';
         $body .= '
                         <td>' . format_username($staff['id']) . "</td>
-                        <td><img src='{$site_config['pic_baseurl']}" . ($staff['last_access'] > $dt && $staff['perms'] < bt_options::PERMS_STEALTH ? 'online.png' : 'offline.png') . "' height='16' alt='' /></td>" . "
-                        <td><a href='{$site_config['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $staff['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . "'><img src='{$site_config['pic_baseurl']}mailicon.png' class='tooltipper' title='Personal Message' alt='' /></a></td>" . "
-                        <td><img src='$flagpic' alt='" . htmlsafechars($flagname) . "' /></td>
+                        <td><img src='{$image}' data-src='{$site_config['pic_baseurl']}" . ($staff['last_access'] > $dt && $staff['perms'] < bt_options::PERMS_STEALTH ? 'online.png' : 'offline.png') . "' alt='' class='emoticon lazy' /></td>" . "
+                        <td><a href='{$site_config['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $staff['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . "'><img src='{$image}' data-src='{$site_config['pic_baseurl']}mailicon.png' class='tooltipper emoticon lazy' title='Personal Message' alt='' /></a></td>" . "
+                        <td><img src='{$image}' data-src='$flagpic' alt='" . htmlsafechars($flagname) . "' class='emoticon lazy' /></td>
                     </tr>";
     }
 
@@ -72,7 +74,9 @@ function DoStaff($staff_array, $staffclass)
 }
 
 foreach ($staffs as $key => $value) {
-    $htmlout .= DoStaff($value, ucfirst($key) . 's');
+    if (!empty($key)) {
+        $htmlout .= DoStaff($value, ucfirst($key) . 's');
+    }
 }
 
 $dt = TIME_NOW - 180;
@@ -84,9 +88,9 @@ if (!empty($support)) {
         $body .= '
                 <tr>
                     <td>' . format_username($a['id']) . "</td>
-                    <td><img src='{$site_config['pic_baseurl']}" . ($a['last_access'] > $dt ? 'online.png' : 'offline.png') . "' alt='' /></td>
-                    <td><a href='{$site_config['baseurl']}messages.php?action=send_message&amp;receiver=" . (int) $a['id'] . "'><img src='{$site_config['pic_baseurl']}mailicon.png' class='tooltipper' title='{$lang['alt_pm']}' alt='' /></a></td>
-                    <td><img src='$flagpic' alt='" . htmlsafechars($flagname) . "' /></td>
+                    <td><img src='{$image}' data-src='{$site_config['pic_baseurl']}" . ($a['last_access'] > $dt ? 'online.png' : 'offline.png') . "' alt='' class='emoticon lazy' /></td>
+                    <td><a href='{$site_config['baseurl']}messages.php?action=send_message&amp;receiver=" . (int) $a['id'] . "'><img src='{$image}' data-src='{$site_config['pic_baseurl']}mailicon.png' class='tooltipper emoticon lazy' title='{$lang['alt_pm']}' alt='' /></a></td>
+                    <td><img src='{$image}' data-src='$flagpic' alt='" . htmlsafechars($flagname) . "' class='emoticon lazy' /></td>
                     <td>" . htmlsafechars($a['supportfor']) . '</td>
                 </tr>';
     }
