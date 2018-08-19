@@ -999,7 +999,7 @@ function get_time_offset()
  *
  * @return false|mixed|string
  */
-function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc = false)
+function get_date(int $date, $method = 'LONG', $norelative = 0, $full_relative = 0, $calc = false)
 {
     global $site_config;
 
@@ -1018,9 +1018,6 @@ function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc
     ];
     if (!$date) {
         return '--';
-    }
-    if (empty($method)) {
-        $method = 'LONG';
     }
     if ($offset_set == 0) {
         $GLOBALS['offset'] = get_time_offset();

@@ -229,7 +229,9 @@ CREATE TABLE `auth_tokens` (
   `selector` char(32) COLLATE utf8mb4_unicode_ci NOT NULL,
   `hashedValidator` char(64) COLLATE utf8mb4_unicode_ci NOT NULL,
   `userid` int(10) unsigned NOT NULL,
-  `expires` int(10) DEFAULT NULL,
+  `expires` datetime NOT NULL,
+  `set_time` int(10) unsigned NOT NULL DEFAULT '900',
+  `created_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `selector` (`selector`),
   KEY `userid` (`userid`),
@@ -1550,6 +1552,7 @@ CREATE TABLE `posts` (
   KEY `userid` (`user_id`),
   KEY `body` (`post_title`),
   FULLTEXT KEY `ft_body` (`body`),
+  FULLTEXT KEY `ft_title` (`post_title`),
   CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2121,6 +2124,7 @@ CREATE TABLE `topics` (
   KEY `subject` (`topic_name`),
   KEY `lastpost` (`last_post`),
   KEY `forum_id` (`forum_id`),
+  FULLTEXT KEY `ft_name` (`topic_name`),
   CONSTRAINT `topics_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2653,4 +2657,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-18  1:24:59
+-- Dump completed on 2018-08-19  5:51:08

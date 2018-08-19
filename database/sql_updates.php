@@ -381,4 +381,25 @@ $sql_updates = [
         'query' => "ALTER TABLE `users` DROP `sig_w`, DROP `sig_h`",
         'flush' => false,
     ],
+    [
+        'id' => 1534657713,
+        'info' => 'Modify column expires',
+        'date' => '19 Aug, 2018',
+        'query' => "ALTER TABLE `auth_tokens` MODIFY COLUMN `expires` datetime NOT NULL",
+        'flush' => false,
+    ],
+    [
+        'id' => 1534657714,
+        'info' => 'Add column created_at',
+        'date' => '19 Aug, 2018',
+        'query' => "ALTER TABLE `auth_tokens` ADD COLUMN `created_at` datetime NOT NULL",
+        'flush' => false,
+    ],
+    [
+        'id' => 1534657715,
+        'info' => 'Add column set_time',
+        'date' => '19 Aug, 2018',
+        'query' => "ALTER TABLE `auth_tokens` ADD COLUMN `set_time` int(10) unsigned NOT NULL DEFAULT '900'",
+        'flush' => false,
+    ],
 ];

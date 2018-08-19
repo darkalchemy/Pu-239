@@ -157,22 +157,20 @@ class User
 
     public function get_remember($selector)
     {
-        $remember = $this->cache->get('remembered_' . $selector);
-        if ($remember === false || is_null($remember)) {
-            $remember = $this->fluent->from('auth_tokens')
-                ->where('selector = ?', $selector)
-                ->where('expires >= ?', TIME_NOW)
-                ->fetch();
-            if ($remember) {
-                $this->cache->set('remembered_' . $selector, $remember, $remember['expires']);
-            }
-        }
+        global $session, $fluent;
+
+        $remember = $this->fluent->from('auth_tokens')
+            ->where('selector = ?', $selector)
+            ->where('expires >= ?', new \Envms\FluentPDO\Literal('NOW()'))
+            ->fetch();
 
         return $remember;
     }
 
     public function set_remember($userid, $expires)
     {
+        global $session;
+
         $selector = make_password(16);
         $validator = make_password(32);
         $hashedValidator = hash('sha256', $validator);
@@ -192,7 +190,9 @@ class User
             'selector' => $selector,
             'hashedValidator' => $hashedValidator,
             'userid' => $userid,
-            'expires' => TIME_NOW + $expires,
+            'expires' => date('Y-m-d H:i:s', TIME_NOW + $expires),
+            'set_time' => $expires,
+            'created_at' => date('Y-m-d H:i:s', TIME_NOW),
         ];
         $this->fluent->insertInto('auth_tokens')
             ->values($values)

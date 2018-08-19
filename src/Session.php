@@ -6,6 +6,7 @@ class Session
 {
     private $config;
     private $cache;
+    private $fluent;
 
     /**
      * Session constructor.
@@ -16,8 +17,10 @@ class Session
     public function __construct()
     {
         global $site_config;
+
         $this->config = $site_config;
         $this->cache = new Cache();
+        $this->fluent = new Database();
     }
 
     /**
@@ -84,6 +87,16 @@ class Session
         }
 
         if ($this->get('canary') <= TIME_NOW - 300) {
+            $userID = $this->get('userID');
+            if (!empty($userID)) {
+                $set = [
+                    'expires' => new \Envms\FluentPDO\Literal('DATE_ADD(NOW(), INTERVAL `set_time` SECOND)'),
+                ];
+                $this->fluent->update('auth_tokens')
+                    ->set($set)
+                    ->where('userid = ?', $userID)
+                    ->execute();
+            }
             session_regenerate_id(true);
             $this->set('canary', TIME_NOW);
         }
