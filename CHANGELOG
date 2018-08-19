@@ -1,3 +1,6 @@
+19 Aug 2018
+update: imdbphp class
+
 18 Aug 2018
 update: tooltip formatting movies.php
 update: imdb_info_short to find images on fanart or omdb, when imdb image not found

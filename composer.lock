@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bead6a520ed423ead0ef1555a2bd940b",
+    "content-hash": "cc32bbcdcd7c6123f455236054ead8b8",
     "packages": [
         {
             "name": "blocktrail/cryptojs-aes-php",
@@ -274,26 +274,30 @@
         },
         {
             "name": "imdbphp/imdbphp",
-            "version": "v5.2.6",
+            "version": "v6.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tboothman/imdbphp.git",
-                "reference": "31fe404098688fa5a089dd9420667d9d8beeb1c4"
+                "reference": "ce0cd847eaff39594f01f1f2ce28c4fea7b31f92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tboothman/imdbphp/zipball/31fe404098688fa5a089dd9420667d9d8beeb1c4",
-                "reference": "31fe404098688fa5a089dd9420667d9d8beeb1c4",
+                "url": "https://api.github.com/repos/tboothman/imdbphp/zipball/ce0cd847eaff39594f01f1f2ce28c4fea7b31f92",
+                "reference": "ce0cd847eaff39594f01f1f2ce28c4fea7b31f92",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
-                "php": ">5.3",
-                "psr/log": "~1.0"
+                "ext-dom": "*",
+                "php": ">=5.6",
+                "psr/log": "~1.0",
+                "psr/simple-cache": "^1.0"
             },
             "require-dev": {
+                "cache/array-adapter": "^1.0",
                 "mockery/mockery": "~0.9",
-                "phpunit/phpunit": "~3.7"
+                "phpstan/phpstan": "^0.9.2",
+                "phpunit/phpunit": "5.4.8"
             },
             "type": "library",
             "autoload": {
@@ -306,7 +310,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Library for retrieving film and tv information from IMDb",
-            "time": "2018-02-24T16:10:40+00:00"
+            "time": "2018-08-18T22:29:04+00:00"
         },
         {
             "name": "intervention/image",
