@@ -280,7 +280,7 @@ function get_imdb_info_short($imdb_id)
                                     </div>
                                     <div>
                                         <span class='size_4 right10 has-text-primary'>Critics: </span>
-                                        <span>" . htmlsafechars($imdb_data['critic']) . "</span>
+                                        <span>" . htmlsafechars($imdb_data['critics']) . "</span>
                                     </div>
                                     <div>
                                         <span class='size_4 right10 has-text-primary'>Rating: </span>
