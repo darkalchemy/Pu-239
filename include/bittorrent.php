@@ -249,9 +249,17 @@ function userlogin()
     $id = $user_stuffs->getUserId();
     if (!$id) {
         $session->destroy();
-        $returnto = !empty($_SERVER['REQUEST_URI']) ? '?returnto=' . urlencode($_SERVER['REQUEST_URI']) : '';
-        header('Location: login.php' . $returnto);
+        header('Location: login.php');
         die();
+    }
+    $forced_logout = $cache->get('forced_logout_' . $id);
+    if ($forced_logout) {
+        $last_access = $session->get('last_access');
+        if (!empty($last_access) && $last_access <= $forced_logout) {
+            $session->destroy();
+            header('Location: login.php');
+            die();
+        }
     }
 
     $ip = getip(true);
@@ -410,11 +418,12 @@ function userlogin()
         $userupdate0 = 'onlinetime = onlinetime + ' . $new_time;
         $update_time = $new_time;
     }
+    $session->set('last_access', TIME_NOW);
     $userupdate1 = 'last_access_numb = ' . TIME_NOW;
     $update_time = ($users_data['onlinetime'] + $update_time);
     if (($users_data['last_access'] != '0') && (($users_data['last_access']) < (TIME_NOW - 180))) {
         sql_query('UPDATE users
-                    SET where_is =' . sqlesc($whereis) . ', last_access=' . TIME_NOW . ", $userupdate0, $userupdate1
+                    SET where_is =' . sqlesc($whereis) . ', last_access = ' . TIME_NOW . ", $userupdate0, $userupdate1
                     WHERE id = " . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user' . $users_data['id'], [
             'last_access' => TIME_NOW,

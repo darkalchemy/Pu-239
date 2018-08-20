@@ -7,7 +7,7 @@ require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 class_check(UC_STAFF);
 dbconn();
-global $CURUSER, $site_config, $lang, $cache, $user_stuffs;
+global $CURUSER, $site_config, $lang, $cache, $user_stuffs, $fluent;
 
 $lang = array_merge($lang, load_language('modtask'));
 
@@ -194,6 +194,10 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         $useredit['update'][] = $lang['modtask_enabled_disabled'] . $enabled . '';
         $curuser_cache['enabled'] = $enabled;
         $user_cache['enabled'] = $enabled;
+        $fluent->deleteFrom('ajax_chat_online')
+            ->where('userID = ?', $userid)
+            ->execute();
+        $cache->set('forced_logout_' . $userid, TIME_NOW, 2592000);
     }
     if (isset($_POST['downloadpos']) && ($downloadpos = (int) $_POST['downloadpos'])) {
         unset($disable_pm);

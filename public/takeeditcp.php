@@ -18,6 +18,7 @@ $curuser_cache = $user_cache = $urladd = $changedemail = $birthday = '';
 $action = isset($_POST['action']) ? htmlsafechars(trim($_POST['action'])) : '';
 $updateset = $curuser_cache = $user_cache = [];
 $setbits = $clrbits = $setbits2 = $clrbits2 = 0;
+$force_logout = false;
 
 if ($action == 'avatar') {
     $avatars = (isset($_POST['avatars']) && $_POST['avatars'] === 'yes' ? 'yes' : 'no');
@@ -114,6 +115,7 @@ if ($action == 'avatar') {
         $updateset[] = 'passhash = ' . sqlesc($passhash);
         $curuser_cache['passhash'] = $passhash;
         $user_cache['passhash'] = $passhash;
+        $force_logout = true;
     }
 
     if (!empty($chmailpass)) {
@@ -491,6 +493,9 @@ if ($user_cache) {
 
 if (!empty($updateset)) {
     sql_query('UPDATE users SET ' . implode(',', $updateset) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    if ($force_logout) {
+        $cache->set('forced_logout_' . $CURUSER['id'], TIME_NOW, 2592000);
+    }
 }
 if ($setbits || $clrbits) {
     $sql = 'UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id = ' . sqlesc($CURUSER['id']);

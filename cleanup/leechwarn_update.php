@@ -127,6 +127,7 @@ function leechwarn_update($data)
             ->execute();
 
         $cache->delete('user' . $arr['id']);
+        $cache->set('forced_logout_' . $arr['id'], TIME_NOW, 2592000);
     }
 
     if ($data['clean_log'] && $i > 0) {

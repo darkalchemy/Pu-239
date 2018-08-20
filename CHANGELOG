@@ -1,7 +1,9 @@
 20 Aug 2018
+add: cache entry to destroy user session when changing password, disabled, etc
+update: destroy all users auth_tokens when logging out
 update: delete all expired auth_tokens when generating new token
 fix: multiple logins destroying other login remember me tokens
-update: insert/update in 1 query inseatd of delete/insert set_remember
+update: insert/update in 1 query instead of delete/insert set_remember
 
 19 Aug 2018
 fix: undefined index get_date()

@@ -201,7 +201,7 @@ class Session
      */
     public function destroy()
     {
-        global $CURUSER, $cache;
+        global $CURUSER, $cache, $fluent;
 
         if (!empty($CURUSER)) {
             $cache->delete('inbox_' . $CURUSER['id']);
@@ -221,6 +221,10 @@ class Session
         if (!empty($cookie[0])) {
             $this->cache->delete('remember_' . $cookie[0]);
         }
+
+        $this->fluent->deleteFrom('auth_tokens')
+            ->where('userid = ?', $CURUSER['id'])
+            ->execute();
 
         $this->start();
         $_SESSION = [];
