@@ -1,4 +1,5 @@
 20 Aug 2018
+update: reset remember me cookie expires time when remember token is updated in db
 add: cache entry to destroy user session when changing password, disabled, etc
 update: destroy all users auth_tokens when logging out
 update: delete all expired auth_tokens when generating new token

@@ -7,6 +7,7 @@ class Session
     private $config;
     private $cache;
     private $fluent;
+    private $cookies;
 
     /**
      * Session constructor.
@@ -21,6 +22,7 @@ class Session
         $this->config = $site_config;
         $this->cache = new Cache();
         $this->fluent = new Database();
+        $this->cookies = new Cookie('remember');
     }
 
     /**
@@ -33,11 +35,12 @@ class Session
      */
     public function start()
     {
+        $expires = $this->config['cookie_lifetime'] <= 1 ? 900 : $this->config['cookie_lifetime'] * 86400;
+
         if (!session_id()) {
             // Set the session name:
             session_name($this->config['sessionName']);
 
-            $expires = $this->config['cookie_lifetime'] <= 1 ? 900 : $this->config['cookie_lifetime'] * 86400;
             $secure_session = 'https' === get_scheme() ? true : false;
             $domain = $this->config['cookie_domain'] === $this->config['domain'] ? '' : $this->config['cookie_domain'];
 
@@ -97,6 +100,13 @@ class Session
                     ->where('userid = ?', $userID)
                     ->execute();
             }
+
+            if (!empty($cookie[0]) && !empty($cookie[1])) {
+                $selector = $cookie[0];
+                $validator = $cookie[1];
+                $this->cookies->set("$selector:$validator", TIME_NOW + $expires);
+            }
+
             session_regenerate_id(true);
             $this->set('canary', TIME_NOW);
         }
