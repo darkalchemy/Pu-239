@@ -225,16 +225,15 @@ DROP TABLE IF EXISTS `auth_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `auth_tokens` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `selector` char(32) COLLATE utf8mb4_unicode_ci NOT NULL,
   `hashedValidator` char(64) COLLATE utf8mb4_unicode_ci NOT NULL,
   `userid` int(10) unsigned NOT NULL,
   `expires` datetime NOT NULL,
   `set_time` int(10) unsigned NOT NULL DEFAULT '900',
   `created_at` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `selector` (`selector`),
-  UNIQUE KEY `userid` (`userid`),
+  PRIMARY KEY (`selector`),
+  UNIQUE KEY `userid_selector` (`userid`,`selector`),
+  KEY `userid` (`userid`),
   CONSTRAINT `auth_tokens_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2657,4 +2656,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-20  5:23:02
+-- Dump completed on 2018-08-20  9:57:31

@@ -416,4 +416,18 @@ $sql_updates = [
         'query' => "ALTER TABLE `auth_tokens` DROP INDEX `userid`, ADD CONSTRAINT `userid` UNIQUE (`userid`)",
         'flush' => false,
     ],
+    [
+        'id' => 1534742178,
+        'info' => 'Make userid non unique, add compound index',
+        'date' => '20 Aug, 2018',
+        'query' => "ALTER TABLE `auth_tokens` DROP INDEX `userid`, ADD CONSTRAINT UNIQUE `userid_selector`(`userid`, `selector`), ADD INDEX `userid` (`userid`)",
+        'flush' => false,
+    ],
+    [
+        'id' => 1534742179,
+        'info' => 'Change selector to primary key',
+        'date' => '20 Aug, 2018',
+        'query' => "ALTER TABLE `auth_tokens` DROP PRIMARY KEY, DROP COLUMN `id`, DROP INDEX `selector`, MODIFY COLUMN `selector` char(32) COLLATE utf8mb4_unicode_ci NOT NULL PRIMARY KEY",
+        'flush' => false,
+    ],
 ];

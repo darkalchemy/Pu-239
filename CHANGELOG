@@ -1,4 +1,5 @@
 20 Aug 2018
+fix: multiple logins destroying other login remember me tokens
 update: insert/update in 1 query inseatd of delete/insert set_remember
 
 19 Aug 2018
