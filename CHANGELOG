@@ -1,3 +1,6 @@
+20 Aug 2018
+update: insert/update in 1 query inseatd of delete/insert set_remember
+
 19 Aug 2018
 fix: undefined index get_date()
 update: add required fields to signup.php, invite_signup.php, requests.php, offers.php

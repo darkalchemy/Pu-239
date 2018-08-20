@@ -184,10 +184,6 @@ class User
 
         $this->cookies->set("$selector:$validator", TIME_NOW + $expires);
 
-        $this->fluent->deleteFrom('auth_tokens')
-            ->where('userid = ?', $userid)
-            ->execute();
-
         $values = [
             'selector' => $selector,
             'hashedValidator' => $hashedValidator,
@@ -196,8 +192,15 @@ class User
             'set_time' => $expires,
             'created_at' => date('Y-m-d H:i:s', TIME_NOW),
         ];
-        $this->fluent->insertInto('auth_tokens')
-            ->values($values)
+        $update_values = [
+            'selector' => $selector,
+            'hashedValidator' => $hashedValidator,
+            'expires' => date('Y-m-d H:i:s', TIME_NOW + $expires),
+            'set_time' => $expires,
+            'created_at' => date('Y-m-d H:i:s', TIME_NOW),
+        ];
+        $this->fluent->insertInto('auth_tokens', $values)
+            ->onDuplicateKeyUpdate($update_values)
             ->execute();
     }
 }

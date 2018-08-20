@@ -409,4 +409,11 @@ $sql_updates = [
         'query' => "ALTER TABLE `auth_tokens` ADD COLUMN `set_time` int(10) unsigned NOT NULL DEFAULT '900'",
         'flush' => false,
     ],
+    [
+        'id' => 1534742176,
+        'info' => 'Make userid unique',
+        'date' => '20 Aug, 2018',
+        'query' => "ALTER TABLE `auth_tokens` DROP INDEX `userid`, ADD CONSTRAINT `userid` UNIQUE (`userid`)",
+        'flush' => false,
+    ],
 ];
