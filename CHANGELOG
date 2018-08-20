@@ -1,4 +1,5 @@
 20 Aug 2018
+update: delete all expired auth_tokens when generating new token
 fix: multiple logins destroying other login remember me tokens
 update: insert/update in 1 query inseatd of delete/insert set_remember
 

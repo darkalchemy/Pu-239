@@ -185,7 +185,6 @@ class User
         $this->cookies->set("$selector:$validator", TIME_NOW + $expires);
 
         $this->fluent->deleteFrom('auth_tokens')
-            ->where('userid = ?', $userid)
             ->where('expires <= ?', date('Y-m-d H:i:s', TIME_NOW))
             ->execute();
 
