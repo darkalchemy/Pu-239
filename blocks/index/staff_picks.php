@@ -37,7 +37,7 @@ $HTMLOUT .= "
         <div class='has-text-centered'>";
 
 $HTMLOUT .= "
-        <div class='module table-wrapper bottom20'>
+        <div class='table-wrapper'>
             <table class='table table-bordered table-striped'>";
 $HTMLOUT .= "
                 <thead>
