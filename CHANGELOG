@@ -1,4 +1,5 @@
 21 Aug 2018
+fix: serialize data, multiple values admin/freeleech.php
 fix: initial cookie_lifetime value, during install
 remove: bottom margin staff picks block
 add: missing free_details.php

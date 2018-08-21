@@ -13,12 +13,12 @@ require_once VENDOR_DIR . 'autoload.php';
 $dotenv = new Dotenv\Dotenv(ROOT_DIR);
 $dotenv->load();
 
-require_once CACHE_DIR . 'free_cache.php';
+$free = json_decode(file_get_contents(CACHE_DIR . 'free_cache.php'), true);
 require_once CACHE_DIR . 'class_config.php';
 require_once INCL_DIR . 'password_functions.php';
 $cache = new DarkAlchemy\Pu239\Cache();
-$session = new DarkAlchemy\Pu239\Session();
 $fluent = new DarkAlchemy\Pu239\Database();
+$session = new DarkAlchemy\Pu239\Session();
 $user_stuffs = new DarkAlchemy\Pu239\User();
 $torrent_stuffs = new DarkAlchemy\Pu239\Torrent();
 
@@ -249,16 +249,12 @@ function userlogin()
     $id = $user_stuffs->getUserId();
     if (!$id) {
         $session->destroy();
-        header('Location: login.php');
-        die();
     }
     $forced_logout = $cache->get('forced_logout_' . $id);
     if ($forced_logout) {
         $last_access = $session->get('last_access');
         if (!empty($last_access) && $last_access <= $forced_logout) {
             $session->destroy();
-            header('Location: login.php');
-            die();
         }
     }
 
@@ -267,15 +263,10 @@ function userlogin()
     $users_data = $user_stuffs->getUserFromId($id);
     if (empty($users_data)) {
         $session->destroy();
-        $returnto = !empty($_SERVER['REQUEST_URI']) ? '?returnto=' . urlencode($_SERVER['REQUEST_URI']) : '';
-        header('Location: login.php' . $returnto);
-        die();
     }
 
     if (!$site_config['site_online'] && $users_data['class'] < UC_STAFF) {
         $session->destroy();
-        header('Location: login.php');
-        die();
     }
 
     if (!isset($users_data['perms']) || (!($users_data['perms'] & bt_options::PERMS_BYPASS_BAN))) {
@@ -300,7 +291,6 @@ function userlogin()
 </body>
 </html>";
             $session->destroy();
-            die();
         }
     }
 
@@ -1489,8 +1479,6 @@ function check_user_status()
     userlogin();
     if (!$session->validateToken($session->get('auth'), 'auth')) {
         $session->destroy();
-        header('Location: login.php');
-        die();
     }
     referer();
     parked();

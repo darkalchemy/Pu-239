@@ -342,8 +342,8 @@ if (!isset($self)) {
     }
     if ($upthis > 0 || $downthis > 0) {
         $isfree = $isdouble = $issilver = '';
-        include CACHE_DIR . 'free_cache.php';
-        if (isset($free)) {
+        $free = json_decode(file_get_contents(CACHE_DIR . 'free_cache.php'), true);
+        if (!empty($free)) {
             foreach ($free as $fl) {
                 $isfree = ($fl['modifier'] == 1 || $fl['modifier'] == 3) && $fl['expires'] > TIME_NOW;
                 $isdouble = ($fl['modifier'] == 2 || $fl['modifier'] == 3) && $fl['expires'] > TIME_NOW;
