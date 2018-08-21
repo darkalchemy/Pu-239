@@ -419,7 +419,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] || $C
     $HTMLOUT .= "
         <div class='top10 bottom10 has-text-centered'>";
 
-    require_once MODS_DIR . 'free_details.php';
+    require_once ROOT_DIR . 'free_details.php';
     $HTMLOUT .= "
         </div>
         <div class='level has-text-centered bottom20 columns top20'>

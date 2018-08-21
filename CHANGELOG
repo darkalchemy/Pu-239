@@ -1,3 +1,6 @@
+21 Aug 2018
+add: missing free_details.php
+
 20 Aug 2018
 update: reset remember me cookie expires time when remember token is updated in db
 add: cache entry to destroy user session when changing password, disabled, etc
