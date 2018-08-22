@@ -596,26 +596,26 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         $subject = sqlesc($lang['modtask_gl_notification']);
         $added = sqlesc(TIME_NOW);
         if ($free_switch == 255) {
-            $modcomment = get_date($added, 'DATE', 1) . $lang['modtask_freelech_status'] . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $free_pm\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_freelech_received'] . $username . ($free_pm ? "\n\n{$lang['modtask_gl_reason']} $free_pm" : ''));
+            $modcomment = get_date($added, 'DATE', 1) . $lang['modtask_freeleech_status'] . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $free_pm\n" . $modcomment;
+            $msg = sqlesc($lang['modtask_freeleech_received'] . $username . ($free_pm ? "\n\n{$lang['modtask_gl_reason']} $free_pm" : ''));
             $updateset[] = 'free_switch = 1';
-            $useredit['update'][] = $lang['modtask_freelech_yes'];
+            $useredit['update'][] = $lang['modtask_freeleech_yes'];
             $curuser_cache['free_switch'] = '1';
             $user_cache['free_switch'] = '1';
         } elseif ($free_switch == 42) {
-            $modcomment = get_date($added, 'DATE', 1) . $lang['modtask_freelech_remove'] . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sqlesc($lang['modtask_freelech_removed'] . $username);
+            $modcomment = get_date($added, 'DATE', 1) . $lang['modtask_freeleech_remove'] . $CURUSER['username'] . ".\n" . $modcomment;
+            $msg = sqlesc($lang['modtask_freeleech_removed'] . $username);
             $updateset[] = 'free_switch = 0';
-            $useredit['update'][] = $lang['modtask_freelech_no'];
+            $useredit['update'][] = $lang['modtask_freeleech_no'];
             $curuser_cache['free_switch'] = '0';
             $user_cache['free_switch'] = '0';
         } else {
             $free_until = ($added + $free_switch * 604800);
             $dur = $free_switch . $lang['modtask_gl_week'] . ($free_switch > 1 ? $lang['modtask_gl_weeks'] : '');
-            $msg = sqlesc("{$lang['modtask_gl_received']} $dur {$lang['modtask_freelech_from']}Freeleech Status from " . $username . ($free_pm ? "\n\n{$lang['modtask_gl_reason']} $free_pm" : ''));
-            $modcomment = get_date($added, 'DATE', 1) . "{$lang['modtask_freelech_for']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $free_pm\n" . $modcomment;
+            $msg = sqlesc("{$lang['modtask_gl_received']} $dur {$lang['modtask_freeleech_from']}Freeleech Status from " . $username . ($free_pm ? "\n\n{$lang['modtask_gl_reason']} $free_pm" : ''));
+            $modcomment = get_date($added, 'DATE', 1) . "{$lang['modtask_freeleech_for']} $dur {$lang['modtask_gl_by']}" . $CURUSER['username'] . ".\n{$lang['modtask_gl_reason']} $free_pm\n" . $modcomment;
             $updateset[] = 'free_switch = ' . $free_until;
-            $useredit['update'][] = $lang['modtask_freelech_enabled'] . get_date($free_until, 'DATE', 0, 1) . '';
+            $useredit['update'][] = $lang['modtask_freeleech_enabled'] . get_date($free_until, 'DATE', 0, 1) . '';
             $curuser_cache['free_switch'] = $free_until;
             $user_cache['free_switch'] = $free_until;
         }

@@ -437,4 +437,11 @@ $sql_updates = [
         'query' => "ALTER TABLE `auth_tokens` DROP COLUMN `set_time`",
         'flush' => false,
     ],
+    [
+        'id' => 1534933910,
+        'info' => 'Fix typo',
+        'date' => '22 Aug, 2018',
+        'query' => "UPDATE bonus SET description = REPLACE(description, 'Freelech', 'Freeleech');",
+        'flush' => false,
+    ],
 ];

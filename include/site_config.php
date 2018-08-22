@@ -40,6 +40,7 @@ date_default_timezone_set('UTC');
 // 0 = permanent (doesn't expires);
 // 1 - 2591999 (30 days) = relative time, in seconds from now;
 // 2592000 and over = absolute time, unix timestamp
+$site_config['expires']['remember_me'] = 14; // number of days to keep long term cookie
 $site_config['expires']['latestuser'] = 3600; // 3600 = 1 hour
 $site_config['expires']['motw'] = 3600; // 3600 = 1 hour
 $site_config['expires']['peers_'] = 120; // 120 = 2 minutes

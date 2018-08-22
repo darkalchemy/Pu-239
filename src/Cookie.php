@@ -9,6 +9,7 @@ class Cookie
     private $config;
     private $cache;
     protected $key;
+    private $fluent;
 
     /**
      * Cookie constructor.
@@ -20,10 +21,12 @@ class Cookie
      */
     public function __construct($key)
     {
-        global $site_config;
+        global $site_config, $cache, $fluent;
+
         $this->config = $site_config;
-        $this->cache = new Cache();
+        $this->cache = $cache;
         $this->key = $key;
+        $this->fluent = $fluent;
     }
 
     /**
@@ -37,7 +40,6 @@ class Cookie
         if (empty($this->key) || empty($value)) {
             return false;
         }
-
         $params = session_get_cookie_params();
         $encrypted = CryptoJSAES::encrypt($value, $this->config['site']['salt']);
         setcookie($this->config['cookie_prefix'] . $this->key, base64_encode($encrypted), $expires, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
@@ -64,6 +66,26 @@ class Cookie
         $cookies = $this->get();
         if ($cookies) {
             return explode(':', $cookies);
+        }
+    }
+
+    public function reset_expire()
+    {
+        $cookie = $this->getToken();
+        if (!empty($cookie[0]) && !empty($cookie[1]) && !empty($cookie[2])) {
+            $selector = $cookie[0];
+            $validator = $cookie[1];
+            $expires = (int) $cookie[2];
+
+            $this->set("$selector:$validator:$expires", TIME_NOW + $expires);
+
+            $set = [
+                'expires' => date('Y-m-d H:i:s', TIME_NOW + $expires),
+            ];
+            $this->fluent->update('auth_tokens')
+                ->set($set)
+                ->where('selector = ?', $selector)
+                ->execute();
         }
     }
 }

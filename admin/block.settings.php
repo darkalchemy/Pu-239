@@ -326,11 +326,11 @@ $HTMLOUT .= "
 
 $contents = [];
 $contents[] = "
-                            <div class='w-100'>{$lang['block_freelech']}</div>
+                            <div class='w-100'>{$lang['block_freeleech']}</div>
                             <div class='slideThree'>
                                 <#global_freeleech_on#>
                             </div>
-                            <div class='w-100'>{$lang['block_freelech_set']}</div>";
+                            <div class='w-100'>{$lang['block_freeleech_set']}</div>";
 
 $contents[] = "
                             <div class='w-100'>{$lang['block_demotion']}</div>
@@ -581,11 +581,11 @@ $contents[] = "
                             <div class='w-100'>{$lang['block_gender_set']}</div>";
 
 $contents[] = "
-                            <div class='w-100'>{$lang['block_freeslot_freelech']}</div>
+                            <div class='w-100'>{$lang['block_freeslot_freeleech']}</div>
                             <div class='slideThree'>
                                 <#userdetails_freestuffs_on#>
                             </div>
-                            <div class='w-100'>{$lang['block_freeslot_freelech_set']}</div>";
+                            <div class='w-100'>{$lang['block_freeslot_freeleech_set']}</div>";
 
 $contents[] = "
                             <div class='w-100'>{$lang['block_torrent_comment']}</div>

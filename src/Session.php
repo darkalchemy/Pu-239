@@ -8,6 +8,7 @@ class Session
     private $cache;
     private $fluent;
     private $cookies;
+    private $user_stuffs;
 
     /**
      * Session constructor.
@@ -17,11 +18,12 @@ class Session
      */
     public function __construct()
     {
-        global $site_config;
+        global $site_config, $cache, $fluent;
 
         $this->config = $site_config;
-        $this->cache = new Cache();
-        $this->fluent = new Database();
+        $this->cache = $cache;
+        $this->fluent = $fluent;
+        $this->user_stuffs = new User();
         $this->cookies = new Cookie('remember');
     }
 
@@ -35,7 +37,7 @@ class Session
      */
     public function start()
     {
-        $expires = $this->config['cookie_lifetime'] <= 1 ? 900 : $this->config['cookie_lifetime'] * 86400;
+        $expires = (int) $this->config['cookie_lifetime'] * 60;
 
         if (!session_id()) {
             // Set the session name:
@@ -81,32 +83,12 @@ class Session
             $this->set('auth', bin2hex(random_bytes(32)));
         }
 
-        if (!$this->get('salt')) {
-            $this->set('salt', make_passhash($this->get('auth')));
-        }
-
         if (!$this->get($this->config['session_csrf'])) {
             $this->set($this->config['session_csrf'], bin2hex(random_bytes(32)));
         }
 
         if ($this->get('canary') <= TIME_NOW - 300) {
-            $userID = $this->get('userID');
-            if (!empty($userID)) {
-                $set = [
-                    'expires' => new \Envms\FluentPDO\Literal('DATE_ADD(NOW(), INTERVAL `set_time` SECOND)'),
-                ];
-                $this->fluent->update('auth_tokens')
-                    ->set($set)
-                    ->where('userid = ?', $userID)
-                    ->execute();
-            }
-
-            if (!empty($cookie[0]) && !empty($cookie[1])) {
-                $selector = $cookie[0];
-                $validator = $cookie[1];
-                $this->cookies->set("$selector:$validator", TIME_NOW + $expires);
-            }
-
+            $this->cookies->reset_expire();
             session_regenerate_id(true);
             $this->set('canary', TIME_NOW);
         }
@@ -121,7 +103,7 @@ class Session
      */
     public function set($key, $value, $prefix = null)
     {
-        if (null === $prefix) {
+        if ($prefix === null) {
             $prefix = $this->config['sessionKeyPrefix'];
         }
         if (in_array($key, $this->config['notifications'])) {
@@ -149,7 +131,7 @@ class Session
             return null;
         }
 
-        if (null === $prefix) {
+        if ($prefix === null) {
             $prefix = $this->config['sessionKeyPrefix'];
         }
 
@@ -166,7 +148,7 @@ class Session
      */
     public function unset($key, $prefix = null)
     {
-        if (null === $prefix) {
+        if ($prefix === null) {
             $prefix = $this->config['sessionKeyPrefix'];
         }
 
@@ -211,30 +193,15 @@ class Session
      */
     public function destroy()
     {
-        global $CURUSER, $cache, $fluent;
+        global $CURUSER;
 
-        if (!empty($CURUSER)) {
-            $cache->delete('inbox_' . $CURUSER['id']);
-            $cache->delete('peers_' . $CURUSER['id']);
-            $cache->delete('port_data_' . $CURUSER['id']);
-            $cache->delete('shitlist_' . $CURUSER['id']);
-            $cache->delete('user' . $CURUSER['id']);
-            $cache->delete('user_friends_' . $CURUSER['id']);
-            $cache->delete('userlist_' . $CURUSER['id']);
-            $cache->delete('user_rep_' . $CURUSER['id']);
-            $cache->delete('user_snatches_data_' . $CURUSER['id']);
-            $cache->delete('userstatus_' . $CURUSER['id']);
-            $cache->delete('is_staffs');
+        $userID = $CURUSER['id'];
+        if ($userID) {
+            $this->user_stuffs->delete_user_cache([
+                $userID,
+            ]);
+            $this->user_stuffs->delete_remember($userID);
         }
-        $cookies = new Cookie('remember');
-        $cookie = $cookies->getToken();
-        if (!empty($cookie[0])) {
-            $this->cache->delete('remember_' . $cookie[0]);
-        }
-
-        $this->fluent->deleteFrom('auth_tokens')
-            ->where('userid = ?', $CURUSER['id'])
-            ->execute();
 
         $this->start();
         $_SESSION = [];
@@ -242,12 +209,15 @@ class Session
         if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
             setcookie($this->config['cookie_prefix'] . 'remember', '', TIME_NOW - 86400, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
-
             setcookie(session_name(), '', TIME_NOW - 86400, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
         }
 
         session_unset();
         session_destroy();
+
+        $returnto = !empty($_SERVER['REQUEST_URI']) ? '?returnto=' . urlencode($_SERVER['REQUEST_URI']) : '';
+        header("Location: {$this->config['baseurl']}/login.php" . $returnto);
+        die();
     }
 
     public function close()

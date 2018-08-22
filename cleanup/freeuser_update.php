@@ -64,6 +64,6 @@ function freeuser_update($data)
     }
 
     if ($data['clean_log'] && $queries > 0) {
-        write_log("Freelech Cleanup: Completed using $queries queries");
+        write_log("Freeleech Cleanup: Completed using $queries queries");
     }
 }

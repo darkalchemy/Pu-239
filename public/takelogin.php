@@ -199,7 +199,8 @@ $session->set('userID', $userid);
 $session->set('username', $username);
 $session->set('remembered_by_cookie', false);
 
-$expires = !empty($remember) ? 365 * 86400 : 900;
+$expires = !empty($remember) ? $site_config['expires']['remember_me'] * 86400 : $site_config['cookie_lifetime'] * 60;
+$expires = $expires >= 900 ? $expires : 900;
 $user_stuffs->set_remember($userid, $expires);
 
 if (isset($returnto)) {

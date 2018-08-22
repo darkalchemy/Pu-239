@@ -24,8 +24,6 @@ function stdhead($title = '', $stdhead = null)
     }
     if (!empty($CURUSER) && $CURUSER['enabled'] !== 'yes') {
         $session->destroy();
-        header('Location: login.php');
-        die();
     }
     if (empty($title)) {
         $title = $site_config['site_name'];

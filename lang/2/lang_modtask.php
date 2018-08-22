@@ -205,16 +205,16 @@ $lang = [
     //free slots
     'modtask_freeslots_amount' => ' - freeslots amount changed to ',
     'modtask_freeslots_total' => 'Freeeslots total adjusted = Yes',
-    //freelech
-    'modtask_freelech_status' => ' - Freeleech Status enabled by ',
-    'modtask_freelech_received' => 'You have received Freeleech Status from ',
-    'modtask_freelech_yes' => 'Freeleech enabled = Yes',
-    'modtask_freelech_remove' => ' - Freeleech Status removed by ',
-    'modtask_freelech_removed' => 'Your Freeleech Status has been removed by ',
-    'modtask_freelech_no' => 'Freeleech enabled = No',
-    'modtask_freelech_from' => 'Freeleech Status from ',
-    'modtask_freelech_for' => ' - Freeleech Status for',
-    'modtask_freelech_enabled' => 'Freeleech enabled = ',
+    //freeleech
+    'modtask_freeleech_status' => ' - Freeleech Status enabled by ',
+    'modtask_freeleech_received' => 'You have received Freeleech Status from ',
+    'modtask_freeleech_yes' => 'Freeleech enabled = Yes',
+    'modtask_freeleech_remove' => ' - Freeleech Status removed by ',
+    'modtask_freeleech_removed' => 'Your Freeleech Status has been removed by ',
+    'modtask_freeleech_no' => 'Freeleech enabled = No',
+    'modtask_freeleech_from' => 'Freeleech Status from ',
+    'modtask_freeleech_for' => ' - Freeleech Status for',
+    'modtask_freeleech_enabled' => 'Freeleech enabled = ',
     //game possible
     'modtask_games_dis_by' => ' - Gaming disablement by ',
     'modtask_games_dis_right' => 'Your gaming rights have been disabled by ',

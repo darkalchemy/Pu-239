@@ -5,4 +5,3 @@ check_user_status();
 global $CURUSER, $site_config, $session;
 
 $session->destroy();
-header("Location: {$site_config['baseurl']}/login.php");

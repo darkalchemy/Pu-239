@@ -170,7 +170,7 @@ if (!is_array($scheduled_events)) {
     $HTMLOUT .= "<p><strong>{$lang['events_schedular']}</strong><strong> <span class='has-text-danger'>{$lang['events_beta']}</span> </strong> </p>
 <form action='' method='post'>
 <table width='80%'>
-<tr><th>{$lang['events_user']}</th><th>{$lang['events_text']}</th><th>{$lang['events_start']}</th><th>{$lang['events_end']}</th><th>{$lang['events_freelech']}</th><th>{$lang['events_dupload']}</th><th>{$lang['events_hdown']}</th><th>{$lang['events_sdate']}</th><th>&#160;</th></tr>";
+<tr><th>{$lang['events_user']}</th><th>{$lang['events_text']}</th><th>{$lang['events_start']}</th><th>{$lang['events_end']}</th><th>{$lang['events_freeleech']}</th><th>{$lang['events_dupload']}</th><th>{$lang['events_hdown']}</th><th>{$lang['events_sdate']}</th><th>&#160;</th></tr>";
     foreach ($scheduled_events as $scheduled_event) {
         $id = (int) $scheduled_event['id'];
         $users = $scheduled_event;

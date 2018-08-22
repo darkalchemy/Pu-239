@@ -103,32 +103,23 @@ class User
 
         if (!$id) {
             $cookie = $this->cookies->getToken();
-            if ($cookie) {
+            if (!empty($cookie[0]) && !empty($cookie[1]) && !empty($cookie[2])) {
                 $selector = $cookie[0];
                 $validator = $cookie[1];
+                $expires = $cookie[2];
                 $stashed = $this->get_remember($selector);
-                if (empty($stashed)) {
-                    $this->session->destroy();
-
-                    return false;
-                }
-                if (hash_equals($stashed['hashedValidator'], hash('sha256', $validator))) {
+                if (!empty($stashed) && hash_equals($stashed['hashedValidator'], hash('sha256', $validator))) {
                     $id = $stashed['userid'];
                     $this->session->start();
                     $this->session->set('userID', $id);
                     $this->session->set('remembered_by_cookie', true);
-                    $this->set_remember($id, $stashed['set_time']);
+                    $this->refresh_remember($selector, $id, $expires);
 
                     return (int) $id;
-                } else {
-                    $this->session->destroy();
-
-                    return false;
                 }
             }
-            $this->session->destroy();
 
-            return false;
+            $this->session->destroy();
         }
 
         return (int) $id;
@@ -157,10 +148,8 @@ class User
         return $result;
     }
 
-    public function get_remember($selector)
+    public function get_remember(string $selector)
     {
-        global $session, $fluent;
-
         $remember = $this->fluent->from('auth_tokens')
             ->where('selector = ?', $selector)
             ->where('expires >= ?', date('Y-m-d H:i:s', TIME_NOW))
@@ -169,10 +158,8 @@ class User
         return $remember;
     }
 
-    public function set_remember($userid, $expires)
+    public function set_remember(int $userid, int $expires)
     {
-        global $session;
-
         $selector = bin2hex(random_bytes(16));
         $validator = bin2hex(random_bytes(32));
         $hashedValidator = hash('sha256', $validator);
@@ -182,7 +169,7 @@ class User
             'uid' => $userid,
         ];
 
-        $this->cookies->set("$selector:$validator", TIME_NOW + $expires);
+        $this->cookies->set("$selector:$validator:$expires", TIME_NOW + $expires);
 
         $this->fluent->deleteFrom('auth_tokens')
             ->where('expires <= ?', date('Y-m-d H:i:s', TIME_NOW))
@@ -193,18 +180,47 @@ class User
             'hashedValidator' => $hashedValidator,
             'userid' => $userid,
             'expires' => date('Y-m-d H:i:s', TIME_NOW + $expires),
-            'set_time' => $expires,
             'created_at' => date('Y-m-d H:i:s', TIME_NOW),
         ];
-        $update_values = [
-            'selector' => $selector,
-            'hashedValidator' => $hashedValidator,
-            'expires' => date('Y-m-d H:i:s', TIME_NOW + $expires),
-            'set_time' => $expires,
-            'created_at' => date('Y-m-d H:i:s', TIME_NOW),
-        ];
-        $this->fluent->insertInto('auth_tokens', $values)
-            ->onDuplicateKeyUpdate($update_values)
+        $this->fluent->insertInto('auth_tokens')
+            ->values($values)
             ->execute();
+    }
+
+    public function refresh_remember(string $selector, int $userid, int $expires)
+    {
+        $this->fluent->deleteFrom('auth_tokens')
+            ->where('selector = ?', $selector)
+            ->execute();
+
+        $this->set_remember($userid, $expires);
+    }
+
+    public function delete_remember(int $userid)
+    {
+        $this->fluent->deleteFrom('auth_tokens')
+            ->where('userid = ?', $userid)
+            ->execute();
+    }
+
+    public function delete_user_cache(array $users)
+    {
+        foreach ($users as $userid) {
+            if (!empty($userid)) {
+                $this->cache->deleteMulti([
+                    'inbox_' . $userid,
+                    'peers_' . $userid,
+                    'port_data_' . $userid,
+                    'shitlist_' . $userid,
+                    'user' . $userid,
+                    'user_friends_' . $userid,
+                    'userlist_' . $userid,
+                    'user_rep_' . $userid,
+                    'user_snatches_data_' . $userid,
+                    'userstatus_' . $userid,
+                    'is_staffs',
+                ]);
+            }
+        }
     }
 }

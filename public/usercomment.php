@@ -43,7 +43,7 @@ if ($action === 'add') {
         }
     }
     $HTMLOUT .= "
-    <h1 class='has-text-centered'>Add a comment for " . format_username($arr['userid']) . "</h1>
+    <h1 class='has-text-centered'>Add a comment for " . format_username($userid) . "</h1>
     <form method='post' action='usercomment.php?action=add'>
         <input type='hidden' name='userid' value='$userid' />
         <div>" . BBcode() . "</div>

@@ -1,4 +1,10 @@
 22 Aug 2018
+fix: remember me token expires
+cleanup: class files to do only what class relates to
+update: placeholder text freeleech.php
+fix: typo lang files
+fix: use incorrect userid variable usercomment.php
+add: remember me expires to site_config.php
 update: database files
 update: allow only 1 for each modifier admin/freeleech.php
 
