@@ -10,45 +10,6 @@ global $site_config, $lang;
 
 $lang = array_merge($lang, load_language('ad_viewpeers'));
 $HTMLOUT = $count = '';
-/**
- * @param $ip
- *
- * @return array|bool|string
- */
-function my_inet_ntop($ip)
-{
-    if (strlen($ip) == 4) {
-        // ipv4
-        list(, $ip) = unpack('N', $ip);
-        $ip = long2ip($ip);
-    } elseif (strlen($ip) == 16) {
-        // ipv6
-        $ip = bin2hex($ip);
-        $ip = substr(chunk_split($ip, 4, ':'), 0, -1);
-        $ip = explode(':', $ip);
-        $res = '';
-        foreach ($ip as $seg) {
-            while ($seg[0] == '0') {
-                $seg = substr($seg, 1);
-            }
-            if ($seg != '') {
-                $res .= ($res == '' ? '' : ':') . $seg;
-            } else {
-                if (strpos($res, '::') === false) {
-                    if (substr($res, -1) === ':') {
-                        continue;
-                    }
-                    $res .= ':';
-                    continue;
-                }
-                $res .= ($res === '' ? '' : ':') . '0';
-            }
-        }
-        $ip = $res;
-    }
-
-    return $ip;
-}
 
 /**
  * @param $a
@@ -82,7 +43,7 @@ $res = sql_query("SELECT COUNT($Which_ID) FROM $Which_Table") or sqlerr(__FILE__
 $row = mysqli_fetch_row($res);
 $count = $row[0];
 $peersperpage = 15;
-$HTMLOUT .= "<h2>{$lang['wpeers_h2']}</h2>
+$HTMLOUT .= "<h1 class='has-text-centered'>{$lang['wpeers_h2']}</h1>
 <font class='small'>{$lang['wpeers_there']}" . htmlsafechars($count) . "{$lang['wpeers_peer']}" . ($count > 1 ? $lang['wpeers_ps'] : '') . "{$lang['wpeers_curr']}</font>";
 $HTMLOUT .= begin_main_frame();
 $pager = pager($peersperpage, $count, 'staffpanel.php?tool=view_peers&amp;action=view_peers&amp;');
@@ -92,42 +53,42 @@ if ($count > $peersperpage) {
 if (XBT_TRACKER) {
     $sql = "SELECT x.fid, x.uid, x.left, x.active, x.peer_id, x.ipa, x.uploaded, x.downloaded, x.leechtime, x.seedtime, x.upspeed, x.downspeed, x.mtime, x.completedtime, u.torrent_pass, u.username, t.seeders, t.leechers, t.name FROM `xbt_files_users` AS x LEFT JOIN users AS u ON u.id=x.uid LEFT JOIN torrents AS t ON t.id=x.fid WHERE `left` >= 0 AND t.leechers >= 0 ORDER BY fid DESC {$pager['limit']}";
 } else {
-    $sql = 'SELECT p.id, p.userid, p.torrent, p.torrent_pass, p.peer_id, p.ip, p.port, p.uploaded, p.downloaded, p.to_go, p.seeder, p.started, p.last_action, p.connectable, p.agent, p.finishedat, p.downloadoffset, p.uploadoffset, u.username, t.name ' . 'FROM peers AS p ' . 'LEFT JOIN users AS u ON u.id=p.userid ' . "LEFT JOIN torrents AS t ON t.id=p.torrent WHERE started != '0'" . "ORDER BY p.started DESC {$pager['limit']}";
+    $sql = "SELECT p.id, p.userid, p.torrent, p.torrent_pass, p.peer_id, INET6_NTOA(p.ip) AS ip, p.port, p.uploaded, p.downloaded, p.to_go, p.seeder, p.started, p.last_action, p.connectable, p.agent, p.finishedat, p.downloadoffset, p.uploadoffset, u.username, t.name FROM peers AS p LEFT JOIN users AS u ON u.id = p.userid LEFT JOIN torrents AS t ON t.id = p.torrent WHERE started != 0 ORDER BY p.started DESC {$pager['limit']}";
 }
 $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($result) != 0) {
     if (XBT_TRACKER) {
-        $HTMLOUT .= "<table width='100%' >
+        $HTMLOUT .= "<table class='table table-bordered table-striped'>
 <tr>
-<td class='colhead' width='1%'>{$lang['wpeers_user']}</td>
-<td class='colhead' width='1%'>{$lang['wpeers_torrent']}</td>
-<td class='colhead' width='1%'>{$lang['wpeers_ip']}</td>
-<td class='colhead' width='1%'>{$lang['wpeers_up']}</td>
-" . ($site_config['ratio_free'] == true ? '' : "<td class='colhead' width='1%'>{$lang['wpeers_dn']}</td>") . "
-<td class='colhead' width='1%'>{$lang['wpeers_pssky']}</td>
-<td class='colhead' width='1%'>{$lang['wpeers_seed']}</td>
-<td class='colhead' width='1%'>{$lang['wpeers_last']}</td>
-<td class='colhead' width='1%'>{$lang['wpeers_uspeed']}</td>
-" . ($site_config['ratio_free'] == true ? '' : "<td class='colhead' width='1%'>{$lang['wpeers_dspeed']}</td>") . "
-<td class='colhead' width='1%'>{$lang['wpeers_togo']}</td>
+<td>{$lang['wpeers_user']}</td>
+<td>{$lang['wpeers_torrent']}</td>
+<td>{$lang['wpeers_ip']}</td>
+<td>{$lang['wpeers_up']}</td>
+" . ($site_config['ratio_free'] == true ? '' : "<td>{$lang['wpeers_dn']}</td>") . "
+<td>{$lang['wpeers_pssky']}</td>
+<td>{$lang['wpeers_seed']}</td>
+<td>{$lang['wpeers_last']}</td>
+<td>{$lang['wpeers_uspeed']}</td>
+" . ($site_config['ratio_free'] == true ? '' : "<td>{$lang['wpeers_dspeed']}</td>") . "
+<td>{$lang['wpeers_togo']}</td>
 </tr>";
     } else {
-        $HTMLOUT .= "<table width='100%' >
+        $HTMLOUT .= "<table class='table table-bordered table-striped'>
 <tr>
-<td class='colhead' width='1%'>{$lang['wpeers_user']}</td>
-<td class='colhead' width='1%'>{$lang['wpeers_torrent']}</td>
-<td class='colhead' width='1%'>{$lang['wpeers_ip']}</td>
-<td class='colhead' width='1%'>{$lang['wpeers_port']}</td>
-<td class='colhead' width='1%'>{$lang['wpeers_up']}</td>
-" . ($site_config['ratio_free'] == true ? '' : "<td class='colhead' width='1%'>{$lang['wpeers_dn']}</td>") . "
-<td class='colhead' width='1%'>{$lang['wpeers_pssky']}</td>
-<td class='colhead' width='1%'>{$lang['wpeers_con']}</td>
-<td class='colhead' width='1%'>{$lang['wpeers_seed']}</td>
-<td class='colhead' width='1%'>{$lang['wpeers_start']}</td>
-<td class='colhead' width='1%'>{$lang['wpeers_last']}</td>
-<td class='colhead' width='1%'>{$lang['wpeers_upoff']}</td>
-" . ($site_config['ratio_free'] == true ? '' : "<td class='colhead' width='1%'>{$lang['wpeers_dnoff']}</td>") . "
-<td class='colhead' width='1%'>{$lang['wpeers_togo']}</td>
+<td>{$lang['wpeers_user']}</td>
+<td>{$lang['wpeers_torrent']}</td>
+<td>{$lang['wpeers_ip']}</td>
+<td>{$lang['wpeers_port']}</td>
+<td>{$lang['wpeers_up']}</td>
+" . ($site_config['ratio_free'] == true ? '' : "<td>{$lang['wpeers_dn']}</td>") . "
+<td>{$lang['wpeers_pssky']}</td>
+<td>{$lang['wpeers_con']}</td>
+<td>{$lang['wpeers_seed']}</td>
+<td>{$lang['wpeers_start']}</td>
+<td>{$lang['wpeers_last']}</td>
+<td>{$lang['wpeers_upoff']}</td>
+" . ($site_config['ratio_free'] == true ? '' : "<td>{$lang['wpeers_dnoff']}</td>") . "
+<td>{$lang['wpeers_togo']}</td>
 </tr>";
     }
     while ($row = mysqli_fetch_assoc($result)) {

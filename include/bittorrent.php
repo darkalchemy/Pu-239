@@ -143,8 +143,13 @@ function getip($login = false)
 
     $no_log_ip = $CURUSER['perms'] & bt_options::PERMS_NO_IP;
 
+    $ip = $_SERVER['REMOTE_ADDR'];
+    if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) && !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        $ip = '10.1.1.1';
+    }
+
     if ($login || (IP_LOGGING && !$no_log_ip)) {
-        return $_SERVER['REMOTE_ADDR'];
+        return $ip;
     }
 
     return '127.0.0.1';
