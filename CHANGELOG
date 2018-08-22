@@ -1,3 +1,6 @@
+22 Aug 2018
+update: allow only 1 for each modifier admin/freeleech.php
+
 21 Aug 2018
 fix: serialize data, multiple values admin/freeleech.php
 fix: initial cookie_lifetime value, during install

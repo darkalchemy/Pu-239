@@ -34,9 +34,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo '' . $lang['freelech_error_form'] . '';
         die();
     }
-    if (!empty($free[0]) && $free[0]['modifier'] === 0) {
-        unset($free[0]);
+    $i = 0;
+    foreach ($free as $temp) {
+        if ($temp['modifier'] == $fl['modifier']) {
+            unset($free[$i]);
+        }
+        $i++;
     }
+    $free = array_values($free);
     $free[] = [
         'modifier'=> $fl['modifier'],
         'expires'=> $fl['expires'],
