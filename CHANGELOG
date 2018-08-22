@@ -1,4 +1,5 @@
 22 Aug 2018
+fix: validate IPV6 address while getting user ip address
 fix: returnto logout.out when logging in after clicking logout
 fix: remember me token expires
 cleanup: class files to do only what class relates to

@@ -1749,7 +1749,7 @@ function plural($int)
 function ipToStorageFormat($ip)
 {
     $ip = empty($ip) ? '10.10.10.10' : $ip;
-    if (!filter_var($ip, FILTER_VALIDATE_IP)) {
+    if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) && !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
         $ip = '10.10.10.10';
     }
 
