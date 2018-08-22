@@ -215,7 +215,7 @@ class Session
         session_unset();
         session_destroy();
 
-        $returnto = !empty($_SERVER['REQUEST_URI']) ? '?returnto=' . urlencode($_SERVER['REQUEST_URI']) : '';
+        $returnto = !empty($_SERVER['REQUEST_URI']) && !preg_match('/logout.php/', $_SERVER['REQUEST_URI']) ? '?returnto=' . urlencode($_SERVER['REQUEST_URI']) : '';
         header("Location: {$this->config['baseurl']}/login.php" . $returnto);
         die();
     }
