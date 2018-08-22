@@ -229,7 +229,6 @@ CREATE TABLE `auth_tokens` (
   `hashedValidator` char(64) COLLATE utf8mb4_unicode_ci NOT NULL,
   `userid` int(10) unsigned NOT NULL,
   `expires` datetime NOT NULL,
-  `set_time` int(10) unsigned NOT NULL DEFAULT '900',
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`selector`),
   UNIQUE KEY `userid_selector` (`userid`,`selector`),
@@ -2656,4 +2655,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-20  9:57:31
+-- Dump completed on 2018-08-22  9:50:39

@@ -430,4 +430,11 @@ $sql_updates = [
         'query' => "ALTER TABLE `auth_tokens` DROP PRIMARY KEY, DROP COLUMN `id`, DROP INDEX `selector`, MODIFY COLUMN `selector` char(32) COLLATE utf8mb4_unicode_ci NOT NULL PRIMARY KEY",
         'flush' => false,
     ],
+    [
+        'id' => 1534824925,
+        'info' => 'Drop column set_time',
+        'date' => '21 Aug, 2018',
+        'query' => "ALTER TABLE `auth_tokens` DROP COLUMN `set_time`",
+        'flush' => false,
+    ],
 ];
