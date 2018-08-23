@@ -14,19 +14,17 @@ $edit_mood['action'] = (isset($edit_params['action']) ? $edit_params['action'] :
 $edit_mood['id'] = (isset($edit_params['id']) ? (int) $edit_params['id'] : 0);
 $edit_mood['name'] = (isset($edit_params['name']) ? $edit_params['name'] : 0);
 $edit_mood['image'] = (isset($edit_params['image']) ? $edit_params['image'] : 0);
-$edit_mood['bonus'] = (isset($edit_params['bonus']) ? (int) $edit_params['bonus'] : 0);
+$edit_mood['bonus'] = (isset($edit_params['bonus']) ? 1 : 0);
 if ($edit_mood['action'] === 'added') {
-    if ($edit_mood['name'] && $edit_mood['name'] && $edit_mood['name'] && ($edit_mood['name'] != '' . $lang['moods_example'] . '' && $edit_mood['image'] != 'smile1.gif')) {
+    if ($edit_mood['name'] != $lang['moods_example'] && $edit_mood['image'] != 'smile1.gif') {
         sql_query('INSERT INTO moods (name, image, bonus) VALUES (' . sqlesc($edit_mood['name']) . ', ' . sqlesc($edit_mood['image']) . ', ' . sqlesc($edit_mood['bonus']) . ')') or sqlerr(__FILE__, __LINE__);
         $cache->delete('topmoods');
         write_log('<b>' . $lang['moods_added'] . '</b> ' . htmlsafechars($CURUSER['username']) . ' - ' . htmlsafechars($edit_mood['name']) . '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($edit_mood['image']) . '" alt="" />');
     }
 } elseif ($edit_mood['action'] === 'edited') {
-    if ($edit_mood['name'] && $edit_mood['name'] && $edit_mood['name']) {
-        sql_query('UPDATE moods SET name = ' . sqlesc($edit_mood['name']) . ', image = ' . sqlesc($edit_mood['image']) . ', bonus = ' . sqlesc($edit_mood['bonus']) . ' WHERE id = ' . sqlesc($edit_mood['id'])) or sqlerr(__FILE__, __LINE__);
-        $cache->delete('topmoods');
-        write_log('<b>' . $lang['moods_edited'] . '</b> ' . htmlsafechars($CURUSER['username']) . ' - ' . htmlsafechars($edit_mood['name']) . '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($edit_mood['image']) . '" alt="" />');
-    }
+    sql_query('UPDATE moods SET name = ' . sqlesc($edit_mood['name']) . ', image = ' . sqlesc($edit_mood['image']) . ', bonus = ' . sqlesc($edit_mood['bonus']) . ' WHERE id = ' . sqlesc($edit_mood['id'])) or sqlerr(__FILE__, __LINE__);
+    $cache->delete('topmoods');
+    write_log('<b>' . $lang['moods_edited'] . '</b> ' . htmlsafechars($CURUSER['username']) . ' - ' . htmlsafechars($edit_mood['name']) . '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($edit_mood['image']) . '" alt="" />');
 }
 /*
 elseif ($edit_mood['action'] == 'remove') {
@@ -39,9 +37,9 @@ if ($edit_mood['action'] === 'edit' && $edit_mood['id']) {
     $edit_mood['res'] = sql_query('SELECT * FROM moods WHERE id = ' . sqlesc($edit_mood['id'])) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($edit_mood['res'])) {
         $edit_mood['arr'] = mysqli_fetch_assoc($edit_mood['res']);
-        $HTMLOUT .= "<h1>{$lang['moods_edit']}</h1>
+        $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['moods_edit']}</h1>
             <form method='post' action='staffpanel.php?tool=edit_moods&amp;action=edited'>
-            <table >
+            <table class='table table-bordered table-striped'>
             <tr><td class='colhead'>{$lang['moods_name']}</td>
             <td><input type='text' name='name' size='40' value ='" . htmlsafechars($edit_mood['arr']['name']) . "' /></td></tr>
             <tr><td class='colhead'>{$lang['moods_image']}</td>
@@ -55,9 +53,9 @@ if ($edit_mood['action'] === 'edit' && $edit_mood['id']) {
             </table></form>";
     }
 } else {
-    $HTMLOUT .= "<h1>{$lang['moods_add_new']}</h1>
+    $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['moods_add_new']}</h1>
          <form method='post' action='staffpanel.php?tool=edit_moods&amp;action=added'>
-         <table >
+         <table class='table table-bordered table-striped'>
          <tr><td class='colhead'>{$lang['moods_name']}</td>
          <td><input type='text' name='name' size='40' value ='is example mood' /></td></tr>
          <tr><td class='colhead'>{$lang['moods_image']}</td>
@@ -69,8 +67,8 @@ if ($edit_mood['action'] === 'edit' && $edit_mood['id']) {
          </td></tr>
          </table></form>";
 }
-$HTMLOUT .= '<h1>' . $lang['moods_current'] . '</h1>';
-$HTMLOUT .= "<table width='85%'>
+$HTMLOUT .= '<h1 class="has-text-centered">' . $lang['moods_current'] . '</h1>';
+$HTMLOUT .= "<table class='table table-bordered table-striped'>
       <tr><td class='colhead'>{$lang['moods_added1']}</td>
       <td class='colhead'>{$lang['moods_name']}</td>
       <td class='colhead'>{$lang['moods_image']}</td>
