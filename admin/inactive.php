@@ -7,7 +7,7 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_account_delete.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $cache;
+global $CURUSER, $site_config, $lang, $cache, $session;
 
 $lang = array_merge($lang, load_language('inactive'));
 
@@ -20,7 +20,7 @@ $days = 30; //number of days of inactivity
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = isset($_POST['action']) ? htmlsafechars(trim($_POST['action'])) : '';
     if (empty($_POST['userid']) && (($action === 'deluser') || ($action === 'mail'))) {
-        stderr($lang['inactive_error'], "{$lang['inactive_selectuser']}");
+        $session->set('is-warning', "{$lang['inactive_selectuser']}");
     }
 
     if ($action === 'deluser' && (!empty($_POST['userid']))) {
@@ -29,18 +29,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         while ($arr = mysqli_fetch_array($res)) {
             $userid = (int) $arr['id'];
             $username = htmlsafechars($arr['username']);
-            $res_del = sql_query(account_delete($userid)) or sqlerr(__FILE__, __LINE__);
-            if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) !== false) {
-                $cache->delete('user' . $userid);
+            if (account_delete($userid)) {
                 write_log("User: $username Was deleted by {$CURUSER['username']}");
             }
         }
-        stderr($lang['inactive_success'], "{$lang['inactive_deleted']} <a href='" . $site_config['baseurl'] . "/staffpanel.php?tool=inactive>{$lang['inactive_back']}</a>");
+        $session->set('is-success', $lang['inactive_deleted']);
     }
 
     if ($action === 'disable' && (!empty($_POST['userid']))) {
         sql_query("UPDATE users SET enabled='no' WHERE id IN (" . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ');
-        stderr($lang['inactive_success'], "{$lang['inactive_disabled']} <a href='" . $site_config['baseurl'] . "/staffpanel.php?tool=inactive>{$lang['inactive_back']}</a>");
+        $session->set('is-success', $lang['inactive_disabled']);
     }
 
     if ($action === 'mail' && (!empty($_POST['userid']))) {
@@ -89,9 +87,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($mail) {
-            stderr($lang['inactive_success'], "{$lang['inactive_msgsent']} <a href='" . $site_config['baseurl'] . "/staffpanel.php?tool=inactive'>{$lang['inactive_back']}</a>");
+            $session->set('is-success', $lang['inactive_msgsent']);
         } else {
-            stderr($lang['inactive_error'], "{$lang['inactive_tryagain']}");
+            $session->set('is-error', $lang['inactive_tryagain']);
         }
     }
 }
@@ -104,8 +102,9 @@ $pager = pager($perpage, $count, 'staffpanel.php?tool=inactive&amp;');
 $res = sql_query('SELECT id,username,class,email,uploaded,downloaded,last_access FROM users WHERE last_access < ' . sqlesc($dt) . " AND status='confirmed' AND enabled='yes' ORDER BY last_access DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
 $count_inactive = mysqli_num_rows($res);
 if ($count_inactive > 0) {
-    //if ($count > $perpage)
-    $HTMLOUT .= $pager['pagertop'];
+    if ($count > $perpage) {
+        $HTMLOUT .= $pager['pagertop'];
+    }
     $HTMLOUT .= "<script>
     /*<![CDATA[*/
     var checkflag = 'false';
@@ -124,7 +123,7 @@ if ($count_inactive > 0) {
     /*]]>*/
     </script>";
     $HTMLOUT .= "<div class='row'><div class='col-md-12'>";
-    $HTMLOUT .= '<h2>' . htmlsafechars($count) . "{$lang['inactive_accounts']} " . htmlsafechars($days) . " {$lang['inactive_days']}</h2>
+    $HTMLOUT .= '<h1 class="has-text-centered">' . htmlsafechars($count) . "{$lang['inactive_accounts']} " . htmlsafechars($days) . " {$lang['inactive_days']}</h2>
     <form method='post' action='staffpanel.php?tool=inactive&amp;action=inactive'>
     <table class='table table-bordered'>
     <tr>
@@ -153,7 +152,7 @@ if ($count_inactive > 0) {
     <option value='mail'>{$lang['inactive_sendmail']}</option>
     <option value='deluser' " . ($CURUSER['class'] < UC_ADMINISTRATOR ? 'disabled' : '') . ">{$lang['inactive_deleteusers']}</option>
     <option value='disable'>{$lang['inactive_disaccounts']}</option>
-    </select>&#160;&#160;<input type='submit' name='submit' value='{$lang['inactive_apchanges']}' />&#160;&#160;<input type='button' value='Check all' onclick='this.value=check(form)' /></td></tr>";
+    </select>&#160;&#160;<input type='submit' name='submit' value='{$lang['inactive_apchanges']}' class='button is-small' />&#160;&#160;<input type='button' value='Check all' onclick='this.value=check(form)' class='button is-small' /></td></tr>";
     if ($record_mail) {
         $ress = sql_query("SELECT avps.value_s AS userid, avps.value_i AS last_mail, avps.value_u AS mails, users.username FROM avps LEFT JOIN users ON avps.value_s=users.id WHERE avps.arg='inactivemail' LIMIT 1");
         $date = mysqli_fetch_assoc($ress);
@@ -166,6 +165,7 @@ if ($count_inactive > 0) {
 } else {
     $HTMLOUT .= "<h2 class='has-text-centered margin20'>{$lang['inactive_noaccounts']} " . $days . " {$lang['inactive_days']}</h2>";
 }
-//if ($count > $perpage)
-$HTMLOUT .= $pager['pagerbottom'];
+if ($count > $perpage) {
+    $HTMLOUT .= $pager['pagerbottom'];
+}
 echo stdhead($lang['inactive_users']) . wrapper($HTMLOUT) . stdfoot();
