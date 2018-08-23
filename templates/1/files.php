@@ -22,7 +22,7 @@ function get_file_name($file)
         case 'browse_js':
             return "{$site_config['baseurl']}/js/1/browse_74f9954e.js";
         case 'userdetails_js':
-            return "{$site_config['baseurl']}/js/1/userdetails_01fabb92.js";
+            return "{$site_config['baseurl']}/js/1/userdetails_6ea0d103.js";
         case 'checkport_js':
             return "{$site_config['baseurl']}/js/1/checkport_9f985589.js";
         case 'captcha2_js':

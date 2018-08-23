@@ -1,4 +1,5 @@
 23 Aug 2018
+add: missing flip_box.js uglify.php
 fix: typo stelth
 fix: delete user inactive.php
 fix: display freeleech.php block
