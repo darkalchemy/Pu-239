@@ -1,3 +1,6 @@
+23 Aug 2018
+fix: users class not sending messages grouppm.php
+
 22 Aug 2018
 fix: display ip view_peers.php
 fix: validate IPV6 address while getting user ip address

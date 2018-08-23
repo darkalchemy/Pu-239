@@ -12,11 +12,9 @@ $lang = array_merge($lang, load_language('ad_grouppm'));
 
 $HTMLOUT = '';
 $err = [];
-$FSCLASS = UC_STAFF; //== First staff class;
-$LSCLASS = UC_MAX; //== Last staff class;
-$FUCLASS = UC_MIN; //== First users class;
-$LUCLASS = UC_STAFF - 1; //== Last users class;
+$last_user_class = UC_STAFF - 1; //== Last users class;
 $sent2classes = [];
+
 /**
  * @param $min
  * @param $max
@@ -24,6 +22,7 @@ $sent2classes = [];
 function classes2name($min, $max)
 {
     global $sent2classes;
+
     for ($i = $min; $i < $max + 1; ++$i) {
         $sent2classes[] = get_user_class_name($i);
     }
@@ -41,7 +40,6 @@ function mkint($x)
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $groups = isset($_POST['groups']) ? $_POST['groups'] : '';
-    //$groups = isset($_POST["groups"]) ? array_map('mkint',$_POST["groups"]) : ""; //no need for this kind of check because every value its checked inside the switch also the array contains no integer values so that will be a problem
     $subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '';
     $msg = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
     $msg = str_replace('&amp', '&', $_POST['body']);
@@ -52,7 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($msg)) {
         $err[] = $lang['grouppm_nomsg'];
     }
-    //$msg .= "\n This is a group message !";
     if (empty($groups)) {
         $err[] = $lang['grouppm_nogrp'];
     }
@@ -62,13 +59,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (is_string($group)) {
                 switch ($group) {
                     case 'all_staff':
-                        $where[] = 'u.class BETWEEN ' . $FSCLASS . ' and ' . $LSCLASS;
-                        classes2name($FSCLASS, $LSCLASS);
+                        $where[] = 'u.class BETWEEN ' . UC_STAFF . ' AND ' . UC_MAX;
+                        classes2name(UC_STAFF, UC_MAX);
                         break;
 
                     case 'all_users':
-                        $where[] = 'u.class BETWEEN ' . $FUCLASS . ' and ' . $LSCLASS;
-                        classes2name($FUCLASS, $LSCLASS);
+                        $where[] = 'u.class BETWEEN ' . UC_MIN . ' AND ' . UC_MAX;
+                        classes2name(UC_MIN, UC_MAX);
                         break;
 
                     case 'fls':
@@ -82,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         break;
 
                     case 'all_friends':
-                        $fq = sql_query('SELECT friendid FROM friends WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+                        $fq = sql_query('SELECT friendid FROM friends WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                         if (mysqli_num_rows($fq)) {
                             while ($fa = mysqli_fetch_row($fq)) {
                                 $ids[] = $fa[0];
@@ -91,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         break;
                 }
             }
-            if (is_numeric($group + 0) && $group + 0 > 0) {
+            if (ctype_digit($group) && (int) $group >= 0) {
                 $classes[] = $group;
                 $sent2classes[] = get_user_class_name($group);
             }
@@ -113,14 +110,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $msg .= "\n[p]" . $lang['grouppm_this'] . implode(', ', $sent2classes) . '[/p]';
             foreach ($ids as $rid) {
                 $pms[] = '(' . $sender . ',' . $rid . ',' . TIME_NOW . ',' . sqlesc($msg) . ',' . sqlesc($subject) . ')';
+                $cache->increment('inbox_' . $rid);
             }
             if (count($pms) > 0) {
                 $r = sql_query('INSERT INTO messages(sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pms)) or sqlerr(__FILE__, __LINE__);
             }
-            foreach ($ids as $rid) {
-                $cache->increment('inbox_' . $rid);
-            }
-            $err[] = ($r ? $lang['grouppm_sent'] : $lang['grouppm_again']);
+            $err[] = $r ? $lang['grouppm_sent'] . ' to ' . count($pms) . ' users' : $lang['grouppm_again'];
         } else {
             $err[] = $lang['grouppm_nousers'];
         }
@@ -132,7 +127,7 @@ $groups['staff'] = [
     'opname' => $lang['grouppm_staff'],
     'minclass' => UC_MIN,
 ];
-for ($i = $FSCLASS; $i <= $LSCLASS; ++$i) {
+for ($i = UC_STAFF; $i <= UC_MAX; ++$i) {
     $groups['staff']['ops'][$i] = get_user_class_name($i);
 }
 $groups['staff']['ops']['fls'] = $lang['grouppm_fls'];
@@ -142,7 +137,7 @@ $groups['members'] = [
     'opname' => $lang['grouppm_mem'],
     'minclass' => UC_STAFF,
 ];
-for ($i = $FUCLASS; $i <= $LUCLASS; ++$i) {
+for ($i = UC_MIN; $i <= $last_user_class; ++$i) {
     $groups['members']['ops'][$i] = get_user_class_name($i);
 }
 $groups['members']['ops']['donor'] = $lang['grouppm_donor'];
@@ -160,7 +155,7 @@ function dropdown()
 {
     global $CURUSER, $groups;
 
-    $r = '<select multiple="multiple" name="groups[]"  size="11" style="padding:5px; width:180px;">';
+    $r = '<select multiple="multiple" name="groups[]"  size="16">';
     foreach ($groups as $group) {
         if ($group['minclass'] >= $CURUSER['class']) {
             continue;
@@ -177,33 +172,34 @@ function dropdown()
     return $r;
 }
 
-$HTMLOUT .= begin_main_frame();
 if (count($err) > 0) {
-    $class = (stristr($err[0], 'sent!') == true ? 'sent' : 'notsent');
-    $errs = '<ul><li>' . implode('</li><li>', $err) . '</li></ul>';
-    $HTMLOUT .= '<div class="' . $class . "\">$errs</div>";
+    $status = stristr($err[0], 'sent!') == true ? 'is-success' : 'is-warning';
+    foreach ($err as $error) {
+        $session->set($status, $error);
+    }
 }
-$HTMLOUT .= "<fieldset style='border:1px solid #333333; padding:5px;'>
-    <legend style='padding:3px 5px 3px 5px; border:solid 1px #333333; font-size:12px;font-weight:bold;'>{$lang['grouppm_head']}</legend>
+$HTMLOUT .= "
+    <h1 class='has-text-centered'>{$lang['grouppm_head']}</h1>
     <form action='staffpanel.php?tool=grouppm&amp;action=grouppm' method='post'>
-      <table width='500' style='border-collapse: collapse;'>
+      <table class='table table-bordered table-striped'>
         <tr>
-          <td nowrap='nowrap' colspan='2'><b>{$lang['grouppm_sub']}</b> &#160;&#160;
-            <input type='text' name='subject' size='30' style='width:300px;'/></td>
+          <td colspan='2'>{$lang['grouppm_sub']}
+            <input type='text' name='subject' class='w-100' /></td>
         </tr>
         <tr>
-          <td nowrap='nowrap'><b>{$lang['grouppm_body']}</b></td>
-          <td nowrap='nowrap'><b>{$lang['grouppm_groups']}</b></td>
+          <td>{$lang['grouppm_body']}</td>
+          <td>{$lang['grouppm_groups']}</td>
           </tr>
         <tr>
-          <td width='100%'>" . BBcode() . "</td>
-          <td width='100%' >" . dropdown() . "</td>
-        </tr>
-        <tr>
-         <td><label for='sys'>{$lang['grouppm_sendas']}</label><input id='sys' type='checkbox' name='system' value='yes' /></td><td ><input type='submit' value='{$lang['grouppm_send']}' class='button is-small' /></td>
+          <td>" . BBcode() . "</td>
+          <td>" . dropdown() . "</td>
+
         </tr>
       </table>
-    </form>
-    </fieldset>";
-$HTMLOUT .= end_main_frame();
+        <div class='has-text-centered margin20'>
+            <label for='sys'>{$lang['grouppm_sendas']}</label>
+            <input id='sys' type='checkbox' name='system' value='yes' class='' />
+            <input type='submit' value='{$lang['grouppm_send']}' class='button is-small left20' />
+        </div>
+    </form>";
 echo stdhead($lang['grouppm_stdhead']) . wrapper($HTMLOUT) . stdfoot();
