@@ -169,8 +169,10 @@ function torrenttable($res, $variant = 'index')
         $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
         /** Freeslot/doubleslot in Use **/
         $id = (int) $row['id'];
-        foreach ($slot as $sl) {
-            $slots_check = ($sl['torrentid'] == $id && $sl['free'] === 'yes' || $sl['doubleup'] === 'yes');
+        if (!empty($slot)) {
+            foreach ($slot as $sl) {
+                $slots_check = ($sl['torrentid'] == $id && $sl['free'] === 'yes' || $sl['doubleup'] === 'yes');
+            }
         }
         $htmlout .= "
                     <tr>
