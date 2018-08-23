@@ -1,4 +1,5 @@
 23 Aug 2018
+fix: typo stelth
 fix: delete user inactive.php
 fix: display freeleech.php block
 fix: set/unset bonus edit_moods.php

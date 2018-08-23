@@ -180,7 +180,7 @@ if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
     $watched_user .= ($user['watched_user'] == 0 ? '' : '  <img src="' . $site_config['pic_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '" /> <b>' . $lang['userdetails_watchlist1'] . ' <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users" >' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $site_config['pic_baseurl'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '" />');
 }
 $perms .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_NO_IP) ? '  <img src="' . $site_config['pic_baseurl'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  class="tooltipper" title="' . $lang['userdetails_invincible'] . '" />' : '') : '');
-$stealth .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? '  <img src="' . $site_config['pic_baseurl'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stelth'] . '"  class="tooltipper" title="' . $lang['userdetails_stelth'] . '" />' : '') : '');
+$stealth .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? '  <img src="' . $site_config['pic_baseurl'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stealth'] . '"  class="tooltipper" title="' . $lang['userdetails_stealth'] . '" />' : '') : '');
 $enabled = $user['enabled'] === 'yes';
 $parked = $user['opt1'] & user_options::PARKED ? $lang['userdetails_parked'] : '';
 
@@ -263,12 +263,12 @@ $HTMLOUT .= "
 
 $stealth = $cache->get('display_stealth' . $user['id']);
 if ($stealth) {
-    $session->set('is-info', htmlsafechars($user['username']) . " $stealth {$lang['userdetails_in_stelth']}");
+    $session->set('is-info', htmlsafechars($user['username']) . " $stealth {$lang['userdetails_in_stealth']}");
 }
 
 $HTMLOUT .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? "
-            <li><a class='altlink margin20 tooltipper' title='{$lang['userdetails_stelth_def1']}<br>{$lang['userdetails_stelth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=no'>{$lang['userdetails_stelth_disable']}</a></li>" : "
-            <li><a class='altlink margin20 tooltipper' title='{$lang['userdetails_stelth_def1']}<br>{$lang['userdetails_stelth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=yes'>{$lang['userdetails_stelth_enable']}</a></li>") : '') . '
+            <li><a class='altlink margin20 tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=no'>{$lang['userdetails_stealth_disable']}</a></li>" : "
+            <li><a class='altlink margin20 tooltipper' title='{$lang['userdetails_stealth_def1']}<br>{$lang['userdetails_stealth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=yes'>{$lang['userdetails_stealth_enable']}</a></li>") : '') . '
         </ul>
     </div>';
 
