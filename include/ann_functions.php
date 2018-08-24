@@ -506,10 +506,12 @@ function portblacklisted($port)
     return false;
 }
 
-function validip($ip)
-{
-    return filter_var($ip, FILTER_VALIDATE_IP, [
-        'flags' => FILTER_FLAG_NO_PRIV_RANGE,
-                    FILTER_FLAG_NO_RES_RANGE,
-    ]) ? true : false;
+if (!function_exists('validip')) {
+    function validip($ip)
+    {
+        return filter_var($ip, FILTER_VALIDATE_IP, [
+            'flags' => FILTER_FLAG_NO_PRIV_RANGE,
+                        FILTER_FLAG_NO_RES_RANGE,
+        ]) ? true : false;
+    }
 }

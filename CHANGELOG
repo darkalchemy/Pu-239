@@ -1,4 +1,5 @@
 24 Aug 2018
+fix: redecalare function validip() ann_functions.php
 fix: using var before set
 fix: get correct class from similar staffpanel names
 update: insert/select user ip correctly
