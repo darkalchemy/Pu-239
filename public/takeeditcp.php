@@ -35,7 +35,7 @@ if ($action == 'avatar') {
         if ($img_size[0] < 5 || $img_size[1] < 5) {
             stderr($lang['takeeditcp_user_error'], $lang['takeeditcp_small_image']);
         }
-        sql_query('UPDATE usersachiev SET avatarset = avatarset + 1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND avatarset = 0") or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usersachiev SET avatarset = avatarset + 1 WHERE userid = ' . sqlesc($CURUSER['id']) . ' AND avatarset = 0') or sqlerr(__FILE__, __LINE__);
     }
     $updateset[] = 'offensive_avatar = ' . sqlesc($offensive_avatar);
     $updateset[] = 'view_offensive_avatar = ' . sqlesc($view_offensive_avatar);
@@ -68,7 +68,7 @@ if ($action == 'avatar') {
         if ($img_size[0] < 5 || $img_size[1] < 5) {
             stderr($lang['takeeditcp_uerr'], $lang['takeeditcp_img_to_small']);
         }
-        sql_query('UPDATE usersachiev SET sigset = sigset+1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND sigset = 0") or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usersachiev SET sigset = sigset+1 WHERE userid = ' . sqlesc($CURUSER['id']) . ' AND sigset = 0') or sqlerr(__FILE__, __LINE__);
         $updateset[] = 'signature = ' . sqlesc('[img]' . $signature . "[/img]\n");
         $curuser_cache['signature'] = ('[img]' . $signature . "[/img]\n");
         $user_cache['signature'] = ('[img]' . $signature . "[/img]\n");

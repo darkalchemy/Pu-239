@@ -8,7 +8,7 @@ if (empty($_POST['uid'])) {
 }
 
 $uid = intval($_POST['uid']);
-$sql = 'SELECT ip, port, agent FROM peers WHERE userid = ' . sqlesc($uid) . ' GROUP BY ip, port';
+$sql = 'SELECT INET6_NTOA(ip), port, agent FROM peers WHERE userid = ' . sqlesc($uid) . ' GROUP BY ip, port';
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
 $out = '';

@@ -1,6 +1,5 @@
 In no particular order
 
-update offers.php requests.php pager() missing #comments on tail of $link
 user blocks AVATAR is only used in userdetails.php, check to see if useful elsewhere in code
 fix subtitles folder
 fix avatar folder

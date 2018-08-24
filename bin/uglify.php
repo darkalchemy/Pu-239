@@ -58,7 +58,7 @@ foreach ($folders as $folder) {
     $js_list['index_js'] = $js_list['js'] = [];
     if ($BLOCKS['ajaxchat_on']) {
         $js_list = array_merge($js_list, [
-            'chat_js'     => [
+            'chat_js' => [
                 CHAT_DIR . 'js/chat.js',
                 CHAT_DIR . 'js/custom.js',
                 CHAT_DIR . 'js/classes.js',
@@ -139,41 +139,39 @@ foreach ($folders as $folder) {
     ]);
 
     $js_list = array_merge($js_list, [
-        'checkport_js'  => [
+        'checkport_js' => [
             SCRIPTS_DIR . 'checkports.js',
         ],
-        'captcha2_js'   => [
+        'captcha2_js' => [
             SCRIPTS_DIR . 'check.js',
             ROOT_DIR . 'node_modules/jquery-validation/dist/jquery.validate.js',
             SCRIPTS_DIR . 'pStrength.jquery.js',
             SCRIPTS_DIR . 'pstrength.js',
         ],
-        'upload_js'     => [
+        'upload_js' => [
             SCRIPTS_DIR . 'FormManager.js',
             SCRIPTS_DIR . 'getname.js',
             SCRIPTS_DIR . 'imdb.js',
             SCRIPTS_DIR . 'isbn.js',
         ],
-        'request_js'    => [
+        'request_js' => [
             ROOT_DIR . 'node_modules/jquery-validation/dist/jquery.validate.js',
-            SCRIPTS_DIR . 'check_selected.js',
             SCRIPTS_DIR . 'imdb.js',
         ],
-        'acp_js'        => [
+        'acp_js' => [
             SCRIPTS_DIR . 'acp.js',
         ],
-        'dragndrop_js'  => [
+        'dragndrop_js' => [
             SCRIPTS_DIR . 'dragndrop.js',
         ],
-        'details_js'    => [
+        'details_js' => [
             SCRIPTS_DIR . 'jquery.thanks.js',
         ],
-        'forums_js'     => [
-            SCRIPTS_DIR . 'check_selected.js',
+        'forums_js' => [
             SCRIPTS_DIR . 'jquery.trilemma.js',
             SCRIPTS_DIR . 'forums.js',
         ],
-        'staffpanel_js' => [
+        'pollsmanager_js' => [
             SCRIPTS_DIR . 'polls.js',
         ],
     ]);
@@ -221,7 +219,7 @@ foreach ($folders as $folder) {
 
     if ($BLOCKS['ajaxchat_on']) {
         $css_list = array_merge([
-            'chat_css_trans'   => [
+            'chat_css_trans' => [
                 ROOT_DIR . 'node_modules/normalize.css/normalize.css',
                 CHAT_DIR . 'css/global.css',
                 CHAT_DIR . 'css/fonts.css',
@@ -269,7 +267,6 @@ foreach ($folders as $folder) {
     unlink(BIN_DIR . 'lightbox.css');
     write_file($update, $pages);
 }
-
 
 echo "All CSS and Javascript files processed\n";
 foreach ($argv as $arg) {

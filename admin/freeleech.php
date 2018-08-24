@@ -39,15 +39,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($temp['modifier'] == $fl['modifier']) {
             unset($free[$i]);
         }
-        $i++;
+        ++$i;
     }
     $free = array_values($free);
     $free[] = [
-        'modifier'=> $fl['modifier'],
-        'expires'=> $fl['expires'],
-        'setby'=> $fl['setby'],
-        'title'=> $fl['title'],
-        'message'=> $fl['message'],
+        'modifier' => $fl['modifier'],
+        'expires' => $fl['expires'],
+        'setby' => $fl['setby'],
+        'title' => $fl['title'],
+        'message' => $fl['message'],
     ];
     file_put_contents(CACHE_DIR . 'free_cache.php', json_encode($free) . PHP_EOL);
     clearstatcache();
@@ -99,7 +99,7 @@ if (isset($free) && (count($free) < 1)) {
              <td>{$fl['message']}</td>
              <td><a href='staffpanel.php?tool=freeleech&amp;action=freeleech&amp;remove={$i}' class='button is-small'>{$lang['freeleech_remove']}</a>
              </td></tr>";
-        $i++;
+        ++$i;
     }
     $HTMLOUT .= '</table>';
 }

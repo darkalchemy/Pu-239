@@ -30,13 +30,15 @@ class_check(UC_STAFF);
 $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : null));
 $id = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : null));
 $class_color = (function_exists('get_user_class_color') ? true : false);
-$tool = (isset($_GET['tool']) ? $_GET['tool'] : (isset($_POST['tool']) ? $_POST['tool'] : null));
-$tool = isset($_GET['tool']) ? $_GET['tool'] : '';
+$tool = !empty($_GET['tool']) ? $_GET['tool'] : (!empty($_POST['tool']) ? $_POST['tool'] : null);
 
-$staff_tools['modtask'] = 'modtask';
-$staff_tools['iphistory'] = 'iphistory';
-$staff_tools['ipsearch'] = 'ipsearch';
-$staff_tools['shit_list'] = 'shit_list';
+$staff_tools = [
+    'modtask' => 'modtask',
+    'iphistory' => 'iphistory',
+    'ipsearch' => 'ipsearch',
+    'shit_list' => 'shit_list',
+    'invite_tree' => 'invite_tree',
+];
 
 $sql = sql_query('SELECT file_name FROM staffpanel') or sqlerr(__FILE__, __LINE__);
 while ($list = mysqli_fetch_assoc($sql)) {
@@ -48,7 +50,7 @@ while ($list = mysqli_fetch_assoc($sql)) {
     ], '', $list['file_name']);
     $staff_tools[$item] = $item;
 }
-
+ksort($staff_tools);
 if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool] . '.php')) {
     require_once ADMIN_DIR . $staff_tools[$tool] . '.php';
 } else {

@@ -54,9 +54,9 @@ $HTMLOUT .= "
             <span class='size_1'>{$lang['pm_mailbox_full']}{$num_messages}{$lang['pm_mailbox_full1']}</span>
             <br>
             <div class='bottom20'>$mailbox_pic</div>
-            " . insertJumpTo($mailbox) . $other_box_info . "
-        </h3>" . ($messages > $perpage ? $menu_top : '') . "
-        <form action='messages.php' method='post' name='checkme' onsubmit='return ValidateForm(this,\"pm\")'>
+            " . insertJumpTo($mailbox) . $other_box_info . '
+        </h3>' . ($messages > $perpage ? $menu_top : '') . "
+        <form action='messages.php' method='post' name='checkme'>
             <div class='table-wrapper'>
             <table class='table table-bordered table-striped top20 bottom20'>
                 <thead>

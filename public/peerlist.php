@@ -88,7 +88,7 @@ if (mysqli_num_rows($res) == 0) {
 $row = mysqli_fetch_assoc($res);
 $downloaders = [];
 $seeders = [];
-$subres = sql_query('SELECT u.username, u.anonymous, u.paranoia, t.owner, t.anonymous AS tanonymous, p.seeder, p.finishedat, p.downloadoffset, p.uploadoffset, p.ip, p.port, p.uploaded, p.downloaded, p.to_go, p.started AS st, p.connectable, p.agent, p.last_action AS la, p.userid, p.peer_id
+$subres = sql_query('SELECT u.username, u.anonymous, u.paranoia, t.owner, t.anonymous AS tanonymous, p.seeder, p.finishedat, p.downloadoffset, p.uploadoffset, INET6_NTOA(p.ip), p.port, p.uploaded, p.downloaded, p.to_go, p.started AS st, p.connectable, p.agent, p.last_action AS la, p.userid, p.peer_id
     FROM peers p
     LEFT JOIN users u ON p.userid = u.id
     LEFT JOIN torrents AS t ON t.id = p.torrent

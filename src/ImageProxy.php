@@ -57,6 +57,7 @@ class ImageProxy
         }
         if (!is_array(getimagesize($path))) {
             unlink($path);
+
             return false;
         }
         chmod($path, 0775);

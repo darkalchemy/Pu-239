@@ -18,7 +18,7 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
         if (!$topicid) {
             $values = [
                 'user_id' => $site_config['chatBotID'],
-                'forum_id' =>$site_config['staff']['forumid'],
+                'forum_id' => $site_config['staff']['forumid'],
                 'topic_name' => $subject,
             ];
             $topicid = $fluent->insertInto('topics')

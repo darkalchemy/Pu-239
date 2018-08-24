@@ -8,7 +8,7 @@ global $lang;
 
 $stdfoot = [
     'js' => [
-        get_file_name('staffpanel_js'),
+        get_file_name('pollsmanager_js'),
     ],
 ];
 

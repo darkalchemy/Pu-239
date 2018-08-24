@@ -154,25 +154,25 @@ $legend = main_table("
         <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/hot_topic_new.gif' alt='hot_topic_new' title='{$lang['fm_hot_topic_new']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fm_hot_topic_unread']}</td>
         <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/hot_topic.gif' alt='hot_topic' title='{$lang['fm_hot_topic']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fm_hot_topic_more_than_30_replies']}<br></td>
+        <td>{$lang['fm_hot_topic_more_than_30_replies']}</td>
         <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/lockednew.gif' alt='lockednew' title='{$lang['fm_locked_new']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fm_locked_un-read']}</td>
         <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/locked.gif' alt='locked' title='{$lang['fe_locked']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fe_locked']}<br></td>
+        <td>{$lang['fe_locked']}</td>
 	</tr>
 	<tr>
         <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/poll.gif' alt='poll' title='{$lang['fe_poll']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fe_poll']}</td>
         <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/pinned.gif' alt='pinned' title='{$lang['fe_pinned']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fe_pinned']}<br></td>
-        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/subscriptions.gif' alt='{$lang['fe_subscribed']} title='{$lang['fe_subscribed']}' class='tooltipper emoticon lazy'></td>
+        <td>{$lang['fe_pinned']}</td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/subscriptions.gif' alt='{$lang['fe_subscribed']}' title='{$lang['fe_subscribed']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fm_subscribed_to_thread']}</td>
         <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/posted.gif' alt='posted' title='{$lang['fm_posted']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fm_you_have_posted_here']}<br></td>
+        <td>{$lang['fm_you_have_posted_here']}</td>
 	</tr>
 	<tr>
-        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/mg.gif' height='20' alt='{$lang['fm_1st_post_preview']} title='{$lang['fm_1st_post_preview']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fm_1st_post_preview']}<br></td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/mg.gif' alt='{$lang['fm_1st_post_preview']}' title='{$lang['fm_1st_post_preview']}' class='tooltipper emoticon lazy'></td>
+        <td>{$lang['fm_1st_post_preview']}</td>
         <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/last_post.gif' alt='last post' title='{$lang['fe_last_post']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fe_last_post']}</td>
         <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/topic_normal.gif' alt='{$lang['fe_thread_icon']}' title='{$lang['fe_thread_icon']}' class='tooltipper emoticon lazy'></td>

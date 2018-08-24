@@ -44,8 +44,7 @@ $row = mysqli_fetch_row($res);
 $count = $row[0];
 $peersperpage = 15;
 $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['wpeers_h2']}</h1>
-<font class='small'>{$lang['wpeers_there']}" . htmlsafechars($count) . "{$lang['wpeers_peer']}" . ($count > 1 ? $lang['wpeers_ps'] : '') . "{$lang['wpeers_curr']}</font>";
-$HTMLOUT .= begin_main_frame();
+<div class='size_4 has-text-centered margin20'>{$lang['wpeers_there']}" . htmlsafechars($count) . "{$lang['wpeers_peer']}" . ($count > 1 ? $lang['wpeers_ps'] : '') . "{$lang['wpeers_curr']}</div>";
 $pager = pager($peersperpage, $count, 'staffpanel.php?tool=view_peers&amp;action=view_peers&amp;');
 if ($count > $peersperpage) {
     $HTMLOUT .= $pager['pagertop'];
@@ -140,6 +139,5 @@ if (mysqli_num_rows($result) != 0) {
 if ($count > $peersperpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-$HTMLOUT .= end_main_frame();
 echo stdhead($lang['wpeers_peerover']) . wrapper($HTMLOUT) . stdfoot();
 die();

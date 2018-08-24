@@ -191,8 +191,8 @@ $HTMLOUT .= "
           <td>{$lang['grouppm_groups']}</td>
           </tr>
         <tr>
-          <td>" . BBcode() . "</td>
-          <td>" . dropdown() . "</td>
+          <td>" . BBcode() . '</td>
+          <td>' . dropdown() . "</td>
 
         </tr>
       </table>

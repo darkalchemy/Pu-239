@@ -114,9 +114,8 @@ if (mysqli_num_rows($res) != 0) {
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagerbottom'];
     }
-    $HTMLOUT = wrapper($HTMLOUT);
 } else {
-    $HTMLOUT = stdmsg($lang['std_sorry'], $lang['std_nf']);
+    $HTMLOUT = main_div("<h1>{$lang['std_sorry']}</h1><p>{$lang['std_nf']}</p>");
 }
 
 echo stdhead($lang['text_stdhead']) . wrapper($HTMLOUT) . stdfoot($stdfoot);

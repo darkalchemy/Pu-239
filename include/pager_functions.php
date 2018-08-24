@@ -95,10 +95,10 @@ function pager($perpage, $count, $href, $opts = [], $class = null)
     $start = $page * $perpage;
 
     return [
-        'pagertop'    => $pagertop,
+        'pagertop' => $pagertop,
         'pagerbottom' => $pagerbottom,
-        'limit'       => "LIMIT $start, $perpage",
-        'pdo'         => [
+        'limit' => "LIMIT $start, $perpage",
+        'pdo' => [
             (int) $start,
             (int) $perpage,
         ],
@@ -115,10 +115,10 @@ function pager_rep($data)
     global $site_config;
 
     $pager = [
-        'pages'     => 0,
+        'pages' => 0,
         'page_span' => '',
-        'start'     => '',
-        'end'       => '',
+        'start' => '',
+        'end' => '',
     ];
     $section = $data['span'] = isset($data['span']) ? $data['span'] : 2;
     $parameter = isset($data['parameter']) ? $data['parameter'] : 'page';

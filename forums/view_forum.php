@@ -184,7 +184,7 @@ $count = $posts = $row[0];
 
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
 $perpage = $CURUSER['topicsperpage'] !== 0 ? $CURUSER['topicsperpage'] : (isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15);
-$link = $site_config['baseurl'] .  "/forums.php?action=view_forum&amp;forum_id=$forum_id&amp;" . (isset($_GET['perpage']) ? "perpage={$perpage}&amp;" : '');
+$link = $site_config['baseurl'] . "/forums.php?action=view_forum&amp;forum_id=$forum_id&amp;" . (isset($_GET['perpage']) ? "perpage={$perpage}&amp;" : '');
 $pager = pager($perpage, $count, $link);
 $menu_top = $pager['pagertop'];
 $menu_bottom = $pager['pagerbottom'];

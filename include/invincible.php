@@ -34,7 +34,7 @@ function invincible($id, $invincible = true, $bypass_bans = true)
                  WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     }
     // grab current data
-    $res = sql_query('SELECT username, torrent_pass, ip, perms, modcomment FROM users 
+    $res = sql_query('SELECT username, torrent_pass, INET6_NTOA(ip), perms, modcomment FROM users 
                      WHERE id = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_assoc($res);
     $row['perms'] = (int) $row['perms'];

@@ -130,7 +130,7 @@ function validip($ip)
 {
     return filter_var($ip, FILTER_VALIDATE_IP, [
         'flags' => FILTER_FLAG_NO_PRIV_RANGE,
-        FILTER_FLAG_NO_RES_RANGE,
+                    FILTER_FLAG_NO_RES_RANGE,
     ]) ? true : false;
 }
 
@@ -141,13 +141,11 @@ function getip($login = false)
 {
     global $CURUSER;
 
-    $no_log_ip = $CURUSER['perms'] & bt_options::PERMS_NO_IP;
-
     $ip = $_SERVER['REMOTE_ADDR'];
-    if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) && !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-        $ip = '10.1.1.1';
+    if (!validip($ip)) {
+        $ip = '10.0.0.1';
     }
-
+    $no_log_ip = $CURUSER['perms'] & bt_options::PERMS_NO_IP;
     if ($login || (IP_LOGGING && !$no_log_ip)) {
         return $ip;
     }
@@ -310,7 +308,7 @@ function userlogin()
                 'class' => 0,
             ], $site_config['expires']['user_cache']);
             write_log($msg);
-            $body = "User: [url={$site_config['baseurl']}/userdetails.php?id={$users_data['id']}][class=user]{$users_data['username']}[/class][/url] - {$ip}[br]Class {$users_data['class']}[br]Current page: {$_SERVER['PHP_SELF']}[br]Previous page: " . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . "[br]Action: " . $_SERVER['REQUEST_URI'] . "[br] Member has been disabled and demoted by class check system.";
+            $body = "User: [url={$site_config['baseurl']}/userdetails.php?id={$users_data['id']}][class=user]{$users_data['username']}[/class][/url] - {$ip}[br]Class {$users_data['class']}[br]Current page: {$_SERVER['PHP_SELF']}[br]Previous page: " . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . '[br]Action: ' . $_SERVER['REQUEST_URI'] . '[br] Member has been disabled and demoted by class check system.';
             $subject = 'Fake Account Detected!';
             auto_post($subject, $body);
             $session->set('is-danger', 'This account has been banned');
@@ -1754,7 +1752,7 @@ function plural($int)
 function ipToStorageFormat($ip)
 {
     $ip = empty($ip) ? '10.10.10.10' : $ip;
-    if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) && !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+    if (!validip($ip)) {
         $ip = '10.10.10.10';
     }
 
@@ -2091,7 +2089,8 @@ function get_body_image($details, $portrait = false)
     return false;
 }
 
-function validate_url($url) {
+function validate_url($url)
+{
     $url = filter_var($url, FILTER_SANITIZE_URL);
     if (!filter_var($url, FILTER_VALIDATE_URL)) {
         return null;
@@ -2100,6 +2099,7 @@ function validate_url($url) {
     if (preg_match("/^https?:\/\/$/i", $url) || preg_match('/[&;]/', $url) || preg_match('#javascript:#is', $url) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $url)) {
         return null;
     }
+
     return $url;
 }
 

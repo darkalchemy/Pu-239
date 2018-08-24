@@ -50,7 +50,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
         stderr($lang['gl_error'], $lang['fe_no_body_txt']);
     }
     $ip = ($CURUSER['ip'] === '' ? htmlsafechars(getip()) : $CURUSER['ip']);
-    sql_query('INSERT INTO `posts` (`topic_id`, `user_id`, `added`, `body`, `icon`, `post_title`, `bbcode`, `ip` , `anonymous`) VALUES (' . sqlesc($topic_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . TIME_NOW . ', ' . sqlesc($body) . ', ' . sqlesc($icon) . ', ' . sqlesc($post_title) . ', ' . sqlesc($bb_code) . ', ' . sqlesc($ip) . ', ' . sqlesc($anonymous) . ')') or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO `posts` (`topic_id`, `user_id`, `added`, `body`, `icon`, `post_title`, `bbcode`, `ip` , `anonymous`) VALUES (' . sqlesc($topic_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . TIME_NOW . ', ' . sqlesc($body) . ', ' . sqlesc($icon) . ', ' . sqlesc($post_title) . ', ' . sqlesc($bb_code) . ', ' . ipToStorageFormat($ip) . ', ' . sqlesc($anonymous) . ')') or sqlerr(__FILE__, __LINE__);
     clr_forums_cache($arr['real_forum_id']);
     $cache->delete('forum_posts_' . $CURUSER['id']);
     $post_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);

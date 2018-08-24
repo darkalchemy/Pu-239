@@ -34,7 +34,7 @@ function forum_update($data)
             ->set($set)
             ->where('id = ?', $forum['id'])
             ->execute();
-        $i++;
+        ++$i;
     }
     if ($data['clean_log']) {
         write_log("Forum Cleanup: Completed using $i queries");

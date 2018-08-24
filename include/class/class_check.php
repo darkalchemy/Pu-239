@@ -52,16 +52,16 @@ function class_check($class = 0, $staff = true, $pin = false)
         if ($staff) {
             if (($CURUSER['class'] > UC_MAX) || (!in_array($CURUSER['id'], $site_config['is_staff']['allowed']))) {
                 $ip = getip();
-                $body = "User: [url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=user]{$CURUSER['username']}[/color][/url] - {$ip}[br]Class {$CURUSER['class']}[br]Current page: {$_SERVER['PHP_SELF']}[br]Previous page: " . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . "[br]Action: " . $_SERVER['REQUEST_URI'] . "[br] Member has been disabled and demoted by class check system.";
+                $body = "User: [url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=user]{$CURUSER['username']}[/color][/url] - {$ip}[br]Class {$CURUSER['class']}[br]Current page: {$_SERVER['PHP_SELF']}[br]Previous page: " . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . '[br]Action: ' . $_SERVER['REQUEST_URI'] . '[br] Member has been disabled and demoted by class check system.';
                 $subject = 'Warning Class Check System!';
                 $added = TIME_NOW;
                 $sip = ipToStorageFormat($ip, true);
                 if (user_exists($site_config['chatBotID'])) {
                     auto_post($subject, $body);
-                    sql_query("UPDATE users SET class = " . UC_MIN . " WHERE id = {$CURUSER['id']}") or sqlerr(__FILE__, __LINE__);
+                    sql_query('UPDATE users SET class = ' . UC_MIN . " WHERE id = {$CURUSER['id']}") or sqlerr(__FILE__, __LINE__);
                     $cache->update_row('user' . $CURUSER['id'], [
                         'class' => 0,
-                        'enabled' => 'no'
+                        'enabled' => 'no',
                     ], $site_config['expires']['user_cache']);
 
                     write_log('Class Check System Initialized [url=' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topicid . '&amp;page=last#' . $postid . ']VIEW[/url]');

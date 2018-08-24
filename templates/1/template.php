@@ -371,10 +371,10 @@ function stdfoot($stdfoot = false)
         }
     }
 
-    $htmlfoot .= "
+    $htmlfoot .= '
     </div>
 </body>
-</html>";
+</html>';
 
     $session->close();
 

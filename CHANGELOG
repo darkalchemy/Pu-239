@@ -1,3 +1,9 @@
+24 Aug 2018
+remove: check_selected.js
+fix: check if var is empty before using it watched_users.php
+fix: typo forums.php
+update: limit displayed users count active_24h_users.php
+
 23 Aug 2018
 add: missing flip_box.js uglify.php
 fix: typo stelth

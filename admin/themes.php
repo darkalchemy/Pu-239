@@ -26,7 +26,7 @@ if (isset($_GET['act'])) {
         $HTML .= "
         <form action='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=4' method='post'>
             <input type='hidden' value='{$template['id']}' name='tid' />
-            <h1 class='has-text-centered'>{$lang['themes_edit_tem']}: " . htmlsafechars($template['name']) . "</h1>";
+            <h1 class='has-text-centered'>{$lang['themes_edit_tem']}: " . htmlsafechars($template['name']) . '</h1>';
         $HTML .= main_table("
             <tr>
                 <td>{$lang['themes_id']}<br>{$lang['themes_explain_id']}</td>
@@ -43,10 +43,10 @@ if (isset($_GET['act'])) {
             <tr>
                 <td>{$lang['themes_is_folder']}</td>
                 <td>
-                    <b>" . (file_exists(TEMPLATE_DIR . $template['id'] . '/template.php') ? "{$lang['themes_file_exists']}" : "{$lang['themes_not_exists']}") . "</b>
+                    <b>" . (file_exists(TEMPLATE_DIR . $template['id'] . '/template.php') ? "{$lang['themes_file_exists']}" : "{$lang['themes_not_exists']}") . '</b>
                 </td>
             </tr>
-            <tr>");
+            <tr>');
         $HTML .= "
             <div class='has-text-centered margin20'>
                 <input type='submit' value='{$lang['themes_save']}' class='button is-small' />
@@ -190,8 +190,8 @@ if (isset($_GET['act'])) {
         }
         dd($_POST);
         $values = [
-            'id'   => $_POST['id'],
-            'uri'  => $_POST['uri'],
+            'id' => $_POST['id'],
+            'uri' => $_POST['uri'],
             'name' => htmlsafechars($_POST['name']),
         ];
         $fluent->insertInto('stylesheets')
@@ -214,8 +214,8 @@ if (isset($_GET['act'])) {
         }
 
         $values = [
-            'id'   => $_GET['id'],
-            'uri'  => $_GET['uri'],
+            'id' => $_GET['id'],
+            'uri' => $_GET['uri'],
             'name' => htmlsafechars($_GET['name']),
         ];
         $fluent->insertInto('stylesheets')

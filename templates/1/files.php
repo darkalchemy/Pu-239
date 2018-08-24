@@ -30,7 +30,7 @@ function get_file_name($file)
         case 'upload_js':
             return "{$site_config['baseurl']}/js/1/upload_cbc14d14.js";
         case 'request_js':
-            return "{$site_config['baseurl']}/js/1/request_4f3792e6.js";
+            return "{$site_config['baseurl']}/js/1/request_d06dd1ba.js";
         case 'acp_js':
             return "{$site_config['baseurl']}/js/1/acp_22d19c79.js";
         case 'dragndrop_js':
@@ -38,9 +38,9 @@ function get_file_name($file)
         case 'details_js':
             return "{$site_config['baseurl']}/js/1/details_7864bc8d.js";
         case 'forums_js':
-            return "{$site_config['baseurl']}/js/1/forums_2ff1ac95.js";
-        case 'staffpanel_js':
-            return "{$site_config['baseurl']}/js/1/staffpanel_801ab346.js";
+            return "{$site_config['baseurl']}/js/1/forums_b87eec63.js";
+        case 'pollsmanager_js':
+            return "{$site_config['baseurl']}/js/1/pollsmanager_801ab346.js";
         default:
             return null;
     }

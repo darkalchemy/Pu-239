@@ -251,7 +251,6 @@ $subscribed = $fluent->from('subscriptions')
     ->where('user_id = ?', $CURUSER['id'])
     ->fetch('id');
 
-
 $subscriptions = $subscribed ? "
         <a class='altlink' href='{$site_config['baseurl']}/forums.php?action=delete_subscription&amp;topic_id={$topic_id}'> 
 		    <img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/unsubscribe.gif' alt='+' title='+' class='tooltipper emoticon lazy' />
@@ -266,10 +265,10 @@ $fluent->deleteFrom('now_viewing')
     ->execute();
 
 $values = [
-    'user_id'  => $CURUSER['id'],
+    'user_id' => $CURUSER['id'],
     'forum_id' => $forum_id,
     'topic_id' => $topic_id,
-    'added'    => TIME_NOW,
+    'added' => TIME_NOW,
 ];
 $fluent->insertInto('now_viewing')
     ->values($values)
@@ -427,7 +426,7 @@ $HTMLOUT .= ($upload_errors_size > 0 ? ($upload_errors_size === 1 ? '
         <div>One file was not uploaded. The maximum file size allowed is. ' . mksize($max_file_size) . '.</div>' : '
         <div>' . $upload_errors_size . ' file were not uploaded. The maximum file size allowed is. ' . mksize($max_file_size) . '.</div>') : '') . ($upload_errors_type > 0 ? (1 === $upload_errors_type ? '<div>One file was not uploaded. The accepted formats are zip and rar.</div>' : '<div>' . $upload_errors_type . ' files were not uploaded. The accepted formats are zip and rar.</div>') : '') . $mini_menu . $topic_poll . '
 		' . ($CURUSER['class'] < UC_STAFF ? '' : '
-        <form action="' . $site_config['baseurl'] . '/forums.php?action=staff_actions" method="post" name="checkme" onsubmit="return SetChecked(this,\'post_to_mess_with\')" enctype="multipart/form-data">') . (isset($_GET['count']) ? '
+        <form action="' . $site_config['baseurl'] . '/forums.php?action=staff_actions" method="post" name="checkme" enctype="multipart/form-data">') . (isset($_GET['count']) ? '
             <div>' . intval($_GET['count']) . ' PMs Sent</div>' : '') . '
     		<table class="table table-bordered table-striped">
                 ' . ($posts_count > $perpage ? "<div class='bottom20'>$menu_top</div>" : '') . $the_top_and_bottom . '
@@ -634,8 +633,8 @@ $fluent->deleteFrom('read_posts')
     ->execute();
 
 $values = [
-    'user_id'        => $CURUSER['id'],
-    'topic_id'       => $topic_id,
+    'user_id' => $CURUSER['id'],
+    'topic_id' => $topic_id,
     'last_post_read' => $postid,
 ];
 $fluent->insertInto('read_posts')
@@ -672,8 +671,9 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 ' . $lang['fe_topic'] . ':<input type="text" size="2" name="new_topic" value="' . $topic_id . '" />
             </td>
             <td class="has-text-centered">
-                <a class="altlink" href="javascript:SetChecked(1,\'post_to_mess_with[]\')" title="' . $lang['vt_select_all_posts_and_use_the_following_options'] . '"> ' . $lang['vt_select_all'] . '</a><br>
-                <a class="altlink" href="javascript:SetChecked(0,\'post_to_mess_with[]\')" title="' . $lang['vt_unselect_all_posts'] . '">' . $lang['vt_un_select_all'] . '</a><br>
+                <div class="bottom10">
+                    <input type="checkbox" id="checkThemAll" class="tooltipper" title="Select All" /> Select All
+                </div>
                 <input type="submit" name="button" class="button is-small w-100" value="' . $lang['vt_with_selected'] . '"  />
             </td>
         </tr>

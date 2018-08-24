@@ -37,11 +37,11 @@ if ($CURUSER) {
                         {$fl['title']}
                     </div>
                     {$mode}<br>
-                    {$fl['message']} {$lang['gl_freeleech_sb']} {$fl['setby']}<br>" . ($fl['expires'] != 1 ? $lang['gl_freeleech_u'] . ' ' . get_date($fl['expires'], 'DATE') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . ' ' . $lang['gl_freeleech_tg'] . ')' : '') . "
+                    {$fl['message']} {$lang['gl_freeleech_sb']} {$fl['setby']}<br>" . ($fl['expires'] != 1 ? $lang['gl_freeleech_u'] . ' ' . get_date($fl['expires'], 'DATE') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . ' ' . $lang['gl_freeleech_tg'] . ')' : '') . '
                 </span
             </div>
         </a>
-    </li>" : '');
+    </li>' : '');
         }
     }
 }

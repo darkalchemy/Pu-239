@@ -1,6 +1,7 @@
 <?php
 
 global $lang;
+
 $posts = $lppostid = $topicpoll = $rpic = $body = '';
 $HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">Subscribed Forums for ' . format_username($CURUSER['id']) . '</h1>';
 $res = sql_query('SELECT COUNT(id) FROM subscriptions WHERE user_id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -106,13 +107,11 @@ $heading = '
 		<th>' . $lang['fe_views'] . '</th>
 		<th>' . $lang['fe_last_post'] . '</th>
 		<th><img src="' . $site_config['pic_baseurl'] . 'forums/last_post.gif" class="icon tooltipper" alt="Last post" title="Last post" /></th>
-		<th></th>
+		<th> <input type="checkbox" id="checkThemAll" class="tooltipper" title="Select All" /></th>
 		</tr>';
 
 $HTMLOUT .= main_table($body, $heading) . '
 		<div class="has-text-centered margin20">
-    		<a href="javascript:SetChecked(1,\'remove[]\')"><span class="button is-small right10">' . $lang['sub_select_all'] . '</span></a>
-	    	<a href="javascript:SetChecked(0,\'remove[]\')"><span class="button is-small right10">' . $lang['sub_un_select_all'] . '</span></a>
 		    <input type="submit" name="button" class="button is-small" value="' . $lang['fe_remove'] . ' Selected"  />
         </div>
         </form>' . ($count > $perpage ? $menu_bottom : '');

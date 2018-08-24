@@ -16,16 +16,21 @@ if ($active24 === false || is_null($active24)) {
         ->where('last_access > ?', $dt)
         ->where('perms < ?', bt_options::PERMS_STEALTH)
         ->where('id != 2')
-        ->orderBy('username ASC');
+        ->orderBy('username ASC')
+        ->fetchAll();
 
-    foreach ($query as $row) {
-        $list[] = format_username($row['id']);
-    }
-    $list[] = format_username(2);
-    $count = count($list);
-    $active24['activeusers24'] = implode(',&nbsp;&nbsp;', $list);
-    if ($count === 0) {
-        $active24['activeusers24'] = $lang['index_last24_nousers'];
+    $count = count($query);
+    if ($count >= 250) {
+        $active24['activeusers24'] = format_comment('Too many to list here :)');
+    } else {
+        foreach ($query as $row) {
+            $list[] = format_username($row['id']);
+        }
+        $list[] = format_username(2);
+        $active24['activeusers24'] = implode(',&nbsp;&nbsp;', $list);
+        if ($count === 0) {
+            $active24['activeusers24'] = $lang['index_last24_nousers'];
+        }
     }
     $active24['totalonline24'] = number_format($count);
     $active24['last24'] = number_format($record['value_i']);
@@ -42,6 +47,7 @@ if ($active24 === false || is_null($active24)) {
             ->where('arg = ?', 'last24')
             ->execute();
     }
+
     $cache->set('last24_users_', $active24, $site_config['expires']['last24']);
 }
 

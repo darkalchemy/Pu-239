@@ -62,7 +62,7 @@ $heading = "
 
 $body = '';
 while ($iphistory = mysqli_fetch_array($resip)) {
-    if (!filter_var($iphistory['ip'], FILTER_VALIDATE_IP)) {
+    if (!validip($iphistory['ip'])) {
         continue;
     }
     $host = gethostbyaddr($iphistory['ip']); //Hostname
@@ -93,7 +93,7 @@ while ($iphistory = mysqli_fetch_array($resip)) {
     $lastlogin = (int) $iphistory['lastlogin'];
     $lastannounce = (int) $iphistory['lastannounce'];
     $iptype = htmlsafechars($iphistory['type']);
-    $queryc = 'SELECT COUNT(id) FROM (SELECT u.id FROM users AS u WHERE u.ip = ' . ipToStorageFormat($iphistory['ip']) . ' UNION SELECT u.id FROM users AS u RIGHT JOIN ips ON u.id= ips.userid WHERE ips.ip =' . ipToStorageFormat($iphistory['ip']) . ' GROUP BY u.id) AS ipsearch';
+    $queryc = 'SELECT COUNT(id) FROM (SELECT u.id FROM users AS u WHERE u.ip = ' . ipToStorageFormat($iphistory['ip']) . ' UNION SELECT u.id FROM users AS u RIGHT JOIN ips ON u.id = ips.userid WHERE ips.ip =' . ipToStorageFormat($iphistory['ip']) . ' GROUP BY u.id) AS ipsearch';
     $resip2 = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
     $arrip2 = mysqli_fetch_row($resip2);
     $ipcount = $arrip2[0];
