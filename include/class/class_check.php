@@ -114,7 +114,7 @@ function get_access($script)
     }
     $class = $cache->get('av_class_' . $ending);
     if ($class === false || is_null($class)) {
-        $classid = sql_query("SELECT av_class FROM staffpanel WHERE file_name LIKE '%$ending%'") or sqlerr(__FILE__, __LINE__);
+        $classid = sql_query("SELECT av_class FROM staffpanel WHERE file_name LIKE '%$ending'") or sqlerr(__FILE__, __LINE__);
         $classid = mysqli_fetch_assoc($classid);
         $class = (int) $classid['av_class'];
         $cache->set('av_class_' . $ending, $class, 0);

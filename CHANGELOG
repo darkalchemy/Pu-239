@@ -1,4 +1,5 @@
 24 Aug 2018
+fix: get correct class from similar staffpanel names
 update: insert/select user ip correctly
 remove: check_selected.js
 fix: check if var is empty before using it watched_users.php
