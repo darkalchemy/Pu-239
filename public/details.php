@@ -352,7 +352,12 @@ $HTMLOUT .= "
             <div class='has-text-centered margin20'>
                 <h1>$s</h1>
            </div>
-        </div>
+        </div>";
+if (!empty($imdb_info)) {
+    $HTMLOUT .= main_div($imdb_info, 'bottom20, top20');
+}
+
+$HTMLOUT .= "
     <div class='tooltip_templates'>
         <span id='balloon1'>
             Once chosen this torrent will be Freeleech {$torrent['freeimg']} until " . get_date($torrent['idk'], 'DATE') . " and can be resumed or started over using the regular download link. Doing so will result in one Freeleech Slot being taken away from your total.
@@ -417,11 +422,6 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] || $C
     $freeslot_text = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;text=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span style='color: " . $torrent['free_color'] . ";'><b>Freeleech Slot</b></font></a> <b>Use: </b><a class='index dt-tooltipper-small' href='download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;text=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='" . $torrent['free_color'] . ";'><b>Doubleseed Slot</b></span></a>- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
 
     $HTMLOUT .= "
-        <div class='top10 bottom10 has-text-centered'>";
-
-    require_once ROOT_DIR . 'free_details.php';
-    $HTMLOUT .= "
-        </div>
         <div class='level has-text-centered bottom20 columns top20'>
             <div class='img-polaroid round10 right10 column is-2'>";
 
@@ -437,6 +437,10 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] || $C
             </div>
             <div class='table-wrapper column'>
                 <table class='table table-bordered'>
+                    <div class='bottom10'>";
+    require_once ROOT_DIR . 'free_details.php';
+    $HTMLOUT .= "
+                    </div>
                     <tr>
                         <td class='rowhead' width='3%'>{$lang['details_download']}</td>
                         <td>
@@ -721,7 +725,7 @@ $HTMLOUT .= "
     <div class='table-wrapper bottom20'>
         <table class='table table-bordered'>";
 
-$HTMLOUT .= tr('Report Torrent', "<form action='report.php?type=Torrent&amp;id=$id' method='post'><input class='button is-small bottom10' type='submit' name='submit' value='Report This Torrent' /><strong><em class='label label-primary'>For breaking the <a href='rules.php'>rules</a></em></strong></form>", 1);
+$HTMLOUT .= tr('Report Torrent', "<form action='report.php?type=Torrent&amp;id=$id' method='post'><input class='button is-small bottom10' type='submit' name='submit' value='Report This Torrent' /> For breaking the <a href='{$site_config['baseurl']}/rules.php'><span class='has-text-lime'>rules</span></a></form>", 1);
 
 if ($torrent_cache['rep']) {
     $torrents = array_merge($torrents, $torrent_cache['rep']);
@@ -729,7 +733,7 @@ if ($torrent_cache['rep']) {
     $HTMLOUT .= '
             <tr>
                 <td class="rowhead">Reputation</td>
-                <td>' . $member_reputation . ' (counts towards uploaders Reputation)<br></td>
+                <td>' . $member_reputation . ' counts towards uploaders Reputation</td>
             </tr>';
 }
 
@@ -744,12 +748,10 @@ if ($CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= "<tr>
                 <td class='rowhead'>Clear Cache</td>
                 <td>
-                    <div class='bottom10'>
-                        <form method='post' action='./details.php?id={$torrents['id']}'>
-                            <input type='hidden' name='clear_cache' value={$torrents['id']}>
-                            <input type='submit' class='button is-small bottom10' value='Clear Cache' />
-                        </form>
-                    </div>
+                    <form method='post' action='./details.php?id={$torrents['id']}'>
+                        <input type='hidden' name='clear_cache' value={$torrents['id']}>
+                        <input type='submit' class='button is-small bottom10' value='Clear Cache' />
+                    </form>
                 </td>
             </tr>";
 }
@@ -850,10 +852,6 @@ if (!empty($torrents['youtube'])) {
                         <iframe width='1920px' height='1080px' src='{$image}' data-src='https://youtube.com/embed/{$youtube_id}?vq=hd1080' controls autoplay='false' frameborder='0' allowfullscreen class='lazy'></iframe>
                     </div>", 'bottom20');
     }
-}
-
-if (!empty($imdb_info)) {
-    $HTMLOUT .= main_div($imdb_info, 'bottom20');
 }
 
 if (!empty($omdb_info)) {

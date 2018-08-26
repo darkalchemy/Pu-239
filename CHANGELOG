@@ -1,3 +1,10 @@
+26 Aug 2018
+update: placeholder_image() allow variable size
+update: move imdb info to top of page details.php
+update: use minimal bulma, only as needed
+refactor: navbar.php
+add: node-sass to compile sass files
+
 24 Aug 2018
 fix: redecalare function validip() ann_functions.php
 fix: using var before set

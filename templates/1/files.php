@@ -6,13 +6,13 @@ function get_file_name($file)
 
     switch ($file) {
         case 'chat_css_trans':
-            return "{$site_config['baseurl']}/css/1/chat_trans_bc9ac054.css";
+            return "{$site_config['baseurl']}/css/1/chat_trans_01f5c7f1.css";
         case 'chat_css_uranium':
-            return "{$site_config['baseurl']}/css/1/chat_uranium_7253eb89.css";
+            return "{$site_config['baseurl']}/css/1/chat_uranium_9ceb588f.css";
         case 'css':
-            return "{$site_config['baseurl']}/css/1/css_705667c6.css";
+            return "{$site_config['baseurl']}/css/1/css_2a8db95d.css";
         case 'js':
-            return "{$site_config['baseurl']}/js/1/js_0842ef2c.js";
+            return "{$site_config['baseurl']}/js/1/js_a0388646.js";
         case 'index_js':
             return "{$site_config['baseurl']}/js/1/index_3479219a.js";
         case 'chat_js':

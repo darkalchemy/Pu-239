@@ -2,8 +2,6 @@
 
 namespace DarkAlchemy\Pu239;
 
-use Envms\FluentPDO\Query;
-
 class User
 {
     private $fluent;
@@ -14,8 +12,6 @@ class User
 
     /**
      * User constructor.
-     *
-     * @param Query $fluent
      *
      * @throws \MatthiasMullie\Scrapbook\Exception\Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
@@ -90,10 +86,8 @@ class User
     }
 
     /**
-     * @return bool|int
+     * @return int
      *
-     * @throws Exception
-     * @throws \Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
      */
@@ -131,7 +125,6 @@ class User
      *
      * @return \PDOStatement
      *
-     * @throws \Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
      */
     public function update(int $user_id, array $set)
@@ -148,6 +141,11 @@ class User
         return $result;
     }
 
+    /**
+     * @param string $selector
+     *
+     * @return mixed
+     */
     public function get_remember(string $selector)
     {
         $remember = $this->fluent->from('auth_tokens')
@@ -158,6 +156,12 @@ class User
         return $remember;
     }
 
+    /**
+     * @param int $userid
+     * @param int $expires
+     *
+     * @throws \Exception
+     */
     public function set_remember(int $userid, int $expires)
     {
         $selector = bin2hex(random_bytes(16));
@@ -187,6 +191,13 @@ class User
             ->execute();
     }
 
+    /**
+     * @param string $selector
+     * @param int    $userid
+     * @param int    $expires
+     *
+     * @throws \Exception
+     */
     public function refresh_remember(string $selector, int $userid, int $expires)
     {
         $this->fluent->deleteFrom('auth_tokens')
@@ -196,6 +207,9 @@ class User
         $this->set_remember($userid, $expires);
     }
 
+    /**
+     * @param int $userid
+     */
     public function delete_remember(int $userid)
     {
         $this->fluent->deleteFrom('auth_tokens')
@@ -203,6 +217,9 @@ class User
             ->execute();
     }
 
+    /**
+     * @param array $users
+     */
     public function delete_user_cache(array $users)
     {
         foreach ($users as $userid) {

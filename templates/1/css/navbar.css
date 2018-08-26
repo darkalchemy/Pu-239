@@ -49,10 +49,9 @@ header#navbar ul > li {
 
 header#navbar ul > li > a {
     font-weight: lighter;
-    font-size: 1.1em;
-    text-transform: uppercase;
+    /*font-size: 1.1em;*/
     text-decoration: none;
-    transition: all .3s ease;
+    transition: all .25s ease;
     line-height: 40px;
 }
 
@@ -90,23 +89,15 @@ header#navbar .nav_container ul > li > ul > li > a {
     text-transform: none;
 }
 
-.ddFadeSlow {
-    transition: all .9s ease-in-out;
-}
-
-.ddFadeNormal {
-    transition: all .6s ease-in-out;
-}
-
 .ddFadeFast {
-    transition: all .3s ease-in-out;
+    transition: all .25s ease-in-out;
 }
 
 li:hover ul.hov {
-    -webkit-animation-duration: .3s;
-    animation-duration: .3s;
-    -webkit-animation-delay: .3s;
-    animation-delay: .3s;
+    -webkit-animation-duration: .25s;
+    animation-duration: .25s;
+    -webkit-animation-delay: .25s;
+    animation-delay: .25s;
 }
 
 li:hover ul.hov li {
@@ -149,7 +140,7 @@ header#navbar .nav_container ul > li > ul a:hover {
     position: relative;
     margin-top: 3px;
     color: #fff;
-    transition: all .3s ease;
+    transition: all .25s ease;
 }
 
 #close {
@@ -204,14 +195,14 @@ header#navbar .nav_container ul > li > ul a:hover {
 
     #hamburger {
         display: block;
-        transition: all .3s ease;
+        transition: all .25s ease;
         -webkit-transform: translateY(0);
         transform: translateY(0);
         z-index: 1;
     }
 
     #close {
-        transition: all .3s ease;
+        transition: all .25s ease;
         -webkit-transform: translateX(50px);
         transform: translateX(50px);
         display: block;
@@ -250,7 +241,7 @@ header#navbar .nav_container ul > li > ul a:hover {
         width: 100%;
         margin: 0 auto;
         border-bottom: none;
-        font-size: 3em;
+        /*font-size: 3em;*/
     }
 
     header#navbar .nav_container ul > li > ul {
@@ -297,7 +288,7 @@ header#navbar .nav_container ul > li > ul a:hover {
         position: static;
         padding: 0 5%;
         width: 100%;
-        font-size: .8em;
+        /*font-size: .8em;*/
     }
 
     header#navbar.showNav #hamburger {

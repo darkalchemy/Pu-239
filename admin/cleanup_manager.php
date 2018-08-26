@@ -127,7 +127,7 @@ function cleanup_show_main()
         $row['_clean_time'] = $row['clean_on'] != 1 ? "<span style='color:red'>{$row['_clean_time']}</span>" : $row['_clean_time'];
         $htmlout .= "
         <tr>
-            <td{$row['_class']}>{$row['clean_title']}{$row['_title']}<br><span class='size_3'>{$row['clean_desc']}</span></td>
+            <td{$row['_class']}>{$row['clean_title']}{$row['_title']}<br><span class='is-size-5'>{$row['clean_desc']}</span></td>
             <td class='has-text-centered'>" . mkprettytime($row['clean_increment']) . "</td>
             <td class='has-text-centered'>{$row['_clean_time']}</td>
             <td class='has-text-centered'>

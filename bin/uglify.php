@@ -35,6 +35,8 @@ foreach ($templates as $template) {
     }
 }
 
+passthru('npx node-sass ' . BIN_DIR . 'pu239.scss ' . BIN_DIR . 'pu239.css');
+
 foreach ($folders as $folder) {
     $update = TEMPLATE_DIR . "{$folder}/files.php";
     $dirs = [
@@ -178,8 +180,9 @@ foreach ($folders as $folder) {
 
     $css_list = [];
     $css_list['css'] = [
-        ROOT_DIR . 'node_modules/normalize.css/normalize.css',
-        ROOT_DIR . 'node_modules/bulma/css/bulma.css',
+        //ROOT_DIR . 'node_modules/normalize.css/normalize.css',
+        //ROOT_DIR . 'node_modules/bulma/css/bulma.css',
+        BIN_DIR . 'pu239.css',
     ];
 
     if ($BLOCKS['global_themechanger_on']) {

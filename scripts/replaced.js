@@ -242,7 +242,7 @@ $(function () {
         navbar.addClass('showNav');
         var winHeight = $(window).outerHeight();
         menuwrapper.css('height', winHeight + 'px');
-        menuwrapper.slideToggle(animate_duration, easing, function () {
+        menuwrapper.slideToggle(250, easing, function () {
         });
     });
     $('#close').click(function (event) {

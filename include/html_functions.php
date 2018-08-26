@@ -319,16 +319,16 @@ function clear_image_cache()
     ]);
 }
 
-function placeholder_image()
+function placeholder_image($size = 10)
 {
     global $cache;
 
-    $image = $cache->get('placeholder_image_');
+    $image = $cache->get('placeholder_image_' . $size);
     if ($image === false || is_null($image)) {
         $image_proxy = new DarkAlchemy\Pu239\ImageProxy();
-        $image = $image_proxy->create_image(10, 10, '#0f0');
+        $image = $image_proxy->create_image($size, $size, '#7d7e7d');
         $image = 'data:image/jpeg;base64, ' . base64_encode($image);
-        $cache->set('placeholder_image_', $image, 0);
+        $cache->set('placeholder_image_' . $size, $image, 0);
     }
 
     return $image;

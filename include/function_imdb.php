@@ -163,7 +163,6 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false)
                     }
                 }
             }
-
             if (!empty($imdb_tmp)) {
                 $imdb_info .= "
                     <div class='columns'>
@@ -177,7 +176,19 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false)
 
     $imdb_info = preg_replace('/&(?![A-Za-z0-9#]{1,7};)/', '&amp;', $imdb_info);
     if ($title) {
-        $imdb_info = "<div class='padding10'><div class='has-text-centered size_6 bottom20'>IMDb</div>$imdb_info</div>";
+        $imdb_info = "
+        <div class='padding10'>
+            <div class='has-text-centered size_6 bottom20'>IMDb</div>
+                <div class='columns'>
+                    <div class='column is-3'>
+                        <img src='" . placeholder_image('225') . "' data-src='" . url_proxy($poster, true, 225) . "' class='lazy round10 img-polaroid'>
+                    </div>
+                    <div class='column'>
+                        $imdb_info
+                    </div>
+                </div>
+            </div>
+        </div>";
     } else {
         $imdb_info = "<div class='padding10'>$imdb_info</div>";
     }
