@@ -2107,8 +2107,8 @@ if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {
     $session->set('is-danger', '[h1]This site is vulnerable until you delete the install directory[/h1][p]rm -r ' . ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR . '[/p]');
 }
 
-if (!file_exists(TEMPLATE_DIR . get_stylesheet() . DIRECTORY_SEPARATOR . 'files.php')) {
-    $session->set('is-danger', 'Please run php bin/uglify.php to generate the required files');
+if (file_exists(TEMPLATE_DIR . get_stylesheet() . DIRECTORY_SEPARATOR . 'files.php')) {
+    dd('Error', 'Please run php bin/uglify.php to generate the required files');
 }
 
 require_once TEMPLATE_DIR . get_stylesheet() . DIRECTORY_SEPARATOR . 'files.php';
