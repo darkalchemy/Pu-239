@@ -17,8 +17,13 @@ if (!isset($CURUSER)) {
     die();
 }
 
+if (!$session->validateToken($_POST['csrf'])) {
+    echo 'CSRF Verification failed.';
+    die();
+}
+
 $uid = (int) $CURUSER['id'];
-$tid = isset($_POST['torrentid']) ? (int) $_POST['torrentid'] : (isset($_GET['torrentid']) ? (int) $_GET['torrentid'] : 0);
+$tid = isset($_POST['tid']) ? (int) $_POST['tid'] : (isset($_GET['tid']) ? (int) $_GET['tid'] : 0);
 $do = isset($_POST['action']) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) ? htmlsafechars($_GET['action']) : 'list');
 $ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
 /**
@@ -27,6 +32,7 @@ $ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
 function print_list()
 {
     global $uid, $tid, $ajax;
+
     $target = $ajax ? '_self' : '_parent';
     $qt = sql_query('SELECT th.userid, u.username, u.seedbonus FROM thanks AS th INNER JOIN users AS u ON u.id=th.userid WHERE th.torrentid = ' . sqlesc($tid) . ' ORDER BY u.class DESC') or sqlerr(__FILE__, __LINE__);
     $list = [];
@@ -40,13 +46,13 @@ function print_list()
     }
     if ($ajax) {
         return json_encode([
-            'list' => (count($list) > 0 ? implode(', ', $list) : 'Not yet'),
+            'list' => (count($list) > 0 ? implode(', ', $list) : ''),
             'hadTh' => $hadTh,
             'status' => true,
         ]);
     } else {
-        $form = !$hadTh ? "<br><form action='./ajax/thanks.php' method='post'><input type='submit' class='button is-small' name='submit' value='Say thanks' /><input type='hidden' name='torrentid' value='{$tid}' /><input type='hidden' name='action' value='add' /></form>" : '';
-        $out = (count($list) > 0 ? implode(', ', $list) : 'Not yet');
+        $form = !$hadTh ? "<span class='left10'><form action='{$site_config['baseurl']}/ajax/thanks.php' method='post'><input type='submit' class='button is-small' name='submit' value='Say thanks' /><input type='hidden' name='torrentid' value='{$tid}' /><input type='hidden' name='action' value='add' /></form></span>" : '';
+        $out = (count($list) > 0 ? implode(', ', $list) : '');
 
         return <<<IFRAME
 <!doctype html>

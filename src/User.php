@@ -28,17 +28,17 @@ class User
     }
 
     /**
-     * @param $user_id
+     * @param $userid
      *
      * @return bool|mixed
      */
-    public function getUserFromId($user_id)
+    public function getUserFromId($userid)
     {
-        $user = $this->cache->get('user' . $user_id);
+        $user = $this->cache->get('user' . $userid);
         if ($user === false || is_null($user)) {
             $user = $this->fluent->from('users')
                 ->select('INET6_NTOA(ip) AS ip')
-                ->where('id = ?', $user_id)
+                ->where('id = ?', $userid)
                 ->fetch();
 
             if ($user) {
@@ -52,7 +52,7 @@ class User
                     $user['it'] = 'it';
                 }
 
-                $this->cache->set('user' . $user_id, $user, $this->config['expires']['user_cache']);
+                $this->cache->set('user' . $userid, $user, $this->config['expires']['user_cache']);
             }
         }
 
@@ -68,7 +68,7 @@ class User
      *
      * @return bool|mixed
      */
-    public function getUserIdFromName($username)
+    public function getUserIdFromName(string $username)
     {
         $user = $this->cache->get('userid_from_' . urlencode($username));
 
@@ -120,22 +120,22 @@ class User
     }
 
     /**
-     * @param int   $user_id
+     * @param int   $userid
      * @param array $set
      *
      * @return \PDOStatement
      *
      * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
      */
-    public function update(int $user_id, array $set)
+    public function update(array $set, int $userid)
     {
         $result = $this->fluent->update('users')
             ->set($set)
-            ->where('id = ?', $user_id)
+            ->where('id = ?', $userid)
             ->execute();
 
         if ($result) {
-            $this->cache->update_row('user' . $user_id, $set, $this->config['expires']['user_cache']);
+            $this->cache->update_row('user' . $userid, $set, $this->config['expires']['user_cache']);
         }
 
         return $result;
@@ -167,11 +167,6 @@ class User
         $selector = bin2hex(random_bytes(16));
         $validator = bin2hex(random_bytes(32));
         $hashedValidator = hash('sha256', $validator);
-
-        $values = [
-            'hash' => $hashedValidator,
-            'uid' => $userid,
-        ];
 
         $this->cookies->set("$selector:$validator:$expires", TIME_NOW + $expires);
 
@@ -239,5 +234,57 @@ class User
                 ]);
             }
         }
+    }
+
+    /**
+     * @param string $item
+     * @param int    $userid
+     *
+     * @return mixed
+     */
+    public function get_item(string $item, int $userid)
+    {
+        $user = $this->getUserFromId($userid);
+
+        return $user[$item];
+    }
+
+    /**
+     * @param string $username
+     *
+     * @return mixed
+     */
+    public function get_login(string $username)
+    {
+        $row = $this->fluent->from('users')
+            ->select(null)
+            ->select('id')
+            ->select('INET6_NTOA(ip) AS ip')
+            ->select('passhash')
+            ->select('perms')
+            ->select('enabled')
+            ->select('status')
+            ->where('username = ?', $username)
+            ->fetch();
+
+        return $row;
+    }
+
+    /**
+     * @param $class
+     * @param $bot
+     * @param $auth
+     *
+     * @return mixed
+     */
+    public function get_bot_id($class, $bot, $auth)
+    {
+        $userid = $this->fluent->from('users')
+            ->select(null)
+            ->select('id')
+            ->where('class >= ? AND username = ? AND auth = ? AND uploadpos = 1 AND suspended = "no"', $class, $bot, $auth)
+            ->fetch('id');
+
+        return $userid;
     }
 }

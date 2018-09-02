@@ -1,24 +1,17 @@
 <?php
 
+require_once INCL_DIR . 'html_functions.php';
 use Scriptotek\GoogleBooks\GoogleBooks;
 
-/**
- * @param $torrent
- *
- * @return bool|mixed|string
- */
-function get_book_info($torrent)
+function get_book_info($isbn, $name, $tid, $poster)
 {
-    global $site_config, $CURUSER, $cache, $BLOCKS;
+    global $site_config, $CURUSER, $cache, $BLOCKS, $torrent_stuffs, $image_stuffs;
 
     if (!$BLOCKS['google_books_api_on']) {
         return false;
     }
 
-    $search = $torrent['name'];
-    if (!empty($torrent['isbn'])) {
-        $search = $torrent['isbn'];
-    }
+    $search = !empty($isbn) ? $isbn : $name;
     $api_hits = $cache->get('google_api_limits_');
     $hash = hash('sha256', $search);
     $ebook = $cache->get('book_info_' . $hash);
@@ -53,10 +46,10 @@ function get_book_info($torrent)
         } else {
             $books = new GoogleBooks();
         }
-        if (!empty($torrent['isbn'])) {
-            $book = $books->volumes->byIsbn($torrent['isbn']);
+        if (!empty($isbn)) {
+            $book = $books->volumes->byIsbn($isbn);
         } else {
-            $book = $books->volumes->firstOrNull($torrent['name']);
+            $book = $books->volumes->firstOrNull($name);
         }
         $keys = $ebook['authors'] = $categories = [];
         if (empty($book->title)) {
@@ -70,18 +63,21 @@ function get_book_info($torrent)
                 $ebook['authors'][] = $author;
             }
         }
+        $ebook['rating'] = get_or_null($book->averageRating);
         $ebook['publisher'] = get_or_null($book->publisher);
         $ebook['publishedDate'] = get_or_null($book->publishedDate);
         $ebook['description'] = get_or_null($book->description);
         if (!empty($book->industryIdentifiers)) {
             foreach ($book->industryIdentifiers as $industryIdentifier) {
                 foreach ($industryIdentifier as $key => $value) {
-                    $keys[] = $value;
+                    if (strlen($value) === 10) {
+                        $ebook['isbn10'] = $value;
+                    } elseif (strlen($value) === 13) {
+                        $ebook['isbn13'] = $value;
+                    }
                 }
             }
         }
-        $ebook['isbn10'] = !empty($keys[1]) && strlen($keys[1]) === 10 ? $keys[1] : !empty($keys[3]) ? $keys[3] : '';
-        $ebook['isbn13'] = !empty($keys[3]) && strlen($keys[3]) === 13 ? $keys[3] : !empty($keys[1]) ? $keys[1] : '';
         if (!empty($book->categories)) {
             foreach ($book->categories as $category) {
                 $ebook['categories'][] = $category;
@@ -91,6 +87,20 @@ function get_book_info($torrent)
         $ebook['poster'] = get_or_null($book->imageLinks->thumbnail);
 
         if (!empty($ebook)) {
+            if (!empty($ebook['categories'])) {
+                $temp = implode(', ', array_map('strtolower', $ebook['categories']));
+                $temp = explode(', ', $temp);
+                $ebook['newgenre'] = implode(', ', array_map('ucwords', $temp));
+            }
+            preg_match('/(\d{4})/', $ebook['publishedDate'], $match);
+            $ebook['year'] = !empty($match[1]) ? $match[1] : null;
+            $set = [
+                'year' => $ebook['year'],
+                'rating' => $ebook['rating'],
+                'newgenre' => $ebook['newgenre'],
+                'isbn' => !empty($ebook['isbn13']) ? $ebook['isbn13'] : $ebook['isbn10'],
+            ];
+            $torrent_stuffs->set($set, $tid);
             $cache->set('book_info_' . $hash, $ebook, $site_config['expires']['book_info']);
         }
     }
@@ -112,20 +122,26 @@ function get_book_info($torrent)
                     </div>
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>Published: </div>
-                        <span class='column padding5'>{$ebook['publisher']}<br>{$ebook['publishedDate']}</span>
-                    </div>
+                        <span class='column padding5'>{$ebook['publisher']}" . (!empty($ebook['publisher']) ? '<br>' : '') . "{$ebook['publishedDate']}</span>
+                    </div>";
+    if (!empty($ebook['description'])) {
+        $ebook_info .= "
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>Description: </div>
                         <span class='column padding5'>{$ebook['description']}</span>
                     </div>";
-    if (!empty($keys)) {
+    }
+    if (!empty($ebook['isbn10'])) {
         $ebook_info .= "
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>ISBN 10: </div>
                         <span class='column padding5'>
                             <a href='" . url_proxy("https://www.amazon.com/gp/search/field-isbn={$ebook['isbn10']}") . "' target='_blank'>{$ebook['isbn10']}</a>
                         </span>
-                    </div>
+                    </div>";
+    }
+    if (!empty($ebook['isbn13'])) {
+        $ebook_info .= "
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>ISBN 13: </div>
                         <span class='column padding5'>
@@ -141,11 +157,20 @@ function get_book_info($torrent)
                         <span class='column padding5'>" . implode(', ', $ebook['categories']) . '</span>
                     </div>';
     }
+
     $ebook_info .= "
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>Pages: </div>
                         <span class='column padding5'>{$ebook['pageCount']}</span>
                     </div>";
+
+    if (!empty($ebook['rating'])) {
+        $ebook_info .= "
+                    <div class='columns'>
+                        <div class='has-text-red column is-2 size_5 padding5'>Rating: </div>
+                        <span class='column padding5'>{$ebook['rating']}</span>
+                    </div>";
+    }
 
     if ($CURUSER['class'] >= UC_STAFF) {
         $ebook_info .= "
@@ -155,13 +180,40 @@ function get_book_info($torrent)
                     </div>";
     }
 
-    $poster = '';
-    if (empty($torrent['poster']) && !empty($ebook['poster'])) {
+    if (empty($poster) && !empty($ebook['poster'])) {
         $poster = $ebook['poster'];
+        $set = [
+            'poster' => $poster,
+        ];
+        $torrent_stuffs->set($set, $tid);
+        $values = [
+            'isbn' => $ebook['isbn13'],
+            'url' => $poster,
+            'type' => 'poster',
+        ];
+        $image_stuffs->insert($values);
     }
 
+    if (!empty($poster)) {
+        $ebook_info = "
+        <div class='padding10'>
+            <div class='columns'>
+                <div class='column is-3'>
+                    <img src='" . placeholder_image('225') . "' data-src='" . url_proxy($poster, true, 225) . "' class='lazy round10 img-polaroid'>
+                </div>
+                <div class='column'>
+                    $ebook_info
+                </div>
+            </div>
+        </div>";
+    } else {
+        $ebook_info = "<div class='padding10'>$ebook_info</div>";
+    }
+
+    $cache->set('book_fullset_' . $hash, $ebook_info, $site_config['expires']['book_info']);
+
     return [
-        "<div class='padding10'>$ebook_info</div>",
+        $ebook_info,
         $poster,
     ];
 }

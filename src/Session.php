@@ -30,8 +30,6 @@ class Session
     /**
      * @return bool
      *
-     * @throws Exception
-     * @throws \Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
      */
@@ -186,8 +184,6 @@ class Session
     }
 
     /**
-     * @throws Exception
-     * @throws \Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
      */

@@ -2,7 +2,7 @@
 
 namespace DarkAlchemy\Pu239;
 
-class Message
+class IP
 {
     protected $cache;
     protected $fluent;
@@ -19,15 +19,15 @@ class Message
 
     /**
      * @param array $values
-     *
-     * @throws \Exception
+     * @param array $update
+     * @param       $userid
      */
-    public function insert(array $values)
+    public function insert(array $values, array $update, $userid)
     {
-        $this->fluent->insertInto('messages')
-            ->values($values)
+        $this->fluent->insertInto('ips', $values)
+            ->onDuplicateKeyUpdate($update)
             ->execute();
 
-        $this->cache->delete('inbox_' . $values['receiver']);
+        $this->cache->delete('ip_history_' . $userid);
     }
 }

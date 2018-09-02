@@ -16,15 +16,11 @@
 
 This is a fork of U-232 V4.
 
-PHP 7.0+ is required, PHP 7.2 recommended.
+PHP 7.2+ is required.
 
 MySQL 5.6 is required. MySQL 5.7 recommended.
 
 This code explicitly sets the php default timezone to 'UTC', it is recommended that you set the servers timezone to 'UTC' or change it in the code. The timezones must match. After changing the servers timezone, you must restart mysql.
-
-This is still a WIP and a few pages may not be functional in there current location.
-
-Do not use the xbt install, as it's update has not been started and is, therefore broken.
 
 A working site with this code is at https://pu-239.pw/
 
@@ -34,7 +30,7 @@ A working site with this code is at https://pu-239.pw/
 jpegoptim, optipng, pngquant, gifsicle
 
 # required php extensions
-php-gd, php-xml, php-json, php-mbstring, php-mysqli, php-zip, php-simplexml, php-curl, php-exif, php-bz2, php-imagick
+php-gd, php-xml, php-json, php-mbstring, php-mysqli, php-zip, php-simplexml, php-curl, php-exif, php-bz2, php-imagick, php-common
 
 # cache repositories(optional)
 redis, php-redis

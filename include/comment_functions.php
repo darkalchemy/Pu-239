@@ -46,13 +46,12 @@ function commenttable($rows, $variant = 'torrent')
         if ($row['user_likes'] > 0) {
             $user_likes = $cache->get("{$type}_user_likes_" . $cid);
             if ($user_likes === false || is_null($user_likes)) {
-                $query = $fluent->from('likes')
+                $likes = $fluent->from('likes')
                     ->select(null)
                     ->select('user_id')
                     ->where("{$variantc}_id = ?", $cid);
-
-                foreach ($query as $userid) {
-                    $user_likes[] = $userid['user_id'];
+                foreach ($likes as $like) {
+                    $user_likes[] = $like['user_id'];
                 }
                 $cache->set("{$type}_user_likes_" . $cid, $user_likes, 86400);
             }
@@ -69,14 +68,10 @@ function commenttable($rows, $variant = 'torrent')
                 if ($count === 1) {
                     $att_str = "<span class='chg'>You like this</span>";
                 } else {
-                    $att_str = "<span class='chg'>You and " . (($count - 1) === 1 ? '1 other person likes this' : ($count - 1) . ' others like this') . '</span>';
+                    $att_str = "<span class='chg'>you and " . ($count - 1) . ' other' . !plural($count - 1) . ' like' . plural($count - 1) . ' this</span>';
                 }
             } else {
-                if ($count === 1) {
-                    $att_str = '1 person likes this';
-                } else {
-                    $att_str = $count . ' others like this';
-                }
+                $att_str = $likes . ' like' . plural($count) . ' this';
             }
         }
         $wht = $count > 0 && in_array($CURUSER['id'], $user_likes) ? 'unlike' : 'like';

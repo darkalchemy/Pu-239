@@ -111,13 +111,14 @@ if (!empty($_GET['today']) && $_GET['today']) {
     $today = 1;
 }
 
-if (isset($_GET['incldead']) && $_GET['incldead'] == 1) {
+$selected = !empty($_GET['incldead']) ? (int) $_GET['incldead'] : '';
+if ($selected === 1) {
     $addparam .= 'incldead=1&amp;';
     if (!isset($CURUSER) || $CURUSER['class'] < UC_ADMINISTRATOR) {
         $wherea[] = "banned != 'yes'";
     }
 } else {
-    if (isset($_GET['incldead']) && $_GET['incldead'] == 2) {
+    if ($selected === 2) {
         $addparam .= 'incldead=2&amp;';
         $wherea[] = "visible = 'no'";
     } else {
@@ -167,7 +168,7 @@ if (count($wherecatina) > 1) {
 }
 if (isset($cleansearchstr)) {
     if ($searchstr != '') {
-        $addparam .= 'search=' . rawurlencode($searchstr) . '&amp;searchin=' . htmlsafechars($_GET['searchin']) . '&amp;incldead=' . intval($_GET['incldead']) . '&amp;';
+        $addparam .= 'search=' . rawurlencode($searchstr) . '&amp;searchin=' . htmlsafechars($_GET['searchin']) . '&amp;incldead=' . $selected . '&amp;';
         $searchstring = str_replace([
             '_',
             '.',
@@ -326,7 +327,6 @@ $vip_box = "
                         <option value='2'" . ($vip == 2 ? ' selected' : '') . '>VIP Torrents Only</option>
                     </select>';
 
-$selected = (isset($_GET['incldead'])) ? (int) $_GET['incldead'] : '';
 $deadcheck = "
                     <select name='incldead' class='w-100'>
                         <option value='0'>{$lang['browse_active']}</option>

@@ -5,7 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_get_images.php';
 check_user_status();
-global $CURUSER, $site_config, $fluent, $cache;
+global $session;
 
 extract($_POST);
 
@@ -15,13 +15,27 @@ if (!$session->validateToken($csrf)) {
     die();
 }
 
+$imdb = '';
 if (!empty($url)) {
-    preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $url, $imdb);
-    $imdb = !empty($imdb[2]) ? $imdb[2] : '';
-    $movie_info = get_imdb_info($imdb);
-    $poster = get_image_by_id('movie', null, $imdb, 'movieposter', null, false);
-    $banner = get_image_by_id('movie', null, $imdb, 'moviebanner', null, false);
-    $background = get_image_by_id('movie', null, $imdb, 'moviebackground', null, false);
+    preg_match('/(tt[\d]{7})|^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $url, $imdb);
+    $imdb = !empty($imdb[2]) ? $imdb[2] : (!empty($imdb[1]) ? $imdb[1] : '');
+}
+
+if (!empty($imdb)) {
+    $poster = $banner = $background = 'nothing';
+    $movie_info = get_imdb_info($imdb, true, false, $tid);
+    $poster = get_image_by_id('movie', $tid, $imdb, 'movieposter');
+    $banner = get_image_by_id('movie', $tid, $imdb, 'moviebanner');
+    $background = get_image_by_id('movie', $tid, $imdb, 'moviebackground');
+    if (empty($poster)) {
+        $poster = get_image_by_id('tmdb_id', $tid, $imdb, 'movieposter');
+    }
+    if (empty($banner)) {
+        $banner = get_image_by_id('tmdb_id', $tid, $imdb, 'moviebanner');
+    }
+    if (empty($background)) {
+        $background = get_image_by_id('tmdb_id', $tid, $imdb, 'moviebackground');
+    }
     if (!empty($movie_info[1])) {
         url_proxy($movie_info[1], true, 150);
         url_proxy($movie_info[1], true, 150, null, 10);
@@ -38,18 +52,18 @@ if (!empty($url)) {
     }
 
     if (!empty($movie_info)) {
-        echo json_encode([
+        $output = json_encode([
             'content' => $movie_info[0],
             'poster1' => $movie_info[1],
             'poster2' => $poster,
             'banner' => $banner,
             'background' => $background,
         ]);
-        die();
-    } else {
-        echo json_encode([
-            'fail' => 'invalid',
-        ]);
+        echo $output;
         die();
     }
 }
+echo json_encode([
+    'fail' => 'invalid',
+]);
+die();

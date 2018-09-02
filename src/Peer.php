@@ -8,9 +8,6 @@ class Peer
     protected $fluent;
     protected $config;
 
-    /**
-     * Peer constructor.
-     */
     public function __construct()
     {
         global $cache, $fluent, $site_config;
@@ -20,6 +17,11 @@ class Peer
         $this->config = $site_config;
     }
 
+    /**
+     * @param $user_id
+     *
+     * @return bool|mixed
+     */
     public function getPeersFromUserId($user_id)
     {
         $peers = $this->cache->get('peers_' . $user_id);

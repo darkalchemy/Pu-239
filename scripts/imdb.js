@@ -1,13 +1,22 @@
 $('#url').change(function () {
+    var el = document.querySelector('#url');
+    get_imdb(el.dataset.csrf, el.value);
+});
+
+if ($('#imdb').length) {
+    var el = document.querySelector('#imdb');
+    get_imdb(el.dataset.csrf, el.dataset.imdbid, el.dataset.tid);
+};
+
+function get_imdb(csrf, url, tid) {
     var el1 = $('.imdb_outer');
     var el2 = $('.imdb_inner');
     var el3 = $('#poster');
     var el4 = $('.poster_container');
     var el5 = $('.banner_container');
-    el1.addClass('bordered bg-00 margin10');
-    el2.addClass('alt_bordered has-text-centered');
+    el2.addClass('has-text-centered');
     el4.addClass('padding20 margin10 round10 bg-00');
-    el2.html('Looking up IMDb and downloading/optimizing images, please be patient.');
+    el2.html('Looking up "' + url + '" from IMDb, please be patient.');
 
     $.ajax({
         url: './ajax/imdb_lookup.php',
@@ -15,8 +24,9 @@ $('#url').change(function () {
         dataType: 'json',
         context: this,
         data: {
-            csrf: this.dataset.csrf,
-            url: this.value,
+            csrf: csrf,
+            url: url,
+            tid: tid,
         },
         success: function (data) {
             if (data['fail'] === 'csrf') {
@@ -43,11 +53,9 @@ $('#url').change(function () {
                     document.getElementsByTagName('body')[0].style.backgroundImage = 'url(' + data['background'] + ')';
                     document.getElementsByTagName('body')[0].style.backgroundSize = 'cover';
                 } else {
-                    document.getElementsByTagName('body')[0].style.backgroundColor = 'black';
                     document.getElementsByTagName('body')[0].style.backgroundImage = '';
                 }
             }
         }
     });
-});
-
+}

@@ -6,11 +6,6 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $site_config, $session;
 $lang = array_merge(load_language('global'), load_language('report'));
-$stdhead = [
-    'css' => [
-        'forums',
-    ],
-];
 $HTMLOUT = $id_2 = $id_2b = '';
 
 $id = ($_GET['id'] ? (int) $_GET['id'] : (int) $_POST['id']);
@@ -75,5 +70,5 @@ $HTMLOUT .= main_div("
         <textarea name='reason' class='w-100' rows='5'></textarea> [ {$lang['report_req']} ]<br>
         <input type='submit' class='button is-small margin20' value='{$lang['report_confirm']}' />
     </form>");
-echo stdhead('Report', $stdhead) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead('Report') . wrapper($HTMLOUT) . stdfoot();
 die();

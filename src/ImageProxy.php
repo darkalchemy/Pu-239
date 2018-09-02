@@ -7,6 +7,14 @@ use Intervention\Image\ImageManager;
 
 class ImageProxy
 {
+    /**
+     * @param $url
+     * @param $width
+     * @param $height
+     * @param $quality
+     *
+     * @return bool|string
+     */
     public function get_image($url, $width, $height, $quality)
     {
         if (empty($url)) {
@@ -45,6 +53,12 @@ class ImageProxy
         return $hash;
     }
 
+    /**
+     * @param $url
+     * @param $path
+     *
+     * @return bool
+     */
     protected function store_image($url, $path)
     {
         $image = fetch($url);
@@ -68,6 +82,15 @@ class ImageProxy
         return false;
     }
 
+    /**
+     * @param $url
+     * @param $path
+     * @param $quality
+     *
+     * @return string
+     *
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
+     */
     protected function convert_image($url, $path, $quality)
     {
         $hash = hash('sha512', $url . '_converted');
@@ -96,6 +119,9 @@ class ImageProxy
         return $hash;
     }
 
+    /**
+     * @param $path
+     */
     protected function optimize($path)
     {
         if (mime_content_type($path) !== 'image/gif') {
@@ -105,6 +131,14 @@ class ImageProxy
         }
     }
 
+    /**
+     * @param      $url
+     * @param      $path
+     * @param null $width
+     * @param null $height
+     *
+     * @return bool|string
+     */
     protected function resize_image($url, $path, $width = null, $height = null)
     {
         $manager = new ImageManager();

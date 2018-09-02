@@ -21,6 +21,11 @@ $fluent = new DarkAlchemy\Pu239\Database();
 $session = new DarkAlchemy\Pu239\Session();
 $user_stuffs = new DarkAlchemy\Pu239\User();
 $torrent_stuffs = new DarkAlchemy\Pu239\Torrent();
+$image_stuffs = new DarkAlchemy\Pu239\Image();
+$comment_stuffs = new DarkAlchemy\Pu239\Comment();
+$failed_logins = new DarkAlchemy\Pu239\FailedLogin();
+$message_stuffs = new DarkAlchemy\Pu239\Message();
+$ip_stuffs = new DarkAlchemy\Pu239\IP();
 
 define('MIN_TO_PLAY', UC_POWER_USER);
 
@@ -334,11 +339,6 @@ function userlogin()
     $users_data['last_status'] = $ustatus['last_status'];
     $users_data['last_update'] = $ustatus['last_update'];
     $users_data['archive'] = $ustatus['archive'];
-    if ($users_data['ssluse'] >= 1 && !isset($_SERVER['HTTPS']) && !defined('NO_FORCE_SSL')) {
-        $site_config['baseurl'] = str_replace('http', 'https', $site_config['baseurl']);
-        header('Location: ' . $site_config['baseurl'] . $_SERVER['REQUEST_URI']);
-        die();
-    }
     $blocks_key = 'blocks_' . $users_data['id'];
 
     $CURBLOCK = $cache->get($blocks_key);
@@ -524,17 +524,14 @@ function get_template()
  */
 function make_freeslots($userid, $key)
 {
-    global $cache;
+    global $cache, $fluent;
 
     $slot = $cache->get($key . $userid);
     if ($slot === false || is_null($slot)) {
-        $res_slots = sql_query('SELECT * FROM freeslots WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-        $slot = [];
-        if (mysqli_num_rows($res_slots)) {
-            while ($rowslot = mysqli_fetch_assoc($res_slots)) {
-                $slot[] = $rowslot;
-            }
-        }
+        $slot = $fluent->from('freeslots')
+            ->where('userid = ?', $userid)
+            ->fetchAll();
+
         $cache->set($key . $userid, $slot, 86400 * 7);
     }
 
@@ -1737,11 +1734,13 @@ function return_bytes($val)
  *
  * @return string
  */
-function plural($int)
+function plural(int $int)
 {
-    if ($int != 1) {
+    if ($int === 1) {
         return 's';
     }
+
+    return false;
 }
 
 /**
@@ -1751,8 +1750,7 @@ function plural($int)
  */
 function ipToStorageFormat($ip)
 {
-    $ip = empty($ip) ? '10.10.10.10' : $ip;
-    if (!validip($ip)) {
+    if (empty($ip) || !validip($ip)) {
         $ip = '10.10.10.10';
     }
 
@@ -2054,11 +2052,11 @@ function fetch($url)
 
 function get_body_image($details, $portrait = false)
 {
-    global $cache, $fluent, $torrents;
+    global $cache, $fluent, $torrent;
 
     if ($details) {
         return [
-            'background' => $torrents['background'],
+            'background' => $torrent['background'],
         ];
     }
 

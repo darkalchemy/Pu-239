@@ -2,6 +2,7 @@
 
 require_once 'emoticons.php';
 require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'user_functions.php';
 
 /**
  * @param $smilies_set
@@ -237,7 +238,7 @@ function format_urls($s)
  */
 function format_comment($text, $strip_html = true, $urls = true, $images = true)
 {
-    global $smilies, $staff_smilies, $customsmilies, $site_config, $CURUSER;
+    global $smilies, $staff_smilies, $customsmilies, $site_config, $CURUSER, $user_stuffs;
 
     $image = placeholder_image();
     $s = $text;
@@ -403,6 +404,16 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         $s = str_replace('}', '&#125;', $s);
         $s = str_replace('$', '&#36;', $s);
         $s = str_replace('&nbsp;', '&#160;', $s);
+    }
+
+    // find username tags
+    preg_match_all('/@(.+\b)/imsU', $s, $match);
+    foreach ($match[1] as $tmp) {
+        $userid = $user_stuffs->getUserIdFromName($tmp);
+        if ($userid) {
+            $username = format_username($userid, false, true, true);
+            $s = preg_replace("/@$tmp/", $username . ' ', $s);
+        }
     }
 
     // find timpstamps replace with dates

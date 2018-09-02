@@ -5,7 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class_browser.php';
 dbconn();
-global $CURUSER, $site_config, $fluent, $cache, $session, $user_stuffs;
+global $CURUSER, $site_config, $cache, $session, $user_stuffs, $failed_logins, $message_stuffs, $ip_stuffs;
 
 if (!$CURUSER) {
     get_template();
@@ -14,13 +14,13 @@ $lang = array_merge(load_language('global'), load_language('takelogin'));
 
 function failedloginscheck()
 {
-    global $site_config;
+    global $site_config, $failed_logins;
 
     $ip = getip(true);
-    $res = sql_query('SELECT SUM(attempts), ip FROM failedlogins WHERE ip = ' . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
-    list($total) = mysqli_fetch_row($res);
+    $total = $failed_logins->get($ip);
     if ($total >= $site_config['failedlogins']) {
-        sql_query("UPDATE failedlogins SET banned = 'yes' WHERE ip = " . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
+        $set = ['banned' => 'yes'];
+        $failed_logins->set($set, $ip);
         stderr('Login Locked!', 'You have <b>Exceeded</b> the allowed maximum login attempts without successful login, therefore your ip address <b>(' . htmlsafechars($ip) . ')</b> has been locked for 24 hours.');
     }
 }
@@ -32,11 +32,7 @@ unset($_POST);
 extract($_GET);
 unset($_GET);
 if (!empty($bot) && !empty($auth)) {
-    $user_id = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->where('class >= ? AND username = ? AND auth = ? AND uploadpos = 1 AND suspended = "no"', UC_UPLOADER, $bot, $auth)
-        ->fetch('id');
+    $user_id = $user_stuffs->get_bot_id(UC_UPLOADER, $bot, $auth);
 }
 
 if (empty($user_id)) {
@@ -96,44 +92,45 @@ function bark($text = 'Username or password incorrect')
 }
 
 failedloginscheck();
-$row = $fluent->from('users')
-    ->select(null)
-    ->select('id')
-    ->select('INET6_NTOA(ip) AS ip')
-    ->select('passhash')
-    ->select('perms')
-    ->select('ssluse')
-    ->select('enabled')
-    ->select('status')
-    ->where('username = ?', $username)
-    ->fetch();
-
+$row = $user_stuffs->get_login($username);
 $userid = $row['id'];
-$ip_escaped = ipToStorageFormat(getip(true));
 $ip = getip();
-$added = TIME_NOW;
 if ($row === false) {
-    $fail = (@mysqli_fetch_row(sql_query("SELECT COUNT(id) from failedlogins where ip = $ip_escaped"))) or sqlerr(__FILE__, __LINE__);
-    if ($fail[0] == 0) {
-        sql_query("INSERT INTO failedlogins (ip, added, attempts) VALUES ($ip_escaped, $added, 1)") or sqlerr(__FILE__, __LINE__);
-    } else {
-        sql_query("UPDATE failedlogins SET attempts = attempts + 1 where ip = $ip_escaped") or sqlerr(__FILE__, __LINE__);
-    }
+    $values = [
+        'ip' => inet_pton($ip),
+        'added' => TIME_NOW,
+        'attempts' => 1,
+    ];
+    $update = [
+        'added' => TIME_NOW,
+        'attempts' => new Envms\FluentPDO\Literal('attempts + 1'),
+    ];
+
+    $failed_logins->insert($values, $update);
     bark();
 }
-
+$ip_escaped = ipToStorageFormat($ip);
+$added = TIME_NOW;
 if (!password_verify($password, $row['passhash'])) {
-    $fail = (@mysqli_fetch_row(sql_query("SELECT COUNT(id), ip from failedlogins where ip = $ip_escaped"))) or sqlerr(__FILE__, __LINE__);
-    if ($fail[0] == 0) {
-        sql_query("INSERT INTO failedlogins (ip, added, attempts) VALUES ($ip_escaped, $added, 1)") or sqlerr(__FILE__, __LINE__);
-    } else {
-        sql_query("UPDATE failedlogins SET attempts = attempts + 1 where ip=$ip_escaped") or sqlerr(__FILE__, __LINE__);
-    }
-    $subject = 'Failed login';
-    $msg = "[color=red]Security alert[/color]\n Account: ID=" . $userid . ' Somebody (probably you, ' . htmlsafechars($username) . ' !) tried to login but failed!' . "\nTheir [b]Ip Address [/b] was : " . htmlsafechars($ip) . "\n If this wasn't you please report this event to a {$site_config['site_name']} staff member\n - Thank you.\n";
-    $sql = 'INSERT INTO messages (sender, receiver, msg, subject, added) VALUES(0, ' . sqlesc($userid) . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ", $added);";
-    $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    $cache->increment('inbox_' . $userid);
+    $values = [
+        'ip' => inet_pton($ip),
+        'added' => TIME_NOW,
+        'attempts' => 1,
+    ];
+    $update = [
+        'added' => TIME_NOW,
+        'attempts' => new Envms\FluentPDO\Literal('attempts + 1'),
+    ];
+
+    $failed_logins->insert($values, $update);
+    $values = [
+        'sender' => 0,
+        'receiver' => $userid,
+        'msg' => "[size=7][color=red]Security Alert[/color][/size][br]Account ID: {$userid}[br][b]Ip Address[/b]: " . htmlsafechars($ip) . '[br]Somebody (' . htmlsafechars($username) . ") tried to login but failed![br]If this wasn't you please report this event to a {$site_config['site_name']} staff member.[br][br]Thank you.[br]",
+        'subject' => 'Failed login',
+        'added' => TIME_NOW,
+    ];
+    $message_stuffs->insert($values);
     bark("<b>Error</b>: Username or password entry incorrect <br>Have you forgotten your password? <a href='{$site_config['baseurl']}/resetpw.php'><b>Recover</b></a> your password !");
 } else {
     if (PHP_VERSION_ID >= 70200 && @password_hash('secret_password', PASSWORD_ARGON2I)) {
@@ -150,7 +147,10 @@ if (!password_verify($password, $row['passhash'])) {
         ];
     }
     if (password_needs_rehash($row['passhash'], $algo, $options)) {
-        sql_query('UPDATE users SET passhash = ' . sqlesc(make_passhash($password)) . ' WHERE id = ' . sqlesc($row['id'])) or sqlerr(__FILE__, __LINE__);
+        $set = [
+            'passhash' => make_passhash($password),
+        ];
+        $user_stuffs->set($set, $row['id']);
     }
 }
 
@@ -163,36 +163,38 @@ if ($row['status'] === 'pending') {
     }
     bark('Your account has not been confirmed.');
 }
-sql_query("DELETE FROM failedlogins WHERE ip = $ip_escaped");
+$failed_logins->delete($ip);
 $row['perms'] = (int) $row['perms'];
 $no_log_ip = ($row['perms'] & bt_options::PERMS_NO_IP);
 if ($no_log_ip) {
     $ip = '127.0.0.1';
 }
-$ip_escaped = ipToStorageFormat($ip);
 
 if (!$no_log_ip) {
-    $res = sql_query("SELECT * FROM ips WHERE ip = $ip_escaped AND userid = " . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($res) == 0) {
-        sql_query('INSERT INTO ips (userid, ip, lastlogin, type) VALUES (' . sqlesc($userid) . ", $ip_escaped , $added, 'Login')") or sqlerr(__FILE__, __LINE__);
-        $cache->delete('ip_history_' . $userid);
-    } else {
-        sql_query("UPDATE ips SET lastlogin = $added WHERE ip = $ip_escaped AND userid = " . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-        $cache->delete('ip_history_' . $userid);
-    }
+    $values = [
+        'userid' => $userid,
+        'ip' => inet_pton($ip),
+        'lastlogin' => TIME_NOW,
+        'type' => 'Login',
+    ];
+    $update = [
+        'lastlogin' => TIME_NOW,
+    ];
+
+    $ip_stuffs->insert($values, $update, $userid);
 }
 
-$ssluse = isset($use_ssl) && $use_ssl == 1 ? 1 : 0;
 $ua = getBrowser();
 $browser = 'Browser: ' . $ua['name'] . ' ' . $ua['version'] . '. Os: ' . $ua['platform'] . '. Agent : ' . $ua['userAgent'];
-
-sql_query('UPDATE users SET browser = ' . sqlesc($browser) . ', ssluse = ' . sqlesc($ssluse) . ", ip = $ip_escaped, last_access = " . TIME_NOW . ', last_login = ' . TIME_NOW . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-$cache->update_row('user' . $userid, [
+$set = [
     'browser' => $browser,
-    'ip' => $ip,
-    'ssluse' => $ssluse,
+    'ip' => inet_pton($ip),
     'last_access' => TIME_NOW,
     'last_login' => TIME_NOW,
+];
+$user_stuffs->update($set, $userid);
+$cache->update_row('user' . $userid, [
+    'ip' => $ip,
 ], $site_config['expires']['user_cache']);
 
 $session->set('userID', $userid);

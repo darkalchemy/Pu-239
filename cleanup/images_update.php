@@ -10,6 +10,7 @@ function images_update($data)
     require_once INCL_DIR . 'function_tmdb.php';
     require_once INCL_DIR . 'function_tvmaze.php';
     require_once INCL_DIR . 'function_imdb.php';
+    require_once INCL_DIR . 'function_omdb.php';
     require_once INCL_DIR . 'function_bluray.php';
     require_once INCL_DIR . 'function_books.php';
     global $fluent, $cache;
@@ -54,17 +55,15 @@ function images_update($data)
         get_book_info($links);
     }
 
-    $links = $fluent->from('torrents')
+    $imdbids = $fluent->from('torrents')
         ->select(null)
-        ->select('url')
-        ->where('url != NULL');
+        ->select('imdb_id')
+        ->where('imdb_id != ""');
 
-    foreach ($links as $link) {
-        preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $link['url'], $imdb);
-        $imdb = !empty($imdb[2]) ? $imdb[2] : '';
-        if (!empty($imdb)) {
-            get_imdb_info($imdb, false);
-            get_omdb_info($imdb, false);
+    foreach ($imdbids as $imdbid) {
+        if (!empty($imdbid)) {
+            get_imdb_info($imdbid['imdb_id'], false);
+            get_omdb_info($imdbid['imdb_id'], false);
         }
     }
 
@@ -99,8 +98,8 @@ function images_update($data)
     $images = $fluent->from('images')
         ->select(null)
         ->select('url')
-        ->where('url IS NOT null')
-        ->select('type');
+        ->select('type')
+        ->where('url IS NOT null');
 
     foreach ($images as $image) {
         url_proxy($image['url'], true);

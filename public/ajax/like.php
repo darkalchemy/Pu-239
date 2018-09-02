@@ -3,9 +3,6 @@
 require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-global $CURUSER, $site_config;
-
-$lang = array_merge(load_language('global'), load_language('ajax_like'));
 
 $check = isset($_POST['type']) ? $_POST['type'] : '';
 $fields = [
@@ -15,14 +12,16 @@ $fields = [
     'usercomment' => 'usercomments',
     'request' => 'requests',
     'offer' => 'offers',
+    'torrent' => 'torrents',
 ];
 
-extract($_POST);
-comment_like_unlike();
+comment_like_unlike($fields);
 
-function comment_like_unlike()
+function comment_like_unlike($fields)
 {
-    global $CURUSER, $type, $fields, $id, $lang, $csrf, $session, $current, $cache, $fluent;
+    $lang = array_merge(load_language('global'), load_language('ajax_like'));
+    extract($_POST);
+    global $CURUSER, $session, $cache, $fluent, $torrent_stuffs;
 
     $id = (int) $id;
     header('content-type: application/json');
@@ -39,6 +38,10 @@ function comment_like_unlike()
         die();
     }
 
+    if ($type === 'torrent') {
+        $type = 'comment';
+    }
+
     $sql = 'SELECT COUNT(id) AS count FROM likes WHERE user_id = ' . sqlesc($CURUSER['id']) . " AND {$type}_id = " . sqlesc($id);
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $data = mysqli_fetch_assoc($res);
@@ -46,30 +49,30 @@ function comment_like_unlike()
     if ($type === 'topic' || $type === 'post' || $type === 'usercomment') {
         $table = $fields[$type];
     }
-
+    file_put_contents('/var/log/nginx/ajax.log', $data['count'] . PHP_EOL . $current . PHP_EOL, FILE_APPEND);
     if ($data['count'] == 0 && $current === 'Like') {
         $sql = "INSERT INTO likes ({$type}_id, user_id) VALUES (" . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ')';
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $sql = "UPDATE $table SET user_likes = user_likes + 1 WHERE id = " . sqlesc($id);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        $cache->increment("{$fields[$type]}_user_likes_" . $id);
+        $cache->delete("{$type}_user_likes_" . $id);
         $cache->delete('latest_comments_');
         $data['label'] = 'Unlike';
-        $data['list'] = 'You like this';
+        $data['list'] = 'you like this';
     } elseif ($data['count'] == 1 && $current === 'Unlike') {
         $sql = "DELETE FROM likes WHERE {$type}_id = " . sqlesc($id) . ' AND user_id = ' . sqlesc($CURUSER['id']);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $sql = "UPDATE $table SET user_likes = user_likes - 1 WHERE id = " . sqlesc($id);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        $cache->decrement("{$fields[$type]}_user_likes_" . $id);
+        $cache->delete("{$type}_user_likes_" . $id);
         $cache->delete('latest_comments_');
         $data['label'] = 'Like';
         $data['list'] = '';
     } elseif ($data['count'] == 1 && $current === 'Like') {
         $data['label'] = 'Unlike';
-        $data['list'] = 'You like this';
+        $data['list'] = 'you like this';
     } else {
-        $data['label'] = 'You lost me';
+        $data['label'] = 'you lost me';
     }
     $sql = $fluent->from('likes')
         ->select(null)
@@ -80,9 +83,12 @@ function comment_like_unlike()
         $rows[] = format_username($row['user_id']);
     }
     if (!empty($rows)) {
-        $data['list'] = $data['list'] . implode(', ', $rows);
+        $data['list'] = implode(', ', $rows) . (!empty($data['list']) ? ' and ' . $data['list'] : ' like' . plural(count($rows)) . ' this');
     }
     $data['class'] = "tot-$id";
+
+    file_put_contents('/var/log/nginx/ajax.log', json_encode($data) . PHP_EOL, FILE_APPEND);
+
     echo json_encode($data);
     die();
 }

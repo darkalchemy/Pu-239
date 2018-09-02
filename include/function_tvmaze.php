@@ -1,5 +1,7 @@
 <?php
 
+require_once INCL_DIR . 'html_functions.php';
+
 /**
  * @param $tvmaze_data
  * @param $tvmaze_type
@@ -88,7 +90,7 @@ function episode_format($tvmaze_data, $tvmaze_type)
     if (!$BLOCKS['tvmaze_api_on']) {
         return false;
     }
-
+    file_put_contents('/var/log/nginx/ajax.log', json_encode($tvmaze_data) . PHP_EOL, FILE_APPEND);
     $tvmaze_display['episode'] = [
         'name' => line_by_line('Episode Title', '%s'),
         'url' => line_by_line('Link', "<a href='{$site_config['anonymizer_url']}%s'>TVMaze Lookup</a>"),
@@ -118,9 +120,9 @@ function episode_format($tvmaze_data, $tvmaze_type)
  *
  * @return bool|null|string
  */
-function get_episode($tvmaze_id, $season, $episode)
+function get_episode($tvmaze_id, $season, $episode, $tid)
 {
-    global $cache, $BLOCKS;
+    global $cache, $BLOCKS, $torrent_stuffs;
 
     if (!$BLOCKS['tvmaze_api_on']) {
         return false;
@@ -141,8 +143,17 @@ function get_episode($tvmaze_id, $season, $episode)
             $cache->set('tvshow_episode_info_' . $tvmaze_id . $season . $episode, 0, 86400);
         }
     }
+    preg_match('/(\d{4})/', $episode_info['airdate'], $match);
+    if (!empty($match[1])) {
+        $episode_info['year'] = $match[1];
+        $set = [
+            'year' => $episode_info['year'],
+        ];
+        $torrent_stuffs->set($set, $tid);
+    }
+
     if (!empty($episode_info)) {
-        return "<div class='padding10'><div class='has-text-centered size_6 bottom20'>TVMaze Episode</div>" . episode_format($episode_info, 'episode') . '</div>';
+        return episode_format($episode_info, 'episode');
     }
 
     return null;
@@ -150,32 +161,22 @@ function get_episode($tvmaze_id, $season, $episode)
 
 /**
  * @param $tvmaze_id
- * @param $id
+ * @param $tid
  *
  * @return bool|string
  *
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
-function tvmaze($tvmaze_id, $id)
+function tvmaze(int $tvmaze_id, int $tid, $season = 0, $episode = 0, $poster = '')
 {
-    global $fluent, $cache, $site_config, $CURUSER, $torrents, $BLOCKS;
+    global $cache, $site_config, $CURUSER, $BLOCKS, $torrent_stuffs, $image_stuffs;
 
-    if (!$BLOCKS['tvmaze_api_on']) {
+    if (!$BLOCKS['tvmaze_api_on'] || empty($tvmaze_id)) {
         return false;
-    }
-
-    $set = [];
-    if (empty($tvmaze_id)) {
-        return false;
-    }
-
-    $force_update = false;
-    if (empty($torrents['newgenre']) || empty($torrents['poster'])) {
-        $force_update = true;
     }
 
     $tvmaze_show_data = $cache->get('tvmaze_' . $tvmaze_id);
-    if ($force_update || $tvmaze_show_data === false || is_null($tvmaze_show_data)) {
+    if ($tvmaze_show_data === false || is_null($tvmaze_show_data)) {
         $tvmaze_link = "http://api.tvmaze.com/shows/{$tvmaze_id}?embed=cast";
         $content = fetch($tvmaze_link);
         if (empty($content)) {
@@ -204,52 +205,51 @@ function tvmaze($tvmaze_id, $id)
         $tvmaze_show_data['genres2'] = implode(', ', array_map('ucwords', $temp));
     }
 
-    if (empty($torrents['newgenre'])) {
-        $torrents['newgenre'] = $tvmaze_show_data['genres2'];
-        $set['newgenre'] = ucwords($tvmaze_show_data['genres2']);
-        $cache->update_row('torrent_details_' . $id, [
-            'newgenre' => ucwords($tvmaze_show_data['genres2']),
-        ], 0);
-    }
-    if (empty($torrents['poster'])) {
-        $poster = '';
+    $set = [
+        'newgenre' => $tvmaze_show_data['genres2'],
+        'rating' => $tvmaze_show_data['rating']['average'],
+    ];
+
+    $episode = get_episode($tvmaze_id, $season, $episode, $tid);
+
+    if (empty($poster)) {
         if (!empty($tvmaze_show_data['image']['medium'])) {
             $poster = $tvmaze_show_data['image']['medium'];
         } elseif (!empty($tvmaze_show_data['_embedded']['show']) && !empty($tvmaze_show_data['_embedded']['show']['image']['medium'])) {
             $poster = $tvmaze_show_data['_embedded']['show']['image']['medium'];
         }
         if (!empty($poster)) {
-            $torrents['poster'] = $poster;
             $set['poster'] = $poster;
-            $cache->update_row('torrent_details_' . $id, [
-                'poster' => $poster,
-            ], 0);
-            $insert = $cache->get('insert_tvmaze_tvmazeid_' . $tvmaze_id);
-            if ($insert === false || is_null($insert)) {
-                $values = [
-                    'tvmaze_id' => $tvmaze_id,
-                    'url' => $poster,
-                    'type' => 'poster',
-                ];
-                $fluent->insertInto('images')
-                    ->values($values)
-                    ->ignore()
-                    ->execute();
-
-                $cache->set('insert_tvmaze_tvmazeid_' . $tvmaze_id, 0, 604800);
-            } else {
-                $cache->set('insert_tvmaze_tvmazeid_' . $tvmaze_id, 0, 86400);
-            }
+            $values = [
+                'tvmaze_id' => $tvmaze_id,
+                'url' => $poster,
+                'type' => 'poster',
+            ];
+            $image_stuffs->insert($values);
         }
     }
-    if (!empty($set)) {
-        $fluent->update('torrents')
-            ->set($set)
-            ->where('id = ?', $id)
-            ->execute();
-    }
+    $torrent_stuffs->set($set, $tid);
+
+    $episode = get_episode($tvmaze_id, $season, $episode, $tid);
+
     if (!empty($tvmaze_show_data)) {
-        return "<div class='padding10'><div class='has-text-centered size_6 bottom20'>TVMaze</div>" . tvmaze_format($tvmaze_show_data, 'show') . '</div>';
+        if (!empty($poster)) {
+            $tvmaze_data = "
+            <div class='padding10'>
+                <div class='columns'>
+                    <div class='column is-3'>
+                        <img src='" . placeholder_image('225') . "' data-src='" . url_proxy($poster, true, 225) . "' class='lazy round10 img-polaroid'>
+                    </div>
+                    <div class='column'>" . tvmaze_format($tvmaze_show_data, 'show') . $episode . '
+                    </div>
+                </div>
+            </div>';
+        } else {
+            $tvmaze_data = "<div class='column'>" . tvmaze_format($tvmaze_show_data, 'show') . $episode . '</div>';
+        }
+        $cache->set('tvmaze_fullset_' . $tvmaze_id, $tvmaze_data, 604800);
+
+        return $tvmaze_data;
     }
 
     return false;

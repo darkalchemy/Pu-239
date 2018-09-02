@@ -354,11 +354,6 @@ function stdfoot($stdfoot = false)
     <script>
         $bg_image
         var is_12_hour = {$use_12_hour};
-        var cookie_prefix = '{$site_config['cookie_prefix']}';
-        var cookie_path = '{$site_config['cookie_path']}';
-        var cookie_lifetime = '{$site_config['cookie_lifetime']}';
-        var cookie_domain = '{$site_config['cookie_domain']}';
-        var csrf_token = '" . $session->get('csrf_token') . "';
     </script>";
 
     $htmlfoot .= "
@@ -408,13 +403,13 @@ function stdmsg($heading, $text, $class = null)
  */
 function StatusBar()
 {
-    global $CURUSER;
+    global $CURUSER, $session;
     if (!$CURUSER) {
         return '';
     }
     $StatusBar = $clock = '';
     $StatusBar .= "
-                    <div id='base_usermenu' class='tooltipper-ajax right10 level-item'>
+                    <div id='base_usermenu' class='tooltipper-ajax right10 level-item' data-csrf='" . $session->get('csrf_token') . "'>
                         <span id='clock' class='has-text-white right10'>{$clock}</span>
                         " . format_username($CURUSER['id'], true, false) . '
                     </div>';

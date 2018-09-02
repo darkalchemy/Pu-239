@@ -11,6 +11,8 @@ define('UC_ADMINISTRATOR', 5);
 define('UC_SYSOP', 6);
 define('UC_MAX', 6);
 
+
+
 $class_names = [
   UC_USER => 'USER',
   UC_POWER_USER => 'POWER USER',
@@ -21,6 +23,7 @@ $class_names = [
   UC_SYSOP => 'SYSOP',
 ];
 
+
 $class_colors = [
   UC_USER => '8e35ef',
   UC_POWER_USER => 'f9a200',
@@ -30,6 +33,7 @@ $class_colors = [
   UC_ADMINISTRATOR => 'b000b0',
   UC_SYSOP => '61df00',
 ];
+
 
 $class_images = [
   UC_USER => $site_config['pic_baseurl'] . 'class/user.gif',

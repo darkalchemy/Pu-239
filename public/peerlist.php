@@ -94,7 +94,7 @@ $subres = sql_query('SELECT u.username, u.anonymous, u.paranoia, t.owner, t.anon
     LEFT JOIN torrents AS t ON t.id = p.torrent
     WHERE p.torrent = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($subres) == 0) {
-    stderr("{$lang['peerslist_warning']}", "{$lang['peerslist_no_data']}");
+    stderr("<a id='seeders'></a>{$lang['peerslist_warning']}", "{$lang['peerslist_no_data']}");
 }
 while ($subrow = mysqli_fetch_assoc($subres)) {
     if ($subrow['seeder'] === 'yes') {

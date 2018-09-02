@@ -12,9 +12,7 @@ $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if (!is_valid_id($id)) {
     stderr('USER ERROR', 'Bad id');
 }
-$res = sql_query('SELECT COUNT(id)
-    FROM files 
-    WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT COUNT(id) FROM files  WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 
 $row = mysqli_fetch_row($res);
 $count = $row[0];
@@ -25,10 +23,7 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
 
-$subres = sql_query('SELECT * FROM files 
-    WHERE torrent = ' . sqlesc($id) . " 
-    ORDER BY id
-    {$pager['limit']}");
+$subres = sql_query('SELECT * FROM files WHERE torrent = ' . sqlesc($id) . " ORDER BY id {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
 
 $header = "
             <tr>
@@ -38,10 +33,8 @@ $header = "
             </tr>";
 $body = '';
 while ($subrow = mysqli_fetch_assoc($subres)) {
-    $ext = 'Unknown';
-    if (preg_match('/\\.([A-Za-z0-9]+)$/', $subrow['filename'], $ext)) {
-        $ext = strtolower($ext[1]);
-    }
+    $ext = pathinfo($subrow['filename'], PATHINFO_EXTENSION);
+    $ext = !empty($ext) ? $ext : 'Unknown';
     if (!file_exists(IMAGES_DIR . "icons/{$ext}.png")) {
         $ext = 'Unknown';
     }

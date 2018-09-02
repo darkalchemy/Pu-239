@@ -303,7 +303,7 @@ function torrenttable($res, $variant = 'index')
                 <td>
                     <div class='level-center'>
                         <div class='flex-inrow'>
-                            <a href='{$site_config['baseurl']}/download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "' class='flex-item'>
+                            <a href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "' class='flex-item'>
                                 <i class='icon-download icon tooltipper' title='Download This Torrent!'></i>
                             </a>
                         </div>
@@ -323,7 +323,7 @@ function torrenttable($res, $variant = 'index')
                 <td class='has-text-centered'>
                     <div class='level-center'>
                         <div class='flex-inrow'>
-                            <a href='{$site_config['baseurl']}/download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "'  class='flex-item'>
+                            <a href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "'  class='flex-item'>
                                 <i class='icon-download icon tooltipper' title='Download This Torrent!'></i>
                             </a>
                         </div>

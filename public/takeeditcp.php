@@ -78,11 +78,6 @@ if ($action == 'avatar') {
     $user_cache['signatures'] = $signatures;
     $action = 'signature';
 } elseif ($action === 'security') {
-    if (isset($_POST['ssluse']) && ($ssluse = (int) $_POST['ssluse']) && ($ssluse != $CURUSER['ssluse'])) {
-        $updateset[] = 'ssluse = ' . $ssluse;
-        $curuser_cache['ssluse'] = $ssluse;
-        $user_cache['ssluse'] = $ssluse;
-    }
     mkglobal('email:chpassword:passagain:chmailpass:secretanswer:current_pass');
     if (!empty($chpassword)) {
         if (strlen($chpassword) > 72) {

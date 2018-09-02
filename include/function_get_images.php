@@ -7,22 +7,21 @@ require_once INCL_DIR . 'function_omdb.php';
 require_once INCL_DIR . 'function_tmdb.php';
 require_once INCL_DIR . 'function_fanart.php';
 
-function get_image_by_id($media, $tid, $id, $type, $season = null, $save = true)
+function get_image_by_id($media, $tid, $imdb, $type, $season = null, $save = true)
 {
     if ($media === 'tv') {
-        $image = getTVImagesByTVDb($id, $type, $season);
+        $image = getTVImagesByTVDb($imdb, $type, $season);
     } elseif ($media === 'movie') {
-        $image = getMovieImagesByID($id, $type);
+        $image = getMovieImagesByID($imdb, $type);
     } else {
-        $id = get_movie_id($id, 'tmdb_id');
-        $image = getMovieImagesByID($id, $type);
+        $tmdbid = get_movie_id($imdb, 'tmdb_id');
+        $image = getMovieImagesByID($tmdbid, $type);
     }
-
     if (!empty($image) && $save) {
         save_changes($tid, $type, $image);
-    } elseif (!empty($image)) {
-        return $image;
     }
+
+    return $image;
 }
 
 function save_changes($tid, $type, $poster)

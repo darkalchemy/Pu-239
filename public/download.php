@@ -21,7 +21,7 @@ if (!empty($T_Pass)) {
     check_user_status();
 }
 $id = isset($_GET['torrent']) ? (int) $_GET['torrent'] : 0;
-$ssluse = isset($_GET['ssl']) && $_GET['ssl'] >= 1 || $CURUSER['ssluse'] >= 1 ? 1 : 0;
+$usessl = get_scheme() === 'https' >= 1 ? 1 : 0;
 $zipuse = isset($_GET['zip']) && $_GET['zip'] == 1 ? true : false;
 $text = isset($_GET['text']) && $_GET['text'] == 1 ? true : false;
 if (!is_valid_id($id)) {
@@ -128,7 +128,7 @@ $dict = bencdec::decode_file($fn, $site_config['max_torrent_size']);
 if (XBT_TRACKER) {
     $dict['announce'] = $site_config['xbt_prefix'] . $CURUSER['torrent_pass'] . $site_config['xbt_suffix'];
 } else {
-    $dict['announce'] = $site_config['announce_urls'][$ssluse] . '?torrent_pass=' . $CURUSER['torrent_pass'];
+    $dict['announce'] = $site_config['announce_urls'][$usessl] . '?torrent_pass=' . $CURUSER['torrent_pass'];
 }
 $dict['uid'] = (int) $CURUSER['id'];
 $tor = bencdec::encode($dict);

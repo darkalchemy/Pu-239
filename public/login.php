@@ -21,22 +21,17 @@ $left = $total = '';
  */
 function left()
 {
-    global $site_config, $fluent;
+    global $site_config, $fluent, $failed_logins;
 
-    $ip = getip();
-    $count = $fluent->from('failedlogins')
-        ->select(null)
-        ->select('COUNT(*) AS count')
-        ->where('INET6_NTOA(ip) = ?', $ip)
-        ->fetch('count');
-
+    $ip = getip(true);
+    $count = $failed_logins->get($ip);
     $left = $site_config['failedlogins'] - $count;
     if ($left <= 2) {
         $left = "
-        <span>{$left}</span>";
+        <span class='has-text-red'>{$left}</span>";
     } else {
         $left = "
-        <span>{$left}</span>";
+        <span class='has-text-lime'>{$left}</span>";
     }
 
     return $left;

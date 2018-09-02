@@ -266,9 +266,6 @@ $(function () {
             });
         });
     }
-    if ($('#thanks_holder').length) {
-        show_thanks(tid);
-    }
     var tzcheckdst = $('#tz-checkdst');
     if (tzcheckdst.length) {
         if (!tzcheckdst.is(':checked')) {
@@ -357,7 +354,7 @@ $(function () {
 
     if (document.body.contains(document.getElementById('overlay'))) {
         var width = document.getElementById('overlay').offsetWidth;
-        var height = (width * 185 / 1000) + 4;
+        var height = (width * 185 / 1000) + 6;
         document.getElementById('overlay').style.height = height + 'px';
         document.getElementById('body-overlay').classList.add('body-overlay');
     }

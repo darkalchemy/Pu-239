@@ -35,7 +35,7 @@ foreach ($templates as $template) {
     }
 }
 
-passthru('npx node-sass ' . BIN_DIR . 'pu239.scss ' . BIN_DIR . 'pu239.css');
+exec('npx node-sass ' . BIN_DIR . 'pu239.scss ' . BIN_DIR . 'pu239.css');
 
 foreach ($folders as $folder) {
     $update = TEMPLATE_DIR . "{$folder}/files.php";
@@ -168,6 +168,9 @@ foreach ($folders as $folder) {
         ],
         'details_js' => [
             SCRIPTS_DIR . 'jquery.thanks.js',
+            SCRIPTS_DIR . 'imdb.js',
+            SCRIPTS_DIR . 'isbn.js',
+            SCRIPTS_DIR . 'tvmaze.js',
         ],
         'forums_js' => [
             SCRIPTS_DIR . 'jquery.trilemma.js',

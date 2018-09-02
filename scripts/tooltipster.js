@@ -79,9 +79,10 @@ function initAll() {
         content: 'patience, grasshopper...',
         functionBefore: function (instance, helper) {
             var $origin = $(helper.origin);
+            var el = document.querySelector('#base_usermenu');
             if ($origin.data('loaded') !== true) {
                 $.post('../ajax/ajax_tooltips.php', {
-                    csrf_token: csrf_token
+                    csrf_token: el.dataset.csrf
                 }, function (data) {
                     if (instance.content() === '') return false;
                     instance.content(data);

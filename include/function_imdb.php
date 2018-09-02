@@ -1,5 +1,10 @@
 <?php
 
+require_once INCL_DIR . 'function_fanart.php';
+require_once INCL_DIR . 'function_tmdb.php';
+require_once INCL_DIR . 'function_imdb.php';
+require_once INCL_DIR . 'html_functions.php';
+
 use Imdb\Config;
 
 /**
@@ -10,9 +15,9 @@ use Imdb\Config;
  *
  * @throws Exception
  */
-function get_imdb_info($imdb_id, $title = true, $data_only = false)
+function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false)
 {
-    global $cache, $BLOCKS, $fluent;
+    global $cache, $BLOCKS, $torrent_stuffs, $image_stuffs;
 
     if (!$BLOCKS['imdb_api_on']) {
         return false;
@@ -59,6 +64,20 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false)
             'id' => $imdbid,
         ];
 
+        if (count($imdb_data['genres']) > 0) {
+            $temp = implode(', ', array_map('strtolower', $imdb_data['genres']));
+            $temp = explode(', ', $temp);
+            $imdb_data['newgenre'] = implode(', ', array_map('ucwords', $temp));
+        }
+
+        $set = [
+            'year' => $imdb_data['year'],
+            'rating' => $imdb_data['rating'],
+            'newgenre' => $imdb_data['newgenre'],
+        ];
+        if ($tid) {
+            $torrent_stuffs->set($set, $tid);
+        }
         $cache->set('imdb_' . $imdb_id, $imdb_data, 604800);
     }
     if (empty($imdb_data)) {
@@ -76,14 +95,10 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false)
         if ($insert === false || is_null($insert)) {
             $values = [
                 'imdb_id' => $imdbid,
-                'url' => $imdb_data['poster'],
+                'url' => $poster,
                 'type' => 'poster',
             ];
-            $fluent->insertInto('images')
-                ->values($values)
-                ->ignore()
-                ->execute();
-
+            $image_stuffs->insert($values);
             $cache->set('insert_imdb_imdbid_' . $imdbid, 0, 604800);
         }
     }
@@ -115,7 +130,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false)
                                 <a href='" . url_proxy("https://www.imdb.com/name/nm{$pp['imdb']}") . "' target='_blank'>
                                     <span class='dt-tooltipper-small' data-tooltip-content='#cast_{$pp['imdb']}_tooltip'>
                                         <span class='cast'>
-                                            <img src='" . url_proxy(strip_tags($pp['thumb']), true) . "' alt='' class='round5'>
+                                            <img src='" . url_proxy(strip_tags($pp['thumb']), true) . "' class='round5'>
                                         </span>
                                         <span class='tooltip_templates'>
                                             <span id='cast_{$pp['imdb']}_tooltip'>
@@ -159,7 +174,8 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false)
                     if ($foo === 'trailers') {
                         $imdb_tmp[] = "<a href='" . url_proxy($pp['url']) . "' target='_blank'>{$pp['title']}</a>";
                     } elseif ($foo != 'cast') {
-                        $imdb_tmp[] = "<a href='" . url_proxy("https://www.imdb.com/name/nm{$pp['imdb']}") . "' target='_blank' class='tooltipper' title='" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . "'>" . $pp['name'] . '</a>';
+                        $role = !empty($pp['role']) ? ucwords($pp['role']) : 'unknown';
+                        $imdb_tmp[] = "<a href='" . url_proxy("https://www.imdb.com/name/nm{$pp['imdb']}") . "' target='_blank' class='tooltipper' title='$role'>" . $pp['name'] . '</a>';
                     }
                 }
             }
@@ -178,14 +194,12 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false)
     if ($title) {
         $imdb_info = "
         <div class='padding10'>
-            <div class='has-text-centered size_6 bottom20'>IMDb</div>
-                <div class='columns'>
-                    <div class='column is-3'>
-                        <img src='" . placeholder_image('225') . "' data-src='" . url_proxy($poster, true, 225) . "' class='lazy round10 img-polaroid'>
-                    </div>
-                    <div class='column'>
-                        $imdb_info
-                    </div>
+            <div class='columns'>
+                <div class='column is-3'>
+                    <img src='" . placeholder_image('225') . "' data-src='" . url_proxy($poster, true, 225) . "' class='lazy round10 img-polaroid'>
+                </div>
+                <div class='column'>
+                    $imdb_info
                 </div>
             </div>
         </div>";
@@ -193,10 +207,30 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false)
         $imdb_info = "<div class='padding10'>$imdb_info</div>";
     }
 
+    $cache->set('imdb_fullset_' . $imdbid, $imdb_info, 604800);
+
     return [
         $imdb_info,
         $poster,
     ];
+}
+
+function get_imdb_title($imdb_id)
+{
+    global $cache, $BLOCKS, $site_config, $image_stuffs;
+
+    if (!$BLOCKS['imdb_api_on']) {
+        return false;
+    }
+
+    $imdbid = $imdb_id;
+    $imdb_id = str_replace('tt', '', $imdb_id);
+    $imdb_data = get_imdb_info($imdb_id, true, true);
+    if (empty($imdb_data['title'])) {
+        return false;
+    }
+
+    return $imdb_data['title'];
 }
 
 /**
@@ -208,10 +242,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false)
  */
 function get_imdb_info_short($imdb_id)
 {
-    require_once INCL_DIR . 'function_fanart.php';
-    require_once INCL_DIR . 'function_tmdb.php';
-    require_once INCL_DIR . 'function_imdb.php';
-    global $cache, $BLOCKS, $fluent, $site_config;
+    global $cache, $BLOCKS, $site_config, $image_stuffs;
 
     if (!$BLOCKS['imdb_api_on']) {
         return false;
@@ -248,6 +279,13 @@ function get_imdb_info_short($imdb_id)
             $imdb_data['poster'] = $image;
             $imdb_data['placeholder'] = url_proxy($imdb_data['poster'], true, 150, null, 10);
         }
+        $values = [
+            'tmdb_id' => $tmdb_id,
+            'imdb_id' => $imdbid,
+            'url' => $poster,
+            'type' => 'poster',
+        ];
+        $image_stuffs->insert($values);
     }
     if (empty($imdb_data['poster'])) {
         $poster = $site_config['pic_baseurl'] . 'noposter.png';

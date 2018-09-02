@@ -388,19 +388,6 @@ if ($action === 'avatar') {
                                     </tr>
                                 </thead>
                                 <tbody>";
-    /*
-        if (get_scheme() === 'https') {
-            $HTMLOUT .= tr('SSL options', "
-                                            <select name='ssluse' class='w-100'>
-                                                <option value='1' " . ($CURUSER['ssluse'] == 1 ? 'selected' : '') . ">SSL for Nothing</option>
-                                                <option value='2' " . ($CURUSER['ssluse'] == 2 ? 'selected' : '') . ">SSL only for site browsing</option>
-                                                <option value='3' " . ($CURUSER['ssluse'] == 3 ? 'selected' : '') . ">SSL for site browsing and downloading (recommended)</option>
-                                            </select>
-                                            <div class='top10'>
-                                                <span class='size_2'>SSL (Secure Socket Layer) is a network layer security protocol which is reponsible for ensuring security of data</span>
-                                            </div>", 1);
-        }
-    */
     if (get_parked() == '1') {
         $HTMLOUT .= tr($lang['usercp_acc_parked'], "
                                         <input type='radio' name='parked'" . ($CURUSER['parked'] === 'yes' ? ' checked' : '') . " value='yes' /> Yes

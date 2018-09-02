@@ -10,9 +10,9 @@ function get_file_name($file)
         case 'chat_css_uranium':
             return "{$site_config['baseurl']}/css/1/chat_uranium_9ceb588f.css";
         case 'css':
-            return "{$site_config['baseurl']}/css/1/css_2a8db95d.css";
+            return "{$site_config['baseurl']}/css/1/css_aee0ce01.css";
         case 'js':
-            return "{$site_config['baseurl']}/js/1/js_a0388646.js";
+            return "{$site_config['baseurl']}/js/1/js_04e8dd36.js";
         case 'index_js':
             return "{$site_config['baseurl']}/js/1/index_3479219a.js";
         case 'chat_js':
@@ -28,15 +28,15 @@ function get_file_name($file)
         case 'captcha2_js':
             return "{$site_config['baseurl']}/js/1/captcha2_5875867d.js";
         case 'upload_js':
-            return "{$site_config['baseurl']}/js/1/upload_cbc14d14.js";
+            return "{$site_config['baseurl']}/js/1/upload_d778010e.js";
         case 'request_js':
-            return "{$site_config['baseurl']}/js/1/request_d06dd1ba.js";
+            return "{$site_config['baseurl']}/js/1/request_cf1ccfa4.js";
         case 'acp_js':
             return "{$site_config['baseurl']}/js/1/acp_22d19c79.js";
         case 'dragndrop_js':
             return "{$site_config['baseurl']}/js/1/dragndrop_8018b488.js";
         case 'details_js':
-            return "{$site_config['baseurl']}/js/1/details_7864bc8d.js";
+            return "{$site_config['baseurl']}/js/1/details_91503546.js";
         case 'forums_js':
             return "{$site_config['baseurl']}/js/1/forums_b87eec63.js";
         case 'pollsmanager_js':
