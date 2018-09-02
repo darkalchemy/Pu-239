@@ -491,7 +491,6 @@ $sql_updates = [
         'flush' => false,
     ],
     [
-    [
         'id' => 1535474419,
         'info' => 'Make column unique',
         'date' => '28 Aug, 2018',
