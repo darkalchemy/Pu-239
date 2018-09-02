@@ -17,6 +17,13 @@ class Comment
         $this->site_config = $site_config;
     }
 
+    /**
+     * @param int $tid
+     * @param int $count
+     * @param int $perpage
+     *
+     * @return array
+     */
     public function get_torrent_comment(int $tid, int $count, int $perpage)
     {
         require_once INCL_DIR . 'pager_functions.php';

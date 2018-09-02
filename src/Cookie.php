@@ -11,14 +11,6 @@ class Cookie
     protected $key;
     private $fluent;
 
-    /**
-     * Cookie constructor.
-     *
-     * @param $key
-     *
-     * @throws \MatthiasMullie\Scrapbook\Exception\Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
-     */
     public function __construct($key)
     {
         global $site_config, $cache, $fluent;
@@ -69,6 +61,9 @@ class Cookie
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     public function reset_expire()
     {
         $cookie = $this->getToken();

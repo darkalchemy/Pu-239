@@ -1,4 +1,6 @@
 02 Sept, 2018
+update: database files
+remove: image proxy key
 update: remove leading dots in cookie_domain example
 add: tag @username anywhere
 update: add columns year, rating updated from api calls

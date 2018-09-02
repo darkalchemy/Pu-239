@@ -41,7 +41,7 @@ class Session
             // Set the session name:
             session_name($this->config['sessionName']);
 
-            $secure_session = 'https' === get_scheme() ? true : false;
+            $secure_session = get_scheme() === 'https' ? true : false;
             $domain = $this->config['cookie_domain'] === $this->config['domain'] ? '' : $this->config['cookie_domain'];
 
             // Set session cookie parameters:

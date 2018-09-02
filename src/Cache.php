@@ -100,6 +100,9 @@ class Cache extends TransactionalStore
         $this->commit();
     }
 
+    /**
+     * @return bool
+     */
     public function flushDB()
     {
         if ($_ENV['CACHE_DRIVER'] === 'redis') {

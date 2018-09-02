@@ -777,7 +777,7 @@ CREATE TABLE `failedlogins` (
   `banned` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `attempts` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `ip` (`ip`)
+  UNIQUE KEY `ip` (`ip`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1079,6 +1079,7 @@ CREATE TABLE `images` (
   `imdb_id` char(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `isbn` char(13) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `url_type` (`url`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1367,6 +1368,20 @@ CREATE TABLE `offers` (
   KEY `offered_by_name` (`offer_name`),
   KEY `offered_by_user_id` (`offered_by_user_id`),
   CONSTRAINT `offers_ibfk_1` FOREIGN KEY (`offered_by_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `options`
+--
+
+DROP TABLE IF EXISTS `options`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `options` (
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2165,6 +2180,9 @@ CREATE TABLE `torrents` (
   `sticky` enum('yes','fly','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `anonymous` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `url` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imdb_id` char(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `year` char(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rating` decimal(2,1) NOT NULL DEFAULT '0.0',
   `checked_by` int(10) unsigned NOT NULL DEFAULT '0',
   `points` int(10) unsigned NOT NULL DEFAULT '0',
   `allow_comments` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
@@ -2488,7 +2506,6 @@ CREATE TABLE `users` (
   `pirate` int(11) unsigned NOT NULL DEFAULT '0',
   `king` int(11) unsigned NOT NULL DEFAULT '0',
   `hidecur` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `ssluse` int(1) NOT NULL DEFAULT '0',
   `signature_post` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `forum_post` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `avatar_rights` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
@@ -2655,4 +2672,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-22 10:50:59
+-- Dump completed on 2018-09-02 23:19:02

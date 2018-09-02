@@ -13,9 +13,14 @@ class Image
         $this->fluent = $fluent;
     }
 
+    /**
+     * @param array $values
+     *
+     * @throws \Exception
+     */
     public function insert(array $values)
     {
-        $query = $this->fluent->insertInto('images')
+        $this->fluent->insertInto('images')
             ->values($values)
             ->ignore()
             ->execute();

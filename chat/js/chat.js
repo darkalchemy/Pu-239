@@ -1448,7 +1448,7 @@ var ajaxChat = {
     },
 
     getChatListUserNameTitle: function (userID, userName, userRole, ip) {
-        return this.userRole >= UC_ADMINISTRATOR && ip !== '127.0.0.1' && ip !== null ? ' title="IP: ' + ip + '"' : ' title="Click to @mention "';
+        return this.userRole >= UC_ADMINISTRATOR && ip !== '127.0.0.1' && ip !== null ? ' title="IP: ' + ip + '"' : ' title="Click to @tag "';
     },
 
     getMessageDocumentID: function (messageID) {

@@ -17,17 +17,28 @@ class FailedLogin
         $this->site_config = $site_config;
     }
 
+    /**
+     * @param string $ip
+     *
+     * @return mixed
+     */
     public function get(string $ip)
     {
         $fails = $this->fluent->from('failedlogins')
-                ->select(null)
-                ->select('SUM(attempts) AS attempts')
-                ->where('INET6_NTOA(ip) = ?', $ip)
-                ->fetch('attempts');
+            ->select(null)
+            ->select('SUM(attempts) AS attempts')
+            ->where('INET6_NTOA(ip) = ?', $ip)
+            ->fetch('attempts');
 
         return $fails;
     }
 
+    /**
+     * @param array  $set
+     * @param string $ip
+     *
+     * @throws \Exception
+     */
     public function set(array $set, string $ip)
     {
         $this->fluent->update('failedlogins')
@@ -36,6 +47,10 @@ class FailedLogin
             ->execute();
     }
 
+    /**
+     * @param array $values
+     * @param array $update
+     */
     public function insert(array $values, array $update)
     {
         $this->fluent->insertInto('failedlogins', $values)
@@ -43,6 +58,9 @@ class FailedLogin
             ->execute();
     }
 
+    /**
+     * @param string $ip
+     */
     public function delete(string $ip)
     {
         $this->fluent->deleteFrom('failedlogins')
