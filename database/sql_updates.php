@@ -491,12 +491,6 @@ $sql_updates = [
         'flush' => false,
     ],
     [
-        'id' => 1535474418,
-        'info' => 'Add column torrent_id',
-        'date' => '28 Aug, 2018',
-        'query' => "ALTER TABLE `likes` ADD COLUMN `torrent_id` int(10) unsigned NOT NULL DEFAULT '0'",
-        'flush' => false,
-    ],
     [
         'id' => 1535474419,
         'info' => 'Make column unique',
