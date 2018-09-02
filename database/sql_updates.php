@@ -473,7 +473,7 @@ $sql_updates = [
         'id' => 1535474415,
         'info' => 'Add columns year, rating',
         'date' => '28 Aug, 2018',
-        'query' => "ALTER TABLE `torrents` ADD COLUMN `year` char(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `imdb_id`, ADD COLUMN `rating` decimal(2,1) NOT NULL DEFAULT '0.0' AFTER `imdb_year`",
+        'query' => "ALTER TABLE `torrents` ADD COLUMN `year` char(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `imdb_id`, ADD COLUMN `rating` decimal(2,1) NOT NULL DEFAULT '0.0' AFTER `year`",
         'flush' => false,
     ],
     [
