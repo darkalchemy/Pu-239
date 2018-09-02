@@ -1,4 +1,5 @@
 02 Sept, 2018
+update: remove leading dots in cookie_domain example
 add: tag @username anywhere
 update: add columns year, rating updated from api calls
 update: api calls to ajax requests for faster initial page load details.php
