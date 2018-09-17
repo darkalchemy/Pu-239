@@ -22,8 +22,6 @@ MySQL 5.6 is required. MySQL 5.7 recommended.
 
 This code explicitly sets the php default timezone to 'UTC', it is recommended that you set the servers timezone to 'UTC' or change it in the code. The timezones must match. After changing the servers timezone, you must restart mysql.
 
-A working site with this code is at https://pu-239.pw/
-
 ### To Install:
 ```
 # required apps
