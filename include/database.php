@@ -18,7 +18,7 @@ if (SQL_DEBUG && $_SERVER['PHP_SELF'] != '/announce.php') {
         $params = [];
         $query = str_replace(' ?', ' %s', $BaseQuery->getQuery(true));
         $paramaters = $BaseQuery->getParameters();
-        $time = $BaseQuery->getTime();
+        $time = $BaseQuery->getExecutionTime();
         if (!empty($paramaters) && count($paramaters) >= 1) {
             foreach ($paramaters as $param) {
                 if (is_int($param)) {

@@ -230,9 +230,8 @@ if (!isset($self)) {
         ->select('last_action AS ts')
         ->select('UNIX_TIMESTAMP(NOW()) AS nowts')
         ->select('prev_action AS prevts')
-        ->where('(peer_id = ? OR peer_id = ?)', $peer_id, preg_replace('/ *$/s', '', $peer_id))
+        ->where(['peer_id = ?' => $peer_id, 'peer_id = ?' => preg_replace('/ *$/s', '', $peer_id)])
         ->where('torrent = ?', $torrentid)
-        ->where('(peer_id = ? OR peer_id = ?)', $peer_id, preg_replace('/ *$/s', '', $peer_id))
         ->fetch();
 
     if ($row) {
@@ -425,7 +424,7 @@ if (isset($self) && $event === 'stopped') {
     $seeder = 'no';
     $delete_count = $fluent->deleteFrom('peers')
         ->where('torrent = ?', $torrentid)
-        ->where('(peer_id = ? OR peer_id = ?)', $peer_id, preg_replace('/ *$/s', '', $peer_id))
+        ->where(['peer_id = ?' => $peer_id, 'peer_id = ?' => preg_replace('/ *$/s', '', $peer_id)])
         ->execute();
 
     $cache->delete('peers_' . $userid);
@@ -538,7 +537,7 @@ if (isset($self) && $event === 'stopped') {
     $updated = $fluent->update('peers')
         ->set($set)
         ->where('torrent = ?', $torrentid)
-        ->where('(peer_id = ? OR peer_id = ?)', $peer_id, preg_replace('/ *$/s', '', $peer_id))
+        ->where(['peer_id = ?' => $peer_id, 'peer_id = ?' => preg_replace('/ *$/s', '', $peer_id)])
         ->execute();
 
     $cache->delete('peers_' . $userid);
@@ -616,10 +615,11 @@ if (isset($self) && $event === 'stopped') {
         ->ignore()
         ->execute();
 
-    echo $insert_peers;
     if ($insert_peers == 0) {
         $fluent->update('peers')
             ->set($update_values)
+            ->where('peer_id = ?', $peer_id)
+            ->where('ip = ?', inet_pton($realip))
             ->execute();
     } else {
         if ($seeder == 'yes') {
@@ -664,6 +664,7 @@ if (!empty($torrent_updateset)) {
         ->execute();
 }
 if (!empty($snatch_updateset)) {
+file_put_contents('/var/log/nginx/announce.log', json_encode($snatch_updateset) . PHP_EOL, FILE_APPEND);
     $fluent->update('snatched')
         ->set($snatch_updateset)
         ->where('torrentid = ?', $torrentid)
