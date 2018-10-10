@@ -664,7 +664,6 @@ if (!empty($torrent_updateset)) {
         ->execute();
 }
 if (!empty($snatch_updateset)) {
-file_put_contents('/var/log/nginx/announce.log', json_encode($snatch_updateset) . PHP_EOL, FILE_APPEND);
     $fluent->update('snatched')
         ->set($snatch_updateset)
         ->where('torrentid = ?', $torrentid)
