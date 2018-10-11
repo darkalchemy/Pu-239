@@ -45,7 +45,8 @@ if ($staff_settings === false || is_null($staff_settings)) {
     $sql = $fluent->from('users')
         ->select(null)
         ->select('id')
-        ->where('class BETWEEN ? AND ?', UC_STAFF, UC_MAX)
+        ->where('class >= ?', UC_STAFF)
+        ->where('class <= ?', UC_MAX)
         ->orderBy('id ASC');
     foreach ($sql as $res) {
         $staff_settings['is_staff']['allowed'][] = $res['id'];
