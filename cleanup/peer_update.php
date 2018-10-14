@@ -6,7 +6,7 @@
 function peer_update($data)
 {
     dbconn();
-    global $site_config, $queries;
+    global $site_config, $queries, $torrent_stuffs;
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -30,7 +30,7 @@ function peer_update($data)
     }
     foreach (array_keys($torrent_seeds) as $tid) {
         $update = [];
-        adjust_torrent_peers($tid, -$torrent_seeds[$tid], -$torrent_leeches[$tid], 0);
+        $torrent_stuffs->adjust_torrent_peers($tid, -$torrent_seeds[$tid], -$torrent_leeches[$tid], 0);
         if ($torrent_seeds[$tid]) {
             $update[] = 'seeders = (seeders - ' . $torrent_seeds[$tid] . ')';
         }

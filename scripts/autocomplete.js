@@ -1,4 +1,4 @@
-var min_length = 5;
+var min_length = 2;
 
 document.onclick = function (event) {
     closechoices(event);
@@ -10,20 +10,25 @@ suggcont.style.display = 'none';
 
 function autosearch(key) {
     if (key != 13) {
-        var keyword = $('#search').val();
+        var el = document.querySelector('#search');
+        var csrf = el.dataset.csrf
+        var keyword = el.value
         var lastChar = keyword.slice(-1);
         if (lastChar != ' ' && keyword.length >= min_length) {
             $.ajax({
                 url: './ajax/autocomplete.php',
                 type: 'POST',
                 data: {
-                    keyword: keyword
+                    keyword: keyword,
+                    csrf: csrf
                 },
                 success: function (data) {
                     $('#autocomplete').slideDown('slow', function () {
                     });
                     $('#autocomplete_list').html(data);
                 }
+            }).fail(function () {
+                document.getElementById('autocomplete_list').innerHTML = 'No Results';
             });
         } else if (keyword.length < min_length) {
             $('#autocomplete_list').html('');

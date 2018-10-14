@@ -11,9 +11,15 @@ check_user_status();
 global $CURUSER, $site_config, $user_stuffs, $fluent;
 
 $lang = array_merge(load_language('global'), load_language('comment'));
+$stdhead = [
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
+];
 $stdfoot = [
     'js' => [
         get_file_name('request_js'),
+        get_file_name('sceditor_js'),
     ],
 ];
 $HTMLOUT = $count2 = '';
@@ -105,7 +111,7 @@ switch ($action) {
         while ($main_query_arr = mysqli_fetch_assoc($main_query_res)) {
             $HTMLOUT .= '
     <tr>
-        <td><img src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '" /></td>
+        <td><img src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '"></td>
         <td><a class="altlink" href="' . $site_config['baseurl'] . '/requests.php?action=request_details&amp;id=' . (int) $main_query_arr['request_id'] . '">' . htmlsafechars($main_query_arr['request_name'], ENT_QUOTES) . '</a></td>
         <td>' . get_date($main_query_arr['added'], 'LONG') . '</td>
         <td>' . number_format($main_query_arr['comments']) . '</td>
@@ -117,7 +123,7 @@ switch ($action) {
         }
         $HTMLOUT .= '</table>';
         $HTMLOUT .= ($count > $perpage ? $menu_bottom : '') . '<br>';
-        echo stdhead('Requests') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Requests', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'request_details':
@@ -146,17 +152,17 @@ switch ($action) {
             ->fetch();
 
         if (!$row_did_they_vote) {
-            $vote_yes = '<form method="post" action="requests.php">
-                    <input type="hidden" name="action" value="vote" />
-                    <input type="hidden" name="id" value="' . $id . '" />
-                    <input type="hidden" name="vote" value="1" />
-                    <input type="submit" class="button is-small" value="vote yes!" />
+            $vote_yes = '<form method="post" action="' . $site_config['baseurl'] . '/requests.php">
+                    <input type="hidden" name="action" value="vote">
+                    <input type="hidden" name="id" value="' . $id . '">
+                    <input type="hidden" name="vote" value="1">
+                    <input type="submit" class="button is-small" value="vote yes!">
                     </form> ~ you will be notified when this request is filled.';
-            $vote_no = '<form method="post" action="requests.php">
-                    <input type="hidden" name="action" value="vote" />
-                    <input type="hidden" name="id" value="' . $id . '" />
-                    <input type="hidden" name="vote" value="2" />
-                    <input type="submit" class="button is-small" value="vote no!" />
+            $vote_no = '<form method="post" action="' . $site_config['baseurl'] . '/requests.php">
+                    <input type="hidden" name="action" value="vote">
+                    <input type="hidden" name="id" value="' . $id . '">
+                    <input type="hidden" name="vote" value="2">
+                    <input type="submit" class="button is-small" value="vote no!">
                     </form> ~ you are being a stick in the mud.';
             $your_vote_was = '';
         } else {
@@ -173,7 +179,7 @@ switch ($action) {
   </tr>
   <tr>
   <td>image:</td>
-  <td><img src="' . strip_tags(url_proxy($arr['image'], true, 500, null)) . '" alt="image" /></td>
+  <td><img src="' . strip_tags(url_proxy($arr['image'], true, 500, null)) . '" alt="image"></td>
   </tr>
   <tr>
   <td>description:</td>
@@ -181,7 +187,7 @@ switch ($action) {
   </tr>
   <tr>
   <td>category:</td>
-  <td><img src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '" /></td>
+  <td><img src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '"></td>
   </tr>
   <tr>
   <td>link:</td>
@@ -208,9 +214,9 @@ switch ($action) {
   <tr>
   <td>Report Request</td>
   <td>
-    <form action="report.php?type=Request&amp;id=' . $id . '" method="post">
+    <form action="' . $site_config['baseurl'] . '/report.php?type=Request&amp;id=' . $id . '" method="post">
         <div class="has-text-centered margin20">
-            <input type="submit" class="button is-small" value="Report This Request" />
+            <input type="submit" class="button is-small" value="Report This Request">
         </div>
         For breaking the <a class="altlink" href="rules.php">rules</a>
     </form>
@@ -247,7 +253,7 @@ switch ($action) {
             $HTMLOUT .= commenttable($allrows, 'request');
             $HTMLOUT .= ($count > $perpage ? $menu_bottom : '');
         }
-        echo stdhead('Request details for: ' . htmlsafechars($arr['request_name'], ENT_QUOTES)) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Request details for: ' . htmlsafechars($arr['request_name'], ENT_QUOTES), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'add_new_request':
@@ -255,7 +261,7 @@ switch ($action) {
         $image = strip_tags(isset($_POST['image']) ? trim($_POST['image']) : '');
         $body = (isset($_POST['body']) ? trim($_POST['body']) : '');
         $link = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : '');
-        $category_drop_down = '<select name="category" class="required"><option class="body" value="">Select Request Category</option>';
+        $category_drop_down = '<select name="category" required><option class="body" value="">Select Request Category</option>';
         $cats = genrelist();
         foreach ($cats as $row) {
             $category_drop_down .= '<option class="body" value="' . (int) $row['id'] . '"' . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($row['name']) . '</option>';
@@ -277,7 +283,7 @@ switch ($action) {
         $HTMLOUT .= $top_menu . '
     <h1 class="has-text-centered">New Request</h1>
     <div class="banner_container has-text-centered w-100"></div>
-    <form method="post" action="requests.php?action=add_new_request" name="validate_form" id="validate_form">
+    <form method="post" action="' . $site_config['baseurl'] . '/requests.php?action=add_new_request">
     <table class="table table-bordered table-striped">
     <tbody>
     <tr>
@@ -291,12 +297,12 @@ switch ($action) {
     </tr>
     <tr>
     <td>name:</td>
-    <td><input type="text" name="request_name" value="' . htmlsafechars($request_name, ENT_QUOTES) . '" class="required w-100" /></td>
+    <td><input type="text" name="request_name" value="' . htmlsafechars($request_name, ENT_QUOTES) . '" class="w-100" required></td>
     </tr>
     <tr>
     <td>link:</td>
     <td>
-        <input type="text" id="url" name="link" class="w-100 required" data-csrf="' . $session->get('csrf_token') . '" value="' . htmlsafechars($link, ENT_QUOTES) . '" />
+        <input type="url" id="url" name="link" class="w-100" data-csrf="' . $session->get('csrf_token') . '" value="' . htmlsafechars($link, ENT_QUOTES) . '" required>
         <div class="imdb_outer">
             <div class="imdb_inner">
             </div>
@@ -306,7 +312,7 @@ switch ($action) {
     <tr>
     <td>image:</td>
     <td>
-        <input type="text" id="poster" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required w-100" />
+        <input type="url" id="poster" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="w-100" required>
         <div class="poster_container has-text-centered"></div>
     </td>
     </tr>
@@ -316,18 +322,18 @@ switch ($action) {
     </tr>
     <tr>
     <td>description:</td>
-    <td>' . BBcode($body, 'required') . '</td>
+    <td>' . BBcode($body) . '</td>
     </tr>
     <tr>
     <td colspan="2">
     <div class="has-text-centered margin20">
-        <input type="submit" name="button" class="button is-small" value="Submit" />
+        <input type="submit" name="button" class="button is-small" value="Submit">
     </div>
     </td>
     </tr>
     </tbody>
     </table></form><br>';
-        echo stdhead('Add new request.') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Add new request.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'delete_request':
@@ -352,7 +358,7 @@ switch ($action) {
             header('Location: /requests.php?request_deleted=1');
             die();
         }
-        echo stdhead('Delete Request.') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Delete Request.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'edit_request':
@@ -374,7 +380,7 @@ switch ($action) {
         $body = (isset($_POST['body']) ? trim($_POST['body']) : $edit_arr['description']);
         $link = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : $edit_arr['link']);
         $category = (isset($_POST['category']) ? intval($_POST['category']) : $edit_arr['category']);
-        $category_drop_down = '<select name="category" class="required"><option class="body" value="">Select Request Category</option>';
+        $category_drop_down = '<select name="category" required><option class="body" value="">Select Request Category</option>';
         $cats = genrelist();
         foreach ($cats as $row) {
             $category_drop_down .= '<option class="body" value="' . (int) $row['id'] . '"' . ($category == $row['id'] ? ' selected"' : '') . '>' . htmlsafechars($row['name'], ENT_QUOTES) . '</option>';
@@ -387,27 +393,24 @@ switch ($action) {
         $HTMLOUT .= '<table class="table table-bordered table-striped">
    <tr>
    <td class="embedded">
-   <h1>Edit Request</h1>' . $top_menu . '
-   <form method="post" action="requests.php?action=edit_request" name="validate_form" id="validate_form">
-   <input type="hidden" name="id" value="' . $id . '" />
+   <h1 class="has-text-centered">Edit Request</h1>' . $top_menu . '
+   <form method="post" action="' . $site_config['baseurl'] . '/requests.php?action=edit_request">
+   <input type="hidden" name="id" value="' . $id . '">
    <table class="table table-bordered table-striped">
-   <tr>
-   <td colspan="2"><h1>Edit Request</h1></td>
-   </tr>
    <tr>
    <td colspan="2">Be sure to fill in all fields!</td>
    </tr>
    <tr>
    <td>name:</td>
-   <td><input type="text" name="request_name" value="' . htmlsafechars($request_name, ENT_QUOTES) . '" class="required" /></td>
+   <td><input type="text" name="request_name" value="' . htmlsafechars($request_name, ENT_QUOTES) . '" class="w-100" required></td>
    </tr>
    <tr>
    <td>image:</td>
-   <td><input type="text" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required" /></td>
+   <td><input type="url" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="w-100" required></td>
    </tr>
    <tr>
    <td>link:</td>
-   <td><input type="text" name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="required" /></td>
+   <td><input type="url" name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="w-100" required></td>
    </tr>
    <tr>
    <td>category:</td>
@@ -419,18 +422,18 @@ switch ($action) {
    </tr>' . ($edit_arr['filled_by_user_id'] == 0 ? '' : '
    <tr>
    <td>filled:</td>
-   <td>' . $filled_by . ' <input type="checkbox" name="filled_by" value="1"' . (isset($_POST['filled_by']) ? ' "checked"' : '') . ' /> check this box to re-set this request. [ removes filled by ]  </td>
+   <td>' . $filled_by . ' <input type="checkbox" name="filled_by" value="1"' . (isset($_POST['filled_by']) ? ' "checked"' : '') . '> check this box to re-set this request. [ removes filled by ]  </td>
    </tr>') . '
    <tr>
    <td colspan="2">
     <div class="has-text-centered margin20">
-        <input type="submit" name="button" class="button is-small" value="Edit" />
+        <input type="submit" name="button" class="button is-small" value="Edit">
     </div>
     </td>
    </tr>
    </table></form>
     </td></tr></table><br>';
-        echo stdhead('Edit Request.') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Edit Request.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'add_comment':
@@ -459,8 +462,8 @@ switch ($action) {
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
         $HTMLOUT .= $top_menu . '
-    <form method="post" action="requests.php?action=add_comment">
-        <input type="hidden" name="id" value="' . $id . '"/>
+    <form method="post" action="' . $site_config['baseurl'] . '/requests.php?action=add_comment">
+        <input type="hidden" name="id" value="' . $id . '">
         <table class="table table-bordered table-striped">
             <tr>
                 <td class="colhead" colspan="2"><h1>Add a comment to "' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '"</h1></td>
@@ -472,7 +475,7 @@ switch ($action) {
             <tr>
                 <td colspan="2">
                     <div class="has-text-centered margin20">
-                        <input name="button" type="submit" class="button is-small" value="Save" />
+                        <input name="button" type="submit" class="button is-small" value="Save">
                     </div>
                 </td>
             </tr>
@@ -490,7 +493,7 @@ switch ($action) {
             $HTMLOUT .= '<h2>Most recent comments, in reverse order</h2>';
             $HTMLOUT .= commenttable($allrows, 'request');
         }
-        echo stdhead('Add a comment to "' . $arr['request_name'] . '"') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Add a comment to "' . $arr['request_name'] . '"', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'edit':
@@ -521,9 +524,9 @@ switch ($action) {
             $arr_user = $user_stuffs->getUserFromId($arr['user']);
             $avatar = get_avatar($arr_user);
         }
-        $HTMLOUT .= $top_menu . '<form method="post" action="requests.php?action=edit">
-    <input type="hidden" name="id" value="' . $arr['request'] . '"/>
-    <input type="hidden" name="cid" value="' . $comment_id . '"/>
+        $HTMLOUT .= $top_menu . '<form method="post" action="' . $site_config['baseurl'] . '/requests.php?action=edit">
+    <input type="hidden" name="id" value="' . $arr['request'] . '">
+    <input type="hidden" name="cid" value="' . $comment_id . '">
     <table class="table table-bordered table-striped">
      <tr>
     <td colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '"</h1></td>
@@ -534,12 +537,12 @@ switch ($action) {
      <tr>
         <td colspan="2">
             <div class="has-text-centered margin20">
-                <input name="button" type="submit" class="button is-small" value="Edit" />
+                <input name="button" type="submit" class="button is-small" value="Edit">
             </div>
         </td>
     </tr>
      </table></form>';
-        echo stdhead('Edit comment to "' . $arr['request_name'] . '"') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Edit comment to "' . $arr['request_name'] . '"', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'edit_comment':
@@ -606,7 +609,7 @@ switch ($action) {
                     <a href='$returnto' class='button is-small has-text-black'>back</a>
                 </div>";
         }
-        echo stdhead("{$lang['comment_original']}") . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead("{$lang['comment_original']}", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         die();
         break;
 }

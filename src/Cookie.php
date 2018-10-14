@@ -27,7 +27,7 @@ class Cookie
      *
      * @return bool
      */
-    public function set($value, $expires)
+    public function set(string $value, int $expires)
     {
         if (empty($this->key) || empty($value)) {
             return false;

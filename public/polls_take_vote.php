@@ -3,7 +3,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $fluent, $cache;
+global $CURUSER, $site_config, $fluent, $cache, $pollvoter_stuffs;
 
 $lang = load_language('global');
 $poll_id = isset($_GET['pollid']) ? intval($_GET['pollid']) : false;
@@ -47,8 +47,13 @@ if (!$_POST['nullvote']) {
     if (!empty($vote_cast) && count($vote_cast) < count($poll_answers)) {
         stderr('ERROR', 'No vote');
     }
-    $sql = "INSERT INTO poll_voters (user_id, ip, poll_id, vote_date) VALUES ({$CURUSER['id']}, " . ipToStorageFormat($CURUSER['ip']) . ", {$poll_data['pid']}, " . TIME_NOW . ')';
-    sql_query($sql) or sqlerr(__FILE__, __LINE__);
+    $values = [
+        'user_id' => $CURUSER['id'],
+        'ip' => inet_pton(getip()),
+        'poll_id' => $poll_data['pid'],
+        'vote_date' => TIME_NOW,
+    ];
+    $vid = $pollvoter_stuffs->add($values);
     $votes = $poll_data['votes'] + 1;
     $cache->update_row('poll_data_' . $CURUSER['id'], [
         'votes' => $votes,
@@ -56,7 +61,8 @@ if (!$_POST['nullvote']) {
         'user_id' => $CURUSER['id'],
         'vote_date' => TIME_NOW,
     ], $site_config['expires']['poll_data']);
-    if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    dd($cache->get('poll_data_' . $CURUSER['id']));
+    if (!$vid) {
         stderr('DBERROR', 'Could not update records');
     }
     foreach ($vote_cast as $question_id => $choice_array) {
@@ -73,9 +79,13 @@ if (!$_POST['nullvote']) {
         stderr('DBERROR', 'Could not update records');
     }
 } else {
-    sql_query("INSERT INTO poll_voters (user_id, ip, poll_id, vote_date)
-                VALUES
-                ({$CURUSER['id']}, " . ipToStorageFormat($CURUSER['ip']) . ", {$poll_data['pid']}, " . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
+    $values = [
+        'user_id' => $CURUSER['id'],
+        'ip' => inet_pton(getip()),
+        'poll_id' => $poll_data['pid'],
+        'vote_date' => TIME_NOW,
+    ];
+    $vid = $pollvoter_stuffs->add($values);
     $votes = $poll_data['votes'] + 1;
     $cache->update_row('poll_data_' . $CURUSER['id'], [
         'votes' => $votes,
@@ -83,7 +93,9 @@ if (!$_POST['nullvote']) {
         'user_id' => $CURUSER['id'],
         'vote_date' => TIME_NOW,
     ], $site_config['expires']['poll_data']);
-    if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    dd($cache->get('poll_data_' . $CURUSER['id']));
+
+    if (!$vid) {
         stderr('DBERROR', 'Could not update records');
     }
 }

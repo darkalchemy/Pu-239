@@ -319,3 +319,30 @@ function getStartAndEndDate($year, $week)
             ->format('Y-m-d'),
     ];
 }
+
+function get_imdbid($tmdbid)
+{
+    global $cache, $BLOCKS, $fluent;
+
+    if (!$BLOCKS['tmdb_api_on']) {
+        return false;
+    }
+
+    $json = $cache->get('tmdb_get_imdbid_' . $tmdbid);
+    if ($json === false || is_null($json)) {
+        $apikey = $_ENV['TMDB_API_KEY'];
+        $url = "https://api.themoviedb.org/3/movie/{$tmdbid}/external_ids?api_key={$apikey}";
+        $content = fetch($url);
+        if (!$content) {
+            $cache->set('tmdb_movies_by_id_' . $tmdbid, 0, 86400);
+
+            return false;
+        }
+        $json = json_decode($content, true);
+        $cache->set('tmdb_get_imdbid_' . $tmdbid, $json, 86400);
+    }
+
+    if (!empty($json['imdb_id'])) {
+        return $json['imdb_id'];
+    }
+}

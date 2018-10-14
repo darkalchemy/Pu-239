@@ -14,11 +14,18 @@ if ($CURUSER['class'] >= UC_STAFF) {
                     <a id='snatched-staff-hash'></a>
                     <fieldset id='snatched-staff' class='header'>
                         <legend class='flipper size_4'><i class='icon-down-open' aria-hidden='true'></i><span class='has-text-red'>*Staff Only*</span> View Snatched Torrents</legend>";
-    if (!XBT_TRACKER) {
-        $res = sql_query('SELECT sn.start_date AS s, sn.complete_date AS c, sn.last_action AS l_a, sn.seedtime AS s_t, sn.seedtime, sn.leechtime AS l_t, sn.leechtime, sn.downspeed, sn.upspeed, sn.uploaded, sn.downloaded, sn.torrentid, sn.start_date, sn.complete_date, sn.seeder, sn.last_action, sn.connectable, sn.agent, sn.seedtime, sn.port, cat.name, cat.image, t.size, t.seeders, t.leechers, t.owner, t.name AS torrent_name ' . 'FROM snatched AS sn ' . 'LEFT JOIN torrents AS t ON t.id = sn.torrentid ' . 'LEFT JOIN categories AS cat ON cat.id = t.category ' . 'WHERE sn.userid = ' . sqlesc($id) . ' ORDER BY sn.start_date DESC LIMIT 0, 15') or sqlerr(__FILE__, __LINE__);
-    } else {
-        $res = sql_query('SELECT x.started AS s, x.completedtime AS c, x.mtime AS l_a, x.seedtime AS s_t, x.seedtime, x.leechtime AS l_t, x.leechtime, x.downspeed, x.upspeed, x.uploaded, x.downloaded, x.fid, x.started, x.completedtime, x.active, x.mtime, x.connectable, x.peer_id, cat.name, cat.image, t.size, t.seeders, t.leechers, t.owner, t.name AS torrent_name ' . 'FROM xbt_files_users AS x ' . 'LEFT JOIN torrents AS t ON t.id = x.fid ' . 'LEFT JOIN categories AS cat ON cat.id = t.category ' . 'WHERE x.uid=' . sqlesc($id) . ' ORDER BY x.started DESC LIMIT 0, 15') or sqlerr(__FILE__, __LINE__);
-    }
+    $res = sql_query('SELECT sn.start_date AS s, sn.complete_date AS c, sn.last_action AS l_a, sn.seedtime AS s_t, sn.seedtime, sn.leechtime AS l_t, sn.leechtime, sn.downspeed, sn.upspeed, sn.uploaded,
+                        sn.downloaded, sn.torrentid, sn.start_date, sn.complete_date, sn.seeder, sn.last_action, sn.seedtime,
+                        cat.name, cat.image,
+                        t.size, t.seeders, t.leechers, t.owner, t.name AS torrent_name,
+                        p.agent, p.connectable, p.port, INET6_NTOA(p.ip) AS ip
+                    FROM snatched AS sn
+                    LEFT JOIN torrents AS t ON sn.torrentid = t.id
+                    LEFT JOIN categories AS cat ON t.category = cat.id
+                    LEFT JOIN peers AS p ON t.id = p.torrent
+                    WHERE sn.userid = ' . sqlesc($id) . ' AND p.userid = ' . sqlesc($id) . '
+                    ORDER BY sn.start_date DESC
+                    LIMIT 0, 15') or sqlerr(__FILE__, __LINE__);
     $heading .= "
                     <tr>
                         <th>{$lang['userdetails_s_cat']}</th>
@@ -97,8 +104,8 @@ if ($CURUSER['class'] >= UC_STAFF) {
                     <span class='has-text-lightgreen'><b>{$lang['userdetails_s_seeding']}</b></span>" : "
                     <span class='has-text-red'><b>{$lang['userdetails_s_nseeding']}</b></span>") . '
                 </td>
-                <td>' . htmlsafechars($arr['agent']) . "<br>{$lang['userdetails_s_port']}" . (int) $arr['port'] . '<br>' . ($arr['connectable'] === 'yes' ? "<b>{$lang['userdetails_s_conn']}</b> 
-                    <span class='has-text-lightgreen'>{$lang['userdetails_yes']}</span>" : "<b>{$lang['userdetails_s_conn']}</b> 
+                <td>' . htmlsafechars($arr['agent']) . '<br>IP: ' . $arr['ip'] . "<br>{$lang['userdetails_s_port']}" . $arr['port'] . '<br>' . ($arr['connectable'] === 'yes' ? "<b>{$lang['userdetails_s_conn']}</b> 
+                    <span class='has-text-lightgreen'>{$lang['userdetails_yes']}</span>" : "<b>{$lang['userdetails_s_conn']}</b>
                     <span class='has-text-red'><b>{$lang['userdetails_no']}</b></span>") . '
                 </td>
             </tr>';

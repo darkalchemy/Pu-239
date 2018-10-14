@@ -13,24 +13,28 @@ if ($irc === false || is_null($irc)) {
         ->where('id != 2')
         ->orderBy('username ASC');
 
-    foreach ($query as $row) {
-        $list[] = format_username($row['id']);
-    }
-    $list[] = format_username(2);
-    $irc['ircusers'] = implode(',&nbsp;&nbsp;', $list);
-    $irc['count'] = count($list);
-    if ($irc['count'] === 0) {
+    $irc['count'] = count($query);
+    if ($irc['count'] >= 100) {
+        $irc['ircusers'] = format_comment('Too many to list here :)');
+    } elseif ($irc['count'] > 0) {
+        foreach ($query as $row) {
+            $list[] = format_username($row['id']);
+        }
+        $irc['ircusers'] = implode(',&nbsp;&nbsp;', $list);
+    } elseif ($irc['count'] === 0) {
         $irc['ircusers'] = $lang['index_irc_nousers'];
     }
+
+    $irc['count'] = number_format($irc['count']);
     $cache->set('ircusers_', $irc, $site_config['expires']['activeircusers']);
 }
 
 $HTMLOUT .= "
     <a id='irc-hash'></a>
     <fieldset id='irc' class='header'>
-        <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['index_active_irc']} ({$irc['count']})</legend>
+        <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_active_irc']} ({$irc['count']})</legend>
         <div class='bordered'>
-            <div class='alt_bordered bg-00 level-item is-wrapped top10 bottom10 line-40'>
+            <div class='alt_bordered bg-00 level-item is-wrapped top10 bottom10'>
                 {$irc['ircusers']}
             </div>
         </div>

@@ -221,7 +221,6 @@ $staff_smilies = [
     ':maxlocked:' => 'maxlocked.gif',
     ':hslocked:' => 'hslocked.gif',
     ':locked:' => 'locked.gif',
-    ':censoredpic:' => 'boucher-censored.jpg',
     ':dabunnies:' => 'bunnies3.gif',
 ];
 $customsmilies = [

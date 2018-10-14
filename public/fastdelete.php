@@ -3,7 +3,6 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
-require_once INCL_DIR . 'function_memcache.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $session, $fluent, $torrent_stuffs;
 
@@ -41,7 +40,7 @@ if (!$sure) {
 }
 
 $torrent_stuffs->delete_by_id($tid['id']);
-remove_torrent($tid['info_hash']);
+$torrent_stuffs->remove_torrent($tid['info_hash']);
 
 if ($CURUSER['id'] != $tid['owner']) {
     $msg = sqlesc("{$lang['fastdelete_msg_first']} [b]{$tid['name']}[/b] {$lang['fastdelete_msg_last']} {$CURUSER['username']}");

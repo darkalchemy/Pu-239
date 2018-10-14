@@ -3,10 +3,12 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
+require_once INCL_DIR . 'function_recaptcha.php';
 require_once CLASS_DIR . 'class_browser.php';
 dbconn();
 global $CURUSER, $site_config, $cache, $session, $user_stuffs, $failed_logins, $message_stuffs, $ip_stuffs;
 
+$dt = TIME_NOW;
 if (!$CURUSER) {
     get_template();
 }
@@ -26,13 +28,13 @@ function failedloginscheck()
 }
 
 $user_id = '';
-$response = !empty($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
+$response = !empty($_POST['token']) ? $_POST['token'] : '';
 extract($_POST);
 unset($_POST);
 extract($_GET);
 unset($_GET);
-if (!empty($bot) && !empty($auth)) {
-    $user_id = $user_stuffs->get_bot_id(UC_UPLOADER, $bot, $auth);
+if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
+    $user_id = $user_stuffs->get_bot_id(UC_UPLOADER, $bot, $torrent_pass, $auth);
 }
 
 if (empty($user_id)) {
@@ -42,33 +44,12 @@ if (empty($user_id)) {
     if (empty($password)) {
         stderr('Error', "Password can't be blank");
     }
-    if (empty($submitme) || $submitme != 'Login') {
-        stderr('Error', 'You missed, you plonker!');
-    }
-
     if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
-        if ($response === '') {
-            header('Location: login.php');
-            exit();
-        }
-        $ip = getip(true);
-        $url = 'https://www.google.com/recaptcha/api/siteverify';
-        $params = [
-            'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
-            'response' => $response,
-            'remoteip' => $ip,
-        ];
-        $query = http_build_query($params);
-        $contextData = [
-            'method' => 'POST',
-            'header' => "Content-Type: application/x-www-form-urlencoded\r\n" . "Connection: close\r\n" . 'Content-Length: ' . strlen($query) . "\r\n",
-            'content' => $query,
-        ];
-        $context = stream_context_create(['http' => $contextData]);
-        $result = file_get_contents($url, false, $context);
-        $responseKeys = json_decode($result, true);
-        if (intval($responseKeys['success']) !== 1) {
-            stderr('Error', 'reCAPTCHA Failed');
+        $result = verify_recaptcha($response);
+        if ($result !== 'valid') {
+            $session->set('is-warning', "[h2]reCAPTCHA failed. {$result}[/h2]");
+            header("Location: {$site_config['baseurl']}/login.php");
+            die();
         }
     }
 }
@@ -94,31 +75,29 @@ function bark($text = 'Username or password incorrect')
 failedloginscheck();
 $row = $user_stuffs->get_login($username);
 $userid = $row['id'];
-$ip = getip();
+$ip = getip(true);
 if ($row === false) {
     $values = [
         'ip' => inet_pton($ip),
-        'added' => TIME_NOW,
+        'added' => $dt,
         'attempts' => 1,
     ];
     $update = [
-        'added' => TIME_NOW,
+        'added' => $dt,
         'attempts' => new Envms\FluentPDO\Literal('attempts + 1'),
     ];
 
     $failed_logins->insert($values, $update);
     bark();
 }
-$ip_escaped = ipToStorageFormat($ip);
-$added = TIME_NOW;
 if (!password_verify($password, $row['passhash'])) {
     $values = [
         'ip' => inet_pton($ip),
-        'added' => TIME_NOW,
+        'added' => $dt,
         'attempts' => 1,
     ];
     $update = [
-        'added' => TIME_NOW,
+        'added' => $dt,
         'attempts' => new Envms\FluentPDO\Literal('attempts + 1'),
     ];
 
@@ -128,7 +107,7 @@ if (!password_verify($password, $row['passhash'])) {
         'receiver' => $userid,
         'msg' => "[size=7][color=red]Security Alert[/color][/size][br]Account ID: {$userid}[br][b]Ip Address[/b]: " . htmlsafechars($ip) . '[br]Somebody (' . htmlsafechars($username) . ") tried to login but failed![br]If this wasn't you please report this event to a {$site_config['site_name']} staff member.[br][br]Thank you.[br]",
         'subject' => 'Failed login',
-        'added' => TIME_NOW,
+        'added' => $dt,
     ];
     $message_stuffs->insert($values);
     bark("<b>Error</b>: Username or password entry incorrect <br>Have you forgotten your password? <a href='{$site_config['baseurl']}/resetpw.php'><b>Recover</b></a> your password !");
@@ -172,16 +151,16 @@ if ($no_log_ip) {
 
 if (!$no_log_ip) {
     $values = [
+        'ip' => $ip,
         'userid' => $userid,
-        'ip' => inet_pton($ip),
-        'lastlogin' => TIME_NOW,
-        'type' => 'Login',
+        'type' => 'login',
+        'lastlogin' => $dt,
     ];
     $update = [
-        'lastlogin' => TIME_NOW,
+        'lastlogin' => $dt,
     ];
 
-    $ip_stuffs->insert($values, $update, $userid);
+    $ip_stuffs->insert_update($values, $update, $userid);
 }
 
 $ua = getBrowser();
@@ -189,8 +168,8 @@ $browser = 'Browser: ' . $ua['name'] . ' ' . $ua['version'] . '. Os: ' . $ua['pl
 $set = [
     'browser' => $browser,
     'ip' => inet_pton($ip),
-    'last_access' => TIME_NOW,
-    'last_login' => TIME_NOW,
+    'last_access' => $dt,
+    'last_login' => $dt,
 ];
 $user_stuffs->update($set, $userid);
 $cache->update_row('user' . $userid, [

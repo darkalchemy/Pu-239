@@ -11,9 +11,15 @@ check_user_status();
 global $CURUSER, $site_config, $user_stuffs, $fluent;
 
 $lang = array_merge(load_language('global'), load_language('comment'));
+$stdhead = [
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
+];
 $stdfoot = [
     'js' => [
         get_file_name('request_js'),
+        get_file_name('sceditor_js'),
     ],
 ];
 $HTMLOUT = $count2 = '';
@@ -114,7 +120,7 @@ switch ($action) {
             $status = ($main_query_arr['status'] == 'approved' ? '<span>Approved!</span>' : ($main_query_arr['status'] === 'pending' ? '<span>Pending...</span>' : '<span>denied</span>'));
             $HTMLOUT .= '
     <tr>
-        <td><img src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '" /></td>
+        <td><img src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '"></td>
         <td><a class="altlink" href="' . $site_config['baseurl'] . '/offers.php?action=offer_details&amp;id=' . $main_query_arr['offer_id'] . '">' . htmlsafechars($main_query_arr['offer_name'], ENT_QUOTES) . '</a></td>
         <td>' . get_date($main_query_arr['added'], 'LONG') . '</td>
         <td>' . number_format($main_query_arr['comments']) . '</td>
@@ -126,7 +132,7 @@ switch ($action) {
         }
         $HTMLOUT .= '</table>';
         $HTMLOUT .= ($count > $perpage ? $menu_bottom : '') . '<br>';
-        echo stdhead('Offers') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Offers', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'offer_details':
@@ -155,17 +161,17 @@ switch ($action) {
             ->fetch();
 
         if (!$row_did_they_vote) {
-            $vote_yes = '<form method="post" action="offers.php">
-                    <input type="hidden" name="action" value="vote" />
-                    <input type="hidden" name="id" value="' . $id . '" />
-                    <input type="hidden" name="vote" value="1" />
-                    <input type="submit" class="button is-small" value="vote yes!" />
+            $vote_yes = '<form method="post" action="' . $site_config['baseurl'] . '/offers.php">
+                    <input type="hidden" name="action" value="vote">
+                    <input type="hidden" name="id" value="' . $id . '">
+                    <input type="hidden" name="vote" value="1">
+                    <input type="submit" class="button is-small" value="vote yes!">
                     </form> ~ you will be notified when this offer is filled.';
-            $vote_no = '<form method="post" action="offers.php">
-                    <input type="hidden" name="action" value="vote" />
-                    <input type="hidden" name="id" value="' . $id . '" />
-                    <input type="hidden" name="vote" value="2" />
-                    <input type="submit" class="button is-small" value="vote no!" />
+            $vote_no = '<form method="post" action="' . $site_config['baseurl'] . '/offers.php">
+                    <input type="hidden" name="action" value="vote">
+                    <input type="hidden" name="id" value="' . $id . '">
+                    <input type="hidden" name="vote" value="2">
+                    <input type="submit" class="button is-small" value="vote no!">
                     </form> ~ you are being a stick in the mud.';
             $your_vote_was = '';
         } else {
@@ -173,15 +179,15 @@ switch ($action) {
             $vote_no = '';
             $your_vote_was = ' your vote: ' . $row_did_they_vote[0] . ' ';
         }
-        $status_drop_down = ($CURUSER['class'] < UC_STAFF ? '' : '<br><form method="post" action="offers.php">
-                    <input type="hidden" name="action" value="alter_status" />
-                    <input type="hidden" name="id" value="' . $id . '" />
+        $status_drop_down = ($CURUSER['class'] < UC_STAFF ? '' : '<br><form method="post" action="' . $site_config['baseurl'] . '/offers.php">
+                    <input type="hidden" name="action" value="alter_status">
+                    <input type="hidden" name="id" value="' . $id . '">
                     <select name="set_status">
                     <option class="body" value="pending"' . ($arr['status'] == 'pending' ? ' selected' : '') . '>Status: pending</option>
                     <option class="body" value="approved"' . ($arr['status'] == 'approved' ? ' selected' : '') . '>Status: approved</option>
                     <option class="body" value="denied"' . ($arr['status'] == 'denied' ? ' selected' : '') . '>Status: denied</option>
                     </select>
-                    <input type="submit" class="button is-small" value="change status!" />
+                    <input type="submit" class="button is-small" value="change status!">
                     </form> ');
         $usersdata = $user_stuffs->getUserFromId($arr['offered_by_user_id']);
         $HTMLOUT .= '<div class="has-text-centered">' . (isset($_GET['status_changed']) ? '<h1>Offer Status Updated!</h1>' : '') . (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . ($arr['status'] === 'approved' ? '<span>status: approved!</span>' : ($arr['status'] === 'pending' ? '<span>status: pending...</span>' : '<span>status: denied</span>')) . $status_drop_down . '</div><br><br>
@@ -192,7 +198,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>image:</td>
-    <td><img src="' . strip_tags(url_proxy($arr['image'], true, 500, null)) . '" alt="image" /></td>
+    <td><img src="' . strip_tags(url_proxy($arr['image'], true, 500, null)) . '" alt="image"></td>
     </tr>
     <tr>
     <td>description:</td>
@@ -200,7 +206,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>category:</td>
-    <td><img src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '" /></td>
+    <td><img src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '"></td>
     </tr>
     <tr>
     <td>link:</td>
@@ -223,8 +229,8 @@ switch ($action) {
     </tr>
     <tr>
     <td>Report Offer</td>
-    <td><form action="report.php?type=Offer&amp;id=' . $id . '" method="post">
-    <input type="submit" class="button is-small" value="Report This Offer" />
+    <td><form action="' . $site_config['baseurl'] . '/report.php?type=Offer&amp;id=' . $id . '" method="post">
+    <input type="submit" class="button is-small" value="Report This Offer">
     For breaking the <a class="altlink" href="rules.php">rules</a></form></td>
     </tr>
     </table>';
@@ -257,7 +263,7 @@ switch ($action) {
             $HTMLOUT .= commenttable($allrows, 'offer');
             $HTMLOUT .= ($count > $perpage ? $menu_bottom : '');
         }
-        echo stdhead('Offer details for: ' . htmlsafechars($arr['offer_name'], ENT_QUOTES)) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Offer details for: ' . htmlsafechars($arr['offer_name'], ENT_QUOTES), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'add_new_offer':
@@ -265,7 +271,7 @@ switch ($action) {
         $image = strip_tags(isset($_POST['image']) ? trim($_POST['image']) : '');
         $body = (isset($_POST['body']) ? trim($_POST['body']) : '');
         $link = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : '');
-        $category_drop_down = '<select name="category" class="required"><option class="body" value="">Select Offer Category</option>';
+        $category_drop_down = '<select name="category" required><option class="body" value="">Select Offer Category</option>';
         $cats = genrelist();
         foreach ($cats as $row) {
             $category_drop_down .= '<option class="body" value="' . (int) $row['id'] . '"' . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($row['name'], ENT_QUOTES) . '</option>';
@@ -286,14 +292,9 @@ switch ($action) {
         $HTMLOUT .= $top_menu . '
     <h1 class="has-text-centered">New Offer</h1>
     <div class="banner_container has-text-centered w-100"></div>
-    <form method="post" action="offers.php?action=add_new_offer" name="validate_form" id="validate_form">
+    <form method="post" action="' . $site_config['baseurl'] . '/offers.php?action=add_new_offer">
     <table class="table table-bordered table-striped">
     <tbody>
-    <tr>
-    <td colspan="2">
-        <h1>Making a Offer</h1>
-    </td>
-    </tr>
     <tr>
     <td colspan="2">Before you make an offer, <a class="altlink" href="search.php">Search</a>
     to be sure it has not yet been requested, offered, or uploaded!<br><br>
@@ -303,12 +304,12 @@ switch ($action) {
     </tr>
     <tr>
     <td>name:</td>
-    <td><input type="text" name="offer_name" value="' . htmlsafechars($offer_name, ENT_QUOTES) . '" class="required w-100" /></td>
+    <td><input type="text" name="offer_name" value="' . htmlsafechars($offer_name, ENT_QUOTES) . '" class="w-100" required></td>
     </tr>
     <tr>
     <td>link:</td>
     <td>
-        <input type="text" id="url" name="link" class="w-100 required" data-csrf="' . $session->get('csrf_token') . '" value="' . htmlsafechars($link, ENT_QUOTES) . '" />
+        <input type="url" id="url" name="link" class="w-100" data-csrf="' . $session->get('csrf_token') . '" value="' . htmlsafechars($link, ENT_QUOTES) . '" required>
         <div class="imdb_outer">
             <div class="imdb_inner">
             </div>
@@ -318,7 +319,7 @@ switch ($action) {
     <tr>
     <td>image:</td>
     <td>
-        <input type="text" id="poster" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required w-100" />
+        <input type="url" id="poster" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="w-100" require>
         <div class="poster_container has-text-centered"></div>
     </td>
     </tr>
@@ -328,16 +329,16 @@ switch ($action) {
     </tr>
     <tr>
     <td>description:</td>
-    <td>' . BBcode($body, 'required') . '</td>
+    <td>' . BBcode($body) . '</td>
     </tr>
     <tr>
     <td colspan="2" class="has-text-centered">
-    <input type="submit" name="button" class="button is-small" value="Submit" /></td>
+    <input type="submit" name="button" class="button is-small" value="Submit"></td>
     </tr>
     </tbody>
     </table></form>
      </td></tr></table><br>';
-        echo stdhead('Add new offer.') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Add new offer.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'delete_offer':
@@ -362,7 +363,7 @@ switch ($action) {
             header('Location: /offers.php?offer_deleted=1');
             die();
         }
-        echo stdhead('Delete Offer.') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Delete Offer.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'edit_offer':
@@ -380,7 +381,7 @@ switch ($action) {
         $body = (isset($_POST['body']) ? trim($_POST['body']) : $edit_arr['description']);
         $link = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : $edit_arr['link']);
         $category = (isset($_POST['category']) ? intval($_POST['category']) : $edit_arr['category']);
-        $category_drop_down = '<select name="category" class="required"><option class="body" value="">Select Offer Category</option>';
+        $category_drop_down = '<select name="category" required><option class="body" value="">Select Offer Category</option>';
         $cats = genrelist();
         foreach ($cats as $row) {
             $category_drop_down .= '<option class="body" value="' . (int) $row['id'] . '"' . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($row['name'], ENT_QUOTES) . '</option>';
@@ -398,27 +399,24 @@ switch ($action) {
         $HTMLOUT .= '<table class="table table-bordered table-striped">
     <tr>
     <td class="embedded">
-    <h1>Edit Offer</h1>' . $top_menu . '
-    <form method="post" action="offers.php?action=edit_offer" name="offer_form" id="offer_form">
-    <input type="hidden" name="id" value="' . $id . '" />
+    <h1 class="has-text-centered">Edit Offer</h1>' . $top_menu . '
+    <form method="post" action="' . $site_config['baseurl'] . '/offers.php?action=edit_offer" name="offer_form" id="offer_form">
+    <input type="hidden" name="id" value="' . $id . '">
     <table class="table table-bordered table-striped">
-    <tr>
-    <td class="colhead" colspan="2"><h1>Edit Offer</h1></td>
-    </tr>
     <tr>
     <td colspan="2">Be sure to fill in all fields!</td>
     </tr>
     <tr>
     <td>name:</td>
-    <td><input type="text" name="offer_name" value="' . htmlsafechars($offer_name, ENT_QUOTES) . '" class="required" /></td>
+    <td><input type="text" name="offer_name" value="' . htmlsafechars($offer_name, ENT_QUOTES) . '" class="w-100" required></td>
     </tr>
     <tr>
     <td>image:</td>
-    <td><input type="text" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required" /></td>
+    <td><input type="url" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="w-100" required></td>
     </tr>
     <tr>
     <td>link:</td>
-    <td><input type="text" name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="required" /></td>
+    <td><input type="url" name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="w-100" required></td>
     </tr>
     <tr>
     <td>category:</td>
@@ -429,12 +427,12 @@ switch ($action) {
     <td>' . BBcode($body) . '</td>
     </tr>
     <tr>
-    <td colspan="2">
-    <input type="submit" name="button" class="button is-small" value="Edit" /></td>
+    <td colspan="2" class="has-text-centered">
+    <input type="submit" name="button" class="button is-small" value="Edit"></td>
     </tr>
     </table></form>
      </td></tr></table><br>';
-        echo stdhead('Edit Offer.') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Edit Offer.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'add_comment':
@@ -463,8 +461,8 @@ switch ($action) {
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
         $HTMLOUT .= $top_menu . '
-    <form method="post" action="offers.php?action=add_comment">
-        <input type="hidden" name="id" value="' . $id . '"/>
+    <form method="post" action="' . $site_config['baseurl'] . '/offers.php?action=add_comment">
+        <input type="hidden" name="id" value="' . $id . '">
         <table class="table table-bordered table-striped">
             <tr>
                 <td class="colhead" colspan="2"><h1>Add a comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"</h1></td>
@@ -476,7 +474,7 @@ switch ($action) {
             <tr>
                 <td colspan="2">
                     <div class="has-text-centered margin20">
-                        <input name="button" type="submit" class="button is-small" value="Save" />
+                        <input name="button" type="submit" class="button is-small" value="Save">
                     </div>
                 </td>
             </tr>
@@ -494,7 +492,7 @@ switch ($action) {
             $HTMLOUT .= '<h2>Most recent comments, in reverse order</h2>';
             $HTMLOUT .= commenttable($allrows, 'offer');
         }
-        echo stdhead('Add a comment to "' . htmlsafechars($arr['offer_name']) . '"') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Add a comment to "' . htmlsafechars($arr['offer_name']) . '"', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'edit':
@@ -526,9 +524,9 @@ switch ($action) {
             $avatar = get_avatar($arr_user);
         }
 
-        $HTMLOUT .= $top_menu . '<form method="post" action="offers.php?action=edit_comment">
-    <input type="hidden" name="id" value="' . $arr['offer'] . '"/>
-    <input type="hidden" name="comment_id" value="' . $comment_id . '"/>
+        $HTMLOUT .= $top_menu . '<form method="post" action="' . $site_config['baseurl'] . '/offers.php?action=edit_comment">
+    <input type="hidden" name="id" value="' . $arr['offer'] . '">
+    <input type="hidden" name="comment_id" value="' . $comment_id . '">
     <table class="table table-bordered table-striped">
      <tr>
     <td colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"</h1></td>
@@ -540,12 +538,12 @@ switch ($action) {
      <tr>
     <td colspan="2">
             <div class="has-text-centered margin20">
-                <input name="button" type="submit" class="button is-small" value="Edit" />
+                <input name="button" type="submit" class="button is-small" value="Edit">
             </div>
         </td>
     </tr>
      </table></form>';
-        echo stdhead('Edit comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead('Edit comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
     case 'edit_comment':
@@ -645,7 +643,7 @@ switch ($action) {
                     <a href='$returnto' class='button is-small has-text-black'>back</a>
                 </div>";
         }
-        echo stdhead("{$lang['comment_original']}") . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead("{$lang['comment_original']}", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         die();
         break;
 }

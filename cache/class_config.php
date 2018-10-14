@@ -22,7 +22,7 @@ $class_names = [
 ];
 
 $class_colors = [
-  UC_USER => '8e35ef',
+  UC_USER => 'eaf59c',
   UC_POWER_USER => 'f9a200',
   UC_VIP => '009f00',
   UC_UPLOADER => '0000ff',

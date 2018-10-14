@@ -3,6 +3,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'ann_config.php';
 require_once INCL_DIR . 'ann_functions.php';
 require_once CLASS_DIR . 'class_bt_options.php';
+global $torrent_stuffs, $user_stuffs;
 
 /**
  * @param $err
@@ -31,6 +32,7 @@ function getip()
 function check_bans($ip, &$reason = '')
 {
     global $cache;
+
     if (empty($ip)) {
         return false;
     }
@@ -125,20 +127,20 @@ $torrents = [];
 if ($numhash < 1) {
     die('Scrape Error d5:filesdee');
 } elseif ($numhash === 1) {
-    $torrent = get_torrent_from_hash($_GET['info_hash']);
+    $torrent = $torrent_stuffs->get_torrent_from_hash($_GET['info_hash']);
     if ($torrent) {
         $torrents[$_GET['info_hash']] = $torrent;
     }
 } else {
     foreach ($_GET['info_hash'] as $hash) {
-        $torrent = get_torrent_from_hash($hash);
+        $torrent = $torrent_stuffs->get_torrent_from_hash($hash);
         if ($torrent) {
             $torrents[$hash] = $torrent;
         }
     }
 }
 
-$user = get_user_from_torrent_pass($torrent_pass);
+$user = $user_stuffs->get_user_from_torrent_pass($torrent_pass);
 if (!$user || !count($torrents)) {
     die('scrape user error');
 }

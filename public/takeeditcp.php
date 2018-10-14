@@ -6,7 +6,7 @@ require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER, $site_config, $fluent, $cache, $session;
+global $CURUSER, $site_config, $fluent, $cache, $session, $message_stuffs;
 
 $lang = array_merge(load_language('global'), load_language('takeeditcp'));
 
@@ -228,9 +228,17 @@ if ($action == 'avatar') {
         $msg = sqlesc("{$lang['takeeditcp_email_user']}[url={$site_config['baseurl']}/userdetails.php?id=" . (int) $spm['id'] . '][b]' . htmlsafechars($spm['username']) . "[/b][/url]{$lang['takeeditcp_email_changed']}{$lang['takeeditcp_email_old']}" . htmlsafechars($spm['email']) . "{$lang['takeeditcp_email_new']}$email{$lang['takeeditcp_email_check']}");
         $pmstaff = sql_query('SELECT id FROM users WHERE class = ' . UC_ADMINISTRATOR) or sqlerr(__FILE__, __LINE__);
         while ($arr = mysqli_fetch_assoc($pmstaff)) {
-            sql_query('INSERT INTO messages(sender, receiver, added, msg, subject) VALUES(0, ' . sqlesc($arr['id']) . ", $dt, $msg, $subject)") or sqlerr(__FILE__, __LINE__);
+            $msgs_buffer[] = [
+                'sender' => 0,
+                'receiver' => $arr['id'],
+                'added' => $dt,
+                'msg' => $msg,
+                'subject' => $subject,
+            ];
         }
-        $cache->increment('inbox_' . $arr['id']);
+        if (!empty($msgs_buffer)) {
+            $message_stuffs->insert($msgs_buffer);
+        }
         $urladd .= '&mailsent=1';
     }
     $action = 'security';

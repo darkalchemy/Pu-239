@@ -40,7 +40,7 @@ function backupdb($data)
     $pass = $_ENV['DB_PASSWORD'];
     $db = $_ENV['DB_DATABASE'];
     $dt = TIME_NOW;
-    $bdir = $site_config['backup_dir'];
+    $bdir = BACKUPS_DIR;
     $filename = 'db_' . date('m_d_y_H', TIME_NOW) . '.sql';
 
     $c1 = "mysqldump -h $host -u{$user} -p" . quotemeta($pass) . " $db -d > $bdir/db_structure.sql";

@@ -6,13 +6,19 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once CACHE_DIR . 'subs.php';
 check_user_status();
-global $CURUSER, $site_config;
+global $CURUSER, $site_config, $session;
 
 $lang = array_merge(load_language('global'), load_language('upload'), load_language('bitbucket'));
+$stdhead = [
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
+];
 $stdfoot = [
     'js' => [
         get_file_name('upload_js'),
         get_file_name('dragndrop_js'),
+        get_file_name('sceditor_js'),
     ],
 ];
 $HTMLOUT = $offers = $subs_list = $request = $descr = '';
@@ -54,17 +60,24 @@ if (mysqli_num_rows($res_offer) > 0) {
     $offers .= '</select> If you are uploading one of your offers, please select it here so interested members will be notified.</td>
     </tr>';
 }
+$announce_url = $site_config['announce_urls'][0];
+if (get_scheme() === 'https') {
+    $announce_url = $site_config['announce_urls'][1];
+}
 $HTMLOUT .= "
-    <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='./takeupload.php' method='post'>
-    <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['max_torrent_size']}' />
+    <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='" . $site_config['baseurl'] . "/takeupload.php' method='post'>
+    <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['max_torrent_size']}'>
+    <input type='hidden' id='csrf' name='csrf' value='" . $session->get('csrf_token') . "'>
     <h1 class='has-text-centered'>Upload a Torrent</h1>
-    <p class='top10 has-text-centered'>{$lang['upload_announce_url']}:<br><input type='text' class='has-text-centered w-100 top10' readonly='readonly' value='{$site_config['announce_urls'][0]}' onclick='select()' /></p>
+    <p class='top10 has-text-centered'>{$lang['upload_announce_url']}:<br>
+        <input type='text' class='has-text-centered w-100 top10' readonly='readonly' value='{$announce_url}' onclick='select()'>
+    </p>
     <div class='banner_container has-text-centered w-100'></div>";
 $HTMLOUT .= "<table class='table table-bordered table-striped top20 bottom20'>
     <tr>
     <td class='rowhead'>{$lang['upload_imdb_url']}</td>
     <td>
-        <input type='text' id='url' name='url' class='w-100' data-csrf='" . $session->get('csrf_token') . "' /><br>
+        <input type='url' id='url' name='url' class='w-100' data-csrf='" . $session->get('csrf_token') . "'><br>
         {$lang['upload_imdb_tfi']}{$lang['upload_imdb_rfmo']}
         <div class='imdb_outer'>
             <div class='imdb_inner'>
@@ -75,7 +88,7 @@ $HTMLOUT .= "<table class='table table-bordered table-striped top20 bottom20'>
     <tr>
     <td class='rowhead'>{$lang['upload_isbn']}</td>
     <td>
-        <input type='text' id='isbn' name='isbn' class='w-100' data-csrf='" . $session->get('csrf_token') . "' /><br>
+        <input type='text' id='isbn' name='isbn' class='w-100' data-csrf='" . $session->get('csrf_token') . "'><br>
         {$lang['upload_isbn_details']}
         <div class='isbn_outer'>
             <div class='isbn_inner'>
@@ -86,14 +99,14 @@ $HTMLOUT .= "<table class='table table-bordered table-striped top20 bottom20'>
     <tr>
     <td class='rowhead'>{$lang['upload_poster']}</td>
     <td>
-        <input type='text' id='poster' name='poster' class='w-100' />
+        <input type='url' id='poster' name='poster' class='w-100' required>
         <br>{$lang['upload_poster1']}
         <div class='poster_container has-text-centered'></div>
     </td>
     </tr>
     <tr>
     <td class='rowhead'>{$lang['upload_youtube']}</td>
-    <td><input type='text' id='youtube' name='youtube' class='w-100' /><br>({$lang['upload_youtube_info']})</td>
+    <td><input type='url' id='youtube' name='youtube' class='w-100'><br>({$lang['upload_youtube_info']})</td>
     </tr>
     <tr>
     <td class='rowhead'><b>{$lang['upload_bitbucket']}</b></td>
@@ -101,7 +114,7 @@ $HTMLOUT .= "<table class='table table-bordered table-striped top20 bottom20'>
         <div id='droppable' class='droppable bg-03'>
             <span id='comment'>{$lang['bitbucket_dragndrop']}</span>
             <div id='loader' class='is-hidden'>
-                <img src='{$site_config['pic_baseurl']}forums/updating.svg' alt='Loading...' />
+                <img src='{$site_config['pic_baseurl']}forums/updating.svg' alt='Loading...'>
             </div>
         </div>
         <div class='output-wrapper output'></div>
@@ -110,28 +123,28 @@ $HTMLOUT .= "<table class='table table-bordered table-striped top20 bottom20'>
     <tr>
     <td class='rowhead'>{$lang['upload_torrent']}</td>
     <td>
-        <input type='file' name='file' id='torrent' onchange='getname()' class='inputfile' />
+        <input type='file' name='file' id='torrent' onchange='getname()' class='inputfile' required>
     </td>
     </tr>
     <tr>
     <td class='rowhead'>{$lang['upload_name']}</td>
-    <td><input type='text' id='name' name='name' class='w-100' /><br>({$lang['upload_filename']})</td>
+    <td><input type='text' id='name' name='name' class='w-100' required><br>({$lang['upload_filename']})</td>
     </tr>
     <tr>
     <td class='rowhead'>{$lang['upload_tags']}</td>
-    <td><input type='text' name='tags' class='w-100' /><br>({$lang['upload_tag_info']})</td>
+    <td><input type='text' name='tags' class='w-100'><br>({$lang['upload_tag_info']})</td>
     </tr>
     <tr>
     <td class='rowhead'>{$lang['upload_small_description']}</td>
-    <td><input type='text' name='description' class='w-100' maxlength='120' /><br>({$lang['upload_small_descr']})</td>
+    <td><input type='text' name='description' class='w-100' maxlength='120'><br>({$lang['upload_small_descr']})</td>
     </tr>
     <tr>
     <td class='rowhead'>{$lang['upload_nfo']}</td>
-    <td><input type='file' name='nfo' /><br>({$lang['upload_nfo_info']})</td>
+    <td><input type='file' name='nfo'><br>({$lang['upload_nfo_info']})</td>
     </tr>
     <tr>
     <td class='rowhead'>{$lang['upload_description']}</td>
-    <td>" . BBcode() . "
+    <td class='is-paddingless'>" . BBcode() . "
     <br>({$lang['upload_html_bbcode']})</td>
     </tr>";
 $s = "<select name='type'>\n<option value='0'>({$lang['upload_choose_one']})</option>\n";
@@ -152,8 +165,8 @@ foreach ($subs as $s) {
     $subs_list .= "
             <div class='w-15 margin10 tooltipper bordered level-center' title='" . htmlsafechars($s['name']) . "'>
                 <span class='has-text-centered'>
-                    <input name='subs[]' type='checkbox' value='{$s['id']}' />
-                    <image class='sub_flag' src='{$s['pic']}' alt='" . htmlsafechars($s['name']) . "' />
+                    <input name='subs[]' type='checkbox' value='{$s['id']}'>
+                    <image class='sub_flag' src='{$s['pic']}' alt='" . htmlsafechars($s['name']) . "'>
                 </span>
                 <span class='has-text-centered'>" . htmlsafechars($s['name']) . '</span>
             </div>';
@@ -164,11 +177,11 @@ $subs_list .= '
 $HTMLOUT .= tr('Subtitiles', $subs_list, 1);
 $rg = "<select name='release_group'>\n<option value='none'>None</option>\n<option value='p2p'>p2p</option>\n<option value='scene'>Scene</option>\n</select>\n";
 $HTMLOUT .= tr('Release Type', $rg, 1);
-$HTMLOUT .= tr("{$lang['upload_anonymous']}", "<div class='flex'><input type='checkbox' name='uplver' value='yes' /><span>{$lang['upload_anonymous1']}</span></div>", 1);
+$HTMLOUT .= tr("{$lang['upload_anonymous']}", "<div class='flex'><input type='checkbox' name='uplver' value='yes'><span>{$lang['upload_anonymous1']}</span></div>", 1);
 if ($CURUSER['class'] === UC_MAX) {
-    $HTMLOUT .= tr("{$lang['upload_comment']}", "<div class='flex'><input type='checkbox' name='allow_commentd' value='yes' /><span>{$lang['upload_discom1']}</span></div>", 1);
+    $HTMLOUT .= tr("{$lang['upload_comment']}", "<div class='flex'><input type='checkbox' name='allow_commentd' value='yes'><span>{$lang['upload_discom1']}</span></div>", 1);
 }
-$HTMLOUT .= tr('Strip ASCII', "<div class='flex'><input type='checkbox' name='strip' value='strip' /><span><a href='https://en.wikipedia.org/wiki/ASCII_art' target='_blank'>What is this?</a></span></div>", 1);
+$HTMLOUT .= tr('Strip ASCII', "<div class='flex'><input type='checkbox' name='strip' value='strip'><span><a href='https://en.wikipedia.org/wiki/ASCII_art' target='_blank'>What is this?</a></span></div>", 1);
 if ($CURUSER['class'] >= UC_UPLOADER && !XBT_TRACKER) {
     $HTMLOUT .= "<tr>
     <td class='rowhead'>Free Leech</td>
@@ -198,117 +211,22 @@ if ($CURUSER['class'] >= UC_UPLOADER && !XBT_TRACKER) {
     </tr>";
 }
 if (XBT_TRACKER) {
-    $HTMLOUT .= tr('Freeleech', "<div class='flex'><input type='checkbox' name='freetorrent' value='1' /><span>Check this to make this torrent freeleech</span></div>", 1);
+    $HTMLOUT .= tr('Freeleech', "<div class='flex'><input type='checkbox' name='freetorrent' value='1'><span>Check this to make this torrent freeleech</span></div>", 1);
 }
-
-$genres = [
-    'Movie',
-    'Music',
-    'Game',
-    'Apps',
-];
-
-$HTMLOUT .= "
-    <tr>
-        <td class='rowhead'><b>Genre</b></td>
-        <td>
-            <div class='flex-grid'>";
-
-for ($x = 0; $x < count($genres); ++$x) {
-    $HTMLOUT .= "
-                <div class='flex_cell_5'>
-                    <input type='radio' value='" . strtolower($genres[$x]) . "' name='genre' />
-                    <span>{$genres[$x]}</span>
-                </div>";
-}
-
-$HTMLOUT .= "
-                <div class='flex_cell_5'>
-                    <input type='radio' name='genre' value='' checked />
-                    <span>None</span>
-                </div>
-            </div>
-            <label>
-            <input type='hidden' class='Depends on genre being movie or genre being music' /></label>
-            <div class='flex-grid'>";
-
-$movie = [
-    'Action',
-    'Comedy',
-    'Thriller',
-    'Adventure',
-    'Family',
-    'Adult',
-    'Sci-fi',
-];
-for ($x = 0; $x < count($movie); ++$x) {
-    $HTMLOUT .= "
-                <label>
-                    <input type='checkbox' value='{$movie[$x]}' name='{movie[]}' class='DEPENDS ON genre BEING movie' />
-                    <span>{$movie[$x]}</span>
-                </label>";
-}
-$music = [
-    'Hip Hop',
-    'Rock',
-    'Pop',
-    'House',
-    'Techno',
-    'Commercial',
-];
-for ($x = 0; $x < count($music); ++$x) {
-    $HTMLOUT .= "
-                <label>
-                    <input type='checkbox' value='{$music[$x]}' name='{music[]}' class='DEPENDS ON genre BEING music' />
-                    <span>{$music[$x]}</span>
-                </label>";
-}
-$game = [
-    'Fps',
-    'Strategy',
-    'Adventure',
-    '3rd Person',
-    'Acton',
-];
-for ($x = 0; $x < count($game); ++$x) {
-    $HTMLOUT .= "
-                <label>
-                    <input type='checkbox' value='{$game[$x]}' name='{game[]}' class='DEPENDS ON genre BEING game' />
-                    <span>{$game[$x]}</span>
-                </label>";
-}
-$apps = [
-    'Burning',
-    'Encoding',
-    'Anti-Virus',
-    'Office',
-    'Os',
-    'Misc',
-    'Image',
-];
-for ($x = 0; $x < count($apps); ++$x) {
-    $HTMLOUT .= "
-                <label>
-                    <input type='checkbox' value='{$apps[$x]}' name='{apps[]}' class='DEPENDS ON genre BEING apps' />
-                    <span>{$apps[$x]}</span>
-                </label>";
-}
-$HTMLOUT .= '
-            </td>
-        </tr>';
+require_once PARTIALS_DIR . 'genres.php';
 
 if ($CURUSER['class'] >= UC_UPLOADER && !XBT_TRACKER) {
-    $HTMLOUT .= tr('Vip Torrent', "<div class='flex'><input type='checkbox' name='vip' value='1' /><span>If this one is checked, only Vip's can download this torrent</span></div>", 1);
+    $HTMLOUT .= tr('Vip Torrent', "<div class='flex'><input type='checkbox' name='vip' value='1'><span>If this one is checked, only Vip's can download this torrent</span></div>", 1);
 }
 $HTMLOUT .= "
         <tr>
             <td colspan='2'>
                 <div class='has-text-centered'>
-                    <input type='submit' class='button is-small' value='{$lang['upload_submit']}' />
+                    <input type='submit' class='button is-small' value='{$lang['upload_submit']}'>
                 </div>
             </td>
         </tr>
         </table>
         </form>";
 
-echo stdhead($lang['upload_stdhead']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($lang['upload_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

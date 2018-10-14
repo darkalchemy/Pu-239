@@ -3,12 +3,13 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session;
+global $CURUSER, $site_config, $cache, $session, $message_stuffs;
 
 $lang = array_merge(load_language('global'), load_language('coins'));
 
 $id = (int) $_GET['id'];
 $points = (int) $_GET['points'];
+$dt = TIME_NOW;
 if (!is_valid_id($id) || !is_valid_id($points)) {
     die();
 }
@@ -54,9 +55,16 @@ sql_query('INSERT INTO coins (userid, torrentid, points) VALUES (' . sqlesc($CUR
 sql_query('UPDATE users SET seedbonus=seedbonus+' . sqlesc($points) . ' WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 sql_query('UPDATE users SET seedbonus=seedbonus-' . sqlesc($points) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 sql_query('UPDATE torrents SET points=points+' . sqlesc($points) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$msg = sqlesc("{$lang['coins_you_have_been_given']} " . htmlspecialchars($points) . " {$lang['coins_points_by']} " . $CURUSER['username'] . " {$lang['coins_for_torrent']} [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlspecialchars($row['name']) . '[/url].');
-$subject = sqlesc($lang['coins_you_have_been_given_a_gift']);
-sql_query('INSERT INTO messages (sender, receiver, msg, added, subject) VALUES(0, ' . sqlesc($userid) . ", $msg, " . TIME_NOW . ", $subject)") or sqlerr(__FILE__, __LINE__);
+$msg = "{$lang['coins_you_have_been_given']} " . htmlspecialchars($points) . " {$lang['coins_points_by']} " . $CURUSER['username'] . " {$lang['coins_for_torrent']} [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlspecialchars($row['name']) . '[/url].';
+$subject = $lang['coins_you_have_been_given_a_gift'];
+$msgs_buffer[] = [
+    'sender' => 0,
+    'receiver' => $userid,
+    'added' => $dt,
+    'msg' => $msg,
+    'subject' => $subject,
+];
+$message_stuffs->insert($msgs_buffer);
 $update['points'] = ($row['points'] + $points);
 $update['seedbonus_uploader'] = ($User['seedbonus'] + $points);
 $update['seedbonus_donator'] = ($CURUSER['seedbonus'] - $points);
@@ -73,7 +81,6 @@ $cache->update_row('user' . $CURUSER['id'], [
     'seedbonus' => $update['seedbonus_donator'],
 ], $site_config['expires']['user_cache']);
 //== delete the pm keys
-$cache->increment('inbox_' . $userid);
 $cache->delete('coin_points_' . $id);
 
 $session->set('is-success', $lang['coins_successfully_gave_points_to_this_torrent']);

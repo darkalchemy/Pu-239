@@ -174,23 +174,29 @@ class CustomAJAXChat extends AJAXChat
                 case '/announce':
                     $this->insertChatBotMessage(0, $text);
                     $this->insertChatBotMessage(5, $text);
+
                     $sql = "SELECT id FROM users WHERE enabled = 'yes'";
                     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
                     while ($id = mysqli_fetch_assoc($res)) {
                         $ids[] = $id;
                     }
-                    $pms = [];
+                    $msgs_buffer = [];
                     foreach ($ids as $rid) {
-                        $pms[] = '(0,' . $rid['id'] . ',' . TIME_NOW . ',' . sqlesc(str_replace('/announce ', '', $text)) . ", 'Site News')";
+                        $msgs_buffer[] = [
+                            'sender' => 0,
+                            'receiver' => $rid['id'],
+                            'added' => TIME_NOW,
+                            'msg' => str_replace('/announce ', '', $text),
+                            'subject' => 'Site News',
+                            'poster' => $this->getUserID(),
+                        ];
                     }
-                    if (count($pms) > 0) {
-                        $r = sql_query('INSERT INTO messages(sender, receiver, added, msg, subject) VALUES ' . implode(',', $pms)) or sqlerr(__FILE__, __LINE__);
-                    }
-                    foreach ($ids as $rid) {
-                        $cache->increment('inbox_' . $rid['id']);
+                    if (count($msgs_buffer) > 0) {
+                        $this->_message->insert($msgs_buffer);
                     }
 
                     return true;
+
                 default:
                     return false;
             }

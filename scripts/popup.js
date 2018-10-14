@@ -1,6 +1,8 @@
 function PopUp(url, name, width, height, center, resize, scroll, posleft, postop) {
-    showx = '';
-    showy = '';
+    var showx = '';
+    var showy = '';
+    var X = '';
+    var Y = '';
     if (posleft != 0) {
         X = posleft;
     }

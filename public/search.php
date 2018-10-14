@@ -8,12 +8,8 @@ $torrent_pass = $auth = $bot = $owner_id = '';
 extract($_POST);
 unset($_POST);
 
-if (!empty($bot) && !empty($auth)) {
-    $userid = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->where('class > ? AND username = ? AND auth = ? AND torrent_pass = ? AND uploadpos = 1 AND suspended = "no"', UC_UPLOADER, $bot, $auth, $torrent_pass)
-        ->fetch('id');
+if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
+    $userid = $user_stuffs->get_bot_id(UC_UPLOADER, $bot, $torrent_pass, $auth);
 } else {
     $session->set('is-warning', 'The search page is a restricted page, bots only');
     header("Location: {$site_config['baseurl']}/browse.php");

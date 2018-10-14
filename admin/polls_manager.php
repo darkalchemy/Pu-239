@@ -63,13 +63,12 @@ function delete_poll()
     }
     sql_query('DELETE FROM polls WHERE pid = ' . sqlesc($pid));
     sql_query('DELETE FROM poll_voters WHERE poll_id = ' . sqlesc($pid));
-    $cache->delete('poll_data_' . $CURUSER['id']);
     show_poll_archive();
 }
 
 function update_poll()
 {
-    global $site_config, $CURUSER, $lang, $stdfoot, $cache;
+    global $site_config, $CURUSER, $lang, $stdfoot, $cache, $session, $pollvoter_stuffs;
 
     $total_votes = 0;
     if (!isset($_POST['pid']) || !is_valid_id($_POST['pid'])) {
@@ -90,25 +89,16 @@ function update_poll()
     //all ok, serialize
     $poll_data = sqlesc(serialize($poll_data));
     sql_query("UPDATE polls SET choices = $poll_data, starter_id = {$CURUSER['id']}, votes = $total_votes, poll_question = $poll_title WHERE pid = " . sqlesc($pid)) or sqlerr(__FILE__, __LINE__);
-    $cache->delete('poll_data_' . $CURUSER['id']);
-    if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    $pollvoter_stuffs->delete_users_cache();
+    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === -1) {
         $msg = "
-        <h1 class='has-text-centered'>{$lang['poll_up_error']}</h1>
-        <div class='has-text-centered margin20'>
-            <a href='javascript:history.back()' class='button is-small'>
-                {$lang['poll_up_back']}
-            </a>
-        </div>";
+        [h1]{$lang['poll_up_error']}[/h1]";
     } else {
         $msg = "
-        <h1 class='has-text-centered'>{$lang['poll_up_worked']}</h1>
-        <div class='has-text-centered margin20'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager' class='button is-small'>
-                {$lang['poll_up_success']}
-            </a>
-        </div>";
+        [h1]{$lang['poll_up_worked']}[/h1]";
     }
-    echo stdhead($lang['poll_up_stdhead']) . wrapper($msg) . stdfoot($stdfoot);
+    $session->set('is-info', $msg);
+    header("Location:  {$site_config['baseurl']}/staffpanel.php?tool=polls_manager&action=polls_manager");
 }
 
 function insert_new_poll()
@@ -129,8 +119,7 @@ function insert_new_poll()
     $username = sqlesc($CURUSER['username']);
     $time = TIME_NOW;
     sql_query("INSERT INTO polls (start_date, choices, starter_id, votes, poll_question)VALUES($time, $poll_data, {$CURUSER['id']}, 0, $poll_title)") or sqlerr(__FILE__, __LINE__);
-    $cache->delete('poll_data_' . $CURUSER['id']);
-    if (false == ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res)) {
+    if (fale === ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res)) {
         $msg = "
         <h1 class='has-text-centered'>{$lang['poll_inp_error']}</h1>
         <div class='has-text-centered margin20'>

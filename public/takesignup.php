@@ -5,18 +5,29 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'function_bemail.php';
+require_once INCL_DIR . 'function_recaptcha.php';
+
 dbconn();
 get_template();
-global $site_config, $lang, $fluent, $cache, $session;
+global $site_config, $fluent, $cache, $session, $user_stuffs, $usersachiev_stuffs, $message_stuffs;
 
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
 
-$wantusername = $wantpassword = $passagain = $email = $user_timezone = $year = $month = $day = $passhint = '';
+$dt = TIME_NOW;
+
+$lang = array_merge(load_language('global'), load_language('takesignup'));
+$wantusername = $wantpassword = $passagain = $email = $user_timezone = $date = $passhint = '';
 $hintanswer = $country = $gender = $rulesverify = $faqverify = $ageverify = $submitme = '';
 $session->set('signup_variables', serialize($_POST));
 
-$response = !empty($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
+if (!$session->validateToken($_POST['csrf'])) {
+    $session->set('is-warning', '[h2]CSRF Verification failed.[/h2]');
+    header("Location: {$site_config['baseurl']}/signup.php");
+    die();
+}
+
+$response = !empty($_POST['token']) ? $_POST['token'] : '';
 extract($_POST);
 unset($_POST);
 
@@ -29,69 +40,38 @@ $users_count = $fluent->from('users')
     ->select(null)
     ->select('COUNT(id) AS count')
     ->fetch('count');
-
+/*
 if ($users_count >= $site_config['maxusers']) {
     stderr($lang['takesignup_error'], $lang['takesignup_limit']);
 }
-$lang = array_merge(load_language('global'), load_language('takesignup'));
-
+*/
 $required = [
     'passagain',
     'email',
-    'year',
-    'month',
-    'day',
+    'date',
     'passhint',
     'hintanswer',
     'gender',
     'rulesverify',
     'faqverify',
     'ageverify',
-    'submitme',
 ];
 
 foreach ($required as $field) {
     if (empty($$field)) {
-        $session->set('is-warning', "[h2]{$lang['takesignup_form_data']}[/h2][p]All fields must be completed [{$field}][/p]");
+        $session->set('is-warning', "[h2]{$lang['takesignup_form_data']}[/h2][p]All fields must be completed [{$field}][/h2]");
         header("Location: {$site_config['baseurl']}/signup.php");
         die();
     }
 }
-
-if ($submitme != 'X') {
-    $session->set('is-warning', '[h2]You clicked the wrong button.[/h2]');
-    header("Location: {$site_config['baseurl']}/signup.php");
-    die();
-}
-
 if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
-    if ($response === '') {
-        header('Location: login.php');
-        exit();
-    }
-    $ip = getip();
-    $url = 'https://www.google.com/recaptcha/api/siteverify';
-    $params = [
-        'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
-        'response' => $response,
-        'remoteip' => $ip,
-    ];
-    $query = http_build_query($params);
-    $contextData = [
-        'method' => 'POST',
-        'header' => "Content-Type: application/x-www-form-urlencoded\r\n" . "Connection: close\r\n" . 'Content-Length: ' . strlen($query) . "\r\n",
-        'content' => $query,
-    ];
-    $context = stream_context_create(['http' => $contextData]);
-    $result = file_get_contents($url, false, $context);
-    $responseKeys = json_decode($result, true);
-    if (intval($responseKeys['success']) !== 1) {
-        $session->set('is-warning', '[h2]reCAPTCHA was incorrect.[/h2]');
+    $result = verify_recaptcha($response, 120);
+    if ($result !== 'valid') {
+        $session->set('is-warning', "[h2]reCAPTCHA failed. {$result}[/h2]");
         header("Location: {$site_config['baseurl']}/signup.php");
         die();
     }
 }
-
 if (empty($country)) {
     $session->set('is-warning', '[h2]Please select your country[/h2]');
     header("Location: {$site_config['baseurl']}/signup.php");
@@ -132,25 +112,18 @@ if (!valid_username($wantusername)) {
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
-if (empty($day) || empty($month) || empty($year)) {
+if (empty($date)) {
     $session->set('is-warning', '[h2]You have to fill in your birthday.[/h2]');
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
-if (checkdate($month, $day, $year)) {
-    $birthday = $year . '-' . $month . '-' . str_pad($day, 2, '0', STR_PAD_LEFT);
-} else {
-    $session->set('is-warning', '[h2]You have to fill in your birthday correctly.[/h2]');
-    header("Location: {$site_config['baseurl']}/signup.php");
-    die();
-}
-if ((date('Y') - $year) < 18) {
+if ((date('Y') - date('Y', strtotime($date))) < 18) {
     $session->set('is-warning', '[h2]You must be at least 18 years old to register.[/h2]');
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
 if (!(isset($country))) {
-    $session->set('is-warning', '[h2]You have to set your country.[/h2]');
+    $session->set('is-warning', '[h2]You must select a country.[/h2]');
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
 }
@@ -191,7 +164,7 @@ if (isset($user_timezone) && preg_match('#^\-?\d{1,2}(?:\.\d{1,2})?$#', $user_ti
     $time_offset = isset($site_config['time_offset']) ? (int) $site_config['time_offset'] : 0;
 }
 
-$dst_in_use = localtime(TIME_NOW + ($time_offset * 3600), true);
+$dst_in_use = localtime($dt + ($time_offset * 3600), true);
 
 check_banned_emails($email);
 
@@ -201,18 +174,18 @@ $values = [
     'auth' => make_password(32),
     'apikey' => make_password(32),
     'passhash' => make_passhash($wantpassword),
-    'birthday' => $birthday,
+    'birthday' => $date,
     'country' => $country,
     'gender' => $gender,
     'stylesheet' => $site_config['stylesheet'],
     'passhint' => $passhint,
     'hintanswer' => make_passhash($hintanswer),
     'email' => $email,
-    'added' => TIME_NOW,
-    'last_access' => TIME_NOW,
+    'added' => $dt,
+    'last_access' => $dt,
     'time_offset' => $time_offset,
     'dst_in_use' => $dst_in_use['tm_isdst'],
-    'free_switch' => XBT_TRACKER ? '0' : TIME_NOW + 14 * 86400,
+    'free_switch' => XBT_TRACKER ? '0' : $dt + 14 * 86400,
     'ip' => inet_pton($ip),
     'status' => $users_count === 0 || (!$site_config['email_confirm'] && $site_config['auto_confirm']) ? 'confirmed' : 'pending',
     'class' => $users_count === 0 ? UC_MAX : UC_MIN,
@@ -223,18 +196,14 @@ if ($users_count === 0) {
     $values['invites'] = 1000;
 }
 
-$user_id = $fluent->insertInto('users')
-    ->values($values)
-    ->execute();
-
+$user_id = $user_stuffs->add($values);
+unset($values);
 if (!$user_id) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_user_exists']);
     die();
 }
 
-$fluent->insertInto('usersachiev')
-    ->values(['userid' => $user_id])
-    ->execute();
+$usersachiev_stuffs->add(['userid' => $user_id]);
 
 $psecret = '';
 if ($users_count > 0 && $site_config['email_confirm']) {
@@ -251,29 +220,33 @@ if ($users_count > 0 && $site_config['email_confirm']) {
         ->values($values)
         ->execute();
 }
-
+unset($values);
 $cache->delete('birthdayusers');
 $cache->delete('chat_users_list');
 if ($users_count === 0) {
     $cache->delete('staff_settings_');
 }
 
-$added = TIME_NOW;
 $subject = 'Welcome';
 $msg = 'Hey there ' . htmlsafechars($wantusername) . "!\n\n Welcome to {$site_config['site_name']}! :clap2: \n\n Please ensure you're connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\ncheers {$site_config['site_name']} staff.\n";
-$values = [
+$msgs_buffer[] = [
     'sender' => 0,
     'subject' => $subject,
     'receiver' => $user_id,
     'msg' => $msg,
-    'added' => $added,
+    'added' => $dt,
 ];
 
-$fluent->insertInto('messages')
-    ->values($values)
-    ->execute();
+$message_stuffs->insert($msgs_buffer);
 
-$cache->delete('all_users_');
+$cache->delete('birthdayusers');
+$cache->delete('chat_users_list');
+$split = str_split($wantusername);
+$clear = '';
+foreach ($split as $to_clear) {
+    $clear .= $to_clear;
+    $cache->delete('all_users_' . $clear);
+}
 $cache->set('latestuser', format_username($user_id), $site_config['expires']['latestuser']);
 write_log('User account ' . (int) $user_id . ' (' . htmlsafechars($wantusername) . ') was created');
 
@@ -308,7 +281,7 @@ if ($users_count > 0 && $site_config['email_confirm']) {
 }
 
 if ($site_config['auto_confirm']) {
-    clearUserCache($user_id);
+    $user_stuffs->delete_user_cache([$user_id]);
     $session->set('userID', $user_id);
 }
 

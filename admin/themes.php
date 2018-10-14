@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'html_functions.php';
 class_check(UC_MAX);
-global $site_config, $lang, $fluent, $session;
+global $site_config, $lang, $fluent, $session, $cache;
 
 $lang = array_merge($lang, load_language('ad_themes'));
 $HTML = '';
@@ -136,6 +136,7 @@ if (isset($_GET['act'])) {
         if (!$update) {
             $session->set('is-danger', $lang['themes_some_wrong']);
         } else {
+            $cache->delete('templates_');
             $session->set('is-success', $lang['themes_msg']);
         }
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=themes&action=themes");
@@ -170,6 +171,7 @@ if (isset($_GET['act'])) {
             ->where('stylesheet = ?', $id)
             ->execute();
 
+        $cache->delete('templates_');
         $session->set('is-success', $lang['themes_msg2']);
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=themes&action=themes");
         die();
@@ -188,7 +190,6 @@ if (isset($_GET['act'])) {
             stderr("{$lang['themes_nofile']}", "{$lang['themes_inv_file']}<a href='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=7&amp;id=" . (int) $_POST['id'] . '&amp;uri=' . $_POST['uri'] . '&amp;name=' . htmlsafechars($_POST['name']) . "'>{$lang['themes_file_exists']}</a>/
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=themes'>{$lang['themes_not_exists']}</a>");
         }
-        dd($_POST);
         $values = [
             'id' => $_POST['id'],
             'uri' => $_POST['uri'],
@@ -198,6 +199,7 @@ if (isset($_GET['act'])) {
             ->values($values)
             ->execute();
 
+        $cache->delete('templates_');
         $session->set('is-success', $lang['themes_msg']);
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=themes&action=themes");
         die();
@@ -222,6 +224,7 @@ if (isset($_GET['act'])) {
             ->values($values)
             ->execute();
 
+        $cache->delete('templates_');
         $session->set('is-success', $lang['themes_msg3']);
         header('Location: staffpanel.php?tool=themes&action=themes');
         die();

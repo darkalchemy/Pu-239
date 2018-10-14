@@ -3,29 +3,25 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class.bencdec.php';
-require_once INCL_DIR . 'function_memcache.php';
 require_once INCL_DIR . 'ann_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 dbconn();
-global $site_config, $fluent, $session, $user_stuffs, $cache;
+global $site_config, $fluent, $session, $user_stuffs, $cache, $message_stuffs, $torrent_stuffs;
 
 $torrent_pass = $auth = $bot = $owner_id = '';
 extract($_GET);
 unset($_GET);
 extract($_POST);
 unset($_POST);
-if (!empty($bot) && !empty($auth)) {
-    $owner_id = $fluent->from('users')
-        ->select(null)
-        ->select('id')
-        ->where('class >= ? AND username = ? AND auth = ? AND torrent_pass = ? AND uploadpos = 1 AND suspended = "no"', UC_UPLOADER, $bot, $auth, $torrent_pass)
-        ->fetch('id');
+if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
+    $owner_id = $user_stuffs->get_bot_id(UC_UPLOADER, $bot, $torrent_pass, $auth);
 } else {
     check_user_status();
     global $CURUSER;
     $owner_id = $CURUSER['id'];
 }
 
+$dt = TIME_NOW;
 $user_data = $user_stuffs->getUserFromId($owner_id);
 
 ini_set('upload_max_filesize', $site_config['max_torrent_size']);
@@ -128,9 +124,9 @@ if (isset($free_length) && ($free_length = (int) $free_length)) {
     if ($free_length == 255) {
         $free2 = 1;
     } elseif ($free_length == 42) {
-        $free2 = (86400 + TIME_NOW);
+        $free2 = (86400 + $dt);
     } else {
-        $free2 = (TIME_NOW + $free_length * 604800);
+        $free2 = ($dt + $free_length * 604800);
     }
 }
 
@@ -139,9 +135,9 @@ if (isset($half_length) && ($half_length = (int) $half_length)) {
     if ($half_length == 255) {
         $silver = 1;
     } elseif ($half_length == 42) {
-        $silver = (86400 + TIME_NOW);
+        $silver = (86400 + $dt);
     } else {
-        $silver = (TIME_NOW + $half_length * 604800);
+        $silver = ($dt + $half_length * 604800);
     }
 }
 
@@ -377,10 +373,10 @@ $values = [
     'save_as' => $dname,
     'youtube' => $youtube,
     'tags' => $tags,
-    'added' => TIME_NOW,
-    'last_action' => TIME_NOW,
-    'mtime' => TIME_NOW,
-    'ctime' => TIME_NOW,
+    'added' => $dt,
+    'last_action' => $dt,
+    'mtime' => $dt,
+    'ctime' => $dt,
     'freetorrent' => $freetorrent,
     'nfo' => $nfo,
     'client_created_by' => $tmaker,
@@ -395,10 +391,10 @@ if (!$id) {
     die();
 }
 if (!XBT_TRACKER) {
-    remove_torrent($infohash);
+    $torrent_stuffs->remove_torrent($infohash);
 }
 
-get_torrent_from_hash($infohash);
+$torrent_stuffs->get_torrent_from_hash($infohash);
 
 $cache->delete('peers_' . $owner_id);
 $peer = new DarkAlchemy\Pu239\Peer();
@@ -413,9 +409,9 @@ if (!empty($hashes)) {
 }
 
 if (isset($uplver) && $uplver === 'yes') {
-    $message = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by ' . get_anonymous_name();
+    $msg = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by ' . get_anonymous_name();
 } else {
-    $message = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by ' . htmlsafechars($user_data['username']);
+    $msg = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by ' . htmlsafechars($user_data['username']);
 }
 $messages = "{$site_config['site_name']} New Torrent: $torrent Uploaded By: $anon " . mksize($totallen) . " {$site_config['baseurl']}/details.php?id=$id";
 sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
@@ -438,14 +434,13 @@ function file_list($arr, $id)
 
 sql_query('INSERT INTO files (torrent, filename, size) VALUES ' . file_list($filelist, $id)) or sqlerr(__FILE__, __LINE__);
 
-$dir = $site_config['torrent_dir'] . '/' . $id . '.torrent';
+$dir = TORRENTS_DIR . $id . '.torrent';
 if (!bencdec::encode_file($dir, $dict)) {
     $session->set('is-warning', 'Could not properly encode file');
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
 @unlink($tmpname);
-chmod($dir, 0664);
 
 if ($site_config['seedbonus_on'] == 1) {
     $seedbonus = $user_data['seedbonus'];
@@ -456,17 +451,24 @@ if ($site_config['seedbonus_on'] == 1) {
     ], $site_config['expires']['user_cache']);
 }
 if ($site_config['autoshout_on'] == 1) {
-    autoshout($message);
-    autoshout($message, 2, 0);
+    autoshout($msg);
+    autoshout($msg, 2, 0);
 }
 if ($offer > 0) {
     $res_offer = sql_query("SELECT user_id FROM offer_votes WHERE vote = 'yes' AND user_id != " . sqlesc($owner_id) . ' AND offer_id = ' . sqlesc($offer)) or sqlerr(__FILE__, __LINE__);
-    $subject = sqlesc('An offer you voted for has been uploaded!');
-    $message = sqlesc("Hi, \n An offer you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent, ENT_QUOTES) . '[/url] to see the torrent page!');
+    $subject = 'An offer you voted for has been uploaded!';
+    $msg = "Hi, \n An offer you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent, ENT_QUOTES) . '[/url] to see the torrent page!';
     while ($arr_offer = mysqli_fetch_assoc($res_offer)) {
-        sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, saved, location)
-    VALUES(0, ' . sqlesc($arr_offer['user_id']) . ', ' . TIME_NOW . ', ' . $message . ', ' . $subject . ', "yes", 1)') or sqlerr(__FILE__, __LINE__);
-        $cache->increment('inbox_' . $arr_offer['user_id']);
+        $msgs_buffer[] = [
+            'sender' => 0,
+            'receiver' => $arr_offer['user_id'],
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
+        ];
+    }
+    if (!empty($msgs_buffer)) {
+        $message_stuffs->insert($msgs_buffer);
     }
     write_log('Offered torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was uploaded by ' . $user_data['username']);
     $filled = 1;
@@ -474,12 +476,19 @@ if ($offer > 0) {
 $filled = 0;
 if ($request > 0) {
     $res_req = sql_query('SELECT user_id FROM request_votes WHERE vote = "yes" AND request_id = ' . sqlesc($request)) or sqlerr(__FILE__, __LINE__);
-    $subject = sqlesc('A  request you were interested in has been uploaded!');
-    $message = sqlesc("Hi :D \n A request you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent, ENT_QUOTES) . '[/url] to see the torrent page!');
+    $subject = 'A  request you were interested in has been uploaded!';
+    $msg = "Hi :D \n A request you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent, ENT_QUOTES) . '[/url] to see the torrent page!';
     while ($arr_req = mysqli_fetch_assoc($res_req)) {
-        sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, saved, location)
-    VALUES(0, ' . sqlesc($arr_req['user_id']) . ', ' . TIME_NOW . ', ' . $message . ', ' . $subject . ', "yes", 1)') or sqlerr(__FILE__, __LINE__);
-        $cache->increment('inbox_' . $arr_req['user_id']);
+        $msgs_buffer[] = [
+            'sender' => 0,
+            'receiver' => $arr_req['user_id'],
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
+        ];
+    }
+    if (!empty($msgs_buffer)) {
+        $message_stuffs->insert($msgs_buffer);
     }
     sql_query('UPDATE requests SET filled_by_user_id = ' . sqlesc($owner_id) . ', filled_torrent_id = ' . sqlesc($id) . ' WHERE id = ' . sqlesc($request)) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE usersachiev SET reqfilled = reqfilled + 1 WHERE userid = ' . sqlesc($owner_id)) or sqlerr(__FILE__, __LINE__);

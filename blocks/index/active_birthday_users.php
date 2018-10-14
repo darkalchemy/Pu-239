@@ -14,23 +14,28 @@ if ($birthday === false || is_null($birthday)) {
         ->where('perms < ?', bt_options::PERMS_STEALTH)
         ->orderBy('username');
 
-    foreach ($query as $row) {
-        $list[] = format_username($row['id']);
-    }
-    $birthday['birthdayusers'] = implode(',&nbsp;&nbsp;', $list);
-    $birthday['count'] = count($list);
-    if ($birthday['count'] === 0) {
+    $birthday['count'] = count($query);
+    if ($birthday['count'] >= 100) {
+        $birthday['birthdayusers'] = format_comment('Too many to list here :)');
+    } elseif ($birthday['count'] > 0) {
+        foreach ($query as $row) {
+            $list[] = format_username($row['id']);
+        }
+        $birthday['birthdayusers'] = implode(',&nbsp;&nbsp;', $list);
+    } elseif ($birthday['count'] === 0) {
         $birthday['birthdayusers'] = $lang['index_birthday_no'];
     }
+
+    $birthday['count'] = number_format($birthday['count']);
     $cache->set('birthdayusers_', $birthday, $site_config['expires']['birthdayusers']);
 }
 
 $HTMLOUT .= "
     <a id='birthday-hash'></a>
     <fieldset id='birthday' class='header'>
-        <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['index_birthday']} ({$birthday['count']})</legend>
+        <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_birthday']} ({$birthday['count']})</legend>
         <div class='bordered'>
-            <div class='alt_bordered bg-00 level-item is-wrapped top10 bottom10 line-40'>
+            <div class='alt_bordered bg-00 level-item is-wrapped top10 bottom10'>
                 {$birthday['birthdayusers']}
             </div>
         </div>

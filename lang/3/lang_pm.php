@@ -7,7 +7,7 @@ $lang = [
     'pm_search' => 'Cauta mesaje',
     'pm_manager' => 'Manager Cutie Postala / Setari mesaje private',
     'pm_write_new' => 'Schita Noua',
-    'pm_in_box' => 'Mesaje primite',
+    'pm_in_box' => 'Inbox',
     //=== some get stuff to display messages
     'pm_deleted' => 'Message deleted!',
     'pm_avatar' => 'Avatars settings changed!',
@@ -25,6 +25,7 @@ $lang = [
     'pm_inbox' => 'Mesaje primite',
     'pm_sentbox' => 'Mesaje trimise',
     'pm_drafts' => 'Schite',
+    'pm_deleted' => 'Deleted',
     //=== insert jump to box
     'pm_jump_to' => 'Sari la:',
     'pm_stdhead' => 'Cutia Postala',

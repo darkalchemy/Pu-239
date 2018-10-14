@@ -10,14 +10,18 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $session, $fluent;
 
-define('PM_DELETED', 0); // Message was deleted
-define('PM_INBOX', 1); // Message located in Inbox for reciever
-define('PM_SENTBOX', -1); // GET value for sent box
-define('PM_DRAFTS', -2); //  new drafts folder
-$lang = array_merge(load_language('global'), load_language('takesignup'), load_language('pm'));
 $stdhead = [
-    'css' => [],
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
 ];
+$stdfoot = [
+    'js' => [
+        get_file_name('sceditor_js'),
+        get_file_name('user_search_js'),
+    ],
+];
+$lang = array_merge(load_language('global'), load_language('takesignup'), load_language('pm'));
 $HTMLOUT = $count2 = $other_box_info = $maxpic = $maxbox = '';
 
 $maxbox = 100 * ($CURUSER['class'] + 1);
@@ -133,7 +137,7 @@ isset($_GET['new_draft']) ? $session->set('is-success', $lang['pm_draft_saved'])
 isset($_GET['sent']) ? $session->set('is-success', $lang['pm_msg_sent']) : null;
 isset($_GET['pms']) ? $session->set('is-success', $lang['pm_msg_sett']) : null;
 
-$mailbox_name = ($mailbox === PM_INBOX ? $lang['pm_inbox'] : ($mailbox === PM_SENTBOX ? $lang['pm_sentbox'] : $lang['pm_drafts']));
+$mailbox_name = ($mailbox === PM_INBOX ? $lang['pm_inbox'] : ($mailbox === PM_SENTBOX ? $lang['pm_sentbox'] : ($mailbox === PM_DELETED ? $lang['pm_deleted'] : $lang['pm_drafts'])));
 switch ($action) {
     case 'view_mailbox':
         require_once PM_DIR . 'view_mailbox.php';
@@ -195,25 +199,31 @@ switch ($action) {
  */
 function get_all_boxes($box = 1)
 {
-    global $CURUSER, $site_config, $lang, $cache;
+    global $CURUSER, $site_config, $lang, $cache, $fluent;
 
     $get_all_boxes = $cache->get('get_all_boxes_' . $CURUSER['id']);
     if ($get_all_boxes === false || is_null($get_all_boxes)) {
-        $res = sql_query('SELECT boxnumber, name FROM pmboxes WHERE userid = ' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
-        while ($row = mysqli_fetch_assoc($res)) {
-            $get_all_boxes[] = $row;
-        }
+        $get_all_boxes = $fluent->from('pmboxes')
+            ->select(null)
+            ->select('boxnumber')
+            ->select('name')
+            ->where('userid = ?', $CURUSER['id'])
+            ->orderBy('boxnumber')
+            ->fetchAll();
+
         $cache->set('get_all_boxes_' . $CURUSER['id'], $get_all_boxes, $site_config['expires']['get_all_boxes']);
     }
     $boxes = "
-        <select name='box' class='right10'>
-            <option value='1'" . ($box === 1 ? 'selected' : '') . ">{$lang['pm_inbox']}</option>
-            <option value='-1'" . ($box === -1 ? 'selected' : '') . ">{$lang['pm_sentbox']}</option>
-            <option value='-2'" . ($box === -2 ? 'selected' : '') . ">{$lang['pm_drafts']}</option>";
+        <select name='boxx' class='right10'>
+            <option value='10000'>{$lang['pm_search_move_to']}</option>" . ($box !== 1 ? "
+            <option value='1'>{$lang['pm_inbox']}</option>" : '') . ($box !== -1 ? "
+            <option value='-1'>{$lang['pm_sentbox']}</option>" : '') . ($box !== -2 ? "
+            <option value='-2'>{$lang['pm_drafts']}</option>" : '') . "
+            <option value='0'>{$lang['pm_deleted']}</option>";
     if (!empty($get_all_boxes)) {
-        foreach ($get_all_boxes as $box) {
-            $boxes .= "
-            <option value='{$box['boxnumber']}'" . ($box === (int) $box['boxnumber'] ? 'selected' : '') . '>' . htmlsafechars($box['name']) . '</option>';
+        foreach ($get_all_boxes as $boxx) {
+            $boxes .= $box === (int) $boxx['boxnumber'] ? '' : "
+            <option value='{$boxx['boxnumber']}'>" . htmlsafechars($boxx['name']) . '</option>';
         }
     }
     $boxes .= '
@@ -231,24 +241,31 @@ function insertJumpTo($mailbox)
 {
     global $CURUSER, $site_config, $lang, $cache;
 
+    $cache->delete('insertJumpTo' . $CURUSER['id']);
     $insertJumpTo = $cache->get('insertJumpTo' . $CURUSER['id']);
     if ($insertJumpTo === false || is_null($insertJumpTo)) {
         $res = sql_query('SELECT boxnumber,name FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
-        $insertJumpTo = '<form action="messages.php" method="get">
-                                    <input type="hidden" name="action" value="view_mailbox" />
-                                    <select name="box" onchange="location = this.options[this.selectedIndex].value;">
-                                    <option class="head" value="">' . $lang['pm_jump_to'] . '</option>
-                                    <option value="messages.php?action=view_mailbox&amp;box=1" ' . ($mailbox == '1' ? 'selected' : '') . '>' . $lang['pm_inbox'] . '</option>
-                                    <option value="messages.php?action=view_mailbox&amp;box=-1" ' . ($mailbox == '-1' ? 'selected' : '') . '>' . $lang['pm_sentbox'] . '</option>
-                                    <option value="messages.php?action=view_mailbox&amp;box=-2" ' . ($mailbox == '-2' ? 'selected' : '') . '>' . $lang['pm_drafts'] . '</option>';
+        $insertJumpTo = '
+            <form action="messages.php" method="get">
+                <input type="hidden" name="action" value="view_mailbox" />
+                <label for="box">' . $lang['pm_jump_to'] . '
+                    <select name="box" onchange="location = this.options[this.selectedIndex].value;">
+                        <option value="' . $site_config['baseurl'] . '/messages.php?action=view_mailbox&amp;box=1"' . ($mailbox === 1 ? ' selected' : '') . '>' . $lang['pm_inbox'] . '</option>
+                        <option value="' . $site_config['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-1"' . ($mailbox === -1 ? ' selected' : '') . '>' . $lang['pm_sentbox'] . '</option>
+                        <option value="' . $site_config['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-2"' . ($mailbox === -2 ? ' selected' : '') . '>' . $lang['pm_drafts'] . '</option>
+                        <option value="' . $site_config['baseurl'] . '/messages.php?action=view_mailbox&amp;box=0"' . ($mailbox === 0 ? ' selected' : '') . '>' . $lang['pm_deleted'] . '</option>';
         while ($row = mysqli_fetch_assoc($res)) {
-            $insertJumpTo .= '<option value="messages.php?action=view_mailbox&amp;box=' . (int) $row['boxnumber'] . '" ' . ((int) $row['boxnumber'] == $mailbox ? 'selected' : '') . '>' . htmlsafechars($row['name']) . '</option>';
+            $insertJumpTo .= '
+                        <option value="' . $site_config['baseurl'] . '/messages.php?action=view_mailbox&amp;box=' . (int) $row['boxnumber'] . '"' . ($mailbox === (int) $row['boxnumber'] ? ' selected' : '') . '>' . htmlsafechars($row['name']) . '</option>';
         }
-        $insertJumpTo .= '</select></form>';
+        $insertJumpTo .= '
+                    </select>
+                </label>
+            </form>';
         $cache->set('insertJumpTo' . $CURUSER['id'], $insertJumpTo, $site_config['expires']['insertJumpTo']);
     }
 
     return $insertJumpTo;
 }
 
-echo stdhead($lang['pm_stdhead'], $stdhead) . wrapper($HTMLOUT, 'has-text-centered') . stdfoot();
+echo stdhead($lang['pm_stdhead'], $stdhead) . wrapper($HTMLOUT, 'has-text-centered') . stdfoot($stdfoot);

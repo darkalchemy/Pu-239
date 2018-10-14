@@ -22,7 +22,7 @@ function torrents_normalize($data)
             break;
         }
 
-        $dp = opendir($site_config['torrent_dir']);
+        $dp = opendir(TORRENTS_DIR);
         if (!$dp) {
             break;
         }
@@ -37,7 +37,7 @@ function torrents_normalize($data)
             if (isset($ar[$id]) && $ar[$id]) {
                 continue;
             }
-            $ff = $site_config['torrent_dir'] . "/$file";
+            $ff = TORRENTS_DIR . $file;
             unlink($ff);
         }
         closedir($dp);

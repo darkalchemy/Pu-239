@@ -6,15 +6,15 @@
  */
 function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Body')
 {
-    global $CURUSER, $site_config, $cache, $fluent;
+    global $CURUSER, $site_config, $cache, $fluent, $message_stuffs;
 
     if (user_exists($site_config['chatBotID'])) {
         $topicid = $fluent->from('topics')
-                ->select(null)
-                ->select('id')
-                ->where('forum_id = ?', $site_config['staff']['forumid'])
-                ->where('topic_name = ?', $subject)
-                ->fetch('id');
+            ->select(null)
+            ->select('id')
+            ->where('forum_id = ?', $site_config['staff']['forumid'])
+            ->where('topic_name = ?', $subject)
+            ->fetch('id');
         if (!$topicid) {
             $values = [
                 'user_id' => $site_config['chatBotID'],
@@ -70,10 +70,6 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
             'subject' => $subject,
             'msg' => $body,
         ];
-        $fluent->insertInto('messages')
-            ->values($values)
-            ->execute();
-
-        $cache->delete('inbox_' . $site_config['site']['owner']);
+        $message_stuffs->insert($values);
     }
 }

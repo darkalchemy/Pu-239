@@ -252,7 +252,10 @@ body.ajax-chat {
 }
 
 #content #chatList div {
-    padding: 2px 5px;
+    width: calc(100% - 22px);
+    padding: 4px 10px;
+    border-radius: .3125em;
+    overflow-wrap: break-word;
 }
 
 #content #chatList img {

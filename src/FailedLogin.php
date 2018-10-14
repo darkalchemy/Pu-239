@@ -21,6 +21,8 @@ class FailedLogin
      * @param string $ip
      *
      * @return mixed
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function get(string $ip)
     {
@@ -50,6 +52,8 @@ class FailedLogin
     /**
      * @param array $values
      * @param array $update
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function insert(array $values, array $update)
     {
@@ -60,6 +64,8 @@ class FailedLogin
 
     /**
      * @param string $ip
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function delete(string $ip)
     {

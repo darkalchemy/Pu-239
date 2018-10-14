@@ -1,9 +1,9 @@
 <?php
 
-global $h1_thingie, $lang;
+global $h1_thingie, $lang, $user_stuffs, $message_stuffs;
 
 $subject = $friends = '';
-//=== Get the message
+
 $res = sql_query('SELECT m.*, f.id AS friend, b.id AS blocked
                             FROM messages AS m LEFT JOIN friends AS f ON f.userid = ' . sqlesc($CURUSER['id']) . ' AND f.friendid = m.sender
                             LEFT JOIN blocks AS b ON b.userid = ' . sqlesc($CURUSER['id']) . ' AND b.blockid = m.sender WHERE m.id = ' . sqlesc($pm_id) . ' AND (receiver = ' . sqlesc($CURUSER['id']) . ' OR (sender = ' . sqlesc($CURUSER['id']) . ' AND (saved = \'yes\' || unread= \'yes\'))) LIMIT 1') or sqlerr(__FILE__, __LINE__);
@@ -11,19 +11,30 @@ $message = mysqli_fetch_assoc($res);
 if (!$message) {
     stderr($lang['pm_error'], $lang['pm_viewmsg_err']);
 }
-$res_user_stuff = sql_query('SELECT id, username, uploaded, warned, suspended, enabled, donor, class, avatar, offensive_avatar, leechwarn, chatpost, pirate, king, opt1, opt2 FROM users WHERE id = ' . ($message['sender'] === $CURUSER['id'] ? sqlesc($message['receiver']) : sqlesc($message['sender']))) or sqlerr(__FILE__, __LINE__);
-$arr_user_stuff = mysqli_fetch_assoc($res_user_stuff);
-$id = (int) $arr_user_stuff['id'];
+$arr_user_stuff = $user_stuffs->getUserFromId($message['sender'] === $CURUSER['id'] ? $message['receiver'] : $message['sender']);
+$id = $arr_user_stuff['id'];
 sql_query('UPDATE messages SET unread = "no" WHERE id = ' . sqlesc($pm_id) . ' AND receiver = ' . sqlesc($CURUSER['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
 $cache->decrement('inbox_' . $CURUSER['id']);
 if ($message['friend'] > 0) {
-    $friends = $lang['pm_mailbox_char1'] . '<span class="size_2"><a href="' . $site_config['baseurl'] . '/friends.php?action=delete&amp;type=friend&amp;targetid=' . $id . '">' . $lang['pm_mailbox_removef'] . '</a></span>' . $lang['pm_mailbox_char2'];
+    $friends = '
+                    <a href="' . $site_config['baseurl'] . '/friends.php?action=delete&amp;type=friend&amp;targetid=' . (int) $message['id'] . '">
+                        <small><i class="icon-minus has-text-red tooltipper" title="' . $lang['pm_mailbox_removef'] . '"></i></small>
+                    </a>';
 } elseif ($message['blocked'] > 0) {
-    $friends = $lang['pm_mailbox_char1'] . '<span class="size_2"><a href="' . $site_config['baseurl'] . '/friends.php?action=delete&amp;type=block&amp;targetid=' . $id . '">' . $lang['pm_mailbox_removeb'] . '</a></span>' . $lang['pm_mailbox_char2'];
-} elseif ($id > 0) {
-    $friends = $lang['pm_mailbox_char1'] . '<span class="size_2"><a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=friend&amp;targetid=' . $id . '">' . $lang['pm_mailbox_addf'] . '</a></span>' . $lang['pm_mailbox_char2'] . '
-                               ' . $lang['pm_mailbox_char1'] . '<span class="size_2"><a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=block&amp;targetid=' . $id . '">' . $lang['pm_mailbox_addb'] . '</a></span>' . $lang['pm_mailbox_char2'];
+    $friends = '
+                    <a href="' . $site_config['baseurl'] . '/friends.php?action=delete&amp;type=block&amp;targetid=' . (int) $message['id'] . '">
+                        <small><i class="icon-minus has-text-red tooltipper" title="' . $lang['pm_mailbox_removeb'] . '"></i></small>
+                    </a>';
+} else {
+    $friends = '
+                    <a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=friend&amp;targetid=' . (int) $message['id'] . '">
+                        <small><i class="icon-plus has-text-lime tooltipper" title="' . $lang['pm_mailbox_addf'] . '"></i></small>
+                    </a>
+                    <a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=block&amp;targetid=' . (int) $message['id'] . '">
+                        <small><i class="icon-cancel has-text-red tooltipper" title="' . $lang['pm_mailbox_addb'] . '"></i></small>
+                    </a>';
 }
+
 $avatar = get_avatar($arr_user_stuff);
 
 if ($message['location'] > 1) {
@@ -65,31 +76,30 @@ $HTMLOUT .= "
                 <td colspan='2'>
                     <div class='has-text-centered flex flex-justify-center'>
                         <form action='./messages.php' method='post'>
-                            <input type='hidden' name='id' value='{$pm_id}' />
-                            <input type='hidden' name='action' value='{$lang['pm_viewmsg_to']}' />
-                            <span class='right10'>{$lang['pm_search_move_to']}</span>
+                            <input type='hidden' name='id' value='{$pm_id}'>
+                            <input type='hidden' name='action' value='move'>
                             " . get_all_boxes() . "
-                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_move']}' />
+                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_move']}'>
                         </form>
                     </div>
                     <div class='has-text-centered flex flex-center top20'>
                         <a href='{$site_config['baseurl']}/messages.php?action=delete&amp;id={$pm_id}'>
-                            <input type='submit' class='button is-small' value='{$lang['pm_viewmsg_delete']}' />
+                            <input type='submit' class='button is-small' value='{$lang['pm_viewmsg_delete']}'>
                         </a>" . ($message['draft'] === 'no' ? "
                         <a href='{$site_config['baseurl']}/messages.php?action=save_or_edit_draft&amp;id={$pm_id}'>
-                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_sdraft']}' />
+                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_sdraft']}'>
                         </a>" . (($id < 1 || $message['sender'] === $CURUSER['id']) ? '' : "
                         <a href='{$site_config['baseurl']}/messages.php?action=send_message&amp;receiver={$message['sender']}&amp;replyto={$pm_id}'>
-                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_reply']}' />
+                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_reply']}'>
                         </a>
                         <a href='{$site_config['baseurl']}/messages.php?action=forward&amp;id={$pm_id}'>
-                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_fwd']}' />
+                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_fwd']}'>
                         </a>") : "
                         <a href='{$site_config['baseurl']}/messages.php?action=save_or_edit_draft&amp;edit=1&amp;id={$pm_id}'>
-                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_dedit']}' />
+                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_dedit']}'>
                         </a>
                         <a href='{$site_config['baseurl']}/messages.php?action=use_draft&amp;send=1&amp;id={$pm_id}'>
-                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_duse']}' />
+                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_duse']}'>
                         </a>") . "
                     </div>
                 </td>

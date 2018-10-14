@@ -2,6 +2,7 @@
 
 ## REQUIRE PACKAGES  ##
 package require http
+package require tls
 
 ## INSTRUCTIONS ##
 #in your eggdrop.conf make sure settings match like below or uncomment these 4 lines

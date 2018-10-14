@@ -700,10 +700,9 @@ var ajaxChat = {
             this.sounds[soundID].currentTime = 0;
             var promise = this.sounds[soundID].play();
             if (promise !== undefined) {
-                promise.then(function() {
+                promise.then(function () {
                     return promise;
-                }).
-                catch(function(error) {
+                }).catch(function (error) {
                     return null;
                 });
             }
@@ -1270,8 +1269,8 @@ var ajaxChat = {
                 + '<li class="disc"><a href="javascript:ajaxChat.sendMessageWrapper(\'/casino \');" title="Show Casino and BlackJack Stats.">'
                 + 'Game Stats'
                 + '</a></li>'
-                + '<li class="disc"><a href="' + window.location.protocol + '//' + window.location.host + '/hnrs.php" target="_blank">Hit and Runs</a></li>'
-                + '<li class="disc"><a href="' + window.location.protocol + '//' + window.location.host + '/port_check.php" target="_blank">Port Check</a></li>'
+                + '<li class="disc"><a href="' + window.location.origin + '/hnrs.php" target="_blank">Hit and Runs</a></li>'
+                + '<li class="disc"><a href="' + window.location.origin + '/port_check.php" target="_blank">Port Check</a></li>'
                 + '<li class="disc"><a href="javascript:ajaxChat.sendMessageWrapper(\'/mentions \');" title="Show last 25 posts that mention you by name.">'
                 + 'Mentions'
                 + '</a></li>'
@@ -2796,6 +2795,8 @@ var ajaxChat = {
                 return ajaxChat.replaceBBCodeItalic(p3);
             case 'updown':
                 return ajaxChat.replaceBBCodeUpDown(p3);
+            case 'level':
+                return ajaxChat.replaceBBCodeLevel(p3);
             default:
                 return ajaxChat.replaceCustomBBCode(p1, p2, p3);
         }
@@ -2970,6 +2971,12 @@ var ajaxChat = {
 
     replaceBBCodeUpDown: function (content) {
         return '<span class="txtUpsideDown">'
+            + this.replaceBBCode(content)
+            + '</span>';
+    },
+
+    replaceBBCodeLevel: function (content) {
+        return '<span class="level-left">'
             + this.replaceBBCode(content)
             + '</span>';
     },

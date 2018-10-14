@@ -5,12 +5,27 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'function_bemail.php';
-dbconn();
-global $CURUSER, $site_config, $lang, $fluent, $cache, $session;
+require_once INCL_DIR . 'function_recaptcha.php';
 
-if (!$CURUSER) {
-    get_template();
+dbconn();
+get_template();
+global $site_config, $fluent, $cache, $session, $user_stuffs, $usersachiev_stuffs, $message_stuffs;
+
+$dt = TIME_NOW;
+
+$lang = array_merge(load_language('global'), load_language('takesignup'));
+$wantusername = $wantpassword = $passagain = $email = $user_timezone = $date = $passhint = '';
+$hintanswer = $country = $gender = $rulesverify = $faqverify = $ageverify = $submitme = '';
+$session->set('signup_variables', serialize($_POST));
+
+if (!$session->validateToken($_POST['csrf'])) {
+    $session->set('is-warning', '[h2]CSRF Verification failed.[/h2]');
+    header("Location: {$site_config['baseurl']}/signup.php");
+    die();
 }
+$response = !empty($_POST['token']) ? $_POST['token'] : '';
+extract($_POST);
+unset($_POST);
 
 $cache->delete('userlist_' . $site_config['chatBotID']);
 $ip = getip();
@@ -22,88 +37,106 @@ $users_count = $fluent->from('users')
     ->select('COUNT(id) AS count')
     ->fetch('count');
 
+/*
 if ($users_count >= $site_config['maxusers']) {
     stderr($lang['takesignup_error'], $lang['takesignup_limit']);
 }
-$lang = array_merge(load_language('global'), load_language('takesignup'));
-if (!mkglobal('wantusername:wantpassword:passagain:invite:submitme:passhint:hintanswer:country')) {
-    stderr($lang['takesignup_user_error'], $lang['takesignup_form_data']);
-}
-if ($submitme != 'X') {
-    stderr('Ha Ha', 'You Missed, You plonker!');
-}
+*/
+$required = [
+    'passagain',
+    'email',
+    'date',
+    'passhint',
+    'hintanswer',
+    'gender',
+    'rulesverify',
+    'faqverify',
+    'ageverify',
+];
 
-if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
-    $response = !empty($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
-    if ($response === '') {
-        header('Location: login.php');
-        exit();
+foreach ($required as $field) {
+    if (empty($$field)) {
+        $session->set('is-warning', "[h2]{$lang['takesignup_form_data']}[/h2][p]All fields must be completed [{$field}][/h2]");
+        header("Location: {$site_config['baseurl']}/signup.php");
+        die();
     }
-    $ip = getip();
-    $url = 'https://www.google.com/recaptcha/api/siteverify';
-    $params = [
-        'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
-        'response' => $response,
-        'remoteip' => $ip,
-    ];
-    $query = http_build_query($params);
-    $contextData = [
-        'method' => 'POST',
-        'header' => "Content-Type: application/x-www-form-urlencoded\r\n" . "Connection: close\r\n" . 'Content-Length: ' . strlen($query) . "\r\n",
-        'content' => $query,
-    ];
-    $context = stream_context_create(['http' => $contextData]);
-    $result = file_get_contents($url, false, $context);
-    $responseKeys = json_decode($result, true);
-    if (intval($responseKeys['success']) !== 1) {
-        $session->set('is-warning', '[h2]reCAPTCHA was incorrect.[/h2]');
+}
+if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
+    $result = verify_recaptcha($response, 120);
+    if ($result !== 'valid') {
+        $session->set('is-warning', "[h2]reCAPTCHA failed. {$result}[/h2]");
         header("Location: {$site_config['baseurl']}/invite_signup.php");
         die();
     }
 }
 
-if (empty($wantusername) || empty($wantpassword) || empty($invite) || empty($passhint) || empty($hintanswer) || empty($country)) {
-    stderr($lang['takesignup_user_error'], $lang['takesignup_blank']);
-}
 if (empty($country)) {
-    stderr($lang['takesignup_user_error'], 'Please select your country');
+    $session->set('is-warning', '[h2]Please select your country[/h2]');
+    header("Location: {$site_config['baseurl']}/invite_signup.php");
+    die();
 }
 if (!blacklist($wantusername)) {
-    stderr($lang['takesignup_user_error'], sprintf($lang['takesignup_badusername'], htmlsafechars($wantusername)));
+    $session->set('is-warning', '[h2]' . sprintf($lang['takesignup_badusername'], htmlsafechars($wantusername)) . '[/h2]');
+    header("Location: {$site_config['baseurl']}/invite_signup.php");
+    die();
 }
 if (strlen($wantusername) > 64) {
-    stderr('Error', 'Sorry, username is too long (max is 64 chars)');
+    $session->set('is-warning', '[h2]Sorry, username is too long (max is 64 chars)[/h2]');
+    header("Location: {$site_config['baseurl']}/invite_signup.php");
+    die();
 }
 if ($wantpassword !== $passagain) {
-    stderr($lang['takesignup_user_error'], $lang['takesignup_nomatch']);
+    $session->set('is-warning', "[h2]{$lang['takesignup_nomatch']}[/h2]");
+    header("Location: {$site_config['baseurl']}/invite_signup.php");
+    die();
 }
 if (strlen($wantpassword) < 6) {
-    stderr($lang['takesignup_user_error'], $lang['takesignup_pass_short']);
+    $session->set('is-warning', "[h2]{$lang['takesignup_pass_short']}[/h2]");
+    header("Location: {$site_config['baseurl']}/invite_signup.php");
+    die();
 }
 if ($wantpassword === $wantusername) {
-    stderr($lang['takesignup_user_error'], $lang['takesignup_same']);
+    $session->set('is-warning', "[h2]{$lang['takesignup_same']}[/h2]");
+    header("Location: {$site_config['baseurl']}/invite_signup.php");
+    die();
 }
 if (!valid_username($wantusername)) {
-    stderr($lang['takesignup_user_error'], $lang['takesignup_invalidname']);
+    $session->set('is-warning', "[h2]{$lang['takesignup_invalidname']}[/h2]");
+    header("Location: {$site_config['baseurl']}/invite_signup.php");
+    die();
 }
-if (!(isset($_POST['day']) || isset($_POST['month']) || isset($_POST['year']))) {
-    stderr('Error', 'You have to fill in your birthday.');
+if (empty($date)) {
+    $session->set('is-warning', '[h2]You have to fill in your birthday.[/h2]');
+    header("Location: {$site_config['baseurl']}/invite_signup.php");
+    die();
 }
-if (checkdate($_POST['month'], $_POST['day'], $_POST['year'])) {
-    $birthday = $_POST['year'] . '-' . $_POST['month'] . '-' . $_POST['day'];
-} else {
-    stderr('Error', 'You have to fill in your birthday correctly.');
+if ((date('Y') - date('Y', strtotime($date))) < 18) {
+    $session->set('is-warning', '[h2]You must be at least 18 years old to register.[/h2]');
+    header("Location: {$site_config['baseurl']}/invite_signup.php");
+    die();
 }
-if ((date('Y') - $_POST['year']) < 17) {
-    stderr('Error', 'You must be at least 18 years old to register.');
+if (!(isset($country))) {
+    $session->set('is-warning', '[h2]You must select a country.[/h2]');
+    header("Location: {$site_config['baseurl']}/invite_signup.php");
+    die();
 }
-if (!(isset($_POST['country']))) {
-    stderr('Error', 'You have to set your country.');
+$country = isset($country) && is_valid_id($country) ? intval($country) : 0;
+$gender = isset($gender) ? htmlsafechars($gender) : '';
+if ($rulesverify != 'yes' || $faqverify != 'yes' || $ageverify != 'yes') {
+    $session->set('is-warning', "[h2]{$lang['takesignup_qualify']}[/h2]");
+    header("Location: {$site_config['baseurl']}/invite_signup.php");
+    die();
 }
-$country = (((isset($_POST['country']) && is_valid_id($_POST['country'])) ? intval($_POST['country']) : 0));
-$gender = isset($_POST['gender'], $_POST['gender']) ? htmlsafechars($_POST['gender']) : '';
-if ($_POST['rulesverify'] != 'yes' || $_POST['faqverify'] != 'yes' || $_POST['ageverify'] != 'yes') {
-    stderr($lang['takesignup_failed'], $lang['takesignup_qualify']);
+
+$email_count = $fluent->from('users')
+    ->select(null)
+    ->select('COUNT(id) AS count')
+    ->where('email = ?', $email)
+    ->fetch('count');
+if ($email_count != 0) {
+    $session->set('is-warning', "[h2]{$lang['takesignup_email_used']}[/h2]");
+    header("Location: {$site_config['baseurl']}/signup.php");
+    die();
 }
 
 if ($site_config['dupeip_check_on']) {
@@ -113,28 +146,36 @@ if ($site_config['dupeip_check_on']) {
         ->where('ip = ?', inet_pton($ip))
         ->fetch('count');
     if ($ip_count != 0) {
-        stderr('Error', 'The ip ' . htmlsafechars($ip) . ' is already in use. We only allow one account per ip address.');
+        $session->set('is-warning', '[h2]The ip ' . htmlsafechars($ip) . ' is already in use. We only allow one account per ip address.[/h2]');
+        header("Location: {$site_config['baseurl']}/signup.php");
         die();
     }
 }
-if (isset($_POST['user_timezone']) && preg_match('#^\-?\d{1,2}(?:\.\d{1,2})?$#', $_POST['user_timezone'])) {
-    $time_offset = (int) $_POST['user_timezone'];
+if (isset($user_timezone) && preg_match('#^\-?\d{1,2}(?:\.\d{1,2})?$#', $user_timezone)) {
+    $time_offset = (int) $user_timezone;
 } else {
     $time_offset = isset($site_config['time_offset']) ? (int) $site_config['time_offset'] : 0;
 }
 
-$dst_in_use = localtime(TIME_NOW + ($time_offset * 3600), true);
+$dst_in_use = localtime($dt + ($time_offset * 3600), true);
 
-$select_inv = sql_query('SELECT sender, receiver, status, email FROM invite_codes WHERE code = ' . sqlesc($invite)) or sqlerr(__FILE__, __LINE__);
-$rows = mysqli_num_rows($select_inv);
-$assoc = mysqli_fetch_assoc($select_inv);
-if ($rows == 0) {
-    stderr('Error', "Invite not found.\nPlease request a invite from one of our members.");
+check_banned_emails($email);
+
+$inviter = $fluent->from('invite_codes')
+    ->where('code = ?', $invite)
+    ->fetchAll();
+
+if (empty($inviter)) {
+    $session->set('is-warning', '[h2]Invite not found.[br]Please request a invite from one of our members.[/h2]');
+    header("Location: {$site_config['baseurl']}/invite_signup.php");
+    die();
 }
-if ($assoc['receiver'] != 0) {
-    stderr('Error', "Invite already taken.\nPlease request a new one from your inviter.");
+if ($inviter['receiver'] != 0) {
+    $session->set('is-warning', '[h2]Invite already taken.[br]Please request a new one from your inviter.[/h2]');
+    header("Location: {$site_config['baseurl']}/invite_signup.php");
+    die();
 }
-$email = $assoc['email'];
+$email = $inviter['email'];
 $email_count = $fluent->from('users')
     ->select(null)
     ->select('COUNT(id) AS count')
@@ -142,78 +183,90 @@ $email_count = $fluent->from('users')
     ->fetch('count');
 if ($email_count != 0) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_email_used']);
+    $session->set('is-warning', "[h2]{$lang['takesignup_email_used']}[/h2]");
     die();
 }
-$wantpasshash = make_passhash($wantpassword);
-$wanthintanswer = make_passhash($hintanswer);
-$user_frees = (XBT_TRACKER ? '0' : TIME_NOW + 14 * 86400);
-$torrent_pass = make_password(32);
-$auth = make_password(32);
-$apikey = make_password(32);
-check_banned_emails($email);
 
-$new_user = sql_query('INSERT INTO users (username, passhash, torrent_pass, auth, apikey, passhint, hintanswer, birthday, invitedby, email, added, last_access, last_login, time_offset, dst_in_use, free_switch, ip, status) VALUES (' . implode(',', array_map('sqlesc', [
-        $wantusername,
-        $wantpasshash,
-        $torrent_pass,
-        $auth,
-        $apikey,
-        $passhint,
-        $wanthintanswer,
-        $birthday,
-        (int) $assoc['sender'],
-        $email,
-        TIME_NOW,
-        TIME_NOW,
-        TIME_NOW,
-        $time_offset,
-        $dst_in_use['tm_isdst'],
-        $user_frees,
-        $ip,
-        'confirmed',
-    ])) . ')');
-$id = 0;
-while ($id == 0) {
-    usleep(500);
-    $id = get_one_row('users', 'id', 'WHERE username = ' . sqlesc($wantusername));
-}
-sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($id) . ')') or sqlerr(__FILE__, __LINE__);
-sql_query('UPDATE usersachiev SET invited = invited + 1 WHERE userid = ' . sqlesc($assoc['sender'])) or sqlerr(__FILE__, __LINE__);
-$msg = "Welcome New {$site_config['site_name']} Member : - [user]" . htmlsafechars($wantusername) . '[/user]';
-if (!$new_user) {
-    if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
-        stderr('Error', 'Username already exists!');
-    }
+$values = [
+    'username' => $wantusername,
+    'torrent_pass' => make_password(32),
+    'auth' => make_password(32),
+    'apikey' => make_password(32),
+    'passhash' => make_passhash($wantpassword),
+    'birthday' => $date,
+    'country' => $country,
+    'gender' => $gender,
+    'stylesheet' => $site_config['stylesheet'],
+    'passhint' => $passhint,
+    'hintanswer' => make_passhash($hintanswer),
+    'email' => $email,
+    'added' => $dt,
+    'last_access' => $dt,
+    'time_offset' => $time_offset,
+    'dst_in_use' => $dst_in_use['tm_isdst'],
+    'free_switch' => XBT_TRACKER ? '0' : $dt + 14 * 86400,
+    'ip' => inet_pton($ip),
+    'status' => $users_count === 0 || (!$site_config['email_confirm'] && $site_config['auto_confirm']) ? 'confirmed' : 'pending',
+    'class' => $users_count === 0 ? UC_MAX : UC_MIN,
+    'invitedby' => $inviter['sender'],
+];
+
+$user_id = $user_stuffs->add($values);
+unset($values);
+if (!$user_id) {
+    stderr($lang['takesignup_user_error'], $lang['takesignup_user_exists']);
+    die();
 }
 
-$sender = (int) $assoc['sender'];
-$added = TIME_NOW;
-$msg = sqlesc("Hey there [you] ! :wave:\nIt seems that someone you invited to {$site_config['site_name']} has arrived ! :clap2: \n\n Please go to your [url={$site_config['baseurl']}/invite.php]Invite page[/url] to confirm them so they can log in.\n\ncheers\n");
-$subject = sqlesc('Someone you invited has arrived!');
-sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($sender) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
-$cache->increment('inbox_' . $sender);
+$usersachiev_stuffs->add(['userid' => $user_id]);
 
-sql_query('UPDATE invite_codes SET receiver = ' . sqlesc($id) . ', status = "Confirmed" WHERE sender = ' . sqlesc((int) $assoc['sender']) . ' AND code = ' . sqlesc($invite)) or sqlerr(__FILE__, __LINE__);
-$latestuser_cache['id'] = (int) $id;
-$latestuser_cache['username'] = $wantusername;
-$latestuser_cache['class'] = '0';
-$latestuser_cache['donor'] = 'no';
-$latestuser_cache['warned'] = '0';
-$latestuser_cache['enabled'] = 'yes';
-$latestuser_cache['chatpost'] = '1';
-$latestuser_cache['leechwarn'] = '0';
-$latestuser_cache['pirate'] = '0';
-$latestuser_cache['king'] = '0';
-$cache->delete('all_users_');
+$subject = 'Welcome';
+$msg = 'Hey there ' . htmlsafechars($wantusername) . "!\n\n Welcome to {$site_config['site_name']}! :clap2: \n\n Please ensure you're connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\ncheers {$site_config['site_name']} staff.\n";
+$msgs_buffer[] = [
+    'sender' => 0,
+    'subject' => $subject,
+    'receiver' => $user_id,
+    'msg' => $msg,
+    'added' => $dt,
+];
 
-$cache->set('latestuser', $latestuser_cache, 0, $site_config['expires']['latestuser']);
+$msg = "Hey there [you] ! :wave:\nIt seems that someone you invited to {$site_config['site_name']} has arrived ! :clap2: \n\n Please go to your [url={$site_config['baseurl']}/invite.php]Invite page[/url] to confirm them so they can log in.\n\ncheers\n";
+$subject = 'Someone you invited has arrived!';
+$msgs_buffer[] = [
+    'sender' => 0,
+    'receiver' => $inviter['sender'],
+    'added' => $dt,
+    'msg' => $msg,
+    'subject' => $subject,
+];
+$message_stuffs->insert($msgs_buffer);
+
+$set = [
+    'receiver' => $user_id,
+    'status' => 'Confirmed',
+];
+$fluent->update('invite_codes')
+    ->set($set)
+    ->where('sender = ?', $inviter['sender'])
+    ->where('code = ?', $invite)
+    ->execute();
+
 $cache->delete('birthdayusers');
 $cache->delete('chat_users_list');
-write_log('User account ' . htmlsafechars($wantusername) . ' was created!');
-if ($id > 2 && $site_config['autoshout_on'] == 1) {
+$split = str_split($wantusername);
+$clear = '';
+foreach ($split as $to_clear) {
+    $clear .= $to_clear;
+    $cache->delete('all_users_' . $clear);
+}
+$cache->set('latestuser', format_username($user_id), $site_config['expires']['latestuser']);
+write_log('User account ' . (int) $user_id . ' (' . htmlsafechars($wantusername) . ') was created');
+
+if ($site_config['autoshout_on'] == 1) {
     $msg = "Welcome New {$site_config['site_name']} Member: [user]" . htmlsafechars($wantusername) . '[/user]';
     autoshout($msg);
 }
 
+$session->unset('signup_variables');
 header("Location: {$site_config['baseurl']}/ok.php?type=confirm");
 die();

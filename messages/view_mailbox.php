@@ -5,7 +5,6 @@ global $h1_thingie, $lang;
 
 $show_pm_avatar = ($CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR) === user_options_2::SHOW_PM_AVATAR;
 
-//=== get mailbox name
 if ($mailbox > 1) {
     //== get name of PM box if not in or out
     $res_box_name = sql_query('SELECT name FROM pmboxes WHERE userid = ' . sqlesc($CURUSER['id']) . ' AND boxnumber=' . sqlesc($mailbox) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
@@ -35,7 +34,7 @@ $menu_bottom = $pager['pagerbottom'];
 $LIMIT = $pager['limit'];
 
 //=== get message info we need to display then all nice and tidy like \o/
-$res = sql_query('SELECT m.id AS message_id, m.sender, m.receiver, m.added, m.subject, m.unread, m.urgent, u.id, u.username, u.uploaded, u.downloaded, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.opt1, u.opt2,  u.leechwarn, u.chatpost, u.pirate, u.king, f.id AS friend, b.id AS blocked FROM messages AS m
+$res = sql_query('SELECT m.id AS message_id, m.poster, m.sender, m.receiver, m.added, m.subject, m.unread, m.urgent, u.id, u.username, u.uploaded, u.downloaded, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.opt1, u.opt2,  u.leechwarn, u.chatpost, u.pirate, u.king, f.id AS friend, b.id AS blocked FROM messages AS m
                             LEFT JOIN users AS u ON u.id=m.' . ($mailbox === PM_SENTBOX ? 'receiver' : 'sender') . '
                             LEFT JOIN friends AS f ON f.userid = ' . $CURUSER['id'] . ' AND f.friendid = m.sender
                             LEFT JOIN blocks AS b ON b.userid = ' . $CURUSER['id'] . ' AND b.blockid = m.sender
@@ -62,7 +61,7 @@ $HTMLOUT .= "
                 <thead>
                     <tr>
                         <th class='has-text-centered w-1'>
-                            <input type='hidden' name='action' value='move_or_delete_multi' />
+                            <input type='hidden' name='action' value='move_or_delete_multi'>
                             Mailbox
                         </th>
                         <th class='min-150'>
@@ -77,7 +76,7 @@ $HTMLOUT .= "
                             <a href='{$site_config['baseurl']}/messages.php?action=view_mailbox&amp;box={$mailbox}" . ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=added{$desc_asc}#pm' class='tooltipper' title='{$lang['pm_mailbox_dorder']} {$desc_asc_2}'>{$lang['pm_mailbox_date']}
                             </a>
                         </th>
-                        <th class='has-text-centered w-1'><input type='checkbox' id='checkThemAll' class='tooltipper' title='Select All' /></th>
+                        <th class='has-text-centered w-1'><input type='checkbox' id='checkThemAll' class='tooltipper' title='Select All'></th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -90,30 +89,43 @@ if (mysqli_num_rows($res) === 0) {
         </tr>";
 } else {
     while ($row = mysqli_fetch_assoc($res)) {
-        if ($mailbox === PM_DRAFTS || $row['id'] == 0) {
+        if ($mailbox === PM_DRAFTS || $row['id'] == 0 || $row['sender'] == $CURUSER['id'] || $row['poster'] == $CURUSER['id']) {
             $friends = '';
         } else {
             if ($row['friend'] > 0) {
-                $friends = $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="' . $site_config['baseurl'] . '/friends.php?action=delete&amp;type=friend&amp;targetid=' . (int) $row['id'] . '">' . $lang['pm_mailbox_removef'] . '</a></span>' . $lang['pm_mailbox_char2'];
+                $friends = '
+                    <a href="' . $site_config['baseurl'] . '/friends.php?action=delete&amp;type=friend&amp;targetid=' . (int) $row['id'] . '">
+                        <small><i class="icon-minus has-text-red tooltipper" title="' . $lang['pm_mailbox_removef'] . '"></i></small>
+                    </a>';
             } elseif ($row['blocked'] > 0) {
-                $friends = $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="' . $site_config['baseurl'] . '/friends.php?action=delete&amp;type=block&amp;targetid=' . (int) $row['id'] . '">' . $lang['pm_mailbox_removeb'] . '</a></span>' . $lang['pm_mailbox_char2'];
+                $friends = '
+                    <a href="' . $site_config['baseurl'] . '/friends.php?action=delete&amp;type=block&amp;targetid=' . (int) $row['id'] . '">
+                        <small><i class="icon-minus has-text-red tooltipper" title="' . $lang['pm_mailbox_removeb'] . '"></i></small>
+                    </a>';
             } else {
-                $friends = $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=friend&amp;targetid=' . (int) $row['id'] . '">' . $lang['pm_mailbox_addf'] . '</a></span>' . $lang['pm_mailbox_char2'] . '
-                                          ' . $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=block&amp;targetid=' . (int) $row['id'] . '">' . $lang['pm_mailbox_addb'] . '</a></span>' . $lang['pm_mailbox_char2'];
+                $friends = '
+                    <a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=friend&amp;targetid=' . (int) $row['id'] . '">
+                        <small><i class="icon-plus has-text-lime tooltipper" title="' . $lang['pm_mailbox_addf'] . '"></i></small>
+                    </a>
+                    <a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=block&amp;targetid=' . (int) $row['id'] . '">
+                        <small><i class="icon-cancel has-text-red tooltipper" title="' . $lang['pm_mailbox_addb'] . '"></i></small>
+                    </a>';
             }
         }
         $subject = !empty($row['subject']) ? htmlsafechars($row['subject']) : $lang['pm_search_nosubject'];
         $who_sent_it = $row['id'] == 0 ? '<span style="font-weight: bold;">' . $lang['pm_forward_system'] . '</span>' : format_username($row['id']) . $friends;
-        $read_unread = $row['unread'] === 'yes' ? '<img src="' . $site_config['pic_baseurl'] . 'pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '" />' : '<img src="' . $site_config['pic_baseurl'] . 'pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '" />';
+        $read_unread = $row['unread'] === 'yes' ? '<img src="' . $site_config['pic_baseurl'] . 'pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '">' : '<img src="' . $site_config['pic_baseurl'] . 'pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '">';
         $extra = ($row['unread'] === 'yes' ? $lang['pm_mailbox_char1'] . '<span style="color: red;">' . $lang['pm_mailbox_unread'] . '</span>' . $lang['pm_mailbox_char2'] : '') . ($row['urgent'] === 'yes' ? '<span style="color: red;">' . $lang['pm_mailbox_urgent'] . '</span>' : '');
         $avatar = $show_pm_avatar ? get_avatar($row) : '';
         $HTMLOUT .= '
                 <tr>
                     <td class="has-text-centered">' . $read_unread . '</td>
                     <td><a class="altlink"  href="' . $site_config['baseurl'] . '/messages.php?action=view_message&amp;id=' . (int) $row['message_id'] . '">' . $subject . '</a> ' . $extra . '</td>
-                    <td class="has-text-centered w-15 mw-150">' . $avatar . $who_sent_it . '</td>
-                    <td class="has-text-centered">' . get_date($row['added'], '') . '</td>
-                    <td class="has-text-centered"><input type="checkbox" name="pm[]" value="' . (int) $row['message_id'] . '" /></td>
+                    <td class="has-text-centered w-15 mw-150">' . $avatar . $who_sent_it . ($CURUSER['class'] >= UC_STAFF && $row['sender'] == 0 && $row['poster'] != 0 && $row['poster'] != $CURUSER['id'] ? ' [' . format_username($row['poster']) . ']' : '') . '</td>
+                    <td class="has-text-centered w-15 mw-150">' . get_date($row['added'], '') . '</td>
+                    <td class="has-text-centered">
+                        <input type="checkbox" name="pm[]" value="' . (int) $row['message_id'] . '">
+                    </td>
                 </tr>';
     }
 }
@@ -124,7 +136,7 @@ while ($i <= ($maxbox > 200 ? 200 : $maxbox)) {
     $per_page_drop_down .= '<option class="body" value="' . $link . '&amp;change_pm_number=' . $i . '"  ' . ($CURUSER['pms_per_page'] == $i ? ' selected' : '') . '>' . $i . $lang['pm_edmail_perpage'] . '</option>';
     $i = ($i < 100 ? $i = $i + 10 : $i = $i + 25);
 }
-$per_page_drop_down .= '</select><input type="hidden" name="box" value="' . $mailbox . '" /></form>';
+$per_page_drop_down .= '</select><input type="hidden" name="box" value="' . $mailbox . '"></form>';
 
 $show_pm_avatar_drop_down = '
     <form method="post" action="messages.php">
@@ -132,15 +144,15 @@ $show_pm_avatar_drop_down = '
             <option value="' . $link . '&amp;show_pm_avatar=yes" ' . ($show_pm_avatar ? ' selected' : '') . '>' . $lang['pm_edmail_show_av'] . '</option>
             <option value="' . $link . '&amp;show_pm_avatar=no" ' . (!$show_pm_avatar ? ' selected' : '') . '>' . $lang['pm_mailbox_dontav'] . '</option>
         </select>
-            <input type="hidden" name="box" value="' . $mailbox . '" /></form>';
+            <input type="hidden" name="box" value="' . $mailbox . '"></form>';
 
 $HTMLOUT .= (mysqli_num_rows($res) > 0 ? "
     <tr>
         <td colspan='5'>
             <div class='level-center'>
                 <span>
-                    <input type='submit' class='button is-small right10' name='move' value='{$lang['pm_search_move_to']}' /> " . get_all_boxes() . " or
-                    <input type='submit' class='button is-small left10 right10' name='delete' value='{$lang['pm_search_delete']}' />{$lang['pm_search_selected']}
+                    <input type='submit' class='button is-small right10' name='move' value='{$lang['pm_search_move_to']}'> " . get_all_boxes($mailbox) . " or
+                    <input type='submit' class='button is-small left10 right10' name='delete' value='{$lang['pm_search_delete']}'>{$lang['pm_search_selected']}
                 </span>
             </div>
         </td>
@@ -148,8 +160,8 @@ $HTMLOUT .= (mysqli_num_rows($res) > 0 ? "
     <tr>
         <td colspan='5'>
             <div class='level-center'>
-                <span><img src='{$site_config['pic_baseurl']}pn_inboxnew.gif' title='{$lang['pm_mailbox_unreadmsg']}' alt='{$lang['pm_mailbox_unread']}' />{$lang['pm_mailbox_unreadmsgs']}</span>
-                <span><img src='{$site_config['pic_baseurl']}pn_inbox.gif' title='{$lang['pm_mailbox_readmsg']}' alt='{$lang['pm_mailbox_read']}' />'{$lang['pm_mailbox_readmsgs']}</span>
+                <span><img src='{$site_config['pic_baseurl']}pn_inboxnew.gif' title='{$lang['pm_mailbox_unreadmsg']}' alt='{$lang['pm_mailbox_unread']}'>{$lang['pm_mailbox_unreadmsgs']}</span>
+                <span><img src='{$site_config['pic_baseurl']}pn_inbox.gif' title='{$lang['pm_mailbox_readmsg']}' alt='{$lang['pm_mailbox_read']}'>'{$lang['pm_mailbox_readmsgs']}</span>
                 {$per_page_drop_down}
                 {$show_pm_avatar_drop_down}
             </div>

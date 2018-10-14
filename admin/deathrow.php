@@ -2,7 +2,6 @@
 
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
-require_once INCL_DIR . 'function_memcache.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
@@ -38,7 +37,7 @@ function calctime($val)
  */
 function delete_torrent($delete_array, $page)
 {
-    global $site_config, $CURUSER, $lang, $cache;
+    global $site_config, $CURUSER, $lang, $cache, $torrent_stuffs;
 
     if (empty($delete_array)) {
         return false;
@@ -63,8 +62,8 @@ function delete_torrent($delete_array, $page)
         $ids[] = $row['id'];
         $names[] = htmlsafechars($row['name']);
         $id = (int) $row['id'];
-        unlink("{$site_config['torrent_dir']}/$id.torrent");
-        remove_torrent($row['info_hash']);
+        unlink(TORRENTS_DIR . "$id.torrent");
+        $torrent_stuffs->remove_torrent($row['info_hash']);
 
         $dt = sqlesc(TIME_NOW - (14 * 86400)); // lose karma if deleted within 2 weeks
         if ($row['added'] > $dt) {

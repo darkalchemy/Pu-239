@@ -9,6 +9,16 @@ require_once INCL_DIR . 'comment_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $userid, $fluent, $user_stuffs, $session;
 
+$stdhead = [
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
+];
+$stdfoot = [
+    'js' => [
+        get_file_name('sceditor_js'),
+    ],
+];
 $lang = load_language('global');
 $HTMLOUT = $user = '';
 $action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
@@ -62,7 +72,7 @@ if ($action === 'add') {
         $HTMLOUT .= '
             <h2>Most recent comments, in reverse order</h2>' . commenttable($allrows, 'userdetails');
     }
-    echo stdhead('Add a comment for ' . htmlsafechars($arr['username'])) . wrapper($HTMLOUT) . stdfoot();
+    echo stdhead('Add a comment for ' . htmlsafechars($arr['username']), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
 } elseif ($action === 'edit') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -106,7 +116,7 @@ if ($action === 'add') {
     <div class='has-text-centered margin20'>
         <input type='submit' class='button is-small' value='Do it!' />
     </div></form>";
-    echo stdhead('Edit comment for ' . htmlsafechars($arr['username'])) . wrapper($HTMLOUT) . stdfoot();
+    echo stdhead('Edit comment for ' . htmlsafechars($arr['username']), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
 } elseif ($action === 'delete') {
     $commentid = (int) $_GET['cid'];
@@ -164,7 +174,7 @@ if ($action === 'add') {
                 <a href='$returnto#comments' class='button is-small has-text-black'>back</a>
             </div>  ";
     }
-    echo stdhead("{$lang['comment_original']}") . wrapper($HTMLOUT) . stdfoot();
+    echo stdhead("{$lang['comment_original']}", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
 } else {
     stderr('Error', 'Unknown action');

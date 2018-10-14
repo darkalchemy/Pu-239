@@ -22,7 +22,7 @@ $query = $fluent->from('users')
     ->select('countries.flagpic')
     ->select('countries.name as flagname')
     ->leftJoin('countries ON countries.id = users.country')
-    ->where('users.class >= ? OR users.support = ?', UC_STAFF, 'yes')
+    ->whereOr(['users.class >= ?' => UC_STAFF, 'users.support = ?' => 'yes'])
     ->where('users.status = ?', 'confirmed')
     ->orderBy('class DESC')
     ->orderBy('username');

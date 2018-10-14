@@ -5,13 +5,24 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang;
+global $CURUSER, $site_config, $lang, $session;
 
 $lang = array_merge($lang, load_language('ad_backup'));
 if (!in_array($CURUSER['id'], $staff_settings['is_staff']['allowed'])) {
     stderr($lang['backup_stderr'], $lang['backup_stderr1']);
 }
 
+$crumbs = [
+    'inactive' => [
+        'title' => 'Staff Panel',
+        'url' => 'staffpanel.php',
+    ],
+    'active' => [
+        'title' => 'DB Backup',
+        'url' => $_SERVER['REQUEST_URI'],
+    ],
+];
+$session->set('crumbs', $crumbs);
 $lang = array_merge($lang, load_language('ad_backup'));
 
 $HTMLOUT = '';
@@ -34,7 +45,7 @@ if (empty($mode)) {
                         ORDER BY db.added DESC') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $HTMLOUT .= "
-        <div class='container is-fluid portlet has-text-centered top20 bottom20 padding20'>
+        <div class='container is-fluid portlet has-text-centered'>
             <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=backup&amp;mode=delete'>
                 <input type='hidden' name='action' value='delete' />
                 {$lang['backup_welcome']}
@@ -78,7 +89,7 @@ if (empty($mode)) {
             </form>
             <div class='has-text-centered top20 bottom20'>
                 <span class='flipper has-text-primary pointer'>
-                    <i class='icon-down-open size_3 has-text-primary' aria-hidden='true'></i>
+                    <i class='icon-up-open size_3 has-text-primary' aria-hidden='true'></i>
                     <span class='has-text-primary size_4 left10'>{$lang['backup_settingschk']}</span>
                 </span>
                 <div class='container is-fluid portlet is_hidden top20 bottom20'>
@@ -96,16 +107,16 @@ if (empty($mode)) {
                             </tr>
                             <tr>
                                 <td>{$lang['backup_pathfolder']}</td>
-                                <td>{$site_config['backup_dir']}</td>
-                                <td>" . (is_dir($site_config['backup_dir']) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . BACKUPS_DIR . '</td>
+                                <td>' . (is_dir(BACKUPS_DIR) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_readfolder']}</td>
-                                <td>" . (is_readable($site_config['backup_dir']) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . (is_readable(BACKUPS_DIR) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_writable']}</td>
-                                <td>" . (is_writable($site_config['backup_dir']) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . (is_writable(BACKUPS_DIR) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td>{$lang['backup_mysqldump']}</td>
@@ -148,7 +159,7 @@ if (empty($mode)) {
     $mysql_pass = $_ENV['DB_PASSWORD'];
     $mysql_db = $_ENV['DB_DATABASE'];
     $ext = $mysql_db . '-' . date('d') . '-' . date('m') . '-' . date('Y') . '_' . date('H') . '-' . date('i') . '-' . date('s') . '_' . date('D') . '.sql';
-    $filepath = $site_config['backup_dir'] . '/' . $ext;
+    $filepath = BACKUPS_DIR . $ext;
     exec("{$site_config['db_backup_mysqldump_path']} -h $mysql_host -u $mysql_user -p$mysql_pass $mysql_db > $filepath");
     if ($site_config['db_backup_use_gzip']) {
         exec("{$site_config['db_backup_gzip_path']} --best $filepath");
@@ -171,7 +182,7 @@ if (empty($mode)) {
     }
     $res = sql_query('SELECT name FROM dbbackup WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
-    $filename = $site_config['backup_dir'] . '/' . $arr['name'];
+    $filename = BACKUPS_DIR . $arr['name'];
 
     if (!is_file($filename)) {
         stderr($lang['backup_stderr'], $lang['backup_inexistent']);
@@ -217,7 +228,7 @@ if (empty($mode)) {
         $count = mysqli_num_rows($res);
         if ($count > 0) {
             while ($arr = mysqli_fetch_assoc($res)) {
-                $filename = $site_config['backup_dir'] . '/' . $arr['name'];
+                $filename = BACKUPS_DIR . $arr['name'];
                 if (is_file($filename)) {
                     unlink($filename);
                 }

@@ -31,6 +31,8 @@ class AJAXChat
     protected $_cache;
     protected $_fluent;
     protected $_siteConfig;
+    protected $_message;
+    protected $_user_stuffs;
 
     /**
      * AJAXChat constructor.
@@ -39,13 +41,15 @@ class AJAXChat
      */
     public function __construct()
     {
-        global $site_config, $fluent, $session, $cache, $user_stuffs;
+        global $site_config, $fluent, $session, $cache, $user_stuffs, $message_stuffs, $user_stuffs;
 
         $this->_siteConfig = $site_config;
         $this->_session = $session;
         $this->_cache = $cache;
         $this->_fluent = $fluent;
         $this->_user = $user_stuffs;
+        $this->_message = $message_stuffs;
+        $this->_user_stuffs = $user_stuffs;
         $this->initialize();
     }
 
@@ -320,7 +324,7 @@ class AJAXChat
                 ->orderBy('LOWER(o.userName) ASC');
 
             foreach ($sql as $row) {
-                $row['pmCount'] = getPMCount($row['userID']);
+                $row['pmCount'] = $this->_message->get_count($row['userID']);
                 array_push($this->_onlineUsersData, $row);
             }
         }
@@ -1424,9 +1428,9 @@ class AJAXChat
 
         if ($this->getConfig('socketServerEnabled')) {
             $this->updateSocketAuthentication($this->getUserID(), $this->getSocketRegistrationID(), [
-                    $channel,
-                    $this->getPrivateMessageID(),
-                ]);
+                $channel,
+                $this->getPrivateMessageID(),
+            ]);
         }
 
         if ($this->_session->get('logsViewSocketAuthenticated')) {
@@ -1751,35 +1755,39 @@ class AJAXChat
      */
     public function deleteMessage($messageID)
     {
-        $channel = $this->_fluent->from($this->getDataBaseTable('messages'))
+        $message = $this->_fluent->from($this->getDataBaseTable('messages'))
             ->select(null)
             ->select('channel')
+            ->select('userID')
+            ->select('userRole')
             ->where('id = ?', $messageID)
-            ->fetch('channel');
+            ->fetch();
 
-        if (is_int($channel) && $channel >= 0) {
+        $delete = false;
+        if (!empty($message) && $message['channel'] >= 0) {
             if ($this->getUserRole() >= UC_ADMINISTRATOR) {
-                $result = $this->_fluent->deleteFrom($this->getDataBaseTable('messages'))
-                    ->where('id = ?', $messageID)
-                    ->where('(userRole = ? OR userRole < ? OR userID = ?)', AJAX_CHAT_CHATBOT, $this->getUserRole(), $this->getUserID())
-                    ->execute();
+                if ($message['userRole'] === AJAX_CHAT_CHATBOT || $message['userRole'] < $this->getUserRole() || $message['userID'] === $this->getUserID()) {
+                    $delete = true;
+                }
             } elseif ($this->getUserRole() >= UC_STAFF) {
-                $result = $this->_fluent->deleteFrom($this->getDataBaseTable('messages'))
-                    ->where('id = ?', $messageID)
-                    ->where('userRole != ?', AJAX_CHAT_CHATBOT)
-                    ->where('(userRole < ? OR userID = ?)', UC_STAFF, $this->getUserID())
-                    ->execute();
+                if ($message['userRole'] != AJAX_CHAT_CHATBOT || $message['userRole'] < UC_STAFF || $message['userID'] === $this->getUserID()) {
+                    $delete = true;
+                }
             } elseif ($this->getUserRole() < UC_STAFF && $this->getConfig('allowUserMessageDelete')) {
-                $result = $this->_fluent->deleteFrom($this->getDataBaseTable('messages'))
-                    ->where('id = ?', $messageID)
-                    ->where('userID = ?', $this->getUserID())
-                    ->execute();
+                if ($message['userID'] === $this->getUserID()) {
+                    $delete = true;
+                }
             } else {
                 return false;
             }
+            if ($delete) {
+                $result = $this->_fluent->deleteFrom($this->getDataBaseTable('messages'))
+                    ->where('id = ?', $messageID)
+                    ->execute();
+            }
 
             if ($result) {
-                $this->insertChatBotMessage($channel, '/delete ' . $messageID, 0, 240);
+                $this->insertChatBotMessage($message['channel'], '/delete ' . $messageID, 0, 240);
 
                 return true;
             }
@@ -2772,16 +2780,7 @@ class AJAXChat
             if ($whereisUserID === null) {
                 $this->insertChatBotMessage($this->getPrivateMessageID(), '/error UserNameNotFound ' . $textParts[1]);
             } else {
-                $sql = 'SELECT u.onirc, u.irctotal, u.donor, u.warned, u.leechwarn, u.pirate, u.king, u.enabled,
-                            u.downloadpos, u.last_access, u.username, u.reputation, u.class, u.bjwins - u.bjlosses AS bj,
-                            u.uploaded, u.downloaded, u.seedbonus, u.freeslots, u.free_switch, u.added, u.invite_rights,
-                            u.invites, c.win - c.lost AS casino
-                        FROM users AS u
-                        LEFT JOIN casino AS c ON c.userid = u.id
-                        WHERE id = ' . $whereisUserID;
-
-                $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-                $stats = mysqli_fetch_assoc($result);
+                $stats = $this->_user_stuffs->getUserFromId($whereisUserID);
                 $stats['bj'] = $stats['bj'] * 1024 * 1024 * 1024;
                 $bj = $stats['bj'] > 0 ? '[color=#00FF00]' . mksize($stats['bj']) . '[/color]' : '[color=#CC0000]' . mksize($stats['bj']) . '[/color]';
                 $uploaded = '[color=#00FF00]' . human_filesize($stats['uploaded']) . '[/color]';
@@ -2845,15 +2844,14 @@ class AJAXChat
                 $whereisRoleClass = get_user_class_name($stats['class'], true);
                 $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . '][url=' . $this->_siteConfig['baseurl'] . '/userdetails.php?id=' . $whereisUserID . '&hit=1]' . $stats['username'] . '[/url][/' . $whereisRoleClass . ']' : '@' . $textParts[1];
                 $str = '';
-                $str .= (isset($stats['donor']) && $stats['donor'] === 'yes' && isset($stats['show_donor']) && $stats['show_donor'] === 'yes' ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/star.png[/img]' : '');
-                $str .= (isset($stats['warned']) && $stats['warned'] >= 1 ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/alertred.png[/img]' : '');
-                $str .= (isset($stats['leechwarn']) && $stats['leechwarn'] >= 1 ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/alertblue.png[/img]' : '');
-                $str .= (isset($stats['enabled']) && $stats['enabled'] != 'yes' ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/disabled.gif[/img]' : '');
-                $str .= (isset($stats['chatpost']) && $stats['chatpost'] == 0 ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/warned.png[/img]' : '');
-                $str .= (isset($stats['pirate']) && $stats['pirate'] >= TIME_NOW ? '[img]' . $this->_siteConfig['baseurl'] . '/pic/pirate.png[/img]' : '');
+                $str .= isset($stats['donor']) && $stats['donor'] === 'yes' ? '[img]' . $this->_siteConfig['pic_baseurl_chat'] . 'star.png[/img]' : '';
+                $str .= isset($stats['warned']) && $stats['warned'] >= 1 ? '[img]' . $this->_siteConfig['pic_baseurl_chat'] . 'alertred.png[/img]' : '';
+                $str .= isset($stats['leechwarn']) && $stats['leechwarn'] >= 1 ? '[img]' . $this->_siteConfig['pic_baseurl_chat'] . 'alertblue.png[/img]' : '';
+                $str .= isset($stats['enabled']) && $stats['enabled'] != 'yes' ? '[img]' . $this->_siteConfig['pic_baseurl_chat'] . 'disabled.gif[/img]' : '';
+                $str .= isset($stats['chatpost']) && $stats['chatpost'] == 0 ? '[img]' . $this->_siteConfig['pic_baseurl_chat'] . 'warned.png[/img]' : '';
+                $str .= isset($stats['pirate']) && $stats['pirate'] >= TIME_NOW ? '[img]' . $this->_siteConfig['pic_baseurl_chat'] . 'pirate.png[/img]' : '';
 
-                $text = "$userNameClass{$str}: [color=#fff]User Class:[/color] [$whereisRoleClass]{$userClass}[/$whereisRoleClass]$enabled
-[color=#fff]idling in irc for:[/color]  {$ircidle}, [color=#fff]Member Since:[/color]  $joined, [color=#fff]Last Seen:[/color]  $seen, [color=#fff]Downloaded:[/color]  $downloaded, [color=#fff]Uploaded:[/color]  $uploaded, [color=#fff]Ratio:[/color]  $ratio, [color=#fff]Seedbonus:[/color]  $seedbonus, [color=#fff]Invites:[/color]  $invites, [color=#fff]Reputation:[/color]  $reputation, [color=#fff]HnRs:[/color]  $hnrs, [color=#fff]Snatched:[/color]  $snatched, [color=#fff]Seeding:[/color]  $seeding, [color=#fff]Seeding Size:[/color]  $volume, [color=#fff]Leeching:[/color]  $leeching, [color=#fff]Requirements Not Met:[/color]  $count_incomplete, [color=#fff]Connectable:[/color]  $connectable, [color=#fff]Uploads:[/color]  $uploads, [color=#fff]Earning Bonus:[/color]  $earns, [color=#fff]Casino:[/color]  $casino, [color=#fff]Blackjack:[/color]  $bj, [color=#fff]Freeleech Until:[/color]  $free, [color=#fff]Free/Double Slots:[/color]  $freeslots";
+                $text = "[level]$userNameClass{$str}: [color=#fff]User Class:[/color] [$whereisRoleClass]{$userClass}[/$whereisRoleClass]{$enabled}[/level][color=#fff]idling in irc for:[/color]  {$ircidle}, [color=#fff]Member Since:[/color]  $joined, [color=#fff]Last Seen:[/color]  $seen, [color=#fff]Downloaded:[/color]  $downloaded, [color=#fff]Uploaded:[/color]  $uploaded, [color=#fff]Ratio:[/color]  $ratio, [color=#fff]Seedbonus:[/color]  $seedbonus, [color=#fff]Invites:[/color]  $invites, [color=#fff]Reputation:[/color]  $reputation, [color=#fff]HnRs:[/color]  $hnrs, [color=#fff]Snatched:[/color]  $snatched, [color=#fff]Seeding:[/color]  $seeding, [color=#fff]Seeding Size:[/color]  $volume, [color=#fff]Leeching:[/color]  $leeching, [color=#fff]Requirements Not Met:[/color]  $count_incomplete, [color=#fff]Connectable:[/color]  $connectable, [color=#fff]Uploads:[/color]  $uploads, [color=#fff]Earning Bonus:[/color]  $earns, [color=#fff]Casino:[/color]  $casino, [color=#fff]Blackjack:[/color]  $bj, [color=#fff]Freeleech Until:[/color]  $free, [color=#fff]Free/Double Slots:[/color]  {$freeslots}";
                 $this->insertChatBotMessage($this->getPrivateMessageID(), $text, 1, 600);
             }
         }
@@ -3336,6 +3334,7 @@ class AJAXChat
      */
     public function getLogsViewMessagesXML()
     {
+        file_put_contents('/var/log/nginx/ajax.log', $this->getLogsViewCondition() . PHP_EOL, FILE_APPEND);
         $sql = 'SELECT
                     id,
                     userID,
@@ -3472,7 +3471,7 @@ class AJAXChat
             if (($this->getUserRole() >= UC_STAFF) && strpos($this->getRequestVar('search'), 'ip=') === 0) {
                 // Search for messages with the given IP:
                 $ip = substr($this->getRequestVar('search'), 3);
-                $condition .= ' AND (ip = ' . ipToStorageFormat($ip) . ')';
+                $condition .= ' AND (INET6_NTOA(ip) = ' . sqlesc($ip) . ')';
             } elseif (strpos($this->getRequestVar('search'), 'userID=') === 0) {
                 // Search for messages with the given userID:
                 $userID = substr($this->getRequestVar('search'), 7);

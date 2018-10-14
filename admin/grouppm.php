@@ -6,7 +6,7 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang, $site_config, $cache;
+global $CURUSER, $lang, $site_config, $cache, $message_stuffs;
 
 $lang = array_merge($lang, load_language('ad_grouppm'));
 
@@ -14,7 +14,7 @@ $HTMLOUT = '';
 $err = [];
 $last_user_class = UC_STAFF - 1; //== Last users class;
 $sent2classes = [];
-
+$dt = TIME_NOW;
 /**
  * @param $min
  * @param $max
@@ -106,16 +106,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $ids = array_unique($ids);
         if (count($ids) > 0) {
-            $pms = [];
-            $msg .= "\n[p]" . $lang['grouppm_this'] . implode(', ', $sent2classes) . '[/p]';
+            $msg .= '[class=top20][p]' . $lang['grouppm_this'] . implode(', ', $sent2classes) . '[/p][/class]';
             foreach ($ids as $rid) {
-                $pms[] = '(' . $sender . ',' . $rid . ',' . TIME_NOW . ',' . sqlesc($msg) . ',' . sqlesc($subject) . ')';
-                $cache->increment('inbox_' . $rid);
+                $msgs_buffer[] = [
+                    'sender' => $sender,
+                    'poster' => $CURUSER['id'],
+                    'receiver' => $rid,
+                    'added' => $dt,
+                    'msg' => $msg,
+                    'subject' => $subject,
+                ];
             }
-            if (count($pms) > 0) {
-                $r = sql_query('INSERT INTO messages(sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pms)) or sqlerr(__FILE__, __LINE__);
-            }
-            $err[] = $r ? $lang['grouppm_sent'] . ' to ' . count($pms) . ' users' : $lang['grouppm_again'];
+            $r = $message_stuffs->insert($msgs_buffer);
+            $err[] = $r ? $lang['grouppm_sent'] . ' to ' . count($msgs_buffer) . ' users' : $lang['grouppm_again'];
         } else {
             $err[] = $lang['grouppm_nousers'];
         }

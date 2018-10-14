@@ -6,6 +6,16 @@ require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
 global $CURUSER, $site_config;
 
+$stdhead = [
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
+];
+$stdfoot = [
+    'js' => [
+        get_file_name('sceditor_js'),
+    ],
+];
 $lang = load_language('global');
 if ($CURUSER['class'] < UC_ADMINISTRATOR) {
     stderr('Error', 'Your not authorised');
@@ -78,7 +88,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         stderr('Error', 'Contact an administrator');
     }
-    echo stdhead('Create Announcement');
     $HTMLOUT = '';
     $HTMLOUT .= "<table class='main' width='750' >
      <tr>
@@ -126,4 +135,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo $HTMLOUT;
     die();
 }
-echo stdhead('New Announcement') . wrapper($HTMLOUT) . stdfoot();
+echo stdhead('New Announcement', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

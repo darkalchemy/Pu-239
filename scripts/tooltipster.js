@@ -1,17 +1,21 @@
-var animate_duration = 1e3;
-var animation = 'fade';
-var delay = 500;
+var animate_duration = 500;
+var animation = 'grow';
+var update_animation = 'rotate';
+var delay = 300;
+var distance = 12;
 
 $(function () {
     $('.tooltipper').tooltipster({
         theme: 'tooltipster-borderless',
-        side: 'top',
+        side: ['bottom', 'top'],
+        interactive: false,
         animation: animation,
         animationDuration: animate_duration,
         delay: delay,
         arrow: true,
         contentAsHTML: true,
-        maxWidth: 500
+        maxWidth: 500,
+        distance: distance,
     });
     initAll();
 });
@@ -21,12 +25,14 @@ function initAll() {
     $('.dt-tooltipper-large').tooltipster({
         theme: 'tooltipster-borderless',
         interactive: true,
+        side: ['bottom', 'top'],
         animation: animation,
         animationDuration: animate_duration,
         delay: delay,
         arrow: true,
         contentAsHTML: true,
         maxWidth: 500,
+        distance: distance,
         trigger: 'custom',
         triggerOpen: {
             mouseenter: true,
@@ -41,16 +47,29 @@ function initAll() {
             touchLeave: true
         }
     });
+    $('.dt-tooltipper-links').tooltipster({
+        theme: 'tooltipster-borderless',
+        side: ['bottom', 'top'],
+        interactive: true,
+        animation: animation,
+        animationDuration: animate_duration,
+        delay: delay,
+        arrow: true,
+        contentAsHTML: true,
+        maxWidth: 300,
+        distance: distance
+    });
     $('.dt-tooltipper-small').tooltipster({
         theme: 'tooltipster-borderless',
-        side: 'top',
+        side: ['bottom', 'top'],
         interactive: false,
         animation: animation,
         animationDuration: animate_duration,
         delay: delay,
         arrow: true,
         contentAsHTML: true,
-        maxWidth: 250
+        maxWidth: 300,
+        distance: distance
     });
     $('.tooltipper-ajax.tooltipstered').tooltipster('destroy');
     $('.tooltipper-ajax').tooltipster({
@@ -68,14 +87,16 @@ function initAll() {
             touchLeave: true
         },
         theme: ['tooltipster-borderless', 'tooltipster-custom'],
+        side: ['bottom', 'top'],
         contentAsHTML: true,
         interactive: true,
         animation: animation,
         animationDuration: animate_duration,
         delay: delay,
-        updateAnimation: animation,
+        updateAnimation: update_animation,
         arrow: true,
         minWidth: 250,
+        distance: distance,
         content: 'patience, grasshopper...',
         functionBefore: function (instance, helper) {
             var $origin = $(helper.origin);

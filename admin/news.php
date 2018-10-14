@@ -9,9 +9,15 @@ class_check($class);
 global $CURUSER, $lang, $site_config, $cache;
 
 $HTMLOUT = '';
+$stdhead = [
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
+];
 $stdfoot = [
     'js' => [
         get_file_name('upload_js'),
+        get_file_name('sceditor_js'),
     ],
 ];
 $lang = array_merge($lang, load_language('ad_news'));
@@ -225,14 +231,24 @@ if ($mode === 'news') {
         $added = get_date($arr['added'], 'LONG', 0, 1);
         $by = '<b>' . format_username($arr['userid']) . '</b>';
         $hash = hash('sha256', $site_config['site']['salt'] . $newsid . 'add');
-        $HTMLOUT .= "<table ><tr><td class='embedded'>
-        $added{$lang['news_created_by']}
-        - [<a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid'><b>{$lang['news_edit']}</b></a>]
-        - [<a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;newsid=$newsid&amp;sure=1&amp;h=$hash'><b>{$lang['news_delete']}</b></a>]
-        </td></tr></table>\n";
-        $HTMLOUT .= "<tr><td class='comment'><b>" . htmlsafechars($title) . '</b><br>' . format_comment($body) . "</td></tr>\n";
-        $HTMLOUT .= '<br>';
+        $user = $arr['anonymous'] === 'yes' ? get_anonymous_name() : format_username($arr['userid']);
+        $HTMLOUT .= main_div("
+            <div class='level bg-01 padding20 round5'>
+                <div class='has-text-left'>
+                    {$lang['news_created_by']} $user $added
+                </div>
+                <div class='has-text-right'>
+                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid' title='{$lang['news_edit']}' class='tooltipper'>
+                        <i class='icon-edit icon'></i>
+                    </a>
+                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;newsid=$newsid&amp;sure=1&amp;h=$hash' title='{$lang['news_delete']}' class='has-text-red tooltipper'>
+                        <i class='icon-cancel icon'></i>
+                    </a>
+                </div>
+            </div>
+            <h2>" . htmlsafechars($title) . '</h2>
+            <div>' . format_comment($body) . '</div>');
     }
 }
-echo stdhead($lang['news_stdhead']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($lang['news_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 die();

@@ -21,6 +21,8 @@ class Coin
      * @param int $tid
      *
      * @return bool|mixed
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function get(int $tid)
     {

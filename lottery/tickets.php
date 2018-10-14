@@ -56,7 +56,7 @@ $lottery['total_tickets'] = 0;
 //select the total amount of tickets
 $qt = sql_query('SELECT id,user FROM tickets ORDER BY id ASC ') or sqlerr(__FILE__, __LINE__);
 while ($at = mysqli_fetch_assoc($qt)) {
-    $lottery['total_tickets'] += 1;
+    ++$lottery['total_tickets'];
     if ($at['user'] == $CURUSER['id']) {
         $lottery['current_user']['tickets'][] = $at['id'];
     }

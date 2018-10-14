@@ -56,7 +56,7 @@ Let's dissect this:
     From now on the client will keep send GETs to the tracker. We show only the first one as an example:
 </p>
 <p class='text-black'>
-    GET /announce.php?info_hash=c9791C5jG951BEC7MF9BFa03F22CEDEE0F&amp; peer_id=S588-----gqQ8TqDeqaY&amp;port=6882&amp;
+    GET /announce.php?info_hash=c9791C5jG951BEC7MF9BFa03F22CEDEE0F&amp;peer_id=S588-----gqQ8TqDeqaY&amp;port=6882&amp;
     <span class='has-text-yellow'>uploaded=67960832</span>&amp;<span class='has-text-green'>downloaded=40828928</span>&amp;left=715417851&amp;<span class='has-text-turquoise'>numwant=0</span>
 </p>
 <ul class='disc left20'>

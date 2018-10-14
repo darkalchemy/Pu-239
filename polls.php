@@ -18,7 +18,7 @@ function parse_poll()
     $poll_data = get_poll();
 
     if (empty($poll_data)) {
-        return '';
+        return false;
     }
 
     $member_voted = 0;
@@ -44,7 +44,7 @@ function parse_poll()
             $poll_footer = '';
         }
     }
-    if ($check == 1) {
+    if ($check === 1) {
         $htmlout = poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question'], ENT_QUOTES));
         $poll_answers = unserialize(stripslashes($poll_data['choices']));
         reset($poll_answers);
@@ -156,7 +156,7 @@ function poll_header($pid = '', $poll_q = '')
     </script>
     <a id='poll-hash'></a>
     <fieldset id='poll' class='header'>
-        <legend class='flipper has-text-primary has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$poll_q}</legend>
+        <legend class='flipper has-text-primary has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$poll_q}</legend>
         <div class='bordered'>
             <div class='alt_bordered bg-00'>
                 <form action='{$site_config['baseurl']}/polls_take_vote.php?pollid={$pid}&amp;st=main&amp;addpoll=1' method='post'>";

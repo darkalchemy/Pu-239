@@ -7,7 +7,7 @@ $lang = [
     'pm_search' => 'Search Messages',
     'pm_manager' => 'Mailbox Manager / PM settings',
     'pm_write_new' => 'Write New Draft',
-    'pm_in_box' => 'In-box',
+    'pm_in_box' => 'Inbox',
     //=== some get stuff to display messages
     'pm_deleted' => 'Message deleted!',
     'pm_avatar' => 'Avatars settings changed!',
@@ -25,6 +25,7 @@ $lang = [
     'pm_inbox' => 'Inbox',
     'pm_sentbox' => 'Sentbox',
     'pm_drafts' => 'Drafts',
+    'pm_deleted' => 'Deleted',
     //=== insert jump to box
     'pm_jump_to' => 'Jump to:',
     'pm_stdhead' => 'Mailbox',

@@ -20,7 +20,7 @@ function smilies_frame($smilies_set)
             <span class='margin10 mw-50 is-flex tooltipper' title='{$code}'>
                 <span class='bordered bg-03'>
                     <a href='#' alt='{$code}'>
-                        <img src='{$image}' data-src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='{$code}' class='lazy w-100' />
+                        <img src='{$image}' data-src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='{$code}' class='lazy w-100'>
                     </a>
                 </span>
             </span>";
@@ -39,83 +39,12 @@ function smilies_frame($smilies_set)
  *
  * @return string
  */
-function BBcode($body = '', $class = null)
+function BBcode($body = null, $class = null, $height = 600)
 {
-    global $CURUSER, $smilies, $customsmilies, $staff_smilies, $site_config;
-
-    $image = placeholder_image();
-    $emoticons_normal = smilies_frame($smilies, 3, ':hslocked:');
-    $emoticons_custom = smilies_frame($customsmilies, 3, ':wink_skull:');
-    $emoticons_staff = smilies_frame($staff_smilies, 1, ':dabunnies:');
-
-    $bbcode = '
-            <div>
-                <div class="emos_wrapper">
-                    <div class="emos">
-                        <ul class="level-center">
-                            <li>
-                                <a href="#BBcode" id="smilies" class="button is-link">Smilies</a>
-                            </li>' . ($CURUSER['smile_until'] > 0 ? '
-                            <li>
-                                <a href="#BBcode" id="custom" class="button is-link">Custom</a>
-                            </li>' : '') . ($CURUSER['class'] < UC_STAFF ? '' : '
-                            <li>
-                                <a href="#BBcode" id="staff" class="button is-link">Staff</a>
-                            </li>') . '
-                        </ul>
-                        <div class="scroll_wrapper">
-                            <div class="scroll" id="box_0" style="display: none;">
-                                <div class="smilies_frame">
-                                    <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/updating.svg" alt="Loading..." class="lazy" />
-                                </div>
-                            </div>
-                            <div class="scroll" id="box_1" style="display: none;">
-                                ' . $emoticons_normal . '
-                            </div>
-                            ' . ($CURUSER['smile_until'] > 0 ? '<div class="scroll" id="box_2" style="display: none;">
-                                ' . $emoticons_custom . '
-                            </div>' : '') . ($CURUSER['class'] < UC_STAFF ? '' : '<div class="scroll" id="box_3" style="display: none;">
-                                ' . $emoticons_staff . '
-                            </div>') . '
-                        </div>
-                    </div>
-                </div>
-                <div id="tblDefects" class="w-100">
-                    <div class="table-wrapper">
-                    <textarea id="bbcode_editor" name="body" rows="20" ' . (!empty($class) ? 'class="' . $class . '"' : '') . '>' . $body . '</textarea>
-                    <div id="outer-preview" class="outer-preview">
-                        <div class="inner-preview">
-                            <div id="preview-window" class="preview-window has-text-left">
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-            </div>';
+    $bbcode = "
+            <textarea name='body' id='bbcode-editor' class='w-100 $class' style='height: {$height}px;'>$body</textarea>";
 
     return $bbcode;
-}
-
-/**
- * @param $s
- *
- * @return mixed
- */
-function validate_imgs($s)
-{
-    $start = 'https?://';
-    $end = "+\.(?:jpe?g|png|gif)";
-    preg_match_all('!' . $start . '(.*)' . $end . '!Ui', $s, $result);
-    $array = $result[0];
-    for ($i = 0; $i < count($array); ++$i) {
-        $headers = @get_headers($array[$i]);
-        if (strpos($headers[0], '200') === false) {
-            $s = str_replace('[img]' . $array[$i] . '[/img]', '', $s);
-            $s = str_replace('[img=' . $array[$i] . ']', '', $s);
-        }
-    }
-
-    return $s;
 }
 
 /**
@@ -199,7 +128,7 @@ function islocal($link)
         $title = trim($link[2]);
         if (stristr($title, '[img]') !== false) {
             $flag = true;
-            $title = preg_replace("/\[img](https?:\/\/[^\s'\"<>]+(\.(jpeg|jpg|gif|png)))\[\/img\]/i", '<img class="img-responsive" src="\\1" alt="" border="0" />', $title);
+            $title = preg_replace("/\[img](https?:\/\/[^\s'\"<>]+(\.(jpeg|jpg|gif|png)))\[\/img\]/i", '<img class="img-responsive" src="\\1" alt="" border="0">', $title);
         }
     } elseif (false !== stristr($link[0], '[url]')) {
         $url = $title = trim($link[1]);
@@ -243,7 +172,6 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     $image = placeholder_image();
     $s = $text;
     unset($text);
-    $s = validate_imgs($s);
     $site_config['url'] = str_replace([
         'http://',
         'www',
@@ -294,7 +222,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '/\[collapse=(.*?)\](.*?)\[\/collapse\]/is',
         '/\[size=([1-7])\](.*?)\[\/size\]/is',
         '/\[color=([a-zA-Z]+)\](.*?)\[\/color\]/is',
-        '/\[color=(#[a-fA-F0-9]{6})\](.*?)\[\/color\]/is',
+        '/\[color=(#[a-fA-F0-9]{3}|#[a-fA-F0-9]{6})\](.*?)\[\/color\]/is',
         '/\[font=([a-zA-Z ,]+)\](.*?)\[\/font\]/is',
         '/\[font01\](.*?)\[\/font01\]/is',
         '/\[font02\](.*?)\[\/font02\]/is',
@@ -304,6 +232,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '/\[font06\](.*?)\[\/font06\]/is',
         '/\[font07\](.*?)\[\/font07\]/is',
         '/\[font08\](.*?)\[\/font08\]/is',
+        '/\[size=(\d+)\](.*?)\[\/size\]/is',
         '/\[spoiler\](.*?)\[\/spoiler\]/is',
         '/\[hide\](.*?)\[\/hide\]/is',
         '/\[youtube=[^\s\'"<>]*youtube.com.*v=([^\s\'"<>]+)\]/imsU',
@@ -338,9 +267,9 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<th>\1</th>',
         '<sup>\1</sup>',
         '<sub>\1</sub>',
-        '<span style="font-weight: bold;">\1</span>',
-        '<span style="font-style: italic;">\1</span>',
-        '<span style="text-decoration: underline;">\1</span>',
+        '<span class="has-text-weight-bold">\1</span>',
+        '<em>\1</em>',
+        '<u>\1</u>',
         '<p>\1</p>',
         '<a class="altlink" href="mailto:\1">\1</a>',
         '<div style="text-align: \1;">\2</div>',
@@ -349,9 +278,9 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<div class="has-text-right">\1</div>',
         '<div class="text-justify">\1</div>',
         '<blockquote class="style"><span>\1</span></blockquote>',
-        '<span style="text-decoration: line-through;">\1</span>',
-        '<span style="text-decoration: line-through;">\1</span>',
-        '<span style="tab-size: 4; -moz-tab-size: 4;-o-tab-size: 4; white-space: pre-wrap; font-family: \'Courier New\', Courier, monospace;">\1</span>',
+        '<s>\1</s>',
+        '<s>\1</s>',
+        '<span class="pre">\1</span>',
         '<marquee class="style">\1</marquee>',
         '<div style="padding-top: 2px; white-space: nowrap;"><span style="cursor: pointer; border-bottom: 1px dotted;" onclick="if (document.getElementById(\'collapseobj\1\').style.display==\'block\') {document.getElementById(\'collapseobj\1\').style.display=\'none\' } else { document.getElementById(\'collapseobj\1\').style.display=\'block\' }">\1</span></div><div id="collapseobj\1" style="display:none; padding-top: 2px; padding-left: 14px; margin-bottom:10px; padding-bottom: 2px; background-color: #FEFEF4;">\2</div>',
         '<span class="size_\1">\2</span>',
@@ -366,19 +295,20 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<span class="text-6">\1</span>',
         '<span class="text-7">\1</span>',
         '<span class="text-8">\1</span>',
-        "<div style='margin-bottom: 5px;'><span class='flip button'>Show Spoiler!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
-        "<div style='margin-bottom: 5px;'><span class='flip button'>Show Hide!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
-        "<div class='responsive-container'><iframe width='1920px' height='1080px' src='{$image}' data-src='//youtube.com/embed/\\1?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen class='lazy'></iframe></div>",
-        "<div class='responsive-container'><iframe width='1920px' height='1080px' src='{$image}' data-src='//youtube.com/embed/\\1?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen class='lazy'></iframe></div>",
+        '<span class="text-\1">\2</span>',
+        "<div style='margin-bottom: 5px;'><span class='flip button is-small'>Show Spoiler!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
+        "<div style='margin-bottom: 5px;'><span class='flip button is-small'>Show Hide!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
+        "<div class='responsive-container'><iframe width='1920px' height='1080px' src='{$image}' data-src='//youtube.com/embed/\\1?vq=hd1080&wmode=opaque' autoplay='false' frameborder='0' allowfullscreen class='lazy'></iframe></div>",
+        "<div class='responsive-container'><iframe width='1920px' height='1080px' src='{$image}' data-src='//youtube.com/embed/\\1?vq=hd1080&wmode=opaque' autoplay='false' frameborder='0' allowfullscreen class='lazy'></iframe></div>",
         '<embed style="width:500px; height:410px;" id="VideoPlayback" align="middle" type="application/x-shockwave-flash" src="//video.google.com/googleplayer.swf?docId=\\1" allowScriptAccess="sameDomain" quality="best" bgcolor="#fff" scale="noScale" wmode="window" salign="TL"  FlashVars="playerMode=embedded"> </embed>',
-        '<span><video width="500" loop muted autoplay><source src="//i.imgur.com/\1.webm" type="video/webm" /><source src="//i.imgur.com/\1.mp4" type="video/mp4" />Your browser does not support the video tag.</video></span>',
-        '<span><video width="500" controls preload="none"><source src="\1" /><source src="\1" type="video/mp4" />Your browser does not support the video tag.</video></span>',
-        '<span><video width="500" controls preload="none"><source src="\1" /><source src="\1" type="video/ogg" />Your browser does not support the video tag.</video></span>',
-        '<span><video width="500" controls preload="none"><source src="\1" /><source src="\1" type="video/webm" />Your browser does not support the video tag.</video></span>',
-        '<span><video width="500" loop muted autoplay><source src="\1" /><source src="\1" type="video/mp4" />Your browser does not support the video tag.</video></span>',
-        '<span><video width="500" loop muted autoplay><source src="\1" /><source src="\1" type="video/webm" />Your browser does not support the video tag.</video></span>',
-        '<span><video width="500" loop muted autoplay><source src="\1" /><source src="\1" type="video/ogv" />Your browser does not support the video tag.</video></span>',
-        '<span class="has-text-centered"><p>Audio From: \1</p><embed type="application/x-shockwave-flash" src="https://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=\\1" width="400" height="27" allowscriptaccess="never" quality="best" bgcolor="#fff" wmode="window" flashvars="playerMode=embedded" /></span>',
+        '<span><video width="500" loop muted autoplay><source src="//i.imgur.com/\1.webm" type="video/webm"><source src="//i.imgur.com/\1.mp4" type="video/mp4">Your browser does not support the video tag.</video></span>',
+        '<span><video width="500" controls preload="none"><source src="\1"><source src="\1" type="video/mp4">Your browser does not support the video tag.</video></span>',
+        '<span><video width="500" controls preload="none"><source src="\1"><source src="\1" type="video/ogg">Your browser does not support the video tag.</video></span>',
+        '<span><video width="500" controls preload="none"><source src="\1"><source src="\1" type="video/webm">Your browser does not support the video tag.</video></span>',
+        '<span><video width="500" loop muted autoplay><source src="\1"><source src="\1" type="video/mp4">Your browser does not support the video tag.</video></span>',
+        '<span><video width="500" loop muted autoplay><source src="\1"><source src="\1" type="video/webm">Your browser does not support the video tag.</video></span>',
+        '<span><video width="500" loop muted autoplay><source src="\1"><source src="\1" type="video/ogv">Your browser does not support the video tag.</video></span>',
+        '<span class="has-text-centered"><p>Audio From: \1</p><embed type="application/x-shockwave-flash" src="https://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=\\1" width="400" height="27" allowscriptaccess="never" quality="best" bgcolor="#fff" wmode="window" flashvars="playerMode=embedded"></span>',
         '<ol class="style" start="\1">\2</ol>',
         '<ul class="style">\1</ul>',
         '<li>\1</li>',
@@ -447,21 +377,27 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         $s = preg_replace("#\[media=(youtube|liveleak|GameTrailers|vimeo|imdb)\](.+?)\[/media\]#ies", "_MediaTag('\\2','\\1')", $s);
     }
     if (stripos($s, '[img') !== false && $images) {
+        // img with width and height
+        $s = preg_replace("/\[img=(\d+)x(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\3" data-lightbox="details"><img src="\\3" alt="" width="\\1" height="\\2" class="img-responsive"></a>', $s);
         // [img=image services with or without extension
-        $s = preg_replace("/\[img=(https?:\/\/[^\s'\"<>]*)\]/i", '<a href="\\1" data-lightbox="details" /><img src="\\1" alt="" class="img-responsive" /></a>', $s);
+        $s = preg_replace("/\[img=(https?:\/\/[^[^\s'\"<>]*)\]/i", '<a href="\\1" data-lightbox="details"><img src="\\1" alt="" class="img-responsive"></a>', $s);
         // [img]image services with or without extension
-        $s = preg_replace("/\[img\](https?:\/\/[^\s'\"<>]*)\[\/img\]/i", '<a href="\\1" data-lightbox="details" /><img src="\\1" alt="" class="img-responsive" /></a>', $s);
+        $s = preg_replace("/\[img\](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\1" data-lightbox="details"><img src="\\1" alt="" class="img-responsive"></a>', $s);
 
-        preg_match_all('/<img.*?src=["|\'](.*?)["|\'].*?>/s', $s, $matches);
+        preg_match_all('/<img.*?src=["|\'](.*?)["|\'](.*?)>/s', $s, $matches);
+        $i = 0;
         foreach ($matches[1] as $match) {
-            $s = str_replace($match, url_proxy($match, true), $s);
+            preg_match('/width=[\'|"](\d+)[\'|"] height=[\'|"](\d+)[\'|"]/', $matches[2][$i++], $dimensions);
+            $width = !empty($dimensions[1]) ? $dimensions[1] : null;
+            $height = !empty($dimensions[2]) ? $dimensions[2] : null;
+            $s = str_replace($match, url_proxy($match, true, $width, $height), $s);
         }
 
         // [img] proxied local images
-        $s = preg_replace("#\[img\](.*" . preg_quote($site_config['pic_baseurl']) . "proxy/.*)\[/img\]#i", '<img src="' . $image . '" data-src="\\1" alt="" class="lazy" /></a>', $s);
+        $s = preg_replace("#\[img\](.*" . preg_quote($site_config['pic_baseurl']) . "proxy/.*)\[/img\]#i", '<img src="' . $image . '" data-src="\\1" alt="" class="lazy"></a>', $s);
 
         // [img] local images
-        $s = preg_replace("#\[img\](.*" . preg_quote($site_config['pic_baseurl']) . ".*)\[/img\]#i", '<img src="' . $image . '" data-src="\\1" alt="" class="lazy emoticon is-2x" /></a>', $s);
+        $s = preg_replace("#\[img\](.*" . preg_quote($site_config['pic_baseurl']) . ".*)\[/img\]#i", '<img src="' . $image . '" data-src="\\1" alt="" class="lazy emoticon is-2x"></a>', $s);
     }
     // [mcom]Text[/mcom]
     if (stripos($s, '[mcom]') !== false) {
@@ -484,17 +420,17 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     $s = str_replace('  ', '&#160;&#160;', $s);
     if (isset($smilies)) {
         foreach ($smilies as $code => $url) {
-            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' class='lazy' />", $s);
+            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' class='lazy'>", $s);
         }
     }
     if (isset($staff_smilies)) {
         foreach ($staff_smilies as $code => $url) {
-            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' class='lazy' />", $s);
+            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' class='lazy'>", $s);
         }
     }
     if (isset($customsmilies)) {
         foreach ($customsmilies as $code => $url) {
-            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' class='lazy' />", $s);
+            $s = str_replace($code, "<img src='{$image}' data-src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' class='lazy'>", $s);
         }
     }
 
@@ -543,17 +479,8 @@ function format_code($s)
                 return $s;
             }
         }
-        $s = str_replace('[code]', "
-            <div class='round10 padding20'>
-                <span class='size_5 has-text-weight-bold'>
-                    code:
-                </span>
-                <div class='round10 padding10 bg-light'>
-                    <code>", htmlspecialchars($s));
-        $s = str_replace('[/code]', '
-                    </code>
-                </div>
-            </div>', $s);
+        $s = str_replace('[code]', "<div><div class='size_3 has-text-weight-bold bottom10'>code:</div><div class='round10 padding10 bg-light'><code>", htmlspecialchars($s));
+        $s = str_replace('[/code]', '</code></div></div>', $s);
         $s = html_entity_decode($s);
     }
 
@@ -684,15 +611,15 @@ function _MediaTag($content, $type)
     $return = '';
     switch ($type) {
         case 'youtube':
-            $return = preg_replace("#^https?://(?:|www\.)youtube\.com/watch\?v=([a-zA-Z0-9\-]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='https://www.youtube.com/v/\\1'><param name='movie' value='https://www.youtube.com/v/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#fff' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
+            $return = preg_replace("#^https?://(?:|www\.)youtube\.com/watch\?v=([a-zA-Z0-9\-]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='https://www.youtube.com/v/\\1'><param name='movie' value='https://www.youtube.com/v/\\1'><param name='allowScriptAccess' value='sameDomain'><param name='quality' value='best'><param name='bgcolor' value='#fff'><param name='scale' value='noScale'><param name='salign' value='TL'><param name='FlashVars' value='playerMode=embedded'><param name='wmode' value='transparent'></object>", $content);
             break;
 
         case 'liveleak':
-            $return = preg_replace("#^https?://(?:|www\.)liveleak\.com/view\?i=([_a-zA-Z0-9\-]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='https://www.liveleak.com/e/\\1'><param name='movie' value='https://www.liveleak.com/e/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#fff' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
+            $return = preg_replace("#^https?://(?:|www\.)liveleak\.com/view\?i=([_a-zA-Z0-9\-]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='https://www.liveleak.com/e/\\1'><param name='movie' value='https://www.liveleak.com/e/\\1'><param name='allowScriptAccess' value='sameDomain'><param name='quality' value='best'><param name='bgcolor' value='#fff'><param name='scale' value='noScale'><param name='salign' value='TL'><param name='FlashVars' value='playerMode=embedded'><param name='wmode' value='transparent'></object>", $content);
             break;
 
         case 'GameTrailers':
-            $return = preg_replace("#^https?://(?:|www\.)gametrailers\.com/video/([\-_a-zA-Z0-9\-]+)+?/([0-9]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='https://www.gametrailers.com/remote_wrap.php?mid=\\2'><param name='movie' value='https://www.gametrailers.com/remote_wrap.php?mid=\\2' /><param name='allowScriptAccess' value='sameDomain' /> <param name='allowFullScreen' value='true' /><param name='quality' value='high' /></object>", $content);
+            $return = preg_replace("#^https?://(?:|www\.)gametrailers\.com/video/([\-_a-zA-Z0-9\-]+)+?/([0-9]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='https://www.gametrailers.com/remote_wrap.php?mid=\\2'><param name='movie' value='https://www.gametrailers.com/remote_wrap.php?mid=\\2'><param name='allowScriptAccess' value='sameDomain'> <param name='allowFullScreen' value='true'><param name='quality' value='high'></object>", $content);
             break;
 
         case 'imdb':
@@ -701,10 +628,10 @@ function _MediaTag($content, $type)
 
         case 'vimeo':
             $return = preg_replace("#^https?://(?:|www\.)vimeo\.com/([0-9]+)+?$#i", "<object type='application/x-shockwave-flash' width='425' height='355' data='https://vimeo.com/moogaloop.swf?clip_id=\\1&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1'>
-    <param name='allowFullScreen' value='true' />
-    <param name='allowScriptAccess' value='sameDomain' />
-    <param name='movie' value='https://vimeo.com/moogaloop.swf?clip_id=\\1&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1' />
-    <param name='quality' value='high' />
+    <param name='allowFullScreen' value='true'>
+    <param name='allowScriptAccess' value='sameDomain'>
+    <param name='movie' value='https://vimeo.com/moogaloop.swf?clip_id=\\1&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1'>
+    <param name='quality' value='high'>
     </object>", $content);
             break;
 

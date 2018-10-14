@@ -36,10 +36,17 @@ $site_config['expires']['sitepot'] = 86400;
 $site_config['expires']['torrent_announce'] = 86400;
 $site_config['expires']['torrent_details'] = 2591999;
 $site_config['expires']['user_cache'] = 2591999;
+$site_config['query_limit'] = 65536; // mysql placeholder limit
 
 require_once INCL_DIR . 'database.php';
 $cache = new DarkAlchemy\Pu239\Cache();
 $fluent = new DarkAlchemy\Pu239\Database();
+$ip_stuffs = new DarkAlchemy\Pu239\IP();
+$peer_stuffs = new DarkAlchemy\Pu239\Peer();
+$event_stuffs = new DarkAlchemy\Pu239\Event();
+$snatched_stuffs = new DarkAlchemy\Pu239\Snatched();
+$torrent_stuffs = new DarkAlchemy\Pu239\Torrent();
+$user_stuffs = new DarkAlchemy\Pu239\User();
 
 /**
  * @return mixed

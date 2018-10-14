@@ -116,7 +116,7 @@ $HTMLOUT = "
         <h1 class='has-text-centered'>{$lang['block_global']}</h1>
         <div class='bg-02'>
         <fieldset id='user_blocks_index' class='header'>
-            <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['block_index']}</legend>
+            <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['block_index']}</legend>
             <div>
                 <div class='level-center'>";
 
@@ -320,7 +320,7 @@ $HTMLOUT .= "
     </div>
     <div class='bg-02 top20'>
         <fieldset id='user_blocks_stdhead' class='header'>
-            <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['block_stdhead_settings']}</legend>
+            <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['block_stdhead_settings']}</legend>
             <div>
                 <div class='level-center'>";
 
@@ -441,7 +441,7 @@ $HTMLOUT .= "
         </div>
         <div class='bg-02 top20'>
         <fieldset id='user_blocks_userdetails' class='header'>
-            <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['block_userdetails']}</legend>
+            <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['block_userdetails']}</legend>
             <div>
                 <div class='level-center'>";
 
@@ -689,7 +689,7 @@ $HTMLOUT .= "
     </div>
     <div class='bg-02 top20'>
         <fieldset id='user_blocks_apis' class='header'>
-            <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['block_apis_settings']}</legend>
+            <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['block_apis_settings']}</legend>
             <div>
                 <div class='level-center'>";
 

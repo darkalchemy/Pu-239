@@ -357,7 +357,7 @@ $searchin .= '
                     </select>';
 $HTMLOUT .= main_div("
                     <div class='padding10 w-100'>
-                        <input id='search' name='search' type='text' placeholder='{$lang['search_search']}' class='search w-100' value='" . (!empty($_GET['search']) ? $_GET['search'] : '') . "' onkeyup='autosearch()' />
+                        <input id='search' name='search' type='text' data-csrf='" . $session->get('csrf_token') . "' placeholder='{$lang['search_search']}' class='search w-100' value='" . (!empty($_GET['search']) ? $_GET['search'] : '') . "' onkeyup='autosearch()' />
                     </div>
                     <div class='level-center'>
                         <div class='padding10 w-25 mw-50'>
@@ -372,8 +372,8 @@ $HTMLOUT .= main_div("
                         <div class='padding10 w-25 mw-50'>
                             $only_free_box
                         </div>
-                        <div id='autocomplete' class='w-100'>
-                            <div class='padding20 margin10 bg-00 round10 bordered'>
+                        <div id='autocomplete' class='w-100 bottom10'>
+                            <div class='padding20 bg-00 round10 bordered autofill'>
                                 <div id='autocomplete_list' class='margin10'>
                                 </div>
                             </div>

@@ -23,7 +23,7 @@ if ($progress >= 100) {
 $HTMLOUT .= "
         <a id='donations-hash'></a>
         <fieldset id='donations' class='header'>
-            <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['index_donations']}</legend>
+            <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_donations']}</legend>
             <div class='bordered'>
                 <div class='alt_bordered bg-00 has-text-centered'>
                     <div>

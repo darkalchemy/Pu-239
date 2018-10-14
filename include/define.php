@@ -26,11 +26,19 @@ define('AVATAR_DIR', BITBUCKET_DIR . 'avatar' . DIRECTORY_SEPARATOR);
 define('SQLERROR_LOGS_DIR', ROOT_DIR . 'sqlerr_logs' . DIRECTORY_SEPARATOR);
 define('PLUGINS_DIR', ROOT_DIR . 'plugins' . DIRECTORY_SEPARATOR);
 define('IMDB_CACHE_DIR', CACHE_DIR . 'imdb' . DIRECTORY_SEPARATOR);
-define('LOGS_DIR', ROOT_DIR . 'logs' . DIRECTORY_SEPARATOR);
+define('PARTIALS_DIR', ROOT_DIR . 'partials' . DIRECTORY_SEPARATOR);
+define('TORRENTS_DIR', ROOT_DIR . 'torrents' . DIRECTORY_SEPARATOR);
+define('USER_TORRENTS_DIR', TORRENTS_DIR . 'users' . DIRECTORY_SEPARATOR);
+define('BACKUPS_DIR', ROOT_DIR . 'backups' . DIRECTORY_SEPARATOR);
 
 define('SQL_DEBUG', true);
-define('IP_LOGGING', false);
+define('IP_LOGGING', true);
 define('XBT_TRACKER', false);
 define('REQUIRE_CONNECTABLE', false);
 define('SOCKET', false);
 define('NFO_SIZE', 1048576);
+
+define('PM_DELETED', 0);
+define('PM_INBOX', 1);
+define('PM_SENTBOX', -1);
+define('PM_DRAFTS', -2);

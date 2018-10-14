@@ -8,7 +8,7 @@
 function pu_demote_update($data)
 {
     dbconn();
-    global $site_config, $queries, $cache;
+    global $site_config, $queries, $cache, $message_stuffs;
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -42,6 +42,7 @@ function pu_demote_update($data)
         $res = sql_query('SELECT id, uploaded, downloaded, modcomment FROM users WHERE class = ' . sqlesc($class_value) . " AND uploaded / downloaded < $minratio") or sqlerr(__FILE__, __LINE__);
         $subject = 'Auto Demotion';
         $msgs_buffer = $users_buffer = [];
+        $dt = TIME_NOW;
         if (mysqli_num_rows($res) > 0) {
             $msg = "You have been auto-demoted from [b]{$class_name}[/b] to [b]{$prev_class_name}[/b] because your share ratio has dropped below  $minratio.\n";
 
@@ -50,18 +51,22 @@ function pu_demote_update($data)
                 $modcomment = $arr['modcomment'];
                 $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - Demoted To ' . $prev_class_name . ' by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ").\n" . $modcomment;
                 $modcom = sqlesc($modcomment);
-                $msgs_buffer[] = '(0,' . $arr['id'] . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $users_buffer[] = '(' . $arr['id'] . ', ' . $prev_class . ', ' . $modcom . ')';
-
+                $msgs_buffer[] = [
+                    'sender' => 0,
+                    'receiver' => $arr['id'],
+                    'added' => $dt,
+                    'msg' => $msg,
+                    'subject' => $subject,
+                ];
                 $cache->update_row('user' . $arr['id'], [
                     'class' => $prev_class,
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
-                $cache->increment('inbox_' . $arr['id']);
             }
             $count = count($users_buffer);
             if ($count > 0) {
-                sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
+                $message_stuffs->insert($msgs_buffer);
                 sql_query('INSERT INTO users (id, class, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE class = VALUES(class),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
             }
             if ($data['clean_log']) {

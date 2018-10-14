@@ -1,6 +1,6 @@
 <?php
 
-global $lang;
+global $lang, $post_stuff;
 
 $page = $colour = $arr_quote = $extension_error = $size_error = '';
 $topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
@@ -50,10 +50,20 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
         stderr($lang['gl_error'], $lang['fe_no_body_txt']);
     }
     $ip = ($CURUSER['ip'] === '' ? htmlsafechars(getip()) : $CURUSER['ip']);
-    sql_query('INSERT INTO `posts` (`topic_id`, `user_id`, `added`, `body`, `icon`, `post_title`, `bbcode`, `ip` , `anonymous`) VALUES (' . sqlesc($topic_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . TIME_NOW . ', ' . sqlesc($body) . ', ' . sqlesc($icon) . ', ' . sqlesc($post_title) . ', ' . sqlesc($bb_code) . ', ' . ipToStorageFormat($ip) . ', ' . sqlesc($anonymous) . ')') or sqlerr(__FILE__, __LINE__);
+    $values = [
+        'topic_id' => $topic_id,
+        'user_id' => $CURUSER['id'],
+        'added' => TIME_NOW,
+        'body' => $body,
+        'icon' => $icon,
+        'post_title' => $post_title,
+        'bbcode' => $bbcode,
+        'ip' => inet_pton($ip),
+        'anonymous' => $anonymous,
+    ];
+    $post_id = $post_stuffs->values($values);
     clr_forums_cache($arr['real_forum_id']);
     $cache->delete('forum_posts_' . $CURUSER['id']);
-    $post_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
     sql_query('UPDATE topics SET last_post = ' . sqlesc($post_id) . ', post_count = post_count + 1 WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE `forums` SET post_count = post_count + 1 WHERE id =' . sqlesc($arr['real_forum_id'])) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE usersachiev SET forumposts = forumposts + 1 WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);

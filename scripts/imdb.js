@@ -6,7 +6,7 @@ $('#url').change(function () {
 if ($('#imdb').length) {
     var el = document.querySelector('#imdb');
     get_imdb(el.dataset.csrf, el.dataset.imdbid, el.dataset.tid);
-};
+}
 
 function get_imdb(csrf, url, tid) {
     var el1 = $('.imdb_outer');
@@ -36,10 +36,11 @@ function get_imdb(csrf, url, tid) {
             } else {
                 el2.removeClass('has-text-centered');
                 el2.html(data['content']);
+                var poster;
                 if (data['poster2']) {
-                    var poster = data['poster2'];
+                    poster = data['poster2'];
                 } else {
-                    var poster = data['poster1'];
+                    poster = data['poster1'];
                 }
                 if (poster) {
                     el3.val(poster);

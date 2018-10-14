@@ -1,6 +1,7 @@
 <?php
 
-global $lang;
+global $lang, $post_stuffs;
+
 //=== post  action posted so we know what to do :P
 $posted_staff_action = strip_tags((isset($_POST['action_2']) ? $_POST['action_2'] : ''));
 //=== add all possible actions here and check them to be sure they are ok
@@ -199,9 +200,25 @@ switch ($staff_action) {
                 //=== get current post info
                 $post_res = sql_query('SELECT * FROM posts WHERE id = ' . sqlesc($post_to_mess_with)) or sqlerr(__FILE__, __LINE__);
                 $post_arr = mysqli_fetch_array($post_res);
-                sql_query('INSERT INTO posts (`topic_id`, `user_id`, `added`, `body`, `edited_by`, `edit_date`, `icon`, `post_title`, `bbcode`, `post_history`, `edit_reason`, `ip`, `status`, `anonymous`) VALUES (' . sqlesc($topic_to_append_to) . ', ' . sqlesc($post_arr['user_id']) . ', ' . sqlesc($post_arr['added']) . ', ' . sqlesc($post_arr['body']) . ', ' . sqlesc($post_arr['edited_by']) . ', ' . $post_arr['edit_date'] . ', ' . sqlesc($post_arr['icon']) . ', ' . sqlesc($post_arr['post_title']) . ', ' . sqlesc($post_arr['bbcode']) . ', ' . sqlesc($post_arr['post_history']) . ', ' . sqlesc($post_arr['edit_reason']) . ', ' . ipToStorageFormat($post_arr['ip']) . ', ' . sqlesc($post_arr['status']) . ', ' . sqlesc($post_arr['anonymous']) . ')') or sqlerr(__FILE__, __LINE__);
+                $values = [
+                    'topic_id' => $topic_to_append_to,
+                    'user_id' => $post_arr['user_id'],
+                    'added' => $post_arr['added'],
+                    'body' => $post_arr['body'],
+                    'edited_by' => $post_arr['edited_by'],
+                    'edit_date' => $post_arr['edit_date'],
+                    'icon' => $post_arr['icon'],
+                    'post_title' => $post_arr['post_title'],
+                    'bbcode' => $post_arr['bbcode'],
+                    'post_history' => $post_arr['post_history'],
+                    'edit_reason' => $post_arr['edit_reason'],
+                    'ip' => inet_pton($post_arr['ip']),
+                    'status' => $post_arr['status'],
+                    'anonymous' => $post_arr['anonymous'],
+                ];
+                $post_stuffs->insert($values);
                 $count = $count + 1;
-                sql_query('DELETE FROM posts WHERE id = ' . sqlesc($post_to_mess_with) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+                $post_stuffs->delete($post_to_mess_with, $topic_id);
                 clr_forums_cache($topic_id);
             }
             //=== and delete post and update counts and boum! done \o/

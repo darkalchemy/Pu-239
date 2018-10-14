@@ -1,3 +1,6 @@
+package require http
+package require tls
+
 set conf(port) 35789
 set conf(chan) "#09source"
 set conf(pass) "bWFtYWFyZW1lcmU"

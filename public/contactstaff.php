@@ -9,9 +9,15 @@ check_user_status();
 global $CURUSER, $site_config, $cache, $session;
 
 $lang = array_merge(load_language('global'), load_language('contactstaff'));
+$stdhead = [
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
+];
 $stdfoot = [
     'js' => [
         get_file_name('upload_js'),
+        get_file_name('sceditor_js'),
     ],
 ];
 
@@ -83,5 +89,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $HTMLOUT .= '
             </form>';
 
-    echo stdhead($lang['contactstaff_header']) . $HTMLOUT . stdfoot($stdfoot);
+    echo stdhead($lang['contactstaff_header'], $stdhead) . $HTMLOUT . stdfoot($stdfoot);
 }

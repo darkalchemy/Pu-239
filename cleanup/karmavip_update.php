@@ -8,7 +8,7 @@
 function karmavip_update($data)
 {
     dbconn();
-    global $site_config, $queries, $cache;
+    global $site_config, $queries, $cache, $message_update;
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -23,7 +23,14 @@ function karmavip_update($data)
             $modcomment = $arr['modcomment'];
             $modcomment = get_date($dt, 'DATE', 1) . " - Vip status Automatically Removed By System.\n" . $modcomment;
             $modcom = sqlesc($modcomment);
-            $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
+            $msgs_buffer[] = [
+                'sender' => 0,
+                'receiver' => $arr['userid'],
+                'added' => $dt,
+                'msg' => $msg,
+                'subject' => $subject,
+            ];
+
             $users_buffer[] = '(' . $arr['id'] . ',1, \'no\', \'0\' , ' . $modcom . ')';
             $cache->update_row('user' . $arr['id'], [
                 'class' => 1,
@@ -31,11 +38,10 @@ function karmavip_update($data)
                 'vip_until' => 0,
                 'modcomment' => $modcomment,
             ], $site_config['expires']['user_cache']);
-            $cache->increment('inbox_' . $arr['id']);
         }
         $count = count($users_buffer);
         if ($count > 0) {
-            sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
+            $message_stuffs->insert($msgs_buffer);
             sql_query('INSERT INTO users (id, class, vip_added, vip_until, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE class = VALUES(class),vip_added = VALUES(vip_added),vip_until = VALUES(vip_until),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
         }
         if ($data['clean_log']) {

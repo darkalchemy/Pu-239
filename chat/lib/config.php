@@ -20,8 +20,9 @@ define('AJAX_CHAT_CHATBOT', $site_config['chatBotRole']);
 $config = [];
 
 // javascript file
+$config['js_main'] = get_file_name('chat_main_js');
 $config['js'] = get_file_name('chat_js');
-$config['jslog'] = get_file_name('chat_log_js');
+$config['js_log'] = get_file_name('chat_log_js');
 
 // Database connection values:
 $config['dbConnection'] = [];
@@ -202,11 +203,11 @@ $config['guestUserSuffix'] = ')';
 $config['minGuestUserID'] = 400000000;
 
 // Allow/Disallow users to change their userName (Nickname):
-$config['allowNickChange'] = false;
+$config['allowNickChange'] = true;
 // Changed userNames should be distinguished by either a prefix or a suffix or both (no whitespace):
-$config['changedNickPrefix'] = '[';
+$config['changedNickPrefix'] = '';
 // Changed userNames should be distinguished by either a prefix or a suffix or both (no whitespace):
-$config['changedNickSuffix'] = ']';
+$config['changedNickSuffix'] = '';
 
 // Allow/Disallow registered users to delete their own messages:
 $config['allowUserMessageDelete'] = true;

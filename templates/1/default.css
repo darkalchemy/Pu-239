@@ -129,9 +129,13 @@ a:hover {
     text-decoration: none;
 }
 
+.iframe,
 iframe {
     padding: 0;
     margin: 0;
+}
+
+.iframe {
     width: 1px;
     min-width: 100%;
 }
@@ -151,6 +155,16 @@ legend {
     border: 0;
     width: calc(100% - 10px);
     margin-left: 5px;
+}
+
+select:invalid,
+input:invalid {
+    box-shadow: 0 0 5px 1px #00f;
+}
+
+select:valid,
+input:valid {
+    border: 1px solid #fff;
 }
 
 input[type=button],
@@ -519,7 +533,6 @@ textarea {
     border: 1px solid rgba(0, 0, 0, 1);
     box-shadow: 2px 2px 5px rgba(0, 0, 0, .5);
     display: inline-block;
-/*    width: 158px;*/
     width: 100%;
     height: auto;
     border-radius: .625em;
@@ -645,13 +658,6 @@ textarea {
 .navbar-menu.box,
 .slideThree [type=checkbox] {
     display: none;
-}
-
-.half-container {
-    width: 500px;
-    max-width: 100%;
-    margin: 0 auto;
-    position: relative;
 }
 
 .notification {
@@ -1195,6 +1201,11 @@ body.background-16 {
     background-color: #282828;
     background-size: 16px 16px;
     background-attachment: fixed;
+}
+
+.autofill {
+    max-height: 500px;
+    overflow: auto;
 }
 
 @media (max-width: 1200px) {

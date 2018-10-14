@@ -6,7 +6,7 @@ $('#isbn').change(function () {
 if ($('#book').length) {
     var el = document.querySelector('#book');
     get_isbn(el.dataset.csrf, el.dataset.isbn, el.dataset.name, el.dataset.tid);
-};
+}
 
 function get_isbn(csrf, isbn, name, tid) {
     var el1 = $('.isbn_outer');

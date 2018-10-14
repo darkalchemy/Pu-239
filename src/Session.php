@@ -10,12 +10,6 @@ class Session
     private $cookies;
     private $user_stuffs;
 
-    /**
-     * Session constructor.
-     *
-     * @throws \MatthiasMullie\Scrapbook\Exception\Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
-     */
     public function __construct()
     {
         global $site_config, $cache, $fluent;
@@ -48,6 +42,12 @@ class Session
             session_set_cookie_params($expires, $this->config['cookie_path'], $domain, $secure_session, true);
 
             // enforce php settings before start session
+            if (ini_get('memory_limit') != 0) {
+                $current = $this->convert_to_bytes(ini_get('memory_limit'));
+                if ($current < 1024 * 1024 * 512) {
+                    ini_set('memory_limit', '512M');
+                }
+            }
             ini_set('session.use_strict_mode', 1);
             ini_set('session.use_trans_sid', 0);
             ini_set('default_charset', $this->config['char_set']);
@@ -73,6 +73,8 @@ class Session
             return false;
         }
 
+        $this->set('LoggedIn', true);
+
         if (!$this->get('canary')) {
             $this->set('canary', TIME_NOW);
         }
@@ -95,11 +97,11 @@ class Session
     }
 
     /**
-     * @param      $key
-     * @param      $value
-     * @param null $prefix
+     * @param string $key
+     * @param $value
+     * @param string|null $prefix
      */
-    public function set($key, $value, $prefix = null)
+    public function set(string $key, $value, string $prefix = null)
     {
         if ($prefix === null) {
             $prefix = $this->config['sessionKeyPrefix'];
@@ -120,10 +122,10 @@ class Session
     }
 
     /**
-     * @param      $key
-     * @param null $prefix
+     * @param string      $key
+     * @param string|null $prefix
      */
-    public function get($key, $prefix = null)
+    public function get(string $key, string $prefix = null)
     {
         if (empty($key)) {
             return null;
@@ -141,10 +143,10 @@ class Session
     }
 
     /**
-     * @param      $key
-     * @param null $prefix
+     * @param string      $key
+     * @param string|null $prefix
      */
-    public function unset($key, $prefix = null)
+    public function unset(string $key, string $prefix = null)
     {
         if ($prefix === null) {
             $prefix = $this->config['sessionKeyPrefix'];
@@ -154,15 +156,15 @@ class Session
     }
 
     /**
-     * @param      $token
-     * @param null $key
-     * @param bool $regen
+     * @param string      $token
+     * @param string|null $key
+     * @param bool        $regen
      *
      * @return bool
      *
      * @throws \Exception
      */
-    public function validateToken($token, $key = null, $regen = false)
+    public function validateToken(string $token, string $key = null, bool $regen = false)
     {
         if ($key === null) {
             $key = $this->config['session_csrf'];
@@ -219,5 +221,32 @@ class Session
     public function close()
     {
         session_write_close();
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return float|int
+     */
+    private function convert_to_bytes(string $value)
+    {
+        if (preg_match('/^(\d+)(.)$/', $value, $matches)) {
+            switch ($matches[2]) {
+                case 'K':
+                    return $matches[1] * 1024;
+                    break;
+
+                case 'M':
+                    return $matches[1] * 1024 * 1024;
+                    break;
+
+                case 'G':
+                    return $matches[1] * 1024 * 1024 * 1024;
+                    break;
+
+                default:
+                    return 0;
+            }
+        }
     }
 }

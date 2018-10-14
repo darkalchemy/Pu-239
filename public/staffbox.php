@@ -6,7 +6,7 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session;
+global $CURUSER, $site_config, $cache, $session, $message_stuffs;
 
 /**
  * @param $x
@@ -18,6 +18,7 @@ function mkint($x)
     return (int) $x;
 }
 
+$dt = TIME_NOW;
 $lang = array_merge(load_language('global'), load_language('staffbox'));
 if ($CURUSER['class'] < UC_STAFF) {
     $session->set('is-danger', $lang['staffbox_class']);
@@ -66,9 +67,17 @@ switch ($do) {
             }
             $q1 = sql_query('SELECT s.msg,s.sender,s.subject,u.username FROM staffmessages AS s LEFT JOIN users AS u ON s.sender=u.id WHERE s.id IN (' . implode(', ', $id) . ')') or sqlerr(__FILE__, __LINE__);
             $a = mysqli_fetch_assoc($q1);
-            $response = htmlsafechars($message) . "\n---" . htmlsafechars($a['username']) . " wrote ---\n" . htmlsafechars($a['msg']);
-            sql_query('INSERT INTO messages(sender,receiver,added,subject,msg) VALUES(' . sqlesc($CURUSER['id']) . ',' . sqlesc($a['sender']) . ',' . TIME_NOW . ',' . sqlesc('RE: ' . $a['subject']) . ',' . sqlesc($response) . ')') or sqlerr(__FILE__, __LINE__);
-            $cache->increment('inbox_' . $a['sender']);
+            $msg = htmlsafechars($message) . "\n---" . htmlsafechars($a['username']) . " wrote ---\n" . htmlsafechars($a['msg']);
+
+            $msgs_buffer[] = [
+                'sender' => $CURUSER['id'],
+                'poster' => $CURUSER['id'],
+                'receiver' => $a['sender'],
+                'added' => $dt,
+                'msg' => $msg,
+                'subject' => 'RE: ' . $subject,
+            ];
+
             $message = ', answer=' . sqlesc($message);
             if (sql_query('UPDATE staffmessages SET answered=\'1\', answeredby=' . sqlesc($CURUSER['id']) . ' ' . $message . ' WHERE id IN (' . implode(', ', $id) . ')')) {
                 $cache->delete('staff_mess_');

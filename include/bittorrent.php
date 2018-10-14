@@ -26,6 +26,15 @@ $comment_stuffs = new DarkAlchemy\Pu239\Comment();
 $failed_logins = new DarkAlchemy\Pu239\FailedLogin();
 $message_stuffs = new DarkAlchemy\Pu239\Message();
 $ip_stuffs = new DarkAlchemy\Pu239\IP();
+$ban_stuffs = new DarkAlchemy\Pu239\Ban();
+$searchcloud_stuffs = new DarkAlchemy\Pu239\Searchcloud();
+$post_stuffs = new DarkAlchemy\Pu239\Post();
+$referer_stuffs = new DarkAlchemy\Pu239\Referer();
+$achievement_stuffs = new DarkAlchemy\Pu239\Achievement();
+$usersachiev_stuffs = new DarkAlchemy\Pu239\Usersachiev();
+$pollvoter_stuffs = new DarkAlchemy\Pu239\PollVoter();
+$happylog_stuffs = new DarkAlchemy\Pu239\HappyLog();
+$snatched_stuffs = new DarkAlchemy\Pu239\Snatched();
 
 define('MIN_TO_PLAY', UC_POWER_USER);
 
@@ -135,7 +144,7 @@ function validip($ip)
 {
     return filter_var($ip, FILTER_VALIDATE_IP, [
         'flags' => FILTER_FLAG_NO_PRIV_RANGE,
-                    FILTER_FLAG_NO_RES_RANGE,
+        FILTER_FLAG_NO_RES_RANGE,
     ]) ? true : false;
 }
 
@@ -146,9 +155,9 @@ function getip($login = false)
 {
     global $CURUSER;
 
-    $ip = $_SERVER['REMOTE_ADDR'];
+    $ip = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
     if (!validip($ip)) {
-        $ip = '10.0.0.1';
+        $ip = '127.0.0.1';
     }
     $no_log_ip = $CURUSER['perms'] & bt_options::PERMS_NO_IP;
     if ($login || (IP_LOGGING && !$no_log_ip)) {
@@ -458,8 +467,9 @@ function get_stylesheet()
     global $site_config, $user_stuffs, $session;
 
     $user = '';
-    if (!empty($_SESSION)) {
-        $user = $user_stuffs->getUserFromId($session->get('userID'));
+    $userid = $session->get('userID');
+    if (!empty($userid)) {
+        $user = $user_stuffs->getUserFromId($userid);
     }
 
     return isset($user['stylesheet']) ? (int) $user['stylesheet'] : (int) $site_config['stylesheet'];
@@ -1318,16 +1328,24 @@ function strip_tags_array($ar)
 
 function referer()
 {
+    global $referer_stuffs;
+
     $http_referer = getenv('HTTP_REFERER');
     if (!empty($_SERVER['HTTP_HOST']) && strstr($http_referer, $_SERVER['HTTP_HOST']) === false && $http_referer != '') {
-        $ip = getip();
+        $ip = getip(true);
         $http_agent = $_SERVER['HTTP_USER_AGENT'];
         $http_page = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
         if (!empty($_SERVER['QUERY_STRING'])) {
             $http_page .= '?' . $_SERVER['QUERY_STRING'];
         }
-        sql_query('INSERT INTO referrers (browser, ip, referer, page, date)
-            VALUES (' . sqlesc($http_agent) . ', ' . ipToStorageFormat($ip, true) . ', ' . sqlesc($http_referer) . ', ' . sqlesc($http_page) . ', ' . sqlesc(TIME_NOW) . ')') or sqlerr(__FILE__, __LINE__);
+        $values = [
+            'browser' => $http_agent,
+            'ip' => inet_pton($ip),
+            'referer' => $http_referer,
+            'page' => $http_page,
+            'date' => TIME_NOW,
+        ];
+        $referer_stuffs->insert($values);
     }
 }
 
@@ -1424,26 +1442,6 @@ function replace_unicode_strings($text)
     $text = str_replace('&amp;', '&#38;', $text);
 
     return html_entity_decode(htmlentities($text, ENT_QUOTES));
-}
-
-/**
- * @param $userid
- *
- * @return bool|int|mixed
- */
-function getPmCount($userid)
-{
-    global $site_config, $cache;
-
-    $pmCount = $cache->get('inbox_' . $userid);
-    if ($pmCount === false || is_null($pmCount)) {
-        $res = sql_query('SELECT COUNT(id) FROM messages WHERE receiver = ' . sqlesc($userid) . " AND unread = 'yes' AND location = 1") or sqlerr(__LINE__, __FILE__);
-        $result = mysqli_fetch_row($res);
-        $pmCount = (int) $result[0];
-        $cache->set('inbox_' . $userid, $pmCount, $site_config['expires']['unread']);
-    }
-
-    return $pmCount;
 }
 
 function parked()
@@ -1544,16 +1542,17 @@ function get_poll()
             ->limit(1)
             ->fetch();
 
-        $vote_data = $fluent->from('poll_voters')
-            ->select(null)
-            ->select('INET6_NTOA(ip) AS ip')
-            ->select('user_id')
-            ->select('vote_date')
-            ->where('user_id = ?', $CURUSER['id'])
-            ->where('poll_id = ?', $poll_data['pid'])
-            ->limit('1')
-            ->fetch();
         if (!empty($poll_data)) {
+            $vote_data = $fluent->from('poll_voters')
+                ->select(null)
+                ->select('INET6_NTOA(ip) AS ip')
+                ->select('user_id')
+                ->select('vote_date')
+                ->where('user_id = ?', $CURUSER['id'])
+                ->where('poll_id = ?', $poll_data['pid'])
+                ->limit('1')
+                ->fetch();
+
             $poll_data['ip'] = $vote_data['ip'];
             $poll_data['user_id'] = $vote_data['user_id'];
             $poll_data['vote_date'] = $vote_data['vote_date'];
@@ -1736,25 +1735,11 @@ function return_bytes($val)
  */
 function plural(int $int)
 {
-    if ($int === 1) {
+    if ($int !== 1) {
         return 's';
     }
 
     return false;
-}
-
-/**
- * @param $ip
- *
- * @return string
- */
-function ipToStorageFormat($ip)
-{
-    if (empty($ip) || !validip($ip)) {
-        $ip = '10.10.10.10';
-    }
-
-    return '0x' . bin2hex(inet_pton($ip));
 }
 
 /**
@@ -1853,20 +1838,18 @@ function url_proxy($url, $image = false, $width = null, $height = null, $quality
     if (empty($url) || preg_match('#' . preg_quote($site_config['domain']) . '#', $url) || preg_match('#' . preg_quote($site_config['pic_baseurl']) . '#', $url)) {
         return $url;
     }
-
     if (!$image) {
         return (!empty($site_config['anonymizer_url']) ? $site_config['anonymizer_url'] : '') . $url;
     }
-
     if ($site_config['image_proxy']) {
         $image_proxy = new DarkAlchemy\Pu239\ImageProxy();
-        $image = @$image_proxy->get_image($url, $width, $height, $quality);
+        $image = $image_proxy->get_image($url, $width, $height, $quality);
 
-        if (!empty($image)) {
+        if (!$image) {
+            return $site_config['pic_baseurl'] . 'noposter.png';
+        } else {
             return $site_config['pic_baseurl'] . 'proxy/' . $image;
         }
-
-        return $url;
     }
 
     return $url;
@@ -1970,7 +1953,7 @@ function time24to12($timestamp, $sec = false)
  *
  * @return string
  */
-function GetDirectorySize($path)
+function GetDirectorySize($path, $human = true)
 {
     $bytestotal = 0;
     $path = realpath($path);
@@ -1980,7 +1963,11 @@ function GetDirectorySize($path)
         }
     }
 
-    return human_filesize($bytestotal);
+    if ($human) {
+        return human_filesize($bytestotal);
+    }
+
+    return $bytestotal;
 }
 
 /**
@@ -1998,24 +1985,22 @@ function formatQuery($query)
 
 function insert_update_ip()
 {
-    global $CURUSER, $cache;
+    global $CURUSER, $cache, $ip_stuffs;
 
     if (empty($CURUSER)) {
-        return;
+        return false;
     }
-    $id = (int) $CURUSER['id'];
-    $ip = getip();
-    $hash = hash('sha256', "{$id}_{$ip}");
-    $user_ips = $cache->get('user_ips_' . $hash);
-    if ($user_ips === false || is_null($user_ips)) {
-        $added = TIME_NOW;
-        sql_query('INSERT INTO ips (userid, ip, lastbrowse, type)
-                    VALUES (' . sqlesc($id) . ', ' . ipToStorageFormat($ip) . ", $added, 'Browse')
-                    ON DUPLICATE KEY UPDATE
-                    ip = VALUES(ip), lastbrowse = VALUES(lastbrowse), type = VALUES(type)") or sqlerr(__FILE__, __LINE__);
-        $cache->delete('ip_history_' . $id);
-        $cache->set('user_ips_' . $hash, 300);
-    }
+    $added = TIME_NOW;
+    $values = [
+        'ip' => getip(),
+        'userid' => $CURUSER['id'],
+        'type' => 'browse',
+        'lastbrowse' => $added,
+    ];
+    $update = [
+        'lastbrowse' => $added,
+    ];
+    $ip_stuffs->insert_update($values, $update, $CURUSER['id']);
 }
 
 function fetch($url)
@@ -2055,9 +2040,7 @@ function get_body_image($details, $portrait = false)
     global $cache, $fluent, $torrent;
 
     if ($details) {
-        return [
-            'background' => $torrent['background'],
-        ];
+        return $torrent['background'];
     }
 
     $backgrounds = $cache->get('backgrounds_');
@@ -2076,13 +2059,19 @@ function get_body_image($details, $portrait = false)
         }
     }
 
-    if (!empty($backgrounds)) {
-        $images['background'] = $backgrounds[array_rand($backgrounds)];
+    shuffle($backgrounds);
+    $image = array_pop($backgrounds);
+    if (!empty($image)) {
+        if (count($backgrounds) <= 5) {
+            $cache->delete('backgrounds_');
+        } else {
+            $cache->set('backgrounds_', $backgrounds, 86400);
+        }
+
+        return $image;
     }
 
-    if (!empty($images)) {
-        return $images;
-    }
+    $cache->delete('backgrounds_');
 
     return false;
 }

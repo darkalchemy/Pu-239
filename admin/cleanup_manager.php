@@ -136,7 +136,7 @@ function cleanup_show_main()
                 </a>
             </td>
             <td class='has-text-centered'>
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=delete&amp;cid={$row['clean_id']} class='tooltipper' title='{$lang['cleanup_delete1']}'>
+                <a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=delete&amp;cid={$row['clean_id']}' class='tooltipper' title='{$lang['cleanup_delete1']}'>
                     <i class='icon-cancel icon'></i>
                 </a>
             </td>

@@ -2,7 +2,7 @@
 
 function get_bluray_info()
 {
-    global $cache, $site_config, $BLOCKS;
+    global $cache, $site_config, $BLOCKS, $image_stuffs;
 
     if (!$BLOCKS['bluray_com_api_on']) {
         return false;
@@ -29,7 +29,7 @@ function get_bluray_info()
         $doc->loadXML($bluray_data);
         $items = $doc->getElementsByTagName('item');
         $pubs = [];
-        $i = 10000;
+        $i = 1000;
         foreach ($items as $item) {
             ++$i;
             $movie = empty($item->getElementsByTagName('title')
@@ -49,9 +49,9 @@ function get_bluray_info()
                 ->item(0)->nodeValue;
             $poster_link = '';
             if ($link) {
-                preg_match('#http://www.blu-ray.com/movies/.*/(.*)/#', $link, $match);
+                preg_match('#https?://www.blu-ray.com/movies/(.*)/(.*)/#', $link, $match);
                 if (!empty($match[1])) {
-                    $poster_link = "https://images4.static-bluray.com/movies/covers/{$match[1]}_large.jpg";
+                    $poster_link = "https://images.static-bluray.com/movies/covers/{$match[2]}_large.jpg";
                 }
             }
 

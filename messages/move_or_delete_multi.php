@@ -1,51 +1,55 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $cache;
+global $CURUSER, $site_config, $lang, $cache, $message_stuffs;
 
 if (empty($_POST['pm'])) {
     header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
-
-$pm_messages = $_POST['pm'];
+$pm_messages = is_array($_POST['pm']) ? $_POST['pm'] : [$_POST['pm']];
 if (isset($_POST['move'])) {
-    if (is_valid_id($pm_messages)) {
-        sql_query('UPDATE messages SET saved = "yes", location = ' . sqlesc($mailbox) . ' WHERE id = ' . sqlesc($pm_messages) . ' AND receiver = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    } else {
-        sql_query('UPDATE messages SET saved = "yes", location = ' . sqlesc($mailbox) . ' WHERE id IN (' . implode(', ', array_map('sqlesc', $pm_messages)) . ') AND receiver =' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    $set = [
+        'location' => $_POST['boxx'],
+    ];
+    foreach ($pm_messages as $pm_message) {
+        $message_stuffs->update($set, $pm_message);
     }
-    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
-        stderr($lang['pm_error'], $lang['pm_move_err']);
-    }
-    header('Location: ?action=view_mailbox&multi_move=1&box=' . $mailbox);
+    $cache->delete('inbox_' . $CURUSER['id']);
+    header('Location: ' . $site_config['baseurl'] . '/messages.php?action=view_mailbox&multi_move=1&box=' . $mailbox);
     die();
 }
 if (isset($_POST['delete'])) {
     foreach ($pm_messages as $id) {
-        $res = sql_query('SELECT * FROM messages WHERE id = ' . sqlesc($id));
-        $message = mysqli_fetch_assoc($res);
+        $message = $message_stuffs->get_by_id($id);
         if ($message['receiver'] == $CURUSER['id'] && $message['urgent'] === 'yes' && $message['unread'] === 'yes') {
             stderr($lang['pm_error'], '' . $lang['pm_delete_err'] . '<a class="altlink" href="' . $site_config['baseurl'] . '/messages.php?action=view_message&id=' . $pm_id . '">' . $lang['pm_delete_back'] . '</a>' . $lang['pm_delete_msg'] . '');
         }
-        if ($message['receiver'] == $CURUSER['id'] || $message['sender'] == $CURUSER['id'] && $message['location'] == PM_DELETED) {
-            sql_query('DELETE FROM messages WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        if (($message['receiver'] == $CURUSER['id'] || $message['sender'] == $CURUSER['id']) && $message['location'] == PM_DELETED) {
+            $result = $message_stuffs->delete($id, $CURUSER['id']);
         } elseif ($message['receiver'] == $CURUSER['id']) {
-            sql_query('UPDATE messages SET location = 0, unread = "no" WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+            $set = [
+                'location' => 0,
+                'unread' => 'no',
+            ];
+            $result = $message_stuffs->update($set, $id);
+            $cache->decrement('inbox_' . $CURUSER['id']);
         } elseif ($message['sender'] == $CURUSER['id'] && $message['location'] != PM_DELETED) {
-            sql_query('UPDATE messages SET saved = "no" WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+            $set = [
+                'saved' => 'no',
+            ];
+            $result = $message_stuffs->update($set, $id);
         }
-        $cache->delete('inbox_' . $CURUSER['id']);
     }
 
-    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
+    if (!$result) {
         stderr($lang['pm_error'], $lang['pm_delete_err_multi']);
     }
     if (isset($_POST['returnto'])) {
-        header('Location: messages.php?action=' . $_POST['returnto'] . '&multi_delete=1');
+        header('Location: ' . $site_config['baseurl'] . '/messages.php?action=' . $_POST['returnto'] . '&multi_delete=1');
     } elseif (isset($_POST['draft_section'])) {
-        header('Location: messages.php?action=viewdrafts&multi_delete=1');
+        header('Location: ' . $site_config['baseurl'] . '/messages.php?action=viewdrafts&multi_delete=1');
     } else {
-        header('Location: messages.php?action=view_mailbox&multi_delete=1&box=' . $mailbox);
+        header('Location: ' . $site_config['baseurl'] . '/messages.php?action=view_mailbox&multi_delete=1&box=' . $mailbox);
     }
     die();
 }

@@ -1,4 +1,5 @@
 package require http
+package require tls
 
 #set channel where script should work
 set conf(channel) "#09source"

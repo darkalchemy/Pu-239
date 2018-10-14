@@ -51,7 +51,7 @@ header#navbar ul > li > a {
     font-weight: lighter;
     /*font-size: 1.1em;*/
     text-decoration: none;
-    transition: all .25s ease;
+    transition: all .25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     line-height: 40px;
 }
 
@@ -140,7 +140,7 @@ header#navbar .nav_container ul > li > ul a:hover {
     position: relative;
     margin-top: 3px;
     color: #fff;
-    transition: all .25s ease;
+    transition: all .25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 #close {
@@ -195,14 +195,14 @@ header#navbar .nav_container ul > li > ul a:hover {
 
     #hamburger {
         display: block;
-        transition: all .25s ease;
+        transition: all .25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         -webkit-transform: translateY(0);
         transform: translateY(0);
         z-index: 1;
     }
 
     #close {
-        transition: all .25s ease;
+        transition: all .25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         -webkit-transform: translateX(50px);
         transform: translateX(50px);
         display: block;

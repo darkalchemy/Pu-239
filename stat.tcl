@@ -1,4 +1,5 @@
 package require http
+package require tls
 
 set url "irc_stats.php" ## add site url
 set hash "YXBwemZhbg"

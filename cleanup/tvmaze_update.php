@@ -7,7 +7,6 @@
  */
 function tvmaze_update($data)
 {
-    dbconn();
     global $fluent, $BLOCKS;
 
     if (!$BLOCKS['tvmaze_api_on']) {
@@ -26,7 +25,10 @@ function tvmaze_update($data)
     $values = [];
     foreach ($pages as $page) {
         $url = "http://api.tvmaze.com/shows?page=$page";
-        $json = @file_get_contents($url);
+        $json = fetch($url);
+        if (empty($json)) {
+            return false;
+        }
         $shows = @json_decode($json, true);
         if ($shows) {
             foreach ($shows as $show) {

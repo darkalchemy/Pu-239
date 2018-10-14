@@ -1,6 +1,7 @@
 <?php
 
 require_once INCL_DIR . 'html_functions.php';
+
 use Scriptotek\GoogleBooks\GoogleBooks;
 
 function get_book_info($isbn, $name, $tid, $poster)

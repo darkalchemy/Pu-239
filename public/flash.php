@@ -44,7 +44,7 @@ $HTMLOUT .= "
                 <li class='altlink margin20'>
                     <a href='{$site_config['baseurl']}/arcade.php'>Arcade</a>
                 </li>
-                <li class='altlink margin20>
+                <li class='altlink margin20'>
                     <a href='{$site_config['baseurl']}/arcade_top_scores.php'>Top Scores</a>
                 </li>
             </ul>

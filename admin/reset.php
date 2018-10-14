@@ -7,6 +7,10 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $lang;
 
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $username = !empty($_GET['username']) ? $_GET['username'] : '';
+    $userid = !empty($_GET['userid']) ? $_GET['userid'] : '';
+}
 $lang = array_merge($lang, load_language('ad_reset'));
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim(htmlsafechars($_POST['username']));
@@ -30,20 +34,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     write_log($lang['reset_pw_log1'] . htmlsafechars($username) . $lang['reset_pw_log2'] . htmlsafechars($CURUSER['username']));
     stderr($lang['reset_pw_success'], '' . $lang['reset_pw_success1'] . ' <b>' . htmlsafechars($username) . '</b>' . $lang['reset_pw_success2'] . '<b>' . htmlsafechars($newpassword) . '</b>.');
 }
-$HTMLOUT = '';
-$HTMLOUT .= "<h1>{$lang['reset_title']}</h1>
-<form method='post' action='staffpanel.php?tool=reset&amp;action=reset'>
-<table >
-<tr>
-<td class='rowhead'>{$lang['reset_id']}</td><td>
-<input type='text' name='uid' size='10' /></td></tr>
-<tr>
-<td class='rowhead'>{$lang['reset_username']}</td><td>
-<input size='40' name='username' /></td></tr>
-<tr>
-<td colspan='2'>
-<input type='submit' class='button is-small' value='reset' />
-</td>
-</tr>
-</table></form>";
+$body = "
+    <tr>
+        <td>{$lang['reset_id']}</td>
+        <td><input type='text' name='uid' size='10' value='$userid'></td>
+    </tr>
+    <tr>
+        <td>{$lang['reset_username']}</td>
+        <td><input size='40' name='username' value='$username'></td>
+    </tr>
+    <tr>
+        <td colspan='2' class='has-text-centered'>
+            <input type='submit' class='button is-small' value='reset'>
+        </td>
+    </tr>";
+$HTMLOUT .= "
+<h1 class='has-text-centered'>{$lang['reset_title']}</h1>
+<form method='post' action='staffpanel.php?tool=reset&amp;action=reset'>" . main_table($body) . '
+</form>';
 echo stdhead($lang['reset_stdhead']) . wrapper($HTMLOUT) . stdfoot();

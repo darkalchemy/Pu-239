@@ -6,7 +6,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('uploadapp'));
-global $CURUSER, $site_config, $fluent, $cache;
+global $CURUSER, $site_config, $fluent, $cache, $message_stuffs;
 
 $CURUSER['class'] = 1;
 $HTMLOUT = '';
@@ -197,7 +197,7 @@ if (isset($_POST['form']) != 1) {
             ->fetchAll();
 
         foreach ($subres as $arr) {
-            $values = [
+            $msgs_buffer[] = [
                 'sender' => 0,
                 'receiver' => $arr['id'],
                 'added' => TIME_NOW,
@@ -205,10 +205,9 @@ if (isset($_POST['form']) != 1) {
                 'subject' => $subject,
                 'poster' => 0,
             ];
-            $fluent->insertInto('messages')
-                ->values($values)
-                ->execute();
-            $cache->increment('inbox_' . $arr['id']);
+        }
+        if (!empty($msgs_buffer)) {
+            $message_stuffs->insert($msgs_buffer);
         }
         stderr($lang['uploadapp_appsent'], $lang['uploadapp_success']);
     }

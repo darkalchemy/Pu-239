@@ -112,7 +112,7 @@ function insert_smilies_frame()
     $htmlout .= begin_table(false);
     $htmlout .= "<tr><td class='colhead'>Type...</td><td class='colhead'>To make a...</td></tr>\n";
     foreach ($smilies as $code => $url) {
-        $htmlout .= "<tr><td>$code</td><td><img src=\"{$site_config['pic_baseurl']}smilies/{$url}\" alt='' /></td></tr>\n";
+        $htmlout .= "<tr><td>$code</td><td><img src=\"{$site_config['pic_baseurl']}smilies/{$url}\" alt=''></td></tr>\n";
     }
     $htmlout .= end_table();
     $htmlout .= end_frame();
@@ -128,7 +128,7 @@ function insert_smilies_frame()
  *
  * @return string
  */
-function main_table($body, $header = null, $class = null, $wrapper_class = null)
+function main_table($body, $header = null, $class = null, $wrapper_class = null, $striped = 'table-striped')
 {
     $thead = $header != null ? "
                         <thead>
@@ -137,7 +137,7 @@ function main_table($body, $header = null, $class = null, $wrapper_class = null)
 
     return "
                 <div class='table-wrapper $wrapper_class'>
-                    <table class='table table-bordered table-striped $class'>
+                    <table class='table table-bordered $striped $class'>
                         $thead
                         <tbody>
                             $body
@@ -157,8 +157,8 @@ function main_div($text, $class = null)
         return;
     } else {
         return "
-                <div class='bordered bg-00 $class'>
-                    <div class='alt_bordered'>
+                <div class='bordered $class'>
+                    <div class='alt_bordered bg-00'>
                         $text
                     </div>
                 </div>";
@@ -236,7 +236,7 @@ function write_css($data)
 function write_classes($data, $classes)
 {
     $html = file_get_contents(CHAT_DIR . 'js/config.js');
-    $classes = "bbCodeTags: [\n        'b',\n        'i',\n        'u',\n        'quote',\n        'code',\n        'color',\n        'url',\n        'img',\n        'chatbot',\n        'updown',\n        'video'," . "\n        '" . implode("',\n        '", $classes) . "'\n    ],";
+    $classes = "bbCodeTags: [\n        'b',\n        'i',\n        'u',\n        'quote',\n        'code',\n        'color',\n        'url',\n        'img',\n        'chatbot',\n        'level',\n        'updown',\n        'video'," . "\n        '" . implode("',\n        '", $classes) . "'\n    ],";
     $html = preg_replace('/(bbCodeTags:\s+\[.*?\],)/s', $classes, $html);
     file_put_contents(CHAT_DIR . 'js/config.js', $html);
 
@@ -325,58 +325,4 @@ function placeholder_image($size = 10)
     }
 
     return $image;
-}
-
-function comment_box($tid, $name)
-{
-    global $site_config, $lang;
-
-    $comment_box = "
-    <a name='startcomments'></a>
-    <form name='comment' method='post' action='{$site_config['baseurl']}/comment.php?action=add&amp;tid=$tid'>
-		<div class='has-text-centered'>
-			<div class='size_6'>{$lang['details_comments']}:</div>
-			<h1><a href='{$site_config['baseurl']}/details.php?id=$tid'> " . htmlsafechars($name, ENT_QUOTES) . " </a></h1>
-		</div>
-		<div class='bg-02 round10'>
-			<div class='level-center'>
-				<a href='{$site_config['baseurl']}/comment.php?action=add&amp;tid=$tid' class='button is-small tooltipper' title='Use the BBCode Editor'>BBcode Editor</a>
-				<a href='{$site_config['baseurl']}/takethankyou.php?id=" . $tid . "'>
-					<img src='{$site_config['pic_baseurl']}smilies/thankyou.gif' class='tooltipper' alt='Thank You' title='Give a quick \"Thank You\"' />
-				</a>
-			</div>
-			<textarea name='body' class='w-100' rows='6'></textarea>
-			<input type='hidden' name='tid' value='" . htmlsafechars($tid) . "' />
-			<div class='has-text-centered'>
-				<a href=\"javascript:SmileIT(':-)','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/smile1.gif' alt='Smile' class='tooltipper' title='Smile' /></a>
-				<a href=\"javascript:SmileIT(':smile:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/smile2.gif' alt='Smiling' class='tooltipper' title='Smiling' /></a>
-				<a href=\"javascript:SmileIT(':-D','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/grin.gif' alt='Grin' class='tooltipper' title='Grin' /></a>
-				<a href=\"javascript:SmileIT(':lol:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/laugh.gif' alt='Laughing' class='tooltipper' title='Laughing' /></a>
-				<a href=\"javascript:SmileIT(':w00t:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='W00t' class='tooltipper' title='W00t' /></a>
-				<a href=\"javascript:SmileIT(':blum:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/blum.gif' alt='Rasp' class='tooltipper' title='Rasp' /></a>
-				<a href=\"javascript:SmileIT(';-)','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/wink.gif' alt='Wink' class='tooltipper' title='Wink' /></a>
-				<a href=\"javascript:SmileIT(':devil:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/devil.gif' alt='Devil' class='tooltipper' title='Devil' /></a>
-				<a href=\"javascript:SmileIT(':yawn:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/yawn.gif' alt='Yawn' class='tooltipper' title='Yawn' /></a>
-				<a href=\"javascript:SmileIT(':-/','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/confused.gif' alt='Confused' class='tooltipper' title='Confused' /></a>
-				<a href=\"javascript:SmileIT(':o)','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/clown.gif' alt='Clown' class='tooltipper' title='Clown' /></a>
-				<a href=\"javascript:SmileIT(':innocent:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/innocent.gif' alt='Innocent' class='tooltipper' title='innocent' /></a>
-				<a href=\"javascript:SmileIT(':whistle:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/whistle.gif' alt='Whistle' class='tooltipper' title='Whistle' /></a>
-				<a href=\"javascript:SmileIT(':unsure:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/unsure.gif' alt='Unsure' class='tooltipper' title='Unsure' /></a>
-				<a href=\"javascript:SmileIT(':blush:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/blush.gif' alt='Blush' class='tooltipper' title='Blush' /></a>
-				<a href=\"javascript:SmileIT(':hmm:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/hmm.gif' alt='Hmm' class='tooltipper' title='Hmm' /></a>
-				<a href=\"javascript:SmileIT(':hmmm:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/hmmm.gif' alt='Hmmm' class='tooltipper' title='Hmmm' /></a>
-				<a href=\"javascript:SmileIT(':huh:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/huh.gif' alt='Huh' class='tooltipper' title='Huh' /></a>
-				<a href=\"javascript:SmileIT(':look:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/look.gif' alt='Look' class='tooltipper' title='Look' /></a>
-				<a href=\"javascript:SmileIT(':rolleyes:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/rolleyes.gif' alt='Roll Eyes' class='tooltipper' title='Roll Eyes' /></a>
-				<a href=\"javascript:SmileIT(':kiss:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/kiss.gif' alt='Kiss' class='tooltipper' title='Kiss' /></a>
-				<a href=\"javascript:SmileIT(':blink:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/blink.gif' alt='Blink' class='tooltipper' title='Blink' /></a>
-				<a href=\"javascript:SmileIT(':baby:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/baby.gif' alt='Baby' class='tooltipper' title='Baby' /></a>
-			</div>
-			<div class='has-text-centered'>
-				<input class='button is-small margin20' type='submit' value='Submit' />
-			</div>
-		</div>
-    </form>";
-
-    return $comment_box;
 }

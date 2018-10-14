@@ -4,7 +4,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config, $cache, $message_stuffs;
 
 $lang = array_merge(load_language('global'), load_language('friends'));
 $userid = isset($_GET['id']) ? (int) $_GET['id'] : $CURUSER['id'];
@@ -15,6 +15,7 @@ if (!is_valid_id($userid)) {
 if ($userid != $CURUSER['id']) {
     stderr($lang['friends_error'], $lang['friends_no_access']);
 }
+$dt = TIME_NOW;
 //== action == add
 if ($action === 'add') {
     $targetid = (int) $_GET['targetid'];
@@ -38,10 +39,16 @@ if ($action === 'add') {
     if ($type === 'friend') {
         $r = sql_query("SELECT id, confirmed FROM $table_is WHERE userid = " . sqlesc($userid) . " AND $field_is = " . sqlesc($targetid)) or sqlerr(__FILE__, __LINE__);
         $q = mysqli_fetch_assoc($r);
-        $subject = sqlesc('New Friend Request!');
-        $body = sqlesc("[url={$site_config['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has added you to their Friends List. See all Friend Requests [url={$site_config['baseurl']}/friends.php#pending][b]Here[/b][/url]\n ");
-        sql_query('INSERT INTO messages (sender, receiver, added, subject, msg) VALUES (0, ' . sqlesc($targetid) . ", '" . TIME_NOW . "', $subject, $body)") or sqlerr(__FILE__, __LINE__);
-        $cache->increment('inbox_' . $targetid);
+        $subject = 'New Friend Request!';
+        $msg = "[url={$site_config['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has added you to their Friends List. See all Friend Requests [url={$site_config['baseurl']}/friends.php#pending][b]Here[/b][/url]\n ";
+        $msgs_buffer[] = [
+            'sender' => 0,
+            'receiver' => $targetid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
+        ];
+        $message_stuffs->insert($msgs_buffer);
         if (mysqli_num_rows($r) == 1) {
             stderr('Error', 'User ID is already in your ' . htmlsafechars($table_is) . ' list.');
         }
@@ -89,10 +96,16 @@ if ($action === 'confirm') {
         $cache->delete('Friends_' . $targetid);
         $cache->delete('user_friends_' . $targetid);
         $cache->delete('user_friends_' . $userid);
-        $subject = sqlesc('You have a new friend!');
-        $body = sqlesc("[url={$site_config['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has just confirmed your Friendship Request. See your Friends  [url={$site_config['baseurl']}/friends.php][b]Here[/b][/url]\n ");
-        sql_query('INSERT INTO messages (sender, receiver, added, subject, msg) VALUES (0, ' . sqlesc($targetid) . ", '" . TIME_NOW . "', $subject, $body)") or sqlerr(__FILE__, __LINE__);
-        $cache->increment('inbox_' . $targetid);
+        $subject = 'You have a new friend!';
+        $msg = "[url={$site_config['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has just confirmed your Friendship Request. See your Friends  [url={$site_config['baseurl']}/friends.php][b]Here[/b][/url]\n ";
+        $msgs_buffer[] = [
+            'sender' => 0,
+            'receiver' => $targetid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
+        ];
+        $message_stuffs->insert($msgs_buffer);
         $frag = 'friends';
         header("Refresh: 3; url=friends.php?id=$userid#$frag");
         mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 1 ? stderr('Success', 'Friend was added successfully.') : stderr('oopss', 'That friend is already confirmed !! .');
@@ -169,7 +182,7 @@ if (mysqli_num_rows($res) == 0) {
     $friendsp = "<em>{$lang['friends_pending_empty']}.</em>";
 } else {
     while ($friendp = mysqli_fetch_assoc($res)) {
-        $dt = TIME_NOW - 180;
+        $dt = $dt - 180;
         $online = ($friendp['last_access'] >= $dt && $friendp['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'online.png" alt="Online" class="tooltipper" title="Online" />' : '<img src="' . $site_config['pic_baseurl'] . 'offline.png" alt="Offline" class="tooltipper" title="Offline" />');
         $title = htmlsafechars($friendp['title']);
         if (!$title) {
@@ -209,7 +222,7 @@ if (mysqli_num_rows($res) == 0) {
     $friends = '<em>Your friends list is empty.</em>';
 } else {
     while ($friend = mysqli_fetch_assoc($res)) {
-        $dt = TIME_NOW - 180;
+        $dt = $dt - 180;
         $online = ($friend['last_access'] >= $dt && $friend['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'online.png" alt="Online" class="tooltipper" title="Online" />' : '<img src="' . $site_config['pic_baseurl'] . 'offline.png" alt="Offline" class="tooltipper" title="Offline" />');
         $title = htmlsafechars($friend['title']);
         if (!$title) {

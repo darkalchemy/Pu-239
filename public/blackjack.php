@@ -5,7 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('blackjack'));
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config, $cache, $message_stuffs;
 
 $HTMLOUT = $debugout = '';
 
@@ -109,7 +109,7 @@ $required_ratio = 1.0;
 $blackjack['mb'] = 1024 * 1024 * 1024 * $blackjack['modifier'];
 $game_size = mksize($blackjack['mb'], 0);
 $link = '[url=' . $site_config['baseurl'] . '/blackjack.php?id=' . $id . ']BlackJack ' . $game_size . '[/url]';
-$now = TIME_NOW;
+$dt = TIME_NOW;
 $game = isset($_POST['game']) ? htmlsafechars($_POST['game']) : '';
 $start_ = isset($_POST['start_']) ? htmlsafechars($_POST['start_']) : '';
 
@@ -292,7 +292,7 @@ if ($game) {
                 $dealer_cardids2[] = $dealer_cardid;
             }
 
-            $sql = 'INSERT INTO blackjack (userid, points, cards, date, dealer_cards, game_id) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($points) . ', ' . sqlesc(implode(' ', $cardids2)) . ', ' . sqlesc($now) . ', ' . sqlesc(implode(' ', $dealer_cardids2)) . ', ' . sqlesc($blackjack['gameid']) . ')';
+            $sql = 'INSERT INTO blackjack (userid, points, cards, date, dealer_cards, game_id) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($points) . ', ' . sqlesc(implode(' ', $cardids2)) . ', ' . sqlesc($dt) . ', ' . sqlesc(implode(' ', $dealer_cardids2)) . ', ' . sqlesc($blackjack['gameid']) . ')';
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
             if ($points < 21) {
                 $HTMLOUT .= "
@@ -468,18 +468,24 @@ if ($game) {
                     ], $site_config['expires']['user_cache']);
 
                     $lost_str = str_replace('10GB', mksize($blackjack['mb'], 0), $lang['bj_you_loss_to_10']);
-                    $msg = sqlesc("BlackJack $game_size: $lost_str " . $CURUSER['username'] . " ({$lang['bj_you_had']} " . $a['points'] . " {$lang['bj_points2']}, " . $CURUSER['username'] . " {$lang['bj_had_21_points']}).\n\n");
-                    $subject = sqlesc($lang['bj_blackjack_results']);
+                    $msg = "BlackJack $game_size: $lost_str " . $CURUSER['username'] . " ({$lang['bj_you_had']} " . $a['points'] . " {$lang['bj_points2']}, " . $CURUSER['username'] . " {$lang['bj_had_21_points']}).\n\n";
+                    $subject = $lang['bj_blackjack_results'];
                     $outcome = "{$dbl_text}and won";
                 } else {
-                    $subject = sqlesc($lang['bj_blackjack_results']);
+                    $subject = $lang['bj_blackjack_results'];
                     $winorlose = $lang['bj_nobody_won'];
-                    $msg = sqlesc("BlackJack $game_size: {$lang['bj_you_tied_with']} " . $CURUSER['username'] . " ({$lang['bj_you_both_had']} " . $a['points'] . " points).\n\n");
+                    $msg = "BlackJack $game_size: {$lang['bj_you_tied_with']} " . $CURUSER['username'] . " ({$lang['bj_you_both_had']} " . $a['points'] . " points).\n\n";
                     $outcome = "{$dbl_text}and tied";
                 }
+                $msgs_buffer[] = [
+                    'sender' => 0,
+                    'receiver' => $a['userid'],
+                    'added' => $dt,
+                    'msg' => $msg,
+                    'subject' => $subject,
+                ];
+                $message_stuffs->insert($msgs_buffer);
 
-                $sql = 'INSERT INTO messages (sender, receiver, added, msg, subject) VALUES(0, ' . sqlesc($a['userid']) . ", $now, $msg, $subject)";
-                sql_query($sql) or sqlerr(__FILE__, __LINE__);
                 if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
                     $classColor = get_user_class_color($CURUSER['class']);
                     $opponent = get_user_class_color($a['class']);
@@ -491,7 +497,6 @@ if ($game) {
                     sql_query($sql) or sqlerr(__FILE__, __LINE__);
                     autoshout($msg);
                 }
-                $cache->increment('inbox_' . $a['userid']);
                 $sql = 'DELETE FROM blackjack WHERE game_id = ' . sqlesc($blackjack['gameid']) . ' AND userid IN (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($a['userid']) . ')';
                 sql_query($sql) or sqlerr(__FILE__, __LINE__);
                 $HTMLOUT .= "
@@ -503,7 +508,7 @@ if ($game) {
                             <a href='{$site_config['baseurl']}/games.php' class='button is-small'>Games</a>
                         </p>";
             } else {
-                $sql = "UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . ' AND userid = ' . sqlesc($CURUSER['id']);
+                $sql = "UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $dt . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . ' AND userid = ' . sqlesc($CURUSER['id']);
                 sql_query($sql) or sqlerr(__FILE__, __LINE__);
                 if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
                     $classColor = get_user_class_color($CURUSER['class']);
@@ -541,12 +546,12 @@ if ($game) {
                     $points_text = 'Blackjack';
                 }
                 if ($a['points'] > 21) {
-                    $subject = sqlesc($lang['bj_blackjack_results']);
+                    $subject = $lang['bj_blackjack_results'];
                     $winorlose = $lang['bj_nobody_won'];
-                    $msg = sqlesc("BlackJack $game_size: {$lang['bj_you_tied_with']} " . $CURUSER['username'] . " ({$lang['bj_you_both_had']} " . $a['points'] . " points).\n\n");
+                    $msg = "BlackJack $game_size: {$lang['bj_you_tied_with']} " . $CURUSER['username'] . " ({$lang['bj_you_both_had']} " . $a['points'] . " points).\n\n";
                     $outcome = "{$dbl_text}and busted";
                 } else {
-                    $subject = sqlesc($lang['bj_blackjack_results']);
+                    $subject = $lang['bj_blackjack_results'];
                     $winorlose = "{$lang['bj_you_lost']} " . mksize($blackjack['mb'], 0);
 
                     $sql = "UPDATE users SET uploaded = uploaded + {$blackjack['mb']}, bjwins = bjwins + {$blackjack['modifier']} WHERE id = " . sqlesc($a['userid']);
@@ -574,11 +579,17 @@ if ($game) {
                     ], $site_config['expires']['user_cache']);
 
                     $won_str = str_replace('10GB', mksize($blackjack['mb'], 0), $lang['bj_you_beat_10']);
-                    $msg = sqlesc("BlackJack $game_size: $won_str " . $CURUSER['username'] . " ({$lang['bj_you_had']} " . $a['points'] . " {$lang['bj_points2']}, " . $CURUSER['username'] . " had $points points).\n\n");
+                    $msg = "BlackJack $game_size: $won_str " . $CURUSER['username'] . " ({$lang['bj_you_had']} " . $a['points'] . " {$lang['bj_points2']}, " . $CURUSER['username'] . " had $points points).\n\n";
                     $outcome = "{$dbl_text}and lost";
                 }
-                $sql = 'INSERT INTO messages (sender, receiver, added, msg, subject) VALUES(0, ' . sqlesc($a['userid']) . ", $now, $msg, $subject)";
-                sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                $msgs_buffer[] = [
+                    'sender' => 0,
+                    'receiver' => $a['userid'],
+                    'added' => $dt,
+                    'msg' => $msg,
+                    'subject' => $subject,
+                ];
+                $message_stuffs->insert($msgs_buffer);
 
                 if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
                     $classColor = get_user_class_color($CURUSER['class']);
@@ -591,7 +602,6 @@ if ($game) {
                     sql_query($sql) or sqlerr(__FILE__, __LINE__);
                     autoshout($msg);
                 }
-                $cache->increment('inbox_' . $a['userid']);
                 $sql = 'DELETE FROM blackjack WHERE game_id = ' . sqlesc($blackjack['gameid']) . ' AND userid IN (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($a['userid']) . ')';
                 sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
@@ -604,7 +614,7 @@ if ($game) {
                             <a href='{$site_config['baseurl']}/games.php' class='button is-small'>Games</a>
                         </p>";
             } else {
-                $sql = "UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . ' AND userid = ' . sqlesc($CURUSER['id']);
+                $sql = "UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $dt . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . ' AND userid = ' . sqlesc($CURUSER['id']);
                 sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
                 if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
@@ -753,16 +763,16 @@ if ($game) {
                 $points_text = 'Blackjack';
             }
             if ($a['points'] == $playerarr['points']) {
-                $subject = sqlesc($lang['bj_blackjack_results']);
+                $subject = $lang['bj_blackjack_results'];
                 $winorlose = $lang['bj_nobody_won'];
-                $msg = sqlesc("BlackJack $game_size: {$lang['bj_your_opp_was']} " . $CURUSER['username'] . ", you both had $points_text - it was a tie.\n\n");
+                $msg = "BlackJack $game_size: {$lang['bj_your_opp_was']} " . $CURUSER['username'] . ", you both had $points_text - it was a tie.\n\n";
                 $outcome = "{$dbl_text}and tied";
             } else {
                 // winner $CURUSER
                 if (($a['points'] < $playerarr['points'] && $a['points'] < 21) || ($a['points'] > $playerarr['points'] && $a['points'] > 21)) {
-                    $subject = sqlesc($lang['bj_blackjack_results']);
+                    $subject = $lang['bj_blackjack_results'];
                     $lost_str = str_replace('10GB', mksize($blackjack['mb'], 0), $lang['bj_you_loss_to_10']);
-                    $msg = sqlesc("BlackJack $game_size: $lost_str " . $CURUSER['username'] . " ({$lang['bj_you_had']} " . htmlsafechars($a['points']) . " {$lang['bj_points2']}, " . $CURUSER['username'] . ' had ' . htmlsafechars($playerarr['points']) . " points).\n\n");
+                    $msg = "BlackJack $game_size: $lost_str " . $CURUSER['username'] . " ({$lang['bj_you_had']} " . htmlsafechars($a['points']) . " {$lang['bj_points2']}, " . $CURUSER['username'] . ' had ' . htmlsafechars($playerarr['points']) . " points).\n\n";
                     $winorlose = "{$lang['bj_you_won']} " . mksize($blackjack['mb'], 0);
                     $st_query = '+ ' . $blackjack['mb'] . ', bjwins = bjwins +';
                     $nd_query = '- ' . $blackjack['mb'] . ', bjlosses = bjlosses +';
@@ -775,9 +785,9 @@ if ($game) {
                     $outcome = "{$dbl_text}and won";
                 // loser $CURUSER
                 } elseif (($a['points'] > $playerarr['points'] && $a['points'] < 21) || $a['points'] == 21 || ($a['points'] < $playerarr['points'] && $a['points'] > 21)) {
-                    $subject = sqlesc($lang['bj_blackjack_results']);
+                    $subject = $lang['bj_blackjack_results'];
                     $won_str = str_replace('10GB', mksize($blackjack['mb'], 0), $lang['bj_you_beat_10']);
-                    $msg = sqlesc("BlackJack $game_size: $won_str " . $CURUSER['username'] . " ({$lang['bj_you_had']} " . htmlsafechars($a['points']) . " {$lang['bj_points2']}, " . $CURUSER['username'] . ' had ' . htmlsafechars($playerarr['points']) . " points).\n\n");
+                    $msg = "BlackJack $game_size: $won_str " . $CURUSER['username'] . " ({$lang['bj_you_had']} " . htmlsafechars($a['points']) . " {$lang['bj_points2']}, " . $CURUSER['username'] . ' had ' . htmlsafechars($playerarr['points']) . " points).\n\n";
                     $winorlose = "{$lang['bj_you_lost']} " . mksize($blackjack['mb'], 0);
                     $st_query = '- ' . $blackjack['mb'] . ', bjlosses = bjlosses +';
                     $nd_query = '+ ' . $blackjack['mb'] . ', bjwins = bjwins +';
@@ -808,8 +818,14 @@ if ($game) {
                 ], $site_config['expires']['user_cache']);
             }
 
-            $sql = 'INSERT INTO messages (sender, receiver, added, msg, subject) VALUES(0, ' . sqlesc($a['userid']) . ", $now, $msg, $subject)";
-            sql_query($sql) or sqlerr(__FILE__, __LINE__);
+            $msgs_buffer[] = [
+                'sender' => 0,
+                'receiver' => $a['userid'],
+                'added' => $dt,
+                'msg' => $msg,
+                'subject' => $subject,
+            ];
+            $message_stuffs->insert($msgs_buffer);
 
             if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
                 $classColor = get_user_class_color($CURUSER['class']);
@@ -824,7 +840,6 @@ if ($game) {
             $sql = 'INSERT INTO blackjack_history (`date`, game, player1_userid, player1_points, player1_cards, player2_points, player2_userid, player2_cards) VALUES (UNIX_TIMESTAMP(NOW()), ' . sqlesc($blackjack['gameid']) . ', ' . sqlesc($a['userid']) . ', ' . sqlesc($a['points']) . ', ' . sqlesc($a['cards']) . ', ' . sqlesc($points) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc(implode(' ', $cards_history)) . ')';
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
-            $cache->increment('inbox_' . $a['userid']);
             $sql = 'DELETE FROM blackjack WHERE game_id = ' . sqlesc($blackjack['gameid']) . ' AND userid IN (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($a['userid']) . ')';
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
@@ -837,7 +852,7 @@ if ($game) {
                             <a href='{$site_config['baseurl']}/games.php' class='button is-small'>Games</a>
                         </p>";
         } else {
-            $sql = "UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . ' AND userid = ' . sqlesc($CURUSER['id']);
+            $sql = "UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $dt . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . ' AND userid = ' . sqlesc($CURUSER['id']);
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
             if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
@@ -1182,9 +1197,6 @@ function getCard($cardcount, $gameid, $deal = false)
 function output($blackjack, $HTMLOUT, $debugout)
 {
     global $CURUSER;
-    $stdhead = [
-        'css' => [],
-    ];
 
     $debugout = "
                 <table id='last10List' class='table table-bordered table-striped top20 bottom20'>
@@ -1206,7 +1218,7 @@ function output($blackjack, $HTMLOUT, $debugout)
         $HTMLOUT = $HTMLOUT . $debugout;
     }
 
-    echo stdhead($blackjack['title'], $stdhead) . wrapper($HTMLOUT) . stdfoot();
+    echo stdhead($blackjack['title']) . wrapper($HTMLOUT) . stdfoot();
     die();
 }
 

@@ -29,7 +29,7 @@ if (!is_valid_id($id)) {
 }
 $res = sql_query('SELECT name, owner, vip, category, filename, info_hash FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res);
-$fn = $site_config['torrent_dir'] . '/' . $id . '.torrent';
+$fn = TORRENTS_DIR . $id . '.torrent';
 if (!$row || !is_file($fn) || !is_readable($fn)) {
     stderr('Err', 'There was an error with the file or with the query, please contact staff');
 }
@@ -139,17 +139,17 @@ if ($zipuse) {
         '.',
         '-',
     ], '_', $row['name']);
-    $file_name = $site_config['torrent_dir'] . '/' . $row['name'] . '.torrent';
+    $file_name = TORRENTS_DIR . $row['name'] . '.torrent';
     if (file_put_contents($file_name, $tor)) {
         $zip = new PHPZip();
         $files = [
             $file_name,
         ];
-        $file_name = $site_config['torrent_dir'] . '/' . $row['name'] . '.zip';
+        $file_name = TORRENTS_DIR . $row['name'] . '.zip';
         $zip->Zip($files, $file_name);
         $zip->forceDownload($file_name);
-        unlink($site_config['torrent_dir'] . '/' . $row['name'] . '.torrent');
-        unlink($site_config['torrent_dir'] . '/' . $row['name'] . '.zip');
+        unlink(TORRENTS_DIR . $row['name'] . '.torrent');
+        unlink(TORRENTS_DIR . $row['name'] . '.zip');
     } else {
         stderr('Error', 'Can\'t create the new file, please contatct staff');
     }

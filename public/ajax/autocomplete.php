@@ -2,17 +2,21 @@
 
 require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-check_user_status();
 global $site_config, $cache;
+
+if (!$session->validateToken($_POST['csrf'])) {
+    return false;
+    die();
+}
 
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
 }
 
-if (!isset($_POST['keyword']) || strlen($_POST['keyword']) < 5) {
+if (!isset($_POST['keyword']) || strlen($_POST['keyword']) < 2) {
     return false;
 }
-$keyword = $_POST['keyword'];
+$keyword = htmlsafechars(strtolower(strip_tags($_POST['keyword'])));
 $hash = hash('sha256', $keyword);
 
 $results = $cache->get('suggest_torrents_' . $hash);
@@ -24,8 +28,7 @@ if ($results === false || is_null($results)) {
         ->select('seeders')
         ->select('leechers')
         ->select('visible')
-        ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $keyword)
-        ->limit(10)
+        ->where('name LIKE ?', "%$keyword%")
         ->fetchAll();
     $cache->set('suggest_torrents_' . $hash, $results, 0);
     $hashes = $cache->get('suggest_torrents_hashes_');
@@ -37,6 +40,11 @@ if ($results === false || is_null($results)) {
         $cache->set('suggest_torrents_hashes_', $hashes, 0);
     }
 }
+
+$temp = "
+        <ul>
+            <li class='has-text-centered'>No results. Try refining your search for '$keyword'.</li>
+        </ul>";
 
 if (!empty($results)) {
     $temp = "
@@ -71,11 +79,6 @@ if (!empty($results)) {
             </li>
         </ul>";
     }
-} else {
-    $temp = "
-        <ul>
-            <li class='has-text-centered'>No results. Try refining your search for '$keyword'.</li>
-        </ul>";
 }
 
 echo $temp;

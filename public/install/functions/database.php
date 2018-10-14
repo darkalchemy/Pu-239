@@ -93,6 +93,13 @@ function db_insert()
         $fail .= "<div class='notreadable'>Please add/update my.cnf 'innodb_file_per_table = 1' and restart mysql.</div>";
     }
 
+    $query = 'SHOW VARIABLES LIKE "innodb_autoinc_lock_mode"';
+    $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $query);
+    $retval = shell_exec($sql);
+    if (!preg_match('/innodb_autoinc_lock_mode\s+0/', $retval)) {
+        $fail .= "<div class='notreadable'>Please add/update my.cnf 'innodb_autoinc_lock_mode = 0' and restart mysql.</div>";
+    }
+
     $sources = [
         'schema' => "source {$public}install/extra/schema.php.sql",
         'data' => "source {$public}install/extra/data.php.sql",

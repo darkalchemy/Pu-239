@@ -10,6 +10,16 @@ require_once CACHE_DIR . 'timezones.php';
 check_user_status();
 global $CURUSER, $site_config, $session;
 
+$stdhead = [
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
+];
+$stdfoot = [
+    'js' => [
+        get_file_name('sceditor_js'),
+    ],
+];
 $lang = array_merge(load_language('global'), load_language('usercp'));
 $HTMLOUT = $stylesheets = $wherecatina = '';
 $templates = sql_query('SELECT id, name FROM stylesheets ORDER BY id');
@@ -104,7 +114,7 @@ if ($CURUSER['avatars'] === 'yes') {
 if ($action === 'avatar') {
     $HTMLOUT .= "
                         <div class='table-wrapper $width'>
-                            <table class='table table-bordered table-striped top20 bottom20'>
+                            <table class='table table-bordered table-striped'>
                                 <thead>
                                     <tr>
                                         <th colspan='2'>
@@ -162,7 +172,7 @@ if ($action === 'avatar') {
 } elseif ($action === 'signature') {
     $HTMLOUT .= "
                         <div class='table-wrapper $width'>
-                            <table class='table table-bordered table-striped top20 bottom20'>
+                            <table class='table table-bordered table-striped'>
                                 <thead>
                                     <tr>
                                         <th colspan='2'>
@@ -193,7 +203,7 @@ if ($action === 'avatar') {
 } elseif ($action === 'api') {
     $HTMLOUT .= "
                         <div class='table-wrapper $width'>
-                            <table class='table table-bordered table-striped top20 bottom20'>
+                            <table class='table table-bordered table-striped'>
                                 <thead>
                                     <tr>
                                         <th colspan='2'>
@@ -213,7 +223,7 @@ if ($action === 'avatar') {
 } elseif ($action === 'social') {
     $HTMLOUT .= "
                         <div class='table-wrapper $width'>
-                            <table class='table table-bordered table-striped top20 bottom20'>
+                            <table class='table table-bordered table-striped'>
                                 <thead>
                                     <tr>
                                         <th colspan='2'>
@@ -250,7 +260,7 @@ if ($action === 'avatar') {
     $datetime = unixstamp_to_human(TIME_NOW);
     $HTMLOUT .= "
                         <div class='table-wrapper $width'>
-                            <table class='table table-bordered table-striped top20 bottom20'>
+                            <table class='table table-bordered table-striped'>
                                 <thead>
                                     <tr>
                                         <th colspan='2'>
@@ -292,7 +302,7 @@ if ($action === 'avatar') {
     $HTMLOUT .= "
                         <div class='table-wrapper $width level'>
                             <div class='table-wrapper w-50 right20'>
-                                <table class='table table-bordered table-striped top20 bottom20 w-100'>
+                                <table class='table table-bordered table-striped w-100'>
                                     <thead>
                                         <tr>
                                             <th colspan='2' class='has-text-centered size_6'>
@@ -331,7 +341,7 @@ if ($action === 'avatar') {
                                 </table>
                             </div>
                             <div class='table-wrapper w-50'>
-                                <table class='table table-bordered table-striped top20 bottom20 w-100'>
+                                <table class='table table-bordered table-striped w-100'>
                                     <thead>
                                         <tr>
                                             <th colspan='2' class='has-text-centered size_6'>" . htmlsafechars($CURUSER['username'], ENT_QUOTES) . "'s Entertainment</th>
@@ -378,7 +388,7 @@ if ($action === 'avatar') {
 } elseif ($action === 'security') {
     $HTMLOUT .= "
                         <div class='table-wrapper $width'>
-                            <table class='table table-bordered table-striped top20 bottom20'>
+                            <table class='table table-bordered table-striped'>
                                 <thead>
                                     <tr>
                                         <th colspan='2'>
@@ -414,7 +424,7 @@ if ($action === 'avatar') {
                                         </select>
                                         <div class='mw-100'>
                                             <div class='flipper has-text-primary top10'>
-                                                <a id='paranoia_open'>Paranoia Levels explained <i class='icon-down-open size_3' aria-hidden='true'></i></a>
+                                                <a id='paranoia_open'>Paranoia Levels explained <i class='icon-down-open size_2' aria-hidden='true'></i></a>
                                             </div>
                                             <div id='paranoia_info' class='is_hidden wrap padding20'>
                                                 <p>
@@ -508,7 +518,7 @@ if ($action === 'avatar') {
 } elseif ($action === 'torrents') {
     $HTMLOUT .= "
                         <div class='table-wrapper $width'>
-                            <table class='table table-bordered table-striped top20 bottom20'>
+                            <table class='table table-bordered table-striped'>
                                 <thead>
                                     <tr>
                                         <th colspan='2'>
@@ -578,7 +588,7 @@ if ($action === 'avatar') {
 } elseif ($action === 'personal') {
     $HTMLOUT .= "
                         <div class='table-wrapper $width'>
-                            <table class='table table-bordered table-striped top20 bottom20'>
+                            <table class='table table-bordered table-striped'>
                                 <thead>
                                     <tr>
                                         <th colspan='2'>
@@ -748,7 +758,7 @@ if ($action === 'avatar') {
     if ($action === 'default') {
         $HTMLOUT .= "
                         <div class='table-wrapper $width'>
-                            <table class='table table-bordered table-striped top20 bottom20'>
+                            <table class='table table-bordered table-striped'>
                                 <thead>
                                     <tr>
                                         <th colspan='2'>
@@ -808,4 +818,4 @@ $HTMLOUT .= '
                 </form>
             </div>';
 
-echo stdhead(htmlsafechars($CURUSER['username'], ENT_QUOTES) . "{$lang['usercp_stdhead']} ") . wrapper($HTMLOUT) . stdfoot();
+echo stdhead(htmlsafechars($CURUSER['username'], ENT_QUOTES) . "{$lang['usercp_stdhead']} ", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

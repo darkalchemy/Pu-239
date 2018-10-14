@@ -2,12 +2,23 @@
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'password_functions.php';
+require_once INCL_DIR . 'function_recaptcha.php';
+
 dbconn();
 global $CURUSER, $site_config, $fluent, $session;
 
 if (!$CURUSER) {
     get_template();
+}
+$stdfoot = '';
+if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
+    $stdfoot = [
+        'js' => [
+            get_file_name('recaptcha_js'),
+        ],
+    ];
 }
 $lang = array_merge(load_language('global'), load_language('recover'), load_language('confirm'));
 
@@ -20,32 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         stderr('Oops', 'Missing form data - You must fill all fields');
     }
     if (!empty($_ENV['RECAPTCHA_SITE_KEY'])) {
-        $response = !empty($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
-        if ($response === '') {
-            stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error2']}");
+        $response = !empty($_POST['token']) ? $_POST['token'] : '';
+        $result = verify_recaptcha($response);
+        if ($result !== 'valid') {
+            $session->set('is-warning', "[h2]reCAPTCHA failed. {$result}[/h2]");
+            header("Location: {$site_config['baseurl']}/recover.php");
             die();
         }
-        $ip = getip();
-        $url = 'https://www.google.com/recaptcha/api/siteverify';
-        $params = [
-            'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
-            'response' => $response,
-            'remoteip' => $ip,
-        ];
-        $query = http_build_query($params);
-        $contextData = [
-            'method' => 'POST',
-            'header' => "Content-Type: application/x-www-form-urlencoded\r\n" . "Connection: close\r\n" . 'Content-Length: ' . strlen($query) . "\r\n",
-            'content' => $query,
-        ];
-        $context = stream_context_create(['http' => $contextData]);
-        $result = file_get_contents($url, false, $context);
-        $responseKeys = json_decode($result, true);
-        if (intval($responseKeys['success']) !== 1) {
-            stderr('Error', 'reCAPTCHA Failed');
-        }
     }
-
     $email = trim($_POST['email']);
     if (!validemail($email)) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_invalidemail']}");
@@ -134,37 +127,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     stderr($lang['stderr_successhead'], $lang['stderr_mailed']);
 } else {
     $HTMLOUT .= "
-    <div class='half-container has-text-centered portlet'>
         <form method='post' action='{$_SERVER['PHP_SELF']}'>
-            <table class='table table-bordered top20 bottom20'>
+            <div class='level-center'>";
+    $HTMLOUT .= main_table("
                 <tr class='no_hover'>
-                    <td colspan='2'>
-                        <h2 class='has-text-centered'>{$lang['recover_unamepass']}</h2>
+                    <td class='has-text-centered' colspan='2'>
+                        <h2>{$lang['recover_unamepass']}</h2>
                         <p>{$lang['recover_form']}</p>
                     </td>
                 </tr>
                 <tr class='no_hover'>
                     <td class='rowhead'>{$lang['recover_regdemail']}</td>
-                    <td><input type='text' class='w-100' name='email' /></td>
-                </tr>";
-    if (!empty($_ENV['RECAPTCHA_SITE_KEY'])) {
-        $HTMLOUT .= "
-                    <tr>
-                        <td colspan='2'>
-                            <div class='g-recaptcha level-center' data-theme='dark' data-sitekey='{$_ENV['RECAPTCHA_SITE_KEY']}'></div>
-                        </td>
-                    </tr>";
-    }
-    $HTMLOUT .= "
+                    <td>
+                        <input type='text' class='w-100' name='email' />
+                        <input type='hidden' id='token' name='token' value='' />
+                    </td>
+                </tr>
                 <tr class='no_hover'>
                     <td colspan='2'>
                         <div class='has-text-centered'>
-                            <input type='submit' value='{$lang['recover_btn']}' class='button is-small' />
+                            <input id='recover_captcha_check' type='submit' value='" . (!empty($_ENV['RECAPTCHA_SITE_KEY']) ? 'Verifying reCAPTCHA' : 'Recover') . "' class='button is-small'" . (!empty($_ENV['RECAPTCHA_SITE_KEY']) ? ' disabled' : '') . '/>
                         </div>
                     </td>
-                </tr>
-            </table>
-        </form>
-    </div>";
-    echo stdhead($lang['head_recover']) . $HTMLOUT . stdfoot();
+                </tr>', '', '', 'w-50', '') . '
+        </form>';
+    echo stdhead($lang['head_recover']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 }

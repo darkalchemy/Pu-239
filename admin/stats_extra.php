@@ -431,7 +431,7 @@ function make_year()
     $start_year = 2005;
     $latest_year = intval($time_now['year']);
     if ($latest_year == $start_year) {
-        $start_year -= 1;
+        --$start_year;
     }
     for ($y = $start_year; $y <= $latest_year; ++$y) {
         $return[] = [

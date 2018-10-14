@@ -1,10 +1,9 @@
 if ($('#tvmaze').length) {
     var el = document.querySelector('#tvmaze');
     get_tvmaze(el.dataset.csrf, el.dataset.tvmazeid, el.dataset.name, el.dataset.tid);
-};
+}
 
 function get_tvmaze(csrf, tvmazeid, name, tid) {
-    var el1 = $('.tvmaze_outer');
     var el2 = $('.tvmaze_inner');
     el2.addClass('has-text-centered');
     el2.html('Looking up "' + name + '" from TVMaze, please be patient.');

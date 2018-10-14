@@ -8,11 +8,12 @@ require_once ROOT_DIR . 'polls.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER, $site_config, $BLOCKS, $fluent, $cache, $session;
+global $CURUSER, $site_config, $BLOCKS, $fluent, $cache, $session, $message_stuffs;
 
 $stdfoot = [
     'js' => [
-        get_file_name('index_js'),
+        get_file_name('scroller_js'),
+        get_file_name('slider_js'),
     ],
 ];
 
@@ -23,7 +24,7 @@ if (isset($_GET['act']) && $_GET['act'] === 'Arcade' && isset($_POST['gname'])) 
 }
 $HTMLOUT = '';
 
-$unread = getPmCount($CURUSER['id']);
+$unread = $message_stuffs->get_count($CURUSER['id']);
 if ($unread >= 1) {
     $session->set('is-link', [
         'message' => "You have $unread unread message" . plural($unread) . ' in your Inbox',

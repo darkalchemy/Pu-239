@@ -21,12 +21,12 @@ if ($site_config['report_alert'] && $CURUSER['class'] >= UC_STAFF) {
                 " . ($delt_with > 1 ? $lang['gl_reportss'] . $lang['gl_reports_news'] : $lang['gl_reports'] . $lang['gl_reports_new']) . "
             </span>
             <div class='tooltip_templates'>
-                <span id='reportmessage_tooltip'>
+                <div id='reportmessage_tooltip' class='margin20'>
                     <div class='size_4 has-text-centered has-text-danger has-text-weight-bold bottom10'>
                         " . ($delt_with > 1 ? $lang['gl_reportss'] . $lang['gl_reports_news'] : $lang['gl_reports'] . $lang['gl_reports_new']) . "
                     </div>
                     {$lang['gl_hey']} {$CURUSER['username']}!<br> $delt_with " . ($delt_with > 1 ? $lang['gl_reportss'] . $lang['gl_reports_news'] : $lang['gl_reports'] . $lang['gl_reports_new']) . "{$lang['gl_reports_dealt']}
-                </span>
+                </div>
             </div>
         </a>
     </li>";

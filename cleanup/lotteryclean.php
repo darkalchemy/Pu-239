@@ -6,7 +6,7 @@
 function lotteryclean($data)
 {
     dbconn();
-    global $queries, $cache;
+    global $queries, $cache, $message_stuffs;
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -54,7 +54,14 @@ function lotteryclean($data)
                 'seedbonus' => (float) $winner['seedbonus'] + $lottery['user_pot'],
                 'modcomment' => $mod_comment,
             ];
-            $_pms[] = '(0,' . $winner['uid'] . ',' . $msg['subject'] . ',' . $msg['body'] . ',' . $dt . ')';
+            $_pms[] = [
+                'sender' => 0,
+                'receiver' => $winner['uid'],
+                'added' => $dt,
+                'msg' => $msg['body'],
+                'subject' => $subject['subject'],
+            ];
+
             $uids[] = $winner['uid'];
         }
         $lconfig_update = [
@@ -69,11 +76,9 @@ function lotteryclean($data)
             }
         }
         if (!empty($_pms) && count($_pms)) {
-            sql_query('INSERT INTO messages(sender, receiver, subject, msg, added) VALUES ' . implode(', ', $_pms)) or sqlerr(__FILE__, __LINE__);
+            $message_stuffs->insert($_pms);
         }
         foreach ($uids as $user_id) {
-            $cache->increment('inbox_' . $user_id);
-            $cache->increment('inbox_sb_' . $user_id);
             $cache->delete('user' . $user_id);
         }
         sql_query('INSERT INTO lottery_config(name,value)

@@ -211,6 +211,4 @@ $HTMLOUT .= main_div("
                             {$lang['faq_problem_body']}
                         </div>");
 
-$HTMLOUT = wrapper($HTMLOUT, 'has-text-left');
-
-echo stdhead('FAQ') . $HTMLOUT . stdfoot();
+echo stdhead('FAQ') . wrapper($HTMLOUT, 'has-text-left') . stdfoot();

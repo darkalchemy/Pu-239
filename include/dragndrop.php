@@ -34,7 +34,7 @@ function make_year($path)
 {
     $dir = $path . '/' . date('Y');
     if (!is_dir($dir)) {
-        mkdir($dir);
+        mkdir($dir, 0777, true);
     }
 }
 
@@ -42,6 +42,6 @@ function make_month($path)
 {
     $dir = $path . '/' . date('Y/m');
     if (!is_dir($dir)) {
-        mkdir($dir);
+        mkdir($dir, 0777, true);
     }
 }

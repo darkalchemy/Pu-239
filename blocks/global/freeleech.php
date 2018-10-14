@@ -32,13 +32,13 @@ if ($CURUSER) {
                 {$lang['gl_freeleech']}
             </span>
             <div class='tooltip_templates'>
-                <span id='free_tooltip_{$fl['modifier']}'>
+                <div id='free_tooltip_{$fl['modifier']}' class='margin20'>
                     <div class='size_4 has-text-centered has-text-info has-text-weight-bold bottom10'>
                         {$fl['title']}
                     </div>
                     {$mode}<br>
                     {$fl['message']} {$lang['gl_freeleech_sb']} {$fl['setby']}<br>" . ($fl['expires'] != 1 ? $lang['gl_freeleech_u'] . ' ' . get_date($fl['expires'], 'DATE') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . ' ' . $lang['gl_freeleech_tg'] . ')' : '') . '
-                </span
+                </div>
             </div>
         </a>
     </li>' : '');

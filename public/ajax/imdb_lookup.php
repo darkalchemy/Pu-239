@@ -17,24 +17,28 @@ if (!$session->validateToken($csrf)) {
 
 $imdb = '';
 if (!empty($url)) {
-    preg_match('/(tt[\d]{7})|^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $url, $imdb);
-    $imdb = !empty($imdb[2]) ? $imdb[2] : (!empty($imdb[1]) ? $imdb[1] : '');
+    preg_match('/(tt[\d]{7})/i', $url, $imdb);
+    $imdb = !empty($imdb[1]) ? $imdb[1] : false;
 }
 
 if (!empty($imdb)) {
-    $poster = $banner = $background = 'nothing';
+    $tid = !empty($tid) ? $tid : false;
+    $banner = $background = $poster = null;
     $movie_info = get_imdb_info($imdb, true, false, $tid);
-    $poster = get_image_by_id('movie', $tid, $imdb, 'movieposter');
-    $banner = get_image_by_id('movie', $tid, $imdb, 'moviebanner');
-    $background = get_image_by_id('movie', $tid, $imdb, 'moviebackground');
-    if (empty($poster)) {
-        $poster = get_image_by_id('tmdb_id', $tid, $imdb, 'movieposter');
-    }
-    if (empty($banner)) {
-        $banner = get_image_by_id('tmdb_id', $tid, $imdb, 'moviebanner');
-    }
-    if (empty($background)) {
-        $background = get_image_by_id('tmdb_id', $tid, $imdb, 'moviebackground');
+    if (!empty($tid)) {
+        $poster = get_image_by_id('movie', $tid, $imdb, 'movieposter');
+        $banner = get_image_by_id('movie', $tid, $imdb, 'moviebanner');
+        $background = get_image_by_id('movie', $tid, $imdb, 'moviebackground');
+
+        if (empty($poster)) {
+            $poster = get_image_by_id('tmdb_id', $tid, $imdb, 'movieposter');
+        }
+        if (empty($banner)) {
+            $banner = get_image_by_id('tmdb_id', $tid, $imdb, 'moviebanner');
+        }
+        if (empty($background)) {
+            $background = get_image_by_id('tmdb_id', $tid, $imdb, 'moviebackground');
+        }
     }
     if (!empty($movie_info[1])) {
         url_proxy($movie_info[1], true, 150);

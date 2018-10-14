@@ -5,7 +5,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang;
+global $site_config, $lang, $user_stuffs;
 
 $lang = array_merge($lang, load_language('ad_ipcheck'));
 $res = sql_query("SELECT count(*) AS dupl, INET6_NTOA(ip) AS ip FROM users WHERE enabled = 'yes' AND ip != '' AND INET6_NTOA(ip) NOT IN ('127.0.0.1', '10.0.0.1', '10.10.10.10') GROUP BY users.ip ORDER BY dupl DESC, ip") or sqlerr(__FILE__, __LINE__);
@@ -28,13 +28,11 @@ while ($ras = mysqli_fetch_assoc($res)) {
     if ($ras['dupl'] <= 1) {
         break;
     }
-
     if ($ras['ip'] != $ip) {
-        $ros = sql_query('SELECT id, username, class, email, chatpost, pirate, king, leechwarn, added, last_access, downloaded, uploaded, INET6_NTOA(ip) AS ip, warned, donor, enabled FROM users WHERE ip = ' . ipToStorageFormat($ras['ip']) . ' ORDER BY id') or sqlerr(__FILE__, __LINE__);
-        $num2 = mysqli_num_rows($ros);
-        if ($num2 > 1) {
+        $ros = $user_stuffs->getUsersFromIP($ras['ip']);
+        if (count($ros) > 1) {
             ++$uc;
-            while ($arr = mysqli_fetch_assoc($ros)) {
+            foreach ($ros as $arr) {
                 if ($arr['added'] == '0') {
                     $arr['added'] = '-';
                 }
@@ -61,5 +59,11 @@ while ($ras = mysqli_fetch_assoc($res)) {
         }
     }
 }
-$HTMLOUT = main_table($body, $heading);
+
+$HTMLOUT = '<h1 class="has-text-centered">Duplicate IP Check</h1>';
+if (!empty($body)) {
+    $HTMLOUT .= main_table($body, $heading);
+} else {
+    $HTMLOUT .= main_div("The are no duplicate IP's in use.");
+}
 echo stdhead($lang['ipcheck_stdhead']) . wrapper($HTMLOUT) . stdfoot();

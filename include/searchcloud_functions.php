@@ -38,7 +38,7 @@ function searchcloud($limit = 50)
  */
 function searchcloud_insert($word)
 {
-    global $cache;
+    global $cache, $searchcloud_stuffs;
 
     $searchcloud = searchcloud();
     $ip = getip();
@@ -51,7 +51,15 @@ function searchcloud_insert($word)
             $word => $howmuch,
         ], 0);
     }
-    sql_query('INSERT INTO searchcloud(searchedfor,howmuch,ip) VALUES (' . sqlesc($word) . ',1,' . ipToStorageFormat($ip) . ') ON DUPLICATE KEY UPDATE howmuch = howmuch + 1') or sqlerr(__FILE__, __LINE__);
+    $values = [
+        'searchedfor' => $word,
+        'howmuch' => 1,
+        'ip' => inet_pton($ip),
+    ];
+    $update = [
+        'howmuch' => new Envms\FluentPDO\Literal('howmuch + 1'),
+    ];
+    $searchcloud_stuffs->insert($values, $update);
 }
 
 /**

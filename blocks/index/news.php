@@ -38,10 +38,10 @@ if ($news) {
             $button = "
                 <div class='is-pulled-right'>
                     <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int) $array['id'] . "'>
-                        <i class='icon-edit size_6 tooltipper' aria-hidden='true' title='{$lang['index_news_ed']}'></i>
+                        <i class='icon-edit size_4 tooltipper' aria-hidden='true' title='{$lang['index_news_ed']}'></i>
                     </a>
                     <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int) $array['id'] . "&amp;h={$hash}'>
-                        <i class='icon-cancel size_6 tooltipper' aria-hidden='true' title='{$lang['index_news_del']}'></i>
+                        <i class='icon-cancel size_4 tooltipper' aria-hidden='true' title='{$lang['index_news_del']}'></i>
                     </a>
                 </div>";
         }
@@ -60,7 +60,7 @@ if ($news) {
                         <i class='icon-down-open size_3' aria-hidden='true'></i><small>" . htmlsafechars($array['title']) . "</small>
                     </legend>
                     <div class='bg-02 round5 padding10'>
-                        <div class='bottom20 size_4'>" . get_date($array['added'], 'DATE') . "{$lang['index_news_added']} {$username}{$button}</div>
+                        <div class='bottom20 size_5 bg-01 padding20 round5 '>" . get_date($array['added'], 'DATE') . "{$lang['index_news_added']} {$username}{$button}</div>
                         <div class='has-text-white'>
                             " . format_comment($array['body'], 0) . '
                         </div>

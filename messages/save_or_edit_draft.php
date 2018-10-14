@@ -1,59 +1,70 @@
 <?php
 
+global $message_stuffs;
+
 $save_or_edit = (isset($_POST['edit']) ? 'edit' : (isset($_GET['edit']) ? 'edit' : 'save'));
-if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'save as draft') {
-    //=== make sure they wrote something :P
+
+if (isset($_POST['buttonval']) && $_POST['buttonval'] === 'Save as draft') {
     if (empty($_POST['subject'])) {
         stderr($lang['pm_error'], $lang['pm_draft_err']);
     }
     if (empty($_POST['body'])) {
         stderr($lang['pm_error'], $lang['pm_draft_err1']);
     }
-    $body = sqlesc($_POST['body']);
-    $subject = sqlesc(strip_tags($_POST['subject']));
+    $dt = TIME_NOW;
+    $msg = $_POST['body'];
+    $subject = strip_tags($_POST['subject']);
     if ($save_or_edit === 'save') {
-        sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, location, draft, unread, saved) VALUES  
-                                                                        (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($CURUSER['id']) . ',' . TIME_NOW . ', ' . $body . ', ' . $subject . ', \'-2\', \'yes\',\'no\',\'yes\')') or sqlerr(__FILE__, __LINE__);
-        $cache->increment('inbox_' . $CURUSER['id']);
+        $values = [
+            'sender' => $CURUSER['id'],
+            'receiver' => $CURUSER['id'],
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
+            'location' => -2,
+            'draft' => 'yes',
+            'unread' => 'no',
+            'saved' => 'yes',
+        ];
+        $result = $message_stuffs->insert($values);
     }
     if ($save_or_edit === 'edit') {
-        sql_query('UPDATE messages SET msg = ' . $body . ', subject = ' . $subject . ' WHERE id = ' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
+        $update = [
+            'msg' => $msg,
+            'subject' => $subject,
+        ];
+        $result = $message_stuffs->update($update, $pm_id);
     }
-    //=== Check if messages was saved as draft
-    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
+    if (!$result) {
         stderr($lang['pm_error'], $lang['pm_draft_wasnt']);
     }
     header('Location: messages.php?action=view_mailbox&box=-2&new_draft=1');
     die();
 }
-if (isset($_POST['buttonval'])) {
-    //=== Get the info
-    $res = sql_query('SELECT * FROM messages WHERE id=' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
-    $message = mysqli_fetch_assoc($res);
-    $subject = htmlsafechars($message['subject']);
-    $draft = $message['msg'];
-}
-//=== print out the page
-//echo stdhead('Save / Edit Draft');
-$HTMLOUT .= '<legend>' . $lang['pm_draft_save_edit'] . '' . $subject . '</legend>' . $top_links . '
-        <form name="compose" action="messages.php" method="post">
-        <input type="hidden" name="id" value="' . $pm_id . '" />
-        <input type="hidden" name="' . $save_or_edit . '" value="1" />
-        <input type="hidden" name="action" value="save_or_edit_draft" />
+
+$message = $message_stuffs->get_by_id($pm_id);
+$subject = htmlsafechars($message['subject']);
+$draft = $message['msg'];
+
+$HTMLOUT .= '
+<legend>' . $lang['pm_draft_save_edit'] . '' . $subject . '</legend>' . $top_links . '
+<form name="compose" action="messages.php" method="post">
+    <input type="hidden" name="id" value="' . $pm_id . '">
+    <input type="hidden" name="' . $save_or_edit . '" value="1">
+    <input type="hidden" name="action" value="save_or_edit_draft">
     <table class="table table-bordered">
-    <tr>
-        <td class="colhead" colspan="2">' . $lang['pm_edmail_edit'] . '</td>
-    </tr>
-    <tr>
-        <td><span style="font-weight: bold;">' . $lang['pm_draft_subject'] . '</span></td>
-        <td><input type="text" class="w-100" name="subject" value="' . $subject . '" /></td>
-    </tr>
-    <tr>
-        <td><span style="font-weight: bold;">' . $lang['pm_draft_body'] . '</span></td>
-        <td>' . BBcode($draft) . '</td>
-    </tr>
-    <tr>
-        <td colspan="2">
-        <input type="submit" class="button is-small" name="buttonval" value="' . $lang['pm_draft_save_as'] . '" /></td>
-    </tr>
-    </table></form>';
+        <tr>
+            <td><span style="font-weight: bold;">' . $lang['pm_draft_subject'] . '</span></td>
+            <td><input type="text" class="w-100" name="subject" value="' . $subject . '"></td>
+        </tr>
+        <tr>
+            <td><span style="font-weight: bold;">' . $lang['pm_draft_body'] . '</span></td>
+            <td>' . BBcode($draft) . '</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="has-text-centered">
+                <input type="submit" class="button is-small" name="buttonval" value="' . $lang['pm_draft_save_as'] . '">
+            </td>
+        </tr>
+    </table>
+</form>';

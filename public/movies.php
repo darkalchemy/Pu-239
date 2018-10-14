@@ -34,7 +34,6 @@ switch ($list) {
     case 'bluray':
         $title = 'Bluray Releases';
         $pubs = get_bluray_info();
-
         if (!empty($pubs)) {
             $div = "
         <div class='level-center'>";

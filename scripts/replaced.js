@@ -1,5 +1,5 @@
 var v_offset = 250;
-var animate_duration = 1250;
+var animate_duration = 750;
 var easing = 'swing';
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
@@ -160,29 +160,10 @@ $(function () {
         backtotop.blur();
         return false;
     });
-    var validate_form = $('#validate_form');
-    if (validate_form.length) {
-        validate_form.validate({
-            invalidHandler: function(event, validator) {
-                var errors = validator.numberOfInvalids();
-                if (errors) {
-                    var message = errors == 1
-                        ? 'You missed 1 field. It has been highlighted'
-                        : 'You missed ' + errors + ' fields. They have been highlighted';
-                    $("div.error span").html(message);
-                    $("div.error").show();
-                } else {
-                    $("div.error").hide();
-                }
-            }
+    $('.flip').click(function (e) {
+        $(this).next().slideToggle(animate_duration, easing, function () {
         });
-    }
-    if ($('#upload_form').length) {
-        setupDependencies('upload_form');
-    }
-    if ($('#edit_form').length) {
-        setupDependencies('edit_form');
-    }
+    });
     if ($('#carousel-container').length) {
         $('#icarousel').iCarousel({
             easing: 'ease-in-out',

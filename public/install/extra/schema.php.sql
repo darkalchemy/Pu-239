@@ -1,19 +1,28 @@
--- MySQL dump 10.16  Distrib 10.1.34-MariaDB, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.23-23, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: silly
 -- ------------------------------------------------------
--- Server version	10.1.34-MariaDB-0ubuntu0.18.04.1
+-- Server version	5.7.23-23
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!50717 SELECT COUNT(*) INTO @rocksdb_has_p_s_session_variables FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'performance_schema' AND TABLE_NAME = 'session_variables' */;
+/*!50717 SET @rocksdb_get_is_supported = IF (@rocksdb_has_p_s_session_variables, 'SELECT COUNT(*) INTO @rocksdb_is_supported FROM performance_schema.session_variables WHERE VARIABLE_NAME=\'rocksdb_bulk_load\'', 'SELECT 0') */;
+/*!50717 PREPARE s FROM @rocksdb_get_is_supported */;
+/*!50717 EXECUTE s */;
+/*!50717 DEALLOCATE PREPARE s */;
+/*!50717 SET @rocksdb_enable_bulk_load = IF (@rocksdb_is_supported, 'SET SESSION rocksdb_bulk_load = 1', 'SET @rocksdb_dummy_bulk_load = 0') */;
+/*!50717 PREPARE s FROM @rocksdb_enable_bulk_load */;
+/*!50717 EXECUTE s */;
+/*!50717 DEALLOCATE PREPARE s */;
 
 --
 -- Table structure for table `ach_bonus`
@@ -1077,9 +1086,10 @@ CREATE TABLE `images` (
   `tmdb_id` int(10) unsigned NOT NULL DEFAULT '0',
   `tvmaze_id` int(10) unsigned NOT NULL DEFAULT '0',
   `imdb_id` char(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `isbn` char(13) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` enum('poster','banner','background') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'poster',
+  `fetched` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
   UNIQUE KEY `url_type` (`url`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1202,10 +1212,10 @@ CREATE TABLE `messages` (
   `saved` enum('no','yes') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `urgent` enum('no','yes') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `draft` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `staff_id` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `receiver` (`receiver`),
   KEY `sender` (`sender`),
+  KEY `saved` (`saved`),
   FULLTEXT KEY `ft_subject` (`subject`),
   FULLTEXT KEY `ft_msg` (`msg`),
   FULLTEXT KEY `ft_subject_msg` (`subject`,`msg`),
@@ -1427,7 +1437,7 @@ DROP TABLE IF EXISTS `peers`;
 CREATE TABLE `peers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `torrent` int(10) unsigned NOT NULL DEFAULT '0',
-  `torrent_pass` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `torrent_pass` char(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `peer_id` binary(20) NOT NULL,
   `ip` varbinary(16) NOT NULL,
   `port` smallint(5) unsigned NOT NULL DEFAULT '0',
@@ -1435,27 +1445,27 @@ CREATE TABLE `peers` (
   `downloaded` bigint(20) unsigned NOT NULL DEFAULT '0',
   `to_go` bigint(20) unsigned NOT NULL DEFAULT '0',
   `seeder` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `started` int(11) NOT NULL,
+  `started` int(10) unsigned NOT NULL DEFAULT '0',
   `last_action` int(10) unsigned NOT NULL DEFAULT '0',
   `prev_action` int(10) unsigned NOT NULL DEFAULT '0',
   `connectable` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
-  `agent` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `agent` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `finishedat` int(10) unsigned NOT NULL DEFAULT '0',
   `downloadoffset` bigint(20) unsigned NOT NULL DEFAULT '0',
   `uploadoffset` bigint(20) unsigned NOT NULL DEFAULT '0',
   `corrupt` int(10) NOT NULL DEFAULT '0',
   `compact` varchar(6) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `torrent_peer_id` (`torrent`,`peer_id`,`ip`),
+  UNIQUE KEY `torrent_peer_id_port` (`torrent`,`peer_id`,`ip`,`port`),
   KEY `torrent` (`torrent`),
   KEY `last_action` (`last_action`),
   KEY `connectable` (`connectable`),
   KEY `userid` (`userid`),
   KEY `torrent_pass` (`torrent_pass`),
-  KEY `torrent_connect` (`torrent`),
   KEY `to_go` (`to_go`),
   KEY `seeder` (`seeder`),
+  KEY `peer_id` (`peer_id`),
   CONSTRAINT `peers_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `peers_ibfk_2` FOREIGN KEY (`torrent`) REFERENCES `torrents` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1845,24 +1855,19 @@ CREATE TABLE `snatched` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `torrentid` int(10) unsigned NOT NULL DEFAULT '0',
-  `ip` varbinary(16) NOT NULL,
-  `port` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `connectable` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `agent` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `peer_id` binary(20) NOT NULL,
   `uploaded` bigint(20) unsigned NOT NULL DEFAULT '0',
   `upspeed` bigint(20) NOT NULL DEFAULT '0',
   `downloaded` bigint(20) unsigned NOT NULL DEFAULT '0',
   `downspeed` bigint(20) NOT NULL DEFAULT '0',
   `to_go` bigint(20) unsigned NOT NULL DEFAULT '0',
   `seeder` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
-  `seedtime` int(11) unsigned NOT NULL DEFAULT '0',
-  `leechtime` int(11) unsigned NOT NULL DEFAULT '0',
-  `start_date` int(11) NOT NULL DEFAULT '0',
-  `last_action` int(11) NOT NULL DEFAULT '0',
-  `complete_date` int(11) NOT NULL DEFAULT '0',
+  `seedtime` int(10) unsigned NOT NULL DEFAULT '0',
+  `leechtime` int(10) unsigned NOT NULL DEFAULT '0',
+  `start_date` int(10) unsigned NOT NULL DEFAULT '0',
+  `last_action` int(10) unsigned NOT NULL DEFAULT '0',
+  `complete_date` int(10) unsigned NOT NULL DEFAULT '0',
   `timesann` int(10) unsigned NOT NULL DEFAULT '0',
-  `hit_and_run` int(11) NOT NULL DEFAULT '0',
+  `hit_and_run` int(10) unsigned NOT NULL DEFAULT '0',
   `mark_of_cain` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `finished` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
@@ -2662,6 +2667,10 @@ CREATE TABLE `wiki` (
   CONSTRAINT `wiki_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
+/*!50112 SET @disable_bulk_load = IF (@is_rocksdb_supported, 'SET SESSION rocksdb_bulk_load = @old_rocksdb_bulk_load', 'SET @dummy_rocksdb_bulk_load = 0') */;
+/*!50112 PREPARE s FROM @disable_bulk_load */;
+/*!50112 EXECUTE s */;
+/*!50112 DEALLOCATE PREPARE s */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -2672,4 +2681,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-02 23:19:02
+-- Dump completed on 2018-10-14  3:50:01

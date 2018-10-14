@@ -1,5 +1,11 @@
 In no particular order
 
+
+finish cache inbox_ and messages_stuff
+fix birthday cleanup
+fix karma cleanup
+
+
 user blocks AVATAR is only used in userdetails.php, check to see if useful elsewhere in code
 fix subtitles folder
 fix avatar folder

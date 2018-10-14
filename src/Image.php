@@ -5,12 +5,16 @@ namespace DarkAlchemy\Pu239;
 class Image
 {
     protected $fluent;
+    protected $site_config;
+    protected $limit;
 
     public function __construct()
     {
-        global $fluent;
+        global $fluent, $site_config;
 
         $this->fluent = $fluent;
+        $this->site_config = $site_config;
+        $this->limit = $this->site_config['query_limit'];
     }
 
     /**
@@ -24,5 +28,21 @@ class Image
             ->values($values)
             ->ignore()
             ->execute();
+    }
+
+    /**
+     * @param array $values
+     * @param array $update
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function update(array $values, array $update)
+    {
+        $count = floor($this->limit / max(array_map('count', $values)));
+        foreach (array_chunk($values, $count) as $t) {
+            $this->fluent->insertInto('images', $t)
+                ->onDuplicateKeyUpdate($update)
+                ->execute();
+        }
     }
 }

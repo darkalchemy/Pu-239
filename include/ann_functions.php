@@ -98,173 +98,12 @@ function crazyhour_announce()
 }
 
 /**
- * @param $torrent_pass
- *
- * @return array|bool|null|string
- */
-function get_user_from_torrent_pass($torrent_pass)
-{
-    global $site_config, $fluent, $cache;
-
-    if (strlen($torrent_pass) != 64) {
-        return false;
-    }
-    $userid = $cache->get('torrent_pass_' . $torrent_pass);
-    if ($userid === false || is_null($userid)) {
-        $userid = $fluent->from('users')
-            ->select(null)
-            ->select('id')
-            ->where('torrent_pass = ?', $torrent_pass)
-            ->where("enabled = 'yes'")
-            ->fetch();
-        $userid = $userid['id'];
-        $cache->set('torrent_pass_' . $torrent_pass, $userid, 3600);
-    }
-    if (empty($userid)) {
-        return false;
-    }
-    $user = $cache->get('user' . $userid);
-    if ($user === false || is_null($user)) {
-        $user = $fluent->from('users')
-            ->select('INET6_NTOA(ip) AS ip')
-            ->where('id = ?', $userid)
-            ->fetch();
-        unset($user['hintanswer'], $user['passhash']);
-
-        $cache->set('user' . $userid, $user, $site_config['expires']['user_cache']);
-        if ($user['enabled'] != 'yes') {
-            return false;
-        }
-    }
-    if (!$user) {
-        return false;
-    }
-
-    return $user;
-}
-
-/**
- * @param $info_hash
- *
- * @return array|bool|null|string
- */
-function get_torrent_from_hash($info_hash)
-{
-    global $fluent, $site_config, $cache;
-
-    $key = 'torrent_hash_' . bin2hex($info_hash);
-    $ttl = 21600;
-    $torrent = $cache->get($key);
-    if ($torrent === false || is_null($torrent) || !is_array($torrent)) {
-        $torrent = $fluent->from('torrents')
-            ->select(null)
-            ->select('id')
-            ->select('category')
-            ->select('banned')
-            ->select('free')
-            ->select('silver')
-            ->select('vip')
-            ->select('seeders')
-            ->select('leechers')
-            ->select('times_completed')
-            ->select('seeders + leechers AS numpeers')
-            ->select('added AS ts')
-            ->select('visible')
-            ->select('owner')
-            ->where('HEX(info_hash) = ?', bin2hex($info_hash))
-            ->fetch();
-        if ($torrent !== false) {
-            $cache->set($key, $torrent, $ttl);
-            $seed_key = 'torrents_seeds_' . $torrent['id'];
-            $leech_key = 'torrents_leechs_' . $torrent['id'];
-            $comp_key = 'torrents_comps_' . $torrent['id'];
-            $cache->set($seed_key, $torrent['seeders'], $ttl);
-            $cache->set($leech_key, $torrent['leechers'], $ttl);
-            $cache->set($comp_key, $torrent['times_completed'], $ttl);
-        } else {
-            $cache->set($key, 0, 900);
-
-            return false;
-        }
-    } else {
-        $seed_key = 'torrents_seeds_' . $torrent['id'];
-        $leech_key = 'torrents_leechs_' . $torrent['id'];
-        $comp_key = 'torrents_comps_' . $torrent['id'];
-        $torrent['seeders'] = $cache->get($seed_key);
-        $torrent['leechers'] = $cache->get($leech_key);
-        $torrent['times_completed'] = $cache->get($comp_key);
-        if ($torrent['seeders'] === false || $torrent['leechers'] === false || $torrent['times_completed'] === false || is_null($torrent['seeders']) || is_null($torrent['leechers']) || is_null($torrent['times_completed'])) {
-            $res = $fluent->from('torrents')
-                ->select(null)
-                ->select('seeders')
-                ->select('leechers')
-                ->select('times_completed')
-                ->where('id = ?', $torrent['id'])
-                ->fetch();
-
-            if ($res !== false) {
-                $cache->set($seed_key, $res['seeders'], $ttl);
-                $cache->set($leech_key, $res['leechers'], $ttl);
-                $cache->set($comp_key, $res['times_completed'], $ttl);
-                $torrent = array_merge($torrent, $res);
-                $cache->set($key, $torrent, $ttl);
-            } else {
-                $cache->delete($key);
-
-                return false;
-            }
-        }
-    }
-
-    return $torrent;
-}
-
-/**
- * @param     $id
- * @param int $seeds
- * @param int $leechers
- * @param int $completed
- *
- * @return bool
- */
-function adjust_torrent_peers($id, $seeds = 0, $leechers = 0, $completed = 0)
-{
-    global $cache;
-
-    if (!is_int($id) || $id < 1) {
-        return false;
-    }
-    if (!$seeds && !$leechers && !$completed) {
-        return false;
-    }
-    $adjust = 0;
-    $seed_key = 'torrents_seeds_' . $id;
-    $leech_key = 'torrents_leechs_' . $id;
-    $comp_key = 'torrents_comps_' . $id;
-    if ($seeds > 0) {
-        $adjust += (bool) $cache->increment($seed_key, $seeds);
-    } elseif ($seeds < 0) {
-        $adjust += (bool) $cache->decrement($seed_key, -$seeds);
-    }
-    if ($leechers > 0) {
-        $adjust += (bool) $cache->increment($leech_key, $leechers);
-    } elseif ($leechers < 0) {
-        $adjust += (bool) $cache->decrement($leech_key, -$leechers);
-    }
-    if ($completed > 0) {
-        $adjust += (bool) $cache->increment($comp_key, $completed);
-    }
-
-    return (bool) $adjust;
-}
-
-/**
  * @param $torrentid
  * @param $userid
  *
  * @return int|mixed
  */
-function get_happy($torrentid, $userid)
+function get_happy(int $torrentid, int $userid)
 {
     global $fluent, $site_config, $cache;
 
@@ -294,7 +133,7 @@ function get_happy($torrentid, $userid)
  *
  * @return mixed
  */
-function get_slots($torrentid, $userid)
+function get_slots(int $torrentid, int $userid)
 {
     global $fluent, $site_config, $cache;
 
@@ -309,10 +148,10 @@ function get_slots($torrentid, $userid)
     }
     if (!empty($slot)) {
         foreach ($slot as $sl) {
-            if ($sl['torrentid'] == $torrentid && $sl['free'] == 'yes') {
+            if ($sl['torrentid'] === $torrentid && $sl['free'] === 'yes') {
                 $torrent['freeslot'] = 1;
             }
-            if ($sl['torrentid'] == $torrentid && $sl['doubleup'] == 'yes') {
+            if ($sl['torrentid'] === $torrentid && $sl['doubleup'] === 'yes') {
                 $torrent['doubleslot'] = 1;
             }
         }
@@ -481,9 +320,16 @@ function benc_dict($d)
 function portblacklisted($port)
 {
     $portblacklisted = [
+        80,
         411,
         412,
         413,
+        443,
+        1214,
+        4662,
+        6346,
+        6347,
+        6699,
         6881,
         6882,
         6883,
@@ -492,11 +338,7 @@ function portblacklisted($port)
         6886,
         6887,
         6889,
-        1214,
-        6346,
-        6347,
-        4662,
-        6699,
+        8080,
         65535,
     ];
     if (in_array($port, $portblacklisted)) {
@@ -511,7 +353,7 @@ if (!function_exists('validip')) {
     {
         return filter_var($ip, FILTER_VALIDATE_IP, [
             'flags' => FILTER_FLAG_NO_PRIV_RANGE,
-                        FILTER_FLAG_NO_RES_RANGE,
+            FILTER_FLAG_NO_RES_RANGE,
         ]) ? true : false;
     }
 }

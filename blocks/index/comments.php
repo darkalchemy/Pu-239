@@ -96,7 +96,7 @@ $text = main_table($body, $header);
 $HTMLOUT .= "
     <a id='latest_comment-hash'></a>
     <fieldset id='latest_comment' class='header'>
-        <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['index_latest_comments']}</legend>
+        <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_latest_comments']}</legend>
         <div class='table-wrapper has-text-centered'>
             $text
         </div>

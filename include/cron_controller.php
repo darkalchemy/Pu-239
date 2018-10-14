@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'bittorrent.php';
+dbconn();
 global $cache;
 
 if (!empty($argv[1]) && $argv[1] === 'force') {

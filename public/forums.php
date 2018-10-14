@@ -12,9 +12,15 @@ global $CURUSER, $site_config, $cache, $fluent;
 
 $image = placeholder_image();
 $lang = array_merge(load_language('global'), load_language('forums'), load_language('forums_global'));
+$stdhead = [
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
+];
 $stdfoot = [
     'js' => [
         get_file_name('forums_js'),
+        get_file_name('sceditor_js'),
     ],
 ];
 $over_forum_id = $count = $now_viewing = $child_boards = '';
@@ -619,4 +625,4 @@ function insert_quick_jump_menu($current_forum = 0, $staff = false)
     return $body;
 }
 
-echo stdhead($lang['fe_forums']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($lang['fe_forums'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

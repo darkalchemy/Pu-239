@@ -23,6 +23,8 @@ class Comment
      * @param int $perpage
      *
      * @return array
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function get_torrent_comment(int $tid, int $count, int $perpage)
     {

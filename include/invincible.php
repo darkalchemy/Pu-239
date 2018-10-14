@@ -9,7 +9,7 @@
  */
 function invincible($id, $invincible = true, $bypass_bans = true)
 {
-    global $CURUSER, $site_config, $cache, $session;
+    global $CURUSER, $site_config, $cache, $session, $user_stuffs;
 
     $ip = '127.0.0.1';
     $setbits = $clrbits = 0;
@@ -45,21 +45,12 @@ function invincible($id, $invincible = true, $bypass_bans = true)
     $cache->delete('u_passkey_' . $row['torrent_pass']);
     // update ip in db
     $modcomment = get_date(TIME_NOW, '', 1) . ' - ' . $display . ' invincible thanks to ' . $CURUSER['username'] . "\n" . $row['modcomment'];
-    sql_query('UPDATE users SET ip = ' . ipToStorageFormat($ip) . ', modcomment = ' . sqlesc($modcomment) . '
-              WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-
-    $cache->update_row('user' . $id, [
-        'ip' => $ip,
-        'perms' => $row['perms'],
+    $set = [
+        'ip' => inet_pton($ip),
         'modcomment' => $modcomment,
-    ], $site_config['expires']['user_cache']);
-    if ($id == $CURUSER['id']) {
-        $cache->update_row('user' . $CURUSER['id'], [
-            'ip' => $ip,
-            'perms' => $row['perms'],
-            'modcomment' => $modcomment,
-        ], $site_config['expires']['user_cache']);
-    }
+        'perms' => $row['perms'],
+    ];
+    $user_stuffs->update($set, $id);
     write_log('Member [b][url=userdetails.php?id=' . $id . ']' . (htmlsafechars($row['username'])) . '[/url][/b] is ' . $display . ' invincible thanks to [b]' . $CURUSER['username'] . '[/b]');
     // header ouput
     $session->set('is-info', "{$CURUSER['username']} is $display Invincible");

@@ -1,7 +1,7 @@
 $(function () {
-    if (typeof uid === 'undefined') {
-        return false;
-    }
+    var el = document.querySelector('#ipports');
+    var uid = el.dataset.uid
+
     $.ajax({
         url: './ajax/checkports.php',
         data: {
@@ -10,7 +10,7 @@ $(function () {
         type: 'POST',
         dataType: 'json',
         success: function (output) {
-            $('#ipports').text(output.data);
+            $('#ipports').html(output.data);
         }
     });
 });

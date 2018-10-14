@@ -7,6 +7,7 @@ class Peer
     protected $cache;
     protected $fluent;
     protected $config;
+    protected $limit;
 
     public function __construct()
     {
@@ -15,16 +16,19 @@ class Peer
         $this->cache = $cache;
         $this->fluent = $fluent;
         $this->config = $site_config;
+        $this->limit = $this->config['query_limit'];
     }
 
     /**
-     * @param $user_id
+     * @param int $userid
      *
      * @return bool|mixed
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
-    public function getPeersFromUserId($user_id)
+    public function getPeersFromUserId(int $userid)
     {
-        $peers = $this->cache->get('peers_' . $user_id);
+        $peers = $this->cache->get('peers_' . $userid);
         if ($peers === false || is_null($peers)) {
             $peers['yes'] = $peers['no'] = $peers['conn_yes'] = $peers['conn_no'] = $peers['count'] = 0;
             $peers['conn'] = 3;
@@ -33,14 +37,14 @@ class Peer
                 ->select(null)
                 ->select('seeder')
                 ->select('connectable')
-                ->where('userid = ?', $user_id);
+                ->where('userid = ?', $userid);
 
             foreach ($query as $a) {
                 $key = $a['seeder'] === 'yes' ? 'yes' : 'no';
-                $peers[$key] += 1;
+                ++$peers[$key];
                 $conn = $a['connectable'] === 'yes' ? 'conn_yes' : 'conn_no';
-                $peers[$conn] += 1;
-                $peers['count'] += 1;
+                ++$peers[$conn];
+                ++$peers['count'];
             }
             if ($peers['conn_no'] === 0 && $peers['conn_yes'] > 0) {
                 $peers['conn'] = 2;
@@ -54,9 +58,142 @@ class Peer
                     $peers['percentage'] = ceil(($peers['conn_yes'] / $peers['count']) * 100);
                 }
             }
-            $this->cache->set('peers_' . $user_id, $peers, $this->config['expires']['peers_']);
+            $this->cache->set('peers_' . $userid, $peers, $this->config['expires']['peers_']);
         }
 
         return $peers;
+    }
+
+    /**
+     * @param int $tid
+     *
+     * @return array|bool|mixed|\PDOStatement
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function get_torrent_peers_by_tid(int $tid)
+    {
+        $peers = $this->cache->get('torrent_peers_' . $tid);
+        if ($peers === false || is_null($peers)) {
+            $peers = $this->fluent->from('peers')
+                ->select(null)
+                ->select('id')
+                ->select('seeder')
+                ->select('peer_id')
+                ->select('INET6_NTOA(ip) AS ip')
+                ->select('port')
+                ->select('uploaded')
+                ->select('downloaded')
+                ->select('userid')
+                ->select('(UNIX_TIMESTAMP(NOW()) - last_action) AS announcetime')
+                ->select('last_action AS ts')
+                ->select('UNIX_TIMESTAMP(NOW()) AS nowts')
+                ->select('prev_action AS prevts')
+                ->where('torrent = ?', $tid)
+                ->fetchAll();
+
+            $this->cache->set('torrent_peers_' . $tid, $peers, 60);
+        }
+
+        return $peers;
+    }
+
+    /**
+     * @param int    $tid
+     * @param string $torrent_pass
+     *
+     * @return mixed
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function get_torrent_count(int $tid, string $torrent_pass)
+    {
+        $count = $this->fluent->from('peers')
+            ->select(null)
+            ->select('COUNT(*) AS count')
+            ->where('torrent = ?', $tid)
+            ->where('torrent_pass = ?', $torrent_pass)
+            ->fetch('count');
+
+        return $count;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return bool
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function delete(int $id)
+    {
+        $count = $this->fluent->deleteFrom('peers')
+            ->where('id = ?', $id)
+            ->execute();
+
+        return $count;
+    }
+
+    /**
+     * @param array $set
+     * @param int   $id
+     *
+     * @return bool|int|\PDOStatement
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function update(array $set, int $id)
+    {
+        $result = $this->fluent->update('peers')
+            ->set($set)
+            ->where('id = ?', $id)
+            ->execute();
+
+        return $result;
+    }
+
+    /**
+     * @param array $values
+     * @param array $update
+     *
+     * @return bool|mixed
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function insert_update(array $values, array $update)
+    {
+        $ip = $values['ip'];
+        $id = $this->fluent->from('peers')
+            ->select(null)
+            ->select('id')
+            ->where('torrent = ?', $values['torrent'])
+            ->where('peer_id = ?', $values['peer_id'])
+            ->where('port = ?', $values['port'])
+            ->where('INET6_NTOA(ip) = ?', $ip)
+            ->fetch('id');
+
+        if (empty($id)) {
+            $values['ip'] = inet_pton($ip);
+            $this->insert($values, $values['userid']);
+        } else {
+            $this->update($update, $id);
+
+            return $id;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array $values
+     * @param int   $userid
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function insert(array $values, int $userid)
+    {
+        $this->fluent->insertInto('peers')
+            ->values($values)
+            ->execute();
     }
 }

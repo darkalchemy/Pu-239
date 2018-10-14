@@ -2,7 +2,9 @@
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'password_functions.php';
+require_once INCL_DIR . 'function_recaptcha.php';
 dbconn();
 global $CURUSER, $site_config, $cache, $session;
 
@@ -11,7 +13,16 @@ if (!$CURUSER) {
 }
 $lang = array_merge(load_language('global'), load_language('passhint'));
 $HTMLOUT = '';
-global $CURUSER;
+
+$stdfoot = '';
+if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
+    $stdfoot = [
+        'js' => [
+            get_file_name('recaptcha_js'),
+        ],
+    ];
+}
+
 if ($CURUSER) {
     stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error1']}");
 }
@@ -22,32 +33,14 @@ if ($step == '1') {
             stderr('Oops', 'Missing form data - You must fill all fields');
         }
         if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
-            $response = !empty($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
-            if ($response === '') {
-                stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error2']}");
+            $response = !empty($_POST['token']) ? $_POST['token'] : '';
+            $result = verify_recaptcha($response);
+            if ($result !== 'valid') {
+                $session->set('is-warning', "[h2]reCAPTCHA failed. {$result}[/h2]");
+                header("Location: {$site_config['baseurl']}/resetpw.php");
                 die();
             }
-            $ip = getip();
-            $url = 'https://www.google.com/recaptcha/api/siteverify';
-            $params = [
-                'secret' => $_ENV['RECAPTCHA_SECRET_KEY'],
-                'response' => $response,
-                'remoteip' => $ip,
-            ];
-            $query = http_build_query($params);
-            $contextData = [
-                'method' => 'POST',
-                'header' => "Content-Type: application/x-www-form-urlencoded\r\n" . "Connection: close\r\n" . 'Content-Length: ' . strlen($query) . "\r\n",
-                'content' => $query,
-            ];
-            $context = stream_context_create(['http' => $contextData]);
-            $result = file_get_contents($url, false, $context);
-            $responseKeys = json_decode($result, true);
-            if (intval($responseKeys['success']) !== 1) {
-                stderr('Error', 'reCAPTCHA Failed');
-            }
         }
-
         if (empty($email)) {
             stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_invalidemail']}");
         }
@@ -63,9 +56,9 @@ if ($step == '1') {
             stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error4']}");
         } else {
             $HTMLOUT .= "
-            <div class='half-container has-text-centered portlet'>
                 <form method='post' action='" . $_SERVER['PHP_SELF'] . "?step=2'>
-                    <table class='table table-bordered top20 bottom20'>
+                    <div class='level-center'>";
+            $body = "
                         <tr class='no_hover'>
                             <td class='rowhead'>{$lang['main_question']}</td>";
             $id[1] = '/1/';
@@ -81,7 +74,7 @@ if ($step == '1') {
             $question[5] = "{$lang['main_question5']}";
             $question[6] = "{$lang['main_question6']}";
             $passhint = preg_replace($id, $question, (int) $assoc['passhint']);
-            $HTMLOUT .= "
+            $body .= "
                             <td><i><b>{$passhint}?</b></i><input type='hidden' name='id' value='" . (int) $assoc['id'] . "' class='w-100' /></td>
                         </tr>
                         <tr class='no_hover'>
@@ -94,10 +87,9 @@ if ($step == '1') {
                                     <input type='submit' value='{$lang['main_next']}' class='button is-small' />
                                 </div>
                             </td>
-                        </tr>
-                    </table>
-                </form>
-            </div>";
+                        </tr>";
+            $HTMLOUT .= main_table($body, '', '', 'w-50', '') . '
+                </form>';
             echo stdhead('Reset Lost Password') . $HTMLOUT . stdfoot();
         }
     }
@@ -123,9 +115,9 @@ if ($step == '1') {
     } else {
         $sechash = $fetch['hintanswer'];
         $HTMLOUT .= "
-        <div class='half-container has-text-centered portlet'>
             <form method='post' action='?step=3'>
-                <table class='table table-bordered top20 bottom20'>
+                <div class='level-center'>";
+        $HTMLOUT .= main_table("
                     <tr class='no_hover'>
                         <td class='rowhead'>{$lang['main_new_pass']}</td>
                         <td><input type='password' class='w-100' name='newpass' /></td>
@@ -141,10 +133,8 @@ if ($step == '1') {
                                 <input type='hidden' name='hash' value='" . $sechash . "' />
                             </div>
                         </td>
-                    </tr>
-                </table>
-            </form>
-        </div>";
+                    </tr>", '', '', 'w-50', '') . '
+            </form>';
 
         echo stdhead('Reset Lost Password') . $HTMLOUT . stdfoot();
     }
@@ -181,34 +171,28 @@ if ($step == '1') {
     }
 } else {
     $HTMLOUT .= "
-    <div class='half-container has-text-centered portlet'>
         <form method='post' action='" . $_SERVER['PHP_SELF'] . "?step=1'>
-            <table class='table table-bordered top20 bottom20'>
+            <div class='level-center'>";
+    $HTMLOUT .= main_table("
                 <tr class='no_hover'>
-                    <td colspan='2'><p>{$lang['main_body']}</p><br></td>
+                    <td class='has-text-centered' colspan='2'>
+                        <p>{$lang['main_body']}</p>
+                    </td>
                 </tr>
                 <tr class='no_hover'>
                     <td class='rowhead'>{$lang['main_email_add']}</td>
-                    <td><input type='text' class='w-100' name='email' /></td>
-                </tr>";
-    if (!empty($_ENV['RECAPTCHA_SITE_KEY'])) {
-        $HTMLOUT .= "
-                    <tr>
-                        <td colspan='2'>
-                            <div class='g-recaptcha level-center' data-theme='dark' data-sitekey='{$_ENV['RECAPTCHA_SITE_KEY']}'></div>
-                        </td>
-                    </tr>";
-    }
-    $HTMLOUT .= "
+                    <td>
+                        <input type='text' class='w-100' name='email' />
+                        <input type='hidden' id='token' name='token' value='' />
+                    </td>
+                </tr>
                 <tr class='no_hover'>
                     <td colspan='2'>
                         <div class='has-text-centered'>
-                            <input type='submit' value='{$lang['main_recover']}' class='button is-small' />
+                            <input id='recover_captcha_check' type='submit' value='" . (!empty($_ENV['RECAPTCHA_SITE_KEY']) ? 'Verifying reCAPTCHA' : 'Recover') . "' class='button is-small'" . (!empty($_ENV['RECAPTCHA_SITE_KEY']) ? ' disabled' : '') . '/>
                         </div>
                     </td>
-                </tr>
-            </table>
-        </form>
-    </div>";
-    echo stdhead('Reset Lost Password') . $HTMLOUT . stdfoot();
+                </tr>', '', '', 'w-50', '') . '
+        </form>';
+    echo stdhead('Reset Lost Password') . wrapper($HTMLOUT) . stdfoot($stdfoot);
 }

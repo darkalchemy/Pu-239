@@ -2,9 +2,8 @@
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'function_memcache.php';
 require_once INCL_DIR . 'html_functions.php';
-global $CURUSER, $site_config, $cache, $session;
+global $CURUSER, $site_config, $cache, $session, $torrent_stuffs;
 
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('takeedit'), load_language('details'));
@@ -13,7 +12,6 @@ $possible_extensions = [
     'nfo',
     'txt',
 ];
-//dd($_POST);
 if (!mkglobal('id:name:body:type')) {
     $session->set('is-warning', 'Id, descr, name or type is missing');
     header("Location: {$_SERVER['HTTP_REFERER']}");
@@ -41,7 +39,6 @@ function valid_torrent_name($torrent_name)
 $nfoaction = '';
 $select_torrent = sql_query('SELECT name, descr, category, visible, vip, release_group, poster, url, newgenre, description, anonymous, sticky, owner, allow_comments, nuked, nukereason, filename, save_as, youtube, tags, info_hash, freetorrent FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $fetch_assoc = mysqli_fetch_assoc($select_torrent) or stderr('Error', 'No torrent with this ID!');
-//dd($fetch_assoc);
 $infohash = $fetch_assoc['info_hash'];
 if ($CURUSER['id'] != $fetch_assoc['owner'] && $CURUSER['class'] < UC_STAFF) {
     $session->set('is-danger', "You're not the owner of this torrent.");
@@ -313,13 +310,14 @@ if ($genreaction != 'keep') {
         $genre = implode(',', $_POST['game']);
     } elseif (isset($_POST['apps'])) {
         $genre = implode(',', $_POST['apps']);
+    } elseif (isset($_POST['none'])) {
+        $genre = '';
     }
     $updateset[] = 'newgenre = ' . sqlesc($genre);
     $torrent_cache['newgenre'] = $genre;
 }
 if (count($updateset) > 0) {
     $sql = 'UPDATE torrents SET ' . implode(', ', $updateset) . ' WHERE id = ' . sqlesc($id);
-    //dd($sql);
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
 }
 if ($torrent_cache) {
@@ -335,7 +333,7 @@ if ($torrent_cache) {
 if ($torrent_txt_cache) {
     $cache->update_row('torrent_details_txt_' . $id, $torrent_txt_cache, $site_config['expires']['torrent_details_text']);
 }
-remove_torrent($infohash);
+$torrent_stuffs->remove_torrent($infohash);
 write_log('torrent edited - ' . htmlsafechars($name) . ' was edited by ' . (($fetch_assoc['anonymous'] == 'yes') ? 'Anonymous' : htmlsafechars($CURUSER['username'])) . '');
 $cache->delete('editedby_' . $id);
 

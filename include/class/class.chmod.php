@@ -55,7 +55,7 @@ class Chmod
             $mode += 2;
         }
         if ($execute) {
-            $mode += 1;
+            ++$mode;
         }
 
         return $mode;

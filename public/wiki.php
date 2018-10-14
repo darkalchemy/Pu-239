@@ -10,6 +10,17 @@ $lang = array_merge(load_language('global'), load_language('wiki'));
 $HTMLOUT = '';
 global $CURUSER, $fluent, $user_stuffs, $session;
 
+$stdhead = [
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
+];
+$stdfoot = [
+    'js' => [
+        get_file_name('sceditor_js'),
+    ],
+];
+
 /**
  * @return string
  */
@@ -228,4 +239,4 @@ if ($action === 'sort') {
 }
 $HTMLOUT .= '</div>';
 
-echo stdhead($lang['wiki_title']) . wrapper(main_div($HTMLOUT)) . stdfoot();
+echo stdhead($lang['wiki_title'], $stdhead) . wrapper(main_div($HTMLOUT)) . stdfoot($stdfoot);

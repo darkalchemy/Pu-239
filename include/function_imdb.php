@@ -70,11 +70,17 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
             $imdb_data['newgenre'] = implode(', ', array_map('ucwords', $temp));
         }
 
-        $set = [
+        $set = [];
+        if (!empty($imdb_data['newgenre'])) {
+            $set = [
+                'newgenre' => $imdb_data['newgenre'],
+            ];
+        }
+        $set = array_merge($set, [
             'year' => $imdb_data['year'],
             'rating' => $imdb_data['rating'],
-            'newgenre' => $imdb_data['newgenre'],
-        ];
+        ]);
+
         if ($tid) {
             $torrent_stuffs->set($set, $tid);
         }
@@ -261,7 +267,7 @@ function get_imdb_info_short($imdb_id)
         $imdb_data['poster'] = $poster;
     }
     if (empty($imdb_data['poster'])) {
-        $tmid = get_movie_id($imdbid, 'tmdb_id');
+        $tmdbid = get_movie_id($imdbid, 'tmdb_id');
         if (!empty($tmdbid)) {
             $poster = getMovieImagesByID($tmdbid, 'movieposter');
             $imdb_data['poster'] = $poster;
@@ -279,12 +285,17 @@ function get_imdb_info_short($imdb_id)
             $imdb_data['poster'] = $image;
             $imdb_data['placeholder'] = url_proxy($imdb_data['poster'], true, 150, null, 10);
         }
-        $values = [
-            'tmdb_id' => $tmdb_id,
+        $values = [];
+        if (!empty($tmdbid)) {
+            $values = [
+                'tmdb_id' => $tmdbid,
+            ];
+        }
+        $values = array_merge($values, [
             'imdb_id' => $imdbid,
             'url' => $poster,
             'type' => 'poster',
-        ];
+        ]);
         $image_stuffs->insert($values);
     }
     if (empty($imdb_data['poster'])) {
@@ -407,6 +418,12 @@ function get_upcoming()
     }
 
     if (!empty($imdbs)) {
+        foreach ($imdbs as $day) {
+            foreach ($day as $imdb) {
+                get_imdb_info($imdb);
+            }
+        }
+
         return $imdbs;
     }
 

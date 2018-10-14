@@ -33,8 +33,7 @@ function stdhead($title = '', $stdhead = null)
     $css_incl = '';
     if (!empty($stdhead['css'])) {
         foreach ($stdhead['css'] as $CSS) {
-            $css_incl .= "
-    <link rel='stylesheet' href='{$CSS}' />";
+            $css_incl .= "<link rel='stylesheet' href='{$CSS}'>";
         }
     }
 
@@ -46,17 +45,23 @@ function stdhead($title = '', $stdhead = null)
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta property='og:url' content='{$site_config['baseurl']}'>
+    <meta property='og:type' content='website'>
+    <meta property='og:title' content='{$title}'>
+    <meta property='og:description' content='{$site_config['domain']} - {$site_config['site_name']}'>
 
     <title>{$title}</title>
-    <link rel='alternate' type='application/rss+xml' title='Latest Torrents' href='{$site_config['baseurl']}/rss.php?torrent_pass={$CURUSER['torrent_pass']}' />
-    <link rel='apple-touch-icon' sizes='180x180' href='{$site_config['baseurl']}/apple-touch-icon.png' />
-    <link rel='icon' type='image/png' sizes='32x32' href='{$site_config['baseurl']}/favicon-32x32.png' />
-    <link rel='icon' type='image/png' sizes='16x16' href='{$site_config['baseurl']}/favicon-16x16.png' />
-    <link rel='manifest' href='{$site_config['baseurl']}/manifest.json' />
-    <link rel='mask-icon' href='{$site_config['baseurl']}/safari-pinned-tab.svg' color='#5bbad5' />
+    <link rel='alternate' type='application/rss+xml' title='Latest Torrents' href='{$site_config['baseurl']}/rss.php?torrent_pass={$CURUSER['torrent_pass']}'>
+    <link rel='apple-touch-icon' sizes='180x180' href='{$site_config['baseurl']}/apple-touch-icon.png'>
+    <link rel='icon' type='image/png' sizes='32x32' href='{$site_config['baseurl']}/favicon-32x32.png'>
+    <link rel='icon' type='image/png' sizes='16x16' href='{$site_config['baseurl']}/favicon-16x16.png'>
+    <link rel='manifest' href='{$site_config['baseurl']}/manifest.json'>
+    <link rel='mask-icon' href='{$site_config['baseurl']}/safari-pinned-tab.svg' color='#5bbad5'>
     <meta name='theme-color' content='#fff'>
-    <link rel='stylesheet' href='" . get_file_name('css') . "' />
-    {$css_incl}";
+    <link rel='stylesheet' href='" . get_file_name('vendor_css') . "'>
+    <link rel='stylesheet' href='" . get_file_name('css') . "'>
+    {$css_incl}
+    <link rel='stylesheet' href='" . get_file_name('main_css') . "'>";
 
     if ($CURUSER) {
         $htmlout .= "
@@ -79,10 +84,15 @@ function stdhead($title = '', $stdhead = null)
         'resetpw.php',
         'recover.php',
     ];
+    $action = in_array(basename($_SERVER['PHP_SELF']), $captcha) ? 'login' : 'homepage';
     if (in_array(basename($_SERVER['PHP_SELF']), $captcha) && !empty($_ENV['RECAPTCHA_SITE_KEY'])) {
         $htmlout .= "
-        <script src='//www.google.com/recaptcha/api.js'></script>";
+        <script>
+            var key = '{$_ENV['RECAPTCHA_SITE_KEY']}';
+        </script>
+        <script src='https://www.google.com/recaptcha/api.js?render={$_ENV['RECAPTCHA_SITE_KEY']}'></script>";
     }
+
     $htmlout .= "
 </head>
 <body class='{$body_class}'>
@@ -106,7 +116,7 @@ function stdhead($title = '', $stdhead = null)
                     </div>";
             } else {
                 $banner = "
-                    <img src='" . $site_config['pic_baseurl'] . '/' . $site_config['banners'][array_rand($site_config['banners'])] . "' class='w-100' />";
+                    <img src='" . $site_config['pic_baseurl'] . '/' . $site_config['banners'][array_rand($site_config['banners'])] . "' class='w-100'>";
             }
             $htmlout .= "
             <div id='logo' class='logo columns level is-marginless'>
@@ -122,7 +132,7 @@ function stdhead($title = '', $stdhead = null)
                     <video class='object-fit-video' loop muted autoplay playsinline poster='{$site_config['pic_baseurl']}banner.png'>
                         <source src='{$site_config['pic_baseurl']}{$banner}.mp4' type='video/mp4'>
                         <source src='{$site_config['pic_baseurl']}{$banner}.webm' type='video/webm'>
-                        <img src='{$site_config['pic_baseurl']}banner.png' title='Your browser does not support the <video> tag' alt='Logo' />
+                        <img src='{$site_config['pic_baseurl']}banner.png' title='Your browser does not support the <video> tag' alt='Logo'>
                     </video>
                 </div>
             </div>";
@@ -176,27 +186,14 @@ function stdhead($title = '', $stdhead = null)
         <div id='base_content' class='bg-05'>
             <div class='inner-wrapper bg-04'>";
 
-    $index_array = [
-        '/',
-        '/index.php',
-        '/login.php',
-    ];
-
-    if ($CURUSER && !in_array($_SERVER['REQUEST_URI'], $index_array)) {
-        $htmlout .= "
-                <div class='container is-fluid portlet padding20 bg-00 round10'>
-                    <nav class='breadcrumb' aria-label='breadcrumbs'>
-                        <ul>
-                            " . breadcrumbs() . '
-                        </ul>
-                    </nav>
-                </div>';
+    if ($CURUSER) {
+        $htmlout .= breadcrumbs();
     }
 
     foreach ($site_config['notifications'] as $notif) {
         if (($messages = $session->get($notif)) != false) {
             foreach ($messages as $message) {
-                if ($CURUSER && $BLOCKS['global_flash_messages_on']) {
+                if ($BLOCKS['global_flash_messages_on']) {
                     $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>" . format_comment($message['message']) . '</a>';
                     $htmlout .= "
                 <div class='notification $notif has-text-centered size_6'>
@@ -273,7 +270,7 @@ function stdfoot($stdfoot = false)
                 <div class='container is-fluid portlet'>
                     <a id='queries-hash'></a>
                     <fieldset id='queries' class='header'>
-                        <legend class='flipper has-text-primary'><i class='icon-down-open size_3' aria-hidden='true'></i>{$lang['gl_stdfoot_querys']}</legend>
+                        <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['gl_stdfoot_querys']}</legend>
                         <div class='has-text-centered'>
                             <table class='table table-bordered table-striped bottom10'>
                                 <thead>
@@ -289,7 +286,7 @@ function stdfoot($stdfoot = false)
                 $htmlfoot .= '
                                     <tr>
                                         <td>' . ($key + 1) . '</td>
-                                        <td>' . ($value['seconds'] > 0.01 ? "<span class='has-text-red' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='has-text-green' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
+                                        <td>' . ($value['seconds'] > 0.01 ? "<span class='tooltipper has-text-red' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='tooltipper has-text-green' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
                                         <td>
                                             <div class='text-justify'>" . format_comment($value['query']) . '</div>
                                         </td>
@@ -342,8 +339,8 @@ function stdfoot($stdfoot = false)
     $bg_image = '';
     if ($CURUSER && ($site_config['backgrounds_on_all_pages'] || $details)) {
         $background = get_body_image($details);
-        if (!empty($background['background'])) {
-            $bg_image = "var body_image = '" . url_proxy($background['background'], true) . "'";
+        if (!empty($background)) {
+            $bg_image = "var body_image = '" . url_proxy($background, true) . "'";
         }
     }
     $htmlfoot .= "
@@ -357,7 +354,12 @@ function stdfoot($stdfoot = false)
     </script>";
 
     $htmlfoot .= "
-    <script src='" . get_file_name('js') . "'></script>";
+    <script src='" . get_file_name('jquery_js') . "'></script>
+    <script src='" . get_file_name('theme_js') . "'></script>
+    <script src='" . get_file_name('lightbox_js') . "'></script>
+    <script src='" . get_file_name('tooltipster_js') . "'></script>
+    <script src='" . get_file_name('vendor_js') . "'></script>
+    <script src='" . get_file_name('main_js') . "'></script>";
 
     if (!empty($stdfoot['js'])) {
         foreach ($stdfoot['js'] as $JS) {
@@ -408,29 +410,71 @@ function StatusBar()
         return '';
     }
     $StatusBar = $clock = '';
+    $color = get_user_class_name($CURUSER['class'], true);
     $StatusBar .= "
                     <div id='base_usermenu' class='tooltipper-ajax right10 level-item' data-csrf='" . $session->get('csrf_token') . "'>
-                        <span id='clock' class='has-text-white right10'>{$clock}</span>
-                        " . format_username($CURUSER['id'], true, false) . '
-                    </div>';
+                        <span id='clock' class='right10 {$color}'>{$clock}</span>
+                        " . format_username($CURUSER['id'], true, false) . "<i class='icon-down-open size_2 {$color}'></i>
+                    </div>";
 
     return $StatusBar;
 }
 
 /**
  * @return string
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function platform_menu()
 {
-    global $site_config;
+    global $site_config, $fluent, $CURUSER, $cache;
+
+    $templates = $cache->get('templates_');
+    if ($templates === false || is_null($templates)) {
+        $templates = $fluent->from('stylesheets')
+            ->orderBy('id')
+            ->fetchAll();
+
+        $cache->set('templates_', $templates, 0);
+    }
+
+    $styles = '';
+    if (!empty($templates) && count($templates) > 1) {
+        $color = get_user_class_name($CURUSER['class'], true);
+        $styles .= "
+            <span class='dt-tooltipper-links' data-tooltip-content='#styles_tooltip'>
+                <span class='{$color} right10'>themes<i class='icon-down-open size_2'></i></span>
+            </span>
+            <div class='tooltip_templates'>
+                <div id='styles_tooltip' class='has-text-left margin10'>
+                    <ul>";
+
+        foreach ($templates as $ar) {
+            if ($ar['id'] === $CURUSER['stylesheet']) {
+                $styles .= "
+                        <li class='margin10'>
+                            <span class='has-text-primary'>{$ar['name']}</span>
+                        </li>";
+            } else {
+                $styles .= "
+                        <li class='margin10'>
+                            <a href='{$site_config['baseurl']}/take_theme.php?id={$ar['id']}'>{$ar['name']}</a>
+                        </li>";
+            }
+        }
+        $styles .= '
+                    </ul>
+                </div>
+            </div>';
+    }
 
     $menu = "
         <div id='platform-menu' class='container platform-menu'>
             <div class='platform-wrapper level'>
-                <ul class='level-left'>" . (!$site_config['in_production'] ? "
-                    <li class='left10 has-text-primary'>Pu-239 v{$site_config['version']}</li>" : '') . "
+                <ul class='level-left size_3'>" . (!$site_config['in_production'] ? "
+                    <li class='left10 has-text-primary has-text-white'>Pu-239 v{$site_config['version']}</li>" : '') . "
                 </ul>
-                <ul class='level-right'>" . StatusBar() . '
+                <ul class='level-right size_3'>{$styles}" . StatusBar() . '
                 </ul>
             </div>
         </div>';

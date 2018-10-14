@@ -292,33 +292,6 @@ function get_schedule($use_cache = true)
 }
 
 /**
- * @param $schedule
- * @param $date
- *
- * @return bool
- */
-function insert_images_from_schedule($schedule, $date)
-{
-    global $cache, $BLOCKS;
-
-    if (!$BLOCKS['tvmaze_api_on']) {
-        return false;
-    }
-
-    foreach ($schedule as $listing) {
-        $poster = !empty($listing['image']['medium']) ? $listing['image']['medium'] : !empty($listing['_embedded']['show']['image']['medium']) ? $listing['_embedded']['show']['image']['medium'] : '';
-        if ($listing['airdate'] === $date && $listing['_embedded']['show']['language'] === 'English' && !empty($poster)) {
-            $insert = $cache->get('insert_tvmaze_tvmazeid_' . $listing['id']);
-            if ($insert === false || is_null($insert)) {
-                $sql = "INSERT IGNORE INTO images (tvmaze_id, url, type) VALUES ({$listing['id']}, '$poster', 'poster')";
-                sql_query($sql) or sqlerr(__FILE__, __LINE__);
-                $cache->set('insert_tvmaze_tvmazeid_' . $listing['id'], 0, 604800);
-            }
-        }
-    }
-}
-
-/**
  * @param $heading
  * @param $body
  *

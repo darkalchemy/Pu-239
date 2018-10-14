@@ -2,10 +2,9 @@
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-require_once INCL_DIR . 'function_memcache.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session, $fluent, $torrent_stuffs;
+global $CURUSER, $site_config, $cache, $session, $fluent, $torrent_stuffs, $message_stuffs;
 
 $lang = array_merge(load_language('global'), load_language('delete'));
 if (!mkglobal('id')) {
@@ -15,7 +14,7 @@ $id = (int) $id;
 if (!is_valid_id($id)) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_missing_data']}");
 }
-
+$dt = TIME_NOW;
 $row = $fluent->from('torrents AS t')
     ->select(null)
     ->select('t.id')
@@ -59,11 +58,11 @@ if ($rt == 1) {
 }
 
 $torrent_stuffs->delete_by_id($row['id']);
-remove_torrent($row['info_hash']);
+$torrent_stuffs->remove_torrent($row['info_hash']);
 
 write_log("{$lang['delete_torrent']} $id ({$row['name']}){$lang['delete_deleted_by']}{$CURUSER['username']} ($reasonstr)\n");
 if ($site_config['seedbonus_on'] == 1) {
-    $dt = sqlesc(TIME_NOW - (14 * 86400));
+    $dt = sqlesc($dt - (14 * 86400));
     if ($row['added'] > $dt) {
         sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus_per_delete']) . ' WHERE id = ' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);
         $update['seedbonus'] = ($row['seedbonus'] - $site_config['bonus_per_delete']);
@@ -72,16 +71,20 @@ if ($site_config['seedbonus_on'] == 1) {
         ], $site_config['expires']['user_cache']);
     }
 }
-$message = "Torrent $id (" . htmlsafechars($row['name']) . ") has been deleted.\n  Reason: $reasonstr";
+$msg = "Torrent $id (" . htmlsafechars($row['name']) . ") has been deleted.\n  Reason: $reasonstr";
 if ($CURUSER['id'] != $row['owner'] && ($CURUSER['opt2'] & user_options_2::PM_ON_DELETE) === user_options_2::PM_ON_DELETE) {
-    $added = TIME_NOW;
-    $pm_on = (int) $row['owner'];
     $subject = 'Torrent Deleted';
-    sql_query('INSERT INTO messages (subject, sender, receiver, msg, added) VALUES(' . sqlesc($subject) . ', 0, ' . sqlesc($pm_on) . ',' . sqlesc($message) . ", $added)") or sqlerr(__FILE__, __LINE__);
-    $cache->increment('inbox_' . $pm_on);
+    $msgs_buffer[] = [
+        'sender' => 0,
+        'receiver' => $row['owner'],
+        'added' => $dt,
+        'msg' => $msg,
+        'subject' => $subject,
+    ];
+    $message_stuffs->insert($msgs_buffer);
 }
 
-$session->set('is-success', $message);
+$session->set('is-success', $msg);
 if (!empty($_POST['returnto'])) {
     header('Location: ' . htmlsafechars($_POST['returnto']));
 } else {

@@ -6,7 +6,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'emoticons.php';
 check_user_status();
-global $CURUSER, $site_config, $fluent, $cache, $session, $smilies;
+global $CURUSER, $site_config, $fluent, $cache, $session, $smilies, $message_stuffs;
 
 $lang = array_merge(load_language('global'), load_language('mybonus'));
 if ($site_config['seedbonus_on'] == 0) {
@@ -637,38 +637,32 @@ if (isset($_GET['exchange'])) {
                     'reputation' => $new_rep,
                 ];
                 update_users_stats($ar['id'], $set);
-                $values = [
+                $msgs_buffer[] = [
                     'sender' => $site_config['chatBotID'],
                     'receiver' => $ar['id'],
                     'added' => TIME_NOW,
                     'subject' => sprintf($pm['subject'], $thief_name),
                     'msg' => sprintf($pm['message'], $thief_id, $thief_name, $new_rep),
                 ];
-                $fluent->insertInto('messages')
-                    ->values($values)
-                    ->execute();
-                $cache->increment('inbox_' . $arr['id']);
             }
             if (isset($robbed_users)) {
                 $new_bonus = $thief_bonus - $points;
                 $new_rep = $thief_rep + ($user_limit * $rep_to_steal);
-                $values = [
+                $msgs_buffer[] = [
                     'sender' => $site_config['chatBotID'],
                     'receiver' => $thief_id,
                     'added' => TIME_NOW,
                     'subject' => $pm['subject_thief'],
                     'msg' => sprintf($pm['message_thief'], $thief_name, implode("\n", $robbed_users), $new_rep, $points),
                 ];
-                $fluent->insertInto('messages')
-                    ->values($values)
-                    ->execute();
-                $cache->increment('inbox_' . $thief_id);
-
                 $set = [
                     'reputation' => $new_rep,
                     'seedbonus' => $new_bonus,
                 ];
                 update_users_stats($thief_id, $set);
+            }
+            if (!empty($msgs_buffer)) {
+                $message_stuffs->insert($msgs_buffer);
             }
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?bounty_success=1");
             die();
@@ -997,18 +991,23 @@ if (isset($_GET['exchange'])) {
             sql_query('UPDATE users
                         SET warned = 0, seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . ', modcomment = ' . sqlesc($modcom) . '
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-            $dt = sqlesc(TIME_NOW);
-            $subject = sqlesc('Warning removed by Karma.');
-            $msg = sqlesc("Your warning has been removed by the big Karma payoff... Please keep on your best behaviour from now on.\n");
-            sql_query('INSERT INTO messages (sender, receiver, added, msg, subject)
-                        VALUES (0, ' . sqlesc($userid) . ", $dt, $msg, $subject)") or sqlerr(__FILE__, __LINE__);
+            $dt = TIME_NOW;
+            $subject = 'Warning removed by Karma.';
+            $msg = "Your warning has been removed by the big Karma payoff... Please keep on your best behaviour from now on.\n";
+            $msgs_buffer[] = [
+                'sender' => 0,
+                'receiver' => $userid,
+                'added' => $dt,
+                'msg' => $msg,
+                'subject' => $subject,
+            ];
+            $message_stuffs->insert($msgs_buffer);
             $cache->update_row('user' . $userid, [
                 'warned' => 0,
                 'seedbonus' => $seedbonus,
                 'bonuscomment' => $bonuscomment,
                 'modcomment' => $modcomment,
             ], $site_config['expires']['user_cache']);
-            $cache->increment('inbox_' . $userid);
             header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?warning_success=1");
             die();
             break;
@@ -1128,12 +1127,17 @@ if (isset($_GET['exchange'])) {
                     'bonuscomment' => $bonuscomment_gift,
                 ], $site_config['expires']['user_cache']);
                 //===send message
-                $subject = sqlesc('Someone Loves you');
-                $added = sqlesc(TIME_NOW);
-                $msg = sqlesc("You have been given a gift of $points Karma points by " . $CURUSER['username']);
-                sql_query("INSERT INTO messages (sender, subject, receiver, msg, added)
-                            VALUES (0, $subject, $useridgift, $msg, $added)") or sqlerr(__FILE__, __LINE__);
-                $cache->increment('inbox_' . $useridgift);
+                $subject = 'Someone Loves you';
+                $dt = TIME_NOW;
+                $msg = "You have been given a gift of $points Karma points by " . $CURUSER['username'];
+                $msgs_buffer[] = [
+                    'sender' => 0,
+                    'receiver' => $useridgift,
+                    'added' => $dt,
+                    'msg' => $msg,
+                    'subject' => $subject,
+                ];
+                $message_stuffs->insert($msgs_buffer);
                 header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?gift_success=1&gift_amount_points=$points&usernamegift=$usernamegift&gift_id=$useridgift");
                 die();
             } else {

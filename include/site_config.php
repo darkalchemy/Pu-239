@@ -132,8 +132,8 @@ $site_config['chatBotID'] = 2;
 $site_config['chatBotRole'] = 100;
 $site_config['staffpanel_online'] = 1;
 $site_config['irc_autoshout_on'] = 1;
-$site_config['crazy_hour'] = false; // Off for XBT
-$site_config['happy_hour'] = false; // Off for XBT
+$site_config['crazy_hour'] = true;
+$site_config['happy_hour'] = true;
 $site_config['mods']['slots'] = true;
 $site_config['votesrequired'] = 15;
 $site_config['catsperrow'] = 7;
@@ -153,15 +153,11 @@ $site_config['inviteusers'] = 10000;
 $site_config['flood_time'] = 900; //comment/forum/pm flood limit
 $site_config['readpost_expiry'] = 14 * 86400; // 14 days
 
-$site_config['backup_dir'] = INCL_DIR . 'backup';
-$site_config['dictbreaker'] = ROOT_DIR . 'dictbreaker';
-$site_config['torrent_dir'] = ROOT_DIR . 'torrents'; // must be writable for httpd user
 $site_config['sub_up_dir'] = ROOT_DIR . 'uploadsub'; // must be writable for httpd user
 $site_config['flood_file'] = INCL_DIR . 'settings' . DIRECTORY_SEPARATOR . 'limitfile.txt';
 $site_config['nameblacklist'] = CACHE_DIR . 'nameblacklist.txt';
-$site_config['happyhour'] = CACHE_DIR . 'happyhour' . DIRECTORY_SEPARATOR . 'happyhour.txt';
+$site_config['happyhour'] = CACHE_DIR . 'happyhour.cache';
 $site_config['sql_error_log'] = SQLERROR_LOGS_DIR . 'sql_err_' . date('Y_m_d', TIME_NOW) . '.log';
-$site_config['php_error_log'] = LOGS_DIR . 'err_' . date('Y_m_d', TIME_NOW) . '.log';
 
 if (empty($_SERVER['HTTP_HOST'])) {
     $_SERVER['HTTP_HOST'] = !empty($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $site_config['domain'];
@@ -307,3 +303,4 @@ $site_config['notifications'] = [
 
 $site_config['video_banners'] = [];
 $site_config['banners'] = [];
+$site_config['query_limit'] = 65536; // mysql placeholder limit

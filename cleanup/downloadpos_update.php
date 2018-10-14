@@ -7,7 +7,7 @@
  */
 function downloadpos_update($data)
 {
-    global $site_config, $cache, $fluent;
+    global $site_config, $cache, $fluent, $message_stuffs;
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -45,15 +45,12 @@ function downloadpos_update($data)
             ->execute();
 
         $cache->update_row('user' . $arr['id'], $set, $site_config['expires']['user_cache']);
-        $cache->increment('inbox_' . $arr['id']);
     }
 
     $count = count($values);
     if ($count > 0) {
         ++$i;
-        $fluent->insertInto('messages')
-            ->values($values)
-            ->execute();
+        $message_stuffs->insert($values);
     }
     if ($data['clean_log'] && $i > 0) {
         write_log('Cleanup - Removed Download ban from ' . $count . ' members');

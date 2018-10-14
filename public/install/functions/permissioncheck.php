@@ -19,7 +19,7 @@ function checkdir(&$dirs)
 
 function permissioncheck()
 {
-    global $root, $public;
+    global $root;
     $dirs = [
         //$root => 0,
         $root . 'dir_list/' => 0,
@@ -28,10 +28,6 @@ function permissioncheck()
         $root . 'uploads/' => 0,
         $root . 'include/backup/' => 0,
         $root . 'sqlerr_logs/' => 0,
-        $public . 'install/' => 0,
-        $public . 'install/extra/' => 0,
-        $public . 'images/proxy/' => 0,
-        $root . 'logs/' => 0,
         $root . 'chat/css/' => 0,
         $root . 'chat/js/' => 0,
         $root . 'templates/1/css/' => 0,
@@ -47,13 +43,13 @@ function permissioncheck()
         $out .= '<div class="' . ($state ? 'readable' : 'notreadable') . '">' . $dir . '</div>';
     }
     if (!$continue) {
-        $out .= '<div class="info" style="text-align:center;">It looks like you need to chmod some directories!<br>all directories marked in red should be chmoded 0777<br><br><input type="button" value="Reload" onclick="window.location.reload()" /></div>';
+        $out .= '<div class="info" style="text-align:center;">It looks like you need to chmod some directories!<br>all directories marked in red should be chmoded 0777<br><br><input type="button" value="Reload" onclick="window.location.reload()"></div>';
     }
     $out .= '</fieldset>';
     if ($continue) {
         $out .= '
                 <div style="text-align:center;">
-                    <input type="button" onclick="onClick(2)" value="Next step" />
+                    <input type="button" onclick="onClick(2)" value="Next step">
                 </div>';
     }
     $out .= '

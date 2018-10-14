@@ -26,8 +26,6 @@ $box = isset($_POST['box']) ? (int) $_POST['box'] : 1;
 $sort = (isset($_GET['sort']) ? htmlsafechars($_GET['sort']) : (isset($_POST['sort']) ? htmlsafechars($_POST['sort']) : 'relevance'));
 if (!in_array($sort, $possible_sort)) {
     stderr($lang['pm_error'], $lang['pm_error_ruffian']);
-} else {
-    $sort = htmlsafechars($_POST['sort']);
 }
 
 if ($member) {

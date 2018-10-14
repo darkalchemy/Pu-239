@@ -6,16 +6,27 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'comment_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session;
+global $CURUSER, $site_config, $cache, $session, $message_stuffs;
 
 $lang = array_merge(load_language('global'), load_language('comment'), load_language('capprove'));
 flood_limit('comments');
-$action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : 0);
+$action = !empty($_GET['action']) ? htmlsafechars($_GET['action']) : (!empty($_POST['action']) ? htmlsafechars($_POST['action']) : 0);
+$stdhead = [
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
+];
 $stdfoot = [
     'js' => [
         get_file_name('upload_js'),
+        get_file_name('sceditor_js'),
     ],
 ];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$session->validateToken($_POST['csrf'])) {
+    echo stderr('Error', 'Invalid CSRF');
+    die();
+}
+
 $locale = 'torrent';
 $locale_link = 'details';
 $extra_link = '';
@@ -94,11 +105,17 @@ if ($action === 'add') {
         $cpm = sql_query('SELECT commentpm FROM users WHERE id = ' . sqlesc($owner)) or sqlerr(__FILE__, __LINE__);
         $cpm_r = mysqli_fetch_assoc($cpm);
         if ($cpm_r['commentpm'] === 'yes') {
-            $added = TIME_NOW;
-            $subby = sqlesc('Someone has left a comment');
-            $notifs = sqlesc("You have received a comment on your torrent [url={$site_config['baseurl']}/details.php?id={$id}] " . htmlsafechars($arr['name']) . '[/url].');
-            sql_query('INSERT INTO messages (sender, receiver, subject, msg, added) VALUES(0, ' . sqlesc($arr['owner']) . ", $subby, $notifs, $added)") or sqlerr(__FILE__, __LINE__);
-            $cache->increment('inbox_' . $arr['owner']);
+            $dt = TIME_NOW;
+            $subby = 'Someone has left a comment';
+            $msg = "You have received a comment on your torrent [url={$site_config['baseurl']}/details.php?id={$id}] " . htmlsafechars($arr['name']) . '[/url].';
+            $msgs_buffer[] = [
+                'sender' => 0,
+                'receiver' => $arr['owner'],
+                'added' => $dt,
+                'msg' => $msg,
+                'subject' => $subject,
+            ];
+            $message_stuffs->insert($msgs_buffer);
         }
         $session->set('is-success', 'Your comment has been posted');
         header("Refresh: 0; url=$locale_link.php?id=$id$extra_link&viewcomm=$newid#comm$newid");
@@ -150,7 +167,7 @@ if ($action === 'add') {
         $HTMLOUT = wrapper($HTMLOUT);
         $HTMLOUT .= wrapper("<h2 class='has-text-centered'>{$lang['comment_recent']}</h2>" . commenttable($allrows, $locale));
     }
-    echo stdhead("{$lang['comment_add']}'" . $arr[$name] . "'") . wrapper($HTMLOUT) . stdfoot($stdfoot);
+    echo stdhead("{$lang['comment_add']}'" . $arr[$name] . "'", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
 } elseif ($action === 'edit') {
     $commentid = (isset($_GET['cid']) ? (int) $_GET['cid'] : 0);
@@ -200,7 +217,7 @@ if ($action === 'add') {
             <input type="submit" class="button is-small" value="' . $lang['comment_doit'] . '" />
         </div>
     </form>';
-    echo stdhead("{$lang['comment_edit']}'" . $arr[$name] . "'") . wrapper($HTMLOUT) . stdfoot($stdfoot);
+    echo stdhead("{$lang['comment_edit']}'" . $arr[$name] . "'", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
 } elseif ($action === 'delete') {
     if ($CURUSER['class'] < UC_STAFF) {
@@ -269,7 +286,7 @@ if ($action === 'add') {
                 <a href='$returnto{$hashtag}' class='button is-small has-text-black'>back</a>
             </div>  ";
     }
-    echo stdhead("{$lang['comment_original']}") . wrapper($HTMLOUT) . stdfoot($stdfoot);
+    echo stdhead("{$lang['comment_original']}", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
 } else {
     stderr("{$lang['comment_error']}", "{$lang['comment_unknown']}");

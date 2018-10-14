@@ -7,7 +7,7 @@
  */
 function leechwarn_update($data)
 {
-    global $site_config, $cache, $fluent;
+    global $site_config, $cache, $fluent, $message_stuffs;
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -57,15 +57,12 @@ function leechwarn_update($data)
             ->execute();
 
         $cache->update_row('user' . $arr['id'], $set, $site_config['expires']['user_cache']);
-        $cache->increment('inbox_' . $arr['id']);
     }
 
     $count = count($values);
-    if ($count > 0) {
+    if ($count) {
         ++$i;
-        $fluent->insertInto('messages')
-            ->values($values)
-            ->execute();
+        $message_stuffs->insert($values);
     }
 
     $minratio = 0.5;
@@ -101,9 +98,10 @@ function leechwarn_update($data)
             ->execute();
 
         $cache->update_row('user' . $arr['id'], $set, $site_config['expires']['user_cache']);
-        $cache->increment('inbox_' . $arr['id']);
     }
-
+    if (!empty($values)) {
+        $message_stuffs->insert($values);
+    }
     $res = $fluent->from('users')
         ->select(null)
         ->select('id')

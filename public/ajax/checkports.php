@@ -8,7 +8,7 @@ if (empty($_POST['uid'])) {
 }
 
 $uid = intval($_POST['uid']);
-$sql = 'SELECT INET6_NTOA(ip), port, agent FROM peers WHERE userid = ' . sqlesc($uid) . ' GROUP BY ip, port';
+$sql = 'SELECT INET6_NTOA(ip) AS ip, port, agent FROM peers WHERE userid = ' . sqlesc($uid) . ' GROUP BY ip, port';
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
 $out = '';
@@ -24,12 +24,14 @@ while ($curip = mysqli_fetch_assoc($res)) {
         $msg = "<span class='has-text-red'> CLOSED => $errstr </span>";
     }
     $out .= "
-                                <section>
-                                    <input class='text-center' type='text' size='12' value='{$uip}' readonly />
-                                    <input class='text-center' type='text' size='5' value='{$uport}' readonly />
-                                    <input class='text-center' type='text' size='20' value='{$uagent}' readonly />
-                                    <span>$msg</span>
-                                </section>";
+<div class='top20 bottom20 has-text-centered'>
+    <div class='columns is-multiline bg-00 round10'>
+        <span class='column is-2 padding5'>{$uip}</span>
+        <span class='column is-1 padding5'>{$uport}</span>
+        <span class='column is-2 padding5'>{$uagent}</span>
+        <span class='column padding5 has-text-left'>$msg</span>
+    </div>
+<div>";
 }
 $status = ['data' => $out];
 header('content-type: application/json');

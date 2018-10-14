@@ -19,9 +19,11 @@ if ($CURUSER) {
                 Lottery in Progress
             </b>
             <div class='tooltip_templates'>
-                <span id='lottery_tooltip'>
+                <div id='lottery_tooltip' class='margin20'>
                     <div>
-                        <div class='size_4 has-text-centered has-text-success bottom10'>Lottery Info</div>
+                        <div class='size_4 has-text-centered has-text-success has-text-weight-bold bottom10'>
+                            Lottery Info
+                        </div>
                         <div class='level is-marginless'>
                             <span>Started at: </span><span>" . get_date($lottery_info['start_date'], 'LONG') . "</span>
                         </div>
@@ -32,7 +34,7 @@ if ($CURUSER) {
                             <span>Remaining: </span><span>" . mkprettytime($lottery_info['end_date'] - TIME_NOW) . '</span>
                         </div>
                     </div>
-                </span>
+                </div>
             </div>
         </a>
     </li>';

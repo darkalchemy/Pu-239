@@ -17,7 +17,7 @@ function backup_update($data)
         $ids = [];
         while ($arr = mysqli_fetch_assoc($res)) {
             $ids[] = (int) $arr['id'];
-            $filename = $site_config['backup_dir'] . '/' . $arr['name'];
+            $filename = BACKUPS_DIR . $arr['name'];
             if (is_file($filename)) {
                 unlink($filename);
             }

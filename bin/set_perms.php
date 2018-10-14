@@ -20,23 +20,23 @@ $exts = [
 ];
 
 $folders = [
-    ROOT_DIR . 'bin/',
+    BIN_DIR,
+    CACHE_DIR,
+    BACKUPS_DIR,
+    TORRENTS_DIR,
+    USER_TORRENTS_DIR,
+    SQLERROR_LOGS_DIR,
+    BITBUCKET_DIR,
     ROOT_DIR . '.git',
     ROOT_DIR . 'dir_list/',
-    ROOT_DIR . 'cache/',
-    ROOT_DIR . 'torrents/',
     ROOT_DIR . 'uploads/',
-    ROOT_DIR . 'include/backup/',
-    ROOT_DIR . 'sqlerr_logs/',
     PUBLIC_DIR . 'install/',
     PUBLIC_DIR . 'install/extra/',
-    ROOT_DIR . 'logs/',
     CHAT_DIR . 'css/',
     CHAT_DIR . 'js/',
     TEMPLATE_DIR . '1/css/',
     TEMPLATE_DIR . '2/css/',
     PUBLIC_DIR . 'images/proxy/',
-    BITBUCKET_DIR,
 ];
 
 $excludes = [
@@ -50,7 +50,7 @@ foreach ($folders as $folder) {
     }
 }
 
-$i = 0;
+$i = 1;
 foreach ($paths as $path) {
     if (file_exists($path)) {
         $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);

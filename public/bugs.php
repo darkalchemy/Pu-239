@@ -5,7 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session;
+global $CURUSER, $site_config, $cache, $session, $message_stuffs;
 
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('bugs'));
@@ -18,6 +18,7 @@ $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_PO
 if (!in_array($action, $possible_actions)) {
     stderr('Error', 'A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.');
 }
+$dt = TIME_NOW;
 if ($action === 'viewbug') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($CURUSER['class'] < UC_MAX) {
@@ -35,7 +36,7 @@ if ($action === 'viewbug') {
         while ($q1 = mysqli_fetch_assoc($query1)) {
             switch ($status) {
                 case 'fixed':
-                    $msg = sqlesc('Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been treated by one of our coder, and is done.\n\nWe would to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site_name']}'s coders.\n");
+                    $msg = 'Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been treated by one of our coder, and is done.\n\nWe would to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site_name']}'s coders.\n";
                     $uq = 'UPDATE users SET uploaded = uploaded +' . 1024 * 1024 * 1024 * 2 . ' WHERE id = ' . sqlesc($q1['sender']);
                     $update['uploaded'] = ($q1['uploaded'] + 1024 * 1024 * 1024 * 2);
                     $cache->update_row('user' . $q1['sender'], [
@@ -44,14 +45,21 @@ if ($action === 'viewbug') {
                     break;
 
                 case 'ignored':
-                    $msg = sqlesc('Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$site_config['site_name']}'s coders.\n");
+                    $msg = 'Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$site_config['site_name']}'s coders.\n";
                     $uq = '';
                     break;
             }
             sql_query($uq) or sqlerr(__FILE__, __LINE__);
-            sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (0, ' . sqlesc($q1['sender']) . ', ' . TIME_NOW . ", {$msg})") or sqlerr(__FILE__, __LINE__);
+            $msgs_buffer[] = [
+                'sender' => 0,
+                'receiver' => $q1['sender'],
+                'added' => $dt,
+                'msg' => $msg,
+                'subject' => 'Bug Report',
+            ];
+            $message_stuffs->insert($msgs_buffer);
+            sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (0, ' . sqlesc($q1['sender']) . ', ' . $dt . ", {$msg})") or sqlerr(__FILE__, __LINE__);
             sql_query('UPDATE bugs SET status=' . sqlesc($status) . ', staff=' . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-            $cache->increment('inbox_' . $q1['sender']);
             $cache->delete('bug_mess_');
         }
         header("location: bugs.php?action=viewbug&id={$id}");
@@ -201,7 +209,7 @@ if ($action === 'viewbug') {
         if (strlen($title) < 10) {
             stderr("{$lang['stderr_error']}", "{$lang['stderr_title_10']}");
         }
-        $q1 = sql_query('INSERT INTO bugs (title, priority, problem, sender, added) VALUES (' . sqlesc($title) . ', ' . sqlesc($priority) . ', ' . sqlesc($problem) . ', ' . sqlesc($CURUSER['id']) . ', ' . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
+        $q1 = sql_query('INSERT INTO bugs (title, priority, problem, sender, added) VALUES (' . sqlesc($title) . ', ' . sqlesc($priority) . ', ' . sqlesc($problem) . ', ' . sqlesc($CURUSER['id']) . ', ' . $dt . ')') or sqlerr(__FILE__, __LINE__);
         $cache->delete('bug_mess_');
         if ($q1) {
             stderr("{$lang['stderr_sucess']}", sprintf($lang['stderr_sucess_2'], $priority));

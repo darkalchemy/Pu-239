@@ -7,8 +7,9 @@
  */
 function navbar()
 {
-    global $site_config, $CURUSER, $lang, $fluent, $cache, $BLOCKS;
+    global $site_config, $CURUSER, $lang, $BLOCKS;
 
+    $navbar = '';
     $staff_links = staff_panel();
     if ($CURUSER) {
         $navbar = "
@@ -84,10 +85,8 @@ function navbar()
                             <ul class='ddFade ddFadeFast'>
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/friends.php'>{$lang['gl_friends']}</a></li>
-                                <li class='iss_hidden'><a href='#' onclick='language_select();'>{$lang['gl_language_select']}</a></li>
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/messages.php'>{$lang['gl_pms']}</a></li>
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/users.php'>Search Users</a></li>
-                                <li class='iss_hidden'><a href='#' onclick='themes();'>{$lang['gl_theme']}</a></li>
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
                             </ul>
                         </li>
@@ -131,7 +130,7 @@ function make_link($value)
 
 function staff_panel()
 {
-    global $site_config, $lang, $CURUSER, $BLOCKS, $cache, $fluent;
+    global $site_config, $CURUSER, $BLOCKS, $cache, $fluent;
 
     $panel = '';
     $panels = [];
@@ -143,7 +142,18 @@ function staff_panel()
                 ->where('av_class <= ?', $CURUSER['class'])
                 ->orderBy('page_name')
                 ->fetchAll();
+
             $cache->set('staff_panels_' . $CURUSER['class'], $staff_panel, 0);
+        }
+        if (in_array($CURUSER['id'], $site_config['adminer_allowed_ids'])) {
+            $staff_panel[] = [
+                'page_name' => 'Adminer',
+                'file_name' => 'view_sql.php',
+                'type' => 'other',
+                'av_class' => UC_MAX,
+                'navbar' => 1,
+            ];
+            $staff_panel = array_msort($staff_panel, ['page_name' => SORT_ASC]);
         }
         if ($staff_panel) {
             foreach ($staff_panel as $key => $value) {
@@ -163,10 +173,11 @@ function staff_panel()
             $panel .= "
                 <li class='clickable'>
                     <a id='staff_other' href='#'>[" . substr($key, 1) . "]</a>
-                        <ul class='ddFade ddFadeFast'>" . make_link([
-                                'file_name' => 'staffpanel.php',
-                                'page_name' => 'Staff Panel',
-                            ]) . implode('', $value) . '
+                        <ul class='ddFade ddFadeFast'>" .
+                make_link([
+                    'file_name' => 'staffpanel.php',
+                    'page_name' => 'Staff Panel',
+                ]) . implode('', $value) . '
                         </ul>
                     </a>
                 </li>';

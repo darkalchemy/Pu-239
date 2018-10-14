@@ -9,8 +9,8 @@ $lang = load_language('global');
 global $site_config, $CURUSER;
 
 $HTMLOUT = "
-        <h1>{$site_config['site_name']} Arcade Top Scores!</h1>
-        <div class='bottom10'>
+        <h1 class='has-text-centered'>{$site_config['site_name']} Arcade Top Scores!</h1>
+        <div class='bottom10 has-text-centered'>
             <div>Top Scores Earn {$site_config['top_score_points']} Karma Points</div>
             <div class='level-center top10'>
                 <a class='altlink' href='{$site_config['baseurl']}/arcade.php'>Back to the Arcade</a>

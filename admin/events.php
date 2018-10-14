@@ -167,10 +167,26 @@ if (!is_array($scheduled_events)) {
     if ($count1 > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
     }
-    $HTMLOUT .= "<p><strong>{$lang['events_schedular']}</strong><strong> <span class='has-text-danger'>{$lang['events_beta']}</span> </strong> </p>
-<form action='' method='post'>
-<table width='80%'>
-<tr><th>{$lang['events_user']}</th><th>{$lang['events_text']}</th><th>{$lang['events_start']}</th><th>{$lang['events_end']}</th><th>{$lang['events_freeleech']}</th><th>{$lang['events_dupload']}</th><th>{$lang['events_hdown']}</th><th>{$lang['events_sdate']}</th><th>&#160;</th></tr>";
+    $HTMLOUT .= "
+<div class='has-text-centered bottom20'>
+    <h1>{$lang['events_schedular']}</h1>
+    <span class='has-text-danger'>{$lang['events_beta']}</span>
+</div>
+<form action='' method='post'>";
+
+    $heading = "
+    <tr>
+        <th>{$lang['events_user']}</th>
+        <th>{$lang['events_text']}</th>
+        <th>{$lang['events_start']}</th>
+        <th>{$lang['events_end']}</th>
+        <th>{$lang['events_freeleech']}</th>
+        <th>{$lang['events_dupload']}</th>
+        <th>{$lang['events_hdown']}</th>
+        <th>{$lang['events_sdate']}</th>
+        <th>&#160;</th>
+    </tr>";
+    $body = '';
     foreach ($scheduled_events as $scheduled_event) {
         $id = (int) $scheduled_event['id'];
         $users = $scheduled_event;
@@ -183,45 +199,66 @@ if (!is_array($scheduled_events)) {
         $doubleUpload = (bool) (int) $scheduled_event['duploadEnabled'];
         $halfdownload = (bool) (int) $scheduled_event['hdownEnabled'];
         if ($freeleech) {
-            $freeleech = "<img src='{$site_config['pic_baseurl']}on.gif' alt='{$lang['events_fenable']}' title='{$lang['events_enable']}' />";
+            $freeleech = "<img src='{$site_config['pic_baseurl']}on.gif' alt='{$lang['events_fenable']}' title='{$lang['events_enable']}'>";
         } else {
-            $freeleech = "<img src='{$site_config['pic_baseurl']}off.gif' alt='{$lang['events_fdisable']}' title='{$lang['events_disable']}' />";
+            $freeleech = "<img src='{$site_config['pic_baseurl']}off.gif' alt='{$lang['events_fdisable']}' title='{$lang['events_disable']}'>";
         }
         if ($doubleUpload) {
-            $doubleUpload = "<img src='{$site_config['pic_baseurl']}on.gif' alt='{$lang['events_duenable']}' title='{$lang['events_enable']}' />";
+            $doubleUpload = "<img src='{$site_config['pic_baseurl']}on.gif' alt='{$lang['events_duenable']}' title='{$lang['events_enable']}'>";
         } else {
-            $doubleUpload = "<img src='{$site_config['pic_baseurl']}off.gif' alt='{$lang['events_dudisable']}' title='{$lang['events_disable']}' />";
+            $doubleUpload = "<img src='{$site_config['pic_baseurl']}off.gif' alt='{$lang['events_dudisable']}' title='{$lang['events_disable']}'>";
         }
         if ($halfdownload) {
-            $halfdownload = "<img src='{$site_config['pic_baseurl']}on.gif' alt='{$lang['events_henable']}' title='{$lang['events_enable']}' />";
+            $halfdownload = "<img src='{$site_config['pic_baseurl']}on.gif' alt='{$lang['events_henable']}' title='{$lang['events_enable']}'>";
         } else {
-            $halfdownload = "<img src='{$site_config['pic_baseurl']}off.gif' alt='{$lang['events_hdisable']}' title='{$lang['events_disable']}' />";
+            $halfdownload = "<img src='{$site_config['pic_baseurl']}off.gif' alt='{$lang['events_hdisable']}' title='{$lang['events_disable']}'>";
         }
         $showdates = (bool) (int) $scheduled_event['displayDates'];
         if ($showdates) {
-            $showdates = "<img src='{$site_config['pic_baseurl']}on.gif' alt='{$lang['events_daenable']}' title='{$lang['events_enable']}' />";
+            $showdates = "<img src='{$site_config['pic_baseurl']}on.gif' alt='{$lang['events_daenable']}' title='{$lang['events_enable']}'>";
         } else {
-            $showdates = "<img src='{$site_config['pic_baseurl']}off.gif' alt='{$lang['events_dadisable']}' title='{$lang['events_disable']}' />";
+            $showdates = "<img src='{$site_config['pic_baseurl']}off.gif' alt='{$lang['events_dadisable']}' title='{$lang['events_disable']}'>";
         }
-        $HTMLOUT .= "<tr><td align='center'>{$username}</td><td align='center'>{$text}</td><td align='center'>{$start}</td><td align='center'>{$end}</td><td align='center'>{$freeleech}</td><td align='center'>{$doubleUpload}</td><td align='center'>{$halfdownload}</td><td align='center'>{$showdates}</td><td align='center'><input type='submit' class='button is-small' name='editEvent_$id' value='{$lang['events_edit']}' /> <input type='submit' class='button is-small' onclick='return checkAllGood('$text')' name='removeEvent_$id' value='{$lang['events_remove']}' /></td></tr>";
+        $body .= "
+            <tr>
+                <td class='has-text-centered'>{$username}</td>
+                <td class='has-text-centered'>{$text}</td>
+                <td class='has-text-centered'>{$start}</td>
+                <td class='has-text-centered'>{$end}</td>
+                <td class='has-text-centered'>{$freeleech}</td>
+                <td class='has-text-centered'>{$doubleUpload}</td>
+                <td class='has-text-centered'>{$halfdownload}</td>
+                <td class='has-text-centered'>{$showdates}</td>
+                <td class='has-text-centered'>
+                    <input type='submit' class='button is-small margin10' name='editEvent_$id' value='{$lang['events_edit']}'>
+                    <input type='submit' class='button is-small margin10' onclick='return checkAllGood('$text')' name='removeEvent_$id' value='{$lang['events_remove']}'>
+                </td>
+            </tr>";
     }
-    $HTMLOUT .= "<tr><td colspan='9'><input type='submit' class='button is-small' name='editEvent_-1' value='{$lang['events_add']}'' /></td></tr></table>";
+    $button = "
+            <tr>
+                <td colspan='9' class='has-text-centered'>
+                    <input type='submit' class='button is-small margin20' name='editEvent_-1' value='{$lang['events_add']}''>
+                </td>
+            </tr>";
+
+    $HTMLOUT .= !empty($body) ? main_table($body . $button, $heading) : '';
+
     foreach ($_POST as $key => $value) {
         if (gettype($pos = strpos($key, '_')) != 'boolean') {
             $id = (int) substr($key, $pos + 1);
             if (gettype(strpos($key, 'editEvent_')) != 'boolean') {
                 if ($id == -1) {
-                    $HTMLOUT .= "<table>
-<tr><th>{$lang['events_userid']}</th><td><input type='text' name='userid' value='{$CURUSER['id']}' /></td></tr>
-<tr><th>{$lang['events_txt']}</th><td><input type='text' name='editText' /></td></tr>
-<tr><th>{$lang['events_starttime']}</th><td><input type='text' name='editStartTime' /></td></tr>
-<tr><th>{$lang['events_endtime']}</th><td><input type='text' name='editEndTime' /></td></tr>
-<tr><th>{$lang['events_freel']}</th><td><input type='checkbox' name='editFreeleech' /></td></tr>
-<tr><th>{$lang['events_double']}</th><td><input type='checkbox' name='editDoubleupload' /></td></tr>
-<tr><th>{$lang['events_half']}</th><td><input type='checkbox' name='editHalfdownload' /></td></tr>
-<tr><th>{$lang['events_showd']}</th><td><input type='checkbox' name='editShowDates' /></td></tr>
-<tr><td colspan='2'><input type='submit' class='button is-small' name='saveEvent_-1' value='{$lang['events_save']}' /></td></tr>
-</table>";
+                    $HTMLOUT .= main_table("
+<tr><th>{$lang['events_userid']}</th><td><input type='text' name='userid' value='{$CURUSER['id']}'></td></tr>
+<tr><th>{$lang['events_txt']}</th><td><input type='text' name='editText'></td></tr>
+<tr><th>{$lang['events_starttime']}</th><td><input type='text' name='editStartTime'></td></tr>
+<tr><th>{$lang['events_endtime']}</th><td><input type='text' name='editEndTime'></td></tr>
+<tr><th>{$lang['events_freel']}</th><td><input type='checkbox' name='editFreeleech'></td></tr>
+<tr><th>{$lang['events_double']}</th><td><input type='checkbox' name='editDoubleupload'></td></tr>
+<tr><th>{$lang['events_half']}</th><td><input type='checkbox' name='editHalfdownload'></td></tr>
+<tr><th>{$lang['events_showd']}</th><td><input type='checkbox' name='editShowDates'></td></tr>
+<tr><td colspan='2'><input type='submit' class='button is-small' name='saveEvent_-1' value='{$lang['events_save']}'></td></tr>");
                 } else {
                     foreach ($scheduled_events as $scheduled_event) {
                         if ($id == $scheduled_event['id']) {
@@ -252,17 +289,16 @@ if (!is_array($scheduled_events)) {
                             } else {
                                 $showdates = '';
                             }
-                            $HTMLOUT .= "<table>
-<tr><th>{$lang['events_userid']}</th><td><input type='text' name='userid' value='{$CURUSER['id']}' /></td></tr>
-<tr><th>{$lang['events_txt']}</th><td><input type='text' name='editText' value='{$text}' /></td></tr>
-<tr><th>{$lang['events_starttime']}</th><td><input type='text' name='editStartTime' value='{$start}' /></td></tr>
-<tr><th>{$lang['events_endtime']}</th><td><input type='text' name='editEndTime' value='{$end}' /></td></tr>
-<tr><th>{$lang['events_freel']}</th><td><input type='checkbox' name='editFreeleech' value='{$freeleech}' /></td></tr>
-<tr><th>{$lang['events_double']}</th><td><input type='checkbox' name='editDoubleupload' value='{$doubleUpload}' /></td></tr>
-<tr><th>{$lang['events_half']}</th><td><input type='checkbox' name='editHalfdownload' value='{$halfdownload}' /></td></tr>
-<tr><th>{$lang['events_showd']}</th><td><input type='checkbox' name='editShowDates' value='{$showdates}' /></td></tr>
-<tr><td colspan='2'><input type='submit' class='button is-small' name='saveEvent_{$id}' value='{$lang['events_save']}' /></td></tr>
-</table>";
+                            $HTMLOUT .= main_table("
+<tr><th>{$lang['events_userid']}</th><td><input type='text' name='userid' value='{$CURUSER['id']}'></td></tr>
+<tr><th>{$lang['events_txt']}</th><td><input type='text' name='editText' value='{$text}'></td></tr>
+<tr><th>{$lang['events_starttime']}</th><td><input type='text' name='editStartTime' value='{$start}'></td></tr>
+<tr><th>{$lang['events_endtime']}</th><td><input type='text' name='editEndTime' value='{$end}'></td></tr>
+<tr><th>{$lang['events_freel']}</th><td><input type='checkbox' name='editFreeleech' value='{$freeleech}'></td></tr>
+<tr><th>{$lang['events_double']}</th><td><input type='checkbox' name='editDoubleupload' value='{$doubleUpload}'></td></tr>
+<tr><th>{$lang['events_half']}</th><td><input type='checkbox' name='editHalfdownload' value='{$halfdownload}'></td></tr>
+<tr><th>{$lang['events_showd']}</th><td><input type='checkbox' name='editShowDates' value='{$showdates}'></td></tr>
+<tr><td colspan='2'><input type='submit' class='button is-small' name='saveEvent_{$id}' value='{$lang['events_save']}'></td></tr>");
                             break;
                         }
                     }

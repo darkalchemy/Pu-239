@@ -90,8 +90,10 @@ class AJAXChatTemplate
 
             case 'JS':
                 return $this->ajaxChat->getConfig('js');
-            case 'JSLOG':
-                return $this->ajaxChat->getConfig('jslog');
+            case 'JS_MAIN':
+                return $this->ajaxChat->getConfig('js_main');
+            case 'JS_LOG':
+                return $this->ajaxChat->getConfig('js_log');
 
             case 'LANG':
                 return $this->ajaxChat->htmlEncode($this->ajaxChat->getLang((isset($tagData[2]) ? $tagData[2] : null)));
@@ -412,7 +414,7 @@ class AJAXChatTemplate
     public function alternateRow($rowOdd = 'rowOdd', $rowEven = 'rowEven')
     {
         static $i;
-        $i += 1;
+        ++$i;
         if ($i % 2 == 0) {
             return $rowEven;
         } else {

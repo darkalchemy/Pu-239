@@ -5,7 +5,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $cache;
+global $CURUSER, $site_config, $lang, $cache, $message_stuffs;
 
 $lang = array_merge($lang, load_language('ad_warn'));
 $HTMLOUT = '';
@@ -19,6 +19,7 @@ function mkint($x)
     return (int) $x;
 }
 
+$dt = TIME_NOW;
 $this_url = $_SERVER['SCRIPT_NAME'];
 $do = isset($_GET['do']) && $_GET['do'] === 'disabled' ? 'disabled' : 'warned';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -51,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     if ($act === 'disable') {
-        if (sql_query("UPDATE users SET enabled='no', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['warn_disabled_by'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')')) {
+        if (sql_query("UPDATE users SET enabled='no', modcomment=CONCAT(" . sqlesc(get_date($dt, 'DATE', 1) . $lang['warn_disabled_by'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')')) {
             foreach ($_uids as $uid) {
                 $cache->update_row('user' . $uid, [
                     'enabled' => 'no',
@@ -64,20 +65,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             stderr($lang['warn_stderr'], $lang['warn_stderr_msg3']);
         }
     } elseif ($act === 'unwarn') {
-        $sub = $lang['warn_removed'];
-        $body = $lang['warn_removed_msg'] . $CURUSER['username'] . $lang['warn_removed_msg1'];
-        $pms = [];
+        $subject = $lang['warn_removed'];
+        $msg = $lang['warn_removed_msg'] . $CURUSER['username'] . $lang['warn_removed_msg1'];
         foreach ($_uids as $id) {
             $cache->update_row('user' . $id, [
                 'warned' => 0,
             ], $site_config['expires']['user_cache']);
-            $pms[] = '(0,' . $id . ', ' . sqlesc($sub) . ', ' . sqlesc($body) . ', ' . sqlesc(TIME_NOW) . ')';
-            $cache->increment('inbox_' . $id);
+            $msgs_buffer[] = [
+                'sender' => 0,
+                'receiver' => $id,
+                'added' => $dt,
+                'msg' => $msg,
+                'subject' => $subject,
+            ];
         }
-        if (!empty($pms) && count($pms)) {
-            $g = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . implode(', ', $pms)) or ($q_err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
-            $q1 = sql_query("UPDATE users SET warned='0', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['warn_removed_msg'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or ($q2_err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
-            if ($g && $q1) {
+        if (!empty($msgs_buffer)) {
+            $message_stuffs->insert($msgs_buffer);
+            $q1 = sql_query("UPDATE users SET warned='0', modcomment=CONCAT(" . sqlesc(get_date($dt, 'DATE', 1) . $lang['warn_removed_msg'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or ($q2_err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            if ($q1) {
                 header('Refresh: 2; url=' . $r);
                 stderr($lang['warn_stdmsg_success'], count($pms) . $lang['warn_stdmsg_user'] . (count($pms) > 1 ? 's' : '') . $lang['warn_stdmsg_unwarned']);
             } else {
@@ -85,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     }
-    exit;
+    die();
 }
 switch ($do) {
     case 'disabled':
@@ -102,13 +107,14 @@ switch ($do) {
 }
 $g = sql_query($query) or print (is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false);
 $count = mysqli_num_rows($g);
-$HTMLOUT .= begin_main_frame();
-$HTMLOUT .= begin_frame($title . "&#160;[<font class=\"small\">{$lang['warn_total']}" . $count . $lang['warn_total_user'] . ($count > 1 ? $lang['warn_total_user_plural'] : '') . '</font>] - ' . $link);
+$HTMLOUT .= "
+        <h1 class='has-text-centered'>{$lang['warn_total']} $count {$lang['warn_total_user']}" . plural($count) . "</h1>
+        $link";
 if ($count == 0) {
     $HTMLOUT .= stdmsg($lang['warn_hey'], $lang['warn_hey_msg'] . strtolower($title));
 } else {
     $HTMLOUT .= "<form action='staffpanel.php?tool=warn&amp;action=warn' method='post'>
-                <table width='600' style='border-collapse:separate;'>
+                <table>
                 <tr>
                         <td class='colhead' width='100%' >{$lang['warn_user']}</td>
                         <td class='colhead' nowrap='nowrap'>{$lang['warn_ratio']}</td>
@@ -118,7 +124,7 @@ if ($count == 0) {
                         <td class='colhead' nowrap='nowrap'><input type='checkbox' name='checkall' /></td>
                 </tr>";
     while ($a = mysqli_fetch_assoc($g)) {
-        $tip = ($do === 'warned' ? $lang['warn_for'] . $a['warn_reason'] . '<br>' . $lang['warn_till'] . get_date($a['warned'], 'DATE', 1) . ' - ' . mkprettytime($a['warned'] - TIME_NOW) : $lang['warn_disabled_for'] . $a['disable_reason']);
+        $tip = ($do === 'warned' ? $lang['warn_for'] . $a['warn_reason'] . '<br>' . $lang['warn_till'] . get_date($a['warned'], 'DATE', 1) . ' - ' . mkprettytime($a['warned'] - $dt) : $lang['warn_disabled_for'] . $a['disable_reason']);
         $HTMLOUT .= "<tr>
                                   <td width='100%'><a href='userdetails.php?id=" . (int) $a['id'] . "' class='tooltipper' title='$tip'>" . htmlsafechars($a['username']) . "</a></td>
                                   <td nowrap='nowrap'>" . (float) $a['ratio'] . "<br><font class='small'><b>{$lang['warn_down']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['warn_upl']}</b> " . mksize($a['uploaded']) . "</font></td>
@@ -143,6 +149,4 @@ if ($count == 0) {
                         </table>
                         </form>";
 }
-$HTMLOUT .= end_frame();
-$HTMLOUT .= end_main_frame();
 echo stdhead($title) . wrapper($HTMLOUT) . stdfoot();

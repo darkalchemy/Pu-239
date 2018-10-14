@@ -103,7 +103,9 @@ $HTMLOUT = "<!doctype html>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     $refresh
     <title>Trivia</title>
+    <link rel='stylesheet' href='" . get_file_name('vendor_css') . "' />
     <link rel='stylesheet' href='" . get_file_name('css') . "' />
+    <link rel='stylesheet' href='" . get_file_name('main_css') . "' />
 </head>
 <body class='ajax-chat text-9'>
 <script>

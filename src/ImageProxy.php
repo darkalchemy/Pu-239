@@ -8,14 +8,16 @@ use Intervention\Image\ImageManager;
 class ImageProxy
 {
     /**
-     * @param $url
-     * @param $width
-     * @param $height
-     * @param $quality
+     * @param string   $url
+     * @param int|null $width
+     * @param int|null $height
+     * @param int|null $quality
      *
      * @return bool|string
+     *
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
-    public function get_image($url, $width, $height, $quality)
+    public function get_image(string $url, ?int $width, ?int $height, ?int $quality)
     {
         if (empty($url)) {
             return false;
@@ -25,23 +27,15 @@ class ImageProxy
         $path = PROXY_IMAGES_DIR . $hash;
 
         if (file_exists($path)) {
-            if (!@is_array(getimagesize($path))) {
+            if (!exif_imagetype($path)) {
                 unlink($path);
             }
         }
 
         if (!file_exists($path)) {
-            $this->store_image($url, $path);
-        }
-
-        if (!file_exists($path)) {
-            return false;
-        }
-
-        if (!is_array(getimagesize($path))) {
-            unlink($path);
-
-            return false;
+            if (!$this->store_image($url, $path)) {
+                return false;
+            }
         }
 
         if (!empty($quality)) {
@@ -59,17 +53,16 @@ class ImageProxy
      *
      * @return bool
      */
-    protected function store_image($url, $path)
+    protected function store_image(string $url, string $path)
     {
         $image = fetch($url);
         if (!$image) {
             return false;
         }
-        file_put_contents($path, $image);
-        if (!file_exists($path)) {
+        if (!file_put_contents($path, $image)) {
             return false;
         }
-        if (!is_array(getimagesize($path))) {
+        if (!exif_imagetype($path)) {
             unlink($path);
 
             return false;
@@ -91,7 +84,7 @@ class ImageProxy
      *
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
-    protected function convert_image($url, $path, $quality)
+    protected function convert_image(string $url, string $path, ?int $quality)
     {
         $hash = hash('sha512', $url . '_converted');
         $new_path = PROXY_IMAGES_DIR . $hash;
@@ -99,20 +92,17 @@ class ImageProxy
         if (file_exists($new_path)) {
             return $hash;
         }
+
         if (mime_content_type($path) !== 'image/gif') {
             if (mime_content_type($path) !== 'image/jpeg') {
                 Image::load($new_path)
                     ->format(Manipulations::FORMAT_JPG)
-                    ->quality($quality)
-                    ->blur(50)
                     ->optimize()
-                    ->save($new_path);
+                    ->save($new_path, $quality);
             } else {
                 Image::load($path)
-                    ->quality($quality)
-                    ->blur(50)
                     ->optimize()
-                    ->save($new_path);
+                    ->save($new_path, $quality);
             }
         }
 
@@ -120,26 +110,32 @@ class ImageProxy
     }
 
     /**
-     * @param $path
+     * @param string $path
+     *
+     * @return bool
      */
-    protected function optimize($path)
+    protected function optimize(string $path)
     {
         if (mime_content_type($path) !== 'image/gif') {
             Image::load($path)
                 ->optimize()
                 ->save();
+
+            return true;
         }
+
+        return false;
     }
 
     /**
-     * @param      $url
-     * @param      $path
-     * @param null $width
-     * @param null $height
+     * @param string   $url
+     * @param string   $path
+     * @param int|null $width
+     * @param int|null $height
      *
      * @return bool|string
      */
-    protected function resize_image($url, $path, $width = null, $height = null)
+    protected function resize_image(string $url, string $path, int $width = null, int $height = null)
     {
         $manager = new ImageManager();
         $hash = hash('sha512', $url . (!empty($width) ? "_$width" : "_$height"));
@@ -163,7 +159,14 @@ class ImageProxy
         return $hash;
     }
 
-    public function optimize_image($path, $width = null, $height = null)
+    /**
+     * @param string   $path
+     * @param int|null $width
+     * @param int|null $height
+     *
+     * @return bool
+     */
+    public function optimize_image(string $path, int $width = null, int $height = null)
     {
         $manager = new ImageManager();
 
@@ -184,7 +187,14 @@ class ImageProxy
         return true;
     }
 
-    public function create_image($width = 1000, $height = 1000, $color = null)
+    /**
+     * @param int         $width
+     * @param int         $height
+     * @param string|null $color
+     *
+     * @return \Intervention\Image\Image
+     */
+    public function create_image(int $width = 1000, int $height = 1000, string $color = null)
     {
         $manager = new ImageManager();
         $img = $manager->canvas($width, $height, $color)->encode('jpg', 50);

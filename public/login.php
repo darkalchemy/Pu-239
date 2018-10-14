@@ -13,15 +13,26 @@ if (!$CURUSER) {
     header("Location: {$site_config['baseurl']}/index.php");
     die();
 }
+$stdfoot = '';
+if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
+    $stdfoot = [
+        'js' => [
+            get_file_name('recaptcha_js'),
+        ],
+    ];
+}
+
 $lang = array_merge(load_language('global'), load_language('login'));
 $left = $total = '';
 
 /**
- * @return string
+ * @return mixed|string
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function left()
 {
-    global $site_config, $fluent, $failed_logins;
+    global $site_config, $failed_logins;
 
     $ip = getip(true);
     $count = $failed_logins->get($ip);
@@ -41,54 +52,38 @@ $HTMLOUT = '';
 if (!empty($_GET['returnto'])) {
     $returnto = htmlsafechars($_GET['returnto']);
 }
-if (!isset($_GET['nowarn'])) {
-    $HTMLOUT .= "
-        <div class='half-container has-text-centered portlet'>
-            <div class='margin20'>
-                <h3>{$lang['login_error']}</h3>
-                <h3>{$lang['login_cookies']}</h3>
-                <h3>{$lang['login_cookies1']}</h3>
-                <h3>
-                    <b>[{$site_config['failedlogins']}]</b> {$lang['login_failed']}<br>{$lang['login_failed_1']}<b> " . left() . " </b> {$lang['login_failed_2']}
-                </h3>
-            </div>";
-}
+
 $got_ssl = isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] == true ? true : false;
 $HTMLOUT .= "
-            <form class='form-inline table-wrapper' method='post' action='takelogin.php'>
-                <table class='table table-bordered'>
+            <form id='site_login' class='form-inline table-wrapper' method='post' action='{$site_config['baseurl']}/takelogin.php'>
+                <div class='level-center'>";
+
+$body = "
                     <tr class='no_hover'>
                         <td class='rowhead'>{$lang['login_username']}</td>
                         <td>
-                            <input type='text' class='w-100' name='username' />" . ($got_ssl ? "
+                            <input type='text' class='w-100' name='username' autocomplete='on'>" . ($got_ssl ? "
                             <input type='hidden' name='use_ssl' value='" . ($got_ssl ? 1 : 0) . "' id='ssl' />" : '') . "
+                            <input type='hidden' id='token' name='token' value='' />
                         </td>
                     </tr>
                     <tr class='no_hover'>
                         <td class='rowhead'>{$lang['login_password']}</td>
-                        <td><input type='password' class='w-100' name='password' /></td>
+                        <td><input type='password' class='w-100' name='password' autocomplete='on'></td>
                     </tr>";
 
-if (!empty($_ENV['RECAPTCHA_SITE_KEY'])) {
-    $HTMLOUT .= "
-                    <tr>
-                        <td colspan='2'>
-                            <div class='g-recaptcha level-center' data-theme='dark' data-sitekey='{$_ENV['RECAPTCHA_SITE_KEY']}'></div>
-                        </td>
-                    </tr>";
-}
-$HTMLOUT .= "
+$body .= "
                     <tr class='no_hover'>
                         <td colspan='2' class='has-text-centered'>
                             <span class='has-text-centered margin5'>
-                                <input name='submitme' type='submit' value='Login' class='button is-small' />
+                                <input id='login_captcha_check' type='submit' value='" . (!empty($_ENV['RECAPTCHA_SITE_KEY']) ? 'Verifying reCAPTCHA' : 'Login') . "' class='button is-small'>
                             </span>";
 
 if (isset($returnto)) {
-    $HTMLOUT .= "
+    $body .= "
                             <input type='hidden' name='returnto' value='" . htmlsafechars($returnto) . "' />";
 }
-$HTMLOUT .= "           </td>
+$body .= "           </td>
                     </tr>
                     <tr class='no_hover'>
                         <td colspan='2' class='has-text-centered'>
@@ -109,7 +104,7 @@ $HTMLOUT .= "           </td>
                         </td>
                     </tr>
                 </table>
-            </form>
-        </div>";
+            </form>";
 
-echo stdhead("{$lang['login_login_btn']}") . $HTMLOUT . stdfoot();
+$HTMLOUT .= main_table($body, '', '', 'w-50', '');
+echo stdhead("{$lang['login_login_btn']}") . wrapper($HTMLOUT) . stdfoot($stdfoot);

@@ -4,40 +4,45 @@ namespace DarkAlchemy\Pu239;
 
 class User
 {
-    private $fluent;
-    private $session;
-    private $cookies;
-    private $cache;
-    private $config;
+    protected $fluent;
+    protected $session;
+    protected $cookies;
+    protected $cache;
+    protected $config;
+    protected $pdo;
+    protected $limit;
 
-    /**
-     * User constructor.
-     *
-     * @throws \MatthiasMullie\Scrapbook\Exception\Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
-     */
     public function __construct()
     {
-        global $site_config, $session, $cache, $fluent;
+        global $site_config, $session, $cache, $fluent, $pdo;
 
         $this->fluent = $fluent;
         $this->session = $session;
         $this->cache = $cache;
         $this->cookies = new Cookie('remember');
         $this->config = $site_config;
+        $this->pdo = $pdo;
+        $this->limit = $this->config['query_limit'];
     }
 
     /**
-     * @param $userid
+     * @param int  $userid
+     * @param bool $fresh
      *
      * @return bool|mixed
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
-    public function getUserFromId($userid)
+    public function getUserFromId(int $userid, bool $fresh = false)
     {
+        $this->cache->delete('user' . $userid);
         $user = $this->cache->get('user' . $userid);
-        if ($user === false || is_null($user)) {
-            $user = $this->fluent->from('users')
-                ->select('INET6_NTOA(ip) AS ip')
+        if ($fresh || $user === false || is_null($user)) {
+            $user = $this->fluent->from('users AS u')
+                ->select('INET6_NTOA(u.ip) AS ip')
+                ->select('u.bjwins - u.bjlosses AS bj')
+                ->select('c.win - c.lost AS casino')
+                ->leftJoin('casino AS c ON u.id = c.userid')
                 ->where('id = ?', $userid)
                 ->fetch();
 
@@ -64,9 +69,11 @@ class User
     }
 
     /**
-     * @param $username
+     * @param string $username
      *
      * @return bool|mixed
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function getUserIdFromName(string $username)
     {
@@ -76,7 +83,7 @@ class User
             $user = $this->fluent->from('users')
                 ->select(null)
                 ->select('id')
-                ->where('username = ?', $username)
+                ->where('LOWER(username) = ?', strtolower($username))
                 ->fetch('id');
 
             $this->cache->set('userid_from_' . urldecode($username), $user, $this->config['expires']['user_cache']);
@@ -86,8 +93,46 @@ class User
     }
 
     /**
+     * @param string $ip
+     *
+     * @return mixed
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function getUsersFromIP(string $ip)
+    {
+        $users = $this->fluent->from('users')
+            ->select(null)
+            ->select('id')
+            ->select('last_access')
+            ->select('added')
+            ->select('email')
+            ->select('downloaded')
+            ->select('uploaded')
+            ->select('INET6_NTOA(ip) AS ip')
+            ->where('ip = ?', inet_pton($ip))
+            ->orderBy('id')
+            ->fetchAll();
+
+        foreach ($users as $user) {
+            unset($user['hintanswer'], $user['passhash']);
+
+            if ('Male' === $user['gender']) {
+                $user['it'] = 'he';
+            } elseif ('Female' === $user['gender']) {
+                $user['it'] = 'she';
+            } else {
+                $user['it'] = 'it';
+            }
+        }
+
+        return $users;
+    }
+
+    /**
      * @return int
      *
+     * @throws \Envms\FluentPDO\Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
      */
@@ -120,21 +165,54 @@ class User
     }
 
     /**
-     * @param int   $userid
+     * @param string $username
+     *
+     * @return bool|mixed
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function search_by_username(string $username)
+    {
+        $username = strtolower($username);
+        $users = $this->cache->get('search_users_' . $username);
+        if ($users === false || is_null($users)) {
+            $users = $this->fluent->from('users AS u')
+                ->select(null)
+                ->select('u.id')
+                ->select('u.username')
+                ->select('u.class')
+                ->select("LOWER(REPLACE(classname, ' ', '_')) AS classname")
+                ->innerJoin('class_config AS c ON u.class = c.id')
+                ->where("u.acceptpms != 'no'")
+                ->where('u.username != ?', $this->config['chatBotName'])
+                ->where('u.username LIKE ?', "$username%")
+                ->where('c.classname != ""')
+                ->orderBy('LOWER(u.username)')
+                ->fetchAll();
+            $this->cache->set('search_users_' . $username, $users, 86400);
+        }
+
+        return $users;
+    }
+
+    /**
      * @param array $set
+     * @param int   $userid
+     * @param bool  $persist
      *
-     * @return \PDOStatement
+     * @return bool|int|\PDOStatement
      *
+     * @throws \Envms\FluentPDO\Exception
      * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
      */
-    public function update(array $set, int $userid)
+    public function update(array $set, int $userid, bool $persist = true)
     {
         $result = $this->fluent->update('users')
             ->set($set)
             ->where('id = ?', $userid)
             ->execute();
 
-        if ($result) {
+        if ($result && $persist) {
             $this->cache->update_row('user' . $userid, $set, $this->config['expires']['user_cache']);
         }
 
@@ -145,6 +223,8 @@ class User
      * @param string $selector
      *
      * @return mixed
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function get_remember(string $selector)
     {
@@ -202,9 +282,6 @@ class User
         $this->set_remember($userid, $expires);
     }
 
-    /**
-     * @param int $userid
-     */
     public function delete_remember(int $userid)
     {
         $this->fluent->deleteFrom('auth_tokens')
@@ -219,18 +296,27 @@ class User
     {
         foreach ($users as $userid) {
             if (!empty($userid)) {
+                $user = $this->getUserFromId($userid);
+                $username = !empty($user) ? $user['username'] : '';
                 $this->cache->deleteMulti([
+                    'get_all_boxes_' . $userid,
                     'inbox_' . $userid,
+                    'insertJumpTo' . $userid,
+                    'is_staffs',
                     'peers_' . $userid,
+                    'poll_votes_' . $userid,
                     'port_data_' . $userid,
                     'shitlist_' . $userid,
                     'user' . $userid,
+                    'useravatar_' . $userid,
+                    'userclasses_' . $username,
                     'user_friends_' . $userid,
+                    'userhnrs_' . $userid,
                     'userlist_' . $userid,
+                    'users_names_' . $username,
                     'user_rep_' . $userid,
                     'user_snatches_data_' . $userid,
                     'userstatus_' . $userid,
-                    'is_staffs',
                 ]);
             }
         }
@@ -253,6 +339,8 @@ class User
      * @param string $username
      *
      * @return mixed
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function get_login(string $username)
     {
@@ -273,18 +361,131 @@ class User
     /**
      * @param $class
      * @param $bot
+     * @param $torrent_pass
      * @param $auth
      *
      * @return mixed
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
-    public function get_bot_id($class, $bot, $auth)
+    public function get_bot_id($class, $bot, $torrent_pass, $auth)
     {
         $userid = $this->fluent->from('users')
             ->select(null)
             ->select('id')
-            ->where('class >= ? AND username = ? AND auth = ? AND uploadpos = 1 AND suspended = "no"', $class, $bot, $auth)
+            ->where('class >= ?', $class)
+            ->where('username = ?', $bot)
+            ->where('auth = ?', $auth)
+            ->where('torrent_pass = ?', $torrent_pass)
+            ->where('uploadpos = 1 AND suspended = "no"')
             ->fetch('id');
 
         return $userid;
+    }
+
+    /**
+     * @param array $values
+     *
+     * @return int
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function add(array $values)
+    {
+        $id = $this->fluent->insertInto('users')
+            ->values($values)
+            ->execute();
+
+        return $id;
+    }
+
+    /**
+     * @param array $values
+     * @param array $update
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function insert(array $values, array $update)
+    {
+        $count = floor($this->limit / max(array_map('count', $values)));
+        foreach (array_chunk($values, $count) as $t) {
+            $this->fluent->insertInto('users', $t)
+                ->onDuplicateKeyUpdate($update)
+                ->execute();
+        }
+    }
+
+    /**
+     * @param $date
+     *
+     * @return array|\PDOStatement
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function get_birthday_users($date)
+    {
+        $results = $this->fluent->from('users')
+            ->select(null)
+            ->select('id')
+            ->select('class')
+            ->select('username')
+            ->select('uploaded')
+            ->select('email')
+            ->select('INET6_NTOA(ip) AS ip')
+            ->where('MONTH(birthday) = ?', $date['mon'])
+            ->where('DAYOFMONTH(birthday) = ?', $date['mday'])
+            ->fetchAll();
+
+        return $results;
+    }
+
+    /**
+     * @return array|\PDOStatement
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function get_all_ids()
+    {
+        $ids = $this->fluent->from('users')
+            ->select(null)
+            ->select('id')
+            ->where('enabled = "yes"')
+            ->fetchAll();
+
+        return $ids;
+    }
+
+    /**
+     * @param $torrent_pass
+     *
+     * @return bool|mixed
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
+    public function get_user_from_torrent_pass($torrent_pass)
+    {
+        if (strlen($torrent_pass) != 64) {
+            return false;
+        }
+        $userid = $this->cache->get('torrent_pass_' . $torrent_pass);
+        if ($userid === false || is_null($userid)) {
+            $userid = $this->fluent->from('users')
+                ->select(null)
+                ->select('id')
+                ->where('torrent_pass = ?', $torrent_pass)
+                ->where("enabled = 'yes'")
+                ->fetch();
+            $userid = $userid['id'];
+            $this->cache->set('torrent_pass_' . $torrent_pass, $userid, 86400);
+        }
+        if (empty($userid)) {
+            return false;
+        }
+        $user = $this->getUserFromId($userid);
+        if (!$user) {
+            return false;
+        }
+
+        return $user;
     }
 }

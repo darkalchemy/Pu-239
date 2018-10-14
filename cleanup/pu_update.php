@@ -8,7 +8,7 @@
 function pu_update($data)
 {
     dbconn();
-    global $site_config, $queries, $cache;
+    global $site_config, $queries, $cache, $message_stuffs;
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -52,7 +52,13 @@ function pu_update($data)
                 $modcomment = $arr['modcomment'];
                 $modcomment = get_date($dt, 'DATE', 1) . ' - Promoted to ' . $class_name . ' by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ").\n" . $modcomment;
                 $modcom = sqlesc($modcomment);
-                $msgs_buffer[] = '(0,' . $arr['id'] . ', ' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+                $msgs_buffer[] = [
+                    'sender' => 0,
+                    'receiver' => $arr['id'],
+                    'added' => $dt,
+                    'msg' => $msg,
+                    'subject' => $subject,
+                ];
                 $users_buffer[] = '(' . $arr['id'] . ', ' . $class_value . ', 1, ' . $modcom . ')';
                 $update['invites'] = ($arr['invites'] + 1);
                 $cache->update_row('user' . $arr['id'], [
@@ -60,11 +66,10 @@ function pu_update($data)
                     'invites' => $update['invites'],
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_cache']);
-                $cache->increment('inbox_' . $arr['id']);
             }
             $count = count($users_buffer);
             if ($count > 0) {
-                sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
+                $message_stuffs->insert($msgs_buffer);
                 sql_query('INSERT INTO users (id, class, invites, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE class = VALUES(class), invites = invites + VALUES(invites), modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
             }
             if ($data['clean_log']) {

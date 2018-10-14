@@ -477,7 +477,7 @@ $form .= "
     <form action='' method='post'>
         <div class='bg-02'>
         <fieldset id='user_blocks_home' class='header'>
-            <legend class='flipper has-text-primary'><i class='icon-up-open size_3' aria-is_hidden='true'></i>Home Page Settings</legend>
+            <legend class='flipper has-text-primary'><i class='icon-up-open size_2' aria-is_hidden='true'></i>Home Page Settings</legend>
             <div>";
 
 $level1 .= "
@@ -750,7 +750,7 @@ $form .= "
         </div>
         <div class='bg-02 top20'>
         <fieldset id='user_blocks_site' class='header'>
-            <legend class='flipper has-text-primary'><i class='icon-up-open size_3' aria-is_hidden='true'></i>Site Alert Settings</legend>
+            <legend class='flipper has-text-primary'><i class='icon-up-open size_2' aria-is_hidden='true'></i>Site Alert Settings</legend>
             <div>";
 
 $level2 .= "
@@ -875,7 +875,7 @@ $form .= "
         </div>
         <div class='bg-02 top20'>
         <fieldset id='user_blocks_user' class='header'>
-            <legend class='flipper has-text-primary'><i class='icon-up-open size_3' aria-is_hidden='true'></i>Userdetails Page Settings</legend>
+            <legend class='flipper has-text-primary'><i class='icon-up-open size_2' aria-is_hidden='true'></i>Userdetails Page Settings</legend>
             <div>";
 
 $level3 = "

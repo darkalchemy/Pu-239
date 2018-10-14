@@ -8,7 +8,7 @@
 function trivia_points_update($data)
 {
     dbconn();
-    global $site_config, $queries, $cache;
+    global $site_config, $queries, $cache, $message_stuffs;
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -27,6 +27,7 @@ function trivia_points_update($data)
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $subject = 'Trivia Bonus Points Award.';
+        $dt = TIME_NOW;
         while ($winners = mysqli_fetch_assoc($res)) {
             $correct = $incorrect = $modcomment = $user_id = '';
             extract($winners);
@@ -66,7 +67,14 @@ function trivia_points_update($data)
 
             $msg = 'You answered ' . number_format($correct) . ' trivia question' . plural($correct) . " correctly and were awarded $points Bonus Points!!\n";
             $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - Awarded Bonus Points for Trivia.\n" . $modcomment;
-            $msgs_buffer[] = '(0,' . sqlesc($user_id) . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+            $msgs_buffer[] = [
+                'sender' => 0,
+                'receiver' => $user_id,
+                'added' => $dt,
+                'msg' => $msg,
+                'subject' => $subject,
+            ];
+
             $users[] = $user_id;
             $cache->update_row('user' . $user_id, [
                 'modcomment' => $modcomment,
@@ -77,11 +85,10 @@ function trivia_points_update($data)
     }
 
     if (!empty($msgs_buffer)) {
-        sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
+        $message_stuffs->insert($msgs_buffer);
     }
     write_log('Cleanup - Trivia Bonus Points awarded to - ' . $count . ' Member(s)');
     foreach ($users as $user_id) {
-        $cache->increment('inbox_' . $user_id);
         $cache->delete('user' . $user_id);
     }
 

@@ -11,9 +11,15 @@ global $CURUSER, $site_config, $session, $cache, $user_stuffs, $BLOCKS, $torrent
 
 $coin_stuffs = new DarkAlchemy\Pu239\Coin();
 $lang = array_merge(load_language('global'), load_language('details'));
+$stdhead = [
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
+];
 $stdfoot = [
     'js' => [
         get_file_name('details_js'),
+        get_file_name('sceditor_js'),
     ],
 ];
 
@@ -147,7 +153,7 @@ if ($CURUSER['downloadpos'] !== 1) {
 
 $HTMLOUT = '';
 if (isset($_GET['uploaded'])) {
-    $HTMLOUT .= "<meta http-equiv='refresh' content='1;url=download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "' />";
+    $HTMLOUT .= "<meta http-equiv='refresh' content='1;url=download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "'>";
 }
 
 $categorie = genrelist();
@@ -251,13 +257,13 @@ $banner_image = '';
 if (!empty($torrent['banner'])) {
     $banner_image = "
         <div id='banner'>
-            <img src='" . url_proxy($torrent['banner'], true, 1000, 185) . "' class='w-100 round10' />
+            <img src='" . url_proxy($torrent['banner'], true, 1000, 185) . "' class='w-100 round10'>
         </div>
         <div id='overlay' class='container is-fluid bg-07 is-marginless round10'>";
     /*} else {
         $banner_image = "
             <div id='banner'>
-                <img src='' class='w-100 round10' />
+                <img src='' class='w-100 round10'>
             </div>
             <div id='overlay' class='container is-fluid bg-07 is-marginless round10'>";*/
 }
@@ -271,6 +277,8 @@ if (!empty($torrent['name'])) {
                 </div>
             </div>';
 }
+$torrent['free_color'] = '#0f0';
+$torrent['silver_color'] = 'silver';
 require_once ROOT_DIR . 'free_details.php';
 
 $info_block = '';
@@ -285,7 +293,7 @@ if ($moderator) {
 }
 if ($torrent['nuked'] === 'yes') {
     $reason = !empty($torrent['nukereason']) ? $torrent['nukereason'] : '';
-    $info_block .= tr('Nuked', "<div class='level-left left10'><img src='{$site_config['pic_baseurl']}nuked.gif' alt='Nuked' class='tooltipper icon right5' title='Nuked' />$reason</div>", 1);
+    $info_block .= tr('Nuked', "<div class='level-left left10'><img src='{$site_config['pic_baseurl']}nuked.gif' alt='Nuked' class='tooltipper icon right5' title='Nuked'>$reason</div>", 1);
 }
 $torrent['cat_name'] = htmlsafechars($change[$torrent['category']]['name']);
 if (isset($torrent['cat_name'])) {
@@ -318,8 +326,8 @@ if (!empty($torrent['descr'])) {
 $torrent['addup'] = !empty($torrent['addedup']) ? get_date($torrent['addedup'], 'DATE') : '';
 $torrent['addfree'] = !empty($torrent['addedfree']) ? get_date($torrent['addedfree'], 'DATE') : '';
 $torrent['idk'] = $dt + 14 * 86400;
-$torrent['freeimg'] = '<img src="' . $site_config['pic_baseurl'] . 'freedownload.gif" alt="" />';
-$torrent['doubleimg'] = '<img src="' . $site_config['pic_baseurl'] . 'doubleseed.gif" alt="" />';
+$torrent['freeimg'] = '<img src="' . $site_config['pic_baseurl'] . 'freedownload.gif" alt="">';
+$torrent['doubleimg'] = '<img src="' . $site_config['pic_baseurl'] . 'doubleseed.gif" alt="">';
 $slot = make_freeslots($CURUSER['id'], 'fllslot_');
 $torrent['addedfree'] = $torrent['addedup'] = $free_slot = $double_slot = '';
 if (!empty($slot)) {
@@ -355,25 +363,25 @@ $points .= tr('Karma Points', '
                         <p>In total ' . (int) $torrent['points'] . ' Karma Points given to this torrent of which ' . $my_points . ' from you</p>
                         <p>
                             <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=10">
-                                <img src="' . $site_config['pic_baseurl'] . '10coin.png" alt="10" class="tooltipper" title="10 Points" />
+                                <img src="' . $site_config['pic_baseurl'] . '10coin.png" alt="10" class="tooltipper" title="10 Points">
                             </a>
                             <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=20">
-                                <img src="' . $site_config['pic_baseurl'] . '20coin.png" alt="20" class="tooltipper" title="20 Points" />
+                                <img src="' . $site_config['pic_baseurl'] . '20coin.png" alt="20" class="tooltipper" title="20 Points">
                             </a>
                             <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=50">
-                                <img src="' . $site_config['pic_baseurl'] . '50coin.png" alt="50" class="tooltipper" title="50 Points" />
+                                <img src="' . $site_config['pic_baseurl'] . '50coin.png" alt="50" class="tooltipper" title="50 Points">
                             </a>
                             <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=100">
-                                <img src="' . $site_config['pic_baseurl'] . '100coin.png" alt="100" class="tooltipper" title="100 Points" />
+                                <img src="' . $site_config['pic_baseurl'] . '100coin.png" alt="100" class="tooltipper" title="100 Points">
                             </a>
                             <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=200">
-                                <img src="' . $site_config['pic_baseurl'] . '200coin.png" alt="200" class="tooltipper" title="200 Points" />
+                                <img src="' . $site_config['pic_baseurl'] . '200coin.png" alt="200" class="tooltipper" title="200 Points">
                             </a>
                             <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=500">
-                                <img src="' . $site_config['pic_baseurl'] . '500coin.png" alt="500" class="tooltipper" title="500 Points" />
+                                <img src="' . $site_config['pic_baseurl'] . '500coin.png" alt="500" class="tooltipper" title="500 Points">
                             </a>
                             <a href="' . $site_config['baseurl'] . '/coins.php?id=' . $id . '&amp;points=1000">
-                                <img src="' . $site_config['pic_baseurl'] . '1000coin.png" alt="1000" class="tooltipper" title="1000 Points" />
+                                <img src="' . $site_config['pic_baseurl'] . '1000coin.png" alt="1000" class="tooltipper" title="1000 Points">
                             </a>
                         </p>
                         <p>By clicking on the coins you can give Karma Points to the uploader of this torrent.</p>
@@ -412,7 +420,7 @@ switch (true) {
 }
 $sr = floor(($sr * 1000) / 1000);
 $sr = "
-    <img src='{$site_config['pic_baseurl']}smilies/{$s}.gif' alt='' class='emoticon right10' />
+    <img src='{$site_config['pic_baseurl']}smilies/{$s}.gif' alt='' class='emoticon right10'>
     <span style='color: " . get_ratio_color($sr) . ";'>" . number_format($sr, 3) . '</span>';
 if ($torrent['free'] >= 1 || $torrent['freetorrent'] >= 1 || $isfree['yep'] || $free_slot || $double_slot != 0 || $CURUSER['free_switch'] != 0) {
     $points .= tr('Ratio After Download', "<div class='left10'><div class='level-left'><del>{$sr} Your new ratio if you download this torrent.</del></div><div class='top10'><span class='has-text-lime'>[FREE] </span>(Only upload stats are recorded)</div></div>", 1);
@@ -440,7 +448,7 @@ if ($torrent_cache['rep']) {
 $audit .= tr('Report Torrent', "
     <form action='{$site_config['baseurl']}/report.php?type=Torrent&amp;id=$id' method='post'>
         <div class='level-left'>
-            <input class='button is-small left10 right10' type='submit' name='submit' value='Report This Torrent' />
+            <input class='button is-small left10 right10' type='submit' name='submit' value='Report This Torrent'>
             For breaking the
             <a href='{$site_config['baseurl']}/rules.php'>
                 <span class='has-text-lime'>&nbsp;rules</span>
@@ -456,7 +464,7 @@ if ($moderator) {
     $audit .= tr('Clear Cache', "
                     <form method='post' action='{$site_config['baseurl']}/details.php?id={$torrent['id']}'>
                         <input type='hidden' name='clear_cache' value={$torrent['id']}>
-                        <input type='submit' class='button is-small left10' value='Clear Cache' />
+                        <input type='submit' class='button is-small left10' value='Clear Cache'>
                     </form>", 1);
 
     if (!empty($torrent['checked_by'])) {
@@ -470,18 +478,18 @@ if ($moderator) {
                     <div class='bottom10 left10'>
                         <form method='post' action='{$site_config['baseurl']}/details.php?id={$torrent['id']}'>
                             <input type='hidden' name='rechecked' value={$torrent['id']}>
-                            <input type='submit' class='button is-small bottom10' value='Re-Check this torrent' />
+                            <input type='submit' class='button is-small bottom10' value='Re-Check this torrent'>
                         </form>
                         <form method='post' action='{$site_config['baseurl']}/details.php?id={$torrent['id']}'>
                             <input type='hidden' name='clearchecked' value={$torrent['id']}>
-                            <input type='submit' class='button is-small' value='Un-Check this torrent' />
+                            <input type='submit' class='button is-small' value='Un-Check this torrent'>
                         </form>
                     </div>", 1);
     } else {
         $audit .= tr('Checked by', "
                     <form method='post' action='{$site_config['baseurl']}/details.php?id={$torrent['id']}'>
                         <input type='hidden' name='checked' value={$torrent['id']}>
-                        <input type='submit' class='button is-small left10' value='Check this torrent' />
+                        <input type='submit' class='button is-small left10' value='Check this torrent'>
                     </form>", 1);
     }
 }
@@ -505,17 +513,33 @@ $audit .= tr('Request Reseed', "
                     <option value='last10'>last10</option>
                     <option value='owner'>uploader</option>
                 </select>
-                <input type='hidden' name='uploader' value='" . (int) $torrent['owner'] . "' />
-                <input type='hidden' name='reseedid' value='$id' />
-                <input type='hidden' name='name' value='{$torrent['name']}' />
+                <input type='hidden' name='uploader' value='" . (int) $torrent['owner'] . "'>
+                <input type='hidden' name='reseedid' value='$id'>
+                <input type='hidden' name='name' value='{$torrent['name']}'>
                 <input type='hidden' name='csrf' value='" . $session->get('csrf_token') . "'>
-                <input type='submit' class='button is-small left10'" . (($next_reseed > $dt) ? ' disabled' : '') . " value='SendPM' />
+                <input type='submit' class='button is-small left10'" . (($next_reseed > $dt) ? ' disabled' : '') . " value='SendPM'>
             </form>
         </div>", 1);
 
 if ($torrent['allow_comments'] === 'yes' || $moderator) {
     $comments = '';
-    $add_comment = comment_box($torrent['id'], $torrent['name']);
+    $add_comment = "
+    <a name='startcomments'></a>
+    <div class='has-text-centered'>
+        <div class='size_5 bottom20'>Leave a Comment</div>
+        <a href='{$site_config['baseurl']}/takethankyou.php?id={$torrent['id']}'>
+            <img src='{$site_config['pic_baseurl']}smilies/thankyou.gif' class='tooltipper' alt='Thank You' title='Give a quick \"Thank You\"'>
+        </a>
+    <form name='comment' method='post' action='{$site_config['baseurl']}/comment.php'>
+        <input type='hidden' name='csrf' value='" . $session->get('csrf_token') . "'>
+        <input type='hidden' name='action' value='add'>
+        <input type='hidden' name='tid' value='{$torrent['id']}'>
+        </div>" . BBcode(null, null, 200) . "
+        <div class='has-text-centered'>
+            <input class='button is-small margin20' type='submit' value='Submit'>
+        </div>
+    </form>";
+
     $count = $torrent['comments'];
     if (!$count) {
         $comments .= "
@@ -554,7 +578,7 @@ if ($CURUSER['downloadpos'] === 1 || $owner) {
         </div>
         <div class='tooltip_templates'>
             <div id='balloon3' class='text-justify'>
-                Remember to show your gratitude and Thank the Uploader. <img src='{$site_config['pic_baseurl']}smilies/smile1.gif' alt='' />
+                Remember to show your gratitude and Thank the Uploader. <img src='{$site_config['pic_baseurl']}smilies/smile1.gif' alt=''>
             </div>
         </div>";
 
@@ -619,8 +643,5 @@ foreach ($sections as $section => $container) {
         $HTMLOUT .= $$section;
     }
 }
-//dd($torrent);
-//$cache->set('torrent_details_' . $id, $torrent, $site_config['expires']['torrent_details']);
 
-//dd($HTMLOUT, $torrent, $torrent, $imdb_data);
-echo stdhead(htmlsafechars($torrent['name'], ENT_QUOTES)) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead(htmlsafechars($torrent['name'], ENT_QUOTES), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

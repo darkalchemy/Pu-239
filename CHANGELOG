@@ -1,3 +1,19 @@
+14 Oct, 2018
+add: lighter template WIP - will need to rethink AJAX Chat templates
+rewrite: breadcrumbs, WIP
+replace: get all users with ajax user lookup send_message.php
+replace: markItUp.js with SCEditor.js WYSIWYG Editor
+remove: jquery.mousewheel.js
+move: jquery.flexslider.js to npm
+move: tooltipster.js to npm
+remove .htaccess files as nginx ignores them
+add: new base template
+move: themeChanger into template folder to allow modification per template
+replace: FormManager.js with genres_show_hide.js
+replace: jquery.validator.js with html5 validation
+fix: Adminer link in navbar
+remove: ipToStorageFormat function
+
 11 Oct, 2018
 fix: site_settings.php
 

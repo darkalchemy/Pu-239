@@ -3,7 +3,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config, $cache, $message_stuffs;
 
 check_user_status();
 if ($CURUSER['class'] < MIN_TO_PLAY) {
@@ -228,7 +228,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     } else {
         $ratio = number_format(($CURUSER['uploaded'] - $nobits) / $CURUSER['downloaded'], 2);
     }
-    $time = TIME_NOW;
+    $dt = TIME_NOW;
     //== Take Bet
     if (isset($_GET['takebet'])) {
         $betid = (int) $_GET['takebet'];
@@ -264,13 +264,20 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                 'uploaded' => $update['uploaded'],
             ], $site_config['expires']['user_cache']);
             if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
-                sql_query('INSERT INTO casino (userid, date, deposit) VALUES (' . sqlesc($tbet['userid']) . ", $time, -" . sqlesc($tbet['amount']) . ')') or sqlerr(__FILE__, __LINE__);
+                sql_query('INSERT INTO casino (userid, date, deposit) VALUES (' . sqlesc($tbet['userid']) . ", $dt, -" . sqlesc($tbet['amount']) . ')') or sqlerr(__FILE__, __LINE__);
             }
             sql_query('UPDATE casino_bets SET challenged = ' . sqlesc($CURUSER['username']) . ', winner = ' . sqlesc($CURUSER['username']) . ' WHERE id =' . sqlesc($betid)) or sqlerr(__FILE__, __LINE__);
-            $subject = sqlesc($lang['casino_casino_results']);
-            $msg = sqlesc('You lost a bet! ' . htmlsafechars($CURUSER['username']) . ' just won ' . htmlsafechars($nogb) . ' of your upload credit!');
-            sql_query("INSERT INTO messages (subject, sender, receiver, added, msg, unread, poster) VALUES ($subject, $sendfrom, " . sqlesc($tbet['userid']) . ", $time, $msg, 'yes', $sendfrom)") or sqlerr(__FILE__, __LINE__);
-            $cache->increment('inbox_' . $tbet['userid']);
+            $subject = $lang['casino_casino_results'];
+            $msg = 'You lost a bet! ' . htmlsafechars($CURUSER['username']) . ' just won ' . htmlsafechars($nogb) . ' of your upload credit!';
+            $msgs_buffer[] = [
+                'sender' => $sendfrom,
+                'poster' => $sendfrom,
+                'receiver' => $tbet['userid'],
+                'added' => $dt,
+                'msg' => $msg,
+                'subject' => $subject,
+            ];
+            $message_stuffs->insert($msgs_buffer);
             if ($writelog == 1) {
                 write_log($CURUSER['username'] . " won $nogb {$lang['casino_of_upload_credit_off']} " . htmlsafechars($tbet['proposed']));
             }
@@ -305,13 +312,22 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             ], $site_config['expires']['user_cache']);
 
             if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
-                sql_query('INSERT INTO casino (userid, date, deposit) VALUES (' . sqlesc($tbet['userid']) . ", $time, -" . sqlesc($tbet['amount']) . ')') or sqlerr(__FILE__, __LINE__);
+                sql_query('INSERT INTO casino (userid, date, deposit) VALUES (' . sqlesc($tbet['userid']) . ", $dt, -" . sqlesc($tbet['amount']) . ')') or sqlerr(__FILE__, __LINE__);
             }
             sql_query('UPDATE casino_bets SET challenged = ' . sqlesc($CURUSER['username']) . ', winner = ' . sqlesc($tbet['proposed']) . ' WHERE id = ' . sqlesc($betid)) or sqlerr(__FILE__, __LINE__);
             $subject = sqlesc($lang['casino_casino_results']);
             $msg = sqlesc("{$lang['casino_you_just_won']} " . htmlsafechars($nogb) . " {$lang['casino_of_upload_credit_from']} " . $CURUSER['username'] . '!');
-            sql_query("INSERT INTO messages (subject, sender, receiver, added, msg, unread, poster) VALUES ($subject, $sendfrom, " . sqlesc($tbet['userid']) . ", $time, $msg, 'yes', $sendfrom)") or sqlerr(__FILE__, __LINE__);
-            $cache->increment('inbox_' . $tbet['userid']);
+
+            $msgs_buffer[] = [
+                'sender' => $sendfrom,
+                'poster' => $sendfrom,
+                'receiver' => $tbet['userid'],
+                'added' => $dt,
+                'msg' => $msg,
+                'subject' => $subject,
+            ];
+            $message_stuffs->insert($msgs_buffer);
+
             if ($writelog == 1) {
                 write_log('' . htmlsafechars($tbet['proposed']) . " won $nogb {$lang['casino_of_upload_credit_off']} " . $CURUSER['username']);
             }
@@ -364,7 +380,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
         $classColor = get_user_class_color($CURUSER['class']);
         $message = "[color=#$classColor][b]{$user}[/b][/color] {$lang['casino_has_just_placed_a']} [color=red][b]{$bet}[/b][/color] {$lang['casino_bet_in_the_casino']}";
         $messages = "{$user} {$lang['casino_has_just_placed_a']} {$bet} {$lang['casino_bet_in_the_casino']}";
-        sql_query('INSERT INTO casino_bets ( userid, proposed, challenged, amount, time) VALUES (' . sqlesc($CURUSER['id']) . ',' . sqlesc($CURUSER['username']) . ", 'empty', $nobits, $time)") or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO casino_bets ( userid, proposed, challenged, amount, time) VALUES (' . sqlesc($CURUSER['id']) . ',' . sqlesc($CURUSER['username']) . ", 'empty', $nobits, $dt)") or sqlerr(__FILE__, __LINE__);
         sql_query('UPDATE users SET uploaded = ' . sqlesc($newups) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         sql_query('UPDATE casino SET deposit = deposit + ' . sqlesc($nobits) . ' WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 
@@ -377,7 +393,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             //ircbot($messages);
         }
         if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
-            sql_query('INSERT INTO casino (userid, date, deposit) VALUES (' . sqlesc($CURUSER['id']) . ", $time, " . sqlesc($nobits) . ')') or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO casino (userid, date, deposit) VALUES (' . sqlesc($CURUSER['id']) . ", $dt, " . sqlesc($nobits) . ')') or sqlerr(__FILE__, __LINE__);
         }
     }
     $loca = sql_query("SELECT * FROM casino_bets WHERE challenged ='empty'") or sqlerr(__FILE__, __LINE__);

@@ -1,8 +1,8 @@
 <?php
 
-global $CURUSER, $site_config, $lang, $cache, $h1_thingie;
+global $CURUSER, $site_config, $lang, $cache, $h1_thingie, $user_stuffs, $message_stuffs, $fluent;
 
-$all_my_boxes = $curuser_cache = $user_cache = $categories = '';
+$all_my_boxes = $user_cache = $categories = '';
 if (isset($_POST['action2'])) {
     $good_actions = [
         'add',
@@ -19,26 +19,34 @@ if (isset($_POST['action2'])) {
     switch ($action2) {
         case 'change_pm':
             $change_pm_number = (isset($_POST['change_pm_number']) ? intval($_POST['change_pm_number']) : 20);
-            sql_query('UPDATE users SET pms_per_page = ' . sqlesc($change_pm_number) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-            $cache->update_row('user' . $CURUSER['id'], [
+            $set = [
                 'pms_per_page' => $change_pm_number,
-            ], $site_config['expires']['user_cache']);
+            ];
+            $user_stuffs->update($set, $CURUSER['id']);
             header('Location: messages.php?action=edit_mailboxes&pm=1');
             die();
-            break;
 
         case 'add':
             if ($_POST['new'] === '') {
                 stderr($lang['pm_error'], $lang['pm_edmail_err']);
             }
-            $res = sql_query('SELECT boxnumber FROM pmboxes WHERE userid = ' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber  DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
-            $box_arr = mysqli_fetch_row($res);
-            $box = ($box_arr[0] < 2 ? 2 : ($box_arr[0] + 1));
+            $boxnumber = $fluent->from('pmboxes')
+                ->select(null)
+                ->select('MAX(boxnumber) AS boxnumber')
+                ->fetch('boxnumber');
+            $box = $boxnumber < 2 ? 2 : $boxnumber++;
             $new_box = $_POST['new'];
             foreach ($new_box as $key => $add_it) {
                 if (valid_username($add_it) && $add_it !== '') {
                     $name = htmlsafechars($add_it);
-                    sql_query('INSERT INTO pmboxes (userid, name, boxnumber) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($name) . ', ' . sqlesc($box) . ')') or sqlerr(__FILE__, __LINE__);
+                    $values = [
+                        'userid' => $CURUSER['id'],
+                        'name' => $name,
+                        'boxnumber' => $box,
+                    ];
+                    $fluent->insertInto('pmboxes')
+                        ->values($values)
+                        ->execute();
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo' . $CURUSER['id']);
                 }
@@ -50,24 +58,35 @@ if (isset($_POST['action2'])) {
             break;
 
         case 'edit_boxes':
-            $res = sql_query('SELECT * FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-            if (mysqli_num_rows($res) === 0) {
+            $boxes = $fluent->from('pmboxes')
+                ->where('userid = ?', $CURUSER['id'])
+                ->fetchAll();
+
+            if (empty($boxes)) {
                 stderr($lang['pm_error'], $lang['pm_edmail_err1']);
             }
-            while ($row = mysqli_fetch_assoc($res)) {
+            foreach ($boxes as $row) {
                 if (valid_username($_POST['edit' . $row['id']]) && $_POST['edit' . $row['id']] !== '' && $_POST['edit' . $row['id']] !== $row['name']) {
                     $name = htmlsafechars($_POST['edit' . $row['id']]);
-                    sql_query('UPDATE pmboxes SET name=' . sqlesc($name) . ' WHERE id=' . sqlesc($row['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+                    $set = [
+                        'name' => $name,
+                    ];
+                    $fluent->update('pmboxes')
+                        ->set($set)
+                        ->where('id = ?', $row['id'])
+                        ->execute();
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo' . $CURUSER['id']);
                     $worked = '&name=1';
                 }
                 if ($_POST['edit' . $row['id']] == '') {
-                    $remove_messages_res = sql_query('SELECT id FROM messages WHERE location=' . sqlesc($row['boxnumber']) . '  AND receiver=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-                    while ($remove_messages_arr = mysqli_fetch_assoc($remove_messages_res)) {
-                        sql_query('UPDATE messages SET location=1 WHERE id=' . sqlesc($remove_messages_arr['id'])) or sqlerr(__FILE__, __LINE__);
-                    }
-                    sql_query('DELETE FROM pmboxes WHERE id=' . sqlesc($row['id']) . '  LIMIT 1') or sqlerr(__FILE__, __LINE__);
+                    $set = [
+                        'location' => 1,
+                    ];
+                    $message_stuffs->update_location($set, $row['boxnumber'], $CURUSER['id']);
+                    $fluent->delete('pmboxes')
+                        ->where('id = ?', $row['id'])
+                        ->execute();
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo' . $CURUSER['id']);
                     $deleted = '&box_delete=1';
@@ -78,83 +97,71 @@ if (isset($_POST['action2'])) {
             break;
 
         case 'message_settings':
-            $updateset = [];
+            $set = [];
             $change_pm_number = (isset($_POST['change_pm_number']) ? intval($_POST['change_pm_number']) : 20);
-            $updateset[] = 'pms_per_page = ' . sqlesc($change_pm_number);
-            $curuser_cache['pms_per_page'] = $change_pm_number;
-            $user_cache['pms_per_page'] = $change_pm_number;
-
             $setbits = $clrbits = 0;
             if ($_POST['show_pm_avatar'] === 'yes') {
                 $setbits |= user_options_2::SHOW_PM_AVATAR;
             } else {
                 $clrbits |= user_options_2::SHOW_PM_AVATAR;
             }
-
-            $acceptpms = ((isset($_POST['acceptpms']) && $_POST['acceptpms'] === 'yes') ? 'yes' : ((isset($_POST['acceptpms']) && $_POST['acceptpms'] === 'friends') ? 'friends' : 'no'));
-            $updateset[] = 'acceptpms = ' . sqlesc($acceptpms);
-            $curuser_cache['acceptpms'] = $acceptpms;
-            $user_cache['acceptpms'] = $acceptpms;
-            $save_pms = ((isset($_POST['save_pms'])) ? 'yes' : 'no');
-            $updateset[] = 'savepms = ' . sqlesc($save_pms);
-            $curuser_cache['savepms'] = $save_pms;
-            $user_cache['savepms'] = $save_pms;
-            $deletepms = ((isset($_POST['deletepms']) && $_POST['deletepms'] == 'yes') ? 'yes' : 'no');
-            $updateset[] = 'deletepms = ' . sqlesc($deletepms);
-            $curuser_cache['deletepms'] = $deletepms;
-            $user_cache['deletepms'] = $deletepms;
-            $pmnotif = (isset($_POST['pmnotif']) ? $_POST['pmnotif'] : '');
-            $emailnotif = (isset($_POST['emailnotif']) ? $_POST['emailnotif'] : '');
-            $notifs = ($pmnotif == 'yes' ? $lang['pm_edmail_pm_1'] : '');
-            $notifs .= ($emailnotif == 'yes' ? $lang['pm_edmail_email_1'] : '');
+            $acceptpms = isset($_POST['acceptpms']) && $_POST['acceptpms'] === 'yes' ? 'yes' : (isset($_POST['acceptpms']) && $_POST['acceptpms'] === 'friends' ? 'friends' : 'no');
+            $save_pms = isset($_POST['save_pms']) ? 'yes' : 'no';
+            $deletepms = isset($_POST['deletepms']) && $_POST['deletepms'] === 'yes' ? 'yes' : 'no';
+            $pmnotif = isset($_POST['pmnotif']) ? $_POST['pmnotif'] : '';
+            $emailnotif = isset($_POST['emailnotif']) ? $_POST['emailnotif'] : '';
+            $notifs = $pmnotif == 'yes' ? $lang['pm_edmail_pm_1'] : '';
+            $notifs .= $emailnotif == 'yes' ? $lang['pm_edmail_email_1'] : '';
             $cats = genrelist();
-            $r = sql_query('SELECT id FROM categories') or sqlerr(__FILE__, __LINE__);
-            $rows = mysqli_num_rows($r);
+            $category_ids = $fluent->from('categories')
+                ->select(null)
+                ->select('id')
+                ->fetchAll();
+
+            $rows = count($category_ids);
             for ($i = 0; $i < $rows; ++$i) {
-                $a = mysqli_fetch_assoc($r);
-                if (isset($_POST["cat{$a['id']}"]) && $_POST["cat{$a['id']}"] === 'yes') {
-                    $notifs .= "[cat{$a['id']}]";
+                $a = $category_ids[$i]['id'];
+                if (isset($_POST["cat{$a}"]) && $_POST["cat{$a}"] === 'yes') {
+                    $notifs .= "[cat{$a}]";
                 }
             }
-            $updateset[] = 'notifs = ' . sqlesc($notifs) . '';
-            $curuser_cache['notifs'] = $notifs;
-            $user_cache['notifs'] = $notifs;
 
             if ($setbits || $clrbits) {
-                $sql = 'UPDATE users SET opt2 = ((opt2 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id = ' . sqlesc($CURUSER['id']);
-                sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                $set = [
+                    'opt2' => new Envms\FluentPDO\Literal("(opt2 | {$setbits}) & ~{$clrbits}"),
+                ];
+                $user_stuffs->update($set, $CURUSER['id'], false);
             }
-            $opt2 = $fluent->from('users')
-                ->select(null)
-                ->select('opt2')
-                ->where('id = ?', $CURUSER['id'])
-                ->fetch('opt2');
-            $cache->update_row('user' . $CURUSER['id'], [
-                'opt2' => $opt2,
-            ], $site_config['expires']['user_cache']);
-
-            if ($user_cache) {
-                $cache->update_row('user' . $CURUSER['id'], $user_cache, $site_config['expires']['user_cache']);
-            }
-            sql_query('UPDATE users SET ' . implode(', ', $updateset) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+            unset($set);
+            $set = [
+                'pms_per_page' => $change_pm_number,
+                'acceptpms' => $acceptpms,
+                'savepms' => $save_pms,
+                'deletepms' => $deletepms,
+                'notifs' => $notifs,
+            ];
+            $user_stuffs->update($set, $CURUSER['id']);
+            $user_stuffs->getUserFromId($CURUSER['id'], true);
             $worked = '&pms=1';
             header('Location: messages.php?action=edit_mailboxes' . $worked);
             die();
-            break;
     }
 }
 
-$res = sql_query('SELECT * FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY name ASC') or sqlerr(__FILE__, __LINE__);
-if (mysqli_num_rows($res) > 0) {
-    while ($row = mysqli_fetch_assoc($res)) {
-        $res_count = sql_query('SELECT COUNT(id) FROM messages WHERE  location = ' . sqlesc($row['boxnumber']) . ' AND receiver = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-        $arr_count = mysqli_fetch_row($res_count);
-        $messages = (int) $arr_count[0];
+$boxes = $fluent->from('pmboxes')
+    ->where('userid = ?', $CURUSER['id'])
+    ->orderBy('name ASC')
+    ->fetchAll();
+$count_boxes = !empty($boxes) ? count($boxes) : 0;
+
+if (!empty($boxes)) {
+    foreach ($boxes as $row) {
+        $messages = $message_stuffs->get_count($CURUSER['id'], $row['boxnumber']);
         $all_my_boxes .= '
                     <tr>
                         <td colspan="2">
-                            ' . $lang['pm_edmail_box'] . '' . ((int) $row['boxnumber'] - 1) . ' <span class="has-text-weight-bold">' . htmlsafechars($row['name']) . ':</span>
-                            <input type="text" name="edit' . ((int) $row['id']) . '" value="' . htmlsafechars($row['name']) . '" class="w-100" />' . $lang['pm_edmail_contain'] . '' . htmlsafechars($messages) . '' . $lang['pm_edmail_messages'] . '
+                            ' . $lang['pm_edmail_box'] . '' . ((int) $row['boxnumber'] - 1) . ' <span>' . htmlsafechars($row['name']) . ':</span>
+                            <input type="text" name="edit' . ((int) $row['id']) . '" value="' . htmlsafechars($row['name']) . '" class="w-100">' . $lang['pm_edmail_contain'] . '' . htmlsafechars($messages) . '' . $lang['pm_edmail_messages'] . '
                         </td>
                     </tr>';
     }
@@ -164,7 +171,7 @@ if (mysqli_num_rows($res) > 0) {
                         ' . $lang['pm_edmail_if'] . '</td>
                     </tr>
                     <tr>
-                        <td colspan="2"><span class="has-text-weight-bold">' . $lang['pm_edmail_note'] . '</span>
+                        <td colspan="2"><span>' . $lang['pm_edmail_note'] . '</span>
                         <ul>
                             <li>' . $lang['pm_edmail_if1'] . '</li>
                             <li>' . $lang['pm_edmail_if2'] . '<a class="altlink" href="messages.php?action=view_mailbox">' . $lang['pm_edmail_main'] . '</a>.</li>
@@ -172,35 +179,41 @@ if (mysqli_num_rows($res) > 0) {
                     </tr>
                     <tr>
                         <td colspan="2" class="has-text-centered">
-                            <input type="submit" class="button is-small margin20" value="' . $lang['pm_edmail_edit'] . '" />
+                            <input type="submit" class="button is-small margin20" value="' . $lang['pm_edmail_edit'] . '">
                         </td>
                     </tr>';
 } else {
     $all_my_boxes .= '
                     <tr>
-                        <td><span class="has-text-weight-bold">' . $lang['pm_edmail_nobox'] . '</span></td>
+                        <td><span>' . $lang['pm_edmail_nobox'] . '</span></td>
                     </tr>';
 }
 
 $per_page_drop_down = '<select name="change_pm_number">';
 $i = 20;
 while ($i <= ($maxbox > 200 ? 200 : $maxbox)) {
-    $per_page_drop_down .= '<option class="body" value="' . $i . '" ' . ($CURUSER['pms_per_page'] == $i ? ' selected' : '') . '>' . $i . '' . $lang['pm_edmail_perpage'] . '</option>';
+    $per_page_drop_down .= '<option class="body" value="' . $i . '"' . ($CURUSER['pms_per_page'] == $i ? ' selected' : '') . '>' . $i . '' . $lang['pm_edmail_perpage'] . '</option>';
     $i = ($i < 100 ? $i = $i + 10 : $i = $i + 25);
 }
 $per_page_drop_down .= '</select>';
 
-$r = sql_query('SELECT id, image, name FROM categories ORDER BY name') or sqlerr(__FILE__, __LINE__);
-if (mysqli_num_rows($r) > 0) {
+$category_set = $fluent->from('categories')
+    ->select(null)
+    ->select('id')
+    ->select('image')
+    ->select('name')
+    ->fetchAll();
+
+if (!empty($category_set)) {
     $categories .= "
             <div id='cat-container' class='level-center'>";
-    while ($a = mysqli_fetch_assoc($r)) {
+    foreach ($category_set as $a) {
         $categories .= "
                 <span class='margin10 bordered level-center bg-02 tooltipper' title='" . htmlsafechars($a['name']) . "'>
-                    <input name='cat{$a['id']}' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? ' checked' : '') . " value='yes' />
+                    <input name='cat{$a['id']}' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? ' checked' : '') . " value='yes'>
                     <span class='cat-image left10'>
                         <a href='{$site_config['baseurl']}/browse.php?c" . (int) $a['id'] . "'>
-                            <img class='radius-sm' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . "'alt='" . htmlsafechars($a['name']) . "' />
+                            <img class='radius-sm' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . "'alt='" . htmlsafechars($a['name']) . "'>
                         </a>
                     </span>
                 </span>";
@@ -210,16 +223,15 @@ if (mysqli_num_rows($r) > 0) {
 }
 $HTMLOUT .= $top_links . '<h1>' . $lang['pm_edmail_title'] . '</h1>' . $h1_thingie . '
         <form action="messages.php" method="post">
-        <input type="hidden" name="action" value="edit_mailboxes" />
-        <input type="hidden" name="action2" value="add" />
+        <input type="hidden" name="action" value="edit_mailboxes">
+        <input type="hidden" name="action2" value="add">
         <h2 class="has-text-centered">' . $lang['pm_edmail_add_mbox'] . '</h2>';
-
 $body = '
             <tr>
                 <td colspan="2" class="has-text-centered">
-                    ' . $lang['pm_edmail_as_a'] . '' . get_user_class_name($CURUSER['class']) . $lang['pm_edmail_you_may'] . $maxboxes . $lang['pm_edmail_pm_box'] . ($maxboxes !== 1 ? $lang['pm_edmail_pm_boxes'] : '') . '' . $lang['pm_edmail_other'] . '<br>' . $lang['pm_edmail_currently'] . '' . mysqli_num_rows($res) . $lang['pm_edmail_custom'] . (mysqli_num_rows($res) !== 1 ? $lang['pm_edmail_custom_es'] : '') . $lang['pm_edmail_may_add'] . ($maxboxes - mysqli_num_rows($res)) . '' . $lang['pm_edmail_more_extra'] . '
+                    ' . $lang['pm_edmail_as_a'] . '' . get_user_class_name($CURUSER['class']) . $lang['pm_edmail_you_may'] . $maxboxes . $lang['pm_edmail_pm_box'] . ($maxboxes !== 1 ? $lang['pm_edmail_pm_boxes'] : '') . '' . $lang['pm_edmail_other'] . '<br>' . $lang['pm_edmail_currently'] . $count_boxes . $lang['pm_edmail_custom'] . ($count_boxes !== 1 ? $lang['pm_edmail_custom_es'] : '') . $lang['pm_edmail_may_add'] . ($maxboxes - $count_boxes) . '' . $lang['pm_edmail_more_extra'] . '
                     <p class="top10">
-                        <span class="has-text-weight-bold">' . $lang['pm_edmail_following'] . '</span>' . $lang['pm_edmail_chars'] . '
+                        <span>' . $lang['pm_edmail_following'] . '</span>' . $lang['pm_edmail_chars'] . '
                     </p>
                 </td>
             </tr>';
@@ -227,8 +239,8 @@ $body = '
 for ($i = 1; $i < 6; ++$i) {
     $body .= '
             <tr>
-                <td><span class="has-text-weight-bold">box ' . $i . ':</span></td>
-                <td><input type="text" name="new[]" class="w-100" maxlength="100" /></td>
+                <td><span>box ' . $i . ':</span></td>
+                <td><input type="text" name="new[]" class="w-100" maxlength="100"></td>
             </tr>';
 }
 
@@ -237,7 +249,7 @@ $body .= '
                 <td colspan="2" class="has-text-centered">
                     ' . $lang['pm_edmail_only_fill'] . '<br>
                     ' . $lang['pm_edmail_blank'] . '<br>
-                    <input type="submit" class="button is-small margin20" name="move" value="' . $lang['pm_edmail_add'] . '" />
+                    <input type="submit" class="button is-small margin20" name="move" value="' . $lang['pm_edmail_add'] . '">
                 </td>
             </tr>
         </form>';
@@ -246,61 +258,61 @@ $HTMLOUT .= main_table($body);
 $HTMLOUT .= '<h2 class="top20 has-text-centered">' . $lang['pm_edmail_ed_del'] . '</h2>';
 $HTMLOUT .= '
         <form action="messages.php" method="post">
-        <input type="hidden" name="action" value="edit_mailboxes" />
-        <input type="hidden" name="action2" value="edit_boxes" />';
+        <input type="hidden" name="action" value="edit_mailboxes">
+        <input type="hidden" name="action2" value="edit_boxes">';
 $HTMLOUT .= main_table($all_my_boxes);
 $HTMLOUT .= '
         </form>';
-
+$cache->delete('user' . $CURUSER['id']);
 $show_pm_avatar = ($CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR) === user_options_2::SHOW_PM_AVATAR;
 $HTMLOUT .= '<h2 class="top20 has-text-centered">' . $lang['pm_edmail_msg_settings'] . '</h2>';
 $HTMLOUT .= main_table('
     <tr>
-        <td class="w-25"><span class="has-text-weight-bold">' . $lang['pm_edmail_pm_page'] . '</span></td>
+        <td class="w-25"><span>' . $lang['pm_edmail_pm_page'] . '</span></td>
         <td>
         <form action="messages.php" method="post">
-        <input type="hidden" name="action" value="edit_mailboxes" />
-        <input type="hidden" name="action2" value="message_settings" />
+        <input type="hidden" name="action" value="edit_mailboxes">
+        <input type="hidden" name="action2" value="message_settings">
         ' . $per_page_drop_down . '' . $lang['pm_edmail_s_how_many'] . '</td>
     </tr>
     <tr>
-        <td><span class="has-text-weight-bold">' . $lang['pm_edmail_av'] . '</span></td>
+        <td><span>' . $lang['pm_edmail_av'] . '</span></td>
         <td>
         <select name="show_pm_avatar">
-        <option value="yes" ' . ($show_pm_avatar ? ' selected' : '') . '>' . $lang['pm_edmail_show_av'] . '</option>
-        <option value="no" ' . (!$show_pm_avatar ? ' selected' : '') . '>' . $lang['pm_edmail_dshow_av'] . '</option>
+        <option value="yes"' . ($show_pm_avatar ? ' selected' : '') . '>' . $lang['pm_edmail_show_av'] . '</option>
+        <option value="no"' . (!$show_pm_avatar ? ' selected' : '') . '>' . $lang['pm_edmail_dshow_av'] . '</option>
         </select>' . $lang['pm_edmail_show_av_box'] . '</td>
     </tr>
     <tr>
-        <td><span class="has-text-weight-bold">' . $lang['pm_edmail_accept'] . '</span></td>
+        <td><span>' . $lang['pm_edmail_accept'] . '</span></td>
         <td>
-        <input type="radio" name="acceptpms" ' . ($CURUSER['acceptpms'] === 'yes' ? ' checked' : '') . ' value="yes" />' . $lang['pm_edmail_all'] . '
-        <input type="radio" name="acceptpms" ' . ($CURUSER['acceptpms'] === 'friends' ? ' checked' : '') . ' value="friends" />' . $lang['pm_edmail_friend'] . '
-        <input type="radio" name="acceptpms" ' . ($CURUSER['acceptpms'] === 'no' ? ' checked' : '') . ' value="no" />' . $lang['pm_edmail_staff'] . '</td>
+        <input type="radio" name="acceptpms"' . ($CURUSER['acceptpms'] === 'yes' ? ' checked' : '') . ' value="yes">' . $lang['pm_edmail_all'] . '
+        <input type="radio" name="acceptpms"' . ($CURUSER['acceptpms'] === 'friends' ? ' checked' : '') . ' value="friends">' . $lang['pm_edmail_friend'] . '
+        <input type="radio" name="acceptpms"' . ($CURUSER['acceptpms'] === 'no' ? ' checked' : '') . ' value="no">' . $lang['pm_edmail_staff'] . '</td>
     </tr>
     <tr>
-        <td><span class="has-text-weight-bold">' . $lang['pm_edmail_save'] . '</span></td>
-        <td><input type="checkbox" name="save_pms" ' . ($CURUSER['savepms'] === 'yes' ? ' checked' : '') . '  />' . $lang['pm_edmail_default'] . '</td>
+        <td><span>' . $lang['pm_edmail_save'] . '</span></td>
+        <td><input type="checkbox" name="save_pms"' . ($CURUSER['savepms'] === 'yes' ? ' checked' : '') . ' value="yes">' . $lang['pm_edmail_default'] . '</td>
     </tr>
     <tr>
-        <td><span class="has-text-weight-bold">' . $lang['pm_edmail_del_pms'] . '</span></td>
-        <td><input type="checkbox" name="deletepms" ' . ($CURUSER['deletepms'] === 'yes' ? ' checked' : '') . ' />' . $lang['pm_edmail_default_r'] . '</td>
+        <td><span>' . $lang['pm_edmail_del_pms'] . '</span></td>
+        <td><input type="checkbox" name="deletepms"' . ($CURUSER['deletepms'] === 'yes' ? ' checked' : '') . ' value="yes">' . $lang['pm_edmail_default_r'] . '</td>
     </tr>
     <tr>
-        <td><span class="has-text-weight-bold">' . $lang['pm_edmail_email_notif'] . '</span></td>
-        <td><input type="checkbox" name="pmnotif" ' . (strpos($CURUSER['notifs'], $lang['pm_edmail_pm_1']) !== false ? ' checked' : '') . '  value="yes" />' . $lang['pm_edmail_notify'] . '</td>
+        <td><span>' . $lang['pm_edmail_email_notif'] . '</span></td>
+        <td><input type="checkbox" name="pmnotif"' . (strpos($CURUSER['notifs'], $lang['pm_edmail_pm_1']) !== false ? ' checked' : '') . '  value="yes">' . $lang['pm_edmail_notify'] . '</td>
     </tr>
     <tr>
         <td></td>
-        <td><input type="checkbox" name="emailnotif" ' . (strpos($CURUSER['notifs'], $lang['pm_edmail_email_1']) !== false ? ' checked' : '') . '  value="yes" />' . $lang['pm_edmail_notify1'] . '</td>
+        <td><input type="checkbox" name="emailnotif"' . (strpos($CURUSER['notifs'], $lang['pm_edmail_email_1']) !== false ? ' checked' : '') . '  value="yes">' . $lang['pm_edmail_notify1'] . '</td>
     </tr>
     <tr>
-        <td><span class="has-text-weight-bold">' . $lang['pm_edmail_cats'] . '</span></td>
-        <td><a class="altlink has-text-weight-bold"  title="' . $lang['pm_edmail_clickmore'] . '" id="cat_open">' . $lang['pm_edmail_show_hide'] . '</a>' . $lang['pm_edmail_torr'] . '
+        <td><span>' . $lang['pm_edmail_cats'] . '</span></td>
+        <td><a class="altlink"  title="' . $lang['pm_edmail_clickmore'] . '" id="cat_open">' . $lang['pm_edmail_show_hide'] . '</a>' . $lang['pm_edmail_torr'] . '
         <div id="defcat" class="is_hidden">' . $lang['pm_edmail_def_cats'] . '<br>' . $categories . '</div></td>
     </tr>
     <tr>
         <td colspan="2" class="has-text-centered">
-        <input type="submit" class="button is-small margin20" value="' . $lang['pm_edmail_change'] . '" /></form></td>
+        <input type="submit" class="button is-small margin20" value="' . $lang['pm_edmail_change'] . '"></form></td>
     </tr>
     </table></form>');

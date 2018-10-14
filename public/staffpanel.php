@@ -6,6 +6,16 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $site_config, $CURUSER, $cache, $session;
 
+$stdhead = [
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
+];
+$stdfoot = [
+    'js' => [
+        get_file_name('sceditor_js'),
+    ],
+];
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('index'), load_language('staff_panel'));
 $staff_classes1['name'] = $page_name = $file_name = $navbar = '';
@@ -282,7 +292,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             <input type='submit' class='button is-small' value='{$lang['spanel_cancel']}' />
         </form>
     </div>";
-        echo stdhead($lang['spanel_header'] . ' :: ' . ($action == 'edit' ? '' . $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' page') . $HTMLOUT . stdfoot();
+        echo stdhead($lang['spanel_header'] . ' :: ' . ($action == 'edit' ? '' . $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' page', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     } else {
         $add_button = '';
         if ($CURUSER['class'] >= UC_SYSOP) {
@@ -378,6 +388,6 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         } else {
             $HTMLOUT .= stdmsg($lang['spanel_sorry'], $lang['spanel_nothing_found']);
         }
-        echo stdhead($lang['spanel_header']) . wrapper($HTMLOUT) . stdfoot();
+        echo stdhead($lang['spanel_header'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     }
 }

@@ -4,7 +4,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $site_config;
+global $site_config, $session;
 
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('needseed'));
@@ -16,7 +16,6 @@ $needed = (isset($_GET['needed']) ? htmlsafechars($_GET['needed']) : 'seeders');
 if (!in_array($needed, $possible_actions)) {
     stderr('Error', 'A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.');
 }
-//$needed = isset($_GET["needed"]) ? htmlsafechars($_GET["needed"]) : '';
 $categorie = genrelist();
 foreach ($categorie as $key => $value) {
     $change[$value['id']] = [
@@ -72,13 +71,13 @@ if ($needed === 'leechers') {
             $What_User_ID = (XBT_TRACKER === true ? $arr['uid'] : $arr['userid']);
             $needseed['cat_name'] = htmlsafechars($change[$arr['category']]['name']);
             $needseed['cat_pic'] = htmlsafechars($change[$arr['category']]['image']);
-            $cat = "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$needseed['cat_pic']}' alt='{$needseed['cat_name']}' title='{$needseed['cat_name']}' />";
+            $cat = "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$needseed['cat_pic']}' alt='{$needseed['cat_name']}' title='{$needseed['cat_name']}' class='tooltipper'>";
             $torrname = htmlsafechars(CutName($arr['name'], 80));
             $peers = (int) $arr['seeders'] . ' seeder' . ((int) $arr['seeders'] > 1 ? 's' : '') . ', ' . (int) $arr['leechers'] . ' leecher' . ((int) $arr['leechers'] > 1 ? 's' : '');
             $body .= '
                 <tr>
                     <td>' . format_username($arr['id']) . ' (' . member_ratio($arr['uploaded'], $arr['downloaded']) . ")</td>
-                    <td><a href='{$site_config['baseurl']}/details.php?id=" . (int) $What_ID . "' title='{$torrname}'>{$torrname}</a></td>
+                    <td><a href='{$site_config['baseurl']}/details.php?id=" . (int) $What_ID . "' title='{$torrname}' class='tooltipper'>{$torrname}</a></td>
                     <td>{$cat}</td>
                     <td>{$peers}</td>
                 </tr>";
@@ -113,12 +112,12 @@ if ($needed === 'leechers') {
         while ($arr = mysqli_fetch_assoc($res)) {
             $needseed['cat_name'] = htmlsafechars($change[$arr['category']]['name']);
             $needseed['cat_pic'] = htmlsafechars($change[$arr['category']]['image']);
-            $cat = "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$needseed['cat_pic']}' alt='{$needseed['cat_name']}' title='{$needseed['cat_name']}' />";
+            $cat = "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$needseed['cat_pic']}' alt='{$needseed['cat_name']}' title='{$needseed['cat_name']}' class='tooltipper'>";
             $torrname = htmlsafechars(CutName($arr['name'], 80));
             $body .= "
                 <tr>
                     <td class='has-text-centered'>{$cat}</td>
-                    <td><a href='{$site_config['baseurl']}/details.php?id=" . (int) $arr['id'] . "&amp;hit=1' title='{$torrname}'>{$torrname}</a></td>
+                    <td><a href='{$site_config['baseurl']}/details.php?id=" . (int) $arr['id'] . "&amp;hit=1' title='{$torrname}' class='tooltipper'>{$torrname}</a></td>
                     <td class='has-text-centered'><span>" . (int) $arr['seeders'] . "</span></td>
                     <td class='has-text-centered'>" . (int) $arr['leechers'] . '</td>
                 </tr>';
