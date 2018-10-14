@@ -1,0 +1,90 @@
+#iCarouselNext,
+#iCarouselPrev,
+#iCarouselPrev:hover {
+    transition-property: none;
+}
+
+#iCarouselNext {
+    left: 205px;
+    background-position: right top;
+}
+
+#iCarouselNext:hover {
+    background-position: right bottom;
+}
+
+#iCarouselPrev {
+    left: -50px;
+    background-position: left top;
+}
+
+#iCarouselPrev:hover {
+    background-position: left bottom;
+}
+
+#iCarousel-preloader,
+#iCarousel-timer,
+a.iCarouselNav {
+    z-index: 1000;
+    position: absolute;
+}
+
+a.iCarouselNav {
+    display: block;
+    top: 130px;
+    width: 43px;
+    height: 43px;
+    background: url(./images/arrows.png) no-repeat;
+    text-indent: -9999px;
+}
+
+#iCarousel-preloader {
+    border-radius: .3125em;
+    border: 1px solid rgba(0, 0, 0, .6);
+    padding: 1px;
+    width: 150px;
+    height: 3px;
+}
+
+#iCarousel-preloader div {
+    float: left;
+    border-radius: .1875em;
+    height: 3px;
+    background: rgba(0, 0, 0, .6);
+    width: 0;
+}
+
+#iCarousel-timer,
+#iCarousel-timer div {
+    cursor: pointer;
+    border-radius: .3125em;
+}
+
+#icarousel {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    height: 300px;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
+}
+
+#icarousel .slide {
+    visibility: hidden;
+    width: 200px;
+    height: auto;
+}
+
+#icarousel .slide img {
+    border-radius: .625em;
+    border: 1px solid #faebd7;
+}
+
+.carousel-container {
+    width: 100%;
+    overflow: hidden;
+    border-radius: .3125em;
+}

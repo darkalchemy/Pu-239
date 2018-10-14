@@ -1,0 +1,116 @@
+table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    background-color: rgba(0, 0, 0, .1);
+}
+
+.heading {
+    width: 150px;
+    max-width: 25%;
+}
+
+.table {
+    width: calc(100% - 2px);
+    background-color: transparent;
+    color: #fff;
+    margin-bottom: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.table > tbody,
+.table > thead {
+    background-color: rgba(255, 255, 255, .1);
+}
+
+.table > tbody > tr > td,
+.table > thead > tr > th,
+.table-bordered {
+    -webkit-margin-start: .125em;
+    -webkit-margin-end: .125em;
+}
+
+.table > tbody > tr > td,
+.table > thead > tr > th {
+    line-height: 18px;
+    text-align: left;
+    vertical-align: top;
+    border: 1px solid transparent;
+    border-bottom: 0;
+    border-right: 0;
+}
+
+.table > tbody > tr > td:last-child,
+.table > thead > tr > th:last-child {
+    border-right: 1px solid transparent;
+}
+
+.table > thead > tr > th {
+    font-weight: 700;
+    color: #fff;
+    vertical-align: bottom;
+}
+
+.table > tbody:first-child > tr:first-child > td,
+.table > thead:first-child > tr:first-child > th,
+.table-bordered > tbody:first-child > tr:first-child > td,
+.table-bordered > thead:first-child > tr:first-child > th {
+    border-top: 0;
+}
+
+.table > tbody:last-child > tr:last-child > td,
+.table > thead:last-child > tr:last-child > th,
+.table-bordered > tbody:last-child > tr:last-child > td,
+.table-bordered > thead:last-child > tr:last-child > th {
+    border-bottom: 0;
+}
+
+.table-bordered {
+    border: 2px solid transparent;
+    border-collapse: separate;
+    border-left: 0;
+    border-right: 0;
+    border-radius: .625em;
+    padding: .75em;
+}
+
+.table-bordered > tbody > tr > td,
+.table-bordered > thead > tr > th {
+    border-left: 1px solid transparent;
+}
+
+.table-bordered > tbody:first-child > tr:first-child > td:first-child,
+.table-bordered > thead:first-child > tr:first-child > th:first-child {
+    border-top-left-radius: .625em;
+}
+
+.table-bordered > tbody:first-child > tr:first-child > td:last-child,
+.table-bordered > thead:first-child > tr:first-child > th:last-child {
+    border-top-right-radius: .625em;
+}
+
+.table-bordered > tbody:last-child > tr:last-child > td:first-child,
+.table-bordered > thead:last-child > tr:last-child > th:first-child {
+    border-bottom-left-radius: .625em;
+}
+
+.table-bordered > tbody:last-child > tr:last-child > td:last-child,
+.table-bordered > thead:last-child > tr:last-child > th:last-child {
+    border-bottom-right-radius: .625em;
+}
+
+.table-striped > tbody > tr:nth-child(odd) > td:not(.card-background),
+.table-striped > thead > tr:nth-child(even) > th:not(.card-background) {
+    background-color: rgba(250, 250, 250, .4);
+}
+
+.table tbody > tr:not(.no_hover):hover > td {
+    background-color: rgba(250, 250, 250, .4);
+    transition: all .35s ease-in-out;
+}
+
+.table-wrapper {
+    overflow: auto;
+}

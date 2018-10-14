@@ -1,0 +1,32 @@
+.sceditor-container {
+    border: 1px solid #ff3860;
+    border-radius: .625em;
+    margin: .625em .625em 0 .625em;
+}
+
+div.sceditor-toolbar {
+    border-radius: .625em .625em 0 0;
+    background: #7d7e7d;
+    background: linear-gradient(to bottom, #7d7e7d 0, #0e0e0e 100%);
+    border: none;
+}
+
+.sceditor-container iframe,
+.sceditor-container {
+    background-color: transparent;
+}
+
+.pre {
+    tab-size: 4;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    white-space:
+    pre-wrap;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.sceditor-container textarea {
+    background-color: #fff;
+    color: #000;
+}
+

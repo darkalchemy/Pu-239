@@ -1,0 +1,9 @@
+.tooltipper_img {
+    vertical-align: unset;
+    margin: 5px;
+}
+
+.tooltip_templates,
+.tooltipster-sidetip.tooltipster-borderless .tooltipster-arrow-background {
+    display: none;
+}
