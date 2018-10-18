@@ -39,7 +39,9 @@ if ($site_config['in_production']) {
 $templates = glob(TEMPLATE_DIR . '*', GLOB_ONLYDIR);
 foreach ($templates as $template) {
     $folder = basename($template);
-    $folders[] = $folder;
+    if (is_numeric($folder)) {
+        $folders[] = $folder;
+    }
 }
 
 exec('npx node-sass ' . BIN_DIR . 'pu239.scss ' . BIN_DIR . 'pu239.css');

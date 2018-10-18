@@ -24,10 +24,10 @@ class Post
      *
      * @throws \Envms\FluentPDO\Exception
      */
-    public function insert(array $set)
+    public function insert(array $values)
     {
-        $id = $this->fluent->update('posts')
-            ->set($set)
+        $id = $this->fluent->insertInto('posts')
+            ->values($values)
             ->execute();
 
         return $id;

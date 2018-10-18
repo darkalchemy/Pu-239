@@ -129,6 +129,7 @@ $lang = [
     'paypal_settings' => 'Paypal Settings',
     'personal' => 'Personal Settings',
     'polls_manager' => 'Manage Polls',
+    'post_reply' => 'Post Reply',
     'referrers' => 'Referrers',
     'reputation_ad' => 'Reputation Settings',
     'request_details' => 'View Request Details',

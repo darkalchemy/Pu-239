@@ -42,7 +42,7 @@ function get_file_name($file)
         case 'theme_js':
             return "{$site_config['baseurl']}/js/1/theme_ff3ca3dd.js";
         case 'sceditor_js':
-            return "{$site_config['baseurl']}/js/1/sceditor_298b438a.js";
+            return "{$site_config['baseurl']}/js/1/sceditor_6d698138.js";
         case 'user_search_js':
             return "{$site_config['baseurl']}/js/1/user_search_79ba3068.js";
         case 'lightbox_js':

@@ -379,6 +379,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     if (stripos($s, '[img') !== false && $images) {
         // img with width and height
         $s = preg_replace("/\[img=(\d+)x(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\3" data-lightbox="details"><img src="\\3" alt="" width="\\1" height="\\2" class="img-responsive"></a>', $s);
+        $s = preg_replace("/\[img width=(\d+) height=(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\3" data-lightbox="details"><img src="\\3" alt="" width="\\1" height="\\2" class="img-responsive"></a>', $s);
         // [img=image services with or without extension
         $s = preg_replace("/\[img=(https?:\/\/[^[^\s'\"<>]*)\]/i", '<a href="\\1" data-lightbox="details"><img src="\\1" alt="" class="img-responsive"></a>', $s);
         // [img]image services with or without extension
