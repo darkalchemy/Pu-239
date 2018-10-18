@@ -1,4 +1,7 @@
 18 Oct, 2038
+update: FluentPDO, Flysystem, Sass, PostCSS, autoprefixer, node-sas
+update: version number package.json
+fix: news block icon size
 fix: iterate only numeric template folders uglify.php
 fix: call image_proxy with width/height when bbcode image tag includes width/height
 fix: db insert Post.php
