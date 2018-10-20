@@ -45,7 +45,7 @@ $HTMLOUT .= $top_links . '
     </tr>
     <tr>
         <td><span style="font-weight: bold;">' . $lang['pm_draft_body'] . '</span></td>
-        <td>' . BBcode($draft) . '</td>
+        <td class="is-paddingless">' . BBcode($draft) . '</td>
     </tr>
     <tr>
         <td colspan="2">

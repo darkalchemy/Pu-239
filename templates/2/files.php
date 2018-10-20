@@ -10,11 +10,11 @@ function get_file_name($file)
         case 'chat_css_uranium':
             return "{$site_config['baseurl']}/css/2/chat_uranium_4603c5b9.css";
         case 'css':
-            return "{$site_config['baseurl']}/css/2/css_7c97d596.css";
+            return "{$site_config['baseurl']}/css/2/css_6e4e1498.css";
         case 'vendor_css':
             return "{$site_config['baseurl']}/css/2/vendor_e892b672.css";
         case 'sceditor_css':
-            return "{$site_config['baseurl']}/css/2/sceditor_3f6e189a.css";
+            return "{$site_config['baseurl']}/css/2/sceditor_6eb75160.css";
         case 'main_css':
             return "{$site_config['baseurl']}/css/2/main_325b8b55.css";
         case 'main_js':
@@ -42,7 +42,7 @@ function get_file_name($file)
         case '':
             return "{$site_config['baseurl']}/";
         case 'sceditor_js':
-            return "{$site_config['baseurl']}/js/2/sceditor_406359ee.js";
+            return "{$site_config['baseurl']}/js/2/sceditor_3942ad35.js";
         case 'user_search_js':
             return "{$site_config['baseurl']}/js/2/user_search_79ba3068.js";
         case 'lightbox_js':

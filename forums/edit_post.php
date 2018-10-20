@@ -243,7 +243,7 @@ $HTMLOUT .= '<table>
 	<input type="radio" name="show_edited_by" value="no"' . ($show_edited_by === 'no' ? ' checked="checked"' : '') . ' /> no
 	</td></tr>' : '') . $attachments . '
 	<tr><td><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_body'] . '</span></td>
-	<td>' . BBcode($body) . $more_options . '
+	<td class="is-paddingless">' . BBcode($body) . $more_options . '
 	</td></tr>
     </table>
 	<div class="has-text-centered">

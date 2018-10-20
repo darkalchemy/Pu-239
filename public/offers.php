@@ -329,7 +329,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>description:</td>
-    <td>' . BBcode($body) . '</td>
+    <td class="is-paddingless">' . BBcode($body) . '</td>
     </tr>
     <tr>
     <td colspan="2" class="has-text-centered">
@@ -424,7 +424,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>description:</td>
-    <td>' . BBcode($body) . '</td>
+    <td class="is-paddingless">' . BBcode($body) . '</td>
     </tr>
     <tr>
     <td colspan="2" class="has-text-centered">
@@ -469,7 +469,7 @@ switch ($action) {
             </tr>
             <tr>
                 <td><b>Comment:</b></td>
-                <td>' . BBcode($body) . '   </td>
+                <td class="is-paddingless">' . BBcode($body) . '   </td>
             </tr>
             <tr>
                 <td colspan="2">
@@ -533,7 +533,7 @@ switch ($action) {
     </tr>
      <tr>
     <td><b>Comment:</b></td>
-    <td>' . BBcode($body) . '</td>
+    <td class="is-paddingless">' . BBcode($body) . '</td>
     </tr>
      <tr>
     <td colspan="2">

@@ -1,4 +1,7 @@
 20 Oct, 2018
+update: don't show pager when not more than 1 page staffbox.php, bugs.php
+update: align checkboxes upload.php
+update: SCEditor style
 update: missing tags from breadcrumbs
 
 18 Oct, 2038

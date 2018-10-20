@@ -322,7 +322,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>description:</td>
-    <td>' . BBcode($body) . '</td>
+    <td class="is-paddingless">' . BBcode($body) . '</td>
     </tr>
     <tr>
     <td colspan="2">
@@ -418,7 +418,7 @@ switch ($action) {
    </tr>
    <tr>
    <td>description:</td>
-   <td>' . BBcode($body) . '</td>
+   <td class="is-paddingless">' . BBcode($body) . '</td>
    </tr>' . ($edit_arr['filled_by_user_id'] == 0 ? '' : '
    <tr>
    <td>filled:</td>
@@ -470,7 +470,7 @@ switch ($action) {
             </tr>
             <tr>
                 <td><b>Comment:</b></td>
-                <td>' . BBcode($body) . '   </td>
+                <td class="is-paddingless">' . BBcode($body) . '   </td>
             </tr>
             <tr>
                 <td colspan="2">
@@ -532,7 +532,7 @@ switch ($action) {
     <td colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '"</h1></td>
     </tr>
      <tr>
-    <td><b>Comment:</b></td><td>' . BBcode($body) . '</td>
+    <td><b>Comment:</b></td><td class="is-paddingless">' . BBcode($body) . '</td>
     </tr>
      <tr>
         <td colspan="2">

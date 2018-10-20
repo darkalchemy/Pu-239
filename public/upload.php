@@ -177,11 +177,11 @@ $subs_list .= '
 $HTMLOUT .= tr('Subtitiles', $subs_list, 1);
 $rg = "<select name='release_group'>\n<option value='none'>None</option>\n<option value='p2p'>p2p</option>\n<option value='scene'>Scene</option>\n</select>\n";
 $HTMLOUT .= tr('Release Type', $rg, 1);
-$HTMLOUT .= tr("{$lang['upload_anonymous']}", "<div class='flex'><input type='checkbox' name='uplver' value='yes'><span>{$lang['upload_anonymous1']}</span></div>", 1);
+$HTMLOUT .= tr("{$lang['upload_anonymous']}", "<div class='level-left'><input type='checkbox' name='uplver' id='uplver' value='yes'><label for='uplver' class='left5'>{$lang['upload_anonymous1']}</label></div>", 1);
 if ($CURUSER['class'] === UC_MAX) {
-    $HTMLOUT .= tr("{$lang['upload_comment']}", "<div class='flex'><input type='checkbox' name='allow_commentd' value='yes'><span>{$lang['upload_discom1']}</span></div>", 1);
+    $HTMLOUT .= tr("{$lang['upload_comment']}", "<div class='level-left'><input type='checkbox' name='allow_commentd' id='allow_commentd' value='yes'><label for='allow_commentd' class='left5'>{$lang['upload_discom1']}</label></div>", 1);
 }
-$HTMLOUT .= tr('Strip ASCII', "<div class='flex'><input type='checkbox' name='strip' value='strip'><span><a href='https://en.wikipedia.org/wiki/ASCII_art' target='_blank'>What is this?</a></span></div>", 1);
+$HTMLOUT .= tr('Strip ASCII', "<div class='level-left'><input type='checkbox' name='strip' id='strip' value='strip'><label for='strip' class='left5'><a href='https://en.wikipedia.org/wiki/ASCII_art' target='_blank'>What is this?</a></label></div>", 1);
 if ($CURUSER['class'] >= UC_UPLOADER && !XBT_TRACKER) {
     $HTMLOUT .= "<tr>
     <td class='rowhead'>Free Leech</td>
@@ -210,13 +210,10 @@ if ($CURUSER['class'] >= UC_UPLOADER && !XBT_TRACKER) {
     </select></td>
     </tr>";
 }
-if (XBT_TRACKER) {
-    $HTMLOUT .= tr('Freeleech', "<div class='flex'><input type='checkbox' name='freetorrent' value='1'><span>Check this to make this torrent freeleech</span></div>", 1);
-}
 require_once PARTIALS_DIR . 'genres.php';
 
 if ($CURUSER['class'] >= UC_UPLOADER && !XBT_TRACKER) {
-    $HTMLOUT .= tr('Vip Torrent', "<div class='flex'><input type='checkbox' name='vip' value='1'><span>If this one is checked, only Vip's can download this torrent</span></div>", 1);
+    $HTMLOUT .= tr('Vip Torrent', "<div class='level-left'><input type='checkbox' name='vip' id='vip' value='1'><label for='vip' class='left5'>If this one is checked, only Vip's can download this torrent</label></div>", 1);
 }
 $HTMLOUT .= "
         <tr>

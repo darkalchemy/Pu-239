@@ -212,7 +212,7 @@ $htmlout = '<table class="main" width="750px" border="0" cellspacing="0" cellpad
 	<input type="radio" name="bb_code" value="no"' . ($bb_code === 'no' ? ' checked="checked"' : '') . ' /> ' . $lang['fe_no_disable'] . ' ' . $lang['fe_bbcode_in_post'] . ' 
 	</td></tr>
 	<tr><td align="right" valign="top" ><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_body'] . '</span></td>
-	<td align="left" >' . BBcode($body) . $more_options . '
+	<td align="left" class="is-paddingless">' . BBcode($body) . $more_options . '
 	</td></tr>
 	<tr><td colspan="2" >
    Anonymous post : <input type="checkbox" name="anonymous" value="yes" /><br>

@@ -19,10 +19,6 @@ if (textarea) {
             },
             isInline: false,
             skipLastLineBreak: true,
-            //breakBefore: false,
-            //breakStart: false,
-            //breakEnd: false,
-            //breakAfter: false,
             format: function (element, content) {
                 return '[spoiler]' + element.children[1].outerText + '[/spoiler]';
             },
@@ -44,8 +40,9 @@ if (textarea) {
     );
 
     sceditor.create(textarea, {
+        width: '100%',
         format: 'bbcode',
-        style: window.location.origin + '/css/2/sceditor_3f6e189a.css',
+        style: window.location.origin + '/css/2/sceditor_6eb75160.css',
         startInSourceMode: true,
         resizeEnabled: true,
         enablePasteFiltering: true,

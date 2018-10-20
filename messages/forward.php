@@ -51,7 +51,7 @@ $HTMLOUT .= '<h1>' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subj
     </tr>
     <tr>
         <td><span>' . $lang['pm_forward_message'] . '</span></td>
-        <td>' . BBcode($body) . '</td>
+        <td class="is-paddingless">' . BBcode($body) . '</td>
     </tr>
     <tr>
         <td colspan="2">' . ($CURUSER['class'] >= UC_STAFF ? '<span class="label label-danger">' . $lang['pm_forward_mark'] . '</span>

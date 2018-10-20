@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $body = "
                     <tr>
-                        <td colspan='2'>" . BBcode($msg) . "
+                        <td colspan='2' class='is-paddingless'>" . BBcode($msg) . "
                        </td>
                     </tr>
                     <tr>

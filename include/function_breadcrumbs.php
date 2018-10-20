@@ -109,6 +109,7 @@ function get_infopage($lang, $queries, $path)
         'modtask',
         'deleted',
         'action',
+        'userid',
     ];
 
     $ignore2 = [

@@ -171,7 +171,7 @@ switch ($do) {
             $HTMLOUT .= "
                     <h1 class='has-text-centered'>{$lang['staffbox_info']}</h1>
                     <form method='post' name='staffbox' action='{$_SERVER['PHP_SELF']}'>";
-            $HTMLOUT .= $pager['pagertop'];
+            $HTMLOUT .= $count_msgs > $perpage ? $pager['pagertop'] : '';
             $head = "
                         <tr>
                             <th>{$lang['staffbox_subject']}</th>
@@ -205,7 +205,7 @@ switch ($do) {
                     <input type='submit' class='button is-small' value='{$lang['staffbox_confirm']}' />
                 </div>
             </form>";
-            $HTMLOUT .= $pager['pagerbottom'];
+            $HTMLOUT .= $count_msgs > $perpage ? $pager['pagerbottom'] : '';
             $HTMLOUT = wrapper($HTMLOUT);
         }
         echo stdhead($lang['staffbox_head']) . wrapper($HTMLOUT) . stdfoot();

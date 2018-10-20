@@ -314,7 +314,7 @@ $pm_drop_down = '
                     </tr>
                     <tr>
                         <td><span style="font-weight: bold;">' . $lang['bonusmanager_pm_body'] . '</span></td>
-                        <td>' . BBcode($body) . '</td>
+                        <td class="is-paddingless">' . BBcode($body) . '</td>
                     </tr>
                 </table>
             </form>';

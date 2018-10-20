@@ -141,11 +141,10 @@ if ($action === 'viewbug') {
     $r = sql_query("SELECT * FROM bugs WHERE status = 'na'") or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $count = mysqli_num_rows($r);
-        $HTMLOUT .= $pager['pagertop'];
+        $HTMLOUT .= $count > $perpage ? $pager['pagertop'] : '';
         $HTMLOUT .= "
-      <!--<h1>There is <span style='color: #FF0000;'>{$count}</span> new bug" . ($count > 1 ? 's' : '') . '. Please check them.</h1>-->
-      <h1>' . sprintf($lang['h1_count_bugs'], $count, ($count > 1 ? 's' : '')) . "</h1>
-      <font class='small'>{$lang['delete_when']}</font><br>
+      <h1 class="has-text-centered">' . sprintf($lang['h1_count_bugs'], $count, ($count > 1 ? 's' : '')) . "</h1>
+      <div class='has-text-centered size_3'>{$lang['delete_when']}</div>
       <table class='table table-bordered table-striped'><tr>
       <td class='colhead'>{$lang['title']}</td>
       <td class='colhead'>{$lang['added']} / {$lang['by']}</td>
@@ -189,7 +188,7 @@ if ($action === 'viewbug') {
       </tr>';
         }
         $HTMLOUT .= '</table>';
-        $HTMLOUT .= $pager['pagerbottom'];
+        $HTMLOUT .= $count > $perpage ? $pager['pagerbottom'] : '';
     } else {
         $session->set('is-warning', $lang['no_bugs']);
         header('Location: index.php');

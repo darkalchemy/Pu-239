@@ -359,7 +359,7 @@ $HTMLOUT .= main_table('
         </tr>
         <tr>
             <td><span>' . $lang['fe_body'] . '</span></td>
-            <td>' . BBcode($body) . $more_options . '</td>
+            <td class="is-paddingless">' . BBcode($body) . $more_options . '</td>
         </tr>
         <tr>
             <td>

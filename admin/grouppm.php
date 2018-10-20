@@ -194,7 +194,7 @@ $HTMLOUT .= "
           <td>{$lang['grouppm_groups']}</td>
           </tr>
         <tr>
-          <td>" . BBcode() . '</td>
+          <td class='is-paddingless'>" . BBcode() . '</td>
           <td>' . dropdown() . "</td>
 
         </tr>

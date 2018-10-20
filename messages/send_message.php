@@ -189,7 +189,7 @@ $HTMLOUT .= '
             </tr>
             <tr class="no_hover">
                 <td><span style="font-weight: bold;">' . $lang['pm_send_body'] . '</span></td>
-                <td>' . BBcode($msg) . '</td>
+                <td class="is-paddingless">' . BBcode($msg) . '</td>
             </tr>
             <tr class="no_hover">
                 <td colspan="2">

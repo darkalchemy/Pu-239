@@ -142,7 +142,7 @@ $HTMLOUT .= '<h1>' . $lang['pm_usedraft'] . '' . $subject . '</h1>' . $top_links
     </tr>
     <tr>
         <td><span style="font-weight: bold;">' . $lang['pm_send_body'] . '</span></td>
-        <td>' . BBcode($draft) . '</td>
+        <td class="is-paddingless">' . BBcode($draft) . '</td>
     </tr>
     <tr>
         <td colspan="2">' . ($CURUSER['class'] >= UC_STAFF ? '

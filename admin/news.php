@@ -128,7 +128,7 @@ if ($mode === 'edit') {
                         <td>
                             BBcode Editor
                         </td>
-                        <td>
+                        <td class='is-paddingless'>
                             " . BBcode($arr['body']) . "
                         </td>
                     </tr>
@@ -189,7 +189,7 @@ if ($mode === 'news') {
                         <td>
                             BBcode Editor
                         </td>
-                        <td>" . BBcode() . "
+                        <td class='is-paddingless'>" . BBcode() . "
                         </td>
                     </tr>
                     <tr>

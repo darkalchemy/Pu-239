@@ -81,7 +81,7 @@ function end_table()
     return "</table>\n";
 }
 
-function tr($x, $y, $noesc = false)
+function tr($x, $y, $noesc = false, $class = '')
 {
     if ($noesc) {
         $a = $y;
@@ -90,12 +90,13 @@ function tr($x, $y, $noesc = false)
         $a = str_replace("\n", "<br>\n", $a);
     }
 
+    $class = !empty($class) ? " class='$class'" : '';
     return "
         <tr>
             <td class='rowhead'>
                 $x
             </td>
-            <td>
+            <td{$class}>
                 $a
             </td>
         </tr>";

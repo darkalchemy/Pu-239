@@ -82,7 +82,7 @@ if ((strpos($row['ori_descr'], '<') === false) || (strpos($row['ori_descr'], '&l
 } else {
     $c = ' checked';
 }
-$HTMLOUT .= tr($lang['edit_description'], BBcode($row['ori_descr']) . "<br>({$lang['edit_tags']})", 1);
+$HTMLOUT .= tr($lang['edit_description'], BBcode($row['ori_descr']) . "<br>({$lang['edit_tags']})", 1, 'is-paddingless');
 $s = "<select name='type'>\n";
 $cats = genrelist();
 foreach ($cats as $subrow) {
