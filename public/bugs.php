@@ -58,8 +58,7 @@ if ($action === 'viewbug') {
                 'subject' => 'Bug Report',
             ];
             $message_stuffs->insert($msgs_buffer);
-            sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (0, ' . sqlesc($q1['sender']) . ', ' . $dt . ", {$msg})") or sqlerr(__FILE__, __LINE__);
-            sql_query('UPDATE bugs SET status=' . sqlesc($status) . ', staff=' . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE bugs SET status = ' . sqlesc($status) . ', staff = ' . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             $cache->delete('bug_mess_');
         }
         header("location: bugs.php?action=viewbug&id={$id}");
@@ -124,7 +123,7 @@ if ($action === 'viewbug') {
       <tr><td class='rowhead'>{$lang['problem_bug']}</td><td><textarea cols='60' rows='10' readonly='readonly'>{$problem}</textarea></td></tr>
       <tr><td class='rowhead'>{$lang['status']} / {$lang['by']}</td><td>{$status} - {$by}</td></tr>";
         if ($a['status'] === 'na') {
-            $HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['submit_btn_fix']}' class='button is-small'/></td></tr>\n";
+            $HTMLOUT .= "<tr><td colspan='2' class='has-text-centered'><input type='submit' value='{$lang['submit_btn_fix']}' class='button is-small'/></td></tr>\n";
         }
     }
     $HTMLOUT .= "</table></form><a href='bugs.php?action=bugs'>{$lang['go_back']}</a>\n";
@@ -132,7 +131,7 @@ if ($action === 'viewbug') {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr("{$lang['stderr_error']}", "{$lang['stderr_only_staff_can_view']}");
     }
-    $search_count = sql_query('SELECT COUNT(id) FROM bugs');
+    $search_count = sql_query('SELECT COUNT(id) FROM bugs') or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_array($search_count);
     $count = $row[0];
     $perpage = 10;
@@ -227,7 +226,7 @@ if ($action === 'viewbug') {
                   <option value='veryhigh'>{$lang['veryhigh']}</option>
                   </select>
                   <br>{$lang['only_veryhigh_when']}</td></tr>
-                  <tr><td colspan='2'><input type='submit' value='{$lang['submit_btn_send']}' class='button is-small'/></td></tr>
+                  <tr><td colspan='2' class='has-text-centered'><input type='submit' value='{$lang['submit_btn_send']}' class='button is-small'/></td></tr>
                   </table></form>";
 }
 echo stdhead("{$lang['header']}") . wrapper($HTMLOUT) . stdfoot();

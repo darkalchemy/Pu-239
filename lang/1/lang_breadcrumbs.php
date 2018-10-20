@@ -171,6 +171,7 @@ $lang = [
     'usersearch' => 'Search Users',
     'view' => 'Viewing',
     'view_app' => 'View Application',
+    'viewbug' => 'View Bug',
     'view_forum' => 'View Forum',
     'view_my_posts' => 'View My Posts',
     'view_message' => 'View Message',
