@@ -45,8 +45,6 @@ function get_file_name($file)
             return "{$site_config['baseurl']}/js/1/sceditor_826b5ad4.js";
         case 'user_search_js':
             return "{$site_config['baseurl']}/js/1/user_search_79ba3068.js";
-        case 'opcache_js':
-            return "{$site_config['baseurl']}/js/1/opcache_885a7399.js";
         case 'lightbox_js':
             return "{$site_config['baseurl']}/js/1/lightbox_b0c4a917.js";
         case 'tooltipster_js':
