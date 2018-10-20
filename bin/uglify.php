@@ -143,6 +143,10 @@ foreach ($folders as $folder) {
         SCRIPTS_DIR . 'sceditor.js',
     ];
 
+    $js_list['cheaters_js'] = [
+        SCRIPTS_DIR . 'cheaters.js',
+    ];
+
     $js_list['user_search_js'] = [
         SCRIPTS_DIR . 'usersearch.js',
     ];

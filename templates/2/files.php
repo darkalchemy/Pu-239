@@ -43,6 +43,8 @@ function get_file_name($file)
             return "{$site_config['baseurl']}/";
         case 'sceditor_js':
             return "{$site_config['baseurl']}/js/2/sceditor_3942ad35.js";
+        case 'cheaters_js':
+            return "{$site_config['baseurl']}/js/2/cheaters_88e84984.js";
         case 'user_search_js':
             return "{$site_config['baseurl']}/js/2/user_search_79ba3068.js";
         case 'lightbox_js':

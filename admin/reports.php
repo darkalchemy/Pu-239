@@ -76,7 +76,7 @@ if ((isset($_GET['deal_with_report'])) || (isset($_POST['deal_with_report']))) {
     $cache->delete('new_report_');
 }
 
-$HTMLOUT .= "<h1>{$lang['reports_active']}</h1>";
+$HTMLOUT .= "<h1 class='has-text-centered'>{$lang['reports_active']}</h1>";
 
 if ((isset($_GET['delete'])) && ($CURUSER['class'] == UC_MAX)) {
     $res = sql_query('DELETE FROM reports WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);

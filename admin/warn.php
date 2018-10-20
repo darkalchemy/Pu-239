@@ -108,45 +108,50 @@ switch ($do) {
 $g = sql_query($query) or print (is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false);
 $count = mysqli_num_rows($g);
 $HTMLOUT .= "
-        <h1 class='has-text-centered'>{$lang['warn_total']} $count {$lang['warn_total_user']}" . plural($count) . "</h1>
-        $link";
+        <ul class='level-center bg-06'>
+            <li class='altlink margin20'>
+                $link
+            </li>
+        </ul>
+        <h1 class='has-text-centered'>{$lang['warn_total']} $count {$lang['warn_total_user']}" . plural($count) . "</h1>";
 if ($count == 0) {
-    $HTMLOUT .= stdmsg($lang['warn_hey'], $lang['warn_hey_msg'] . strtolower($title));
+    $HTMLOUT .= main_div($lang['warn_hey_msg'] . strtolower($title));
 } else {
-    $HTMLOUT .= "<form action='staffpanel.php?tool=warn&amp;action=warn' method='post'>
-                <table>
-                <tr>
-                        <td class='colhead' width='100%' >{$lang['warn_user']}</td>
-                        <td class='colhead' nowrap='nowrap'>{$lang['warn_ratio']}</td>
-                        <td class='colhead' nowrap='nowrap'>{$lang['warn_class']}</td>
-                        <td class='colhead' nowrap='nowrap'>{$lang['warn_ltacces']}</td>
-                        <td class='colhead' nowrap='nowrap'>{$lang['warn_joined']}</td>
-                        <td class='colhead' nowrap='nowrap'><input type='checkbox' name='checkall' /></td>
-                </tr>";
+    $HTMLOUT .= "<form action='staffpanel.php?tool=warn&amp;action=warn' method='post'>";
+    $heading = "
+        <tr>
+            <th>{$lang['warn_user']}</th>
+            <th>{$lang['warn_ratio']}</th>
+            <th>{$lang['warn_class']}</th>
+            <th>{$lang['warn_ltacces']}</th>
+            <th>{$lang['warn_joined']}</th>
+            <th><input type='checkbox' name='checkall'></th>
+        </tr>";
+    $body = '';
     while ($a = mysqli_fetch_assoc($g)) {
         $tip = ($do === 'warned' ? $lang['warn_for'] . $a['warn_reason'] . '<br>' . $lang['warn_till'] . get_date($a['warned'], 'DATE', 1) . ' - ' . mkprettytime($a['warned'] - $dt) : $lang['warn_disabled_for'] . $a['disable_reason']);
-        $HTMLOUT .= "<tr>
-                                  <td width='100%'><a href='userdetails.php?id=" . (int) $a['id'] . "' class='tooltipper' title='$tip'>" . htmlsafechars($a['username']) . "</a></td>
-                                  <td nowrap='nowrap'>" . (float) $a['ratio'] . "<br><font class='small'><b>{$lang['warn_down']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['warn_upl']}</b> " . mksize($a['uploaded']) . "</font></td>
-                                  <td nowrap='nowrap'>" . get_user_class_name($a['class']) . "</td>
-                                  <td nowrap='nowrap'>" . get_date($a['last_access'], 'LONG', 0, 1) . "</td>
-                                  <td nowrap='nowrap'>" . get_date($a['added'], 'DATE', 1) . "</td>
-                                  <td nowrap='nowrap'><input type='checkbox' name='users[]' value='" . (int) $a['id'] . "' /></td>
-                                </tr>";
+        $body .= "
+        <tr>
+            <td><a href='userdetails.php?id=" . (int) $a['id'] . "' class='tooltipper' title='$tip'>" . htmlsafechars($a['username']) . "</a></td>
+            <td>" . (float) $a['ratio'] . "<br><font class='small'><b>{$lang['warn_down']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['warn_upl']}</b> " . mksize($a['uploaded']) . "</font></td>
+            <td>" . get_user_class_name($a['class']) . "</td>
+            <td>" . get_date($a['last_access'], 'LONG', 0, 1) . "</td>
+            <td>" . get_date($a['added'], 'DATE', 1) . "</td>
+            <td><input type='checkbox' name='users[]' value='" . (int) $a['id'] . "'></td>
+        </tr>";
     }
-    $HTMLOUT .= "<tr>
-                        <td colspan='6' class='colhead'>
-                                <select name='action'>
-                                        <option value='unwarn'>{$lang['warn_unwarn']}</option>
-                                        <option value='disable'>{$lang['warn_disable']}</option>
-                                        <option value='delete' " . ($CURUSER['class'] < UC_SYSOP ? 'disabled' : '') . ">{$lang['warn_delete']}</option>
-                                </select>
-                                &raquo;
-                                <input type='submit' value='Apply' />
-                                <input type='hidden' value='" . htmlsafechars($_SERVER['REQUEST_URI']) . "' name='ref' />
-                        </td>
-                        </tr>
-                        </table>
-                        </form>";
+    $HTMLOUT .= main_table($body, $heading);
+    $HTMLOUT .= "
+        <div class='has-text-centered'>
+            <select name='action'>
+                <option value='unwarn'>{$lang['warn_unwarn']}</option>
+                <option value='disable'>{$lang['warn_disable']}</option>
+                <option value='delete' " . ($CURUSER['class'] < UC_SYSOP ? 'disabled' : '') . ">{$lang['warn_delete']}</option>
+            </select>
+            &raquo;
+            <input type='submit' value='Apply' class='button is-small'>
+            <input type='hidden' value='" . htmlsafechars($_SERVER['REQUEST_URI']) . "' name='ref'>
+        </div>
+        </form>";
 }
 echo stdhead($title) . wrapper($HTMLOUT) . stdfoot();

@@ -64,7 +64,13 @@ if (!$site_config['in_production']) {
 }
 
 $load = sys_getloadavg();
-if ($load[0] > 20) {
+$cores = $cache->get('cores_');
+if ($cores === false || is_null($cores)) {
+    $cores = `grep -c processor /proc/cpuinfo`;
+    $cores = empty($cores) ? 1 : (int) $cores;
+    $cache->set('cores_', $cores, 0);
+}
+if ($load[0] > $cores * 2) {
     die("Load is too high. Don't continuously refresh, or you will just make the problem last longer");
 }
 if (preg_match('/(?:\< *(?:java|script)|script\:|\+document\.)/i', serialize($_SERVER))) {

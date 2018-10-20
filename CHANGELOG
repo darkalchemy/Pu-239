@@ -1,4 +1,6 @@
 20 Oct, 2018
+update: a few more of the admin pages
+add: missing file promo.php
 update: most of the admin pages
 fix: bug bugs.php
 update: don't show pager when not more than 1 page staffbox.php, bugs.php

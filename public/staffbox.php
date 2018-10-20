@@ -121,9 +121,9 @@ switch ($do) {
                                 <option value='restart' " . ($a['answeredby'] != $CURUSER['id'] ? 'disabled' : '') . ">{$lang['staffbox_pm_restart']}</option>
                                 <option value='delete'>{$lang['staffbox_pm_delete']}</option>
                             </select>
-                            <input type='hidden' name='reply' value='1' />
-                            <input type='hidden' name='id[]' value='" . (int) $a['id'] . "' />
-                            <input type='submit' class='button is-small' value='{$lang['staffbox_confirm']}' />
+                            <input type='hidden' name='reply' value='1'>
+                            <input type='hidden' name='id[]' value='" . (int) $a['id'] . "'>
+                            <input type='submit' class='button is-small' value='{$lang['staffbox_confirm']}'>
                         </div>
                     </form>");
                 echo stdhead('StaffBox') . wrapper($HTMLOUT) . stdfoot();
@@ -178,7 +178,7 @@ switch ($do) {
                             <th>{$lang['staffbox_sender']}</th>
                             <th>{$lang['staffbox_added']}</th>
                             <th>{$lang['staffbox_answered']}</th>
-                            <th><input type='checkbox' id='checkThemAll' /></th>
+                            <th><input type='checkbox' id='checkThemAll'></th>
                         </tr>";
             $r = sql_query('SELECT s.id, s.added, s.subject, s.answered, s.answeredby, s.sender, s.answer, u.username, u2.username AS username2 FROM staffmessages AS s LEFT JOIN users AS u ON s.sender = u.id LEFT JOIN users AS u2 ON s.answeredby = u2.id ORDER BY id DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
             $body = '
@@ -190,7 +190,7 @@ switch ($do) {
                             <td><b>' . ($a['username'] ? format_username($a['sender']) : 'Unknown[' . (int) $a['sender'] . ']') . '</b></td>
                             <td>' . get_date($a['added'], 'DATE', 1) . "<br><span class='small'>" . get_date($a['added'], 0, 1) . '</span></td>
                             <td><b>' . ($a['answeredby'] > 0 ? 'by ' . format_username($a['answeredby']) : '<span>No</span>') . "</b></td>
-                            <td><input type='checkbox' name='id[]' value='" . (int) $a['id'] . "' /></td>
+                            <td><input type='checkbox' name='id[]' value='" . (int) $a['id'] . "'></td>
                         </tr>";
             }
             $body .= '
@@ -202,7 +202,7 @@ switch ($do) {
                         <option value='delete'>{$lang['staffbox_do_delete']}</option>
                         <option value='setanswered'>{$lang['staffbox_do_set']}</option>
                     </select>
-                    <input type='submit' class='button is-small' value='{$lang['staffbox_confirm']}' />
+                    <input type='submit' class='button is-small' value='{$lang['staffbox_confirm']}'>
                 </div>
             </form>";
             $HTMLOUT .= $count_msgs > $perpage ? $pager['pagerbottom'] : '';

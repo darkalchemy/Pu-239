@@ -520,16 +520,16 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
     if ($icons != false) {
         require_once INCL_DIR . 'html_functions.php';
         $image = placeholder_image();
-        $str .= $users_data['donor'] === 'yes' ? '<span class="tooltipper" title="Donor"><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'star.png" alt="Donor"></span>' : '';
-        $str .= $users_data['king'] >= TIME_NOW ? '<span class="tooltipper" title="King"><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'king.png" alt="King"></span>' : '';
-        $str .= $users_data['pirate'] >= TIME_NOW ? '<span class="tooltipper" title="Pirate"><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'pirate.png" alt="Pirate"></span>' : '';
-        $str .= $users_data['warned'] >= 1 ? '<span class="tooltipper" title="Warned"><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'alertred.png" alt="Warned"></span>' : '';
-        $str .= $users_data['leechwarn'] >= 1 ? '<span class="tooltipper" title="Leech Warned"><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'alertblue.png" alt="Leech Warned"></span>' : '';
-        $str .= $users_data['enabled'] != 'yes' ? '<span class="tooltipper" title="Disabled"><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'disabled.gif" alt="Disabled"></span>' : '';
-        $str .= $users_data['downloadpos'] != 1 ? '<span class="tooltipper" title="Download Disabled"><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'downloadpos.gif" alt="Download Disabled"></span>' : '';
-        $str .= $users_data['chatpost'] != 1 ? '<span class="tooltipper" title="Shout Disabled"><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'warned.png" alt="No Chat"></span>' : '';
+        $str .= $users_data['donor'] === 'yes' ? '<span' . ($tooltipper ? ' class="tooltipper" title="Donor"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'star.png" alt="Donor"></span>' : '';
+        $str .= $users_data['king'] >= TIME_NOW ? '<span' . ($tooltipper ? ' class="tooltipper" title="King"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'king.png" alt="King"></span>' : '';
+        $str .= $users_data['pirate'] >= TIME_NOW ? '<span' . ($tooltipper ? ' class="tooltipper" title="Pirate"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'pirate.png" alt="Pirate"></span>' : '';
+        $str .= $users_data['warned'] >= 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="Warned"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'alertred.png" alt="Warned"></span>' : '';
+        $str .= $users_data['leechwarn'] >= 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="Leech Warned"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'alertblue.png" alt="Leech Warned"></span>' : '';
+        $str .= $users_data['enabled'] != 'yes' ? '<span' . ($tooltipper ? ' class="tooltipper" title="Disabled"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'disabled.gif" alt="Disabled"></span>' : '';
+        $str .= $users_data['downloadpos'] != 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="Download Disabled"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'downloadpos.gif" alt="Download Disabled"></span>' : '';
+        $str .= $users_data['chatpost'] != 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="Shout Disabled"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'warned.png" alt="No Chat"></span>' : '';
         if (Christmas()) {
-            $str .= isset($users_data['gotgift']) && $users_data['gotgift'] === 'yes' ? '<span class="tooltipper" title="Has Claimed a Christmas Gift"><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'gift.png" alt="Christmas Gift"></span>' : '';
+            $str .= isset($users_data['gotgift']) && $users_data['gotgift'] === 'yes' ? '<span' . ($tooltipper ? ' class="tooltipper" title="Has Claimed a Christmas Gift"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'gift.png" alt="Christmas Gift"></span>' : '';
         }
     }
 
