@@ -24,10 +24,8 @@ if (isset($_GET['total_donors'])) {
         stderr($lang['donate_sorry'], $lang['donate_nofound']);
     }
     $users = number_format(get_row_count('users', "WHERE total_donated != '0.00'"));
-    $HTMLOUT .= begin_frame("{$lang['donate_list_all']} [" . htmlsafechars($users) . ']', true);
     $res = sql_query("SELECT id, username, email, added, donated, donoruntil, total_donated FROM users WHERE total_donated != '0.00' ORDER BY id DESC " . $pager['limit'] . '') or sqlerr(__FILE__, __LINE__);
-} // ===end total donors
-else {
+} else {
     $res = sql_query("SELECT COUNT(id) FROM users WHERE donor='yes'") or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_array($res);
     $count = $row[0];
@@ -37,34 +35,59 @@ else {
         stderr($lang['donate_sorry'], $lang['donate_nofound']);
     }
     $users = number_format(get_row_count('users', "WHERE donor='yes'"));
-    $HTMLOUT .= begin_frame("{$lang['donate_list_curr']} [" . htmlsafechars($users) . ' ]', true);
     $res = sql_query("SELECT id, username, email, added, donated, total_donated, donoruntil FROM users WHERE donor='yes' ORDER BY id DESC " . $pager['limit'] . '') or sqlerr(__FILE__, __LINE__);
 }
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$HTMLOUT .= begin_table();
-$HTMLOUT .= "<tr><td colspan='9'><a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=donations&amp;action=donations'>{$lang['donate_curr_don']}</a> || <a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=donations&amp;action=donations&amp;total_donors=1'>{$lang['donate_all_don']}</a></td></tr>";
-$HTMLOUT .= "<tr><td class='colhead'>{$lang['donate_id']}</td><td class='colhead'>{$lang['donate_username']}</td><td class='colhead'>{$lang['donate_email']}</td>" . "<td class='colhead'>{$lang['donate_joined']}</td><td class='colhead'>{$lang['donate_until']}</td><td class='colhead'>" . "{$lang['donate_current']}</td><td class='colhead'>{$lang['donate_total']}</td><td class='colhead'>{$lang['donate_pm']}</td></tr>";
+
+$HTMLOUT .= "
+    <ul class='level-center bg-06'>
+        <li class='altlink margin20'>
+            <a href='{$site_config['baseurl']}/staffpanel.php?tool=donations&amp;action=donations'>{$lang['donate_curr_don']}</a>
+        </li>
+        <li class='altlink margin20'>
+            <a href='{$site_config['baseurl']}/staffpanel.php?tool=donations&amp;action=donations&amp;total_donors=1'>{$lang['donate_all_don']}</a>
+        </li>
+    </ul>";
+$heading = "
+    <tr>
+        <th>{$lang['donate_id']}</th>
+        <th>{$lang['donate_username']}</th>
+        <th>{$lang['donate_email']}</th>
+        <th>{$lang['donate_joined']}</th>
+        <th>{$lang['donate_until']}</th>
+        <th>{$lang['donate_current']}</th>
+        <th>{$lang['donate_total']}</th>
+        <th>{$lang['donate_pm']}</th>
+    </tr>";
+$body = '';
 while ($arr = mysqli_fetch_assoc($res)) {
-    // =======end
-    $HTMLOUT .= '
-        <tr>
-            <td>' . format_username($arr['id']) . "</td>
-            <td><a class='altlink' href='mailto:" . htmlsafechars($arr['email']) . "'>" . htmlsafechars($arr['email']) . '</a>' . '</td>
-            <td><span class="size_3">' . get_date($arr['added'], 'DATE') . '</span></td>
-            <td>';
+    $body .= "
+    <tr>
+        <td>{$arr['id']}</td>
+        <td>" . format_username($arr['id']) . "</td>
+        <td><a class='altlink' href='mailto:" . htmlsafechars($arr['email']) . "'>" . htmlsafechars($arr['email']) . "</a></td>
+        <td><span class='size_3'>" . get_date($arr['added'], 'DATE') . "</span></td>
+        <td>";
     $donoruntil = (int) $arr['donoruntil'];
-    if ($donoruntil == '0') {
-        $HTMLOUT .= 'n/a';
+    if ($donoruntil == 0) {
+        $body .= 'n/a';
     } else {
-        $HTMLOUT .= '<font size="-3"> ' . get_date($arr['donoruntil'], 'DATE') . ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ]{$lang['donate_togo']}</font>";
+        $body .= '<span class="size_3">' . get_date($arr['donoruntil'], 'DATE') . ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ]{$lang['donate_togo']}</span>";
     }
-    $HTMLOUT .= '</td><td><b>&#36;' . htmlsafechars($arr['donated']) . '</b></td>' . '<td><b>&#36;' . htmlsafechars($arr['total_donated']) . '</b></td>' . "<td><b><a class='altlink' href='{$site_config['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $arr['id'] . "'>{$lang['donate_sendpm']}</a></b></td></tr>";
+    $body .= "
+        </td>
+        <td><b>&#36;" . htmlsafechars($arr['donated']) . "</td>
+        <td><b>&#36;" . htmlsafechars($arr['total_donated']) . "</td>
+        <td>
+            <a class='altlink' href='{$site_config['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $arr['id'] . "'>{$lang['donate_sendpm']}</a>
+        </td>
+    </tr>";
 }
-$HTMLOUT .= end_table();
-$HTMLOUT .= end_frame();
+$HTMLOUT .= main_table($body, $heading);
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
+
 echo stdhead($lang['donate_stdhead']) . wrapper($HTMLOUT) . stdfoot();

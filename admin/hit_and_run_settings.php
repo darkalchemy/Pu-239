@@ -30,29 +30,29 @@ $HTMLOUT .= "
 <form action='staffpanel.php?tool=hit_and_run_settings' method='post'>";
 
 $HTMLOUT .= main_table("
-    <tr><td class='w-50'>{$lang['hnr_settings_online']}</td><td>{$lang['hnr_settings_yes']}<input type='radio' name='hnr_online' value='1' " . ($site_config['hnr_config']['hnr_online'] ? 'checked=\'checked\'' : '') . " />{$lang['hnr_settings_no']}<input type='radio' name='hnr_online' value='0' " . (!$site_config['hnr_config']['hnr_online'] ? 'checked=\'checked\'' : '') . " /></td></tr>
-    <tr><td class='w-50'>{$lang['hnr_settings_fclass']}</td><td><input type='text' name='firstclass' size='20' value='" . htmlsafechars($site_config['hnr_config']['firstclass']) . "' /></td></tr>
-    <tr><td class='w-50'>{$lang['hnr_settings_sclass']}</td><td><input type='text' name='secondclass' size='20' value='" . htmlsafechars($site_config['hnr_config']['secondclass']) . "' /></td></tr>
-    <tr><td class='w-50'>{$lang['hnr_settings_tclass']}</td><td><input type='text' name='thirdclass' size='20' value='" . htmlsafechars($site_config['hnr_config']['thirdclass']) . "' /></td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_online']}</td><td>{$lang['hnr_settings_yes']}<input type='radio' name='hnr_online' value='1' " . ($site_config['hnr_config']['hnr_online'] ? 'checked=\'checked\'' : '') . ">{$lang['hnr_settings_no']}<input type='radio' name='hnr_online' value='0' " . (!$site_config['hnr_config']['hnr_online'] ? 'checked=\'checked\'' : '') . "></td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_fclass']}</td><td><input type='text' name='firstclass' size='20' value='" . htmlsafechars($site_config['hnr_config']['firstclass']) . "'></td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_sclass']}</td><td><input type='text' name='secondclass' size='20' value='" . htmlsafechars($site_config['hnr_config']['secondclass']) . "'></td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_tclass']}</td><td><input type='text' name='thirdclass' size='20' value='" . htmlsafechars($site_config['hnr_config']['thirdclass']) . "'></td></tr>
 
-    <tr><td class='w-50'>{$lang['hnr_settings_tage1']}</td><td><input type='number' name='torrentage1' min='0' max='31' step='0.5'value='" . htmlsafechars($site_config['hnr_config']['torrentage1']) . "' />{$lang['hnr_settings_days']}</td></tr>
-    <tr><td class='w-50'>{$lang['hnr_settings_tage2']}</td><td><input type='number' name='torrentage2' min='0' max='31' step='0.5'value='" . htmlsafechars($site_config['hnr_config']['torrentage2']) . "' />{$lang['hnr_settings_days']}</td></tr>
-    <tr><td class='w-50'>{$lang['hnr_settings_tage3']}</td><td><input type='number' name='torrentage3' min='0' max='31' step='0.5'value='" . htmlsafechars($site_config['hnr_config']['torrentage3']) . "' />{$lang['hnr_settings_days']}</td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_tage1']}</td><td><input type='number' name='torrentage1' min='0' max='31' step='0.5'value='" . htmlsafechars($site_config['hnr_config']['torrentage1']) . "'>{$lang['hnr_settings_days']}</td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_tage2']}</td><td><input type='number' name='torrentage2' min='0' max='31' step='0.5'value='" . htmlsafechars($site_config['hnr_config']['torrentage2']) . "'>{$lang['hnr_settings_days']}</td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_tage3']}</td><td><input type='number' name='torrentage3' min='0' max='31' step='0.5'value='" . htmlsafechars($site_config['hnr_config']['torrentage3']) . "'>{$lang['hnr_settings_days']}</td></tr>
 
-    <tr><td class='w-50'>{$lang['hnr_settings_seed1_1']}</td><td><input type='number' name='_3day_first' min='0' max='120' step='0.5' value='" . htmlsafechars($site_config['hnr_config']['_3day_first']) . "' />{$lang['hnr_settings_hours']}</td></tr>
-    <tr><td class='w-50'>{$lang['hnr_settings_seed1_2']}</td><td><input type='number' name='_14day_first' min='0' max='120' step='0.5' value='" . htmlsafechars($site_config['hnr_config']['_14day_first']) . "' />{$lang['hnr_settings_hours']}</td></tr>
-    <tr><td class='w-50'>{$lang['hnr_settings_seed1_3']}</td><td><input type='number' name='_14day_over_first' min='0' max='120' step='0.5' value='" . htmlsafechars($site_config['hnr_config']['_14day_over_first']) . "' />Hours</td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_seed1_1']}</td><td><input type='number' name='_3day_first' min='0' max='120' step='0.5' value='" . htmlsafechars($site_config['hnr_config']['_3day_first']) . "'>{$lang['hnr_settings_hours']}</td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_seed1_2']}</td><td><input type='number' name='_14day_first' min='0' max='120' step='0.5' value='" . htmlsafechars($site_config['hnr_config']['_14day_first']) . "'>{$lang['hnr_settings_hours']}</td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_seed1_3']}</td><td><input type='number' name='_14day_over_first' min='0' max='120' step='0.5' value='" . htmlsafechars($site_config['hnr_config']['_14day_over_first']) . "'>Hours</td></tr>
 
-    <tr><td class='w-50'>{$lang['hnr_settings_seed2_1']}</td><td><input type='number' name='_3day_second' min='0' max='120' step='0.5' value='" . htmlsafechars($site_config['hnr_config']['_3day_second']) . "' />{$lang['hnr_settings_hours']}</td></tr>
-    <tr><td class='w-50'>{$lang['hnr_settings_seed2_2']}</td><td><input type='number' name='_14day_second' min='0' max='120' step='0.5' value='" . htmlsafechars($site_config['hnr_config']['_14day_second']) . "' />{$lang['hnr_settings_hours']}</td></tr>
-    <tr><td class='w-50'>{$lang['hnr_settings_seed2_3']}</td><td><input type='number' name='_14day_over_second' min='0' max='120' step='0.5'  value='" . htmlsafechars($site_config['hnr_config']['_14day_over_second']) . "' />{$lang['hnr_settings_hours']}</td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_seed2_1']}</td><td><input type='number' name='_3day_second' min='0' max='120' step='0.5' value='" . htmlsafechars($site_config['hnr_config']['_3day_second']) . "'>{$lang['hnr_settings_hours']}</td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_seed2_2']}</td><td><input type='number' name='_14day_second' min='0' max='120' step='0.5' value='" . htmlsafechars($site_config['hnr_config']['_14day_second']) . "'>{$lang['hnr_settings_hours']}</td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_seed2_3']}</td><td><input type='number' name='_14day_over_second' min='0' max='120' step='0.5'  value='" . htmlsafechars($site_config['hnr_config']['_14day_over_second']) . "'>{$lang['hnr_settings_hours']}</td></tr>
 
-    <tr><td class='w-50'>{$lang['hnr_settings_seedt3_1']}</td><td><input type='number' name='_3day_third' min='0' max='120' step='0.5' value='" . htmlsafechars($site_config['hnr_config']['_3day_third']) . "' />{$lang['hnr_settings_hours']}</td></tr>
-    <tr><td class='w-50'>{$lang['hnr_settings_seedt3_2']}</td><td><input type='number' name='_14day_third' min='0' max='120' step='0.5' value='" . htmlsafechars($site_config['hnr_config']['_14day_third']) . "' />{$lang['hnr_settings_hours']}</td></tr>
-    <tr><td class='w-50'>{$lang['hnr_settings_seedt3_3']}</td><td><input type='number' name='_14day_over_third' min='0' max='120' step='0.5' value='" . htmlsafechars($site_config['hnr_config']['_14day_over_third']) . "' />{$lang['hnr_settings_hours']}</td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_seedt3_1']}</td><td><input type='number' name='_3day_third' min='0' max='120' step='0.5' value='" . htmlsafechars($site_config['hnr_config']['_3day_third']) . "'>{$lang['hnr_settings_hours']}</td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_seedt3_2']}</td><td><input type='number' name='_14day_third' min='0' max='120' step='0.5' value='" . htmlsafechars($site_config['hnr_config']['_14day_third']) . "'>{$lang['hnr_settings_hours']}</td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_seedt3_3']}</td><td><input type='number' name='_14day_over_third' min='0' max='120' step='0.5' value='" . htmlsafechars($site_config['hnr_config']['_14day_over_third']) . "'>{$lang['hnr_settings_hours']}</td></tr>
 
-    <tr><td class='w-50'>{$lang['hnr_settings_tallow']}</td><td><input type='number' name='caindays' min='0' max='20' step='0.5'value='" . htmlsafechars($site_config['hnr_config']['caindays']) . "' />{$lang['hnr_settings_days']}</td></tr>
-    <tr><td class='w-50'>{$lang['hnr_settings_allow']}</td><td><input type='number' name='cainallowed' min='0' max='500' step='1'value='" . htmlsafechars($site_config['hnr_config']['cainallowed']) . "' /></td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_tallow']}</td><td><input type='number' name='caindays' min='0' max='20' step='0.5'value='" . htmlsafechars($site_config['hnr_config']['caindays']) . "'>{$lang['hnr_settings_days']}</td></tr>
+    <tr><td class='w-50'>{$lang['hnr_settings_allow']}</td><td><input type='number' name='cainallowed' min='0' max='500' step='1'value='" . htmlsafechars($site_config['hnr_config']['cainallowed']) . "'></td></tr>
 
-    <tr><td colspan='2' class='has-text-centered'><input type='submit' value='{$lang['hnr_settings_apply']}' /></td></tr>") . '</form>';
+    <tr><td colspan='2' class='has-text-centered'><input type='submit' value='{$lang['hnr_settings_apply']}' class='button is-small'></td></tr>") . '</form>';
 echo stdhead($lang['hnr_settings_stdhead']) . wrapper($HTMLOUT) . stdfoot();

@@ -1502,7 +1502,7 @@ function random_color($minVal = 0, $maxVal = 255)
     $b = mt_rand($minVal, $maxVal);
 
     // Return a hex colour ID string
-    return sprintf('#%02X%02X%02X', $r, $g, $b);
+    return strtolower(sprintf('#%02X%02X%02X', $r, $g, $b));
 }
 
 /**

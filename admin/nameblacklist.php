@@ -28,13 +28,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         stderr($lang['name_err'], ' ' . $lang['name_hmm'] . '<b>' . $site_config['nameblacklist'] . '</b>' . $lang['name_is'] . '');
     }
 } else {
-    $out = begin_main_frame();
-    $out .= stdmsg($lang['name_curr'], count($blacklist) ? implode(', ', array_keys($blacklist)) : $lang['name_no']);
-    $out .= stdmsg($lang['name_add'], '<form action="staffpanel.php?tool=nameblacklist&amp;action=nameblacklist" method="post"><table width="90%" style="border-collapse:separate">
-    <tr><td><textarea rows="3" cols="100" name="badnames"></textarea></td></tr>
-    <tr><td>' . $lang['name_note'] . '</td></tr>
-    <tr> <td><input type="submit" value="' . $lang['name_update'] . '"/></td></tr>
-    </table></form>');
-    $out .= end_main_frame();
+    $out = stdmsg($lang['name_curr'], count($blacklist) ? implode(', ', array_keys($blacklist)) : $lang['name_no']);
+    $out .= main_div("
+    <h2 class='has-text-centered'>{$lang['name_add']}</h2>
+    <form action='{$site_config['baseurl']}/staffpanel.php?tool=nameblacklist&amp;action=nameblacklist' method='post'>
+        <textarea rows='3' name='badnames' class='w-100'></textarea>
+        <div class='has-text-centered'>
+            <p>{$lang['name_note']}</p>
+            <input type='submit' value='{$lang['name_update']}' class='button is-small margin10'>
+        </div>
+    </form>", 'top20');
     echo stdhead($lang['name_stdhead']) . wrapper($out) . stdfoot();
 }

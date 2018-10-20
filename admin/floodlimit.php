@@ -25,12 +25,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!file_exists($site_config['flood_file']) || !is_array($limit = unserialize(file_get_contents($site_config['flood_file'])))) {
         $limit = [];
     }
-    $out = begin_main_frame() . begin_frame($lang['floodlimit_editflood']);
-    $out .= '<form method=\'post\' action=\'\' ><table width=\'60%\' align=\'center\'><tr><td class=\'colhead\'>' . $lang['floodlimit_userclass'] . '</td><td class=\'colhead\'>' . $lang['floodlimit_limit'] . '</td></tr>';
+    $out = "
+        <form method='post' action=''>";
+    $heading = "
+        <tr>
+            <th>{$lang['floodlimit_userclass']}</th>
+            <th>{$lang['floodlimit_limit']}</th>
+        </tr>";
+    $body = '';
     for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
-        $out .= '<tr><td align=\'left\'>' . get_user_class_name($i) . '</td><td><input name=\'limit[' . $i . ']\' type=\'text\' size=\'10\' value=\'' . (isset($limit[$i]) ? $limit[$i] : 0) . '\'/></td></tr>';
+        $body .= "
+        <tr>
+            <td>" . get_user_class_name($i) . "</td>
+            <td><input name='{limit[$i]}' type='text' class='w-100' value='" . (isset($limit[$i]) ? $limit[$i] : 0) . "'></td>
+        </tr>";
     }
-    $out .= '<tr><td colspan=\'2\'>' . $lang['floodlimit_note'] . '</td></tr><tr><td colspan=\'2\' class=\'colhead\'><input type=\'submit\' value=\'' . $lang['floodlimit_save'] . '\' /></td></tr>';
-    $out .= '</table></form>' . end_frame() . end_main_frame();
+    $out .= main_table($body, $heading) . "
+        <div class='has-text-centered'>
+            <p>{$lang['floodlimit_note']}</p>
+            <input type='submit' value='{$lang['floodlimit_save']}' class='button is-small margin20'>
+        </div>
+        </form>";
+
     echo stdhead($lang['floodlimit_std']) . wrapper($out) . stdfoot();
 }

@@ -41,37 +41,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+$heading = "
+        <tr>
+            <th class='w-1'>{$lang['bonusmanager_id']}</th>
+            <th class='w-1'>{$lang['bonusmanager_order_id']}</th>
+            <th class='w-1 tooltipper' title='{$lang['bonusmanager_enabled']}'>E</th>
+            <th class='w-1'>{$lang['bonusmanager_bonus']}</th>
+            <th class='w-1'>{$lang['bonusmanager_points']}</th>
+            <th class='w-1'>{$lang['bonusmanager_pointspool']}</th>
+            <th class='w-1'>{$lang['bonusmanager_minpoints']}</th>
+            <th class='w-1'>{$lang['bonusmanager_minclass']}</th>
+            <th class='w-10'>{$lang['bonusmanager_description']}</th>
+            <th class='w-1'>{$lang['bonusmanager_type']}</th>
+            <th class='w-1'>{$lang['bonusmanager_quantity']}</th>
+            <th class='w-1'>{$lang['bonusmanager_action']}</th>
+        </tr>";
+
+$HTMLOUT = "
+    <h1 class='has-text-centered'>{$lang['bonusmanager_bm']}</h1>";
+
+$body = '';
 while ($arr = mysqli_fetch_assoc($res)) {
-    $HTMLOUT .= "<form name='bonusmanage' method='post' action='staffpanel.php?tool=bonusmanage&amp;action=bonusmanage'>
-      <div class='roundedCorners' style='text-align:left;width:80%;border:1px solid black;padding:5px;'>
-    <div class='colhead'><span style='font-weight:bold;font-size:12pt;'>{$lang['bonusmanager_bm']}</span></div>
-      <table width='100%'>
-      <tr>
-        <td class='colhead'>{$lang['bonusmanager_id']}</td>
-        <td class='colhead'>{$lang['bonusmanager_order_id']}</td>
-        <td class='colhead'>{$lang['bonusmanager_enabled']}</td>
-        <td class='colhead'>{$lang['bonusmanager_bonus']}</td>
-        <td class='colhead'>{$lang['bonusmanager_points']}</td>
-        <td class='colhead'>{$lang['bonusmanager_pointspool']}</td>
-        <td class='colhead'>{$lang['bonusmanager_minpoints']}</td>
-        <td class='colhead'>{$lang['bonusmanager_minclass']}</td>
-        <td class='colhead'>{$lang['bonusmanager_description']}</td>
-        <td class='colhead'>{$lang['bonusmanager_type']}</td>
-        <td class='colhead'>{$lang['bonusmanager_quantity']}</td>
-        <td class='colhead'>{$lang['bonusmanager_action']}</td></tr> 
-      <tr><td>
-        <input name='id' type='hidden' value='" . (int) $arr['id'] . "' />" . (int) $arr['id'] . "</td>
-        <td><input type='text' name='orderid' value='" . (int) $arr['orderid'] . "' size='4' /></td>
-        <td><input name='enabled' type='checkbox'" . ($arr['enabled'] === 'yes' ? ' checked' : '') . ' /></td>
-        <td>' . htmlsafechars($arr['bonusname']) . "</td>
-        <td><input type='text' name='bonuspoints' value='" . (int) $arr['points'] . "' size='4' /></td>
-        <td><input type='text' name='pointspool' value='" . (int) $arr['pointspool'] . "' size='4' /></td>
-        <td><input type='text' name='minpoints' value='" . (int) $arr['minpoints'] . "' size='4' /></td>
-        <td><input type='text' name='minclass' value='" . (int) $arr['minclass'] . "' size='4' /></td>
-        <td><textarea name='description' rows='4' cols='10'>" . htmlsafechars($arr['description']) . '</textarea></td>
-        <td>' . htmlsafechars($arr['art']) . '</td>
-        <td>' . (($arr['art'] === 'traffic' || $arr['art'] === 'traffic2' || $arr['art'] === 'gift_1' || $arr['art'] === 'gift_2') ? (htmlsafechars($arr['menge']) / 1024 / 1024 / 1024) . ' GB' : htmlsafechars($arr['menge'])) . "</td>
-        <td><input class='button is-small' type='submit' value='{$lang['bonusmanager_submit']}' /></td>
-        </tr></table></div></form>";
+    $body .= "
+        <tr>
+            <form name='bonusmanage' method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=bonusmanage&amp;action=bonusmanage'>
+                <td class='w-1'><input name='id' type='hidden' value='" . (int) $arr['id'] . "'>" . (int) $arr['id'] . "</td>
+                <td class='w-1'><input type='text' name='orderid' value='" . (int) $arr['orderid'] . "' class='w-100'></td>
+                <td class='w-1'><input name='enabled' type='checkbox'" . ($arr['enabled'] === 'yes' ? ' checked' : '') . "></td>
+                <td class='w-1'>" . htmlsafechars($arr['bonusname']) . "</td>
+                <td class='w-1'><input type='text' name='bonuspoints' value='" . (int) $arr['points'] . "' class='w-100'></td>
+                <td class='w-1'><input type='text' name='pointspool' value='" . (int) $arr['pointspool'] . "' class='w-100'></td>
+                <td class='w-1'><input type='text' name='minpoints' value='" . (int) $arr['minpoints'] . "' class='w-100'></td>
+                <td class='w-1'><input type='text' name='minclass' value='" . (int) $arr['minclass'] . "' class='w-100'></td>
+                <td class='w-10'><textarea name='description' rows='4' class='w-100'>" . htmlsafechars($arr['description']) . "</textarea></td>
+                <td class='w-1'>" . htmlsafechars($arr['art']) . "</td>
+                <td class='w-1'>" . (($arr['art'] === 'traffic' || $arr['art'] === 'traffic2' || $arr['art'] === 'gift_1' || $arr['art'] === 'gift_2') ? (htmlsafechars($arr['menge']) / 1024 / 1024 / 1024) . ' GB' : htmlsafechars($arr['menge'])) . "</td>
+                <td class='w-1'><input class='button is-small' type='submit' value='{$lang['bonusmanager_submit']}'></td>
+            </form>
+        </tr>";
 }
+
+$HTMLOUT .= main_table($body, $heading);
 echo stdhead($lang['bonusmanager_stdhead']) . wrapper($HTMLOUT) . stdfoot();

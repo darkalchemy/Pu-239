@@ -55,23 +55,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Refresh: 3; url=staffpanel.php?tool=datareset');
     stderr($lang['datareset_stderr'], $lang['datareset_pls']);
 } else {
-    $HTMLOUT .= begin_frame();
-    $HTMLOUT .= "<form action='staffpanel.php?tool=datareset&amp;action=datareset' method='post'>
-    <fieldset>
-    <legend>{$lang['datareset_reset']}</legend>
- <table width='500' style='border-collapse:collapse'>
-        <tr><td nowrap='nowrap'>{$lang['datareset_tid']}</td><td width='100%'><input type='text' name='tid' size='20' /></td></tr>
-        <tr><td style='background:#990033; color:#CCCCCC;' colspan='2'>
+    $form = "
+    <form action='{$site_config['baseurl']}/staffpanel.php?tool=datareset&amp;action=datareset' method='post'>
+    <div class='has-text-centered'>
+        <h1>{$lang['datareset_reset']}</h1>
+        <label for='tid'>{$lang['datareset_tid']}</label>
+        <input type='text' name='tid' id='tid' required pattern='\d+'>
+        <div style='background:#990033; color:#CCCCCC;' class='has-text-left padding10 top20 bottom20 round5'>
             <ul>
-                    <li>{$lang['datareset_tid_info']}</li>
-                    <li>{$lang['datareset_info']}</li>
-                    <li>{$lang['datareset_info1']}</b></li>
-                </ul>
-            </td></tr>
-            <tr><td colspan='2'><input type='submit' value='{$lang['datareset_repay']}' /></td></tr>
-        </table>
-    </fieldset>
+                <li>{$lang['datareset_tid_info']}</li>
+                <li>{$lang['datareset_info']}</li>
+                <li>{$lang['datareset_info1']}</b></li>
+            </ul>
+        </div>
+        <input type='submit' value='{$lang['datareset_repay']}' class='button is-small'>
+    </div>
     </form>";
-    $HTMLOUT .= end_frame();
+
+    $HTMLOUT .= main_div($form);
     echo stdhead($lang['datareset_stdhead']) . wrapper($HTMLOUT) . stdfoot();
 }

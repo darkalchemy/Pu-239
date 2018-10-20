@@ -110,6 +110,9 @@ function get_infopage($lang, $queries, $path)
         'deleted',
         'action',
         'userid',
+        'receiver',
+        'server',
+        'op',
     ];
 
     $ignore2 = [
@@ -119,6 +122,8 @@ function get_infopage($lang, $queries, $path)
 
     if (!empty($list[0]) && $list[0] === 'box') {
         $title = get_mailbox_name($list[1]);
+    } elseif ($list[0] === 'phpinfo') {
+        $title = $lang['phpinfo'];
     } elseif ($list[0] === 'mode' && $list[1] === 'news') {
         $title = $lang['add_news'];
     } elseif ($list[0] === 'mode' && $list[1] === 'edit') {

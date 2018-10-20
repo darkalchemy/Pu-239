@@ -191,14 +191,14 @@ function show_poll_archive()
 
     $HTMLOUT = '';
     $query = sql_query('SELECT * FROM polls ORDER BY start_date DESC');
-    if (false == mysqli_num_rows($query)) {
-        $HTMLOUT = "
+    if (mysqli_num_rows($query) == false) {
+        $HTMLOUT = main_div("
         <h1 class='has-text-centered'>{$lang['poll_spa_no_polls']}</h1>
         <div class='has-text-centered'>
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=new' class='button is-small margin20'>
                 {$lang['poll_spa_add']}
             </a>
-        </div>";
+        </div>");
     } else {
         $HTMLOUT .= "
         <h1 class='has-text-centered'>{$lang['poll_spa_manage']}</h1>
@@ -240,6 +240,7 @@ function show_poll_archive()
                             <i class='icon-cancel icon'></i>
                         </a>
                     </span>
+                </div>
             </td>
         </tr>";
         }

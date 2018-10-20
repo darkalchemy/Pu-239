@@ -21,42 +21,20 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config;
+global $site_config, $session;
 
 $VERSION = '$Id: memcache.php,v 1.1.2.3 2008/08/28 18:07:54 mikl Exp $';
-//define('ADMIN_USERNAME','memcache_stats');     // Admin Username
-//define('ADMIN_PASSWORD','richmond1');      // Admin Password
 define('DATE_FORMAT', 'Y/m/d H:i:s');
 define('GRAPH_SIZE', 200);
 define('MAX_ITEM_DUMP', 50);
 $MEMCACHE_SERVERS[] = "{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"; // add more as an array
 //$MEMCACHE_SERVERS[] = 'mymemcache-server2:11211'; // add more as an array
 ////////// END OF DEFAULT CONFIG AREA /////////////////////////////////////////////////////////////
-///////////////// Password protect ////////////////////////////////////////////////////////////////
-/*
-if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW']) ||
-           $_SERVER['PHP_AUTH_USER'] != ADMIN_USERNAME ||$_SERVER['PHP_AUTH_PW'] != ADMIN_PASSWORD) {
-            Header("WWW-Authenticate: Basic realm=\"Memcache Login\"");
-            Header("HTTP/1.0 401 Unauthorized");
 
-            echo <<<EOB
-                <html><body>
-                <h1>Rejected!</h1>
-                <big>Wrong Username or Password!</big>
-                </body></html>
-EOB;
-            exit;
-}
-*/
-///////////MEMCACHE FUNCTIONS /////////////////////////////////////////////////////////////////////
-/**
- * @param $command
- *
- * @return array
- */
 function sendMemcacheCommands($command)
 {
     global $MEMCACHE_SERVERS;
+
     $result = [];
     foreach ($MEMCACHE_SERVERS as $server) {
         $strs = explode(':', $server);
@@ -68,18 +46,11 @@ function sendMemcacheCommands($command)
     return $result;
 }
 
-/**
- * @param $server
- * @param $port
- * @param $command
- *
- * @return array
- */
 function sendMemcacheCommand($server, $port, $command)
 {
     $s = @fsockopen($server, $port);
     if (!$s) {
-        die('Cant connect to:' . $server . ':' . $port);
+        die("Can't connect to: {$server}:{$port}");
     }
     fwrite($s, $command . "\r\n");
     $buf = '';
@@ -100,11 +71,6 @@ function sendMemcacheCommand($server, $port, $command)
     return parseMemcacheResults($buf);
 }
 
-/**
- * @param $str
- *
- * @return array
- */
 function parseMemcacheResults($str)
 {
     $res = [];
@@ -132,13 +98,6 @@ function parseMemcacheResults($str)
     return $res;
 }
 
-/**
- * @param $server
- * @param $slabId
- * @param $limit
- *
- * @return array
- */
 function dumpCacheSlab($server, $slabId, $limit)
 {
     list($host, $port) = explode(':', $server);
@@ -147,11 +106,6 @@ function dumpCacheSlab($server, $slabId, $limit)
     return $resp;
 }
 
-/**
- * @param $server
- *
- * @return array
- */
 function flushServer($server)
 {
     list($host, $port) = explode(':', $server);
@@ -160,9 +114,6 @@ function flushServer($server)
     return $resp;
 }
 
-/**
- * @return array
- */
 function getCacheItems()
 {
     $items = sendMemcacheCommands('stats items');
@@ -191,11 +142,6 @@ function getCacheItems()
     ];
 }
 
-/**
- * @param bool $total
- *
- * @return array
- */
 function getMemcacheStats($total = true)
 {
     $resp = sendMemcacheCommands('stats');
@@ -304,21 +250,10 @@ function getMemcacheStats($total = true)
     return $resp;
 }
 
-//////////////////////////////////////////////////////
-//
-// don't cache this page
-//
-header('Cache-Control: no-store, no-cache, must-revalidate'); // HTTP/1.1
-header('Cache-Control: post-check=0, pre-check=0', false);
-header('Pragma: no-cache'); // HTTP/1.0
-/**
- * @param $ts
- *
- * @return string
- */
 function duration($ts)
 {
     global $time;
+
     $years = (int) ((($time - $ts) / (7 * 86400)) / 52.177457);
     $rem = (int) (($time - $ts) - ($years * 52.177457 * 7 * 86400));
     $weeks = (int) (($rem) / (7 * 86400));
@@ -359,289 +294,46 @@ function duration($ts)
     return $str;
 }
 
-// create graphics
-//
-/**
- * @return bool
- */
-function graphics_avail()
-{
-    return extension_loaded('gd');
-}
-
-/**
- * @param $s
- *
- * @return string
- */
-function bsize($s)
-{
-    foreach ([
-                 '',
-                 'K',
-                 'M',
-                 'G',
-             ] as $i => $k) {
-        if ($s < 1024) {
-            break;
-        }
-
-        $s /= 1024;
-    }
-
-    return sprintf('%5.1f %sBytes', $s, $k);
-}
-
-// create menu entry
-/**
- * @param $ob
- * @param $title
- *
- * @return string
- */
 function menu_entry($ob, $title)
 {
     global $site_config;
+
     if ($ob == $_GET['op']) {
-        return "<li><a class=\"child_active\" href=\"{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=$ob\">$title</a></li>";
+        return "
+            <li class='altlink margin20'>
+                <a class='active' href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=$ob'>$title</a>
+            </li>";
     }
 
-    return "<li><a class=\"active\" href=\"{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=$ob\">$title</a></li>";
-}
-
-/**
- * @return string
- */
-function getHeader()
-{
-    $header = <<<EOB
-<!doctype html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>MEMCACHE INFO</title>
-<style><!--
-body { background:#fff; font-size:100.01%; margin:0; padding:0; }
-body,p,td,th,input,submit { font-size:0.8em;font-family:arial,helvetica,sans-serif; }
-* html body   {font-size: 0.8em;}
-* html p      {font-size: 0.8em;}
-* html td     {font-size: 0.8em;}
-* html th     {font-size: 0.8em;}
-* html input  {font-size: 0.8em;}
-* html submit {font-size: 0.8em;}
-td { vertical-align:top }
-a { color:black; font-weight:none; text-decoration:none; }
-a:hover { text-decoration:underline; }
-div.content { padding:1em 1em 1em 1em; position:absolute; width:97%; z-index:100; }
-
-h1.memcache { background:rgb(153,153,204); margin:0; padding:0.5em 1em 0.5em 1em; }
-* html h1.memcache { margin-bottom:-7px; }
-h1.memcache a:hover { text-decoration:none; color:rgb(90,90,90); }
-h1.memcache span.logo {
-    background:rgb(119,123,180);
-    color:black;
-    border-right: solid black 1px;
-    border-bottom: solid black 1px;
-    font-style:italic;
-    font-size:1em;
-    padding-left:1.2em;
-    padding-right:1.2em;
-    text-align:right;
-    display:block;
-    width:130px;
-    }
-h1.memcache span.logo span.name { color:#fff; font-size:0.7em; padding:0 0.8em 0 2em; }
-h1.memcache span.nameinfo { color:#fff; display:inline; font-size:0.4em; margin-left: 3em; }
-h1.memcache div.copy { color:black; font-size:0.4em; position:absolute; right:1em; }
-hr.memcache {
-    background:#fff;
-    border-top:solid rgb(102,102,153) 10px;
-    height:12px;
-    margin:0;
-    margin-top:1px;
-    padding:0;
-}
-
-ol,menu { margin:1em 0 0 0; padding:0.2em; margin-left:1em;}
-ol.menu li { display:inline; margin-right:0.7em; list-style: none; font-size: 85%;}
-ol.menu a {
-    background:rgb(153,153,204);
-    border:solid rgb(102,102,153) 2px;
-    color:#fff;
-    font-weight:bold;
-    margin-right:0;
-    padding:0.1em 0.5em 0.1em 0.5em;
-    text-decoration:none;
-    margin-left: 5px;
-    }
-ol.menu a.child_active {
-    background:rgb(153,153,204);
-    border:solid rgb(102,102,153) 2px;
-    color:#fff;
-    font-weight:bold;
-    margin-right:0;
-    padding:0.1em 0.5em 0.1em 0.5em;
-    text-decoration:none;
-    border-left: solid black 5px;
-    margin-left: 0;
-    }
-ol.menu span.active {
-    background:rgb(153,153,204);
-    border:solid rgb(102,102,153) 2px;
-    color:black;
-    font-weight:bold;
-    margin-right:0;
-    padding:0.1em 0.5em 0.1em 0.5em;
-    text-decoration:none;
-    border-left: solid black 5px;
-    }
-ol.menu span.inactive {
-    background:rgb(193,193,244);
-    border:solid rgb(182,182,233) 2px;
-    color:#fff;
-    font-weight:bold;
-    margin-right:0;
-    padding:0.1em 0.5em 0.1em 0.5em;
-    text-decoration:none;
-    margin-left: 5px;
-    }
-ol.menu a:hover {
-    background:rgb(193,193,244);
-    text-decoration:none;
-    }
-
-div.info {
-    background:rgb(204,204,204);
-    border:solid rgb(204,204,204) 1px;
-    margin-bottom:1em;
-    }
-div.info h2 {
-    background:rgb(204,204,204);
-    color:black;
-    font-size:1em;
-    margin:0;
-    padding:0.1em 1em 0.1em 1em;
-    }
-div.info table {
-    border:solid rgb(204,204,204) 1px;
-    border-spacing:0;
-    width:100%;
-    }
-div.info table th {
-    background:rgb(204,204,204);
-    color:#fff;
-    margin:0;
-    padding:0.1em 1em 0.1em 1em;
-    }
-div.info table th a.sortable { color:black; }
-div.info table tr.tr-0 { background:rgb(238,238,238); }
-div.info table tr.tr-1 { background:rgb(221,221,221); }
-div.info table td { padding:0.3em 1em 0.3em 1em; }
-div.info table td.td-0 { border-right:solid rgb(102,102,153) 1px; white-space:nowrap; }
-div.info table td.td-n { border-right:solid rgb(102,102,153) 1px; }
-div.info table td h3 {
-    color:black;
-    font-size:1.1em;
-    margin-left:-0.3em;
-    }
-.td-0 a , .td-n a, .tr-0 a , tr-1 a {
-    text-decoration:underline;
-}
-div.graph { margin-bottom: 1em; }
-div.graph h2 { background: rgb(204,204,204); color: black; font-size: 1em; margin: 0; padding: 0.1em 1em 0.1em 1em; }
-div.graph table { border: solid rgb(204,204,204) 1px; color:black; font-weight:normal; width:100%; }
-div.graph table td.td-0 { background: rgb(238,238,238); }
-div.graph table td.td-1 { background: rgb(221,221,221); }
-div.graph table td { padding: 0.2em 1em 0.4em 1em; }
-
-div.div1,div.div2 { margin-bottom: 1em; width:35em; }
-div.div3 { position:absolute; left:40em; top:1em; width:580px; }
-
-div.sorting { margin: 1.5em 0 1.5em 2em; }
-.center { text-align: center; }
-.aright { position: absolute; right:1em; }
-.right { text-align:right; }
-.ok { color:rgb(0,200,0); font-weight:bold; }
-.failed { color:rgb(200,0,0); font-weight:bold; }
-
-span.box {
-    border: black solid 1px;
-    border-right: solid black 2px;
-    border-bottom: solid black 2px;
-    padding: 0 0.5em 0 0.5em;
-    margin-right: 1em;
-}
-span.green { background: #60F060; padding: 0 0.5em 0 0.5em; }
-span.red { background: #D06030; padding: 0 0.5em 0 0.5em; }
-
-div.authneeded {
-    background: rgb(238,238,238);
-    border: solid rgb(204,204,204) 1px;
-    color: rgb(200,0,0);
-    font-size: 1.2em;
-    font-weight: bold;
-    padding: 2em;
-    text-align: center;
-    }
-
-input {
-    background:rgb(153,153,204);
-    border:solid rgb(102,102,153) 2px;
-    color:#fff;
-    font-weight:bold;
-    margin-right:1em;
-    padding:0.1em 0.5em 0.1em 0.5em;
-    }
-//-->
-</style>
-</head>
-<body>
-<div class="head">
-    <h1 class="memcache">
-        <span class="logo"><a href="http://pecl.php.net/package/memcache">memcache</a></span>
-        <span class="nameinfo">memcache.php by <a href="http://livebookmark.net">Harun Yayli</a></span>
-    </h1>
-    <hr class="memcache">
-</div>
-<div class=content>
-EOB;
-
-    return $header;
-}
-
-/**
- * @return string
- */
-function getFooter()
-{
-    global $VERSION;
-    $footer = '</div></div><!-- Based on apc.php ' . $VERSION . '--></body>
-</html>
-';
-
-    return $footer;
+    return "
+            <li class='altlink margin20'>
+                <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=$ob'>$title</a>
+            </li>";
 }
 
 function getMenu()
 {
     global $site_config;
-    echo '<ol class=menu>';
+
+    $menu = "
+        <ul class='level-center bg-06'>";
     if ($_GET['op'] != 4) {
-        echo <<<EOB
-    <li><a href="{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op={$_GET['op']}">Refresh Data</a></li>
-EOB;
+        $menu .= "
+            <li class='altlink margin20'>
+                <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op={$_GET['op']}'>Refresh Data</a>
+            </li>";
     } else {
-        echo <<<EOB
-    <li><a href="{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=2">Back</a></li>
-EOB;
+        $menu .= "
+            <li class='altlink margin20'>
+                <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=2'>Back</a>
+            </li>";
     }
-    echo menu_entry(1, 'View Host Stats'), menu_entry(2, 'Variables');
-    echo <<<EOB
-    </ol>
-    <br>
-EOB;
+    $menu .= menu_entry(1, 'View Host Stats');
+    $menu .= menu_entry(2, 'Variables');
+    $menu .= "
+        </ul>";
+
+    return $menu;
 }
 
 // TODO, AUTH
@@ -649,38 +341,24 @@ $_GET['op'] = !isset($_GET['op']) ? '1' : $_GET['op'];
 $PHP_SELF = isset($_SERVER['PHP_SELF']) ? htmlentities(strip_tags($_SERVER['PHP_SELF'], '')) : '';
 $PHP_SELF = $PHP_SELF . '?';
 $time = time();
-// sanitize _GET
+
 foreach ($_GET as $key => $g) {
     $_GET[$key] = htmlentities($g);
 }
-// singleout
-// when singleout is set, it only gives details for that server.
+
 if (isset($_GET['singleout']) && $_GET['singleout'] >= 0 && $_GET['singleout'] < count($MEMCACHE_SERVERS)) {
     $MEMCACHE_SERVERS = [
         $MEMCACHE_SERVERS[$_GET['singleout']],
     ];
 }
-// display images
+
 if (isset($_GET['IMG'])) {
     $memcacheStats = getMemcacheStats();
     $memcacheStatsSingle = getMemcacheStats(false);
-    if (!graphics_avail()) {
-        die();
-    }
-    /**
-     * @param        $im
-     * @param        $x
-     * @param        $y
-     * @param        $w
-     * @param        $h
-     * @param        $color1
-     * @param        $color2
-     * @param string $text
-     * @param string $placeindex
-     */
     function fill_box($im, $x, $y, $w, $h, $color1, $color2, $text = '', $placeindex = '')
     {
         global $col_black;
+
         $x1 = $x + $w - 1;
         $y1 = $y + $h - 1;
         imagerectangle($im, $x, $y1, $x1 + 1, $y + 1, $col_black);
@@ -716,18 +394,6 @@ if (isset($_GET['IMG'])) {
         }
     }
 
-    /**
-     * @param        $im
-     * @param        $centerX
-     * @param        $centerY
-     * @param        $diameter
-     * @param        $start
-     * @param        $end
-     * @param        $color1
-     * @param        $color2
-     * @param string $text
-     * @param int    $placeindex
-     */
     function fill_arc($im, $centerX, $centerY, $diameter, $start, $end, $color1, $color2, $text = '', $placeindex = 0)
     {
         $r = $diameter / 2;
@@ -801,8 +467,7 @@ if (isset($_GET['IMG'])) {
     imagepng($image);
     exit;
 }
-echo getHeader();
-echo getMenu();
+$HTMLOUT = getMenu();
 switch ($_GET['op']) {
     case 1: // host stats
         $phpversion = phpversion();
@@ -821,156 +486,252 @@ switch ($_GET['op']) {
         $hit_rate = sprintf('%.2f', ($hits) / ($time - $startTime));
         $miss_rate = sprintf('%.2f', ($misses) / ($time - $startTime));
         $set_rate = sprintf('%.2f', ($sets) / ($time - $startTime));
-        echo <<< EOB
-        <div class="info div1"><h2>General Cache Information</h2>
-        <table><tbody>
-        <tr class="tr-1"><td class="td-0">PHP Version</td><td>$phpversion</td></tr>
-EOB;
-        echo "<tr class='tr-0'><td class='td-0'>Memcached Host" . ((count($MEMCACHE_SERVERS) > 1) ? 's' : '') . '</td><td>';
+        $HTMLOUT .= "
+            <div class='info div1'>
+                <h2 class='has-text-centered'>General Cache Information</h2>";
+        $body = "
+            <tr>
+                <td>PHP Version</td>
+                <td>$phpversion</td>
+            </tr>
+            <tr>
+                <td>Memcached Host" . plural(count($MEMCACHE_SERVERS)) . "</td>
+                <td>";
         $i = 0;
         if (!isset($_GET['singleout']) && count($MEMCACHE_SERVERS) > 1) {
             foreach ($MEMCACHE_SERVERS as $server) {
-                echo($i + 1) . '. <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=memcache&amp;singleout=' . $i++ . '">' . $server . '</a><br>';
+                $i++;
+                $body .= "$i : <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;singleout={$i}'>{$server}</a><br>";
             }
         } else {
-            echo '1.' . $MEMCACHE_SERVERS[0];
+            $body .= "1: {$MEMCACHE_SERVERS[0]}";
         }
         if (isset($_GET['singleout'])) {
-            echo '<a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=memcache">(all servers)</a><br>';
+            $body .= "<a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache'>(all servers)</a><br>";
         }
-        echo "</td></tr>\n";
-        echo "<tr class='tr-1'><td class='td-0'>Total Memcache Cache</td><td>" . bsize($memcacheStats['limit_maxbytes']) . "</td></tr>\n";
-        echo <<<EOB
-        </tbody></table>
-        </div>
+        $body .= "
+                </td>
+            </tr>
+            <tr>
+                <td>Total Memcache Cache</td>
+                <td>" . human_filesize($memcacheStats['limit_maxbytes']) . "</td>
+            </tr>";
 
-        <div class="info div1"><h2>Memcache Server Information</h2>
-EOB;
+        $HTMLOUT .= main_table($body) ."
+        </div>
+        <div>
+            <h2 class='has-text-centered top20'>Memcache Server Information</h2>";
+
         foreach ($MEMCACHE_SERVERS as $server) {
-            echo '<table><tbody>';
-            echo '<tr class="tr-1"><td class="td-1">' . $server . '</td><td><a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=memcache&amp;server=' . array_search($server, $MEMCACHE_SERVERS) . '&amp;op=6">[<b>Flush this server</b>]</a></td></tr>';
-            echo '<tr class="tr-0"><td class="td-0">Start Time</td><td>', date(DATE_FORMAT, $memcacheStatsSingle[$server]['STAT']['time'] - $memcacheStatsSingle[$server]['STAT']['uptime']), '</td></tr>';
-            echo '<tr class="tr-1"><td class="td-0">Uptime</td><td>', duration($memcacheStatsSingle[$server]['STAT']['time'] - $memcacheStatsSingle[$server]['STAT']['uptime']), '</td></tr>';
-            echo '<tr class="tr-0"><td class="td-0">Memcached Server Version</td><td>' . $memcacheStatsSingle[$server]['STAT']['version'] . '</td></tr>';
-            echo '<tr class="tr-1"><td class="td-0">Used Cache Size</td><td>', bsize($memcacheStatsSingle[$server]['STAT']['bytes']), '</td></tr>';
-            echo '<tr class="tr-0"><td class="td-0">Total Cache Size</td><td>', bsize($memcacheStatsSingle[$server]['STAT']['limit_maxbytes']), '</td></tr>';
-            echo '</tbody></table>';
+            $body = "
+            <tr>
+                <td>$server</td>
+                <td>
+                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;server=" . array_search($server, $MEMCACHE_SERVERS) . "&amp;op=6'>Flush this server</a>
+                </td>
+            </tr>
+            <tr>
+                <td>Start Time</td>
+                <td>" . date(DATE_FORMAT, $memcacheStatsSingle[$server]['STAT']['time'] - $memcacheStatsSingle[$server]['STAT']['uptime']) . "</td>
+            </tr>
+            <tr>
+                <td>Uptime</td>
+                <td>" . duration($memcacheStatsSingle[$server]['STAT']['time'] - $memcacheStatsSingle[$server]['STAT']['uptime']) . "</td>
+            </tr>
+            <tr>
+                <td>Memcached Server Version</td>
+                <td>" . $memcacheStatsSingle[$server]['STAT']['version'] . "</td>
+            </tr>
+            <tr>
+                <td>Used Cache Size</td>
+                <td>" . human_filesize($memcacheStatsSingle[$server]['STAT']['bytes']) . "</td>
+            </tr>
+            <tr>
+                <td>Total Cache Size</td>
+                <td>" . human_filesize($memcacheStatsSingle[$server]['STAT']['limit_maxbytes']) . "</td>
+            </tr>";
         }
-        echo <<<EOB
-
+        $HTMLOUT .= main_table($body) . "
         </div>
-        <div class="graph div3"><h2>Host Status Diagrams</h2>
-        <table><tbody>
-EOB;
+        <div>
+            <h2 class='has-text-centered top20'>Host Status Diagrams</h2>";
         $size = 'width=' . (GRAPH_SIZE + 50) . ' height=' . (GRAPH_SIZE + 10);
-        echo <<<EOB
-        <tr>
-        <td class="td-0">Cache Usage</td>
-        <td class="td-1">Hits &amp; Misses</td>
-        </tr>
-EOB;
-        echo graphics_avail() ? '<tr>' . "<td class='td-0'><img alt=\"\" $size src=\"{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;IMG=1&amp;" . (isset($_GET['singleout']) ? 'singleout=' . $_GET['singleout'] . '&amp;' : '') . "$time\"></td>" . "<td class='td-1'><img alt=\"\" $size src=\"{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;IMG=2&amp;" . (isset($_GET['singleout']) ? 'singleout=' . $_GET['singleout'] . '&amp;' : '') . "$time\"></td></tr>\n" : '', '<tr>', '<td class="td-0"><span class="green box">&#160;</span>Free: ', bsize($mem_avail) . sprintf(' (%.1f%%)', $mem_avail * 100 / $mem_size), "</td>\n", '<td class="td-1"><span class="green box">&#160;</span>Hits: ', $hits . sprintf(' (%.1f%%)', $hits * 100 / ($hits + $misses)), "</td>\n", '</tr>', '<tr>', '<td class="td-0"><span class="red box">&#160;</span>Used: ', bsize($mem_used) . sprintf(' (%.1f%%)', $mem_used * 100 / $mem_size), "</td>\n", '<td class="td-1"><span class="red box">&#160;</span>Misses: ', $misses . sprintf(' (%.1f%%)', $misses * 100 / ($hits + $misses)), "</td>\n";
-        echo <<< EOB
-    </tr>
-    </tbody></table>
-<br>
-    <div class="info"><h2>Cache Information</h2>
-        <table><tbody>
-        <tr class="tr-0"><td class="td-0">Current Items(total)</td><td>$curr_items ($total_items)</td></tr>
-        <tr class="tr-1"><td class="td-0">Hits</td><td>{$hits}</td></tr>
-        <tr class="tr-0"><td class="td-0">Misses</td><td>{$misses}</td></tr>
-        <tr class="tr-1"><td class="td-0">Request Rate (hits, misses)</td><td>$req_rate cache requests/second</td></tr>
-        <tr class="tr-0"><td class="td-0">Hit Rate</td><td>$hit_rate cache requests/second</td></tr>
-        <tr class="tr-1"><td class="td-0">Miss Rate</td><td>$miss_rate cache requests/second</td></tr>
-        <tr class="tr-0"><td class="td-0">Set Rate</td><td>$set_rate cache requests/second</td></tr>
-        </tbody></table>
+        $body = "
+            <tr>
+                <td>Cache Usage</td>
+                <td>Hits &amp; Misses</td>
+            </tr>";
+        $body .=  "
+            <tr>
+                <td>
+                    <img alt='' $size src='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;IMG=1&amp;" . (isset($_GET['singleout']) ? "singleout={$_GET['singleout']}&amp;" : '') . "$time'>
+                </td>
+                <td>
+                    <img alt='' $size src='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;IMG=2&amp;" . (isset($_GET['singleout']) ? "singleout={$_GET['singleout']}&amp;" : '') . "$time'>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class='has-text-lime'>Free: </span>" . human_filesize($mem_avail) . sprintf(' (%.1f%%)', $mem_avail * 100 / $mem_size) . "
+                </td>
+                <td>
+                    <span class='has-text-lime'>Hits: </span>" . $hits . sprintf(' (%.1f%%)', $hits * 100 / ($hits + $misses)) . "
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class='has-text-red'>Used: </span>" . human_filesize($mem_used) . sprintf(' (%.1f%%)', $mem_used * 100 / $mem_size) . "
+                </td>
+                <td>
+                    <span class='has-text-red'>Misses: </span>" . $misses . sprintf(' (%.1f%%)', $misses * 100 / ($hits + $misses)) . "
+                </td>
+            </tr>";
+        $HTMLOUT .= main_table($body) . "
         </div>
+        <div>
+            <h2 class='has-text-centered top20'>Cache Information</h2>";
+        $body = "
+            <tr>
+                <td>Current Items(total)</td>
+                <td>$curr_items ($total_items)</td>
+            </tr>
+            <tr>
+                <td>Hits</td>
+                <td>{$hits}</td>
+            </tr>
+            <tr>
+                <td>Misses</td>
+                <td>{$misses}</td>
+            </tr>
+            <tr>
+                <td>Request Rate (hits, misses)</td>
+                <td>$req_rate cache requests/second</td>
+            </tr>
+            <tr>
+                <td>Hit Rate</td>
+                <td>$hit_rate cache requests/second</td>
+            </tr>
+            <tr>
+                <td>Miss Rate</td>
+                <td>$miss_rate cache requests/second</td>
+            </tr>
+            <tr>
+                <td>Set Rate</td>
+                <td>$set_rate cache requests/second</td>
+            </tr>";
+        $HTMLOUT .= main_table($body) . "
+        </div>";
 
-EOB;
         break;
 
-    case 2: // variables
+    case 2:
         $m = 0;
         $cacheItems = getCacheItems();
         $items = $cacheItems['items'];
         $totals = $cacheItems['counts'];
         $maxDump = MAX_ITEM_DUMP;
         foreach ($items as $server => $entries) {
-            echo <<< EOB
-
-            <div class="info"><table><tbody>
-            <tr><th colspan="2">$server</th></tr>
-            <tr><th>Slab Id</th><th>Info</th></tr>
-EOB;
+            $HTMLOUT .= "
+        <div>";
+            $heading = "
+            <tr>
+                <th colspan='2' class='has-text-centered size_6'>$server</th>
+            </tr>
+            <tr>
+                <th>Slab Id</th>
+                <th>Info</th>
+            </tr>";
+            $body = '';
             foreach ($entries as $slabId => $slab) {
                 $dumpUrl = $site_config['baseurl'] . '/staffpanel.php?tool=memcache&amp;op=2&amp;server=' . (array_search($server, $MEMCACHE_SERVERS)) . '&amp;dumpslab=' . $slabId;
-                echo "<tr class='tr-$m'>", "<td class='td-0'><center>", '<a href="', $dumpUrl, '">', $slabId, '</a>', '</center></td>', "<td class='td-last'><b>Item count:</b> ", $slab['number'], '<br><b>Age:</b>', duration($time - $slab['age']), '<br> <b>Evicted:</b>', ((isset($slab['evicted']) && $slab['evicted'] == 1) ? 'Yes' : 'No');
+                $body .= "
+            <tr>
+                <td>
+                    <a href='$dumpUrl'>$slabId</a>
+                </td>
+                <td>
+                    Item count: {$slab['number']}<br>
+                    Age: " . duration($time - $slab['age']) . "<br>
+                    Evicted: " . (isset($slab['evicted']) && $slab['evicted'] == 1 ? 'Yes' : 'No');
                 if ((isset($_GET['dumpslab']) && $_GET['dumpslab'] == $slabId) && (isset($_GET['server']) && $_GET['server'] == array_search($server, $MEMCACHE_SERVERS))) {
-                    echo '<br><b>Items: item</b><br>';
+                    $body .= "<br>
+                    Items: item<br>";
                     $items = dumpCacheSlab($server, $slabId, $slab['number']);
-                    // maybe someone likes to do a pagination here :)
                     $i = 1;
                     foreach ($items['ITEM'] as $itemKey => $itemInfo) {
                         $itemInfo = trim($itemInfo, '[ ]');
-                        echo '<a href="', $site_config['baseurl'], '/staffpanel.php?tool=memcache&amp;op=4&amp;server=', (array_search($server, $MEMCACHE_SERVERS)), '&amp;key=', base64_encode($itemKey) . '">', $itemKey, '</a>';
+                        $body .=  "<a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=4&amp;server=" . (array_search($server, $MEMCACHE_SERVERS)) . "&amp;key=" . base64_encode($itemKey) . "'>$itemKey</a>";
                         if ($i++ % 10 == 0) {
-                            echo '<br>';
+                            $body .=  '<br>';
                         } elseif ($i != $slab['number'] + 1) {
-                            echo ',';
+                            $body .=  '.';
                         }
                     }
                 }
-                echo '</td></tr>';
+                $body .=  '
+                </td>
+            </tr>';
                 $m = 1 - $m;
             }
-            echo <<<EOB
-            </tbody></table>
-            </div><hr>
-EOB;
+            $HTMLOUT .= main_table($body, $heading) . "
+        </div><hr>";
         }
         break;
 
-        break;
-
-    case 4: //item dump
+    case 4:
         if (!isset($_GET['key']) || !isset($_GET['server'])) {
-            echo 'No key set!';
+            $crap =  'No key set!';
             break;
         }
-        // I'm not doing anything to check the validity of the key string.
-        // probably an exploit can be written to delete all the files in key=base64_encode("\n\r delete all").
-        // somebody has to do a fix to this.
         $theKey = htmlentities(base64_decode($_GET['key']));
         $theserver = $MEMCACHE_SERVERS[(int) $_GET['server']];
         list($h, $p) = explode(':', $theserver);
         $r = sendMemcacheCommand($h, $p, 'get ' . $theKey);
-        echo <<<EOB
-        <div class="info"><table><tbody>
-            <tr><th>Server<th>Key</th><th>Value</th><th>Delete</th></tr>
-EOB;
-        echo "<tr><td class='td-0'>", $theserver, "</td><td class='td-0'>", $theKey, ' <br>flag:', $r['VALUE'][$theKey]['stat']['flag'], ' <br>Size:', bsize($r['VALUE'][$theKey]['stat']['size']), '</td><td>', chunk_split($r['VALUE'][$theKey]['value'], 40), '</td>', '<td><a href="', $site_config['baseurl'], '/staffpanel.php?tool=memcache&op=5&server=', (int) $_GET['server'], '&key=', base64_encode($theKey), '">Delete</a></td>', '</tr>';
-        echo <<<EOB
-            </tbody></table>
-            </div><hr>
-EOB;
+        $HTMLOUT .= "
+        <div>";
+        $heading = "
+            <tr>
+                <th>Server</th>
+                <th>Key</th>
+                <th>Value</th>
+                <th>Delete</th>
+            </tr>";
+        $body = "
+            <tr>
+                <td>$theserver</td>
+                <td>
+                    $theKey<br>
+                    flag: {$r['VALUE'][$theKey]['stat']['flag']}<br>
+                    Size: " . human_filesize($r['VALUE'][$theKey]['stat']['size']) . "
+                </td>
+                <td>" . chunk_split($r['VALUE'][$theKey]['value'], 40) . "</td>
+                <td>
+                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&op=5&server={$_GET['server']}&amp;key=" . base64_encode($theKey) . "'>Delete</a>
+                </td>
+            </tr>";
+        $HTMLOUT .= main_table($body, $heading) . "
+        </div><hr>";
         break;
 
-    case 5: // item delete
+    case 5:
         if (!isset($_GET['key']) || !isset($_GET['server'])) {
-            echo 'No key set!';
+            $crap =  'No key set!';
             break;
         }
         $theKey = htmlentities(base64_decode($_GET['key']));
         $theserver = $MEMCACHE_SERVERS[(int) $_GET['server']];
         list($h, $p) = explode(':', $theserver);
         $r = sendMemcacheCommand($h, $p, 'delete ' . $theKey);
-        echo 'Deleting ' . $theKey . ':' . $r;
+        $session->set('is-success', "Deleting $theKey: $r");
+        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=memcache");
         break;
 
-    case 6: // flush server
+    case 6:
         $theserver = $MEMCACHE_SERVERS[(int) $_GET['server']];
         $r = flushServer($theserver);
-        echo 'Flush  ' . $theserver . ':' . $r;
+        $session->set('is-success', "Flushing $theserver: $r");
+        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=memcache");
         break;
 }
-echo getFooter();
+
+echo stdhead('Memcached') . wrapper($HTMLOUT) . stdfoot();

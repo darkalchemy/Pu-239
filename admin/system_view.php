@@ -2,11 +2,11 @@
 
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
-class_check(UC_MAX, true, true);
+require_once INCL_DIR . 'html_functions.php';
+class_check(UC_MAX);
 global $site_config, $lang;
 
 $lang = array_merge($lang, load_language('ad_systemview'));
-$htmlout = '';
 if (isset($_GET['phpinfo']) && $_GET['phpinfo']) {
     @ob_start();
     phpinfo();
@@ -29,25 +29,31 @@ if (isset($_GET['phpinfo']) && $_GET['phpinfo']) {
     // PREVENT WRAP: Cookie , split
     $php_body = preg_replace("#,(\d+),#", ',<br>\\1,', $php_body);
     $php_style = "<style>
+body {background-color: #fff; color: #222; font-family: sans-serif;}
+pre {margin: 0; font-family: monospace;}
+a:link {color: #009; text-decoration: none; background-color: #fff;}
+a:hover {text-decoration: underline;}
+table {border-collapse: collapse; border: 0; width: 100%; box-shadow: 1px 2px 3px #ccc;}
 .center {text-align: center;}
-.center table { margin-left: auto; margin-right: auto; text-align: left; }
-.center th { text-align: center; }
+.center table {margin: 1em auto; text-align: left;}
+.center th {text-align: center !important;}
+td, th {border: 1px solid #666; font-size: 75%; vertical-align: baseline; padding: 4px 5px;}
 h1 {font-size: 150%;}
 h2 {font-size: 125%;}
 .p {text-align: left;}
-.e {background-color: #ccccff; font-weight: bold;}
-.h {background-color: #9999cc; font-weight: bold;}
-.v {background-color: #cccccc; white-space: normal;}
+.e {background-color: #ccf; width: 300px; font-weight: bold;}
+.h {background-color: #99c; font-weight: bold;}
+.v {background-color: #ddd; max-width: 300px; overflow-x: auto; word-wrap: break-word;}
+.v i {color: #999;}
+img {float: right; border: 0;}
+hr {width: 100%; background-color: #ccc; border: 0; height: 1px;}
 </style>\n";
     $html = $php_style . $php_body;
-    echo $html;
-    stdfoot();
+    echo stdhead('PHP Info') . wrapper($html) . stdfoot();
     die();
 }
 $html = [];
-/**
- * @return string
- */
+
 function sql_get_version()
 {
     $query = sql_query('SELECT VERSION() AS version');
@@ -64,7 +70,7 @@ function sql_get_version()
     return $mysql_version . ' (' . $true_version . ')';
 }
 
-$php_version = phpversion() . ' (' . @php_sapi_name() . ") ( <a href='{$site_config['baseurl']}/staffpanel.php?tool=system_view&amp;action=system_view&amp;phpinfo=1'>{$lang['system_phpinfo']}</a> )";
+$php_version = phpversion() . ' (' . @php_sapi_name() . ")";
 $server_software = php_uname();
 // print $php_version ." ".$server_software;
 $load_limit = '--';
@@ -179,9 +185,25 @@ $html[] = [
     $lang['system_sys_proc'],
     $tasks,
 ];
-$htmlout .= '<table>';
+$body = '';
 foreach ($html as $key => $value) {
-    $htmlout .= '<tr><td>' . $value[0] . '</td><td>' . $value[1] . '</td></tr>';
+    $body .= "
+        <tr>
+            <td class='w-20'>{$value[0]}</td>
+            <td>{$value[1]}</td>
+        </tr>";
 }
-$htmlout .= '</table>';
+$htmlout = "
+    <ul class='level-center bg-06'>
+        <li class='altlink margin20'>
+            <a href='{$site_config['baseurl']}/staffpanel.php?tool=system_view&amp;action=system_view&amp;phpinfo=1'>{$lang['system_phpinfo']}</a>
+        </li>
+        <li class='altlink margin20'>
+            <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache'>Memcache</a>
+        </li>
+        <li class='altlink margin20'>
+            <a href='{$site_config['baseurl']}/staffpanel.php?tool=op'>OPcache</a>
+        </li>
+    </ul>";
+$htmlout .= main_table($body);
 echo stdhead($lang['system_stdhead']) . wrapper($htmlout) . stdfoot();

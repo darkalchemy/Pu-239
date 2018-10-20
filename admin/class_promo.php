@@ -122,7 +122,7 @@ if (mysqli_num_rows($res) >= 1) {
             <td>
                 <form name='remove' action='staffpanel.php?tool=class_promo&amp;mode=remove' method='post'>
                     <input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "'>
-                    <input type='submit' value='{$lang['classpromo_remove']}'>
+                    <input type='submit' value='{$lang['classpromo_remove']}' class='button is-small'>
                 </form>
             </td>
         </tr>";
@@ -131,7 +131,7 @@ if (mysqli_num_rows($res) >= 1) {
     $body .= "
         <tr>
             <td colspan='7' class='has-text-centered'>
-                <input type='submit' value='{$lang['classpromo_apply']}'>
+                <input type='submit' value='{$lang['classpromo_apply']}' class='button is-small'>
             </td>
         </tr>";
 
@@ -175,7 +175,7 @@ $body .= "
             <td><input type='text' name='low_ratio' value='' class='w-100'></td>
         </tr>
         <tr><td colspan='5' class='has-text-centered'>
-                <input type='submit' value='{$lang['classpromo_add_new']}'>
+                <input type='submit' value='{$lang['classpromo_add_new']}' class='button is-small'>
             </td>
         </tr>";
 $HTMLOUT .= main_table($body, $heading) . '

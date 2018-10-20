@@ -41,8 +41,8 @@ if ($lottery_config['enable']) {
 } else {
     $html .= "
     <form action='{$site_config['baseurl']}/lottery.php?action=config' method='post'>
-        <div class='container is-fluid portlet'>
-            <table class='table table-bordered table-striped top20 bottom20'>
+        <div class='container is-fluid portlet'>";
+    $table = "
                 <tr>
                     <td class='rowhead'>Enable The Lottery</td>
                     <td>
@@ -81,12 +81,12 @@ if ($lottery_config['enable']) {
                     <td>Classes Allowed</td>
                     <td>";
     for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
-        $html .= "
+        $table .= "
                     <label for='c{$i}'>
                         <input type='checkbox' value='{$i}' id='c{$i}' name='class_allowed[]' /> " . get_user_class_name($i) . '
                     </label>';
     }
-    $html .= "
+    $table .= "
                     </td>
                 </tr>
                 <tr>
@@ -99,10 +99,10 @@ if ($lottery_config['enable']) {
                         <select name='start_date' class='w-100'>
                             <option value='" . TIME_NOW . "'>Now</option>";
     for ($i = 2; $i <= 24; $i += 2) {
-        $html .= "
+        $table .= "
                             <option value='" . (TIME_NOW + (3600 * $i)) . "' >" . $i . ' hours</option>';
     }
-    $html .= "
+    $table .= "
                         </select>
                     </td>
                 </tr>
@@ -112,10 +112,10 @@ if ($lottery_config['enable']) {
                         <select name='end_date' class='w-100'>
                             <option value='0'>------</option>";
     for ($i = 1; $i <= 7; ++$i) {
-        $html .= "
+        $table .= "
                             <option value='" . (TIME_NOW + (84600 * $i)) . "'>{$i} days</option>";
     }
-    $html .= "
+    $table .= "
                         </select>
                     </td>
                 </tr>
@@ -125,8 +125,8 @@ if ($lottery_config['enable']) {
                             <input type='submit' class='button is-small' value='Apply changes' />
                         </div>
                     </td>
-                </tr>
-            </table>
+                </tr>";
+    $html .= main_table($table) . "
         </div>
     </form>";
 }

@@ -35,7 +35,7 @@ $HTMLOUT .= "<form method=\"post\" action=\"staffpanel.php?tool=bannedemails\">
 <td><input type=\"text\" name=\"comment\" size=\"40\"/></td></tr>
 <tr><td colspan='2'>{$lang['ad_banemail_info']}</td></tr>
 <tr><td colspan='2'>
-<input type=\"submit\" value=\"{$lang['ad_banemail_ok']}\" class=\"btn\"/></td></tr>
+<input type='submit' value='{$lang['ad_banemail_ok']}' class='button is-small'></td></tr>
 </table></form>\n";
 $HTMLOUT .= end_frame();
 $count1 = get_row_count('bannedemails');

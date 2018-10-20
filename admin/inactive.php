@@ -163,7 +163,7 @@ if ($count_inactive > 0) {
     $HTMLOUT .= '</table></form>';
     $HTMLOUT .= '</div></div>';
 } else {
-    $HTMLOUT .= "<h2 class='has-text-centered margin20'>{$lang['inactive_noaccounts']} " . $days . " {$lang['inactive_days']}</h2>";
+    $HTMLOUT .= main_div("<h2 class='has-text-centered margin20'>{$lang['inactive_noaccounts']} " . $days . " {$lang['inactive_days']}</h2>");
 }
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
