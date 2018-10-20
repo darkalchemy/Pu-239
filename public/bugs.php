@@ -143,7 +143,7 @@ if ($action === 'viewbug') {
         $count = mysqli_num_rows($r);
         $HTMLOUT .= $count > $perpage ? $pager['pagertop'] : '';
         $HTMLOUT .= "
-      <h1 class='has-text-centered'>' . sprintf($lang['h1_count_bugs'], $count, ($count > 1 ? 's' : '')) . "</h1>
+      <h1 class='has-text-centered'>" . sprintf($lang['h1_count_bugs'], $count, ($count > 1 ? 's' : '')) . "</h1>
       <div class='has-text-centered size_3'>{$lang['delete_when']}</div>
       <table class='table table-bordered table-striped'><tr>
       <td class='colhead'>{$lang['title']}</td>
