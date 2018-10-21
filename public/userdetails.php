@@ -20,7 +20,7 @@ $stdfoot = [
         get_file_name('userdetails_js'),
     ],
 ];
-$id = (int) $_GET['id'];
+$id = !empty($_GET['id']) ? (int) $_GET['id'] : $CURUSER['id'];
 if (!is_valid_id($id)) {
     stderr($lang['userdetails_error'], "{$lang['userdetails_bad_id']}");
 }
