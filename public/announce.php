@@ -333,6 +333,7 @@ if (empty($snatched)) {
         'start_date' => $dt,
         'last_action' => $dt,
         'seeder' => $seeder,
+        'timesann' => 1,
     ];
     if ($seeder === 'no') {
         $snatched_stuffs->insert($values);
@@ -487,7 +488,7 @@ if (isset($self) && $event === 'stopped') {
             }
             $snatch_updateset['last_action'] = $dt;
             $snatch_updateset['seeder'] = $seeder;
-            $snatch_updateset['timesann'] = $snatched['timesann']++;
+            $snatch_updateset['timesann'] = isset($snatched['timesann']) ? $snatched['timesann'] + 1 : 1;
         }
     }
 } else {
@@ -534,7 +535,7 @@ if (isset($self) && $event === 'stopped') {
             $snatch_updateset['last_action'] = $dt;
             $snatch_updateset['seeder'] = $seeder;
             $snatch_updateset['hit_and_run'] = 0;
-            $snatch_updateset['timesann'] = $snatched['timesann']++;
+            $snatch_updateset['timesann'] = isset($snatched['timesann']) ? $snatched['timesann'] + 1 : 1;
             $snatch_updateset['mark_of_cain'] = 'no';
         }
     }
