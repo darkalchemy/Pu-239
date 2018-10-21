@@ -36,11 +36,13 @@ function freeuser_update($data)
             'msg' => $msg,
             'subject' => $subject,
         ];
+        $user = $user_stuffs->getUserFromId($arr['id']);
         /*
                 $set[] = [
                     'free_switch' => 0,
                     'modcomment' => $modcom,
                     'id' => $arr['id'],
+                    'username' => $user['username'],
                 ];
 
                 $update[] = [
@@ -48,7 +50,8 @@ function freeuser_update($data)
                     'modcomment' => new Envms\FluentPDO\Literal('VALUES(modcomment)'),
                 ];
         */
-        $users_buffer[] = "({$arr['id']}, 0, {$modcom})";
+        $user = $user_stuffs->getUserFromId($arr['id']);
+        $users_buffer[] = "({$arr['id']}, {$user['username']}, 0, {$modcom})";
         $cache->update_row('user' . $arr['id'], [
             'free_switch' => 0,
             'modcomment' => $modcomment,
@@ -58,7 +61,7 @@ function freeuser_update($data)
     $count = count($values);
     if ($count) {
         $message_stuffs->insert($values);
-        sql_query('INSERT INTO users (id, free_switch, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE free_switch=values(free_switch), modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO users (id, username, free_switch, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE free_switch=values(free_switch), modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
         //$user_stuffs->insert($set, $update);
     }
 

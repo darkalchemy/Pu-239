@@ -4,7 +4,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $site_config, $CURUSER, $cache, $session;
+global $site_config, $CURUSER, $cache, $session, $fluent;
 
 $stdhead = [
     'css' => [
@@ -16,6 +16,7 @@ $stdfoot = [
         get_file_name('sceditor_js'),
     ],
 ];
+
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('index'), load_language('staff_panel'));
 $staff_classes1['name'] = $page_name = $file_name = $navbar = '';
@@ -162,9 +163,13 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         ])) . ')');
                     $cache->delete('is_staffs_');
                     $cache->delete('av_class_');
-                    $cache->delete('staff_panels_6');
-                    $cache->delete('staff_panels_5');
-                    $cache->delete('staff_panels_4');
+                    $classes = $fluent->from('class_config')
+                        ->select(null)
+                        ->select('DISTINCT value AS value')
+                        ->where('value >= ?', UC_STAFF);
+                    foreach ($classes as $class) {
+                        $cache->delete('staff_panels_' . $class);
+                    }
                     if (!$res) {
                         if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
                             $errors[] = $lang['spanel_this_fname_sub'];
@@ -173,11 +178,26 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         }
                     }
                 } else {
-                    $res = sql_query('UPDATE staffpanel SET navbar = ' . sqlesc($navbar) . ', page_name = ' . sqlesc($page_name) . ', file_name = ' . sqlesc($file_name) . ', description = ' . sqlesc($description) . ', type = ' . sqlesc($type) . ', av_class = ' . sqlesc((int) $_POST['av_class']) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+                    $set = [
+                        'navbar' => $navbar,
+                        'page_name' => $page_name,
+                        'file_name' =>  $file_name,
+                        'description' => $description,
+                        'type' => $type,
+                        'av_class' => (int) $_POST['av_class'],
+                    ];
+                    $fluent->update('staffpanel')
+                        ->set($set)
+                        ->where('id = ?', $id)
+                        ->execute();
                     $cache->delete('av_class_');
-                    $cache->delete('staff_panels_6');
-                    $cache->delete('staff_panels_5');
-                    $cache->delete('staff_panels_4');
+                    $classes = $fluent->from('class_config')
+                        ->select(null)
+                        ->select('DISTINCT value AS value')
+                        ->where('value >= ?', UC_STAFF);
+                    foreach ($classes as $class) {
+                        $cache->delete('staff_panels_' . $class['value']);
+                    }
                     if (!$res) {
                         $errors[] = $lang['spanel_db_error_msg'];
                     }
@@ -200,9 +220,9 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             $HTMLOUT .= '<br>';
         }
         $HTMLOUT .= "<form method='post' action='{$_SERVER['PHP_SELF']}'>
-    <input type='hidden' name='action' value='{$action}' />";
+    <input type='hidden' name='action' value='{$action}'>";
         if ($action === 'edit') {
-            $HTMLOUT .= "<input type='hidden' name='id' value='{$id}' />";
+            $HTMLOUT .= "<input type='hidden' name='id' value='{$id}'>";
         }
         $header = "
                 <tr>
@@ -216,7 +236,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         {$lang['spanel_pg_name']}
                     </td>
                     <td>
-                        <input type='text' class='w-100' name='page_name' value='{$page_name}' />
+                        <input type='text' class='w-100' name='page_name' value='{$page_name}'>
                     </td>
                 </tr>
                 <tr>
@@ -224,7 +244,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         {$lang['spanel_filename']}
                     </td>
                     <td>
-                        <input type='text' class='w-100' name='file_name' value='{$file_name}' />
+                        <input type='text' class='w-100' name='file_name' value='{$file_name}'>
                     </td>
                 </tr>
                 <tr>
@@ -232,7 +252,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         {$lang['spanel_description']}
                     </td>
                     <td>
-                        <input type='text' class='w-100' name='description' value='{$description}' />
+                        <input type='text' class='w-100' name='description' value='{$description}'>
                     </td>
                 </tr>
                 <tr>
@@ -240,8 +260,8 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         Show in Navbar
                     </td>
                     <td>
-                        <input name='navbar' value='1' type='radio'" . ($navbar == 1 ? ' checked' : '') . " /><span class='left5'>Yes</span><br>
-                        <input name='navbar' value='0' type='radio'" . ($navbar == 0 ? ' checked' : '') . " /><span class='left5'>No</span>
+                        <input name='navbar' value='1' type='radio'" . ($navbar == 1 ? ' checked' : '') . "><span class='left5'>Yes</span><br>
+                        <input name='navbar' value='0' type='radio'" . ($navbar == 0 ? ' checked' : '') . "><span class='left5'>No</span>
                     </td>
                 </tr>";
 
@@ -259,7 +279,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         <select name='type'>";
         foreach ($types as $type) {
             $body .= '
-                            <option value="' . $type . '"' . ($types == $type ? ' selected' : '') . '>' . ucfirst($type) . '</option>';
+                            <option value="' . $type . '"' . ($arr['type'] === $type ? ' selected' : '') . '>' . ucfirst($type) . '</option>';
         }
         $body .= "
                         </select>
@@ -286,10 +306,10 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $HTMLOUT .= main_table($body, $header);
         $HTMLOUT .= "
     <div class='level-center margin20'>
-            <input type='submit' class='button is-small' value='{$lang['spanel_submit']}' />
+            <input type='submit' class='button is-small' value='{$lang['spanel_submit']}'>
         </form>
         <form method='post' action='{$_SERVER['PHP_SELF']}'>
-            <input type='submit' class='button is-small' value='{$lang['spanel_cancel']}' />
+            <input type='submit' class='button is-small' value='{$lang['spanel_cancel']}'>
         </form>
     </div>";
         echo stdhead($lang['spanel_header'] . ' :: ' . ($action == 'edit' ? '' . $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' page', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

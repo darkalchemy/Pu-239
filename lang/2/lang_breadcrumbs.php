@@ -91,6 +91,7 @@ $lang = [
     'default' => 'PM Settings',
     'delacct' => 'Delete User Account',
     'donations' => 'Donations',
+    'edit' => 'Edit',
     'edit_mailboxes' => 'Manage Mailboxes',
     'edit_moods' => 'Mood Editor',
     'edit_news' => 'Edit News',

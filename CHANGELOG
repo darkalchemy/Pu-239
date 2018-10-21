@@ -1,4 +1,5 @@
 20 Oct, 2018
+fix: edit admin pages select current staffpanel.php
 remove: file_put_contents logging
 fix: php_info display system_view.php
 update: a few more of the admin pages
