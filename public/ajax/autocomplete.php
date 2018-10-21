@@ -50,13 +50,13 @@ if (!empty($results)) {
     $temp = "
         <ul class='columns level w-100 is-paddingless'>
             <li class='column is-three-fifth is-paddingless'>
-                <span class='size_6 is-bold'>Name</span>
+                <span class='size_5 is-bold'>Name</span>
             </li>
             <li class='column is-one-fifth is-paddingless has-text-centered'>
-                <span class='size_6 is-bold'>Seeders</span>
+                <span class='size_5 is-bold'>Seeders</span>
             </li>
             <li class='column is-one-fifth is-paddingless has-text-centered'>
-                <span class='size_6 is-bold'>Leechers</span>
+                <span class='size_5 is-bold'>Leechers</span>
             </li>
         </ul>
         <hr class='top5 bottom20'>";
@@ -65,7 +65,7 @@ if (!empty($results)) {
         $color = $result['visible'] === 'yes' ? 'has-text-green' : 'has-text-red';
         $background = $i++ % 2 === 0 ? 'bg-04' : 'bg-03';
         $temp .= "
-        <ul class='columns level w-100 padding10 round5 $background'>
+        <ul class='columns level w-100 padding10 $background'>
             <li class='column is-three-fifth is-paddingless'>
                 <a href='{$site_config['baseurl']}/details.php?id={$result['id']}&amp;hit=1'>
                     <span class='$color'>{$result['name']}</span>

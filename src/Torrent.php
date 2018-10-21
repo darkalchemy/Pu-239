@@ -197,36 +197,10 @@ class Torrent
             if (!empty($tid)) {
                 $torrent = $this->get($tid);
                 $this->cache->set($key, $torrent, $ttl);
-                $seed_key = 'torrents_seeds_' . $torrent['id'];
-                $leech_key = 'torrents_leechs_' . $torrent['id'];
-                $comp_key = 'torrents_comps_' . $torrent['id'];
-                $this->cache->set($seed_key, $torrent['seeders'], $ttl);
-                $this->cache->set($leech_key, $torrent['leechers'], $ttl);
-                $this->cache->set($comp_key, $torrent['times_completed'], $ttl);
             } else {
                 $this->cache->set($key, 'empty', 900);
 
                 return false;
-            }
-        } else {
-            $seed_key = 'torrents_seeds_' . $torrent['id'];
-            $leech_key = 'torrents_leechs_' . $torrent['id'];
-            $comp_key = 'torrents_comps_' . $torrent['id'];
-            $torrent['seeders'] = $this->cache->get($seed_key);
-            $torrent['leechers'] = $this->cache->get($leech_key);
-            $torrent['times_completed'] = $this->cache->get($comp_key);
-            if ($torrent['seeders'] === false || $torrent['leechers'] === false || $torrent['times_completed'] === false || is_null($torrent['seeders']) || is_null($torrent['leechers']) || is_null($torrent['times_completed'])) {
-                $torrent = $this->get($tid, true);
-                if (!empty($torrent)) {
-                    $this->cache->set($seed_key, $torrent['seeders'], $ttl);
-                    $this->cache->set($leech_key, $torrent['leechers'], $ttl);
-                    $this->cache->set($comp_key, $torrent['times_completed'], $ttl);
-                    $this->cache->set($key, $torrent, $ttl);
-                } else {
-                    $this->cache->delete($key);
-
-                    return false;
-                }
             }
         }
 

@@ -6,7 +6,7 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang;
+global $site_config, $lang, $fluent;
 
 $lang = array_merge($lang, load_language('ad_viewpeers'));
 $HTMLOUT = $count = '';
@@ -37,11 +37,11 @@ function XBT_IP_CONVERT($a)
     return $d;
 }
 
-$Which_ID = (XBT_TRACKER ? 'fid' : 'id');
-$Which_Table = (XBT_TRACKER ? 'xbt_files_users' : 'peers');
-$res = sql_query("SELECT COUNT($Which_ID) FROM $Which_Table") or sqlerr(__FILE__, __LINE__);
-$row = mysqli_fetch_row($res);
-$count = $row[0];
+$count = $fluent->from('peers')
+    ->select(null)
+    ->select('COUNT(*) AS count')
+    ->fetch('count');
+
 $peersperpage = 15;
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['wpeers_h2']}</h1>
@@ -79,12 +79,12 @@ $heading = "
     $body .= '
     <tr>
         <td>' . format_username($row['userid']) . '</td>
-        <td><a href="details.php?id=' . (int) ($row['torrent']) . '">' . $smallname . '</a></td>
+        <td><a href="' . $site_config['baseurl'] . '/details.php?id=' . (int) ($row['torrent']) . '">' . $smallname . '</a></td>
         <td>' . htmlsafechars($row['ip']) . '</td>
         <td>' . htmlsafechars($row['port']) . '</td>
         <td>' . htmlsafechars(mksize($row['uploaded'])) . '</td>' . ($site_config['ratio_free'] == true ? '' : '
         <td>' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
-        <td>' . htmlsafechars($row['torrent_pass']) . '</td>
+        <td class="w-15"><span style="word-break: break-all;">' . htmlsafechars($row['torrent_pass']) . '</span></td>
         <td>' . ($row['connectable'] == 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
         <td>' . ($row['seeder'] == 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
         <td>' . get_date($row['started'], 'DATE') . '</td>

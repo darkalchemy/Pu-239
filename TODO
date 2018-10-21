@@ -9,7 +9,6 @@ fix karma cleanup
 user blocks AVATAR is only used in userdetails.php, check to see if useful elsewhere in code
 fix subtitles folder
 fix avatar folder
-fix happy hour
 replace mysql full text search with elasticsearch
 add language to staff.php
 replace current authentication system

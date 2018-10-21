@@ -73,6 +73,7 @@ class Peer
      */
     public function get_torrent_peers_by_tid(int $tid)
     {
+        $this->cache->delete('torrent_peers_' . $tid);
         $peers = $this->cache->get('torrent_peers_' . $tid);
         if ($peers === false || is_null($peers)) {
             $peers = $this->fluent->from('peers')
@@ -118,20 +119,24 @@ class Peer
         return $count;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return bool
-     *
-     * @throws \Envms\FluentPDO\Exception
-     */
-    public function delete(int $id)
+    public function delete(int $pid, int $tid, string $info_hash)
     {
-        $count = $this->fluent->deleteFrom('peers')
-            ->where('id = ?', $id)
+        $result = $this->fluent->deleteFrom('peers', $pid)
             ->execute();
 
-        return $count;
+        if ($result) {
+            $key = 'torrent_hash_' . bin2hex($info_hash);
+            $this->cache->deleteMulti([
+                $key,
+                'torrent_details_' . $tid,
+                'torrent_peers_' . $tid,
+            ]);
+
+            $this->cache->delete('torrent_details_' . $tid);
+            $this->cache->delete('torrent_peers_' . $tid);
+        }
+
+        return $result;
     }
 
     /**
@@ -162,18 +167,17 @@ class Peer
      */
     public function insert_update(array $values, array $update)
     {
-        $ip = $values['ip'];
         $id = $this->fluent->from('peers')
             ->select(null)
             ->select('id')
             ->where('torrent = ?', $values['torrent'])
             ->where('peer_id = ?', $values['peer_id'])
             ->where('port = ?', $values['port'])
-            ->where('INET6_NTOA(ip) = ?', $ip)
+            ->where('INET6_NTOA(ip) = ?', $values['ip'])
             ->fetch('id');
 
         if (empty($id)) {
-            $values['ip'] = inet_pton($ip);
+            $values['ip'] = inet_pton($values['ip']);
             $this->insert($values, $values['userid']);
         } else {
             $this->update($update, $id);

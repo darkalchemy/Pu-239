@@ -298,16 +298,16 @@ if ($CURUSER['id'] === $id || $CURUSER['class'] >= UC_ADMINISTRATOR) {
             <td>
                 <ul class='level-left'>
                     <li class='right10'>
-                        <a href='{$site_config['baseurl']}/download_multi.php?userid=$id' class='button is-small'>Snatched Torrents</a>
+                        <a href='{$site_config['baseurl']}/download_multi.php?userid=$id' class='button is-small tooltipper' title='Download <i><b>all torrents</b></i> that you have previously snatched'>Snatched Torrents</a>
                     </li>
                     <li class='right10'>
-                        <a href='{$site_config['baseurl']}/download_multi.php?owner=true&amp;userid=$id' class='button is-small'>Uploaded Torrents</a>
+                        <a href='{$site_config['baseurl']}/download_multi.php?owner=true&amp;userid=$id' class='button is-small tooltipper' title='Download <i><b>all torrents</b></i> that you have uploaded'>Uploaded Torrents</a>
                     </li>
                     <li class='right10'>
-                        <a href='{$site_config['baseurl']}/download_multi.php?getall=yes' class='button is-small'>Live Torrents</a>
+                        <a href='{$site_config['baseurl']}/download_multi.php?getall=yes' class='button is-small tooltipper' title='Download <i><b>all active</b></i> torrents'>Live Torrents</a>
                     </li>
                     <li class='right10'>
-                        <a href='{$site_config['baseurl']}/download_multi.php?getall=no' class='button is-small'>Dead Torrents</a>
+                        <a href='{$site_config['baseurl']}/download_multi.php?getall=no' class='button is-small tooltipper' title='Download <i><b>all dead</b></i> torrents'>Dead Torrents</a>
                     </li>
                 </ul>
             </td>

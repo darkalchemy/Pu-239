@@ -30,7 +30,7 @@ function get_file_name($file)
         case 'chat_log_js':
             return "{$site_config['baseurl']}/js/1/chat_log_e081be8f.js";
         case 'browse_js':
-            return "{$site_config['baseurl']}/js/1/browse_922a31c0.js";
+            return "{$site_config['baseurl']}/js/1/browse_47e712d5.js";
         case 'scroller_js':
             return "{$site_config['baseurl']}/js/1/scroller_13b47ab3.js";
         case 'slider_js':

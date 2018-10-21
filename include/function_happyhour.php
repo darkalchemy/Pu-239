@@ -1,15 +1,9 @@
 <?php
 
-/**
- * @param $action
- *
- * @return false|float|int|string
- */
 function happyHour($action)
 {
     global $site_config, $fluent;
 
-    //generate happy hour
     if ($action === 'generate') {
         $nextDay = date('Y-m-d', TIME_NOW + 86400);
         $nextHoura = random_int(0, 2);
@@ -32,13 +26,11 @@ function happyHour($action)
     $happyDate = $happyHour;
     $curDate = TIME_NOW;
     $nextDate = $happyHour + 3600;
-    //action check
     if ($action === 'check') {
         if ($happyDate < $curDate && $nextDate >= $curDate) {
             return true;
         }
     }
-    //action time left
     if ($action === 'time') {
         $timeLeft = mkprettytime(($happyHour + 3600) - TIME_NOW);
         $timeLeft = explode(':', $timeLeft);
@@ -46,13 +38,11 @@ function happyHour($action)
 
         return $time;
     }
-    //this will set all torrent free or just one category
     if ($action === 'todo') {
         $act = random_int(1, 2);
         if ($act === 1) {
             $todo = 255;
-        } // this will mean that all the torrent are free
-        else {
+        } else {
             $categories = $fluent->from('categories')
                 ->select(null)
                 ->select('id')
@@ -60,24 +50,17 @@ function happyHour($action)
 
             shuffle($categories);
             $todo = $categories[0];
-        } // only one cat will be free || remember to change the number of categories i have 14 but you may have more
+        }
 
         return $todo;
     }
-    //this will generate the multiplier so every torrent downloaded in the happy hour will have upload multiplied but this
     if ($action === 'multiplier') {
-        $multiplier = random_int(11, 55) / 10; //max value of the multiplier will be 5.5 || you could change it to a higher or a lower value
+        $multiplier = random_int(11, 55) / 10;
 
         return $multiplier;
     }
 }
 
-/**
- * @param      $action
- * @param null $id
- *
- * @return bool
- */
 function happyCheck($action, $id = null)
 {
     global $site_config;
@@ -86,16 +69,13 @@ function happyCheck($action, $id = null)
     $happy = unserialize(file_get_contents($file));
     $happycheck = $happy['catid'];
     if ($action === 'check') {
-        return $happycheck;
+        return $happycheck['id'];
     }
     if ($action === 'checkid' && (($happycheck == '255') || $happycheck == $id)) {
         return true;
     }
 }
 
-/**
- * @param $act
- */
 function happyFile($act)
 {
     global $site_config;
@@ -123,13 +103,8 @@ function happyFile($act)
     fclose($file);
 }
 
-/**
- * @param $userid
- * @param $torrentid
- * @param $multi
- */
 function happyLog($userid, $torrentid, $multi)
 {
     $time = sqlesc(TIME_NOW);
-    sql_query('INSERT INTO happylog (userid, torrentid,multi, date) VALUES(' . sqlesc($userid) . ', ' . sqlesc($torrentid) . ', ' . sqlesc($multi) . ", $time)") or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO happylog (userid, torrentid, multi, date) VALUES(' . sqlesc($userid) . ', ' . sqlesc($torrentid) . ', ' . sqlesc($multi) . ", $time)") or sqlerr(__FILE__, __LINE__);
 }

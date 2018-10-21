@@ -131,6 +131,7 @@ if (IP_LOGGING) {
             'lastannounce' => $dt,
         ];
         $ip_stuffs->insert_update($values, $update, $userid);
+        unset($values, $update);
     }
 }
 
@@ -144,9 +145,8 @@ if ($compact != 1) {
 } else {
     $resp = 'd' . benc_str('interval') . 'i' . $site_config['announce_interval'] . 'e' . benc_str('private') . 'i1e' . benc_str('min interval') . 'i' . 300 . 'e5:' . 'peers';
 }
-
 $peers = $peer_stuffs->get_torrent_peers_by_tid($torrent['id']);
-$res = [];
+$res = $this_user_torrent = [];
 foreach ($peers as $peer) {
     if ($port != $peer['port'] || $realip != $peer['ip']) {
         if ($seeder === 'yes' && $peer['seeder'] === 'no') {
@@ -154,6 +154,8 @@ foreach ($peers as $peer) {
         } elseif ($seeder === 'no') {
             $res[] = $peer;
         }
+    } elseif ($port == $peer['port'] && $realip == $peer['ip'] && $peer['peer_id'] == $peer_id) {
+        $this_user_torrent = $peer;
     }
 }
 shuffle($res);
@@ -340,11 +342,15 @@ if (empty($snatched)) {
         $values['finished'] = 'yes';
         $snatched_stuffs->insert($values);
     }
+    unset($values);
+}
+$peer_deleted = false;
+if ($event === 'stopped') {
+    $peer_deleted = $peer_stuffs->delete($this_user_torrent['id'], $torrent['id'], $info_hash);
+    $cache->delete('peers_' . $userid);
 }
 if (isset($self) && $event === 'stopped') {
     $seeder = 'no';
-    $delete_count = $peer_stuffs->delete($self['id']);
-    $cache->delete('peers_' . $userid);
     $self['announcetime'] = $self['announcetime'] > 0 ? $self['announcetime'] : 1;
 
     if (($snatched['uploaded'] + $upthis) < ($snatched['downloaded'] + $downthis) && $snatched['finished'] === 'yes') {
@@ -398,7 +404,7 @@ if (isset($self) && $event === 'stopped') {
     } else {
         $hit_and_run = 0;
     }
-    if ($delete_count >= 1) {
+    if ($peer_deleted) {
         if ($self['seeder'] === 'yes') {
             $torrent_stuffs->adjust_torrent_peers($torrent['id'], -1, 0, 0);
             $torrent_updateset['seeders'] = max(0, $torrent['seeders'] - 1);
@@ -452,7 +458,9 @@ if (isset($self) && $event === 'stopped') {
     $values['ip'] = $realip;
     $values['port'] = $port;
     $values['userid'] = $userid;
+    $values['torrent_pass'] = $torrent_pass;
     $updated = $peer_stuffs->insert_update($values, $update);
+    unset($values, $update);
     $cache->delete('peers_' . $userid);
     if (!empty($updated)) {
         if ($seeder != $self['seeder']) {

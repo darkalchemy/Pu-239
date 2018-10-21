@@ -127,7 +127,7 @@ if ($selected === 1) {
 }
 
 if (isset($_GET['only_free']) && $_GET['only_free'] == 1) {
-    $wherea[] = XBT_TRACKER ? $wherea[] = "freetorrent >= '1'" : $wherea[] = "free >= '1'";
+    $wherea[] = "free >= '1'";
     $addparam .= 'only_free=1&amp;';
 }
 if (isset($_GET['vip'])) {
@@ -251,7 +251,6 @@ if ($count > 0) {
         $addparam = $pagerlink;
     }
     $pager = pager($torrentsperpage, $count, "{$site_config['baseurl']}/browse.php?" . $addparam);
-
     $query = "SELECT t.id, t.staff_picks, t.search_text, t.category, t.leechers, t.seeders, t.bump, t.release_group, t.subs, t.name, t.times_completed, t.size, t.added, t.poster, t.descr, t.free, t.freetorrent, t.silver, t.comments, t.numfiles, t.filename, t.anonymous, t.sticky, t.nuked, t.vip, t.nukereason, t.newgenre, t.description, t.owner, t.youtube, t.checked_by, IF(t.nfo <> '', 1, 0) as nfoav," . "IF(t.num_ratings < {$site_config['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS rating, t.checked_when, c.username AS checked_by_username
                 FROM torrents AS t
                 LEFT JOIN users AS c ON t.checked_by = c.id
@@ -278,7 +277,7 @@ $HTMLOUT .= "
                                 <form id='catsids' method='get' action='{$site_config['baseurl']}/browse.php'>";
 if ($today) {
     $HTMLOUT .= "
-                                    <input type='hidden' name='today' value='$today' />";
+                                    <input type='hidden' name='today' value='$today'>";
 }
 $main_div = "
                                         <div id='checkbox_container' class='level-center'>";
@@ -287,10 +286,10 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
         $main_div .= "
                                             <span class='margin10 mw-50 is-flex tooltipper' title='" . htmlsafechars($cat['name']) . "'>
                                                 <span class='bordered level-center bg-02'>
-                                                    <input name='c" . (int) $cat['id'] . "' class='styled' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? ' checked' : '') . " value='1' />
+                                                    <input name='c" . (int) $cat['id'] . "' class='styled' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? ' checked' : '') . " value='1'>
                                                     <span class='cat-image left10'>
                                                         <a href='{$site_config['baseurl']}/browse.php?c" . (int) $cat['id'] . "'>
-                                                            <img class='radius-sm' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' />
+                                                            <img class='radius-sm' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "'>
                                                         </a>
                                                     </span>
                                                 </span>
@@ -301,7 +300,7 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
         $main_div .= "
                                             <span class='margin10 bordered tooltipper' title='" . htmlsafechars($cat['name']) . "'>
                                                 <label for='c" . (int) $cat['id'] . "'>
-                                                    <input name='c" . (int) $cat['id'] . "' class='styled1' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? ' checked' : '') . "value='1' />
+                                                    <input name='c" . (int) $cat['id'] . "' class='styled1' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? ' checked' : '') . "value='1'>
                                                     <a class='catlink' href='{$site_config['baseurl']}/browse.php?cat=" . (int) $cat['id'] . "'>" . htmlsafechars($cat['name']) . '</a>
                                                 </label>
                                             </span>';
@@ -311,14 +310,14 @@ $main_div .= "
                                         </div>
                                         <div class='has-text-centered'>
                                             <label for='checkAll'>
-                                                <input type='checkbox' id='checkAll' /><span> Select All Categories</span>
+                                                <input type='checkbox' id='checkAll'><span> Select All Categories</span>
                                             </label>
                                         </div>";
 $HTMLOUT .= main_div($main_div, 'bottom20');
 
 if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     $new_button = "
-        <a href='{$site_config['baseurl']}/browse.php?clear_new=1'><input type='submit' value='clear new tag' class='button is-small' /></a>
+        <a href='{$site_config['baseurl']}/browse.php?clear_new=1'><input type='submit' value='clear new tag' class='button is-small'></a>
         <br>";
 } else {
     //== clear new tag automatically
@@ -366,7 +365,7 @@ $searchin .= '
                     </select>';
 $HTMLOUT .= main_div("
                     <div class='padding10 w-100'>
-                        <input id='search' name='search' type='text' data-csrf='" . $session->get('csrf_token') . "' placeholder='{$lang['search_search']}' class='search w-100' value='" . (!empty($_GET['search']) ? $_GET['search'] : '') . "' onkeyup='autosearch()' />
+                        <input id='search' name='search' type='text' data-csrf='" . $session->get('csrf_token') . "' placeholder='{$lang['search_search']}' class='search w-100' value='" . (!empty($_GET['search']) ? $_GET['search'] : '') . "' onkeyup='autosearch()'>
                     </div>
                     <div class='level-center'>
                         <div class='padding10 w-25 mw-50'>
@@ -389,7 +388,7 @@ $HTMLOUT .= main_div("
                         </div>
                     </div>
                     <div class='margin10 has-text-centered'>
-                        <input type='submit' value='{$lang['search_search_btn']}' class='button is-small' />
+                        <input type='submit' value='{$lang['search_search_btn']}' class='button is-small'>
                     </div>");
 $HTMLOUT .= '
             </form>';
