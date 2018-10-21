@@ -488,4 +488,22 @@ class User
 
         return $user;
     }
+
+    public function get_users_for_notifications(int $category)
+    {
+        $users = $this->fluent->from('users')
+            ->select(null)
+            ->select('id')
+            ->select('notifs')
+            ->where('notifs IS NOT NULL');
+
+        $notify = [];
+        foreach ($users as $user) {
+            if (strpos($user['notifs'], '[cat' . $category . ']') !== false) {
+                $notify[] = $user;
+            }
+        }
+
+        return $notify;
+    }
 }

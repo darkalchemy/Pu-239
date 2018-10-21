@@ -448,7 +448,7 @@ if ($site_config['autoshout_on'] == 1) {
 if ($offer > 0) {
     $res_offer = sql_query("SELECT user_id FROM offer_votes WHERE vote = 'yes' AND user_id != " . sqlesc($owner_id) . ' AND offer_id = ' . sqlesc($offer)) or sqlerr(__FILE__, __LINE__);
     $subject = 'An offer you voted for has been uploaded!';
-    $msg = "Hi, \n An offer you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent, ENT_QUOTES) . '[/url] to see the torrent page!';
+    $msg = "Hi, \n An offer you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent, ENT_QUOTES) . '[/url] to see the torrent details page!';
     while ($arr_offer = mysqli_fetch_assoc($res_offer)) {
         $msgs_buffer[] = [
             'sender' => 0,
@@ -467,8 +467,8 @@ if ($offer > 0) {
 $filled = 0;
 if ($request > 0) {
     $res_req = sql_query('SELECT user_id FROM request_votes WHERE vote = "yes" AND request_id = ' . sqlesc($request)) or sqlerr(__FILE__, __LINE__);
-    $subject = 'A  request you were interested in has been uploaded!';
-    $msg = "Hi :D \n A request you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent, ENT_QUOTES) . '[/url] to see the torrent page!';
+    $subject = 'A request you were interested in has been uploaded!';
+    $msg = "Hi :D \n A request you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent, ENT_QUOTES) . '[/url] to see the torrent details page!';
     while ($arr_req = mysqli_fetch_assoc($res_req)) {
         $msgs_buffer[] = [
             'sender' => 0,
@@ -488,6 +488,24 @@ if ($request > 0) {
 }
 if ($filled == 0) {
     write_log(sprintf($lang['takeupload_log'], $id, $torrent, $user_data['username']));
+}
+
+$notify = $user_stuffs->get_users_for_notifications($type);
+if (!empty($notify)) {
+    $subject = 'New Torrent Uploaded!';
+    $msg = "A torrent in one of your default categories has been uploaded! \n\n Click  [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent, ENT_QUOTES) . '[/url] to see the torrent details page!';
+    foreach ($notify as $notif) {
+        $msgs_buffer[] = [
+            'sender' => 0,
+            'receiver' => $notif['id'],
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
+        ];
+    }
+    if (!empty($msgs_buffer)) {
+        $message_stuffs->insert($msgs_buffer);
+    }
 }
 
 $keys = $cache->get('where_keys_');
