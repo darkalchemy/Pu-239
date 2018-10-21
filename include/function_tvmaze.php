@@ -90,7 +90,6 @@ function episode_format($tvmaze_data, $tvmaze_type)
     if (!$BLOCKS['tvmaze_api_on']) {
         return false;
     }
-    file_put_contents('/var/log/nginx/ajax.log', json_encode($tvmaze_data) . PHP_EOL, FILE_APPEND);
     $tvmaze_display['episode'] = [
         'name' => line_by_line('Episode Title', '%s'),
         'url' => line_by_line('Link', "<a href='{$site_config['anonymizer_url']}%s'>TVMaze Lookup</a>"),

@@ -3334,7 +3334,6 @@ class AJAXChat
      */
     public function getLogsViewMessagesXML()
     {
-        file_put_contents('/var/log/nginx/ajax.log', $this->getLogsViewCondition() . PHP_EOL, FILE_APPEND);
         $sql = 'SELECT
                     id,
                     userID,

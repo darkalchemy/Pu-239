@@ -49,7 +49,6 @@ function comment_like_unlike($fields)
     if ($type === 'topic' || $type === 'post' || $type === 'usercomment') {
         $table = $fields[$type];
     }
-    file_put_contents('/var/log/nginx/ajax.log', $data['count'] . PHP_EOL . $current . PHP_EOL, FILE_APPEND);
     if ($data['count'] == 0 && $current === 'Like') {
         $sql = "INSERT INTO likes ({$type}_id, user_id) VALUES (" . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ')';
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -86,8 +85,6 @@ function comment_like_unlike($fields)
         $data['list'] = implode(', ', $rows) . (!empty($data['list']) ? ' and ' . $data['list'] : ' like' . plural(count($rows)) . ' this');
     }
     $data['class'] = "tot-$id";
-
-    file_put_contents('/var/log/nginx/ajax.log', json_encode($data) . PHP_EOL, FILE_APPEND);
 
     echo json_encode($data);
     die();
