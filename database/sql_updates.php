@@ -665,4 +665,11 @@ $sql_updates = [
         'query' => "INSERT INTO `stylesheets` (`id`, `uri`, `name`) VALUES (2, 'default.css', 'Light Template')",
         'flush' => true,
     ],
+    [
+        'id' => 1540080466,
+        'info' => 'Move MySQL Stats',
+        'date' => '20 Oct, 2018',
+        'query' => "UPDATE `staffpanel` SET `av_class` = " . UC_MAX . " WHERE `page_name` = 'Mysql Stats'",
+        'flush' => true,
+    ],
 ];

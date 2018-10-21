@@ -33,15 +33,16 @@ if (!XBT_TRACKER) {
     $query_2 = (isset($_GET['really_bad']) ? "SELECT x.fid, x.uid, x.hit_and_run, x.downloaded AS dload, x.uploaded AS uload, x.seedtime, x.started, x.completedtime, x.active, u.id, u.avatar, u.offensive_avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM xbt_files_users AS x LEFT JOIN users AS u ON u.id = x.uid LEFT JOIN torrents AS t ON t.id=x.fid WHERE completed >= '1' AND hit_and_run > 0 AND u.hit_and_run_total > 2 ORDER BY uid $LIMIT" : "SELECT x.fid, x.uid, x.hit_and_run, x.downloaded AS dload, x.uploaded AS uload, x.seedtime, x.started, x.completedtime, x.active, u.id, u.avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM xbt_files_users AS x LEFT JOIN users AS u ON u.id = x.uid LEFT JOIN torrents AS t ON t.id = x.fid WHERE `completed` >= '1' AND `hit_and_run` > 0 ORDER BY `uid` $LIMIT");
 }
 $hit_and_run_rez = sql_query($query_2) or sqlerr(__FILE__, __LINE__);
-$HTMLOUT .= '<h1 class="has-text-centered">' . (!isset($_GET['really_bad']) ? $lang['hitnrun_chance'] : $lang['hitnrun_nochance']) . '</h1>
-            <ul class="level-center bottom20">
-                <li>
-                    <a class="button is-small" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=hit_and_run">' . $lang['hitnrun_show_current'] . '</a>
+$HTMLOUT .= "
+            <ul class='level-center bg-06'>
+                <li class='altlink margin20'>
+                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=hit_and_run'>{$lang['hitnrun_show_current']}</a>
                 </li>
-                <li>
-                    <a class="button is-small" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=hit_and_run&amp;really_bad=show_them">' . $lang['hitnrun_show_disabled'] . '</a>
+                <li class='altlink margin20'>
+                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=hit_and_run&amp;really_bad=show_them'>{$lang['hitnrun_show_disabled']}</a>
                 </li>
-            </ul>' . ($count > $perpage ? '<p>' . $menu_top . '</p>' : '') . '
+            </ul>
+            <h1 class='has-text-centered'>" . (!isset($_GET['really_bad']) ? $lang['hitnrun_chance'] : $lang['hitnrun_nochance']) . '</h1>' . ($count > $perpage ? '<p>' . $menu_top . '</p>' : '') . '
         <table class="table table-bordered table-striped">' . (mysqli_num_rows($hit_and_run_rez) > 0 ? '<tr><td  class="colhead">' . $lang['hitnrun_avatar'] . '</td>
         <td class="colhead"><b>' . $lang['hitnrun_member'] . '</b></td>
         <td class="colhead"><b>' . $lang['hitnrun_torrent'] . '</b></td>

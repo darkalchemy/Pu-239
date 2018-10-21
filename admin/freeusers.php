@@ -1,6 +1,7 @@
 <?php
 
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
@@ -47,26 +48,40 @@ if ($remove) {
 }
 $res2 = sql_query('SELECT id, username, class, free_switch FROM users WHERE free_switch != 0 ORDER BY username ASC') or sqlerr(__FILE__, __LINE__);
 $count = mysqli_num_rows($res2);
-$HTMLOUT .= "<h1>{$lang['freeusers_head']} ($count)</h1>";
+$perpage = 25;
+$pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?tool=freeusers&amp;");
+$res2 = sql_query('SELECT id, username, class, free_switch FROM users WHERE free_switch != 0 ORDER BY username ASC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
+
+$HTMLOUT .= "<h1 class='has-text-centered'>{$lang['freeusers_head']} ($count)</h1>";
 if ($count == 0) {
-    $HTMLOUT .= '<p><b>' . $lang['freeusers_nothing'] . '</b></p>';
+    $HTMLOUT .= main_div('<h2>' . $lang['freeusers_nothing'] . '</h2>');
 } else {
-    $HTMLOUT .= "<table width='50%'>
-          <tr><td class='colhead'>{$lang['freeusers_username']}</td><td class='colhead'>{$lang['freeusers_class']}</td>
-          <td class='colhead'>{$lang['freeusers_expires']}</td><td class='colhead'>{$lang['freeusers_remove']}</td></tr>";
+    $heading = "
+        <tr>
+            <th>{$lang['freeusers_username']}</th>
+            <th>{$lang['freeusers_class']}</th>
+            <th>{$lang['freeusers_expires']}</th>
+            <th>{$lang['freeusers_remove']}</th>
+        </tr>";
+    $body = '';
     while ($arr2 = mysqli_fetch_assoc($res2)) {
-        $HTMLOUT .= '<tr><td>' . format_username($arr2['id']) . '</td><td>' . get_user_class_name($arr2['class']);
+        $body .= '
+        <tr>
+            <td>' . format_username($arr2['id']) . '</td>
+            <td>' . get_user_class_name($arr2['class']);
         if ($arr2['class'] > UC_ADMINISTRATOR && $arr2['id'] != $CURUSER['id']) {
-            $HTMLOUT .= "</td><td>{$lang['freeusers_until']}" . get_date($arr2['free_switch'], 'DATE') . ' 
-(' . mkprettytime($arr2['free_switch'] - $dt) . "{$lang['freeusers_togo']})" . "</td><td><span class='has-text-danger'>{$lang['freeusers_notallowed']}</span></td>
-</tr>";
+            $body .= "</td>
+            <td>{$lang['freeusers_until']}" . get_date($arr2['free_switch'], 'DATE') . '(' . mkprettytime($arr2['free_switch'] - $dt) . "{$lang['freeusers_togo']})" . "</td>
+            <td><span class='has-text-danger'>{$lang['freeusers_notallowed']}</span></td>
+        </tr>";
         } else {
-            $HTMLOUT .= "</td><td>{$lang['freeusers_until']}" . get_date($arr2['free_switch'], 'DATE') . ' 
-(' . mkprettytime($arr2['free_switch'] - $dt) . "{$lang['freeusers_togo']})" . "</td>
-<td><a href='staffpanel.php?tool=freeusers&amp;action=freeusers&amp;remove=" . (int) $arr2['id'] . "' onclick=\"return confirm('{$lang['freeusers_confirm']}')\">{$lang['freeusers_rem']}</a></td></tr>";
+            $body .= "</td>
+            <td>{$lang['freeusers_until']}" . get_date($arr2['free_switch'], 'DATE') . '(' . mkprettytime($arr2['free_switch'] - $dt) . "{$lang['freeusers_togo']})" . "</td>
+            <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=freeusers&amp;action=freeusers&amp;remove=" . (int) $arr2['id'] . "' onclick=\"return confirm('{$lang['freeusers_confirm']}')\">{$lang['freeusers_rem']}</a></td>
+        </tr>";
         }
     }
-    $HTMLOUT .= '</table>';
+    $HTMLOUT .= ($count > $perpage ? $pager['pagertop'] : '' ) . main_table($body, $heading) . ($count > $perpage ? $pager['pagerbottom'] : '' );
 }
 echo stdhead($lang['freeusers_stdhead']) . wrapper($HTMLOUT) . stdfoot();
 die();

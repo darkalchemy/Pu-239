@@ -137,6 +137,8 @@ function get_infopage($lang, $queries, $path)
     } elseif ($list[0] === 'page') {
         $page = $list[1] + 1;
         $title = $lang['page'] . " $page";
+    } elseif ($list[0] === 'type') {
+        $title = $lang[$list[1]];
     } elseif (!empty($list[0])) {
         $title = $list[0] === 'action' && $list[1] === 'view' ? $lang[$list[1]] : $lang[$list[0]];
     }
@@ -194,13 +196,14 @@ function get_basepage($lang, $path)
     if ($path === '/' || $path === '/index.php' || $path === '/flash.php') {
         return false;
     }
+
     $title = $lang[trim($path, '/')];
     if (empty($title)) {
         dd('path = ' . $path);
     }
-    if (empty($title)) {
-        $title = htmlspecialchars(ucfirst(basename(trim($path, '/'), '.php')), ENT_QUOTES, 'UTF-8');
-    }
+//    if (empty($title)) {
+//        $title = htmlspecialchars(ucfirst(basename(trim($path, '/'), '.php')), ENT_QUOTES, 'UTF-8');
+//    }
 
     return "<a href='{$site_config['baseurl']}{$path}'>{$title}</a>";
 }

@@ -10,6 +10,16 @@ global $CURUSER, $lang, $site_config, $cache, $message_stuffs;
 
 $lang = array_merge($lang, load_language('ad_grouppm'));
 
+$stdhead = [
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
+];
+$stdfoot = [
+    'js' => [
+        get_file_name('sceditor_js'),
+    ],
+];
 $HTMLOUT = '';
 $err = [];
 $last_user_class = UC_STAFF - 1; //== Last users class;
@@ -205,4 +215,4 @@ $HTMLOUT .= "
             <input type='submit' value='{$lang['grouppm_send']}' class='button is-small left20' />
         </div>
     </form>";
-echo stdhead($lang['grouppm_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($lang['grouppm_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

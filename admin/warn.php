@@ -125,7 +125,7 @@ if ($count == 0) {
             <th>{$lang['warn_class']}</th>
             <th>{$lang['warn_ltacces']}</th>
             <th>{$lang['warn_joined']}</th>
-            <th><input type='checkbox' name='checkall'></th>
+            <th><input type='checkbox' id='checkThemAll'></th>
         </tr>";
     $body = '';
     while ($a = mysqli_fetch_assoc($g)) {
@@ -140,9 +140,9 @@ if ($count == 0) {
             <td><input type='checkbox' name='users[]' value='" . (int) $a['id'] . "'></td>
         </tr>";
     }
-    $HTMLOUT .= main_table($body, $heading);
+    $HTMLOUT .= main_table($body, $heading, null, null, 'table-striped', 'checkbox_container');
     $HTMLOUT .= "
-        <div class='has-text-centered'>
+        <div class='has-text-centered margin20'>
             <select name='action'>
                 <option value='unwarn'>{$lang['warn_unwarn']}</option>
                 <option value='disable'>{$lang['warn_disable']}</option>

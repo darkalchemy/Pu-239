@@ -125,20 +125,21 @@ function show_views()
     $results = [];
     $menu = make_side_menu();
     $heading = "{$lang['stats_ex_topicv']} ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} {$lang['stats_ex_topict']} {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
+dd('sdfsdf');
     $htmlout = "<div>
       <div style='background: grey; height: 25px;'>
       <span style='font-weight: bold; font-size: 12pt;'>{$lang['stats_ex_center']}</span>
       </div><br>
     {$menu}
-        
-        <div><table width='70%'>
+        <div>
+    <table class='table table-bordered table-striped'>
         <tr>
     <td colspan='3'>{$heading}</td>
     </tr>
         <tr>
-    <td width='20%'>{$lang['stats_ex_date']}</td>
-    <td width='70%'>{$lang['stats_ex_result']}</td>
-    <td width='10%'>{$lang['stats_ex_count']}</td>
+    <td>{$lang['stats_ex_date']}</td>
+    <td>{$lang['stats_ex_result']}</td>
+    <td>{$lang['stats_ex_count']}</td>
     </tr>";
     if (mysqli_num_rows($q)) {
         while ($row = mysqli_fetch_assoc($q)) {
@@ -164,14 +165,15 @@ function show_views()
                     </tr>";
         }
         $htmlout .= "<tr>
-<td width='20%'>&#160;</td>
-<td width='70%'><div><b>{$lang['stats_ex_total']}</b></div></td>
-<td width='10%'><center><b>{$running_total}</b></center></td>
+<td>&#160;</td>
+<td><div><b>{$lang['stats_ex_total']}</b></div></td>
+<td><center><b>{$running_total}</b></center></td>
 </tr>";
     } else {
         $htmlout .= "<tr><td colspan='3'>{$lang['stats_ex_noresult']}</td></tr>";
     }
     $htmlout .= '</table></div></div>';
+
     echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
 }
 
@@ -274,14 +276,14 @@ function result_screen($mode = 'reg')
       </div><br>
     {$menu}
         
-        <div><table width='70%'>
+        <div><table class='table table-bordered table-striped'>
         <tr>
     <td colspan='3'>{$heading}<br>{$page_detail}</td>
     </tr>
         <tr>
-    <td width='20%'>{$lang['stats_ex_date']}</td>
-    <td width='70%'>{$lang['stats_ex_result']}</td>
-    <td width='10%'>{$lang['stats_ex_count']}</td>
+    <td>{$lang['stats_ex_date']}</td>
+    <td>{$lang['stats_ex_result']}</td>
+    <td>{$lang['stats_ex_count']}</td>
     </tr>";
     if (mysqli_num_rows($q1)) {
         while ($row = mysqli_fetch_assoc($q1)) {
@@ -313,23 +315,22 @@ function result_screen($mode = 'reg')
                     </tr>";
         }
         $htmlout .= "<tr>
-<td width='20%'>&#160;</td>
-<td width='70%'><div><b>{$lang['stats_ex_total']}</b></div></td>
-<td width='10%'><center><b>{$running_total}</b></center></td>
+<td>&#160;</td>
+<td><div><b>{$lang['stats_ex_total']}</b></div></td>
+<td><center><b>{$running_total}</b></center></td>
 </tr>";
     } else {
         $htmlout .= "<tr><td colspan='3'>{$lang['stats_ex_noresult']}</td></tr>";
     }
     $htmlout .= '</table></div></div>';
+
     echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
 }
 
-/**
- * @param string $mode
- */
 function main_screen($mode = 'reg')
 {
     global $site_config, $lang;
+
     $page_title = $lang['stats_ex_center'];
     $page_detail = "{$lang['stats_ex_details_main']}<br>{$lang['stats_ex_details_main1']}";
     if ($mode === 'reg') {
@@ -360,22 +361,24 @@ function main_screen($mode = 'reg')
     $old_date = getdate(time() - (3600 * 24 * 90));
     $new_date = getdate(time() + (3600 * 24));
     $menu = make_side_menu();
-    $htmlout = "<div>
-      <div style='background: grey; height: 25px;'>
-      <span style='font-weight: bold; font-size: 12pt;'>{$lang['stats_ex_center']}</span>
-      </div><br>
-    {$menu}
-    <form action='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra' method='post' name='StatsForm'>
-    <input name='mode' value='{$form_code}' type='hidden' />
-
-    
-    <div style='text-align: left; width: 50%; border: 1px solid blue; padding: 5px;'>
-        <div style='background: grey; height: 25px; margin-bottom:20px;'>
-      <span style='font-weight: bold; font-size: 12pt;'>{$table}</span>
-    </div>
-    <fieldset><legend><strong>{$lang['stats_ex_infor']}</strong></legend>
-    {$page_detail}</fieldset>
-        <fieldset><legend><strong>{$lang['stats_ex_datefrom']}</strong></legend>";
+    $htmlout = "
+        <div>
+            <div style='background: grey; height: 25px;'>
+                <span style='font-weight: bold; font-size: 12pt;'>{$lang['stats_ex_center']}</span>
+            </div>>
+            {$menu}
+            <form action='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra' method='post' name='StatsForm'>
+                <input name='mode' value='{$form_code}' type='hidden' />
+                <div style='text-align: left; width: 50%; border: 1px solid blue; padding: 5px;'>
+                <div style='background: grey; height: 25px; margin-bottom:20px;'>
+                    <span style='font-weight: bold; font-size: 12pt;'>{$table}</span>
+                </div>
+                <fieldset>
+                    <legend><strong>{$lang['stats_ex_infor']}</strong></legend>
+                    {$page_detail}
+                </fieldset>
+                <fieldset>
+                    <legend><strong>{$lang['stats_ex_datefrom']}</strong></legend>";
     $htmlout .= make_select('from_month', make_month(), $old_date['mon']) . '&#160;&#160;';
     $htmlout .= make_select('from_day', make_day(), $old_date['mday']) . '&#160;&#160;';
     $htmlout .= make_select('from_year', make_year(), $old_date['year']) . '</fieldset>';

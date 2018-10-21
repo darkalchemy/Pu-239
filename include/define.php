@@ -42,3 +42,8 @@ define('PM_DELETED', 0);
 define('PM_INBOX', 1);
 define('PM_SENTBOX', -1);
 define('PM_DRAFTS', -2);
+
+define('INTERVAL_1_MIN', 0);
+define('INTERVAL_5_MIN', 1);
+define('INTERVAL_15_MIN', 2);
+define('DEFAULT_AVG', INTERVAL_15_MIN);

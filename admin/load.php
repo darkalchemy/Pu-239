@@ -7,16 +7,7 @@ class_check($class);
 global $site_config, $lang;
 
 $lang = array_merge($lang, load_language('ad_index'));
-$HTMLOUT = '';
-define('INTERVAL_1_MIN', 0); // load average for last 1 minute
-define('INTERVAL_5_MIN', 1); // load average for last 5 minute
-define('INTERVAL_15_MIN', 2); //  load average for last 15 minute
-define('DEFAULT_AVG', INTERVAL_15_MIN); // selects which load average to return by default if no parameters are passed
-/**
- * @param $n
- *
- * @return string
- */
+
 function is_s($n)
 {
     global $lang;
@@ -27,9 +18,6 @@ function is_s($n)
     }
 }
 
-/**
- * @return string
- */
 function uptime()
 {
     global $lang;
@@ -73,14 +61,10 @@ function uptime()
     return $res;
 }
 
-/**
- * @param bool $return_all
- *
- * @return string
- */
 function loadavg($return_all = false)
 {
     global $lang;
+
     $res = '';
     $filename = '/proc/loadavg';
     $fd = fopen($filename, 'r');
@@ -91,13 +75,15 @@ function loadavg($return_all = false)
         fclose($fd);
         $loadavg = explode(' ', $loadavg);
         if ($return_all) {
-            $res['last1'] = $loadavg[INTERVAL_1_MIN];
-            $res['last5'] = $loadavg[INTERVAL_5_MIN];
-            $res['last15'] = $loadavg[INTERVAL_15_MIN];
             $active = explode('/', $loadavg[3]);
-            $res['tasks'] = $active[0];
-            $res['processes'] = $active[1];
-            $res['lastpid'] = $loadavg[4];
+            $res = [
+                'last1' => $loadavg[INTERVAL_1_MIN],
+                'last5' => $loadavg[INTERVAL_5_MIN],
+                'last15' => $loadavg[INTERVAL_15_MIN],
+                'tasks' => $active[0],
+                'processes' => $active[1],
+                'lastpid' => $loadavg[4],
+            ];
         } else {
             $res = $loadavg[DEFAULT_AVG];
         }
@@ -106,34 +92,11 @@ function loadavg($return_all = false)
     return $res;
 }
 
-/*
-    //==Windows Server Load
-    $HTMLOUT .="
-    <div class='roundedCorners' style='text-align:left;width:80%;border:1px solid black;padding:5px;'>
-    <div style='background:transparent;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_serverload']}</span></div>
-    <br>
-    <table width='100%' >
-        <tr><td>
-        <table class='main' width='402'>
-    <tr><td style='padding: 0; background-image: url({$site_config['pic_baseurl']}loadbarbg.gif); background-repeat: repeat-x'>";
-    $perc = get_server_load();
-    $percent = min(100, $perc);
-    if ($percent <= 70) $pic = "loadbargreen.gif";
-    elseif ($percent <= 90) $pic = "loadbaryellow.gif";
-    else $pic = "loadbarred.gif";
-    $width = $percent * 4;
-    $HTMLOUT .="<img height='15' width='$width' src=\"{$site_config['pic_baseurl']}{$pic}\" alt='$percent&#37;' /><br>{$lang['index_load_curr']}{$percent}{$lang['index_load_cpu']}<br></td></tr></table></td></tr></table></div><br>";
-    //==End
-*/
-//==Server Load linux
-$HTMLOUT .= "
-    <div class='roundedCorners' style='text-align:left;width:80%;border:1px solid black;padding:5px;'>
-    <div style='background:transparent;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_serverload']}</span></div>
-    <br>
-    <table width='100%' >
-            <tr><td>
-            <table class='main' width='402'>
-                <tr><td style='padding: 0; background: url({$site_config['pic_baseurl']}loadbarbg.gif) repeat-x;'>";
+$HTMLOUT = "
+    <h1 class='has-text-centered'>{$lang['index_serverload']}</h1>";
+$body = "
+    <div id='load'>
+        <div style='width: 100%; height: 15px; background: url({$site_config['pic_baseurl']}loadbarbg.gif) repeat-x;' class='bottom20 round5'>";
 $percent = min(100, round(exec('ps ax | grep -c apache') / 256 * 100));
 if ($percent <= 70) {
     $pic = 'loadbargreen.gif';
@@ -142,19 +105,47 @@ if ($percent <= 70) {
 } else {
     $pic = 'loadbarred.gif';
 }
-$width = $percent * 4;
-$HTMLOUT .= "<img height='15' width='$width' src=\"{$site_config['pic_baseurl']}{$pic}\" alt='$percent&#37;' /><br>{$lang['index_load_curr']}{$percent}{$lang['index_load_cpu']}<br>";
-//==End graphic
-$HTMLOUT .= "{$lang['index_load_uptime1']}" . uptime() . '';
-$loadinfo = loadavg(true);
-$HTMLOUT .= "<br>
-    {$lang['index_load_pastmin']}" . $loadinfo['last1'] . "<br>
-    {$lang['index_load_pastmin5']}" . $loadinfo['last5'] . "<br>
-    {$lang['index_load_pastmin15']}" . $loadinfo['last15'] . "<br>
-    {$lang['index_load_numtsk']}" . $loadinfo['tasks'] . "<br>
-    {$lang['index_load_numproc']}" . $loadinfo['processes'] . "<br>
-   {$lang['index_load_pid']}" . $loadinfo['lastpid'] . '<br>
-    </td></tr></table></td></tr></table></div><br>';
-//==End
+$body .= "
+            <img id='load_image' style='height: 15px; width: 1px;' src='{$site_config['pic_baseurl']}{$pic}' alt='$percent&#37;' class='round5'>
+        </div>
+        <div class='padding20'>
+            <span class='columns is-paddingless'>
+            <span class='column is-paddingless'>{$lang['index_load_curr']} </span><span class='has-text-lime column is-paddingless has-text-right is-one-third'>{$percent}{$lang['index_load_cpu']}</span>
+            </span>
+            <span class='columns is-paddingless'>
+                <span class='column is-paddingless'>{$lang['index_load_uptime1']} </span><span class='has-text-lime column is-paddingless has-text-right is-one-third'>" . uptime() . '</span>
+            </span>';
 
+$loadinfo = loadavg(true);
+$body .= "
+            <span class='columns is-paddingless'>
+                <span class='column is-paddingless'>{$lang['index_load_pastmin']} </span><span class='has-text-lime column is-paddingless has-text-right is-one-third'>" . $loadinfo['last1'] . "</span>
+            </span>
+            <span class='columns is-paddingless'>
+                <span class='column is-paddingless'>{$lang['index_load_pastmin5']} </span><span class='has-text-lime column is-paddingless has-text-right is-one-third'>" . $loadinfo['last5'] . "</span>
+            </span>
+            <span class='columns is-paddingless'>
+                <span class='column is-paddingless'>{$lang['index_load_pastmin15']} </span><span class='has-text-lime column is-paddingless has-text-right is-one-third'>" . $loadinfo['last15'] . "</span>
+            </span>
+            <span class='columns is-paddingless'>
+                <span class='column is-paddingless'>{$lang['index_load_numtsk']} </span><span class='has-text-lime column is-paddingless has-text-right is-one-third'>" . $loadinfo['tasks'] . "</span>
+            </span>
+            <span class='columns is-paddingless'>
+                <span class='column is-paddingless'>{$lang['index_load_numproc']} </span><span class='has-text-lime column is-paddingless has-text-right is-one-third'>" . $loadinfo['processes'] . "</span>
+            </span>
+            <span class='columns is-paddingless'>
+                <span class='column is-paddingless'>{$lang['index_load_pid']} </span><span class='has-text-lime column is-paddingless has-text-right is-one-third'>" . $loadinfo['lastpid'] . '</span>
+            </span>
+        </div>
+    </div>';
+
+$HTMLOUT .= main_div($body) . "
+    <script>
+        var percent = $percent;
+        var width = document.getElementById('load').offsetWidth;
+        width = Math.ceil(width / 100 * percent);
+        document.getElementById('load_image').style.width = width + 'px';
+        console.log(percent);
+        console.log(width);
+    </script>";
 echo stdhead($lang['index_serverload']) . wrapper($HTMLOUT) . stdfoot();

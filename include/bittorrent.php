@@ -1340,7 +1340,7 @@ function referer()
     if (!empty($_SERVER['HTTP_HOST']) && strstr($http_referer, $_SERVER['HTTP_HOST']) === false && $http_referer != '') {
         $ip = getip(true);
         $http_agent = $_SERVER['HTTP_USER_AGENT'];
-        $http_page = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
+        $http_page = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
         if (!empty($_SERVER['QUERY_STRING'])) {
             $http_page .= '?' . $_SERVER['QUERY_STRING'];
         }

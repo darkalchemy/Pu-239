@@ -107,14 +107,14 @@ if ($count == 0) {
     $HTMLOUT .= stdmsg($lang['hnrwarn_hey'], $lang['hnrwarn_none'] . strtolower($title));
 } else {
     $HTMLOUT .= "<form action='staffpanel.php?tool=hnrwarn&amp;action=hnrwarn' method='post'>
-        <table width='600' style='border-collapse:separate;'>
-        <tr>        
+        <table id='checkbox_container' width='600' style='border-collapse:separate;'>
+        <tr>
             <td class='colhead' width='100%' >{$lang['hnrwarn_form_user']}</td>
             <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_ratio']}</td>
             <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_class']}</td>
             <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_access']}</td>
             <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_join']}</td>
-            <td class='colhead' nowrap='nowrap'><input type='checkbox' name='checkall' /></td>
+            <td class='colhead' nowrap='nowrap'><input type='checkbox' id='checkThemAll' /></td>
         </tr>";
     while ($a = mysqli_fetch_assoc($g)) {
         $tip = ($do === 'hnrwarn' ? $lang['hnrwarn_tip1'] . htmlsafechars($a['warn_reason']) . '<br>' : $lang['hnrwarn_tip2'] . htmlsafechars($a['disable_reason']));

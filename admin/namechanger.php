@@ -39,17 +39,26 @@ if (isset($mode) && $mode == 'change') {
             }
         }
         sql_query("INSERT INTO messages (sender, receiver, msg, subject, added) VALUES(0, $uid, $changed, $subject, $added)") or sqlerr(__FILE__, __LINE__);
-        header('Refresh: 2; url=staffpanel.php?tool=namechanger');
+        header("Refresh: 2; url={$site_config['baseurl']}/staffpanel.php?tool=namechanger");
         stderr($lang['namechanger_success'], $lang['namechanger_u_changed'] . htmlsafechars($uname) . $lang['namechanger_please']);
     }
 }
 $HTMLOUT .= "
-    <h1>{$lang['namechanger_change_u']}</h1>
-    <form method='post' action='staffpanel.php?tool=namechanger&amp;mode=change'>
-    <table >
-    <tr><td class='rowhead'>{$lang['namechanger_id']}</td><td><input type='text' name='uid' size='10' /></td></tr>
-    <tr><td class='rowhead'>{$lang['namechanger_new_user']}</td><td><input type='text' name='uname' size='20' /></td></tr>
-    <tr><td colspan='2'>{$lang['namechanger_if']}<input type='submit' value='{$lang['namechanger_change_name']}' class='button is-small' /></td></tr>
-    </table>
+    <h1 class='has-text-centered'>{$lang['namechanger_change_u']}</h1>
+    <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=namechanger&amp;mode=change'>";
+$body = "
+    <tr>
+        <td>{$lang['namechanger_id']}</td>
+        <td><input type='text' name='uid' class='w-100'></td>
+    </tr>
+    <tr>
+        <td>{$lang['namechanger_new_user']}</td>
+        <td><input type='text' name='uname' class='w-100'></td>
+    </tr>
+    <tr>";
+$HTMLOUT .= main_table($body) . "
+    <div class='has-text-centered'>
+        <input type='submit' value='{$lang['namechanger_change_name']}' class='button is-small margin20'>
+    </div>
     </form>";
 echo stdhead($lang['namechanger_stdhead']) . wrapper($HTMLOUT) . stdfoot();

@@ -204,6 +204,9 @@ $htmlout = "
         <li class='altlink margin20'>
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=op'>OPcache</a>
         </li>
+        <li class='altlink margin20'>
+            <a href='{$site_config['baseurl']}/staffpanel.php?tool=mysql_stats'>MySQL Stats</a>
+        </li>
     </ul>";
 $htmlout .= main_table($body);
 echo stdhead($lang['system_stdhead']) . wrapper($htmlout) . stdfoot();

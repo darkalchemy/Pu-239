@@ -59,14 +59,17 @@ $HTMLOUT .= '<h1 class="has-text-centered">' . $lang['freeleech_current'] . '</h
 if (isset($free) && (count($free) < 1)) {
     $HTMLOUT .= main_div($lang['freeleech_nofound'], 'has-text-centered bottom20');
 } else {
-    $HTMLOUT .= "<table class='table table-bordered table-striped'>
-        <tr><td class='colhead'>{$lang['freeleech_free_all']}</td>
-        <td class='colhead'>{$lang['freeleech_expires']}</td>
-        <td class='colhead'>{$lang['freeleech_setby']}</td>
-        <td class='colhead'>{$lang['freeleech_title']}</td>
-        <td class='colhead'>{$lang['freeleech_message']}</td>
-        <td class='colhead'>{$lang['freeleech_remove']}</td></tr>";
+    $heading .= "
+        <tr>
+            <th>{$lang['freeleech_free_all']}</th>
+            <th>{$lang['freeleech_expires']}</th>
+            <th>{$lang['freeleech_setby']}</th>
+            <th>{$lang['freeleech_title']}</th>
+            <th>{$lang['freeleech_message']}</th>
+            <th>{$lang['freeleech_remove']}</th>
+        </tr>";
     $i = 0;
+    $body = '';;
     foreach ($free as $fl) {
         switch ($fl['modifier']) {
             case 1:
@@ -92,21 +95,24 @@ if (isset($free) && (count($free) < 1)) {
             default:
                 $mode = $lang['freeleech_not_enable'];
         }
-        $HTMLOUT .= "<tr><td>$mode
-             </td><td>" . ($fl['expires'] != 'Inf.' && $fl['expires'] != 1 ? "{$lang['freeleech_until']}" . get_date($fl['expires'], 'DATE') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . "{$lang['freeleech_togo']})" : '' . $lang['freeleech_unlimited'] . '') . " </td>
-             <td>{$fl['setby']}</td>
-             <td>{$fl['title']}</td>
-             <td>{$fl['message']}</td>
-             <td><a href='staffpanel.php?tool=freeleech&amp;action=freeleech&amp;remove={$i}' class='button is-small'>{$lang['freeleech_remove']}</a>
-             </td></tr>";
+        $body .= "
+            <tr>
+                <td>$mode</td>
+                <td>" . ($fl['expires'] != 'Inf.' && $fl['expires'] != 1 ? "{$lang['freeleech_until']}" . get_date($fl['expires'], 'DATE') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . "{$lang['freeleech_togo']})" : '' . $lang['freeleech_unlimited'] . '') . " </td>
+                <td>{$fl['setby']}</td>
+                <td>{$fl['title']}</td>
+                <td>{$fl['message']}</td>
+                <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=freeleech&amp;action=freeleech&amp;remove={$i}' class='button is-small'>{$lang['freeleech_remove']}</a></td>
+            </tr>";
         ++$i;
     }
-    $HTMLOUT .= '</table>';
+    $HTMLOUT .= main_table($body, $heading);
 }
-$checked = 'checked=\'checked\'';
+$checked = ' checked';
 
-$HTMLOUT .= "<h2 class='has-text-centered'>{$lang['freeleech_set_free']}</h2>
-    <form method='post' action='staffpanel.php?tool=freeleech&amp;action=freeleech'>
+$HTMLOUT .= "
+    <h2 class='has-text-centered'>{$lang['freeleech_set_free']}</h2>
+    <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=freeleech&amp;action=freeleech'>
     <table class='table table-bordered table-striped'>
     <tr><td class='rowhead'>{$lang['freeleech_mode']}</td>
     <td> <table width='100%'>

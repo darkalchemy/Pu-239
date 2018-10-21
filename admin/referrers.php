@@ -13,22 +13,24 @@ $_GET['page'] = !isset($_GET['page']) ? 0 : (int) $_GET['page'];
 $res = sql_query('SELECT * FROM referrers') or sqlerr(__FILE__, __LINE__);
 $count = mysqli_num_rows($res);
 if ($count > 0) {
-    $HTMLOUT .= "<h1>{$lang['ref_last']}</h1>
-    <table>
+    $HTMLOUT .= "
+    <h1 class='has-text-centered'>{$lang['ref_last']}</h1>";
+    $heading = "
         <tr>
-            <td class='colhead'>{$lang['ref_nr']}</td>
-            <td class='colhead'>{$lang['ref_date']}</td>
-            <td class='colhead'>{$lang['ref_browser']}</td>
-            <td class='colhead'>{$lang['ref_ip']}</td>
-            <td class='colhead'>{$lang['ref_user']}</td>
-            <td class='colhead'>{$lang['ref_url']}</td>
-            <!--<td class='colhead'>{$lang['ref_result']}</td>-->
+            <th>{$lang['ref_nr']}</th>
+            <th>{$lang['ref_date']}</th>
+            <th>{$lang['ref_browser']}</th>
+            <th>{$lang['ref_ip']}</th>
+            <th>{$lang['ref_user']}</th>
+            <th>{$lang['ref_url']}</th>
+            <th>{$lang['ref_result']}</th>
         </tr>";
     $perpage = 10;
     $i = (int) $_GET['page'] * $perpage;
     $pager = pager($perpage, $count, 'staffpanel.php?tool=referrers&amp;');
     $res = sql_query("SELECT r.*, u.id as uid, u.username FROM referrers AS r LEFT JOIN users AS u ON u.ip = r.ip ORDER BY date DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
+        $body = '';
         while ($data = mysqli_fetch_assoc($res)) {
             ++$i;
             $http_agent = htmlsafechars($data['browser']);
@@ -45,21 +47,23 @@ if ($count > 0) {
             } else {
                 $browser = $lang['ref_unknow'];
             }
-            $HTMLOUT .= '
+            $body .= '
         <tr>
             <td>' . $i . '</td>
             <td>' . get_date($data['date'], '') . '</td>
             <td>' . $browser . '</td>
             <td>' . htmlsafechars($data['ip']) . '</td>
-            <td>' . htmlsafechars($data['ip']) . ' ' . ((int) $data['uid'] ? format_username($data['uid']) : $lang['ref_guest']) . "
-</td><td><a href='" . htmlsafechars($data['referer']) . "'>" . htmlsafechars(CutName($data['referer'], '50')) . "</a></td><!--<td><a href='" . htmlsafechars($data['page']) . "'>{$lang['ref_view']}</a></td>--></tr>";
+            <td>' . htmlsafechars($data['ip']) . ' ' . ((int) $data['uid'] ? format_username($data['uid']) : $lang['ref_guest']) . "</td>
+            <td><a href='" . htmlsafechars($data['referer']) . "'>" . htmlsafechars(CutName($data['referer'], '50')) . "</a></td>
+            <td><a href='" . htmlsafechars($data['page']) . "'>{$lang['ref_view']}</a></td>
+        </tr>";
             $browser = '';
         }
     }
-    $HTMLOUT .= '</table>';
+    $HTMLOUT .= main_table($body, $heading);
     $HTMLOUT .= $pager['pagerbottom'];
 } else {
-    $HTMLOUT .= $lang['ref_nothing'];
+    $HTMLOUT .= main_div($lang['ref_nothing']);
 }
 
 echo stdhead($lang['ref_stdhead']) . wrapper($HTMLOUT) . stdfoot();

@@ -68,7 +68,7 @@ function begin_table($striped = false)
 {
     $htmlout = '';
     $stripe = $striped === true ? ' table-striped' : '';
-    $htmlout .= "<table class='sucks table table-bordered{$stripe}'>\n";
+    $htmlout .= "<table class='table table-bordered{$stripe}'>\n";
 
     return $htmlout;
 }
@@ -129,8 +129,9 @@ function insert_smilies_frame()
  *
  * @return string
  */
-function main_table($body, $header = null, $class = null, $wrapper_class = null, $striped = 'table-striped')
+function main_table($body, $header = null, $class = null, $wrapper_class = null, $striped = 'table-striped', $id = null)
 {
+    $id = !empty($id) ? " id='$id'" : '';
     $thead = $header != null ? "
                         <thead>
                             $header
@@ -138,7 +139,7 @@ function main_table($body, $header = null, $class = null, $wrapper_class = null,
 
     return "
                 <div class='table-wrapper $wrapper_class'>
-                    <table class='table table-bordered $striped $class'>
+                    <table{$id} class='table table-bordered $striped $class'>
                         $thead
                         <tbody>
                             $body
