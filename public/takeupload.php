@@ -381,9 +381,7 @@ $values = [
     'nfo' => $nfo,
     'client_created_by' => $tmaker,
 ];
-$id = $fluent->insertInto('torrents')
-    ->values($values)
-    ->execute();
+$id = $torrent_stuffs->add($values);
 
 if (!$id) {
     $session->set('is-warning', 'upload failed');
@@ -400,13 +398,6 @@ $cache->delete('peers_' . $owner_id);
 $peer = new DarkAlchemy\Pu239\Peer();
 $peer->getPeersFromUserId($owner_id);
 clear_image_cache();
-$hashes = $cache->get('hashes_');
-if (!empty($hashes)) {
-    foreach ($hashes as $hash) {
-        $cache->delete('suggest_torrents_' . $hash);
-    }
-    $cache->delete('hashes_');
-}
 
 if (isset($uplver) && $uplver === 'yes') {
     $msg = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by ' . get_anonymous_name();
@@ -497,6 +488,14 @@ if ($request > 0) {
 }
 if ($filled == 0) {
     write_log(sprintf($lang['takeupload_log'], $id, $torrent, $user_data['username']));
+}
+
+$keys = $cache->get('where_keys_');
+if (is_array($keys)) {
+    foreach ($keys as $key) {
+        $cache->delete($key);
+    }
+    $cache->delete('where_keys_');
 }
 
 $session->set('is-success', $lang['takeupload_success']);

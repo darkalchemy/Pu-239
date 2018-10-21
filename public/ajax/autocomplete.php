@@ -17,9 +17,9 @@ if (!isset($_POST['keyword']) || strlen($_POST['keyword']) < 2) {
     return false;
 }
 $keyword = htmlsafechars(strtolower(strip_tags($_POST['keyword'])));
-$hash = hash('sha256', $keyword);
+$hash = 'suggest_torrents_' . hash('sha256', $keyword);
 
-$results = $cache->get('suggest_torrents_' . $hash);
+$results = $cache->get($hash);
 if ($results === false || is_null($results)) {
     $results = $fluent->from('torrents')
         ->select(null)
@@ -30,7 +30,7 @@ if ($results === false || is_null($results)) {
         ->select('visible')
         ->where('name LIKE ?', "%$keyword%")
         ->fetchAll();
-    $cache->set('suggest_torrents_' . $hash, $results, 0);
+    $cache->set($hash, $results, 0);
     $hashes = $cache->get('suggest_torrents_hashes_');
     if (empty($hashes)) {
         $hashes = [];

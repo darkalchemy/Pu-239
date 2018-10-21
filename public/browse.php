@@ -218,6 +218,15 @@ if (isset($cleansearchstr)) {
 
 $where = count($wherea) ? 'WHERE ' . implode(' AND ', $wherea) : '';
 $where_key = 'where_' . hash('sha256', $where);
+$keys = $cache->get('where_keys_');
+if (!is_array($keys)) {
+    $keys = [];
+}
+if (!in_array($where_key, $keys)) {
+    $keys[] = $where_key;
+    $cache->set('where_keys_', $keys, 0);
+}
+
 $count = $cache->get($where_key);
 if ($count === false || is_null($count)) {
     $res = sql_query("SELECT COUNT(*) FROM torrents AS t $join $where") or sqlerr(__FILE__, __LINE__);
@@ -229,7 +238,7 @@ $torrentsperpage = $CURUSER['torrentsperpage'];
 if (!$torrentsperpage) {
     $torrentsperpage = 15;
 }
-if ($count) {
+if ($count > 0) {
     if ($addparam != '') {
         if ($pagerlink != '') {
             if ($addparam[strlen($addparam) - 1] != ';') {
@@ -391,7 +400,7 @@ if ($count) {
                 <div class='top20 bottom20'>
                     {$pager['pagertop']}
                 </div>
-                <div class='table-wrapper'>" . torrenttable($res) . "</div>
+                <div class='table-wrapper'>" . torrenttable($res, 'index') . "</div>
                 <div class='top20'>
                     {$pager['pagerbottom']}
                 </div>";

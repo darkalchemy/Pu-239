@@ -41,7 +41,13 @@ if (!$sure) {
 
 $torrent_stuffs->delete_by_id($tid['id']);
 $torrent_stuffs->remove_torrent($tid['info_hash']);
-
+$keys = $cache->get('where_keys_');
+if (is_array($keys)) {
+    foreach ($keys as $key) {
+        $cache->delete($key);
+    }
+    $cache->delete('where_keys_');
+}
 if ($CURUSER['id'] != $tid['owner']) {
     $msg = sqlesc("{$lang['fastdelete_msg_first']} [b]{$tid['name']}[/b] {$lang['fastdelete_msg_last']} {$CURUSER['username']}");
     sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (0, ' . sqlesc($tid['owner']) . ', ' . TIME_NOW . ", {$msg})") or sqlerr(__FILE__, __LINE__);

@@ -1,3 +1,6 @@
+21 Oct, 2018
+fix: properly clear torrent caches when deleting or adding
+
 20 Oct, 2018
 fix: edit admin pages select current staffpanel.php
 remove: file_put_contents logging

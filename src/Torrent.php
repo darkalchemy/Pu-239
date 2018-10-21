@@ -45,6 +45,7 @@ class Torrent
             ->execute();
 
         unlink(TORRENTS_DIR . $tid . '.torrent');
+        $this->clear_caches();
     }
 
     /**
@@ -312,15 +313,35 @@ class Torrent
                 'posters_',
                 'similiar_tor_' . $torrent['id'],
             ]);
-            $hashes = $this->cache->get('hashes_');
-            if (!empty($hashes)) {
-                foreach ($hashes as $hash) {
-                    $this->cache->delete('suggest_torrents_' . $hash);
-                }
-                $this->cache->delete('hashes_');
-            }
+            $this->clear_caches();
         }
 
         return true;
+    }
+
+    public function clear_caches()
+    {
+        $keys = $this->cache->get('where_keys_');
+        if (is_array($keys)) {
+            $this->cache->deleteMulti($keys);
+            $this->cache->delete('where_keys_');
+        }
+
+        $hashes = $this->cache->get('hashes_');
+        if (!empty($hashes)) {
+            $this->cache->deleteMulti($hashes);
+            $this->cache->delete('hashes_');
+        }
+    }
+
+    public function add(array $values)
+    {
+        $id = $this->fluent->insertInto('torrents')
+            ->values($values)
+            ->execute();
+
+        $this->clear_caches();
+
+        return $id;
     }
 }
