@@ -1,4 +1,6 @@
 21 Oct, 2018
+fix: don't show pager menu when only 1 page browse.php
+add: missing torrents/users 
 fix: user notification on upload to their defaul categories
 update: fluentpdo, php-cs-fixer, flysystem, node-sass
 fix: peers not always deleting on stop announce.php

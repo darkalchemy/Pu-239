@@ -395,14 +395,10 @@ $HTMLOUT .= '
 $HTMLOUT .= "{$new_button}";
 
 if ($count) {
-    $HTMLOUT .= "
-                <div class='top20 bottom20'>
-                    {$pager['pagertop']}
-                </div>
-                <div class='table-wrapper'>" . torrenttable($res, 'index') . "</div>
-                <div class='top20'>
-                    {$pager['pagerbottom']}
-                </div>";
+    $HTMLOUT .= ($count > $torrentsperpage ? "
+        <div class='top20'>{$pager['pagertop']}</div>" : '') . "
+            <div class='table-wrapper top20'>" . torrenttable($res, 'index') . "</div>" . ($count > $torrentsperpage ? "
+        <div class='top20'>{$pager['pagerbottom']}</div>" : '');
 } else {
     if (isset($cleansearchstr)) {
         $HTMLOUT .= main_div("<h2>{$lang['browse_not_found']}</h2>
