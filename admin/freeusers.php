@@ -81,7 +81,7 @@ if ($count == 0) {
         </tr>";
         }
     }
-    $HTMLOUT .= ($count > $perpage ? $pager['pagertop'] : '' ) . main_table($body, $heading) . ($count > $perpage ? $pager['pagerbottom'] : '' );
+    $HTMLOUT .= ($count > $perpage ? $pager['pagertop'] : '') . main_table($body, $heading) . ($count > $perpage ? $pager['pagerbottom'] : '');
 }
 echo stdhead($lang['freeusers_stdhead']) . wrapper($HTMLOUT) . stdfoot();
 die();

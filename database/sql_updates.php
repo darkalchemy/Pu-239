@@ -669,7 +669,7 @@ $sql_updates = [
         'id' => 1540080466,
         'info' => 'Move MySQL Stats',
         'date' => '20 Oct, 2018',
-        'query' => "UPDATE `staffpanel` SET `av_class` = " . UC_MAX . " WHERE `page_name` = 'Mysql Stats'",
+        'query' => 'UPDATE `staffpanel` SET `av_class` = ' . UC_MAX . " WHERE `page_name` = 'Mysql Stats'",
         'flush' => true,
     ],
 ];

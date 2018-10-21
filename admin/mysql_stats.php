@@ -132,7 +132,7 @@ unset($res, $row);
 
 $res = @sql_query('SELECT UNIX_TIMESTAMP() - ' . $serverStatus['Uptime']);
 $row = mysqli_fetch_row($res);
-$HTMLOUT .= "<p class='has-text-centered'>{$lang['mysql_stats_server']}" . timespanFormat($serverStatus['Uptime']) . $lang['mysql_stats_started'] . localisedDate($row[0]) . "</p>";
+$HTMLOUT .= "<p class='has-text-centered'>{$lang['mysql_stats_server']}" . timespanFormat($serverStatus['Uptime']) . $lang['mysql_stats_started'] . localisedDate($row[0]) . '</p>';
 ((mysqli_free_result($res) || (is_object($res) && (get_class($res) === 'mysqli_result'))) ? true : false);
 unset($res, $row);
 
@@ -201,9 +201,9 @@ $heading = "
         <th>{$lang['mysql_stats_per_minute']}</th>
         <th>{$lang['mysql_stats_per_seconds']}</th>
     </tr>";
-$body = "
+$body = '
     <tr>
-        <td>" . number_format($serverStatus['Questions'], 0, '.', ',') . '</td>
+        <td>' . number_format($serverStatus['Questions'], 0, '.', ',') . '</td>
         <td>' . number_format(($serverStatus['Questions'] * 3600 / $serverStatus['Uptime']), 2, '.', ',') . '</td>
         <td>' . number_format(($serverStatus['Questions'] * 60 / $serverStatus['Uptime']), 2, '.', ',') . '</td>
         <td>' . number_format(($serverStatus['Questions'] / $serverStatus['Uptime']), 2, '.', ',') . '</td>

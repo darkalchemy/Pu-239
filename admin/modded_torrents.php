@@ -22,9 +22,9 @@ $links = "
             <a href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=yesterday' >" . $lang['mtor_modded_yesterday'] . "</a>
         </li>
         <li class='altlink margin20'>
-            <a href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=unmodded' >" . $lang['mtor_all_unmodded_torrents'] . "</a>
+            <a href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=unmodded' >" . $lang['mtor_all_unmodded_torrents'] . '</a>
         </li>
-    </ul>";
+    </ul>';
 
 function do_sort($arr, $empty = false)
 {
@@ -111,9 +111,9 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                     <h1>{$lang['mtor_summary']}</h1>
                     <p>$put</p>
                 </div>";
-            $heading = "
+            $heading = '
                 <tr>
-                   <th>" . $lang['mtor_torrent'] . '</th>
+                   <th>' . $lang['mtor_torrent'] . '</th>
                    <th>' . $lang['mtor_added'] . '</th>
                    <th>' . $lang['mtor_edit'] . ' ' . $lang['mtor_torrent'] . '</th>
                 </tr>';
@@ -146,9 +146,9 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                 <div class='has-text-centered'>
                     <h4>" . $lang['mtor_summary'] . "</h4>$trim
                 </div>";
-                $heading = "
+                $heading = '
                     <tr>
-                       <th>" . $lang['mtor_torrent'] . '</th>
+                       <th>' . $lang['mtor_torrent'] . '</th>
                        <th>' . $lang['mtor_modded_by'] . '</th>
                        <th>' . $lang['mtor_time'] . '</th>
                     </tr>';
@@ -212,9 +212,9 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                 <div class='has-text-centered'>
                     <h4>" . $lang['mtor_summary'] . "</h4>$trim
                 </div>";
-                $heading = "
+                $heading = '
                     <tr>
-                        <th>" . $lang['mtor_torrent'] . '</th>
+                        <th>' . $lang['mtor_torrent'] . '</th>
                         <th>' . $lang['mtor_modded_by'] . '</th>
                         <th>' . $lang['mtor_time'] . '</th>
                     </tr>';
@@ -230,7 +230,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
 }
 $HTMLOUT = '';
 $HTMLOUT .= $links . "
-    <h1 class='has-text-centered'>" . $lang['mtor_modded_torrents_complete_panel'] . "</h1>";
+    <h1 class='has-text-centered'>" . $lang['mtor_modded_torrents_complete_panel'] . '</h1>';
 
 $HTMLOUT .= main_div("
     <div class='has-text-centered'>

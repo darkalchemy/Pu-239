@@ -84,8 +84,8 @@ if ($count === 0) {
         <td>{$uper['n_t']}</td>
         <td>" . ($n_tor > 0 ? number_format(100 * $uper['n_t'] / $n_tor, 1) . '%' : '---') . '</td>
         <td>' . $uper['n_p'] . '</td>
-        <td>' . ($n_peers > 0 ? number_format(100 * $uper['n_p'] / $n_peers, 1) . '%' : '---') . "</td>
-    </tr>";
+        <td>' . ($n_peers > 0 ? number_format(100 * $uper['n_p'] / $n_peers, 1) . '%' : '---') . '</td>
+    </tr>';
     }
     $HTMLOUT .= main_table($body, $heading);
     if ($count > $perpage) {
@@ -118,15 +118,15 @@ if ($n_tor == 0) {
     </tr>";
     $body = '';
     while ($cat = mysqli_fetch_assoc($res)) {
-        $body .= "
+        $body .= '
     <tr>
-        <td>" . htmlsafechars($cat['name']) . '</td>
+        <td>' . htmlsafechars($cat['name']) . '</td>
         <td ' . ($cat['last'] ? ('>' . get_date($cat['last'], '') . ' (' . get_date($cat['last'], '', 0, 1) . ')') : "align='center'>---") . "</td>
         <td>{$cat['n_t']}</td>
         <td>" . number_format(100 * $cat['n_t'] / $n_tor, 1) . "%</td>
         <td>{$cat['n_p']}</td>
-        <td>" . ($n_peers > 0 ? number_format(100 * $cat['n_p'] / $n_peers, 1) . '%' : '---') . "</td>
-    </tr>";
+        <td>" . ($n_peers > 0 ? number_format(100 * $cat['n_p'] / $n_peers, 1) . '%' : '---') . '</td>
+    </tr>';
     }
     $HTMLOUT .= main_table($body, $heading, null, 'top20');
 }

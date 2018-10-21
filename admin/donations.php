@@ -68,18 +68,18 @@ while ($arr = mysqli_fetch_assoc($res)) {
         <td>{$arr['id']}</td>
         <td>" . format_username($arr['id']) . "</td>
         <td><a class='altlink' href='mailto:" . htmlsafechars($arr['email']) . "'>" . htmlsafechars($arr['email']) . "</a></td>
-        <td><span class='size_3'>" . get_date($arr['added'], 'DATE') . "</span></td>
-        <td>";
+        <td><span class='size_3'>" . get_date($arr['added'], 'DATE') . '</span></td>
+        <td>';
     $donoruntil = (int) $arr['donoruntil'];
     if ($donoruntil == 0) {
         $body .= 'n/a';
     } else {
         $body .= '<span class="size_3">' . get_date($arr['donoruntil'], 'DATE') . ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ]{$lang['donate_togo']}</span>";
     }
-    $body .= "
+    $body .= '
         </td>
-        <td><b>&#36;" . htmlsafechars($arr['donated']) . "</td>
-        <td><b>&#36;" . htmlsafechars($arr['total_donated']) . "</td>
+        <td><b>&#36;' . htmlsafechars($arr['donated']) . '</td>
+        <td><b>&#36;' . htmlsafechars($arr['total_donated']) . "</td>
         <td>
             <a class='altlink' href='{$site_config['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $arr['id'] . "'>{$lang['donate_sendpm']}</a>
         </td>

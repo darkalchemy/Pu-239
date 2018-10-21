@@ -45,9 +45,9 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'list') {
             </tr>";
         $body = '';
         while ($arr2 = mysqli_fetch_assoc($res2)) {
-            $body .= "
+            $body .= '
             <tr>
-                <td>" . format_username($arr2['userid']) . "</td>
+                <td>' . format_username($arr2['userid']) . "</td>
                 <td><a href='{$site_config['baseurl']}/details.php?id={$arr2['torrent']}&amp;dllist=1#seeders'>{$arr2['torrent']}</a>";
             if ($arr2['seeder'] === 'yes') {
                 $body .= "<span class='has-text-danger'>*</span>";
@@ -108,17 +108,17 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'sendpm') {
     <div>
         <h1 class='has-text-centered'>{$lang['non_con_mass']}</h1>
         <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>";
-        if (isset($_GET['returnto']) || isset($_SERVER['HTTP_REFERER'])) {
-            $HTMLOUT .= "<input type='hidden' name='returnto' value='" . (isset($_GET['returnto']) ? htmlsafechars($_GET['returnto']) : htmlsafechars($_SERVER['HTTP_REFERER'])) . "'>";
-        }
+    if (isset($_GET['returnto']) || isset($_SERVER['HTTP_REFERER'])) {
+        $HTMLOUT .= "<input type='hidden' name='returnto' value='" . (isset($_GET['returnto']) ? htmlsafechars($_GET['returnto']) : htmlsafechars($_SERVER['HTTP_REFERER'])) . "'>";
+    }
     $receiver = '';
     $body = "{$lang['non_con_body']}";
     $HTMLOUT .= main_div(BBcode($body, null, 250) . "
             <div class='has-text-centered'>
                 <input type='submit' value='Send' class='button is-small'>
-            </div>") . "
+            </div>") . '
         </form>
-    </div>";
+    </div>';
 }
 if (isset($_GET['action1']) == '') {
     $getlog = sql_query('SELECT * FROM `notconnectablepmlog` ORDER BY date DESC LIMIT 20') or sqlerr(__FILE__, __LINE__);
@@ -144,10 +144,10 @@ if (isset($_GET['action1']) == '') {
         $body = '';
         while ($arr2 = mysqli_fetch_assoc($getlog)) {
             $elapsed = get_date($arr2['date'], '', 0, 1);
-            $body .= "
+            $body .= '
         <tr>
-            <td>" . format_username($arr2['user']) . "</td>
-            <td>" . get_date($arr2['date'], '') . "</td>
+            <td>' . format_username($arr2['user']) . '</td>
+            <td>' . get_date($arr2['date'], '') . "</td>
             <td>$elapsed</td>
         </tr>";
         }

@@ -53,7 +53,7 @@ if ($count > $peersperpage) {
 $sql = "SELECT p.id, p.userid, p.torrent, p.torrent_pass, p.peer_id, INET6_NTOA(p.ip) AS ip, p.port, p.uploaded, p.downloaded, p.to_go, p.seeder, p.started, p.last_action, p.connectable, p.agent, p.finishedat, p.downloadoffset, p.uploadoffset, u.username, t.name FROM peers AS p LEFT JOIN users AS u ON u.id = p.userid LEFT JOIN torrents AS t ON t.id = p.torrent WHERE started != 0 ORDER BY p.started DESC {$pager['limit']}";
 $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($result) != 0) {
-$heading = "
+    $heading = "
     <tr>
         <th>{$lang['wpeers_user']}</th>
         <th>{$lang['wpeers_torrent']}</th>
@@ -76,7 +76,7 @@ $heading = "
         if ($smallname != htmlsafechars($row['name'])) {
             $smallname .= '...';
         }
-    $body .= '
+        $body .= '
     <tr>
         <td>' . format_username($row['userid']) . '</td>
         <td><a href="' . $site_config['baseurl'] . '/details.php?id=' . (int) ($row['torrent']) . '">' . $smallname . '</a></td>

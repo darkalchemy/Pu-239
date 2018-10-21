@@ -113,7 +113,7 @@ $HTMLOUT .= "
                 $link
             </li>
         </ul>
-        <h1 class='has-text-centered'>{$lang['warn_total']} $count {$lang['warn_total_user']}" . plural($count) . "</h1>";
+        <h1 class='has-text-centered'>{$lang['warn_total']} $count {$lang['warn_total_user']}" . plural($count) . '</h1>';
 if ($count == 0) {
     $HTMLOUT .= main_div($lang['warn_hey_msg'] . strtolower($title));
 } else {
@@ -132,11 +132,11 @@ if ($count == 0) {
         $tip = ($do === 'warned' ? $lang['warn_for'] . $a['warn_reason'] . '<br>' . $lang['warn_till'] . get_date($a['warned'], 'DATE', 1) . ' - ' . mkprettytime($a['warned'] - $dt) : $lang['warn_disabled_for'] . $a['disable_reason']);
         $body .= "
         <tr>
-            <td><a href='userdetails.php?id=" . (int) $a['id'] . "' class='tooltipper' title='$tip'>" . htmlsafechars($a['username']) . "</a></td>
-            <td>" . (float) $a['ratio'] . "<br><font class='small'><b>{$lang['warn_down']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['warn_upl']}</b> " . mksize($a['uploaded']) . "</font></td>
-            <td>" . get_user_class_name($a['class']) . "</td>
-            <td>" . get_date($a['last_access'], 'LONG', 0, 1) . "</td>
-            <td>" . get_date($a['added'], 'DATE', 1) . "</td>
+            <td><a href='userdetails.php?id=" . (int) $a['id'] . "' class='tooltipper' title='$tip'>" . htmlsafechars($a['username']) . '</a></td>
+            <td>' . (float) $a['ratio'] . "<br><font class='small'><b>{$lang['warn_down']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['warn_upl']}</b> " . mksize($a['uploaded']) . '</font></td>
+            <td>' . get_user_class_name($a['class']) . '</td>
+            <td>' . get_date($a['last_access'], 'LONG', 0, 1) . '</td>
+            <td>' . get_date($a['added'], 'DATE', 1) . "</td>
             <td><input type='checkbox' name='users[]' value='" . (int) $a['id'] . "'></td>
         </tr>";
     }

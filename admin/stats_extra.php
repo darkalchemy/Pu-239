@@ -125,7 +125,7 @@ function show_views()
     $results = [];
     $menu = make_side_menu();
     $heading = "{$lang['stats_ex_topicv']} ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} {$lang['stats_ex_topict']} {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
-dd('sdfsdf');
+    dd('sdfsdf');
     $htmlout = "<div>
       <div style='background: grey; height: 25px;'>
       <span style='font-weight: bold; font-size: 12pt;'>{$lang['stats_ex_center']}</span>

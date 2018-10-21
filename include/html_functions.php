@@ -91,6 +91,7 @@ function tr($x, $y, $noesc = false, $class = '')
     }
 
     $class = !empty($class) ? " class='$class'" : '';
+
     return "
         <tr>
             <td class='rowhead'>

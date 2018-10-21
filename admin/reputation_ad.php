@@ -438,8 +438,8 @@ function view_list()
             $html .= "
             <tr>
                 <td>#{$r['reputationid']}</td>
-                <td>" . format_username($r['leftby_id']) . "</td>
-                <td>" . format_username($r['leftfor_id']) . "</td>
+                <td>" . format_username($r['leftby_id']) . '</td>
+                <td>' . format_username($r['leftfor_id']) . "</td>
                 <td>{$r['dateadd']}</td>
                 <td>{$r['reputation']}</td>
                 <td>

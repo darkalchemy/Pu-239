@@ -69,7 +69,7 @@ if (isset($free) && (count($free) < 1)) {
             <th>{$lang['freeleech_remove']}</th>
         </tr>";
     $i = 0;
-    $body = '';;
+    $body = '';
     foreach ($free as $fl) {
         switch ($fl['modifier']) {
             case 1:

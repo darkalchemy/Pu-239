@@ -126,8 +126,8 @@ if ($lottery_config['enable']) {
                         </div>
                     </td>
                 </tr>";
-    $html .= main_table($table) . "
+    $html .= main_table($table) . '
         </div>
-    </form>";
+    </form>';
 }
 echo stdhead('Lottery configuration') . wrapper($html) . stdfoot();

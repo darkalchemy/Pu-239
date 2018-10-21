@@ -1,4 +1,5 @@
 21 Oct, 2018
+update: fluentpdo, php-cs-fixer, flysystem, node-sass
 fix: peers not always deleting on stop announce.php
 fix: happy hour
 fix: properly clear torrent caches when deleting or adding

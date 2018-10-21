@@ -111,7 +111,7 @@ function get_secondarypage($lang, $queries, $path)
         $title = htmlspecialchars(ucwords(str_replace('_', ' ', $list[1])), ENT_QUOTES, 'UTF-8');
     }
 
-    return "<a href='{$site_config['baseurl']}{$path}?{$queries[0]}&amp;{$queries[1]}&amp;{$queries[2]}'>{$title}</a>";;
+    return "<a href='{$site_config['baseurl']}{$path}?{$queries[0]}&amp;{$queries[1]}&amp;{$queries[2]}'>{$title}</a>";
 }
 
 function get_infopage($lang, $queries, $path)

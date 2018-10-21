@@ -68,7 +68,7 @@ function sql_get_version()
     return $mysql_version . ' (' . $true_version . ')';
 }
 
-$php_version = phpversion() . ' (' . @php_sapi_name() . ")";
+$php_version = phpversion() . ' (' . @php_sapi_name() . ')';
 $server_software = php_uname();
 // print $php_version ." ".$server_software;
 $load_limit = '--';

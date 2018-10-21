@@ -330,8 +330,8 @@ function getMenu()
     }
     $menu .= menu_entry(1, 'View Host Stats');
     $menu .= menu_entry(2, 'Variables');
-    $menu .= "
-        </ul>";
+    $menu .= '
+        </ul>';
 
     return $menu;
 }
@@ -495,12 +495,12 @@ switch ($_GET['op']) {
                 <td>$phpversion</td>
             </tr>
             <tr>
-                <td>Memcached Host" . plural(count($MEMCACHE_SERVERS)) . "</td>
-                <td>";
+                <td>Memcached Host" . plural(count($MEMCACHE_SERVERS)) . '</td>
+                <td>';
         $i = 0;
         if (!isset($_GET['singleout']) && count($MEMCACHE_SERVERS) > 1) {
             foreach ($MEMCACHE_SERVERS as $server) {
-                $i++;
+                ++$i;
                 $body .= "$i : <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;singleout={$i}'>{$server}</a><br>";
             }
         } else {
@@ -509,15 +509,15 @@ switch ($_GET['op']) {
         if (isset($_GET['singleout'])) {
             $body .= "<a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache'>(all servers)</a><br>";
         }
-        $body .= "
+        $body .= '
                 </td>
             </tr>
             <tr>
                 <td>Total Memcache Cache</td>
-                <td>" . human_filesize($memcacheStats['limit_maxbytes']) . "</td>
-            </tr>";
+                <td>' . human_filesize($memcacheStats['limit_maxbytes']) . '</td>
+            </tr>';
 
-        $HTMLOUT .= main_table($body) ."
+        $HTMLOUT .= main_table($body) . "
         </div>
         <div>
             <h2 class='has-text-centered top20'>Memcache Server Information</h2>";
@@ -532,36 +532,36 @@ switch ($_GET['op']) {
             </tr>
             <tr>
                 <td>Start Time</td>
-                <td>" . date(DATE_FORMAT, $memcacheStatsSingle[$server]['STAT']['time'] - $memcacheStatsSingle[$server]['STAT']['uptime']) . "</td>
+                <td>" . date(DATE_FORMAT, $memcacheStatsSingle[$server]['STAT']['time'] - $memcacheStatsSingle[$server]['STAT']['uptime']) . '</td>
             </tr>
             <tr>
                 <td>Uptime</td>
-                <td>" . duration($memcacheStatsSingle[$server]['STAT']['time'] - $memcacheStatsSingle[$server]['STAT']['uptime']) . "</td>
+                <td>' . duration($memcacheStatsSingle[$server]['STAT']['time'] - $memcacheStatsSingle[$server]['STAT']['uptime']) . '</td>
             </tr>
             <tr>
                 <td>Memcached Server Version</td>
-                <td>" . $memcacheStatsSingle[$server]['STAT']['version'] . "</td>
+                <td>' . $memcacheStatsSingle[$server]['STAT']['version'] . '</td>
             </tr>
             <tr>
                 <td>Used Cache Size</td>
-                <td>" . human_filesize($memcacheStatsSingle[$server]['STAT']['bytes']) . "</td>
+                <td>' . human_filesize($memcacheStatsSingle[$server]['STAT']['bytes']) . '</td>
             </tr>
             <tr>
                 <td>Total Cache Size</td>
-                <td>" . human_filesize($memcacheStatsSingle[$server]['STAT']['limit_maxbytes']) . "</td>
-            </tr>";
+                <td>' . human_filesize($memcacheStatsSingle[$server]['STAT']['limit_maxbytes']) . '</td>
+            </tr>';
         }
         $HTMLOUT .= main_table($body) . "
         </div>
         <div>
             <h2 class='has-text-centered top20'>Host Status Diagrams</h2>";
         $size = 'width=' . (GRAPH_SIZE + 50) . ' height=' . (GRAPH_SIZE + 10);
-        $body = "
+        $body = '
             <tr>
                 <td>Cache Usage</td>
                 <td>Hits &amp; Misses</td>
-            </tr>";
-        $body .=  "
+            </tr>';
+        $body .= "
             <tr>
                 <td>
                     <img alt='' $size src='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;IMG=1&amp;" . (isset($_GET['singleout']) ? "singleout={$_GET['singleout']}&amp;" : '') . "$time'>
@@ -583,9 +583,9 @@ switch ($_GET['op']) {
                     <span class='has-text-red'>Used: </span>" . human_filesize($mem_used) . sprintf(' (%.1f%%)', $mem_used * 100 / $mem_size) . "
                 </td>
                 <td>
-                    <span class='has-text-red'>Misses: </span>" . $misses . sprintf(' (%.1f%%)', $misses * 100 / ($hits + $misses)) . "
+                    <span class='has-text-red'>Misses: </span>" . $misses . sprintf(' (%.1f%%)', $misses * 100 / ($hits + $misses)) . '
                 </td>
-            </tr>";
+            </tr>';
         $HTMLOUT .= main_table($body) . "
         </div>
         <div>
@@ -619,8 +619,8 @@ switch ($_GET['op']) {
                 <td>Set Rate</td>
                 <td>$set_rate cache requests/second</td>
             </tr>";
-        $HTMLOUT .= main_table($body) . "
-        </div>";
+        $HTMLOUT .= main_table($body) . '
+        </div>';
 
         break;
 
@@ -631,8 +631,8 @@ switch ($_GET['op']) {
         $totals = $cacheItems['counts'];
         $maxDump = MAX_ITEM_DUMP;
         foreach ($items as $server => $entries) {
-            $HTMLOUT .= "
-        <div>";
+            $HTMLOUT .= '
+        <div>';
             $heading = "
             <tr>
                 <th colspan='2' class='has-text-centered size_6'>$server</th>
@@ -651,71 +651,71 @@ switch ($_GET['op']) {
                 </td>
                 <td>
                     Item count: {$slab['number']}<br>
-                    Age: " . duration($time - $slab['age']) . "<br>
-                    Evicted: " . (isset($slab['evicted']) && $slab['evicted'] == 1 ? 'Yes' : 'No');
+                    Age: " . duration($time - $slab['age']) . '<br>
+                    Evicted: ' . (isset($slab['evicted']) && $slab['evicted'] == 1 ? 'Yes' : 'No');
                 if ((isset($_GET['dumpslab']) && $_GET['dumpslab'] == $slabId) && (isset($_GET['server']) && $_GET['server'] == array_search($server, $MEMCACHE_SERVERS))) {
-                    $body .= "<br>
-                    Items: item<br>";
+                    $body .= '<br>
+                    Items: item<br>';
                     $items = dumpCacheSlab($server, $slabId, $slab['number']);
                     $i = 1;
                     foreach ($items['ITEM'] as $itemKey => $itemInfo) {
                         $itemInfo = trim($itemInfo, '[ ]');
-                        $body .=  "<a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=4&amp;server=" . (array_search($server, $MEMCACHE_SERVERS)) . "&amp;key=" . base64_encode($itemKey) . "'>$itemKey</a>";
+                        $body .= "<a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=4&amp;server=" . (array_search($server, $MEMCACHE_SERVERS)) . '&amp;key=' . base64_encode($itemKey) . "'>$itemKey</a>";
                         if ($i++ % 10 == 0) {
-                            $body .=  '<br>';
+                            $body .= '<br>';
                         } elseif ($i != $slab['number'] + 1) {
-                            $body .=  '.';
+                            $body .= '.';
                         }
                     }
                 }
-                $body .=  '
+                $body .= '
                 </td>
             </tr>';
                 $m = 1 - $m;
             }
-            $HTMLOUT .= main_table($body, $heading) . "
-        </div><hr>";
+            $HTMLOUT .= main_table($body, $heading) . '
+        </div><hr>';
         }
         break;
 
     case 4:
         if (!isset($_GET['key']) || !isset($_GET['server'])) {
-            $crap =  'No key set!';
+            $crap = 'No key set!';
             break;
         }
         $theKey = htmlentities(base64_decode($_GET['key']));
         $theserver = $MEMCACHE_SERVERS[(int) $_GET['server']];
         list($h, $p) = explode(':', $theserver);
         $r = sendMemcacheCommand($h, $p, 'get ' . $theKey);
-        $HTMLOUT .= "
-        <div>";
-        $heading = "
+        $HTMLOUT .= '
+        <div>';
+        $heading = '
             <tr>
                 <th>Server</th>
                 <th>Key</th>
                 <th>Value</th>
                 <th>Delete</th>
-            </tr>";
+            </tr>';
         $body = "
             <tr>
                 <td>$theserver</td>
                 <td>
                     $theKey<br>
                     flag: {$r['VALUE'][$theKey]['stat']['flag']}<br>
-                    Size: " . human_filesize($r['VALUE'][$theKey]['stat']['size']) . "
+                    Size: " . human_filesize($r['VALUE'][$theKey]['stat']['size']) . '
                 </td>
-                <td>" . chunk_split($r['VALUE'][$theKey]['value'], 40) . "</td>
+                <td>' . chunk_split($r['VALUE'][$theKey]['value'], 40) . "</td>
                 <td>
                     <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&op=5&server={$_GET['server']}&amp;key=" . base64_encode($theKey) . "'>Delete</a>
                 </td>
             </tr>";
-        $HTMLOUT .= main_table($body, $heading) . "
-        </div><hr>";
+        $HTMLOUT .= main_table($body, $heading) . '
+        </div><hr>';
         break;
 
     case 5:
         if (!isset($_GET['key']) || !isset($_GET['server'])) {
-            $crap =  'No key set!';
+            $crap = 'No key set!';
             break;
         }
         $theKey = htmlentities(base64_decode($_GET['key']));

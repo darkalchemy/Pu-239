@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "363e46979cfd996e19ef02b4b0b79e34",
+    "content-hash": "6e241f222bf54770f38fd29c0a7ab4aa",
     "packages": [
         {
             "name": "blocktrail/cryptojs-aes-php",
@@ -272,16 +272,16 @@
         },
         {
             "name": "envms/fluentpdo",
-            "version": "v2.0.0",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/envms/fluentpdo.git",
-                "reference": "c4eb6339815d08a3562219dfabe040490a7764c9"
+                "reference": "3f51d4b4e34e85110f87f7e98ebc0ab38e211c74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/envms/fluentpdo/zipball/c4eb6339815d08a3562219dfabe040490a7764c9",
-                "reference": "c4eb6339815d08a3562219dfabe040490a7764c9",
+                "url": "https://api.github.com/repos/envms/fluentpdo/zipball/3f51d4b4e34e85110f87f7e98ebc0ab38e211c74",
+                "reference": "3f51d4b4e34e85110f87f7e98ebc0ab38e211c74",
                 "shasum": ""
             },
             "require-dev": {
@@ -318,20 +318,20 @@
                 "pdo",
                 "query"
             ],
-            "time": "2018-10-10T13:50:31+00:00"
+            "time": "2018-10-19T12:47:44+00:00"
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v2.13.0",
+            "version": "v2.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "7136aa4e0c5f912e8af82383775460d906168a10"
+                "reference": "54814c62d5beef3ba55297b9b3186ed8b8a1b161"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/7136aa4e0c5f912e8af82383775460d906168a10",
-                "reference": "7136aa4e0c5f912e8af82383775460d906168a10",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/54814c62d5beef3ba55297b9b3186ed8b8a1b161",
+                "reference": "54814c62d5beef3ba55297b9b3186ed8b8a1b161",
                 "shasum": ""
             },
             "require": {
@@ -342,7 +342,7 @@
                 "ext-tokenizer": "*",
                 "php": "^5.6 || >=7.0 <7.3",
                 "php-cs-fixer/diff": "^1.3",
-                "symfony/console": "^3.2 || ^4.0",
+                "symfony/console": "^3.4.17 || ^4.1.6",
                 "symfony/event-dispatcher": "^3.0 || ^4.0",
                 "symfony/filesystem": "^3.0 || ^4.0",
                 "symfony/finder": "^3.0 || ^4.0",
@@ -378,11 +378,6 @@
                 "php-cs-fixer"
             ],
             "type": "application",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.13-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "PhpCsFixer\\": "src/"
@@ -414,7 +409,7 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
-            "time": "2018-08-23T13:15:44+00:00"
+            "time": "2018-10-21T00:32:10+00:00"
         },
         {
             "name": "google/recaptcha",
@@ -2435,9 +2430,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "envms/fluentpdo": 10
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

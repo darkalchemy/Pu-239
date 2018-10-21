@@ -181,7 +181,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     $set = [
                         'navbar' => $navbar,
                         'page_name' => $page_name,
-                        'file_name' =>  $file_name,
+                        'file_name' => $file_name,
                         'description' => $description,
                         'type' => $type,
                         'av_class' => (int) $_POST['av_class'],
