@@ -1,4 +1,5 @@
 20 Oct, 2018
+fix: php_info display system_view.php
 update: a few more of the admin pages
 add: missing file promo.php
 update: most of the admin pages

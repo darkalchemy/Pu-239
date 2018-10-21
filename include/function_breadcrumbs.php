@@ -31,6 +31,10 @@ function breadcrumbs()
             if (!empty($info_page)) {
                 $links[] = $info_page;
             }
+            $secondary_page = get_secondarypage($lang, $queries, $path);
+            if (!empty($secondary_page)) {
+                $links[] = $secondary_page;
+            }
         }
     } else {
         $post_page = get_postpage($lang, $path);
@@ -91,6 +95,25 @@ function get_postpage($lang, $url)
     return false;
 }
 
+function get_secondarypage($lang, $queries, $path)
+{
+    global $site_config;
+
+    if (empty($queries[2])) {
+        return false;
+    }
+    $list = explode('=', $queries[2]);
+    if ($list[0] === 'phpinfo') {
+        $title = $lang['phpinfo'];
+    }
+
+    if (empty($title)) {
+        $title = htmlspecialchars(ucwords(str_replace('_', ' ', $list[1])), ENT_QUOTES, 'UTF-8');
+    }
+
+    return "<a href='{$site_config['baseurl']}{$path}?{$queries[0]}&amp;{$queries[1]}&amp;{$queries[2]}'>{$title}</a>";;
+}
+
 function get_infopage($lang, $queries, $path)
 {
     global $site_config;
@@ -120,9 +143,13 @@ function get_infopage($lang, $queries, $path)
         'cleanup_manager',
     ];
 
+    if (!empty($queries[2])) {
+        $secondary = explode('=', $queries[2]);
+    }
+
     if (!empty($list[0]) && $list[0] === 'box') {
         $title = get_mailbox_name($list[1]);
-    } elseif ($list[0] === 'phpinfo') {
+    } elseif (!empty($secondary) && $secondary[1] === 'phpinfo') {
         $title = $lang['phpinfo'];
     } elseif ($list[0] === 'mode' && $list[1] === 'news') {
         $title = $lang['add_news'];

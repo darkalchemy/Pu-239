@@ -31,8 +31,6 @@ if (isset($_GET['phpinfo']) && $_GET['phpinfo']) {
     $php_style = "<style>
 body {background-color: #fff; color: #222; font-family: sans-serif;}
 pre {margin: 0; font-family: monospace;}
-a:link {color: #009; text-decoration: none; background-color: #fff;}
-a:hover {text-decoration: underline;}
 table {border-collapse: collapse; border: 0; width: 100%; box-shadow: 1px 2px 3px #ccc;}
 .center {text-align: center;}
 .center table {margin: 1em auto; text-align: left;}
@@ -196,7 +194,7 @@ foreach ($html as $key => $value) {
 $htmlout = "
     <ul class='level-center bg-06'>
         <li class='altlink margin20'>
-            <a href='{$site_config['baseurl']}/staffpanel.php?tool=system_view&amp;action=system_view&amp;phpinfo=1'>{$lang['system_phpinfo']}</a>
+            <a href='{$site_config['baseurl']}/staffpanel.php?tool=system_view&amp;phpinfo=1'>{$lang['system_phpinfo']}</a>
         </li>
         <li class='altlink margin20'>
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache'>Memcache</a>
