@@ -1,3 +1,6 @@
+22 Oct, 2018
+fix: division by 0 pu_update.php
+
 21 Oct, 2018
 fix: get from array happyhour_update.php
 fix: freee_switch not resetting freeuser_update.php

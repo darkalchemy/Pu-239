@@ -672,4 +672,11 @@ $sql_updates = [
         'query' => 'UPDATE `staffpanel` SET `av_class` = ' . UC_MAX . " WHERE `page_name` = 'Mysql Stats'",
         'flush' => true,
     ],
+    [
+        'id' => 1540182645,
+        'info' => 'Add default promotion',
+        'date' => '22 Oct, 2018',
+        'query' => "INSERT INTO `class_promo` VALUES(1, '1', 1.20, 50, 20, 0.85)",
+        'flush' => true,
+    ],
 ];

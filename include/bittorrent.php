@@ -193,12 +193,18 @@ function dbconn()
     }
 }
 
-/**
- * @param $id
- */
-function status_change($id)
+function status_change(int $id)
 {
-    sql_query('UPDATE announcement_process SET status = 0 WHERE user_id = ' . sqlesc($id) . ' AND status = 1') or sqlerr(__FILE__, __LINE__);
+    global $fluent;
+
+    $set = [
+        'status' => 0,
+    ];
+    $fluent->update('announcement_process')
+        ->set($set)
+        ->where('user_id = ?', $id)
+        ->where('status = 1')
+        ->execute();
 }
 
 /**
