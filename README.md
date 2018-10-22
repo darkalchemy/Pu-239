@@ -10,7 +10,7 @@
 7. Replace manual concat/gzip of css/js file with webpack
 8. Optimize all images for web - Done
 9. Remove js from head and relocate to body
-10. Replace Simple Captcha with reCAPTCHA V2 - Done
+10. Replace Simple Captcha with reCAPTCHA V3 - Done
 11. Fully responsive and mobile ready
 12. Drag and Drop Image Upload - Done
 
@@ -147,7 +147,7 @@ note: if that does exist, check the changelog for 6 Dec, 2017
 
 ### API's
 
-reCAPTCHA V2 needs both the site key and secret key set in .env.
+reCAPTCHA V3 needs both the site key and secret key set in .env.
 
 Fanart.tv needs api key set in .env.
 
