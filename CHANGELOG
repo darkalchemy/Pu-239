@@ -1,4 +1,5 @@
 21 Oct, 2018
+fix: get from array happyhour_update.php
 fix: freee_switch not resetting freeuser_update.php
 fix: timesann not updating announce.php
 update: set default userid userdetails.php

@@ -19,7 +19,7 @@ function happyhour_update($data)
     $happyEnd = $happyHour + 3600;
     if ($happy['status'] == 0 && $site_config['happy_hour'] === true) {
         if ($data['clean_log']) {
-            write_log('Happy hour was @ ' . get_date($happyHour, 'LONG', 1, 0) . ' and Catid ' . $happy['catid'] . ' ');
+            write_log('Happy hour was @ ' . get_date($happyHour, 'LONG', 1, 0) . ' and Catid ' . $happy['catid']['id'] . ' ');
         }
         happyFile('set');
     } elseif (($curDate > $happyEnd) && $happy['status'] == 1) {
