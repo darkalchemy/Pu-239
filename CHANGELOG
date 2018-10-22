@@ -1,4 +1,5 @@
 21 Oct, 2018
+fix: freee_switch not resetting freeuser_update.php
 fix: timesann not updating announce.php
 update: set default userid userdetails.php
 fix: don't show pager menu when only 1 page browse.php

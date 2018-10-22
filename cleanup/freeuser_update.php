@@ -8,8 +8,7 @@
  */
 function freeuser_update($data)
 {
-    dbconn();
-    global $site_config, $queries, $fluent, $cache, $message_stuffs, $user_stuffs;
+    global $site_config, $queries, $fluent, $message_stuffs, $user_stuffs;
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -28,7 +27,6 @@ function freeuser_update($data)
     foreach ($query as $arr) {
         $modcomment = $arr['modcomment'];
         $modcomment = get_date($dt, 'DATE', 1) . " - Freeleech Removed By System.\n" . $modcomment;
-        $modcom = sqlesc($modcomment);
         $values[] = [
             'sender' => 0,
             'receiver' => $arr['id'],
@@ -36,33 +34,16 @@ function freeuser_update($data)
             'msg' => $msg,
             'subject' => $subject,
         ];
-        $user = $user_stuffs->getUserFromId($arr['id']);
-        /*
-                $set[] = [
-                    'free_switch' => 0,
-                    'modcomment' => $modcom,
-                    'id' => $arr['id'],
-                    'username' => $user['username'],
-                ];
-
-                $update[] = [
-                    'free_switch' => 0,
-                    'modcomment' => new Envms\FluentPDO\Literal('VALUES(modcomment)'),
-                ];
-        */
-        $user = $user_stuffs->getUserFromId($arr['id']);
-        $users_buffer[] = "({$arr['id']}, {$user['username']}, 0, {$modcom})";
-        $cache->update_row('user' . $arr['id'], [
+        $set = [
             'free_switch' => 0,
             'modcomment' => $modcomment,
-        ], $site_config['expires']['user_cache']);
+        ];
+        $user_stuffs->update($set, $arr['id']);
     }
 
     $count = count($values);
     if ($count) {
         $message_stuffs->insert($values);
-        sql_query('INSERT INTO users (id, username, free_switch, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE free_switch=values(free_switch), modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
-        //$user_stuffs->insert($set, $update);
     }
 
     if ($data['clean_log']) {
