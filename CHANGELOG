@@ -1,4 +1,5 @@
 26 Oct, 2018
+update: show client and peer id view_peers.php
 remove: unused/duplicate functions scrape.php
 fix: divide by 0 annoounce.php
 fix: non numeric rating function_imdb.php

@@ -50,7 +50,7 @@ $pager = pager($peersperpage, $count, 'staffpanel.php?tool=view_peers&amp;action
 if ($count > $peersperpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$sql = "SELECT p.id, p.userid, p.torrent, p.torrent_pass, p.peer_id, INET6_NTOA(p.ip) AS ip, p.port, p.uploaded, p.downloaded, p.to_go, p.seeder, p.started, p.last_action, p.connectable, p.agent, p.finishedat, p.downloadoffset, p.uploadoffset, u.username, t.name FROM peers AS p LEFT JOIN users AS u ON u.id = p.userid LEFT JOIN torrents AS t ON t.id = p.torrent WHERE started != 0 ORDER BY p.started DESC {$pager['limit']}";
+$sql = "SELECT p.id, p.userid, p.torrent, p.torrent_pass, LEFT(p.peer_id, 8) AS peer_id, INET6_NTOA(p.ip) AS ip, p.port, p.uploaded, p.downloaded, p.to_go, p.seeder, p.started, p.last_action, p.connectable, p.agent, p.finishedat, p.downloadoffset, p.uploadoffset, u.username, t.name FROM peers AS p LEFT JOIN users AS u ON u.id = p.userid LEFT JOIN torrents AS t ON t.id = p.torrent WHERE started != 0 ORDER BY p.started DESC {$pager['limit']}";
 $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($result) != 0) {
     $heading = "
@@ -59,9 +59,10 @@ if (mysqli_num_rows($result) != 0) {
         <th>{$lang['wpeers_torrent']}</th>
         <th>{$lang['wpeers_ip']}</th>
         <th>{$lang['wpeers_port']}</th>
+        <th>{$lang['wpeers_client']}</th>
+        <th>{$lang['wpeers_peer_id']}</th>
         <th>{$lang['wpeers_up']}</th>" . ($site_config['ratio_free'] == true ? '' : "
         <th>{$lang['wpeers_dn']}</th>") . "
-        <th>{$lang['wpeers_pssky']}</th>
         <th>{$lang['wpeers_con']}</th>
         <th>{$lang['wpeers_seed']}</th>
         <th>{$lang['wpeers_start']}</th>
@@ -82,9 +83,10 @@ if (mysqli_num_rows($result) != 0) {
         <td><a href="' . $site_config['baseurl'] . '/details.php?id=' . (int) ($row['torrent']) . '">' . $smallname . '</a></td>
         <td>' . htmlsafechars($row['ip']) . '</td>
         <td>' . htmlsafechars($row['port']) . '</td>
+        <td>' . htmlsafechars($row['agent']) . '</td>
+        <td>' . htmlsafechars($row['peer_id']) . '</td>
         <td>' . htmlsafechars(mksize($row['uploaded'])) . '</td>' . ($site_config['ratio_free'] == true ? '' : '
         <td>' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
-        <td class="w-15"><span style="word-break: break-all;">' . htmlsafechars($row['torrent_pass']) . '</span></td>
         <td>' . ($row['connectable'] == 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
         <td>' . ($row['seeder'] == 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
         <td>' . get_date($row['started'], 'DATE') . '</td>

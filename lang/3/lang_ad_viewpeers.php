@@ -26,4 +26,6 @@ $lang = [
     'wpeers_no' => 'Nu',
     'wpeers_notfound' => 'Nu s-au gasit peeruri',
     'wpeers_peerover' => 'Previzualizare Peer',
+    'wpeers_client' => 'Client',
+    'wpeers_peer_id' => 'Peer ID',
 ];
