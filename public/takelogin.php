@@ -102,7 +102,8 @@ if (!password_verify($password, $row['passhash'])) {
     ];
 
     $failed_logins->insert($values, $update);
-    $values = [
+    unset($values);
+    $values[] = [
         'sender' => 0,
         'receiver' => $userid,
         'msg' => "[size=7][color=red]Security Alert[/color][/size][br]Account ID: {$userid}[br][b]Ip Address[/b]: " . htmlsafechars($ip) . '[br]Somebody (' . htmlsafechars($username) . ") tried to login but failed![br]If this wasn't you please report this event to a {$site_config['site_name']} staff member.[br][br]Thank you.[br]",
