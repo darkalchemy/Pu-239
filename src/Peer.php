@@ -119,7 +119,25 @@ class Peer
         return $count;
     }
 
-    public function delete(int $pid, int $tid, string $info_hash)
+    public function delete_by_peerid(string $peerid, int $tid, string $info_hash)
+    {
+        $result = $this->fluent->deleteFrom('peers')
+            ->where('HEX(peer_id) = ?', bin2hex($peerid))
+            ->execute();
+
+        if ($result) {
+            $key = 'torrent_hash_' . bin2hex($info_hash);
+            $this->cache->deleteMulti([
+                $key,
+                'torrent_details_' . $tid,
+                'torrent_peers_' . $tid,
+            ]);
+        }
+
+        return $result;
+    }
+
+    public function delete_by_id(int $pid, int $tid, string $info_hash)
     {
         $result = $this->fluent->deleteFrom('peers', $pid)
             ->execute();
@@ -131,9 +149,6 @@ class Peer
                 'torrent_details_' . $tid,
                 'torrent_peers_' . $tid,
             ]);
-
-            $this->cache->delete('torrent_details_' . $tid);
-            $this->cache->delete('torrent_peers_' . $tid);
         }
 
         return $result;

@@ -45,24 +45,15 @@ switch ($action) {
                     'msg' => $msg,
                     'subject' => $lang['bonusmanager_up_added'],
                 ];
-                $user_values[] = [
-                    'id' => $arr_GB['id'],
+                $set = [
                     'uploaded' => $GB_new,
                     'modcomment' => $modcomment,
                 ];
-                $user_updates = [
-                    'uploaded' => new Envms\FluentPDO\Literal('VALUES(uploaded)'),
-                    'modcomment' => new Envms\FluentPDO\Literal('VALUES(modcomment)'),
-                ];
-                $cache->update_row('user' . $arr_GB['id'], [
-                    'uploaded' => $GB_new,
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_cache']);
+                $user_stuffs->update($set, $arr_GB['id']);
             }
             $count = count($pm_values);
             if ($count > 0) {
                 $message_stuffs->insert($pm_values);
-                $user_stuffs->insert($user_values, $user_updates);
                 write_log($lang['bonusmanager_up_writelog'] . $count . $lang['bonusmanager_up_writelog1'] . $CURUSER['username']);
             }
             unset($pm_values, $user_values, $user_updates, $count);
@@ -91,24 +82,15 @@ switch ($action) {
                     'msg' => $msg,
                     'subject' => $lang['bonusmanager_karma_added'],
                 ];
-                $user_values[] = [
-                    'id' => $arr_karma['id'],
+                $set = [
                     'seedbonus' => $karma_new,
                     'modcomment' => $modcomment,
                 ];
-                $user_updates = [
-                    'seedbonus' => new Envms\FluentPDO\Literal('VALUES(seedbonus)'),
-                    'modcomment' => new Envms\FluentPDO\Literal('VALUES(modcomment)'),
-                ];
-                $cache->update_row('user' . $arr_karma['id'], [
-                    'seedbonus' => $karma_new,
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_cache']);
+                $user_stuffs->update($set, $arr_karma['id']);
             }
             $count = count($pm_values);
             if ($count > 0) {
                 $message_stuffs->insert($pm_values);
-                $user_stuffs->insert($user_values, $user_updates);
                 write_log($lang['bonusmanager_karma_writelog'] . $count . $lang['bonusmanager_karma_writelog1'] . $CURUSER['username']);
             }
             unset($pm_values, $user_values, $user_updates, $count);
@@ -137,24 +119,15 @@ switch ($action) {
                     'msg' => $msg,
                     'subject' => $lang['bonusmanager_freeslots_added'],
                 ];
-                $user_values[] = [
-                    'id' => $arr_freeslots['id'],
+                $set = [
                     'freeslots' => $freeslots_new,
                     'modcomment' => $modcomment,
                 ];
-                $user_updates = [
-                    'freeslots' => new Envms\FluentPDO\Literal('VALUES(freeslots)'),
-                    'modcomment' => new Envms\FluentPDO\Literal('VALUES(modcomment)'),
-                ];
-                $cache->update_row('user' . $arr_freeslots['id'], [
-                    'freeslots' => $freeslots_new,
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_cache']);
+                $user_stuffs->update($set, $arr_freeslots['id']);
             }
             $count = count($pm_values);
             if ($count > 0) {
                 $message_stuffs->insert($pm_values);
-                $user_stuffs->insert($user_values, $user_updates);
                 write_log($lang['bonusmanager_freeslots_writelog'] . $count . $lang['bonusmanager_freeslots_writelog1'] . $CURUSER['username']);
             }
             unset($pm_values, $user_values, $user_updates, $count);
@@ -183,24 +156,15 @@ switch ($action) {
                     'msg' => $msg,
                     'subject' => $lang['bonusmanager_invite_added'],
                 ];
-                $user_values[] = [
-                    'id' => $arr_invites['id'],
+                $set = [
                     'invites' => $invites_new,
                     'modcomment' => $modcomment,
                 ];
-                $user_updates = [
-                    'invites' => new Envms\FluentPDO\Literal('VALUES(invites)'),
-                    'modcomment' => new Envms\FluentPDO\Literal('VALUES(modcomment)'),
-                ];
-                $cache->update_row('user' . $arr_invites['id'], [
-                    'invites' => $invites_new,
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_cache']);
+                $user_stuffs->update($set, $arr_invites['id']);
             }
             $count = count($pm_values);
             if ($count > 0) {
                 $message_stuffs->insert($pm_values);
-                $user_stuffs->insert($user_values, $user_updates);
                 write_log($lang['bonusmanager_invite_writelog'] . $count . $lang['bonusmanager_invite_writelog1'] . $CURUSER['username']);
             }
             unset($pm_values, $user_values, $user_updates, $count);

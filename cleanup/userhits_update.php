@@ -1,20 +1,19 @@
 <?php
 
-/**
- * @param $data
- */
 function userhits_update($data)
 {
-    dbconn();
-    global $queries;
+    global $fluent;
 
     set_time_limit(1200);
     ignore_user_abort(true);
 
     $days = 14;
     $dt = TIME_NOW - ($days * 86400);
-    sql_query("DELETE FROM userhits WHERE added < $dt") or sqlerr(__FILE__, __LINE__);
-    if ($data['clean_log'] && $queries > 0) {
-        write_log("Userhits Updates Cleanup: Completed using $queries queries");
+    $fluent->deleteFrom('userhits')
+        ->where('added < ?', $dt)
+        ->execute();
+
+    if ($data['clean_log']) {
+        write_log('Userhits Updates Cleanup completed');
     }
 }

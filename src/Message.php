@@ -28,6 +28,9 @@ class Message
      */
     public function insert(array $values)
     {
+        if (empty($values)) {
+            return false;
+        }
         $count = floor($this->limit / max(array_map('count', $values)));
         foreach (array_chunk($values, $count) as $t) {
             $result = $this->fluent->insertInto('messages')
@@ -164,21 +167,36 @@ class Message
      */
     public function delete_old_messages(int $dt)
     {
-        $messages = $this->fluent->from('messages')
+        $messages_1 = $this->fluent->from('messages')
             ->select(null)
             ->select('receiver')
-            ->where("saved != 'yes'")
+            ->where('location = 0')
             ->where('added <= ?', $dt);
 
         $this->fluent->delete('messages')
-            ->where("saved != 'yes'")
+            ->where('location = 0')
+            ->where('added <= ?', $dt)
+            ->execute();
+
+        $messages_2 = $this->fluent->from('messages')
+            ->select(null)
+            ->select('receiver')
+            ->where('location = 1')
+            ->where('added <= ?', $dt);
+
+        $this->fluent->delete('messages')
+            ->where('location = 1')
             ->where('added <= ?', $dt)
             ->execute();
 
         $i = 0;
-        foreach ($messages as $message) {
+        foreach ($messages_1 as $message) {
             ++$i;
-            $this->cache->decrement('inbox_' . $message['receiver']);
+            $this->cache->delete('inbox_' . $message['receiver']);
+        }
+        foreach ($messages_2 as $message) {
+            ++$i;
+            $this->cache->delete('inbox_' . $message['receiver']);
         }
 
         return $i;

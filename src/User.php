@@ -400,22 +400,6 @@ class User
     }
 
     /**
-     * @param array $values
-     * @param array $update
-     *
-     * @throws \Envms\FluentPDO\Exception
-     */
-    public function insert(array $values, array $update)
-    {
-        $count = floor($this->limit / max(array_map('count', $values)));
-        foreach (array_chunk($values, $count) as $t) {
-            $this->fluent->insertInto('users', $t)
-                ->onDuplicateKeyUpdate($update)
-                ->execute();
-        }
-    }
-
-    /**
      * @param $date
      *
      * @return array|\PDOStatement

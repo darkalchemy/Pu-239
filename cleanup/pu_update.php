@@ -1,13 +1,8 @@
 <?php
 
-/**
- * @param $data
- *
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
- */
 function pu_update($data)
 {
-    global $site_config, $cache, $message_stuffs, $user_stuffs, $fluent;
+    global $site_config, $cache, $message_stuffs, $fluent;
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -63,8 +58,8 @@ function pu_update($data)
             foreach ($users as $arr) {
                 $ratio = $arr['downloaded'] === 0 ? 'Infinite' : number_format($arr['uploaded'] / $arr['downloaded'], 3);
                 $modcomment = $arr['modcomment'];
-                $modcomment = get_date($dt, 'DATE', 1) . ' - Promoted to ' . $class_name . ' by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ").\n" . $modcomment;
-                $modcom = $modcomment;
+                $comment = get_date($dt, 'DATE', 1) . ' - Promoted to ' . $class_name . ' by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ").\n";
+                $modcomment = $comment . $modcomment;
                 $msgs_buffer[] = [
                     'sender' => 0,
                     'receiver' => $arr['id'],
@@ -72,18 +67,33 @@ function pu_update($data)
                     'msg' => $msg,
                     'subject' => $subject,
                 ];
-                $set = [
-                    'class' => $class_value,
-                    'invites' => $arr['invites'] + 1,
-                    'modcomment' => $modcomment,
-                ];
-                $user_stuffs->update($set, $arr['id']);
+                $user = $cache->get('user' . $arr['id']);
+                if (!empty($user)) {
+                    $cache->update_row('user' . $arr['id'], [
+                        'class' => $class_value,
+                        'invites' => $update['invites'],
+                        'modcomment' => $modcomment,
+                    ], $site_config['expires']['user_cache']);
+                }
                 status_change($arr['id']);
             }
 
             $count = count($msgs_buffer);
             if ($count > 0) {
                 $message_stuffs->insert($msgs_buffer);
+                $set = [
+                    'invites' => new Envms\FluentPDO\Literal('invites + 1'),
+                    'class' => $class_value,
+                    'modcomment' => new Envms\FluentPDO\Literal("CONCAT(\"$comment\", modcomment)"),
+                ];
+                $fluent->update('users')
+                    ->set($set)
+                    ->where('class = ?', $prev_class)
+                    ->where('enabled = "yes"')
+                    ->where('added < ?', $maxdt)
+                    ->where('uploaded >= ?', $limit)
+                    ->where('uploaded / IF(downloaded > 0, downloaded, 1) >= ?', $minratio)
+                    ->execute();
             }
             if ($data['clean_log']) {
                 write_log('Cleanup: Promoted ' . $count . ' member(s) from ' . $prev_class_name . ' to ' . $class_name . '');

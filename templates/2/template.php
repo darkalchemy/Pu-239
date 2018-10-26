@@ -218,7 +218,7 @@ function stdfoot($stdfoot = false)
     require_once INCL_DIR . 'bbcode_functions.php';
     global $CURUSER, $site_config, $starttime, $query_stat, $querytime, $lang, $cache, $session;
 
-    $use_12_hour = !empty($CURUSER['12_hour']) ? $CURUSER['12_hour'] === 'yes' ? 1 : 0 : $site_config['12_hour'];
+    $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] === 'yes' ? 1 : 0 : $site_config['use_12_hour'];
     $header = $uptime = $htmlfoot = '';
     $debug = SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0;
     $queries = !empty($query_stat) ? count($query_stat) : 0;

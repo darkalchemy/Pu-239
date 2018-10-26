@@ -1,12 +1,8 @@
 <?php
 
-/**
- * @param $data
- */
 function trivia_update($data)
 {
-    dbconn();
-    global $queries, $fluent, $cache;
+    global $fluent, $cache;
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -19,20 +15,22 @@ function trivia_update($data)
             ->fetch('count');
         $cache->set('trivia_questions_count_', $count, 900);
     }
-
     if ($count > 0) {
-        // update trivia to get next question
-        $sql = 'SELECT gamenum FROM triviasettings WHERE gameon = 1';
-        $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        $result = mysqli_fetch_assoc($res);
-        $gamenum = $result['gamenum'];
-
+        $gamenum = $fluent->from('triviasettings')
+            ->select(null)
+            ->select('gamenum')
+            ->where('gameon = 1')
+            ->fetch('gamenum');
         if ($gamenum >= 1) {
             $qids = $cache->get('triviaquestions_');
             if ($qids === false || is_null($qids)) {
-                $sql = 'SELECT qid FROM triviaq WHERE asked = 0 AND current = 0';
-                $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-                while ($qidarray = mysqli_fetch_assoc($res)) {
+                $result = $fluent->from('triviaq')
+                    ->select(null)
+                    ->select('qid')
+                    ->where('asked = 0')
+                    ->where('current = 0')
+                    ->fetchall('qid');
+                foreach ($result as $qidarray) {
                     $qids[] = $qidarray['qid'];
                 }
                 $cache->set('triviaquestions_', $qids, 0);
@@ -42,11 +40,17 @@ function trivia_update($data)
             }
             $qid = array_pop($qids);
             $cache->replace('triviaquestions_', $qids, 0);
-            if (count($qids) <= 1) {
+            if (count($qids) <= 100) {
+                $set = [
+                    'asked' => 0,
+                    'current' => 0,
+                ];
+                $fluent->update('triviaq')
+                    ->set($set)
+                    ->execute();
                 $cache->delete('triviaquestions_');
             }
 
-            // cache for current question
             $cache->set('trivia_current_qid_', (int) $qid, 360);
             $cache->deleteMulti([
                 'trivia_gamenum_',
@@ -55,14 +59,25 @@ function trivia_update($data)
                 'trivia_correct_answer_',
             ]);
 
-            // clear previous question
-            sql_query('UPDATE triviaq SET current = 0 WHERE current = 1') or sqlerr(__FILE__, __LINE__);
-            // set current question
-            sql_query('UPDATE triviaq SET asked = 1, current = 1 WHERE qid = ' . sqlesc($qid)) or sqlerr(__FILE__, __LINE__);
+            $set = [
+                'current' => 0,
+            ];
+            $fluent->update('triviaq')
+                ->set($set)
+                ->where('current = 1')
+                ->execute();
+            $set = [
+                'asked' => 1,
+                'current' => 1,
+            ];
+            $fluent->update('triviaq')
+                ->set($set)
+                ->where('qid = ?', $qid)
+                ->execute();
         }
     }
 
-    if ($data['clean_log'] && $queries > 0) {
-        write_log("Trivia Questions Cleanup: Completed using $queries queries");
+    if ($data['clean_log']) {
+        write_log('Trivia Questions Cleanup completed');
     }
 }

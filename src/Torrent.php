@@ -44,7 +44,9 @@ class Torrent
             ->where('torrent = ?', $tid)
             ->execute();
 
-        unlink(TORRENTS_DIR . $tid . '.torrent');
+        if (file_exists(TORRENTS_DIR . $tid . '.torrent')) {
+            unlink(TORRENTS_DIR . $tid . '.torrent');
+        }
         $this->clear_caches();
     }
 
@@ -261,31 +263,35 @@ class Torrent
      *
      * @return bool
      */
-    public function remove_torrent(string $infohash)
+    public function remove_torrent(string $infohash, int $tid = null, int $owner = null)
     {
         if (strlen($infohash) != 20) {
             return false;
         }
-        $torrent = $this->get_torrent_from_hash($infohash);
-        if (is_array($torrent)) {
+        if (empty($tid) || empty($owner)) {
+            $torrent = $this->get_torrent_from_hash($infohash);
+            $tid = $torrent['id'];
+            $owner = $torrent['owner'];
+        }
+        if (!empty($tid) && !empty($owner)) {
             $key = 'torrent_hash_' . bin2hex($infohash);
             $this->cache->deleteMulti([
                 $key,
-                'peers_' . $torrent['owner'],
-                'coin_points_' . $torrent['id'],
+                'peers_' . $owner,
+                'coin_points_' . $tid,
                 'latest_comments_',
                 'top5_tor_',
                 'last5_tor_',
                 'scroll_tor_',
-                'torrent_details_' . $torrent['id'],
-                'torrent_details_txt_' . $torrent['id'],
+                'torrent_details_' . $tid,
+                'torrent_details_txt_' . $tid,
                 'lastest_tor_',
                 'slider_tor_',
                 'torrent_poster_count_',
                 'torrent_banner_count_',
                 'backgrounds_',
                 'posters_',
-                'similiar_tor_' . $torrent['id'],
+                'similiar_tor_' . $tid,
             ]);
             $this->clear_caches();
         }

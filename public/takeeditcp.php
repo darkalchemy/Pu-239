@@ -347,11 +347,11 @@ if ($action == 'avatar') {
         $curuser_cache['forum_sort'] = $forum_sort;
         $user_cache['forum_sort'] = $forum_sort;
     }
-    if (isset($_POST['12_hour']) && ($is_12_hour = $_POST['12_hour']) != $CURUSER['12_hour']) {
-        $updateset[] = '12_hour = ' . sqlesc($is_12_hour);
-        $curuser_cache['12_hour'] = $is_12_hour;
-        $user_cache['12_hour'] = $is_12_hour;
-        $session->set('12_hour', $is_12_hour);
+    if (isset($_POST['use_12_hour']) && ($is_12_hour = $_POST['use_12_hour']) != $CURUSER['use_12_hour']) {
+        $updateset[] = 'use_12_hour = ' . sqlesc($is_12_hour);
+        $curuser_cache['use_12_hour'] = $is_12_hour;
+        $user_cache['use_12_hour'] = $is_12_hour;
+        $session->set('use_12_hour', $is_12_hour);
     }
     if (isset($_POST['gender']) && ($gender = $_POST['gender']) != $CURUSER['gender']) {
         $updateset[] = 'gender = ' . sqlesc($gender);

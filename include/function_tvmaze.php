@@ -195,7 +195,7 @@ function tvmaze(int $tvmaze_id, int $tid, $season = 0, $episode = 0, $poster = '
     }
 
     $days = implode(', ', $tvmaze_show_data['schedule']['days']);
-    $use_12_hour = !empty($CURUSER['12_hour']) ? $CURUSER['12_hour'] === 'yes' ? 1 : 0 : $site_config['12_hour'];
+    $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] === 'yes' ? 1 : 0 : $site_config['use_12_hour'];
     $tvmaze_show_data['airtime'] = $days . ' at ' . ($use_12_hour ? time24to12($airtime) : get_date($airtime, 'WITHOUT_SEC', 1, 1)) . " on {$tvmaze_show_data['network']['name']}. <span class='has-text-primary'>(Time zone: {$tvmaze_show_data['network']['country']['timezone']})</span>";
     $tvmaze_show_data['origin'] = "{$tvmaze_show_data['network']['country']['name']}: {$tvmaze_show_data['language']}";
     if (count($tvmaze_show_data['genres']) > 0) {

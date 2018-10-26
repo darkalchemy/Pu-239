@@ -1,31 +1,91 @@
 <?php
 
-/**
- * @param $data
- */
 function user_update($data)
 {
-    dbconn();
-    global $queries;
+    global $fluent;
 
     set_time_limit(1200);
     ignore_user_abort(true);
 
     $dt = TIME_NOW;
-    sql_query('UPDATE freeslots SET addedup = 0 WHERE addedup != 0 AND addedup < ' . $dt) or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE freeslots SET addedfree = 0 WHERE addedfree != 0 AND addedfree < ' . $dt) or sqlerr(__FILE__, __LINE__);
-    sql_query('DELETE FROM freeslots WHERE addedup = 0 AND addedfree = 0') or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE users SET free_switch = 0 WHERE free_switch > 1 AND free_switch < ' . $dt) or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE torrents SET free = 0 WHERE free > 1 AND free < ' . $dt) or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE users SET downloadpos = 1 WHERE downloadpos > 1 AND downloadpos < ' . $dt) or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE users SET uploadpos = 1 WHERE uploadpos > 1 AND uploadpos < ' . $dt) or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE users SET chatpost = 1 WHERE chatpost > 1 AND chatpost < ' . $dt) or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE users SET avatarpos = 1 WHERE avatarpos > 1 AND avatarpos < ' . $dt) or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE users SET immunity = 0 WHERE immunity > 1 AND immunity < ' . $dt) or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE users SET warned = 0 WHERE warned > 1 AND warned < ' . $dt) or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE users SET pirate = 0 WHERE pirate > 1 AND pirate < ' . $dt) or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE users SET king = 0 WHERE king > 1 AND king < ' . $dt) or sqlerr(__FILE__, __LINE__);
-    if ($data['clean_log'] && $queries > 0) {
-        write_log("User Cleanup: Completed using $queries queries");
+    $fluent->update('freeslots')
+        ->set(['addedup' => 0])
+        ->where('addedup != 0')
+        ->where('addedup < ?', $dt)
+        ->execute();
+
+    $fluent->update('freeslots')
+        ->set(['addedfree' => 0])
+        ->where('addedfree != 0')
+        ->where('addedfree < ?', $dt)
+        ->execute();
+
+    $fluent->deleteFrom('freeslots')
+        ->where('addedup = 0')
+        ->where('addedfree = 0')
+        ->execute();
+
+    $fluent->update('torrents')
+        ->set(['free' => 0])
+        ->where('free > 1')
+        ->where('free < ?', $dt)
+        ->execute();
+
+    $fluent->update('users')
+        ->set(['free_switch' => 0])
+        ->where('free_switch > 1')
+        ->where('free_switch < ?', $dt)
+        ->execute();
+
+    $fluent->update('users')
+        ->set(['downloadpos' => 1])
+        ->where('downloadpos > 1')
+        ->where('downloadpos < ?', $dt)
+        ->execute();
+
+    $fluent->update('users')
+        ->set(['uploadpos' => 1])
+        ->where('uploadpos > 1')
+        ->where('uploadpos < ?', $dt)
+        ->execute();
+
+    $fluent->update('users')
+        ->set(['chatpost' => 1])
+        ->where('chatpost > 1')
+        ->where('chatpost < ?', $dt)
+        ->execute();
+
+    $fluent->update('users')
+        ->set(['avatarpos' => 1])
+        ->where('avatarpos > 1')
+        ->where('avatarpos < ?', $dt)
+        ->execute();
+
+    $fluent->update('users')
+        ->set(['immunity' => 0])
+        ->where('immunity > 1')
+        ->where('immunity < ?', $dt)
+        ->execute();
+
+    $fluent->update('users')
+        ->set(['warned' => 0])
+        ->where('warned > 1')
+        ->where('warned < ?', $dt)
+        ->execute();
+
+    $fluent->update('users')
+        ->set(['pirate' => 0])
+        ->where('pirate > 1')
+        ->where('pirate < ?', $dt)
+        ->execute();
+
+    $fluent->update('users')
+        ->set(['king' => 0])
+        ->where('king > 1')
+        ->where('king < ?', $dt)
+        ->execute();
+
+    if ($data['clean_log']) {
+        write_log('User Cleanup completed');
     }
 }

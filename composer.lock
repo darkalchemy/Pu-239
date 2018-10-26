@@ -272,16 +272,16 @@
         },
         {
             "name": "envms/fluentpdo",
-            "version": "v2.1.0",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/envms/fluentpdo.git",
-                "reference": "3f51d4b4e34e85110f87f7e98ebc0ab38e211c74"
+                "reference": "e120999e255c03694a055d7425b158dd04964f17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/envms/fluentpdo/zipball/3f51d4b4e34e85110f87f7e98ebc0ab38e211c74",
-                "reference": "3f51d4b4e34e85110f87f7e98ebc0ab38e211c74",
+                "url": "https://api.github.com/repos/envms/fluentpdo/zipball/e120999e255c03694a055d7425b158dd04964f17",
+                "reference": "e120999e255c03694a055d7425b158dd04964f17",
                 "shasum": ""
             },
             "require-dev": {
@@ -318,7 +318,7 @@
                 "pdo",
                 "query"
             ],
-            "time": "2018-10-19T12:47:44+00:00"
+            "time": "2018-10-24T19:41:54+00:00"
         },
         {
             "name": "friendsofphp/php-cs-fixer",

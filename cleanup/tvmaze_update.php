@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @param $data
- *
- * @throws Exception
- */
 function tvmaze_update($data)
 {
     global $fluent, $BLOCKS;
@@ -20,7 +15,6 @@ function tvmaze_update($data)
 
     $pages[0] = floor($max / 250);
     $pages[1] = ceil($max / 250);
-    $i = 1;
 
     $values = [];
     foreach ($pages as $page) {
@@ -47,10 +41,9 @@ function tvmaze_update($data)
             ->values($values)
             ->ignore()
             ->execute();
-        ++$i;
     }
 
-    if ($data['clean_log'] && $i > 0) {
-        write_log("TVMaze ID's Cleanup: Completed using $i queries");
+    if ($data['clean_log']) {
+        write_log("TVMaze ID's Cleanup completed");
     }
 }

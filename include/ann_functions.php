@@ -207,7 +207,7 @@ function err($msg)
             'value' => $msg,
         ],
     ]);
-    exit();
+    die();
 }
 
 /**

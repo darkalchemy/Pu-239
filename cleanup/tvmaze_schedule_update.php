@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @param $data
- *
- * @throws Exception
- */
 function tvmaze_schedule_update($data)
 {
     require_once INCL_DIR . 'function_tvmaze.php';

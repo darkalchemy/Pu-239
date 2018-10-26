@@ -1,55 +1,51 @@
 <?php
 
-/**
- * @param $data
- *
- * @throws Exception
- */
 function torrents_update($data)
 {
-    dbconn();
     global $fluent;
 
     set_time_limit(1200);
     ignore_user_abort(true);
-    $i = 1;
     $torrents = $fluent->from('torrents')
         ->select(null)
         ->select('id')
         ->select('seeders')
         ->select('leechers')
         ->select('comments')
-        ->orderBy('id');
+        ->orderBy('id')
+        ->fetchAll();
+
+    $peers = $fluent->from('peers')
+        ->select(null)
+        ->select('seeder')
+        ->select('torrent')
+        ->fetchAll();
+
+    $comments = $fluent->from('comments')
+        ->select(null)
+        ->select('torrent')
+        ->fetchAll();
 
     foreach ($torrents as $torrent) {
-        ++$i;
-        $seeders = $fluent->from('peers')
-            ->select(null)
-            ->select('COUNT(*) AS count')
-            ->where('seeder = ?', 'yes')
-            ->where('torrent = ?', $torrent['id'])
-            ->fetch('count');
-        $torrent['seeders_num'] = $seeders;
+        $torrent['seeders_num'] = $torrent['leechers_num'] = $torrent['comments_num'] = 0;
 
-        ++$i;
-        $leechers = $fluent->from('peers')
-            ->select(null)
-            ->select('COUNT(*) AS count')
-            ->where('seeder = ?', 'no')
-            ->where('torrent = ?', $torrent['id'])
-            ->fetch('count');
-        $torrent['leechers_num'] = $leechers;
+        foreach ($peers as $peer) {
+            if ($peer['torrent'] === $torrent['id']) {
+                if ($seeder === 'yes') {
+                    ++$torrent['seeders_num'];
+                } else {
+                    ++$torrent['leechers_num'];
+                }
+            }
+        }
 
-        ++$i;
-        $comments = $fluent->from('comments')
-            ->select(null)
-            ->select('COUNT(*) AS count')
-            ->where('torrent = ?', $torrent['id'])
-            ->fetch('count');
-        $torrent['comments_num'] = $comments;
+        foreach ($comments as $comment) {
+            if ($comment['torrent'] === $torrent['id']) {
+                ++$torrent['comments_num'];
+            }
+        }
 
         if ($torrent['seeders'] != $torrent['seeders_num'] || $torrent['leechers'] != $torrent['leechers_num'] || $torrent['comments'] != $torrent['comments_num']) {
-            ++$i;
             $set = [
                 'seeders' => $torrent['seeders_num'],
                 'leechers' => $torrent['leechers_num'],
@@ -62,7 +58,7 @@ function torrents_update($data)
         }
     }
 
-    if ($data['clean_log'] && $i > 0) {
-        write_log("Torrent Cleanup: Complete using $i queries");
+    if ($data['clean_log']) {
+        write_log('Torrent Cleanup completed');
     }
 }

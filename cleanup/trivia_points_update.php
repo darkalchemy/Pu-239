@@ -1,35 +1,41 @@
 <?php
 
-/**
- * @param $data
- *
- * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
- */
 function trivia_points_update($data)
 {
-    dbconn();
-    global $site_config, $queries, $cache, $message_stuffs;
+    global $site_config, $cache, $message_stuffs, $fluent;
 
     set_time_limit(1200);
     ignore_user_abort(true);
-
+    $dt = TIME_NOW;
     $count = 0;
-    $msgs_buffer = $users_buffer = $users = [];
+    $msgs = [];
     $i = 1;
-    $gamenum = get_one_row('triviasettings', 'gamenum', 'WHERE gameon = 1');
-    $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username, u.modcomment, (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE gamenum = ' . sqlesc($gamenum) . ' AND correct = 0 AND user_id = t.user_id) AS incorrect
-                FROM triviausers AS t
-                INNER JOIN users AS u ON u.id = t.user_id
-                WHERE t.correct = 1 AND gamenum = ' . sqlesc($gamenum) . '
-                GROUP BY t.user_id
-                ORDER BY correct DESC, incorrect ASC
-                LIMIT 10';
-    $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($res) > 0) {
+
+    $gamenum = $fluent->from('triviasettings')
+        ->select(null)
+        ->select('gamenum')
+        ->where('gameon = 1')
+        ->fetch('gamenum');
+
+    $results = $fluent->from('triviausers AS t')
+            ->select(null)
+            ->select('t.user_id')
+            ->select('COUNT(t.correct) AS correct')
+            ->select('u.seedbonus')
+            ->select('u.username')
+            ->select('u.modcomment')
+            ->innerJoin('users AS  u ON t.user_id = u.id')
+            ->where('t.correct = 1')
+            ->where('gamenum = ?', $gamenum)
+            ->groupBy('t.user_id')
+            ->orderBy('correct DESC')
+            ->limit(10)
+            ->fetchAll();
+
+    if ($results) {
         $subject = 'Trivia Bonus Points Award.';
-        $dt = TIME_NOW;
-        while ($winners = mysqli_fetch_assoc($res)) {
-            $correct = $incorrect = $modcomment = $user_id = '';
+        foreach ($results as $winners) {
+            $correct = $modcomment = $user_id = '';
             extract($winners);
             $points = 0;
             switch ($i) {
@@ -66,8 +72,9 @@ function trivia_points_update($data)
             }
 
             $msg = 'You answered ' . number_format($correct) . ' trivia question' . plural($correct) . " correctly and were awarded $points Bonus Points!!\n";
-            $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - Awarded Bonus Points for Trivia.\n" . $modcomment;
-            $msgs_buffer[] = [
+            $comment = get_date(TIME_NOW, 'DATE', 1) . " - Awarded Bonus Points for Trivia.\n";
+            $modcomment = $comment . $modcomment;
+            $msgs[] = [
                 'sender' => 0,
                 'receiver' => $user_id,
                 'added' => $dt,
@@ -75,28 +82,48 @@ function trivia_points_update($data)
                 'subject' => $subject,
             ];
 
-            $users[] = $user_id;
-            $cache->update_row('user' . $user_id, [
-                'modcomment' => $modcomment,
-            ], $site_config['expires']['user_cache']);
-            sql_query('UPDATE users SET modcomment = ' . sqlesc($modcomment) . ", seedbonus = seedbonus + $points WHERE id = " . sqlesc($user_id)) or sqlerr(__FILE__, __LINE__);
+            $points = $seedbonus + $points;
+            $user = $cache->get('user' . $user_id);
+            if (!empty($user)) {
+                $cache->update_row('user' . $user_id, [
+                    'modcomment' => $modcomment,
+                    'seedbonus' => $points,
+                ], $site_config['expires']['user_cache']);
+            }
+            $set = [
+                'modcomment' => new Envms\FluentPDO\Literal("CONCAT(\"$comment\", modcomment)"),
+                'seedbonus' => $points,
+            ];
+            $fluent->update('users')
+                ->set($set)
+                ->where('id = ?', $user_id)
+                ->execute();
             $count = $i++;
         }
     }
 
-    if (!empty($msgs_buffer)) {
-        $message_stuffs->insert($msgs_buffer);
-    }
-    write_log('Cleanup - Trivia Bonus Points awarded to - ' . $count . ' Member(s)');
-    foreach ($users as $user_id) {
-        $cache->delete('user' . $user_id);
+    if (!empty($msgs)) {
+        $message_stuffs->insert($msgs);
     }
 
-    sql_query('UPDATE triviaq SET asked = 0, current = 0') or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE triviasettings SET gameon = 0, finished = NOW() WHERE gameon = 1') or sqlerr(__FILE__, __LINE__);
-    sql_query('INSERT INTO triviasettings (gameon, started) VALUES (1, NOW())') or sqlerr(__FILE__, __LINE__);
+    $set = [
+        'gameon' => 0,
+        'finished' => date('Y-m-d H:i:s', $dt),
+    ];
+    $fluent->update('triviasettings')
+        ->set($set)
+        ->where('gameon = 1')
+        ->execute();
 
-    if ($data['clean_log'] && $queries > 0) {
-        write_log("Trivia Points Cleanup: Completed using $queries queries");
+    $values = [
+        'gameon' => 1,
+        'started' => date('Y-m-d H:i:s', $dt),
+    ];
+    $fluent->insertInto('triviasettings')
+        ->values($values)
+        ->execute();
+
+    if ($data['clean_log']) {
+        write_log('Cleanup - Trivia Bonus Points awarded to - ' . $count . ' Member(s)');
     }
 }

@@ -449,7 +449,7 @@ function userlogin()
     if ($users_data['override_class'] < $users_data['class']) {
         $users_data['class'] = $users_data['override_class'];
     }
-    $session->set('12_hour', $users_data['12_hour']);
+    $session->set('use_12_hour', $users_data['use_12_hour']);
     $GLOBALS['CURUSER'] = $users_data;
     get_template();
     $mood = create_moods();
@@ -931,7 +931,7 @@ function sqlerr($file = '', $line = '')
         $_error_string .= "\n Error: " . $the_error;
         $_error_string .= "\n IP Address: " . getip();
         $_error_string .= "\n in file " . $file . ' on line ' . $line;
-        $_error_string .= "\n URL:" . $_SERVER['REQUEST_URI'];
+        $_error_string .= "\n URL:" . !empty($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'Empty';
         $_error_string .= "\n Username: {$CURUSER['username']}[{$CURUSER['id']}]";
         if ($FH = @fopen($site_config['sql_error_log'], 'a')) {
             @fwrite($FH, $_error_string);

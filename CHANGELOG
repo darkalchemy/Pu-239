@@ -1,4 +1,8 @@
 22 Oct, 2018
+fix: check if REQUEST_URI is empty, mainly for running cron_controller.php from cli
+fix: update user birthday_update.php
+remove: insert method User.php
+fix: don't show pager menu when only 1 page reports.php 
 fix: division by 0 pu_update.php
 
 21 Oct, 2018

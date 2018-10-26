@@ -22,7 +22,7 @@ function freeuser_update($data)
 
     $dt = TIME_NOW;
     $subject = 'Freeleech expired.';
-    $msg = "Your freeleech has expired and has been auto-removed by the system.\n";
+    $msg = "Your freeleech has expired and has been auto-removed by the system. If you would like to have it again, exchange some Karma Bonus Points.\n";
     $values = $set = $update = [];
     foreach ($query as $arr) {
         $modcomment = $arr['modcomment'];

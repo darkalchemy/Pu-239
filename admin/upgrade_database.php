@@ -5,15 +5,10 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'pager_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang, $fluent, $site_config, $cache, $session;
+global $CURUSER, $lang, $fluent, $site_config, $cache, $session, $pdo;
 
 $lang = array_merge($lang);
-if (!defined('DATABASE_DIR')) {
-    stderr('Error', "add \"define('DATABASE_DIR', ROOT_DIR . 'database' . DIRECTORY_SEPARATOR);\" to define.php");
-    die();
-} else {
-    require_once DATABASE_DIR . 'sql_updates.php';
-}
+require_once DATABASE_DIR . 'sql_updates.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     extract($_POST);
@@ -23,9 +18,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($qid) && $submit === 'Run Query') {
         $sql = $sql_updates[$qid]['query'];
         $flush = $sql_updates[$qid]['flush'];
-        if (sql_query($sql)) {
-            $sql = 'INSERT INTO database_updates (id, query) VALUES (' . sqlesc($id) . ', ' . sqlesc($sql) . ')';
-            sql_query($sql) or sqlerr(__FILE__, __LINE__);
+
+        if ($pdo->query($sql)) {
+            $values = [
+                'id' => (int) $id,
+                'query' => $sql,
+            ];
+            $fluent->insertInto('database_updates')
+                ->values($values)
+                ->execute();
+
             if ($flush) {
                 $cache->flushDB();
                 $session->set('is-success', 'You flushed the ' . ucfirst($_ENV['CACHE_DRIVER']) . ' cache');
@@ -43,28 +45,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $session->set('is-danger', "[p]Query #$id failed to run, try to run manually[/p][p]" . htmlspecialchars($sql) . '[/p]');
         }
     } elseif (isset($qid) && $submit === 'Ignore Query') {
-        $sql = $sql_updates[$qid]['query'];
-        $sql = 'INSERT INTO database_updates (id, query) VALUES (' . sqlesc($id) . ', ' . sqlesc($sql) . ')';
-        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        $values = [
+            'id' => (int) $id,
+            'query' => $sql,
+        ];
+        $fluent->insertInto('database_updates')
+            ->values($values)
+            ->execute();
         $session->set('is-success', "Query #$id has been ignored");
     }
-}
-
-$table_exists = $cache->get('table_exists_database_updates');
-if ($table_exists === false || is_null($table_exists)) {
-    $sql = "SHOW tables LIKE 'database_updates'";
-    $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($result) != 1) {
-        sql_query("CREATE TABLE `database_updates` (
-              `id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-              `info` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-              `query` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
-              `added` DATETIME DEFAULT CURRENT_TIMESTAMP,
-              PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;") or sqlerr(__FILE__, __LINE__);
-    }
-
-    $cache->set('table_exists_database_updates', 1, 0);
 }
 
 $heading = "

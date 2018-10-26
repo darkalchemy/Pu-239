@@ -96,7 +96,7 @@ switch ($list) {
                     if (!empty($tv['name']) && !in_array(strtolower($tv['name']), $titles)) {
                         $poster = !empty($tv['image']['original']) ? $tv['image']['original'] : !empty($tv['_embedded']['show']['image']['original']) ? $tv['_embedded']['show']['image']['original'] : $site_config['pic_baseurl'] . 'noposter.png';
                         $airtime = strtotime($tv['airstamp']);
-                        $use_12_hour = !empty($CURUSER['12_hour']) ? $CURUSER['12_hour'] === 'yes' ? 1 : 0 : $site_config['12_hour'];
+                        $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] === 'yes' ? 1 : 0 : $site_config['use_12_hour'];
                         $body[] = [
                             'poster' => url_proxy($poster, true, 150),
                             'placeholder' => url_proxy($poster, true, 150, null, 10),

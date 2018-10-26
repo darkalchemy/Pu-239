@@ -92,7 +92,7 @@ $pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?tool=
 if ($count == '0') {
     $HTMLOUT .= main_div($lang['reports_nice']);
 } else {
-    $HTMLOUT .= $pager['pagertop'];
+    $HTMLOUT .= $count > $perpage ? $pager['pagertop'] : '';
     $HTMLOUT .= "
         <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=reports&amp;action=reports&amp;deal_with_report=1'>";
     $header = "
@@ -217,12 +217,13 @@ if ($count == '0') {
         }
     }
     $HTMLOUT .= main_table($body, $header);
+    $HTMLOUT .= $count > $perpage ? $pager['pagerbottom'] : '';
 }
 if ($count > '0') {
     $HTMLOUT .= main_div("{$lang['reports_how']} {$CURUSER['username']} {$lang['reports_dealt1']}<br>{$lang['reports_please']} [ {$lang['reports_req']} ]
     <textarea name='how_delt_with' class='w-100' rows='5'></textarea>
     <input type='submit' class='button is-small' value='{$lang['reports_confirm']}' />
-    </form>");
+    </form>", 'top20');
 }
 echo stdhead($lang['reports_stdhead']) . wrapper($HTMLOUT) . stdfoot();
 die();

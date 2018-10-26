@@ -27,7 +27,7 @@ function autoclean()
         ->where('clean_on = 1')
         ->where('clean_time < ?', $now)
         ->orderBy('clean_time ASC')
-        ->orderBy('clean_increment DESC')
+        ->orderBy('clean_increment ASC')
         ->fetchAll();
 
     if (!$query) {

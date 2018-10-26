@@ -5,65 +5,43 @@
  */
 function torrents_normalize($data)
 {
-    dbconn();
-    global $site_config, $queries;
+    global $site_config, $fluent, $torrent_stuffs;
 
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    do {
-        $res = sql_query('SELECT id FROM torrents') or sqlerr(__FILE__, __LINE__);
-        $ar = [];
-        while ($row = mysqli_fetch_array($res, MYSQLI_NUM)) {
-            $id = $row[0];
-            $ar[$id] = 1;
-        }
-        if (!count($ar)) {
-            break;
-        }
+    $torrents = $fluent->from('torrents')
+        ->select(null)
+        ->select('id')
+        ->select('info_hash')
+        ->select('owner')
+        ->orderBy('id');
 
-        $dp = opendir(TORRENTS_DIR);
-        if (!$dp) {
-            break;
-        }
+    foreach ($torrents as $torrent) {
+        $tids[] = $torrent['id'];
+        $list[$torrent['id']] = $torrent;
+    }
+    $path = TORRENTS_DIR;
 
-        $ar2 = [];
-        while (($file = readdir($dp)) !== false) {
-            if (!preg_match('/^(\d+)\.torrent$/', $file, $m)) {
-                continue;
-            }
-            $id = $m[1];
-            $ar2[$id] = 1;
-            if (isset($ar[$id]) && $ar[$id]) {
-                continue;
-            }
-            $ff = TORRENTS_DIR . $file;
-            unlink($ff);
+    $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
+    foreach ($objects as $name => $object) {
+        $ext = pathinfo($name, PATHINFO_EXTENSION);
+        if ($ext === 'torrent') {
+            $ids[] = basename($name, '.torrent');
         }
-        closedir($dp);
-        if (!count($ar2)) {
-            break;
-        }
+    }
+    sort($ids);
+    $bad1 = array_diff($ids, $tids);
+    $bad2 = array_diff($tids, $ids);
+    $bad = array_merge($bad1, $bad2);
+    $i = 0;
+    foreach ($bad as $tid) {
+        $torrent_stuffs->delete_by_id($tid);
+        $torrent_stuffs->remove_torrent($list[$tid]['info_hash'], $list[$tid]['id'], $list[$tid]['owner']);
+        ++$i;
+    }
 
-        $delids = [];
-        foreach (array_keys($ar) as $k) {
-            if (isset($ar2[$k]) && $ar2[$k]) {
-                continue;
-            }
-            $delids[] = $k;
-            unset($ar[$k]);
-        }
-        if (!empty($delids) && count($delids)) {
-            $ids = implode(', ', $delids);
-            sql_query("DELETE t.*, p.*, f.* FROM torrents AS t
-                  LEFT JOIN files AS f ON f.torrent = t.id
-                  LEFT JOIN peers AS p ON p.torrent = t.id
-                  WHERE f.torrent IN ($ids)
-                  OR p.torrent IN ($ids)
-                  OR t.id IN ($ids)") or sqlerr(__FILE__, __LINE__);
-        }
-    } while (0);
-    if ($data['clean_log'] && $queries > 0) {
-        write_log("Normalize Cleanup: Completed using $queries queries");
+    if ($data['clean_log']) {
+        write_log("Normalize Cleanup: Completed, deleted $i torrents");
     }
 }

@@ -15,8 +15,8 @@
     "not dead"
   ],
   "devDependencies": {
-    "autoprefixer": "^9.2.1",
-    "browserslist": "^4.3.0",
+    "autoprefixer": "^9.3.1",
+    "browserslist": "^4.3.3",
     "bulma": "^0.7.2",
     "clean-css": "^4.2.1",
     "clean-css-cli": "^4.2.1",

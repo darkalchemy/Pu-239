@@ -72,6 +72,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
         'topic_desc' => $topic_desc,
         'poll_id' => $poll_id,
         'anonymous' => $anonymous,
+        'added' => TIME_NOW,
     ];
     $topic_id = $fluent->insertInto('topics')
         ->values($values)

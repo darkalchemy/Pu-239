@@ -11,10 +11,10 @@ function pms_cleanup($data)
     ignore_user_abort(true);
 
     $secs = 90 * 86400;
-    $dt = sqlesc(TIME_NOW - $secs);
+    $dt = TIME_NOW - $secs;
     $messages = $message_stuffs->delete_old_messages($dt);
 
     if ($data['clean_log'] && !empty($messages)) {
-        write_log("PMs Cleanup: Private Messages Deleted using $queries queries");
+        write_log('PMs Cleanup completed');
     }
 }

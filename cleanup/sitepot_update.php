@@ -5,15 +5,24 @@
  */
 function sitepot_update($data)
 {
-    dbconn();
-    global $queries, $cache;
+    global $fluent, $cache;
 
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    sql_query("UPDATE avps SET value_i = 0, value_s = '0' WHERE arg = 'sitepot' AND value_u < " . TIME_NOW . " AND value_s = '1'") or sqlerr(__FILE__, __LINE__);
+    $set = [
+        'value_i' => 0,
+        'value_s' => '0',
+    ];
+    $fluent->update('avps')
+        ->set($set)
+        ->where('arg = ?', 'sitepot')
+        ->where('value_u < ?', TIME_NOW)
+        ->where('value_s = ?', '1')
+        ->execute();
+
     $cache->delete('Sitepot_');
-    if ($data['clean_log'] && $queries > 0) {
-        write_log("Sitepot Cleanup: Completed using $queries queries");
+    if ($data['clean_log']) {
+        write_log('Sitepot Cleanup completed');
     }
 }

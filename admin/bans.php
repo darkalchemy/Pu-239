@@ -6,7 +6,7 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'html_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $pdo, $fluent, $cache, $session;
+global $CURUSER, $site_config, $lang, $fluent, $cache, $session;
 
 $lang = array_merge($lang, load_language('ad_bans'));
 $remove = isset($_GET['remove']) ? (int) $_GET['remove'] : 0;
@@ -54,16 +54,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] == UC_MAX) {
     $values = [
         'added' => $added,
         'addedby' => $CURUSER['id'],
-        'first' => $first,
-        'last' => $last,
+        'first' => inet_pton($first),
+        'last' => inet_pton($last),
         'comment' => $comment,
     ];
 
-    $stmt = $pdo->prepare('INSERT INTO bans
-                        (added, addedby, first, last, comment)
-                      VALUES
-                        (:added, :addedby, INET6_ATON(:first), INET6_ATON(:last), :comment)');
-    $stmt->execute($values);
+    $fluent->insertInto('bans')
+        ->values('values')
+        ->execute();
+
     $session->set('is-success', "IPs: $first to $last added to Bans");
     unset($_POST);
 }

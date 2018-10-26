@@ -61,7 +61,7 @@ if ($staff_settings === false || is_null($staff_settings)) {
 
 $site_config = array_merge($site_settings, $site_config, $paypal_settings, $hnr_settings, $staff_settings);
 
-$use_12_hour = !empty($session->get('12_hour')) ? $session->get('12_hour') === 'yes' ? 1 : 0 : $site_config['12_hour'];
+$use_12_hour = !empty($session->get('use_12_hour')) ? $session->get('use_12_hour') === 'yes' ? 1 : 0 : $site_config['use_12_hour'];
 $time_string = $use_12_hour ? 'g:i:s a' : 'H:i:s';
 $time_string_without_seconds = $use_12_hour ? 'g:i a' : 'H:i';
 $site_config['time_adjust'] = 0;

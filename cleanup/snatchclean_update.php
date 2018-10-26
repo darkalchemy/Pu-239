@@ -1,8 +1,5 @@
 <?php
 
-/**
- * @param $data
- */
 function snatchclean_update($data)
 {
     global $snatched_stuffs;
@@ -11,9 +8,9 @@ function snatchclean_update($data)
     ignore_user_abort(true);
 
     $days = 90;
-    $dt = (TIME_NOW - ($days * 86400));
+    $dt = TIME_NOW - ($days * 86400);
     $snatched_stuffs->delete_stale($dt);
     if ($data['clean_log']) {
-        write_log("Snatch List Cleanup: Removed snatches not active for $days days. Completed using 1 query");
+        write_log("Snatch List Cleanup: Removed snatches not active for $days days.");
     }
 }
