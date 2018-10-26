@@ -241,7 +241,7 @@ foreach ($agentarray as $bannedclient) {
         err('This client is banned. Please use rTorrent, qBitTorrent, deluge, Transmission, uTorrent 2.2.1+ or any other modern torrent client.');
     }
 }
-$announce_wait = 30;
+$announce_wait = $site_config['min_interval'];
 
 if (isset($self) && $self['prevts'] > ($self['nowts'] - $announce_wait)) {
     err("There is a minimum announce time of $announce_wait seconds");
@@ -347,7 +347,7 @@ if (empty($snatched)) {
 }
 $peer_deleted = false;
 if ($event === 'stopped') {
-    $peer_deleted = $peer_stuffs->delete_by_id($this_user_torrent['id'], $torrent['id'], $info_hash);
+    $peer_deleted = $peer_stuffs->delete($this_user_torrent['id'], $torrent['id'], $info_hash);
     $cache->delete('peers_' . $userid);
 }
 if (isset($self) && $event === 'stopped') {
@@ -480,7 +480,7 @@ if (isset($self) && $event === 'stopped') {
             $snatch_updateset['downloaded'] = $snatched['downloaded'] + ($ratio_free ? 0 : $downthis);
             $snatch_updateset['to_go'] = $left;
             $snatch_updateset['upspeed'] = $upthis > 0 ? $upthis / $self['announcetime'] : 0;
-            $snatch_updateset['downspeed'] = $downthis > 0 ? $downthis / $self['announcetime'] : 0;
+            $snatch_updateset['downspeed'] = $downthis > 0 && $self['announcetime'] > 0 ? $downthis / $self['announcetime'] : 0;
             if ($self['seeder'] == 'yes') {
                 $snatch_updateset['seedtime'] = $snatched['seedtime'] + $self['announcetime'];
             } else {

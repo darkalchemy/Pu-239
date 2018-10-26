@@ -50,7 +50,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
             'plotoutline' => $movie->plotoutline(true),
             'trailers' => $movie->trailers(true, true),
             'language' => $movie->language(),
-            'rating' => $movie->rating(),
+            'rating' => is_numeric($movie->rating()) ? $movie->rating() : 0,
             'year' => $movie->year(),
             'runtime' => $movie->runtime(),
             'votes' => $movie->votes(),

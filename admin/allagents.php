@@ -7,7 +7,7 @@ class_check($class);
 global $lang;
 
 $lang = array_merge($lang, load_language('ad_allagents'));
-$res = sql_query('SELECT agent, HEX(peer_id) AS peer_id FROM peers GROUP BY agent') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT agent, LEFT(peer_id, 8) AS peer_id FROM peers GROUP BY agent') or sqlerr(__FILE__, __LINE__);
 $heading = "
         <tr>
             <th>{$lang['allagents_client']}</th>

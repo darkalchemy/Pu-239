@@ -1,4 +1,8 @@
 26 Oct, 2018
+remove: unused/duplicate functions scrape.php
+fix: divide by 0 annoounce.php
+fix: non numeric rating function_imdb.php
+fix: display peer_id allagents.php
 update: triviaq questions, removed dupes
 update: many cleanup scripts to FluentPDO, reduce number of queries
 rename: column 12_hour to use_12_hour
