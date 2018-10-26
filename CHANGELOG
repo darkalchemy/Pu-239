@@ -1,3 +1,18 @@
+26 Oct, 2018
+update: triviaq questions, removed dupes
+update: many cleanup scripts to FluentPDO, reduce number of queries
+rename: column 12_hour to use_12_hour
+update: FluentPDO, autoprefixer, browserslist
+update: easier to update/add stats stats.php
+update: use FluentPDO bans.php, upgrade_database.php
+update: many timestamp columns to unsigned int
+add: added column to topics table
+change: sort order for cleanup processing cron_controller.php
+update: delete deleted messages also, only update caches if cache already exists Message.php
+update: check if torrent exists before deleting Torrent.php
+remove: stats table, no need to store these stats in db
+remove: readpost_update.php can't see any reason to reset a users read post history every 2 weeks
+
 22 Oct, 2018
 fix: check if REQUEST_URI is empty, mainly for running cron_controller.php from cli
 fix: update user birthday_update.php
