@@ -48,6 +48,12 @@ function update_forum_classes(int $value, string $direction)
             ->set(['min_class_create' => new Envms\FluentPDO\Literal('min_class_create + 1')])
             ->where('min_class_create >= ?', $value)
             ->execute();
+
+        $fluent->update('forum_config')
+            ->set(['min_delete_view_class' => new Envms\FluentPDO\Literal('min_delete_view_class + 1')])
+            ->where('min_delete_view_class >= ?', $value)
+            ->execute();
+
     } else {
         $fluent->update('forums')
             ->set(['min_class_read' => new Envms\FluentPDO\Literal('min_class_read - 1')])
@@ -66,6 +72,13 @@ function update_forum_classes(int $value, string $direction)
             ->where('min_class_create >= ?', $value)
             ->where('min_class_create > 0')
             ->execute();
+
+        $fluent->update('forum_config')
+            ->set(['min_delete_view_class' => new Envms\FluentPDO\Literal('min_delete_view_class - 1')])
+            ->where('min_delete_view_class >= ?', $value)
+            ->where('min_delete_view_class > 0')
+            ->execute();
+
     }
 
     $cache->delete('staff_forums_');

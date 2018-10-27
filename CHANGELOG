@@ -1,4 +1,5 @@
 27 Oct, 2018
+update: update forum_config min_delete_view_class when adding/removing classes
 update: edit topic, post reply to use same html
 fix: forum signatures
 fix: forum attachments
