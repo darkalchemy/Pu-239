@@ -31,7 +31,7 @@ function torrents_update($data)
 
         foreach ($peers as $peer) {
             if ($peer['torrent'] === $torrent['id']) {
-                if ($seeder === 'yes') {
+                if ($peer['seeder'] === 'yes') {
                     ++$torrent['seeders_num'];
                 } else {
                     ++$torrent['leechers_num'];

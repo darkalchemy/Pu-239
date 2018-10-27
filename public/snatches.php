@@ -38,7 +38,6 @@ if ($count > $perpage) {
 $header = "
         <tr>
             <th class='has-text-left'>{$lang['snatches_username']}</th>
-            <th class='has-text-centered'>{$lang['snatches_connectable']}</th>
             <th class='has-text-right'>{$lang['snatches_uploaded']}</th>
             <th class='has-text-right'>{$lang['snatches_upspeed']}</th>
             " . ($site_config['ratio_free'] ? '' : "<th class='has-text-right'>{$lang['snatches_downloaded']}</th>") . '
@@ -49,15 +48,13 @@ $header = "
             <th class='has-text-right'>{$lang['snatches_leechtime']}</th>
             <th class='has-text-centered'>{$lang['snatches_lastaction']}</th>
             <th class='has-text-centered'>{$lang['snatches_completedat']}</th>
-            <th class='has-text-centered'>{$lang['snatches_client']}</th>
-            <th class='has-text-centered'>{$lang['snatches_port']}</th>
             <th class='has-text-centered'>{$lang['snatches_announced']}</th>
         </tr>";
 $res = sql_query('
-            SELECT s.*, u.paranoia, t.anonymous AS anonymous1, u.anonymous AS anonymous2, size, timesann, owner 
+            SELECT s.*, u.paranoia, t.anonymous AS anonymous1, u.anonymous AS anonymous2, size, timesann, owner
             FROM snatched AS s
             INNER JOIN users AS u ON s.userid = u.id
-            INNER JOIN torrents AS t ON s.torrentid = t.id 
+            INNER JOIN torrents AS t ON s.torrentid = t.id
             WHERE s.complete_date !=0 AND s.torrentid = ' . sqlesc($id) . '
             ORDER BY complete_date DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
 $body = '';
@@ -71,7 +68,6 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $body .= "
         <tr>
             <td class='has-text-left'>{$username}</td>
-            <td class='has-text-centered'>" . ($arr['connectable'] === 'yes' ? "<span class='has-text-success'>Yes</span>" : "<span class='has-text-danger'>No</span>") . "</td>
             <td class='has-text-right'>" . mksize($arr['uploaded']) . "</td>
             <td class='has-text-right'>" . htmlsafechars($upspeed) . '/s</td>
             ' . ($site_config['ratio_free'] ? '' : "<td class='has-text-right'>" . mksize($arr['downloaded']) . '</td>') . '
@@ -82,8 +78,6 @@ while ($arr = mysqli_fetch_assoc($res)) {
             <td class='has-text-right'>" . mkprettytime($arr['leechtime']) . "</td>
             <td class='has-text-centered'>" . get_date($arr['last_action'], '', 0, 1) . "</td>
             <td class='has-text-centered'>" . get_date($arr['complete_date'], '', 0, 1) . "</td>
-            <td class='has-text-centered'>" . htmlsafechars($arr['agent']) . "</td>
-            <td class='has-text-centered'>" . (int) $arr['port'] . "</td>
             <td class='has-text-centered'>" . (int) $arr['timesann'] . '</td>
         </tr>';
 }

@@ -48,6 +48,7 @@ $lang = [
     'rsstfreak.php' => 'Torrent Freak News',
     'rules.php' => 'Site Rules',
     'setclass.php' => 'Set Temp Class',
+    'snatches.php' => 'Snatches',
     'staff.php' => 'Site Staff',
     'staffbox.php' => 'Staff Mailbox',
     'staffpanel.php' => 'Staff Panel',
