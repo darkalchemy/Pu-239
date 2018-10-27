@@ -2,7 +2,7 @@
 
 ## Goals:
 1. Updated to PHP 7.2 - default settings - Done
-2. Error free with MySQL 5.7 strict mode - default settings - Done
+2. Error free with MySQL 5.7 strict mode - default settings - Mostly Done
 3. Remove merged bootstrap - Done
 4. Update jquery - Done
 5. Update all javascript files to remove jquery dependency
@@ -13,6 +13,7 @@
 10. Replace Simple Captcha with reCAPTCHA V3 - Done
 11. Fully responsive and mobile ready
 12. Drag and Drop Image Upload - Done
+13. Use unix sockets for all local server connection - Done
 
 This is a fork of U-232 V4.
 
@@ -20,11 +21,11 @@ PHP 7.2+ is required.
 
 MySQL 5.6 is required. MySQL 5.7 recommended.
 
-Composer is required. Current version 1.7.2 or newer.
+Composer is required. Version ^1.7.2.
 
-NPM is required. Current version 6.4.1 or newer.
+NPM is required. Version ^6.4.1.
 
-This code explicitly sets the php default timezone to 'UTC', it is recommended that you set the servers timezone to 'UTC' or change it in the code. The timezones must match. After changing the servers timezone, you must restart mysql.
+This code explicitly sets the php default timezone to 'UTC'. Further down, you will set MySQL default timezone to the same.
 
 A working site with this code is at https://pu-239.pw/
 
@@ -40,7 +41,8 @@ php-gd, php-xml, php-json, php-mbstring, php-mysqli, php-zip, php-simplexml, php
 redis, php-redis
 memchached, php-memcached
 APCu
-couchbase
+couchbase(untested)
+file(FlySystem)
 
 # data storage
 MySQL or MariaDB or Percona MySQL
