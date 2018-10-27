@@ -3,7 +3,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
-global $CURUSER, $site_config, $cache, $message_stuffs;
+global $CURUSER, $site_config, $cache, $message_stuffs, $mysqli;
 
 check_user_status();
 if ($CURUSER['class'] < MIN_TO_PLAY) {
@@ -69,8 +69,8 @@ while ($arr = mysqli_fetch_assoc($res)) {
 }
 $query = 'SELECT * FROM casino WHERE userid = ' . sqlesc($CURUSER['id']);
 $result = sql_query($query) or sqlerr(__FILE__, __LINE__);
-if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) != 1) {
-    sql_query('INSERT INTO casino (userid, win, lost, trys, date, started) VALUES(' . sqlesc($CURUSER['id']) . ', 0, 0, 0,' . TIME_NOW . ',1)') or ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
+if (mysqli_affected_rows($mysqli) != 1) {
+    sql_query('INSERT INTO casino (userid, win, lost, trys, date, started) VALUES(' . sqlesc($CURUSER['id']) . ', 0, 0, 0,' . TIME_NOW . ',1)') or ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
     $result = sql_query($query) or sqlerr(__FILE__, __LINE__);
 }
 // Make sure Current User is in the table
@@ -263,7 +263,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             $cache->update_row('user' . $CURUSER['id'], [
                 'uploaded' => $update['uploaded'],
             ], $site_config['expires']['user_cache']);
-            if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
+            if (mysqli_affected_rows($mysqli) == 0) {
                 sql_query('INSERT INTO casino (userid, date, deposit) VALUES (' . sqlesc($tbet['userid']) . ", $dt, -" . sqlesc($tbet['amount']) . ')') or sqlerr(__FILE__, __LINE__);
             }
             sql_query('UPDATE casino_bets SET challenged = ' . sqlesc($CURUSER['username']) . ', winner = ' . sqlesc($CURUSER['username']) . ' WHERE id =' . sqlesc($betid)) or sqlerr(__FILE__, __LINE__);
@@ -311,7 +311,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                 'uploaded' => $update['uploaded_2'],
             ], $site_config['expires']['user_cache']);
 
-            if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
+            if (mysqli_affected_rows($mysqli) == 0) {
                 sql_query('INSERT INTO casino (userid, date, deposit) VALUES (' . sqlesc($tbet['userid']) . ", $dt, -" . sqlesc($tbet['amount']) . ')') or sqlerr(__FILE__, __LINE__);
             }
             sql_query('UPDATE casino_bets SET challenged = ' . sqlesc($CURUSER['username']) . ', winner = ' . sqlesc($tbet['proposed']) . ' WHERE id = ' . sqlesc($betid)) or sqlerr(__FILE__, __LINE__);
@@ -392,7 +392,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             autoshout($message);
             //ircbot($messages);
         }
-        if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
+        if (mysqli_affected_rows($mysqli) == 0) {
             sql_query('INSERT INTO casino (userid, date, deposit) VALUES (' . sqlesc($CURUSER['id']) . ", $dt, " . sqlesc($nobits) . ')') or sqlerr(__FILE__, __LINE__);
         }
     }

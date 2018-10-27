@@ -5,7 +5,7 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang;
+global $CURUSER, $lang, $mysqli;
 
 $lang = array_merge($lang, load_language('ad_flush'));
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
@@ -18,7 +18,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     $arr = mysqli_fetch_assoc($res);
     $username = htmlsafechars($arr['username']);
     sql_query('DELETE FROM peers WHERE userid = ' . sqlesc($id));
-    $effected = mysqli_affected_rows($GLOBALS['___mysqli_ston']);
+    $effected = mysqli_affected_rows($mysqli);
     //=== write to log
     write_log($lang['flush_log1'] . $username . $lang['flush_log2'] . get_date($dt, 'LONG', 0, 1) . $lang['flush_log3'] . (int) $effected . $lang['flush_log4']);
     header('Refresh: 3; url=index.php');

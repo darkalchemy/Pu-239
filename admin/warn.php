@@ -5,7 +5,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $cache, $message_stuffs;
+global $CURUSER, $site_config, $lang, $cache, $message_stuffs, $mysqli;
 
 $lang = array_merge($lang, load_language('ad_warn'));
 $HTMLOUT = '';
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'enabled' => 'no',
                 ], $site_config['expires']['user_cache']);
             }
-            $d = mysqli_affected_rows($GLOBALS['___mysqli_ston']);
+            $d = mysqli_affected_rows($mysqli);
             header('Refresh: 2; url=' . $r);
             stderr($lang['warn_stdmsg_success'], $d . $lang['warn_stdmsg_user'] . ($d > 1 ? 's' : '') . $lang['warn_stdmsg_disabled']);
         } else {
@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         if (!empty($msgs_buffer)) {
             $message_stuffs->insert($msgs_buffer);
-            $q1 = sql_query("UPDATE users SET warned='0', modcomment=CONCAT(" . sqlesc(get_date($dt, 'DATE', 1) . $lang['warn_removed_msg'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or ($q2_err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            $q1 = sql_query("UPDATE users SET warned='0', modcomment=CONCAT(" . sqlesc(get_date($dt, 'DATE', 1) . $lang['warn_removed_msg'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or ($q2_err = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
             if ($q1) {
                 header('Refresh: 2; url=' . $r);
                 stderr($lang['warn_stdmsg_success'], count($pms) . $lang['warn_stdmsg_user'] . (count($pms) > 1 ? 's' : '') . $lang['warn_stdmsg_unwarned']);
@@ -105,7 +105,7 @@ switch ($do) {
         $link = "<a href=\"staffpanel.php?tool=warn&amp;action=warn&amp;do=disabled\">{$lang['warn_disabled_users']}</a>";
         break;
 }
-$g = sql_query($query) or print (is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false);
+$g = sql_query($query) or print (is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false);
 $count = mysqli_num_rows($g);
 $HTMLOUT .= "
         <ul class='level-center bg-06'>

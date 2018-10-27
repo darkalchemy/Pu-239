@@ -1,6 +1,6 @@
 <?php
 
-global $CURUSER;
+global $CURUSER, $mysqli;
 
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
@@ -69,7 +69,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
         sql_query('INSERT INTO messages (poster, sender, receiver, added, msg, subject, saved, unread, location, urgent) VALUES 
                             (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . $receiver . ', ' . TIME_NOW . ', ' . $body . ', ' . $subject . ', \'yes\', \'yes\', 1,' . $urgent . ')') or sqlerr(__FILE__, __LINE__);
         $cache->increment('inbox_' . $receiver);
-        if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
+        if (mysqli_affected_rows($mysqli) === 0) {
             stderr($lang['pm_error'], $lang['pm_send_wasnt']);
         }
 
@@ -106,7 +106,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
         }
         die();
     }
-    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
+    if (mysqli_affected_rows($mysqli) === 0) {
         stderr($lang['pm_error'], $lang['pm_draft_wasnt']);
     }
     header('Location: messages.php?action=view_mailbox&box=-2&new_draft=1');

@@ -5,7 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
-global $CURUSER, $site_config;
+global $CURUSER, $site_config, $mysqli;
 
 $lang = load_language('global');
 $HTMLOUT = '';
@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $owner,
                 ])) . ')') or sqlerr(__FILE__, __LINE__);
             move_uploaded_file($temp_name, "{$site_config['sub_up_dir']}/$filename");
-            $id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+            $id = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
             header("Refresh: 0; url=subtitles.php?mode=details&id=$id");
         } //end upload
         if ($action === 'edit') {

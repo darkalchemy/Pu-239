@@ -37,6 +37,11 @@ $happylog_stuffs = new DarkAlchemy\Pu239\HappyLog();
 $snatched_stuffs = new DarkAlchemy\Pu239\Snatched();
 
 define('MIN_TO_PLAY', UC_POWER_USER);
+if (SOCKET) {
+    $mysqli = new mysqli($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], null, $_ENV['DB_SOCKET']);
+} else {
+    $mysqli = new mysqli($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $_ENV['DB_PORT']);
+}
 
 $session->start();
 
@@ -175,22 +180,12 @@ function getip($login = false)
 
 function dbconn()
 {
-    global $site_config;
+    global $site_config, $mysqli;
 
-    if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $_ENV['DB_PORT']))) {
-        switch (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
-            case 1040:
-            case 2002:
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    die("<html><head><meta http-equiv='refresh' content=\"5 $_SERVER[REQUEST_URI]\"></head><body><table width='100%' height='100%'><tr><td><h3>The server load is very high at the moment. Retrying, please wait...</h3></td></tr></table></body></html>");
-                } else {
-                    die('Too many users. Please press the Refresh button in your browser to retry.');
-                }
-            // no break
-            default:
-                die('[' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) . '] dbconn: mysqli_connect: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
-        }
+    if ($mysqli->connect_error) {
+        die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
     }
+
 }
 
 function status_change(int $id)
@@ -798,11 +793,13 @@ function validemail($email)
  */
 function sqlesc($x)
 {
+    global $mysqli;
+
     if (is_integer($x)) {
         return (int) $x;
     }
 
-    return sprintf('\'%s\'', mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $x));
+    return sprintf('\'%s\'', mysqli_real_escape_string($mysqli, $x));
 }
 
 /**
@@ -812,27 +809,13 @@ function sqlesc($x)
  */
 function sqlesc_noquote($x)
 {
+    global $mysqli;
+
     if (is_integer($x)) {
         return (int) $x;
     }
 
-    return mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $x);
-}
-
-/**
- * @param $x
- *
- * @return mixed
- */
-function sqlwildcardesc($x)
-{
-    return str_replace([
-        '%',
-        '_',
-    ], [
-        '\\%',
-        '\\_',
-    ], mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $x));
+    return mysqli_real_escape_string($mysqli, $x);
 }
 
 /**
@@ -874,11 +857,13 @@ function searchfield($s)
  */
 function get_row_count($table, $suffix = '')
 {
+    global $mysqli;
+
     if ($suffix) {
         $suffix = " $suffix";
     }
-    ($r = sql_query("SELECT COUNT(*) FROM $table$suffix")) or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
-    ($a = mysqli_fetch_row($r)) or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+    ($r = sql_query("SELECT COUNT(*) FROM $table$suffix")) or die(((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+    ($a = mysqli_fetch_row($r)) or die(((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
 
     return (int) $a[0];
 }
@@ -919,9 +904,10 @@ function stderr($heading, $text, $class = null)
  */
 function sqlerr($file = '', $line = '')
 {
-    global $site_config, $CURUSER;
-    $the_error = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
-    $the_error_no = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false));
+    global $site_config, $CURUSER, $mysqli;
+
+    $the_error = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
+    $the_error_no = ((is_object($mysqli)) ? mysqli_errno($mysqli) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false));
     if (SQL_DEBUG == 0) {
         die();
     } elseif ($site_config['sql_error_log'] && SQL_DEBUG == 1) {
@@ -1049,6 +1035,7 @@ function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc
         'WITH_SEC' => $site_config['time_with_seconds'],
         'WITHOUT_SEC' => $site_config['time_without_seconds'],
         'DATE' => $site_config['time_date'] ? $site_config['time_date'] : 'j M Y',
+        'FORM' => $site_config['time_form'] ? $site_config['time_form'] : 'Y-m-d',
     ];
     if (!$date) {
         return '--';
@@ -1261,14 +1248,14 @@ function flood_limit($table)
  */
 function sql_query($query, $log = true)
 {
-    global $query_stat, $queries;
+    global $query_stat, $queries, $mysqli;
     dbconn();
 
     if (SQL_DEBUG) {
         $query_start_time = microtime(true);
 
-        mysqli_set_charset($GLOBALS['___mysqli_ston'], 'utf8');
-        $result = mysqli_query($GLOBALS['___mysqli_ston'], $query);
+        mysqli_set_charset($mysqli, 'utf8');
+        $result = mysqli_query($mysqli, $query);
         $query_end_time = microtime(true);
         $query_stat[] = [
             'seconds' => number_format($query_end_time - $query_start_time, 6),
@@ -1276,7 +1263,7 @@ function sql_query($query, $log = true)
         ];
         $queries = count($query_stat);
     } else {
-        $result = mysqli_query($GLOBALS['___mysqli_ston'], $query);
+        $result = mysqli_query($mysqli, $query);
     }
 
     return $result;
@@ -1369,9 +1356,11 @@ function referer()
  */
 function mysql_fetch_all($query, $default_value = [])
 {
+    global $mysqli;
+
     $r = @sql_query($query);
     $result = [];
-    if ($err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))) {
+    if ($err = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))) {
         return $err;
     }
     if (@mysqli_num_rows($r)) {

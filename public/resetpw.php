@@ -6,7 +6,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once INCL_DIR . 'function_recaptcha.php';
 dbconn();
-global $CURUSER, $site_config, $cache, $session;
+global $CURUSER, $site_config, $cache, $session, $mysqli;
 
 if (!$CURUSER) {
     get_template();
@@ -164,7 +164,7 @@ if ($step == '1') {
     $cache->update_row('user' . $id, [
         'passhash' => $newpassword,
     ], $site_config['expires']['user_cache']);
-    if (!mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    if (!mysqli_affected_rows($mysqli)) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error13']}");
     } else {
         stderr("{$lang['stderr_successhead']}", "{$lang['stderr_error14']} <a href='{$site_config['baseurl']}/login.php' class='altlink'><b>{$lang['stderr_error15']}</b></a> {$lang['stderr_error16']}", false);

@@ -6,7 +6,7 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang, $site_config, $cache;
+global $CURUSER, $lang, $site_config, $cache, $mysqli;
 
 $HTMLOUT = '';
 $stdhead = [
@@ -82,7 +82,7 @@ if ($mode === 'add') {
     sql_query('INSERT INTO news (userid, added, body, title, sticky, anonymous) VALUES (' . sqlesc($CURUSER['id']) . ',' . sqlesc($added) . ', ' . sqlesc($body) . ', ' . sqlesc($title) . ', ' . sqlesc($sticky) . ', ' . sqlesc($anonymous) . ')') or sqlerr(__FILE__, __LINE__);
     $cache->delete('latest_news_');
     header('Refresh: 3; url=staffpanel.php?tool=news&mode=news');
-    mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 1 ? stderr($lang['news_success'], $lang['news_add_success']) : stderr($lang['news_add_oopss'], $lang['news_add_something']);
+    mysqli_affected_rows($mysqli) == 1 ? stderr($lang['news_success'], $lang['news_add_success']) : stderr($lang['news_add_oopss'], $lang['news_add_something']);
 }
 //==Edit/change news
 if ($mode === 'edit') {

@@ -1,6 +1,6 @@
 <?php
 
-global $lang, $post_stuffs;
+global $lang, $post_stuffs, $mysqli;
 
 //=== post  action posted so we know what to do :P
 $posted_staff_action = strip_tags((isset($_POST['action_2']) ? $_POST['action_2'] : ''));
@@ -113,7 +113,7 @@ switch ($staff_action) {
         if (isset($_POST['post_to_mess_with'])) {
             //=== make the new topic:
             sql_query('INSERT INTO topics (topic_name, forum_id, topic_desc) VALUES (' . sqlesc($new_topic_name) . ', ' . sqlesc($forum_id) . ', ' . sqlesc($new_topic_desc) . ')') or sqlerr(__FILE__, __LINE__);
-            $new_topic_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+            $new_topic_id = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
             $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
             $post_to_mess_with = [];
             foreach ($_POST['post_to_mess_with'] as $var) {

@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
-global $CURUSER, $site_config;
+global $CURUSER, $site_config, $mysqli;
 
 $stdhead = [
     'css' => [
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $created = TIME_NOW;
         $query = sprintf('INSERT INTO announcement_main (owner_id, created, expires, sql_query, subject, body) VALUES (%s, %s, %s, %s, %s, %s)', sqlesc($CURUSER['id']), sqlesc($created), sqlesc($expires), sqlesc($ann_query), sqlesc($subject), sqlesc($body));
         sql_query($query);
-        if (mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+        if (mysqli_affected_rows($mysqli)) {
             stderr('Success', 'Announcement was successfully created');
         }
         stderr('Error', 'Contact an administrator');

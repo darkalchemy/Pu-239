@@ -5,7 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 check_user_status();
-global $CURUSER, $site_config;
+global $CURUSER, $site_config, $mysqli;
 
 if (!$CURUSER) {
     get_template();
@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
             ])) . ') ') or sqlerr(__FILE__, __LINE__);
         if ($res) {
             //==Updating promo table
-            $userid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+            $userid = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
             $users = (empty($ar_check['users']) ? $userid : $ar_check['users'] . ',' . $userid);
             sql_query('UPDATE promo SET accounts_made = accounts_made + 1 , users = ' . sqlesc($users) . ' WHERE id = ' . sqlesc($ar_check['id'])) or sqlerr(__FILE__, __LINE__);
             //==Email part :)

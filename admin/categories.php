@@ -48,7 +48,7 @@ switch ($params['mode']) {
 }
 function move_cat()
 {
-    global $site_config, $params, $lang, $cache;
+    global $site_config, $params, $lang, $cache, $mysqli;
 
     if ((!isset($params['id']) || !is_valid_id($params['id'])) || (!isset($params['new_cat_id']) || !is_valid_id($params['new_cat_id']))) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
@@ -66,7 +66,7 @@ function move_cat()
     sql_query('UPDATE torrents SET category = ' . sqlesc($new_cat_id) . ' WHERE category = ' . sqlesc($old_cat_id));
     $cache->delete('genrelist');
     $cache->delete('categories');
-    if (-1 != mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    if (-1 != mysqli_affected_rows($mysqli)) {
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories&action=categories");
     } else {
         stderr($lang['categories_error'], $lang['categories_move_error4']);
@@ -115,7 +115,7 @@ function move_cat_form()
 
 function add_cat()
 {
-    global $site_config, $params, $lang, $cache;
+    global $site_config, $params, $lang, $cache, $mysqli;
 
     foreach ([
                  'new_cat_name',
@@ -136,7 +136,7 @@ function add_cat()
                   VALUES($cat_name, $cat_desc, $cat_image)");
     $cache->delete('genrelist');
     $cache->delete('categories');
-    if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    if (-1 == mysqli_affected_rows($mysqli)) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     } else {
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories&action=categories");
@@ -145,7 +145,7 @@ function add_cat()
 
 function delete_cat()
 {
-    global $site_config, $params, $lang, $cache;
+    global $site_config, $params, $lang, $cache, $mysqli;
 
     if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
@@ -172,7 +172,7 @@ function delete_cat()
     sql_query('DELETE FROM categories WHERE id = ' . sqlesc($old_cat_id));
     $cache->delete('genrelist');
     $cache->delete('categories');
-    if (mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    if (mysqli_affected_rows($mysqli)) {
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories&action=categories");
     } else {
         stderr($lang['categories_error'], $lang['categories_del_error1']);
@@ -182,6 +182,7 @@ function delete_cat()
 function delete_cat_form()
 {
     global $params, $lang, $site_config;
+
     if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
@@ -230,7 +231,7 @@ function delete_cat_form()
 
 function edit_cat()
 {
-    global $site_config, $params, $lang, $cache;
+    global $site_config, $params, $lang, $cache, $mysqli;
 
     if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
@@ -263,7 +264,7 @@ function edit_cat()
 
     $cache->delete('genrelist');
     $cache->delete('categories');
-    if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    if (-1 == mysqli_affected_rows($mysqli)) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     } else {
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories&action=categories");

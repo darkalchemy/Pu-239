@@ -1,5 +1,7 @@
 <?php
 
+global $mysqli;
+
 $key = 'VGhlIE1vemlsbGEgZmFtaWx5IGFwcG';
 $vars = [
     'ircidle' => '',
@@ -23,7 +25,7 @@ switch ($vars['do']) {
 
     case 'idle':
         sql_query('UPDATE users SET onirc = ' . sqlesc(!$vars['ircidle'] ? 'no' : 'yes') . ' WHERE username = ' . sqlesc($vars['username']));
-        echo mysqli_affected_rows($GLOBALS['___mysqli_ston']);
+        echo mysqli_affected_rows($mysqli);
         break;
 
     default:

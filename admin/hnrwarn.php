@@ -5,7 +5,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $cache;
+global $CURUSER, $site_config, $lang, $cache, $mysqli;
 
 $lang = array_merge($lang, load_language('ad_hnrwarn'));
 $HTMLOUT = '';
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'enabled' => 'no',
                 ], $site_config['expires']['user_cache']);
             }
-            $d = mysqli_affected_rows($GLOBALS['___mysqli_ston']);
+            $d = mysqli_affected_rows($mysqli);
             header('Refresh: 2; url=' . $r);
             stderr($lang['hnrwarn_success'], $d . $lang['hnrwarn_user'] . ($d > 1 ? $lang['hnrwarn_s'] : '') . ' disabled!');
         } else {

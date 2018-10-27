@@ -6,7 +6,7 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $cache;
+global $CURUSER, $site_config, $lang, $cache, $mysqli;
 
 $lang = array_merge($lang, load_language('ad_watchedusers'));
 $HTMLOUT = $H1_thingie = $count2 = '';
@@ -50,7 +50,7 @@ if (isset($_GET['remove'])) {
         }
     }
     //=== Check if members were removed
-    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
+    if (mysqli_affected_rows($mysqli) == 0) {
         stderr($lang['watched_stderr'], '' . $lang['watched_stderr2'] . '!');
     } else {
         write_log('[b]' . $CURUSER['username'] . '[/b] ' . $lang['watched_removed1'] . '<br>' . $removed_log . ' <br>' . $lang['watched_removedfrom'] . '');
@@ -93,7 +93,7 @@ if (isset($_GET['add'])) {
         ], $site_config['expires']['user_cache']);
     }
     //=== Check if member was added
-    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) > 0) {
+    if (mysqli_affected_rows($mysqli) > 0) {
         $H1_thingie = '<h1 class="has-text-centered">' . $lang['watched_success'] . '!' . htmlsafechars($user['username']) . ' ' . $lang['watched_isadded'] . '!</h1>';
         write_log('[b]' . $CURUSER['username'] . '[/b] ' . $lang['watched_isadded'] . ' ' . format_username($member_whos_been_bad) . ' ' . $lang['watched_tothe'] . ' <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users" class="altlink">' . $lang['watched_users_list'] . '</a>.');
     }

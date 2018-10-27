@@ -4,7 +4,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $message_stuffs;
+global $CURUSER, $site_config, $cache, $message_stuffs, $mysqli;
 
 $lang = array_merge(load_language('global'), load_language('friends'));
 $userid = isset($_GET['id']) ? (int) $_GET['id'] : $CURUSER['id'];
@@ -108,7 +108,7 @@ if ($action === 'confirm') {
         $message_stuffs->insert($msgs_buffer);
         $frag = 'friends';
         header("Refresh: 3; url=friends.php?id=$userid#$frag");
-        mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 1 ? stderr('Success', 'Friend was added successfully.') : stderr('oopss', 'That friend is already confirmed !! .');
+        mysqli_affected_rows($mysqli) == 1 ? stderr('Success', 'Friend was added successfully.') : stderr('oopss', 'That friend is already confirmed !! .');
     }
 } elseif ($action === 'delpending') {
     $targetid = (int) $_GET['targetid'];
@@ -132,7 +132,7 @@ if ($action === 'confirm') {
         $cache->delete('user_friends_' . $targetid);
         $frag = 'friends';
         header("Refresh: 3; url=friends.php?id=$userid#$frag");
-        mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 1 ? stderr('Success', 'Friend was deleted successfully.') : stderr('oopss', 'No friend request found with ID !! .');
+        mysqli_affected_rows($mysqli) == 1 ? stderr('Success', 'Friend was deleted successfully.') : stderr('oopss', 'No friend request found with ID !! .');
     }
 } elseif ($action === 'delete') {
     $targetid = (int) $_GET['targetid'];
@@ -157,14 +157,14 @@ if ($action === 'confirm') {
         $cache->delete('user_friends_' . $targetid);
         $frag = 'friends';
         header("Refresh: 3; url=friends.php?id=$userid#$frag");
-        mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 1 ? stderr('Success', 'Friend was deleted successfully.') : stderr('oopss', 'No friend request found with ID !! .');
+        mysqli_affected_rows($mysqli) == 1 ? stderr('Success', 'Friend was deleted successfully.') : stderr('oopss', 'No friend request found with ID !! .');
     } elseif ($type === 'block') {
         sql_query('DELETE FROM blocks WHERE userid=' . sqlesc($userid) . ' AND blockid=' . sqlesc($targetid)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('Blocks_' . $userid);
         $cache->delete('Blocks_' . $targetid);
         $frag = 'blocks';
         header("Refresh: 3; url=friends.php?id=$userid#$frag");
-        mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 1 ? stderr('Success', 'Block was deleted successfully.') : stderr('oopss', 'No Block found with ID !! .');
+        mysqli_affected_rows($mysqli) == 1 ? stderr('Success', 'Block was deleted successfully.') : stderr('oopss', 'No Block found with ID !! .');
     } else {
         stderr('Error', 'Unknown type.');
     }

@@ -5,7 +5,7 @@ require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang;
+global $CURUSER, $lang, $mysqli;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $username = !empty($_GET['username']) ? $_GET['username'] : '';
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $CURUSER['id'],
     ]);
     $res = sql_query('UPDATE users SET passhash = ' . sqlesc($passhash) . ' WHERE username = ' . sqlesc($username) . ' AND id = ' . sqlesc($uid) . ' AND class < ' . $CURUSER['class']) or sqlerr(__FILE__, __LINE__);
-    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) != 1) {
+    if (mysqli_affected_rows($mysqli) != 1) {
         stderr($lang['reset_stderr'], $lang['reset_stderr1']);
     }
     if (CheckPostKey([

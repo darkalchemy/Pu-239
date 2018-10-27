@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'html_functions.php';
-global $session;
+global $session, $mysqli;
 
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($lconf)) {
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ], $site_config['expires']['user_cache']);
             $session->set('is-success', 'You bought <b class="has-text-primary">' . number_format($tickets) . '</b>. You now have <b class="has-text-primary">' . number_format($tickets + $user_tickets) . '</b> tickets!');
         } else {
-            $session->set('is-warning', 'There was an error with the update query, mysql error: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            $session->set('is-warning', 'There was an error with the update query, mysql error: ' . ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         }
     }
 }

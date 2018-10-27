@@ -40,11 +40,10 @@ $count = $fluent->from('users')
     ->select('COUNT(*) AS count')
     ->fetch('count');
 
-/*
 if ($count >= $site_config['maxusers']) {
     stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $site_config['maxusers']));
 }
-*/
+
 $time_select = "
     <select name='user_timezone' class='w-100' required>
         <option value=''>Select Your Timezone</option>";

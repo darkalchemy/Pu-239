@@ -5,7 +5,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $cache;
+global $CURUSER, $site_config, $lang, $cache, $mysqli;
 
 $lang = array_merge($lang, load_language('ad_leechwarn'));
 $HTMLOUT = '';
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'enabled' => 'no',
                 ], $site_config['expires']['user_cache']);
             }
-            $d = mysqli_affected_rows($GLOBALS['___mysqli_ston']);
+            $d = mysqli_affected_rows($mysqli);
             header('Refresh: 2; url=' . $r);
             stderr($lang['leechwarn_success'], $c . $lang['leechwarn_user'] . ($c > 1 ? $lang['leechwarn_s'] : '') . $lang['leechwarn_disabled']);
         } else {
@@ -74,8 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pms[] = '(0,' . $uid . ', ' . sqlesc($sub) . ', ' . sqlesc($body) . ', ' . sqlesc(TIME_NOW) . ')';
         }
         if (!empty($pms) && count($pms)) {
-            $g = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . implode(', ', $pms)) or ($q_err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
-            $q1 = sql_query("UPDATE users SET leechwarn='0', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['leechwarn_mod'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or ($q2_err = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            $g = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . implode(', ', $pms)) or ($q_err = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            $q1 = sql_query("UPDATE users SET leechwarn='0', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['leechwarn_mod'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or ($q2_err = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
             if ($g && $q1) {
                 header('Refresh: 2; url=' . $r);
                 stderr($lang['leechwarn_success'], count($pms) . $lang['leechwarn_user'] . (count($pms) > 1 ? $lang['leechwarn_s'] : '') . $lang['leechwarn_removed_success']);
@@ -99,7 +99,7 @@ switch ($do) {
         $link = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=leechwarn&amp;action=leechwarn&amp;do=disabled'>{$lang['leechwarn_disabled_link']}</a>";
         break;
 }
-$g = sql_query($query) or print (is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false);
+$g = sql_query($query) or print (is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false);
 $count = mysqli_num_rows($g);
 $HTMLOUT .= "
     <ul class='level-center bg-06'>

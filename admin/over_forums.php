@@ -4,7 +4,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang;
+global $CURUSER, $lang, $mysqli;
 
 $lang = array_merge($lang, load_language('ad_over_forums'));
 $HTMLOUT = $over_forums = $count = $min_class_viewer = $sorted = '';
@@ -108,7 +108,7 @@ switch ($action) {
             <td><span style="font-weight: bold;">' . $lang['ad_over_sort'] . '</span></td>
             <td>
             <select name="sort">';
-            $res = mysqli_query($GLOBALS['___mysqli_ston'], 'SELECT sort FROM over_forums');
+            $res = mysqli_query($mysqli, 'SELECT sort FROM over_forums');
             $nr = mysqli_num_rows($res);
             $maxclass = $nr + 1;
             for ($i = 0; $i <= $maxclass; ++$i) {

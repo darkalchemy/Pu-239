@@ -8,7 +8,7 @@ require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $user_stuffs, $fluent;
+global $CURUSER, $site_config, $user_stuffs, $fluent, $mysqli;
 
 $lang = array_merge(load_language('global'), load_language('comment'));
 $stdhead = [
@@ -275,7 +275,7 @@ switch ($action) {
         }
         if (isset($_POST['button']) && $_POST['button'] == 'Submit') {
             sql_query('INSERT INTO requests (request_name, image, description, category, added, requested_by_user_id, link) VALUES (' . sqlesc($request_name) . ', ' . sqlesc($image) . ', ' . sqlesc($body) . ', ' . sqlesc($category) . ', ' . TIME_NOW . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($link) . ')') or sqlerr(__FILE__, __LINE__);
-            $new_request_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+            $new_request_id = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
             header('Location: requests.php?action=request_details&new=1&id=' . $new_request_id);
             die();
         }
@@ -455,7 +455,7 @@ switch ($action) {
                 stderr('Error', 'Comment body cannot be empty!');
             }
             sql_query('INSERT INTO comments (user, request, added, text, ori_text) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . TIME_NOW . ', ' . sqlesc($body) . ',' . sqlesc($body) . ')') or sqlerr(__FILE__, __LINE__);
-            $newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+            $newid = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
             sql_query('UPDATE requests SET comments = comments + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             header('Location: /requests.php?action=request_details&id=' . $id . '&viewcomm=' . $newid . '#comm' . $newid);
             die();

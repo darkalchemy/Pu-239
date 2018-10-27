@@ -3,7 +3,7 @@
 require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-global $site_config, $cache, $session;
+global $site_config, $cache, $session, $mysqli;
 
 if (empty($_POST)) {
     $session->set('is-danger', 'Access Not Allowed');
@@ -110,7 +110,7 @@ switch ($do) {
                 if (sql_query('INSERT INTO thanks(userid,torrentid) VALUES(' . sqlesc($uid) . ',' . sqlesc($tid) . ')')) {
                     echo print_list();
                 } else {
-                    $msg = 'There was an error with the query,contact the staff. Mysql error ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
+                    $msg = 'There was an error with the query,contact the staff. Mysql error ' . ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
                     echo $ajax ? json_encode([
                         'status' => false,
                         'err' => $msg,

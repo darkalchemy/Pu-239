@@ -7,7 +7,7 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang;
+global $CURUSER, $site_config, $lang, $mysqli;
 
 $lang = array_merge($lang, load_language('ad_events'));
 $HTMLOUT = '';
@@ -95,11 +95,11 @@ if (!is_array($scheduled_events)) {
             if (gettype(strpos($key, 'removeEvent_')) != 'boolean') {
                 $sql = "DELETE FROM `events` WHERE `id` = $id LIMIT 1;";
                 $res = sql_query($sql);
-                if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) != 0) {
-                    $HTMLOUT .= "<p>{$lang['events_err_del']}" . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br>{$lang['events_click']} <a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br></p>\n";
+                if (((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) != 0) {
+                    $HTMLOUT .= "<p>{$lang['events_err_del']}" . ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br>{$lang['events_click']} <a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br></p>\n";
                 } else {
-                    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
-                        $HTMLOUT .= "<p>{$lang['events_err_del']}" . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br>{$lang['events_click']}<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a> {$lang['events_goback']}<br></p>\n";
+                    if (mysqli_affected_rows($mysqli) == 0) {
+                        $HTMLOUT .= "<p>{$lang['events_err_del']}" . ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br>{$lang['events_click']}<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a> {$lang['events_goback']}<br></p>\n";
                     } else {
                         $HTMLOUT .= "<p>{$lang['events_deleted']}</p>\n";
                         header('Refresh: 2; url=staffpanel.php?tool=events');
@@ -150,10 +150,10 @@ if (!is_array($scheduled_events)) {
                     $sql = "UPDATE `events` SET `overlayText` = '$text',`startTime` = $start, `endTime` = $end, `displayDates` = $showDates, `freeleechEnabled` = $freeleech, `duploadEnabled` = $doubleupload, `hdownEnabled` = $halfdownload, `userid` = $userid  WHERE `id` = $id;";
                 }
                 $res = sql_query($sql);
-                if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) != 0) {
-                    $HTMLOUT .= "<p>{$lang['events_err_save']}" . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br>{$lang['events_click']}<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br></p>\n";
+                if (((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) != 0) {
+                    $HTMLOUT .= "<p>{$lang['events_err_save']}" . ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br>{$lang['events_click']}<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br></p>\n";
                 } else {
-                    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
+                    if (mysqli_affected_rows($mysqli) == 0) {
                         $HTMLOUT .= "<p>{$lang['events_err_nochange']}<br>{$lang['events_click']}<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br></p>\n";
                     } else {
                         $HTMLOUT .= "<p>{$lang['events_saved']}</p>\n";
@@ -249,22 +249,23 @@ if (!is_array($scheduled_events)) {
             $id = (int) substr($key, $pos + 1);
             if (gettype(strpos($key, 'editEvent_')) != 'boolean') {
                 if ($id == -1) {
+                    $date = get_date(TIME_NOW, 'FORM');
                     $HTMLOUT .= main_table("
 <tr><th>{$lang['events_userid']}</th><td><input type='text' name='userid' value='{$CURUSER['id']}'></td></tr>
 <tr><th>{$lang['events_txt']}</th><td><input type='text' name='editText'></td></tr>
-<tr><th>{$lang['events_starttime']}</th><td><input type='text' name='editStartTime'></td></tr>
-<tr><th>{$lang['events_endtime']}</th><td><input type='text' name='editEndTime'></td></tr>
+<tr><th>{$lang['events_starttime']}</th><td><input type='date' name='editStartTime' value='$date'></td></tr>
+<tr><th>{$lang['events_endtime']}</th><td><input type='date' name='editEndTime' value='$date'></td></tr>
 <tr><th>{$lang['events_freel']}</th><td><input type='checkbox' name='editFreeleech'></td></tr>
 <tr><th>{$lang['events_double']}</th><td><input type='checkbox' name='editDoubleupload'></td></tr>
 <tr><th>{$lang['events_half']}</th><td><input type='checkbox' name='editHalfdownload'></td></tr>
 <tr><th>{$lang['events_showd']}</th><td><input type='checkbox' name='editShowDates'></td></tr>
-<tr><td colspan='2'><input type='submit' class='button is-small' name='saveEvent_-1' value='{$lang['events_save']}'></td></tr>");
+<tr><td colspan='2' class='has-text-centered'><input type='submit' class='button is-small' name='saveEvent_-1' value='{$lang['events_save']}'></td></tr>", null, 'top20');
                 } else {
                     foreach ($scheduled_events as $scheduled_event) {
                         if ($id == $scheduled_event['id']) {
                             $text = htmlsafechars($scheduled_event['overlayText']);
-                            $start = get_date((int) $scheduled_event['startTime'], 'DATE');
-                            $end = get_date((int) $scheduled_event['endTime'], 'DATE');
+                            $start = get_date((int) $scheduled_event['startTime'], 'FORM', 1);
+                            $end = get_date((int) $scheduled_event['endTime'], 'FORM', 1);
                             $freeleech = (bool) (int) $scheduled_event['freeleechEnabled'];
                             if ($freeleech) {
                                 $freeleech = 'checked';
@@ -292,13 +293,13 @@ if (!is_array($scheduled_events)) {
                             $HTMLOUT .= main_table("
 <tr><th>{$lang['events_userid']}</th><td><input type='text' name='userid' value='{$CURUSER['id']}'></td></tr>
 <tr><th>{$lang['events_txt']}</th><td><input type='text' name='editText' value='{$text}'></td></tr>
-<tr><th>{$lang['events_starttime']}</th><td><input type='text' name='editStartTime' value='{$start}'></td></tr>
-<tr><th>{$lang['events_endtime']}</th><td><input type='text' name='editEndTime' value='{$end}'></td></tr>
+<tr><th>{$lang['events_starttime']}</th><td><input type='date' name='editStartTime' value='$start'></td></tr>
+<tr><th>{$lang['events_endtime']}</th><td><input type='date' name='editEndTime' value='{$end}'></td></tr>
 <tr><th>{$lang['events_freel']}</th><td><input type='checkbox' name='editFreeleech' value='{$freeleech}'></td></tr>
-<tr><th>{$lang['events_double']}</th><td><input type='checkbox' name='editDoubleupload' value='{$doubleUpload}'></td></tr>
+<tr><th>{$lang['events_double']}</th><td><input type='checkbox' name='editDoubleupload' value='{$doubleupload}'></td></tr>
 <tr><th>{$lang['events_half']}</th><td><input type='checkbox' name='editHalfdownload' value='{$halfdownload}'></td></tr>
 <tr><th>{$lang['events_showd']}</th><td><input type='checkbox' name='editShowDates' value='{$showdates}'></td></tr>
-<tr><td colspan='2'><input type='submit' class='button is-small' name='saveEvent_{$id}' value='{$lang['events_save']}'></td></tr>");
+<tr><td colspan='2'  class='has-text-centered'><input type='submit' class='button is-small' name='saveEvent_{$id}' value='{$lang['events_save']}'></td></tr>", null, 'top20');
                             break;
                         }
                     }

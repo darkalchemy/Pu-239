@@ -6,7 +6,7 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session, $message_stuffs;
+global $CURUSER, $site_config, $cache, $session, $message_stuffs, $mysqli;
 
 /**
  * @param $x
@@ -47,7 +47,7 @@ switch ($do) {
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             } else {
-                $session->set('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+                $session->set('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             }
@@ -85,7 +85,7 @@ switch ($do) {
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             } else {
-                $session->set('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+                $session->set('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             }
@@ -148,7 +148,7 @@ switch ($do) {
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             } else {
-                $session->set('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+                $session->set('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             }

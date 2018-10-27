@@ -3,7 +3,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session;
+global $CURUSER, $site_config, $cache, $session, $mysqli;
 
 $lang = array_merge(load_language('global'), load_language('takerate'));
 if (!mkglobal('id')) {
@@ -27,7 +27,7 @@ if ($row) {
     stderr('Error', 'You already thanked.');
 }
 $text = ':thankyou:';
-$newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+$newid = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
 sql_query('INSERT INTO thankyou (uid, torid, thank_date) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ", '" . TIME_NOW . "')") or sqlerr(__FILE__, __LINE__);
 sql_query('INSERT INTO comments (user, torrent, added, text, ori_text) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ", '" . TIME_NOW . "', " . sqlesc($text) . ',' . sqlesc($text) . ')') or sqlerr(__FILE__, __LINE__);
 sql_query('UPDATE torrents SET thanks = thanks + 1, comments = comments + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);

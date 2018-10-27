@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-global $CURUSER;
+global $CURUSER, $mysqli;
 
 $lang = array_merge(load_language('global'), load_language('ajax_status'));
 /**
@@ -65,7 +65,7 @@ switch ($do) {
                 ]);
             } else {
                 $return = jsonmsg([
-                    $lang['ajaxstatus_err'] . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)),
+                    $lang['ajaxstatus_err'] . ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)),
                     false,
                 ]);
             }
@@ -115,7 +115,7 @@ switch ($do) {
             ]);
         } else {
             $return = jsonmsg([
-                $lang['ajaxstatus_err'] . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)),
+                $lang['ajaxstatus_err'] . ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)),
                 false,
             ]);
         }

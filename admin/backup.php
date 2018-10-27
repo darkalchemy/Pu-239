@@ -5,7 +5,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $session;
+global $CURUSER, $site_config, $lang, $session, $mysqli;
 
 $lang = array_merge($lang, load_language('ad_backup'));
 if (!in_array($CURUSER['id'], $staff_settings['is_staff']['allowed'])) {
@@ -167,7 +167,7 @@ if (empty($mode)) {
     sql_query('INSERT INTO dbbackup (name, added, userid) VALUES (' . sqlesc($ext . ($site_config['db_backup_use_gzip'] ? '.gz' : '')) . ', ' . TIME_NOW . ', ' . sqlesc($CURUSER['id']) . ')') or sqlerr(__FILE__, __LINE__);
     $location = 'mode=backup';
     if ($site_config['db_backup_auto_download']) {
-        $id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+        $id = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
         $location = 'mode=download&id=' . $id;
     }
     if ($site_config['db_backup_write_to_log']) {

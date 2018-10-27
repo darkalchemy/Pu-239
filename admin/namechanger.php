@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang, $cache;
+global $site_config, $lang, $cache, $mysqli;
 
 $lang = array_merge($lang, load_language('ad_namechanger'));
 $HTMLOUT = '';
@@ -34,7 +34,7 @@ if (isset($mode) && $mode == 'change') {
         $changed = sqlesc("{$lang['namechanger_changed_to']} $uname");
         $subject = sqlesc($lang['namechanger_changed']);
         if (!$change) {
-            if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
+            if (((is_object($mysqli)) ? mysqli_errno($mysqli) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
                 stderr($lang['namechanger_borked'], $lang['namechanger_already_exist']);
             }
         }

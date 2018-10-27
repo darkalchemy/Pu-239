@@ -3,7 +3,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $fluent, $cache, $pollvoter_stuffs;
+global $CURUSER, $site_config, $fluent, $cache, $pollvoter_stuffs, $mysqli;
 
 $lang = load_language('global');
 $poll_id = isset($_GET['pollid']) ? intval($_GET['pollid']) : false;
@@ -75,7 +75,7 @@ if (!$_POST['nullvote']) {
     }
     $poll_data['choices'] = addslashes(serialize($poll_answers));
     sql_query("UPDATE polls set votes = votes + 1, choices = '{$poll_data['choices']}' WHERE pid = {$poll_data['pid']}") or sqlerr(__FILE__, __LINE__);
-    if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+    if (-1 == mysqli_affected_rows($mysqli)) {
         stderr('DBERROR', 'Could not update records');
     }
 } else {

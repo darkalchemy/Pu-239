@@ -1,4 +1,7 @@
 27 Oct, 2018
+update: allow memcached to use sockets
+update: allow mysqli to use sockets
+remove: avatar folder, not used here
 fix: typo ann_config.php
 add: missing HnR settings from ann_config.php
 fix: call incorrect method name announce.php

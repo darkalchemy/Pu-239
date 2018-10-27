@@ -10,7 +10,7 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'comment_functions.php';
 
 check_user_status();
-global $CURUSER, $site_config, $fluent, $cache, $session;
+global $CURUSER, $site_config, $fluent, $cache, $session, $mysqli;
 
 $lang = array_merge(load_language('global'), load_language('userdetails'));
 $edit_profile = $friend_links = $shitty_link = $sharemark_link = '';
@@ -65,7 +65,7 @@ if (isset($_GET['delete_hit_and_run']) && $CURUSER['class'] >= UC_STAFF) {
         stderr($lang['userdetails_error'], $lang['userdetails_bad_id']);
     }
     sql_query('UPDATE snatched SET hit_and_run = "0", mark_of_cain = "no" WHERE id = ' . sqlesc($delete_me)) or sqlerr(__FILE__, __LINE__);
-    if (@mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
+    if (@mysqli_affected_rows($mysqli) === 0) {
         stderr($lang['userdetails_error'], $lang['userdetails_notdeleted']);
     }
     header('Location: ?id=' . $id . '&completed=1');

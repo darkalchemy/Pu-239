@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 dbconn();
-global $site_config, $cache, $message_stuffs;
+global $site_config, $cache, $message_stuffs, $mysqli;
 
 $dt = TIME_NOW;
 //$payment_status = "Completed";//Only uncomment if using sandbox mode
@@ -207,14 +207,14 @@ if ($hand = fsockopen('ssl://www.paypal.com', 443, $errno, $errstr, 30)) {
     $vars['amount'] = isset($_POST['mc_gross']) ? (int) $_POST['mc_gross'] : 0;
     $vars['memo'] = isset($_POST['memo']) ? htmlsafechars($_POST['memo']) : '';
     if (stripos($paypal_data, 'VERIFIED') !== false) {
-        $user_query = sql_query(sprintf('SELECT COUNT(id) FROM users WHERE id = %d', $vars['uid'])) or paypallog(mysqli_error($GLOBALS['___mysqli_ston']));
+        $user_query = sql_query(sprintf('SELECT COUNT(id) FROM users WHERE id = %d', $vars['uid'])) or paypallog(mysqli_error($mysqli));
         if (mysqli_num_rows($user_query) == 1) {
             //update the user and add the goodies
-            sql_query(mk_update_query($vars['amount'], $vars['uid'])) or paypallog(mysqli_error($GLOBALS['___mysqli_ston']));
+            sql_query(mk_update_query($vars['amount'], $vars['uid'])) or paypallog(mysqli_error($mysqli));
             //instead of updating the cache delete it :P
             $cache->delete('user' . $vars['uid']);
             //update total funds
-            sql_query(sprintf('INSERT INTO funds(cash,user,added) VALUES (%d,%d,%d)', $vars['amount'], $vars['uid'], $dt)) or paypallog(mysqli_error($GLOBALS['___mysqli_ston']));
+            sql_query(sprintf('INSERT INTO funds(cash,user,added) VALUES (%d,%d,%d)', $vars['amount'], $vars['uid'], $dt)) or paypallog(mysqli_error($mysqli));
             //clear the cache for the funds
             $cache->delete('totalfunds_');
             $subject = 'Donation - processed';

@@ -5,7 +5,7 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $cache;
+global $CURUSER, $site_config, $lang, $cache, $mysqli;
 
 $lang = array_merge($lang, load_language('ad_shitlist'));
 $HTMLOUT = $message = $title = '';
@@ -102,7 +102,7 @@ switch ($action2) {
          <a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . $shit_list_id . '&amp;sure=1"><span class="button is-small" style="padding:1px;">' . $lang['shitlist_delete5'] . '</span></a>' . $lang['shitlist_delete6'] . '');
         }
         sql_query('DELETE FROM shit_list WHERE userid=' . sqlesc($CURUSER['id']) . ' AND suspect=' . sqlesc($shit_list_id));
-        if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
+        if (mysqli_affected_rows($mysqli) == 0) {
             stderr($lang['shitlist_stderr'], $lang['shitlist_nomember']);
         }
         $cache->delete('shit_list_' . $shit_list_id);

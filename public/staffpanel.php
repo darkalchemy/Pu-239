@@ -4,7 +4,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $site_config, $CURUSER, $cache, $session, $fluent;
+global $site_config, $CURUSER, $cache, $session, $fluent, $mysqli;
 
 $stdhead = [
     'css' => [
@@ -81,7 +81,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $cache->delete('staff_panels_6');
         $cache->delete('staff_panels_5');
         $cache->delete('staff_panels_4');
-        if (mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+        if (mysqli_affected_rows($mysqli)) {
             if ($CURUSER['class'] <= UC_MAX) {
                 $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color($arr['av_class']) . "]{$arr['page_name']}[/color]'";
                 $user = "[url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#" . get_user_class_color($CURUSER['class']) . "]{$CURUSER['username']}[/color][/url]";
@@ -171,7 +171,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         $cache->delete('staff_panels_' . $class);
                     }
                     if (!$res) {
-                        if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
+                        if (((is_object($mysqli)) ? mysqli_errno($mysqli) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
                             $errors[] = $lang['spanel_this_fname_sub'];
                         } else {
                             $errors[] = $lang['spanel_db_error_msg'];

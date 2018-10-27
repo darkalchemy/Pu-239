@@ -6,7 +6,7 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session;
+global $CURUSER, $site_config, $cache, $session, $mysqli;
 
 $lang = array_merge(load_language('global'), load_language('contactstaff'));
 $stdhead = [
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Refresh: 3; url=' . urldecode($returnto)); //redirect but wait 3 seconds
             $session->set('is-success', $lang['contactstaff_success_msg']);
         } else {
-            $session->set('is-warning', sprintf($lang['contactstaff_mysql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+            $session->set('is-warning', sprintf($lang['contactstaff_mysql_err'], ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
         }
     }
 } else {

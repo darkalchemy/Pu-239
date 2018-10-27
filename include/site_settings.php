@@ -74,5 +74,6 @@ $site_config['time_short'] = 'jS F Y - ' . $time_string;
 $site_config['time_long'] = 'M j Y, ' . $time_string;
 $site_config['time_tiny'] = '';
 $site_config['time_date'] = '';
+$site_config['time_form'] = '';
 $site_config['time_with_seconds'] = $time_string;
 $site_config['time_without_seconds'] = $time_string_without_seconds;

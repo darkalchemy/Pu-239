@@ -7,7 +7,7 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'comment_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $userid, $fluent, $user_stuffs, $session;
+global $CURUSER, $site_config, $userid, $fluent, $user_stuffs, $session, $mysqli;
 
 $stdhead = [
     'css' => [
@@ -38,7 +38,7 @@ if ($action === 'add') {
             stderr('Error', 'Comment body cannot be empty!');
         }
         sql_query('INSERT INTO usercomments (user, userid, added, text, ori_text) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($userid) . ", '" . TIME_NOW . "', " . sqlesc($body) . ',' . sqlesc($body) . ')');
-        $newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+        $newid = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
         sql_query('UPDATE users SET comments = comments + 1 WHERE id =' . sqlesc($userid));
         header("Refresh: 0; url=userdetails.php?id=$userid&viewcomm=$newid#comm$newid");
         die();
@@ -139,7 +139,7 @@ if ($action === 'add') {
         stderr('Error', 'Permission denied.');
     }
     sql_query('DELETE FROM usercomments WHERE id = ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
-    if ($userid && mysqli_affected_rows($GLOBALS['___mysqli_ston']) > 0) {
+    if ($userid && mysqli_affected_rows($mysqli) > 0) {
         sql_query('UPDATE users SET comments = comments - 1 WHERE id = ' . sqlesc($userid));
     }
     $session->set('is-success', 'User Comment has been deleted.');

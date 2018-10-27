@@ -4,7 +4,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'html_functions.php';
 class_check(UC_STAFF);
-global $site_config, $cache;
+global $site_config, $cache, $mysqli;
 
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($lconf)) {
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("Location: {$site_config['baseurl']}/lottery.php");
         die();
     } else {
-        $session->set('is-warning', 'There was an error while executing the update query. Mysql error: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+        $session->set('is-warning', 'There was an error while executing the update query. Mysql error: ' . ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
     }
 }
 if ($lottery_config['enable']) {

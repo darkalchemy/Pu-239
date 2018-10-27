@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang;
+global $lang, $mysqli;
 
 $stdfoot = [
     'js' => [
@@ -90,7 +90,7 @@ function update_poll()
     $poll_data = sqlesc(serialize($poll_data));
     sql_query("UPDATE polls SET choices = $poll_data, starter_id = {$CURUSER['id']}, votes = $total_votes, poll_question = $poll_title WHERE pid = " . sqlesc($pid)) or sqlerr(__FILE__, __LINE__);
     $pollvoter_stuffs->delete_users_cache();
-    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === -1) {
+    if (mysqli_affected_rows($mysqli) === -1) {
         $msg = "
         [h1]{$lang['poll_up_error']}[/h1]";
     } else {
@@ -119,7 +119,7 @@ function insert_new_poll()
     $username = sqlesc($CURUSER['username']);
     $time = TIME_NOW;
     sql_query("INSERT INTO polls (start_date, choices, starter_id, votes, poll_question)VALUES($time, $poll_data, {$CURUSER['id']}, 0, $poll_title)") or sqlerr(__FILE__, __LINE__);
-    if (fale === ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res)) {
+    if (fale === ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res)) {
         $msg = "
         <h1 class='has-text-centered'>{$lang['poll_inp_error']}</h1>
         <div class='has-text-centered margin20'>

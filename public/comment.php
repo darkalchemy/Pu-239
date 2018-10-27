@@ -6,7 +6,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'comment_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session, $message_stuffs;
+global $CURUSER, $site_config, $cache, $session, $message_stuffs, $mysqli;
 
 $lang = array_merge(load_language('global'), load_language('comment'), load_language('capprove'));
 flood_limit('comments');
@@ -85,7 +85,7 @@ if ($action === 'add') {
         }
 
         sql_query("INSERT INTO comments (user, $locale, added, text, ori_text, anonymous) VALUES (" . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . TIME_NOW . ', ' . sqlesc($body) . ', ' . sqlesc($body) . ", $anon)");
-        $newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+        $newid = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
         sql_query("UPDATE $table_type SET comments = comments + 1 WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('latest_comments_');
         if ($site_config['seedbonus_on'] == 1) {
@@ -241,7 +241,7 @@ if ($action === 'add') {
     }
     sql_query('DELETE FROM comments WHERE id = ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
     $cache->delete('latest_comments_');
-    if ($id && mysqli_affected_rows($GLOBALS['___mysqli_ston']) > 0) {
+    if ($id && mysqli_affected_rows($mysqli) > 0) {
         sql_query("UPDATE $table_type SET comments = comments - 1 WHERE id = " . sqlesc($id));
     }
     if ($site_config['seedbonus_on'] == 1) {

@@ -6,9 +6,10 @@ if (!SOCKET) {
     $pdo = new PDO("{$_ENV['DB_CONNECTION']}:unix_socket={$_ENV['DB_SOCKET']};dbname={$_ENV['DB_DATABASE']};charset={$_ENV['DB_CHARSET']}", "{$_ENV['DB_USERNAME']}", "{$_ENV['DB_PASSWORD']}");
 }
 
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+$pdo->setAttribute(PDO::ATTR_PERSISTENT, false);
 
 $fluent = new Envms\FluentPDO\Query($pdo);
 

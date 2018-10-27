@@ -5,7 +5,7 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang;
+global $lang, $mysqli;
 
 $lang = array_merge($lang, load_language('ad_cleanup_manager'));
 $params = array_merge($_GET, $_POST);
@@ -404,7 +404,7 @@ function cleanup_take_new()
         $params[$k] = sqlesc($v);
     }
     sql_query("INSERT INTO cleanup (function_name, clean_title, clean_desc, clean_file, clean_time, clean_increment, clean_log, clean_on) VALUES ({$params['function_name']}, {$params['clean_title']}, {$params['clean_desc']}, {$params['clean_file']}, {$params['clean_time']}, {$params['clean_increment']}, {$params['clean_log']}, {$params['clean_on']})");
-    if (((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res)) {
+    if (((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res)) {
         stderr($lang['cleanup_new_info'], "{$lang['cleanup_new_success']}");
     } else {
         stderr($lang['cleanup_new_error'], "{$lang['cleanup_new_error1']}");
@@ -426,7 +426,7 @@ function cleanup_take_delete()
     }
     $params['cid'] = sqlesc($params['cid']);
     sql_query("DELETE FROM cleanup WHERE clean_id = {$params['cid']}");
-    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 1) {
+    if (mysqli_affected_rows($mysqli) === 1) {
         stderr($lang['cleanup_del_info'], "{$lang['cleanup_del_success']}");
     } else {
         stderr($lang['cleanup_del_error'], "{$lang['cleanup_del_error2']}");
@@ -465,7 +465,7 @@ function cleanup_take_unlock()
     $params['cid'] = sqlesc($params['cid']);
     $params['clean_on'] = ($params['clean_on'] === 1 ? sqlesc($params['clean_on'] - 1) : sqlesc($params['clean_on'] + 1));
     sql_query("UPDATE cleanup SET clean_on = {$params['clean_on']} WHERE clean_id = {$params['cid']}");
-    if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 1) {
+    if (mysqli_affected_rows($mysqli) === 1) {
         cleanup_show_main(); // this go bye bye later
     } else {
         stderr($lang['cleanup_unlock_error'], "{$lang['cleanup_unlock_error']}");

@@ -1,6 +1,7 @@
 <?php
 
-global $lang;
+global $lang, $mysqli;
+
 $topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
 if (!is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
@@ -190,7 +191,7 @@ switch ($action) {
             //=== serialize it and slap it in the DB allready!
             $poll_options = serialize($break_down_poll_options);
             sql_query('INSERT INTO `forum_poll` (`user_id` ,`question` ,`poll_answers` ,`number_of_options` ,`poll_starts` ,`poll_ends` ,`change_vote` ,`multi_options`) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($poll_question) . ', ' . sqlesc($poll_options) . ', ' . $i . ', ' . $poll_starts . ', ' . $poll_ends . ', \'' . $change_vote . '\', ' . $multi_options . ')') or sqlerr(__FILE__, __LINE__);
-            $poll_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+            $poll_id = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
             if (is_valid_id($poll_id)) {
                 sql_query('UPDATE `topics` SET poll_id = ' . sqlesc($poll_id) . ' WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
             } else {
