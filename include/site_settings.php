@@ -10,14 +10,15 @@ if ($site_settings === false || is_null($site_settings)) {
         ->select('value');
 
     foreach ($sql as $res) {
-        if (is_int($res['value'])) {
+        if (ctype_digit($res['value'])) {
             $res['value'] = (int) $res['value'];
+        } elseif (is_float($res['value'])) {
+            $res['value'] = (float) $res['value'];
         }
         $site_settings[$res['name']] = $res['value'];
     }
     $cache->set('site_settings_', $site_settings, 86400);
 }
-
 $paypal_settings = $cache->get('paypal_settings_');
 if ($paypal_settings === false || is_null($paypal_settings)) {
     $sql = $fluent->from('paypal_config');
@@ -59,8 +60,22 @@ if ($staff_settings === false || is_null($staff_settings)) {
     }
 }
 
-$site_config = array_merge($site_settings, $site_config, $paypal_settings, $hnr_settings, $staff_settings);
+$staff_forums = $cache->get('staff_forums_');
+if ($staff_forums === false || is_null($staff_forums)) {
+    $sql = $fluent->from('forums')
+        ->select(null)
+        ->select('id')
+        ->where('min_class_read >= ?', UC_STAFF)
+        ->orderBy('id')
+        ->fetchAll();
 
+    foreach ($sql as $res) {
+        $staff_forums['staff_forums'][] = $res['id'];
+    }
+
+    $cache->set('staff_forums_', $staff_forums, 86400);
+}
+$site_config = array_merge($site_settings, $site_config, $paypal_settings, $hnr_settings, $staff_settings, $staff_forums);
 $use_12_hour = !empty($session->get('use_12_hour')) ? $session->get('use_12_hour') === 'yes' ? 1 : 0 : $site_config['use_12_hour'];
 $time_string = $use_12_hour ? 'g:i:s a' : 'H:i:s';
 $time_string_without_seconds = $use_12_hour ? 'g:i a' : 'H:i';

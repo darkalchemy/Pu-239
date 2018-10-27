@@ -1,4 +1,5 @@
 27 Oct, 2018
+fix: autoshout for new topics/replies
 fix: memcached stats when using sockets
 fix: polls
 update: README

@@ -232,9 +232,6 @@ $site_config['adminer_allowed_ids'] = [
 ];
 
 $site_config['staff']['forumid'] = 1;
-$site_config['staff_forums'] = [
-    1,
-];
 
 // Arcade Games
 $site_config['arcade_games'] = [
