@@ -136,6 +136,7 @@ function get_infopage($lang, $queries, $path)
         'receiver',
         'server',
         'op',
+        'mode',
     ];
 
     $ignore2 = [

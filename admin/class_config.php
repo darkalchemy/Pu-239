@@ -29,6 +29,48 @@ if (!in_array($mode, $possible_modes)) {
     stderr($lang['classcfg_error'], $lang['classcfg_error1']);
 }
 
+function update_forum_classes(int $value, string $direction)
+{
+    global $fluent, $cache;
+
+    if ($direction === 'increment') {
+        $fluent->update('forums')
+            ->set(['min_class_read' => new Envms\FluentPDO\Literal('min_class_read + 1')])
+            ->where('min_class_read >= ?', $value)
+            ->execute();
+
+        $fluent->update('forums')
+            ->set(['min_class_write' => new Envms\FluentPDO\Literal('min_class_write + 1')])
+            ->where('min_class_write >= ?', $value)
+            ->execute();
+
+        $fluent->update('forums')
+            ->set(['min_class_create' => new Envms\FluentPDO\Literal('min_class_create + 1')])
+            ->where('min_class_create >= ?', $value)
+            ->execute();
+    } else {
+        $fluent->update('forums')
+            ->set(['min_class_read' => new Envms\FluentPDO\Literal('min_class_read - 1')])
+            ->where('min_class_read >= ?', $value)
+            ->where('min_class_read > 0')
+            ->execute();
+
+        $fluent->update('forums')
+            ->set(['min_class_write' => new Envms\FluentPDO\Literal('min_class_write - 1')])
+            ->where('min_class_write >= ?', $value)
+            ->where('min_class_write > 0')
+            ->execute();
+
+        $fluent->update('forums')
+            ->set(['min_class_create' => new Envms\FluentPDO\Literal('min_class_create - 1')])
+            ->where('min_class_create >= ?', $value)
+            ->where('min_class_create > 0')
+            ->execute();
+    }
+
+    $cache->delete('staff_forums_');
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [];
     $cache->delete('is_staffs_');
@@ -116,6 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 sql_query("UPDATE class_config SET value = value +1 where value = $i AND name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')");
                 --$i;
             }
+
             if ($value > UC_MAX) {
                 sql_query("UPDATE users SET class = class +1 where class = $old_max");
                 $result = sql_query('SELECT id, class FROM users');
@@ -169,12 +212,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             'className' => $arr['classname'],
                             'classColor' => '#' . strtolower($arr['classcolor']),
                         ];
+                        $config_classes[] = strtolower(str_replace(' ', '_', $arr['classname']));
                     }
                     $classes[] = "var {$arr['name']} = {$arr['value']};";
                 }
                 write_css($data);
                 file_put_contents(ROOT_DIR . 'chat/js/classes.js', implode("\n", $classes));
-                write_classes($js_classes);
+                write_classes($js_classes, $config_classes);
                 $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
                 file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
                 $session->set('is-success', "{$lang['classcfg_success_save']}\n\n{$lang['classcfg_success_uglify']}");
@@ -182,6 +226,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $session->set('is-warning', $lang['classcfg_error_query2']);
             }
             unset($_POST);
+            update_forum_classes($value, 'increment');
         }
     }
 
@@ -246,18 +291,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'className' => $arr['classname'],
                         'classColor' => '#' . strtolower($arr['classcolor']),
                     ];
+                    $config_classes[] = strtolower(str_replace(' ', '_', $arr['classname']));
                 }
                 $classes[] = "var {$arr['name']} = {$arr['value']};";
             }
             write_css($data);
             file_put_contents(ROOT_DIR . 'chat/js/classes.js', implode("\n", $classes));
-            write_classes($js_classes);
+            write_classes($js_classes, $config_classes);
             $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
             file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
             $session->set('is-success', "{$lang['classcfg_success_reset']}\n\n{$lang['classcfg_success_uglify']}");
         } else {
             $session->set('is-warning', $lang['classcfg_error_query2']);
         }
+        update_forum_classes($value, 'decrement');
         unset($_POST);
     }
 }
