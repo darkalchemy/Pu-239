@@ -59,7 +59,7 @@ require_once INCL_DIR . 'site_settings.php';
 require_once INCL_DIR . 'database.php';
 
 if (!$site_config['in_production']) {
-    $pu239_version = new SebastianBergmann\Version('0.1', ROOT_DIR);
+    $pu239_version = new SebastianBergmann\Version('0.4', ROOT_DIR);
     $site_config['version'] = $pu239_version->getVersion();
 }
 
