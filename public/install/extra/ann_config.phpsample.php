@@ -71,4 +71,4 @@ if ($hnr_settings === false || is_null($hnr_settings)) {
     $cache->set('hnr_settings_', $hnr_settings, 86400);
 }
 
-$site_config = array_merge($site_settings, $hnr_settings);
+$site_config = array_merge($site_config, $hnr_settings);

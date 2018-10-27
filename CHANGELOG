@@ -1,4 +1,6 @@
 27 Oct, 2018
+fix: typo ann_config.php
+add: missing HnR settings from ann_config.php
 fix: call incorrect method name announce.php
 
 26 Oct, 2018
