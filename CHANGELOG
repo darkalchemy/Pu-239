@@ -1,4 +1,7 @@
 27 Oct, 2018
+update: edit topic, post reply to use same html
+fix: forum signatures
+fix: forum attachments
 fix: update forum classes when adding/removing classes
 fix: autoshout for new topics/replies
 fix: memcached stats when using sockets

@@ -86,11 +86,11 @@ foreach ($query as $sub_forums_arr) {
                 break;
 
             case 'recycled':
-                $topic_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_topic_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" class="tooltipper icon" />';
+                $topic_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_topic_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" class="tooltipper icon">';
                 break;
 
             case 'deleted':
-                $topic_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_topic_is_currently'] . ' ' . $lang['fe_deleted'] . '" class="tooltipper icon" />';
+                $topic_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_topic_is_currently'] . ' ' . $lang['fe_deleted'] . '" class="tooltipper icon">';
                 break;
         }
 
@@ -130,7 +130,7 @@ foreach ($query as $sub_forums_arr) {
                 <table>
                     <tr>
                         <td>
-                            <img src='{$site_config['pic_baseurl']}forums/{$img}.gif' alt='{$img}' title='{$img}' class='tooltipper icon' />
+                            <img src='{$site_config['pic_baseurl']}forums/{$img}.gif' alt='{$img}' title='{$img}' class='tooltipper icon'>
                         </td>
                         <td>
                             <a class='altlink' href='?action=view_forum&amp;forum_id={$sub_forums_arr['sub_forum_id']}'>" . htmlsafechars($sub_forums_arr['sub_form_name'], ENT_QUOTES) . '</a>' . ($CURUSER['class'] >= UC_ADMINISTRATOR ? "
@@ -173,7 +173,7 @@ foreach ($query as $sub_forums_arr) {
     if ($arr['parent_forum'] > 0) {
         $child = "<span>[ {$lang['fe_child_board']} ]</span>";
         $parent_forum_name = "
-            <img src='{$site_config['pic_baseurl']}arrow_next.gif' alt='&#9658;' title='&#9658;' class='tooltipper icon' />
+            <img src='{$site_config['pic_baseurl']}arrow_next.gif' alt='&#9658;' title='&#9658;' class='tooltipper icon'>
 		    <a class='altlink' href='{$site_config['baseurl']}/forums.php?action=view_forum&amp;forum_id={$parent_forum_id}'>" . htmlsafechars($parent_forum_arr['parent_forum_name'], ENT_QUOTES) . '</a>';
     }
 }
@@ -212,11 +212,11 @@ if ($count > 0) {
                 break;
 
             case 'recycled':
-                $topic_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_topic_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" class="tooltipper icon" />';
+                $topic_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_topic_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" class="tooltipper icon">';
                 break;
 
             case 'deleted':
-                $topic_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_topic_is_currently'] . ' ' . $lang['fe_deleted'] . '" class="tooltipper icon" />';
+                $topic_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_topic_is_currently'] . ' ' . $lang['fe_deleted'] . '" class="tooltipper icon">';
                 break;
         }
 
@@ -235,16 +235,16 @@ if ($count > 0) {
                 break;
 
             case 'recycled':
-                $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" width="18px" class="tooltipper icon" />';
+                $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" width="18px" class="tooltipper icon">';
                 break;
 
             case 'deleted':
-                $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_deleted'] . '" width="18px" class="tooltipper icon" />';
+                $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_deleted'] . '" width="18px" class="tooltipper icon">';
                 break;
 
             case 'postlocked':
                 $post_status = 'postlocked';
-                $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/thread_locked.gif" alt="' . $lang['fe_locked'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_locked'] . '" width="18px" class="tooltipper icon" />';
+                $post_status_image = ' <img src="' . $site_config['pic_baseurl'] . 'forums/thread_locked.gif" alt="' . $lang['fe_locked'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_locked'] . '" width="18px" class="tooltipper icon">';
                 break;
         }
 
@@ -278,8 +278,8 @@ if ($count > 0) {
             $thread_starter = ($first_post_arr['username'] !== '' ? format_username($first_post_arr['user_id']) : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
         }
 
-        $icon = (empty($first_post_arr['icon']) ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_thread_icon'] . '" title="' . $lang['fe_thread_icon'] . '" class="tooltipper icon" />' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" />');
-        $first_post_text = bubble('<img src="' . $site_config['pic_baseurl'] . 'forums/mg.gif" alt="' . $lang['fe_preview'] . '" class="icon" />', format_comment($first_post_arr['body'], true, true, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
+        $icon = (empty($first_post_arr['icon']) ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_thread_icon'] . '" title="' . $lang['fe_thread_icon'] . '" class="tooltipper icon">' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '">');
+        $first_post_text = bubble('<img src="' . $site_config['pic_baseurl'] . 'forums/mg.gif" alt="' . $lang['fe_preview'] . '" class="icon">', format_comment($first_post_arr['body'], true, true, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
 
         $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $last_unread_post_arr = mysqli_fetch_row($last_unread_post_res);
@@ -297,7 +297,7 @@ if ($count > 0) {
                 break;
 
             case $total_pages > 11:
-                $multi_pages = ' <span style="font-size: xx-small;"> <img src="' . $site_config['pic_baseurl'] . 'forums/multipage.gif" alt="+" title="+" class="tooltipper icon" />';
+                $multi_pages = ' <span style="font-size: xx-small;"> <img src="' . $site_config['pic_baseurl'] . 'forums/multipage.gif" alt="+" title="+" class="tooltipper icon">';
                 for ($i = 1; $i < 5; ++$i) {
                     $multi_pages .= ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $i . '">' . $i . '</a>';
                 }
@@ -309,7 +309,7 @@ if ($count > 0) {
                 break;
 
             case $total_pages < 11:
-                $multi_pages = ' <span style="font-size: xx-small;"> <img src="' . $site_config['pic_baseurl'] . 'forums/multipage.gif" alt="+" title="+" class="tooltipper icon" />';
+                $multi_pages = ' <span style="font-size: xx-small;"> <img src="' . $site_config['pic_baseurl'] . 'forums/multipage.gif" alt="+" title="+" class="tooltipper icon">';
                 for ($i = 1; $i < $total_pages; ++$i) {
                     $multi_pages .= ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $i . '">' . $i . '</a>';
                 }
@@ -318,7 +318,7 @@ if ($count > 0) {
         }
         $new = ($arr_post_stuff['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_unread_post_res || $last_post_id > $last_unread_post_id) : 0;
         $topic_pic = ($posts < 30 ? ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'topicnew' : 'topic')) : ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'hot_topic_new' : 'hot_topic')));
-        $topic_name = ($sticky ? '<img src="' . $site_config['pic_baseurl'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" class="tooltipper icon" /> ' : ' ') . ($topic_poll ? '<img src="' . $site_config['pic_baseurl'] . 'forums/poll.gif" alt="Poll:" title="' . $lang['fe_poll'] . '" class="tooltipper icon" /> ' : ' ') . ' <a class="altlink" href="?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($topic_arr['topic_name'], ENT_QUOTES) . '</a> ' . ($posted ? '<img src="' . $site_config['pic_baseurl'] . 'forums/posted.gif" alt="Posted" title="Posted" class="tooltipper icon" /> ' : ' ') . ($subscriptions ? '<img src="' . $site_config['pic_baseurl'] . 'forums/subscriptions.gif" alt="' . $lang['fe_subscribed'] . '" title="Subcribed" class="tooltipper icon" /> ' : ' ') . ($new ? ' <img src="' . $site_config['pic_baseurl'] . 'forums/new.gif" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!" class="tooltipper icon" />' : '') . $multi_pages;
+        $topic_name = ($sticky ? '<img src="' . $site_config['pic_baseurl'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" class="tooltipper icon"> ' : ' ') . ($topic_poll ? '<img src="' . $site_config['pic_baseurl'] . 'forums/poll.gif" alt="Poll:" title="' . $lang['fe_poll'] . '" class="tooltipper icon"> ' : ' ') . ' <a class="altlink" href="?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($topic_arr['topic_name'], ENT_QUOTES) . '</a> ' . ($posted ? '<img src="' . $site_config['pic_baseurl'] . 'forums/posted.gif" alt="Posted" title="Posted" class="tooltipper icon"> ' : ' ') . ($subscriptions ? '<img src="' . $site_config['pic_baseurl'] . 'forums/subscriptions.gif" alt="' . $lang['fe_subscribed'] . '" title="Subcribed" class="tooltipper icon"> ' : ' ') . ($new ? ' <img src="' . $site_config['pic_baseurl'] . 'forums/new.gif" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!" class="tooltipper icon">' : '') . $multi_pages;
 
         $rpic = ($topic_arr['num_ratings'] != 0 ? ratingpic_forums(round($topic_arr['rating_sum'] / $topic_arr['num_ratings'], 1)) : '');
 
@@ -327,7 +327,7 @@ if ($count > 0) {
         }
 
         $content .= '<tr>
-		<td><img src="' . $site_config['pic_baseurl'] . 'forums/' . $topic_pic . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="tooltipper icon" /></td>
+		<td><img src="' . $site_config['pic_baseurl'] . 'forums/' . $topic_pic . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="tooltipper icon"></td>
 		<td>' . $icon . '</td>
 		<td>
 		    <div class="level">
@@ -351,7 +351,7 @@ if ($count > 0) {
 		<td><span style="white-space:nowrap;">' . get_date($arr_post_stuff['added'], '') . '</span><br>
 		<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=last#' . $last_post_id . '" title="' . $lang['fe_go_to_the_last_post_in_this_thread'] . '">' . $lang['fe_last_post'] . '</a> by&nbsp;' . $last_post_username . '</td>
 		<td>' . $post_status_image . ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=last#' . $last_unread_post_id . '">
-		<img src="' . $site_config['pic_baseurl'] . 'forums/last_post.gif" alt="' . $lang['fe_last_post'] . '" title="' . $lang['fe_last_unread_post_in_this_thread'] . '" class="tooltipper icon" /></a></td>
+		<img src="' . $site_config['pic_baseurl'] . 'forums/last_post.gif" alt="' . $lang['fe_last_post'] . '" title="' . $lang['fe_last_unread_post_in_this_thread'] . '" class="tooltipper icon"></a></td>
 		</tr>';
     }
     $the_top_and_bottom = ($locked == 'yes' && $_GET['action'] == 'view_topic' ? '
@@ -370,22 +370,22 @@ $heading = $body = '';
 if (!empty($content)) {
     $heading = '
         <tr>
-		    <th><img src="' . $site_config['pic_baseurl'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '"  class="tooltipper icon" /></th>
-		    <th><img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt=' . $lang['fe_thread_icon'] . '" title=' . $lang['fe_thread_icon'] . '"  class="tooltipper icon" /></th>
+		    <th><img src="' . $site_config['pic_baseurl'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '"  class="tooltipper icon"></th>
+		    <th><img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt=' . $lang['fe_thread_icon'] . '" title=' . $lang['fe_thread_icon'] . '"  class="tooltipper icon"></th>
 		    <th>' . $lang['fe_topic'] . '</th>
 		    <th>' . $lang['fe_started_by'] . '</th>
 		    <th>' . $lang['fe_replies'] . '</th>
 		    <th>' . $lang['fe_views'] . '</th>
 		    <th>' . $lang['fe_last_post'] . '</th>
-		    <th><img src="' . $site_config['pic_baseurl'] . 'forums/last_post.gif" alt="' . $lang['fe_last_post'] . '" title="' . $lang['fe_last_post'] . '" class="tooltipper icon" /></th>
+		    <th><img src="' . $site_config['pic_baseurl'] . 'forums/last_post.gif" alt="' . $lang['fe_last_post'] . '" title="' . $lang['fe_last_post'] . '" class="tooltipper icon"></th>
 		</tr>';
 }
 $table = main_table($content, $heading);
 $HTMLOUT .= $table . ($may_post ? '
                     <div class="has-text-centered margin20">
-                        <form action="' . $site_config['baseurl'] . '/forums.php" method="post" name="new">
-		                    <input type="hidden" name="action" value="new_topic" />
-		                    <input type="hidden" name="forum_id" value="' . $forum_id . '" />
-		                    <input type="submit" name="button" class="button is-small" value="' . $lang['fe_new_topic'] . '"  />
+                        <form action="' . $site_config['baseurl'] . '/forums.php?action=new_topic&amp;forum_id=' . $forum_id . '" method="post" name="new">
+		                    <input type="hidden" name="action" value="new_topic">
+		                    <input type="hidden" name="forum_id" value="' . $forum_id . '">
+		                    <input type="submit" name="button" class="button is-small" value="' . $lang['fe_new_topic'] . '" >
 		                </form>
 		            </div>' : '<span>' . $lang['fe_you_are_not_permitted_to_post_in_this_forum.'] . '</span>') . $the_top_and_bottom . ($count > $perpage ? $menu_bottom : '');

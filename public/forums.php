@@ -49,7 +49,7 @@ $accepted_file_types = [
     $config_arr['accepted_file_types'],
 ];
 $max_file_size = intval($config_arr['max_file_size']);
-$upload_folder = htmlsafechars(trim($config_arr['upload_folder']));
+$upload_folder = ROOT_DIR . htmlsafechars(trim($config_arr['upload_folder']));
 $posted_action = strip_tags((isset($_GET['action']) ? $_GET['action'] : (isset($_POST['action']) ? $_POST['action'] : '')));
 if ($CURUSER['class'] >= UC_STAFF) {
     $valid_actions = [
@@ -191,28 +191,27 @@ $poll_starts = (isset($_POST['poll_starts']) ? intval($_POST['poll_starts']) : 0
 $poll_ends = (isset($_POST['poll_ends']) ? intval($_POST['poll_ends']) : 1356048000);
 $change_vote = ((isset($_POST['change_vote']) && 'yes' === $_POST['change_vote']) ? 'yes' : 'no');
 $multi_options = (isset($_POST['multi_options']) ? intval($_POST['multi_options']) : 1);
-//$can_add_poll = (isset($_GET['action']) && $_GET['action'] == 'new_topic' ? 1 : 0);
-//=== options for amount of options lol
+$can_add_poll = (isset($_GET['action']) && $_GET['action'] == 'new_topic' ? 1 : 0);
+
 $options = '';
 for ($i = 2; $i < 21; ++$i) {
-    $options .= '<option value="' . $i . '" ' . ($multi_options === $i ? 'selected="selected"' : '') . '>' . $i . ' options</option>';
+    $options .= '<option value="' . $i . '" ' . ($multi_options === $i ? 'selected' : '') . '>' . $i . ' options</option>';
 }
 $more_options = '
-<div id="tools" ' . ((isset($_POST['poll_question']) && '' !== $_POST['poll_question']) ? '' : 'style="display:none"') . ' >
+<div id="staff_tools" ' . ((isset($_POST['poll_question']) && '' !== $_POST['poll_question']) ? '' : 'style="display:none"') . ' >
 <table border="0" cellspacing="0" cellpadding="5" width="800">
 <tr>
-<td colspan="3">' . $lang['fm_additional_options'] . '}...</td>
 </tr>' . ($CURUSER['class'] < $min_upload_class ? '' : '<tr>
 <td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/attach.gif" alt="' . $lang['fm_attach'] . '" class="emoticon lazy"></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['fe_attachments'] . ':</span></td>
 <td>
-<input type="file" size="30" name="attachment[]" /> <a title="' . $lang['fm_add_more_attachments'] . '"  id="more" style="white-space:nowrap;font-weight:bold;cursor:pointer;">' . $lang['fm_add_more_attachments'] . '</a>
+<input type="file" size="30" name="attachment[]"> <a title="' . $lang['fm_add_more_attachments'] . '"  id="more" style="white-space:nowrap;font-weight:bold;cursor:pointer;">' . $lang['fm_add_more_attachments'] . '</a>
 <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '}" class="emoticon lazy">
 <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" class="emoticon lazy"><br>
 <div id="attach_more" style="display:none">
-<input type="file" size="30" name="attachment[]" /><br>
-<input type="file" size="30" name="attachment[]" /><br>
-<input type="file" size="30" name="attachment[]" />
+<input type="file" size="30" name="attachment[]"><br>
+<input type="file" size="30" name="attachment[]"><br>
+<input type="file" size="30" name="attachment[]">
 </div>
 </td>
 </tr>') . ((isset($_GET['action']) && 'new_topic' != $_GET['action']) ? '' : '<tr>
@@ -224,7 +223,7 @@ $more_options = '
 <tr>
 <td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/question.png" alt="Question" class="emoticon lazy"></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_question'] . ':</span></td>
-<td><input type="text" name="poll_question" class="w-100" value="' . (isset($_POST['poll_question']) ? strip_tags($_POST['poll_question']) : '') . '" /></td>
+<td><input type="text" name="poll_question" class="w-100" value="' . (isset($_POST['poll_question']) ? strip_tags($_POST['poll_question']) : '') . '"></td>
 </tr>
 <tr>
 <td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/options.gif" alt="' . $lang['poll_answers'] . '" class="emoticon lazy"></td>
@@ -235,48 +234,48 @@ $more_options = '
 <td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/clock.png" alt=' . $lang['poll_starts'] . ' class="emoticon lazy"></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_starts'] . ':</span></td>
 <td><select name="poll_starts">
-<option value="0" ' . (0 === $poll_starts ? 'selected="selected"' : '') . '>' . $lang['poll_start_now'] . '!</option>
-<option value="1" ' . (1 === $poll_starts ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_day'], '1') . '</option>
-<option value="2" ' . (2 === $poll_starts ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_days'], '2') . '</option>
-<option value="3" ' . (3 === $poll_starts ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_days'], '3') . '</option>
-<option value="4" ' . (4 === $poll_starts ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_days'], '4') . '</option>
-<option value="5" ' . (5 === $poll_starts ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_days'], '5') . '</option>
-<option value="6" ' . (6 === $poll_starts ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_days'], '6') . '</option>
-<option value="7" ' . (7 === $poll_starts ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_week'], '1') . '</option>
+<option value="0" ' . (0 === $poll_starts ? 'selected' : '') . '>' . $lang['poll_start_now'] . '!</option>
+<option value="1" ' . (1 === $poll_starts ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_day'], '1') . '</option>
+<option value="2" ' . (2 === $poll_starts ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '2') . '</option>
+<option value="3" ' . (3 === $poll_starts ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '3') . '</option>
+<option value="4" ' . (4 === $poll_starts ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '4') . '</option>
+<option value="5" ' . (5 === $poll_starts ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '5') . '</option>
+<option value="6" ' . (6 === $poll_starts ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '6') . '</option>
+<option value="7" ' . (7 === $poll_starts ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_week'], '1') . '</option>
 </select>' . $lang['fm_when_to_start_the_poll'] . ' ' . $lang['poll_start_now'] . '!</td>
 </tr>
 <tr>
 <td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/stop.png" alt=' . $lang['poll_ends'] . ' class="emoticon lazy"></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_ends'] . ':</span></td>
 <td><select name="poll_ends">
-<option value="1356048000" ' . (1356048000 === $poll_ends ? 'selected="selected"' : '') . '>' . $lang['poll_run_forever'] . '</option>
-<option value="1" ' . (1 === $poll_ends ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_day'], '1') . '</option>
-<option value="2" ' . (2 === $poll_ends ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_days'], '2') . '</option>
-<option value="3" ' . (3 === $poll_ends ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_days'], '3') . '</option>
-<option value="4" ' . (4 === $poll_ends ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_days'], '4') . '</option>
-<option value="5" ' . (5 === $poll_ends ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_days'], '5') . '</option>
-<option value="6" ' . (6 === $poll_ends ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_days'], '6') . '</option>
-<option value="7" ' . (7 === $poll_ends ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_week'], '1') . '</option>
-<option value="14" ' . (14 === $poll_ends ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_weeks'], '2') . '</option>
-<option value="21" ' . (21 === $poll_ends ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_weeks'], '3') . '</option>
-<option value="28" ' . (28 === $poll_ends ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_month'], '1') . '</option>
-<option value="56" ' . (56 === $poll_ends ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_months'], '2') . '</option>
-<option value="84" ' . (84 === $poll_ends ? 'selected="selected"' : '') . '>' . sprintf($lang['poll_in_x_months'], '3') . '</option>
+<option value="1356048000" ' . (1356048000 === $poll_ends ? 'selected' : '') . '>' . $lang['poll_run_forever'] . '</option>
+<option value="1" ' . (1 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_day'], '1') . '</option>
+<option value="2" ' . (2 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '2') . '</option>
+<option value="3" ' . (3 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '3') . '</option>
+<option value="4" ' . (4 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '4') . '</option>
+<option value="5" ' . (5 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '5') . '</option>
+<option value="6" ' . (6 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '6') . '</option>
+<option value="7" ' . (7 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_week'], '1') . '</option>
+<option value="14" ' . (14 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_weeks'], '2') . '</option>
+<option value="21" ' . (21 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_weeks'], '3') . '</option>
+<option value="28" ' . (28 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_month'], '1') . '</option>
+<option value="56" ' . (56 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_months'], '2') . '</option>
+<option value="84" ' . (84 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_months'], '3') . '</option>
 </select> How long should this poll run? Default is "run forever"</td>
 </tr>
 <tr>
 <td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/multi.gif" alt=' . $lang['poll_multi_options'] . ' class="emoticon lazy"/></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_multi_options'] . ':</span></td>
 <td><select name="multi_options">
-<option value="1" ' . (1 === $multi_options ? 'selected="selected"' : '') . '>' . $lang['poll_single_option'] . '!</option>
+<option value="1" ' . (1 === $multi_options ? 'selected' : '') . '>' . $lang['poll_single_option'] . '!</option>
 ' . $options . '
 </select>' . $lang['fm_allow_members_to_have_more_then_one_selection'] . ' ' . $lang['poll_single_option'] . '}!</td>
 </tr>
 <tr>
 <td></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_change_vote'] . ':</span></td>
-<td><input name="change_vote" value="yes" type="radio"' . ('yes' === $change_vote ? ' checked="checked"' : '') . ' />' . $lang['fm_yes'] . '
-<input name="change_vote" value="no" type="radio"' . ('no' === $change_vote ? ' checked="checked"' : '') . ' />' . $lang['fm_no'] . '<br> ' . $lang['fm_allow_members_to_change_their_vote'] . ' "no"
+<td><input name="change_vote" value="yes" type="radio"' . ('yes' === $change_vote ? ' checked' : '') . '>' . $lang['fm_yes'] . '
+<input name="change_vote" value="no" type="radio"' . ($change_vote === 'no' ? ' checked' : '') . '>' . $lang['fm_no'] . '<br> ' . $lang['fm_allow_members_to_change_their_vote'] . ' "no"
 </td></tr>') . '
 </table>
 </div>';
@@ -481,7 +480,7 @@ switch ($action) {
                         <td class="w-25">
                             <div class="level">
                                 <span class="level-left">
-                                    <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/' . $img . '.gif" alt="' . $img . '" title=' . $lang['fm_unlocked'] . ' class="tooltipper emoticon lazy right10" />
+                                    <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/' . $img . '.gif" alt="' . $img . '" title=' . $lang['fm_unlocked'] . ' class="tooltipper emoticon lazy right10">
                                     ' . bubble('
                                     <span>
                                         <a href="?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '">' . $forum_name . '</a>
@@ -600,7 +599,7 @@ function insert_quick_jump_menu($current_forum = 0, $staff = false)
     <div class="has-text-centered margin20">
         <form method="get" action="' . $site_config['baseurl'] . '/forums.php" name="jump">
             <span>
-                <input type="hidden" name="action" value="view_forum" /> 
+                <input type="hidden" name="action" value="view_forum"> 
                 <select name="forum_id" onchange="if(this.options[this.selectedIndex].value != -1){forms[\'jump\'].submit()}">
                     <option class="head" value="0">' . $lang['fm_select_a_forum_to_jump_to'] . '</option>' : '');
 

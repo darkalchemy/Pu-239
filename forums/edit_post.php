@@ -26,7 +26,7 @@ if (!empty($arr_post['file'])) {
         $attachments .= '
 	<tr>
 	<td>
-	<input type="checkbox" name="attachment_to_delete[]" value="' . (int) $attachments_arr['id'] . '" /></td><td>
+	<input type="checkbox" name="attachment_to_delete[]" value="' . (int) $attachments_arr['id'] . '"></td><td>
 	<span style="white-space:nowrap;">' . ('zip' === $attachments_arr['extension'] ? ' <img src="' . $site_config['pic_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '" title="' . $lang['fe_zip'] . '" class="emoticon tooltipper"> ' : '<img src="' . $site_config['pic_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" title="' . $lang['fe_rar'] . '" class="emoticon tooltipper">') . '
 	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=download_attachment&amp;id=' . (int) $attachments_arr['id'] . '" title="' . $lang['fe_download_attachment'] . '" target="_blank">' . htmlsafechars($attachments_arr['file_name']) . '</a> <span style="font-weight: bold; font-size: xx-small;">[' . mksize($attachments_arr['size']) . ']</span></span></td>
 	</tr>';
@@ -106,19 +106,19 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
                 ];
                 $extension_error = $size_error = 0;
                 //=== allowed file types (2 checks) but still can't really trust it
-                $the_file_extension = strrpos($name, '.');
-                $file_extension = strtolower(substr($name, $the_file_extension)); //===  make sure the name is only alphanumeric or _ or -
-                $name = preg_replace('#[^a-zA-Z0-9_-]#', '', $name); // hell, it could even be 0_0 if it wanted to!
+                $file_extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+				$name = basename($name, '.' . $file_extension);
+                $name = preg_replace('#[^a-zA-Z0-9_-]#', '', $name);
                 switch (true) {
                     case $size > $max_file_size:
                         $size_error = ($size_error + 1);
                         break;
 
-                    case !in_array($file_extension, $accepted_file_extension) && false == $accepted_file_extension:
+                    case !in_array($file_extension, $accepted_file_extension) && $accepted_file_extension === false:
                         $extension_error = ($extension_error + 1);
                         break;
 
-                    case 0 === $accepted_file_extension:
+                    case $accepted_file_extension === 0:
                         $extension_error = ($extension_error + 1);
                         break;
 
@@ -127,19 +127,14 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
                         break;
 
                     default:
-                        //=== woohoo passed all our silly tests but just to be sure, let's mess it up a bit ;)
-                        //=== get rid of the file extension
-                        $name = substr($name, 0, -strlen($file_extension));
                         $upload_to = $upload_folder . $name . '(id-' . $post_id . ')' . $file_extension;
-                        //===plop it into the DB all safe and snuggly
                         sql_query('INSERT INTO `attachments` (`post_id`, `user_id`, `file`, `file_name`, `added`, `extension`, `size`) VALUES ( ' . sqlesc($post_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($name . '(id-' . $post_id . ')' . $file_extension) . ', ' . sqlesc($name) . ', ' . TIME_NOW . ', ' . ('.zip' === $file_extension ? '\'zip\'' : '\'rar\'') . ', ' . $size . ')') or sqlerr(__FILE__, __LINE__);
                         copy($_FILES['attachment']['tmp_name'][$key], $upload_to);
                         chmod($upload_to, 0777);
                 }
             }
         }
-    } //=== end attachment stuff
-    //=== now to delete any atachments if selected:
+    }
     if (isset($_POST['attachment_to_delete'])) {
         $_POST['attachment_to_delete'] = (isset($_POST['attachment_to_delete']) ? $_POST['attachment_to_delete'] : '');
         $attachment_to_delete = [];
@@ -162,131 +157,16 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
     header('Location: ' . $site_config['baseurl'] . '/forums.php?action=view_topic&topic_id=' . $topic_id . (0 !== $extension_error ? '&ee=' . $extension_error : '') . (0 !== $size_error ? '&se=' . $size_error : ''));
     die();
 }
-$HTMLOUT .= '<table>
-	<tr><td>
-	<h1>' . $lang['ep_edit_post_by'] . ':' . format_username($arr_post['user_id']) . ' ' . $lang['ep_in_topic'] . ' 
+$HTMLOUT .= '
+	<h1 class="has-text-centered">' . $lang['ep_edit_post_by'] . ': ' . format_username($arr_post['user_id']) . ' ' . $lang['ep_in_topic'] . ' 
 	"<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_post['topic_name'], ENT_QUOTES) . '</a>"</h1>
-	<form method="post" action="' . $site_config['baseurl'] . '/forums.php?action=edit_post&amp;topic_id=' . $topic_id . '&amp;post_id=' . $post_id . '&amp;page=' . $page . '" enctype="multipart/form-data">
-	<table class="table table-bordered table-striped">
-	<tr><td colspan="2">' . $lang['fe_compose'] . '</td></tr>
-	<tr><td><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_icon'] . '</span></td>
-	<td>
-    <table>
-    <tr>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/smile1.gif" alt="' . $lang['fe_smile'] . '" title="' . $lang['fe_smile'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/grin.gif" alt="' . $lang['fe_smilee_grin'] . '" title="' . $lang['fe_smilee_grin'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/tongue.gif" alt="' . $lang['fe_smilee_tongue'] . '" title="' . $lang['fe_smilee_tongue'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/cry.gif" alt="' . $lang['fe_smilee_cry'] . '" title="' . $lang['fe_smilee_cry'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/wink.gif" alt="' . $lang['fe_smilee_wink'] . '" title="' . $lang['fe_smilee_wink'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/rolleyes.gif" alt="' . $lang['fe_smilee_roll_eyes'] . '" title="' . $lang['fe_smilee_roll_eyes'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/blink.gif" alt="' . $lang['fe_smilee_blink'] . '" title="' . $lang['fe_smilee_blink'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/bow.gif" alt="' . $lang['fe_smilee_bow'] . '" title="' . $lang['fe_smilee_bow'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/clap2.gif" alt="' . $lang['fe_smilee_clap'] . '" title="' . $lang['fe_smilee_clap'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/hmmm.gif" alt="' . $lang['fe_smilee_hmm'] . '" title="' . $lang['fe_smilee_hmm'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/devil.gif" alt="' . $lang['fe_smilee_devil'] . '" title="' . $lang['fe_smilee_devil'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/angry.gif" alt="' . $lang['fe_smilee_angry'] . '" title="' . $lang['fe_smilee_angry'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="' . $lang['fe_smilee_shit'] . '" title="' . $lang['fe_smilee_shit'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/sick.gif" alt="' . $lang['fe_smilee_sick'] . '" title="' . $lang['fe_smilee_sick'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/tease.gif" alt="' . $lang['fe_smilee_tease'] . '" title="' . $lang['fe_smilee_tease'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/love.gif" alt="' . $lang['fe_smilee_love'] . '" title="' . $lang['fe_smilee_love'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/ohmy.gif" alt="' . $lang['fe_smilee_oh_my'] . '" title="' . $lang['fe_smilee_oh_my'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/yikes.gif" alt="' . $lang['fe_smilee_yikes'] . '" title="' . $lang['fe_smilee_yikes'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/spider.gif" alt="' . $lang['fe_smilee_spider'] . '" title="' . $lang['fe_smilee_spider'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/wall.gif" alt="' . $lang['fe_smilee_wall'] . '" title="' . $lang['fe_smilee_wall'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/idea.gif" alt="' . $lang['fe_smilee_idea'] . '" title="' . $lang['fe_smilee_idea'] . '" class="icon is-small tooltipper"></td>
-	<td class="has-no-border"><img src="' . $site_config['pic_baseurl'] . 'smilies/question.gif" alt="' . $lang['fe_smilee_question'] . '" title="' . $lang['fe_smilee_question'] . '" class="icon is-small tooltipper"></td>
-	</tr>
-	<tr>
-	<td><input type="radio" name="icon" value="smile1"' . ('smile1' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="grin"' . ('grin' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="tongue"' . ('tongue' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="cry"' . ('cry' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="wink"' . ('wink' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="rolleyes"' . ('rolleyes' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="blink"' . ('blink' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="bow"' . ('bow' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="clap2"' . ('clap2' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="hmmm"' . ('hmmm' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="devil"' . ('devil' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="angry"' . ('angry' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="shit"' . ('shit' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="sick"' . ('sick' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="tease"' . ('tease' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="love"' . ('love' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="ohmy"' . ('ohmy' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="yikes"' . ('yikes' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="spider"' . ('spider' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="wall"' . ('wall' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="idea"' . ('idea' == $icon ? ' checked="checked"' : '') . ' /></td>
-	<td><input type="radio" name="icon" value="question"' . ('question' == $icon ? ' checked="checked"' : '') . ' /></td>
-	</tr>
-    </table>
-	</td></tr>
-	' . ($can_edit ? '<tr><td><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_name'] . '</span></td>
-	<td><input type="text"  name="topic_name" value="' . trim(strip_tags($topic_name)) . '" class="w-100" /></td></tr>
-	<tr><td><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_desc'] . '</span></td>
-	<td><input type="text" maxlength="120" name="topic_desc" value="' . trim(strip_tags($topic_desc)) . '" class="w-100" /> [ optional ]</td></tr>' : '') . '
-	<tr><td><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_title'] . '</span></td>
-	<td><input type="text" maxlength="120" name="post_title" value="' . trim(strip_tags($post_title)) . '" class="w-100" /> [ optional ]</td></tr>
-	<tr><td><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_bbcode'] . '</span></td>
-	<td>
-	<input type="radio" name="show_bbcode" value="yes" ' . ($show_bbcode === 'yes' ? 'checked="checked"' : '') . ' /> ' . $lang['fe_yes_enable'] . ' ' . $lang['fe_bbcode_in_post'] . ' 
-	<input type="radio" name="show_bbcode" value="no" ' . ($show_bbcode === 'no' ? 'checked="checked"' : '') . ' /> ' . $lang['fe_no_disable'] . ' ' . $lang['fe_bbcode_in_post'] . ' 
-	</td></tr>
-	<tr><td><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_reason'] . '</span></td>
-	<td><input type="text" maxlength="20" name="edit_reason" value="' . trim(strip_tags($edit_reason)) . '" class="w-100" /> [ optional ] 
-	&nbsp;&nbsp;&nbsp;&nbsp;
-	</td></tr>
-	' . (($CURUSER['class'] == UC_MAX || $CURUSER['id'] == $arr_post['id']) ? '<tr><td><span style="white-space:nowrap; font-weight: bold;">Edit By</span></td>
-	<td>
-	<input type="radio" name="show_edited_by" value="yes"' . ($show_edited_by === 'yes' ? ' checked="checked"' : '') . ' /> yes
-	<input type="radio" name="show_edited_by" value="no"' . ($show_edited_by === 'no' ? ' checked="checked"' : '') . ' /> no
-	</td></tr>' : '') . $attachments . '
-	<tr><td><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_body'] . '</span></td>
-	<td class="is-paddingless">' . BBcode($body) . $more_options . '
-	</td></tr>
-    </table>
+	<form method="post" action="' . $site_config['baseurl'] . '/forums.php?action=edit_post&amp;topic_id=' . $topic_id . '&amp;post_id=' . $post_id . '&amp;page=' . $page . '" enctype="multipart/form-data">';
+    require_once FORUM_DIR . 'editor.php';
+
+$HTMLOUT .= '
 	<div class="has-text-centered">
-	<input type="submit" name="button" class="button is-small margin20" value="Edit" />
+	<input type="submit" name="button" class="button is-small margin20" value="Edit">
     </div>
     </form>';
 
-$res_posts = sql_query('SELECT p.id AS post_id, p.user_id, p.added, p.body, p.icon, p.post_title, p.bbcode, p.anonymous, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.avatar, u.chatpost, u.leechwarn, u.pirate, u.king, u.offensive_avatar FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND' : '')) . '  topic_id=' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1, 10') or sqlerr(__FILE__, __LINE__);
-$HTMLOUT .= '<h2 class="has-text-centered">' . $lang['fe_last_ten_posts_in_reverse_order'] . '</h2>';
-
-while ($arr = mysqli_fetch_assoc($res_posts)) {
-    $HTMLOUT .= '
-    <table class="table table-bordered table-striped">
-        <tr>
-            <td>
-                <a id="' . (int) $arr['post_id'] . '"></a>
-        		<span style="white-space:nowrap;">#' . (int) $arr['post_id'] . '
-    		        <span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '<i>' . get_anonymous_name() . '</i>' : htmlsafechars($arr['username'])) . '</span>
-                </span>
-            </td>
-    		<td>
-                <span style="white-space:nowrap;"> ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span>
-            </td>
-        </tr>';
-    if ($arr['anonymous'] === 'yes') {
-        if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
-            $HTMLOUT .= '
-        <tr>
-            <td class="has-text-centered w-15 mw-150">' . get_avatar($arr) . '<br><i>' . get_anonymous_name() . '</i></td>';
-        } else {
-            $HTMLOUT .= '
-        <tr>
-            <td class="has-text-centered w-15 mw-150">' . get_avatar($arr) . '<br><i>' . get_anonymous_name() . '</i>[' . format_username($arr['user_id']) . ']</td>';
-        }
-    } else {
-        $HTMLOUT .= '
-        <tr>
-            <td class="has-text-centered w-15 mw-150">' . get_avatar($arr) . '<br>' . format_username($arr['user_id']) . '</td>';
-    }
-    $HTMLOUT .= '
-            <td colspan="2">' . ($arr['bbcode'] == 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body'])) . '</td>
-        </tr>
-    </table>';
-}
-
-$HTMLOUT .= '</td></tr></table>';
+require_once FORUM_DIR . 'last_ten.php';

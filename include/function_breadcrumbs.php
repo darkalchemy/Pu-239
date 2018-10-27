@@ -103,6 +103,14 @@ function get_secondarypage($lang, $queries, $path)
         return false;
     }
     $list = explode('=', $queries[2]);
+    $ignore = [
+        'topic_id',
+    ];
+
+    if (in_array($list[0], $ignore)) {
+        return false;
+    }
+
     if ($list[0] === 'phpinfo') {
         $title = $lang['phpinfo'];
     }
@@ -185,7 +193,7 @@ function get_actionpage($lang, $queries, $path)
     $queries_1 = '';
     $list = explode('=', $queries[0]);
 
-    if ($list[0] === 'id' || $list[0] === 'search' || $list[1] === 'bugs' || preg_match('/c\d*/', $list[0])) {
+    if ($list[0] === 'id' || $list[0] === 'search' || $list[1] === 'bugs' || $list[0] === 'edited' || preg_match('/c\d+/', $list[0])) {
         return false;
     }
 
@@ -199,6 +207,8 @@ function get_actionpage($lang, $queries, $path)
         $title = $lang['top_torrents'];
     } elseif ($list[0] === 'view' && $list[1] === 'c') {
         $title = $lang['top_countries'];
+    } elseif ($list[0] === 'action' && $list[1] === 'new_topic') {
+        $title = $lang[$list[1]];
     } elseif ($list[0] === 'tool' && $list[1] === 'news') {
         $queries_1 = '&amp;mode=news';
     } elseif ($list[0] === 'tool' && $list[1] === 'uploadapps') {
