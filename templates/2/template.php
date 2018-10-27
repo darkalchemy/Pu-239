@@ -251,10 +251,18 @@ function stdfoot($stdfoot = false)
         } elseif ($_ENV['CACHE_DRIVER'] === 'memcached' && extension_loaded('memcached')) {
             $client = new \Memcached();
             if (!count($client->getServerList())) {
-                $client->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
+                if (!SOCKET) {
+                    $client->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
+                } else {
+                    $client->addServer($_ENV['MEMCACHED_SOCKET'], 0);
+                }
             }
             $stats = $client->getStats();
-            $stats = !empty($stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"]) ? $stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"] : null;
+            if (!SOCKET) {
+                $stats = !empty($stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"]) ? $stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"] : null;
+            } else {
+                $stats = !empty($stats["{$_ENV['MEMCACHED_SOCKET']}:0"]) ? $stats["{$_ENV['MEMCACHED_SOCKET']}:0"] : (!empty($stats["{$_ENV['MEMCACHED_SOCKET']}:{$_ENV['MEMCACHED_PORT']}"]) ? $stats["{$_ENV['MEMCACHED_SOCKET']}:{$_ENV['MEMCACHED_PORT']}"] : null);
+            }
             if ($stats && !empty($stats['get_hits']) && !empty($stats['cmd_get'])) {
                 $stats['Hits'] = number_format(($stats['get_hits'] / $stats['cmd_get']) * 100, 3);
                 $header = $lang['gl_stdfoot_querys_mstat3'] . $stats['Hits'] . $lang['gl_stdfoot_querys_mstat4'] . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['curr_items']) . "{$lang['gl_stdfoot_querys_mstat6']}" . human_filesize($stats['bytes']);
@@ -270,33 +278,27 @@ function stdfoot($stdfoot = false)
                 <div class='container is-fluid portlet'>
                     <a id='queries-hash'></a>
                     <fieldset id='queries' class='header'>
-                        <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['gl_stdfoot_querys']}</legend>
-                        <div class='has-text-centered'>
-                            <table class='table table-bordered table-striped bottom10'>
-                                <thead>
-                                    <tr>
-                                        <th class='w-10'>{$lang['gl_stdfoot_id']}</th>
-                                        <th class='w-10'>{$lang['gl_stdfoot_qt']}</th>
-                                        <th>{$lang['gl_stdfoot_qs']}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>";
+                        <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['gl_stdfoot_querys']}</legend>";
+            $heading = "
+                            <tr>
+                                <th class='w-10'>{$lang['gl_stdfoot_id']}</th>
+                                <th class='w-10'>{$lang['gl_stdfoot_qt']}</th>
+                                <th>{$lang['gl_stdfoot_qs']}</th>
+                            </tr>";
+            $body = '';
             foreach ($query_stat as $key => $value) {
                 $querytime += $value['seconds'];
-                $htmlfoot .= '
-                                    <tr>
-                                        <td>' . ($key + 1) . '</td>
-                                        <td>' . ($value['seconds'] > 0.01 ? "<span class='tooltipper has-text-red' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='tooltipper has-text-green' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
-                                        <td>
-                                            <div class='text-justify'>" . format_comment($value['query']) . '</div>
-                                        </td>
-                                    </tr>';
+                $body .= '
+                            <tr>
+                                <td>' . ($key + 1) . '</td>
+                                <td>' . ($value['seconds'] > 0.01 ? "<span class='tooltipper has-text-red' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='tooltipper has-text-green' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
+                                <td>
+                                    <div class='text-justify'>" . format_comment($value['query']) . '</div>
+                                </td>
+                            </tr>';
             }
 
-            $htmlfoot .= '
-                                </tbody>
-                            </table>
-                        </div>
+            $htmlfoot .= main_table($body, $heading) . '
                     </fieldset>
                 </div>';
         }

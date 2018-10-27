@@ -251,10 +251,18 @@ function stdfoot($stdfoot = false)
         } elseif ($_ENV['CACHE_DRIVER'] === 'memcached' && extension_loaded('memcached')) {
             $client = new \Memcached();
             if (!count($client->getServerList())) {
-                $client->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
+                if (!SOCKET) {
+                    $client->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
+                } else {
+                    $client->addServer($_ENV['MEMCACHED_SOCKET'], 0);
+                }
             }
             $stats = $client->getStats();
-            $stats = !empty($stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"]) ? $stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"] : null;
+            if (!SOCKET) {
+                $stats = !empty($stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"]) ? $stats["{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"] : null;
+            } else {
+                $stats = !empty($stats["{$_ENV['MEMCACHED_SOCKET']}:0"]) ? $stats["{$_ENV['MEMCACHED_SOCKET']}:0"] : (!empty($stats["{$_ENV['MEMCACHED_SOCKET']}:{$_ENV['MEMCACHED_PORT']}"]) ? $stats["{$_ENV['MEMCACHED_SOCKET']}:{$_ENV['MEMCACHED_PORT']}"] : null);
+            }
             if ($stats && !empty($stats['get_hits']) && !empty($stats['cmd_get'])) {
                 $stats['Hits'] = number_format(($stats['get_hits'] / $stats['cmd_get']) * 100, 3);
                 $header = $lang['gl_stdfoot_querys_mstat3'] . $stats['Hits'] . $lang['gl_stdfoot_querys_mstat4'] . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['curr_items']) . "{$lang['gl_stdfoot_querys_mstat6']}" . human_filesize($stats['bytes']);
