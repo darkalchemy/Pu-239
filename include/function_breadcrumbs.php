@@ -105,6 +105,7 @@ function get_secondarypage($lang, $queries, $path)
     $list = explode('=', $queries[2]);
     $ignore = [
         'topic_id',
+        'game_id',
     ];
 
     if (in_array($list[0], $ignore)) {
