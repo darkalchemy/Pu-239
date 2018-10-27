@@ -59,3 +59,16 @@ function get_scheme()
 
     return null;
 }
+
+$hnr_settings = $cache->get('hnr_settings_');
+if ($hnr_settings === false || is_null($hnr_settings)) {
+    $sql = $fluent->from('hit_and_run_settings');
+
+    foreach ($sql as $res) {
+        $hnr_settings['hnr_config'][$res['name']] = $res['value'];
+    }
+
+    $cache->set('hnr_settings_', $hnr_settings, 86400);
+}
+
+$site_config = array_merge($site_settings, $hnr_settings);

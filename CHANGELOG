@@ -1,3 +1,6 @@
+27 Oct, 2018
+fix: call incorrect method name announce.php
+
 26 Oct, 2018
 update: version to v0.4
 fix: call to wrong method takelogin.php
