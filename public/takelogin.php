@@ -130,7 +130,7 @@ if (!password_verify($password, $row['passhash'])) {
         $set = [
             'passhash' => make_passhash($password),
         ];
-        $user_stuffs->set($set, $row['id']);
+        $user_stuffs->update($set, $row['id']);
     }
 }
 

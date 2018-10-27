@@ -1,5 +1,6 @@
 26 Oct, 2018
 update: version to v0.4
+fix: call to wrong method takelogin.php
 fix: send message to user when login failed takelogin.php
 update: show client and peer id view_peers.php
 remove: unused/duplicate functions scrape.php
