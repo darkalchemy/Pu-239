@@ -284,10 +284,10 @@ function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type =
         // HTML elements
         var html_add_question = \"<a href='#' title='{$lang['poll_pb_add_q']}' onclick='return poll_add_question()' class='button is-small bottom20'>{$lang['poll_pb_add_q']}</a>\";
         var html_add_choice = \"<li><a href='#' title='{$lang['poll_pb_add_c']}' onclick='return poll_add_choice(\"+'\"'+'<%1>'+'\"'+\")' class='button is-small bottom20'>{$lang['poll_pb_add_c']}</a></li>\";
-        var html_question_box = \"<input type='text' id='question_<%1>' name='question[<%1>]' class='input w-100 bottom20' value='<%2>' /> <a href='#' class='button is-small bottom20' onclick='return poll_remove_question(\"+'\"'+'<%1>'+'\"'+\")'>{$lang['poll_pb_remove_q']}</a><br><input class='checkbox bottom20' type='checkbox' id='multi_<%1>' name='multi[<%1>]' value='1' <%3> /><span>{$lang['poll_pb_multiple']}</span>\";
-        var html_votes_box = \"<input type='text' id='votes_<%1>_<%2>' name='votes[<%1>_<%2>]' class='input w-10 bottom20 right10' value='<%3>' />\";
-        var html_choice_box = \"<li><input type='text' id='choice_<%1>_<%2>' name='choice[<%1>_<%2>]' class='input w-20 bottom20 right10' value='<%3>' /><%4> <a href='#' class='button is-small bottom20' onclick='return poll_remove_choice(\"+'\"'+'<%1>_<%2>'+'\"'+\")'>{$lang['poll_pb_rem_choice']}</a></li>\";
-        var html_choice_wrap = \"<ol><%1></ol>\";
+        var html_question_box = \"<input type='text' id='question_<%1>' name='question[<%1>]' class='input w-100 bottom20' value='<%2>'> <a href='#' class='button is-small bottom20' onclick='return poll_remove_question(\"+'\"'+'<%1>'+'\"'+\")'>{$lang['poll_pb_remove_q']}</a><br><input class='checkbox bottom20' type='checkbox' id='multi_<%1>' name='multi[<%1>]' value='1' <%3>><span>{$lang['poll_pb_multiple']}</span>\";
+        var html_votes_box = \"<input type='text' id='votes_<%1>_<%2>' name='votes[<%1>_<%2>]' class='input w-10 bottom20 right10' value='<%3>'>\";
+        var html_choice_box = \"<li><input type='text' id='choice_<%1>_<%2>' name='choice[<%1>_<%2>]' class='input w-20 bottom20 right10' value='<%3>'><%4> <a href='#' class='button is-small bottom20' onclick='return poll_remove_choice(\"+'\"'+'<%1>_<%2>'+'\"'+\")'>{$lang['poll_pb_rem_choice']}</a></li>\";
+        var html_choice_wrap = \"<ol class='left20'><%1></ol>\";
         var html_question_wrap = \"<div><%1></div>\";
         var html_stat_wrap = \"<br><div><%1></div>\";
 
@@ -298,13 +298,13 @@ function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type =
 
     <h1 class='has-text-centered'>{$lang['poll_pb_editing']}</h1>
     <form id='postingform' action='{$site_config['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager' method='post' name='inputform' enctype='multipart/form-data'>
-        <input type='hidden' name='mode' value='{$form_type}' />
-        <input type='hidden' name='pid' value='$pid' />
+        <input type='hidden' name='mode' value='{$form_type}'>
+        <input type='hidden' name='pid' value='$pid'>
 
         <div>
             <fieldset class='bottom20'>
                 <legend>{$lang['poll_pb_title']}</legend>
-                <input type='text' class='input' name='poll_question' value='{$poll_question}' class='w-100 bottom20' />
+                <input type='text' class='input' name='poll_question' value='{$poll_question}' class='w-100 bottom20'>
             </fieldset>
 
             <fieldset class='bottom20'>
@@ -317,7 +317,7 @@ function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type =
                 <div id='poll-box-stat' class=''></div>
             </fieldset>
             <div class='has-text-centered'>
-                <input type='submit' name='submit' value='{$lang['poll_pb_post']}' class='button is-small right20' />
+                <input type='submit' name='submit' value='{$lang['poll_pb_post']}' class='button is-small right20'>
                 <a href='{$site_config['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager' class='button is-small'>{$lang['poll_pb_cancel']}</a>
             </div>
         </div>

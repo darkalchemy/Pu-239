@@ -45,7 +45,11 @@ class Cache extends TransactionalStore
                 if (extension_loaded('memcached')) {
                     $client = new \Memcached();
                     if (!count($client->getServerList())) {
-                        $client->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
+                        if (!SOCKET) {
+                            $client->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
+                        } else {
+                            $client->addServer($_ENV['MEMCACHED_SOCKET'], 0);
+                        }
                     }
                     $this->cache = new Memcached($client);
                 } else {

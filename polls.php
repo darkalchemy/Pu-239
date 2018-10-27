@@ -69,7 +69,7 @@ function parse_poll()
                 }
                 $percent = $votes == 0 ? 0 : $votes / $tv_poll * 100;
                 $percent = sprintf('%.2f', $percent);
-                $width = $percent > 0 ? intval($percent * 2) : 0;
+                $width = $percent > 0 ? intval($percent * 4) : 0;
                 $choice_html .= poll_show_rendered_choice($choice_id, $votes, $id, $choice, $percent, $width);
             }
             $htmlout .= poll_show_rendered_question($question, $choice_html);
@@ -197,11 +197,11 @@ function poll_show_rendered_choice($choice_id = '', $votes = '', $id = '', $answ
             <div class='bg-02 round10 padding10'>
                 $answer
             </div>
-            <div class='has-text-centered top10'>
-                <img src='{$site_config['pic_baseurl']}polls/bar.gif' style='width: {$width}px; height: 11px;' align='middle' alt='' />
+            <div class='level-center-center'>
+                <img src='{$site_config['pic_baseurl']}polls/bar.gif' style='width: {$width}px; height: 11px;' align='middle' alt=''>
                 [$percentage%]
-                <h1>Total Votes: $votes</h1>
             </div>
+            <span class='size_4'>Total Votes: $votes</span>
         </div>";
 }
 
@@ -217,9 +217,9 @@ function poll_show_rendered_question($question = '', $choice_html = '')
     return "
         <div class='has-text-centered'>
             <div class='round10'>
-                <h1>
+                <span class='size_5'>
                     $question
-                </h1>
+                </span>
             </div>
             $choice_html
         </div>";
@@ -234,7 +234,7 @@ function show_total_votes($total_votes = '')
 {
     return "
         <div class='has-text-centered top10'>
-            <b>Total Votes: $total_votes</b>
+            Total Votes: $total_votes
         </div>";
 }
 
@@ -250,7 +250,7 @@ function poll_show_form_choice_multi($choice_id = '', $votes = '', $id = '', $an
 {
     return "
     <tr>
-        <td colspan='3'><input type='checkbox' name='choice_{$id}_{$choice_id}' value='1'  />&#160;<b>$answer</b></td>
+        <td colspan='3'><input type='checkbox' name='choice_{$id}_{$choice_id}' value='1'> $answer</td>
     </tr>";
 }
 
@@ -266,7 +266,7 @@ function poll_show_form_choice($choice_id = '', $votes = '', $id = '', $answer =
 {
     return "
         <div class='padding10'>
-            <input type='radio' name='choice[{$id}]' value='$choice_id' class='right10' /> $answer
+            <input type='radio' name='choice[{$id}]' value='$choice_id' class='right10'> $answer
         </div>";
 }
 
@@ -295,7 +295,7 @@ function poll_show_form_question($id = '', $question = '', $choice_html = '')
  */
 function button_show_voteable()
 {
-    return "<input class='button is-small tooltipper margin10' type='button' name='viewresult' value='Show Votes'  title='Goto poll voting' onclick=\"go_gadget_vote()\" />";
+    return "<input class='button is-small tooltipper margin10' type='button' name='viewresult' value='Show Votes'  title='Goto poll voting' onclick=\"go_gadget_vote()\">";
 }
 
 /**
@@ -303,7 +303,7 @@ function button_show_voteable()
  */
 function button_show_results()
 {
-    return "<input class='button is-small tooltipper margin10' type='button' value='Results' title='Show all poll results' onclick=\"go_gadget_show()\" />";
+    return "<input class='button is-small tooltipper margin10' type='button' value='Results' title='Show all poll results' onclick=\"go_gadget_show()\">";
 }
 
 /**
@@ -311,7 +311,7 @@ function button_show_results()
  */
 function button_vote()
 {
-    return "<input class='button is-small tooltipper margin10' type='submit' name='submit' value='Vote' title='Cast Your Vote' />";
+    return "<input class='button is-small tooltipper margin10' type='submit' name='submit' value='Vote' title='Cast Your Vote'>";
 }
 
 /**
@@ -319,5 +319,5 @@ function button_vote()
  */
 function button_null_vote()
 {
-    return "<input class='button is-small tooltipper margin10' type='submit' name='nullvote' value='View Results (Null Vote)' title='View results, but forfeit your vote in this poll' />";
+    return "<input class='button is-small tooltipper margin10' type='submit' name='nullvote' value='View Results (Null Vote)' title='View results, but forfeit your vote in this poll'>";
 }

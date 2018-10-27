@@ -13,15 +13,15 @@ if (!is_valid_id($poll_id)) {
 $vote_cast = [];
 $_POST['choice'] = isset($_POST['choice']) ? $_POST['choice'] : [];
 
-$sql = "SELECT * FROM polls
-            LEFT JOIN poll_voters ON polls.pid = poll_voters.poll_id
-            AND poll_voters.user_id = {$CURUSER['id']}
-            WHERE pid = " . sqlesc($poll_id);
-$query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-if (!mysqli_num_rows($query) == 1) {
+$poll_data = $fluent->from('polls')
+    ->where('polls.pid = ?', $poll_id)
+    ->leftJoin('poll_voters ON polls.pid = poll_voters.poll_id AND poll_voters.user_id = ?', $CURUSER['id'])
+    ->fetch();
+
+if (empty($poll_data)) {
     stderr('ERROR', 'No poll with that ID');
 }
-$poll_data = mysqli_fetch_assoc($query);
+
 if (!empty($poll_data['user_id'])) {
     stderr('ERROR', 'You have already voted!');
 }
@@ -54,17 +54,18 @@ if (!$_POST['nullvote']) {
         'vote_date' => TIME_NOW,
     ];
     $vid = $pollvoter_stuffs->add($values);
+    if (!$vid) {
+        stderr('ERROR', 'Could not update records');
+    }
     $votes = $poll_data['votes'] + 1;
+    $choices = addslashes(serialize($poll_answers));
     $cache->update_row('poll_data_' . $CURUSER['id'], [
         'votes' => $votes,
         'ip' => $CURUSER['ip'],
         'user_id' => $CURUSER['id'],
         'vote_date' => TIME_NOW,
+        'choices' => $choices,
     ], $site_config['expires']['poll_data']);
-    dd($cache->get('poll_data_' . $CURUSER['id']));
-    if (!$vid) {
-        stderr('DBERROR', 'Could not update records');
-    }
     foreach ($vote_cast as $question_id => $choice_array) {
         foreach ($choice_array as $choice_id) {
             ++$poll_answers[$question_id]['votes'][$choice_id];
@@ -73,10 +74,17 @@ if (!$_POST['nullvote']) {
             }
         }
     }
-    $poll_data['choices'] = addslashes(serialize($poll_answers));
-    sql_query("UPDATE polls set votes = votes + 1, choices = '{$poll_data['choices']}' WHERE pid = {$poll_data['pid']}") or sqlerr(__FILE__, __LINE__);
-    if (-1 == mysqli_affected_rows($mysqli)) {
-        stderr('DBERROR', 'Could not update records');
+    $set = [
+        'votes' => new Envms\FluentPDO\Literal('votes + 1'),
+        'choices' => $choices,
+    ];
+    $result = $fluent->update('polls')
+        ->set($set)
+        ->where('pid = ?', $poll_data['pid'])
+        ->execute();
+
+    if (!$result) {
+        stderr('ERROR', 'Could not update records');
     }
 } else {
     $values = [
@@ -93,10 +101,9 @@ if (!$_POST['nullvote']) {
         'user_id' => $CURUSER['id'],
         'vote_date' => TIME_NOW,
     ], $site_config['expires']['poll_data']);
-    dd($cache->get('poll_data_' . $CURUSER['id']));
 
     if (!$vid) {
-        stderr('DBERROR', 'Could not update records');
+        stderr('ERROR', 'Could not update records');
     }
 }
 header("location: {$site_config['baseurl']}/index.php#poll");

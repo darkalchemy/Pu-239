@@ -1,4 +1,5 @@
 27 Oct, 2018
+fix: polls
 update: README
 update: allow memcached to use sockets
 update: allow mysqli to use sockets

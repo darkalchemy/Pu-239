@@ -41,6 +41,7 @@ $lang = [
     'needseed.php' => 'Need Seeds',
     'offers.php' => 'View Offers',
     'peerlist.php' => 'Peerlist',
+    'polls_take_vote.php' => 'Take Vote',
     'port_check.php' => 'Port Check',
     'promo.php' => 'Site Promotions',
     'requests.php' => 'View Requests',
