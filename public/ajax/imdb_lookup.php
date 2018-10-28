@@ -54,6 +54,9 @@ if (!empty($imdb)) {
     if (!empty($background)) {
         url_proxy($background, true);
     }
+    if (empty($poster)) {
+        $poster = find_images($imdbid);
+    }
 
     if (!empty($movie_info)) {
         $output = json_encode([

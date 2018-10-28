@@ -15,6 +15,7 @@ if ($motw === false || is_null($motw)) {
         ->select('torrents.poster')
         ->select('torrents.anonymous')
         ->select('torrents.owner')
+        ->select('torrents.imdb_id')
         ->select('torrents.times_completed')
         ->leftJoin('users ON torrents.owner = users.id')
         ->select('users.username')
@@ -52,6 +53,9 @@ foreach ($motw as $m_w) {
     $torrname = htmlsafechars($name);
     if (strlen($torrname) > 75) {
         $torrname = substr($torrname, 0, 50) . '...';
+    }
+    if (empty($poster) && !empty($imdb_id)) {
+        $poster = find_images($imdb_id);
     }
     $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster' />";
 

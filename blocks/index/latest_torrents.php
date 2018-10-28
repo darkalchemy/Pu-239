@@ -15,6 +15,7 @@ if ($top5torrents === false || is_null($top5torrents)) {
         ->select('torrents.poster')
         ->select('torrents.anonymous')
         ->select('torrents.owner')
+        ->select('torrents.imdb_id')
         ->select('torrents.times_completed')
         ->leftJoin('users ON torrents.owner = users.id')
         ->select('users.username')
@@ -42,6 +43,7 @@ if ($last5torrents === false || is_null($last5torrents)) {
         ->select('torrents.poster')
         ->select('torrents.anonymous')
         ->select('torrents.owner')
+        ->select('torrents.imdb_id')
         ->select('torrents.times_completed')
         ->leftJoin('users ON torrents.owner = users.id')
         ->select('users.username')
@@ -80,8 +82,10 @@ $HTMLOUT .= "
 foreach ($top5torrents as $top5torrentarr) {
     $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
     extract($top5torrentarr);
-
     $torrname = htmlsafechars($name);
+    if (empty($poster) && !empty($imdb_id)) {
+        $poster = find_images($imdb_id);
+    }
     $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster' />";
 
     if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
@@ -153,6 +157,9 @@ foreach ($last5torrents as $last5torrent) {
     $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
     extract($last5torrent);
     $torrname = htmlsafechars($name);
+    if (empty($poster) && !empty($imdb_id)) {
+        $poster = find_images($imdb_id);
+    }
     $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster' />";
 
     if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {

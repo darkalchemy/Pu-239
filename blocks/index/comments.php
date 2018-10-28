@@ -20,6 +20,7 @@ if ($comments === false || is_null($comments)) {
         ->select('torrents.poster')
         ->select('torrents.added AS toradd')
         ->select('torrents.size')
+        ->select('torrents.imdb_id')
         ->select('users.username')
         ->select('users.class')
         ->select('torrents:categories.name AS cat')
@@ -53,6 +54,9 @@ if (!$comments) {
         $user = $torrent = $id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = '';
         extract($comment);
         $user = $anonymous === 'yes' ? 'Anonymous' : format_username($user);
+        if (empty($poster) && !empty($imdb_id)) {
+            $poster = find_images($imdb_id);
+        }
         $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster' />";
 
         $body .= "
