@@ -916,10 +916,6 @@ code a,
     min-width: 150px;
 }
 
-.min-200 {
-    min-width: 200px;
-}
-
 .w-1 {
     width: 1%;
     flex: none;
@@ -1181,6 +1177,11 @@ body.background-16 {
 .autofill {
     max-height: 500px;
     overflow: auto;
+}
+
+.signature img{
+    max-height: 75px;
+    width: auto;
 }
 
 @media (max-width: 1200px) {

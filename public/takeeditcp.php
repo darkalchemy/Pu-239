@@ -5,6 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $fluent, $cache, $session, $message_stuffs;
 

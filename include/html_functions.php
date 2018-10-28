@@ -329,3 +329,20 @@ function placeholder_image($size = 10)
 
     return $image;
 }
+
+function validate_url($url)
+{
+    require_once INCL_DIR . 'bbcode_functions.php';
+
+    $url = format_comment_no_bbcode($url);
+    $url = filter_var($url, FILTER_SANITIZE_URL);
+    if (!filter_var($url, FILTER_VALIDATE_URL)) {
+        return null;
+    }
+
+    if (preg_match("/^https?:\/\/$/i", $url) || preg_match('/[&;]/', $url) || preg_match('#javascript:#is', $url) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $url)) {
+        return null;
+    }
+
+    return $url;
+}

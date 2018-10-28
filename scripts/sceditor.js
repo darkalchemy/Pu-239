@@ -42,7 +42,7 @@ if (textarea) {
     sceditor.create(textarea, {
         width: '100%',
         format: 'bbcode',
-        style: window.location.origin + '/css/2/sceditor_6eb75160.css',
+        style: window.location.origin + '/css/2/sceditor_05975556.css',
         startInSourceMode: true,
         resizeEnabled: true,
         enablePasteFiltering: true,

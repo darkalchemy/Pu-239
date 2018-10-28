@@ -2077,20 +2077,6 @@ function get_body_image($details, $portrait = false)
     return false;
 }
 
-function validate_url($url)
-{
-    $url = filter_var($url, FILTER_SANITIZE_URL);
-    if (!filter_var($url, FILTER_VALIDATE_URL)) {
-        return null;
-    }
-
-    if (preg_match("/^https?:\/\/$/i", $url) || preg_match('/[&;]/', $url) || preg_match('#javascript:#is', $url) || !preg_match("#^https?://(?:[^<>*\"]+|[a-z0-9/\._\-!]+)$#iU", $url)) {
-        return null;
-    }
-
-    return $url;
-}
-
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {
     $session->set('is-danger', '[h1]This site is vulnerable until you delete the install directory[/h1][p]rm -r ' . ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR . '[/p]');
 }
