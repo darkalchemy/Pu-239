@@ -10,8 +10,8 @@ if (!$lottery_config['enable']) {
     stderr('Sorry', 'Lottery is closed');
 }
 $html .= '
-    <div class="top20">
-        <h2>' . $site_config['site_name'] . ' Lottery</h2>
+    <div class="margin20 has-text-centered">
+        <h1>' . $site_config['site_name'] . ' Lottery</h1>
         <span class="size_4">
             Started: <b>' . get_date($lottery_config['start_date'], 'LONG') . '</b><br>
             Ends: <b>' . get_date($lottery_config['end_date'], 'LONG') . "</b><br>

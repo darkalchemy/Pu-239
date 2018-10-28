@@ -1,4 +1,5 @@
 27 Oct, 2018
+update: viewtickets.php
 fix: flash message using html instead of bbcode tickets.php
 fix: autobahn recording stats
 fix: removed columns snatches.php
