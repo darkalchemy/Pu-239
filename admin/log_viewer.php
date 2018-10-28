@@ -18,13 +18,8 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     $ext = pathinfo($file, PATHINFO_EXTENSION);
     $name = basename($file);
     $uncompress = $ext === 'gz' ? 'compress.zlib://' : '';
-    $maxsize = 2 * 1048576; // 2MB
-    $offset = filesize($file) - $maxsize;
-    $offset = $offset <= 0 ? 0 : $offset;
 
-    if (file_exists($file) && filesize($file) >= $maxsize) {
-        $content = file_get_contents($uncompress . $file, false, null, $offset, $maxsize);
-    } elseif (file_exists($file)) {
+	if (file_exists($file)) {
         $content = file_get_contents($uncompress . $file);
     } else {
         $content = '<b>' . $file . '</b> does not exist';
