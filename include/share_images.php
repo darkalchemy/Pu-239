@@ -19,7 +19,7 @@ function find_images(string $imdb_id)
         shuffle($posters);
         $poster = $posters[0]['url'];
 
-        return $poster
+        return $poster;
     }
     return false;
 }

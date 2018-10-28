@@ -4,6 +4,7 @@ require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_get_images.php';
+require_once INCL_DIR . 'share_images.php';
 check_user_status();
 global $session;
 
