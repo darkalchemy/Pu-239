@@ -114,6 +114,8 @@ function get_secondarypage($lang, $queries, $path)
 
     if ($list[0] === 'phpinfo') {
         $title = $lang['phpinfo'];
+    } elseif ($list[0] === 'file') {
+        $title = urldecode($list[1]);
     }
 
     if (empty($title)) {
