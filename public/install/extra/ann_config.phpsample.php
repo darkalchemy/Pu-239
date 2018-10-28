@@ -14,7 +14,7 @@ $site_config['baseurl'] = get_scheme() . '://' . $_SERVER['HTTP_HOST'];
 $site_config['pic_baseurl'] = $site_config['baseurl'] . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
 require_once CACHE_DIR . 'class_config.php';
 
-const REQUIRED_PHP = 70100, REQUIRED_PHP_VERSION = '7.1.0';
+const REQUIRED_PHP = 70200, REQUIRED_PHP_VERSION = '7.2.0';
 if (version_compare(PHP_VERSION, REQUIRED_PHP_VERSION, '>=')) {
     date_default_timezone_set('UTC');
 }
@@ -36,6 +36,7 @@ $site_config['expires']['sitepot'] = 86400;
 $site_config['expires']['torrent_announce'] = 86400;
 $site_config['expires']['torrent_details'] = 2591999;
 $site_config['expires']['user_cache'] = 2591999;
+$site_config['minvotes'] = 1;
 $site_config['query_limit'] = 65536; // mysql placeholder limit
 
 require_once INCL_DIR . 'database.php';
