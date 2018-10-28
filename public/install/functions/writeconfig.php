@@ -134,7 +134,7 @@ function createblock($fo, $foo)
         $explain = !empty($bo['explain']) ? "<div class='info'>{$bo['explain']}</div>" : '';
         $out .= "
                 <td class='input_input'>
-                    <input type='{$type}' name='{$bo['input']}' size='30' placeholder='{$bo['placeholder']}' title='{$bo['info']}' />$explain
+                    <input type='{$type}' name='{$bo['input']}' size='30' placeholder='{$bo['placeholder']}' title='{$bo['info']}' required>$explain
                 </td>
             </tr>";
     }
@@ -239,7 +239,7 @@ function saveconfig()
         $out .= '
         </fieldset>
         <div style="text-align:center;">
-            <input type="button" value="Next step" onclick="onClick(5)" />
+            <input type="button" value="Next step" onclick="onClick(5)">
         </div>';
     } else {
         $out .= '

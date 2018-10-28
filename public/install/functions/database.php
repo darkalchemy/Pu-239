@@ -25,12 +25,12 @@ function db_test()
                     <div class="readable">Schema can be created</div>
                     <div class="readable">Data can be imported</div>
                     <div style="text-align:center;">
-                        <input type="hidden" name="do" value="db_insert" />
-                        <input type="hidden" name="xbt" value="' . $_GET['xbt'] . '" />
+                        <input type="hidden" name="do" value="db_insert">
+                        <input type="hidden" name="xbt" value="' . $_GET['xbt'] . '">
                     </div>
                  </fieldset>
                 <div style="text-align:center;">
-                    <input type="submit" value="Import database" />
+                    <input type="submit" value="Import database">
                 </div>
             </form>';
         } else {
@@ -38,7 +38,7 @@ function db_test()
                     <div class="notreadable">There was an error while selecting the database<br>' . $mysqli_test->error . '</div>
                 </fieldset>
                 <div style="text-align:center;">
-                    <input type="button" value="Reload" onclick="window.location.reload()" />
+                    <input type="button" value="Reload" onclick="window.location.reload()">
                 </div>';
         }
     } else {
@@ -46,7 +46,7 @@ function db_test()
                     <div class="notreadable">There was an error while connection to the database<br>' . $mysqli_test->connect_error . '</div>
                 </fieldset>
                 <div class="info" style="text-align:center;">
-                    <input type="button" value="Reload" onclick="window.location.reload()" />
+                    <input type="button" value="Reload" onclick="window.location.reload()">
                 </div>';
     }
     $out .= '
@@ -72,18 +72,23 @@ function db_insert()
 
     $timestamp = strtotime('today midnight');
     $fail = '';
-    $query = 'SHOW VARIABLES LIKE "innodb_large_prefix"';
+    $query = 'SELECT VERSION() AS ver';
     $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $query);
     $retval = shell_exec($sql);
-    if (!preg_match('/innodb_large_prefix\s+ON/', $retval)) {
-        $fail .= "<div class='notreadable'>Please add/update my.cnf 'innodb_large_prefix = 1' and restart mysql.</div>";
-    }
+    if (!preg_match('/10\.3\.\d+\-MariaDB/i', $retval)) {
+        $query = 'SHOW VARIABLES LIKE "innodb_large_prefix"';
+        $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $query);
+        $retval = shell_exec($sql);
+        if (!preg_match('/innodb_large_prefix\s+ON/', $retval)) {
+            $fail .= "<div class='notreadable'>Please add/update my.cnf 'innodb_large_prefix = 1' and restart mysql.</div>";
+        }
 
-    $query = 'SHOW VARIABLES LIKE "innodb_file_format"';
-    $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $query);
-    $retval = shell_exec($sql);
-    if (!preg_match('/innodb_file_format\s+Barracuda/', $retval)) {
-        $fail .= "<div class='notreadable'>Please add/update my.cnf 'innodb_file_format = Barracuda' and restart mysql.</div>";
+        $query = 'SHOW VARIABLES LIKE "innodb_file_format"';
+        $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $query);
+        $retval = shell_exec($sql);
+        if (!preg_match('/innodb_file_format\s+Barracuda/', $retval)) {
+            $fail .= "<div class='notreadable'>Please add/update my.cnf 'innodb_file_format = Barracuda' and restart mysql.</div>";
+        }
     }
 
     $query = 'SHOW VARIABLES LIKE "innodb_file_per_table"';
@@ -104,7 +109,6 @@ function db_insert()
         'schema' => "source {$public}install/extra/schema.php.sql",
         'data' => "source {$public}install/extra/data.php.sql",
         'timestamps' => "UPDATE cleanup SET clean_time = $timestamp",
-        'stats' => 'INSERT INTO stats (regusers) VALUES (1)',
     ];
 
     if (empty($fail)) {
@@ -116,7 +120,7 @@ function db_insert()
             ignore_user_abort(true);
             exec($sql, $output, $retval);
             if ($retval != 0) {
-                $fail .= "<div class='notreadable'>There was an error while creating the database $name</div>";
+                $fail .= "<div class='notreadable'>There was an error while creating the database $name,<br>at step: {$name}</div>";
             }
         }
     }
@@ -125,7 +129,7 @@ function db_insert()
         $out .= '<div class="readable">Database was imported</div>
                 </fieldset>
                 <div style="text-align:center;">
-                    <input type="button" value="Finish" onclick="onClick(6)" />
+                    <input type="button" value="Finish" onclick="onClick(6)">
                 </div>';
     } else {
         $out .= "

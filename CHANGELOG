@@ -1,4 +1,7 @@
 28 Oct, 2018
+update: database files
+fix: installer updating removed table
+fix: installer remove checks for settings depecrated by MariaDB 10.3
 update: README
 update: global blocks
 

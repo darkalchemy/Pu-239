@@ -26,7 +26,7 @@ function permissioncheck()
         $root . 'cache/' => 0,
         $root . 'torrents/' => 0,
         $root . 'uploads/' => 0,
-        $root . 'include/backup/' => 0,
+        $root . 'backups/' => 0,
         $root . 'sqlerr_logs/' => 0,
         $root . 'chat/css/' => 0,
         $root . 'chat/js/' => 0,
