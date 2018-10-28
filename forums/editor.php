@@ -16,10 +16,9 @@ $edit = (preg_match('/edit_post/', $_SERVER['QUERY_STRING']) ? "
 		<td>Edited By</td>
 		<td>
 			<input type='radio' name='show_edited_by' value='yes'" . ($show_edited_by === 'yes' ? ' checked' : '') . "> Yes
-			<input type='radio' name='show_edited_by' value='no'" . ($show_edited_by === 'no' ? ' checked' : '') . "> No
+			<input type='radio' name='show_edited_by' value='no'" . ($show_edited_by === 'no' ? ' checked' : '') . '> No
 		</td>
-	</tr>" : '') : '');
-	
+	</tr>' : '') : '');
 
 $HTMLOUT .= main_table('
         <tr>

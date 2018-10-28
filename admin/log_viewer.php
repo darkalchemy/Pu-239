@@ -20,7 +20,7 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     $name = basename($file);
     $uncompress = $ext === 'gz' ? 'compress.zlib://' : '';
 
-	if (file_exists($file)) {
+    if (file_exists($file)) {
         $content = file_get_contents($uncompress . $file);
     } else {
         $content = '<b>' . $file . '</b> does not exist';
@@ -46,20 +46,20 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
         $state = 'pre';
     }
     if (!empty($contents)) {
-		rsort($contents);
-		$count = count($contents);
-		$pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?tool=log_viewer&action=view&file=" . urlencode($file) . '&amp;');
-	}
+        rsort($contents);
+        $count = count($contents);
+        $pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?tool=log_viewer&action=view&file=" . urlencode($file) . '&amp;');
+    }
     $i = 0;
     $content = [];
     foreach ($contents as $line) {
         if (!empty($line)) {
-			$i++;
-			if ($i >= $pager['pdo'][0]) {
-				$class = $i % 2 === 0 ? 'bg-01 simple_border round10 padding20 has-text-black bottom5' : 'bg-light simple_border round10 padding20 has-text-black bottom5';
-				$line = trim($line);
-				$content[] = "<$state class='{$class}'>{$line}</$state>";
-			}
+            ++$i;
+            if ($i >= $pager['pdo'][0]) {
+                $class = $i % 2 === 0 ? 'bg-01 simple_border round10 padding20 has-text-black bottom5' : 'bg-light simple_border round10 padding20 has-text-black bottom5';
+                $line = trim($line);
+                $content[] = "<$state class='{$class}'>{$line}</$state>";
+            }
             if ($i >= $pager['pdo'][0] + $pager['pdo'][1]) {
                 break;
             }

@@ -13,7 +13,7 @@
 10. Replace Simple Captcha with reCAPTCHA V3 - Done
 11. Fully responsive and mobile ready
 12. Drag and Drop Image Upload - Done
-13. Use unix sockets for all local server connection - Done
+13. Use unix sockets for all local server connections - Done
 
 This is a fork of U-232 V4.
 
@@ -27,7 +27,7 @@ NPM is required. Version ^6.4.1.
 
 This code explicitly sets the php default timezone to 'UTC'. Further down, you will set MySQL default timezone to the same.
 
-A working site with this code is at https://pu-239.pw/
+A working site with this code is at [Pu-239](https://pu-239.pw/)
 
 ### To Install:
 ```
@@ -50,13 +50,16 @@ MySQL or MariaDB or Percona MySQL
 # get the files
 git clone https://github.com/darkalchemy/Pu-239.git
 
-# install dependancies
+# move into the install folder
 cd Pu-239
+
+# install dependancies
 composer install
 npm install
 
 # set webroot to path Pu-239/public
-
+an example [Nginx Configuration](https://github.com/darkalchemy/Pu-239/wiki/NGINX-Config)
+ 
 # add charset to [mysqld] section of mysql.cnf
 character-set-server = utf8mb4
 collation-server = utf8mb4_unicode_ci
@@ -84,7 +87,7 @@ CREATE DATABASE Pu-239;
 # set ownership
 sudo chown -R www-data:www-data ../Pu-239
 
-# goto website and complete install, all fields must be completed and each fields includes an example and tooltip explanation when hovered
+# goto website and complete install, all fields must be completed and each field includes an example and tooltip explanation when hovered
 
 # set permissions and create necessary files
 [sudo] php bin/set_perms.php
@@ -144,7 +147,6 @@ mysql database < database/images.php.sql
 
 # update database:
 goto admin/upgrade_database to check/update the database
-note: if that does exist, check the changelog for 6 Dec, 2017
 ```
 
 ### API's
@@ -166,7 +168,10 @@ TVMaze no key needed, allows tv lookup.
 
 ### Making Changes to css/js files
 
-Make any edits or changes to the files in templates and scripts folder, then run [sudo] php bin/uglify.php to concatenate, minify and gzip the files for use.
+Make any edits or changes to the files in templates and scripts folder, then to concatenate, minify and gzip the files for use, run:
+```
+[sudo] php bin/uglify.php
+```
 
 ### Adding, removing changing classes
 

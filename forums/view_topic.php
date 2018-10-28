@@ -448,30 +448,30 @@ $HTMLOUT .= $mini_menu . "
                     $subscriptions
                 </li>
                 <li class='margin20'>
-                    " . ($may_post ? $locked_or_reply_button : "Can't Post") . "
+                    " . ($may_post ? $locked_or_reply_button : "Can't Post") . '
                 </li>
             </ul>
-        </div>";
+        </div>';
 
 /*
 $HTMLOUT .= ($upload_errors_size > 0 ? ($upload_errors_size === 1 ? '
         <div>One file was not uploaded. The maximum file size allowed is. ' . mksize($max_file_size) . '.</div>' : '
         <div>' . $upload_errors_size . ' file were not uploaded. The maximum file size allowed is. ' . mksize($max_file_size) . '.</div>') : '') . ($upload_errors_type > 0 ? (1 === $upload_errors_type ? '<div>One file was not uploaded. The accepted formats are zip and rar.</div>' : '<div>' . $upload_errors_type . ' files were not uploaded. The accepted formats are zip and rar.</div>') : '') . $topic_poll . '
-		' . ($CURUSER['class'] < UC_STAFF ? '' : '
+        ' . ($CURUSER['class'] < UC_STAFF ? '' : '
         <form action="' . $site_config['baseurl'] . '/forums.php?action=staff_actions" method="post" name="checkme" enctype="multipart/form-data">') . (isset($_GET['count']) ? '
             <div>' . intval($_GET['count']) . ' PMs Sent</div>' : '') . '
-    		<table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped">
                 ' . ($posts_count > $perpage ? "<div class='bottom20'>$menu_top</div>" : '') . $the_top . '
-		        <tr>
-		            <td class="w-25">
-		                <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="tooltipper emoticon lazy">' . $lang['fe_author'] . '
-		            </td>
-		            <td class="w-25">' . $lang['fe_topic'] . ': ' . $topic_name . '  [ ' . $lang['fe_read'] . ' ' . $views . ' ' . $lang['fe_times'] . ' ]</td>
+                <tr>
+                    <td class="w-25">
+                        <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="tooltipper emoticon lazy">' . $lang['fe_author'] . '
+                    </td>
+                    <td class="w-25">' . $lang['fe_topic'] . ': ' . $topic_name . '  [ ' . $lang['fe_read'] . ' ' . $views . ' ' . $lang['fe_times'] . ' ]</td>
                     <td>' . $like_button . '</td>
-		        </tr>
-		        <tr>
-		            <td colspan="3">' . $lang['fe_topic_rating'] . ': ' . (getRate($topic_id, 'topic')) . '</td>
-		        </tr>
+                </tr>
+                <tr>
+                    <td colspan="3">' . $lang['fe_topic_rating'] . ': ' . (getRate($topic_id, 'topic')) . '</td>
+                </tr>
                 <tr>
                     <td colspan="3">' . $topic_users . '</td>
                 </tr>
@@ -519,7 +519,7 @@ foreach ($posts as $arr) {
         }
         $attachments .= '</td></tr></table>';
     }
-    $signature = $CURUSER['opt1'] & user_options::SIGNATURES && !empty($usersdata['signature'])  && $arr['anonymous'] != 'yes' && !($usersdata['perms'] & bt_options::PERMS_STEALTH) ? format_comment($usersdata['signature']) : '';
+    $signature = $CURUSER['opt1'] & user_options::SIGNATURES && !empty($usersdata['signature']) && $arr['anonymous'] != 'yes' && !($usersdata['perms'] & bt_options::PERMS_STEALTH) ? format_comment($usersdata['signature']) : '';
     $post_status = htmlsafechars($arr['post_status']);
     switch ($post_status) {
         case 'ok':

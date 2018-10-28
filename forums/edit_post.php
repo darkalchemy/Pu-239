@@ -107,7 +107,7 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
                 $extension_error = $size_error = 0;
                 //=== allowed file types (2 checks) but still can't really trust it
                 $file_extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-				$name = basename($name, '.' . $file_extension);
+                $name = basename($name, '.' . $file_extension);
                 $name = preg_replace('#[^a-zA-Z0-9_-]#', '', $name);
                 switch (true) {
                     case $size > $max_file_size:
