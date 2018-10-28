@@ -3,13 +3,15 @@
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
+require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
 $HTMLOUT = '';
-$maxpieces = !empty($_GET['maxpieces']) ? $_GET['maxpieces'] : 50;
+$count = 0;
+$perpage = 25;
 
 if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     $file = $_GET['file'];
@@ -25,7 +27,7 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     } elseif (file_exists($file)) {
         $content = file_get_contents($uncompress . $file);
     } else {
-        $content = '[b]' . $file . '[/b] does not exist';
+        $content = '<b>' . $file . '</b> does not exist';
     }
 
     $content = trim($content);
@@ -46,28 +48,32 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     } else {
         $contents = explode('===================================================', $content);
     }
-    rsort($contents);
+    if (!empty($contents)) {
+		rsort($contents);
+		$count = count($contents);
+		$pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?tool=log_viewer&action=view&file=" . urlencode($file) . '&amp;');
+	}
     $i = 0;
     $content = [];
     foreach ($contents as $line) {
         if (!empty($line)) {
-            $class = $i++ % 2 === 0 ? 'bg-01 simple_border round10 padding20 has-text-black' : 'bg-light simple_border round10 padding20 has-text-black';
-            $line = trim($line);
-            $content[] = "[class={$class}]{$line}[/class]";
-            if ($i >= $maxpieces) {
+			$i++;
+			if ($i >= $pager['pdo'][0]) {
+				$class = $i % 2 === 0 ? 'bg-01 simple_border round10 padding20 has-text-black bottom5' : 'bg-light simple_border round10 padding20 has-text-black bottom5';
+				$line = trim($line);
+				$content[] = "<div class='{$class}'>{$line}</div>";
+			}
+            if ($i >= $pager['pdo'][0] + $pager['pdo'][1]) {
                 break;
             }
         }
     }
-
-    $content = implode("\n", $content);
-    $content = '[pre]' . $content . '[/pre]';
+    $content = ($count > $perpage ? $pager['pagertop'] : '') . implode("\n", $content) . ($count > $perpage ? $pager['pagerbottom'] : '');
 
     $HTMLOUT = main_div("
         <div class='bg-00 round10'>
-            <h1 class='has-text-centered'>Viewing Error Log: $file</h1>
-            <h3 class='has-text-centered'>Showing the last $i entries, in reverse order</h3>" . format_comment($content) . '
-        </div>', 'bottom20');
+            <h1 class='has-text-centered'>Viewing Log: $file</h1>$content
+        </div>", 'bottom20');
 }
 
 $paths = [
@@ -108,7 +114,7 @@ if (!empty($files)) {
         $body .= "
         <tr>
             <td>
-                <a href='{$_SERVER['PHP_SELF']}?tool=log_viewer&action=view&maxpieces=$maxpieces&file=" . urlencode($file) . "'>$file</a>
+                <a href='{$_SERVER['PHP_SELF']}?tool=log_viewer&amp;action=view&amp;file=" . urlencode($file) . "'>$file</a>
             </td>
             <td>
                 " . get_date(filemtime($file), 'LONG') . "
