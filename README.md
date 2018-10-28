@@ -58,7 +58,7 @@ composer install
 npm install
 
 # set webroot to path Pu-239/public
-an example [Nginx Configuration](https://github.com/darkalchemy/Pu-239/wiki/NGINX-Config)
+an example Nginx Configuration: https://github.com/darkalchemy/Pu-239/wiki/NGINX-Config
  
 # add charset to [mysqld] section of mysql.cnf
 character-set-server = utf8mb4
