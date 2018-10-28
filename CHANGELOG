@@ -1,4 +1,6 @@
 28 Oct, 2018
+add: .well-known dir
+update: breadcrumbs
 update: resize signature and avatar in forums
 update: version to 0.5
 update: database files

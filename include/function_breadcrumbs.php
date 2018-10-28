@@ -196,7 +196,7 @@ function get_actionpage($lang, $queries, $path)
     $queries_1 = '';
     $list = explode('=', $queries[0]);
 
-    if ($list[0] === 'id' || $list[0] === 'search' || $list[1] === 'bugs' || $list[0] === 'edited' || preg_match('/c\d+/', $list[0])) {
+    if ($list[0] === 'id' || $list[0] === 'search' || $list[1] === 'bugs' || $list[0] === 'edited' || $list[0] === 'act' || preg_match('/c\d+/', $list[0])) {
         return false;
     }
 
@@ -219,7 +219,6 @@ function get_actionpage($lang, $queries, $path)
     } elseif ($list[0] === 'tool' && $list[1] === 'warn') {
         $queries_1 = '&amp;mode=warn';
     }
-
     if (!empty($list[1]) && empty($title)) {
         $title = $lang[$list[1]];
     }
@@ -242,9 +241,6 @@ function get_basepage($lang, $path)
     if (empty($title)) {
         dd('path = ' . $path);
     }
-//    if (empty($title)) {
-//        $title = htmlspecialchars(ucfirst(basename(trim($path, '/'), '.php')), ENT_QUOTES, 'UTF-8');
-//    }
 
     return "<a href='{$site_config['baseurl']}{$path}'>{$title}</a>";
 }
