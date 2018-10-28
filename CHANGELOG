@@ -1,4 +1,5 @@
 27 Oct, 2018
+fix: flash message using html instead of bbcode tickets.php
 fix: autobahn recording stats
 fix: removed columns snatches.php
 fix: seeders/leechers getting correct count torrents_update.php

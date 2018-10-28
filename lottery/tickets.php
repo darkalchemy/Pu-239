@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $cache->update_row('user' . $CURUSER['id'], [
                 'seedbonus' => $seedbonus_new,
             ], $site_config['expires']['user_cache']);
-            $session->set('is-success', 'You bought <b class="has-text-primary">' . number_format($tickets) . '</b>. You now have <b class="has-text-primary">' . number_format($tickets + $user_tickets) . '</b> tickets!');
+            $session->set('is-success', 'You bought [b]' . number_format($tickets) . '[/b]. You now have [b]' . number_format($tickets + $user_tickets) . '[/b] tickets!');
         } else {
             $session->set('is-warning', 'There was an error with the update query, mysql error: ' . ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         }
@@ -107,7 +107,7 @@ $html .= "
                 </ul>
             </div>
         </div>
-        <table class='table table-bordered table-striped top20 bottom20'>
+        <table class='table table-bordered table-striped top20'>
             <tr>
                 <td>Total Pot</td>
                 <td>" . number_format($lottery['total_pot']) . '</td>
@@ -129,8 +129,8 @@ if ($lottery['current_user']['can_buy'] > 0) {
     $html .= "
         <form action='lottery.php?action=tickets' method='post'>
             <div class='has-text-centered margin20'>
-                <input type='text' size='10' name='tickets' />
-                <input type='submit' value='Buy tickets' class='button is-small' />
+                <input type='text' size='10' name='tickets'>
+                <input type='submit' value='Buy tickets' class='button is-small'>
             </div>
         </form>";
 }
