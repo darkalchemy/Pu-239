@@ -184,14 +184,14 @@ if ($half_down_enabled) {
 $htmlout .= "
         <li>
             <a href='{$site_config['baseurl']}/mybonus.php'>
-                <span class='button tag is-success dt-tooltipper-small' data-tooltip-content='#karma_tooltip'>Karma Contribution's</span>
+                <span class='button tag is-success dt-tooltipper-large' data-tooltip-content='#karma_tooltip'>Karma Contribution's</span>
                 <div class='tooltip_templates'>
                     <div id='karma_tooltip' class='margin20'>
-                        <div class='size_4 has-text-centered has-text-success has-text-weight-bold bottom10'>
+                        <div class='size_6 has-text-centered has-text-success has-text-weight-bold bottom10'>
                             Karma Contribution's
                         </div>
                         <div class='level is-marginless'>
-                            <span>Freeleech</span><span> [ ";
+                            <span>Freeleech</span><span class='left10'> [ ";
 if ($freeleech_enabled) {
     $htmlout .= "<span class='has-text-success'> ON </span>" . get_date($freeleech_start_time, 'DATE') . ' - ' . get_date($freeleech_end_time, 'DATE');
 } else {
@@ -203,7 +203,7 @@ $htmlout .= ' ]
 
 $htmlout .= "
                         <div class='level is-marginless'>
-                            <span>DoubleUpload</span><span> [ ";
+                            <span>DoubleUpload</span><span class='left10'> [ ";
 if ($double_upload_enabled) {
     $htmlout .= "<span class='has-text-success'> ON </span>" . get_date($double_upload_start_time, 'DATE') . ' - ' . get_date($double_upload_end_time, 'DATE');
 } else {
@@ -215,7 +215,7 @@ $htmlout .= ' ]
 
 $htmlout .= "
                         <div class='level is-marginless'>
-                            <span>Half Download</span><span> [ ";
+                            <span>Half Download</span><span class='left10'> [ ";
 if ($half_down_enabled) {
     $htmlout .= '<span class="has-text-success"> ON</span> ' . get_date($half_down_start_time, 'DATE') . ' - ' . get_date($half_down_end_time, 'DATE');
 } else {

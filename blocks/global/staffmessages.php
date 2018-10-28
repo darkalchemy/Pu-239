@@ -21,11 +21,13 @@ if ($site_config['staffmsg_alert'] && $CURUSER['class'] >= UC_STAFF) {
                 </span>
                 <div class='tooltip_templates'>
                     <div id='staffmessage_tooltip' class='margin20'>
-                        <div class='size_4 has-text-centered has-text-warning has-text-weight-bold bottom10'>" . ($answeredby > 1 ? "
+                        <div class='size_6 has-text-centered has-text-warning has-text-weight-bold bottom10'>" . ($answeredby > 1 ? "
                             {$lang['gl_staff_messages']}{$lang['gl_staff_message_news']}" : "
                             {$lang['gl_staff_message']}{$lang['gl_staff_message_news']}") . "
                         </div>
+                        <div class='has-text-centered'>
                             {$lang['gl_hey']} {$CURUSER['username']}!<br> " . sprintf($lang['gl_staff_message_alert'], $answeredby) . ($answeredby > 1 ? $lang['gl_staff_message_alerts'] : '') . "{$lang['gl_staff_message_for']}
+                        </div>
                     </div>
                 </div>
             </a>

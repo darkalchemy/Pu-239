@@ -73,13 +73,13 @@ if (!XBT_TRACKER && $site_config['crazy_hour']) {
             <span class='button tag is-success dt-tooltipper-small' data-tooltip-content='#crazy_tooltip'>{$lang['gl_crazy_']}</span>
             <div class='tooltip_templates'>
                 <div id='crazy_tooltip' class='margin20'>
-                    <div class='size_4 has-text-centered has-text-success has-text-weight-bold bottom10'>
-                        <span class='size_6 '>{$lang['gl_crazy_']}</span>
+                    <div class='size_6 has-text-centered has-text-success has-text-weight-bold bottom10'>
+                        {$lang['gl_crazy_']}
                     </div>
                     <div class='has-text-centered has-text-white'>
                         {$lang['gl_crazy_message4']}<br>
                         {$lang['gl_crazy_message5']}<br>
-                        {$lang['gl_crazy_message6']} " . mkprettytime($crazyhour['crazyhour']['var'] - 3600 - TIME_NOW) . " {$lang['gl_crazy_at']}<br>" . get_date($crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'LONG') . '
+                        {$lang['gl_crazy_message6']} " . mkprettytime($crazyhour['crazyhour']['var'] - 3600 - TIME_NOW) . "<br>{$lang['gl_crazy_at']} " . get_date($crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'TIME', 1) . '
                     </div>
                 </div>
             </div>

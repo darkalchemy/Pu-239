@@ -15,13 +15,13 @@ if ($CURUSER) {
         $htmlout .= "
     <li>
         <a href='{$site_config['baseurl']}/lottery.php'>
-            <b class='button tag is-success is-small dt-tooltipper-small' data-tooltip-content='#lottery_tooltip'>
+            <b class='button tag is-success is-small dt-tooltipper-large' data-tooltip-content='#lottery_tooltip'>
                 Lottery in Progress
             </b>
             <div class='tooltip_templates'>
                 <div id='lottery_tooltip' class='margin20'>
                     <div>
-                        <div class='size_4 has-text-centered has-text-success has-text-weight-bold bottom10'>
+                        <div class='size_6 has-text-centered has-text-success has-text-weight-bold bottom10'>
                             Lottery Info
                         </div>
                         <div class='level is-marginless'>

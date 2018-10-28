@@ -1035,6 +1035,7 @@ function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc
         'WITHOUT_SEC' => $site_config['time_without_seconds'],
         'DATE' => $site_config['time_date'] ? $site_config['time_date'] : 'j M Y',
         'FORM' => $site_config['time_form'] ? $site_config['time_form'] : 'Y-m-d',
+        'TIME' => $site_config['time_time'],
     ];
     if (!$date) {
         return '--';
