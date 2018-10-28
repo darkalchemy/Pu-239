@@ -191,6 +191,9 @@ function torrenttable($res, $variant = 'index')
         $htmlout .= '</td>';
         $dispname = htmlsafechars($row['name']);
         $smalldescr = (!empty($row['description']) ? '<i>[' . htmlsafechars($row['description']) . ']</i>' : '');
+        if (empty($row['poster']) && !empty($row['imdb_id'])) {
+            $row['poster'] = find_images($row['imdb_id']);
+        }
         $poster = empty($row['poster']) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' alt='Poster'>" : "<img src='" . url_proxy($row['poster'], true, 150, null) . "' class='tooltip-poster' alt='Poster'>";
         //$rating = empty($row["rating"]) ? "No votes yet":"".ratingpic($row["rating"])."";
         if (!empty($row['descr'])) {

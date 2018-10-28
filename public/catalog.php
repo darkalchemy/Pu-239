@@ -5,6 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
+require_once INCL_DIR . 'share_images.php';
 check_user_status();
 global $CURUSER;
 
@@ -114,6 +115,7 @@ $query = $fluent->from('torrents')
     ->select('size')
     ->select('added')
     ->select('descr')
+    ->select('imdb_id')
     ->select('anonymous')
     ->where('name LIKE :name', $params)
     ->limit(str_replace('LIMIT ', '', $pager['limit']));
@@ -174,6 +176,9 @@ $htmlout .= main_div($div);
 
 if (!empty($rows)) {
     foreach ($rows as $row) {
+        if (empty($row['poster']) && !empty($row['imdb_id'])) {
+            $row['poster'] = find_images($row['imdb_id']);
+        }
         if ($row['anonymous'] === 'yes' && ($CURUSER['class'] < UC_STAFF || $row['owner'] === $CURUSER['id'])) {
             $uploader = get_anonymous_name();
         } else {
