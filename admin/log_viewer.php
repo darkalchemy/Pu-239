@@ -12,6 +12,7 @@ global $site_config, $lang;
 $HTMLOUT = '';
 $count = 0;
 $perpage = 25;
+$state = 'div';
 
 if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     $file = $_GET['file'];
@@ -42,6 +43,7 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
         }
     } else {
         $contents = explode('===================================================', $content);
+        $state = 'pre';
     }
     if (!empty($contents)) {
 		rsort($contents);
@@ -56,7 +58,7 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
 			if ($i >= $pager['pdo'][0]) {
 				$class = $i % 2 === 0 ? 'bg-01 simple_border round10 padding20 has-text-black bottom5' : 'bg-light simple_border round10 padding20 has-text-black bottom5';
 				$line = trim($line);
-				$content[] = "<div class='{$class}'>{$line}</div>";
+				$content[] = "<$state class='{$class}'>{$line}</$state>";
 			}
             if ($i >= $pager['pdo'][0] + $pager['pdo'][1]) {
                 break;
@@ -75,7 +77,6 @@ $paths = [
     '/var/log/apache2',
     '/var/log/nginx/',
     SQLERROR_LOGS_DIR,
-    ROOT_DIR . 'logs',
 ];
 
 $files = [];
