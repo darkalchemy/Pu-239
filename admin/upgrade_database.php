@@ -14,9 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     extract($_POST);
     unset($_POST);
     $qid = array_search($id, array_column($sql_updates, 'id'));
+    $sql = $sql_updates[$qid]['query'];
 
     if (isset($qid) && $submit === 'Run Query') {
-        $sql = $sql_updates[$qid]['query'];
         $flush = $sql_updates[$qid]['flush'];
 
         if ($pdo->query($sql)) {
