@@ -1,3 +1,6 @@
+29 Oct, 2018
+fix: seedtime cleanup once per userid, not once per torrent
+
 28 Oct, 2018
 update: get poster from images table when torrents.poster is empty catalog.php, browse.php 
 fix: missing requires
