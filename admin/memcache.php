@@ -27,9 +27,29 @@ $VERSION = '$Id: memcache.php,v 1.1.2.3 2008/08/28 18:07:54 mikl Exp $';
 define('DATE_FORMAT', 'Y/m/d H:i:s');
 define('GRAPH_SIZE', 200);
 define('MAX_ITEM_DUMP', 50);
-$MEMCACHE_SERVERS[] = "{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"; // add more as an array
+//$MEMCACHE_SERVERS[] = "{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}"; // add more as an array
 //$MEMCACHE_SERVERS[] = 'mymemcache-server2:11211'; // add more as an array
+
+if (extension_loaded('memcached')) {
+    if (!SOCKET) {
+        $MEMCACHE_SERVERS[] = "{$_ENV['MEMCACHED_HOST']}:{$_ENV['MEMCACHED_PORT']}";
+    } else {
+        $MEMCACHE_SERVERS[] = "unix://{$_ENV['MEMCACHED_SOCKET']}";
+    }
+} else {
+    die('<h1>Error</h1><p>php-memcached is not available</p>');
+}
+
 ////////// END OF DEFAULT CONFIG AREA /////////////////////////////////////////////////////////////
+function get_host_port_from_server($server)
+{
+    $values = explode(':', $server);
+    if ($values[0] === 'unix' && !is_numeric($values[1])) {
+        return [$server, 0];
+    } else {
+        return $values;
+    }
+}
 
 function sendMemcacheCommands($command)
 {
@@ -37,7 +57,7 @@ function sendMemcacheCommands($command)
 
     $result = [];
     foreach ($MEMCACHE_SERVERS as $server) {
-        $strs = explode(':', $server);
+        $strs = get_host_port_from_server($server);
         $host = $strs[0];
         $port = $strs[1];
         $result[$server] = sendMemcacheCommand($host, $port, $command);
@@ -674,7 +694,7 @@ switch ($_GET['op']) {
                 $m = 1 - $m;
             }
             $HTMLOUT .= main_table($body, $heading) . '
-        </div><hr>';
+        </div>';
         }
         break;
 
@@ -710,7 +730,7 @@ switch ($_GET['op']) {
                 </td>
             </tr>";
         $HTMLOUT .= main_table($body, $heading) . '
-        </div><hr>';
+        </div>';
         break;
 
     case 5:
