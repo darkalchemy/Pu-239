@@ -1,4 +1,5 @@
 29 Oct, 2018
+fix: incorrect var namr imdb_lookup.php
 fix: admin memcached stats when using sockets
 fix: seedtime cleanup once per userid, not once per torrent
 

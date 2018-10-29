@@ -56,7 +56,7 @@ if (!empty($imdb)) {
         url_proxy($background, true);
     }
     if (empty($poster)) {
-        $poster = find_images($imdbid);
+        $poster = find_images($imdb);
     }
 
     if (!empty($movie_info)) {
