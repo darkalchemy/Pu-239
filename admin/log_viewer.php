@@ -86,6 +86,7 @@ foreach ($paths as $path) {
         $exts = [
             'log',
             'gz',
+            '1',
         ];
         foreach ($objects as $name => $object) {
             $ext = pathinfo($name, PATHINFO_EXTENSION);
