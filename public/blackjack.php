@@ -10,7 +10,7 @@ global $CURUSER, $site_config, $cache, $message_stuffs;
 $HTMLOUT = $debugout = '';
 
 if ($CURUSER['class'] < MIN_TO_PLAY) {
-    stderr('Error!', 'Sorry, you must be a ' . $class_names[MIN_TO_PLAY] . ' to play blackjack!');
+    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][MIN_TO_PLAY] . ' to play blackjack!');
 }
 
 if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['suspended'] === 'yes') {

@@ -31,7 +31,7 @@ foreach ($query as $arr2) {
     if ($arr2['support'] === 'yes') {
         $support[] = $arr2;
     } else {
-        $staffs[strtolower($class_names[$arr2['class']])][] = $arr2;
+        $staffs[strtolower($site_config['class_names'][$arr2['class']])][] = $arr2;
     }
 }
 

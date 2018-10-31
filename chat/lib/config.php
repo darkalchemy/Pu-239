@@ -11,9 +11,6 @@
 global $site_config;
 
 // Define AJAX Chat user roles:
-/*
- *
- */
 define('AJAX_CHAT_CHATBOT', $site_config['chatBotRole']);
 
 // AJAX Chat config parameters:

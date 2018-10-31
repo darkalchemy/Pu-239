@@ -276,9 +276,6 @@ function write_class_files($template)
     foreach ($res as $arr) {
         $configfile .= $t . "'{$arr['name']}', {$arr['value']});\n";
         if ($arr['name'] !== 'UC_STAFF' && $arr['name'] !== 'UC_MIN' && $arr['name'] !== 'UC_MAX') {
-            $the_names .= "{$arr['name']} => '{$arr['classname']}',";
-            $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
-            $the_images .= "{$arr['name']} => " . '$site_config[' . "'pic_baseurl'" . ']' . " . 'class/{$arr['classpic']}',";
             $js_classes[] = $arr['name'];
             $config_classes[] = strtolower(str_replace(' ', '_', $arr['classname']));
             $data[] = [
@@ -292,8 +289,7 @@ function write_class_files($template)
     file_put_contents(ROOT_DIR . 'chat/js/classes.js', implode("\n", $classes) . PHP_EOL);
     write_classes($js_classes, $config_classes);
     write_css($data, $template);
-    $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
-    file_put_contents(CACHE_DIR . $template . DIRECTORY_SEPARATOR . 'class_config.php', $configfile . PHP_EOL);
+    file_put_contents(CACHE_DIR . 'class_config.php', $configfile . PHP_EOL);
 }
 
 function clear_image_cache()

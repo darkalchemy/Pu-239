@@ -8,7 +8,7 @@ global $CURUSER, $site_config;
 
 $lang = array_merge(load_language('global'), load_language('blackjack'));
 if ($CURUSER['class'] < MIN_TO_PLAY) {
-    stderr($lang['bj_sorry'], 'Sorry, you must be a ' . $class_names[MIN_TO_PLAY] . ' to play blackjack!');
+    stderr($lang['bj_sorry'], 'Sorry, you must be a ' . $site_config['class_names'][MIN_TO_PLAY] . ' to play blackjack!');
     exit;
 }
 /**

@@ -122,10 +122,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $session->set('is-warning', $lang['classcfg_error_query1']);
         }
+        $cache->delete('class_config_' . $style);
         unset($_POST);
-    }
-
-    if ($mode === 'add') {
+    } elseif ($mode === 'add') {
         if (!empty($_POST['name']) && !empty($_POST['value']) && !empty($_POST['cname']) && !empty($_POST['color'])) {
             $name = isset($_POST['name']) ? htmlsafechars($_POST['name']) : stderr($lang['classcfg_error'], $lang['classcfg_error_class_name']);
             $value = isset($_POST['value']) ? (int) $_POST['value'] : stderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
@@ -211,12 +210,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $session->set('is-warning', $lang['classcfg_error_query2']);
             }
             unset($_POST);
+            $cache->delete('class_config_' . $style);
             update_forum_classes($value, 'increment');
             $cache->delete('staff_settings_');
         }
-    }
-
-    if ($mode === 'remove') {
+    } elseif ($mode === 'remove') {
         $name = isset($_POST['remove']) ? htmlsafechars($_POST['remove']) : stderr($lang['classcfg_error'], $lang['classcfg_error_required']);
         $res = sql_query("SELECT value from class_config WHERE name = '$name' ");
         while ($arr = mysqli_fetch_array($res)) {
@@ -273,9 +271,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $session->set('is-warning', $lang['classcfg_error_query2']);
         }
+        $cache->delete('class_config_' . $style);
         update_forum_classes($value, 'decrement');
         unset($_POST);
-        $cache->delete('staff_settings_');
     }
 }
 $HTMLOUT .= "

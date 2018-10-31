@@ -41,7 +41,7 @@ if (SOCKET) {
     $mysqli = new mysqli($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $_ENV['DB_PORT']);
 }
 
-require_once CACHE_DIR . get_stylesheet() . DIRECTORY_SEPARATOR . 'class_config.php';
+require_once CACHE_DIR . 'class_config.php';
 define('MIN_TO_PLAY', UC_POWER_USER);
 $session->start();
 
@@ -469,7 +469,7 @@ function get_charset()
 
 function get_stylesheet()
 {
-    global $site_config, $user_stuffs, $session;
+    global $site_config, $user_stuffs, $session, $fluent, $cache;
 
     $user = '';
     $userid = $session->get('userID');
@@ -477,7 +477,26 @@ function get_stylesheet()
         $user = $user_stuffs->getUserFromId($userid);
     }
 
-    return isset($user['stylesheet']) ? (int) $user['stylesheet'] : (int) $site_config['stylesheet'];
+    $style = isset($user['stylesheet']) ? (int) $user['stylesheet'] : (int) $site_config['stylesheet'];
+
+    $class_config = $cache->get('class_config_' . $style);
+    if ($class_config === false || is_null($class_config)) {
+        $class_config = $fluent->from('class_config')
+            ->orderBy('value ASC')
+            ->where('template = ?', $style)
+            ->fetchAll();
+
+        $cache->set('class_config_' . $style, $class_config, 86400);
+    }
+    foreach ($class_config as $arr) {
+        if ($arr['name'] !== 'UC_STAFF' && $arr['name'] !== 'UC_MIN' && $arr['name'] !== 'UC_MAX') {
+            $site_config['class_names'][$arr['value']] = $arr['classname'];
+            $site_config['class_colors'][$arr['value']] = $arr['classcolor'];
+            $site_config['class_images'][$arr['value']] = $site_config['pic_baseurl'] . "class/{$arr['classpic']}";
+        }
+    }
+
+    return $style;
 }
 
 /**

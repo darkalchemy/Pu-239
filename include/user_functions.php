@@ -360,16 +360,16 @@ function ratio_image_machine($ratio_to_check)
  */
 function get_user_class_name($class, $to_lower = false)
 {
-    global $class_names;
+    global $site_config;
 
     $class = (int) $class;
     if (!valid_class($class)) {
         return '';
     }
-    if (isset($class_names[$class]) && $to_lower) {
-        return strtolower(str_replace(' ', '_', $class_names[$class]));
-    } elseif (isset($class_names[$class])) {
-        return $class_names[$class];
+    if (isset($site_config['class_names'][$class]) && $to_lower) {
+        return strtolower(str_replace(' ', '_', $site_config['class_names'][$class]));
+    } elseif (isset($site_config['class_names'][$class])) {
+        return $site_config['class_names'][$class];
     } else {
         return '';
     }
@@ -382,14 +382,14 @@ function get_user_class_name($class, $to_lower = false)
  */
 function get_user_class_color($class)
 {
-    global $class_colors;
+    global $site_config;
 
     $class = (int) $class;
     if (!valid_class($class)) {
         return '';
     }
-    if (isset($class_colors[$class])) {
-        return $class_colors[$class];
+    if (isset($site_config['class_colors'][$class])) {
+        return $site_config['class_colors'][$class];
     } else {
         return '';
     }
@@ -402,14 +402,14 @@ function get_user_class_color($class)
  */
 function get_user_class_image($class)
 {
-    global $class_images;
+    global $site_config;
 
     $class = (int) $class;
     if (!valid_class($class)) {
         return '';
     }
-    if (isset($class_images[$class])) {
-        return $class_images[$class];
+    if (isset($site_config['class_images'][$class])) {
+        return $site_config['class_images'][$class];
     } else {
         return '';
     }
@@ -696,34 +696,6 @@ function get_server_load($windows = 0)
 
         return round($cpu_stats / 4); // remove /4 for single processor systems
     }
-}
-
-/**
- * @param $the_names
- * @param $the_colors
- * @param $the_images
- *
- * @return string
- */
-function get_cache_config_data($the_names, $the_colors, $the_images)
-{
-    $configfile = '';
-    $the_names = str_replace(',', ",\n    ", trim($the_names, ','));
-    $the_colors = str_replace(',', ",\n    ", trim($the_colors, ','));
-    $the_images = str_replace(',', ",\n    ", trim($the_images, ','));
-    $configfile .= "\n\n" . '$class_names = [
-    ' . $the_names . ',
-];';
-    // adding class colors like in user_functions
-    $configfile .= "\n\n" . '$class_colors = [
-    ' . $the_colors . ',
-];';
-    // adding class pics like in user_functions
-    $configfile .= "\n\n" . '$class_images = [
-    ' . $the_images . ',
-];';
-
-    return $configfile;
 }
 
 /**
