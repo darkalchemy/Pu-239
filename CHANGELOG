@@ -1,4 +1,5 @@
 31 Oct, 2018
+update: add try catch to pdo query upgrade_database.php
 update: class_config from cache file to site_config
 update: file output format user_functions.php
 update: get_birthday_users fetch to keep mysql packet size small User.php

@@ -19,7 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($qid) && $submit === 'Run Query') {
         $flush = $sql_updates[$qid]['flush'];
 
-        if ($pdo->query($sql)) {
+        try {
+            $pdo->query($sql);
             $values = [
                 'id' => (int) $id,
                 'query' => $sql,
@@ -41,8 +42,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             $session->set('is-success', "Query #$id ran without error");
-        } else {
-            $session->set('is-danger', "[p]Query #$id failed to run, try to run manually[/p][p]" . htmlspecialchars($sql) . '[/p]');
+        } catch (Exception $e) {
+            $code = $e->getCode();
+            $msg = $e->getMessage();
+            if ($code === '42S21') {
+                $session->set('is-danger', "[h2]{$msg}[/h2][p]\n you should be safe if you ignore this query[/p][p]" . htmlspecialchars($sql) . '[/p]');
+            } else {
+                $session->set('is-danger', "[h2]{$msg}[/h2][p]\n try to run manually[/p][p]" . htmlspecialchars($sql) . '[/p]');
+            }
         }
     } elseif (isset($qid) && $submit === 'Ignore Query') {
         $values = [
