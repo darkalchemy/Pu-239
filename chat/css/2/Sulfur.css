@@ -1,0 +1,116 @@
+/*
+ * @package AJAX_Chat
+ * @author Sebastian Tschan
+ * @author Philip Nicolcev
+ *
+ * Color palette inspired by PunBB style "Sulfur":
+ * http://punbb.org/
+ */
+@import url('global.css');
+@import url('fonts.css');
+@import url('print.css');
+@import url('custom.css');
+@import url('classcolors.css');
+
+/* Buttons */
+#content #bbCodeContainer input, #content #logoutButton, #content #submitButton, #loginForm #loginButton {
+    background-color: #b84623;
+    color: #fff;
+    border: 1px solid #b84623;
+}
+
+#content #bbCodeContainer input:hover, #content #logoutButton:hover, #content #submitButton:hover, #loginForm #loginButton:hover {
+    background-color: #9a2806;
+}
+
+#content select, #loginForm select, #loginForm input, #content textarea {
+    color: #333;
+    border: 1px solid #b84623;
+}
+
+/* Status Icon */
+#content #statusIconContainer {
+    background: url('../../images/loading-sprite.png') no-repeat 0 0;
+}
+
+#content #statusIconContainer.waiting {
+    background-position: 0 -22px;
+}
+
+#content #statusIconContainer.retrying {
+    background-position: 0 -44px;
+}
+
+/* Other Theme Elements */
+.ajax-chat {
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+.ajax-chat h1 {
+    color: #333;
+}
+
+.ajax-chat a {
+    color: #b84623;
+}
+
+#loginContent input, #loginContent select {
+    background-color: #fff;
+    color: #333;
+}
+
+#loginContent #errorContainer {
+    color: red;
+}
+
+#content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer, #content textarea {
+    border-color: #b84623;
+    background-color: #fff;
+}
+
+.ajax-chat .popup {
+    background-color: #fff;
+    border: 1px solid #b84623;
+}
+
+#content #colorCodesContainer a {
+    border-color: black;
+}
+
+#content #optionsContainer input {
+    background-color: transparent;
+}
+
+#content .rowEven, #helpList dl:nth-child(even), #settingsList dl:nth-child(even) {
+    background-color: #f1f1f1;
+}
+
+#content .rowOdd, #helpList dl:nth-child(odd), #settingsList dl:nth-child(odd) {
+    background-color: #dedfdf;
+}
+
+#content #chatList .rowOdd.private {
+    background-color: #f8d0d0;
+}
+
+#content #chatList .rowEven.private {
+    background-color: #f8d9d0;
+}
+
+#content #chatList .chatBotErrorMessage {
+    color: red;
+}
+
+#content #chatList a {
+    color: #b84623;
+}
+
+#content #chatList .deleteSelected {
+    border-color: red;
+}
+
+#content #onlineListContainer h3, #content #helpContainer h3, #content #settingsContainer h3 {
+    background-color: #b84623;
+    color: #fff;
+}

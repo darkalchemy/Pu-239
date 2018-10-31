@@ -14,7 +14,6 @@ $dotenv = new Dotenv\Dotenv(ROOT_DIR);
 $dotenv->load();
 
 $free = json_decode(file_get_contents(CACHE_DIR . 'free_cache.php'), true);
-require_once CACHE_DIR . 'class_config.php';
 require_once INCL_DIR . 'password_functions.php';
 $cache = new DarkAlchemy\Pu239\Cache();
 $fluent = new DarkAlchemy\Pu239\Database();
@@ -36,13 +35,14 @@ $pollvoter_stuffs = new DarkAlchemy\Pu239\PollVoter();
 $happylog_stuffs = new DarkAlchemy\Pu239\HappyLog();
 $snatched_stuffs = new DarkAlchemy\Pu239\Snatched();
 
-define('MIN_TO_PLAY', UC_POWER_USER);
 if (SOCKET) {
     $mysqli = new mysqli($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], null, $_ENV['DB_SOCKET']);
 } else {
     $mysqli = new mysqli($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $_ENV['DB_PORT']);
 }
 
+require_once CACHE_DIR . get_stylesheet() . DIRECTORY_SEPARATOR . 'class_config.php';
+define('MIN_TO_PLAY', UC_POWER_USER);
 $session->start();
 
 /**
@@ -316,7 +316,6 @@ function userlogin()
             $session->destroy();
         }
     }
-
     if ($users_data['class'] >= UC_STAFF) {
         $allowed_ID = $site_config['is_staff']['allowed'];
         if (!in_array(((int) $users_data['id']), $allowed_ID, true)) {

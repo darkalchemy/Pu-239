@@ -15,10 +15,23 @@ foreach ($argv as $arg) {
         passthru('sudo npm install -g npm');
         passthru('composer update');
         passthru('npm update');
+    } elseif ($arg === 'classes') {
+        echo "Creating classes\n";
+        $styles = get_styles();
+        $classes = get_classes($styles, true);
+        die();
     }
 }
 
-write_class_files();
+$styles = get_styles();
+$classes = get_classes($styles, false);
+
+foreach ($styles as $style) {
+    make_dir(CACHE_DIR . $style);
+    make_dir(TEMPLATE_DIR . $style);
+    make_dir(CHAT_DIR . 'css' . DIRECTORY_SEPARATOR . $style);
+    write_class_files($style);
+}
 
 $purpose = '--beautify';
 $short = 'Beautified';
@@ -36,17 +49,9 @@ if ($site_config['in_production']) {
     $js_ext = '.min.js';
 }
 
-$templates = glob(TEMPLATE_DIR . '*', GLOB_ONLYDIR);
-foreach ($templates as $template) {
-    $folder = basename($template);
-    if (is_numeric($folder)) {
-        $folders[] = $folder;
-    }
-}
-
 exec('npx node-sass ' . BIN_DIR . 'pu239.scss ' . BIN_DIR . 'pu239.css');
 
-foreach ($folders as $folder) {
+foreach ($styles as $folder) {
     $update = TEMPLATE_DIR . "{$folder}/files.php";
     $dirs = [
         PUBLIC_DIR . "js/{$folder}/",
@@ -270,21 +275,21 @@ foreach ($folders as $folder) {
         $css_list = array_merge([
             'chat_css_trans' => [
                 ROOT_DIR . 'node_modules/normalize.css/normalize.css',
-                CHAT_DIR . 'css/global.css',
-                CHAT_DIR . 'css/fonts.css',
-                CHAT_DIR . 'css/print.css',
-                CHAT_DIR . 'css/custom.css',
-                CHAT_DIR . 'css/classcolors.css',
-                CHAT_DIR . 'css/transparent.css',
+                CHAT_DIR . "css/{$folder}/global.css",
+                CHAT_DIR . "css/{$folder}/fonts.css",
+                CHAT_DIR . "css/{$folder}/print.css",
+                CHAT_DIR . "css/{$folder}/custom.css",
+                CHAT_DIR . "css/{$folder}/classcolors.css",
+                CHAT_DIR . "css/{$folder}/transparent.css",
             ],
             'chat_css_uranium' => [
                 ROOT_DIR . 'node_modules/normalize.css/normalize.css',
-                CHAT_DIR . 'css/global.css',
-                CHAT_DIR . 'css/fonts.css',
-                CHAT_DIR . 'css/print.css',
-                CHAT_DIR . 'css/custom.css',
-                CHAT_DIR . 'css/classcolors.css',
-                CHAT_DIR . 'css/Uranium.css',
+                CHAT_DIR . "css/{$folder}/global.css",
+                CHAT_DIR . "css/{$folder}/fonts.css",
+                CHAT_DIR . "css/{$folder}/print.css",
+                CHAT_DIR . "css/{$folder}/custom.css",
+                CHAT_DIR . "css/{$folder}/classcolors.css",
+                CHAT_DIR . "css/{$folder}/Uranium.css",
             ],
         ], $css_list);
     }
@@ -455,4 +460,57 @@ function get_file_name($file)
 }';
 
     file_put_contents($update, $output . PHP_EOL);
+}
+
+function get_styles()
+{
+    global $fluent;
+
+    $query = $fluent->from('stylesheets')
+        ->select(null)
+        ->select('id')
+        ->select('uri');
+
+    $styles = [];
+    foreach ($query as $style) {
+        $styles[] = $style['id'];
+    }
+
+    return $styles;
+}
+
+function get_classes(array $styles, bool $create)
+{
+    global $fluent;
+
+    $all_classes = [];
+    foreach ($styles as $style) {
+        $classes = $fluent->from('class_config')
+            ->select(null)
+            ->select('name')
+            ->select('value')
+            ->select('classname')
+            ->select('classcolor')
+            ->select('classpic')
+            ->orderBy('value')
+            ->where('template = ?', $style)
+            ->fetchAll();
+
+        if (empty($classes)) {
+            if (!$create) {
+                die("You do have not classes for template {$style}\n\nto create them rerun this script\nphp bin/uglify.php classes\n");
+            } else {
+                foreach ($all_classes[0] as $values) {
+                    $values['template'] = $style;
+                    $fluent->insertInto('class_config')
+                        ->values($values)
+                        ->execute();
+                }
+                die("Classes added for template {$style}\n");
+            }
+        }
+        $all_classes[] = $classes;
+    }
+
+    return $all_classes;
 }

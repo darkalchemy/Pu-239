@@ -1,0 +1,69 @@
+/* Custom CSS - enter css overrides for all styles below */
+
+:root {
+    --main-color: #0f0;
+}
+
+.mentioned {
+    color: #5eff00;
+    text-shadow: 1px 1px #2c6609;
+}
+
+.text-1 {
+    font-family: 'Oswald', sans-serif;
+}
+
+.text-2 {
+    font-family: 'PT Sans Narrow', sans-serif;
+}
+
+.text-3 {
+    font-family: 'Nova Square', cursive;
+}
+
+.text-4 {
+    font-family: 'Lobster', cursive;
+}
+
+.text-5 {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.text-6 {
+    font-family: 'Encode Sans Condensed', sans-serif;
+}
+
+.text-7 {
+    font-family: 'Baloo Bhaijaan', cursive;
+}
+
+.text-8 {
+    font-family: 'Acme', sans-serif;
+}
+
+a {
+    color: #0f0;
+    color: var(--main-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: #005580;
+    text-decoration: none;
+}
+
+a,
+input[type=button],
+select {
+    transition: all 0.35s ease-in-out;
+}
+
+.circle {
+    list-style-type: circle;
+    color: #c00;
+}
+
+.disc {
+    list-style-type: disc;
+    color: #0f0;
+}

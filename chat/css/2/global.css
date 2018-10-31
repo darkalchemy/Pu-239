@@ -1,0 +1,593 @@
+/*
+ * @package AJAX_Chat
+ * @author Sebastian Tschan
+ * @author Philip Nicolcev
+ * @copyright (c) Sebastian Tschan
+ * @license Modified MIT License
+ * @link https://blueimp.net/ajax/
+ */
+
+body {
+    font: 80%/1.5 system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Droid Sans, Helvetica Neue, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Droid Sans, Helvetica Neue;
+    line-height: 125%;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+/* Positioning */
+body.ajax-chat {
+    padding: 0;
+    margin: 0;
+}
+
+#loginContent {
+    margin: 0 auto 0;
+    padding-top: 20px;
+}
+
+#loginContent #loginHeadline {
+    margin: 0;
+    line-height: 35px;
+}
+
+#loginContent #loginForm div {
+    margin: 5px 0;
+}
+
+#loginContent #loginRegisteredUsers {
+    padding-top: 5px;
+}
+
+#loginContent #copyright {
+    margin: 20px 0 0 0;
+    text-align: right;
+}
+
+#content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: .625em;
+    background: rgba(255, 255, 255, .1);
+}
+
+#content #chatList,
+#content #helpContainer,
+#content #settingsContainer,
+#content #onlineListContainer,
+#content #inputFieldContainer #inputField {
+    background-color: rgba(0, 0, 0, .2);
+}
+
+#content #copyright {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+#content #headline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    padding: 0 0 0 20px;
+    line-height: 45px;
+    margin: 0;
+}
+
+#content #logoutChannelContainer {
+    position: absolute;
+    z-index: 2;
+    left: 5px;
+    top: 10px;
+}
+
+#content #logoutChannelContainer select {
+    width: 105px;
+    height: 22px;
+}
+
+#content #statusIconContainer {
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    width: 22px;
+    height: 22px;
+}
+
+#content #chatList {
+    height: 100%;
+    overflow: auto;
+}
+
+#content #mainPanelContainer {
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    top: 45px;
+    bottom: 120px;
+}
+
+#content #onlineListContainer, #content #helpContainer, #content #settingsContainer {
+    float: right;
+    height: 100%;
+    overflow: auto;
+    margin-left: 5px;
+    position: relative;
+}
+
+#content #onlineListContainer h3, #content #helpContainer h3, #content #settingsContainer h3 {
+    line-height: 25px;
+    padding: 0 10px;
+    margin: 0;
+    text-align: center;
+}
+
+#content #onlineListContainer {
+    width: 200px;
+}
+
+#content #helpContainer, #content #settingsContainer {
+    width: 360px;
+}
+
+#content #onlineListContainer #onlineList, #content #helpContainer #helpList, #content #settingsContainer #settingsList {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 25px;
+    bottom: 0;
+    overflow: auto;
+}
+
+#content #helpContainer #helpList dl, #content #settingsContainer #settingsList dl {
+    overflow: hidden;
+    padding: 5px;
+    margin: 0;
+}
+
+#content #helpContainer #helpList dt, #content #settingsContainer #settingsList dt {
+    float: left;
+    width: 55%;
+    padding: 0 2% 0 0;
+    margin: 0;
+    clear: left;
+}
+
+#content #helpContainer #helpList dd, #content #settingsContainer #settingsList dd {
+    width: 43%;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+#content #inputFieldContainer {
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    bottom: 65px;
+    padding-right: 2px;
+}
+
+#content #inputFieldContainer #inputField {
+    width: 100%;
+    height: 30px;
+    padding: 0;
+}
+
+#content #submitButtonContainer {
+    position: absolute;
+    right: 5px;
+    bottom: 35px;
+}
+
+#content #bbCodeContainer {
+    position: absolute;
+    left: 5px;
+    bottom: 5px;
+    padding: 3px;
+}
+
+#content #bbCodeContainer input {
+    display: block;
+    float: left;
+    margin-right: 2px;
+}
+
+#content #bbCodeContainer #bbCodeEmoticon {
+    display: none;
+}
+
+#content #colorCodesContainer, #content #emoticonsContainer {
+    position: absolute;
+    left: 5px;
+    bottom: 30px;
+    padding: 3px;
+    z-index: 1;
+}
+
+#content #colorCodesContainer {
+    background-color: rgba(0, 0, 0, .9);
+    bottom: 40px;
+    padding: 10px;
+    border-radius: .625em;
+}
+
+#content #emoticonsContainer a {
+    margin-left: 1px;
+    margin-right: 1px;
+    z-index: 1;
+}
+
+#content #emoticonsContainer img {
+    vertical-align: middle;
+    margin-bottom: 2px;
+}
+
+#content #colorCodesContainer a {
+    display: block;
+    float: left;
+    width: 20px;
+    height: 20px;
+}
+
+#content #optionsContainer {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+}
+
+#content #optionsContainer input {
+    vertical-align: middle;
+}
+
+#content #bbCodeContainer input, #content #logoutButton, #content #submitButton, #loginContent #loginButton {
+    padding: 4px 10px;
+}
+
+#content #logoutButton {
+    display: block;
+    float: left;
+    margin: 0 5px 5px 0;
+}
+
+#content #chatList div {
+    width: calc(100% - 22px);
+    padding: 4px 10px;
+    border-radius: .3125em;
+    overflow-wrap: break-word;
+}
+
+#content #chatList img {
+    vertical-align: middle;
+    margin-bottom: 2px;
+}
+
+#content #chatList cite {
+    margin-right: 5px;
+}
+
+#content #chatList .bbCodeImage {
+    vertical-align: top;
+    overflow: auto;
+    margin: 5px;
+}
+
+#content #chatList .delete {
+    display: block;
+    float: right;
+    width: 10px;
+    height: 10px;
+    margin-top: 2px;
+    padding-left: 5px;
+    background: url('../../images/delete.png') no-repeat right;
+}
+
+#content #onlineListContainer #onlineList div {
+    padding: 2px 5px;
+}
+
+#content #onlineListContainer #onlineList a {
+    display: block;
+}
+
+#content #onlineListContainer #onlineList ul {
+    margin: 5px 0;
+    padding-left: 20px;
+}
+
+#content #settingsContainer #settingsList select.left {
+    text-align: right;
+}
+
+/* Buttons */
+#content #optionsContainer input, #content #settingsContainer #settingsList input.button, #content #showChannelsButton {
+    background: url('../../images/buttons-sprite.png') no-repeat;
+    vertical-align: middle;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+}
+
+#content #optionsContainer #helpButton {
+    background-position: -69px -22px;
+}
+
+#content #optionsContainer #settingsButton {
+    background-position: -92px 0;
+}
+
+#content #optionsContainer #onlineListButton {
+    background-position: -69px 0;
+}
+
+#content #optionsContainer #audioButton {
+    background-position: 0 0;
+}
+
+#content #optionsContainer #audioButton.off {
+    background-position: 0 -22px;
+}
+
+#content #optionsContainer #autoScrollButton {
+    background-position: -23px 0;
+}
+
+#content #optionsContainer #autoScrollButton.off {
+    background-position: -23px -22px;
+}
+
+#content #settingsContainer #settingsList input.playback {
+    background-position: -92px -22px;
+    margin-bottom: 3px;
+}
+
+#content #logoutChannelContainer #showChannelsButton {
+    background-position: -46px 0;
+    display: none;
+}
+
+#content #logoutChannelContainer #showChannelsButton.off {
+    background-position: -46px -22px;
+}
+
+/* Borders */
+#content img {
+    border: none;
+}
+
+#content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer, #content #colorCodesContainer a, #content textarea {
+    border: 1px solid;
+}
+
+#content #chatList .deleteSelected {
+    border: 1px dotted;
+}
+
+/* Misc */
+#content #bbCodeContainer input, #content #optionsContainer input.button, #content #settingsContainer #settingsList input.button, #content #logoutButton, #content #submitButton, #loginContent #loginButton {
+    cursor: pointer;
+}
+
+#content #chatList .code {
+    -o-tab-size: 4;
+    tab-size: 4;
+    -moz-tab-size: 4;
+    white-space: pre-wrap;
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: .9em !important;
+    line-height: 1.1em;
+    border: 1px solid #808080;
+    background: #000 linear-gradient(to bottom, #222, #000);
+    border-radius: .625em;
+    padding: 10px;
+    margin: 10px;
+}
+
+.txtUpsideDown {
+    transition: all 0.4s ease !important;
+    display: inline-block;
+    -webkit-transform: scaleY(-1) !important;
+    transform: scaleY(-1) !important;
+    -webkit-filter: FlipH !important;
+    filter: FlipH !important;
+}
+
+.txtUpsideDown:hover {
+    transition: all 0.4s ease !important;
+    display: inline-block;
+    -webkit-transform: scaleY(1) !important;
+    transform: scaleY(1) !important;
+    -webkit-filter: FlipH !important;
+    filter: FlipH !important;
+}
+
+.youtube-embed {
+    width: 740px;
+    height: 400px;
+}
+
+.youtube-embed iframe {
+    width: 100%;
+    height: 100%;
+}
+
+.has-text-centered {
+    margin-left: auto;
+    margin-right: auto
+}
+
+@media (max-width: 700px) {
+    #mainPanelContainer #onlineListContainer,
+    #mainPanelContainer #settingsContainer,
+    #mainPanelContainer #helpContainer {
+        background-color: rgba(0, 0, 0, .9);
+        z-index: 5;
+    }
+
+    #content #mainPanelContainer {
+        top: 35px;
+        left: 5px;
+        right: 5px;
+        bottom: 105px;
+        background-color: rgba(0, 0, 0, .1);
+    }
+
+    #content #headline {
+        margin: 0;
+        padding: 0 0 0 5px;
+        line-height: 25px;
+    }
+
+    #content #statusIconContainer {
+        top: 2px;
+        right: 2px;
+    }
+
+    #content #copyright {
+        top: 0;
+        right: 30px;
+        line-height: 25px;
+    }
+
+    #content #logoutChannelContainer {
+        top: 5px;
+        left: 5px;
+        right: 0;
+    }
+
+    #content #logoutChannelContainer label {
+        display: none;
+    }
+
+    #content #emoticonsContainer, #content #submitButtonContainer {
+        display: none;
+    }
+
+    #content #bbCodeContainer {
+        bottom: 30px;
+        left: 3px;
+        padding: 0;
+    }
+
+    #content #bbCodeContainer #bbCodeEmoticon {
+        display: block;
+    }
+
+    #content #bbCodeContainer #bbCodeQuote, #content #bbCodeContainer #bbCodeCode {
+        display: none;
+    }
+
+    #content #optionsContainer {
+        bottom: 0;
+        right: 0;
+    }
+
+    #content #chatList {
+        left: 5px;
+        right: 150px;
+        bottom: 115px;
+        font-size: 12px;
+    }
+
+    #content #inputFieldContainer #inputField {
+        height: 20px;
+    }
+
+    #content #inputFieldContainer {
+        left: 3px;
+        right: 3px;
+        bottom: 60px;
+    }
+
+    #content #colorCodesContainer, #content #emoticonsContainer {
+        bottom: 55px;
+        left: 5px;
+    }
+
+    #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {
+        margin-left: 0;
+        border-left-width: 0;
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    #content #logoutChannelContainer select {
+        left: 40px;
+        position: absolute;
+        top: 0;
+    }
+
+    #content #mainPanelContainer {
+        top: 30px;
+        left: 3px;
+        right: 3px;
+        bottom: 100px;
+    }
+
+    #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {
+        border-right-width: 0;
+        position: absolute;
+        width: auto;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+
+    #content #chatList {
+        border-left-width: 0;
+        border-right-width: 0;
+    }
+
+    #content #bbCodeContainer #bbCodeBold,
+    #content #bbCodeContainer #bbCodeItalic,
+    #content #bbCodeContainer #bbCodeUnderline,
+    #content #bbCodeContainer #bbCodeUpsideDown {
+        display: none;
+    }
+
+    #content #bbCodeContainer {
+        padding: 0;
+    }
+
+    #content #emoticonsContainer {
+        bottom: 80px;
+        left: 5px;
+    }
+
+    #content #logoutChannelInner {
+        display: none;
+        clear: left;
+        padding: 5px;
+        text-align: right;
+    }
+
+    #content #logoutChannelContainer #showChannelsButton {
+        display: block;
+        position: absolute;
+        left: 5px;
+        top: 0;
+    }
+}
+
+@media (max-height: 300px) {
+    #content #inputFieldContainer #inputField {
+        height: 20px;
+    }
+
+    #content #bbCodeContainer, #content #optionsContainer, #content #emoticonsContainer, #content #submitButtonContainer,
+    #content #statusIconContainer, #content #logoutChannelContainer {
+        display: none;
+    }
+
+    #content #inputFieldContainer {
+        bottom: 5px;
+    }
+
+    #content #mainPanelContainer {
+        bottom: 40px;
+        top: 35px;
+    }
+}

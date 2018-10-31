@@ -1,0 +1,113 @@
+/*
+ * @package AJAX_Chat
+ * @author Sebastian Tschan
+ * @author Philip Nicolcev
+ */
+@import url('global.css');
+@import url('fonts.css');
+@import url('print.css');
+@import url('custom.css');
+@import url('classcolors.css');
+
+/* Buttons */
+#content #bbCodeContainer input, #content #logoutButton, #content #submitButton, #loginForm #loginButton {
+    color: #fff;
+    border: 1px solid #808080;
+    background: #8a8a8a linear-gradient(to bottom, #8a8a8a, #444);
+}
+
+#content #bbCodeContainer input:hover, #content #logoutButton:hover, #content #submitButton:hover, #loginForm #loginButton:hover {
+    background-image: linear-gradient(to top, #8a8a8a, #444);
+}
+
+#content select, #loginForm select, #loginForm input, #content textarea {
+    color: #333;
+    border: 1px solid #808080;
+}
+
+/* Status Icon */
+#content #statusIconContainer {
+    background: url('../../images/loading-sprite.png') no-repeat 0 0;
+}
+
+#content #statusIconContainer.waiting {
+    background-position: 0 -22px;
+}
+
+#content #statusIconContainer.retrying {
+    background-position: 0 -44px;
+}
+
+/* Other Theme Elements */
+.ajax-chat {
+    background-color: #d0d0d0;
+    color: #000;
+}
+
+.ajax-chat h1 {
+    color: #000;
+}
+
+.ajax-chat a {
+    color: #000;
+}
+
+#loginContent input, #loginContent select {
+    background-color: #fff;
+    color: #000;
+}
+
+#loginContent #errorContainer {
+    color: red;
+}
+
+#content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer, #content textarea {
+    border-color: gray;
+    background-color: #fff;
+}
+
+.ajax-chat .popup {
+    background-color: #fff;
+    border: 1px solid gray;
+}
+
+#content #colorCodesContainer a {
+    border-color: black;
+}
+
+#content #optionsContainer input {
+    background-color: transparent;
+}
+
+#content .rowEven, #helpList dl:nth-child(even), #settingsList dl:nth-child(even) {
+    background-color: #fff;
+}
+
+#content .rowOdd, #helpList dl:nth-child(odd), #settingsList dl:nth-child(odd) {
+    background-color: #f6f6f6;
+}
+
+#content #chatList .rowOdd.private {
+    background-color: #f8d0d0;
+}
+
+#content #chatList .rowEven.private {
+    background-color: #f8d9d0;
+}
+
+#content #chatList .chatBotErrorMessage {
+    color: red;
+}
+
+#content #chatList a {
+    color: #1e90ff;
+}
+
+#content #chatList .deleteSelected {
+    border-color: red;
+}
+
+#content #onlineListContainer h3, #content #helpContainer h3, #content #settingsContainer h3 {
+    background-color: #fff;
+    color: #000;
+}

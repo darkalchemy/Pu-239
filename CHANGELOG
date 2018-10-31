@@ -1,3 +1,12 @@
+31 Oct, 2018
+update: file output format user_functions.php
+update: get_birthday_users fetch to keep mysql packet size small User.php
+fix: values should be an array of arrays function_autopost.php
+update: set chat styles per template
+update: set class colors per template
+move: chat css classes into template folders
+remove: unused columns from select User.php
+
 29 Oct, 2018
 fix: undefined var admin/upgrade_database.php
 fix: incorrect var namr imdb_lookup.php

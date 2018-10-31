@@ -201,6 +201,9 @@ $topic_res = sql_query('SELECT t.id AS id, t.user_id AS user_id, t.topic_name AS
 
 if ($count > 0) {
     while ($topic_arr = mysqli_fetch_assoc($topic_res)) {
+        if (empty($topic_res)) {
+            continue;
+        }
         $topic_id = (int) $topic_arr['id'];
         $locked = 'yes' == $topic_arr['locked'];
         $sticky = 'yes' == $topic_arr['sticky'];

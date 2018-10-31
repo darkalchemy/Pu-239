@@ -414,13 +414,15 @@ class User
             ->select('class')
             ->select('username')
             ->select('uploaded')
-            ->select('email')
-            ->select('INET6_NTOA(ip) AS ip')
             ->where('MONTH(birthday) = ?', $date['mon'])
-            ->where('DAYOFMONTH(birthday) = ?', $date['mday'])
-            ->fetchAll();
+            ->where('DAYOFMONTH(birthday) = ?', $date['mday']);
 
-        return $results;
+        $users = [];
+        foreach ($results as $result) {
+            $users[] = $result;
+        }
+
+        return $users;
     }
 
     /**

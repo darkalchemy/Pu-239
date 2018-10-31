@@ -189,7 +189,7 @@ function wrapper($text, $class = '')
 /**
  * @param $data
  */
-function write_css($data)
+function write_css($data, $template)
 {
     $classdata = '';
     foreach ($data as $class) {
@@ -232,8 +232,8 @@ function write_css($data)
 ";
         }
     }
-    file_put_contents(ROOT_DIR . 'chat/css/classcolors.css', $classdata . PHP_EOL);
-    file_put_contents(ROOT_DIR . 'templates/1/css/classcolors.css', $classdata . PHP_EOL);
+    file_put_contents(ROOT_DIR . "chat/css/{$template}/classcolors.css", $classdata . PHP_EOL);
+    file_put_contents(ROOT_DIR . "templates/{$template}/css/classcolors.css", $classdata . PHP_EOL);
 }
 
 function write_classes($data, $classes)
@@ -263,20 +263,18 @@ ajaxChat.getRoleClass = function(roleID) {
     file_put_contents(ROOT_DIR . 'chat/js/classes.js', $text, FILE_APPEND);
 }
 
-function write_class_files()
+function write_class_files($template)
 {
     global $site_config, $fluent;
 
-    $lang = load_language('ad_class_config');
-
     $t = 'define(';
-    $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
     $configfile = "<?php\n\n";
     $res = $fluent->from('class_config')
-        ->orderBy('value ASC');
+        ->orderBy('value ASC')
+        ->where('template = ?', $template);
     $the_names = $the_colors = $the_images = '';
     foreach ($res as $arr) {
-        $configfile .= '' . $t . "'{$arr['name']}', {$arr['value']});\n";
+        $configfile .= $t . "'{$arr['name']}', {$arr['value']});\n";
         if ($arr['name'] !== 'UC_STAFF' && $arr['name'] !== 'UC_MIN' && $arr['name'] !== 'UC_MAX') {
             $the_names .= "{$arr['name']} => '{$arr['classname']}',";
             $the_colors .= "{$arr['name']} => '{$arr['classcolor']}',";
@@ -293,9 +291,9 @@ function write_class_files()
 
     file_put_contents(ROOT_DIR . 'chat/js/classes.js', implode("\n", $classes) . PHP_EOL);
     write_classes($js_classes, $config_classes);
-    write_css($data);
+    write_css($data, $template);
     $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
-    file_put_contents(CACHE_DIR . 'class_config.php', $configfile . PHP_EOL);
+    file_put_contents(CACHE_DIR . $template . DIRECTORY_SEPARATOR . 'class_config.php', $configfile . PHP_EOL);
 }
 
 function clear_image_cache()

@@ -39,6 +39,7 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
             'user_id' => $site_config['chatBotID'],
             'added' => TIME_NOW,
             'body' => $body,
+            'ip' => inet_pton(getip()),
         ];
         $postid = $fluent->insertInto('posts')
             ->values($values)
@@ -63,7 +64,8 @@ function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Bod
         $cache->delete('last_posts_' . $CURUSER['class']);
         $cache->delete('forum_posts_' . $CURUSER['id']);
 
-        $values = [
+        unset($values);
+        $values[] = [
             'sender' => 0,
             'receiver' => $site_config['site']['owner'],
             'added' => TIME_NOW,
