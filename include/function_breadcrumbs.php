@@ -212,6 +212,8 @@ function get_actionpage($lang, $queries, $path)
         $title = $lang['top_countries'];
     } elseif ($list[0] === 'action' && $list[1] === 'new_topic') {
         $title = $lang[$list[1]];
+    } elseif ($list[0] === 'page') {
+        $title = $lang['page'] . ' ' . ($list[1] + 1);
     } elseif ($list[0] === 'tool' && $list[1] === 'news') {
         $queries_1 = '&amp;mode=news';
     } elseif ($list[0] === 'tool' && $list[1] === 'uploadapps') {
