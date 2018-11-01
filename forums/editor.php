@@ -4,12 +4,12 @@ global $bb_code, $subscribe, $can_edit, $show_edited_by, $topic_desc;
 
 $bb_code = empty($bb_code) ? 'yes' : 'no';
 $show_edited_by = empty($show_edited_by) ? 'yes' : 'no';
-
+$can_edit = !empty($can_edit) ? $can_edit : true;
 $edit = (preg_match('/edit_post/', $_SERVER['QUERY_STRING']) ? "
 	<tr>
 		<td>{$lang['fe_reason']}</td>
 		<td>
-			<input type='text' maxlength='60' name='edit_reason' value='" . trim(strip_tags($edit_reason)) . "' class='w-100' placeholder='Optional'> 
+			<input type='text' maxlength='60' name='edit_reason' value='" . trim(strip_tags($edit_reason)) . "' class='w-100' placeholder='Optional'>
 		</td>
 	</tr>" . ($CURUSER['class'] === UC_MAX || $CURUSER['id'] === $arr_post['id'] ? "
 	<tr>
