@@ -2,6 +2,8 @@
 move: ratio_free, crazy_hour and happy_hour to define.php
 
 31 Oct, 2018
+add: view log files with extension '1' log_viewer.php
+fix: error when there are topics but no posts view_forum.php
 update: add try catch to pdo query upgrade_database.php
 update: class_config from cache file to site_config
 update: file output format user_functions.php

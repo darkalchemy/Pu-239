@@ -199,11 +199,15 @@ $topic_res = sql_query('SELECT t.id AS id, t.user_id AS user_id, t.topic_name AS
 				LEFT JOIN posts AS p ON t.id = p.topic_id
 				WHERE  ' . ($CURUSER['class'] < UC_STAFF ? ' p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? ' p.status != \'deleted\'  AND' : '')) . '  forum_id=' . $forum_id . ' GROUP BY p.topic_id ORDER BY sticky, post_added DESC ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
 
-if ($count > 0) {
-    while ($topic_arr = mysqli_fetch_assoc($topic_res)) {
-        if (empty($topic_res)) {
-            continue;
-        }
+$topic_arrs = [];
+while ($topic = mysqli_fetch_assoc($topic_res)) {
+    if (!empty($topic['post_id'])) {
+        $topic_arrs[] = $topic;
+    }
+}
+
+if (!empty($topic_arrs)) {
+    foreach ( $topic_arrs as $topic_arr) {
         $topic_id = (int) $topic_arr['id'];
         $locked = 'yes' == $topic_arr['locked'];
         $sticky = 'yes' == $topic_arr['sticky'];
