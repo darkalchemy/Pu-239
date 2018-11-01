@@ -225,7 +225,7 @@ switch ($action) {
     <tr>
     <td>offered by:</td>
     <td>' . format_username($usersdata['id']) . ' [ ' . get_user_class_name($usersdata['class']) . ' ]
-    ratio: ' . member_ratio($usersdata['uploaded'], $site_config['ratio_free'] ? '0' : $usersdata['downloaded']) . get_user_ratio_image(($site_config['ratio_free'] ? 1 : $usersdata['uploaded'] / ($usersdata['downloaded'] == 0 ? 1 : $usersdata['downloaded']))) . '</td>
+    ratio: ' . member_ratio($usersdata['uploaded'], RATIO_FREE ? '0' : $usersdata['downloaded']) . get_user_ratio_image((RATIO_FREE ? 1 : $usersdata['uploaded'] / ($usersdata['downloaded'] == 0 ? 1 : $usersdata['downloaded']))) . '</td>
     </tr>
     <tr>
     <td>Report Offer</td>

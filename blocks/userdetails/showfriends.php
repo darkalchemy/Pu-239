@@ -14,14 +14,14 @@ if ($users_friends === false || is_null($users_friends)) {
     $cache->set($keys['user_friends'], $users_friends, 0);
 }
 if (!empty($users_friends) && count($users_friends) > 0) {
-    $user_friends = "<table width='100%' class='main' >\n" . "<tr><td class='colhead' width='20'>{$lang['userdetails_avatar']}</td><td class='colhead'>{$lang['userdetails_username']}" . ($CURUSER['class'] >= UC_STAFF ? $lang['userdetails_fip'] : '') . "</td><td class='colhead'>{$lang['userdetails_uploaded']}</td>" . ($site_config['ratio_free'] ? '' : "<td class='colhead'>{$lang['userdetails_downloaded']}</td>") . "<td class='colhead'>{$lang['userdetails_ratio']}</td><td class='colhead'>{$lang['userdetails_status']}</td></tr>\n";
+    $user_friends = "<table width='100%' class='main' >\n" . "<tr><td class='colhead' width='20'>{$lang['userdetails_avatar']}</td><td class='colhead'>{$lang['userdetails_username']}" . ($CURUSER['class'] >= UC_STAFF ? $lang['userdetails_fip'] : '') . "</td><td class='colhead'>{$lang['userdetails_uploaded']}</td>" . (RATIO_FREE ? '' : "<td class='colhead'>{$lang['userdetails_downloaded']}</td>") . "<td class='colhead'>{$lang['userdetails_ratio']}</td><td class='colhead'>{$lang['userdetails_status']}</td></tr>\n";
     if ($users_friends) {
         foreach ($users_friends as $a) {
             $avatar = get_avatar($a);
             $status = "<img style='vertical-align: middle;' src='{$site_config['pic_baseurl']}" . ($a['last_access'] > $dt && $a['perms'] < bt_options::PERMS_STEALTH ? 'online.png' : 'offline.png') . "' alt='' />";
             $user_stuff = $a;
             $user_stuff['id'] = (int) $a['id'];
-            $user_friends .= "<tr><td class='has-text-centered w-15 mw-150'>" . $avatar . '</td><td>' . format_username($user_stuff['id']) . '<br>' . ($CURUSER['class'] >= UC_STAFF ? '' . htmlsafechars($a['ip']) . '' : '') . "</td><td  style='padding: 1px'>" . mksize($a['uploaded']) . '</td>' . ($site_config['ratio_free'] ? '' : "<td  style='padding: 1px'>" . mksize($a['downloaded']) . '</td>') . "<td  style='padding: 1px'>" . member_ratio($a['uploaded'], $site_config['ratio_free'] ? '0' : $a['downloaded']) . "</td><td  style='padding: 1px'>" . $status . "</td></tr>\n";
+            $user_friends .= "<tr><td class='has-text-centered w-15 mw-150'>" . $avatar . '</td><td>' . format_username($user_stuff['id']) . '<br>' . ($CURUSER['class'] >= UC_STAFF ? '' . htmlsafechars($a['ip']) . '' : '') . "</td><td  style='padding: 1px'>" . mksize($a['uploaded']) . '</td>' . (RATIO_FREE ? '' : "<td  style='padding: 1px'>" . mksize($a['downloaded']) . '</td>') . "<td  style='padding: 1px'>" . member_ratio($a['uploaded'], RATIO_FREE ? '0' : $a['downloaded']) . "</td><td  style='padding: 1px'>" . $status . "</td></tr>\n";
         }
         $user_friends .= '</table>';
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_friends']}</td><td width='99%'><a href=\"javascript: klappe_news('a6')\"><img src='{$site_config['pic_baseurl']}plus.png' id='pica6" . (int) $a['uid'] . "' alt='{$lang['userdetails_hide_show']}' title='{$lang['userdetails_hide_show']}' /></a><div id='ka6' style='display: none;'><br>$user_friends</div></td></tr>";

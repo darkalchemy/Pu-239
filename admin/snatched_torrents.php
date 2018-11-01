@@ -116,7 +116,7 @@ if (mysqli_num_rows($result) != 0) {
 <td class='colhead' width='1%'>{$lang['ad_snatched_torrents_torname']}</td>
 <td class='colhead' width='1%'>{$lang['ad_snatched_torrents_announced']}</td>
 <td class='colhead' width='1%'>{$lang['ad_snatched_torrents_upload']}</td>
-" . ($site_config['ratio_free'] ? '' : "<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_download']}</td>") . "
+" . (RATIO_FREE ? '' : "<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_download']}</td>") . "
 <td class='colhead' width='1%'>{$lang['ad_snatched_torrents_seedtime']}</td>
 <td class='colhead' width='1%'>{$lang['ad_snatched_torrents_leechtime']}</td>
 <td class='colhead' width='1%'>{$lang['ad_snatched_torrents_startdate']}</td>
@@ -132,7 +132,7 @@ if (mysqli_num_rows($result) != 0) {
 <td class='colhead' width='1%'>{$lang['ad_snatched_torrents_marked']}</td>
 <td class='colhead' width='1%'>{$lang['ad_snatched_torrents_announced']}</td>
 <td class='colhead' width='1%'>{$lang['ad_snatched_torrents_upload']}</td>
-" . ($site_config['ratio_free'] ? '' : "<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_download']}</td>") . "
+" . (RATIO_FREE ? '' : "<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_download']}</td>") . "
 <td class='colhead' width='1%'>{$lang['ad_snatched_torrents_seedtime']}</td>
 <td class='colhead' width='1%'>{$lang['ad_snatched_torrents_leechtime']}</td>
 <td class='colhead' width='1%'>{$lang['ad_snatched_torrents_startdate']}</td>
@@ -150,7 +150,7 @@ if (mysqli_num_rows($result) != 0) {
 <td><a href='{$site_config['baseurl']}/details.php?id=" . (int) $row['fid'] . "'><b>" . $smallname . '</b></a></td>
 <td><b>' . htmlsafechars($row['announced']) . '</b></td>
 <td><b>' . mksize($row['uploaded']) . '</b></td>
-' . ($site_config['ratio_free'] ? '' : '<td><b>' . mksize($row['downloaded']) . '</b></td>') . '
+' . (RATIO_FREE ? '' : '<td><b>' . mksize($row['downloaded']) . '</b></td>') . '
 <td><b>' . get_snatched_color($row['seedtime']) . '</b></td>
 <td><b>' . mkprettytime($row['leechtime']) . '</b></td><td><b>' . get_date($row['started'], 'LONG', 0, 1) . '</b></td>';
             if ($row['completedtime'] > 0) {
@@ -166,7 +166,7 @@ if (mysqli_num_rows($result) != 0) {
 <td><b>' . htmlsafechars($row['mark_of_cain']) . '</b></td>
 <td><b>' . htmlsafechars($row['timesann']) . '</b></td>
 <td><b>' . mksize($row['uploaded']) . '</b></td>
-' . ($site_config['ratio_free'] ? '' : '<td><b>' . mksize($row['downloaded']) . '</b></td>') . '
+' . (RATIO_FREE ? '' : '<td><b>' . mksize($row['downloaded']) . '</b></td>') . '
 <td><b>' . get_snatched_color($row['seedtime']) . '</b></td>
 <td><b>' . mkprettytime($row['leechtime']) . '</b></td>
 <td><b>' . get_date($row['start_date'], 'LONG', 0, 1) . '</b></td>';

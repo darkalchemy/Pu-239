@@ -216,7 +216,7 @@ if ($game) {
             } else {
                 $ratio = 0;
             }
-            if ($site_config['ratio_free'] === false && $ratio < $required_ratio) {
+            if (RATIO_FREE === false && $ratio < $required_ratio) {
                 stderr("{$lang['bj_sorry2']} " . $CURUSER['username'], "{$lang['bj_your_ratio_is_lower_req']} " . $required_ratio . '%.');
             }
             $sql = 'SELECT * FROM blackjack WHERE userid = ' . sqlesc($CURUSER['id']) . ' AND game_id = ' . sqlesc($blackjack['gameid']);

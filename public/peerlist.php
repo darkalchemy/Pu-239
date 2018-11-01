@@ -31,8 +31,8 @@ function dltable($name, $arr, $torrent)
             <th>{$lang['peerslist_user_ip']}</th>
             <th>{$lang['peerslist_connectable']}</th>
             <th>{$lang['peerslist_uploaded']}</th>
-            <th>{$lang['peerslist_rate']}</th>" . ($site_config['ratio_free'] ? '' : "
-            <th>{$lang['peerslist_downloaded']}</th>") . ($site_config['ratio_free'] ? '' : "
+            <th>{$lang['peerslist_rate']}</th>" . (RATIO_FREE ? '' : "
+            <th>{$lang['peerslist_downloaded']}</th>") . (RATIO_FREE ? '' : "
             <th>{$lang['peerslist_rate']}</th>") . "
             <th>{$lang['peerslist_ratio']}</th>
             <th>{$lang['peerslist_complete']}</th>
@@ -63,13 +63,13 @@ function dltable($name, $arr, $torrent)
         $body .= '<td>' . ($e['connectable'] === 'yes' ? "{$lang['peerslist_yes']}" : "<span class='has-text-danger'>{$lang['peerslist_no']}</span>") . "</td>\n";
         $body .= '<td>' . mksize($e['uploaded']) . "</td>\n";
         $body .= '<td><span style="white-space: nowrap;">' . mksize(($e['uploaded'] - $e['uploadoffset']) / $secs) . "/s</span></td>\n";
-        $body .= '' . ($site_config['ratio_free'] ? '' : '<td>' . mksize($e['downloaded']) . '</td>') . "\n";
+        $body .= '' . (RATIO_FREE ? '' : '<td>' . mksize($e['downloaded']) . '</td>') . "\n";
         if ($e['seeder'] === 'no') {
-            $body .= '' . ($site_config['ratio_free'] ? '' : '<td><span style="white-space: nowrap;">' . mksize(($e['downloaded'] - $e['downloadoffset']) / $secs) . '/s</span></td>') . "\n";
+            $body .= '' . (RATIO_FREE ? '' : '<td><span style="white-space: nowrap;">' . mksize(($e['downloaded'] - $e['downloadoffset']) / $secs) . '/s</span></td>') . "\n";
         } else {
-            $body .= '' . ($site_config['ratio_free'] ? '' : '<td><span style="white-space: nowrap;">' . mksize(($e['downloaded'] - $e['downloadoffset']) / max(1, $e['finishedat'] - $e['st'])) . '/s</span></td>') . "\n";
+            $body .= '' . (RATIO_FREE ? '' : '<td><span style="white-space: nowrap;">' . mksize(($e['downloaded'] - $e['downloadoffset']) / max(1, $e['finishedat'] - $e['st'])) . '/s</span></td>') . "\n";
         }
-        $body .= '<td>' . member_ratio($e['uploaded'], $site_config['ratio_free'] ? '0' : $e['downloaded']) . "</td>\n";
+        $body .= '<td>' . member_ratio($e['uploaded'], RATIO_FREE ? '0' : $e['downloaded']) . "</td>\n";
         $body .= '<td>' . sprintf('%.2f%%', 100 * (1 - ($e['to_go'] / $torrent['size']))) . "</td>\n";
         $body .= '<td>' . mkprettytime($now - $e['st']) . "</td>\n";
         $body .= '<td>' . mkprettytime($now - $e['la']) . "</td>\n";

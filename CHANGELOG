@@ -1,3 +1,6 @@
+01 Nov, 2018
+move: ratio_free, crazy_hour and happy_hour to define.php
+
 31 Oct, 2018
 update: add try catch to pdo query upgrade_database.php
 update: class_config from cache file to site_config

@@ -2,7 +2,7 @@
 
 global $site_config;
 
-if (!XBT_TRACKER && $site_config['crazy_hour']) {
+if (CRAZY_HOUR) {
     function crazyhour()
     {
         global $CURUSER, $site_config, $lang, $cache;

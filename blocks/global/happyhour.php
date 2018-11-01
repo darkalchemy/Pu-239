@@ -2,7 +2,7 @@
 
 global $CURUSER, $site_config, $lang;
 
-if ($site_config['happy_hour'] === true) {
+if (HAPPY_HOUR === true) {
     if ($CURUSER) {
         require_once INCL_DIR . 'function_happyhour.php';
         if (happyHour('check')) {

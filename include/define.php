@@ -47,3 +47,7 @@ define('INTERVAL_1_MIN', 0);
 define('INTERVAL_5_MIN', 1);
 define('INTERVAL_15_MIN', 2);
 define('DEFAULT_AVG', INTERVAL_15_MIN);
+
+define('CRAZY_HOUR', false);
+define('HAPPY_HOUR', false);
+define('RATIO_FREE', false);

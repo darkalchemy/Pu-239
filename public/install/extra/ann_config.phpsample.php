@@ -25,10 +25,6 @@ $site_config['connectable_check'] = true;
 $site_config['ann_sql_error_log'] = SQLERROR_LOGS_DIR . 'ann_sql_err_' . date('M_D_Y') . '.log';
 $site_config['ann_sql_log'] = SQLERROR_LOGS_DIR . 'ann_sql_query_' . date('M_D_Y') . '.log';
 
-$site_config['crazy_hour'] = false;
-$site_config['happy_hour'] = false;
-$site_config['ratio_free'] = false;
-
 $site_config['expires']['user_passkey'] = 3600 * 8;
 $site_config['expires']['contribution'] = 3 * 86400;
 $site_config['expires']['happyhour'] = 43200;

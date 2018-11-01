@@ -59,8 +59,8 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
     //=== if really seeding list them
     if ($Xbt_Seed) {
         if ($Uid_ID !== $hit_and_run_arr['owner']) {
-            $ratio_site = member_ratio($hit_and_run_arr['up'], $site_config['ratio_free'] ? '0' : $hit_and_run_arr['down']);
-            $ratio_torrent = member_ratio($hit_and_run_arr['uload'], $site_config['ratio_free'] ? '0' : $hit_and_run_arr['dload']);
+            $ratio_site = member_ratio($hit_and_run_arr['up'], RATIO_FREE ? '0' : $hit_and_run_arr['down']);
+            $ratio_torrent = member_ratio($hit_and_run_arr['uload'], RATIO_FREE ? '0' : $hit_and_run_arr['dload']);
             $avatar = get_avatar($hit_and_run_arr);
             $torrent_needed_seed_time = $hit_and_run_arr['seedtime'];
             //=== get times per class
@@ -120,7 +120,7 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
             ' . $lang['hitnrun_seeded'] . '' . mkprettytime($hit_and_run_arr['seedtime']) . '<br>
             **' . $lang['hitnrun_still'] . ' ' . mkprettytime($minus_ratio) . '</td>
             <td>' . $lang['hitnrun_uploaded'] . '' . mksize($hit_and_run_arr['uload']) . '<br>
-            ' . ($site_config['ratio_free'] ? '' : '' . $lang['hitnrun_downloaded'] . '' . mksize($hit_and_run_arr['dload']) . '<br>') . '
+            ' . (RATIO_FREE ? '' : '' . $lang['hitnrun_downloaded'] . '' . mksize($hit_and_run_arr['dload']) . '<br>') . '
             ' . $lang['hitnrun_ratio'] . '<font color="' . get_ratio_color($ratio_torrent) . '">' . $ratio_torrent . '</font><br>
             ' . $lang['hitnrun_site_ratio'] . '<font color="' . get_ratio_color($ratio_site) . '" title="' . $lang['hitnrun_includes'] . '">' . $ratio_site . '</font></td>
             <td><a href="messages.php?action=send_message&amp;receiver=' . (int) $Uid_ID . '"><img src="' . $site_config['pic_baseurl'] . 'pm.gif" border="0" alt="PM" title="' . $lang['hitnrun_send'] . '" /></a><br>

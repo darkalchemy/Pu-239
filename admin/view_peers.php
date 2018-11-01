@@ -61,13 +61,13 @@ if (mysqli_num_rows($result) != 0) {
         <th>{$lang['wpeers_port']}</th>
         <th>{$lang['wpeers_client']}</th>
         <th>{$lang['wpeers_peer_id']}</th>
-        <th>{$lang['wpeers_up']}</th>" . ($site_config['ratio_free'] == true ? '' : "
+        <th>{$lang['wpeers_up']}</th>" . (RATIO_FREE == true ? '' : "
         <th>{$lang['wpeers_dn']}</th>") . "
         <th>{$lang['wpeers_con']}</th>
         <th>{$lang['wpeers_seed']}</th>
         <th>{$lang['wpeers_start']}</th>
         <th>{$lang['wpeers_last']}</th>
-        <th>{$lang['wpeers_upoff']}</th>" . ($site_config['ratio_free'] == true ? '' : "
+        <th>{$lang['wpeers_upoff']}</th>" . (RATIO_FREE == true ? '' : "
         <th>{$lang['wpeers_dnoff']}</th>") . "
         <th>{$lang['wpeers_togo']}</th>
     </tr>";
@@ -85,13 +85,13 @@ if (mysqli_num_rows($result) != 0) {
         <td>' . htmlsafechars($row['port']) . '</td>
         <td>' . htmlsafechars($row['agent']) . '</td>
         <td>' . htmlsafechars($row['peer_id']) . '</td>
-        <td>' . htmlsafechars(mksize($row['uploaded'])) . '</td>' . ($site_config['ratio_free'] == true ? '' : '
+        <td>' . htmlsafechars(mksize($row['uploaded'])) . '</td>' . (RATIO_FREE == true ? '' : '
         <td>' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
         <td>' . ($row['connectable'] == 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
         <td>' . ($row['seeder'] == 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
         <td>' . get_date($row['started'], 'DATE') . '</td>
         <td>' . get_date($row['last_action'], 'DATE', 0, 1) . '</td>
-        <td>' . htmlsafechars(mksize($row['uploadoffset'])) . '</td>' . ($site_config['ratio_free'] == true ? '' : '
+        <td>' . htmlsafechars(mksize($row['uploadoffset'])) . '</td>' . (RATIO_FREE == true ? '' : '
         <td>' . htmlsafechars(mksize($row['downloadoffset'])) . '</td>') . '
         <td>' . htmlsafechars(mksize($row['to_go'])) . '</td>
     </tr>';

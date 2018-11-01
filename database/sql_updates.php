@@ -1390,4 +1390,11 @@ $sql_updates = [
         'query' => 'ALTER TABLE `ustatus` MODIFY `last_update` int unsigned NOT NULL DEFAULT 0',
         'flush' => false,
     ],
+    [
+        'id' => 1541055375,
+        'info' => 'Alter column',
+        'date' => '01 Nov, 2018',
+        'query' => "DELETE FROM `site_config` WHERE `name` = 'ratio_free'",
+        'flush' => true,
+    ],
 ];

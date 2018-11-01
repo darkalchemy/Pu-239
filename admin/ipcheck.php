@@ -15,7 +15,7 @@ $heading = "
         <th>{$lang['ipcheck_user']}</th>
         <th>{$lang['ipcheck_email']}</th>
         <th>{$lang['ipcheck_regged']}</th>
-        <th>{$lang['ipcheck_lastacc']}</th>" . ($site_config['ratio_free'] ? '' : "
+        <th>{$lang['ipcheck_lastacc']}</th>" . (RATIO_FREE ? '' : "
         <th>{$lang['ipcheck_dload']}</th>") . "
         <th>{$lang['ipcheck_upped']}</th>
         <th>{$lang['ipcheck_ratio']}</th>
@@ -48,10 +48,10 @@ while ($ras = mysqli_fetch_assoc($res)) {
                     <td>' . format_username($arr['id']) . '</td>
                     <td>' . htmlsafechars($arr['email']) . "</td>
                     <td>$added</td>
-                    <td>$last_access</td>" . ($site_config['ratio_free'] ? '' : "
+                    <td>$last_access</td>" . (RATIO_FREE ? '' : "
                     <td>$downloaded</td>") . "
                     <td>$uploaded</td>
-                    <td>" . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
+                    <td>" . member_ratio($arr['uploaded'], RATIO_FREE ? '0' : $arr['downloaded']) . '</td>
                     <td><span style="font-weight: bold;">' . htmlsafechars($arr['ip']) . '</span></td>
                 </tr>';
                 $ip = htmlsafechars($arr['ip']);

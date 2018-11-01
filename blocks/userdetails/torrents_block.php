@@ -18,8 +18,8 @@ function snatchtable($torrents)
             <th>{$lang['userdetails_s_cat']}</th>
             <th>{$lang['userdetails_s_torr']}</th>
             <th>{$lang['userdetails_s_up']}</th>
-            <th>{$lang['userdetails_rate']}</th>" . ($site_config['ratio_free'] ? '' : "
-            <th>{$lang['userdetails_downl']}</th>") . ($site_config['ratio_free'] ? '' : "
+            <th>{$lang['userdetails_rate']}</th>" . (RATIO_FREE ? '' : "
+            <th>{$lang['userdetails_downl']}</th>") . (RATIO_FREE ? '' : "
             <th>{$lang['userdetails_rate']}</th>") . "
             <th>{$lang['userdetails_ratio']}</th>
             <th>{$lang['userdetails_activity']}</th>
@@ -41,8 +41,8 @@ function snatchtable($torrents)
                 <a href='{$site_config['baseurl']}/details.php?id=" . (int) $XBT_or_PHP . "'><b>" . (strlen($torrent['name']) > 50 ? substr($torrent['name'], 0, 50 - 3) . '...' : htmlsafechars($torrent['name'])) . '</b></a>
             </td>
             <td>' . mksize($torrent['uploaded']) . "</td>
-            <td>$upspeed/s</td>" . ($site_config['ratio_free'] ? '' : '
-            <td>' . mksize($torrent['downloaded']) . '</td>') . ($site_config['ratio_free'] ? '' : "
+            <td>$upspeed/s</td>" . (RATIO_FREE ? '' : '
+            <td>' . mksize($torrent['downloaded']) . '</td>') . (RATIO_FREE ? '' : "
             <td>$downspeed/s</td>") . "
             <td>$ratio</td>
             <td>" . mkprettytime($torrent['seedtime'] + $torrent['leechtime']) . '</td>
@@ -73,7 +73,7 @@ function maketable($torrents)
             <th>{$lang['userdetails_size']}</th>
             <th>{$lang['userdetails_se']}</th>
             <th>{$lang['userdetails_le']}</th>
-            <th>{$lang['userdetails_upl']}</th>" . ($site_config['ratio_free'] ? '' : "
+            <th>{$lang['userdetails_upl']}</th>" . (RATIO_FREE ? '' : "
             <th>{$lang['userdetails_downl']}</th>") . "
             <th>{$lang['userdetails_ratio']}</th>
         </tr>";
@@ -105,7 +105,7 @@ function maketable($torrents)
             <td class='has-text-centered'>$size</td>
             <td class='has-text-centered'>$seeders</td>
             <td class='has-text-centered'>$leechers</td>
-            <td class='has-text-centered'>$uploaded</td>" . ($site_config['ratio_free'] ? '' : "
+            <td class='has-text-centered'>$uploaded</td>" . (RATIO_FREE ? '' : "
             <td class='has-text-centered'>$downloaded</td>") . "
             <td class='has-text-centered'>$ratio</td>
         </tr>";

@@ -4,7 +4,7 @@ global $site_config, $lang, $user_stuffs, $id, $CURUSER, $user;
 
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     $days = round((TIME_NOW - $user['added']) / 86400);
-    if ($site_config['ratio_free']) {
+    if (RATIO_FREE) {
         $table_data .= "
         <tr>
             <td class='rowhead'>{$lang['userdetails_h_days']}</td>

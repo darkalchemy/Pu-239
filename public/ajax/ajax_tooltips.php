@@ -87,10 +87,10 @@ if (!empty($CURUSER)) {
     <div class='navbar-start'>{$lang['gl_tstats']}</div>
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_shareratio']}</div>
-        <div>" . member_ratio($CURUSER['uploaded'], $site_config['ratio_free'] ? '0' : $CURUSER['downloaded']) . '</div>
+        <div>" . member_ratio($CURUSER['uploaded'], RATIO_FREE ? '0' : $CURUSER['downloaded']) . '</div>
     </div>';
 
-    if ($site_config['ratio_free']) {
+    if (RATIO_FREE) {
         $StatusBar .= "
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_uploaded']}</div>
