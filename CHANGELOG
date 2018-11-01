@@ -1,4 +1,5 @@
 01 Nov, 2018
+fix: missing name in form new_topic.php
 fix: breadcrumbs when action is page
 move: ratio_free, crazy_hour and happy_hour to define.php
 

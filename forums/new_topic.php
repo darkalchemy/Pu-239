@@ -125,13 +125,13 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
         ->where('id = ?', $forum_id)
         ->execute();
 
-    if ($site_config['autoshout_on'] === 1) {
+    if ($site_config['autoshout_on']) {
         $message = $CURUSER['username'] . ' ' . $lang['nt_created_new_topic'] . " [quote][url={$site_config['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last]{$topic_name}[/url][/quote]";
         if (!in_array($forum_id, $site_config['staff_forums'])) {
             autoshout($message);
         }
     }
-    if ($site_config['seedbonus_on'] === 1) {
+    if ($site_config['seedbonus_on']) {
         $set = [
             'seedbonus' => new Envms\FluentPDO\Literal('seedbonus + ' . $site_config['bonus_per_topic']),
         ];
