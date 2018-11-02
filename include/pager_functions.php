@@ -44,10 +44,10 @@ function pager($perpage, $count, $href, $opts = [], $class = null)
     }
     if ($page < $mp && $mp >= 0) {
         $pager2 = "
-                        <a class='pagination-next button $class is_hidden-mobile'>Next</a>";
+                        <a href='{$href}page=" . ($page + 1) . "' class='pagination-next button $class tooltipper is_hidden-mobile' title='Goto Page " . ($page + 2) . "'>Next</a>";
     } else {
         $pager2 = "
-                        <a href='{$href}page=" . ($page + 1) . "' class='pagination-next button $class tooltipper is_hidden-mobile' title='Goto Page " . ($page + 2) . "'>Next</a>";
+                        <a class='pagination-next button $class is_hidden-mobile'>Next</a>";
     }
 
     if ($count) {

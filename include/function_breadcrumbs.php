@@ -114,8 +114,13 @@ function get_secondarypage($lang, $queries, $path)
 
     if ($list[0] === 'phpinfo') {
         $title = $lang['phpinfo'];
+    } elseif ($list[0] === 'box') {
+        $title = get_mailbox_name($list[1]);
     } elseif ($list[0] === 'file') {
         $title = urldecode($list[1]);
+    } elseif ($list[0] === 'page') {
+        $page = $list[1] + 1;
+        $title = $lang['page'] . " $page";
     }
 
     if (empty($title)) {
@@ -251,7 +256,7 @@ function get_mailbox_name($mailbox)
 {
     global $fluent;
 
-    switch ($mailbox) {
+    switch ((int) $mailbox) {
         case -2:
             return 'Drafts';
         case -1:
