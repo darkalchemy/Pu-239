@@ -39,6 +39,7 @@ $lang = [
     'details_nfo' => 'NFO',
     'details_view_nfo' => 'View NFO',
     'details_visible' => 'Visible',
+    'details_subs' => 'Subtitles',
     'details_no' => 'No',
     'details_dead' => ' (dead)',
     'details_banned' => 'Banned',

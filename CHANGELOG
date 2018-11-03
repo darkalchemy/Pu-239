@@ -1,3 +1,22 @@
+03 Nov, 2018
+remove: everything paypal
+update: no longer set poster, if empty, poster is strictly for user to set or not
+update: move descr formatting to ajax, if not already cached, improves page load time
+update: wiki breadcrumbs
+update: add previous/next links to torrent details page
+update: set torrents.imdb_id in takeupload.php
+add: left/right angle font awesome
+remove: banner and background from torrents table
+add: get images from images table as needed
+update: show subtitles in details.php
+remove: banner overlay
+fix: use user poster in imdb block
+add: get_torrent_count() Torrent.php
+add: click to IMDb on title imdb block
+fix: remove table backups older than 6 hours
+fix: update tvmaze
+fix: update on/off cleanup item
+
 02 Nox, 2018
 fix: viewnfo breadcrumbs
 

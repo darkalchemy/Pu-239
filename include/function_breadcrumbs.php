@@ -178,9 +178,13 @@ function get_infopage($lang, $queries, $path)
         $title = $lang['app_list'];
     } elseif ($list[0] === 'action' && $list[1] === 'viewapp') {
         $title = $lang['view_app'];
+    } elseif ($list[0] === 'name') {
+        $title = $lang['index'];
     } elseif ($list[0] === 'page') {
         $page = $list[1] + 1;
         $title = $lang['page'] . " $page";
+    } elseif ($list[0] === 'letter') {
+        $title = $lang['letter'] . ' ' . strtoupper($list[1]);
     } elseif ($list[0] === 'type') {
         $title = $lang[$list[1]];
     } elseif (!empty($list[0])) {

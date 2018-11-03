@@ -2,25 +2,15 @@
 
 global $site_config;
 
-const REQUIRED_PHP = 70200, REQUIRED_PHP_VERSION = '7.2.0';
-$site_settings = $paypal_settings = $hnr_settings = $staff_settings = [];
+$site_settings = $hnr_settings = $staff_settings = [];
 
-if (PHP_VERSION_ID < REQUIRED_PHP) {
-    die('PHP ' . REQUIRED_PHP_VERSION . ' or higher is required.');
-}
 if (PHP_INT_SIZE < 8) {
     die('A 64bit or higher OS + Processor is required.');
-}
-if (get_magic_quotes_gpc() || get_magic_quotes_runtime() || ini_get('magic_quotes_sybase')) {
-    die('PHP is configured incorrectly. Turn off magic quotes.');
-}
-if (ini_get('register_long_arrays') || ini_get('register_globals') || ini_get('safe_mode')) {
-    die('PHP is configured incorrectly. Turn off safe_mode, register_globals and register_long_arrays.');
 }
 $site_config['variant'] = 'Pu-239';
 
 // charset
-$site_config['char_set'] = 'UTF-8'; //also to be used site wide in meta tags
+$site_config['char_set'] = 'UTF-8'; // also to be used site wide in meta tags
 
 // Windows fix
 if (!function_exists('sys_getloadavg')) {
@@ -116,7 +106,7 @@ $site_config['expires']['movieofweek'] = 604800; // 604800 = 1 week
 $site_config['expires']['browse_where'] = 60; // 60 = 60 seconds
 $site_config['expires']['torrent_xbt_data'] = 300; // 300 = 5 min
 $site_config['expires']['ismoddin'] = 0; // 0 = infinite
-$site_config['expires']['book_info'] = 604800; //604800 = 1 week
+$site_config['expires']['book_info'] = 604800; // 604800 = 1 week
 $site_config['expires']['browser_user_agent'] = 86400;
 $site_config['expires']['staff_picks'] = 86400;
 // Tracker configs
@@ -136,8 +126,8 @@ $site_config['mods']['slots'] = true;
 $site_config['votesrequired'] = 15;
 $site_config['catsperrow'] = 7;
 // Latest posts limit
-$site_config['latest_posts_limit'] = 5; //query limit for latest forum posts on index
-//latest torrents limit
+$site_config['latest_posts_limit'] = 5; // query limit for latest forum posts on index
+// latest torrents limit
 $site_config['latest_torrents_limit'] = 5;
 $site_config['latest_torrents_limit_2'] = 5;
 $site_config['staff_picks_limit'] = 5;
@@ -148,7 +138,7 @@ $site_config['reports'] = 1; // 1/0 on/off
 $site_config['karma'] = 1; // 1/0 on/off
 $site_config['BBcode'] = 1; // 1/0 on/off
 $site_config['inviteusers'] = 10000;
-$site_config['flood_time'] = 900; //comment/forum/pm flood limit
+$site_config['flood_time'] = 900; // comment/forum/pm flood limit
 $site_config['readpost_expiry'] = 14 * 86400; // 14 days
 
 $site_config['sub_up_dir'] = ROOT_DIR . 'uploadsub'; // must be writable for httpd user
@@ -172,9 +162,9 @@ $site_config['pic_baseurl'] = '.' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_S
 $site_config['pic_baseurl_chat'] = $site_config['baseurl'] . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
 $site_config['stylesheet'] = 1;
 $site_config['categorie_icon'] = 1;
-$site_config['comment_min_class'] = 4; //min class to be checked when posting comments
-$site_config['comment_check'] = 1; //set it to 0 if you wanna allow commenting with out staff checking
-//for subs & youtube mode
+$site_config['comment_min_class'] = 4; // min class to be checked when posting comments
+$site_config['comment_check'] = 1; // set it to 0 if you wanna allow commenting with out staff checking
+// for imdb, tmdb, fanart, subs, youtube
 $site_config['movie_cats'] = [
     2,
     3,

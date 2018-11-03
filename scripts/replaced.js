@@ -332,13 +332,6 @@ $(function () {
         document.getElementsByTagName('body')[0].style.backgroundImage = 'url(' + body_image + ')';
         document.getElementsByTagName('body')[0].style.backgroundSize = 'cover';
     }
-
-    if (document.body.contains(document.getElementById('overlay'))) {
-        var width = document.getElementById('overlay').offsetWidth;
-        var height = (width * 185 / 1000) + 6;
-        document.getElementById('overlay').style.height = height + 'px';
-        document.getElementById('body-overlay').classList.add('body-overlay');
-    }
 });
 
 var vidWidth = $('.object-fit-video').width();

@@ -9,7 +9,7 @@ require_once ROOT_DIR . 'polls.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER, $site_config, $BLOCKS, $fluent, $cache, $session, $message_stuffs;
+global $CURUSER, $site_config, $BLOCKS, $fluent, $cache, $session, $message_stuffs, $torrent_stuffs;
 
 $stdfoot = [
     'js' => [
@@ -103,34 +103,14 @@ if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS && $BLOCKS['la
     $HTMLOUT .= '</div>';
 }
 
-if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SCROLL && $BLOCKS['latest_torrents_scroll_on']) {
-    $count = $cache->get('torrent_poster_count_');
-    if ($count === false || is_null($count)) {
-        $count = $fluent->from('torrents')
-            ->select(null)
-            ->select('COUNT(*) AS count')
-            ->where('poster != ""')
-            ->fetch('count');
-        $cache->set('torrent_poster_count_', $count, 86400);
-    }
-    if ($count > 10) {
+if ($torrent_stuffs->get_torrent_count() >= 10) {
+    if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SCROLL && $BLOCKS['latest_torrents_scroll_on']) {
         $HTMLOUT .= "<div class='container is-fluid portlet' id='LATEST_TORRENTS_SCROLL'>";
         include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_torrents_scroll.php';
         $HTMLOUT .= '</div>';
     }
-}
 
-if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SLIDER && $BLOCKS['latest_torrents_slider_on']) {
-    $count = $cache->get('torrent_banner_count_');
-    if ($count === false || is_null($count)) {
-        $count = $fluent->from('torrents')
-            ->select(null)
-            ->select('COUNT(*) AS count')
-            ->where('banner != ""')
-            ->fetch('count');
-        $cache->set('torrent_banner_count_', $count, 86400);
-    }
-    if ($count > 10) {
+    if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SLIDER && $BLOCKS['latest_torrents_slider_on']) {
         $HTMLOUT .= "<div class='container is-fluid portlet' id='LATEST_TORRENTS_SLIDER'>";
         include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_torrents_slider.php';
         $HTMLOUT .= '</div>';
@@ -218,12 +198,6 @@ if (curuser::$blocks['index_page'] & block_index::TORRENTFREAK && $BLOCKS['torre
 if (curuser::$blocks['index_page'] & block_index::DISCLAIMER && $BLOCKS['disclaimer_on']) {
     $HTMLOUT .= "<div class='container is-fluid portlet' id='DISCLAIMER'>";
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'disclaimer.php';
-    $HTMLOUT .= '</div>';
-}
-
-if (curuser::$blocks['index_page'] & block_index::DONATION_PROGRESS && $BLOCKS['donation_progress_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='DONATIONS'>";
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'donations.php';
     $HTMLOUT .= '</div>';
 }
 

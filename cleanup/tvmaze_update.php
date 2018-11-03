@@ -26,13 +26,15 @@ function tvmaze_update($data)
         $shows = @json_decode($json, true);
         if ($shows) {
             foreach ($shows as $show) {
-                $values[] = [
-                    'name' => htmlsafechars($show['name']),
-                    'tvmaze_id' => $show['id'],
-                    'tvrage_id' => $show['externals']['tvrage'],
-                    'thetvdb_id' => $show['externals']['thetvdb'],
-                    'imdb_id' => $show['externals']['imdb'],
-                ];
+                if (!empty($show['id'])) {
+                    $values[] = [
+                        'name' => get_or_empty($show['name']),
+                        'tvmaze_id' => get_or_empty($show['id']),
+                        'tvrage_id' => get_or_empty($show['externals']['tvrage']),
+                        'thetvdb_id' => get_or_empty($show['externals']['thetvdb']),
+                        'imdb_id' => get_or_empty($show['externals']['imdb']),
+                    ];
+                }
             }
         }
     }
@@ -46,4 +48,13 @@ function tvmaze_update($data)
     if ($data['clean_log']) {
         write_log("TVMaze ID's Cleanup completed");
     }
+}
+
+function get_or_empty($param)
+{
+    if (!empty($param)) {
+        return htmlsafechars($param);
+    }
+
+    return '';
 }

@@ -178,21 +178,13 @@ if (!empty($_POST['poster']) && (($poster = $_POST['poster']) != $fetch_assoc['p
         die();
     }
     $updateset[] = 'poster = ' . sqlesc($poster);
-    $updateset[] = "banner = ''";
-    $updateset[] = "background = ''";
     $torrent_cache['poster'] = $poster;
-    $torrent_cache['banner'] = '';
-    $torrent_cache['background'] = '';
     clear_image_cache();
 }
 
 if (empty($_POST['poster']) && !empty($fetch_assoc['poster'])) {
     $updateset[] = "poster = ''";
-    $updateset[] = "banner = ''";
-    $updateset[] = "background = ''";
     $torrent_cache['poster'] = '';
-    $torrent_cache['banner'] = '';
-    $torrent_cache['background'] = '';
     clear_image_cache();
 }
 
@@ -252,19 +244,11 @@ if (isset($_POST['url']) && (($url = $_POST['url']) != $fetch_assoc['url'])) {
             die();
         }
         $updateset[] = 'url = ' . sqlesc($url);
-        $updateset[] = "banner = ''";
-        $updateset[] = "background = ''";
         $torrent_cache['url'] = $url;
-        $torrent_cache['banner'] = '';
-        $torrent_cache['background'] = '';
         clear_image_cache();
     } else {
         $updateset[] = "url = ''";
-        $updateset[] = "banner = ''";
-        $updateset[] = "background = ''";
         $torrent_cache['url'] = '';
-        $torrent_cache['banner'] = '';
-        $torrent_cache['background'] = '';
         clear_image_cache();
     }
 }
@@ -323,15 +307,12 @@ if (count($updateset) > 0) {
 if ($torrent_cache) {
     $cache->update_row('torrent_details_' . $id, $torrent_cache, $site_config['expires']['torrent_details']);
     $cache->deleteMulti([
+        'torrent_details_' . $id,
         'top5_tor_',
         'last5_tor_',
         'torrent_xbt_data_' . $id,
-        'torrent_details_txt_' . $id,
-        'similiar_tor_' . $id,
+        'torrent_descr_', $id,
     ]);
-}
-if ($torrent_txt_cache) {
-    $cache->update_row('torrent_details_txt_' . $id, $torrent_txt_cache, $site_config['expires']['torrent_details_text']);
 }
 $torrent_stuffs->remove_torrent($infohash);
 write_log('torrent edited - ' . htmlsafechars($name) . ' was edited by ' . (($fetch_assoc['anonymous'] == 'yes') ? 'Anonymous' : htmlsafechars($CURUSER['username'])) . '');

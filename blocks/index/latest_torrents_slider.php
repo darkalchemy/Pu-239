@@ -2,6 +2,7 @@
 
 global $site_config, $lang, $fluent, $CURUSER, $cache;
 
+$cache->delete('sliderl_torrents_');
 $slider_torrents = $cache->get('sliderl_torrents_');
 if ($slider_torrents === false || is_null($slider_torrents)) {
     $slider_torrents = $fluent->from('torrents')
@@ -13,14 +14,13 @@ if ($slider_torrents === false || is_null($slider_torrents)) {
         ->select('torrents.name')
         ->select('torrents.size')
         ->select('torrents.poster')
-        ->select('torrents.banner')
         ->select('torrents.anonymous')
         ->select('torrents.owner')
+        ->select('torrents.imdb_id')
         ->select('users.username')
         ->select('users.class')
+        ->where('imdb_id IS NOT NULL')
         ->leftJoin('users ON torrents.owner = users.id')
-        ->where('banner != ""')
-        ->where('poster != ""')
         ->orderBy('torrents.added DESC')
         ->limit($site_config['latest_torrents_limit_slider'])
         ->fetchAll();
@@ -28,7 +28,51 @@ if ($slider_torrents === false || is_null($slider_torrents)) {
     $cache->set('slider_torrents_', $slider_torrents, $site_config['expires']['slider_torrents']);
 }
 
-if ($slider_torrents) {
+foreach ($slider_torrents as $torrent) {
+    if (empty($torrent['poster']) && !empty($torrent['imdb_id'])) {
+        $images = $cache->get('posters_' . $torrent['imdb_id']);
+        if ($images === false || is_null($images)) {
+            $images = $fluent->from('images')
+                ->select(null)
+                ->select('url')
+                ->where('type = "poster"')
+                ->where('imdb_id = ?', $torrent['imdb_id'])
+                ->fetchAll();
+
+            $cache->set('posters_' . $torrent['imdb_id'], $images, 86400);
+        }
+
+        if (!empty($images)) {
+            shuffle($images);
+            $torrent['poster'] = $images[0]['url'];
+        } else {
+            $torrent['poster'] = $site_config['pic_baseurl'] . 'noposter.png';
+        }
+    }
+    if (!empty($torrent['imdb_id'])) {
+        $images = $cache->get('banners_' . $torrent['imdb_id']);
+        if ($images === false || is_null($images)) {
+            $images = $fluent->from('images')
+                ->select(null)
+                ->select('url')
+                ->where('type = "banner"')
+                ->where('imdb_id = ?', $torrent['imdb_id'])
+                ->fetchAll();
+
+            $cache->set('banners_' . $torrent['imdb_id'], $images, 86400);
+        }
+        if (!empty($images)) {
+            shuffle($images);
+            $torrent['banner'] = $images[0]['url'];
+        }
+    }
+
+    if (!empty($torrent['banner'])) {
+        $sliding_torrents[] = $torrent;
+    }
+}
+
+if (!empty($sliding_torrents)) {
     $HTMLOUT .= "
     <a id='slider-hash'></a>
     <fieldset id='slider' class='header'>
@@ -40,7 +84,7 @@ if ($slider_torrents) {
             <div class='alt_bordered bg-00 automatic-slider flexslider'>
                 <ul class='slides'>";
     $i = 0;
-    foreach ($slider_torrents as $slider_torrent) {
+    foreach ($sliding_torrents as $slider_torrent) {
         $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = '';
         extract($slider_torrent);
         $i = $site_config['latest_torrents_limit_slider'];
@@ -52,13 +96,13 @@ if ($slider_torrents) {
         }
 
         $src = $i++ <= 1 ? "src='" . url_proxy($banner, true, 1000, 185) . "' class='noshow round10'" : "data-src='" . url_proxy($banner, true, 1000, 185) . "' class='noshow lazy round10'";
-        $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster' />";
+        $poster = "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster'>";
 
         $HTMLOUT .= "
                     <li>
                         <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
                             <div class='dt-tooltipper-large' data-tooltip-content='#slider_id_{$id}_tooltip'>
-                                <img $src />
+                                <img $src>
                                 <div class='tooltip_templates'>
                                     <span id='slider_id_{$id}_tooltip'>
                                         <div class='is-flex tooltip-torrent'>

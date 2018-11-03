@@ -10,15 +10,15 @@ function get_file_name($file)
         case 'chat_css_uranium':
             return "{$site_config['baseurl']}/css/1/chat_uranium_4603c5b9.css";
         case 'css':
-            return "{$site_config['baseurl']}/css/1/css_35e08412.css";
+            return "{$site_config['baseurl']}/css/1/css_c0a4997f.css";
         case 'vendor_css':
             return "{$site_config['baseurl']}/css/1/vendor_e892b672.css";
         case 'sceditor_css':
-            return "{$site_config['baseurl']}/css/1/sceditor_e24f1c22.css";
+            return "{$site_config['baseurl']}/css/1/sceditor_0fd3a843.css";
         case 'main_css':
-            return "{$site_config['baseurl']}/css/1/main_45275823.css";
+            return "{$site_config['baseurl']}/css/1/main_8a9305a5.css";
         case 'main_js':
-            return "{$site_config['baseurl']}/js/1/main_f153e2cb.js";
+            return "{$site_config['baseurl']}/js/1/main_81e4e2cb.js";
         case 'vendor_js':
             return "{$site_config['baseurl']}/js/1/vendor_dcc85e11.js";
         case 'jquery_js':
@@ -42,7 +42,7 @@ function get_file_name($file)
         case 'theme_js':
             return "{$site_config['baseurl']}/js/1/theme_ff3ca3dd.js";
         case 'sceditor_js':
-            return "{$site_config['baseurl']}/js/1/sceditor_2d41edb7.js";
+            return "{$site_config['baseurl']}/js/1/sceditor_d07bdcd5.js";
         case 'cheaters_js':
             return "{$site_config['baseurl']}/js/1/cheaters_88e84984.js";
         case 'user_search_js':
@@ -56,15 +56,15 @@ function get_file_name($file)
         case 'pStrength_js':
             return "{$site_config['baseurl']}/js/1/pStrength_2d088c70.js";
         case 'upload_js':
-            return "{$site_config['baseurl']}/js/1/upload_d3a06ad6.js";
+            return "{$site_config['baseurl']}/js/1/upload_7c7799a4.js";
         case 'request_js':
-            return "{$site_config['baseurl']}/js/1/request_b205f15b.js";
+            return "{$site_config['baseurl']}/js/1/request_cccabb75.js";
         case 'acp_js':
             return "{$site_config['baseurl']}/js/1/acp_22d19c79.js";
         case 'dragndrop_js':
             return "{$site_config['baseurl']}/js/1/dragndrop_8018b488.js";
         case 'details_js':
-            return "{$site_config['baseurl']}/js/1/details_5a1433e5.js";
+            return "{$site_config['baseurl']}/js/1/details_b906e2f4.js";
         case 'forums_js':
             return "{$site_config['baseurl']}/js/1/forums_b87eec63.js";
         case 'pollsmanager_js':

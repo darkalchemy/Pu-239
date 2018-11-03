@@ -92,6 +92,20 @@ class Torrent
                 ->where('id = ?', $tid)
                 ->fetch();
 
+            $torrent['previous'] = $this->fluent->from('torrents')
+                ->select(null)
+                ->select('MAX(id) AS id')
+                ->select('name')
+                ->where('id < ?', $torrent['id'])
+                ->fetch();
+
+            $torrent['next'] = $this->fluent->from('torrents')
+                ->select(null)
+                ->select('MIN(id) AS id')
+                ->select('name')
+                ->where('id > ?', $torrent['id'])
+                ->fetch();
+
             $this->cache->set('torrent_details_' . $tid, $torrent, $this->site_config['expires']['torrent_details']);
         }
 
@@ -284,14 +298,15 @@ class Torrent
                 'last5_tor_',
                 'scroll_tor_',
                 'torrent_details_' . $tid,
-                'torrent_details_txt_' . $tid,
                 'lastest_tor_',
                 'slider_tor_',
                 'torrent_poster_count_',
                 'torrent_banner_count_',
                 'backgrounds_',
                 'posters_',
-                'similiar_tor_' . $tid,
+                'banners_',
+                'get_torrent_count_',
+                'torrent_descr_', $tid,
             ]);
             $this->clear_caches();
         }
@@ -323,5 +338,20 @@ class Torrent
         $this->clear_caches();
 
         return $id;
+    }
+
+    public function get_torrent_count()
+    {
+        $count = $this->cache->get('get_torrent_count_');
+        if ($count === false || is_null($count)) {
+            $count = $this->fluent->from('torrents')
+                ->select(null)
+                ->select('COUNT(id) AS count')
+                ->fetch('count');
+
+            $this->cache->set('get_torrent_count_', $count, 86400);
+        }
+
+        return $count;
     }
 }

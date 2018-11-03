@@ -109,7 +109,7 @@ if ($do === 'view_page') {
             $fetch_assoc = mysqli_fetch_assoc($select);
             $can_send_it = empty($fetch_assoc['email']) ? "
                             <a href='{$site_config['baseurl']}/invite.php?do=send_email&amp;id=" . (int) $fetch_assoc['id'] . "' class='tooltipper' title='Send Email'>
-                                <i class='icon-mail' aria-hidden='true'></i>" . htmlsafechars($fetch_assoc['code']) . '
+                                <i class='icon-mail-alt' aria-hidden='true'></i>" . htmlsafechars($fetch_assoc['code']) . '
                             </a>' : "
                             <span class='tooltipper' title='Email Sent'>
                                 " . htmlsafechars($fetch_assoc['code']) . '

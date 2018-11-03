@@ -12,7 +12,7 @@ function find_images(string $imdb_id)
             ->where('imdb_id = ?', $imdb_id)
             ->fetchAll();
 
-         $cache->set('posters_', $imdb_id, 0);
+        $cache->set('posters_', $imdb_id, 0);
     }
 
     if ($posters) {
@@ -21,5 +21,6 @@ function find_images(string $imdb_id)
 
         return $poster;
     }
+
     return false;
 }

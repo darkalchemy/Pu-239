@@ -44,6 +44,11 @@ if (!isset($_FILES['file'])) {
 }
 
 $url = strip_tags(isset($url) ? trim($url) : '');
+if (!empty($url)) {
+    preg_match('/(tt\d{7})/i', $url, $imdb);
+    $imdb = !empty($imdb[1]) ? $imdb[1] : '';
+}
+
 $poster = strip_tags(isset($poster) ? trim($poster) : '');
 $f = $_FILES['file'];
 $fname = unesc($f['name']);
@@ -381,6 +386,9 @@ $values = [
     'nfo' => $nfo,
     'client_created_by' => $tmaker,
 ];
+if (!empty($imdb)) {
+    $values['imdb_id'] = $imdb;
+}
 $id = $torrent_stuffs->add($values);
 
 if (!$id) {

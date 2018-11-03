@@ -3,6 +3,7 @@
 require_once INCL_DIR . 'function_fanart.php';
 require_once INCL_DIR . 'function_tmdb.php';
 require_once INCL_DIR . 'function_imdb.php';
+require_once INCL_DIR . 'function_details.php';
 require_once INCL_DIR . 'html_functions.php';
 
 use Imdb\Config;
@@ -15,7 +16,7 @@ use Imdb\Config;
  *
  * @throws Exception
  */
-function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false)
+function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false, $poster = false)
 {
     global $cache, $BLOCKS, $torrent_stuffs, $image_stuffs;
 
@@ -94,19 +95,12 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
     if ($data_only) {
         return $imdb_data;
     }
-    $poster = !empty($imdb_data['poster']) ? $imdb_data['poster'] : '';
-
     if (!empty($poster)) {
-        $insert = $cache->get('insert_imdb_imdbid_' . $imdbid);
-        if ($insert === false || is_null($insert)) {
-            $values = [
-                'imdb_id' => $imdbid,
-                'url' => $poster,
-                'type' => 'poster',
-            ];
-            $image_stuffs->insert($values);
-            $cache->set('insert_imdb_imdbid_' . $imdbid, 0, 604800);
-        }
+        $poster = $poster;
+    } elseif (!empty($imdb_data['poster'])) {
+        $poster = $imdb_data['poster'];
+    } else {
+        $poster = get_poster($imdbid);
     }
 
     $imdb = [
@@ -159,6 +153,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
     foreach ($imdb as $foo => $boo) {
         if (isset($imdb_data[$foo]) && !empty($imdb_data[$foo])) {
             if (!is_array($imdb_data[$foo])) {
+                $imdb_data[$foo] = $boo === 'Title' ? "<a href='" . url_proxy("https://www.imdb.com/title/{$imdbid}") . "' target='_blank' class='tooltipper' title='IMDb: {$imdb_data[$foo]}'>{$imdb_data[$foo]}</a>" : $imdb_data[$foo];
                 $imdb_info .= "
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>$boo: </div>
@@ -178,7 +173,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                         unset($cast);
                     }
                     if ($foo === 'trailers') {
-                        $imdb_tmp[] = "<a href='" . url_proxy($pp['url']) . "' target='_blank'>{$pp['title']}</a>";
+                        $imdb_tmp[] = "<a href='" . url_proxy($pp['url']) . "' target='_blank' class='tooltipper' title='IMDb: {$pp['title']}'>{$pp['title']}</a>";
                     } elseif ($foo != 'cast') {
                         $role = !empty($pp['role']) ? ucwords($pp['role']) : 'unknown';
                         $imdb_tmp[] = "<a href='" . url_proxy("https://www.imdb.com/name/nm{$pp['imdb']}") . "' target='_blank' class='tooltipper' title='$role'>" . $pp['name'] . '</a>';
@@ -212,7 +207,6 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
     } else {
         $imdb_info = "<div class='padding10'>$imdb_info</div>";
     }
-
     $cache->set('imdb_fullset_' . $imdbid, $imdb_info, 604800);
 
     return [

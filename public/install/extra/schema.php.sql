@@ -1418,20 +1418,6 @@ CREATE TABLE `over_forums` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `paypal_config`
---
-
-DROP TABLE IF EXISTS `paypal_config`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `paypal_config` (
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `value` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `peers`
 --
 
@@ -2163,13 +2149,11 @@ CREATE TABLE `torrents` (
   `points` int(10) unsigned NOT NULL DEFAULT '0',
   `allow_comments` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `poster` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `banner` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `background` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nuked` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `nukereason` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_reseed` int(10) unsigned NOT NULL DEFAULT '0',
   `release_group` enum('scene','p2p','none') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'none',
-  `subs` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subs` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `vip` enum('1','0') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
   `newgenre` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pretime` int(10) unsigned NOT NULL DEFAULT '0',
@@ -2263,8 +2247,8 @@ CREATE TABLE `triviausers` (
   KEY `qid` (`qid`),
   KEY `multi` (`user_id`,`qid`,`gamenum`),
   CONSTRAINT `triviausers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `triviausers_ibfk_2` FOREIGN KEY (`qid`) REFERENCES `triviaq` (`qid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `triviausers_ibfk_3` FOREIGN KEY (`gamenum`) REFERENCES `triviasettings` (`gamenum`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `triviausers_ibfk_3` FOREIGN KEY (`gamenum`) REFERENCES `triviasettings` (`gamenum`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `triviausers_ibfk_4` FOREIGN KEY (`qid`) REFERENCES `triviaq` (`qid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2652,4 +2636,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-01  3:00:15
+-- Dump completed on 2018-11-03 18:07:21

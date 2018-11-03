@@ -1086,9 +1086,6 @@ $sql_updates = [
         'flush' => false,
     ],
 
-
-
-
     [
         'id' => 1540841544,
         'info' => 'Alter column',
@@ -1395,6 +1392,41 @@ $sql_updates = [
         'info' => 'Alter column',
         'date' => '01 Nov, 2018',
         'query' => "DELETE FROM `site_config` WHERE `name` = 'ratio_free'",
+        'flush' => true,
+    ],
+    [
+        'id' => 1541055376,
+        'info' => 'Alter column',
+        'date' => '01 Nov, 2018',
+        'query' => 'ALTER TABLE `torrents` DROP COLUMN `banner`',
+        'flush' => false,
+    ],
+    [
+        'id' => 1541055377,
+        'info' => 'Alter column',
+        'date' => '01 Nov, 2018',
+        'query' => 'ALTER TABLE `torrents` DROP COLUMN `background`',
+        'flush' => false,
+    ],
+    [
+        'id' => 1541055378,
+        'info' => 'Alter column',
+        'date' => '01 Nov, 2018',
+        'query' => 'ALTER TABLE `torrents` MODIFY `subs` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL',
+        'flush' => false,
+    ],
+    [
+        'id' => 1541055379,
+        'info' => 'Drop table',
+        'date' => '01 Nov, 2018',
+        'query' => 'DROP TABLE `paypal_config`',
+        'flush' => true,
+    ],
+    [
+        'id' => 1541055380,
+        'info' => 'Delete paypal config from staff panel',
+        'date' => '01 Nov, 2018',
+        'query' => "DELETE FROM `staffpanel` where`page_name` = 'Paypal Settings'",
         'flush' => true,
     ],
 ];

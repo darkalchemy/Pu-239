@@ -300,7 +300,7 @@ $classes = $fluent->from('class_config')
 $base = [
     'UC_MIN',
     'UC_MAX',
-    'UC_STAFF'
+    'UC_STAFF',
 ];
 foreach ($classes as $class) {
     if (!in_array($class['name'], $base)) {

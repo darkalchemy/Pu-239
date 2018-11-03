@@ -19,16 +19,6 @@ if ($site_settings === false || is_null($site_settings)) {
     }
     $cache->set('site_settings_', $site_settings, 86400);
 }
-$paypal_settings = $cache->get('paypal_settings_');
-if ($paypal_settings === false || is_null($paypal_settings)) {
-    $sql = $fluent->from('paypal_config');
-
-    foreach ($sql as $res) {
-        $paypal_settings['paypal_config'][$res['name']] = $res['value'];
-    }
-
-    $cache->set('paypal_settings_', $paypal_settings, 86400);
-}
 
 $hnr_settings = $cache->get('hnr_settings_');
 if ($hnr_settings === false || is_null($hnr_settings)) {
@@ -75,7 +65,7 @@ if ($staff_forums === false || is_null($staff_forums)) {
 
     $cache->set('staff_forums_', $staff_forums, 86400);
 }
-$site_config = array_merge($site_settings, $site_config, $paypal_settings, $hnr_settings, $staff_settings, $staff_forums);
+$site_config = array_merge($site_settings, $site_config, $hnr_settings, $staff_settings, $staff_forums);
 $use_12_hour = !empty($session->get('use_12_hour')) ? $session->get('use_12_hour') === 'yes' ? 1 : 0 : $site_config['use_12_hour'];
 $time_string = $use_12_hour ? 'g:i:s a' : 'H:i:s';
 $time_string_without_seconds = $use_12_hour ? 'g:i a' : 'H:i';

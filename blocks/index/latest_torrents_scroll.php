@@ -2,6 +2,7 @@
 
 global $site_config, $lang, $fluent, $CURUSER, $cache;
 
+$cache->delete('scroll_tor_');
 $scroll_torrents = $cache->get('scroll_tor_');
 if ($scroll_torrents === false || is_null($scroll_torrents)) {
     $scroll_torrents = $fluent->from('torrents')
@@ -15,17 +16,42 @@ if ($scroll_torrents === false || is_null($scroll_torrents)) {
         ->select('torrents.poster')
         ->select('torrents.anonymous')
         ->select('torrents.owner')
+        ->select('torrents.imdb_id')
         ->select('users.username')
         ->select('users.class')
         ->leftJoin('users ON torrents.owner = users.id')
-        ->where('poster != ""')
         ->orderBy('torrents.added DESC')
         ->limit($site_config['latest_torrents_limit_scroll'])
         ->fetchAll();
+
     $cache->set('scroll_tor_', $scroll_torrents, $site_config['expires']['scroll_torrents']);
 }
 
-if ($scroll_torrents) {
+foreach ($scroll_torrents as $torrent) {
+    if (empty($torrent['poster']) && !empty($torrent['imdb_id'])) {
+        $images = $cache->get('posters_' . $torrent['imdb_id']);
+        if ($images === false || is_null($images)) {
+            $images = $fluent->from('images')
+                ->select(null)
+                ->select('url')
+                ->where('type = "poster"')
+                ->where('imdb_id = ?', $torrent['imdb_id'])
+                ->fetchAll();
+
+            $cache->set('posters_' . $torrent['imdb_id'], $images, 86400);
+        }
+
+        if (!empty($images)) {
+            shuffle($images);
+            $torrent['poster'] = $images[0]['url'];
+        } else {
+            $torrent['poster'] = $site_config['pic_baseurl'] . 'noposter.png';
+        }
+    }
+    $scroller_torrents[] = $torrent;
+}
+
+if ($scroller_torrents) {
     $HTMLOUT .= "
     <a id='scroller-hash'></a>
     <fieldset id='scroller' class='header'>
@@ -37,7 +63,7 @@ if ($scroll_torrents) {
             <div id='carousel-container' class='alt_bordered bg-00 carousel-container'>
                 <div id='icarousel' class='icarousel'>";
 
-    foreach ($scroll_torrents as $scroll_torrent) {
+    foreach ($scroller_torrents as $scroll_torrent) {
         $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = '';
         extract($scroll_torrent);
         $i = $site_config['latest_torrents_limit_scroll'];
@@ -48,21 +74,28 @@ if ($scroll_torrents) {
             $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . '</span>';
         }
 
+        $inner_poster = "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster'>";
+
         $HTMLOUT .= "
                     <div class='slide'>
                         <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
-                            <div class='dt-tooltipper-small' data-tooltip-content='#scroll_id_{$id}_tooltip'>
-                                <img src='" . url_proxy($poster, true, null, 300) . "' alt='{$name}' style='width: auto; height: 300px; max-height: 300px;' />
+                            <div class='dt-tooltipper-large' data-tooltip-content='#scroll_id_{$id}_tooltip'>
+                                <img src='" . url_proxy($poster, true, null, 300) . "' alt='{$name}' style='width: auto; height: 300px; max-height: 300px;'>
                                 <div class='tooltip_templates'>
                                     <span id='scroll_id_{$id}_tooltip'>
-                                        <span>
-                                            <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($name) . "<br>
-                                            <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b>$username<br>
-                                            <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($added, 'DATE', 0, 1) . "<br>
-                                            <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($size)) . "<br>
-                                            <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>{$seeders}<br>
-                                            <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_leecher']}</b>{$leechers}<br>
-                                        </span>
+                                        <div class='is-flex tooltip-torrent'>
+                                            <span class='margin10'>
+                                                $inner_poster
+                                            </span>
+                                            <span class='margin10'>
+                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($name) . "<br>
+                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b>$username<br>
+                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($added, 'DATE', 0, 1) . "<br>
+                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($size)) . "<br>
+                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>{$seeders}<br>
+                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_leecher']}</b>{$leechers}<br>
+                                            </span>
+                                        </div>
                                     </span>
                                 </div>
                             </div>

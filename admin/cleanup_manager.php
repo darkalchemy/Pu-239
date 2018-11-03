@@ -96,6 +96,7 @@ function manualclean()
 function cleanup_show_main()
 {
     global $site_config, $lang;
+
     $count1 = get_row_count('cleanup');
     $perpage = 15;
     $pager = pager($perpage, $count1, $site_config['baseurl'] . '/staffpanel.php?tool=cleanup_manager&amp;');
@@ -415,6 +416,7 @@ function cleanup_take_new()
 function cleanup_take_delete()
 {
     global $params, $lang;
+
     $opts = [
         'options' => [
             'min_range' => 1,
@@ -436,7 +438,8 @@ function cleanup_take_delete()
 
 function cleanup_take_unlock()
 {
-    global $params, $lang;
+    global $params, $lang, $mysqli;
+
     foreach ([
                  'cid',
                  'clean_on',

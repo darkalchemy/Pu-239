@@ -2058,8 +2058,26 @@ function get_body_image($details, $portrait = false)
 {
     global $cache, $fluent, $torrent;
 
-    if ($details) {
-        return $torrent['background'];
+    $image = '';
+    if ($details && !empty($torrent['imdb_id'])) {
+        $images = $cache->get('backgrounds_' . $torrent['imdb_id']);
+        if ($images === false || is_null($images)) {
+            $images = $fluent->from('images')
+                ->select(null)
+                ->select('url')
+                ->where('type = "background"')
+                ->where('imdb_id = ?', $torrent['imdb_id'])
+                ->fetchAll();
+
+            $cache->set('backgrounds_' . $torrent['imdb_id'], $images, 86400);
+        }
+
+        if (!empty($images)) {
+            shuffle($images);
+            $image = $images[0]['url'];
+        }
+
+        return $image;
     }
 
     $backgrounds = $cache->get('backgrounds_');
@@ -2078,10 +2096,10 @@ function get_body_image($details, $portrait = false)
         }
     }
 
-    shuffle($backgrounds);
-    $image = array_pop($backgrounds);
-    if (!empty($image)) {
-        if (count($backgrounds) <= 5) {
+    if (!empty($backgrounds)) {
+        shuffle($backgrounds);
+        $image = array_pop($backgrounds);
+        if (count($backgrounds) <= 3) {
             $cache->delete('backgrounds_');
         } else {
             $cache->set('backgrounds_', $backgrounds, 86400);

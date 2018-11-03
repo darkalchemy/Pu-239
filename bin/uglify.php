@@ -205,6 +205,7 @@ foreach ($styles as $folder) {
             SCRIPTS_DIR . 'imdb.js',
             SCRIPTS_DIR . 'isbn.js',
             SCRIPTS_DIR . 'tvmaze.js',
+            SCRIPTS_DIR . 'descr.js',
         ],
         'forums_js' => [
             SCRIPTS_DIR . 'jquery.trilemma.js',

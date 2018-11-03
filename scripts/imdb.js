@@ -5,10 +5,10 @@ $('#url').change(function () {
 
 if ($('#imdb').length) {
     var el = document.querySelector('#imdb');
-    get_imdb(el.dataset.csrf, el.dataset.imdbid, el.dataset.tid);
+    get_imdb(el.dataset.csrf, el.dataset.imdbid, el.dataset.tid, el.dataset.poster);
 }
 
-function get_imdb(csrf, url, tid) {
+function get_imdb(csrf, url, tid, image) {
     var el1 = $('.imdb_outer');
     var el2 = $('.imdb_inner');
     var el3 = $('#poster');
@@ -27,6 +27,7 @@ function get_imdb(csrf, url, tid) {
             csrf: csrf,
             url: url,
             tid: tid,
+            image: image,
         },
         success: function (data) {
             if (data['fail'] === 'csrf') {
@@ -44,10 +45,10 @@ function get_imdb(csrf, url, tid) {
                 }
                 if (poster) {
                     el3.val(poster);
-                    el4.html('<a href="' + poster + '" data-lightbox="images"><img src="' + poster + '" class="w-100 img-responsive" alt="Poster" /></a>');
+                    el4.html('<a href="' + poster + '" data-lightbox="images"><img src="' + poster + '" class="w-100 img-responsive" alt="Poster"></a>');
                 }
                 if (data['banner']) {
-                    el5.html("<img src='" + data['banner'] + "' class='w-100 round10 top20' />");
+                    el5.html("<img src='" + data['banner'] + "' class='w-100 round10 top20'>");
                 }
                 if (data['background']) {
                     document.getElementsByTagName('body')[0].style.backgroundColor = 'black';

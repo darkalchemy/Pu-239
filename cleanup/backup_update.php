@@ -12,6 +12,7 @@ function backup_update($data)
     ignore_user_abort(true);
 
     $days = 3;
+    $hours = 6 * 3600;
     $res = sql_query('SELECT id, name FROM dbbackup WHERE added < ' . sqlesc(TIME_NOW - ($days * 86400))) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $ids = [];
@@ -23,6 +24,16 @@ function backup_update($data)
             }
         }
         sql_query('DELETE FROM dbbackup WHERE id IN (' . implode(', ', $ids) . ')') or sqlerr(__FILE__, __LINE__);
+    }
+
+    $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(BACKUPS_DIR, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
+    foreach ($objects as $name => $object) {
+        if (preg_match('/^tbl_/', basename($name))) {
+            $date = filemtime($name);
+            if (($date + $hours) < TIME_NOW) {
+                unlink($name);
+            }
+        }
     }
 
     if ($data['clean_log'] && $queries > 0) {

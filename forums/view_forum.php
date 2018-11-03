@@ -207,7 +207,7 @@ while ($topic = mysqli_fetch_assoc($topic_res)) {
 }
 
 if (!empty($topic_arrs)) {
-    foreach ( $topic_arrs as $topic_arr) {
+    foreach ($topic_arrs as $topic_arr) {
         $topic_id = (int) $topic_arr['id'];
         $locked = 'yes' == $topic_arr['locked'];
         $sticky = 'yes' == $topic_arr['sticky'];
