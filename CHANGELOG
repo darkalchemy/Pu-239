@@ -1,4 +1,5 @@
 03 Nov, 2018
+update: ignored files
 remove: everything paypal
 update: no longer set poster, if empty, poster is strictly for user to set or not
 update: move descr formatting to ajax, if not already cached, improves page load time
