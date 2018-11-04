@@ -7,6 +7,7 @@ if (!@include_once(INCL_DIR . 'config.php')) {
     header('Location: ./install/index.php');
     die();
 }
+require_once INCL_DIR . 'common_functions.php';
 require_once INCL_DIR . 'site_config.php';
 require_once VENDOR_DIR . 'autoload.php';
 
@@ -1605,18 +1606,6 @@ function shuffle_assoc($list, $times = 1)
 }
 
 /**
- * @return mixed
- */
-function get_scheme()
-{
-    if (isset($_SERVER['REQUEST_SCHEME'])) {
-        return $_SERVER['REQUEST_SCHEME'];
-    }
-
-    return 'http';
-}
-
-/**
  * @param $array
  * @param $cols
  *
@@ -1712,35 +1701,6 @@ function make_nice_address($ip)
     } else {
         return $ip . '<br>' . $dom;
     }
-}
-
-/**
- * @param $val
- *
- * @return int|string
- */
-function return_bytes($val)
-{
-    if ($val == '') {
-        return 0;
-    }
-    $val = strtolower(trim($val));
-    $last = $val[strlen($val) - 1];
-    $val = rtrim($val, $last);
-
-    switch ($last) {
-        case 'g':
-            $val *= (1024 * 1024 * 1024);
-            break;
-        case 'm':
-            $val *= (1024 * 1024);
-            break;
-        case 'k':
-            $val *= 1024;
-            break;
-    }
-
-    return $val;
 }
 
 /**

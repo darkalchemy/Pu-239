@@ -347,8 +347,10 @@ if (empty($snatched)) {
 }
 $peer_deleted = false;
 if ($event === 'stopped') {
-    $peer_deleted = $peer_stuffs->delete_by_id($this_user_torrent['id'], $torrent['id'], $info_hash);
-    $cache->delete('peers_' . $userid);
+    if (!empty($this_user_torrent['id'])) {
+        $peer_deleted = $peer_stuffs->delete_by_id($this_user_torrent['id'], $torrent['id'], $info_hash);
+        $cache->delete('peers_' . $userid);
+    }
 }
 if (isset($self) && $event === 'stopped') {
     $seeder = 'no';

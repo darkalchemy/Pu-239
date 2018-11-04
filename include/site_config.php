@@ -154,7 +154,7 @@ if (empty($_SERVER['HTTP_HOST'])) {
     $_SERVER['HTTP_HOST'] = !empty($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $site_config['domain'];
 }
 
-$site_config['baseurl'] = (isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'http') . '://' . $_SERVER['HTTP_HOST'];
+$site_config['baseurl'] = get_scheme() . '://' . $_SERVER['HTTP_HOST'];
 
 $site_config['msg_alert'] = 1; // saves a query when off
 $site_config['report_alert'] = 1; // saves a query when off
