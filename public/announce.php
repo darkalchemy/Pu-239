@@ -241,7 +241,7 @@ foreach ($agentarray as $bannedclient) {
         err('This client is banned. Please use rTorrent, qBitTorrent, deluge, Transmission, uTorrent 2.2.1+ or any other modern torrent client.');
     }
 }
-$announce_wait = $site_config['min_interval'];
+$announce_wait = 300; //$site_config['min_interval'];
 
 if (isset($self) && $self['prevts'] > ($self['nowts'] - $announce_wait)) {
     err("There is a minimum announce time of $announce_wait seconds");

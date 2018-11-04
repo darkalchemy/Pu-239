@@ -357,16 +357,3 @@ if (!function_exists('validip')) {
         ]) ? true : false;
     }
 }
-
-/**
- * @return mixed
- */
-function get_scheme()
-{
-    if (isset($_SERVER['REQUEST_SCHEME'])) {
-        return $_SERVER['REQUEST_SCHEME'];
-    }
-
-    return 'http';
-}
-
