@@ -28,6 +28,7 @@ function images_update()
 
     set_time_limit(1200);
     ignore_user_abort(true);
+    $cache->set('images_update_', 'running' , 600);
 
     get_upcoming();
     get_movies_in_theaters();
@@ -154,7 +155,7 @@ function images_update()
         ->select('type')
         ->where('fetched = "no"')
         ->orderBy('id')
-        ->limit(100)
+//        ->limit(100)
         ->fetchAll();
 
     foreach ($images as $image) {
@@ -182,6 +183,7 @@ function images_update()
     }
 
     $cache->delete('backgrounds_');
+    $cache->delete('images_update_');
 
     write_log('Images Cleanup: Completed');
 }

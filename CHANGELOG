@@ -1,4 +1,5 @@
 03 Nov, 2018
+fix: set/delete run cache images_update.php
 remove IE, announcement blocks
 fix: url_proxy trying to proxy 'N/A' 
 update: ignored files
