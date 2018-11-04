@@ -14,6 +14,14 @@ $count = 0;
 $perpage = 25;
 $state = 'div';
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['delete'] === 'Delete') {
+    foreach ($_POST['logs'] as $log) {
+        $log = urldecode($log);
+        if (file_exists($log)) {
+            unlink($log);
+        }
+    }
+}
 if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     $file = $_GET['file'];
     $ext = pathinfo($file, PATHINFO_EXTENSION);
@@ -100,12 +108,13 @@ foreach ($paths as $path) {
 natsort($files);
 
 if (!empty($files)) {
-    $heading = '
+    $heading = "
         <tr>
             <th>Filename</th>
-            <th>Date</th>
-            <th>Size</th>
-        </tr>';
+            <th class='has-text-centered'>Date</th>
+            <th class='has-text-centered'>Size</th>
+            <th class='has-text-centered'><input type='checkbox' id='checkThemAll' class='tooltipper' title='Select All'></th>
+        </tr>";
     $body = '';
     foreach ($files as $file) {
         $body .= "
@@ -113,15 +122,23 @@ if (!empty($files)) {
             <td>
                 <a href='{$_SERVER['PHP_SELF']}?tool=log_viewer&amp;action=view&amp;file=" . urlencode($file) . "'>$file</a>
             </td>
-            <td>
+            <td class='has-text-centered'>
                 " . get_date(filemtime($file), 'LONG') . "
             </td>
-            <td class='has-text-right'>
-                " . human_filesize(filesize($file)) . '
+            <td class='has-text-right w-10'>
+                " . human_filesize(filesize($file)) . "
             </td>
-        </tr>';
+            <td class='has-text-centered w-10'>
+                <input type='checkbox' name='logs[]' value='" . urlencode($file) . "'>
+            </td>
+        </tr>";
     }
-    $HTMLOUT .= main_table($body, $heading);
+    $HTMLOUT .= "
+        <form action='{$site_config['baseurl']}/staffpanel.php?tool=log_viewer' method='post' name='checkme'>" . main_table($body, $heading) . "
+            <div class='has-text-centered margin20'>
+                <input type='submit' class='button is-small' name='delete' value='Delete'>
+            </div>
+        <form>";
 } else {
     $HTMLOUT .= main_div('There are no log files to view');
 }
