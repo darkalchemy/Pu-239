@@ -155,7 +155,7 @@ function images_update()
         ->select('type')
         ->where('fetched = "no"')
         ->orderBy('id')
-//        ->limit(100)
+        ->limit(100)
         ->fetchAll();
 
     foreach ($images as $image) {
