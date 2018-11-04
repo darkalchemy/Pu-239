@@ -22,6 +22,7 @@ $exts = [
 $folders = [
     BIN_DIR,
     CACHE_DIR,
+    IMDB_CACHE_DIR,
     BACKUPS_DIR,
     TORRENTS_DIR,
     USER_TORRENTS_DIR,

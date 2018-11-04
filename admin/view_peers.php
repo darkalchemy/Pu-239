@@ -46,7 +46,7 @@ $peersperpage = 15;
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['wpeers_h2']}</h1>
     <div class='size_4 has-text-centered margin20'>{$lang['wpeers_there']}" . htmlsafechars($count) . "{$lang['wpeers_peer']}" . ($count > 1 ? $lang['wpeers_ps'] : '') . "{$lang['wpeers_curr']}</div>";
-$pager = pager($peersperpage, $count, 'staffpanel.php?tool=view_peers&amp;action=view_peers&amp;');
+$pager = pager($peersperpage, $count, 'staffpanel.php?tool=view_peers&amp;');
 if ($count > $peersperpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
@@ -83,8 +83,8 @@ if (mysqli_num_rows($result) != 0) {
         <td><a href="' . $site_config['baseurl'] . '/details.php?id=' . (int) ($row['torrent']) . '">' . $smallname . '</a></td>
         <td>' . htmlsafechars($row['ip']) . '</td>
         <td>' . htmlsafechars($row['port']) . '</td>
-        <td>' . htmlsafechars($row['agent']) . '</td>
-        <td>' . htmlsafechars($row['peer_id']) . '</td>
+        <td>' . htmlsafechars(str_replace('/', "\n", trim($row['agent']))) . '</td>
+        <td>' . htmlsafechars(str_replace('-', '', $row['peer_id'])) . '</td>
         <td>' . htmlsafechars(mksize($row['uploaded'])) . '</td>' . (RATIO_FREE == true ? '' : '
         <td>' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
         <td>' . ($row['connectable'] == 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>

@@ -21,10 +21,10 @@ if ($CURUSER >= UC_STAFF && !empty($_GET['id']) && is_valid_id($_GET['id'])) {
 $user = format_username($id);
 
 $completed = "
-    <h1 class='text-center'>$user Port Status</h1>";
+    <h1 class='has-text-centered'>$user Port Status</h1>";
 $completed .= main_div("
     <div id='ipports' data-uid='{$id}'></div>
-    <div class='columns is-multiline'>
+    <div class='columns is-multiline top10'>
         <input class='has-text-centered column is-4' type='text' id='userip' placeholder='Your Torrent Client IP [" . getip() . "]'>
         <input class='has-text-centered column is-4' type='text' id='userport' placeholder='Your Torrent Client Port'>
         <input class='has-text-centered column is-4' type='text' id='ipport' placeholder='Check Status' readonly>
