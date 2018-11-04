@@ -118,7 +118,7 @@ switch ($do) {
                 }
             }
         }
-        if ($site_config['seedbonus_on'] == 1) {
+        if ($site_config['seedbonus_on']) {
             sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($site_config['bonus_per_thanks']) . ' WHERE id =' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
             $sql = sql_query('SELECT seedbonus ' . 'FROM users ' . 'WHERE id = ' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
             $User = mysqli_fetch_assoc($sql);

@@ -400,32 +400,6 @@ class User
     }
 
     /**
-     * @param $date
-     *
-     * @return array|\PDOStatement
-     *
-     * @throws \Envms\FluentPDO\Exception
-     */
-    public function get_birthday_users($date)
-    {
-        $results = $this->fluent->from('users')
-            ->select(null)
-            ->select('id')
-            ->select('class')
-            ->select('username')
-            ->select('uploaded')
-            ->where('MONTH(birthday) = ?', $date['mon'])
-            ->where('DAYOFMONTH(birthday) = ?', $date['mday']);
-
-        $users = [];
-        foreach ($results as $result) {
-            $users[] = $result;
-        }
-
-        return $users;
-    }
-
-    /**
      * @return array|\PDOStatement
      *
      * @throws \Envms\FluentPDO\Exception

@@ -193,9 +193,7 @@ if ($BLOCKS['google_books_api_on'] && in_array($torrent['category'], $site_confi
         $ebook_data = "
             <a id='book-hash'></a>
             <div id='book' data-isbn='{$torrent['isbn']}' data-name='{$torrent['name']}' data-tid='{$torrent['id']}' data-csrf='" . $session->get('csrf_token') . "'>
-                <div class='isbn_outer'>
-                    <div class='isbn_inner'>
-                    </div>
+                <div id='isbn_outer'>
                 </div>
             </div>";
     }
@@ -213,9 +211,7 @@ if ($BLOCKS['tvmaze_api_on'] && in_array($torrent['category'], $site_config['tv_
             $tvmaze_data = "
             <a id='tvmaze-hash'></a>
             <div id='tvmaze' data-tvmazeid='{$ids['tvmaze_id']}' data-name='{$torrent['name']}' data-tid='{$torrent['id']}' data-csrf='" . $session->get('csrf_token') . "'>
-                <div class='tvmaze_outer'>
-                    <div class='tvmaze_inner'>
-                    </div>
+                <div id='tvmaze_outer'>
                 </div>
             </div>";
         }
@@ -227,9 +223,7 @@ if ($BLOCKS['imdb_api_on'] && in_array($torrent['category'], $site_config['movie
         $imdb_data = "
             <a id='imdb-hash'></a>
             <div id='imdb' data-imdbid='{$torrent['imdb_id']}' data-tid='{$torrent['id']}' data-poster='{$torrent['poster']}' data-csrf='" . $session->get('csrf_token') . "'>
-                <div class='imdb_outer'>
-                    <div class='imdb_inner'>
-                    </div>
+                <div id='imdb_outer'>
                 </div>
             </div>";
     }
@@ -320,16 +314,10 @@ if (!empty($torrent['descr'])) {
     $descr = $cache->get('torrent_descr_' . $id);
     if ($descr === false || is_null($descr)) {
         $descr = "
-            <a id='descr-hash'></a>
             <div id='descr' data-tid='{$torrent['id']}' data-csrf='" . $session->get('csrf_token') . "'>
-                <div class='descr_outer'>
-                    <div class='descr_inner'>
-                    </div>
+                <div id='descr_outer'>
                 </div>
             </div>";
-
-        //$descr = format_comment($torrent['descr']);
-        //$cache->set('torrent_descr_' . $id, $descr, 86400);
     }
 }
 

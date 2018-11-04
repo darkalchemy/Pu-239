@@ -53,7 +53,7 @@ if ($CURUSER['id'] != $tid['owner']) {
     sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (0, ' . sqlesc($tid['owner']) . ', ' . TIME_NOW . ", {$msg})") or sqlerr(__FILE__, __LINE__);
 }
 write_log("{$lang['fastdelete_log_first']} {$tid['name']} {$lang['fastdelete_log_last']} {$CURUSER['username']}");
-if ($site_config['seedbonus_on'] == 1) {
+if ($site_config['seedbonus_on']) {
     $dt = sqlesc(TIME_NOW - (14 * 86400)); // lose karma if deleted within 2 weeks
     if ($tid['added'] > $dt) {
         $sb = $tid['seedbonus'] - $site_config['bonus_per_delete'];

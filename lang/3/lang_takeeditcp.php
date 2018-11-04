@@ -1,5 +1,7 @@
 <?php
 
+require_once INCL_DIR . 'html_functions.php';
+
 $lang = [
     //takeeditcp
     'takeeditcp_no_data' => 'lipsesc date din formular',
@@ -31,9 +33,7 @@ $lang = [
     'takeeditcp_birth_month' => 'Va rugam sa setati luna aniversarii.',
     'takeeditcp_birth_day' => 'Va rugam sa setati ziua aniversarii.',
     'takeeditcp_birth_not' => 'Data introdusa nu este o data valida, va rugam incercati din nou',
-    'takeeditcp_email_body' => "<html>
-<head>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    'takeeditcp_email_body' => doc_head() . "
     <title>{$site_config['site_name']} Email Change</title>
 </head>
 <body>

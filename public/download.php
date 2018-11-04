@@ -49,7 +49,7 @@ if (happyHour('check') && happyCheck('checkid', $row['category']) && HAPPY_HOUR 
     sql_query('INSERT INTO happyhour (userid, torrentid, multiplier ) VALUES (' . sqlesc($CURUSER['id']) . ',' . sqlesc($id) . ',' . sqlesc($multiplier) . ')') or sqlerr(__FILE__, __LINE__);
     $cache->delete($CURUSER['id'] . '_happy');
 }
-if ($site_config['seedbonus_on'] == 1 && $row['owner'] != $CURUSER['id']) {
+if ($site_config['seedbonus_on'] && $row['owner'] != $CURUSER['id']) {
     sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus_per_download']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] - $site_config['bonus_per_download']);
     $cache->update_row('user' . $CURUSER['id'], [

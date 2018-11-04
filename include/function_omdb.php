@@ -28,7 +28,7 @@ function search_omdb_by_title($title, int $year)
         $url = "http://www.omdbapi.com/?apikey=$apikey&t=" . urlencode(strtolower($title)) . '&y=' . urlencode($year) . '&plot=full';
         $content = fetch($url);
         if (!$content) {
-            $cache->set('omdb_' . $hash, 0, 86400);
+            $cache->set('omdb_' . $hash, 'failed', 86400);
 
             return false;
         }
@@ -47,7 +47,7 @@ function search_omdb_by_title($title, int $year)
                         ->values($values)
                         ->ignore()
                         ->execute();
-                    $cache->set('insert_imdb_imdbid_' . $imdbid, 0, 604800);
+                    $cache->set('insert_imdb_imdbid_' . $imdbid, 'failed', 604800);
                 }
             }
             $cache->set('omdb_' . $hash, $omdb_data, 604800);
@@ -84,7 +84,7 @@ function get_omdb_info($imdbid, $title = true, $data_only = false)
         $url = "https://www.omdbapi.com/?apikey=$apikey&i=$imdbid&plot=full";
         $content = fetch($url);
         if (!$content) {
-            $cache->get('omdb_' . $imdbid, 0, 86400);
+            $cache->set('omdb_' . $imdbid, 'failed', 86400);
 
             return false;
         }
@@ -123,7 +123,7 @@ function get_omdb_info($imdbid, $title = true, $data_only = false)
                         ->values($values)
                         ->ignore()
                         ->execute();
-                    $cache->set('insert_imdb_imdbid_' . $imdbid, 0, 604800);
+                    $cache->set('insert_imdb_imdbid_' . $imdbid, 'failed', 604800);
                 }
             }
         } elseif (!in_array($key, $exclude)) {

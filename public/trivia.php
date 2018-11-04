@@ -95,13 +95,9 @@ if (!empty($gamenum) && !empty($qid)) {
 }
 $refresh = "<meta http-equiv='refresh' content={$time_refresh}; url={$site_config['baseurl']}/trivia.php'>";
 
-$HTMLOUT = "<!doctype html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+$HTMLOUT = doc_head() . "
     $refresh
+    <meta property='og:title' content='Trivia'>
     <title>Trivia</title>
     <link rel='stylesheet' href='" . get_file_name('vendor_css') . "' />
     <link rel='stylesheet' href='" . get_file_name('css') . "' />

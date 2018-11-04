@@ -1,5 +1,7 @@
 <?php
 
+require_once INCL_DIR . 'html_functions.php';
+
 $lang = [
     //takesignup
     'takesignup_error' => 'Error',
@@ -25,9 +27,7 @@ $lang = [
     'takesignup_badusername' => 'The username your trying to use <b>(%s)</b> is on our black list chose another one',
     'takesignup_bannedmail' => 'This email address is banned!<br><br><strong>Reason</strong>:',
     'takesignup_from' => 'From:',
-    'takesignup_email_body' => "<html>
-<head>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    'takesignup_email_body' => doc_head() . "
     <title>{$site_config['site_name']} Registration</title>
 </head>
 <body>

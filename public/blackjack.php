@@ -486,7 +486,7 @@ if ($game) {
                 ];
                 $message_stuffs->insert($msgs_buffer);
 
-                if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
+                if ($site_config['autoshout_on'] || $site_config['irc_autoshout_on'] == 1) {
                     $classColor = get_user_class_color($CURUSER['class']);
                     $opponent = get_user_class_color($a['class']);
                     $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played [color=#$opponent]{$a['username']}[/color] $outcome ($points to {$a['points']}) $link.";
@@ -510,7 +510,7 @@ if ($game) {
             } else {
                 $sql = "UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $dt . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . ' AND userid = ' . sqlesc($CURUSER['id']);
                 sql_query($sql) or sqlerr(__FILE__, __LINE__);
-                if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
+                if ($site_config['autoshout_on'] || $site_config['irc_autoshout_on'] == 1) {
                     $classColor = get_user_class_color($CURUSER['class']);
                     $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played $link.";
                     autoshout($msg);
@@ -591,7 +591,7 @@ if ($game) {
                 ];
                 $message_stuffs->insert($msgs_buffer);
 
-                if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
+                if ($site_config['autoshout_on'] || $site_config['irc_autoshout_on'] == 1) {
                     $classColor = get_user_class_color($CURUSER['class']);
                     $opponent = get_user_class_color($a['class']);
                     $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played [color=#$opponent]{$a['username']}[/color] $outcome ($points to {$a['points']}) $link.";
@@ -617,7 +617,7 @@ if ($game) {
                 $sql = "UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $dt . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . ' AND userid = ' . sqlesc($CURUSER['id']);
                 sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
-                if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
+                if ($site_config['autoshout_on'] || $site_config['irc_autoshout_on'] == 1) {
                     $classColor = get_user_class_color($CURUSER['class']);
                     $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played $link.";
                     autoshout($msg);
@@ -827,7 +827,7 @@ if ($game) {
             ];
             $message_stuffs->insert($msgs_buffer);
 
-            if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
+            if ($site_config['autoshout_on'] || $site_config['irc_autoshout_on'] == 1) {
                 $classColor = get_user_class_color($CURUSER['class']);
                 $opponent = get_user_class_color($a['class']);
                 $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played [color=#$opponent]{$a['username']}[/color] $outcome ({$playerarr['points']} to {$a['points']}) $link.";
@@ -855,7 +855,7 @@ if ($game) {
             $sql = "UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $dt . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . ' AND userid = ' . sqlesc($CURUSER['id']);
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
-            if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
+            if ($site_config['autoshout_on'] || $site_config['irc_autoshout_on'] == 1) {
                 $classColor = get_user_class_color($CURUSER['class']);
                 $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played $link.";
                 autoshout($msg);

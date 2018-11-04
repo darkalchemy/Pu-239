@@ -1,6 +1,7 @@
 <?php
 
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 global $CURUSER, $site_config, $lang, $cache, $user_stuffs, $message_stuffs;
 
 use Nette\Mail\Message;
@@ -74,10 +75,10 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     $message_stuffs->insert($msgs_buffer);
     if (strpos($arr_receiver['notifs'], '[pm]') !== false) {
         $username = htmlsafechars($CURUSER['username']);
-        $msg = "<html>
-<head>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
-    <title>{$site_config['site_name']} PM received</title>
+        $title = $site_config['site_name'];
+        $msg = doc_head() . "
+    <meta property='og:title' content='{$title}'>
+    <title>{$title} PM received</title>
 </head>
 <body>
 <p>{$lang['pm_forwardpm_pmfrom']} $username!</p>

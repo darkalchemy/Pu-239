@@ -1,3 +1,4 @@
+var count = 0;
 $('#isbn').change(function () {
     var el = document.querySelector('#isbn');
     get_book(el.dataset.csrf, el.value, '');
@@ -9,15 +10,18 @@ if ($('#book').length) {
 }
 
 function get_isbn(csrf, isbn, name, tid) {
-    var el1 = $('.isbn_outer');
-    var el2 = $('.isbn_inner');
-    el2.addClass('has-text-centered');
-    el2.html('Looking up "' + name + '" from Google Books, please be patient.');
+    count++;
+    var el = document.querySelector('#isbn_outer');
+    var e = document.createElement('div');
+    e.classList.add('has-text-centered');
+    e.innerHTML = 'Looking up "' + name + '" from Google Books, please be patient. (' + count + ')';
+    el.appendChild(e);
 
     $.ajax({
         url: './ajax/isbn_lookup.php',
         type: 'POST',
         dataType: 'json',
+        timeout: 7500,
         context: this,
         data: {
             csrf: csrf,
@@ -26,13 +30,27 @@ function get_isbn(csrf, isbn, name, tid) {
             tid: tid,
         },
         success: function (data) {
-            if (data['content'] === 'csrf') {
-                el1.addClass('bordered bg-00 margin20');
-                el2.addClass('alt_bordered has-text-centered');
-                el2.html('CSRF Failure');
+            if (data['fail'] === 'csrf') {
+                e.innerHTML = 'CSRF Failure, try refreshing the page';
+            } else if (data['fail'] === 'invalid') {
+                e.innerHTML = 'Google Books Lookup Failed.';
             } else {
-                el2.removeClass('has-text-centered');
-                el2.html(data['content'][0]);
+                e.remove();
+                var node = document.createElement('div');
+                node.innerHTML = data['content'];
+                el.appendChild(node);
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            if (textStatus === 'timeout') {
+                if (count >= 8) {
+                    e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';
+                } else {
+                    e.remove();
+                    get_isbn(csrf, isbn, name, tid);
+                }
+            } else {
+                e.innerHTML = 'Another *unknown* was returned';
             }
         }
     });

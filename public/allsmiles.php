@@ -8,12 +8,8 @@ global $CURUSER;
 
 $lang = load_language('global');
 $body_class = 'background-16 h-style-9 text-9 skin-2';
-$htmlout = "<!doctype html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+$htmlout = doc_head() . "
+    <meta property='og:title' content='All Smiles'>
     <title>All Smilies</title>
     <link rel='stylesheet' href='" . get_file_name('vendor_css') . "'>
     <link rel='stylesheet' href='" . get_file_name('css') . "'>

@@ -9,7 +9,7 @@ check_user_status();
 global $CURUSER, $site_config, $fluent, $cache, $session, $smilies, $message_stuffs;
 
 $lang = array_merge(load_language('global'), load_language('mybonus'));
-if ($site_config['seedbonus_on'] == 0) {
+if (!$site_config['seedbonus_on']) {
     stderr('Information', 'The Karma bonus system is currently offline for maintainance work');
 }
 

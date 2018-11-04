@@ -250,7 +250,7 @@ foreach ($split as $to_clear) {
 $cache->set('latestuser', format_username($user_id), $site_config['expires']['latestuser']);
 write_log('User account ' . (int) $user_id . ' (' . htmlsafechars($wantusername) . ') was created');
 
-if ($user_id > 2 && $site_config['autoshout_on'] == 1) {
+if ($user_id > 2 && $site_config['autoshout_on']) {
     $message = "Welcome New {$site_config['site_name']} Member: [user]" . htmlsafechars($wantusername) . '[/user]';
     autoshout($message);
 }

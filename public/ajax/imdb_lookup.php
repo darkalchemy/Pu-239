@@ -32,43 +32,9 @@ if (!empty($imdb)) {
     }
     $movie_info = get_imdb_info($imdb, true, false, $tid, $poster);
 
-    if (!empty($tid)) {
-        $banner = get_image_by_id('movie', $tid, $imdb, 'moviebanner');
-        $background = get_image_by_id('movie', $tid, $imdb, 'moviebackground');
-        if (empty($banner)) {
-            $banner = get_image_by_id('tmdb_id', $tid, $imdb, 'moviebanner');
-        }
-        if (empty($background)) {
-            $background = get_image_by_id('tmdb_id', $tid, $imdb, 'moviebackground');
-        }
-    }
-
-    if (!empty($movie_info[1])) {
-        url_proxy($movie_info[1], true, 150);
-        url_proxy($movie_info[1], true, 150, null, 10);
-    }
-    if (!empty($poster)) {
-        url_proxy($poster, true, 150);
-        url_proxy($poster, true, 150, null, 10);
-    }
-
-    if (!empty($banner)) {
-        url_proxy($banner, true, 1000, 185);
-    }
-    if (!empty($background)) {
-        url_proxy($background, true);
-    }
-    if (empty($poster)) {
-        $poster = find_images($imdb);
-    }
-
     if (!empty($movie_info)) {
         $output = json_encode([
             'content' => $movie_info[0],
-            'poster1' => $movie_info[1],
-            'poster2' => $poster,
-            'banner' => $banner,
-            'background' => $background,
         ]);
         echo $output;
         die();

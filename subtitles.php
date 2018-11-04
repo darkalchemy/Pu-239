@@ -328,13 +328,10 @@ elseif ($mode === 'details') {
         }
         $file = $site_config['sub_up_dir'] . '/' . $arr['filename'];
         $fileContent = file_get_contents($file);
-        $HTMLOUT .= "<!doctype html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <title>Preview for - " . htmlsafechars($arr['name']) . "</title>
+        $title = htmlsafechars($arr['name']);
+        $HTMLOUT = doc_head() . "
+    <meta property='og:title' content='{$title}'>
+    <title>Preview for - {$title}</title>
 </head>
 <body>
     <div style='font-size:12px;color:black;background-color:#CCCCCC;'>Subtitle preview<br>" . htmlsafechars($fileContent) . '</div>

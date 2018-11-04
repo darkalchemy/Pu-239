@@ -2,6 +2,7 @@
 
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
@@ -175,7 +176,18 @@ if ($count) {
 
     $query = "SELECT * FROM deathrow {$orderby} {$pager['limit']}";
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
-    $b = "<p><b>$count {$lang['deathrow_title']}</b>" . "</p><form action='' method='post'><table width='95%' id='deathtable'>" . "<thead><tr><th class='colhead'>{$lang['deathrow_uname']}</th><th class='colhead'>{$lang['deathrow_tname']}</th><th class='colhead'>{$lang['deathrow_del_resn']}</th><th class='colhead'>{$lang['deathrow_del_torr']}</th></tr></thead>\n";
+    $HTMLOUT = $pager['pagertop'];
+    $HTMLOUT = "
+        <h1 class='has-text-centered'>$count {$lang['deathrow_title']}</h1>
+        <form action='' method='post'>";
+    $heading = "
+        <tr>
+            <th>{$lang['deathrow_uname']}</th>
+            <th>{$lang['deathrow_tname']}</th>
+            <th>{$lang['deathrow_del_resn']}</th>
+            <th>{$lang['deathrow_del_torr']}</th>
+        </tr>";
+    $body = '';
     while ($queued = mysqli_fetch_assoc($res)) {
         if ($queued['reason'] == 1) {
             $reason = $lang['deathrow_nopeer'] . calctime($x_time);
@@ -185,23 +197,27 @@ if ($count) {
             $reason = $lang['deathrow_no_seed'] . calctime($z_time) . $lang['deathrow_new_torr'];
         }
         $id = (int) $queued['tid'];
-        $b .= '<tr>' . ($CURUSER['class'] >= UC_STAFF ? '<td>' . format_username($queued['uid']) . '</td>' : "<td><strong>{$lang['deathrow_hidden']}</strong></td>") . "<td><a href='details.php?id=" . $id . "&amp;hit=1'>" . htmlsafechars($queued['torrent_name']) . '</a></td><td>' . $reason . '</td><td>' . ($queued['username'] === $CURUSER['username'] || $CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" name="remove[]" value="' . $id . '" /><b>' . ($queued['username'] === $CURUSER['username'] ? '&#160;&#160;<font color="#800000">' . $lang['deathrow_delete'] . '</font>' : '' . $lang['deathrow_delete1'] . '') . '</b>' : "{$lang['deathrow_ownstaff']}") . '</td></tr>';
+        $body .= '
+        <tr>' . ($CURUSER['class'] >= UC_STAFF ? '
+            <td>' . format_username($queued['uid']) . '</td>' : "
+            <td>{$lang['deathrow_hidden']}</td>") . "
+            <td><a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>" . htmlsafechars($queued['torrent_name']) . "</a></td>
+            <td>{$reason}</td>
+            <td>" . ($queued['username'] === $CURUSER['username'] || $CURUSER['class'] >= UC_STAFF ? '
+                <input type="checkbox" name="remove[]" value="' . $id . '" /><b>' . ($queued['username'] === $CURUSER['username'] ? '   <font color="#800000">' . $lang['deathrow_delete'] . '</font>' : $lang['deathrow_delete1']) . '</b>' : "{$lang['deathrow_ownstaff']}") . '</td>
+        </tr>';
     }
-    $b .= '<tr><td class="table" colspan="11"><input type="button" value="' . $lang['deathrow_checkall'] . '" onclick="this.value=check(this.form.elements[\'remove[]\'])"/>
-<input type="submit" name="submit" value="' . $lang['deathrow_apply'] . '" /></td></tr></table></form>';
-    $HTMLOUT .= ($pager['pagertop']);
-    $HTMLOUT = $b;
-    $HTMLOUT .= ($pager['pagerbottom']);
+    $HTMLOUT .= main_table($body, $heading);
+    $HTMLOUT .= "
+        <div class='has-text-centered'>
+            <input type='button' class='button is-small' value='{$lang['deathrow_checkall']}' onclick='this.value=check(this.form.elements[\'remove[]\'])'/>
+            <input type='submit' name='submit' class='button is-small' value='{$lang['deathrow_apply']}'>
+        </div>
+        </form>";
+    $HTMLOUT .= $pager['pagerbottom'];
     echo stdhead($lang['deathrow_stdhead']) . wrapper($HTMLOUT) . stdfoot();
 } else {
-    $HTMLOUT .= '<br><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg1'] . '
-    <br><br><br><strong>' . $lang['deathrow_msg2'] . '</strong>' . $lang['deathrow_msg3'] . ' ' . $CURUSER['username'] . '' . $lang['deathrow_msg4'] . '.
-    <br><br><br><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg33'] . ' ' . $CURUSER['username'] . '' . $lang['deathrow_msg4'] . '.
-    <br><br><br><strong>' . $lang['deathrow_msg2'] . '</strong>' . $lang['deathrow_msg5'] . '
-    <br><br><br><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg6'] . '
-    <br><br><br><strong>' . $lang['deathrow_msg2'] . '</strong> ' . $CURUSER['username'] . '' . $lang['deathrow_msg7'] . '
-    <br><br><br><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg8'] . '
-    <br><br><br><strong>' . $lang['deathrow_msg2'] . '</strong>' . $lang['deathrow_msg9'] . '
-    <br><br><br><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg0'] . ' ';
+    $HTMLOUT = "<h1 class='has-text-centered'>{$lang['deathrow_title']}</h1>";
+    $HTMLOUT .= main_div('There are not torrents on deathrow');
     echo stdhead($lang['deathrow_stdhead0']) . wrapper($HTMLOUT) . stdfoot();
 }

@@ -47,7 +47,7 @@ function pager($perpage, $count, $href, $opts = [], $class = null)
                         <a href='{$href}page=" . ($page + 1) . "' class='pagination-next button $class tooltipper is_hidden-mobile' title='Goto Page " . ($page + 2) . "'>Next</a>";
     } else {
         $pager2 = "
-                        <a class='pagination-next button $class is_hidden-mobile'>Next</a>";
+                        <a class='pagination-next button $class is_hidden-mobile' disabled>Next</a>";
     }
 
     if ($count) {

@@ -13,10 +13,6 @@ function themes() {
     PopUp('take_theme.php', 'My themes', 300, 150, 1, 0);
 }
 
-function language_select() {
-    PopUp('take_lang.php', 'My language', 300, 150, 1, 0);
-}
-
 function radio() {
     PopUp('radio_popup.php', 'My Radio', 800, 700, 1, 0);
 }

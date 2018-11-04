@@ -54,7 +54,7 @@ function get_book_info($isbn, $name, $tid, $poster)
         }
         $keys = $ebook['authors'] = $categories = [];
         if (empty($book->title)) {
-            $cache->set('book_info_' . $hash, 0, 86400);
+            $cache->set('book_info_' . $hash, 'failed', 86400);
 
             return false;
         }
@@ -107,7 +107,7 @@ function get_book_info($isbn, $name, $tid, $poster)
     }
 
     if (empty($ebook)) {
-        $cache->set('book_info_' . $hash, 0, 86400);
+        $cache->set('book_info_' . $hash, 'failed', 86400);
 
         return false;
     }

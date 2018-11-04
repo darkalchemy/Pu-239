@@ -12,6 +12,7 @@ function stdhead($title = '', $stdhead = null)
 {
     require_once INCL_DIR . 'bbcode_functions.php';
     require_once INCL_DIR . 'function_breadcrumbs.php';
+    require_once INCL_DIR . 'html_functions.php';
     require_once 'navbar.php';
     global $CURUSER, $site_config, $BLOCKS, $session;
 
@@ -38,18 +39,8 @@ function stdhead($title = '', $stdhead = null)
     }
 
     $body_class = 'background-16 h-style-9 text-9 skin-2';
-    $htmlout = "<!doctype html>
-<html>
-<head>
-    <!--[if lt IE 9]><script language='javascript' type='text/javascript' src='//html5shim.googlecode.com/svn/trunk/html5.js'></script><![endif]-->
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <meta property='og:url' content='{$site_config['baseurl']}'>
-    <meta property='og:type' content='website'>
+    $htmlout = doc_head() . "
     <meta property='og:title' content='{$title}'>
-    <meta property='og:description' content='{$site_config['domain']} - {$site_config['site_name']}'>
-
     <title>{$title}</title>
     <link rel='alternate' type='application/rss+xml' title='Latest Torrents' href='{$site_config['baseurl']}/rss.php?torrent_pass={$CURUSER['torrent_pass']}'>
     <link rel='apple-touch-icon' sizes='180x180' href='{$site_config['baseurl']}/apple-touch-icon.png'>
@@ -218,7 +209,7 @@ function stdfoot($stdfoot = false)
     require_once INCL_DIR . 'bbcode_functions.php';
     global $CURUSER, $site_config, $starttime, $query_stat, $querytime, $lang, $cache, $session;
 
-    $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] === 'yes' ? 1 : 0 : $site_config['use_12_hour'];
+    $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['use_12_hour'];
     $header = $uptime = $htmlfoot = '';
     $debug = SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0;
     $queries = !empty($query_stat) ? count($query_stat) : 0;
@@ -352,7 +343,7 @@ function stdfoot($stdfoot = false)
     </a>
     <script>
         $bg_image
-        var is_12_hour = {$use_12_hour};
+        var is_12_hour = $use_12_hour;
     </script>";
 
     $htmlfoot .= "

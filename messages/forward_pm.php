@@ -1,5 +1,6 @@
 <?php
 
+require_once INCL_DIR . 'html_functions.php';
 global $CURUSER, $message_stuffs, $user_stuffs, $fluent, $site_config;
 
 use Nette\Mail\Message;
@@ -76,10 +77,10 @@ if (!$result) {
 
 if (strpos($to_user['notifs'], '[pm]') !== false) {
     $username = htmlsafechars($CURUSER['username']);
-    $body = "<html>
-<head>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
-    <title>{$site_config['site_name']} PM received</title>
+    $title = $site_config['site_name'];
+    $body = doc_head() . "
+    <meta property='og:title' content='{$title}'>
+    <title>{$title} PM received</title>
 </head>
 <body>
 <p>{$lang['pm_forwardpm_pmfrom']} $username{$lang['pm_forwardpm_exc']}</p>

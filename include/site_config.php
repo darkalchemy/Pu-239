@@ -10,7 +10,7 @@ if (PHP_INT_SIZE < 8) {
 $site_config['variant'] = 'Pu-239';
 
 // charset
-$site_config['char_set'] = 'UTF-8'; // also to be used site wide in meta tags
+$site_config['char_set'] = 'UTF-8';
 
 // Windows fix
 if (!function_exists('sys_getloadavg')) {
@@ -109,9 +109,12 @@ $site_config['expires']['ismoddin'] = 0; // 0 = infinite
 $site_config['expires']['book_info'] = 604800; // 604800 = 1 week
 $site_config['expires']['browser_user_agent'] = 86400;
 $site_config['expires']['staff_picks'] = 86400;
+$site_config['expires']['contribution'] = 3 * 86400;
 // Tracker configs
 $site_config['max_torrent_size'] = 3 * 1024 * 1024;
 $site_config['announce_interval'] = 60 * 30;
+$site_config['min_interval'] = 60 * 15;
+$site_config['connectable_check'] = true;
 $site_config['signup_timeout'] = 86400 * 3;
 $site_config['sub_max_size'] = 500 * 1024;
 $site_config['minvotes'] = 1;

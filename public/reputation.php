@@ -4,6 +4,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
@@ -319,12 +320,8 @@ function rep_output($msg = '', $html = '')
             </td>
         </tr>";
     }
-    $htmlout = "<!doctype html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    $htmlout = doc_head() . "
+    <meta property='og:title' content='Reputation System'>
     <title>Reputation System</title>
     <link rel='stylesheet' href='" . get_file_name('css') . "' />
 </head>

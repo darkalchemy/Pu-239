@@ -121,7 +121,7 @@ if (empty($mode)) {
                             <tr>
                                 <td>{$lang['backup_mysqldump']}</td>
                                 <td>{$site_config['db_backup_mysqldump_path']}</td>
-                                <td>" . (preg_match('/mysqldump/i', exec($site_config['db_backup_mysqldump_path'])) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . (is_file($site_config['db_backup_mysqldump_path']) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_downafter']}</td>
@@ -158,7 +158,7 @@ if (empty($mode)) {
     $mysql_user = $_ENV['DB_USERNAME'];
     $mysql_pass = $_ENV['DB_PASSWORD'];
     $mysql_db = $_ENV['DB_DATABASE'];
-    $ext = $mysql_db . '-' . date('d') . '-' . date('m') . '-' . date('Y') . '_' . date('H') . '-' . date('i') . '-' . date('s') . '_' . date('D') . '.sql';
+    $ext = $mysql_db . '-' . date('m') . '-' . date('d') . '-' . date('Y') . '_' . date('H') . '-' . date('i') . '-' . date('s') . '.sql';
     $filepath = BACKUPS_DIR . $ext;
     exec("{$site_config['db_backup_mysqldump_path']} -h $mysql_host -u $mysql_user -p$mysql_pass $mysql_db > $filepath");
     if ($site_config['db_backup_use_gzip']) {

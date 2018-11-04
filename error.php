@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'html_functions.php';
 global $site_config;
 
 $string = $_SERVER['QUERY_STRING'];
@@ -25,13 +26,9 @@ if ($string === '400') {
     $text = 'There has been an error with the page you are trying to view. Please try again later.';
 }
 $domain = htmlsafechars($_SERVER['HTTP_HOST']);
-$htmlout = "<!doctype html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-        <title>{$page}</title>
+$htmlout = doc_head() . "
+    <meta property='og:title' content='{$page}'>
+    <title>{$page}</title>
     <style>
     <!--
     body     {

@@ -388,7 +388,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
         $cache->update_row('user' . $CURUSER['id'], [
             'uploaded' => $update['uploaded'],
         ], $site_config['expires']['user_cache']);
-        if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
+        if ($site_config['autoshout_on'] || $site_config['irc_autoshout_on'] == 1) {
             autoshout($message);
             //ircbot($messages);
         }

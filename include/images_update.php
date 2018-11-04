@@ -28,7 +28,7 @@ function images_update()
 
     set_time_limit(1200);
     ignore_user_abort(true);
-    $cache->set('images_update_', 'running' , 600);
+    $cache->set('images_update_', 'running', 600);
 
     get_upcoming();
     get_movies_in_theaters();
@@ -109,27 +109,32 @@ function images_update()
         }
     }
 
-    $images = $fluent->from('images')
+    $query = $fluent->from('images')
         ->select(null)
         ->select('tmdb_id')
-        ->select('type')
         ->select('url')
+        ->select('type')
         ->where('tmdb_id != 0')
-        ->where('imdb_id IS NULL')
-        ->limit(100)
-        ->fetchAll();
+        ->where('imdb_id IS NULL');
 
-    foreach ($images as $tmdbid) {
-        $imdb_id = get_imdbid($tmdbid['tmdb_id']);
-        if (!empty($imdb_id)) {
-            $values[] = [
-                'url' => $tmdbid['url'],
-                'imdb_id' => $imdb_id,
-                'type' => $tmdbid['type'],
-            ];
+    $ids = [];
+    foreach ($query as $image) {
+        if (!in_array($image['tmdb_id'], $ids)) {
+            $ids[] = $image['tmdb_id'];
+            $images[] = $image;
         }
     }
 
+    foreach ($images as $image) {
+        $imdb = get_imdbid($image['tmdb_id']);
+        if (!empty($imdb['imdb_id'])) {
+            $set = [
+                'imdb_id' => $imdb['imdb_id'],
+                'type' => $image['type'],
+                'url' => $image['url'],
+            ];
+        }
+    }
     if (!empty($values)) {
         $update = [
             'imdb_id' => new Envms\FluentPDO\Literal('VALUES(imdb_id)'),
@@ -155,7 +160,6 @@ function images_update()
         ->select('type')
         ->where('fetched = "no"')
         ->orderBy('id')
-        ->limit(100)
         ->fetchAll();
 
     foreach ($images as $image) {

@@ -1,5 +1,7 @@
 <?php
 
+require_once INCL_DIR . 'html_functions.php';
+
 $lang = [
     //takeeditcp
     'takeeditcp_no_data' => 'missing form data',
@@ -31,9 +33,7 @@ $lang = [
     'takeeditcp_birth_month' => 'Please set your birth month.',
     'takeeditcp_birth_day' => 'Please set your birth day.',
     'takeeditcp_birth_not' => 'The date entered is not a valid date, please try again',
-    'takeeditcp_email_body' => "<html>
-<head>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    'takeeditcp_email_body' => doc_head() . "
     <title>{$site_config['site_name']} Email Change</title>
 </head>
 <body>

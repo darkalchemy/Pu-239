@@ -38,7 +38,7 @@ $cache->update_row('torrent_details_' . $id, [
     'comments' => $update['comments'],
 ], $site_config['expires']['torrent_details']);
 $cache->delete('latest_comments_');
-if ($site_config['seedbonus_on'] == 1) {
+if ($site_config['seedbonus_on']) {
     sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_comment']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus_per_comment']);
     $cache->update_row('user' . $CURUSER['id'], [

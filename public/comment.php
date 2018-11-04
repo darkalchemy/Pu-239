@@ -88,7 +88,7 @@ if ($action === 'add') {
         $newid = ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res);
         sql_query("UPDATE $table_type SET comments = comments + 1 WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('latest_comments_');
-        if ($site_config['seedbonus_on'] == 1) {
+        if ($site_config['seedbonus_on']) {
             if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
                 sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_comment']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
             }
@@ -244,7 +244,7 @@ if ($action === 'add') {
     if ($id && mysqli_affected_rows($mysqli) > 0) {
         sql_query("UPDATE $table_type SET comments = comments - 1 WHERE id = " . sqlesc($id));
     }
-    if ($site_config['seedbonus_on'] == 1) {
+    if ($site_config['seedbonus_on']) {
         if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
             sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus_per_comment']) . ' WHERE id =' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         }

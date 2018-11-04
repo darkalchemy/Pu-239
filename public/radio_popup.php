@@ -2,20 +2,15 @@
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-//require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 $lang = load_language('global');
 require_once ROOT_DIR . 'radio.php';
 global $CURUSER, $site_config;
 
 $body_class = 'background-16 h-style-9 text-9 skin-2';
-$HTMLOUT = '';
-$HTMLOUT = "<!doctype html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+$HTMLOUT = doc_head() . "
+    <meta property='og:title' content='{$site_config['site_name']}'>
     <title>{$site_config['site_name']} Radio</title>
     <link rel='stylesheet' href='" . get_file_name('vendor_css') . "'>
     <link rel='stylesheet' href='" . get_file_name('css') . "'>

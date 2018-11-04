@@ -139,7 +139,7 @@ function get_episode($tvmaze_id, $season, $episode, $tid)
             $episode_info['timestamp'] = strtotime($episode_info['airstamp']);
             $cache->set('tvshow_episode_info_' . $tvmaze_id . $season . $episode, $episode_info, 604800);
         } else {
-            $cache->set('tvshow_episode_info_' . $tvmaze_id . $season . $episode, 0, 86400);
+            $cache->set('tvshow_episode_info_' . $tvmaze_id . $season . $episode, 'failed', 86400);
         }
     }
     preg_match('/(\d{4})/', $episode_info['airdate'], $match);
@@ -179,7 +179,7 @@ function tvmaze(int $tvmaze_id, int $tid, $season = 0, $episode = 0, $poster = '
         $tvmaze_link = "http://api.tvmaze.com/shows/{$tvmaze_id}?embed=cast";
         $content = fetch($tvmaze_link);
         if (empty($content)) {
-            $cache->set('tvmaze_' . $tvmaze_id, 0, 86400);
+            $cache->set('tvmaze_' . $tvmaze_id, 'failed', 86400);
 
             return false;
         }
@@ -195,7 +195,7 @@ function tvmaze(int $tvmaze_id, int $tid, $season = 0, $episode = 0, $poster = '
     }
 
     $days = implode(', ', $tvmaze_show_data['schedule']['days']);
-    $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] === 'yes' ? 1 : 0 : $site_config['use_12_hour'];
+    $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['use_12_hour'];
     $tvmaze_show_data['airtime'] = $days . ' at ' . ($use_12_hour ? time24to12($airtime) : get_date($airtime, 'WITHOUT_SEC', 1, 1)) . " on {$tvmaze_show_data['network']['name']}. <span class='has-text-primary'>(Time zone: {$tvmaze_show_data['network']['country']['timezone']})</span>";
     $tvmaze_show_data['origin'] = "{$tvmaze_show_data['network']['country']['name']}: {$tvmaze_show_data['language']}";
     if (count($tvmaze_show_data['genres']) > 0) {
@@ -273,7 +273,7 @@ function get_schedule($use_cache = true)
     if (!$use_cache || $tvmaze_data === false || is_null($tvmaze_data)) {
         $content = fetch($url);
         if (!$content) {
-            $cache->set('tvmaze_schedule_', 0, 900);
+            $cache->set('tvmaze_schedule_', 'failed', 3600);
 
             return false;
         }

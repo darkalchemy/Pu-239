@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $cache->set('latestuser', (int) $user_id, $site_config['expires']['latestuser']);
 
         $message = "Welcome New {$site_config['site_name']} Member: [user]" . htmlsafechars($values['username']) . '[/user]';
-        if ($user_id > 2 && $site_config['autoshout_on'] == 1) {
+        if ($user_id > 2 && $site_config['autoshout_on']) {
             autoshout($message);
         }
         if ($user_id === 2) {

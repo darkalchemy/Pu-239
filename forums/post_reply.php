@@ -67,13 +67,13 @@ if (isset($_POST['button']) && $_POST['button'] === 'Post') {
     sql_query('UPDATE topics SET last_post = ' . sqlesc($post_id) . ', post_count = post_count + 1 WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE `forums` SET post_count = post_count + 1 WHERE id =' . sqlesc($arr['real_forum_id'])) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE usersachiev SET forumposts = forumposts + 1 WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    if ($site_config['autoshout_on'] == 1) {
+    if ($site_config['autoshout_on']) {
         $message = $CURUSER['username'] . ' ' . $lang['pr_replied_to_topic'] . " [quote][url={$site_config['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last#{$post_id}]{$topic_name}[/url][/quote]";
         if (!in_array($arr['real_forum_id'], $site_config['staff_forums'])) {
             autoshout($message);
         }
     }
-    if ($site_config['seedbonus_on'] == 1) {
+    if ($site_config['seedbonus_on']) {
         sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_post']) . ' WHERE id = ' . sqlesc($CURUSER['id']) . '') or sqlerr(__FILE__, __LINE__);
         $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus_per_post']);
         $cache->update_row('userstats_' . $CURUSER['id'], [

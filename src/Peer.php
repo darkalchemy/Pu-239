@@ -73,7 +73,6 @@ class Peer
      */
     public function get_torrent_peers_by_tid(int $tid)
     {
-        $this->cache->delete('torrent_peers_' . $tid);
         $peers = $this->cache->get('torrent_peers_' . $tid);
         if ($peers === false || is_null($peers)) {
             $peers = $this->fluent->from('peers')

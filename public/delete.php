@@ -61,7 +61,7 @@ $torrent_stuffs->delete_by_id($row['id']);
 $torrent_stuffs->remove_torrent($row['info_hash']);
 
 write_log("{$lang['delete_torrent']} $id ({$row['name']}){$lang['delete_deleted_by']}{$CURUSER['username']} ($reasonstr)\n");
-if ($site_config['seedbonus_on'] == 1) {
+if ($site_config['seedbonus_on']) {
     $dt = sqlesc($dt - (14 * 86400));
     if ($row['added'] > $dt) {
         sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus_per_delete']) . ' WHERE id = ' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);

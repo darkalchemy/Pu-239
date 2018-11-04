@@ -224,12 +224,8 @@ function redirect($url, $text, $time = 2)
 {
     global $site_config, $lang;
 
-    $html = "<!doctype html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    $html = doc_head() . "
+<meta property='og:title' content='{$lang['repset_adminredir']}'>
 <title>{$lang['repset_adminredir']}</title>
 <link rel='stylesheet' href='" . get_file_name('css') . "' />
 </head>

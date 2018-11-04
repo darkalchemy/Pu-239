@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
             sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($userid) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
             //==End new member pm
             write_log('User account ' . (int) $id . ' (' . htmlsafechars($username) . ') was created');
-            if ($site_config['autoshout_on'] == 1) {
+            if ($site_config['autoshout_on']) {
                 $message = "Welcome New {$site_config['site_name']} Member : - " . htmlsafechars($username) . '';
                 autoshout($message);
             }
@@ -287,13 +287,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
                 if (!empty($users)) {
                     $q2 = sql_query('SELECT id, username, added FROM users WHERE id IN (' . implode(', ', $users) . ')') or sqlerr(__FILE__, __LINE__);
                 }
-                $HTMLOUT = "<!doctype html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <title>Users list for promo : " . htmlsafechars($a1['name']) . "</title>
+                $title = 'Users list for promo : ' . htmlsafechars($a1['name']);
+                $HTMLOUT = doc_head() . "
+    <meta property='og:title' content='{$title}'>
+    <title>$title</title>
     <style>
     body { background-color:#999999;
     color:#333333;

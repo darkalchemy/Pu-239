@@ -2,7 +2,7 @@
 
 function get_bluray_info()
 {
-    global $cache, $site_config, $BLOCKS, $image_stuffs;
+    global $cache, $site_config, $BLOCKS;
 
     if (!$BLOCKS['bluray_com_api_on']) {
         return false;
@@ -15,7 +15,7 @@ function get_bluray_info()
         if (!empty($bluray_data)) {
             $cache->set('bluray_', $bluray_data, 86400);
         } else {
-            $cache->set('bluray_', 0, 3600);
+            $cache->set('bluray_', 'failed', 3600);
         }
     }
 
@@ -83,7 +83,7 @@ function get_bluray_info()
         if (!empty($pubs)) {
             $cache->set('bluray_pubs_', $pubs, 1800);
         } else {
-            $cache->set('bluray_pubs_', $pubs, 900);
+            $cache->set('bluray_pubs_', 'failed', 900);
         }
     }
 

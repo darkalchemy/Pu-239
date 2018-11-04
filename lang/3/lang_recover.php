@@ -1,5 +1,7 @@
 <?php
 
+require_once INCL_DIR . 'html_functions.php';
+
 $lang = [
     //stderr
     'stderr_errorhead' => 'Error',
@@ -17,9 +19,7 @@ $lang = [
     'email_head' => 'Error',
     'email_subjdetails' => 'account details',
     'email_subjreset' => 'password reset confirmation',
-    'email_request' => "<html>
-<head>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    'email_request' => doc_head() . "
     <title>{$site_config['site_name']} Reset Password Request</title>
 </head>
 <body>

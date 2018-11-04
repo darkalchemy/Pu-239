@@ -41,7 +41,7 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
             $fanart = json_decode($fanart, true);
             $cache->set('show_images_' . $thetvdb_id, $fanart, 604800);
         } else {
-            $cache->set('show_images_' . $thetvdb_id, 0, 86400);
+            $cache->set('show_images_' . $thetvdb_id, 'failed', 86400);
 
             return false;
         }
@@ -64,8 +64,9 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
             $insert = $cache->get("insert_fanart_{$type}_{$thetvdb_id}");
             if ($insert === false || is_null($insert)) {
                 foreach ($images as $image) {
-                    dd('fix like bleow');
                     $values = [
+                        'imdb_id' => $fanart['imdb_id'],
+                        'tmdb_id' => $fanart['tmdb_id'],
                         'thetvdb_id' => $thetvdb_id,
                         'url' => $image,
                         'type' => $type,
@@ -122,7 +123,7 @@ function getMovieImagesByID($id, $type = 'moviebackground')
             $fanart = json_decode($fanart, true);
             $cache->set("movie_images_{$type}_{$id}", $fanart, 604800);
         } else {
-            $cache->set("movie_images_{$type}_{$id}", 0, 86400);
+            $cache->set("movie_images_{$type}_{$id}", 'failed', 86400);
 
             return false;
         }
@@ -133,7 +134,8 @@ function getMovieImagesByID($id, $type = 'moviebackground')
         foreach ($fanart[$type] as $image) {
             if (empty($image['lang']) || $image['lang'] === 'en') {
                 $images[] = [
-                    'tmdb_id' => $id,
+                    'imdb_id' => $fanart['imdb_id'],
+                    'tmdb_id' => $fanart['tmdb_id'],
                     'url' => $image['url'],
                     'type' => str_replace('movie', '', $type),
                 ];

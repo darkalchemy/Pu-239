@@ -340,3 +340,19 @@ function validate_url($url)
 
     return $url;
 }
+
+function doc_head()
+{
+    global $site_config;
+
+    return "<!doctype html>
+<html>
+<head>
+    <!--[if lt IE 9]><script src='//html5shim.googlecode.com/svn/trunk/html5.js'></script><![endif]-->
+    <meta charset='{$site_config['char_set']}'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta property='og:url' content='{$site_config['baseurl']}'>
+    <meta property='og:type' content='website'>
+    <meta property='og:description' content='{$site_config['domain']} - {$site_config['site_name']}'>";
+}

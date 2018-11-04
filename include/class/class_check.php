@@ -1,6 +1,7 @@
 <?php
 
 require_once INCL_DIR . 'function_autopost.php';
+require_once INCL_DIR . 'html_functions.php';
 
 /**
  * @param int  $class
@@ -32,12 +33,8 @@ function class_check($class = 0, $staff = true, $pin = false)
             if (!$passed) {
                 header('WWW-Authenticate: Basic realm="Administration"');
                 header('HTTP/1.0 401 Unauthorized');
-                $HTMLOUT = "<!doctype html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+                $HTMLOUT = doc_head() . "
+    <meta property='og:title' content='ERROR'>
     <title>ERROR</title>
 </head>
 <body>
@@ -64,14 +61,8 @@ function class_check($class = 0, $staff = true, $pin = false)
                     ], $site_config['expires']['user_cache']);
 
                     write_log('Class Check System Initialized [url=' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topicid . '&amp;page=last#' . $postid . ']VIEW[/url]');
-                    $HTMLOUT = '';
-                    $HTMLOUT .= "
-<!doctype html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+                    $HTMLOUT = doc_head() . "
+    <meta property='og:title' content='Error!'>
     <title>Error!</title>
 </head>
 <body>

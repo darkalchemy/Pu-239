@@ -36,7 +36,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
 
         $movie = new \Imdb\Title($imdb_id, $config);
         if (empty($movie->title())) {
-            $cache->set('imdb_' . $imdb_id, 0, 86400);
+            $cache->set('imdb_' . $imdb_id, 'failed', 86400);
 
             return false;
         }
@@ -88,7 +88,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
         $cache->set('imdb_' . $imdb_id, $imdb_data, 604800);
     }
     if (empty($imdb_data)) {
-        $cache->set('imdb_' . $imdb_id, 0, 86400);
+        $cache->set('imdb_' . $imdb_id, 'failed', 86400);
 
         return false;
     }
@@ -97,9 +97,19 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
     }
     if (!empty($poster)) {
         $poster = $poster;
-    } elseif (!empty($imdb_data['poster'])) {
-        $poster = $imdb_data['poster'];
-    } else {
+    }
+    if (!empty($imdb_data['poster'])) {
+        if (empty($poster)) {
+            $poster = $imdb_data['poster'];
+        }
+        $values = [
+            'imdb_id' => $imdbid,
+            'url' => $imdb_data['poster'],
+            'type' => 'poster',
+        ];
+        $image_stuffs->insert($values);
+    }
+    if (empty($poster)) {
         $poster = get_poster($imdbid);
     }
 
@@ -124,13 +134,13 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
     ];
 
     foreach ($imdb_data['cast'] as $pp) {
-        if (!empty($pp['name']) && !empty($pp['photo']) && !empty($pp['thumb'])) {
+        if (!empty($pp['name']) && !empty($pp['photo'])) {
             $cast[] = "
                             <span class='padding5'>
                                 <a href='" . url_proxy("https://www.imdb.com/name/nm{$pp['imdb']}") . "' target='_blank'>
                                     <span class='dt-tooltipper-small' data-tooltip-content='#cast_{$pp['imdb']}_tooltip'>
                                         <span class='cast'>
-                                            <img src='" . url_proxy(strip_tags($pp['thumb']), true) . "' class='round5'>
+                                            <img src='" . url_proxy(strip_tags($pp['photo']), true, null, 60) . "' class='round5'>
                                         </span>
                                         <span class='tooltip_templates'>
                                             <span id='cast_{$pp['imdb']}_tooltip'>
@@ -378,7 +388,7 @@ function get_upcoming()
         if ($imdb_data) {
             $cache->set('imdb_upcoming_', $imdb_data, 86400);
         } else {
-            $cache->set('imdb_upcoming_', 0, 3600);
+            $cache->set('imdb_upcoming_', 'failed', 3600);
         }
     }
 

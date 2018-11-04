@@ -94,16 +94,20 @@ class Torrent
 
             $torrent['previous'] = $this->fluent->from('torrents')
                 ->select(null)
-                ->select('MAX(id) AS id')
+                ->select('id')
                 ->select('name')
                 ->where('id < ?', $torrent['id'])
+                ->orderBy('id DESC')
+                ->limit(1)
                 ->fetch();
 
             $torrent['next'] = $this->fluent->from('torrents')
                 ->select(null)
-                ->select('MIN(id) AS id')
+                ->select('id')
                 ->select('name')
                 ->where('id > ?', $torrent['id'])
+                ->orderBy('id')
+                ->limit(1)
                 ->fetch();
 
             $this->cache->set('torrent_details_' . $tid, $torrent, $this->site_config['expires']['torrent_details']);

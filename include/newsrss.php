@@ -17,7 +17,7 @@ function foxnews_shout($links = [])
         //'Sports' => 'http://feeds.foxnews.com/foxnews/sports',
     ];
 
-    if ($site_config['autoshout_on'] == 1) {
+    if ($site_config['autoshout_on']) {
         include_once INCL_DIR . 'user_functions.php';
         foreach ($feeds as $key => $feed) {
             $hash = md5($feed);
@@ -84,7 +84,7 @@ function tfreak_shout($links = [])
     global $site_config, $cache, $fluent;
 
     $empty = empty($links);
-    if ($site_config['autoshout_on'] == 1) {
+    if ($site_config['autoshout_on']) {
         include_once INCL_DIR . 'user_functions.php';
         $xml = $cache->get('tfreaknewsrss_');
         if ($xml === false || is_null($xml)) {
@@ -152,7 +152,7 @@ function github_shout($links = [])
         //'dev'    => 'https://github.com/darkalchemy/Pu-239/commits/dev.atom',
         'master' => 'https://github.com/darkalchemy/Pu-239/commits/master.atom',
     ];
-    if ($site_config['autoshout_on'] == 1) {
+    if ($site_config['autoshout_on']) {
         include_once INCL_DIR . 'user_functions.php';
         foreach ($feeds as $key => $feed) {
             $hash = md5($feed);

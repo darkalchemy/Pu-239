@@ -66,7 +66,7 @@ if ($staff_forums === false || is_null($staff_forums)) {
     $cache->set('staff_forums_', $staff_forums, 86400);
 }
 $site_config = array_merge($site_settings, $site_config, $hnr_settings, $staff_settings, $staff_forums);
-$use_12_hour = !empty($session->get('use_12_hour')) ? $session->get('use_12_hour') === 'yes' ? 1 : 0 : $site_config['use_12_hour'];
+$use_12_hour = !empty($session->get('use_12_hour')) ? $session->get('use_12_hour') : $site_config['use_12_hour'];
 $time_string = $use_12_hour ? 'g:i:s a' : 'H:i:s';
 $time_string_without_seconds = $use_12_hour ? 'g:i a' : 'H:i';
 $site_config['time_adjust'] = 0; // If you have not set date_default_timezone_set to UTC, you should adjust your time to UTC here

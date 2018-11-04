@@ -298,13 +298,9 @@ function userlogin()
             $banned = true;
         }
         if ($banned) {
-            header('Content-Type: text/html; charset=utf-8');
-            echo "<!doctype html>
-<html>
-<head>
-<meta charset='utf-8'>
-<meta http-equiv='X-UA-Compatible' content='IE=edge'>
-<meta name='viewport' content='width=device-width, initial-scale=1'>
+            require_once INCL_DIR . 'html_functions.php';
+            header('Content-Type: text/html; charset=' . $site_config['char_set']);
+            echo doc_head() . "
 <title>Forbidden</title>
 </head>
 <body>

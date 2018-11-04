@@ -200,10 +200,10 @@ if ($do === 'view_page') {
             ->execute();
 
         $inviter = htmlsafechars($CURUSER['username']);
-        $body = "<html>
-<head>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
-    <title>{$site_config['site_name']} Invitation</title>
+        $title = $site_config['site_name'];
+        $body = doc_head() . "
+    <meta property='og:title' content='{$title}'>
+    <title>{$title} Invitation</title>
 </head>
 <body>
 <p>You have been invited to {$site_config['site_name']} by $inviter.<br>

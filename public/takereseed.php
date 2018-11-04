@@ -48,7 +48,7 @@ sql_query('UPDATE torrents SET last_reseed = ' . $dt . ' WHERE id = ' . sqlesc($
 $cache->update_row('torrent_details_' . $reseedid, [
     'last_reseed' => $dt,
 ], $site_config['expires']['torrent_details']);
-if ($site_config['seedbonus_on'] == 1) {
+if ($site_config['seedbonus_on']) {
     sql_query('UPDATE users SET seedbonus = seedbonus-10.0 WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] - 10);
     $cache->update_row('user' . $CURUSER['id'], [

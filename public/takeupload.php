@@ -441,7 +441,7 @@ if (!bencdec::encode_file($dir, $dict)) {
 }
 @unlink($tmpname);
 
-if ($site_config['seedbonus_on'] == 1) {
+if ($site_config['seedbonus_on']) {
     $seedbonus = $user_data['seedbonus'];
     sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_upload']) . ', numuploads = numuploads+ 1  WHERE id = ' . sqlesc($owner_id)) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($seedbonus + $site_config['bonus_per_upload']);
@@ -449,7 +449,7 @@ if ($site_config['seedbonus_on'] == 1) {
         'seedbonus' => $update['seedbonus'],
     ], $site_config['expires']['user_cache']);
 }
-if ($site_config['autoshout_on'] == 1) {
+if ($site_config['autoshout_on']) {
     autoshout($msg);
     autoshout($msg, 2, 0);
 }

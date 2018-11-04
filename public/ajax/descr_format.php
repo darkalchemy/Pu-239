@@ -13,13 +13,15 @@ if (!$session->validateToken($csrf)) {
 
 $tid = is_numeric($tid) ? (int) $tid : '';
 if (!empty($tid)) {
-    $torrent = $torrent_stuffs->get_item('descr', $tid);
+    $torrent = $torrent_stuffs->get($tid);
     if (!empty($torrent)) {
-        if (!preg_match('/\[pre\].*\[\/pre\]/isU', $torrent)) {
-            $torrent = '[pre]' . $torrent . '[/pre]';
+        $descr = $torrent['descr'];
+        if (!preg_match('/\[pre\].*\[\/pre\]/isU', $descr)) {
+            $descr = '[pre]' . $descr . '[/pre]';
         }
-        $descr = format_comment($torrent);
+        $descr = format_comment($descr);
         $cache->set('torrent_descr_' . $tid, $descr, 86400);
+
         echo json_encode(['descr' => $descr]);
         die();
     }

@@ -3,6 +3,7 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $mysqli;
 
@@ -128,8 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } else { // Shouldn't be here
     header('HTTP/1.0 404 Not Found');
-    $HTMLOUT = '';
-    $HTMLOUT .= '<html><h1>Not Found</h1><p>The requested URL ' . htmlsafechars($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], '/') + 1) . " was not found on this server.</p>
+    $HTMLOUT = '<h1>Not Found</h1><p>The requested URL ' . htmlsafechars($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], '/') + 1) . " was not found on this server.</p>
 <hr>
 <address>{$_SERVER['SERVER_SOFTWARE']} Server at {$site_config['baseurl']} Port 80</address></body></html>\n";
     echo $HTMLOUT;

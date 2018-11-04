@@ -1429,4 +1429,18 @@ $sql_updates = [
         'query' => "DELETE FROM `staffpanel` where`page_name` = 'Paypal Settings'",
         'flush' => true,
     ],
+    [
+        'id' => 1541073295,
+        'info' => 'Delete setting',
+        'date' => '01 Nov, 2018',
+        'query' => "DELETE FROM `site_config` WHERE `name` = 'captcha_on'",
+        'flush' => false,
+    ],
+    [
+        'id' => 1541073296,
+        'info' => 'Alter column',
+        'date' => '01 Nov, 2018',
+        'query' => 'ALTER TABLE `users` MODIFY COLUMN `use_12_hour` tinyint(1) unsigned NOT NULL DEFAULT 0',
+        'flush' => false,
+    ],
 ];

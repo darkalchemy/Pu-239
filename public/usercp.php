@@ -661,8 +661,8 @@ if ($action === 'avatar') {
                                             <input type='radio' name='forum_sort' " . ($CURUSER['forum_sort'] === 'ASC' ? ' checked' : '') . " value='ASC' /> At Bottom 
                                             <input type='radio' name='forum_sort' " . ($CURUSER['forum_sort'] !== 'ASC' ? ' checked' : '') . " value='DESC' /> At Top<br>What order you want the posts to be listed in.", 1);
     $HTMLOUT .= tr('12 Hour Time', "
-                                            <input type='radio' name='use_12_hour' " . ($CURUSER['use_12_hour'] === 'yes' ? ' checked' : '') . " value='yes' /> Yes 
-                                            <input type='radio' name='use_12_hour' " . ($CURUSER['use_12_hour'] !== 'yes' ? ' checked' : '') . " value='no' /> No", 1);
+                                            <input type='radio' name='use_12_hour' " . ($CURUSER['use_12_hour'] ? ' checked' : '') . " value='yes' /> Yes 
+                                            <input type='radio' name='use_12_hour' " . (!$CURUSER['use_12_hour'] ? ' checked' : '') . " value='no' /> No", 1);
 
     $HTMLOUT .= tr($lang['usercp_stylesheet'], "
                                             <select name='stylesheet'>

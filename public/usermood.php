@@ -22,13 +22,9 @@ if (isset($_GET['id'])) {
         ], $site_config['expires']['user_cache']);
         $cache->delete('topmoods');
         write_log('<b>' . $lang['user_mood_change'] . '</b> ' . $CURUSER['username'] . ' ' . htmlsafechars($rmood['name']) . '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($rmood['image']) . '" alt="" />');
-        $HTMLOUT .= '<!doctype html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-      <html xmlns="http://www.w3.org/1999/xhtml">
-      <head>
-         <meta http-equiv="Content-Language" content="en-us" />
-         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-         <title>' . $lang['user_mood_title'] . '</title>
+        $HTMLOUT = doc_head() . '
+        <meta property="og:title" content=' . $lang['user_mood_title'] . '>
+        <title>' . $lang['user_mood_title'] . '</title>
       <script>
       <!--
       opener.location.reload(true);
@@ -40,12 +36,8 @@ if (isset($_GET['id'])) {
     }
 }
 $body_class = 'background-16 h-style-9 text-9 skin-2';
-$HTMLOUT .= '<!doctype html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+$HTMLOUT .= doc_head() . '
+    <meta property="og:title" content=' . $lang['user_mood_title'] . '>
     <title>' . $lang['user_mood_title'] . '</title>
     <link rel="stylesheet" href="' . get_file_name('css') . '" />
 </head>';

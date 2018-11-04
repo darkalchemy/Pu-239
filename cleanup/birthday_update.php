@@ -3,13 +3,22 @@
 function birthday_update($data)
 {
     require_once INCL_DIR . 'user_functions.php';
-    global $site_config, $cache, $message_stuffs, $user_stuffs, $fluent;
+    global $site_config, $cache, $message_stuffs, $fluent;
 
     set_time_limit(1200);
     ignore_user_abort(true);
     $dt = TIME_NOW;
     $date = getdate();
-    $users = $user_stuffs->get_birthday_users($date);
+
+    $users = $fluent->from('users')
+        ->select(null)
+        ->select('id')
+        ->select('class')
+        ->select('username')
+        ->select('uploaded')
+        ->where('MONTH(birthday) = ?', $date['mon'])
+        ->where('DAYOFMONTH(birthday) = ?', $date['mday']);
+
     $count = 0;
     if (!empty($users)) {
         foreach ($users as $arr) {

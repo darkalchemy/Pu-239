@@ -37,7 +37,7 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
                 'rating_sum' => $update['rating_sum'],
             ], $site_config['expires']['torrent_details']);
         }
-        if ($site_config['seedbonus_on'] == 1) {
+        if ($site_config['seedbonus_on']) {
             $amount = ($what === 'torrent' ? $site_config['bonus_per_rating'] : $site_config['bonus_per_topic']);
             sql_query("UPDATE users SET seedbonus = seedbonus+$amount WHERE id = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
             $update['seedbonus'] = ($CURUSER['seedbonus'] + $amount);
