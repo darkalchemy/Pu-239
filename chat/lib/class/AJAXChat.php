@@ -535,6 +535,7 @@ class AJAXChat
     {
         // Get the online users for the given channels:
         $onlineUsersData = $this->getOnlineUsersData($channelIDs);
+
         $xml = '<users>';
         foreach ($onlineUsersData as $onlineUserData) {
             $xml .= '<user';
@@ -1234,6 +1235,7 @@ class AJAXChat
             return null;
         }
         $channels = $this->getAllChannels();
+
         if (array_key_exists($channelName, $channels)) {
             return $channels[$channelName];
         }
@@ -2920,6 +2922,7 @@ class AJAXChat
                         AND NOT MATCH(text) AGAINST ('/privmsg /announce /login /logout /roll /takeover /channelEnter /channelLeave /kick /me /nick' IN NATURAL LANGUAGE MODE)
                         AND userName != " . sqlesc($userName) . '
                         AND userID != ' . $this->getConfig('chatBotID') . '
+                        AND channel = 0
                     ORDER BY id DESC LIMIT 25';
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $messages = [];
