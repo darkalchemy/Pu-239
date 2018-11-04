@@ -79,6 +79,7 @@ $HTMLOUT .= "
                     </tr>
                 </thead>
                 <tbody>";
+
 foreach ($top5torrents as $top5torrentarr) {
     $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
     extract($top5torrentarr);
@@ -86,7 +87,7 @@ foreach ($top5torrents as $top5torrentarr) {
     if (empty($poster) && !empty($imdb_id)) {
         $poster = find_images($imdb_id);
     }
-    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster' />";
+    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster'>";
 
     if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';
@@ -97,7 +98,7 @@ foreach ($top5torrents as $top5torrentarr) {
     $HTMLOUT .= "
                     <tr>
                         <td class='has-text-centered'>
-                            <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' />
+                            <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "'>
                         </td>
                         <td>
                             <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
@@ -160,7 +161,7 @@ foreach ($last5torrents as $last5torrent) {
     if (empty($poster) && !empty($imdb_id)) {
         $poster = find_images($imdb_id);
     }
-    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster' />";
+    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster'>";
 
     if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';
@@ -171,7 +172,7 @@ foreach ($last5torrents as $last5torrent) {
     $HTMLOUT .= "
                         <tr id='id_{$id}_tooltip'>
                             <td class='has-text-centered'>
-                                <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' />
+                                <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "'>
                             </td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>

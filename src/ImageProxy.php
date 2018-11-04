@@ -19,7 +19,7 @@ class ImageProxy
      */
     public function get_image(string $url, ?int $width, ?int $height, ?int $quality)
     {
-        if (empty($url)) {
+        if (empty($url) || $url == 'N/A') {
             return false;
         }
 

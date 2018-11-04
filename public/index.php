@@ -33,18 +33,6 @@ if ($unread >= 1) {
     ]);
 }
 
-if (curuser::$blocks['index_page'] & block_index::IE_ALERT && $BLOCKS['ie_user_alert']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='IE_ALERT'>";
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'ie_user.php';
-    $HTMLOUT .= '</div>';
-}
-
-//if (curuser::$blocks['index_page'] & block_index::ANNOUNCEMENT && $BLOCKS['announcement_on']) {
-//    $HTMLOUT .= "<div class='container is-fluid portlet' id='ANNOUNCEMENT'>";
-//    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'announcement.php';
-//    $HTMLOUT .= '</div>';
-//}
-
 if (curuser::$blocks['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_on'] && $CURUSER['chatpost'] === 1) {
     $HTMLOUT .= "<div class='container is-fluid portlet' id='AJAXCHAT'>";
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'ajaxchat.php';

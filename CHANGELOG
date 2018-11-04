@@ -1,4 +1,6 @@
 03 Nov, 2018
+remove IE, announcement blocks
+fix: url_proxy trying to proxy 'N/A' 
 update: ignored files
 remove: everything paypal
 update: no longer set poster, if empty, poster is strictly for user to set or not

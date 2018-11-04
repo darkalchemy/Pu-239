@@ -166,8 +166,11 @@ function images_update()
             ];
         }
         if ($image['type'] === 'poster') {
+            url_proxy($image['url'], true, 300);
             url_proxy($image['url'], true, 150);
             url_proxy($image['url'], true, 150, null, 10);
+        } elseif ($image['type'] === 'banner') {
+            url_proxy($image['url'], true, 1000, 185);
         }
     }
 

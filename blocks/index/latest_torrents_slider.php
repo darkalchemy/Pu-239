@@ -2,8 +2,7 @@
 
 global $site_config, $lang, $fluent, $CURUSER, $cache;
 
-$cache->delete('sliderl_torrents_');
-$slider_torrents = $cache->get('sliderl_torrents_');
+$slider_torrents = $cache->get('slider_torrents_');
 if ($slider_torrents === false || is_null($slider_torrents)) {
     $slider_torrents = $fluent->from('torrents')
         ->select(null)
@@ -21,8 +20,8 @@ if ($slider_torrents === false || is_null($slider_torrents)) {
         ->select('users.class')
         ->where('imdb_id IS NOT NULL')
         ->leftJoin('users ON torrents.owner = users.id')
+        ->limit(100)
         ->orderBy('torrents.added DESC')
-        ->limit($site_config['latest_torrents_limit_slider'])
         ->fetchAll();
 
     $cache->set('slider_torrents_', $slider_torrents, $site_config['expires']['slider_torrents']);
@@ -65,10 +64,14 @@ foreach ($slider_torrents as $torrent) {
             shuffle($images);
             $torrent['banner'] = $images[0]['url'];
         }
+
+        if (!empty($torrent['banner'])) {
+            $sliding_torrents[] = $torrent;
+        }
     }
 
-    if (!empty($torrent['banner'])) {
-        $sliding_torrents[] = $torrent;
+    if (!empty($sliding_torrents) && count($sliding_torrents) >= $site_config['latest_torrents_limit_slider']) {
+        break;
     }
 }
 

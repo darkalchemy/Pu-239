@@ -2,7 +2,6 @@
 
 global $site_config, $lang, $fluent, $CURUSER, $cache;
 
-$cache->delete('scroll_tor_');
 $scroll_torrents = $cache->get('scroll_tor_');
 if ($scroll_torrents === false || is_null($scroll_torrents)) {
     $scroll_torrents = $fluent->from('torrents')
@@ -21,7 +20,7 @@ if ($scroll_torrents === false || is_null($scroll_torrents)) {
         ->select('users.class')
         ->leftJoin('users ON torrents.owner = users.id')
         ->orderBy('torrents.added DESC')
-        ->limit($site_config['latest_torrents_limit_scroll'])
+        ->limit(100)
         ->fetchAll();
 
     $cache->set('scroll_tor_', $scroll_torrents, $site_config['expires']['scroll_torrents']);
@@ -49,6 +48,9 @@ foreach ($scroll_torrents as $torrent) {
         }
     }
     $scroller_torrents[] = $torrent;
+    if (count($scroller_torrents) >= $site_config['latest_torrents_limit_scroll']) {
+        break;
+    }
 }
 
 if ($scroller_torrents) {
