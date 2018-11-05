@@ -314,7 +314,6 @@ function userlogin()
         }
     }
     if ($users_data['class'] >= UC_STAFF) {
-        dd($site_config['is_staff']['allowed']);
         if (!in_array($users_data['id'], $site_config['is_staff']['allowed'], true)) {
             require_once INCL_DIR . 'function_autopost.php';
             $msg = 'Fake Account Detected: Username: ' . htmlsafechars($users_data['username']) . ' - userID: ' . (int) $users_data['id'] . ' - UserIP : ' . getip();
