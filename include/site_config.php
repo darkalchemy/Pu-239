@@ -292,3 +292,25 @@ $site_config['notifications'] = [
 $site_config['video_banners'] = [];
 $site_config['banners'] = [];
 $site_config['query_limit'] = 65536; // mysql placeholder limit
+
+// Auto Lottery, you must first start a lottery, then this will restart it based on the settings below
+$site_config['auto_lotto'] = [
+    'enable' => 1,
+    'use_prize_fund' => 1,
+    'prize_fund' => 1000000,
+    'ticket_amount' => 100,
+    'ticket_amount_type' => 'seedbonus',
+    'user_tickets' => 10,
+    'class_allowed' => [
+        0 => 0,
+        1 => 1,
+        2 => 2,
+        3 => 3,
+        4 => 4,
+        5 => 5,
+        6 => 6,
+    ],
+    'total_winners' => 5,
+    'duration' => 7,
+];
+

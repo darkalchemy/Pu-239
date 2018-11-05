@@ -1,3 +1,6 @@
+### 05 Nov, 2018
+add: auto lottery, if enabled, the lottery will auto restart  
+
 ### 04 Nov, 2018
 fix: polls  
 update: README to account for greater number of users  

@@ -6,7 +6,7 @@
 function lotteryclean($data)
 {
     dbconn();
-    global $queries, $cache, $message_stuffs;
+    global $queries, $cache, $message_stuffs, $fluent;
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -59,7 +59,7 @@ function lotteryclean($data)
                 'receiver' => $winner['uid'],
                 'added' => $dt,
                 'msg' => $msg['body'],
-                'subject' => $subject['subject'],
+                'subject' => $msg['subject'],
             ];
 
             $uids[] = $winner['uid'];
@@ -85,6 +85,40 @@ function lotteryclean($data)
                     VALUES ' . implode(', ', $lconfig_update) . '
                     ON DUPLICATE KEY UPDATE value=VALUES(value)') or sqlerr(__FILE__, __LINE__);
         sql_query('DELETE FROM tickets') or sqlerr(__FILE__, __LINE__);
+
+        if (!empty($site_config['auto_lotto']) && $site_config['auto_lotto']['enable']) {
+            $values = [];
+            foreach ($site_config['auto_lotto'] as $key => $value) {
+                //dd($key, $value);
+                if ($key === 'duration') {
+                    $values[] = [
+                        'name' => 'start_date',
+                        'value' => $dt,
+                    ];
+                    $values[] = [
+                        'name' => 'end_date',
+                        'value' => $dt + ($value * 86400),
+                    ];
+                } elseif ($key === 'class_allowed') {
+                    $values[] = [
+                        'name' => $key,
+                        'value' => implode('|', $value),
+                    ];
+                } else {
+                    $values[] = [
+                        'name' => $key,
+                        'value' => $value
+                    ];
+                }
+            }
+            $update = [
+                'value' => new Envms\FluentPDO\Literal('VALUES(value)'),
+            ];
+            $fluent->insertInto('lottery_config', $values)
+                ->onDuplicateKeyUpdate($update)
+                ->execute();
+        }
+
         $cache->delete('lottery_info_');
     }
 

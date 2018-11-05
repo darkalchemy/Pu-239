@@ -20,6 +20,7 @@ function birthday_update($data)
         ->where('DAYOFMONTH(birthday) = ?', $date['mday']);
 
     $count = 0;
+    $msgs = [];
     if (!empty($users)) {
         $subject = "It's your birthday!!";
         foreach ($users as $arr) {
