@@ -1,4 +1,6 @@
-04 Nov, 2018
+### 04 Nov, 2018
+update: README to account for greater number of users
+fix: cleanup users achievement seedtime
 update: restrict AJAX Chat @mentions to main channel
 add: delete log files from log viewer
 fix: ajax timeout
@@ -8,7 +10,7 @@ update: remove some unused site_config settings
 update: remove some unuses ann_config settings
 remove: public/install/extra/ann_config.phpsample.php as not needed
 
-03 Nov, 2018
+### 03 Nov, 2018
 fix: set/delete run cache images_update.php
 remove IE, announcement blocks
 fix: url_proxy trying to proxy 'N/A' 
@@ -31,15 +33,15 @@ fix: remove table backups older than 6 hours
 fix: update tvmaze
 fix: update on/off cleanup item
 
-02 Nox, 2018
+### 02 Nov, 2018
 fix: viewnfo breadcrumbs
 
-01 Nov, 2018
+### 01 Nov, 2018
 fix: missing name in form new_topic.php
 fix: breadcrumbs when action is page
 move: ratio_free, crazy_hour and happy_hour to define.php
 
-31 Oct, 2018
+### 31 Oct, 2018
 add: view log files with extension '1' log_viewer.php
 fix: error when there are topics but no posts view_forum.php
 update: add try catch to pdo query upgrade_database.php
@@ -52,13 +54,13 @@ update: set class colors per template
 move: chat css classes into template folders
 remove: unused columns from select User.php
 
-29 Oct, 2018
+### 29 Oct, 2018
 fix: undefined var admin/upgrade_database.php
 fix: incorrect var namr imdb_lookup.php
 fix: admin memcached stats when using sockets
 fix: seedtime cleanup once per userid, not once per torrent
 
-28 Oct, 2018
+### 28 Oct, 2018
 update: get poster from images table when torrents.poster is empty catalog.php, browse.php 
 fix: missing requires
 update: get poster from images table when torrents.poster is empty index blocks
@@ -72,7 +74,7 @@ fix: installer remove checks for settings depecrated by MariaDB 10.3
 update: README
 update: global blocks
 
-27 Oct, 2018
+### 27 Oct, 2018
 update: wrap sql errors in pre tabs log_viewer.php
 update: remove filesize limits log_viewer.php
 update: function_breadcrumbs.php
@@ -98,7 +100,7 @@ fix: typo ann_config.php
 add: missing HnR settings from ann_config.php
 fix: call incorrect method name announce.php
 
-26 Oct, 2018
+### 26 Oct, 2018
 update: version to v0.4
 fix: call to wrong method takelogin.php
 fix: send message to user when login failed takelogin.php
@@ -121,14 +123,14 @@ update: check if torrent exists before deleting Torrent.php
 remove: stats table, no need to store these stats in db
 remove: readpost_update.php can't see any reason to reset a users read post history every 2 weeks
 
-22 Oct, 2018
+### 22 Oct, 2018
 fix: check if REQUEST_URI is empty, mainly for running cron_controller.php from cli
 fix: update user birthday_update.php
 remove: insert method User.php
 fix: don't show pager menu when only 1 page reports.php 
 fix: division by 0 pu_update.php
 
-21 Oct, 2018
+### 21 Oct, 2018
 fix: get from array happyhour_update.php
 fix: freee_switch not resetting freeuser_update.php
 fix: timesann not updating announce.php
@@ -141,7 +143,7 @@ fix: peers not always deleting on stop announce.php
 fix: happy hour
 fix: properly clear torrent caches when deleting or adding
 
-20 Oct, 2018
+### 20 Oct, 2018
 fix: edit admin pages select current staffpanel.php
 remove: file_put_contents logging
 fix: php_info display system_view.php

@@ -70,7 +70,7 @@ innodb_large_prefix = 1 # MariaDB deprecated this in 10.2 and removed in 10.3
 innodb_file_per_table = 1
 
 # add/modify this in [mysqld] to increase payload capacity
-max_allowed_packet = 64M
+max_allowed_packet = 64M ## this may need to be increased as your user count increases
 
 # add/modify this in [mysqld] to stop autoincrement on insert ignore(optional)
 innodb_autoinc_lock_mode = 0
