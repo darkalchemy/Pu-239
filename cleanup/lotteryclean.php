@@ -6,7 +6,7 @@
 function lotteryclean($data)
 {
     dbconn();
-    global $queries, $cache, $message_stuffs, $fluent;
+    global $queries, $cache, $message_stuffs, $fluent, $site_config;
 
     set_time_limit(1200);
     ignore_user_abort(true);
