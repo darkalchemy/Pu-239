@@ -1,160 +1,160 @@
 ### 04 Nov, 2018
-update: README to account for greater number of users
-fix: cleanup users achievement seedtime
-update: restrict AJAX Chat @mentions to main channel
-add: delete log files from log viewer
-fix: ajax timeout
-update: improve ajax render times
-update: ajax scripts for uniformity
-update: remove some unused site_config settings
-update: remove some unuses ann_config settings
-remove: public/install/extra/ann_config.phpsample.php as not needed
+update: README to account for greater number of users  
+fix: cleanup users achievement seedtime  
+update: restrict AJAX Chat @mentions to main channel  
+add: delete log files from log viewer  
+fix: ajax timeout  
+update: improve ajax render times  
+update: ajax scripts for uniformity  
+update: remove some unused site_config settings  
+update: remove some unuses ann_config settings  
+remove: public/install/extra/ann_config.phpsample.php as not needed  
 
 ### 03 Nov, 2018
-fix: set/delete run cache images_update.php
-remove IE, announcement blocks
-fix: url_proxy trying to proxy 'N/A' 
-update: ignored files
-remove: everything paypal
-update: no longer set poster, if empty, poster is strictly for user to set or not
-update: move descr formatting to ajax, if not already cached, improves page load time
-update: wiki breadcrumbs
-update: add previous/next links to torrent details page
-update: set torrents.imdb_id in takeupload.php
-add: left/right angle font awesome
-remove: banner and background from torrents table
-add: get images from images table as needed
-update: show subtitles in details.php
-remove: banner overlay
-fix: use user poster in imdb block
-add: get_torrent_count() Torrent.php
-add: click to IMDb on title imdb block
-fix: remove table backups older than 6 hours
-fix: update tvmaze
-fix: update on/off cleanup item
+fix: set/delete run cache images_update.php  
+remove IE, announcement blocks  
+fix: url_proxy trying to proxy 'N/A'   
+update: ignored files  
+remove: everything paypal  
+update: no longer set poster, if empty, poster is strictly for user to set or not  
+update: move descr formatting to ajax, if not already cached, improves page load time  
+update: wiki breadcrumbs  
+update: add previous/next links to torrent details page  
+update: set torrents.imdb_id in takeupload.php  
+add: left/right angle font awesome  
+remove: banner and background from torrents table  
+add: get images from images table as needed  
+update: show subtitles in details.php  
+remove: banner overlay  
+fix: use user poster in imdb block  
+add: get_torrent_count() Torrent.php  
+add: click to IMDb on title imdb block  
+fix: remove table backups older than 6 hours  
+fix: update tvmaze  
+fix: update on/off cleanup item  
 
 ### 02 Nov, 2018
-fix: viewnfo breadcrumbs
+fix: viewnfo breadcrumbs  
 
 ### 01 Nov, 2018
-fix: missing name in form new_topic.php
-fix: breadcrumbs when action is page
-move: ratio_free, crazy_hour and happy_hour to define.php
+fix: missing name in form new_topic.php  
+fix: breadcrumbs when action is page  
+move: ratio_free, crazy_hour and happy_hour to define.php  
 
 ### 31 Oct, 2018
-add: view log files with extension '1' log_viewer.php
-fix: error when there are topics but no posts view_forum.php
-update: add try catch to pdo query upgrade_database.php
-update: class_config from cache file to site_config
-update: file output format user_functions.php
-update: get_birthday_users fetch to keep mysql packet size small User.php
-fix: values should be an array of arrays function_autopost.php
-update: set chat styles per template
-update: set class colors per template
-move: chat css classes into template folders
-remove: unused columns from select User.php
+add: view log files with extension '1' log_viewer.php  
+fix: error when there are topics but no posts view_forum.php  
+update: add try catch to pdo query upgrade_database.php  
+update: class_config from cache file to site_config  
+update: file output format user_functions.php  
+update: get_birthday_users fetch to keep mysql packet size small User.php  
+fix: values should be an array of arrays function_autopost.php  
+update: set chat styles per template  
+update: set class colors per template  
+move: chat css classes into template folders  
+remove: unused columns from select User.php  
 
 ### 29 Oct, 2018
-fix: undefined var admin/upgrade_database.php
-fix: incorrect var namr imdb_lookup.php
-fix: admin memcached stats when using sockets
-fix: seedtime cleanup once per userid, not once per torrent
+fix: undefined var admin/upgrade_database.php  
+fix: incorrect var namr imdb_lookup.php  
+fix: admin memcached stats when using sockets  
+fix: seedtime cleanup once per userid, not once per torrent  
 
 ### 28 Oct, 2018
-update: get poster from images table when torrents.poster is empty catalog.php, browse.php 
-fix: missing requires
-update: get poster from images table when torrents.poster is empty index blocks
-add: .well-known dir
-update: breadcrumbs
-update: resize signature and avatar in forums
-update: version to 0.5
-update: database files
-fix: installer updating removed table
-fix: installer remove checks for settings depecrated by MariaDB 10.3
-update: README
-update: global blocks
+update: get poster from images table when torrents.poster is empty catalog.php, browse.php   
+fix: missing requires  
+update: get poster from images table when torrents.poster is empty index blocks  
+add: .well-known dir  
+update: breadcrumbs  
+update: resize signature and avatar in forums  
+update: version to 0.5  
+update: database files  
+fix: installer updating removed table  
+fix: installer remove checks for settings depecrated by MariaDB 10.3  
+update: README  
+update: global blocks  
 
 ### 27 Oct, 2018
-update: wrap sql errors in pre tabs log_viewer.php
-update: remove filesize limits log_viewer.php
-update: function_breadcrumbs.php
-update: pagination to log_viewer.php
-update: viewtickets.php
-fix: flash message using html instead of bbcode tickets.php
-fix: autobahn recording stats
-fix: removed columns snatches.php
-fix: seeders/leechers getting correct count torrents_update.php
-update: update forum_config min_delete_view_class when adding/removing classes
-update: edit topic, post reply to use same html
-fix: forum signatures
-fix: forum attachments
-fix: update forum classes when adding/removing classes
-fix: autoshout for new topics/replies
-fix: memcached stats when using sockets
-fix: polls
-update: README
-update: allow memcached to use sockets
-update: allow mysqli to use sockets
-remove: avatar folder, not used here
-fix: typo ann_config.php
-add: missing HnR settings from ann_config.php
-fix: call incorrect method name announce.php
+update: wrap sql errors in pre tabs log_viewer.php  
+update: remove filesize limits log_viewer.php  
+update: function_breadcrumbs.php  
+update: pagination to log_viewer.php  
+update: viewtickets.php  
+fix: flash message using html instead of bbcode tickets.php  
+fix: autobahn recording stats  
+fix: removed columns snatches.php  
+fix: seeders/leechers getting correct count torrents_update.php  
+update: update forum_config min_delete_view_class when adding/removing classes  
+update: edit topic, post reply to use same html  
+fix: forum signatures  
+fix: forum attachments  
+fix: update forum classes when adding/removing classes  
+fix: autoshout for new topics/replies  
+fix: memcached stats when using sockets  
+fix: polls  
+update: README  
+update: allow memcached to use sockets  
+update: allow mysqli to use sockets  
+remove: avatar folder, not used here  
+fix: typo ann_config.php  
+add: missing HnR settings from ann_config.php  
+fix: call incorrect method name announce.php  
 
 ### 26 Oct, 2018
-update: version to v0.4
-fix: call to wrong method takelogin.php
-fix: send message to user when login failed takelogin.php
-update: show client and peer id view_peers.php
-remove: unused/duplicate functions scrape.php
-fix: divide by 0 annoounce.php
-fix: non numeric rating function_imdb.php
-fix: display peer_id allagents.php
-update: triviaq questions, removed dupes
-update: many cleanup scripts to FluentPDO, reduce number of queries
-rename: column 12_hour to use_12_hour
-update: FluentPDO, autoprefixer, browserslist
-update: easier to update/add stats stats.php
-update: use FluentPDO bans.php, upgrade_database.php
-update: many timestamp columns to unsigned int
-add: added column to topics table
-change: sort order for cleanup processing cron_controller.php
-update: delete deleted messages also, only update caches if cache already exists Message.php
-update: check if torrent exists before deleting Torrent.php
-remove: stats table, no need to store these stats in db
-remove: readpost_update.php can't see any reason to reset a users read post history every 2 weeks
+update: version to v0.4  
+fix: call to wrong method takelogin.php  
+fix: send message to user when login failed takelogin.php  
+update: show client and peer id view_peers.php  
+remove: unused/duplicate functions scrape.php  
+fix: divide by 0 annoounce.php  
+fix: non numeric rating function_imdb.php  
+fix: display peer_id allagents.php  
+update: triviaq questions, removed dupes  
+update: many cleanup scripts to FluentPDO, reduce number of queries  
+rename: column 12_hour to use_12_hour  
+update: FluentPDO, autoprefixer, browserslist  
+update: easier to update/add stats stats.php  
+update: use FluentPDO bans.php, upgrade_database.php  
+update: many timestamp columns to unsigned int  
+add: added column to topics table  
+change: sort order for cleanup processing cron_controller.php  
+update: delete deleted messages also, only update caches if cache already exists Message.php  
+update: check if torrent exists before deleting Torrent.php  
+remove: stats table, no need to store these stats in db  
+remove: readpost_update.php can't see any reason to reset a users read post history every 2 weeks  
 
 ### 22 Oct, 2018
-fix: check if REQUEST_URI is empty, mainly for running cron_controller.php from cli
-fix: update user birthday_update.php
-remove: insert method User.php
-fix: don't show pager menu when only 1 page reports.php 
-fix: division by 0 pu_update.php
+fix: check if REQUEST_URI is empty, mainly for running cron_controller.php from cli  
+fix: update user birthday_update.php  
+remove: insert method User.php  
+fix: don't show pager menu when only 1 page reports.php   
+fix: division by 0 pu_update.php  
 
 ### 21 Oct, 2018
-fix: get from array happyhour_update.php
-fix: freee_switch not resetting freeuser_update.php
-fix: timesann not updating announce.php
-update: set default userid userdetails.php
-fix: don't show pager menu when only 1 page browse.php
-add: missing torrents/users 
-fix: user notification on upload to their defaul categories
-update: fluentpdo, php-cs-fixer, flysystem, node-sass
-fix: peers not always deleting on stop announce.php
-fix: happy hour
-fix: properly clear torrent caches when deleting or adding
+fix: get from array happyhour_update.php  
+fix: freee_switch not resetting freeuser_update.php  
+fix: timesann not updating announce.php  
+update: set default userid userdetails.php  
+fix: don't show pager menu when only 1 page browse.php  
+add: missing torrents/users   
+fix: user notification on upload to their defaul categories  
+update: fluentpdo, php-cs-fixer, flysystem, node-sass  
+fix: peers not always deleting on stop announce.php  
+fix: happy hour  
+fix: properly clear torrent caches when deleting or adding  
 
 ### 20 Oct, 2018
-fix: edit admin pages select current staffpanel.php
-remove: file_put_contents logging
-fix: php_info display system_view.php
-update: a few more of the admin pages
-add: missing file promo.php
-update: most of the admin pages
-fix: bug bugs.php
-update: don't show pager when not more than 1 page staffbox.php, bugs.php
-update: align checkboxes upload.php
-update: SCEditor style
-update: missing tags from breadcrumbs
+fix: edit admin pages select current staffpanel.php  
+remove: file_put_contents logging  
+fix: php_info display system_view.php  
+update: a few more of the admin pages  
+add: missing file promo.php  
+update: most of the admin pages  
+fix: bug bugs.php  
+update: don't show pager when not more than 1 page staffbox.php, bugs.php  
+update: align checkboxes upload.php  
+update: SCEditor style  
+update: missing tags from breadcrumbs  
 
 18 Oct, 2038
 update: FluentPDO, Flysystem, Sass, PostCSS, autoprefixer, node-sas
