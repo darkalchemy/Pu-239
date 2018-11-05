@@ -313,4 +313,3 @@ $site_config['auto_lotto'] = [
     'total_winners' => 5,
     'duration' => 7,
 ];
-

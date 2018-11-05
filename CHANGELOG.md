@@ -1,4 +1,5 @@
 ### 05 Nov, 2018
+fix: some incorrect user defaults in db schema  
 add: auto lottery, if enabled, the lottery will auto restart  
 
 ### 04 Nov, 2018
