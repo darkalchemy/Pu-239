@@ -1,4 +1,5 @@
 ### 04 Nov, 2018
+fix: polls  
 update: README to account for greater number of users  
 fix: cleanup users achievement seedtime  
 update: restrict AJAX Chat @mentions to main channel  

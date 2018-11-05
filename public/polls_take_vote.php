@@ -3,7 +3,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $fluent, $cache, $pollvoter_stuffs, $mysqli;
+global $CURUSER, $site_config, $fluent, $cache, $pollvoter_stuffs;
 
 $lang = load_language('global');
 $poll_id = isset($_GET['pollid']) ? intval($_GET['pollid']) : false;
@@ -57,15 +57,6 @@ if (!$_POST['nullvote']) {
     if (!$vid) {
         stderr('ERROR', 'Could not update records');
     }
-    $votes = $poll_data['votes'] + 1;
-    $choices = addslashes(serialize($poll_answers));
-    $cache->update_row('poll_data_' . $CURUSER['id'], [
-        'votes' => $votes,
-        'ip' => $CURUSER['ip'],
-        'user_id' => $CURUSER['id'],
-        'vote_date' => TIME_NOW,
-        'choices' => $choices,
-    ], $site_config['expires']['poll_data']);
     foreach ($vote_cast as $question_id => $choice_array) {
         foreach ($choice_array as $choice_id) {
             ++$poll_answers[$question_id]['votes'][$choice_id];
@@ -74,6 +65,16 @@ if (!$_POST['nullvote']) {
             }
         }
     }
+    $choices = addslashes(serialize($poll_answers));
+    $votes = $poll_data['votes'] + 1;
+    $cache->update_row('poll_data_' . $CURUSER['id'], [
+        'votes' => $votes,
+        'ip' => $CURUSER['ip'],
+        'user_id' => $CURUSER['id'],
+        'vote_date' => TIME_NOW,
+        'choices' => $choices,
+    ], $site_config['expires']['poll_data']);
+
     $set = [
         'votes' => new Envms\FluentPDO\Literal('votes + 1'),
         'choices' => $choices,

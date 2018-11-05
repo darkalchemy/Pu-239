@@ -23,7 +23,7 @@ $staff_classes1['name'] = $page_name = $file_name = $navbar = '';
 $staff = sqlesc(UC_STAFF);
 $staff_classes = $cache->get('is_staffs_');
 if ($staff_classes === false || is_null($staff_classes)) {
-    $res = sql_query("SELECT value FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX') AND value >= '$staff' ORDER BY value ASC");
+    $res = sql_query("SELECT value FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX') AND value >= '$staff' GROUP BY value ORDER BY value ASC");
     $staff_classes = [];
     while (($row = mysqli_fetch_assoc($res))) {
         $staff_classes[] = $row['value'];
@@ -62,6 +62,7 @@ while ($list = mysqli_fetch_assoc($sql)) {
     $staff_tools[$item] = $item;
 }
 ksort($staff_tools);
+
 if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool] . '.php')) {
     require_once ADMIN_DIR . $staff_tools[$tool] . '.php';
 } else {

@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang, $mysqli;
+global $lang;
 
 $stdfoot = [
     'js' => [
@@ -68,7 +68,7 @@ function delete_poll()
 
 function update_poll()
 {
-    global $site_config, $CURUSER, $lang, $stdfoot, $cache, $session, $pollvoter_stuffs;
+    global $site_config, $CURUSER, $lang, $stdfoot, $cache, $session, $pollvoter_stuffs, $mysqli;
 
     $total_votes = 0;
     if (!isset($_POST['pid']) || !is_valid_id($_POST['pid'])) {
@@ -103,7 +103,7 @@ function update_poll()
 
 function insert_new_poll()
 {
-    global $site_config, $CURUSER, $lang, $stdfoot, $cache;
+    global $site_config, $CURUSER, $lang, $stdfoot, $cache, $mysqli;
 
     if (!isset($_POST['poll_question']) || empty($_POST['poll_question'])) {
         stderr($lang['poll_inp_usr_err'], $lang['poll_inp_no_title']);
@@ -119,7 +119,7 @@ function insert_new_poll()
     $username = sqlesc($CURUSER['username']);
     $time = TIME_NOW;
     sql_query("INSERT INTO polls (start_date, choices, starter_id, votes, poll_question)VALUES($time, $poll_data, {$CURUSER['id']}, 0, $poll_title)") or sqlerr(__FILE__, __LINE__);
-    if (fale === ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res)) {
+    if (false === ((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res)) {
         $msg = "
         <h1 class='has-text-centered'>{$lang['poll_inp_error']}</h1>
         <div class='has-text-centered margin20'>
@@ -378,7 +378,7 @@ function makepoll()
     if (count($questions) > $site_config['max_poll_questions']) {
         die('poll_to_many');
     }
-    if (!empty($choices_count) && count($choices_count) > ($site_config['max_poll_questions'] * $site_config['max_poll_choices_per_question'])) {
+    if ($choices_count > ($site_config['max_poll_questions'] * $site_config['max_poll_choices_per_question'])) {
         die('poll_to_many');
     }
     if (isset($_POST['mode']) && $_POST['mode'] == 'poll_update') {
