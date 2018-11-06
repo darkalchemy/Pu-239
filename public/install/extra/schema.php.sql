@@ -2451,7 +2451,6 @@ CREATE TABLE `users` (
   `avatarpos` int(10) unsigned NOT NULL DEFAULT '1',
   `support` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `supportfor` mediumtext COLLATE utf8mb4_unicode_ci,
-  `language_new` int(10) unsigned NOT NULL DEFAULT '1',
   `sendpmpos` int(10) unsigned NOT NULL DEFAULT '1',
   `invitedate` int(10) unsigned NOT NULL DEFAULT '0',
   `invitees` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -2636,4 +2635,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-06  1:11:09
+-- Dump completed on 2018-11-06  1:34:12

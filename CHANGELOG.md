@@ -1,4 +1,5 @@
 ### 06 Nov, 2018
+update: drop unused column  
 fix: incorrect user defaults in db schema  
 
 ### 05 Nov, 2018

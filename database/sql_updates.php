@@ -1569,4 +1569,11 @@ $sql_updates = [
         'query' => 'ALTER TABLE `users` MODIFY `reputation` int unsigned NOT NULL DEFAULT 10',
         'flush' => false,
     ],
+    [
+        'id' => 1541484438,
+        'info' => 'Drop column',
+        'date' => '06 Nov, 2018',
+        'query' => 'ALTER TABLE `users` DROP COLUMN `language_new`',
+        'flush' => false,
+    ],
 ];
