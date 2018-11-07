@@ -37,6 +37,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'seedbonus' => $seedbonus_new,
             ], $site_config['expires']['user_cache']);
             $session->set('is-success', 'You bought [b]' . number_format($tickets) . '[/b]. You now have [b]' . number_format($tickets + $user_tickets) . '[/b] tickets!');
+            if ($site_config['autoshout_on'] || $site_config['irc_autoshout_on'] == 1) {
+                $classColor = get_user_class_color($CURUSER['class']);
+                $link = "[url={$site_config['baseurl']}/lottery.php]Lottery[/url]";
+                $end = random_int(0, 5) == 1 ? 'Sucker!' : 'Excellent!';
+                $msg = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just bought $tickets $link Ticket" . plural($tickets) . "!! $end";
+                autoshout($msg);
+            }
         } else {
             $session->set('is-warning', 'There was an error with the update query, mysql error: ' . ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         }

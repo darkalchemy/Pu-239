@@ -22,7 +22,8 @@ $qs = sql_query('SELECT count(t.id) AS tickets , u.id, u.seedbonus FROM tickets 
 $header = $body = '';
 
 if (!mysqli_num_rows($qs)) {
-    $html .= '<h2>No tickets have been purchased!</h2>';
+    $html .= '<h2 class="has-text-centered">No tickets have been purchased!</h2>';
+    $html = main_div($html);
 } else {
     $header = '
     <tr>

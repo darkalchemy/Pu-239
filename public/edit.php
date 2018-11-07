@@ -40,7 +40,6 @@ $lang = array_merge(load_language('global'), load_language('edit'));
 $row = $fluent->from('torrents')
     ->where('id = ?', $id)
     ->fetch();
-
 if (!$row) {
     stderr($lang['edit_user_error'], $lang['edit_no_torrent']);
 }
@@ -98,9 +97,10 @@ $HTMLOUT .= tr($lang['edit_type'], $s, 1);
 $subs_list .= "
         <div class='level-center'>";
 foreach ($subs as $s) {
+    $torrent_subs = explode(',', $row['subs']);
     $subs_list .= "
             <div class='w-15 margin10 tooltipper bordered level-center tooltipstered'>
-                <input name='subs[]' type='checkbox' class='reset' value='{$s['id']}'>
+                <input name='subs[]' type='checkbox' class='reset' value='{$s['id']}'" . (in_array($s['id'], $torrent_subs) ? ' checked' : '') . ">
                 <image class='sub_flag left5' src='{$s['pic']}' alt='{$s['name']}' title='" . htmlsafechars($s['name']) . "'>
                 <span class='left5'>" . htmlsafechars($s['name']) . '</span>
             </div>';

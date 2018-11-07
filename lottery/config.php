@@ -3,6 +3,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'user_functions.php';
 class_check(UC_STAFF);
 global $site_config, $cache, $mysqli;
 
@@ -24,10 +25,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ($lottery_config as $c_name => $c_value) {
         if (isset($_POST[$c_name]) && $_POST[$c_name] != $c_value) {
             $update[] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($_POST[$c_name]) ? implode('|', $_POST[$c_name]) : $_POST[$c_name]) . ')';
+            if ($_POST['c_name'] === 'prize_fund') {
+                $fund = number_format($_POST['c_value']);
+            } elseif ($_POST['c_name'] === 'ticket_amount') {
+                $cost = number_format($_POST['c_value']);
+            } elseif ($_POST['c_name'] === 'ticket_amount_type') {
+                $type = ucfirst($_POST['c_value']);
+            }
         }
     }
     if (sql_query('INSERT INTO lottery_config(name,value) VALUES ' . implode(', ', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value)')) {
         $cache->delete('lottery_info_');
+        if ($site_config['autoshout_on'] || $site_config['irc_autoshout_on'] == 1) {
+            $link = "[url={$site_config['baseurl']}/lottery.php]Lottery[/url]";
+            $msg = "The $link has begun!! Get your tickets now. The pot is $fund and each ticket is only $cost $type.";
+            autoshout($msg);
+        }
         $session->set('is-success', 'Lottery configuration was saved!');
         header("Location: {$site_config['baseurl']}/lottery.php");
         die();

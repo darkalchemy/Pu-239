@@ -89,7 +89,6 @@ function lotteryclean($data)
         if (!empty($site_config['auto_lotto']) && $site_config['auto_lotto']['enable']) {
             $values = [];
             foreach ($site_config['auto_lotto'] as $key => $value) {
-                //dd($key, $value);
                 if ($key === 'duration') {
                     $values[] = [
                         'name' => 'start_date',
@@ -117,6 +116,14 @@ function lotteryclean($data)
             $fluent->insertInto('lottery_config', $values)
                 ->onDuplicateKeyUpdate($update)
                 ->execute();
+            if ($site_config['autoshout_on'] || $site_config['irc_autoshout_on'] == 1) {
+                $fund = number_format($site_config['auto_lotto']['prize_fund']);
+                $cost = number_format($site_config['auto_lotto']['ticket_amount']);
+                $type = ucfirst($site_config['auto_lotto']['ticket_amount_type']);
+                $link = "[url={$site_config['baseurl']}/lottery.php]Lottery[/url]";
+                $msg = "The $link has begun!! Get your tickets now. The pot is $fund and each ticket is only $cost $type.";
+                autoshout($msg);
+            }
         }
 
         $cache->delete('lottery_info_');

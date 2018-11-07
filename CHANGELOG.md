@@ -1,4 +1,7 @@
 ### 07 Nov, 2018
+fix: clear torrent cache details.php  
+fix: subtitles on open edit.php not getting set  
+add: autoshout for lottery start and tickets purchased  
 fix: forums section view  
 
 ### 06 Nov, 2018

@@ -116,7 +116,6 @@ if ($moderator) {
         write_log("Torrent [url={$site_config['baseurl']}details.php?id=$id](" . htmlsafechars($torrent['name']) . ")[/url] was un-checked by {$CURUSER['username']}");
         $session->set('is-success', "Torrents has been 'Un-Checked'");
     } elseif (isset($_POST['clear_cache']) && $_POST['clear_cache'] == $id) {
-        dd($imdb_id, $imdbid, $torrent['imdb_id'], $tvmaze_id, $thetvdb_id);
         $cache->deleteMulti([
             'torrent_details_' . $id,
             'top5_tor_',
@@ -129,16 +128,21 @@ if ($moderator) {
         if (!empty($imdb_id)) {
             $cache->delete('tvshow_ids_' . $torrent['imdb_id']);
         }
-        if (!empty($tvmaze_id)) {
+        if (!empty($torrent['imdb_id'])) {
+            $ids = get_show_id_by_imdb($torrent['imdb_id']);
+        } else {
+            $ids = get_show_id($torrent['name']);
+        }
+        if (!empty($ids['tvmaze_id'])) {
             $cache->deleteMulti([
-                'tvshow_episode_info_' . $tvmaze_id,
-                'tvsmaze_' . $tvmaze_id,
+                'tvshow_episode_info_' . $ids['tvmaze_id'],
+                'tvsmaze_' . $ids['$tvmaze_id'],
             ]);
         }
-        if (!empty($thetvdb_id)) {
+        if (!empty($ids['thetvdb_id'])) {
             $cache->deleteMulti([
-                'show_images_' . $thetvdb_id,
-                'movie_images_' . $thetvdb_id,
+                'show_images_' . $ids['thetvdb_id'],
+                'movie_images_' . $ids['thetvdb_id'],
             ]);
         }
 
@@ -518,7 +522,7 @@ if ($torrent['allow_comments'] === 'yes' || $moderator) {
     $add_comment = "
     <a name='startcomments'></a>
     <div class='has-text-centered'>
-        <div class='size_5 bottom20'>Leave a Comment</div>
+        <h2>Leave a Comment</h2>
         <a href='{$site_config['baseurl']}/takethankyou.php?id={$torrent['id']}'>
             <img src='{$site_config['pic_baseurl']}smilies/thankyou.gif' class='tooltipper' alt='Thank You' title='Give a quick \"Thank You\"'>
         </a>
