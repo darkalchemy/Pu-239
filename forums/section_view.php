@@ -1,34 +1,27 @@
 <?php
 
 global $lang;
+
 $child_boards = $now_viewing = $colour = '';
 $forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));
 if (!is_valid_id($forum_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
-//=== stupid query just to get overforum name :'(
-$over_forums_res = sql_query('SELECT name, min_class_view FROM over_forums WHERE id =' . sqlesc($forum_id)) or sqlerr(__FILE__, __LINE__);
+
+$over_forums_res = sql_query('SELECT name, min_class_view FROM over_forums WHERE id = ' . sqlesc($forum_id)) or sqlerr(__FILE__, __LINE__);
 $over_forums_arr = mysqli_fetch_assoc($over_forums_res);
-//=== make sure they can be here
+
 if ($CURUSER['class'] < $over_forums_arr['min_class_view']) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
-$location_bar = '<h1><a class="altlink" href="' . $site_config['baseurl'] . '/index.php">' . $site_config['site_name'] . '</a>  <img src="' . $site_config['pic_baseurl'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
-	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums'] . '</a> <img src="' . $site_config['pic_baseurl'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
-	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=section_view&amp;forum_id=' . $forum_id . '">' . htmlsafechars($over_forums_arr['name'], ENT_QUOTES) . '</a></h1>' . $mini_menu . '<br><br>';
-$HTMLOUT .= $location_bar;
-//=== top and bottom stuff
-$HTMLOUT .= '<br><table border="0" cellspacing="0" cellpadding="5" width="90%">
-	<tr>
-	<td align="left" colspan="4"><span style="color: white;">' . $lang['sv_section_view_for'] . ' ' . htmlsafechars($over_forums_arr['name'], ENT_QUOTES) . '</span></td>
-   </tr>';
-//=== basic query
-$forums_res = sql_query('SELECT name AS forum_name, description AS forum_description, id AS forum_id, post_count, topic_count FROM forums WHERE min_class_read < ' . sqlesc($CURUSER['class']) . ' AND forum_id=' . sqlesc($forum_id) . ' AND parent_forum = 0 ORDER BY sort') or sqlerr(__FILE__, __LINE__);
-//=== lets start the loop \o/
+
+$HTMLOUT .= $mini_menu;
+
+$HTMLOUT .= "
+    <h1 class='has-text-centered'pan>{$lang['sv_section_view_for']} " . htmlsafechars($over_forums_arr['name'], ENT_QUOTES) . "</h1>";
+$forums_res = sql_query('SELECT name AS forum_name, description AS forum_description, id AS forum_id, post_count, topic_count FROM forums WHERE min_class_read < ' . sqlesc($CURUSER['class']) . ' AND forum_id = ' . sqlesc($forum_id) . ' AND parent_forum = 0 ORDER BY sort') or sqlerr(__FILE__, __LINE__);
+$body = '';
 while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
-    //=== change colors
-    $colour = (++$colour) % 2;
-    $class = ($colour == 0 ? 'one' : 'two');
     //=== Get last post info
     if (($last_post_arr = $cache->get('sv_last_post_' . $forums_arr['forum_id'] . '_' . $CURUSER['class'])) === false) {
         $query = sql_query('SELECT t.last_post, t.topic_name, t.id AS topic_id, t.anonymous AS tan, p.user_id, p.added, p.anonymous AS pan, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.perms, u.offensive_avatar FROM topics AS t LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\' AND' : '')) . ' forum_id = ' . sqlesc($forums_arr['forum_id']) . ' ORDER BY last_post DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
@@ -84,7 +77,7 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
         }
         $now_viewing = $now_viewing_cache['now_viewing'];
         if ($now_viewing !== '') {
-            $now_viewing = '<hr><span style="font-size: xx-small;">' . $lang['sv_now_viewing'] . ':</span>' . $now_viewing;
+            $now_viewing = '<hr><span style="font-size: xx-small;">' . $lang['sv_now_viewing'] . ': </span>' . $now_viewing;
         }
         if ($last_post_arr['tan'] === 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $last_post_arr['user_id'] != $CURUSER['id']) {
@@ -92,13 +85,13 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
 		<span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>
 		' . get_date($last_post_arr['added'], '') . '<br>';
             } else {
-                $last_post = '' . $lang['fe_last_post_by'] . ': ' . get_anonymous_name() . ' [' . format_username($last_post_arr['user_id']) . '] <span style="font-size: x-small;"> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>
+                $last_post = '' . $lang['fe_last_post_by'] . ': ' . get_anonymous_name() . ' [' . format_username($last_post_arr['user_id']) . ']</span><br>
 		in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=p' . (int) $last_post_arr['last_post'] . '#' . (int) $last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '">
 		<span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>
 		' . get_date($last_post_arr['added'], '') . '<br>';
             }
         } else {
-            $last_post = '' . $lang['fe_last_post_by'] . ': ' . format_username($last_post_arr['user_id']) . ' <span style="font-size: x-small;"> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>
+            $last_post = '' . $lang['fe_last_post_by'] . ': ' . format_username($last_post_arr['user_id']) . '</span><br>
 		in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=p' . (int) $last_post_arr['last_post'] . '#' . (int) $last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '">
 		<span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>
 		' . get_date($last_post_arr['added'], '') . '<br>';
@@ -108,15 +101,19 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
         $now_viewing = '';
         $last_post = $lang['fe_na'];
     }
-    $HTMLOUT .= '<tr>
-		<td class="' . $class . '" valign="middle" width="30"><img src="' . $site_config['pic_baseurl'] . 'forums/' . $img . '.gif" alt="' . $site_config['pic_baseurl'] . 'forums/' . $img . '.gif" title="' . $site_config['pic_baseurl'] . 'forums/' . $img . '.gif" /></td>
-		<td class="' . $class . '" align="left">
-		<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $forums_arr['forum_id'] . '">' . htmlsafechars($forums_arr['forum_name'], ENT_QUOTES) . '</a>
-		<br>' . htmlsafechars($forums_arr['forum_description'], ENT_QUOTES) . $child_boards . $now_viewing . '</td>
-		<td class="' . $class . '" width="80">' . number_format($forums_arr['post_count']) . ' ' . $lang['fe_posts'] . '<br>' . number_format($forums_arr['topic_count']) . ' ' . $lang['fe_topics'] . '</td>
-		<td class="' . $class . '" align="left" width="140">
-		<span style="white-space:nowrap;">' . $last_post . '</span>
-		</td>
-		</tr>';
+    $body .= "
+    <tr>
+        <td>
+            <img src='{$site_config['pic_baseurl']}forums/{$img}.gif' alt='" . ucfirst($img) . "' title='" . ucfirst($img) . "' class='tooltipper'>
+        </td>
+		<td>
+    		<a class='altlink' href='{$site_config['baseurl']}/forums.php?action=view_forum&amp;forum_id={$forums_arr['forum_id']}'>" . htmlsafechars($forums_arr['forum_name'], ENT_QUOTES) . "</a><p class='top10'>" . htmlsafechars($forums_arr['forum_description'], ENT_QUOTES) . $child_boards . $now_viewing . "</p>
+        </td>
+        <td>" . number_format($forums_arr['post_count']) . "{$lang['fe_posts']}<br>" . number_format($forums_arr['topic_count']) . "{$lang['fe_topics']}</td>
+        <td>
+		    <span>{$last_post}</span>
+        </td>
+    </tr>";
 }
-$HTMLOUT .= '</table><br>' . $location_bar;
+
+$HTMLOUT .= main_table($body);

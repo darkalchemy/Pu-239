@@ -1,3 +1,6 @@
+### 07 Nov, 2018
+fix: forums section view  
+
 ### 05 Nov, 2018
 fix: some incorrect user defaults in db schema  
 add: auto lottery, if enabled, the lottery will auto restart  

@@ -413,7 +413,6 @@ switch ($action) {
             ->orderBy('of.sort, f.sort');
 
         $HTMLOUT .= $mini_menu;
-
         foreach ($query as $arr_forums) {
             $body = '';
             $body .= ($arr_forums['over_forum_id'] !== $over_forum_id ? '
@@ -448,10 +447,10 @@ switch ($action) {
                         if ($CURUSER['class'] < UC_STAFF && $last_post_arr['user_id'] != $CURUSER['id']) {
                             $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
                         } else {
-                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> [' . ('' !== $last_post_arr['username'] ? format_username($last_post_arr['id']) : '' . $lang['fe_lost'] . '') . '] <span style="font-size: x-small;"> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>in &#9658; <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
+                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> [' . ('' !== $last_post_arr['username'] ? format_username($last_post_arr['id']) : '' . $lang['fe_lost'] . '') . ']<br>in &#9658; <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
                         }
                     } else {
-                        $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . ('' !== $last_post_arr['username'] ? format_username($last_post_arr['id']) : '' . $lang['fe_lost'] . '') . ' <span style="font-size: x-small;"> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>in &#9658; <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
+                        $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . ('' !== $last_post_arr['username'] ? format_username($last_post_arr['id']) : '' . $lang['fe_lost'] . '') . '</span><br>in &#9658; <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
                     }
                     $keys['child_boards'] = 'child_boards_' . $last_post_id . '_' . $CURUSER['class'];
                     if (($child_boards_cache = $cache->get($keys['child_boards'])) === false) {
