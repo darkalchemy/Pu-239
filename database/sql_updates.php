@@ -1555,4 +1555,25 @@ $sql_updates = [
         'query' => 'ALTER TABLE `users` MODIFY `mood` int unsigned NOT NULL DEFAULT 1',
         'flush' => false,
     ],
+    [
+        'id' => 1541484436,
+        'info' => 'Alter column',
+        'date' => '06 Nov, 2018',
+        'query' => 'ALTER TABLE `users` MODIFY `hit_and_run_total` int unsigned NOT NULL DEFAULT 0',
+        'flush' => false,
+    ],
+    [
+        'id' => 1541484437,
+        'info' => 'Alter column',
+        'date' => '06 Nov, 2018',
+        'query' => 'ALTER TABLE `users` MODIFY `reputation` int unsigned NOT NULL DEFAULT 10',
+        'flush' => false,
+    ],
+    [
+        'id' => 1541484438,
+        'info' => 'Drop column',
+        'date' => '06 Nov, 2018',
+        'query' => 'ALTER TABLE `users` DROP COLUMN `language_new`',
+        'flush' => false,
+    ],
 ];
