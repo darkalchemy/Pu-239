@@ -18,6 +18,10 @@ if ($('#inner_snatched').length) {
     get_torrents(el.dataset.csrf, el.dataset.uid, 'snatched');
 }
 
+if ($('#inner_snatched_staff').length) {
+    var el = document.querySelector('#inner_snatched_staff');
+    get_torrents(el.dataset.csrf, el.dataset.uid, 'snatched_staff');
+}
 
 function get_torrents(csrf, uid, type) {
     var selector = '#inner_' + type;

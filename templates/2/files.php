@@ -36,7 +36,7 @@ function get_file_name($file)
         case 'slider_js':
             return "{$site_config['baseurl']}/js/2/slider_33a1861e.js";
         case 'userdetails_js':
-            return "{$site_config['baseurl']}/js/2/userdetails_e752d230.js";
+            return "{$site_config['baseurl']}/js/2/userdetails_88ffe01b.js";
         case 'recaptcha_js':
             return "{$site_config['baseurl']}/js/2/recaptcha_31b1d18c.js";
         case '':
