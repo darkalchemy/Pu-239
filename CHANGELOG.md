@@ -1,3 +1,6 @@
+### 08 Nov, 2018
+fix: userdetails torrent blocks, incorrect values  
+
 ### 07 Nov, 2018
 fix: clear torrent cache details.php  
 fix: subtitles on open edit.php not getting set  

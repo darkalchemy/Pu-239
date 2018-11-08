@@ -120,6 +120,7 @@ foreach ($styles as $folder) {
     $js_list['userdetails_js'] = [
         SCRIPTS_DIR . 'jquery.tabcontrol.js',
         SCRIPTS_DIR . 'flip_box.js',
+        SCRIPTS_DIR . 'user_torrents.js',
     ];
     if ($BLOCKS['userdetails_flush_on']) {
         $js_list['userdetails_js'] = array_merge($js_list['userdetails_js'], [
