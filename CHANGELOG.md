@@ -1,4 +1,5 @@
 ### 08 Nov, 2018
+update: make torrent blocks initial state hidden  
 update: make torrent blocks ajax userdetails.php  
 fix: userdetails torrent blocks, incorrect values  
 

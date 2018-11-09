@@ -12,7 +12,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
                 <a id='torrents-hash'></a>
                 <fieldset id='torrents' class='header'>
                     <legend class='flipper size_4'><i class='icon-down-open' aria-hidden='true'></i>View Torrents you uploaded</legend>
-                    <div id='inner_torrents' data-uid='{$user['id']}' data-csrf='" . $session->get('csrf_token') . "'></div>
+                    <div id='inner_torrents' style='display: none;' data-uid='{$user['id']}' data-csrf='" . $session->get('csrf_token') . "'></div>
                 </fieldset>
             </td>
         </tr>
@@ -22,7 +22,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
                 <a id='seeding-hash'></a>
                 <fieldset id='seeding' class='header'>
                     <legend class='flipper size_4'><i class='icon-down-open' aria-hidden='true'></i>View Torrents you are currently seeding</legend>
-                    <div id='inner_seeding' data-uid='{$user['id']}' data-csrf='" . $session->get('csrf_token') . "'></div>
+                    <div id='inner_seeding' style='display: none;' data-uid='{$user['id']}' data-csrf='" . $session->get('csrf_token') . "'></div>
                 </fieldset>
             </td>
         </tr>
@@ -32,7 +32,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
                 <a id='leeching-hash'></a>
                 <fieldset id='leeching' class='header'>
                     <legend class='flipper size_4'><i class='icon-down-open' aria-hidden='true'></i>View Torrents you are currently leeching</legend>
-                    <div id='inner_leeching' data-uid='{$user['id']}' data-csrf='" . $session->get('csrf_token') . "'></div>
+                    <div id='inner_leeching' style='display: none;' data-uid='{$user['id']}' data-csrf='" . $session->get('csrf_token') . "'></div>
                 </fieldset>
             </td>
         </tr>
@@ -42,7 +42,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
                 <a id='snatched-hash'></a>
                 <fieldset id='snatched' class='header'>
                     <legend class='flipper size_4'><i class='icon-down-open' aria-hidden='true'></i>View Torrents you have snatched</legend>
-                    <div id='inner_snatched' data-uid='{$user['id']}' data-csrf='" . $session->get('csrf_token') . "'></div>
+                    <div id='inner_snatched' style='display: none;' data-uid='{$user['id']}' data-csrf='" . $session->get('csrf_token') . "'></div>
                 </fieldset>
             </td>
         </tr>";
