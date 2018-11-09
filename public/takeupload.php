@@ -6,11 +6,11 @@ require_once CLASS_DIR . 'class.bencdec.php';
 require_once INCL_DIR . 'ann_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 dbconn();
-global $site_config, $fluent, $session, $user_stuffs, $cache, $message_stuffs, $torrent_stuffs;
+global $site_config, $fluent, $session, $user_stuffs, $cache, $message_stuffs, $torrent_stuffs, $CURUSER;
 
 $torrent_pass = $auth = $bot = $owner_id = '';
-extract($_GET);
-unset($_GET);
+$data = $_POST;
+
 extract($_POST);
 unset($_POST);
 if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
@@ -18,7 +18,12 @@ if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
 } else {
     check_user_status();
     global $CURUSER;
+
     $owner_id = $CURUSER['id'];
+    $cache->set('user_upload_variables_' . $owner_id, serialize($data), 3600);
+
+    header("Location: {$site_config['baseurl']}/upload.php");
+    die();
 }
 
 $dt = TIME_NOW;
@@ -50,7 +55,7 @@ if (!empty($url)) {
 }
 
 $poster = strip_tags(isset($poster) ? trim($poster) : '');
-$f = $_FILES['file'];
+//$f = $_FILES['file'];
 $fname = unesc($f['name']);
 if (empty($fname)) {
     $session->set('is-warning', $lang['takeupload_no_filename']);
@@ -524,5 +529,6 @@ if (is_array($keys)) {
     $cache->delete('where_keys_');
 }
 
+$cache->delete('user_upload_variables_' . $owner_id);
 $session->set('is-success', $lang['takeupload_success']);
 header("Location: {$site_config['baseurl']}/details.php?id=$id&uploaded=1");

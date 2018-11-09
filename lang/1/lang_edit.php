@@ -42,7 +42,7 @@ $lang = [
     'edit_image_up' => 'Update:',
     'edit_cover' => 'Cover file(s)',
     'edit_cover_add' => 'Add more',
-    'edit_imdb_url' => 'Imdb Url',
+    'edit_imdb_url' => "<a href='" . url_proxy('https://www.imdb.com') . "' target='_blank'>IMDb Url</a>",
     'edit_isbn' => 'ISBN',
     'edit_isbn_details' => 'Used for Books, ISBN 13 or ISBN 10, no spaces or dashes',
     'edit_comment' => 'Allow Comments',

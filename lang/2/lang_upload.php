@@ -25,7 +25,7 @@ $lang = [
     'upload_anonymous1' => "Don't show my username in 'Uploaded By' field in browse.",
     'upload_type' => 'Category',
     'upload_submit' => 'Do it!',
-    'upload_imdb_url' => 'Imdb Url',
+    'upload_imdb_url' => "<a href='" . url_proxy('https://www.imdb.com') . "' target='_blank'>IMDb Url</a>",
     'upload_isbn' => 'ISBN',
     'upload_imdb_tfi' => '(Taken from Imdb - ',
     'upload_imdb_rfmo' => 'Add the Imdb url to display Imdb data on details.)',
