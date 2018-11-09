@@ -1,3 +1,8 @@
+### 09 Nov, 2018
+fix: bbcode images with width or height
+update: enable poll questions to use bbcode
+update: additional checks on ajax torrents
+
 ### 08 Nov, 2018
 update: make torrent blocks initial state hidden  
 update: make torrent blocks ajax userdetails.php  

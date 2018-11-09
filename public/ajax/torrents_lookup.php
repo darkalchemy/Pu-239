@@ -3,7 +3,7 @@
 require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
-global $session;
+global $session, $site_config;
 
 $lang = array_merge(load_language('global'), load_language('userdetails'));
 extract($_POST);
@@ -14,7 +14,15 @@ if (!$session->validateToken($csrf)) {
     die();
 }
 
-if ($type === 'torrents') {
+$current_user = $session->get('userID');
+if (empty($current_user)) {
+    echo json_encode(['fail' => 'csrf']);
+    die();
+}
+$isStaff = in_array($current_user, $site_config['is_staff']['allowed']);
+$hasAccess = $current_user === $uid || $isStaff ? true : false;
+
+if ($type === 'torrents' && $hasAccess) {
     $torrents = get_uploaded($uid);
     if (empty($torrents)) {
         echo json_encode(['content' => main_div('You have not uploaded any torrents')]);
@@ -28,13 +36,13 @@ if ($type === 'torrents') {
         echo json_encode(['content' => main_div('You have not uploaded any torrents')]);
         die();
     }
-} elseif ($type === 'seeding') {
+} elseif ($type === 'seeding' && $hasAccess) {
     $torrents = get_seeding($uid);
     if (empty($torrents)) {
         echo json_encode(['content' => main_div('You are not seeding any torrents')]);
         die();
     }
-    $data = maketable($torrents);
+    $data = maketable($torrents && $hasAccess);
     if (!empty($data)) {
         echo json_encode(['content' => $data]);
         die();
@@ -42,7 +50,7 @@ if ($type === 'torrents') {
         echo json_encode(['content' => main_div('You are not seeding any torrents')]);
         die();
     }
-} elseif ($type === 'leeching') {
+} elseif ($type === 'leeching' && $hasAccess) {
     $torrents = get_leeching($uid);
     if (empty($torrents)) {
         echo json_encode(['content' => main_div('You have not leeching any torrents')]);
@@ -56,7 +64,7 @@ if ($type === 'torrents') {
         echo json_encode(['content' => main_div('You are not leeching any torrents')]);
         die();
     }
-} elseif ($type === 'snatched') {
+} elseif ($type === 'snatched' && $hasAccess) {
     $torrents = get_snatched($uid);
     if (empty($torrents)) {
         echo json_encode(['content' => main_div('You have not downloaded any torrents')]);
@@ -70,7 +78,7 @@ if ($type === 'torrents') {
         echo json_encode(['content' => main_div('You are downloaded any torrents')]);
         die();
     }
-} elseif ($type === 'snatched_staff') {
+} elseif ($type === 'snatched_staff' && $isStaff) {
     $torrents = get_snatched_staff($uid);
     if (empty($torrents)) {
         echo json_encode(['content' => main_div('You have not downloaded any torrents')]);

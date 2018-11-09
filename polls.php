@@ -65,7 +65,7 @@ function parse_poll()
                     continue;
                 }
                 if ($GVARS['allow_poll_tags']) {
-                    $choice = preg_replace("/\[url=([^()<>\s]+?)\]((\s|.)+?)\[\/url\]/i", '<a href="\\1">\\2</a>', $choice);
+                    $choice = format_comment($choice);
                 }
                 $percent = $votes == 0 ? 0 : $votes / $tv_poll * 100;
                 $percent = sprintf('%.2f', $percent);
@@ -98,7 +98,7 @@ function parse_poll()
                 }
                 //do we wanna allow URL's and if so convert them
                 if ($GVARS['allow_poll_tags']) {
-                    $choice = $s = preg_replace("/\[url=([^()<>\s]+?)\]((\s|.)+?)\[\/url\]/i", '<a href="\\1">\\2</a>', $choice);
+                    $choice = format_comment($choice);
                 }
                 if (isset($data['multi']) && $data['multi'] == 1) {
                     $choice_html .= poll_show_form_choice_multi($choice_id, $votes, $id, $choice);
@@ -265,8 +265,8 @@ function poll_show_form_choice_multi($choice_id = '', $votes = '', $id = '', $an
 function poll_show_form_choice($choice_id = '', $votes = '', $id = '', $answer = '')
 {
     return "
-        <div class='padding10'>
-            <input type='radio' name='choice[{$id}]' value='$choice_id' class='right10'> $answer
+        <div class='padding10 level-left'>
+            <input type='radio' name='choice[{$id}]' value='$choice_id' class='right20'> $answer
         </div>";
 }
 

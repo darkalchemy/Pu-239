@@ -377,9 +377,10 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         $s = preg_replace("#\[media=(youtube|liveleak|GameTrailers|vimeo|imdb)\](.+?)\[/media\]#ies", "_MediaTag('\\2','\\1')", $s);
     }
     if (stripos($s, '[img') !== false && $images) {
-        // img with width and height
         $s = preg_replace("/\[img=(\d+)x(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\3" data-lightbox="details"><img src="\\3" alt="" width="\\1" height="\\2" class="img-responsive"></a>', $s);
         $s = preg_replace("/\[img width=(\d+) height=(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\3" data-lightbox="details"><img src="\\3" alt="" width="\\1" height="\\2" class="img-responsive"></a>', $s);
+        $s = preg_replace("/\[img width=(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\2" data-lightbox="details"><img src="\\2" alt="" width="\\1" height="auto" class="img-responsive"></a>', $s);
+        $s = preg_replace("/\[img height=(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\2" data-lightbox="details"><img src="\\2" alt="" width="auto" height="\\1" class="img-responsive"></a>', $s);
         // [img=image services with or without extension
         $s = preg_replace("/\[img=(https?:\/\/[^[^\s'\"<>]*)\]/i", '<a href="\\1" data-lightbox="details"><img src="\\1" alt="" class="img-responsive"></a>', $s);
         // [img]image services with or without extension
