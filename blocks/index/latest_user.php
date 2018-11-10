@@ -17,7 +17,7 @@ if ($latestuser === false || is_null($latestuser)) {
     $cache->set('latestuser', $latestuser, $site_config['expires']['latestuser']);
 }
 
-$HTMLOUT .= "
+$latest_user .= "
         <a id='latestuser-hash'></a>
         <fieldset id='latestuser' class='header'>
             <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_lmember']}</legend>

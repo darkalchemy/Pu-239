@@ -20,7 +20,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     $adminbutton = "
         <a class='is-pulled-right size_2' href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=news'>{$lang['index_news_title']}</a>";
 }
-$HTMLOUT .= "
+$site_news .= "
     <a id='news-hash'></a>
     <fieldset id='news' class='header'>
         <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['news_title']}
@@ -53,7 +53,7 @@ if ($news) {
                 $username = get_anonymous_name() . ' - ' . format_username($array['userid']);
             }
         }
-        $HTMLOUT .= "
+        $site_news .= "
             <div class='bordered{$padding}' style='font-size: 90%;'>
                 <div id='{$array['id']}' class='header alt_bordered bg-00 has-text-left'>
                     <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>" . htmlsafechars($array['title']) . "</legend>
@@ -67,7 +67,7 @@ if ($news) {
             </div>';
     }
 } else {
-    $HTMLOUT .= main_div("
+    $site_news .= main_div("
                     <div class='bg-02 round5 padding10'>
                         <div class='has-text-white'>
                             " . format_comment($lang['index_news_not'], 0) . '
@@ -75,6 +75,6 @@ if ($news) {
                     </div>');
 }
 
-$HTMLOUT .= '
+$site_news .= '
         </div>
     </fieldset>';

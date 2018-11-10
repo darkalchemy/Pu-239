@@ -7,6 +7,7 @@ $lang = [
     'index_announce' => 'Anun&#355;uri',
     'index_latest' => 'Ultimele torente',
     'index_latest_comments' => 'Latest Comments',
+    'index_top' => 'Top Torrents',
     'index_ajaxchat' => 'AJAX Chat',
     'index_active_irc' => 'Utilizatori activi pe irc',
     'index_active' => 'Utilizatori activi',

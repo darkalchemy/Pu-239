@@ -30,7 +30,7 @@ if ($active === false || is_null($active)) {
     $cache->set('activeusers_', $active, $site_config['expires']['activeusers']);
 }
 
-$HTMLOUT .= "
+$active_users .= "
         <a id='activeusers-hash'></a>
         <fieldset id='activeusers' class='header'>
             <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_active']} ({$active['actcount']})</legend>

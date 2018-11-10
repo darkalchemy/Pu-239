@@ -2,7 +2,7 @@
 
 global $lang, $site_config;
 
-$HTMLOUT .= "
+$trivia .= "
     <a id='trivia-hash'></a>
     <fieldset id='trivia' class='header'>
         <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_trivia']}</legend>

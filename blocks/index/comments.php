@@ -37,7 +37,7 @@ if ($comments === false || is_null($comments)) {
     $cache->set('latest_comments_', $comments, $site_config['expires']['latestcomments']);
 }
 
-$HTMLOUT .= "
+$posted_comments .= "
         <a id='latest_comment-hash'></a>
         <fieldset id='latest_comment' class='header'>
             <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_latest_comments']}</legend>
@@ -72,15 +72,15 @@ foreach ($comments as $comment) {
         $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($users_data['username']) . '</span>';
     }
 
-    $HTMLOUT .= "
+    $posted_comments .= "
                         <tr>
                             <td class='has-text-centered'>
                                 <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/$image' class='tooltipper' alt='$cat' title='$cat'>
                             </td>
                             <td>";
     $block_id = "comment_id_{$comment_id}";
-    include PARTIALS_DIR . 'torrent_hover.php';
-    $HTMLOUT .= "
+    $posted_comments .= torrent_tooltip();
+    $posted_comments .= "
                             <td class='has-text-centered'>$user</td>
                             <td class='has-text-centered'>" . get_date($added, 'LONG') . "</td>
                             <td class='has-text-centered'>" . number_format($user_likes) . "</td>
@@ -89,13 +89,13 @@ foreach ($comments as $comment) {
 }
 
 if (count($comments) === 0) {
-    $HTMLOUT .= "
+    $posted_comments .= "
                         <tr>
                             <td colspan='5'>No Comments Found</td>
                         </tr>";
 }
 
-$HTMLOUT .= '
+$posted_comments .= '
                     </tbody>
                 </table>
             </div>

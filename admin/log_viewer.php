@@ -35,8 +35,10 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     }
 
     $content = trim($content);
+
+    $date_formats = "(\d{4}/\d{2}/\d{2}\s+\d{2}:\d{2}:\d{2}.*?|\[\w+ \w+ \d+ \d{2}:\d{2}:\d{2}\.\d+ \d{4}\])";
     if (!preg_match('/sqlerr_logs/i', $file) && !preg_match('/access\.log/', $name)) {
-        preg_match_all('!(\d{4}/\d{2}/\d{2}\s+\d{2}:\d{2}:\d{2}.*?)!iU', $content, $matches);
+        preg_match_all('!' . $date_formats . '!iU', $content, $matches);
         if (!empty($matches[1])) {
             $contents = $matches[1];
         } else {

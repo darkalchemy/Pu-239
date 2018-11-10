@@ -55,7 +55,7 @@ foreach ($scroll_torrents as $torrent) {
 }
 
 if ($scroller_torrents) {
-    $HTMLOUT .= "
+    $torrents_scroller .= "
     <a id='scroller-hash'></a>
     <fieldset id='scroller' class='header'>
         <legend class='flipper has-text-primary'>
@@ -79,22 +79,22 @@ if ($scroller_torrents) {
         $scroll_poster = $poster;
         $poster = "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster'>";
 
-        $HTMLOUT .= "
+        $torrents_scroller .= "
                     <div class='slide'>";
         $torrname = "<img src='" . url_proxy($scroll_poster, true, null, 300) . "' alt='{$name}' style='width: auto; height: 300px; max-height: 300px;'>";
         $block_id = "scroll_id_{$id}";
-        include PARTIALS_DIR . 'torrent_hover.php';
-        $HTMLOUT .= "
+        $torrents_scroller .= torrent_tooltip();
+        $torrents_scroller .= "
                     </div>";
     }
 
-    $HTMLOUT .= '
+    $torrents_scroller .= '
                 </div>
             </div>
         </div>
     </fieldset>';
 } else {
-    $HTMLOUT .= "
+    $torrents_scroller .= "
     <a id='scroller-hash'></a>
     <fieldset id='scroller' class='header'>
         <legend class='flipper has-text-primary'>

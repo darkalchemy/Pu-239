@@ -5,7 +5,7 @@ global $lang;
 
 $feed = rsstfreakinfo();
 if (!empty($feed)) {
-    $HTMLOUT .= "
+    $tfreak_feed .= "
     <a id='tfreak-hash'></a>
     <fieldset id='tfreak' class='header'>
         <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_torr_freak']}</legend>

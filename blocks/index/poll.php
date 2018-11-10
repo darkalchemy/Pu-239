@@ -1,3 +1,3 @@
 <?php
 
-$HTMLOUT .= parse_poll();
+$site_poll .= parse_poll();

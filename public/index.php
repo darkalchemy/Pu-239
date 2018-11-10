@@ -8,6 +8,7 @@ require_once INCL_DIR . 'share_images.php';
 require_once ROOT_DIR . 'polls.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
+require_once INCL_DIR . 'torrent_hover.php';
 check_user_status();
 global $CURUSER, $site_config, $BLOCKS, $fluent, $cache, $session, $message_stuffs, $torrent_stuffs;
 
@@ -33,114 +34,6 @@ if ($unread >= 1) {
     ]);
 }
 
-if (curuser::$blocks['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_on'] && $CURUSER['chatpost'] === 1) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='AJAXCHAT'>";
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'ajaxchat.php';
-    $HTMLOUT .= '</div>';
-} elseif (curuser::$blocks['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_on'] && $CURUSER['chatpost'] != 1) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='AJAXCHAT'>";
-    $HTMLOUT .= main_div("<div class='has-text-centered padding20 bg-02 round5'>You have been banned from AJAX Chat!</div>", 'bg-00');
-    $HTMLOUT .= '</div>';
-}
-
-if (curuser::$blocks['index_page'] & block_index::TRIVIA && $BLOCKS['trivia_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='TRIVIA'>";
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'trivia.php';
-    $HTMLOUT .= '</div>';
-}
-
-if (curuser::$blocks['index_page'] & block_index::NEWS && $BLOCKS['news_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='NEWS'>";
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'news.php';
-    $HTMLOUT .= '</div>';
-}
-
-if (curuser::$blocks['index_page'] & block_index::ADVERTISEMENTS && $BLOCKS['ads_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='ADVERTISEMENTS'>";
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'advertise.php';
-    $HTMLOUT .= '</div>';
-}
-
-if (curuser::$blocks['index_page'] & block_index::FORUMPOSTS && $BLOCKS['forum_posts_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='FORUMPOSTS'>";
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'forum_posts.php';
-    $HTMLOUT .= '</div>';
-}
-
-if (curuser::$blocks['index_page'] & block_index::LATESTCOMMENTS && $BLOCKS['latest_comments_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='LATESTCOMMENTS'>";
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'comments.php';
-    $HTMLOUT .= '</div>';
-}
-
-if (curuser::$blocks['index_page'] & block_index::STAFF_PICKS && $BLOCKS['staff_picks_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='STAFF_PICKS'>";
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'staff_picks.php';
-    $HTMLOUT .= '</div>';
-}
-
-if (curuser::$blocks['index_page'] & block_index::MOVIEOFWEEK && $BLOCKS['movie_ofthe_week_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='MOVIEOFWEEK'>";
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'mow.php';
-    $HTMLOUT .= '</div>';
-}
-
-if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS && $BLOCKS['latest_torrents_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='LATEST_TORRENTS'>";
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_torrents.php';
-    $HTMLOUT .= '</div>';
-}
-
-if ($torrent_stuffs->get_torrent_count() >= 10) {
-    if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SCROLL && $BLOCKS['latest_torrents_scroll_on']) {
-        $HTMLOUT .= "<div class='container is-fluid portlet' id='LATEST_TORRENTS_SCROLL'>";
-        include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_torrents_scroll.php';
-        $HTMLOUT .= '</div>';
-    }
-
-    if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SLIDER && $BLOCKS['latest_torrents_slider_on']) {
-        $HTMLOUT .= "<div class='container is-fluid portlet' id='LATEST_TORRENTS_SLIDER'>";
-        include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_torrents_slider.php';
-        $HTMLOUT .= '</div>';
-    }
-}
-
-if (curuser::$blocks['index_page'] & block_index::STATS && $BLOCKS['stats_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='STATS'>";
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'stats.php';
-    $HTMLOUT .= '</div>';
-}
-
-if (curuser::$blocks['index_page'] & block_index::ACTIVE_USERS && $BLOCKS['active_users_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='ACTIVE_USERS'>";
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'active_users.php';
-    $HTMLOUT .= '</div>';
-}
-
-if (curuser::$blocks['index_page'] & block_index::IRC_ACTIVE_USERS && $BLOCKS['active_irc_users_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='IRC_ACTIVE_USERS'>";
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'active_irc_users.php';
-    $HTMLOUT .= '</div>';
-}
-
-if (curuser::$blocks['index_page'] & block_index::LAST_24_ACTIVE_USERS && $BLOCKS['active_24h_users_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='LAST_24_ACTIVE_USERS'>";
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'active_24h_users.php';
-    $HTMLOUT .= '</div>';
-}
-
-if (curuser::$blocks['index_page'] & block_index::BIRTHDAY_ACTIVE_USERS && $BLOCKS['active_birthday_users_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='BIRTHDAY_ACTIVE_USERS'>";
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'active_birthday_users.php';
-    $HTMLOUT .= '</div>';
-}
-
-if (curuser::$blocks['index_page'] & block_index::LATEST_USER && $BLOCKS['latest_user_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='LATEST_USER'>";
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_user.php';
-    $HTMLOUT .= '</div>';
-}
-
 $poll_data = get_poll();
 if (!empty($poll_data['pid']) && empty($poll_data['user_id'])) {
     $HTMLOUT .= "
@@ -157,36 +50,173 @@ if (!empty($poll_data['pid']) && empty($poll_data['user_id'])) {
 </script>";
 }
 
+$christmas_gift = $posted_comments = $advertise = $active_users = $active_users_irc = $birthday_users = $active_users_24 = $forum_posts = $staffpicks = $disclaimer = $trivia = $slider = $ajaxchat = '';
+$tfreak_feed = $torrents_top = $site_stats = $site_radio = $site_poll = $site_news = $torrents_mow = $latest_user = $torrents_scroller = $latest_torrents = '';
+if ($torrent_stuffs->get_torrent_count() >= 10) {
+    if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SLIDER && $BLOCKS['latest_torrents_slider_on']) {
+        include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_torrents_slider.php';
+    }
+}
+
+if (curuser::$blocks['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_on'] && $CURUSER['chatpost'] === 1) {
+    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'ajaxchat.php';
+} elseif (curuser::$blocks['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_on'] && $CURUSER['chatpost'] != 1) {
+    $ajaxchat .= main_div("<div class='has-text-centered padding20 bg-02 round5'>You have been banned from AJAX Chat!</div>", 'bg-00');
+}
+
+if (curuser::$blocks['index_page'] & block_index::TRIVIA && $BLOCKS['trivia_on']) {
+    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'trivia.php';
+}
+
+if (curuser::$blocks['index_page'] & block_index::FORUMPOSTS && $BLOCKS['forum_posts_on']) {
+    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'forum_posts.php';
+}
+
+if (curuser::$blocks['index_page'] & block_index::STAFF_PICKS && $BLOCKS['staff_picks_on']) {
+    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'staff_picks.php';
+}
+
+if (curuser::$blocks['index_page'] & block_index::LATEST_USER && $BLOCKS['latest_user_on']) {
+    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_user.php';
+}
+
+if (curuser::$blocks['index_page'] & block_index::BIRTHDAY_ACTIVE_USERS && $BLOCKS['active_birthday_users_on']) {
+    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'active_birthday_users.php';
+}
+
+if (curuser::$blocks['index_page'] & block_index::IRC_ACTIVE_USERS && $BLOCKS['active_irc_users_on']) {
+    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'active_irc_users.php';
+}
+
+if (curuser::$blocks['index_page'] & block_index::ACTIVE_USERS && $BLOCKS['active_users_on']) {
+    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'active_users.php';
+}
+
+if (curuser::$blocks['index_page'] & block_index::LAST_24_ACTIVE_USERS && $BLOCKS['active_24h_users_on']) {
+    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'active_24h_users.php';
+}
+
 if (!empty($poll_data) && curuser::$blocks['index_page'] & block_index::ACTIVE_POLL && $BLOCKS['active_poll_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='ACTIVE_POLL'>";
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'poll.php';
-    $HTMLOUT .= '</div>';
+}
+
+if (curuser::$blocks['index_page'] & block_index::STATS && $BLOCKS['stats_on']) {
+    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'stats.php';
 }
 
 if (Christmas()) {
     if (curuser::$blocks['index_page'] & block_index::CHRISTMAS_GIFT && $BLOCKS['christmas_gift_on']) {
-        $HTMLOUT .= "<div class='container is-fluid portlet' id='CHRISTMAS_GIFT'>";
         include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'gift.php';
-        $HTMLOUT .= '</div>';
     }
 }
 
 if (curuser::$blocks['index_page'] & block_index::RADIO && $BLOCKS['radio_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='RADIO'>";
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'radio.php';
-    $HTMLOUT .= '</div>';
+}
+
+if ($torrent_stuffs->get_torrent_count() >= 10) {
+    if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SCROLL && $BLOCKS['latest_torrents_scroll_on']) {
+        include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_torrents_scroll.php';
+    }
+}
+
+if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS && $BLOCKS['latest_torrents_on']) {
+    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'top_torrents.php';
+}
+
+if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS && $BLOCKS['latest_torrents_on']) {
+    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'latest_torrents.php';
+}
+
+if (curuser::$blocks['index_page'] & block_index::NEWS && $BLOCKS['news_on']) {
+    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'news.php';
+}
+
+if (curuser::$blocks['index_page'] & block_index::ADVERTISEMENTS && $BLOCKS['ads_on']) {
+    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'advertise.php';
+}
+
+if (curuser::$blocks['index_page'] & block_index::LATESTCOMMENTS && $BLOCKS['latest_comments_on']) {
+    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'comments.php';
+}
+
+if (curuser::$blocks['index_page'] & block_index::MOVIEOFWEEK && $BLOCKS['movie_ofthe_week_on']) {
+    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'mow.php';
 }
 
 if (curuser::$blocks['index_page'] & block_index::TORRENTFREAK && $BLOCKS['torrentfreak_on'] && $site_config['newsrss_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='TORRENTFREAK'>";
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'torrentfreak.php';
-    $HTMLOUT .= '</div>';
 }
 
 if (curuser::$blocks['index_page'] & block_index::DISCLAIMER && $BLOCKS['disclaimer_on']) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='DISCLAIMER'>";
     include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'disclaimer.php';
-    $HTMLOUT .= '</div>';
 }
 
+$above_columns = [
+    'slider',
+];
+$below_columns = [
+    'disclaimer'
+];
+$left_column = [
+    'ajaxchat',
+    'torrents_scroller',
+    'torrents_mow',
+    'staffpicks',
+    'torrents_top',
+    'latest_torrents',
+    'forum_posts',
+    'site_stats',
+    'site_poll',
+];
+$right_column = [
+    'trivia',
+    'advertise',
+    'site_news',
+    'posted_comments',
+    'tfreak_feed',
+    'latest_user',
+    'birthday_users',
+    'active_users_irc',
+    'active_users',
+    'active_users_24',
+    'christmas_gift',
+    'site_radio',
+];
+
+foreach ($above_columns as $item) {
+    $HTMLOUT .= wrap_it($item, $$item);
+}
+
+$HTMLOUT .= "
+<div class='columns'>
+    <div class='column is-two-thirds'>";
+
+foreach ($left_column as $item) {
+    $HTMLOUT .= wrap_it($item, $$item);
+}
+
+$HTMLOUT .= "
+    </div>
+    <div class='column'>";
+
+foreach ($right_column as $item) {
+    $HTMLOUT .= wrap_it($item, $$item);
+}
+
+$HTMLOUT .= "
+    </div>
+</div>";
+
+foreach ($below_columns as $item) {
+    $HTMLOUT .= wrap_it($item, $$item);
+}
+
+function wrap_it($item, $data)
+{
+    return "
+    <div class='container is-fluid portlet' id='" . strtoupper($item) . "'>{$data}
+    </div>";
+
+}
 echo stdhead('Home') . $HTMLOUT . stdfoot($stdfoot);

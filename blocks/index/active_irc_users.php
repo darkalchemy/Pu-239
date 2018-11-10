@@ -29,7 +29,7 @@ if ($irc === false || is_null($irc)) {
     $cache->set('ircusers_', $irc, $site_config['expires']['activeircusers']);
 }
 
-$HTMLOUT .= "
+$active_users_irc .= "
     <a id='irc-hash'></a>
     <fieldset id='irc' class='header'>
         <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_active_irc']} ({$irc['count']})</legend>

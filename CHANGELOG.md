@@ -1,4 +1,7 @@
 ### 10 Nox, 2018
+update: regex for date formats log viewer  
+update: easier to rearrange index page block  
+update: 2 column index page  
 fix: incorrect url in index page comments block  
 
 ### 09 Nov, 2018

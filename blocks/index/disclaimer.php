@@ -2,7 +2,7 @@
 
 global $site_config, $lang;
 
-$HTMLOUT .= "
+$disclaimer .= "
     <a id='disclaimer-hash'></a>
     <fieldset id='disclaimer' class='header'>
         <legend class='flipper has-text-primary has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_disclaimer']}</legend>

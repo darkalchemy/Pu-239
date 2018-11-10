@@ -5,7 +5,7 @@ global $CURUSER, $site_config, $lang;
 $Christmasday = mktime(0, 0, 0, 12, 25, date('Y'));
 $today = mktime(date('G'), date('i'), date('s'), date('m'), date('d'), date('Y'));
 if (($CURUSER['opt1'] & user_options::GOTGIFT) && $today != $Christmasday) {
-    $HTMLOUT .= "
+    $christmas_gift .= "
     <a id='gift-hash'></a>
     <fieldset id='gift' class='header'>
         <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_christmas_gift']}</legend>

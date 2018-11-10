@@ -30,7 +30,7 @@ if ($birthday === false || is_null($birthday)) {
     $cache->set('birthdayusers_', $birthday, $site_config['expires']['birthdayusers']);
 }
 
-$HTMLOUT .= "
+$birthday_users .= "
     <a id='birthday-hash'></a>
     <fieldset id='birthday' class='header'>
         <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_birthday']} ({$birthday['count']})</legend>

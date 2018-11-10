@@ -1,6 +1,9 @@
 <?php
 
-$HTMLOUT .= "
+function torrent_tooltip() {
+    global $site_config, $id, $block_id, $torrname, $poster, $lang, $name, $uploader, $added, $size, $seeders, $leechers;
+
+    $content = "
                             <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
                                 <span class='dt-tooltipper-large' data-tooltip-content='#{$block_id}_tooltip'>
                                     {$torrname}
@@ -23,3 +26,24 @@ $HTMLOUT .= "
                                     </div>
                                 </span>
                             </a>";
+
+    return $content;
+}
+
+
+function torrent_tooltip_wrapper() {
+    global $site_config, $image, $cat, $times_completed, $seeders, $leechers;
+
+    $content = "
+                    <tr>
+                        <td class='has-text-centered'>
+                            <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' height='20px' width='auto'>
+                        </td>
+                        <td>" . torrent_tooltip() . "
+                        <td class='has-text-centered'>{$times_completed}</td>
+                        <td class='has-text-centered'>{$seeders}</td>
+                        <td class='has-text-centered'>{$leechers}</td>
+                    </tr>";
+
+    return $content;
+}

@@ -7,7 +7,7 @@ if (!empty($CURUSER['ajaxchat_height'])) {
     $height = $CURUSER['ajaxchat_height'];
 }
 
-$HTMLOUT .= "
+$ajaxchat .= "
     <a id='ajaxchat-hash'></a>
     <fieldset id='ajaxchat' class='header'>
         <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_ajaxchat']}</legend>

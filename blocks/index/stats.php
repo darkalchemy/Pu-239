@@ -46,7 +46,7 @@ $torrents = [
 //    "<tr><td>{$lang['index_stats_slratio']}</td><td class='w-15 has-text-centered'>" . round($stats_cache['ratio'] * 100) . "</td></tr>",
 ];
 
-$HTMLOUT .= "
+$site_stats .= "
     <a id='stats-hash'></a>
     <fieldset id='stats' class='header'>
     <div>

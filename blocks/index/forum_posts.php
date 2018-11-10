@@ -2,7 +2,7 @@
 
 global $CURUSER, $site_config, $lang, $cache;
 
-$HTMLOUT .= "
+$forum_posts .= "
     <a id='latestforum-hash'></a>
     <fieldset id='latestforum' class='header'>
         <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['latestposts_title']}</legend>
@@ -26,7 +26,7 @@ if ($topics === false || is_null($topics)) {
     }
     $cache->set('last_posts_' . $CURUSER['class'], $topics, $site_config['expires']['latestposts']);
 }
-$HTMLOUT .= "
+$forum_posts .= "
             <table class='table table-bordered table-striped'>
                 <thead>
                     <tr>
@@ -91,7 +91,7 @@ if (!empty($topics) && count($topics) > 0) {
         $stickyimg = ($topicarr['sticky'] === 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "sticky.gif' alt='{$lang['index_fposts_sticky']}' title='{$lang['index_fposts_stickyt']}' />&#160;&#160;" : '');
         $lockedimg = ($topicarr['locked'] === 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "forumicons/locked.gif' alt='{$lang['index_fposts_locked']}' title='{$lang['index_fposts_lockedt']}' />&#160;" : '');
         $topic_name = $lockedimg . $stickyimg . "<a href='{$site_config['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=last#" . (int) $topicarr['last_post'] . "'><b>" . htmlsafechars($topicarr['topic_name']) . "</b></a>&#160;&#160;$staffimg&#160;&#160;$menu<br><font class='small'>{$lang['index_fposts_in']}<a href='forums.php?action=view_forum&amp;forum_id=" . (int) $topicarr['forum_id'] . "'>" . htmlsafechars($topicarr['name']) . "</a>&#160;by&#160;$author&#160;&#160;($added)</font>";
-        $HTMLOUT .= "
+        $forum_posts .= "
                     <tr>
                         <td>{$topic_name}</td>
                         <td class='has-text-centered'>{$replies}</td>
@@ -99,14 +99,14 @@ if (!empty($topics) && count($topics) > 0) {
                         <td class='has-text-centered'>{$username}</td>
                     </tr>";
     }
-    $HTMLOUT .= '
+    $forum_posts .= '
                 </tbody>
             </table>
         </div>
         </div>
     </fieldset>';
 } else {
-    $HTMLOUT .= "
+    $forum_posts .= "
                     <tr>
                         <td colspan='4'>{$lang['latestposts_no_posts']}</td>
                     </tr>

@@ -30,7 +30,7 @@ if ($motw === false || is_null($motw)) {
     $cache->set('motw_', $motw, $site_config['expires']['motw']);
 }
 
-$HTMLOUT .= "
+$torrents_mow .= "
     <a id='mow-hash'></a>
     <fieldset id='mow' class='header'>
         <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_mow_title']}</legend>
@@ -66,16 +66,16 @@ foreach ($motw as $m_w) {
     }
 
     $block_id = "mow_id_{$id}";
-    include PARTIALS_DIR . 'torrent_hover_wrapper.php';
+    $torrents_mow .= torrent_tooltip_wrapper();
 }
 
 if (count($motw) === 0) {
-    $HTMLOUT .= "
+    $torrents_mow .= "
                         <tr>
                             <td colspan='5'>{$lang['index_mow_no']}!</td>
                         </tr>";
 }
-$HTMLOUT .= '
+$torrents_mow .= '
                     </tbody>
                 </table>
             </div>

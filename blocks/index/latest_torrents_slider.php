@@ -77,7 +77,7 @@ foreach ($slider_torrents as $torrent) {
 }
 
 if (!empty($sliding_torrents)) {
-    $HTMLOUT .= "
+    $slider .= "
     <a id='slider-hash'></a>
     <fieldset id='slider' class='header'>
         <legend class='flipper has-text-primary'>
@@ -102,22 +102,22 @@ if (!empty($sliding_torrents)) {
         $src = $i++ <= 1 ? "src='" . url_proxy($banner, true, 1000, 185) . "' class='noshow round10'" : "data-src='" . url_proxy($banner, true, 1000, 185) . "' class='noshow lazy round10'";
         $poster = "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster'>";
 
-        $HTMLOUT .= "
+        $slider .= "
                     <li>";
         $torrname = "<img $src>";
         $block_id = "slider_id_{$id}";
-        include PARTIALS_DIR . 'torrent_hover.php';
-        $HTMLOUT .= "
+        $slider .= torrent_tooltip();
+        $slider .= "
                     </li>";
     }
 
-    $HTMLOUT .= '
+    $slider .= '
                 </ul>
             </div>
         </div>
     </fieldset>';
 } else {
-    $HTMLOUT .= "
+    $slider .= "
     <a id='slider-hash'></a>
     <fieldset id='slider' class='header'>
         <legend class='flipper has-text-primary'>

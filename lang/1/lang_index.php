@@ -6,6 +6,7 @@ $lang = [
     //index
     'index_announce' => 'Announcements',
     'index_latest' => 'Latest Torrents',
+    'index_top' => 'Top Torrents',
     'index_latest_comments' => 'Latest Comments',
     'index_ajaxchat' => 'AJAX Chat',
     'index_active_irc' => 'Active Irc users',
