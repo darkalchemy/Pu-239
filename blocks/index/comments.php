@@ -21,6 +21,8 @@ if ($comments === false || is_null($comments)) {
         ->select('torrents.added AS toradd')
         ->select('torrents.size')
         ->select('torrents.imdb_id')
+        ->select('torrents.owner')
+        ->select('torrents.times_completed')
         ->select('users.username')
         ->select('users.class')
         ->select('torrents:categories.name AS cat')
@@ -35,73 +37,66 @@ if ($comments === false || is_null($comments)) {
     $cache->set('latest_comments_', $comments, $site_config['expires']['latestcomments']);
 }
 
-$header = "
+$HTMLOUT .= "
+        <a id='latest_comment-hash'></a>
+        <fieldset id='latest_comment' class='header'>
+            <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_latest_comments']}</legend>
+            <div class='table-wrapper has-text-centered'>
+                <table class='table table-bordered table-striped'>
+                    <thead>
                         <tr>
                             <th class='has-text-centered w-10'>Type</th>
                             <th class='w-50 minw-150'>Last 5 Comments</th>
                             <th class='has-text-centered'>User</th>
                             <th class='has-text-centered'>When</th>
                             <th class='has-text-centered'>Likes</th>
-                        </tr>";
-$body = '';
-if (!$comments) {
-    $body = '
-                        <tr>
-                            <td colspan="5">No Comments Found</td>
-                        </tr>';
-} else {
-    foreach ($comments as $comment) {
-        $user = $torrent = $id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = '';
-        extract($comment);
-        $user = $anonymous === 'yes' ? 'Anonymous' : format_username($user);
-        if (empty($poster) && !empty($imdb_id)) {
-            $poster = find_images($imdb_id);
-        }
-        $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster' />";
+                        </tr>
+                    </thead>
+                    <tbody>";
 
-        $body .= "
+foreach ($comments as $comment) {
+    $owner = $user = $torrent = $id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = $times_completed = '';
+    extract($comment);
+    $torrname = htmlsafechars($name);
+    $user = $anonymous === 'yes' ? 'Anonymous' : format_username($user);
+    if (empty($poster) && !empty($imdb_id)) {
+        $poster = find_images($imdb_id);
+    }
+    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster'>";
+    if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
+        $uploader = '<span>' . get_anonymous_name() . '</span>';
+    } else {
+        global $user_stuffs;
+
+        $users_data = $user_stuffs->getUserFromId($owner);
+        $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($users_data['username']) . '</span>';
+    }
+
+    $HTMLOUT .= "
                         <tr>
                             <td class='has-text-centered'>
-                                <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/$image' class='tooltipper' alt='$cat' title='$cat' />
+                                <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/$image' class='tooltipper' alt='$cat' title='$cat'>
                             </td>
-                            <td>
-                                <a href='{$site_config['baseurl']}/details.php?id=$torrent&amp;hit=1'>
-                                    <div class='dt-tooltipper-large' data-tooltip-content='#comment_id_{$id}_tooltip'>
-                                        " . format_comment($text) . "
-                                        <div class='tooltip_templates'>
-                                            <span id='comment_id_{$id}_tooltip'>
-                                                <div class='is-flex tooltip-torrent'>
-                                                    <span class='margin10'>
-                                                        $poster
-                                                    </span>
-                                                    <span class='margin10'>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($name) . "<br>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b><span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . "</span><br>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($toradd, 'DATE', 0, 1) . "<br>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($size)) . "<br>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>" . (int) $seeders . "<br>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_leecher']}</b>" . (int) $leechers . "<br>
-                                                    </span>
-                                                </div>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </td>
+                            <td>";
+    $block_id = "comment_id_{$id}";
+    include PARTIALS_DIR . 'torrent_hover.php';
+    $HTMLOUT .= "
                             <td class='has-text-centered'>$user</td>
                             <td class='has-text-centered'>" . get_date($added, 'LONG') . "</td>
-                            <td class='has-text-centered'>" . number_format($user_likes) . '</td>
-                        </tr>';
-    }
+                            <td class='has-text-centered'>" . number_format($user_likes) . "</td>
+                        </tr>";
+
 }
 
-$text = main_table($body, $header);
+if (count($comments) === 0) {
+    $HTMLOUT .= "
+                        <tr>
+                            <td colspan='5'>No Comments Found</td>
+                        </tr>";
+}
 
-$HTMLOUT .= "
-    <a id='latest_comment-hash'></a>
-    <fieldset id='latest_comment' class='header'>
-        <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_latest_comments']}</legend>
-        <div class='table-wrapper has-text-centered'>
-            $text
-        </div>
-    </fieldset>";
+$HTMLOUT .= '
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>';

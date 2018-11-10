@@ -16,6 +16,7 @@ if ($slider_torrents === false || is_null($slider_torrents)) {
         ->select('torrents.anonymous')
         ->select('torrents.owner')
         ->select('torrents.imdb_id')
+        ->select('torrents.times_completed')
         ->select('users.username')
         ->select('users.class')
         ->where('imdb_id IS NOT NULL')
@@ -88,7 +89,7 @@ if (!empty($sliding_torrents)) {
                 <ul class='slides'>";
     $i = 0;
     foreach ($sliding_torrents as $slider_torrent) {
-        $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = '';
+        $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
         extract($slider_torrent);
         $i = $site_config['latest_torrents_limit_slider'];
 
@@ -102,29 +103,11 @@ if (!empty($sliding_torrents)) {
         $poster = "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster'>";
 
         $HTMLOUT .= "
-                    <li>
-                        <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
-                            <div class='dt-tooltipper-large' data-tooltip-content='#slider_id_{$id}_tooltip'>
-                                <img $src>
-                                <div class='tooltip_templates'>
-                                    <span id='slider_id_{$id}_tooltip'>
-                                        <div class='is-flex tooltip-torrent'>
-                                            <span class='margin10'>
-                                                $poster
-                                            </span>
-                                            <span class='margin10'>
-                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($name) . "<br>
-                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b>$uploader<br>
-                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($added, 'DATE', 0, 1) . "<br>
-                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($size)) . "<br>
-                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>{$seeders}<br>
-                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_leecher']}</b>{$leechers}<br>
-                                            </span>
-                                        </div>
-                                    </span>
-                                </div>
-                            </div>
-                        </a>
+                    <li>";
+        $torrname = "<img $src>";
+        $block_id = "slider_id_{$id}";
+        include PARTIALS_DIR . 'torrent_hover.php';
+        $HTMLOUT .= "
                     </li>";
     }
 

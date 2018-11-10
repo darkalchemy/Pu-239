@@ -1,7 +1,10 @@
 ### 09 Nov, 2018
-fix: bbcode images with width or height
-update: enable poll questions to use bbcode
-update: additional checks on ajax torrents
+update: IMDb rating to stars  
+refactor: common code to template  
+update: store upload form user input and repopulate fields on return to page  
+fix: bbcode images with width or height  
+update: enable poll questions to use bbcode  
+update: additional checks on ajax torrents  
 
 ### 08 Nov, 2018
 update: make torrent blocks initial state hidden  

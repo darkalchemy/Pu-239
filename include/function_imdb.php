@@ -63,6 +63,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
             'mpaa' => $movie->mpaa(),
             'mpaa_reason' => $movie->mpaa_reason(),
             'id' => $imdbid,
+            'updated' => get_date(TIME_NOW, 'LONG'),
         ];
 
         if (count($imdb_data['genres']) > 0) {
@@ -130,6 +131,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
         'runtime' => 'Runtime',
         'votes' => 'Votes',
         'critics' => 'Critic Rating',
+        'updated' => 'Last Updated',
         'cast' => 'Cast',
     ];
 
@@ -146,7 +148,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                                             <span id='cast_{$pp['imdb']}_tooltip'>
                                                 <span class='is-flex'>
                                                     <span class='has-text-centered'>
-                                                        <img src='" . url_proxy(strip_tags($pp['photo']), true, 150, null) . "' class='tooltip-poster' />
+                                                        <img src='" . url_proxy(strip_tags($pp['photo']), true, 150, null) . "' class='tooltip-poster'>
                                                         <p class='top10'>{$pp['name']}</p>
                                                         <p>{$pp['role']}</p>
                                                     </span>
@@ -164,6 +166,15 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
         if (isset($imdb_data[$foo]) && !empty($imdb_data[$foo])) {
             if (!is_array($imdb_data[$foo])) {
                 $imdb_data[$foo] = $boo === 'Title' ? "<a href='" . url_proxy("https://www.imdb.com/title/{$imdbid}") . "' target='_blank' class='tooltipper' title='IMDb: {$imdb_data[$foo]}'>{$imdb_data[$foo]}</a>" : $imdb_data[$foo];
+                if ($boo === 'Rating') {
+                    $percent = $imdb_data['rating'] * 10;
+                    $imdb_data[$foo] = "
+                        <div class='star-ratings-css tooltipper' title='{$percent}% out of {$imdb_data['votes']} votes!'>
+                            <div class='star-ratings-css-top' style='width: {$percent}%'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                            <div class='star-ratings-css-bottom'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                        </div>";
+
+                }
                 $imdb_info .= "
                     <div class='columns'>
                         <div class='has-text-red column is-2 size_5 padding5'>$boo: </div>
@@ -205,7 +216,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
     if ($title) {
         $imdb_info = "
         <div class='padding10'>
-            <div class='columns'>
+            <div class='columns bottom20'>
                 <div class='column is-3'>
                     <img src='" . placeholder_image('225') . "' data-src='" . url_proxy($poster, true, 225) . "' class='lazy round10 img-polaroid'>
                 </div>
@@ -316,7 +327,7 @@ function get_imdb_info_short($imdb_id)
         $imdb_data['vote_count'] = '?';
     }
     if (empty($imdb_data['rating'])) {
-        $imdb_data['rating'] = '?';
+        $rating = '?';
     }
     if (empty($imdb_data['mpaa_reason']) && !empty($imdb_data['mpaa']['United States'])) {
         $imdb_data['mpaa_reason'] = $imdb_data['mpaa']['United States'];
@@ -348,7 +359,7 @@ function get_imdb_info_short($imdb_id)
                                     </div>
                                     <div>
                                         <span class='size_4 right10 has-text-primary'>Rating: </span>
-                                        <span>" . htmlsafechars($imdb_data['rating']) . "</span>
+                                        <span>" . htmlsafechars($rating) . "</span>
                                     </div>
                                     <div>
                                         <span class='size_4 right10 has-text-primary'>Votes: </span>

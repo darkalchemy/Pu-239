@@ -95,39 +95,8 @@ foreach ($top5torrents as $top5torrentarr) {
         $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . '</span>';
     }
 
-    $HTMLOUT .= "
-                    <tr>
-                        <td class='has-text-centered'>
-                            <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "'>
-                        </td>
-                        <td>
-                            <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
-                                <span class='dt-tooltipper-large' data-tooltip-content='#top_id_{$id}_tooltip'>
-                                    {$torrname}
-                                    <div class='tooltip_templates'>
-                                        <div id='top_id_{$id}_tooltip'>
-                                            <div class='is-flex tooltip-torrent'>
-                                                <span class='margin10'>
-                                                    $poster
-                                                </span>
-                                                <span class='margin10'>
-                                                    <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($name) . "<br>
-                                                    <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b>$uploader<br>
-                                                    <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($added, 'DATE', 0, 1) . "<br>
-                                                    <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($size)) . "<br>
-                                                    <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>{$seeders}<br>
-                                                    <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_leecher']}</b>{$leechers}<br>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </span>
-                            </a>
-                        </td>
-                        <td class='has-text-centered'>{$times_completed}</td>
-                        <td class='has-text-centered'>{$seeders}</td>
-                        <td class='has-text-centered'>{$leechers}</td>
-                    </tr>";
+    $block_id = "top_id_{$id}";
+    include PARTIALS_DIR . 'torrent_hover_wrapper.php';
 }
 if (count($top5torrents) === 0) {
     $HTMLOUT .= "
@@ -169,39 +138,8 @@ foreach ($last5torrents as $last5torrent) {
         $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . '</span>';
     }
 
-    $HTMLOUT .= "
-                        <tr id='id_{$id}_tooltip'>
-                            <td class='has-text-centered'>
-                                <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "'>
-                            </td>
-                            <td>
-                                <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
-                                    <div class='dt-tooltipper-large' data-tooltip-content='#last_id_{$id}_tooltip'>
-                                        {$torrname}
-                                        <div class='tooltip_templates'>
-                                            <div id='last_id_{$id}_tooltip'>
-                                                <div class='is-flex tooltip-torrent'>
-                                                    <span class='margin10'>
-                                                        $poster
-                                                    </span>
-                                                    <span class='margin10'>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($name) . "<br>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b>$uploader<br>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($added, 'DATE', 0, 1) . "<br>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($size)) . "<br>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>{$seeders}<br>
-                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_leecher']}</b>{$leechers}<br>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </td>
-                            <td class='has-text-centered'>{$times_completed}</td>
-                            <td class='has-text-centered'>{$seeders}</td>
-                            <td class='has-text-centered'>{$leechers}</td>
-                        </tr>";
+    $block_id = "last_id_{$id}";
+    include PARTIALS_DIR . 'torrent_hover_wrapper.php';
 }
 if (count($last5torrents) === 0) {
     $HTMLOUT .= "

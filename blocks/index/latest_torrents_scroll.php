@@ -16,6 +16,7 @@ if ($scroll_torrents === false || is_null($scroll_torrents)) {
         ->select('torrents.anonymous')
         ->select('torrents.owner')
         ->select('torrents.imdb_id')
+        ->select('torrents.times_completed')
         ->select('users.username')
         ->select('users.class')
         ->leftJoin('users ON torrents.owner = users.id')
@@ -66,7 +67,7 @@ if ($scroller_torrents) {
                 <div id='icarousel' class='icarousel'>";
 
     foreach ($scroller_torrents as $scroll_torrent) {
-        $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = '';
+        $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
         extract($scroll_torrent);
         $i = $site_config['latest_torrents_limit_scroll'];
 
@@ -75,33 +76,15 @@ if ($scroller_torrents) {
         } else {
             $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . '</span>';
         }
-
-        $inner_poster = "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster'>";
+        $scroll_poster = $poster;
+        $poster = "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster'>";
 
         $HTMLOUT .= "
-                    <div class='slide'>
-                        <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
-                            <div class='dt-tooltipper-large' data-tooltip-content='#scroll_id_{$id}_tooltip'>
-                                <img src='" . url_proxy($poster, true, null, 300) . "' alt='{$name}' style='width: auto; height: 300px; max-height: 300px;'>
-                                <div class='tooltip_templates'>
-                                    <span id='scroll_id_{$id}_tooltip'>
-                                        <div class='is-flex tooltip-torrent'>
-                                            <span class='margin10'>
-                                                $inner_poster
-                                            </span>
-                                            <span class='margin10'>
-                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($name) . "<br>
-                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b>$username<br>
-                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($added, 'DATE', 0, 1) . "<br>
-                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($size)) . "<br>
-                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>{$seeders}<br>
-                                                <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_leecher']}</b>{$leechers}<br>
-                                            </span>
-                                        </div>
-                                    </span>
-                                </div>
-                            </div>
-                        </a>
+                    <div class='slide'>";
+        $torrname = "<img src='" . url_proxy($scroll_poster, true, null, 300) . "' alt='{$name}' style='width: auto; height: 300px; max-height: 300px;'>";
+        $block_id = "scroll_id_{$id}";
+        include PARTIALS_DIR . 'torrent_hover.php';
+        $HTMLOUT .= "
                     </div>";
     }
 
