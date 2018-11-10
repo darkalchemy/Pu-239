@@ -7,9 +7,9 @@ $comments = $cache->get('latest_comments_');
 if ($comments === false || is_null($comments)) {
     $comments = $fluent->from('comments')
         ->select(null)
-        ->select('comments.id')
+        ->select('comments.id AS comment_id')
         ->select('comments.user')
-        ->select('comments.torrent')
+        ->select('comments.torrent AS id')
         ->select('comments.added')
         ->select('comments.text')
         ->select('comments.anonymous')
@@ -55,7 +55,7 @@ $HTMLOUT .= "
                     <tbody>";
 
 foreach ($comments as $comment) {
-    $owner = $user = $torrent = $id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = $times_completed = '';
+    $owner = $user = $id = $comment_id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = $times_completed = '';
     extract($comment);
     $torrname = htmlsafechars($name);
     $user = $anonymous === 'yes' ? 'Anonymous' : format_username($user);
@@ -78,7 +78,7 @@ foreach ($comments as $comment) {
                                 <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/$image' class='tooltipper' alt='$cat' title='$cat'>
                             </td>
                             <td>";
-    $block_id = "comment_id_{$id}";
+    $block_id = "comment_id_{$comment_id}";
     include PARTIALS_DIR . 'torrent_hover.php';
     $HTMLOUT .= "
                             <td class='has-text-centered'>$user</td>

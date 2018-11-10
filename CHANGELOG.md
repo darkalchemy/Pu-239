@@ -1,3 +1,6 @@
+### 10 Nox, 2018
+fix: incorrect url in index page comments block  
+
 ### 09 Nov, 2018
 update: IMDb rating to stars  
 refactor: common code to template  
