@@ -1,4 +1,5 @@
 ### 10 Nox, 2018
+cleanup: fomatting  
 update: expand page to full width of screen  
 update: regex for date formats log viewer  
 update: easier to rearrange index page block  

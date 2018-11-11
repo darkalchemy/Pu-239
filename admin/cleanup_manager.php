@@ -101,7 +101,7 @@ function cleanup_show_main()
     $perpage = 15;
     $pager = pager($perpage, $count1, $site_config['baseurl'] . '/staffpanel.php?tool=cleanup_manager&amp;');
     $htmlout = "
-    <div class='container is-fluid portlet'>
+    <div class='portlet'>
         <h2 class='has-text-centered top20'>{$lang['cleanup_head']}</h2>
         <table class='table table-bordered table-striped bottom20'>
             <thead>

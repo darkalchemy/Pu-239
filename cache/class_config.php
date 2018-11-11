@@ -10,4 +10,3 @@ define('UC_STAFF', 4);
 define('UC_ADMINISTRATOR', 5);
 define('UC_SYSOP', 6);
 define('UC_MAX', 6);
-

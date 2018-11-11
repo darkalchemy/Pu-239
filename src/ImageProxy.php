@@ -197,7 +197,8 @@ class ImageProxy
     public function create_image(int $width = 1000, int $height = 1000, string $color = null)
     {
         $manager = new ImageManager();
-        $img = $manager->canvas($width, $height, $color)->encode('jpg', 50);
+        $img = $manager->canvas($width, $height, $color)
+            ->encode('jpg', 50);
 
         return $img;
     }

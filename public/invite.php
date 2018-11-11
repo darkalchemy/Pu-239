@@ -252,7 +252,7 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
     }
 
     $HTMLOUT .= "
-        <div class='container is-fluid portlet'>
+        <div class='portlet'>
             <form method='post' action='?do=send_email'>
                 <table class='table table-bordered bottom20'>
                     <thead>

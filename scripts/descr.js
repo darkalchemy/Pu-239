@@ -9,7 +9,7 @@ function get_descr(csrf, tid) {
     var el = document.querySelector('#descr_outer');
     var e = document.createElement('div');
     e.classList.add('has-text-centered');
-    e.innerHTML = "Grabbing and processing all of the images in the torrent's description, please be patient. (" + count + ")";
+    e.innerHTML = 'Grabbing and processing all of the images in the torrent\'s description, please be patient. (' + count + ')';
     el.appendChild(e);
     $.ajax({
         url: './ajax/descr_format.php',
@@ -19,13 +19,13 @@ function get_descr(csrf, tid) {
         context: this,
         data: {
             csrf: csrf,
-            tid: tid,
+            tid: tid
         },
         success: function (data) {
             if (data['fail'] === 'csrf') {
                 e.innerHTML = 'CSRF Failure, try refreshing the page';
             } else if (data['fail'] === 'invalid') {
-                e.innerHTML = "Invalid text in \$torrent['descr'].";
+                e.innerHTML = 'Invalid text in \$torrent[\'descr\'].';
             } else {
                 e.remove();
                 var node = document.createElement('div');
@@ -33,7 +33,7 @@ function get_descr(csrf, tid) {
                 el.appendChild(node);
             }
         },
-        error: function(jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) {
             if (textStatus === 'timeout') {
                 if (count >= 8) {
                     e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';

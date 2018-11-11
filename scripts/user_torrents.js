@@ -39,7 +39,7 @@ function get_torrents(csrf, uid, type) {
         data: {
             csrf: csrf,
             uid: uid,
-            type: type,
+            type: type
         },
         success: function (data) {
             if (data['fail'] === 'csrf') {

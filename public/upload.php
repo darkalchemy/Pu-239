@@ -31,33 +31,33 @@ if (!empty($upload_vars)) {
 }
 //dd($upload_vars);
 $vars = [
-        'url',
-        'isbn',
-        'poster',
-        'youtube',
-        'name',
-        'tags',
-        'description',
-        'body',
-        'type',
-        'request',
-        'offer',
-        'release_group',
-        'free_length',
-        'half_length',
-        'genre',
-        'vip',
-        'uplver',
-        'allow_comments',
-        'strip',
-        'free_length',
-        'half_length',
-        'subs',
-        'movie',
-        'tv',
-        'music',
-        'game',
-        'apps',
+    'url',
+    'isbn',
+    'poster',
+    'youtube',
+    'name',
+    'tags',
+    'description',
+    'body',
+    'type',
+    'request',
+    'offer',
+    'release_group',
+    'free_length',
+    'half_length',
+    'genre',
+    'vip',
+    'uplver',
+    'allow_comments',
+    'strip',
+    'free_length',
+    'half_length',
+    'subs',
+    'movie',
+    'tv',
+    'music',
+    'game',
+    'apps',
 ];
 
 foreach ($vars as $var) {
@@ -192,7 +192,7 @@ $HTMLOUT .= "<table class='table table-bordered table-striped top20'>
 $s = "<select name='type' required>\n<option value='0'>({$lang['upload_choose_one']})</option>\n";
 $cats = genrelist();
 foreach ($cats as $row) {
-    $s .= "<option value='" . (int) $row['id'] . "'" . ($type == $row['id'] ? ' selected' : '') . ">" . htmlsafechars($row['name']) . "</option>\n";
+    $s .= "<option value='" . (int) $row['id'] . "'" . ($type == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($row['name']) . "</option>\n";
 }
 $s .= "</select>\n";
 $HTMLOUT .= "<tr>
@@ -221,8 +221,8 @@ $rg = "
     <select name='release_group'>
         <option value='none'>None</option>
         <option value='p2p'" . ($release_group === 'p2p' ? ' selected' : '') . ">p2p</option>
-        <option value='scene'" . ($release_group === 'scene' ? ' selected' : '') . ">Scene</option>
-    </select>";
+        <option value='scene'" . ($release_group === 'scene' ? ' selected' : '') . '>Scene</option>
+    </select>';
 $HTMLOUT .= tr('Release Type', $rg, 1);
 $HTMLOUT .= tr("{$lang['upload_anonymous']}", "<div class='level-left'><input type='checkbox' name='uplver' id='uplver' value='yes'" . ($uplver === 'yes' ? ' checked' : '') . "><label for='uplver' class='left5'>{$lang['upload_anonymous1']}</label></div>", 1);
 if ($CURUSER['class'] === UC_MAX) {
@@ -240,9 +240,9 @@ if ($CURUSER['class'] >= UC_UPLOADER && !XBT_TRACKER) {
     <option value='2'" . ($free_length == '2' ? ' selected' : '') . ">Free for 2 weeks</option>
     <option value='4'" . ($free_length == '4' ? ' selected' : '') . ">Free for 4 weeks</option>
     <option value='8'" . ($free_length == '8' ? ' selected' : '') . ">Free for 8 weeks</option>
-    <option value='255'" . ($free_length == '255' ? ' selected' : '') . ">Unlimited</option>
+    <option value='255'" . ($free_length == '255' ? ' selected' : '') . '>Unlimited</option>
     </select></td>
-    </tr>";
+    </tr>';
     $HTMLOUT .= "<tr>
     <td class='rowhead'>Silver Torrent</td>
     <td>
@@ -253,9 +253,9 @@ if ($CURUSER['class'] >= UC_UPLOADER && !XBT_TRACKER) {
     <option value='2'" . ($half_length == '2' ? ' selected' : '') . ">Silver for 2 weeks</option>
     <option value='4'" . ($half_length == '4' ? ' selected' : '') . ">Silver for 4 weeks</option>
     <option value='8'" . ($half_length == '8' ? ' selected' : '') . ">Silver for 8 weeks</option>
-    <option value='255'" . ($half_length == '255' ? ' selected' : '') . ">Unlimited</option>
+    <option value='255'" . ($half_length == '255' ? ' selected' : '') . '>Unlimited</option>
     </select></td>
-    </tr>";
+    </tr>';
 }
 require_once PARTIALS_DIR . 'genres.php';
 

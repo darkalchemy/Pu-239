@@ -13,8 +13,8 @@ $lang = array_merge($lang, load_language('ad_cloudview'));
 $HTMLOUT = '';
 if (isset($_POST['delcloud'])) {
     $searchcloud_stuffs->delete($_POST['delcloud']);
-//    $do = 'DELETE FROM searchcloud WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['delcloud'])) . ')';
-//    $res = sql_query($do);
+    //    $do = 'DELETE FROM searchcloud WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['delcloud'])) . ')';
+    //    $res = sql_query($do);
     $cache->delete('searchcloud');
     header('Refresh: 3; url=staffpanel.php?tool=cloudview&action=cloudview');
     stderr("{$lang['cloudview_success']}", "{$lang['cloudview_success_del']}");

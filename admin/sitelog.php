@@ -29,7 +29,7 @@ $HTMLOUT = '';
 $res = sql_query("SELECT added, txt FROM sitelog $where ORDER BY added DESC {$pager['limit']} ") or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['text_sitelog']}</h1>
-    <div class='container is-fluid portlet'>
+    <div class='portlet'>
         <div class='has-text-centered bordered top20'>
             <h2>{$lang['log_search']}</h2>
             <form method='post' action='./staffpanel.php?tool=sitelog&amp;action=sitelog'>

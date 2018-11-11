@@ -121,7 +121,8 @@ if ($moderator) {
             'top5_tor_',
             'last5_tor_',
             'torrent_xbt_data_' . $id,
-            'torrent_descr_', $id,
+            'torrent_descr_',
+            $id,
             'tvshow_ids_' . hash('sha512', get_show_name($torrent['name'])),
             'imdb_fullset_' . $torrent['imdb_id'],
         ]);
@@ -310,8 +311,7 @@ $info_block .= tr($lang['details_added'], '<div class="left10">' . get_date($tor
 $info_block .= tr($lang['details_views'], "<div class='left10'>{$torrent['views']}</div>", 1);
 $info_block .= tr($lang['details_hits'], "<div class='left10'>{$torrent['hits']}</div>", 1);
 $info_block .= tr($lang['details_snatched'], '<div class="left10">' . ($torrent['times_completed'] > 0 ? "<a href='{$site_config['baseurl']}snatches.php?id={$id}'>{$torrent['times_completed']} {$lang['details_times']}" . plural($torrent['times_completed']) . '</a>' : "0 {$lang['details_times']}") . '</div>', 1);
-$info_block .= tr($lang['details_peers'], '<div class="left10">' . $torrent['seeders'] . ' seeder' . plural($torrent['seeders']) . ' + ' . $torrent['leechers'] . ' leecher' . plural($torrent['leechers']) . ' = ' .
-    ($torrent['seeders'] + $torrent['leechers']) . "{$lang['details_peer_total']}<br>
+$info_block .= tr($lang['details_peers'], '<div class="left10">' . $torrent['seeders'] . ' seeder' . plural($torrent['seeders']) . ' + ' . $torrent['leechers'] . ' leecher' . plural($torrent['leechers']) . ' = ' . ($torrent['seeders'] + $torrent['leechers']) . "{$lang['details_peer_total']}<br>
     <a href='{$site_config['baseurl']}/peerlist.php?id=$id#seeders' class='top10 button is-small'>{$lang['details_list']}</a></div>", 1);
 
 if (!empty($torrent['descr'])) {
@@ -347,7 +347,12 @@ if (!empty($slot)) {
         }
     }
 }
-$torrent['tags'] = empty($torrent['tags']) ? str_replace([' ', '_', '-', ':'], ',', $torrent['name']) : $torrent['tags'];
+$torrent['tags'] = empty($torrent['tags']) ? str_replace([
+    ' ',
+    '_',
+    '-',
+    ':',
+], ',', $torrent['name']) : $torrent['tags'];
 $tags = explode(',', $torrent['tags']);
 $keywords = '';
 foreach ($tags as $tag) {

@@ -31,9 +31,9 @@ function uploadpos_update($data)
         $user = $cache->get('user' . $arr['id']);
         if (!empty($user)) {
             $cache->update_row('user' . $arr['id'], [
-            'uploadpos' => 1,
-            'modcomment' => $modcomment,
-           ], $site_config['expires']['user_cache']);
+                'uploadpos' => 1,
+                'modcomment' => $modcomment,
+            ], $site_config['expires']['user_cache']);
         }
     }
 

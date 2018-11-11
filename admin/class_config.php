@@ -277,7 +277,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 $HTMLOUT .= "
-    <div class='container is-fluid portlet bordered'>
+    <div class='portlet bordered'>
         <h1 class='has-text-centered top20'>{$lang['classcfg_class_settings']} for Template $style</h1>
         <form name='edit' action='staffpanel.php?tool=class_config&amp;mode=edit' method='post'>
             <table class='table table-bordered table-stiped bottom20'>

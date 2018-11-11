@@ -43,9 +43,9 @@ function sendpmpos_update($data)
         if ($count > 0) {
             $message_stuffs->insert($msgs_buffer);
             $set = [
-                    'sendpmpos' => 1,
-                    'modcomment' => new Envms\FluentPDO\Literal("CONCAT(\"$comment\", modcomment)"),
-                ];
+                'sendpmpos' => 1,
+                'modcomment' => new Envms\FluentPDO\Literal("CONCAT(\"$comment\", modcomment)"),
+            ];
             $fluent->update('users')
                 ->set($set)
                 ->where('sendpmpos > 1')

@@ -1149,7 +1149,7 @@ if (isset($_GET['exchange'])) {
 }
 
 $HTMLOUT .= "
-    <div class='container is-fluid portlet'>
+    <div class='portlet'>
         <div class='has-text-centered size_6 top20 bottom20'>Karma Bonus Point's System</div>";
 $fpoints = $dpoints = $hpoints = $freeleech_enabled = $double_upload_enabled = $half_down_enabled = $top_donators = $top_donators2 = $top_donators3 = $count1 = '';
 
@@ -1552,7 +1552,7 @@ $atform = number_format($at);
 $activet = number_format($at * $bpt * 2, 2);
 
 $HTMLOUT .= "</tr></table></div>
-    <div class='container is-fluid portlet'>
+    <div class='portlet'>
         <h2 class='top20 left10'>What the hell are these Karma Bonus points, and how do I get them?</h2>
         <div class='bordered bottom20'>
             <div class='alt_bordered bg-00'>

@@ -60,7 +60,11 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
             }
         }
         if (!empty($images)) {
-            $type = str_replace(['tv', 'show', 'season'], '', $type);
+            $type = str_replace([
+                'tv',
+                'show',
+                'season',
+            ], '', $type);
             $insert = $cache->get("insert_fanart_{$type}_{$thetvdb_id}");
             if ($insert === false || is_null($insert)) {
                 foreach ($images as $image) {

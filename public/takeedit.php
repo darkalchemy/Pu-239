@@ -311,7 +311,8 @@ if ($torrent_cache) {
         'top5_tor_',
         'last5_tor_',
         'torrent_xbt_data_' . $id,
-        'torrent_descr_', $id,
+        'torrent_descr_',
+        $id,
     ]);
 }
 $torrent_stuffs->remove_torrent($infohash);

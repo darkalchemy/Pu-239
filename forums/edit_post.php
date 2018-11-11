@@ -161,7 +161,7 @@ $HTMLOUT .= '
 	<h1 class="has-text-centered">' . $lang['ep_edit_post_by'] . ': ' . format_username($arr_post['user_id']) . ' ' . $lang['ep_in_topic'] . ' 
 	"<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_post['topic_name'], ENT_QUOTES) . '</a>"</h1>
 	<form method="post" action="' . $site_config['baseurl'] . '/forums.php?action=edit_post&amp;topic_id=' . $topic_id . '&amp;post_id=' . $post_id . '&amp;page=' . $page . '" enctype="multipart/form-data">';
-    require_once FORUM_DIR . 'editor.php';
+require_once FORUM_DIR . 'editor.php';
 
 $HTMLOUT .= '
 	<div class="has-text-centered">

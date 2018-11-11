@@ -46,6 +46,7 @@ file(FlySystem)
 
 # data storage
 MySQL or MariaDB or Percona MySQL
+Adminer is included, only user #1 has access, others can be added, by id
 
 # get the files
 git clone https://github.com/darkalchemy/Pu-239.git

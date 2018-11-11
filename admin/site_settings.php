@@ -37,7 +37,7 @@ while ($ac = mysqli_fetch_assoc($pconf)) {
     $site_settings[] = $ac;
 }
 $HTMLOUT .= "
-        <div class='container is-fluid portlet'>
+        <div class='portlet'>
             <h3 class='has-text-centered top20'>{$lang['sitesettings_sitehead']}</h3>
             <form action='./staffpanel.php?tool=site_settings' method='post'>
                 <div class='table-wrapper'>

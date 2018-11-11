@@ -310,7 +310,8 @@ class Torrent
                 'posters_',
                 'banners_',
                 'get_torrent_count_',
-                'torrent_descr_', $tid,
+                'torrent_descr_',
+                $tid,
             ]);
             $this->clear_caches();
         }

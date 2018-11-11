@@ -27,7 +27,7 @@ function get_imdb(csrf, url, tid, image) {
             csrf: csrf,
             url: url,
             tid: tid,
-            image: image,
+            image: image
         },
         success: function (data) {
             if (data['fail'] === 'csrf') {
@@ -41,7 +41,7 @@ function get_imdb(csrf, url, tid, image) {
                 el.appendChild(node);
             }
         },
-        error: function(jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) {
             if (textStatus === 'timeout') {
                 if (count >= 8) {
                     e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';

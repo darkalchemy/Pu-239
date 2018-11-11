@@ -156,7 +156,7 @@ $above_columns = [
     'slider',
 ];
 $below_columns = [
-    'disclaimer'
+    'disclaimer',
 ];
 $left_column = [
     'ajaxchat',
@@ -204,9 +204,9 @@ foreach ($right_column as $item) {
     $HTMLOUT .= wrap_it($item, $$item);
 }
 
-$HTMLOUT .= "
+$HTMLOUT .= '
     </div>
-</div>";
+</div>';
 
 foreach ($below_columns as $item) {
     $HTMLOUT .= wrap_it($item, $$item);
@@ -215,8 +215,8 @@ foreach ($below_columns as $item) {
 function wrap_it($item, $data)
 {
     return "
-    <div class='container is-fluid portlet' id='" . strtoupper($item) . "'>{$data}
+    <div class='portlet' id='" . strtoupper($item) . "'>{$data}
     </div>";
-
 }
+
 echo stdhead('Home') . $HTMLOUT . stdfoot($stdfoot);

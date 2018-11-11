@@ -7,81 +7,105 @@
     color: #ff3860;
 }
 
-.breadcrumb { 
-    list-style: none; 
-    overflow: hidden; 
+.breadcrumb {
+    list-style: none;
+    overflow: hidden;
     font-size: 1.25em;
     padding: .625em;
 }
 
 @media (min-width: 500px) {
-    .breadcrumb { 
+    .breadcrumb {
         /*list-style: none; 
         overflow: hidden; 
         font-size: 1.25em;*/
         padding: 0;
     }
 
-    .breadcrumb li { 
-        float: left; 
+    .breadcrumb li {
+        float: left;
     }
 
     .breadcrumb li a {
         color: #ff3860;
-        text-decoration: none; 
+        text-decoration: none;
         padding: 15px 0 15px 40px;
-        background: hsla(0,0%,15%,1); 
-        position: relative; 
+        background: hsla(0, 0%, 15%, 1);
+        position: relative;
         display: block;
         float: left;
         transition: all .25s ease-in-out;
     }
 
-    .breadcrumb li a:after { 
-        content: " "; 
-        display: block; 
-        width: 0; 
+    .breadcrumb li a:after {
+        content: " ";
+        display: block;
+        width: 0;
         height: 0;
         border-top: 50px solid transparent;
         border-bottom: 50px solid transparent;
-        border-left: 30px solid hsla(0,0%,15%,1);
+        border-left: 30px solid hsla(0, 0%, 15%, 1);
         position: absolute;
         top: 50%;
-        margin-top: -50px; 
+        margin-top: -50px;
         left: 100%;
-        z-index: 2; 
+        z-index: 2;
         transition: all .25s ease-in-out;
-    }     
+    }
 
-    .breadcrumb li a:before { 
-        content: " "; 
-        display: block; 
-        width: 0; 
+    .breadcrumb li a:before {
+        content: " ";
+        display: block;
+        width: 0;
         height: 0;
         border-top: 50px solid transparent;
         border-bottom: 50px solid transparent;
         border-left: 30px solid #ff3860;
         position: absolute;
         top: 50%;
-        margin-top: -50px; 
+        margin-top: -50px;
         margin-left: 1px;
         left: 100%;
-        z-index: 1; 
+        z-index: 1;
         transition: all .25s ease-in-out;
-    }   
+    }
 
     .breadcrumb li:first-child a {
         padding-left: 10px;
     }
 
-    .breadcrumb li:nth-child(2) a       { background:        hsla(0,0%,25%,1); }
-    .breadcrumb li:nth-child(2) a:after { border-left-color: hsla(0,0%,25%,1); }
-    .breadcrumb li:nth-child(3) a       { background:        hsla(0,0%,35%,1); }
-    .breadcrumb li:nth-child(3) a:after { border-left-color: hsla(0,0%,35%,1); }
-    .breadcrumb li:nth-child(4) a       { background:        hsla(0,0%,45%,1); }
-    .breadcrumb li:nth-child(4) a:after { border-left-color: hsla(0,0%,45%,1); }
-    .breadcrumb li:nth-child(5) a       { background:        hsla(0,0%,55%,1); }
-    .breadcrumb li:nth-child(5) a:after { border-left-color: hsla(0,0%,55%,1); }
+    .breadcrumb li:nth-child(2) a {
+        background: hsla(0, 0%, 25%, 1);
+    }
+
+    .breadcrumb li:nth-child(2) a:after {
+        border-left-color: hsla(0, 0%, 25%, 1);
+    }
+
+    .breadcrumb li:nth-child(3) a {
+        background: hsla(0, 0%, 35%, 1);
+    }
+
+    .breadcrumb li:nth-child(3) a:after {
+        border-left-color: hsla(0, 0%, 35%, 1);
+    }
+
+    .breadcrumb li:nth-child(4) a {
+        background: hsla(0, 0%, 45%, 1);
+    }
+
+    .breadcrumb li:nth-child(4) a:after {
+        border-left-color: hsla(0, 0%, 45%, 1);
+    }
+
+    .breadcrumb li:nth-child(5) a {
+        background: hsla(0, 0%, 55%, 1);
+    }
+
+    .breadcrumb li:nth-child(5) a:after {
+        border-left-color: hsla(0, 0%, 55%, 1);
+    }
+
     .breadcrumb li:last-child a {
         color: #fff;
         background: transparent !important;
@@ -89,8 +113,19 @@
         cursor: default;
     }
 
-    .breadcrumb li:last-child a:before { border-left: 30px solid transparent !important; }
-    .breadcrumb li:last-child a:after { border: 0; }
-    .breadcrumb li a:hover { background: hsla(0,0%,5%,1); }
-    .breadcrumb li a:hover:after { border-left-color: hsla(0,0%,5%,1) !important; }
+    .breadcrumb li:last-child a:before {
+        border-left: 30px solid transparent !important;
+    }
+
+    .breadcrumb li:last-child a:after {
+        border: 0;
+    }
+
+    .breadcrumb li a:hover {
+        background: hsla(0, 0%, 5%, 1);
+    }
+
+    .breadcrumb li a:hover:after {
+        border-left-color: hsla(0, 0%, 5%, 1) !important;
+    }
 }

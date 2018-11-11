@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @return string
  */
@@ -180,7 +181,7 @@ function wrapper($text, $class = '')
         return;
     } else {
         return "
-            <div class='container is-fluid portlet $class'>
+            <div class='portlet $class'>
                 $text
             </div>";
     }

@@ -32,9 +32,9 @@ function warned_update($data)
         $user = $cache->get('user' . $arr['id']);
         if (!empty($user)) {
             $cache->update_row('user' . $arr['id'], [
-            'warned' => 0,
-            'modcomment' => $modcomment,
-           ], $site_config['expires']['user_cache']);
+                'warned' => 0,
+                'modcomment' => $modcomment,
+            ], $site_config['expires']['user_cache']);
         }
     }
 

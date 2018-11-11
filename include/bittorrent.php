@@ -43,7 +43,6 @@ if (SOCKET) {
 }
 
 require_once CACHE_DIR . 'class_config.php';
-define('MIN_TO_PLAY', UC_POWER_USER);
 $session->start();
 
 /**

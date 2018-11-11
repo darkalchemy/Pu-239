@@ -45,7 +45,10 @@ function get_host_port_from_server($server)
 {
     $values = explode(':', $server);
     if ($values[0] === 'unix' && !is_numeric($values[1])) {
-        return [$server, 0];
+        return [
+            $server,
+            0,
+        ];
     } else {
         return $values;
     }

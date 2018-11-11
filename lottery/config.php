@@ -54,7 +54,7 @@ if ($lottery_config['enable']) {
 } else {
     $html .= "
     <form action='{$site_config['baseurl']}/lottery.php?action=config' method='post'>
-        <div class='container is-fluid portlet'>";
+        <div class='portlet'>";
     $table = "
                 <tr>
                     <td class='rowhead'>Enable The Lottery</td>

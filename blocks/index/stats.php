@@ -17,11 +17,9 @@ $users = [
 ];
 
 $gender = [
-    "<tr><td>{$lang['index_stats_uncon']}</td><td class='w-15 has-text-centered'>{$stats_cache['unconusers']}</td></tr>" .
-    "<tr><td>{$lang['index_stats_banned']}</td><td class='w-15 has-text-centered'>{$stats_cache['disabled']}</td></tr>",
+    "<tr><td>{$lang['index_stats_uncon']}</td><td class='w-15 has-text-centered'>{$stats_cache['unconusers']}</td></tr>" . "<tr><td>{$lang['index_stats_banned']}</td><td class='w-15 has-text-centered'>{$stats_cache['disabled']}</td></tr>",
     "<tr><td>{$lang['index_stats_donor']}</td><td class='w-15 has-text-centered'>{$stats_cache['donors']}</td></tr>",
-    "<tr><td>{$lang['index_stats_gender_na']}</td><td class='w-15 has-text-centered'>{$stats_cache['gender_na']}</td></tr>" .
-    "<tr><td>{$lang['index_stats_gender_female']}</td><td class='w-15 has-text-centered'>{$stats_cache['gender_female']}</td></tr>",
+    "<tr><td>{$lang['index_stats_gender_na']}</td><td class='w-15 has-text-centered'>{$stats_cache['gender_na']}</td></tr>" . "<tr><td>{$lang['index_stats_gender_female']}</td><td class='w-15 has-text-centered'>{$stats_cache['gender_female']}</td></tr>",
     "<tr><td>{$lang['index_stats_gender_male']}</td><td class='w-15 has-text-centered'>{$stats_cache['gender_male']}</td></tr>",
 ];
 
@@ -41,9 +39,9 @@ $torrents = [
     "<tr><td>{$lang['index_stats_peers']}</td><td class='w-15 has-text-centered'>{$stats_cache['peers']}</td></tr>",
     "<tr><td>{$lang['index_stats_seeders']}</td><td class='w-15 has-text-centered'>{$stats_cache['seeders']}</td></tr>",
     "<tr><td>{$lang['index_stats_leechers']}</td><td class='w-15 has-text-centered'>{$stats_cache['leechers']}</td></tr>",
-//    "<tr><td>{$lang['index_stats_unconpeer']}</td><td class='w-15 has-text-centered'>{$stats_cache['unconnectables']}</td></tr>",
-//    "<tr><td>{$lang['index_stats_unconratio']}</td><td class='w-15 has-text-centered'>" . round($stats_cache['ratiounconn'] * 100) . "</td></tr>",
-//    "<tr><td>{$lang['index_stats_slratio']}</td><td class='w-15 has-text-centered'>" . round($stats_cache['ratio'] * 100) . "</td></tr>",
+    //    "<tr><td>{$lang['index_stats_unconpeer']}</td><td class='w-15 has-text-centered'>{$stats_cache['unconnectables']}</td></tr>",
+    //    "<tr><td>{$lang['index_stats_unconratio']}</td><td class='w-15 has-text-centered'>" . round($stats_cache['ratiounconn'] * 100) . "</td></tr>",
+    //    "<tr><td>{$lang['index_stats_slratio']}</td><td class='w-15 has-text-centered'>" . round($stats_cache['ratio'] * 100) . "</td></tr>",
 ];
 
 $site_stats .= "
@@ -55,10 +53,10 @@ $site_stats .= "
             <div class='column'>" . wrap_this($users) . "</div>
             <div class='column'>" . wrap_this($gender) . "</div>
             <div class='column'>" . wrap_this($torrents) . "</div>
-            <div class='column'>" . wrap_this($forums) . "</div>
+            <div class='column'>" . wrap_this($forums) . '</div>
         </div>
     </div>
-    </fieldset>";
+    </fieldset>';
 
 function wrap_this(array $values)
 {

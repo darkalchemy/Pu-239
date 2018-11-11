@@ -112,7 +112,7 @@ if ($mode === 'edit') {
         stderr($lang['news_success'], $lang['news_edit_success']);
     } else {
         $HTMLOUT .= "
-        <div class='container is-fluid portlet'>
+        <div class='portlet'>
             <h1>{$lang['news_edit_item']}</h1>
             <form method='post' name='compose' action='./staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid'>
                 <table class='table table-bordered table-striped'>
@@ -173,7 +173,7 @@ if ($mode === 'edit') {
 if ($mode === 'news') {
     $res = sql_query('SELECT n.id AS newsid, n.body, n.title, n.userid, n.added, n.anonymous, u.id, u.username, u.class, u.warned, u.chatpost, u.pirate, u.king, u.leechwarn, u.enabled, u.donor FROM news AS n LEFT JOIN users AS u ON u.id=n.userid ORDER BY sticky, added DESC') or sqlerr(__FILE__, __LINE__);
     $HTMLOUT .= "
-    <div class='container is-fluid portlet'>
+    <div class='portlet'>
         <h1>{$lang['news_submit_new']}</h1>
         <form method='post' name='compose' action='./staffpanel.php?tool=news&amp;mode=add'>
                 <table class='table table-bordered table-striped'>

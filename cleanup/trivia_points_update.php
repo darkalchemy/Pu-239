@@ -18,19 +18,19 @@ function trivia_points_update($data)
         ->fetch('gamenum');
 
     $results = $fluent->from('triviausers AS t')
-            ->select(null)
-            ->select('t.user_id')
-            ->select('COUNT(t.correct) AS correct')
-            ->select('u.seedbonus')
-            ->select('u.username')
-            ->select('u.modcomment')
-            ->innerJoin('users AS  u ON t.user_id = u.id')
-            ->where('t.correct = 1')
-            ->where('gamenum = ?', $gamenum)
-            ->groupBy('t.user_id')
-            ->orderBy('correct DESC')
-            ->limit(10)
-            ->fetchAll();
+        ->select(null)
+        ->select('t.user_id')
+        ->select('COUNT(t.correct) AS correct')
+        ->select('u.seedbonus')
+        ->select('u.username')
+        ->select('u.modcomment')
+        ->innerJoin('users AS  u ON t.user_id = u.id')
+        ->where('t.correct = 1')
+        ->where('gamenum = ?', $gamenum)
+        ->groupBy('t.user_id')
+        ->orderBy('correct DESC')
+        ->limit(10)
+        ->fetchAll();
 
     if ($results) {
         $subject = 'Trivia Bonus Points Award.';

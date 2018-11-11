@@ -173,7 +173,6 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                             <div class='star-ratings-css-top' style='width: {$percent}%'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                             <div class='star-ratings-css-bottom'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                         </div>";
-
                 }
                 $imdb_info .= "
                     <div class='columns'>

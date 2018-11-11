@@ -7,7 +7,7 @@ $('.staff_pick').on('click', function () {
         data: {
             id: this.dataset.id,
             csrf: this.dataset.csrf,
-            pick: this.dataset.pick,
+            pick: this.dataset.pick
         },
         success: function (data) {
             if (data['staff_pick'] === 'csrf') {
@@ -20,11 +20,11 @@ $('.staff_pick').on('click', function () {
                 $(this).html('CSRF');
                 $(this).tooltipster('content', 'Unknow failure. Try refreshing the page.');
             } else if (data['staff_pick'] > 0) {
-                $(this).html("<i class='icon-minus icon has-text-red'></i>");
+                $(this).html('<i class=\'icon-minus icon has-text-red\'></i>');
                 $(this).tooltipster('content', 'Remove from Staff Picks');
                 $(this).attr('data-pick', data['staff_pick']);
             } else {
-                $(this).html("<i class='icon-plus icon has-text-lime'></i>");
+                $(this).html('<i class=\'icon-plus icon has-text-lime\'></i>');
                 $(this).tooltipster('content', 'Add to Staff Picks');
                 $(this).attr('data-pick', data['staff_pick']);
             }

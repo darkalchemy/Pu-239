@@ -22,7 +22,7 @@ function get_tvmaze(csrf, tvmazeid, name, tid) {
             csrf: csrf,
             tvmazeid: tvmazeid,
             tid: tid,
-            name: name,
+            name: name
         },
         success: function (data) {
             if (data['fail'] === 'csrf') {
@@ -36,7 +36,7 @@ function get_tvmaze(csrf, tvmazeid, name, tid) {
                 el.appendChild(node);
             }
         },
-        error: function(jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) {
             if (textStatus === 'timeout') {
                 if (count >= 8) {
                     e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';

@@ -51,3 +51,6 @@ define('DEFAULT_AVG', INTERVAL_15_MIN);
 define('CRAZY_HOUR', false);
 define('HAPPY_HOUR', false);
 define('RATIO_FREE', false);
+
+require_once CACHE_DIR . 'class_config.php';
+define('MIN_TO_PLAY', UC_POWER_USER);

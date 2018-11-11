@@ -18,7 +18,7 @@ if ($CURUSER['class'] < $over_forums_arr['min_class_view']) {
 $HTMLOUT .= $mini_menu;
 
 $HTMLOUT .= "
-    <h1 class='has-text-centered'pan>{$lang['sv_section_view_for']} " . htmlsafechars($over_forums_arr['name'], ENT_QUOTES) . "</h1>";
+    <h1 class='has-text-centered'pan>{$lang['sv_section_view_for']} " . htmlsafechars($over_forums_arr['name'], ENT_QUOTES) . '</h1>';
 $forums_res = sql_query('SELECT name AS forum_name, description AS forum_description, id AS forum_id, post_count, topic_count FROM forums WHERE min_class_read < ' . sqlesc($CURUSER['class']) . ' AND forum_id = ' . sqlesc($forum_id) . ' AND parent_forum = 0 ORDER BY sort') or sqlerr(__FILE__, __LINE__);
 $body = '';
 while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
@@ -107,9 +107,9 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
             <img src='{$site_config['pic_baseurl']}forums/{$img}.gif' alt='" . ucfirst($img) . "' title='" . ucfirst($img) . "' class='tooltipper'>
         </td>
 		<td>
-    		<a class='altlink' href='{$site_config['baseurl']}/forums.php?action=view_forum&amp;forum_id={$forums_arr['forum_id']}'>" . htmlsafechars($forums_arr['forum_name'], ENT_QUOTES) . "</a><p class='top10'>" . htmlsafechars($forums_arr['forum_description'], ENT_QUOTES) . $child_boards . $now_viewing . "</p>
+    		<a class='altlink' href='{$site_config['baseurl']}/forums.php?action=view_forum&amp;forum_id={$forums_arr['forum_id']}'>" . htmlsafechars($forums_arr['forum_name'], ENT_QUOTES) . "</a><p class='top10'>" . htmlsafechars($forums_arr['forum_description'], ENT_QUOTES) . $child_boards . $now_viewing . '</p>
         </td>
-        <td>" . number_format($forums_arr['post_count']) . "{$lang['fe_posts']}<br>" . number_format($forums_arr['topic_count']) . "{$lang['fe_topics']}</td>
+        <td>' . number_format($forums_arr['post_count']) . "{$lang['fe_posts']}<br>" . number_format($forums_arr['topic_count']) . "{$lang['fe_topics']}</td>
         <td>
 		    <span>{$last_post}</span>
         </td>

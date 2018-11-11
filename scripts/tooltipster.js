@@ -15,7 +15,7 @@ $(function () {
         arrow: true,
         contentAsHTML: true,
         maxWidth: 500,
-        distance: distance,
+        distance: distance
     });
     initAll();
 });

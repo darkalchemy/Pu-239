@@ -9,8 +9,8 @@ if (suggcont) {
 function usersearch(key) {
     if (key != 13) {
         var el = document.querySelector('#user_search');
-        var csrf = el.dataset.csrf
-        var keyword = el.value
+        var csrf = el.dataset.csrf;
+        var keyword = el.value;
         var lastChar = keyword.slice(-1);
         if (lastChar != ' ' && keyword.length >= min_length) {
             $.ajax({

@@ -25,7 +25,8 @@ function images_update($data)
 
     $today = date('Y-m-d');
     $date = new DateTime($today);
-    $tomorrow = $date->modify('+1 day')->format('Y-m-d');
+    $tomorrow = $date->modify('+1 day')
+        ->format('Y-m-d');
 
     get_movies_by_vote_average(100);
     get_tv_by_day($today);

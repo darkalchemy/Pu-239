@@ -8,7 +8,10 @@ global $CURUSER, $site_config, $cache, $torrent_stuffs, $user_stuffs;
 
 $lang = array_merge(load_language('global'), load_language('index'));
 $userid = isset($_GET['userid']) ? $_GET['userid'] : $CURUSER['id'];
-$yes_no = ['yes', 'no'];
+$yes_no = [
+    'yes',
+    'no',
+];
 if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
     $user = $user_stuffs->getUserFromId($userid);
     if (!empty($_GET['owner'])) {

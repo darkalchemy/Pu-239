@@ -28,7 +28,7 @@ function bookmarktable($res, $variant = 'index')
         <img src='{$site_config['pic_baseurl']}public.gif' alt='{$lang['bookmarks_public']}' border='none'  />{$lang['bookmarks_public1']}
     </span>
     <div class='table-wrapper'>
-        <div class='container is-fluid portlet'>
+        <div class='portlet'>
             <table class='table table-bordered table-striped top20 bottom20''>
                 <thead>
                     <tr>

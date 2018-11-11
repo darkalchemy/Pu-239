@@ -301,7 +301,15 @@ $site_config['auto_lotto'] = [
     'ticket_amount' => 100,
     'ticket_amount_type' => 'seedbonus',
     'user_tickets' => 10,
-    'class_allowed' => [0, 1, 2, 3, 4, 5, 6],
+    'class_allowed' => [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+    ],
     'total_winners' => 5,
     'duration' => 7,
 ];

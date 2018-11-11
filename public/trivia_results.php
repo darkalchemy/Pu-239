@@ -9,7 +9,7 @@ $lang = array_merge(load_language('global'), load_language('trivia'));
 $sql = 'SELECT gamenum, IFNULL(unix_timestamp(finished), 0) AS ended, IFNULL(unix_timestamp(started), 0) AS started FROM triviasettings GROUP BY gamenum ORDER BY gamenum DESC LIMIT 10';
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $table = "
-            <div class='container is-fluid portlet'>";
+            <div class='portlet'>";
 while ($result = mysqli_fetch_assoc($res)) {
     $gamenum = (int) $result['gamenum'];
     $ended = $result['ended'] >= 1 ? get_date($result['ended'], 'LONG') : 0;

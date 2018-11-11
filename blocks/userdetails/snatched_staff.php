@@ -16,4 +16,3 @@ if ($CURUSER['class'] >= UC_STAFF) {
             </td>
         </tr>";
 }
-

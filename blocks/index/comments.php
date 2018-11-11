@@ -83,9 +83,8 @@ foreach ($comments as $comment) {
     $posted_comments .= "
                             <td class='has-text-centered'>$user</td>
                             <td class='has-text-centered'>" . get_date($added, 'LONG') . "</td>
-                            <td class='has-text-centered'>" . number_format($user_likes) . "</td>
-                        </tr>";
-
+                            <td class='has-text-centered'>" . number_format($user_likes) . '</td>
+                        </tr>';
 }
 
 if (count($comments) === 0) {

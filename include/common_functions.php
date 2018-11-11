@@ -40,4 +40,3 @@ function get_scheme()
 
     return 'http';
 }
-

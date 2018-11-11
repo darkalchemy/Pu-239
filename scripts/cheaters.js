@@ -1,5 +1,6 @@
 var check1flag = 'false';
 var check2flag = 'false';
+
 function check1(field) {
     if (check1flag == 'false') {
         for (i = 0; i < field.length; i++) {

@@ -44,7 +44,7 @@ function breadcrumbs()
     }
 
     $crumbs = "
-                <div class='container bottom20'>
+                <div class='bottom20'>
                     <nav class='breadcrumb round5' aria-label='breadcrumbs'>
                         <ul>
                             <li><a href='{$site_config['baseurl']}/index.php'>Home</a></li>";

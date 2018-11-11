@@ -51,7 +51,7 @@ if ($message['location'] > 1) {
 }
 
 $HTMLOUT .= "
-    <div class='container is-fluid portlet'>
+    <div class='portlet'>
         $h1_thingie" . ($message['draft'] === 'yes' ? "
         <h1>{$lang['pm_viewmsg_tdraft']}</h1>" : "
         <h1>{$lang['pm_viewmsg_mailbox']}{$mailbox_name}</h1>") . "

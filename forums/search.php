@@ -83,7 +83,7 @@ if ($search) {
     }
 
     dd($tables, $searchables);
-//    $sql = 'SELECT p.id, ' . . ' FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN
+    //    $sql = 'SELECT p.id, ' . . ' FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN
     //forums AS f ON t.forum_id = f.id WHERE MATCH (' . $search_where . ') AGAINST (' . sqlesc($search) . ' IN BOOLEAN MODE) AND ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class'] . $AND . ' HAVING relevance > 0.2';
     dd($sql);
     $res_count = sql_query($sql) or sqlerr(__FILE__, __LINE__);

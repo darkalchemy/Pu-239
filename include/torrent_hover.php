@@ -1,6 +1,7 @@
 <?php
 
-function torrent_tooltip() {
+function torrent_tooltip()
+{
     global $site_config, $id, $block_id, $torrname, $poster, $lang, $name, $uploader, $added, $size, $seeders, $leechers;
 
     $content = "
@@ -30,8 +31,8 @@ function torrent_tooltip() {
     return $content;
 }
 
-
-function torrent_tooltip_wrapper() {
+function torrent_tooltip_wrapper()
+{
     global $site_config, $image, $cat, $times_completed, $seeders, $leechers;
 
     $content = "

@@ -27,7 +27,7 @@ function get_isbn(csrf, isbn, name, tid) {
             csrf: csrf,
             isbn: isbn,
             name: name,
-            tid: tid,
+            tid: tid
         },
         success: function (data) {
             if (data['fail'] === 'csrf') {
@@ -41,7 +41,7 @@ function get_isbn(csrf, isbn, name, tid) {
                 el.appendChild(node);
             }
         },
-        error: function(jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) {
             if (textStatus === 'timeout') {
                 if (count >= 8) {
                     e.innerHTML = 'AJAX Request timed out. Try refreshing the page.';

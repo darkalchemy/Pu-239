@@ -45,7 +45,7 @@ if (empty($mode)) {
                         ORDER BY db.added DESC') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $HTMLOUT .= "
-        <div class='container is-fluid portlet has-text-centered'>
+        <div class='portlet has-text-centered'>
             <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=backup&amp;mode=delete'>
                 <input type='hidden' name='action' value='delete' />
                 {$lang['backup_welcome']}
@@ -92,7 +92,7 @@ if (empty($mode)) {
                     <i class='icon-up-open size_3 has-text-primary' aria-hidden='true'></i>
                     <span class='has-text-primary size_4 left10'>{$lang['backup_settingschk']}</span>
                 </span>
-                <div class='container is-fluid portlet is_hidden top20 bottom20'>
+                <div class='portlet is_hidden top20 bottom20'>
                     <table class='table table-bordered table-striped top20 bottom20'>
                         <tbody>
                             <tr>

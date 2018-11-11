@@ -6,9 +6,9 @@ $fpoints = $dpoints = $hpoints = $freeleech_enabled = $double_upload_enabled = $
 $scheduled_events = $cache->get('freecontribution_datas_alerts_');
 if ($scheduled_events === false || is_null($scheduled_events)) {
     $scheduled_events = $fluent->from('events')
-    ->orderBy('startTime DESC')
-    ->limit(3)
-    ->fetchAll();
+        ->orderBy('startTime DESC')
+        ->limit(3)
+        ->fetchAll();
     $cache->set('freecontribution_datas_alerts_', $scheduled_events, 3 * 86400);
 }
 
@@ -52,118 +52,118 @@ if (is_array($scheduled_events)) {
 $percent_fl = $cache->get('freeleech_counter_alerts_');
 if ($percent_fl === false || is_null($percent_fl)) {
     $res = $fluent->from('bonus')
-    ->select(null)
-    ->select('pointspool / points * 100 AS percent')
-    ->where('id = 11')
-    ->fetch();
+        ->select(null)
+        ->select('pointspool / points * 100 AS percent')
+        ->where('id = 11')
+        ->fetch();
 
     $percent_fl = number_format($res['percent'], 2);
     $cache->set('freeleech_counter_alerts_', $percent_fl, 0);
 }
 
 switch ($percent_fl) {
-case $percent_fl >= 90:
-    $font_color_fl = "<span class='has-text-green'> {$percent_fl}%</span>";
-    break;
-case $percent_fl >= 80:
-    $font_color_fl = "<span class='has-text-lightgreen'> {$percent_fl}%</span>";
-    break;
-case $percent_fl >= 70:
-    $font_color_fl = "<span class='has-text-jade'> {$percent_fl}%</span>";
-    break;
-case $percent_fl >= 50:
-    $font_color_fl = "<span class='has-text-turquoise'> {$percent_fl}%</span>";
-    break;
-case $percent_fl >= 40:
-    $font_color_fl = "<span class='has-text-lghtblue'> {$percent_fl}%</span>";
-    break;
-case $percent_fl >= 30:
-    $font_color_fl = "<span class='has-text-gold'> {$percent_fl}%</span>";
-    break;
-case $percent_fl >= 20:
-    $font_color_fl = "<span class='has-text-oragne'> {$percent_fl}%</span>";
-    break;
-case $percent_fl < 20:
-    $font_color_fl = "<span class='has-text-red'> {$percent_fl}%</span>";
-    break;
+    case $percent_fl >= 90:
+        $font_color_fl = "<span class='has-text-green'> {$percent_fl}%</span>";
+        break;
+    case $percent_fl >= 80:
+        $font_color_fl = "<span class='has-text-lightgreen'> {$percent_fl}%</span>";
+        break;
+    case $percent_fl >= 70:
+        $font_color_fl = "<span class='has-text-jade'> {$percent_fl}%</span>";
+        break;
+    case $percent_fl >= 50:
+        $font_color_fl = "<span class='has-text-turquoise'> {$percent_fl}%</span>";
+        break;
+    case $percent_fl >= 40:
+        $font_color_fl = "<span class='has-text-lghtblue'> {$percent_fl}%</span>";
+        break;
+    case $percent_fl >= 30:
+        $font_color_fl = "<span class='has-text-gold'> {$percent_fl}%</span>";
+        break;
+    case $percent_fl >= 20:
+        $font_color_fl = "<span class='has-text-oragne'> {$percent_fl}%</span>";
+        break;
+    case $percent_fl < 20:
+        $font_color_fl = "<span class='has-text-red'> {$percent_fl}%</span>";
+        break;
 }
 
 $percent_du = $cache->get('doubleupload_counter_alerts_');
 if ($percent_du === false || is_null($percent_du)) {
     $res = $fluent->from('bonus')
-    ->select(null)
-    ->select('pointspool / points * 100 AS percent')
-    ->where('id = 12')
-    ->fetch();
+        ->select(null)
+        ->select('pointspool / points * 100 AS percent')
+        ->where('id = 12')
+        ->fetch();
 
     $percent_du = number_format($res['percent'], 2);
     $cache->set('doubleupload_counter_alerts_', $percent_du, 0);
 }
 
 switch ($percent_du) {
-case $percent_du >= 90:
-    $font_color_du = "<span class='has-text-green'> {$percent_du}%</span>";
-    break;
-case $percent_du >= 80:
-    $font_color_du = "<span class='has-text-lightgreen'> {$percent_du}%</span>";
-    break;
-case $percent_du >= 70:
-    $font_color_du = "<span class='has-text-jade'> {$percent_du}%</span>";
-    break;
-case $percent_du >= 50:
-    $font_color_du = "<span class='has-text-turquoise'> {$percent_du}%</span>";
-    break;
-case $percent_du >= 40:
-    $font_color_du = "<span class='has-text-lghtblue'> {$percent_du}%</span>";
-    break;
-case $percent_du >= 30:
-    $font_color_du = "<span class='has-text-gold'> {$percent_du}%</span>";
-    break;
-case $percent_du >= 20:
-    $font_color_du = "<span class='has-text-oragne'> {$percent_du}%</span>";
-    break;
-case $percent_du < 20:
-    $font_color_du = "<span class='has-text-red'> {$percent_du}%</span>";
-    break;
+    case $percent_du >= 90:
+        $font_color_du = "<span class='has-text-green'> {$percent_du}%</span>";
+        break;
+    case $percent_du >= 80:
+        $font_color_du = "<span class='has-text-lightgreen'> {$percent_du}%</span>";
+        break;
+    case $percent_du >= 70:
+        $font_color_du = "<span class='has-text-jade'> {$percent_du}%</span>";
+        break;
+    case $percent_du >= 50:
+        $font_color_du = "<span class='has-text-turquoise'> {$percent_du}%</span>";
+        break;
+    case $percent_du >= 40:
+        $font_color_du = "<span class='has-text-lghtblue'> {$percent_du}%</span>";
+        break;
+    case $percent_du >= 30:
+        $font_color_du = "<span class='has-text-gold'> {$percent_du}%</span>";
+        break;
+    case $percent_du >= 20:
+        $font_color_du = "<span class='has-text-oragne'> {$percent_du}%</span>";
+        break;
+    case $percent_du < 20:
+        $font_color_du = "<span class='has-text-red'> {$percent_du}%</span>";
+        break;
 }
 
 $percent_hd = $cache->get('halfdownload_counter_alerts_');
 if ($percent_hd === false || is_null($percent_hd)) {
     $res = $fluent->from('bonus')
-    ->select(null)
-    ->select('pointspool / points * 100 AS percent')
-    ->where('id = 13')
-    ->fetch();
+        ->select(null)
+        ->select('pointspool / points * 100 AS percent')
+        ->where('id = 13')
+        ->fetch();
 
     $percent_hd = number_format($res['percent'], 2);
     $cache->set('halfdownload_counter_alerts_', $percent_hd, 0);
 }
 
 switch ($percent_hd) {
-case $percent_hd >= 90:
-    $font_color_hd = "<span class='has-text-green'> {$percent_hd}%</span>";
-    break;
-case $percent_hd >= 80:
-    $font_color_hd = "<span class='has-text-lightgreen'> {$percent_hd}%</span>";
-    break;
-case $percent_hd >= 70:
-    $font_color_hd = "<span class='has-text-jade'> {$percent_hd}%</span>";
-    break;
-case $percent_hd >= 50:
-    $font_color_hd = "<span class='has-text-turquoise'> {$percent_hd}%</span>";
-    break;
-case $percent_hd >= 40:
-    $font_color_hd = "<span class='has-text-lghtblue'> {$percent_hd}%</span>";
-    break;
-case $percent_hd >= 30:
-    $font_color_hd = "<span class='has-text-gold'> {$percent_hd}%</span>";
-    break;
-case $percent_hd >= 20:
-    $font_color_hd = "<span class='has-text-oragne'> {$percent_hd}%</span>";
-    break;
-case $percent_hd < 20:
-    $font_color_hd = "<span class='has-text-red'> {$percent_hd}%</span>";
-    break;
+    case $percent_hd >= 90:
+        $font_color_hd = "<span class='has-text-green'> {$percent_hd}%</span>";
+        break;
+    case $percent_hd >= 80:
+        $font_color_hd = "<span class='has-text-lightgreen'> {$percent_hd}%</span>";
+        break;
+    case $percent_hd >= 70:
+        $font_color_hd = "<span class='has-text-jade'> {$percent_hd}%</span>";
+        break;
+    case $percent_hd >= 50:
+        $font_color_hd = "<span class='has-text-turquoise'> {$percent_hd}%</span>";
+        break;
+    case $percent_hd >= 40:
+        $font_color_hd = "<span class='has-text-lghtblue'> {$percent_hd}%</span>";
+        break;
+    case $percent_hd >= 30:
+        $font_color_hd = "<span class='has-text-gold'> {$percent_hd}%</span>";
+        break;
+    case $percent_hd >= 20:
+        $font_color_hd = "<span class='has-text-oragne'> {$percent_hd}%</span>";
+        break;
+    case $percent_hd < 20:
+        $font_color_hd = "<span class='has-text-red'> {$percent_hd}%</span>";
+        break;
 }
 
 if ($freeleech_enabled) {

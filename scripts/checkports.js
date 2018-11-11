@@ -1,6 +1,6 @@
 $(function () {
     var el = document.querySelector('#ipports');
-    var uid = el.dataset.uid
+    var uid = el.dataset.uid;
 
     $.ajax({
         url: './ajax/checkports.php',

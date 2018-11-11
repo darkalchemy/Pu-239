@@ -73,7 +73,7 @@ $current += $last;
 unset($last, $data, $fetch_set);
 
 $HTMLOUT .= "
-    <div class='container is-fluid portlet'>
+    <div class='portlet'>
         <h2 class='has-text-centered top20'>Coder's Log</h2>
         <div class='bordered bottom20'>
             <div class='alt_bordered bg-00'>

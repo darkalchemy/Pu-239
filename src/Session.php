@@ -97,8 +97,8 @@ class Session
     }
 
     /**
-     * @param string $key
-     * @param $value
+     * @param string      $key
+     * @param             $value
      * @param string|null $prefix
      */
     public function set(string $key, $value, string $prefix = null)

@@ -106,7 +106,7 @@ function lotteryclean($data)
                 } else {
                     $values[] = [
                         'name' => $key,
-                        'value' => $value
+                        'value' => $value,
                     ];
                 }
             }

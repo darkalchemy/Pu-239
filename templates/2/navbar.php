@@ -173,8 +173,7 @@ function staff_panel()
             $panel .= "
                 <li class='clickable'>
                     <a id='staff_other' href='#'>[" . substr($key, 1) . "]</a>
-                        <ul class='ddFade ddFadeFast'>" .
-                make_link([
+                        <ul class='ddFade ddFadeFast'>" . make_link([
                     'file_name' => 'staffpanel.php',
                     'page_name' => 'Staff Panel',
                 ]) . implode('', $value) . '

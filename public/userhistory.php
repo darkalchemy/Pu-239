@@ -82,7 +82,7 @@ if ($action === 'viewposts') {
         }
 
         $HTMLOUT .= "
-        <div class='container is-fluid portlet'>
+        <div class='portlet'>
             <h2 class='has-text-centered'>
             $title
             </h2>" . main_div($body) . '
@@ -136,7 +136,7 @@ if ($action === 'viewposts') {
         $added = get_date($arr['added'], '') . ' (' . get_date($arr['added'], '', 0, 1) . ')';
         $body = format_comment($arr['text']);
         $HTMLOUT .= "
-        <div class='container is-fluid portlet'>
+        <div class='portlet'>
             <h2 class='has-text-centered'>
                 $added --- <b>{$lang['posts_torrent']}: </b>" . ($torrent ? ("<a href='{$site_config['baseurl']}/details.php?id=$torrentid&amp;tocomm=1'>$torrent</a>") : " [{$lang['posts_del']}] ") . " --- <b>{$lang['posts_comment']}: </b>#<a href='{$site_config['baseurl']}/details.php?id=$torrentid&amp;tocomm=1$page_url'>$commentid</a>
             </h2>" . main_div($body) . '

@@ -97,7 +97,6 @@ if ($type === 'torrents' && $hasAccess) {
 echo json_encode(['fail' => 'invalid']);
 die();
 
-
 function get_uploaded(int $userid)
 {
     global $fluent, $site_config;
@@ -286,7 +285,8 @@ function get_snatched_staff(int $userid)
         ->orderBy('last_action DESC')
         ->fetchAll();
 
-file_put_contents('/var/log/nginx/data.log', json_encode($torrents) . PHP_EOL, FILE_APPEND);
+    file_put_contents('/var/log/nginx/data.log', json_encode($torrents) . PHP_EOL, FILE_APPEND);
+
     return $torrents;
 }
 
@@ -489,5 +489,6 @@ function staff_snatchtable(array $torrents, int $userid)
         }
     }
     $table = main_table($body, $heading);
+
     return $table;
 }
