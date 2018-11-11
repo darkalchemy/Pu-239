@@ -1,3 +1,6 @@
+### 11 Nox, 2018
+remove: padding around banner  
+
 ### 10 Nox, 2018
 cleanup: fomatting  
 update: expand page to full width of screen  

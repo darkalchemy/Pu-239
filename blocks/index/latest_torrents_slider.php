@@ -85,7 +85,7 @@ if (!empty($sliding_torrents)) {
             {$lang['index_latest']} Slider
         </legend>
         <div class='bordered'>
-            <div class='alt_bordered bg-00 automatic-slider flexslider'>
+            <div class='alt_bordered bg-00 automatic-slider flexslider is-paddingless'>
                 <ul class='slides'>";
     $i = 0;
     foreach ($sliding_torrents as $slider_torrent) {
