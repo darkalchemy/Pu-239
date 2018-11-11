@@ -55,7 +55,7 @@ if (!empty($url)) {
 }
 
 $poster = strip_tags(isset($poster) ? trim($poster) : '');
-//$f = $_FILES['file'];
+$f = $_FILES['file'];
 $fname = unesc($f['name']);
 if (empty($fname)) {
     $session->set('is-warning', $lang['takeupload_no_filename']);

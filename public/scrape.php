@@ -32,10 +32,13 @@ foreach ($q as $p) {
 if (empty($_GET['torrent_pass']) || strlen($_GET['torrent_pass']) != 64) {
     err('torrent pass not valid, please redownload your torrent file');
 }
-
 $torrent_pass = $_GET['torrent_pass'];
 if (!$torrent_pass) {
     err('empty torrent pass');
+}
+$user = $user_stuffs->get_user_from_torrent_pass($torrent_pass);
+if (empty($user) || $user['enabled'] === 'no' || $user['parked'] === 'yes' || $user['downloadpos'] != 1) {
+    err('scrape user error');
 }
 $numhash = 1;
 if (!empty($_GET['info_hash']) && is_array($_GET['info_hash'])) {
@@ -61,10 +64,6 @@ if ($numhash < 1) {
 }
 if (count($torrents) === 0) {
     err('torrent error');
-}
-$user = $user_stuffs->get_user_from_torrent_pass($torrent_pass);
-if (empty($user) || $user['enabled'] === 'no' || $user['parked'] === 'yes' || $user['downloadpos'] != 1) {
-    err('scrape user error');
 }
 $resp = 'd5:filesd';
 foreach ($torrents as $info_hash => $torrent) {

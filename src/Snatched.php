@@ -27,18 +27,23 @@ class Snatched
      */
     public function get_snatched(int $userid, int $tid)
     {
-        $snatches = $this->fluent->from('snatched')
-            ->select(null)
-            ->select('seedtime')
-            ->select('leechtime')
-            ->select('uploaded')
-            ->select('downloaded')
-            ->select('finished')
-            ->select('timesann')
-            ->select('start_date AS start_snatch')
-            ->where('torrentid = ?', $tid)
-            ->where('userid = ?', $userid)
-            ->fetch();
+        $snatches = $this->cache->get("snatches_{$userid}_{$tid}");
+        if ($snatches === false || is_null($snatches)) {
+            $snatches = $this->fluent->from('snatched')
+                ->select(null)
+                ->select('seedtime')
+                ->select('leechtime')
+                ->select('uploaded')
+                ->select('downloaded')
+                ->select('finished')
+                ->select('timesann')
+                ->select('start_date AS start_snatch')
+                ->where('torrentid = ?', $tid)
+                ->where('userid = ?', $userid)
+                ->fetch();
+
+            $this->cache->set("snatches_{$userid}_{$tid}", $snatches, 3600);
+        }
 
         return $snatches;
     }
@@ -69,6 +74,8 @@ class Snatched
             ->where('torrentid = ?', $tid)
             ->where('userid = ?', $userid)
             ->execute();
+
+        $this->cache->update("snatches_{$userid}_{$tid}", $set);
     }
 
     /**

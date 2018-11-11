@@ -1,4 +1,6 @@
 ### 11 Nox, 2018
+add: prime caches cleanup  
+add: some caching to queries in announce.php  
 remove: padding around banner  
 
 ### 10 Nox, 2018

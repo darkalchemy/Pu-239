@@ -35,7 +35,6 @@ class User
      */
     public function getUserFromId(int $userid, bool $fresh = false)
     {
-        $this->cache->delete('user' . $userid);
         $user = $this->cache->get('user' . $userid);
         if ($fresh || $user === false || is_null($user)) {
             $user = $this->fluent->from('users AS u')

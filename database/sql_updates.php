@@ -1576,4 +1576,11 @@ $sql_updates = [
         'query' => 'ALTER TABLE `users` DROP COLUMN `language_new`',
         'flush' => false,
     ],
+    [
+        'id' => 1541938356,
+        'info' => 'Add cleanup',
+        'date' => '11 Nov, 2018',
+        'query' => "INSERT INTO `cleanup` (`clean_title`, `clean_file`, `clean_time`, `clean_increment`, `clean_log`, `clean_desc`, `clean_on`, `function_name`) VALUES ('Prime Caches', 'prime_caches.php', 1541938500, 900, 1, 'Prime Caches to improve page loading and announce process', 1, 'prime_caches')",
+        'flush' => false,
+    ],
 ];
