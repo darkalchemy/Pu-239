@@ -206,25 +206,6 @@ function saveconfig()
         <div class="notreadable">config.php file could not be saved</div>';
             $continue = false;
         }
-
-        $file = 'extra/ann_config.phpsample.php';
-        //$xbt = 0;
-        if (isset($_POST['config']['xbt_tracker'])) {
-            $file = 'extra/ann_config.xbtsample.php';
-            //$xbt = 1;
-        }
-        $announce = file_get_contents($file);
-        $keys = array_map('foo', array_keys($_POST['config']));
-        $values = array_values($_POST['config']);
-        $announce = preg_replace($keys, $values, $announce);
-        if (file_put_contents($root . 'include/ann_config.php', $announce)) {
-            $out .= '
-        <div class="readable">ann_config.php file was created</div>';
-        } else {
-            $out .= '
-        <div class="notreadable">ann_config.php file could not be saved</div>';
-            $continue = false;
-        }
     }
     if (rrmdir('/dev/shm/' . $_POST['config']['mysql_db'])) {
         $out .= '

@@ -1,4 +1,5 @@
 ### 11 Nox, 2018
+fix: installer to reflect removal of ann_config.php  
 add: prime caches cleanup  
 add: some caching to queries in announce.php  
 remove: padding around banner  
