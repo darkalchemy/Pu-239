@@ -52,13 +52,13 @@ $site_stats .= "
     <div>
         <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_stats_title']} <span class='size_2'>Updated: " . get_date($stats_cache['updated'], 'LONG', 0, 1) . "</span></legend>
         <div class='columns'>
-            <div class='column is-one-quarters'>" . wrap_this($users) . "</div>
-            <div class='column is-one-quarters'>" . wrap_this($gender) . "</div>
-            <div class='column is-one-quarters'>" . wrap_this($torrents) . "</div>
-            <div class='column is-one-quarters'>" . wrap_this($forums) . '</div>
+            <div class='column'>" . wrap_this($users) . "</div>
+            <div class='column'>" . wrap_this($gender) . "</div>
+            <div class='column'>" . wrap_this($torrents) . "</div>
+            <div class='column'>" . wrap_this($forums) . "</div>
         </div>
     </div>
-    </fieldset>';
+    </fieldset>";
 
 function wrap_this(array $values)
 {

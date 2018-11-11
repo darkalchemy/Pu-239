@@ -189,8 +189,8 @@ foreach ($above_columns as $item) {
 }
 
 $HTMLOUT .= "
-<div class='columns'>
-    <div class='column is-two-thirds'>";
+<div class='columns is-desktop'>
+    <div class='column is-three-fifths-desktop is-full'>";
 
 foreach ($left_column as $item) {
     $HTMLOUT .= wrap_it($item, $$item);
@@ -198,7 +198,7 @@ foreach ($left_column as $item) {
 
 $HTMLOUT .= "
     </div>
-    <div class='column'>";
+    <div class='column is-two-fifths-desktop is-full'>";
 
 foreach ($right_column as $item) {
     $HTMLOUT .= wrap_it($item, $$item);

@@ -94,7 +94,7 @@ function stdhead($title = '', $stdhead = null)
             document.body.className = theme;
         }
     </script>
-    <div id='container' class='container'>
+    <div id='container'>
         <div class='page-wrapper'>";
     if ($CURUSER) {
         $htmlout .= navbar();
@@ -266,7 +266,7 @@ function stdfoot($stdfoot = false)
 
         if (!empty($query_stat)) {
             $htmlfoot .= "
-                <div class='container is-fluid portlet'>
+                <div class='portlet'>
                     <a id='queries-hash'></a>
                     <fieldset id='queries' class='header'>
                         <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['gl_stdfoot_querys']}</legend>";
@@ -310,7 +310,7 @@ function stdfoot($stdfoot = false)
 
     if ($CURUSER) {
         $htmlfoot .= "
-            <div class='container site-debug bg-05 round10 top20 bottom20'>
+            <div class='site-debug bg-05 round10 top20 bottom20'>
                 <div class='level bordered bg-04'>
                     <div class='size_4 top10 bottom10'>
                         <p class='is-marginless'>{$lang['gl_stdfoot_querys_page']} " . mksize(memory_get_peak_usage()) . " in $r_seconds {$lang['gl_stdfoot_querys_seconds']}</p>
@@ -462,7 +462,7 @@ function platform_menu()
     }
 
     $menu = "
-        <div id='platform-menu' class='container platform-menu'>
+        <div id='platform-menu' class='platform-menu'>
             <div class='platform-wrapper level'>
                 <ul class='level-left size_3'>" . (!$site_config['in_production'] ? "
                     <li class='left10 has-text-primary has-text-white'>Pu-239 v{$site_config['version']}</li>" : '') . "

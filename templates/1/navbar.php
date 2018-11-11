@@ -14,7 +14,7 @@ function navbar()
     if ($CURUSER) {
         $navbar = "
 <div class='spacer'>
-    <header id='navbar' class='container'>
+    <header id='navbar'>
         <div class='contained'>
             <div class='nav_container'>
                 <div id='hamburger'><i class='icon-menu size_6 has-text-white' aria-hidden='true'></i></div>
