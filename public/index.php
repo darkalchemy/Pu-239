@@ -214,9 +214,11 @@ foreach ($below_columns as $item) {
 
 function wrap_it($item, $data)
 {
-    return "
+    if (!empty($data)) {
+        return "
     <div class='portlet' id='" . strtoupper($item) . "'>{$data}
     </div>";
+    }
 }
 
 echo stdhead('Home') . $HTMLOUT . stdfoot($stdfoot);

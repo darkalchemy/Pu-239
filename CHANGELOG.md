@@ -1,3 +1,7 @@
+### 12 Nov, 2018
+fix: typo in method call Snatched.php  
+fix: don't give space to empty or disabled block index.php  
+
 ### 11 Nox, 2018
 fix: installer to reflect removal of ann_config.php  
 add: prime caches cleanup  

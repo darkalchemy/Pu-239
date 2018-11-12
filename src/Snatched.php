@@ -75,7 +75,7 @@ class Snatched
             ->where('userid = ?', $userid)
             ->execute();
 
-        $this->cache->update("snatches_{$userid}_{$tid}", $set);
+        $this->cache->update_row("snatches_{$userid}_{$tid}", $set);
     }
 
     /**
