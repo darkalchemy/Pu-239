@@ -52,10 +52,11 @@ if (!empty($user)) {
         $answered = "<h3 class='has-text-danger'>{$lang['trivia_incorrect']}</h3>";
     }
     echo json_encode([
-        'content' => $table . main_div($answered, 'bottom20') . trivia_clocks(),
+        'content' => $table . main_div($answered, 'top20 bottom20') . trivia_clocks(),
         'round' => $cleanup['round'],
         'game' => $cleanup['game'],
     ]);
+    die();
 }
 
 $question = $output = '';
@@ -80,7 +81,5 @@ if (!empty($output)) {
     die();
 }
 
-echo json_encode([
-    'fail' => 'invalid',
-]);
+echo json_encode(['fail' => 'invalid']);
 die();

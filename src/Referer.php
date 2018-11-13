@@ -24,10 +24,10 @@ class Referer
      *
      * @throws \Envms\FluentPDO\Exception
      */
-    public function insert(array $set)
+    public function insert(array $values)
     {
-        $id = $this->fluent->update('referer')
-            ->set($set)
+        $id = $this->fluent->insertInto('referer')
+            ->values($values)
             ->execute();
 
         return $id;

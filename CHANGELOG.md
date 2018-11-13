@@ -1,4 +1,7 @@
 ### 13 Nov, 2018
+fix: trivia fail trivia_lookup.php  
+remove: console.log trivia.js  
+fix: insert query Referer.php  
 fix: comments block not showing comment text  
 add: runtime to cleanup scripts  
 refactor: trivia to ajax  

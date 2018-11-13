@@ -13,7 +13,6 @@ function get_trivia_question() {
         url: './ajax/trivia_lookup.php',
         type: 'POST',
         dataType: 'json',
-        context: this,
         data: {
             csrf: csrf,
             qid: qid,
@@ -80,7 +79,6 @@ function initializeClock(id, remaining)
 
 function process_trivia(elem)
 {
-    console.log(elem);
     var el = document.querySelector('#' + elem);
     var content = document.querySelector('#trivia_content');
 
@@ -90,7 +88,6 @@ function process_trivia(elem)
     var answer = el.dataset.answer;
     content.innerHTML = '<span class="has-text-centered">Checking your answer, please be patient.</span>';
 
-    console.log(answer);
     $.ajax({
         url: './ajax/trivia_answers.php',
         type: 'POST',
