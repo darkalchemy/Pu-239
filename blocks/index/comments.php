@@ -55,7 +55,7 @@ $posted_comments .= "
                     <tbody>";
 
 foreach ($comments as $comment) {
-    $owner = $user = $id = $comment_id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = $times_completed = '';
+    $text = $owner = $user = $id = $comment_id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = $times_completed = '';
     extract($comment);
     $torrname = htmlsafechars($name);
     $user = $anonymous === 'yes' ? 'Anonymous' : format_username($user);
@@ -79,7 +79,7 @@ foreach ($comments as $comment) {
                             </td>
                             <td>";
     $block_id = "comment_id_{$comment_id}";
-    $posted_comments .= torrent_tooltip();
+    $posted_comments .= torrent_tooltip(format_comment($text));
     $posted_comments .= "
                             <td class='has-text-centered'>$user</td>
                             <td class='has-text-centered'>" . get_date($added, 'LONG') . "</td>

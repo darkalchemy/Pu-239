@@ -7,6 +7,7 @@
  */
 function irc_update($data)
 {
+    $time_start = microtime(true);
     dbconn();
     global $site_config, $queries, $cache;
 
@@ -34,7 +35,11 @@ function irc_update($data)
         }
         unset($users_buffer, $update, $count);
     }
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log'] && $queries > 0) {
-        write_log("Irc Cleanup: Completed using $queries queries");
+        write_log("Irc Cleanup: Completed using $queries queries" . $text);
     }
 }

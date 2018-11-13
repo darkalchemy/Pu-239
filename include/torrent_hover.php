@@ -1,13 +1,13 @@
 <?php
 
-function torrent_tooltip()
+function torrent_tooltip($text)
 {
-    global $site_config, $id, $block_id, $torrname, $poster, $lang, $name, $uploader, $added, $size, $seeders, $leechers;
+    global $site_config, $id, $block_id, $name, $poster, $lang, $uploader, $added, $size, $seeders, $leechers;
 
     $content = "
                             <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
                                 <span class='dt-tooltipper-large' data-tooltip-content='#{$block_id}_tooltip'>
-                                    {$torrname}
+                                    {$text}
                                     <div class='tooltip_templates'>
                                         <div id='{$block_id}_tooltip'>
                                             <div class='is-flex tooltip-torrent'>
@@ -31,7 +31,7 @@ function torrent_tooltip()
     return $content;
 }
 
-function torrent_tooltip_wrapper()
+function torrent_tooltip_wrapper($text)
 {
     global $site_config, $image, $cat, $times_completed, $seeders, $leechers;
 
@@ -40,7 +40,7 @@ function torrent_tooltip_wrapper()
                         <td class='has-text-centered'>
                             <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' height='20px' width='auto'>
                         </td>
-                        <td>" . torrent_tooltip() . "
+                        <td>" . torrent_tooltip($text) . "
                         <td class='has-text-centered'>{$times_completed}</td>
                         <td class='has-text-centered'>{$seeders}</td>
                         <td class='has-text-centered'>{$leechers}</td>

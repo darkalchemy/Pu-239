@@ -8,6 +8,7 @@
  */
 function freeuser_update($data)
 {
+    $time_start = microtime(true);
     global $site_config, $queries, $fluent, $message_stuffs, $user_stuffs;
 
     set_time_limit(1200);
@@ -50,7 +51,11 @@ function freeuser_update($data)
         write_log('Cleanup - Removed Freeleech from ' . $count . ' members');
     }
 
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log'] && $queries > 0) {
-        write_log("Freeleech Cleanup: Completed using $queries queries");
+        write_log("Freeleech Cleanup: Completed using $queries queries" . $text);
     }
 }

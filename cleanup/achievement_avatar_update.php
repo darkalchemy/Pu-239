@@ -7,6 +7,7 @@
  */
 function achievement_avatar_update($data)
 {
+    $time_start = microtime(true);
     dbconn();
     global $site_config, $queries, $cache, $message_stuffs;
 
@@ -38,9 +39,13 @@ function achievement_avatar_update($data)
             sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE KEY UPDATE date = VALUES(date),achievement = VALUES(achievement),icon = VALUES(icon),description = VALUES(description)') or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO usersachiev (userid, avatarach, achpoints) VALUES ' . implode(', ', $usersachiev_buffer) . ' ON DUPLICATE KEY UPDATE avatarach = VALUES(avatarach), achpoints=achpoints + VALUES(achpoints)') or sqlerr(__FILE__, __LINE__);
         }
-        if ($data['clean_log'] && $queries > 0) {
-            write_log("Achievements Cleanup: Avatar Setter Completed using $queries queries. Avatar Achievements awarded to - " . $count . ' Member(s)');
-        }
         unset($usersachiev_buffer, $achievement_buffer, $msgs_buffer, $count);
+        $time_end = microtime(true);
+        $run_time = $time_end - $time_start;
+        $text = " Run time: $run_time seconds";
+        echo $text . "\n";
+        if ($data['clean_log'] && $queries > 0) {
+            write_log("Achievements Cleanup: Avatar Setter Completed using $queries queries. Avatar Achievements awarded to - " . $count . ' Member(s).' . $text);
+        }
     }
 }

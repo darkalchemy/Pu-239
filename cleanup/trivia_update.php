@@ -2,6 +2,7 @@
 
 function trivia_update($data)
 {
+    $time_start = microtime(true);
     global $fluent, $cache;
 
     set_time_limit(1200);
@@ -77,7 +78,11 @@ function trivia_update($data)
         }
     }
 
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log']) {
-        write_log('Trivia Questions Cleanup completed');
+        write_log('Trivia Questions Cleanup completed' . $text);
     }
 }

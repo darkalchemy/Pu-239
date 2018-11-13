@@ -7,7 +7,7 @@
  */
 function prime_caches($data)
 {
-
+    $time_start = microtime(true);
     global $fluent, $torrent_stuffs, $user_stuffs, $snatched_stuffs;
 
     $peer_stuffs = new DarkAlchemy\Pu239\Peer();
@@ -22,22 +22,25 @@ function prime_caches($data)
         ->select('info_hash')
         ->select('owner');
 
-    $users = $user_stuffs->get_all_ids();
     $event_stuffs->get_event();
+    $users = $fluent->from('users')
+        ->select(null)
+        ->select('users.id')
+        ->innerJoin('snatched ON users.id = snatched.userid')
+        ->groupBy('users.id');
+
     foreach ($torrents as $torrent) {
         $torrent_stuffs->get($torrent['id']);
         $torrent_stuffs->get_torrent_from_hash($torrent['info_hash']);
         $user_stuffs->getUserFromId($torrent['owner']);
         $peer_stuffs->get_torrent_peers_by_tid($torrent['id']);
-        foreach ($users as $user) {
-            $snatched_stuffs->get_snatched($user['id'], $torrent['id']);
-            $torrent_pass = $user_stuffs->get_item('torrent_pass', $user['id']);
-            $user_stuffs->get_user_from_torrent_pass($torrent_pass);
-        }
     }
 
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log']) {
-        write_log('Prime Caches Cleanup: Completed');
+        write_log('Prime Caches Cleanup: Completed' . $text);
     }
 }
-

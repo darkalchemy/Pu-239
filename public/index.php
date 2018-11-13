@@ -16,6 +16,7 @@ $stdfoot = [
     'js' => [
         get_file_name('scroller_js'),
         get_file_name('slider_js'),
+        get_file_name('trivia_js'),
     ],
 ];
 

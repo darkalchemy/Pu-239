@@ -83,7 +83,7 @@ if ($scroller_torrents) {
                     <div class='slide'>";
         $torrname = "<img src='" . url_proxy($scroll_poster, true, null, 300) . "' alt='{$name}' style='width: auto; height: 300px; max-height: 300px;'>";
         $block_id = "scroll_id_{$id}";
-        $torrents_scroller .= torrent_tooltip();
+        $torrents_scroller .= torrent_tooltip($torrname);
         $torrents_scroller .= '
                     </div>';
     }

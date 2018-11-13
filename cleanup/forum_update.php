@@ -5,6 +5,7 @@
  */
 function forum_update($data)
 {
+    $time_start = microtime(true);
     global $fluent;
 
     set_time_limit(1200);
@@ -36,7 +37,11 @@ function forum_update($data)
             ->execute();
         ++$i;
     }
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log']) {
-        write_log("Forum Cleanup: Completed using $i queries");
+        write_log("Forum Cleanup: Completed using $i queries" . $text);
     }
 }

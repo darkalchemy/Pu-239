@@ -2,6 +2,7 @@
 
 function userhits_update($data)
 {
+    $time_start = microtime(true);
     global $fluent;
 
     set_time_limit(1200);
@@ -13,7 +14,11 @@ function userhits_update($data)
         ->where('added < ?', $dt)
         ->execute();
 
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log']) {
-        write_log('Userhits Updates Cleanup completed');
+        write_log('Userhits Updates Cleanup completed' . $text);
     }
 }

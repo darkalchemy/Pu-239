@@ -54,7 +54,6 @@ $staffpicks .= "
 foreach ($staff_picks as $staff_pick) {
     $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
     extract($staff_pick);
-    $torrname = htmlsafechars($name);
     if (empty($poster) && !empty($imdb_id)) {
         $poster = find_images($imdb_id);
     }
@@ -67,7 +66,7 @@ foreach ($staff_picks as $staff_pick) {
     }
 
     $block_id = "staff_pick_id_{$id}";
-    $staffpicks .= torrent_tooltip_wrapper();
+    $staffpicks .= torrent_tooltip_wrapper(htmlsafechars($name));
 }
 if (count($staff_picks) === 0) {
     $staffpicks .= "

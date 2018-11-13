@@ -5,6 +5,7 @@
  */
 function mow_update($data)
 {
+    $time_start = microtime(true);
     dbconn();
     global $site_config, $queries, $cache;
 
@@ -24,7 +25,11 @@ function mow_update($data)
     if ($data['clean_log']) {
         write_log('Torrent [' . (int) $arr['id'] . '] [' . htmlentities($arr['name']) . "] was set 'Best Film of the Week' by system");
     }
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log'] && $queries > 0) {
-        write_log("Movie of the Week Cleanup: Completed using $queries queries");
+        write_log("Movie of the Week Cleanup: Completed using $queries queries" . $text);
     }
 }

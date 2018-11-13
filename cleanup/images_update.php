@@ -7,6 +7,7 @@
  */
 function images_update($data)
 {
+    $time_start = microtime(true);
     require_once INCL_DIR . 'function_tmdb.php';
     require_once INCL_DIR . 'function_tvmaze.php';
     require_once INCL_DIR . 'function_imdb.php';
@@ -171,7 +172,11 @@ function images_update($data)
 
     $cache->delete('backgrounds_');
 
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log']) {
-        write_log('Images Cleanup: Completed');
+        write_log('Images Cleanup: Completed' . $text);
     }
 }

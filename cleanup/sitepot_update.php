@@ -5,6 +5,7 @@
  */
 function sitepot_update($data)
 {
+    $time_start = microtime(true);
     global $fluent, $cache;
 
     set_time_limit(1200);
@@ -22,7 +23,11 @@ function sitepot_update($data)
         ->execute();
 
     $cache->delete('Sitepot_');
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log']) {
-        write_log('Sitepot Cleanup completed');
+        write_log('Sitepot Cleanup completed' . $text);
     }
 }

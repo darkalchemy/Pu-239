@@ -5,6 +5,7 @@
  */
 function delete_torrents_update($data)
 {
+    $time_start = microtime(true);
     global $site_config, $cache, $fluent, $torrent_stuffs, $message_stuffs;
 
     set_time_limit(1200);
@@ -48,7 +49,11 @@ function delete_torrents_update($data)
         $message_stuffs->insert($values);
     }
 
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log'] && $i > 0) {
-        write_log("Delete Old Torrents Cleanup: Completed using $i queries");
+        write_log("Delete Old Torrents Cleanup: Completed using $i queries" . $text);
     }
 }

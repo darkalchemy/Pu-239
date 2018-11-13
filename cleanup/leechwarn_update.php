@@ -7,6 +7,7 @@
  */
 function leechwarn_update($data)
 {
+    $time_start = microtime(true);
     global $site_config, $cache, $fluent, $message_stuffs;
 
     set_time_limit(1200);
@@ -128,8 +129,12 @@ function leechwarn_update($data)
         $cache->set('forced_logout_' . $arr['id'], TIME_NOW, 2592000);
     }
 
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log'] && $i > 0) {
         write_log('Cleanup - Removed Pirate status from ' . $count . ' members');
-        write_log("Pirate Status Cleanup: Completed using $i queries");
+        write_log("Pirate Status Cleanup: Completed using $i queries" . $text);
     }
 }

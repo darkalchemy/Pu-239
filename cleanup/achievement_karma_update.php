@@ -7,6 +7,7 @@
  */
 function achievement_karma_update($data)
 {
+    $time_start = microtime(true);
     dbconn();
     global $site_config, $queries, $cache, $message_stuffs, $usersachiev_stuffs, $achievement_stuffs;
 
@@ -158,8 +159,12 @@ function achievement_karma_update($data)
             ];
             $usersachiev_stuffs->insert($usersachiev_buffer, $update);
         }
+        $time_end = microtime(true);
+        $run_time = $time_end - $time_start;
+        $text = " Run time: $run_time seconds";
+        echo $text . "\n";
         if ($data['clean_log'] && $queries > 0) {
-            write_log("Achievements Cleanup: Karma Completed using $queries queries. Karma Achievements awarded to - " . $count . ' Member(s)');
+            write_log("Achievements Cleanup: Karma Completed using $queries queries. Karma Achievements awarded to - " . $count . ' Member(s).' . $text);
         }
         unset($usersachiev_buffer, $achievements_buffer, $msgs_buffer, $count);
     }

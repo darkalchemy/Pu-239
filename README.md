@@ -15,19 +15,13 @@
 12. Drag and Drop Image Upload - Done
 13. Use unix sockets for all local server connections - Done
 
-This is a fork of U-232 V4.
-
-PHP 7.2+ is required.
-
-MySQL 5.6 is required. MySQL 5.7 recommended.
-
-Composer is required. Version ^1.7.2.
-
-NPM is required. Version ^6.4.1.
-
-This code explicitly sets the php default timezone to 'UTC'. Further down, you will set MySQL default timezone to the same.
-
-A working site with this code is at [Pu-239](https://pu-239.pw/)
+This is a fork of U-232 V4. 
+PHP 7.2+ is required. 
+MySQL 5.6 is required. MySQL 5.7 recommended. 
+Composer is required. Version ^1.7.3. 
+NPM is required. Version ^6.4.1. 
+This code explicitly sets the php default timezone to 'UTC'. Further down, you will set MySQL default timezone to the same. 
+A working site with this code is at [Pu-239](https://pu-239.pw/)  
 
 ### To Install:
 ```
@@ -92,7 +86,7 @@ sudo chown -R www-data:www-data ../Pu-239
 
 # set permissions and create necessary files
 [sudo] php bin/set_perms.php
-[sudo] php bin/uglify.php
+php bin/uglify.php 
 
 # delete public/install folder once directed to
 sudo rm -r public/install/
@@ -135,59 +129,47 @@ composer install
 composer dump-autoload -o
 npm install
 [sudo] php bin/set_perms.php
-[sudo] php bin/uglify.php
+php bin/uglify.php
 
 # update trivia questions if desired
 mysql database < database/trivia.php.sql
 
-# update tvmaze ids 
+# update tvmaze ids
 mysql database < database/tvmaze.php.sql
 
-# update image urls 
+# update image urls
 mysql database < database/images.php.sql
 
 # update database:
 goto admin/upgrade_database to check/update the database
 ```
 
-### API's
+### API's 
+reCAPTCHA V3 needs both the site key and secret key set in .env.  
+Fanart.tv needs api key set in .env.  
+TMDb API key allows upcoming movies and many images.  
+OMDb API key allows movies and tv lookup.  
+Google API key allows up to 1000 api hits instead of 100 per day, set in .env.  
+IMDb no key needed, allow movies and tv lookup.  
+TVMaze no key needed, allows tv lookup.  
 
-reCAPTCHA V3 needs both the site key and secret key set in .env.
-
-Fanart.tv needs api key set in .env.
-
-TMDb API key allows upcoming movies and many images.
-
-OMDb API key allows movies and tv lookup.
-
-Google API key allows up to 1000 api hits instead of 100 per day, set in .env.
-
-IMDb no key needed, allow movies and tv lookup.
-
-TVMaze no key needed, allows tv lookup.
-
-
-### Making Changes to css/js files
-
+### Making Changes to css/js files  
 Make any edits or changes to the files in templates and scripts folder, then to concatenate, minify and gzip the files for use, run:
 ```
-[sudo] php bin/uglify.php
+php bin/uglify.php
 ```
 
-### Adding, removing changing classes
+### Adding, removing changing classes   
+Make any changes, then run php bin/uglify.php to concatenate, minify and gzip the files for use.
 
-Make any changes, then run [sudo] php bin/uglify.php to concatenate, minify and gzip the files for use.
-
-### Cache Engines
-
+### Cache Engines  
 couchbase, apcu, memcached, redis or file. file is set as default set in .env. In order to use any cache engin besides 'file', you must first install the appropriate driver and php extensions.
 
-
-### Image Proxy:
-
+### Image Proxy:  
 An image proxy for hot linked images is built in, enabled by default, disable/enable in staff panel => site settings, this allows for browser image caching and images with http when site is https
 
+### Notes: 
+If sudo is necessary to run uglify.php without errors, then you have the permissions set incorrectly. See the wiki for a brief example.
 
-### Credits:
-
+### Credits:  
 All Credit goes to the original code creators of U-232, tbdev, etc. Without them, this would not be possible.

@@ -51,7 +51,6 @@ $latest_torrents .= "
 foreach ($last5torrents as $last5torrent) {
     $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
     extract($last5torrent);
-    $torrname = htmlsafechars($name);
     if (empty($poster) && !empty($imdb_id)) {
         $poster = find_images($imdb_id);
     }
@@ -64,7 +63,7 @@ foreach ($last5torrents as $last5torrent) {
     }
 
     $block_id = "last_id_{$id}";
-    $latest_torrents .= torrent_tooltip_wrapper();
+    $latest_torrents .= torrent_tooltip_wrapper(htmlsafechars($name));
 }
 if (count($last5torrents) === 0) {
     $latest_torrents .= "

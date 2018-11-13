@@ -1,3 +1,8 @@
+### 13 Nov, 2018
+fix: comments block not showing comment text  
+add: runtime to cleanup scripts  
+refactor: trivia to ajax  
+
 ### 12 Nov, 2018
 fix: typo in method call Snatched.php  
 fix: don't give space to empty or disabled block index.php  

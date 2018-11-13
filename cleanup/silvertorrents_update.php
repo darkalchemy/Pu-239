@@ -2,6 +2,7 @@
 
 function silvertorrents_update($data)
 {
+    $time_start = microtime(true);
     global $site_config, $fluent, $cache;
 
     set_time_limit(1200);
@@ -36,7 +37,11 @@ function silvertorrents_update($data)
         }
     }
 
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log']) {
-        write_log('Cleanup - Removed Silver from ' . $count . ' torrents');
+        write_log('Cleanup - Removed Silver from ' . $count . ' torrents' . $text);
     }
 }

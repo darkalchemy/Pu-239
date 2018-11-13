@@ -7,6 +7,7 @@
  */
 function achievement_sheep_update($data)
 {
+    $time_start = microtime(true);
     dbconn();
     global $site_config, $queries, $cache, $message_stuffs;
 
@@ -38,8 +39,12 @@ function achievement_sheep_update($data)
             sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE KEY UPDATE date = VALUES(date),achievement = VALUES(achievement),icon = VALUES(icon),description = VALUES(description)') or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO usersachiev (userid, sheepach, achpoints) VALUES ' . implode(', ', $usersachiev_buffer) . ' ON DUPLICATE KEY UPDATE sheepach = VALUES(sheepach), achpoints=achpoints + VALUES(achpoints)') or sqlerr(__FILE__, __LINE__);
         }
+        $time_end = microtime(true);
+        $run_time = $time_end - $time_start;
+        $text = " Run time: $run_time seconds";
+        echo $text . "\n";
         if ($data['clean_log'] && $queries > 0) {
-            write_log("Achievements Cleanup: Sheep Fondler Completed using $queries queries. Sheep Fondling Achievements awarded to - " . $count . ' Member(s)');
+            write_log("Achievements Cleanup: Sheep Fondler Completed using $queries queries. Sheep Fondling Achievements awarded to - " . $count . ' Member(s).' . $text);
         }
         unset($usersachiev_buffer, $achievement_buffer, $msgs_buffer, $count);
     }

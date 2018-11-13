@@ -5,6 +5,7 @@
  */
 function expired_signup_update($data)
 {
+    $time_start = microtime(true);
     dbconn();
     global $site_config, $queries, $cache;
 
@@ -25,7 +26,11 @@ function expired_signup_update($data)
         }
     }
 
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log'] && $queries > 0) {
-        write_log("Expired Signup clean-------------------- Expired Signup cleanup Complete using $queries queries --------------------");
+        write_log("Expired Signup Completed using $queries queries" . $text);
     }
 }

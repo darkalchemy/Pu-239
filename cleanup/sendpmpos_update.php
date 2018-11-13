@@ -2,6 +2,7 @@
 
 function sendpmpos_update($data)
 {
+    $time_start = microtime(true);
     global $site_config, $fluent, $cache, $message_stuffs;
 
     set_time_limit(1200);
@@ -52,8 +53,12 @@ function sendpmpos_update($data)
                 ->where('sendpmpos < ?', $dt)
                 ->execute();
         }
+        $time_end = microtime(true);
+        $run_time = $time_end - $time_start;
+        $text = " Run time: $run_time seconds";
+        echo $text . "\n";
         if ($data['clean_log']) {
-            write_log('Cleanup - Removed PM ban from ' . $count . ' members');
+            write_log('Cleanup - Removed PM ban from ' . $count . ' members' . $text);
         }
     }
 }

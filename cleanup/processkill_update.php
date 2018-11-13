@@ -5,6 +5,7 @@
  */
 function processkill_update($data)
 {
+    $time_start = microtime(true);
     dbconn();
     global $queries;
 
@@ -19,7 +20,11 @@ function processkill_update($data)
             ++$cnt;
         }
     }
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log'] && $queries > 0) {
-        write_log("Process Kill Cleanup: Completed using $queries queries");
+        write_log("Process Kill Cleanup: Completed using $queries queries" . $text);
     }
 }

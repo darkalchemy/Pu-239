@@ -2,6 +2,7 @@
 
 function tvmaze_schedule_update($data)
 {
+    $time_start = microtime(true);
     require_once INCL_DIR . 'function_tvmaze.php';
     global $cache, $BLOCKS, $image_stuffs;
 
@@ -41,7 +42,11 @@ function tvmaze_schedule_update($data)
         }
     }
 
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log']) {
-        write_log('TVMaze Schedule Cleanup: Completed using 0 queries, processed $i images');
+        write_log('TVMaze Schedule Cleanup: Completed using 0 queries, processed $i images' . $text);
     }
 }

@@ -5,6 +5,7 @@
  */
 function optimizedb($data)
 {
+    $time_start = microtime(true);
     dbconn();
     global $queries;
 
@@ -26,7 +27,11 @@ function optimizedb($data)
     if ($data['clean_log'] && $queries > 0) {
         write_log("Auto Optimize DB Cleanup: Completed using $queries queries");
     }
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log'] && $oht != '') {
-        write_log('MySQL Optimized ' . count($tables) . ' table' . plural(count($tables)) . ": {$oht}");
+        write_log('MySQL Optimized ' . count($tables) . ' table' . plural(count($tables)) . ": {$oht}" . $text);
     }
 }

@@ -5,6 +5,7 @@
  */
 function lotteryclean($data)
 {
+    $time_start = microtime(true);
     dbconn();
     global $queries, $cache, $message_stuffs, $fluent, $site_config;
 
@@ -129,7 +130,11 @@ function lotteryclean($data)
         $cache->delete('lottery_info_');
     }
 
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log'] && $queries > 0) {
-        write_log("Lottery Cleanup: Completed using $queries queries");
+        write_log("Lottery Cleanup: Completed using $queries queries" . $text);
     }
 }

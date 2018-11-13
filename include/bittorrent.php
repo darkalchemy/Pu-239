@@ -1609,7 +1609,7 @@ function shuffle_assoc($list, $times = 1)
  *
  * @return array
  */
-function array_msort($array, $cols)
+function array_msort(array $array, array $cols)
 {
     $colarr = [];
     foreach ($cols as $col => $order) {

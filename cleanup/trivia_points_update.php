@@ -2,6 +2,7 @@
 
 function trivia_points_update($data)
 {
+    $time_start = microtime(true);
     global $site_config, $cache, $message_stuffs, $fluent;
 
     set_time_limit(1200);
@@ -123,7 +124,11 @@ function trivia_points_update($data)
         ->values($values)
         ->execute();
 
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log']) {
-        write_log('Cleanup - Trivia Bonus Points awarded to - ' . $count . ' Member(s)');
+        write_log('Cleanup - Trivia Bonus Points awarded to - ' . $count . ' Member(s).' . $text);
     }
 }

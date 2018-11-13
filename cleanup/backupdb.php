@@ -29,6 +29,7 @@ function tables($no_data = '')
  */
 function backupdb($data)
 {
+    $time_start = microtime(true);
     dbconn();
     global $site_config, $queries;
 
@@ -75,7 +76,11 @@ function backupdb($data)
 
     $ext = 'db_' . date('m_d_y_H', $dt) . '.sql.bz2';
     sql_query('INSERT INTO dbbackup (name, added, userid) VALUES (' . sqlesc($ext) . ', ' . $dt . ', ' . $site_config['site']['owner'] . ')') or sqlerr(__FILE__, __LINE__);
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log'] && $queries > 0) {
-        write_log("Auto DB Backup Cleanup: Completed using $queries queries");
+        write_log("Auto DB Backup Cleanup: Completed using $queries queries" . $text);
     }
 }

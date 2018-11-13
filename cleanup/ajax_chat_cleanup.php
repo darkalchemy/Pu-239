@@ -5,6 +5,7 @@
  */
 function ajax_chat_cleanup($data)
 {
+    $time_start = microtime(true);
     dbconn();
     global $site_config, $queries;
 
@@ -24,7 +25,11 @@ function ajax_chat_cleanup($data)
 
     sql_query("UPDATE ajax_chat_messages SET text = REPLACE(REPLACE(text, '[/img]', '[/url]'), '[img]', '[url]') WHERE text LIKE '%[img]%[/img]%' AND dateTime <= NOW() - INTERVAL 1 DAY;") or sqlerr(__FILE__, __LINE__);
 
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log'] && $queries > 0) {
-        write_log("AJAX Chat Cleanup: Autoshout posts Deleted using $queries queries");
+        write_log("AJAX Chat Cleanup: Autoshout posts Deleted using $queries queries" . $text);
     }
 }

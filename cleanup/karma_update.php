@@ -7,6 +7,7 @@
  */
 function karma_update($data)
 {
+    $time_start = microtime(true);
     dbconn();
     global $site_config, $queries, $cache;
 
@@ -56,7 +57,11 @@ function karma_update($data)
         }
         unset($users_buffer, $update, $count, $arr, $total, $Buffer_User, $sql, $res);
     }
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log'] && $queries > 0) {
-        write_log("Karma Cleanup: Completed using $queries queries");
+        write_log("Karma Cleanup: Completed using $queries queries" . $text);
     }
 }

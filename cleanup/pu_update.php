@@ -2,6 +2,7 @@
 
 function pu_update($data)
 {
+    $time_start = microtime(true);
     global $site_config, $cache, $message_stuffs, $fluent;
 
     set_time_limit(1200);
@@ -95,8 +96,12 @@ function pu_update($data)
                     ->where('uploaded / IF(downloaded > 0, downloaded, 1) >= ?', $minratio)
                     ->execute();
             }
+            $time_end = microtime(true);
+            $run_time = $time_end - $time_start;
+            $text = " Run time: $run_time seconds";
+            echo $text . "\n";
             if ($data['clean_log']) {
-                write_log('Cleanup: Promoted ' . $count . ' member(s) from ' . $prev_class_name . ' to ' . $class_name . '');
+                write_log('Cleanup: Promoted ' . $count . ' member(s) from ' . $prev_class_name . ' to ' . $class_name . $text);
             }
         }
     }

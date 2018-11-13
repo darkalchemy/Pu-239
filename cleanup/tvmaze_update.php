@@ -2,6 +2,7 @@
 
 function tvmaze_update($data)
 {
+    $time_start = microtime(true);
     global $fluent, $BLOCKS;
 
     if (!$BLOCKS['tvmaze_api_on']) {
@@ -45,8 +46,12 @@ function tvmaze_update($data)
             ->execute();
     }
 
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log']) {
-        write_log("TVMaze ID's Cleanup completed");
+        write_log("TVMaze ID's Cleanup completed" . $text);
     }
 }
 

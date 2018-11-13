@@ -5,6 +5,7 @@
  */
 function sitestats_update($data)
 {
+    $time_start = microtime(true);
     global $fluent, $cache;
 
     set_time_limit(1200);
@@ -116,7 +117,11 @@ function sitestats_update($data)
 
     $cache->set('site_stats_', $set, 0);
 
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log']) {
-        write_log('Stats Cleanup completed');
+        write_log('Stats Cleanup completed' . $text);
     }
 }

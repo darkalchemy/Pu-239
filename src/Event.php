@@ -24,7 +24,6 @@ class Event
      */
     public function get_event()
     {
-
         $event = $this->cache->get('site_events_');
         if ($event === false || is_null($event)) {
             $event = $this->fluent->from('events')
@@ -40,6 +39,7 @@ class Event
 
             $this->cache->set('site_events_', $event, 3600);
         }
+
         return $event;
     }
 }

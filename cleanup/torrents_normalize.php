@@ -5,6 +5,7 @@
  */
 function torrents_normalize($data)
 {
+    $time_start = microtime(true);
     global $site_config, $fluent, $torrent_stuffs;
 
     set_time_limit(1200);
@@ -41,7 +42,11 @@ function torrents_normalize($data)
         ++$i;
     }
 
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log']) {
-        write_log("Normalize Cleanup: Completed, deleted $i torrents");
+        write_log("Normalize Cleanup: Completed, deleted $i torrents" . $text);
     }
 }

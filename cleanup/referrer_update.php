@@ -2,6 +2,7 @@
 
 function referrer_update($data)
 {
+    $time_start = microtime(true);
     global $fluent;
 
     set_time_limit(1200);
@@ -13,7 +14,11 @@ function referrer_update($data)
         ->where('date < ?', $dt)
         ->execute();
 
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log']) {
-        write_log('Referrer Cleanup completed');
+        write_log('Referrer Cleanup completed' . $text);
     }
 }

@@ -215,6 +215,9 @@ foreach ($styles as $folder) {
         'pollsmanager_js' => [
             SCRIPTS_DIR . 'polls.js',
         ],
+        'trivia_js' => [
+            SCRIPTS_DIR . 'trivia.js',
+        ],
     ]);
 
     $css_list = [];

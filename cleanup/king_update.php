@@ -7,6 +7,7 @@
  */
 function king_update($data)
 {
+    $time_start = microtime(true);
     global $site_config, $cache, $fluent, $message_update;
 
     set_time_limit(1200);
@@ -52,8 +53,12 @@ function king_update($data)
         ++$i;
         $message_stuffs->insert($values);
     }
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log'] && $i > 0) {
         write_log('Cleanup - Removed King status from ' . $count . ' members');
-        write_log("King Status Cleanup: Completed using $i queries");
+        write_log("King Status Cleanup: Completed using $i queries" . $text);
     }
 }

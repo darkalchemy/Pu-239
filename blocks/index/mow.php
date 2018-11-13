@@ -50,7 +50,6 @@ $torrents_mow .= "
 foreach ($motw as $m_w) {
     $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
     extract($m_w);
-    $torrname = htmlsafechars($name);
     if (strlen($torrname) > 75) {
         $torrname = substr($torrname, 0, 50) . '...';
     }
@@ -66,7 +65,7 @@ foreach ($motw as $m_w) {
     }
 
     $block_id = "mow_id_{$id}";
-    $torrents_mow .= torrent_tooltip_wrapper();
+    $torrents_mow .= torrent_tooltip_wrapper(htmlsafechars($name));
 }
 
 if (count($motw) === 0) {

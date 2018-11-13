@@ -2,6 +2,7 @@
 
 function birthday_update($data)
 {
+    $time_start = microtime(true);
     require_once INCL_DIR . 'user_functions.php';
     global $site_config, $cache, $message_stuffs, $fluent;
 
@@ -48,7 +49,11 @@ function birthday_update($data)
                 ->execute();
         }
     }
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log']) {
-        write_log("Birthday Cleanup: Pm'd' " . $count . ' member(s) and awarded a birthday prize');
+        write_log("Birthday Cleanup: Pm'd' " . $count . ' member(s) and awarded a birthday prize' . $text);
     }
 }

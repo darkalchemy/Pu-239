@@ -7,6 +7,7 @@
  */
 function funds_update($data)
 {
+    $time_start = microtime(true);
     dbconn();
     global $site_config, $queries, $cache, $message_stuffs;
 
@@ -54,7 +55,11 @@ function funds_update($data)
         }
         unset($users_buffer, $msgs_buffer, $update, $count);
     }
+    $time_end = microtime(true);
+    $run_time = $time_end - $time_start;
+    $text = " Run time: $run_time seconds";
+    echo $text . "\n";
     if ($data['clean_log'] && $queries > 0) {
-        write_log("Delete Old Funds Cleanup: Completed using $queries queries");
+        write_log("Delete Old Funds Cleanup: Completed using $queries queries" . $text);
     }
 }

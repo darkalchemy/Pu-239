@@ -142,6 +142,19 @@ input:valid {
     border: 1px solid #000;
 }
 
+.trivia-pointer {
+    cursor: pointer;
+}
+
+.trivia-pointer:hover {
+    transform: scale(1.2);
+}
+
+.trivia-pointer:active {
+    transform: scale(1);
+    font-weight: bold;
+}
+
 input[type=button],
 input[type=checkbox],
 input[type=radio],
