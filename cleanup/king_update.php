@@ -8,7 +8,7 @@
 function king_update($data)
 {
     $time_start = microtime(true);
-    global $site_config, $cache, $fluent, $message_update;
+    global $site_config, $cache, $fluent, $message_stuffs;
 
     set_time_limit(1200);
     ignore_user_abort(true);

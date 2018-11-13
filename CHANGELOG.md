@@ -1,4 +1,7 @@
 ### 13 Nov, 2018
+add: third column to index page  
+fix: king update incorrect gloval variable  
+fix: trivia update when questions array less than 100  
 fix: trivia fail trivia_lookup.php  
 remove: console.log trivia.js  
 fix: insert query Referer.php  

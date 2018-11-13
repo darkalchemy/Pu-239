@@ -3,6 +3,8 @@
 require_once ROOT_DIR . 'tfreak.php';
 global $lang;
 
+$tfreak_feed = rsstfreakinfo();
+/*
 $feed = rsstfreakinfo();
 if (!empty($feed)) {
     $tfreak_feed .= "
@@ -14,3 +16,4 @@ if (!empty($feed)) {
         </div>
     </fieldset>";
 }
+*/

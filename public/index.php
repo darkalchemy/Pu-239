@@ -160,6 +160,9 @@ $below_columns = [
     'disclaimer',
 ];
 $left_column = [
+    'tfreak_feed',
+];
+$center_column = [
     'ajaxchat',
     'torrents_scroller',
     'torrents_mow',
@@ -175,7 +178,6 @@ $right_column = [
     'advertise',
     'site_news',
     'posted_comments',
-    'tfreak_feed',
     'latest_user',
     'birthday_users',
     'active_users_irc',
@@ -191,7 +193,7 @@ foreach ($above_columns as $item) {
 
 $HTMLOUT .= "
 <div class='columns is-desktop'>
-    <div class='column is-three-fifths-desktop is-full'>";
+    <div class='column is-2 is-full'>";
 
 foreach ($left_column as $item) {
     $HTMLOUT .= wrap_it($item, $$item);
@@ -199,7 +201,15 @@ foreach ($left_column as $item) {
 
 $HTMLOUT .= "
     </div>
-    <div class='column is-two-fifths-desktop is-full'>";
+    <div class='column is-6 is-full'>";
+
+foreach ($center_column as $item) {
+    $HTMLOUT .= wrap_it($item, $$item);
+}
+
+$HTMLOUT .= "
+    </div>
+    <div class='column is-4 is-full'>";
 
 foreach ($right_column as $item) {
     $HTMLOUT .= wrap_it($item, $$item);
