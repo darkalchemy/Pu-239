@@ -1,4 +1,6 @@
 ### 13 Nov, 2018
+update: trivia display  
+add: basic parallax scrolling to index, should be able to improve on it  
 add: third column to index page  
 fix: king update incorrect gloval variable  
 fix: trivia update when questions array less than 100  

@@ -84,7 +84,7 @@ function trivia_clocks()
     global $lang;
 
     return "
-    <ul class='level-center'>
+    <ul class='level-center top20'>
         <div id='clock_round'>
             <span class='right10'>{$lang['trivia_next_question']}: </span><span class='has-text-lime'><span class='days'></span><span class='hours'></span><span class='minutes'></span>:<span class='seconds'></span></span>
         </div>

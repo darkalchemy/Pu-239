@@ -47,12 +47,12 @@ $user = $fluent->from('triviausers')
 $cleanup = trivia_time();
 if (!empty($user)) {
     if ($user['correct'] == 1) {
-        $answered = "<h3 class='has-text-success'>{$lang['trivia_correct']}</h3>";
+        $answered = "<h3 class='has-text-success top20'>{$lang['trivia_correct']}</h3>";
     } else {
-        $answered = "<h3 class='has-text-danger'>{$lang['trivia_incorrect']}</h3>";
+        $answered = "<h3 class='has-text-danger top20'>{$lang['trivia_incorrect']}</h3>";
     }
     echo json_encode([
-        'content' => $table . main_div($answered, 'top20 bottom20') . trivia_clocks(),
+        'content' => $table . $answered . trivia_clocks(),
         'round' => $cleanup['round'],
         'game' => $cleanup['game'],
     ]);
@@ -74,7 +74,7 @@ foreach ($answers as $answer) {
 if (!empty($output)) {
     $output = "<div class='level-center'>$output</div>";
     echo json_encode([
-        'content' => main_div($question . $output, 'bottom20') . trivia_clocks(),
+        'content' => $question . $output . trivia_clocks(),
         'round' => $cleanup['round'],
         'game' => $cleanup['game'],
     ]);

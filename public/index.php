@@ -17,6 +17,7 @@ $stdfoot = [
         get_file_name('scroller_js'),
         get_file_name('slider_js'),
         get_file_name('trivia_js'),
+        get_file_name('parallax_js'),
     ],
 ];
 
@@ -192,30 +193,36 @@ foreach ($above_columns as $item) {
 }
 
 $HTMLOUT .= "
-<div class='columns is-desktop'>
-    <div class='column is-2 is-full'>";
+<div class='columns parallax is-desktop'>
+    <div class='column is-2 is-full'>
+        <div id='left_column' class='left_column'>";
 
 foreach ($left_column as $item) {
     $HTMLOUT .= wrap_it($item, $$item);
 }
 
 $HTMLOUT .= "
+        </div>
     </div>
-    <div class='column is-6 is-full'>";
+    <div class='column is-6 is-full'>
+        <div id='center_column'>";
 
 foreach ($center_column as $item) {
     $HTMLOUT .= wrap_it($item, $$item);
 }
 
 $HTMLOUT .= "
+        </div>
     </div>
-    <div class='column is-4 is-full'>";
+    <div class='column is-4 is-full'>
+        <div id='right_column' class='right_column'>";
 
 foreach ($right_column as $item) {
     $HTMLOUT .= wrap_it($item, $$item);
 }
 
 $HTMLOUT .= '
+        </div>
     </div>
 </div>';
 

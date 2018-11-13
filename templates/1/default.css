@@ -269,6 +269,9 @@ h6 {
 
 p {
     line-height: 1.25em;
+    text-align: justify;
+    text-justify: kashida;
+    -ms-text-justify: kashida;
 }
 
 .site-debug {
@@ -1214,12 +1217,6 @@ body.background-16 {
 }
 
 @media (max-width: 767px) {
-    p {
-        text-align: justify;
-        text-justify: kashida;
-        -ms-text-justify: kashida;
-    }
-
     #base_content {
         padding: 0;
         border-radius: 0;

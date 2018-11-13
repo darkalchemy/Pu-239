@@ -38,9 +38,9 @@ $cleanup = trivia_time();
 
 if (!empty($user)) {
     if ($user['correct'] == 1) {
-        $answered = "<h3 class='has-text-success'>{$lang['trivia_correct']}</h3>";
+        $answered = "<h3 class='has-text-success top20'>{$lang['trivia_correct']}</h3>";
     } else {
-        $answered = "<h3 class='has-text-danger'>{$lang['trivia_incorrect']}</h3>";
+        $answered = "<h3 class='has-text-danger top20'>{$lang['trivia_incorrect']}</h3>";
     }
 } else {
     $values = [
@@ -50,10 +50,10 @@ if (!empty($user)) {
         'date' => date('Y-m-d H:i:s'),
     ];
     if ($correct_answer === $answer) {
-        $answered = "<h3 class='has-text-success'>{$lang['trivia_correct']}</h3>";
+        $answered = "<h3 class='has-text-success top20'>{$lang['trivia_correct']}</h3>";
         $values['correct'] = 1;
     } else {
-        $answered = "<h3 class='has-text-danger'>{$lang['trivia_incorrect']}</h3>";
+        $answered = "<h3 class='has-text-danger top20'>{$lang['trivia_incorrect']}</h3>";
         $values['correct'] = 0;
     }
     $fluent->insertInto('triviausers')
@@ -63,7 +63,7 @@ if (!empty($user)) {
 
 $table = trivia_table();
 echo json_encode([
-    'content' => $table['table'] . main_div($answered, 'bottom20 top20') . trivia_clocks(),
+    'content' => $table['table'] . $answered . trivia_clocks(),
     'round' => $cleanup['round'],
     'game' => $cleanup['game'],
 ]);
