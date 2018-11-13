@@ -1,4 +1,5 @@
 ### 13 Nov, 2018
+fix: column position after scroll  
 update: trivia display  
 add: basic parallax scrolling to index, should be able to improve on it  
 add: third column to index page  

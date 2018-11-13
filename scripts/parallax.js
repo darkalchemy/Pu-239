@@ -29,6 +29,14 @@ $(window).on("load resize scroll",function(e){
                  "-o-transform": "translate3d(0px, " + a1 + "px, 0px)",
                       transform: "translate3d(0px, " + a1 + "px, 0px)"
         });
+    } else if (distance <= 0) {
+        $("#left_column").css({
+            "-webkit-transform": "translate3d(0px, 0px, 0px)",
+               "-moz-transform": "translate3d(0px, 0px, 0px)",
+                "-ms-transform": "translate3d(0px, 0px, 0px)",
+                 "-o-transform": "translate3d(0px, 0px, 0px)",
+                      transform: "translate3d(0px, 0px, 0px)"
+        });
     }
     if (scrolltop >= topOfColumns && b3 === false ) {
         $("#right_column").css({
@@ -37,6 +45,14 @@ $(window).on("load resize scroll",function(e){
                 "-ms-transform": "translate3d(0px, " + a3 + "px, 0px)",
                  "-o-transform": "translate3d(0px, " + a3 + "px, 0px)",
                       transform: "translate3d(0px, " + a3 + "px, 0px)"
+        });
+    } else if (distance <= 0) {
+        $("#right_column").css({
+            "-webkit-transform": "translate3d(0px, 0px, 0px)",
+               "-moz-transform": "translate3d(0px, 0px, 0px)",
+                "-ms-transform": "translate3d(0px, 0px, 0px)",
+                 "-o-transform": "translate3d(0px, 0px, 0px)",
+                      transform: "translate3d(0px, 0px, 0px)"
         });
     }
 });
