@@ -281,12 +281,13 @@ if ($action === 'avatar') {
                                             <select name='country' class='w-100'>
                                                 $countries
                                             </select>", 1);
+    $current_lang = get_language();
     $HTMLOUT .= tr($lang['usercp_language'], "
                                             <select name='language' class='w-100'>
-                                                <option value='1'" . (get_language() == '1' ? ' selected' : '') . ">En</option>
-                                                <option value='2'" . (get_language() == '2' ? ' selected' : '') . ">Dk</option>
-                                                <option value='3'" . (get_language() == '3' ? ' selected' : '') . '>New</option>
-                                            </select>', get_language());
+                                                <option value='1'" . ($current_lang == '1' ? ' selected' : '') . ">English</option>
+                                                <option value='2'" . ($current_lang == '2' ? ' selected' : '') . ">Danish [Incomplete]</option>
+                                                <option value='3'" . ($current_lang == '3' ? ' selected' : '') . '>Romanian [Incomplete]</option>
+                                            </select>', $current_lang);
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>

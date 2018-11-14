@@ -1,4 +1,5 @@
 ### 14 Nov, 2018
+update: columns in tablet stats.php  
 update: missimg bookmark.php breadcrumb  
 update: proper columns gap  
 update: parallax scrolling only on desktop or larger  

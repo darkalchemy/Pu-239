@@ -1,15 +1,16 @@
 $(window).on('load resize scroll', function (e) {
-    if ($(window).innerWidth() >= 1344) {
+    if (document.body.clientWidth >= 1344) {
         var col1 = document.getElementById('left_column').offsetHeight;
         var col2 = document.getElementById('center_column').offsetHeight;
         var col3 = document.getElementById('right_column').offsetHeight;
 
-        var travel1 = col2 - col1;
-        var travel3 = col2 - col3;
+        var travel1 = Math.abs(col2 - col1);
+        var travel3 = Math.abs(col2 - col3);
 
         var height = $(window).innerHeight();
         var topOfColumns = $('.parallax').offset().top;
         var columns = $('.parallax').outerHeight() - height;
+        console.log(columns);
         var scrollInterval1 = columns / travel1;
         var scrollInterval3 = columns / travel3;
 
