@@ -12,6 +12,7 @@ $lang = [
     'bitbucket.php' => 'BitBucket',
     'blackjack.php' => 'Blackjack',
     'bjstats.php' => 'Blackjack Stats',
+    'bookmark.php' => 'Bookmark It!',
     'bookmarks.php' => 'Bookmarks',
     'browse.php' => 'Browse Torrents',
     'bugs.php' => 'Bugs',
