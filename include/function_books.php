@@ -27,7 +27,7 @@ function get_book_info($isbn, $name, $tid, $poster)
                     "
                 <div class='padding10'>
                     <div class='columns'>
-                        <div class='has-text-red column is-2 size_5 padding5'>Google API: </div>
+                        <span class='has-text-red column is-2 size_5 padding5'>Google API: </span>
                         <span class='column padding5'>API Limit exceeded: $api_hits / $api_limit</span>
                     </div>
                 </div>",
@@ -114,28 +114,28 @@ function get_book_info($isbn, $name, $tid, $poster)
 
     $ebook_info = "
                     <div class='columns'>
-                        <div class='has-text-red column is-2 size_5 padding5'>Title: </div>
+                        <span class='has-text-red column is-2 size_5 padding5'>Title: </span>
                         <span class='column padding5'>{$ebook['title']}</span>
                     </div>
                     <div class='columns'>
-                        <div class='has-text-red column is-2 size_5 padding5'>Author: </div>
+                        <span class='has-text-red column is-2 size_5 padding5'>Author: </span>
                         <span class='column padding5'>" . implode(', ', $ebook['authors']) . "</span>
                     </div>
                     <div class='columns'>
-                        <div class='has-text-red column is-2 size_5 padding5'>Published: </div>
+                        <span class='has-text-red column is-2 size_5 padding5'>Published: </span>
                         <span class='column padding5'>{$ebook['publisher']}" . (!empty($ebook['publisher']) ? '<br>' : '') . "{$ebook['publishedDate']}</span>
                     </div>";
     if (!empty($ebook['description'])) {
         $ebook_info .= "
                     <div class='columns'>
-                        <div class='has-text-red column is-2 size_5 padding5'>Description: </div>
+                        <span class='has-text-red column is-2 size_5 padding5'>Description: </span>
                         <span class='column padding5'>{$ebook['description']}</span>
                     </div>";
     }
     if (!empty($ebook['isbn10'])) {
         $ebook_info .= "
                     <div class='columns'>
-                        <div class='has-text-red column is-2 size_5 padding5'>ISBN 10: </div>
+                        <span class='has-text-red column is-2 size_5 padding5'>ISBN 10: </span>
                         <span class='column padding5'>
                             <a href='" . url_proxy("https://www.amazon.com/gp/search/field-isbn={$ebook['isbn10']}") . "' target='_blank'>{$ebook['isbn10']}</a>
                         </span>
@@ -144,7 +144,7 @@ function get_book_info($isbn, $name, $tid, $poster)
     if (!empty($ebook['isbn13'])) {
         $ebook_info .= "
                     <div class='columns'>
-                        <div class='has-text-red column is-2 size_5 padding5'>ISBN 13: </div>
+                        <span class='has-text-red column is-2 size_5 padding5'>ISBN 13: </span>
                         <span class='column padding5'>
                             <a href='" . url_proxy("https://www.amazon.com/gp/search/field-isbn={$ebook['isbn13']}") . "' target='_blank'>{$ebook['isbn13']}</a>
                         </span>
@@ -154,21 +154,21 @@ function get_book_info($isbn, $name, $tid, $poster)
     if (!empty($ebook['categories'])) {
         $ebook_info .= "
                     <div class='columns'>
-                        <div class='has-text-red column is-2 size_5 padding5'>Genre: </div>
+                        <span class='has-text-red column is-2 size_5 padding5'>Genre: </span>
                         <span class='column padding5'>" . implode(', ', $ebook['categories']) . '</span>
                     </div>';
     }
 
     $ebook_info .= "
                     <div class='columns'>
-                        <div class='has-text-red column is-2 size_5 padding5'>Pages: </div>
+                        <span class='has-text-red column is-2 size_5 padding5'>Pages: </span>
                         <span class='column padding5'>{$ebook['pageCount']}</span>
                     </div>";
 
     if (!empty($ebook['rating'])) {
         $ebook_info .= "
                     <div class='columns'>
-                        <div class='has-text-red column is-2 size_5 padding5'>Rating: </div>
+                        <span class='has-text-red column is-2 size_5 padding5'>Rating: </span>
                         <span class='column padding5'>{$ebook['rating']}</span>
                     </div>";
     }
@@ -176,7 +176,7 @@ function get_book_info($isbn, $name, $tid, $poster)
     if ($CURUSER['class'] >= UC_STAFF) {
         $ebook_info .= "
                     <div class='columns'>
-                        <div class='has-text-red column is-2 size_5 padding5'>API Hits: </div>
+                        <span class='has-text-red column is-2 size_5 padding5'>API Hits: </span>
                         <span class='column padding5'>$api_hits</span>
                     </div>";
     }

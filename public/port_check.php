@@ -24,10 +24,16 @@ $completed = "
     <h1 class='has-text-centered'>$user Port Status</h1>";
 $completed .= main_div("
     <div id='ipports' data-uid='{$id}'></div>
-    <div class='columns is-multiline top10'>
-        <input class='has-text-centered column is-4' type='text' id='userip' placeholder='Your Torrent Client IP [" . getip() . "]'>
-        <input class='has-text-centered column is-4' type='text' id='userport' placeholder='Your Torrent Client Port'>
-        <input class='has-text-centered column is-4' type='text' id='ipport' placeholder='Check Status' readonly>
+    <div class='columns top10 is-variable is-0-mobile is-1-tablet is-2-desktop'>
+        <span class='has-text-centered column is-one-third'>
+            <input class='w-100' type='text' id='userip' placeholder='Your Torrent Client IP [" . getip() . "]'>
+        </span>
+        <span class='has-text-centered column is-one-third'>
+            <input class='w-100' type='text' id='userport' placeholder='Your Torrent Client Port'>
+        </span>
+        <span class='has-text-centered column is-one-third'>
+            <input class='w-100' type='text' id='ipport' placeholder='Check Status' readonly>
+        </span>
     </div>
     <div class='has-text-centered'>
         <input id='portcheck' type='submit' value='Test Connectivity' class='button is-small margin20'>

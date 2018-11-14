@@ -176,8 +176,8 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                 }
                 $imdb_info .= "
                     <div class='columns'>
-                        <div class='has-text-red column is-2 size_5 padding5'>$boo: </div>
-                        <div class='column padding5'>{$imdb_data[$foo]}</div>
+                        <span class='has-text-red column is-2 size_5 padding5'>$boo: </span>
+                        <span class='column padding5'>{$imdb_data[$foo]}</span>
                     </div>";
             } elseif (is_array($imdb_data[$foo]) && in_array($foo, [
                     'director',
@@ -203,8 +203,8 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
             if (!empty($imdb_tmp)) {
                 $imdb_info .= "
                     <div class='columns'>
-                        <div class='has-text-red column is-2 size_5 padding5'>$boo: </div>
-                        <div class='column padding5'>" . implode(', ', $imdb_tmp) . '</div>
+                        <span class='has-text-red column is-2 size_5 padding5'>$boo: </span>
+                        <span class='column padding5'>" . implode(', ', $imdb_tmp) . '</span>
                     </div>';
                 unset($imdb_tmp);
             }

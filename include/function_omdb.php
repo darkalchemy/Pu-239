@@ -129,8 +129,8 @@ function get_omdb_info($imdbid, $title = true, $data_only = false)
         } elseif (!in_array($key, $exclude)) {
             $body .= "
             <div class='columns'>
-                <div class='has-text-red column is-2 size_5 padding5'>{$key}: </div>
-                <div class='column padding5'>{$value}</div>
+                <span class='has-text-red column is-2 size_5 padding5'>{$key}: </span>
+                <span class='column padding5'>{$value}</span>
             </div>";
         }
     }
