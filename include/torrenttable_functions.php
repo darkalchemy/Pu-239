@@ -40,6 +40,7 @@ function torrenttable($res, $variant = 'index')
     $oldlink = [];
 
     global $site_config, $CURUSER, $lang, $free, $session;
+
     include_once INCL_DIR . 'bbcode_functions.php';
     include_once CLASS_DIR . 'class_user_options_2.php';
     include_once CACHE_DIR . 'subs.php';
@@ -62,14 +63,12 @@ function torrenttable($res, $variant = 'index')
                 break;
         }
         $slot = make_freeslots($CURUSER['id'], 'fllslot_');
-        $book = make_bookmarks($CURUSER['id'], 'bookmm_');
         $all_free_tag = ($fl['modifier'] != 0 && ($fl['expires'] > TIME_NOW || $fl['expires'] == 1) ? ' <a class="info" href="#">
             <b>' . $free_display . '</b>
             <span>' . ($fl['expires'] != 1 ? '
             Expires: ' . get_date($fl['expires'], 'DATE') . '<br>
             (' . mkprettytime($fl['expires'] - TIME_NOW) . ' to go)</span></a><br>' : 'Unlimited</span></a><br>') : '');
     }
-    $book = make_bookmarks($CURUSER['id'], 'bookmm_');
     foreach ($_GET as $key => $var) {
         if (in_array($key, [
             'sort',
@@ -115,7 +114,7 @@ function torrenttable($res, $variant = 'index')
                     <th class='has-text-centered w-50 tooltipper' title='{$lang['torrenttable_name']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=1&amp;type={$link1}'>{$lang['torrenttable_name']}</a></th>
                     <th class='has-text-centered w-1 tooltipper' title='Download'><img src='{$site_config['pic_baseurl']}zip.gif' alt='Download'></th>";
     $htmlout .= ($variant === 'index' ? "
-                    <th class='has-text-centered tooltipper' title='Go To My Bookmarks'>
+                    <th class='has-text-centered tooltipper' title='{$lang['bookmark_goto']}'>
                         <a href='{$site_config['baseurl']}/bookmarks.php'>
                             <i class='icon-ok icon'></i>
                         </a>
@@ -153,6 +152,7 @@ function torrenttable($res, $variant = 'index')
             'image' => $value['image'],
         ];
     }
+    $book = make_bookmarks($CURUSER['id'], 'bookmm_');
     while ($row = mysqli_fetch_assoc($res)) {
         if ($CURUSER['opt2'] & user_options_2::SPLIT) {
             if (get_date($row['added'], 'DATE') == $prevdate) {
@@ -341,35 +341,22 @@ function torrenttable($res, $variant = 'index')
             }
             $htmlout .= '</td>';
         }
-        $booked = '';
+
+        $bookmark = "
+                <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' class='bookmarks tooltipper' title='{$lang['bookmark_add']}'>
+                    <i class='icon-ok icon has-text-success'></i>
+                </span>";
+
         if (!empty($book)) {
             foreach ($book as $bk) {
                 if ($bk['torrentid'] == $id) {
-                    $booked = 1;
+                    $bookmark = "
+                    <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' class='bookmarks tooltipper' title='{$lang['bookmark_del']}'>
+                        <i class='icon-cancel icon has-text-danger'></i>
+                    </span>";
                 }
             }
         }
-        $rm_status = (!$booked ? ' style="display:none;"' : ' style="display:inline;"');
-        $bm_status = ($booked ? ' style="display:none;"' : ' style="display:inline;"');
-        $bookmark = "
-                    <span id='bookmark{$id}' {$bm_status}>
-                        <div class='level-center'>
-                            <div class='flex-inrow'>
-                                <a href='{$site_config['baseurl']}/bookmark.php?torrent={$id}&amp;action=add' class='flex-item bookmark' name='{$id}'>
-                                    <i class='icon-ok icon has-text-success tooltipper' title='Bookmark it!'></i>
-                                </a>
-                            </div>
-                        </div>
-                    </span>
-                    <span id='remove{$id}' {$rm_status}>
-                        <div class='level-center'>
-                            <div class='flex-inrow'>
-                                <a href='{$site_config['baseurl']}/bookmark.php?torrent={$id}&amp;action=delete' class='flex-item remove' name='{$id}'>
-                                    <i class='icon-ok icon has-text-red tooltipper' title='Delete Bookmark!'></i>
-                                </a>
-                            </div>
-                        </div>
-                    </span>";
         if ($variant === 'index') {
             $htmlout .= "<td class='has-text-centered'>{$bookmark}</td>";
         }

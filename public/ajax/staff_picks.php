@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-global $site_config, $fluent, $cache, $session;
+global $site_config, $fluent, $cache, $session, $user_stuffs;
 
 extract($_POST);
 
@@ -10,6 +10,14 @@ if (!$session->validateToken($csrf)) {
     echo json_encode(['pick' => 'csrf']);
     die();
 }
+
+$current_user = $session->get('userID');
+$class = $user_stuffs->get_item('class', $current_user);
+if (empty($current_user) || $class < UC_STAFF) {
+    echo json_encode(['pick' => 'csrf']);
+    die();
+}
+
 
 if (!isset($pick) || empty($id)) {
     echo json_encode(['pick' => 'invalid']);

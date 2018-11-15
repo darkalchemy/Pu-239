@@ -14,11 +14,11 @@ $('.staff_pick').on('click', function () {
                 $(this).html('CSRF');
                 $(this).tooltipster('content', 'Invalid CSRF, try refreshing the page.');
             } else if (data['staff_pick'] === 'invalid') {
-                $(this).html('CSRF');
+                $(this).html('?');
                 $(this).tooltipster('content', 'Invalid data received, try refreshing the page.');
             } else if (data['staff_pick'] === 'fail') {
-                $(this).html('CSRF');
-                $(this).tooltipster('content', 'Unknow failure. Try refreshing the page.');
+                $(this).html('?');
+                $(this).tooltipster('content', 'Unknown failure. Try refreshing the page.');
             } else if (data['staff_pick'] > 0) {
                 $(this).html('<i class=\'icon-minus icon has-text-red\'></i>');
                 $(this).tooltipster('content', 'Remove from Staff Picks');

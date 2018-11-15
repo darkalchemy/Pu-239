@@ -1,4 +1,6 @@
 ### 15 Nov, 2018
+update: check user class staff_picks.php  
+update: bookmarks add/delete to ajax  
 update: reduce font size, increase line height for legend  
 fix: add/remove bookmark not updating torrents page correctly  
 update: remove fieldset/legend from index page blocks  

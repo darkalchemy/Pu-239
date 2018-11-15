@@ -105,12 +105,14 @@ foreach ($styles as $folder) {
             SCRIPTS_DIR . 'autocomplete.js',
         ];
     }
+
     if ($BLOCKS['latest_torrents_scroll_on']) {
         $js_list['scroller_js'] = [
             ROOT_DIR . 'node_modules/raphael/raphael.js',
             SCRIPTS_DIR . 'icarousel.js',
         ];
     }
+
     if ($BLOCKS['latest_torrents_slider_on']) {
         $js_list['slider_js'] = [
             ROOT_DIR . 'node_modules/flexslider/jquery.flexslider.js',
@@ -122,6 +124,7 @@ foreach ($styles as $folder) {
         SCRIPTS_DIR . 'flip_box.js',
         SCRIPTS_DIR . 'user_torrents.js',
     ];
+
     if ($BLOCKS['userdetails_flush_on']) {
         $js_list['userdetails_js'] = array_merge($js_list['userdetails_js'], [
             SCRIPTS_DIR . 'flush_torrents.js',
@@ -131,8 +134,13 @@ foreach ($styles as $folder) {
     $js_list['jquery_js'] = [
         ROOT_DIR . 'node_modules/jquery/dist/jquery.js',
     ];
+
     $js_list['recaptcha_js'] = [
         SCRIPTS_DIR . 'recaptcha.js',
+    ];
+
+    $js_list['bookmarks_js'] = [
+        SCRIPTS_DIR . 'bookmarks.js',
     ];
 
     if ($BLOCKS['global_themechanger_on']) {

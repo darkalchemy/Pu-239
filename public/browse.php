@@ -26,10 +26,11 @@ if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
 $stdfoot = [
     'js' => [
         get_file_name('browse_js'),
+        get_file_name('bookmarks_js'),
     ],
 ];
 
-$lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'));
+$lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'), load_language('bookmark'));
 $HTMLOUT = $searchin = $select_searchin = $where = $addparam = $new_button = $vip_box = $only_free = $searchstr = $join = '';
 $searchincrt = [];
 

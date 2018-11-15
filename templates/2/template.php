@@ -268,8 +268,7 @@ function stdfoot($stdfoot = false)
             $htmlfoot .= "
                 <div class='portlet'>
                     <a id='queries-hash'></a>
-                    <fieldset id='queries' class='header'>
-                        <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['gl_stdfoot_querys']}</legend>";
+                    <div id='queries' class='box'>";
             $heading = "
                             <tr>
                                 <th class='w-10'>{$lang['gl_stdfoot_id']}</th>
@@ -290,7 +289,7 @@ function stdfoot($stdfoot = false)
             }
 
             $htmlfoot .= main_table($body, $heading) . '
-                    </fieldset>
+                    </div>
                 </div>';
         }
         $uptime = $cache->get('uptime');

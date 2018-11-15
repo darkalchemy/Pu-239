@@ -9,6 +9,12 @@ check_user_status();
 global $CURUSER;
 
 $lang = array_merge(load_language('global'), load_language('torrenttable_functions'), load_language('bookmark'));
+$stdfoot = [
+    'js' => [
+        get_file_name('bookmarks_js'),
+    ],
+];
+
 $htmlout = '';
 /**
  * @param        $res
@@ -18,14 +24,15 @@ $htmlout = '';
  */
 function bookmarktable($res, $variant = 'index')
 {
-    global $site_config, $CURUSER, $lang;
+    global $site_config, $CURUSER, $lang, $session;
+
     $htmlout = "
     <span>
         {$lang['bookmarks_icon']}
-        <img src='{$site_config['pic_baseurl']}aff_cross.gif' alt='{$lang['bookmarks_del']}' border='none' />{$lang['bookmarks_del1']}
-        <img src='{$site_config['pic_baseurl']}zip.gif' alt='{$lang['bookmarks_down']}' border='none' />{$lang['bookmarks_down1']}
-        <img alt='{$lang['bookmarks_private']}' src='{$site_config['pic_baseurl']}key.gif' border='none'  /> {$lang['bookmarks_private1']}
-        <img src='{$site_config['pic_baseurl']}public.gif' alt='{$lang['bookmarks_public']}' border='none'  />{$lang['bookmarks_public1']}
+        <img src='{$site_config['pic_baseurl']}aff_cross.gif' alt='{$lang['bookmarks_del']}' border='none'>{$lang['bookmarks_del1']}
+        <img src='{$site_config['pic_baseurl']}zip.gif' alt='{$lang['bookmarks_down']}' border='none'>{$lang['bookmarks_down1']}
+        <img alt='{$lang['bookmarks_private']}' src='{$site_config['pic_baseurl']}key.gif' border='none' > {$lang['bookmarks_private1']}
+        <img src='{$site_config['pic_baseurl']}public.gif' alt='{$lang['bookmarks_public']}' border='none' >{$lang['bookmarks_public1']}
     </span>
     <div class='table-wrapper'>
         <div class='portlet'>
@@ -77,7 +84,7 @@ function bookmarktable($res, $variant = 'index')
         if (isset($row['cat_name'])) {
             $htmlout .= '<a href="' . $site_config['baseurl'] . '/browse.php?cat=' . (int) $row['category'] . '">';
             if (isset($row['cat_pic']) && $row['cat_pic'] != '') {
-                $htmlout .= "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($row['cat_pic']) . "' alt='" . htmlsafechars($row['cat_name']) . "' class='tooltipper' title='" . htmlsafechars($row['cat_name']) . "' />";
+                $htmlout .= "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($row['cat_pic']) . "' alt='" . htmlsafechars($row['cat_name']) . "' class='tooltipper' title='" . htmlsafechars($row['cat_name']) . "'>";
             } else {
                 $htmlout .= htmlsafechars($row['cat_name']);
             }
@@ -102,21 +109,21 @@ function bookmarktable($res, $variant = 'index')
                         </td>";
         $htmlout .= ($variant === 'index' ? "
                         <td class='has-text-centered'>
-                            <a href='{$site_config['baseurl']}/bookmark.php?torrent={$id}&amp;action=delete'>
-                                <img src='{$site_config['pic_baseurl']}aff_cross.gif' alt='{$lang['bookmarks_del3']}' class='tooltipper' title='{$lang['bookmarks_del3']}' />
-                            </a>
+                            <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='true' class='bookmarks tooltipper' title='{$lang['bookmarks_del3']}'>
+                                <i class='icon-cancel icon has-text-danger'></i>
+                            </span>
                         </td>" : '');
         $htmlout .= ($variant === 'index' ? "
                         <td class='has-text-centered'>
                             <a href='{$site_config['baseurl']}/download.php?torrent={$id}'>
-                                <img src='{$site_config['pic_baseurl']}zip.gif' alt='{$lang['bookmarks_down3']}' class='tooltipper' title='{$lang['bookmarks_down3']}' />
+                                <img src='{$site_config['pic_baseurl']}zip.gif' alt='{$lang['bookmarks_down3']}' class='tooltipper' title='{$lang['bookmarks_down3']}'>
                             </a>
                         </td>" : '');
         $bm = sql_query('SELECT * FROM bookmarks WHERE torrentid=' . sqlesc($id) . ' && userid=' . sqlesc($CURUSER['id']));
         $bms = mysqli_fetch_assoc($bm);
         if ($bms['private'] === 'yes' && $bms['userid'] == $CURUSER['id']) {
             $makepriv = "<a href='{$site_config['baseurl']}/bookmark.php?torrent={$id}&amp;action=public'>
-                                <img src='{$site_config['pic_baseurl']}key.gif' alt='{$lang['bookmarks_public2']}' class='tooltipper' title='{$lang['bookmarks_public2']}' />
+                                <img src='{$site_config['pic_baseurl']}key.gif' alt='{$lang['bookmarks_public2']}' class='tooltipper' title='{$lang['bookmarks_public2']}'>
                             </a>";
             $htmlout .= '' . ($variant === 'index' ? "
                         <td class='has-text-centered'>
@@ -124,7 +131,7 @@ function bookmarktable($res, $variant = 'index')
                         </td>" : '');
         } elseif ($bms['private'] === 'no' && $bms['userid'] == $CURUSER['id']) {
             $makepriv = "<a href='{$site_config['baseurl']}/bookmark.php?torrent=" . $id . "&amp;action=private'>
-                                <img src='{$site_config['pic_baseurl']}public.gif' alt='{$lang['bookmarks_private2']}' class='tooltipper' title='{$lang['bookmarks_private2']}' />
+                                <img src='{$site_config['pic_baseurl']}public.gif' alt='{$lang['bookmarks_private2']}' class='tooltipper' title='{$lang['bookmarks_private2']}'>
                             </a>";
             $htmlout .= '' . ($variant === 'index' ? "
                         <td class='has-text-centered'>
@@ -263,4 +270,4 @@ if ($count) {
     $htmlout .= bookmarktable($res, 'index');
     $htmlout .= $pager['pagerbottom'];
 }
-echo stdhead($lang['bookmarks_stdhead']) . wrapper($htmlout) . stdfoot();
+echo stdhead($lang['bookmarks_stdhead']) . wrapper($htmlout) . stdfoot($stdfoot);
