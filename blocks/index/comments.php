@@ -39,8 +39,7 @@ if ($comments === false || is_null($comments)) {
 
 $posted_comments .= "
         <a id='latest_comment-hash'></a>
-        <fieldset id='latest_comment' class='header'>
-            <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_latest_comments']}</legend>
+        <div id='latest_comment' class='box'>
             <div class='table-wrapper has-text-centered'>
                 <table class='table table-bordered table-striped'>
                     <thead>
@@ -98,4 +97,4 @@ $posted_comments .= '
                     </tbody>
                 </table>
             </div>
-        </fieldset>';
+        </div>';

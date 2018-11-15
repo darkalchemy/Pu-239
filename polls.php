@@ -155,8 +155,7 @@ function poll_header($pid = '', $poll_q = '')
     /*]]>*/
     </script>
     <a id='poll-hash'></a>
-    <fieldset id='poll' class='header'>
-        <legend class='flipper has-text-primary has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$poll_q}</legend>
+    <div id='poll' class='box'>
         <div class='bordered'>
             <div class='alt_bordered bg-00'>
                 <form action='{$site_config['baseurl']}/polls_take_vote.php?pollid={$pid}&amp;st=main&amp;addpoll=1' method='post'>";
@@ -175,7 +174,7 @@ function poll_footer()
                 </form>
             </div>
         </div>
-    </fieldset>';
+    </div>';
 }
 
 /**

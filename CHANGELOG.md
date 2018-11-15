@@ -1,3 +1,6 @@
+### 15 Nov, 2018
+update: remove fieldset/legend from index page blocks  
+
 ### 14 Nov, 2018
 update: columns in tablet stats.php  
 update: missimg bookmark.php breadcrumb  

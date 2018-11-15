@@ -32,11 +32,10 @@ if ($active === false || is_null($active)) {
 
 $active_users .= "
         <a id='activeusers-hash'></a>
-        <fieldset id='activeusers' class='header'>
-            <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_active']} ({$active['actcount']})</legend>
+        <div id='activeusers' class='box'>
             <div class='bordered'>
                 <div class='alt_bordered bg-00 level-item is-wrapped top10 bottom10'>
                     {$active['activeusers']}
                 </div>
             </div>
-        </fieldset>";
+        </div>";

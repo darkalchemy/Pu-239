@@ -57,11 +57,7 @@ foreach ($scroll_torrents as $torrent) {
 if ($scroller_torrents) {
     $torrents_scroller .= "
     <a id='scroller-hash'></a>
-    <fieldset id='scroller' class='header'>
-        <legend class='flipper has-text-primary'>
-            <i class='icon-down-open size_2' aria-hidden='true'></i>
-            {$lang['index_latest']} Scroller
-        </legend>
+    <div id='scroller' class='box'>
         <div class='bordered'>
             <div id='carousel-container' class='alt_bordered bg-00 carousel-container'>
                 <div id='icarousel' class='icarousel'>";
@@ -92,19 +88,5 @@ if ($scroller_torrents) {
                 </div>
             </div>
         </div>
-    </fieldset>';
-} else {
-    $torrents_scroller .= "
-    <a id='scroller-hash'></a>
-    <fieldset id='scroller' class='header'>
-        <legend class='flipper has-text-primary'>
-            <i class='icon-down-open size_2' aria-hidden='true'></i>
-            {$lang['index_latest']} Scroller
-        </legend>
-        <div class='bordered'>
-            <div class='alt_bordered bg-00'>
-                {$lang['last5torrents_no_torrents']}
-            </div>
-        </div>
-    </fieldset>";
+    </div>';
 }

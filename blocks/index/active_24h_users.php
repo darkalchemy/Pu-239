@@ -51,8 +51,7 @@ if ($active24 === false || is_null($active24)) {
 
 $active_users_24 .= "
         <a id='active24-hash'></a>
-        <fieldset id='active24' class='header'>
-            <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_active24']} <small>{$lang['index_last24_list']}</small></legend>
+        <div id='active24' class='box'>
             <div class='bordered'>
                 <div class='alt_bordered bg-00 has-text-centered'>
                     <div>{$active24['totalonline24']}{$active24['ss24']}{$lang['index_last24_during']}</div>
@@ -62,4 +61,4 @@ $active_users_24 .= "
                     <div>{$lang['index_last24_most']}{$active24['last24']}{$active24['ss24']}{$lang['index_last24_on']}{$active24['record']}</div>
                 </div>
             </div>
-        </fieldset>";
+        </div>";

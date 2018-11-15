@@ -31,11 +31,10 @@ if ($irc === false || is_null($irc)) {
 
 $active_users_irc .= "
     <a id='irc-hash'></a>
-    <fieldset id='irc' class='header'>
-        <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_active_irc']} ({$irc['count']})</legend>
+    <div id='irc' class='box'>
         <div class='bordered'>
             <div class='alt_bordered bg-00 level-item is-wrapped top10 bottom10'>
                 {$irc['ircusers']}
             </div>
         </div>
-    </fieldset>";
+    </div>";

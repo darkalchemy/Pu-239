@@ -33,8 +33,7 @@ if ($staff_picks === false || is_null($staff_picks)) {
 
 $staffpicks = "
     <a id='staffpicks-hash'></a>
-    <fieldset id='staffpicks' class='header'>
-        <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['staff_picks']}</legend>
+    <div id='staffpicks' class='box'>
         <div class='has-text-centered'>";
 
 $staffpicks .= "
@@ -44,7 +43,7 @@ $staffpicks .= "
                 <thead>
                     <tr>
                         <th class='has-text-centered w-10'>{$lang['index_mow_type']}</th>
-                        <th class='w-50 minw-150'>{$lang['top5torrents_title']}</th>
+                        <th class='w-50 minw-150'>{$lang['staff_picks']}</th>
                         <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
                         <th class='has-text-centered'>{$lang['top5torrents_seeders']}</th>
                         <th class='has-text-centered'>{$lang['top5torrents_leechers']}</th>
@@ -79,4 +78,4 @@ $staffpicks .= '
                 </table>
             </div>
         </div>
-    </fieldset>';
+    </div>';

@@ -32,8 +32,7 @@ if ($last5torrents === false || is_null($last5torrents)) {
 
 $latest_torrents .= "
     <a id='latesttorrents-hash'></a>
-    <fieldset id='latesttorrents' class='header'>
-        <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_latest']}</legend>
+    <div id='latesttorrents' class='box'>
         <div class='has-text-centered'>
             <div class='module table-wrapper'>
                 <div class='badge badge-new'></div>
@@ -76,4 +75,4 @@ $latest_torrents .= '
                 </table>
             </div>
         </div>
-    </fieldset>';
+    </div>';

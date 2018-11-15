@@ -79,11 +79,7 @@ foreach ($slider_torrents as $torrent) {
 if (!empty($sliding_torrents)) {
     $slider .= "
     <a id='slider-hash'></a>
-    <fieldset id='slider' class='header'>
-        <legend class='flipper has-text-primary'>
-            <i class='icon-down-open size_2' aria-hidden='true'></i>
-            {$lang['index_latest']} Slider
-        </legend>
+    <div id='slider' class='box'>
         <div class='bordered'>
             <div class='alt_bordered bg-00 automatic-slider flexslider is-paddingless'>
                 <ul class='slides'>";
@@ -115,19 +111,5 @@ if (!empty($sliding_torrents)) {
                 </ul>
             </div>
         </div>
-    </fieldset>';
-} else {
-    $slider .= "
-    <a id='slider-hash'></a>
-    <fieldset id='slider' class='header'>
-        <legend class='flipper has-text-primary'>
-            <i class='icon-down-open size_2' aria-hidden='true'></i>
-            {$lang['index_latest']} Slider
-        </legend>
-        <div class='bordered'>
-            <div class='alt_bordered bg-00'>
-                {$lang['last5torrents_no_torrents']}
-            </div>
-        </div>
-    </fieldset>";
+    </div>';
 }

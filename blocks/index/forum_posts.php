@@ -4,8 +4,7 @@ global $CURUSER, $site_config, $lang, $cache;
 
 $forum_posts .= "
     <a id='latestforum-hash'></a>
-    <fieldset id='latestforum' class='header'>
-        <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['latestposts_title']}</legend>
+    <div id='latestforum' class='box'>
         <div class='grid-wrapper'>
         <div class='table-wrapper has-text-centered'>";
 $page = 1;
@@ -104,7 +103,7 @@ if (!empty($topics) && count($topics) > 0) {
             </table>
         </div>
         </div>
-    </fieldset>';
+    </div>';
 } else {
     $forum_posts .= "
                     <tr>
@@ -114,5 +113,5 @@ if (!empty($topics) && count($topics) > 0) {
             </table>
         </div>
         </div>
-    </fieldset>";
+    </div>";
 }

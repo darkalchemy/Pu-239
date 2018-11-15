@@ -32,8 +32,7 @@ if ($top5torrents === false || is_null($top5torrents)) {
 
 $torrents_top .= "
     <a id='toptorrents-hash'></a>
-    <fieldset id='toptorrents' class='header'>
-        <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_top']}</legend>
+    <div id='toptorrents' class='box'>
         <div class='has-text-centered'>
         <div class='module table-wrapper bottom20'>
             <div class='badge badge-top'></div>
@@ -77,4 +76,4 @@ $torrents_top .= '
                 </table>
             </div>
         </div>
-    </fieldset>';
+    </div>';

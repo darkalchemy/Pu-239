@@ -7,8 +7,7 @@ $today = mktime(date('G'), date('i'), date('s'), date('m'), date('d'), date('Y')
 if (($CURUSER['opt1'] & user_options::GOTGIFT) && $today != $Christmasday) {
     $christmas_gift .= "
     <a id='gift-hash'></a>
-    <fieldset id='gift' class='header'>
-        <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_christmas_gift']}</legend>
+    <div id='gift' class='box'>
         <div class='bordered'>
             <div class='alt_bordered bg-00 has-text-centered'>
                 <a href='{$site_config['baseurl']}/gift.php?open=1'>
@@ -16,5 +15,5 @@ if (($CURUSER['opt1'] & user_options::GOTGIFT) && $today != $Christmasday) {
                 </a>
             </div>
         </div>
-    </fieldset>";
+    </div>";
 }

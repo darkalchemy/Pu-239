@@ -22,10 +22,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
 }
 $site_news .= "
     <a id='news-hash'></a>
-    <fieldset id='news' class='header'>
-        <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['news_title']}
-            <span class='news'>{$adminbutton}</span>
-        </legend>
+    <div id='news' class='box'>
         <div>";
 
 $i = 0;
@@ -77,4 +74,4 @@ if ($news) {
 
 $site_news .= '
         </div>
-    </fieldset>';
+    </div>';

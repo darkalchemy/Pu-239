@@ -32,11 +32,14 @@ if ($birthday === false || is_null($birthday)) {
 
 $birthday_users .= "
     <a id='birthday-hash'></a>
-    <fieldset id='birthday' class='header'>
-        <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_birthday']} ({$birthday['count']})</legend>
+    <div id='birthday' class='box'>
         <div class='bordered'>
-            <div class='alt_bordered bg-00 level-item is-wrapped top10 bottom10'>
-                {$birthday['birthdayusers']}
+            <div class='alt_bordered bg-00 top10 bottom10'>
+                <div class='bg-00 padding10 bottom10 has-text-centered round10 size_5'>{$lang['index_birthday']} ({$birthday['count']})</div>
+                <div class='level-item is-wrapped'>
+                    {$birthday['birthdayusers']}
+                </div>
             </div>
         </div>
-    </fieldset>";
+    </div>";
+

@@ -32,15 +32,14 @@ if ($motw === false || is_null($motw)) {
 
 $torrents_mow .= "
     <a id='mow-hash'></a>
-    <fieldset id='mow' class='header'>
-        <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_mow_title']}</legend>
+    <div id='mow' class='box'>
         <div class='has-text-centered'>
             <div class='table-wrapper module'><div class='badge badge-hot'></div>
                 <table class='table table-bordered table-striped'>
                     <thead>
                         <tr>
                             <th class='has-text-centered w-10'>{$lang['index_mow_type']}</th>
-                            <th class='w-50 minw-150'>{$lang['index_mow_name']}</th>
+                            <th class='w-50 minw-150'>{$lang['index_mow_title']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_seeder']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_leecher']}</th>
@@ -79,4 +78,4 @@ $torrents_mow .= '
                 </table>
             </div>
         </div>
-    </fieldset>';
+    </div>';

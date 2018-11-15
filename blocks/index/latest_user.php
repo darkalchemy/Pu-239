@@ -19,11 +19,10 @@ if ($latestuser === false || is_null($latestuser)) {
 
 $latest_user .= "
         <a id='latestuser-hash'></a>
-        <fieldset id='latestuser' class='header'>
-            <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>{$lang['index_lmember']}</legend>
+        <div id='latestuser' class='box'>
             <div class='bordered'>
                 <div class='alt_bordered bg-00 level-item is-wrapped top10 bottom10'>
-                    {$lang['index_wmember']}&nbsp;{$latestuser}!
+                    {$lang['index_wmember']} {$latestuser}!
                 </div>
             </div>
-        </fieldset>";
+        </div>";
