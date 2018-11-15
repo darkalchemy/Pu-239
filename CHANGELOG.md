@@ -1,4 +1,5 @@
 ### 15 Nov, 2018
+fix: add/remove bookmark not updating torrents page correctly  
 update: remove fieldset/legend from index page blocks  
 
 ### 14 Nov, 2018

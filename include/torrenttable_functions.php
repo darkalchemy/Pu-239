@@ -43,7 +43,6 @@ function torrenttable($res, $variant = 'index')
     include_once INCL_DIR . 'bbcode_functions.php';
     include_once CLASS_DIR . 'class_user_options_2.php';
     include_once CACHE_DIR . 'subs.php';
-
     foreach ($free as $fl) {
         switch ($fl['modifier']) {
             case 1:
@@ -70,6 +69,7 @@ function torrenttable($res, $variant = 'index')
             Expires: ' . get_date($fl['expires'], 'DATE') . '<br>
             (' . mkprettytime($fl['expires'] - TIME_NOW) . ' to go)</span></a><br>' : 'Unlimited</span></a><br>') : '');
     }
+    $book = make_bookmarks($CURUSER['id'], 'bookmm_');
     foreach ($_GET as $key => $var) {
         if (in_array($key, [
             'sort',
