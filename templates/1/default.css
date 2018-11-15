@@ -147,10 +147,10 @@ fieldset {
 }
 
 legend {
-    font-size: 1.625em;
+    font-size: 1.25em;
+    line-height: 1.25em;
     display: block;
     color: #fff;
-    text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
     padding: 10px 0;
     border: 0;
     width: calc(100% - 10px);
