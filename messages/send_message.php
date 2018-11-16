@@ -102,7 +102,6 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     if ($delete != 0) {
         $message = $message_stuffs->get_by_id($delete);
         if ($message) {
-            $arr = mysqli_fetch_assoc($res);
             if ($message['receiver'] != $CURUSER['id']) {
                 stderr($lang['pm_send_quote'], $lang['pm_send_thou']);
             }
@@ -144,8 +143,8 @@ if ($replyto != 0) {
         stderr($lang['pm_error'], $lang['pm_send_slander']);
     }
     if ($message['receiver'] == $CURUSER['id']) {
-        $msg .= "\n\n\n{$lang['pm_send_wrote0']}{$arr_member['username']}{$lang['pm_send_wrote']}\n{$arr_old_message['msg']}\n";
-        $subject = $lang['pm_send_re'] . htmlsafechars($arr_old_message['subject']);
+        $msg .= "\n\n\n{$lang['pm_send_wrote0']}{$arr_member['username']}{$lang['pm_send_wrote']}\n{$message['msg']}\n";
+        $subject = $lang['pm_send_re'] . htmlsafechars($message['subject']);
     }
 }
 

@@ -1,4 +1,5 @@
 ### 16 Nov, 2018
+fix: reply to: subject/message not populating send_message.php  
 fix: typo send_message.php  
 update: allow '-' in category names  
 add: font-awesome icon-key icon-users  
