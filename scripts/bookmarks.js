@@ -8,6 +8,7 @@ $('.bookmarks').on('click', function () {
             tid: this.dataset.tid,
             csrf: this.dataset.csrf,
             remove: this.dataset.remove,
+            private:  this.dataset.private,
         },
         success: function (data) {
             if (data['fail'] === 'csrf') {
@@ -19,6 +20,14 @@ $('.bookmarks').on('click', function () {
             } else if (data['fail'] === 'fail') {
                 $(this).html('?');
                 $(this).tooltipster('content', 'Unknown failure. Try refreshing the page.');
+            } else if (data['content'] === 'private') {
+                if (data['bookmark'] === 'yes') {
+                    $(this).html('<i class=\'icon-key icon\'></i>');
+                } else {
+                    $(this).html('<i class=\'icon-users icon\'></i>');
+                }
+                $(this).tooltipster('content', data['text']);
+                $(this).attr('data-tid', data['tid']);
             } else if (data['content'] === 'added') {
                 $(this).html('<i class=\'icon-cancel icon has-text-danger\'></i>');
                 $(this).tooltipster('content', data['text']);

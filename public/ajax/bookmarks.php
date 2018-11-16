@@ -23,6 +23,42 @@ if (empty($current_user)) {
     die();
 }
 
+if ($private === 'true') {
+    $bookmark = $fluent->from('bookmarks')
+        ->select(null)
+        ->select('private')
+        ->where('torrentid = ?', $tid)
+        ->where('userid = ?', $current_user)
+        ->fetch('private');
+
+    if ($bookmark === 'yes') {
+        $private = 'no';
+        $text = $lang['bookmarks_private2'];
+    } else {
+        $private = 'yes';
+        $text = $lang['bookmarks_public2'];
+    }
+    $set = [
+        'private' => $private,
+    ];
+
+    $fluent->update('bookmarks')
+        ->set($set)
+        ->where('torrentid = ?', $tid)
+        ->where('userid = ?', $current_user)
+        ->execute();
+
+    $cache->delete('bookmm_' . $current_user);
+    echo json_encode([
+        'bookmark' => $private,
+        'content' => 'private',
+        'text' => $text,
+        'tid' => $tid,
+        'remove' => 'false',
+    ]);
+    die();
+}
+
 $bookmark = $fluent->from('bookmarks')
     ->select(null)
     ->select('id')

@@ -1,3 +1,10 @@
+### 16 Nov, 2018
+fix: typo send_message.php  
+update: allow '-' in category names  
+add: font-awesome icon-key icon-users  
+update: bookmarks.php and sharemarks.php use ajax  
+remove: bookmark.php, aff_cross.gif, key.gif, public.gif 
+
 ### 15 Nov, 2018
 update: check user class staff_picks.php  
 update: bookmarks add/delete to ajax  

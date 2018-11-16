@@ -100,7 +100,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
         $mailer->send($mail);
     }
     if ($delete != 0) {
-        $message = $message_stuffs->get_buy_id($delete);
+        $message = $message_stuffs->get_by_id($delete);
         if ($message) {
             $arr = mysqli_fetch_assoc($res);
             if ($message['receiver'] != $CURUSER['id']) {

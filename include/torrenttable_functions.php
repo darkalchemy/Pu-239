@@ -112,7 +112,7 @@ function torrenttable($res, $variant = 'index')
                 <tr>
                     <th class='has-text-centered w-1 tooltipper' title='{$lang['torrenttable_type']}'>{$lang['torrenttable_type']}</th>
                     <th class='has-text-centered w-50 tooltipper' title='{$lang['torrenttable_name']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=1&amp;type={$link1}'>{$lang['torrenttable_name']}</a></th>
-                    <th class='has-text-centered w-1 tooltipper' title='Download'><img src='{$site_config['pic_baseurl']}zip.gif' alt='Download'></th>";
+                    <th class='has-text-centered w-1 tooltipper' title='Download'><i class='icon-download icon'></i>w</th>";
     $htmlout .= ($variant === 'index' ? "
                     <th class='has-text-centered tooltipper' title='{$lang['bookmark_goto']}'>
                         <a href='{$site_config['baseurl']}/bookmarks.php'>
@@ -351,7 +351,7 @@ function torrenttable($res, $variant = 'index')
             foreach ($book as $bk) {
                 if ($bk['torrentid'] == $id) {
                     $bookmark = "
-                    <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' class='bookmarks tooltipper' title='{$lang['bookmark_del']}'>
+                    <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_del']}'>
                         <i class='icon-cancel icon has-text-danger'></i>
                     </span>";
                 }

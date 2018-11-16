@@ -29,10 +29,10 @@ function bookmarktable($res, $variant = 'index')
     $htmlout = "
     <span>
         {$lang['bookmarks_icon']}
-        <img src='{$site_config['pic_baseurl']}aff_cross.gif' alt='{$lang['bookmarks_del']}' border='none'>{$lang['bookmarks_del1']}
-        <img src='{$site_config['pic_baseurl']}zip.gif' alt='{$lang['bookmarks_down']}' border='none'>{$lang['bookmarks_down1']}
-        <img alt='{$lang['bookmarks_private']}' src='{$site_config['pic_baseurl']}key.gif' border='none' > {$lang['bookmarks_private1']}
-        <img src='{$site_config['pic_baseurl']}public.gif' alt='{$lang['bookmarks_public']}' border='none' >{$lang['bookmarks_public1']}
+        <i class='icon-cancel icon has-text-danger'></i>{$lang['bookmarks_del1']}
+        <i class='icon-download icon'></i>{$lang['bookmarks_down1']}
+        <i class='icon-key icon'></i>{$lang['bookmarks_private1']}
+        <i class='icon-users icon'></i>{$lang['bookmarks_public1']}
     </span>
     <div class='table-wrapper'>
         <div class='portlet'>
@@ -109,33 +109,31 @@ function bookmarktable($res, $variant = 'index')
                         </td>";
         $htmlout .= ($variant === 'index' ? "
                         <td class='has-text-centered'>
-                            <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='true' class='bookmarks tooltipper' title='{$lang['bookmarks_del3']}'>
+                            <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='true' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmarks_del3']}'>
                                 <i class='icon-cancel icon has-text-danger'></i>
                             </span>
                         </td>" : '');
         $htmlout .= ($variant === 'index' ? "
                         <td class='has-text-centered'>
-                            <a href='{$site_config['baseurl']}/download.php?torrent={$id}'>
-                                <img src='{$site_config['pic_baseurl']}zip.gif' alt='{$lang['bookmarks_down3']}' class='tooltipper' title='{$lang['bookmarks_down3']}'>
+                            <a href='{$site_config['baseurl']}/download.php?torrent={$id}' class='tooltipper' title='{$lang['bookmarks_down3']}'>
+                                <i class='icon-download icon'></i>
                             </a>
                         </td>" : '');
         $bm = sql_query('SELECT * FROM bookmarks WHERE torrentid=' . sqlesc($id) . ' && userid=' . sqlesc($CURUSER['id']));
         $bms = mysqli_fetch_assoc($bm);
         if ($bms['private'] === 'yes' && $bms['userid'] == $CURUSER['id']) {
-            $makepriv = "<a href='{$site_config['baseurl']}/bookmark.php?torrent={$id}&amp;action=public'>
-                                <img src='{$site_config['pic_baseurl']}key.gif' alt='{$lang['bookmarks_public2']}' class='tooltipper' title='{$lang['bookmarks_public2']}'>
-                            </a>";
-            $htmlout .= '' . ($variant === 'index' ? "
+            $htmlout .= ($variant === 'index' ? "
                         <td class='has-text-centered'>
-                            {$makepriv}
+                            <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' data-private='true' class='bookmarks tooltipper' title='{$lang['bookmarks_public2']}'>
+                                <i class='icon-key icon'></i>
+                            </span>
                         </td>" : '');
         } elseif ($bms['private'] === 'no' && $bms['userid'] == $CURUSER['id']) {
-            $makepriv = "<a href='{$site_config['baseurl']}/bookmark.php?torrent=" . $id . "&amp;action=private'>
-                                <img src='{$site_config['pic_baseurl']}public.gif' alt='{$lang['bookmarks_private2']}' class='tooltipper' title='{$lang['bookmarks_private2']}'>
-                            </a>";
-            $htmlout .= '' . ($variant === 'index' ? "
+            $htmlout .= ($variant === 'index' ? "
                         <td class='has-text-centered'>
-                            {$makepriv}
+                            <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' data-private='true' class='bookmarks tooltipper' title='{$lang['bookmarks_private2']}'>
+                                <i class='icon-users icon'></i>
+                            </span>
                         </td>" : '');
         }
         if ($variant === 'mytorrents') {
@@ -229,7 +227,6 @@ function bookmarktable($res, $variant = 'index')
     return $htmlout;
 }
 
-//==Bookmarks
 $userid = isset($_GET['id']) ? (int) $_GET['id'] : $CURUSER['id'];
 if (!is_valid_id($userid)) {
     stderr($lang['bookmarks_err'], $lang['bookmark_invalidid']);
@@ -266,8 +263,8 @@ if ($count) {
     $res = sql_query($query1) or sqlerr(__FILE__, __LINE__);
 }
 if ($count) {
-    $htmlout .= $pager['pagertop'];
+    $htmlout .= $count > $torrentsperpage ? $pager['pagertop'] : '';
     $htmlout .= bookmarktable($res, 'index');
-    $htmlout .= $pager['pagerbottom'];
+    $htmlout .= $count > $torrentsperpage ? $pager['pagerbottom'] : '';
 }
 echo stdhead($lang['bookmarks_stdhead']) . wrapper($htmlout) . stdfoot($stdfoot);

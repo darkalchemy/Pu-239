@@ -87,8 +87,8 @@ if (mysqli_num_rows($result) != 0) {
         <td>' . htmlsafechars(str_replace('-', '', $row['peer_id'])) . '</td>
         <td>' . htmlsafechars(mksize($row['uploaded'])) . '</td>' . (RATIO_FREE == true ? '' : '
         <td>' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
-        <td>' . ($row['connectable'] == 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
-        <td>' . ($row['seeder'] == 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
+        <td>' . ($row['connectable'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
+        <td>' . ($row['seeder'] == 'yes' ? "<i class='icon-ok icon has-text-danger tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
         <td>' . get_date($row['started'], 'DATE') . '</td>
         <td>' . get_date($row['last_action'], 'DATE', 0, 1) . '</td>
         <td>' . htmlsafechars(mksize($row['uploadoffset'])) . '</td>' . (RATIO_FREE == true ? '' : '

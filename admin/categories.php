@@ -96,16 +96,16 @@ function move_cat_form()
             </select>';
     $htmlout = "
         <form action='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;action=categories' method='post'>
-            <input type='hidden' name='mode' value='takemove_cat' />
-            <input type='hidden' name='id' value='{$r['id']}' />
+            <input type='hidden' name='mode' value='takemove_cat'>
+            <input type='hidden' name='id' value='{$r['id']}'>
             <h2 class='has-text-centered'>{$lang['categories_move_about']} " . htmlsafechars($r['name'], ENT_QUOTES) . "</h2>
             <h3 class='has-text-centered'>{$lang['categories_move_note']}</h3>";
     $htmlout .= main_div("
             <div class='w-50 has-text-centered'>
                 <p class='has-text-danger level'>{$lang['categories_move_old']} <span class='has-text-white'>" . htmlsafechars($r['name'], ENT_QUOTES) . "</span></p>
                 <p class='has-text-green level'>{$lang['categories_select_new']} $select</p>
-                <input type='submit' class='button is-small right20' value='{$lang['categories_move']}' />
-                <input type='button' class='button is-small' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\" />
+                <input type='submit' class='button is-small right20' value='{$lang['categories_move']}'>
+                <input type='button' class='button is-small' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\">
             </div>");
     $htmlout .= '
         </form>';
@@ -126,7 +126,7 @@ function add_cat()
             stderr($lang['categories_error'], $lang['categories_add_error1']);
         }
     }
-    if (!preg_match("/^cat_[A-Za-z0-9_]+\.(?:gif|jpg|jpeg|png)$/i", $params['new_cat_image'])) {
+    if (!preg_match("/^cat_[A-Za-z0-9_\-]+\.(?:gif|jpg|jpeg|png)$/i", $params['new_cat_image'])) {
         stderr($lang['categories_error'], $lang['categories_add_error2']);
     }
     $cat_name = sqlesc($params['new_cat_name']);
@@ -211,8 +211,8 @@ function delete_cat_form()
 
     $htmlout = "
         <form action='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;action=categories' method='post'>
-            <input type='hidden' name='mode' value='takedel_cat' />
-            <input type='hidden' name='id' value='" . (int) $r['id'] . "' />
+            <input type='hidden' name='mode' value='takedel_cat'>
+            <input type='hidden' name='id' value='" . (int) $r['id'] . "'>
             <h2 class='has-text-centered'>{$lang['categories_del_about']} " . htmlsafechars($r['name'], ENT_QUOTES) . '</h2>';
     $htmlout .= main_div("
             <div class='w-50 has-text-centered'>
@@ -220,8 +220,8 @@ function delete_cat_form()
                 <p class='has-text-danger level'>{$lang['categories_del_description']} <span class='has-text-white'>" . htmlsafechars($r['cat_desc'], ENT_QUOTES) . "</span></p>
                 <p class='has-text-danger level'>{$lang['categories_del_image']} <span class='has-text-white'>" . htmlsafechars($r['image'], ENT_QUOTES) . "</span></p>
                 $select
-                <input type='submit' class='button is-small right20' value='{$lang['categories_del_delete']}' />
-                <input type='button' class='button is-small' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\" />
+                <input type='submit' class='button is-small right20' value='{$lang['categories_del_delete']}'>
+                <input type='button' class='button is-small' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\">
             </div>");
     $htmlout .= '
         </form>';
@@ -245,7 +245,7 @@ function edit_cat()
             stderr($lang['categories_error'], $lang['categories_edit_error1'] . $x . '');
         }
     }
-    if (!preg_match("/^cat_[A-Za-z0-9_]+\.(?:gif|jpg|jpeg|png)$/i", $params['cat_image'])) {
+    if (!preg_match("/^cat_[A-Za-z0-9_\-]+\.(?:gif|jpg|jpeg|png)$/i", $params['cat_image'])) {
         stderr($lang['categories_error'], $lang['categories_edit_error2']);
     }
     $cat_name = sqlesc($params['cat_name']);
@@ -311,16 +311,16 @@ function edit_cat_form()
     }
     $htmlout .= "
         <form action='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;action=categories' method='post'>
-            <input type='hidden' name='mode' value='takeedit_cat' />
-            <input type='hidden' name='id' value='" . (int) $r['id'] . "' />";
+            <input type='hidden' name='mode' value='takeedit_cat'>
+            <input type='hidden' name='id' value='" . (int) $r['id'] . "'>";
     $htmlout .= main_div("
             <div class='w-75 has-text-centered'>
-                <p class='has-text-green level'>{$lang['categories_edit_name']}<input type='text' name='cat_name' class='w-75' value='" . htmlsafechars($r['name'], ENT_QUOTES) . "' /></p>
-                <p class='has-text-green level'>{$lang['categories_edit_order_id']}<input type='text' name='order_id' class='w-75' value='" . htmlsafechars($r['ordered'], ENT_QUOTES) . "' /></p>
+                <p class='has-text-green level'>{$lang['categories_edit_name']}<input type='text' name='cat_name' class='w-75' value='" . htmlsafechars($r['name'], ENT_QUOTES) . "'></p>
+                <p class='has-text-green level'>{$lang['categories_edit_order_id']}<input type='text' name='order_id' class='w-75' value='" . htmlsafechars($r['ordered'], ENT_QUOTES) . "'></p>
                 <p class='has-text-green level'>{$lang['categories_del_description']}<textarea class='w-75' rows='5' name='cat_desc'>" . htmlsafechars($r['cat_desc'], ENT_QUOTES) . "</textarea></p>
                 $select
-                <input type='submit' class='button is-small right10' value='{$lang['categories_edit_edit']}' />
-                <input type='button' class='button is-small' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\" />
+                <input type='submit' class='button is-small right10' value='{$lang['categories_edit_edit']}'>
+                <input type='button' class='button is-small' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\">
             </div>");
     $htmlout .= '
         </form>';
@@ -360,20 +360,20 @@ function show_categories()
     $htmlout = "
         <form action='" . $site_config['baseurl'] . "/staffpanel.php?tool=categories&amp;action=categories' method='post'>";
     $htmlout .= main_div("
-            <input type='hidden' name='mode' value='takeadd_cat' />
+            <input type='hidden' name='mode' value='takeadd_cat'>
             <div class='w-75 has-text-centered'>
                 <h2>{$lang['categories_show_make']}</h2>
                 <p class='has-text-green level'>            
                     {$lang['categories_edit_name']}
-                    <input type='text' name='new_cat_name' class='w-75' maxlength='50' />
+                    <input type='text' name='new_cat_name' class='w-75' maxlength='50'>
                 </p>
                 <p class='has-text-green level'>
                     {$lang['categories_del_description']}
                     <textarea class='w-75' rows='5' name='new_cat_desc'></textarea>
                 </p>
                 $select
-                <input type='submit' value='{$lang['categories_show_add']}' class='button is-small right10' />
-                <input type='reset' value='{$lang['categories_show_reset']}' class='button is-small' />
+                <input type='submit' value='{$lang['categories_show_add']}' class='button is-small right10'>
+                <input type='reset' value='{$lang['categories_show_reset']}' class='button is-small'>
             </div>");
     $htmlout .= '
         </form>';
@@ -398,22 +398,27 @@ function show_categories()
     } else {
         $cats = genrelist();
         while ($row = mysqli_fetch_assoc($query)) {
-            $cat_image = file_exists(IMAGES_DIR . 'caticons/1/' . $row['image']) ? "<img src='{$site_config['pic_baseurl']}caticons/1/" . htmlsafechars($row['image']) . "' alt='" . (int) $row['id'] . "' />" : "{$lang['categories_show_no_image']}";
+            $cat_image = file_exists(IMAGES_DIR . 'caticons/1/' . $row['image']) ? "<img src='{$site_config['pic_baseurl']}caticons/1/" . htmlsafechars($row['image']) . "' alt='" . (int) $row['id'] . "'>" : "{$lang['categories_show_no_image']}";
             $body .= "
         <tr>
             <td><b>{$lang['categories_show_id2']} (" . (int) $row['id'] . ')</b></td>
-            <td>' . htmlsafechars($row['ordered']) . '</td>    
+            <td>' . htmlsafechars($row['ordered']) . '</td>
             <td>' . htmlsafechars($row['name']) . '</td>
             <td>' . htmlsafechars($row['cat_desc']) . "</td>
             <td>$cat_image</td>
             <td><a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=edit_cat&amp;id=" . (int) $row['id'] . "'>
-                <img src='{$site_config['pic_baseurl']}aff_tick.gif' alt='{$lang['categories_show_edit2']}' title='{$lang['categories_show_edit']}' width='12' height='12' /></a>
+                    <i class='icon-pencil icon tooltipper' title='{$lang['categories_show_edit']}'></i>
+                </a>
             </td>
-            <td width='18'><a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=del_cat&amp;id=" . (int) $row['id'] . "'>
-                <img src='{$site_config['pic_baseurl']}aff_cross.gif' alt='{$lang['categories_show_delete2']}' title='{$lang['categories_show_delete']}' width='12' height='12' /></a>
+            <td width='18'>
+                <a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=del_cat&amp;id=" . (int) $row['id'] . "'>
+                    <i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['categories_show_delete']}'></i>
+                </a>
             </td>
-            <td width='18'><a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=move_cat&amp;id=" . (int) $row['id'] . "'>
-                <img src='{$site_config['pic_baseurl']}plus.gif' alt='{$lang['categories_show_move2']}' title='{$lang['categories_show_move']}' width='12' height='12' /></a>
+            <td width='18'>
+                <a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=move_cat&amp;id=" . (int) $row['id'] . "'>
+                    <i class='icon-plus icon has-text-success tooltipper' title='{$lang['categories_show_move']}'></i>
+                </a>
             </td>
         </tr>";
         }

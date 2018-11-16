@@ -158,7 +158,7 @@ if (mysqli_num_rows($result) != 0) {
             } else {
                 $HTMLOUT .= "<td><b><span class='has-text-danger'>{$lang['ad_snatched_torrents_ncomplete']}</span></b></td>";
             }
-            $HTMLOUT .= '<td>' . ($row['seeders'] >= 1 ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['ad_snatched_torrents_yes']}' title='{$lang['ad_snatched_torrents_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['ad_snatched_torrents_no']}' title='{$lang['ad_snatched_torrents_no']}' />") . '</td></tr>';
+            $HTMLOUT .= '<td>' . ($row['seeders'] >= 1 ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['ad_snatched_torrents_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['ad_snatched_torrents_no']}'></i>") . '</td></tr>';
         } else {
             $HTMLOUT .= '<tr><td>' . format_username($row['userid']) . "</td>
 <td><a href='{$site_config['baseurl']}/details.php?id=" . (int) $row['torrentid'] . "'><b>" . $smallname . '</b></a></td>
@@ -175,7 +175,7 @@ if (mysqli_num_rows($result) != 0) {
             } else {
                 $HTMLOUT .= "<td><b><span class='has-text-danger'>{$lang['ad_snatched_torrents_ncomplete']}</span></b></td></tr>";
             }
-            $HTMLOUT .= '<td><b>' . ($row['seeder'] === 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['ad_snatched_torrents_yes']}' title='{$lang['ad_snatched_torrents_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['ad_snatched_torrents_no']}' title='{$lang['ad_snatched_torrents_no']}' />") . '</b></td></tr>';
+            $HTMLOUT .= '<td><b>' . ($row['seeder'] === 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['ad_snatched_torrents_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['ad_snatched_torrents_no']}'></i>") . '</b></td></tr>';
         }
     }
     $HTMLOUT .= '</table>';
