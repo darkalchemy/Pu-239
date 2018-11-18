@@ -8,7 +8,7 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER;
 
-$lang = array_merge(load_language('global'), load_language('torrenttable_functions'),  load_language('bookmark'));
+$lang = array_merge(load_language('global'), load_language('torrenttable_functions'), load_language('bookmark'));
 $stdfoot = [
     'js' => [
         get_file_name('bookmarks_js'),

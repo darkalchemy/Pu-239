@@ -16,4 +16,3 @@ $ajaxchat .= "
             </div>
         </div>
     </div>";
-

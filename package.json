@@ -28,7 +28,7 @@
     "postcss-font-family-system-ui": "^3.0.0",
     "postcss-preset-env": "^5.3.0",
     "raphael": "^2.2.7",
-    "sass": "^1.14.3",
+    "sass": "^1.15.1",
     "uglify-js": "^3.4.9"
   },
   "dependencies": {

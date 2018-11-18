@@ -10,6 +10,7 @@ $('.staff_pick').on('click', function () {
             pick: this.dataset.pick
         },
         success: function (data) {
+            var el = document.querySelector('#staff_pick_' + this.dataset.id);
             if (data['staff_pick'] === 'csrf') {
                 $(this).html('CSRF');
                 $(this).tooltipster('content', 'Invalid CSRF, try refreshing the page.');
@@ -23,10 +24,12 @@ $('.staff_pick').on('click', function () {
                 $(this).html('<i class=\'icon-minus icon has-text-red\'></i>');
                 $(this).tooltipster('content', 'Remove from Staff Picks');
                 $(this).attr('data-pick', data['staff_pick']);
+                el.innerHTML = "<img src='./images/staff_pick.png' class='tooltipper emoticon is-2x' alt='Staff Pick!' title='Staff Pick!'>";
             } else {
                 $(this).html('<i class=\'icon-plus icon has-text-lime\'></i>');
                 $(this).tooltipster('content', 'Add to Staff Picks');
                 $(this).attr('data-pick', data['staff_pick']);
+                el.innerHTML = '';
             }
         }
     });

@@ -406,17 +406,17 @@ function show_categories()
             <td>' . htmlsafechars($row['name']) . '</td>
             <td>' . htmlsafechars($row['cat_desc']) . "</td>
             <td>$cat_image</td>
-            <td><a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=edit_cat&amp;id=" . (int) $row['id'] . "'>
-                    <i class='icon-pencil icon tooltipper' title='{$lang['categories_show_edit']}'></i>
+            <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;action=categories&amp;mode=edit_cat&amp;id=" . (int) $row['id'] . "'>
+                    <i class='icon-edit icon tooltipper' title='{$lang['categories_show_edit']}'></i>
                 </a>
             </td>
             <td width='18'>
-                <a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=del_cat&amp;id=" . (int) $row['id'] . "'>
+                <a href='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;action=categories&amp;mode=del_cat&amp;id=" . (int) $row['id'] . "'>
                     <i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['categories_show_delete']}'></i>
                 </a>
             </td>
             <td width='18'>
-                <a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=move_cat&amp;id=" . (int) $row['id'] . "'>
+                <a href='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;action=categories&amp;mode=move_cat&amp;id=" . (int) $row['id'] . "'>
                     <i class='icon-plus icon has-text-success tooltipper' title='{$lang['categories_show_move']}'></i>
                 </a>
             </td>

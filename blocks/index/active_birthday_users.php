@@ -42,4 +42,3 @@ $birthday_users .= "
             </div>
         </div>
     </div>";
-

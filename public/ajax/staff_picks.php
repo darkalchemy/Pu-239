@@ -18,7 +18,6 @@ if (empty($current_user) || $class < UC_STAFF) {
     die();
 }
 
-
 if (!isset($pick) || empty($id)) {
     echo json_encode(['pick' => 'invalid']);
     die();

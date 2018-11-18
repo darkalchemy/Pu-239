@@ -1,26 +1,34 @@
-### 16 Nov, 2018
+### 18 Nov, 2018  
+add: staff_picks.png to browse.php  
+update: sort torrents by staff_picks  
+
+### 17 Nov, 2018  
+replace: font-awesome icon-pencil with icon-edit  
+update: sass, imdbphp  
+
+### 16 Nov, 2018  
 fix: reply to: subject/message not populating send_message.php  
 fix: typo send_message.php  
 update: allow '-' in category names  
 add: font-awesome icon-key icon-users  
 update: bookmarks.php and sharemarks.php use ajax  
-remove: bookmark.php, aff_cross.gif, key.gif, public.gif 
+remove: bookmark.php, aff_cross.gif, key.gif, public.gif   
 
-### 15 Nov, 2018
+### 15 Nov, 2018  
 update: check user class staff_picks.php  
 update: bookmarks add/delete to ajax  
 update: reduce font size, increase line height for legend  
 fix: add/remove bookmark not updating torrents page correctly  
 update: remove fieldset/legend from index page blocks  
 
-### 14 Nov, 2018
+### 14 Nov, 2018  
 update: columns in tablet stats.php  
 update: missimg bookmark.php breadcrumb  
 update: proper columns gap  
 update: parallax scrolling only on desktop or larger  
 update: proper column stacking order on mobile  
 
-### 13 Nov, 2018
+### 13 Nov, 2018  
 fix: column position after scroll  
 update: trivia display  
 add: basic parallax scrolling to index, should be able to improve on it  
@@ -34,17 +42,17 @@ fix: comments block not showing comment text
 add: runtime to cleanup scripts  
 refactor: trivia to ajax  
 
-### 12 Nov, 2018
+### 12 Nov, 2018  
 fix: typo in method call Snatched.php  
 fix: don't give space to empty or disabled block index.php  
 
-### 11 Nox, 2018
+### 11 Nox, 2018  
 fix: installer to reflect removal of ann_config.php  
 add: prime caches cleanup  
 add: some caching to queries in announce.php  
 remove: padding around banner  
 
-### 10 Nox, 2018
+### 10 Nox, 2018  
 cleanup: fomatting  
 update: expand page to full width of screen  
 update: regex for date formats log viewer  
@@ -52,7 +60,7 @@ update: easier to rearrange index page block
 update: 2 column index page  
 fix: incorrect url in index page comments block  
 
-### 09 Nov, 2018
+### 09 Nov, 2018  
 update: IMDb rating to stars  
 refactor: common code to template  
 update: store upload form user input and repopulate fields on return to page  
@@ -60,30 +68,30 @@ fix: bbcode images with width or height
 update: enable poll questions to use bbcode  
 update: additional checks on ajax torrents  
 
-### 08 Nov, 2018
+### 08 Nov, 2018  
 update: make torrent blocks initial state hidden  
 update: make torrent blocks ajax userdetails.php  
 fix: userdetails torrent blocks, incorrect values  
 
-### 07 Nov, 2018
+### 07 Nov, 2018  
 fix: clear torrent cache details.php  
 fix: subtitles on open edit.php not getting set  
 add: autoshout for lottery start and tickets purchased  
 fix: forums section view  
 
-### 06 Nov, 2018
+### 06 Nov, 2018  
 update: drop unused column  
 fix: incorrect user defaults in db schema  
 
-### 05 Nov, 2018
+### 05 Nov, 2018  
 fix: some incorrect user defaults in db schema  
 add: auto lottery, if enabled, the lottery will auto restart  
 
-### 04 Nov, 2018
+### 04 Nov, 2018  
 fix: polls  
 update: README to account for greater number of users  
 fix: cleanup users achievement seedtime  
-update: restrict AJAX Chat @mentions to main channel  
+update: restrict AJAX Chat   @mentions to main channel  
 add: delete log files from log viewer  
 fix: ajax timeout  
 update: improve ajax render times  
@@ -92,7 +100,7 @@ update: remove some unused site_config settings
 update: remove some unuses ann_config settings  
 remove: public/install/extra/ann_config.phpsample.php as not needed  
 
-### 03 Nov, 2018
+### 03 Nov, 2018  
 fix: set/delete run cache images_update.php  
 remove IE, announcement blocks  
 fix: url_proxy trying to proxy 'N/A'   
@@ -115,15 +123,15 @@ fix: remove table backups older than 6 hours
 fix: update tvmaze  
 fix: update on/off cleanup item  
 
-### 02 Nov, 2018
+### 02 Nov, 2018  
 fix: viewnfo breadcrumbs  
 
-### 01 Nov, 2018
+### 01 Nov, 2018  
 fix: missing name in form new_topic.php  
 fix: breadcrumbs when action is page  
 move: ratio_free, crazy_hour and happy_hour to define.php  
 
-### 31 Oct, 2018
+### 31 Oct, 2018  
 add: view log files with extension '1' log_viewer.php  
 fix: error when there are topics but no posts view_forum.php  
 update: add try catch to pdo query upgrade_database.php  
@@ -136,13 +144,13 @@ update: set class colors per template
 move: chat css classes into template folders  
 remove: unused columns from select User.php  
 
-### 29 Oct, 2018
+### 29 Oct, 2018  
 fix: undefined var admin/upgrade_database.php  
 fix: incorrect var namr imdb_lookup.php  
 fix: admin memcached stats when using sockets  
 fix: seedtime cleanup once per userid, not once per torrent  
 
-### 28 Oct, 2018
+### 28 Oct, 2018  
 update: get poster from images table when torrents.poster is empty catalog.php, browse.php   
 fix: missing requires  
 update: get poster from images table when torrents.poster is empty index blocks  
@@ -156,7 +164,7 @@ fix: installer remove checks for settings depecrated by MariaDB 10.3
 update: README  
 update: global blocks  
 
-### 27 Oct, 2018
+### 27 Oct, 2018  
 update: wrap sql errors in pre tabs log_viewer.php  
 update: remove filesize limits log_viewer.php  
 update: function_breadcrumbs.php  
@@ -182,7 +190,7 @@ fix: typo ann_config.php
 add: missing HnR settings from ann_config.php  
 fix: call incorrect method name announce.php  
 
-### 26 Oct, 2018
+### 26 Oct, 2018  
 update: version to v0.4  
 fix: call to wrong method takelogin.php  
 fix: send message to user when login failed takelogin.php  
@@ -205,14 +213,14 @@ update: check if torrent exists before deleting Torrent.php
 remove: stats table, no need to store these stats in db  
 remove: readpost_update.php can't see any reason to reset a users read post history every 2 weeks  
 
-### 22 Oct, 2018
+### 22 Oct, 2018  
 fix: check if REQUEST_URI is empty, mainly for running cron_controller.php from cli  
 fix: update user birthday_update.php  
 remove: insert method User.php  
 fix: don't show pager menu when only 1 page reports.php   
 fix: division by 0 pu_update.php  
 
-### 21 Oct, 2018
+### 21 Oct, 2018  
 fix: get from array happyhour_update.php  
 fix: freee_switch not resetting freeuser_update.php  
 fix: timesann not updating announce.php  
@@ -225,7 +233,7 @@ fix: peers not always deleting on stop announce.php
 fix: happy hour  
 fix: properly clear torrent caches when deleting or adding  
 
-### 20 Oct, 2018
+### 20 Oct, 2018  
 fix: edit admin pages select current staffpanel.php  
 remove: file_put_contents logging  
 fix: php_info display system_view.php  
@@ -238,1376 +246,1376 @@ update: align checkboxes upload.php
 update: SCEditor style  
 update: missing tags from breadcrumbs  
 
-18 Oct, 2038
-update: FluentPDO, Flysystem, Sass, PostCSS, autoprefixer, node-sas
-update: version number package.json
-fix: news block icon size
-fix: iterate only numeric template folders uglify.php
-fix: call image_proxy with width/height when bbcode image tag includes width/height
-fix: db insert Post.php
-update: missing tags from breadcrumbs
-
-14 Oct, 2018
-add: lighter template WIP - will need to rethink AJAX Chat templates
-rewrite: breadcrumbs, WIP
-replace: get all users with ajax user lookup send_message.php
-replace: markItUp.js with SCEditor.js WYSIWYG Editor
-remove: jquery.mousewheel.js
-move: jquery.flexslider.js to npm
-move: tooltipster.js to npm
-remove .htaccess files as nginx ignores them
-add: new base template
-move: themeChanger into template folder to allow modification per template
-replace: FormManager.js with genres_show_hide.js
-replace: jquery.validator.js with html5 validation
-fix: Adminer link in navbar
-remove: ipToStorageFormat function
-
-11 Oct, 2018
-fix: site_settings.php
-
-10 Oct, 2018
-fix: announce.php
-
-02 Sept, 2018
-update: database files
-remove: image proxy key
-update: remove leading dots in cookie_domain example
-add: tag @username anywhere
-update: add columns year, rating updated from api calls
-update: api calls to ajax requests for faster initial page load details.php
-update: merge tvmaze title info with episode info
-remove: ssluse, determine by site scheme instead
-
-28 Aug, 2018
-update: full stop when files.php is missing
-
-27 Aug, 2018
-update: add notice if missing files.php
-
-26 Aug, 2018
-update: placeholder_image() allow variable size
-update: move imdb info to top of page details.php
-update: use minimal bulma, only as needed
-refactor: navbar.php
-add: node-sass to compile sass files
-
-24 Aug, 2018
-fix: redecalare function validip() ann_functions.php
-fix: using var before set
-fix: get correct class from similar staffpanel names
-update: insert/select user ip correctly
-remove: check_selected.js
-fix: check if var is empty before using it watched_users.php
-fix: typo forums.php
-update: limit displayed users count active_24h_users.php
-
-23 Aug, 2018
-add: missing flip_box.js uglify.php
-fix: typo stelth
-fix: delete user inactive.php
-fix: display freeleech.php block
-fix: set/unset bonus edit_moods.php
-fix: check if var is empty before using it torrenttable_functions.php
-fix: users class not sending messages grouppm.php
-
-22 Aug, 2018
-fix: display ip view_peers.php
-fix: validate IPV6 address while getting user ip address
-fix: returnto logout.out when logging in after clicking logout
-fix: remember me token expires
-cleanup: class files to do only what class relates to
-update: placeholder text freeleech.php
-fix: typo lang files
-fix: use incorrect userid variable usercomment.php
-add: remember me expires to site_config.php
-update: database files
-update: allow only 1 for each modifier admin/freeleech.php
-
-21 Aug, 2018
-fix: serialize data, multiple values admin/freeleech.php
-fix: initial cookie_lifetime value, during install
-remove: bottom margin staff picks block
-add: missing free_details.php
-
-20 Aug, 2018
-update: reset remember me cookie expires time when remember token is updated in db
-add: cache entry to destroy user session when changing password, disabled, etc
-update: destroy all users auth_tokens when logging out
-update: delete all expired auth_tokens when generating new token
-fix: multiple logins destroying other login remember me tokens
-update: insert/update in 1 query instead of delete/insert set_remember
-
-19 Aug, 2018
-fix: undefined index get_date()
-update: add required fields to signup.php, invite_signup.php, requests.php, offers.php
-fix: null referer when url not wrapped in url tags AJAX Chat
-update: jquery.validate.js
-remove: mods folder, not used
-update: use php date() instead of mysql NOW() for search
-update: use random_bytes() instead of make_password() to generate auth tokens
-add: change remember me tokens once used
-add: additional user whereis locations
-update: explicitly start session when using remember me token
-update: remember me fuction to update expires time while user is active on site
-add: flushDB() to flush only the site specific db when using redis as cache driver
-update: imdbphp class
-
-18 Aug, 2018
-update: tooltip formatting movies.php
-update: imdb_info_short to find images on fanart or omdb, when imdb image not found
-add: create_image() to create dummy src images for lazy loading
-update: additional images lazy loaded
-fix: typo lang_pm.php
-fix: check incorrect var view_message.php
-fix: typo ajax_chat_cleanup.php
-add: missing pirate.png
-fix: AJAX Chat disabled gif
-fix: incorrect lang key for AJAX Chat messages
-update: show users message when banned from AJAX Chat
-update: remove img tags from AJAX Chat messages after 24 hours
-update: hide anonymous users from showing in AJAX Chat Online list
-fix: last post link forums.php
-update: database files
-fix: comments edit/delete
-fix: invalid Cache dir site_config.php
-
-16 Aug, 2018
-fix: check downloaded file is actually an image before optimizing it
-update: composer imported classes
-add: wrapper() to all admin/files
-add: [br] to format_comment()
-fix: take_theme.php incorrect comparison
-fix: staff allowed fail post to correct forum/topic
-remove: pager_new.php
-remove: resize_image()
-update: validemail() to use filter_var
-fix: get_stylesheet()
-fix: allow avatar/signature with '?' in the url
-fix: AJAX Chat View Logs
-update: AJAX Chat polling timer to 45 seconds after 10 min inactive
-update: uglify.php to update all templates within templates folder
-
-08 Aug, 2018
-fix: missing image uploader_info.php
-fix: missing require user_unlocks.php
-update: show poster, banner, background images, IMDb info in requests.php, offers.php, upload.php when using valid IMDb url and images are available
-fix: allow anything class UC_UPLOADER and above to upload
-fix: after upload multiple images to bitbucket, you can select any link correctly
-
-07 Aug, 2018
-fix: write_css_class()
-move: all delete torrent functions to Torrents Class
-add: IMDb lookup on upload.php
-add: ISBN lookup on upload.php
-remove: unneeded link to google fonts AJAXChatTemplate.php
-fix: Tooltips
-fix: overwrite key browse_js uglify.php
-update: write_classes() to write chat/js/config bbCodeTags
-
-06 Aug, 2018
-fix: clear index page user blocks when edit any user
-fix: missing staff_picks mytorrents.php
-
-05 Aug, 2018
-fix: countable AJAX Chat
-fix: path to up.gif torrenttable_functions.php
-move: find images in details.php to function_get_images.php
-update: allow : in torrent name
-add: verify file is actually an image ImageProxy.php
-move: background-16 to default.css
-add: attribution to colorpicker.js
-fix: get correct page/post when post count greater than per page
-fix: AJAX Chat stats
-fix: bluray releases
-fix: admin user delete account
-fix: admin account manage delete user account
-fix: promise exception AJAX Chat
-add: animation to flipper
-move: flipper to seaparate file
-move: navbar to separate file
-add: apis block to enable/disable individual apis
-
-03 Aug, 2018
-update: set cache for failed apis to limit retries
-add: Staff Picks
-fix: delete cache when updating bonus
-fix: adminer
-
-02 Aug, 2018
-fix: invalid date birthday.php
-fix: remember token getting deleted when flush cache
-fix: AJAX Chat ban user
-fix: string literals announce.php
-fix: trivia showing icons
-fix: schema for cheaters userip
-update: jquery remove to fade out
-
-01 Aug, 2018
-fix: typo lang_torrenttable_functions.php
-fix: use correct key for userid news.php
-
-31 Jul, 2018
-fix: typo bbcode_functions.php and anatomy.php
-fix: typo takeedit.php
-fix: return false if $image is empty bittorent.php
-
-30 Jul, 2018
-fix: comments avatar details.php
-fix: allow special chars for db password backupdb.php
-move: breadcrumbs() to its own file
-update: several cleanup scripts to fluentPDO
-fix: incorrect lang variable name used modtask.php
-fix: typo delete_torrents_update.php
-update: return query ip ajax chat
-update: delete user caches when set disabled
-update: chat destroy session when user is disabled
-add: missing require takeedit.php
-update: check if var is empty before using it function_books.php
-add: book update to images update cleanup
-fix: ignore query upgrade_database.php
-update: delete session for disabled users
-add: button to ignore query on database update
-update: allow staff site access when site set offline
-remove: bad banner
-fix: get lang before use of lang
-fix: install set correct announce https url
-fix: left join when no topic forum_posts.php
-
-29 Jul, 2018
-add: default banner.jpp
-add: dbconn() to all cleanup scripts
-remove: time_adjust and time_offest from site_config
-update: inner join on torrents comments.php
-fix: when empty array comments.php 
-update: site_config
-update: assumed fk inactive_update.php
-update: drop fk contstaint on dbbackup
-update: drop fk constraint on bans
-fix: customsmilie_update.php
-update: drop fk constraint on bannedemails
-update: site_config
-fix: redis flush cache flushing all databases instead of just redis site db
-update: site_config
-fix: torrents_update.php
-update: database files
-
-28 Jul, 2018
-fix: card table background
-fix: nfo display viewnfo.php
-update: clean image caches when poster added to torrent
-remove: XBT Cleanup Items
-update: Adminer 4.6.3
-revert: css image to base64
-fix: postcss css cleanup
-update: text for bad id details.php
-fix: redirect to index page and show flash message when torrent not exist details.php
-fix: upload description removing characters such as ë, è, é, and ê
-fix: upload stripping ascii from description instead of nfo
-
-27 Jul, 2018
-update: add class color to flash message hnrs.php
-fix: format_username can't be used with flash messages hnrs.php
-fix: direct link to post view_topic.php
-replace: file_get_contents() with fetch() tfreak.php
-update: use global $fluent instead of passing it User.php
-add: delete_by_id() Torrent.php
-replace: MyPeers_ with peers_
-fix: first db connection error takeupload.php
-update: search.php bot use only
-fix: delete torrent not deleting all caches and all likes to comments, only remove bp if torrent newer than 14 days
-fix: tfreak block if no results
-fix: only grab urls that are not empty images_cleanup.php
-update: browse.php search by genre full text search
-
-24 Jul, 2018
-remove: timeout from fetch guzzle config
-fix: save image to path store_image()
-fix: get backgrounds when url is empty function_bluray.php
-fix: unquoted key send_message.php
-
-23 Jul, 2018
-fix: remove dd($url) from function_tmdb.php
-update: add try/catch to fetch()
-fix: typo in newsrss.php
-update: cleanup_manager.php replace edit/delete icons
-update: Image Proxy to use fetch()
-fix: function_bluray.php missing requires
-add: Newsrss cleanup to remove news entries older than 30 days
-update: only post newest nrewrss item when starting for the first time
-fix: newsrss initial cache
-fix: gifs no longer optimized on the fly by image proxy
-fix: display no friends when friends list is empty userdetails.php
-add: missing Avatar toggle in user blocks, currently only used in userdetails.php
-fix: bbcode image class 
-fix: typo in dragndrop.js
-
-22 Jul, 2018
-fix: view_mailbox.php breaking template
-fix: log_viewer.php not displaying all files correctly
-fix: incorrect use of $cache->add
-update: only show block in user_blocks if block is enabled by site
-remove: redundant columns from users table
-fix: bitwise for opt2
-remove: imacss and postcss-font-base64
-
-21 Jul, 2018
-update: bitbucket.php using ajax drag and drop
-remove: incorrect method parameter stdhead()
-remove: avatar path from bitbucket
-
-20 Jul, 2018
-cleanup: formatting, alignment, replace join with implode
-
-19 Jul, 2018
-fix: youtube link on upload
-update: database files
-add: php-cs-fixer and postcss to uglify.php
-add: auto download torrent after upload
-fix: typo in function_tvmaze.php
-fix: trivia results on index page not showing scrollbar
-update: log vierer better messages splitting
-fix: direct link to post button
-fix: latest comments poster not using url_proxy
-fix: removal of background
-
-18 Jul, 2018
-update: database files
-add: latest torrents slider using flexslider and torrent banners
-
-17 Jul, 2018
-fix: background image not 100% width
-fix: bluray releases getting incorrect imdbid
-
-16 Jul, 2018
-add: bluray.com new releases page
-replace: file_get_contents() with fetch()
-add: omdb lookup to images_cleanup.php
-fix: random_int larger int listed before smaller int casino.php
-
-15 Jul, 2018
-fix: missing var
-add: OMDb API
-add: upcoming movies from imdb
-merged: all lists into 1 file
-update: check file/folder exists before processing
-fix: images cleanup
-update: composer require PHP >= 7.2.0
-update: increase font size slightly
-cleanup: general code cleanup, phpstorm
-update: database files
-fix: all like buttons
-add: additional like buttons
-update: all comments displayed in same manner
-add: imdb info in requests and offers
-add: cleanup script to download anf optimize images if using image proxy
-remove: poster from image background
-add: try/catch ImageProxy
-fix: time sort in tvmaze.php
-update: tmdb image sizes for better quality
-add: min-width to index page blocks titles
-rename: pm_system messages
-update: pager_new.php pager_functions.php to return limits for fluentPDO
-remove: manage_likes table
-
-13 Jul, 2018
-fix: make action 'default' usercp.php
-
-12 Jul, 2018
-fix: check if dir exists before traverse it log_viewer.php
-
-11 Jul, 2018
-fix: background not displaying details.php
-fix: query non existent table
-add: TMDb Top 100 Movies
-add: images table to store image urls
-update: API get images to store urls
-update: get_body_image to get from images table and get poster or background depending on screen orientation
-update: normalize relative urls in js files
-remove: Atlantis from countries signup.php invite_signup.php
-fix: error on valid empty post contents takesignup.php
-remove: optimize/blur gifs ImageProxy.php
-fix: check if empty beofre use details.php
-update: README innodb_autoinc_lock_mode = 0
-fix: undefined $count admin/bans.php
-fix: search by category browse.php
-fix: missing require thanks.php
-fix: missing require bookmark.php
-
-9 Jul, 2018
-fix: uptime time display
-fix: mybonus.php sort order
-fix: crazyhour global message
-
-8 Jul, 2018
-fix: get empty image get_body_image()
-fix: avatar max-width
-fix: update user birthday when birthday not set
-fix: get random image get_body_image()
-update: delete get_body_image() cache on new upload
-fix: url getting deleted when edit takeedit.php
-update: remove banner and background when torrent poster is changed
-update: clean up get_show_name() for better search results
-fix: emoticons.php
-update: bitbucket.php allow webp images, optimize images after upload
-update: details.php to show which api lookup results are showing
-update: composer
-fix: background art not showing when enabled
-add: user option to use 12 or 24 hour clock everywhere except AJAX Chat(working on it)
-update: database update process
-remove: some extraneous spaces in lang files
-
-7 Jul, 2018
-fix: plural question(s) in trivia points pm
-add: option to use 12 or 24 hour clock everywhere except AJAX Chat(working on it)
-
-5 Jul, 2018
-fix: remove invalid chars from uploaded nfo before db insert
-fix: typo in bittorrent.php
-fit: incorrect method name
-
-1 Jul, 2018
-fix: check if folder exists before setting perms set_perms.php
-update: set new/updated files owner:group according to current owner:group set_perms.php
-fix: check for empty vars before using them signup.php
-fix: install folder check
-fix: incorrect file permissions in 775 folders
-fix: bit bucket link not showing
-update: max image size in AJAX Chat
-fix: images in AJAX Chat
-remove: unused gzip directory
-add: logs folder
-fix: permissions
-update: README to correct install directions
-remove: redundant fetch() functions
-replace: remote image proxy with local image proxy, enable only if you have the space for it
-purged: database_updates, rethinking the process
-updated: README to include required apps and php extensions
-add: option to show random background on every page
-add: lazy load most images
-
-27 Jun, 2018
-update: adjust avatar display size for consistency
-update: use real ip when logging failed logins
-add: TVMaze TV Schedule
-add: php-bz2 requirement for TVMaze TV Schedule
-
-26 Jun, 2018
-update: hide video butto in AJAX Chat on small screen
-add: notice to run uglify.php when changing classes info
-
-25 Jun, 2018
-update: limit video size in AJAX Chat
-add: video player to AJAX Chat
-fix: banner width
-add: static and video banners to top of template
-update: enable background image on details.php
-add: gm.gif and hiya.gif
-remove: bans and bannedemail foreign keys
-fix: missing initial site statitics data
-fix: allowed staff and missing lang reference in backup.php
-
-24 Jun, 2018
-fix: check for empty pm ids before attempting to delete them
-change: anchor tags to id from name for uniformity
-fix: incorrect url for announce
-update: resetpw.php when importing from U-232 allow compare hintanswer with md5
-add: forum_id column to over_forums
-remove: unused css links in forums.php
-remove: direct link to Pu-239.pw/forums.php
-fix: staff forums id
-fix: over_forums.php edit forum with same sort number
-update: tv.php function_tmdb.php to get tv listing by date, pretty limited set
-update: use internal cache flush method
-update: limit AJAX Chat images to 50% height 50% width
-
-23 Jun, 2018
-add: tv.php use TMDb to get a list of tv showings airing today
-add: movies.php use TMDb to get a list of movies released any particular week
-fix: emoticon size
-cleanup: avatar and icon display
-fix: forums scroll to post
-
-22 Jun, 2018
-fix: image proxy when using width/height
-add: image proxy in AJAX Chat
-fix: almost all formating of usernames is format_username()
-remove: preview buttons
-fix: AJAX Chat not using override_class
-replace: log viewer to allow reading gzipped files and sqlerr_log files
-
-18 Jun, 2018
-disable: additional newsfeeds
-remove: binary_operator_spaces from php_cs_fixer
-update: function_imdb.php to handle failure
-update: uglify.php to create all needed files, instead of copy example files
-
-17 Jun, 2018
-remove: unneeded var
-update: forums display, still incomplete but much better
-fix: achievementhistory.php table display
-fix: achievementbonus.php
-fix: userhistory.php
-fix: admin/iphistory.php display
-
-16 Jun, 2018
-fix: several admin pages issues
-change: pre to code to keep bbcode code block from breaking template
-
-14 Jun, 2018
-fix: tvmaze lookup
-add: clear torrent cache button on details page
-
-13 Jun, 2018
-fix: remove deleted columns from query mytorrents.php
-update: guzzle request in function_fanart,php
-update: normalize user classes so that adding/removing most classes will not need any code changes
-fix: typo
-remove: redundant parked() check in forums.php
-fix: faq.php output
-update: ip logging false by default
-update: all requests for ip, except announce and scrape, use the function getip() to facilitate logging ip true/false
-fix: calling format_username() with array instead of id
-
-12 Jun, 2018
-fix: friends.php
-
-9 Jun, 2018
-fix: typo
-update: details.php youtube to match others
-fix: imdb lookup
-fix: site forcing new users to https
-fix: query using incorrect id
-fix: classcolors.css overwrite on git pull
-fix: classes.js overwrite on git pull
-fix: missing ip class_check.php in query
-fix: typos
-fix: tracker bencode issue, you will need to manually merge this with your include/ann_config.php
-update: ssluse for everything, always if using https
-fix: announce.php
-replace: deprecated function each()
-fix: incorrect lang var
-add: missing sqlerr in many forum queries
-fix: bbcode code block breaking layout
-
-8 Jun, 2018
-add: rounded corners to youtube
-fix: youtube display
-fix: class add/remove not updating AJAX Chat classes
-fix: flush cache when driver is 'file'
-fix: adding/removing user class not updating class colors
-fix: ambiguous 'status' view_forum.php
-add: missing sqlerr in many queries
-fix: missing space in query view_topic.php
-fix: missing global
-add: AJAX Chat command takeover to allow staff to speak as BOT
-add: AJAX Chat command announce to allow staff to speak as BOT and send as a PM to all users
-add: missing help info to AJAX Chat commands
-
-7 Jun, 2018
-fix: missing quotes
-add: bin/set_perms.php script to set file permissions to 0664
-add: bin/uglify.php script to process css/js files
-
-6 Jun, 2018
-fix: missing '/'
-fix: incorrect column name used
-fix: properly display html chars in forum posts
-fix: missing js file
-fix: userdetails.php using CURUSER details instead of id.user details
-fix: missing semicolon in takesignup.php
-fix: missing js file signup.php
-update: missing response var
-fix: reCAPTCHA success check
-update: README.md
-
-5 Jun, 2018
-replace: jquery.simpleCaptcha-0.2.js with reCAPTCHA V2
-fix: userdetails.php tabs not working
-fix: > UC_UPLOADER should not be demoted to UC_VIP when donating
-fix: remove Cache class instantiation
-
-4 Jun, 2018
-update: when cleanup item is missed, next cleanup time is set to time later than now
-fix: cleanup manager not updating or creating cleanup items
-update: timeout for all index page blocks
-fix: set timeout on cron_controller cache, in the event any cleanup failed cleanup would not run again
-
-3 Jun, 2018
-remove: mcrypt check during install
-change: some non-expiring cache items to 86400
-move: 404.jpg, off.gif, on.gih to public/images/
-fix: admin/events.php format_username
-fix: admin/editlog.php remove check_user_status
-remove: mcrypt dependency for bitbucket
-add: bucket folder for bitbucket
-update: bitbucket.php
-
-2 Jun, 2018
-change: persistent db connections to false
-fix: typo in ajax_tooltips.php
-remove: show_staffshout from database
-
-30 May, 2018
-remove: tfreak.php has no need for check_user_status since not loaded directly by user
-fix: typo in cleanup_manager.php
-add: ability to reset cleanup time to yesterday midnight from cleanup manager
-remove: radio.php has no need for check_user_status since not loaded directly by user
-remove: need to hash check, salty function for logout.php
-revert: reversed conditionals
-fix: a couple of var set that should have been a comparison
-replace: sizeof with count for consistency
-replace: __DIR__ with dirname(__FILE__) for consistency
-update: README to include required MariaDB settings
-add: check for innodb_file_format , innodb_large_prefix, innodb_file_per_table in mysql during install
-
-27 May, 2018
-remove: cleanup from user thread, remove autoclean and register_shutdown_function
-add: cronjob to contol cleanup on separate thread
-update: manually set $_SERVER['HTTP_HOST'] = $site_config['domain'] when $_SERVER['HTTP_HOST'] and $_SERVER['SERVER_NAME'] are empty
-update: login.php move 'remember me' above login button
-update: welcome message to new users
-update: cleanup info for hourly backup
-update: rewrite Peer Class to remove need for ANY_VALUE, MariaDB does not have it 
-
-24 May, 2018
-add: check for mysql variable innodb_large_prefix = 1 during install
-update: schema tokens table to dynamic
-add: password_needs_rehash to login
-update: check to assure PASSWORD_ARGON2I is available
-fix: errors in log_viewer.php
-update: use PASSWORD_BCRYPT for php versions prior to 7.2.0
-
-23 May, 2018
-add: limit to number of cleanup scripts processed each run
-update: increase karma achievement to start at 250, users start with 200
-fix: undefinded lang in cleanup
-update: clear default cache during install
-fix: dissallow cleanup scripts to run before installation completed
-fix: typo in adduser.php
-fix: count in forum_posts.php
-
-16 May, 2018
-fix: topics view increment
-update: dependencies
-update: replace password_hash algorithm bcrypt with argon2i, this only effects new or updated passwords,
-        all previous password will continue to use bcrypt until password is updated
-
-13 May, 2018
-update: move check for width/height to after if proxy url exists
-remove: image proxy default url
-update: enable latest forum posts on index page
-
-12 May, 2018
-request: allow any alphanumeric character in username #4
-update: require all new users or change username to use function valid_username
-
-11 May, 2018
-update: cleanup process runs in perpetuity once started
-fix: incorrect implementation of autoclean perpetuity
-
-10 May, 2018
-update: cleanup process select all scripts that need processing instead of just 1
-
-9 May, 2018
-fix: format_username in pm_system
-
-19 Apr, 2018
-fix: fully revert navvbar changes
-fix: README typo #3
-fix: newest user block shows user id instead of formatted user name #1
-fix: site stats not populating
-fix: call getUserFromId() with array instead of id
-
-18 Apr, 2018
-update: README
-fix: incorrect var for users id
-update: cookie lifetime to 1 as default
-fix: site not working without redis installed and used as php session handler
-
-17 Apr, 2018
-update: README
-4 Mar, 2018
-update: composer.json require php extensions
-
-3 Mar, 2018
-update: README, removed test sites
-update: db files
-add: stock forums(mostly done, but not happy with it)
-add: cache insert/update AJAX Chat user online, only hit db once per 60 sec per user
-fix: php-cs-fixer @Symfony reversing if comparisons(yoda style)
-
-25 Feb, 2018
-fix: global user expecting users data, instead of class instance
-fix: announce update not updating peers cache
-add: stock forums
-
-23 Feb, 2018
-cleanup: add additional rules to php-cs-fixer(will run before any new commits)
-revert: use globals in functions, until all moved to classes(i'm still learning)
-remove: class destructors
-remove: persistent connections to pdo
-add: @Symfony to php-cs-fixer default rules
-
-22 Feb, 2018
-add: destructor to classes
-add: persistent connections to pdo
-
-21 Feb, 2018
-move: project classes to src
-add: namespace to project classes
-move: manage jquery with npm
-fix: usercp.php password change
-fix: AJAX Chat not login user when not in online list
-replace: some globals with new Class()
-move: begin moving functions to class methods
-
-18 Feb, 2018
-remove: remember me cookies when user logs out
-move: all cookie functions to cookie class
-move: foreign key scripts to database folder for use after install folder removed
-add: Torrent Class
-add: User Class
-
-17 Feb, 2018
-fix: stylesheets for firefox, should now appear the same in all browsers
-fix: unauthenticated user redirected to login
-move: all session related tasks to Session class
-add: encrypted remember me cookie, set at 1 year
-move: AJAX Chat cookies to localstorage, no need to pass them back and forth with each request
-
-10 Feb, 2018
-fix: delete cookie at logout
-fix: admin failedlogins.php
-add: secure cookie store for userID
-remove: userID from sessions
-remove: call to undefined var arcade_top_scores.php
-update: AJAX Chat polling timer
-update:image_proxy function to match updated simple image proxy
-update: prefer ogg over mp3 audio
-add: missing ogg/wav sound files
-add: anonymize url in advertise block
-
-9 Feb, 2018
-fix: wrong user var used in recover.php
-
-7 Feb, 2018
-update: a few minor fixes
-
-5 Feb, 2018
-update: google books api, track api usage and disable if exceeded. cache only book data, not formatting
-fix: birthday cleanup
-update: books function check if empty
-remove: duplicate trivia questions
-
-4 Feb, 2018
-update: download torrent
-update: delete torrent
-update: edit torrent
-update: add flush cache for UC_MAX
-update: redis cache to choose database
-update: trivia always autrefresh, hide days when lees than 1 day
-update: rating when torrent not downloaded
-update: queries block
-fix: cache variable
-add: cache stats for memcache, redis, apcu and files
-hide: display of stats from all but staff
-
-3 Feb, 2018
-fix: freeuser_update.php
-add: redirect to login on no session
-update: sql files
-
-2 Feb, 2018
-fix: typo in site_config hnr
-remove: duplicate, unused images
-fix: rating system, using ajax
-add: torrent search suggestions
-move: create session variable salt to login function
-fix: 350 millisecond page load delay on page refresh
-
-1 Feb, 2018
-update: sql files
-fix: code block bbcode on ajax chat
-fix: users cache for AJAX Chat when staff add user
-fix: session canary and regenerate session id
-add: encrypted session data, may require delete current sessions
-update: emails to html
-add: mail class to send emails, adds headers and sennds both plain text and html versions or email
-update: torrents scoller to force image dimensions, images all face-up
-
-28 Jan, 2018
-update: wiki item formatting
-update: catalog.php formatting remove bbcode from description
-update: catalog.php formatting when no peers
-add: catalog.php
-update: alphabatize nav menu links
-update: wiki highlight active tab
-update: make AJAX Chat default audio html5, flash is not working in current ubuntu chrome
-update: get_poll return false when no poll
-update: update poll_data cache when user votes
-update: scroll to poll if user not voted
-update: use fluentpdo in tvmaze functions
-update: tvmaze and imdb api to limit cast to first 30
-update: tvmaze and imdb api to only cache the data, not the html
-add: tvmaze table with all tvmaze ids for quicker lookup
-add: tvmaze cleanup to get new tvmaze id's
-update: README to show tvmaze insert/update
-update: sql dumps to allow update
-update: tvmaze api to include episode info
-update: fanart api to include tv 
-
-27 Jan, 2018
-remove: check for imdb dir during install
-
-26 Jan, 2018
-fix: polls
-remove: thumbsup, torrent rating is sufficient
-update: set overlay height correctly
-
-25 Jan, 2018
-add: fanart api banner, poster, background
-fix: validator.php
-update: staff change user class to allow UC_MAX to set any user to any class
-
-24 Jan, 2018
-fix: left margin on details poster
-fix: incorrect array being passed to get_reputation
-add: ability to use a simple, encrypted image proxy for hotlinked images
-update: blackjack better appearance for mobile
-
-23 Jan, 2018
-add: isbn field to edit.php
-update: fix get correct isbn 10/13
-update: minified js/css files
-update: add anonymizer_url to imdb cast and trailer links
-update: update categories
-update: apis will set poster to api poster, if poster unset, without page refresh
-update: book uniformity
-update: tvmaze uniformity
-update: details.php youtube display highest quality video available
-update: imdb info
-remove: unused beep.mp3 and beep.ogg
-fix: incorrect var name for newsrss enable/disable
-replace: imdb class with imdbphp class via composer
-update: resetpw to use token auth
-
-22 Jan, 2018
-update: comment.php
-
-21 Jan, 2018
-update: trivia questions
-fix: undefined vars in staffpanel.php
-remove: log queries from staff panel
-fix: anonymous username in popups
-remove: log queries
-update: adminer.php 4.4.0
-update: check if vaiable is set before counting
-update: missing expire time in site_config
-update: details.php
-merge: userstatus_ and user_status_ caches
-update: snatched_staff.php remove duplicated text
-fix: show/hide userdetails torrent blocks, should be closed at start
-remove: redundant cache user_stats_
-remove: redundant cache userstats_
-fix: undefined var in news block
-fix: incorrect sql erro log path
-fix: countables
-update: signup errors redirect, previous form data intact
-update: install info
-add: apikey for future api access
-update: torrent_pass, auth to 64 characters
-update: tables.css to work same with table inside table
-fix: userdetails table blocks
-
-20 Jan, 2018
-update: install tooltips
-
-19 Jan, 2018
-update: set file permissions of .env, config.php and ann_config.php during install
-update: installer check writeable root
-update: user_unlocks.php to same style as the other block pages
-add: option to disable/enable newsrss feeds
-add: missing admin 'Show Friends' block
-
-18 Jan, 2018
-fix: edit wiki article
-fix: logout salt
-fix: blackjack
-update: index news block
-update: wiki.php
-
-17 Jan, 2018
-remove: double page load details.php just to increment hits
-update: set poster in db from book cache
-add: set ebook poster(in cache) to google book poster, if poster not set
-add: isbn column to torrents for better search results from google
-update: admin categories
-add: book info from google books api, with or without api key
-remove: unused columns from categories table
-update: database files
-add: list of anonymous names
-replace: 'Anonymous' with anonymous name
-add: auth key
-update: BOT upload to use auth key
-
-16 Jan, 2018
-update: site config: auto confirm = yes, confirm email = no
-add: missing trivia questions
-
-15 Jan, 2018
-update: install database
-update: karma cleanup
-move: cleanup
-update: site log
-update: coders log
-add: gzipped adminer.css
-update: browse.php not building links for seeders, leechers, snatches
-update: peerlist.php
-remove: unneeded ann_config var
-update: ann_config vars
-fix: AJAX Chat admin/sysop delete own posts
-update: install
-
-14 Jan, 2018
-update: add bot login/upload
-update: scrape.php
-update: tabs to spaces
-fix: hnr config settings
-fix: missing variable in AJAX Chat
-update: missing global
-
-13 Jan, 2018
-update: installer not write config files if empty values
-update: explicitly set variable
-update: announce.php
-update: template to show current PHP version
-update: PHP7.2
-update: install not continue if fields are blank
-fix: install back button and bad write config
-update: README.md
-
-12 Jan, 2018
-add: default .php_cs - rules used
-update: run php-cs-fixer --rules=@PSR2
-
-11 Jan, 2018
-fix: delete torrent xbt cleanup name 
-fix: admin+ delete bot messages in AJAX Chat
-update: hide latest forum posts
-update: hide torrent scroller when less than 10 torrent posters
-add: version number when site not in production
-fix: logout using the salt
-update: use of salts
-
-10 Jan, 2018
-fix: missing lang vars
-fix: queries affected by 'only_full_group_by'
-update: README.md add utf8 to mysqld.cnf
-add: searchcloud to initial database data
-update: begin update queries for sql_mode=only_full_group_by(stoc​k mysql default), i have been using stock Percona without issue
-add: explicit globals
-
-9 Jan, 2018
-fix: trivia_update when 0 questions in db
-fix: uptime not showing when 0 queries
-update: lastest_user cache
-move: adminer into iframe
-remove: unnecessary css
-
-8 Jan, 2018
-add: adminer database manager
-remove: king icon showing for all
-fix: icon size in news
-update: minified css/js files
-move: fontawesome fonts to local
-move: google fonts to local
-
-7 Jan, 2018
-update: database
-update: config.php
-remove: forums link
-remove: forums
-update: use of dirname
-update: announce.php
-revert: changes to imdb class
-fix: typo in lang files
-
-6 Jan, 2018
-fix: global block uploadapp.php
-fix: uploadapp.php
-move: jquery to local file
-replace: many relative urls with full url
-
-5 Jan 2108
-fix: login bug
-
-4 Jan, 2018
-remove: ipToStorageFormat function
-fix: admin/bans.php
-fix: first user status pending
-add: error message for pending users attempting to login
-
-2 Jan, 2018
-update: README
-remove: trivia questions to separate sql install
-update: trivia to not refresh when game closed
-replace: getting server's webroot with getting root from script
-add: set the 3 passwords to random generated password in config during install
-remove: news delete \n
-fix: margin on index page last news item
-remove: unused js files
-fix: AJAX Chat anonimize url without bbcode
-
-1 Jan, 2018
-add: missing month in AJAX Chat
-fix: function call Christmas
-add: checkdate for Christmas Gift
-fix: lang not loaded in achievements cleanup
-
-31 Dec, 2017
-fix: AJAX Chat dateTime insert
-add: datetime for mysql
-update: re-order sql updates
-update: database updates
-update: CACHE class
-update: database updates
-update: install scripts
-fix: invite signup
-fix: signup confirm
-update: many additional edits
-update: sql files
-
-16 Dec, 2017
-add: read from .env file
-update: installer to check composer and npm
-update: split install.php.sql into schema.php.sql and data.php.sql
-update: pStrength.jquery.js
-fix: autologin on successful account creation
-
-10 Dec, 2017
-fix: index trivia block display slightly different than all the others
-add: add bbcode for [p]
-removed: unneeded css/js/gz files
-
-9 Dec, 2017
-add: missing required file
-update: general code cleanup
-update: allow notifications to use bbcode
-fix: wiki.php
-fix: users.php
-update: forums sort links to tabs
-fix: navbar username class color
-add: mini navbar for links in usercp.php, userdetails.php forums.php
-remove: text shadow from user classes
-remove: webpack dependancy
-fix: extra space between username and comma
-add: package.json
-add: bulma css requirement
-add: notification of which cache adapter is in use
-fix: pm search delete
-add: cache all_users search for send message
-
-8 Dec, 2017
-change: most buttons smaller
-fix: pm search
-add: missing full text indexes
-add: select/send message to any user
-update: pm pages
-
-6 Dec, 2017
-fix: remove author from newsrss.php
-fix: check for defined
-run: "INSERT INTO staffpanel VALUES (75, 'Upgrade Database', 'staffpanel.php?tool=upgrade_database', 'upgrade database', 'other', 6, 1, 1512555394, 0);"
-add: admin/database_updates.php will show all queries that need run or things that need to be added to config.php
-
-2 Dec, 2017
-replace: more mysqli queries with pdo
-general code cleanup
-
-1 Dec, 2017
-remove: duplicate caches Myuser_ and user
-
-26 Nov, 2017
-remove: hardcoded user:pass
-add: pdo class, just beginning to move from mysqli to pdo
-fix: tooltipster position
-update: browse.php search function
-update: details.php comments
-update: cache->get
-update: details.php
-remove: new up redis
-
-25 Nov, 2017
-fix: index page poll
-fix: index page latest torrents spacing
-fix: index page torrents scroller when empty
-fix: index page news block spacing
-fix: global messages positioning
-add: caching environment 'Scrapbook'
-remove: redis requirement
-remove: memcached and php-memcache requirement
-
-14 Nov, 2017
-update: GeoIP files
-fix: iphistory.php view ip
-fix: userdetails.php view ip
-add: transition to notification buttons
-fix: themeChanger active border
-fix: lottery config
-fix: userdetails.php tabs and anchors
-update: faq
-fix: scroll to anchor
-merge: torrents-today.php into browse.php
-fix: userdetails.php tabcontrol
-
-12 Nov, 2017
-add: user stats and gifts in AJAX Chat
-add: torrent search by uploader
-add: port_check.php to assist in opening ports
-add: hnrs.php so users can keep up with them
-update: AJAX Chat channels, restrict messages origins
-update: newsrss.php can accept arrays for feeds
-
-11 Nov, 2017
-update: page uniformity
-update: snatches.php, peerlist.php, viewnfo.php, report.php
-update: global messages
-add: doc blocks(a start)
-update: filelist.php
-update: torrents-today.php
-update: notifications can accept arrays
-update: ip storage(probably missed something)
-update: lightbox v2.9.0, group every image on page, using lightbox, to create slideshow
-update: raphael.js 2.2.7
-
-6 Nov, 2017
-replace: jquery-ui accordion with smaller alternative
-add: missing markItUp css
-optimize: gif images using gifsicle
-
-5 Nov, 2017
-add: index page latest comments block(request)
-
-4 Nov, 2017
-update: installer set bot name in config.php
-fix: breadcrumbs
-add: missing lnag index
-remove: check for array index after changing to string
-fix: compare array when array does not exist
-fix: unset blocks not getting cached
-fix: compare array where array is string
-fix: error with newsfeeds before bot user created
-fix: error with autoshout before bot user created
-move: iframe resize to template
-remove: checkbox for XBT install
-add: missing function
-update: config files
-remove: unused javascript files
-update: admin/block.settings.php
-update: user_blocks.php
-remove: jquery-ui, can't find any place its being used
-replace: iframeResizer.js with one-liner
-replace: css/js files are now served pre-gzipped
-add: admin view queries page
-fix: tooltips on index page last/top/mow torrents
-add: style to scrollbar
-
-31 Oct, 2017
-fix: various typos
-add: button to remove alerts
-replace: more error/success redirects with session variable and alerts
-update: iCarousel 1.2.2
-remove: bootstrap from default.css
-add: bulma.css
-replace: bootstrap classes with bulma classes
-update: and validated rss.php
-update: getrss.php
-remove: 'LOW_PRIORITY' from sql statements, is ignored when using INNODB tables
-update: contactstaff.php
-
-31 Oct, 2017
-add: php extensions check during install
-add: missing js files
-remove: incorrect references
-add: missing functions
-fix: ini_get method
-fix: installer
-
-22 Oct, 2017
-update: rules.php
-update: faq.php
-update: useragreement.php
-fix: rules.php, faq.php, useragreement.php accessible when not logged in
-update: add anonymizer url to lang files
-replace: $#163; with $#36;
-update: admin/mega_search.php
-add: lottery site alert
-add: more staff links to navbar
-update: blackjack.php
-fix: admin/backup.php checkboxes
-
-21 Oct, 2017
-fix: browse.php checkbox selection
-change: vip to include, not include and only in search results
-fix: missing $subs in torrenttable.php
-fix: browse.php
-
-20 Oct, 2017
-add: auto remove alerts that use session variables after 15 seconds
-update: trivia pages
-fix: removed lines from backup.php
-add: breadcrumbs to all pages except index page
-update: staffpanel.php
-update: view_mailbox.php
-
-18 Oct, 2017
-remove: empty extra tools button from bbcode editor
-update: tfreak news block format to match news block
-replace: fast delete and fast edit images with font awesome icons
-
-17 Oct, 2017
-update: database schema
-add: missing images
-fix: BBcode editor using 100% of available space
-update: index news block
-fix: admin news add/edit
-update: captcha pages
-remove: print_user_stuff function
-remove: javascript to change button class on hover
-
-14 Oct, 2017
-update: admin cleanup log, moved disabled to last, instead of first
-fix: lottery
-update: Arcade and related files
-update: index page forum posts, remove unneeded joins
-fix: AJAX Chat kick/ban user
-remove: destroy session from AJAX Chat so not logged out of site
-fix: AJAX Chat endless loop when user is banned or disabled
-remove: AJAX Chat channels from mysql
-move: AJAX Chat online table to redis
-move: AJAX Chat bans table to redis
-begin: move AJAX-Chat from mysql to redis
-
-9 Oct, 2017
-remove: unneeded check for direct file access in files not in webroot
-remove: geshi syntax highlighter
-update: coders log
-add: bbcode code for [code]
-
-8 Oct, 2017
-update: minified css and js files
-remove: margin and padding on collapsed divs
-remove: cleanup log
-move: DB Backup config settings to db and site_config
-remove: torrent.type from database
-remove: torrent.username from database
-update: pushed AJAX Chat to the borders
-update: AJAX Chat to use same mysqli object as the rest of the site
-add: anonymizer url to site settings and all links use this
-add: simple logs viewer
-remove: LogViewer
-add: option to log all queries to the database
-update: admin/site_config
-remove: many inline style
-update: index blocks -> torrents to uniform style
-remove: excess borders on table-bordered
-
-14 Sept, 2017
-fix: cleanup manual run
-fix: MOW
-add: missing jquery-ui in merged and minified js files
-fix: iCarousel centering
-remove: navbar border radius along top
-
-13 Sept, 2017
-fix: iCarousel 3d
-
-12 Sept, 2017
-update: jquery.mousewheel.js
-fix: scroller mouse scroll not scroll entire page
-fix: themeChanger font color in iframes
-update: css/js minified files
-update: AJAX Chat links to behave same as the rest of the site
-fix: blackjack cards incorrect info in sql table
-fix: AJAX Chat log viewer
-add: link to AJAX Chat log viewer
-fix: overflow-y on index page
-
-11 Sept, 2017
-fix: back to top z-index
-hide index page poll block when no poll
-hide index page ie alert block if not using ie
-index page more mobile friendly
-
-11 Sept, 2017
-replace js navbar with css navbar
-remove: or replaced all document.write
-fix: install issues with foreign key issues
-
-6 Sept, 2017
-fix: all index blocks to display correctly
-fix: returnto in fastdelete.php and edit.php
-update: favicon
-update: install scripts
-
-5 Sept, 2017
-remove: php preview, replaced with inline bbcode editor preview
-fix: bbcode parser adding extra newlines when displaying tables
-moved: home button to sticky navbar
-
-4 Sept, 2017
-modify: bbcode editor, add preview
-moved almost everything out of the webroot, incomplete
-merge: default.css, bootstrap.css and bootstart-responsive.css
-update: jquery 3.2.1
-update: jquery ui 1.12.1
-add: more subtitle options for upload
-update: upload
-moved: bucket inside root
-update: bitbucket
-begin removing: unneeded tables
-begin replacing: tooltips and hover popups with tooltipster
-begin modify: all toggle/slide elements to operate uniformly
-
-21 Aug, 2017
-modify: themeController to localstorage instead of cookies
-modify: themeController add additional fonts and removed MS fonts
-modify: themeController now also controls the fonts in AJAX Caht and trivia
-modify: cleanup filelist.php
-
-20 Aug, 2017
-modify: change sitelog message to be more consistant and easier to read
-fix: install setting incorrect clean_time
-replace: Xmas with Christmas
-add: function to return a random color
-fix: incorrect minified js file being requested
-add: cleanup log viewer in admin panel
-fix: cleanup getting access to $queries count
-fix: rename cleanup function names for concurrency
-
-19 Aug, 2017
-fix: installer
-update: README
-fix: update/reorder ajax chat online list when users count changes
-fix: inactive_update.php fail on empty set
-fix: move js to just before closing body tag
-fix: combine and minify most js files on index page
-fix: themecontroller to use cookie_prefix: when getting/setting cookie
-update: jQuery Cookie Plugin to v1.4.1
-remove: duplicated function from cleanup scripts
-
-18 Aug, 2017
-add: foreign_keys.sql to create some foreign keys, nowhere near complete
-add: mysql_drop_fks.php to remove foreign keys from database
-fix: inactive_update.php to properly delete users
-
-17 Aug, 2017
-fix: make more pages 'table' appear similar to the other pages
-fix: make invite_signup.php similar to signup.php
-update: make blakckjack use 1 table, use single image sprite for cards
-fix: admin adduser.php adds user to usersachiev table and autoshout
-fix: add color class 'user' to autoshout of new users
-
-16 Aug, 2017
-rename: project to Pu-239
+### 18 Oct, 2018  
+update: FluentPDO, Flysystem, Sass, PostCSS, autoprefixer, node-sas  
+update: version number package.json  
+fix: news block icon size  
+fix: iterate only numeric template folders uglify.php  
+fix: call image_proxy with width/height when bbcode image tag includes width/height  
+fix: db insert Post.php  
+update: missing tags from breadcrumbs  
+
+### 14 Oct, 2018  
+add: lighter template WIP - will need to rethink AJAX Chat templates  
+rewrite: breadcrumbs, WIP  
+replace: get all users with ajax user lookup send_message.php  
+replace: markItUp.js with SCEditor.js WYSIWYG Editor  
+remove: jquery.mousewheel.js  
+move: jquery.flexslider.js to npm  
+move: tooltipster.js to npm  
+remove .htaccess files as nginx ignores them  
+add: new base template  
+move: themeChanger into template folder to allow modification per template  
+replace: FormManager.js with genres_show_hide.js  
+replace: jquery.validator.js with html5 validation  
+fix: Adminer link in navbar  
+remove: ipToStorageFormat function  
+
+### 11 Oct, 2018  
+fix: site_settings.php  
+
+### 10 Oct, 2018  
+fix: announce.php  
+
+### 02 Sept, 2018  
+update: database files  
+remove: image proxy key  
+update: remove leading dots in cookie_domain example  
+add: tag   @username anywhere  
+update: add columns year, rating updated from api calls  
+update: api calls to ajax requests for faster initial page load details.php  
+update: merge tvmaze title info with episode info  
+remove: ssluse, determine by site scheme instead  
+
+### 28 Aug, 2018  
+update: full stop when files.php is missing  
+
+### 27 Aug, 2018  
+update: add notice if missing files.php  
+
+### 26 Aug, 2018  
+update: placeholder_image() allow variable size  
+update: move imdb info to top of page details.php  
+update: use minimal bulma, only as needed  
+refactor: navbar.php  
+add: node-sass to compile sass files  
+
+### 24 Aug, 2018  
+fix: redecalare function validip() ann_functions.php  
+fix: using var before set  
+fix: get correct class from similar staffpanel names  
+update: insert/select user ip correctly  
+remove: check_selected.js  
+fix: check if var is empty before using it watched_users.php  
+fix: typo forums.php  
+update: limit displayed users count active_24h_users.php  
+
+### 23 Aug, 2018  
+add: missing flip_box.js uglify.php  
+fix: typo stelth  
+fix: delete user inactive.php  
+fix: display freeleech.php block  
+fix: set/unset bonus edit_moods.php  
+fix: check if var is empty before using it torrenttable_functions.php  
+fix: users class not sending messages grouppm.php  
+
+### 22 Aug, 2018  
+fix: display ip view_peers.php  
+fix: validate IPV6 address while getting user ip address  
+fix: returnto logout.out when logging in after clicking logout  
+fix: remember me token expires  
+cleanup: class files to do only what class relates to  
+update: placeholder text freeleech.php  
+fix: typo lang files  
+fix: use incorrect userid variable usercomment.php  
+add: remember me expires to site_config.php  
+update: database files  
+update: allow only 1 for each modifier admin/freeleech.php  
+
+### 21 Aug, 2018  
+fix: serialize data, multiple values admin/freeleech.php  
+fix: initial cookie_lifetime value, during install  
+remove: bottom margin staff picks block  
+add: missing free_details.php  
+
+### 20 Aug, 2018  
+update: reset remember me cookie expires time when remember token is updated in db  
+add: cache entry to destroy user session when changing password, disabled, etc  
+update: destroy all users auth_tokens when logging out  
+update: delete all expired auth_tokens when generating new token  
+fix: multiple logins destroying other login remember me tokens  
+update: insert/update in 1 query instead of delete/insert set_remember  
+
+### 19 Aug, 2018  
+fix: undefined index get_date()  
+update: add required fields to signup.php, invite_signup.php, requests.php, offers.php  
+fix: null referer when url not wrapped in url tags AJAX Chat  
+update: jquery.validate.js  
+remove: mods folder, not used  
+update: use php date() instead of mysql NOW() for search  
+update: use random_bytes() instead of make_password() to generate auth tokens  
+add: change remember me tokens once used  
+add: additional user whereis locations  
+update: explicitly start session when using remember me token  
+update: remember me fuction to update expires time while user is active on site  
+add: flushDB() to flush only the site specific db when using redis as cache driver  
+update: imdbphp class  
+
+### 18 Aug, 2018  
+update: tooltip formatting movies.php  
+update: imdb_info_short to find images on fanart or omdb, when imdb image not found  
+add: create_image() to create dummy src images for lazy loading  
+update: additional images lazy loaded  
+fix: typo lang_pm.php  
+fix: check incorrect var view_message.php  
+fix: typo ajax_chat_cleanup.php  
+add: missing pirate.png  
+fix: AJAX Chat disabled gif  
+fix: incorrect lang key for AJAX Chat messages  
+update: show users message when banned from AJAX Chat  
+update: remove img tags from AJAX Chat messages after 24 hours  
+update: hide anonymous users from showing in AJAX Chat Online list  
+fix: last post link forums.php  
+update: database files  
+fix: comments edit/delete  
+fix: invalid Cache dir site_config.php  
+
+### 16 Aug, 2018  
+fix: check downloaded file is actually an image before optimizing it  
+update: composer imported classes  
+add: wrapper() to all admin/files  
+add:   [br  ] to format_comment()  
+fix: take_theme.php incorrect comparison  
+fix: staff allowed fail post to correct forum/topic  
+remove: pager_new.php  
+remove: resize_image()  
+update: validemail() to use filter_var  
+fix: get_stylesheet()  
+fix: allow avatar/signature with '  ?' in the url  
+fix: AJAX Chat View Logs  
+update: AJAX Chat polling timer to 45 seconds after 10 min inactive  
+update: uglify.php to update all templates within templates folder  
+
+### 08 Aug, 2018  
+fix: missing image uploader_info.php  
+fix: missing require user_unlocks.php  
+update: show poster, banner, background images, IMDb info in requests.php, offers.php, upload.php when using valid IMDb url and images are available  
+fix: allow anything class UC_UPLOADER and above to upload  
+fix: after upload multiple images to bitbucket, you can select any link correctly  
+
+### 07 Aug, 2018  
+fix: write_css_class()  
+move: all delete torrent functions to Torrents Class  
+add: IMDb lookup on upload.php  
+add: ISBN lookup on upload.php  
+remove: unneeded link to google fonts AJAXChatTemplate.php  
+fix: Tooltips  
+fix: overwrite key browse_js uglify.php  
+update: write_classes() to write chat/js/config bbCodeTags  
+
+### 06 Aug, 2018  
+fix: clear index page user blocks when edit any user  
+fix: missing staff_picks mytorrents.php  
+
+### 05 Aug, 2018  
+fix: countable AJAX Chat  
+fix: path to up.gif torrenttable_functions.php  
+move: find images in details.php to function_get_images.php  
+update: allow : in torrent name  
+add: verify file is actually an image ImageProxy.php  
+move: background-16 to default.css  
+add: attribution to colorpicker.js  
+fix: get correct page/post when post count greater than per page  
+fix: AJAX Chat stats  
+fix: bluray releases  
+fix: admin user delete account  
+fix: admin account manage delete user account  
+fix: promise exception AJAX Chat  
+add: animation to flipper  
+move: flipper to seaparate file  
+move: navbar to separate file  
+add: apis block to enable/disable individual apis  
+
+### 03 Aug, 2018  
+update: set cache for failed apis to limit retries  
+add: Staff Picks  
+fix: delete cache when updating bonus  
+fix: adminer  
+
+### 02 Aug, 2018  
+fix: invalid date birthday.php  
+fix: remember token getting deleted when flush cache  
+fix: AJAX Chat ban user  
+fix: string literals announce.php  
+fix: trivia showing icons  
+fix: schema for cheaters userip  
+update: jquery remove to fade out  
+
+### 01 Aug, 2018  
+fix: typo lang_torrenttable_functions.php  
+fix: use correct key for userid news.php  
+
+### 31 Jul, 2018  
+fix: typo bbcode_functions.php and anatomy.php  
+fix: typo takeedit.php  
+fix: return false if $image is empty bittorent.php  
+
+### 30 Jul, 2018  
+fix: comments avatar details.php  
+fix: allow special chars for db password backupdb.php  
+move: breadcrumbs() to its own file  
+update: several cleanup scripts to fluentPDO  
+fix: incorrect lang variable name used modtask.php  
+fix: typo delete_torrents_update.php  
+update: return query ip ajax chat  
+update: delete user caches when set disabled  
+update: chat destroy session when user is disabled  
+add: missing require takeedit.php  
+update: check if var is empty before using it function_books.php  
+add: book update to images update cleanup  
+fix: ignore query upgrade_database.php  
+update: delete session for disabled users  
+add: button to ignore query on database update  
+update: allow staff site access when site set offline  
+remove: bad banner  
+fix: get lang before use of lang  
+fix: install set correct announce https url  
+fix: left join when no topic forum_posts.php  
+
+### 29 Jul, 2018  
+add: default banner.jpp  
+add: dbconn() to all cleanup scripts  
+remove: time_adjust and time_offest from site_config  
+update: inner join on torrents comments.php  
+fix: when empty array comments.php  
+update: site_config  
+update: assumed fk inactive_update.php  
+update: drop fk contstaint on dbbackup  
+update: drop fk constraint on bans  
+fix: customsmilie_update.php  
+update: drop fk constraint on bannedemails  
+update: site_config  
+fix: redis flush cache flushing all databases instead of just redis site db  
+update: site_config  
+fix: torrents_update.php  
+update: database files  
+
+### 28 Jul, 2018  
+fix: card table background  
+fix: nfo display viewnfo.php  
+update: clean image caches when poster added to torrent  
+remove: XBT Cleanup Items  
+update: Adminer 4.6.3  
+revert: css image to base64  
+fix: postcss css cleanup  
+update: text for bad id details.php  
+fix: redirect to index page and show flash message when torrent not exist details.php  
+fix: upload description removing characters such as   ë,   è,   é, and   ê    
+fix: upload stripping ascii from description instead of nfo  
+
+### 27 Jul, 2018  
+update: add class color to flash message hnrs.php  
+fix: format_username can't be used with flash messages hnrs.php  
+fix: direct link to post view_topic.php  
+replace: file_get_contents() with fetch() tfreak.php  
+update: use global $fluent instead of passing it User.php  
+add: delete_by_id() Torrent.php  
+replace: MyPeers_ with peers_  
+fix: first db connection error takeupload.php  
+update: search.php bot use only  
+fix: delete torrent not deleting all caches and all likes to comments, only remove bp if torrent newer than 14 days  
+fix: tfreak block if no results  
+fix: only grab urls that are not empty images_cleanup.php  
+update: browse.php search by genre full text search  
+
+### 24 Jul, 2018  
+remove: timeout from fetch guzzle config  
+fix: save image to path store_image()  
+fix: get backgrounds when url is empty function_bluray.php  
+fix: unquoted key send_message.php  
+
+### 23 Jul, 2018  
+fix: remove dd($url) from function_tmdb.php  
+update: add try/catch to fetch()  
+fix: typo in newsrss.php  
+update: cleanup_manager.php replace edit/delete icons  
+update: Image Proxy to use fetch()  
+fix: function_bluray.php missing requires  
+add: Newsrss cleanup to remove news entries older than 30 days  
+update: only post newest nrewrss item when starting for the first time  
+fix: newsrss initial cache  
+fix: gifs no longer optimized on the fly by image proxy  
+fix: display no friends when friends list is empty userdetails.php  
+add: missing Avatar toggle in user blocks, currently only used in userdetails.php  
+fix: bbcode image class  
+fix: typo in dragndrop.js  
+
+### 22 Jul, 2018  
+fix: view_mailbox.php breaking template  
+fix: log_viewer.php not displaying all files correctly  
+fix: incorrect use of $cache-  >add  
+update: only show block in user_blocks if block is enabled by site  
+remove: redundant columns from users table  
+fix: bitwise for opt2  
+remove: imacss and postcss-font-base64  
+
+### 21 Jul, 2018  
+update: bitbucket.php using ajax drag and drop  
+remove: incorrect method parameter stdhead()  
+remove: avatar path from bitbucket  
+
+### 20 Jul, 2018  
+cleanup: formatting, alignment, replace join with implode  
+
+### 19 Jul, 2018  
+fix: youtube link on upload  
+update: database files  
+add: php-cs-fixer and postcss to uglify.php  
+add: auto download torrent after upload  
+fix: typo in function_tvmaze.php  
+fix: trivia results on index page not showing scrollbar  
+update: log vierer better messages splitting  
+fix: direct link to post button  
+fix: latest comments poster not using url_proxy  
+fix: removal of background  
+
+### 18 Jul, 2018  
+update: database files  
+add: latest torrents slider using flexslider and torrent banners  
+
+### 17 Jul, 2018  
+fix: background image not 100% width  
+fix: bluray releases getting incorrect imdbid  
+
+### 16 Jul, 2018  
+add: bluray.com new releases page  
+replace: file_get_contents() with fetch()  
+add: omdb lookup to images_cleanup.php  
+fix: random_int larger int listed before smaller int casino.php  
+
+### 15 Jul, 2018  
+fix: missing var  
+add: OMDb API  
+add: upcoming movies from imdb  
+merged: all lists into 1 file  
+update: check file/folder exists before processing  
+fix: images cleanup  
+update: composer require PHP   >= 7.2.0  
+update: increase font size slightly  
+cleanup: general code cleanup, phpstorm  
+update: database files  
+fix: all like buttons  
+add: additional like buttons  
+update: all comments displayed in same manner  
+add: imdb info in requests and offers  
+add: cleanup script to download anf optimize images if using image proxy  
+remove: poster from image background  
+add: try/catch ImageProxy  
+fix: time sort in tvmaze.php  
+update: tmdb image sizes for better quality  
+add: min-width to index page blocks titles  
+rename: pm_system messages  
+update: pager_new.php pager_functions.php to return limits for fluentPDO  
+remove: manage_likes table  
+
+### 13 Jul, 2018  
+fix: make action 'default' usercp.php  
+
+### 12 Jul, 2018  
+fix: check if dir exists before traverse it log_viewer.php  
+
+### 11 Jul, 2018  
+fix: background not displaying details.php  
+fix: query non existent table  
+add: TMDb Top 100 Movies  
+add: images table to store image urls  
+update: API get images to store urls  
+update: get_body_image to get from images table and get poster or background depending on screen orientation  
+update: normalize relative urls in js files  
+remove: Atlantis from countries signup.php invite_signup.php  
+fix: error on valid empty post contents takesignup.php  
+remove: optimize/blur gifs ImageProxy.php  
+fix: check if empty beofre use details.php  
+update: README innodb_autoinc_lock_mode   = 0  
+fix: undefined $count admin/bans.php  
+fix: search by category browse.php  
+fix: missing require thanks.php  
+fix: missing require bookmark.php  
+
+### 9 Jul, 2018  
+fix: uptime time display  
+fix: mybonus.php sort order  
+fix: crazyhour global message  
+
+### 8 Jul, 2018  
+fix: get empty image get_body_image()  
+fix: avatar max-width  
+fix: update user birthday when birthday not set  
+fix: get random image get_body_image()  
+update: delete get_body_image() cache on new upload  
+fix: url getting deleted when edit takeedit.php  
+update: remove banner and background when torrent poster is changed  
+update: clean up get_show_name() for better search results  
+fix: emoticons.php  
+update: bitbucket.php allow webp images, optimize images after upload  
+update: details.php to show which api lookup results are showing  
+update: composer  
+fix: background art not showing when enabled  
+add: user option to use 12 or 24 hour clock everywhere except AJAX Chat(working on it)  
+update: database update process  
+remove: some extraneous spaces in lang files  
+
+### 7 Jul, 2018  
+fix: plural question(s) in trivia points pm  
+add: option to use 12 or 24 hour clock everywhere except AJAX Chat(working on it)  
+
+### 5 Jul, 2018  
+fix: remove invalid chars from uploaded nfo before db insert  
+fix: typo in bittorrent.php  
+fit: incorrect method name  
+
+### 1 Jul, 2018  
+fix: check if folder exists before setting perms set_perms.php  
+update: set new/updated files owner:group according to current owner:group set_perms.php  
+fix: check for empty vars before using them signup.php  
+fix: install folder check  
+fix: incorrect file permissions in 775 folders  
+fix: bit bucket link not showing  
+update: max image size in AJAX Chat  
+fix: images in AJAX Chat  
+remove: unused gzip directory  
+add: logs folder  
+fix: permissions  
+update: README to correct install directions  
+remove: redundant fetch() functions  
+replace: remote image proxy with local image proxy, enable only if you have the space for it  
+purged: database_updates, rethinking the process  
+updated: README to include required apps and php extensions  
+add: option to show random background on every page  
+add: lazy load most images  
+
+### 27 Jun, 2018  
+update: adjust avatar display size for consistency  
+update: use real ip when logging failed logins  
+add: TVMaze TV Schedule  
+add: php-bz2 requirement for TVMaze TV Schedule  
+
+### 26 Jun, 2018  
+update: hide video butto in AJAX Chat on small screen  
+add: notice to run uglify.php when changing classes info  
+
+### 25 Jun, 2018  
+update: limit video size in AJAX Chat  
+add: video player to AJAX Chat  
+fix: banner width  
+add: static and video banners to top of template  
+update: enable background image on details.php  
+add: gm.gif and hiya.gif  
+remove: bans and bannedemail foreign keys  
+fix: missing initial site statitics data  
+fix: allowed staff and missing lang reference in backup.php  
+
+### 24 Jun, 2018  
+fix: check for empty pm ids before attempting to delete them  
+change: anchor tags to id from name for uniformity  
+fix: incorrect url for announce  
+update: resetpw.php when importing from U-232 allow compare hintanswer with md5  
+add: forum_id column to over_forums  
+remove: unused css links in forums.php  
+remove: direct link to Pu-239.pw/forums.php  
+fix: staff forums id  
+fix: over_forums.php edit forum with same sort number  
+update: tv.php function_tmdb.php to get tv listing by date, pretty limited set  
+update: use internal cache flush method  
+update: limit AJAX Chat images to 50% height 50% width  
+
+### 23 Jun, 2018  
+add: tv.php use TMDb to get a list of tv showings airing today  
+add: movies.php use TMDb to get a list of movies released any particular week  
+fix: emoticon size  
+cleanup: avatar and icon display  
+fix: forums scroll to post  
+
+### 22 Jun, 2018  
+fix: image proxy when using width/height  
+add: image proxy in AJAX Chat  
+fix: almost all formating of usernames is format_username()  
+remove: preview buttons  
+fix: AJAX Chat not using override_class  
+replace: log viewer to allow reading gzipped files and sqlerr_log files  
+
+### 18 Jun, 2018  
+disable: additional newsfeeds  
+remove: binary_operator_spaces from php_cs_fixer  
+update: function_imdb.php to handle failure  
+update: uglify.php to create all needed files, instead of copy example files  
+
+### 17 Jun, 2018  
+remove: unneeded var  
+update: forums display, still incomplete but much better  
+fix: achievementhistory.php table display  
+fix: achievementbonus.php  
+fix: userhistory.php  
+fix: admin/iphistory.php display  
+
+### 16 Jun, 2018  
+fix: several admin pages issues  
+change: pre to code to keep bbcode code block from breaking template  
+
+### 14 Jun, 2018  
+fix: tvmaze lookup  
+add: clear torrent cache button on details page  
+
+### 13 Jun, 2018  
+fix: remove deleted columns from query mytorrents.php  
+update: guzzle request in function_fanart,php  
+update: normalize user classes so that adding/removing most classes will not need any code changes  
+fix: typo  
+remove: redundant parked() check in forums.php  
+fix: faq.php output  
+update: ip logging false by default  
+update: all requests for ip, except announce and scrape, use the function getip() to facilitate logging ip true/false  
+fix: calling format_username() with array instead of id  
+
+### 12 Jun, 2018  
+fix: friends.php  
+
+### 9 Jun, 2018  
+fix: typo  
+update: details.php youtube to match others  
+fix: imdb lookup  
+fix: site forcing new users to https  
+fix: query using incorrect id  
+fix: classcolors.css overwrite on git pull  
+fix: classes.js overwrite on git pull  
+fix: missing ip class_check.php in query  
+fix: typos  
+fix: tracker bencode issue, you will need to manually merge this with your include/ann_config.php  
+update: ssluse for everything, always if using https  
+fix: announce.php  
+replace: deprecated function each()  
+fix: incorrect lang var  
+add: missing sqlerr in many forum queries  
+fix: bbcode code block breaking layout  
+
+### 8 Jun, 2018  
+add: rounded corners to youtube  
+fix: youtube display  
+fix: class add/remove not updating AJAX Chat classes  
+fix: flush cache when driver is 'file'  
+fix: adding/removing user class not updating class colors  
+fix: ambiguous 'status' view_forum.php  
+add: missing sqlerr in many queries  
+fix: missing space in query view_topic.php  
+fix: missing global  
+add: AJAX Chat command takeover to allow staff to speak as BOT  
+add: AJAX Chat command announce to allow staff to speak as BOT and send as a PM to all users  
+add: missing help info to AJAX Chat commands  
+
+### 7 Jun, 2018  
+fix: missing quotes  
+add: bin/set_perms.php script to set file permissions to 0664  
+add: bin/uglify.php script to process css/js files  
+
+### 6 Jun, 2018  
+fix: missing '/'  
+fix: incorrect column name used  
+fix: properly display html chars in forum posts  
+fix: missing js file  
+fix: userdetails.php using CURUSER details instead of id.user details  
+fix: missing semicolon in takesignup.php  
+fix: missing js file signup.php  
+update: missing response var  
+fix: reCAPTCHA success check  
+update: README.md  
+
+### 5 Jun, 2018  
+replace: jquery.simpleCaptcha-0.2.js with reCAPTCHA V2  
+fix: userdetails.php tabs not working  
+fix:   > UC_UPLOADER should not be demoted to UC_VIP when donating  
+fix: remove Cache class instantiation  
+
+### 4 Jun, 2018  
+update: when cleanup item is missed, next cleanup time is set to time later than now  
+fix: cleanup manager not updating or creating cleanup items  
+update: timeout for all index page blocks  
+fix: set timeout on cron_controller cache, in the event any cleanup failed cleanup would not run again  
+
+### 3 Jun, 2018  
+remove: mcrypt check during install  
+change: some non-expiring cache items to 86400  
+move: 404.jpg, off.gif, on.gih to public/images/  
+fix: admin/events.php format_username  
+fix: admin/editlog.php remove check_user_status  
+remove: mcrypt dependency for bitbucket  
+add: bucket folder for bitbucket  
+update: bitbucket.php  
+
+### 2 Jun, 2018  
+change: persistent db connections to false  
+fix: typo in ajax_tooltips.php  
+remove: show_staffshout from database  
+
+### 30 May, 2018  
+remove: tfreak.php has no need for check_user_status since not loaded directly by user  
+fix: typo in cleanup_manager.php  
+add: ability to reset cleanup time to yesterday midnight from cleanup manager  
+remove: radio.php has no need for check_user_status since not loaded directly by user  
+remove: need to hash check, salty function for logout.php  
+revert: reversed conditionals  
+fix: a couple of var set that should have been a comparison  
+replace: sizeof with count for consistency  
+replace: __DIR__ with dirname(__FILE__) for consistency  
+update: README to include required MariaDB settings  
+add: check for innodb_file_format , innodb_large_prefix, innodb_file_per_table in mysql during install  
+
+### 27 May, 2018  
+remove: cleanup from user thread, remove autoclean and register_shutdown_function  
+add: cronjob to contol cleanup on separate thread  
+update: manually set $_SERVER  ['HTTP_HOST'  ]   = $site_config  ['domain'  ] when $_SERVER  ['HTTP_HOST'  ] and $_SERVER  ['SERVER_NAME'  ] are empty  
+update: login.php move 'remember me' above login button  
+update: welcome message to new users  
+update: cleanup info for hourly backup  
+update: rewrite Peer Class to remove need for ANY_VALUE, MariaDB does not have it   
+
+### 24 May, 2018  
+add: check for mysql variable innodb_large_prefix   = 1 during install  
+update: schema tokens table to dynamic  
+add: password_needs_rehash to login  
+update: check to assure PASSWORD_ARGON2I is available  
+fix: errors in log_viewer.php  
+update: use PASSWORD_BCRYPT for php versions prior to 7.2.0  
+
+### 23 May, 2018  
+add: limit to number of cleanup scripts processed each run  
+update: increase karma achievement to start at 250, users start with 200  
+fix: undefinded lang in cleanup  
+update: clear default cache during install  
+fix: dissallow cleanup scripts to run before installation completed  
+fix: typo in adduser.php  
+fix: count in forum_posts.php  
+
+### 16 May, 2018  
+fix: topics view increment  
+update: dependencies  
+update: replace password_hash algorithm bcrypt with argon2i, this only effects new or updated passwords,  
+      all previous password will continue to use bcrypt until password is updated  
+
+### 13 May, 2018  
+update: move check for width/height to after if proxy url exists  
+remove: image proxy default url  
+update: enable latest forum posts on index page  
+
+### 12 May, 2018  
+request: allow any alphanumeric character in username #4  
+update: require all new users or change username to use function valid_username  
+
+### 11 May, 2018  
+update: cleanup process runs in perpetuity once started  
+fix: incorrect implementation of autoclean perpetuity  
+
+### 10 May, 2018  
+update: cleanup process select all scripts that need processing instead of just 1  
+
+### 9 May, 2018  
+fix: format_username in pm_system  
+
+### 19 Apr, 2018  
+fix: fully revert navvbar changes  
+fix: README typo #3  
+fix: newest user block shows user id instead of formatted user name #1  
+fix: site stats not populating  
+fix: call getUserFromId() with array instead of id  
+
+### 18 Apr, 2018  
+update: README  
+fix: incorrect var for users id  
+update: cookie lifetime to 1 as default  
+fix: site not working without redis installed and used as php session handler  
+
+### 17 Apr, 2018  
+update: README  
+### 4 Mar, 2018  
+update: composer.json require php extensions  
+
+### 3 Mar, 2018  
+update: README, removed test sites  
+update: db files  
+add: stock forums(mostly done, but not happy with it)  
+add: cache insert/update AJAX Chat user online, only hit db once per 60 sec per user  
+fix: php-cs-fixer   @Symfony reversing if comparisons(yoda style)  
+
+### 25 Feb, 2018  
+fix: global user expecting users data, instead of class instance  
+fix: announce update not updating peers cache  
+add: stock forums  
+
+### 23 Feb, 2018  
+cleanup: add additional rules to php-cs-fixer(will run before any new commits)  
+revert: use globals in functions, until all moved to classes(i'm still learning)  
+remove: class destructors  
+remove: persistent connections to pdo  
+add:   @Symfony to php-cs-fixer default rules  
+
+### 22 Feb, 2018  
+add: destructor to classes  
+add: persistent connections to pdo  
+
+### 21 Feb, 2018  
+move: project classes to src  
+add: namespace to project classes  
+move: manage jquery with npm  
+fix: usercp.php password change  
+fix: AJAX Chat not login user when not in online list  
+replace: some globals with new Class()  
+move: begin moving functions to class methods  
+
+### 18 Feb, 2018  
+remove: remember me cookies when user logs out  
+move: all cookie functions to cookie class  
+move: foreign key scripts to database folder for use after install folder removed  
+add: Torrent Class  
+add: User Class  
+
+### 17 Feb, 2018  
+fix: stylesheets for firefox, should now appear the same in all browsers  
+fix: unauthenticated user redirected to login  
+move: all session related tasks to Session class  
+add: encrypted remember me cookie, set at 1 year  
+move: AJAX Chat cookies to localstorage, no need to pass them back and forth with each request  
+
+### 10 Feb, 2018  
+fix: delete cookie at logout  
+fix: admin failedlogins.php  
+add: secure cookie store for userID  
+remove: userID from sessions  
+remove: call to undefined var arcade_top_scores.php  
+update: AJAX Chat polling timer  
+update:image_proxy function to match updated simple image proxy  
+update: prefer ogg over mp3 audio  
+add: missing ogg/wav sound files  
+add: anonymize url in advertise block  
+
+### 9 Feb, 2018  
+fix: wrong user var used in recover.php  
+
+### 7 Feb, 2018  
+update: a few minor fixes  
+
+### 5 Feb, 2018  
+update: google books api, track api usage and disable if exceeded. cache only book data, not formatting  
+fix: birthday cleanup  
+update: books function check if empty  
+remove: duplicate trivia questions  
+
+### 4 Feb, 2018  
+update: download torrent  
+update: delete torrent  
+update: edit torrent  
+update: add flush cache for UC_MAX  
+update: redis cache to choose database  
+update: trivia always autrefresh, hide days when lees than 1 day  
+update: rating when torrent not downloaded  
+update: queries block  
+fix: cache variable  
+add: cache stats for memcache, redis, apcu and files  
+hide: display of stats from all but staff  
+
+### 3 Feb, 2018  
+fix: freeuser_update.php  
+add: redirect to login on no session  
+update: sql files  
+
+### 2 Feb, 2018  
+fix: typo in site_config hnr  
+remove: duplicate, unused images  
+fix: rating system, using ajax  
+add: torrent search suggestions  
+move: create session variable salt to login function  
+fix: 350 millisecond page load delay on page refresh  
+
+### 1 Feb, 2018  
+update: sql files  
+fix: code block bbcode on ajax chat  
+fix: users cache for AJAX Chat when staff add user  
+fix: session canary and regenerate session id  
+add: encrypted session data, may require delete current sessions  
+update: emails to html  
+add: mail class to send emails, adds headers and sennds both plain text and html versions or email  
+update: torrents scoller to force image dimensions, images all face-up  
+
+### 28 Jan, 2018  
+update: wiki item formatting  
+update: catalog.php formatting remove bbcode from description  
+update: catalog.php formatting when no peers  
+add: catalog.php  
+update: alphabatize nav menu links  
+update: wiki highlight active tab  
+update: make AJAX Chat default audio html5, flash is not working in current ubuntu chrome  
+update: get_poll return false when no poll  
+update: update poll_data cache when user votes  
+update: scroll to poll if user not voted  
+update: use fluentpdo in tvmaze functions  
+update: tvmaze and imdb api to limit cast to first 30  
+update: tvmaze and imdb api to only cache the data, not the html  
+add: tvmaze table with all tvmaze ids for quicker lookup  
+add: tvmaze cleanup to get new tvmaze id's  
+update: README to show tvmaze insert/update  
+update: sql dumps to allow update  
+update: tvmaze api to include episode info  
+update: fanart api to include tv   
+
+### 27 Jan, 2018  
+remove: check for imdb dir during install  
+
+### 26 Jan, 2018  
+fix: polls  
+remove: thumbsup, torrent rating is sufficient  
+update: set overlay height correctly  
+
+### 25 Jan, 2018  
+add: fanart api banner, poster, background  
+fix: validator.php  
+update: staff change user class to allow UC_MAX to set any user to any class  
+
+### 24 Jan, 2018  
+fix: left margin on details poster  
+fix: incorrect array being passed to get_reputation  
+add: ability to use a simple, encrypted image proxy for hotlinked images  
+update: blackjack better appearance for mobile  
+
+### 23 Jan, 2018  
+add: isbn field to edit.php  
+update: fix get correct isbn 10/13  
+update: minified js/css files  
+update: add anonymizer_url to imdb cast and trailer links  
+update: update categories  
+update: apis will set poster to api poster, if poster unset, without page refresh  
+update: book uniformity  
+update: tvmaze uniformity  
+update: details.php youtube display highest quality video available  
+update: imdb info  
+remove: unused beep.mp3 and beep.ogg  
+fix: incorrect var name for newsrss enable/disable  
+replace: imdb class with imdbphp class via composer  
+update: resetpw to use token auth  
+
+### 22 Jan, 2018  
+update: comment.php  
+
+### 21 Jan, 2018  
+update: trivia questions  
+fix: undefined vars in staffpanel.php  
+remove: log queries from staff panel  
+fix: anonymous username in popups  
+remove: log queries  
+update: adminer.php 4.4.0  
+update: check if vaiable is set before counting  
+update: missing expire time in site_config  
+update: details.php  
+merge: userstatus_ and user_status_ caches  
+update: snatched_staff.php remove duplicated text  
+fix: show/hide userdetails torrent blocks, should be closed at start  
+remove: redundant cache user_stats_  
+remove: redundant cache userstats_  
+fix: undefined var in news block  
+fix: incorrect sql erro log path  
+fix: countables  
+update: signup errors redirect, previous form data intact  
+update: install info  
+add: apikey for future api access  
+update: torrent_pass, auth to 64 characters  
+update: tables.css to work same with table inside table  
+fix: userdetails table blocks  
+
+### 20 Jan, 2018  
+update: install tooltips  
+
+### 19 Jan, 2018  
+update: set file permissions of .env, config.php and ann_config.php during install  
+update: installer check writeable root  
+update: user_unlocks.php to same style as the other block pages  
+add: option to disable/enable newsrss feeds  
+add: missing admin 'Show Friends' block  
+
+### 18 Jan, 2018  
+fix: edit wiki article  
+fix: logout salt  
+fix: blackjack  
+update: index news block  
+update: wiki.php  
+
+### 17 Jan, 2018  
+remove: double page load details.php just to increment hits  
+update: set poster in db from book cache  
+add: set ebook poster(in cache) to google book poster, if poster not set  
+add: isbn column to torrents for better search results from google  
+update: admin categories  
+add: book info from google books api, with or without api key  
+remove: unused columns from categories table  
+update: database files  
+add: list of anonymous names  
+replace: 'Anonymous' with anonymous name  
+add: auth key  
+update: BOT upload to use auth key  
+
+### 16 Jan, 2018  
+update: site config: auto confirm   = yes, confirm email   = no  
+add: missing trivia questions  
+
+### 15 Jan, 2018  
+update: install database  
+update: karma cleanup  
+move: cleanup  
+update: site log  
+update: coders log  
+add: gzipped adminer.css  
+update: browse.php not building links for seeders, leechers, snatches  
+update: peerlist.php  
+remove: unneeded ann_config var  
+update: ann_config vars  
+fix: AJAX Chat admin/sysop delete own posts  
+update: install  
+
+### 14 Jan, 2018  
+update: add bot login/upload  
+update: scrape.php  
+update: tabs to spaces  
+fix: hnr config settings  
+fix: missing variable in AJAX Chat  
+update: missing global  
+
+### 13 Jan, 2018  
+update: installer not write config files if empty values  
+update: explicitly set variable  
+update: announce.php  
+update: template to show current PHP version  
+update: PHP7.2  
+update: install not continue if fields are blank  
+fix: install back button and bad write config  
+update: README.md  
+
+### 12 Jan, 2018  
+add: default .php_cs - rules used  
+update: run php-cs-fixer --rules  =@PSR2  
+
+### 11 Jan, 2018  
+fix: delete torrent xbt cleanup name   
+fix: admin+ delete bot messages in AJAX Chat  
+update: hide latest forum posts  
+update: hide torrent scroller when less than 10 torrent posters  
+add: version number when site not in production  
+fix: logout using the salt  
+update: use of salts  
+
+### 10 Jan, 2018  
+fix: missing lang vars  
+fix: queries affected by 'only_full_group_by'  
+update: README.md add utf8 to mysqld.cnf  
+add: searchcloud to initial database data  
+update: begin update queries for sql_mode  =only_full_group_by(stoc  ​k mysql default), i have been using stock Percona without issue  
+add: explicit globals  
+
+### 9 Jan, 2018  
+fix: trivia_update when 0 questions in db  
+fix: uptime not showing when 0 queries  
+update: lastest_user cache  
+move: adminer into iframe  
+remove: unnecessary css  
+
+### 8 Jan, 2018  
+add: adminer database manager  
+remove: king icon showing for all  
+fix: icon size in news  
+update: minified css/js files  
+move: fontawesome fonts to local  
+move: google fonts to local  
+
+### 7 Jan, 2018  
+update: database  
+update: config.php  
+remove: forums link  
+remove: forums  
+update: use of dirname  
+update: announce.php  
+revert: changes to imdb class  
+fix: typo in lang files  
+
+### 6 Jan, 2018  
+fix: global block uploadapp.php  
+fix: uploadapp.php  
+move: jquery to local file  
+replace: many relative urls with full url  
+
+5 Jan 2108  
+fix: login bug  
+
+### 4 Jan, 2018  
+remove: ipToStorageFormat function  
+fix: admin/bans.php  
+fix: first user status pending  
+add: error message for pending users attempting to login  
+
+### 2 Jan, 2018  
+update: README  
+remove: trivia questions to separate sql install  
+update: trivia to not refresh when game closed  
+replace: getting server's webroot with getting root from script  
+add: set the 3 passwords to random generated password in config during install  
+remove: news delete   \n  
+fix: margin on index page last news item  
+remove: unused js files  
+fix: AJAX Chat anonimize url without bbcode  
+
+### 1 Jan, 2018  
+add: missing month in AJAX Chat  
+fix: function call Christmas  
+add: checkdate for Christmas Gift  
+fix: lang not loaded in achievements cleanup  
+
+### 31 Dec, 2017  
+fix: AJAX Chat dateTime insert  
+add: datetime for mysql  
+update: re-order sql updates  
+update: database updates  
+update: CACHE class  
+update: database updates  
+update: install scripts  
+fix: invite signup  
+fix: signup confirm  
+update: many additional edits  
+update: sql files  
+
+### 16 Dec, 2017  
+add: read from .env file  
+update: installer to check composer and npm  
+update: split install.php.sql into schema.php.sql and data.php.sql  
+update: pStrength.jquery.js  
+fix: autologin on successful account creation  
+
+### 10 Dec, 2017  
+fix: index trivia block display slightly different than all the others  
+add: add bbcode for   [p  ]
+removed: unneeded css/js/gz files  
+
+### 9 Dec, 2017  
+add: missing required file  
+update: general code cleanup  
+update: allow notifications to use bbcode  
+fix: wiki.php  
+fix: users.php  
+update: forums sort links to tabs  
+fix: navbar username class color  
+add: mini navbar for links in usercp.php, userdetails.php forums.php  
+remove: text shadow from user classes  
+remove: webpack dependancy  
+fix: extra space between username and comma  
+add: package.json  
+add: bulma css requirement  
+add: notification of which cache adapter is in use  
+fix: pm search delete  
+add: cache all_users search for send message  
+
+### 8 Dec, 2017  
+change: most buttons smaller  
+fix: pm search  
+add: missing full text indexes  
+add: select/send message to any user  
+update: pm pages  
+
+### 6 Dec, 2017  
+fix: remove author from newsrss.php  
+fix: check for defined  
+run: "INSERT INTO staffpanel VALUES (75, 'Upgrade Database', 'staffpanel.php  ?tool  =upgrade_database', 'upgrade database', 'other', 6, 1, 1512555394, 0)  ;"  
+add: admin/database_updates.php will show all queries that need run or things that need to be added to config.php  
+
+### 2 Dec, 2017  
+replace: more mysqli queries with pdo  
+general code cleanup  
+
+### 1 Dec, 2017  
+remove: duplicate caches Myuser_ and user  
+
+### 26 Nov, 2017  
+remove: hardcoded user:pass  
+add: pdo class, just beginning to move from mysqli to pdo  
+fix: tooltipster position  
+update: browse.php search function  
+update: details.php comments  
+update: cache-  >get  
+update: details.php  
+remove: new up redis  
+
+### 25 Nov, 2017  
+fix: index page poll  
+fix: index page latest torrents spacing  
+fix: index page torrents scroller when empty  
+fix: index page news block spacing  
+fix: global messages positioning  
+add: caching environment 'Scrapbook'  
+remove: redis requirement  
+remove: memcached and php-memcache requirement  
+
+### 14 Nov, 2017  
+update: GeoIP files  
+fix: iphistory.php view ip  
+fix: userdetails.php view ip  
+add: transition to notification buttons  
+fix: themeChanger active border  
+fix: lottery config  
+fix: userdetails.php tabs and anchors  
+update: faq  
+fix: scroll to anchor  
+merge: torrents-today.php into browse.php  
+fix: userdetails.php tabcontrol  
+
+### 12 Nov, 2017  
+add: user stats and gifts in AJAX Chat  
+add: torrent search by uploader  
+add: port_check.php to assist in opening ports  
+add: hnrs.php so users can keep up with them  
+update: AJAX Chat channels, restrict messages origins  
+update: newsrss.php can accept arrays for feeds  
+
+### 11 Nov, 2017  
+update: page uniformity  
+update: snatches.php, peerlist.php, viewnfo.php, report.php  
+update: global messages  
+add: doc blocks(a start)  
+update: filelist.php  
+update: torrents-today.php  
+update: notifications can accept arrays  
+update: ip storage(probably missed something)  
+update: lightbox v2.9.0, group every image on page, using lightbox, to create slideshow  
+update: raphael.js 2.2.7  
+
+### 6 Nov, 2017  
+replace: jquery-ui accordion with smaller alternative  
+add: missing markItUp css  
+optimize: gif images using gifsicle  
+
+### 5 Nov, 2017  
+add: index page latest comments block(request)  
+
+### 4 Nov, 2017  
+update: installer set bot name in config.php  
+fix: breadcrumbs  
+add: missing lnag index  
+remove: check for array index after changing to string  
+fix: compare array when array does not exist  
+fix: unset blocks not getting cached  
+fix: compare array where array is string  
+fix: error with newsfeeds before bot user created  
+fix: error with autoshout before bot user created  
+move: iframe resize to template  
+remove: checkbox for XBT install  
+add: missing function  
+update: config files  
+remove: unused javascript files  
+update: admin/block.settings.php  
+update: user_blocks.php  
+remove: jquery-ui, can't find any place its being used  
+replace: iframeResizer.js with one-liner  
+replace: css/js files are now served pre-gzipped  
+add: admin view queries page  
+fix: tooltips on index page last/top/mow torrents  
+add: style to scrollbar  
+
+### 31 Oct, 2017  
+fix: various typos  
+add: button to remove alerts  
+replace: more error/success redirects with session variable and alerts  
+update: iCarousel 1.2.2  
+remove: bootstrap from default.css  
+add: bulma.css  
+replace: bootstrap classes with bulma classes  
+update: and validated rss.php  
+update: getrss.php  
+remove: 'LOW_PRIORITY' from sql statements, is ignored when using INNODB tables  
+update: contactstaff.php  
+
+### 31 Oct, 2017  
+add: php extensions check during install  
+add: missing js files  
+remove: incorrect references  
+add: missing functions  
+fix: ini_get method  
+fix: installer  
+
+### 22 Oct, 2017  
+update: rules.php  
+update: faq.php  
+update: useragreement.php  
+fix: rules.php, faq.php, useragreement.php accessible when not logged in  
+update: add anonymizer url to lang files  
+replace: $#163  ; with $#36  ;
+update: admin/mega_search.php  
+add: lottery site alert  
+add: more staff links to navbar  
+update: blackjack.php  
+fix: admin/backup.php checkboxes  
+
+### 21 Oct, 2017  
+fix: browse.php checkbox selection  
+change: vip to include, not include and only in search results  
+fix: missing $subs in torrenttable.php  
+fix: browse.php  
+
+### 20 Oct, 2017  
+add: auto remove alerts that use session variables after 15 seconds  
+update: trivia pages  
+fix: removed lines from backup.php  
+add: breadcrumbs to all pages except index page  
+update: staffpanel.php  
+update: view_mailbox.php  
+
+### 18 Oct, 2017  
+remove: empty extra tools button from bbcode editor  
+update: tfreak news block format to match news block  
+replace: fast delete and fast edit images with font awesome icons  
+
+### 17 Oct, 2017  
+update: database schema  
+add: missing images  
+fix: BBcode editor using 100% of available space  
+update: index news block  
+fix: admin news add/edit  
+update: captcha pages  
+remove: print_user_stuff function  
+remove: javascript to change button class on hover  
+
+### 14 Oct, 2017  
+update: admin cleanup log, moved disabled to last, instead of first  
+fix: lottery  
+update: Arcade and related files  
+update: index page forum posts, remove unneeded joins  
+fix: AJAX Chat kick/ban user  
+remove: destroy session from AJAX Chat so not logged out of site  
+fix: AJAX Chat endless loop when user is banned or disabled  
+remove: AJAX Chat channels from mysql  
+move: AJAX Chat online table to redis  
+move: AJAX Chat bans table to redis  
+begin: move AJAX-Chat from mysql to redis  
+
+### 9 Oct, 2017  
+remove: unneeded check for direct file access in files not in webroot  
+remove: geshi syntax highlighter  
+update: coders log  
+add: bbcode code for   [code  ]
+
+### 8 Oct, 2017  
+update: minified css and js files  
+remove: margin and padding on collapsed divs  
+remove: cleanup log  
+move: DB Backup config settings to db and site_config  
+remove: torrent.type from database  
+remove: torrent.username from database  
+update: pushed AJAX Chat to the borders  
+update: AJAX Chat to use same mysqli object as the rest of the site  
+add: anonymizer url to site settings and all links use this  
+add: simple logs viewer  
+remove: LogViewer  
+add: option to log all queries to the database  
+update: admin/site_config  
+remove: many inline style  
+update: index blocks -  > torrents to uniform style  
+remove: excess borders on table-bordered  
+
+### 14 Sept, 2017  
+fix: cleanup manual run  
+fix: MOW  
+add: missing jquery-ui in merged and minified js files  
+fix: iCarousel centering  
+remove: navbar border radius along top  
+
+### 13 Sept, 2017  
+fix: iCarousel 3d  
+
+### 12 Sept, 2017  
+update: jquery.mousewheel.js  
+fix: scroller mouse scroll not scroll entire page  
+fix: themeChanger font color in iframes  
+update: css/js minified files  
+update: AJAX Chat links to behave same as the rest of the site  
+fix: blackjack cards incorrect info in sql table  
+fix: AJAX Chat log viewer  
+add: link to AJAX Chat log viewer  
+fix: overflow-y on index page  
+
+### 11 Sept, 2017  
+fix: back to top z-index  
+hide index page poll block when no poll  
+hide index page ie alert block if not using ie  
+index page more mobile friendly  
+
+### 11 Sept, 2017  
+replace js navbar with css navbar  
+remove: or replaced all document.write  
+fix: install issues with foreign key issues  
+
+### 6 Sept, 2017  
+fix: all index blocks to display correctly  
+fix: returnto in fastdelete.php and edit.php  
+update: favicon  
+update: install scripts  
+
+### 5 Sept, 2017  
+remove: php preview, replaced with inline bbcode editor preview  
+fix: bbcode parser adding extra newlines when displaying tables  
+moved: home button to sticky navbar  
+
+### 4 Sept, 2017  
+modify: bbcode editor, add preview  
+moved almost everything out of the webroot, incomplete  
+merge: default.css, bootstrap.css and bootstart-responsive.css  
+update: jquery 3.2.1  
+update: jquery ui 1.12.1  
+add: more subtitle options for upload  
+update: upload  
+moved: bucket inside root  
+update: bitbucket  
+begin removing: unneeded tables  
+begin replacing: tooltips and hover popups with tooltipster  
+begin modify: all toggle/slide elements to operate uniformly  
+
+### 21 Aug, 2017  
+modify: themeController to localstorage instead of cookies  
+modify: themeController add additional fonts and removed MS fonts  
+modify: themeController now also controls the fonts in AJAX Caht and trivia  
+modify: cleanup filelist.php  
+
+### 20 Aug, 2017  
+modify: change sitelog message to be more consistant and easier to read  
+fix: install setting incorrect clean_time  
+replace: Xmas with Christmas  
+add: function to return a random color  
+fix: incorrect minified js file being requested  
+add: cleanup log viewer in admin panel  
+fix: cleanup getting access to $queries count  
+fix: rename cleanup function names for concurrency  
+
+### 19 Aug, 2017  
+fix: installer  
+update: README  
+fix: update/reorder ajax chat online list when users count changes  
+fix: inactive_update.php fail on empty set  
+fix: move js to just before closing body tag  
+fix: combine and minify most js files on index page  
+fix: themecontroller to use cookie_prefix: when getting/setting cookie  
+update: jQuery Cookie Plugin to v1.4.1  
+remove: duplicated function from cleanup scripts  
+
+### 18 Aug, 2017  
+add: foreign_keys.sql to create some foreign keys, nowhere near complete  
+add: mysql_drop_fks.php to remove foreign keys from database  
+fix: inactive_update.php to properly delete users  
+
+### 17 Aug, 2017  
+fix: make more pages 'table' appear similar to the other pages  
+fix: make invite_signup.php similar to signup.php  
+update: make blakckjack use 1 table, use single image sprite for cards  
+fix: admin adduser.php adds user to usersachiev table and autoshout  
+fix: add color class 'user' to autoshout of new users  
+
+### 16 Aug, 2017  
+rename: project to Pu-239  

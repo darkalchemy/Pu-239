@@ -101,7 +101,7 @@ if (isset($_GET['sort'], $_GET['type'])) {
     $orderby = "ORDER BY {$column} " . $ascdesc;
     $pagerlink = 'sort=' . intval($_GET['sort']) . "&amp;type={$linkascdesc}&amp;";
 } else {
-    $orderby = 'ORDER BY sticky ASC, id DESC';
+    $orderby = 'ORDER BY staff_picks DESC, sticky ASC, id DESC';
     $pagerlink = '';
 }
 
@@ -253,7 +253,7 @@ if ($count > 0) {
         $addparam = $pagerlink;
     }
     $pager = pager($torrentsperpage, $count, "{$site_config['baseurl']}/browse.php?" . $addparam);
-    $query = "SELECT t.id, t.imdb_id, t.staff_picks, t.search_text, t.category, t.leechers, t.seeders, t.bump, t.release_group, t.subs, t.name, t.times_completed, t.size, t.added, t.poster, t.descr, t.free, t.freetorrent, t.silver, t.comments, t.numfiles, t.filename, t.anonymous, t.sticky, t.nuked, t.vip, t.nukereason, t.newgenre, t.description, t.owner, t.youtube, t.checked_by, IF(t.nfo <> '', 1, 0) as nfoav," . "IF(t.num_ratings < {$site_config['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS rating, t.checked_when, c.username AS checked_by_username
+    $query = "SELECT t.id, t.imdb_id, t.staff_picks, t.search_text, t.category, t.leechers, t.seeders, t.bump, t.release_group, t.subs, t.name, t.times_completed, t.size, t.added, t.poster, t.descr, t.free, t.freetorrent, t.silver, t.comments, t.numfiles, t.filename, t.anonymous, t.sticky, t.nuked, t.vip, t.nukereason, t.newgenre, t.description, t.owner, t.youtube, t.checked_by, IF(t.nfo <> '', 1, 0) as nfoav, t.rating as imdb_rating, " . "IF(t.num_ratings < {$site_config['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS rating, t.checked_when, c.username AS checked_by_username
                 FROM torrents AS t
                 LEFT JOIN users AS c ON t.checked_by = c.id
                 {$join}
@@ -310,10 +310,9 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
 }
 $main_div .= "
                                         </div>
-                                        <div class='has-text-centered'>
-                                            <label for='checkAll'>
-                                                <input type='checkbox' id='checkAll'><span> Select All Categories</span>
-                                            </label>
+                                        <div class='level-center-center'>
+                                            <label for='checkAll' class='right10'>Select All Categories</label>
+                                            <input type='checkbox' id='checkAll'>
                                         </div>";
 $HTMLOUT .= main_div($main_div, 'bottom20');
 

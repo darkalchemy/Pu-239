@@ -112,7 +112,7 @@ function torrenttable($res, $variant = 'index')
                 <tr>
                     <th class='has-text-centered w-1 tooltipper' title='{$lang['torrenttable_type']}'>{$lang['torrenttable_type']}</th>
                     <th class='has-text-centered w-50 tooltipper' title='{$lang['torrenttable_name']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=1&amp;type={$link1}'>{$lang['torrenttable_name']}</a></th>
-                    <th class='has-text-centered w-1 tooltipper' title='Download'><i class='icon-download icon'></i>w</th>";
+                    <th class='has-text-centered w-1 tooltipper' title='Download'><i class='icon-download icon'></i></th>";
     $htmlout .= ($variant === 'index' ? "
                     <th class='has-text-centered tooltipper' title='{$lang['bookmark_goto']}'>
                         <a href='{$site_config['baseurl']}/bookmarks.php'>
@@ -190,19 +190,35 @@ function torrenttable($res, $variant = 'index')
         }
         $htmlout .= '</td>';
         $dispname = htmlsafechars($row['name']);
-        $smalldescr = (!empty($row['description']) ? '<i>[' . htmlsafechars($row['description']) . ']</i>' : '');
+        $staff_pick = $row['staff_picks'] > 0 ? "
+            <span id='staff_pick_{$row['id']}'>
+                <img src='{$site_config['pic_baseurl']}staff_pick.png' class='tooltipper emoticon is-2x' alt='Staff Pick!' title='Staff Pick!'>
+            </span>" : "
+            <span id='staff_pick_{$row['id']}'>
+            </span>";
+        $percent = !empty($row['imdb_rating']) ? $row['imdb_rating'] * 10 : 0;
+        $imdb_info = "
+                    <div class='star-ratings-css tooltipper' title='{$percent}% of IMDb voters liked this!'>
+                        <div class='star-ratings-css-top' style='width: {$percent}%'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                        <div class='star-ratings-css-bottom'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                    </div>";
+        $smalldescr = (!empty($row['description']) ? '<br><i>[' . htmlsafechars($row['description']) . ']</i>' : '');
         if (empty($row['poster']) && !empty($row['imdb_id'])) {
             $row['poster'] = find_images($row['imdb_id']);
         }
         $poster = empty($row['poster']) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' alt='Poster'>" : "<img src='" . url_proxy($row['poster'], true, 150, null) . "' class='tooltip-poster' alt='Poster'>";
-        //$rating = empty($row["rating"]) ? "No votes yet":"".ratingpic($row["rating"])."";
+        $rating = empty($row['rating']) ? 'No users have rated this torrent' : ratingpic($row['rating']);
         if (!empty($row['descr'])) {
             $descr = str_replace('"', '&quot;', readMore($row['descr'], 500, $site_config['baseurl'] . '/details.php?id=' . (int) $row['id'] . '&amp;hit=1'));
             $descr = preg_replace('/\[img\].*?\[\/img\]\s+/', '', $descr);
             $descr = preg_replace('/\[img=.*?\]\s+/', '', $descr);
         }
 
-        $htmlout .= "<td class='has-text-left'><a href='{$site_config['baseurl']}/details.php?";
+        $htmlout .= "
+            <td>
+                <div class='columns'>
+                    <div class='column is-10'>
+                        <a href='{$site_config['baseurl']}/details.php?";
         if ($variant === 'mytorrents') {
             $htmlout .= 'returnto=' . urlencode($_SERVER['REQUEST_URI']) . '&amp;';
         }
@@ -210,7 +226,7 @@ function torrenttable($res, $variant = 'index')
         if ($variant === 'index') {
             $htmlout .= '&amp;hit=1';
         }
-
+        $htmlout .= "'>";
         $icons = [];
         $icons[] = $row['added'] >= $CURUSER['last_browse'] ? "<img src='{$site_config['pic_baseurl']}newb.png' class='tooltipper icon' alt='New!' title='New!'>" : '';
         $icons[] = ($row['sticky'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}sticky.gif' class='tooltipper icon' alt='Sticky' title='Sticky!'>" : '');
@@ -277,29 +293,36 @@ function torrenttable($res, $variant = 'index')
         }
 
         $icon_string = implode(' ', array_diff($icons, ['']));
-        $htmlout .= "'><span class='dt-tooltipper-large' data-tooltip-content='#torrent_{$row['id']}_tooltip'>
-                            <span class='torrent-name'>{$dispname}</span>
-                            <div class='tooltip_templates'>
-                                <span id='torrent_{$row['id']}_tooltip'>
-                                    <div class='is-flex tooltip-torrent'>
-                                        <span class='margin10'>
-                                            $poster
-                                        </span>
-                                        <span class='margin10'>
-                                            <b class='size_4 right10 has-text-primary'>Name:</b>" . htmlsafechars($dispname) . "<br>
-                                            <b class='size_4 right10 has-text-primary'>Added:</b>" . get_date($row['added'], 'DATE', 0, 1) . "<br>
-                                            <b class='size_4 right10 has-text-primary'>Size</b>" . mksize(htmlsafechars($row['size'])) . "<br>
-                                            <b class='size_4 right10 has-text-primary'>Subtitle:</b> {$Subs}<br>
-                                            <b class='size_4 right10 has-text-primary'>Seeders</b>" . (int) $row['seeders'] . "<br>
-                                            <b class='size_4 right10 has-text-primary'>Leechers</b>" . (int) $row['leechers'] . "<br>
-                                        </span>
-                                    </div>
-                                </span>
-                            </div>
-                        </span>
+        $htmlout .= "
+                            <span class='dt-tooltipper-large' data-tooltip-content='#torrent_{$row['id']}_tooltip'>
+                                <span class='torrent-name'>{$dispname}</span>
+                                <div class='tooltip_templates'>
+                                    <span id='torrent_{$row['id']}_tooltip'>
+                                        <div class='is-flex tooltip-torrent'>
+                                            <span class='margin10'>
+                                                $poster
+                                            </span>
+                                            <span class='margin10'>
+                                                <b class='size_4 right10 has-text-primary'>Name:</b>" . htmlsafechars($dispname) . "<br>
+                                                <b class='size_4 right10 has-text-primary'>Added:</b>" . get_date($row['added'], 'DATE', 0, 1) . "<br>
+                                                <b class='size_4 right10 has-text-primary'>Size</b>" . mksize(htmlsafechars($row['size'])) . "<br>
+                                                <b class='size_4 right10 has-text-primary'>Subtitle:</b> {$Subs}<br>
+                                                <b class='size_4 right10 has-text-primary'>Seeders</b>" . (int) $row['seeders'] . "<br>
+                                                <b class='size_4 right10 has-text-primary'>Leechers</b>" . (int) $row['leechers'] . "<br>
+                                            </span>
+                                        </div>
+                                    </span>
+                                </div>
+                            </span>
                         </a>
                         <span class='left10'>$icon_string</span>
-                        <br>$smalldescr
+                        $imdb_info
+                        $rating
+                        $smalldescr
+                    </div>
+                    <div class='column is-2 has-text-right'>
+                        $staff_pick
+                    </div>
                 </td>";
         if ($variant === 'mytorrents') {
             $htmlout .= "
