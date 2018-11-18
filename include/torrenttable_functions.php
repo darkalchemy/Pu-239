@@ -215,7 +215,7 @@ function torrenttable($res, $variant = 'index')
         }
 
         $htmlout .= "
-            <td>
+            <td style='min-width: 350px;'>
                 <div class='columns'>
                     <div class='column is-10'>
                         <a href='{$site_config['baseurl']}/details.php?";
