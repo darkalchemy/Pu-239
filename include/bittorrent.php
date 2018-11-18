@@ -1168,7 +1168,7 @@ function ratingpic($num)
         return null;
     }
 
-    return "<img src='{$site_config['pic_baseurl']}/{$r}.gif' alt='Rating: $num / 5' title='Rating: $num / 5' class='tooltipper'>";
+    return "<img src='{$site_config['pic_baseurl']}/{$r}.gif' alt='Rating: $num / 5' title='Users have rated this: $num / 5' class='tooltipper'>";
 }
 
 /**

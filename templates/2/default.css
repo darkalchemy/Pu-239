@@ -6,7 +6,7 @@ html {
 }
 
 body {
-    font: 85%/1.5 system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Droid Sans, Helvetica Neue, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Droid Sans, Helvetica Neue;
+    font: 95%/1.5 system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Droid Sans, Helvetica Neue, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Droid Sans, Helvetica Neue;
     color: #000;
     line-height: 125%;
     margin: auto;
@@ -28,9 +28,9 @@ body {
 .rating > span {
     display: inline-block;
     position: relative;
-    width: 25px;
-    font-size: 25px;
-    height: 25px;
+    width: 15px;
+    font-size: 15px;
+    height: 15px;
 }
 
 .rating > span:hover ~ span:before,
@@ -47,7 +47,7 @@ body {
 .star-ratings-css {
     unicode-bidi: bidi-override;
     color: #000;
-    width: 120px;
+    width: 70px;
     position: relative;
     text-shadow: 0 1px 0 #a2a2a2;
 }
@@ -69,9 +69,9 @@ body {
 
 .star-ratings-css-bottom > span,
 .star-ratings-css-top > span {
-    width: 25px;
-    font-size: 25px;
-    height: 25px;
+    width: 15px;
+    font-size: 15px;
+    height: 15px;
 }
 
 .star-ratings-css-bottom > span:not(:last-child),

@@ -1,4 +1,6 @@
 ### 18 Nov, 2018  
+update: initial page font size  
+update: star rating size  
 fix: image path for rating  
 fix: missing gif files  
 add: staff_picks.png to browse.php  
