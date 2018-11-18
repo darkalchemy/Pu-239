@@ -1,4 +1,6 @@
 ### 18 Nov, 2018  
+fix: image path for rating  
+fix: missing gif files  
 add: staff_picks.png to browse.php  
 update: sort torrents by staff_picks  
 

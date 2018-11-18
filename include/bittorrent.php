@@ -1168,7 +1168,7 @@ function ratingpic($num)
         return null;
     }
 
-    return "<img src=\"{$site_config['pic_baseurl']}ratings/{$r}.gif\" border=\"0\" alt=\"Rating: $num / 5\" title=\"Rating: $num / 5\" />";
+    return "<img src='{$site_config['pic_baseurl']}/{$r}.gif' alt='Rating: $num / 5' title='Rating: $num / 5' class='tooltipper'>";
 }
 
 /**
@@ -1317,7 +1317,7 @@ function get_percent_completed_image($p)
             break;
     }
 
-    return "<img src='{$site_config['pic_baseurl']}{$img}.gif' alt='percent' />";
+    return "<img src='{$site_config['pic_baseurl']}{$img}.gif' alt='percent'>";
 }
 
 /**
