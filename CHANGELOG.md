@@ -1,3 +1,6 @@
+### 19 Nov, 2018
+fix: incorrect logout fontello class name  
+
 ### 18 Nov, 2018  
 update: reduce font size for tfreak  
 fix: determine longest column parallax scrolling  
