@@ -1,4 +1,6 @@
 ### 18 Nov, 2018  
+update: reduce font size for tfreak  
+fix: determine longest column parallax scrolling  
 update: initial page font size  
 update: star rating size  
 fix: image path for rating  

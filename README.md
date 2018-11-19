@@ -26,7 +26,7 @@ A working site with this code is at [Pu-239](https://pu-239.pw/)
 ### To Install:
 ```
 # required apps
-jpegoptim, optipng, pngquant, gifsicle
+jpegoptim, optipng, pngquant, gifsicle, imagemagick
 
 # required php extensions
 php-gd, php-xml, php-json, php-mbstring, php-mysqli, php-zip, php-simplexml, php-curl, php-exif, php-bz2, php-imagick, php-common
