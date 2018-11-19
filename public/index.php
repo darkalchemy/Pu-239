@@ -236,9 +236,10 @@ foreach ($below_columns as $item) {
 
 function wrap_it($item, $data)
 {
+    $class = $item === 'tfreak_feed' ? '' : 'portlet';
     if (!empty($data)) {
         return "
-    <div class='portlet' id='" . strtoupper($item) . "'>{$data}
+    <div class='$class' id='" . strtoupper($item) . "'>{$data}
     </div>";
     }
 }

@@ -139,8 +139,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <tr class='no_hover'>
                     <td class='rowhead'>{$lang['recover_regdemail']}</td>
                     <td>
-                        <input type='text' class='w-100' name='email' />
-                        <input type='hidden' id='token' name='token' value='' />
+                        <input type='text' class='w-100' name='email'>
+                        <input type='hidden' id='token' name='token' value=''>
                     </td>
                 </tr>
                 <tr class='no_hover'>

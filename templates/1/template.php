@@ -181,18 +181,18 @@ function stdhead($title = '', $stdhead = null)
         $htmlout .= breadcrumbs();
     }
 
-    foreach ($site_config['notifications'] as $notif) {
-        if (($messages = $session->get($notif)) != false) {
-            foreach ($messages as $message) {
-                if ($BLOCKS['global_flash_messages_on']) {
+    if ($BLOCKS['global_flash_messages_on']) {
+        foreach ($site_config['notifications'] as $notif) {
+            if (($messages = $session->get($notif)) != false) {
+                foreach ($messages as $message) {
                     $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>" . format_comment($message['message']) . '</a>';
                     $htmlout .= "
                 <div class='notification $notif has-text-centered size_6'>
                     <button class='delete'></button>$message
                 </div>";
                 }
-                $session->unset($notif);
             }
+            $session->unset($notif);
         }
     }
 

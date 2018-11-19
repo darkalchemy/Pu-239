@@ -48,5 +48,5 @@ if ($passed) {
 $cache->update_row('user' . $row['user_id'], [
     'email' => $row['new_email'],
 ], $site_config['expires']['user_cache']);
-$session->set('is-success', "[h1]Your email has been updated to {$row['email']}[/h1]");
+$session->set('is-success', "[h2]Your email has been updated to {$row['email']}[/h2]");
 header("Refresh: 0; url={$site_config['baseurl']}/usercp.php?action=security");

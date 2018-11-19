@@ -75,16 +75,16 @@ if ($step == '1') {
             $question[6] = "{$lang['main_question6']}";
             $passhint = preg_replace($id, $question, (int) $assoc['passhint']);
             $body .= "
-                            <td><i><b>{$passhint}?</b></i><input type='hidden' name='id' value='" . (int) $assoc['id'] . "' class='w-100' /></td>
+                            <td><i><b>{$passhint}?</b></i><input type='hidden' name='id' value='" . (int) $assoc['id'] . "' class='w-100'></td>
                         </tr>
                         <tr class='no_hover'>
                             <td class='rowhead'>{$lang['main_sec_answer']}</td>
-                            <td><input type='text' class='w-100' name='answer' /></td>
+                            <td><input type='text' class='w-100' name='answer'></td>
                         </tr>
                         <tr class='no_hover'>
                             <td colspan='2'>
                                 <div class='has-text-centered'>
-                                    <input type='submit' value='{$lang['main_next']}' class='button is-small' />
+                                    <input type='submit' value='{$lang['main_next']}' class='button is-small'>
                                 </div>
                             </td>
                         </tr>";
@@ -120,17 +120,17 @@ if ($step == '1') {
         $HTMLOUT .= main_table("
                     <tr class='no_hover'>
                         <td class='rowhead'>{$lang['main_new_pass']}</td>
-                        <td><input type='password' class='w-100' name='newpass' /></td>
+                        <td><input type='password' class='w-100' name='newpass'></td>
                     </tr>
                     <tr class='no_hover'>
-                        <td class='rowhead'>{$lang['main_new_pass_confirm']}</td><td><input type='password' class='w-100' name='newpassagain' /></td>
+                        <td class='rowhead'>{$lang['main_new_pass_confirm']}</td><td><input type='password' class='w-100' name='newpassagain'></td>
                     </tr>
                     <tr class='no_hover'>
                         <td colspan='2'>
                             <div class='has-text-centered'>
-                                <input type='submit' value='{$lang['main_changeit']}' class='button is-small' />
-                                <input type='hidden' name='id' value='" . (int) $fetch['id'] . "' />
-                                <input type='hidden' name='hash' value='" . $sechash . "' />
+                                <input type='submit' value='{$lang['main_changeit']}' class='button is-small'>
+                                <input type='hidden' name='id' value='" . (int) $fetch['id'] . "'>
+                                <input type='hidden' name='hash' value='" . $sechash . "'>
                             </div>
                         </td>
                     </tr>", '', '', 'w-50', '') . '
@@ -182,8 +182,8 @@ if ($step == '1') {
                 <tr class='no_hover'>
                     <td class='rowhead'>{$lang['main_email_add']}</td>
                     <td>
-                        <input type='text' class='w-100' name='email' />
-                        <input type='hidden' id='token' name='token' value='' />
+                        <input type='text' class='w-100' name='email'>
+                        <input type='hidden' id='token' name='token' value=''>
                     </td>
                 </tr>
                 <tr class='no_hover'>

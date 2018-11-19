@@ -34,7 +34,7 @@ $torrents_top .= "
     <a id='toptorrents-hash'></a>
     <div id='toptorrents' class='box'>
         <div class='has-text-centered'>
-        <div class='module table-wrapper bottom20'>
+        <div class='module table-wrapper'>
             <div class='badge badge-top'></div>
             <table class='table table-bordered table-striped'>
                 <thead>

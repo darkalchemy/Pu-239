@@ -402,7 +402,10 @@ span {
     min-width: 125px;
 }
 
-.alt_bordered,
+.alt_bordered {
+    border-radius: .625em;
+}
+
 .bordered {
     border-radius: .625em;
     padding: .75em;

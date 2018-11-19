@@ -1,4 +1,7 @@
 ### 19 Nov, 2018
+update: include links to composer and node.js README  
+remove: h1 tags in flash messages  
+fix: loading reCAPTCHA when empty reCAPTCHA keys signup.php, invite_signup.php  
 fix: incorrect logout fontello class name  
 
 ### 18 Nov, 2018  

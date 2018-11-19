@@ -100,7 +100,7 @@ $body = "
             </tr>
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_invcode']}</td>
-                <td><input type='text' class='w-100 required' name='invite' value='{$code}' /></td>
+                <td><input type='text' class='w-100 required' name='invite' value='{$code}'></td>
             </tr>
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_timez']}</td>
@@ -193,7 +193,7 @@ $body .= "
                      <span class='has-text-centered margin5'>
                         <input type='hidden' id='token' name='token' value=''>
                         <input type='hidden' id='csrf' name='csrf' value='" . $session->get('csrf_token') . "'>
-                        <input id='signup_captcha_check' type='submit' value='Verifying reCAPTCHA' class='button is-small'>
+                        <input id='signup_captcha_check' type='submit' value='" . (!empty($_ENV['RECAPTCHA_SITE_KEY']) ? 'Verifying reCAPTCHA' : 'Signup') . "' class='button is-small'>
                     </span>
                 </td>
             </tr>";

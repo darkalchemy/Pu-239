@@ -18,8 +18,8 @@
 This is a fork of U-232 V4. 
 PHP 7.2+ is required. 
 MySQL 5.6 is required. MySQL 5.7 recommended. 
-Composer is required. Version ^1.7.3. 
-NPM is required. Version ^6.4.1. 
+[Composer](https://getcomposer.org/download/) is required. Version ^1.7.3. 
+[NPM](https://nodejs.org/en/download/package-manager/) is required. Version ^6.4.1. 
 This code explicitly sets the php default timezone to 'UTC'. Further down, you will set MySQL default timezone to the same. 
 A working site with this code is at [Pu-239](https://pu-239.pw/)  
 

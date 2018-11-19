@@ -7,9 +7,7 @@ $feed = rsstfreakinfo();
 if (!empty($feed)) {
     $tfreak_feed .= "
     <a id='tfreak-hash'></a>
-    <div id='tfreak' class='box'>
-        <div>
-            $feed
-        </div>
+    <div id='tfreak'>
+        $feed
     </div>";
 }
