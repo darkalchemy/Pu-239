@@ -17,7 +17,7 @@ $lang = [
     'datareset_tid' => 'Torrent id',
     'datareset_tid_info' => 'Torrent id must be a number and only a number!!!',
     'datareset_info' => "If the torrent is not nuked or there is not problem with it , don't use this as it will delete the torrent and any other entries associated with it!",
-    'datareset_info1' => "If you don't know what this will do , <b>go play somewhere else</b>",
+    'datareset_info1' => "If you don't know what this will do, <b>go play somewhere else</b>",
     'datareset_repay' => 'Re-pay!',
     'datareset_stdhead' => 'Data Reset Manager',
 ];

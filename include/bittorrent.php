@@ -449,6 +449,7 @@ function userlogin()
 function get_charset()
 {
     global $CURUSER;
+
     $lang_charset = $CURUSER['language'];
     switch ($lang_charset) {
         case $lang_charset == 2:
@@ -1211,19 +1212,15 @@ function CutName_B($txt, $len = 20)
 function load_language($file = '')
 {
     global $site_config, $CURUSER;
+
+    $site_lang = get_language();
     $lang = [];
-    if (!isset($GLOBALS['CURUSER']) || empty($GLOBALS['CURUSER']['language'])) {
-        if (!file_exists(LANG_DIR . "{$site_config['language']}/lang_{$file}.php")) {
-            stderr('System Error', "Can't find language files({$site_config['language']})");
-        }
-        include_once LANG_DIR . "{$site_config['language']}/lang_{$file}.php";
-    } elseif (!file_exists(LANG_DIR . "{$CURUSER['language']}/lang_{$file}.php")) {
-        if (!file_exists(LANG_DIR . "1/lang_{$file}.php")) {
-            stderr('System Error', "Can't find language files({$CURUSER['language']} and 1)");
-        }
+    if (file_exists(LANG_DIR . "{$site_lang}/lang_{$file}.php")) {
+        include_once LANG_DIR . "{$site_lang}/lang_{$file}.php";
+    } elseif (file_exists(LANG_DIR . "1/lang_{$file}.php")) {
         include_once LANG_DIR . "1/lang_{$file}.php";
     } else {
-        include_once LANG_DIR . "{$CURUSER['language']}/lang_{$file}.php";
+        stderr('System Error', "Can't find language file specified(user or site)");
     }
 
     return $lang;

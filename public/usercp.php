@@ -285,9 +285,7 @@ if ($action === 'avatar') {
     $HTMLOUT .= tr($lang['usercp_language'], "
                                             <select name='language' class='w-100'>
                                                 <option value='1'" . ($current_lang == '1' ? ' selected' : '') . ">English</option>
-                                                <option value='2'" . ($current_lang == '2' ? ' selected' : '') . ">Danish [Incomplete]</option>
-                                                <option value='3'" . ($current_lang == '3' ? ' selected' : '') . '>Romanian [Incomplete]</option>
-                                            </select>', $current_lang);
+                                            </select>", $current_lang);
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>

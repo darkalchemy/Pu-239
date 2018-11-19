@@ -16,6 +16,7 @@ $lang = [
     'takeinvites_confirm' => 'New membership request',
     'takeinvites_from' => 'From:',
 ];
+
 $lang['takeinvites_email_body'] = <<<EOD
 
 You have been invited to <#SITENAME#> by <#INVITENICK#>. They have
