@@ -1,4 +1,5 @@
 ### 19 Nov, 2018
+fix: incorrect css path sceditor.js  
 update: add check_install_dir() for staff and above  
 remove: lang files other that english, garbage/incomplete  
 fix: not getting user selected lang when getting lang files  

@@ -154,7 +154,7 @@ foreach ($styles as $folder) {
         ROOT_DIR . 'node_modules/sceditor/minified/jquery.sceditor.bbcode.min.js',
         ROOT_DIR . 'node_modules/sceditor/src/icons/material.js',
         ROOT_DIR . 'node_modules/sceditor/src/plugins/autoyoutube.js',
-        SCRIPTS_DIR . 'sceditor.js',
+        BIN_DIR . "{$folder}/sceditor.js",
     ];
 
     $js_list['cheaters_js'] = [
@@ -433,8 +433,8 @@ function process_css($key, $list)
         $lkey = str_replace('_css', '', $key);
         copy(ROOT_DIR . 'node_modules/sceditor/minified/themes/famfamfam.png', PUBLIC_DIR . "css/{$folder}/famfamfam.png");
         $sceditor = file_get_contents(SCRIPTS_DIR . 'sceditor.js');
-        $sceditor = preg_replace("#/\d+/sceditor_.{8}\.css#", "/{$folder}/{$lkey}_{$hash}{$css_ext}", $sceditor);
-        file_put_contents(SCRIPTS_DIR . 'sceditor.js', $sceditor);
+        $sceditor = preg_replace("#/css/\d+/sceditor_.{8}\.css#", "/css/{$folder}/{$lkey}_{$hash}{$css_ext}", $sceditor);
+        file_put_contents(BIN_DIR . "{$folder}/sceditor.js", $sceditor);
     }
 
     return [
