@@ -1,3 +1,6 @@
+### 20 Nov, 2018
+fix: show bbcode not getting set properly in edit_topic.php  
+
 ### 19 Nov, 2018
 fix: incorrect css path sceditor.js  
 update: add check_install_dir() for staff and above  
