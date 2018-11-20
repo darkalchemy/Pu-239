@@ -2,8 +2,9 @@
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config, $user_stuffs, $fluent;
 
 $lang = array_merge(load_language('global'), load_language('setclass'));
 $HTMLOUT = '';
@@ -13,34 +14,43 @@ if ($CURUSER['class'] < UC_STAFF || $CURUSER['override_class'] != 255) {
 if (isset($_GET['action']) && htmlsafechars($_GET['action']) === 'editclass') {
     $newclass = (int) $_GET['class'];
     $returnto = htmlsafechars($_GET['returnto']);
-    sql_query('UPDATE users SET override_class = ' . sqlesc($newclass) . ' WHERE id = ' . sqlesc($CURUSER['id']));
-    $cache->update_row('user' . $CURUSER['id'], [
+    $set = [
         'override_class' => $newclass,
-    ], $site_config['expires']['user_cache']);
+    ];
+    $user_stuffs->update($set, $CURUSER['id']);
+    $fluent->deleteFrom('ajax_chat_online')
+        ->where('userID = ?', $CURUSER['id'])
+        ->execute();
     header("Location: {$site_config['baseurl']}/" . $returnto);
     die();
 }
 
-$HTMLOUT .= "<br>
-<span class='size_4'><b>{$lang['set_class_allow']}</b></span>
-<br><br>
+$HTMLOUT .= "
+<h2 class='has-text-centered'>{$lang['set_class_allow']}</h2>
 <form method='get' action='{$site_config['baseurl']}/setclass.php'>
-    <input type='hidden' name='action' value='editclass' />
-    <input type='hidden' name='returnto' value='userdetails.php?id=" . (int) $CURUSER['id'] . "' />
-    <table class='table table-bordered table-striped'>
-    <tr>
-    <td>Class</td>
-    <td>
-    <select name='class'>";
+    <input type='hidden' name='action' value='editclass'>
+    <input type='hidden' name='returnto' value='userdetails.php?id=" . (int) $CURUSER['id'] . "'>";
+
+$text = "
+    <div class='has-text-centered padding20'>
+        <label for='name'>Class</label>
+        <span class='margin20'>
+            <select name='class'>";
 $maxclass = $CURUSER['class'] - 1;
 for ($i = 0; $i <= $maxclass; ++$i) {
     if (trim(get_user_class_name($i)) != '') {
-        $HTMLOUT .= "<option value='$i" . "'>" . get_user_class_name($i) . "</option>\n";
+        $text .= "
+                <option value='$i'>" . get_user_class_name($i) . "</option>";
     }
 }
-$HTMLOUT .= "</select></td></tr>
-        <tr><td colspan='3'><input type='submit' class='button is-small' value='{$lang['set_class_ok']}' /></td></tr>
-    </table>
-</form>
-<br>";
+$text .= "
+            </select>
+        </span>
+        <div class='top20'>
+            <input type='submit' class='button is-small' value='{$lang['set_class_ok']}'>
+        </div>
+    </div>";
+
+$HTMLOUT .= main_div($text) . "
+</form>";
 echo stdhead("{$lang['set_class_temp']}") . $HTMLOUT . stdfoot();

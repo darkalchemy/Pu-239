@@ -433,6 +433,7 @@ function process_css($key, $list)
         $lkey = str_replace('_css', '', $key);
         copy(ROOT_DIR . 'node_modules/sceditor/minified/themes/famfamfam.png', PUBLIC_DIR . "css/{$folder}/famfamfam.png");
         $sceditor = file_get_contents(SCRIPTS_DIR . 'sceditor.js');
+        make_dir(BIN_DIR . $folder);
         $sceditor = preg_replace("#/css/\d+/sceditor_.{8}\.css#", "/css/{$folder}/{$lkey}_{$hash}{$css_ext}", $sceditor);
         file_put_contents(BIN_DIR . "{$folder}/sceditor.js", $sceditor);
     }

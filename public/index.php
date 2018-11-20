@@ -197,7 +197,7 @@ foreach ($above_columns as $item) {
 }
 
 $HTMLOUT .= "
-<div class='columns parallax is-variable is-0-mobile is-0-tablet is-2-desktop'>
+<div class='columns parallax is-desktop is-variable is-0-mobile is-0-tablet is-1-desktop'>
     <div class='column is-2-desktop fl-3'>
         <div id='left_column' class='left_column'>";
 

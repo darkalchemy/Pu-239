@@ -1,4 +1,7 @@
 ### 20 Nov, 2018
+fix: allow characters other than english as username  
+update: force create dirs in bin uglify.php  
+fix: AJAX Chat not picking up temp user class  
 fix: show bbcode not getting set properly in edit_topic.php  
 
 ### 19 Nov, 2018

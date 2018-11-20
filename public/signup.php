@@ -78,7 +78,7 @@ $body = "
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_uname']}</td>
                 <td>
-                    <input type='text' name='wantusername' id='wantusername' class='w-100' onblur='checkit();' value='{$signup_vars['wantusername']}' autocomplete='on' required pattern='[A-Za-z0-9_-]{3,64}'>
+                    <input type='text' name='wantusername' id='wantusername' class='w-100' onblur='checkit();' value='{$signup_vars['wantusername']}' autocomplete='on' required pattern='[\p{L}\p{N}_-]{3,64}'>
                     <div id='namecheck'></div>
                 </td>
             </tr>

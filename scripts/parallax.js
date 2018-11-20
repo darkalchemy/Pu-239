@@ -1,5 +1,5 @@
 $(window).on('load resize scroll', function (e) {
-    if (document.body.clientWidth >= 1344) {
+    if (document.body.clientWidth >= 1088) {
         var col1 = document.getElementById('left_column').offsetHeight;
         var col2 = document.getElementById('center_column').offsetHeight;
         var col3 = document.getElementById('right_column').offsetHeight;
