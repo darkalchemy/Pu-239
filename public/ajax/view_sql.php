@@ -31,6 +31,8 @@ function adminer_object()
         new AdminerEnumTypes(),
         new AdminerVersionNoverify(),
         new AdminerTablesFilter(),
+        new AdminerReadableDates(),
+        new AdminerDumpDate(),
     ];
 
     class AdminerCustomization extends AdminerPlugin

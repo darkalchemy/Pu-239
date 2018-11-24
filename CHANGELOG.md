@@ -1,4 +1,5 @@
 ### 24 Nov, 2018
+update: Adminer  
 fix: missing key  
 remove: ip2long  
 update: rewrite as notify owner of pending deletion deathrow.php  
