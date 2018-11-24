@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $HTMLOUT = "
         <div class='portlet has-text-centered'>
             <h2>{$lang['getrss_result']}</h2>
-            <input type='text' class='w-100' readonly='readonly' value='{$rsslink}' onclick='select()' />
+            <input type='text' class='w-100' readonly='readonly' value='{$rsslink}' onclick='select()'>
         </div>";
         echo stdhead($lang['getrss_head2']) . $HTMLOUT . stdfoot();
         die();
@@ -55,9 +55,9 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
         $text .= "
                     <span class='margin10 mw-50 is-flex bg-02 round10 tooltipper' title='" . htmlsafechars($cat['name']) . "'>
                         <span class='bordered level-center'>
-                            <input type='checkbox' name='cats[]' id='cat_" . (int) $cat['id'] . "' value='" . (int) $cat['id'] . "' />
+                            <input type='checkbox' name='cats[]' id='cat_" . (int) $cat['id'] . "' value='" . (int) $cat['id'] . "'>
                             <span class='cat-image left10'>
-                                <img class='radius-sm' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' />
+                                <img class='radius-sm' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "'>
                             </span>
                         </span>
                     </span>";
@@ -67,7 +67,7 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
         $text .= "
                     <span class='margin10 bordered tooltipper' title='" . htmlsafechars($cat['name']) . "'>
                         <label for='c" . (int) $cat['id'] . "'>
-                            <input name='c" . (int) $cat['id'] . "' class='styled1' type='checkbox' value='1' />
+                            <input name='c" . (int) $cat['id'] . "' class='styled1' type='checkbox' value='1'>
                         </label>
                     </span>";
     }
@@ -76,7 +76,7 @@ $text .= "
                 </div>
                 <div class='level-center top20'>
                     <label for='checkAll'>
-                        <input type='checkbox' id='checkAll' /><span> Select All Categories</span>
+                        <input type='checkbox' id='checkAll'><span> Select All Categories</span>
                     </label>
                 </div>
             </div>";
@@ -111,7 +111,7 @@ $HTMLOUT .= main_div("
                 </li>
             </div>
             <div class='level-center top20 bottom20'>
-                <input type='submit' class='button is-small' value='{$lang['getrss_btn']}' />
+                <input type='submit' class='button is-small' value='{$lang['getrss_btn']}'>
             </div>");
 $HTMLOUT .= '
         </form>';

@@ -55,10 +55,10 @@ $action = (in_array($posted_action, $valid_actions) ? $posted_action : 'default'
 $top_menu = '
     <div>
         <ul class="level-center bg-06 bottom20">
-            <li class="altlink margin20">
+            <li class="altlink margin10">
                 <a href="' . $site_config['baseurl'] . '/requests.php">View Requests</a>
             </li>
-            <li class="altlink margin20">
+            <li class="altlink margin10">
                 <a href="' . $site_config['baseurl'] . '/requests.php?action=add_new_request">New Request</a>
             </li>
         </ul>

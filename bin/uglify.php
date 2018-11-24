@@ -143,6 +143,10 @@ foreach ($styles as $folder) {
         SCRIPTS_DIR . 'bookmarks.js',
     ];
 
+    $js_list['iframe_js'] = [
+        SCRIPTS_DIR . 'resize_iframe.js',
+    ];
+
     if ($BLOCKS['global_themechanger_on']) {
         $js_list['theme_js'] = [
             TEMPLATE_DIR . "{$folder}/themeChanger/js/colorpicker.js",
@@ -189,8 +193,10 @@ foreach ($styles as $folder) {
         'checkport_js' => [
             SCRIPTS_DIR . 'checkports.js',
         ],
-        'pStrength_js' => [
+        'check_username_js' => [
             SCRIPTS_DIR . 'check.js',
+        ],
+        'pStrength_js' => [
             SCRIPTS_DIR . 'pStrength.jquery.js',
             SCRIPTS_DIR . 'pstrength.js',
         ],
@@ -435,6 +441,7 @@ function process_css($key, $list)
         $sceditor = file_get_contents(SCRIPTS_DIR . 'sceditor.js');
         make_dir(BIN_DIR . $folder);
         $sceditor = preg_replace("#/css/\d+/sceditor_.{8}\.css#", "/css/{$folder}/{$lkey}_{$hash}{$css_ext}", $sceditor);
+        $sceditor = preg_replace("#/css/\d+/sceditor_.{8}\.min.css#", "/css/{$folder}/{$lkey}_{$hash}{$css_ext}", $sceditor);
         file_put_contents(BIN_DIR . "{$folder}/sceditor.js", $sceditor);
     }
 

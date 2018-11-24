@@ -15,7 +15,7 @@ $lang = load_language('global');
 $htmlout = doc_head() . "
     <meta property='og:title' content='Staff Smiles'>
     <title>Staff Smilies</title>
-    <link rel='stylesheet' href='" . get_file_name('css') . "' />
+    <link rel='stylesheet' href='" . get_file_name('css') . "'>
 </head>
 <body>
     <script>
@@ -37,7 +37,7 @@ while ((list($code, $url) = each($staff_smilies))) {
     $htmlout .= "
             <td class='has-text-centered'>
                 <a href=\"javascript: SmileIT('" . str_replace("'", "\'", $code) . "','" . htmlsafechars($_GET['form']) . "','" . htmlsafechars($_GET['text']) . "')\">
-                    <img src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='' />
+                    <img src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt=''>
                 </a>
             </td>";
     ++$count;

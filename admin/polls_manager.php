@@ -237,7 +237,7 @@ function show_poll_archive()
                     </span>
                     <span>
                         <a href='{$site_config['baseurl']}/staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=delete&amp;pid=" . (int) $row['pid'] . "' title='{$lang['poll_spa_delete']}' class='tooltipper'>
-                            <i class='icon-cancel icon'></i>
+                            <i class='icon-trash-empty icon has-text-danger'></i>
                         </a>
                     </span>
                 </div>

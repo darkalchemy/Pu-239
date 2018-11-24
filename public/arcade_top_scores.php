@@ -30,7 +30,7 @@ foreach ($list as $gname) {
         <div class='bg-02 has-text-centered padtop10 round5'>
             <a id='{$game}'></a>
             <a href='{$site_config['baseurl']}/flash.php?gameURI={$game}.swf&amp;gamename={$game}&amp;game_id={$game_id}'>
-                <img src='{$site_config['pic_baseurl']}games/{$game}.png' alt='{$gname}' class='round5' />
+                <img src='{$site_config['pic_baseurl']}games/{$game}.png' alt='{$gname}' class='round5'>
             </a>";
         $HTMLOUT .= '
             <table class="table table-bordered table-striped top10 bottom20">

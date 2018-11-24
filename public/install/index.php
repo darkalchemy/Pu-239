@@ -110,8 +110,8 @@ function get_scheme()
                 }
                 $out .= '
                     <div style="text-align:center;">
-                        <input type="submit" value="Submit data" />
-                        <input type="hidden" value="write" name="do" />
+                        <input type="submit" value="Submit data">
+                        <input type="hidden" value="write" name="do">
                     </div>
                     <script>
                         var processing = 4;

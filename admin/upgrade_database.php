@@ -102,11 +102,11 @@ if (file_exists(DATABASE_DIR)) {
                     <div class='level-center'>
                         <span class='margin10'>
                             <input type='hidden' name='id' value={$update['id']}>
-                            <input class='button is-small' type='submit' name='submit' value='Run Query' />
+                            <input class='button is-small' type='submit' name='submit' value='Run Query'>
                         </span>
                         <span class='margin10'>
                             <input type='hidden' name='id' value={$update['id']}>
-                            <input class='button is-small' type='submit' name='submit' value='Ignore Query' />
+                            <input class='button is-small' type='submit' name='submit' value='Ignore Query'>
                         </span
                     </div>
                 </form>";

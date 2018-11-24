@@ -64,6 +64,8 @@ function breadcrumbs()
 
 function get_prepage($lang, $url)
 {
+    global $CURUSER;
+
     switch ($url) {
         case '/catalog.php':
         case '/needseed.php':
@@ -78,6 +80,15 @@ function get_prepage($lang, $url)
         case '/arcade_top_scores.php':
         case '/flash.php':
             return get_basepage($lang, '/arcade.php');
+        case '/lottery.php':
+            if ($CURUSER['class'] >= UC_STAFF) {
+                return get_basepage($lang, '/staffpanel.php');
+            }
+            // no break
+        case '/promo.php':
+            if ($CURUSER['class'] >= UC_STAFF) {
+                return get_basepage($lang, '/staffpanel.php');
+            }
     }
 
     return false;

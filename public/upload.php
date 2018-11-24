@@ -165,7 +165,7 @@ $HTMLOUT .= "<table class='table table-bordered table-striped top20'>
     <tr>
     <td class='rowhead'>{$lang['upload_torrent']}</td>
     <td>
-        <input type='file' name='file' id='torrent' onchange='getname()' class='inputfile' required>
+        <input type='file' name='file' id='torrent' onchange='getname()' class='inputfile'>
     </td>
     </tr>
     <tr>

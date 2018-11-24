@@ -20,9 +20,15 @@ if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_ST
         $Ident_Client = (XBT_TRACKER ? $port_data['1'] : $port_data[2]);
         $XBT_or_PHP = (XBT_TRACKER ? '1' : 'yes');
         if ($connect == $XBT_or_PHP) {
-            $connectable = "<div class='level-left'><img src='{$site_config['pic_baseurl']}tick.png' alt='{$lang['userdetails_yes']}' title='{$lang['userdetails_conn_sort']}' style='border:none;padding:2px;' /><span style='color: green;'><b>{$lang['userdetails_yes']}</b></span></div>";
+            $connectable = "
+    <div class='has-text-success tooltipper' title='{$lang['userdetails_conn_sort']}'>
+        <i class='icon-thumbs-up-alt icon' aria-hidden='true'></i><b>{$lang['userdetails_yes']}</b>
+    </div>";
         } else {
-            $connectable = "<div class='level-left'><img src='{$site_config['pic_baseurl']}cross.png' alt='{$lang['userdetails_no']}' title='{$lang['userdetails_conn_staff']}' style='border:none;padding:2px;' /><span class='has-text-danger'><b>{$lang['userdetails_no']}</b></span></div>";
+            $connectable = "
+    <div class='has-text-danger tooltipper' title='{$lang['userdetails_conn_staff']}'>
+        <i class='icon-thumbs-down-alt icon' aria-hidden='true'></i><b>{$lang['userdetails_no']}</b>
+    </div>";
         }
     } else {
         $connectable = "<span style='color: orange;'><b>{$lang['userdetails_unknown']}</b></span>";

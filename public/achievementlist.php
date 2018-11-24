@@ -36,7 +36,7 @@ if (mysqli_num_rows($res) === 0) {
         $notes = htmlsafechars($arr['notes']);
         $clienticon = '';
         if ($arr['clienticon'] != '') {
-            $clienticon = "<img src='" . $site_config['pic_baseurl'] . 'achievements/' . htmlsafechars($arr['clienticon']) . "' title='" . htmlsafechars($arr['achievname']) . "' alt='" . htmlsafechars($arr['achievname']) . "' />";
+            $clienticon = "<img src='" . $site_config['pic_baseurl'] . 'achievements/' . htmlsafechars($arr['clienticon']) . "' title='" . htmlsafechars($arr['achievname']) . "' alt='" . htmlsafechars($arr['achievname']) . "'>";
         }
         $body .= "
             <tr>
@@ -54,7 +54,7 @@ if ($CURUSER['class'] === UC_MAX) {
     <form method='post' action='achievementlist.php'>" . main_table("
             <tr>
                 <td class='w-15'>{$lang['achlst_achievname']}</td>
-                <td><input class='w-100' type='text' name='achievname' /></td>
+                <td><input class='w-100' type='text' name='achievname'></td>
             </tr>
             <tr>
                 <td>{$lang['achlst_achievicon']}</td>
@@ -66,7 +66,7 @@ if ($CURUSER['class'] === UC_MAX) {
             </tr>
             <tr>
                 <td colspan='2' class='has-text-centered'>
-                    <input type='submit' name='okay' value='{$lang['achlst_add_me']}!' class='button is-small' />
+                    <input type='submit' name='okay' value='{$lang['achlst_add_me']}!' class='button is-small'>
                 </td>
             </tr>") . '
     </form>';

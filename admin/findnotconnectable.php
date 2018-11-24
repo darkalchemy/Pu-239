@@ -17,10 +17,10 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'list') {
 
     $HTMLOUT .= "
     <ul class='level-center bg-06'>
-        <li class='altlink margin20'>
+        <li class='altlink margin10'>
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=sendpm'>{$lang['non_con_sendall']}</a>
         </li>
-        <li class='altlink margin20'>
+        <li class='altlink margin10'>
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>{$lang['non_con_view']}</a>
         </li>
     </ul>
@@ -29,12 +29,12 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'list') {
     $count = mysqli_num_rows($result);
     @((mysqli_free_result($result) || (is_object($result) && (get_class($result) === 'mysqli_result'))) ? true : false);
     if (mysqli_num_rows($res2) == 0) {
-        $HTMLOUT .= main_div("{$lang['non_con_all']}");
+        $HTMLOUT .= stdmsg($lang['non_con_sorry'], $lang['non_con_all']);
     } else {
         $HTMLOUT .= "
         {$lang['non_con_this']}<br>
         <p>
-            <span class='has-text-red'>*</span> {$lang['non_con_means']}<br>
+            <span class='has-text-danger'>*</span> {$lang['non_con_means']}<br>
             $count {$lang['non_con_unique']}
         </p>";
         $heading = "
@@ -98,10 +98,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'sendpm') {
     $HTMLOUT .= "
     <ul class='level-center bg-06'>
-        <li class='altlink margin20'>
+        <li class='altlink margin10'>
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>{$lang['non_con_view']}</a>
         </li>
-        <li class='altlink margin20'>
+        <li class='altlink margin10'>
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=list'>{$lang['non_con_list']}</a>
         </li>
     </ul>
@@ -124,10 +124,10 @@ if (isset($_GET['action1']) == '') {
     $getlog = sql_query('SELECT * FROM `notconnectablepmlog` ORDER BY date DESC LIMIT 20') or sqlerr(__FILE__, __LINE__);
     $HTMLOUT .= "
     <ul class='level-center bg-06'>
-        <li class='altlink margin20'>
+        <li class='altlink margin10'>
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=sendpm'>{$lang['non_con_sendall']}</a>
         </li>
-        <li class='altlink margin20'>
+        <li class='altlink margin10'>
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=list'>{$lang['non_con_list']}</a>
         </li>
     </ul>
@@ -153,7 +153,7 @@ if (isset($_GET['action1']) == '') {
         }
         $HTMLOUT .= main_table($body, $heading);
     } else {
-        $HTMLOUT .= main_div("{$lang['non_con_all']}");
+        $HTMLOUT .= stdmsg($lang['non_con_sorry'], $lang['non_con_all']);
     }
 }
 echo stdhead() . wrapper($HTMLOUT) . stdfoot();

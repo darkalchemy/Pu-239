@@ -9,17 +9,15 @@ global $lang;
 $lang = array_merge($lang, load_language('ad_comments'));
 $view = isset($_GET['view']) ? htmlsafechars($_GET['view']) : '';
 switch ($view) {
-    //==== Page: View all comments
     case 'allComments':
-        $sql = 'SELECT c.id, c.user, c.torrent, c.text, c.ori_text, c.added, t.name, u.username ' . 'FROM comments AS c ' . 'JOIN users AS u ON u.id = c.user ' . 'JOIN torrents AS t ON  c.torrent = t.id ' . 'ORDER BY c.id DESC';
-
-        $query = sql_query("{$sql}");
+        $sql = 'SELECT c.id, c.user, c.torrent, c.text, c.ori_text, c.added, t.name, u.username FROM comments AS c JOIN users AS u ON u.id = c.user JOIN torrents AS t ON  c.torrent = t.id ORDER BY c.id DESC';
+        $query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $rows = mysqli_num_rows($query);
 
         $Row_Count = 0;
 
         //==== HTML Output
-        $HTMLOUT = "<h3><a href='staffpanel.php?tool=comments'>{$lang['text_overview']}</a>" . " - <a href='staffpanel.php?tool=comments&amp;view=allComments'>{$lang['text_all']}</a>" . " - <a href='staffpanel.php?tool=comments&amp;view=search'>{$lang['text_search']}</a>" . '</h3>' . "<hr class='separator' />" . '<br>' . "<table width='950px'>" . "<tr><td colspan='9'><strong><em>{$lang['text_all_comm']}</em></strong></td></tr>" . '<tr>' . "<td class='colhead'>{$lang['text_comm_id']}</td>" . "<td class='colhead'>{$lang['text_user_id']}</td>" . "<td class='colhead'>{$lang['text_torr_id']}</td>" . "<td class='colhead'>{$lang['text_comm']}</td>" . "<td class='colhead'>{$lang['text_comm_ori']}</td>" . "<td class='colhead'>{$lang['text_user']}</td>" . "<td class='colhead'>{$lang['text_torr']}</td>" . "<td class='colhead'>{$lang['text_added']}</td>" . "<td class='colhead'>{$lang['text_actions']}</td>" . '</tr>';
+        $HTMLOUT = "<h3><a href='staffpanel.php?tool=comments'>{$lang['text_overview']}</a>" . " - <a href='staffpanel.php?tool=comments&amp;view=allComments'>{$lang['text_all']}</a>" . " - <a href='staffpanel.php?tool=comments&amp;view=search'>{$lang['text_search']}</a>" . '</h3>' . "<hr class='separator'>" . '<br>' . "<table width='950px'>" . "<tr><td colspan='9'><strong><em>{$lang['text_all_comm']}</em></strong></td></tr>" . '<tr>' . "<td class='colhead'>{$lang['text_comm_id']}</td>" . "<td class='colhead'>{$lang['text_user_id']}</td>" . "<td class='colhead'>{$lang['text_torr_id']}</td>" . "<td class='colhead'>{$lang['text_comm']}</td>" . "<td class='colhead'>{$lang['text_comm_ori']}</td>" . "<td class='colhead'>{$lang['text_user']}</td>" . "<td class='colhead'>{$lang['text_torr']}</td>" . "<td class='colhead'>{$lang['text_added']}</td>" . "<td class='colhead'>{$lang['text_actions']}</td>" . '</tr>';
 
         while ($comment = mysqli_fetch_assoc($query)) {
             //==== Begin an array that will sanitize all the variables from the MySQLI query
@@ -57,7 +55,7 @@ switch ($view) {
 
     //==== Page: Search
     case 'search':
-        $HTMLOUT = "<form method='post' action='staffpanel.php?tool=comments&amp;view=results'>" . '<table>' . '<tr>' . "<td class='colhead' colspan='2'>{$lang['text_search']}</td>" . '</tr>' . "<tr><td>{$lang['text_keywords']}</td><td><input type='text' name='keywords' size='40' /></td></tr>" . "<tr><td colspan='2'><input type='submit' value='{$lang['text_submit']}' /></td></tr>" . '</table>' . '</form>';
+        $HTMLOUT = "<form method='post' action='staffpanel.php?tool=comments&amp;view=results'>" . '<table>' . '<tr>' . "<td class='colhead' colspan='2'>{$lang['text_search']}</td>" . '</tr>' . "<tr><td>{$lang['text_keywords']}</td><td><input type='text' name='keywords' size='40'></td></tr>" . "<tr><td colspan='2'><input type='submit' value='{$lang['text_submit']}'></td></tr>" . '</table>' . '</form>';
 
         //==== Display Everything
         echo stdhead("{$lang['text_search']}") . wrapper($HTMLOUT) . stdfoot();
@@ -66,9 +64,8 @@ switch ($view) {
 
     //==== Page: Search Results
     case 'results':
-        $sql = 'SELECT c.id, c.user, c.torrent, c.text, c.added, t.name, u.username ' . 'FROM comments AS c ' . 'JOIN users AS u ON u.id = c.user ' . 'JOIN torrents AS t ON c.torrent = t.id ' . 'WHERE c.text LIKE ' . sqlesc("%{$_POST['keywords']}%") . 'ORDER BY c.added DESC';
-
-        $query = sql_query("{$sql}") or sqlerr(__FILE__, __LINE__);
+        $sql = 'SELECT c.id, c.user, c.torrent, c.text, c.added, t.name, u.username FROM comments AS c JOIN users AS u ON u.id = c.user JOIN torrents AS t ON c.torrent = t.id WHERE c.text LIKE ' . sqlesc("%{$_POST['keywords']}%") . ' ORDER BY c.added DESC';
+        $query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $rows = mysqli_num_rows($query);
 
         $Row_Count = 0;
@@ -104,15 +101,13 @@ switch ($view) {
         break;
 }
 
-//==== Begin the main page
-$sql = 'SELECT c.id, c.user, c.torrent, c.text, c.ori_text, c.added, c.checked_by, c.checked_when, t.name, u.username ' . 'FROM comments AS c ' . 'JOIN users AS u ON u.id = c.user ' . 'JOIN torrents AS t ON  c.torrent = t.id ' . 'ORDER BY c.id DESC ' . 'LIMIT 10';
-
-$query = sql_query("{$sql}");
+$sql = 'SELECT c.id, c.user, c.torrent, c.text, c.ori_text, c.added, c.checked_by, c.checked_when, t.name, u.username FROM comments AS c JOIN users AS u ON u.id = c.user JOIN torrents AS t ON  c.torrent = t.id ORDER BY c.id DESC LIMIT 10';
+$query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $rows = mysqli_num_rows($query);
 $Row_Count = 0;
 
 //==== HTML Output
-$HTMLOUT = "<h3><a href='staffpanel.php?tool=comments'>{$lang['text_overview']}</a>" . " - <a href='staffpanel.php?tool=comments&amp;view=allComments'>{$lang['text_all']}</a>" . " - <a href='staffpanel.php?tool=comments&amp;view=search'>{$lang['text_search']}</a>" . '</h3>' . "<hr class='separator' />" . '<br>' . "<table width='950px'>" . "<tr><td colspan='9'><strong><em>{$lang['text_recent']}</em></strong></td></tr>" . '<tr>' . "<td class='colhead'>{$lang['text_comm_id']}</td>" . "<td class='colhead'>{$lang['text_user_id']}</td>" . "<td class='colhead'>{$lang['text_torr_id']}</td>" . "<td class='colhead'>{$lang['text_comm']}</td>" . "<td class='colhead'>{$lang['text_comm_ori']}</td>" . "<td class='colhead'>{$lang['text_user']}</td>" . "<td class='colhead'>{$lang['text_torr']}</td>" . "<td class='colhead'>{$lang['text_added']}</td>" . "<td class='colhead'>{$lang['text_actions']}</td>" . '</tr>';
+$HTMLOUT = "<h3><a href='staffpanel.php?tool=comments'>{$lang['text_overview']}</a>" . " - <a href='staffpanel.php?tool=comments&amp;view=allComments'>{$lang['text_all']}</a>" . " - <a href='staffpanel.php?tool=comments&amp;view=search'>{$lang['text_search']}</a>" . '</h3>' . "<hr class='separator'>" . '<br>' . "<table width='950px'>" . "<tr><td colspan='9'><strong><em>{$lang['text_recent']}</em></strong></td></tr>" . '<tr>' . "<td class='colhead'>{$lang['text_comm_id']}</td>" . "<td class='colhead'>{$lang['text_user_id']}</td>" . "<td class='colhead'>{$lang['text_torr_id']}</td>" . "<td class='colhead'>{$lang['text_comm']}</td>" . "<td class='colhead'>{$lang['text_comm_ori']}</td>" . "<td class='colhead'>{$lang['text_user']}</td>" . "<td class='colhead'>{$lang['text_torr']}</td>" . "<td class='colhead'>{$lang['text_added']}</td>" . "<td class='colhead'>{$lang['text_actions']}</td>" . '</tr>';
 
 while ($comment = mysqli_fetch_assoc($query)) {
     //==== Begin an array that will sanitize all the variables from the MySQLI query
@@ -137,7 +132,6 @@ while ($comment = mysqli_fetch_assoc($query)) {
 }
 
 if ($rows == 0) {
-    //==== Show an error if there are no rows in the MySQLI table
     $HTMLOUT .= "<tr><td colspan='9'>{$lang['text_no_rows']}</td></tr>";
 }
 

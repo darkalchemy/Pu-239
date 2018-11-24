@@ -11,10 +11,10 @@ $HTMLOUT = $over_forums = $count = $min_class_viewer = $sorted = '';
 $main_links = "
             <div class='bottom20'>
                 <ul class='level-center bg-06'>
-                    <li class='altlink margin20'>
+                    <li class='altlink margin10'>
                         <a href='{$site_config['baseurl']}/staffpanel.php?tool=forum_config&amp;action=forum_config'>{$lang['ad_over_configure']}</a>
                     </li>
-                    <li class='altlink margin20'>
+                    <li class='altlink margin10'>
                         <a href='{$site_config['baseurl']}/staffpanel.php?tool=forum_manage&amp;action=forum_manage'>{$lang['ad_over_manager']}</a>
                     </li>
                 </ul>
@@ -91,11 +91,11 @@ switch ($action) {
             <td colspan="2">' . $lang['ad_over_editfor'] . '' . htmlsafechars($row['name'], ENT_QUOTES) . '</td>
           </tr>
             <td><span style="font-weight: bold;">' . $lang['ad_over_name'] . '</span></td>
-            <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . '" /></td>
+            <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . '"></td>
           </tr>
           <tr>
             <td ><span style="font-weight: bold;">' . $lang['ad_over_description'] . '</span>  </td>
-            <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . '" /></td>
+            <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . '"></td>
           </tr>
             <tr>
             <td><span style="font-weight: bold;">' . $lang['ad_over_minview'] . ' </span></td>
@@ -117,7 +117,7 @@ switch ($action) {
             $HTMLOUT .= $sorted . '</select></td></tr>
             <tr>
                 <td colspan="2" class="has-text-centered">
-                <input type="submit" name="button" class="button is-small margin20" value="' . $lang['ad_over_editbut'] . '" />
+                <input type="submit" name="button" class="button is-small margin20" value="' . $lang['ad_over_editbut'] . '">
                 </td>
           </tr>
         </table></form>';
@@ -155,7 +155,7 @@ switch ($action) {
                     </span>
                     <span>
                         <a href="javascript:confirm_delete(\'' . $row['id'] . '\');">
-                            <i class="icon-cancel icon"></i>
+                            <i class="icon-trash-empty icon has-text-danger"></i>
                         </a>
                     </span>
                 </span>
@@ -166,18 +166,18 @@ switch ($action) {
         $HTMLOUT .= main_table($body, $heading);
         $HTMLOUT .= '
             <form method="post" action="staffpanel.php?tool=over_forums&amp;action=over_forums">
-                <input type="hidden" name="action2" value="add_forum" />';
+                <input type="hidden" name="action2" value="add_forum">';
         $body = '
                 <tr>
                     <td colspan="2">' . $lang['ad_over_makenew'] . '</td>
                 </tr>
                 <tr>
                     <td><span>' . $lang['ad_over_name'] . '</span></td>
-                    <td><input name="name" type="text" class="w-100" maxlength="60" /></td>
+                    <td><input name="name" type="text" class="w-100" maxlength="60"></td>
                 </tr>
                 <tr>
                     <td><span>' . $lang['ad_over_description'] . '</span>  </td>
-                    <td><input name="desc" type="text" class="w-100" maxlength="200" /></td>
+                    <td><input name="desc" type="text" class="w-100" maxlength="200"></td>
                 </tr>
                 <tr>
                     <td><span>' . $lang['ad_over_minview'] . '</span></td>
@@ -208,7 +208,7 @@ switch ($action) {
                 </tr>';
         $HTMLOUT .= main_table($body, '', 'top20') . '
                 <div class="has-text-centered margin20">
-                    <input type="submit" name="button" class="button is-small margin20" value="' . $lang['ad_over_makebutton'] . '" />
+                    <input type="submit" name="button" class="button is-small margin20" value="' . $lang['ad_over_makebutton'] . '">
                 </div>
            </form>';
         break;

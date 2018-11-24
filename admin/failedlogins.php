@@ -69,8 +69,8 @@ if (!$where && $count === 0) {
 $HTMLOUT = main_div("
     <h1 class='has-text-centered'>{$lang['failed_main_search']}</h1>
     <form method='post' action='staffpanel.php?tool=failedlogins&amp;action=failedlogins' class='has-text-centered'>
-        <input type='text' name='search' class='w-50' placeholder='Search By IP' value='' /><br>
-        <input type='submit' value='{$lang['failed_main_search_btn']}' class='button is-small top20' />
+        <input type='text' name='search' class='w-50' placeholder='Search By IP' value=''><br>
+        <input type='submit' value='{$lang['failed_main_search_btn']}' class='button is-small margin20'>
     </form>");
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
@@ -78,7 +78,7 @@ if ($count > $perpage) {
 $sql = "SELECT f.*, INET6_NTOA(f.ip) AS ip, u.id as uid, u.username FROM failedlogins as f LEFT JOIN users as u ON u.ip = f.ip $where ORDER BY f.added DESC " . $pager['limit'];
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($res) == 0) {
-    $HTMLOUT .= main_div("<h3 class='has-text-centered'>{$lang['failed_message_nothing']}</h3>", 'top20');
+    $HTMLOUT .= stdmsg($lang['failed_sorry'], $lang['failed_message_nothing'], 'top20');
 } else {
     $heading = "
         <tr>
@@ -97,7 +97,7 @@ if (mysqli_num_rows($res) == 0) {
             <td class='has-text-centered'>" . get_date($arr['added'], '', 1, 0) . "</td>
             <td class='has-text-centered'>" . (int) $arr['attempts'] . '</td>
             <td>' . ($arr['banned'] === 'yes' ? "
-                <span class='has-text-red'>{$lang['failed_main_banned']}</span> 
+                <span class='has-text-danger'>{$lang['failed_main_banned']}</span> 
                 <a href='{$site_config['baseurl']}/staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=removeban&amp;id=" . (int) $arr['id'] . "'> 
                     <span class='has-text-green'>[{$lang['failed_main_remban']}]</span>
                 </a>" : "

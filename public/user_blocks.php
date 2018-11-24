@@ -486,7 +486,7 @@ if ($BLOCKS['ie_user_alert']) {
     $contents[] = "
                 <div class='w-100'>Enable IE alert?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='ie_alert' name='ie_alert' value='yes' $checkbox_index_ie_alert />
+                    <input type='checkbox' id='ie_alert' name='ie_alert' value='yes' $checkbox_index_ie_alert>
                     <label for='ie_alert'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the IE user alert.</div>";
@@ -496,7 +496,7 @@ if ($BLOCKS['news_on']) {
     $contents[] = "
                 <div class='w-100'>Enable News?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='news' name='news' value='yes' $checkbox_index_news />
+                    <input type='checkbox' id='news' name='news' value='yes' $checkbox_index_news>
                     <label for='news'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the News Block.</div>";
@@ -506,7 +506,7 @@ if ($BLOCKS['ajaxchat_on']) {
     $contents[] = "
                 <div class='w-100'>Enable AJAX Chat?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='ajaxchat' name='ajaxchat' value='yes' $checkbox_index_ajaxchat />
+                    <input type='checkbox' id='ajaxchat' name='ajaxchat' value='yes' $checkbox_index_ajaxchat>
                     <label for='ajaxchat'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the AJAX Chat.</div>";
@@ -516,7 +516,7 @@ if ($BLOCKS['active_users_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Active Users?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='active_users' name='active_users' value='yes' $checkbox_index_active_users />
+                    <input type='checkbox' id='active_users' name='active_users' value='yes' $checkbox_index_active_users>
                     <label for='active_users'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the Active Users.</div>";
@@ -526,7 +526,7 @@ if ($BLOCKS['active_24h_users_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Active Users Over 24hours?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='last_24_active_users' name='last_24_active_users' value='yes' $checkbox_index_active_24h_users />
+                    <input type='checkbox' id='last_24_active_users' name='last_24_active_users' value='yes' $checkbox_index_active_24h_users>
                     <label for='last_24_active_users'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the Active Users visited over 24hours.</div>";
@@ -536,7 +536,7 @@ if ($BLOCKS['active_irc_users_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Active Irc Users?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='irc_active_users' name='irc_active_users' value='yes' $checkbox_index_active_irc_users />
+                    <input type='checkbox' id='irc_active_users' name='irc_active_users' value='yes' $checkbox_index_active_irc_users>
                     <label for='irc_active_users'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the Active Irc Users.</div>";
@@ -546,7 +546,7 @@ if ($BLOCKS['active_birthday_users_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Birthday Users?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='birthday_active_users' name='birthday_active_users' value='yes' $checkbox_index_active_birthday_users />
+                    <input type='checkbox' id='birthday_active_users' name='birthday_active_users' value='yes' $checkbox_index_active_birthday_users>
                     <label for='birthday_active_users'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the Active Birthday Users.</div>";
@@ -556,7 +556,7 @@ if ($BLOCKS['stats_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Site Stats?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='stats' name='stats' value='yes' $checkbox_index_stats />
+                    <input type='checkbox' id='stats' name='stats' value='yes' $checkbox_index_stats>
                 <label for='stats'></label></div>
                 <div class='w-100'>Check this option if you want to enable the Stats.</div>";
 }
@@ -565,7 +565,7 @@ if ($BLOCKS['trivia_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Trivia?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='trivia' name='trivia' value='yes' $checkbox_index_trivia />
+                    <input type='checkbox' id='trivia' name='trivia' value='yes' $checkbox_index_trivia>
                     <label for='trivia'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the Trivia Game.</div>";
@@ -575,7 +575,7 @@ if ($BLOCKS['disclaimer_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Disclaimer?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='disclaimer' name='disclaimer' value='yes' $checkbox_index_disclaimer />
+                    <input type='checkbox' id='disclaimer' name='disclaimer' value='yes' $checkbox_index_disclaimer>
                     <label for='disclaimer'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable Disclaimer.</div>";
@@ -585,7 +585,7 @@ if ($BLOCKS['latest_user_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Latest User?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='latest_user' name='latest_user' value='yes' $checkbox_index_latest_user />
+                    <input type='checkbox' id='latest_user' name='latest_user' value='yes' $checkbox_index_latest_user>
                     <label for='latest_user'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable Latest User.</div>";
@@ -595,7 +595,7 @@ if ($BLOCKS['latest_comments_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Latest Comments?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='latestcomments' name='latestcomments' value='yes' $checkbox_index_latest_comments />
+                    <input type='checkbox' id='latestcomments' name='latestcomments' value='yes' $checkbox_index_latest_comments>
                     <label for='latestcomments'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable latest Comments.</div>";
@@ -605,7 +605,7 @@ if ($BLOCKS['forum_posts_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Latest Forum Posts?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='forumposts' name='forumposts' value='yes' $checkbox_index_latest_forumposts />
+                    <input type='checkbox' id='forumposts' name='forumposts' value='yes' $checkbox_index_latest_forumposts>
                     <label for='forumposts'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable latest Forum Posts.</div>";
@@ -615,7 +615,7 @@ if ($BLOCKS['staff_picks_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Staff Picks?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='staff_picks' name='staff_picks' value='yes' $checkbox_index_staff_picks />
+                    <input type='checkbox' id='staff_picks' name='staff_picks' value='yes' $checkbox_index_staff_picks>
                     <label for='staff_picks'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable staff_picks.</div>";
@@ -625,7 +625,7 @@ if ($BLOCKS['latest_torrents_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Latest torrents?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='latest_torrents' name='latest_torrents' value='yes' $checkbox_index_latest_torrents />
+                    <input type='checkbox' id='latest_torrents' name='latest_torrents' value='yes' $checkbox_index_latest_torrents>
                     <label for='latest_torrents'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable latest torrents.</div>";
@@ -635,7 +635,7 @@ if ($BLOCKS['latest_torrents_scroll_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Latest torrents scroll?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='latest_torrents_scroll' name='latest_torrents_scroll' value='yes' $checkbox_index_latest_torrents_scroll />
+                    <input type='checkbox' id='latest_torrents_scroll' name='latest_torrents_scroll' value='yes' $checkbox_index_latest_torrents_scroll>
                     <label for='latest_torrents_scroll'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable latest torrents marquee.</div>";
@@ -645,7 +645,7 @@ if ($BLOCKS['latest_torrents_slider_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Latest torrents slider?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='latest_torrents_slider' name='latest_torrents_slider' value='yes' $checkbox_index_latest_torrents_slider />
+                    <input type='checkbox' id='latest_torrents_slider' name='latest_torrents_slider' value='yes' $checkbox_index_latest_torrents_slider>
                     <label for='latest_torrents_slider'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable latest torrents banner slider.</div>";
@@ -655,7 +655,7 @@ if ($BLOCKS['announcement_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Announcement?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='announcement' name='announcement' value='yes' $checkbox_index_announcement />
+                    <input type='checkbox' id='announcement' name='announcement' value='yes' $checkbox_index_announcement>
                     <label for='announcement'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the Announcement Block.</div>";
@@ -665,7 +665,7 @@ if ($BLOCKS['donation_progress_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Donation Progress?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='donation_progress' name='donation_progress' value='yes' $checkbox_index_donation_progress />
+                    <input type='checkbox' id='donation_progress' name='donation_progress' value='yes' $checkbox_index_donation_progress>
                     <label for='donation_progress'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the Donation Progress.</div>";
@@ -675,7 +675,7 @@ if ($BLOCKS['ads_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Advertisements?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='advertisements' name='advertisements' value='yes' $checkbox_index_ads />
+                    <input type='checkbox' id='advertisements' name='advertisements' value='yes' $checkbox_index_ads>
                     <label for='advertisements'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the Advertisements.</div>";
@@ -685,7 +685,7 @@ if ($BLOCKS['radio_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Radio?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='radio' name='radio' value='yes' $checkbox_index_radio />
+                    <input type='checkbox' id='radio' name='radio' value='yes' $checkbox_index_radio>
                     <label for='radio'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the site radio.</div>";
@@ -695,7 +695,7 @@ if ($BLOCKS['torrentfreak_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Torrent Freak?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='torrentfreak' name='torrentfreak' value='yes' $checkbox_index_torrentfreak />
+                    <input type='checkbox' id='torrentfreak' name='torrentfreak' value='yes' $checkbox_index_torrentfreak>
                     <label for='torrentfreak'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the torrent freak news.</div>";
@@ -705,7 +705,7 @@ if ($BLOCKS['christmas_gift_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Christmas Gift?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='christmas_gift' name='christmas_gift' value='yes' $checkbox_index_christmasgift />
+                    <input type='checkbox' id='christmas_gift' name='christmas_gift' value='yes' $checkbox_index_christmasgift>
                     <label for='christmas_gift'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the Christmas Gift.</div>";
@@ -715,7 +715,7 @@ if ($BLOCKS['active_poll_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Poll?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='active_poll' name='active_poll' value='yes' $checkbox_index_active_poll />
+                    <input type='checkbox' id='active_poll' name='active_poll' value='yes' $checkbox_index_active_poll>
                     <label for='active_poll'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the Active Poll.</div>";
@@ -725,7 +725,7 @@ if ($BLOCKS['movie_ofthe_week_on']) {
     $contents[] = "
                 <div class='w-100'>Enable Movie of the week?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='movie_ofthe_week' name='movie_ofthe_week' value='yes' $checkbox_index_mow />
+                    <input type='checkbox' id='movie_ofthe_week' name='movie_ofthe_week' value='yes' $checkbox_index_mow>
                     <label for='movie_ofthe_week'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the MOvie of the week.</div>";
@@ -744,7 +744,7 @@ $level1 .= '
 $form .= main_div($level1);
 $form .= "
                     <div class='has-text-centered margin20'>
-                        <input class='button' type='submit' name='submit' value='Submit' />
+                        <input class='button' type='submit' name='submit' value='Submit'>
                     </div>
         </fieldset>
         </div>
@@ -761,7 +761,7 @@ if ($BLOCKS['global_freeleech_on']) {
     $contents[] = "
                 <div class='w-100'>Freeleech?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='stdhead_freeleech' name='stdhead_freeleech' value='yes' $checkbox_global_freeleech />
+                    <input type='checkbox' id='stdhead_freeleech' name='stdhead_freeleech' value='yes' $checkbox_global_freeleech>
                     <label for='stdhead_freeleech'></label>
                 </div>
                 <div class='w-100'>Enable 'freeleech mark' in stdhead</div>";
@@ -771,7 +771,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
         $contents[] = "
                     <div class='w-100'>Staff Reports?</div>
                     <div class='slideThree'>
-                        <input type='checkbox' id='stdhead_reports' name='stdhead_reports' value='yes' $checkbox_global_staff_report />
+                        <input type='checkbox' id='stdhead_reports' name='stdhead_reports' value='yes' $checkbox_global_staff_report>
                         <label for='stdhead_reports'></label>
                     </div>
                     <div class='w-100'>Enable reports alert in stdhead</div>";
@@ -781,7 +781,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
         $contents[] = "
                     <div class='w-100'>Upload App Alert?</div>
                     <div class='slideThree'>
-                        <input type='checkbox' id='stdhead_uploadapp' name='stdhead_uploadapp' value='yes' $checkbox_global_staff_uploadapp />
+                        <input type='checkbox' id='stdhead_uploadapp' name='stdhead_uploadapp' value='yes' $checkbox_global_staff_uploadapp>
                         <label for='stdhead_uploadapp'></label>
                     </div>
                     <div class='w-100'>Enable upload application alerts in stdhead</div>";
@@ -791,7 +791,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
         $contents[] = "
                     <div class='w-100'>Demotion</div>
                     <div class='slideThree'>
-                        <input type='checkbox' id='stdhead_demotion' name='stdhead_demotion' value='yes' $checkbox_global_demotion />
+                        <input type='checkbox' id='stdhead_demotion' name='stdhead_demotion' value='yes' $checkbox_global_demotion>
                         <label for='stdhead_demotion'></label>
                     </div>
                     <div class='w-100'>Enable the global demotion alerts block in stdhead</div>";
@@ -801,7 +801,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
         $contents[] = "
                     <div class='w-100'>Staff Warning?</div>
                     <div class='slideThree'>
-                        <input type='checkbox' id='stdhead_staff_message' name='stdhead_staff_message' value='yes' $checkbox_global_staff_message_alert /> 
+                        <input type='checkbox' id='stdhead_staff_message' name='stdhead_staff_message' value='yes' $checkbox_global_staff_message_alert> 
                         <label for='stdhead_staff_message'></label>
                     </div>
                     <div class='w-100'>Shows if there is a new message for staff alert in stdhead</div>";
@@ -811,7 +811,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
         $contents[] = "
                     <div class='w-100'>Bug Alert Message?</div>
                     <div class='slideThree'>   
-                        <input type='checkbox' id='stdhead_bugmessage' name='stdhead_bugmessage' value='yes' $checkbox_global_bugmessage />
+                        <input type='checkbox' id='stdhead_bugmessage' name='stdhead_bugmessage' value='yes' $checkbox_global_bugmessage>
                         <label for='stdhead_bugmessage'></label>
                     </div>
                     <div class='w-100'>Enable Bug Message alerts in stdhead</div>";
@@ -822,7 +822,7 @@ if ($BLOCKS['global_message_on']) {
     $contents[] = "
                 <div class='w-100'>Message block?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='stdhead_newpm' name='stdhead_newpm' value='yes' $checkbox_global_message_alert />
+                    <input type='checkbox' id='stdhead_newpm' name='stdhead_newpm' value='yes' $checkbox_global_message_alert>
                     <label for='stdhead_newpm'></label>
                     </div>
                 <div class='w-100'>Enable message alerts in stdhead</div>";
@@ -832,7 +832,7 @@ if ($BLOCKS['global_happyhour_on']) {
     $contents[] = "
                 <div class='w-100'>Happyhour?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='stdhead_happyhour' name='stdhead_happyhour' value='yes' $checkbox_global_happyhour />
+                    <input type='checkbox' id='stdhead_happyhour' name='stdhead_happyhour' value='yes' $checkbox_global_happyhour>
                     <label for='stdhead_happyhour'></label>
                 </div>
                 <div class='w-100'>Enable happy hour alerts in stdhead</div>";
@@ -842,7 +842,7 @@ if ($BLOCKS['global_crazyhour_on']) {
     $contents[] = "
                 <div class='w-100'>CrazyHour?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='stdhead_crazyhour' name='stdhead_crazyhour' value='yes' $checkbox_global_crazyhour />
+                    <input type='checkbox' id='stdhead_crazyhour' name='stdhead_crazyhour' value='yes' $checkbox_global_crazyhour>
                     <label for='stdhead_crazyhour'></label></div>
                 <div class='w-100'>Enable crazyhour alerts in stdhead</div>";
 }
@@ -851,7 +851,7 @@ if ($BLOCKS['global_freeleech_contribution_on']) {
     $contents[] = "
                 <div class='w-100'>Karma Contributions</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='stdhead_freeleech_contribution' name='stdhead_freeleech_contribution' value='yes' $checkbox_global_freeleech_contribution />
+                    <input type='checkbox' id='stdhead_freeleech_contribution' name='stdhead_freeleech_contribution' value='yes' $checkbox_global_freeleech_contribution>
                     <label for='stdhead_freeleech_contribution'></label>
                 </div>
                 <div class='w-100'>Enable karma contribution status alert in stdhead</div>";
@@ -869,7 +869,7 @@ $level2 .= '
 $form .= main_div($level2);
 $form .= "
                     <div class='has-text-centered margin20'>
-                        <input class='button' type='submit' name='submit' value='Submit' />
+                        <input class='button' type='submit' name='submit' value='Submit'>
                     </div>
         </fieldset>
         </div>
@@ -886,7 +886,7 @@ $contents = [];
 if ($BLOCKS['userdetails_flush_on']) {
     $contents[] = "
                 <div class='w-100'>Flush torrents?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_flush' name='userdetails_flush' value='yes' $checkbox_userdetails_flush />
+                <div class='slideThree'><input type='checkbox' id='userdetails_flush' name='userdetails_flush' value='yes' $checkbox_userdetails_flush>
                 <label for='userdetails_flush'></label></div>
                 <div class='w-100'>Enable flush torrents</div>";
 }
@@ -894,7 +894,7 @@ if ($BLOCKS['userdetails_flush_on']) {
 if ($BLOCKS['userdetails_joined_on']) {
     $contents[] = "
                 <div class='w-100'>Join date?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_joined' name='userdetails_joined' value='yes' $checkbox_userdetails_joined />
+                <div class='slideThree'><input type='checkbox' id='userdetails_joined' name='userdetails_joined' value='yes' $checkbox_userdetails_joined>
                 <label for='userdetails_joined'></label></div>
                 <div class='w-100'>Enable join date</div>";
 }
@@ -902,7 +902,7 @@ if ($BLOCKS['userdetails_joined_on']) {
 if ($BLOCKS['userdetails_online_time_on']) {
     $contents[] = "
                 <div class='w-100'>Online time?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_online_time' name='userdetails_online_time' value='yes' $checkbox_userdetails_onlinetime />
+                <div class='slideThree'><input type='checkbox' id='userdetails_online_time' name='userdetails_online_time' value='yes' $checkbox_userdetails_onlinetime>
                 <label for='userdetails_online_time'></label></div>
                 <div class='w-100'>Enable online time</div>";
 }
@@ -910,7 +910,7 @@ if ($BLOCKS['userdetails_online_time_on']) {
 if ($BLOCKS['userdetails_browser_on']) {
     $contents[] = "
                 <div class='w-100'>Browser?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_browser' name='userdetails_browser' value='yes' $checkbox_userdetails_browser />
+                <div class='slideThree'><input type='checkbox' id='userdetails_browser' name='userdetails_browser' value='yes' $checkbox_userdetails_browser>
                 <label for='userdetails_browser'></label></div>
                 <div class='w-100'>Enable browser and os detection</div>";
 }
@@ -918,7 +918,7 @@ if ($BLOCKS['userdetails_browser_on']) {
 if ($BLOCKS['userdetails_reputation_on']) {
     $contents[] = "
                 <div class='w-100'>Reputation?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_reputation' name='userdetails_reputation' value='yes' $checkbox_userdetails_reputation />
+                <div class='slideThree'><input type='checkbox' id='userdetails_reputation' name='userdetails_reputation' value='yes' $checkbox_userdetails_reputation>
                 <label for='userdetails_reputation'></label></div>
                 <div class='w-100'>Enable add reputation link</div>";
 }
@@ -926,7 +926,7 @@ if ($BLOCKS['userdetails_reputation_on']) {
 if ($BLOCKS['userdetails_profile_hits_on']) {
     $contents[] = "
                 <div class='w-100'>Profile hits?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_user_hits' name='userdetails_user_hits' value='yes' $checkbox_userdetails_userhits />
+                <div class='slideThree'><input type='checkbox' id='userdetails_user_hits' name='userdetails_user_hits' value='yes' $checkbox_userdetails_userhits>
                 <label for='userdetails_user_hits'></label></div>
                 <div class='w-100'>Enable user hits</div>";
 }
@@ -934,7 +934,7 @@ if ($BLOCKS['userdetails_profile_hits_on']) {
 if ($BLOCKS['userdetails_birthday_on']) {
     $contents[] = "
                 <div class='w-100'>Birthday?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_birthday' name='userdetails_birthday' value='yes' $checkbox_userdetails_birthday />
+                <div class='slideThree'><input type='checkbox' id='userdetails_birthday' name='userdetails_birthday' value='yes' $checkbox_userdetails_birthday>
                 <label for='userdetails_birthday'></label></div>
                 <div class='w-100'>Enable birthdate and age</div>";
 }
@@ -942,7 +942,7 @@ if ($BLOCKS['userdetails_birthday_on']) {
 if ($BLOCKS['userdetails_contact_info_on']) {
     $contents[] = "
                 <div class='w-100'>Contact?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_contact_info' name='userdetails_contact_info' value='yes' $checkbox_userdetails_contact_info />
+                <div class='slideThree'><input type='checkbox' id='userdetails_contact_info' name='userdetails_contact_info' value='yes' $checkbox_userdetails_contact_info>
                 <label for='userdetails_contact_info'></label></div>
                 <div class='w-100'>Enable contact infos</div>";
 }
@@ -950,7 +950,7 @@ if ($BLOCKS['userdetails_contact_info_on']) {
 if ($BLOCKS['userdetails_avatar_on']) {
     $contents[] = "
                 <div class='w-100'>Avatar?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_avatar' name='userdetails_avatar' value='yes' $checkbox_userdetails_avatar />
+                <div class='slideThree'><input type='checkbox' id='userdetails_avatar' name='userdetails_avatar' value='yes' $checkbox_userdetails_avatar>
                 <label for='userdetails_avatar'></label></div>
                 <div class='w-100'>Enable Avatar</div>";
 }
@@ -958,7 +958,7 @@ if ($BLOCKS['userdetails_avatar_on']) {
 if ($BLOCKS['userdetails_iphistory_on']) {
     $contents[] = "
                 <div class='w-100'>IP history?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_iphistory' name='userdetails_iphistory' value='yes' $checkbox_userdetails_iphistory />
+                <div class='slideThree'><input type='checkbox' id='userdetails_iphistory' name='userdetails_iphistory' value='yes' $checkbox_userdetails_iphistory>
                 <label for='userdetails_iphistory'></label></div>
                 <div class='w-100'>Enable ip history lists</div>";
 }
@@ -966,7 +966,7 @@ if ($BLOCKS['userdetails_iphistory_on']) {
 if ($BLOCKS['userdetails_traffic_on']) {
     $contents[] = "
                 <div class='w-100'>User traffic?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_traffic' name='userdetails_traffic' value='yes' $checkbox_userdetails_traffic />
+                <div class='slideThree'><input type='checkbox' id='userdetails_traffic' name='userdetails_traffic' value='yes' $checkbox_userdetails_traffic>
                 <label for='userdetails_traffic'></label></div>
                 <div class='w-100'>Enable uploaded and download</div>";
 }
@@ -974,7 +974,7 @@ if ($BLOCKS['userdetails_traffic_on']) {
 if ($BLOCKS['userdetails_share_ratio_on']) {
     $contents[] = "
                 <div class='w-100'>Share ratio?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_share_ratio' name='userdetails_share_ratio' value='yes' $checkbox_userdetails_shareratio />
+                <div class='slideThree'><input type='checkbox' id='userdetails_share_ratio' name='userdetails_share_ratio' value='yes' $checkbox_userdetails_shareratio>
                 <label for='userdetails_share_ratio'></label></div>
                 <div class='w-100'>Enable share ratio</div>";
 }
@@ -982,7 +982,7 @@ if ($BLOCKS['userdetails_share_ratio_on']) {
 if ($BLOCKS['userdetails_seedtime_ratio_on']) {
     $contents[] = "
                 <div class='w-100'>Seed time ratio?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_seedtime_ratio' name='userdetails_seedtime_ratio' value='yes' $checkbox_userdetails_seedtime_ratio />
+                <div class='slideThree'><input type='checkbox' id='userdetails_seedtime_ratio' name='userdetails_seedtime_ratio' value='yes' $checkbox_userdetails_seedtime_ratio>
                 <label for='userdetails_seedtime_ratio'></label></div>
                 <div class='w-100'>Enable seed time per torrent average ratio</div>";
 }
@@ -990,7 +990,7 @@ if ($BLOCKS['userdetails_seedtime_ratio_on']) {
 if ($BLOCKS['userdetails_seedbonus_on']) {
     $contents[] = "
                 <div class='w-100'>Seedbonus?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_seedbonus' name='userdetails_seedbonus' value='yes' $checkbox_userdetails_seedbonus />
+                <div class='slideThree'><input type='checkbox' id='userdetails_seedbonus' name='userdetails_seedbonus' value='yes' $checkbox_userdetails_seedbonus>
                 <label for='userdetails_seedbonus'></label></div>
                 <div class='w-100'>Enable seed bonus</div>";
 }
@@ -998,7 +998,7 @@ if ($BLOCKS['userdetails_seedbonus_on']) {
 if ($BLOCKS['userdetails_irc_stats_on']) {
     $contents[] = "
                 <div class='w-100'>IRC stats?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_irc_stats' name='userdetails_irc_stats' value='yes' $checkbox_userdetails_irc_stats />
+                <div class='slideThree'><input type='checkbox' id='userdetails_irc_stats' name='userdetails_irc_stats' value='yes' $checkbox_userdetails_irc_stats>
                 <label for='userdetails_irc_stats'></label></div>
                 <div class='w-100'>Enable irc online stats</div>";
 }
@@ -1006,7 +1006,7 @@ if ($BLOCKS['userdetails_irc_stats_on']) {
 if ($BLOCKS['userdetails_connectable_port_on']) {
     $contents[] = "
                 <div class='w-100'>Connectable?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_connectable_port' name='userdetails_connectable_port' value='yes' $checkbox_userdetails_connectable />
+                <div class='slideThree'><input type='checkbox' id='userdetails_connectable_port' name='userdetails_connectable_port' value='yes' $checkbox_userdetails_connectable>
                 <label for='userdetails_connectable_port'></label></div>
                 <div class='w-100'>Enable connectable and port</div>";
 }
@@ -1014,7 +1014,7 @@ if ($BLOCKS['userdetails_connectable_port_on']) {
 if ($BLOCKS['userdetails_userclass_on']) {
     $contents[] = "
                  <div class='w-100'>Userclass?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_userclass' name='userdetails_userclass' value='yes' $checkbox_userdetails_userclass />
+                <div class='slideThree'><input type='checkbox' id='userdetails_userclass' name='userdetails_userclass' value='yes' $checkbox_userdetails_userclass>
                 <label for='userdetails_userclass'></label></div>
                  <div class='w-100'>Enable userclass</div>";
 }
@@ -1022,7 +1022,7 @@ if ($BLOCKS['userdetails_userclass_on']) {
 if ($BLOCKS['userdetails_gender_on']) {
     $contents[] = "
                 <div class='w-100'>Gender?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_gender' name='userdetails_gender' value='yes' $checkbox_userdetails_gender />
+                <div class='slideThree'><input type='checkbox' id='userdetails_gender' name='userdetails_gender' value='yes' $checkbox_userdetails_gender>
                 <label for='userdetails_gender'></label></div>
                 <div class='w-100'>Enable gender</div>";
 }
@@ -1030,7 +1030,7 @@ if ($BLOCKS['userdetails_gender_on']) {
 if ($BLOCKS['userdetails_freestuffs_on']) {
     $contents[] = "
                 <div class='w-100'>Free stuffs?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_freestuffs' name='userdetails_freestuffs' value='yes' $checkbox_userdetails_freestuffs />
+                <div class='slideThree'><input type='checkbox' id='userdetails_freestuffs' name='userdetails_freestuffs' value='yes' $checkbox_userdetails_freestuffs>
                 <label for='userdetails_freestuffs'></label></div>
                 <div class='w-100'>Enable freeslots and freeleech status</div>";
 }
@@ -1038,7 +1038,7 @@ if ($BLOCKS['userdetails_freestuffs_on']) {
 if ($BLOCKS['userdetails_comments_on']) {
     $contents[] = "
                 <div class='w-100'>Comments?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_comments' name='userdetails_comments' value='yes' $checkbox_userdetails_torrent_comments />
+                <div class='slideThree'><input type='checkbox' id='userdetails_comments' name='userdetails_comments' value='yes' $checkbox_userdetails_torrent_comments>
                 <label for='userdetails_comments'></label></div>
                 <div class='w-100'>Enable torrent comments history</div>";
 }
@@ -1046,7 +1046,7 @@ if ($BLOCKS['userdetails_comments_on']) {
 if ($BLOCKS['userdetails_forumposts_on']) {
     $contents[] = "
                 <div class='w-100'>Forumposts?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_forumposts' name='userdetails_forumposts' value='yes' $checkbox_userdetails_forumposts />
+                <div class='slideThree'><input type='checkbox' id='userdetails_forumposts' name='userdetails_forumposts' value='yes' $checkbox_userdetails_forumposts>
                 <label for='userdetails_forumposts'></label></div>
                 <div class='w-100'>Enable forum posts history</div>";
 }
@@ -1054,7 +1054,7 @@ if ($BLOCKS['userdetails_forumposts_on']) {
 if ($BLOCKS['userdetails_invitedby_on']) {
     $contents[] = "
                 <div class='w-100'>Invited by?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_invitedby' name='userdetails_invitedby' value='yes' $checkbox_userdetails_invitedby />
+                <div class='slideThree'><input type='checkbox' id='userdetails_invitedby' name='userdetails_invitedby' value='yes' $checkbox_userdetails_invitedby>
                 <label for='userdetails_invitedby'></label></div>
                 <div class='w-100'>Enable invited by list</div>";
 }
@@ -1062,7 +1062,7 @@ if ($BLOCKS['userdetails_invitedby_on']) {
 if ($BLOCKS['userdetails_torrents_block_on']) {
     $contents[] = "
                 <div class='w-100'>Torrents blocks?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_torrents_block' name='userdetails_torrents_block' value='yes' $checkbox_userdetails_torrents_block />
+                <div class='slideThree'><input type='checkbox' id='userdetails_torrents_block' name='userdetails_torrents_block' value='yes' $checkbox_userdetails_torrents_block>
                 <label for='userdetails_torrents_block'></label></div>
                 <div class='w-100'>Enable seeding, leeching, snatched and uploaded torrents</div>";
 }
@@ -1070,7 +1070,7 @@ if ($BLOCKS['userdetails_torrents_block_on']) {
 if ($BLOCKS['userdetails_snatched_staff_on']) {
     $contents[] = "
                 <div class='w-100'>Staff snatched?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_snatched_staff' name='userdetails_snatched_staff' value='yes' $checkbox_userdetails_snatched_staff />
+                <div class='slideThree'><input type='checkbox' id='userdetails_snatched_staff' name='userdetails_snatched_staff' value='yes' $checkbox_userdetails_snatched_staff>
                 <label for='userdetails_snatched_staff'></label></div>
                 <div class='w-100'>Enable staff snatchlist</div>";
 }
@@ -1078,7 +1078,7 @@ if ($BLOCKS['userdetails_snatched_staff_on']) {
 if ($BLOCKS['userdetails_userinfo_on']) {
     $contents[] = "
                 <div class='w-100'>User info?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_userinfo' name='userdetails_userinfo' value='yes' $checkbox_userdetails_userinfo />
+                <div class='slideThree'><input type='checkbox' id='userdetails_userinfo' name='userdetails_userinfo' value='yes' $checkbox_userdetails_userinfo>
                 <label for='userdetails_userinfo'></label></div>
                 <div class='w-100'>Enable user info</div>";
 }
@@ -1087,7 +1087,7 @@ if ($BLOCKS['userdetails_showpm_on']) {
     $contents[] = "
                 <div class='w-100'>Show PM?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='userdetails_showpm' name='userdetails_showpm' value='yes' $checkbox_userdetails_showpm />
+                    <input type='checkbox' id='userdetails_showpm' name='userdetails_showpm' value='yes' $checkbox_userdetails_showpm>
                     <label for='userdetails_showpm'></label>
                 </div>
                 <div class='w-100'>Enable send message button</div>";
@@ -1097,7 +1097,7 @@ if ($BLOCKS['userdetails_showfriends_on']) {
     $contents[] = "
                 <div class='w-100'>Show Friends</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='userdetails_show_friends' name='userdetails_show_friends' value='yes' $checkbox_userdetails_showfriends />
+                    <input type='checkbox' id='userdetails_show_friends' name='userdetails_show_friends' value='yes' $checkbox_userdetails_showfriends>
                 <label for='userdetails_show_friends'></label></div>
                 <div class='w-100'>Enable show friends button</div>";
 }
@@ -1106,7 +1106,7 @@ if ($BLOCKS['userdetails_report_user_on']) {
     $contents[] = "
                 <div class='w-100'>Report user?</div>
                 <div class='slideThree'>
-                    <input type='checkbox' id='userdetails_report_user' name='userdetails_report_user' value='yes' $checkbox_userdetails_report />
+                    <input type='checkbox' id='userdetails_report_user' name='userdetails_report_user' value='yes' $checkbox_userdetails_report>
                     <label for='userdetails_report_user'></label>
                 </div>
                 <div class='w-100'>Enable report users button</div>";
@@ -1115,7 +1115,7 @@ if ($BLOCKS['userdetails_report_user_on']) {
 if ($BLOCKS['userdetails_user_status_on']) {
     $contents[] = "
                 <div class='w-100'>User status?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_user_status' name='userdetails_user_status' value='yes' $checkbox_userdetails_userstatus />
+                <div class='slideThree'><input type='checkbox' id='userdetails_user_status' name='userdetails_user_status' value='yes' $checkbox_userdetails_userstatus>
                 <label for='userdetails_user_status'></label></div>
                 <div class='w-100'>Enable user status</div>";
 }
@@ -1123,7 +1123,7 @@ if ($BLOCKS['userdetails_user_status_on']) {
 if ($BLOCKS['userdetails_user_comments_on']) {
     $contents[] = "
                 <div class='w-100'>User comments?</div>
-                <div class='slideThree'><input type='checkbox' id='userdetails_user_comments' name='userdetails_user_comments' value='yes' $checkbox_userdetails_usercomments />
+                <div class='slideThree'><input type='checkbox' id='userdetails_user_comments' name='userdetails_user_comments' value='yes' $checkbox_userdetails_usercomments>
                 <label for='userdetails_user_comments'></label></div>
                 <div class='w-100'>Enable user comments</div>";
 }
@@ -1131,7 +1131,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     if ($BLOCKS['news_on']) {
         $contents[] = "
         <div class='w-100'>Completed?</div>
-        <div class='slideThree'><input type='checkbox' id='userdetails_completed' name='userdetails_completed' value='yes' $checkbox_userdetails_completed />
+        <div class='slideThree'><input type='checkbox' id='userdetails_completed' name='userdetails_completed' value='yes' $checkbox_userdetails_completed>
         <label for='userdetails_completed'></label></div>
         <div class='w-100'>Enable completed torrents</div>";
     }
@@ -1152,7 +1152,7 @@ $level3 .= '
 $form .= main_div($level3);
 $form .= "
                     <div class='has-text-centered margin20'>
-                        <input class='button' type='submit' name='submit' value='Submit' />
+                        <input class='button' type='submit' name='submit' value='Submit'>
                     </div>
         </fieldset>
         </div>";

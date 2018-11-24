@@ -1,7 +1,7 @@
 <?php
 
 if (empty($_GET['wantusername'])) {
-    die('Silly Rabbit - Twix are for kids - You cant post nothing please enter a username!');
+    die('<div class="margin10 has-text-info">You can\'t post nothing please enter a username!</div>');
 }
 require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 dbconn();
@@ -27,10 +27,10 @@ $result = sql_query($sql);
 $numbers = mysqli_num_rows($result);
 if ($numbers > 0) {
     while ($namecheck = mysqli_fetch_assoc($result)) {
-        $HTMLOUT .= "<span style='color: #cc0000;'><img src='{$site_config['pic_baseurl']}cross.png' alt='Cross' title='Username Not Available' /><b>Sorry... Username - " . htmlsafechars($namecheck['username']) . ' is already in use.</b></span>';
+        $HTMLOUT .= "<div class='has-text-danger tooltipper margin10' title='Username Not Available'><i class='icon-thumbs-down-alt icon' aria-hidden='true'></i><b>Sorry... Username - " . htmlsafechars($namecheck['username']) . ' is already in use.</b></div>';
     }
 } else {
-    $HTMLOUT .= "<span style='color: #33cc33;'><img src='{$site_config['pic_baseurl']}tick.png' alt='Tick' title='Username Available' /><b>Username Available</b></span>";
+    $HTMLOUT .= "<div class='has-text-success tooltipper margin10' title='Username Available'><i class='icon-thumbs-up-alt icon' aria-hidden='true'></i><b>Username Available</b></div>";
 }
 echo $HTMLOUT;
 die();

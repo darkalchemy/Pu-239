@@ -414,10 +414,10 @@ switch ($staff_action) {
         if (!isset($_POST['sanity_check'])) {
             stderr($lang['fe_sanity_check'], '' . $lang['fe_are_you_sure_you_want_to_delete_this_topic_msg'] . '<br>
 	<form action="forums.php?action=staff_actions" method="post">
-	<input type="hidden" name="action_2" value="delete_topic" />
-	<input type="hidden" name="sanity_check" value="1" />
-	<input type="hidden" name="topic_id" value="' . $topic_id . '" />
-	<input type="submit" name="button" class="button" value="' . $lang['fe_del_topic'] . '"  />
+	<input type="hidden" name="action_2" value="delete_topic">
+	<input type="hidden" name="sanity_check" value="1">
+	<input type="hidden" name="topic_id" value="' . $topic_id . '">
+	<input type="submit" name="button" class="button" value="' . $lang['fe_del_topic'] . '" >
 	</form>');
         }
         //=== if you want the un-delete option (only admin and up can see "deleted" posts)

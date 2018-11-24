@@ -61,7 +61,7 @@ if (!empty($results)) {
         </ul>";
     $i = 1;
     foreach ($results as $result) {
-        $color = $result['visible'] === 'yes' ? 'has-text-green' : 'has-text-red';
+        $color = $result['visible'] === 'yes' ? 'has-text-green' : 'has-text-danger';
         $background = $i++ % 2 === 0 ? 'bg-04' : 'bg-03';
         $temp .= "
         <ul class='columns $background round10'>

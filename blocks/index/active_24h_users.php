@@ -53,12 +53,16 @@ $active_users_24 .= "
         <a id='active24-hash'></a>
         <div id='active24' class='box'>
             <div class='bordered'>
-                <div class='alt_bordered bg-00 has-text-centered'>
-                    <div>{$active24['totalonline24']}{$active24['ss24']}{$lang['index_last24_during']}</div>
-                    <div class='top10 bottom10 level-item is-wrapped top10 bottom10'>
+                <div class='alt_bordered bg-00 has-text-centered top10 bottom10'>
+                    <div class='bg-00 padding10 bottom10 round5 size_5'>
+                        {$active24['totalonline24']}{$active24['ss24']}{$lang['index_last24_during']}
+                    </div>
+                    <div class='top10 bottom10 level-item is-wrapped top10 bottom10 padding20'>
                         {$active24['activeusers24']}
                     </div>
-                    <div>{$lang['index_last24_most']}{$active24['last24']}{$active24['ss24']}{$lang['index_last24_on']}{$active24['record']}</div>
+                    <div class='bg-00 padding10 bottom10 has-text-centered round5 size_3'>
+                        {$lang['index_last24_most']}{$active24['last24']}{$active24['ss24']}{$lang['index_last24_on']}{$active24['record']}
+                    </div>
                 </div>
             </div>
         </div>";

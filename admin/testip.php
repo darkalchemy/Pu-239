@@ -35,15 +35,15 @@ if ($ip) {
             $HTMLOUT .= "<tr><td>$first</td><td>$last</td><td>$comment</td></tr>\n";
         }
         $HTMLOUT .= "</table>\n";
-        stderr($lang['testip_result'], "<table ><tr><td class='embedded' style='padding-right: 5px'><img src='{$site_config['pic_baseurl']}smilies/excl.gif' alt='' /></td><td class='embedded'>" . sprintf($lang['testip_notice2'], $ip) . "</td></tr></table><p>$HTMLOUT</p>");
+        stderr($lang['testip_result'], "<table ><tr><td class='embedded' style='padding-right: 5px'><img src='{$site_config['pic_baseurl']}smilies/excl.gif' alt=''></td><td class='embedded'>" . sprintf($lang['testip_notice2'], $ip) . "</td></tr></table><p>$HTMLOUT</p>");
     }
 }
 $HTMLOUT .= "
     <h1>{$lang['testip_title']}</h1>
     <form method='post' action='staffpanel.php?tool=testip&amp;action=testip'>
     <table >
-    <tr><td class='rowhead'>{$lang['testip_address']}</td><td><input type='text' name='ip' /></td></tr>
-    <tr><td colspan='2'><input type='submit' class='button is-small' value='{$lang['testip_ok']}' /></td></tr>
+    <tr><td class='rowhead'>{$lang['testip_address']}</td><td><input type='text' name='ip'></td></tr>
+    <tr><td colspan='2'><input type='submit' class='button is-small' value='{$lang['testip_ok']}'></td></tr>
     </table>
     </form>";
 echo stdhead($lang['testip_windows_title']) . wrapper($HTMLOUT) . stdfoot();

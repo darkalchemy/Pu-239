@@ -11,7 +11,7 @@ $lang = [
     'name_curr' => 'Current words on blacklist',
     'name_no' => 'There is no username on the blacklist',
     'name_add' => 'Add word',
-    'name_note' => 'Note if you want to submit more then one bad nick at a time separate them with a semicol',
+    'name_note' => 'Note: if you want to submit more then one bad nick at a time separate them with a comma',
     'name_update' => 'Update',
     'name_stdhead' => 'Username blacklist',
 ];

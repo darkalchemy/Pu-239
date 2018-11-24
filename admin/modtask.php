@@ -4,6 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_autopost.php';
 require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'staff_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 class_check(UC_STAFF);
@@ -34,16 +35,6 @@ function remove_torrent_pass($torrent_pass)
     $cache->delete('user_torrent_pass_' . $torrent_pass);
 
     return true;
-}
-
-/**
- * @param $text
- */
-function write_info($text)
-{
-    $text = sqlesc($text);
-    $dt = TIME_NOW;
-    sql_query("INSERT INTO infolog (added, txt) VALUES($dt, $text)") or sqlerr(__FILE__, __LINE__);
 }
 
 if ($CURUSER['class'] < UC_STAFF) {

@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 $HTMLOUT .= '<h1 class="has-text-centered">' . $lang['freeleech_current'] . '</h1>';
 if (isset($free) && (count($free) < 1)) {
-    $HTMLOUT .= main_div($lang['freeleech_nofound'], 'has-text-centered bottom20');
+    $HTMLOUT .= stdmsg($lang['freeleech_nofound'], 'has-text-centered bottom20');
 } else {
     $heading .= "
         <tr>
@@ -118,18 +118,18 @@ $HTMLOUT .= "
     <td> <table width='100%'>
  <tr>
  <td>{$lang['freeleech_torr_free']}</td>
- <td><input name=\"modifier\" type=\"radio\" $checked1 value=\"1\" /></td>
+ <td><input name='modifier' type='radio' $checked1 value='1'></td>
  </tr>
  <tr>
  <td>{$lang['freeleech_double_up']}</td>
- <td><input name=\"modifier\" type=\"radio\" $checked2 value=\"2\" /></td>
+ <td><input name='modifier' type='radio' $checked2 value='2'></td>
  </tr>
  <tr>
  <td >{$lang['freeleech_free_double']}</td>
- <td><input name=\"modifier\" type=\"radio\" $checked3 value=\"3\" /></td></tr>
+ <td><input name='modifier' type='radio' $checked3 value='3'></td></tr>
  <tr>
  <td >{$lang['freeleech_torr_silver']}</td>
- <td><input name=\"modifier\" type=\"radio\" $checked4 value=\"4\" /></td></tr>
+ <td><input name='modifier' type='radio' $checked4 value='4'></td></tr>
  </table>
     </td></tr>
     <tr><td class='rowhead'>{$lang['freeleech_expire']}
@@ -142,17 +142,17 @@ $HTMLOUT .= "
     <option value='255'>{$lang['freeleech_unlimited']}</option>
     </select></td></tr>
     <tr><td class='rowhead'>{$lang['freeleech_title']}</td>
-    <td><input type='text' class= 'w-100' name='title' placeholder='{$lang['freeleech_title']}' />
+    <td><input type='text' class= 'w-100' name='title' placeholder='{$lang['freeleech_title']}'>
     </td></tr>
         <tr><td class='rowhead'>{$lang['freeleech_message']}</td>
-    <td><input type='text' class='w-100' name='message' placeholder='{$lang['freeleech_message']}' />
+    <td><input type='text' class='w-100' name='message' placeholder='{$lang['freeleech_message']}'>
     </td></tr>
             <tr><td class='rowhead'>{$lang['freeleech_setby']}</td>
-    <td><input type='text' class='w-100' value ='" . $CURUSER['username'] . "' name='setby' />
+    <td><input type='text' class='w-100' value ='" . $CURUSER['username'] . "' name='setby'>
     </td></tr>
     <tr><td colspan='2' class='has-text-centered'>
-    <input type='submit' name='okay' value='{$lang['freeleech_doit']}' class='button is-small' />
-    <input type='hidden' name='cacheit' value='{$lang['freeleech_cache']}' />
+    <input type='submit' name='okay' value='{$lang['freeleech_doit']}' class='button is-small'>
+    <input type='hidden' name='cacheit' value='{$lang['freeleech_cache']}'>
     </td></tr>
     </table></form>";
 

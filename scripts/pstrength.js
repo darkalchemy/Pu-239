@@ -3,11 +3,13 @@ $(function () {
         changeBackground: true,
         onPasswordStrengthChanged: function (passwordStrength, strengthPercentage) {
             if ($(this).val()) {
+                $('.button').prop('disabled', true);
                 $.fn.pStrength('changeBackground', $(this), passwordStrength);
             } else {
                 $.fn.pStrength('resetStyle', $(this));
+                $('.button').prop('disabled', false);
             }
-            $('#' + $(this).data('display')).html('Your password strength is ' + strengthPercentage + '%');
+            $('#' + $(this).data('display')).html('Your password strength is ' + strengthPercentage + '%.<br>Min strength = 60%');
         },
         onValidatePassword: function (strengthPercentage) {
             if ($(this).data('display') == 'myDisplayElement2') {
@@ -17,7 +19,7 @@ $(function () {
                     $('#' + $(this).data('display')).html($('#' + $(this).data('display')).html() + '<br>Passwords do not match!');
                 } else {
                     $('#' + $(this).data('display')).html($('#' + $(this).data('display')).html() + '<br>Great, now you can continue to register!');
-                    $('.button').removeAttr('disabled');
+                    $('.button').prop('disabled', false);
                 }
             }
         }

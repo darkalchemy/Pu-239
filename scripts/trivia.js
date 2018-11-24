@@ -65,7 +65,11 @@ function initializeClock(id, remaining)
         if (t.hours > 0) {
             hoursSpan.innerHTML = String(t.hours);
         }
-        minutesSpan.innerHTML = String(t.minutes);
+        if (id === 'clock_game') {
+            minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+        } else {
+            minutesSpan.innerHTML = String(t.minutes);
+        }
         secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
         if (t.total <= 0) {
             clearInterval(timeinterval);

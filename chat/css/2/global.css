@@ -370,9 +370,7 @@ body.ajax-chat {
 }
 
 #content #chatList .code {
-    -o-tab-size: 4;
     tab-size: 4;
-    -moz-tab-size: 4;
     white-space: pre-wrap;
     font-family: "Lucida Console", Monaco, monospace;
     font-size: .9em !important;

@@ -84,7 +84,7 @@ switch ($percent_fl) {
         $font_color_fl = "<span class='has-text-oragne'> {$percent_fl}%</span>";
         break;
     case $percent_fl < 20:
-        $font_color_fl = "<span class='has-text-red'> {$percent_fl}%</span>";
+        $font_color_fl = "<span class='has-text-danger'> {$percent_fl}%</span>";
         break;
 }
 
@@ -123,7 +123,7 @@ switch ($percent_du) {
         $font_color_du = "<span class='has-text-oragne'> {$percent_du}%</span>";
         break;
     case $percent_du < 20:
-        $font_color_du = "<span class='has-text-red'> {$percent_du}%</span>";
+        $font_color_du = "<span class='has-text-danger'> {$percent_du}%</span>";
         break;
 }
 
@@ -162,7 +162,7 @@ switch ($percent_hd) {
         $font_color_hd = "<span class='has-text-oragne'> {$percent_hd}%</span>";
         break;
     case $percent_hd < 20:
-        $font_color_hd = "<span class='has-text-red'> {$percent_hd}%</span>";
+        $font_color_hd = "<span class='has-text-danger'> {$percent_hd}%</span>";
         break;
 }
 

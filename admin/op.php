@@ -327,11 +327,11 @@ $host = (function_exists('gethostname') ? gethostname() : (php_uname('n') ?: (em
 
 <div style="text-align:center;margin-bottom:2em;">
     <p>
-        <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=op&page=overview"
+        <a href="/staffpanel.php?tool=op&page=overview"
            class="button is-small">Overview</a>
-        <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=op&page=files" class="button is-small">File
+        <a href="/staffpanel.php?tool=op&page=files" class="button is-small">File
             usage</a>
-        <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=op&page=reset" class="button is-small"
+        <a href="/staffpanel.php?tool=op&page=reset" class="button is-small"
            onclick="return confirm('Are you sure you want to reset the cache?');">Reset cache</a>
     </p>
 </div>

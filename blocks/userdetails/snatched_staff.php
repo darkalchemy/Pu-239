@@ -10,7 +10,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
             <td>
                 <a id='snatched-staff-hash'></a>
                 <fieldset id='snatched-staff' class='header'>
-                    <legend class='flipper size_4'><i class='icon-down-open' aria-hidden='true'></i><span class='has-text-red'>*Staff Only*</span> View Snatched Torrents</legend>
+                    <legend class='flipper size_4'><i class='icon-down-open' aria-hidden='true'></i><span class='has-text-danger'>*Staff Only*</span> View Snatched Torrents</legend>
                     <div id='inner_snatched_staff' style='display: none;' data-uid='{$user['id']}' data-csrf='" . $session->get('csrf_token') . "'></div>
                 </fieldset>
             </td>

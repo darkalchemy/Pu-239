@@ -304,10 +304,10 @@ function edit_cat_form()
         $select .= "
                 </select>
             </p>
-            <p class='has-text-lime'>{$lang['categories_edit_info']}</p>";
+            <p class='has-text-success'>{$lang['categories_edit_info']}</p>";
     } else {
         $select = "
-            <p class='has-text-red'>{$lang['categories_edit_warning']}</p>";
+            <p class='has-text-danger'>{$lang['categories_edit_warning']}</p>";
     }
     $htmlout .= "
         <form action='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;action=categories' method='post'>
@@ -352,10 +352,10 @@ function show_categories()
         $select .= "
                 </select>
             </p>
-            <p class='has-text-red'>{$lang['categories_edit_warning1']}</p>";
+            <p class='has-text-danger'>{$lang['categories_edit_warning1']}</p>";
     } else {
         $select = "
-        <p class='has-text-red'>{$lang['categories_edit_warning']}</p>";
+        <p class='has-text-danger'>{$lang['categories_edit_warning']}</p>";
     }
     $htmlout = "
         <form action='" . $site_config['baseurl'] . "/staffpanel.php?tool=categories&amp;action=categories' method='post'>";

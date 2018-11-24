@@ -61,7 +61,7 @@ if ($do === 'view_page') {
             if ($row['status'] === 'confirmed') {
                 $status = "<span class='has-text-success'>{$lang['invites_confirm1']}</span>";
             } else {
-                $status = "<span class='has-text-red'>{$lang['invites_pend']}</span>";
+                $status = "<span class='has-text-danger'>{$lang['invites_pend']}</span>";
             }
             $body .= "
                     <tr>
@@ -74,7 +74,7 @@ if ($do === 'view_page') {
                 $body .= "
                         <td>
                             <a {$site_config['baseurl']}/invite.php?do=confirm_account&amp;userid=" . (int) $row['id'] . '&amp;sender=' . (int) $CURUSER['id'] . "'>
-                                <img src='{$site_config['pic_baseurl']}confirm.png' alt='confirm' class='tooltipper' title='Confirm' />
+                                <img src='{$site_config['pic_baseurl']}confirm.png' alt='confirm' class='tooltipper' title='Confirm'>
                             </a>
                         </td>
                     </tr>";
@@ -124,7 +124,7 @@ if ($do === 'view_page') {
                         <td class='has-text-centered'>" . get_date($fetch_assoc['added'], '', 0, 1) . "</td>
                         <td class='has-text-centered'>
                             <a href='{$site_config['baseurl']}/invite.php?do=delete_invite&amp;id=" . (int) $fetch_assoc['id'] . '&amp;sender=' . (int) $CURUSER['id'] . "' class='tooltipper' title='Delete'>
-                                <i class='icon-cancel'></i>
+                                <i class='icon-cancel icon has-text-danger'></i>
                             </a>
                         </td>
                         <td class='has-text-centered'>" . htmlsafechars($fetch_assoc['status']) . '</td>
@@ -134,7 +134,7 @@ if ($do === 'view_page') {
     $HTMLOUT .= main_table($body, $heading) . "
             <form action='?do=create_invite' method='post'>
                 <div class='has-text-centered margin20'>
-                    <input type='submit' class='button is-small' value='{$lang['invites_create']}' />
+                    <input type='submit' class='button is-small' value='{$lang['invites_create']}'>
                 </div>
             </form>";
     echo stdhead('Invites') . wrapper($HTMLOUT) . stdfoot();
@@ -259,15 +259,15 @@ We urge you to read the RULES and FAQ before you start using {$site_config['site
                         <tr>
                             <th>E-Mail</th>
                             <th>
-                                <input type='text' class='w-100' name='email' />
+                                <input type='text' class='w-100' name='email'>
                             </th>
                         </tr>
                     </thead>
                 </table>
                 <div class='has-text-centered margin20'>
-                    <input type='hidden' name='code' value='" . htmlsafechars($fetch['code']) . "' />
-                    <input type='hidden' name='secret' value='" . htmlsafechars($fetch['id']) . "' />
-                    <input type='submit' value='Send e-mail' class='button is-small' />
+                    <input type='hidden' name='code' value='" . htmlsafechars($fetch['code']) . "'>
+                    <input type='hidden' name='secret' value='" . htmlsafechars($fetch['id']) . "'>
+                    <input type='submit' value='Send e-mail' class='button is-small'>
                 </div>
             </form>
         </div>";

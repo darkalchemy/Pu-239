@@ -64,6 +64,6 @@ $HTMLOUT = '<h1 class="has-text-centered">Duplicate IP Check</h1>';
 if (!empty($body)) {
     $HTMLOUT .= main_table($body, $heading);
 } else {
-    $HTMLOUT .= main_div("The are no duplicate IP's in use.");
+    $HTMLOUT .= stdmsg($lang['ipcheck_sorry'], $lang['ipcheck_no_dupes']);
 }
 echo stdhead($lang['ipcheck_stdhead']) . wrapper($HTMLOUT) . stdfoot();

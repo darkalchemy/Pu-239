@@ -125,21 +125,21 @@ if (isset($_POST['buttonval'])) {
 //echo stdhead('Use Draft');
 $HTMLOUT .= '<h1>' . $lang['pm_usedraft'] . '' . $subject . '</h1>' . $top_links . '
         <form name="compose" action="messages.php" method="post">
-        <input type="hidden" name="id" value="' . $pm_id . '" />
-        <input type="hidden" name="' . $save_or_edit . '" value="1" />
-        <input type="hidden" name="action" value="use_draft" />
+        <input type="hidden" name="id" value="' . $pm_id . '">
+        <input type="hidden" name="' . $save_or_edit . '" value="1">
+        <input type="hidden" name="action" value="use_draft">
     <table class="table table-bordered">
     <tr>
         <td class="colhead" colspan="2">' . $lang['pm_usedraft1'] . '</td>
     </tr>
     <tr>
         <td><span style="font-weight: bold;">' . $lang['pm_forward_to'] . '</span></td>
-        <td><input type="text" name="to" value="' . ((isset($_POST['to']) && valid_username($_POST['to'], false)) ? htmlsafechars($_POST['to']) : $lang['pm_forward_user']) . '" class="member" onfocus="this.value=\'\';" />
+        <td><input type="text" name="to" value="' . ((isset($_POST['to']) && valid_username($_POST['to'], false)) ? htmlsafechars($_POST['to']) : $lang['pm_forward_user']) . '" class="member" onfocus="this.value=\'\';">
          ' . $lang['pm_usedraft_usr'] . '</td>
     </tr>
     <tr>
         <td><span style="font-weight: bold;">' . $lang['pm_send_subject'] . '</span></td>
-        <td><input type="text" class="w-100" name="subject" value="' . $subject . '" /></td>
+        <td><input type="text" class="w-100" name="subject" value="' . $subject . '"></td>
     </tr>
     <tr>
         <td><span style="font-weight: bold;">' . $lang['pm_send_body'] . '</span></td>
@@ -147,8 +147,8 @@ $HTMLOUT .= '<h1>' . $lang['pm_usedraft'] . '' . $subject . '</h1>' . $top_links
     </tr>
     <tr>
         <td colspan="2">' . ($CURUSER['class'] >= UC_STAFF ? '
-        <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? ' checked' : '') . ' /> 
+        <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? ' checked' : '') . '> 
         <span style="font-weight: bold;color:red;">' . $lang['pm_send_mark'] . '</span>' : '') . '
-        <input type="submit" class="button is-small" name="buttonval" value="' . $save_or_edit . '" /></td>
+        <input type="submit" class="button is-small" name="buttonval" value="' . $save_or_edit . '"></td>
     </tr>
     </table></form>';

@@ -76,7 +76,7 @@ if (isset($_GET['add'])) {
                         <span><b>{$lang['watched_pleasefil']}" . format_username($member_whos_been_bad) . " {$lang['watched_userlist']}</b></span>
                     </div>
                     <textarea class='w-100' rows='6' name='reason'>" . htmlsafechars($user['watched_user_reason']) . "</textarea>
-                    <input type='submit' class='button is-small' value='{$lang['watched_addtowu']}!' />
+                    <input type='submit' class='button is-small' value='{$lang['watched_addtowu']}!'>
                 </form>";
             $naughty_box = main_div($text);
 
@@ -109,14 +109,15 @@ $good_stuff = [
 $ORDER_BY = ((isset($_GET['sort']) && in_array($_GET['sort'], $good_stuff, true)) ? $_GET['sort'] . ' ' : 'watched_user ');
 $ASC = (isset($_GET['ASC']) ? ($_GET['ASC'] === 'ASC' ? 'DESC' : 'ASC') : 'DESC');
 $i = 1;
-$HTMLOUT .= $H1_thingie . '<br>
-        <form action="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;remove=1" method="post"  name="checkme">
-        <h1 class="has-text-centered">' . $lang['watched_users'] . '[ ' . $watched_users . ' ]</h1>
-    <table class="table table-bordered table-striped">';
+$HTMLOUT .= $H1_thingie;
 
 $res = sql_query('SELECT id, username, added, watched_user_reason, watched_user, uploaded, downloaded, warned, suspended, enabled, donor, class, leechwarn, chatpost, pirate, king, invitedby FROM users WHERE watched_user != \'0\' ORDER BY ' . $ORDER_BY . $ASC) or sqlerr(__FILE__, __LINE__);
 $how_many = mysqli_num_rows($res);
 if ($how_many > 0) {
+    $HTMLOUT .= '
+        <form action="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;remove=1" method="post"  name="checkme">
+        <h1 class="has-text-centered">' . $lang['watched_users'] . '[ ' . $watched_users . ' ]</h1>
+    <table class="table table-bordered table-striped">';
     $HTMLOUT .= '
     <tr>
         <td><a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=watched_user&amp;ASC=' . $ASC . '">' . $lang['watched_isadded'] . '</a></td>
@@ -126,7 +127,7 @@ if ($how_many > 0) {
         <td class="has-text-centered"><a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=invited_by&amp;ASC=' . $ASC . '">' . $lang['watched_invitedby'] . '</a></td>
         ' . ($CURUSER['class'] >= UC_STAFF ? '
         <td class="has-text-centered">
-            <input type="checkbox" id="checkThemAll" class="tooltipper" title="Select All" />
+            <input type="checkbox" id="checkThemAll" class="tooltipper" title="Select All">
         </td>' : '') . '
     </tr>';
     while ($arr = @mysqli_fetch_assoc($res)) {
@@ -145,20 +146,20 @@ if ($how_many > 0) {
         <td class="has-text-centered">' . member_ratio($arr['uploaded'], RATIO_FREE ? '0' : $arr['downloaded']) . '</td>
         <td class="has-text-centered">' . ($invitor_arr['username'] == '' ? '' . $lang['watched_open_sign-ups'] . '' : format_username($arr['invitedby'])) . '</td>
         ' . ($CURUSER['class'] >= UC_STAFF ? '
-        <td class="has-text-centered"><input type="checkbox" name="wu[]" value="' . (int) $arr['id'] . '" /></td>' : '') . '
+        <td class="has-text-centered"><input type="checkbox" name="wu[]" value="' . (int) $arr['id'] . '"></td>' : '') . '
     </tr>';
     }
-} else {
-    $HTMLOUT .= '<tr>
-<td class="has-text-centered one"><h1>' . $lang['watched_usrempty'] . '!</h1></td></tr>';
-}
-$HTMLOUT .= '
+
+    $HTMLOUT .= '
         <tr>
             <td class="has-text-centered" colspan="6">
-                <input type="submit" class="button is-small" value="remove selected ' . $lang['watched_removedfrom'] . '" />
+                <input type="submit" class="button is-small" value="remove selected ' . $lang['watched_removedfrom'] . '">
             </td>
         </tr>
     </table>
 </form>';
+} else {
+    $HTMLOUT .= stdmsg('', $lang['watched_usrempty']);
+}
 
 echo stdhead('' . $lang['watched_users'] . '') . wrapper($HTMLOUT) . stdfoot();

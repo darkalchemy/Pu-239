@@ -19,12 +19,12 @@ if ($edit_mood['action'] === 'added') {
     if ($edit_mood['name'] != $lang['moods_example'] && $edit_mood['image'] != 'smile1.gif') {
         sql_query('INSERT INTO moods (name, image, bonus) VALUES (' . sqlesc($edit_mood['name']) . ', ' . sqlesc($edit_mood['image']) . ', ' . sqlesc($edit_mood['bonus']) . ')') or sqlerr(__FILE__, __LINE__);
         $cache->delete('topmoods');
-        write_log('<b>' . $lang['moods_added'] . '</b> ' . htmlsafechars($CURUSER['username']) . ' - ' . htmlsafechars($edit_mood['name']) . '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($edit_mood['image']) . '" alt="" />');
+        write_log('<b>' . $lang['moods_added'] . '</b> ' . htmlsafechars($CURUSER['username']) . ' - ' . htmlsafechars($edit_mood['name']) . '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($edit_mood['image']) . '" alt="">');
     }
 } elseif ($edit_mood['action'] === 'edited') {
     sql_query('UPDATE moods SET name = ' . sqlesc($edit_mood['name']) . ', image = ' . sqlesc($edit_mood['image']) . ', bonus = ' . sqlesc($edit_mood['bonus']) . ' WHERE id = ' . sqlesc($edit_mood['id'])) or sqlerr(__FILE__, __LINE__);
     $cache->delete('topmoods');
-    write_log('<b>' . $lang['moods_edited'] . '</b> ' . htmlsafechars($CURUSER['username']) . ' - ' . htmlsafechars($edit_mood['name']) . '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($edit_mood['image']) . '" alt="" />');
+    write_log('<b>' . $lang['moods_edited'] . '</b> ' . htmlsafechars($CURUSER['username']) . ' - ' . htmlsafechars($edit_mood['name']) . '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($edit_mood['image']) . '" alt="">');
 }
 /*
 elseif ($edit_mood['action'] == 'remove') {
@@ -41,14 +41,14 @@ if ($edit_mood['action'] === 'edit' && $edit_mood['id']) {
             <form method='post' action='staffpanel.php?tool=edit_moods&amp;action=edited'>
             <table class='table table-bordered table-striped'>
             <tr><td class='colhead'>{$lang['moods_name']}</td>
-            <td><input type='text' name='name' size='40' value ='" . htmlsafechars($edit_mood['arr']['name']) . "' /></td></tr>
+            <td><input type='text' name='name' size='40' value ='" . htmlsafechars($edit_mood['arr']['name']) . "'></td></tr>
             <tr><td class='colhead'>{$lang['moods_image']}</td>
-            <td><input type='text' name='image' size='40' value ='" . htmlsafechars($edit_mood['arr']['image']) . "' /></td></tr>
+            <td><input type='text' name='image' size='40' value ='" . htmlsafechars($edit_mood['arr']['image']) . "'></td></tr>
             <tr><td class='colhead'>{$lang['moods_bonus']}</td>
-            <td><input type='checkbox' name='bonus'" . ($edit_mood['arr']['bonus'] ? ' checked' : '') . " /></td></tr>
-            <tr><td colspan='2'>
-            <input type='hidden' name='id' value='" . (int) $edit_mood['id'] . "' />
-            <input type='submit' name='okay' value='{$lang['moods_add']}' class='button is-small' />
+            <td><input type='checkbox' name='bonus'" . ($edit_mood['arr']['bonus'] ? ' checked' : '') . "></td></tr>
+            <tr><td colspan='2' class='has-text-centered'>
+            <input type='hidden' name='id' value='" . (int) $edit_mood['id'] . "'>
+            <input type='submit' name='okay' value='{$lang['moods_add']}' class='button is-small'>
             </td></tr>
             </table></form>";
     }
@@ -57,13 +57,13 @@ if ($edit_mood['action'] === 'edit' && $edit_mood['id']) {
          <form method='post' action='staffpanel.php?tool=edit_moods&amp;action=added'>
          <table class='table table-bordered table-striped'>
          <tr><td class='colhead'>{$lang['moods_name']}</td>
-         <td><input type='text' name='name' size='40' value ='is example mood' /></td></tr>
+         <td><input type='text' name='name' size='40' value ='is example mood'></td></tr>
          <tr><td class='colhead'>{$lang['moods_image']}</td>
-         <td><input type='text' name='image' size='40' value ='smiley1.gif' /></td></tr>
+         <td><input type='text' name='image' size='40' value ='smiley1.gif'></td></tr>
          <tr><td class='colhead'>{$lang['moods_bonus']}</td>
-         <td><input type='checkbox' name='bonus' /></td></tr>
-         <tr><td colspan='2'>
-         <input type='submit' name='okay' value='{$lang['moods_add']}' class='button is-small' />
+         <td><input type='checkbox' name='bonus'></td></tr>
+         <tr><td colspan='2' class='has-text-centered'>
+         <input type='submit' name='okay' value='{$lang['moods_add']}' class='button is-small'>
          </td></tr>
          </table></form>";
 }
@@ -80,7 +80,7 @@ if (mysqli_num_rows($res)) {
     $color = true;
     while ($arr = mysqli_fetch_assoc($res)) {
         $HTMLOUT .= '<tr ' . (($color = !$color) ? ' style="background-color:#000000;"' : 'style="background-color:#0f0f0f;"') . '>
-      <td><img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt="" /></td>
+      <td><img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt=""></td>
       <td>' . htmlsafechars($arr['name']) . '</td>
       <td>' . htmlsafechars($arr['image']) . '</td>
       <td>' . ($arr['bonus'] != 0 ? '' . $lang['moods_yes'] . '' : '' . $lang['moods_no'] . '') . '</td>

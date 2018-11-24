@@ -101,8 +101,6 @@ switch ($do) {
 }
 $g = sql_query($query) or sqlerr(__FILE__, __LINE__);
 $count = mysqli_num_rows($g);
-$HTMLOUT .= begin_main_frame();
-$HTMLOUT .= begin_frame($title . '&#160;[<font class="small">total - ' . $count . ' user' . ($count > 1 ? 's' : '') . '</font>] - ' . $link);
 if ($count == 0) {
     $HTMLOUT .= stdmsg($lang['hnrwarn_hey'], $lang['hnrwarn_none'] . strtolower($title));
 } else {
@@ -114,7 +112,7 @@ if ($count == 0) {
             <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_class']}</td>
             <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_access']}</td>
             <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_join']}</td>
-            <td class='colhead' nowrap='nowrap'><input type='checkbox' id='checkThemAll' /></td>
+            <td class='colhead' nowrap='nowrap'><input type='checkbox' id='checkThemAll'></td>
         </tr>";
     while ($a = mysqli_fetch_assoc($g)) {
         $tip = ($do === 'hnrwarn' ? $lang['hnrwarn_tip1'] . htmlsafechars($a['warn_reason']) . '<br>' : $lang['hnrwarn_tip2'] . htmlsafechars($a['disable_reason']));
@@ -124,7 +122,7 @@ if ($count == 0) {
                   <td nowrap='nowrap'>" . get_user_class_name($a['class']) . "</td>
                   <td nowrap='nowrap'>" . get_date($a['last_access'], 'LONG', 0, 1) . "</td>
                   <td nowrap='nowrap'>" . get_date($a['added'], 'DATE', 1) . "</td>
-                  <td nowrap='nowrap'><input type='checkbox' name='users[]' value='" . (int) $a['id'] . "' /></td>
+                  <td nowrap='nowrap'><input type='checkbox' name='users[]' value='" . (int) $a['id'] . "'></td>
                 </tr>";
     }
     $HTMLOUT .= "<tr>
@@ -137,13 +135,11 @@ if ($count == 0) {
     $HTMLOUT .= "
                     </select>
                 &raquo;
-                <input type='submit' value='{$lang['hnrwarn_apply']}' />
-                <input type='hidden' value='" . htmlsafechars($_SERVER['REQUEST_URI']) . "' name='ref' />
+                <input type='submit' value='{$lang['hnrwarn_apply']}'>
+                <input type='hidden' value='" . htmlsafechars($_SERVER['REQUEST_URI']) . "' name='ref'>
             </td>
             </tr>
             </table>
             </form>";
 }
-$HTMLOUT .= end_frame();
-$HTMLOUT .= end_main_frame();
 echo stdhead($title) . wrapper($HTMLOUT) . stdfoot();

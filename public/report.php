@@ -65,11 +65,11 @@ if ((isset($_GET['do_it'])) || (isset($_POST['do_it']))) {
 $HTMLOUT .= main_div("
     <form method='post' action='{$site_config['baseurl']}/report.php?type=$type$id_2b&amp;id=$id&amp;do_it=1'>
     <h1>Report: " . str_replace('_', ' ', $type) . "</h1>
-        <img src='{$site_config['pic_baseurl']}warned.png' alt='warned' title='Warned' /> {$lang['report_report']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>$id</b>
-        <img src='{$site_config['pic_baseurl']}warned.png' alt='warned' title='Warned' /><br>{$lang['report_report1']} <a class='altlink' href='{$site_config['baseurl']}/rules.php' target='_blank'>{$lang['report_rules']}</a>?</td></tr>
+        <img src='{$site_config['pic_baseurl']}warned.png' alt='warned' title='Warned'> {$lang['report_report']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>$id</b>
+        <img src='{$site_config['pic_baseurl']}warned.png' alt='warned' title='Warned'><br>{$lang['report_report1']} <a class='altlink' href='{$site_config['baseurl']}/rules.php' target='_blank'>{$lang['report_rules']}</a>?</td></tr>
         <b>{$lang['report_reason']}</b>
         <textarea name='reason' class='w-100' rows='5'></textarea> [ {$lang['report_req']} ]<br>
-        <input type='submit' class='button is-small margin20' value='{$lang['report_confirm']}' />
+        <input type='submit' class='button is-small margin20' value='{$lang['report_confirm']}'>
     </form>");
 echo stdhead('Report') . wrapper($HTMLOUT) . stdfoot();
 die();

@@ -8,14 +8,14 @@ $qid = $table['qid'];
 $gamenum = $table['gamenum'];
 $table = $table['table'];
 
-$table = !empty($table) ? $table : main_div('No one has attempted any questions, yet.');
+$table = !empty($table) ? $table : stdmsg('', 'No one has attempted any questions, yet.');
 
 $buttons = "
     <ul class='level-center'>
-        <li class='top20'>
+        <li class='margin20'>
             <button id='button' onclick=\"get_trivia_question()\" class='button is-small'>Get Trivia Question</button>
         </li>
-        <li  class='top20'>
+        <li  class='margin20'>
             <a href='{$site_config['baseurl']}/trivia_results.php' target='_top' class='button is-small'>Get Trivia Results</a>
         </li>
     </ul>";

@@ -48,7 +48,7 @@ $res = sql_query('SELECT boxnumber, name FROM pmboxes WHERE userid = ' . sqlesc(
 $HTMLOUT .= $top_links . '
         <h1>' . $lang['pm_search_title'] . '</h1>
         <form action="messages.php?action=search" method="post">
-            <input type="hidden" name="action"  value="' . $lang['pm_search_btn'] . '" />';
+            <input type="hidden" name="action"  value="' . $lang['pm_search_btn'] . '">';
 $header = '
                 <tr>
                     <th colspan="2">' . $lang['pm_search_s'] . '</th>
@@ -56,7 +56,7 @@ $header = '
 $body = '
                 <tr>
                     <td><span>' . $lang['pm_search_terms'] . '</span></td>
-                    <td><input type="text" class="search" name="keywords" value="' . $keywords . '" />' . $lang['pm_search_common'] . '</td>
+                    <td><input type="text" class="search" name="keywords" value="' . $keywords . '">' . $lang['pm_search_common'] . '</td>
                 </tr>
                 <tr>
                     <td><span>' . $lang['pm_search_box'] . '</span></td>
@@ -64,20 +64,20 @@ $body = '
                 </tr>
                 <tr>
                     <td><span>' . $lang['pm_search_allbox'] . '</span></td>
-                    <td><input name="all_boxes" type="checkbox" value="1" ' . ($all_boxes == 1 ? ' checked' : '') . ' />' . $lang['pm_search_ignored'] . '</td>
+                    <td><input name="all_boxes" type="checkbox" value="1" ' . ($all_boxes == 1 ? ' checked' : '') . '>' . $lang['pm_search_ignored'] . '</td>
                 </tr>
                 <tr>
                     <td><span>' . $lang['pm_search_member_by'] . '</span></td>
-                    <td><input type="text" class="member" name="member" value="' . $member . '" />' . $lang['pm_search_member_only'] . '</td>
+                    <td><input type="text" class="member" name="member" value="' . $member . '">' . $lang['pm_search_member_only'] . '</td>
                 </tr>
                 <tr>
                     <td><span>' . $lang['pm_search_system'] . '</span></td>
-                    <td><input name="system" type="checkbox" value="system" ' . ($member_sys === 'system' ? ' checked' : '') . ' />' . $lang['pm_search_system_only'] . '</td>
+                    <td><input name="system" type="checkbox" value="system" ' . ($member_sys === 'system' ? ' checked' : '') . '>' . $lang['pm_search_system_only'] . '</td>
                 </tr>
                 <tr>
                     <td><span>' . $lang['pm_search_in'] . '</span></td>
-                    <td><input name="subject" type="checkbox" value="1" ' . ($subject == 1 ? ' checked' : '') . ' />' . $lang['pm_search_subject'] . '
-                    <input name="text" type="checkbox" value="1" ' . ($text === 1 ? ' checked' : '') . ' />' . $lang['pm_search_msgtext'] . '</td>
+                    <td><input name="subject" type="checkbox" value="1" ' . ($subject == 1 ? ' checked' : '') . '>' . $lang['pm_search_subject'] . '
+                    <input name="text" type="checkbox" value="1" ' . ($text === 1 ? ' checked' : '') . '>' . $lang['pm_search_msgtext'] . '</td>
                 </tr>
                 <tr>
                     <td><span>' . $lang['pm_search_sortby'] . '</span></td>
@@ -88,8 +88,8 @@ $body = '
                         <option value="added" ' . ($sort === 'added' ? ' selected' : '') . '>' . $lang['pm_search_added'] . '</option>
                         <option value="' . $sender_reciever . '" ' . ($sort === $sender_reciever ? ' selected="selected' : '') . '>' . $lang['pm_search_member'] . '</option>
                     </select>
-                        <input name="ASC" type="radio" value="1" ' . ((isset($_POST['ASC']) && $_POST['ASC'] == 1) ? ' checked' : '') . ' />' . $lang['pm_search_asc'] . '
-                        <input name="ASC" type="radio" value="2" ' . ((isset($_POST['ASC']) && $_POST['ASC'] == 2 || !isset($_POST['ASC'])) ? ' checked' : '') . ' />' . $lang['pm_search_desc'] . '</td>
+                        <input name="ASC" type="radio" value="1" ' . ((isset($_POST['ASC']) && $_POST['ASC'] == 1) ? ' checked' : '') . '>' . $lang['pm_search_asc'] . '
+                        <input name="ASC" type="radio" value="2" ' . ((isset($_POST['ASC']) && $_POST['ASC'] == 2 || !isset($_POST['ASC'])) ? ' checked' : '') . '>' . $lang['pm_search_desc'] . '</td>
                 </tr>
                 <tr>
                     <td><span>' . $lang['pm_search_show'] . '</span></td>
@@ -106,12 +106,12 @@ $body = '
                 </tr>' . ($limit < 100 ? '
                 <tr>
                     <td><span>' . $lang['pm_search_display'] . '</span></td>
-                    <td><input name="as_list_post" type="radio" value="1" ' . ($as_list_post == 1 ? ' checked' : '') . ' /> <span>' . $lang['pm_search_list'] . '</span>
-                    <input name="as_list_post" type="radio" value="2" ' . ($as_list_post == 2 ? ' checked' : '') . ' /> <span> ' . $lang['pm_search_message'] . '</span></td>
+                    <td><input name="as_list_post" type="radio" value="1" ' . ($as_list_post == 1 ? ' checked' : '') . '> <span>' . $lang['pm_search_list'] . '</span>
+                    <input name="as_list_post" type="radio" value="2" ' . ($as_list_post == 2 ? ' checked' : '') . '> <span> ' . $lang['pm_search_message'] . '</span></td>
                 </tr>' : '') . '
                 <tr class="no_hover">
                     <td colspan="2" class="has-text-centered margin20">
-                    <input type="submit" class="button is-small" name="change" value="' . $lang['pm_search_btn'] . '" /></td>
+                    <input type="submit" class="button is-small" name="change" value="' . $lang['pm_search_btn'] . '"></td>
                 </tr>';
 $HTMLOUT .= main_table($body, $header);
 $HTMLOUT .= '
@@ -169,11 +169,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <th class='w-50'>{$lang['pm_search_subject']}</th>
                 <th class='w-10 has-text-centered'>Sender</th>
                 <th class='w-10 has-text-centered'>{$lang['pm_search_date']}</th>
-                <th class='w-1 has-text-centered'><input type='checkbox' id='checkThemAll' class='tooltipper' title='Select All' /></th>
+                <th class='w-1 has-text-centered'><input type='checkbox' id='checkThemAll' class='tooltipper' title='Select All'></th>
             </tr>";
 
         while ($row = mysqli_fetch_assoc($res_search)) {
-            $read = $row['unread'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}pn_inboxnew.gif' title='{$lang['pm_mailbox_unreadmsg']}' alt='{$lang['pm_mailbox_unread']}' class='tooltipper' />" : "<img src='{$site_config['pic_baseurl']}pn_inbox.gif title='{$lang['pm_mailbox_readmsg']}' alt='{$lang['pm_mailbox_read']}' class='tooltipper' />";
+            $read = $row['unread'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}pn_inboxnew.gif' title='{$lang['pm_mailbox_unreadmsg']}' alt='{$lang['pm_mailbox_unread']}' class='tooltipper'>" : "<img src='{$site_config['pic_baseurl']}pn_inbox.gif title='{$lang['pm_mailbox_readmsg']}' alt='{$lang['pm_mailbox_read']}' class='tooltipper'>";
             $sender = $row['sender'] > 0 ? format_username($row['sender']) : 'System';
             $date = str_replace(', ', '<br>', get_date($row['added'], 'LONG'));
             $subject = str_ireplace($keywords, "<span style='background-color:yellow;font-weight:bold;color:black;'>{$keywords}</span>", htmlsafechars($row['subject']));
@@ -183,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <td><a href='{$site_config['baseurl']}/messages.php?id={$row['id']}'>{$subject}</a></td>
                 <td class='w-10 has-text-centered'>$sender</td>
                 <td class='has-text-centered'>$date</td>
-                <td class='w-1 has-text-centered'><input type='checkbox' name='pm[]' value='" . (int) $row['id'] . "' /></td>
+                <td class='w-1 has-text-centered'><input type='checkbox' name='pm[]' value='" . (int) $row['id'] . "'></td>
             </tr>";
         }
         $table = main_table($table_body, $table_header);
@@ -197,7 +197,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <tr>
                 <td class='w-10'>{$lang['pm_search_subject']}</td>
                 <td><a href='{$site_config['baseurl']}/messages.php?id={$row['id']}'>$subject</a></td>
-                <td class='w-1'><input type='checkbox' name='pm[]' value='" . (int) $row['id'] . "' /></td>
+                <td class='w-1'><input type='checkbox' name='pm[]' value='" . (int) $row['id'] . "'></td>
             </tr>
             <tr>
                 <td class='w-10'></td>
@@ -222,17 +222,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($num_result > 0) {
         $results .= "
     <form action='messages.php' method='post' name='messages'>
-        <input type='hidden' name='action' value='move_or_delete_multi' />
-        <input type='hidden' name='returnto' value='search' />
+        <input type='hidden' name='action' value='move_or_delete_multi'>
+        <input type='hidden' name='returnto' value='search'>
         $table
         <div class='has-text-centered top20'>";
         if ($as_list_post === 2) {
             $results .= "
-            <input type='checkbox' id='checkThemAll' class='tooltipper' title='Select All' /><span class='left10 right10'>Select All</span>";
+            <input type='checkbox' id='checkThemAll' class='tooltipper' title='Select All'><span class='left10 right10'>Select All</span>";
         }
         $results .= "
-            <input type='submit' class='button is-small right10' name='move' value='{$lang['pm_search_move_to']}' />" . get_all_boxes($box) . " or
-            <input type='submit' class='button is-small left10 right10' name='delete' value='{$lang['pm_search_delete']}' />{$lang['pm_search_selected']}
+            <input type='submit' class='button is-small right10' name='move' value='{$lang['pm_search_move_to']}'>" . get_all_boxes($box) . " or
+            <input type='submit' class='button is-small left10 right10' name='delete' value='{$lang['pm_search_delete']}'>{$lang['pm_search_selected']}
         </div>
     </form>";
     }

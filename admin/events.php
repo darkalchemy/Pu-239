@@ -201,25 +201,25 @@ if (!is_array($scheduled_events)) {
         $doubleUpload = (bool) (int) $scheduled_event['duploadEnabled'];
         $halfdownload = (bool) (int) $scheduled_event['hdownEnabled'];
         if ($freeleech) {
-            $freeleech = "<img src='{$site_config['pic_baseurl']}on.gif' alt='{$lang['events_fenable']}' title='{$lang['events_enable']}'>";
+            $freeleech = "<i class='icon-toggle-on icon has-text-success tooltipper' title='{$lang['events_enable']}'></i>";
         } else {
-            $freeleech = "<img src='{$site_config['pic_baseurl']}off.gif' alt='{$lang['events_fdisable']}' title='{$lang['events_disable']}'>";
+            $freeleech = "<i class='icon-toggle-off icon has-text-danger tooltipper' title='{$lang['events_disable']}'></i>";
         }
         if ($doubleUpload) {
-            $doubleUpload = "<img src='{$site_config['pic_baseurl']}on.gif' alt='{$lang['events_duenable']}' title='{$lang['events_enable']}'>";
+            $doubleUpload = "<i class='icon-toggle-on icon has-text-success tooltipper' title='{$lang['events_enable']}'></i>";
         } else {
-            $doubleUpload = "<img src='{$site_config['pic_baseurl']}off.gif' alt='{$lang['events_dudisable']}' title='{$lang['events_disable']}'>";
+            $doubleUpload = "<i class='icon-toggle-off icon has-text-danger tooltipper' title='{$lang['events_disable']}'></i>";
         }
         if ($halfdownload) {
-            $halfdownload = "<img src='{$site_config['pic_baseurl']}on.gif' alt='{$lang['events_henable']}' title='{$lang['events_enable']}'>";
+            $halfdownload = "<i class='icon-toggle-on icon has-text-success tooltipper' title='{$lang['events_enable']}'></i>";
         } else {
-            $halfdownload = "<img src='{$site_config['pic_baseurl']}off.gif' alt='{$lang['events_hdisable']}' title='{$lang['events_disable']}'>";
+            $halfdownload = "<i class='icon-toggle-off icon has-text-danger tooltipper' title='{$lang['events_disable']}'></i>";
         }
         $showdates = (bool) (int) $scheduled_event['displayDates'];
         if ($showdates) {
-            $showdates = "<img src='{$site_config['pic_baseurl']}on.gif' alt='{$lang['events_daenable']}' title='{$lang['events_enable']}'>";
+            $showdates = "<i class='icon-toggle-on icon has-text-success tooltipper' title='{$lang['events_enable']}'></i>";
         } else {
-            $showdates = "<img src='{$site_config['pic_baseurl']}off.gif' alt='{$lang['events_dadisable']}' title='{$lang['events_disable']}'>";
+            $showdates = "<i class='icon-toggle-off icon has-text-danger tooltipper' title='{$lang['events_disable']}'></i>";
         }
         $body .= "
             <tr>

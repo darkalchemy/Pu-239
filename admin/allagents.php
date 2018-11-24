@@ -4,22 +4,32 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $lang;
+global $lang, $fluent;
 
 $lang = array_merge($lang, load_language('ad_allagents'));
-$res = sql_query('SELECT agent, LEFT(peer_id, 8) AS peer_id FROM peers GROUP BY agent') or sqlerr(__FILE__, __LINE__);
-$heading = "
+$agents = $fluent->from('peers')
+    ->select(null)
+    ->select('agent')
+    ->select('LEFT(peer_id, 8) AS peer_id')
+    ->groupBy('agent')
+    ->fetchAll();
+
+if (!empty($agents)) {
+    $heading = "
         <tr>
             <th>{$lang['allagents_client']}</th>
             <th>{$lang['allagents_peerid']}</th>
         </tr>";
-$body = '';
-while ($arr = mysqli_fetch_assoc($res)) {
-    $body .= '
+    $body = '';
+    foreach ($agent as $arr) {
+        $body .= '
         <tr>
             <td>' . htmlsafechars($arr['agent']) . '</td>
             <td>' . htmlsafechars($arr['peer_id']) . '</td>
         </tr>';
+    }
+    $HTMLOUT = main_table($body, $heading);
+} else {
+    $HTMLOUT = stdmsg($lang['allagents_sorry'], $lang['allagents_empty']);
 }
-$HTMLOUT = main_table($body, $heading);
 echo stdhead($lang['allagents_allclients']) . wrapper($HTMLOUT) . stdfoot();

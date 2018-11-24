@@ -101,8 +101,11 @@ function cleanup_show_main()
     $perpage = 15;
     $pager = pager($perpage, $count1, $site_config['baseurl'] . '/staffpanel.php?tool=cleanup_manager&amp;');
     $htmlout = "
-    <div class='portlet'>
-        <h2 class='has-text-centered top20'>{$lang['cleanup_head']}</h2>
+        <ul class='level-center bg-06'>
+            <li class='altlink margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=new'>{$lang['cleanup_add_new']}</a></li>
+            <li class='altlink margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=reset'>{$lang['cleanup_reset']}</a></li>
+        </ul>
+        <h1 class='has-text-centered top20'>{$lang['cleanup_head']}</h1>" . ($count1 > $perpage ? $pager['pagertop'] : '') . "
         <table class='table table-bordered table-striped bottom20'>
             <thead>
                 <tr>
@@ -126,6 +129,7 @@ function cleanup_show_main()
         $row['_class'] = $row['clean_on'] != 1 ? " style='color:red'" : '';
         $row['_title'] = $row['clean_on'] != 1 ? " {$lang['cleanup_lock']}" : '';
         $row['_clean_time'] = $row['clean_on'] != 1 ? "<span style='color:red'>{$row['_clean_time']}</span>" : $row['_clean_time'];
+        $on_off = $row['clean_on'] != 1 ? "<i class='icon-toggle-off icon has-text-danger'></i>" : "<i class='icon-toggle-on icon has-text-success'></i>";
         $htmlout .= "
         <tr>
             <td{$row['_class']}>{$row['clean_title']}{$row['_title']}<br><span class='size_3'>{$row['clean_desc']}</span></td>
@@ -138,27 +142,19 @@ function cleanup_show_main()
             </td>
             <td class='has-text-centered'>
                 <a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=delete&amp;cid={$row['clean_id']}' class='tooltipper' title='{$lang['cleanup_delete1']}'>
-                    <i class='icon-cancel icon'></i>
+                    <i class='icon-trash-empty icon has-text-danger'></i>
                 </a>
             </td>
             <td class='has-text-centered'>
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=unlock&amp;cid={$row['clean_id']}&amp;clean_on={$row['clean_on']}'>
-                <img src='{$site_config['pic_baseurl']}warned.png' alt='{$lang['cleanup_off_on2']}' class='tooltipper' title='{$lang['cleanup_off_on']}' height='12' width='12' /></a>
+                <a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=unlock&amp;cid={$row['clean_id']}&amp;clean_on={$row['clean_on']}' class='tooltipper' title='{$lang['cleanup_off_on']}'>
+                $on_off
             </td>
             <td class='has-text-centered'>
                 <a class='button is-small' href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=run&amp;cid={$row['clean_id']}'>{$lang['cleanup_run_now2']}</a>
             </td>
          </tr>";
     }
-    $htmlout .= '</tbody></table></div>';
-    if ($count1 > $perpage) {
-        $htmlout = $pager['pagertop'] . $htmlout . $pager['pagerbottom'];
-    }
-    $htmlout .= "
-                <div class='has-text-centered top20'>
-                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=new' class='margin20 button is-small'>{$lang['cleanup_add_new']}</a>
-                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=reset' class='margin20 button is-small'>{$lang['cleanup_reset']}</a>
-                </div>";
+    $htmlout .= '</tbody></table>' . ($count1 > $perpage ? $pager['pagerbottom'] : '');
     echo stdhead($lang['cleanup_stdhead']) . wrapper($htmlout) . stdfoot();
 }
 
@@ -188,44 +184,44 @@ function cleanup_show_edit()
     $htmlout = "<h2>{$lang['cleanup_show_head']} {$row['clean_title']}</h2>
     <div style='width: 800px; text-align: left; padding: 10px; margin: 0 auto;border-style: solid; border-color: #333333; border-width: 5px 2px;'>
     <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager'>
-    <input type='hidden' name='mode' value='takeedit' />
-    <input type='hidden' name='cid' value='{$row['clean_id']}' />
-    <input type='hidden' name='clean_time' value='{$row['clean_time']}' />
+    <input type='hidden' name='mode' value='takeedit'>
+    <input type='hidden' name='cid' value='{$row['clean_id']}'>
+    <input type='hidden' name='clean_time' value='{$row['clean_time']}'>
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_title']}</label>
-    <input type='text' value='{$row['clean_title']}' name='clean_title' style='width:250px;' /></div>
+    <input type='text' value='{$row['clean_title']}' name='clean_title' style='width:250px;'></div>
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_descr']}</label>
-    <input type='text' value='{$row['clean_desc']}' name='clean_desc' style='width:380px;' />
+    <input type='text' value='{$row['clean_desc']}' name='clean_desc' style='width:380px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_fname']}</label>
-    <input type='text' value='{$row['function_name']}' name='function_name' style='width:380px;' />
+    <input type='text' value='{$row['function_name']}' name='function_name' style='width:380px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_file']}</label>
-    <input type='text' value='{$row['clean_file']}' name='clean_file' style='width:380px;' />
+    <input type='text' value='{$row['clean_file']}' name='clean_file' style='width:380px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_interval']}</label>
-    <input type='text' value='{$row['clean_increment']}' name='clean_increment' style='width:380px;' />
+    <input type='text' value='{$row['clean_increment']}' name='clean_increment' style='width:380px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>{$lang['cleanup_show_log']}</label>{$lang['cleanup_show_yes']}<input name='clean_log' value='1' $logyes type='radio' />&#160;&#160;&#160;<input name='clean_log' value='0' $logno type='radio' />{$lang['cleanup_show_no']}</div>
+    <label style='float:left;width:200px;'>{$lang['cleanup_show_log']}</label>{$lang['cleanup_show_yes']}<input name='clean_log' value='1' $logyes type='radio'>&#160;&#160;&#160;<input name='clean_log' value='0' $logno type='radio'>{$lang['cleanup_show_no']}</div>
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_on']}</label>
-    {$lang['cleanup_show_yes']} <input name='clean_on' value='1' $cleanon type='radio' />&#160;&#160;&#160;<input name='clean_on' value='0' $cleanoff type='radio' /> {$lang['cleanup_show_no']}
+    {$lang['cleanup_show_yes']} <input name='clean_on' value='1' $cleanon type='radio'>&#160;&#160;&#160;<input name='clean_on' value='0' $cleanoff type='radio'> {$lang['cleanup_show_no']}
     </div>
 
     <div style='text-align:center;'>
-        <input type='submit' name='submit' value='{$lang['cleanup_show_edit']}' class='button is-small right1-' />
-        <input type='button' class='button is-small' value='{$lang['cleanup_show_cancel']}' onclick='javascript: history.back()' />
+        <input type='submit' name='submit' value='{$lang['cleanup_show_edit']}' class='button is-small right1-'>
+        <input type='button' class='button is-small' value='{$lang['cleanup_show_cancel']}' onclick='javascript: history.back()'>
     </div>
     </form>
     </div>";
@@ -302,47 +298,47 @@ function cleanup_show_new()
     $htmlout = "<h2>{$lang['cleanup_new_head']}</h2>
     <div style='width: 800px; text-align: left; padding: 10px; margin: 0 auto;border-style: solid; border-color: #333333; border-width: 5px 2px;'>
     <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager'>
-    <input type='hidden' name='mode' value='takenew' />
-    <input type='hidden' name='clean_time' value='{$clean_time}' />
+    <input type='hidden' name='mode' value='takenew'>
+    <input type='hidden' name='clean_time' value='{$clean_time}'>
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_title']}</label>
-    <input type='text' value='' name='clean_title' style='width:350px;' />
+    <input type='text' value='' name='clean_title' style='width:350px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_descr']}</label>
-    <input type='text' value='' name='clean_desc' style='width:350px;' />
+    <input type='text' value='' name='clean_desc' style='width:350px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_fname']}</label>
-    <input type='text' value='' name='function_name' style='width:350px;' />
+    <input type='text' value='' name='function_name' style='width:350px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_file']}</label>
-    <input type='text' value='' name='clean_file' style='width:350px;' />
+    <input type='text' value='' name='clean_file' style='width:350px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_interval']}</label>
-    <input type='text' value='' name='clean_increment' style='width:350px;' />
+    <input type='text' value='' name='clean_increment' style='width:350px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_log']}</label>
-    {$lang['cleanup_show_yes']} <input name='clean_log' value='1' type='radio' />&#160;&#160;&#160;<input name='clean_log' value='0' checked type='radio' /> {$lang['cleanup_show_no']}
+    {$lang['cleanup_show_yes']} <input name='clean_log' value='1' type='radio'>&#160;&#160;&#160;<input name='clean_log' value='0' checked type='radio'> {$lang['cleanup_show_no']}
     </div>
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_on']}</label>
-    {$lang['cleanup_show_yes']} <input name='clean_on' value='1' type='radio' />&#160;&#160;&#160;<input name='clean_on' value='0' checked type='radio' /> {$lang['cleanup_show_no']}
+    {$lang['cleanup_show_yes']} <input name='clean_on' value='1' type='radio'>&#160;&#160;&#160;<input name='clean_on' value='0' checked type='radio'> {$lang['cleanup_show_no']}
     </div>
 
     <div style='text-align:center;'>
-        <input type='submit' name='submit' value='{$lang['cleanup_new_add']}' class='button is-small right10' />
-        <input type='button' class='button is-small' value='{$lang['cleanup_new_cancel']}' onclick='javascript: history.back()' />
+        <input type='submit' name='submit' value='{$lang['cleanup_new_add']}' class='button is-small right10'>
+        <input type='button' class='button is-small' value='{$lang['cleanup_new_cancel']}' onclick='javascript: history.back()'>
     </div>
     </form>
     </div>";

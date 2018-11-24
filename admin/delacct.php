@@ -49,19 +49,19 @@ $HTMLOUT = "
 </script>
 <div class='row'>
     <div class='col-md-12'>
-        <h1>{$lang['text_delete']}</h1>
+        <h1 class='has-text-centered'>{$lang['text_delete']}</h1>
             <form method='post' action='staffpanel.php?tool=delacct&amp;action=delacct' onsubmit='return deleteConfirm();'>
                 <table class='table table-bordered'>
                     <tr>
                         <td class='rowhead'>{$lang['table_userid']}</td>
-                        <td><input class='w-100' name='userid' /></td>
+                        <td><input class='w-100' name='userid'></td>
                     </tr>
                     <tr>
                         <td class='rowhead'>{$lang['table_username']}</td>
-                        <td><input class='w-100' name='username' /></td>
+                        <td><input class='w-100' name='username'></td>
                     </tr>
                     <tr>
-                        <td colspan='2' class='has-text-centered'><input type='submit' class='button is-small' value='{$lang['btn_delete']}' /></td>
+                        <td colspan='2' class='has-text-centered'><input type='submit' class='button is-small' value='{$lang['btn_delete']}'></td>
                     </tr>
                 </table>
             </form>

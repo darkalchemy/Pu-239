@@ -75,13 +75,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <tr>
                         <td colspan='2'>
                             <div class='has-text-centered'>
-                                <input type='submit' value='{$lang['contactstaff_sendit']}' class='button is-small' />
+                                <input type='submit' value='{$lang['contactstaff_sendit']}' class='button is-small'>
                             </div>
                         </td>
                     </tr>";
     if (isset($_GET['returnto'])) {
         $body .= "
-                    <input type='hidden' name='returnto' value='" . urlencode($_GET['returnto']) . "' />";
+                    <input type='hidden' name='returnto' value='" . urlencode($_GET['returnto']) . "'>";
     }
 
     $HTMLOUT .= main_table($body, $header);

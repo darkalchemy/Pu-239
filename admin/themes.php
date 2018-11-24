@@ -25,20 +25,20 @@ if (isset($_GET['act'])) {
 
         $HTML .= "
         <form action='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=4' method='post'>
-            <input type='hidden' value='{$template['id']}' name='tid' />
+            <input type='hidden' value='{$template['id']}' name='tid'>
             <h1 class='has-text-centered'>{$lang['themes_edit_tem']}: " . htmlsafechars($template['name']) . '</h1>';
         $HTML .= main_table("
             <tr>
                 <td>{$lang['themes_id']}<br>{$lang['themes_explain_id']}</td>
-                <td><input type='text' value='{$template['id']}' name='id' /></td>
+                <td><input type='text' value='{$template['id']}' name='id'></td>
             </tr>
             <tr>
                 <td>{$lang['themes_uri']}</td>
-                <td><input type='text' value='{$template['uri']}' name='uri' /></td>
+                <td><input type='text' value='{$template['uri']}' name='uri'></td>
             </tr>
             <tr>
                 <td>{$lang['themes_name']}</td>
-                <td><input type='text' value='" . htmlsafechars($template['name']) . "' name='title' /></td>
+                <td><input type='text' value='" . htmlsafechars($template['name']) . "' name='title'></td>
             </tr>
             <tr>
                 <td>{$lang['themes_is_folder']}</td>
@@ -49,7 +49,7 @@ if (isset($_GET['act'])) {
             <tr>');
         $HTML .= "
             <div class='has-text-centered margin20'>
-                <input type='submit' value='{$lang['themes_save']}' class='button is-small' />
+                <input type='submit' value='{$lang['themes_save']}' class='button is-small'>
             </div>
         </form>";
     }
@@ -67,7 +67,7 @@ if (isset($_GET['act'])) {
             ->orderBy('id');
         foreach ($ids as $id) {
             if (file_exists(TEMPLATE_DIR . (int) $id['id'] . '/template.php')) {
-                $taken[] = "<span class='has-text-lime'>{$id['id']}</span>";
+                $taken[] = "<span class='has-text-success'>{$id['id']}</span>";
             } else {
                 $taken[] = "<span class='has-text-danger'>{$id['id']}</span>";
             }
@@ -79,22 +79,22 @@ if (isset($_GET['act'])) {
                 <tr>
                     <td>{$lang['themes_id']}</td>
                     <td>
-                        <input type='text' value='' name='id' placeholder='Must be a positive integer' /> {$lang['themes_takenids']}<b>" . implode(', ', $taken) . "</b>
+                        <input type='text' value='' name='id' placeholder='Must be a positive integer'> {$lang['themes_takenids']}<b>" . implode(', ', $taken) . "</b>
                     </td>
                 </tr>
                 <tr>
                     <td>{$lang['themes_uri']}</td>
-                    <td><input type='text' value='default.css' name='uri' /></td>
+                    <td><input type='text' value='default.css' name='uri'></td>
                 </tr>
                 <tr>
                     <td>{$lang['themes_name']}</td>
-                    <td><input type='text' value='' name='name' placeholder='Template Name' /></td>
+                    <td><input type='text' value='' name='name' placeholder='Template Name'></td>
                 </tr>
                 <tr>
                     <td colspan='2'>{$lang['themes_guide']}</td>
                 </tr>") . "
                 <div class='has-text-centered margin20'>
-                    <input type='submit' value='{$lang['themes_add']}' class='button is-small' />
+                    <input type='submit' value='{$lang['themes_add']}' class='button is-small'>
                 </div>
         </form>";
     }
@@ -260,7 +260,7 @@ if (!isset($_GET['act'])) {
                 </span>
                 <span>
                     <a href='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=2&amp;id=" . (int) $template['id'] . "' class='tooltipper' title='{$lang['themes_delete']}'>
-                        <i class='icon-cancel icon has-text-red'></i>
+                        <i class='icon-trash-empty icon has-text-danger'></i>
                     </a>
                 </span>
             </td>

@@ -81,7 +81,7 @@ $cards_history = $dealer_cards_history = $deadcards = [];
 $sql = 'SELECT b.*, u.username, u.class, u.id, u.gender FROM blackjack AS b INNER JOIN users AS u ON u.id = b.userid WHERE game_id = ' . sqlesc($blackjack['gameid']) . ' ORDER BY b.date ASC LIMIT 1';
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $nick = mysqli_fetch_assoc($res);
-$userName = empty($nick['username']) || $nick['username'] === $CURUSER['username'] ? "<span class='has-text-red'><b>Dealer</b></span>" : format_username($nick['id']);
+$userName = empty($nick['username']) || $nick['username'] === $CURUSER['username'] ? "<span class='has-text-danger'><b>Dealer</b></span>" : format_username($nick['id']);
 if ($nick['gender'] === 'Male') {
     $gender = 'he';
 } elseif ($nick['gender'] === 'Female') {
@@ -124,7 +124,7 @@ if (!empty($list) && count($list) > 0) {
         if ($card != $player_cards[0]) {
             $player_showcards .= "<div class='card {$arr['pic']}'></div>";
         } else {
-            $player_showcards .= "<img src='{$site_config['pic_baseurl']}back.png' width='71' height='97' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
+            $player_showcards .= "<img src='{$site_config['pic_baseurl']}back.png' width='71' height='97' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img'>";
         }
         $player_showcards_end .= "<div class='card {$arr['pic']}'></div>";
     }
@@ -141,7 +141,7 @@ if (!empty($list) && count($list) > 0) {
             if ($card != $dealer_cards[0]) {
                 $player_showcards .= "<div class='card {$arr['pic']}'></div>";
             } else {
-                $player_showcards .= "<img src='{$site_config['pic_baseurl']}back.png' width='71' height='97' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
+                $player_showcards .= "<img src='{$site_config['pic_baseurl']}back.png' width='71' height='97' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img'>";
             }
         }
         $player_showcards_end = $player_showcards;
@@ -227,10 +227,10 @@ if ($game) {
             } elseif ($arr['status'] === 'playing') {
                 stderr($lang['bj_sorry'], "{$lang['bj_you_most_finish_current']}
                     <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
-                        <input type='hidden' name='game' value='hit' readonly='readonly' />
-                        <input type='hidden' name='continue' value='yes' readonly='readonly' />
+                        <input type='hidden' name='game' value='hit' readonly='readonly'>
+                        <input type='hidden' name='continue' value='yes' readonly='readonly'>
                         <div class='has-text-centered top20'>
-                            <input class='button is-small' type='submit' value='{$lang['bj_continue_old_game']}' />
+                            <input class='button is-small' type='submit' value='{$lang['bj_continue_old_game']}'>
                         </div>
                     </form>");
             }
@@ -246,7 +246,7 @@ if ($game) {
                 $dealer_card = getCard($cardcount, $blackjack['gameid'], false);
                 $dealer_cardids[] = $dealer_card;
                 $player_showcards .= "
-                    <img src='{$site_config['pic_baseurl']}back.png' width='71' height='97' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
+                    <img src='{$site_config['pic_baseurl']}back.png' width='71' height='97' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img'>";
                 // player card 2
                 $card = getCard($cardcount, $blackjack['gameid'], false);
                 $cardids[] = $card;
@@ -324,9 +324,9 @@ if ($game) {
                         <tr class='no_hover'>
                             <td colspan='2'>
                                 <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
-                                    <input type='hidden' name='game' value='hit' readonly='readonly' />
+                                    <input type='hidden' name='game' value='hit' readonly='readonly'>
                                     <div class='has-text-centered'>
-                                        <input class='button is-small' type='submit' value='{$lang['bj_hitme']}' />
+                                        <input class='button is-small' type='submit' value='{$lang['bj_hitme']}'>
                                     </div>
                                 </form>
                             </td>
@@ -337,9 +337,9 @@ if ($game) {
                         <tr class='no_hover'>
                             <td colspan='2'>
                                 <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
-                                    <input type='hidden' name='game' value='stop' readonly='readonly' />
+                                    <input type='hidden' name='game' value='stop' readonly='readonly'>
                                     <div class='has-text-centered'>
-                                        <input class='button is-small' type='submit' value='{$lang['bj_stay']}' />
+                                        <input class='button is-small' type='submit' value='{$lang['bj_stay']}'>
                                     </div>
                                 </form>
                             </td>
@@ -350,10 +350,10 @@ if ($game) {
                         <tr class='no_hover'>
                             <td colspan='2'>
                                 <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
-                                    <input type='hidden' name='ddown' value='ddown' readonly='readonly' />
-                                    <input type='hidden' name='game' value='hit' readonly='readonly' />
+                                    <input type='hidden' name='ddown' value='ddown' readonly='readonly'>
+                                    <input type='hidden' name='game' value='hit' readonly='readonly'>
                                     <div class='has-text-centered'>
-                                        <input class='button is-small' type='submit' value='Double Down' />
+                                        <input class='button is-small' type='submit' value='Double Down'>
                                     </div>
                                 </form>
                             </td>
@@ -669,9 +669,9 @@ if ($game) {
                     <tr class='no_hover'>
                         <td colspan='2'>
                             <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
-                                <input type='hidden' name='game' value='hit' readonly='readonly' />
+                                <input type='hidden' name='game' value='hit' readonly='readonly'>
                                 <div class='has-text-centered'>
-                                    <input class='button is-small' type='submit' value='{$lang['bj_hitme']}' />
+                                    <input class='button is-small' type='submit' value='{$lang['bj_hitme']}'>
                                 </div>
                             </form>
                         </td>
@@ -682,9 +682,9 @@ if ($game) {
                     <tr class='no_hover'>
                         <td colspan='2'>
                             <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
-                                <input type='hidden' name='game' value='stop' readonly='readonly' />
+                                <input type='hidden' name='game' value='stop' readonly='readonly'>
                                 <div class='has-text-centered'>
-                                    <input class='button is-small' type='submit' value='{$lang['bj_stay']}' />
+                                    <input class='button is-small' type='submit' value='{$lang['bj_stay']}'>
                                 </div>
                             </form>
                         </td>
@@ -695,10 +695,10 @@ if ($game) {
                     <tr class='no_hover'>
                         <td colspan='2'>
                             <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
-                                <input type='hidden' name='ddown' value='ddown' readonly='readonly' />
-                                <input type='hidden' name='game' value='hit' readonly='readonly' />
+                                <input type='hidden' name='ddown' value='ddown' readonly='readonly'>
+                                <input type='hidden' name='game' value='hit' readonly='readonly'>
                                 <div class='has-text-centered'>
-                                    <input class='button is-small' type='submit' value='Double Down' />
+                                    <input class='button is-small' type='submit' value='Double Down'>
                                 </div>
                             </form>
                         </td>
@@ -925,10 +925,10 @@ if ($game) {
                     <tr class='no_hover'>
                         <td>
                             <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
-                                <input type='hidden' name='game' value='hit' readonly='readonly' />
-                                <input type='hidden' name='start_' value='yes' readonly='readonly' />
+                                <input type='hidden' name='game' value='hit' readonly='readonly'>
+                                <input type='hidden' name='start_' value='yes' readonly='readonly'>
                                 <div class='has-text-centered'>
-                                    <input class='button is-small' type='submit' value='Start!' />
+                                    <input class='button is-small' type='submit' value='Start!'>
                                 </div>
                             </form>
                         </td>

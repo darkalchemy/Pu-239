@@ -56,10 +56,10 @@ $action = (in_array($posted_action, $valid_actions) ? $posted_action : 'default'
 $top_menu = '
     <div>
         <ul class="level-center bg-06 bottom20">
-            <li class="altlink margin20">
+            <li class="altlink margin10">
                 <a href="' . $site_config['baseurl'] . '/offers.php">View Offers</a>
             </li>
-            <li class="altlink margin20">
+            <li class="altlink margin10">
                 <a href="' . $site_config['baseurl'] . '/offers.php?action=add_new_offer">New Offer</a>
             </li>
         </ul>

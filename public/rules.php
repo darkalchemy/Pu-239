@@ -15,7 +15,7 @@ $lang = array_merge(load_language('global'), load_language('rules'));
 $HTMLOUT = "
         <fieldset id='rules'>
             <legend>
-                <img src='{$site_config['pic_baseurl']}info.png' alt='' class='tooltipper right5' title='Guidelines' width='25' />Guidelines
+                <img src='{$site_config['pic_baseurl']}info.png' alt='' class='tooltipper right5' title='Guidelines' width='25'>Guidelines
             </legend>
 
             <div class='bordered has-text-left'>
@@ -105,7 +105,7 @@ if (isset($CURUSER) && $CURUSER['class'] >= UC_STAFF) {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <img src='{$site_config['pic_baseurl']}star.gif' alt='Donor' class='tooltipper' title='Donor' />
+                                        <img src='{$site_config['pic_baseurl']}star.gif' alt='Donor' class='tooltipper' title='Donor'>
                                     </td>
                                     <td>{$lang['rules_moderating_body1']}</td>
                                 </tr>

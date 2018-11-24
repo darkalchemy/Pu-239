@@ -115,28 +115,28 @@ if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
 $mini_menu = "
     <div class='bottom20'>
         <ul class='level-center bg-06'>" . ($action !== 'forum' ? "
-            <li class='margin20'>
+            <li class='margin10'>
                 <a href='{$site_config['baseurl']}/forums.php'>{$lang['fe_forums_main']}</a>
             </li>" : '') . ($action !== 'subscriptions' ? "
-            <li class='margin20'>
+            <li class='margin10'>
                 <a href='{$site_config['baseurl']}/forums.php?action=subscriptions'>{$lang['fm_my_subscriptions']}</a>
             </li>" : '') . ($action !== 'search' ? "
-            <li class='margin20'>
+            <li class='margin10'>
                 <a href='{$site_config['baseurl']}/forums.php?action=search'>{$lang['fe_search']}</a>
             </li>" : '') . ($action !== 'view_unread_posts' ? "
-            <li class='margin20'>
+            <li class='margin10'>
                 <a href='{$site_config['baseurl']}/forums.php?action=view_unread_posts'>{$lang['fm_unread_posts']}</a>
             </li>" : '') . ($action !== 'new_replies' ? "
-            <li class='margin20'>
+            <li class='margin10'>
                 <a href='{$site_config['baseurl']}/forums.php?action=new_replies'>{$lang['fm_new_replies']}</a>
             </li>" : '') . ($action !== 'vew_my_posts' ? "
-            <li class='margin20'>
+            <li class='margin10'>
                 <a href='{$site_config['baseurl']}/forums.php?action=view_my_posts'>{$lang['fm_my_posts']}</a>
             </li>" : '') . "
-            <li class='margin20'>
+            <li class='margin10'>
         	    <a href='{$site_config['baseurl']}/forums.php?action=mark_all_as_read'>{$lang['fm_mark_all_as_read']}</a>
         	</li>" . ($CURUSER['class'] >= UC_SYSOP && $action !== 'member_post_history' ? "
-            <li class='margin20'>
+            <li class='margin10'>
         	    <a href='{$site_config['baseurl']}/forums.php?action=member_post_history'>{$lang['fm_member_post_history']}</a>
         	</li>" : '') . '
         </ul>
@@ -493,12 +493,12 @@ switch ($action) {
                                     </span>
                                     <span>
                                         <a href="javascript:confirm_delete(\'' . $forum_id . '\');">
-                                            <i class="icon-cancel icon"></i>
+                                            <i class="icon-trash-empty icon has-text-danger"></i>
                                         </a>
                                     </span>
                                 </span>
                             </div>' : '') . '
-                            <span> ' . $forum_description . '</span>' . $child_boards . $now_viewing . '
+                            <div> ' . $forum_description . '</div>' . $child_boards . $now_viewing . '
                         </td>
                         <td class="w-25">
                             <span>' . $post_count . ' ' . $lang['fe_posts'] . '<br>' . $topic_count . ' ' . $lang['fe_topics'] . '</span>

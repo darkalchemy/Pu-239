@@ -18,20 +18,20 @@ $cache->decrement('inbox_' . $CURUSER['id']);
 if ($message['friend'] > 0) {
     $friends = '
                     <a href="' . $site_config['baseurl'] . '/friends.php?action=delete&amp;type=friend&amp;targetid=' . (int) $message['id'] . '">
-                        <small><i class="icon-minus has-text-red tooltipper" title="' . $lang['pm_mailbox_removef'] . '"></i></small>
+                        <small><i class="icon-minus has-text-danger tooltipper" title="' . $lang['pm_mailbox_removef'] . '"></i></small>
                     </a>';
 } elseif ($message['blocked'] > 0) {
     $friends = '
                     <a href="' . $site_config['baseurl'] . '/friends.php?action=delete&amp;type=block&amp;targetid=' . (int) $message['id'] . '">
-                        <small><i class="icon-minus has-text-red tooltipper" title="' . $lang['pm_mailbox_removeb'] . '"></i></small>
+                        <small><i class="icon-minus has-text-danger tooltipper" title="' . $lang['pm_mailbox_removeb'] . '"></i></small>
                     </a>';
 } else {
     $friends = '
                     <a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=friend&amp;targetid=' . (int) $message['id'] . '">
-                        <small><i class="icon-plus has-text-lime tooltipper" title="' . $lang['pm_mailbox_addf'] . '"></i></small>
+                        <small><i class="icon-users icon has-text-success tooltipper" title="' . $lang['pm_mailbox_addf'] . '"></i></small>
                     </a>
                     <a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=block&amp;targetid=' . (int) $message['id'] . '">
-                        <small><i class="icon-cancel has-text-red tooltipper" title="' . $lang['pm_mailbox_addb'] . '"></i></small>
+                        <small><i class="icon-users icon has-text-danger tooltipper" title="' . $lang['pm_mailbox_addb'] . '"></i></small>
                     </a>';
 }
 
@@ -65,7 +65,7 @@ $HTMLOUT .= "
             <tr class='no_hover'>
                 <td colspan='2'>
                     <span>" . ($message['sender'] === $CURUSER['id'] ? $lang['pm_viewmsg_to'] : $lang['pm_viewmsg_from']) . ': </span>' . ($arr_user_stuff['id'] == 0 ? $lang['pm_viewmsg_sys'] : format_username($arr_user_stuff['id'])) . "{$friends}
-                    <br><span>{$lang['pm_viewmsg_sent']}: </span>" . get_date($message['added'], '') . (($message['sender'] === $CURUSER['id'] && $message['unread'] === 'yes') ? $lang['pm_mailbox_char1'] . "<span class='has-text-red'>{$lang['pm_mailbox_unread']}</span>{$lang['pm_mailbox_char2']}" : '') . ($message['urgent'] === 'yes' ? "<span class='has-text-red'>{$lang['pm_mailbox_urgent']}</span>" : '') . "
+                    <br><span>{$lang['pm_viewmsg_sent']}: </span>" . get_date($message['added'], '') . (($message['sender'] === $CURUSER['id'] && $message['unread'] === 'yes') ? $lang['pm_mailbox_char1'] . "<span class='has-text-danger'>{$lang['pm_mailbox_unread']}</span>{$lang['pm_mailbox_char2']}" : '') . ($message['urgent'] === 'yes' ? "<span class='has-text-danger'>{$lang['pm_mailbox_urgent']}</span>" : '') . "
                 </td>
             </tr>
             <tr class='no_hover'>

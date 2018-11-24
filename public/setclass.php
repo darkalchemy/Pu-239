@@ -40,7 +40,7 @@ $maxclass = $CURUSER['class'] - 1;
 for ($i = 0; $i <= $maxclass; ++$i) {
     if (trim(get_user_class_name($i)) != '') {
         $text .= "
-                <option value='$i'>" . get_user_class_name($i) . "</option>";
+                <option value='$i'>" . get_user_class_name($i) . '</option>';
     }
 }
 $text .= "
@@ -51,6 +51,6 @@ $text .= "
         </div>
     </div>";
 
-$HTMLOUT .= main_div($text) . "
-</form>";
+$HTMLOUT .= main_div($text) . '
+</form>';
 echo stdhead("{$lang['set_class_temp']}") . $HTMLOUT . stdfoot();

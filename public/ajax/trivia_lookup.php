@@ -63,7 +63,7 @@ $question = $output = '';
 $answers = ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'];
 if (!empty($data['question'])) {
     $question = "
-        <h2 class='bg-02 padding10 bottom10 round10'>" . htmlspecialchars_decode($data['question']) . '</h2>';
+        <h2 class='bg-00 padding10 bottom10 round5'>" . htmlspecialchars_decode($data['question']) . '</h2>';
 }
 foreach ($answers as $answer) {
     if (!empty($data[$answer])) {

@@ -21,8 +21,8 @@ $latest_user .= "
         <a id='latestuser-hash'></a>
         <div id='latestuser' class='box'>
             <div class='bordered'>
-                <div class='alt_bordered bg-00 level-item is-wrapped top10 bottom10'>
-                    {$lang['index_wmember']} {$latestuser}!
+                <div class='alt_bordered bg-00 level-item is-wrapped top10 bottom10 padding20'>
+                    {$lang['index_wmember']}&nbsp;{$latestuser}!
                 </div>
             </div>
         </div>";

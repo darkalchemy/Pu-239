@@ -190,9 +190,9 @@ $wiki = 0;
 if ($action === 'add') {
     $HTMLOUT .= navmenu() . "
             <form method='post' action='wiki.php'>
-                <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' placeholder='Article Title' />" . BBcode() . "
+                <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' placeholder='Article Title'>" . BBcode() . "
                 <div class='has-text-centered margin20'>
-                    <input type='submit' class='button is-small' name='article-add' value='{$lang['wiki_ok']}' />
+                    <input type='submit' class='button is-small' name='article-add' value='{$lang['wiki_ok']}'>
                 </div>
             </form>";
 }
@@ -202,10 +202,10 @@ if ($action === 'edit') {
     if (($CURUSER['class'] >= UC_STAFF) || ($CURUSER['id'] == $result['userid'])) {
         $HTMLOUT .= navmenu() . "
             <form method='post' action='wiki.php'>
-                <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' value='" . htmlsafechars($result['name']) . "' />
-                <input type='hidden' name='article-id' value='$id' />" . BBcode(htmlsafechars($result['body'])) . "
+                <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' value='" . htmlsafechars($result['name']) . "'>
+                <input type='hidden' name='article-id' value='$id'>" . BBcode(htmlsafechars($result['body'])) . "
                 <div class='has-text-centered margin20'>
-                    <input type='submit' class='button is-small' name='article-edit' value='{$lang['wiki_ok']}' />
+                    <input type='submit' class='button is-small' name='article-edit' value='{$lang['wiki_ok']}'>
                 </div>
             </form>";
     } else {

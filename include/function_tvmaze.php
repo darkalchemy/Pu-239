@@ -62,7 +62,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
                                             <span id='cast_{$role['id']}_tooltip'>
                                                 <span class='is-flex'>
                                                     <span class='has-text-centered'>
-                                                        <img src='" . url_proxy(strip_tags($role['photo']), true, 150, null) . "' class='tooltip-poster' />
+                                                        <img src='" . url_proxy(strip_tags($role['photo']), true, 150, null) . "' class='tooltip-poster'>
                                                         <p class='top10'>{$role['name']}</p>
                                                         <p>{$role['character']}</p>
                                                     </span>
@@ -300,7 +300,7 @@ function line_by_line($heading, $body)
 {
     return "
                     <div class='columns'>
-                        <div class='has-text-red column is-2 size_5 padding5'>$heading: </div>
+                        <div class='has-text-danger column is-2 size_5 padding5'>$heading: </div>
                         <span class='column padding5'>$body</span>
                     </div>";
 }

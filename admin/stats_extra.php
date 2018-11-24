@@ -95,17 +95,12 @@ switch ($inbound['mode']) {
 function show_views()
 {
     global $inbound, $month_names, $lang;
+
     $page_title = $lang['stats_ex_ptitle'];
     $page_detail = $lang['stats_ex_pdetail'];
     stderr($lang['stats_ex_stderr'], $lang['stats_ex_stderr1']);
-    if (!checkdate($inbound['to_month'], $inbound['to_day'], $inbound['to_year'])) {
-        stderr($lang['stats_ex_ustderr'], $lang['stats_ex_ustderr1']);
-    }
-    if (!checkdate($inbound['from_month'], $inbound['from_day'], $inbound['from_year'])) {
-        stderr($lang['stats_ex_ustderr'], $lang['stats_ex_dstderr']);
-    }
-    $to_time = mktime(12, 0, 0, $inbound['to_month'], $inbound['to_day'], $inbound['to_year']);
-    $from_time = mktime(12, 0, 0, $inbound['from_month'], $inbound['from_day'], $inbound['from_year']);
+    $to_time = strtotime($inbound['olddate']);
+    $from_time = strtotime($inbound['newdate']);
     $human_to_date = getdate($to_time);
     $human_from_date = getdate($from_time);
     $sql = [
@@ -125,13 +120,9 @@ function show_views()
     $results = [];
     $menu = make_side_menu();
     $heading = "{$lang['stats_ex_topicv']} ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} {$lang['stats_ex_topict']} {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
-    dd('sdfsdf');
-    $htmlout = "<div>
-      <div style='background: grey; height: 25px;'>
-      <span style='font-weight: bold; font-size: 12pt;'>{$lang['stats_ex_center']}</span>
-      </div><br>
-    {$menu}
-        <div>
+    $htmlout = $menu . "
+    <h1 class='has-text-centered'>{$lang['stats_ex_center']}</h1>
+    <div>
     <table class='table table-bordered table-striped'>
         <tr>
     <td colspan='3'>{$heading}</td>
@@ -160,7 +151,7 @@ function show_views()
             $img_width .= '%';
             $htmlout .= "<tr>
                 <td>$date</td>
-                <td><img src='{$site_config['pic_baseurl']}bar_left.gif' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_baseurl']}bar.gif' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_baseurl']}bar_right.gif' width='4' height='11' align='middle' alt='' /></td>
+                <td><img src='{$site_config['pic_baseurl']}bar_left.gif' width='4' height='11' align='middle' alt=''><img src='{$site_config['pic_baseurl']}bar.gif' width='$img_width' height='11' align='middle' alt=''><img src='{$site_config['pic_baseurl']}bar_right.gif' width='4' height='11' align='middle' alt=''></td>
                     <td><center>{$data['result_count']}</center></td>
                     </tr>";
         }
@@ -183,16 +174,11 @@ function show_views()
 function result_screen($mode = 'reg')
 {
     global $site_config, $inbound, $month_names, $lang;
+
     $page_title = $lang['stats_ex_center_result'];
     $page_detail = '&#160;';
-    if (!checkdate($inbound['to_month'], $inbound['to_day'], $inbound['to_year'])) {
-        stderr($lang['stats_ex_ustderr'], $lang['stats_ex_ustderr1']);
-    }
-    if (!checkdate($inbound['from_month'], $inbound['from_day'], $inbound['from_year'])) {
-        stderr($lang['stats_ex_ustderr'], $lang['stats_ex_dstderr']);
-    }
-    $to_time = mktime(0, 0, 0, $inbound['to_month'], $inbound['to_day'], $inbound['to_year']);
-    $from_time = mktime(0, 0, 0, $inbound['from_month'], $inbound['from_day'], $inbound['from_year']);
+    $to_time = strtotime($inbound['olddate']);
+    $from_time = strtotime($inbound['newdate']);
     $human_to_date = getdate($to_time);
     $human_from_date = getdate($from_time);
     if ($mode === 'reg') {
@@ -270,13 +256,9 @@ function result_screen($mode = 'reg')
     $results = [];
     $heading = ucfirst($inbound['timescale']) . " $table ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} to {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
     $menu = make_side_menu();
-    $htmlout = "<div>
-      <div style='background: grey; height: 25px;'>
-      <span style='font-weight: bold; font-size: 12pt;'>{$lang['stats_ex_center']}</span>
-      </div><br>
-    {$menu}
-        
-        <div><table class='table table-bordered table-striped'>
+    $htmlout = $menu . "
+    <h1 class='has-text-centered'>{$lang['stats_ex_center']}</h1>
+    <table class='table table-bordered table-striped'>
         <tr>
     <td colspan='3'>{$heading}<br>{$page_detail}</td>
     </tr>
@@ -310,7 +292,7 @@ function result_screen($mode = 'reg')
             }
             $htmlout .= "<tr>
                 <td>$date</td>
-                <td><img src='{$site_config['pic_baseurl']}bar_left.gif' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_baseurl']}bar.gif' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_baseurl']}bar_right.gif' width='4' height='11' align='middle' alt='' /></td>
+                <td><img src='{$site_config['pic_baseurl']}bar_left.gif' width='4' height='11' align='middle' alt=''><img src='{$site_config['pic_baseurl']}bar.gif' width='$img_width' height='11' align='middle' alt=''><img src='{$site_config['pic_baseurl']}bar_right.gif' width='4' height='11' align='middle' alt=''></td>
                     <td><center>{$data['result_count']}</center></td>
                     </tr>";
         }
@@ -358,37 +340,28 @@ function main_screen($mode = 'reg')
         $form_code = 'show_reps';
         $table = $lang['stats_ex_repsts'];
     }
-    $old_date = getdate(time() - (3600 * 24 * 90));
-    $new_date = getdate(time() + (3600 * 24));
+    $old_date = get_date(TIME_NOW - (3600 * 24 * 90), 'FORM', 1, 0);
+    $new_date = get_date(TIME_NOW + (3600 * 24), 'FORM', 1, 0);
     $menu = make_side_menu();
-    $htmlout = "
-        <div>
-            <div style='background: grey; height: 25px;'>
-                <span style='font-weight: bold; font-size: 12pt;'>{$lang['stats_ex_center']}</span>
-            </div>>
-            {$menu}
-            <form action='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra' method='post' name='StatsForm'>
-                <input name='mode' value='{$form_code}' type='hidden' />
-                <div style='text-align: left; width: 50%; border: 1px solid blue; padding: 5px;'>
-                <div style='background: grey; height: 25px; margin-bottom:20px;'>
-                    <span style='font-weight: bold; font-size: 12pt;'>{$table}</span>
-                </div>
-                <fieldset>
-                    <legend><strong>{$lang['stats_ex_infor']}</strong></legend>
-                    {$page_detail}
-                </fieldset>
-                <fieldset>
-                    <legend><strong>{$lang['stats_ex_datefrom']}</strong></legend>";
-    $htmlout .= make_select('from_month', make_month(), $old_date['mon']) . '&#160;&#160;';
-    $htmlout .= make_select('from_day', make_day(), $old_date['mday']) . '&#160;&#160;';
-    $htmlout .= make_select('from_year', make_year(), $old_date['year']) . '</fieldset>';
-    $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_dateto']}</strong></legend>";
-    $htmlout .= make_select('to_month', make_month(), $new_date['mon']) . '&#160;&#160;';
-    $htmlout .= make_select('to_day', make_day(), $new_date['mday']) . '&#160;&#160;';
-    $htmlout .= make_select('to_year', make_year(), $new_date['year']) . '</fieldset>';
+    $htmlout = $menu . "
+        <h1 class='has-text-centered'>{$lang['stats_ex_center']}</h1>
+        <form action='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra' method='post' name='StatsForm'>
+            <div class='has-text-centered'>
+                <input name='mode' value='{$form_code}' type='hidden'>
+                <h1 class='has-text-centered'>{$table}</h1>";
+    $htmlout .= main_div("<h2 class='has-text-centered'>{$lang['stats_ex_infor']}</h2>$page_detail");
+    $dates = "
+                <h2 class='has-text-centered'>{$lang['stats_ex_datefrom']}</h2>
+                <input name='olddate' type='date' value='$old_date' class='bottom20'>
+                <h2>{$lang['stats_ex_dateto']}</h2>
+                <input name='newdate' type='date' value='$new_date' class='bottom20'>";
+
+    $htmlout .= main_div($dates, 'top20');
+    $timescale = '';
     if ($mode != 'views') {
-        $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_timescale']}</strong></legend>";
-        $htmlout .= make_select('timescale', [
+        $timescale .= "
+                <h2 class='has-text-centered'>{$lang['stats_ex_timescale']}</h2>";
+        $timescale .= make_select('timescale', [
                 0 => [
                     'daily',
                     $lang['stats_ex_daily'],
@@ -401,10 +374,11 @@ function main_screen($mode = 'reg')
                     'monthly',
                     $lang['stats_ex_monthly'],
                 ],
-            ]) . '</fieldset>';
+            ]);
     }
-    $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_ressort']}</strong></legend>";
-    $htmlout .= make_select('sortby', [
+    $timescale .= "
+                <h2 class='has-text-centered'>{$lang['stats_ex_ressort']}</h2>";
+    $timescale .= make_select('sortby', [
             0 => [
                 'asc',
                 $lang['stats_ex_asc'],
@@ -413,70 +387,13 @@ function main_screen($mode = 'reg')
                 'desc',
                 $lang['stats_ex_desc'],
             ],
-        ], 'desc') . '</fieldset>';
-    $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_submit']}</strong></legend>
-                <input value='{$lang['stats_ex_show']}' class='button is-small' accesskey='s' type='submit' />
-            </fieldset>
-
-        </div>
-    
-    </form></div>";
+        ], 'desc');
+    $htmlout .= main_div($timescale, 'top20');
+    $htmlout .= "
+                <input value='{$lang['stats_ex_submit']}' class='button is-small margin20' accesskey='s' type='submit'>
+            </div>
+        </form>";
     echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
-}
-
-/**
- * @return array
- */
-function make_year()
-{
-    $time_now = getdate();
-    $return = [];
-    $start_year = 2005;
-    $latest_year = intval($time_now['year']);
-    if ($latest_year == $start_year) {
-        --$start_year;
-    }
-    for ($y = $start_year; $y <= $latest_year; ++$y) {
-        $return[] = [
-            $y,
-            $y,
-        ];
-    }
-
-    return $return;
-}
-
-/**
- * @return array
- */
-function make_month()
-{
-    global $month_names;
-    $return = [];
-    for ($m = 1; $m <= 12; ++$m) {
-        $return[] = [
-            $m,
-            $month_names[$m],
-        ];
-    }
-
-    return $return;
-}
-
-/**
- * @return array
- */
-function make_day()
-{
-    $return = [];
-    for ($d = 1; $d <= 31; ++$d) {
-        $return[] = [
-            $d,
-            $d,
-        ];
-    }
-
-    return $return;
 }
 
 /**
@@ -488,7 +405,7 @@ function make_day()
  */
 function make_select($name, $in = [], $default = '')
 {
-    $html = "<select name='$name' class='dropdown'>\n";
+    $html = "<select name='$name' class='dropdown bottom20'>\n";
     foreach ($in as $v) {
         $selected = '';
         if (($default != '') && ($v[0] == $default)) {
@@ -507,17 +424,18 @@ function make_select($name, $in = [], $default = '')
 function make_side_menu()
 {
     global $site_config, $lang;
-    $htmlout = "<div style='float:left;border: 1px solid black;padding:5px;'>
-    <div><strong>{$lang['stats_ex_menu']}</strong></div>
-    <div>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reg' style='text-decoration: none;'>{$lang['stats_ex_menureg']}</a></div>
-    <div>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=topic' style='text-decoration: none;'>{$lang['stats_ex_menutopnew']}</a></div>
-    <div>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=post' style='text-decoration: none;'>{$lang['stats_ex_menuposts']}</a></div>
-    <div>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=msg' style='text-decoration: none;'>{$lang['stats_ex_menupm']}</a></div>
-    <div>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=views' style='text-decoration: none;'>{$lang['stats_ex_menutopic']}</a></div>
-    <div>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=comms' style='text-decoration: none;'>{$lang['stats_ex_menucomm']}</a></div>
-    <div>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=torrents' style='text-decoration: none;'>{$lang['stats_ex_menutorr']}</a></div>
-    <div>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reps' style='text-decoration: none;'>{$lang['stats_ex_menurep']}</a></div>
-</div>";
+
+    $htmlout = "
+    <ul class='level-center bg-06'>
+        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reg'>{$lang['stats_ex_menureg']}</a></li>
+        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=topic'>{$lang['stats_ex_menutopnew']}</a></li>
+        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=post'>{$lang['stats_ex_menuposts']}</a></li>
+        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=msg'>{$lang['stats_ex_menupm']}</a></li>
+        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=views'>{$lang['stats_ex_menutopic']}</a></li>
+        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=comms'>{$lang['stats_ex_menucomm']}</a></li>
+        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=torrents'>{$lang['stats_ex_menutorr']}</a></li>
+        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reps'>{$lang['stats_ex_menurep']}</a></li>
+    </ul>";
 
     return $htmlout;
 }

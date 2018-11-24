@@ -35,10 +35,10 @@ if (!XBT_TRACKER) {
 $hit_and_run_rez = sql_query($query_2) or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= "
             <ul class='level-center bg-06'>
-                <li class='altlink margin20'>
+                <li class='altlink margin10'>
                     <a href='{$site_config['baseurl']}/staffpanel.php?tool=hit_and_run'>{$lang['hitnrun_show_current']}</a>
                 </li>
-                <li class='altlink margin20'>
+                <li class='altlink margin10'>
                     <a href='{$site_config['baseurl']}/staffpanel.php?tool=hit_and_run&amp;really_bad=show_them'>{$lang['hitnrun_show_disabled']}</a>
                 </li>
             </ul>
@@ -48,7 +48,7 @@ $HTMLOUT .= "
         <td class="colhead"><b>' . $lang['hitnrun_torrent'] . '</b></td>
         <td class="colhead"><b>' . $lang['hitnrun_times'] . '</b></td>
         <td class="colhead"><b>' . $lang['hitnrun_stats'] . '</b></td>
-        <td class="colhead">' . $lang['hitnrun_actions'] . '</td>' : '<tr><td>' . $lang['hitnrun_none'] . '</td>') . '</tr>';
+        <td class="colhead">' . $lang['hitnrun_actions'] . '</td>' : '<tr><td><div class="padding20">' . $lang['hitnrun_none'] . '</div></td>') . '</tr>';
 while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
     //=== Xbt Tracker or Default Announce
     $Xbt_Seed = (XBT_TRACKER === true ? $hit_and_run_arr['active'] !== 1 : $hit_and_run_arr['seeder'] !== 'yes');
@@ -123,8 +123,8 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
             ' . (RATIO_FREE ? '' : '' . $lang['hitnrun_downloaded'] . '' . mksize($hit_and_run_arr['dload']) . '<br>') . '
             ' . $lang['hitnrun_ratio'] . '<font color="' . get_ratio_color($ratio_torrent) . '">' . $ratio_torrent . '</font><br>
             ' . $lang['hitnrun_site_ratio'] . '<font color="' . get_ratio_color($ratio_site) . '" title="' . $lang['hitnrun_includes'] . '">' . $ratio_site . '</font></td>
-            <td><a href="messages.php?action=send_message&amp;receiver=' . (int) $Uid_ID . '"><img src="' . $site_config['pic_baseurl'] . 'pm.gif" border="0" alt="PM" title="' . $lang['hitnrun_send'] . '" /></a><br>
-            <a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action2=new&amp;shit_list_id=' . (int) $Uid_ID . '&amp;return_to=staffpanel.php?tool=hit_and_run" ><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" border="0" alt="Shit" title="' . $lang['hitnrun_shit'] . '" /></a></td></tr>';
+            <td><a href="messages.php?action=send_message&amp;receiver=' . (int) $Uid_ID . '"><img src="' . $site_config['pic_baseurl'] . 'pm.gif" border="0" alt="PM" title="' . $lang['hitnrun_send'] . '"></a><br>
+            <a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action2=new&amp;shit_list_id=' . (int) $Uid_ID . '&amp;return_to=staffpanel.php?tool=hit_and_run" ><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" border="0" alt="Shit" title="' . $lang['hitnrun_shit'] . '"></a></td></tr>';
         }
     }
 }

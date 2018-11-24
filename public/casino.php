@@ -416,7 +416,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                     <tbody>
                         <tr>
                             <td class='has-text-centered'><b>{$lang['casino_amount_to_bet']}</b>
-                                <input type='text' name='amnt' size='5' value='1' />
+                                <input type='text' name='amnt' size='5' value='1'>
                                 <select name='unit'>
                                     <option value='1'>MB</option>
                                     <option value='2'>GB</option>
@@ -425,7 +425,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                         </tr>
                         <tr>
                             <td class='has-text-centered' colspan='2'>
-                                <input type='submit' class='button is-small' value='{$lang['casino_gamble']}!' />
+                                <input type='submit' class='button is-small' value='{$lang['casino_gamble']}!'>
                             </td>
                         </tr>
                     </tbody>
@@ -482,8 +482,8 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                         </tr>
                     </thead>
                     <tbody>";
-    $HTMLOUT .= tr($lang['casino_black'], '<input name="color" type="radio" checked value="black" />', 1);
-    $HTMLOUT .= tr($lang['casino_red'], '<input name="color" type="radio" checked value="red" />', 1);
+    $HTMLOUT .= tr($lang['casino_black'], '<input name="color" type="radio" checked value="black">', 1);
+    $HTMLOUT .= tr($lang['casino_red'], '<input name="color" type="radio" checked value="red">', 1);
     $HTMLOUT .= tr($lang['casino_how_much'], "
                             <select name='betmb'>
                                 <option value='{$bet_value1}'>" . mksize($bet_value1) . "</option>
@@ -501,7 +501,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     }
     $HTMLOUT .= tr($lang['casino_your_chance'], '1 : ' . $real_chance, 1);
     $HTMLOUT .= tr($lang['casino_you_can_win'], $win_amount . ' * stake', 1);
-    $HTMLOUT .= tr($lang['casino_bet_on_color'], "<input type='submit' class='button is-small' value='{$lang['casino_do_it']}!' />", 1);
+    $HTMLOUT .= tr($lang['casino_bet_on_color'], "<input type='submit' class='button is-small' value='{$lang['casino_do_it']}!'>", 1);
     $HTMLOUT .= '
                     </tbody>
                 </table>
@@ -516,8 +516,8 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                         </tr>
                     </thead>
                     <tbody>";
-    $HTMLOUT .= tr($lang['casino_number'], '<input name="number" type="radio" checked value="1" />1&#160;&#160;<input name="number" type="radio" value="2" />2&#160;&#160;<input name="number" type="radio" value="3" />3', 1);
-    $HTMLOUT .= tr('', '<input name="number" type="radio" value="4" />4&#160;&#160;<input name="number" type="radio" value="5" />5&#160;&#160;<input name="number" type="radio" value="6" />6', 1);
+    $HTMLOUT .= tr($lang['casino_number'], '<input name="number" type="radio" checked value="1">1&#160;&#160;<input name="number" type="radio" value="2">2&#160;&#160;<input name="number" type="radio" value="3">3', 1);
+    $HTMLOUT .= tr('', '<input name="number" type="radio" value="4">4&#160;&#160;<input name="number" type="radio" value="5">5&#160;&#160;<input name="number" type="radio" value="6">6', 1);
     $HTMLOUT .= tr($lang['casino_how_much'], "
                                 <select name='betmb'>
                                     <option value='{$bet_value1}'>" . mksize($bet_value1) . "</option>
@@ -535,7 +535,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     }
     $HTMLOUT .= tr($lang['casino_your_chance'], '1 : ' . $real_chance, 1);
     $HTMLOUT .= tr($lang['casino_you_can_win'], $win_amount_on_number . ' * stake', 1);
-    $HTMLOUT .= tr($lang['casino_bet_on_a_number'], "<input type='submit' class='button is-small' value='{$lang['casino_do_it']}!' />", 1);
+    $HTMLOUT .= tr($lang['casino_bet_on_a_number'], "<input type='submit' class='button is-small' value='{$lang['casino_do_it']}!'>", 1);
     $HTMLOUT .= '
                     </tbody>
                 </table>

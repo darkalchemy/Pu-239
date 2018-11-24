@@ -35,7 +35,7 @@ define('SQL_DEBUG', true);
 define('IP_LOGGING', true);
 define('XBT_TRACKER', false);
 define('REQUIRE_CONNECTABLE', false);
-define('SOCKET', false);
+define('SOCKET', true);
 define('NFO_SIZE', 1048576);
 
 define('PM_DELETED', 0);

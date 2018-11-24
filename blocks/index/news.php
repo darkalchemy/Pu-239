@@ -35,10 +35,10 @@ if ($news) {
             $button = "
                 <div class='is-pulled-right'>
                     <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int) $array['id'] . "'>
-                        <i class='icon-edit size_4 tooltipper' aria-hidden='true' title='{$lang['index_news_ed']}'></i>
+                        <i class='icon-edit icon size_4 tooltipper' aria-hidden='true' title='{$lang['index_news_ed']}'></i>
                     </a>
                     <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int) $array['id'] . "&amp;h={$hash}'>
-                        <i class='icon-cancel size_4 tooltipper' aria-hidden='true' title='{$lang['index_news_del']}'></i>
+                        <i class='icon-cancel icon has-text-danger size_4 tooltipper' aria-hidden='true' title='{$lang['index_news_del']}'></i>
                     </a>
                 </div>";
         }
@@ -65,7 +65,7 @@ if ($news) {
     }
 } else {
     $site_news .= main_div("
-                    <div class='bg-02 round5 padding10'>
+                    <div class='bg-02 round5 padding20'>
                         <div class='has-text-white'>
                             " . format_comment($lang['index_news_not'], 0) . '
                         </div>

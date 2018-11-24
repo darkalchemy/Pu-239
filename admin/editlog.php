@@ -73,7 +73,6 @@ $current += $last;
 unset($last, $data, $fetch_set);
 
 $HTMLOUT .= "
-    <div class='portlet'>
         <h2 class='has-text-centered top20'>Coder's Log</h2>
         <div class='bordered bottom20'>
             <div class='alt_bordered bg-00'>
@@ -177,8 +176,7 @@ $HTMLOUT .= "
         </div>
         <form method='post' action='staffpanel.php?tool=editlog&amp;action=editlog'>
             <div class='has-text-centered top20 bottom20'>
-                <input name='update' type='submit' value='{$lang['editlog_update']}' class='button is-small' />
+                <input name='update' type='submit' value='{$lang['editlog_update']}' class='button is-small'>
             </div>
-        </form>
-    </div>";
+        </form>";
 echo stdhead($lang['editlog_stdhead']) . wrapper($HTMLOUT) . stdfoot();

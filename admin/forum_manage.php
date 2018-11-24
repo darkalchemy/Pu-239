@@ -23,10 +23,10 @@ $min_class_create = (isset($_POST['min_class_create']) ? intval($_POST['min_clas
 $main_links = "
             <div class='bottom20'>
                 <ul class='level-center bg-06'>
-                    <li class='altlink margin20'>
+                    <li class='altlink margin10'>
                         <a href='{$site_config['baseurl']}/staffpanel.php?tool=over_forums&amp;action=over_forums'>{$lang['fm_overforum']}</a>
                     </li>
-                    <li class='altlink margin20'>
+                    <li class='altlink margin10'>
                         <a href='{$site_config['baseurl']}/staffpanel.php?tool=forum_config&amp;action=forum_config'>{$lang['fm_configure']}</a>
                     </li>
                 </ul>
@@ -94,11 +94,11 @@ switch ($action) {
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_name'] . '</span></td>
-                    <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . '" /></td>
+                    <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . '"></td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_description'] . '</span></td>
-                    <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . '" /></td>
+                    <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . '"></td>
                     </tr>
                     <tr>
                     <td><span>' . $lang['fm_efp_over'] . '</span></td>
@@ -158,9 +158,9 @@ switch ($action) {
                     </tr>
                 </table>
             <div class="has-text-centered margin20">
-                <input type="hidden" name="action2" value="edit_forum" />
-                <input type="hidden" name="id" value="' . htmlsafechars($id) . '" />
-                <input type="submit" name="button" class="button is-small margin20" value="' . $lang['fm_efp_btn'] . '" />
+                <input type="hidden" name="action2" value="edit_forum">
+                <input type="hidden" name="id" value="' . htmlsafechars($id) . '">
+                <input type="submit" name="button" class="button is-small margin20" value="' . $lang['fm_efp_btn'] . '">
             </div>
         </form>';
         }
@@ -207,7 +207,7 @@ if (mysqli_num_rows($res) > 0) {
                     </span>
                     <span class="tooltipper" title="Delete">
                         <a href="javascript:confirm_delete(\'' . $row['id'] . '\');">
-                            <i class="icon-cancel icon"></i>
+                            <i class="icon-cancel icon has-text-danger"></i>
                         </a>
                     </span>
                 </span>
@@ -223,11 +223,11 @@ $HTMLOUT .= '</table><br><br>
             </tr>
             <tr>
             <td><span>' . $lang['fm_mp_fname'] . '</span></td>
-            <td><input name="name" type="text" class="w-100" maxlength="60" /></td>
+            <td><input name="name" type="text" class="w-100" maxlength="60"></td>
             </tr>
             <tr>
             <td><span>' . $lang['fm_mp_description'] . '</span>  </td>
-            <td><input name="desc" type="text" class="w-100" maxlength="200" /></td>
+            <td><input name="desc" type="text" class="w-100" maxlength="200"></td>
             </tr>
             <tr>
             <td><span>' . $lang['fm_mp_over2'] . '</span></td>
@@ -291,8 +291,8 @@ $HTMLOUT .= $option_12 . '
         </tr>
     </table>
     <div class="has-text-centered margin20">
-        <input type="hidden" name="action2" value="add_forum" />
-        <input type="submit" name="button" class="button is-small margin20" value="' . $lang['fm_mp_btn'] . '" />
+        <input type="hidden" name="action2" value="add_forum">
+        <input type="submit" name="button" class="button is-small margin20" value="' . $lang['fm_mp_btn'] . '">
     </div>
     </form>
           <script>

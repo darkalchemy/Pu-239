@@ -62,7 +62,7 @@ if (mysqli_num_rows($res) != 0) {
     $HTMLOUT .= "<form action='{$site_config['baseurl']}/staffpanel.php?tool=acpmanage&amp;action=acpmanage' method='post'>";
     $HTMLOUT .= begin_table();
     $HTMLOUT .= "<tr><td class='colhead'>
-      <input style='margin: 0;' type='checkbox' title='" . $lang['text_markall'] . "' value='" . $lang['text_markall'] . "' onclick=\"this.value=check(form);\" /></td>
+      <input style='margin: 0;' type='checkbox' title='" . $lang['text_markall'] . "' value='" . $lang['text_markall'] . "' onclick=\"this.value=check(form);\"></td>
       <td class='colhead'>{$lang['text_username']}</td>
       <td class='colhead' style='white-space: nowrap;'>{$lang['text_reg']}</td>
       <td class='colhead' style='white-space: nowrap;'>{$lang['text_la']}</td>
@@ -90,7 +90,7 @@ if (mysqli_num_rows($res) != 0) {
         $HTMLOUT .= "
         <tr>
             <td>
-                <input type='checkbox' name='ids[]' value='{$arr['id']}' />
+                <input type='checkbox' name='ids[]' value='{$arr['id']}'>
             </td>
             <td>" . format_username($arr['id']) . "</td>
             <td style='white-space: nowrap;'>{$added}</td>
@@ -104,9 +104,9 @@ if (mysqli_num_rows($res) != 0) {
         </tr>";
     }
     if (($CURUSER['class'] === UC_MAX)) {
-        $HTMLOUT .= "<tr><td colspan='10' class='has-text-centered'><select name='do'><option value='enabled' disabled selected>{$lang['text_wtd']}</option><option value='enabled'>{$lang['text_es']}</option><option value='confirm'>{$lang['text_cs']}</option><option value='delete'>{$lang['text_ds']}</option></select><br><input type='submit' class='margin20 button is-small' value='" . $lang['text_submit'] . "' /></td></tr>";
+        $HTMLOUT .= "<tr><td colspan='10' class='has-text-centered'><select name='do'><option value='enabled' disabled selected>{$lang['text_wtd']}</option><option value='enabled'>{$lang['text_es']}</option><option value='confirm'>{$lang['text_cs']}</option><option value='delete'>{$lang['text_ds']}</option></select><br><input type='submit' class='margin20 button is-small' value='" . $lang['text_submit'] . "'></td></tr>";
     } else {
-        $HTMLOUT .= "<tr><td colspan='10' class='has-text-centered'><select name='do'><option value='enabled' disabled selected>{$lang['text_wtd']}</option><option value='enabled'>{$lang['text_es']}</option><option value='confirm'>{$lang['text_cs']}</option></select><br><input type='submit' class='margin20 button is-small' value='" . $lang['text_submit'] . "' /></td></tr>";
+        $HTMLOUT .= "<tr><td colspan='10' class='has-text-centered'><select name='do'><option value='enabled' disabled selected>{$lang['text_wtd']}</option><option value='enabled'>{$lang['text_es']}</option><option value='confirm'>{$lang['text_cs']}</option></select><br><input type='submit' class='margin20 button is-small' value='" . $lang['text_submit'] . "'></td></tr>";
     }
 
     $HTMLOUT .= end_table();
@@ -115,7 +115,7 @@ if (mysqli_num_rows($res) != 0) {
         $HTMLOUT .= $pager['pagerbottom'];
     }
 } else {
-    $HTMLOUT = main_div("<h1>{$lang['std_sorry']}</h1><p>{$lang['std_nf']}</p>");
+    $HTMLOUT = stdmsg("<h2>{$lang['std_sorry']}</h2>", "<p>{$lang['std_nf']}</p>");
 }
 
 echo stdhead($lang['text_stdhead']) . wrapper($HTMLOUT) . stdfoot($stdfoot);

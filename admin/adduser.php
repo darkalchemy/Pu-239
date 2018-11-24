@@ -11,6 +11,12 @@ global $site_config, $lang, $cache, $session, $user_stuffs;
 $cache->delete('userlist_' . $site_config['chatBotID']);
 $cache->delete('chat_users_list');
 
+$stdfoot = [
+    'js' => [
+        get_file_name('check_username_js'),
+    ],
+];
+
 $lang = array_merge($lang, load_language('ad_adduser'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $values = [
@@ -70,16 +76,20 @@ $HTMLOUT = '
 $HTMLOUT .= main_table('
         <tr>
             <td class="w-25">' . $lang['text_username'] . '</td>
-            <td><input type="text" name="username" class="w-100" /></td></tr>
-        <tr><td>' . $lang['text_password'] . '</td><td><input type="password" name="password" class="w-100" /></td></tr>
-        <tr><td>' . $lang['text_password2'] . '</td><td><input type="password" name="password2" class="w-100" /></td></tr>
+            <td>
+                <input type="text" name="username" id="wantusername" class="w-100" onblur="checkit();" autocomplete="on" required pattern="[\p{L}\p{N}_-]{3,64}">
+                <div id="namecheck"></div>
+            </td>
+        </tr>
+        <tr><td>' . $lang['text_password'] . '</td><td><input type="password" name="password" class="w-100" required></td></tr>
+        <tr><td>' . $lang['text_password2'] . '</td><td><input type="password" name="password2" class="w-100" required></td></tr>
         <tr>
-            <td>' . $lang['text_email'] . '</td><td><input type="text" name="email" class="w-100" /></td>
+            <td>' . $lang['text_email'] . '</td><td><input type="text" name="email" class="w-100" required></td>
         </tr>');
 $HTMLOUT .= '
         <div class="has-text-centered margin20">
-            <input type="submit" value="' . $lang['btn_okay'] . '" class="button is-small" />
+            <input type="submit" value="' . $lang['btn_okay'] . '" class="button is-small">
         </div>
   </form>';
 
-echo stdhead($lang['std_adduser']) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($lang['std_adduser']) . wrapper($HTMLOUT) . stdfoot($stdfoot);

@@ -3,6 +3,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'staff_functions.php';
 check_user_status();
 global $site_config, $CURUSER, $cache, $session, $fluent, $mysqli;
 
@@ -42,7 +43,7 @@ $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_PO
 $id = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : null));
 $class_color = (function_exists('get_user_class_color') ? true : false);
 $tool = !empty($_GET['tool']) ? $_GET['tool'] : (!empty($_POST['tool']) ? $_POST['tool'] : null);
-
+write_info("{$CURUSER['username']} has accessed the " . (empty($tool) ? 'staffpanel' : "$tool staff page"));
 $staff_tools = [
     'modtask' => 'modtask',
     'iphistory' => 'iphistory',
@@ -342,7 +343,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
 
             $header = "
                     <tr>
-                        <th>{$lang['spanel_pg_name']}</th>
+                        <th class='w-50'>{$lang['spanel_pg_name']}</th>
                         <th><div class='has-text-centered'>Show in Navbar</div></th>
                         <th><div class='has-text-centered'>{$lang['spanel_added_by']}</div></th>
                         <th><div class='has-text-centered'>{$lang['spanel_date_added']}</div></th>";
@@ -362,16 +363,23 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             <h1 class='has-text-centered top20 text-shadow'>" . ($class_color ? '<font color="#' . get_user_class_color($arr['av_class']) . '">' : '') . get_user_class_name($arr['av_class']) . '\'s Panel' . ($class_color ? '</font>' : '') . "</h1>
             {$add_button}";
                 }
+                $show_in_nav = $arr['navbar'] == 1 ? '<span class="has-text-success">true</span>' : '<span class="has-text-info">false</span>';
+
+                $class = $title = '';
+                if ($arr['page_name'] === 'Usersearch') {
+                    $class = 'has-text-danger';
+                    $title = '<span class="has-text-danger">[Partially Broken]</span> ';
+                }
                 $body .= "
                     <tr>
                         <td>
                             <div class='size_4'>
-                                <a href='" . htmlsafechars($arr['file_name']) . "' class='tooltipper' title='" . htmlsafechars($arr['description'] . '<br>' . $arr['file_name']) . "'>" . htmlsafechars($arr['page_name']) . "</a>
+                                <a href='" . htmlsafechars($arr['file_name']) . "' class='tooltipper' title='{$title}" . htmlsafechars($arr['description'] . '<br>' . $arr['file_name']) . "'><span class='$class'>" . ucwords(htmlsafechars($arr['page_name'])) . "</span></a>
                             </div>
                         </td>
                         <td>
                             <div class='has-text-centered'>
-                                {$arr['navbar']}
+                                {$show_in_nav}
                             </div>
                         </td>
                         <td>
@@ -392,7 +400,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                                     <i class='icon-edit icon'></i>
                                 </a>
                                 <a href='{$site_config['baseurl']}/staffpanel.php?action=delete&amp;id=" . (int) $arr['id'] . "' class='tooltipper' title='{$lang['spanel_delete']}'>
-                                    <i class='icon-cancel icon'></i>
+                                    <i class='icon-trash-empty icon has-text-danger'></i>
                                 </a>
                             </div>
                         </td>";

@@ -29,10 +29,10 @@ $HTMLOUT = doc_head() . "
     <h2>{$site_config['site_name']} Site Radio</h2>
     <div>
         <a href='http://{$radio['host']}:{$radio['port']}/listen.pls' onmouseover=\"roll_over('winamp', '{$site_config['pic_baseurl']}winamp_over.png')\" onmouseout=\"roll_over('winamp', '{$site_config['pic_baseurl']}winamp.png')\">
-            <img src='{$site_config['pic_baseurl']}winamp.png' name='winamp' alt='Click here to listen with Winamp' title='Click here to listen with Winamp' />
+            <img src='{$site_config['pic_baseurl']}winamp.png' name='winamp' alt='Click here to listen with Winamp' title='Click here to listen with Winamp'>
         </a>
         <a href='http://{$radio['host']}:{$radio['port']}/listen.asx' onmouseover=\"roll_over('wmp', '{$site_config['pic_baseurl']}wmp_over.png')\" onmouseout=\"roll_over('wmp', '{$site_config['pic_baseurl']}wmp.png')\">
-            <img src='{$site_config['pic_baseurl']}wmp.png' name='wmp' alt='Click here to listen with Windows Media Player' title='Click here to listen with Windows Media Player' />
+            <img src='{$site_config['pic_baseurl']}wmp.png' name='wmp' alt='Click here to listen with Windows Media Player' title='Click here to listen with Windows Media Player'>
         </a>
     </div>" . radioinfo($radio) . "
     <div class='has-text-centered'>

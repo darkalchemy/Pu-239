@@ -910,7 +910,7 @@ function get_one_row($table, $suffix, $where)
  */
 function stderr($heading, $text, $class = null)
 {
-    echo stdhead() . stdmsg($heading, $text, $class) . stdfoot();
+    echo stdhead() . stdmsg($heading, $text, $class . ' bottom20') . stdfoot();
     die();
 }
 

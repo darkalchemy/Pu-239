@@ -109,13 +109,13 @@ $g = sql_query($query) or print (is_object($mysqli)) ? mysqli_error($mysqli) : (
 $count = mysqli_num_rows($g);
 $HTMLOUT .= "
         <ul class='level-center bg-06'>
-            <li class='altlink margin20'>
+            <li class='altlink margin10'>
                 $link
             </li>
         </ul>
         <h1 class='has-text-centered'>{$lang['warn_total']} $count {$lang['warn_total_user']}" . plural($count) . '</h1>';
 if ($count == 0) {
-    $HTMLOUT .= main_div($lang['warn_hey_msg'] . strtolower($title));
+    $HTMLOUT .= stdmsg('', $lang['warn_hey_msg'] . strtolower($title));
 } else {
     $HTMLOUT .= "<form action='staffpanel.php?tool=warn&amp;action=warn' method='post'>";
     $heading = "

@@ -112,7 +112,6 @@ if ($mode === 'edit') {
         stderr($lang['news_success'], $lang['news_edit_success']);
     } else {
         $HTMLOUT .= "
-        <div class='portlet'>
             <h1>{$lang['news_edit_item']}</h1>
             <form method='post' name='compose' action='./staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid'>
                 <table class='table table-bordered table-striped'>
@@ -121,7 +120,7 @@ if ($mode === 'edit') {
                             Title
                         </td>
                         <td>
-                            <input type='text' name='title' value='" . htmlsafechars($arr['title']) . "' />
+                            <input type='text' name='title' value='" . htmlsafechars($arr['title']) . "'>
                         </td>
                     </tr>
                     <tr>
@@ -137,9 +136,9 @@ if ($mode === 'edit') {
                             {$lang['news_sticky']}
                         </td>
                         <td>
-                            <input type='radio' " . ($arr['sticky'] === 'yes' ? ' checked' : '') . " name='sticky' value='yes' />
+                            <input type='radio' " . ($arr['sticky'] === 'yes' ? ' checked' : '') . " name='sticky' value='yes'>
                             {$lang['news_yes']}
-                            <input type='radio' " . ($arr['sticky'] === 'no' ? ' checked' : '') . " name='sticky' value='no' />
+                            <input type='radio' " . ($arr['sticky'] === 'no' ? ' checked' : '') . " name='sticky' value='no'>
                             {$lang['news_no']}
                         </td>
                     </tr>
@@ -149,22 +148,21 @@ if ($mode === 'edit') {
                         </td>
                         <td>
                             {$lang['news_anonymous']}
-                            <input type='radio' " . ($arr['anonymous'] === 'yes' ? ' checked' : '') . " name='anonymous' value='yes' />
+                            <input type='radio' " . ($arr['anonymous'] === 'yes' ? ' checked' : '') . " name='anonymous' value='yes'>
                             {$lang['news_yes']}
-                            <input type='radio' " . ($arr['anonymous'] === 'no' ? ' checked' : '') . " name='anonymous' value='no' />
+                            <input type='radio' " . ($arr['anonymous'] === 'no' ? ' checked' : '') . " name='anonymous' value='no'>
                             {$lang['news_no']}
                         </td>
                     </tr>
                     <tr>
                         <td colspan='2'>
                             <div class='has-text-centered'>
-                                <input type='submit' value='{$lang['news_okay']}' class='button is-small' />
+                                <input type='submit' value='{$lang['news_okay']}' class='button is-small'>
                             </div>
                         </td>
                     </tr>
                 </table>
-            </form>
-        </div>";
+            </form>";
         echo stdhead($lang['news_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         die();
     }
@@ -182,7 +180,7 @@ if ($mode === 'news') {
                             Title
                         </td>
                         <td>
-                            <input type='text' name='title' value='' />
+                            <input type='text' name='title' value=''>
                         </td>
                     </tr>
                     <tr>
@@ -197,9 +195,9 @@ if ($mode === 'news') {
                             {$lang['news_sticky']}
                         </td>
                         <td>
-                            <input type='radio' checked name='sticky' value='yes' />
+                            <input type='radio' checked name='sticky' value='yes'>
                             {$lang['news_yes']}
-                            <input name='sticky' type='radio' value='no' />
+                            <input name='sticky' type='radio' value='no'>
                             {$lang['news_no']}
                         </td>
                     </tr>
@@ -208,16 +206,16 @@ if ($mode === 'news') {
                             {$lang['news_anonymous']}
                         </td>
                         <td>
-                            <input type='radio' checked name='anonymous' value='yes' />
+                            <input type='radio' checked name='anonymous' value='yes'>
                             {$lang['news_yes']}
-                            <input name='anonymous' type='radio' value='no' />
+                            <input name='anonymous' type='radio' value='no'>
                             {$lang['news_no']}
                         </td>
                     </tr>
                     <tr class='no_hover'>
                         <td colspan='2'>
                             <div class='has-text-centered'>
-                                <input type='submit' value='{$lang['news_okay']}' class='button is-small' />
+                                <input type='submit' value='{$lang['news_okay']}' class='button is-small'>
                             </div>
                         </td>
                     </tr>
@@ -241,14 +239,17 @@ if ($mode === 'news') {
                     <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid' title='{$lang['news_edit']}' class='tooltipper'>
                         <i class='icon-edit icon'></i>
                     </a>
-                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;newsid=$newsid&amp;sure=1&amp;h=$hash' title='{$lang['news_delete']}' class='has-text-red tooltipper'>
-                        <i class='icon-cancel icon'></i>
+                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;newsid=$newsid&amp;sure=1&amp;h=$hash' title='{$lang['news_delete']}' class='has-text-danger tooltipper'>
+                        <i class='icon-cancel icon has-text-danger'></i>
                     </a>
                 </div>
             </div>
-            <h2>" . htmlsafechars($title) . '</h2>
-            <div>' . format_comment($body) . '</div>');
+            <div class='padding20'>
+                <h2>" . htmlsafechars($title) . '</h2>
+                <div>' . format_comment($body) . '</div>
+            </div>');
     }
 }
+
 echo stdhead($lang['news_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 die();

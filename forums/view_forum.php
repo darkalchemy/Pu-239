@@ -142,7 +142,7 @@ foreach ($query as $sub_forums_arr) {
                                 </span>
                                 <span>
                                     <a class='altlink' href='{$site_config['baseurl']}/forums.php?action=delete_forum&amp;forum_id={$sub_forums_arr['sub_forum_id']}'>
-                                        <i class='icon-cancel icon'></i>
+                                        <i class='icon-cancel icon has-text-danger'></i>
                                     </a>
                                 </span>
                             </span>" : '') . '

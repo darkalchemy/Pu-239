@@ -54,17 +54,6 @@ function stdhead($title = '', $stdhead = null)
     {$css_incl}
     <link rel='stylesheet' href='" . get_file_name('main_css') . "'>";
 
-    if ($CURUSER) {
-        $htmlout .= "
-    <style>#mlike{cursor:pointer;}</style>
-    <script>
-        function resizeIframe(obj) {
-            obj.style.height = 0;
-            obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-        }
-    </script>";
-    }
-
     $captcha = [
         'login.php',
         'takelogin.php',
@@ -78,12 +67,10 @@ function stdhead($title = '', $stdhead = null)
     $action = in_array(basename($_SERVER['PHP_SELF']), $captcha) ? 'login' : 'homepage';
     if (in_array(basename($_SERVER['PHP_SELF']), $captcha) && !empty($_ENV['RECAPTCHA_SITE_KEY'])) {
         $htmlout .= "
-        <script>
-            var key = '{$_ENV['RECAPTCHA_SITE_KEY']}';
-        </script>
         <script src='https://www.google.com/recaptcha/api.js?render={$_ENV['RECAPTCHA_SITE_KEY']}'></script>";
     }
 
+    $font_size = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] : 85;
     $htmlout .= "
 </head>
 <body class='{$body_class}'>
@@ -93,6 +80,7 @@ function stdhead($title = '', $stdhead = null)
         if (theme) {
             document.body.className = theme;
         }
+        document.body.style.fontSize = '{$font_size}%';
     </script>
     <div id='container'>
         <div class='page-wrapper'>";
@@ -281,7 +269,7 @@ function stdfoot($stdfoot = false)
                 $body .= '
                             <tr>
                                 <td>' . ($key + 1) . '</td>
-                                <td>' . ($value['seconds'] > 0.01 ? "<span class='tooltipper has-text-red' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='tooltipper has-text-green' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
+                                <td>' . ($value['seconds'] > 0.01 ? "<span class='tooltipper has-text-danger' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='tooltipper has-text-green' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
                                 <td>
                                     <div class='text-justify'>" . format_comment($value['query']) . '</div>
                                 </td>
@@ -342,7 +330,7 @@ function stdfoot($stdfoot = false)
     </a>
     <script>
         $bg_image
-        var is_12_hour = '$use_12_hour';
+        var is_12_hour = $use_12_hour;
     </script>";
 
     $htmlfoot .= "
@@ -389,7 +377,9 @@ function stdmsg($heading, $text, $class = null)
     $htmlout .= "
                 <p>$text</p>";
 
-    return main_div($htmlout, "$class bottom20");
+    $htmlout = "<div class='padding20'>$htmlout</div>";
+
+    return main_div($htmlout, $class);
 }
 
 /**

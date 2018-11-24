@@ -21,7 +21,7 @@ $lang = [
     'hnr_settings_tage2' => 'Torrent Age Group 2 Under',
     'hnr_settings_tage3' => 'Torrent Age Group 3 Over',
     'hnr_settings_seed1_1' => 'Seed Time For Torrent Age Group 1 First Class',
-    'hnr_settings_hours' => 'Hours',
+    'hnr_settings_hours' => ' Hours',
     'hnr_settings_seed1_2' => 'Seed Time For Torrent Age Group 2 First Class',
     'hnr_settings_seed1_3' => 'Seed Time For Torrent Age Group 3 First Class',
     'hnr_settings_seed2_1' => 'Seed Time For Torrent Age Group 1 Second Class',
@@ -34,4 +34,7 @@ $lang = [
     'hnr_settings_allow' => 'Allowed Mark Of Cains',
     'hnr_settings_apply' => 'Apply changes',
     'hnr_settings_stdhead' => 'Hit And Run Settings',
+    'hnr_settings_group1' => 'Group 1',
+    'hnr_settings_group2' => 'Group 3',
+    'hnr_settings_group3' => 'Group 2',
 ];

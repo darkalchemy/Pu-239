@@ -54,16 +54,14 @@ if ($CURUSER['class'] >= UC_STAFF) {
         $mod_cache_name = $CURUSER['username'];
         $cache->set('editedby_' . $id, $mod_cache_name, $site_config['expires']['ismoddin']);
     }
-    $HTMLOUT .= '<h1 class="has-text-centered"><span class="has-text-red">' . $mod_cache_name . '</span> is currently editing this torrent!</h1>';
+    $HTMLOUT .= '<h1 class="has-text-centered"><span class="has-text-danger">' . $mod_cache_name . '</span> is currently editing this torrent!</h1>';
 }
-$ismodd = '<tr><td class=\'colhead\' colspan=\'2\'>Edit Torrent ' . (($CURUSER['class'] > UC_UPLOADER) ? '<small><a href="edit.php?id=' . $id . '&amp;unedit=1">Click here</a> to add temp edit notification while you edit this torrent</small>' : '') . '</td></tr>';
 $HTMLOUT .= "<form method='post' id='edit_form' name='edit_form' action='takeedit.php' enctype='multipart/form-data'>
     <input type='hidden' name='id' value='$id'>";
 if (isset($_GET['returnto'])) {
     $HTMLOUT .= "<input type='hidden' name='returnto' value='" . htmlsafechars($_GET['returnto']) . "'>\n";
 }
 $HTMLOUT .= "<table class='table table-bordered table-striped'>\n";
-$HTMLOUT .= $ismodd;
 $HTMLOUT .= tr($lang['edit_imdb_url'], "<input type='text' name='url' class='w-100' value='" . htmlsafechars($row['url']) . "'>", 1);
 $HTMLOUT .= tr($lang['edit_isbn'], "<input type='text' name='isbn' class='w-100' value='" . htmlsafechars($row['isbn']) . "'/><br>{$lang['edit_isbn_details']}", 1);
 $HTMLOUT .= tr($lang['edit_poster'], "<input type='text' name='poster' class='w-100' value='" . htmlsafechars($row['poster']) . "'><br>{$lang['edit_poster1']}\n", 1);

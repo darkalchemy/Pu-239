@@ -63,7 +63,7 @@ $HTMLOUT = "<?xml version='1.0'?>
         <language>en-us</language>
         <copyright>Copyright © " . date('Y') . " {$site_config['site_name']}</copyright>
         <webMaster>{$site_config['site_email']}({$site_config['site_name']})</webMaster>
-        <atom:link href='{$url}' rel='self' type='application/rss+xml' />
+        <atom:link href='{$url}' rel='self' type='application/rss+xml'>
         <image>
             <title>{$site_config['site_name']}</title>
             <url>{$site_config['baseurl']}/favicon-16x16.png</url>

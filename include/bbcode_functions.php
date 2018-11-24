@@ -481,8 +481,8 @@ function format_code($s)
                 return $s;
             }
         }
-        $s = str_replace('[code]', "<div><div class='size_3 has-text-weight-bold bottom10'>code:</div><div class='round10 padding10 bg-light'><code>", htmlspecialchars($s));
-        $s = str_replace('[/code]', '</code></div></div>', $s);
+        $s = str_replace('[code]', "<div><div class='size_3 has-text-weight-bold bottom10'>code:</div><div class='code'>", htmlspecialchars($s));
+        $s = str_replace('[/code]', '</div></div>', $s);
         $s = html_entity_decode($s);
     }
 

@@ -31,10 +31,10 @@ if (isset($_POST['do_it'])) {
 $main_links = "
             <div class='bottom20'>
                 <ul class='level-center bg-06'>
-                    <li class='altlink margin20'>
+                    <li class='altlink margin10'>
                         <a href='{$site_config['baseurl']}/staffpanel.php?tool=over_forums&amp;action=over_forums'>{$lang['forum_config_over']}</a>
                     </li>
-                    <li class='altlink margin20'>
+                    <li class='altlink margin10'>
                         <a href='{$site_config['baseurl']}/staffpanel.php?tool=forum_manage&amp;action=forum_manage'>{$lang['forum_config_manager']}</a>
                     </li>
                 </ul>
@@ -58,13 +58,13 @@ foreach ($accepted_file_types1 as $x) {
     $accepted_file_types .= $x . ' ';
 }
 $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=forum_config&amp;action=forum_config">
-            <input type="hidden" name="do_it" value="1" />
+            <input type="hidden" name="do_it" value="1">
         <table class="table table-bordered table-striped">
         <tr>
             <td><span style="font-weight: bold;">' . $lang['forum_config_delete'] . '</span></td>
             <td>
-            <input type="radio" name="delete_for_real" value="1" ' . ($arr['delete_for_real'] == 1 ? 'checked' : '') . ' />' . $lang['forum_config_yes'] . '
-            <input type="radio" name="delete_for_real" value="0" ' . ($arr['delete_for_real'] == 0 ? 'checked' : '') . ' />' . $lang['forum_config_no'] . '<br>
+            <input type="radio" name="delete_for_real" value="1" ' . ($arr['delete_for_real'] == 1 ? 'checked' : '') . '>' . $lang['forum_config_yes'] . '
+            <input type="radio" name="delete_for_real" value="0" ' . ($arr['delete_for_real'] == 0 ? 'checked' : '') . '>' . $lang['forum_config_no'] . '<br>
             ' . $lang['forum_config_no_desc'] . '</td>
         </tr>
         <tr>
@@ -88,30 +88,30 @@ $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=forum
           <tr>
             <td><span style="font-weight: bold;">' . $lang['forum_config_accepted'] . '</span>  </td>
             <td>
-            <input name="accepted_file_extension" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($accepted_file_extension) . '" /><br>
+            <input name="accepted_file_extension" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($accepted_file_extension) . '"><br>
             ' . $lang['forum_config_accepted_desc'] . '</td>
          </tr>
           <tr>
             <td><span style="font-weight: bold;">' . $lang['forum_config_accepted2'] . '</span>  </td>
             <td>
-            <input name="accepted_file_types" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($accepted_file_types) . '" /><br>
+            <input name="accepted_file_types" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($accepted_file_types) . '"><br>
             ' . $lang['forum_config_accepted2_desc'] . '</td>
          </tr>
           <tr>
             <td><span style="font-weight: bold;">' . $lang['forum_config_size'] . '</span>  </td>
             <td>
-            <input name="max_file_size" type="text" class="w-100" maxlength="200" value="' . intval($arr['max_file_size']) . '" /><br>
+            <input name="max_file_size" type="text" class="w-100" maxlength="200" value="' . intval($arr['max_file_size']) . '"><br>
             ' . $lang['forum_config_size_desc'] . '' . mksize($arr['max_file_size']) . '.</td>
          </tr>
           <tr>
             <td><span style="font-weight: bold;">' . $lang['forum_config_folder'] . '</span>  </td>
             <td>
-            <input name="upload_folder" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($arr['upload_folder']) . '" /><br>
+            <input name="upload_folder" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($arr['upload_folder']) . '"><br>
             ' . $lang['forum_config_folder_desc'] . '<br>
          </tr>
         <tr>
             <td colspan="2" class="has-text-centered">
-            <input type="submit" name="button" class="button is-small margin20" value="' . $lang['forum_config_save'] . '" /></td>
+            <input type="submit" name="button" class="button is-small margin20" value="' . $lang['forum_config_save'] . '"></td>
         </tr>
         </table></form>';
 /**

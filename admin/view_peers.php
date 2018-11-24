@@ -99,7 +99,7 @@ if (mysqli_num_rows($result) != 0) {
 
     $HTMLOUT .= main_table($body, $heading);
 } else {
-    $HTMLOUT .= main_div($lang['wpeers_notfound']);
+    $HTMLOUT .= stderr('', $lang['wpeers_notfound']);
 }
 if ($count > $peersperpage) {
     $HTMLOUT .= $pager['pagerbottom'];

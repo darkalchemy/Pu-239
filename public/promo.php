@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     if (!$q) {
         stderr('Error', 'Something wrong happned, please retry');
     } else {
-        stderr('Success', 'The promo link <b>' . htmlsafechars($promoname) . '</b> was added! here is the link <br><input type="text" name="promo-link" value="' . $site_config['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $link . '" size="80" onclick="select();"  /><br><a href="' . $_SERVER['PHP_SELF'] . '"><input type="button" value="Back to Promos" /></a>');
+        stderr('Success', 'The promo link <b>' . htmlsafechars($promoname) . '</b> was added! here is the link <br><input type="text" name="promo-link" value="' . $site_config['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $link . '" size="80" onclick="select();" ><br><a href="' . $_SERVER['PHP_SELF'] . '"><input type="button" class="button is-small" value="Back to Promos"></a>');
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'signup') {
     $r_check = sql_query('SELECT * FROM promo WHERE link=' . sqlesc($link)) or sqlerr(__FILE__, __LINE__);
@@ -171,18 +171,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr('Error', 'There is nothing for you here! Go play somewhere else');
     }
-    $HTMLOUT .= begin_frame('Add Promo Link');
+    $HTMLOUT .= begin_frame('Add Promo Link', true);
     $HTMLOUT .= "<form action='" . ($_SERVER['PHP_SELF']) . "' method='post' >
                     <table width='50%' class='has-text-centered' style='border-collapse:collapse;'>
                       <tr>
                         <td nowrap='nowrap' class='has-text-right' colspan='1'>Promo Name</td>
-                        <td class='has-text-left' width='100%' colspan='3'><input type='text' name='promoname' size='60' /></td>
+                        <td class='has-text-left' width='100%' colspan='3'><input type='text' name='promoname' size='60'></td>
                       </tr>
                       <tr>
                       <td nowrap='nowrap' class='has-text-right' >Days valid</td>
-                        <td class='has-text-left' width='100%' colspan='1'><input type='text' name='days_valid' size='15' /></td>
+                        <td class='has-text-left' width='100%' colspan='1'><input type='text' name='days_valid' size='15'></td>
                         <td nowrap='nowrap' class='has-text-right' >Max users</td>
-                        <td class='has-text-left' width='100%' colspan='2'><input type='text' name='max_users' size='15' /></td>
+                        <td class='has-text-left' width='100%' colspan='2'><input type='text' name='max_users' size='15'></td>
                       </tr>
                       <tr>
                         <td class='has-text-right' rowspan='3'>Bonuses</td>
@@ -193,15 +193,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
                         <td class='has-text-centered'>Karma</td>
                       </tr>
                       <tr>
-                        <td class='has-text-centered'><input type='text' name='bonus_upload' size='15' /></td>
-                        <td class='has-text-centered'><input type='text' name='bonus_invites' size='15' /></td>
-                        <td class='has-text-centered'><input type='text' name='bonus_karma' size='15' /></td>
+                        <td class='has-text-centered'><input type='text' name='bonus_upload' size='15'></td>
+                        <td class='has-text-centered'><input type='text' name='bonus_invites' size='15'></td>
+                        <td class='has-text-centered'><input type='text' name='bonus_karma' size='15'></td>
                       </tr>
-                      <tr><td class='has-text-centered' colspan='4'><input type='hidden' value='addpromo' name='do'  /><input type='submit' value='Add Promo!' /></td></tr>
+                      <tr><td class='has-text-centered' colspan='4'><input type='hidden' value='addpromo' name='do' ><input type='submit' value='Add Promo!' class='button is-small'></td></tr>
                     </table>
                 </form>";
     $HTMLOUT .= end_frame();
-    echo stdhead('Add Promo Link') . $HTMLOUT . stdfoot();
+    echo stdhead('Add Promo Link') . wrapper($HTMLOUT) . stdfoot();
 } elseif ($do === 'signup') {
     if (empty($link)) {
         stderr('Error', 'There is no link found! Please check the link');
@@ -261,18 +261,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
                                 </td></tr>
                                 <tr>
                               <td nowrap='nowrap' class='has-text-right'>Username</td>
-                              <td class='has-text-left' width='100%'><input type='text' size='40' name='username' /></td>
+                              <td class='has-text-left' width='100%'><input type='text' size='40' name='username'></td>
                             </tr>
-                            <tr><td nowrap='nowrap' class='has-text-right'>Password</td><td class='has-text-left' width='100%'><input type='password' name='password' size='40' /></td></tr>
-                            <tr><td nowrap='nowrap' class='has-text-right'>Password again</td><td class='has-text-left' width='100%'><input type='password' name='passwordagain' size='40' /></td></tr>
+                            <tr><td nowrap='nowrap' class='has-text-right'>Password</td><td class='has-text-left' width='100%'><input type='password' name='password' size='40'></td></tr>
+                            <tr><td nowrap='nowrap' class='has-text-right'>Password again</td><td class='has-text-left' width='100%'><input type='password' name='passwordagain' size='40'></td></tr>
                             <tr><td nowrap='nowrap' class='has-text-right'>Email</td><td class='has-text-left' width='100%'><input type='text' name='mail' size='40'/></td></tr>
                             <tr><td class='has-text-right' class='rowhead'>{$lang['signup_select']}</td><td class='has-text-left'><select name='passhint'>\n$passhint\n</select></td></tr>
-                            <tr><td class='has-text-right' class='rowhead'>{$lang['signup_enter']}</td><td class='has-text-left'><input type='text' size='40'  name='hintanswer' /><br><span style='font-size: 1em;'>{$lang['signup_this_answer']}<br>{$lang['signup_this_answer1']}</span></td></tr>
-                            <tr><td colspan='2' class='colhead' class='has-text-centered'><input type='hidden' name='link' value='" . ($link) . "'/><input type='hidden' name='do' value='signup'/><input type='submit' value='SignUp!' /></td></tr>
+                            <tr><td class='has-text-right' class='rowhead'>{$lang['signup_enter']}</td><td class='has-text-left'><input type='text' size='40'  name='hintanswer'><br><span style='font-size: 1em;'>{$lang['signup_this_answer']}<br>{$lang['signup_this_answer1']}</span></td></tr>
+                            <tr><td colspan='2' class='colhead' class='has-text-centered'><input type='hidden' name='link' value='" . ($link) . "'/><input type='hidden' name='do' value='signup'/><input type='submit' value='SignUp!' class='button is-small'></td></tr>
                           </table> 
                         </form>";
             $HTMLOUT .= end_frame();
-            echo stdhead('Signup for promo :' . htmlsafechars($ar['name']) . '') . $HTMLOUT . stdfoot();
+            echo stdhead('Signup for promo :' . htmlsafechars($ar['name']) . '') . wrapper($HTMLOUT) . stdfoot();
         }
     }
 } elseif ($do === 'accounts') {
@@ -312,10 +312,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
                 }
                 $HTMLOUT .= "</table>
                         <br>
-                    <div class='has-text-centered'><a href='javascript:close()'><input type='button' value='Close' /></a></div>
+                    <div class='has-text-centered'><a href='javascript:close()'><input type='button' class='button is-small' value='Close'></a></div>
                     </body>
                     </html>";
-                echo $HTMLOUT;
+                echo wrapper($HTMLOUT);
             } else {
                 die('No users');
             }
@@ -331,7 +331,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     if (mysqli_num_rows($r) == 0) {
         stderr('Error', 'There is no promo if you want to make one click <a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo">here</a>');
     } else {
-        $HTMLOUT .= begin_frame('Current Promos&#160;<font class="small"><a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo">- Add promo</a></font>');
+        $HTMLOUT .= begin_frame('Current Promos&#160;<a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo"><span class="size_3">- Add promo</span></a>', true);
         $HTMLOUT .= "<script>
         /*<![CDATA[*/
         function link(id)
@@ -361,7 +361,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
         while ($ar = mysqli_fetch_assoc($r)) {
             $active = (($ar['max_users'] == $ar['accounts_made']) || (($ar['added'] + (86400 * $ar['days_valid'])) < TIME_NOW)) ? false : true;
             $HTMLOUT .= '<tr ' . (!$active ? 'title="This promo has ended"' : '') . ">
-                <td nowrap='nowrap' class='has-text-centered'>" . (htmlsafechars($ar['name'])) . "<br><input type='text' " . (!$active ? 'disabled' : '') . " value='" . ($site_config['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $ar['link']) . "' size='60' name='" . (htmlsafechars($ar['name'])) . "' onclick='select();' /></td>
+                <td nowrap='nowrap' class='has-text-centered'>" . (htmlsafechars($ar['name'])) . "<br><input type='text' " . (!$active ? 'disabled' : '') . " value='" . ($site_config['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $ar['link']) . "' size='60' name='" . (htmlsafechars($ar['name'])) . "' onclick='select();'></td>
                 <td nowrap='nowrap' class='has-text-centered'>" . (date('d/M-Y', $ar['added'])) . "</td>
                 <td nowrap='nowrap' class='has-text-centered'>" . (date('d/M-Y', ($ar['added'] + (86400 * $ar['days_valid'])))) . "</td>
                 <td nowrap='nowrap' class='has-text-centered'>" . ((int) $ar['max_users']) . "</td>
@@ -370,11 +370,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
                 <td nowrap='nowrap' class='has-text-centered'>" . ((int) $ar['bonus_invites']) . "</td>
                 <td nowrap='nowrap' class='has-text-centered'>" . ((int) $ar['bonus_karma']) . "</td>
                 <td nowrap='nowrap' class='has-text-centered'>" . format_username($ar['creator']) . "</a></td>
-                <td nowrap='nowrap' class='has-text-centered'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . (int) $ar['id'] . "'><img src='{$site_config['pic_baseurl']}del.png' alt='Drop' /></a></td>
+                <td nowrap='nowrap' class='has-text-centered'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . (int) $ar['id'] . "'><img src='{$site_config['pic_baseurl']}del.png' alt='Drop'></a></td>
             </tr>";
         }
         $HTMLOUT .= '</table>';
         $HTMLOUT .= end_frame();
-        echo stdhead('Current Promos') . $HTMLOUT . stdfoot();
+        echo stdhead('Current Promos') . wrapper($HTMLOUT) . stdfoot();
     }
 }

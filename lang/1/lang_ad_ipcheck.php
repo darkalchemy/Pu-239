@@ -18,4 +18,6 @@ $lang = [
     'ipcheck_no' => 'No',
     'ipcheck_noaccess' => 'You are not able to view this page.',
     'ipcheck_stdhead' => 'Ip Check',
+    'ipcheck_sorry' => 'Sorry',
+    'ipcheck_no_dupes' => "The are no duplicate IP's in use.",
 ];

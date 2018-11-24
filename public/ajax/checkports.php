@@ -18,10 +18,10 @@ while ($curip = mysqli_fetch_assoc($res)) {
     $uagent = $curip['agent'];
     $connection = @fsockopen($uip, $uport, $errno, $errstr, 10);
     if (is_resource($connection)) {
-        $msg = "<span class='has-text-lime'> OPEN</span>";
+        $msg = "<span class='has-text-success'> OPEN</span>";
         fclose($connection);
     } else {
-        $msg = "<span class='has-text-red'> CLOSED => $errstr </span>";
+        $msg = "<span class='has-text-danger'> CLOSED => $errstr </span>";
     }
     $out .= "
 <div class='top20 bottom20 has-text-centered'>

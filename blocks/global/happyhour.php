@@ -19,7 +19,7 @@ if (HAPPY_HOUR === true) {
                         {$lang['gl_happyhour1']}<br>" . ((happyCheck('check') == 255) ? "
                         {$lang['gl_happyhour2']}" : "
                         {$lang['gl_happyhour3']}") . "<br>
-                        <span class='has-text-red'><b>" . happyHour('time') . '</b></span>
+                        <span class='has-text-danger'><b>" . happyHour('time') . '</b></span>
                     </div>
                 </div>
             </div>

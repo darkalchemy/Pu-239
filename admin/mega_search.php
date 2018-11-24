@@ -26,7 +26,7 @@ $HTMLOUT .= main_div('
                 ' . bubble($lang['mega_text'], $lang['mega_text_1']) . '
                 <textarea name="msg_to_analyze" rows="20" class="w-100">' . $msg_to_analyze . '</textarea>
                 <div class="has-text-centered top20">
-                    <input type="submit" class="button is-small" value="' . $lang['mega_search_btn'] . '" />
+                    <input type="submit" class="button is-small" value="' . $lang['mega_search_btn'] . '">
                 </div>
             </form>
         </div>', 'bottom20');
@@ -34,9 +34,9 @@ $HTMLOUT .= main_div('
         <div class="bg-00 round10 padding20 ">
             <form method="post" action="' . $site_config['baseurl'] . '/staffpanel.php?tool=mega_search&action=mega_search">
                 ' . bubble('<b>' . $lang['mega_invite'] . '</b>', $lang['mega_invite_1']) . '
-                <input type="text" name="invite_code" class="w-100" value="' . $invite_code . '" />
+                <input type="text" name="invite_code" class="w-100" value="' . $invite_code . '">
                 <div class="has-text-centered top20">
-                    <input type="submit" class="button is-small" value="' . $lang['mega_search_btn'] . '" />
+                    <input type="submit" class="button is-small" value="' . $lang['mega_search_btn'] . '">
                 </div>
             </form>
         </div>', 'bottom20');
@@ -46,7 +46,7 @@ $HTMLOUT .= main_div('
                 ' . bubble('<b>' . $lang['mega_names'] . '</b>', $lang['mega_names_1']) . '
                 <textarea name="user_names" rows="4" class="w-100">' . $user_names . '</textarea>
                 <div class="has-text-centered top20">
-                    <input type="submit" class="button is-small" value="' . $lang['mega_search_btn'] . '" />
+                    <input type="submit" class="button is-small" value="' . $lang['mega_search_btn'] . '">
                 </div>
             </form>
         </div>');
@@ -90,13 +90,13 @@ if (!empty($user_names)) {
                 </td>
                 <td>
                     <span class="has-text-success tooltipper" title="' . $lang['mega_uploaded'] . '">
-                        <img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" /> 
+                        <img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '"> 
                         ' . mksize($arr['uploaded']) . '
                     </span>
                     ' . (RATIO_FREE ? '
                 </td>' : '<br>
-                    <span class="has-text-red tooltipper" title="' . $lang['mega_downloaded'] . '">
-                        <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" />  
+                    <span class="has-text-danger tooltipper" title="' . $lang['mega_downloaded'] . '">
+                        <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '">  
                         ' . mksize($arr['downloaded']) . '
                     </span>
                 </td>') . '
@@ -112,13 +112,13 @@ if (!empty($user_names)) {
     if (!empty($failed)) {
         $body .= "
             <tr>
-                <td colspan='8'><span class='size_4 has-text-red text-shadow'>Not Found: </span><span class='has-text-blue'>" . implode(', ', $failed) . '</span></td>
+                <td colspan='8'><span class='size_4 has-text-danger text-shadow'>Not Found: </span><span class='has-text-blue'>" . implode(', ', $failed) . '</span></td>
             </tr>';
     }
     if (empty($body)) {
         $body = "
             <tr>
-                <td colspan='8'><span class='size_4 has-text-red text-shadow'>Not Found: </span><span class='has-text-blue'>" . implode(', ', $searched_users) . '</span></td>
+                <td colspan='8'><span class='size_4 has-text-danger text-shadow'>Not Found: </span><span class='has-text-blue'>" . implode(', ', $searched_users) . '</span></td>
             </tr>';
     }
     $heading = " 
@@ -181,13 +181,13 @@ if (isset($_POST['msg_to_analyze'])) {
                 </td>
                 <td>
                     <span class="has-text-success tooltipper" title="' . $lang['mega_uploaded'] . '">
-                        <img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" /> 
+                        <img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '"> 
                         ' . mksize($arr['uploaded']) . '
                     </span>
                     ' . (RATIO_FREE ? '
                 </td>' : '<br>
-                    <span class="tooltipper has-text-red" title="' . $lang['mega_downloaded'] . '">
-                        <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" />  
+                    <span class="tooltipper has-text-danger" title="' . $lang['mega_downloaded'] . '">
+                        <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '">  
                         ' . mksize($arr['downloaded']) . '
                     </span>
                 </td>') . '
@@ -203,7 +203,7 @@ if (isset($_POST['msg_to_analyze'])) {
         $body .= "
             <tr>
                 <td colspan='7'>
-                    <span class='size_4 has-text-red text-shadow'>Email" . plural($failed) . " Not Found: </span>
+                    <span class='size_4 has-text-danger text-shadow'>Email" . plural($failed) . " Not Found: </span>
                     <span class='has-text-blue'>" . implode(', ', $failed) . '</span>
                 </td>
             </tr>';
@@ -316,10 +316,10 @@ if (isset($_POST['msg_to_analyze'])) {
                         <span style="color: green;" title="last access">' . get_date($arr['last_access'], '') . '</span>
                     </td>
                     <td>
-                        <img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '" /> 
+                        <img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '"> 
                         <span style="color: green;">' . mksize($arr['uploaded']) . '</span>
                         ' . (RATIO_FREE ? '' : '<br>
-                        <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
+                        <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '">  
                         <span style="color: red;">' . mksize($arr['downloaded']) . '</span></td>') . '
                     <td>' . member_ratio($arr['uploaded'], RATIO_FREE ? '0' : $arr['downloaded']) . '</td>
                     <td>' . make_nice_address($arr['ip']) . '<br>
@@ -384,9 +384,9 @@ if (isset($_POST['invite_code'])) {
                     <td>' . htmlsafechars($user['ip']) . '</td>
                     <td>' . get_date($user['last_access'], '') . '</td>
                     <td>' . get_date($user['added'], '') . '</td>
-                    <td><img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '" /> <span style="color: green;">' . mksize($user['uploaded']) . '</span>
+                    <td><img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '"> <span style="color: green;">' . mksize($user['uploaded']) . '</span>
                     ' . (RATIO_FREE ? '' : '<br>
-                    <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
+                    <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '">  
                     <span style="color: red;">' . mksize($user['downloaded']) . '</span></td>') . '
                     <td>' . member_ratio($user['uploaded'], RATIO_FREE ? '0' : $user['downloaded']) . '</td>
                     <td>' . ($user['invitedby'] == 0 ? $lang['mega_open'] : format_username($user['invitedby'])) . '</td>
@@ -433,9 +433,9 @@ if (isset($_POST['invite_code'])) {
                     <td>' . htmlsafechars($user_invited['ip']) . '</td>
                     <td>' . get_date($user_invited['last_access'], '') . '</td>
                     <td>' . get_date($user_invited['added'], '') . '</td>
-                    <td><img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '" /> <span style="color: green;">' . mksize($user_invited['uploaded']) . '</span>
+                    <td><img src="' . $site_config['pic_baseurl'] . 'up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '"> <span style="color: green;">' . mksize($user_invited['uploaded']) . '</span>
                     ' . (RATIO_FREE ? '' : '<br>
-                    <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
+                    <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '">  
                     <span style="color: red;">' . mksize($user_invited['downloaded']) . '</span></td>') . '
                     <td>' . member_ratio($user_invited['uploaded'], RATIO_FREE ? '0' : $user_invited['downloaded']) . '</td>
                     <td>' . ($user_invited['invitedby'] == 0 ? $lang['mega_open'] : format_username($user_invited['receiver'])) . '</td>

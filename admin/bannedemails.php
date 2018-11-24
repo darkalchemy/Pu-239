@@ -26,42 +26,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: staffpanel.php?tool=bannedemails');
     die();
 }
-$HTMLOUT .= begin_frame("{$lang['ad_banemail_add']}", true);
-$HTMLOUT .= "<form method=\"post\" action=\"staffpanel.php?tool=bannedemails\">
-<table >
-<tr><td class='rowhead'>{$lang['ad_banemail_email']}</td>
-<td><input type=\"text\" name=\"email\" size=\"40\"/></td></tr>
-<tr><td class='rowhead'align='left'>{$lang['ad_banemail_comment']}</td>
-<td><input type=\"text\" name=\"comment\" size=\"40\"/></td></tr>
-<tr><td colspan='2'>{$lang['ad_banemail_info']}</td></tr>
-<tr><td colspan='2'>
-<input type='submit' value='{$lang['ad_banemail_ok']}' class='button is-small'></td></tr>
-</table></form>\n";
-$HTMLOUT .= end_frame();
+$HTMLOUT .= "
+    <h1 class='has-text-centered'>{$lang['ad_banemail_add']}</h1>
+    <form method='post' action='staffpanel.php?tool=bannedemails'>";
+$body = "
+        <tr>
+            <td class='rowhead'>{$lang['ad_banemail_email']}</td>
+            <td><input type='text' name='email' size='40'></td></tr>
+            <tr><td class='rowhead'align='left'>{$lang['ad_banemail_comment']}</td>
+            <td><input type='text' name='comment' size='40'></td>
+        </tr>
+        <tr>
+            <td colspan='2'>{$lang['ad_banemail_info']}</td>
+        </tr>
+        <tr>
+            <td colspan='2' class='has-text-centered'>
+                <input type='submit' value='{$lang['ad_banemail_ok']}' class='button is-small'>
+            </td>
+        </tr>";
+$HTMLOUT .= main_table($body) . '
+    </form>';
 $count1 = get_row_count('bannedemails');
 $perpage = 15;
 $pager = pager($perpage, $count1, 'staffpanel.php?tool=bannedemails&amp;');
 $res = sql_query('SELECT b.id, b.added, b.addedby, b.comment, b.email, u.username FROM bannedemails AS b LEFT JOIN users AS u ON b.addedby=u.id ORDER BY added DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
-$HTMLOUT .= begin_frame("{$lang['ad_banemail_current']}", true);
+$HTMLOUT .= "<h1 class='has-text-centered'>{$lang['ad_banemail_current']}</h1>";
 if ($count1 > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
 if (mysqli_num_rows($res) == 0) {
-    $HTMLOUT .= "<p><b>{$lang['ad_banemail_nothing']}</b></p>\n";
+    $HTMLOUT .= stdmsg('Sorry', "<p><b>{$lang['ad_banemail_nothing']}</b></p>");
 } else {
-    $HTMLOUT .= "<table >\n";
-    $HTMLOUT .= "<tr><td class='colhead'>{$lang['ad_banemail_add1']}</td><td class='colhead'>{$lang['ad_banemail_email']}</td>" . "<td class='colhead'>{$lang['ad_banemail_by']}</td><td class='colhead'>{$lang['ad_banemail_comment']}</td><td class='colhead'>{$lang['ad_banemail_remove']}</td></tr>\n";
+    $heading = "
+        <tr>
+            <th>{$lang['ad_banemail_add1']}</th>
+            <th>{$lang['ad_banemail_email']}</th>
+            <th>{$lang['ad_banemail_by']}</th>
+            <th>{$lang['ad_banemail_comment']}</th>
+            <th>{$lang['ad_banemail_remove']}</th>
+        </tr>";
+    $body = '';
     while ($arr = mysqli_fetch_assoc($res)) {
-        $HTMLOUT .= '<tr><td>' . get_date($arr['added'], '') . '</td>
+        $body .= '
+        <tr>
+            <td>' . get_date($arr['added'], '') . '</td>
             <td>' . htmlsafechars($arr['email']) . '</td>
             <td>' . format_username($arr['addedby']) . '</td>
             <td>' . htmlsafechars($arr['comment']) . "</td>
-            <td><a href='staffpanel.php?tool=bannedemails&amp;remove=" . (int) $arr['id'] . "'>{$lang['ad_banemail_remove1']}</a></td></tr>\n";
+            <td><a href='staffpanel.php?tool=bannedemails&amp;remove=" . (int) $arr['id'] . "'>{$lang['ad_banemail_remove1']}</a></td>
+        </tr>";
     }
-    $HTMLOUT .= "</table>\n";
+    $HTMLOUT .= main_table($body, $heading);
 }
 if ($count1 > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-$HTMLOUT .= end_frame();
 echo stdhead("{$lang['ad_banemail_head']}") . wrapper($HTMLOUT) . stdfoot();

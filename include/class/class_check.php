@@ -2,13 +2,13 @@
 
 require_once INCL_DIR . 'function_autopost.php';
 require_once INCL_DIR . 'html_functions.php';
-
+require_once INCL_DIR . 'staff_functions.php';
 /**
  * @param int  $class
  * @param bool $staff
  * @param bool $pin
  */
-function class_check($class = 0, $staff = true, $pin = false)
+function class_check($class = 0, $staff = true)
 {
     global $CURUSER, $site_config, $cache;
 
@@ -18,34 +18,6 @@ function class_check($class = 0, $staff = true, $pin = false)
     }
 
     if ($CURUSER['class'] >= $class) {
-        if ($pin) {
-            if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'])) {
-                header("Location: {$site_config['baseurl']}/404.html");
-                die();
-            }
-            $passed = false;
-            if (isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) && $_SERVER['PHP_AUTH_USER'] === ($CURUSER['username'])) {
-                $hash = md5($site_config['site']['salt2'] . $_SERVER['PHP_AUTH_PW'] . $CURUSER['secret']);
-                if (md5($site_config['site']['salt2'] . $site_config['staff']['staff_pin'] . $CURUSER['secret']) === $hash) {
-                    $passed = true;
-                }
-            }
-            if (!$passed) {
-                header('WWW-Authenticate: Basic realm="Administration"');
-                header('HTTP/1.0 401 Unauthorized');
-                $HTMLOUT = doc_head() . "
-    <meta property='og:title' content='ERROR'>
-    <title>ERROR</title>
-</head>
-<body>
-<h1>ERROR</h1>
-<p>Sorry! Access denied!</p>
-</body>
-</html>";
-                echo $HTMLOUT;
-                die();
-            }
-        }
         if ($staff) {
             if (($CURUSER['class'] > UC_MAX) || (!in_array($CURUSER['id'], $site_config['is_staff']['allowed']))) {
                 $ip = getip();
@@ -76,6 +48,7 @@ function class_check($class = 0, $staff = true, $pin = false)
         }
     } else {
         if (!$staff) {
+            write_info("{$CURUSER['username']} attempted to access a staff page");
             stderr('ERROR', 'No Permission. Page is for ' . get_user_class_name($class) . 's and above. Read FAQ.');
         } else {
             header("Location: {$site_config['baseurl']}/404.html");

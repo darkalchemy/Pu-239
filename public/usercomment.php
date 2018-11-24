@@ -55,10 +55,10 @@ if ($action === 'add') {
     $HTMLOUT .= "
     <h1 class='has-text-centered'>Add a comment for " . format_username($userid) . "</h1>
     <form method='post' action='usercomment.php?action=add'>
-        <input type='hidden' name='userid' value='$userid' />
+        <input type='hidden' name='userid' value='$userid'>
         <div>" . BBcode() . "</div>
         <div class='has-text-centered margin20'>
-        <input type='submit' class='button is-small' value='Do it!' />
+        <input type='submit' class='button is-small' value='Do it!'>
         </div>
     </form>";
 
@@ -110,11 +110,11 @@ if ($action === 'add') {
     $referer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
     $HTMLOUT .= '<h1 class="has-text-centered">Edit comment for ' . format_username($arr['userid']) . "</h1>
     <form method='post' action='usercomment.php?action=edit&amp;cid={$commentid}'>
-    <input type='hidden' name='returnto' value='{$referer}' />
-    <input type=\"hidden\" name=\"cid\" value='" . (int) $commentid . "' />
+    <input type='hidden' name='returnto' value='{$referer}'>
+    <input type=\"hidden\" name=\"cid\" value='" . (int) $commentid . "'>
     <textarea name='body' rows='10' class='w-100'>" . htmlsafechars($arr['text']) . "</textarea>
     <div class='has-text-centered margin20'>
-        <input type='submit' class='button is-small' value='Do it!' />
+        <input type='submit' class='button is-small' value='Do it!'>
     </div></form>";
     echo stdhead('Edit comment for ' . htmlsafechars($arr['username']), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     die();
@@ -126,7 +126,7 @@ if ($action === 'add') {
     $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : false;
     if (!$sure) {
         $referer = $_SERVER['HTTP_REFERER'];
-        stderr('Delete comment', "You are about to delete a comment. Click\n" . "<a href='usercomment.php?action=delete&amp;cid=$commentid&amp;sure=1" . ($referer ? '&amp;returnto=' . urlencode($referer) : '') . "'><span class='has-text-lime'>here</span></a> if you are sure.");
+        stderr('Delete comment', "You are about to delete a comment. Click\n" . "<a href='usercomment.php?action=delete&amp;cid=$commentid&amp;sure=1" . ($referer ? '&amp;returnto=' . urlencode($referer) : '') . "'><span class='has-text-success'>here</span></a> if you are sure.");
     }
     $arr = $fluent->from('usercomments')
         ->where('id = ?', $commentid)

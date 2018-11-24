@@ -41,8 +41,8 @@ if ($count === 0) {
     $HTMLOUT .= ($count > $perpage ? $menu_top : '');
     $heading = '
         <tr>
-            <th><img src="' . $site_config['pic_baseurl'] . 'forums/topic.gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></th>
-            <th><img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" class="icon tooltipper" alt=' . $lang['fe_thread_icon'] . '" title=' . $lang['fe_thread_icon'] . '" /></th>
+            <th><img src="' . $site_config['pic_baseurl'] . 'forums/topic.gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '"></th>
+            <th><img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" class="icon tooltipper" alt=' . $lang['fe_thread_icon'] . '" title=' . $lang['fe_thread_icon'] . '"></th>
             <th>' . $lang['fe_new_posts'] . '!</th>
             <th>' . $lang['fe_replies'] . '</th>
             <th>' . $lang['fe_views'] . '</th>
@@ -61,11 +61,11 @@ if ($count === 0) {
                     break;
 
                 case 'recycled':
-                    $topic_status_image = '<img src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" class="icon tooltipper" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" />';
+                    $topic_status_image = '<img src="' . $site_config['pic_baseurl'] . 'forums/recycle_bin.gif" class="icon tooltipper" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '">';
                     break;
 
                 case 'deleted':
-                    $topic_status_image = '<img src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" class="icon tooltipper" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_deleted'] . '" />';
+                    $topic_status_image = '<img src="' . $site_config['pic_baseurl'] . 'forums/delete_icon.gif" class="icon tooltipper" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_deleted'] . '">';
                     break;
             }
             $locked = $arr_unread['locked'] === 'yes';
@@ -88,12 +88,12 @@ if ($count === 0) {
             $posted = (mysqli_num_rows($did_i_post_here) > 0 ? 1 : 0);
             $sub = sql_query('SELECT user_id FROM subscriptions WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($arr_unread['topic_id'])) or sqlerr(__FILE__, __LINE__);
             $subscriptions = (mysqli_num_rows($sub) > 0 ? 1 : 0);
-            $icon = (empty($arr_unread['icon']) ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr_unread['icon']) . '.gif" class="icon tooltipper" alt="' . $lang['fe_unread'] . '" title="' . $lang['fe_unread'] . '" />');
-            $first_post_text = bubble(' <img src="' . $site_config['pic_baseurl'] . 'forums/mg.gif" class="icon tooltipper" alt="' . $lang['fe_preview'] . '" />', format_comment($arr_unread['body'], true, true, false), '' . $lang['fe_last_post'] . ' ' . $lang['fe_preview'] . '');
-            $topic_name = ($sticky ? '<img src="' . $site_config['pic_baseurl'] . 'forums/pinned.gif" class="icon tooltipper" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" /> ' : ' ') . ($topicpoll ? '<img src="' . $site_config['pic_baseurl'] . 'forums/poll.gif" class="icon tooltipper" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '" /> ' : ' ') . ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $arr_unread['topic_id'] . '" title="' . $lang['fe_1st_post_in_tread'] . '">' . htmlsafechars($arr_unread['topic_name'], ENT_QUOTES) . '</a><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $arr_unread['topic_id'] . '&amp;page=0#' . (int) $arr_post_read[0] . '" title="' . $lang['fe_1st_unread_post_topic'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/last_post.gif" class="icon tooltipper" alt="' . $lang['fe_last_post'] . '" title="' . $lang['fe_last_post'] . '" /></a>' . ($posted ? '<img src="' . $site_config['pic_baseurl'] . 'forums/posted.gif" class="icon tooltipper" alt="Posted" title="Posted" /> ' : ' ') . ($subscriptions ? '<img src="' . $site_config['pic_baseurl'] . 'forums/subscriptions.gif" class="icon tooltipper" alt="' . $lang['fe_subscribed'] . '" title="' . $lang['fe_subscribed'] . '" /> ' : ' ') . ' <img src="' . $site_config['pic_baseurl'] . 'forums/new.gif" class="icon tooltipper" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!" />';
+            $icon = (empty($arr_unread['icon']) ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '">' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr_unread['icon']) . '.gif" class="icon tooltipper" alt="' . $lang['fe_unread'] . '" title="' . $lang['fe_unread'] . '">');
+            $first_post_text = bubble(' <img src="' . $site_config['pic_baseurl'] . 'forums/mg.gif" class="icon tooltipper" alt="' . $lang['fe_preview'] . '">', format_comment($arr_unread['body'], true, true, false), '' . $lang['fe_last_post'] . ' ' . $lang['fe_preview'] . '');
+            $topic_name = ($sticky ? '<img src="' . $site_config['pic_baseurl'] . 'forums/pinned.gif" class="icon tooltipper" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '"> ' : ' ') . ($topicpoll ? '<img src="' . $site_config['pic_baseurl'] . 'forums/poll.gif" class="icon tooltipper" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '"> ' : ' ') . ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $arr_unread['topic_id'] . '" title="' . $lang['fe_1st_post_in_tread'] . '">' . htmlsafechars($arr_unread['topic_name'], ENT_QUOTES) . '</a><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $arr_unread['topic_id'] . '&amp;page=0#' . (int) $arr_post_read[0] . '" title="' . $lang['fe_1st_unread_post_topic'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/last_post.gif" class="icon tooltipper" alt="' . $lang['fe_last_post'] . '" title="' . $lang['fe_last_post'] . '"></a>' . ($posted ? '<img src="' . $site_config['pic_baseurl'] . 'forums/posted.gif" class="icon tooltipper" alt="Posted" title="Posted"> ' : ' ') . ($subscriptions ? '<img src="' . $site_config['pic_baseurl'] . 'forums/subscriptions.gif" class="icon tooltipper" alt="' . $lang['fe_subscribed'] . '" title="' . $lang['fe_subscribed'] . '"> ' : ' ') . ' <img src="' . $site_config['pic_baseurl'] . 'forums/new.gif" class="icon tooltipper" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!">';
             $body .= '
             <tr>
-                <td><img src="' . $site_config['pic_baseurl'] . 'forums/' . $topicpic . '.gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
+                <td><img src="' . $site_config['pic_baseurl'] . 'forums/' . $topicpic . '.gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '"></td>
                 <td>' . $icon . '</td>
                 <td>
                     <table>

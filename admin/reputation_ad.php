@@ -119,7 +119,7 @@ function show_level()
                     <i class='icon-edit icon'></i>
                 </a>
                 <a href='{$site_config['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=dodelete&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>
-                    <i class='icon-cancel icon has-text-red'></i>
+                    <i class='icon-trash-empty icon has-text-danger'></i>
                 </a>
             </td>
         </tr>";
@@ -450,7 +450,7 @@ function view_list()
                         <i class='icon-edit icon'></i>
                     </a>
                     <a href='{$site_config['baseurl']}/reputation_ad.php?mode=dodelrep&amp;reputationid={$r['reputationid']}'>
-                        <i class='icon-cancel icon has-text-red'></i>
+                        <i class='icon-trash-empty icon has-text-danger'></i>
                     </a>
                 </td>
             </tr>";

@@ -42,7 +42,7 @@ $div = "
     <form method='get' action='users.php?'>
         <div class='level-center-center'>
             <span class='right10 top20'>{$lang['form_search']}</span>
-            <input type='text' name='search' class='w-25 top20' />
+            <input type='text' name='search' class='w-25 top20'>
             <select name='class' class='left10 top20'>";
 $div .= "
                 <option value='-'>(any class)</option>";
@@ -56,7 +56,7 @@ for ($i = 0;; ++$i) {
 }
 $div .= "
             </select>
-            <input type='submit' value='{$lang['form_btn']}' class='button is-small left10 top20' />
+            <input type='submit' value='{$lang['form_btn']}' class='button is-small left10 top20'>
         </div>
     </form>";
 
@@ -108,7 +108,7 @@ if ($arr[0] > 0) {
                 </tr>";
     $body = '';
     while ($row = mysqli_fetch_assoc($res)) {
-        $country = ($row['name'] != null) ? "<img src='{$site_config['pic_baseurl']}flag/" . htmlsafechars($row['flagpic']) . "' alt='" . htmlsafechars($row['name']) . "' />" : '---';
+        $country = ($row['name'] != null) ? "<img src='{$site_config['pic_baseurl']}flag/" . htmlsafechars($row['flagpic']) . "' alt='" . htmlsafechars($row['name']) . "'>" : '---';
         $body .= '
                 <tr>
                     <td>' . format_username($row['id']) . '</td>

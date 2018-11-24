@@ -314,7 +314,7 @@ $HTMLOUT .= main_div($level1);
 $HTMLOUT .= "
                 </div>
             <div class='has-text-centered margin20'>
-                <input class='button is-small' type='submit' name='submit' value='{$lang['block_submit']}' />
+                <input class='button is-small' type='submit' name='submit' value='{$lang['block_submit']}'>
             </div>
         </fieldset>
     </div>
@@ -435,7 +435,7 @@ $HTMLOUT .= main_div($level2);
 $HTMLOUT .= "
                 </div>
             <div class='has-text-centered margin20'>
-                <input class='button is-small' type='submit' name='submit' value='{$lang['block_submit']}' />
+                <input class='button is-small' type='submit' name='submit' value='{$lang['block_submit']}'>
             </div>
         </fieldset>
         </div>
@@ -683,7 +683,7 @@ $HTMLOUT .= main_div($level3);
 $HTMLOUT .= "
                 </div>
             <div class='has-text-centered margin20'>
-                <input class='button is-small' type='submit' name='submit' value='{$lang['block_submit']}' />
+                <input class='button is-small' type='submit' name='submit' value='{$lang['block_submit']}'>
             </div>
         </fieldset>
     </div>
@@ -762,7 +762,7 @@ $HTMLOUT .= main_div($level4);
 $HTMLOUT .= "
                     </div>
                 <div class='has-text-centered margin20'>
-                    <input class='button is-small' type='submit' name='submit' value='{$lang['block_submit']}' />
+                    <input class='button is-small' type='submit' name='submit' value='{$lang['block_submit']}'>
                 </div>
             </fieldset>
         </div>
@@ -789,6 +789,6 @@ function template_out($matches)
     }
 
     return "
-    <input type='checkbox' id='{$matches[1]}' name='{$matches[1]}' value='1'" . ($BLOCKS[$matches[1]] == 1 ? ' checked' : '') . " /> 
+    <input type='checkbox' id='{$matches[1]}' name='{$matches[1]}' value='1'" . ($BLOCKS[$matches[1]] == 1 ? ' checked' : '') . "> 
     <label for='{$matches[1]}'></label>";
 }

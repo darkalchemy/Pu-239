@@ -183,7 +183,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                     $postrep['reason'] = $postrep['reason'] . " <span class='desc'>{$lang['rep_left_by']} " . format_username($postrep['leftby_id']) . '</span>';
                 }
                 $reasonbits .= "<tr>
-    <td class='row2' width='1%'><img src='{$site_config['pic_baseurl']}rep/reputation_$posneg.gif' alt='' /></td>
+    <td class='row2' width='1%'><img src='{$site_config['pic_baseurl']}rep/reputation_$posneg.gif' alt=''></td>
     <td class='row2'>{$postrep['reason']}</td>
 </tr>";
             }
@@ -268,14 +268,14 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                                                     <td>
                                                         <div>
                                                             <label for='rb_reputation_pos'>
-                                                                <input type='radio' name='reputation' value='pos' id='rb_reputation_pos' checked class='radiobutton' /> &#160;{$lang['rep_i_approve']}
+                                                                <input type='radio' name='reputation' value='pos' id='rb_reputation_pos' checked class='radiobutton'> &#160;{$lang['rep_i_approve']}
                                                             </label>
                                                         </div>";
         if ($negativerep) {
             $html .= "
                                                         <div>
                                                             <label for='rb_reputation_neg'>
-                                                                <input type='radio' name='reputation' value='neg' id='rb_reputation_neg' class='radiobutton' /> &#160;{$lang['rep_i_disapprove']}
+                                                                <input type='radio' name='reputation' value='neg' id='rb_reputation_neg' class='radiobutton'> &#160;{$lang['rep_i_disapprove']}
                                                             </label>
                                                         </div>";
         }
@@ -284,19 +284,19 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                                                 <tr>
                                                     <td>
                                                         {$lang['rep_your_comm_on_this_post']} " . $this_rep . "<br>
-                                                        <input type='text' size='40' maxlength='250' name='reason' />
+                                                        <input type='text' size='40' maxlength='250' name='reason'>
                                                     </td>
                                                 </tr>
                                             </table>
                                         </fieldset>
                                     </div>
                                     <div>
-                                        <input type='hidden' name='act' value='reputation' />
-                                        <input type='hidden' name='do' value='addrep' />
-                                        <input type='hidden' name='pid' value='{$input['pid']}' />
-                                        <input type='hidden' name='locale' value='{$input['locale']}' />
-                                        <input type='submit' value='" . $lang['info_add_rep'] . "' class='button is-small' accesskey='s' />
-                                        <input type='button' value='Close Window' class='button is-small' accesskey='c' onclick='self.close()' />
+                                        <input type='hidden' name='act' value='reputation'>
+                                        <input type='hidden' name='do' value='addrep'>
+                                        <input type='hidden' name='pid' value='{$input['pid']}'>
+                                        <input type='hidden' name='locale' value='{$input['locale']}'>
+                                        <input type='submit' value='" . $lang['info_add_rep'] . "' class='button is-small' accesskey='s'>
+                                        <input type='button' value='Close Window' class='button is-small' accesskey='c' onclick='self.close()'>
                                     </div>
                                 </form>
                             </td>
@@ -323,7 +323,7 @@ function rep_output($msg = '', $html = '')
     $htmlout = doc_head() . "
     <meta property='og:title' content='Reputation System'>
     <title>Reputation System</title>
-    <link rel='stylesheet' href='" . get_file_name('css') . "' />
+    <link rel='stylesheet' href='" . get_file_name('css') . "'>
 </head>
 <body class='$body_class'>
     <script>

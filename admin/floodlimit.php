@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $out .= main_table($body, $heading) . "
         <div class='has-text-centered'>
-            <p>{$lang['floodlimit_note']}</p>
+            <p class='padding10'>{$lang['floodlimit_note']}</p>
             <input type='submit' value='{$lang['floodlimit_save']}' class='button is-small margin20'>
         </div>
         </form>";

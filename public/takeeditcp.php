@@ -354,6 +354,11 @@ if ($action == 'avatar') {
         $user_cache['use_12_hour'] = $is_12_hour;
         $session->set('use_12_hour', $is_12_hour);
     }
+    if (isset($_POST['fontsize']) && is_int($fontsize) && ($fontsize = $_POST['fontsize']) != $CURUSER['font_size']) {
+        $updateset[] = 'font_size = ' . sqlesc($fontsize);
+        $curuser_cache['font_size'] = $fontsize;
+        $user_cache['font_size'] = $fontsize;
+    }
     if (isset($_POST['gender']) && ($gender = $_POST['gender']) != $CURUSER['gender']) {
         $updateset[] = 'gender = ' . sqlesc($gender);
         $curuser_cache['gender'] = $gender;

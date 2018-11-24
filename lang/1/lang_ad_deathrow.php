@@ -41,4 +41,11 @@ $lang = [
     'deathrow_msg9' => ' Move along.',
     'deathrow_msg0' => ' Move along... move along.',
     'deathrow_stdhead0' => '0 Torrents on deathrow',
+    'deathrow_dead' => 'Dead Torrent Notice',
+    'deathrow_warn' => 'will soon be deleted. Please re-seed this torrent to avoid deletion',
+    'deathrow_torrent' => 'Torrent',
+    'deathrow_owner' => 'Torrent Owner',
+    'deathrow_notified' => ' Notified',
+    'deathrow_notify' => ' Notify',
+    'deathrow_failed' => 'Torrnet Notification Failed',
 ];

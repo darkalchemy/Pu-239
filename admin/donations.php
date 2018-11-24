@@ -43,13 +43,14 @@ if ($count > $perpage) {
 
 $HTMLOUT .= "
     <ul class='level-center bg-06'>
-        <li class='altlink margin20'>
+        <li class='altlink margin10'>
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=donations&amp;action=donations'>{$lang['donate_curr_don']}</a>
         </li>
-        <li class='altlink margin20'>
+        <li class='altlink margin10'>
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=donations&amp;action=donations&amp;total_donors=1'>{$lang['donate_all_don']}</a>
         </li>
-    </ul>";
+    </ul>
+    <h1 class='has-text-centered'>Site Donations</h1>";
 $heading = "
     <tr>
         <th>{$lang['donate_id']}</th>

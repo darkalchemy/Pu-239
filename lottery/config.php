@@ -59,24 +59,24 @@ if ($lottery_config['enable']) {
                 <tr>
                     <td class='rowhead'>Enable The Lottery</td>
                     <td>
-                        <input type='radio' name='enable' value='1' " . ($lottery_config['enable'] ? 'checked' : '') . " /> Yes
-                        <input type='radio' name='enable' value='0' " . (!$lottery_config['enable'] ? 'checked' : '') . " /> No
+                        <input type='radio' name='enable' value='1' " . ($lottery_config['enable'] ? 'checked' : '') . "> Yes
+                        <input type='radio' name='enable' value='0' " . (!$lottery_config['enable'] ? 'checked' : '') . "> No
                     </td>
                 </tr>
                 <tr>
                     <td>Use Prize Fund (No, uses default pot of all users)</td>
                     <td>
-                        <input type='radio' name='use_prize_fund' value='1' " . ($lottery_config['use_prize_fund'] ? 'checked' : '') . " /> Yes
-                        <input type='radio' name='use_prize_fund' value='0' " . (!$lottery_config['use_prize_fund'] ? 'checked' : '') . " /> No
+                        <input type='radio' name='use_prize_fund' value='1' " . ($lottery_config['use_prize_fund'] ? 'checked' : '') . "> Yes
+                        <input type='radio' name='use_prize_fund' value='0' " . (!$lottery_config['use_prize_fund'] ? 'checked' : '') . "> No
                     </td>
                 </tr>
                 <tr>
                     <td>Prize Fund</td>
-                    <td><input type='text' name='prize_fund' value='{$lottery_config['prize_fund']}' class='w-100' /></td>
+                    <td><input type='text' name='prize_fund' value='{$lottery_config['prize_fund']}' class='w-100'></td>
                 </tr>
                 <tr>
                     <td>Ticket Amount</td>
-                    <td><input type='text' name='ticket_amount' value='{$lottery_config['ticket_amount']}' class='w-100' /></td>
+                    <td><input type='text' name='ticket_amount' value='{$lottery_config['ticket_amount']}' class='w-100'></td>
                 </tr>
                 <tr>
                     <td>Ticket Amount Type</td>
@@ -88,7 +88,7 @@ if ($lottery_config['enable']) {
                 </tr>
                 <tr>
                     <td>Amount Of Tickets Allowed</td>
-                    <td><input type='text' name='user_tickets' value='{$lottery_config['user_tickets']}' class='w-100' /></td>
+                    <td><input type='text' name='user_tickets' value='{$lottery_config['user_tickets']}' class='w-100'></td>
                 </tr>
                 <tr>
                     <td>Classes Allowed</td>
@@ -96,7 +96,7 @@ if ($lottery_config['enable']) {
     for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
         $table .= "
                     <label for='c{$i}'>
-                        <input type='checkbox' value='{$i}' id='c{$i}' name='class_allowed[]' /> " . get_user_class_name($i) . '
+                        <input type='checkbox' value='{$i}' id='c{$i}' name='class_allowed[]'> " . get_user_class_name($i) . '
                     </label>';
     }
     $table .= "
@@ -104,7 +104,7 @@ if ($lottery_config['enable']) {
                 </tr>
                 <tr>
                     <td>Total Winners</td>
-                    <td><input type='text' name='total_winners' value='{$lottery_config['total_winners']}' class='w-100' /></td>
+                    <td><input type='text' name='total_winners' value='{$lottery_config['total_winners']}' class='w-100'></td>
                 </tr>
                 <tr>
                     <td>Start Date</td>
@@ -135,7 +135,7 @@ if ($lottery_config['enable']) {
                 <tr>
                     <td colspan='2'>
                         <div class='has-text-centered'>
-                            <input type='submit' class='button is-small' value='Apply changes' />
+                            <input type='submit' class='button is-small' value='Apply changes'>
                         </div>
                     </td>
                 </tr>";

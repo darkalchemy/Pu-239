@@ -39,10 +39,10 @@ function left()
     $left = $site_config['failedlogins'] - $count;
     if ($left <= 2) {
         $left = "
-        <span class='has-text-red'>{$left}</span>";
+        <span class='has-text-danger'>{$left}</span>";
     } else {
         $left = "
-        <span class='has-text-lime'>{$left}</span>";
+        <span class='has-text-success'>{$left}</span>";
     }
 
     return $left;
@@ -63,8 +63,8 @@ $body = "
                         <td class='rowhead'>{$lang['login_username']}</td>
                         <td>
                             <input type='text' class='w-100' name='username' autocomplete='on'>" . ($got_ssl ? "
-                            <input type='hidden' name='use_ssl' value='" . ($got_ssl ? 1 : 0) . "' id='ssl' />" : '') . "
-                            <input type='hidden' id='token' name='token' value='' />
+                            <input type='hidden' name='use_ssl' value='" . ($got_ssl ? 1 : 0) . "' id='ssl'>" : '') . "
+                            <input type='hidden' id='token' name='token' value=''>
                         </td>
                     </tr>
                     <tr class='no_hover'>
@@ -81,7 +81,7 @@ $body .= "
 
 if (isset($returnto)) {
     $body .= "
-                            <input type='hidden' name='returnto' value='" . htmlsafechars($returnto) . "' />";
+                            <input type='hidden' name='returnto' value='" . htmlsafechars($returnto) . "'>";
 }
 $body .= "           </td>
                     </tr>
@@ -89,7 +89,7 @@ $body .= "           </td>
                         <td colspan='2' class='has-text-centered'>
                             <span class='has-text-centered margin5'>
                                 <label for='remember' class='level-item tooltipper' title='Keep me logged in'>Remember Me?
-                                    <input type='checkbox' name='remember' value='1' id='remember' class='left10' />
+                                    <input type='checkbox' name='remember' value='1' id='remember' class='left10'>
                                 </label>
                             </span>
                         </td>

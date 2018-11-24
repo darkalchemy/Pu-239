@@ -146,7 +146,7 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
         }
 
         if (!empty($mode)) {
-            return '<div class="bottom10">Rep: ' . $posneg . "</div><span><a href='javascript:;' onclick=\"PopUp('{$site_config['baseurl']}/reputation.php?pid=" . ($post_id != 0 ? (int) $post_id : (int) $user['id']) . '&amp;locale=' . $mode . "','Reputation',400,300,1,1);\" title='Add reputation: " . htmlsafechars($user['username']) . "' class='tooltipper'><i class='icon-ok icon has-text-lime'></i></a></span>";
+            return '<div class="bottom10">Rep: ' . $posneg . "</div><span><a href='javascript:;' onclick=\"PopUp('{$site_config['baseurl']}/reputation.php?pid=" . ($post_id != 0 ? (int) $post_id : (int) $user['id']) . '&amp;locale=' . $mode . "','Reputation',400,300,1,1);\" title='Add reputation: " . htmlsafechars($user['username']) . "' class='tooltipper'><i class='icon-ok icon has-text-success'></i></a></span>";
         } else {
             return ' ' . $posneg;
         }
@@ -471,7 +471,7 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
     if ($users_data['id'] === 0) {
         return 'System';
     } elseif (empty($users_data['username'])) {
-        return "<span class='has-text-red'>unknown_id[$user_id]</span>";
+        return "<span class='has-text-danger'>unknown_id[$user_id]</span>";
     }
     $avatar = get_avatar($users_data);
     $tip = $tooltip = '';

@@ -14,7 +14,7 @@ if (!$session->validateToken($_POST['csrf'])) {
 }
 $dt = TIME_NOW;
 $subject = 'Request reseed!';
-$msg = "@{$CURUSER['username']} asked for a reseed on [url={$site_config['baseurl']}/details.php?id={$reseedid}][class=has-text-lime]{$name}[/class][/url]![br][br]Thank You!";
+$msg = "@{$CURUSER['username']} asked for a reseed on [url={$site_config['baseurl']}/details.php?id={$reseedid}][class=has-text-success]{$name}[/class][/url]![br][br]Thank You!";
 $msgs_buffer = [];
 if ($pm_what === 'last10') {
     $res = sql_query('SELECT s.userid, s.torrentid FROM snatched AS s WHERE s.torrentid =' . sqlesc($reseedid) . " AND s.seeder = 'yes' LIMIT 10") or sqlerr(__FILE__, __LINE__);

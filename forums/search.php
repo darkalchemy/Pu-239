@@ -261,28 +261,28 @@ $search__help_boolean = '
     <div id="help" style="display:none">
         <h1 class="has-text-centered">' . $lang['sea_help_msg1'] . '</h1>
         <div class="columns">
-            <div class="has-text-lime has-text-weight-bold column is-1 has-text-centered">+</div><div class="column">' . $lang['sea_help_msg2'] . '</div>
+            <div class="has-text-success has-text-weight-bold column is-1 has-text-centered">+</div><div class="column">' . $lang['sea_help_msg2'] . '</div>
         </div>
         <div class="columns">
-            <div class="has-text-lime has-text-weight-bold column is-1 has-text-centered">-</div><div class="column">' . $lang['sea_help_msg3'] . '</div>
+            <div class="has-text-success has-text-weight-bold column is-1 has-text-centered">-</div><div class="column">' . $lang['sea_help_msg3'] . '</div>
         </div>
         <div class="columns">
             <div class="column is-1 has-text-centered"></div><div class="column">' . $lang['sea_help_msg4'] . '</div>
         </div>
         <div class="columns">
-            <div class="has-text-lime has-text-weight-bold column is-1 has-text-centered">*</div><div class="column">' . $lang['sea_help_msg5'] . '</div>
+            <div class="has-text-success has-text-weight-bold column is-1 has-text-centered">*</div><div class="column">' . $lang['sea_help_msg5'] . '</div>
         </div>
         <div class="columns">
-            <div class="has-text-lime has-text-weight-bold column is-1 has-text-centered">> <</div><div class="column">' . $lang['sea_help_msg6'] . '</div>
+            <div class="has-text-success has-text-weight-bold column is-1 has-text-centered">> <</div><div class="column">' . $lang['sea_help_msg6'] . '</div>
         </div>
         <div class="columns">
-            <div class="has-text-lime has-text-weight-bold column is-1 has-text-centered">~</div><div class="column">' . $lang['sea_help_msg7'] . '</div>
+            <div class="has-text-success has-text-weight-bold column is-1 has-text-centered">~</div><div class="column">' . $lang['sea_help_msg7'] . '</div>
         </div>
         <div class="columns">
-            <div class="has-text-lime has-text-weight-bold column is-1 has-text-centered">" "</div><div class="column">' . $lang['sea_help_msg8'] . '</div>
+            <div class="has-text-success has-text-weight-bold column is-1 has-text-centered">" "</div><div class="column">' . $lang['sea_help_msg8'] . '</div>
         </div>
         <div class="columns">
-            <div class="has-text-lime has-text-weight-bold column is-1 has-text-centered">( )</div><div class="column">' . $lang['sea_help_msg9'] . '</div>
+            <div class="has-text-success has-text-weight-bold column is-1 has-text-centered">( )</div><div class="column">' . $lang['sea_help_msg9'] . '</div>
         </div>
     </div>';
 $search_in_forums = '<table class="table-striped">';
@@ -303,7 +303,7 @@ while ($arr_forums = mysqli_fetch_assoc($res_forums)) {
         $row_count = ($row_count == 3 ? 0 : $row_count);
         $search_in_forums .= ($row_count == 0 ? '' : '');
         ++$row_count;
-        $search_in_forums .= '<tr><td class="has-no-border"><input name="f' . $arr_forums['real_forum_id'] . '" type="checkbox" ' . ($selected_forums ? 'checked="checked"' : '') . ' value="1" /><a href="forums.php?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '" class="altlink" title="' . htmlsafechars($arr_forums['description'], ENT_QUOTES) . '">' . htmlsafechars($arr_forums['name'], ENT_QUOTES) . '</a></td></tr> ' . ($row_count == 3 ? '</td></tr>' : '');
+        $search_in_forums .= '<tr><td class="has-no-border"><input name="f' . $arr_forums['real_forum_id'] . '" type="checkbox" ' . ($selected_forums ? 'checked="checked"' : '') . ' value="1"><a href="forums.php?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '" class="altlink" title="' . htmlsafechars($arr_forums['description'], ENT_QUOTES) . '">' . htmlsafechars($arr_forums['name'], ENT_QUOTES) . '</a></td></tr> ' . ($row_count == 3 ? '</td></tr>' : '');
     }
     $over_forum_id = $arr_forums['over_forum_id'];
 }
@@ -332,7 +332,7 @@ $search_in_forums .= '<tr><td class="has-no-border"><span class="has-text-weight
     $row_count = ($row_count == 3 ? 0 : $row_count);
     $search_in_forums .= ($row_count == 0 ? '<tr>' : '');
     ++$row_count;
-    $search_in_forums .= '<td align="left"><input name="f'.$arr_forums['real_forum_id'].'" type="checkbox" '.(in_array($arr_forums['real_forum_id'], $selected_forums) ? 'checked="checked"' : '').' value="1" />
+    $search_in_forums .= '<td align="left"><input name="f'.$arr_forums['real_forum_id'].'" type="checkbox" '.(in_array($arr_forums['real_forum_id'], $selected_forums) ? 'checked="checked"' : '').' value="1">
     <a href="forums.php?action=view_forum&amp;forum_id='.$arr_forums['real_forum_id'].'" class="altlink" title="'.htmlsafechars($arr_forums['description'], ENT_QUOTES).'">'.htmlsafechars($arr_forums['name'], ENT_QUOTES).'</a> '.($row_count == 3 ? '</tr>' : '');
     }
     $over_forum_id = $arr_forums['over_forum_id'];
@@ -371,7 +371,7 @@ $sort_by_drop_down = '<select name="sort_by">
 	<option class="body" value="date"' . ('date' === $sort_by ? ' selected="selected"' : '') . '>' . $lang['sea_post_date'] . '</option>
 	</select>';
 $HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">' . $lang['sea_forums'] . '</h1>' . ($count > 0 ? '<h1>' . $count . ' ' . $lang['sea_search_results'] . ' ' . $lang['sea_below'] . '</h1>' : ($search ? $content : '')) . '
-	<form method="get" action="forums.php?"><input type="hidden" name="action" value="search" /><table class="table table-bordered table-striped">
+	<form method="get" action="forums.php?"><input type="hidden" name="action" value="search"><table class="table table-bordered table-striped">
 	<tr>
 	<td align="center" colspan="2"><span style="color: white; font-weight: bold;">' . $site_config['site_name'] . ' ' . $lang['sea_forums_search'] . '</span></td>
 	</tr>
@@ -380,17 +380,17 @@ $HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">' . $lang['sea_forums'] 
 	<span style="font-weight: bold;white-space:nowrap;">' . $lang['sea_search_in'] . ':</span>
 	</td>
 	<td align="left" valign="middle">
-	<input type="radio" name="search_what" value="title" ' . ('title' === $search_what ? 'checked="checked"' : '') . ' /> <span class="has-text-weight-bold">Title(s)</span> 
-	<input type="radio" name="search_what" value="body" ' . ('body' === $search_what ? 'checked="checked"' : '') . ' /> <span class="has-text-weight-bold">Body text</span>  
-	<input type="radio" name="search_what" value="all" ' . ('all' === $search_what ? 'checked="checked"' : '') . ' /> <span class="has-text-weight-bold">All</span> [ default ]</td>
+	<input type="radio" name="search_what" value="title" ' . ('title' === $search_what ? 'checked="checked"' : '') . '> <span class="has-text-weight-bold">Title(s)</span> 
+	<input type="radio" name="search_what" value="body" ' . ('body' === $search_what ? 'checked="checked"' : '') . '> <span class="has-text-weight-bold">Body text</span>  
+	<input type="radio" name="search_what" value="all" ' . ('all' === $search_what ? 'checked="checked"' : '') . '> <span class="has-text-weight-bold">All</span> [ default ]</td>
 	</tr>
 	<tr>
 	<td align="right" width="60px" valign="middle">
 	<span style="font-weight: bold;white-space:nowrap;">' . $lang['sea_search_terms'] . ':</span></td>
 	<td align="left">
-	<input type="text" class="search" name="search" value="' . htmlsafechars($search) . '" />
+	<input type="text" class="search" name="search" value="' . htmlsafechars($search) . '">
 	<span style="text-align: right;">
-	<a class="altlink"  title="' . $lang['sea_open_boolean_search_help'] . '"  id="help_open" style="font-weight:bold;cursor:help;"><img src="' . $site_config['pic_baseurl'] . 'forums/more.gif" alt="+" title="+" class="emoticon" /> ' . $lang['sea_open_boolean_search_help'] . '</a>
+	<a class="altlink"  title="' . $lang['sea_open_boolean_search_help'] . '"  id="help_open" style="font-weight:bold;cursor:help;"><img src="' . $site_config['pic_baseurl'] . 'forums/more.gif" alt="+" title="+" class="emoticon"> ' . $lang['sea_open_boolean_search_help'] . '</a>
 	<a class="altlink"  title="' . $lang['sea_close_boolean_search_help'] . '"  id="help_close" style="font-weight:bold;cursor:pointer;display:none"><img src="' . $site_config['pic_baseurl'] . 'forums/less.gif" alt="-" title="-" class="emoticon"> ' . $lang['sea_close_boolean_search_help'] . '</a>
 	</span>' . $search__help_boolean . '</td>
 	</tr>
@@ -399,7 +399,7 @@ $HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">' . $lang['sea_forums'] 
 	<span style="font-weight: bold;white-space:nowrap;">' . $lang['sea_by_member'] . ':</span>
 	</td>
 	<td align="left">' . $author_error . '
-	<input type="text" class="member" name="author" value="' . $author . '" /> 	' . $lang['sea_search_only_posts_by_this_member'] . '</td>
+	<input type="text" class="member" name="author" value="' . $author . '"> 	' . $lang['sea_search_only_posts_by_this_member'] . '</td>
 	</tr>
 	<tr>
 	<td align="right" width="60px" valign="middle">
@@ -413,8 +413,8 @@ $HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">' . $lang['sea_forums'] 
 	<span style="font-weight: bold;white-space:nowrap;">' . $lang['sea_sort_by'] . ':</span>
 	</td>
 	<td align="left">' . $sort_by_drop_down . '
-	<input type="radio" name="asc_desc" value="ASC" ' . ('ASC' === $asc_desc ? 'checked="checked"' : '') . ' /> <span class="has-text-weight-bold">' . $lang['sea_ascending'] . '</span>  
-	<input type="radio" name="asc_desc" value="DESC" ' . ('DESC' === $asc_desc ? 'checked="checked"' : '') . ' /> <span class="has-text-weight-bold">' . $lang['sea_descending'] . '</span> 
+	<input type="radio" name="asc_desc" value="ASC" ' . ('ASC' === $asc_desc ? 'checked="checked"' : '') . '> <span class="has-text-weight-bold">' . $lang['sea_ascending'] . '</span>  
+	<input type="radio" name="asc_desc" value="DESC" ' . ('DESC' === $asc_desc ? 'checked="checked"' : '') . '> <span class="has-text-weight-bold">' . $lang['sea_descending'] . '</span> 
 	</td>
 	</tr>
 	<tr><td align="right" width="60px" valign="top">
@@ -425,9 +425,9 @@ $HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">' . $lang['sea_forums'] 
 	</tr>
 	<tr>
 	<td colspan="2" class="has-text-centered">
-	<input type="radio" name="show_as" value="list" ' . ('list' === $show_as ? 'checked="checked"' : '') . ' /> <span class="has-text-weight-bold">' . $lang['sea_results_as_list'] . '</span>  
-	<input type="radio" name="show_as" value="posts" ' . ('posts' === $show_as ? 'checked="checked"' : '') . ' /> <span class="has-text-weight-bold">' . $lang['sea_results_as_posts'] . '</span>  
-	<input type="submit" name="button" class="button is-small" value="' . $lang['gl_search'] . '"  />
+	<input type="radio" name="show_as" value="list" ' . ('list' === $show_as ? 'checked="checked"' : '') . '> <span class="has-text-weight-bold">' . $lang['sea_results_as_list'] . '</span>  
+	<input type="radio" name="show_as" value="posts" ' . ('posts' === $show_as ? 'checked="checked"' : '') . '> <span class="has-text-weight-bold">' . $lang['sea_results_as_posts'] . '</span>  
+	<input type="submit" name="button" class="button is-small" value="' . $lang['gl_search'] . '" >
 	</td>
 	</tr>
 	</table></form>' . $content;

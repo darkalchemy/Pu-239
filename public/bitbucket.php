@@ -95,7 +95,7 @@ $htmlout .= main_div("
     <div id='droppable' class='droppable bg-03'>
         <span id='comment'>{$lang['bitbucket_dragndrop']}</span>
         <div id='loader' class='is-hidden'>
-            <img src='{$site_config['pic_baseurl']}forums/updating.svg' alt='Loading...' />
+            <img src='{$site_config['pic_baseurl']}forums/updating.svg' alt='Loading...'>
         </div>
     </div>");
 
@@ -166,17 +166,17 @@ if (isset($_GET['images'])) {
             $htmlout .= main_div("
             <div class='padding20 margin20 round10 bg-00'>
                 <div class='margin20'>
-                    <a href='{$site_config['baseurl']}/img.php?{$filename}' data-lightbox='bitbucket' />
-                        <img src='{$site_config['baseurl']}/img.php?{$filename}' class='w-50 img-responsive' alt='' />
+                    <a href='{$site_config['baseurl']}/img.php?{$filename}' data-lightbox='bitbucket'>
+                        <img src='{$site_config['baseurl']}/img.php?{$filename}' class='w-50 img-responsive' alt=''>
                     </a>
                 </div>
                 <h3>{$lang['bitbucket_directlink']}</h3>
                 <div class='bottom10'>
-                    <input id='d{$eid}d' onclick=\"SelectAll('d{$eid}d');\" type='text' size='70' value='{$site_config['baseurl']}/img.php?{$filename}' readonly='readonly' />
+                    <input id='d{$eid}d' onclick=\"SelectAll('d{$eid}d');\" type='text' size='70' value='{$site_config['baseurl']}/img.php?{$filename}' readonly='readonly'>
                 </div>
                 <h3>{$lang['bitbucket_tags']}</h3>
                 <div class='bottom10'>
-                    <input id='t{$eid}t' onclick=\"SelectAll('t{$eid}t');\" type='text' size='70' value='[img]{$site_config['baseurl']}/img.php?{$filename}[/img]' readonly='readonly' />
+                    <input id='t{$eid}t' onclick=\"SelectAll('t{$eid}t');\" type='text' size='70' value='[img]{$site_config['baseurl']}/img.php?{$filename}[/img]' readonly='readonly'>
                 </div>
                 <div>
                     <ul class='level-center margin10'>

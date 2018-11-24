@@ -72,14 +72,14 @@ if ($action === 'edit' && $CURUSER['class'] >= UC_SYSOP) {
     while ($mod = mysqli_fetch_assoc($res)) {
         $HTMLOUT .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . '?action=update&amp;id=' . $id . "'>
   <table width='50%' border='1'>
-    <tr><td class='rowhead'>{$lang['credits_mod']}</td>" . "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='name' " . "value='" . htmlsafechars($mod['name']) . "' /></td></tr>\n" . "<tr>
+    <tr><td class='rowhead'>{$lang['credits_mod']}</td>" . "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='name' " . "value='" . htmlsafechars($mod['name']) . "'></td></tr>\n" . "<tr>
     <td class='rowhead'>{$lang['credits_description']}</td>" . "<td style='padding: 0'>
-    <input type='text' size='60' maxlength='120' name='description' value='" . htmlsafechars($mod['description']) . "' /></td></tr>\n" . "<tr>
+    <input type='text' size='60' maxlength='120' name='description' value='" . htmlsafechars($mod['description']) . "'></td></tr>\n" . "<tr>
     <td class='rowhead'>{$lang['credits_category']}</td>
   <td style='padding: 0'>
   <select name='category'>";
 
-        $result = sql_query('SHOW COLUMNS FROM modscredits WHERE field=\'category\'');
+        $result = sql_query('SHOW COLUMNS FROM modscredits WHERE field="category"');
         while ($row = mysqli_fetch_row($result)) {
             foreach (explode("','", substr($row[1], 6, -2)) as $v) {
                 $HTMLOUT .= "<option value='$v" . ($mod['category'] == $v ? ' selected' : '') . "'>$v</option>";
@@ -88,12 +88,12 @@ if ($action === 'edit' && $CURUSER['class'] >= UC_SYSOP) {
 
         $HTMLOUT .= '</select></td></tr>';
 
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['credits_link']}</td>" . "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='link' " . "value='" . htmlsafechars($mod['pu239lnk']) . "' /></td></tr>\n" . "<tr>
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['credits_link']}</td>" . "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='link' " . "value='" . htmlsafechars($mod['pu239lnk']) . "'></td></tr>\n" . "<tr>
   <td class='rowhead'>{$lang['credits_status']}</td>
   <td style='padding: 0'>
   <select name='modstatus'>";
 
-        $result = sql_query('SHOW COLUMNS FROM modscredits WHERE field=\'status\'');
+        $result = sql_query('SHOW COLUMNS FROM modscredits WHERE field="status"');
         while ($row = mysqli_fetch_row($result)) {
             foreach (explode("','", substr($row[1], 6, -2)) as $y) {
                 $HTMLOUT .= "<option value='$y" . ($mod['status'] == $y ? ' selected' : '') . "'>$y</option>";
@@ -103,8 +103,8 @@ if ($action === 'edit' && $CURUSER['class'] >= UC_SYSOP) {
         $HTMLOUT .= '</select></td></tr>';
 
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['credits_credits']}</td><td style='padding: 0'>
-  <input type='text' size='60' maxlength='120' name='credits' value='" . htmlsafechars($mod['credit']) . "' /></td></tr>\n";
-        $HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='Submit' /></td></tr>\n";
+  <input type='text' size='60' maxlength='120' name='credits' value='" . htmlsafechars($mod['credit']) . "'></td></tr>\n";
+        $HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='Submit'></td></tr>\n";
         $HTMLOUT .= '</table></form>';
     }
     echo stdhead($lang['credits_editmod']) . $HTMLOUT . stdfoot();
@@ -210,15 +210,15 @@ if ($CURUSER['class'] >= UC_SYSOP) { //I recommend a higher class like UC_CODER
     <tr>
         <td colspan='2' class='colhead'>
     {$lang['credits_add']}
-        <input type='hidden' name='action' value='add' /></td>
+        <input type='hidden' name='action' value='add'></td>
       </tr>
     
     <tr>
         <td>{$lang['credits_name1']}</td>
-        <td><input name='name' type='text' size='120' /></td>
+        <td><input name='name' type='text' size='120'></td>
         </tr>
         <tr>
-        <td>{$lang['credits_description1']}</td><td><input name='description' type='text' size='120' maxlength='120' /></td>
+        <td>{$lang['credits_description1']}</td><td><input name='description' type='text' size='120' maxlength='120'></td>
         </tr>
                 
         <tr>
@@ -237,7 +237,7 @@ if ($CURUSER['class'] >= UC_SYSOP) { //I recommend a higher class like UC_CODER
       </td>
         </tr>
         <tr>
-        <td>{$lang['credits_link1']}</td><td><input name='link' type='text' size='50' /></td>
+        <td>{$lang['credits_link1']}</td><td><input name='link' type='text' size='50'></td>
         </tr>
         <tr>
         <td>{$lang['credits_status1']}</td><td>
@@ -249,11 +249,11 @@ if ($CURUSER['class'] >= UC_SYSOP) { //I recommend a higher class like UC_CODER
         </td>
         </tr>
       <tr>
-      <td>{$lang['credits_credits1']}</td><td><input name='credit' type='text' size='120' maxlength='120' /><br  /><font class='small'>{$lang['credits_val']}</font></td>
+      <td>{$lang['credits_credits1']}</td><td><input name='credit' type='text' size='120' maxlength='120'><br ><font class='small'>{$lang['credits_val']}</font></td>
       </tr>
       <tr>
         <td colspan='2'>
-        <input type='submit' value='{$lang['credits_addc']}' />
+        <input type='submit' value='{$lang['credits_addc']}'>
         </td>
       </tr>
       </table></form>";

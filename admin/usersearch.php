@@ -3,18 +3,238 @@
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
+require_once INCL_DIR . 'html_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang;
+global $CURUSER, $site_config, $lang, $fluent;
 
-// 0 - No debug; 1 - Show and run SQL query; 2 - Show SQL query only
-$DEBUG_MODE = 0;
 $lang = array_merge($lang, load_language('ad_usersearch'));
-/**
- * @param $param
- *
- * @return bool
- */
+
+$HTMLOUT = $where_is = $join_is = $q1 = $comment_is = $comments_exc = $email_is = '';
+$HTMLOUT .= "
+        <ul class='level-center bg-06'>
+            <li class='altlink margin10'>
+                <a href='{$site_config['baseurl']}/staffpanel.php?tool=usersearch&amp;h=1'>{$lang['usersearch_inlink']}</a>
+            </li>
+            <li class='altlink margin10'>
+                <a href='{$site_config['baseurl']}/staffpanel.php?tool=usersearch'>{$lang['usersearch_reset']}</a>
+            </li>
+        </ul>
+        <h1 class='has-text-centered'>{$lang['usersearch_window_title']}</h1>";
+
+if (isset($_GET['h'])) {
+    $HTMLOUT .= stdmsg('', $lang['usersearch_instructions']);
+}
+
+$HTMLOUT .= "
+    <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=usersearch'>";
+$body = "
+        <tr>
+            <td class='w-1'>{$lang['usersearch_name']}</td>
+            <td class='w-10'><input name='n' type='text' value='' class='w-100'></td>
+            <td class='w-1'>{$lang['usersearch_ratio']}</td>
+            <td class='w-10'>
+                <select name='rt' class='w-100'>";
+$options = [
+    $lang['usersearch_equal'],
+    $lang['usersearch_above'],
+    $lang['usersearch_below'],
+    $lang['usersearch_between'],
+];
+for ($i = 0; $i < count($options); ++$i) {
+    $body .= "
+                    <option value='$i'" . (((isset($_POST['rt']) ? $_POST['rt'] : '3') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+}
+$body .= "
+                </select>
+                <input name='r' type='text' value='' maxlength='4' class='top10 w-100'>
+                <input name='r2' type='text' value='' maxlength='4'" . (isset($_POST['r2']) ? $_POST['r2'] : '') . " class='top10 w-100'>
+            </td>
+            <td class='w-1'>{$lang['usersearch_status']}</td>
+            <td class='w-5'>
+                <select name='st' class='w-100'>";
+$options = [
+    $lang['usersearch_any'],
+    $lang['usersearch_confirmed'],
+    $lang['usersearch_pending'],
+];
+for ($i = 0; $i < count($options); ++$i) {
+    $body .= "
+                    <option value='$i'" . (((isset($_POST['st']) ? $_POST['st'] : '0') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+}
+$body .= "
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>{$lang['usersearch_email']}</td>
+            <td><input name='em' type='text' value=''" . (isset($_POST['em']) ? $_POST['em'] : '') . " class='w-100'></td>
+            <td>{$lang['usersearch_ip']}</td>
+            <td><input name='ip' type='text' value=''" . (isset($_POST['ip']) ? $_POST['ip'] : '') . " maxlength='17' class='w-100'></td>
+            <td>{$lang['usersearch_acstatus']}</td>
+            <td>
+                <select name='as' class='w-100'>";
+$options = [
+    $lang['usersearch_any'],
+    $lang['usersearch_enabled'],
+    $lang['usersearch_disabled'],
+];
+for ($i = 0; $i < count($options); ++$i) {
+    $body .= "
+                    <option value='$i'" . (((isset($_POST['as']) ? $_POST['as'] : '0') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+}
+$body .= "
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>{$lang['usersearch_comments']}</td>
+            <td><input name='co' type='text' value='' " . (isset($_POST['co']) ? $_POST['co'] : '') . " class='w-100'></td>
+            <td>{$lang['usersearch_mask']}</td>
+            <td><input name='ma' type='text' value=''" . (isset($_POST['ma']) ? $_POST['ma'] : '') . " maxlength='17' class='w-100'></td>
+            <td>{$lang['usersearch_class']}</td>
+            <td>
+                <select name='c' class='w-100'>
+                    <option value=''>{$lang['usersearch_any']}</option>";
+
+$class = isset($_POST['c']) ? (int) $_POST['c'] : '';
+if (!is_valid_id($class)) {
+    $class = '';
+}
+for ($i = 2;; ++$i) {
+    if ($c = get_user_class_name($i - 2)) {
+        $body .= "
+                    <option value='$i'" . ((isset($class) ? $class : 0) == $i ? ' selected' : '') . ">$c</option>";
+    } else {
+        break;
+    }
+}
+$body .= "
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>{$lang['usersearch_joined']}</td>
+            <td>
+                <select name='dt' class='w-100'>";
+$options = [
+    $lang['usersearch_on'],
+    $lang['usersearch_before'],
+    $lang['usersearch_after'],
+    $lang['usersearch_between'],
+];
+for ($i = 0; $i < count($options); ++$i) {
+    $body .= "
+                    <option value='$i'" . (((isset($_POST['dt']) ? $_POST['dt'] : '0') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+}
+$body .= "
+                </select>
+                <input name='d' type='text' value=''" . (isset($_POST['d']) ? $_POST['d'] : '') . " maxlength='10' class='top10 w-100'>
+                <input name='d2' type='text' value=''" . (isset($_POST['d2']) ? $_POST['d2'] : '') . " maxlength='10' class='top10 w-100'>
+            </td>
+            <td>{$lang['usersearch_uploaded']}</td>
+            <td>
+                <select name='ult' id='ult' class='w-100'>";
+$options = [
+    $lang['usersearch_equal'],
+    $lang['usersearch_above'],
+    $lang['usersearch_below'],
+    $lang['usersearch_between'],
+];
+for ($i = 0; $i < count($options); ++$i) {
+    $body .= "
+                    <option value='$i'" . (((isset($_POST['ult']) ? $_POST['ult'] : '0') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+}
+$body .= "
+                </select>
+                <input name='ul' type='text' id='ul' maxlength='7' value=''" . (isset($_POST['ul']) ? $_POST['ul'] : '') . " class='top10 w-100'>
+                <input name='ul2' type='text' id='ul2' maxlength='7' value=''" . (isset($_POST['ul2']) ? $_POST['ul2'] : '') . " class='top10 w-100'>
+            </td>
+            <td>{$lang['usersearch_donor']}</td>
+            <td>
+                <select name='do' class='w-100'>";
+$options = [
+    $lang['usersearch_any'],
+    $lang['usersearch_yes'],
+    $lang['usersearch_no'],
+];
+for ($i = 0; $i < count($options); ++$i) {
+    $body .= "
+                    <option value='$i'" . (((isset($_POST['do']) ? $_POST['do'] : '0') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+}
+$body .= "
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>{$lang['usersearch_lastseen']}</td>
+            <td>
+                <select name='lst' class='w-100'>";
+$options = [
+    $lang['usersearch_on'],
+    $lang['usersearch_before'],
+    $lang['usersearch_after'],
+    $lang['usersearch_between'],
+];
+for ($i = 0; $i < count($options); ++$i) {
+    $body .= "
+                    <option value='$i'" . (((isset($_POST['lst']) ? $_POST['lst'] : '0') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+}
+$body .= "
+                </select>
+                <input name='ls' type='text' value=''" . (isset($_POST['ls']) ? $_POST['ls'] : '') . " maxlength='10' class='top10 w-100'>
+                <input name='ls2' type='text' value=''" . (isset($_POST['ls2']) ? $_POST['ls2'] : '') . " maxlength='10' class='top10 w-100'>
+            </td>
+            <td>{$lang['usersearch_downloaded']}</td>
+            <td>
+                <select name='dlt' id='dlt' class='w-100'>";
+$options = [
+    $lang['usersearch_equal'],
+    $lang['usersearch_above'],
+    $lang['usersearch_below'],
+    $lang['usersearch_between'],
+];
+for ($i = 0; $i < count($options); ++$i) {
+    $body .= "
+                    <option value='$i'" . (((isset($_POST['dlt']) ? $_POST['dlt'] : '0') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+}
+$body .= "
+                </select>
+                <input name='dl' type='text' id='dl' maxlength='7' value=''" . (isset($_POST['dl']) ? $_POST['dl'] : '') . " class='top10 w-100'>
+                <input name='dl2' type='text' id='dl2' maxlength='7' value=''" . (isset($_POST['dl2']) ? $_POST['dl2'] : '') . " class='top10 w-100'>
+            </td>
+            <td>{$lang['usersearch_warned']}</td>
+            <td>
+                <select name='w' class='w-100'>";
+$options = [
+    $lang['usersearch_any'],
+    $lang['usersearch_yes'],
+    $lang['usersearch_no'],
+];
+for ($i = 0; $i < count($options); ++$i) {
+    $body .= "
+                    <option value='$i'" . (((isset($_POST['w']) ? $_POST['w'] : '0') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+}
+$body .= "
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>{$lang['usersearch_active']}</td>
+            <td>
+                <input name='ac' type='checkbox' value='1'" . (isset($_POST['ac']) ? ' checked' : '') . ">
+            </td>
+            <td>{$lang['usersearch_banned']}</td>
+            <td><input name='dip' type='checkbox' value='1'" . (isset($_POST['dip']) ? ' checked' : '') . "></td>
+        </tr>
+        <tr>
+            <td colspan='6' class='has-text-centered'><input name='submit' type='submit' class='button is-small margin20'></td>
+        </tr>";
+$HTMLOUT .= main_table($body) . '
+    </form>';
+
 function is_set_not_empty($param)
 {
     if (isset($_POST[$param]) && !empty($_POST[$param])) {
@@ -24,370 +244,6 @@ function is_set_not_empty($param)
     }
 }
 
-echo stdhead($lang['usersearch_window_title']);
-//$HTMLOUT .= "<h1>{$lang['usersearch_title']}</h1>\n";
-echo "<h1>{$lang['usersearch_title']}</h1>\n";
-$HTMLOUT = $where_is = $join_is = $q1 = $comment_is = $comments_exc = $email_is = '';
-if (isset($_GET['h'])) {
-    echo $lang['usersearch_instructions'];
-//$HTMLOUT .= $lang['usersearch_instructions'];
-} else {
-    $HTMLOUT .= "<p>(<a href='staffpanel.php?tool=usersearch&amp;action=usersearch&amp;h=1'>{$lang['usersearch_inlink']}</a>)";
-    $HTMLOUT .= "&#160;-&#160;(<a href='staffpanel.php?tool=usersearch'>{$lang['usersearch_reset']}</a>)</p>\n";
-    //echo "<p>(<a href='staffpanel.php?tool=usersearch&amp;action=usersearch&amp;h=1'>{$lang['usersearch_inlink']}</a>)";
-    //echo "&#160;-&#160;(<a href='staffpanel.php?tool=usersearch'>{$lang['usersearch_reset']}</a>)</p>\n";
-}
-$highlight = " bgcolor='lightgrey'";
-?>
-
-    <form method='post' action='staffpanel.php?tool=usersearch&amp;action=usersearch'>
-        <table border="1">
-            <tr>
-
-                <td class='rowhead'><?php
-
-                    echo $lang['usersearch_name']; ?></td>
-                <td <?php
-
-                echo (isset($_POST['n']) && !empty($_POST['n'])) ? $highlight : ''; ?>><input name="n" type="text"
-                                                                                              value=""<?php
-
-                    echo isset($_POST['n']) ? htmlsafechars($_POST['n']) : ''; ?>" size='25' />
-                </td>
-
-                <td class='rowhead'><?php
-
-                    echo $lang['usersearch_ratio']; ?></td>
-                <td <?php
-
-                echo (isset($_POST['r']) && !empty($_POST['r'])) ? $highlight : ''; ?>><select name="rt">
-                        <?php
-
-                        $options = [
-                            $lang['usersearch_equal'],
-                            $lang['usersearch_above'],
-                            $lang['usersearch_below'],
-                            $lang['usersearch_between'],
-                        ];
-                        for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['rt']) ? $_POST['rt'] : '3') == "$i") ? 'selected' : '') . '>' . $options[$i] . "</option>\n";
-                        }
-                        ?>
-                    </select>
-                    <input name="r" type="text" value=""<?php
-
-                    echo isset($_POST['r']) ? $_POST['r'] : ''; ?>" size="5" maxlength="4" />
-                    <input name="r2" type="text" value=""<?php
-
-                    echo isset($_POST['r2']) ? $_POST['r2'] : ''; ?>" size="5" maxlength="4" />
-                </td>
-
-                <td class='rowhead'><?php
-
-                    echo $lang['usersearch_status']; ?></td>
-                <td <?php
-
-                echo (isset($_POST['st']) && !empty($_POST['st'])) ? $highlight : ''; ?>><select name="st">
-                        <?php
-
-                        $options = [
-                            $lang['usersearch_any'],
-                            $lang['usersearch_confirmed'],
-                            $lang['usersearch_pending'],
-                        ];
-                        for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['st']) ? $_POST['st'] : '0') == "$i") ? 'selected' : '') . '>' . $options[$i] . "</option>\n";
-                        }
-                        ?>
-                    </select></td>
-            </tr>
-            <tr>
-                <td class='rowhead'><?php
-
-                    echo $lang['usersearch_email']; ?></td>
-                <td <?php
-
-                echo (isset($_POST['em']) && !empty($_POST['em'])) ? $highlight : ''; ?>><input name="em" type="text"
-                                                                                                value=""<?php
-
-                    echo isset($_POST['em']) ? $_POST['em'] : ''; ?>" size="25" />
-                </td>
-                <td class='rowhead'><?php
-
-                    echo $lang['usersearch_ip']; ?></td>
-                <td <?php
-
-                echo (isset($_POST['ip']) && !empty($_POST['ip'])) ? $highlight : ''; ?>><input name="ip" type="text"
-                                                                                                value=""<?php
-
-                    echo isset($_POST['ip']) ? $_POST['ip'] : ''; ?>" maxlength="17" />
-                </td>
-
-                <td class='rowhead'><?php
-
-                    echo $lang['usersearch_acstatus']; ?></td>
-                <td <?php
-
-                echo (isset($_POST['as']) && !empty($_POST['as'])) ? $highlight : ''; ?>><select name="as">
-                        <?php
-
-                        $options = [
-                            $lang['usersearch_any'],
-                            $lang['usersearch_enabled'],
-                            $lang['usersearch_disabled'],
-                        ];
-                        for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['as']) ? $_POST['as'] : '0') == "$i") ? 'selected' : '') . '>' . $options[$i] . "</option>\n";
-                        }
-                        ?>
-                    </select></td>
-            </tr>
-            <tr>
-                <td class='rowhead'><?php
-
-                    echo $lang['usersearch_comments']; ?></td>
-                <td <?php
-
-                echo (isset($_POST['co']) && !empty($_POST['co'])) ? $highlight : ''; ?>><input name="co" type="text"
-                                                                                                value=""<?php
-
-                    echo isset($_POST['co']) ? $_POST['co'] : ''; ?>" size="25" />
-                </td>
-                <td class='rowhead'><?php
-
-                    echo $lang['usersearch_mask']; ?></td>
-                <td <?php
-
-                echo (isset($_POST['ma']) && !empty($_POST['ma'])) ? $highlight : ''; ?>><input name="ma" type="text"
-                                                                                                value=""<?php
-
-                    echo isset($_POST['ma']) ? $_POST['ma'] : ''; ?>" maxlength="17" />
-                </td>
-                <td class='rowhead'><?php
-
-                    echo $lang['usersearch_class']; ?></td>
-                <td <?php
-
-                echo (isset($_POST['c']) && !empty($_POST['c'])) ? $highlight : ''; ?>><select name="c">
-                        <option value=''><?php $lang['usersearch_any']; ?></option>
-                        <?php
-
-                        $class = isset($_POST['c']) ? (int) $_POST['c'] : '';
-                        if (!is_valid_id($class)) {
-                            $class = '';
-                        }
-                        for ($i = 2;; ++$i) {
-                            if ($c = get_user_class_name($i - 2)) {
-                                echo "<option value='" . $i . "'" . ((isset($class) ? $class : 0) == $i ? ' selected' : '') . ">$c</option>\n";
-                            } else {
-                                break;
-                            }
-                        }
-                        ?>
-                    </select></td>
-            </tr>
-            <tr>
-
-                <td class='rowhead'><?php
-
-                    echo $lang['usersearch_joined']; ?></td>
-
-                <td <?php
-
-                echo (isset($_POST['d']) && !empty($_POST['d'])) ? $highlight : ''; ?>><select name="dt">
-                        <?php
-
-                        $options = [
-                            $lang['usersearch_on'],
-                            $lang['usersearch_before'],
-                            $lang['usersearch_after'],
-                            $lang['usersearch_between'],
-                        ];
-                        for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['dt']) ? $_POST['dt'] : '0') == "$i") ? 'selected' : '') . '>' . $options[$i] . "</option>\n";
-                        }
-                        ?>
-                    </select>
-
-                    <input name="d" type="text" value=""<?php
-
-                    echo isset($_POST['d']) ? $_POST['d'] : ''; ?>" size="12" maxlength="10" />
-
-                    <input name="d2" type="text" value=""<?php
-
-                    echo isset($_POST['d2']) ? $_POST['d2'] : ''; ?>" size="12" maxlength="10" />
-                </td>
-
-                <td class='rowhead'><?php
-
-                    echo $lang['usersearch_uploaded']; ?></td>
-
-                <td <?php
-
-                echo (isset($_POST['ult']) && !empty($_POST['ult'])) ? $highlight : ''; ?>><select name="ult" id="ult">
-                        <?php
-
-                        $options = [
-                            $lang['usersearch_equal'],
-                            $lang['usersearch_above'],
-                            $lang['usersearch_below'],
-                            $lang['usersearch_between'],
-                        ];
-                        for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['ult']) ? $_POST['ult'] : '0') == "$i") ? 'selected' : '') . '>' . $options[$i] . "</option>\n";
-                        }
-                        ?>
-                    </select>
-
-                    <input name="ul" type="text" id="ul" size="8" maxlength="7" value=""<?php
-
-                    echo isset($_POST['ul']) ? $_POST['ul'] : ''; ?>" />
-
-                    <input name="ul2" type="text" id="ul2" size="8" maxlength="7" value=""<?php
-
-                    echo isset($_POST['ul2']) ? $_POST['ul2'] : ''; ?>" />
-                </td>
-                <td class="rowhead"><?php
-
-                    echo $lang['usersearch_donor']; ?></td>
-
-                <td <?php
-
-                echo (isset($_POST['do']) && !empty($_POST['do'])) ? $highlight : ''; ?>><select name="do">
-                        <?php
-
-                        $options = [
-                            $lang['usersearch_any'],
-                            $lang['usersearch_yes'],
-                            $lang['usersearch_no'],
-                        ];
-                        for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['do']) ? $_POST['do'] : '0') == "$i") ? 'selected' : '') . '>' . $options[$i] . "</option>\n";
-                        }
-                        ?>
-                    </select></td>
-            </tr>
-            <tr>
-
-                <td class='rowhead'><?php
-
-                    echo $lang['usersearch_lastseen']; ?></td>
-
-                <td <?php
-
-                echo (isset($_POST['ls']) && !empty($_POST['ls'])) ? $highlight : ''; ?>><select name="lst">
-                        <?php
-
-                        $options = [
-                            $lang['usersearch_on'],
-                            $lang['usersearch_before'],
-                            $lang['usersearch_after'],
-                            $lang['usersearch_between'],
-                        ];
-                        for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['lst']) ? $_POST['lst'] : '0') == "$i") ? 'selected' : '') . '>' . $options[$i] . "</option>\n";
-                        }
-                        ?>
-                    </select>
-
-                    <input name="ls" type="text" value=""<?php
-
-                    echo isset($_POST['ls']) ? $_POST['ls'] : ''; ?>" size="12" maxlength="10" />
-
-                    <input name="ls2" type="text" value=""<?php
-
-                    echo isset($_POST['ls2']) ? $_POST['ls2'] : ''; ?>" size="12" maxlength="10" />
-                </td>
-                <td class='rowhead'><?php
-
-                    echo $lang['usersearch_downloaded']; ?></td>
-
-                <td <?php
-
-                echo (isset($_POST['dl']) && !empty($_POST['dl'])) ? $highlight : ''; ?>><select name="dlt" id="dlt">
-                        <?php
-
-                        $options = [
-                            $lang['usersearch_equal'],
-                            $lang['usersearch_above'],
-                            $lang['usersearch_below'],
-                            $lang['usersearch_between'],
-                        ];
-                        for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['dlt']) ? $_POST['dlt'] : '0') == "$i") ? 'selected' : '') . '>' . $options[$i] . "</option>\n";
-                        }
-                        ?>
-                    </select>
-
-                    <input name="dl" type="text" id="dl" size="8" maxlength="7" value=""<?php
-
-                    echo isset($_POST['dl']) ? $_POST['dl'] : ''; ?>" />
-
-                    <input name="dl2" type="text" id="dl2" size="8" maxlength="7" value=""<?php
-
-                    echo isset($_POST['dl2']) ? $_POST['dl2'] : ''; ?>" />
-                </td>
-
-                <td class='rowhead'><?php
-
-                    echo $lang['usersearch_warned']; ?></td>
-
-                <td <?php
-
-                echo (isset($_POST['w']) && !empty($_POST['w'])) ? $highlight : ''; ?>><select name="w">
-                        <?php
-
-                        $options = [
-                            $lang['usersearch_any'],
-                            $lang['usersearch_yes'],
-                            $lang['usersearch_no'],
-                        ];
-                        for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['w']) ? $_POST['w'] : '0') == "$i") ? 'selected' : '') . '>' . $options[$i] . "</option>\n";
-                        }
-                        ?>
-                    </select></td>
-            </tr>
-
-            <tr>
-                <td class="rowhead"></td>
-                <td></td>
-                <td class='rowhead'><?php
-
-                    echo $lang['usersearch_active']; ?></td>
-                <td <?php
-
-                echo (isset($_POST['ac']) && !empty($_POST['ac'])) ? $highlight : ''; ?>><input name="ac"
-                                                                                                type="checkbox"
-                                                                                                value="1" <?php
-
-                    echo (isset($_POST['ac'])) ? 'checked' : ''; ?> /></td>
-                <td class='rowhead'><?php
-
-                    echo $lang['usersearch_banned']; ?></td>
-                <td <?php
-
-                echo (isset($_POST['dip']) && !empty($_POST['dip'])) ? $highlight : ''; ?>><input name="dip"
-                                                                                                  type="checkbox"
-                                                                                                  value="1" <?php
-
-                    echo (isset($_POST['dip'])) ? 'checked' : ''; ?> /></td>
-            </tr>
-            <tr>
-                <td colspan="6"><input name="submit" type='submit' class='button is-small'/></td>
-            </tr>
-        </table>
-        <br><br>
-    </form>
-
-<?php
-// Validates date in the form [yy]yy-mm-dd;
-// Returns date if valid, 0 otherwise.
-/**
- * @param $date
- *
- * @return false|int|string
- */
 function mkdate($date)
 {
     if (strpos($date, '-')) {
@@ -409,14 +265,6 @@ function mkdate($date)
     }
 }
 
-// ratio as a string
-/**
- * @param      $up
- * @param      $down
- * @param bool $color
- *
- * @return string
- */
 function ratios($up, $down, $color = true)
 {
     if ($down > 0) {
@@ -433,12 +281,6 @@ function ratios($up, $down, $color = true)
     return $r;
 }
 
-// checks for the usual wildcards *, ? plus mySQL ones
-/**
- * @param $text
- *
- * @return bool
- */
 function haswildcard($text)
 {
     if (strpos($text, '*') === false && strpos($text, '?') === false && strpos($text, '%') === false && strpos($text, '_') === false) {
@@ -448,8 +290,7 @@ function haswildcard($text)
     }
 }
 
-if (!empty($_POST) && count($_POST) > 0) {
-    // name
+if (!empty($_POST)) {
     $name_is = '';
     $names_exc = 0;
     $names = isset($_POST['n']) ? explode(' ', trim($_POST['n'])) : [
@@ -882,30 +723,16 @@ if (!empty($_POST) && count($_POST) > 0) {
     $queryc = 'SELECT COUNT(' . $distinct . 'u.id) FROM ' . $from_is . (($where_is == '') ? '' : " WHERE $where_is ");
     $querypm = 'FROM ' . $from_is . (($where_is == '') ? ' ' : " WHERE $where_is ");
     $announcement_query = 'SELECT u.id FROM ' . $from_is . (($where_is == '') ? ' WHERE 1 = 1' : " WHERE $where_is");
-    $select_is = 'u.id, u.username, u.email, u.status, u.added, u.last_access, u.ip,
+    $select_is = 'u.id, u.username, u.email, u.status, u.added, u.last_access, INET6_NTOA(u.ip) AS ip,
       u.class, u.uploaded, u.downloaded, u.donor, u.modcomment, u.enabled, u.warned';
     $query1 = 'SELECT ' . $distinct . ' ' . $select_is . ' ' . $querypm;
-    //    <temporary>    /////////////////////////////////////////////////////
-    if ($DEBUG_MODE > 0) {
-        stdmsg($lang['usersearch_count'], $queryc);
-        echo '<br><br>';
-        stdmsg($lang['usersearch_query'], $query1);
-        echo '<br><br>';
-        stdmsg($lang['usersearch_url'], $q1);
-        stdmsg('Announce Query', $announcement_query);
-        echo '<br><br>';
-        if ($DEBUG_MODE == 2) {
-            stdfoot();
-        }
-        die();
-    }
-    //    </temporary>   /////////////////////////////////////////////////////
+
     $res = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_row($res);
     $count = $arr[0];
     $q1 = isset($q1) ? ($q1 . '&amp;') : '';
     $perpage = 30;
-    $pager = pager($perpage, $count, 'staffpanel.php?tool=usersearch&amp;action=usersearch&amp;' . $q1);
+    $pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?tool=usersearch&amp;" . $q1);
     $query1 .= $pager['limit'];
     $res = sql_query($query1) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {
@@ -914,21 +741,34 @@ if (!empty($_POST) && count($_POST) > 0) {
         if ($count > $perpage) {
             $HTMLOUT .= $pager['pagertop'];
         }
-        $HTMLOUT .= "<table >\n
-        <tr><td class='colhead'>{$lang['usersearch_name']}</td>
-          <td class='colhead'>{$lang['usersearch_ratio']}</td>
-        <td class='colhead'>{$lang['usersearch_ip']}</td>
-        <td class='colhead'>{$lang['usersearch_email']}</td>" . "<td class='colhead'>{$lang['usersearch_joined']}</td>" . "<td class='colhead'>{$lang['usersearch_lastseen']}</td>" . "<td class='colhead'>{$lang['usersearch_asts']}</td>" . "<td class='colhead'>{$lang['usersearch_enabled']}</td>" . "<td class='colhead'>{$lang['usersearch_pR']}</td>" . "<td class='colhead'>{$lang['usersearch_pUL']}</td>" . "<td class='colhead'>{$lang['usersearch_pDL']}</td>" . "<td class='colhead'>{$lang['usersearch_history']}</td></tr>";
-        $ids = '';
+        $heading = "
+        <tr>
+            <th>{$lang['usersearch_name']}</th>
+            <th>{$lang['usersearch_ratio']}</th>
+            <th>{$lang['usersearch_ip']}</th>
+            <th>{$lang['usersearch_email']}</th>
+            <th>{$lang['usersearch_joined']}</th>
+            <th>{$lang['usersearch_lastseen']}</th>
+            <th>{$lang['usersearch_asts']}</th>
+            <th>{$lang['usersearch_enabled']}</th>
+            <th>{$lang['usersearch_pR']}</th>
+            <th>{$lang['usersearch_pUL']}</th>
+            <th>{$lang['usersearch_pDL']}</th>
+            <th>{$lang['usersearch_history']}</th>
+        </tr>";
+        $body = $ids = '';
         while ($user = mysqli_fetch_array($res)) {
             if ($user['ip']) {
-                $nip = ip2long($user['ip']);
-                $auxres = sql_query("SELECT COUNT(*) FROM bans WHERE $nip >= first AND $nip <= last") or sqlerr(__FILE__, __LINE__);
-                $array = mysqli_fetch_row($auxres);
-                if ($array[0] == 0) {
+                $count = $fluent->from('bans')
+                    ->select(null)
+                    ->select('COUNT(*) AS count')
+                    ->where('INET6_NTOA(first) <= ?', $user['ip'])
+                    ->where('INET6_NTOA(last) >= ?', $user['ip'])
+                    ->fetch('count');
+                if ($count == 0) {
                     $ipstr = $user['ip'];
                 } else {
-                    $ipstr = "<a href='staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['ip']) . "'><span style='color: #FF0000;'><b>" . htmlsafechars($user['ip']) . '</b></span></a>';
+                    $ipstr = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['ip']) . "'><span style='color: #FF0000;'><b>" . htmlsafechars($user['ip']) . '</b></span></a>';
                 }
             } else {
                 $ipstr = '---';
@@ -954,41 +794,41 @@ if (!empty($_POST) && count($_POST) > 0) {
             $n = mysqli_fetch_row($auxres);
             $n_comments = $n[0];
             $ids .= (int) $user['id'] . ':';
-            $HTMLOUT .= '<tr><td><b>' . format_username($user['id']) . '</td>
-          <td>' . ratios($user['uploaded'], $user['downloaded']) . '</td>
-          <td>' . $ipstr . '</td><td>' . htmlsafechars($user['email']) . '</td>
-          <td><div>' . get_date($user['added'], '') . '</div></td>
-          <td><div>' . get_date($user['last_access'], '', 0, 1) . '</div></td>
-          <td><div>' . htmlsafechars($user['status']) . '</div></td>
-          <td><div>' . htmlsafechars($user['enabled']) . '</div></td>
-          <td><div>' . ratios($pul, $pdl) . '</div></td>
-          <td><div>' . number_format($pul / 1048576) . '</div></td>
-          <td><div>' . number_format($pdl / 1048576) . '</div></td>
-          <td><div>' . ($n_posts ? "<a href='userhistory.php?action=viewposts&amp;id=" . (int) $user['id'] . "'>$n_posts</a>" : $n_posts) . '|' . ($n_comments ? "<a href='userhistory.php?action=viewcomments&amp;id=" . (int) $user['id'] . "'>$n_comments</a>" : $n_comments) . "</div></td></tr>\n";
+            $body .= '
+        <tr>
+            <td>' . format_username($user['id']) . '</td>
+            <td>' . ratios($user['uploaded'], $user['downloaded']) . '</td>
+            <td>' . $ipstr . '</td>
+            <td>' . htmlsafechars($user['email']) . '</td>
+            <td>' . get_date($user['added'], '') . '</td>
+            <td>' . get_date($user['last_access'], '', 0, 1) . '</td>
+            <td>' . htmlsafechars($user['status']) . '</td>
+            <td>' . htmlsafechars($user['enabled']) . '</td>
+            <td>' . ratios($pul, $pdl) . '</td>
+            <td>' . number_format($pul / 1048576) . '</td>
+            <td>' . number_format($pdl / 1048576) . '</td>
+            <td>' . ($n_posts ? "<a href='{$site_config['baseurl']}/userhistory.php?action=viewposts&amp;id=" . (int) $user['id'] . "'>$n_posts</a>" : $n_posts) . '|' . ($n_comments ? "<a href='{$site_config['baseurl']}/userhistory.php?action=viewcomments&amp;id=" . (int) $user['id'] . "'>$n_comments</a>" : $n_comments) . '</td>
+        </tr>';
         }
-        $HTMLOUT .= '</table>';
+        $HTMLOUT .= main_table($body, $heading, 'top20');
         if ($count > $perpage) {
             $HTMLOUT .= $pager['pagerbottom'];
         }
         $HTMLOUT .= "
 <br>
-<form method='post' action='./new_announcement.php'>
-<table>
-<tr>
-<td>
-<div>
-<input name='n_pms' type='hidden' value='" . $count . "' />
-<input name='ann_query' type='hidden' value='" . rawurlencode($announcement_query) . "' />
-<input name='ann_hash' type='hidden' value ='" . (hashit($announcement_query, $count)) . "' />
-<button type='submit' class='button is-small'>{$lang['usersearch_create_ann']}</button>
-</div></td>
-</tr>
-</table>
+<form method='post' action='{$site_config['baseurl']}/new_announcement.php'>
+    <div class='has-text-centered margin20'>
+        <input name='n_pms' type='hidden' value='" . $count . "'>
+        <input name='ann_query' type='hidden' value='" . rawurlencode($announcement_query) . "'>
+        <input name='ann_hash' type='hidden' value ='" . (hashit($announcement_query, $count)) . "'>
+        <button type='submit' class='button is-small' disabled>{$lang['usersearch_create_ann']}</button>
+    </div>
 </form>";
     }
 }
 if (isset($pagemenu)) {
     $HTMLOUT .= ("<p>$pagemenu<br>$browsemenu</p>");
 }
+
 echo stdhead() . wrapper($HTMLOUT) . stdfoot();
 die();

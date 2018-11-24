@@ -197,7 +197,7 @@ $HTMLOUT .= "
       <table class='table table-bordered table-striped'>
         <tr>
           <td colspan='2'>{$lang['grouppm_sub']}
-            <input type='text' name='subject' class='w-100' /></td>
+            <input type='text' name='subject' class='w-100'></td>
         </tr>
         <tr>
           <td>{$lang['grouppm_body']}</td>
@@ -211,8 +211,8 @@ $HTMLOUT .= "
       </table>
         <div class='has-text-centered margin20'>
             <label for='sys'>{$lang['grouppm_sendas']}</label>
-            <input id='sys' type='checkbox' name='system' value='yes' class='' />
-            <input type='submit' value='{$lang['grouppm_send']}' class='button is-small left20' />
+            <input id='sys' type='checkbox' name='system' value='yes' class=''>
+            <input type='submit' value='{$lang['grouppm_send']}' class='button is-small left20'>
         </div>
     </form>";
 echo stdhead($lang['grouppm_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

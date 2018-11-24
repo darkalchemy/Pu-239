@@ -22,6 +22,7 @@ if (!empty($code) && strlen($code) != 64) {
 }
 $stdfoot = [
     'js' => [
+        get_file_name('check_username_js'),
         get_file_name('pStrength_js'),
     ],
 ];
@@ -88,19 +89,19 @@ $body = "
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_pass']}</td>
                 <td>
-                    <input type='password' name='wantpassword' id='myElement1' class='required password w-100 left' data-display='myDisplayElement1' autocomplete='on' required minlength='6'> <div class='left' id='myDisplayElement1'></div>
+                    <input type='password' name='wantpassword' id='myElement1' class='w-100' data-display='myDisplayElement1' autocomplete='on' required minlength='6'> <div id='myDisplayElement1'></div>
                     <div class='clear'></div>
                 </td>
             </tr>
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_passa']}</td>
                 <td>
-                    <input type='password' name='passagain' id='myElement2' class='required password w-100 left' data-display='myDisplayElement2' autocomplete='on' required minlength='6'> <div class='left' id='myDisplayElement2'></div>
+                    <input type='password' name='passagain' id='myElement2' class='w-100' data-display='myDisplayElement2' autocomplete='on' required minlength='6'> <div id='myDisplayElement2'></div>
                 </td>
             </tr>
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_invcode']}</td>
-                <td><input type='text' class='w-100 required' name='invite' value='{$code}'></td>
+                <td><input type='text' class='w-100' name='invite' value='{$code}'></td>
             </tr>
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_timez']}</td>
@@ -183,9 +184,9 @@ $body .= "
             <tr class='no_hover'>
                 <td class='rowhead'></td>
                 <td>
-                    <input type='checkbox' name='rulesverify' class='required' value='yes'" . (!empty($signup_vars['rulesverify']) && $signup_vars['rulesverify'] === 'yes' ? ' checked ' : '') . " required> {$lang['signup_rules']}<br>
-                    <input type='checkbox' name='faqverify' class='required' value='yes'" . (!empty($signup_vars['faqverify']) && $signup_vars['faqverify'] === 'yes' ? ' checked ' : '') . " required> {$lang['signup_faq']}<br>
-                    <input type='checkbox' name='ageverify' class='required' value='yes'" . (!empty($signup_vars['ageverify']) && $signup_vars['ageverify'] === 'yes' ? ' checked ' : '') . " required> {$lang['signup_age']}
+                    <input type='checkbox' name='rulesverify' value='yes'" . (!empty($signup_vars['rulesverify']) && $signup_vars['rulesverify'] === 'yes' ? ' checked ' : '') . " required> {$lang['signup_rules']}<br>
+                    <input type='checkbox' name='faqverify' value='yes'" . (!empty($signup_vars['faqverify']) && $signup_vars['faqverify'] === 'yes' ? ' checked ' : '') . " required> {$lang['signup_faq']}<br>
+                    <input type='checkbox' name='ageverify' value='yes'" . (!empty($signup_vars['ageverify']) && $signup_vars['ageverify'] === 'yes' ? ' checked ' : '') . " required> {$lang['signup_age']}
                 </td>
             </tr>
             <tr class='no_hover'>
@@ -193,7 +194,7 @@ $body .= "
                      <span class='has-text-centered margin5'>
                         <input type='hidden' id='token' name='token' value=''>
                         <input type='hidden' id='csrf' name='csrf' value='" . $session->get('csrf_token') . "'>
-                        <input id='signup_captcha_check' type='submit' value='" . (!empty($_ENV['RECAPTCHA_SITE_KEY']) ? 'Verifying reCAPTCHA' : 'Signup') . "' class='button is-small'>
+                        <input id='signup_captcha_check' type='submit' value='" . (!empty($_ENV['RECAPTCHA_SITE_KEY']) ? 'Verifying reCAPTCHA' : 'Signup') . "' class='button is-small' disabled>
                     </span>
                 </td>
             </tr>";

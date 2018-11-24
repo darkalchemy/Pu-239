@@ -7,6 +7,16 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $CURUSER, $lang, $cache, $message_stuffs, $user_stuffs;
 
+$stdhead = [
+    'css' => [
+        get_file_name('sceditor_css'),
+    ],
+];
+$stdfoot = [
+    'js' => [
+        get_file_name('sceditor_js'),
+    ],
+];
 $lang = array_merge($lang, load_language('ad_bonus_for_members'));
 $h1_thingie = $HTMLOUT = '';
 $good_stuff = [
@@ -209,7 +219,7 @@ $all_classes_check_boxes = '
 for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
     $all_classes_check_boxes .= '
         <div>
-            <input type="checkbox" name="free_for_classes[]" value="' . $i . '" checked />
+            <input type="checkbox" name="free_for_classes[]" value="' . $i . '" checked>
             <span style="font-weight: bold;color:#' . get_user_class_color($i) . ';">' . get_user_class_name($i) . '</span>
         </div>';
 }
@@ -267,14 +277,14 @@ $subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : $lang['
 $body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : $lang['bonusmanager_pm_texthere'];
 $pm_drop_down = '
             <form name="compose" method="post" action="mass_bonus_for_members.php">
-            <input type="hidden" name="pm" value="pm" />
+            <input type="hidden" name="pm" value="pm">
                 <table border="0" style="max-width: 800px;">
                     <tr>
                         <td colspan="2">' . $lang['bonusmanager_pm_send'] . '</td>
                     </tr>
                     <tr>
                         <td><span style="font-weight: bold;">' . $lang['bonusmanager_pm_subject'] . '</span></td>
-                        <td><input name="subject" type="text" class="w-100" value="' . $subject . '" /></td>
+                        <td><input name="subject" type="text" class="w-100" value="' . $subject . '"></td>
                     </tr>
                     <tr>
                         <td><span style="font-weight: bold;">' . $lang['bonusmanager_pm_body'] . '</span></td>
@@ -298,7 +308,7 @@ $h1_thingie .= (isset($_GET['karma']) ? ($_GET['karma'] === 1 ? '<h2>' . $lang['
 $h1_thingie .= (isset($_GET['freeslots']) ? ($_GET['freeslots'] === 1 ? '<h2>' . $lang['bonusmanager_h1_freeslot'] . '<h2>' : '<h2>' . $lang['bonusmanager_h1_freeslot1'] . '</h2>') : '');
 $h1_thingie .= (isset($_GET['invites']) ? ($_GET['invites'] === 1 ? '<h2>' . $lang['bonusmanager_h1_invite'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_invite1'] . '</h2>') : '');
 $h1_thingie .= (isset($_GET['pm']) ? ($_GET['pm'] === 1 ? '<h2>' . $lang['bonusmanager_h1_pm'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_pm1'] . '</h2>') : '');
-$HTMLOUT .= '<h1>' . $site_config['site_name'] . ' ' . $lang['bonusmanager_mass_bonus'] . '</h1>' . $h1_thingie;
+$HTMLOUT .= '<h1 class="has-text-centered">' . $site_config['site_name'] . ' ' . $lang['bonusmanager_mass_bonus'] . '</h1>' . $h1_thingie;
 $HTMLOUT .= '
     <form name="inputform" method="post" action="' . $site_config['baseurl'] . '/staffpanel.php?tool=mass_bonus_for_members&amp;action=mass_bonus_for_members" enctype="multipart/form-data">';
 $body = '
@@ -327,8 +337,8 @@ $body = '
         </tr>
         <tr>
             <td colspan="2" class="has-text-centered">
-            <input type="submit" class="button is-small" name="button" value="' . $lang['bonusmanager_doit'] . '"  /></td>
+            <input type="submit" class="button is-small" name="button" value="' . $lang['bonusmanager_doit'] . '" ></td>
         </tr>';
 $HTMLOUT .= main_table($body) . '
     </form>';
-echo stdhead($lang['bonusmanager_h1_upload']) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($lang['bonusmanager_h1_upload'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

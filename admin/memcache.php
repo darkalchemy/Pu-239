@@ -323,13 +323,13 @@ function menu_entry($ob, $title)
 
     if ($ob == $_GET['op']) {
         return "
-            <li class='altlink margin20'>
+            <li class='altlink margin10'>
                 <a class='active' href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=$ob'>$title</a>
             </li>";
     }
 
     return "
-            <li class='altlink margin20'>
+            <li class='altlink margin10'>
                 <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=$ob'>$title</a>
             </li>";
 }
@@ -342,12 +342,12 @@ function getMenu()
         <ul class='level-center bg-06'>";
     if ($_GET['op'] != 4) {
         $menu .= "
-            <li class='altlink margin20'>
+            <li class='altlink margin10'>
                 <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op={$_GET['op']}'>Refresh Data</a>
             </li>";
     } else {
         $menu .= "
-            <li class='altlink margin20'>
+            <li class='altlink margin10'>
                 <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=2'>Back</a>
             </li>";
     }
@@ -595,18 +595,18 @@ switch ($_GET['op']) {
             </tr>
             <tr>
                 <td>
-                    <span class='has-text-lime'>Free: </span>" . human_filesize($mem_avail) . sprintf(' (%.1f%%)', $mem_avail * 100 / $mem_size) . "
+                    <span class='has-text-success'>Free: </span>" . human_filesize($mem_avail) . sprintf(' (%.1f%%)', $mem_avail * 100 / $mem_size) . "
                 </td>
                 <td>
-                    <span class='has-text-lime'>Hits: </span>" . $hits . sprintf(' (%.1f%%)', $hits * 100 / ($hits + $misses)) . "
+                    <span class='has-text-success'>Hits: </span>" . $hits . sprintf(' (%.1f%%)', $hits * 100 / ($hits + $misses)) . "
                 </td>
             </tr>
             <tr>
                 <td>
-                    <span class='has-text-red'>Used: </span>" . human_filesize($mem_used) . sprintf(' (%.1f%%)', $mem_used * 100 / $mem_size) . "
+                    <span class='has-text-danger'>Used: </span>" . human_filesize($mem_used) . sprintf(' (%.1f%%)', $mem_used * 100 / $mem_size) . "
                 </td>
                 <td>
-                    <span class='has-text-red'>Misses: </span>" . $misses . sprintf(' (%.1f%%)', $misses * 100 / ($hits + $misses)) . '
+                    <span class='has-text-danger'>Misses: </span>" . $misses . sprintf(' (%.1f%%)', $misses * 100 / ($hits + $misses)) . '
                 </td>
             </tr>';
         $HTMLOUT .= main_table($body) . "

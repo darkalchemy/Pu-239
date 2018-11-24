@@ -1,3 +1,17 @@
+### 24 Nov, 2018
+remove: ip2long  
+update: rewrite as notify owner of pending deletion deathrow.php  
+update: add several plugins to adminer  
+update: add leading 0 on minutes for trivia game time remaining  
+add: log all access to the staff panel  
+add: user option to set/change font scaling usercp->personal  
+fix: uglify.php not updating sceditor.js in production mode  
+update: make site class code same as chat class code  
+remove: last remnants of klappe_news  
+remove: unused images  
+update: adduser.php force same username restrictions and signup.php  
+fix: user setting use_12_hour not taking affect  
+
 ### 20 Nov, 2018
 fix: allow characters other than english as username  
 update: force create dirs in bin uglify.php  

@@ -35,8 +35,8 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     $HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">' . $lang['fmp_search_members'] . '</h1>
             <div class="has-text-centered">
 			<form method="get" action="forums.php?">
-			<input type="hidden" value="member_post_history" name="action" />
-			<input type="text" size="30" name="search" value="' . $search . '" />
+			<input type="hidden" value="member_post_history" name="action">
+			<input type="text" size="30" name="search" value="' . $search . '">
 			<select name="class">
 			<option value="-">(' . $lang['fmp_any_class'] . ')</option>';
     for ($i = 0;; ++$i) {
@@ -47,7 +47,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         }
     }
     $HTMLOUT .= $option . '</select>
-	 <input type="submit" class="button is-small" value="' . $lang['gl_search'] . '"  />
+	 <input type="submit" class="button is-small" value="' . $lang['gl_search'] . '" >
 	 </form></div>';
     $aa = range('0', '9');
     $bb = range('a', 'z');

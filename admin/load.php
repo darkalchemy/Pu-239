@@ -110,31 +110,31 @@ $body .= "
         </div>
         <div class='padding20'>
             <span class='columns'>
-            <span class='column'>{$lang['index_load_curr']} </span><span class='has-text-lime column has-text-right is-one-third'>{$percent}{$lang['index_load_cpu']}</span>
+            <span class='column'>{$lang['index_load_curr']} </span><span class='has-text-success column has-text-right is-one-third'>{$percent}{$lang['index_load_cpu']}</span>
             </span>
             <span class='columns'>
-                <span class='column'>{$lang['index_load_uptime1']} </span><span class='has-text-lime column has-text-right is-one-third'>" . uptime() . '</span>
+                <span class='column'>{$lang['index_load_uptime1']} </span><span class='has-text-success column has-text-right is-one-third'>" . uptime() . '</span>
             </span>';
 
 $loadinfo = loadavg(true);
 $body .= "
             <span class='columns'>
-                <span class='column'>{$lang['index_load_pastmin']} </span><span class='has-text-lime column has-text-right is-one-third'>" . $loadinfo['last1'] . "</span>
+                <span class='column'>{$lang['index_load_pastmin']} </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['last1'] . "</span>
             </span>
             <span class='columns'>
-                <span class='column'>{$lang['index_load_pastmin5']} </span><span class='has-text-lime column has-text-right is-one-third'>" . $loadinfo['last5'] . "</span>
+                <span class='column'>{$lang['index_load_pastmin5']} </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['last5'] . "</span>
             </span>
             <span class='columns'>
-                <span class='column'>{$lang['index_load_pastmin15']} </span><span class='has-text-lime column has-text-right is-one-third'>" . $loadinfo['last15'] . "</span>
+                <span class='column'>{$lang['index_load_pastmin15']} </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['last15'] . "</span>
             </span>
             <span class='columns'>
-                <span class='column'>{$lang['index_load_numtsk']} </span><span class='has-text-lime column has-text-right is-one-third'>" . $loadinfo['tasks'] . "</span>
+                <span class='column'>{$lang['index_load_numtsk']} </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['tasks'] . "</span>
             </span>
             <span class='columns'>
-                <span class='column'>{$lang['index_load_numproc']} </span><span class='has-text-lime column has-text-right is-one-third'>" . $loadinfo['processes'] . "</span>
+                <span class='column'>{$lang['index_load_numproc']} </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['processes'] . "</span>
             </span>
             <span class='columns'>
-                <span class='column'>{$lang['index_load_pid']} </span><span class='has-text-lime column has-text-right is-one-third'>" . $loadinfo['lastpid'] . '</span>
+                <span class='column'>{$lang['index_load_pid']} </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['lastpid'] . '</span>
             </span>
         </div>
     </div>';

@@ -52,7 +52,7 @@ if ($action === 'app' || $action === 'show') {
     $HTMLOUT .= "
         <div class='bottom20'>
             <ul class='level-center bg-06'>
-                <li class='altlink margin20'>$hide</li>
+                <li class='altlink margin10'>$hide</li>
             </ul>
         </div>
         <h1 class='has-text-centered'>{$lang['uploadapps_applications']}</h1>";
@@ -97,12 +97,12 @@ if ($action === 'app' || $action === 'show') {
                 <td>' . mksize($arr['uploaded']) . '</td>
                 <td>' . member_ratio($arr['uploaded'], RATIO_FREE ? '0' : $arr['downloaded']) . "</td>
                 <td>{$status}</td>
-                <td><input type=\"checkbox\" name=\"deleteapp[]\" value=\"" . (int) $arr['id'] . '" /></td>
+                <td><input type=\"checkbox\" name=\"deleteapp[]\" value=\"" . (int) $arr['id'] . '"></td>
             </tr>';
         }
         $HTMLOUT .= main_table($body, $heading) . "
             <div class='has-text-centered margin20'>
-                <input type='submit' value='Delete' class='button is-small' />
+                <input type='submit' value='Delete' class='button is-small'>
             </div>
         </form>";
         if ($count > $perpage) {
@@ -199,19 +199,19 @@ if ($action === 'viewapp') {
         $div1 = "
             <h2>{$lang['uploadapps_note']}</h2>
             <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=acceptapp'>
-                <input name='id' type='hidden' value='{$arr['id']}' />
-                <input type='text' name='note' class='w-100' />
+                <input name='id' type='hidden' value='{$arr['id']}'>
+                <input type='text' name='note' class='w-100'>
                 <div class='has-text-centered'>
-                    <input type='submit' value='{$lang['uploadapps_accept']}' class='button is-small margin20' />
+                    <input type='submit' value='{$lang['uploadapps_accept']}' class='button is-small margin20'>
                 </div>
             </form>";
         $div2 = "
             <h2>{$lang['uploadapps_reason']}</h2>
             <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=rejectapp'>
-                <input name='id' type='hidden' value='{$arr['id']}' />
-                <input type='text' name='reason' class='w-100' />
+                <input name='id' type='hidden' value='{$arr['id']}'>
+                <input type='text' name='reason' class='w-100'>
                 <div class='has-text-centered'>
-                    <input type='submit' value='{$lang['uploadapps_reject']}' class='button is-small margin20' />
+                    <input type='submit' value='{$lang['uploadapps_reject']}' class='button is-small margin20'>
                 </div>
             </form>";
         $HTMLOUT .= main_table($table) . main_div($div1, 'top20') . main_div($div2, 'top20');

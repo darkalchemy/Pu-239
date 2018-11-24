@@ -53,7 +53,7 @@ if (isset($_POST['form']) != 1) {
                 <tr>
                     <td class='rowhead'>{$lang['uploadapp_username']}</td>
                     <td>
-                        <input name='userid' type='hidden' value='" . (int) $CURUSER['id'] . "' />
+                        <input name='userid' type='hidden' value='" . (int) $CURUSER['id'] . "'>
                         {$CURUSER['username']}
                      </td>
                 </tr>
@@ -70,7 +70,7 @@ if (isset($_POST['form']) != 1) {
                         {$lang['uploadapp_connectable']}
                     </td>
                     <td>
-                        <input name='connectable' type='hidden' value='$connectable' />$connectable
+                        <input name='connectable' type='hidden' value='$connectable'>$connectable
                     </td>
                 </tr>
                 <tr>
@@ -78,7 +78,7 @@ if (isset($_POST['form']) != 1) {
                         {$lang['uploadapp_upspeed']}
                     </td>
                     <td>
-                        <input type='text' name='speed' class='w-100' />
+                        <input type='text' name='speed' class='w-100'>
                     </td>
                 </tr>
                 <tr>
@@ -99,8 +99,8 @@ if (isset($_POST['form']) != 1) {
                 </tr>
                 <tr>
                     <td class='rowhead'>
-                        {$lang['uploadapp_uploader']}</td><td><input type='radio' name='sites' value='yes' />{$lang['uploadapp_yes']}
-                        <input name='sites' type='radio' value='no' checked />{$lang['uploadapp_no']}
+                        {$lang['uploadapp_uploader']}</td><td><input type='radio' name='sites' value='yes'>{$lang['uploadapp_yes']}
+                        <input name='sites' type='radio' value='no' checked>{$lang['uploadapp_no']}
                     </td>
                 </tr>
                 <tr>
@@ -115,8 +115,8 @@ if (isset($_POST['form']) != 1) {
                         {$lang['uploadapp_scene']}
                     </td>
                     <td>
-                        <input type='radio' name='scene' value='yes' />{$lang['uploadapp_yes']}
-                        <input name='scene' type='radio' value='no' checked />{$lang['uploadapp_no']}
+                        <input type='radio' name='scene' value='yes'>{$lang['uploadapp_yes']}
+                        <input name='scene' type='radio' value='no' checked>{$lang['uploadapp_no']}
                     </td>
                 </tr>
                 <tr>
@@ -125,22 +125,22 @@ if (isset($_POST['form']) != 1) {
                             <span class='right10'>
                                 {$lang['uploadapp_create']}
                             </span>
-                            <input type='radio' name='creating' value='yes' />{$lang['uploadapp_yes']}
-                            <input type='radio' name='creating' value='no' checked />{$lang['uploadapp_no']}
+                            <input type='radio' name='creating' value='yes'>{$lang['uploadapp_yes']}
+                            <input type='radio' name='creating' value='no' checked>{$lang['uploadapp_no']}
                         </p>
                         <p>
                             <span class='right10'>
                                 {$lang['uploadapp_seeding']}
                             </span>
-                            <input type='radio' name='seeding' value='yes' />{$lang['uploadapp_yes']}
-                            <input name='seeding' type='radio' value='no' checked />{$lang['uploadapp_no']}
+                            <input type='radio' name='seeding' value='yes'>{$lang['uploadapp_yes']}
+                            <input name='seeding' type='radio' value='no' checked>{$lang['uploadapp_no']}
                         </p>
-                        <input name='form' type='hidden' value='1' />
+                        <input name='form' type='hidden' value='1'>
                     </td>
                 </tr>
             </table>
             <div class='has-text-centered margin20'>
-                <input type='submit' name='Submit' value='{$lang['uploadapp_send']}' class='button is-small' />
+                <input type='submit' name='Submit' value='{$lang['uploadapp_send']}' class='button is-small'>
             </div>
         </form>";
     }

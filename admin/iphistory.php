@@ -49,7 +49,7 @@ $HTMLOUT = "
         <h1 class='has-text-centered'>{$lang['iphistory_usedby']}" . format_username($id) . "</h1>
         <p class='has-text-centered'>{$lang['iphistory_total_unique']} <b>$username</b> {$lang['iphistory_total_logged']} <b><u>$ipcount</u></b>.</p>
         <p class='has-text-centered'>
-            <span class='has-text-blue'>{$lang['iphistory_single']}</span> - <span class='has-text-danger'>{$lang['iphistory_banned']}</span> - <span class='has-text-lime'>{$lang['iphistory_dupe']}</span>
+            <span class='has-text-blue'>{$lang['iphistory_single']}</span> - <span class='has-text-danger'>{$lang['iphistory_banned']}</span> - <span class='has-text-success'>{$lang['iphistory_dupe']}</span>
         </p>";
 
 $heading = "
@@ -107,12 +107,12 @@ foreach ($resip as $iphistory) {
     $count = $ban_stuffs->get_count($iphistory['ip']);
     if ($count === 0) {
         if ($ipcount > 1) {
-            $ipshow = "<b><a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><span class='has-text-lime'>" . htmlsafechars($iphistory['ip']) . ' </span ></a ></b > ';
+            $ipshow = "<b><a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><span class='has-text-success'>" . htmlsafechars($iphistory['ip']) . ' </span ></a ></b > ';
         } else {
             $ipshow = "<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><b><span class='has-text-blue'>" . htmlsafechars($iphistory['ip']) . ' </span ></b ></a > ';
         }
     } else {
-        $ipshow = "<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><span class='has-text-red'><b>" . htmlsafechars($iphistory['ip']) . ' </b ></span ></a > ';
+        $ipshow = "<a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($iphistory['ip']) . "'><span class='has-text-danger'><b>" . htmlsafechars($iphistory['ip']) . ' </b ></span ></a > ';
     }
     // User IP listed for GeoIP tracing
     $gi = geoip_open(ROOT_DIR . 'GeoIP' . DIRECTORY_SEPARATOR . 'GeoIP.dat', GEOIP_STANDARD);

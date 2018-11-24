@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      <table >
      <tr>
      <td colspan='2'><b>Subject: </b>
-     <input name='subject' type='text' size='76' value='" . htmlsafechars($subject) . "' /></td>
+     <input name='subject' type='text' size='76' value='" . htmlsafechars($subject) . "'></td>
      </tr>
      <tr><td colspan='2'><div class='has-text-centered'>
                        " . BBcode() . '
@@ -111,11 +111,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $HTMLOUT .= "</select>
 
-     <input type='submit' name='buttonval' value='Submit' class='button is-small' />
+     <input type='submit' name='buttonval' value='Submit' class='button is-small'>
      </td></tr></table>
-     <input type='hidden' name='n_pms' value='" . $n_pms . "' />
-    <input type='hidden' name='ann_query' value='" . rawurlencode($ann_query) . "' />
-     <input type='hidden' name='ann_hash' value='" . $ann_hash . "' />
+     <input type='hidden' name='n_pms' value='" . $n_pms . "'>
+    <input type='hidden' name='ann_query' value='" . rawurlencode($ann_query) . "'>
+     <input type='hidden' name='ann_hash' value='" . $ann_hash . "'>
      </form><br><br>
      </div></td></tr></table>";
     if ($body) {

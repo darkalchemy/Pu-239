@@ -70,7 +70,7 @@ $lang = [
     'usersearch_no' => 'No',
     'usersearch_create_ann' => 'Create New Announcement',
     //instructions
-    'usersearch_instructions' => "<table class='has-text-centered'><tr><td class='embedded'><div>\n
+    'usersearch_instructions' => "<div>\n
         Fields left blank will be ignored;\n
         Wildcards * and ? may be used in Name, Email and Comments, as well as multiple values\n
         separated by spaces (e.g. 'wyz Max*' in Name will list both users named\n
@@ -89,5 +89,5 @@ $lang = [
         of the torrents in progress. <br><br>\n
         The History column lists the number of forum posts and torrent comments,\n
         respectively, as well as linking to the history page.\n
-        </div></td></tr></table><br><br>\n",
+        </div>\n",
 ];

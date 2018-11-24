@@ -1,1 +1,1 @@
-a:3:{s:7:"Unknown";i:1;s:4:"Cunt";i:1;s:7:"Bastard";i:1;}
+a:15:{s:7:"Unknown";i:1;s:4:"Cunt";i:1;s:7:"Bastard";i:1;s:4:"crap";i:1;s:4:"shit";i:1;s:4:"fuck";i:1;s:4:"damn";i:1;s:5:"admin";i:1;s:5:"sysop";i:1;s:5:"owner";i:1;s:5:"staff";i:1;s:13:"administrator";i:1;s:4:"user";i:1;s:9:"poweruser";i:1;s:3:"vip";i:1;}

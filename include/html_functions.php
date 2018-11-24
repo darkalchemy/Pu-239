@@ -33,11 +33,9 @@ function begin_frame($caption = '', $center = false, $padding = 10)
 {
     $tdextra = '';
     $htmlout = '';
+    $center = $center ? " class='has-text-centered'" : '';
     if ($caption) {
-        $htmlout .= "<h2>$caption</h2>\n";
-    }
-    if ($center) {
-        $tdextra .= '';
+        $htmlout .= "<h1{$center}>$caption</h1>";
     }
     $htmlout .= "<table class='shit table table-bordered table-striped'><tr><td$tdextra>\n";
 

@@ -184,7 +184,7 @@ $lang = [
               <td class='rowhead'><p>Can download DOX over 1MB and view NFO files.</p></td>
             </tr>
             <tr>
-              <td class='rowhead'><img src='{$site_config['pic_baseurl']}star.gif' alt='Star' /></td>
+              <td class='rowhead'><img src='{$site_config['pic_baseurl']}star.gif' alt='Star'></td>
               <td class='rowhead'><p>Has donated money to {$site_config['site_name']}.</p></td>
             </tr>
             <tr>
@@ -225,7 +225,7 @@ $lang = [
                 </td>
             </tr>
             <tr>
-                <td class='rowhead'><img src='{$site_config['pic_baseurl']}star.gif' alt='Star' /></td>
+                <td class='rowhead'><img src='{$site_config['pic_baseurl']}star.gif' alt='Star'></td>
                 <td class='rowhead'><p>Just donate, and send the <a href='{$site_config['baseurl']}/contactstaff.php'>Staff</a> the details.</p></td>
             </tr>
             <tr>

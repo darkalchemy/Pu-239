@@ -6,7 +6,7 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $lang;
+global $site_config, $lang, $fluent;
 
 $lang = array_merge($lang, load_language('ad_ipsearch'));
 $HTMLOUT = $ip = $mask = '';
@@ -84,10 +84,10 @@ if ($ip) {
         $orderby = 'access DESC';
     }
     $query1 = "SELECT * FROM (
-          SELECT u.id, u.username, u.ip AS ip, u.ip AS last_ip, u.last_access, u.last_access AS access, u.email, u.invitedby, u.added, u.class, u.uploaded, u.downloaded, u.donor, u.enabled, u.warned, u.leechwarn, u.chatpost, u.pirate, u.king
+          SELECT u.id, u.username, INET6_NTOA(u.ip) AS ip, INET6_NTOA(u.ip) AS last_ip, u.last_access, u.last_access AS access, u.email, u.invitedby, u.added, u.class, u.uploaded, u.downloaded, u.donor, u.enabled, u.warned, u.leechwarn, u.chatpost, u.pirate, u.king
           FROM users AS u
           WHERE $where1
-          UNION SELECT u.id, u.username, ips.ip AS ip, u.ip as last_ip, u.last_access, max(ips.lastlogin) AS access, u.email, u.invitedby, u.added, u.class, u.uploaded, u.downloaded, u.donor, u.enabled, u.warned, u.leechwarn, u.chatpost, u.pirate, u.king
+          UNION SELECT u.id, u.username, INET6_NTOA(ips.ip) AS ip, INET6_NTOA(u.ip) as last_ip, u.last_access, max(ips.lastlogin) AS access, u.email, u.invitedby, u.added, u.class, u.uploaded, u.downloaded, u.donor, u.enabled, u.warned, u.leechwarn, u.chatpost, u.pirate, u.king
           FROM users AS u
           RIGHT JOIN ips ON u.id = ips.userid
           WHERE $where2
@@ -111,10 +111,14 @@ if ($ip) {
             $user['last_access'] = '---';
         }
         if ($user['last_ip']) {
-            $nip = ip2long($user['last_ip']);
-            $res1 = sql_query("SELECT COUNT(*) FROM bans WHERE $nip >= first AND $nip <= last") or sqlerr(__FILE__, __LINE__);
-            $array = mysqli_fetch_row($res1);
-            if ($array[0] == 0) {
+            $count = $fluent->from('bans')
+                ->select(null)
+                ->select('COUNT(*) AS count')
+                ->where('INET6_NTOA(first) <= ?', $user['last_ip'])
+                ->where('INET6_NTOA(last) >= ?', $user['last_ip'])
+                ->fetch('count');
+
+            if ($count == 0) {
                 $ipstr = $user['last_ip'];
             } else {
                 $ipstr = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['last_ip']) . "'><span style='color: #FF0000;'><b>" . htmlsafechars($user['last_ip']) . '</b></span></a>';
@@ -122,10 +126,10 @@ if ($ip) {
         } else {
             $ipstr = '---';
         }
-        $resip = sql_query('SELECT ip FROM ips WHERE userid=' . sqlesc($user['id']) . ' GROUP BY ips.ip') or sqlerr(__FILE__, __LINE__);
+        $resip = sql_query('SELECT INET6_NTOA(ip) FROM ips WHERE userid = ' . sqlesc($user['id']) . ' GROUP BY ips.ip') or sqlerr(__FILE__, __LINE__);
         $iphistory = mysqli_num_rows($resip);
         if ($user['invitedby'] > 0) {
-            $res2 = sql_query('SELECT username FROM users WHERE id=' . sqlesc($user['invitedby']) . '');
+            $res2 = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($user['invitedby']) . '');
             $array = mysqli_fetch_assoc($res2);
             $invitedby = $array['id'];
             if ($invitedby == '') {

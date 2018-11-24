@@ -33,4 +33,5 @@ $lang = [
     'mtor_month' => 'Month',
     'mtor_year' => 'Year',
     'mtor_search' => 'Search',
+    'mtor_sorry' => 'Sorry',
 ];

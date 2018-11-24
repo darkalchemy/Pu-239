@@ -277,10 +277,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 $HTMLOUT .= "
-    <div class='portlet bordered'>
         <h1 class='has-text-centered top20'>{$lang['classcfg_class_settings']} for Template $style</h1>
         <form name='edit' action='staffpanel.php?tool=class_config&amp;mode=edit' method='post'>
-            <table class='table table-bordered table-stiped bottom20'>
+            <table class='table table-bordered table-stiped'>
                 <thead>
                     <tr>
                         <th>{$lang['classcfg_class_name']}</th>
@@ -314,7 +313,7 @@ foreach ($primary_classes as $arr) {
     $cname = str_replace(' ', '_', strtolower($arr['classname'])) . '_bk';
     $HTMLOUT .= "
                     <tr class='{$cname}'>
-                        <td class='has-text-white'>" . htmlsafechars($arr['name']) . "</td>
+                        <td class='has-text-black has-text-weight-bold'>" . htmlsafechars($arr['name']) . "</td>
                         <td class='has-text-centered'>
                             <input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='2' value='" . (int) $arr['value'] . " 'readonly>
                         </td>
@@ -341,7 +340,7 @@ $HTMLOUT .= '
 
 $HTMLOUT .= "
             <h2 class='has-text-centered top20'>{$lang['classcfg_class_security']}</h2>
-            <table class='table table-bordered table-stiped bottom20'>
+            <table class='table table-bordered table-stiped'>
                 <thead>
                     <tr>
                         <th>{$lang['classcfg_class_name']}</th>
@@ -374,7 +373,7 @@ $HTMLOUT .= "
 $HTMLOUT .= "
         <h2 class='has-text-centered top20'>{$lang['classcfg_class_add']}</h2>
         <form name='add' action='staffpanel.php?tool=class_config&amp;mode=add' method='post'>
-            <table class='table table-bordered table-stiped bottom20'>
+            <table class='table table-bordered table-stiped'>
                 <thead>
                     <tr>
                         <th>{$lang['classcfg_class_name']}</th>
@@ -401,6 +400,5 @@ $HTMLOUT .= "
                     </tr>
                 </tbody>
             </table>
-        </form>
-    </div>";
+        </form>";
 echo stdhead($lang['classcfg_stdhead']) . wrapper($HTMLOUT) . stdfoot();

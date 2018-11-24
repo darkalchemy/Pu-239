@@ -142,7 +142,7 @@ if ($count_inactive > 0) {
         <td style='max-width:130px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;'><a href='mailto:" . htmlsafechars($arr['email']) . "'>" . htmlsafechars($arr['email']) . '</a></td>
         <td>' . $ratio . '</td>
         <td>' . $last_seen . "</td>
-        <td bgcolor='#FF0000'><input type='checkbox' name='userid[]' value='" . (int) $arr['id'] . "' /></td></tr>
+        <td bgcolor='#FF0000'><input type='checkbox' name='userid[]' value='" . (int) $arr['id'] . "'></td></tr>
         ";
     }
     $HTMLOUT .= "<tr>
@@ -151,7 +151,7 @@ if ($count_inactive > 0) {
     <option value='mail'>{$lang['inactive_sendmail']}</option>
     <option value='deluser' " . ($CURUSER['class'] < UC_ADMINISTRATOR ? 'disabled' : '') . ">{$lang['inactive_deleteusers']}</option>
     <option value='disable'>{$lang['inactive_disaccounts']}</option>
-    </select>&#160;&#160;<input type='submit' name='submit' value='{$lang['inactive_apchanges']}' class='button is-small' />&#160;&#160;<input type='button' value='Check all' onclick='this.value=check(form)' class='button is-small' /></td></tr>";
+    </select>&#160;&#160;<input type='submit' name='submit' value='{$lang['inactive_apchanges']}' class='button is-small'>&#160;&#160;<input type='button' value='Check all' onclick='this.value=check(form)' class='button is-small'></td></tr>";
     if ($record_mail) {
         $ress = sql_query("SELECT avps.value_s AS userid, avps.value_i AS last_mail, avps.value_u AS mails, users.username FROM avps LEFT JOIN users ON avps.value_s=users.id WHERE avps.arg='inactivemail' LIMIT 1");
         $date = mysqli_fetch_assoc($ress);
@@ -162,7 +162,7 @@ if ($count_inactive > 0) {
     $HTMLOUT .= '</table></form>';
     $HTMLOUT .= '</div></div>';
 } else {
-    $HTMLOUT .= main_div("<h2 class='has-text-centered margin20'>{$lang['inactive_noaccounts']} " . $days . " {$lang['inactive_days']}</h2>");
+    $HTMLOUT .= stdmsg("<h2>{$lang['inactive_noaccounts']}</h2>", '<p>' . $days . " {$lang['inactive_days']}</p>");
 }
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];

@@ -86,10 +86,10 @@ function trivia_clocks()
     return "
     <ul class='level-center top20'>
         <div id='clock_round'>
-            <span class='right10'>{$lang['trivia_next_question']}: </span><span class='has-text-lime'><span class='days'></span><span class='hours'></span><span class='minutes'></span>:<span class='seconds'></span></span>
+            <span class='right10'>{$lang['trivia_next_question']}: </span><span class='has-text-success'><span class='days'></span><span class='hours'></span><span class='minutes'></span>:<span class='seconds'></span></span>
         </div>
         <div id='clock_game'>
-            <span class='right10'>{$lang['trivia_next_game']}: </span><span class='has-text-lime'><span class='days'></span> <span class='hours'></span>:<span class='minutes'></span>:<span class='seconds'></span></span>
+            <span class='right10'>{$lang['trivia_next_game']}: </span><span class='has-text-success'><span class='days'></span> <span class='hours'></span>:<span class='minutes'></span>:<span class='seconds'></span></span>
         </div>
     </ul>";
 }

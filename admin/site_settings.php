@@ -37,11 +37,10 @@ while ($ac = mysqli_fetch_assoc($pconf)) {
     $site_settings[] = $ac;
 }
 $HTMLOUT .= "
-        <div class='portlet'>
             <h3 class='has-text-centered top20'>{$lang['sitesettings_sitehead']}</h3>
             <form action='./staffpanel.php?tool=site_settings' method='post'>
                 <div class='table-wrapper'>
-                    <table class='table table-bordered table-striped bottom20 w-100'>";
+                    <table class='table table-bordered table-striped bottom20'>";
 foreach ($site_settings as $site_setting) {
     extract($site_setting);
     if (is_numeric($value)) {
@@ -49,15 +48,15 @@ foreach ($site_settings as $site_setting) {
     }
     $var = $name . '[value]';
     $input = "
-                        <input type='text' name='{$var}' value='" . htmlsafechars($value) . "' class='w-100' />";
+                        <input type='text' name='{$var}' value='" . htmlsafechars($value) . "' class='w-100'>";
     if (is_numeric($value) && ($value == 0 || $value == 1)) {
         $input = "
                         <div class='level-center'>
                             <label for ='{$var}' class='right10'>{$lang['sitesettings_no']}
-                                <input class='table' type='radio' name='{$var}' value='0' " . ((int) $value === 0 ? 'checked' : '') . " />
+                                <input class='table' type='radio' name='{$var}' value='0' " . ((int) $value === 0 ? 'checked' : '') . ">
                             </label>
                             <label for ='{$var}' class='right10'>{$lang['sitesettings_yes']}
-                                <input class='table' type='radio' name='{$var}' value='1' " . ((int) $value === 1 ? 'checked' : '') . ' />
+                                <input class='table' type='radio' name='{$var}' value='1' " . ((int) $value === 1 ? 'checked' : '') . '>
                             </label>
                         </div>';
     }
@@ -83,10 +82,10 @@ $descr = 'new[description]';
 $HTMLOUT .= "
                     <tr>
                         <td>
-                            <input type='text' name='{$name}' value='' class='w-100' placeholder='New Site Setting Name' />
+                            <input type='text' name='{$name}' value='' class='w-100' placeholder='New Site Setting Name'>
                         </td>
                         <td>
-                            <input type='text' name='{$value}' value='' class='w-100' placeholder='Use 0 for false, 1 for true, or anyother int/float as needed.' />
+                            <input type='text' name='{$value}' value='' class='w-100' placeholder='Use 0 for false, 1 for true, or anyother int/float as needed.'>
                         </td>
                         <td>
                             <textarea name='{$descr}' class='w-100' placeholder='Description'></textarea>
@@ -95,9 +94,8 @@ $HTMLOUT .= "
                 </table>
                 </div>
                 <div class='has-text-centered top20 bottom20'>
-                    <input type='submit' value='{$lang['sitesettings_apply']}' class='button is-small' />
+                    <input type='submit' value='{$lang['sitesettings_apply']}' class='button is-small'>
                 </div>
-            </form>
-        </div>";
+            </form>";
 
 echo stdhead($lang['sitesettings_stdhead']) . wrapper($HTMLOUT) . stdfoot();

@@ -34,7 +34,7 @@ $heading = "
         <th>{$lang['cloudview_phrase']}</th>
         <th>{$lang['cloudview_hits']}</th>
         <th>{$lang['cloudview_ip']}</th>
-        <th><input type='checkbox' id='checkThemAll' class='tooltipper' title='{$lang['cloudview_del']}' /></th>
+        <th><input type='checkbox' id='checkThemAll' class='tooltipper' title='{$lang['cloudview_del']}'></th>
     </tr>";
 $body = '';
 foreach ($searches as $arr) {
@@ -44,14 +44,14 @@ foreach ($searches as $arr) {
         <td>$search_phrase</td>
         <td>{$arr['howmuch']}</td>
         <td>{$arr['ip']}</td>
-        <td><input type='checkbox' name='delcloud[]' title='{$lang['cloudview_mark']}' value='" . (int) $arr['id'] . "' /></td>
+        <td><input type='checkbox' name='delcloud[]' title='{$lang['cloudview_mark']}' value='" . (int) $arr['id'] . "'></td>
     </tr>";
 }
 if (!empty($body)) {
     $body .= "
     <tr>
         <td colspan='4' class='has-text-centered'>
-            <input type='submit' value='{$lang['cloudview_del_terms']}' class='button is-small' />
+            <input type='submit' value='{$lang['cloudview_del_terms']}' class='button is-small margin10'>
         </td>
     </tr>";
 

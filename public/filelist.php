@@ -41,7 +41,7 @@ while ($subrow = mysqli_fetch_assoc($subres)) {
     $body .= "
             <tr>
                 <td class='has-text-centered'>
-                    <img src='{$site_config['pic_baseurl']}icons/" . htmlsafechars($ext) . ".png' class='tooltipper icon' alt='" . htmlsafechars($ext) . " file' title='" . htmlsafechars($ext) . " file' /></td>
+                    <img src='{$site_config['pic_baseurl']}icons/" . htmlsafechars($ext) . ".png' class='tooltipper icon' alt='" . htmlsafechars($ext) . " file' title='" . htmlsafechars($ext) . " file'></td>
                 <td>" . htmlsafechars($subrow['filename']) . "</td>
                 <td class='has-text-right'>" . mksize($subrow['size']) . '</td>
             </tr>';

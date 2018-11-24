@@ -28,13 +28,12 @@ $pager = pager($perpage, $count, 'staffpanel.php?tool=sitelog&amp;action=sitelog
 $HTMLOUT = '';
 $res = sql_query("SELECT added, txt FROM sitelog $where ORDER BY added DESC {$pager['limit']} ") or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= "
-    <h1 class='has-text-centered'>{$lang['text_sitelog']}</h1>
-    <div class='portlet'>
-        <div class='has-text-centered bordered top20'>
+        <h1 class='has-text-centered'>{$lang['text_sitelog']}</h1>
+        <div class='has-text-centered margin20'>
             <h2>{$lang['log_search']}</h2>
             <form method='post' action='./staffpanel.php?tool=sitelog&amp;action=sitelog'>
-                <input type='text' name='search' class='w-50' value='' />
-                <input type='submit' class='button is-small' value='{$lang['log_search_btn']}' />
+                <input type='text' name='search' class='w-50' value=''>
+                <input type='submit' class='button is-small' value='{$lang['log_search_btn']}'>
             </form>
         </div>";
 if ($count > $perpage) {
@@ -44,7 +43,7 @@ if (mysqli_num_rows($res) == 0) {
     $HTMLOUT .= "<b>{$lang['text_logempty']}</b>";
 } else {
     $HTMLOUT .= "
-        <table class='table table-bordered bottom20'>
+        <table class='table table-bordered'>
             <thead>
                 <tr>
                     <th>{$lang['header_date']}</th>
@@ -55,7 +54,7 @@ if (mysqli_num_rows($res) == 0) {
     $log_events = [];
     $colors = [];
     while ($arr = mysqli_fetch_assoc($res)) {
-        $txt = substr($arr['txt'], 0, 20);
+        $txt = substr($arr['txt'], 0, 50);
         if (!in_array($txt, $log_events)) {
             $color = random_color(100, 200);
             while (in_array($color, $colors)) {
@@ -80,10 +79,8 @@ if (mysqli_num_rows($res) == 0) {
     }
     $HTMLOUT .= '
             </tbody>
-        </table>
-    </div>';
+        </table>';
 }
-$HTMLOUT .= "<p>{$lang['text_times']}</p>";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }

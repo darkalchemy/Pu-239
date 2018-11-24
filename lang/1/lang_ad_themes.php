@@ -11,7 +11,7 @@ $lang = [
     'themes_e_d' => 'Edit/Delete',
     'themes_edit' => 'Edit',
     'themes_delete' => 'Delete',
-    'themes_file_exists' => "<span class='has-text-lime'> Yes </span>",
+    'themes_file_exists' => "<span class='has-text-success'> Yes </span>",
     'themes_not_exists' => "<span class='has-text-danger'> No </span>",
     //Other Stuff
     'themes_use_temp' => 'Use this template',
@@ -23,7 +23,7 @@ $lang = [
     'themes_add' => 'Add',
     'themes_some_wrong' => 'Something Went Wrong',
     'themes_delete_sure_q' => 'Are you sure you want to delete this template?',
-    'themes_delete_sure_q2' => "Click <span class='has-text-lime'>here</span>",
+    'themes_delete_sure_q2' => "Click <span class='has-text-success'>here</span>",
     'themes_delete_sure_q3' => 'if you are sure',
     'themes_delete_q' => 'Delete Template',
     'themes_takenids' => "Taken ID's: ",

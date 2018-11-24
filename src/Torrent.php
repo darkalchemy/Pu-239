@@ -7,14 +7,16 @@ class Torrent
     protected $cache;
     protected $fluent;
     protected $site_config;
+    protected $user_stuffs;
 
     public function __construct()
     {
-        global $fluent, $cache, $site_config;
+        global $fluent, $cache, $site_config, $user_stuffs;
 
         $this->fluent = $fluent;
         $this->cache = $cache;
         $this->site_config = $site_config;
+        $this->user_stuffs = $user_stuffs;
     }
 
     /**
@@ -42,6 +44,18 @@ class Torrent
 
         $this->fluent->deleteFrom('rating')
             ->where('torrent = ?', $tid)
+            ->execute();
+
+        $this->fluent->deleteFrom('snatched')
+            ->where('torrentid = ?', $tid)
+            ->execute();
+
+        $this->fluent->deleteFrom('peers')
+            ->where('torrent = ?', $tid)
+            ->execute();
+
+        $this->fluent->deleteFrom('deathrow')
+            ->where('tid = ?', $tid)
             ->execute();
 
         if (file_exists(TORRENTS_DIR . $tid . '.torrent')) {
@@ -281,15 +295,16 @@ class Torrent
      *
      * @return bool
      */
-    public function remove_torrent(string $infohash, int $tid = null, int $owner = null)
+    public function remove_torrent(string $infohash, int $tid = null, int $owner = null, int $added = null)
     {
         if (strlen($infohash) != 20) {
             return false;
         }
-        if (empty($tid) || empty($owner)) {
+        if (empty($tid) || empty($owner) || empty($added)) {
             $torrent = $this->get_torrent_from_hash($infohash);
             $tid = $torrent['id'];
             $owner = $torrent['owner'];
+            $added = $torrent['added'];
         }
         if (!empty($tid) && !empty($owner)) {
             $key = 'torrent_hash_' . bin2hex($infohash);
@@ -314,6 +329,19 @@ class Torrent
                 $tid,
             ]);
             $this->clear_caches();
+        }
+
+        if ($added > TIME_NOW - (14 * 86400)) {
+            $seedbonus = $this->user_stuffs->get_item('seedbonus', $owner);
+            $set = [
+                'seedbonus' => $seedbonus - $this->site_config['bonus_per_delete'],
+            ];
+            $this->fluent('users')
+                ->set($set)
+                ->where('id = ?', $owner)
+                ->execute();
+
+            $this->cache->update_row('user' . $owner, $set, $this->site_config['expires']['user_cache']);
         }
 
         return true;

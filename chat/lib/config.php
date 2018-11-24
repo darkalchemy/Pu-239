@@ -8,7 +8,7 @@
  */
 
 // import globals
-global $site_config;
+global $site_config, $CURUSER;
 
 // Define AJAX Chat user roles:
 define('AJAX_CHAT_CHATBOT', $site_config['chatBotRole']);
@@ -280,3 +280,6 @@ $config['socketServerChatID'] = 0;
 
 // This is used to anonymize the external urls
 $config['anonymous_link'] = $site_config['anonymizer_url'];
+
+// Font Scaling
+$config['font_size'] = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] - 5 . '%' : '80%';

@@ -72,11 +72,11 @@ if (!in_array($order_by, $good_order_by)) {
 $top_links = '
     <div class="bottom20">
         <ul class="level-center bg-06">
-            <li class="altlink margin20"><a href="' . $site_config['baseurl'] . '/messages.php?action=search">' . $lang['pm_search'] . '</a></li>
-            <li class="altlink margin20"><a href="' . $site_config['baseurl'] . '/messages.php?action=edit_mailboxes">' . $lang['pm_manager'] . '</a></li>
-            <li class="altlink margin20"><a href="' . $site_config['baseurl'] . '/messages.php?action=send_message">Send Message</a></li>
-            <li class="altlink margin20"><a href="' . $site_config['baseurl'] . '/messages.php?action=new_draft">' . $lang['pm_write_new'] . '</a></li>
-            <li class="altlink margin20"><a href="' . $site_config['baseurl'] . '/messages.php?action=view_mailbox">' . $lang['pm_in_box'] . '</a></li>
+            <li class="altlink margin10"><a href="' . $site_config['baseurl'] . '/messages.php?action=search">' . $lang['pm_search'] . '</a></li>
+            <li class="altlink margin10"><a href="' . $site_config['baseurl'] . '/messages.php?action=edit_mailboxes">' . $lang['pm_manager'] . '</a></li>
+            <li class="altlink margin10"><a href="' . $site_config['baseurl'] . '/messages.php?action=send_message">Send Message</a></li>
+            <li class="altlink margin10"><a href="' . $site_config['baseurl'] . '/messages.php?action=new_draft">' . $lang['pm_write_new'] . '</a></li>
+            <li class="altlink margin10"><a href="' . $site_config['baseurl'] . '/messages.php?action=view_mailbox">' . $lang['pm_in_box'] . '</a></li>
         </ul>
     </div>';
 
@@ -247,7 +247,7 @@ function insertJumpTo($mailbox)
         $res = sql_query('SELECT boxnumber,name FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
         $insertJumpTo = '
             <form action="messages.php" method="get">
-                <input type="hidden" name="action" value="view_mailbox" />
+                <input type="hidden" name="action" value="view_mailbox">
                 <label for="box">' . $lang['pm_jump_to'] . '
                     <select name="box" onchange="location = this.options[this.selectedIndex].value;">
                         <option value="' . $site_config['baseurl'] . '/messages.php?action=view_mailbox&amp;box=1"' . ($mailbox === 1 ? ' selected' : '') . '>' . $lang['pm_inbox'] . '</option>

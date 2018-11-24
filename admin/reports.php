@@ -90,7 +90,7 @@ $count = $row[0];
 $perpage = 15;
 $pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?tool=reports&amp;");
 if ($count == '0') {
-    $HTMLOUT .= main_div($lang['reports_nice']);
+    $HTMLOUT .= stderr('', $lang['reports_nice']);
 } else {
     $HTMLOUT .= $count > $perpage ? $pager['pagertop'] : '';
     $HTMLOUT .= "
@@ -131,10 +131,10 @@ if ($count == '0') {
             $res_who = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr_info['who_delt_with_it']));
             $arr_who = mysqli_fetch_assoc($res_who);
             $dealtwith = "<span style='color: {$solved_color};'><b>{$lang['reports_yes']}</b> </span> {$lang['reports_by']} " . format_username($arr_info['who_delt_with_it']) . "<br>{$lang['reports_in']} <span style='color: {$solved_color};'>{$solved_in}</span>";
-            $checkbox = "<input type='radio' name='id' value='" . (int) $arr_info['id'] . "' disabled />";
+            $checkbox = "<input type='radio' name='id' value='" . (int) $arr_info['id'] . "' disabled>";
         } else {
             $dealtwith = "<span class='has-text-danger'><b>{$lang['reports_no']}</b></span>";
-            $checkbox = "<input type='radio' name='id' value='" . (int) $arr_info['id'] . "' />";
+            $checkbox = "<input type='radio' name='id' value='" . (int) $arr_info['id'] . "'>";
         }
 
         if ($arr_info['reporting_type'] != '') {
@@ -222,7 +222,7 @@ if ($count == '0') {
 if ($count > '0') {
     $HTMLOUT .= main_div("{$lang['reports_how']} {$CURUSER['username']} {$lang['reports_dealt1']}<br>{$lang['reports_please']} [ {$lang['reports_req']} ]
     <textarea name='how_delt_with' class='w-100' rows='5'></textarea>
-    <input type='submit' class='button is-small' value='{$lang['reports_confirm']}' />
+    <input type='submit' class='button is-small' value='{$lang['reports_confirm']}'>
     </form>", 'top20');
 }
 echo stdhead($lang['reports_stdhead']) . wrapper($HTMLOUT) . stdfoot();

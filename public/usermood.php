@@ -21,7 +21,7 @@ if (isset($_GET['id'])) {
             'mood' => $moodid,
         ], $site_config['expires']['user_cache']);
         $cache->delete('topmoods');
-        write_log('<b>' . $lang['user_mood_change'] . '</b> ' . $CURUSER['username'] . ' ' . htmlsafechars($rmood['name']) . '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($rmood['image']) . '" alt="" />');
+        write_log('<b>' . $lang['user_mood_change'] . '</b> ' . $CURUSER['username'] . ' ' . htmlsafechars($rmood['name']) . '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($rmood['image']) . '" alt="">');
         $HTMLOUT = doc_head() . '
         <meta property="og:title" content=' . $lang['user_mood_title'] . '>
         <title>' . $lang['user_mood_title'] . '</title>
@@ -39,7 +39,7 @@ $body_class = 'background-16 h-style-9 text-9 skin-2';
 $HTMLOUT .= doc_head() . '
     <meta property="og:title" content=' . $lang['user_mood_title'] . '>
     <title>' . $lang['user_mood_title'] . '</title>
-    <link rel="stylesheet" href="' . get_file_name('css') . '" />
+    <link rel="stylesheet" href="' . get_file_name('css') . '">
 </head>';
 
 $body = '
@@ -60,7 +60,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $div .= '
         <span class="margin10 bordered has-text-centered bg-04">
             <a href="?id=' . (int) $arr['id'] . '">
-                <img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt="" class="bottom10" />
+                <img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt="" class="bottom10">
                 <br>' . htmlsafechars($arr['name']) . '
             </a>
         </span>';

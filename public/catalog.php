@@ -156,8 +156,8 @@ $htmlout = "
 $div = "
     <h2 class='has-text-centered'>{$lang['catol_search']}</h2>
     <form  action='" . $_SERVER['PHP_SELF'] . "' method='get' class='has-text-centered'>
-        <input type='text' name='search' class='w-50' placeholder='{$lang['catol_search_for_tor']}' value='$search' /><br>
-        <input type='submit' value='search!' class='button is-small margin20' />
+        <input type='text' name='search' class='w-50' placeholder='{$lang['catol_search_for_tor']}' value='$search'><br>
+        <input type='submit' value='search!' class='button is-small margin20'>
     </form>
     <div class='tabs is-centered is-small'>
         <ul>";
@@ -190,9 +190,9 @@ if (!empty($rows)) {
             <div class='column is-2 has-text-centered'>
                 <div class='bottom10'>{$lang['catol_upper']}: $uploader</div>
                 <div>" . ($row['poster'] ? "
-                    <img src='" . url_proxy($row['poster'], true, 150, null) . "' alt='Poster' class='tooltip-poster' />
+                    <img src='" . url_proxy($row['poster'], true, 150, null) . "' alt='Poster' class='tooltip-poster'>
                 </div>" : "
-                    <img src='{$site_config['pic_baseurl']}noposter.png' alt='{$lang['catol_no_poster']}' class='tooltip-poster' />
+                    <img src='{$site_config['pic_baseurl']}noposter.png' alt='{$lang['catol_no_poster']}' class='tooltip-poster'>
                 </div>") . "
             </div   >
             <div class='column'>";

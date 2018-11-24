@@ -26,6 +26,11 @@ function adminer_object()
             'information_schema',
         ]),
         new AdminerFrames(),
+        new AdminerDumpBz2(),
+        new AdminerDumpZip(),
+        new AdminerEnumTypes(),
+        new AdminerVersionNoverify(),
+        new AdminerTablesFilter(),
     ];
 
     class AdminerCustomization extends AdminerPlugin

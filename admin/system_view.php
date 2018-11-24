@@ -192,17 +192,17 @@ foreach ($html as $key => $value) {
         </tr>";
 }
 $htmlout = "
-    <ul class='level-center bg-06'>
-        <li class='altlink margin20'>
+    <ul class='level-center bg-06 bottom10'>
+        <li class='altlink margin10'>
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=system_view&amp;phpinfo=1'>{$lang['system_phpinfo']}</a>
         </li>
-        <li class='altlink margin20'>
+        <li class='altlink margin10'>
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=memcache'>Memcache</a>
         </li>
-        <li class='altlink margin20'>
+        <li class='altlink margin10'>
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=op'>OPcache</a>
         </li>
-        <li class='altlink margin20'>
+        <li class='altlink margin10'>
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=mysql_stats'>MySQL Stats</a>
         </li>
     </ul>";

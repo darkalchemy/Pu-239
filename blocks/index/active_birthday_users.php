@@ -35,8 +35,8 @@ $birthday_users .= "
     <div id='birthday' class='box'>
         <div class='bordered'>
             <div class='alt_bordered bg-00 top10 bottom10'>
-                <div class='bg-00 padding10 bottom10 has-text-centered round10 size_5'>{$lang['index_birthday']} ({$birthday['count']})</div>
-                <div class='level-item is-wrapped'>
+                <div class='bg-00 padding10 bottom10 has-text-centered round5 size_5'>{$lang['index_birthday']} ({$birthday['count']})</div>
+                <div class='level-item is-wrapped padding20'>
                     {$birthday['birthdayusers']}
                 </div>
             </div>

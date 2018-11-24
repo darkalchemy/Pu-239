@@ -101,6 +101,9 @@ class AJAXChatTemplate
             case 'LANG_CODE':
                 return $this->ajaxChat->getLangCode();
 
+            case 'FONT_SIZE':
+                return $this->ajaxChat->getConfig('font_size');
+
             case 'BASE_DIRECTION':
                 return $this->getBaseDirectionAttribute();
 

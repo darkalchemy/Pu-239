@@ -41,9 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] == UC_MAX) {
     if (!$first || !$last || !$comment) {
         stderr("{$lang['stderr_error']}", "{$lang['text_missing']}");
     }
-    $test_first = ip2long($first);
-    $test_last = ip2long($last);
-    if ($test_first == -1 || $test_first === false || $test_last == -1 || $test_last === false) {
+    if (!validip($first) || !validip($last)) {
         stderr("{$lang['stderr_error']}", "{$lang['text_badip']}");
     }
     $added = TIME_NOW;
@@ -109,7 +107,7 @@ if ($count == 0) {
                     <td>' . htmlsafechars($banned['last']) . '</td>
                     <td>' . format_username($banned['addedby']) . '</td>
                     <td>' . htmlsafechars($banned['comment'], ENT_QUOTES) . "</td>
-                    <td><a href='" . $site_config['baseurl'] . '/staffpanel.php?tool=bans&amp;remove=' . $banned['id'] . "'>{$lang['text_remove']}</a></td>
+                    <td><a href='" . $site_config['baseurl'] . '/staffpanel.php?tool=bans&amp;remove=' . $banned['id'] . "'><i class='icon-trash-empty icon tooltipper has-text-danger' title='{$lang['text_remove']}'></i></a></td>
                </tr>";
     }
     $HTMLOUT .= main_table($body, $header);
@@ -129,18 +127,18 @@ if ($CURUSER['class'] == UC_MAX) {
     $HTMLOUT .= main_table("
                 <tr>
                     <td class='rowhead'>{$lang['table_firstip']}</td>
-                    <td><input type='text' name='first' class='w-100' /></td>
+                    <td><input type='text' name='first' class='w-100'></td>
                 </tr>
                 <tr>
                     <td class='rowhead'>{$lang['table_lastip']}</td>
-                    <td><input type='text' name='last' class='w-100' /></td>
+                    <td><input type='text' name='last' class='w-100'></td>
                 </tr>
                 <tr>
-                    <td class='rowhead'>{$lang['table_comment']}</td><td><input type='text' name='comment' class='w-100' /></td>
+                    <td class='rowhead'>{$lang['table_comment']}</td><td><input type='text' name='comment' class='w-100'></td>
                 </tr>");
     $HTMLOUT .= "
                 <div class='has-text-centered padding20'>
-                    <input type='submit' name='okay' value='{$lang['btn_add']}' class='button is-small' />
+                    <input type='submit' name='okay' value='{$lang['btn_add']}' class='button is-small'>
                 </div>
             </form>
         </div>";

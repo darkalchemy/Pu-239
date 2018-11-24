@@ -9,7 +9,7 @@ $lang = [
     'floodlimit_editflood' => 'Edit flood limit',
     'floodlimit_userclass' => 'User class',
     'floodlimit_limit' => 'Limit',
-    'floodlimit_note' => 'Note if you want no limit for the user class set the limit to 0',
+    'floodlimit_note' => 'Note: if you want no limit for the user class set the limit to 0',
     'floodlimit_save' => 'Save',
     'floodlimit_std' => 'Flood limit',
 ];

@@ -41,10 +41,10 @@ $HTMLOUT = '';
 $HTMLOUT .= "
         <div class='bottom20'>
             <ul class='level-center bg-06'>
-                <li class='altlink margin20'>
+                <li class='altlink margin10'>
                     <a href='{$site_config['baseurl']}/arcade.php'>Arcade</a>
                 </li>
-                <li class='altlink margin20'>
+                <li class='altlink margin10'>
                     <a href='{$site_config['baseurl']}/arcade_top_scores.php'>Top Scores</a>
                 </li>
             </ul>
@@ -56,8 +56,8 @@ $HTMLOUT .= "
         <div class='bordered top20'>
             <div class='alt_bordered bg-00 has-text-centered'>
                 <object classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0' width='{$game_width}' height='{$game_height}'>
-                    <param name='movie' value='./media/flash_games/{$gameURI}' />
-                    <param name='quality' value='high' />
+                    <param name='movie' value='./media/flash_games/{$gameURI}'>
+                    <param name='quality' value='high'>
                     <embed src='{$site_config['baseurl']}/media/flash_games/{$gameURI}' quality='high' pluginspage='http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash type=application/x-shockwave-flash' width='{$game_width}' height='{$game_height}'></embed>
                 </object>
             </div>
