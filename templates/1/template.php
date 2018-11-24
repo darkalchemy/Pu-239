@@ -67,6 +67,9 @@ function stdhead($title = '', $stdhead = null)
     $action = in_array(basename($_SERVER['PHP_SELF']), $captcha) ? 'login' : 'homepage';
     if (in_array(basename($_SERVER['PHP_SELF']), $captcha) && !empty($_ENV['RECAPTCHA_SITE_KEY'])) {
         $htmlout .= "
+        <script>
+            var key = '{$_ENV['RECAPTCHA_SITE_KEY']}';
+        </script>
         <script src='https://www.google.com/recaptcha/api.js?render={$_ENV['RECAPTCHA_SITE_KEY']}'></script>";
     }
 
