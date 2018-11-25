@@ -130,8 +130,12 @@ function get_secondarypage($lang, $queries, $path)
     } elseif ($list[0] === 'file') {
         $title = urldecode($list[1]);
     } elseif ($list[0] === 'page') {
-        $page = $list[1] + 1;
-        $title = $lang['page'] . " $page";
+        if ($list[1] != 'last') {
+            $page = $list[1] + 1;
+            $title = $lang['page'] . " $page";
+        } else {
+            $title = $lang['last'];
+        }
     }
 
     if (empty($title)) {

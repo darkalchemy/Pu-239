@@ -51,7 +51,7 @@ function rsstfreakinfo()
                 '',
                 '',
                 'href="' . $site_config['anonymizer_url'],
-            ], preg_replace('/<p>/', "<p class='size_3 has-text-white'>", $item->getElementsByTagName('description')
+            ], preg_replace('/<p>/', "<p class='size_4 has-text-white'>", $item->getElementsByTagName('description')
                 ->item(0)->nodeValue, 1)) . "
                             <a href='{$site_config['anonymizer_url']}" . $item->getElementsByTagName('link')
                 ->item(0)->nodeValue . "' target='_blank'>

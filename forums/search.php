@@ -142,7 +142,7 @@ if ($search) {
                 $search_post = str_replace(' ', '+', $search);
                 $post_id = (int) $arr['post_id'];
                 $posts = (int) $arr['post_count'];
-                $post_text = bubble('<img src="' . $site_config['pic_baseurl'] . 'forums/mg.gif" height="14" alt="' . $lang['fe_preview'] . '" class="emoticon">', $body, '' . $lang['fe_post_preview'] . '');
+                $post_text = bubble("<i class='icon-search icon' aria-hidden='true'></i>", $body, '' . $lang['fe_post_preview'] . '');
                 $rpic = ($arr['num_ratings'] != 0 ? ratingpic_forums(round($arr['rating_sum'] / $arr['num_ratings'], 1)) : '');
                 $content .= '<tr>
 		<td class="' . $class . '"><img src="' . $site_config['pic_baseurl'] . 'forums/' . ($posts < 30 ? ($arr['locked'] === 'yes' ? 'locked' : 'topic') : 'hot_topic') . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="emoticon"></td>

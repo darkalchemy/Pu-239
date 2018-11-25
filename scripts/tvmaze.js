@@ -8,7 +8,7 @@ function get_tvmaze(csrf, tvmazeid, name, tid) {
     count++;
     var el = document.querySelector('#tvmaze_outer');
     var e = document.createElement('div');
-    e.classList.add('has-text-centered');
+    e.classList.add('has-text-centered', 'padding20');
     e.innerHTML = 'Looking up "' + name + '" from TVMaze, please be patient. (' + count + ')';
     el.appendChild(e);
 

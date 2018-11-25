@@ -21,9 +21,6 @@ if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
 
     $owner_id = $CURUSER['id'];
     $cache->set('user_upload_variables_' . $owner_id, serialize($data), 3600);
-
-    header("Location: {$site_config['baseurl']}/upload.php");
-    die();
 }
 
 $dt = TIME_NOW;
@@ -34,6 +31,8 @@ ini_set('memory_limit', '64M');
 $lang = array_merge(load_language('global'), load_language('takeupload'));
 
 if ($user_data['class'] < UC_UPLOADER || $user_data['uploadpos'] == 0 || $user_data['uploadpos'] > 1 || $user_data['suspended'] === 'yes') {
+    $cache->delete('user_upload_variables_' . $owner_id);
+    $session->set('is-warning', $lang['not_authorized']);
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
@@ -350,7 +349,7 @@ if ($num_pieces != $expected_pieces) {
 $tmaker = (isset($dict['created by']) && !empty($dict['created by'])) ? $dict['created by'] : $lang['takeupload_unkown'];
 $dict['comment'] = ("In using this torrent you are bound by the {$site_config['site_name']} Confidentiality Agreement By Law"); // change torrent comment
 
-$visible = (XBT_TRACKER ? 'yes' : 'no');
+$visible = 'no';
 $torrent = str_replace('_', ' ', $torrent);
 $vip = (isset($vip) ? '1' : '0');
 
@@ -401,12 +400,8 @@ if (!$id) {
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
-if (!XBT_TRACKER) {
-    $torrent_stuffs->remove_torrent($infohash);
-}
-
+$torrent_stuffs->remove_torrent($infohash);
 $torrent_stuffs->get_torrent_from_hash($infohash);
-
 $cache->delete('peers_' . $owner_id);
 $peer = new DarkAlchemy\Pu239\Peer();
 $peer->getPeersFromUserId($owner_id);

@@ -557,7 +557,7 @@ if ($seeder === 'yes') {
 }
 
 if (!empty($torrent_updateset)) {
-    $torrent_stuffs->set($torrent_updateset, $torrent['id']);
+    $torrent_stuffs->update($torrent_updateset, $torrent['id']);
 }
 if (!empty($snatch_updateset)) {
     $snatched_stuffs->update($snatch_updateset, $torrent['id'], $userid);

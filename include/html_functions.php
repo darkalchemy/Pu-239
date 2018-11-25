@@ -160,9 +160,7 @@ function main_div($text, $class = null)
     } else {
         return "
                 <div class='bordered $class'>
-                    <div class='alt_bordered bg-00'>
-                        $text
-                    </div>
+                    <div class='alt_bordered bg-00'>$text</div>
                 </div>";
     }
 }

@@ -18,6 +18,7 @@ function torrents_normalize($data)
         ->select('owner')
         ->orderBy('id');
 
+    $tids = $ids = $bad1 = $bad2 = [];
     foreach ($torrents as $torrent) {
         $tids[] = $torrent['id'];
         $list[$torrent['id']] = $torrent;

@@ -73,7 +73,7 @@ if (isset($_GET['hit'])) {
     $set = [
         'views' => $torrent['views'],
     ];
-    $torrent_stuffs->set($set, $id);
+    $torrent_stuffs->update($set, $id);
 }
 $owned = $moderator = 0;
 if ($CURUSER['class'] >= UC_STAFF) {
@@ -87,7 +87,7 @@ if ($moderator) {
             'checked_by' => $CURUSER['id'],
             'checked_when' => $dt,
         ];
-        $torrent_stuffs->set($set, $id);
+        $torrent_stuffs->update($set, $id);
         $torrent['checked_by'] = $CURUSER['id'];
         $torrent['checked_when'] = $dt;
         $cache->set('checked_by_' . $id, $CURUSER['id'], 0);
@@ -103,7 +103,7 @@ if ($moderator) {
             'checked_by' => $CURUSER['id'],
             'checked_when' => $dt,
         ];
-        $torrent_stuffs->set($set, $id);
+        $torrent_stuffs->update($set, $id);
         $torrent['checked_by'] = $CURUSER['id'];
         $torrent['checked_when'] = $dt;
         $cache->set('checked_by_' . $id, $CURUSER['id'], 0);
@@ -114,7 +114,7 @@ if ($moderator) {
             'checked_by' => 0,
             'checked_when' => 0,
         ];
-        $torrent_stuffs->set($set, $id);
+        $torrent_stuffs->update($set, $id);
         $torrent['checked_by'] = 0;
         $torrent['checked_when'] = 0;
         $cache->delete('checked_by_' . $id);
@@ -129,7 +129,7 @@ if ($moderator) {
             'torrent_descr_',
             $id,
             'tvshow_ids_' . hash('sha512', get_show_name($torrent['name'])),
-            'imdb_fullset_' . $torrent['imdb_id'],
+            'imdb_fullset_title_' . $torrent['imdb_id'],
         ]);
         if (!empty($imdb_id)) {
             $cache->delete('tvshow_ids_' . $torrent['imdb_id']);
@@ -187,7 +187,7 @@ if (empty($torrent['imdb_id']) && !empty($torrent['url'])) {
         $set = [
             'imdb_id' => $imdb_id,
         ];
-        $torrent_stuffs->set($set, $id);
+        $torrent_stuffs->update($set, $id);
         $torrent['imdb_id'] = $imdb_id;
     }
 }
@@ -228,7 +228,7 @@ if ($BLOCKS['tvmaze_api_on'] && in_array($torrent['category'], $site_config['tv_
     }
 }
 if ($BLOCKS['imdb_api_on'] && in_array($torrent['category'], $site_config['movie_cats']) && !empty($torrent['imdb_id'])) {
-    $imdb_data = $cache->get('imdb_fullset_' . $torrent['imdb_id']);
+    $imdb_data = $cache->get('imdb_fullset_title_' . $torrent['imdb_id']);
     if ($imdb_data === false || is_null($imdb_data)) {
         $imdb_data = "
             <a id='imdb-hash'></a>
@@ -237,6 +237,8 @@ if ($BLOCKS['imdb_api_on'] && in_array($torrent['category'], $site_config['movie
                 </div>
             </div>";
     }
+    $imdb_data = "
+            <div class='padding20'>{$imdb_data}</div>";
 }
 if (!empty($torrent['youtube'])) {
     preg_match('/(watch\?v=|watch\?.+&v=)(.{11})/i', $torrent['youtube'], $match);
@@ -269,11 +271,11 @@ $banner_image = get_banner($torrent['imdb_id']);
 $banner = !empty($banner_image) ? "<img src='" . url_proxy($banner_image, true, 1000, 185) . "' class='w-100 round10 bottom20'>" : '';
 if (!empty($torrent['name'])) {
     $title = "
-            <div class='bottom20'>
+            <div class='bottom20 w-100'>
                 $banner
-                <div class='bg-00 round10 columns padding20'>
+                <div class='bg-00 round10 columns padding20 is-gapless'>
                     <span class='column is-1 size_7 has-text-left padding20'>$previous</span>
-                    <span class='column size_7 has-text-centered padding20'>" . htmlsafechars($torrent['name'], ENT_QUOTES) . "</span>
+                    <h1 class='column has-text-centered padding20'>" . htmlsafechars($torrent['name'], ENT_QUOTES) . "</h1>
                     <span class='column is-1 size_7 has-text-right padding20'>$next</span>
                 </div>
             </div>";

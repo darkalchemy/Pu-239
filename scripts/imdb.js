@@ -13,7 +13,7 @@ function get_imdb(csrf, url, tid, image) {
     count++;
     var el = document.querySelector('#imdb_outer');
     var e = document.createElement('div');
-    e.classList.add('has-text-centered');
+    e.classList.add('has-text-centered', 'padding20');
     e.innerHTML = 'Looking up "' + url + '" from IMDb, please be patient. (' + count + ')';
     el.appendChild(e);
 

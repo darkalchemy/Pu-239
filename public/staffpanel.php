@@ -41,7 +41,6 @@ require_once CLASS_DIR . 'class_check.php';
 class_check(UC_STAFF);
 $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : null));
 $id = (isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : null));
-$class_color = (function_exists('get_user_class_color') ? true : false);
 $tool = !empty($_GET['tool']) ? $_GET['tool'] : (!empty($_POST['tool']) ? $_POST['tool'] : null);
 write_info("{$CURUSER['username']} has accessed the " . (empty($tool) ? 'staffpanel' : "$tool staff page"));
 $staff_tools = [
@@ -360,7 +359,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 if (!in_array($arr['av_class'], $unique_classes)) {
                     $unique_classes[] = $arr['av_class'];
                     $table = "
-            <h1 class='has-text-centered top20 text-shadow'>" . ($class_color ? '<font color="#' . get_user_class_color($arr['av_class']) . '">' : '') . get_user_class_name($arr['av_class']) . '\'s Panel' . ($class_color ? '</font>' : '') . "</h1>
+            <h1 class='has-text-centered top20 text-shadow " . get_user_class_name($arr['av_class'], true) . "'>" . get_user_class_name($arr['av_class']) . "'s Panel</h1>
             {$add_button}";
                 }
                 $show_in_nav = $arr['navbar'] == 1 ? '<span class="has-text-success">true</span>' : '<span class="has-text-info">false</span>';

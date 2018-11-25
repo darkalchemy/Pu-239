@@ -101,7 +101,7 @@ function get_book_info($isbn, $name, $tid, $poster)
                 'newgenre' => $ebook['newgenre'],
                 'isbn' => !empty($ebook['isbn13']) ? $ebook['isbn13'] : $ebook['isbn10'],
             ];
-            $torrent_stuffs->set($set, $tid);
+            $torrent_stuffs->update($set, $tid);
             $cache->set('book_info_' . $hash, $ebook, $site_config['expires']['book_info']);
         }
     }
@@ -186,7 +186,7 @@ function get_book_info($isbn, $name, $tid, $poster)
         $set = [
             'poster' => $poster,
         ];
-        $torrent_stuffs->set($set, $tid);
+        $torrent_stuffs->update($set, $tid);
         $values = [
             'isbn' => $ebook['isbn13'],
             'url' => $poster,

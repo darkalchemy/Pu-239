@@ -84,7 +84,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
         ]);
 
         if ($tid) {
-            $torrent_stuffs->set($set, $tid);
+            $torrent_stuffs->update($set, $tid);
         }
         $cache->set('imdb_' . $imdb_id, $imdb_data, 604800);
     }
@@ -149,8 +149,8 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                                                 <span class='is-flex'>
                                                     <span class='has-text-centered'>
                                                         <img src='" . url_proxy(strip_tags($pp['photo']), true, 150, null) . "' class='tooltip-poster'>
-                                                        <p class='top10'>{$pp['name']}</p>
-                                                        <p>{$pp['role']}</p>
+                                                        <div class='top10 size_5'>{$pp['name']}</div>
+                                                        <span class='has-text-primary size_6'>{$pp['role']}</span>
                                                     </span>
                                                 </span>
                                             </span>
@@ -176,7 +176,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                 }
                 $imdb_info .= "
                     <div class='columns'>
-                        <span class='has-text-danger column is-2 size_5 padding5'>$boo: </span>
+                        <span class='has-text-primary column is-2 size_5 padding5'>$boo: </span>
                         <span class='column padding5'>{$imdb_data[$foo]}</span>
                     </div>";
             } elseif (is_array($imdb_data[$foo]) && in_array($foo, [
@@ -203,7 +203,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
             if (!empty($imdb_tmp)) {
                 $imdb_info .= "
                     <div class='columns'>
-                        <span class='has-text-danger column is-2 size_5 padding5'>$boo: </span>
+                        <span class='has-text-primary column is-2 size_5 padding5'>$boo: </span>
                         <span class='column padding5'>" . implode(', ', $imdb_tmp) . '</span>
                     </div>';
                 unset($imdb_tmp);
@@ -214,9 +214,9 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
     $imdb_info = preg_replace('/&(?![A-Za-z0-9#]{1,7};)/', '&amp;', $imdb_info);
     if ($title) {
         $imdb_info = "
-        <div class='padding10'>
+        <div class='padding20'>
             <div class='columns bottom20'>
-                <div class='column is-3'>
+                <div class='column is-one-third'>
                     <img src='" . placeholder_image('225') . "' data-src='" . url_proxy($poster, true, 225) . "' class='lazy round10 img-polaroid'>
                 </div>
                 <div class='column'>
@@ -224,10 +224,10 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                 </div>
             </div>
         </div>";
+        $cache->set('imdb_fullset_title_' . $imdbid, $imdb_info, 604800);
     } else {
-        $imdb_info = "<div class='padding10'>$imdb_info</div>";
+        $imdb_info = "<div class='padding20'>$imdb_info</div>";
     }
-    $cache->set('imdb_fullset_' . $imdbid, $imdb_info, 604800);
 
     return [
         $imdb_info,

@@ -205,6 +205,7 @@ foreach ($styles as $folder) {
             SCRIPTS_DIR . 'getname.js',
             SCRIPTS_DIR . 'imdb.js',
             SCRIPTS_DIR . 'isbn.js',
+            SCRIPTS_DIR . 'upload.js',
         ],
         'request_js' => [
             SCRIPTS_DIR . 'imdb.js',

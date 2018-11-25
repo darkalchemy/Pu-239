@@ -1632,4 +1632,11 @@ $sql_updates = [
         'query' => 'ALTER TABLE `deathrow` ADD INDEX `notified`(`notified`)',
         'flush' => false,
     ],
+    [
+        'id' => 1543133768,
+        'info' => 'Fix typo',
+        'date' => '25 Nov, 2018',
+        'query' => 'UPDATE `cleanup` SET `clean_title` = "Christmas Gift Reset" WHERE `clean_title` = "Christmas Gift Rest"',
+        'flush' => false,
+    ],
 ];

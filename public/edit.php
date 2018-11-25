@@ -36,7 +36,7 @@ if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $CURUSER['class'] >= UC_
     header("Refresh: 1; url=$returl");
     die();
 }
-$lang = array_merge(load_language('global'), load_language('edit'));
+$lang = array_merge(load_language('global'), load_language('edit'), load_language('upload'));
 $row = $fluent->from('torrents')
     ->where('id = ?', $id)
     ->fetch();

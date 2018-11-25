@@ -272,7 +272,7 @@ if (isset($cleansearchstr)) {
 }
 
 if ($CURUSER['opt1'] & user_options::VIEWSCLOUD) {
-    $HTMLOUT .= main_div("<div class='cloud'>" . cloud() . '</div>', 'bottom20');
+    $HTMLOUT .= main_div("<div class='cloud round10 padding20'>" . cloud() . '</div>', 'bottom20');
 }
 
 $HTMLOUT .= "
@@ -282,6 +282,7 @@ if ($today) {
                                     <input type='hidden' name='today' value='$today'>";
 }
 $main_div = "
+                                    <div class='padding20'>
                                         <div id='checkbox_container' class='level-center'>";
 if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
     foreach ($catids as $cat) {
@@ -310,10 +311,11 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
 }
 $main_div .= "
                                         </div>
-                                        <div class='level-center-center'>
+                                        <div class='level-center-center top10'>
                                             <label for='checkAll' class='right10'>Select All Categories</label>
                                             <input type='checkbox' id='checkAll'>
-                                        </div>";
+                                        </div>
+                                    </div>";
 $HTMLOUT .= main_div($main_div, 'bottom20');
 
 if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
@@ -365,6 +367,7 @@ foreach ([
 $searchin .= '
                     </select>';
 $HTMLOUT .= main_div("
+                <div class='padding20'>
                     <div class='padding10 w-100'>
                         <input id='search' name='search' type='text' data-csrf='" . $session->get('csrf_token') . "' placeholder='{$lang['search_search']}' class='search w-100' value='" . (!empty($_GET['search']) ? $_GET['search'] : '') . "' onkeyup='autosearch()'>
                     </div>
@@ -390,7 +393,8 @@ $HTMLOUT .= main_div("
                     </div>
                     <div class='margin10 has-text-centered'>
                         <input type='submit' value='{$lang['search_search_btn']}' class='button is-small'>
-                    </div>");
+                    </div>
+                </div>");
 $HTMLOUT .= '
             </form>';
 $HTMLOUT .= "{$new_button}";

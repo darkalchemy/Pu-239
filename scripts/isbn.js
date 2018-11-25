@@ -13,7 +13,7 @@ function get_isbn(csrf, isbn, name, tid) {
     count++;
     var el = document.querySelector('#isbn_outer');
     var e = document.createElement('div');
-    e.classList.add('has-text-centered');
+    e.classList.add('has-text-centered', 'padding20');
     e.innerHTML = 'Looking up "' + name + '" from Google Books, please be patient. (' + count + ')';
     el.appendChild(e);
 

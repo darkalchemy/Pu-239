@@ -19,6 +19,7 @@ require_once INCL_DIR . 'password_functions.php';
 $cache = new DarkAlchemy\Pu239\Cache();
 $fluent = new DarkAlchemy\Pu239\Database();
 $session = new DarkAlchemy\Pu239\Session();
+require_once INCL_DIR . 'site_settings.php';
 $user_stuffs = new DarkAlchemy\Pu239\User();
 $torrent_stuffs = new DarkAlchemy\Pu239\Torrent();
 $image_stuffs = new DarkAlchemy\Pu239\Image();
@@ -60,7 +61,6 @@ require_once CLASS_DIR . 'class_blocks_userdetails.php';
 require_once CLASS_DIR . 'class_blocks_apis.php';
 require_once CLASS_DIR . 'class_bt_options.php';
 require_once CACHE_DIR . 'block_settings_cache.php';
-require_once INCL_DIR . 'site_settings.php';
 require_once INCL_DIR . 'database.php';
 
 if (!$site_config['in_production']) {

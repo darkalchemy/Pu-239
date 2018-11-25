@@ -148,7 +148,7 @@ function get_episode($tvmaze_id, $season, $episode, $tid)
         $set = [
             'year' => $episode_info['year'],
         ];
-        $torrent_stuffs->set($set, $tid);
+        $torrent_stuffs->update($set, $tid);
     }
 
     if (!empty($episode_info)) {
@@ -227,7 +227,7 @@ function tvmaze(int $tvmaze_id, int $tid, $season = 0, $episode = 0, $poster = '
             $image_stuffs->insert($values);
         }
     }
-    $torrent_stuffs->set($set, $tid);
+    $torrent_stuffs->update($set, $tid);
 
     $episode = get_episode($tvmaze_id, $season, $episode, $tid);
 

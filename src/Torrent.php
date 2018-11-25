@@ -64,16 +64,7 @@ class Torrent
         $this->clear_caches();
     }
 
-    /**
-     * @param array $set
-     * @param int   $tid
-     *
-     * @return bool|int|\PDOStatement
-     *
-     * @throws \Envms\FluentPDO\Exception
-     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
-     */
-    public function set(array $set, int $tid)
+    public function update(array $set, int $tid)
     {
         $query = $this->fluent->update('torrents')
             ->set($set)
@@ -251,6 +242,7 @@ class Torrent
             'ts' => $torrent['added'],
             'visible' => $torrent['visible'],
             'owner' => $torrent['owner'],
+            'added' => $torrent['added'],
             'info_hash' => $torrent['info_hash'],
         ];
 
@@ -287,7 +279,7 @@ class Torrent
         $set['seeders'] = max(0, $set['seeders']);
         $set['leechers'] = max(0, $set['leechers']);
 
-        $this->set($set, $tid);
+        $this->update($set, $tid);
     }
 
     /**
@@ -336,7 +328,7 @@ class Torrent
             $set = [
                 'seedbonus' => $seedbonus - $this->site_config['bonus_per_delete'],
             ];
-            $this->fluent('users')
+            $this->fluent->update('users')
                 ->set($set)
                 ->where('id = ?', $owner)
                 ->execute();

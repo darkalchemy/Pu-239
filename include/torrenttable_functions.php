@@ -111,12 +111,12 @@ function torrenttable($res, $variant = 'index')
             <thead>
                 <tr>
                     <th class='has-text-centered w-1 tooltipper' title='{$lang['torrenttable_type']}'>{$lang['torrenttable_type']}</th>
-                    <th class='has-text-centered w-50 tooltipper' title='{$lang['torrenttable_name']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=1&amp;type={$link1}'>{$lang['torrenttable_name']}</a></th>
-                    <th class='has-text-centered w-1 tooltipper' title='Download'><i class='icon-download icon'></i></th>";
+                    <th class='has-text-centered min-350 tooltipper' title='{$lang['torrenttable_name']}'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=1&amp;type={$link1}'>{$lang['torrenttable_name']}</a></th>
+                    <th class='has-text-centered w-1 tooltipper' title='Download'><i class='icon-download icon' aria-hidden='true'></i></th>";
     $htmlout .= ($variant === 'index' ? "
                     <th class='has-text-centered tooltipper' title='{$lang['bookmark_goto']}'>
                         <a href='{$site_config['baseurl']}/bookmarks.php'>
-                            <i class='icon-ok icon'></i>
+                            <i class='icon-ok icon' aria-hidden='true'></i>
                         </a>
                     </th>" : '');
     if ($variant === 'mytorrents') {
@@ -215,7 +215,7 @@ function torrenttable($res, $variant = 'index')
         }
 
         $htmlout .= "
-            <td style='min-width: 350px;'>
+            <td>
                 <div class='columns'>
                     <div class='column is-10'>
                         <a href='{$site_config['baseurl']}/details.php?";
@@ -239,7 +239,7 @@ function torrenttable($res, $variant = 'index')
         $icons[] = ($row['silver'] != 0 ? "<img src='{$site_config['pic_baseurl']}silver.png' class='tooltipper icon' alt='Silver Torrent' title='<div class=\"has-text-centered size_5 has-text-success\">Silver Torrent</div><div class=\"has-text-centered\">" . ($row['silver'] > 1 ? 'Expires: ' . get_date($row['silver'], 'DATE') . '<br>(' . mkprettytime($row['silver'] - TIME_NOW) . ' to go)</div>' : '<div class="has-text-centered">Unlimited</div>') . "'>" : '');
         $title = "
             <span class='dt-tooltipper-large' data-tooltip-content='#desc_{$row['id']}_tooltip'>
-                <img src='{$site_config['pic_baseurl']}forums/mg.gif' class='icon' alt='Preview'>
+                <i class='icon-search icon' aria-hidden='true'></i>
                 <div class='tooltip_templates'>
                     <span id='desc_{$row['id']}_tooltip'>
                         " . format_comment($descr, false, true, false) . '
@@ -274,7 +274,7 @@ function torrenttable($res, $variant = 'index')
                 $newgenre[] = "<a href='{$site_config['baseurl']}/browse.php?search=" . strtolower(trim($foo)) . "&amp;searchin=genre'>" . ucfirst(strtolower(trim($foo))) . '</a>';
             }
             if (!empty($newgenre)) {
-                $icons[] = '<br>' . implode(', ', $newgenre);
+                $icons[] = implode(', ', $newgenre);
             }
         }
 
@@ -315,7 +315,7 @@ function torrenttable($res, $variant = 'index')
                                 </div>
                             </span>
                         </a>
-                        <span class='left10'>$icon_string</span>
+                        <div>$icon_string</div>
                         $imdb_info
                         $rating
                         $smalldescr
@@ -330,7 +330,7 @@ function torrenttable($res, $variant = 'index')
                     <div class='level-center'>
                         <div class='flex-inrow'>
                             <a href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "' class='flex-item'>
-                                <i class='icon-download icon tooltipper' title='Download This Torrent!'></i>
+                                <i class='icon-download icon tooltipper' aria-hidden='true' title='Download This Torrent!'></i>
                             </a>
                         </div>
                     </div>
@@ -350,7 +350,7 @@ function torrenttable($res, $variant = 'index')
                     <div class='level-center'>
                         <div class='flex-inrow'>
                             <a href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "'  class='flex-item'>
-                                <i class='icon-download icon tooltipper' title='Download This Torrent!'></i>
+                                <i class='icon-download icon tooltipper' aria-hidden='true' title='Download This Torrent!'></i>
                             </a>
                         </div>
                     </div>
@@ -367,7 +367,7 @@ function torrenttable($res, $variant = 'index')
 
         $bookmark = "
                 <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' class='bookmarks tooltipper' title='{$lang['bookmark_add']}'>
-                    <i class='icon-ok icon has-text-success'></i>
+                    <i class='icon-ok icon has-text-success' aria-hidden='true'></i>
                 </span>";
 
         if (!empty($book)) {
@@ -375,7 +375,7 @@ function torrenttable($res, $variant = 'index')
                 if ($bk['torrentid'] == $id) {
                     $bookmark = "
                     <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_del']}'>
-                        <i class='icon-cancel icon has-text-danger'></i>
+                        <i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i>
                     </span>";
                 }
             }
@@ -441,25 +441,25 @@ function torrenttable($res, $variant = 'index')
             $edit_link = "
                 <span>
                     <a href='{$site_config['baseurl']}/edit.php?id=" . (int) $row['id'] . "{$returnto}' class='tooltipper' title='Fast Edit'>
-                        <i class='icon-edit icon'></i>
+                        <i class='icon-edit icon' aria-hidden='true'></i>
                     </a>
                 </span>";
             $del_link = ($CURUSER['class'] === UC_MAX ? "
                 <span>
                     <a href='{$site_config['baseurl']}/fastdelete.php?id=" . (int) $row['id'] . "{$returnto}' class='tooltipper' title='Fast Delete'>
-                        <i class='icon-cancel icon has-text-danger'></i>
+                        <i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i>
                     </a>
                 </span>" : '');
             $staff_pick = '';
             if ($CURUSER['class'] === UC_MAX && (int) $row['staff_picks'] > 0) {
                 $staff_pick = "
                 <span data-id='{$row['id']}' data-pick='{$row['staff_picks']}' . data-csrf='" . $session->get('csrf_token') . "' class='staff_pick tooltipper' title='Remove from Staff Picks'>
-                    <i class='icon-minus icon has-text-danger'></i>
+                    <i class='icon-minus icon has-text-danger' aria-hidden='true'></i>
                 </span>";
             } elseif ($CURUSER['class'] === UC_MAX) {
                 $staff_pick = "
                 <span data-id='{$row['id']}' data-pick='{$row['staff_picks']}' . data-csrf='" . $session->get('csrf_token') . "' class='staff_pick tooltipper' title='Add to Staff Picks'>
-                    <i class='icon-plus icon has-text-success'></i>
+                    <i class='icon-plus icon has-text-success' aria-hidden='true'></i>
                 </span>";
             }
 

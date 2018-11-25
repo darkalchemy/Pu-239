@@ -37,7 +37,14 @@ function birthday_update($data)
         }
         $count = count($msgs);
         if ($count > 0) {
-            $message_stuffs->insert($msgs);
+            if ($count > 100) {
+                foreach (array_chunk($msgs, 150) as $t) {
+                    echo 'Inserting ' . count($t) . " messages\n";
+                    $message_stuffs->insert($t);
+                }
+            } else {
+                $message_stuffs->insert($msgs);
+            }
 
             $set = [
                 'uploaded' => new Envms\FluentPDO\Literal('uploaded + 10737418240'),

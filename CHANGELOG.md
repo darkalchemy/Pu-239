@@ -1,3 +1,11 @@
+### 25 Nov, 2018
+fix: imdb poster not chowing when imdb is from cache details.php  
+fix: create empty arrays before use torrents_normalize.php  
+fix: another attempt to fix birthday_update.php  
+fix: torrent upload  
+update: require isbn on ebook upload  
+update: require imdb on movie/tv upload  
+
 ### 24 Nov, 2018
 update: Adminer  
 fix: missing key  

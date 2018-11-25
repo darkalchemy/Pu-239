@@ -169,13 +169,11 @@ $site_config['comment_min_class'] = 4; // min class to be checked when posting c
 $site_config['comment_check'] = 1; // set it to 0 if you wanna allow commenting with out staff checking
 // for imdb, tmdb, fanart, subs, youtube
 $site_config['movie_cats'] = [
-    2,
     3,
     10,
     11,
 ];
 $site_config['slider_cats'] = [
-    2,
     3,
     10,
     11,

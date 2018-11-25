@@ -177,7 +177,7 @@ if ($arr['poll_id'] > 0) {
 		        <tr>
 		            <td style="padding: 0px; background-image: url(' . $site_config['pic_baseurl'] . 'forums/vote_img_bg.gif); background-repeat: repeat-x">
                         <span class="tooltipper" title="' . $math_text . '">
-                    	    <img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/vote_img.gif" width="' . $math . '%" height="8" alt="' . $math_text . '" class="lazy">
+                            <i class="icon-search icon" aria-hidden="true"></i>
                         </span>
                 	</td>
         	   </tr>
