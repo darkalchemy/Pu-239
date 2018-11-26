@@ -73,8 +73,8 @@ function images_update($data)
 
     foreach ($imdbids as $imdbid) {
         if (!empty($imdbid)) {
-            get_imdb_info($imdbid['imdb_id'], false);
-            get_omdb_info($imdbid['imdb_id'], false);
+            get_imdb_info($imdbid['imdb_id'], true);
+            get_omdb_info($imdbid['imdb_id'], true);
         }
     }
 
