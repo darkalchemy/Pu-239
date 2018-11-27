@@ -5,7 +5,7 @@
  */
 function parse_poll()
 {
-    global $CURUSER, $site_config, $cache;
+    global $CURUSER, $site_config;
 
     $htmlout = '';
     $check = 0;

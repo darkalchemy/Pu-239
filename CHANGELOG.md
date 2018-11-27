@@ -1,8 +1,8 @@
-### 26 Nov, 2018
+### 27 Nov, 2018
 fix: IMDb caching during images update  
 
 ### 25 Nov, 2018
-fix: imdb poster not chowing when imdb is from cache details.php  
+fix: imdb poster not showing when imdb is from cache details.php  
 fix: create empty arrays before use torrents_normalize.php  
 fix: another attempt to fix birthday_update.php  
 fix: torrent upload  

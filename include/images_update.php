@@ -28,7 +28,7 @@ function images_update()
 
     set_time_limit(1200);
     ignore_user_abort(true);
-    $cache->set('images_update_', 'running', 600);
+    $cache->set('images_update_', 'running', 3600);
 
     get_upcoming();
     get_movies_in_theaters();
@@ -83,7 +83,7 @@ function images_update()
 
     foreach ($imdbids as $imdbid) {
         if (!empty($imdbid)) {
-            get_imdb_info($imdbid['imdb_id'], false);
+            get_imdb_info($imdbid['imdb_id'], true);
             get_omdb_info($imdbid['imdb_id'], false);
         }
     }
@@ -105,7 +105,7 @@ function images_update()
         preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $link['url'], $imdb);
         $imdb = !empty($imdb[2]) ? $imdb[2] : '';
         if (!empty($imdb)) {
-            get_imdb_info($imdb, false);
+            get_imdb_info($imdb, true);
             get_omdb_info($imdb, false);
         }
     }
