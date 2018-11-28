@@ -1,3 +1,6 @@
+### 28 Nov, 2018
+fix: insert duplicate ip, announce.php  
+
 ### 27 Nov, 2018
 fix: IMDb caching during images update  
 

@@ -65,7 +65,7 @@ class IP
         $type = $values['type'];
         $ttl = $type === 'announce' ? 60 : 300;
         $ip = $values['ip'];
-        $cached_ip = $this->cache->get($type . '_ip_' . $userid . '_' . $ip);
+        $cached_ip = $this->cache->get($type . '_ip_' . $userid . '_' . md5(inet_pton($ip)));
         if ($cached_ip === false || is_null($cached_ip)) {
             $id = $this->fluent->from('ips')
                 ->select(null)
@@ -81,9 +81,8 @@ class IP
             } else {
                 $this->set($update, $id);
             }
+            $this->cache->set($type . '_ip_' . $userid . '_' . md5(inet_pton($ip)), inet_pton($ip), $ttl);
         }
-
-        $this->cache->set($type . '_ip_' . $userid . '_' . $ip, $ip, $ttl);
     }
 
     /**
@@ -96,6 +95,7 @@ class IP
     {
         $this->fluent->insertInto('ips')
             ->values($values)
+            ->ignore()
             ->execute();
 
         $this->cache->delete('ip_history_' . $userid);
