@@ -49,6 +49,12 @@ $excludes = [
     ROOT_DIR . 'node_modules',
 ];
 
+foreach ($folders as $folder) {
+    if (file_exists($folder)) {
+        chmod_r($folder);
+    }
+}
+
 $i = 1;
 foreach ($paths as $path) {
     if (file_exists($path)) {
@@ -77,7 +83,24 @@ foreach ($paths as $path) {
 
 foreach ($folders as $folder) {
     if (file_exists($folder)) {
-        chmod_r($folder);
+        chown_r($folder);
+    }
+}
+
+function chown_r($path)
+{
+    global $group;
+
+    if (!file_exists($path)) {
+        return;
+    }
+    $dir = new DirectoryIterator($path);
+    chown($path, $group);
+    foreach ($dir as $item) {
+        chown($item->getPathname(), $group);
+        if ($item->isDir() && !$item->isDot()) {
+            chown_r($item->getPathname());
+        }
     }
 }
 
@@ -85,7 +108,7 @@ function chmod_r($path)
 {
     global $group;
 
-    if (!file_exists($path) && is_dir($path)) {
+    if (!file_exists($path) || is_dir($path)) {
         return;
     }
     $dir = new DirectoryIterator($path);
