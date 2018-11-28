@@ -1,12 +1,19 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once BIN_DIR . 'functions.php';
+
 $user = trim(`logname`);
 $group = posix_getgrgid(filegroup(__FILE__))['name'];
 $paths = [
     ROOT_DIR,
 ];
-
+$styles = get_styles();
+$dirs = [];
+foreach ($styles as $style) {
+    $dirs[] = CHAT_DIR . "css/$style/";
+    $dirs[] = TEMPLATE_DIR . "$style/css/";
+}
 $exts = [
     'php',
     'js',
@@ -31,26 +38,16 @@ $folders = [
     ROOT_DIR . '.git',
     ROOT_DIR . 'dir_list/',
     ROOT_DIR . 'uploads/',
-    PUBLIC_DIR . 'install/',
-    PUBLIC_DIR . 'install/extra/',
-    CHAT_DIR . 'css/1/',
-    CHAT_DIR . 'css/2/',
     CHAT_DIR . 'js/',
-    TEMPLATE_DIR . '1/css/',
-    TEMPLATE_DIR . '2/css/',
     PUBLIC_DIR . 'images/proxy/',
 ];
+
+$folders = array_merge($dirs, $folders);
 
 $excludes = [
     ROOT_DIR . 'vendor',
     ROOT_DIR . 'node_modules',
 ];
-
-foreach ($folders as $folder) {
-    if (file_exists($folder)) {
-        chmod_r($folder);
-    }
-}
 
 $i = 1;
 foreach ($paths as $path) {
@@ -78,14 +75,23 @@ foreach ($paths as $path) {
     }
 }
 
+foreach ($folders as $folder) {
+    if (file_exists($folder)) {
+        chmod_r($folder);
+    }
+}
+
 function chmod_r($path)
 {
+    global $group;
+
     if (!file_exists($path) && is_dir($path)) {
         return;
     }
     $dir = new DirectoryIterator($path);
     foreach ($dir as $item) {
         chmod($item->getPathname(), 0775);
+        chown($item->getPathname(), $group);
         if ($item->isDir() && !$item->isDot()) {
             chmod_r($item->getPathname());
         }

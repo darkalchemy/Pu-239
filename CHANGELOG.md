@@ -1,4 +1,5 @@
 ### 28 Nov, 2018
+fix: correct owner set_perms.php  
 fix: insert duplicate ip, announce.php  
 
 ### 27 Nov, 2018

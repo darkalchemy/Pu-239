@@ -3,6 +3,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
+require_once BIN_DIR . 'functions.php';
 global $site_config, $BLOCKS;
 
 if (empty($BLOCKS)) {
@@ -485,57 +486,4 @@ function get_file_name($file)
 }';
 
     file_put_contents($update, $output . PHP_EOL);
-}
-
-function get_styles()
-{
-    global $fluent;
-
-    $query = $fluent->from('stylesheets')
-        ->select(null)
-        ->select('id')
-        ->select('uri');
-
-    $styles = [];
-    foreach ($query as $style) {
-        $styles[] = $style['id'];
-    }
-
-    return $styles;
-}
-
-function get_classes(array $styles, bool $create)
-{
-    global $fluent;
-
-    $all_classes = [];
-    foreach ($styles as $style) {
-        $classes = $fluent->from('class_config')
-            ->select(null)
-            ->select('name')
-            ->select('value')
-            ->select('classname')
-            ->select('classcolor')
-            ->select('classpic')
-            ->orderBy('value')
-            ->where('template = ?', $style)
-            ->fetchAll();
-
-        if (empty($classes)) {
-            if (!$create) {
-                die("You do have not classes for template {$style}\n\nto create them rerun this script\nphp bin/uglify.php classes\n");
-            } else {
-                foreach ($all_classes[0] as $values) {
-                    $values['template'] = $style;
-                    $fluent->insertInto('class_config')
-                        ->values($values)
-                        ->execute();
-                }
-                die("Classes added for template {$style}\n");
-            }
-        }
-        $all_classes[] = $classes;
-    }
-
-    return $all_classes;
 }
