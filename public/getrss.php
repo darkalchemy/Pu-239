@@ -19,28 +19,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return (int) $x;
     }
 
-    $cats = isset($_POST['cats']) ? array_map('mkint', $_POST['cats']) : [];
-    if (count($cats) == 0) {
-        $session->set('is-warning', $lang['getrss_nocat']);
-    } else {
-        $feed = isset($_POST['feed']) && $_POST['feed'] === 'dl' ? 'dl' : 'web';
-        $bm = isset($_POST['bm']) && is_int($_POST['bm']) ? $_POST['bm'] : 0;
-        $counts = [
-            15,
-            30,
-            50,
-            100,
-        ];
-        $count = isset($_POST['count']) && is_int($_POST['count']) && in_array($counts, $_POST['count']) ? $_POST['count'] : 15;
-        $rsslink = "{$site_config['baseurl']}/rss.php?cats=" . implode(',', $cats) . "&amp;type={$feed}&amp;torrent_pass={$CURUSER['torrent_pass']}&amp;count=$count&amp;bm=$bm";
-        $HTMLOUT = "
-        <div class='portlet has-text-centered'>
-            <h2>{$lang['getrss_result']}</h2>
-            <input type='text' class='w-100' readonly='readonly' value='{$rsslink}' onclick='select()'>
+    $cats = !empty($_POST['cats']) ? array_map('mkint', $_POST['cats']) : [];
+    $feed = !empty($_POST['feed']) && $_POST['feed'] === 'dl' ? 'dl' : 'web';
+    $bm = isset($_POST['bm']) ? (int) $_POST['bm'] : 0;
+
+    $counts = [
+        15,
+        30,
+        50,
+        100,
+    ];
+    $count = isset($_POST['count']) && is_int($_POST['count']) && in_array($counts, $_POST['count']) ? $_POST['count'] : 15;
+    $rsslink = "{$site_config['baseurl']}/rss.php?cats=" . implode(',', $cats) . "&amp;type={$feed}&amp;torrent_pass={$CURUSER['torrent_pass']}&amp;count=$count&amp;bm=$bm";
+    $HTMLOUT = "
+        <div class='portlet has-text-centered w-100'>
+            <h1>{$lang['getrss_result']}</h1>
+            <input type='text' class='w-75 margin20' readonly='readonly' value='{$rsslink}' onclick='select()'>
         </div>";
-        echo stdhead($lang['getrss_head2']) . $HTMLOUT . stdfoot();
-        die();
-    }
+    echo stdhead($lang['getrss_head2']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+    die();
 }
 
 $HTMLOUT = "
@@ -82,6 +79,7 @@ $text .= "
             </div>";
 $HTMLOUT .= main_div($text, 'bottom20');
 $HTMLOUT .= main_div("
+        <div class='padding20'>
             <div class='level-center'>
                 <li class='has-text-centered w-25 tooltipper' title='Returns only Bookmarked Torrents'>
                     <label for='bm' >Bookmarked Torrents<br>
@@ -110,9 +108,10 @@ $HTMLOUT .= main_div("
                     </label>
                 </li>
             </div>
-            <div class='level-center top20 bottom20'>
+            <div class='level-center top20'>
                 <input type='submit' class='button is-small' value='{$lang['getrss_btn']}'>
-            </div>");
+            </div>
+        </div>");
 $HTMLOUT .= '
         </form>';
-echo stdhead($lang['getrss_head2']) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($lang['getrss_head2']) . wrapper($HTMLOUT) . stdfoot($stdfoot);

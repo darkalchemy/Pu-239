@@ -1,3 +1,8 @@
+### 29 Nov, 2018
+fix: rss.php  
+fix: missing data-private torrenttable_functions.php  
+fix: check for empty $CURUSER['language'], $CURUSER['dst_in_use'] before use bittorrent.php  
+
 ### 28 Nov, 2018
 fix: correct owner set_perms.php  
 fix: insert duplicate ip, announce.php  

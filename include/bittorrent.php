@@ -453,7 +453,7 @@ function get_charset()
 {
     global $CURUSER;
 
-    $lang_charset = $CURUSER['language'];
+    $lang_charset = isset($CURUSER['language']) ? $CURUSER['language'] : 0;
     switch ($lang_charset) {
         case $lang_charset == 2:
             return 'ISO-8859-1';
@@ -1019,7 +1019,7 @@ function get_time_offset()
     if ($site_config['time_adjust']) {
         $r += $site_config['time_adjust'] * 60;
     }
-    if ($CURUSER['dst_in_use']) {
+    if (isset($CURUSER['dst_in_use']) && $CURUSER['dst_in_use']) {
         $r += 3600;
     }
 

@@ -1,44 +1,31 @@
 <?php
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-dbconn();
-global $site_config;
+require_once INCL_DIR . 'bbcode_functions.php';
+global $site_config, $user_stuffs, $fluent;
 
-$torrent_pass = (isset($_GET['torrent_pass']) ? htmlsafechars($_GET['torrent_pass']) : '');
-$feed = (isset($_GET['type']) && $_GET['type'] === 'dl' ? 'dl' : 'web');
-$cats = (isset($_GET['cats']) ? $_GET['cats'] : '');
-if ($cats) {
-    $validate_cats = explode(',', $cats);
-    $cats = implode(', ', array_map('intval', $validate_cats));
-    $cats = implode(', ', array_map('sqlesc', $validate_cats));
-}
+$torrent_pass = isset($_GET['torrent_pass']) ? htmlsafechars($_GET['torrent_pass']) : '';
 if (!empty($torrent_pass)) {
     if (strlen($torrent_pass) != 64) {
-        die('Your passkey is not long enough! Go to ' . $site_config['site_name'] . ' and reset your passkey');
+        format_rss('Your torrent pass is not long enough! Go to ' . $site_config['site_name'] . ' and reset your passkey');
     } else {
-        $q0 = sql_query('SELECT id, class FROM users WHERE torrent_pass = ' . sqlesc($torrent_pass)) or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($q0) == 0) {
-            die('Your passkey is invalid! Go to ' . $site_config['site_name'] . ' and reset your passkey');
-        } else {
-            $CURUSER = mysqli_fetch_assoc($q0);
+        $user = $user_stuffs->get_user_from_torrent_pass($torrent_pass);
+        if (!$user) {
+            format_rss('Your torrent pass is invalid! Go to ' . $site_config['site_name'] . ' and reset your passkey');
+        } elseif ($user['downloadpos'] != 1) {
+            format_rss('You download privileges have been removed.');
         }
     }
 } else {
-    die("Your link doesn't have a passkey");
+    format_rss("Your link doesn't have a torrent pass");
 }
-$site_config['rssdescr'] = $site_config['site_name'] . ' RSS Feed - Please Donate';
-$where = [];
-$join = $limit = '';
-$where[] = "t.visible != 'yes'";
-if (!empty($cats)) {
-    $where[] = "t.category IN ($cats)";
+$cats = isset($_GET['cats']) ? $_GET['cats'] : '';
+if ($cats) {
+    $validate_cats = explode(',', $cats);
+    $cats = implode(', ', array_map('intval', $validate_cats));
+    $cats = implode(', ', $validate_cats);
 }
-if ($CURUSER['class'] < UC_VIP) {
-    $where[] = "t.vip = '0'";
-}
-if (isset($_POST['bm']) && is_int($_POST['bm']) && $_POST['bm'] == 1) {
-    $join = 'LEFT JOIN bookmarks AS b ON b.torrentid = t.id';
-}
+
 $counts = [
     15,
     30,
@@ -46,59 +33,121 @@ $counts = [
     100,
 ];
 if (!empty($_GET['count']) && in_array((int) $_GET['count'], $counts)) {
-    $limit = 'LIMIT ' . (int) $_GET['count'];
+    $limit = (int) $_GET['count'];
 } else {
-    $limit = 'LIMIT 15';
+    $limit = 15;
 }
 
-$url = htmlsafechars($site_config['baseurl'] . $_SERVER['REQUEST_URI']);
+$sql = $fluent->from('torrents AS t')
+    ->select(null)
+    ->select('t.id')
+    ->select('t.name')
+    ->select('t.descr')
+    ->select('t.size')
+    ->select('t.category')
+    ->select('t.seeders')
+    ->select('t.leechers')
+    ->select('t.added')
+    ->select('c.name AS catname')
+    ->where('t.visible = "yes"');
 
-$HTMLOUT = "<?xml version='1.0'?>
-<?xml-stylesheet type='text/css' href='{$site_config['baseurl']}/css/1/rss.css\" ?>
-<rss version='2.0' xmlns:atom='http://www.w3.org/2005/Atom'>
+if (!empty($cats)) {
+    $sql = $sql->where('t.category', $cats);
+}
+if ($user['class'] != UC_VIP) {
+    $sql = $sql->where('t.vip = "0"');
+}
+if (isset($_GET['bm']) && (int) $_GET['bm'] === 1) {
+    $sql = $sql->where('b.userid = ?', $user['id'])
+        ->innerJoin('bookmarks AS b ON t.id = b.torrentid');
+}
+
+$sql = $sql->leftJoin('categories AS c ON t.category = c.id')
+    ->orderBy('t.added')
+    ->limit($limit);
+
+$data = [];
+foreach ($sql as $a) {
+    $data[] = $a;
+}
+format_rss($data);
+
+function format_rss($data)
+{
+    global $site_config, $torrent_pass;
+
+    $site_config['rssdescr'] = $site_config['site_name'] . ' RSS Feed - Please Donate';
+    $feed = isset($_GET['type']) && $_GET['type'] === 'dl' ? 'dl' : 'web';
+    $url = urlencode($site_config['baseurl'] . $_SERVER['REQUEST_URI']);
+    $br = '<br />';
+    $date = date(DATE_RSS, TIME_NOW);
+
+    $rss = '<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="' . $site_config['baseurl'] . '/css/rss.css"?>
+<rss version="2.0"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+    xmlns:slash="http://purl.org/rss/1.0/modules/slash/">
     <channel>
-        <title>{$site_config['site_name']}</title>
-        <link>{$site_config['baseurl']}</link>
-        <description>{$site_config['rssdescr']}</description>
+        <title>' . $site_config['site_name'] . '</title>
+        <atom:link href="' . $url . '" rel="self" type="application/rss+xml" />
+        <link>' . $site_config['baseurl'] . '</link>
+        <description>' . $site_config['rssdescr'] . '</description>
         <language>en-us</language>
-        <copyright>Copyright © " . date('Y') . " {$site_config['site_name']}</copyright>
-        <webMaster>{$site_config['site_email']}({$site_config['site_name']})</webMaster>
-        <atom:link href='{$url}' rel='self' type='application/rss+xml'>
+        <copyright>Copyright © ' . date('Y') . ' ' . $site_config['site_name'] . '</copyright>
+        <webMaster>' . $site_config['site_email'] . '(' . $site_config['site_name'] . ')</webMaster>
+        <lastBuildDate>' . $date . '</lastBuildDate>
+        <ttl>5</ttl>
         <image>
-            <title>{$site_config['site_name']}</title>
-            <url>{$site_config['baseurl']}/favicon-16x16.png</url>
-            <link>{$site_config['baseurl']}</link>
+            <title>' . $site_config['site_name'] . '</title>
+            <url>' . $site_config['baseurl'] . '/favicon-16x16.png</url>
+            <link>' . $site_config['baseurl'] . '</link>
             <width>16</width>
             <height>16</height>
-            <description>{$site_config['rssdescr']}</description>
-        </image>";
+            <description>' . $site_config['rssdescr'] . '</description>
+        </image>';
 
-$sql = "SELECT t.id, t.name, t.descr, t.size, t.category, t.seeders, t.leechers, t.added, c.name as catname
-        FROM torrents as t
-        $join
-        LEFT JOIN categories as c ON t.category = c.id
-        WHERE " . implode(' AND ', $where) . "
-        ORDER BY t.added
-        DESC $limit";
-
-$res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-
-while ($a = mysqli_fetch_assoc($res)) {
-    $link = $site_config['baseurl'] . ($feed === 'dl' ? '/download.php?torrent=' . (int) $a['id'] . '&amp;torrent_pass=' . $torrent_pass : '/details.php?id=' . (int) $a['id'] . '&amp;hit=1');
-    $br = '&lt;br/&gt;';
-    $guidlink = $site_config['baseurl'] . '/details.php?id=' . (int) $a['id'];
-    $HTMLOUT .= '
+    if (is_array($data)) {
+        foreach ($data as $a) {
+            $id = (int) $a['id'];
+            $size = mksize((int) $a['size']);
+            $seeders = (int) $a['seeders'];
+            $leechers = (int) $a['leechers'];
+            $name = htmlsafechars($a['name']);
+            $cat = htmlsafechars($a['catname']);
+            $added = get_date($a['added'], 'DATE');
+            $descr = htmlsafechars(substr(format_comment_no_bbcode(strip_tags($a['descr'])), 0, 450));
+            $date = date(DATE_RSS, $a['added']);
+            $link = $site_config['baseurl'] . ($feed === 'dl' ? '/download.php?torrent=' . $id . '&amp;torrent_pass=' . $torrent_pass : '/details.php?id=' . $id . '&amp;hit=1');
+            $guidlink = $site_config['baseurl'] . '/details.php?id=' . $id;
+            $rss .= '
         <item>
-            <title>' . htmlsafechars($a['name']) . "</title>
-            <link>{$link}</link>
-            <description>{$br}Category: " . htmlsafechars($a['catname']) . " {$br} Size: " . mksize((int) $a['size']) . " {$br} Leechers: " . (int) $a['leechers'] . " {$br} Seeders: " . (int) $a['seeders'] . " {$br} Added: " . get_date($a['added'], 'DATE') . " {$br} Description: " . htmlsafechars(substr($a['descr'], 0, 450)) . " {$br}</description>
-            <guid>{$guidlink}</guid>
-            <pubDate>" . date(DATE_RSS, $a['added']) . '</pubDate>
+            <title>' . $name . '</title>
+            <link>' . $link . '</link>
+            <description>' . $br . 'Category: ' . $cat . $br . 'Size: ' . $size . $br . 'Leechers: ' . $leechers . $br . 'Seeders: ' . $seeders . $br . 'Added: ' . $added . $br . 'Description: ' . $descr . $br . '</description>
+            <guid>' . $guidlink . '</guid>
+            <pubDate>' . $date . '</pubDate>
         </item>';
-}
-$HTMLOUT .= '
+        }
+    } else {
+        $rss .= '
+        <item>
+            <title>Invalid Request</title>
+            <link>' . $site_config['baseurl'] . '/getrss.php</link>
+            <description>' . $data . '</description>
+            <guid>' . $site_config['baseurl'] . '/getrss.php</guid>
+            <pubDate>' . $date . '</pubDate>
+        </item>';
+    }
+
+    $rss .= '
     </channel>
 </rss>';
 
-header('Content-Type: application/xml');
-echo $HTMLOUT;
+    header('Content-Type: application/xml');
+    echo $rss;
+    die();
+}

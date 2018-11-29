@@ -366,7 +366,7 @@ function torrenttable($res, $variant = 'index')
         }
 
         $bookmark = "
-                <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' class='bookmarks tooltipper' title='{$lang['bookmark_add']}'>
+                <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_add']}'>
                     <i class='icon-ok icon has-text-success' aria-hidden='true'></i>
                 </span>";
 
@@ -374,7 +374,7 @@ function torrenttable($res, $variant = 'index')
             foreach ($book as $bk) {
                 if ($bk['torrentid'] == $id) {
                     $bookmark = "
-                    <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_del']}'>
+                    <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_delete']}'>
                         <i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i>
                     </span>";
                 }

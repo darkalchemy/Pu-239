@@ -29,7 +29,7 @@ $('.bookmarks').on('click', function () {
                 $(this).tooltipster('content', data['text']);
                 $(this).attr('data-tid', data['tid']);
             } else if (data['content'] === 'added') {
-                $(this).html('<i class=\'icon-cancel icon has-text-danger\'></i>');
+                $(this).html('<i class=\'icon-trash-empty icon has-text-danger\'></i>');
                 $(this).tooltipster('content', data['text']);
                 $(this).attr('data-tid', data['tid']);
             } else if (data['content'] === 'deleted') {

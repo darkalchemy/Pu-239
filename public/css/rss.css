@@ -1,0 +1,70 @@
+* {
+	display: block;
+}
+
+:root {
+	margin: 50px;
+}
+
+channel > description {
+    font-size: 250%;
+	text-align: center;
+	background-color: grey;
+	padding-top: 10px;
+}
+
+channel > lastBuildDate {
+	text-align: center;
+	background-color: grey;
+}
+channel > lastBuildDate:after {
+	display: block;
+	padding: 10px;
+	content: "This is an RSS feed, designed to be read in an RSS application.";
+	background-color: grey;
+	color: white;
+}
+
+item {
+	margin: 25px 0 20px 0;
+}
+
+item > title {
+    background-color: #538620;
+    border-bottom-width: 0;
+    color: #FFF;
+    display: block;
+    font-size: 110%;
+    font-weight: bold;
+    padding: 0.3em 0.5em;
+}
+
+item > link {
+	font-size: small;
+	margin-top: 6px;
+	margin-bottom: 6px;
+}
+
+item > description {
+	font-size: small;
+}
+
+item > pubDate {
+	font-size: small;
+}
+
+channel > link,
+channel > copyright, 
+channel > generator, 
+channel > docs, 
+channel > language, 
+channel > ttl, 
+channel > guid, 
+channel > category,
+channel > title,
+channel > image,
+channel > webMaster,
+channel > item > guid,
+channel > item > comments {
+	display: none;
+}
