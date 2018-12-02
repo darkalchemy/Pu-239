@@ -374,7 +374,7 @@ function process_js($key, $list)
         }
     }
     if (empty($files)) {
-        return [];
+        return null;
     }
 
     $list = implode(' ', $files);
@@ -418,7 +418,7 @@ function process_css($key, $list)
         }
     }
     if (empty($files)) {
-        return [];
+        return null;
     }
 
     $list = implode(' ', $files);

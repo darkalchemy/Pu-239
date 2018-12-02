@@ -12,7 +12,7 @@ function torrent_tooltip($text)
     $content = "
                             <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
                                 <span class='dt-tooltipper-large' data-tooltip-content='#{$block_id}_tooltip'>
-                                    <span class='torrent-name narrow'>{$text}</span>
+                                    {$text}
                                     <div class='tooltip_templates'>
                                         <div id='{$block_id}_tooltip'>
                                             <div class='is-flex tooltip-torrent'>

@@ -276,7 +276,7 @@ if (!empty($torrent['name'])) {
     $title = "
             <div class='bottom20 w-100'>
                 $banner
-                <div class='bg-00 round10 columns padding20 is-gapless'>
+                <div class='bg-00 round10 columns padding20 is-gapless level'>
                     <span class='column is-1 size_7 has-text-left padding20'>$previous</span>
                     <h1 class='column has-text-centered padding20'>" . htmlsafechars($torrent['name'], ENT_QUOTES) . "</h1>
                     <span class='column is-1 size_7 has-text-right padding20'>$next</span>

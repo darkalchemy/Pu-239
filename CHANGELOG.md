@@ -1,4 +1,6 @@
 ### 02 Dec, 2018
+fix: banner size  
+fix: uglify.php  
 cleanup: missing globals, parenthesis, quotes, etc  
 update: PHPDoc elements  
 remove: AJAXChat native database classes  

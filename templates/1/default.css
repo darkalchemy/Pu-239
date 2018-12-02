@@ -509,10 +509,6 @@ span {
     white-space: nowrap;
 }
 
-.torrent-name .narrow {
-    max-width: 300px;
-}
-
 .inner-wrapper {
     padding: 1.25em;
     border-radius: .625em;
