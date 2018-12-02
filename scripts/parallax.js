@@ -1,6 +1,3 @@
-var height = $(window).innerHeight();
-var columns = $('.parallax').outerHeight() - height;
-
 $(window).on('load resize scroll', function (e) {
     if (document.body.clientWidth >= 1088) {
         var col1 = document.getElementById('left_column').offsetHeight;
@@ -9,6 +6,8 @@ $(window).on('load resize scroll', function (e) {
         var max = Math.max(col1, col2, col3);
 
         var getTop = function(col) {
+            var height = $(window).innerHeight();
+            var columns = $('.parallax').outerHeight() - height;
             var travel = max - col;
             var scrollInterval = columns / travel;
             var scrolltop = $(window).scrollTop();
