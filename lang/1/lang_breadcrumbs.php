@@ -106,6 +106,7 @@ $lang = [
     'deathrow' => 'Torrents on Death Row',
     'default' => 'PM Settings',
     'delacct' => 'Delete User Account',
+    'delete' => 'Delete',
     'delete_post' => 'Delete Post',
     'details' => 'Details.php',
     'donations' => 'Donations',
