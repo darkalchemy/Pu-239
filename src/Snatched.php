@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class Snatched.
+ */
 class Snatched
 {
     protected $cache;
@@ -66,6 +69,7 @@ class Snatched
      * @param int   $userid
      *
      * @throws \Envms\FluentPDO\Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
      */
     public function update(array $set, int $tid, int $userid)
     {

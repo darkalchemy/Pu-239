@@ -4,7 +4,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $site_config, $session;
+global $site_config, $session, $CURUSER;
 
 $lang = array_merge(load_language('global'), load_language('report'));
 $HTMLOUT = $id_2 = $id_2b = '';

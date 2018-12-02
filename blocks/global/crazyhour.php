@@ -3,6 +3,11 @@
 global $site_config;
 
 if (CRAZY_HOUR) {
+    /**
+     * @return string
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
     function crazyhour()
     {
         global $CURUSER, $site_config, $lang, $cache;

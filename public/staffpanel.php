@@ -112,7 +112,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             $arr = mysqli_fetch_assoc($res);
         }
         foreach ($names as $name) {
-            $$name = (isset($_POST[$name]) ? $_POST[$name] : ($action === 'edit' ? $arr[$name] : ''));
+            ${$name} = (isset($_POST[$name]) ? $_POST[$name] : ($action === 'edit' ? $arr[$name] : ''));
         }
         if ($action === 'edit' && $CURUSER['class'] < $arr['av_class']) {
             stderr($lang['spanel_error'], $lang['spanel_cant_edit_this_pg']);
@@ -368,7 +368,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 $show_in_nav = $arr['navbar'] == 1 ? '<span class="has-text-success">true</span>' : '<span class="has-text-info">false</span>';
 
                 $class = $title = '';
-                if ($arr['page_name'] === 'Usersearch') {
+                if ($arr['page_name'] === 'Usersearch' || $arr['page_name'] === 'Extra Stats') {
                     $class = 'has-text-danger';
                     $title = '<span class="has-text-danger">[Partially Broken]</span> ';
                 }

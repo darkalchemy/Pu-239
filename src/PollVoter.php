@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class PollVoter.
+ */
 class PollVoter
 {
     protected $cache;

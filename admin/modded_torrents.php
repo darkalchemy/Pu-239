@@ -26,6 +26,14 @@ $links = "
         </li>
     </ul>';
 
+/**
+ * @param      $arr
+ * @param bool $empty
+ *
+ * @return string
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function do_sort($arr, $empty = false)
 {
     global $lang, $site_config;

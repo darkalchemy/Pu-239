@@ -3,6 +3,7 @@
 /**
  * @param $data
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function customsmilie_update($data)
@@ -24,11 +25,11 @@ function customsmilie_update($data)
     $subject = 'Custom smilies expired.';
     $msg = "Your Custom smilies have timed out and has been auto-removed by the system. If you would like to have them again, exchange some Karma Bonus Points again. Cheers!\n";
     $i = 0;
-    $values = [];
+    $msgs_buffer = [];
     foreach ($res as $arr) {
         $modcomment = $arr['modcomment'];
         $modcomment = get_date($dt, 'DATE', 1) . " - Custom smilies Automatically Removed By System.\n" . $modcomment;
-        $values[] = [
+        $msgs_buffer[] = [
             'sender' => 0,
             'receiver' => $arr['id'],
             'added' => $dt,
@@ -48,7 +49,7 @@ function customsmilie_update($data)
         $cache->update_row('user' . $arr['id'], $set, $site_config['expires']['user_cache']);
     }
 
-    $count = count($values);
+    $count = count($msgs_buffer);
     if ($count > 0) {
         ++$i;
         $message_stuffs->insert($msgs_buffer);

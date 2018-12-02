@@ -16,7 +16,7 @@ if ($remove) {
         die($lang['freeusers_wtf']);
     }
     $res = sql_query('SELECT id, username, class FROM users WHERE free_switch != 0 AND id = ' . sqlesc($remove)) or sqlerr(__FILE__, __LINE__);
-    $msgs_buffer = $users_buffer = [];
+    $msgs_buffer = $users_buffer = $usernames = $msgs_ids = [];
     if (mysqli_num_rows($res) > 0) {
         $msg = sqlesc($lang['freeusers_msg'] . $CURUSER['username'] . $lang['freeusers_period']);
         while ($arr = mysqli_fetch_assoc($res)) {

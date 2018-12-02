@@ -278,7 +278,7 @@ if ($mode === 'upload' || $mode === 'edit') {
         }
         $image = "
         <div class='margin20'>
-            <img src='" . url_proxy($arr['poster'], true, 225, null) . "' width='225' alt='" . htmlsafechars($arr['name']) . "' class='round10'>
+            <img src='" . url_proxy($arr['poster'], true, 250) . "' width='250' alt='" . htmlsafechars($arr['name']) . "' class='round10'>
         </div>";
         $body = '
         <tr><td>Name : <b>' . htmlsafechars($arr['name']) . "</b></td></tr>

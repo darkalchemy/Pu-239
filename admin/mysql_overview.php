@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'html_functions.php';
 class_check(UC_MAX);
-global $site_config, $lang, $pdo;
+global $site_config, $lang, $fluent;
 
 $lang = array_merge($lang, load_language('ad_mysql_overview'));
 if (isset($_GET['Do']) && $_GET['Do'] === 'optimize' && isset($_GET['table'])) {
@@ -16,7 +16,7 @@ if (isset($_GET['Do']) && $_GET['Do'] === 'optimize' && isset($_GET['table'])) {
     }
     $sql = "OPTIMIZE TABLE $Table";
     if (preg_match('@^(CHECK|ANALYZE|REPAIR|OPTIMIZE)[[:space:]]TABLE[[:space:]]' . $Table . '$@i', $sql)) {
-        $query = $pdo->query($sql);
+        $query = $fluent->getPdo()->prepare($sql);
         $query->execute();
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=mysql_overview&action=mysql_overview");
         exit;
@@ -44,10 +44,13 @@ $heading = "
         </tr>";
 
 $count = 0;
-$tables = $pdo->query('SHOW TABLE STATUS FROM ' . $_ENV['DB_DATABASE']);
+$tables = $fluent->getPdo()->prepare('SHOW TABLE STATUS');
+$tables->execute();
+$query = $tables->fetchAll();
+
 $body = '';
-if (!empty($tables)) {
-    while ($row = $tables->fetch()) {
+if (!empty($query)) {
+    foreach ($query as $row) {
         //dd($row);
         $avg_length = mksize($row['Avg_row_length']);
         $data_length = mksize($row['Data_length']);

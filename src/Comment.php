@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class Comment.
+ */
 class Comment
 {
     protected $cache;

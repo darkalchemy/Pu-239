@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class Session.
+ */
 class Session
 {
     private $config;
@@ -124,6 +127,8 @@ class Session
     /**
      * @param string      $key
      * @param string|null $prefix
+     *
+     * @return |null
      */
     public function get(string $key, string $prefix = null)
     {

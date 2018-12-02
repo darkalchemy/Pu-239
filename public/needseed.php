@@ -17,6 +17,7 @@ if (!in_array($needed, $possible_actions)) {
     stderr('Error', 'A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.');
 }
 $categorie = genrelist();
+$change = [];
 foreach ($categorie as $key => $value) {
     $change[$value['id']] = [
         'id' => $value['id'],
@@ -38,25 +39,14 @@ if ($needed === 'leechers') {
         </div>";
 
     $Dur = TIME_NOW - 86400 * 7; //== 7 days
-    if (XBT_TRACKER === true) {
-        $res = sql_query("
-            SELECT x.fid, x.uid, u.username, u.uploaded, u.downloaded, t.name, t.seeders, t.leechers, t.category
-            FROM xbt_files_users AS x
-            LEFT JOIN users AS u ON u.id = x.uid
-            LEFT JOIN torrents AS t ON t.id = x.fid
-            WHERE x.left = '0' AND active='1' AND u.downloaded > '1024' AND u.added < $Dur
-            ORDER BY u.uploaded / u.downloaded ASC
-            LIMIT 20") or sqlerr(__FILE__, __LINE__);
-    } else {
-        $res = sql_query("
-            SELECT p.id, p.userid, p.torrent, u.username, u.uploaded, u.downloaded, t.name, t.seeders, t.leechers, t.category
-            FROM peers AS p
-            LEFT JOIN users AS u ON u.id = p.userid
-            LEFT JOIN torrents AS t ON t.id = p.torrent
-            WHERE p.seeder = 'yes' AND u.downloaded > '1024' AND u.added < $Dur
-            ORDER BY u.uploaded / u.downloaded ASC
-            LIMIT 20") or sqlerr(__FILE__, __LINE__);
-    }
+    $res = sql_query("
+        SELECT p.id, p.userid, p.torrent, u.username, u.uploaded, u.downloaded, t.name, t.seeders, t.leechers, t.category
+        FROM peers AS p
+        LEFT JOIN users AS u ON u.id = p.userid
+        LEFT JOIN torrents AS t ON t.id = p.torrent
+        WHERE p.seeder = 'yes' AND u.downloaded > '1024' AND u.added < $Dur
+        ORDER BY u.uploaded / u.downloaded ASC
+        LIMIT 20") or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $header = "
                 <tr>

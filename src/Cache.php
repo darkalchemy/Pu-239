@@ -13,6 +13,9 @@ use MatthiasMullie\Scrapbook\Buffered\BufferedStore;
 use MatthiasMullie\Scrapbook\Buffered\TransactionalStore;
 use MatthiasMullie\Scrapbook\Adapters\Collections\Utils\PrefixKeys;
 
+/**
+ * Class Cache.
+ */
 class Cache extends TransactionalStore
 {
     protected $cache;

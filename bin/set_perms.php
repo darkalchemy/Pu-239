@@ -88,6 +88,9 @@ foreach ($folders as $folder) {
     }
 }
 
+/**
+ * @param $path
+ */
 function chown_r($path)
 {
     global $group;
@@ -105,6 +108,9 @@ function chown_r($path)
     }
 }
 
+/**
+ * @param $path
+ */
 function chmod_r($path)
 {
     global $group;

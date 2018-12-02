@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @param $data
+ *
+ * @throws \Envms\FluentPDO\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ */
 function trivia_points_update($data)
 {
     $time_start = microtime(true);
@@ -83,7 +89,7 @@ function trivia_points_update($data)
                 'subject' => $subject,
             ];
 
-            $points = $seedbonus + $points;
+            $points = $winners['seedbonus'] + $points;
             $user = $cache->get('user' . $user_id);
             if (!empty($user)) {
                 $cache->update_row('user' . $user_id, [

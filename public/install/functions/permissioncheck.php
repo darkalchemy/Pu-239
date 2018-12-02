@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @param $dirs
+ */
 function checkdir(&$dirs)
 {
     foreach ($dirs as $dir => $x) {
@@ -17,6 +20,9 @@ function checkdir(&$dirs)
     }
 }
 
+/**
+ * @return string
+ */
 function permissioncheck()
 {
     global $root;

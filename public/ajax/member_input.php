@@ -3,7 +3,7 @@
 require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $session;
+global $CURUSER, $site_config, $cache, $session, $mysqli;
 
 $posted_action = (isset($_POST['action']) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) ? htmlsafechars($_GET['action']) : ''));
 $valid_actions = [
@@ -31,7 +31,7 @@ if ($action == '') {
                 sql_query('UPDATE snatched SET seeder = "no" WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                 //=== flush dem torrents!!! \o/
                 sql_query('DELETE FROM peers WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-                $number_of_torrents_flushed = mysqli_affected_rows();
+                $number_of_torrents_flushed = mysqli_affected_rows($mysqli);
                 //=== add it to the log
                 // come back
                 sql_query('INSERT INTO `sitelog` (`id`, `added`, `txt`) VALUES (NULL , ' . TIME_NOW . ', ' . sqlesc("[url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}]{$CURUSER['username']}[/url] flushed {$number_of_torrents_flushed} torrents.") . ')') or sqlerr(__FILE__, __LINE__);
@@ -44,7 +44,7 @@ if ($action == '') {
                 sql_query('UPDATE snatched SET seeder="no" WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
                 //=== flush dem torrents!!! \o/
                 sql_query('DELETE FROM peers WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-                $number_of_torrents_flushed = mysqli_affected_rows();
+                $number_of_torrents_flushed = mysqli_affected_rows($mysqli);
                 //=== add it to the log
                 sql_query('INSERT INTO `sitelog` (`id`, `added`, `txt`) VALUES (NULL , ' . TIME_NOW . ', ' . sqlesc("Staff Flush: [url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}]{$CURUSER['username']}[/url] flushed {$number_of_torrents_flushed} torrents for [url={$site_config['baseurl']}/userdetails.php?id={$id}]{$user_get_info['username']}[/url]") . ')') or sqlerr(__FILE__, __LINE__);
             }

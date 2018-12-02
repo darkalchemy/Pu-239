@@ -610,7 +610,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
                  VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $dt)") or sqlerr(__FILE__, __LINE__);
     }
     if (isset($_POST['game_access']) && ($game_access = (int) $_POST['game_access'])) {
-        unset($game_disable_pm);
+        //unset($game_disable_pm);
         if (isset($_POST['game_disable_pm'])) {
             $disable_pm = $_POST['game_disable_pm'];
         }

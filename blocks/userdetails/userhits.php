@@ -1,5 +1,7 @@
 <?php
 
+global $CURUSER;
+
 if ($CURUSER['id'] == $user['id'] || $user['paranoia'] < 2) {
     $HTMLOUT .= "
         <tr>

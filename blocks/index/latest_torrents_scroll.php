@@ -54,7 +54,7 @@ foreach ($scroll_torrents as $torrent) {
     }
 }
 
-if ($scroller_torrents) {
+if (!empty($scroller_torrents)) {
     $torrents_scroller .= "
     <a id='scroller-hash'></a>
     <div id='scroller' class='box'>
@@ -73,7 +73,7 @@ if ($scroller_torrents) {
             $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . '</span>';
         }
         $scroll_poster = $poster;
-        $poster = "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster'>";
+        $poster = "<img src='" . url_proxy($poster, true, 250) . "' class='tooltip-poster'>";
 
         $torrents_scroller .= "
                     <div class='slide'>";

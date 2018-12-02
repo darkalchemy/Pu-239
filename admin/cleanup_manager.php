@@ -347,7 +347,7 @@ function cleanup_show_new()
 
 function cleanup_take_new()
 {
-    global $params, $lang;
+    global $params, $lang, $mysqli;
 
     //ints
     foreach ([
@@ -411,7 +411,7 @@ function cleanup_take_new()
 
 function cleanup_take_delete()
 {
-    global $params, $lang;
+    global $params, $lang, $mysqli;
 
     $opts = [
         'options' => [

@@ -5,6 +5,8 @@
  * @param $what
  *
  * @return bool|string
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function getRate($id, $what)
 {

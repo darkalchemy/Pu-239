@@ -1,7 +1,7 @@
 <?php
 
 require_once INCL_DIR . 'html_functions.php';
-global $lang, $site_config, $fluent, $cache;
+global $lang, $site_config, $fluent, $cache, $CURUSER;
 
 $comments = $cache->get('latest_comments_');
 if ($comments === false || is_null($comments)) {
@@ -61,7 +61,7 @@ foreach ($comments as $comment) {
     if (empty($poster) && !empty($imdb_id)) {
         $poster = find_images($imdb_id);
     }
-    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster'>";
+    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' class='tooltip-poster'>";
     if ($anonymous === 'yes' && ($CURUSER['class'] < UC_STAFF || $owner === $CURUSER['id'])) {
         $uploader = '<span>' . get_anonymous_name() . '</span>';
     } else {

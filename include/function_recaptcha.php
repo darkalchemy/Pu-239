@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @param     $response
+ * @param int $timeout
+ *
+ * @return bool|string
+ */
 function verify_recaptcha($response, $timeout = 30)
 {
     if ($response === '') {

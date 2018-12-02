@@ -196,6 +196,8 @@ switch ($action) {
  * @param int $box
  *
  * @return array|string
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_all_boxes($box = 1)
 {

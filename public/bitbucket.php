@@ -73,7 +73,7 @@ if (!empty($_GET['updated']) && $_GET['updated'] === 'avatar') {
     $session->set('is-info', "
         [h3]{$lang['bitbucket_updated']}[/h3]
         [class=mw-150 has-text-centered]
-            [img]" . url_proxy($CURUSER['avatar'], true, 150, null) . '[/img]
+            [img]" . url_proxy($CURUSER['avatar'], true, 250) . '[/img]
         [/class]');
 }
 

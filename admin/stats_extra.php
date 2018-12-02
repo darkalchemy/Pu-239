@@ -94,7 +94,7 @@ switch ($inbound['mode']) {
 }
 function show_views()
 {
-    global $inbound, $month_names, $lang;
+    global $inbound, $month_names, $lang, $site_config;
 
     $page_title = $lang['stats_ex_ptitle'];
     $page_detail = $lang['stats_ex_pdetail'];
@@ -134,6 +134,8 @@ function show_views()
     </tr>";
     if (mysqli_num_rows($q)) {
         while ($row = mysqli_fetch_assoc($q)) {
+            dd($row);
+
             if ($row['result_count'] > $max_result) {
                 $max_result = $row['result_count'];
             }
@@ -152,13 +154,13 @@ function show_views()
             $htmlout .= "<tr>
                 <td>$date</td>
                 <td><img src='{$site_config['pic_baseurl']}bar_left.gif' width='4' height='11' align='middle' alt=''><img src='{$site_config['pic_baseurl']}bar.gif' width='$img_width' height='11' align='middle' alt=''><img src='{$site_config['pic_baseurl']}bar_right.gif' width='4' height='11' align='middle' alt=''></td>
-                    <td><center>{$data['result_count']}</center></td>
+                    <td class='has-text-centered'>{$data['result_count']}</td>
                     </tr>";
         }
         $htmlout .= "<tr>
 <td>&#160;</td>
 <td><div><b>{$lang['stats_ex_total']}</b></div></td>
-<td><center><b>{$running_total}</b></center></td>
+<td class='has-text-centered'><b>{$running_total}</b></td>
 </tr>";
     } else {
         $htmlout .= "<tr><td colspan='3'>{$lang['stats_ex_noresult']}</td></tr>";
@@ -170,6 +172,8 @@ function show_views()
 
 /**
  * @param string $mode
+ *
+ * @throws Exception
  */
 function result_screen($mode = 'reg')
 {
@@ -293,13 +297,13 @@ function result_screen($mode = 'reg')
             $htmlout .= "<tr>
                 <td>$date</td>
                 <td><img src='{$site_config['pic_baseurl']}bar_left.gif' width='4' height='11' align='middle' alt=''><img src='{$site_config['pic_baseurl']}bar.gif' width='$img_width' height='11' align='middle' alt=''><img src='{$site_config['pic_baseurl']}bar_right.gif' width='4' height='11' align='middle' alt=''></td>
-                    <td><center>{$data['result_count']}</center></td>
+                    <td class='has-text-centered'>{$data['result_count']}</td>
                     </tr>";
         }
         $htmlout .= "<tr>
 <td>&#160;</td>
 <td><div><b>{$lang['stats_ex_total']}</b></div></td>
-<td><center><b>{$running_total}</b></center></td>
+<td class='has-text-centered'><b>{$running_total}</b></td>
 </tr>";
     } else {
         $htmlout .= "<tr><td colspan='3'>{$lang['stats_ex_noresult']}</td></tr>";
@@ -309,6 +313,11 @@ function result_screen($mode = 'reg')
     echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
 }
 
+/**
+ * @param string $mode
+ *
+ * @throws Exception
+ */
 function main_screen($mode = 'reg')
 {
     global $site_config, $lang;

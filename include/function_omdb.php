@@ -60,10 +60,11 @@ function search_omdb_by_title($title, int $year)
 /**
  * @param      $imdbid
  * @param bool $title
+ * @param bool $data_only
  *
  * @return bool|string
  *
- * @throws Exception
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_omdb_info($imdbid, $title = true, $data_only = false)
 {

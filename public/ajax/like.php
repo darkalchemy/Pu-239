@@ -17,11 +17,17 @@ $fields = [
 
 comment_like_unlike($fields);
 
+/**
+ * @param $fields
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function comment_like_unlike($fields)
 {
     $lang = array_merge(load_language('global'), load_language('ajax_like'));
+    $id = $csrf = $type = $current = '';
     extract($_POST);
-    global $CURUSER, $session, $cache, $fluent, $torrent_stuffs;
+    global $CURUSER, $session, $cache, $fluent;
 
     $id = (int) $id;
     header('content-type: application/json');

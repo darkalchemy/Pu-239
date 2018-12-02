@@ -1,6 +1,6 @@
 <?php
 
-global $h1_thingie, $lang, $user_stuffs, $message_stuffs;
+global $h1_thingie, $lang, $user_stuffs, $message_stuffs, $CURUSER;
 
 $subject = $friends = '';
 

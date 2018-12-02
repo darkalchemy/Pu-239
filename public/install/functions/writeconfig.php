@@ -109,11 +109,22 @@ $foo = [
         ],
     ],
 ];
+/**
+ * @param $x
+ *
+ * @return string
+ */
 function foo($x)
 {
     return '/\#' . $x . '/';
 }
 
+/**
+ * @param $fo
+ * @param $foo
+ *
+ * @return string
+ */
 function createblock($fo, $foo)
 {
     $out = '
@@ -245,6 +256,11 @@ function saveconfig()
     echo $out;
 }
 
+/**
+ * @param $dir
+ *
+ * @return bool
+ */
 function rrmdir($dir)
 {
     if (is_dir($dir)) {

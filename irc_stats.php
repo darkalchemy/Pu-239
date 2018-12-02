@@ -67,6 +67,7 @@ if ($_hash === $hash) {
             die('User "' . $_user . '"  has no torrent active');
         }
         $act['seed'] = $act['leech'] = 0;
+        $con = 'no';
         while ($a = mysqli_fetch_assoc($q)) {
             $key = ($a['seeder'] === 'yes' ? 'seed' : 'leech');
             $act[$key] = $a['count'];

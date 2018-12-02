@@ -4,16 +4,23 @@
     "ext-bz2": "*",
     "ext-ctype": "*",
     "ext-curl": "*",
+    "ext-dom": "*",
     "ext-exif": "*",
     "ext-fileinfo": "*",
     "ext-gd": "*",
+    "ext-iconv": "*",
     "ext-imagick": "*",
     "ext-json": "*",
     "ext-mbstring": "*",
     "ext-mysqli": "*",
     "ext-pdo": "*",
+    "ext-posix": "*",
+    "ext-simplexml": "*",
+    "ext-sockets": "*",
     "ext-xml": "*",
+    "ext-zend-opcache": "*",
     "ext-zip": "*",
+    "ext-zlib": "*",
     "blocktrail/cryptojs-aes-php": "^0.1.0",
     "envms/fluentpdo": "^v2.1.0",
     "friendsofphp/php-cs-fixer": "^2.13",
@@ -35,5 +42,8 @@
     "psr-4": {
       "DarkAlchemy\\Pu239\\": "src"
     }
+  },
+  "config": {
+    "sort-packages": true
   }
 }

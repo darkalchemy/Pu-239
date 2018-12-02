@@ -14,7 +14,6 @@ $(function () {
         delay: delay,
         arrow: true,
         contentAsHTML: true,
-        maxWidth: 500,
         distance: distance
     });
     initAll();
@@ -31,7 +30,6 @@ function initAll() {
         delay: delay,
         arrow: true,
         contentAsHTML: true,
-        maxWidth: 500,
         distance: distance,
         trigger: 'custom',
         triggerOpen: {
@@ -56,7 +54,6 @@ function initAll() {
         delay: delay,
         arrow: true,
         contentAsHTML: true,
-        maxWidth: 300,
         distance: distance
     });
     $('.dt-tooltipper-small').tooltipster({
@@ -68,7 +65,6 @@ function initAll() {
         delay: delay,
         arrow: true,
         contentAsHTML: true,
-        maxWidth: 300,
         distance: distance
     });
     $('.tooltipper-ajax.tooltipstered').tooltipster('destroy');
@@ -95,7 +91,6 @@ function initAll() {
         delay: delay,
         updateAnimation: update_animation,
         arrow: true,
-        minWidth: 250,
         distance: distance,
         content: 'patience, grasshopper...',
         functionBefore: function (instance, helper) {

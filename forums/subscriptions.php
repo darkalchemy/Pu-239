@@ -1,6 +1,6 @@
 <?php
 
-global $lang;
+global $lang, $CURUSER;
 
 $posts = $lppostid = $topicpoll = $rpic = $body = '';
 $HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">Subscribed Forums for ' . format_username($CURUSER['id']) . '</h1>';
@@ -18,7 +18,7 @@ if ($count === 0) {
 }
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
 $perpage = (isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20);
-$link = $site_config['baseurl'] . '/forums.php?action=subscriptions&amp;' . (isset($_GET['perpage']) ? "perpage={$perpage}$amp;" : '');
+$link = $site_config['baseurl'] . '/forums.php?action=subscriptions&amp;' . (isset($_GET['perpage']) ? "perpage={$perpage}$&amp;" : '');
 $pager = pager($perpage, $count, $link);
 $menu_top = $pager['pagertop'];
 $menu_bottom = $pager['pagerbottom'];

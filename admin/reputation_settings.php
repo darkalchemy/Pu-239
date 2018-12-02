@@ -18,6 +18,8 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
 
 function rep_cache()
 {
+    global $lang;
+
     $rep_out = '<' . "?php\n\n\$GVARS = array(\n";
     foreach ($_POST as $k => $v) {
         $rep_out .= ($k === 'rep_undefined') ? "\t'{$k}' => '" . htmlsafechars($v, ENT_QUOTES) . "',\n" : "\t'{$k}' => " . intval($v) . ",\n";

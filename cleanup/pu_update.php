@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @param $data
+ *
+ * @throws \Envms\FluentPDO\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ */
 function pu_update($data)
 {
     $time_start = microtime(true);
@@ -53,6 +59,7 @@ function pu_update($data)
             ->fetchAll();
 
         $msgs_buffer = $users_buffer = [];
+        $comment = '';
         if (count($users) > 0) {
             $subject = 'Class Promotion';
             $msg = 'Congratulations, you have been promoted to [b]' . $class_name . "[/b]. :)\n You get one extra invite.\n";
@@ -72,7 +79,7 @@ function pu_update($data)
                 if (!empty($user)) {
                     $cache->update_row('user' . $arr['id'], [
                         'class' => $class_value,
-                        'invites' => $update['invites'],
+                        'invites' => $arr['invites'] + 1,
                         'modcomment' => $modcomment,
                     ], $site_config['expires']['user_cache']);
                 }

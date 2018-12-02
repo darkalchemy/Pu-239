@@ -4,6 +4,16 @@ require_once INCL_DIR . 'html_functions.php';
 
 use Scriptotek\GoogleBooks\GoogleBooks;
 
+/**
+ * @param $isbn
+ * @param $name
+ * @param $tid
+ * @param $poster
+ *
+ * @return array
+ *
+ * @throws \Spatie\Image\Exceptions\InvalidManipulation
+ */
 function get_book_info($isbn, $name, $tid, $poster)
 {
     global $site_config, $CURUSER, $cache, $BLOCKS, $torrent_stuffs, $image_stuffs;
@@ -200,7 +210,7 @@ function get_book_info($isbn, $name, $tid, $poster)
         <div class='padding10'>
             <div class='columns'>
                 <div class='column is-3'>
-                    <img src='" . placeholder_image('225') . "' data-src='" . url_proxy($poster, true, 225) . "' class='lazy round10 img-polaroid'>
+                    <img src='" . placeholder_image('250') . "' data-src='" . url_proxy($poster, true, 250) . "' class='lazy round10 img-polaroid'>
                 </div>
                 <div class='column'>
                     $ebook_info
@@ -219,6 +229,9 @@ function get_book_info($isbn, $name, $tid, $poster)
     ];
 }
 
+/**
+ * @param $content
+ */
 function get_or_null($content)
 {
     if (empty($content)) {

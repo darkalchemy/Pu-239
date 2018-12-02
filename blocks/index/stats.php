@@ -55,6 +55,11 @@ $site_stats .= "
         </div>
     </div>';
 
+/**
+ * @param array $values
+ *
+ * @return string
+ */
 function wrap_this(array $values)
 {
     return main_table(implode("\n", $values));

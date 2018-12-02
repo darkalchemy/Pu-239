@@ -12,6 +12,11 @@ $lang = array_merge($lang, load_language('ad_deathrow'));
 
 $HTMLOUT = '';
 
+/**
+ * @param $val
+ *
+ * @return string
+ */
 function calctime($val)
 {
     global $lang;
@@ -26,6 +31,13 @@ function calctime($val)
     return "$days {$lang['deathrow_days']}, $hours {$lang['deathrow_hrs']}, $mins {$lang['deathrow_minutes']}";
 }
 
+/**
+ * @param array $tids
+ *
+ * @return bool|int
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function notify_owner(array $tids)
 {
     global $fluent, $site_config, $lang, $message_stuffs;

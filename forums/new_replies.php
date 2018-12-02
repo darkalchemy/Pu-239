@@ -1,13 +1,10 @@
 <?php
 
-global $lang;
+global $lang, $CURUSER;
 
-//=== start page
 $colour = $topicpoll = '';
 $HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">' . $lang['nr_new_replys_to_treads'] . ' ' . $lang['nr_youve_posted_in'] . '</h1>';
-//$time = $readpost_expiry;
 $res_count = sql_query('SELECT t.id, t.last_post FROM topics AS t LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN forums AS f ON f.id = t.forum_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class']) or sqlerr(__FILE__, __LINE__);
-//=== lets do the loop / Check if post is read / get count there must be a beter way to do this lol
 $count = 0;
 while ($arr_count = mysqli_fetch_assoc($res_count)) {
     $res_post_read = sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($arr_count['id'])) or sqlerr(__FILE__, __LINE__);
@@ -18,7 +15,6 @@ while ($arr_count = mysqli_fetch_assoc($res_count)) {
         ++$count;
     }
 }
-//=== nothing here? kill the page
 if ($count === 0) {
     $HTMLOUT .= '<br><br><table class="table table-bordered table-striped">
    <tr><td>
@@ -52,7 +48,6 @@ if ($count === 0) {
 	<td>' . $lang['fe_views'] . '</td>
 	<td>' . $lang['fe_started_by'] . '</td>
 	</tr>';
-    //=== ok let's show the posts...
     while ($arr_unread = mysqli_fetch_assoc($res_unread)) {
         $res_post_read = sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($arr_unread['topic_id'])) or sqlerr(__FILE__, __LINE__);
         $arr_post_read = mysqli_fetch_row($res_post_read);
@@ -80,7 +75,6 @@ if ($count === 0) {
             $icon = ($arr_unread['icon'] === '' ? '<img src="' . $site_config['pic_baseurl'] . 'forums/topic_normal.gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '">' : '<img src="' . $site_config['pic_baseurl'] . 'smilies/' . htmlsafechars($arr_unread['icon']) . '.gif" class="icon tooltipper" alt="' . htmlsafechars($arr_unread['icon']) . '" title="' . htmlsafechars($arr_unread['icon']) . '">');
             $first_post_text = bubble("<i class='icon-search icon' aria-hidden='true'></i>", format_comment($arr_unread['body'], true, true, false), '' . $lang['fe_last_post'] . ' ' . $lang['fe_preview'] . '');
             $topic_name = ($sticky ? '<img src="' . $site_config['pic_baseurl'] . 'forums/pinned.gif" class="icon tooltipper" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '"> ' : ' ') . ($topicpoll ? '<img src="' . $site_config['pic_baseurl'] . 'forums/poll.gif" class="icon tooltipper" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '"> ' : ' ') . ' <a class="altlink" href="?action=view_topic&amp;topic_id=' . (int) $arr_unread['topic_id'] . '" title="' . $lang['fe_1st_post_in_tread'] . '">' . htmlsafechars($arr_unread['topic_name'], ENT_QUOTES) . '</a><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $arr_unread['topic_id'] . '&amp;page=0#' . (int) $arr_post_read[0] . '" title="' . $lang['fe_1st_unread_post_topic'] . '"><img src="' . $site_config['pic_baseurl'] . 'forums/last_post.gif" class="icon tooltipper" alt="First unread post" title="First unread post"></a>' . ($posted ? '<img src="' . $site_config['pic_baseurl'] . 'forums/posted.gif" class="icon tooltipper" alt="Posted" title="Posted"> ' : ' ') . ($subscriptions ? '<img src="' . $site_config['pic_baseurl'] . 'forums/subscriptions.gif" class="icon tooltipper" alt="' . $lang['fe_subscribed'] . '" title="' . $lang['fe_subscribed'] . '"> ' : ' ') . ' <img src="' . $site_config['pic_baseurl'] . 'forums/new.gif" class="icon tooltipper" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!">';
-            //=== print here
             $HTMLOUT .= '<tr>
 		<td><img src="' . $site_config['pic_baseurl'] . 'forums/' . $topicpic . '.gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '"></td>
 		<td>' . $icon . '</td>

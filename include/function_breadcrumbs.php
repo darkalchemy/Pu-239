@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @return string|void
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function breadcrumbs()
 {
     global $site_config, $session, $CURUSER;
@@ -62,6 +67,12 @@ function breadcrumbs()
     return $crumbs;
 }
 
+/**
+ * @param $lang
+ * @param $url
+ *
+ * @return bool|string
+ */
 function get_prepage($lang, $url)
 {
     global $CURUSER;
@@ -84,7 +95,7 @@ function get_prepage($lang, $url)
             if ($CURUSER['class'] >= UC_STAFF) {
                 return get_basepage($lang, '/staffpanel.php');
             }
-            // no break
+            break;
         case '/promo.php':
             if ($CURUSER['class'] >= UC_STAFF) {
                 return get_basepage($lang, '/staffpanel.php');
@@ -94,6 +105,12 @@ function get_prepage($lang, $url)
     return false;
 }
 
+/**
+ * @param $lang
+ * @param $url
+ *
+ * @return bool|string
+ */
 function get_postpage($lang, $url)
 {
     switch ($url) {
@@ -106,6 +123,15 @@ function get_postpage($lang, $url)
     return false;
 }
 
+/**
+ * @param $lang
+ * @param $queries
+ * @param $path
+ *
+ * @return bool|string
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_secondarypage($lang, $queries, $path)
 {
     global $site_config;
@@ -145,6 +171,15 @@ function get_secondarypage($lang, $queries, $path)
     return "<a href='{$site_config['baseurl']}{$path}?{$queries[0]}&amp;{$queries[1]}&amp;{$queries[2]}'>{$title}</a>";
 }
 
+/**
+ * @param $lang
+ * @param $queries
+ * @param $path
+ *
+ * @return bool|string
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_infopage($lang, $queries, $path)
 {
     global $site_config;
@@ -214,6 +249,13 @@ function get_infopage($lang, $queries, $path)
     return "<a href='{$site_config['baseurl']}{$path}?{$queries[0]}&amp;{$queries[1]}'>{$title}</a>";
 }
 
+/**
+ * @param $lang
+ * @param $queries
+ * @param $path
+ *
+ * @return bool|string
+ */
 function get_actionpage($lang, $queries, $path)
 {
     global $site_config;
@@ -263,6 +305,12 @@ function get_actionpage($lang, $queries, $path)
     return "<a href='{$site_config['baseurl']}{$path}?{$queries[0]}{$queries_1}'>{$title}</a>";
 }
 
+/**
+ * @param $lang
+ * @param $path
+ *
+ * @return bool|string
+ */
 function get_basepage($lang, $path)
 {
     global $site_config;
@@ -279,9 +327,16 @@ function get_basepage($lang, $path)
     return "<a href='{$site_config['baseurl']}{$path}'>{$title}</a>";
 }
 
+/**
+ * @param $mailbox
+ *
+ * @return string
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_mailbox_name($mailbox)
 {
-    global $fluent;
+    global $fluent, $CURUSER;
 
     switch ((int) $mailbox) {
         case -2:

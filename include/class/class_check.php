@@ -6,11 +6,12 @@ require_once INCL_DIR . 'staff_functions.php';
 /**
  * @param int  $class
  * @param bool $staff
- * @param bool $pin
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function class_check($class = 0, $staff = true)
 {
-    global $CURUSER, $site_config, $cache;
+    global $CURUSER, $site_config, $cache, $topicid, $postid;
 
     if (!$CURUSER) {
         header("Location: {$site_config['baseurl']}/404.html");

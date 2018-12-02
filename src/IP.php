@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class IP.
+ */
 class IP
 {
     protected $cache;

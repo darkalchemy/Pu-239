@@ -251,12 +251,6 @@ switch (true) {
         $session->set('is-success', "[b]Congratulations![/b] {$CURUSER['username']}, you have got your self 3 new invites! :woot:");
         break;
 
-    case isset($_GET['freeslots_success']):
-        I_smell_a_rat($_GET['freeslots_success']);
-
-        $session->set('is-success', "[b]Congratulations![/b] {$CURUSER['username']}, you have got your self 3 freeleech slots! :woot:");
-        break;
-
     case isset($_GET['title_success']):
         I_smell_a_rat($_GET['title_success']);
 
@@ -749,7 +743,6 @@ if (isset($_GET['exchange'])) {
                 header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?freeleech_success=2");
                 die();
             }
-            die();
             break;
 
         //--- doubleupload
@@ -817,7 +810,6 @@ if (isset($_GET['exchange'])) {
                 header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?doubleup_success=2");
                 die();
             }
-            die();
             break;
 
         //---Halfdownload
@@ -885,7 +877,6 @@ if (isset($_GET['exchange'])) {
                 header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?halfdown_success=2");
                 die();
             }
-            die();
             break;
 
         case 'ratio':

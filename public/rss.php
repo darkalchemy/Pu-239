@@ -81,6 +81,9 @@ if ($data === false || is_null($data)) {
 
 format_rss($data);
 
+/**
+ * @param $data
+ */
 function format_rss($data)
 {
     global $site_config, $torrent_pass;

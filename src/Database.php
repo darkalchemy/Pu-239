@@ -5,6 +5,9 @@ namespace DarkAlchemy\Pu239;
 use Envms\FluentPDO\Query;
 use PDO;
 
+/**
+ * Class Database.
+ */
 class Database extends Query
 {
     protected $pdo;

@@ -48,11 +48,11 @@ function parse_poll()
         $htmlout = poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question'], ENT_QUOTES));
         $poll_answers = unserialize(stripslashes($poll_data['choices']));
         reset($poll_answers);
+        $tv_poll = 0;
         foreach ($poll_answers as $id => $data) {
             //subtitle question
             $question = htmlsafechars($data['question'], ENT_QUOTES);
             $choice_html = '';
-            $tv_poll = 0;
             //get total votes for each choice
             foreach ($poll_answers[$id]['votes'] as $number) {
                 $tv_poll += intval($number);
@@ -78,7 +78,7 @@ function parse_poll()
     } elseif ($check == 2) {
         // only for guests when view before vote is off
         $htmlout = poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question'], ENT_QUOTES));
-        $htmlout .= poll_show_no_guest_view();
+        //$htmlout .= poll_show_no_guest_view();
         $htmlout .= show_total_votes($total_votes);
     } else {
         $poll_answers = unserialize(stripslashes($poll_data['choices']));
@@ -205,7 +205,6 @@ function poll_show_rendered_choice($choice_id = '', $votes = '', $id = '', $answ
 }
 
 /**
- * @param string $id
  * @param string $question
  * @param string $choice_html
  *

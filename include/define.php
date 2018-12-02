@@ -30,6 +30,7 @@ define('PARTIALS_DIR', ROOT_DIR . 'partials' . DIRECTORY_SEPARATOR);
 define('TORRENTS_DIR', ROOT_DIR . 'torrents' . DIRECTORY_SEPARATOR);
 define('USER_TORRENTS_DIR', TORRENTS_DIR . 'users' . DIRECTORY_SEPARATOR);
 define('BACKUPS_DIR', ROOT_DIR . 'backups' . DIRECTORY_SEPARATOR);
+define('AJAX_CHAT_PATH', ROOT_DIR . 'chat' . DIRECTORY_SEPARATOR);
 
 define('SQL_DEBUG', true);
 define('IP_LOGGING', true);

@@ -478,11 +478,15 @@ span {
 
 .torrent-name {
     display: inline-block;
-    max-width: 300px;
+    max-width: 450px;
     overflow: hidden;
     text-align: left;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.torrent-name .narrow {
+    max-width: 300px;
 }
 
 .inner-wrapper {
@@ -787,7 +791,7 @@ code a,
 }
 
 .tooltip-poster {
-    width: 150px;
+    width: 250px;
     height: auto;
     border-radius: .625em;
 }
@@ -1024,7 +1028,7 @@ p + p {
 
 .cast > img {
     width: auto;
-    height: 60px;
+    height: 70px;
 }
 
 .body-overlay {

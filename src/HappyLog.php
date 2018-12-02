@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class HappyLog.
+ */
 class HappyLog
 {
     protected $cache;

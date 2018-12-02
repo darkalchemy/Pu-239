@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class Post.
+ */
 class Post
 {
     protected $cache;
@@ -18,7 +21,7 @@ class Post
     }
 
     /**
-     * @param array $set
+     * @param array $values
      *
      * @return mixed
      *

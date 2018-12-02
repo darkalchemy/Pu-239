@@ -374,7 +374,7 @@ function process_js($key, $list)
         }
     }
     if (empty($files)) {
-        return;
+        return [];
     }
 
     $list = implode(' ', $files);
@@ -418,7 +418,7 @@ function process_css($key, $list)
         }
     }
     if (empty($files)) {
-        return;
+        return [];
     }
 
     $list = implode(' ', $files);
@@ -453,6 +453,9 @@ function process_css($key, $list)
     ];
 }
 
+/**
+ * @param $dir
+ */
 function make_dir($dir)
 {
     if (!is_dir($dir)) {

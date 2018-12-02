@@ -84,9 +84,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $q1 = sql_query("UPDATE users SET warned='0', modcomment=CONCAT(" . sqlesc(get_date($dt, 'DATE', 1) . $lang['warn_removed_msg'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or ($q2_err = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
             if ($q1) {
                 header('Refresh: 2; url=' . $r);
-                stderr($lang['warn_stdmsg_success'], count($pms) . $lang['warn_stdmsg_user'] . (count($pms) > 1 ? 's' : '') . $lang['warn_stdmsg_unwarned']);
+                stderr($lang['warn_stdmsg_success'], count($msgs_buffer) . $lang['warn_stdmsg_user'] . (count($msgs_buffer) > 1 ? 's' : '') . $lang['warn_stdmsg_unwarned']);
             } else {
-                stderr($lang['warn_stderr'], $lang['warn_stderr_msgq1'] . $q_err . $lang['warn_stderr_msgq2'] . $q2_err);
+                stderr($lang['warn_stderr'], $lang['warn_stderr_msgq1'] . $lang['warn_stderr_msgq2'] . $q2_err);
             }
         }
     }

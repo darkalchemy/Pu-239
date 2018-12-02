@@ -119,6 +119,11 @@ function navbar()
     return $navbar;
 }
 
+/**
+ * @param $value
+ *
+ * @return string
+ */
 function make_link($value)
 {
     global $site_config;
@@ -129,6 +134,11 @@ function make_link($value)
     return $link;
 }
 
+/**
+ * @return string
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function staff_panel()
 {
     global $site_config, $CURUSER, $BLOCKS, $cache, $fluent;

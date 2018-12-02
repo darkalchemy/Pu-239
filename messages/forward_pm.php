@@ -36,7 +36,7 @@ if ($CURUSER['class'] < UC_STAFF) {
     }
     $blocked = $fluent->from('blocks')
         ->select(null)
-        ->select(id)
+        ->select('id')
         ->where('userid = ?', $to_user['id'])
         ->where('blockid = ?', $CURUSER['id'])
         ->fetch();
@@ -46,7 +46,7 @@ if ($CURUSER['class'] < UC_STAFF) {
     if ($to_user['acceptpms'] === 'friends') {
         $friend = $fluent->from('friends')
             ->select(null)
-            ->select(id)
+            ->select('id')
             ->where('userid = ?', $to_user['id'])
             ->where('friendid = ?', $CURUSER['id'])
             ->fetch();

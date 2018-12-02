@@ -4,6 +4,8 @@
  * @param $userid
  *
  * @return string
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function account_delete($userid)
 {

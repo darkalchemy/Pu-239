@@ -1,6 +1,6 @@
 <?php
 
-global $lang;
+global $lang, $CURUSER;
 
 $post_id = (isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0));
 $topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
@@ -8,12 +8,9 @@ $page = (isset($_GET['page']) ? intval($_GET['page']) : (isset($_POST['page']) ?
 if (!is_valid_id($post_id) || !is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
-//=== get the post info
 $res_post = sql_query('SELECT p.added, p.user_id AS puser_id, p.body, p.icon, p.post_title, p.bbcode, p.post_history, p.edited_by, p.edit_date, p.edit_reason, p.staff_lock, a.file, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, t.topic_name, t.locked, t.user_id, t.topic_desc, f.min_class_read, f.min_class_write, f.id AS forum_id FROM posts AS p LEFT JOIN attachments AS a ON p.id = a.post_id LEFT JOIN users AS u ON p.user_id = u.id LEFT JOIN topics AS t ON t.id = p.topic_id LEFT JOIN forums AS f ON t.forum_id = f.id WHERE p.id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
 $arr_post = mysqli_fetch_assoc($res_post);
-//=== get any attachments
 $colour = $attachments = $extension_error = $size_error = '';
-//=== if there are attachments, let's get them!
 if (!empty($arr_post['file'])) {
     $attachments = '<tr><td><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_attachments'] . ':</span></td>
 	<td>
@@ -87,11 +84,9 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
     sql_query('UPDATE posts SET body = ' . sqlesc($body) . ', icon = ' . sqlesc($icon) . ', post_title = ' . sqlesc($post_title) . ', bbcode = ' . sqlesc($show_bbcode) . ', edit_reason = ' . sqlesc($edit_reason) . ', edited_by = ' . sqlesc($edited_by) . ', edit_date = ' . sqlesc($edit_date) . ', post_history = ' . sqlesc($post_history) . ' WHERE id = ' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
     clr_forums_cache($post_id);
     $cache->delete('forum_posts_' . $CURUSER['id']);
-    //=== update topic stuff
     if ($can_edit) {
         sql_query('UPDATE topics SET topic_name = ' . sqlesc($topic_name) . ', topic_desc = ' . sqlesc($topic_desc) . ' WHERE id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     }
-    //=== stuff for file uploads
     if ($CURUSER['class'] >= $min_upload_class) {
         foreach ($_FILES['attachment']['name'] as $key => $name) {
             if (!empty($name)) {
@@ -105,7 +100,6 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
                     'application/x-rar',
                 ];
                 $extension_error = $size_error = 0;
-                //=== allowed file types (2 checks) but still can't really trust it
                 $file_extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
                 $name = basename($name, '.' . $file_extension);
                 $name = preg_replace('#[^a-zA-Z0-9_-]#', '', $name);
@@ -148,12 +142,10 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
             //=== delete them from the DB
             sql_query('DELETE FROM attachments WHERE id = ' . sqlesc($attachment_to_delete) . ' AND post_id = ' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);
         }
-    } //=== end attachment stuff
-    //=== only write to staff actions if it's a staff editing and not their own post
+    }
     if ($CURUSER['class'] >= UC_STAFF && $CURUSER['id'] !== $arr_post['user_id']) {
         write_log('' . $CURUSER['username'] . ' ' . $lang['ep_edited_a_post_by'] . ' ' . htmlsafechars($arr_post['username']) . '. ' . $lang['ep_here_is_the'] . ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . $post_id . '&amp;forum_id=' . (int) $arr_post['forum_id'] . '&amp;topic_id=' . $topic_id . '">' . $lang['ep_link'] . '</a> ' . $lang['ep_to_the_post_history'] . '', $CURUSER['id']);
     }
-    //header('Location: forums.php?action=view_topic&topic_id='.$topic_id.'&page='.$page.'#'.$post_id);
     header('Location: ' . $site_config['baseurl'] . '/forums.php?action=view_topic&topic_id=' . $topic_id . (0 !== $extension_error ? '&ee=' . $extension_error : '') . (0 !== $size_error ? '&se=' . $size_error : ''));
     die();
 }

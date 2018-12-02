@@ -1,6 +1,6 @@
 <?php
 
-global $message_stuffs;
+global $message_stuffs, $CURUSER;
 
 $save_or_edit = (isset($_POST['edit']) ? 'edit' : (isset($_GET['edit']) ? 'edit' : 'save'));
 

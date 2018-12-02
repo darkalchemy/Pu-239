@@ -149,6 +149,8 @@ function show_poll_form()
 
 /**
  * @return mixed
+ *
+ * @throws Exception
  */
 function edit_poll_form()
 {

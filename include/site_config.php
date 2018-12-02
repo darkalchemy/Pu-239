@@ -14,6 +14,9 @@ $site_config['char_set'] = 'UTF-8';
 
 // Windows fix
 if (!function_exists('sys_getloadavg')) {
+    /**
+     * @return array
+     */
     function sys_getloadavg()
     {
         return [

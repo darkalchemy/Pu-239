@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @param $action
+ *
+ * @return false|float|int|string
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function happyHour($action)
 {
     global $site_config, $fluent;
@@ -61,6 +68,12 @@ function happyHour($action)
     }
 }
 
+/**
+ * @param      $action
+ * @param null $id
+ *
+ * @return bool
+ */
 function happyCheck($action, $id = null)
 {
     global $site_config;
@@ -76,6 +89,9 @@ function happyCheck($action, $id = null)
     }
 }
 
+/**
+ * @param $act
+ */
 function happyFile($act)
 {
     global $site_config;
@@ -95,14 +111,21 @@ function happyFile($act)
             'catid' => $happy['catid'],
         ];
     }
-    $array_happy = serialize($array_happy);
-    $file = $site_config['happyhour'];
-    $file = fopen($file, 'w');
-    ftruncate($file, 0);
-    fwrite($file, $array_happy);
-    fclose($file);
+    if (!empty($array_happy)) {
+        $array_happy = serialize($array_happy);
+        $file = $site_config['happyhour'];
+        $file = fopen($file, 'w');
+        ftruncate($file, 0);
+        fwrite($file, $array_happy);
+        fclose($file);
+    }
 }
 
+/**
+ * @param $userid
+ * @param $torrentid
+ * @param $multi
+ */
 function happyLog($userid, $torrentid, $multi)
 {
     $time = sqlesc(TIME_NOW);

@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class Image.
+ */
 class Image
 {
     protected $fluent;

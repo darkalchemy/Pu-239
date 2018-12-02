@@ -26,12 +26,15 @@ $uid = (int) $CURUSER['id'];
 $tid = isset($_POST['tid']) ? (int) $_POST['tid'] : (isset($_GET['tid']) ? (int) $_GET['tid'] : 0);
 $do = isset($_POST['action']) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) ? htmlsafechars($_GET['action']) : 'list');
 $ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
+
 /**
  * @return string
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function print_list()
 {
-    global $uid, $tid, $ajax;
+    global $uid, $tid, $ajax, $site_config;
 
     $target = $ajax ? '_self' : '_parent';
     $qt = sql_query('SELECT th.userid, u.username, u.seedbonus FROM thanks AS th INNER JOIN users AS u ON u.id=th.userid WHERE th.torrentid = ' . sqlesc($tid) . ' ORDER BY u.class DESC') or sqlerr(__FILE__, __LINE__);

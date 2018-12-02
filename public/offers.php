@@ -8,7 +8,7 @@ require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $user_stuffs, $fluent, $mysqli;
+global $CURUSER, $site_config, $user_stuffs, $fluent, $mysqli, $commentid;
 
 $lang = array_merge(load_language('global'), load_language('comment'));
 $stdhead = [
@@ -143,7 +143,7 @@ switch ($action) {
             ->select('o.id AS offer_id')
             ->select('c.name AS cat_name')
             ->select('c.image AS cat_image')
-            ->join('categories AS c ON o.category = c.id')
+            ->leftJoin('categories AS c ON o.category = c.id')
             ->where('o.id = ?', $id)
             ->fetch();
 
@@ -198,7 +198,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>image:</td>
-    <td><img src="' . strip_tags(url_proxy($arr['image'], true, 500, null)) . '" alt="image"></td>
+    <td><img src="' . strip_tags(url_proxy($arr['image'], true, 500)) . '" alt="image"></td>
     </tr>
     <tr>
     <td>description:</td>

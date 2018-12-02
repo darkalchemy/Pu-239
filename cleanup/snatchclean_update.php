@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @param $data
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function snatchclean_update($data)
 {
     $time_start = microtime(true);

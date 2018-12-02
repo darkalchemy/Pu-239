@@ -1,6 +1,6 @@
 <?php
 
-global $message_stuffs;
+global $message_stuffs, $CURUSER;
 
 $subject = $draft = '';
 if (!empty($_POST['buttonval']) && $_POST['buttonval'] === 'Save draft') {

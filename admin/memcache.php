@@ -41,6 +41,11 @@ if (extension_loaded('memcached')) {
 }
 
 ////////// END OF DEFAULT CONFIG AREA /////////////////////////////////////////////////////////////
+/**
+ * @param $server
+ *
+ * @return array
+ */
 function get_host_port_from_server($server)
 {
     $values = explode(':', $server);
@@ -54,6 +59,11 @@ function get_host_port_from_server($server)
     }
 }
 
+/**
+ * @param $command
+ *
+ * @return array
+ */
 function sendMemcacheCommands($command)
 {
     global $MEMCACHE_SERVERS;
@@ -69,6 +79,13 @@ function sendMemcacheCommands($command)
     return $result;
 }
 
+/**
+ * @param $server
+ * @param $port
+ * @param $command
+ *
+ * @return array
+ */
 function sendMemcacheCommand($server, $port, $command)
 {
     $s = @fsockopen($server, $port);
@@ -94,6 +111,11 @@ function sendMemcacheCommand($server, $port, $command)
     return parseMemcacheResults($buf);
 }
 
+/**
+ * @param $str
+ *
+ * @return array
+ */
 function parseMemcacheResults($str)
 {
     $res = [];
@@ -121,6 +143,13 @@ function parseMemcacheResults($str)
     return $res;
 }
 
+/**
+ * @param $server
+ * @param $slabId
+ * @param $limit
+ *
+ * @return array
+ */
 function dumpCacheSlab($server, $slabId, $limit)
 {
     list($host, $port) = explode(':', $server);
@@ -129,6 +158,11 @@ function dumpCacheSlab($server, $slabId, $limit)
     return $resp;
 }
 
+/**
+ * @param $server
+ *
+ * @return array
+ */
 function flushServer($server)
 {
     list($host, $port) = explode(':', $server);
@@ -137,6 +171,9 @@ function flushServer($server)
     return $resp;
 }
 
+/**
+ * @return array
+ */
 function getCacheItems()
 {
     $items = sendMemcacheCommands('stats items');
@@ -165,6 +202,11 @@ function getCacheItems()
     ];
 }
 
+/**
+ * @param bool $total
+ *
+ * @return array
+ */
 function getMemcacheStats($total = true)
 {
     $resp = sendMemcacheCommands('stats');
@@ -273,6 +315,11 @@ function getMemcacheStats($total = true)
     return $resp;
 }
 
+/**
+ * @param $ts
+ *
+ * @return string
+ */
 function duration($ts)
 {
     global $time;
@@ -317,6 +364,12 @@ function duration($ts)
     return $str;
 }
 
+/**
+ * @param $ob
+ * @param $title
+ *
+ * @return string
+ */
 function menu_entry($ob, $title)
 {
     global $site_config;
@@ -334,6 +387,9 @@ function menu_entry($ob, $title)
             </li>";
 }
 
+/**
+ * @return string
+ */
 function getMenu()
 {
     global $site_config;
@@ -378,6 +434,17 @@ if (isset($_GET['singleout']) && $_GET['singleout'] >= 0 && $_GET['singleout'] <
 if (isset($_GET['IMG'])) {
     $memcacheStats = getMemcacheStats();
     $memcacheStatsSingle = getMemcacheStats(false);
+    /**
+     * @param        $im
+     * @param        $x
+     * @param        $y
+     * @param        $w
+     * @param        $h
+     * @param        $color1
+     * @param        $color2
+     * @param string $text
+     * @param string $placeindex
+     */
     function fill_box($im, $x, $y, $w, $h, $color1, $color2, $text = '', $placeindex = '')
     {
         global $col_black;
@@ -417,6 +484,18 @@ if (isset($_GET['IMG'])) {
         }
     }
 
+    /**
+     * @param        $im
+     * @param        $centerX
+     * @param        $centerY
+     * @param        $diameter
+     * @param        $start
+     * @param        $end
+     * @param        $color1
+     * @param        $color2
+     * @param string $text
+     * @param int    $placeindex
+     */
     function fill_arc($im, $centerX, $centerY, $diameter, $start, $end, $color1, $color2, $text = '', $placeindex = 0)
     {
         $r = $diameter / 2;

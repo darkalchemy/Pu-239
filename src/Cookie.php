@@ -4,6 +4,9 @@ namespace DarkAlchemy\Pu239;
 
 use Blocktrail\CryptoJSAES\CryptoJSAES;
 
+/**
+ * Class Cookie.
+ */
 class Cookie
 {
     private $config;
@@ -11,6 +14,11 @@ class Cookie
     protected $key;
     private $fluent;
 
+    /**
+     * Cookie constructor.
+     *
+     * @param $key
+     */
     public function __construct($key)
     {
         global $site_config, $cache, $fluent;

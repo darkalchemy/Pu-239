@@ -10,6 +10,9 @@ if (empty($CURUSER) || $CURUSER['class'] !== UC_MAX) {
     die();
 }
 
+/**
+ * @return AdminerCustomization
+ */
 function adminer_object()
 {
     include_once PLUGINS_DIR . 'plugin.php';
@@ -35,13 +38,24 @@ function adminer_object()
         new AdminerDumpDate(),
     ];
 
+    /**
+     * Class AdminerCustomization.
+     */
     class AdminerCustomization extends AdminerPlugin
     {
+        /**
+         * AdminerCustomization constructor.
+         *
+         * @param $plugins
+         */
         public function __construct($plugins)
         {
             $this->plugins = $plugins;
         }
 
+        /**
+         * @return mixed
+         */
         public function name()
         {
             global $site_config;
@@ -49,11 +63,17 @@ function adminer_object()
             return $site_config['site_name'];
         }
 
+        /**
+         * @return mixed|string
+         */
         public function database()
         {
             return "{$_ENV['DB_DATABASE']}";
         }
 
+        /**
+         * @return array|mixed
+         */
         public function credentials()
         {
             global $CURUSER, $site_config;

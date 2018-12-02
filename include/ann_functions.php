@@ -98,10 +98,12 @@ function crazyhour_announce()
 }
 
 /**
- * @param $torrentid
- * @param $userid
+ * @param int $torrentid
+ * @param int $userid
  *
  * @return int|mixed
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_happy(int $torrentid, int $userid)
 {
@@ -128,10 +130,12 @@ function get_happy(int $torrentid, int $userid)
 }
 
 /**
- * @param $torrentid
- * @param $userid
+ * @param int $torrentid
+ * @param int $userid
  *
  * @return mixed
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_slots(int $torrentid, int $userid)
 {
@@ -169,6 +173,8 @@ function get_slots(int $torrentid, int $userid)
  * @param $client
  * @param $realip
  * @param $last_up
+ *
+ * @return bool
  *
  * @throws Exception
  */
@@ -349,6 +355,11 @@ function portblacklisted($port)
 }
 
 if (!function_exists('validip')) {
+    /**
+     * @param $ip
+     *
+     * @return bool
+     */
     function validip($ip)
     {
         return filter_var($ip, FILTER_VALIDATE_IP, [

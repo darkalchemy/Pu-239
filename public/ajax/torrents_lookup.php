@@ -97,6 +97,13 @@ if ($type === 'torrents' && $hasAccess) {
 echo json_encode(['fail' => 'invalid']);
 die();
 
+/**
+ * @param int $userid
+ *
+ * @return array|bool
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_uploaded(int $userid)
 {
     global $fluent, $site_config;
@@ -141,6 +148,13 @@ function get_uploaded(int $userid)
     return $torrents;
 }
 
+/**
+ * @param int $userid
+ *
+ * @return array|bool
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_seeding(int $userid)
 {
     global $fluent, $site_config;
@@ -181,6 +195,13 @@ function get_seeding(int $userid)
     return $torrents;
 }
 
+/**
+ * @param int $userid
+ *
+ * @return array|bool
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_leeching(int $userid)
 {
     global $fluent, $site_config;
@@ -221,6 +242,13 @@ function get_leeching(int $userid)
     return $torrents;
 }
 
+/**
+ * @param int $userid
+ *
+ * @return array|bool
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_snatched(int $userid)
 {
     global $fluent, $site_config;
@@ -251,6 +279,13 @@ function get_snatched(int $userid)
     return $torrents;
 }
 
+/**
+ * @param int $userid
+ *
+ * @return array|bool
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_snatched_staff(int $userid)
 {
     global $fluent, $site_config;
@@ -290,6 +325,11 @@ function get_snatched_staff(int $userid)
     return $torrents;
 }
 
+/**
+ * @param array $torrents
+ *
+ * @return string
+ */
 function maketable(array $torrents)
 {
     global $site_config, $lang;
@@ -343,6 +383,11 @@ function maketable(array $torrents)
     return $table;
 }
 
+/**
+ * @param array $torrents
+ *
+ * @return string
+ */
 function snatchtable(array $torrents)
 {
     global $site_config, $lang;
@@ -391,6 +436,12 @@ function snatchtable(array $torrents)
     return $table;
 }
 
+/**
+ * @param array $torrents
+ * @param int   $userid
+ *
+ * @return string
+ */
 function staff_snatchtable(array $torrents, int $userid)
 {
     global $site_config, $lang;

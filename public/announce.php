@@ -28,7 +28,7 @@ foreach ([
              'left',
              'compact',
          ] as $x) {
-    if (!isset($$x)) {
+    if (!isset(${$x})) {
         err("Missing key: $x");
     }
 }
@@ -37,8 +37,8 @@ foreach ([
              'info_hash',
              'peer_id',
          ] as $x) {
-    if (strlen($$x) != 20) {
-        err("Invalid $x (" . strlen($$x) . ' - ' . urlencode($$x) . ')');
+    if (strlen(${$x}) != 20) {
+        err("Invalid $x (" . strlen(${$x}) . ' - ' . urlencode(${$x}) . ')');
     }
 }
 unset($x);
@@ -53,8 +53,8 @@ foreach ([
              'numwant',
              'num_want',
          ] as $x) {
-    if (isset($$x)) {
-        $rsize = (int) $$x;
+    if (isset(${$x})) {
+        $rsize = (int) ${$x};
         break;
     }
 }

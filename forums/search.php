@@ -1,6 +1,6 @@
 <?php
 
-global $lang, $site_config, $user_stuffs;
+global $lang, $site_config, $user_stuffs, $CURUSER;
 
 $author_error = $content = $count = $count2 = $edited_by = $row_count = $over_forum_id = $author_id = $content = '';
 $search_where = $selected_forums = [];
@@ -51,7 +51,7 @@ if ($search) {
 
     $res_forum_ids = sql_query('SELECT id FROM forums') or sqlerr(__FILE__, __LINE__);
     while ($arr_forum_ids = mysqli_fetch_assoc($res_forum_ids)) {
-        if (isset($_GET['f' . $arr_forum_ids[id]])) {
+        if (isset($_GET['f' . $arr_forum_ids['id']])) {
             $selected_forums[] = $arr_forum_ids['id'];
         }
     }

@@ -42,9 +42,6 @@ foreach ($query as $arr2) {
  * @param $staffclass
  *
  * @return null|string
- *
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  */
 function DoStaff($staff_array, $staffclass)
 {

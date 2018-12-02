@@ -11,6 +11,7 @@ require_once INCL_DIR . 'function_details.php';
 check_user_status();
 global $CURUSER, $site_config, $session, $cache, $user_stuffs, $BLOCKS, $torrent_stuffs, $comment_stuffs;
 
+$isfree = [];
 $coin_stuffs = new DarkAlchemy\Pu239\Coin();
 $lang = array_merge(load_language('global'), load_language('details'));
 $stdhead = [
@@ -76,9 +77,10 @@ if (isset($_GET['hit'])) {
     $torrent_stuffs->update($set, $id);
 }
 $owned = $moderator = 0;
+$owner = $torrent['owner'];
 if ($CURUSER['class'] >= UC_STAFF) {
     $owned = $moderator = 1;
-} elseif ($CURUSER['id'] === $torrent['owner']) {
+} elseif ($CURUSER['id'] === $owner) {
     $owned = 1;
 }
 if ($moderator) {
@@ -165,6 +167,7 @@ if (isset($_GET['uploaded'])) {
     $HTMLOUT .= "<meta http-equiv='refresh' content='1;url=download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "'>";
 }
 $categories = genrelist();
+$change = [];
 foreach ($categories as $key => $value) {
     $change[$value['id']] = [
         'id' => $value['id'],
@@ -447,12 +450,12 @@ if (isset($_GET['returnto'])) {
     $url .= '&amp;returnto=' . urlencode($_GET['returnto']);
 }
 $editlink = "<a href='$url' class='button is-small bottom10'>";
-$rowuser = isset($torrent['owner']) ? format_username($torrent['owner']) : $lang['details_unknown'];
+$rowuser = !empty($owner) ? format_username($owner) : $lang['details_unknown'];
 $uprow = $torrent['anonymous'] === 'yes' ? (!$moderator && !$owner ? '' : $rowuser . ' - ') . '<i>' . get_anonymous_name() . '</i>' : $rowuser;
 $audit = tr('Upped by', "<div class='level-left left10'>$uprow</div>", 1);
-$torrent_cache['rep'] = $user_stuffs->get_item('reputation', $torrent['owner']);
+$torrent_cache['rep'] = $user_stuffs->get_item('reputation', $owner);
 if ($torrent_cache['rep']) {
-    $member_reputation = get_reputation($user_stuffs->getUserFromId($torrent['owner']), 'torrents', $torrent['anonymous'], $id);
+    $member_reputation = get_reputation($user_stuffs->getUserFromId($owner), 'torrents', $torrent['anonymous'], $id);
     $audit .= tr('Reputation', "<div class='left10'>$member_reputation counts towards uploaders Reputation</div>", 1);
 }
 $audit .= tr('Report Torrent', "
@@ -525,7 +528,7 @@ $audit .= tr('Request Reseed', "
                     <option value='last10'>last10</option>
                     <option value='owner'>uploader</option>
                 </select>
-                <input type='hidden' name='uploader' value='" . (int) $torrent['owner'] . "'>
+                <input type='hidden' name='uploader' value='" . (int) $owner . "'>
                 <input type='hidden' name='reseedid' value='$id'>
                 <input type='hidden' name='name' value='{$torrent['name']}'>
                 <input type='hidden' name='csrf' value='" . $session->get('csrf_token') . "'>
@@ -635,7 +638,7 @@ if ($CURUSER['downloadpos'] === 1 || $owner) {
 }
 $i = 0;
 foreach ($sections as $section => $container) {
-    if (empty($$section)) {
+    if (empty(${$section})) {
         unset($sections[$section]);
     }
     ++$i;
@@ -645,11 +648,11 @@ foreach ($sections as $section => $container) {
     ++$i;
     $class = $i >= count($sections) ? '' : 'bottom20';
     if ($container === 'main_table') {
-        $HTMLOUT .= main_table($$section, null, null, $class);
+        $HTMLOUT .= main_table(${$section}, null, null, $class);
     } elseif ($container === 'main_div') {
-        $HTMLOUT .= main_div($$section, $class);
+        $HTMLOUT .= main_div(${$section}, $class);
     } else {
-        $HTMLOUT .= $$section;
+        $HTMLOUT .= ${$section};
     }
 }
 

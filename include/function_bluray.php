@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @return array|bool|mixed
+ *
+ * @throws \Spatie\Image\Exceptions\InvalidManipulation
+ */
 function get_bluray_info()
 {
     global $cache, $site_config, $BLOCKS;
@@ -58,10 +63,10 @@ function get_bluray_info()
             $poster = $placeholder = $site_config['pic_baseurl'] . 'noposter.png';
 
             if (!empty($poster_link)) {
-                $image = url_proxy($poster_link, true, 150);
+                $image = url_proxy($poster_link, true, 250);
                 if ($image) {
                     $poster = $image;
-                    $placeholder = url_proxy($poster_link, true, 150, null, 10);
+                    $placeholder = url_proxy($poster_link, true, 250, null, 20);
                 }
             }
 

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @return array
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_styles()
 {
     global $fluent;
@@ -17,6 +22,14 @@ function get_styles()
     return $styles;
 }
 
+/**
+ * @param array $styles
+ * @param bool  $create
+ *
+ * @return array
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_classes(array $styles, bool $create)
 {
     global $fluent;

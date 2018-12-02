@@ -1,6 +1,6 @@
 <?php
 
-global $message_stuffs, $user_stuffs;
+global $message_stuffs, $user_stuffs, $CURUSER;
 
 $body = '';
 $message = $message_stuffs->get_by_id($pm_id);

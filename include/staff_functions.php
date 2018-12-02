@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @param $text
+ *
+ * @return bool|int
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function write_info($text)
 {
     global $fluent;

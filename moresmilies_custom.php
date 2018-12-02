@@ -11,7 +11,7 @@ $lang = load_language('global');
 if ($CURUSER['smile_until'] == '0') {
     stderr('Error', 'you do not have access!');
 }
-$htmlout = doc_type() . "
+$htmlout = doc_head() . "
     <title>Custom Smilies</title>
     <link rel='stylesheet' href='" . get_file_name('css') . "'>
 </head>
@@ -28,7 +28,7 @@ $count = 0;
 $ctr = 0;
 global $customsmilies;
 
-while ((list($code, $url) = each($customsmilies))) {
+foreach ($customsmilies as $code => $url) {
     if ($count % 3 == 0) {
         $htmlout .= '
         <tr>';

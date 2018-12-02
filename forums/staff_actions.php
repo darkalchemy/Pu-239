@@ -1,6 +1,6 @@
 <?php
 
-global $lang, $post_stuffs, $mysqli;
+global $lang, $post_stuffs, $mysqli, $CURUSER;
 
 //=== post  action posted so we know what to do :P
 $posted_staff_action = strip_tags((isset($_POST['action_2']) ? $_POST['action_2'] : ''));

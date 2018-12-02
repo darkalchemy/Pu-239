@@ -63,7 +63,7 @@ foreach ($vars as $var) {
     if ($var === 'subs') {
         $has_subs = isset($upload_vars[$var]) ? $upload_vars[$var] : [];
     } else {
-        $$var = isset($upload_vars[$var]) ? $upload_vars[$var] : '';
+        ${$var} = isset($upload_vars[$var]) ? $upload_vars[$var] : '';
     }
 }
 $res_request = $fluent->from('requests')

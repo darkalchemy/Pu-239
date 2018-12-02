@@ -2,6 +2,8 @@
 
 /**
  * @param $data
+ *
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function gift_update($data)
 {

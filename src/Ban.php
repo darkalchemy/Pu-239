@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class Ban.
+ */
 class Ban
 {
     protected $cache;

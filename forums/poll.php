@@ -1,12 +1,17 @@
 <?php
 
-global $lang, $mysqli;
+global $lang, $mysqli, $CURUSER;
 
 $topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
 if (!is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
 //=== sue me I got lazy :P but I still think  is_numeric is crappy
+/**
+ * @param $vote
+ *
+ * @return bool
+ */
 function is_valid_poll_vote($vote)
 {
     return is_numeric($vote) && ($vote >= 0) && (floor($vote) == $vote);

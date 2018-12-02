@@ -52,6 +52,9 @@ hr {width: 100%; background-color: #ccc; border: 0; height: 1px;}
 }
 $html = [];
 
+/**
+ * @return string
+ */
 function sql_get_version()
 {
     $query = sql_query('SELECT VERSION() AS version');
@@ -74,7 +77,7 @@ $server_software = php_uname();
 $load_limit = '--';
 $server_load_found = 0;
 $using_cache = 0;
-$avp = @sql_query("SELECT value_s FROM avps WHERE arg = 'loadlimit'");
+$avp = sql_query("SELECT value_s FROM avps WHERE arg = 'loadlimit'") or sqlerr(__FILE__, __LINE__);
 if (false !== $row = mysqli_fetch_assoc($avp)) {
     $loadinfo = explode('-', $row['value_s']);
     if (intval($loadinfo[1]) > (time() - 20)) {
@@ -106,7 +109,7 @@ if (!$server_load_found) {
         }
     }
     if ($load_limit) {
-        @sql_query("UPDATE avps SET value_s = '" . $load_limit . '-' . time() . "' WHERE arg = 'loadlimit'");
+        sql_query("UPDATE avps SET value_s = '" . $load_limit . '-' . time() . "' WHERE arg = 'loadlimit'") or sqlerr(__FILE__, __LINE__);
     }
 }
 $total_memory = $avail_memory = '--';

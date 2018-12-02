@@ -1,3 +1,10 @@
+### 02 Dec, 2018
+cleanup: missing globals, parenthesis, quotes, etc  
+update: PHPDoc elements  
+remove: AJAXChat native database classes  
+update: increase image sizes  
+fix: IMDb rating, year, genre not updating if already cached  
+
 ### 01 Dec, 2018
 update: database files  
 add: caching to rss, default 5 minutes ttl  

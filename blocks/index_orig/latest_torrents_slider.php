@@ -100,7 +100,7 @@ if (!empty($sliding_torrents)) {
         }
 
         $src = $i++ <= 1 ? "src='" . url_proxy($banner, true, 1000, 185) . "' class='noshow round10'" : "data-src='" . url_proxy($banner, true, 1000, 185) . "' class='noshow lazy round10'";
-        $poster = "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster'>";
+        $poster = "<img src='" . url_proxy($poster, true, 250) . "' class='tooltip-poster'>";
 
         $slider .= '
                     <li>';

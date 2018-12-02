@@ -19,6 +19,10 @@ class CustomAJAXChat extends AJAXChat
 
     /**
      * @return bool
+     *
+     * @throws \Envms\FluentPDO\Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
      */
     public function getValidLoginUserData()
     {
@@ -107,6 +111,9 @@ class CustomAJAXChat extends AJAXChat
         return $this->_channels;
     }
 
+    /**
+     * @return |null
+     */
     public function &getCustomUsers()
     {
         // List containing the registered chat users:
@@ -161,6 +168,15 @@ class CustomAJAXChat extends AJAXChat
     }
 
     // Add custom commands
+
+    /**
+     * @param $text
+     * @param $textParts
+     *
+     * @return bool
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
     public function parseCustomCommands($text, $textParts)
     {
         global $CURUSER, $cache;
@@ -181,15 +197,17 @@ class CustomAJAXChat extends AJAXChat
                         $ids[] = $id;
                     }
                     $msgs_buffer = [];
-                    foreach ($ids as $rid) {
-                        $msgs_buffer[] = [
-                            'sender' => 0,
-                            'receiver' => $rid['id'],
-                            'added' => TIME_NOW,
-                            'msg' => str_replace('/announce ', '', $text),
-                            'subject' => 'Site News',
-                            'poster' => $this->getUserID(),
-                        ];
+                    if (!empty($ids)) {
+                        foreach ($ids as $rid) {
+                            $msgs_buffer[] = [
+                                'sender' => 0,
+                                'receiver' => $rid['id'],
+                                'added' => TIME_NOW,
+                                'msg' => str_replace('/announce ', '', $text),
+                                'subject' => 'Site News',
+                                'poster' => $this->getUserID(),
+                            ];
+                        }
                     }
                     if (count($msgs_buffer) > 0) {
                         $this->_message->insert($msgs_buffer);

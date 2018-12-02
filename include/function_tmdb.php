@@ -306,6 +306,8 @@ function dateSort($a, $b)
  * @param $week
  *
  * @return array
+ *
+ * @throws Exception
  */
 function getStartAndEndDate($year, $week)
 {
@@ -319,6 +321,11 @@ function getStartAndEndDate($year, $week)
     ];
 }
 
+/**
+ * @param $tmdbid
+ *
+ * @return bool
+ */
 function get_imdbid($tmdbid)
 {
     global $cache, $BLOCKS, $fluent;

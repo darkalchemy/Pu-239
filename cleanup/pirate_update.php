@@ -3,6 +3,7 @@
 /**
  * @param $data
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function pirate_update($data)

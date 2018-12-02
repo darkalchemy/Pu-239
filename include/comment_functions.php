@@ -5,6 +5,8 @@
  * @param string $variant
  *
  * @return string
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function commenttable($rows, $variant = 'torrent')
 {
@@ -29,6 +31,7 @@ function commenttable($rows, $variant = 'torrent')
     $delete = ($variant === 'request' || $variant === 'offer') ? 'action=delete_comment' : 'action=delete';
     $htmlout = '';
     $i = 0;
+    $variantc = '';
     foreach ($rows as $row) {
         $cid = $row['id'];
         if ($variant === 'torrent') {

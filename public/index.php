@@ -188,7 +188,7 @@ if (in_array('disclaimer', $available_columns) && curuser::$blocks['index_page']
 }
 
 foreach ($above_columns as $item) {
-    $HTMLOUT .= wrap_it($item, $$item);
+    $HTMLOUT .= wrap_it($item, ${$item});
 }
 
 $HTMLOUT .= "
@@ -197,7 +197,7 @@ $HTMLOUT .= "
         <div id='left_column' class='left_column'>";
 
 foreach ($left_column as $item) {
-    $HTMLOUT .= wrap_it($item, $$item);
+    $HTMLOUT .= wrap_it($item, ${$item});
 }
 
 $HTMLOUT .= "
@@ -207,7 +207,7 @@ $HTMLOUT .= "
         <div id='center_column'>";
 
 foreach ($center_column as $item) {
-    $HTMLOUT .= wrap_it($item, $$item);
+    $HTMLOUT .= wrap_it($item, ${$item});
 }
 
 $HTMLOUT .= "
@@ -217,7 +217,7 @@ $HTMLOUT .= "
         <div id='right_column' class='right_column'>";
 
 foreach ($right_column as $item) {
-    $HTMLOUT .= wrap_it($item, $$item);
+    $HTMLOUT .= wrap_it($item, ${$item});
 }
 
 $HTMLOUT .= '
@@ -226,9 +226,15 @@ $HTMLOUT .= '
 </div>';
 
 foreach ($below_columns as $item) {
-    $HTMLOUT .= wrap_it($item, $$item);
+    $HTMLOUT .= wrap_it($item, ${$item});
 }
 
+/**
+ * @param $item
+ * @param $data
+ *
+ * @return string
+ */
 function wrap_it($item, $data)
 {
     $class = $item === 'tfreak_feed' ? '' : 'portlet';

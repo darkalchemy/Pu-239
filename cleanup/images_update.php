@@ -63,7 +63,7 @@ function images_update($data)
         ->where('isbn != ""');
 
     foreach ($links as $link) {
-        get_book_info($links);
+        get_book_info($link);
     }
 
     $imdbids = $fluent->from('torrents')
@@ -158,8 +158,8 @@ function images_update($data)
             ];
         }
         if ($image['type'] === 'poster') {
-            url_proxy($image['url'], true, 150);
-            url_proxy($image['url'], true, 150, null, 10);
+            url_proxy($image['url'], true, 250);
+            url_proxy($image['url'], true, 250, null, 20);
         }
     }
 

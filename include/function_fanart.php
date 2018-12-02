@@ -9,7 +9,7 @@
  */
 function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
 {
-    global $cache, $BLOCKS;
+    global $cache, $BLOCKS, $fluent;
 
     if (!$BLOCKS['fanart_api_on']) {
         return false;

@@ -99,9 +99,9 @@ function torrenttable($res, $variant = 'index')
     $i = 1;
     foreach ($links as $link) {
         if (isset($_GET['sort']) && $_GET['sort'] == $i) {
-            $$link = (isset($_GET['type']) && $_GET['type'] === 'desc') ? 'asc' : 'desc';
+            ${$link} = (isset($_GET['type']) && $_GET['type'] === 'desc') ? 'asc' : 'desc';
         } else {
-            $$link = 'asc';
+            ${$link} = 'asc';
         }
         ++$i;
     }
@@ -206,7 +206,7 @@ function torrenttable($res, $variant = 'index')
         if (empty($row['poster']) && !empty($row['imdb_id'])) {
             $row['poster'] = find_images($row['imdb_id']);
         }
-        $poster = empty($row['poster']) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' alt='Poster'>" : "<img src='" . url_proxy($row['poster'], true, 150, null) . "' class='tooltip-poster' alt='Poster'>";
+        $poster = empty($row['poster']) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' alt='Poster'>" : "<img src='" . url_proxy($row['poster'], true, 250) . "' class='tooltip-poster' alt='Poster'>";
         $rating = empty($row['rating']) ? 'No users have rated this torrent' : ratingpic($row['rating']);
         if (!empty($row['descr'])) {
             $descr = str_replace('"', '&quot;', readMore($row['descr'], 500, $site_config['baseurl'] . '/details.php?id=' . (int) $row['id'] . '&amp;hit=1'));

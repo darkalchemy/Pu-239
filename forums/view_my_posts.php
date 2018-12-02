@@ -1,6 +1,6 @@
 <?php
 
-global $lang;
+global $lang, $CURUSER;
 
 $colour = $post_status_image = '';
 $ASC_DESC = ((isset($_GET['ASC_DESC']) && 'ASC' === $_GET['ASC_DESC']) ? 'ASC ' : 'DESC ');

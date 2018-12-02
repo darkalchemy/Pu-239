@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class Achievement.
+ */
 class Achievement
 {
     protected $cache;

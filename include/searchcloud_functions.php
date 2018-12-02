@@ -34,6 +34,7 @@ function searchcloud($limit = 50)
 /**
  * @param $word
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function searchcloud_insert($word)

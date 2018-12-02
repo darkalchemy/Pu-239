@@ -3,6 +3,8 @@
 /**
  * @param string $subject
  * @param string $body
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Body')
 {

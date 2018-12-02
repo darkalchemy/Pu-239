@@ -1,6 +1,6 @@
 <?php
 
-global $bb_code, $subscribe, $can_edit, $show_edited_by, $topic_desc;
+global $bb_code, $subscribe, $can_edit, $show_edited_by, $topic_desc, $CURUSER;
 
 $bb_code = empty($bb_code) ? 'yes' : 'no';
 $show_edited_by = empty($show_edited_by) ? 'yes' : 'no';

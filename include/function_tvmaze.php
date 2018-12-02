@@ -62,7 +62,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
                                             <span id='cast_{$role['id']}_tooltip'>
                                                 <span class='is-flex'>
                                                     <span class='has-text-centered'>
-                                                        <img src='" . url_proxy(strip_tags($role['photo']), true, 150, null) . "' class='tooltip-poster'>
+                                                        <img src='" . url_proxy(strip_tags($role['photo']), true, 250) . "' class='tooltip-poster'>
                                                         <p class='top10'>{$role['name']}</p>
                                                         <p>{$role['character']}</p>
                                                     </span>
@@ -116,8 +116,12 @@ function episode_format($tvmaze_data, $tvmaze_type)
  * @param $tvmaze_id
  * @param $season
  * @param $episode
+ * @param $tid
  *
  * @return bool|null|string
+ *
+ * @throws \Envms\FluentPDO\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function get_episode($tvmaze_id, $season, $episode, $tid)
 {
@@ -159,12 +163,17 @@ function get_episode($tvmaze_id, $season, $episode, $tid)
 }
 
 /**
- * @param $tvmaze_id
- * @param $tid
+ * @param int    $tvmaze_id
+ * @param int    $tid
+ * @param int    $season
+ * @param int    $episode
+ * @param string $poster
  *
  * @return bool|string
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws \Spatie\Image\Exceptions\InvalidManipulation
  */
 function tvmaze(int $tvmaze_id, int $tid, $season = 0, $episode = 0, $poster = '')
 {
@@ -237,7 +246,7 @@ function tvmaze(int $tvmaze_id, int $tid, $season = 0, $episode = 0, $poster = '
             <div class='padding10'>
                 <div class='columns'>
                     <div class='column is-3'>
-                        <img src='" . placeholder_image('225') . "' data-src='" . url_proxy($poster, true, 225) . "' class='lazy round10 img-polaroid'>
+                        <img src='" . placeholder_image('250') . "' data-src='" . url_proxy($poster, true, 250) . "' class='lazy round10 img-polaroid'>
                     </div>
                     <div class='column'>" . tvmaze_format($tvmaze_show_data, 'show') . $episode . '
                     </div>
@@ -305,6 +314,12 @@ function line_by_line($heading, $body)
                     </div>";
 }
 
+/**
+ * @param $a
+ * @param $b
+ *
+ * @return int|lt
+ */
 function timeSort($a, $b)
 {
     return strcmp($a['airstamp'], $b['airstamp']);

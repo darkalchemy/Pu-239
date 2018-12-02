@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @param $text
+ *
+ * @return string
+ */
 function torrent_tooltip($text)
 {
     global $site_config, $id, $block_id, $name, $poster, $lang, $uploader, $added, $size, $seeders, $leechers;
@@ -7,7 +12,7 @@ function torrent_tooltip($text)
     $content = "
                             <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
                                 <span class='dt-tooltipper-large' data-tooltip-content='#{$block_id}_tooltip'>
-                                    {$text}
+                                    <span class='torrent-name narrow'>{$text}</span>
                                     <div class='tooltip_templates'>
                                         <div id='{$block_id}_tooltip'>
                                             <div class='is-flex tooltip-torrent'>
@@ -15,7 +20,7 @@ function torrent_tooltip($text)
                                                     $poster
                                                 </span>
                                                 <span class='margin10'>
-                                                    <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($name) . "<br>
+                                                    <b class='size_4 right10 has-text-primary torrent_name narrow'>{$lang['index_ltst_name']}</b>" . htmlsafechars($name) . "<br>
                                                     <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b>$uploader<br>
                                                     <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($added, 'DATE', 0, 1) . "<br>
                                                     <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($size)) . "<br>
@@ -31,6 +36,11 @@ function torrent_tooltip($text)
     return $content;
 }
 
+/**
+ * @param $text
+ *
+ * @return string
+ */
 function torrent_tooltip_wrapper($text)
 {
     global $site_config, $image, $cat, $times_completed, $seeders, $leechers;

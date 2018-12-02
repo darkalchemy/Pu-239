@@ -235,6 +235,11 @@ $body .= "
 $HTMLOUT .= main_table($body) . '
     </form>';
 
+/**
+ * @param $param
+ *
+ * @return bool
+ */
 function is_set_not_empty($param)
 {
     if (isset($_POST[$param]) && !empty($_POST[$param])) {
@@ -244,6 +249,11 @@ function is_set_not_empty($param)
     }
 }
 
+/**
+ * @param $date
+ *
+ * @return false|int|string
+ */
 function mkdate($date)
 {
     if (strpos($date, '-')) {
@@ -265,6 +275,13 @@ function mkdate($date)
     }
 }
 
+/**
+ * @param      $up
+ * @param      $down
+ * @param bool $color
+ *
+ * @return string
+ */
 function ratios($up, $down, $color = true)
 {
     if ($down > 0) {
@@ -281,6 +298,11 @@ function ratios($up, $down, $color = true)
     return $r;
 }
 
+/**
+ * @param $text
+ *
+ * @return bool
+ */
 function haswildcard($text)
 {
     if (strpos($text, '*') === false && strpos($text, '?') === false && strpos($text, '%') === false && strpos($text, '_') === false) {

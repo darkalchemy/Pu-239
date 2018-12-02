@@ -9,6 +9,11 @@ if ($public[strlen($public) - 1] != DIRECTORY_SEPARATOR) {
     $public = $public . DIRECTORY_SEPARATOR;
 }
 
+/**
+ * @param $val
+ *
+ * @return float|int|string
+ */
 function return_bytes($val)
 {
     if ($val == '') {
@@ -33,6 +38,9 @@ function return_bytes($val)
     return $val;
 }
 
+/**
+ * @return string
+ */
 function get_scheme()
 {
     $scheme = '';

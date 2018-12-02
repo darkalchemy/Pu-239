@@ -80,6 +80,14 @@ function end_table()
     return "</table>\n";
 }
 
+/**
+ * @param        $x
+ * @param        $y
+ * @param bool   $noesc
+ * @param string $class
+ *
+ * @return string
+ */
 function tr($x, $y, $noesc = false, $class = '')
 {
     if ($noesc) {
@@ -122,10 +130,12 @@ function insert_smilies_frame()
 }
 
 /**
- * @param      $body
- * @param null $header
- * @param null $class
- * @param null $wrapper_class
+ * @param        $body
+ * @param null   $header
+ * @param null   $class
+ * @param null   $wrapper_class
+ * @param string $striped
+ * @param null   $id
  *
  * @return string
  */
@@ -149,7 +159,8 @@ function main_table($body, $header = null, $class = null, $wrapper_class = null,
 }
 
 /**
- * @param $text
+ * @param      $text
+ * @param null $class
  *
  * @return string|void
  */
@@ -185,6 +196,7 @@ function wrapper($text, $class = '')
 
 /**
  * @param $data
+ * @param $template
  */
 function write_css($data, $template)
 {
@@ -233,6 +245,10 @@ function write_css($data, $template)
     file_put_contents(ROOT_DIR . "templates/{$template}/css/classcolors.css", $classdata . PHP_EOL);
 }
 
+/**
+ * @param $data
+ * @param $classes
+ */
 function write_classes($data, $classes)
 {
     $html = file_get_contents(CHAT_DIR . 'js/config.js');
@@ -260,16 +276,21 @@ ajaxChat.getRoleClass = function(roleID) {
     file_put_contents(ROOT_DIR . 'chat/js/classes.js', $text, FILE_APPEND);
 }
 
+/**
+ * @param $template
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function write_class_files($template)
 {
     global $site_config, $fluent;
 
+    $classes = $js_classes = $config_classes = $data = [];
     $t = 'define(';
     $configfile = "<?php\n\n";
     $res = $fluent->from('class_config')
         ->orderBy('value ASC')
         ->where('template = ?', $template);
-    $the_names = $the_colors = $the_images = '';
     foreach ($res as $arr) {
         $configfile .= $t . "'{$arr['name']}', {$arr['value']});\n";
         if ($arr['name'] !== 'UC_STAFF' && $arr['name'] !== 'UC_MIN' && $arr['name'] !== 'UC_MAX') {
@@ -306,6 +327,11 @@ function clear_image_cache()
     ]);
 }
 
+/**
+ * @param int $size
+ *
+ * @return bool|\Intervention\Image\Image|mixed|string
+ */
 function placeholder_image($size = 10)
 {
     global $cache;
@@ -321,6 +347,11 @@ function placeholder_image($size = 10)
     return $image;
 }
 
+/**
+ * @param $url
+ *
+ * @return mixed|string|null
+ */
 function validate_url($url)
 {
     require_once INCL_DIR . 'bbcode_functions.php';
@@ -338,6 +369,9 @@ function validate_url($url)
     return $url;
 }
 
+/**
+ * @return string
+ */
 function doc_head()
 {
     global $site_config;

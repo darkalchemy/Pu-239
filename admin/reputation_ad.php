@@ -76,13 +76,17 @@ switch ($input['mode']) {
         show_level();
         break;
 }
+
+/**
+ * @throws Exception
+ */
 function show_level()
 {
     global $lang, $site_config;
 
     $title = $lang['rep_ad_show_title'];
     $html = '';
-    $query = sql_query('SELECT * FROM reputationlevel ORDER BY minimumreputation ASC');
+    $query = sql_query('SELECT * FROM reputationlevel ORDER BY minimumreputation ASC') or sqlerr(__FILE__, __LINE__);
     if (!mysqli_num_rows($query)) {
         do_update('new');
 
@@ -144,14 +148,17 @@ function show_level()
 
 /**
  * @param string $type
+ *
+ * @throws Exception
  */
 function show_form($type = 'edit')
 {
-    global $input, $lang, $site_config;
+    global $input, $lang;
 
     $html = $lang['rep_ad_form_html'];
+    $res = [];
     if ($type === 'edit') {
-        $query = sql_query('SELECT * FROM reputationlevel WHERE reputationlevelid=' . intval($input['reputationlevelid'])) or sqlerr(__LINE__, __FILE__);
+        $query = sql_query('SELECT * FROM reputationlevel WHERE reputationlevelid = ' . intval($input['reputationlevelid'])) or sqlerr(__LINE__, __FILE__);
         if (!$res = mysqli_fetch_assoc($query)) {
             stderr($lang['rep_ad_form_error'], $lang['rep_ad_form_error_msg']);
         }
@@ -185,16 +192,16 @@ function show_form($type = 'edit')
     html_out($html, $title);
 }
 
-/////////////////////////////////////
-//    Update rep function
-/////////////////////////////////////
 /**
  * @param string $type
+ *
+ * @throws Exception
  */
 function do_update($type = '')
 {
-    global $input, $lang, $site_config;
+    global $input, $lang;
 
+    $minrep = $level = '';
     if ($type != '') {
         $level = strip_tags($input['level']);
         $level = trim($level);
@@ -210,26 +217,23 @@ function do_update($type = '')
     }
     // what we gonna do?
     if ($type === 'new') {
-        @sql_query("INSERT INTO reputationlevel ( minimumreputation, level ) 
-                            VALUES  ($minrep, $level )");
+        sql_query("INSERT INTO reputationlevel (minimumreputation, level) VALUES ($minrep, $level)") or sqlerr(__FILE__, __LINE__);
     } elseif ($type === 'edit') {
         $levelid = intval($input['reputationlevelid']);
         if (!is_valid_id($levelid)) {
             stderr('', $lang['rep_ad_update_err3']);
         }
         // check it's a valid rep id
-        $query = sql_query("SELECT reputationlevelid FROM reputationlevel WHERE 
-                                    reputationlevelid = $levelid");
+        $query = sql_query("SELECT reputationlevelid FROM reputationlevel WHERE reputationlevelid = $levelid") or sqlerr(__FILE__, __LINE__);
         if (!mysqli_num_rows($query)) {
             stderr('', $lang['rep_ad_update_err4']);
         }
-        @sql_query("UPDATE reputationlevel SET minimumreputation = $minrep, level = $level 
-                            WHERE reputationlevelid = $levelid");
+        sql_query("UPDATE reputationlevel SET minimumreputation = $minrep, level = $level WHERE reputationlevelid = $levelid") or sqlerr(__FILE__, __LINE__);
     } else {
         $ids = $input['reputation'];
         if (is_array($ids) && count($ids)) {
             foreach ($ids as $k => $v) {
-                @sql_query('UPDATE reputationlevel SET minimumreputation = ' . intval($v) . ' WHERE reputationlevelid = ' . intval($k));
+                sql_query('UPDATE reputationlevel SET minimumreputation = ' . intval($v) . ' WHERE reputationlevelid = ' . intval($k)) or sqlerr(__FILE__, __LINE__);
             }
         } else {
             stderr('', $lang['rep_ad_update_err4']);
@@ -240,31 +244,31 @@ function do_update($type = '')
     redirect('staffpanel.php?tool=reputation_ad&amp;mode=done', $redirect);
 }
 
-//////////////////////////////////////
-//    Reputaion delete
-//////////////////////////////////////
+/**
+ * @throws Exception
+ */
 function do_delete()
 {
-    global $input, $lang, $site_config;
+    global $input, $lang;
 
     if (!isset($input['reputationlevelid']) || !is_valid_id($input['reputationlevelid'])) {
         stderr('', 'No valid ID.');
     }
     $levelid = intval($input['reputationlevelid']);
     // check the id is valid within db
-    $query = sql_query("SELECT reputationlevelid FROM reputationlevel WHERE reputationlevelid=$levelid");
+    $query = sql_query("SELECT reputationlevelid FROM reputationlevel WHERE reputationlevelid = $levelid") or sqlerr(__FILE__, __LINE__);
     if (!mysqli_num_rows($query)) {
         stderr('', $lang['rep_ad_delete_no']);
     }
     // if we here, we delete it!
-    @sql_query("DELETE FROM reputationlevel WHERE reputationlevelid=$levelid");
+    sql_query("DELETE FROM reputationlevel WHERE reputationlevelid = $levelid") or sqlerr(__FILE__, __LINE__);
     rep_cache();
     redirect('staffpanel.php?tool=reputation_ad&amp;mode=done', $lang['rep_ad_delete_success'], 5);
 }
 
-//////////////////////////////////////
-//    Reputaion edit
-//////////////////////////////////////
+/**
+ * @throws Exception
+ */
 function show_form_rep()
 {
     global $input, $lang, $site_config;
@@ -276,11 +280,11 @@ function show_form_rep()
     $query = sql_query('SELECT r.*, p.topic_id, t.topic_name, leftfor.username AS leftfor_name, 
                     leftby.username AS leftby_name
                     FROM reputation r
-                    LEFT JOIN posts p ON p.id=r.postid
-                    LEFT JOIN topics t ON p.topic_id=t.id
-                    LEFT JOIN users leftfor ON leftfor.id=r.userid
-                    LEFT JOIN users leftby ON leftby.id=r.whoadded
-                    WHERE reputationid = ' . intval($input['reputationid']));
+                    LEFT JOIN posts p ON p.id = r.postid
+                    LEFT JOIN topics t ON p.topic_id = t.id
+                    LEFT JOIN users leftfor ON leftfor.id = r.userid
+                    LEFT JOIN users leftby ON leftby.id = r.whoadded
+                    WHERE reputationid = ' . intval($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     if (!$res = mysqli_fetch_assoc($query)) {
         stderr('', $lang['rep_ad_rep_form_erm']);
     }
@@ -300,9 +304,9 @@ function show_form_rep()
     html_out($html, $title);
 }
 
-/////////////////////////////////////
-//    View reputation comments function
-/////////////////////////////////////
+/**
+ * @throws \Envms\FluentPDO\Exception
+ */
 function view_list()
 {
     global $now_date, $time_offset, $input, $lang, $site_config;
@@ -354,7 +358,7 @@ function view_list()
             stderr($lang['rep_ad_view_err1'], $lang['rep_ad_view_err2']);
         }
         if (!empty($input['leftby'])) {
-            $left_b = @sql_query('SELECT id FROM users WHERE username = ' . sqlesc($input['leftby']));
+            $left_b = sql_query('SELECT id FROM users WHERE username = ' . sqlesc($input['leftby'])) or sqlerr(__FILE__, __LINE__);
             if (!mysqli_num_rows($left_b)) {
                 stderr($lang['rep_ad_view_err3'], $lang['rep_ad_view_err4'] . htmlsafechars($input['leftby'], ENT_QUOTES));
             }
@@ -363,7 +367,7 @@ function view_list()
             $cond = 'r.whoadded=' . $who;
         }
         if (!empty($input['leftfor'])) {
-            $left_f = @sql_query('SELECT id FROM users WHERE username = ' . sqlesc($input['leftfor']));
+            $left_f = sql_query('SELECT id FROM users WHERE username = ' . sqlesc($input['leftfor'])) or sqlerr(__FILE__, __LINE__);
             if (!mysqli_num_rows($left_f)) {
                 stderr($lang['rep_ad_view_err3'], $lang['rep_ad_view_err4'] . htmlsafechars($input['leftfor'], ENT_QUOTES));
             }
@@ -403,7 +407,7 @@ function view_list()
         $table_header .= "<td width='10%'>{$lang['rep_ad_view_controls']}</td></tr>";
         $html .= $table_header;
         // do the count for pager etc
-        $query = sql_query("SELECT COUNT(*) AS cnt FROM reputation r WHERE $cond");
+        $query = sql_query("SELECT COUNT(*) AS cnt FROM reputation r WHERE $cond") or sqlerr(__FILE__, __LINE__);
         //echo_r($input); exit;
         $total = mysqli_fetch_assoc($query);
         if (!$total['cnt']) {
@@ -422,14 +426,14 @@ function view_list()
             ]);
         }
         // mofo query!
-        $query = sql_query("SELECT r.*, p.topic_id, leftfor.id as leftfor_id, 
-                                    leftfor.username as leftfor_name, leftby.id as leftby_id, 
-                                    leftby.username as leftby_name 
+        $query = sql_query("SELECT r.*, p.topic_id, leftfor.id AS leftfor_id, 
+                                    leftfor.username AS leftfor_name, leftby.id AS leftby_id, 
+                                    leftby.username AS leftby_name 
                                     FROM reputation r 
-                                    left join posts p on p.id=r.postid 
-                                    left join users leftfor on leftfor.id=r.userid 
-                                    left join users leftby on leftby.id=r.whoadded 
-                                    WHERE $cond ORDER BY $order LIMIT $first,$deflimit");
+                                    left join posts p ON p.id = r.postid 
+                                    left join users leftfor ON leftfor.id = r.userid 
+                                    left join users leftby ON leftby.id = r.whoadded 
+                                    WHERE $cond ORDER BY $order LIMIT $first, $deflimit") or sqlerr(__FILE__, __LINE__);
         if (!mysqli_num_rows($query)) {
             stderr($lang['rep_ad_view_err3'], $lang['rep_ad_view_err5']);
         }
@@ -461,9 +465,9 @@ function view_list()
     html_out($html, $title);
 }
 
-///////////////////////////////////////////////
-//    Reputation do_delete_rep function
-///////////////////////////////////////////////
+/**
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ */
 function do_delete_rep()
 {
     global $input, $lang, $site_config, $cache;
@@ -472,15 +476,15 @@ function do_delete_rep()
         stderr($lang['rep_ad_delete_rep_err1'], $lang['rep_ad_delete_rep_err2']);
     }
     // check it's a valid ID.
-    $query = sql_query('SELECT reputationid, reputation, userid FROM reputation WHERE reputationid=' . intval($input['reputationid']));
+    $query = sql_query('SELECT reputationid, reputation, userid FROM reputation WHERE reputationid = ' . intval($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     if (($r = mysqli_fetch_assoc($query)) === false) {
         stderr($lang['rep_ad_delete_rep_err3'], $lang['rep_ad_delete_rep_err4']);
     }
     $sql = sql_query('SELECT reputation ' . 'FROM users ' . 'WHERE id = ' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     $User = mysqli_fetch_assoc($sql);
     // do the delete
-    sql_query('DELETE FROM reputation WHERE reputationid=' . intval($r['reputationid']));
-    sql_query("UPDATE users SET reputation = (reputation-{$r['reputation']} ) WHERE id=" . intval($r['userid']));
+    sql_query('DELETE FROM reputation WHERE reputationid=' . intval($r['reputationid'])) or sqlerr(__FILE__, __LINE__);
+    sql_query("UPDATE users SET reputation = (reputation-{$r['reputation']} ) WHERE id=" . intval($r['userid'])) or sqlerr(__FILE__, __LINE__);
     $update['rep'] = ($User['reputation'] - $r['reputation']);
     $cache->update_row('user' . $r['userid'], [
         'reputation' => $update['rep'],
@@ -488,9 +492,9 @@ function do_delete_rep()
     redirect('staffpanel.php?tool=reputation_ad&amp;mode=list', $lang['rep_ad_delete_rep_success'], 5);
 }
 
-///////////////////////////////////////////////
-//    Reputation do_edit_rep function
-///////////////////////////////////////////////
+/**
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ */
 function do_edit_rep()
 {
     global $input, $lang, $site_config, $cache;
@@ -508,18 +512,18 @@ function do_edit_rep()
     $oldrep = intval($input['oldreputation']);
     $newrep = intval($input['reputation']);
     // valid ID?
-    $query = sql_query('SELECT reputationid, reason, userid FROM reputation WHERE reputationid=' . intval($input['reputationid']));
+    $query = sql_query('SELECT reputationid, reason, userid FROM reputation WHERE reputationid=' . intval($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     if ($r = mysqli_fetch_assoc($query) === false) {
         stderr($lang['rep_ad_edit_input'], $lang['rep_ad_edit_noid']);
     }
     if ($oldrep != $newrep) {
         if ($r['reason'] != $reason) {
-            @sql_query('UPDATE reputation SET reputation = ' . intval($newrep) . ', reason = ' . sqlesc($reason) . ' WHERE reputationid = ' . intval($r['reputationid']));
+            sql_query('UPDATE reputation SET reputation = ' . intval($newrep) . ', reason = ' . sqlesc($reason) . ' WHERE reputationid = ' . intval($r['reputationid'])) or sqlerr(__FILE__, __LINE__);
         }
         $sql = sql_query('SELECT reputation ' . 'FROM users ' . 'WHERE id = ' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
         $User = mysqli_fetch_assoc($sql);
         $diff = $oldrep - $newrep;
-        @sql_query("UPDATE users SET reputation = (reputation-{$diff}) WHERE id=" . intval($r['userid']));
+        sql_query("UPDATE users SET reputation = (reputation-{$diff}) WHERE id=" . intval($r['userid'])) or sqlerr(__FILE__, __LINE__);
         $update['rep'] = ($User['reputation'] - $diff);
         $cache->update_row('user' . $r['userid'], [
             'reputation' => $update['rep'],
@@ -529,14 +533,11 @@ function do_edit_rep()
     redirect('staffpanel.php?tool=reputation_ad&amp;mode=list', "{$lang['rep_ad_edit_saved']} {$r['reputationid']} {$lang['rep_ad_edit_success']}", 5);
 }
 
-///////////////////////////////////////////////
-//    Reputation output function
-//    $msg -> string
-//    $html -> string
-///////////////////////////////////////////////
 /**
  * @param string $html
  * @param string $title
+ *
+ * @throws Exception
  */
 function html_out($html = '', $title = '')
 {
@@ -581,9 +582,6 @@ function redirect($url, $text, $time = 2)
     exit;
 }
 
-/////////////////////////////
-//    get_month worker function
-/////////////////////////////
 /**
  * @param int $i
  *
@@ -618,14 +616,14 @@ function get_month_dropdown($i = 0)
     return $return;
 }
 
-/////////////////////////////
-//    cache rep function
-/////////////////////////////
+/**
+ * @throws Exception
+ */
 function rep_cache()
 {
     global $lang;
 
-    $query = @sql_query('SELECT * FROM reputationlevel');
+    $query = sql_query('SELECT * FROM reputationlevel') or sqlerr(__FILE__, __LINE__);
     if (!mysqli_num_rows($query)) {
         stderr($lang['rep_ad_cache_cache'], $lang['rep_ad_cache_none']);
     }

@@ -545,6 +545,12 @@ switch ($action) {
         break;
 }
 
+/**
+ * @param $text
+ * @param $words
+ *
+ * @return string|string[]|null
+ */
 function highlightWords($text, $words)
 {
     preg_match_all('~\w+~', $words, $m);
@@ -557,6 +563,11 @@ function highlightWords($text, $words)
     return $string;
 }
 
+/**
+ * @param $num
+ *
+ * @return string|void
+ */
 function ratingpic_forums($num)
 {
     global $site_config;
@@ -570,6 +581,14 @@ function ratingpic_forums($num)
     return '<img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/rating/' . $r . '.gif" alt="rating: ' . $num . ' / 5" class="emoticon lazy">';
 }
 
+/**
+ * @param int  $current_forum
+ * @param bool $staff
+ *
+ * @return string
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function insert_quick_jump_menu($current_forum = 0, $staff = false)
 {
     global $CURUSER, $site_config, $cache, $lang, $fluent;

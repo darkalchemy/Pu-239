@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class Torrent.
+ */
 class Torrent
 {
     protected $cache;
@@ -64,6 +67,15 @@ class Torrent
         $this->clear_caches();
     }
 
+    /**
+     * @param array $set
+     * @param int   $tid
+     *
+     * @return bool|int|\PDOStatement
+     *
+     * @throws \Envms\FluentPDO\Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+     */
     public function update(array $set, int $tid)
     {
         $query = $this->fluent->update('torrents')
@@ -254,6 +266,8 @@ class Torrent
      * @param int $seeders
      * @param int $leechers
      * @param int $times_completed
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function adjust_torrent_peers(int $tid, int $seeders = 0, int $leechers = 0, int $times_completed = 0)
     {
@@ -283,9 +297,15 @@ class Torrent
     }
 
     /**
-     * @param string $infohash
+     * @param string   $infohash
+     * @param int|null $tid
+     * @param int|null $owner
+     * @param int|null $added
      *
      * @return bool
+     *
+     * @throws \Envms\FluentPDO\Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
      */
     public function remove_torrent(string $infohash, int $tid = null, int $owner = null, int $added = null)
     {
@@ -354,6 +374,13 @@ class Torrent
         }
     }
 
+    /**
+     * @param array $values
+     *
+     * @return bool|int
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
     public function add(array $values)
     {
         $id = $this->fluent->insertInto('torrents')
@@ -365,6 +392,11 @@ class Torrent
         return $id;
     }
 
+    /**
+     * @return bool|mixed
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
     public function get_torrent_count()
     {
         $count = $this->cache->get('get_torrent_count_');

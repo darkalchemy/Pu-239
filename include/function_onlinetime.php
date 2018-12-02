@@ -7,6 +7,7 @@
  */
 function time_return($stamp)
 {
+    $nicetime = [];
     $ysecs = 365 * 24 * 60 * 60;
     $mosecs = 31 * 24 * 60 * 60;
     $wsecs = 7 * 24 * 60 * 60;

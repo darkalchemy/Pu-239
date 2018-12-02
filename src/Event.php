@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class Event.
+ */
 class Event
 {
     protected $cache;

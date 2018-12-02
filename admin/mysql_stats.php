@@ -122,15 +122,15 @@ function localisedDate($timestamp = -1, $format = '')
 ////////////////////// END FUNCTION LIST /////////////////////////////////////
 $HTMLOUT = '';
 $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['mysql_stats_status']}</h1>";
-//$res = @mysql_query('SHOW STATUS') or sqlerr(__FILE__,__LINE__);
-$res = @sql_query('SHOW GLOBAL STATUS') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SHOW GLOBAL STATUS') or sqlerr(__FILE__, __LINE__);
+$serverStatus = [];
 while ($row = mysqli_fetch_row($res)) {
     $serverStatus[$row[0]] = $row[1];
 }
 @((mysqli_free_result($res) || (is_object($res) && (get_class($res) === 'mysqli_result'))) ? true : false);
 unset($res, $row);
 
-$res = @sql_query('SELECT UNIX_TIMESTAMP() - ' . $serverStatus['Uptime']);
+$res = sql_query('SELECT UNIX_TIMESTAMP() - ' . $serverStatus['Uptime']) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_row($res);
 $HTMLOUT .= "<p class='has-text-centered'>{$lang['mysql_stats_server']}" . timespanFormat($serverStatus['Uptime']) . $lang['mysql_stats_started'] . localisedDate($row[0]) . '</p>';
 ((mysqli_free_result($res) || (is_object($res) && (get_class($res) === 'mysqli_result'))) ? true : false);

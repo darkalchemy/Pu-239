@@ -2,6 +2,8 @@
 
 /**
  * @param $data
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function visible_update($data)
 {

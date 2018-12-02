@@ -119,6 +119,13 @@ $next_para = "
 if ($CURUSER) {
     $byratio = 0;
     $byul = 0;
+    /**
+     * @param      $up
+     * @param      $down
+     * @param bool $color
+     *
+     * @return string
+     */
     function format_ratio($up, $down, $color = true)
     {
         if ($down > 0) {

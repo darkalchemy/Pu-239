@@ -3,22 +3,19 @@
 global $CURUSER, $site_config, $lang, $user_stuffs, $id, $cache, $user;
 
 if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
-    $What_Cache = (XBT_TRACKER ? 'port_data_xbt_' : 'port_data_');
+    $What_Cache = 'port_data_';
+    $Ident_Client = '';
     $port_data = $cache->get($What_Cache . $id);
     if ($port_data === false || is_null($port_data)) {
-        if (XBT_TRACKER) {
-            $q1 = sql_query('SELECT `connectable`, `peer_id` FROM `xbt_files_users` WHERE uid = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-        } else {
-            $q1 = sql_query('SELECT connectable, port,agent FROM peers WHERE userid = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-        }
+        $q1 = sql_query('SELECT connectable, port,agent FROM peers WHERE userid = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $port_data = mysqli_fetch_row($q1);
         $cache->set('port_data_' . $id, $port_data, $site_config['expires']['port_data']);
     }
     if ($port_data > 0) {
         $connect = $port_data[0];
-        $port = (XBT_TRACKER ? '' : $port_data[1]);
-        $Ident_Client = (XBT_TRACKER ? $port_data['1'] : $port_data[2]);
-        $XBT_or_PHP = (XBT_TRACKER ? '1' : 'yes');
+        $port = $port_data[1];
+        $Ident_Client = $port_data[2];
+        $XBT_or_PHP = 'yes';
         if ($connect == $XBT_or_PHP) {
             $connectable = "
     <div class='has-text-success tooltipper' title='{$lang['userdetails_conn_sort']}'>

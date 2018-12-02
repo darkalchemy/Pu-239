@@ -4,6 +4,11 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'user_functions.php';
 
+/**
+ * @return array
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function trivia_table()
 {
     global $lang, $site_config, $fluent, $session;
@@ -79,6 +84,9 @@ function trivia_table()
     ];
 }
 
+/**
+ * @return string
+ */
 function trivia_clocks()
 {
     global $lang;
@@ -94,6 +102,11 @@ function trivia_clocks()
     </ul>";
 }
 
+/**
+ * @param $data
+ *
+ * @return mixed
+ */
 function clean_data($data)
 {
     foreach ($data as $key => $value) {
@@ -103,6 +116,11 @@ function clean_data($data)
     return $data;
 }
 
+/**
+ * @return array
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function trivia_time()
 {
     global $fluent;

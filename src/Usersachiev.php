@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class Usersachiev.
+ */
 class Usersachiev
 {
     protected $cache;

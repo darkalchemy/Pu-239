@@ -160,6 +160,8 @@ function validip($ip)
 }
 
 /**
+ * @param bool $login
+ *
  * @return mixed
  */
 function getip($login = false)
@@ -187,6 +189,11 @@ function dbconn()
     }
 }
 
+/**
+ * @param int $id
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function status_change(int $id)
 {
     global $fluent;
@@ -254,7 +261,6 @@ function check_bans($ip, &$reason = '')
  * @return bool
  *
  * @throws Exception
- * @throws \DarkAlchemy\Pu239\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
@@ -466,6 +472,11 @@ function get_charset()
     }
 }
 
+/**
+ * @return int
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_stylesheet()
 {
     global $site_config, $user_stuffs, $session, $fluent, $cache;
@@ -554,6 +565,8 @@ function get_template()
  * @param $key
  *
  * @return array|bool|mixed
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function make_freeslots($userid, $key)
 {
@@ -676,6 +689,11 @@ function unesc($x)
     return $x;
 }
 
+/**
+ * @param $size
+ *
+ * @return string
+ */
 function mksize($size)
 {
     for ($i = 0; ($size / 1024) > 0.9; $i++, $size /= 1024) {
@@ -893,6 +911,8 @@ function get_one_row($table, $suffix, $where)
  * @param      $heading
  * @param      $text
  * @param null $class
+ *
+ * @throws Exception
  */
 function stderr($heading, $text, $class = null)
 {
@@ -1443,7 +1463,6 @@ function suspended()
 
 /**
  * @throws Exception
- * @throws \DarkAlchemy\Pu239\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
@@ -1509,6 +1528,8 @@ function user_exists($user_id)
 
 /**
  * @return bool|mixed
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_poll()
 {
@@ -1623,8 +1644,9 @@ function countries()
 }
 
 /**
- * @param $link
- * @param $text
+ * @param      $link
+ * @param      $text
+ * @param bool $title
  *
  * @return string
  */
@@ -1718,6 +1740,8 @@ function valid_username($username, $ajax = false)
  * @param bool $celebrate
  *
  * @return bool
+ *
+ * @throws Exception
  */
 function Christmas($celebrate = true)
 {
@@ -1768,6 +1792,8 @@ function get_anonymous_name()
  * @param null $quality
  *
  * @return string
+ *
+ * @throws \Spatie\Image\Exceptions\InvalidManipulation
  */
 function url_proxy($url, $image = false, $width = null, $height = null, $quality = null)
 {
@@ -1819,7 +1845,10 @@ function get_show_name(string $name)
 
 /**
  * @param string $name
- * @param string $type
+ *
+ * @return bool|mixed|null
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_show_id(string $name)
 {
@@ -1853,6 +1882,13 @@ function get_show_id(string $name)
     return false;
 }
 
+/**
+ * @param string $imdbid
+ *
+ * @return bool|mixed|null
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_show_id_by_imdb(string $imdbid)
 {
     global $fluent, $cache;
@@ -1877,6 +1913,12 @@ function get_show_id_by_imdb(string $imdbid)
     return false;
 }
 
+/**
+ * @param      $timestamp
+ * @param bool $sec
+ *
+ * @return false|mixed|string
+ */
 function time24to12($timestamp, $sec = false)
 {
     if ($sec) {
@@ -1887,7 +1929,8 @@ function time24to12($timestamp, $sec = false)
 }
 
 /**
- * @param $path
+ * @param      $path
+ * @param bool $human
  *
  * @return string
  */
@@ -1922,6 +1965,11 @@ function formatQuery($query)
     return $query;
 }
 
+/**
+ * @return bool
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function insert_update_ip()
 {
     global $CURUSER, $cache, $ip_stuffs;
@@ -1942,6 +1990,11 @@ function insert_update_ip()
     $ip_stuffs->insert_update($values, $update, $CURUSER['id']);
 }
 
+/**
+ * @param $url
+ *
+ * @return bool|string
+ */
 function fetch($url)
 {
     global $site_config;
@@ -1974,6 +2027,14 @@ function fetch($url)
     return false;
 }
 
+/**
+ * @param      $details
+ * @param bool $portrait
+ *
+ * @return bool|mixed|string
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_body_image($details, $portrait = false)
 {
     global $cache, $fluent, $torrent;

@@ -1,6 +1,6 @@
 <?php
 
-global $lang;
+global $lang, $CURUSER;
 
 $child_boards = $now_viewing = $colour = '';
 $forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));

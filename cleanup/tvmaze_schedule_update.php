@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @param $data
+ *
+ * @throws \Spatie\Image\Exceptions\InvalidManipulation
+ */
 function tvmaze_schedule_update($data)
 {
     $time_start = microtime(true);
@@ -34,8 +39,8 @@ function tvmaze_schedule_update($data)
                         $image_stuffs->insert($values);
                         $cache->set('insert_tvmaze_tvmazeid_' . $tv['id'], 0, 604800);
                         ++$i;
-                        url_proxy($poster, true, 150);
-                        url_proxy($poster, true, null, null, 20);
+                        url_proxy($poster, true, 250);
+                        url_proxy($poster, true, 250, null, 20);
                     }
                 }
             }

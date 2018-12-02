@@ -98,8 +98,8 @@ switch ($list) {
                         $airtime = strtotime($tv['airstamp']);
                         $use_12_hour = !empty($CURUSER['use_12_hour']) ? $CURUSER['use_12_hour'] : $site_config['use_12_hour'];
                         $body[] = [
-                            'poster' => url_proxy($poster, true, 150),
-                            'placeholder' => url_proxy($poster, true, 150, null, 10),
+                            'poster' => url_proxy($poster, true, 250),
+                            'placeholder' => url_proxy($poster, true, 250, null, 20),
                             'title' => $tv['_embedded']['show']['name'],
                             'ep_title' => $tv['name'],
                             'season' => $tv['season'],
@@ -197,8 +197,8 @@ switch ($list) {
                     $backdrop = !empty($tv['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$tv['backdrop_path']}" : '';
 
                     $body[] = [
-                        'poster' => url_proxy($poster, true, 150),
-                        'placeholder' => url_proxy($poster, true, 150, null, 10),
+                        'poster' => url_proxy($poster, true, 250),
+                        'placeholder' => url_proxy($poster, true, 250, null, 20),
                         'backdrop' => url_proxy($backdrop, true),
                         'title' => $tv['name'],
                         'vote_count' => $tv['vote_count'],
@@ -262,8 +262,8 @@ switch ($list) {
                     $poster = !empty($movie['poster_path']) ? "https://image.tmdb.org/t/p/w185{$movie['poster_path']}" : $site_config['pic_baseurl'] . 'noposter.png';
                     $backdrop = !empty($movie['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$movie['backdrop_path']}" : '';
                     $body[] = [
-                        'poster' => url_proxy($poster, true, 150),
-                        'placeholder' => url_proxy($poster, true, 150, null, 10),
+                        'poster' => url_proxy($poster, true, 250),
+                        'placeholder' => url_proxy($poster, true, 250, null, 20),
                         'backdrop' => url_proxy($backdrop, true),
                         'title' => $movie['title'],
                         'vote_count' => $movie['vote_count'],
@@ -330,8 +330,8 @@ switch ($list) {
                     $poster = !empty($movie['poster_path']) ? "https://image.tmdb.org/t/p/w185{$movie['poster_path']}" : $site_config['pic_baseurl'] . 'noposter.png';
                     $backdrop = !empty($movie['backdrop_path']) ? "https://image.tmdb.org/t/p/w1280{$movie['backdrop_path']}" : '';
                     $body[] = [
-                        'poster' => url_proxy($poster, true, 150),
-                        'placeholder' => url_proxy($poster, true, 150, null, 10),
+                        'poster' => url_proxy($poster, true, 250),
+                        'placeholder' => url_proxy($poster, true, 250, null, 20),
                         'backdrop' => url_proxy($backdrop, true),
                         'title' => $movie['title'],
                         'vote_count' => $movie['vote_count'],

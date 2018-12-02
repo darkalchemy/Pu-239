@@ -347,6 +347,7 @@ function getagent($httpagent, $peer_id = '')
         }
     }
     // Rufus
+    $rufus_chk = false;
     if (substr($peer_id, 2, 2) === 'RS') {
         for ($i = 0; $i <= strlen(substr($peer_id, 4, 9)); ++$i) {
             $c = $peer_id[$i + 4];

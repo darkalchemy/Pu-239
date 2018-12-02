@@ -39,28 +39,29 @@ if (!$check) {
     rep_output('Incorrect Access');
 }
 if ($rep_locale === 'posts') {
-    $forum = sql_query("SELECT posts.topic_id AS locale, posts.user_id AS userid, forums.min_class_read,
+    $forum = sql_query('SELECT posts.topic_id AS locale, posts.user_id AS userid, forums.min_class_read,
 users.username, users.reputation
 FROM posts
 LEFT JOIN topics ON topic_id = topics.id
 LEFT JOIN forums ON topics.forum_id = forums.id
 LEFT JOIN users ON posts.user_id = users.id
-WHERE posts.id ={$input['pid']}");
+WHERE posts.id = ' . sqlesc($input['pid'])) or sqlerr(__FILE__, __LINE__);
 } elseif ($rep_locale === 'comments') {
-    $forum = sql_query("SELECT comments.id, comments.user AS userid, comments.anonymous AS anon,
+    $forum = sql_query('SELECT comments.id, comments.user AS userid, comments.anonymous AS anon,
      comments.torrent AS locale,
      users.username, users.reputation
      FROM comments
      LEFT JOIN users ON comments.user = users.id
-     WHERE comments.id = {$input['pid']}");
+     WHERE comments.id = ' . sqlesc($input['pid'])) or sqlerr(__FILE__, __LINE__);
 } elseif ($rep_locale === 'torrents') {
-    $forum = sql_query("SELECT torrents.id as locale, torrents.owner AS userid, torrents.anonymous AS anon,
+    $forum = sql_query('SELECT torrents.id as locale, torrents.owner AS userid, torrents.anonymous AS anon,
     users.username, users.reputation
     FROM torrents
     LEFT JOIN users ON torrents.owner = users.id
-    WHERE torrents.id ={$input['pid']}");
+    WHERE torrents.id = ' . sqlesc($input['pid'])) or sqlerr(__FILE__, __LINE__);
 } elseif ($rep_locale === 'users') {
-    $forum = sql_query("SELECT id AS userid, username, reputation, opt1, opt2 FROM users WHERE id ={$input['pid']}");
+    $forum = sql_query('SELECT id AS userid, username, reputation, opt1, opt2 FROM users WHERE id = ' . sqlesc($input['pid'])) or sqlerr(__FILE__,
+        __LINE__);
 }
 switch ($rep_locale) {
     case 'comments':
@@ -90,7 +91,8 @@ if (isset($res['minclassread'])) {
     }
 }
 
-$repeat = sql_query("SELECT postid FROM reputation WHERE postid ={$input['pid']} AND whoadded={$CURUSER['id']}");
+$repeat = sql_query("SELECT postid FROM reputation WHERE postid ={$input['pid']} AND whoadded={$CURUSER['id']}") or sqlerr(__FILE__,
+    __LINE__);
 if (mysqli_num_rows($repeat) > 0 && $rep_locale != 'users') {
     rep_output('You have already added Rep to this ' . $this_rep . '!');
 }
@@ -102,10 +104,10 @@ if (!$is_mod) {
         $klimit = intval($GVARS['rep_repeat'] + 1);
     }
 
-    $flood = sql_query("SELECT dateadd, userid FROM reputation 
-                                    WHERE whoadded = {$CURUSER['id']} 
+    $flood = sql_query('SELECT dateadd, userid FROM reputation 
+                                    WHERE whoadded = ' . sqlesc($CURUSER['id']) . ' 
                                     ORDER BY dateadd DESC
-                                    LIMIT 0 , $klimit");
+                                    LIMIT 0 , ' . sqlesc($klimit)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($flood)) {
         $i = 0;
         while ($check = mysqli_fetch_assoc($flood)) {
@@ -119,7 +121,7 @@ if (!$is_mod) {
         }
     }
 }
-$r = sql_query("SELECT COUNT(*) FROM posts WHERE user_id = {$CURUSER['id']}") or sqlerr(__FILE__, __LINE__);
+$r = sql_query('SELECT COUNT(*) FROM posts WHERE user_id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 $a = mysqli_fetch_row($r);
 $CURUSER['posts'] = $a[0];
 
@@ -141,33 +143,35 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
     }
     $score = fetch_reppower($CURUSER, $input['reputation']);
     $res['reputation'] += $score;
-    sql_query('UPDATE users SET reputation=' . intval($res['reputation']) . ' WHERE id=' . $res['userid']);
+    sql_query('UPDATE users SET reputation = ' . intval($res['reputation']) . ' WHERE id = ' . sqlesc($res['userid'])) or sqlerr(__FILE__,
+        __LINE__);
     $cache->update_row('user' . $res['userid'], [
         'reputation' => $res['reputation'],
     ], $site_config['expires']['user_cache']);
     $cache->delete('user_rep_' . $res['userid']);
     $save = [
-        'reputation' => $score,
-        'whoadded' => $CURUSER['id'],
+        'reputation' => sqlesc($score),
+        'whoadded' => sqlesc($CURUSER['id']),
         'reason' => sqlesc($reason),
-        'dateadd' => TIME_NOW,
+        'dateadd' => sqlesc(TIME_NOW),
         'locale' => sqlesc($rep_locale),
-        'postid' => (int) $input['pid'],
-        'userid' => $res['userid'],
+        'postid' => sqlesc((int) $input['pid']),
+        'userid' => sqlesc($res['userid']),
     ];
 
-    sql_query('INSERT INTO reputation (' . implode(', ', array_keys($save)) . ') VALUES (' . implode(', ', $save) . ')');
+    sql_query('INSERT INTO reputation (' . implode(', ', array_keys($save)) . ') VALUES (' . implode(', ',
+            $save) . ')') or sqlerr(__FILE__, __LINE__);
     header("Location: {$site_config['baseurl']}/reputation.php?pid={$input['pid']}&done=1");
 } else {
     if ($res['userid'] == $CURUSER['id']) { // same as him!
         // check for fish!
-        $query1 = sql_query("select r.*, leftby.id as leftby_id, leftby.username as leftby_name
-                                        from reputation r
-                                        left join users leftby on leftby.id=r.whoadded
-                                        where postid={$input['pid']}
-                                        AND r.locale = " . sqlesc($input['locale']) . '
-                                        order by dateadd DESC');
-        $reasonbits = '';
+        $query1 = sql_query('SELECT r.*, leftby.id AS leftby_id, leftby.username AS leftby_name
+                                        FROM reputation AS r
+                                        LEFT JOIN users leftby ON leftby.id=r.whoadded
+                                        WHERE postid = ' . sqlesc($input['pid']) . '
+                                        AND r.locale = ' . sqlesc($input['locale']) . '
+                                        ORDER BY dateadd DESC') or sqlerr(__FILE__, __LINE__);
+        $reasonbits = $rep = '';
         if (false !== mysqli_num_rows($query1)) {
             $total = 0;
             while ($postrep = mysqli_fetch_assoc($query1)) {
@@ -212,21 +216,26 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
         }
         switch ($rep_locale) {
             case 'comments':
-                $rep_info = sprintf("Your reputation on <a href='{$site_config['baseurl']}/details.php?id=%d&amp;viewcomm=%d#comm%d' target='_blank'>this Comment</a> is %s<br>Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
+                $rep_info = sprintf("Your reputation on <a href='{$site_config['baseurl']}/details.php?id=%d&amp;viewcomm=%d#comm%d' target='_blank'>this Comment</a> is %s<br>Total: %s points.",
+                    $res['locale'], $input['pid'], $input['pid'], $rep, $total);
                 break;
 
             case 'torrents':
-                $rep_info = sprintf("Your reputation on <a href='{$site_config['baseurl']}/details.php?id=%d' target='_blank'>this Torrent</a> is %s<br>Total: %s points.", $input['pid'], $rep, $total);
+                $rep_info = sprintf("Your reputation on <a href='{$site_config['baseurl']}/details.php?id=%d' target='_blank'>this Torrent</a> is %s<br>Total: %s points.",
+                    $input['pid'], $rep, $total);
                 break;
 
             case 'users':
-                $rep_info = sprintf("Your reputation on <a href='{$site_config['baseurl']}/userdetails.php?id=%d' target='_blank'>your profile</a> is %s<br>Total: %s points.", $input['pid'], $rep, $total);
+                $rep_info = sprintf("Your reputation on <a href='{$site_config['baseurl']}/userdetails.php?id=%d' target='_blank'>your profile</a> is %s<br>Total: %s points.",
+                    $input['pid'], $rep, $total);
                 break;
 
             default:
-                $rep_info = sprintf("Your reputation on <a href='{$site_config['baseurl']}/forums.php?action=viewtopic&amp;topicid=%d&amp;page=p%d#%d' target='_blank'>this Post</a> is %s<br>Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
+                $rep_info = sprintf("Your reputation on <a href='{$site_config['baseurl']}/forums.php?action=viewtopic&amp;topicid=%d&amp;page=p%d#%d' target='_blank'>this Post</a> is %s<br>Total: %s points.",
+                    $res['locale'], $input['pid'], $input['pid'], $rep, $total);
         }
-        $rep_points = sprintf('' . $lang['info_you_have'] . ' %d ' . $lang['info_reputation_points'] . '', $CURUSER['reputation']);
+        $rep_points = sprintf('' . $lang['info_you_have'] . ' %d ' . $lang['info_reputation_points'] . '',
+            $CURUSER['reputation']);
         $html = "
                         <tr>
                             <td class='has-text-centered'>{$rep_info}</td>
@@ -250,7 +259,8 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                         </tr>";
     } else {
         $res['anon'] = (isset($res['anon']) ? $res['anon'] : 'no');
-        $rep_text = sprintf("What do you think of %s's " . $this_rep . '?', ($res['anon'] === 'yes' ? 'Anonymous' : htmlsafechars($res['username'])));
+        $rep_text = sprintf("What do you think of %s's " . $this_rep . '?',
+            ($res['anon'] === 'yes' ? 'Anonymous' : htmlsafechars($res['username'])));
         $negativerep = ($is_mod || $GVARS['g_rep_negative']) ? true : false;
         $closewindow = false;
         $html = "

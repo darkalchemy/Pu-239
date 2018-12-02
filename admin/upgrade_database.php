@@ -5,61 +5,67 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'pager_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $lang, $fluent, $site_config, $cache, $session, $pdo;
+global $CURUSER, $lang, $fluent, $site_config, $cache, $session, $fluent;
 
 $lang = array_merge($lang);
 require_once DATABASE_DIR . 'sql_updates.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    extract($_POST);
-    unset($_POST);
-    $qid = array_search($id, array_column($sql_updates, 'id'));
-    $sql = $sql_updates[$qid]['query'];
+    if (!empty($_POST['id']) && !empty($_POST['submit'])) {
+        $id = $_POST['id'];
+        $submit = $_POST['submit'];
+        $qid = array_search($id, array_column($sql_updates, 'id'));
+        $sql = $sql_updates[$qid]['query'];
 
-    if (isset($qid) && $submit === 'Run Query') {
-        $flush = $sql_updates[$qid]['flush'];
+        if (isset($qid) && $submit === 'Run Query') {
+            $flush = $sql_updates[$qid]['flush'];
 
-        try {
-            $pdo->query($sql);
+            try {
+                $query = $fluent->getPdo()
+                                ->prepare($sql);
+                $query->execute();
+                $values = [
+                    'id' => (int) $id,
+                    'query' => $sql,
+                ];
+                $fluent->insertInto('database_updates')
+                       ->values($values)
+                       ->execute();
+
+                if ($flush) {
+                    $cache->flushDB();
+                    $session->set('is-success', 'You flushed the ' . ucfirst($_ENV['CACHE_DRIVER']) . ' cache');
+                } elseif (!$flush) {
+                    // do nothing
+                } else {
+                    $items = explode(', ', $flush);
+                    foreach ($items as $item) {
+                        $cache->delete($item);
+                        $session->set('is-success', "You flushed $item cache");
+                    }
+                }
+                $session->set('is-success', "Query #$id ran without error");
+            } catch (Exception $e) {
+                $code = $e->getCode();
+                $msg = $e->getMessage();
+                if ($code === '42S21') {
+                    $session->set('is-danger',
+                        "[h2]{$msg}[/h2][p]\n you should be safe if you ignore this query[/p][p]" . htmlspecialchars($sql) . '[/p]');
+                } else {
+                    $session->set('is-danger',
+                        "[h2]{$msg}[/h2][p]\n try to run manually[/p][p]" . htmlspecialchars($sql) . '[/p]');
+                }
+            }
+        } elseif (isset($qid) && $submit === 'Ignore Query') {
             $values = [
                 'id' => (int) $id,
                 'query' => $sql,
             ];
             $fluent->insertInto('database_updates')
-                ->values($values)
-                ->execute();
-
-            if ($flush) {
-                $cache->flushDB();
-                $session->set('is-success', 'You flushed the ' . ucfirst($_ENV['CACHE_DRIVER']) . ' cache');
-            } elseif (!$flush) {
-                // do nothing
-            } else {
-                $items = explode(', ', $flush);
-                foreach ($items as $item) {
-                    $cache->delete($item);
-                    $session->set('is-success', "You flushed $item cache");
-                }
-            }
-            $session->set('is-success', "Query #$id ran without error");
-        } catch (Exception $e) {
-            $code = $e->getCode();
-            $msg = $e->getMessage();
-            if ($code === '42S21') {
-                $session->set('is-danger', "[h2]{$msg}[/h2][p]\n you should be safe if you ignore this query[/p][p]" . htmlspecialchars($sql) . '[/p]');
-            } else {
-                $session->set('is-danger', "[h2]{$msg}[/h2][p]\n try to run manually[/p][p]" . htmlspecialchars($sql) . '[/p]');
-            }
+                   ->values($values)
+                   ->execute();
+            $session->set('is-success', "Query #$id has been ignored");
         }
-    } elseif (isset($qid) && $submit === 'Ignore Query') {
-        $values = [
-            'id' => (int) $id,
-            'query' => $sql,
-        ];
-        $fluent->insertInto('database_updates')
-            ->values($values)
-            ->execute();
-        $session->set('is-success', "Query #$id has been ignored");
     }
 }
 
@@ -84,10 +90,10 @@ $heading = "
 
 if (file_exists(DATABASE_DIR)) {
     $results = $fluent->from('database_updates')
-        ->select(null)
-        ->select('id')
-        ->select('added')
-        ->fetchPairs('id', 'added');
+                      ->select(null)
+                      ->select('id')
+                      ->select('added')
+                      ->fetchPairs('id', 'added');
 
     $results = !empty($results) ? $results : [0 => '2017-12-06 14:43:22'];
 

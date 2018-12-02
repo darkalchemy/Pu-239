@@ -6,7 +6,6 @@ global $site_config, $cache;
 
 if (!$session->validateToken($_POST['csrf'])) {
     return false;
-    die();
 }
 
 if (isset($_POST['id'])) {

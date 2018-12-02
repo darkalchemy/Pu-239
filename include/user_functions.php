@@ -25,8 +25,7 @@ function get_parked()
  * @param int $channel
  * @param int $ttl
  *
- * @throws \MatthiasMullie\Scrapbook\Exception\Exception
- * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
+ * @throws \Envms\FluentPDO\Exception
  */
 function autoshout($msg, $channel = 0, $ttl = 7200)
 {
@@ -57,6 +56,8 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
  * @param int    $post_id
  *
  * @return string
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
 {
@@ -456,8 +457,11 @@ function min_class($min = UC_MIN, $max = UC_MAX)
  * @param int  $user_id
  * @param bool $icons
  * @param bool $tooltipper
+ * @param bool $tag
  *
  * @return string
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function format_username(int $user_id, $icons = true, $tooltipper = true, $tag = false)
 {
@@ -622,10 +626,11 @@ function get_user_ratio_image($ratio)
 }
 
 /**
- * @param     $avatar
- * @param int $width
+ * @param $avatar
  *
  * @return string
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_avatar($avatar)
 {

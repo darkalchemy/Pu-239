@@ -1,5 +1,7 @@
 <?php
 
+global $CURUSER;
+
 $HTMLOUT .= (($CURUSER['class'] >= UC_STAFF || $user['show_email'] === 'yes') ? '
         <tr>
             <td class="rowhead">' . $lang['userdetails_email'] . '</td>

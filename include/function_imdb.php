@@ -11,6 +11,9 @@ use Imdb\Config;
 /**
  * @param      $imdb_id
  * @param bool $title
+ * @param bool $data_only
+ * @param bool $tid
+ * @param bool $poster
  *
  * @return array|bool
  *
@@ -72,6 +75,9 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
             $imdb_data['newgenre'] = implode(', ', array_map('ucwords', $temp));
         }
 
+        $cache->set('imdb_' . $imdb_id, $imdb_data, 604800);
+    }
+    if ($tid) {
         $set = [];
         if (!empty($imdb_data['newgenre'])) {
             $set = [
@@ -83,10 +89,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
             'rating' => $imdb_data['rating'],
         ]);
 
-        if ($tid) {
-            $torrent_stuffs->update($set, $tid);
-        }
-        $cache->set('imdb_' . $imdb_id, $imdb_data, 604800);
+        $torrent_stuffs->update($set, $tid);
     }
     if (empty($imdb_data)) {
         $cache->set('imdb_' . $imdb_id, 'failed', 86400);
@@ -96,16 +99,11 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
     if ($data_only) {
         return $imdb_data;
     }
-    if (!empty($poster)) {
-        $poster = $poster;
-    }
-    if (!empty($imdb_data['poster'])) {
-        if (empty($poster)) {
-            $poster = $imdb_data['poster'];
-        }
+    if (!empty($imdb_data['poster']) && empty($poster)) {
+        $poster = $imdb_data['poster'];
         $values = [
             'imdb_id' => $imdbid,
-            'url' => $imdb_data['poster'],
+            'url' => $poster,
             'type' => 'poster',
         ];
         $image_stuffs->insert($values);
@@ -142,13 +140,13 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                                 <a href='" . url_proxy("https://www.imdb.com/name/nm{$pp['imdb']}") . "' target='_blank'>
                                     <span class='dt-tooltipper-small' data-tooltip-content='#cast_{$pp['imdb']}_tooltip'>
                                         <span class='cast'>
-                                            <img src='" . url_proxy(strip_tags($pp['photo']), true, null, 60) . "' class='round5'>
+                                            <img src='" . url_proxy(strip_tags($pp['photo']), true, null, 70) . "' class='round5'>
                                         </span>
                                         <span class='tooltip_templates'>
                                             <span id='cast_{$pp['imdb']}_tooltip'>
                                                 <span class='is-flex'>
                                                     <span class='has-text-centered'>
-                                                        <img src='" . url_proxy(strip_tags($pp['photo']), true, 150, null) . "' class='tooltip-poster'>
+                                                        <img src='" . url_proxy(strip_tags($pp['photo']), true, 250) . "' class='tooltip-poster'>
                                                         <div class='top10 size_5'>{$pp['name']}</div>
                                                         <span class='has-text-primary size_6'>{$pp['role']}</span>
                                                     </span>
@@ -217,7 +215,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
         <div class='padding20'>
             <div class='columns bottom20'>
                 <div class='column is-one-third'>
-                    <img src='" . placeholder_image('225') . "' data-src='" . url_proxy($poster, true, 225) . "' class='lazy round10 img-polaroid'>
+                    <img src='" . placeholder_image('450') . "' data-src='" . url_proxy($poster, true, 450) . "' class='lazy round10 img-polaroid'>
                 </div>
                 <div class='column'>
                     $imdb_info
@@ -235,9 +233,16 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
     ];
 }
 
+/**
+ * @param $imdb_id
+ *
+ * @return bool|mixed
+ *
+ * @throws Exception
+ */
 function get_imdb_title($imdb_id)
 {
-    global $cache, $BLOCKS, $site_config, $image_stuffs;
+    global $BLOCKS;
 
     if (!$BLOCKS['imdb_api_on']) {
         return false;
@@ -294,10 +299,10 @@ function get_imdb_info_short($imdb_id)
         }
     }
     if (!empty($imdb_data['poster'])) {
-        $image = url_proxy($imdb_data['poster'], true, 150);
+        $image = url_proxy($imdb_data['poster'], true, 250);
         if ($image) {
             $imdb_data['poster'] = $image;
-            $imdb_data['placeholder'] = url_proxy($imdb_data['poster'], true, 150, null, 10);
+            $imdb_data['placeholder'] = url_proxy($imdb_data['poster'], true, 250, null, 20);
         }
         $values = [];
         if (!empty($tmdbid)) {
@@ -326,7 +331,7 @@ function get_imdb_info_short($imdb_id)
         $imdb_data['vote_count'] = '?';
     }
     if (empty($imdb_data['rating'])) {
-        $rating = '?';
+        $imdb_data['rating'] = '?';
     }
     if (empty($imdb_data['mpaa_reason']) && !empty($imdb_data['mpaa']['United States'])) {
         $imdb_data['mpaa_reason'] = $imdb_data['mpaa']['United States'];
@@ -358,7 +363,7 @@ function get_imdb_info_short($imdb_id)
                                     </div>
                                     <div>
                                         <span class='size_4 right10 has-text-primary'>Rating: </span>
-                                        <span>" . htmlsafechars($rating) . "</span>
+                                        <span>" . htmlsafechars($imdb_data['rating']) . "</span>
                                     </div>
                                     <div>
                                         <span class='size_4 right10 has-text-primary'>Votes: </span>
@@ -382,6 +387,8 @@ function get_imdb_info_short($imdb_id)
 
 /**
  * @return array|bool
+ *
+ * @throws Exception
  */
 function get_upcoming()
 {
@@ -446,6 +453,8 @@ function get_upcoming()
 
 /**
  * @return bool|mixed
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_random_useragent()
 {

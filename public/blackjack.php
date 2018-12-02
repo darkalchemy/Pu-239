@@ -1194,6 +1194,8 @@ function getCard($cardcount, $gameid, $deal = false)
  * @param $blackjack
  * @param $HTMLOUT
  * @param $debugout
+ *
+ * @throws Exception
  */
 function output($blackjack, $HTMLOUT, $debugout)
 {

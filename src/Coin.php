@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class Coin.
+ */
 class Coin
 {
     protected $cache;

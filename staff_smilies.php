@@ -29,7 +29,8 @@ $htmlout = doc_head() . "
 $count = 0;
 $ctr = 0;
 global $staff_smilies;
-while ((list($code, $url) = each($staff_smilies))) {
+
+foreach ($staff_smilies as $code => $url) {
     if ($count % 3 == 0) {
         $htmlout .= '
         <tr>';

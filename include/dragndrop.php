@@ -2,6 +2,11 @@
 
 use Blocktrail\CryptoJSAES\CryptoJSAES;
 
+/**
+ * @param $text
+ *
+ * @return string
+ */
 function encrypt($text)
 {
     global $PICSALT;
@@ -11,6 +16,11 @@ function encrypt($text)
     return base64_encode($encrypted);
 }
 
+/**
+ * @param $text
+ *
+ * @return string
+ */
 function decrypt($text)
 {
     global $PICSALT;
@@ -20,6 +30,12 @@ function decrypt($text)
     return CryptoJSAES::decrypt($str, $PICSALT);
 }
 
+/**
+ * @param $root
+ * @param $input
+ *
+ * @return bool|string|null
+ */
 function valid_path($root, $input)
 {
     $fullpath = $root . $input;
@@ -30,6 +46,9 @@ function valid_path($root, $input)
     return ($root != substr($fullpath, 0, $rl)) ? null : $fullpath;
 }
 
+/**
+ * @param $path
+ */
 function make_year($path)
 {
     $dir = $path . '/' . date('Y');
@@ -38,6 +57,9 @@ function make_year($path)
     }
 }
 
+/**
+ * @param $path
+ */
 function make_month($path)
 {
     $dir = $path . '/' . date('Y/m');

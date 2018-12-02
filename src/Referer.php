@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class Referer.
+ */
 class Referer
 {
     protected $cache;
@@ -18,7 +21,7 @@ class Referer
     }
 
     /**
-     * @param array $set
+     * @param array $values
      *
      * @return mixed
      *

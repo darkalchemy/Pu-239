@@ -1,7 +1,7 @@
 <?php
 
 require_once INCL_DIR . 'user_functions.php';
-global $h1_thingie, $lang;
+global $h1_thingie, $lang, $CURUSER;
 
 $show_pm_avatar = ($CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR) === user_options_2::SHOW_PM_AVATAR;
 

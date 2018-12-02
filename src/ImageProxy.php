@@ -4,7 +4,11 @@ namespace DarkAlchemy\Pu239;
 
 use Spatie\Image\Image;
 use Intervention\Image\ImageManager;
+use Spatie\Image\Manipulations;
 
+/**
+ * Class ImageProxy.
+ */
 class ImageProxy
 {
     /**

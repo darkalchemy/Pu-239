@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @param string $imdb_id
+ *
+ * @return bool
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function find_images(string $imdb_id)
 {
     global $cache, $fluent;

@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class Peer.
+ */
 class Peer
 {
     protected $cache;
@@ -118,6 +121,15 @@ class Peer
         return $count;
     }
 
+    /**
+     * @param string $peerid
+     * @param int    $tid
+     * @param string $info_hash
+     *
+     * @return bool
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
     public function delete_by_peerid(string $peerid, int $tid, string $info_hash)
     {
         $result = $this->fluent->deleteFrom('peers')
@@ -136,6 +148,15 @@ class Peer
         return $result;
     }
 
+    /**
+     * @param int    $pid
+     * @param int    $tid
+     * @param string $info_hash
+     *
+     * @return bool
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
     public function delete_by_id(int $pid, int $tid, string $info_hash)
     {
         $result = $this->fluent->deleteFrom('peers', $pid)

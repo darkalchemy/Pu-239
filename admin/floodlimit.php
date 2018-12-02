@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Refresh: 2; url=/staffpanel.php?tool=floodlimit');
         stderr($lang['floodlimit_success'], $lang['floodlimit_saved']);
     } else {
-        stderr($lang['floodlimit_stderr'], $lang['floodlimit_wentwrong'] . $_file . $lang['floodlimit_exist']);
+        stderr($lang['floodlimit_stderr'], $lang['floodlimit_wentwrong'] . $site_config['flood_file'] . $lang['floodlimit_exist']);
     }
 } else {
     if (!file_exists($site_config['flood_file']) || !is_array($limit = unserialize(file_get_contents($site_config['flood_file'])))) {

@@ -1,6 +1,6 @@
 <?php
 
-global $lang, $user_stuffs;
+global $lang, $user_stuffs, $CURUSER;
 
 $post_id = (isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0));
 $forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));

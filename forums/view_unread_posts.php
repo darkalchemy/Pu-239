@@ -1,6 +1,6 @@
 <?php
 
-global $lang;
+global $lang, $CURUSER;
 
 $colour = $topicpoll = $topic_status_image = '';
 $HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">' . $lang['vup_unread_post_since_visit'] . '</h1>';

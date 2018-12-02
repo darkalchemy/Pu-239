@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Refresh: 2; url=' . $r);
                 stderr($lang['hnrwarn_success'], count($pms) . $lang['hnrwarn_user'] . (count($pms) > 1 ? 's' : '') . $lang['hnrwarn_rem_suc']);
             } else {
-                stderr($lang['hnrwarn_stderror'], $lang['hnrwarn_q1'] . $q_err . "<br>{$lang['hnrwarn_q2']}" . $q1_err);
+                stderr($lang['hnrwarn_stderror'], $lang['hnrwarn_q1'] . "<br>{$lang['hnrwarn_q2']}");
             }
         }
     }

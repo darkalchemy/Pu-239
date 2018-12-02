@@ -203,7 +203,7 @@ if (isset($_POST['msg_to_analyze'])) {
         $body .= "
             <tr>
                 <td colspan='7'>
-                    <span class='size_4 has-text-danger text-shadow'>Email" . plural($failed) . " Not Found: </span>
+                    <span class='size_4 has-text-danger text-shadow'>Email" . plural(count($failed)) . " Not Found: </span>
                     <span class='has-text-blue'>" . implode(', ', $failed) . '</span>
                 </td>
             </tr>';

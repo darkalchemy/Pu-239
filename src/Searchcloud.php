@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class Searchcloud.
+ */
 class Searchcloud
 {
     protected $cache;

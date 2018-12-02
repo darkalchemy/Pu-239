@@ -3,15 +3,14 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
+global $site_config, $session;
 
-$session = newSession();
 if (!$session->get('LoggedIn')) {
     dbconn();
     get_template();
 } else {
     check_user_status();
 }
-global $site_config;
 
 $lang = array_merge(load_language('global'), load_language('useragreement'));
 

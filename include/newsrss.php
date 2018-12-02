@@ -3,7 +3,7 @@
 /**
  * @param array $links
  *
- * @return bool
+ * @throws \Envms\FluentPDO\Exception
  */
 function foxnews_shout($links = [])
 {
@@ -32,11 +32,11 @@ function foxnews_shout($links = [])
             $pubs = [];
             foreach ($items as $item) {
                 $title = empty($item->getElementsByTagName('title')
-                    ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
-                    ->item(0)->nodeValue;
+                                    ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
+                                                                      ->item(0)->nodeValue;
                 $link = empty($item->getElementsByTagName('link')
-                    ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
-                    ->item(0)->nodeValue;
+                                   ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
+                                                                     ->item(0)->nodeValue;
                 $pubs[] = [
                     'title' => replace_unicode_strings($title),
                     'link' => replace_unicode_strings($link),
@@ -58,7 +58,7 @@ function foxnews_shout($links = [])
                     'link' => $link,
                 ];
                 $query = $fluent->insertInto('newsrss')
-                    ->values($values);
+                                ->values($values);
                 $newid = $query->execute();
                 if ($newid) {
                     $cache->set('tfreak_news_links_', $links, 86400);
@@ -77,7 +77,7 @@ function foxnews_shout($links = [])
 /**
  * @param array $links
  *
- * @return bool
+ * @throws \Envms\FluentPDO\Exception
  */
 function tfreak_shout($links = [])
 {
@@ -97,11 +97,11 @@ function tfreak_shout($links = [])
         $pubs = [];
         foreach ($items as $item) {
             $title = empty($item->getElementsByTagName('title')
-                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
-                ->item(0)->nodeValue;
+                                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
+                                                                  ->item(0)->nodeValue;
             $link = empty($item->getElementsByTagName('link')
-                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
-                ->item(0)->nodeValue;
+                               ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
+                                                                 ->item(0)->nodeValue;
             $pubs[] = [
                 'title' => replace_unicode_strings($title),
                 'link' => replace_unicode_strings($link),
@@ -123,7 +123,7 @@ function tfreak_shout($links = [])
                 'link' => $link,
             ];
             $query = $fluent->insertInto('newsrss')
-                ->values($values);
+                            ->values($values);
             $newid = $query->execute();
             if ($newid) {
                 $cache->set('tfreak_news_links_', $links, 86400);
@@ -141,7 +141,7 @@ function tfreak_shout($links = [])
 /**
  * @param array $links
  *
- * @return bool
+ * @throws \Envms\FluentPDO\Exception
  */
 function github_shout($links = [])
 {
@@ -162,20 +162,24 @@ function github_shout($links = [])
                 $cache->set('githubcommitrss_' . $hash, $rss, 300);
             }
             $xml = simplexml_load_string($rss);
-            $items = $xml->entry;
+            if (!empty($xml->entry)) {
+                $items = $xml->entry;
+            }
             $pubs = [];
-            foreach ($items as $item) {
-                $devices = json_decode(json_encode($item), true);
-                preg_match('/Commit\/(.*)/', $devices['id'], $match);
-                $commit = trim($match[1]);
-                $title = trim($devices['title']);
-                $link = trim($devices['link']['@attributes']['href']);
+            if (!empty($items)) {
+                foreach ($items as $item) {
+                    $devices = json_decode(json_encode($item), true);
+                    preg_match('/Commit\/(.*)/', $devices['id'], $match);
+                    $commit = trim($match[1]);
+                    $title = trim($devices['title']);
+                    $link = trim($devices['link']['@attributes']['href']);
 
-                $pubs[] = [
-                    'title' => replace_unicode_strings($title),
-                    'link' => replace_unicode_strings($link),
-                    'commit' => replace_unicode_strings($commit),
-                ];
+                    $pubs[] = [
+                        'title' => replace_unicode_strings($title),
+                        'link' => replace_unicode_strings($link),
+                        'commit' => replace_unicode_strings($commit),
+                    ];
+                }
             }
             $pubs = array_reverse($pubs);
             $count = count($pubs);
@@ -193,7 +197,7 @@ function github_shout($links = [])
                     'link' => $link,
                 ];
                 $query = $fluent->insertInto('newsrss')
-                    ->values($values);
+                                ->values($values);
                 $newid = $query->execute();
                 if ($newid) {
                     $cache->set('tfreak_news_links_', $links, 86400);

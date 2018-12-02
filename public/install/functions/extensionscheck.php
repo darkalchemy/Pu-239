@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @param $ext
+ *
+ * @return bool
+ */
 function is_installed($ext)
 {
     if (extension_loaded($ext)) {
@@ -9,6 +14,9 @@ function is_installed($ext)
     return false;
 }
 
+/**
+ * @return string
+ */
 function extensionscheck()
 {
     $php_min_vers = '7.2';

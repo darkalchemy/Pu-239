@@ -8,6 +8,7 @@ global $CURUSER, $site_config;
 
 $lang = load_language('global');
 $html = '';
+$lottery_config = [];
 $lottery_root = ROOT_DIR . 'lottery' . DIRECTORY_SEPARATOR;
 $valid = [
     'config' => [

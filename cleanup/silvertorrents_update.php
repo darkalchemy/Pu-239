@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @param $data
+ *
+ * @throws \Envms\FluentPDO\Exception
+ * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ */
 function silvertorrents_update($data)
 {
     $time_start = microtime(true);

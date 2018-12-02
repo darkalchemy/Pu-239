@@ -55,7 +55,7 @@ $required = [
 ];
 
 foreach ($required as $field) {
-    if (empty($$field)) {
+    if (empty(${$field})) {
         $session->set('is-warning', "[h2]{$lang['takesignup_form_data']}[/h2][p]All fields must be completed [{$field}][/h2]");
         header("Location: {$site_config['baseurl']}/signup.php");
         die();

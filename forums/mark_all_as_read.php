@@ -1,6 +1,6 @@
 <?php
 
-global $lang;
+global $lang, $CURUSER;
 
 $dt = (TIME_NOW - $readpost_expiry);
 $last_posts_read_res = sql_query('SELECT t.id, t.last_post FROM topics AS t LEFT JOIN posts AS p ON p.id = t.last_post AND p.added > ' . $dt) or sqlerr(__FILE__, __LINE__);
@@ -19,6 +19,6 @@ while ($last_posts_read_arr = mysqli_fetch_assoc($last_posts_read_res)) {
         }
     }
 }
-//=== ok, all done here, send them back! \o/
+
 header('Location: forums.php?m=1');
 die();

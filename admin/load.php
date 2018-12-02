@@ -8,6 +8,11 @@ global $site_config, $lang;
 
 $lang = array_merge($lang, load_language('ad_index'));
 
+/**
+ * @param $n
+ *
+ * @return string
+ */
 function is_s($n)
 {
     global $lang;
@@ -18,6 +23,9 @@ function is_s($n)
     }
 }
 
+/**
+ * @return string
+ */
 function uptime()
 {
     global $lang;
@@ -41,7 +49,7 @@ function uptime()
         $shown = false;
         $uptime = substr($uptime, 0, strpos($uptime, ' '));
         $res = '';
-        while (list($k, $v) = each($mults)) {
+        foreach ($mults as $k => $v) {
             $nmbr = floor($uptime / $n);
             $uptime -= ($nmbr * $n);
             $n = $n / $k;
@@ -61,6 +69,11 @@ function uptime()
     return $res;
 }
 
+/**
+ * @param bool $return_all
+ *
+ * @return array|string
+ */
 function loadavg($return_all = false)
 {
     global $lang;

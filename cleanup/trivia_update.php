@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @param $data
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function trivia_update($data)
 {
     $time_start = microtime(true);
@@ -83,6 +88,11 @@ function trivia_update($data)
     }
 }
 
+/**
+ * @return array|bool|mixed
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_qids()
 {
     global $fluent, $cache;

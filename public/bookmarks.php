@@ -67,6 +67,7 @@ function bookmarktable($res, $variant = 'index')
                 </thead>
                 <tbody>';
     $categories = genrelist();
+    $change = [];
     foreach ($categories as $key => $value) {
         $change[$value['id']] = [
             'id' => $value['id'],

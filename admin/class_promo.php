@@ -35,28 +35,35 @@ if (!in_array($mode, $possible_modes)) {
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($mode === 'edit') {
-        foreach ($class_config as $c_name => $value) {
-            // handing from database
-            $c_value = $value['id']; // $key is like 0, 1, 2 etc....
-            $c_name = strtoupper($value['name']);
-            $c_min_ratio = $value['min_ratio'];
-            $c_uploaded = $value['uploaded'];
-            $c_time = $value['time'];
-            $c_low_ratio = $value['low_ratio'];
-            // handling from posting of contents
-            $post_data = $_POST[$c_name]; //    0=> name,1=>min_ratio,2=>uploaded,3=>time,4=>low_ratio
-            $value = $post_data[0];
-            $name = $post_data[1];
-            $min_ratio = strtoupper($post_data[2]);
-            $uploaded = $post_data[3];
-            $time = $post_data[4];
-            $low_ratio = $post_data[5];
+        if (!empty($class_config)) {
+            foreach ($class_config as $c_name => $value) {
+                // handing from database
+                $c_value = $value['id']; // $key is like 0, 1, 2 etc....
+                $c_name = strtoupper($value['name']);
+                $c_min_ratio = $value['min_ratio'];
+                $c_uploaded = $value['uploaded'];
+                $c_time = $value['time'];
+                $c_low_ratio = $value['low_ratio'];
+                // handling from posting of contents
+                $post_data = $_POST[$c_name]; //    0=> name,1=>min_ratio,2=>uploaded,3=>time,4=>low_ratio
+                $value = $post_data[0];
+                $name = $post_data[1];
+                $min_ratio = strtoupper($post_data[2]);
+                $uploaded = $post_data[3];
+                $time = $post_data[4];
+                $low_ratio = $post_data[5];
 
-            if (isset($_POST[$c_name][0]) && (($value != $c_value) || ($name != $c_name) || ($min_ratio != $c_min_ratio) || ($uploaded != $c_uploaded) || ($time != $c_time) || ($low_ratio != $c_low_ratio))) {
-                $update[$c_name] = '(' . sqlesc($c_name) . ', ' . sqlesc(is_array($min_ratio) ? implode('|', $min_ratio) : $min_ratio) . ', ' . sqlesc(is_array($uploaded) ? implode('|', $uploaded) : $uploaded) . ', ' . sqlesc(is_array($time) ? implode('|', $time) : $time) . ', ' . sqlesc(is_array($low_ratio) ? implode('|', $low_ratio) : $low_ratio) . ')';
+                if (isset($_POST[$c_name][0]) && (($value != $c_value) || ($name != $c_name) || ($min_ratio != $c_min_ratio) || ($uploaded != $c_uploaded) || ($time != $c_time) || ($low_ratio != $c_low_ratio))) {
+                    $update[$c_name] = '(' . sqlesc($c_name) . ', ' . sqlesc(is_array($min_ratio) ? implode('|',
+                            $min_ratio) : $min_ratio) . ', ' . sqlesc(is_array($uploaded) ? implode('|',
+                            $uploaded) : $uploaded) . ', ' . sqlesc(is_array($time) ? implode('|',
+                            $time) : $time) . ', ' . sqlesc(is_array($low_ratio) ? implode('|',
+                            $low_ratio) : $low_ratio) . ')';
+                }
             }
         }
-        if (sql_query('INSERT INTO class_promo(name,min_ratio,uploaded,time,low_ratio) VALUES ' . implode(', ', $update) . ' ON DUPLICATE KEY UPDATE name = VALUES(name),min_ratio = VALUES(min_ratio),uploaded = VALUES(uploaded),time = VALUES(time),low_ratio = VALUES(low_ratio)')) { // need to change strut
+        if (sql_query('INSERT INTO class_promo(name,min_ratio,uploaded,time,low_ratio) VALUES ' . implode(', ',
+                $update) . ' ON DUPLICATE KEY UPDATE name = VALUES(name),min_ratio = VALUES(min_ratio),uploaded = VALUES(uploaded),time = VALUES(time),low_ratio = VALUES(low_ratio)')) { // need to change strut
             stderr($lang['classpromo_success'], $lang['classpromo_success_saved']);
         } else {
             stderr($lang['classpromo_error'], $lang['classpromo_err_query1']);

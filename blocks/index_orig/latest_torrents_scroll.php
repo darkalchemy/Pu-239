@@ -27,6 +27,7 @@ if ($scroll_torrents === false || is_null($scroll_torrents)) {
     $cache->set('scroll_tor_', $scroll_torrents, $site_config['expires']['scroll_torrents']);
 }
 
+$scroller_torrents = [];
 foreach ($scroll_torrents as $torrent) {
     if (empty($torrent['poster']) && !empty($torrent['imdb_id'])) {
         $images = $cache->get('posters_' . $torrent['imdb_id']);
@@ -77,7 +78,7 @@ if ($scroller_torrents) {
             $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . '</span>';
         }
         $scroll_poster = $poster;
-        $poster = "<img src='" . url_proxy($poster, true, 150, null) . "' class='tooltip-poster'>";
+        $poster = "<img src='" . url_proxy($poster, true, 250) . "' class='tooltip-poster'>";
 
         $torrents_scroller .= "
                     <div class='slide'>";

@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @param $imdb_id
+ *
+ * @return bool
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_banner($imdb_id)
 {
     global $cache, $fluent;
@@ -27,6 +34,13 @@ function get_banner($imdb_id)
     }
 }
 
+/**
+ * @param $imdb_id
+ *
+ * @return bool
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function get_poster($imdb_id)
 {
     global $cache, $fluent;

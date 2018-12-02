@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class User.
+ */
 class User
 {
     protected $fluent;
@@ -281,6 +284,11 @@ class User
         $this->set_remember($userid, $expires);
     }
 
+    /**
+     * @param int $userid
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
     public function delete_remember(int $userid)
     {
         $this->fluent->deleteFrom('auth_tokens')
@@ -290,6 +298,8 @@ class User
 
     /**
      * @param array $users
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function delete_user_cache(array $users)
     {
@@ -326,6 +336,8 @@ class User
      * @param int    $userid
      *
      * @return mixed
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function get_item(string $item, int $userid)
     {
@@ -448,6 +460,13 @@ class User
         return $user;
     }
 
+    /**
+     * @param int $category
+     *
+     * @return array
+     *
+     * @throws \Envms\FluentPDO\Exception
+     */
     public function get_users_for_notifications(int $category)
     {
         $users = $this->fluent->from('users')

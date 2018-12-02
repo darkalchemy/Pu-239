@@ -36,6 +36,8 @@ function smilies_frame($smilies_set)
 
 /**
  * @param string $body
+ * @param null   $class
+ * @param int    $height
  *
  * @return string
  */
@@ -164,6 +166,9 @@ function format_urls($s)
  * @param bool $images
  *
  * @return mixed|string
+ *
+ * @throws \Envms\FluentPDO\Exception
+ * @throws \Spatie\Image\Exceptions\InvalidManipulation
  */
 function format_comment($text, $strip_html = true, $urls = true, $images = true)
 {

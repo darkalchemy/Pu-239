@@ -12,7 +12,8 @@ $style = get_stylesheet();
 if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'])) {
     stderr($lang['classcfg_error'], $lang['classcfg_denied']);
 }
-$pconf = sql_query('SELECT * FROM class_config WHERE template = ' . sqlesc($style) . ' ORDER BY value') or sqlerr(__FILE__, __LINE__);
+$pconf = sql_query('SELECT * FROM class_config WHERE template = ' . sqlesc($style) . ' ORDER BY value') or sqlerr(__FILE__,
+    __LINE__);
 while ($ac = mysqli_fetch_assoc($pconf)) {
     $class_config[$ac['name']]['value'] = $ac['value'];
     $class_config[$ac['name']]['classname'] = $ac['classname'];
@@ -30,54 +31,60 @@ if (!in_array($mode, $possible_modes)) {
     stderr($lang['classcfg_error'], $lang['classcfg_error1']);
 }
 
+/**
+ * @param int    $value
+ * @param string $direction
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function update_forum_classes(int $value, string $direction)
 {
     global $fluent, $cache;
 
     if ($direction === 'increment') {
         $fluent->update('forums')
-            ->set(['min_class_read' => new Envms\FluentPDO\Literal('min_class_read + 1')])
-            ->where('min_class_read >= ?', $value)
-            ->execute();
+               ->set(['min_class_read' => new Envms\FluentPDO\Literal('min_class_read + 1')])
+               ->where('min_class_read >= ?', $value)
+               ->execute();
 
         $fluent->update('forums')
-            ->set(['min_class_write' => new Envms\FluentPDO\Literal('min_class_write + 1')])
-            ->where('min_class_write >= ?', $value)
-            ->execute();
+               ->set(['min_class_write' => new Envms\FluentPDO\Literal('min_class_write + 1')])
+               ->where('min_class_write >= ?', $value)
+               ->execute();
 
         $fluent->update('forums')
-            ->set(['min_class_create' => new Envms\FluentPDO\Literal('min_class_create + 1')])
-            ->where('min_class_create >= ?', $value)
-            ->execute();
+               ->set(['min_class_create' => new Envms\FluentPDO\Literal('min_class_create + 1')])
+               ->where('min_class_create >= ?', $value)
+               ->execute();
 
         $fluent->update('forum_config')
-            ->set(['min_delete_view_class' => new Envms\FluentPDO\Literal('min_delete_view_class + 1')])
-            ->where('min_delete_view_class >= ?', $value)
-            ->execute();
+               ->set(['min_delete_view_class' => new Envms\FluentPDO\Literal('min_delete_view_class + 1')])
+               ->where('min_delete_view_class >= ?', $value)
+               ->execute();
     } else {
         $fluent->update('forums')
-            ->set(['min_class_read' => new Envms\FluentPDO\Literal('min_class_read - 1')])
-            ->where('min_class_read >= ?', $value)
-            ->where('min_class_read > 0')
-            ->execute();
+               ->set(['min_class_read' => new Envms\FluentPDO\Literal('min_class_read - 1')])
+               ->where('min_class_read >= ?', $value)
+               ->where('min_class_read > 0')
+               ->execute();
 
         $fluent->update('forums')
-            ->set(['min_class_write' => new Envms\FluentPDO\Literal('min_class_write - 1')])
-            ->where('min_class_write >= ?', $value)
-            ->where('min_class_write > 0')
-            ->execute();
+               ->set(['min_class_write' => new Envms\FluentPDO\Literal('min_class_write - 1')])
+               ->where('min_class_write >= ?', $value)
+               ->where('min_class_write > 0')
+               ->execute();
 
         $fluent->update('forums')
-            ->set(['min_class_create' => new Envms\FluentPDO\Literal('min_class_create - 1')])
-            ->where('min_class_create >= ?', $value)
-            ->where('min_class_create > 0')
-            ->execute();
+               ->set(['min_class_create' => new Envms\FluentPDO\Literal('min_class_create - 1')])
+               ->where('min_class_create >= ?', $value)
+               ->where('min_class_create > 0')
+               ->execute();
 
         $fluent->update('forum_config')
-            ->set(['min_delete_view_class' => new Envms\FluentPDO\Literal('min_delete_view_class - 1')])
-            ->where('min_delete_view_class >= ?', $value)
-            ->where('min_delete_view_class > 0')
-            ->execute();
+               ->set(['min_delete_view_class' => new Envms\FluentPDO\Literal('min_delete_view_class - 1')])
+               ->where('min_delete_view_class >= ?', $value)
+               ->where('min_delete_view_class > 0')
+               ->execute();
     }
 
     $cache->delete('staff_forums_');
@@ -85,36 +92,39 @@ function update_forum_classes(int $value, string $direction)
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [];
+    $old_max = 0;
     $cache->delete('is_staffs_');
     if ($mode === 'edit') {
         $edited = false;
-        foreach ($class_config as $current_name => $value) {
-            $current_value = $value['value']; // $key is like UC_USER etc....
-            $current_classname = strtoupper($value['classname']);
-            $current_classcolor = strtoupper($value['classcolor']);
-            $current_classcolor = str_replace('#', '', "$current_classcolor");
-            $current_classpic = $value['classpic'];
-            $post_data = $_POST[$current_name];
-            $value = trim($post_data[0]);
-            $classname = !empty($post_data[1]) ? strtoupper($post_data[1]) : '';
-            $classcolor = !empty($post_data[2]) ? $post_data[2] : '';
-            $classcolor = str_replace('#', '', "$classcolor");
-            $classpic = !empty($post_data[3]) ? $post_data[3] : '';
-            if (isset($_POST[$current_name][0]) && (($value != $current_value) || ($classname != $current_classname) || ($classcolor != $current_classcolor) || ($classpic != $current_classpic))) {
-                $set = [
-                    'value' => is_array($value) ? implode('|', $value) : $value,
-                    'classname' => is_array($classname) ? implode('|', $classname) : $classname,
-                    'classcolor' => is_array($classcolor) ? implode('|', $classcolor) : $classcolor,
-                    'classpic' => is_array($classpic) ? implode('|', $classpic) : $classpic,
-                ];
-                $fluent->update('class_config')
-                    ->set($set)
-                    ->where('template = ?', $style)
-                    ->where('name = ?', $current_name)
-                    ->execute();
+        if (!empty($class_config)) {
+            foreach ($class_config as $current_name => $value) {
+                $current_value = $value['value']; // $key is like UC_USER etc....
+                $current_classname = strtoupper($value['classname']);
+                $current_classcolor = strtoupper($value['classcolor']);
+                $current_classcolor = str_replace('#', '', "$current_classcolor");
+                $current_classpic = $value['classpic'];
+                $post_data = $_POST[$current_name];
+                $value = trim($post_data[0]);
+                $classname = !empty($post_data[1]) ? strtoupper($post_data[1]) : '';
+                $classcolor = !empty($post_data[2]) ? $post_data[2] : '';
+                $classcolor = str_replace('#', '', "$classcolor");
+                $classpic = !empty($post_data[3]) ? $post_data[3] : '';
+                if (isset($_POST[$current_name][0]) && (($value != $current_value) || ($classname != $current_classname) || ($classcolor != $current_classcolor) || ($classpic != $current_classpic))) {
+                    $set = [
+                        'value' => is_array($value) ? implode('|', $value) : $value,
+                        'classname' => is_array($classname) ? implode('|', $classname) : $classname,
+                        'classcolor' => is_array($classcolor) ? implode('|', $classcolor) : $classcolor,
+                        'classpic' => is_array($classpic) ? implode('|', $classpic) : $classpic,
+                    ];
+                    $fluent->update('class_config')
+                           ->set($set)
+                           ->where('template = ?', $style)
+                           ->where('name = ?', $current_name)
+                           ->execute();
 
-                write_class_files($style);
-                $edited = true;
+                    write_class_files($style);
+                    $edited = true;
+                }
             }
         }
         if ($edited) {
@@ -185,8 +195,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             $stylesheets = $fluent->from('stylesheets')
-                ->select(null)
-                ->select('id');
+                                  ->select(null)
+                                  ->select('id');
 
             $class_id = false;
             foreach ($stylesheets as $stylesheet) {
@@ -199,8 +209,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'template' => $stylesheet['id'],
                 ];
                 $class_id = $fluent->insertInto('class_config')
-                    ->values($values)
-                    ->execute();
+                                   ->values($values)
+                                   ->execute();
 
                 write_class_files($stylesheet['id']);
             }
@@ -215,7 +225,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $cache->delete('staff_settings_');
         }
     } elseif ($mode === 'remove') {
-        $name = isset($_POST['remove']) ? htmlsafechars($_POST['remove']) : stderr($lang['classcfg_error'], $lang['classcfg_error_required']);
+        $name = isset($_POST['remove']) ? htmlsafechars($_POST['remove']) : stderr($lang['classcfg_error'],
+            $lang['classcfg_error_required']);
         $res = sql_query("SELECT value from class_config WHERE name = '$name' ");
         while ($arr = mysqli_fetch_array($res)) {
             $value = $arr['value'];
@@ -255,12 +266,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         $deleted = $fluent->deleteFrom('class_config')
-            ->where('name = ?', $name)
-            ->execute();
+                          ->where('name = ?', $name)
+                          ->execute();
 
         $stylesheets = $fluent->from('stylesheets')
-            ->select(null)
-            ->select('id');
+                              ->select(null)
+                              ->select('id');
 
         foreach ($stylesheets as $stylesheet) {
             write_class_files($stylesheet['id']);
@@ -293,8 +304,8 @@ $HTMLOUT .= "
                 <tbody>";
 
 $classes = $fluent->from('class_config')
-    ->where('template = ?', $style)
-    ->orderBy('value');
+                  ->where('template = ?', $style)
+                  ->orderBy('value');
 
 $base = [
     'UC_MIN',
@@ -309,30 +320,32 @@ foreach ($classes as $class) {
     }
 }
 
-foreach ($primary_classes as $arr) {
-    $cname = str_replace(' ', '_', strtolower($arr['classname'])) . '_bk';
-    $HTMLOUT .= "
-                    <tr class='{$cname}'>
-                        <td class='has-text-black has-text-weight-bold'>" . htmlsafechars($arr['name']) . "</td>
-                        <td class='has-text-centered'>
-                            <input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='2' value='" . (int) $arr['value'] . " 'readonly>
-                        </td>
-                        <td class='has-text-centered'>
-                            <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . htmlsafechars($arr['classname']) . "'>
-                        </td>
-                        <td class='has-text-centered'>
-                            <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='#" . htmlsafechars($arr['classcolor']) . "'>
-                        </td>
-                        <td class='has-text-centered'>
-                            <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . htmlsafechars($arr['classpic']) . "'>
-                        </td>
-                        <td class='has-text-centered'>
-                            <form name='remove' action='staffpanel.php?tool=class_config&amp;mode=remove' method='post'>
-                                <input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "'>
-                                <input type='submit' class='button is-small' value='{$lang['classcfg_class_remove']}'>
-                            </form>
-                        </td>
-                    </tr>";
+if (!empty($primary_classes)) {
+    foreach ($primary_classes as $arr) {
+        $cname = str_replace(' ', '_', strtolower($arr['classname'])) . '_bk';
+        $HTMLOUT .= "
+                        <tr class='{$cname}'>
+                            <td class='has-text-black has-text-weight-bold'>" . htmlsafechars($arr['name']) . "</td>
+                            <td class='has-text-centered'>
+                                <input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='2' value='" . (int) $arr['value'] . " 'readonly>
+                            </td>
+                            <td class='has-text-centered'>
+                                <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . htmlsafechars($arr['classname']) . "'>
+                            </td>
+                            <td class='has-text-centered'>
+                                <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='#" . htmlsafechars($arr['classcolor']) . "'>
+                            </td>
+                            <td class='has-text-centered'>
+                                <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . htmlsafechars($arr['classpic']) . "'>
+                            </td>
+                            <td class='has-text-centered'>
+                                <form name='remove' action='staffpanel.php?tool=class_config&amp;mode=remove' method='post'>
+                                    <input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "'>
+                                    <input type='submit' class='button is-small' value='{$lang['classcfg_class_remove']}'>
+                                </form>
+                            </td>
+                        </tr>";
+    }
 }
 $HTMLOUT .= '
                 </tbody>
@@ -349,14 +362,16 @@ $HTMLOUT .= "
                 </thead>
                 <tbody>";
 
-foreach ($base_classes as $arr1) {
-    $HTMLOUT .= '
-                    <tr>
-                        <td>' . htmlsafechars($arr1['name']) . "</td>
-                        <td>
-                            <input class='w-100' type='text' name='" . htmlsafechars($arr1['name']) . "[]' value='" . (int) $arr1['value'] . "'>
-                        </td>
-                    </tr>";
+if (!empty($base_classes)) {
+    foreach ($base_classes as $arr1) {
+        $HTMLOUT .= '
+                        <tr>
+                            <td>' . htmlsafechars($arr1['name']) . "</td>
+                            <td>
+                                <input class='w-100' type='text' name='" . htmlsafechars($arr1['name']) . "[]' value='" . (int) $arr1['value'] . "'>
+                            </td>
+                        </tr>";
+    }
 }
 $HTMLOUT .= "
                     <tr>

@@ -73,7 +73,7 @@ function images_update()
         ->where('isbn != ""');
 
     foreach ($links as $link) {
-        get_book_info($links);
+        get_book_info($link);
     }
 
     $imdbids = $fluent->from('torrents')
@@ -118,7 +118,7 @@ function images_update()
         ->where('tmdb_id != 0')
         ->where('imdb_id IS NULL');
 
-    $ids = [];
+    $ids = $images = [];
     foreach ($query as $image) {
         if (!in_array($image['tmdb_id'], $ids)) {
             $ids[] = $image['tmdb_id'];
@@ -172,9 +172,9 @@ function images_update()
             ];
         }
         if ($image['type'] === 'poster') {
-            url_proxy($image['url'], true, 300);
-            url_proxy($image['url'], true, 150);
-            url_proxy($image['url'], true, 150, null, 10);
+            url_proxy($image['url'], true, 450);
+            url_proxy($image['url'], true, 250);
+            url_proxy($image['url'], true, 250, null, 20);
         } elseif ($image['type'] === 'banner') {
             url_proxy($image['url'], true, 1000, 185);
         }

@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @param $data
+ *
+ * @return bool|void
+ *
+ * @throws \Envms\FluentPDO\Exception
+ */
 function tvmaze_update($data)
 {
     $time_start = microtime(true);
@@ -55,6 +62,11 @@ function tvmaze_update($data)
     }
 }
 
+/**
+ * @param $param
+ *
+ * @return mixed|string
+ */
 function get_or_empty($param)
 {
     if (!empty($param)) {

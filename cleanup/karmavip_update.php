@@ -3,13 +3,14 @@
 /**
  * @param $data
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function karmavip_update($data)
 {
     $time_start = microtime(true);
     dbconn();
-    global $site_config, $queries, $cache, $message_update;
+    global $site_config, $queries, $cache, $message_stuffs;
 
     set_time_limit(1200);
     ignore_user_abort(true);

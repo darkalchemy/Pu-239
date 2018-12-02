@@ -2,6 +2,9 @@
 
 namespace DarkAlchemy\Pu239;
 
+/**
+ * Class Message.
+ */
 class Message
 {
     protected $cache;

@@ -53,8 +53,7 @@ function inactive_update($data)
 }
 
 /**
- * @param      $users
- * @param bool $using_foreign_keys
+ * @param $users
  */
 function delete_cleanup($users)
 {

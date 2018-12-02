@@ -27,6 +27,8 @@ function calctime($val)
 
 if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']) && $_GET['hash'] == $hash)) {
     dbconn();
+    $seedingbonus = 0;
+    $meinvite = $whominvite = [];
     if (isset($_GET['search'])) {
         $search = trim($_GET['search']);
         $query = 'username = ' . sqlesc("$search") . " AND status='confirmed'";

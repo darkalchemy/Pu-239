@@ -24,6 +24,11 @@ if (!is_valid_id($id)) {
     die();
 }
 
+/**
+ * @param $torrent_name
+ *
+ * @return bool
+ */
 function valid_torrent_name($torrent_name)
 {
     $allowedchars = 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-_[]*():';

@@ -41,7 +41,7 @@ class AJAXChat
      */
     public function __construct()
     {
-        global $site_config, $fluent, $session, $cache, $user_stuffs, $message_stuffs, $user_stuffs;
+        global $site_config, $fluent, $session, $cache, $message_stuffs, $user_stuffs;
 
         $this->_siteConfig = $site_config;
         $this->_session = $session;
@@ -100,20 +100,6 @@ class AJAXChat
 
     public function initDataBaseConnection()
     {
-        $this->db = new AJAXChatDataBase($this->_config['dbConnection']);
-        if (!$this->_config['dbConnection']['link']) {
-            $this->db->connect($this->_config['dbConnection']);
-            if ($this->db->error()) {
-                echo $this->db->getError();
-                die();
-            }
-            $this->db->select($this->_config['dbConnection']['name']);
-            if ($this->db->error()) {
-                echo $this->db->getError();
-                die();
-            }
-        }
-        unset($this->_config['dbConnection']);
     }
 
     public function initRequestVars()
@@ -225,13 +211,23 @@ class AJAXChat
         return (bool) $this->_session->get('LoggedIn');
     }
 
+    /**
+     * @return mixed|null
+     */
     public function getSessionIP()
     {
-        return $this->_session->get('IP');
+        $ip = $this->_session->get('IP');
+        if (empty($ip)) {
+            $ip = getip();
+        }
+
+        return $ip;
     }
 
     /**
      * @param null $type
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function logout($type = null)
     {
@@ -277,6 +273,9 @@ class AJAXChat
         }
     }
 
+    /**
+     * @return int
+     */
     public function getUserID()
     {
         return (int) $this->_session->get('userID');
@@ -286,6 +285,8 @@ class AJAXChat
      * @param null $userID
      *
      * @return bool
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function isUserOnline($userID = null)
     {
@@ -304,6 +305,8 @@ class AJAXChat
      * @param null $value
      *
      * @return array|null
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function getOnlineUsersData($channelIDs = null, $key = null, $value = null)
     {
@@ -366,15 +369,13 @@ class AJAXChat
      */
     public function getDataBaseTable($table)
     {
-        if ($table === 'online' || $table === 'bans') {
-            return $this->getConfig('dbTableNames', $table);
-        }
-
-        return $this->db->getName() ? '`' . $this->db->getName() . '`.' . $this->getConfig('dbTableNames', $table) : $this->getConfig('dbTableNames', $table);
+        return $this->getConfig('dbTableNames', $table);
     }
 
     /**
      * @param $type
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function chatViewLogout($type)
     {
@@ -383,6 +384,8 @@ class AJAXChat
 
     /**
      * @param $userID
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function removeFromOnlineList($userID)
     {
@@ -414,6 +417,9 @@ class AJAXChat
         }
     }
 
+    /**
+     * @return |null
+     */
     public function getUserName()
     {
         return $this->_session->get('username');
@@ -589,6 +595,9 @@ class AJAXChat
         return $message;
     }
 
+    /**
+     * @return |null
+     */
     public function getChannel()
     {
         return $this->_session->get('Channel');
@@ -615,6 +624,8 @@ class AJAXChat
 
     /**
      * @param $key
+     *
+     * @return |null
      */
     public function getRequestVar($key)
     {
@@ -658,6 +669,13 @@ class AJAXChat
         }
     }
 
+    /**
+     * @return |null
+     *
+     * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
+     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+     */
     public function getUserRole()
     {
         $userRole = $this->_session->get('UserRole');
@@ -785,6 +803,10 @@ class AJAXChat
 
     /**
      * @return bool
+     *
+     * @throws \MatthiasMullie\Scrapbook\Exception\Exception
+     * @throws \MatthiasMullie\Scrapbook\Exception\ServerUnhealthy
+     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
      */
     public function getValidLoginUserData()
     {
@@ -1032,6 +1054,8 @@ class AJAXChat
      * @param null $value
      *
      * @return array|null
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function getBannedUsersData($key = null, $value = null)
     {
@@ -1298,6 +1322,8 @@ class AJAXChat
 
     /**
      * @param null $userID
+     *
+     * @return int|mixed|null
      */
     public function getPrivateChannelID($userID = null)
     {
@@ -1312,6 +1338,8 @@ class AJAXChat
      * @param $userName
      *
      * @return bool|mixed
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function getIDFromName($userName)
     {
@@ -1409,6 +1437,8 @@ class AJAXChat
 
     /**
      * @param null $userID
+     *
+     * @return int|mixed|null
      */
     public function getPrivateMessageID($userID = null)
     {
@@ -1448,6 +1478,9 @@ class AJAXChat
         $this->_session->set('ChannelEnterTimeStamp', $time);
     }
 
+    /**
+     * @return |null
+     */
     public function getSocketRegistrationID()
     {
         return $this->_session->get('SocketRegistrationID');
@@ -1509,6 +1542,9 @@ class AJAXChat
         }
     }
 
+    /**
+     * @return |null
+     */
     public function getStatusUpdateTimeStamp()
     {
         return $this->_session->get('StatusUpdateTimeStamp');
@@ -1530,6 +1566,9 @@ class AJAXChat
         }
     }
 
+    /**
+     * @return |null
+     */
     public function getInactiveCheckTimeStamp()
     {
         return $this->_session->get('InactiveCheckTimeStamp');
@@ -1660,6 +1699,9 @@ class AJAXChat
         $this->updateSocketAuthentication($this->getUserID(), $this->getSocketRegistrationID(), $channels);
     }
 
+    /**
+     * @return |null
+     */
     public function getLangCode()
     {
         $langCodeCookie = isset($_COOKIE[$this->getConfig('sessionKeyPrefix') . 'lang']) ? $_COOKIE[$this->getConfig('sessionKeyPrefix') . 'lang'] : null;
@@ -1765,7 +1807,7 @@ class AJAXChat
             ->where('id = ?', $messageID)
             ->fetch();
 
-        $delete = false;
+        $delete = $result = false;
         if (!empty($message) && $message['channel'] >= 0) {
             if ($this->getUserRole() >= UC_ADMINISTRATOR) {
                 if ($message['userRole'] === AJAX_CHAT_CHATBOT || $message['userRole'] < $this->getUserRole() || $message['userID'] === $this->getUserID()) {
@@ -1886,6 +1928,9 @@ class AJAXChat
         return true;
     }
 
+    /**
+     * @return |null
+     */
     public function getInsertedMessagesRateTimeStamp()
     {
         return $this->_session->get('InsertedMessagesRateTimeStamp');
@@ -1907,6 +1952,9 @@ class AJAXChat
         $this->_session->set('InsertedMessagesRate', $rate);
     }
 
+    /**
+     * @return |null
+     */
     public function getInsertedMessagesRate()
     {
         return $this->_session->get('InsertedMessagesRate');
@@ -2058,6 +2106,9 @@ class AJAXChat
         }
     }
 
+    /**
+     * @return |null
+     */
     public function getQueryUserName()
     {
         return $this->_session->get('QueryUserName');
@@ -2211,6 +2262,8 @@ class AJAXChat
     /**
      * @param      $userID
      * @param null $channelID
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function removeInvitation($userID, $channelID = null)
     {
@@ -2355,6 +2408,8 @@ class AJAXChat
      * @param      $userName
      * @param null $banMinutes
      * @param null $userID
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function banUser($userName, $banMinutes = null, $userID = null)
     {
@@ -2464,6 +2519,8 @@ class AJAXChat
 
     /**
      * @param $userName
+     *
+     * @throws \Envms\FluentPDO\Exception
      */
     public function unbanUser($userName)
     {
@@ -2728,7 +2785,7 @@ class AJAXChat
         if (!$row) {
             $msg .= '[color=#00FF00]There are no Casino bets in play. [/color]';
         } else {
-            $count = !empty($row[0]) ? $count($row[0]) : 0;
+            $count = !empty($row[0]) ? count($row[0]) : 0;
             $msg .= '[color=#00FF00]' . $row[0] . ' bet' . plural($count) . ' in the [url=' . $this->_siteConfig['baseurl'] . '/casino.php]Casino[/url] for ' . mksize($row[1]) . '. [/color]';
         }
 
@@ -3058,6 +3115,9 @@ class AJAXChat
         }
     }
 
+    /**
+     * @return |null
+     */
     public function getLoginUserName()
     {
         return $this->_session->get('LoginUserName');
@@ -3215,6 +3275,9 @@ class AJAXChat
         return $condition;
     }
 
+    /**
+     * @return |null
+     */
     public function getChannelEnterTimeStamp()
     {
         return $this->_session->get('ChannelEnterTimeStamp');
@@ -3442,6 +3505,8 @@ class AJAXChat
             }
         }
 
+        $periodStart = TIME_NOW - 86400;
+        $periodEnd = TIME_NOW;
         if ($year === null) {
             // No year given, so no period condition
         } elseif ($month === null) {
@@ -3562,6 +3627,9 @@ class AJAXChat
         return $this->getOnlineUsersData($channelIDs, 'userID');
     }
 
+    /**
+     * @return |null
+     */
     public function getLoginTimeStamp()
     {
         return $this->_session->get('LoginTimeStamp');
@@ -3626,6 +3694,8 @@ class AJAXChat
 
     /**
      * @param null $key
+     *
+     * @return |null
      */
     public function getLang($key = null)
     {

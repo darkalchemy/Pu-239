@@ -5,6 +5,7 @@
  * @param bool $invincible
  * @param bool $bypass_bans
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
 function invincible($id, $invincible = true, $bypass_bans = true)

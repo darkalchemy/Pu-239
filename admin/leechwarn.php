@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'enabled' => 'no',
                 ], $site_config['expires']['user_cache']);
             }
-            $d = mysqli_affected_rows($mysqli);
+            $c = mysqli_affected_rows($mysqli);
             header('Refresh: 2; url=' . $r);
             stderr($lang['leechwarn_success'], $c . $lang['leechwarn_user'] . ($c > 1 ? $lang['leechwarn_s'] : '') . $lang['leechwarn_disabled']);
         } else {

@@ -73,8 +73,8 @@ class PHPZip
      */
     public function GetFileList($dir)
     {
+        $file = [];
         if (file_exists($dir)) {
-            $file = [];
             $args = func_get_args();
             $pref = $args[1];
             $dh = opendir($dir);
