@@ -57,7 +57,7 @@ $HTMLOUT .= "
         </h3>' . ($messages > $perpage ? $menu_top : '') . "
         <form action='messages.php' method='post' name='checkme'>
             <div class='table-wrapper'>
-            <table class='table table-bordered table-striped top20 bottom20'>
+            <table class='table table-bordered table-striped top20'>
                 <thead>
                     <tr>
                         <th class='has-text-centered w-1'>

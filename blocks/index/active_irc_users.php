@@ -33,7 +33,7 @@ $active_users_irc .= "
     <a id='irc-hash'></a>
     <div id='irc' class='box'>
         <div class='bordered'>
-            <div class='alt_bordered bg-00 level-item is-wrapped top10 bottom10 padding20'>
+            <div class='alt_bordered bg-00 level-item is-wrapped padding20'>
                 {$irc['ircusers']}
             </div>
         </div>
