@@ -24,7 +24,6 @@ $ignore = [
 ];
 
 if (SQL_DEBUG && !in_array($_SERVER['PHP_SELF'], $ignore)) {
-    file_put_contents('/var/log/nginx/fluent.log', $_SERVER['PHP_SELF'] . PHP_EOL, FILE_APPEND);
     $fluent->debug = function ($BaseQuery) {
         global $pdo, $query_stat;
 
