@@ -128,7 +128,7 @@ if (!empty($files)) {
                 " . get_date(filemtime($file), 'LONG') . "
             </td>
             <td class='has-text-right w-10'>
-                " . human_filesize(filesize($file)) . "
+                " . mksize(filesize($file)) . "
             </td>
             <td class='has-text-centered w-10'>
                 <input type='checkbox' name='logs[]' value='" . urlencode($file) . "'>

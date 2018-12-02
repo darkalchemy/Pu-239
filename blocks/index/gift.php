@@ -2,9 +2,7 @@
 
 global $CURUSER, $site_config, $lang;
 
-$Christmasday = mktime(0, 0, 0, 12, 25, date('Y'));
-$today = mktime(date('G'), date('i'), date('s'), date('m'), date('d'), date('Y'));
-if (($CURUSER['opt1'] & user_options::GOTGIFT) && $today != $Christmasday) {
+if ($CURUSER['gotgift'] === 'no') {
     $christmas_gift .= "
     <a id='gift-hash'></a>
     <div id='gift' class='box'>

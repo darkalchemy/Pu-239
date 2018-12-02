@@ -15,7 +15,7 @@ if ($irc === false || is_null($irc)) {
 
     $irc['count'] = count($query);
     if ($irc['count'] >= 100) {
-        $irc['ircusers'] = format_comment('Too many to list here :)');
+        $irc['ircusers'] = format_comment($lang['index_blocks_too_many'], 0);
     } elseif ($irc['count'] > 0) {
         foreach ($query as $row) {
             $list[] = format_username($row['id']);

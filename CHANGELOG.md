@@ -1,3 +1,14 @@
+### 01 Dec, 2018
+add: caching to rss, default 5 minutes ttl  
+remove: radio  
+add: subtitles  
+fix: parallax scrolling  
+fix: gift.php  
+update: optimize tables only if free data > 10 MB  
+add: admin/mysql_overview.php  
+merge: human_filesize() and mksize() both provided same functionality  
+replace: deprecated ereg() with preg_match()  
+
 ### 29 Nov, 2018
 fix: rss.php  
 fix: missing data-private torrenttable_functions.php  

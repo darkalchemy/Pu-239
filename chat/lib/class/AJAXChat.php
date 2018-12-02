@@ -2785,8 +2785,8 @@ class AJAXChat
                 $stats = $this->_user_stuffs->getUserFromId($whereisUserID);
                 $stats['bj'] = $stats['bj'] * 1024 * 1024 * 1024;
                 $bj = $stats['bj'] > 0 ? '[color=#00FF00]' . mksize($stats['bj']) . '[/color]' : '[color=#CC0000]' . mksize($stats['bj']) . '[/color]';
-                $uploaded = '[color=#00FF00]' . human_filesize($stats['uploaded']) . '[/color]';
-                $downloaded = '[color=#00FF00]' . human_filesize($stats['downloaded']) . '[/color]';
+                $uploaded = '[color=#00FF00]' . mksize($stats['uploaded']) . '[/color]';
+                $downloaded = '[color=#00FF00]' . mksize($stats['downloaded']) . '[/color]';
                 $userClass = get_user_class_name($stats['class']);
                 $enabled = $stats['enabled'] === 'yes' && $stats['downloadpos'] == 1 ? '[color=#00FF00](Enabled)[/color]' : '[color=#CC0000](Disabled)[/color]';
                 $invites = $stats['invites'] > 0 && $stats['invite_rights'] === 'yes' ? '[color=#00FF00]' . number_format($stats['invites']) . '[/color]' : '[color=#CC0000]0[/color]';
@@ -2842,7 +2842,7 @@ class AJAXChat
                 $allbonus = number_format(($connectyes * $bpt * 2) + $ircbonus, 2);
                 $earns = $connectyes > 0 ? '[color=#00FF00]' . $allbonus . 'bph[/color]' : '[color=#CC0000]' . $allbonus . 'bph[/color]';
                 $seedsize = get_one_row('peers AS p INNER JOIN torrents AS t ON t.id = p.torrent', 'SUM(t.size)', "WHERE p.seeder = 'yes' AND p.connectable = 'yes' AND p.userid = " . $whereisUserID);
-                $volume = '[color=#00FF00]' . human_filesize($seedsize) . '[/color]';
+                $volume = '[color=#00FF00]' . mksize($seedsize) . '[/color]';
                 $whereisRoleClass = get_user_class_name($stats['class'], true);
                 $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . '][url=' . $this->_siteConfig['baseurl'] . '/userdetails.php?id=' . $whereisUserID . '&hit=1]' . $stats['username'] . '[/url][/' . $whereisRoleClass . ']' : '@' . $textParts[1];
                 $str = '';

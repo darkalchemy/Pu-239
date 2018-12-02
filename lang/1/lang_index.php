@@ -168,8 +168,9 @@ It is your own responsibility to adhere to these terms.",
     'index_news_del' => 'Delete news',
     'index_news_added' => '&#160;-&#160;Added by ',
     'index_news_anon' => 'Anonymous',
-    'index_news_not' => 'We currently have fuck all to say :-P',
+    'index_news_not' => "<div class='right5'>No news [i]is[/i] good news!</div> :-P",
     'index_news_txt' => '&#160;-&#160;',
     //torrent freak
     'index_torr_freak' => ' Torrent Freak News',
+    'index_blocks_too_many' => "<div class='right5'>Too many to list here</div> :)",
 ];

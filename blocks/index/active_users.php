@@ -16,7 +16,7 @@ if ($active === false || is_null($active)) {
 
     $active['actcount'] = count($query);
     if ($active['actcount'] >= 100) {
-        $active['activeusers'] = format_comment('Too many to list here :)');
+        $active['activeusers'] = format_comment($lang['index_blocks_too_many'], 0);
     } elseif ($active['actcount'] > 0) {
         foreach ($query as $row) {
             $list[] = format_username($row['id']);

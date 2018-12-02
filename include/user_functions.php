@@ -45,8 +45,8 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
         ];
 
         $fluent->insertInto('ajax_chat_messages')
-            ->values($values)
-            ->execute();
+               ->values($values)
+               ->execute();
     }
 }
 
@@ -487,11 +487,11 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>Uploaded: </span>
-                                <span class='level-right'>" . human_filesize($users_data['uploaded']) . "</span>
+                                <span class='level-right'>" . mksize($users_data['uploaded']) . "</span>
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>Downloaded: </span>
-                                <span class='level-right'>" . human_filesize($users_data['downloaded']) . "</span>
+                                <span class='level-right'>" . mksize($users_data['downloaded']) . "</span>
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>Karma: </span>

@@ -195,10 +195,10 @@ function status_change(int $id)
         'status' => 0,
     ];
     $fluent->update('announcement_process')
-        ->set($set)
-        ->where('user_id = ?', $id)
-        ->where('status = 1')
-        ->execute();
+           ->set($set)
+           ->where('user_id = ?', $id)
+           ->where('status = 1')
+           ->execute();
 }
 
 /**
@@ -481,9 +481,9 @@ function get_stylesheet()
     $class_config = $cache->get('class_config_' . $style);
     if ($class_config === false || is_null($class_config)) {
         $class_config = $fluent->from('class_config')
-            ->orderBy('value ASC')
-            ->where('template = ?', $style)
-            ->fetchAll();
+                               ->orderBy('value ASC')
+                               ->where('template = ?', $style)
+                               ->fetchAll();
 
         $cache->set('class_config_' . $style, $class_config, 86400);
     }
@@ -562,8 +562,8 @@ function make_freeslots($userid, $key)
     $slot = $cache->get($key . $userid);
     if ($slot === false || is_null($slot)) {
         $slot = $fluent->from('freeslots')
-            ->where('userid = ?', $userid)
-            ->fetchAll();
+                       ->where('userid = ?', $userid)
+                       ->fetchAll();
 
         $cache->set($key . $userid, $slot, 86400 * 7);
     }
@@ -676,46 +676,32 @@ function unesc($x)
     return $x;
 }
 
-/**
- * @param     $bytes
- * @param int $dec
- *
- * @return string
- */
-function mksize($bytes, $dec = 2)
+function mksize($size)
 {
-    $neg = 1;
-    if ($bytes < 0) {
-        $neg = -1;
+    for ($i = 0; ($size / 1024) > 0.9; $i++, $size /= 1024) {
     }
 
-    $bytes = abs($bytes);
-    $bytes = max(0, (int) $bytes);
-
-    if ($bytes < 1024000) {
-        return number_format($neg * $bytes / 1024, $dec) . ' KB';
-    } //Kilobyte
-    elseif ($bytes < 1048576000) {
-        return number_format($neg * $bytes / 1048576, $dec) . ' MB';
-    } //Megabyte
-    elseif ($bytes < 1073741824000) {
-        return number_format($neg * $bytes / 1073741824, $dec) . ' GB';
-    } //Gigebyte
-    elseif ($bytes < 1099511627776000) {
-        return number_format($neg * $bytes / 1099511627776, $dec) . ' TB';
-    } //Terabyte
-    elseif ($bytes < 1125899906842624000) {
-        return number_format($neg * $bytes / 1125899906842624, $dec) . ' PB';
-    } //Petabyte
-    elseif ($bytes < 1152921504606846976000) {
-        return number_format($neg * $bytes / 1152921504606846976, $dec) . ' EB';
-    } //Exabyte
-    elseif ($bytes < 1180591620717411303424000) {
-        return number_format($neg * $bytes / 1180591620717411303424, $dec) . ' ZB';
-    } //Zettabyte
-    else {
-        return number_format($neg * $bytes / 1208925819614629174706176, $dec) . ' YB';
-    } //Yottabyte
+    return round($size, [
+            0,
+            0,
+            1,
+            2,
+            2,
+            3,
+            3,
+            4,
+            4,
+        ][$i]) . ' ' . [
+            'B',
+            'kB',
+            'MB',
+            'GB',
+            'TB',
+            'PB',
+            'EB',
+            'ZB',
+            'YB',
+        ][$i];
 }
 
 /**
@@ -910,7 +896,7 @@ function get_one_row($table, $suffix, $where)
  */
 function stderr($heading, $text, $class = null)
 {
-    echo stdhead() . stdmsg($heading, $text, $class . ' bottom20') . stdfoot();
+    echo stdhead() . stdmsg($heading, $text, $class) . stdfoot();
     die();
 }
 
@@ -1136,19 +1122,22 @@ function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc
         $hours = intval($date / 3600);
         $date -= $hours * 3600;
         $mins = intval($date / 60);
-        //$secs = $date - ($mins * 60);
+        $secs = $date - ($mins * 60);
         $text = [];
         if ($years > 0) {
-            $text[] = number_format($years) . ' years';
+            $text[] = number_format($years) . ' year' . plural($years);
         }
         if ($days > 0) {
-            $text[] = number_format($days) . ' days';
+            $text[] = number_format($days) . ' day' . plural($days);
         }
         if ($hours > 0) {
-            $text[] = number_format($hours) . ' hours';
+            $text[] = number_format($hours) . ' hour' . plural($hours);
         }
         if ($mins > 0) {
-            $text[] = number_format($mins) . ' min';
+            $text[] = number_format($mins) . ' min' . plural($mins);
+        }
+        if ($secs > 0) {
+            $text[] = number_format($secs) . ' sec' . plural($secs);
         }
         if (!empty($text)) {
             return implode(', ', $text);
@@ -1402,30 +1391,6 @@ function write_bonus_log($userid, $amount, $type)
 }
 
 /**
- * @param     $bytes
- * @param int $dec
- *
- * @return string
- */
-function human_filesize($bytes, $dec = 2)
-{
-    $size = [
-        'B',
-        'kB',
-        'MB',
-        'GB',
-        'TB',
-        'PB',
-        'EB',
-        'ZB',
-        'YB',
-    ];
-    $factor = floor((strlen($bytes) - 1) / 3);
-
-    return sprintf("%.{$dec}f", $bytes / pow(1024, $factor)) . @$size[$factor];
-}
-
-/**
  * @param $text
  *
  * @return string
@@ -1552,20 +1517,20 @@ function get_poll()
     $poll_data = $cache->get('poll_data_' . $CURUSER['id']);
     if ($poll_data === false || is_null($poll_data)) {
         $poll_data = $fluent->from('polls')
-            ->orderBy('start_date DESC')
-            ->limit(1)
-            ->fetch();
+                            ->orderBy('start_date DESC')
+                            ->limit(1)
+                            ->fetch();
 
         if (!empty($poll_data)) {
             $vote_data = $fluent->from('poll_voters')
-                ->select(null)
-                ->select('INET6_NTOA(ip) AS ip')
-                ->select('user_id')
-                ->select('vote_date')
-                ->where('user_id = ?', $CURUSER['id'])
-                ->where('poll_id = ?', $poll_data['pid'])
-                ->limit('1')
-                ->fetch();
+                                ->select(null)
+                                ->select('INET6_NTOA(ip) AS ip')
+                                ->select('user_id')
+                                ->select('vote_date')
+                                ->where('user_id = ?', $CURUSER['id'])
+                                ->where('poll_id = ?', $poll_data['pid'])
+                                ->limit('1')
+                                ->fetch();
 
             $poll_data['ip'] = $vote_data['ip'];
             $poll_data['user_id'] = $vote_data['user_id'];
@@ -1868,8 +1833,8 @@ function get_show_id(string $name)
     $id_array = $cache->get('tvshow_ids_' . $hash);
     if ($id_array === false || is_null($id_array)) {
         $items = $fluent->from('tvmaze')
-            ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $name)
-            ->fetchAll();
+                        ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $name)
+                        ->fetchAll();
         if ($items) {
             $id_array = $items[0];
             foreach ($items as $item) {
@@ -1898,8 +1863,8 @@ function get_show_id_by_imdb(string $imdbid)
     $id_array = $cache->get('tvshow_ids_' . $imdbid);
     if ($id_array === false || is_null($id_array)) {
         $id_array = $fluent->from('tvmaze')
-            ->where('imdb_id = ?', $imdbid)
-            ->fetch();
+                           ->where('imdb_id = ?', $imdbid)
+                           ->fetch();
         if ($id_array) {
             $cache->set('tvshow_ids_' . $imdbid, $id_array, 0);
         }
@@ -1937,7 +1902,7 @@ function GetDirectorySize($path, $human = true)
     }
 
     if ($human) {
-        return human_filesize($bytestotal);
+        return mksize($bytestotal);
     }
 
     return $bytestotal;
@@ -1950,7 +1915,8 @@ function GetDirectorySize($path, $human = true)
  */
 function formatQuery($query)
 {
-    $query = preg_replace('/\b(WHERE|FROM|GROUP BY|HAVING|ORDER BY|LIMIT|OFFSET|UNION|ON DUPLICATE KEY UPDATE|VALUES|SET)\b/', "\n$0", $query);
+    $query = preg_replace('/\b(WHERE|FROM|GROUP BY|HAVING|ORDER BY|LIMIT|OFFSET|UNION|ON DUPLICATE KEY UPDATE|VALUES|SET)\b/',
+        "\n$0", $query);
     $query = preg_replace('/\b(INNER|OUTER|LEFT|RIGHT|FULL|CASE|WHEN|END|ELSE|AND)\b/', "\n\t$0", $query);
     $query = preg_replace("/\s+\n/", "\n", $query); // remove trailing spaces
     return $query;
@@ -1996,7 +1962,7 @@ function fetch($url)
         if ($res = $client->request('GET', $url)) {
             if ($res->getStatusCode() === 200) {
                 return $res->getBody()
-                    ->getContents();
+                           ->getContents();
             }
         } else {
             return false;
@@ -2017,11 +1983,11 @@ function get_body_image($details, $portrait = false)
         $images = $cache->get('backgrounds_' . $torrent['imdb_id']);
         if ($images === false || is_null($images)) {
             $images = $fluent->from('images')
-                ->select(null)
-                ->select('url')
-                ->where('type = "background"')
-                ->where('imdb_id = ?', $torrent['imdb_id'])
-                ->fetchAll();
+                             ->select(null)
+                             ->select('url')
+                             ->where('type = "background"')
+                             ->where('imdb_id = ?', $torrent['imdb_id'])
+                             ->fetchAll();
 
             $cache->set('backgrounds_' . $torrent['imdb_id'], $images, 86400);
         }
@@ -2037,9 +2003,9 @@ function get_body_image($details, $portrait = false)
     $backgrounds = $cache->get('backgrounds_');
     if ($backgrounds === false || is_null($backgrounds)) {
         $results = $fluent->from('images')
-            ->select(null)
-            ->select('url')
-            ->where('type = ?', 'background');
+                          ->select(null)
+                          ->select('url')
+                          ->where('type = ?', 'background');
 
         $backgrounds = [];
         foreach ($results as $background) {
@@ -2072,7 +2038,8 @@ function check_install_dir()
     global $session;
 
     if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {
-        $session->set('is-danger', '[h2]This site is vulnerable until you delete the install directory[/h2]rm -r ' . ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR);
+        $session->set('is-danger',
+            '[h2]This site is vulnerable until you delete the install directory[/h2]rm -r ' . ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR);
     }
 }
 

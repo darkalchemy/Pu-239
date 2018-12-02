@@ -50,7 +50,7 @@ if ($blackjack['gm'] < $blackjack['max'] && $blackjack['gm'] > $blackjack['min']
 } else {
     $blackjack['quantity'] = $blackjack['min'];
 }
-$blackjack['min_text'] = mksize($blackjack['quantity'] * 1073741824, 1);
+$blackjack['min_text'] = mksize($blackjack['quantity'] * 1073741824);
 $id = $blackjack['id'];
 
 if ($CURUSER['uploaded'] < 1073741824 * $blackjack['quantity']) {
@@ -107,7 +107,7 @@ $opponent = isset($nick['username']) ? '<h3>Your Opponent is: ' . format_usernam
 $required_ratio = 1.0;
 
 $blackjack['mb'] = 1024 * 1024 * 1024 * $blackjack['modifier'];
-$game_size = mksize($blackjack['mb'], 0);
+$game_size = mksize($blackjack['mb']);
 $link = '[url=' . $site_config['baseurl'] . '/blackjack.php?id=' . $id . ']BlackJack ' . $game_size . '[/url]';
 $dt = TIME_NOW;
 $game = isset($_POST['game']) ? htmlsafechars($_POST['game']) : '';
@@ -207,7 +207,7 @@ if ($game) {
     if ($_POST['game'] === 'hit') {
         if ($start_ === 'yes') {
             if ($CURUSER['uploaded'] < $blackjack['mb']) {
-                stderr("{$lang['bj_sorry2']} " . $CURUSER['username'], "{$lang['bj_you_have_not_uploaded']} " . mksize($blackjack['mb'], 0) . ' yet.');
+                stderr("{$lang['bj_sorry2']} " . $CURUSER['username'], "{$lang['bj_you_have_not_uploaded']} " . mksize($blackjack['mb']) . ' yet.');
             }
             if ($CURUSER['downloaded'] > 0) {
                 $ratio = number_format($CURUSER['uploaded'] / $CURUSER['downloaded'], 3);
@@ -443,7 +443,7 @@ if ($game) {
                     $points_text = 'Blackjack';
                 }
                 if ($a['points'] != 21) {
-                    $winorlose = "{$lang['bj_you_won']} " . mksize($blackjack['mb'], 0);
+                    $winorlose = "{$lang['bj_you_won']} " . mksize($blackjack['mb']);
                     $sql = "UPDATE users SET uploaded = uploaded + {$blackjack['mb']}, bjwins = bjwins + {$blackjack['modifier']} WHERE id = " . sqlesc($CURUSER['id']);
                     sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
@@ -467,7 +467,7 @@ if ($game) {
                         'bjlosses' => $update['bjlosses'],
                     ], $site_config['expires']['user_cache']);
 
-                    $lost_str = str_replace('10GB', mksize($blackjack['mb'], 0), $lang['bj_you_loss_to_10']);
+                    $lost_str = str_replace('10GB', mksize($blackjack['mb']), $lang['bj_you_loss_to_10']);
                     $msg = "BlackJack $game_size: $lost_str " . $CURUSER['username'] . " ({$lang['bj_you_had']} " . $a['points'] . " {$lang['bj_points2']}, " . $CURUSER['username'] . " {$lang['bj_had_21_points']}).\n\n";
                     $subject = $lang['bj_blackjack_results'];
                     $outcome = "{$dbl_text}and won";
@@ -552,7 +552,7 @@ if ($game) {
                     $outcome = "{$dbl_text}and busted";
                 } else {
                     $subject = $lang['bj_blackjack_results'];
-                    $winorlose = "{$lang['bj_you_lost']} " . mksize($blackjack['mb'], 0);
+                    $winorlose = "{$lang['bj_you_lost']} " . mksize($blackjack['mb']);
 
                     $sql = "UPDATE users SET uploaded = uploaded + {$blackjack['mb']}, bjwins = bjwins + {$blackjack['modifier']} WHERE id = " . sqlesc($a['userid']);
                     sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -578,7 +578,7 @@ if ($game) {
                         'bjlosses' => $update['bjlosses'],
                     ], $site_config['expires']['user_cache']);
 
-                    $won_str = str_replace('10GB', mksize($blackjack['mb'], 0), $lang['bj_you_beat_10']);
+                    $won_str = str_replace('10GB', mksize($blackjack['mb']), $lang['bj_you_beat_10']);
                     $msg = "BlackJack $game_size: $won_str " . $CURUSER['username'] . " ({$lang['bj_you_had']} " . $a['points'] . " {$lang['bj_points2']}, " . $CURUSER['username'] . " had $points points).\n\n";
                     $outcome = "{$dbl_text}and lost";
                 }
@@ -771,9 +771,9 @@ if ($game) {
                 // winner $CURUSER
                 if (($a['points'] < $playerarr['points'] && $a['points'] < 21) || ($a['points'] > $playerarr['points'] && $a['points'] > 21)) {
                     $subject = $lang['bj_blackjack_results'];
-                    $lost_str = str_replace('10GB', mksize($blackjack['mb'], 0), $lang['bj_you_loss_to_10']);
+                    $lost_str = str_replace('10GB', mksize($blackjack['mb']), $lang['bj_you_loss_to_10']);
                     $msg = "BlackJack $game_size: $lost_str " . $CURUSER['username'] . " ({$lang['bj_you_had']} " . htmlsafechars($a['points']) . " {$lang['bj_points2']}, " . $CURUSER['username'] . ' had ' . htmlsafechars($playerarr['points']) . " points).\n\n";
-                    $winorlose = "{$lang['bj_you_won']} " . mksize($blackjack['mb'], 0);
+                    $winorlose = "{$lang['bj_you_won']} " . mksize($blackjack['mb']);
                     $st_query = '+ ' . $blackjack['mb'] . ', bjwins = bjwins +';
                     $nd_query = '- ' . $blackjack['mb'] . ', bjlosses = bjlosses +';
                     $update['uploaded'] = ($User['uploaded'] + $blackjack['mb']);
@@ -786,9 +786,9 @@ if ($game) {
                 // loser $CURUSER
                 } elseif (($a['points'] > $playerarr['points'] && $a['points'] < 21) || $a['points'] == 21 || ($a['points'] < $playerarr['points'] && $a['points'] > 21)) {
                     $subject = $lang['bj_blackjack_results'];
-                    $won_str = str_replace('10GB', mksize($blackjack['mb'], 0), $lang['bj_you_beat_10']);
+                    $won_str = str_replace('10GB', mksize($blackjack['mb']), $lang['bj_you_beat_10']);
                     $msg = "BlackJack $game_size: $won_str " . $CURUSER['username'] . " ({$lang['bj_you_had']} " . htmlsafechars($a['points']) . " {$lang['bj_points2']}, " . $CURUSER['username'] . ' had ' . htmlsafechars($playerarr['points']) . " points).\n\n";
-                    $winorlose = "{$lang['bj_you_lost']} " . mksize($blackjack['mb'], 0);
+                    $winorlose = "{$lang['bj_you_lost']} " . mksize($blackjack['mb']);
                     $st_query = '- ' . $blackjack['mb'] . ', bjlosses = bjlosses +';
                     $nd_query = '+ ' . $blackjack['mb'] . ', bjwins = bjwins +';
                     $update['uploaded'] = ($a['uploaded'] + $blackjack['mb']);
@@ -893,11 +893,11 @@ if ($game) {
         $doubled = "
             <tr class='no_hover'>
                 <td>
-                    <div class='has-text-centered'>" . format_username($nick['id']) . ' has Doubled Down, thereby doubling the bet to ' . mksize($blackjack['mb'], 0) . '.</div>
+                    <div class='has-text-centered'>" . format_username($nick['id']) . ' has Doubled Down, thereby doubling the bet to ' . mksize($blackjack['mb']) . '.</div>
                 </td>
             </tr>';
     }
-    $game_str = str_replace('10GB', mksize($blackjack['mb'], 0), $lang['bj_bj_note_cost_10']);
+    $game_str = str_replace('10GB', mksize($blackjack['mb']), $lang['bj_bj_note_cost_10']);
 
     $HTMLOUT .= "
                 <a id='blackjack-hash'></a>
@@ -917,9 +917,10 @@ if ($game) {
                         <td class='has-text-centered'>
                             <p>{$lang['bj_you_most_collect_21']}</p>
                             <p>{$lang['bj_note']} {$game_str}</p>
-                            <p>You can lose 1.5 times your bet if you lose to a Natural Blackjack and a winning Natural Blackjack pays out at 1.5 times the bet.</p>
-                            <p>The first player is considered the player and the second is considered the dealer. Only the player can double down on 9, 10, 11 and receive 1 card only.</p>
-                            <p>The dealer can see the upcards of the player but must draw a card for anything less than 17. No one wins a tie.</p>
+                            <p>{$lang['bj_rules_1']}</p>
+                            <p>{$lang['bj_rules_2']}</p>
+                            <p>{$lang['bj_rules_3']}</p>
+                            <p>{$lang['bj_rules_4']}</p>
                         </td>
                     </tr>
                     <tr class='no_hover'>
@@ -948,11 +949,11 @@ if ($game) {
                     <tbody>
                         <tr class='no_hover'>
                             <td>{$lang['bj_wins']}</td>
-                            <td>" . human_filesize($tot_wins) . "</td>
+                            <td>" . mksize($tot_wins) . "</td>
                         </tr>
                         <tr class='no_hover'>
                             <td>{$lang['bj_losses']}</td>
-                            <td>" . human_filesize($tot_losses) . "</td>
+                            <td>" . mksize($tot_losses) . "</td>
                         </tr>
                         <tr class='no_hover'>
                             <td>{$lang['bj_win']} {$lang['bj_percentage']}</td>
@@ -960,7 +961,7 @@ if ($game) {
                         </tr>
                         <tr class='no_hover'>
                             <td>+/-</td>
-                            <td>" . human_filesize($plus_minus) . '</td>
+                            <td>" . mksize($plus_minus) . '</td>
                         </tr>
                 </table>';
     // site stats
@@ -990,13 +991,13 @@ if ($game) {
                                 " . format_username($bjuser['id']) . '
                             </td>
                             <td>
-                                ' . human_filesize($bjuser['sum']) . '
+                                ' . mksize($bjuser['sum']) . '
                             </td>
                             <td>
-                                ' . human_filesize($bjuser['wins']) . '
+                                ' . mksize($bjuser['wins']) . '
                             </td>
                             <td>
-                                ' . human_filesize($bjuser['losses']) . '
+                                ' . mksize($bjuser['losses']) . '
                             </td>
                         </tr>';
     }

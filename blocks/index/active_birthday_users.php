@@ -16,7 +16,7 @@ if ($birthday === false || is_null($birthday)) {
 
     $birthday['count'] = count($query);
     if ($birthday['count'] >= 100) {
-        $birthday['birthdayusers'] = format_comment('Too many to list here :)');
+        $birthday['birthdayusers'] = format_comment($lang['index_blocks_too_many'], 0);
     } elseif ($birthday['count'] > 0) {
         foreach ($query as $row) {
             $list[] = format_username($row['id']);

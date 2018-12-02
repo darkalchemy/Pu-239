@@ -537,7 +537,7 @@ switch ($_GET['op']) {
             </tr>
             <tr>
                 <td>Total Memcache Cache</td>
-                <td>' . human_filesize($memcacheStats['limit_maxbytes']) . '</td>
+                <td>' . mksize($memcacheStats['limit_maxbytes']) . '</td>
             </tr>';
 
         $HTMLOUT .= main_table($body) . "
@@ -567,11 +567,11 @@ switch ($_GET['op']) {
             </tr>
             <tr>
                 <td>Used Cache Size</td>
-                <td>' . human_filesize($memcacheStatsSingle[$server]['STAT']['bytes']) . '</td>
+                <td>' . mksize($memcacheStatsSingle[$server]['STAT']['bytes']) . '</td>
             </tr>
             <tr>
                 <td>Total Cache Size</td>
-                <td>' . human_filesize($memcacheStatsSingle[$server]['STAT']['limit_maxbytes']) . '</td>
+                <td>' . mksize($memcacheStatsSingle[$server]['STAT']['limit_maxbytes']) . '</td>
             </tr>';
         }
         $HTMLOUT .= main_table($body) . "
@@ -595,7 +595,7 @@ switch ($_GET['op']) {
             </tr>
             <tr>
                 <td>
-                    <span class='has-text-success'>Free: </span>" . human_filesize($mem_avail) . sprintf(' (%.1f%%)', $mem_avail * 100 / $mem_size) . "
+                    <span class='has-text-success'>Free: </span>" . mksize($mem_avail) . sprintf(' (%.1f%%)', $mem_avail * 100 / $mem_size) . "
                 </td>
                 <td>
                     <span class='has-text-success'>Hits: </span>" . $hits . sprintf(' (%.1f%%)', $hits * 100 / ($hits + $misses)) . "
@@ -603,7 +603,7 @@ switch ($_GET['op']) {
             </tr>
             <tr>
                 <td>
-                    <span class='has-text-danger'>Used: </span>" . human_filesize($mem_used) . sprintf(' (%.1f%%)', $mem_used * 100 / $mem_size) . "
+                    <span class='has-text-danger'>Used: </span>" . mksize($mem_used) . sprintf(' (%.1f%%)', $mem_used * 100 / $mem_size) . "
                 </td>
                 <td>
                     <span class='has-text-danger'>Misses: </span>" . $misses . sprintf(' (%.1f%%)', $misses * 100 / ($hits + $misses)) . '
@@ -725,7 +725,7 @@ switch ($_GET['op']) {
                 <td>
                     $theKey<br>
                     flag: {$r['VALUE'][$theKey]['stat']['flag']}<br>
-                    Size: " . human_filesize($r['VALUE'][$theKey]['stat']['size']) . '
+                    Size: " . mksize($r['VALUE'][$theKey]['stat']['size']) . '
                 </td>
                 <td>' . chunk_split($r['VALUE'][$theKey]['value'], 40) . "</td>
                 <td>

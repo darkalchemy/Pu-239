@@ -28,7 +28,6 @@ $list = [
     'announcement_on',
     'donation_progress_on',
     'ads_on',
-    'radio_on',
     'torrentfreak_on',
     'christmas_gift_on',
     'active_poll_on',
@@ -259,13 +258,6 @@ $contents[] = "
                                 <#ads_on#>
                             </div>
                             <div class='w-100'>{$lang['block_advertise_set']}</div>";
-
-$contents[] = "
-                            <div class='w-100'>{$lang['block_radio']}</div>
-                            <div class='slideThree'>
-                                <#radio_on#>
-                            </div>
-                            <div class='w-100'>{$lang['block_radio_set']}</div>";
 
 $contents[] = "
                             <div class='w-100'>{$lang['block_torrent_freak']}</div>

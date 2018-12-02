@@ -28,6 +28,7 @@ $lang = [
     'gl_browse' => 'Browse',
     'gl_search' => 'Search',
     'gl_upload' => 'Upload',
+    'gl_subtitles' => 'Subtitles',
     'gl_requests' => 'Requests',
     'gl_offers' => 'Offers',
     'gl_uapp' => 'Upload app',

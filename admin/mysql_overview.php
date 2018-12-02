@@ -2,137 +2,92 @@
 
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
+require_once INCL_DIR . 'html_functions.php';
 class_check(UC_MAX);
-global $site_config, $lang;
+global $site_config, $lang, $pdo;
 
 $lang = array_merge($lang, load_language('ad_mysql_overview'));
-//Do we wanna continue here, or skip to just the overview?
-if (isset($_GET['Do'], $_GET['table'])) {
-    $Do = ($_GET['Do'] === 'T') ? sqlesc($_GET['Do']) : ''; //for later use!
-    //Make sure the GET only has alpha letters and nothing else
-    if (!ereg('[^A-Za-z_]+', $_GET['table'])) {
-        $Table = '`' . $_GET['table'] . '`'; //add backquotes to GET or we is doomed!
+if (isset($_GET['Do']) && $_GET['Do'] === 'optimize' && isset($_GET['table'])) {
+    $table = htmlspecialchars(strip_tags($_GET['table']));
+    if (!preg_match('/[^A-Za-z_]+/', $table)) {
+        $Table = "`{$table}`";
     } else {
-        stderr($lang['mysql_over_error'], $lang['mysql_over_pg']); //Silly boy doh!!
+        stderr($lang['mysql_over_error'], $lang['mysql_over_pg']);
     }
     $sql = "OPTIMIZE TABLE $Table";
-    //preg match the sql incase it was hijacked somewhere!(will use CHECK|ANALYZE|REPAIR|later
     if (preg_match('@^(CHECK|ANALYZE|REPAIR|OPTIMIZE)[[:space:]]TABLE[[:space:]]' . $Table . '$@i', $sql)) {
-        //all good? Do it!
-        @sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=mysql_overview&action=mysql_overview&Do=F");
+        $query = $pdo->query($sql);
+        $query->execute();
+        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=mysql_overview&action=mysql_overview");
         exit;
     }
 }
-//byteunit array to prime formatByteDown function
-$GLOBALS['byteUnits'] = [
-    'Bytes',
-    'KB',
-    'MB',
-    'GB',
-    'TB',
-    'PB',
-    'EB',
-];
-/**
- * @param     $value
- * @param int $limes
- * @param int $comma
- *
- * @return array
- */
-function byteformat($value, $limes = 2, $comma = 0)
-{
-    $dh = pow(10, $comma);
-    $li = pow(10, $limes);
-    $return_value = $value;
-    $unit = $GLOBALS['byteUnits'][0];
-    for ($d = 6, $ex = 15; $d >= 1; $d--, $ex -= 3) {
-        if (isset($GLOBALS['byteUnits'][$d]) && $value >= $li * pow(10, $ex)) {
-            $value = round($value / (pow(1024, $d) / $dh)) / $dh;
-            $unit = $GLOBALS['byteUnits'][$d];
-            break 1;
-        } // end if
-    } // end for
-    if ($unit != $GLOBALS['byteUnits'][0]) {
-        $return_value = number_format($value, $comma, '.', ',');
-    } else {
-        $return_value = number_format($value, 0, '.', ',');
-    }
 
-    return [
-        $return_value,
-        $unit,
-    ];
-} // end of the 'formatByteDown' function
-////////////////// END FUNCTION LIST /////////////////////////
-$HTMLOUT = '';
-$HTMLOUT .= "<h2>{$lang['mysql_over_title']}</h2>
+$HTMLOUT = "
+    <h1 class='has-text-centered'>{$lang['mysql_over_title']}</h1>";
 
-    <!-- Start table -->
-
-    <table class='torrenttable'>
-
-    <!-- Start table headers -->
-    <tr>
-
-    <td class='colhead'>{$lang['mysql_over_name']}</td>
-                    
-    <td class='colhead'>{$lang['mysql_over_size']}</td>
-                    
-    <td class='colhead'>{$lang['mysql_over_rows']}</td>
-                    
-    <td class='colhead'>{$lang['mysql_over_avg_row']}</td>
-                    
-    <td class='colhead'>{$lang['mysql_over_data_length']}</td>
-                    
-    <!-- <td class='colhead'>{$lang['mysql_over_max_data_length']}</td> -->
-                    
-    <td class='colhead'>{$lang['mysql_over_index_length']}</td>
-                    
-    <td class='colhead'>{$lang['mysql_over_overhead']}</td>
-                    
-    <!-- <td class='colhead'>{$lang['mysql_over_auto_increment']}</td> -->
-                    
-    <!-- <td class='colhead'>{$lang['mysql_over_timings']}</td> -->
-                    
-    </tr>
-            
-    <!-- End table headers -->";
-$count = 0;
-$res = @sql_query("SHOW TABLE STATUS FROM {$_ENV['DB_DATABASE']}") or stderr(__FILE__, __LINE__);
-while ($row = mysqli_fetch_array($res)) {
-    list($formatted_Avg, $formatted_Abytes) = byteformat($row['Avg_row_length']);
-    list($formatted_Dlength, $formatted_Dbytes) = byteformat($row['Data_length']);
-    list($formatted_Ilength, $formatted_Ibytes) = byteformat($row['Index_length']);
-    list($formatted_Dfree, $formatted_Fbytes) = byteformat($row['Data_free']);
-    $tablesize = ($row['Data_length']) + ($row['Index_length']);
-    list($formatted_Tsize, $formatted_Tbytes) = byteformat($tablesize, 3, ($tablesize > 0) ? 1 : 0);
-    $thispage = '&amp;Do=T&amp;table=' . urlencode($row['Name']);
-    $overhead = ($formatted_Dfree > 0) ? "<a href='staffpanel.php?tool=mysql_overview&amp;action=mysql_overview$thispage'><span class='has-text-danger'><b>$formatted_Dfree $formatted_Fbytes</b></span></a>" : "$formatted_Dfree $formatted_Fbytes";
-    $HTMLOUT .= "<tr>
-          <td><span style='font-weight:bold;'>" . strtoupper($row['Name']) . "</span></td>
-          <td>{$formatted_Tsize} {$formatted_Tbytes}</td>
-          <td>{$row['Rows']}</td>
-          <td>{$formatted_Avg} {$formatted_Abytes}</td>
-          <td>{$formatted_Dlength} {$formatted_Dbytes}</td>
-          <td>{$formatted_Ilength} {$formatted_Ibytes}</td>
-          <td>{$overhead}</td>
-        </tr>
+$heading = "
         <tr>
-          <td colspan='7'><i><b>{$lang['mysql_over_rf']}</b></i> {$row['Row_format']}
-          <br><i><b>{$lang['mysql_over_ct']}</b></i> {$row['Create_time']}
-          <br><i><b>{$lang['mysql_over_ut']}</b></i> {$row['Update_time']}
-          <br><i><b>{$lang['mysql_over_chkt']}</b></i> {$row['Check_time']}</td>
+            <th>{$lang['mysql_over_name']}</th>
+            <th class='has-text-centered'>{$lang['mysql_over_rows']}</th>
+            <th class='has-text-centered'>{$lang['mysql_over_avg_row']}</th>
+            <th class='has-text-centered'>{$lang['mysql_over_data_length']}</th>
+            <th class='has-text-centered'>{$lang['mysql_over_index_length']}</th>
+            <th class='has-text-centered'>{$lang['mysql_over_table_length']}</th>
+            <th class='has-text-centered'>{$lang['mysql_over_overhead']}</th>
+            <th class='has-text-centered'>{$lang['mysql_over_auto_increment']}</th>
+            <th class='has-text-centered'>{$lang['mysql_over_rf']}</th>
+            <th class='has-text-centered'>{$lang['mysql_over_collation']}</th>
+            <th class='has-text-centered'>{$lang['mysql_over_ct']}</th>
+            <th class='has-text-centered'>{$lang['mysql_over_ut']}</th>
+            <th class='has-text-centered'>{$lang['mysql_over_chkt']}</th>
         </tr>";
-    //do sums
-    ++$count;
-} //end while
-$HTMLOUT .= "<tr>
-      <td><b>{$lang['mysql_over_tables']} {$count}</b></td>
-      <td colspan='6'>{$lang['mysql_over_if']} <span style='font-weight:bold;color:red;'>{$lang['mysql_over_red']}</span>{$lang['mysql_over_it_needs']}</td>
-    </tr>
 
-    <!-- End table -->
-    </table>";
+$count = 0;
+$tables = $pdo->query('SHOW TABLE STATUS FROM ' . $_ENV['DB_DATABASE']);
+$body = '';
+if (!empty($tables)) {
+    while ($row = $tables->fetch()) {
+        //dd($row);
+        $avg_length = mksize($row['Avg_row_length']);
+        $data_length = mksize($row['Data_length']);
+        $index_length = mksize($row['Index_length']);
+        $data_free = mksize($row['Data_free']);
+        $tablesize = $row['Data_length'] + $row['Index_length'];
+        $table_length = mksize($tablesize);
+        $update_time = !empty($row['Update_time']) ? $row['Update_time'] : 'null';
+        $check_time = !empty($row['Check_time']) ? $row['Check_time'] : 'null';
+        $autoincrement = !empty($row['Auto_increment']) ? $row['Auto_increment'] : 'null';
+        $thispage = '&amp;Do=optimize&amp;table=' . urlencode($row['Name']);
+        $overhead = ($row['Data_free'] > 1024 * 1024 * 10) ? "
+                <a href='{$site_config['baseurl']}/staffpanel.php?tool=mysql_overview&amp;action=mysql_overview$thispage'>
+                    <span class='has-text-danger has-text-weight-bold'>$data_free</span>
+                </a>" : $data_free;
+        $body .= '
+            <tr >
+                <td>' . strtoupper($row['Name']) . "</td>
+                <td class='has-text-centered'>{$row['Rows']}</td>
+                <td class='has-text-centered'>{$avg_length}</td>
+                <td class='has-text-centered'>{$data_length}</td>
+                <td class='has-text-centered'>{$index_length}</td>
+                <td class='has-text-centered'>{$table_length}</td>
+                <td class='has-text-centered'>{$overhead}</td>
+                <td class='has-text-centered'>{$autoincrement}</td>
+                <td class='has-text-centered'>{$row['Row_format']}</td>
+                <td class='has-text-centered'>{$row['Collation']}</td>
+                <td class='has-text-centered'>{$row['Create_time']}</td>
+                <td class='has-text-centered'>{$update_time}</td>
+                <td class='has-text-centered'>{$check_time}</td>
+            </tr>";
+        ++$count;
+    }
+}
+$body .= "
+        <tr>
+            <td><b>{$lang['mysql_over_tables']} {$count}</b></td>
+            <td colspan='12'>{$lang['mysql_over_if']} <span class='has-text-danger has-text-weight-bold'>{$lang['mysql_over_red']}</span>{$lang['mysql_over_it_needs']}</td>
+        </tr>";
+
+$HTMLOUT .= main_table($body, $heading);
+
 echo stdhead($lang['mysql_over_stdhead']) . wrapper($HTMLOUT) . stdfoot();

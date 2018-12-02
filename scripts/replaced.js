@@ -9,14 +9,6 @@ function SelectAll(id) {
     document.getElementById(id).select();
 }
 
-function themes() {
-    PopUp('take_theme.php', 'My themes', 300, 150, 1, 0);
-}
-
-function radio() {
-    PopUp('radio_popup.php', 'My Radio', 800, 700, 1, 0);
-}
-
 function togglepic(bu, picid, formid) {
     var pic = document.getElementById(picid);
     var form = document.getElementById(formid);

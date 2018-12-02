@@ -38,6 +38,7 @@ $folders = [
     ROOT_DIR . '.git',
     ROOT_DIR . 'dir_list/',
     ROOT_DIR . 'uploads/',
+    ROOT_DIR . 'uploadsub/',
     CHAT_DIR . 'js/',
     PUBLIC_DIR . 'images/proxy/',
 ];

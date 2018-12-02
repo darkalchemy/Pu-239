@@ -11,8 +11,9 @@ function optimizedb($data)
 
     set_time_limit(1200);
     ignore_user_abort(true);
-
-    $sql = sql_query("SHOW TABLE STATUS FROM {$_ENV['DB_DATABASE']} WHERE Data_free > 1000") or sqlerr(__FILE__, __LINE__);
+    $minwaste = 1024 * 1024 * 10; // 10 MB
+    $sql = sql_query("SHOW TABLE STATUS FROM {$_ENV['DB_DATABASE']} WHERE Data_free > " . sqlesc($minwaste)) or sqlerr(__FILE__,
+        __LINE__);
     $oht = '';
     $tables = [];
 

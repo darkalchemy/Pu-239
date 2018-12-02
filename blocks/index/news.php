@@ -66,7 +66,7 @@ if ($news) {
 } else {
     $site_news .= main_div("
                     <div class='bg-02 round5 padding20'>
-                        <div class='has-text-white'>
+                        <div class='has-text-white level-center-center'>
                             " . format_comment($lang['index_news_not'], 0) . '
                         </div>
                     </div>');

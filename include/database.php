@@ -13,9 +13,21 @@ $pdo->setAttribute(PDO::ATTR_PERSISTENT, false);
 
 $fluent = new Envms\FluentPDO\Query($pdo);
 
-if (SQL_DEBUG && $_SERVER['PHP_SELF'] != '/announce.php') {
+$ignore = [
+    '/announce.php',
+    '/scrape.php',
+    '/rss.php',
+    '/ajaxchat.php',
+    INCL_DIR . 'cron_controller.php',
+    PUBLIC_DIR . 'ajax/trivia_lookup.php',
+    PUBLIC_DIR . 'ajax/trivia_answers.php',
+];
+
+if (SQL_DEBUG && !in_array($_SERVER['PHP_SELF'], $ignore)) {
+    file_put_contents('/var/log/nginx/fluent.log', $_SERVER['PHP_SELF'] . PHP_EOL, FILE_APPEND);
     $fluent->debug = function ($BaseQuery) {
         global $pdo, $query_stat;
+
         $params = [];
         $query = str_replace(' ?', ' %s', $BaseQuery->getQuery(true));
         $paramaters = $BaseQuery->getParameters();

@@ -16,7 +16,7 @@
   ],
   "devDependencies": {
     "autoprefixer": "^9.3.1",
-    "browserslist": "^4.3.4",
+    "browserslist": "^4.3.5",
     "bulma": "^0.7.2",
     "clean-css": "^4.2.1",
     "clean-css-cli": "^4.2.1",

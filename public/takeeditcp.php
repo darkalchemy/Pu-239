@@ -354,7 +354,7 @@ if ($action == 'avatar') {
         $user_cache['use_12_hour'] = $is_12_hour;
         $session->set('use_12_hour', $is_12_hour);
     }
-    if (isset($_POST['fontsize']) && is_int($fontsize) && ($fontsize = $_POST['fontsize']) != $CURUSER['font_size']) {
+    if (isset($_POST['fontsize']) && ($fontsize = $_POST['fontsize']) != $CURUSER['font_size']) {
         $updateset[] = 'font_size = ' . sqlesc($fontsize);
         $curuser_cache['font_size'] = $fontsize;
         $user_cache['font_size'] = $fontsize;

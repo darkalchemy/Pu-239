@@ -22,7 +22,7 @@ foreach ($paths as $path) {
         }
     }
 }
-$dirsize = human_filesize($dirsize);
+$dirsize = mksize($dirsize);
 echo "$o images validated
 Images size: $dirsize
 $i bad images removed\n";

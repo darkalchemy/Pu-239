@@ -165,9 +165,9 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     $cache->delete('is_staffs_');
                     $cache->delete('av_class_');
                     $classes = $fluent->from('class_config')
-                        ->select(null)
-                        ->select('DISTINCT value AS value')
-                        ->where('value >= ?', UC_STAFF);
+                                      ->select(null)
+                                      ->select('DISTINCT value AS value')
+                                      ->where('value >= ?', UC_STAFF);
                     foreach ($classes as $class) {
                         $cache->delete('staff_panels_' . $class);
                     }
@@ -188,14 +188,14 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         'av_class' => (int) $_POST['av_class'],
                     ];
                     $fluent->update('staffpanel')
-                        ->set($set)
-                        ->where('id = ?', $id)
-                        ->execute();
+                           ->set($set)
+                           ->where('id = ?', $id)
+                           ->execute();
                     $cache->delete('av_class_');
                     $classes = $fluent->from('class_config')
-                        ->select(null)
-                        ->select('DISTINCT value AS value')
-                        ->where('value >= ?', UC_STAFF);
+                                      ->select(null)
+                                      ->select('DISTINCT value AS value')
+                                      ->where('value >= ?', UC_STAFF);
                     foreach ($classes as $class) {
                         $cache->delete('staff_panels_' . $class['value']);
                     }
@@ -318,10 +318,14 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $add_button = '';
         if ($CURUSER['class'] >= UC_SYSOP) {
             $add_button = "
-                <div class='level-center bottom20'>
-                    <a href='{$site_config['baseurl']}/staffpanel.php?action=add' class='tooltipper button is-small' title='{$lang['spanel_add_a_new_pg']}'>{$lang['spanel_add_a_new_pg']}</a>
-                    <a href='{$site_config['baseurl']}/staffpanel.php?action=flush' class='tooltipper button is-small' title='{$lang['spanel_flush_cache']}'>{$lang['spanel_flush_cache']}</a>
-                </div>";
+                <ul class='level-center bg-06'>
+                    <li class='margin10'>
+                        <a href='{$site_config['baseurl']}/staffpanel.php?action=add' class='tooltipper' title='{$lang['spanel_add_a_new_pg']}'>{$lang['spanel_add_a_new_pg']}</a>
+                    </li>
+                    <li class='margin10'>
+                        <a href='{$site_config['baseurl']}/staffpanel.php?action=flush' class='tooltipper' title='{$lang['spanel_flush_cache']}'>{$lang['spanel_flush_cache']}</a>
+                    </li>
+                </ul>";
         }
         $res = sql_query('SELECT s.*, u.username 
                                 FROM staffpanel AS s
@@ -337,7 +341,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 $db_classes[$value['av_class']][] = $value['av_class'];
             }
             $i = 1;
-            $HTMLOUT .= "
+            $HTMLOUT .= "{$add_button}
             <h1 class='has-text-centered'>{$lang['spanel_welcome']} {$CURUSER['username']} {$lang['spanel_to_the']} {$lang['spanel_header']}!</h1>";
 
             $header = "
@@ -359,8 +363,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 if (!in_array($arr['av_class'], $unique_classes)) {
                     $unique_classes[] = $arr['av_class'];
                     $table = "
-            <h1 class='has-text-centered top20 text-shadow " . get_user_class_name($arr['av_class'], true) . "'>" . get_user_class_name($arr['av_class']) . "'s Panel</h1>
-            {$add_button}";
+            <h1 class='has-text-centered text-shadow " . get_user_class_name($arr['av_class'], true) . "'>" . get_user_class_name($arr['av_class']) . "'s Panel</h1>";
                 }
                 $show_in_nav = $arr['navbar'] == 1 ? '<span class="has-text-success">true</span>' : '<span class="has-text-info">false</span>';
 

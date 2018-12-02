@@ -1639,4 +1639,18 @@ $sql_updates = [
         'query' => 'UPDATE `cleanup` SET `clean_title` = "Christmas Gift Reset" WHERE `clean_title` = "Christmas Gift Rest"',
         'flush' => false,
     ],
+    [
+        'id' => 1543666178,
+        'info' => 'Add Staff page',
+        'date' => '01 Dec, 2018',
+        'query' => "INSERT INTO `staffpanel` (`page_name`, `file_name`, `description`, `type`, `av_class`, `added_by`, `added`, `navbar`) VALUES ('MySQL Overview', 'staffpanel.php?tool=mysql_overview', 'MySQL Overview', 'stats', 6, 1, 1543666178, 1)",
+        'flush' => false,
+    ],
+    [
+        'id' => 1543704690,
+        'info' => 'Alter table',
+        'date' => '01 Dec, 2018',
+        'query' => 'ALTER TABLE `subtitles` MODIFY COLUMN `lang` tinyint NOT NULL DEFAULT 1',
+        'flush' => false,
+    ],
 ];

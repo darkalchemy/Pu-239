@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'bbcode_functions.php';
-global $site_config, $user_stuffs, $fluent;
+global $site_config, $user_stuffs, $fluent, $cache;
 
 $torrent_pass = isset($_GET['torrent_pass']) ? htmlsafechars($_GET['torrent_pass']) : '';
 if (!empty($torrent_pass)) {
@@ -13,7 +13,7 @@ if (!empty($torrent_pass)) {
         if (!$user) {
             format_rss('Your torrent pass is invalid! Go to ' . $site_config['site_name'] . ' and reset your passkey');
         } elseif ($user['downloadpos'] != 1) {
-            format_rss('You download privileges have been removed.');
+            format_rss('Your download privileges have been removed.');
         }
     }
 } else {
@@ -38,38 +38,47 @@ if (!empty($_GET['count']) && in_array((int) $_GET['count'], $counts)) {
     $limit = 15;
 }
 
-$sql = $fluent->from('torrents AS t')
-    ->select(null)
-    ->select('t.id')
-    ->select('t.name')
-    ->select('t.descr')
-    ->select('t.size')
-    ->select('t.category')
-    ->select('t.seeders')
-    ->select('t.leechers')
-    ->select('t.added')
-    ->select('c.name AS catname')
-    ->where('t.visible = "yes"');
+$hash = hash('sha256', json_encode($_POST));
+$data = $cache->get('rss_' . $hash);
+if ($data === false || is_null($data)) {
+    $sql = $fluent->from('torrents AS t')
+        ->select(null)
+        ->select('t.id')
+        ->select('t.name')
+        ->select('t.descr')
+        ->select('t.size')
+        ->select('t.category')
+        ->select('t.seeders')
+        ->select('t.leechers')
+        ->select('t.added')
+        ->select('c.name AS catname')
+        ->where('t.visible = "yes"');
 
-if (!empty($cats)) {
-    $sql = $sql->where('t.category', $cats);
-}
-if ($user['class'] != UC_VIP) {
-    $sql = $sql->where('t.vip = "0"');
-}
-if (isset($_GET['bm']) && (int) $_GET['bm'] === 1) {
-    $sql = $sql->where('b.userid = ?', $user['id'])
-        ->innerJoin('bookmarks AS b ON t.id = b.torrentid');
+    if (!empty($cats)) {
+        $sql = $sql->where('t.category', $cats);
+    }
+    if ($user['class'] != UC_VIP) {
+        $sql = $sql->where('t.vip = "0"');
+    }
+    if (isset($_GET['bm']) && (int) $_GET['bm'] === 1) {
+        $sql = $sql->where('b.userid = ?', $user['id'])
+            ->innerJoin('bookmarks AS b ON t.id = b.torrentid');
+    }
+
+    $sql = $sql->leftJoin('categories AS c ON t.category = c.id')
+        ->orderBy('t.added')
+        ->limit($limit);
+
+    foreach ($sql as $a) {
+        $data[] = $a;
+    }
+    if (!empty($data)) {
+        $cache->set('rss_' . $hash, $data, 300);
+    } else {
+        $data = 'No results in your request';
+    }
 }
 
-$sql = $sql->leftJoin('categories AS c ON t.category = c.id')
-    ->orderBy('t.added')
-    ->limit($limit);
-
-$data = [];
-foreach ($sql as $a) {
-    $data[] = $a;
-}
 format_rss($data);
 
 function format_rss($data)

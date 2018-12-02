@@ -47,7 +47,7 @@ $torrents = [
 $site_stats .= "
     <a id='stats-hash'></a>
     <div id='stats' class='box'>
-        <div class='columns is-multiline is-variable is-0-mobile is-0-tablet is-1-desktop'>
+        <div class='columns is-multiline is-gapless'>
             <div class='column is-half-tablet is-one-fourth-desktop'>" . wrap_this($users) . "</div>
             <div class='column is-half-tablet is-one-fourth-desktop'>" . wrap_this($gender) . "</div>
             <div class='column is-half-tablet is-one-fourth-desktop'>" . wrap_this($torrents) . "</div>

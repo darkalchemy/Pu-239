@@ -218,15 +218,16 @@ class PHPZip
             echo '<html><title>Public Photo Directory - Download </title><body><br><b>ERROR:</b> File not found.</body></html>';
             exit;
         }
-        header('Pragma: public');
+        header('Content-type: application/zip');
+        header('Content-Disposition: attachment; filename="' . basename($archiveName) . '"');
+        header('Content-Transfer-Encoding: Binary');
+        header('Content-length: ' . filesize($archiveName));
+        header('Pragma: no-cache');
         header('Expires: 0');
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Cache-Control: private', false);
-        header('Content-Type: application/zip');
-        header('Content-Encoding: zlib,deflate,gzip');
-        header('Content-Disposition: attachment; filename=' . basename($archiveName) . ';');
-        header('Content-Transfer-Encoding: binary');
-        header('Content-Length: ' . filesize($archiveName));
-        readfile("$archiveName");
+
+        ob_clean();
+        flush();
+        readfile($archiveName);
+        unlink($archiveName);
     }
-} // end of the 'PHPZip' class
+}

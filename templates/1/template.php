@@ -214,7 +214,7 @@ function stdfoot($stdfoot = false)
             $stats = apcu_cache_info();
             if ($stats) {
                 $stats['Hits'] = number_format($stats['num_hits'] / ($stats['num_hits'] + $stats['num_misses']) * 100, 3);
-                $header = "{$lang['gl_stdfoot_querys_apcu1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['num_entries']) . "{$lang['gl_stdfoot_querys_mstat6']}" . human_filesize($stats['mem_size']);
+                $header = "{$lang['gl_stdfoot_querys_apcu1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['num_entries']) . "{$lang['gl_stdfoot_querys_mstat6']}" . mksize($stats['mem_size']);
             }
         } elseif ($_ENV['CACHE_DRIVER'] === 'redis' && extension_loaded('redis')) {
             $client = new \Redis();
@@ -247,7 +247,7 @@ function stdfoot($stdfoot = false)
             }
             if ($stats && !empty($stats['get_hits']) && !empty($stats['cmd_get'])) {
                 $stats['Hits'] = number_format(($stats['get_hits'] / $stats['cmd_get']) * 100, 3);
-                $header = $lang['gl_stdfoot_querys_mstat3'] . $stats['Hits'] . $lang['gl_stdfoot_querys_mstat4'] . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['curr_items']) . "{$lang['gl_stdfoot_querys_mstat6']}" . human_filesize($stats['bytes']);
+                $header = $lang['gl_stdfoot_querys_mstat3'] . $stats['Hits'] . $lang['gl_stdfoot_querys_mstat4'] . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['curr_items']) . "{$lang['gl_stdfoot_querys_mstat6']}" . mksize($stats['bytes']);
             }
         } elseif ($_ENV['CACHE_DRIVER'] === 'files') {
             $header = "{$lang['gl_stdfoot_querys_fly1']}{$_ENV['FILES_PATH']} {$lang['gl_stdfoot_querys_fly2']}" . GetDirectorySize($_ENV['FILES_PATH']);

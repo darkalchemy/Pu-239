@@ -83,11 +83,10 @@ $right_column = [
     'active_users',
     'active_users_24',
     'christmas_gift',
-    'site_radio',
 ];
 
 $christmas_gift = $posted_comments = $advertise = $active_users = $active_users_irc = $birthday_users = $active_users_24 = $forum_posts = $staffpicks = $disclaimer = $trivia = $slider = $ajaxchat = '';
-$tfreak_feed = $torrents_top = $site_stats = $site_radio = $site_poll = $site_news = $torrents_mow = $latest_user = $torrents_scroller = $latest_torrents = '';
+$tfreak_feed = $torrents_top = $site_stats = $site_poll = $site_news = $torrents_mow = $latest_user = $torrents_scroller = $latest_torrents = '';
 $available_columns = array_merge($above_columns, $left_column, $center_column, $right_column, $below_columns);
 
 if (in_array('slider', $available_columns) && $torrent_stuffs->get_torrent_count() >= 10) {
@@ -148,10 +147,6 @@ if (in_array('christmas_gift', $available_columns) && Christmas()) {
     if (curuser::$blocks['index_page'] & block_index::CHRISTMAS_GIFT && $BLOCKS['christmas_gift_on']) {
         include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'gift.php';
     }
-}
-
-if (in_array('site_radio', $available_columns) && curuser::$blocks['index_page'] & block_index::RADIO && $BLOCKS['radio_on']) {
-    include_once BLOCK_DIR . 'index' . DIRECTORY_SEPARATOR . 'radio.php';
 }
 
 if (in_array('torrents_scroller', $available_columns) && $torrent_stuffs->get_torrent_count() >= 10) {

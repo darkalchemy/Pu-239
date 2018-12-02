@@ -122,11 +122,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $clrbits_index_page |= block_index::ADVERTISEMENTS;
     }
-    if (isset($_POST['radio'])) {
-        $setbits_index_page |= block_index::RADIO;
-    } else {
-        $clrbits_index_page |= block_index::RADIO;
-    }
     if (isset($_POST['torrentfreak'])) {
         $setbits_index_page |= block_index::TORRENTFREAK;
     } else {
@@ -422,7 +417,6 @@ $checkbox_index_latest_torrents_slider = ((curuser::$blocks['index_page'] & bloc
 $checkbox_index_announcement = ((curuser::$blocks['index_page'] & block_index::ANNOUNCEMENT) ? ' checked' : '');
 $checkbox_index_donation_progress = ((curuser::$blocks['index_page'] & block_index::DONATION_PROGRESS) ? ' checked' : '');
 $checkbox_index_ads = ((curuser::$blocks['index_page'] & block_index::ADVERTISEMENTS) ? ' checked' : '');
-$checkbox_index_radio = ((curuser::$blocks['index_page'] & block_index::RADIO) ? ' checked' : '');
 $checkbox_index_torrentfreak = ((curuser::$blocks['index_page'] & block_index::TORRENTFREAK) ? ' checked' : '');
 $checkbox_index_christmasgift = ((curuser::$blocks['index_page'] & block_index::CHRISTMAS_GIFT) ? ' checked' : '');
 $checkbox_index_active_poll = ((curuser::$blocks['index_page'] & block_index::ACTIVE_POLL) ? ' checked' : '');
@@ -679,16 +673,6 @@ if ($BLOCKS['ads_on']) {
                     <label for='advertisements'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the Advertisements.</div>";
-}
-
-if ($BLOCKS['radio_on']) {
-    $contents[] = "
-                <div class='w-100'>Enable Radio?</div>
-                <div class='slideThree'>
-                    <input type='checkbox' id='radio' name='radio' value='yes' $checkbox_index_radio>
-                    <label for='radio'></label>
-                </div>
-                <div class='w-100'>Check this option if you want to enable the site radio.</div>";
 }
 
 if ($BLOCKS['torrentfreak_on']) {
