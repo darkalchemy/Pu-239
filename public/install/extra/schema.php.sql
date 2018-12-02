@@ -1967,7 +1967,7 @@ CREATE TABLE `subtitles` (
   `name` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `filename` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `imdb` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `lang` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lang` tinyint(4) NOT NULL DEFAULT 1,
   `comment` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fps` varchar(6) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `poster` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -2619,4 +2619,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-25 12:38:07
+-- Dump completed on 2018-12-01 23:03:17
