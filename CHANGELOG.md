@@ -1,3 +1,6 @@
+### 03 Dec, 2018
+fix: check for proper format of supplied date, birthdate  
+
 ### 02 Dec, 2018
 fix: unneeded margins in index blocks  
 fix: banner size  

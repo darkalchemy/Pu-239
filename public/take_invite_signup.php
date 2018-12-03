@@ -115,6 +115,12 @@ if ((date('Y') - date('Y', strtotime($date))) < 18) {
     header("Location: {$site_config['baseurl']}/invite_signup.php");
     die();
 }
+$date_split = explode('-', $date);
+if (!checkdate($date_split[1], $date_split[2], $date_split[0])) {
+    $session->set('is-warning', '[h2]You have to fill in your birthday, in the correct format, using the form.[/h2]');
+    header("Location: {$site_config['baseurl']}/invite_signup.php");
+    die();
+}
 if (!(isset($country))) {
     $session->set('is-warning', '[h2]You must select a country.[/h2]');
     header("Location: {$site_config['baseurl']}/invite_signup.php");
