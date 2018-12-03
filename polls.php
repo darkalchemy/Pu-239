@@ -16,7 +16,6 @@ function parse_poll()
         'allow_poll_tags' => 1,
     ];
     $poll_data = get_poll();
-
     if (empty($poll_data)) {
         return false;
     }
@@ -44,6 +43,7 @@ function parse_poll()
             $poll_footer = '';
         }
     }
+
     if ($check === 1) {
         $htmlout = poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question'], ENT_QUOTES));
         $poll_answers = unserialize(stripslashes($poll_data['choices']));
@@ -82,10 +82,12 @@ function parse_poll()
         $htmlout .= show_total_votes($total_votes);
     } else {
         $poll_answers = unserialize(stripslashes($poll_data['choices']));
-        reset($poll_answers);
         //output poll form
         $htmlout = poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question'], ENT_QUOTES));
         foreach ($poll_answers as $id => $data) {
+            foreach ($poll_answers[$id]['votes'] as $number) {
+                $total_votes += intval($number);
+            }
             // get the question again!
             $question = htmlsafechars($data['question'], ENT_QUOTES);
             $choice_html = '';
@@ -228,7 +230,7 @@ function poll_show_rendered_question($question = '', $choice_html = '')
  *
  * @return string
  */
-function show_total_votes($total_votes = '')
+function show_total_votes($total_votes = 0)
 {
     return "
         <div class='has-text-centered top10'>

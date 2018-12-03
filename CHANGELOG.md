@@ -1,4 +1,5 @@
 ### 03 Dec, 2018
+fix: get votes count before user votes  
 add: ajax toggle for 'show in navbar' staffpanel  
 update: check for empty csrf token before trying to validate it  
 update: increase cast image size  
