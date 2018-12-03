@@ -26,7 +26,7 @@ function images_update()
     require_once INCL_DIR . 'function_fanart.php';
     global $fluent, $cache, $image_stuffs;
 
-    set_time_limit(1200);
+    set_time_limit(12000);
     ignore_user_abort(true);
     $cache->set('images_update_', 'running', 3600);
 

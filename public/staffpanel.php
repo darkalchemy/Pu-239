@@ -15,6 +15,7 @@ $stdhead = [
 $stdfoot = [
     'js' => [
         get_file_name('sceditor_js'),
+        get_file_name('navbar_show_js'),
     ],
 ];
 
@@ -365,7 +366,9 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     $table = "
             <h1 class='has-text-centered text-shadow " . get_user_class_name($arr['av_class'], true) . "'>" . get_user_class_name($arr['av_class']) . "'s Panel</h1>";
                 }
-                $show_in_nav = $arr['navbar'] == 1 ? '<span class="has-text-success">true</span>' : '<span class="has-text-info">false</span>';
+                $show_in_nav = $arr['navbar'] == 1 ? '
+                <span class="has-text-success show_in_navbar tooltipper" title="Hide from Navbar" data-show="' . $arr['navbar'] . '" data-id="' . $arr['id'] .'" data-csrf="' . $session->get('csrf_token') . '">true</span>' : '
+                <span class="has-text-info show_in_navbar tooltipper" title="Show in Navbar" data-show="' . $arr['navbar'] . '" data-id="' . $arr['id'] .'" data-csrf="' . $session->get('csrf_token') . '">false</span>';
 
                 $class = $title = '';
                 if ($arr['page_name'] === 'Usersearch' || $arr['page_name'] === 'Extra Stats') {

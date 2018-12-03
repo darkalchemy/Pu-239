@@ -9,7 +9,7 @@ $lang = array_merge(load_language('global'), load_language('userdetails'));
 extract($_POST);
 
 header('content-type: application/json');
-if (!$session->validateToken($csrf)) {
+if (empty($csrf) || !$session->validateToken($csrf)) {
     echo json_encode(['fail' => 'csrf']);
     die();
 }

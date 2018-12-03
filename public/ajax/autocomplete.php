@@ -4,7 +4,7 @@ require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 global $site_config, $cache;
 
-if (!$session->validateToken($_POST['csrf'])) {
+if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {
     return false;
 }
 

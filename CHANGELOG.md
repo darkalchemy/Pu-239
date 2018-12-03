@@ -1,4 +1,7 @@
 ### 03 Dec, 2018
+add: ajax toggle for 'show in navbar' staffpanel  
+update: check for empty csrf token before trying to validate it  
+update: increase cast image size  
 fix: check for proper format of supplied date, birthdate  
 
 ### 02 Dec, 2018

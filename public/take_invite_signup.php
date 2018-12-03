@@ -18,7 +18,7 @@ $wantusername = $wantpassword = $passagain = $email = $user_timezone = $date = $
 $hintanswer = $country = $gender = $rulesverify = $faqverify = $ageverify = $submitme = '';
 $session->set('signup_variables', serialize($_POST));
 
-if (!$session->validateToken($_POST['csrf'])) {
+if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {
     $session->set('is-warning', '[h2]CSRF Verification failed.[/h2]');
     header("Location: {$site_config['baseurl']}/signup.php");
     die();

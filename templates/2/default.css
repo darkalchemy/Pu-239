@@ -1024,7 +1024,7 @@ p + p {
 
 .cast > img {
     width: auto;
-    height: 70px;
+    height: 110px;
 }
 
 .body-overlay {
@@ -1186,6 +1186,7 @@ body.background-16 {
     padding: 10px;
 }
 
+.show_in_navbar,
 #mlike {
     cursor: pointer;
 }

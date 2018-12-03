@@ -5,7 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 global $session, $user_stuffs, $cache;
 
 header('content-type: application/json');
-if (!$session->validateToken($_POST['csrf'])) {
+if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {
     $status = ['data' => 'Invalid CSRF Token'];
     echo json_encode($status);
     die();

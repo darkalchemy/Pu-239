@@ -21,7 +21,7 @@ $wantusername = $wantpassword = $passagain = $email = $user_timezone = $date = $
 $hintanswer = $country = $gender = $rulesverify = $faqverify = $ageverify = $submitme = '';
 $session->set('signup_variables', serialize($_POST));
 
-if (!$session->validateToken($_POST['csrf'])) {
+if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {
     $session->set('is-warning', '[h2]CSRF Verification failed.[/h2]');
     header("Location: {$site_config['baseurl']}/signup.php");
     die();
@@ -40,11 +40,11 @@ $users_count = $fluent->from('users')
     ->select(null)
     ->select('COUNT(id) AS count')
     ->fetch('count');
-/*
+
 if ($users_count >= $site_config['maxusers']) {
     stderr($lang['takesignup_error'], $lang['takesignup_limit']);
 }
-*/
+
 $required = [
     'passagain',
     'email',

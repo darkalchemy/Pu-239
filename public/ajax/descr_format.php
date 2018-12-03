@@ -6,7 +6,7 @@ global $session, $cache, $torrent_stuffs;
 
 extract($_POST);
 header('content-type: application/json');
-if (!$session->validateToken($csrf)) {
+if (empty($csrf) || !$session->validateToken($csrf)) {
     echo json_encode(['fail' => 'csrf']);
     die();
 }

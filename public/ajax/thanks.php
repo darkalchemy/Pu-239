@@ -17,7 +17,7 @@ if (!isset($CURUSER)) {
     die();
 }
 
-if (!$session->validateToken($_POST['csrf'])) {
+if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {
     echo 'CSRF Verification failed.';
     die();
 }

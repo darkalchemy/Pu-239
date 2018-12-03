@@ -8,7 +8,7 @@ $pm_what = isset($_POST['pm_what']) && $_POST['pm_what'] === 'last10' ? 'last10'
 $reseedid = (int) $_POST['reseedid'];
 $uploader = (int) $_POST['uploader'];
 $name = $_POST['name'];
-if (!$session->validateToken($_POST['csrf'])) {
+if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {
     $session->set('is-warning', 'CSRF Token Verification Failed.');
     header("Refresh: 0; url={$site_config['baseurl']}/details.php?id=$reseedid");
 }

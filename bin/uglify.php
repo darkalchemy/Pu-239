@@ -148,6 +148,10 @@ foreach ($styles as $folder) {
         SCRIPTS_DIR . 'resize_iframe.js',
     ];
 
+    $js_list['navbar_show_js'] = [
+        SCRIPTS_DIR . 'navbar_show.js',
+    ];
+
     if ($BLOCKS['global_themechanger_on']) {
         $js_list['theme_js'] = [
             TEMPLATE_DIR . "{$folder}/themeChanger/js/colorpicker.js",

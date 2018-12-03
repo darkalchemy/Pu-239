@@ -140,7 +140,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                                 <a href='" . url_proxy("https://www.imdb.com/name/nm{$pp['imdb']}") . "' target='_blank'>
                                     <span class='dt-tooltipper-small' data-tooltip-content='#cast_{$pp['imdb']}_tooltip'>
                                         <span class='cast'>
-                                            <img src='" . url_proxy(strip_tags($pp['photo']), true, null, 70) . "' class='round5'>
+                                            <img src='" . url_proxy(strip_tags($pp['photo']), true, null, 110) . "' class='round5'>
                                         </span>
                                         <span class='tooltip_templates'>
                                             <span id='cast_{$pp['imdb']}_tooltip'>
