@@ -26,7 +26,7 @@ $('.show_in_navbar').on('click', function () {
             } else {
                 $(this).removeClass('has-text-success').addClass('has-text-info');
                 $(this).html('false');
-                $(this).tooltipster('content', 'Showin Navbar');
+                $(this).tooltipster('content', 'Show in Navbar');
                 $(this).attr('data-show', 0);
             }
         }
