@@ -47,11 +47,11 @@ $torrents = [
 $site_stats .= "
     <a id='stats-hash'></a>
     <div id='stats' class='box'>
-        <div class='columns is-multiline is-gapless'>
-            <div class='column is-half-tablet is-one-fourth-desktop'>" . wrap_this($users) . "</div>
-            <div class='column is-half-tablet is-one-fourth-desktop'>" . wrap_this($gender) . "</div>
-            <div class='column is-half-tablet is-one-fourth-desktop'>" . wrap_this($torrents) . "</div>
-            <div class='column is-half-tablet is-one-fourth-desktop'>" . wrap_this($forums) . '</div>
+        <div class='has-text-centered'>
+            <div class='stats'>" . wrap_this($users) . "</div>
+            <div class='stats'>" . wrap_this($gender) . "</div>
+            <div class='stats'>" . wrap_this($torrents) . "</div>
+            <div class='stats'>" . wrap_this($forums) . '</div>
         </div>
     </div>';
 

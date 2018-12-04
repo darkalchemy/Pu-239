@@ -1293,11 +1293,35 @@ body.background-16 {
     .minw-150 {
         min-width: 150px !important;
     }
+
+    .stats:not(:last-child) {
+        margin-bottom: 1.25em;
+    }
 }
 
 @media (min-width: 768px) {
     .flex-top {
         align-items: flex-start;
         display: flex;
+    }
+
+    .stats {
+        width: calc(50% - .625em - 2px);
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .stats:nth-child(odd) {
+        margin-right: .625em;
+        margin-left: 0;
+    }
+
+    .stats:nth-child(even) {
+        margin-left: .625em;   
+        margin-right: 0;
+    }
+
+    .stats:nth-child(-n+2) {
+        margin-bottom: 1.25em;
     }
 }
