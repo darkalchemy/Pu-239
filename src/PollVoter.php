@@ -101,8 +101,10 @@ class PollVoter
     public function delete_users_cache()
     {
         $ids = $this->user_stuffs->get_all_ids();
-        foreach ($ids as $id) {
-            $this->cache->delete('poll_data_' . $id);
+        if (!empty($ids)) {
+            foreach ($ids as $id) {
+                $this->cache->delete('poll_data_' . $id);
+            }
         }
     }
 }

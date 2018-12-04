@@ -1,5 +1,6 @@
 <?php
 
+require_once INCL_DIR . 'staff_functions.php';
 /**
  * @param     $response
  * @param int $timeout
@@ -22,18 +23,18 @@ function verify_recaptcha($response, $timeout = 30)
 
     if (!$results['success'] || $results['action'] !== 'login') {
         $errors = $resp->getErrorCodes();
-        write_log('reCAPTCHA Failed: ' . json_encode($errors));
+        write_info('reCAPTCHA Failed: ' . json_encode($errors) . ' : ' . $results['hostname'] . ' : ' . $_SERVER['HTTP_HOST']);
 
         return $errors[0];
     }
 
     if ($results['score'] < 0.5 && TIME_NOW - strtotime($results['challenge_ts']) > 15) {
-        write_log('reCAPTCHA Failed: Score = ' . json_encode($results['score']));
+        write_info('reCAPTCHA Failed: Score = ' . json_encode($results['score']) . ' : ' . $results['hostname'] . ' : ' . $_SERVER['HTTP_HOST']);
 
         return "Failed Score: {$results['score']}";
     }
 
-    write_log('reCAPTCHA Success: ' . json_encode($results));
+    write_info('reCAPTCHA Success: ' . json_encode($results));
 
     return 'valid';
 }
