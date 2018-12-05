@@ -14,14 +14,11 @@ if (!$CURUSER) {
 $lang = array_merge(load_language('global'), load_language('passhint'));
 $HTMLOUT = '';
 
-$stdfoot = '';
-if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
-    $stdfoot = [
-        'js' => [
-            get_file_name('recaptcha_js'),
-        ],
-    ];
-}
+$stdfoot = [
+    'js' => [
+        get_file_name('recaptcha_js'),
+    ],
+];
 
 if ($CURUSER) {
     stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error1']}");
@@ -113,6 +110,12 @@ if ($step == '1') {
         sql_query('INSERT INTO messages (receiver, msg, subject, added) VALUES (' . sqlesc((int) $fetch['id']) . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ', ' . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error7']}");
     } else {
+        $stdfoot = [
+            'js' => [
+                get_file_name('pStrength_js'),
+            ],
+        ];
+
         $sechash = $fetch['hintanswer'];
         $HTMLOUT .= "
             <form method='post' action='?step=3'>
@@ -120,10 +123,18 @@ if ($step == '1') {
         $HTMLOUT .= main_table("
                     <tr class='no_hover'>
                         <td class='rowhead'>{$lang['main_new_pass']}</td>
-                        <td><input type='password' class='w-100' name='newpass'></td>
+                        <td>
+                            <input type='password' class='w-100' name='wantpassword' id='myElement1' data-display='myDisplayElement1' autocomplete='on' required minlength='6'>
+                            <div id='myDisplayElement1'></div>
+                            <div class='clear'></div>
+                        </td>
                     </tr>
                     <tr class='no_hover'>
-                        <td class='rowhead'>{$lang['main_new_pass_confirm']}</td><td><input type='password' class='w-100' name='newpassagain'></td>
+                        <td class='rowhead'>{$lang['main_new_pass_confirm']}</td>
+                        <td>
+                            <input type='password' class='w-100' name='passagain' id='myElement2' data-display='myDisplayElement2' autocomplete='on' required minlength='6'>
+                            <div id='myDisplayElement2'></div>
+                        </td>
                     </tr>
                     <tr class='no_hover'>
                         <td colspan='2'>
@@ -136,38 +147,37 @@ if ($step == '1') {
                     </tr>", '', '', 'w-50', '') . '
             </form>';
 
-        echo stdhead('Reset Lost Password') . $HTMLOUT . stdfoot();
+        echo stdhead('Reset Lost Password') . $HTMLOUT . stdfoot($stdfoot);
     }
 } elseif ($step == '3') {
-    if (!mkglobal('id:newpass:newpassagain:hash')) {
+//dd($_POST);
+    if (!mkglobal('id:wantpassword:passagain:hash')) {
         die();
     }
     $select = sql_query('SELECT id, hintanswer FROM users WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $fetch = mysqli_fetch_assoc($select) or stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error8']}");
-    if (empty($newpass)) {
+    if (empty($wantpassword)) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error9']}");
     }
-    if ($newpass != $newpassagain) {
+    if ($wantpassword != $passagain) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error10']}");
     }
-    if (strlen($newpass) < 6) {
+    if (strlen($wantpassword) < 6) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error11']}");
     }
-    if (strlen($newpass) > 255) {
+    if (strlen($wantpassword) > 255) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error12']}");
     }
     if (!hash_equals($hash, $fetch['hintanswer'])) {
         die('invalid hash');
     }
-    $newpassword = make_passhash($newpass);
-    sql_query('UPDATE users SET passhash = ' . sqlesc($newpassword) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $cache->update_row('user' . $id, [
-        'passhash' => $newpassword,
-    ], $site_config['expires']['user_cache']);
-    if (!mysqli_affected_rows($mysqli)) {
-        stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error13']}");
-    } else {
+    $set = [
+        'passhash' => make_passhash($wantpassword),
+    ];
+    if ($user_stuffs->update($set, $id, false)) {
         stderr("{$lang['stderr_successhead']}", "{$lang['stderr_error14']} <a href='{$site_config['baseurl']}/login.php' class='altlink'><b>{$lang['stderr_error15']}</b></a> {$lang['stderr_error16']}", false);
+    } else {
+        stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error13']}");
     }
 } else {
     $HTMLOUT .= "

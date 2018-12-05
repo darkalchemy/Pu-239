@@ -1,4 +1,8 @@
+### 05 Dec, 2018
+update: enforce password restrictions resetpw.php  
+
 ### 03 Dec, 2018
+update: stats block formatting  
 update: move reCAPTCHA logging to Sysop log  
 fix: get votes count before user votes  
 add: ajax toggle for 'show in navbar' staffpanel  

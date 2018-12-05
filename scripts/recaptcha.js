@@ -19,6 +19,7 @@ grecaptcha.ready(function () {
 
         var el = document.getElementById('recover_captcha_check');
         if (el && token) {
+            el.disabled = false;
             tcheck.value = token;
             el.value = 'Recover';
         } else if (el) {
