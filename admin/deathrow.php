@@ -208,7 +208,7 @@ if ($count) {
     $pager = pager($perpage, $count, 'staffpanel.php?tool=deathrow&amp;');
     $torrents = $fluent->from('deathrow')
         ->orderBy('username')
-        ->limit('?, ?', $pager['pdo'][0], $pager['pdo'][1])
+        ->limit("{$pager['pdo']}")
         ->fetchAll();
 
     $HTMLOUT .= "

@@ -14,19 +14,24 @@ if ($active === false || is_null($active)) {
         ->where('id != 2')
         ->orderBy('username ASC');
 
-    $active['actcount'] = count($query);
-    if ($active['actcount'] >= 100) {
+    $count = count($query);
+    $i = 0;
+    if ($count >= 100) {
         $active['activeusers'] = format_comment($lang['index_blocks_too_many'], 0);
-    } elseif ($active['actcount'] > 0) {
+    } elseif ($count > 0) {
         foreach ($query as $row) {
-            $list[] = format_username($row['id']);
+            if (++$i != $count) {
+                $list[] = format_username($row['id'], true, true, false, true);
+            } else {
+                $list[] = format_username($row['id']);
+            }
         }
-        $active['activeusers'] = implode(',&nbsp;&nbsp;', $list);
-    } elseif ($active['actcount'] === 0) {
+        $active['activeusers'] = implode('', $list);
+    } elseif ($count === 0) {
         $active['activeusers'] = $lang['index_active_users_no'];
     }
 
-    $active['actcount'] = number_format($active['actcount']);
+    $active['actcount'] = number_format($count);
     $cache->set('activeusers_', $active, $site_config['expires']['activeusers']);
 }
 

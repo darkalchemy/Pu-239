@@ -21,7 +21,7 @@ use Imdb\Config;
  */
 function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false, $poster = false)
 {
-    global $cache, $BLOCKS, $torrent_stuffs, $image_stuffs;
+    global $cache, $BLOCKS, $torrent_stuffs, $image_stuffs, $site_config;
 
     if (!$BLOCKS['imdb_api_on']) {
         return false;
@@ -71,8 +71,8 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
 
         if (count($imdb_data['genres']) > 0) {
             $temp = implode(', ', array_map('strtolower', $imdb_data['genres']));
-            $temp = explode(', ', $temp);
-            $imdb_data['newgenre'] = implode(', ', array_map('ucwords', $temp));
+            $imdb_data['genres'] = explode(', ', $temp);
+            $imdb_data['newgenre'] = implode(', ', array_map('ucwords', $imdb_data['genres']));
         }
 
         $cache->set('imdb_' . $imdb_id, $imdb_data, 604800);
@@ -132,7 +132,6 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
         'updated' => 'Last Updated',
         'cast' => 'Cast',
     ];
-
     foreach ($imdb_data['cast'] as $pp) {
         if (!empty($pp['name']) && !empty($pp['photo'])) {
             $cast[] = "
@@ -161,9 +160,9 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
 
     $imdb_info = '';
     foreach ($imdb as $foo => $boo) {
-        if (isset($imdb_data[$foo]) && !empty($imdb_data[$foo])) {
+        if (!empty($imdb_data[$foo])) {
             if (!is_array($imdb_data[$foo])) {
-                $imdb_data[$foo] = $boo === 'Title' ? "<a href='" . url_proxy("https://www.imdb.com/title/{$imdbid}") . "' target='_blank' class='tooltipper' title='IMDb: {$imdb_data[$foo]}'>{$imdb_data[$foo]}</a>" : $imdb_data[$foo];
+                $imdb_data[$foo] = $boo === 'Title' ? "<a href='" . url_proxy("https://www.imdb.com/title/{$imdbid}") . "' target='_blank' class='tooltipper' title='IMDb Lookup: {$imdb_data[$foo]}'>{$imdb_data[$foo]}</a>" : $imdb_data[$foo];
                 if ($boo === 'Rating') {
                     $percent = $imdb_data['rating'] * 10;
                     $imdb_data[$foo] = "
@@ -194,8 +193,13 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                         $imdb_tmp[] = "<a href='" . url_proxy($pp['url']) . "' target='_blank' class='tooltipper' title='IMDb: {$pp['title']}'>{$pp['title']}</a>";
                     } elseif ($foo != 'cast') {
                         $role = !empty($pp['role']) ? ucwords($pp['role']) : 'unknown';
-                        $imdb_tmp[] = "<a href='" . url_proxy("https://www.imdb.com/name/nm{$pp['imdb']}") . "' target='_blank' class='tooltipper' title='$role'>" . $pp['name'] . '</a>';
+                        $imdb_tmp[] = "<a href='" . url_proxy("https://www.imdb.com/name/nm{$pp['imdb']}") . "' target='_blank' class='tooltipper' title='$role'>{$pp['name']}</a>";
                     }
+                }
+            } elseif ($foo === 'genres') {
+                foreach ($imdb_data[$foo] as $genre) {
+                    $genre_title = 'Search by genre: ' . ucwords($genre);
+                    $imdb_tmp[] = "<a href='{$site_config['baseurl']}/browse.php?search_genre=" . urlencode(strtolower($genre)) . "' target='_blank' class='tooltipper' title='$genre_title'>" . ucwords($genre) . '</a>';
                 }
             }
             if (!empty($imdb_tmp)) {
@@ -487,4 +491,42 @@ function get_random_useragent()
     }
 
     return $browser[0];
+}
+
+function update_torrent_data(string $imdb_id)
+{
+    global $BLOCKS, $fluent, $cache, $site_config;
+
+    if (!$BLOCKS['imdb_api_on']) {
+        return false;
+    }
+
+    $imdb_id = str_replace('tt', '', $imdb_id);
+    $imdb_data = get_imdb_info($imdb_id, true, true);
+    $set = [];
+    if (!empty($imdb_data['newgenre'])) {
+        $set = [
+            'newgenre' => $imdb_data['newgenre'],
+        ];
+    }
+    $set = array_merge($set, [
+        'year' => $imdb_data['year'],
+        'rating' => $imdb_data['rating'],
+    ]);
+    $result = $fluent->update('torrents')
+        ->set($set)
+        ->where('imdb_id = ?', 'tt' . $imdb_id)
+        ->execute();
+
+    if ($result) {
+        $torrents = $fluent->from('torrents')
+            ->select(null)
+            ->select('id')
+            ->where('imdb_id = ?', 'tt' . $imdb_id)
+            ->fetchAll();
+
+        foreach ($torrents as $torrent) {
+            $cache->update_row('torrent_details_' . $torrent['id'], $set, $site_config['expires']['torrent_details']);
+        }
+    }
 }

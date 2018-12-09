@@ -21,9 +21,9 @@ if (!empty($torrent_pass)) {
 }
 $cats = isset($_GET['cats']) ? $_GET['cats'] : '';
 if ($cats) {
-    $validate_cats = explode(',', $cats);
-    $cats = implode(', ', array_map('intval', $validate_cats));
-    $cats = implode(', ', $validate_cats);
+    $cats = explode(',', $cats);
+} else {
+    $cats = [];
 }
 
 $counts = [
@@ -39,9 +39,10 @@ if (!empty($_GET['count']) && in_array((int) $_GET['count'], $counts)) {
 }
 
 $hash = hash('sha256', json_encode($_POST));
+$cache->delete('rss_' . $hash);
 $data = $cache->get('rss_' . $hash);
 if ($data === false || is_null($data)) {
-    $sql = $fluent->from('torrents AS t')
+    $data = $fluent->from('torrents AS t')
         ->select(null)
         ->select('t.id')
         ->select('t.name')
@@ -55,23 +56,21 @@ if ($data === false || is_null($data)) {
         ->where('t.visible = "yes"');
 
     if (!empty($cats)) {
-        $sql = $sql->where('t.category', $cats);
+        $data = $data->where('t.category', $cats);
     }
     if ($user['class'] != UC_VIP) {
-        $sql = $sql->where('t.vip = "0"');
+        $data = $data->where('t.vip = "0"');
     }
     if (isset($_GET['bm']) && (int) $_GET['bm'] === 1) {
-        $sql = $sql->where('b.userid = ?', $user['id'])
+        $data = $data->where('b.userid = ?', $user['id'])
             ->innerJoin('bookmarks AS b ON t.id = b.torrentid');
     }
 
-    $sql = $sql->leftJoin('categories AS c ON t.category = c.id')
+    $data = $data->leftJoin('categories AS c ON t.category = c.id')
         ->orderBy('t.added')
-        ->limit($limit);
+        ->limit($limit)
+        ->fetchAll();
 
-    foreach ($sql as $a) {
-        $data[] = $a;
-    }
     if (!empty($data)) {
         $cache->set('rss_' . $hash, $data, 300);
     } else {
@@ -81,9 +80,6 @@ if ($data === false || is_null($data)) {
 
 format_rss($data);
 
-/**
- * @param $data
- */
 function format_rss($data)
 {
     global $site_config, $torrent_pass;
@@ -147,7 +143,7 @@ function format_rss($data)
     } else {
         $rss .= '
         <item>
-            <title>Invalid Request</title>
+            <title>Empty Results</title>
             <link>' . $site_config['baseurl'] . '/getrss.php</link>
             <description>' . $data . '</description>
             <guid>' . $site_config['baseurl'] . '/getrss.php</guid>

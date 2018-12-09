@@ -133,10 +133,12 @@ $HTMLOUT .= "
 $s = "
             <select id='upload_category' name='type' class='w-100' required>
                 <option value='0'>({$lang['upload_choose_one']})</option>";
-$cats = genrelist();
-foreach ($cats as $row) {
-    $s .= "
-                <option value='" . (int) $row['id'] . "'" . ($type == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($row['name']) . '</option>';
+$cats = genrelist(true);
+foreach ($cats as $cat) {
+    foreach ($cat['children'] as $row) {
+        $s .= "
+                <option value='{$row['id']}'" . ($type == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
+    }
 }
 $s .= '
             </select>';

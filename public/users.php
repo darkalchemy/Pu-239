@@ -72,8 +72,8 @@ foreach ($cc as $aa) {
         <ul>";
     foreach ($aa as $L) {
         if (!strcmp($L, $letter)) {
-            $div .= '
-            <li>' . strtoupper($L) . '</li>';
+            $div .= "
+            <li class='is-active'><a>" . strtoupper($L) . '</a></li>';
         } else {
             $div .= "
             <li><a href='users.php?letter=$L'>" . strtoupper($L) . '</a></li>';

@@ -183,9 +183,9 @@ switch ($action) {
                     <input type="hidden" name="action" value="alter_status">
                     <input type="hidden" name="id" value="' . $id . '">
                     <select name="set_status">
-                    <option class="body" value="pending"' . ($arr['status'] == 'pending' ? ' selected' : '') . '>Status: pending</option>
-                    <option class="body" value="approved"' . ($arr['status'] == 'approved' ? ' selected' : '') . '>Status: approved</option>
-                    <option class="body" value="denied"' . ($arr['status'] == 'denied' ? ' selected' : '') . '>Status: denied</option>
+                    <option value="pending"' . ($arr['status'] == 'pending' ? ' selected' : '') . '>Status: pending</option>
+                    <option value="approved"' . ($arr['status'] == 'approved' ? ' selected' : '') . '>Status: approved</option>
+                    <option value="denied"' . ($arr['status'] == 'denied' ? ' selected' : '') . '>Status: denied</option>
                     </select>
                     <input type="submit" class="button is-small" value="change status!">
                     </form> ');
@@ -250,13 +250,12 @@ switch ($action) {
             $pager = pager($perpage, $count, $link);
             $menu_top = $pager['pagertop'];
             $menu_bottom = $pager['pagerbottom'];
-            $LIMIT = $pager['pdo'];
 
             $allrows = $fluent->from('comments')
                 ->select('id AS comment_id')
                 ->where('offer = ?', $id)
                 ->orderBy('id DESC')
-                ->limit('?, ?', $LIMIT[0], $LIMIT[1])
+                ->limit("{$pager['pdo']}")
                 ->fetchAll();
             $HTMLOUT .= '<a id="comments"></a>';
             $HTMLOUT .= ($count > $perpage ? $menu_top : '') . '<br>';
@@ -271,12 +270,17 @@ switch ($action) {
         $image = strip_tags(isset($_POST['image']) ? trim($_POST['image']) : '');
         $body = (isset($_POST['body']) ? trim($_POST['body']) : '');
         $link = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : '');
-        $category_drop_down = '<select name="category" required><option class="body" value="">Select Offer Category</option>';
-        $cats = genrelist();
-        foreach ($cats as $row) {
-            $category_drop_down .= '<option class="body" value="' . (int) $row['id'] . '"' . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($row['name'], ENT_QUOTES) . '</option>';
+        $category_drop_down = '
+                <select name="category" required><option value="">Select Offer Category</option>';
+        $cats = genrelist(true);
+        foreach ($cats as $cat) {
+            foreach ($cat['children'] as $row) {
+                $category_drop_down .= "
+                    <option value='{$row['id']}'" . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
+            }
         }
-        $category_drop_down .= '</select>';
+        $category_drop_down .= '
+                </select>';
         if (isset($_POST['category'])) {
             $cat_res = sql_query('SELECT id AS cat_id, name AS cat_name, image AS cat_image FROM categories WHERE id = ' . sqlesc($category)) or sqlerr(__FILE__, __LINE__);
             $cat_arr = mysqli_fetch_assoc($cat_res);
@@ -381,12 +385,17 @@ switch ($action) {
         $body = (isset($_POST['body']) ? trim($_POST['body']) : $edit_arr['description']);
         $link = strip_tags(isset($_POST['link']) ? trim($_POST['link']) : $edit_arr['link']);
         $category = (isset($_POST['category']) ? intval($_POST['category']) : $edit_arr['category']);
-        $category_drop_down = '<select name="category" required><option class="body" value="">Select Offer Category</option>';
-        $cats = genrelist();
-        foreach ($cats as $row) {
-            $category_drop_down .= '<option class="body" value="' . (int) $row['id'] . '"' . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($row['name'], ENT_QUOTES) . '</option>';
+        $category_drop_down = '
+                <select name="category" required><option value="">Select Offer Category</option>';
+        $cats = genrelist(true);
+        foreach ($cats as $cat) {
+            foreach ($cat['children'] as $row) {
+                $category_drop_down .= "
+                    <option value='{$row['id']}'" . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($row['name']) . '</option>';
+            }
         }
-        $category_drop_down .= '</select>';
+        $category_drop_down .= '
+                </select>';
         $cat_res = sql_query('SELECT id AS cat_id, name AS cat_name, image AS cat_image FROM categories WHERE id = ' . sqlesc($category)) or sqlerr(__FILE__, __LINE__);
         $cat_arr = mysqli_fetch_assoc($cat_res);
         $cat_image = htmlsafechars($cat_arr['cat_image'], ENT_QUOTES);

@@ -62,15 +62,16 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
     }
     $i = 0;
     $content = [];
+    $pager_pdo = explode(', ', $pager['pdo']);
     foreach ($contents as $line) {
         if (!empty($line)) {
             ++$i;
-            if ($i >= $pager['pdo'][0]) {
+            if ($i >= $pager_pdo[0]) {
                 $class = $i % 2 === 0 ? 'bg-01 simple_border round10 padding20 has-text-black bottom5' : 'bg-light simple_border round10 padding20 has-text-black bottom5';
                 $line = trim($line);
                 $content[] = "<$state class='{$class}'>{$line}</$state>";
             }
-            if ($i >= $pager['pdo'][0] + $pager['pdo'][1]) {
+            if ($i >= $pager_pdo[0] + $pager_pdo[1]) {
                 break;
             }
         }

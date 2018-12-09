@@ -85,6 +85,7 @@ function images_update()
         if (!empty($imdbid)) {
             get_imdb_info($imdbid['imdb_id'], true);
             get_omdb_info($imdbid['imdb_id'], false);
+            update_torrent_data($imdbid['imdb_id']);
         }
     }
 

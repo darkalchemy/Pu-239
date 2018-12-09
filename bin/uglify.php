@@ -96,15 +96,19 @@ foreach ($styles as $folder) {
             ],
         ]);
     }
+
+    $js_list['categories_js'] = [
+        SCRIPTS_DIR . 'categories.js',
+    ];
+
+    $js_list['browse_js'] = [
+        SCRIPTS_DIR . 'autocomplete.js',
+    ];
+
     if ($BLOCKS['staff_picks_on']) {
-        $js_list['browse_js'] = [
-            SCRIPTS_DIR . 'autocomplete.js',
+        $js_list['browse_js'] = array_merge($js_list['browse_js'], [
             SCRIPTS_DIR . 'staff_picks.js',
-        ];
-    } else {
-        $js_list['browse_js'] = [
-            SCRIPTS_DIR . 'autocomplete.js',
-        ];
+        ]);
     }
 
     if ($BLOCKS['latest_torrents_scroll_on']) {

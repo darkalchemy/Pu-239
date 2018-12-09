@@ -27,13 +27,13 @@ function bookmarktable($res, $variant = 'index')
     global $site_config, $CURUSER, $lang, $session;
 
     $htmlout = "
-    <span>
+    <div class='has-text-centered bottom20'>
         {$lang['bookmarks_icon']}
-        <i class='icon-cancel icon has-text-danger'></i>{$lang['bookmarks_del1']}
+        <i class='icon-trash-empty icon has-text-danger'></i>{$lang['bookmarks_del1']}
         <i class='icon-download icon'></i>{$lang['bookmarks_down1']}
         <i class='icon-key icon'></i>{$lang['bookmarks_private1']}
         <i class='icon-users icon'></i>{$lang['bookmarks_public1']}
-    </span>
+    </div>
     <div class='table-wrapper'>
         <div class='portlet'>
             <table class='table table-bordered table-striped top20 bottom20''>
@@ -66,7 +66,7 @@ function bookmarktable($res, $variant = 'index')
                     </tr>
                 </thead>
                 <tbody>';
-    $categories = genrelist();
+    $categories = genrelist(false);
     $change = [];
     foreach ($categories as $key => $value) {
         $change[$value['id']] = [
@@ -111,7 +111,7 @@ function bookmarktable($res, $variant = 'index')
         $htmlout .= ($variant === 'index' ? "
                         <td class='has-text-centered'>
                             <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='true' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmarks_del3']}'>
-                                <i class='icon-cancel icon has-text-danger'></i>
+                                <i class='icon-trash-empty icon has-text-danger'></i>
                             </span>
                         </td>" : '');
         $htmlout .= ($variant === 'index' ? "

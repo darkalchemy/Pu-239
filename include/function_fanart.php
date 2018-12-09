@@ -6,6 +6,8 @@
  * @param int    $season
  *
  * @return bool|mixed
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
 {
@@ -103,7 +105,7 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
  */
 function getMovieImagesByID($id, $type = 'moviebackground')
 {
-    global $cache, $BLOCKS, $fluent, $image_stuffs;
+    global $cache, $BLOCKS, $image_stuffs;
 
     if (!$BLOCKS['fanart_api_on']) {
         return false;

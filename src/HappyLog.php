@@ -58,7 +58,7 @@ class HappyLog
             ->leftJoin('torrents AS t ON h.torrentid = t.id')
             ->where('h.userid = ?', $userid)
             ->orderBy('h.date DESC')
-            ->limit('?, ?', $limit[0], $limit[1])
+            ->limit("{$limit}")
             ->fetchAll();
 
         return $happy;

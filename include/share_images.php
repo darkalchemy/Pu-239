@@ -10,6 +10,7 @@
 function find_images(string $imdb_id)
 {
     global $cache, $fluent;
+
     $posters = $cache->get('posters_' . $imdb_id);
     if ($posters === false || is_null($posters)) {
         $posters = $fluent->from('images')
@@ -19,7 +20,7 @@ function find_images(string $imdb_id)
             ->where('imdb_id = ?', $imdb_id)
             ->fetchAll();
 
-        $cache->set('posters_', $imdb_id, 0);
+        $cache->set('posters_' . $imdb_id, $posters, 0);
     }
 
     if ($posters) {

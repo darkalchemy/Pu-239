@@ -9,6 +9,10 @@ global $lang;
 $lang = array_merge($lang, load_language('ad_categories'));
 $params = array_merge($_GET, $_POST);
 $params['mode'] = isset($params['mode']) ? $params['mode'] : '';
+$params['parent_id'] = !empty($params['parent_id']) ? intval($params['parent_id']) : 0;
+$params['id'] = !empty($params['id']) ? intval($params['id']) : 0;
+$params['new_cat_id'] = !empty($params['new_cat_id']) ? intval($params['new_cat_id']) : 0;
+
 switch ($params['mode']) {
     case 'takemove_cat':
         move_cat();
@@ -38,17 +42,14 @@ switch ($params['mode']) {
         edit_cat_form();
         break;
 
-    //    case 'cat_form':
-    //        show_cat_form();
-    //        break;
-
     default:
         show_categories();
         break;
 }
+
 function move_cat()
 {
-    global $site_config, $params, $lang, $cache, $mysqli;
+    global $site_config, $params, $lang, $cache, $fluent;
 
     if ((!isset($params['id']) || !is_valid_id($params['id'])) || (!isset($params['new_cat_id']) || !is_valid_id($params['new_cat_id']))) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
@@ -56,18 +57,33 @@ function move_cat()
     if (!is_valid_id($params['new_cat_id']) || ($params['id'] == $params['new_cat_id'])) {
         stderr($lang['categories_error'], $lang['categories_move_error2']);
     }
-    $old_cat_id = intval($params['id']);
-    $new_cat_id = intval($params['new_cat_id']);
 
-    $q = sql_query("SELECT id FROM categories WHERE id IN($old_cat_id, $new_cat_id)");
-    if (mysqli_num_rows($q) != 2) {
+    $count = $fluent->from('categories')
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('id', [$params['id'], $params['new_cat_id']])
+        ->fetch('count');
+
+    if ($count != 2) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     }
-    sql_query('UPDATE torrents SET category = ' . sqlesc($new_cat_id) . ' WHERE category = ' . sqlesc($old_cat_id));
-    $cache->delete('genrelist');
+    $set = [
+        'category' => $params['new_cat_id'],
+    ];
+
+    $results = $fluent->update('torrents')
+        ->set($set)
+        ->where('category = ?', $params['id'])
+        ->execute();
+
+    flush_torrents($params['id']);
+    flush_torrents($params['new_cat_id']);
+    $cache->delete('genrelist_grouped');
+    $cache->delete('genrelist_ordered');
     $cache->delete('categories');
-    if (-1 != mysqli_affected_rows($mysqli)) {
-        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories&action=categories");
+    if ($results) {
+        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories");
+        die();
     } else {
         stderr($lang['categories_error'], $lang['categories_move_error4']);
     }
@@ -75,105 +91,123 @@ function move_cat()
 
 function move_cat_form()
 {
-    global $params, $lang, $site_config;
+    global $params, $lang, $site_config, $fluent;
+
     if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
-    $q = sql_query('SELECT * FROM categories WHERE id = ' . intval($params['id']));
-    if (false == mysqli_num_rows($q)) {
+
+    $current_cat = get_cat($params['id']);
+
+    if (empty($current_cat)) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     }
-    $r = mysqli_fetch_assoc($q);
+
     $select = "
             <select name='new_cat_id'>
                 <option value='0'>{$lang['categories_select']}</option>";
-    $cats = genrelist();
-    foreach ($cats as $c) {
-        $select .= ($c['id'] != $r['id']) ? "
-                <option value='{$c['id']}'>" . htmlsafechars($c['name'], ENT_QUOTES) . '</option>' : '';
+    $cats = genrelist(true);
+    foreach ($cats as $cat) {
+        foreach ($cat['children'] as $child) {
+            $select .= ($child['id'] != $current_cat['id']) ? "
+                <option value='{$child['id']}'>{$cat['name']}::" . htmlsafechars($child['name'], ENT_QUOTES) . '</option>' : '';
+        }
     }
     $select .= '
             </select>';
     $htmlout = "
-        <form action='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;action=categories' method='post'>
+        <form action='{$site_config['baseurl']}/staffpanel.php?tool=categories' method='post'>
             <input type='hidden' name='mode' value='takemove_cat'>
-            <input type='hidden' name='id' value='{$r['id']}'>
-            <h2 class='has-text-centered'>{$lang['categories_move_about']} " . htmlsafechars($r['name'], ENT_QUOTES) . "</h2>
+            <input type='hidden' name='id' value='{$current_cat['id']}'>
+            <h2 class='has-text-centered'>{$lang['categories_move_about']} " . htmlsafechars($current_cat['name'], ENT_QUOTES) . "</h2>
             <h3 class='has-text-centered'>{$lang['categories_move_note']}</h3>";
     $htmlout .= main_div("
-            <div class='w-50 has-text-centered'>
-                <p class='has-text-danger level'>{$lang['categories_move_old']} <span class='has-text-white'>" . htmlsafechars($r['name'], ENT_QUOTES) . "</span></p>
+            <div class='w-50 has-text-centered padding20'>
+                <p class='has-text-danger level'>{$lang['categories_move_old']} <span class='has-text-white'>" . htmlsafechars($current_cat['parent_name'], ENT_QUOTES) . '::' . htmlsafechars($current_cat['name'], ENT_QUOTES) . "</span></p>
                 <p class='has-text-green level'>{$lang['categories_select_new']} $select</p>
-                <input type='submit' class='button is-small right20' value='{$lang['categories_move']}'>
-                <input type='button' class='button is-small' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\">
+                <div class='has-text-centered'>
+                    <input type='submit' class='button is-small right20' value='{$lang['categories_move']}'>
+                    <input type='button' class='button is-small' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\">
+                </div>
             </div>");
     $htmlout .= '
         </form>';
 
-    echo stdhead($lang['categories_move_stdhead'] . $r['name']) . wrapper($htmlout) . stdfoot();
+    echo stdhead($lang['categories_move_stdhead'] . $current_cat['name']) . wrapper($htmlout) . stdfoot();
 }
 
 function add_cat()
 {
-    global $site_config, $params, $lang, $cache, $mysqli;
+    global $site_config, $params, $lang, $cache, $fluent;
 
     foreach ([
-                 'new_cat_name',
-                 'new_cat_desc',
-                 'new_cat_image',
-             ] as $x) {
-        if (!isset($params[$x]) || empty($params[$x])) {
-            stderr($lang['categories_error'], $lang['categories_add_error1']);
+        'new_cat_name',
+        'new_cat_desc',
+        'cat_image',
+        'parent_id',
+        ] as $x) {
+        if (!isset($params[$x])) {
+            stderr($lang['categories_error'], $lang['categories_add_error1'] . ': ' . $x);
         }
     }
-    if (!preg_match("/^cat_[A-Za-z0-9_\-]+\.(?:gif|jpg|jpeg|png)$/i", $params['new_cat_image'])) {
-        stderr($lang['categories_error'], $lang['categories_add_error2']);
+    if (!preg_match("/^cat_[A-Za-z0-9_\-]+\.(?:gif|jpg|jpeg|png)$/i", $params['cat_image'])) {
+        stderr($lang['categories_error'], $lang['categories_add_error2'] . ': ' . $params['cat_image']);
     }
-    $cat_name = sqlesc($params['new_cat_name']);
-    $cat_desc = sqlesc($params['new_cat_desc']);
-    $cat_image = sqlesc($params['new_cat_image']);
-    sql_query("INSERT INTO categories (name, cat_desc, image)
-                  VALUES($cat_name, $cat_desc, $cat_image)");
-    $cache->delete('genrelist');
+    $values = [
+        'name' => $params['new_cat_name'],
+        'cat_desc' => $params['new_cat_desc'],
+        'image' => $params['cat_image'],
+        'parent_id' => $params['parent_id'],
+    ];
+    $insert = $fluent->insertInto('categories')
+        ->values($values)
+        ->execute();
+
+    $cache->delete('genrelist_grouped');
+    $cache->delete('genrelist_ordered');
     $cache->delete('categories');
-    if (-1 == mysqli_affected_rows($mysqli)) {
+    if (!$insert) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     } else {
-        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories&action=categories");
+        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories");
+        die();
     }
 }
 
 function delete_cat()
 {
-    global $site_config, $params, $lang, $cache, $mysqli;
+    global $site_config, $params, $lang, $cache, $fluent;
 
     if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
-    $q = sql_query('SELECT * FROM categories WHERE id = ' . intval($params['id']));
-    if (false == mysqli_num_rows($q)) {
+    $cat = $fluent->from('categories')
+        ->where('id = ?', $params['id'])
+        ->fetch();
+
+    if (!$cat) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     }
-    $r = mysqli_fetch_assoc($q);
-    $old_cat_id = intval($r['id']);
-    if (isset($params['new_cat_id'])) {
-        if (!is_valid_id($params['new_cat_id']) || ($r['id'] == $params['new_cat_id'])) {
-            stderr($lang['categories_error'], $lang['categories_exist_error']);
-        }
-        $new_cat_id = intval($params['new_cat_id']);
+    $count = $fluent->from('torrents')
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('category = ?', $params['id'])
+        ->fetch('count');
 
-        $q = sql_query('SELECT COUNT(*) FROM categories WHERE id = ' . sqlesc($new_cat_id));
-        $count = mysqli_fetch_array($q, MYSQLI_NUM);
-        if (!$count[0]) {
-            stderr($lang['categories_error'], $lang['categories_exist_error']);
-        }
-        sql_query('UPDATE torrents SET category = ' . sqlesc($new_cat_id) . ' WHERE category = ' . sqlesc($old_cat_id));
+    if ($count) {
+        stderr($lang['categories_error'], $lang['categories_not_empty']);
     }
-    sql_query('DELETE FROM categories WHERE id = ' . sqlesc($old_cat_id));
-    $cache->delete('genrelist');
+
+    $results = $fluent->deleteFrom('categories')
+        ->where('id =?', $params['id'])
+        ->execute();
+
+    $cache->delete('genrelist_grouped');
+    $cache->delete('genrelist_ordered');
     $cache->delete('categories');
-    if (mysqli_affected_rows($mysqli)) {
-        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories&action=categories");
+    if ($results) {
+        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories");
+        die();
     } else {
         stderr($lang['categories_error'], $lang['categories_del_error1']);
     }
@@ -181,57 +215,50 @@ function delete_cat()
 
 function delete_cat_form()
 {
-    global $params, $lang, $site_config;
+    global $params, $lang, $site_config, $fluent;
 
     if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
-    $q = sql_query('SELECT * FROM categories WHERE id = ' . intval($params['id']));
-    if (false == mysqli_num_rows($q)) {
+    $cat = get_cat($params['id']);
+
+    if (!$cat) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     }
-    $r = mysqli_fetch_assoc($q);
-    $q = sql_query('SELECT COUNT(*) AS count FROM torrents WHERE category = ' . intval($r['id']));
-    $count = mysqli_fetch_array($q, MYSQLI_NUM);
-    $select = '';
-    if ($count['count'] > 0) {
-        $select = "
-            <p class='has-text-danger level'>{$lang['categories_select_new']}
-                <select name='new_cat_id'>
-                    <option value='0'>{$lang['categories_select']}</option>";
-        $cats = genrelist();
-        foreach ($cats as $c) {
-            $select .= ($c['id'] != $r['id']) ? "
-                    <option value='{$c['id']}'>" . htmlsafechars($c['name'], ENT_QUOTES) . '</option>' : '';
-        }
-        $select .= '
-                </select>
-            </p>';
+
+    $count = $fluent->from('torrents')
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where('category = ?', $params['id'])
+        ->fetch('count');
+
+    if ($count) {
+        stderr($lang['categories_error'], $lang['categories_not_empty']);
     }
 
     $htmlout = "
-        <form action='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;action=categories' method='post'>
+        <form action='{$site_config['baseurl']}/staffpanel.php?tool=categories' method='post'>
             <input type='hidden' name='mode' value='takedel_cat'>
-            <input type='hidden' name='id' value='" . (int) $r['id'] . "'>
-            <h2 class='has-text-centered'>{$lang['categories_del_about']} " . htmlsafechars($r['name'], ENT_QUOTES) . '</h2>';
+            <input type='hidden' name='id' value='{$cat['id']}'>";
     $htmlout .= main_div("
-            <div class='w-50 has-text-centered'>
-                <p class='has-text-danger level'>{$lang['categories_del_name']} <span class='has-text-white'>" . htmlsafechars($r['name'], ENT_QUOTES) . "</span></p>
-                <p class='has-text-danger level'>{$lang['categories_del_description']} <span class='has-text-white'>" . htmlsafechars($r['cat_desc'], ENT_QUOTES) . "</span></p>
-                <p class='has-text-danger level'>{$lang['categories_del_image']} <span class='has-text-white'>" . htmlsafechars($r['image'], ENT_QUOTES) . "</span></p>
-                $select
+            <div class='w-50 has-text-centered padding20'>
+                <h2 class='has-text-centered'>{$lang['categories_del_about']} {$cat['name']}</h2>
+                <p class='has-text-danger level'>{$lang['categories_del_name']} <span class='has-text-white'>{$cat['name']}</span></p>
+                <p class='has-text-danger level'>{$lang['categories_del_parent_name']} <span class='has-text-white'>{$cat['parent_name']}</span></p>
+                <p class='has-text-danger level'>{$lang['categories_del_description']} <span class='has-text-white'>{$cat['cat_desc']}</span></p>
+                <p class='has-text-danger level'>{$lang['categories_del_image']} <span class='has-text-white'>{$cat['image']}</span></p>
                 <input type='submit' class='button is-small right20' value='{$lang['categories_del_delete']}'>
                 <input type='button' class='button is-small' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\">
             </div>");
     $htmlout .= '
         </form>';
 
-    echo stdhead($lang['categories_del_stdhead'] . $r['name']) . wrapper($htmlout) . stdfoot();
+    echo stdhead($lang['categories_del_stdhead'] . $cat['name']) . wrapper($htmlout) . stdfoot();
 }
 
 function edit_cat()
 {
-    global $site_config, $params, $lang, $cache, $mysqli;
+    global $site_config, $params, $lang, $cache, $fluent;
 
     if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
@@ -240,133 +267,96 @@ function edit_cat()
                  'cat_name',
                  'cat_desc',
                  'cat_image',
+                 'parent_id',
+                 'order_id',
              ] as $x) {
-        if (!isset($params[$x]) || empty($params[$x])) {
+        if (!isset($params[$x])) {
             stderr($lang['categories_error'], $lang['categories_edit_error1'] . $x . '');
         }
     }
     if (!preg_match("/^cat_[A-Za-z0-9_\-]+\.(?:gif|jpg|jpeg|png)$/i", $params['cat_image'])) {
         stderr($lang['categories_error'], $lang['categories_edit_error2']);
     }
-    $cat_name = sqlesc($params['cat_name']);
-    $cat_desc = sqlesc($params['cat_desc']);
-    $cat_image = sqlesc($params['cat_image']);
-    $order_id = intval($params['order_id']);
-    $cat_id = intval($params['id']);
-    sql_query("UPDATE categories SET ordered = $order_id, name = $cat_name, cat_desc = $cat_desc, image = $cat_image WHERE id = $cat_id");
-    sql_query("UPDATE categories SET ordered = ordered + 1 WHERE ordered >= $order_id AND id != $cat_id") or sqlerr(__FILE__, __LINE__);
+    $set = [
+        'name' => $params['cat_name'],
+        'cat_desc' => $params['cat_desc'],
+        'image' => $params['cat_image'],
+        'ordered' => $params['order_id'],
+        'parent_id' => $params['parent_id'],
+    ];
+    $update = $fluent->update('categories')
+        ->set($set)
+        ->where('id = ?', $params['id'])
+        ->execute();
 
-    $query = sql_query('SELECT id FROM categories ORDER BY ordered, name') or sqlerr(__FILE__, __LINE__);
-    $iter = 0;
-    while ($arr = mysqli_fetch_assoc($query)) {
-        sql_query('UPDATE categories SET ordered = ' . ++$iter . ' WHERE id = ' . $arr['id']) or sqlerr(__FILE__, __LINE__);
-    }
+    if ($update) {
+        set_ordered($params);
+        reorder_cats(false);
 
-    $cache->delete('genrelist');
-    $cache->delete('categories');
-    if (-1 == mysqli_affected_rows($mysqli)) {
-        stderr($lang['categories_error'], $lang['categories_exist_error']);
+        $cache->delete('genrelist_grouped');
+        $cache->delete('genrelist_ordered');
+        $cache->delete('categories');
+        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories");
+        die();
     } else {
-        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories&action=categories");
+        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories");
+        die();
     }
 }
 
 function edit_cat_form()
 {
-    global $site_config, $params, $lang;
+    global $site_config, $params, $lang, $fluent;
+
     if (!isset($params['id']) || !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
-    $htmlout = '';
-    $q = sql_query('SELECT * FROM categories WHERE id = ' . intval($params['id']));
-    if (false == mysqli_num_rows($q)) {
+
+    $cat = get_cat($params['id']);
+
+    if (!$cat) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     }
-    $r = mysqli_fetch_assoc($q);
-    $path = IMAGES_DIR . 'caticons/1/';
-    $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
-    $files = [];
-    foreach ($objects as $name => $object) {
-        $basename = pathinfo($name, PATHINFO_BASENAME);
-        $files[] = $basename;
-    }
 
-    if (is_array($files) && count($files)) {
-        $select = "
-            <p class='has-text-green level'>{$lang['categories_edit_select_new']}
-                <select class='w-75' name='cat_image'>
-                    <option value='0'>{$lang['categories_edit_select']}</option>";
-        foreach ($files as $f) {
-            $selected = ($f == $r['image']) ? 'selected' : '';
-            $select .= "
-                    <option value='" . htmlsafechars($f, ENT_QUOTES) . "' $selected>" . htmlsafechars($f, ENT_QUOTES) . '</option>';
-        }
-        $select .= "
-                </select>
-            </p>
-            <p class='has-text-success'>{$lang['categories_edit_info']}</p>";
-    } else {
-        $select = "
-            <p class='has-text-danger'>{$lang['categories_edit_warning']}</p>";
-    }
-    $htmlout .= "
-        <form action='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;action=categories' method='post'>
+    $parents = get_parents($cat);
+    $select = get_images($cat);
+    $htmlout = "
+        <form action='{$site_config['baseurl']}/staffpanel.php?tool=categories' method='post'>
             <input type='hidden' name='mode' value='takeedit_cat'>
-            <input type='hidden' name='id' value='" . (int) $r['id'] . "'>";
+            <input type='hidden' name='id' value='{$cat['id']}'>";
     $htmlout .= main_div("
-            <div class='w-75 has-text-centered'>
-                <p class='has-text-green level'>{$lang['categories_edit_name']}<input type='text' name='cat_name' class='w-75' value='" . htmlsafechars($r['name'], ENT_QUOTES) . "'></p>
-                <p class='has-text-green level'>{$lang['categories_edit_order_id']}<input type='text' name='order_id' class='w-75' value='" . htmlsafechars($r['ordered'], ENT_QUOTES) . "'></p>
-                <p class='has-text-green level'>{$lang['categories_del_description']}<textarea class='w-75' rows='5' name='cat_desc'>" . htmlsafechars($r['cat_desc'], ENT_QUOTES) . "</textarea></p>
+            <div class='w-100 has-text-centered padding20'>
+                <h2>{$lang['categories_show_edit2']}</h2>
+                <p class='has-text-green level'>{$lang['categories_edit_name']}<input type='text' name='cat_name' class='w-75' value='{$cat['name']}'></p>
+                $parents
+                <p class='has-text-green level'>{$lang['categories_edit_order_id']}<input type='number' min='0' max='1000' name='order_id' class='w-75' value='{$cat['ordered']}'></p>
+                <p class='has-text-green level'>{$lang['categories_del_description']}<textarea class='w-75' rows='5' name='cat_desc'>{$cat['cat_desc']}</textarea></p>
                 $select
                 <input type='submit' class='button is-small right10' value='{$lang['categories_edit_edit']}'>
                 <input type='button' class='button is-small' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\">
             </div>");
     $htmlout .= '
         </form>';
-    echo stdhead($lang['categories_edit_stdhead'] . $r['name']) . wrapper($htmlout) . stdfoot();
+    echo stdhead($lang['categories_edit_stdhead'] . $cat['name']) . wrapper($htmlout) . stdfoot();
 }
 
 function show_categories()
 {
     global $site_config, $lang;
 
-    $path = IMAGES_DIR . 'caticons/1/';
-    $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
-    $files = [];
-    foreach ($objects as $name => $object) {
-        $basename = pathinfo($name, PATHINFO_BASENAME);
-        $files[] = $basename;
-    }
-
-    if (is_array($files) && count($files)) {
-        $select = "
-            <p class='has-text-green level'>
-                {$lang['categories_edit_select_new']}
-                <select class='w-75' name='new_cat_image'>
-                    <option value='0'>{$lang['categories_edit_select']}</option>";
-        foreach ($files as $file) {
-            $select .= "
-                    <option value='" . htmlsafechars($file, ENT_QUOTES) . "'>" . htmlsafechars($file, ENT_QUOTES) . '</option>';
-        }
-        $select .= "
-                </select>
-            </p>
-            <p class='has-text-danger'>{$lang['categories_edit_warning1']}</p>";
-    } else {
-        $select = "
-        <p class='has-text-danger'>{$lang['categories_edit_warning']}</p>";
-    }
+    $parents = get_parents([]);
+    $select = get_images([]);
     $htmlout = "
-        <form action='" . $site_config['baseurl'] . "/staffpanel.php?tool=categories&amp;action=categories' method='post'>";
+        <form action='" . $site_config['baseurl'] . "/staffpanel.php?tool=categories' method='post'>";
     $htmlout .= main_div("
             <input type='hidden' name='mode' value='takeadd_cat'>
-            <div class='w-75 has-text-centered'>
+            <div class='has-text-centered padding20'>
                 <h2>{$lang['categories_show_make']}</h2>
-                <p class='has-text-green level'>            
+                <p class='has-text-green level'>
                     {$lang['categories_edit_name']}
                     <input type='text' name='new_cat_name' class='w-75' maxlength='50'>
                 </p>
+                $parents
                 <p class='has-text-green level'>
                     {$lang['categories_del_description']}
                     <textarea class='w-75' rows='5' name='new_cat_desc'></textarea>
@@ -383,46 +373,211 @@ function show_categories()
     $body = '';
     $heading = "
         <tr>
-            <th>{$lang['categories_show_id']}</th>
-            <th>{$lang['categories_show_order_id']}</th>
-            <th>{$lang['categories_show_name']}</th>
-            <th>{$lang['categories_show_descr']}</th>
-            <th>{$lang['categories_show_image']}</th>
-            <th>{$lang['categories_show_edit']}</th>
-            <th>{$lang['categories_show_delete']}</th>
-            <th>{$lang['categories_show_move']}</th>
+            <th class='has-text-centered w-1'>{$lang['categories_show_id']}</th>
+            <th class='has-text-centered w-10'>{$lang['categories_show_order_id']}</th>
+            <th class='w-25'>{$lang['categories_show_name']}</th>
+            <th class='has-text-centered w-1'>{$lang['categories_show_parent']}</th>
+            <th class='has-text-centered'>{$lang['categories_show_descr']}</th>
+            <th class='has-text-centered w-10'>{$lang['categories_show_image']}</th>
+            <th class='has-text-centered w-10'>{$lang['categories_show_tools']}</th>
         </tr>";
-    $query = sql_query('SELECT * FROM categories ORDER BY ordered ASC');
-    if (false == mysqli_num_rows($query)) {
-        $htmlout = '<h1>' . $lang['categories_show_oops'] . '</h1>';
-    } else {
-        $cats = genrelist();
-        while ($row = mysqli_fetch_assoc($query)) {
-            $cat_image = file_exists(IMAGES_DIR . 'caticons/1/' . $row['image']) ? "<img src='{$site_config['pic_baseurl']}caticons/1/" . htmlsafechars($row['image']) . "' alt='" . (int) $row['id'] . "'>" : "{$lang['categories_show_no_image']}";
-            $body .= "
-        <tr>
-            <td><b>{$lang['categories_show_id2']} (" . (int) $row['id'] . ')</b></td>
-            <td>' . htmlsafechars($row['ordered']) . '</td>
-            <td>' . htmlsafechars($row['name']) . '</td>
-            <td>' . htmlsafechars($row['cat_desc']) . "</td>
-            <td>$cat_image</td>
-            <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;action=categories&amp;mode=edit_cat&amp;id=" . (int) $row['id'] . "'>
-                    <i class='icon-edit icon tooltipper' title='{$lang['categories_show_edit']}'></i>
-                </a>
-            </td>
-            <td width='18'>
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;action=categories&amp;mode=del_cat&amp;id=" . (int) $row['id'] . "'>
-                    <i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['categories_show_delete']}'></i>
-                </a>
-            </td>
-            <td width='18'>
-                <a href='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;action=categories&amp;mode=move_cat&amp;id=" . (int) $row['id'] . "'>
-                    <i class='icon-plus icon has-text-success tooltipper' title='{$lang['categories_show_move']}'></i>
-                </a>
-            </td>
-        </tr>";
+    $cats = genrelist(true);
+    foreach ($cats as $cat) {
+        $parent_name = '';
+        $body .= build_table($cat, $parent_name);
+        foreach ($cat['children'] as $child) {
+            $parent_name = htmlsafechars($cat['name']);
+            $child['name'] = htmlsafechars($cat['name']) . '::' . htmlsafechars($child['name']);
+            $body .= build_table($child, $parent_name);
         }
     }
     $htmlout .= main_table($body, $heading);
     echo stdhead($lang['categories_show_stdhead']) . wrapper($htmlout) . stdfoot();
+}
+
+function build_table(array $data, string $parent_name)
+{
+    global $site_config, $lang;
+
+    $cat_image = !empty($data['image']) && file_exists(IMAGES_DIR . 'caticons/1/' . $data['image']) ? "
+            <img src='{$site_config['pic_baseurl']}caticons/1/" . htmlsafechars($data['image']) . "' alt='{$data['id']}'>" : $lang['categories_show_no_image'];
+
+    $row = "
+        <tr>
+            <td class='has-text-centered'>{$data['id']}</td>
+            <td class='has-text-centered'>{$data['ordered']}</td>
+            <td>" . htmlsafechars($data['name']) . "</td>
+            <td class='has-text-centered'>{$parent_name}</td>
+            <td class='has-text-centered'>{$data['cat_desc']}</td>
+            <td class='has-text-centered'>{$cat_image}</td>
+            <td>
+                <div class='level-center'>
+                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;mode=edit_cat&amp;id={$data['id']}'>
+                        <i class='icon-edit icon tooltipper' title='{$lang['categories_show_edit']}'></i>
+                    </a>
+                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;mode=del_cat&amp;id={$data['id']}'>
+                        <i class='icon-trash-empty icon has-text-danger tooltipper' title='{$lang['categories_show_delete']}'></i>
+                    </a>
+                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=categories&amp;mode=move_cat&amp;id={$data['id']}'>
+                        <i class='icon-plus icon has-text-success tooltipper' title='{$lang['categories_show_move']}'></i>
+                    </a>
+                </div>
+            </td>
+        </tr>";
+
+    return $row;
+}
+
+function get_parents(array $cat)
+{
+    global $fluent, $lang;
+
+    $parents = $fluent->from('categories')
+        ->where('parent_id = 0')
+        ->orderBy('ordered')
+        ->fetchAll();
+
+    foreach ($parents as $parent) {
+        $parent['name'] = htmlsafechars($parent['name'], ENT_QUOTES);
+        $parent['cat_desc'] = htmlsafechars($parent['cat_desc'], ENT_QUOTES);
+        $parent['image'] = htmlsafechars($parent['image'], ENT_QUOTES);
+    }
+
+    $out = "
+            <p class='has-text-green level'>{$lang['categories_select_parent']}
+                <select class='w-75' name='parent_id'>
+                    <option value='0'>{$lang['categories_select_parent']}</option>";
+    foreach ($parents as $parent) {
+        $selected = !empty($cat) && $parent['id'] === $cat['parent_id'] ? ' selected' : '';
+        $out .= "
+                    <option value='{$parent['id']}'{$selected}>{$parent['name']}</option>";
+    }
+    $out .= '
+                </select>
+            </p>';
+
+    return $out;
+}
+
+function reorder_cats(bool $redirect = true)
+{
+    global $site_config, $fluent, $cache;
+
+    $i = 0;
+    $cats = $fluent->from('categories')
+        ->orderBy('ordered');
+
+    foreach ($cats as $cat) {
+        $set = [
+            'ordered' => ++$i,
+        ];
+
+        $fluent->update('categories')
+            ->set($set)
+            ->where('id = ?', $cat['id'])
+            ->execute();
+    }
+
+    flush_torrents(0);
+    $cache->delete('genrelist_grouped');
+    $cache->delete('genrelist_ordered');
+    $cache->delete('categories');
+
+    if ($redirect) {
+        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories");
+        die();
+    }
+}
+
+function set_ordered(array $params)
+{
+    global $fluent;
+
+    $set = [
+        'ordered' => new Envms\FluentPDO\Literal('ordered + 1'),
+    ];
+    $fluent->update('categories')
+        ->set($set)
+        ->where('ordered >= ?', $params['order_id'])
+        ->where('id != ?', $params['id'])
+        ->execute();
+}
+
+function get_images(array $cat)
+{
+    global $lang;
+
+    $path = IMAGES_DIR . 'caticons/1/';
+    $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
+    $files = [];
+    foreach ($objects as $name => $object) {
+        $basename = pathinfo($name, PATHINFO_BASENAME);
+        $files[] = $basename;
+    }
+
+    if (is_array($files) && count($files)) {
+        natsort($files);
+        $select = "
+            <p class='has-text-green level'>{$lang['categories_edit_select_new']}
+                <select class='w-75' name='cat_image'>
+                    <option value='0'>{$lang['categories_edit_select']}</option>";
+        foreach ($files as $file) {
+            $selected = !empty($cat) && $file == $cat['image'] ? ' selected' : '';
+            $select .= "
+                    <option value='" . htmlsafechars($file, ENT_QUOTES) . "'{$selected}>" . htmlsafechars($file, ENT_QUOTES) . '</option>';
+        }
+        $select .= "
+                </select>
+            </p>
+            <p class='has-text-danger has-text-centered'>{$lang['categories_edit_info']}</p>";
+    } else {
+        $select = "
+            <p class='has-text-danger'>{$lang['categories_edit_warning']}</p>";
+    }
+
+    return $select;
+}
+
+function get_cat(int $id)
+{
+    global $fluent;
+
+    $cat = $fluent->from('categories')
+        ->where('id = ?', $id)
+        ->fetch();
+
+    $current_cat['parent_name'] = $fluent->from('categories')
+        ->select(null)
+        ->select('name')
+        ->where('id = ?', $cat['parent_id'])
+        ->fetch('name');
+
+    $cat['name'] = htmlsafechars($cat['name'], ENT_QUOTES);
+    $cat['cat_desc'] = htmlsafechars($cat['cat_desc'], ENT_QUOTES);
+    $cat['image'] = htmlsafechars($cat['image'], ENT_QUOTES);
+    $cat['parent_name'] = !empty($cat['parent_name']) ? htmlsafechars($cat['parent_name'], ENT_QUOTES) : '';
+
+    return $cat;
+}
+
+function flush_torrents(int $id)
+{
+    global $fluent, $site_config, $cache;
+
+    $torrents = $fluent->from('torrents')
+        ->select(null)
+        ->select('id');
+    if (!empty($id)) {
+        $torrents->where('category = ?', $id);
+    } else {
+        $torrents->where('category != 0');
+    }
+
+    $set = [
+        'category' => $id,
+    ];
+
+    foreach ($torrents as $torrent) {
+        $cache->update_row('torrent_details_' . $torrent['id'], $set, $site_config['expires']['torrent_details']);
+    }
 }

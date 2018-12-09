@@ -3,7 +3,6 @@
 require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 global $site_config, $fluent, $session, $user_stuffs, $cache;
 
-
 header('content-type: application/json');
 if (empty($_POST['csrf']) || !$session->validateToken($_POST['csrf'])) {
     echo json_encode(['show_in_navbar' => 'csrf']);

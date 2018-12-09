@@ -16,7 +16,7 @@ $needed = (isset($_GET['needed']) ? htmlsafechars($_GET['needed']) : 'seeders');
 if (!in_array($needed, $possible_actions)) {
     stderr('Error', 'A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.');
 }
-$categorie = genrelist();
+$categorie = genrelist(false);
 $change = [];
 foreach ($categorie as $key => $value) {
     $change[$value['id']] = [
@@ -74,7 +74,7 @@ if ($needed === 'leechers') {
         }
         $HTMLOUT .= main_table($body, $header);
     } else {
-        $HTMLOUT .= main_div("{$lang['needseed_noleech']}");
+        $HTMLOUT .= main_div("<div class='padding20'>{$lang['needseed_noleech']}</div>");
     }
     echo stdhead("{$lang['needseed_lin']}") . wrapper($HTMLOUT) . stdfoot();
 } else {
@@ -114,7 +114,7 @@ if ($needed === 'leechers') {
         }
         $HTMLOUT .= main_table($body, $header);
     } else {
-        $HTMLOUT .= main_div("{$lang['needseed_noseed']}");
+        $HTMLOUT .= main_div("<div class='padding20'>{$lang['needseed_noseed']}</div>");
     }
     echo stdhead("{$lang['needseed_sin']}") . wrapper($HTMLOUT) . stdfoot();
 }

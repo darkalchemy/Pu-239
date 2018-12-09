@@ -21,7 +21,7 @@ $season = !empty($match[1]) ? $match[1] : 0;
 $torrent = $torrent_stuffs->get('torrent_details_' . $tid);
 $poster = !empty($torrent['poster']) ? $torrent['poster'] : '';
 if ($poster) {
-    $poster = get_image_by_id('tv', $tid, $ids['thetvdb_id'], 'poster', $season, true);
+    $poster = get_image_by_id('tv', $ids['thetvdb_id'], 'poster', $season, true);
 }
 
 $tvmaze_data = tvmaze($tvmazeid, $tid, $season, $episode, $poster);

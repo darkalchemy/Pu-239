@@ -28,11 +28,10 @@ function rsstfreakinfo()
             <div class='bordered $top'>
                 <div id='" . md5($item->getElementsByTagName('title')
                 ->item(0)->nodeValue) . "' class='header alt_bordered bg-00 has-text-left'>
-                    <legend class='flipper has-text-primary flex flex-left'>
-                        <i class='icon-down-open size_2' aria-hidden='true'></i>
+                    <div class='has-text-primary size_5 padding10'>
                         " . htmlsafechars($item->getElementsByTagName('title')
                 ->item(0)->nodeValue) . "
-                    </legend>
+                    </div>
                     <div class='bg-02 round5 padding10'>
                         <div class='bottom20 size_2 has-text-primary'>
                             by " . str_replace([
@@ -51,7 +50,7 @@ function rsstfreakinfo()
                 '',
                 '',
                 'href="' . $site_config['anonymizer_url'],
-            ], preg_replace('/<p>/', "<p class='size_4 has-text-white'>", $item->getElementsByTagName('description')
+            ], preg_replace('/<p>/', "<p class='has-text-white'>", $item->getElementsByTagName('description')
                 ->item(0)->nodeValue, 1)) . "
                             <a href='{$site_config['anonymizer_url']}" . $item->getElementsByTagName('link')
                 ->item(0)->nodeValue . "' target='_blank'>

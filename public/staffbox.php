@@ -8,16 +8,6 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $session, $message_stuffs, $mysqli;
 
-/**
- * @param $x
- *
- * @return int
- */
-function mkint($x)
-{
-    return (int) $x;
-}
-
 $dt = TIME_NOW;
 $lang = array_merge(load_language('global'), load_language('staffbox'));
 if ($CURUSER['class'] < UC_STAFF) {
@@ -33,7 +23,7 @@ $valid_do = [
     '',
 ];
 $do = isset($_GET['do']) && in_array($_GET['do'], $valid_do) ? $_GET['do'] : (isset($_POST['do']) && in_array($_POST['do'], $valid_do) ? $_POST['do'] : '');
-$id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) && is_array($_POST['id']) ? array_map('mkint', $_POST['id']) : 0);
+$id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) && is_array($_POST['id']) ? array_map('intval', $_POST['id']) : 0);
 $message = isset($_POST['message']) && !empty($_POST['message']) ? htmlsafechars($_POST['message']) : '';
 $reply = isset($_POST['reply']) && $_POST['reply'] == 1 ? true : false;
 $HTMLOUT = '';

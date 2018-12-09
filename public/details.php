@@ -166,7 +166,7 @@ $HTMLOUT = '';
 if (isset($_GET['uploaded'])) {
     $HTMLOUT .= "<meta http-equiv='refresh' content='1;url=download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "'>";
 }
-$categories = genrelist();
+$categories = genrelist(false);
 $change = [];
 foreach ($categories as $key => $value) {
     $change[$value['id']] = [

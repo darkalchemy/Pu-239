@@ -9,22 +9,12 @@ global $CURUSER, $site_config, $lang, $cache, $message_stuffs, $mysqli;
 
 $lang = array_merge($lang, load_language('ad_warn'));
 $HTMLOUT = '';
-/**
- * @param $x
- *
- * @return int
- */
-function mkint($x)
-{
-    return (int) $x;
-}
-
 $dt = TIME_NOW;
 $this_url = $_SERVER['SCRIPT_NAME'];
 $do = isset($_GET['do']) && $_GET['do'] === 'disabled' ? 'disabled' : 'warned';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $r = isset($_POST['ref']) ? $_POST['ref'] : $this_url;
-    $_uids = isset($_POST['users']) ? array_map('mkint', $_POST['users']) : 0;
+    $_uids = isset($_POST['users']) ? array_map('intval', $_POST['users']) : 0;
     if ($_uids == 0 || count($_uids) == 0) {
         stderr($lang['warn_stderr'], $lang['warn_stderr_msg']);
     }

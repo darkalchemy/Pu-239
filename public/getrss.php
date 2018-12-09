@@ -7,19 +7,14 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $CURUSER, $site_config, $session;
 
+$stdfoot = [
+    'js' => [
+        get_file_name('categories_js'),
+    ],
+];
 $lang = array_merge(load_language('global'), load_language('getrss'));
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    /**
-     * @param $x
-     *
-     * @return int
-     */
-    function mkint($x)
-    {
-        return (int) $x;
-    }
-
-    $cats = !empty($_POST['cats']) ? array_map('mkint', $_POST['cats']) : [];
+    $cats = !empty($_POST['cats']) ? array_map('intval', $_POST['cats']) : [];
     $feed = !empty($_POST['feed']) && $_POST['feed'] === 'dl' ? 'dl' : 'web';
     $bm = isset($_POST['bm']) ? (int) $_POST['bm'] : 0;
 
@@ -36,17 +31,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h1>{$lang['getrss_result']}</h1>
             <input type='text' class='w-75 margin20' readonly='readonly' value='{$rsslink}' onclick='select()'>
         </div>";
-    echo stdhead($lang['getrss_head2']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+    echo stdhead($lang['getrss_head2']) . wrapper($HTMLOUT) . stdfoot();
     die();
 }
 
 $HTMLOUT = "
         <form action='{$_SERVER['PHP_SELF']}' method='post'>";
+/*
 $text = "
             <div class='padding20 round10 top20 bottom20 bg-02'>
                 <div id='checkbox_container' class='level-center'>";
-
-$catids = genrelist();
+$catids = genrelist(true);
 if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
     foreach ($catids as $cat) {
         $text .= "
@@ -69,6 +64,9 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
                     </span>";
     }
 }
+*/
+require_once PARTIALS_DIR . 'categories.php';
+/*
 $text .= "
                 </div>
                 <div class='level-center top20'>
@@ -78,6 +76,7 @@ $text .= "
                 </div>
             </div>";
 $HTMLOUT .= main_div($text, 'bottom20');
+*/
 $HTMLOUT .= main_div("
         <div class='padding20'>
             <div class='level-center'>

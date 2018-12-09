@@ -9,21 +9,11 @@ global $CURUSER, $site_config, $lang, $cache, $mysqli;
 
 $lang = array_merge($lang, load_language('ad_leechwarn'));
 $HTMLOUT = '';
-/**
- * @param $x
- *
- * @return int
- */
-function mkint($x)
-{
-    return (int) $x;
-}
-
 $this_url = $_SERVER['SCRIPT_NAME'];
 $do = isset($_GET['do']) && $_GET['do'] === 'disabled' ? 'disabled' : 'leechwarn';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $r = isset($_POST['ref']) ? $_POST['ref'] : $this_url;
-    $_uids = isset($_POST['users']) ? array_map('mkint', $_POST['users']) : 0;
+    $_uids = isset($_POST['users']) ? array_map('intval', $_POST['users']) : 0;
     if ($_uids == 0 || count($_uids) == 0) {
         stderr($lang['leechwarn_stderror'], $lang['leechwarn_nouser']);
     }

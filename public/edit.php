@@ -80,16 +80,17 @@ if ((strpos($row['ori_descr'], '<') === false) || (strpos($row['ori_descr'], '&l
     $c = ' checked';
 }
 $HTMLOUT .= tr($lang['edit_description'], BBcode($row['ori_descr']) . "<br>({$lang['edit_tags']})", 1, 'is-paddingless');
-$s = "<select name='type'>\n";
-$cats = genrelist();
-foreach ($cats as $subrow) {
-    $s .= "<option value='" . (int) $subrow['id'] . "'";
-    if ($subrow['id'] == $row['category']) {
-        $s .= ' selected';
+$s = "
+    <select name='type'>";
+$cats = genrelist(true);
+foreach ($cats as $cat) {
+    foreach ($cat['children'] as $subrow) {
+        $s .= "
+        <option value='{$subrow['id']}'" . ($subrow['id'] == $row['category'] ? ' selected' : '') . '>' . htmlsafechars($cat['name']) . '::' . htmlsafechars($subrow['name']) . '</option>';
     }
-    $s .= '>' . htmlsafechars($subrow['name']) . "</option>\n";
 }
-$s .= "</select>\n";
+$s .= '
+    </select>';
 $HTMLOUT .= tr($lang['edit_type'], $s, 1);
 
 $subs_list .= "

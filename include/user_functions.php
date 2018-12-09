@@ -463,7 +463,7 @@ function min_class($min = UC_MIN, $max = UC_MAX)
  *
  * @throws \Envms\FluentPDO\Exception
  */
-function format_username(int $user_id, $icons = true, $tooltipper = true, $tag = false)
+function format_username(int $user_id, $icons = true, $tooltipper = true, $tag = false, $comma = false)
 {
     global $site_config, $user_stuffs;
 
@@ -537,10 +537,11 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
         }
     }
 
+    $str .= $comma ? ', ' : '';
     $str .= '
                 </span>';
 
-    return preg_replace('/\s{2,}/', '', $str); //"<span class='level-left'>$str</span>");
+    return preg_replace('/\s{2,}/', '', $str);
 }
 
 /**

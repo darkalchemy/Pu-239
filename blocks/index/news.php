@@ -38,7 +38,7 @@ if ($news) {
                         <i class='icon-edit icon size_4 tooltipper' aria-hidden='true' title='{$lang['index_news_ed']}'></i>
                     </a>
                     <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int) $array['id'] . "&amp;h={$hash}'>
-                        <i class='icon-cancel icon has-text-danger size_4 tooltipper' aria-hidden='true' title='{$lang['index_news_del']}'></i>
+                        <i class='icon-trash-empty icon has-text-danger size_4 tooltipper' aria-hidden='true' title='{$lang['index_news_del']}'></i>
                     </a>
                 </div>";
         }
@@ -51,14 +51,12 @@ if ($news) {
             }
         }
         $site_news .= "
-            <div class='bordered{$padding}' style='font-size: 90%;'>
-                <div id='{$array['id']}' class='header alt_bordered bg-00 has-text-left'>
-                    <legend class='flipper has-text-primary'><i class='icon-down-open size_2' aria-hidden='true'></i>" . htmlsafechars($array['title']) . "</legend>
-                    <div class='bg-02 round5 padding10'>
-                        <div class='bottom20 size_5 bg-01 padding20 round5 '>" . get_date($array['added'], 'DATE') . "{$lang['index_news_added']} {$username}{$button}</div>
-                        <div class='has-text-white'>
-                            " . format_comment($array['body'], 0) . '
-                        </div>
+            <div class='bordered{$padding}'>
+                <div id='{$array['id']}' class='header alt_bordered bg-00'>
+                    <div class='has-text-primary size_5 padding10 has-text-centered'>" . htmlsafechars($array['title']) . "</div>
+                    <div class='bottom20 size_2 left20 right20 padding10 bg-00 round5'>" . get_date($array['added'], 'DATE') . "{$lang['index_news_added']} {$username}{$button}</div>
+                    <div class='has-text-white padding20'>
+                        " . format_comment($array['body'], 0) . '
                     </div>
                 </div>
             </div>';

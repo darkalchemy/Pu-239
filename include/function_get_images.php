@@ -5,7 +5,6 @@ require_once INCL_DIR . 'function_fanart.php';
 
 /**
  * @param      $media
- * @param      $tid
  * @param      $imdb
  * @param      $type
  * @param null $season
@@ -14,7 +13,7 @@ require_once INCL_DIR . 'function_fanart.php';
  *
  * @throws Exception
  */
-function get_image_by_id($media, $tid, $imdb, $type, $season = null)
+function get_image_by_id($media, $imdb, $type, $season = null)
 {
     if ($media === 'tv') {
         $image = getTVImagesByTVDb($imdb, $type, $season);

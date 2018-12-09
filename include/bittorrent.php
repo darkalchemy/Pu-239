@@ -610,20 +610,41 @@ function make_bookmarks($userid, $key)
 }
 
 /**
- * @return array
+ * @return array|bool|mixed
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
-function genrelist()
+function genrelist(bool $grouped)
 {
-    global $site_config, $cache;
+    global $site_config, $cache, $fluent;
 
-    $ret = $cache->get('genrelist');
-    if ($ret === false || is_null($ret)) {
-        $ret = [];
-        $res = sql_query('SELECT id, image, name, ordered FROM categories ORDER BY ordered') or sqlerr(__FILE__, __LINE__);
-        while ($row = mysqli_fetch_assoc($res)) {
-            $ret[] = $row;
+    if ($grouped) {
+        $ret = $cache->get('genrelist_grouped');
+        if ($ret === false || is_null($ret)) {
+            $parents = $fluent->from('categories')
+                ->where('parent_id = 0')
+                ->orderBy('ordered');
+            foreach ($parents as $parent) {
+                $children = $fluent->from('categories')
+                    ->where('parent_id = ?', $parent['id'])
+                    ->orderBy('ordered')
+                    ->fetchAll();
+
+                $parent['children'] = $children;
+                $ret[] = $parent;
+            }
+
+            $cache->set('genrelist_grouped', $ret, $site_config['expires']['genrelist']);
         }
-        $cache->set('genrelist', $ret, $site_config['expires']['genrelist']);
+    } else {
+        $ret = $cache->get('genrelist_ordered');
+        if ($ret === false || is_null($ret)) {
+            $ret = $fluent->from('categories')
+                ->orderBy('ordered')
+                ->fetchAll();
+
+            $cache->set('genrelist_ordered', $ret, $site_config['expires']['genrelist']);
+        }
     }
 
     return $ret;
@@ -914,7 +935,7 @@ function get_one_row($table, $suffix, $where)
  *
  * @throws Exception
  */
-function stderr($heading, $text, $class = null)
+function stderr($heading, $text, $class = 'bottom20')
 {
     echo stdhead() . stdmsg($heading, $text, $class) . stdfoot();
     die();

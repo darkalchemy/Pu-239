@@ -241,8 +241,12 @@ function write_css($data, $template)
 ";
         }
     }
-    file_put_contents(ROOT_DIR . "chat/css/{$template}/classcolors.css", $classdata . PHP_EOL);
-    file_put_contents(ROOT_DIR . "templates/{$template}/css/classcolors.css", $classdata . PHP_EOL);
+    if (file_exists(ROOT_DIR . "chat/css/{$template}")) {
+        file_put_contents(ROOT_DIR . "chat/css/{$template}/classcolors.css", $classdata . PHP_EOL);
+    }
+    if (file_exists(ROOT_DIR . "templates/{$template}/css")) {
+        file_put_contents(ROOT_DIR . "templates/{$template}/css/classcolors.css", $classdata . PHP_EOL);
+    }
 }
 
 /**

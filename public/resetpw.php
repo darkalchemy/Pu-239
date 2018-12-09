@@ -150,7 +150,7 @@ if ($step == '1') {
         echo stdhead('Reset Lost Password') . $HTMLOUT . stdfoot($stdfoot);
     }
 } elseif ($step == '3') {
-//dd($_POST);
+    //dd($_POST);
     if (!mkglobal('id:wantpassword:passagain:hash')) {
         die();
     }

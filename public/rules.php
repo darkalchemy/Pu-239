@@ -17,10 +17,9 @@ $HTMLOUT = "
         <fieldset id='rules'>
             <legend>
                 <img src='{$site_config['pic_baseurl']}info.png' alt='' class='tooltipper right5' title='Guidelines' width='25'>Guidelines
-            </legend>
+            </legend>";
 
-            <div class='bordered has-text-left'>
-                <div class='alt_bordered bg-00'>
+$main_div = "
                     <div id='accordion'>
                         <p class='accordion-toggle has-text-black round5-top'>
                             {$lang['rules_general_header']}<span class='has-text-blue'>{$lang['rules_general_header_sub']}</span>
@@ -72,7 +71,7 @@ $HTMLOUT = "
                         </div>";
 
 if (isset($CURUSER) && $CURUSER['class'] >= UC_UPLOADER) {
-    $HTMLOUT .= "
+    $main_div .= "
                         <p class='accordion-toggle has-text-black" . ($CURUSER['class'] < UC_STAFF ? ' round5-bottom' : '') . "'>
                             {$lang['rules_uploading_header']}<span class='has-text-blue'>{$lang['rules_uploading_header_sub']}</span>
                         </p>
@@ -92,7 +91,7 @@ if (isset($CURUSER) && $CURUSER['class'] >= UC_UPLOADER) {
                         </div>";
 }
 if (isset($CURUSER) && $CURUSER['class'] >= UC_STAFF) {
-    $HTMLOUT .= "
+    $main_div .= "
                         <p class='accordion-toggle has-text-black'>
                             {$lang['rules_moderating_header']}<span class='has-text-blue'>{$lang['rules_moderating_header_sub']}</span>
                         </p>
@@ -106,7 +105,7 @@ if (isset($CURUSER) && $CURUSER['class'] >= UC_STAFF) {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <img src='{$site_config['pic_baseurl']}star.gif' alt='Donor' class='tooltipper' title='Donor'>
+                                        <img src='{$site_config['pic_baseurl']}star.png' alt='Donor' class='tooltipper' title='Donor'>
                                     </td>
                                     <td>{$lang['rules_moderating_body1']}</td>
                                 </tr>
@@ -165,11 +164,9 @@ if (isset($CURUSER) && $CURUSER['class'] >= UC_STAFF) {
                         </div>";
 }
 
-$HTMLOUT .= '
-                    </div>
-                </div>
-            </div>
-        </div>
+$main_div .= '
+                    </div>';
+$HTMLOUT .= main_div($main_div) . '
     </fieldset>';
 
 echo stdhead('Rules') . wrapper($HTMLOUT) . stdfoot();

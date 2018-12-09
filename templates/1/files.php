@@ -14,9 +14,9 @@ function get_file_name($file)
         case 'vendor_css':
             return "{$site_config['baseurl']}/css/1/vendor_e11d3062.css";
         case 'sceditor_css':
-            return "{$site_config['baseurl']}/css/1/sceditor_bef4ac18.css";
+            return "{$site_config['baseurl']}/css/1/sceditor_eb62a2de.css";
         case 'main_css':
-            return "{$site_config['baseurl']}/css/1/main_41ec77fd.css";
+            return "{$site_config['baseurl']}/css/1/main_2d5f06f8.css";
         case 'main_js':
             return "{$site_config['baseurl']}/js/1/main_3a013c91.js";
         case 'vendor_js':
@@ -29,6 +29,8 @@ function get_file_name($file)
             return "{$site_config['baseurl']}/js/1/chat_8497c973.js";
         case 'chat_log_js':
             return "{$site_config['baseurl']}/js/1/chat_log_e081be8f.js";
+        case 'categories_js':
+            return "{$site_config['baseurl']}/js/1/categories_347dfb04.js";
         case 'browse_js':
             return "{$site_config['baseurl']}/js/1/browse_d96450ea.js";
         case 'scroller_js':
@@ -38,15 +40,17 @@ function get_file_name($file)
         case 'userdetails_js':
             return "{$site_config['baseurl']}/js/1/userdetails_88ffe01b.js";
         case 'recaptcha_js':
-            return "{$site_config['baseurl']}/js/1/recaptcha_31b1d18c.js";
+            return "{$site_config['baseurl']}/js/1/recaptcha_8313f33d.js";
         case 'bookmarks_js':
             return "{$site_config['baseurl']}/js/1/bookmarks_8e719a09.js";
         case 'iframe_js':
             return "{$site_config['baseurl']}/js/1/iframe_f74a311b.js";
+        case 'navbar_show_js':
+            return "{$site_config['baseurl']}/js/1/navbar_show_6a493036.js";
         case 'theme_js':
             return "{$site_config['baseurl']}/js/1/theme_ff3ca3dd.js";
         case 'sceditor_js':
-            return "{$site_config['baseurl']}/js/1/sceditor_e4a73238.js";
+            return "{$site_config['baseurl']}/js/1/sceditor_12c91cb0.js";
         case 'cheaters_js':
             return "{$site_config['baseurl']}/js/1/cheaters_88e84984.js";
         case 'user_search_js':

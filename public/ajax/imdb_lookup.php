@@ -23,9 +23,9 @@ if (!empty($url)) {
 if (!empty($imdb)) {
     $tid = !empty($tid) ? $tid : false;
     $banner = $background = null;
-    $poster = !empty($image) ? $image : get_image_by_id('movie', $tid, $imdb, 'movieposter');
+    $poster = !empty($image) ? $image : get_image_by_id('movie', $imdb, 'movieposter');
     if (empty($poster)) {
-        $poster = get_image_by_id('tmdb_id', $tid, $imdb, 'movieposter');
+        $poster = get_image_by_id('tmdb_id', $imdb, 'movieposter');
     }
     if (empty($poster)) {
         $poster = find_images($imdb);

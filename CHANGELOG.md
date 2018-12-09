@@ -1,3 +1,13 @@
+### 09 Dec, 2018
+remove: mkint()  
+update: update IMDb during images update  
+fix: IMDb rating not showing on browse page  
+fix: IMDb block not showing genres  
+fix: find_images() not caching  
+remove: star.gif, looks terrible  
+fix: formatting rules.php  
+fix: tabs users.php  
+
 ### 05 Dec, 2018
 update: enforce password restrictions resetpw.php  
 

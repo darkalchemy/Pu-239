@@ -112,7 +112,6 @@ if (isset($_POST['action2'])) {
             $emailnotif = isset($_POST['emailnotif']) ? $_POST['emailnotif'] : '';
             $notifs = $pmnotif == 'yes' ? $lang['pm_edmail_pm_1'] : '';
             $notifs .= $emailnotif == 'yes' ? $lang['pm_edmail_email_1'] : '';
-            $cats = genrelist();
             $category_ids = $fluent->from('categories')
                 ->select(null)
                 ->select('id')
@@ -197,29 +196,33 @@ while ($i <= ($maxbox > 200 ? 200 : $maxbox)) {
 }
 $per_page_drop_down .= '</select>';
 
-$category_set = $fluent->from('categories')
-    ->select(null)
-    ->select('id')
-    ->select('image')
-    ->select('name')
-    ->fetchAll();
+$category_set = genrelist(false);
 
+$i = 0;
 if (!empty($category_set)) {
-    $categories .= "
-            <div id='cat-container' class='level-center'>";
     foreach ($category_set as $a) {
-        $categories .= "
-                <span class='margin10 bordered level-center bg-02 tooltipper' title='" . htmlsafechars($a['name']) . "'>
-                    <input name='cat{$a['id']}' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? ' checked' : '') . " value='yes'>
-                    <span class='cat-image left10'>
-                        <a href='{$site_config['baseurl']}/browse.php?c" . (int) $a['id'] . "'>
-                            <img class='radius-sm' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . "'alt='" . htmlsafechars($a['name']) . "'>
+        if ($a['parent_id'] != 0) {
+            $image = !empty($a['image']) && $CURUSER['opt2'] & user_options_2::BROWSE_ICONS ? "
+                    <span class='left10'>
+                        <a href='{$site_config['baseurl']}/browse.php?c{$a['id']}'>
+                            <img class='caticon' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . "'alt='" . htmlsafechars($a['name']) . "'>
                         </a>
-                    </span>
+                    </span>" : "
+                    <span class='left10'>" . htmlsafechars($a['name']) . '</span>';
+
+            $categories .= "
+                <span class='margin10 bordered level-center bg-02 tooltipper' title='" . htmlsafechars($a['name']) . "'>
+                    <input name='cat{$a['id']}' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? ' checked' : '') . " value='yes'>$image
                 </span>";
+        } else {
+            if ($i++ > 0) {
+                $categories .= '
+                </div>';
+            }
+            $categories .= "
+                <div class='level-center bg-02 round10 top10'>";
+        }
     }
-    $categories .= '
-            </div>';
 }
 $HTMLOUT .= $top_links . '<h1>' . $lang['pm_edmail_title'] . '</h1>' . $h1_thingie . '
         <form action="messages.php" method="post">

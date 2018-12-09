@@ -144,7 +144,7 @@ function torrenttable($res, $variant = 'index')
             </tr>
         </thead>
         <tbody>';
-    $categories = genrelist();
+    $categories = genrelist(false);
     foreach ($categories as $key => $value) {
         $change[$value['id']] = [
             'id' => $value['id'],
@@ -153,7 +153,7 @@ function torrenttable($res, $variant = 'index')
         ];
     }
     $book = make_bookmarks($CURUSER['id'], 'bookmm_');
-    while ($row = mysqli_fetch_assoc($res)) {
+    foreach ($res as $row) {
         if ($CURUSER['opt2'] & user_options_2::SPLIT) {
             if (get_date($row['added'], 'DATE') == $prevdate) {
                 $cleandate = '';
@@ -196,7 +196,7 @@ function torrenttable($res, $variant = 'index')
             </span>" : "
             <span id='staff_pick_{$row['id']}'>
             </span>";
-        $percent = !empty($row['imdb_rating']) ? $row['imdb_rating'] * 10 : 0;
+        $percent = !empty($row['rating']) ? $row['rating'] * 10 : 0;
         $imdb_info = "
                     <div class='star-ratings-css tooltipper' title='{$percent}% of IMDb voters liked this!'>
                         <div class='star-ratings-css-top' style='width: {$percent}%'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
@@ -271,7 +271,7 @@ function torrenttable($res, $variant = 'index')
             $newgenre = [];
             $row['newgenre'] = explode(',', $row['newgenre']);
             foreach ($row['newgenre'] as $foo) {
-                $newgenre[] = "<a href='{$site_config['baseurl']}/browse.php?search=" . strtolower(trim($foo)) . "&amp;searchin=genre'>" . ucfirst(strtolower(trim($foo))) . '</a>';
+                $newgenre[] = "<a href='{$site_config['baseurl']}/browse.php?search_genre=" . strtolower(trim($foo)) . "'>" . ucfirst(strtolower(trim($foo))) . '</a>';
             }
             if (!empty($newgenre)) {
                 $icons[] = implode(', ', $newgenre);

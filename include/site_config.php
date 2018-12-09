@@ -59,7 +59,6 @@ $site_config['expires']['get_all_boxes'] = 2591999; // 30 days
 $site_config['expires']['iphistory'] = 900; // 900 = 15 min
 $site_config['expires']['newpoll'] = 0; // 900 = 15 min
 $site_config['expires']['genrelist'] = 2591999; // 30 days
-$site_config['expires']['genrelist2'] = 2591999; // 30 days
 $site_config['expires']['poll_data'] = 900; // 300 = 5 min
 $site_config['expires']['torrent_data'] = 900; // 900 = 15 min
 $site_config['expires']['user_flag'] = 86400 * 28; // 900 = 15 min
@@ -172,20 +171,30 @@ $site_config['comment_min_class'] = 4; // min class to be checked when posting c
 $site_config['comment_check'] = 1; // set it to 0 if you wanna allow commenting with out staff checking
 // for imdb, tmdb, fanart, subs, youtube
 $site_config['movie_cats'] = [
-    3,
-    10,
-    11,
+    13,
+    14,
+    15,
+    16,
+    17,
 ];
 $site_config['slider_cats'] = [
-    3,
-    10,
-    11,
+    13,
+    14,
+    15,
+    16,
+    17,
 ];
 $site_config['tv_cats'] = [
-    5,
+    18,
+    19,
+    20,
+    21,
 ];
 $site_config['ebook_cats'] = [
-    15,
+    40,
+    41,
+    42,
+    43,
 ];
 
 $youtube_pattern = "/^http(s)?\:\/\/www\.youtube\.com\/watch\?v\=[\w-]{11}/i";

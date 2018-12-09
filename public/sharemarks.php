@@ -28,12 +28,12 @@ function sharetable($res, $variant = 'index')
     global $site_config, $CURUSER, $lang, $session;
 
     $htmlout = "
-    <span>
+    <div class='has-text-centered bottom20'>
         {$lang['bookmarks_icon']}
-        <i class='icon-cancel icon has-text-danger'></i>{$lang['bookmarks_del1']}
+        <i class='icon-trash-empty icon has-text-danger'></i>{$lang['bookmarks_del1']}
         <i class='icon-download icon'></i>{$lang['bookmarks_down1']}
         <i class='icon-ok icon'></i>{$lang['bookmark_add']}
-    </span>
+    </div>
 <table class='table table-bordered table-striped'>
 <tr>
 <td class='colhead'>Type</td>
@@ -59,7 +59,7 @@ function sharetable($res, $variant = 'index')
         $htmlout .= "<td class='colhead'>{$lang['torrenttable_uppedby']}</td>\n";
     }
     $htmlout .= "</tr>\n";
-    $categories = genrelist();
+    $categories = genrelist(false);
     foreach ($categories as $key => $value) {
         $change[$value['id']] = [
             'id' => $value['id'],
@@ -108,7 +108,7 @@ function sharetable($res, $variant = 'index')
                                 <i class='icon-ok icon'></i>
                             </span>" : "
                             <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='true' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_del']}'>
-                                <i class='icon-cancel icon has-text-danger'></i>
+                                <i class='icon-trash-empty icon has-text-danger'></i>
                             </span>");
         $htmlout .= ($variant === 'index' ? "<td>{$bookmarked}</td>" : '');
         if ($variant === 'mytorrents') {

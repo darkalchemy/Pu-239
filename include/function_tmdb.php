@@ -328,7 +328,7 @@ function getStartAndEndDate($year, $week)
  */
 function get_imdbid($tmdbid)
 {
-    global $cache, $BLOCKS, $fluent;
+    global $cache, $BLOCKS;
 
     if (!$BLOCKS['tmdb_api_on']) {
         return false;

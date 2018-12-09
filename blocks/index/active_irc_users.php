@@ -13,19 +13,24 @@ if ($irc === false || is_null($irc)) {
         ->where('id != 2')
         ->orderBy('username ASC');
 
-    $irc['count'] = count($query);
-    if ($irc['count'] >= 100) {
+    $count = count($query);
+    $i = 0;
+    if ($count >= 100) {
         $irc['ircusers'] = format_comment($lang['index_blocks_too_many'], 0);
-    } elseif ($irc['count'] > 0) {
+    } elseif ($count > 0) {
         foreach ($query as $row) {
-            $list[] = format_username($row['id']);
+            if (++$i != $count) {
+                $list[] = format_username($row['id'], true, true, false, true);
+            } else {
+                $list[] = format_username($row['id']);
+            }
         }
-        $irc['ircusers'] = implode(',&nbsp;&nbsp;', $list);
-    } elseif ($irc['count'] === 0) {
+        $irc['ircusers'] = implode('', $list);
+    } elseif ($count === 0) {
         $irc['ircusers'] = $lang['index_irc_nousers'];
     }
 
-    $irc['count'] = number_format($irc['count']);
+    $irc['count'] = number_format($count);
     $cache->set('ircusers_', $irc, $site_config['expires']['activeircusers']);
 }
 

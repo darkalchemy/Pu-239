@@ -38,16 +38,6 @@ function classes2name($min, $max)
     }
 }
 
-/**
- * @param $x
- *
- * @return int
- */
-function mkint($x)
-{
-    return (int) $x;
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $groups = isset($_POST['groups']) ? $_POST['groups'] : '';
     $subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '';

@@ -26,7 +26,7 @@ if (!$count) {
         ->select('id as comment_id')
         ->where('userid = ?', $id)
         ->orderBy('id DESC')
-        ->limit('?, ?', $pager['pdo'][0], $pager['pdo'][1]);
+        ->limit("{$pager['pdo']}");
 
     foreach ($res as $row) {
         $row['anonymous'] = false;

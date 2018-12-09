@@ -1033,6 +1033,10 @@ code a,
     border: none;
 }
 
+.tabs li.is-active a {
+    border: none;
+}
+
 .tabcontent.active {
     overflow: hidden;
 }
@@ -1215,6 +1219,15 @@ body.background-16 {
     cursor: pointer; 
 }
 
+.cat-image {
+    max-width: 125px;
+}
+
+.caticon {
+    width: 50px;
+    height: 50px;
+}
+
 @media (max-width: 1087px) {
     .parallax {
         display: flex;
@@ -1296,6 +1309,10 @@ body.background-16 {
 
     .stats:not(:last-child) {
         margin-bottom: 1.25em;
+    }
+
+    .badge {
+        display: none;
     }
 }
 

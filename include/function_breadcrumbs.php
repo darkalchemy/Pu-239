@@ -31,7 +31,7 @@ function breadcrumbs()
     if (!empty($queries)) {
         $action_page = get_actionpage($lang, $queries, $path);
         if (!empty($action_page)) {
-            $links[] = $action_page;
+            $links = array_merge($links, $action_page);
             $info_page = get_infopage($lang, $queries, $path);
             if (!empty($info_page)) {
                 $links[] = $info_page;
@@ -148,7 +148,6 @@ function get_secondarypage($lang, $queries, $path)
     if (in_array($list[0], $ignore)) {
         return false;
     }
-
     if ($list[0] === 'phpinfo') {
         $title = $lang['phpinfo'];
     } elseif ($list[0] === 'box') {
@@ -205,7 +204,6 @@ function get_infopage($lang, $queries, $path)
         'mode',
         'sent',
     ];
-
     $ignore2 = [
         'polls_manager',
         'cleanup_manager',
@@ -262,14 +260,19 @@ function get_actionpage($lang, $queries, $path)
 
     $queries_1 = '';
     $list = explode('=', $queries[0]);
-
     $ignore = [
+        'cats%5B%5D',
         'open',
         'id',
         'search',
         'edited',
         'act',
+        'search_name',
+        'search_descr',
+        'search_genre',
+        'search_owner',
     ];
+
     if (in_array($list[0], $ignore) || $list[1] === 'bugs' || preg_match('/c\d+/', $list[0])) {
         return false;
     }
@@ -302,7 +305,19 @@ function get_actionpage($lang, $queries, $path)
         $title = htmlspecialchars(ucwords(str_replace('_', ' ', $list[1])), ENT_QUOTES, 'UTF-8');
     }
 
-    return "<a href='{$site_config['baseurl']}{$path}?{$queries[0]}{$queries_1}'>{$title}</a>";
+    $pages = [
+        'memcache',
+        'mysql_stats',
+        'mysql_overview',
+    ];
+
+    if ($list[0] === 'tool' && in_array($list[1], $pages)) {
+        $page[] = "<a href='{$site_config['baseurl']}{$path}?{$list[0]}=system_view'>{$lang['system_view']}</a>";
+    }
+
+    $page[] = "<a href='{$site_config['baseurl']}{$path}?{$queries[0]}{$queries_1}'>{$title}</a>";
+
+    return $page;
 }
 
 /**

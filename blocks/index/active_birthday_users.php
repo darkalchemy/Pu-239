@@ -14,19 +14,24 @@ if ($birthday === false || is_null($birthday)) {
         ->where('perms < ?', bt_options::PERMS_STEALTH)
         ->orderBy('username');
 
-    $birthday['count'] = count($query);
-    if ($birthday['count'] >= 100) {
+    $count = count($query);
+    $i = 0;
+    if ($count >= 100) {
         $birthday['birthdayusers'] = format_comment($lang['index_blocks_too_many'], 0);
-    } elseif ($birthday['count'] > 0) {
+    } elseif ($count > 0) {
         foreach ($query as $row) {
-            $list[] = format_username($row['id']);
+            if (++$i != $count) {
+                $list[] = format_username($row['id'], true, true, false, true);
+            } else {
+                $list[] = format_username($row['id']);
+            }
         }
-        $birthday['birthdayusers'] = implode(',&nbsp;&nbsp;', $list);
-    } elseif ($birthday['count'] === 0) {
+        $birthday['birthdayusers'] = implode('', $list);
+    } elseif ($count === 0) {
         $birthday['birthdayusers'] = $lang['index_birthday_no'];
     }
 
-    $birthday['count'] = number_format($birthday['count']);
+    $birthday['count'] = number_format($count);
     $cache->set('birthdayusers_', $birthday, $site_config['expires']['birthdayusers']);
 }
 

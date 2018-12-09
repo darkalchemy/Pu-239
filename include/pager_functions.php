@@ -9,7 +9,7 @@
  *
  * @return array
  */
-function pager($perpage, $count, $href, $opts = [], $class = null)
+function pager(int $perpage, int $count, $href, $opts = [], $class = null)
 {
     $pages = ceil($count / $perpage);
 
@@ -94,14 +94,13 @@ function pager($perpage, $count, $href, $opts = [], $class = null)
 
     $start = $page * $perpage;
 
+    $start = (int) $start;
+
     return [
         'pagertop' => $pagertop,
         'pagerbottom' => $pagerbottom,
         'limit' => "LIMIT $start, $perpage",
-        'pdo' => [
-            (int) $start,
-            (int) $perpage,
-        ],
+        'pdo' => "$start, $perpage",
     ];
 }
 

@@ -32,7 +32,7 @@ class Searchcloud
         $search = $this->fluent->from('searchcloud')
             ->select('INET6_NTOA(ip) AS ip')
             ->orderBy('howmuch DESC')
-            ->limit('?, ?', $limit[0], $limit[1])
+            ->limit("{$limit}")
             ->fetchAll();
 
         return $search;

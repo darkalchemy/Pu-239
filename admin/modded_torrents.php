@@ -95,7 +95,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                 ->where('checked_when < UNIX_TIMESTAMP(CURDATE())')
                 ->where('checked_when >= UNIX_TIMESTAMP(CURDATE() - INTERVAL 1 DAY)')
                 ->orderBy('checked_when DESC')
-                ->limit('?, ?', $pager['pdo'][0], $pager['pdo'][1])
+                ->limit("{$pager['pdo']}")
                 ->fetchAll();
 
             if ($data) {
@@ -138,7 +138,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                 ->where('checked_when >= UNIX_TIMESTAMP(CURDATE())')
                 ->where('checked_when < UNIX_TIMESTAMP(CURDATE() + INTERVAL 1 DAY)')
                 ->orderBy('checked_when DESC')
-                ->limit('?, ?', $pager['pdo'][0], $pager['pdo'][1])
+                ->limit("{$pager['pdo']}")
                 ->fetchAll();
 
             if ($data) {
@@ -190,7 +190,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                 ->select('name')
                 ->select('added')
                 ->where('checked_when = 0')
-                ->limit('?, ?', $pager['pdo'][0], $pager['pdo'][1])
+                ->limit("{$pager['pdo']}")
                 ->fetchAll();
 
             $HTMLOUT .= main_table(do_sort($data), $heading);

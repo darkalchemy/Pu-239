@@ -14,9 +14,9 @@ function get_file_name($file)
         case 'vendor_css':
             return "{$site_config['baseurl']}/css/2/vendor_e11d3062.css";
         case 'sceditor_css':
-            return "{$site_config['baseurl']}/css/2/sceditor_59c4e4a3.css";
+            return "{$site_config['baseurl']}/css/2/sceditor_470efb3f.css";
         case 'main_css':
-            return "{$site_config['baseurl']}/css/2/main_8d434446.css";
+            return "{$site_config['baseurl']}/css/2/main_196394eb.css";
         case 'main_js':
             return "{$site_config['baseurl']}/js/2/main_3a013c91.js";
         case 'vendor_js':
@@ -29,6 +29,8 @@ function get_file_name($file)
             return "{$site_config['baseurl']}/js/2/chat_8497c973.js";
         case 'chat_log_js':
             return "{$site_config['baseurl']}/js/2/chat_log_e081be8f.js";
+        case 'categories_js':
+            return "{$site_config['baseurl']}/js/2/categories_347dfb04.js";
         case 'browse_js':
             return "{$site_config['baseurl']}/js/2/browse_d96450ea.js";
         case 'scroller_js':
@@ -38,15 +40,17 @@ function get_file_name($file)
         case 'userdetails_js':
             return "{$site_config['baseurl']}/js/2/userdetails_88ffe01b.js";
         case 'recaptcha_js':
-            return "{$site_config['baseurl']}/js/2/recaptcha_31b1d18c.js";
+            return "{$site_config['baseurl']}/js/2/recaptcha_8313f33d.js";
         case 'bookmarks_js':
             return "{$site_config['baseurl']}/js/2/bookmarks_8e719a09.js";
         case 'iframe_js':
             return "{$site_config['baseurl']}/js/2/iframe_f74a311b.js";
+        case 'navbar_show_js':
+            return "{$site_config['baseurl']}/js/2/navbar_show_6a493036.js";
         case '':
             return "{$site_config['baseurl']}/";
         case 'sceditor_js':
-            return "{$site_config['baseurl']}/js/2/sceditor_d4a6c38b.js";
+            return "{$site_config['baseurl']}/js/2/sceditor_1a8dc4da.js";
         case 'cheaters_js':
             return "{$site_config['baseurl']}/js/2/cheaters_88e84984.js";
         case 'user_search_js':

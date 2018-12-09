@@ -208,6 +208,9 @@ $htmlout = "
         <li class='altlink margin10'>
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=mysql_stats'>MySQL Stats</a>
         </li>
+        <li class='altlink margin10'>
+            <a href='{$site_config['baseurl']}/staffpanel.php?tool=mysql_overview'>MySQL Overview</a>
+        </li>
     </ul>";
 $htmlout .= main_table($body);
 echo stdhead($lang['system_stdhead']) . wrapper($htmlout) . stdfoot();
