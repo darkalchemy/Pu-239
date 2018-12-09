@@ -88,7 +88,7 @@ function cloud()
             $size = floor($small + round(($count - $minimum_count) * ($big - $small) / $spread, 0, PHP_ROUND_HALF_UP));
             $color = random_color(100, 200);
             $cloud_tags[] = "
-                            <a class='tooltipper tag_cloud' style='color:{$color}; font-size: {$size}px' href='{$site_config['baseurl']}/browse.php?search=" . urlencode($tag) . "&amp;searchin=all&amp;incldead=1' title='<div class=\"size_5 has-text-primary has-text-centered\">\"" . htmlsafechars($tag) . "\"</div><br>has been searched for {$count} times.'>
+                            <a class='tooltipper tag_cloud' style='color:{$color}; font-size: {$size}px' href='{$site_config['baseurl']}/browse.php?search_name=" . urlencode($tag) . "&amp;search_descr=" . urlencode($tag) . "&amp;incldead=1' title='<div class=\"size_5 has-text-primary has-text-centered\">\"" . htmlsafechars($tag) . "\"</div><br>has been searched for {$count} times.'>
                                 <span class='padding10 has-no-wrap'>" . htmlsafechars(stripslashes($tag)) . '</span>
                             </a>';
         }
