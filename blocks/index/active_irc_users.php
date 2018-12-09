@@ -25,7 +25,7 @@ if ($irc === false || is_null($irc)) {
                 $list[] = format_username($row['id']);
             }
         }
-        $irc['ircusers'] = implode('', $list);
+        $irc['ircusers'] = implode('&nbsp;&nbsp;', $list);
     } elseif ($count === 0) {
         $irc['ircusers'] = $lang['index_irc_nousers'];
     }

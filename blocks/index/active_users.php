@@ -26,7 +26,7 @@ if ($active === false || is_null($active)) {
                 $list[] = format_username($row['id']);
             }
         }
-        $active['activeusers'] = implode('', $list);
+        $active['activeusers'] = implode('&nbsp;&nbsp;', $list);
     } elseif ($count === 0) {
         $active['activeusers'] = $lang['index_active_users_no'];
     }

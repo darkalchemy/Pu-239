@@ -26,7 +26,7 @@ if ($birthday === false || is_null($birthday)) {
                 $list[] = format_username($row['id']);
             }
         }
-        $birthday['birthdayusers'] = implode('', $list);
+        $birthday['birthdayusers'] = implode('&nbsp;&nbsp;', $list);
     } elseif ($count === 0) {
         $birthday['birthdayusers'] = $lang['index_birthday_no'];
     }

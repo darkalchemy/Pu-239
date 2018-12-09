@@ -31,7 +31,7 @@ if ($active24 === false || is_null($active24)) {
                 $list[] = format_username($row['id']);
             }
         }
-        $active24['activeusers24'] = implode('', $list);
+        $active24['activeusers24'] = implode('&nbsp;&nbsp;', $list);
     } elseif ($count === 0) {
         $active24['activeusers24'] = $lang['index_last24_nousers'];
     }
