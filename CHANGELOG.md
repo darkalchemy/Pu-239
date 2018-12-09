@@ -1,4 +1,5 @@
 ### 09 Dec, 2018
+fix: categories.js not working in firefox  
 remove: mkint()  
 update: update IMDb during images update  
 fix: IMDb rating not showing on browse page  

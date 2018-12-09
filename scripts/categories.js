@@ -1,7 +1,7 @@
-var animate_duration = 750;
-
-function showMe(box) {
+function showMe(event) {
     var clicked = document.getElementById(event.target.id);
+    var parent = clicked.dataset.parent;
+    var el = document.getElementById(parent);
     var checked = clicked.checked;
     var checkboxes = document.querySelectorAll('input[type=checkbox]');
     toggle(checkboxes, false);
@@ -9,24 +9,12 @@ function showMe(box) {
     var children = document.getElementsByClassName('children');
     var i;
     for (i = 0; i < children.length; i++) {
-//        if (children[i].classList.contains('is_hidden')) {
-//            $(children[i]).slideToggle(animate_duration, easing, function () {
-//                $(children[i]).toggleClass('is_hidden', $(this).is(':visible'));
-//            });
-
-
-            children[i].classList.add('is_hidden');
-//        }
+        children[i].classList.add('is_hidden');
     }
 
     if (checked) {
         clicked.checked = true;
-        var el = document.getElementById(box);
         el.classList.remove('is_hidden');
-//        $('#box').slideToggle(animate_duration, easing, function () {
-//            $('#box').toggleClass('is_hidden', $(this).is(':visible'));
-//        });
-
         checkboxes = el.querySelectorAll('input[type=checkbox]');
         toggle(checkboxes, true);
     }

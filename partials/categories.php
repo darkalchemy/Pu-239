@@ -29,7 +29,7 @@ function format_row(array $cat, string $parent, string $cat_name)
     if ($parent === 'child') {
         $js = '';
     } else {
-        $js = "onchange=\"showMe('$cat_name')\"";
+        $js = "onclick=\"return showMe(event);\"";
     }
 
     $image = !empty($cat['image']) && $CURUSER['opt2'] & user_options_2::BROWSE_ICONS ? "
@@ -43,7 +43,7 @@ function format_row(array $cat, string $parent, string $cat_name)
     return "
         <span class='margin10 is-flex tooltipper' title='" . htmlsafechars($cat['name']) . "'>
             <span class='bordered level-center bg-02 cat-image'>
-                <input name='cats[]' id='cat_{$cat['id']}' value='{$cat['id']}' class='styled' type='checkbox' " . (in_array($cat['id'], $cats) ? ' checked' : '') . " {$js}>$image
+                <input name='cats[]' id='cat_{$cat['id']}' value='{$cat['id']}' class='styled' data-parent='$cat_name' type='checkbox' " . (in_array($cat['id'], $cats) ? ' checked' : '') . " {$js}>$image
             </span>
         </span>";
 }
