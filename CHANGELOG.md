@@ -1,3 +1,7 @@
+### 10 Dec, 2018
+update: optimize new images  
+update: categories add parent name to child name for display  
+
 ### 09 Dec, 2018
 fix: categories.js not working in firefox  
 remove: mkint()  

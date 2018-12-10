@@ -639,9 +639,17 @@ function genrelist(bool $grouped)
     } else {
         $ret = $cache->get('genrelist_ordered');
         if ($ret === false || is_null($ret)) {
-            $ret = $fluent->from('categories')
-                ->orderBy('ordered')
-                ->fetchAll();
+            $cats = $fluent->from('categories AS c')
+                ->select('p.name AS parent_name')
+                ->leftJoin('categories AS p ON c.parent_id = p.id')
+                ->orderBy('ordered');
+
+            foreach ($cats as $cat) {
+                if (!empty($cat['parent_name'])) {
+                    $cat['name'] = $cat['parent_name'] . '::' . $cat['name'];
+                }
+                $ret[] = $cat;
+            }
 
             $cache->set('genrelist_ordered', $ret, $site_config['expires']['genrelist']);
         }
