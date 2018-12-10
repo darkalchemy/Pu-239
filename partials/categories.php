@@ -29,7 +29,7 @@ function format_row(array $cat, string $parent, string $cat_name)
     if ($parent === 'child') {
         $js = '';
     } else {
-        $js = "onclick=\"return showMe(event);\"";
+        $js = 'onclick="return showMe(event);"';
     }
 
     $image = !empty($cat['image']) && $CURUSER['opt2'] & user_options_2::BROWSE_ICONS ? "

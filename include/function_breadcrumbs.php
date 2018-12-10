@@ -271,6 +271,7 @@ function get_actionpage($lang, $queries, $path)
         'search_descr',
         'search_genre',
         'search_owner',
+        'images',
     ];
 
     if (in_array($list[0], $ignore) || $list[1] === 'bugs' || preg_match('/c\d+/', $list[0])) {

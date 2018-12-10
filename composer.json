@@ -32,6 +32,7 @@
     "matthiasmullie/scrapbook": "^1.4",
     "mp091689/dump-die": "^1.0",
     "nette/mail": "^2.4",
+    "php-curl-class/php-curl-class": "^8.3",
     "scriptotek/google-books": "^0.2.3",
     "sebastian/version": "^2.0",
     "spatie/image": "^1.4",

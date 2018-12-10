@@ -1155,7 +1155,6 @@ option.head {
     padding: 50px 0;
     border: 1px dashed white;
     border-radius: .625em;
-    margin: 25px;
 }
 
 .droppable.dragover {

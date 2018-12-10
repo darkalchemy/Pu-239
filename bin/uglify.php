@@ -227,6 +227,7 @@ foreach ($styles as $folder) {
         ],
         'dragndrop_js' => [
             SCRIPTS_DIR . 'dragndrop.js',
+            SCRIPTS_DIR . 'upload_image_from_url.js',
         ],
         'details_js' => [
             SCRIPTS_DIR . 'descr.js',

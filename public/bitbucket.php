@@ -89,7 +89,13 @@ $htmlout = "
 
 $htmlout .= "
     <h1>BitBucket Image Uploader</h1>
-    <p class='bottom20'>{$lang['bitbucket_disclaimer']}</p>";
+    <p class='has-text-centered margin20'>{$lang['bitbucket_disclaimer']}</p>";
+$htmlout .= main_div("
+        <div class='padding20'>
+            <h2>Upload from URL</h2>
+            <input type='url' id='image_url' data-csrf='" . $session->get('csrf_token') . "' placeholder='External Image URL' class='w-100 top20 bottom20'>
+            <span class='button is-small' onclick=\"return grab_url(event)\">Upload</span>
+        </div>", 'bottom20');
 
 $htmlout .= main_div("
     <div id='droppable' class='droppable bg-03'>
@@ -192,7 +198,7 @@ if (isset($_GET['images'])) {
         }
     } else {
         $htmlout .= main_div("
-                {$lang['bitbucket_noimages']}", 'top20');
+                <div class='padding20'>{$lang['bitbucket_noimages']}</div>", 'top20');
     }
 }
 
