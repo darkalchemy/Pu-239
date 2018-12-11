@@ -1,3 +1,7 @@
+### 11 Dec, 2018
+remove: last usages of mg.gif  
+fix: check items exist before validating takesignup.php  
+
 ### 10 Dec, 2018
 update: optimize new images  
 update: categories add parent name to child name for display  

@@ -177,7 +177,9 @@ $legend = main_table("
         <td>{$lang['fm_you_have_posted_here']}</td>
 	</tr>
 	<tr>
-        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/mg.gif' alt='{$lang['fm_1st_post_preview']}' title='{$lang['fm_1st_post_preview']}' class='tooltipper emoticon lazy'></td>
+        <td class='has-text-centered'>
+            <i class='icon-search icon' aria-hidden='true' title='{$lang['fm_1st_post_preview']}' class='tooltipper'></i>
+        </td>
         <td>{$lang['fm_1st_post_preview']}</td>
         <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['pic_baseurl']}forums/last_post.gif' alt='last post' title='{$lang['fe_last_post']}' class='tooltipper emoticon lazy'></td>
         <td>{$lang['fe_last_post']}</td>
