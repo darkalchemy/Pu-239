@@ -4,7 +4,8 @@ global $lang, $site_config, $fluent, $CURUSER, $cache;
 
 $motw = $cache->get('motw_');
 if ($motw === false || is_null($motw)) {
-    $motw = $fluent->from('torrents')
+    $motw = [];
+    $torrents = $fluent->from('torrents')
         ->select(null)
         ->select('torrents.id')
         ->select('torrents.added')
@@ -21,11 +22,19 @@ if ($motw === false || is_null($motw)) {
         ->select('users.username')
         ->select('users.class')
         ->leftJoin('categories ON torrents.category = categories.id')
+        ->select('p.name AS parent_name')
+        ->leftJoin('categories AS p ON categories.parent_id = p.id')
         ->select('categories.name AS cat')
         ->select('categories.image')
         ->leftJoin('avps ON torrents.id = avps.value_u')
-        ->where('avps.arg', 'bestfilmofweek')
-        ->fetchAll();
+        ->where('avps.arg', 'bestfilmofweek');
+
+    foreach ($torrents as $torrent) {
+        if (!empty($torrent['parent_name'])) {
+            $torrent['cat'] = $torrent['parent_name'] . '::' . $torrent['cat'];
+        }
+        $motw[] = $torrent;
+    }
 
     $cache->set('motw_', $motw, $site_config['expires']['motw']);
 }
@@ -46,6 +55,7 @@ $torrents_mow .= "
                         </tr>
                     </thead>
                     <tbody>";
+
 foreach ($motw as $m_w) {
     $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
     extract($m_w);

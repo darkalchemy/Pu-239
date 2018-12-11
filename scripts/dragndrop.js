@@ -90,9 +90,9 @@ function callback(files) {
                         '</a>' +
                         '<h2 class="has-text-centered padding20">You can use width and/or height as shown in the second link. You can use auto for one or the other.</h2>' +
                         '<h3>Direct link to image</h3>' +
-                        '<input class="w-100" id="direct_' + i + '" onclick="SelectAll(\'direct_' + i + '\')" type="text" value="' + response.urls[i] + '" readonly>' +
+                        '<input class="w-75" id="direct_' + i + '" onclick="SelectAll(\'direct_' + i + '\')" type="text" value="' + response.urls[i] + '" readonly>' +
                         '<h3 class="top20">Tag for forums or comments with Width and Height</h3>' +
-                        '<input class="w-100" id="comments_' + i + '" onclick="SelectAll(\'comments_' + i + '\')" type="text" value="[img width=250 height=auto]' + response.urls[i] + '[/img]" readonly>' +
+                        '<input class="w-75" id="comments_' + i + '" onclick="SelectAll(\'comments_' + i + '\')" type="text" value="[img width=250 height=auto]' + response.urls[i] + '[/img]" readonly>' +
                         '</div>' +
                         '</div>';
                 }

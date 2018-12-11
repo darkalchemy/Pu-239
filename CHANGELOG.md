@@ -1,4 +1,6 @@
 ### 11 Dec, 2018
+update: page template bitbucket.php  
+update: concatenate parent name with child name in index page torrent blocks  
 remove: last usages of mg.gif  
 fix: check items exist before validating takesignup.php  
 

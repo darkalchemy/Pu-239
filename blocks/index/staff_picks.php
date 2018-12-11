@@ -4,7 +4,8 @@ global $site_config, $lang, $fluent, $CURUSER, $cache;
 
 $staff_picks = $cache->get('staff_picks_');
 if ($staff_picks === false || is_null($staff_picks)) {
-    $staff_picks = $fluent->from('torrents')
+    $staff_picks = [];
+    $torrents = $fluent->from('torrents')
         ->select(null)
         ->select('torrents.id')
         ->select('torrents.added')
@@ -21,12 +22,20 @@ if ($staff_picks === false || is_null($staff_picks)) {
         ->select('users.username')
         ->select('users.class')
         ->leftJoin('categories ON torrents.category = categories.id')
+        ->select('p.name AS parent_name')
+        ->leftJoin('categories AS p ON categories.parent_id = p.id')
         ->select('categories.name AS cat')
         ->select('categories.image')
         ->where('torrents.staff_picks != 0')
         ->orderBy('torrents.staff_picks DESC')
-        ->limit($site_config['staff_picks_limit'])
-        ->fetchAll();
+        ->limit($site_config['staff_picks_limit']);
+
+    foreach ($torrents as $torrent) {
+        if (!empty($torrent['parent_name'])) {
+            $torrent['cat'] = $torrent['parent_name'] . '::' . $torrent['cat'];
+        }
+        $staff_picks[] = $torrent;
+    }
 
     $cache->set('staff_picks_', $staff_picks, $site_config['expires']['staff_picks']);
 }

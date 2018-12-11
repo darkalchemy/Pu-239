@@ -4,7 +4,8 @@ global $site_config, $lang, $fluent, $CURUSER, $cache;
 
 $last5torrents = $cache->get('last5_tor_');
 if ($last5torrents === false || is_null($last5torrents)) {
-    $last5torrents = $fluent->from('torrents')
+    $last5torrents = [];
+    $torrents = $fluent->from('torrents')
         ->select(null)
         ->select('torrents.id')
         ->select('torrents.added')
@@ -21,11 +22,19 @@ if ($last5torrents === false || is_null($last5torrents)) {
         ->select('users.username')
         ->select('users.class')
         ->leftJoin('categories ON torrents.category = categories.id')
+        ->select('p.name AS parent_name')
+        ->leftJoin('categories AS p ON categories.parent_id = p.id')
         ->select('categories.name AS cat')
         ->select('categories.image')
         ->orderBy('torrents.added DESC')
-        ->limit($site_config['latest_torrents_limit'])
-        ->fetchAll();
+        ->limit($site_config['latest_torrents_limit']);
+
+    foreach ($torrents as $torrent) {
+        if (!empty($torrent['parent_name'])) {
+            $torrent['cat'] = $torrent['parent_name'] . '::' . $torrent['cat'];
+        }
+        $last5torrents[] = $torrent;
+    }
 
     $cache->set('last5_tor_', $last5torrents, $site_config['expires']['last5_torrents']);
 }

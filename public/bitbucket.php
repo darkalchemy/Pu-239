@@ -73,7 +73,7 @@ if (!empty($_GET['updated']) && $_GET['updated'] === 'avatar') {
     $session->set('is-info', "
         [h3]{$lang['bitbucket_updated']}[/h3]
         [class=mw-150 has-text-centered]
-            [img]" . url_proxy($CURUSER['avatar'], true, 250) . '[/img]
+            [img width=250 height=auto]" . url_proxy($CURUSER['avatar'], true, 250) . '[/img]
         [/class]');
 }
 
@@ -170,19 +170,20 @@ if (isset($_GET['images'])) {
             $encryptedfilename = urlencode(encrypt($filename));
             $eid = md5($filename);
             $htmlout .= main_div("
-            <div class='padding20 margin20 round10 bg-00'>
+            <div class='padding20 round10 bg-00'>
                 <div class='margin20'>
                     <a href='{$site_config['baseurl']}/img.php?{$filename}' data-lightbox='bitbucket'>
                         <img src='{$site_config['baseurl']}/img.php?{$filename}' class='w-50 img-responsive' alt=''>
                     </a>
                 </div>
+                <h2 class='has-text-centered padding20'>You can use width and/or height as shown in the second link. You can use auto for one or the other.</h2>
                 <h3>{$lang['bitbucket_directlink']}</h3>
                 <div class='bottom10'>
-                    <input id='d{$eid}d' onclick=\"SelectAll('d{$eid}d');\" type='text' size='70' value='{$site_config['baseurl']}/img.php?{$filename}' readonly='readonly'>
+                    <input id='d{$eid}d' onclick=\"SelectAll('d{$eid}d');\" type='text' class='w-75' value='{$site_config['baseurl']}/img.php?{$filename}' readonly>
                 </div>
-                <h3>{$lang['bitbucket_tags']}</h3>
+                <h3 class='top20'>{$lang['bitbucket_tags']}</h3>
                 <div class='bottom10'>
-                    <input id='t{$eid}t' onclick=\"SelectAll('t{$eid}t');\" type='text' size='70' value='[img]{$site_config['baseurl']}/img.php?{$filename}[/img]' readonly='readonly'>
+                    <input id='t{$eid}t' onclick=\"SelectAll('t{$eid}t');\" type='text' class='w-75' value='[img width=250 height=auto]{$site_config['baseurl']}/img.php?{$filename}[/img]' readonly>
                 </div>
                 <div>
                     <ul class='level-center margin10'>
