@@ -14,9 +14,9 @@ function get_file_name($file)
         case 'vendor_css':
             return "{$site_config['baseurl']}/css/2/vendor_e11d3062.css";
         case 'sceditor_css':
-            return "{$site_config['baseurl']}/css/2/sceditor_470efb3f.css";
+            return "{$site_config['baseurl']}/css/2/sceditor_6f97cb59.css";
         case 'main_css':
-            return "{$site_config['baseurl']}/css/2/main_196394eb.css";
+            return "{$site_config['baseurl']}/css/2/main_14ea1ee0.css";
         case 'main_js':
             return "{$site_config['baseurl']}/js/2/main_3a013c91.js";
         case 'vendor_js':
@@ -30,7 +30,7 @@ function get_file_name($file)
         case 'chat_log_js':
             return "{$site_config['baseurl']}/js/2/chat_log_e081be8f.js";
         case 'categories_js':
-            return "{$site_config['baseurl']}/js/2/categories_347dfb04.js";
+            return "{$site_config['baseurl']}/js/2/categories_ab858fca.js";
         case 'browse_js':
             return "{$site_config['baseurl']}/js/2/browse_d96450ea.js";
         case 'scroller_js':
@@ -50,7 +50,7 @@ function get_file_name($file)
         case '':
             return "{$site_config['baseurl']}/";
         case 'sceditor_js':
-            return "{$site_config['baseurl']}/js/2/sceditor_1a8dc4da.js";
+            return "{$site_config['baseurl']}/js/2/sceditor_89d93365.js";
         case 'cheaters_js':
             return "{$site_config['baseurl']}/js/2/cheaters_88e84984.js";
         case 'user_search_js':
@@ -74,7 +74,7 @@ function get_file_name($file)
         case 'acp_js':
             return "{$site_config['baseurl']}/js/2/acp_22d19c79.js";
         case 'dragndrop_js':
-            return "{$site_config['baseurl']}/js/2/dragndrop_8018b488.js";
+            return "{$site_config['baseurl']}/js/2/dragndrop_d654de7a.js";
         case 'details_js':
             return "{$site_config['baseurl']}/js/2/details_fa26612c.js";
         case 'forums_js':

@@ -69,7 +69,9 @@ function callback(files) {
         success: function (response) {
             if (!poster) {
                 output.innerHTML = '' +
-                    '<h2>' + response.msg + '</h2>';
+                    '<div class="padding20">' +
+                    '<h2>' + response.msg + '</h2>' +
+                    '</div>';
             }
             for (i = 0; i < response.urls.length; i++) {
                 if (poster) {
@@ -77,18 +79,21 @@ function callback(files) {
                     droppable.classList.add('is-hidden');
                     output.innerHTML = '' +
                         '<div class="padding20 margin20 round10 bg-00">' +
-                        '<img src="' + response.urls[i] + '" class="w-50 img-responsive" alt="" />' +
+                        '<img src="' + response.urls[i] + '" class="w-50 img-responsive" alt="">' +
                         '</div>';
                 } else {
                     output.innerHTML += '' +
-                        '<div class="padding20 margin20 round10 bg-00">' +
+                        '<div class="padding20">' +
+                        '<div class="padding20 margin10 round10 bg-00">' +
                         '<a href="' + response.urls[i] + '" data-lightbox="bitbucket">' +
-                        '<img src="' + response.urls[i] + '" class="w-50 img-responsive" alt="" />' +
+                        '<img src="' + response.urls[i] + '" class="w-50 img-responsive" alt="">' +
                         '</a>' +
-                        '<h2>Direct link to image</h2>' +
+                        '<h2 class="has-text-centered padding20">You can use width and/or height as shown in the second link. You can use auto for one or the other.</h2>' +
+                        '<h3>Direct link to image</h3>' +
                         '<input class="w-100" id="direct_' + i + '" onclick="SelectAll(\'direct_' + i + '\')" type="text" value="' + response.urls[i] + '" readonly>' +
-                        '<h3>Tag for forums or comments</h3>' +
-                        '<input class="w-100" id="comments_' + i + '" onclick="SelectAll(\'comments_' + i + '\')" type="text" value="[img]' + response.urls[i] + '[/img]" readonly>' +
+                        '<h3 class="top20">Tag for forums or comments with Width and Height</h3>' +
+                        '<input class="w-100" id="comments_' + i + '" onclick="SelectAll(\'comments_' + i + '\')" type="text" value="[img width=250 height=auto]' + response.urls[i] + '[/img]" readonly>' +
+                        '</div>' +
                         '</div>';
                 }
             }
