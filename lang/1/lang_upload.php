@@ -100,6 +100,6 @@ $lang = [
     'upload_os' => 'OS',
     'upload_misc' => 'Misc',
     'upload_image' => 'Image',
-    'upload_vip_msg' => "If this one is checked, only Vip's can download this torrent",
+    'upload_vip_msg' => "If this one is checked, only VIP's can download this torrent",
     'upload_not_authorized' => 'you do not have permission to upload torrents',
 ];

@@ -236,39 +236,39 @@ $more_options = '
 <td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/clock.png" alt=' . $lang['poll_starts'] . ' class="emoticon lazy"></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_starts'] . ':</span></td>
 <td><select name="poll_starts">
-<option value="0" ' . (0 === $poll_starts ? 'selected' : '') . '>' . $lang['poll_start_now'] . '!</option>
-<option value="1" ' . (1 === $poll_starts ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_day'], '1') . '</option>
-<option value="2" ' . (2 === $poll_starts ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '2') . '</option>
-<option value="3" ' . (3 === $poll_starts ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '3') . '</option>
-<option value="4" ' . (4 === $poll_starts ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '4') . '</option>
-<option value="5" ' . (5 === $poll_starts ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '5') . '</option>
-<option value="6" ' . (6 === $poll_starts ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '6') . '</option>
-<option value="7" ' . (7 === $poll_starts ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_week'], '1') . '</option>
+<option value="0" ' . ($poll_starts === 0 ? 'selected' : '') . '>' . $lang['poll_start_now'] . '!</option>
+<option value="1" ' . ($poll_starts === 1 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_day'], '1') . '</option>
+<option value="2" ' . ($poll_starts === 2 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '2') . '</option>
+<option value="3" ' . ($poll_starts === 3 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '3') . '</option>
+<option value="4" ' . ($poll_starts === 4 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '4') . '</option>
+<option value="5" ' . ($poll_starts === 5 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '5') . '</option>
+<option value="6" ' . ($poll_starts === 6 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '6') . '</option>
+<option value="7" ' . ($poll_starts === 7 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_week'], '1') . '</option>
 </select>' . $lang['fm_when_to_start_the_poll'] . ' ' . $lang['poll_start_now'] . '!</td>
 </tr>
 <tr>
 <td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/stop.png" alt=' . $lang['poll_ends'] . ' class="emoticon lazy"></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_ends'] . ':</span></td>
 <td><select name="poll_ends">
-<option value="1356048000" ' . (1356048000 === $poll_ends ? 'selected' : '') . '>' . $lang['poll_run_forever'] . '</option>
-<option value="1" ' . (1 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_day'], '1') . '</option>
-<option value="2" ' . (2 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '2') . '</option>
-<option value="3" ' . (3 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '3') . '</option>
-<option value="4" ' . (4 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '4') . '</option>
-<option value="5" ' . (5 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '5') . '</option>
-<option value="6" ' . (6 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '6') . '</option>
-<option value="7" ' . (7 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_week'], '1') . '</option>
-<option value="14" ' . (14 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_weeks'], '2') . '</option>
-<option value="21" ' . (21 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_weeks'], '3') . '</option>
-<option value="28" ' . (28 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_month'], '1') . '</option>
-<option value="56" ' . (56 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_months'], '2') . '</option>
-<option value="84" ' . (84 === $poll_ends ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_months'], '3') . '</option>
+<option value="1356048000" ' . ($poll_ends === 1356048000 ? 'selected' : '') . '>' . $lang['poll_run_forever'] . '</option>
+<option value="1" ' . ($poll_ends === 1 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_day'], '1') . '</option>
+<option value="2" ' . ($poll_ends === 2 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '2') . '</option>
+<option value="3" ' . ($poll_ends === 3 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '3') . '</option>
+<option value="4" ' . ($poll_ends === 4 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '4') . '</option>
+<option value="5" ' . ($poll_ends === 5 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '5') . '</option>
+<option value="6" ' . ($poll_ends === 6 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '6') . '</option>
+<option value="7" ' . ($poll_ends === 7 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_week'], '1') . '</option>
+<option value="14" ' . ($poll_ends === 14 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_weeks'], '2') . '</option>
+<option value="21" ' . ($poll_ends === 21 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_weeks'], '3') . '</option>
+<option value="28" ' . ($poll_ends === 28 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_month'], '1') . '</option>
+<option value="56" ' . ($poll_ends === 56 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_months'], '2') . '</option>
+<option value="84" ' . ($poll_ends === 84 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_months'], '3') . '</option>
 </select> How long should this poll run? Default is "run forever"</td>
 </tr>
 <tr>
 <td><img src="' . $image . '" data-src="' . $site_config['pic_baseurl'] . 'forums/multi.gif" alt=' . $lang['poll_multi_options'] . ' class="emoticon lazy"/></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_multi_options'] . ':</span></td>
-<td><select name="multi_options">
+<td><select name="multi_options"
 <option value="1" ' . (1 === $multi_options ? 'selected' : '') . '>' . $lang['poll_single_option'] . '!</option>
 ' . $options . '
 </select>' . $lang['fm_allow_members_to_have_more_then_one_selection'] . ' ' . $lang['poll_single_option'] . '}!</td>
@@ -422,6 +422,7 @@ switch ($action) {
                 $children[] = $forum;
             }
         }
+        unset($query);
         $i = 0;
         foreach ($children as $child) {
             foreach ($parents as $parent) {
@@ -439,11 +440,10 @@ switch ($action) {
 
         $HTMLOUT .= $mini_menu;
         foreach ($updated as $arr_forums) {
-            $body = '';
-            $body .= ($arr_forums['over_forum_id'] !== $over_forum_id ? '
-                <h2 class="margin20">
-	                <a href="' . $site_config['baseurl'] . '/forums.php?action=section_view&amp;forum_id=' . (int) $arr_forums['over_forum_id'] . '" title="' . htmlsafechars($arr_forums['over_forum_description'], ENT_QUOTES) . '" class="tooltipper">
-	                    <span>' . htmlsafechars($arr_forums['over_forum_name'], ENT_QUOTES) . '</span>
+            $body = ($arr_forums['over_forum_id'] !== $over_forum_id ? "
+                <h2 class='margin20'>
+	                <a href='{$site_config['baseurl']}/forums.php?action=section_view&amp;forum_id={$arr_forums['over_forum_id']}' title='" . htmlsafechars($arr_forums['over_forum_description'], ENT_QUOTES) . "' class='tooltipper'>
+	                    <span>" . htmlsafechars($arr_forums['over_forum_name'], ENT_QUOTES) . '</span>
 	                </a>
 	            </h2>' : '');
             if ($arr_forums['forum_id'] === $arr_forums['over_forum_id']) {
@@ -478,7 +478,8 @@ switch ($action) {
 
                     $cache->set('last_post_' . $forum_id . '_' . $CURUSER['class'], $last_post_arr, $site_config['expires']['last_post']);
                 }
-                if ($last_post_arr['last_post'] > 0) {
+                $last_post = '';
+                if (!empty($last_post_arr) && $last_post_arr['last_post'] > 0) {
                     $last_post_id = $last_post_arr['last_post'];
                     if (($last_read_post_arr = $cache->get('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'])) === false) {
                         $query = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($last_post_arr['topic_id'])) or sqlerr(__FILE__, __LINE__);
@@ -487,6 +488,7 @@ switch ($action) {
                     }
                     $image_to_use = ($last_post_arr['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_read_post_arr or $last_post_id > $last_read_post_arr[0]) : 0;
                     $img = ($image_to_use ? 'unlockednew' : 'unlocked');
+
                     if ($last_post_arr['tan'] === 'yes') {
                         if ($CURUSER['class'] < UC_STAFF && $last_post_arr['user_id'] != $CURUSER['id']) {
                             $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
@@ -496,27 +498,30 @@ switch ($action) {
                     } else {
                         $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . (!empty($last_post_arr['user_id']) ? format_username($last_post_arr['user_id']) : $lang['fe_lost']) . '</span><br>in &#9658; <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
                     }
-                    $keys['child_boards'] = 'child_boards_' . $last_post_id . '_' . $CURUSER['class'];
-                    if (($child_boards_cache = $cache->get($keys['child_boards'])) === false) {
-                        $child_boards = '';
-                        $child_boards_cache = [];
-                        $res = sql_query('SELECT name, id FROM forums WHERE parent_forum = ' . sqlesc($arr_forums['real_forum_id']) . ' AND min_class_read <= ' . sqlesc($CURUSER['class']) . ' ORDER BY sort ASC') or sqlerr(__FILE__, __LINE__);
-                        while ($arr = mysqli_fetch_assoc($res)) {
-                            if ($child_boards) {
-                                $child_boards .= ', ';
-                            }
-                            $child_boards .= '<a href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="altlink">' . htmlsafechars($arr['name'], ENT_QUOTES) . '</a>';
-                        }
-                        $child_boards_cache['child_boards'] = $child_boards;
-                        $cache->set($keys['child_boards'], $child_boards_cache, $site_config['expires']['child_boards']);
-                    }
-                    $child_boards = $child_boards_cache['child_boards'];
-                    if ('' != $child_boards) {
-                        $child_boards = '<hr><span style="font-size: xx-small;">' . $lang['sv_child_boards'] . ':</span> ' . $child_boards;
-                    }
                 } else {
                     $img = 'unlocked';
                     $last_post = 'N/A';
+                }
+                $keys['child_boards'] = 'child_boards_' . $arr_forums['real_forum_id'] . '_' . $CURUSER['class'];
+                $child_boards_cache = $cache->get($keys['child_boards']);
+                if ($child_boards_cache === false || is_null($child_boards_cache)) {
+                    $child_boards_cache = [];
+                    $query = $fluent->from('forums')
+                        ->select(null)
+                        ->select('id')
+                        ->select('name')
+                        ->where('parent_forum = ?', $arr_forums['real_forum_id'])
+                        ->where('min_class_read <= ?', $CURUSER['class'])
+                        ->orderBy('sort');
+
+                    foreach ($query as $arr) {
+                        $child_boards_cache[] = '<a href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="altlink">' . htmlsafechars($arr['name'], ENT_QUOTES) . '</a>';
+                    }
+                    $cache->set($keys['child_boards'], $child_boards_cache, $site_config['expires']['child_boards']);
+                }
+                $child_boards = '';
+                if (!empty($child_boards_cache)) {
+                    $child_boards = '<hr class="is-marginless"><div class="top10"><span class="size_3">' . $lang['sv_child_boards'] . ': </span>' . implode(', ', $child_boards_cache) . '</div>';
                 }
                 $body .= '
                     <tr>

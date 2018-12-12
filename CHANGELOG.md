@@ -1,4 +1,5 @@
 ### 12 Dec, 2018
+fix: child boards not showing properly  
 fix: child forums not included in stats on main forum page  
 
 ### 11 Dec, 2018
