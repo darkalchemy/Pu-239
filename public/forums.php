@@ -191,7 +191,7 @@ $legend = main_table("
 
 $poll_starts = (isset($_POST['poll_starts']) ? intval($_POST['poll_starts']) : 0);
 $poll_ends = (isset($_POST['poll_ends']) ? intval($_POST['poll_ends']) : 1356048000);
-$change_vote = ((isset($_POST['change_vote']) && 'yes' === $_POST['change_vote']) ? 'yes' : 'no');
+$change_vote = ((isset($_POST['change_vote']) && $_POST['change_vote'] === 'yes') ? 'yes' : 'no');
 $multi_options = (isset($_POST['multi_options']) ? intval($_POST['multi_options']) : 1);
 $can_add_poll = (isset($_GET['action']) && $_GET['action'] == 'new_topic' ? 1 : 0);
 
@@ -276,7 +276,7 @@ $more_options = '
 <tr>
 <td></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_change_vote'] . ':</span></td>
-<td><input name="change_vote" value="yes" type="radio"' . ('yes' === $change_vote ? ' checked' : '') . '>' . $lang['fm_yes'] . '
+<td><input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked' : '') . '>' . $lang['fm_yes'] . '
 <input name="change_vote" value="no" type="radio"' . ($change_vote === 'no' ? ' checked' : '') . '>' . $lang['fm_no'] . '<br> ' . $lang['fm_allow_members_to_change_their_vote'] . ' "no"
 </td></tr>') . '
 </table>
@@ -408,14 +408,37 @@ switch ($action) {
             ->select('f.post_count')
             ->select('f.topic_count')
             ->select('f.forum_id')
+            ->select('f.parent_forum')
             ->innerJoin('forums AS f ON f.forum_id = of.id')
             ->where('of.min_class_view <= ?', $CURUSER['class'])
             ->where('f.min_class_read <= ?', $CURUSER['class'])
-            ->where('f.parent_forum = 0')
-            ->orderBy('of.sort, f.sort');
+            ->orderBy('of.sort, f.sort')
+            ->fetchAll();
+
+        foreach ($query as $forum) {
+            if ($forum['parent_forum'] === 0) {
+                $parents[] = $forum;
+            } else {
+                $children[] = $forum;
+            }
+        }
+        $i = 0;
+        foreach ($children as $child) {
+            foreach ($parents as $parent) {
+                $i++;
+                $parent['children_ids'][] = $parent['real_forum_id'];
+                if ($parent['real_forum_id'] === $child['parent_forum']) {
+                    $original = $parent;
+                    $parent['post_count'] += $child['post_count'];
+                    $parent['topic_count'] += $child['topic_count'];
+                    $parent['children_ids'][] = $child['real_forum_id'];
+                }
+                $updated[] = $parent;
+            }
+        }
 
         $HTMLOUT .= $mini_menu;
-        foreach ($query as $arr_forums) {
+        foreach ($updated as $arr_forums) {
             $body = '';
             $body .= ($arr_forums['over_forum_id'] !== $over_forum_id ? '
                 <h2 class="margin20">
@@ -432,12 +455,31 @@ switch ($action) {
 
                 $last_post_arr = $cache->get('last_post_' . $forum_id . '_' . $CURUSER['class']);
                 if ($last_post_arr === false || is_null($last_post_arr)) {
-                    $query = sql_query('SELECT t.id AS topic_id, t.topic_name, t.last_post, t.anonymous AS tan, p.added, p.anonymous AS pan, p.user_id, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.avatar_rights FROM topics AS t LEFT JOIN posts AS p ON p.topic_id = t.id RIGHT JOIN users AS u ON u.id = p.user_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? ' t.status != \'deleted\' AND p.status != \'deleted\' AND' : '')) . ' t.forum_id = ' . sqlesc($forum_id) . ' ORDER BY p.id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
-                    $last_post_arr = mysqli_fetch_assoc($query);
+                    $query = $fluent->from('topics AS t')
+                        ->select('t.id AS topic_id')
+                        ->select('t.topic_name')
+                        ->select('t.last_post')
+                        ->select('t.anonymous AS tan')
+                        ->select('p.added')
+                        ->select('p.anonymous AS pan')
+                        ->select('p.user_id')
+                        ->leftJoin('posts AS p ON t.id = p.topic_id');
+                    if ($CURUSER['class'] < UC_STAFF) {
+                        $query = $query->where('p.status = "ok"')
+                            ->where('t.status = "ok"');
+                    } elseif ($CURUSER['class'] < $min_delete_view_class) {
+                        $query = $query->where('t.status != "deleted"')
+                            ->where('p.status != "deleted"');
+                    }
+                    $last_post_arr = $query->where('t.forum_id', $arr_forums['children_ids'])
+                        ->orderBy('p.id DESC')
+                        ->limit(1)
+                        ->fetch();
+
                     $cache->set('last_post_' . $forum_id . '_' . $CURUSER['class'], $last_post_arr, $site_config['expires']['last_post']);
                 }
                 if ($last_post_arr['last_post'] > 0) {
-                    $last_post_id = (int) $last_post_arr['last_post'];
+                    $last_post_id = $last_post_arr['last_post'];
                     if (($last_read_post_arr = $cache->get('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'])) === false) {
                         $query = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($CURUSER['id']) . ' AND topic_id = ' . sqlesc($last_post_arr['topic_id'])) or sqlerr(__FILE__, __LINE__);
                         $last_read_post_arr = mysqli_fetch_row($query);
@@ -445,14 +487,14 @@ switch ($action) {
                     }
                     $image_to_use = ($last_post_arr['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_read_post_arr or $last_post_id > $last_read_post_arr[0]) : 0;
                     $img = ($image_to_use ? 'unlockednew' : 'unlocked');
-                    if ('yes' == $last_post_arr['tan']) {
+                    if ($last_post_arr['tan'] === 'yes') {
                         if ($CURUSER['class'] < UC_STAFF && $last_post_arr['user_id'] != $CURUSER['id']) {
                             $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
                         } else {
-                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> [' . ('' !== $last_post_arr['username'] ? format_username($last_post_arr['id']) : '' . $lang['fe_lost'] . '') . ']<br>in &#9658; <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
+                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> [' . (!empty($last_post_arr['user_id']) ? format_username($last_post_arr['user_id']) : $lang['fe_lost']) . ']<br>in &#9658; <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
                         }
                     } else {
-                        $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . ('' !== $last_post_arr['username'] ? format_username($last_post_arr['id']) : '' . $lang['fe_lost'] . '') . '</span><br>in &#9658; <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
+                        $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . (!empty($last_post_arr['user_id']) ? format_username($last_post_arr['user_id']) : $lang['fe_lost']) . '</span><br>in &#9658; <a href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
                     }
                     $keys['child_boards'] = 'child_boards_' . $last_post_id . '_' . $CURUSER['class'];
                     if (($child_boards_cache = $cache->get($keys['child_boards'])) === false) {

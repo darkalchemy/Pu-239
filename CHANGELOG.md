@@ -1,3 +1,6 @@
+### 12 Dec, 2018
+fix: child forums not included in stats on main forum page  
+
 ### 11 Dec, 2018
 update: page template bitbucket.php  
 update: concatenate parent name with child name in index page torrent blocks  
