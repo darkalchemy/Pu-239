@@ -1,6 +1,6 @@
 <?php
 
-global $lang, $post_stuffs, $mysqli, $CURUSER;
+global $lang, $post_stuffs, $mysqli, $CURUSER, $cache, $fluent;
 
 //=== post  action posted so we know what to do :P
 $posted_staff_action = strip_tags((isset($_POST['action_2']) ? $_POST['action_2'] : ''));
@@ -417,7 +417,7 @@ switch ($staff_action) {
 	<input type="hidden" name="action_2" value="delete_topic">
 	<input type="hidden" name="sanity_check" value="1">
 	<input type="hidden" name="topic_id" value="' . $topic_id . '">
-	<input type="submit" name="button" class="button" value="' . $lang['fe_del_topic'] . '" >
+	<input type="submit" name="button" class="top20 button is-small" value="' . $lang['fe_del_topic'] . '" >
 	</form>');
         }
         //=== if you want the un-delete option (only admin and up can see "deleted" posts)
@@ -439,6 +439,10 @@ switch ($staff_action) {
             clr_forums_cache($topic_id);
             //=== should I delete attachments? or let the members have a management page? or do it in cleanup?
             sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($arr_count['post_count']) . ', topic_count = topic_count - 1 WHERE id = ' . sqlesc($arr_count['forum_id'])) or sqlerr(__FILE__, __LINE__);
+
+            for ($i = UC_MIN; $i <= UC_MAX; $i++) {
+                $cache->delete('last_post_' . $arr_count['forum_id'] . '_' . $i);
+            }
             header('Location: forums.php');
             die();
         }

@@ -61,6 +61,7 @@ if (!empty($user)) {
         ->execute();
 }
 
+$cache->delete('triviaq_');
 $table = trivia_table();
 echo json_encode([
     'content' => $table['table'] . $answered . trivia_clocks(),

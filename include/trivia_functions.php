@@ -11,42 +11,55 @@ require_once INCL_DIR . 'user_functions.php';
  */
 function trivia_table()
 {
-    global $lang, $site_config, $fluent, $session;
+    global $lang, $site_config, $fluent, $session, $cache;
 
-    $qid = $fluent->from('triviaq')
-        ->select(null)
-        ->select('qid')
-        ->where('current = 1')
-        ->where('asked = 1')
-        ->fetch('qid');
+    $triviaq = $cache->get('triviaq_');
+    if ($triviaq === false || is_null($triviaq)) {
+        $qid = $fluent->from('triviaq')
+            ->select(null)
+            ->select('qid')
+            ->where('current = 1')
+            ->where('asked = 1')
+            ->fetch('qid');
 
-    $gamenum = $fluent->from('triviasettings')
-        ->select(null)
-        ->select('gamenum')
-        ->where('gameon = 1')
-        ->fetch('gamenum');
+        $gamenum = $fluent->from('triviasettings')
+            ->select(null)
+            ->select('gamenum')
+            ->where('gameon = 1')
+            ->fetch('gamenum');
 
-    $results = $fluent->from('triviausers')
-        ->select(null)
-        ->select('user_id')
-        ->select('correct')
-        ->where('gamenum = ?', $gamenum);
+        $results = $fluent->from('triviausers')
+            ->select(null)
+            ->select('user_id')
+            ->select('correct')
+            ->where('gamenum = ?', $gamenum);
 
-    $users = [];
-    foreach ($results as $result) {
-        if (empty($users[$result['user_id']])) {
-            $users[$result['user_id']] = [
-                'uid' => $result['user_id'],
-                'correct' => 0,
-                'incorrect' => 0,
-            ];
+        $users = [];
+        foreach ($results as $result) {
+            if (empty($users[$result['user_id']])) {
+                $users[$result['user_id']] = [
+                    'uid' => $result['user_id'],
+                    'correct' => 0,
+                    'incorrect' => 0,
+                ];
+            }
+            if ($result['correct'] === 0) {
+                ++$users[$result['user_id']]['incorrect'];
+            } else {
+                ++$users[$result['user_id']]['correct'];
+            }
         }
-        if ($result['correct'] === 0) {
-            ++$users[$result['user_id']]['incorrect'];
-        } else {
-            ++$users[$result['user_id']]['correct'];
-        }
+        $triviaq = [
+            'qid' => $qid,
+            'gamenum' => $gamenum,
+            'users' => $users,
+        ];
+        $cache->set('triviaq_', $triviaq, 86400);
     }
+    $qid = $triviaq['qid'];
+    $gamenum = $triviaq['gamenum'];
+    $users = $triviaq['users'];
+
     if (!empty($users)) {
         $users = array_msort($users, ['correct' => SORT_DESC, 'incorrect' => SORT_ASC]);
         $users = array_splice($users, 0, 5);

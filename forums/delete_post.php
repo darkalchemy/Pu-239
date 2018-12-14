@@ -1,6 +1,6 @@
 <?php
 
-global $lang, $CURUSER;
+global $lang, $CURUSER, $cache;
 
 $post_id = (isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0));
 $topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
@@ -42,6 +42,9 @@ if ($sanity_check > 0) {
         sql_query('UPDATE usersachiev SET forumposts = forumposts - 1 WHERE userid = ' . sqlesc($arr_post['user_id'])) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($arr['forum_id']);
         clr_forums_cache($post_id);
+        for ($i = UC_MIN; $i <= UC_MAX; $i++) {
+            $cache->delete('last_post_' . $arr['forum_id'] . '_' . $i);
+        }
     } else {
         sql_query('UPDATE posts SET status = \'deleted\'  WHERE id = ' . sqlesc($post_id) . ' AND topic_id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     }

@@ -1,4 +1,6 @@
 ### 14 Dec, 2018
+update: add cache to trivia block  
+update: clear last post cache when deleting topic or post  
 update: restrict search cloud terms to descr and name  
 update: display last update time as static, not relative imdb block  
 update: README to reflect the addition of Pu-239 Installer script  
