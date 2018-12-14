@@ -66,7 +66,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
             'mpaa' => $movie->mpaa(),
             'mpaa_reason' => $movie->mpaa_reason(),
             'id' => $imdbid,
-            'updated' => get_date(TIME_NOW, 'LONG'),
+            'updated' => get_date(TIME_NOW, 'LONG', 1, 0),
         ];
 
         if (count($imdb_data['genres']) > 0) {

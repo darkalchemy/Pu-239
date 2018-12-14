@@ -49,7 +49,7 @@ function permissioncheck()
         $out .= '<div class="' . ($state ? 'readable' : 'notreadable') . '">' . $dir . '</div>';
     }
     if (!$continue) {
-        $out .= '<div class="info" style="text-align:center;">It looks like you need to chmod some directories!<br>all directories marked in red should be chmoded 0777<br><br><input type="button" value="Reload" onclick="window.location.reload()"></div>';
+        $out .= '<div class="info" style="text-align:center;">It looks like you need to chmod some directories!<br>all directories marked in red should be chmoded 0775<br><br><input type="button" value="Reload" onclick="window.location.reload()"></div>';
     }
     $out .= '</fieldset>';
     if ($continue) {

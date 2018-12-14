@@ -1,3 +1,9 @@
+### 14 Dec, 2018
+update: display last update time as static, not relative imdb block  
+update: README to reflect the addition of Pu-239 Installer script  
+update: 0777 to 0775 in install notes  
+update: add ARGON2ID as default, when it becomes available to the server  
+
 ### 12 Dec, 2018
 fix: child boards not showing properly  
 fix: child forums not included in stats on main forum page  

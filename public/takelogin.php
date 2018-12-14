@@ -111,25 +111,7 @@ if (!password_verify($password, $row['passhash'])) {
     $message_stuffs->insert($values);
     bark("<b>Error</b>: Username or password entry incorrect <br>Have you forgotten your password? <a href='{$site_config['baseurl']}/resetpw.php'><b>Recover</b></a> your password !");
 } else {
-    if (PHP_VERSION_ID >= 70200 && @password_hash('secret_password', PASSWORD_ARGON2I)) {
-        $algo = PASSWORD_ARGON2I;
-        $options = [
-            'memory_cost' => !empty($site_config['password_memory_cost']) ? $site_config['password_memory_cost'] : 2048,
-            'time_cost' => !empty($site_config['password_time_cost']) ? $site_config['password_time_cost'] : 12,
-            'threads' => !empty($site_config['password_threads']) ? $site_config['password_threads'] : 4,
-        ];
-    } else {
-        $algo = PASSWORD_BCRYPT;
-        $options = [
-            'cost' => !empty($site_config['password_cost']) ? $site_config['password_cost'] : 12,
-        ];
-    }
-    if (password_needs_rehash($row['passhash'], $algo, $options)) {
-        $set = [
-            'passhash' => make_passhash($password),
-        ];
-        $user_stuffs->update($set, $row['id']);
-    }
+    rehash_password($row['passhash'], $password, $userid);
 }
 
 if ($row['enabled'] === 'no') {
