@@ -44,4 +44,8 @@ $lang = [
     'browse_rating' => 'IMDb Rating',
     'search_year' => 'Search by Year',
     'search_rating' => 'Search by Rating',
+    'browse_imdb' => 'IMDb ID',
+    'browse_isbn' => 'ISBN',
+    'search_imdb' => 'tt2401097',
+    'search_isbn' => '978-0399501487',
 ];

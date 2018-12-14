@@ -1,4 +1,5 @@
 ### 14 Dec, 2018
+add: search by IMDb and ISBN  
 update: add cache to trivia block  
 update: clear last post cache when deleting topic or post  
 update: restrict search cloud terms to descr and name  

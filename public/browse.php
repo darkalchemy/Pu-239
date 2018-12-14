@@ -44,6 +44,8 @@ $valid_search = [
     'search_owner',
     'search_year',
     'search_rating',
+    'search_imdb',
+    'search_isbn',
 ];
 
 if (isset($_GET['sort'], $_GET['type'])) {
@@ -169,6 +171,18 @@ foreach ($valid_search as $search) {
         } elseif ($search === 'search_rating') {
             $count = $count->where('t.rating >= ?', (float) $cleaned);
             $select = $select->where('t.rating >= ?', (float) $cleaned);
+        } elseif ($search === 'search_imdb') {
+            $imdb = preg_match('/(tt\d{7})/', $cleaned, $match);
+            if (!empty($match[1])) {
+                $count = $count->where('t.imdb_id = ?', $match[1]);
+                $select = $select->where('t.imdb_id = ?', $cleaned);
+            }
+        } elseif ($search === 'search_isbn') {
+            $isbn = preg_match('/\d{7,10}/', $cleaned, $match);
+            if (!empty($match[1])) {
+                $count = $count->where('t.isbn = ?', $match[1]);
+                $select = $select->where('t.isbn = ?', $cleaned);
+            }
         }
     }
 }
@@ -272,6 +286,18 @@ $HTMLOUT .= main_div("
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_rating']}</div>
                                 <input name='search_rating' type='number' min='0' max='10' step='0.1' placeholder='{$lang['search_rating']}' class='search w-100' value='" . (!empty($_GET['search_rating']) ? $_GET['search_rating'] : '') . "'>
+                            </div>
+                        </div>
+                        <div class='columns'>
+                            <div class='column'>
+                                <div class='has-text-centered bottom10'>{$lang['browse_imdb']}</div>
+                                <input name='search_imdb' type='text' placeholder='{$lang['search_imdb']}' class='search w-100' value='" . (!empty($_GET['search_imdb']) ? $_GET['search_imdb'] : '') . "'>
+                            </div>
+                            <div class='column'>
+                                <div class='has-text-centered bottom10'>{$lang['browse_isbn']}</div>
+                                <input name='search_isbn' type='text' placeholder='{$lang['search_isbn']}' class='search w-100' value='" . (!empty($_GET['search_isbn']) ? $_GET['search_isbn'] : '') . "'>
+                            </div>
+                            <div class='column'>
                             </div>
                         </div>
                         <div class='columns top20'>
