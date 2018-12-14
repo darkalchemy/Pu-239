@@ -273,12 +273,12 @@ $HTMLOUT .= main_div("
                                 <div class='has-text-centered bottom10'>{$lang['browse_uploader']}</div>
                                 <input name='search_owner' type='text' placeholder='{$lang['search_uploader']}' class='search w-100' value='" . (!empty($_GET['search_owner']) ? $_GET['search_owner'] : '') . "'>
                             </div>
-                        </div>
-                        <div class='columns'>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_genre']}</div>
                                 <input name='search_genre' type='text' placeholder='{$lang['search_genre']}' class='search w-100' value='" . (!empty($_GET['search_genre']) ? $_GET['search_genre'] : '') . "'>
                             </div>
+                        </div>
+                        <div class='columns'>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_year']}</div>
                                 <input name='search_year' type='number' min='1900' max='" . (date('Y') + 1) . "' placeholder='{$lang['search_year']}' class='search w-100' value='" . (!empty($_GET['search_year']) ? $_GET['search_year'] : '') . "'>
@@ -287,8 +287,6 @@ $HTMLOUT .= main_div("
                                 <div class='has-text-centered bottom10'>{$lang['browse_rating']}</div>
                                 <input name='search_rating' type='number' min='0' max='10' step='0.1' placeholder='{$lang['search_rating']}' class='search w-100' value='" . (!empty($_GET['search_rating']) ? $_GET['search_rating'] : '') . "'>
                             </div>
-                        </div>
-                        <div class='columns'>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_imdb']}</div>
                                 <input name='search_imdb' type='text' placeholder='{$lang['search_imdb']}' class='search w-100' value='" . (!empty($_GET['search_imdb']) ? $_GET['search_imdb'] : '') . "'>
@@ -296,8 +294,6 @@ $HTMLOUT .= main_div("
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_isbn']}</div>
                                 <input name='search_isbn' type='text' placeholder='{$lang['search_isbn']}' class='search w-100' value='" . (!empty($_GET['search_isbn']) ? $_GET['search_isbn'] : '') . "'>
-                            </div>
-                            <div class='column'>
                             </div>
                         </div>
                         <div class='columns top20'>
