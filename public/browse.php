@@ -145,7 +145,9 @@ foreach ($valid_search as $search) {
     if (!empty($_GET[$search])) {
         $cleaned = searchfield($_GET[$search]);
         $title .= " $cleaned";
-        searchcloud_insert($cleaned);
+        if ($search === 'search_name' || $search === 'search_descr') {
+            searchcloud_insert($cleaned, str_replace('search_', '', $search));
+        }
         $addparam .= "{$search}=" . urlencode($cleaned) . '&amp;';
         if ($search === 'search_name') {
             $count = $count->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);

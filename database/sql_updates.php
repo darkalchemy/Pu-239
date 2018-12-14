@@ -1686,4 +1686,11 @@ CREATE TABLE `categories` (
         'query' => "INSERT  IGNORE INTO `categories` VALUES (1,'Anime','cat_animes.png','',1,0),(2,'Movies','cat_movies.png',NULL,7,0),(3,'TV','cat_tvshow.png',NULL,13,0),(4,'Music','cat_music.png',NULL,18,0),(5,'Apps','cat_applications.png',NULL,24,0),(6,'Games','cat_games.png',NULL,28,0),(7,'Ebooks','cat_ebooks.png',NULL,39,0),(8,'720p','cat_animes720.png',NULL,2,1),(9,'1080p','cat_animes1080.png',NULL,3,1),(10,'4k','cat_animes4k.png',NULL,4,1),(11,'Remux','',NULL,5,1),(12,'Bluray Disc','',NULL,6,1),(13,'720p','cat_moviesspectacle720.png',NULL,8,2),(14,'1080p','cat_moviesspectacle1080.png',NULL,9,2),(15,'4k','',NULL,10,2),(16,'Remux','',NULL,11,2),(17,'Bluray Disc','',NULL,12,2),(18,'HDTV 720p','cat_serieshdtv720.png',NULL,14,3),(19,'HDTV 1080p','cat_serieshdtv1080.png',NULL,15,3),(20,'WEB-DL 720p','cat_serieswebdl720.png',NULL,16,3),(21,'WEB-DL 1080p','cat_serieswebdl1080.png',NULL,17,3),(22,'MP4','',NULL,19,4),(23,'MP3','cat_musicmp3.png',NULL,20,4),(24,'Flac','cat_musicflac.png',NULL,21,4),(25,'Windows','cat_applicationswindows.png',NULL,25,5),(26,'Linux','cat_applicationslinux.png',NULL,26,5),(27,'MacOS','cat_applicationsmacos.png',NULL,27,5),(28,'Android','cat_gamesmacos.png',NULL,22,5),(29,'iOS','cat_gamesandroid.png',NULL,23,5),(30,'Windows','cat_gameswindows.png',NULL,29,6),(31,'Linux','cat_gameslinux.png',NULL,30,6),(32,'MacOS','cat_gamesmacos.png',NULL,31,6),(33,'Android','cat_gamesandroid.png',NULL,32,6),(34,'iOS','cat_gamesiphone.png',NULL,33,6),(35,'Nintendo Wii','cat_gameswii.png',NULL,34,6),(36,'Nintendo 3DS','cat_gamesds3.png',NULL,35,6),(37,'Nintendo DS','cat_gamesds.png',NULL,36,6),(38,'Playstation','cat_gamesps.png',NULL,37,6),(39,'XBOX','cat_gamesxbox.png',NULL,38,6),(40,'PDFs','',NULL,40,7),(41,'EPUBs','',NULL,41,7),(42,'MOBIs','',NULL,42,7),(43,'AZWs','',NULL,43,7)",
         'flush' => false,
     ],
+    [
+        'id' => 1544785124,
+        'info' => 'Add column search_column',
+        'date' => '14 Dec, 2018',
+        'query' => "ALTER TABLE `searchcloud` ADD COLUMN `search_column` enum('name','descr') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'name' AFTER `searchedfor`",
+        'flush' => false,
+    ],
 ];

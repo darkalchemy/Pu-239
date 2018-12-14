@@ -7,28 +7,44 @@
  */
 function searchcloud($limit = 50)
 {
-    global $cache;
+    global $cache, $fluent;
 
-    if (!($return = $cache->get('searchcloud'))) {
-        $search_q = sql_query('SELECT searchedfor, howmuch
-                                FROM searchcloud
-                                ORDER BY id DESC' . ($limit > 0 ? ' LIMIT ' . $limit : '')) or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($search_q)) {
-            $return = [];
-            while ($search_a = mysqli_fetch_assoc($search_q)) {
-                $return[$search_a['searchedfor']] = $search_a['howmuch'];
-            }
-            ksort($return);
-            $cache->set('searchcloud', $return, 0);
-
-            return $return;
+    $searchcloud = $cache->get('searchcloud');
+    if ($searchcloud === false || is_null($searchcloud)) {
+        $search = $fluent->from('searchcloud')
+            ->select('searchedfor')
+            ->select('howmuch')
+            ->select('search_column')
+            ->orderBy('howmuch DESC');
+        if ($limit > 0) {
+            $search = $search->limit($limit);
+        }
+        $searchcloud = [];
+        $min = 100000;
+        $max = 0;
+        foreach ($search as $item) {
+            $min = $min > $item['howmuch'] ? $item['howmuch'] : $min;
+            $max = $max < $item['howmuch'] ? $item['howmuch'] : $max;
+            $searchcloud[] = [
+                'searchedfor' => $item['searchedfor'],
+                'howmuch' => $item['howmuch'],
+                'column' => $item['search_column'],
+            ];
+        }
+        if (!empty($searchcloud)) {
+            $searchcloud = [
+                'search' => $searchcloud,
+                'min' => $min,
+                'max' => $max
+            ];
+            $cache->set('searchcloud', $searchcloud, 0);
+            return $searchcloud;
         }
 
         return [];
     }
-    ksort($return);
 
-    return $return;
+    return $searchcloud;
 }
 
 /**
@@ -37,29 +53,45 @@ function searchcloud($limit = 50)
  * @throws \Envms\FluentPDO\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
  */
-function searchcloud_insert($word)
+function searchcloud_insert($word, $column)
 {
     global $cache, $searchcloud_stuffs;
 
     $searchcloud = searchcloud();
     $ip = getip();
-    $howmuch = isset($searchcloud[$word]) ? $searchcloud[$word] + 1 : 1;
-    if (!count($searchcloud) || !isset($searchcloud[$word])) {
-        $searchcloud[$word] = $howmuch;
+    $howmuch = 1;
+    $add = true;
+    foreach ($searchcloud['search'] as $cloud) {
+        if (strtolower($word) === strtolower($cloud['searchedfor'])) {
+            $add = false;
+            $howmuch = $cloud['howmuch'] + 1;
+        }
+    }
+
+
+    if ($add) {
+        $searchcloud['search'][] = [
+            'searchedfor' => $word,
+            'howmuch' => $howmuch,
+            'column' => $column,
+        ];
         $cache->set('searchcloud', $searchcloud, 0);
     } else {
-        $cache->update_row('searchcloud', [
-            $word => $howmuch,
-        ], 0);
+        $cache->delete('searchcloud');
     }
+
     $values = [
         'searchedfor' => $word,
+        'search_column' => $column,
         'howmuch' => 1,
         'ip' => inet_pton($ip),
     ];
     $update = [
-        'howmuch' => new Envms\FluentPDO\Literal('howmuch + 1'),
+        'howmuch' => $howmuch,
+        'search_column' => new Envms\FluentPDO\Literal('VALUES(search_column)'),
+        'ip' => new Envms\FluentPDO\Literal('VALUES(ip)'),
     ];
+
     $searchcloud_stuffs->insert($values, $update);
 }
 
@@ -75,20 +107,27 @@ function cloud()
     $tags = searchcloud();
 
     if (!empty($tags)) {
-        $minimum_count = min(array_values($tags));
-        $maximum_count = max(array_values($tags));
+        $minimum_count = $tags['min'];
+        $maximum_count = $tags['max'];
         $spread = $maximum_count - $minimum_count;
         if ($spread == 0) {
             $spread = 1;
         }
         $cloud_html = '';
         $cloud_tags = [];
-        $tags = shuffle_assoc($tags, 3);
-        foreach ($tags as $tag => $count) {
+        foreach ($tags['search'] as $tag) {
+            if (!empty($tag['searchedfor'])) {
+                $search[$tag['searchedfor']] = $tag;
+            }
+        }
+        $tags = shuffle_assoc($search, 10);
+        foreach ($tags as $tag => $values) {
+            $count = $values['howmuch'];
+            $column = $values['column'];
             $size = floor($small + round(($count - $minimum_count) * ($big - $small) / $spread, 0, PHP_ROUND_HALF_UP));
             $color = random_color(100, 200);
             $cloud_tags[] = "
-                            <a class='tooltipper tag_cloud' style='color:{$color}; font-size: {$size}px' href='{$site_config['baseurl']}/browse.php?search_name=" . urlencode($tag) . '&amp;search_descr=' . urlencode($tag) . "&amp;incldead=1' title='<div class=\"size_5 has-text-primary has-text-centered\">\"" . htmlsafechars($tag) . "\"</div><br>has been searched for {$count} times.'>
+                            <a class='tooltipper tag_cloud' style='color:{$color}; font-size: {$size}px' href='{$site_config['baseurl']}/browse.php?search_{$column}=" . urlencode($tag) . "&amp;incldead=1' title='<div class=\"size_5 has-text-primary has-text-centered\">\"" . htmlsafechars($tag) . "\"</div><br>has been searched for {$count} times.'>
                                 <span class='padding10 has-no-wrap'>" . htmlsafechars(stripslashes($tag)) . '</span>
                             </a>';
         }
@@ -97,3 +136,4 @@ function cloud()
         return $cloud_html;
     }
 }
+

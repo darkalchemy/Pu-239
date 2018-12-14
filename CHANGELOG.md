@@ -1,4 +1,5 @@
 ### 14 Dec, 2018
+update: restrict search cloud terms to descr and name  
 update: display last update time as static, not relative imdb block  
 update: README to reflect the addition of Pu-239 Installer script  
 update: 0777 to 0775 in install notes  
