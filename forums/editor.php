@@ -2,7 +2,7 @@
 
 global $bb_code, $subscribe, $can_edit, $show_edited_by, $topic_desc, $CURUSER;
 
-$bb_code = empty($bb_code) ? 'yes' : 'no';
+$bb_code = empty($bb_code) || $bb_code === 'yes' ? 'yes' : 'no';
 $show_edited_by = empty($show_edited_by) ? 'yes' : 'no';
 $can_edit = !empty($can_edit) ? $can_edit : true;
 $edit = (preg_match('/edit_post/', $_SERVER['QUERY_STRING']) ? "
@@ -143,7 +143,7 @@ $HTMLOUT .= main_table('
             </td>
         </tr>
         <tr>
-            <td>       
+            <td>
                 <span>' . $lang['fe_bbcode'] . '</span>
             </td>
             <td>

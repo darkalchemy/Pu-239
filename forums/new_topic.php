@@ -19,7 +19,7 @@ $post_title = strip_tags(isset($_POST['post_title']) ? $_POST['post_title'] : ''
 $icon = htmlsafechars(isset($_POST['icon']) ? $_POST['icon'] : '');
 $body = isset($_POST['body']) ? $_POST['body'] : '';
 $ip = getip();
-$bb_code = isset($_POST['bb_code']) && $_POST['bb_code'] == 'no' ? 'no' : 'yes';
+$bb_code = !isset($_POST['bb_code']) || $_POST['bb_code'] == 'yes' ? 'yes' : 'no';
 $anonymous = isset($_POST['anonymous']) && $_POST['anonymous'] != '' ? 'yes' : 'no';
 
 $poll_question = strip_tags(isset($_POST['poll_question']) ? trim($_POST['poll_question']) : '');

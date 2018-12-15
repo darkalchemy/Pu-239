@@ -1,3 +1,6 @@
+### 15 Dec, 2018
+update: make allow bbcode default for new forumn posts  
+
 ### 14 Dec, 2018
 update: include search by imdb and isbn in cloud search  
 add: search by IMDb and ISBN  

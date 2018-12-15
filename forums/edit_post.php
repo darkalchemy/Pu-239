@@ -55,21 +55,31 @@ if ($can_edit) {
 }
 $post_title = strip_tags(isset($_POST['post_title']) ? $_POST['post_title'] : $arr_post['post_title']);
 $icon = (isset($_POST['icon']) ? htmlsafechars($_POST['icon']) : htmlsafechars($arr_post['icon']));
-$show_bbcode = (isset($_POST['bb_code']) ? $_POST['bb_code'] : $arr_post['bbcode']);
+$show_bbcode = isset($_POST['bb_code']) ? $_POST['bb_code'] : $arr_post['bbcode'];
+$bb_code = $show_bbcode;
 $edit_reason = strip_tags(isset($_POST['edit_reason']) ? ($_POST['edit_reason']) : '');
 $show_edited_by = ((isset($_POST['show_edited_by']) && $_POST['show_edited_by'] === 'no' && $CURUSER['class'] == UC_MAX && $CURUSER['id'] == $arr_post['id']) ? 'no' : 'yes');
 if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
     if (empty($body)) {
         stderr($lang['gl_error'], $lang['fe_body_text_can_not_be_empty']);
     }
-    $changed = '<span style="color:red;">' . $lang['fe_changed'] . '</span>';
-    $not_changed = '<span style="color:green;">' . $lang['fe_not_changed'] . '</span>';
+    $changed = '<span style="color:red;">' . $lang['fe_changed'] . '</span>'; $not_changed = '<span style="color:green;">' . $lang['fe_not_changed'] . '</span>';
     $post_history = '<table>
 	<tr>
 	<td>#' . $post_id . '  ' . format_username($arr_post['user_id']) . '</td>
-	<td>' . (empty($arr_post['post_history']) ? '' . $lang['fe_first_post'] . '' : '' . $lang['fe_post_edited'] . '') . ' By: ' . format_username($CURUSER['id']) . ' On: ' . date('l jS \of F Y h:i:s A', TIME_NOW) . ' GMT ' . ('' !== $post_title ? '&nbsp;&nbsp;&nbsp;&nbsp; ' . $lang['fe_title'] . ': <span style="font-weight: bold;">' . $post_title . '</span>' : '') . ('' !== $icon ? ' <img src="' . $site_config['pic_baseurl'] . 'smilies/' . $icon . '.gif" alt="' . $icon . '" title="' . $icon . '" class="emoticon tooltipper">' : '') . '</td>
+	<td>' . (empty($arr_post['post_history']) ? '' . $lang['fe_first_post'] . '' : '' . $lang['fe_post_edited'] . '') . ' By: ' . format_username($CURUSER['id']) . ' On: ' . date('l jS \of F Y h:i:s A', TIME_NOW) . ' GMT ' . (!empty($post_title) ? '&nbsp;&nbsp;&nbsp;&nbsp; ' . $lang['fe_title'] . ': <span style="font-weight: bold;">' . $post_title . '</span>' : '') . (!empty($icon) ? ' <img src="' . $site_config['pic_baseurl'] . 'smilies/' . $icon . '.gif" alt="' . $icon . '" title="' . $icon . '" class="emoticon tooltipper">' : '') . '</td>
 	<tr>
-	<td>' . (empty($arr_post['post_history']) ? ($can_edit ? '<span style="white-space:nowrap;">Desc: ' . ('' !== $arr_post['topic_desc'] ? 'yes' : 'none') . '</span><br>' : '') . '<span style="white-space:nowrap;">' . $lang['fe_title'] . ': ' . ('' !== $arr_post['post_title'] ? 'yes' : 'none') . '</span><br><span style="white-space:nowrap;">' . $lang['fe_icon'] . ': ' . ('' !== $arr_post['icon'] ? 'yes' : 'none') . '</span><br><span style="white-space:nowrap;">' . $lang['ep_bb_code'] . ': ' . ('yes' !== $arr_post['bbcode'] ? 'off' : 'on') . '</span><br>' : ($can_edit ? '<span style="white-space:nowrap;">Topic Name: ' . ((isset($_POST['topic_name']) && $_POST['topic_name'] !== $arr_post['topic_name']) ? $changed : $not_changed) . '</span><br><span style="white-space:nowrap;">Desc: ' . ((isset($_POST['topic_desc']) && $_POST['topic_desc'] !== $arr_post['topic_desc']) ? $changed : $not_changed) . '</span><br>' : '') . '<span style="white-space:nowrap;">' . $lang['fe_title'] . ': ' . ((isset($_POST['post_title']) && $_POST['post_title'] !== $arr_post['post_title']) ? $changed : $not_changed) . '</span><br><span style="white-space:nowrap;">' . $lang['fe_icon'] . ': ' . ((isset($_POST['icon']) && $_POST['icon'] !== $arr_post['icon']) ? $changed : $not_changed) . '</span><br><span style="white-space:nowrap;">' . $lang['ep_bb_code'] . ': ' . (($show_bbcode !== $arr_post['bbcode']) ? $changed : $not_changed) . '</span><br><span style="white-space:nowrap;">' . $lang['fe_body'] . ': ' . ((isset($_POST['body']) && $_POST['body'] !== $arr_post['body']) ? $changed : $not_changed) . '</span><br>') . '
+	<td>' . (empty($arr_post['post_history']) ? ($can_edit ? '
+        <span style="white-space:nowrap;">Desc: ' . (!empty($arr_post['topic_desc']) ? 'yes' : 'none') . '</span><br>' : '') . '
+        <span style="white-space:nowrap;">' . $lang['fe_title'] . ': ' . (!empty($arr_post['post_title']) ? 'yes' : 'none') . '</span><br>
+        <span style="white-space:nowrap;">' . $lang['fe_icon'] . ': ' . (!empty($arr_post['icon']) ? 'yes' : 'none') . '</span><br>
+        <span style="white-space:nowrap;">' . $lang['ep_bb_code'] . ': ' . ($show_bbcode === 'yes' ? 'on' : 'off') . '</span><br>' : ($can_edit ? '
+        <span style="white-space:nowrap;">Topic Name: ' . ((isset($_POST['topic_name']) && $_POST['topic_name'] !== $arr_post['topic_name']) ? $changed : $not_changed) . '</span><br>
+        <span style="white-space:nowrap;">Desc: ' . ((isset($_POST['topic_desc']) && $_POST['topic_desc'] !== $arr_post['topic_desc']) ? $changed : $not_changed) . '</span><br>' : '') . '
+        <span style="white-space:nowrap;">' . $lang['fe_title'] . ': ' . ((isset($_POST['post_title']) && $_POST['post_title'] !== $arr_post['post_title']) ? $changed : $not_changed) . '</span><br>
+        <span style="white-space:nowrap;">' . $lang['fe_icon'] . ': ' . ((isset($_POST['icon']) && $_POST['icon'] !== $arr_post['icon']) ? $changed : $not_changed) . '</span><br>
+        <span style="white-space:nowrap;">' . $lang['ep_bb_code'] . ': ' . (($show_bbcode !== $arr_post['bbcode']) ? $changed : $not_changed) . '</span><br>
+        <span style="white-space:nowrap;">' . $lang['fe_body'] . ': ' . ((isset($_POST['body']) && $_POST['body'] !== $arr_post['body']) ? $changed : $not_changed) . '</span><br>') . '
 	</td>
 	<td>' . ($arr_post['bbcode'] === 'yes' ? format_comment($arr_post['body']) : format_comment_no_bbcode($arr_post['body'])) . '</td>
 	</tr>

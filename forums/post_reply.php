@@ -24,7 +24,7 @@ $key = (isset($_GET['key']) ? intval($_GET['key']) : 0);
 $body = (isset($_POST['body']) ? $_POST['body'] : '');
 $post_title = strip_tags((isset($_POST['post_title']) ? $_POST['post_title'] : ''));
 $icon = htmlsafechars((isset($_POST['icon']) ? $_POST['icon'] : ''));
-$bb_code = (isset($_POST['bb_code']) && $_POST['bb_code'] === 'no' ? 'no' : 'yes');
+$bb_code = !isset($_POST['bb_code']) || $_POST['bb_code'] === 'yes' ? 'yes' : 'no';
 $subscribe = ((isset($_POST['subscribe']) && $_POST['subscribe'] === 'yes') ? 'yes' : ((!isset($_POST['subscribe']) && $arr['subscribed_id'] > 0) ? 'yes' : 'no'));
 $topic_name = htmlsafechars($arr['topic_name']);
 $anonymous = (isset($_POST['anonymous']) && '' != $_POST['anonymous'] ? 'yes' : 'no');
