@@ -162,7 +162,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
     foreach ($imdb as $foo => $boo) {
         if (!empty($imdb_data[$foo])) {
             if (!is_array($imdb_data[$foo])) {
-                $imdb_data[$foo] = $boo === 'Title' ? "<a href='{$site_config['baseurl']/browse.php?search_imdb={$imdbid}' class='tooltipper' title='Browse by IMDb'>{$imdb_data[$foo]}</a>" : $imdb_data[$foo];
+                $imdb_data[$foo] = $boo === 'Title' ? "<a href='{$site_config['baseurl']}/browse.php?search_imdb={$imdbid}' class='tooltipper' title='Browse by IMDb'>{$imdb_data[$foo]}</a>" : $imdb_data[$foo];
                 if ($boo === 'Rating') {
                     $percent = $imdb_data['rating'] * 10;
                     $imdb_data[$foo] = "
