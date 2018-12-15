@@ -1,4 +1,5 @@
 ### 15 Dec, 2018
+update: set min/max release year in torrent search  
 update: format cron controller logging  
 update: make allow bbcode default for new forumn posts  
 
