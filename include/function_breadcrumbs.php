@@ -271,6 +271,8 @@ function get_actionpage($lang, $queries, $path)
         'search_descr',
         'search_genre',
         'search_owner',
+        'search_imdb',
+        'search_isbn',
         'images',
     ];
 

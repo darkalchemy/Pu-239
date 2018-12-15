@@ -1,4 +1,5 @@
 ### 14 Dec, 2018
+update: include search by imdb and isbn in cloud search  
 add: search by IMDb and ISBN  
 update: add cache to trivia block  
 update: clear last post cache when deleting topic or post  

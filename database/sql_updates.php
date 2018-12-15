@@ -1693,4 +1693,11 @@ CREATE TABLE `categories` (
         'query' => "ALTER TABLE `searchcloud` ADD COLUMN `search_column` enum('name','descr') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'name' AFTER `searchedfor`",
         'flush' => false,
     ],
+    [
+        'id' => 1544786124,
+        'info' => 'Update column search_column',
+        'date' => '14 Dec, 2018',
+        'query' => "ALTER TABLE `searchcloud` MODIFY COLUMN `search_column` enum('name','descr', 'imdb', 'isbn') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'name'",
+        'flush' => false,
+    ],
 ];

@@ -147,7 +147,13 @@ foreach ($valid_search as $search) {
     if (!empty($_GET[$search])) {
         $cleaned = searchfield($_GET[$search]);
         $title .= " $cleaned";
-        if ($search === 'search_name' || $search === 'search_descr') {
+        $insert_cloud = [
+            'search_name',
+            'search_descr',
+            'search_imdb',
+            'search_isbn',
+        ];
+        if (in_array($search, $insert_cloud)) {
             searchcloud_insert($cleaned, str_replace('search_', '', $search));
         }
         $addparam .= "{$search}=" . urlencode($cleaned) . '&amp;';
