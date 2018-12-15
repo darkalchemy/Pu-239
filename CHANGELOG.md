@@ -1,4 +1,5 @@
 ### 15 Dec, 2018
+update: format cron controller logging  
 update: make allow bbcode default for new forumn posts  
 
 ### 14 Dec, 2018

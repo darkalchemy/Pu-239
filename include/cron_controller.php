@@ -31,6 +31,8 @@ function autoclean()
         ->orderBy('clean_increment ASC')
         ->fetchAll();
 
+    echo "===================================================\n";
+    echo get_date(TIME_NOW, 1, 0) . "\n";
     if (!$query) {
         echo "Nothing to process, all caught up.\n";
     } else {
