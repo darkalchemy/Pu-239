@@ -167,6 +167,7 @@ $lang = [
     'bluray_com_api' => 'Bluray.com RSS API',
     'google_books_api' => 'Google Books API',
     'tvmaze_api' => 'TvMaze API',
+    'anidb_api' => 'AniDb API',
     'fanart_api_set' => 'Enable FANART.tv API',
     'tmdb_api_set' => 'Enable The Movie Database (TMDb) API',
     'imdb_api_set' => 'Enable IMDb API',
@@ -174,4 +175,5 @@ $lang = [
     'bluray_com_api_set' => 'Enable Bluray.com RSS API',
     'google_books_api_set' => 'Enable Google Books API',
     'tvmaze_api_set' => 'Enable TvMaze API',
+    'anidb_api_set' => 'Enable AniDb API',
 ];

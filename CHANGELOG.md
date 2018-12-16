@@ -1,4 +1,6 @@
 ### 16 Dec, 2018
+add: anidb titles update, runs daily  
+add: anidb titles table  
 update: set min/max rating in torrent search  
 update: database files  
 fix: not setting permissions for folders set_perms.php  

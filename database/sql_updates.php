@@ -1700,4 +1700,26 @@ CREATE TABLE `categories` (
         'query' => "ALTER TABLE `searchcloud` MODIFY COLUMN `search_column` enum('name','descr', 'imdb', 'isbn') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'name'",
         'flush' => false,
     ],
+    [
+        'id' => 1544975052,
+        'info' => 'Add anidb_titles table',
+        'date' => '16 Dec, 2018',
+        'query' => "CREATE TABLE `anidb_titles` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `aid` int(10) unsigned NOT NULL DEFAULT 0,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `language` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` enum('short', 'official', 'syn', 'main') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'official',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `aid_title_lang_type` (`aid`, `title`, `language`, `type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;",
+        'flush' => false,
+    ],
+    [
+        'id' => 1544975053,
+        'info' => 'Add anidb titles cleanup',
+        'date' => '15 Jul, 2018',
+        'query' => "INSERT INTO `cleanup` (clean_title, clean_file, clean_time, clean_increment, clean_log, clean_desc, clean_on, function_name) VALUES ('AniDb Update', 'anidb_title_update.php', 1544832000, 86400, 1, 'Download and Update AniDb Titls', 1, 'anidb_titles_update')",
+        'flush' => false,
+    ],
 ];

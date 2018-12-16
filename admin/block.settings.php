@@ -83,6 +83,7 @@ $list = [
     'bluray_com_api_on',
     'google_books_api_on',
     'tvmaze_api_on',
+    'anidb_api_on',
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -734,6 +735,14 @@ $contents[] = "
                                 <#tvmaze_api_on#>
                             </div>
                             <div class='w-100'>{$lang['tvmaze_api_set']}</div>";
+
+$contents[] = "
+                            <div class='w-100'>{$lang['anidb_api']}</div>
+                            <div class='slideThree'>
+                                <#anidb_api_on#>
+                            </div>
+                            <div class='w-100'>{$lang['anidb_api_set']}</div>";
+
 
 $level4 = "
                 <div class='level-center'>";
