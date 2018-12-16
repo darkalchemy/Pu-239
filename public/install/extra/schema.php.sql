@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.24-26, for debian-linux-gnu (x86_64)
 --
--- Host: localhost    Database: silly
+-- Host: localhost    Database: master
 -- ------------------------------------------------------
 -- Server version	5.7.24-26
 
@@ -1782,6 +1782,7 @@ DROP TABLE IF EXISTS `searchcloud`;
 CREATE TABLE `searchcloud` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `searchedfor` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `search_column` enum('name','descr','imdb','isbn') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'name',
   `howmuch` int(10) NOT NULL,
   `ip` varbinary(16) NOT NULL,
   PRIMARY KEY (`id`),
@@ -2640,4 +2641,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-09  8:50:03
+-- Dump completed on 2018-12-16  9:27:56
