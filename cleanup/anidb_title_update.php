@@ -10,7 +10,7 @@ function anidb_titles_update($data)
         return;
     }
 
-    $file = CACHE_DIR . 'anime-titles.dat.gz', $dat;
+    $file = CACHE_DIR . 'anime-titles.dat.gz';
     $dat = fetch('http://anidb.net/api/anime-titles.dat.gz');
     file_put_contents($file, $dat);
 
