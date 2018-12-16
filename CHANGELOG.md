@@ -1,4 +1,8 @@
+### 16 Dec, 2018
+fix: not setting permissions for folders set_perms.php  
+
 ### 15 Dec, 2018
+fix: missing update browse.php  
 update: level align rows details.php  
 update: set min/max release year in torrent search  
 update: format cron controller logging  

@@ -115,7 +115,7 @@ function chmod_r($path)
 {
     global $group;
 
-    if (!file_exists($path) || is_dir($path)) {
+    if (!file_exists($path)) {
         return;
     }
     $dir = new DirectoryIterator($path);
