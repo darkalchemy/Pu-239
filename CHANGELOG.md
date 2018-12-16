@@ -1,4 +1,5 @@
 ### 16 Dec, 2018
+update: set min/max rating in torrent search  
 update: database files  
 fix: not setting permissions for folders set_perms.php  
 

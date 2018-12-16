@@ -44,7 +44,8 @@ $valid_search = [
     'search_owner',
     'search_year_start',
     'search_year_end',
-    'search_rating',
+    'search_rating_start',
+    'search_rating_end',
     'search_imdb',
     'search_isbn',
 ];
@@ -178,9 +179,12 @@ foreach ($valid_search as $search) {
         } elseif ($search === 'search_year_end') {
             $count = $count->where('t.year <= ?', (int) $cleaned);
             $select = $select->where('t.year <= ?', (int) $cleaned);
-        } elseif ($search === 'search_rating') {
+        } elseif ($search === 'search_rating_start') {
             $count = $count->where('t.rating >= ?', (float) $cleaned);
             $select = $select->where('t.rating >= ?', (float) $cleaned);
+        } elseif ($search === 'search_rating_end') {
+            $count = $count->where('t.rating <= ?', (float) $cleaned);
+            $select = $select->where('t.rating <= ?', (float) $cleaned);
         } elseif ($search === 'search_imdb') {
             $imdb = preg_match('/(tt\d{7})/', $cleaned, $match);
             if (!empty($match[1])) {
@@ -302,8 +306,16 @@ $HTMLOUT .= main_div("
                                 </div>
                             </div>
                             <div class='column'>
-                                <div class='has-text-centered bottom10'>{$lang['browse_rating']}</div>
-                                <input name='search_rating' type='number' min='0' max='10' step='0.1' placeholder='{$lang['search_rating']}' class='search w-100' value='" . (!empty($_GET['search_rating']) ? $_GET['search_rating'] : '') . "'>
+                                <div class='columns'>
+                                    <div class='column'>
+                                        <div class='has-text-centered bottom10'>{$lang['browse_rating_start']}</div>
+                                        <input name='search_rating_start' type='number' min='0' max='10' step='0.1' placeholder='{$lang['search_rating_start']}' class='search w-100' value='" . (!empty($_GET['search_rating_start']) ? $_GET['search_rating_start'] : '') . "'>
+                                    </div>
+                                    <div class='column'>
+                                        <div class='has-text-centered bottom10'>{$lang['browse_rating_end']}</div>
+                                        <input name='search_rating_end' type='number' min='0' max='10' step='0.1' placeholder='{$lang['search_rating_end']}' class='search w-100' value='" . (!empty($_GET['search_rating_end']) ? $_GET['search_rating_end'] : '') . "'>
+                                    </div>
+                                </div>
                             </div>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_imdb']}</div>
