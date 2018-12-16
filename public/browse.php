@@ -42,7 +42,8 @@ $valid_search = [
     'search_descr',
     'search_genre',
     'search_owner',
-    'search_year',
+    'search_year_start',
+    'search_year_end',
     'search_rating',
     'search_imdb',
     'search_isbn',
@@ -171,9 +172,12 @@ foreach ($valid_search as $search) {
                 ->leftJoin('users AS u ON t.owner = u.id');
             $select = $select->where('u.username = ?', $cleaned)
                 ->leftJoin('users AS u ON t.owner = u.id');
-        } elseif ($search === 'search_year') {
+        } elseif ($search === 'search_year_start') {
             $count = $count->where('t.year >= ?', (int) $cleaned);
             $select = $select->where('t.year >= ?', (int) $cleaned);
+        } elseif ($search === 'search_year_end') {
+            $count = $count->where('t.year <= ?', (int) $cleaned);
+            $select = $select->where('t.year <= ?', (int) $cleaned);
         } elseif ($search === 'search_rating') {
             $count = $count->where('t.rating >= ?', (float) $cleaned);
             $select = $select->where('t.rating >= ?', (float) $cleaned);
@@ -286,8 +290,16 @@ $HTMLOUT .= main_div("
                         </div>
                         <div class='columns'>
                             <div class='column'>
-                                <div class='has-text-centered bottom10'>{$lang['browse_year']}</div>
-                                <input name='search_year' type='number' min='1900' max='" . (date('Y') + 1) . "' placeholder='{$lang['search_year']}' class='search w-100' value='" . (!empty($_GET['search_year']) ? $_GET['search_year'] : '') . "'>
+                                <div class='columns'>
+                                    <div class='column'>
+                                        <div class='has-text-centered bottom10'>{$lang['browse_year_start']}</div>
+                                        <input name='search_year_start' type='number' min='1900' max='" . (date('Y') + 1) . "' placeholder='{$lang['search_year_start']}' class='search w-100' value='" . (!empty($_GET['search_year_start']) ? $_GET['search_year_start'] : '') . "'>
+                                    </div>
+                                    <div class='column'>
+                                        <div class='has-text-centered bottom10'>{$lang['browse_year_end']}</div>
+                                        <input name='search_year_end' type='number' min='1900' max='" . (date('Y') + 1) . "' placeholder='{$lang['search_year_end']}' class='search w-100' value='" . (!empty($_GET['search_year_end']) ? $_GET['search_year_end'] : '') . "'>
+                                    </div>
+                                </div>
                             </div>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_rating']}</div>

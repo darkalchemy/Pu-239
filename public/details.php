@@ -314,7 +314,7 @@ $lastseed = $torrent_stuffs->get_item('last_action', $id);
 $info_block .= tr('Rating', '<div class="left10">' . getRate($id, 'torrent') . '</div>', 1);
 $info_block .= tr($lang['details_last_seeder'], '<div class="left10">' . $lang['details_last_activity'] . get_date($lastseed, '', 0, 1) . '</div>', 1);
 if (!isset($_GET['filelist'])) {
-    $info_block .= tr($lang['details_num_files'], "<div class='level-left left10'>{$torrent['numfiles']} file" . plural($torrent['numfiles']) . "<a href='{$site_config['baseurl']}/filelist.php?id=$id' class='button is-small left10'>{$lang['details_list']}</a></div>", 1);
+    $info_block .= tr($lang['details_num_files'], "<div class='level-left is-flex left10'>{$torrent['numfiles']} file" . plural($torrent['numfiles']) . "<a href='{$site_config['baseurl']}/filelist.php?id=$id' class='button is-small left10'>{$lang['details_list']}</a></div>", 1);
 }
 $info_block .= tr($lang['details_size'], '<div class="left10">' . mksize($torrent['size']) . ' (' . number_format($torrent['size']) . " {$lang['details_bytes']})</div>", 1);
 $info_block .= tr($lang['details_added'], '<div class="left10">' . get_date($torrent['added'], 'LONG') . '</div>', 1);
@@ -456,16 +456,21 @@ $audit = tr('Upped by', "<div class='level-left left10'>$uprow</div>", 1);
 $torrent_cache['rep'] = $user_stuffs->get_item('reputation', $owner);
 if ($torrent_cache['rep']) {
     $member_reputation = get_reputation($user_stuffs->getUserFromId($owner), 'torrents', $torrent['anonymous'], $id);
-    $audit .= tr('Reputation', "<div class='left10'>$member_reputation counts towards uploaders Reputation</div>", 1);
+    $audit .= tr('Reputation', "
+        <div class='level-left left10'>
+            $member_reputation counts towards uploaders Reputation
+        <div>", 1);
 }
 $audit .= tr('Report Torrent', "
     <form action='{$site_config['baseurl']}/report.php?type=Torrent&amp;id=$id' method='post'>
         <div class='level-left'>
-            <input class='button is-small left10 right10' type='submit' name='submit' value='Report This Torrent'>
-            For breaking the
-            <a href='{$site_config['baseurl']}/rules.php'>
-                <span class='has-text-success'>&nbsp;rules</span>
-            </a>
+            <input class='button is-small left10' type='submit' name='submit' value='Report This Torrent'>
+            <div class='left10'>
+                For breaking the
+                <a href='{$site_config['baseurl']}/rules.php'>
+                    <span class='has-text-success'>&nbsp;rules</span>
+                </a>
+            </div>
         </div>
     </form>", 1);
 
@@ -522,17 +527,21 @@ if ($torrent['last_reseed'] > 0) {
     $next_reseed = $torrent['last_reseed'] + 172800;
 }
 $audit .= tr('Request Reseed', "
-        <div class='level-left left10'>
-            <form method='post' action='{$site_config['baseurl']}/takereseed.php'>
-                <select name='pm_what'>
-                    <option value='last10'>last10</option>
-                    <option value='owner'>uploader</option>
-                </select>
-                <input type='hidden' name='uploader' value='" . (int) $owner . "'>
-                <input type='hidden' name='reseedid' value='$id'>
-                <input type='hidden' name='name' value='{$torrent['name']}'>
-                <input type='hidden' name='csrf' value='" . $session->get('csrf_token') . "'>
-                <input type='submit' class='button is-small left10'" . (($next_reseed > $dt) ? ' disabled' : '') . " value='SendPM'>
+        <form method='post' action='{$site_config['baseurl']}/takereseed.php'>
+            <div class='level-left is-flex'>
+                <span class='left10'>
+                    <select name='pm_what'>
+                        <option value='last10'>last10</option>
+                        <option value='owner'>uploader</option>
+                    </select>
+                </span>
+                <span class='left10'>
+                    <input type='hidden' name='uploader' value='" . (int) $owner . "'>
+                    <input type='hidden' name='reseedid' value='$id'>
+                    <input type='hidden' name='name' value='{$torrent['name']}'>
+                    <input type='hidden' name='csrf' value='" . $session->get('csrf_token') . "'>
+                    <input type='submit' class='button is-small'" . (($next_reseed > $dt) ? ' disabled' : '') . " value='SendPM'>
+                </span>
             </form>
         </div>", 1);
 if ($torrent['allow_comments'] === 'yes' || $moderator) {
