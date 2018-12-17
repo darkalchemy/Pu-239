@@ -3,7 +3,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once BIN_DIR . 'functions.php';
 
-$user = trim(`logname`);
+$user = trim(exec('echo $SUDO_USER'));
 $group = posix_getgrgid(filegroup(__FILE__))['name'];
 $paths = [
     ROOT_DIR,

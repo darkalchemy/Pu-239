@@ -1,4 +1,6 @@
 ### 16 Dec, 2018
+fix: typo template.php  
+replace: logname broken in Ubuntu 16.04, set_perms.php  
 add: anidb titles update, runs daily  
 add: anidb titles table  
 update: set min/max rating in torrent search  
