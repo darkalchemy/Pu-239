@@ -12,6 +12,7 @@ $agents = $fluent->from('peers')
     ->select('agent')
     ->select('LEFT(peer_id, 8) AS peer_id')
     ->groupBy('agent')
+    ->groupBy('peer_id')
     ->fetchAll();
 
 if (!empty($agents)) {
@@ -21,7 +22,7 @@ if (!empty($agents)) {
             <th>{$lang['allagents_peerid']}</th>
         </tr>";
     $body = '';
-    foreach ($agent as $arr) {
+    foreach ($agents as $arr) {
         $body .= '
         <tr>
             <td>' . htmlsafechars($arr['agent']) . '</td>

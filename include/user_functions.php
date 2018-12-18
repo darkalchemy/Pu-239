@@ -490,6 +490,10 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
                                 <span class='level-right " . get_user_class_name($users_data['class'], true) . "'>" . get_user_class_name($users_data['class'], false) . "</span>
                             </span>
                             <span class='level is-marginless'>
+                                <span class='level-left'>Last Seen: </span>
+                                <span class='level-right'>" . get_date($users_data['last_access'], (date('Ymd') == date('Ymd', $users_data['last_access']) ? 'TIME' : 'FORM'), 1, 0) . "</span>
+                            </span>
+                            <span class='level is-marginless'>
                                 <span class='level-left'>Uploaded: </span>
                                 <span class='level-right'>" . mksize($users_data['uploaded']) . "</span>
                             </span>
