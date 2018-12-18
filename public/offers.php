@@ -105,33 +105,35 @@ switch ($action) {
         if ($count === 0) {
             stderr('Error!', 'Sorry, there are no current offers!');
         }
-        $HTMLOUT .= (isset($_GET['new']) ? '<h1>Offer Added!</h1>' : '') . (isset($_GET['offer_deleted']) ? '<h1>Offer Deleted!</h1>' : '') . $top_menu . '' . ($count > $perpage ? $menu_top : '') . '<br>';
-        $HTMLOUT .= '<table class="table table-bordered table-striped">
-       <tr>
-        <td class="colhead">Type</td>
-        <td class="colhead">Name</td>
-        <td class="colhead">Added</td>
-        <td class="colhead">Comm</td>
-        <td class="colhead">Votes</td>
-        <td class="colhead">Offered By</td>
-        <td class="colhead">Status</td>
-    </tr>';
+        $HTMLOUT .= (isset($_GET['new']) ? '<h1>Offer Added!</h1>' : '') . (isset($_GET['offer_deleted']) ? '<h1>Offer Deleted!</h1>' : '') . $top_menu . '' . ($count > $perpage ? $menu_top : '');
+        $heading = '
+        <tr>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Added</th>
+            <th>Comm</th>
+            <th>Votes</th>
+            <th>Offered By</th>
+            <th>Status</th>
+        </tr>';
+        $body = '';
         while ($main_query_arr = mysqli_fetch_assoc($main_query_res)) {
             $status = ($main_query_arr['status'] == 'approved' ? '<span>Approved!</span>' : ($main_query_arr['status'] === 'pending' ? '<span>Pending...</span>' : '<span>denied</span>'));
-            $HTMLOUT .= '
-    <tr>
-        <td><img src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '"></td>
-        <td><a class="altlink" href="' . $site_config['baseurl'] . '/offers.php?action=offer_details&amp;id=' . $main_query_arr['offer_id'] . '">' . htmlsafechars($main_query_arr['offer_name'], ENT_QUOTES) . '</a></td>
-        <td>' . get_date($main_query_arr['added'], 'LONG') . '</td>
-        <td>' . number_format($main_query_arr['comments']) . '</td>
-        <td>yes: ' . number_format($main_query_arr['vote_yes_count']) . '<br>
-        no: ' . number_format($main_query_arr['vote_no_count']) . '</td>
-        <td>' . format_username($main_query_arr['id']) . '</td>
-        <td>' . $status . '</td>
-    </tr>';
+            $body .= '
+        <tr>
+            <td><img src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '"></td>
+            <td><a class="altlink" href="' . $site_config['baseurl'] . '/offers.php?action=offer_details&amp;id=' . $main_query_arr['offer_id'] . '">' . htmlsafechars($main_query_arr['offer_name'], ENT_QUOTES) . '</a></td>
+            <td>' . get_date($main_query_arr['added'], 'LONG') . '</td>
+            <td>' . number_format($main_query_arr['comments']) . '</td>
+            <td>yes: ' . number_format($main_query_arr['vote_yes_count']) . '<br>
+            no: ' . number_format($main_query_arr['vote_no_count']) . '</td>
+            <td>' . format_username($main_query_arr['id']) . '</td>
+            <td>' . $status . '</td>
+        </tr>';
         }
-        $HTMLOUT .= '</table>';
-        $HTMLOUT .= ($count > $perpage ? $menu_bottom : '') . '<br>';
+        $HTMLOUT .= !empty($body) ? main_table($body, $heading) : main_div('<div class="padding20 has-text-centered">There are no offers</div>');
+        $HTMLOUT .= $count > $perpage ? $menu_bottom : '';
+
         echo stdhead('Offers', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
@@ -193,7 +195,7 @@ switch ($action) {
         $HTMLOUT .= '<div class="has-text-centered">' . (isset($_GET['status_changed']) ? '<h1>Offer Status Updated!</h1>' : '') . (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . ($arr['status'] === 'approved' ? '<span>status: approved!</span>' : ($arr['status'] === 'pending' ? '<span>status: pending...</span>' : '<span>status: denied</span>')) . $status_drop_down . '</div><br><br>
     <table class="table table-bordered table-striped">
     <tr>
-    <td class="colhead" colspan="2"><h1>' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="offers.php?action=edit_offer&amp;id=' . $id . '">edit</a> ]
+    <td colspan="2"><h1>' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="offers.php?action=edit_offer&amp;id=' . $id . '">edit</a> ]
     [ <a href="offers.php?action=delete_offer&amp;id=' . $id . '">delete</a> ]') . '</h1></td>
     </tr>
     <tr>
@@ -341,7 +343,7 @@ switch ($action) {
     </tr>
     </tbody>
     </table></form>
-     </td></tr></table><br>';
+     </td></tr></table>';
         echo stdhead('Add new offer.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
@@ -474,7 +476,7 @@ switch ($action) {
         <input type="hidden" name="id" value="' . $id . '">
         <table class="table table-bordered table-striped">
             <tr>
-                <td class="colhead" colspan="2"><h1>Add a comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"</h1></td>
+                <td colspan="2"><h1>Add a comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"</h1></td>
             </tr>
             <tr>
                 <td><b>Comment:</b></td>

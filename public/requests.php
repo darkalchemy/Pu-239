@@ -97,32 +97,35 @@ switch ($action) {
         if ($count === 0) {
             stderr('Error!', 'Sorry, there are no current requests!');
         }
-        $HTMLOUT .= (isset($_GET['new']) ? '<h1>Request Added!</h1>' : '') . (isset($_GET['request_deleted']) ? '<h1>Request Deleted!</h1>' : '') . $top_menu . '' . ($count > $perpage ? $menu_top : '') . '<br>';
-        $HTMLOUT .= '<table class="table table-bordered table-striped">
-    <tr>
-        <td>Type</td>
-        <td>Name</td>
-        <td>Added</td>
-        <td>Comm</td>
-        <td>Votes</td>
-        <td>Requested By</td>
-        <td>Filled</td>
-    </tr>';
+        $HTMLOUT .= (isset($_GET['new']) ? '<h1>Request Added!</h1>' : '') . (isset($_GET['offer_deleted']) ? '<h1>Request Deleted!</h1>' : '') . $top_menu . '' . ($count > $perpage ? $menu_top : '');
+        $heading = '
+        <tr>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Added</th>
+            <th>Comm</th>
+            <th>Votes</th>
+            <th>Requested By</th>
+            <th>Filled</th>
+        </tr>';
+        $body = '';
         while ($main_query_arr = mysqli_fetch_assoc($main_query_res)) {
-            $HTMLOUT .= '
-    <tr>
-        <td><img src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '"></td>
-        <td><a class="altlink" href="' . $site_config['baseurl'] . '/requests.php?action=request_details&amp;id=' . (int) $main_query_arr['request_id'] . '">' . htmlsafechars($main_query_arr['request_name'], ENT_QUOTES) . '</a></td>
-        <td>' . get_date($main_query_arr['added'], 'LONG') . '</td>
-        <td>' . number_format($main_query_arr['comments']) . '</td>
-        <td>yes: ' . number_format($main_query_arr['vote_yes_count']) . '<br>
-        no: ' . number_format($main_query_arr['vote_no_count']) . '</td>
-        <td>' . format_username($main_query_arr['id']) . '</td>
-        <td>' . ($main_query_arr['filled_by_user_id'] > 0 ? '<a href="details.php?id=' . (int) $main_query_arr['filled_torrent_id'] . '" title="go to torrent page!!!"><span>yes!</span></a>' : '<span>no</span>') . '</td>
-    </tr>';
+            $status = ($main_query_arr['status'] == 'approved' ? '<span>Approved!</span>' : ($main_query_arr['status'] === 'pending' ? '<span>Pending...</span>' : '<span>denied</span>'));
+            $body .= '
+        <tr>
+            <td><img src="' . $site_config['pic_baseurl'] . 'caticons/' . get_category_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '"></td>
+            <td><a class="altlink" href="' . $site_config['baseurl'] . '/requests.php?action=request_details&amp;id=' . (int) $main_query_arr['request_id'] . '">' . htmlsafechars($main_query_arr['request_name'], ENT_QUOTES) . '</a></td>
+            <td>' . get_date($main_query_arr['added'], 'LONG') . '</td>
+            <td>' . number_format($main_query_arr['comments']) . '</td>
+            <td>yes: ' . number_format($main_query_arr['vote_yes_count']) . '<br>
+            no: ' . number_format($main_query_arr['vote_no_count']) . '</td>
+            <td>' . format_username($main_query_arr['id']) . '</td>
+            <td>' . ($main_query_arr['filled_by_user_id'] > 0 ? '<a href="details.php?id=' . (int) $main_query_arr['filled_torrent_id'] . '" title="go to torrent page!!!"><span>yes!</span></a>' : '<span>no</span>') . '</td>
+        </tr>';
         }
-        $HTMLOUT .= '</table>';
-        $HTMLOUT .= ($count > $perpage ? $menu_bottom : '') . '<br>';
+        $HTMLOUT .= !empty($body) ? main_table($body, $heading) : main_div('<div class="padding20 has-text-centered">There are no offers</div>');
+        $HTMLOUT .= $count > $perpage ? $menu_bottom : '';
+
         echo stdhead('Requests', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
@@ -336,7 +339,7 @@ switch ($action) {
     </td>
     </tr>
     </tbody>
-    </table></form><br>';
+    </table></form>';
         echo stdhead('Add new request.', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
 
