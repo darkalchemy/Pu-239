@@ -33,6 +33,7 @@ class IP
             ->select('INET6_NTOA(ip) AS ip')
             ->where('userid = ?', $userid)
             ->groupBy('ip')
+            ->groupBy('id')
             ->fetchAll();
 
         return $ips;
