@@ -1,4 +1,5 @@
 ### 18 Dec, 2038
+remove: radio link from navbar  
 update: page formatting  
 update: display last seen time when hover username  
 fix: group by queries  

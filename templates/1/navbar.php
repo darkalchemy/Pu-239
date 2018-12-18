@@ -63,7 +63,6 @@ function navbar()
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/faq.php'>{$lang['gl_faq']}</a></li>
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/chat.php'>{$lang['gl_irc']}</a></li>
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/mybonus.php'>Karma Store</a></li>
-                                <li class='iss_hidden'><a href='#' onclick='radio();'>{$lang['gl_radio']}</a></li>
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/getrss.php'>RSS</a></li>
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/rules.php'>{$lang['gl_rules']}</a></li>
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/announcement.php'>{$lang['gl_announcements']}</a></li>
