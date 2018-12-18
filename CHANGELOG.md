@@ -1,4 +1,5 @@
 ### 18 Dec, 2038
+fix: group by queries  
 fix: invalid count active_irc.php, active_users.php, active_birthday_users.php  
 
 ### 16 Dec, 2018

@@ -24,7 +24,12 @@ function achievement_seedtime_update($data)
     $seedtime8 = 10368000; // 120days
     $seedtime9 = 12960000; // 200days
     $seedtime10 = 31536000; //1year
-    $res = sql_query('SELECT s.userid, s.seedtime, a.dayseed FROM snatched AS s LEFT JOIN usersachiev AS a ON s.userid = a.userid WHERE seedtime >= ' . sqlesc($seedtime) . ' GROUP BY userid ORDER BY SEEDTIME DESC') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT s.userid, s.seedtime, a.dayseed
+                    FROM snatched AS s
+                    LEFT JOIN usersachiev AS a ON s.userid = a.userid
+                    WHERE seedtime >= ' . sqlesc($seedtime) . '
+                    GROUP BY userid, seedtime, dayseed
+                    ORDER BY seedtime DESC') or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $dt = TIME_NOW;
