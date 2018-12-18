@@ -1,3 +1,6 @@
+### 18 Dec, 2038
+fix: invalid count active_irc.php, active_users.php, active_birthday_users.php  
+
 ### 16 Dec, 2018
 fix: typo template.php  
 replace: logname broken in Ubuntu 16.04, set_perms.php  

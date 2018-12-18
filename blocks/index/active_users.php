@@ -12,7 +12,8 @@ if ($active === false || is_null($active)) {
         ->where('last_access > ?', $dt)
         ->where('perms < ?', bt_options::PERMS_STEALTH)
         ->where('id != 2')
-        ->orderBy('username ASC');
+        ->orderBy('username ASC')
+        ->fetchAll();
 
     $count = count($query);
     $i = 0;
