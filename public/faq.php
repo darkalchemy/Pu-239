@@ -15,7 +15,7 @@ if (!$session->get('LoggedIn')) {
 $lang = array_merge(load_language('global'), load_language('faq'));
 $HTMLOUT = "
             <div class='bordered'>
-                <div class='alt_bordered bg-00'>
+                <div class='alt_bordered bg-00 padding20'>
                     {$lang['faq_welcome']}
                 </div>
             </div>
@@ -23,8 +23,8 @@ $HTMLOUT = "
                 <legend class='is-flex'>
                     <img src='{$site_config['pic_baseurl']}info.png' alt='' class='tooltipper right10 icon' title='Guidelines'>{$lang['faq_contents_header']}
                 </legend>
-                <div class='bordered bottom20'>
-                    <div class='alt_bordered bg-00 has-text-left'>
+                <div class='bordered'>
+                    <div class='alt_bordered bg-00'>
                         <div id='accordion'>
                             <p class='has-text-black accordion-toggle round5-top'>
                                 {$lang['faq_siteinfo_header']}
@@ -86,46 +86,41 @@ $HTMLOUT = "
             </fieldset>";
 
 $HTMLOUT .= main_div("
-                        <h2 id='answer_1'>{$lang['faq_siteinfo_header']}</h2>
+                        <h2 class='has-text-centered padtop10' id='answer_1'>{$lang['faq_siteinfo_header']}</h2>
                         <div id='answer_1_text'>
                             {$lang['faq_siteinfo_body']}
-                        </div>", 'bottom20');
+                        </div>", 'top20');
 
 $HTMLOUT .= main_div("
-                        <h2 id='answer_2'>{$lang['faq_userinfo_header']}</h2>
+                        <h2 class='has-text-centered padtop10' id='answer_2'>{$lang['faq_userinfo_header']}</h2>
                         <div id='answer_2_text'>
-                            {$lang['faq_userinfo_body']}
-                            {$lang['faq_promotion_header']}
-                            {$lang['faq_promotion_body']}
-                            <a class='altlink' href='userdetails.php?id={$CURUSER['id']}'>{$lang['faq_details_page']}</a>.
-                        </div>", 'bottom20');
+                                {$lang['faq_userinfo_body']}
+                                {$lang['faq_promotion_header']}
+                                {$lang['faq_promotion_body']} <a class='altlink' href='userdetails.php?id={$CURUSER['id']}'>{$lang['faq_details_page']}</a>.</p>
+                            </div>
+                        </div>", 'top20');
 
 $HTMLOUT .= main_div("
-                        <h2 id='answer_3'>{$lang['faq_stats_header']}</h2>
+                        <h2 class='has-text-centered padtop10' id='answer_3'>{$lang['faq_stats_header']}</h2>
                         <div id='answer_3_text'>
                             {$lang['faq_stats_body']}
-                        </div>", 'bottom20');
+                        </div>", 'top20');
 
 $HTMLOUT .= main_div("
-                        <h2 id='answer_4'>{$lang['faq_uploading_header']}</h2>
+                        <h2 class='has-text-centered padtop10' id='answer_4'>{$lang['faq_uploading_header']}</h2>
                         <div id='answer_4_text'>
                             {$lang['faq_uploading_body']}
-                        </div>", 'bottom20');
+                        </div>", 'top20');
 
 $next_para = "
-                        <h2 id='answer_5'>{$lang['faq_downloading_header']}</h2>
+                        <h2 class='has-text-centered padtop10' id='answer_5'>{$lang['faq_downloading_header']}</h2>
                         <div id='answer_5_text'>
                             {$lang['faq_downloading_body']}";
+
 if ($CURUSER) {
     $byratio = 0;
     $byul = 0;
-    /**
-     * @param      $up
-     * @param      $down
-     * @param bool $color
-     *
-     * @return string
-     */
+
     function format_ratio($up, $down, $color = true)
     {
         if ($down > 0) {
@@ -189,33 +184,34 @@ if ($CURUSER) {
         $next_para .= "{$lang['faq_nodelay']}";
     }
 }
-$HTMLOUT .= main_div($next_para);
+
+$HTMLOUT .= main_div($next_para . '</div>', 'top20');
 
 $HTMLOUT .= main_div("
-                        <h2 id='answer_6'>{$lang['faq_improve_speed_title']}</h2>
+                        <h2 class='has-text-centered padtop10' id='answer_6'>{$lang['faq_improve_speed_title']}</h2>
                         <div id='answer_6_text'>
                             {$lang['faq_improve_speed_body']}
-                        </div>", 'bottom20');
+                        </div>", 'top20');
 
 $HTMLOUT .= main_div("
-                        <h2 id='answer_7'>{$lang['faq_proxy_title']}</h2>
+                        <h2 class='has-text-centered padtop10' id='answer_7'>{$lang['faq_proxy_title']}</h2>
                         <div id='answer_7_text'>
                             {$lang['faq_proxy_body']}
                             {$lang['faq_proxy_body2']}
-                        </div>", 'bottom20');
+                        </div>", 'top20');
 
 $HTMLOUT .= main_div("
-                        <h2 id='answer_8'>{$lang['faq_blocked_title']}</h2>
+                        <h2 class='has-text-centered padtop10' id='answer_8'>{$lang['faq_blocked_title']}</h2>
                         <div id='answer_8_text'>
                             {$lang['faq_blocked_body']}
                             {$lang['faq_alt_port']}
                             {$lang['faq_alt_port_body']}
-                        </div>", 'bottom20');
+                        </div>", 'top20');
 
 $HTMLOUT .= main_div("
-                        <h2 id='answer_9'>{$lang['faq_problem_title']}</h2>
+                        <h2 class='has-text-centered padtop10' id='answer_9'>{$lang['faq_problem_title']}</h2>
                         <div id='answer_9_text'>
                             {$lang['faq_problem_body']}
-                        </div>");
+                        </div>", 'top20');
 
-echo stdhead('FAQ') . wrapper($HTMLOUT, 'has-text-left') . stdfoot();
+echo stdhead('FAQ') . wrapper($HTMLOUT) . stdfoot();

@@ -1191,7 +1191,8 @@ if (!XBT_TRACKER) {
     if ($freeleech_counter === false || is_null($freeleech_counter)) {
         $total_fl = sql_query('SELECT SUM(pointspool) AS pointspool, points
                                 FROM bonus
-                                WHERE id = 11') or sqlerr(__FILE__, __LINE__);
+                                WHERE id = 11
+                                GROUP BY pointspool, points') or sqlerr(__FILE__, __LINE__);
         $fl_total_row = mysqli_fetch_assoc($total_fl);
         $percent_fl = number_format($fl_total_row['pointspool'] / $fl_total_row['points'] * 100, 2);
         $cache->set('freeleech_counter', $percent_fl, 0);
@@ -1232,7 +1233,8 @@ if (!XBT_TRACKER) {
     if ($doubleupload_counter === false || is_null($doubleupload_counter)) {
         $total_du = sql_query('SELECT SUM(pointspool) AS pointspool, points
                                 FROM bonus
-                                WHERE id = 12') or sqlerr(__FILE__, __LINE__);
+                                WHERE id = 12
+                                GROUP BY pointspool, points') or sqlerr(__FILE__, __LINE__);
         $du_total_row = mysqli_fetch_assoc($total_du);
         $percent_du = number_format($du_total_row['pointspool'] / $du_total_row['points'] * 100, 2);
         $cache->set('doubleupload_counter', $percent_du, 0);
@@ -1271,7 +1273,8 @@ if (!XBT_TRACKER) {
     if ($halfdownload_counter === false || is_null($halfdownload_counter)) {
         $total_hd = sql_query('SELECT SUM(pointspool) AS pointspool, points
                                 FROM bonus
-                                WHERE id = 13') or sqlerr(__FILE__, __LINE__);
+                                WHERE id = 13
+                                GROUP BY pointspool, points') or sqlerr(__FILE__, __LINE__);
         $hd_total_row = mysqli_fetch_assoc($total_hd);
         $percent_hd = number_format($hd_total_row['pointspool'] / $hd_total_row['points'] * 100, 2);
         $cache->set('halfdownload_counter', $percent_hd, 0);
@@ -1324,9 +1327,8 @@ if (!XBT_TRACKER) {
 
 $top_donators = $cache->get('top_donators_');
 if ($top_donators === false || is_null($top_donators)) {
-    $a = sql_query("SELECT b.id, SUM(b.donation) AS total, u.username, u.id AS userid, u.pirate, u.king, u.class, u.donor, u.warned, u.leechwarn, u.enabled, u.chatpost
+    $a = sql_query("SELECT b.id, SUM(b.donation) AS total
                         FROM bonuslog AS b
-                        LEFT JOIN users AS u ON b.id = u.id
                         WHERE b.type = 'freeleech'
                         GROUP BY b.id
                         ORDER BY total DESC LIMIT 10") or sqlerr(__FILE__, __LINE__);
@@ -1347,13 +1349,11 @@ if (!empty($top_donators) && count($top_donators) > 0) {
         }
     }
 }
-//$cache->delete('top_donators_');
-//==
+
 $top_donators2 = $cache->get('top_donators2_');
 if ($top_donators2 === false || is_null($top_donators2)) {
-    $b = sql_query("SELECT b.id, SUM(b.donation) AS total, u.username, u.id AS userid, u.pirate, u.king, u.class, u.donor, u.warned, u.leechwarn, u.enabled, u.chatpost
+    $b = sql_query("SELECT b.id, SUM(b.donation) AS total
                         FROM bonuslog AS b
-                        LEFT JOIN users AS u ON b.id = u.id
                         WHERE b.type = 'doubleupload'
                         GROUP BY b.id
                         ORDER BY total DESC LIMIT 10") or sqlerr(__FILE__, __LINE__);
@@ -1378,9 +1378,8 @@ if (!empty($top_donators2) && count($top_donators2) > 0) {
 //==
 $top_donators3 = $cache->get('top_donators3_');
 if ($top_donators3 === false || is_null($top_donators3)) {
-    $c = sql_query("SELECT b.id, SUM(b.donation) AS total, u.username, u.id AS userid, u.pirate, u.king, u.class, u.donor, u.warned, u.leechwarn, u.enabled, u.chatpost
+    $c = sql_query("SELECT b.id, SUM(b.donation) AS total
                         FROM bonuslog AS b
-                        LEFT JOIN users AS u ON b.id = u.id
                         WHERE b.type = 'halfdownload'
                         GROUP BY b.id
                         ORDER BY total DESC LIMIT 10") or sqlerr(__FILE__, __LINE__);
@@ -1401,7 +1400,6 @@ if (!empty($top_donators3) && count($top_donators3) > 0) {
         }
     }
 }
-//$cache->delete('top_donators3_');
 //==End
 if (!XBT_TRACKER) {
     //== Show the percentages

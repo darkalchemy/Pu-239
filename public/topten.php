@@ -34,7 +34,12 @@ chf = 7d7d7d = background colour, adjust to your theme background colour
 */
 $imgstartbar = '<img src="https://chart.googleapis.com/chart?cht=bvg&amp;chbh=a&amp;chs=780x300&amp;chco=4D89F9,4D89F9&amp;chf=bg,s,000000';
 $imgstartpie = '<img src="https://chart.googleapis.com/chart?cht=p3&amp;chbh=a&amp;chs=780x300&amp;chco=4D89F9&amp;chf=bg,s,000000';
-$HTMLOUT .= "<br><div class='article_header'><a href='{$site_config['baseurl']}/topten.php'>Users</a> | <a href='{$site_config['baseurl']}/topten.php?view=t'>Torrents</a> | <a href='{$site_config['baseurl']}/topten.php?view=c'>Countries</a></div>";
+$HTMLOUT .= "
+        <ul class='level-center bg-06'>
+            <li class='margin10'><a class='altlink tooltipper' href='{$site_config['baseurl']}/topten.php' title='Top 10 Users'>Users</a></li>
+            <li class='margin10'><a class='altlink tooltipper' href='{$site_config['baseurl']}/topten.php?view=t' title='Top 10 Torrents'>Torrents</a></li>
+            <li class='margin10'><a class='altlink tooltipper' href='{$site_config['baseurl']}/topten.php?view=c' title='Top 10 Countries'>Countries</a></li>
+        </ul>";
 if (isset($_GET['view']) && $_GET['view'] === 't') {
     $view = strip_tags(isset($_GET['t']));
     // Top Torrents
@@ -164,7 +169,7 @@ if (isset($_GET['view']) && $_GET['view'] === 'c') {
     die();
 }
 // Default display / Top Users
-$HTMLOUT .= "<div class='article'><div class='article_header'><h2>Top 10 Uploaders</h2></div>";
+$table = "<div class='article padding20'><div class='article_header'><h2>Top 10 Uploaders</h2></div>";
 $result = sql_query("SELECT username, uploaded FROM users WHERE enabled = 'yes' ORDER BY uploaded DESC LIMIT 10");
 $counted = mysqli_num_rows($result);
 if ($counted == '10') {
@@ -189,11 +194,11 @@ if ($counted == '10') {
     $upped8 = $arr[7]['uploaded'];
     $upped9 = $arr[8]['uploaded'];
     $upped10 = $arr[9]['uploaded'];
-    $HTMLOUT .= "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||" . mksize($upped1) . '|2:|(' . mksize($upped1) . ')|(' . mksize($upped2) . ')|(' . mksize($upped3) . ')|(' . mksize($upped4) . ')|(' . mksize($upped5) . ')|(' . mksize($upped6) . ')|(' . mksize($upped7) . ')|(' . mksize($upped8) . ')|(' . mksize($upped9) . ')|(' . mksize($upped10) . ")\" alt=''></div>";
+    $HTMLOUT .= main_div($table . "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||" . mksize($upped1) . '|2:|(' . mksize($upped1) . ')|(' . mksize($upped2) . ')|(' . mksize($upped3) . ')|(' . mksize($upped4) . ')|(' . mksize($upped5) . ')|(' . mksize($upped6) . ')|(' . mksize($upped7) . ')|(' . mksize($upped8) . ')|(' . mksize($upped9) . ')|(' . mksize($upped10) . ")\" alt=''></div>", 'top20');
 } else {
     $HTMLOUT .= '<h4>Insufficient Uploaders (' . $counted . ')</h4></div>';
 }
-$HTMLOUT .= "<div class='article'><div class='article_header'><h2>Top 10 Downloaders</h2></div>";
+$table = "<div class='article padding20'><div class='article_header'><h2>Top 10 Downloaders</h2></div>";
 $result = sql_query("SELECT username, downloaded FROM users WHERE enabled = 'yes' ORDER BY downloaded DESC LIMIT 10");
 $counted = mysqli_num_rows($result);
 if ($counted == '10') {
@@ -218,11 +223,11 @@ if ($counted == '10') {
     $upped8 = $arr[7]['downloaded'];
     $upped9 = $arr[8]['downloaded'];
     $upped10 = $arr[9]['downloaded'];
-    $HTMLOUT .= "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||" . mksize($upped1) . '|2:|(' . mksize($upped1) . ')|(' . mksize($upped2) . ')|(' . mksize($upped3) . ')|(' . mksize($upped4) . ')|(' . mksize($upped5) . ')|(' . mksize($upped6) . ')|(' . mksize($upped7) . ')|(' . mksize($upped8) . ')|(' . mksize($upped9) . ')|(' . mksize($upped10) . ")\" alt=''/></div>";
+    $HTMLOUT .= main_div($table . "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||" . mksize($upped1) . '|2:|(' . mksize($upped1) . ')|(' . mksize($upped2) . ')|(' . mksize($upped3) . ')|(' . mksize($upped4) . ')|(' . mksize($upped5) . ')|(' . mksize($upped6) . ')|(' . mksize($upped7) . ')|(' . mksize($upped8) . ')|(' . mksize($upped9) . ')|(' . mksize($upped10) . ")\" alt=''/></div>", 'top20');
 } else {
     $HTMLOUT .= '<h4>Insufficient Downloaders (' . $counted . ')</h4></div>';
 }
-$HTMLOUT .= "<div class='article'><div class='article_header'><h2>Top 10 Fastest Uploaders</h2></div>";
+$table = "<div class='article padding20'><div class='article_header'><h2>Top 10 Fastest Uploaders</h2></div>";
 $result = sql_query('SELECT  username, uploaded / (' . TIME_NOW . " - added) AS upspeed FROM users WHERE enabled = 'yes' ORDER BY upspeed DESC LIMIT 10");
 $counted = mysqli_num_rows($result);
 if ($counted == '10') {
@@ -247,11 +252,11 @@ if ($counted == '10') {
     $upped8 = $arr[7]['upspeed'];
     $upped9 = $arr[8]['upspeed'];
     $upped10 = $arr[9]['upspeed'];
-    $HTMLOUT .= "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||" . mksize($upped1) . '/s|2:|(' . mksize($upped1) . '/s)|(' . mksize($upped2) . '/s)|(' . mksize($upped3) . '/s)|(' . mksize($upped4) . '/s)|(' . mksize($upped5) . '/s)|(' . mksize($upped6) . '/s)|(' . mksize($upped7) . '/s)|(' . mksize($upped8) . '/s)|(' . mksize($upped9) . '/s)|(' . mksize($upped10) . "/s)\" alt=''></div>";
+    $HTMLOUT .= main_div($table . "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||" . mksize($upped1) . '/s|2:|(' . mksize($upped1) . '/s)|(' . mksize($upped2) . '/s)|(' . mksize($upped3) . '/s)|(' . mksize($upped4) . '/s)|(' . mksize($upped5) . '/s)|(' . mksize($upped6) . '/s)|(' . mksize($upped7) . '/s)|(' . mksize($upped8) . '/s)|(' . mksize($upped9) . '/s)|(' . mksize($upped10) . "/s)\" alt=''></div>", 'top20');
 } else {
     $HTMLOUT .= '<h4>Insufficient Uploaders (' . $counted . ')</h4></div>';
 }
-$HTMLOUT .= "<div class='article'><div class='article_header'><h2>Top 10 Fastest Downloaders</h2></div>";
+$table = "<div class='article padding20'><div class='article_header'><h2>Top 10 Fastest Downloaders</h2></div>";
 $result = sql_query('SELECT username, downloaded / (' . TIME_NOW . " - added) AS downspeed FROM users WHERE enabled = 'yes' ORDER BY downspeed DESC LIMIT 10");
 $counted = mysqli_num_rows($result);
 if ($counted == '10') {
@@ -276,7 +281,7 @@ if ($counted == '10') {
     $upped8 = $arr[7]['downspeed'];
     $upped9 = $arr[8]['downspeed'];
     $upped10 = $arr[9]['downspeed'];
-    $HTMLOUT .= "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||" . mksize($upped1) . '/s|2:|(' . mksize($upped1) . '/s)|(' . mksize($upped2) . '/s)|(' . mksize($upped3) . '/s)|(' . mksize($upped4) . '/s)|(' . mksize($upped5) . '/s)|(' . mksize($upped6) . '/s)|(' . mksize($upped7) . '/s)|(' . mksize($upped8) . '/s)|(' . mksize($upped9) . '/s)|(' . mksize($upped10) . "/s)\" alt=''></div>";
+    $HTMLOUT .= main_div($table . "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||" . mksize($upped1) . '/s|2:|(' . mksize($upped1) . '/s)|(' . mksize($upped2) . '/s)|(' . mksize($upped3) . '/s)|(' . mksize($upped4) . '/s)|(' . mksize($upped5) . '/s)|(' . mksize($upped6) . '/s)|(' . mksize($upped7) . '/s)|(' . mksize($upped8) . '/s)|(' . mksize($upped9) . '/s)|(' . mksize($upped10) . "/s)\" alt=''></div>", 'top20');
 } else {
     $HTMLOUT .= '<h4>Insufficient Downloaders (' . $counted . ')</h4></div>';
 }

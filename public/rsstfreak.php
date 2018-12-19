@@ -20,13 +20,12 @@ $doc = new DOMDocument();
 @$doc->loadXML($xml);
 $items = $doc->getElementsByTagName('item');
 foreach ($items as $item) {
-    $html .= "
-        <div class='bordered has-text-left bottom20'>
-            <h2>" . $item->getElementsByTagName('title')
-            ->item(0)->nodeValue . '</h2>
-            <hr>' . preg_replace("/<p>Source\:(.*?)width=\"1\"\/>/is", '', $item->getElementsByTagName('encoded')
-            ->item(0)->nodeValue) . '<hr>
+    $div = "
+        <div class='has-text-left padding20'>
+            <h2>" . $item->getElementsByTagName('title')->item(0)->nodeValue . '</h2>
+            <hr>' . preg_replace("/<p>Source\:(.*?)width=\"1\"\/>/is", '', $item->getElementsByTagName('encoded')->item(0)->nodeValue) . '
         </div>';
+    $html .= main_div($div, $icount < $limit ? 'bottom20' : '');
     if ($use_limit && $icount++ >= $limit) {
         break;
     }
@@ -42,6 +41,11 @@ $html = str_replace([
     '‘',
 ], "'", $html);
 $html = str_replace('–', '-', $html);
-$html = str_replace('="/images/', '="http://torrentfreak.com/images/', $html);
-$html = main_div($html);
+$html = str_replace('href="', 'href="' . $site_config['anonymizer_url'],  $html);
+$html = str_replace('="/images/', '="https://torrentfreak.com/images/', $html);
+preg_match_all('/<img.*?src=["|\'](.*?)["|\'](.*?)>/s', $html, $matches);
+$i = 0;
+foreach ($matches[1] as $match) {
+    $html = str_replace($match, url_proxy($match, true), $html);
+}
 echo stdhead('Torrent freak news') . wrapper($html) . stdfoot();

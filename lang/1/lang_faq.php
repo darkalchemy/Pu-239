@@ -210,7 +210,7 @@ $lang = [
             <tr>
                 <td class='rowhead'><span class='sysop'>SysOp</span></td>
                 <td class='rowhead'>Runs day to day matters on site</td>
-            </tr>"),
+            </tr>", '', 'top20'),
     'faq_promotion_header' => "
     </div>
     <div class='top20 bg-02 padding20 round10'>
@@ -262,8 +262,8 @@ $lang = [
         <a id='userd'></a>
         <p>How do I add an avatar to my profile?</p>
         <p>First, find an image that you like, and that is within the <a href='{$site_config['baseurl']}/rules.php'>Rules</a>. Then you will have to find a place to host it, such as our own <a href='{$site_config['baseurl']}/bitbucket.php'>BitBucket</a>. (Other popular choices are <a href='" . url_proxy('https://photobucket.com/') . "'>Photobucket</a>, <a href='" . url_proxy('https://uploadit.org/') . "'>Upload-It!</a> or <a href='" . url_proxy('https://www.imageshack.us/') . "'>ImageShack</a>). All that is left to do is copy the URL you were given when uploading it to the avatar field in your <a href='{$site_config['baseurl']}/usercp.php?action=default'>profile</a>.</p>
-        <p>Please do not make a post just to test your avatar. If everything is allright you'll see it in your profile</p>
-    </div>",
+        <p>Please do not make a post just to test your avatar. If everything is allright you'll see it in your profile
+    ",
     'faq_details_page' => 'details page',
     'faq_stats_title' => 'Stats',
     'faq_stats_body' => "
@@ -332,7 +332,7 @@ $lang = [
                 <p><i>You are the single {$site_config['site_name']} user in the LAN</i></p>
                 <p>You should use the same {$site_config['site_name']} account in all the computers.</p>
                 <p>Note also that in the ICS case it is preferable to run the BT client on the ICS gateway. Clients running on the other computers will be unconnectable (they will be listed as such, as explained elsewhere in the FAQ) unless you specify the appropriate services in your ICS configuration (a good explanation of how to do this for Windows XP can be found <a href='" . url_proxy('https://www.microsoft.com/downloads/details.aspx?FamilyID=1dcff3ce-f50f-4a34-ae67-cac31ccd7bc9&amp;displaylang=en') . "'>here</a>). In the NAT case you should configure different ranges for clients on different computers and create appropriate NAT rules in the router. (Details vary widely from router to router and are outside the scope of this FAQ. Check your router documentation and/or support forum.)</p>
-            </li>            
+            </li>
             <li class='padding10'>
                 <p><i>There are multiple {$site_config['site_name']} users in the LAN</i></p>
                 <p>At present there is no way of making this setup always work properly with {$site_config['site_name']}. Each torrent will be associated with the user who last accessed the site from within the LAN before the torrent was started. Unless there is cooperation between the users mixing of statistics is possible. (User A accesses the site, downloads a .torrent file, but does not start the torrent immediately. Meanwhile, user B accesses the site. User A then starts the torrent. The torrent will count towards user B's statistics, not user A's.)</p>
@@ -431,41 +431,21 @@ $lang = [
         <a id='dl8'></a>
         <p>Why do I get a 'Not authorized (xx h) - READ THE FAQ!' error?</p>
         <p>From the time that each new torrent is uploaded to the tracker, there is a period of time that some users must wait before they can download it.</p>
-        <p>This delay in downloading will only affect users with a low ratio, and users with low upload amounts.</p>
-        <p>" . main_table("
-            <tr>
-                <td class='rowhead'>Ratio below</td>
-                <td class='rowhead'><span style='color:#BB0000;'>0.50</span></td>
-                <td class='rowhead'>and/or upload below</td>
-                <td class='rowhead'><div>5.0GB</div></td>
-                <td class='rowhead'>delay of</td>
-                <td class='rowhead'><div>48h</div></td>
-            </tr>
-            <tr>
-                <td class='rowhead'>Ratio below</td>
-                <td class='rowhead'><span style='color:#A10000;'>0.65</span></td>
-                <td class='rowhead'>and/or upload below</td>
-                <td class='rowhead'><div>6.5GB</div></td>
-                <td class='rowhead'>delay of</td>
-                <td class='rowhead'><div>24h</div></td>
-            </tr>
-            <tr>
-                <td class='rowhead'>Ratio below</td>
-                <td class='rowhead'><span style='color:#880000;'>0.80</span></td>
-                <td class='rowhead'>and/or upload below</td>
-                <td class='rowhead'><div>8.0GB</div></td>
-                <td class='rowhead'>delay of</td>
-                <td class='rowhead'><div>12h</div></td>
-            </tr>
-            <tr>
-                <td class='rowhead'>Ratio below</td>
-                <td class='rowhead'><span style='color:#6E0000;>0.95</span></td>
-                <td class='rowhead'>and/or upload below</td>
-                <td class='rowhead'><div>9.5GB</div></td>
-                <td class='rowhead'>delay of</td>
-                <td class='rowhead'><div>06h</div></td>
-            </tr>") . "
-        <p>'And/or' means any or both. Your delay will be the largest one for which you meet at least one condition.</p>",
+        <p>This delay in downloading will only affect users with a low ratio, and users with low upload amounts.</p>" . main_div("
+        <div class='padding10'>
+            Ratio below <span style='color:#bb0000;'>0.50</span> and/or upload below 5.0GB then a delay of 48h.
+        </div>
+        <div class='padding10'>
+            Ratio below <span style='color:#a10000;'>0.65</span> and/or upload below 6.5GB then a delay of 24h.
+        </div>
+        <div class='padding10'>
+            Ratio below <span style='color:#880000;'>0.80</span> and/or upload below 8.0GB then a delay of 12h.
+        </div>
+        <div class='padding10'>
+            Ratio below <span style='color:#6e0000;'>0.95</span> and/or upload below 9.5GB then a delay of 6h.
+        </div>") . "
+        <p class='top20'>'And/or' means any or both. Your delay will be the largest one for which you meet at least one condition.</p>
+    </div>",
     'faq_in' => 'In ',
     'faq_your' => 'your',
     'faq_case' => ' particular case, ',
@@ -530,9 +510,10 @@ $lang = [
     </div>",
     'faq_improve_speed_title' => 'How can I improve my download speed?',
     'faq_improve_speed_body' => "
-    <p>The download speed mostly depends on the seeder-to-leecher ratio (SLR). Poor download speed is mainly a problem with new and very popular torrents where the SLR is low.</p>
-    <p>(Proselytising sidenote: make sure you remember that you did not enjoy the low speed. Seed so that others will not endure the same.)</p>
-    <p>There are a couple of things that you can try on your end to improve your speed:</p>
+    <div class='top20 bg-02 padding20 round10'>
+        <p>The download speed mostly depends on the seeder-to-leecher ratio (SLR). Poor download speed is mainly a problem with new and very popular torrents where the SLR is low.</p>
+        <p>(Proselytising sidenote: make sure you remember that you did not enjoy the low speed. Seed so that others will not endure the same.)</p>
+        <p>There are a couple of things that you can try on your end to improve your speed:</p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
         <a id='dlsp1'></a>
@@ -580,10 +561,12 @@ $lang = [
         <p>Your download speed is always finite. If you are a peer in a fast torrent it will almost certainly saturate your download bandwidth, and your browsing will suffer. At the moment there is no client that allows you to limit the download speed, only the upload. You will have to use a third-party solution, such as <a href='" . url_proxy('https://www.netlimiter.com/') . "'>NetLimiter</a>.</p>
         <p>Browsing was used just as an example, the same would apply to gaming, IMing, etc...</p>
     </div>",
-    'faq_proxy_title' => '<h2>My ISP uses a transparent proxy. What should I do?</h2>',
+    'faq_proxy_title' => 'My ISP uses a transparent proxy. What should I do?',
     'faq_proxy_body' => "
-    <p><i>Caveat: This is a large and complex topic. It is not possible to cover all variations here.</i></p>
-    <p>Short reply: change to an ISP that does not force a proxy upon you. If you cannot or do not want to then read on.</p>
+    <div class='top20 bg-02 padding20 round10'>
+        <p><i>Caveat: This is a large and complex topic. It is not possible to cover all variations here.</i></p>
+        <span>Short reply: change to an ISP that does not force a proxy upon you. If you cannot or do not want to then read on.</span>
+    </div>
     <div class='top20 bg-02 padding20 round10'>
         <a id='prox1'></a>
         <p>What is a proxy?</p>
@@ -609,7 +592,7 @@ $lang = [
         <tr>
             <td class='rowhead'>Public</td>
             <td class='rowhead'><p>(Self explanatory)</p></td>
-        </tr>") . "
+        </tr>", '', 'bottom20') . "
         <p>A transparent proxy may or may not be anonymous, and there are several levels of anonymity.</p>
     </div>
     <div class='top20 bg-02 padding20 round10'>
@@ -659,7 +642,7 @@ $lang = [
         <p>Does this apply to other torrent sites?</p>
         <p>This section was written for {$site_config['site_name']}, a closed, port 80-81 tracker. Other trackers may be open or closed, and many listen on e.g. ports 6868 or 6969. The above does not necessarily apply to other trackers.</p>
     </div>",
-    'faq_blocked_title' => "<h2>Why can't I connect? Is the site blocking me?</h2>",
+    'faq_blocked_title' => "Why can't I connect? Is the site blocking me?",
     'faq_blocked_body' => "
     <div class='top20 bg-02 padding20 round10'>
         <a id='conn1'></a>
@@ -678,14 +661,14 @@ $lang = [
         <p>There's nothing we can do. You should contact your ISP (or get a new one). Note that you can still visit the site via a proxy, follow the instructions in the relevant section. In this case it doesn't matter if the proxy is anonymous or not, or which port it listens to.</p>
         <p>Notice that you will always be listed as an 'unconnectable' client because the tracker will be unable to check that you're capable of accepting incoming connections.</p>
     </div>",
-    'faq_alt_port' => '<h2>Alternate port (81)</h2>',
+    'faq_alt_port' => '<h2 class="has-text-centered">Alternate port (81)</h2>',
     'faq_alt_port_body' => "
     <div class='top20 bg-02 padding20 round10'>
         <a id='conn4'></a>
         <p>Some of our torrents use ports other than the usual HTTP port 80. This may cause problems for some users, for instance those behind some firewall or proxy configurations. You can easily solve this by editing the .torrent file yourself with any torrent editor, e.g. <a href='" . url_proxy('https://sourceforge.net/projects/burst/') . "'>MakeTorrent</a>, and replacing the announce url {$site_config['baseurl']}:81 with {$site_config['site_name']}:80 or just {$site_config['site_name']}.</p>
         <p>Editing the .torrent with Notepad is not recommended. It may look like a text file, but it is in fact a bencoded file. If for some reason you must use a plain text editor, change the announce url to {$site_config['site_name']}:80, not {$site_config['site_name']}. (If you're thinking about changing the number before the announce url instead, you know too much to be reading this.)</p>
     </div>",
-    'faq_problem_title' => "<h2>What if I can't find the answer to my problem here?</h2>",
+    'faq_problem_title' => "What if I can't find the answer to my problem here?",
     'faq_problem_body' => "
     <div class='top20 bg-02 padding20 round10'>
         <a id='answer_9'></a>

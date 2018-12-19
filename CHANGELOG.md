@@ -1,4 +1,7 @@
-### 18 Dec, 2038
+### 19 Dec, 2018
+update: cleanup template formatting  
+
+### 18 Dec, 2018
 remove: radio link from navbar  
 update: page formatting  
 update: display last seen time when hover username  

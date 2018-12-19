@@ -14,7 +14,7 @@ function breadcrumbs()
     $queries = [];
 
     $url = $_SERVER['REQUEST_URI'];
-    $parsed_url = parse_url($_SERVER['REQUEST_URI']);
+    $parsed_url = parse_url($url);
     extract($parsed_url);
     if (empty($path)) {
         return;

@@ -106,8 +106,9 @@ if ((!empty($ann_subject)) && (!empty($ann_body))) {
     </div>";
 } else {
     $HTMLOUT .= main_div("
-        <h1>{$lang['index_announce']}</h1>
-        <p>{$lang['annouce_announcement']}: {$lang['annouce_nothing_here']}</p>
-        <p class='has-text-blue'>{$lang['annouce_cur_no_new_ann']}</p>", 'has-text-centered');
+        <div class='padding20'>
+            <h1>{$lang['index_announce']}</h1>
+            <div>{$lang['annouce_announcement']}: <span class='has-text-blue'>{$lang['annouce_cur_no_new_ann']}</span></div>
+        </div>", 'has-text-centered');
 }
 echo stdhead($lang['annouce_std_head']) . wrapper($HTMLOUT) . stdfoot();

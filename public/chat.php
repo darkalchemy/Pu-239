@@ -7,12 +7,12 @@ check_user_status();
 global $CURUSER, $site_config;
 
 $lang = array_merge(load_language('global'), load_language('chat'));
-$nick = ($CURUSER ? $CURUSER['username'] : ('Guest' . random_int(1000, 9999)));
+$nick = $CURUSER ? $CURUSER['username'] : ('Guest' . random_int(1000, 9999));
 $irc_url = 'irc.p2p-network.net';
 $irc_channel = '#pu-239';
-$HTMLOUT = '';
-$HTMLOUT .= "<p>{$lang['chat_channel']}<a href='irc://{$irc_url}'>{$irc_channel}</a> {$lang['chat_network']}</p>
-    <div class='borderwrap'>
+$HTMLOUT = "
+    <div class='padding20'>
+    <p>{$lang['chat_channel']}<a href='irc://{$irc_url}'>{$irc_channel}</a> {$lang['chat_network']}</p>
     <div class='maintitle'>{$site_config['site_name']}</div>
     <div class='row1'>
     <applet code='IRCApplet.class' codebase='./javairc/' archive='irc.jar,pixx.jar' width='640' height='400'>
@@ -35,5 +35,5 @@ $HTMLOUT .= "<p>{$lang['chat_channel']}<a href='irc://{$irc_url}'>{$irc_channel}
     </applet>
     </div>
     </div>";
-///////////////////// HTML OUTPUT ////////////////////////////
-echo stdhead("{$lang['chat_chat']}") . wrapper($HTMLOUT, 'padding20 has-text-centered') . stdfoot();
+
+echo stdhead("{$lang['chat_chat']}") . wrapper(main_div($HTMLOUT)) . stdfoot();

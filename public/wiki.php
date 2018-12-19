@@ -27,18 +27,25 @@ $stdfoot = [
 function navmenu()
 {
     global $lang, $site_config;
-
+    $url = $_SERVER['REQUEST_URI'];
+    $parsed_url = parse_url($url);
+    $action = 'index';
+    if (!empty($parsed_url['query'])) {
+        $queries = explode('&', $parsed_url['query']);
+        $values = explode('=', $queries[0]);
+        $action = $values[1] === 'sort' ? 'index' : 'add';
+    }
     $ret = '
     <div id="wiki-navigation">
         <div class="tabs is-centered">
             <ul>
-                <li><a href="' . $site_config['baseurl'] . '/wiki.php" class="' . (empty($_SERVER['QUERY_STRING']) ? 'active ' : '') . 'altlink margin10">' . $lang['wiki_index'] . '</a></li>
-                <li><a href="' . $site_config['baseurl'] . '/wiki.php?action=add" class="' . (!empty($_SERVER['QUERY_STRING']) ? 'active ' : '') . 'altlink margin10">' . $lang['wiki_add'] . '</a></li>
+                <li><a href="' . $site_config['baseurl'] . '/wiki.php" class="' . ($action === 'index' ? 'active ' : '') . 'altlink margin10">' . $lang['wiki_index'] . '</a></li>
+                <li><a href="' . $site_config['baseurl'] . '/wiki.php?action=add" class="' . ($action === 'add' ? 'active ' : '') . 'altlink margin10">' . $lang['wiki_add'] . '</a></li>
             </ul>
         </div>';
     $div = '
         <form action="wiki.php" method="post">
-            <div class="tabs is-centered is-small">
+            <div class="tabs is-centered is-small padtop10">
                 <ul>
                     <li><a href="' . $site_config['baseurl'] . '/wiki.php?action=sort&amp;letter=a">A</a></li>';
     for ($i = 0; $i < 25; ++$i) {
@@ -50,7 +57,7 @@ function navmenu()
     $div .= "
                 </ul>
             </div>
-            <div class='margin20 has-text-centered'>
+            <div class='has-text-centered padding20'>
                 <input type='text' name='article' value='$value'>
                 <input type='submit' class='button is-small' value='{$lang['wiki_search']}' name='wiki'>
             </div>
@@ -72,12 +79,14 @@ function wikimenu()
     $latestarticle = htmlsafechars($latest['name']);
 
     return main_div("
-        <span class='size_6'>{$lang['wiki_permissions']}:</span>
-        <li>{$lang['wiki_read_user']}</li>
-        <li>{$lang['wiki_write_user']}</li>
-        <li>{$lang['wiki_edit_staff']} / Author</li><br>
-        <span class='size_6'>{$lang['wiki_latest_article']}</span>
-        <li><a href='{$site_config['baseurl']}/wiki.php?action=article&amp;name=$latestarticle'>" . htmlsafechars($latest['name']) . '</a></li>');
+        <div class='padding20'>
+            <span class='size_6'>{$lang['wiki_permissions']}:</span>
+            <li>{$lang['wiki_read_user']}</li>
+            <li>{$lang['wiki_write_user']}</li>
+            <li>{$lang['wiki_edit_staff']} / Author</li><br>
+            <span class='size_6'>{$lang['wiki_latest_article']}</span>
+            <li><a href='{$site_config['baseurl']}/wiki.php?action=article&amp;name=$latestarticle'>" . htmlsafechars($latest['name']) . '</a></li>
+        </div>');
 }
 
 $action = 'article';
@@ -106,7 +115,7 @@ $HTMLOUT .= "
         <div class='level-center'>
             <h1>
             <span class='level-left'>
-                <img src='{$site_config['pic_baseurl']}wiki.png' alt='' title='{$lang['wiki_title']}' class='tooltipper' width='25'/>
+                <img src='{$site_config['pic_baseurl']}wiki.png' alt='' title='{$lang['wiki_title']}' class='tooltipper' width='25'>
                 <span class='left10'>{$lang['wiki_title']}</span>
             </span>
             </h1>
@@ -147,18 +156,19 @@ if ($action === 'article') {
             if ($wiki['lastedit']) {
                 $edit = '<div class="left10 top20">Last Updated by: ' . format_username($wiki['lastedituser']) . ' - ' . get_date($wiki['lastedit'], 'LONG') . '</div>';
             }
-            $HTMLOUT .= main_div('
+            $div = '
                     <h1 class="has-text-centered">
                         <a href="' . $site_config['baseurl'] . '/wiki.php?action=article&amp;name=' . htmlsafechars($wiki['name']) . '">' . htmlsafechars($wiki['name']) . '</a></b>
                     </h1>
                     <div id="bg-02 padding10 round10">' . ($wiki['userid'] > 0 ? "
                         <div class='left10 bottom20'>{$lang['wiki_added_by_art']}: " . format_username($wiki['userid']) . '</div>' : '') . '
                         <div class="w-100 padding20 round10 bg-02">' . format_comment($wiki['body']) . '</div>
-                    </div>' . $edit);
-            $HTMLOUT .= ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $wiki['userid'] ? '
+                    </div>' . $edit;
+            $div .= ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $wiki['userid'] ? '
                     <div class="has-text-centered">
                         <a href="' . $site_config['baseurl'] . '/wiki.php?action=edit&amp;id=' . (int) $wiki['id'] . '" class="button is-small margin20">' . $lang['wiki_edit'] . '</a>
                     </div>' : '');
+            $HTMLOUT .= main_div($div, 'bottom20');
         }
         $HTMLOUT .= wikimenu() . '
             </div>
@@ -176,10 +186,12 @@ if ($action === 'article') {
                     $wikiname = $user['username'];
                 }
                 $HTMLOUT .= main_div('
-                    <h2><a href="' . $site_config['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($wiki['name']) . '">' . htmlsafechars($wiki['name']) . "</a></h2>
-                    <div>{$lang['wiki_added_by']}: " . format_username($wiki['userid']) . '</div>
-                    <div>Added on: ' . get_date($wiki['time'], 'LONG') . '</div>' . (!empty($wiki['lastedit']) ? '
-                    <div>Last Edited on: ' . get_date($wiki['lastedit'], 'LONG') . '</div>' : ''), 'top20');
+                    <div class="padding20">
+                        <h2><a href="' . $site_config['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($wiki['name']) . '">' . htmlsafechars($wiki['name']) . "</a></h2>
+                        <div>{$lang['wiki_added_by']}: " . format_username($wiki['userid']) . '</div>
+                        <div>Added on: ' . get_date($wiki['time'], 'LONG') . '</div>' . (!empty($wiki['lastedit']) ? '
+                        <div>Last Edited on: ' . get_date($wiki['lastedit'], 'LONG') . '</div>
+                    </div>' : '</div>'), 'top20');
             }
         } else {
             stderr($lang['wiki_error'], $lang['wiki_no_art_found']);
@@ -215,7 +227,8 @@ if ($action === 'edit') {
 if ($action === 'sort') {
     $sortres = sql_query("SELECT * FROM wiki WHERE name LIKE '$letter%' ORDER BY name");
     if (mysqli_num_rows($sortres) > 0) {
-        $HTMLOUT .= navmenu() . "
+        $HTMLOUT .= navmenu();
+        $div = "
         <h2 class='has-text-centered'>{$lang['wiki_art_found_starting']}: <b>" . htmlsafechars($letter) . "</b></h2>
         <div class='w-100 padding20 round10 bg-02'>";
         while ($wiki = mysqli_fetch_array($sortres)) {
@@ -223,7 +236,7 @@ if ($action === 'sort') {
                 $user = $user_stuffs->getUserFromId($wiki['userid']);
                 $wikiname = $user['username'];
             }
-            $HTMLOUT .= '
+            $div .= '
             <div class="padding20 bottom10 round10 bg-02">
                 <h2><a href="' . $site_config['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($wiki['name']) . '">' . htmlsafechars($wiki['name']) . "</a></h2>
                 <div>{$lang['wiki_added_by']}: " . format_username($wiki['userid']) . '</div>
@@ -231,12 +244,13 @@ if ($action === 'sort') {
                 <div>Last Edited on: ' . get_date($wiki['lastedit'], 'LONG') . '</div>' : '') . '
             </div>';
         }
-        $HTMLOUT .= '
+        $div .= '
         </div>';
+        $HTMLOUT .= main_div($div);
     } else {
         stderr($lang['wiki_error'], "{$lang['wiki_no_art_found_starting']}<b>$letter</b> found.");
     }
 }
 $HTMLOUT .= '</div>';
 
-echo stdhead($lang['wiki_title'], $stdhead) . wrapper(main_div($HTMLOUT)) . stdfoot($stdfoot);
+echo stdhead($lang['wiki_title'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
