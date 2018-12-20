@@ -1,3 +1,6 @@
+### 20 Dec, 2018
+add: missing forum quote style  
+
 ### 19 Dec, 2018
 update: cleanup template formatting  
 

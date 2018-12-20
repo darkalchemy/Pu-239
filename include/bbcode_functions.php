@@ -108,8 +108,8 @@ function format_quotes($s)
         }
     } // Cannot close before opening. Return raw string...
     $s = str_replace('[quote]', "<div><b>Quote:</b><br><span class='quote'>", $s);
-    $s = preg_replace('/\\[quote=(.+?)\\]/', "<div><b>\\1 wrote:</b><br><span class='quote'>", $s);
-    $s = str_replace('[/quote]', '</span></div>', $s);
+    $s = preg_replace('/\\[quote=(.+?)\\]/', "<div><b>\\1 wrote:</b><br><div class='quote'>", $s);
+    $s = str_replace('[/quote]', '</div></div>', $s);
 
     return $s;
 }
