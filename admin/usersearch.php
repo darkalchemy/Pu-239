@@ -18,10 +18,11 @@ if ($oldest === false || is_null($oldest)) {
         ->orderBy('added')
         ->limit(1)
         ->fetch('added');
-    $oldest = date('Y-m-d', $oldest);
     $cache->set('oldest_', $oldest, 0);
 }
-$today = date('Y-m-d', TIME_NOW);
+$oldest = get_date($oldest, 'FORM', 1, 0);
+$today = get_date(TIME_NOW, 'FORM', 1, 0);
+
 $HTMLOUT = $where_is = $join_is = $q1 = $comment_is = $comments_exc = $email_is = '';
 $HTMLOUT .= "
         <ul class='level-center bg-06'>

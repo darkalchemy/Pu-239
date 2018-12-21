@@ -191,19 +191,33 @@ foreach ($above_columns as $item) {
     $HTMLOUT .= wrap_it($item, ${$item});
 }
 
+$middle = 'is-8-desktop';
 $HTMLOUT .= "
-<div class='columns parallax is-desktop is-variable is-0-mobile is-0-tablet is-1-desktop'>
+<div class='columns parallax is-desktop is-variable is-0-mobile is-0-tablet is-1-desktop'>";
+if (!empty($left_column)) {
+    $middle = 'is-6-desktop';
+    $HTMLOUT .= "
     <div class='column is-2-desktop fl-3'>
         <div id='left_column' class='left_column'>";
 
-foreach ($left_column as $item) {
-    $HTMLOUT .= wrap_it($item, ${$item});
+    foreach ($left_column as $item) {
+        $HTMLOUT .= wrap_it($item, ${$item});
+    }
+
+    $HTMLOUT .= "
+        </div>
+    </div>";
+} else {
+    $HTMLOUT .= "
+    <div class='column is-hidden fl-3'>
+        <div id='left_column' class='left_column'>
+        </div>
+    </div>";
+
 }
 
 $HTMLOUT .= "
-        </div>
-    </div>
-    <div class='column is-6-desktop fl-1'>
+    <div class='column $middle fl-1'>
         <div id='center_column'>";
 
 foreach ($center_column as $item) {
