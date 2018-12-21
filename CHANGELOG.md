@@ -1,4 +1,5 @@
 ### 21 Dec, 2018
+update: more ways to get sudo user set_perms.php  
 fix: admin/usersearch.php  
 update: make search term required search.php  
 fix: forums search  
