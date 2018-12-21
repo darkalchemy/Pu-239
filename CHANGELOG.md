@@ -1,3 +1,6 @@
+### 21 Dec, 2018
+fix: forums search  
+
 ### 20 Dec, 2018
 add: missing forum quote style  
 

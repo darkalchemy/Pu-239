@@ -203,6 +203,7 @@ function get_infopage($lang, $queries, $path)
         'op',
         'mode',
         'sent',
+        'search_what',
     ];
     $ignore2 = [
         'polls_manager',
