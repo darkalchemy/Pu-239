@@ -389,7 +389,7 @@ $table_body = '
                         <span>' . $lang['sea_search_terms'] . ':</span>
                     </td>
                     <td>
-                        <input type="text" class="search" name="search" value="' . htmlsafechars($search) . '"> Surround with double quotes to search for a phrase.
+                        <input type="text" class="search" name="search" value="' . htmlsafechars($search) . '" required> Surround with double quotes to search for a phrase.
                     </td>
                 </tr>
                 <tr>

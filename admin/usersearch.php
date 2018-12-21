@@ -6,10 +6,22 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'html_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $lang, $fluent;
+global $CURUSER, $site_config, $lang, $fluent, $cache;
 
 $lang = array_merge($lang, load_language('ad_usersearch'));
 
+$oldest = $cache->get('oldest_');
+if ($oldest === false || is_null($oldest)) {
+    $oldest = $fluent->from('users')
+        ->select(null)
+        ->select('added')
+        ->orderBy('added')
+        ->limit(1)
+        ->fetch('added');
+    $oldest = date('Y-m-d', $oldest);
+    $cache->set('oldest_', $oldest, 0);
+}
+$today = date('Y-m-d', TIME_NOW);
 $HTMLOUT = $where_is = $join_is = $q1 = $comment_is = $comments_exc = $email_is = '';
 $HTMLOUT .= "
         <ul class='level-center bg-06'>
@@ -22,16 +34,14 @@ $HTMLOUT .= "
         </ul>
         <h1 class='has-text-centered'>{$lang['usersearch_window_title']}</h1>";
 
-if (isset($_GET['h'])) {
-    $HTMLOUT .= stdmsg('', $lang['usersearch_instructions']);
-}
+$HTMLOUT .= stdmsg('', $lang['usersearch_instructions'], 'bottom20');
 
 $HTMLOUT .= "
     <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=usersearch'>";
 $body = "
         <tr>
             <td class='w-1'>{$lang['usersearch_name']}</td>
-            <td class='w-10'><input name='n' type='text' value='' class='w-100'></td>
+            <td class='w-10'><input name='n' type='text' value='" . (isset($_POST['n']) ? $_POST['n'] : '') . "' class='w-100'></td>
             <td class='w-1'>{$lang['usersearch_ratio']}</td>
             <td class='w-10'>
                 <select name='rt' class='w-100'>";
@@ -43,15 +53,15 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (((isset($_POST['rt']) ? $_POST['rt'] : '3') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($_POST['rt']) && $_POST['rt'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
-                <input name='r' type='text' value='' maxlength='4' class='top10 w-100'>
-                <input name='r2' type='text' value='' maxlength='4'" . (isset($_POST['r2']) ? $_POST['r2'] : '') . " class='top10 w-100'>
+                <input name='r' type='number' step='.1' value='" . (isset($_POST['r']) ? $_POST['r'] : '') . "' maxlength='4' class='top10 w-100'>
+                <input name='r2' type='number' step='.1' value='" . (isset($_POST['r2']) ? $_POST['r2'] : '') . "' maxlength='4' class='top10 w-100'>
             </td>
             <td class='w-1'>{$lang['usersearch_status']}</td>
-            <td class='w-5'>
+            <td class='w-10'>
                 <select name='st' class='w-100'>";
 $options = [
     $lang['usersearch_any'],
@@ -60,7 +70,7 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (((isset($_POST['st']) ? $_POST['st'] : '0') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($_POST['st']) && $_POST['st'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
@@ -68,9 +78,9 @@ $body .= "
         </tr>
         <tr>
             <td>{$lang['usersearch_email']}</td>
-            <td><input name='em' type='text' value=''" . (isset($_POST['em']) ? $_POST['em'] : '') . " class='w-100'></td>
+            <td><input name='em' type='text' value='" . (isset($_POST['em']) ? $_POST['em'] : '') . "' class='w-100'></td>
             <td>{$lang['usersearch_ip']}</td>
-            <td><input name='ip' type='text' value=''" . (isset($_POST['ip']) ? $_POST['ip'] : '') . " maxlength='17' class='w-100'></td>
+            <td><input name='ip' type='text' value='" . (isset($_POST['ip']) ? $_POST['ip'] : '') . "' maxlength='17' class='w-100'></td>
             <td>{$lang['usersearch_acstatus']}</td>
             <td>
                 <select name='as' class='w-100'>";
@@ -81,7 +91,7 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (((isset($_POST['as']) ? $_POST['as'] : '0') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($_POST['as']) && $_POST['as'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
@@ -89,9 +99,9 @@ $body .= "
         </tr>
         <tr>
             <td>{$lang['usersearch_comments']}</td>
-            <td><input name='co' type='text' value='' " . (isset($_POST['co']) ? $_POST['co'] : '') . " class='w-100'></td>
+            <td><input name='co' type='text' value='" . (isset($_POST['co']) ? $_POST['co'] : '') . "' class='w-100'></td>
             <td>{$lang['usersearch_mask']}</td>
-            <td><input name='ma' type='text' value=''" . (isset($_POST['ma']) ? $_POST['ma'] : '') . " maxlength='17' class='w-100'></td>
+            <td><input name='ma' type='text' value='" . (isset($_POST['ma']) ? $_POST['ma'] : '') . "' maxlength='17' class='w-100'></td>
             <td>{$lang['usersearch_class']}</td>
             <td>
                 <select name='c' class='w-100'>
@@ -104,7 +114,7 @@ if (!is_valid_id($class)) {
 for ($i = 2;; ++$i) {
     if ($c = get_user_class_name($i - 2)) {
         $body .= "
-                    <option value='$i'" . ((isset($class) ? $class : 0) == $i ? ' selected' : '') . ">$c</option>";
+                    <option value='$i'" . (isset($class) && $class == $i ? ' selected' : '') . ">$c</option>";
     } else {
         break;
     }
@@ -125,12 +135,12 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (((isset($_POST['dt']) ? $_POST['dt'] : '0') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($_POST['dt']) && $_POST['dt'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
-                <input name='d' type='text' value=''" . (isset($_POST['d']) ? $_POST['d'] : '') . " maxlength='10' class='top10 w-100'>
-                <input name='d2' type='text' value=''" . (isset($_POST['d2']) ? $_POST['d2'] : '') . " maxlength='10' class='top10 w-100'>
+                <input name='d' type='date' value='" . (isset($_POST['d']) ? $_POST['d'] : '') . "' min='$oldest' max='$today' class='top10 w-100'>
+                <input name='d2' type='date' value='" . (isset($_POST['d2']) ? $_POST['d2'] : '') . "' min='$oldest' max='$today' class='top10 w-100'>
             </td>
             <td>{$lang['usersearch_uploaded']}</td>
             <td>
@@ -143,12 +153,12 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (((isset($_POST['ult']) ? $_POST['ult'] : '0') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($_POST['ult']) && $_POST['ult'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
-                <input name='ul' type='text' id='ul' maxlength='7' value=''" . (isset($_POST['ul']) ? $_POST['ul'] : '') . " class='top10 w-100'>
-                <input name='ul2' type='text' id='ul2' maxlength='7' value=''" . (isset($_POST['ul2']) ? $_POST['ul2'] : '') . " class='top10 w-100'>
+                <input name='ul' type='number' id='ul' maxlength='7' value='" . (isset($_POST['ul']) ? $_POST['ul'] : '') . "' class='top10 w-100'>
+                <input name='ul2' type='number' id='ul2' maxlength='7' value='" . (isset($_POST['ul2']) ? $_POST['ul2'] : '') . "' class='top10 w-100'>
             </td>
             <td>{$lang['usersearch_donor']}</td>
             <td>
@@ -160,7 +170,7 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (((isset($_POST['do']) ? $_POST['do'] : '0') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($_POST['do']) && $_POST['do'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
@@ -178,12 +188,12 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (((isset($_POST['lst']) ? $_POST['lst'] : '0') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($_POST['lst']) && $_POST['lst'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
-                <input name='ls' type='text' value=''" . (isset($_POST['ls']) ? $_POST['ls'] : '') . " maxlength='10' class='top10 w-100'>
-                <input name='ls2' type='text' value=''" . (isset($_POST['ls2']) ? $_POST['ls2'] : '') . " maxlength='10' class='top10 w-100'>
+                <input name='ls' type='date' value='" . (isset($_POST['ls']) ? $_POST['ls'] : '') . "' min='$oldest' max='$today' class='top10 w-100'>
+                <input name='ls2' type='date' value='" . (isset($_POST['ls2']) ? $_POST['ls2'] : '') . "' min='$oldest' max='$today' class='top10 w-100'>
             </td>
             <td>{$lang['usersearch_downloaded']}</td>
             <td>
@@ -196,12 +206,12 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (((isset($_POST['dlt']) ? $_POST['dlt'] : '0') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($_POST['dlt']) && $_POST['dlt'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
-                <input name='dl' type='text' id='dl' maxlength='7' value=''" . (isset($_POST['dl']) ? $_POST['dl'] : '') . " class='top10 w-100'>
-                <input name='dl2' type='text' id='dl2' maxlength='7' value=''" . (isset($_POST['dl2']) ? $_POST['dl2'] : '') . " class='top10 w-100'>
+                <input name='dl' type='number' id='dl' maxlength='7' value='" . (isset($_POST['dl']) ? $_POST['dl'] : '') . "' class='top10 w-100'>
+                <input name='dl2' type='number' id='dl2' maxlength='7' value='" . (isset($_POST['dl2']) ? $_POST['dl2'] : '') . "' class='top10 w-100'>
             </td>
             <td>{$lang['usersearch_warned']}</td>
             <td>
@@ -213,7 +223,7 @@ $options = [
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
-                    <option value='$i'" . (((isset($_POST['w']) ? $_POST['w'] : '0') == '$i') ? ' selected' : '') . ">{$options[$i]}</option>";
+                    <option value='$i'" . (isset($_POST['w']) && $_POST['w'] == $i ? ' selected' : '') . ">{$options[$i]}</option>";
 }
 $body .= "
                 </select>
@@ -235,11 +245,6 @@ $body .= "
 $HTMLOUT .= main_table($body) . '
     </form>';
 
-/**
- * @param $param
- *
- * @return bool
- */
 function is_set_not_empty($param)
 {
     if (isset($_POST[$param]) && !empty($_POST[$param])) {
@@ -249,39 +254,6 @@ function is_set_not_empty($param)
     }
 }
 
-/**
- * @param $date
- *
- * @return false|int|string
- */
-function mkdate($date)
-{
-    if (strpos($date, '-')) {
-        $a = explode('-', $date);
-    } elseif (strpos($date, '/')) {
-        $a = explode('/', $date);
-    } else {
-        return 0;
-    }
-    for ($i = 0; $i < 3; ++$i) {
-        if (!is_numeric($a[$i])) {
-            return 0;
-        }
-    }
-    if (checkdate($a[1], $a[2], $a[0])) {
-        return date('Y-m-d', mktime(0, 0, 0, $a[1], $a[2], $a[0]));
-    } else {
-        return 0;
-    }
-}
-
-/**
- * @param      $up
- * @param      $down
- * @param bool $color
- *
- * @return string
- */
 function ratios($up, $down, $color = true)
 {
     if ($down > 0) {
@@ -298,11 +270,6 @@ function ratios($up, $down, $color = true)
     return $r;
 }
 
-/**
- * @param $text
- *
- * @return bool
- */
 function haswildcard($text)
 {
     if (strpos($text, '*') === false && strpos($text, '?') === false && strpos($text, '%') === false && strpos($text, '_') === false) {

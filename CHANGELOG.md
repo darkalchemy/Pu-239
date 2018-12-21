@@ -1,4 +1,6 @@
 ### 21 Dec, 2018
+fix: admin/usersearch.php  
+update: make search term required search.php  
 fix: forums search  
 
 ### 20 Dec, 2018

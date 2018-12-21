@@ -371,7 +371,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 <span class="has-text-info show_in_navbar tooltipper" title="Show in Navbar" data-show="' . $arr['navbar'] . '" data-id="' . $arr['id'] . '" data-csrf="' . $session->get('csrf_token') . '">false</span>';
 
                 $class = $title = '';
-                if ($arr['page_name'] === 'Usersearch' || $arr['page_name'] === 'Extra Stats') {
+                if ($arr['page_name'] === 'Extra Stats') {
                     $class = 'has-text-danger';
                     $title = '<span class="has-text-danger">[Partially Broken]</span> ';
                 }
