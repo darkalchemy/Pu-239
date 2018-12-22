@@ -6,3 +6,4 @@ vendor/
 /include/config.php
 silly/
 cache/imdb/title.*
+cache/anime-titles.dat.gz

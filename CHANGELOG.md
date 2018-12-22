@@ -1,4 +1,5 @@
 ### 22 Dec, 2018
+fix: stats_extra.php  
 update: breadcrumbs for forum search page  
 
 ### 21 Dec, 2018

@@ -2,13 +2,14 @@
 
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $site_config, $lang;
 
 $lang = array_merge($lang, load_language('ad_stats_extra'));
-$inbound = array_merge($_GET, $_POST);
+$inbound = $_GET;
 if (!isset($inbound['mode'])) {
     $inbound['mode'] = '';
 }
@@ -92,50 +93,58 @@ switch ($inbound['mode']) {
         main_screen('reg');
         break;
 }
+
 function show_views()
 {
-    global $inbound, $month_names, $lang, $site_config;
+    global $inbound, $month_names, $lang, $site_config, $fluent;
 
     $page_title = $lang['stats_ex_ptitle'];
     $page_detail = $lang['stats_ex_pdetail'];
-    stderr($lang['stats_ex_stderr'], $lang['stats_ex_stderr1']);
-    $to_time = strtotime($inbound['olddate']);
-    $from_time = strtotime($inbound['newdate']);
-    $human_to_date = getdate($to_time);
+    $from_time = strtotime("MIDNIGHT {$inbound['olddate']}");
+    $to_time = strtotime("MIDNIGHT {$inbound['newdate']}") + 86400;
+    $human_to_date = getdate($to_time - 86400);
     $human_from_date = getdate($from_time);
-    $sql = [
-        'from_time' => $from_time,
-        'to_time' => $to_time,
-        'sortby' => $inbound['sortby'],
-    ];
-    $q = sql_query("SELECT SUM(t.views) as result_count, t.forumid, f.name as result_name
-                    FROM topics AS t
-                    LEFT JOIN forums AS f ON (f.id=t.forumid)
-                    WHERE t.start_date > '{$sql['from_time']}'
-                    AND t.start_date < '{$sql['to_time']}'
-                    GROUP BY t.forumid
-                    ORDER BY result_count {$sql['sortby']}") or sqlerr(__FILE__, __LINE__);
+    $count = $fluent->from('topics AS t')
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->leftJoin('forums AS f ON t.forum_id = f.id')
+        ->where('t.added >= ?', $from_time)
+        ->where('t.added <= ?', $to_time)
+        ->fetch('count');
+
+    $pager = pager(15, $count, "{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;");
+    $query = $fluent->from('topics AS t')
+        ->select(null)
+        ->select('SUM(t.views) AS result_count')
+        ->select('t.forum_id')
+        ->select('f.name AS result_name')
+        ->leftJoin('forums AS f ON t.forum_id = f.id')
+        ->where('t.added >= ?', $from_time)
+        ->where('t.added <= ?', $to_time)
+        ->groupBy('t.forum_id')
+        ->orderBy("result_count {$inbound['sortby']}")
+        ->limit($pager['pdo'])
+        ->fetchAll();
+
     $running_total = 0;
     $max_result = 0;
     $results = [];
     $menu = make_side_menu();
     $heading = "{$lang['stats_ex_topicv']} ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} {$lang['stats_ex_topict']} {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
     $htmlout = $menu . "
-    <h1 class='has-text-centered'>{$lang['stats_ex_center']}</h1>
-    <div>
-    <table class='table table-bordered table-striped'>
-        <tr>
-    <td colspan='3'>{$heading}</td>
-    </tr>
-        <tr>
-    <td>{$lang['stats_ex_date']}</td>
-    <td>{$lang['stats_ex_result']}</td>
-    <td>{$lang['stats_ex_count']}</td>
-    </tr>";
-    if (mysqli_num_rows($q)) {
-        while ($row = mysqli_fetch_assoc($q)) {
-            dd($row);
+        <h1 class='has-text-centered'>{$lang['stats_ex_center']}</h1>
+        <div class='has-text-centered padding20 bg-02 round10 bottom20 size_5'>
+            $heading
+        </div>";
+    $table_heading = "
+            <tr>
+                <th>{$lang['stats_ex_forum_name']}</th>
+                <th>{$lang['stats_ex_result']}</th>
+                <th>{$lang['stats_ex_count']}</th>
+            </tr>";
 
+    if ($count > 0) {
+        foreach ($query as $row) {
             if ($row['result_count'] > $max_result) {
                 $max_result = $row['result_count'];
             }
@@ -145,45 +154,54 @@ function show_views()
                 'result_count' => $row['result_count'],
             ];
         }
+        $body = '';
         foreach ($results as $data) {
             $img_width = intval(($data['result_count'] / $max_result) * 100 - 8);
             if ($img_width < 1) {
                 $img_width = 1;
             }
             $img_width .= '%';
-            $htmlout .= "<tr>
-                <td>$date</td>
-                <td><img src='{$site_config['pic_baseurl']}bar_left.gif' width='4' height='11' align='middle' alt=''><img src='{$site_config['pic_baseurl']}bar.gif' width='$img_width' height='11' align='middle' alt=''><img src='{$site_config['pic_baseurl']}bar_right.gif' width='4' height='11' align='middle' alt=''></td>
-                    <td class='has-text-centered'>{$data['result_count']}</td>
-                    </tr>";
+            $body .= "
+            <tr>
+                <td>{$data['result_name']}</td>
+                <td>
+                    <div class='tooltipper' title='{$data['result_count']} of $running_total'>
+                        <img src='{$site_config['pic_baseurl']}bar_left.gif' width='4' alt='' class='bar'>
+                        <img src='{$site_config['pic_baseurl']}bar.gif' width='$img_width' alt='' class='bar'>
+                        <img src='{$site_config['pic_baseurl']}bar_right.gif' width='4' alt='' class='bar'>
+                    </div>
+                </td>
+                <td class='has-text-centered'>{$data['result_count']}</td>
+            </tr>";
         }
-        $htmlout .= "<tr>
-<td>&#160;</td>
-<td><div><b>{$lang['stats_ex_total']}</b></div></td>
-<td class='has-text-centered'><b>{$running_total}</b></td>
-</tr>";
+        $body .= "
+            <tr>
+                <td></td>
+                <td>
+                    <div><b>{$lang['stats_ex_total']}</b></div>
+                </td>
+                <td class='has-text-centered'><b>{$running_total}</b></td>
+            </tr>";
     } else {
-        $htmlout .= "<tr><td colspan='3'>{$lang['stats_ex_noresult']}</td></tr>";
+        $body .= "
+            <tr>
+                <td colspan='3'>{$lang['stats_ex_noresult']}</td>
+            </tr>";
     }
-    $htmlout .= '</table></div></div>';
+    $htmlout .= main_table($body, $table_heading);
 
     echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
 }
 
-/**
- * @param string $mode
- *
- * @throws Exception
- */
 function result_screen($mode = 'reg')
 {
-    global $site_config, $inbound, $month_names, $lang;
+    global $site_config, $inbound, $month_names, $lang, $fluent;
 
     $page_title = $lang['stats_ex_center_result'];
-    $page_detail = '&#160;';
-    $to_time = strtotime($inbound['olddate']);
-    $from_time = strtotime($inbound['newdate']);
-    $human_to_date = getdate($to_time);
+    $page_detail = '';
+    $from_time = strtotime("MIDNIGHT {$inbound['olddate']}");
+    $to_time = strtotime("MIDNIGHT {$inbound['newdate']}") + 86400;
+    $human_to_date = getdate($to_time - 86400);
     $human_from_date = getdate($from_time);
     if ($mode === 'reg') {
         $table = $lang['stats_ex_registr'];
@@ -224,7 +242,7 @@ function result_screen($mode = 'reg')
     switch ($inbound['timescale']) {
         case 'daily':
             $sql_date = '%w %U %m %Y';
-            $php_date = 'F jS - Y';
+            $php_date = 'F jS, Y';
             break;
 
         case 'monthly':
@@ -239,50 +257,56 @@ function result_screen($mode = 'reg')
             break;
     }
     $sort_by = ($inbound['sortby'] === 'DESC') ? 'DESC' : 'ASC';
-    $sql = [
-        'from_time' => $from_time,
-        'to_time' => $to_time,
-        'sortby' => $sort_by,
-        'sql_field' => $sql_field,
-        'sql_table' => $sql_table,
-        'sql_date' => $sql_date,
-    ];
-    $q1 = sql_query("SELECT MAX({$sql['sql_field']}) as result_maxdate,
-                 COUNT(*) as result_count,
-                 DATE_FORMAT(from_unixtime({$sql['sql_field']}),'{$sql['sql_date']}') AS result_time
-                 FROM {$sql['sql_table']}
-                 WHERE {$sql['sql_field']} > '{$sql['from_time']}'
-                 AND {$sql['sql_field']} < '{$sql['to_time']}'
-                 GROUP BY result_time
-                 ORDER BY {$sql['sql_field']} {$sql['sortby']}");
+    $count = $fluent->from($sql_table)
+        ->select(null)
+        ->select('COUNT(*) AS count')
+        ->where("$sql_field >= $from_time")
+        ->where("$sql_field <= $to_time")
+        ->fetch('count');
+
+    $pager = pager(15, $count, "{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;");
+    $query = $fluent->from($sql_table)
+        ->select(null)
+        ->select('COUNT(*) AS result_count')
+        ->select("MAX($sql_field) AS result_maxdate")
+        ->select("DATE_FORMAT(FROM_UNIXTIME($sql_field), '$sql_date') AS result_time")
+        ->where("$sql_field >= $from_time")
+        ->where("$sql_field <= $to_time")
+        ->groupBy('result_time')
+        ->orderBy("$sql_field $sortby")
+        ->limit($pager['pdo'])
+        ->fetchAll();
+
     $running_total = 0;
     $max_result = 0;
     $results = [];
     $heading = ucfirst($inbound['timescale']) . " $table ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} to {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
     $menu = make_side_menu();
     $htmlout = $menu . "
-    <h1 class='has-text-centered'>{$lang['stats_ex_center']}</h1>
-    <table class='table table-bordered table-striped'>
-        <tr>
-    <td colspan='3'>{$heading}<br>{$page_detail}</td>
-    </tr>
-        <tr>
-    <td>{$lang['stats_ex_date']}</td>
-    <td>{$lang['stats_ex_result']}</td>
-    <td>{$lang['stats_ex_count']}</td>
-    </tr>";
-    if (mysqli_num_rows($q1)) {
-        while ($row = mysqli_fetch_assoc($q1)) {
-            if ($row['result_count'] > $max_result) {
-                $max_result = $row['result_count'];
-            }
-            $running_total += $row['result_count'];
-            $results[] = [
-                'result_maxdate' => $row['result_maxdate'],
-                'result_count' => $row['result_count'],
-                'result_time' => $row['result_time'],
-            ];
+        <h1 class='has-text-centered'>{$lang['stats_ex_center']}</h1>
+        <div class='has-text-centered padding20 bg-02 round10 bottom20 size_5'>
+            {$heading}<br><br>
+            {$page_detail}
+        </div>";
+    $table_heading = "
+            <tr>
+                <th>{$lang['stats_ex_date']}</th>
+                <th>{$lang['stats_ex_result']}</th>
+                <th>{$lang['stats_ex_count']}</th>
+            </tr>";
+    foreach ($query as $row) {
+        if ($row['result_count'] > $max_result) {
+            $max_result = $row['result_count'];
         }
+        $running_total += $row['result_count'];
+        $results[] = [
+            'result_maxdate' => $row['result_maxdate'],
+            'result_count' => $row['result_count'],
+            'result_time' => $row['result_time'],
+        ];
+    }
+    if (!empty($results)) {
+        $body = '';
         foreach ($results as $data) {
             $img_width = intval(($data['result_count'] / $max_result) * 100 - 8);
             if ($img_width < 1) {
@@ -294,33 +318,41 @@ function result_screen($mode = 'reg')
             } else {
                 $date = date($php_date, $data['result_maxdate']);
             }
-            $htmlout .= "<tr>
+            $body .= "
+            <tr>
                 <td>$date</td>
-                <td><img src='{$site_config['pic_baseurl']}bar_left.gif' width='4' height='11' align='middle' alt=''><img src='{$site_config['pic_baseurl']}bar.gif' width='$img_width' height='11' align='middle' alt=''><img src='{$site_config['pic_baseurl']}bar_right.gif' width='4' height='11' align='middle' alt=''></td>
-                    <td class='has-text-centered'>{$data['result_count']}</td>
-                    </tr>";
+                <td>
+                    <div class='tooltipper' title='{$data['result_count']} of $running_total'>
+                        <img src='{$site_config['pic_baseurl']}bar_left.gif' width='4' alt='' class='bar'>
+                        <img src='{$site_config['pic_baseurl']}bar.gif' width='$img_width' alt='' class='bar'>
+                        <img src='{$site_config['pic_baseurl']}bar_right.gif' width='4' alt='' class='bar'>
+                    </div>
+                </td>
+                <td class='has-text-centered'>{$data['result_count']}</td>
+            </tr>";
         }
-        $htmlout .= "<tr>
-<td>&#160;</td>
-<td><div><b>{$lang['stats_ex_total']}</b></div></td>
-<td class='has-text-centered'><b>{$running_total}</b></td>
-</tr>";
+        $body .= "
+            <tr>
+                <td></td>
+                <td>
+                    <div><b>{$lang['stats_ex_total']}</b></div>
+                </td>
+                <td class='has-text-centered'><b>{$running_total}</b></td>
+            </tr>";
     } else {
-        $htmlout .= "<tr><td colspan='3'>{$lang['stats_ex_noresult']}</td></tr>";
+        $body .= "
+            <tr>
+                <td colspan='3'>{$lang['stats_ex_noresult']}</td>
+            </tr>";
     }
-    $htmlout .= '</table></div></div>';
+    $htmlout .= main_table($body, $table_heading);
 
     echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
 }
 
-/**
- * @param string $mode
- *
- * @throws Exception
- */
 function main_screen($mode = 'reg')
 {
-    global $site_config, $lang;
+    global $site_config, $lang, $cache, $fluent;
 
     $page_title = $lang['stats_ex_center'];
     $page_detail = "{$lang['stats_ex_details_main']}<br>{$lang['stats_ex_details_main1']}";
@@ -349,27 +381,42 @@ function main_screen($mode = 'reg')
         $form_code = 'show_reps';
         $table = $lang['stats_ex_repsts'];
     }
-    $old_date = get_date(TIME_NOW - (3600 * 24 * 90), 'FORM', 1, 0);
-    $new_date = get_date(TIME_NOW + (3600 * 24), 'FORM', 1, 0);
+    $oldest = $cache->get('oldest_');
+    if ($oldest === false || is_null($oldest)) {
+        $oldest = $fluent->from('users')
+            ->select(null)
+            ->select('added')
+            ->orderBy('added')
+            ->limit(1)
+            ->fetch('added');
+        $cache->set('oldest_', $oldest, 0);
+    }
+    $old_date = get_date($oldest, 'FORM', 1, 0);
+    $new_date = get_date(TIME_NOW, 'FORM', 1, 0);
     $menu = make_side_menu();
     $htmlout = $menu . "
         <h1 class='has-text-centered'>{$lang['stats_ex_center']}</h1>
-        <form action='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra' method='post' name='StatsForm'>
+        <form action='{$site_config['baseurl']}/staffpanel.php' method='get' name='StatsForm'>
             <div class='has-text-centered'>
+                <input name='tool' value='stats_extra' type='hidden'>
                 <input name='mode' value='{$form_code}' type='hidden'>
-                <h1 class='has-text-centered'>{$table}</h1>";
-    $htmlout .= main_div("<h2 class='has-text-centered'>{$lang['stats_ex_infor']}</h2>$page_detail");
-    $dates = "
-                <h2 class='has-text-centered'>{$lang['stats_ex_datefrom']}</h2>
-                <input name='olddate' type='date' value='$old_date' class='bottom20'>
-                <h2>{$lang['stats_ex_dateto']}</h2>
-                <input name='newdate' type='date' value='$new_date' class='bottom20'>";
-
-    $htmlout .= main_div($dates, 'top20');
+                <h2 class='has-text-centered'>{$table}</h2>";
+    $div = "
+                <h2 class='has-text-centered'>{$lang['stats_ex_infor']}</h2>$page_detail
+                <div class='is-flex level-center padding20'>
+                    <div class='padding20'>
+                    <label for='olddate' class='right5'>{$lang['stats_ex_datefrom']}</label>
+                    <input id='olddate' name='olddate' type='date' value='$old_date' required>
+                    </div>
+                    <div class='padding20'>
+                    <label for='newdate' class='left20 right5'>{$lang['stats_ex_dateto']}</label>
+                    <input id='newdate' name='newdate' type='date' value='$new_date' required>
+                    </div>";
     $timescale = '';
     if ($mode != 'views') {
         $timescale .= "
-                <h2 class='has-text-centered'>{$lang['stats_ex_timescale']}</h2>";
+                <div class='padding20'>
+                <label for='timescale' class='left20 right5'>{$lang['stats_ex_timescale']}</label>";
         $timescale .= make_select('timescale', [
                 0 => [
                     'daily',
@@ -386,7 +433,8 @@ function main_screen($mode = 'reg')
             ]);
     }
     $timescale .= "
-                <h2 class='has-text-centered'>{$lang['stats_ex_ressort']}</h2>";
+                <div class='padding20'>
+                <label for='sortby' class='left20 right5'>{$lang['stats_ex_ressort']}</label>";
     $timescale .= make_select('sortby', [
             0 => [
                 'asc',
@@ -397,7 +445,8 @@ function main_screen($mode = 'reg')
                 $lang['stats_ex_desc'],
             ],
         ], 'desc');
-    $htmlout .= main_div($timescale, 'top20');
+    $div .= $timescale;
+    $htmlout .= main_div($div . '</div>');
     $htmlout .= "
                 <input value='{$lang['stats_ex_submit']}' class='button is-small margin20' accesskey='s' type='submit'>
             </div>
@@ -405,45 +454,39 @@ function main_screen($mode = 'reg')
     echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
 }
 
-/**
- * @param        $name
- * @param array  $in
- * @param string $default
- *
- * @return string
- */
 function make_select($name, $in = [], $default = '')
 {
-    $html = "<select name='$name' class='dropdown bottom20'>\n";
+    $html = "
+            <select id='$name' name='$name' required>";
     foreach ($in as $v) {
         $selected = '';
         if (($default != '') && ($v[0] == $default)) {
             $selected = ' selected';
         }
-        $html .= "<option value='{$v[0]}'{$selected}>{$v[1]}</option>\n";
+        $html .= "
+                <option value='{$v[0]}'{$selected}>{$v[1]}</option>";
     }
-    $html .= "</select>\n\n";
+    $html .= "
+            </select>
+            </div>";
 
     return $html;
 }
 
-/**
- * @return string
- */
 function make_side_menu()
 {
     global $site_config, $lang;
 
     $htmlout = "
     <ul class='level-center bg-06'>
-        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reg'>{$lang['stats_ex_menureg']}</a></li>
-        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=topic'>{$lang['stats_ex_menutopnew']}</a></li>
-        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=post'>{$lang['stats_ex_menuposts']}</a></li>
-        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=msg'>{$lang['stats_ex_menupm']}</a></li>
-        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=views'>{$lang['stats_ex_menutopic']}</a></li>
-        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=comms'>{$lang['stats_ex_menucomm']}</a></li>
-        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=torrents'>{$lang['stats_ex_menutorr']}</a></li>
-        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reps'>{$lang['stats_ex_menurep']}</a></li>
+        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=reg'>{$lang['stats_ex_menureg']}</a></li>
+        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=topic'>{$lang['stats_ex_menutopnew']}</a></li>
+        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=post'>{$lang['stats_ex_menuposts']}</a></li>
+        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=msg'>{$lang['stats_ex_menupm']}</a></li>
+        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=views'>{$lang['stats_ex_menutopic']}</a></li>
+        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=comms'>{$lang['stats_ex_menucomm']}</a></li>
+        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=torrents'>{$lang['stats_ex_menutorr']}</a></li>
+        <li class='margin10'><a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=reps'>{$lang['stats_ex_menurep']}</a></li>
     </ul>";
 
     return $htmlout;
