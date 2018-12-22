@@ -122,7 +122,7 @@ function show_views()
         ->where('t.added >= ?', $from_time)
         ->where('t.added <= ?', $to_time)
         ->groupBy('t.forum_id')
-        ->orderBy("result_count {$inbound['sortby']}")
+        ->orderBy("result_count {$inbound['sort_by']}")
         ->limit($pager['pdo'])
         ->fetchAll();
 
@@ -256,7 +256,7 @@ function result_screen($mode = 'reg')
             $php_date = ' [F Y]';
             break;
     }
-    $sort_by = ($inbound['sortby'] === 'DESC') ? 'DESC' : 'ASC';
+    $sort_by = $inbound['sortby'] === 'DESC' ? 'DESC' : 'ASC';
     $count = $fluent->from($sql_table)
         ->select(null)
         ->select('COUNT(*) AS count')
@@ -272,8 +272,8 @@ function result_screen($mode = 'reg')
         ->select("DATE_FORMAT(FROM_UNIXTIME($sql_field), '$sql_date') AS result_time")
         ->where("$sql_field >= $from_time")
         ->where("$sql_field <= $to_time")
-        ->groupBy('result_time')
-        ->orderBy("$sql_field $sortby")
+        ->groupBy("result_time, $sql_field")
+        ->orderBy("$sql_field $sort_by")
         ->limit($pager['pdo'])
         ->fetchAll();
 
