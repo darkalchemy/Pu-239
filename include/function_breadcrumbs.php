@@ -304,6 +304,8 @@ function get_actionpage($lang, $queries, $path)
     } elseif ($list[0] === 'action' && $list[1] === 'view_topic') {
         $ids = explode('=', $queries[1]);
         $queries_1 = '&amp;' . $ids[0] . '=' . $ids[1];
+    } elseif ($path === '/forums.php' && $list[0] === 'action' && $list[1] === 'search') {
+        $title = $lang['search_forum'];
     }
     if (!empty($list[1]) && empty($title)) {
         $title = $lang[$list[1]];

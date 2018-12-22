@@ -1,3 +1,6 @@
+### 22 Dec, 2018
+update: breadcrumbs for forum search page  
+
 ### 21 Dec, 2018
 update: allow left column to be empty and hidden index.php  
 update: more ways to get sudo user set_perms.php  

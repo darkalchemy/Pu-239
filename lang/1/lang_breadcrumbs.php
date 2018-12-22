@@ -175,6 +175,7 @@ $lang = [
     'reset' => 'Reset Password',
     'reports' => 'View Reports',
     'search' => "Search PM's",
+    'search_forum' => 'Search Forum Posts',
     'search_modded' => 'Search Modderated Torrents',
     'section_view' => 'Section View',
     'security' => 'Security Settings',
