@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.24-26, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.24-27, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: master
 -- ------------------------------------------------------
--- Server version	5.7.24-26
+-- Server version	5.7.24-27
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -160,6 +160,24 @@ CREATE TABLE `ajax_chat_online` (
   PRIMARY KEY (`userID`),
   KEY `userName` (`userName`),
   CONSTRAINT `ajax_chat_online_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `anidb_titles`
+--
+
+DROP TABLE IF EXISTS `anidb_titles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `anidb_titles` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `aid` int(10) unsigned NOT NULL DEFAULT '0',
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `language` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` enum('short','official','syn','main') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'official',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `aid_title_lang_type` (`aid`,`title`,`language`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2320,7 +2338,7 @@ CREATE TABLE `user_blocks` (
   `userid` int(10) unsigned NOT NULL,
   `index_page` int(10) unsigned NOT NULL DEFAULT '33554431',
   `global_stdhead` int(10) unsigned NOT NULL DEFAULT '1023',
-  `userdetails_page` int(10) unsigned NOT NULL DEFAULT '0',
+  `userdetails_page` int(10) unsigned NOT NULL DEFAULT '2147483647',
   UNIQUE KEY `userid` (`userid`),
   CONSTRAINT `user_blocks_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -2641,4 +2659,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-16  9:27:56
+-- Dump completed on 2018-12-23 10:27:26

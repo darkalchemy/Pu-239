@@ -14,9 +14,9 @@ function get_file_name($file)
         case 'vendor_css':
             return "{$site_config['baseurl']}/css/1/vendor_e11d3062.css";
         case 'sceditor_css':
-            return "{$site_config['baseurl']}/css/1/sceditor_73930246.css";
+            return "{$site_config['baseurl']}/css/1/sceditor_2016f237.css";
         case 'main_css':
-            return "{$site_config['baseurl']}/css/1/main_5d54e8f4.css";
+            return "{$site_config['baseurl']}/css/1/main_64bff900.css";
         case 'main_js':
             return "{$site_config['baseurl']}/js/1/main_3a013c91.js";
         case 'vendor_js':
@@ -50,7 +50,7 @@ function get_file_name($file)
         case 'theme_js':
             return "{$site_config['baseurl']}/js/1/theme_ff3ca3dd.js";
         case 'sceditor_js':
-            return "{$site_config['baseurl']}/js/1/sceditor_ddccfc65.js";
+            return "{$site_config['baseurl']}/js/1/sceditor_910bb6f2.js";
         case 'cheaters_js':
             return "{$site_config['baseurl']}/js/1/cheaters_88e84984.js";
         case 'user_search_js':
@@ -58,7 +58,7 @@ function get_file_name($file)
         case 'lightbox_js':
             return "{$site_config['baseurl']}/js/1/lightbox_b0c4a917.js";
         case 'tooltipster_js':
-            return "{$site_config['baseurl']}/js/1/tooltipster_dc2a1682.js";
+            return "{$site_config['baseurl']}/js/1/tooltipster_2036da1c.js";
         case 'checkport_js':
             return "{$site_config['baseurl']}/js/1/checkport_a540ce2b.js";
         case 'check_username_js':

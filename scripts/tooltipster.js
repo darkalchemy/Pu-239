@@ -3,18 +3,20 @@ var animation = 'grow';
 var update_animation = 'rotate';
 var delay = 300;
 var distance = 12;
+var sides = ['bottom', 'top', 'right', 'left'];
 
 $(function () {
     $('.tooltipper').tooltipster({
         theme: 'tooltipster-borderless',
-        side: ['bottom', 'top'],
+        side: sides,
         interactive: false,
         animation: animation,
         animationDuration: animate_duration,
         delay: delay,
         arrow: true,
         contentAsHTML: true,
-        distance: distance
+        distance: distance,
+        maxWidth: 500,
     });
     initAll();
 });
@@ -24,13 +26,14 @@ function initAll() {
     $('.dt-tooltipper-large').tooltipster({
         theme: 'tooltipster-borderless',
         interactive: true,
-        side: ['bottom', 'top'],
+        side: sides,
         animation: animation,
         animationDuration: animate_duration,
         delay: delay,
         arrow: true,
         contentAsHTML: true,
         distance: distance,
+        maxWidth: 500,
         trigger: 'custom',
         triggerOpen: {
             mouseenter: true,
@@ -47,7 +50,7 @@ function initAll() {
     });
     $('.dt-tooltipper-links').tooltipster({
         theme: 'tooltipster-borderless',
-        side: ['bottom', 'top'],
+        side: sides,
         interactive: true,
         animation: animation,
         animationDuration: animate_duration,
@@ -58,14 +61,15 @@ function initAll() {
     });
     $('.dt-tooltipper-small').tooltipster({
         theme: 'tooltipster-borderless',
-        side: ['bottom', 'top'],
+        side: sides,
         interactive: false,
         animation: animation,
         animationDuration: animate_duration,
         delay: delay,
         arrow: true,
         contentAsHTML: true,
-        distance: distance
+        distance: distance,
+        maxWidth: 250
     });
     $('.tooltipper-ajax.tooltipstered').tooltipster('destroy');
     $('.tooltipper-ajax').tooltipster({
@@ -83,7 +87,7 @@ function initAll() {
             touchLeave: true
         },
         theme: ['tooltipster-borderless', 'tooltipster-custom'],
-        side: ['bottom', 'top'],
+        side: sides,
         contentAsHTML: true,
         interactive: true,
         animation: animation,
@@ -92,6 +96,7 @@ function initAll() {
         updateAnimation: update_animation,
         arrow: true,
         distance: distance,
+        minWidth: 250,
         content: 'patience, grasshopper...',
         functionBefore: function (instance, helper) {
             var $origin = $(helper.origin);

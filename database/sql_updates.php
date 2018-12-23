@@ -1722,4 +1722,11 @@ CREATE TABLE `categories` (
         'query' => "INSERT INTO `cleanup` (clean_title, clean_file, clean_time, clean_increment, clean_log, clean_desc, clean_on, function_name) VALUES ('AniDb Update', 'anidb_title_update.php', 1544832000, 86400, 1, 'Download and Update AniDb Titls', 1, 'anidb_titles_update')",
         'flush' => false,
     ],
+    [
+        'id' => 1545578443,
+        'info' => 'Update column userdetails_page',
+        'date' => '23 Dec, 2018',
+        'query' => "ALTER TABLE `user_blocks` MODIFY COLUMN `userdetails_page` int(10) unsigned NOT NULL DEFAULT 2147483647",
+        'flush' => false,
+    ],
 ];
