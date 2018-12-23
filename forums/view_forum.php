@@ -221,17 +221,19 @@ if ($CURUSER['class'] < $min_delete_view_class) {
     $query = $query->where('p.status != "deleted"');
 }
 $query = $query
+    ->groupBy('t.id')
+    ->groupBy('post_id')
     ->orderBy('sticky, post_added DESC')
     ->limit($pager['pdo'])
     ->fetchAll();
 
-$topic_arrs = [];
+$topic_arrs = $topic_ids = [];
 foreach ($query as $topic) {
-    if (!empty($topic['post_id'])) {
+    if (!empty($topic['post_id']) && !in_array($topic['id'], $topic_ids)) {
         $topic_arrs[] = $topic;
+        $topic_ids[] = $topic['id'];
     }
 }
-
 if (!empty($topic_arrs)) {
     foreach ($topic_arrs as $topic_arr) {
         $topic_id = (int) $topic_arr['id'];
