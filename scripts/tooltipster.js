@@ -1,7 +1,8 @@
 var animate_duration = 500;
 var animation = 'grow';
 var update_animation = 'rotate';
-var delay = 300;
+var short = 250;
+var long = 500;
 var distance = 12;
 var sides = ['bottom', 'top', 'right', 'left'];
 
@@ -12,7 +13,7 @@ $(function () {
         interactive: false,
         animation: animation,
         animationDuration: animate_duration,
-        delay: delay,
+        delay: short,
         arrow: true,
         contentAsHTML: true,
         distance: distance,
@@ -29,7 +30,7 @@ function initAll() {
         side: sides,
         animation: animation,
         animationDuration: animate_duration,
-        delay: delay,
+        delay: long,
         arrow: true,
         contentAsHTML: true,
         distance: distance,
@@ -54,7 +55,7 @@ function initAll() {
         interactive: true,
         animation: animation,
         animationDuration: animate_duration,
-        delay: delay,
+        dealy: short,
         arrow: true,
         contentAsHTML: true,
         distance: distance
@@ -65,7 +66,7 @@ function initAll() {
         interactive: false,
         animation: animation,
         animationDuration: animate_duration,
-        delay: delay,
+        delay: long,
         arrow: true,
         contentAsHTML: true,
         distance: distance,
@@ -92,7 +93,7 @@ function initAll() {
         interactive: true,
         animation: animation,
         animationDuration: animate_duration,
-        delay: delay,
+        delay: long,
         updateAnimation: update_animation,
         arrow: true,
         distance: distance,
