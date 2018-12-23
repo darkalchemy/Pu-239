@@ -1,4 +1,5 @@
 ### 23 Dec, 2018
+fix: typos  
 remove: php-cs-fixer until they uppdate to PHP7.3  
 
 ### 22 Dec, 2018

@@ -107,7 +107,7 @@ function sharetable($res, $variant = 'index')
                             <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='false' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_add']}'>
                                 <i class='icon-ok icon'></i>
                             </span>" : "
-                            <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='true' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_del']}'>
+                            <span data-tid='{$id}' data-csrf='" . $session->get('csrf_token') . "' data-remove='true' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmark_delete']}'>
                                 <i class='icon-trash-empty icon has-text-danger'></i>
                             </span>");
         $htmlout .= ($variant === 'index' ? "<td>{$bookmarked}</td>" : '');
