@@ -1,3 +1,6 @@
+### 23 Dec, 2018
+remove: php-cs-fixer until they uppdate to PHP7.3  
+
 ### 22 Dec, 2018
 fix: count stats_extra.php  
 update: page formatting lottery/tickets.php  
