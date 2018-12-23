@@ -1,4 +1,5 @@
 ### 22 Dec, 2018
+fix: count stats_extra.php  
 update: page formatting lottery/tickets.php  
 update: add pager to stats_extra.php  
 fix: stats_extra.php  

@@ -113,8 +113,8 @@ function show_views()
         ->where('t.added <= ?', $to_time)
         ->groupBy('t.forum_id')
          ->fetchAll();
-    $count = !empty($count) ? count($count) : 0;
 
+    $count = !empty($count) ? count($count) : 0;
     $parsed_url = http_build_query($inbound);
     $perpage = 15;
     $pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?{$parsed_url}&amp;");
@@ -265,13 +265,13 @@ function result_screen($mode = 'reg')
     $sort_by = $inbound['sortby'] === 'desc' ? 'DESC' : 'ASC';
     $count = $fluent->from($sql_table)
         ->select(null)
-        ->select('COUNT(*) AS count')
         ->select("DATE_FORMAT(FROM_UNIXTIME($sql_field), '$sql_date') AS result_time")
         ->where("$sql_field >= $from_time")
         ->where("$sql_field <= $to_time")
         ->groupBy("result_time")
-        ->fetch('count');
+        ->fetchAll();
 
+    $count = !empty($count) ? count($count) : 0;
     $parsed_url = http_build_query($inbound);
     $perpage = 15;
     $pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?{$parsed_url}&amp;");
@@ -287,6 +287,7 @@ function result_screen($mode = 'reg')
         ->where("$sql_field <= $to_time")
         ->groupBy("result_time")
         ->orderBy("result_maxdate $sort_by")
+        ->limit($pager['pdo'])
         ->fetchAll();
 
     $running_total = 0;
