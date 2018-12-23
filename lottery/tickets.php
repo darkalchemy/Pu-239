@@ -90,31 +90,28 @@ if (time() > $lottery_config['end_date'] || $lottery_config['user_tickets'] <= $
     $lottery['current_user']['can_buy'] = 0;
 }
 $html .= "
-        <h1 class='has-text-centered'>{$site_config['site_name']} Lottery</h1>
-        <div class='bordered bottom10 top20'>
-            <div class='alt_bordered bg-00 has-text-centered'>
-                <ul style='text-align:left;'>
+        <h1 class='has-text-centered'>{$site_config['site_name']} Lottery</h1>";
+$body = "
+                <ul class='padding20'>
                     <li>Tickets are non-refundable</li>
-                    <li>Each ticket costs <b>" . number_format($lottery_config['ticket_amount']) . '</b> Karma Bonus Points, which is taken from your seedbonus amount</li>
+                    <li>Each ticket costs <b>" . number_format($lottery_config['ticket_amount']) . "</b> Karma Bonus Points, which is taken from your seedbonus amount</li>
                     <li>Purchaseable shows how many tickets you can afford to purchase.</li>
                     <li>You can only buy up to your purchaseable amount.</li>
-                    <li>The competiton will end: <b>' . get_date($lottery_config['end_date'], 'LONG') . '</b></li>
-                    <li>There will be <b>' . $lottery_config['total_winners'] . '</b> winner(s) who will be picked at random.</li>
-                    <li>Winner(s) will get <b>' . number_format($lottery['per_user']) . '</b> added to their seedbonus amount</li>
-                    <li>The Winners will be announced once the lottery has closed and posted on the home page.</li>';
+                    <li>The competiton will end: <b>" . get_date($lottery_config['end_date'], 'LONG') . "</b></li>
+                    <li>There will be <b>" . $lottery_config['total_winners'] . "</b> winner(s) who will be picked at random.</li>
+                    <li>Winner(s) will get <b>" . number_format($lottery['per_user']) . "</b> added to their seedbonus amount</li>
+                    <li>The Winners will be announced once the lottery has closed and posted on the home page.</li>";
 if (!$lottery_config['use_prize_fund']) {
-    $html .= '
+    $body .= '
                     <li>The more tickets that are sold the bigger the pot will be !</li>';
 }
 if (!empty($lottery['current_user']['tickets']) && count($lottery['current_user']['tickets'])) {
-    $html .= '
+    $body .= '
                     <li>You own ticket numbers : <b>' . implode('</b>, <b>', $lottery['current_user']['tickets']) . '</b></li>';
 }
-$html .= "
-                </ul>
-            </div>
-        </div>
-        <table class='table table-bordered table-striped top20'>
+$body .= "
+                </ul>";
+$table = "
             <tr>
                 <td>Total Pot</td>
                 <td>" . number_format($lottery['total_pot']) . '</td>
@@ -130,8 +127,9 @@ $html .= "
             <tr>
                 <td>Purchaseable</td>
                 <td>' . ($lottery['current_user']['could_buy'] > $lottery['current_user']['can_buy'] ? 'you have points for <b>' . number_format($lottery['current_user']['can_buy']) . '</b> ticket(s) but you can buy another <b>' . ($lottery['current_user']['could_buy'] - $lottery['current_user']['can_buy']) . '</b> ticket(s) if you get more bonus points' : number_format($lottery['current_user']['can_buy'])) . '</td>
-            </tr>
-        </table>';
+            </tr>';
+
+$html .= main_div($body) . main_table($table, '', 'top20');
 if ($lottery['current_user']['can_buy'] > 0) {
     $html .= "
         <form action='lottery.php?action=tickets' method='post'>

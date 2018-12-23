@@ -10,6 +10,7 @@ global $site_config, $lang;
 
 $lang = array_merge($lang, load_language('ad_stats_extra'));
 $inbound = $_GET;
+unset($inbound['page']);
 if (!isset($inbound['mode'])) {
     $inbound['mode'] = '';
 }
@@ -104,15 +105,21 @@ function show_views()
     $to_time = strtotime("MIDNIGHT {$inbound['newdate']}") + 86400;
     $human_to_date = getdate($to_time - 86400);
     $human_from_date = getdate($from_time);
+    $sort_by = $inbound['sortby'] === 'desc' ? 'DESC' : 'ASC';
     $count = $fluent->from('topics AS t')
         ->select(null)
-        ->select('COUNT(*) AS count')
-        ->leftJoin('forums AS f ON t.forum_id = f.id')
+        ->select('t.forum_id')
         ->where('t.added >= ?', $from_time)
         ->where('t.added <= ?', $to_time)
-        ->fetch('count');
+        ->groupBy('t.forum_id')
+         ->fetchAll();
+    $count = !empty($count) ? count($count) : 0;
 
-    $pager = pager(15, $count, "{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;");
+    $parsed_url = http_build_query($inbound);
+    $perpage = 15;
+    $pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?{$parsed_url}&amp;");
+    $pagertop = $count > $perpage ? $pager['pagertop'] : '';
+    $pagerbottom = $count > $perpage ? $pager['pagerbottom'] : '';
     $query = $fluent->from('topics AS t')
         ->select(null)
         ->select('SUM(t.views) AS result_count')
@@ -122,7 +129,7 @@ function show_views()
         ->where('t.added >= ?', $from_time)
         ->where('t.added <= ?', $to_time)
         ->groupBy('t.forum_id')
-        ->orderBy("result_count {$inbound['sort_by']}")
+        ->orderBy("result_count $sort_by, t.forum_id")
         ->limit($pager['pdo'])
         ->fetchAll();
 
@@ -188,7 +195,7 @@ function show_views()
                 <td colspan='3'>{$lang['stats_ex_noresult']}</td>
             </tr>";
     }
-    $htmlout .= main_table($body, $table_heading);
+    $htmlout .= $pagertop . main_table($body, $table_heading) . $pagerbottom;
 
     echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
 }
@@ -224,7 +231,7 @@ function result_screen($mode = 'reg')
         $sql_field = 'added';
         $page_detail = $lang['stats_ex_pmdetails'];
     } elseif ($mode === 'comms') {
-        $table = $lang['stats_ex_comsts'];
+        $table = $lang['stats_ex_commsts'];
         $sql_table = 'comments';
         $sql_field = 'added';
         $page_detail = $lang['stats_ex_cdetails'];
@@ -251,20 +258,26 @@ function result_screen($mode = 'reg')
             break;
 
         default:
-            // weekly
             $sql_date = '%U %Y';
             $php_date = ' [F Y]';
             break;
     }
-    $sort_by = $inbound['sortby'] === 'DESC' ? 'DESC' : 'ASC';
+    $sort_by = $inbound['sortby'] === 'desc' ? 'DESC' : 'ASC';
     $count = $fluent->from($sql_table)
         ->select(null)
         ->select('COUNT(*) AS count')
+        ->select("DATE_FORMAT(FROM_UNIXTIME($sql_field), '$sql_date') AS result_time")
         ->where("$sql_field >= $from_time")
         ->where("$sql_field <= $to_time")
+        ->groupBy("result_time")
         ->fetch('count');
 
-    $pager = pager(15, $count, "{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;");
+    $parsed_url = http_build_query($inbound);
+    $perpage = 15;
+    $pager = pager($perpage, $count, "{$site_config['baseurl']}/staffpanel.php?{$parsed_url}&amp;");
+    $pagertop = $count > $perpage ? $pager['pagertop'] : '';
+    $pagerbottom = $count > $perpage ? $pager['pagerbottom'] : '';
+
     $query = $fluent->from($sql_table)
         ->select(null)
         ->select('COUNT(*) AS result_count')
@@ -272,9 +285,8 @@ function result_screen($mode = 'reg')
         ->select("DATE_FORMAT(FROM_UNIXTIME($sql_field), '$sql_date') AS result_time")
         ->where("$sql_field >= $from_time")
         ->where("$sql_field <= $to_time")
-        ->groupBy("result_time, $sql_field")
-        ->orderBy("$sql_field $sort_by")
-        ->limit($pager['pdo'])
+        ->groupBy("result_time")
+        ->orderBy("result_maxdate $sort_by")
         ->fetchAll();
 
     $running_total = 0;
@@ -282,6 +294,7 @@ function result_screen($mode = 'reg')
     $results = [];
     $heading = ucfirst($inbound['timescale']) . " $table ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} to {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
     $menu = make_side_menu();
+
     $htmlout = $menu . "
         <h1 class='has-text-centered'>{$lang['stats_ex_center']}</h1>
         <div class='has-text-centered padding20 bg-02 round10 bottom20 size_5'>
@@ -340,19 +353,19 @@ function result_screen($mode = 'reg')
                 <td class='has-text-centered'><b>{$running_total}</b></td>
             </tr>";
     } else {
-        $body .= "
+        $body = "
             <tr>
                 <td colspan='3'>{$lang['stats_ex_noresult']}</td>
             </tr>";
     }
-    $htmlout .= main_table($body, $table_heading);
+    $htmlout .= $pagertop . main_table($body, $table_heading) . $pagerbottom;
 
     echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
 }
 
 function main_screen($mode = 'reg')
 {
-    global $site_config, $lang, $cache, $fluent;
+    global $site_config, $lang, $cache, $fluent, $inbound;
 
     $page_title = $lang['stats_ex_center'];
     $page_detail = "{$lang['stats_ex_details_main']}<br>{$lang['stats_ex_details_main1']}";
@@ -370,10 +383,10 @@ function main_screen($mode = 'reg')
         $table = $lang['stats_ex_pmsts'];
     } elseif ($mode === 'views') {
         $form_code = 'show_views';
-        $table = $lang['stats_ex_topicviewsts'];
+        $table = $lang['stats_ex_topicv'];
     } elseif ($mode === 'comms') {
         $form_code = 'show_comms';
-        $table = $lang['stats_ex_comsts'];
+        $table = $lang['stats_ex_commsts'];
     } elseif ($mode === 'torrents') {
         $form_code = 'show_torrents';
         $table = $lang['stats_ex_torrsts'];
