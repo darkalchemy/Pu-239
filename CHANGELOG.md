@@ -1,4 +1,5 @@
 ### 23 Dec, 2018
+replace: AniDb Titles with Anime Titles  
 fix: initial user blocks setting for userdetails  
 fix: typos  
 remove: php-cs-fixer until they uppdate to PHP7.3  

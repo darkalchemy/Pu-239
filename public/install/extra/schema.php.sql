@@ -164,20 +164,23 @@ CREATE TABLE `ajax_chat_online` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `anidb_titles`
+-- Table structure for table `anime_titles`
 --
 
-DROP TABLE IF EXISTS `anidb_titles`;
+DROP TABLE IF EXISTS `anime_titles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `anidb_titles` (
+CREATE TABLE `anime_titles` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `aid` int(10) unsigned NOT NULL DEFAULT '0',
+  `anidb_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `anilist_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `myanimelist_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `kitsu_id` int(10) unsigned NOT NULL DEFAULT '0',
   `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `language` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type` enum('short','official','syn','main') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'official',
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` enum('tv','movie','ova','ona','special','music') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'tv',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `aid_title_lang_type` (`aid`,`title`,`language`,`type`)
+  UNIQUE KEY `title` (`title`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -634,8 +637,8 @@ CREATE TABLE `cleanup` (
   `clean_on` tinyint(1) NOT NULL DEFAULT '1',
   `function_name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'docleanup',
   PRIMARY KEY (`clean_id`),
-  KEY `clean_time` (`clean_time`),
-  KEY `clean_file` (`clean_file`)
+  UNIQUE KEY `clean_file` (`clean_file`),
+  KEY `clean_time` (`clean_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2659,4 +2662,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-23 10:27:26
+-- Dump completed on 2018-12-23 12:04:52

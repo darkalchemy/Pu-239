@@ -76,6 +76,6 @@ $BLOCKS = [
 	'bluray_com_api_on' => 1,
 	'google_books_api_on' => 1,
 	'tvmaze_api_on' => 1,
-	'anidb_api_on' => 1,
+	'anime_api_on' => 1,
 	'submit' => 0,
 ];
