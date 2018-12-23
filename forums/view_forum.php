@@ -190,17 +190,43 @@ $menu_top = $pager['pagertop'];
 $menu_bottom = $pager['pagerbottom'];
 $LIMIT = $pager['limit'];
 
-$topic_res = sql_query('SELECT t.id AS id, t.user_id AS user_id, t.topic_name AS topic_name, t.locked AS locked, t.forum_id AS forum_id,
-			t.last_post AS last_post,t.sticky AS sticky, t.views AS views,t.poll_id AS poll_id,t.num_ratings AS num_ratings,
-			t.rating_sum AS rating_sum,t.topic_desc AS topic_desc,t.post_count AS post_count, t.first_post AS first_post,
-			t.status AS status,t.main_forum_id AS main_forum_id,t.anonymous AS anonymous, p.id AS post_id, p.added AS post_added,
-			p.topic_id AS post_topic_id
-				FROM topics AS t
-				LEFT JOIN posts AS p ON t.id = p.topic_id
-				WHERE  ' . ($CURUSER['class'] < UC_STAFF ? ' p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? ' p.status != \'deleted\'  AND' : '')) . '  forum_id=' . $forum_id . ' GROUP BY p.topic_id ORDER BY sticky, post_added DESC ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
+$query = $fluent->from('topics AS t')
+    ->select(null)
+    ->select('t.id')
+    ->select('t.user_id')
+    ->select('t.topic_name')
+    ->select('t.locked')
+    ->select('t.forum_id')
+    ->select('t.last_post')
+    ->select('t.sticky')
+    ->select('t.views')
+    ->select('t.poll_id')
+    ->select('t.num_ratings')
+    ->select('t.rating_sum')
+    ->select('t.topic_desc')
+    ->select('t.post_count')
+    ->select('t.first_post')
+    ->select('t.status')
+    ->select('t.main_forum_id')
+    ->select('t.anonymous')
+    ->select('p.id AS post_id')
+    ->select('p.added AS post_added')
+    ->select('p.topic_id AS post_topic_id')
+    ->leftJoin('posts AS p ON t.id = p.topic_id')
+    ->where('forum_id = ?', $forum_id);
+if ($CURUSER['class'] < UC_STAFF) {
+    $query = $query->where('p.status = "ok"');
+}
+if ($CURUSER['class'] < $min_delete_view_class) {
+    $query = $query->where('p.status != "deleted"');
+}
+$query = $query
+    ->orderBy('sticky, post_added DESC')
+    ->limit($pager['pdo'])
+    ->fetchAll();
 
 $topic_arrs = [];
-while ($topic = mysqli_fetch_assoc($topic_res)) {
+foreach ($query as $topic) {
     if (!empty($topic['post_id'])) {
         $topic_arrs[] = $topic;
     }
