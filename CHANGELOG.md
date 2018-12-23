@@ -1,4 +1,5 @@
 ### 23 Dec, 2018
+fix: bbcode editor youtube  
 fix: group by error view_forums.php  
 replace: AniDb Titles with Anime Titles  
 fix: initial user blocks setting for userdetails  
