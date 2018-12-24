@@ -54,18 +54,27 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     $cc = array_merge($aa, $bb);
     unset($aa, $bb);
     $HTMLOUT .= '<div class="has-text-centered margin20">';
+    $next = '
+            <div class="tabs is-centered is-small padtop10">
+                <ul>';
     $count = 0;
     foreach ($cc as $L) {
-        $next .= ($count === 10) ? '<br>' : '';
-        if (!strcmp($L, $letter)) {
-            $next .= ' <span style="font-weight: bold;">' . strtoupper($L) . '</span>';
-        } else {
-            $next .= ' <a class="altlink" href="forums.php?action=member_post_history&amp;letter=' . $L . '">' . strtoupper($L) . '</a>';
-        }
+        $next .= ($count === 10) ? '
+                </ul>
+            </div>
+            <div class="tabs is-centered is-small padtop10">
+                <ul>' : '';
+        $active = !empty($_GET['letter']) && $_GET['letter'] === strtoupper($L) ? " class='active'" : '';
+        $next .= "
+                    <li><a href='{$site_config['baseurl']}/forums.php?action=member_post_history&amp;letter=" . strtoupper($L) . "'{$active}>" . strtoupper($L) . '</a></li>';
         ++$count;
     }
-    $HTMLOUT .= $next . '</div>';
-    //=== get stuff for the pager
+    $value = !empty($_POST['article']) ? $_POST['article'] : '';
+    $HTMLOUT .= $next . "
+                </ul>
+            </div>";
+
+
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
     $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
     $res_count = sql_query('SELECT COUNT(id) FROM users WHERE ' . $query) or sqlerr(__FILE__, __LINE__);
