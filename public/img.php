@@ -20,8 +20,12 @@ function valid_path($root, $input)
 
 if (isset($_SERVER['REQUEST_URI'])) {
     $image = valid_path(BITBUCKET_DIR, substr($_SERVER['REQUEST_URI'], strlen($_SERVER['SCRIPT_NAME']) + 1));
-    if (!((($pi = pathinfo($image)) && preg_match('#^(jpg|jpeg|gif|png)$#i', $pi['extension'])) && $image && is_file($image))) {
-        die('^_^');
+    if (empty($image)) {
+        die();
+    }
+    $pi = @pathinfo($image);
+    if (empty($pi['extension']) || !preg_match('#^(jpg|jpeg|gif|png)$#i', $pi['extension'])) {
+        die();
     }
     $img['last_mod'] = filemtime($image);
     $img['date_fmt'] = 'D, d M Y H:i:s T';
