@@ -2758,10 +2758,10 @@ var ajaxChat = {
             return text.replace(/\[(?:\/)?(\w+)(?:=([^<>]*?))?\]/, '');
         }
         // Remove the BBCode tags:
-        return text.replace(
-            /\[(\w+)(?:=([^<>]*?))?\](.+?)\[\/\1\]/gm,
-            this.replaceBBCodeCallback
-        );
+        text = text.replace(/\[(\w+)(?:=([^<>]*?))?\](.+?)\[\/\1\]/gmu, this.replaceBBCodeCallback);
+        text = text.replace(/\[(\w+)(?:=([^<>]*?))?\](.+?)\[\/\1\]/gmu, this.replaceBBCodeCallback);
+        text = text.replace(/\[(\w+)(?:=([^<>]*?))?\](.+?)\[\/\1\]/gmu, this.replaceBBCodeCallback);
+        return text = text.replace(/\[(\w+)(?:=([^<>]*?))?\](.+?)\[\/\1\]/gmu, this.replaceBBCodeCallback);
     },
 
     replaceBBCodeCallback: function (str, p1, p2, p3) {
@@ -2896,10 +2896,7 @@ var ajaxChat = {
     replaceBBCodeImage: function (url) {
         var regExpUrl, maxWidth, maxHeight, link;
         if (this.settings['bbCodeImages']) {
-            regExpUrl = new RegExp(
-                this.regExpMediaUrl,
-                ''
-            );
+            regExpUrl = new RegExp(this.regExpMediaUrl, '');
             if (!url || !url.match(regExpUrl)) {
                 return url;
             }

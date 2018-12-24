@@ -1,4 +1,5 @@
 ### 24 Dec, 2018
+fix: multiple image issue in AJAX Chat  
 fix: missing closing div  
 update: member_post_history.php  
 

@@ -3236,15 +3236,13 @@ class AJAXChat
                 LIMIT ' . $this->getConfig('requestMessagesLimit') . ';';
 
         $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-
         $messages = '';
 
         while ($row = mysqli_fetch_array($result)) {
-            preg_match_all('/\[img\](.*)\[\/img\]/s', $row['text'], $matches);
+            preg_match_all('/\[img\](.+?)\[\/img\]/s', $row['text'], $matches);
             foreach ($matches[1] as $match) {
                 $row['text'] = str_replace($match, str_replace($this->_siteConfig['pic_baseurl'], $this->_siteConfig['pic_baseurl_chat'], url_proxy($match, true)), $row['text']);
             }
-
             $message = $this->getChatViewMessageXML($row['id'], $row['timeStamp'], $row['userID'], $row['userName'], $row['userRole'], $row['channelID'], $row['text']);
             $messages = $message . $messages;
         }
