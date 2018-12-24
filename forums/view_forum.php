@@ -220,10 +220,7 @@ if ($CURUSER['class'] < UC_STAFF) {
 if ($CURUSER['class'] < $min_delete_view_class) {
     $query = $query->where('p.status != "deleted"');
 }
-$query = $query
-    ->groupBy('t.id')
-    ->groupBy('post_id')
-    ->orderBy('sticky, post_added DESC')
+$query = $query->orderBy('sticky, post_added DESC')
     ->limit($pager['pdo'])
     ->fetchAll();
 

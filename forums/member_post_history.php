@@ -32,29 +32,33 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         $query .= ' AND class = ' . sqlesc($class);
         $q .= ($q ? '&amp;' : '') . 'class = ' . $class;
     }
-    $HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">' . $lang['fmp_search_members'] . '</h1>
-            <div class="has-text-centered">
+    $HTMLOUT .= $mini_menu . '
+		<h1 class="has-text-centered">' . $lang['fmp_search_members'] . '</h1>
+		<div class="has-text-centered">
 			<form method="get" action="forums.php?">
-			<input type="hidden" value="member_post_history" name="action">
-			<input type="text" size="30" name="search" value="' . $search . '">
-			<select name="class">
-			<option value="-">(' . $lang['fmp_any_class'] . ')</option>';
-    for ($i = 0;; ++$i) {
+				<input type="hidden" value="member_post_history" name="action">
+				<input type="text" size="30" name="search" value="' . $search . '">
+				<select name="class">
+					<option value="-">(' . $lang['fmp_any_class'] . ')</option>';
+	for ($i = 0;; ++$i) {
         if ($c = get_user_class_name($i)) {
-            $option .= '<option value="' . $i . '"' . (ctype_digit($class) && $class == $i ? ' selected="selected"' : '') . '>' . $c . '</option>';
+            $option .= '
+					<option value="' . $i . '"' . (ctype_digit($class) && $class == $i ? ' selected="selected"' : '') . '>' . $c . '</option>';
         } else {
             break;
         }
     }
-    $HTMLOUT .= $option . '</select>
-	 <input type="submit" class="button is-small" value="' . $lang['gl_search'] . '" >
-	 </form></div>';
+    $HTMLOUT .= $option . '
+				</select>
+				<input type="submit" class="button is-small" value="' . $lang['gl_search'] . '" >
+			</form>
+		</div>';
     $aa = range('0', '9');
     $bb = range('a', 'z');
     $cc = array_merge($aa, $bb);
     unset($aa, $bb);
-    $HTMLOUT .= '<div class="has-text-centered margin20">';
     $next = '
+		<div class="has-text-centered margin20">
             <div class="tabs is-centered is-small padtop10">
                 <ul>';
     $count = 0;
@@ -66,13 +70,16 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
                 <ul>' : '';
         $active = !empty($_GET['letter']) && $_GET['letter'] === strtoupper($L) ? " class='active'" : '';
         $next .= "
-                    <li><a href='{$site_config['baseurl']}/forums.php?action=member_post_history&amp;letter=" . strtoupper($L) . "'{$active}>" . strtoupper($L) . '</a></li>';
+                    <li>
+						<a href='{$site_config['baseurl']}/forums.php?action=member_post_history&amp;letter=" . strtoupper($L) . "'{$active}>" . strtoupper($L) . '</a>
+					</li>';
         ++$count;
     }
     $value = !empty($_POST['article']) ? $_POST['article'] : '';
     $HTMLOUT .= $next . "
                 </ul>
-            </div>";
+            </div>
+        </div>";
 
 
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
@@ -89,36 +96,39 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     $HTMLOUT .= ($count > $perpage ? $menu_top : '');
     if ($arr_count[0] > 0) {
         $res = sql_query('SELECT u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.added, u.last_access, u.perms, c.name, c.flagpic FROM users AS u FORCE INDEX (username) LEFT JOIN countries AS c ON u.country = c.id WHERE ' . $query . ' ORDER BY u.username ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
-        $HTMLOUT .= '<table class="table table-bordered table-striped">
-			<tr><td align="left">' . $lang['fmp_member'] . '</td>
-			<td>' . $lang['fmp_registered'] . '</td>
-			<td>' . $lang['fmp_last_access'] . '</td>
-			<td align="left">' . $lang['fmp_class'] . '</td>
-			<td>' . $lang['fmp_country'] . '</td>
-			<td>' . $lang['fe_view'] . '</td></tr>';
+        $heading = '
+			<tr>
+				<th>' . $lang['fmp_member'] . '</th>
+				<th>' . $lang['fmp_registered'] . '</th>
+				<th>' . $lang['fmp_last_access'] . '</th>
+				<th>' . $lang['fmp_class'] . '</th>
+				<th>' . $lang['fmp_country'] . '</th>
+				<th>' . $lang['fe_view'] . '</th>
+			</tr>';
+		$body = '';
         while ($row = mysqli_fetch_assoc($res)) {
-            $country = ($row['name'] != null) ? '<td><img src="' . $site_config['pic_baseurl'] . 'flag/' . $row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" class="emoticon"></td>' : '<td>---</td>';
-            $HTMLOUT .= '<tr>
-   <td>' . format_username($row['id']) . '</td>
-	<td>' . get_date($row['added'], '') . '</td>
-	<td>' . ($row['perms'] < bt_options::PERMS_STEALTH ? get_date($row['last_access'], '') : 'Never') . '</td>
-	<td>' . get_user_class_name($row['class']) . '</td>
-	' . $country . '
-   <td><a href="forums.php?action=member_post_history&amp;id=' . (int) $row['id'] . '" title="see this members post history" class="altlink">' . $lang['fe_post_history'] . '</a></td>
-	</tr>';
+            $country = ($row['name'] != null) ? '<img src="' . $site_config['pic_baseurl'] . 'flag/' . $row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" class="emoticon">' : '---';
+            $body .= '
+			<tr>
+				<td>' . format_username($row['id']) . '</td>
+				<td>' . get_date($row['added'], '') . '</td>
+				<td>' . ($row['perms'] < bt_options::PERMS_STEALTH ? get_date($row['last_access'], '') : 'Never') . '</td>
+				<td>' . get_user_class_name($row['class']) . '</td>
+				<td>' . $country . '</td>
+				<td>
+					<a href="' . $site_config['baseurl'] . '/forums.php?action=member_post_history&amp;id=' . (int) $row['id'] . '" title="see this members post history" class="altlink">' . $lang['fe_post_history'] . '</a>
+				</td>
+			</tr>';
         }
-        $HTMLOUT .= '</table>';
+        $HTMLOUT .= main_table($body, $heading);
     } else {
-        $HTMLOUT .= $lang['vph_sorry_no_mem_found'];
+        $HTMLOUT .= main_div('<div class="padding20">' . $lang['vph_sorry_no_mem_found'] . '</div>');
     }
     $HTMLOUT .= ($count > $perpage ? $menu_bottom : '');
-//echo stdhead() . $HTMLOUT . stdfoot();
-    //die();
 } else {
     $res_count = sql_query('SELECT COUNT(p.id) AS count FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON f.id = t.forum_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' p.user_id = ' . sqlesc($member_id) . ' AND f.min_class_read <= ' . $CURUSER['class']) or sqlerr(__FILE__, __LINE__);
     $arr_count = mysqli_fetch_row($res_count);
     $count = $arr_count[0];
-    //=== get stuff for the pager
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
     $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
     $subscription_on_off = (isset($_GET['s']) ? (1 == $_GET['s'] ? '<br><div style="font-weight: bold;">' . $lang['fe_sub_to_topic'] . ' <img src="' . $site_config['pic_baseurl'] . 'forums/subscribe.gif" alt="" class="emoticon"></div>' : '<br><div style="font-weight: bold;">' . $lang['fe_unsub_to_topic'] . ' <img src="' . $site_config['pic_baseurl'] . 'forums/unsubscribe.gif" alt="" class="emoticon"></div>') : '');
@@ -129,7 +139,6 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     $LIMIT = $pager['limit'];
 
     $res = sql_query('SELECT p.id AS post_id, p.topic_id, p.user_id, p.added, p.body, p.edited_by, p.edit_date, p.icon, p.post_title, p.bbcode, p.post_history, p.edit_reason, p.ip, p.status AS post_status, p.anonymous, t.id AS topic_id, t.topic_name, t.forum_id, t.sticky, t.locked, t.poll_id, t.status AS topic_status, f.name AS forum_name, f.description FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON f.id = t.forum_id WHERE  ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' p.user_id = ' . sqlesc($member_id) . ' AND f.min_class_read <= ' . $CURUSER['class'] . ' ORDER BY p.id ' . $ASC_DESC . $LIMIT) or sqlerr(__FILE__, __LINE__);
-    //== get user info
     if ($count == 0) {
         stderr($lang['gl_sorry'], (!empty($member_id) ? format_username($member_id) . ' ' . $lang['vmp_has_no_posts_look'] . '!' : $lang['fe_no_mem_with_id']));
     }
@@ -144,7 +153,6 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
             </ul>';
 
     $HTMLOUT .= ($count > $perpage ? $menu_top : '') . '<a id="top"></a>';
-    //=== lets start the loop \o/
     while ($arr = mysqli_fetch_assoc($res)) {
         $topic_status = htmlsafechars($arr['topic_status']);
         switch ($topic_status) {

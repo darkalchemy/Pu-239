@@ -1,4 +1,5 @@
 ### 24 Dec, 2018
+fix: missing closing div  
 update: member_post_history.php  
 
 ### 23 Dec, 2018
