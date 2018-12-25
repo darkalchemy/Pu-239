@@ -1,3 +1,8 @@
+### 25 Dec, 2018
+fix: gift cleanup  
+fix: seedtime cleanup  
+fix: anime_title_update.php  
+
 ### 24 Dec, 2018
 fix: check for empty results before evaluating them  
 fix: multiple image issue in AJAX Chat  

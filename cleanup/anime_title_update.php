@@ -23,13 +23,13 @@ function anime_titles_update($data)
     $values = [];
     $types = ['TV', 'Movie', 'OVA', 'ONA', 'Special', 'Music'];
     if (!empty($anime_data)) {
-        foreach ($anime_data['data'] as $data) {
-            if (!empty($data['title'])) {
-                $titles['title'] = trim(preg_replace('/\s+/', ' ' , $data['title']));
-                $titles['image'] = !empty($data['picture']) ? trim($data['picture']) : '';
-                $titles['type'] = !empty($data['type']) && in_array($data['type'], $types) ? $data['type'] : '';
+        foreach ($anime_data['data'] as $anime_data) {
+            if (!empty($anime_data['title'])) {
+                $titles['title'] = trim(preg_replace('/\s+/', ' ' , $anime_data['title']));
+                $titles['image'] = !empty($anime_data['picture']) ? trim($anime_data['picture']) : '';
+                $titles['type'] = !empty($anime_data['type']) && in_array($anime_data['type'], $types) ? $anime_data['type'] : '';
                 $titles['anilist_id'] = $titles['anidb_id'] = $titles['kitsu_id'] = $titles['myanimelist_id'] = 0;
-                foreach ($data['sources'] as $source) {
+                foreach ($anime_data['sources'] as $source) {
                     preg_match("/https?:\/\/anilist.co\/anime\/(\d+)/", $source, $anilist);
                     if (!empty($anilist[1])) {
                         $titles['anilist_id'] = $anilist[1];

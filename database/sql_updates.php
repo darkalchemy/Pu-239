@@ -1775,4 +1775,11 @@ CREATE TABLE `categories` (
         'query' => 'ALTER TABLE `cleanup` DROP INDEX `clean_file`, ADD CONSTRAINT UNIQUE `clean_file` (`clean_file`)',
         'flush' => false,
     ],
+    [
+        'id' => 1545747965,
+        'info' => 'Change gift cleanup to run daily',
+        'date' => '25 Dec, 2018',
+        'query' => "UPDATE `cleanup` SET `clean_time` = 1545696000, `clean_increment` = 86400 WHERE `clean_file` = 'gift_update.php'",
+        'flush' => false,
+    ],
 ];
