@@ -1,4 +1,5 @@
 ### 26 Dec, 2018
+remove: original blocks folder  
 fix: check is server can send email before attemptinf to send email  
 
 ### 25 Dec, 2018
