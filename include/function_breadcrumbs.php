@@ -275,6 +275,10 @@ function get_actionpage($lang, $queries, $path)
         'search_imdb',
         'search_isbn',
         'images',
+        'search_year_start',
+        'search_year_end',
+        'search_rating_start',
+        'search_rating_end',
     ];
 
     if (in_array($list[0], $ignore) || $list[1] === 'bugs' || preg_match('/c\d+/', $list[0])) {

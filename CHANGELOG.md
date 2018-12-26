@@ -1,4 +1,5 @@
 ### 26 Dec, 2018
+update: breadcrumbs  
 remove: unneeded line breaks  
 update: tooltipster  
 move: IMDb cache to /dev/shm  
