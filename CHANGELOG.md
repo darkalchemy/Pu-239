@@ -1,4 +1,5 @@
 ### 26 Dec, 2018
+remove: unneeded line breaks  
 update: tooltipster  
 move: IMDb cache to /dev/shm  
 fix: ignore send mail error  
