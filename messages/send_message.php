@@ -73,7 +73,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
         'urgent' => $urgent,
     ];
     $message_stuffs->insert($msgs_buffer);
-    if (function_exists('mail') && strpos($arr_receiver['notifs'], '[pm]') !== false) {
+    if (strpos($arr_receiver['notifs'], '[pm]') !== false) {
         $username = htmlsafechars($CURUSER['username']);
         $title = $site_config['site_name'];
         $msg = doc_head() . "
@@ -97,7 +97,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
 
         $mailer = new SendmailMailer();
         $mailer->commandArgs = "-f{$site_config['site_email']}";
-        $mailer->send($mail);
+        @$mailer->send($mail);
     }
     if ($delete != 0) {
         $message = $message_stuffs->get_by_id($delete);

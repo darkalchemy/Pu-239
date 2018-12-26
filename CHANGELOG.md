@@ -1,4 +1,5 @@
 ### 26 Dec, 2018
+fix: ignore send mail error  
 update: IMDb PHP  
 remove: original blocks folder  
 fix: check is server can send email before attemptinf to send email  
