@@ -73,7 +73,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
         'urgent' => $urgent,
     ];
     $message_stuffs->insert($msgs_buffer);
-    if (strpos($arr_receiver['notifs'], '[pm]') !== false) {
+    if (function_exists('mail') && strpos($arr_receiver['notifs'], '[pm]') !== false) {
         $username = htmlsafechars($CURUSER['username']);
         $title = $site_config['site_name'];
         $msg = doc_head() . "
