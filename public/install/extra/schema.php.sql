@@ -1122,6 +1122,39 @@ CREATE TABLE `images` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `imdb_info`
+--
+
+DROP TABLE IF EXISTS `imdb_info`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `imdb_info` (
+  `imdb_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `plot` longtext COLLATE utf8mb4_unicode_ci,
+  `runtime` smallint(5) unsigned DEFAULT '0',
+  `updated` int(10) unsigned DEFAULT '0',
+  PRIMARY KEY (`imdb_id`),
+  KEY `updated` (`updated`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `imdb_person`
+--
+
+DROP TABLE IF EXISTS `imdb_person`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `imdb_person` (
+  `imdb_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `person_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`imdb_id`),
+  UNIQUE KEY `id_person` (`imdb_id`,`person_id`),
+  KEY `person_id` (`person_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `infolog`
 --
 
@@ -1483,6 +1516,30 @@ CREATE TABLE `peers` (
   KEY `peer_id` (`peer_id`),
   CONSTRAINT `peers_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `peers_ibfk_2` FOREIGN KEY (`torrent`) REFERENCES `torrents` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `person`
+--
+
+DROP TABLE IF EXISTS `person`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `person` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `realname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bio` longtext COLLATE utf8mb4_unicode_ci,
+  `birthday` datetime DEFAULT NULL,
+  `died` datetime DEFAULT NULL,
+  `birth_place` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imdb_id` char(7) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `photo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated` int(10) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `updated` (`updated`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2662,4 +2719,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-23 12:04:52
+-- Dump completed on 2018-12-26 12:04:48

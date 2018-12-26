@@ -5,33 +5,40 @@ global $lang, $site_config, $fluent, $cache, $CURUSER;
 
 $comments = $cache->get('latest_comments_');
 if ($comments === false || is_null($comments)) {
-    $comments = $fluent->from('comments')
+    $comments = $fluent->from('comments AS c')
         ->select(null)
-        ->select('comments.id AS comment_id')
-        ->select('comments.user')
-        ->select('comments.torrent AS id')
-        ->select('comments.added')
-        ->select('comments.text')
-        ->select('comments.anonymous')
-        ->select('comments.user_likes')
-        ->select('torrents.name')
-        ->select('torrents.seeders')
-        ->select('torrents.leechers')
-        ->select('torrents.poster')
-        ->select('torrents.added AS toradd')
-        ->select('torrents.size')
-        ->select('torrents.imdb_id')
-        ->select('torrents.owner')
-        ->select('torrents.times_completed')
-        ->select('users.username')
-        ->select('users.class')
-        ->select('torrents:categories.name AS cat')
-        ->select('torrents:categories.image')
-        ->innerJoin('torrents ON torrents.id = comments.torrent')
-        ->leftJoin('users ON users.id = comments.user')
-        ->leftJoin('categories ON categories.id = torrents.category')
-        ->where('torrent > 0')
-        ->orderBy('comments.id DESC')
+        ->select('c.id AS comment_id')
+        ->select('c.user')
+        ->select('c.torrent AS id')
+        ->select('c.added')
+        ->select('c.text')
+        ->select('c.anonymous')
+        ->select('c.user_likes')
+        ->select('t.id')
+        ->select('t.added')
+        ->select('t.seeders')
+        ->select('t.leechers')
+        ->select('t.name')
+        ->select('t.size')
+        ->select('t.poster')
+        ->select('t.anonymous')
+        ->select('t.owner')
+        ->select('t.imdb_id')
+        ->select('t.times_completed')
+        ->select('t.rating')
+        ->select('t.year')
+        ->select('t.subs AS subtitles')
+        ->select('u.username')
+        ->select('u.class')
+        ->select('p.name AS parent_name')
+        ->select('s.name AS cat')
+        ->select('s.image')
+        ->innerJoin('torrents AS t ON t.id = c.torrent')
+        ->leftJoin('users AS u ON u.id = c.user')
+        ->leftJoin('categories AS s ON t.category = s.id')
+        ->leftJoin('categories AS p ON s.parent_id = p.id')
+        ->where('c.torrent > 0')
+        ->orderBy('c.id DESC')
         ->limit(5)
         ->fetchAll();
     $cache->set('latest_comments_', $comments, $site_config['expires']['latestcomments']);
@@ -55,6 +62,7 @@ $posted_comments .= "
 
 foreach ($comments as $comment) {
     $text = $owner = $user = $id = $comment_id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = $times_completed = '';
+    $subtitles = $year = $rating = $owner = $anonymous = $name = $added = $class = $cat = $image = '';
     extract($comment);
     $torrname = htmlsafechars($name);
     $user = $anonymous === 'yes' ? 'Anonymous' : format_username($user);
@@ -78,7 +86,7 @@ foreach ($comments as $comment) {
                             </td>
                             <td>";
     $block_id = "comment_id_{$comment_id}";
-    $posted_comments .= torrent_tooltip(format_comment($text));
+    $posted_comments .= torrent_tooltip(format_comment($text), $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
     $posted_comments .= "
                             <td class='has-text-centered'>$user</td>
                             <td class='has-text-centered'>" . get_date($added, 'LONG') . "</td>

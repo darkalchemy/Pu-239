@@ -28,7 +28,7 @@ function images_update()
 
     set_time_limit(12000);
     ignore_user_abort(true);
-    $cache->set('images_update_', 'running', 3600);
+    $cache->set('images_update_', 'running', 7200);
 
     get_upcoming();
     get_movies_in_theaters();
@@ -44,26 +44,35 @@ function images_update()
     get_tv_by_day($tomorrow);
 
     $ids = [];
+
+    $ids_checked = $cache->get('ids_checked_');
+    if ($ids_checked === false || is_null($ids_checked)) {
+        $ids_checked = [];
+    }
     $imdb_ids = $fluent->from('images')
         ->select(null)
-        ->select('imdb_id AS vid')
+        ->select('DISTINCT imdb_id AS vid')
         ->where('imdb_id IS NOT NULL')
+        ->where('tmdb_id = 0')
         ->fetchAll();
 
     $tmdb_ids = $fluent->from('images')
         ->select(null)
-        ->select('tmdb_id AS vid')
+        ->select('DISTINCT tmdb_id AS vid')
         ->where('tmdb_id > 0')
+        ->where('imdb_id IS NULL')
         ->fetchAll();
 
     $ids = array_merge($imdb_ids, $tmdb_ids);
-
     foreach ($ids as $id) {
-        getMovieImagesByID($id['vid'], 'moviebackground');
-        getMovieImagesByID($id['vid'], 'movieposter');
-        getMovieImagesByID($id['vid'], 'moviebanner');
+        if (!in_array($id['vid'], $ids_checked)) {
+            getMovieImagesByID($id['vid'], 'moviebackground');
+            getMovieImagesByID($id['vid'], 'movieposter');
+            getMovieImagesByID($id['vid'], 'moviebanner');
+            $ids_checked[] = $id['vid'];
+        }
     }
-
+    $cache->set('ids_checked_', $ids_checked, 604800);
     $links = $fluent->from('torrents')
         ->select(null)
         ->select('name')
@@ -186,6 +195,19 @@ function images_update()
             'fetched' => 'yes',
         ];
         $image_stuffs->update($values, $update);
+    }
+
+    $persons = $fluent->from('person')
+        ->select(null)
+        ->select('imdb_id')
+        ->select('updated')
+        ->where('updated + 604800 < ?', TIME_NOW)
+//        ->limit(50)
+        ->fetchAll();
+
+dd($persons);
+    foreach ($persons as $person) {
+        get_imdb_person($person['imdb_id']);
     }
 
     $cache->delete('backgrounds_');

@@ -2,33 +2,47 @@
 
 global $site_config, $lang, $fluent, $CURUSER, $cache;
 
-$slider_torrents = $cache->get('slider_torrents_');
-if ($slider_torrents === false || is_null($slider_torrents)) {
-    $slider_torrents = $fluent->from('torrents')
+$torrents = $cache->get('slider_torrents_');
+if ($torrents === false || is_null($torrents)) {
+    $torrents = $fluent->from('torrents AS t')
         ->select(null)
-        ->select('torrents.id')
-        ->select('torrents.added')
-        ->select('torrents.seeders')
-        ->select('torrents.leechers')
-        ->select('torrents.name')
-        ->select('torrents.size')
-        ->select('torrents.poster')
-        ->select('torrents.anonymous')
-        ->select('torrents.owner')
-        ->select('torrents.imdb_id')
-        ->select('torrents.times_completed')
-        ->select('users.username')
-        ->select('users.class')
-        ->where('imdb_id IS NOT NULL')
-        ->leftJoin('users ON torrents.owner = users.id')
+        ->select('t.id')
+        ->select('t.added')
+        ->select('t.seeders')
+        ->select('t.leechers')
+        ->select('t.name')
+        ->select('t.size')
+        ->select('t.poster')
+        ->select('t.anonymous')
+        ->select('t.owner')
+        ->select('t.imdb_id')
+        ->select('t.times_completed')
+        ->select('t.rating')
+        ->select('t.year')
+        ->select('t.subs AS subtitles')
+        ->select('u.username')
+        ->select('u.class')
+        ->select('p.name AS parent_name')
+        ->select('c.name AS cat')
+        ->select('c.image')
+        ->leftJoin('users AS u ON t.owner = u.id')
+        ->leftJoin('categories AS c ON t.category = c.id')
+        ->leftJoin('categories AS p ON c.parent_id = p.id')
+        ->where('t.imdb_id IS NOT NULL')
+        ->orderBy('t.added DESC')
         ->limit(100)
-        ->orderBy('torrents.added DESC')
         ->fetchAll();
 
-    $cache->set('slider_torrents_', $slider_torrents, $site_config['expires']['slider_torrents']);
+    foreach ($torrents as $torrent) {
+        if (!empty($torrent['parent_name'])) {
+            $torrent['cat'] = $torrent['parent_name'] . '::' . $torrent['cat'];
+        }
+        $top5torrents[] = $torrent;
+    }
+    $cache->set('slider_torrents_', $torrents, $site_config['expires']['slider_torrents']);
 }
 
-foreach ($slider_torrents as $torrent) {
+foreach ($torrents as $torrent) {
     if (empty($torrent['poster']) && !empty($torrent['imdb_id'])) {
         $images = $cache->get('posters_' . $torrent['imdb_id']);
         if ($images === false || is_null($images)) {
@@ -85,7 +99,7 @@ if (!empty($sliding_torrents)) {
                 <ul class='slides'>";
     $i = 0;
     foreach ($sliding_torrents as $slider_torrent) {
-        $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
+        $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
         extract($slider_torrent);
         $i = $site_config['latest_torrents_limit_slider'];
 
@@ -102,7 +116,7 @@ if (!empty($sliding_torrents)) {
                     <li>';
         $torrname = "<img $src>";
         $block_id = "slider_id_{$id}";
-        $slider .= torrent_tooltip($torrname);
+        $slider .= torrent_tooltip($torrname, $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
         $slider .= '
                     </li>';
     }

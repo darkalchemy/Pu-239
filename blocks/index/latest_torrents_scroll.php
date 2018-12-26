@@ -2,32 +2,48 @@
 
 global $site_config, $lang, $fluent, $CURUSER, $cache;
 
-$scroll_torrents = $cache->get('scroll_tor_');
-if ($scroll_torrents === false || is_null($scroll_torrents)) {
-    $scroll_torrents = $fluent->from('torrents')
+$torrents = $cache->get('scroll_tor_');
+if ($torrents === false || is_null($torrents)) {
+    $torrents = $fluent->from('torrents AS t')
         ->select(null)
-        ->select('torrents.id')
-        ->select('torrents.added')
-        ->select('torrents.seeders')
-        ->select('torrents.leechers')
-        ->select('torrents.name')
-        ->select('torrents.size')
-        ->select('torrents.poster')
-        ->select('torrents.anonymous')
-        ->select('torrents.owner')
-        ->select('torrents.imdb_id')
-        ->select('torrents.times_completed')
-        ->select('users.username')
-        ->select('users.class')
-        ->leftJoin('users ON torrents.owner = users.id')
-        ->orderBy('torrents.added DESC')
+        ->select('t.id')
+        ->select('t.added')
+        ->select('t.seeders')
+        ->select('t.leechers')
+        ->select('t.name')
+        ->select('t.size')
+        ->select('t.poster')
+        ->select('t.anonymous')
+        ->select('t.owner')
+        ->select('t.imdb_id')
+        ->select('t.times_completed')
+        ->select('t.rating')
+        ->select('t.year')
+        ->select('t.subs AS subtitles')
+        ->select('u.username')
+        ->select('u.class')
+        ->select('p.name AS parent_name')
+        ->select('c.name AS cat')
+        ->select('c.image')
+        ->leftJoin('users AS u ON t.owner = u.id')
+        ->leftJoin('categories AS c ON t.category = c.id')
+        ->leftJoin('categories AS p ON c.parent_id = p.id')
+        ->where('t.imdb_id IS NOT NULL')
+        ->orderBy('t.added DESC')
         ->limit(100)
         ->fetchAll();
 
-    $cache->set('scroll_tor_', $scroll_torrents, $site_config['expires']['scroll_torrents']);
+    foreach ($torrents as $torrent) {
+        if (!empty($torrent['parent_name'])) {
+            $torrent['cat'] = $torrent['parent_name'] . '::' . $torrent['cat'];
+        }
+        $top5torrents[] = $torrent;
+    }
+
+    $cache->set('scroll_tor_', $torrents, $site_config['expires']['scroll_torrents']);
 }
 
-foreach ($scroll_torrents as $torrent) {
+foreach ($torrents as $torrent) {
     if (empty($torrent['poster']) && !empty($torrent['imdb_id'])) {
         $images = $cache->get('posters_' . $torrent['imdb_id']);
         if ($images === false || is_null($images)) {
@@ -63,7 +79,7 @@ if (!empty($scroller_torrents)) {
                 <div id='icarousel' class='icarousel'>";
 
     foreach ($scroller_torrents as $scroll_torrent) {
-        $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
+        $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
         extract($scroll_torrent);
         $i = $site_config['latest_torrents_limit_scroll'];
 
@@ -79,7 +95,7 @@ if (!empty($scroller_torrents)) {
                     <div class='slide'>";
         $torrname = "<img src='" . url_proxy($scroll_poster, true, null, 300) . "' alt='{$name}' style='width: auto; height: 300px; max-height: 300px;'>";
         $block_id = "scroll_id_{$id}";
-        $torrents_scroller .= torrent_tooltip($torrname);
+        $torrents_scroller .= torrent_tooltip($torrname, $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
         $torrents_scroller .= '
                     </div>';
     }

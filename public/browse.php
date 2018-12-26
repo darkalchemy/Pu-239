@@ -24,8 +24,13 @@ if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
 $count = $fluent->from('torrents AS t')
     ->select(null)
     ->select('COUNT(*) AS count');
+    
+$select = $fluent->from('torrents AS t')
+    ->select('u.username')
+    ->select('u.class')
+    ->leftJoin('users AS u ON t.owner = u.id');
 
-$select = $fluent->from('torrents AS t');
+    
 $HTMLOUT = $addparam = $new_button = $title = '';
 $stdfoot = [
     'js' => [
@@ -169,10 +174,8 @@ foreach ($valid_search as $search) {
             $count = $count->where('MATCH (newgenre) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
             $select = $select->where('MATCH (newgenre) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
         } elseif ($search === 'search_owner') {
-            $count = $count->where('u.username = ?', $cleaned)
-                ->leftJoin('users AS u ON t.owner = u.id');
-            $select = $select->where('u.username = ?', $cleaned)
-                ->leftJoin('users AS u ON t.owner = u.id');
+            $count = $count->where('u.username = ?', $cleaned);
+            $select = $select->where('u.username = ?', $cleaned);
         } elseif ($search === 'search_year_start') {
             $count = $count->where('t.year >= ?', (int) $cleaned);
             $select = $select->where('t.year >= ?', (int) $cleaned);

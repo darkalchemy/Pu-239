@@ -24,7 +24,7 @@ function get_file_name($file)
         case 'jquery_js':
             return "{$site_config['baseurl']}/js/1/jquery_acaf7162.js";
         case 'chat_main_js':
-            return "{$site_config['baseurl']}/js/1/chat_main_0b4dc4c4.js";
+            return "{$site_config['baseurl']}/js/1/chat_main_cf3c56a2.js";
         case 'chat_js':
             return "{$site_config['baseurl']}/js/1/chat_8497c973.js";
         case 'chat_log_js':
@@ -58,7 +58,7 @@ function get_file_name($file)
         case 'lightbox_js':
             return "{$site_config['baseurl']}/js/1/lightbox_b0c4a917.js";
         case 'tooltipster_js':
-            return "{$site_config['baseurl']}/js/1/tooltipster_2036da1c.js";
+            return "{$site_config['baseurl']}/js/1/tooltipster_7883a611.js";
         case 'checkport_js':
             return "{$site_config['baseurl']}/js/1/checkport_a540ce2b.js";
         case 'check_username_js':

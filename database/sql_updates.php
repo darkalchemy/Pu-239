@@ -1782,4 +1782,54 @@ CREATE TABLE `categories` (
         'query' => "UPDATE `cleanup` SET `clean_time` = 1545696000, `clean_increment` = 86400 WHERE `clean_file` = 'gift_update.php'",
         'flush' => false,
     ],
+    [
+        'id' => 1545843307,
+        'info' => 'Add person table',
+        'date' => '26 Dec, 2018',
+        'query' => "CREATE TABLE `person` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `realname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bio` longtext COLLATE utf8mb4_unicode_ci,
+  `birthday` datetime DEFAULT NULL,
+  `died` datetime DEFAULT NULL,
+  `birth_place` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imdb_id` char(7) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `photo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated` int(10) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `updated` (`updated`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;",
+        'flush' => false,
+    ],
+    [
+        'id' => 1545843308,
+        'info' => 'Add imdb_person table',
+        'date' => '26 Dec, 2018',
+        'query' => "CREATE TABLE `imdb_person` (
+  `imdb_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `person_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`imdb_id`),
+  KEY (`person_id`),
+  UNIQUE KEY `id_person` (`imdb_id`, `person_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;",
+        'flush' => false,
+    ],
+    [
+        'id' => 1545843309,
+        'info' => 'Add imdb_info table',
+        'date' => '26 Dec, 2018',
+        'query' => "
+CREATE TABLE `imdb_info` (
+  `imdb_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `plot` longtext COLLATE utf8mb4_unicode_ci,
+  `runtime` smallint(5) unsigned DEFAULT '0',
+  `updated` int(10) unsigned DEFAULT '0',
+  PRIMARY KEY (`imdb_id`),
+  KEY `updated` (`updated`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;",
+        'flush' => false,
+    ],
 ];
+

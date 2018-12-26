@@ -5,29 +5,33 @@ global $lang, $site_config, $fluent, $CURUSER, $cache;
 $motw = $cache->get('motw_');
 if ($motw === false || is_null($motw)) {
     $motw = [];
-    $torrents = $fluent->from('torrents')
+    $torrents = $fluent->from('torrents AS t')
         ->select(null)
-        ->select('torrents.id')
-        ->select('torrents.added')
-        ->select('torrents.seeders')
-        ->select('torrents.leechers')
-        ->select('torrents.name')
-        ->select('torrents.size')
-        ->select('torrents.poster')
-        ->select('torrents.anonymous')
-        ->select('torrents.owner')
-        ->select('torrents.imdb_id')
-        ->select('torrents.times_completed')
-        ->leftJoin('users ON torrents.owner = users.id')
-        ->select('users.username')
-        ->select('users.class')
-        ->leftJoin('categories ON torrents.category = categories.id')
+        ->select('t.id')
+        ->select('t.added')
+        ->select('t.seeders')
+        ->select('t.leechers')
+        ->select('t.name')
+        ->select('t.size')
+        ->select('t.poster')
+        ->select('t.anonymous')
+        ->select('t.owner')
+        ->select('t.imdb_id')
+        ->select('t.times_completed')
+        ->select('t.rating')
+        ->select('t.year')
+        ->select('t.subs AS subtitles')
+        ->select('u.username')
+        ->select('u.class')
         ->select('p.name AS parent_name')
-        ->leftJoin('categories AS p ON categories.parent_id = p.id')
-        ->select('categories.name AS cat')
-        ->select('categories.image')
-        ->leftJoin('avps ON torrents.id = avps.value_u')
-        ->where('avps.arg', 'bestfilmofweek');
+        ->select('c.name AS cat')
+        ->select('c.image')
+        ->leftJoin('users AS u ON t.owner = u.id')
+        ->leftJoin('categories AS c ON t.category = c.id')
+        ->leftJoin('categories AS p ON c.parent_id = p.id')
+        ->leftJoin('avps AS a ON t.id = a.value_u')
+        ->orderBy('t.seeders + t.leechers DESC')
+        ->where('a.arg', 'bestfilmofweek');
 
     foreach ($torrents as $torrent) {
         if (!empty($torrent['parent_name'])) {
@@ -57,7 +61,7 @@ $torrents_mow .= "
                     <tbody>";
 
 foreach ($motw as $m_w) {
-    $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
+    $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
     extract($m_w);
     if (empty($poster) && !empty($imdb_id)) {
         $poster = find_images($imdb_id);
@@ -71,7 +75,7 @@ foreach ($motw as $m_w) {
     }
 
     $block_id = "mow_id_{$id}";
-    $torrents_mow .= torrent_tooltip_wrapper(htmlsafechars($name));
+    $torrents_mow .= torrent_tooltip_wrapper(htmlsafechars($name), $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
 }
 
 if (count($motw) === 0) {

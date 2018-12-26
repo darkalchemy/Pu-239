@@ -35,15 +35,16 @@ function readMore($text, $char, $link)
 function torrenttable($res, $variant = 'index')
 {
     $htmlout = $prevdate = $nuked = $free_slot = $free_color = $slots_check = $double_slot = $private = '';
-    $Subs = $subs = '';
     $link1 = $link2 = $link3 = $link4 = $link5 = $link6 = $link7 = $link8 = $link9 = '';
     $oldlink = [];
 
     global $site_config, $CURUSER, $lang, $free, $session;
 
-    include_once INCL_DIR . 'bbcode_functions.php';
-    include_once CLASS_DIR . 'class_user_options_2.php';
-    include_once CACHE_DIR . 'subs.php';
+    require_once INCL_DIR . 'bbcode_functions.php';
+    require_once CLASS_DIR . 'class_user_options_2.php';
+    require_once INCL_DIR . 'torrent_hover.php';
+    $lang = array_merge($lang, load_language('index'));
+    
     foreach ($free as $fl) {
         switch ($fl['modifier']) {
             case 1:
@@ -168,7 +169,7 @@ function torrenttable($res, $variant = 'index')
         $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
         $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
         /** Freeslot/doubleslot in Use **/
-        $id = (int) $row['id'];
+        $id = $row['id'];
         if (!empty($slot)) {
             foreach ($slot as $sl) {
                 $slots_check = ($sl['torrentid'] == $id && $sl['free'] === 'yes' || $sl['doubleup'] === 'yes');
@@ -178,7 +179,7 @@ function torrenttable($res, $variant = 'index')
                     <tr>
                     <td class='has-text-centered'>";
         if (isset($row['cat_name'])) {
-            $htmlout .= "<a href='{$site_config['baseurl']}/browse.php?cat=" . (int) $row['category'] . "'>";
+            $htmlout .= "<a href='{$site_config['baseurl']}/browse.php?cat=" . $row['category'] . "'>";
             if (isset($row['cat_pic']) && $row['cat_pic'] != '') {
                 $htmlout .= "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$row['cat_pic']}' class='tooltipper' alt='{$row['cat_name']}' title='{$row['cat_name']}'>";
             } else {
@@ -209,7 +210,7 @@ function torrenttable($res, $variant = 'index')
         $poster = empty($row['poster']) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' alt='Poster'>" : "<img src='" . url_proxy($row['poster'], true, 250) . "' class='tooltip-poster' alt='Poster'>";
         $rating = empty($row['rating']) ? 'No users have rated this torrent' : ratingpic($row['rating']);
         if (!empty($row['descr'])) {
-            $descr = str_replace('"', '&quot;', readMore($row['descr'], 500, $site_config['baseurl'] . '/details.php?id=' . (int) $row['id'] . '&amp;hit=1'));
+            $descr = str_replace('"', '&quot;', readMore($row['descr'], 500, $site_config['baseurl'] . '/details.php?id=' . $row['id'] . '&amp;hit=1'));
             $descr = preg_replace('/\[img\].*?\[\/img\]\s+/', '', $descr);
             $descr = preg_replace('/\[img=.*?\]\s+/', '', $descr);
         }
@@ -234,7 +235,6 @@ function torrenttable($res, $variant = 'index')
         $icons[] = (!empty($row['youtube']) ? "<a href='" . htmlsafechars($row['youtube']) . "' target='_blank'><img src='{$site_config['pic_baseurl']}youtube.png' class='tooltipper icon' alt='Youtube Trailer' title='Youtube Trailer'></a>" : '');
         $icons[] = ($row['release_group'] === 'scene' ? "<img src='{$site_config['pic_baseurl']}scene.gif' class='tooltipper icon' title='Scene' alt='Scene'>" : ($row['release_group'] === 'p2p' ? " <img src='{$site_config['pic_baseurl']}p2p.gif' class='tooltipper icon' title='P2P' alt='P2P'>" : ''));
         $icons[] = (!empty($row['checked_by_username']) && $CURUSER['class'] >= UC_MIN) ? "<img src='{$site_config['pic_baseurl']}mod.gif' class='tooltipper icon' alt='Checked by " . htmlsafechars($row['checked_by_username']) . "' title='<div class=\"size_5 has-text-primary has-text-centered\">CHECKED</div><span class=\"right10\">By: </span><span>" . htmlsafechars($row['checked_by_username']) . '</span><br><span class="right10">On: </span><span>' . get_date($row['checked_when'], 'DATE') . "</span>'>" : '';
-        $icons[] = (XBT_TRACKER && $row['freetorrent'] >= 1 ? "<img src='{$site_config['pic_baseurl']}freedownload.gif' class='tooltipper icon' alt='Free Torrent' title='Free Torrent'>" : '');
         $icons[] = ($row['free'] != 0 ? "<img src='{$site_config['pic_baseurl']}gold.png' class='tooltipper icon' alt='Free Torrent' title='<div class=\"has-text-centered size_5 has-text-success\">FREE Torrent</div><div class=\"has-text-centered\">" . ($row['free'] > 1 ? 'Expires: ' . get_date($row['free'], 'DATE') . '<br>(' . mkprettytime($row['free'] - TIME_NOW) . ' to go)</div>' : '<div class="has-text-centered">Unlimited</div>') . "'>" : '');
         $icons[] = ($row['silver'] != 0 ? "<img src='{$site_config['pic_baseurl']}silver.png' class='tooltipper icon' alt='Silver Torrent' title='<div class=\"has-text-centered size_5 has-text-success\">Silver Torrent</div><div class=\"has-text-centered\">" . ($row['silver'] > 1 ? 'Expires: ' . get_date($row['silver'], 'DATE') . '<br>(' . mkprettytime($row['silver'] - TIME_NOW) . ' to go)</div>' : '<div class="has-text-centered">Unlimited</div>') . "'>" : '');
         $title = "
@@ -278,42 +278,23 @@ function torrenttable($res, $variant = 'index')
             }
         }
 
-        if (in_array($row['category'], $site_config['movie_cats']) && !empty($row['subs'])) {
-            $subs_array = explode(',', $row['subs']);
-            require_once CACHE_DIR . 'subs.php';
-            foreach ($subs_array as $k => $sid) {
-                foreach ($subs as $sub) {
-                    if ($sub['id'] == $sid) {
-                        $Subs = "<img src='{$sub['pic']}' class='tooltipper icon' width='16px' alt='{$sub['name']}' title='{$sub['name']}'>";
-                    }
-                }
+        $icon_string = implode(' ', array_diff($icons, ['']));
+        $name = $row['name'];
+        if (!empty($row['username'])) {
+            if ($row['anonymous'] === 'yes' && $CURUSER['class'] < UC_STAFF && $row['owner'] != $CURUSER['id']) {
+                $uploader = '<span>' . get_anonymous_name() . '</span>';
+            } else {
+                $uploader = "<span class='" . get_user_class_name($row['class'], true) . "'>" . htmlsafechars($row['username']) . '</span>';
+                $formatted = format_username($row['owner']);
             }
         } else {
-            $Subs = '---';
+            $uploader = $lang['torrenttable_unknown_uploader'];
+            $formatted = "<i>({$uploader})</i>";
         }
+        $block_id = "torrent_{$id}";
+        $tooltip = torrent_tooltip(htmlsafechars($dispname), $id, $block_id, $name, $poster, $uploader, $row['added'], $row['size'], $row['seeders'], $row['leechers'], $row['imdb_id'], $row['rating'], $row['year'], $row['subs']);
 
-        $icon_string = implode(' ', array_diff($icons, ['']));
-        $htmlout .= "
-                            <span class='dt-tooltipper-large' data-tooltip-content='#torrent_{$row['id']}_tooltip'>
-                                <span class='torrent-name'>{$dispname}</span>
-                                <div class='tooltip_templates'>
-                                    <span id='torrent_{$row['id']}_tooltip'>
-                                        <div class='is-flex tooltip-torrent'>
-                                            <span class='margin10'>
-                                                $poster
-                                            </span>
-                                            <span class='margin10'>
-                                                <b class='size_4 right10 has-text-primary'>Name:</b>" . htmlsafechars($dispname) . "<br>
-                                                <b class='size_4 right10 has-text-primary'>Added:</b>" . get_date($row['added'], 'DATE', 0, 1) . "<br>
-                                                <b class='size_4 right10 has-text-primary'>Size</b>" . mksize(htmlsafechars($row['size'])) . "<br>
-                                                <b class='size_4 right10 has-text-primary'>Subtitle:</b> {$Subs}<br>
-                                                <b class='size_4 right10 has-text-primary'>Seeders</b>" . (int) $row['seeders'] . "<br>
-                                                <b class='size_4 right10 has-text-primary'>Leechers</b>" . (int) $row['leechers'] . "<br>
-                                            </span>
-                                        </div>
-                                    </span>
-                                </div>
-                            </span>
+        $htmlout .= $tooltip . "
                         </a>
                         <div>$icon_string</div>
                         $imdb_info
@@ -338,7 +319,7 @@ function torrenttable($res, $variant = 'index')
                 <td>
                     <div class='level-center'>
                         <div class='flex-inrow'>
-                            <a href='{$site_config['baseurl']}/edit.php?id=" . (int) $row['id'] . 'amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . "' class='flex-item'>
+                            <a href='{$site_config['baseurl']}/edit.php?id=" . $row['id'] . 'amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . "' class='flex-item'>
                                 {$lang['torrenttable_edit']}
                             </a>
                         </div>
@@ -384,17 +365,17 @@ function torrenttable($res, $variant = 'index')
             $htmlout .= "<td class='has-text-centered'>{$bookmark}</td>";
         }
         if ($variant === 'index') {
-            $htmlout .= "<td class='has-text-centered'><b><a href='{$site_config['baseurl']}/filelist.php?id=$id'>" . (int) $row['numfiles'] . '</a></b></td>';
+            $htmlout .= "<td class='has-text-centered'><b><a href='{$site_config['baseurl']}/filelist.php?id=$id'>" . $row['numfiles'] . '</a></b></td>';
         } else {
-            $htmlout .= "<td class='has-text-centered'><b><a href='{$site_config['baseurl']}/filelist.php?id=$id'>" . (int) $row['numfiles'] . '</a></b></td>';
+            $htmlout .= "<td class='has-text-centered'><b><a href='{$site_config['baseurl']}/filelist.php?id=$id'>" . $row['numfiles'] . '</a></b></td>';
         }
         if (!$row['comments']) {
-            $htmlout .= "<td class='has-text-centered'>" . (int) $row['comments'] . '</td>';
+            $htmlout .= "<td class='has-text-centered'>" . $row['comments'] . '</td>';
         } else {
             if ($variant === 'index') {
-                $htmlout .= "<td class='has-text-centered'><b><a href='{$site_config['baseurl']}/details.php?id=$id&amp;hit=1&amp;tocomm=1'>" . (int) $row['comments'] . '</a></b></td>';
+                $htmlout .= "<td class='has-text-centered'><b><a href='{$site_config['baseurl']}/details.php?id=$id&amp;hit=1&amp;tocomm=1'>" . $row['comments'] . '</a></b></td>';
             } else {
-                $htmlout .= "<td class='has-text-centered'><b><a href='{$site_config['baseurl']}/details.php?id=$id&amp;page=0#startcomments'>" . (int) $row['comments'] . '</a></b></td>';
+                $htmlout .= "<td class='has-text-centered'><b><a href='{$site_config['baseurl']}/details.php?id=$id&amp;page=0#startcomments'>" . $row['comments'] . '</a></b></td>';
             }
         }
         $htmlout .= "<td class='has-text-centered'><span style='white-space: nowrap;'>" . str_replace(',', '<br>', get_date($row['added'], '')) . '</span></td>';
@@ -404,7 +385,7 @@ function torrenttable($res, $variant = 'index')
         } else {
             $_s = '' . $lang['torrenttable_time_singular'] . '';
         }
-        $What_Script_S = (XBT_TRACKER ? "{$site_config['baseurl']}/snatches_xbt.php?id=" : "{$site_config['baseurl']}/snatches.php?id=");
+        $What_Script_S = "{$site_config['baseurl']}/snatches.php?id=";
         $htmlout .= "<td class='has-text-centered'><a href='$What_Script_S" . "$id'>" . number_format($row['times_completed']) . "<br>$_s</a></td>";
         if ($row['seeders']) {
             if ($variant === 'index') {
@@ -413,45 +394,45 @@ function torrenttable($res, $variant = 'index')
                 } else {
                     $ratio = 1;
                 }
-                $What_Script_P = (XBT_TRACKER ? "{$site_config['baseurl']}/peerlist_xbt.php?id=" : "{$site_config['baseurl']}/peerlist.php?id=");
-                $htmlout .= "<td class='has-text-centered'><b><a href='$What_Script_P" . "$id#seeders'><span style='color: " . get_slr_color($ratio) . ";'>" . (int) $row['seeders'] . '</span></a></b></td>';
+                $What_Script_P = "{$site_config['baseurl']}/peerlist.php?id=";
+                $htmlout .= "<td class='has-text-centered'><b><a href='$What_Script_P" . "$id#seeders'><span style='color: " . get_slr_color($ratio) . ";'>" . $row['seeders'] . '</span></a></b></td>';
             } else {
-                $What_Script_P = (XBT_TRACKER ? "{$site_config['baseurl']}/peerlist_xbt.php?id=" : "{$site_config['baseurl']}/peerlist.php?id=");
-                $htmlout .= "<td class='has-text-centered'><b><a class='" . linkcolor($row['seeders']) . "' href='$What_Script_P" . "$id#seeders'>" . (int) $row['seeders'] . '</a></b></td>';
+                $What_Script_P = "{$site_config['baseurl']}/peerlist.php?id=";
+                $htmlout .= "<td class='has-text-centered'><b><a class='" . linkcolor($row['seeders']) . "' href='$What_Script_P" . "$id#seeders'>" . $row['seeders'] . '</a></b></td>';
             }
         } else {
-            $htmlout .= "<td class='has-text-centered'><span class='" . linkcolor($row['seeders']) . "'>" . (int) $row['seeders'] . '</span></td>';
+            $htmlout .= "<td class='has-text-centered'><span class='" . linkcolor($row['seeders']) . "'>" . $row['seeders'] . '</span></td>';
         }
         if ($row['leechers']) {
-            $What_Script_P = (XBT_TRACKER ? "{$site_config['baseurl']}/peerlist_xbt.php?id=" : "{$site_config['baseurl']}/peerlist.php?id=");
+            $What_Script_P = "{$site_config['baseurl']}/peerlist.php?id=";
             if ($variant === 'index') {
                 $htmlout .= "<td class='has-text-centered'><b><a href='$What_Script_P" . "$id#leechers'>" . number_format($row['leechers']) . '</a></b></td>';
             } else {
-                $htmlout .= "<td class='has-text-centered'><b><a class='" . linkcolor($row['leechers']) . "' href='$What_Script_P" . "$id#leechers'>" . (int) $row['leechers'] . '</a></b></td>';
+                $htmlout .= "<td class='has-text-centered'><b><a class='" . linkcolor($row['leechers']) . "' href='$What_Script_P" . "$id#leechers'>" . $row['leechers'] . '</a></b></td>';
             }
         } else {
             $htmlout .= "<td class='has-text-centered'>0</td>";
         }
         if ($variant === 'index') {
-            $htmlout .= "<td class='has-text-centered'>" . (isset($row['owner']) ? (($row['anonymous'] === 'yes' && $CURUSER['class'] < UC_STAFF && $row['owner'] != $CURUSER['id']) ? '<i>' . get_anonymous_name() . '</i>' : format_username($row['owner'])) : '<i>(' . $lang['torrenttable_unknown_uploader'] . ')</i>') . '</td>';
+            $htmlout .= "<td class='has-text-centered'>{$formatted}</td>";
         }
         if ($CURUSER['class'] >= UC_STAFF) {
             $returnto = !empty($_SERVER['REQUEST_URI']) ? '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) : '';
 
             $edit_link = "
                 <span>
-                    <a href='{$site_config['baseurl']}/edit.php?id=" . (int) $row['id'] . "{$returnto}' class='tooltipper' title='Fast Edit'>
+                    <a href='{$site_config['baseurl']}/edit.php?id=" . $row['id'] . "{$returnto}' class='tooltipper' title='Fast Edit'>
                         <i class='icon-edit icon' aria-hidden='true'></i>
                     </a>
                 </span>";
             $del_link = ($CURUSER['class'] === UC_MAX ? "
                 <span>
-                    <a href='{$site_config['baseurl']}/fastdelete.php?id=" . (int) $row['id'] . "{$returnto}' class='tooltipper' title='Fast Delete'>
+                    <a href='{$site_config['baseurl']}/fastdelete.php?id=" . $row['id'] . "{$returnto}' class='tooltipper' title='Fast Delete'>
                         <i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i>
                     </a>
                 </span>" : '');
             $staff_pick = '';
-            if ($CURUSER['class'] === UC_MAX && (int) $row['staff_picks'] > 0) {
+            if ($CURUSER['class'] === UC_MAX && $row['staff_picks'] > 0) {
                 $staff_pick = "
                 <span data-id='{$row['id']}' data-pick='{$row['staff_picks']}' . data-csrf='" . $session->get('csrf_token') . "' class='staff_pick tooltipper' title='Remove from Staff Picks'>
                     <i class='icon-minus icon has-text-danger' aria-hidden='true'></i>

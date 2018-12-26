@@ -21,7 +21,7 @@ use Imdb\Config;
  */
 function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false, $poster = false)
 {
-    global $cache, $BLOCKS, $torrent_stuffs, $image_stuffs, $site_config;
+    global $cache, $BLOCKS, $torrent_stuffs, $image_stuffs, $site_config, $fluent;
 
     if (!$BLOCKS['imdb_api_on']) {
         return false;
@@ -45,11 +45,11 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
         }
         $imdb_data = [
             'title' => $movie->title(),
-            'director' => array_slice($movie->director(), 0, 30),
-            'writing' => array_slice($movie->writing(), 0, 30),
-            'producer' => array_slice($movie->producer(), 0, 30),
-            'composer' => array_slice($movie->composer(), 0, 30),
-            'cast' => array_slice($movie->cast(), 0, 30),
+            'director' => $movie->director(),
+            'writing' => $movie->writing(),
+            'producer' => $movie->producer(),
+            'composer' => $movie->composer(),
+            'cast' => $movie->cast(),
             'genres' => $movie->genres(),
             'plotoutline' => $movie->plotoutline(true),
             'trailers' => $movie->trailers(true, true),
@@ -66,6 +66,11 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
             'mpaa' => $movie->mpaa(),
             'mpaa_reason' => $movie->mpaa_reason(),
             'id' => $imdbid,
+            'aspect_ration' => $movie->aspect_ratio(),
+            'plot' => $movie->plot(),
+            'top250' => $movie->top250(),
+            'movietype' => $movie->movietype(),
+            'storyline' => $movie->storyline(),
             'updated' => get_date(TIME_NOW, 'LONG', 1, 0),
         ];
 
@@ -73,6 +78,58 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
             $temp = implode(', ', array_map('strtolower', $imdb_data['genres']));
             $imdb_data['genres'] = explode(', ', $temp);
             $imdb_data['newgenre'] = implode(', ', array_map('ucwords', $imdb_data['genres']));
+        }
+
+        $members = [
+            'director',
+            'writing',
+            'producer',
+            'composer',
+            'cast',
+        ];
+
+        $cast = [];
+        foreach ($members as $member) {
+            if (count($imdb_data[$member]) > 0) {
+                foreach ($imdb_data[$member] as $person) {
+                    $all_people[] = $person;
+                    $persons[] = [
+                        'name' => $person['name'],
+                        'imdb_id' => $person['imdb'],
+                    ];
+                    $cast[] = [
+                        'imdb_id' => $imdb_id,
+                        'person_id' => $person['imdb']
+                    ];
+
+                }
+            }
+        }
+
+        if (!empty($persons)) {
+            $fluent->insertInto('person')
+                ->values($persons)
+                ->ignore()
+                ->execute();
+        }
+
+        if (!empty($cast)) {
+            $fluent->insertInto('imdb_person')
+                ->values($cast)
+                ->ignore()
+                ->execute();
+        }
+        unset($cast);
+
+        if (!empty($imdb_data['plotoutline'])) {
+            $values = [
+                'imdb_id' => $imdb_id,
+                'plot' => $imdb_data['plotoutline'],
+            ];
+            $fluent->insertInto('imdb_info')
+                ->values($values)
+                ->ignore()
+                ->execute();
         }
 
         $cache->set('imdb_' . $imdb_id, $imdb_data, 604800);
@@ -134,24 +191,97 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
     ];
     foreach ($imdb_data['cast'] as $pp) {
         if (!empty($pp['name']) && !empty($pp['photo'])) {
+            $realname = $birthday = $died = $birthplace = $history = '';
+            $bio = get_imdb_person($pp['imdb']);
+            if (!empty($bio['realname'])) {
+                $realname =  "
+                                                        <div class='column padding5 is-4'>
+                                                            <span class='size_4 has-text-primary'>Real Name:</span>
+                                                        </div>
+                                                        <div class='column padding5 is-8'>
+                                                            <span class='size_4'>{$bio['realname']}</span>
+                                                        </div>" ;
+            }
+            if (!empty($bio['birthday'])) {
+				$birthdate = date("Y-m-d", strtotime($bio['birthday']));
+				$birthday = "
+                                                        <div class='column padding5 is-4'>
+                                                            <span class='size_4 has-text-primary'>Birthdate:</span>
+                                                        </div>
+                                                        <div class='column padding5 is-8'>
+                                                            <span class='size_4'>{$birthdate}</span>
+                                                        </div>";
+			}
+            if (!empty($bio['died'])) {
+				$died = date("Y-m-d", strtotime($bio['died']));
+				$died = "
+                                                        <div class='column padding5 is-4'>
+                                                            <span class='size_4 has-text-primary'>Died On:</span>
+                                                        </div>
+                                                        <div class='column padding5 is-8'>
+                                                            <span class='size_4'>{$died}</span>
+                                                        </div>";
+			}
+            if (!empty($bio['birthplace'])) {
+                $birthplace = "
+                                                        <div class='column padding5 is-4'>
+                                                            <span class='size_4 has-text-primary'>Birth Place:</span>
+                                                        </div>
+                                                        <div class='column padding5 is-8'>
+                                                            <span class='size_4'>{$bio['birth_place']}</span>
+                                                        </div>";
+                
+            }
+            if (!empty($bio['bio'])) {
+                $stripped = strip_tags($bio['bio']);
+                $text = strlen($stripped) > 500 ? substr($stripped, 0, 500) . '...' : $stripped;
+                $history = "
+                                                        <div class='column padding5 is-4'>
+                                                            <span class='size_4 has-text-primary'>Bio:</span>
+                                                        </div>
+                                                        <div class='column padding5 is-8'>
+                                                            <span class='size_4'>{$text}</span>
+                                                        </div>";
+            }
+
             $cast[] = "
                             <span class='padding5'>
                                 <a href='" . url_proxy("https://www.imdb.com/name/nm{$pp['imdb']}") . "' target='_blank'>
-                                    <span class='dt-tooltipper-small' data-tooltip-content='#cast_{$pp['imdb']}_tooltip'>
+                                    <span class='dt-tooltipper-large' data-tooltip-content='#cast_{$pp['imdb']}_tooltip'>
                                         <span class='cast'>
                                             <img src='" . url_proxy(strip_tags($pp['photo']), true, null, 110) . "' class='round5'>
                                         </span>
-                                        <span class='tooltip_templates'>
-                                            <span id='cast_{$pp['imdb']}_tooltip'>
-                                                <span class='is-flex'>
-                                                    <span class='has-text-centered'>
-                                                        <img src='" . url_proxy(strip_tags($pp['photo']), true, 250) . "' class='tooltip-poster'>
-                                                        <div class='top10 size_5'>{$pp['name']}</div>
-                                                        <span class='has-text-primary size_6'>{$pp['role']}</span>
-                                                    </span>
-                                                </span>
-                                            </span>
-                                        </span>
+                                        <div class='tooltip_templates'>
+                                            <div id='cast_{$pp['imdb']}_tooltip'>
+                                                <div class='tooltip-torrent padding10'>
+													<div class='columns is-marginless is-paddingless'>
+														<div class='column padding10 is-4'>
+                                                            <span>
+                                                                <img src='" . url_proxy(strip_tags($pp['photo']), true, 250) . "' class='tooltip-poster'>
+                                                            </span>
+														</div>
+														<div class='column paddin10 is-8'>
+                                                            <span>
+                                                                <div class='columns is-multiline'>
+                                                                    <div class='column padding5 is-4'>
+                                                                        <span class='size_4 has-text-primary'>Name:</span>
+                                                                    </div>
+                                                                    <div class='column padding5 is-8'>
+                                                                        <span class='size_4'>{$pp['name']}</span>
+                                                                    </div>
+                                                                    <div class='column padding5 is-4'>
+                                                                        <span class='size_4 has-text-primary'>Role:</span>
+                                                                    </div>
+                                                                    <div class='column padding5 is-8'>
+                                                                        <span class='size_4'>{$pp['role']}</span>
+                                                                    </div>{$realname}{$birthday}{$died}{$birthplace}{$history}
+                                                                </div>
+                                                            </span>
+														</div>
+													</div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </span>
                                 </a>
                             </span>";
@@ -166,10 +296,16 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                 if ($boo === 'Rating') {
                     $percent = $imdb_data['rating'] * 10;
                     $imdb_data[$foo] = "
-                        <div class='star-ratings-css tooltipper' title='{$percent}% out of {$imdb_data['votes']} votes!'>
-                            <div class='star-ratings-css-top' style='width: {$percent}%'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-                            <div class='star-ratings-css-bottom'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-                        </div>";
+                        <span class='is-flex'>
+                            <div class='right10'>{$imdb_data['rating']}</div>
+                            <div class='star-ratings-css tooltipper' title='{$percent}% out of {$imdb_data['votes']} votes!'>
+                                <div class='star-ratings-css-top' style='width: {$percent}%'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                <div class='star-ratings-css-bottom'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                            </div>
+                        </span>";
+                } elseif ($boo === 'Year') {
+                    $year = 'Search by year: ' . $imdb_data['year'];
+                    $imdb_data[$foo] = "<a href='{$site_config['baseurl']}/browse.php?search_year_start={$imdb_data['year']}&amp;search_year_end={$imdb_data['year']}' target='_blank' class='tooltipper' title='$year'>{$imdb_data['year']}</a>";
                 }
                 $imdb_info .= "
                     <div class='columns'>
@@ -192,7 +328,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                     if ($foo === 'trailers') {
                         $imdb_tmp[] = "<a href='" . url_proxy($pp['url']) . "' target='_blank' class='tooltipper' title='IMDb: {$pp['title']}'>{$pp['title']}</a>";
                     } elseif ($foo != 'cast') {
-                        $role = !empty($pp['role']) ? ucwords($pp['role']) : 'unknown';
+                        $role = !empty($pp['role']) ? ucwords($pp['role']) : 'unidentified';
                         $imdb_tmp[] = "<a href='" . url_proxy("https://www.imdb.com/name/nm{$pp['imdb']}") . "' target='_blank' class='tooltipper' title='$role'>{$pp['name']}</a>";
                     }
                 }
@@ -354,27 +490,27 @@ function get_imdb_info_short($imdb_id)
                                 </span>
                                 <span class='padding10'>
                                     <div>
-                                        <span class='size_4 right10 has-text-primary has-text-bold'>Title: </span>
+                                        <span class='size_5 right10 has-text-primary has-text-bold'>Title: </span>
                                         <span>" . htmlsafechars($imdb_data['title']) . "</span>
                                     </div>
                                     <div>
-                                        <span class='size_4 right10 has-text-primary'>MPAA: </span>
+                                        <span class='size_5 right10 has-text-primary'>MPAA: </span>
                                         <span>" . htmlsafechars($imdb_data['mpaa_reason']) . "</span>
                                     </div>
                                     <div>
-                                        <span class='size_4 right10 has-text-primary'>Critics: </span>
+                                        <span class='size_5 right10 has-text-primary'>Critics: </span>
                                         <span>" . htmlsafechars($imdb_data['critics']) . "</span>
                                     </div>
                                     <div>
-                                        <span class='size_4 right10 has-text-primary'>Rating: </span>
+                                        <span class='size_5 right10 has-text-primary'>Rating: </span>
                                         <span>" . htmlsafechars($imdb_data['rating']) . "</span>
                                     </div>
                                     <div>
-                                        <span class='size_4 right10 has-text-primary'>Votes: </span>
+                                        <span class='size_5 right10 has-text-primary'>Votes: </span>
                                         <span>" . htmlsafechars($imdb_data['vote_count']) . "</span>
                                     </div>
                                     <div>
-                                        <span class='size_4 right10 has-text-primary'>Overview: </span>
+                                        <span class='size_5 right10 has-text-primary'>Overview: </span>
                                         <span>" . htmlsafechars(strip_tags($imdb_data['overview'])) . '</span>
                                     </div>
                                 </span>
@@ -529,4 +665,82 @@ function update_torrent_data(string $imdb_id)
             $cache->update_row('torrent_details_' . $torrent['id'], $set, $site_config['expires']['torrent_details']);
         }
     }
+}
+
+function get_imdb_person($person_id)
+{
+    global $BLOCKS, $cache, $fluent, $site_config;
+
+    if (!$BLOCKS['imdb_api_on']) {
+        return false;
+    }
+
+    $imdb_person = $cache->get('imdb_person_' . $person_id);
+    if ($imdb_person === false || is_null($imdb_person)) {
+        $imdb_person = $fluent->from('person')
+            ->where('imdb_id = ?', $person_id)
+            ->where('updated + 604800 > ?', TIME_NOW)
+            ->fetch();
+
+        if (!empty($imdb_person)) {
+            return $imdb_person;
+        }
+
+        $config = new Config();
+        $config->language = 'en-US';
+        $config->cachedir = IMDB_CACHE_DIR;
+        $config->throwHttpExceptions = 0;
+        $config->default_agent = get_random_useragent();
+
+        $person = new \Imdb\Person($person_id, $config);
+        $update = $imdb_person = [];
+        if (!empty($person->name())) {
+            $imdb_person['name'] = $person->name();
+        } else {
+            return false;
+        }
+
+        if (!empty($person->birthname())) {
+            $imdb_person['realname'] = $person->birthname();
+        }
+
+        if (!empty($person->born())) {
+            $data = $person->born();
+            if (!empty($data['year']) && !empty($data['mon']) && !empty($data['day'])) {
+                $imdb_person['birthday'] = $data['year'] . '-' . str_pad($data['mon'], 2, '0', STR_PAD_LEFT) . '-' . str_pad($data['day'], 2, '0', STR_PAD_LEFT);
+            }
+            if (!empty($data['place'])) {
+                $imdb_person['birth_place'] = $data['place'];
+            }
+        }
+
+        if (!empty($person->bio())) {
+            $data = $person->bio();
+            $imdb_person['bio'] = str_replace(['<br />', 'href="'], ['<br>', 'href="' . $site_config['anonymizer_url']], $data[0]['desc']);
+        }
+
+        if (!empty($person->died())) {
+            $data = $person->died();
+            if (!empty($data['year']) && !empty($data['mon']) && !empty($data['day'])) {
+                $imdb_person['died'] = $data['year'] . '-' . str_pad($data['mon'], 2, '0', STR_PAD_LEFT) . '-' . str_pad($data['day'], 2, '0', STR_PAD_LEFT);
+            }
+        }
+
+        if (!empty($person->photo(false))) {
+            $data = $person->photo(false);
+            $imdb_person['photo'] = $data;
+        }
+
+        $imdb_person['updated'] = TIME_NOW;
+        $update = $imdb_person;
+        unset($update['name']);
+
+        $fluent->insertInto('person', $imdb_person)
+            ->onDuplicateKeyUpdate($update)
+            ->execute();
+
+        $cache->set('imdb_person_' . $person_id, $imdb_person, 604800);
+    }
+
+    return $imdb_person;
 }

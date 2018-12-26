@@ -5,28 +5,31 @@ global $site_config, $lang, $fluent, $CURUSER, $cache;
 $last5torrents = $cache->get('last5_tor_');
 if ($last5torrents === false || is_null($last5torrents)) {
     $last5torrents = [];
-    $torrents = $fluent->from('torrents')
+    $torrents = $fluent->from('torrents AS t')
         ->select(null)
-        ->select('torrents.id')
-        ->select('torrents.added')
-        ->select('torrents.seeders')
-        ->select('torrents.leechers')
-        ->select('torrents.name')
-        ->select('torrents.size')
-        ->select('torrents.poster')
-        ->select('torrents.anonymous')
-        ->select('torrents.owner')
-        ->select('torrents.imdb_id')
-        ->select('torrents.times_completed')
-        ->leftJoin('users ON torrents.owner = users.id')
-        ->select('users.username')
-        ->select('users.class')
-        ->leftJoin('categories ON torrents.category = categories.id')
+        ->select('t.id')
+        ->select('t.added')
+        ->select('t.seeders')
+        ->select('t.leechers')
+        ->select('t.name')
+        ->select('t.size')
+        ->select('t.poster')
+        ->select('t.anonymous')
+        ->select('t.owner')
+        ->select('t.imdb_id')
+        ->select('t.times_completed')
+        ->select('t.rating')
+        ->select('t.year')
+        ->select('t.subs AS subtitles')
+        ->select('u.username')
+        ->select('u.class')
         ->select('p.name AS parent_name')
-        ->leftJoin('categories AS p ON categories.parent_id = p.id')
-        ->select('categories.name AS cat')
-        ->select('categories.image')
-        ->orderBy('torrents.added DESC')
+        ->select('c.name AS cat')
+        ->select('c.image')
+        ->leftJoin('users AS u ON t.owner = u.id')
+        ->leftJoin('categories AS c ON t.category = c.id')
+        ->leftJoin('categories AS p ON c.parent_id = p.id')
+        ->orderBy('t.seeders + t.leechers DESC')
         ->limit($site_config['latest_torrents_limit']);
 
     foreach ($torrents as $torrent) {
@@ -57,7 +60,7 @@ $latest_torrents .= "
                     </thead>
                     <tbody>";
 foreach ($last5torrents as $last5torrent) {
-    $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
+    $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
     extract($last5torrent);
     if (empty($poster) && !empty($imdb_id)) {
         $poster = find_images($imdb_id);
@@ -71,7 +74,7 @@ foreach ($last5torrents as $last5torrent) {
     }
 
     $block_id = "last_id_{$id}";
-    $latest_torrents .= torrent_tooltip_wrapper(htmlsafechars($name));
+    $latest_torrents .= torrent_tooltip_wrapper(htmlsafechars($name), $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
 }
 if (count($last5torrents) === 0) {
     $latest_torrents .= "

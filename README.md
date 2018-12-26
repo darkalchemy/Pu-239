@@ -131,6 +131,12 @@ mysql database < database/tvmaze.php.sql
 
 # import image urls
 mysql database < database/images.php.sql
+
+# import persons
+mysql database < database/person.php.sql
+
+# import imdb info
+mysql database < database/imdb_info.php.sql
 ```
 
 ### To Update:
@@ -155,6 +161,12 @@ mysql database < database/tvmaze.php.sql
 
 # update image urls
 mysql database < database/images.php.sql
+
+# import persons
+mysql database < database/person.php.sql
+
+# import imdb info 
+mysql database < database/imdb_info.php.sql
 
 # update database:
 goto admin/upgrade_database to check/update the database

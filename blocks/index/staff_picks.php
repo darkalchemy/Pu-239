@@ -5,29 +5,32 @@ global $site_config, $lang, $fluent, $CURUSER, $cache;
 $staff_picks = $cache->get('staff_picks_');
 if ($staff_picks === false || is_null($staff_picks)) {
     $staff_picks = [];
-    $torrents = $fluent->from('torrents')
+    $torrents = $fluent->from('torrents AS t')
         ->select(null)
-        ->select('torrents.id')
-        ->select('torrents.added')
-        ->select('torrents.seeders')
-        ->select('torrents.leechers')
-        ->select('torrents.name')
-        ->select('torrents.size')
-        ->select('torrents.poster')
-        ->select('torrents.anonymous')
-        ->select('torrents.owner')
-        ->select('torrents.imdb_id')
-        ->select('torrents.times_completed')
-        ->leftJoin('users ON torrents.owner = users.id')
-        ->select('users.username')
-        ->select('users.class')
-        ->leftJoin('categories ON torrents.category = categories.id')
+        ->select('t.id')
+        ->select('t.added')
+        ->select('t.seeders')
+        ->select('t.leechers')
+        ->select('t.name')
+        ->select('t.size')
+        ->select('t.poster')
+        ->select('t.anonymous')
+        ->select('t.owner')
+        ->select('t.imdb_id')
+        ->select('t.times_completed')
+        ->select('t.rating')
+        ->select('t.year')
+        ->select('t.subs AS subtitles')
+        ->select('u.username')
+        ->select('u.class')
         ->select('p.name AS parent_name')
-        ->leftJoin('categories AS p ON categories.parent_id = p.id')
-        ->select('categories.name AS cat')
-        ->select('categories.image')
-        ->where('torrents.staff_picks != 0')
-        ->orderBy('torrents.staff_picks DESC')
+        ->select('c.name AS cat')
+        ->select('c.image')
+        ->leftJoin('users AS u ON t.owner = u.id')
+        ->leftJoin('categories AS c ON t.category = c.id')
+        ->leftJoin('categories AS p ON c.parent_id = p.id')
+        ->where('t.staff_picks != 0')
+        ->orderBy('t.seeders + t.leechers DESC')
         ->limit($site_config['staff_picks_limit']);
 
     foreach ($torrents as $torrent) {
@@ -60,7 +63,7 @@ $staffpicks .= "
                 </thead>
                 <tbody>";
 foreach ($staff_picks as $staff_pick) {
-    $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
+    $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
     extract($staff_pick);
     if (empty($poster) && !empty($imdb_id)) {
         $poster = find_images($imdb_id);
@@ -74,7 +77,7 @@ foreach ($staff_picks as $staff_pick) {
     }
 
     $block_id = "staff_pick_id_{$id}";
-    $staffpicks .= torrent_tooltip_wrapper(htmlsafechars($name));
+    $staffpicks .= torrent_tooltip_wrapper(htmlsafechars($name), $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
 }
 if (count($staff_picks) === 0) {
     $staffpicks .= "

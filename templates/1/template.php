@@ -85,7 +85,7 @@ function stdhead($title = '', $stdhead = null)
         }
         document.body.style.fontSize = '{$font_size}%';
     </script>
-    <div id='container'>
+    <div id='container'></div>
         <div class='page-wrapper'>";
     if ($CURUSER) {
         $htmlout .= navbar();
@@ -352,6 +352,7 @@ function stdfoot($stdfoot = false)
     }
 
     $htmlfoot .= '
+        </div>
     </div>
 </body>
 </html>';
