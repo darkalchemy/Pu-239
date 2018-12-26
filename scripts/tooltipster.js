@@ -4,6 +4,7 @@ var update_animation = 'rotate';
 var short = 250;
 var long = 500;
 var distance = 12;
+var maxWidth = window.innerWidth * .5;
 var sides = ['bottom', 'top', 'right', 'left'];
 
 $(function () {
@@ -17,7 +18,7 @@ $(function () {
         arrow: true,
         contentAsHTML: true,
         distance: distance,
-        maxWidth: 500,
+        maxWidth: maxWidth,
     });
     initAll();
 });
@@ -27,15 +28,14 @@ function initAll() {
     $('.dt-tooltipper-large').tooltipster({
         theme: 'tooltipster-borderless',
         interactive: true,
-        side: sides,
         animation: animation,
         animationDuration: animate_duration,
         delay: long,
         arrow: true,
         contentAsHTML: true,
         distance: distance,
-        maxWidth: 500,
         trigger: 'custom',
+        maxWidth: maxWidth,
         triggerOpen: {
             mouseenter: true,
             touchstart: true
@@ -70,7 +70,7 @@ function initAll() {
         arrow: true,
         contentAsHTML: true,
         distance: distance,
-        maxWidth: 250
+        maxWidth: maxWidth
     });
     $('.tooltipper-ajax.tooltipstered').tooltipster('destroy');
     $('.tooltipper-ajax').tooltipster({
@@ -98,6 +98,7 @@ function initAll() {
         arrow: true,
         distance: distance,
         minWidth: 250,
+        maxWidth: maxWidth,
         content: 'patience, grasshopper...',
         functionBefore: function (instance, helper) {
             var $origin = $(helper.origin);
