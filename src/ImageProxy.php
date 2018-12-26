@@ -122,7 +122,11 @@ class ImageProxy
     {
         if (mime_content_type($path) !== 'image/gif') {
             $optimizerChain = OptimizerChainFactory::create();
-            $optimizerChain->setTimeout(15)->optimize($path);
+            try {
+                $optimizerChain->setTimeout(15)->optimize($path);
+            } catch (Exception $e) {
+                return false;
+            }
 
             return true;
         }

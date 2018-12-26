@@ -1774,7 +1774,7 @@ function valid_username($username, $ajax = false)
  */
 function Christmas($celebrate = true)
 {
-    $upperBound = new DateTime('Dec 31');
+    $upperBound = new DateTime('Dec 26');
     $lowerBound = new DateTime('Dec 1');
     $checkDate = new DateTime(date('M d', strtotime('Today')));
 
