@@ -1820,8 +1820,7 @@ CREATE TABLE `categories` (
         'id' => 1545843309,
         'info' => 'Add imdb_info table',
         'date' => '26 Dec, 2018',
-        'query' => "
-CREATE TABLE `imdb_info` (
+        'query' => "CREATE TABLE `imdb_info` (
   `imdb_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
   `plot` longtext COLLATE utf8mb4_unicode_ci,
   `runtime` smallint(5) unsigned DEFAULT '0',

@@ -1,4 +1,5 @@
 ### 26 Dec, 2018
+update: don't cache anime titles, too big  
 update: restrict image optimizer to 15 seconds per optimizer  
 update: imdb info  
 update: breadcrumbs  

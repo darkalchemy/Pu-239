@@ -20,8 +20,7 @@ function tvmaze_schedule_update($data)
 
     $start = date('Y-m-d');
     $date = new DateTime($start);
-    $end = $date->modify('+1 day')
-        ->format('Y-m-d');
+    $end = $date->modify('+1 day')->format('Y-m-d');
 
     $i = 0;
     if (!empty($tvmaze_data)) {
