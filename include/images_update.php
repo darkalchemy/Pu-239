@@ -202,10 +202,9 @@ function images_update()
         ->select('imdb_id')
         ->select('updated')
         ->where('updated + 604800 < ?', TIME_NOW)
-//        ->limit(50)
+        ->limit(50)
         ->fetchAll();
 
-dd($persons);
     foreach ($persons as $person) {
         get_imdb_person($person['imdb_id']);
     }
