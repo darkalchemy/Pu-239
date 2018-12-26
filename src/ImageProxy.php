@@ -5,6 +5,7 @@ namespace DarkAlchemy\Pu239;
 use Spatie\Image\Image;
 use Intervention\Image\ImageManager;
 use Spatie\Image\Manipulations;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 /**
  * Class ImageProxy.
@@ -101,13 +102,12 @@ class ImageProxy
             if (mime_content_type($path) !== 'image/jpeg') {
                 Image::load($new_path)
                     ->format(Manipulations::FORMAT_JPG)
-                    ->optimize()
                     ->save($new_path, $quality);
             } else {
                 Image::load($path)
-                    ->optimize()
                     ->save($new_path, $quality);
             }
+            $this->optimize($new_path);
         }
 
         return $hash;
@@ -121,9 +121,8 @@ class ImageProxy
     protected function optimize(string $path)
     {
         if (mime_content_type($path) !== 'image/gif') {
-            Image::load($path)
-                ->optimize()
-                ->save();
+            $optimizerChain = OptimizerChainFactory::create();
+            $optimizerChain->setTimeout(15)->optimize($path);
 
             return true;
         }

@@ -1,4 +1,5 @@
 ### 26 Dec, 2018
+update: restrict image optimizer to 15 seconds per optimizer  
 update: imdb info  
 update: breadcrumbs  
 remove: unneeded line breaks  
