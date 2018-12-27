@@ -1,4 +1,5 @@
 ### 26 Dec, 2018
+fix: incorrect primary key  
 fix: try/catch optimizer  
 fix: Christmas gifts only on Christmas  
 update: don't cache anime titles, too big  

@@ -1830,5 +1830,26 @@ CREATE TABLE `categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;",
         'flush' => false,
     ],
+    [
+        'id' => 1545881587,
+        'info' => 'Drop imdb_person',
+        'date' => '26 Dec, 2018',
+        'query' => 'DROP TABLE `imdb_person`',
+        'flush' => false,
+    ],
+    [
+        'id' => 1545881588,
+        'info' => 'Add imdb_person table',
+        'date' => '26 Dec, 2018',
+        'query' => "CREATE TABLE `imdb_person` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `imdb_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `person_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY (`person_id`),
+  UNIQUE KEY `id_person` (`imdb_id`, `person_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;",
+        'flush' => true,
+    ],
 ];
 
