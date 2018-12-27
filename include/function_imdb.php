@@ -188,6 +188,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
         'updated' => 'Last Updated',
         'cast' => 'Cast',
     ];
+    $imdb_data['cast'] = array_slice($imdb_data['cast'], 0, 15);
     foreach ($imdb_data['cast'] as $pp) {
         if (!empty($pp['name']) && !empty($pp['photo'])) {
             $realname = $birthday = $died = $birthplace = $history = '';
@@ -741,4 +742,79 @@ function get_imdb_person($person_id)
     }
 
     return $imdb_person;
+}
+
+function get_top_movies()
+{
+    global $cache;
+
+    $top = $cache->get('imdb_top_movies_');
+    if ($top === false || is_null($top)) {
+        $top = [];
+        for ($i = 1; $i <= 1000; $i += 50) {
+            $url = 'https://www.imdb.com/search/title?groups=top_1000&sort=user_rating,desc&start=' . $i;
+            $html = fetch($url);
+            preg_match_all('/(tt\d{7})/', $html, $matches);
+            foreach ($matches[1] as $match) {
+                if (!in_array($match, $top)) {
+                    $top[] = $match;
+                }
+            }
+        }
+        if (!empty($top)) {
+            $cache->set('imdb_top_movies_', $top, 604800);
+        }
+    }
+
+    return $top;
+}
+
+function get_top_tvshows()
+{
+    global $cache;
+
+    $top = $cache->get('imdb_top_tvshows_');
+    if ($top === false || is_null($top)) {
+        $top = [];
+        for ($i = 1; $i <= 350; $i += 50) {
+            $url = 'https://www.imdb.com/search/title?title_type=tv_series&num_votes=30000,&countries=us&sort=user_rating,desc&start=' . $i;
+            $html = fetch($url);
+            preg_match_all('/(tt\d{7})/', $html, $matches);
+            foreach ($matches[1] as $match) {
+                if (!in_array($match, $top)) {
+                    $top[] = $match;
+                }
+            }
+        }
+        if (!empty($top)) {
+            $cache->set('imdb_top_tvshows_', $top, 604800);
+        }
+    }
+
+    return $top;
+}
+
+function get_top_anime()
+{
+    global $cache;
+
+    $top = $cache->get('imdb_top_anime_');
+    if ($top === false || is_null($top)) {
+        $top = [];
+        for ($i = 1; $i <= 350; $i += 50) {
+            $url = 'https://www.imdb.com/search/title?genres=drama&keywords=anime&num_votes=2000,sort=user_rating,desc&start=' . $i;
+            $html = fetch($url);
+            preg_match_all('/(tt\d{7})/', $html, $matches);
+            foreach ($matches[1] as $match) {
+                if (!in_array($match, $top)) {
+                    $top[] = $match;
+                }
+            }
+        }
+        if (!empty($top)) {
+            $cache->set('imdb_top_anime_', $top, 604800);
+        }
+    }
+
+    return $top;
 }

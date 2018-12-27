@@ -1851,5 +1851,19 @@ CREATE TABLE `categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;",
         'flush' => true,
     ],
+    [
+        'id' => 1545935993,
+        'info' => 'Change column to smallint',
+        'date' => '27 Dec, 2018',
+        'query' => "UPDATE `torrents` SET `year` = 0 WHERE `year` IS NULL",
+        'flush' => false,
+    ],
+    [
+        'id' => 1545935994,
+        'info' => 'Change column to smallint',
+        'date' => '27 Dec, 2018',
+        'query' => "ALTER TABLE `torrents` MODIFY COLUMN `year` smallint NOT NULL DEFAULT 0",
+        'flush' => false,
+    ],
 ];
 

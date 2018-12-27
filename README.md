@@ -122,21 +122,9 @@ sudo crontab -e
 # this can take several minutes to run, especially the first time, so we run it separate
 # runs images_update.php every 30 minutes, if not already running, as user www-data
 */30 * * * * su www-data -s /bin/bash -c "/usr/bin/php /var/www/Pu-239/include/images_update.php" >> /var/log/nginx/images_`date +\%Y\%m\%d`.log 2>&1
- 
-# import trivia questions if desired
-mysql database < database/trivia.php.sql
 
-# import tvmaze ids
-mysql database < database/tvmaze.php.sql
-
-# import image urls
-mysql database < database/images.php.sql
-
-# import persons
-mysql database < database/person.php.sql
-
-# import imdb info
-mysql database < database/imdb_info.php.sql
+# import additional tables
+php bin/import_tables.php
 ```
 
 ### To Update:
@@ -153,23 +141,11 @@ npm install
 [sudo] php bin/set_perms.php
 php bin/uglify.php
 
-# update trivia questions if desired
-mysql database < database/trivia.php.sql
+# update additional tables          
+php bin/import_tables.php
 
-# update tvmaze ids
-mysql database < database/tvmaze.php.sql
-
-# update image urls
-mysql database < database/images.php.sql
-
-# import persons
-mysql database < database/person.php.sql
-
-# import imdb info 
-mysql database < database/imdb_info.php.sql
-
-# update database:
-goto admin/upgrade_database to check/update the database
+# occasionally you may need to remove bad images
+php bin/validate_images.php
 ```
 
 ### API's 

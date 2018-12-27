@@ -149,7 +149,8 @@ foreach ($query as $sub_forums_arr) {
                             <span>' . htmlsafechars($sub_forums_arr['sub_form_description'], ENT_QUOTES) . '</span>
                         </td>
                     </tr>
-                </table>
+                </table>w
+
             </td>
             <td>
                 <span>
@@ -358,32 +359,38 @@ if (!empty($topic_arrs)) {
             $delete_me = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: x-small;">[ <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=delete_topic&amp;topic_id=' . $topic_id . '&amp;sure=1&amp;send_me_back=666">' . $lang['fe_delete'] . '</a> ]</span>';
         }
 
-        $content .= '<tr>
-		<td><img src="' . $site_config['pic_baseurl'] . 'forums/' . $topic_pic . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="tooltipper icon"></td>
-		<td>' . $icon . '</td>
-		<td>
-		    <div class="level">
-		        <span class="right10">
-        		    ' . $topic_name . '
-                </span>
-		        <span class="right10">
-        		    ' . $first_post_text . '
-                </span>
-		        <span class="right10">
-        		    ' . $topic_status_image . '
-                </span>
-		    </div>
-		    <div>
-		    ' . $rpic . '
-		    </div>
-		</td>' . (!empty($topic_arr['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($topic_arr['topic_desc'], ENT_QUOTES) . '</span>' : '') . '</td>
-		<td>' . $thread_starter . '</td>
-		<td>' . number_format($topic_arr['post_count']) . '</td>
-		<td>' . number_format($topic_arr['views']) . '</td>
-		<td><span style="white-space:nowrap;">' . get_date($arr_post_stuff['added'], '') . '</span><br>
-		<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=last#' . $last_post_id . '" title="' . $lang['fe_go_to_the_last_post_in_this_thread'] . '">' . $lang['fe_last_post'] . '</a> by&nbsp;' . $last_post_username . '</td>
-		<td>' . $post_status_image . ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=last#' . $last_unread_post_id . '">
-		<img src="' . $site_config['pic_baseurl'] . 'forums/last_post.gif" alt="' . $lang['fe_last_post'] . '" title="' . $lang['fe_last_unread_post_in_this_thread'] . '" class="tooltipper icon"></a></td>
+        $content .= '
+        <tr>
+		    <td>
+                <img src="' . $site_config['pic_baseurl'] . 'forums/' . $topic_pic . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="tooltipper icon">
+            </td>
+    		<td>' . $icon . '</td>
+	    	<td>
+		        <div class="level">
+		            <span class="right10">
+        		        ' . $topic_name . '
+                    </span>
+	    	        <span class="right10">
+            		    ' . $first_post_text . '
+                    </span>
+		            <span class="right10">
+        		        ' . $topic_status_image . '
+                    </span>
+	    	    </div>
+		        <div>
+		        ' . $rpic . '
+    		    </div>
+    		</td>' . (!empty($topic_arr['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($topic_arr['topic_desc'], ENT_QUOTES) . '</span>' : '') . '</td>
+    		<td class="has-text-centered">' . $thread_starter . '</td>
+	    	<td class="has-text-centered">' . number_format($topic_arr['post_count'] - 1) . '</td>
+		    <td class="has-text-centered">' . number_format($topic_arr['views']) . '</td>
+    		<td>
+                <span style="white-space:nowrap;">' . get_date($arr_post_stuff['added'], '') . '</span><br>
+        		<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=last#' . $last_post_id . '" title="' . $lang['fe_go_to_the_last_post_in_this_thread'] . '">' . $lang['fe_last_post'] . '</a> by&nbsp;' . $last_post_username . '
+            </td>
+    		<td>' . $post_status_image . ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=last#' . $last_unread_post_id . '">
+	        	<img src="' . $site_config['pic_baseurl'] . 'forums/last_post.gif" alt="' . $lang['fe_last_post'] . '" title="' . $lang['fe_last_unread_post_in_this_thread'] . '" class="tooltipper icon"></a>
+            </td>
 		</tr>';
     }
     $the_top_and_bottom = ($locked == 'yes' && $_GET['action'] == 'view_topic' ? '

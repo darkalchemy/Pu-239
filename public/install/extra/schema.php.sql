@@ -2227,7 +2227,7 @@ CREATE TABLE `torrents` (
   `anonymous` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `url` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `imdb_id` char(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `year` char(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `year` smallint(6) NOT NULL DEFAULT '0',
   `rating` decimal(2,1) NOT NULL DEFAULT '0.0',
   `checked_by` int(10) unsigned NOT NULL DEFAULT '0',
   `points` int(10) unsigned NOT NULL DEFAULT '0',
@@ -2720,4 +2720,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-27  6:30:27
+-- Dump completed on 2018-12-27 15:43:33

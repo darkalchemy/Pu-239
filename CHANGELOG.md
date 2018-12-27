@@ -1,4 +1,11 @@
 ### 27 Dec, 2018
+update: show the correct number of replies view_forums.php  
+update: torrents.year to smallint  
+update: limit cast images to first 15  
+add: get imdb top movies, anime and tv shows  
+update: add image optimize to validate_images.php  
+add: bin/import_tables.php to easily import gzipped tables  
+update: gzip additional database tables  
 update: uncomment if statement  
 update: hide category icons without an image  
 update: cast birthay to readable month day, year  
