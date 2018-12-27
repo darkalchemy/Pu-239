@@ -8,18 +8,18 @@ $pass = $_ENV['DB_PASSWORD'];
 $db = $_ENV['DB_DATABASE'];
 
 $tables = [
-    DATABASE_DIR . 'images.sql.gz',
-    DATABASE_DIR . 'imdb_info.sql.gz',
-    DATABASE_DIR . 'person.sql.gz',
-    DATABASE_DIR . 'trivia.sql.gz',
-    DATABASE_DIR . 'tvmaze.sql.gz',
+    DATABASE_DIR . 'images.sql.bz2',
+    DATABASE_DIR . 'imdb_info.sql.bz2',
+    DATABASE_DIR . 'person.sql.bz2',
+    DATABASE_DIR . 'trivia.sql.bz2',
+    DATABASE_DIR . 'tvmaze.sql.bz2',
 ];
 
 $i = 0;
 foreach ($tables as $table) {
     if (file_exists($table)) {
         $i++;
-        exec("gunzip < '$table' | mysql '$db' -u'{$user}' -p'{$pass}'");
+        exec("bunzip2 < '$table' | mysql -u'{$user}' -p'{$pass}' '$db'");
     }
 }
 

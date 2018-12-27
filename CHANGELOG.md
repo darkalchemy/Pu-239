@@ -1,4 +1,5 @@
 ### 27 Dec, 2018
+update: bzip2 instead of gzip addditional databases  
 update: show the correct number of replies view_forums.php  
 update: torrents.year to smallint  
 update: limit cast images to first 15  
