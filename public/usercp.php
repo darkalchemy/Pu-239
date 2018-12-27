@@ -537,12 +537,13 @@ if ($action === 'avatar') {
         $categories .= "
                                             <div id='cat-container' class='level-center'>";
         while ($a = mysqli_fetch_assoc($r)) {
+            $image = !empty($a['image']) ? "<img class='radius-sm' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='" . htmlsafechars($a['name']) . "'>" : htmlsafechars($a['name']);
             $categories .= "
                                                 <span class='margin10 bordered level-center bg-02 tooltipper' title='" . htmlsafechars($a['name']) . "'>
                                                     <input name='cat{$a['id']}' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? ' checked' : '') . " value='yes'>
                                                     <span class='cat-image left10'>
                                                         <a href='{$site_config['baseurl']}/browse.php?c" . (int) $a['id'] . "'>
-                                                            <img class='radius-sm' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . "'alt='" . htmlsafechars($a['name']) . "'>
+                                                            $image
                                                         </a>
                                                     </span>
                                                 </span>";
@@ -570,10 +571,7 @@ if ($action === 'avatar') {
     $HTMLOUT .= tr($lang['usercp_cats_sets'], "
                                             <select name='categorie_icon'>
                                                 <option value='1'" . (get_category_icons() == 1 ? ' selected' : '') . ">Default</option>
-                                                <option value='2'" . (get_category_icons() == 2 ? ' selected' : '') . ">Future</option>
-                                                <option value='3'" . (get_category_icons() == 3 ? ' selected' : '') . ">Alt</option>
-                                                <option value='4'" . (get_category_icons() == 4 ? ' selected' : '') . '>Pirate</option>
-                                            </select>', get_category_icons());
+                                            </select>", get_category_icons());
     $HTMLOUT .= tr($lang['usercp_tor_perpage'], "
                                             <input type='text' class='w-25' name='torrentsperpage' value='{$CURUSER['torrentsperpage']}'>
                                             <div>{$lang['usercp_default']}</div>", 1);

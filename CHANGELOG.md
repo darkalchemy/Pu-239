@@ -1,4 +1,5 @@
 ### 27 Dec, 2018
+update: hide category icons without an image  
 update: cast birthay to readable month day, year  
 update: cache plot IMDb plot lookup  
 update: database files  
