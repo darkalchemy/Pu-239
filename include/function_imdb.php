@@ -88,7 +88,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
             'cast',
         ];
 
-        $cast = [];
+        $cast = $persons = [];
         foreach ($members as $member) {
             if (count($imdb_data[$member]) > 0) {
                 foreach ($imdb_data[$member] as $person) {
@@ -101,7 +101,6 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                         'imdb_id' => $imdb_id,
                         'person_id' => $person['imdb']
                     ];
-
                 }
             }
         }
@@ -119,7 +118,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                 ->ignore()
                 ->execute();
         }
-        unset($cast);
+        unset($cast, $persons);
 
         if (!empty($imdb_data['plotoutline'])) {
             $values = [

@@ -1146,9 +1146,10 @@ DROP TABLE IF EXISTS `imdb_person`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `imdb_person` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `imdb_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
   `person_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`imdb_id`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `id_person` (`imdb_id`,`person_id`),
   KEY `person_id` (`person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -2719,4 +2720,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-26 12:04:48
+-- Dump completed on 2018-12-27  6:30:27
