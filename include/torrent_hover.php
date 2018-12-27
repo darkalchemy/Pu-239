@@ -7,15 +7,20 @@
  */
 function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles)
 {
-    global $site_config, $lang, $fluent, $subs;
+    global $site_config, $lang, $fluent, $subs, $cache;
 
     $released = $rating = $plot = $show_subs = '';
     if (!empty($imdb_id)) {
-        $plot = $fluent->from('imdb_info')
-            ->select(null)
-            ->select('plot')
-            ->where('imdb_id = ?', str_replace('tt', '', $imdb_id))
-            ->fetch('plot');
+        $plot = $cache->get('plot_' . $imdb_id);
+        if ($plot === false || is_null($plot)) {
+            $plot = $fluent->from('imdb_info')
+                ->select(null)
+                ->select('plot')
+                ->where('imdb_id = ?', str_replace('tt', '', $imdb_id))
+                ->fetch('plot');
+
+            $cache->set('plot_' . $imdb_id, $plot, 86400);
+        }
 
         if (!empty($plot)) {
             $stripped = strip_tags($plot);
@@ -27,7 +32,6 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$plot}</span>
                                                         </div>";
-            
         }
     }
     if (!empty($rating)) {
@@ -65,7 +69,6 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                 }
             }
         }
-        
         if (!empty($Subs)) {
             $show_subs = "
                                                     <div class='column padding5 is-4'>

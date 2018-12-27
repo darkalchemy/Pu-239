@@ -202,7 +202,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                                                         </div>" ;
             }
             if (!empty($bio['birthday'])) {
-				$birthdate = date("Y-m-d", strtotime($bio['birthday']));
+				$birthdate = date("F j, Y", strtotime($bio['birthday']));
 				$birthday = "
                                                         <div class='column padding5 is-4'>
                                                             <span class='size_4 has-text-primary'>Birthdate:</span>
@@ -212,7 +212,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                                                         </div>";
 			}
             if (!empty($bio['died'])) {
-				$died = date("Y-m-d", strtotime($bio['died']));
+				$died = date("F j, Y", strtotime($bio['died']));
 				$died = "
                                                         <div class='column padding5 is-4'>
                                                             <span class='size_4 has-text-primary'>Died On:</span>
@@ -229,7 +229,6 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$bio['birth_place']}</span>
                                                         </div>";
-                
             }
             if (!empty($bio['bio'])) {
                 $stripped = strip_tags($bio['bio']);

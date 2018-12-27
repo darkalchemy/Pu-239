@@ -1,4 +1,6 @@
 ### 27 Dec, 2018
+update: cast birthay to readable month day, year  
+update: cache plot IMDb plot lookup  
 update: database files  
 
 ### 26 Dec, 2018
