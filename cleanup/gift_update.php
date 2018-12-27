@@ -13,9 +13,9 @@ function gift_update($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
-//    if (Christmas()) {
-//        die();
-//    }
+    if (Christmas()) {
+        die();
+    }
     $query = $fluent->from('users')
         ->select(null)
         ->select('id')
