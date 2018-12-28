@@ -62,11 +62,10 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
             'poster' => $movie->photo(false),
             'country' => $movie->country(),
             'vote_count' => $movie->votes(),
-            'overview' => $movie->plotoutline(true),
             'mpaa' => $movie->mpaa(),
             'mpaa_reason' => $movie->mpaa_reason(),
             'id' => $imdbid,
-            'aspect_ration' => $movie->aspect_ratio(),
+            'aspect_ratio' => $movie->aspect_ratio(),
             'plot' => $movie->plot(),
             'top250' => $movie->top250(),
             'movietype' => $movie->movietype(),
@@ -170,25 +169,30 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
 
     $imdb = [
         'title' => 'Title',
+        'mpaa_reason' => 'MPAA',
         'country' => 'Country',
+        'language' => 'Language',
         'director' => 'Directors',
         'writing' => 'Writers',
         'producer' => 'Producer',
         'plot' => 'Description',
         'composer' => 'Music',
-        'plotoutline' => 'Plot outline',
+        'plotoutline' => 'Plot Outline',
+        'storyline' => 'Stroyline',
         'trailers' => 'Trailers',
         'genres' => 'All genres',
-        'language' => 'Language',
         'rating' => 'Rating',
+        'top250' => 'Top 250',
+        'aspect_ratio' => 'Aspect Ratio',
         'year' => 'Year',
         'runtime' => 'Runtime',
         'votes' => 'Votes',
         'critics' => 'Critic Rating',
+        'movietype' => 'Type',
         'updated' => 'Last Updated',
         'cast' => 'Cast',
     ];
-    $imdb_data['cast'] = array_slice($imdb_data['cast'], 0, 15);
+    $imdb_data['cast'] = array_slice($imdb_data['cast'], 0, 25);
     foreach ($imdb_data['cast'] as $pp) {
         if (!empty($pp['name']) && !empty($pp['photo'])) {
             $realname = $birthday = $died = $birthplace = $history = '';
@@ -305,6 +309,12 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
                 } elseif ($boo === 'Year') {
                     $year = 'Search by year: ' . $imdb_data['year'];
                     $imdb_data[$foo] = "<a href='{$site_config['baseurl']}/browse.php?search_year_start={$imdb_data['year']}&amp;search_year_end={$imdb_data['year']}' target='_blank' class='tooltipper' title='$year'>{$imdb_data['year']}</a>";
+                } elseif ($boo === 'MPAA') {
+                    if (empty($imdb_data['mpaa_reason']) && !empty($imdb_data['mpaa']['United States'])) {
+                        $imdb_data['mpaa_reason'] = $imdb_data['mpaa']['United States'];
+                    }
+                } elseif ($boo === 'Runtime') {
+                    $imdb_data['runtime'] = date('G:i', mktime(0, $imdb_data['runtime']));
                 }
                 $imdb_info .= "
                     <div class='columns'>
@@ -510,7 +520,7 @@ function get_imdb_info_short($imdb_id)
                                     </div>
                                     <div>
                                         <span class='size_5 right10 has-text-primary'>Overview: </span>
-                                        <span>" . htmlsafechars(strip_tags($imdb_data['overview'])) . '</span>
+                                        <span>" . htmlsafechars(strip_tags($imdb_data['plotoutline'])) . '</span>
                                     </div>
                                 </span>
                             </div>
@@ -678,7 +688,7 @@ function get_imdb_person($person_id)
     if ($imdb_person === false || is_null($imdb_person)) {
         $imdb_person = $fluent->from('person')
             ->where('imdb_id = ?', $person_id)
-            ->where('updated + 604800 > ?', TIME_NOW)
+            ->where('updated + 2592000 > ?', TIME_NOW)
             ->fetch();
 
         if (!empty($imdb_person)) {

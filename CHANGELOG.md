@@ -1,3 +1,7 @@
+### 28 Dec, 2018
+update: expiry time for cast to 30 days, up from 7 days  
+remove: extra databases tables from initial site data table  
+
 ### 27 Dec, 2018
 update: bzip2 instead of gzip addditional databases  
 update: show the correct number of replies view_forums.php  
