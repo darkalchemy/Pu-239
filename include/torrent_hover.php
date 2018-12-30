@@ -28,7 +28,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
             $plot = strlen($stripped) > 500 ? substr($plot, 0, 500) . '...' : $stripped;
             $plot = "
                                                         <div class='column padding5 is-4'>
-                                                            <span class='size_4 has-text-primary'>Plot:</span>
+                                                            <span class='size_4 has-text-primary has-text-weight-bold'>Plot:</span>
                                                         </div>
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$plot}</span>
@@ -39,7 +39,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
         $percent = $rating * 10;
         $rating = "
                                                     <div class='column padding5 is-4'>
-                                                        <span class='size_4 has-text-primary'>Rating:</span>
+                                                        <span class='size_4 has-text-primary has-text-weight-bold'>Rating:</span>
                                                     </div>
                                                     <div class='column padding5 is-8'>
                                                         <span class='size_4 is-flex'>
@@ -54,7 +54,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
     if (!empty($year)) {
         $released = "
                                                     <div class='column padding5 is-4'>
-                                                        <span class='size_4 has-text-primary'>Released:</span>
+                                                        <span class='size_4 has-text-primary has-text-weight-bold'>Released:</span>
                                                     </div>
                                                     <div class='column padding5 is-8'>
                                                         <span class='size_4'>{$year}</span>
@@ -73,7 +73,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
         if (!empty($Subs)) {
             $show_subs = "
                                                     <div class='column padding5 is-4'>
-                                                        <span class='size_4 has-text-primary'>Subtitles:</span>
+                                                        <span class='size_4 has-text-primary has-text-weight-bold'>Subtitles:</span>
                                                     </div>
                                                     <div class='column padding5 is-8'>
                                                         <span class='size_4'>" . implode(' ', $Subs) . "</span>
@@ -96,40 +96,40 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                         </span>
                                                     </div>
                                                     <div class='column padding10 is-8'>
-                                                        <span>
+                                                        <div class='padding20 is-8 bg-09 round10'>
                                                             <div class='columns is-multiline'>
                                                                 <div class='column padding5 is-4'>
-                                                                    <span class='size_4 has-text-primary'>{$lang['index_ltst_name']}</span>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_name']}</span>
                                                                 </div>
                                                                 <div class='column padding5 is-8'>" . htmlsafechars($name) . "</div>
                                                                 <div class='column padding5 is-4'>
-                                                                    <span class='size_4 has-text-primary'>{$lang['index_ltst_uploader']}</span>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_uploader']}</span>
                                                                 </div>
                                                                 <div class='column padding5 is-8'>
                                                                     $uploader
                                                                 </div>
                                                                 <div class='column padding5 is-4'>
-                                                                    <span class='size_4 has-text-primary'>{$lang['index_ltst_added']}</span>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_added']}</span>
                                                                 </div>
                                                                 <div class='column padding5 is-8'>" . get_date($added, 'DATE', 0, 1) . "</div>
                                                                 <div class='column padding5 is-4'>
-                                                                    <span class='size_4 has-text-primary'>{$lang['index_ltst_size']}</span>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_size']}</span>
                                                                 </div>
                                                                 <div class='column padding5 is-8'>" . mksize($size) . "</div>$show_subs
                                                                 <div class='column padding5 is-4'>
-                                                                    <span class='size_4 has-text-primary'>{$lang['index_ltst_seeder']}</span>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_seeder']}</span>
                                                                 </div>
                                                                 <div class='column padding5 is-8'>
                                                                     {$seeders}
                                                                 </div>
                                                                 <div class='column padding5 is-4'>
-                                                                    <span class='size_4 has-text-primary'>{$lang['index_ltst_leecher']}</span>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_leecher']}</span>
                                                                 </div>
                                                                 <div class='column padding5 is-8'>
                                                                     {$leechers}
                                                                 </div>{$released}{$rating}{$plot}
                                                             </div>
-                                                        </span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

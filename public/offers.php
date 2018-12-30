@@ -153,7 +153,7 @@ switch ($action) {
             preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $arr['link'], $imdb);
             $imdb = !empty($imdb[2]) ? $imdb[2] : '';
         }
-        $movie_info = get_imdb_info($imdb, false);
+        $movie_info = get_imdb_info($imdb, false, false, null, null);
 
         $row_did_they_vote = $fluent->from('offer_votes')
             ->select(null)

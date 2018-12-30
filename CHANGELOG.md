@@ -1,4 +1,6 @@
 ### 30 Dec, 2018
+fix: get_imdb_info()  
+update: add backgroung color to text over background images  
 update: add background image to torrent hover, if available  
 update: GeoIP files  
 fix: empty var cleanup/torrents_normalize.php  

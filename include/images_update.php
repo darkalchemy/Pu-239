@@ -233,7 +233,7 @@ function images_update()
         ->fetchAll();
 
     foreach ($imdbids as $imdbid) {
-        get_imdb_info($imdbid['imdb_id'], true);
+        get_imdb_info($imdbid['imdb_id'], true, false, null, null);
         get_omdb_info($imdbid['imdb_id'], false);
         update_torrent_data($imdbid['imdb_id']);
         $set = [
@@ -241,7 +241,7 @@ function images_update()
         ];
         $fluent->update('torrents')
             ->set($set)
-            ->where('id = ?', $$imdbid['imdb_id'])
+            ->where('id = ?', $imdbid['imdb_id'])
             ->execute();
     }
 
@@ -257,7 +257,7 @@ function images_update()
         preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $link['url'], $imdb);
         $imdb = !empty($imdb[2]) ? $imdb[2] : '';
         if (!empty($imdb) && !in_array($imdb, $imdb_ids)) {
-            get_imdb_info($imdb, true);
+            get_imdb_info($imdb, true, false, null, null);
             get_omdb_info($imdb, false);
             update_torrent_data($imdb);
             $set = [
@@ -282,7 +282,7 @@ function images_update()
         preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7})/i', $link['url'], $imdb);
         $imdb = !empty($imdb[2]) ? $imdb[2] : '';
         if (!empty($imdb) && !in_array($imdb, $imdb_ids)) {
-            get_imdb_info($imdb, true);
+            get_imdb_info($imdb, true, false, null, null);
             get_omdb_info($imdb, false);
             update_torrent_data($imdb);
             $set = [
