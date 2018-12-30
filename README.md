@@ -49,7 +49,7 @@ file(FlySystem)
 MySQL or MariaDB or Percona MySQL
 Adminer is included, only user #1 has access, others can be added, by id
 ```
-### To Install
+### To Install:
 ```
 # get the files
 git clone https://github.com/darkalchemy/Pu-239.git
