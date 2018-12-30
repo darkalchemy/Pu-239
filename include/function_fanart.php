@@ -11,7 +11,7 @@
  */
 function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
 {
-    global $cache, $BLOCKS, $fluent;
+    global $BLOCKS, $fluent;
 
     if (!$BLOCKS['fanart_api_on']) {
         return false;
@@ -35,18 +35,12 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
     if (empty($key) || empty($thetvdb_id) || !in_array($type, $types)) {
         return false;
     }
-    $fanart = $cache->get('show_images_' . $thetvdb_id);
-    if ($fanart === false || is_null($fanart)) {
-        $url = 'https://webservice.fanart.tv/v3/tv/';
-        $fanart = fetch($url . $thetvdb_id . '?api_key=' . $key);
-        if ($fanart != null) {
-            $fanart = json_decode($fanart, true);
-            $cache->set('show_images_' . $thetvdb_id, $fanart, 604800);
-        } else {
-            $cache->set('show_images_' . $thetvdb_id, 'failed', 86400);
-
-            return false;
-        }
+    $url = 'https://webservice.fanart.tv/v3/tv/';
+    $fanart = fetch($url . $thetvdb_id . '?api_key=' . $key);
+    if ($fanart != null) {
+        $fanart = json_decode($fanart, true);
+    } else {
+        return false;
     }
     if (!empty($fanart[$type])) {
         $images = [];
@@ -67,23 +61,18 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
                 'show',
                 'season',
             ], '', $type);
-            $insert = $cache->get("insert_fanart_{$type}_{$thetvdb_id}");
-            if ($insert === false || is_null($insert)) {
-                foreach ($images as $image) {
-                    $values = [
-                        'imdb_id' => $fanart['imdb_id'],
-                        'tmdb_id' => $fanart['tmdb_id'],
-                        'thetvdb_id' => $thetvdb_id,
-                        'url' => $image,
-                        'type' => $type,
-                    ];
-                    $fluent->insertInto('images')
-                        ->values($values)
-                        ->ignore()
-                        ->execute();
-
-                    $cache->set("insert_fanart_{$type}_{$thetvdb_id}", $thetvdb_id, 604800);
-                }
+            foreach ($images as $image) {
+                $values = [
+                    'imdb_id' => $fanart['imdb_id'],
+                    'tmdb_id' => $fanart['tmdb_id'],
+                    'thetvdb_id' => $thetvdb_id,
+                    'url' => $image,
+                    'type' => $type,
+                ];
+                $fluent->insertInto('images')
+                    ->values($values)
+                    ->ignore()
+                    ->execute();
             }
 
             shuffle($images);
@@ -105,7 +94,7 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
  */
 function getMovieImagesByID($id, $type = 'moviebackground')
 {
-    global $cache, $BLOCKS, $image_stuffs;
+    global $BLOCKS, $image_stuffs;
 
     if (!$BLOCKS['fanart_api_on']) {
         return false;
@@ -121,18 +110,12 @@ function getMovieImagesByID($id, $type = 'moviebackground')
         return false;
     }
 
-    $fanart = $cache->get("movie_images_{$type}_{$id}");
-    if ($fanart === false || is_null($fanart)) {
-        $url = 'https://webservice.fanart.tv/v3/movies/';
-        $fanart = fetch($url . $id . '?api_key=' . $key);
-        if ($fanart) {
-            $fanart = json_decode($fanart, true);
-            $cache->set("movie_images_{$type}_{$id}", $fanart, 604800);
-        } else {
-            $cache->set("movie_images_{$type}_{$id}", 'failed', 86400);
-
-            return false;
-        }
+    $url = 'https://webservice.fanart.tv/v3/movies/';
+    $fanart = fetch($url . $id . '?api_key=' . $key);
+    if ($fanart) {
+        $fanart = json_decode($fanart, true);
+    } else {
+        return false;
     }
 
     if (!empty($fanart[$type])) {
@@ -148,11 +131,7 @@ function getMovieImagesByID($id, $type = 'moviebackground')
             }
         }
         if (!empty($images)) {
-            $insert = $cache->get("insert_fanart_{$type}_{$id}");
-            if ($insert === false || is_null($insert)) {
-                $image_stuffs->insert($images);
-                $cache->set("insert_fanart_{$type}_{$id}", $id, 604800);
-            }
+            $image_stuffs->insert($images);
             shuffle($images);
 
             return $images[0]['url'];

@@ -19,7 +19,7 @@ use Imdb\Config;
  *
  * @throws Exception
  */
-function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false, $poster = false)
+function get_imdb_info(string $imdb_id, bool $title, bool $data_only, bool $tid, bool $poster)
 {
     global $cache, $BLOCKS, $torrent_stuffs, $image_stuffs, $site_config, $fluent;
 
@@ -32,7 +32,7 @@ function get_imdb_info($imdb_id, $title = true, $data_only = false, $tid = false
     $imdb_data = $cache->get('imdb_' . $imdb_id);
     if ($imdb_data === false || is_null($imdb_data)) {
         $config = new Config();
-        $config->language = 'en-US';
+        $config->language = $site_config['imdb_language'];
         $config->cachedir = IMDB_CACHE_DIR;
         $config->throwHttpExceptions = 0;
         $config->default_agent = get_random_useragent();
@@ -399,7 +399,7 @@ function get_imdb_title($imdb_id)
 
     $imdbid = $imdb_id;
     $imdb_id = str_replace('tt', '', $imdb_id);
-    $imdb_data = get_imdb_info($imdb_id, true, true);
+    $imdb_data = get_imdb_info($imdb_id, true, true, false, false);
     if (empty($imdb_data['title'])) {
         return false;
     }
@@ -424,7 +424,7 @@ function get_imdb_info_short($imdb_id)
 
     $imdbid = $imdb_id;
     $imdb_id = str_replace('tt', '', $imdb_id);
-    $imdb_data = get_imdb_info($imdb_id, true, true);
+    $imdb_data = get_imdb_info($imdb_id, true, true, false, false);
     if (empty($imdb_data)) {
         return false;
     }
@@ -590,7 +590,7 @@ function get_upcoming()
     if (!empty($imdbs)) {
         foreach ($imdbs as $day) {
             foreach ($day as $imdb) {
-                get_imdb_info($imdb);
+                get_imdb_info($imdb, true, true, false, false);
             }
         }
 
@@ -647,7 +647,7 @@ function update_torrent_data(string $imdb_id)
     }
 
     $imdb_id = str_replace('tt', '', $imdb_id);
-    $imdb_data = get_imdb_info($imdb_id, true, true);
+    $imdb_data = get_imdb_info($imdb_id, true, true, false, false);
     $set = [];
     if (!empty($imdb_data['newgenre'])) {
         $set = [
@@ -696,7 +696,7 @@ function get_imdb_person($person_id)
         }
 
         $config = new Config();
-        $config->language = 'en-US';
+        $config->language = $site_config['imdb_language'];
         $config->cachedir = IMDB_CACHE_DIR;
         $config->throwHttpExceptions = 0;
         $config->default_agent = get_random_useragent();

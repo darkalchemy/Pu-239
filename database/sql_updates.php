@@ -1865,5 +1865,47 @@ CREATE TABLE `categories` (
         'query' => "ALTER TABLE `torrents` MODIFY COLUMN `year` smallint NOT NULL DEFAULT 0",
         'flush' => false,
     ],
+    [
+        'id' => 1546167289,
+        'info' => 'Add column updated',
+        'date' => '30 Dec, 2018',
+        'query' => "ALTER TABLE `images` ADD COLUMN `updated` int(10) unsigned DEFAULT 0",
+        'flush' => false,
+    ],
+    [
+        'id' => 1546167290,
+        'info' => 'Add column checked',
+        'date' => '30 Dec, 2018',
+        'query' => "ALTER TABLE `images` ADD COLUMN `checked` int(10) unsigned DEFAULT 0",
+        'flush' => false,
+    ],
+    [
+        'id' => 1546167291,
+        'info' => 'Change unique index',
+        'date' => '30 Dec, 2018',
+        'query' => 'ALTER TABLE `images` DROP INDEX `url_type`, ADD CONSTRAINT `url` UNIQUE (`url`)',
+        'flush' => false,
+    ],
+    [
+        'id' => 1546167292,
+        'info' => 'Add column info_updated',
+        'date' => '30 Dec, 2018',
+        'query' => "ALTER TABLE `torrents` ADD COLUMN `info_updated` int(10) unsigned DEFAULT 0",
+        'flush' => false,
+    ],
+    [
+        'id' => 1546167293,
+        'info' => 'Add column updated',
+        'date' => '30 Dec, 2018',
+        'query' => "ALTER TABLE `requests` ADD COLUMN `updated` int(10) unsigned DEFAULT 0",
+        'flush' => false,
+    ],
+    [
+        'id' => 1546167294,
+        'info' => 'Add column updated',
+        'date' => '30 Dec, 2018',
+        'query' => "ALTER TABLE `offers` ADD COLUMN `updated` int(10) unsigned DEFAULT 0",
+        'flush' => false,
+    ],
 ];
 

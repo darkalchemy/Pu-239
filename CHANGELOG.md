@@ -1,3 +1,14 @@
+### 30 Dec, 2018
+update: database files  
+update: import_tables.php allow cli args  
+update: reduce cached time to 5 min newsrss.php  
+update: update images limit each item to 50  
+move: imdb language config to site_config  
+add: updatad/checked columns  
+add: delete user peers cache during cleanup  
+remove: unneeded cached items  
+add: bin/remove_altered_images.php  
+
 ### 29 Dec, 2018
 update: missing cache items  
 update: cheange PDO query warning message to info message  

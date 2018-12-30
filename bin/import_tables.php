@@ -16,7 +16,15 @@ $tables = [
 ];
 
 $i = 0;
-foreach ($tables as $table) {
+if (empty($argv[1])) {
+    foreach ($tables as $table) {
+        if (file_exists($table)) {
+            $i++;
+            exec("bunzip2 < '$table' | mysql -u'{$user}' -p'{$pass}' '$db'");
+        }
+    }
+} else {
+    $table = DATABASE_DIR . $argv[1];
     if (file_exists($table)) {
         $i++;
         exec("bunzip2 < '$table' | mysql -u'{$user}' -p'{$pass}' '$db'");

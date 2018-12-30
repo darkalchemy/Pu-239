@@ -1116,8 +1116,10 @@ CREATE TABLE `images` (
   `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` enum('poster','banner','background') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'poster',
   `fetched` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
+  `updated` int(10) unsigned DEFAULT '0',
+  `checked` int(10) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `url_type` (`url`,`type`)
+  UNIQUE KEY `url` (`url`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1436,6 +1438,7 @@ CREATE TABLE `offers` (
   `comments` int(10) unsigned NOT NULL DEFAULT '0',
   `link` varchar(240) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` enum('approved','pending','denied') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
+  `updated` int(10) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `id_added` (`id`),
   KEY `offered_by_name` (`offer_name`),
@@ -1843,6 +1846,7 @@ CREATE TABLE `requests` (
   `vote_no_count` int(10) unsigned NOT NULL DEFAULT '0',
   `comments` int(10) unsigned NOT NULL DEFAULT '0',
   `link` varchar(240) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated` int(10) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `id_added` (`id`),
   KEY `requested_by_name` (`request_name`),
@@ -2257,6 +2261,7 @@ CREATE TABLE `torrents` (
   `freetorrent` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `isbn` varchar(13) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `staff_picks` int(10) unsigned NOT NULL DEFAULT '0',
+  `info_updated` int(10) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `info_hash` (`info_hash`),
   KEY `owner` (`owner`),
@@ -2720,4 +2725,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-28  5:42:07
+-- Dump completed on 2018-12-30  9:34:17

@@ -4,13 +4,13 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 
 $image_proxy = new DarkAlchemy\Pu239\ImageProxy();
 $paths = [
-    IMAGES_DIR . DIRECTORY_SEPARATOR . 'proxy',
+    IMAGES_DIR . 'proxy',
 ];
 
 $optimize = !empty($argv[1]) && $argv[1] === 'optimize' ? true : false;
 $dirsize = $o = $i = 0;
 foreach ($paths as $path) {
-    $dirsize += (int) GetDirectorySize($path, false, false);
+    $dirsize += GetDirectorySize($path, false, false);
     $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
     foreach ($objects as $name => $object) {
         if (!exif_imagetype($name)) {

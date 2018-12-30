@@ -72,7 +72,7 @@ function autoclean()
                 foreach ($query as $tfreak_new) {
                     $tfreak_news[] = $tfreak_new['link'];
                 }
-                $cache->set('tfreak_news_links_', $tfreak_news, 3600);
+                $cache->set('tfreak_news_links_', $tfreak_news, 300);
             }
 
             $cache->set('tfreak_cron_', TIME_NOW, 30);

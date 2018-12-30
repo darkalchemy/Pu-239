@@ -36,7 +36,7 @@ date_default_timezone_set('UTC');
 $site_config['expires']['remember_me'] = 14; // number of days to keep long term cookie
 $site_config['expires']['latestuser'] = 3600; // 3600 = 1 hour
 $site_config['expires']['motw'] = 3600; // 3600 = 1 hour
-$site_config['expires']['peers_'] = 120; // 120 = 2 minutes
+$site_config['expires']['peers_'] = 1800; // 1800 = 15 minutes
 $site_config['expires']['unread'] = 86400; // 86400 = 1 day
 $site_config['expires']['alerts'] = 86400; // 86400 = 1 day
 $site_config['expires']['searchcloud'] = 86400; // 86400 = 1 day
@@ -169,6 +169,7 @@ $site_config['stylesheet'] = 1;
 $site_config['categorie_icon'] = 1;
 $site_config['comment_min_class'] = 4; // min class to be checked when posting comments
 $site_config['comment_check'] = 1; // set it to 0 if you wanna allow commenting with out staff checking
+$site_config['imdb_language'] = 'en-US';
 // for imdb, tmdb, fanart, subs, youtube
 $site_config['movie_cats'] = [
     13,

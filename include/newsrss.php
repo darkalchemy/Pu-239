@@ -31,12 +31,8 @@ function foxnews_shout($links = [])
             $items = $doc->getElementsByTagName('item');
             $pubs = [];
             foreach ($items as $item) {
-                $title = empty($item->getElementsByTagName('title')
-                                    ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
-                                                                      ->item(0)->nodeValue;
-                $link = empty($item->getElementsByTagName('link')
-                                   ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
-                                                                     ->item(0)->nodeValue;
+                $title = empty($item->getElementsByTagName('title')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')->item(0)->nodeValue;
+                $link = empty($item->getElementsByTagName('link')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')->item(0)->nodeValue;
                 $pubs[] = [
                     'title' => replace_unicode_strings($title),
                     'link' => replace_unicode_strings($link),
@@ -96,12 +92,8 @@ function tfreak_shout($links = [])
         $items = $doc->getElementsByTagName('item');
         $pubs = [];
         foreach ($items as $item) {
-            $title = empty($item->getElementsByTagName('title')
-                                ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')
-                                                                  ->item(0)->nodeValue;
-            $link = empty($item->getElementsByTagName('link')
-                               ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')
-                                                                 ->item(0)->nodeValue;
+            $title = empty($item->getElementsByTagName('title')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')->item(0)->nodeValue;
+            $link = empty($item->getElementsByTagName('link')->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')->item(0)->nodeValue;
             $pubs[] = [
                 'title' => replace_unicode_strings($title),
                 'link' => replace_unicode_strings($link),

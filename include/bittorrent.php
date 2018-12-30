@@ -728,27 +728,7 @@ function mksize($size)
     for ($i = 0; ($size / 1024) > 0.9; $i++, $size /= 1024) {
     }
 
-    return round($size, [
-            0,
-            0,
-            1,
-            2,
-            2,
-            3,
-            3,
-            4,
-            4,
-        ][$i]) . ' ' . [
-            'B',
-            'kB',
-            'MB',
-            'GB',
-            'TB',
-            'PB',
-            'EB',
-            'ZB',
-            'YB',
-        ][$i];
+    return round($size, [0, 0, 1, 2, 2, 3, 3, 4, 4][$i]) . ' ' . ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'][$i];
 }
 
 /**
@@ -1957,12 +1937,6 @@ function time24to12($timestamp, $sec = false)
     return get_date($timestamp, 'WITHOUT_SEC', 1, 1);
 }
 
-/**
- * @param      $path
- * @param bool $human
- *
- * @return string
- */
 function GetDirectorySize($path, $human, $count)
 {
     $bytestotal = $files = 0;
@@ -1972,14 +1946,6 @@ function GetDirectorySize($path, $human, $count)
             $bytestotal += $object->getSize();
             $files++;
         }
-
-/*
-        continue to test for speed
-        $io = popen('/usr/bin/du -sb ' . $path, 'r');
-        $bytestotal = intval(fgets($io,80));
-        pclose($io);
-        $files = `ls $path | wc -l`;
-*/
     }
 
     if ($count) {

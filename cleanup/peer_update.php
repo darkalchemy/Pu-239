@@ -7,7 +7,7 @@ function peer_update($data)
 {
     $time_start = microtime(true);
     dbconn();
-    global $site_config, $queries, $torrent_stuffs;
+    global $site_config, $queries, $torrent_stuffs, $cache;
 
     set_time_limit(1200);
     ignore_user_abort(true);
@@ -28,6 +28,7 @@ function peer_update($data)
         } else {
             ++$torrent_leeches[$torrentid];
         }
+        $cache->delete('peers_' . $dead_peer['userid']);
     }
     foreach (array_keys($torrent_seeds) as $tid) {
         $update = [];
