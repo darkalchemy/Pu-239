@@ -30,7 +30,7 @@ A quick site intro video is available [here](https://www.youtube.com/watch?v=LyW
 If you like this project, please consider supporting me on [Patreon](https://www.patreon.com/user?u=15795177) 
 
 #### Please log in as a non-privileged user, NOT root, to install this.  
-### To Install:
+### Prior to install:
 ```
 # required apps
 jpegoptim, optipng, pngquant, gifsicle, imagemagick
@@ -48,7 +48,9 @@ file(FlySystem)
 # data storage
 MySQL or MariaDB or Percona MySQL
 Adminer is included, only user #1 has access, others can be added, by id
-
+```
+### To Install
+```
 # get the files
 git clone https://github.com/darkalchemy/Pu-239.git
 
