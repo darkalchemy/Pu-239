@@ -295,7 +295,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, bool $tid,
     foreach ($imdb as $foo => $boo) {
         if (!empty($imdb_data[$foo])) {
             if (!is_array($imdb_data[$foo])) {
-                $imdb_data[$foo] = $boo === 'Title' ? "<a href='{$site_config['baseurl']}/browse.php?search_imdb={$imdbid}' class='tooltipper' title='Browse by IMDb'>{$imdb_data[$foo]}</a>" : $imdb_data[$foo];
+                $imdb_data[$foo] = $boo === 'Title' ? "<a href='{$site_config['baseurl']}/browse.php?si={$imdbid}' class='tooltipper' title='Browse by IMDb'>{$imdb_data[$foo]}</a>" : $imdb_data[$foo];
                 if ($boo === 'Rating') {
                     $percent = $imdb_data['rating'] * 10;
                     $imdb_data[$foo] = "
@@ -308,7 +308,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, bool $tid,
                         </span>";
                 } elseif ($boo === 'Year') {
                     $year = 'Search by year: ' . $imdb_data['year'];
-                    $imdb_data[$foo] = "<a href='{$site_config['baseurl']}/browse.php?search_year_start={$imdb_data['year']}&amp;search_year_end={$imdb_data['year']}' target='_blank' class='tooltipper' title='$year'>{$imdb_data['year']}</a>";
+                    $imdb_data[$foo] = "<a href='{$site_config['baseurl']}/browse.php?sys={$imdb_data['year']}&amp;sye={$imdb_data['year']}' target='_blank' class='tooltipper' title='$year'>{$imdb_data['year']}</a>";
                 } elseif ($boo === 'MPAA') {
                     if (empty($imdb_data['mpaa_reason']) && !empty($imdb_data['mpaa']['United States'])) {
                         $imdb_data['mpaa_reason'] = $imdb_data['mpaa']['United States'];
@@ -344,7 +344,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, bool $tid,
             } elseif ($foo === 'genres') {
                 foreach ($imdb_data[$foo] as $genre) {
                     $genre_title = 'Search by genre: ' . ucwords($genre);
-                    $imdb_tmp[] = "<a href='{$site_config['baseurl']}/browse.php?search_genre=" . urlencode(strtolower($genre)) . "' target='_blank' class='tooltipper' title='$genre_title'>" . ucwords($genre) . '</a>';
+                    $imdb_tmp[] = "<a href='{$site_config['baseurl']}/browse.php?sg=" . urlencode(strtolower($genre)) . "' target='_blank' class='tooltipper' title='$genre_title'>" . ucwords($genre) . '</a>';
                 }
             }
             if (!empty($imdb_tmp)) {

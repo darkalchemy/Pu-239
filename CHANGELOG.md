@@ -1,4 +1,5 @@
 ### 30 Dec, 2018
+update: reduce query string length browse.php  
 update: reverse order log files log_viewer.php  
 update: cron jobs log output  
 update: database files  

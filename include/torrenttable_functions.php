@@ -271,7 +271,7 @@ function torrenttable($res, $variant = 'index')
             $newgenre = [];
             $row['newgenre'] = explode(',', $row['newgenre']);
             foreach ($row['newgenre'] as $foo) {
-                $newgenre[] = "<a href='{$site_config['baseurl']}/browse.php?search_genre=" . strtolower(trim($foo)) . "'>" . ucfirst(strtolower(trim($foo))) . '</a>';
+                $newgenre[] = "<a href='{$site_config['baseurl']}/browse.php?sg=" . strtolower(trim($foo)) . "'>" . ucfirst(strtolower(trim($foo))) . '</a>';
             }
             if (!empty($newgenre)) {
                 $icons[] = implode(', ', $newgenre);

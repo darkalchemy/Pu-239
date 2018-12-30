@@ -24,13 +24,12 @@ if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
 $count = $fluent->from('torrents AS t')
     ->select(null)
     ->select('COUNT(*) AS count');
-    
+
 $select = $fluent->from('torrents AS t')
     ->select('u.username')
     ->select('u.class')
     ->leftJoin('users AS u ON t.owner = u.id');
 
-    
 $HTMLOUT = $addparam = $new_button = $title = '';
 $stdfoot = [
     'js' => [
@@ -43,16 +42,16 @@ $stdfoot = [
 $lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'), load_language('bookmark'));
 
 $valid_search = [
-    'search_name',
-    'search_descr',
-    'search_genre',
-    'search_owner',
-    'search_year_start',
-    'search_year_end',
-    'search_rating_start',
-    'search_rating_end',
-    'search_imdb',
-    'search_isbn',
+    'sn',
+    'sd',
+    'sg',
+    'so',
+    'sys',
+    'sye',
+    'srs',
+    'sre',
+    'si',
+    'ss',
 ];
 
 if (isset($_GET['sort'], $_GET['type'])) {
@@ -155,46 +154,47 @@ foreach ($valid_search as $search) {
         $cleaned = searchfield($_GET[$search]);
         $title .= " $cleaned";
         $insert_cloud = [
-            'search_name',
-            'search_descr',
-            'search_imdb',
-            'search_isbn',
+            'sn',
+            'sd',
+            'si',
+            'ss',
         ];
         if (in_array($search, $insert_cloud)) {
-            searchcloud_insert($cleaned, str_replace('search_', '', $search));
+            $column = str_replace(['sn', 'sd', 'si', 'ss'], ['name','descr','imdb','isbn'], $search);
+            searchcloud_insert($cleaned, $column);
         }
         $addparam .= "{$search}=" . urlencode($cleaned) . '&amp;';
-        if ($search === 'search_name') {
+        if ($search === 'sn') {
             $count = $count->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
             $select = $select->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-        } elseif ($search === 'search_descr') {
+        } elseif ($search === 'sd') {
             $count = $count->where('MATCH (search_text, descr) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
             $select = $select->where('MATCH (search_text, descr) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-        } elseif ($search === 'search_genre') {
+        } elseif ($search === 'sg') {
             $count = $count->where('MATCH (newgenre) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
             $select = $select->where('MATCH (newgenre) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
-        } elseif ($search === 'search_owner') {
+        } elseif ($search === 'so') {
             $count = $count->where('u.username = ?', $cleaned);
             $select = $select->where('u.username = ?', $cleaned);
-        } elseif ($search === 'search_year_start') {
+        } elseif ($search === 'sys') {
             $count = $count->where('t.year >= ?', (int) $cleaned);
             $select = $select->where('t.year >= ?', (int) $cleaned);
-        } elseif ($search === 'search_year_end') {
+        } elseif ($search === 'sye') {
             $count = $count->where('t.year <= ?', (int) $cleaned);
             $select = $select->where('t.year <= ?', (int) $cleaned);
-        } elseif ($search === 'search_rating_start') {
+        } elseif ($search === 'srs') {
             $count = $count->where('t.rating >= ?', (float) $cleaned);
             $select = $select->where('t.rating >= ?', (float) $cleaned);
-        } elseif ($search === 'search_rating_end') {
+        } elseif ($search === 'sre') {
             $count = $count->where('t.rating <= ?', (float) $cleaned);
             $select = $select->where('t.rating <= ?', (float) $cleaned);
-        } elseif ($search === 'search_imdb') {
+        } elseif ($search === 'si') {
             $imdb = preg_match('/(tt\d{7})/', $cleaned, $match);
             if (!empty($match[1])) {
                 $count = $count->where('t.imdb_id = ?', $match[1]);
                 $select = $select->where('t.imdb_id = ?', $cleaned);
             }
-        } elseif ($search === 'search_isbn') {
+        } elseif ($search === 'ss') {
             $isbn = preg_match('/\d{7,10}/', $cleaned, $match);
             if (!empty($match[1])) {
                 $count = $count->where('t.isbn = ?', $match[1]);
@@ -280,19 +280,19 @@ $HTMLOUT .= main_div("
                         <div class='columns'>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_name']}</div>
-                                <input id='search' name='search_name' type='text' data-csrf='" . $session->get('csrf_token') . "' placeholder='{$lang['search_name']}' class='search w-100' value='" . (!empty($_GET['search_name']) ? $_GET['search_name'] : '') . "' onkeyup='autosearch()'>
+                                <input id='search' name='sn' type='text' data-csrf='" . $session->get('csrf_token') . "' placeholder='{$lang['search_name']}' class='search w-100' value='" . (!empty($_GET['sn']) ? $_GET['sn'] : '') . "' onkeyup='autosearch()'>
                             </div>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_description']}</div>
-                                <input name='search_descr' type='text' placeholder='{$lang['search_desc']}' class='search w-100' value='" . (!empty($_GET['search_descr']) ? $_GET['search_descr'] : '') . "'>
+                                <input name='sd' type='text' placeholder='{$lang['search_desc']}' class='search w-100' value='" . (!empty($_GET['sd']) ? $_GET['sd'] : '') . "'>
                             </div>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_uploader']}</div>
-                                <input name='search_owner' type='text' placeholder='{$lang['search_uploader']}' class='search w-100' value='" . (!empty($_GET['search_owner']) ? $_GET['search_owner'] : '') . "'>
+                                <input name='so' type='text' placeholder='{$lang['search_uploader']}' class='search w-100' value='" . (!empty($_GET['so']) ? $_GET['so'] : '') . "'>
                             </div>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_genre']}</div>
-                                <input name='search_genre' type='text' placeholder='{$lang['search_genre']}' class='search w-100' value='" . (!empty($_GET['search_genre']) ? $_GET['search_genre'] : '') . "'>
+                                <input name='sg' type='text' placeholder='{$lang['search_genre']}' class='search w-100' value='" . (!empty($_GET['sg']) ? $_GET['sg'] : '') . "'>
                             </div>
                         </div>
                         <div class='columns'>
@@ -300,11 +300,11 @@ $HTMLOUT .= main_div("
                                 <div class='columns'>
                                     <div class='column'>
                                         <div class='has-text-centered bottom10'>{$lang['browse_year_start']}</div>
-                                        <input name='search_year_start' type='number' min='1900' max='" . (date('Y') + 1) . "' placeholder='{$lang['search_year_start']}' class='search w-100' value='" . (!empty($_GET['search_year_start']) ? $_GET['search_year_start'] : '') . "'>
+                                        <input name='sys' type='number' min='1900' max='" . (date('Y') + 1) . "' placeholder='{$lang['search_year_start']}' class='search w-100' value='" . (!empty($_GET['sys']) ? $_GET['sys'] : '') . "'>
                                     </div>
                                     <div class='column'>
                                         <div class='has-text-centered bottom10'>{$lang['browse_year_end']}</div>
-                                        <input name='search_year_end' type='number' min='1900' max='" . (date('Y') + 1) . "' placeholder='{$lang['search_year_end']}' class='search w-100' value='" . (!empty($_GET['search_year_end']) ? $_GET['search_year_end'] : '') . "'>
+                                        <input name='sye' type='number' min='1900' max='" . (date('Y') + 1) . "' placeholder='{$lang['search_year_end']}' class='search w-100' value='" . (!empty($_GET['sye']) ? $_GET['sye'] : '') . "'>
                                     </div>
                                 </div>
                             </div>
@@ -312,21 +312,21 @@ $HTMLOUT .= main_div("
                                 <div class='columns'>
                                     <div class='column'>
                                         <div class='has-text-centered bottom10'>{$lang['browse_rating_start']}</div>
-                                        <input name='search_rating_start' type='number' min='0' max='10' step='0.1' placeholder='{$lang['search_rating_start']}' class='search w-100' value='" . (!empty($_GET['search_rating_start']) ? $_GET['search_rating_start'] : '') . "'>
+                                        <input name='srs' type='number' min='0' max='10' step='0.1' placeholder='{$lang['search_rating_start']}' class='search w-100' value='" . (!empty($_GET['srs']) ? $_GET['srs'] : '') . "'>
                                     </div>
                                     <div class='column'>
                                         <div class='has-text-centered bottom10'>{$lang['browse_rating_end']}</div>
-                                        <input name='search_rating_end' type='number' min='0' max='10' step='0.1' placeholder='{$lang['search_rating_end']}' class='search w-100' value='" . (!empty($_GET['search_rating_end']) ? $_GET['search_rating_end'] : '') . "'>
+                                        <input name='sre' type='number' min='0' max='10' step='0.1' placeholder='{$lang['search_rating_end']}' class='search w-100' value='" . (!empty($_GET['sre']) ? $_GET['sre'] : '') . "'>
                                     </div>
                                 </div>
                             </div>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_imdb']}</div>
-                                <input name='search_imdb' type='text' placeholder='{$lang['search_imdb']}' class='search w-100' value='" . (!empty($_GET['search_imdb']) ? $_GET['search_imdb'] : '') . "'>
+                                <input name='si' type='text' placeholder='{$lang['search_imdb']}' class='search w-100' value='" . (!empty($_GET['si']) ? $_GET['si'] : '') . "'>
                             </div>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_isbn']}</div>
-                                <input name='search_isbn' type='text' placeholder='{$lang['search_isbn']}' class='search w-100' value='" . (!empty($_GET['search_isbn']) ? $_GET['search_isbn'] : '') . "'>
+                                <input name='ss' type='text' placeholder='{$lang['search_isbn']}' class='search w-100' value='" . (!empty($_GET['ss']) ? $_GET['ss'] : '') . "'>
                             </div>
                         </div>
                         <div class='columns top20'>
