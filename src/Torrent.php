@@ -338,6 +338,8 @@ class Torrent
                 'banners_',
                 'get_torrent_count_',
                 'torrent_descr_',
+                'staff_picks_',
+                'motw_',
                 $tid,
             ]);
             $this->clear_caches();

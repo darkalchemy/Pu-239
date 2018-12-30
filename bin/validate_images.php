@@ -10,7 +10,7 @@ $paths = [
 $optimize = !empty($argv[1]) && $argv[1] === 'optimize' ? true : false;
 $dirsize = $o = $i = 0;
 foreach ($paths as $path) {
-    $dirsize += (int) GetDirectorySize($path, false);
+    $dirsize += (int) GetDirectorySize($path, false, false);
     $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
     foreach ($objects as $name => $object) {
         if (!exif_imagetype($name)) {

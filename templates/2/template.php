@@ -85,7 +85,7 @@ function stdhead($title = '', $stdhead = null)
         }
         document.body.style.fontSize = '{$font_size}%';
     </script>
-    <div id='container'>
+    <div id='container'></div>
         <div class='page-wrapper'>";
     if ($CURUSER) {
         $htmlout .= navbar();
@@ -249,8 +249,9 @@ function stdfoot($stdfoot = false)
                 $stats['Hits'] = number_format(($stats['get_hits'] / $stats['cmd_get']) * 100, 3);
                 $header = $lang['gl_stdfoot_querys_mstat3'] . $stats['Hits'] . $lang['gl_stdfoot_querys_mstat4'] . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['curr_items']) . "{$lang['gl_stdfoot_querys_mstat6']}" . mksize($stats['bytes']);
             }
-        } elseif ($_ENV['CACHE_DRIVER'] === 'files') {
-            $header = "{$lang['gl_stdfoot_querys_fly1']}{$_ENV['FILES_PATH']} {$lang['gl_stdfoot_querys_fly2']}" . GetDirectorySize($_ENV['FILES_PATH']);
+        } elseif ($_ENV['CACHE_DRIVER'] === 'file') {
+            $files_info = GetDirectorySize($_ENV['FILES_PATH'], true, true);
+            $header = "{$lang['gl_stdfoot_querys_fly1']}{$_ENV['FILES_PATH']} Count: {$files_info[1]} {$lang['gl_stdfoot_querys_fly2']} {$files_info[0]}";
         } elseif ($_ENV['CACHE_DRIVER'] === 'couchbase') {
             $header = $lang['gl_stdfoot_querys_cbase'];
         }
@@ -352,6 +353,7 @@ function stdfoot($stdfoot = false)
     }
 
     $htmlfoot .= '
+        </div>
     </div>
 </body>
 </html>';

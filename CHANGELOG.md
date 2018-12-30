@@ -1,3 +1,9 @@
+### 29 Dec, 2018
+update: missing cache items  
+update: cheange PDO query warning message to info message  
+add: bin/clear_cache.php bin/remove_torrents.php  
+fix: cache stats when using file  
+
 ### 28 Dec, 2018
 update: expiry time for cast to 30 days, up from 7 days  
 remove: extra databases tables from initial site data table  

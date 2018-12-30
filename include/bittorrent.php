@@ -1963,16 +1963,38 @@ function time24to12($timestamp, $sec = false)
  *
  * @return string
  */
-function GetDirectorySize($path, $human = true)
+function GetDirectorySize($path, $human, $count)
 {
-    $bytestotal = 0;
+    $bytestotal = $files = 0;
     $path = realpath($path);
-    if ($path !== false && $path != '' && file_exists($path)) {
+    if ($path !== false && !empty($path) && is_dir($path)) {
         foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)) as $object) {
             $bytestotal += $object->getSize();
+            $files++;
         }
+
+/*
+        continue to test for speed
+        $io = popen('/usr/bin/du -sb ' . $path, 'r');
+        $bytestotal = intval(fgets($io,80));
+        pclose($io);
+        $files = `ls $path | wc -l`;
+*/
     }
 
+    if ($count) {
+        if ($human) {
+            return [
+                mksize($bytestotal),
+                $files,
+            ];
+        }
+
+        return [
+            $bytestotal,
+            $files,
+        ];
+    }
     if ($human) {
         return mksize($bytestotal);
     }
