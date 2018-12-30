@@ -64,16 +64,12 @@ function autoclean()
         echo "Newsrss Starting\n";
         $tfreak_cron = $cache->get('tfreak_cron_');
         if ($tfreak_cron === false || is_null($tfreak_cron)) {
-            $tfreak_news = $cache->get('tfreak_news_links_');
-            if ($tfreak_news === false || is_null($tfreak_news)) {
-                $query = $fluent->from('newsrss')
-                    ->select(null)
-                    ->select('link');
+            $query = $fluent->from('newsrss')
+                ->select(null)
+                ->select('link');
 
-                foreach ($query as $tfreak_new) {
-                    $tfreak_news[] = $tfreak_new['link'];
-                }
-                $cache->set('tfreak_news_links_', $tfreak_news, 300);
+            foreach ($query as $tfreak_new) {
+                $tfreak_news[] = $tfreak_new['link'];
             }
 
             $cache->set('tfreak_cron_', TIME_NOW, 30);
