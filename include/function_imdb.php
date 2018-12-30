@@ -760,6 +760,7 @@ function get_top_movies()
 
     $top = $cache->get('imdb_top_movies_');
     if ($top === false || is_null($top)) {
+        echo 'not cached';
         $top = [];
         for ($i = 1; $i <= 1000; $i += 50) {
             $url = 'https://www.imdb.com/search/title?groups=top_1000&sort=user_rating,desc&start=' . $i;

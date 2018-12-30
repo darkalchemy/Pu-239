@@ -7,27 +7,27 @@
  *
  * @throws \Envms\FluentPDO\Exception
  */
-function find_images(string $imdb_id)
+function find_images(string $imdb_id, $type = 'poster')
 {
     global $cache, $fluent;
 
-    $posters = $cache->get('posters_' . $imdb_id);
-    if ($posters === false || is_null($posters)) {
-        $posters = $fluent->from('images')
+    $images = $cache->get($type . '_' . $imdb_id);
+    if ($images === false || is_null($images)) {
+        $images = $fluent->from('images')
             ->select(null)
             ->select('url')
-            ->where('type = "poster"')
+            ->where('type = ?', $type)
             ->where('imdb_id = ?', $imdb_id)
             ->fetchAll();
 
-        $cache->set('posters_' . $imdb_id, $posters, 0);
+        $cache->set($type . '_' . $imdb_id, $images, 0);
     }
 
-    if ($posters) {
-        shuffle($posters);
-        $poster = $posters[0]['url'];
+    if ($images) {
+        shuffle($images);
+        $image = $images[0]['url'];
 
-        return $poster;
+        return $image;
     }
 
     return false;

@@ -1,4 +1,5 @@
 ### 30 Dec, 2018
+update: add background image to torrent hover, if available  
 update: GeoIP files  
 fix: empty var cleanup/torrents_normalize.php  
 add: goaccess access.log analyzer  

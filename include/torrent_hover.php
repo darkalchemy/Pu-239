@@ -11,6 +11,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
 
     $released = $rating = $plot = $show_subs = '';
     if (!empty($imdb_id)) {
+        $background = find_images($imdb_id, $type = 'background');
         $plot = $cache->get('plot_' . $imdb_id);
         if ($plot === false || is_null($plot)) {
             $plot = $fluent->from('imdb_info')
@@ -80,12 +81,13 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
         }
     }
 
+    $background = !empty($background) ? " style='background-image: url({$background});'" : '';
     $content = "
                             <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
                                 <span class='dt-tooltipper-large' data-tooltip-content='#{$block_id}_tooltip'>
                                     {$text}
                                     <div class='tooltip_templates'>
-                                        <div id='{$block_id}_tooltip'>
+                                        <div id='{$block_id}_tooltip' class='round10 tooltip-background'{$background}>
                                             <div class='tooltip-torrent padding10'>
                                                 <div class='columns is-marginless is-paddingless'>
                                                     <div class='column padding10 is-4'>
