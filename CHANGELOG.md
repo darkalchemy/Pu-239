@@ -1,4 +1,5 @@
 ### 30 Dec, 2018
+remove: extraneous cache file  
 update: remove cached inside of cached newsrss  
 update: reduce query string length browse.php  
 update: reverse order log files log_viewer.php  

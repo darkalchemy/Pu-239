@@ -8,7 +8,6 @@ global $cache;
 if (!empty($argv[1]) && $argv[1] === 'force') {
     $cache->delete('cleanup_check_');
     $cache->delete('tfreak_cron_');
-    $cache->delete('tfreak_news_links_');
 }
 
 echo "===================================================\n";

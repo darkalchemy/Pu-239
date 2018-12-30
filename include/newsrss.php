@@ -12,7 +12,7 @@ function foxnews_shout($links = [])
     $empty = empty($links);
     $feeds = [
         'Tech' => 'http://feeds.foxnews.com/foxnews/tech',
-        //'World' => 'http://feeds.foxnews.com/foxnews/world',
+        'World' => 'http://feeds.foxnews.com/foxnews/world',
         //'Entertainment' => 'http://feeds.foxnews.com/foxnews/entertainment',
         //'Sports' => 'http://feeds.foxnews.com/foxnews/sports',
     ];
@@ -57,7 +57,6 @@ function foxnews_shout($links = [])
                                 ->values($values);
                 $newid = $query->execute();
                 if ($newid) {
-                    $cache->set('tfreak_news_links_', $links, 86400);
                     if (!$empty || $count === $i++) {
                         $msg = "[color=yellow]In $key News:[/color] [url={$pub['link']}]{$pub['title']}[/url]";
                         autoshout($msg, 0, 1800);
@@ -118,7 +117,6 @@ function tfreak_shout($links = [])
                             ->values($values);
             $newid = $query->execute();
             if ($newid) {
-                $cache->set('tfreak_news_links_', $links, 86400);
                 if (!$empty || $count === $i++) {
                     $msg = "[color=yellow]TFreak News:[/color] [url={$pub['link']}]{$pub['title']}[/url]";
                     autoshout($msg, 0, 1800);
@@ -192,7 +190,6 @@ function github_shout($links = [])
                                 ->values($values);
                 $newid = $query->execute();
                 if ($newid) {
-                    $cache->set('tfreak_news_links_', $links, 86400);
                     if (!$empty || $count === $i++) {
                         $msg = "[color=yellow]Git Commit [$key branch]:[/color] [url={$pub['link']}]{$pub['title']}[/url] => {$pub['commit']}";
                         autoshout($msg, 0, 1800);
