@@ -15,7 +15,7 @@ function goaccess_cleanup($data)
         $path = '/dev/shm/goaccess/';
         make_dir($path);
         passthru("zcat /var/log/nginx/access.log.gz* > {$path}access.log");
-        passthru("/usr/bin/goaccess '{$path}access.log' -p '" . BIN_DIR . "goaccess.conf' -o '" . CACHE_DIR . "goaccess.html' \n");
+        passthru("/usr/bin/goaccess '{$path}access.log' -p '" . BIN_DIR . "goaccess.conf' --real-os --geoip-database='" . ROOT_DIR . "GeoIP/GeoLiteCity.dat' -o '" . CACHE_DIR . "goaccess.html' \n");
     }
 
     $time_end = microtime(true);
