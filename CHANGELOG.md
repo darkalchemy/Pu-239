@@ -1,4 +1,6 @@
 ### 30 Dec, 2018
+update: reverse order log files log_viewer.php  
+update: cron jobs log output  
 update: database files  
 update: import_tables.php allow cli args  
 update: reduce cached time to 5 min newsrss.php  

@@ -7,6 +7,9 @@ if (!empty($argv[1]) && $argv[1] === 'force') {
     $cache->delete('images_update_');
 }
 
+echo "===================================================\n";
+echo get_date(TIME_NOW, 1, 0) . "\n";
+
 $cleanup_check = $cache->get('images_update_');
 if (user_exists($site_config['chatBotID']) && ($cleanup_check === false || is_null($cleanup_check))) {
     images_update();

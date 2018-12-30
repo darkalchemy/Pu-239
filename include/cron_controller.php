@@ -11,6 +11,9 @@ if (!empty($argv[1]) && $argv[1] === 'force') {
     $cache->delete('tfreak_news_links_');
 }
 
+echo "===================================================\n";
+echo get_date(TIME_NOW, 1, 0) . "\n";
+
 $cleanup_check = $cache->get('cleanup_check_');
 if (user_exists($site_config['chatBotID']) && ($cleanup_check === false || is_null($cleanup_check))) {
     autoclean();
@@ -31,8 +34,6 @@ function autoclean()
         ->orderBy('clean_increment ASC')
         ->fetchAll();
 
-    echo "===================================================\n";
-    echo get_date(TIME_NOW, 1, 0) . "\n";
     if (!$query) {
         echo "Nothing to process, all caught up.\n";
     } else {

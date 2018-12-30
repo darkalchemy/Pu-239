@@ -109,6 +109,7 @@ foreach ($paths as $path) {
 }
 
 natsort($files);
+$files = array_reverse($files, false);
 
 if (!empty($files)) {
     $heading = "
