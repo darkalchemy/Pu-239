@@ -42,7 +42,9 @@ function torrents_normalize($data)
     $i = 0;
     foreach ($bad as $tid) {
         $torrent_stuffs->delete_by_id($tid);
-        $torrent_stuffs->remove_torrent($list[$tid]['info_hash'], $list[$tid]['id'], $list[$tid]['owner']);
+        if (!empty($list[$tid]['info_hash'])) {
+            $torrent_stuffs->remove_torrent($list[$tid]['info_hash'], $list[$tid]['id'], $list[$tid]['owner']);
+        }
         ++$i;
     }
 

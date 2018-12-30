@@ -5,4 +5,4 @@ node_modules/
 vendor/
 /include/config.php
 silly/
-cache/imdb/title.*
+cache/goaccess.html

@@ -1907,5 +1907,18 @@ CREATE TABLE `categories` (
         'query' => "ALTER TABLE `offers` ADD COLUMN `updated` int(10) unsigned DEFAULT 0",
         'flush' => false,
     ],
+    [
+        'id' => 1546167295,
+        'info' => 'Add cleanup for goaccess access log analyzer',
+        'date' => '30 Dec, 2018',
+        'query' => "INSERT INTO `cleanup` (clean_title, clean_file, clean_time, clean_increment, clean_log, clean_desc, clean_on, function_name) VALUES ('Goaccess Access Log Analyzer', 'goaccess_update.php', 1546214400, 86400, 1, 'Goaccess Access Log Analyzer Update', 1, 'goaccess_cleanup')",
+        'flush' => false,
+    ],
+    [
+        'id' => 1546167296,
+        'info' => 'Add staff panel item for goaccess',
+        'date' => '30 Dec, 2018',
+        'query' => "INSERT INTO `staffpanel` (page_name, file_name, description, type, av_class, added_by, added, navbar) VALUES ('Access Log Analyzer', 'staffpanel.php?tool=goaccess', 'View the goaccess analyzer page', 'stats', 6, 1, 1546167296, 1)",
+        'flush' => true,
+    ],
 ];
-

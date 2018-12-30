@@ -343,7 +343,12 @@ function get_basepage($lang, $path)
 {
     global $site_config;
 
-    if ($path === '/' || $path === '/index.php' || $path === '/flash.php') {
+    $ignore = [
+        '/',
+        '/index.php',
+        '/flash.php',
+    ];
+    if (in_array($path, $ignore)) {
         return false;
     }
 
