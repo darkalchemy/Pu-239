@@ -51,7 +51,7 @@ function navbar()
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/browse.php?today=1'>{$lang['gl_newtor']}</a></li>
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/offers.php'>{$lang['gl_offers']}</a></li>
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/requests.php'>{$lang['gl_requests']}</a></li>
-                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/subtitles.php'>{$lang['gl_subtitles']}</a></li>" . ($CURUSER['class'] < UC_UPLOADER ? "
+                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/subtitles.php'>{$lang['gl_subtitles']}</a></li>" . ($CURUSER['class'] < $site_config['upload_min_class'] ? "
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/uploadapp.php'>{$lang['gl_uapp']}</a></li>" : "
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/upload.php'>{$lang['gl_upload']}</a></li>") . "
                             </ul>

@@ -14,7 +14,7 @@ $data = $_POST;
 extract($_POST);
 unset($_POST);
 if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
-    $owner_id = $user_stuffs->get_bot_id(UC_UPLOADER, $bot, $torrent_pass, $auth);
+    $owner_id = $user_stuffs->get_bot_id($site_config['upload_min_class'], $bot, $torrent_pass, $auth);
 } else {
     check_user_status();
     global $CURUSER;
@@ -30,7 +30,7 @@ ini_set('upload_max_filesize', $site_config['max_torrent_size']);
 ini_set('memory_limit', '64M');
 $lang = array_merge(load_language('global'), load_language('takeupload'));
 
-if ($user_data['class'] < UC_UPLOADER || $user_data['uploadpos'] == 0 || $user_data['uploadpos'] > 1 || $user_data['suspended'] === 'yes') {
+if ($user_data['class'] < $site_config['upload_min_class'] || $user_data['uploadpos'] != 1 || $user_data['suspended'] === 'yes') {
     $cache->delete('user_upload_variables_' . $owner_id);
     $session->set('is-warning', $lang['not_authorized']);
     header("Location: {$site_config['baseurl']}/upload.php");

@@ -9,7 +9,7 @@ extract($_POST);
 unset($_POST);
 
 if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
-    $userid = $user_stuffs->get_bot_id(UC_UPLOADER, $bot, $torrent_pass, $auth);
+    $userid = $user_stuffs->get_bot_id($site_config['upload_min_class'], $bot, $torrent_pass, $auth);
 } else {
     $session->set('is-warning', 'The search page is a restricted page, bots only');
     header("Location: {$site_config['baseurl']}/browse.php");

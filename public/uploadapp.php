@@ -14,7 +14,7 @@ $HTMLOUT = '';
 if (isset($_POST['form']) != 1) {
     $res = sql_query('SELECT status FROM uploadapp WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
-    if ($CURUSER['class'] >= UC_UPLOADER) {
+    if ($CURUSER['class'] >= $site_config['upload_min_class']) {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_alreadyup']);
     } elseif ($arr['status'] === 'pending') {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_pending']);

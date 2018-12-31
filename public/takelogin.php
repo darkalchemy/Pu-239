@@ -32,7 +32,7 @@ $response = !empty($_POST['token']) ? $_POST['token'] : '';
 extract($_POST);
 unset($_POST);
 if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
-    $user_id = $user_stuffs->get_bot_id(UC_UPLOADER, $bot, $torrent_pass, $auth);
+    $user_id = $user_stuffs->get_bot_id($site_config['upload_min_class'], $bot, $torrent_pass, $auth);
 }
 
 if (empty($user_id)) {

@@ -125,7 +125,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
             $updateset[] = 'donoruntil = ' . sqlesc($donoruntil);
             $curuser_cache['donoruntil'] = $donoruntil;
             $user_cache['donoruntil'] = $donoruntil;
-            if ($user['class'] < UC_UPLOADER) {
+            if ($user['class'] <= UC_VIP) {
                 $updateset[] = 'vipclass_before = ' . sqlesc($user['class']);
                 $curuser_cache['vipclass_before'] = $user['class'];
                 $user_cache['vipclass_before'] = $user['class'];
@@ -136,7 +136,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] === 'edituser')) {
         $useredit['update'][] = $lang['modtask_donor_yes'];
         $curuser_cache['donor'] = 'yes';
         $user_cache['donor'] = 'yes';
-        if ($user['class'] < UC_UPLOADER) {
+        if ($user['class'] <= UC_VIP) {
             $updateset[] = 'class = ' . UC_VIP . '';
             $curuser_cache['class'] = UC_VIP;
             $user_cache['class'] = UC_VIP;

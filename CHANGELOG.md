@@ -1,4 +1,5 @@
 ### 31 Dec, 2018
+update: move UC_UPLOADER class check to $site_config for easier changing of allowed uploaders  
 fix: typo view_forums.php  
 
 ### 30 Dec, 2018

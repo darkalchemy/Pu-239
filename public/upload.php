@@ -22,7 +22,7 @@ $stdfoot = [
     ],
 ];
 $HTMLOUT = $offers = $subs_list = $has_request = $descr = '';
-if ($CURUSER['class'] < UC_UPLOADER || $CURUSER['uploadpos'] === 0 || $CURUSER['uploadpos'] > 1 || $CURUSER['suspended'] === 'yes') {
+if ($CURUSER['class'] < $site_config['upload_min_class'] || $CURUSER['uploadpos'] != 1 || $CURUSER['suspended'] === 'yes') {
     stderr($lang['upload_sorry'], $lang['upload_no_auth']);
 }
 $upload_vars = $cache->get('user_upload_variables_' . $CURUSER['id']);

@@ -167,7 +167,6 @@ $site_config['pic_baseurl'] = '.' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_S
 $site_config['pic_baseurl_chat'] = $site_config['baseurl'] . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
 $site_config['stylesheet'] = 1;
 $site_config['categorie_icon'] = 1;
-$site_config['comment_min_class'] = 4; // min class to be checked when posting comments
 $site_config['comment_check'] = 1; // set it to 0 if you wanna allow commenting with out staff checking
 $site_config['imdb_language'] = 'en-US';
 // for imdb, tmdb, fanart, subs, youtube
@@ -325,3 +324,5 @@ $site_config['auto_lotto'] = [
     'total_winners' => 5,
     'duration' => 7,
 ];
+
+$site_config['upload_min_class'] = UC_UPLOADER; // min class allowed to upload
