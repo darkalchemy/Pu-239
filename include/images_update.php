@@ -195,7 +195,7 @@ function images_update()
             'fetched' => 'yes',
         ];
         $image_stuffs->update($values, $update);
-        echo 'Fetched, optimzed and created needed sizes ' . count($values) . " images\n";
+        echo 'Fetched, optimized and created needed sizes of ' . count($values) . " images\n";
         unset($values);
     }
 
