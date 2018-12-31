@@ -56,6 +56,7 @@ $lang = [
     'staffpanel.php' => 'Staff Panel',
     'subtitles.php' => 'Subtitles',
     'takeeditcp.php' => 'Take Edit',
+    'takethankyou.php' => 'Thank you',
     'test.php' => 'Testing Page',
     'trivia.php' => 'Trivia',
     'trivia_results.php' => 'Trivia Results',
