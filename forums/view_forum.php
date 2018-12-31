@@ -67,6 +67,7 @@ foreach ($query as $sub_forums_arr) {
         ->select('posts.anonymous AS pan')
         ->select('posts.id as post_id')
         ->select('users.id AS user_id')
+        ->select('users.class')
         ->innerJoin('posts ON topics.id = posts.topic_id')
         ->leftJoin('users ON posts.user_id = users.id')
         ->where($where)
@@ -149,7 +150,7 @@ foreach ($query as $sub_forums_arr) {
                             <span>' . htmlsafechars($sub_forums_arr['sub_form_description'], ENT_QUOTES) . '</span>
                         </td>
                     </tr>
-                </table>w
+                </table>
 
             </td>
             <td>

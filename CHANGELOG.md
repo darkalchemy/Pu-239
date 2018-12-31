@@ -1,3 +1,6 @@
+### 31 Dec, 2018
+fix: typo view_forums.php  
+
 ### 30 Dec, 2018
 fix: get_imdb_info()  
 update: add backgroung color to text over background images  
