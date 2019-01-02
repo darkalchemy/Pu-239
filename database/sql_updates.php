@@ -2013,4 +2013,11 @@ CREATE TABLE `categories` (
         'query' => "ALTER TABLE `imdb_info` ADD COLUMN `rating` decimal(2,1) NOT NULL DEFAULT '0.0'",
         'flush' => false,
     ],
+    [
+        'id' => 1546436826,
+        'info' => 'Modify column nfo',
+        'date' => '02 Jan, 2019',
+        'query' => "ALTER TABLE `torrents` MODIFY COLUMN `nfo` BLOB DEFAULT NULL",
+        'flush' => false,
+    ],
 ];

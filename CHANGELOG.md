@@ -1,4 +1,5 @@
 ### 02 Dec, 2018
+update: nfo column to blob to allow for not utf8 characters  
 fix: resized images overwriting other resized images images_update.php  
 fix: png images not getting resized images_update.php  
 
