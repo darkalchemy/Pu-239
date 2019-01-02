@@ -139,6 +139,8 @@ php bin/import_tables.php
 cd Pu-239
 git pull
 
+# check to see if there are any database updates, from the staff panel
+
 # update dependancies:
 composer install
 composer dump-autoload -o
