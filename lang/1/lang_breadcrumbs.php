@@ -58,6 +58,7 @@ $lang = [
     'takeeditcp.php' => 'Take Edit',
     'takethankyou.php' => 'Thank you',
     'test.php' => 'Testing Page',
+    'test1.php' => 'Testing Page',
     'trivia.php' => 'Trivia',
     'trivia_results.php' => 'Trivia Results',
     'topten.php' => 'Top 10',

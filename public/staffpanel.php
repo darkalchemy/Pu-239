@@ -99,6 +99,12 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $session->set('is-success', 'You flushed the ' . ucfirst($_ENV['CACHE_DRIVER']) . ' cache');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
+    } elseif (($action === 'clear_ajaxchat' && $CURUSER['class'] >= UC_SYSOP)) {
+        $fluent->deleteFrom('ajax_chat_messages')
+            ->execute();
+        $session->set('is-success', 'You deleted [i]all[/i] messages in AJAX Chat.');
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        die();
     } elseif (($action === 'add' && $CURUSER['class'] == UC_MAX) || ($action === 'edit' && is_valid_id($id) && $CURUSER['class'] == UC_MAX)) {
         $names = [
             'page_name',
@@ -324,11 +330,14 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         <a href='{$site_config['baseurl']}/staffpanel.php?action=add' class='tooltipper' title='{$lang['spanel_add_a_new_pg']}'>{$lang['spanel_add_a_new_pg']}</a>
                     </li>
                     <li class='margin10'>
+                        <a href='{$site_config['baseurl']}/staffpanel.php?action=clear_chat' class='tooltipper' title='{$lang['spanel_clear_chat_caution']}'>{$lang['spanel_clear_chat']}</a>
+                    </li>
+                    <li class='margin10'>
                         <a href='{$site_config['baseurl']}/staffpanel.php?action=flush' class='tooltipper' title='{$lang['spanel_flush_cache']}'>{$lang['spanel_flush_cache']}</a>
                     </li>
                 </ul>";
         }
-        $res = sql_query('SELECT s.*, u.username 
+        $res = sql_query('SELECT s.*, u.username
                                 FROM staffpanel AS s
                                 LEFT JOIN users AS u ON u.id = s.added_by
                                 WHERE s.av_class <= ' . sqlesc($CURUSER['class']) . '

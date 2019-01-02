@@ -177,13 +177,6 @@ $site_config['movie_cats'] = [
     16,
     17,
 ];
-$site_config['slider_cats'] = [
-    13,
-    14,
-    15,
-    16,
-    17,
-];
 $site_config['tv_cats'] = [
     18,
     19,

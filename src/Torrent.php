@@ -170,6 +170,13 @@ class Torrent
             ->orderBy('id DESC')
             ->fetchAll();
 
+        foreach ($torrents as $torrent) {
+            $set = [
+                'hits' => new \Envms\FluentPDO\Literal('hits + 1'),
+            ];
+            $this->update($set, $torrent['id']);
+        }
+
         return $torrents;
     }
 
@@ -190,6 +197,13 @@ class Torrent
             ->orderBy('id DESC')
             ->fetchAll();
 
+        foreach ($torrents as $torrent) {
+            $set = [
+                'hits' => new \Envms\FluentPDO\Literal('hits + 1'),
+            ];
+            $this->update($set, $torrent['id']);
+        }
+
         return $torrents;
     }
 
@@ -209,6 +223,13 @@ class Torrent
             ->where('visible = ?', $visible)
             ->orderBy('id DESC')
             ->fetchAll();
+
+        foreach ($torrents as $torrent) {
+            $set = [
+                'hits' => new \Envms\FluentPDO\Literal('hits + 1'),
+            ];
+            $this->update($set, $torrent['id']);
+        }
 
         return $torrents;
     }

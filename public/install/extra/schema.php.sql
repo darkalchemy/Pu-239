@@ -1135,6 +1135,8 @@ CREATE TABLE `imdb_info` (
   `plot` longtext COLLATE utf8mb4_unicode_ci,
   `runtime` smallint(5) unsigned DEFAULT '0',
   `updated` int(10) unsigned DEFAULT '0',
+  `top250` tinyint(1) unsigned NOT NULL DEFAULT '255',
+  `rating` decimal(2,1) NOT NULL DEFAULT '0.0',
   PRIMARY KEY (`imdb_id`),
   KEY `updated` (`updated`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1153,7 +1155,26 @@ CREATE TABLE `imdb_person` (
   `person_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_person` (`imdb_id`,`person_id`),
-  KEY `person_id` (`person_id`)
+  KEY `person_id` (`person_id`),
+  KEY `imdb_id` (`imdb_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `imdb_role`
+--
+
+DROP TABLE IF EXISTS `imdb_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `imdb_role` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `imdb_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `imdb_name` (`imdb_id`,`name`),
+  KEY `name` (`name`),
+  FULLTEXT KEY `ft_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1473,7 +1494,6 @@ CREATE TABLE `over_forums` (
   `name` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `min_class_view` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `forum_id` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1543,7 +1563,9 @@ CREATE TABLE `person` (
   `updated` int(10) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
-  KEY `updated` (`updated`)
+  KEY `updated` (`updated`),
+  KEY `imdb_id` (`imdb_id`),
+  FULLTEXT KEY `ft_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1650,8 +1672,6 @@ CREATE TABLE `posts` (
   KEY `topicid` (`topic_id`),
   KEY `userid` (`user_id`),
   KEY `body` (`post_title`),
-  FULLTEXT KEY `ft_body` (`body`),
-  FULLTEXT KEY `ft_title` (`post_title`),
   CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1865,7 +1885,7 @@ DROP TABLE IF EXISTS `searchcloud`;
 CREATE TABLE `searchcloud` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `searchedfor` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `search_column` enum('name','descr','imdb','isbn') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'name',
+  `search_column` enum('name','descr','imdb','isbn','person','fuzzy','genre','role') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'name',
   `howmuch` int(10) NOT NULL,
   `ip` varbinary(16) NOT NULL,
   PRIMARY KEY (`id`),
@@ -2187,7 +2207,6 @@ CREATE TABLE `topics` (
   KEY `subject` (`topic_name`),
   KEY `lastpost` (`last_post`),
   KEY `forum_id` (`forum_id`),
-  FULLTEXT KEY `ft_name` (`topic_name`),
   CONSTRAINT `topics_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2268,6 +2287,10 @@ CREATE TABLE `torrents` (
   KEY `visible` (`visible`),
   KEY `category_visible` (`category`),
   KEY `free` (`free`),
+  KEY `imdb_id` (`imdb_id`),
+  KEY `staff_picks` (`staff_picks`),
+  KEY `sticky` (`sticky`),
+  KEY `added` (`added`),
   FULLTEXT KEY `search_descr` (`search_text`,`descr`),
   FULLTEXT KEY `name` (`name`),
   FULLTEXT KEY `newgenre` (`newgenre`)
@@ -2336,8 +2359,8 @@ CREATE TABLE `triviausers` (
   KEY `qid` (`qid`),
   KEY `multi` (`user_id`,`qid`,`gamenum`),
   CONSTRAINT `triviausers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `triviausers_ibfk_2` FOREIGN KEY (`qid`) REFERENCES `triviaq` (`qid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `triviausers_ibfk_3` FOREIGN KEY (`gamenum`) REFERENCES `triviasettings` (`gamenum`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `triviausers_ibfk_3` FOREIGN KEY (`gamenum`) REFERENCES `triviasettings` (`gamenum`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `triviausers_ibfk_4` FOREIGN KEY (`qid`) REFERENCES `triviaq` (`qid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2550,7 +2573,6 @@ CREATE TABLE `users` (
   `viewscloud` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `tenpercent` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `avatars` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `offavatar` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `pirate` int(10) unsigned NOT NULL DEFAULT '0',
   `king` int(10) unsigned NOT NULL DEFAULT '0',
   `hidecur` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
@@ -2591,7 +2613,7 @@ CREATE TABLE `users` (
   `watched_user_reason` mediumtext COLLATE utf8mb4_unicode_ci,
   `staff_notes` mediumtext COLLATE utf8mb4_unicode_ci,
   `game_access` int(10) unsigned NOT NULL DEFAULT '1',
-  `where_is` mediumtext COLLATE utf8mb4_unicode_ci,
+  `where_is` text COLLATE utf8mb4_unicode_ci,
   `request_uri` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `browse_icons` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `numuploads` int(10) NOT NULL DEFAULT '0',
@@ -2725,4 +2747,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-30 13:45:03
+-- Dump completed on 2019-01-02  5:21:36

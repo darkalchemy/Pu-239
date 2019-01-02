@@ -279,6 +279,10 @@ function get_actionpage($lang, $queries, $path)
         'sye',
         'srs',
         'sre',
+        'sp',
+        'spf',
+        'sr',
+        'sort',
     ];
 
     if (in_array($list[0], $ignore) || $list[1] === 'bugs' || preg_match('/c\d+/', $list[0])) {

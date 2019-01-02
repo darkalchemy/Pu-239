@@ -29,9 +29,7 @@
     "postcss-preset-env": "^5.3.0",
     "raphael": "^2.2.7",
     "sass": "^1.15.2",
-    "uglify-js": "^3.4.9"
-  },
-  "dependencies": {
+    "uglify-js": "^3.4.9",
     "flexslider": "^2.7.1",
     "normalize.css": "^8.0.1",
     "sceditor": "^2.1.3",

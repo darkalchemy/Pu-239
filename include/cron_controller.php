@@ -11,7 +11,7 @@ if (!empty($argv[1]) && $argv[1] === 'force') {
 }
 
 echo "===================================================\n";
-echo get_date(TIME_NOW, 1, 0) . "\n";
+echo get_date(TIME_NOW, 'LONG', 1, 1) . "\n";
 
 $cleanup_check = $cache->get('cleanup_check_');
 if (user_exists($site_config['chatBotID']) && ($cleanup_check === false || is_null($cleanup_check))) {

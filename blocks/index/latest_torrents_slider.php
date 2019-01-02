@@ -29,8 +29,8 @@ if ($torrents === false || is_null($torrents)) {
         ->leftJoin('categories AS c ON t.category = c.id')
         ->leftJoin('categories AS p ON c.parent_id = p.id')
         ->where('t.imdb_id IS NOT NULL')
+        ->where('t.imdb_id != ""')
         ->orderBy('t.added DESC')
-        ->limit(100)
         ->fetchAll();
 
     foreach ($torrents as $torrent) {

@@ -5,7 +5,7 @@
  *
  * @return array|string
  */
-function searchcloud($limit = 50)
+function searchcloud($limit = 100)
 {
     global $cache, $fluent;
 
@@ -103,7 +103,7 @@ function cloud()
     global $site_config;
 
     $small = 14;
-    $big = 40;
+    $big = 80;
     $tags = searchcloud();
 
     if (!empty($tags)) {
@@ -136,4 +136,3 @@ function cloud()
         return $cloud_html;
     }
 }
-

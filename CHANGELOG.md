@@ -1,3 +1,18 @@
+### 02 Dec, 2018
+fix: resized images overwriting other resized images images_update.php  
+fix: png images not getting resized images_update.php  
+
+### 01 Dec, 2018
+update: increment hits when downloading download_multi.php  
+update: remove limit from query latest_torrents_slider.php  
+fix: many issues images_update.php  
+add: several indexes to improve query speed  
+add: link to remove all AJAX Chat messages staffpanel.php  
+update: enable 3 character word search in fulltext indexes README  
+fix: info_updated status not getting set images_update.php  
+fix: sort order browse.php, latest_torrents.php  
+add: indexes on imdb_id  
+
 ### 31 Dec, 2018
 update: move UC_UPLOADER class check to $site_config for easier changing of allowed uploaders  
 fix: typo view_forums.php  

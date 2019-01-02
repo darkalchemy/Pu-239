@@ -18,6 +18,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
 
     $imdbid = $imdb_id;
     $imdb_id = str_replace('tt', '', $imdb_id);
+    $cache->delete('imdb_' . $imdb_id);
     $imdb_data = $cache->get('imdb_' . $imdb_id);
     if ($imdb_data === false || is_null($imdb_data)) {
         $config = new Config();
@@ -76,7 +77,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
             'cast',
         ];
 
-        $cast = $persons = [];
+        $cast = $persons = $roles = [];
         foreach ($members as $member) {
             if (count($imdb_data[$member]) > 0) {
                 foreach ($imdb_data[$member] as $person) {
@@ -87,8 +88,14 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                     ];
                     $cast[] = [
                         'imdb_id' => $imdb_id,
-                        'person_id' => $person['imdb']
+                        'person_id' => $person['imdb'],
                     ];
+                    if ($member === 'cast' && !empty($person['role'])) {
+                        $roles[] = [
+                            'imdb_id' => $imdb_id,
+                            'name' => $person['role'],
+                        ];
+                    }
                 }
             }
         }
@@ -106,16 +113,30 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                 ->ignore()
                 ->execute();
         }
-        unset($cast, $persons);
+
+        if (!empty($roles)) {
+            $fluent->insertInto('imdb_role')
+                ->values($roles)
+                ->ignore()
+                ->execute();
+        }
+
+        unset($cast, $persons, $roles);
 
         if (!empty($imdb_data['plotoutline'])) {
             $values = [
                 'imdb_id' => $imdb_id,
                 'plot' => $imdb_data['plotoutline'],
+                'top250' => $imdb_data['top250'],
+                'rating' => $imdb_data['rating'],
             ];
-            $fluent->insertInto('imdb_info')
-                ->values($values)
-                ->ignore()
+            $update = [
+                'plot' => $imdb_data['plotoutline'],
+                'top250' => $imdb_data['top250'],
+                'rating' => $imdb_data['rating'],
+            ];
+            $fluent->insertInto('imdb_info', $values)
+                ->onDuplicateKeyUpdate($update)
                 ->execute();
         }
 
@@ -749,10 +770,9 @@ function get_top_movies()
 
     $top = $cache->get('imdb_top_movies_');
     if ($top === false || is_null($top)) {
-        echo 'not cached';
         $top = [];
         for ($i = 1; $i <= 1000; $i += 50) {
-            $url = 'https://www.imdb.com/search/title?groups=top_1000&sort=user_rating,desc&start=' . $i;
+            $url = 'https://www.imdb.com/search/title?groups=top_1000&sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
             preg_match_all('/(tt\d{7})/', $html, $matches);
             foreach ($matches[1] as $match) {
@@ -777,7 +797,7 @@ function get_top_tvshows()
     if ($top === false || is_null($top)) {
         $top = [];
         for ($i = 1; $i <= 350; $i += 50) {
-            $url = 'https://www.imdb.com/search/title?title_type=tv_series&num_votes=30000,&countries=us&sort=user_rating,desc&start=' . $i;
+            $url = 'https://www.imdb.com/search/title?title_type=tv_series&num_votes=30000,&countries=us&sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
             preg_match_all('/(tt\d{7})/', $html, $matches);
             foreach ($matches[1] as $match) {
@@ -802,7 +822,7 @@ function get_top_anime()
     if ($top === false || is_null($top)) {
         $top = [];
         for ($i = 1; $i <= 350; $i += 50) {
-            $url = 'https://www.imdb.com/search/title?genres=drama&keywords=anime&num_votes=2000,sort=user_rating,desc&start=' . $i;
+            $url = 'https://www.imdb.com/search/title?genres=drama&keywords=anime&num_votes=2000,sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
             preg_match_all('/(tt\d{7})/', $html, $matches);
             foreach ($matches[1] as $match) {
@@ -818,3 +838,29 @@ function get_top_anime()
 
     return $top;
 }
+
+function get_oscar_winners()
+{
+    global $cache;
+
+    $top = $cache->get('imdb_oscar_winners_');
+    if ($top === false || is_null($top)) {
+        $top = [];
+        for ($i = 1; $i <= 1250; $i += 50) {
+            $url = 'https://www.imdb.com/search/title?groups=oscar_winner&sort=user_rating,desc&view=simple&start=' . $i;
+            $html = fetch($url);
+            preg_match_all('/(tt\d{7})/', $html, $matches);
+            foreach ($matches[1] as $match) {
+                if (!in_array($match, $top)) {
+                    $top[] = $match;
+                }
+            }
+        }
+        if (!empty($top)) {
+            $cache->set('imdb_oscar_winners_', $top, 604800);
+        }
+    }
+
+    return $top;
+}
+

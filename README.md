@@ -82,6 +82,9 @@ innodb_autoinc_lock_mode = 0
 # set timezone to UTC to match PHP
 default_time_zone='+00:00'
 
+# to enable fulltext searches of 3 character words
+innodb_ft_min_token_size=3
+
 # restart mysql for changes to take effect
 sudo service mysql restart
 

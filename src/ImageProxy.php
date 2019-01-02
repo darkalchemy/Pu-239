@@ -43,6 +43,10 @@ class ImageProxy
             }
         }
 
+        if (!file_exists($path)) {
+            return false;
+        }
+
         if (!empty($quality)) {
             $hash = $this->convert_image($url, $path, $quality);
         } elseif ($width || $height) {
@@ -91,8 +95,12 @@ class ImageProxy
      */
     protected function convert_image(string $url, string $path, ?int $quality)
     {
-        $hash = hash('sha512', $url . '_converted');
+        $hash = hash('sha512', $url . '_converted' . (!empty($quality) ? '_' . $quality : ''));
         $new_path = PROXY_IMAGES_DIR . $hash;
+
+        if (!file_exists($path)) {
+            return false;
+        }
 
         if (file_exists($new_path)) {
             return $hash;
@@ -100,7 +108,7 @@ class ImageProxy
 
         if (mime_content_type($path) !== 'image/gif') {
             if (mime_content_type($path) !== 'image/jpeg') {
-                Image::load($new_path)
+                Image::load($path)
                     ->format(Manipulations::FORMAT_JPG)
                     ->save($new_path, $quality);
             } else {

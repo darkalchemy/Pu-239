@@ -11,38 +11,12 @@ global $site_config, $lang, $fluent;
 $lang = array_merge($lang, load_language('ad_viewpeers'));
 $HTMLOUT = $count = '';
 
-/**
- * @param $a
- *
- * @return string
- */
-function XBT_IP_CONVERT($a)
-{
-    $b = [
-        0,
-        0,
-        0,
-        0,
-    ];
-    $c = 16777216.0;
-    $a += 0.0;
-    for ($i = 0; $i < 4; ++$i) {
-        $k = (int) ($a / $c);
-        $a -= $c * $k;
-        $b[$i] = $k;
-        $c /= 256.0;
-    }
-    $d = implode('.', $b);
-
-    return $d;
-}
-
 $count = $fluent->from('peers')
     ->select(null)
     ->select('COUNT(*) AS count')
     ->fetch('count');
 
-$peersperpage = 15;
+$peersperpage = 25;
 $HTMLOUT .= "
     <h1 class='has-text-centered'>{$lang['wpeers_h2']}</h1>
     <div class='size_4 has-text-centered margin20'>{$lang['wpeers_there']}" . htmlsafechars($count) . "{$lang['wpeers_peer']}" . ($count > 1 ? $lang['wpeers_ps'] : '') . "{$lang['wpeers_curr']}</div>";

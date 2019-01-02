@@ -52,6 +52,9 @@ $valid_search = [
     'sre',
     'si',
     'ss',
+    'sp',
+    'spf',
+    'sr'
 ];
 
 if (isset($_GET['sort'], $_GET['type'])) {
@@ -88,7 +91,7 @@ if (isset($_GET['sort'], $_GET['type'])) {
     $select = $select->orderBy("t.{$column} $ascdesc");
     $pagerlink = 'sort=' . intval($_GET['sort']) . "&amp;type={$linkascdesc}&amp;";
 } else {
-    $select = $select->orderBy('t.staff_picks DESC')->orderBy('t.sticky')->orderBy('t.id');
+    $select = $select->orderBy('t.staff_picks DESC')->orderBy('t.sticky')->orderBy('t.added DESC');
     $pagerlink = '';
 }
 
@@ -158,9 +161,13 @@ foreach ($valid_search as $search) {
             'sd',
             'si',
             'ss',
+            'spf',
+            'sp',
+            'sg',
+            'sr'
         ];
         if (in_array($search, $insert_cloud)) {
-            $column = str_replace(['sn', 'sd', 'si', 'ss'], ['name','descr','imdb','isbn'], $search);
+            $column = str_replace(['sn', 'sd', 'si', 'ss', 'spf', 'sp', 'sg', 'sr'], ['name', 'descr', 'imdb', 'isbn', 'fuzzy', 'person', 'genre', 'role'], $search);
             searchcloud_insert($cleaned, $column);
         }
         $addparam .= "{$search}=" . urlencode($cleaned) . '&amp;';
@@ -200,6 +207,29 @@ foreach ($valid_search as $search) {
                 $count = $count->where('t.isbn = ?', $match[1]);
                 $select = $select->where('t.isbn = ?', $cleaned);
             }
+        } elseif ($search === 'sp') {
+            $count = $count->where('p.name = ?', $cleaned)
+                ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                ->innerJoin('person AS p ON i.person_id = p.imdb_id');
+            $select = $select->where('p.name = ?', $cleaned)
+                ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                ->innerJoin('person AS p ON i.person_id = p.imdb_id');
+        } elseif ($search === 'spf') {
+            $count = $count->where('MATCH (p.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
+                ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                ->innerJoin('person AS p ON i.person_id = p.imdb_id')
+                ->groupBy('t.id');
+            $select = $select->where('MATCH (p.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
+                ->innerJoin('imdb_person AS i ON t.imdb_id = CONCAT("tt", i.imdb_id)')
+                ->innerJoin('person AS p ON i.person_id = p.imdb_id')
+                ->groupBy('t.id');
+        } elseif ($search === 'sr') {
+            $count = $count->where('MATCH (r.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
+                ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)')
+                ->groupBy('t.id');
+            $select = $select->where('MATCH (r.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned)
+                ->innerJoin('imdb_role AS r ON t.imdb_id = CONCAT("tt", r.imdb_id)')
+                ->groupBy('t.id');
         }
     }
 }
@@ -229,7 +259,7 @@ if ($count > 0) {
 }
 
 if ($CURUSER['opt1'] & user_options::VIEWSCLOUD) {
-    $HTMLOUT .= main_div("<div class='cloud round10 padding20'>" . cloud() . '</div>', 'bottom20');
+    $HTMLOUT .= main_div("<div class='cloud has-text-centered round10 padding20'>" . cloud() . '</div>', 'bottom20');
 }
 
 $HTMLOUT .= "
@@ -290,6 +320,20 @@ $HTMLOUT .= main_div("
                                 <div class='has-text-centered bottom10'>{$lang['browse_uploader']}</div>
                                 <input name='so' type='text' placeholder='{$lang['search_uploader']}' class='search w-100' value='" . (!empty($_GET['so']) ? $_GET['so'] : '') . "'>
                             </div>
+                        </div>
+                        <div class='columns'>
+                            <div class='column'>
+                                <div class='has-text-centered bottom10'>{$lang['browse_person']}</div>
+                                <input name='sp' type='text' placeholder='{$lang['search_person']}' class='search w-100' value='" . (!empty($_GET['sp']) ? $_GET['sp'] : '') . "'>
+                            </div>
+                            <div class='column'>
+                                <div class='has-text-centered bottom10'>{$lang['browse_person_fuzzy']}</div>
+                                <input name='spf' type='text' placeholder='{$lang['search_person_fuzzy']}' class='search w-100' value='" . (!empty($_GET['spf']) ? $_GET['spf'] : '') . "'>
+                            </div>
+                            <div class='column'>
+                                <div class='has-text-centered bottom10'>{$lang['browse_role']}</div>
+                                <input name='sr' type='text' placeholder='{$lang['search_role']}' class='search w-100' value='" . (!empty($_GET['sr']) ? $_GET['sr'] : '') . "'>
+                            </div>
                             <div class='column'>
                                 <div class='has-text-centered bottom10'>{$lang['browse_genre']}</div>
                                 <input name='sg' type='text' placeholder='{$lang['search_genre']}' class='search w-100' value='" . (!empty($_GET['sg']) ? $_GET['sg'] : '') . "'>
@@ -321,12 +365,16 @@ $HTMLOUT .= main_div("
                                 </div>
                             </div>
                             <div class='column'>
-                                <div class='has-text-centered bottom10'>{$lang['browse_imdb']}</div>
-                                <input name='si' type='text' placeholder='{$lang['search_imdb']}' class='search w-100' value='" . (!empty($_GET['si']) ? $_GET['si'] : '') . "'>
-                            </div>
-                            <div class='column'>
-                                <div class='has-text-centered bottom10'>{$lang['browse_isbn']}</div>
-                                <input name='ss' type='text' placeholder='{$lang['search_isbn']}' class='search w-100' value='" . (!empty($_GET['ss']) ? $_GET['ss'] : '') . "'>
+                                <div class='columns'>
+                                    <div class='column'>
+                                        <div class='has-text-centered bottom10'>{$lang['browse_imdb']}</div>
+                                        <input name='si' type='text' placeholder='{$lang['search_imdb']}' class='search w-100' value='" . (!empty($_GET['si']) ? $_GET['si'] : '') . "'>
+                                    </div>
+                                    <div class='column'>
+                                        <div class='has-text-centered bottom10'>{$lang['browse_isbn']}</div>
+                                        <input name='ss' type='text' placeholder='{$lang['search_isbn']}' class='search w-100' value='" . (!empty($_GET['ss']) ? $_GET['ss'] : '') . "'>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class='columns top20'>
