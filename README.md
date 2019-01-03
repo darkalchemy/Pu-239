@@ -184,3 +184,6 @@ If sudo is necessary to run uglify.php without errors, then you have the permiss
 
 ### Credits:  
 All Credit goes to the original code creators of U-232, tbdev, etc. Without them, this would not be possible.
+
+### Patrons
+Nico

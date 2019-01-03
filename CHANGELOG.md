@@ -1,9 +1,12 @@
-### 02 Dec, 2018
+### 03 Jan, 2019
+add: patrons to README  
+
+### 02 Jan, 2019
 update: nfo column to blob to allow for not utf8 characters  
 fix: resized images overwriting other resized images images_update.php  
 fix: png images not getting resized images_update.php  
 
-### 01 Dec, 2018
+### 01 Jan, 2019
 update: increment hits when downloading download_multi.php  
 update: remove limit from query latest_torrents_slider.php  
 fix: many issues images_update.php  
