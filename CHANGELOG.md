@@ -1,3 +1,6 @@
+### 04 Jan, 2018
+fix: search by rating  
+
 ### 03 Jan, 2019
 add: patrons to README  
 

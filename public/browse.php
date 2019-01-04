@@ -190,11 +190,11 @@ foreach ($valid_search as $search) {
             $count = $count->where('t.year <= ?', (int) $cleaned);
             $select = $select->where('t.year <= ?', (int) $cleaned);
         } elseif ($search === 'srs') {
-            $count = $count->where('t.rating >= ?', (float) $cleaned);
-            $select = $select->where('t.rating >= ?', (float) $cleaned);
+            $count = $count->where('t.rating >= ?', (float) $_GET['srs']);
+            $select = $select->where('t.rating >= ?', (float) $_GET['srs']);
         } elseif ($search === 'sre') {
-            $count = $count->where('t.rating <= ?', (float) $cleaned);
-            $select = $select->where('t.rating <= ?', (float) $cleaned);
+            $count = $count->where('t.rating <= ?', (float) $_GET['sre']);
+            $select = $select->where('t.rating <= ?', (float) $_GET['sre']);
         } elseif ($search === 'si') {
             $imdb = preg_match('/(tt\d{7})/', $cleaned, $match);
             if (!empty($match[1])) {
