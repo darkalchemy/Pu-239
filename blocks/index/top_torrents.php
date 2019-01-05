@@ -75,7 +75,7 @@ foreach ($top5torrents as $top5torrentarr) {
     }
 
     $block_id = "top_id_{$id}";
-    $torrents_top .= torrent_tooltip_wrapper(htmlsafechars($name), $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
+    $torrents_top .= torrent_tooltip_wrapper(htmlsafechars($name) . " ($year)", $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
 }
 if (count($top5torrents) === 0) {
     $torrents_top .= "

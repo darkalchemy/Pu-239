@@ -77,7 +77,7 @@ foreach ($staff_picks as $staff_pick) {
     }
 
     $block_id = "staff_pick_id_{$id}";
-    $staffpicks .= torrent_tooltip_wrapper(htmlsafechars($name), $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
+    $staffpicks .= torrent_tooltip_wrapper(htmlsafechars($name) . " ($year)", $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
 }
 if (count($staff_picks) === 0) {
     $staffpicks .= "

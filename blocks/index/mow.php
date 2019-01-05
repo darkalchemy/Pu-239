@@ -75,7 +75,7 @@ foreach ($motw as $m_w) {
     }
 
     $block_id = "mow_id_{$id}";
-    $torrents_mow .= torrent_tooltip_wrapper(htmlsafechars($name), $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
+    $torrents_mow .= torrent_tooltip_wrapper(htmlsafechars($name) . " ($year)", $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
 }
 
 if (count($motw) === 0) {

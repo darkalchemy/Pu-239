@@ -157,6 +157,7 @@ input:valid {
     z-index: 10;
 }
 
+.icon,
 input[type=button],
 input[type=checkbox],
 input[type=radio],

@@ -1,4 +1,6 @@
 ### 04 Jan, 2018
+fix: year in slider  
+fix: cursor:pointer icon  
 update: dependencies  
 add: person type  
 update: shuffle images for slider and scroller  

@@ -81,12 +81,11 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
         }
     }
 
-    $is_year = !empty($year) ? "($year)" : '';
     $background = !empty($background) ? " style='background-image: url({$background});'" : '';
     $content = "
                             <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
                                 <span class='dt-tooltipper-large' data-tooltip-content='#{$block_id}_tooltip'>
-                                    $text $is_year
+                                    $text
                                     <div class='tooltip_templates'>
                                         <div id='{$block_id}_tooltip' class='round10 tooltip-background'{$background}>
                                             <div class='tooltip-torrent padding10'>

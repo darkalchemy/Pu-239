@@ -190,7 +190,7 @@ function torrenttable($res, $variant = 'index')
             $htmlout .= '-';
         }
         $htmlout .= '</td>';
-        $dispname = htmlsafechars($row['name']);
+        $dispname = htmlsafechars($row['name']) . " ({$row['year']})";
         $staff_pick = $row['staff_picks'] > 0 ? "
             <span id='staff_pick_{$row['id']}'>
                 <img src='{$site_config['pic_baseurl']}staff_pick.png' class='tooltipper emoticon is-2x' alt='Staff Pick!' title='Staff Pick!'>
