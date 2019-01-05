@@ -208,7 +208,7 @@ function torrenttable($res, $variant = 'index')
             $row['poster'] = find_images($row['imdb_id']);
         }
         $poster = empty($row['poster']) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' alt='Poster'>" : "<img src='" . url_proxy($row['poster'], true, 250) . "' class='tooltip-poster' alt='Poster'>";
-        $rating = empty($row['rating']) ? 'No users have rated this torrent' : ratingpic($row['rating']);
+        $user_rating = empty($row['rating_sum']) ? 'No users have rated this torrent' : ratingpic($row['rating_sum'] / $row['num_ratings']);
         if (!empty($row['descr'])) {
             $descr = str_replace('"', '&quot;', readMore($row['descr'], 500, $site_config['baseurl'] . '/details.php?id=' . $row['id'] . '&amp;hit=1'));
             $descr = preg_replace('/\[img\].*?\[\/img\]\s+/', '', $descr);
@@ -298,7 +298,7 @@ function torrenttable($res, $variant = 'index')
                         </a>
                         <div>$icon_string</div>
                         $imdb_info
-                        $rating
+                        $user_rating
                         $smalldescr
                     </div>
                     <div class='column is-2 has-text-right'>

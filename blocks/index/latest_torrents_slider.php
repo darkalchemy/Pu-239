@@ -89,7 +89,7 @@ foreach ($torrents as $torrent) {
         break;
     }
 }
-
+shuffle($sliding_torrents);
 if (!empty($sliding_torrents)) {
     $slider .= "
     <a id='slider-hash'></a>

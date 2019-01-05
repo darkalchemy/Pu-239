@@ -72,7 +72,7 @@ body {
 .star-ratings-css {
     unicode-bidi: bidi-override;
     color: #fff;
-    width: 70px;
+    width: 95px;
     position: relative;
     text-shadow: 0 1px 0 #a2a2a2;
 }
@@ -94,9 +94,9 @@ body {
 
 .star-ratings-css-bottom > span,
 .star-ratings-css-top > span {
-    width: 15px;
-    font-size: 15px;
-    height: 15px;
+    width: 20px;
+    font-size: 20px;
+    height: 20px;
 }
 
 .star-ratings-css-bottom > span:not(:last-child),
@@ -171,18 +171,15 @@ input:valid {
     cursor: pointer;
 }
 
-.masonry-item, 
+.masonry-item,
 .trivia-pointer {
     transition: transform .5s ease-in-out;
 }
 
-.masonry-item:hover {
-    transform: scale(1.5);
-    z-index: 100;
-}
-
+.masonry-item:hover,
 .trivia-pointer:hover {
-    transform: scale(1.2);
+    transform: scale(1.25);
+    z-index: 10;
 }
 
 input[type=button],
@@ -1246,22 +1243,22 @@ img.bar {
 .masonry {
     display: grid;
     grid-gap: 1em;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
 .masonry-item {
-    border-radius: .625em;
-}
-
-.masonry-item {
-    background-color: transparent;
-    border-radius: .625em;
+    background-color: rgba(0, 0, 0, .4);
+    padding: .625em;
 }
 
 .masonry-item,
 .masonry-item img {
     position: relative;
     border-radius: .625em;
+}
+
+.vertical_center {
+    transform: translate(0, 50%);
 }
 
 @media (max-width: 1087px) {
@@ -1376,5 +1373,9 @@ img.bar {
 
     .stats:nth-child(-n+2) {
         margin-bottom: 1.25em;
+    }
+
+    #pm_count {
+        display: none;
     }
 }

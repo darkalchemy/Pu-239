@@ -82,19 +82,22 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
             if (count($imdb_data[$member]) > 0) {
                 foreach ($imdb_data[$member] as $person) {
                     $all_people[] = $person;
-                    $persons[] = [
-                        'name' => $person['name'],
-                        'imdb_id' => $person['imdb'],
-                    ];
-                    $cast[] = [
-                        'imdb_id' => $imdb_id,
-                        'person_id' => $person['imdb'],
-                    ];
-                    if ($member === 'cast' && !empty($person['role'])) {
-                        $roles[] = [
-                            'imdb_id' => $imdb_id,
-                            'name' => $person['role'],
+                    if (!empty($person['imdb'])) {
+                        $persons[] = [
+                            'name' => $person['name'],
+                            'imdb_id' => $person['imdb'],
                         ];
+                        $cast[] = [
+                            'imdb_id' => $imdb_id,
+                            'person_id' => $person['imdb'],
+                            'type' => $member,
+                        ];
+                        if ($member === 'cast' && !empty($person['role'])) {
+                            $roles[] = [
+                                'imdb_id' => $imdb_id,
+                                'name' => $person['role'],
+                            ];
+                        }
                     }
                 }
             }
@@ -309,8 +312,8 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                 if ($boo === 'Rating') {
                     $percent = $imdb_data['rating'] * 10;
                     $imdb_data[$foo] = "
-                        <span class='is-flex'>
-                            <div class='right10'>{$imdb_data['rating']}</div>
+                        <span class='level-left'>
+                            <div class='right5'>{$imdb_data['rating']}</div>
                             <div class='star-ratings-css tooltipper' title='{$percent}% out of {$imdb_data['votes']} votes!'>
                                 <div class='star-ratings-css-top' style='width: {$percent}%'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                                 <div class='star-ratings-css-bottom'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>

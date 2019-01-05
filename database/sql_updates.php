@@ -2020,4 +2020,11 @@ CREATE TABLE `categories` (
         'query' => "ALTER TABLE `torrents` MODIFY COLUMN `nfo` BLOB DEFAULT NULL",
         'flush' => false,
     ],
+    [
+        'id' => 1546640174,
+        'info' => 'Add column type',
+        'date' => '04 Jan, 2019',
+        'query' => "ALTER TABLE `imdb_person` ADD COLUMN `type` enum('director', 'composer', 'producer', 'cast', 'writing') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'cast'",
+        'flush' => false,
+    ],
 ];

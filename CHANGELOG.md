@@ -1,4 +1,9 @@
 ### 04 Jan, 2018
+update: dependencies  
+add: person type  
+update: shuffle images for slider and scroller  
+add: show unread pm's in navbar when mobile  
+fix: show rating on hover  
 fix: search by rating  
 
 ### 03 Jan, 2019

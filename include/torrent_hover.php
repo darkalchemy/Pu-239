@@ -9,7 +9,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
 {
     global $site_config, $lang, $fluent, $subs, $cache;
 
-    $released = $rating = $plot = $show_subs = '';
+    $released = $plot = $show_subs = '';
     if (!empty($imdb_id)) {
         $background = find_images($imdb_id, $type = 'background');
         $plot = $cache->get('plot_' . $imdb_id);
@@ -42,8 +42,8 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                         <span class='size_4 has-text-primary has-text-weight-bold'>Rating:</span>
                                                     </div>
                                                     <div class='column padding5 is-8'>
-                                                        <span class='size_4 is-flex'>
-                                                            <div class='right10'>$rating</div>
+                                                        <span class='level-left'>
+                                                            <div class='right5'>$rating</div>
                                                             <div class='star-ratings-css'>
                                                                 <div class='star-ratings-css-top' style='width: {$percent}%'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                                                                 <div class='star-ratings-css-bottom'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
@@ -81,11 +81,12 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
         }
     }
 
+    $is_year = !empty($year) ? "($year)" : '';
     $background = !empty($background) ? " style='background-image: url({$background});'" : '';
     $content = "
                             <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
                                 <span class='dt-tooltipper-large' data-tooltip-content='#{$block_id}_tooltip'>
-                                    {$text}
+                                    $text $is_year
                                     <div class='tooltip_templates'>
                                         <div id='{$block_id}_tooltip' class='round10 tooltip-background'{$background}>
                                             <div class='tooltip-torrent padding10'>
@@ -101,7 +102,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                                 <div class='column padding5 is-4'>
                                                                     <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_name']}</span>
                                                                 </div>
-                                                                <div class='column padding5 is-8'>" . htmlsafechars($name) . "</div>
+                                                                <div class='column padding5 is-8'>" . htmlsafechars($name) . " ($year)</div>
                                                                 <div class='column padding5 is-4'>
                                                                     <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_uploader']}</span>
                                                                 </div>
@@ -127,7 +128,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                                 </div>
                                                                 <div class='column padding5 is-8'>
                                                                     {$leechers}
-                                                                </div>{$released}{$rating}{$plot}
+                                                                </div>{$rating}{$plot}
                                                             </div>
                                                         </div>
                                                     </div>

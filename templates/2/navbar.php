@@ -17,6 +17,7 @@ function navbar()
     <header id='navbar'>
         <div class='contained'>
             <div class='nav_container'>
+                <div id='pm_count' class='has-text-centered vertical_center'></div>
                 <div id='hamburger'><i class='icon-menu size_6 has-text-white' aria-hidden='true'></i></div>
                 <div id='close' class='top10 right10'><i class='icon-cancel icon size_7 has-text-white' aria-hidden='true'></i></div>
                 <div id='menuWrapper'>

@@ -69,7 +69,7 @@ foreach ($torrents as $torrent) {
         break;
     }
 }
-
+shuffle($scroller_torrents);
 if (!empty($scroller_torrents)) {
     $torrents_scroller .= "
     <a id='scroller-hash'></a>
