@@ -1,4 +1,5 @@
 ### 06 Jan, 2019
+update: is var empty announce.php  
 update: handle empty array comments.php  
 update: depenencies  
 remove: increment hits from get_all* Torrent.php  

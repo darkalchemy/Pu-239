@@ -413,7 +413,7 @@ if (isset($self) && $event === 'stopped') {
         } else {
             $torrent_stuffs->adjust_torrent_peers($torrent['id'], 0, -1, 0);
         }
-        if ($snatched) {
+        if (!empty($snatched)) {
             $snatch_updateset['uploaded'] = $snatched['uploaded'] + $upthis;
             $snatch_updateset['downloaded'] = $snatched['downloaded'] + ($ratio_free ? 0 : $downthis);
             $snatch_updateset['to_go'] = $left;
@@ -432,7 +432,7 @@ if (isset($self) && $event === 'stopped') {
 } elseif (isset($self)) {
     $set = [];
     if ($event === 'completed') {
-        if ($snatched) {
+        if (!empty($snatched)) {
             $snatch_updateset['complete_date'] = $dt;
             $snatch_updateset['finished'] = 'yes';
         }
@@ -471,7 +471,7 @@ if (isset($self) && $event === 'stopped') {
                 $torrent_stuffs->adjust_torrent_peers($torrent['id'], -1, 1, 0);
             }
         }
-        if ($snatched) {
+        if (!empty($snatched)) {
             $snatch_updateset['uploaded'] = $snatched['uploaded'] + $upthis;
             $snatch_updateset['downloaded'] = $snatched['downloaded'] + ($ratio_free ? 0 : $downthis);
             $snatch_updateset['to_go'] = $left;
@@ -524,7 +524,7 @@ if (isset($self) && $event === 'stopped') {
         } else {
             $torrent_stuffs->adjust_torrent_peers($torrent['id'], 0, 1, 0);
         }
-        if ($snatched) {
+        if (!empty($snatched)) {
             $snatch_updateset['to_go'] = $left;
             $snatch_updateset['last_action'] = $dt;
             $snatch_updateset['seeder'] = $seeder;
