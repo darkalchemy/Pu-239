@@ -159,6 +159,7 @@ CREATE TABLE `ajax_chat_online` (
   `ip` varbinary(16) NOT NULL,
   PRIMARY KEY (`userID`),
   KEY `userName` (`userName`),
+  KEY `dateTime` (`dateTime`),
   CONSTRAINT `ajax_chat_online_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -263,6 +264,7 @@ CREATE TABLE `auth_tokens` (
   PRIMARY KEY (`selector`),
   UNIQUE KEY `userid_selector` (`userid`,`selector`),
   KEY `userid` (`userid`),
+  KEY `expires` (`expires`),
   CONSTRAINT `auth_tokens_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -874,7 +876,8 @@ CREATE TABLE `forum_config` (
   `max_file_size` int(10) unsigned NOT NULL DEFAULT '2097152',
   `upload_folder` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`readpost_expiry`),
-  KEY `delete_for_real` (`delete_for_real`)
+  KEY `delete_for_real` (`delete_for_real`),
+  KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -942,7 +945,9 @@ CREATE TABLE `forums` (
   `min_class_create` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `parent_forum` tinyint(4) NOT NULL DEFAULT '0',
   `forum_id` tinyint(4) DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `min_class_read` (`min_class_read`),
+  KEY `parent_forum` (`parent_forum`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1119,7 +1124,8 @@ CREATE TABLE `images` (
   `updated` int(10) unsigned DEFAULT '0',
   `checked` int(10) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `url` (`url`)
+  UNIQUE KEY `url` (`url`),
+  KEY `type` (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1497,7 +1503,8 @@ CREATE TABLE `over_forums` (
   `min_class_view` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `forum_id` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `min_class_view` (`min_class_view`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1674,6 +1681,7 @@ CREATE TABLE `posts` (
   KEY `topicid` (`topic_id`),
   KEY `userid` (`user_id`),
   KEY `body` (`post_title`),
+  KEY `added` (`added`),
   FULLTEXT KEY `ft_body` (`body`),
   FULLTEXT KEY `ft_title` (`post_title`),
   CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -1720,6 +1728,7 @@ CREATE TABLE `rating` (
   PRIMARY KEY (`id`),
   KEY `user` (`user`),
   KEY `torrent` (`torrent`),
+  KEY `topic` (`topic`),
   CONSTRAINT `rating_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2211,6 +2220,7 @@ CREATE TABLE `topics` (
   KEY `subject` (`topic_name`),
   KEY `lastpost` (`last_post`),
   KEY `forum_id` (`forum_id`),
+  KEY `added` (`added`),
   FULLTEXT KEY `ft_name` (`topic_name`),
   CONSTRAINT `topics_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -2645,7 +2655,8 @@ CREATE TABLE `users` (
   KEY `enabled` (`enabled`),
   KEY `warned` (`warned`),
   KEY `T_Pass` (`torrent_pass`),
-  KEY `free_switch` (`free_switch`)
+  KEY `free_switch` (`free_switch`),
+  KEY `perms` (`perms`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2753,4 +2764,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-01-05 19:53:41
+-- Dump completed on 2019-01-06 10:08:19
