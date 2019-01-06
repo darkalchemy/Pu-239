@@ -57,8 +57,8 @@ if ($needed === 'leechers') {
                 </tr>";
         $body = '';
         while ($arr = mysqli_fetch_assoc($res)) {
-            $What_ID = (XBT_TRACKER === true ? $arr['fid'] : $arr['torrent']);
-            $What_User_ID = (XBT_TRACKER === true ? $arr['uid'] : $arr['userid']);
+            $What_ID = $arr['torrent'];
+            $What_User_ID = $arr['userid'];
             $needseed['cat_name'] = htmlsafechars($change[$arr['category']]['name']);
             $needseed['cat_pic'] = htmlsafechars($change[$arr['category']]['image']);
             $cat = "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/{$needseed['cat_pic']}' alt='{$needseed['cat_name']}' title='{$needseed['cat_name']}' class='tooltipper'>";

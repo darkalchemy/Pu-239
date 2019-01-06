@@ -210,7 +210,7 @@ $values = [
     'last_access' => $dt,
     'time_offset' => $time_offset,
     'dst_in_use' => $dst_in_use['tm_isdst'],
-    'free_switch' => XBT_TRACKER ? '0' : $dt + 14 * 86400,
+    'free_switch' => $dt + 14 * 86400,
     'ip' => inet_pton($ip),
     'status' => $users_count === 0 || (!$site_config['email_confirm'] && $site_config['auto_confirm']) ? 'confirmed' : 'pending',
     'class' => $users_count === 0 ? UC_MAX : UC_MIN,

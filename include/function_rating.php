@@ -52,7 +52,7 @@ function getRate($id, $what)
         }
     }
 
-    $completeres = sql_query('SELECT * FROM ' . (XBT_TRACKER ? 'xbt_files_users' : 'snatched') . ' WHERE ' . (XBT_TRACKER ? 'completedtime !=0' : 'complete_date !=0') . ' AND ' . (XBT_TRACKER ? 'uid' : 'userid') . ' = ' . $CURUSER['id'] . ' AND ' . (XBT_TRACKER ? 'fid' : 'torrentid') . ' = ' . $id);
+    $completeres = sql_query('SELECT * FROM snatched WHERE complete_date !=0 AND userid = ' . $CURUSER['id'] . ' AND torrentid = ' . $id) or sqlerr(__FILE__, __LINE__);
     $completecount = mysqli_num_rows($completeres);
     if ($rating_cache['rated']) {
         $rated = number_format($rating_cache['sum'] / $rating_cache['count'] / 5 * 100, 0) . '%';

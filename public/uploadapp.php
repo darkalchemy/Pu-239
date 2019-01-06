@@ -26,21 +26,13 @@ if (isset($_POST['form']) != 1) {
         <form action='./uploadapp.php' method='post' enctype='multipart/form-data'>
             <table class='table table-bordered table-striped'>";
         $ratio = member_ratio($CURUSER['uploaded'], $CURUSER['downloaded']);
-        if (!XBT_TRACKER) {
-            $connect = $fluent->from('peers')
-                ->select(null)
-                ->select('connectable')
-                ->where('userid = ?', $CURUSER['id'])
-                ->fetch();
-        } else {
-            $connect = $fluent->from('xbt_files_users')
-                ->select(null)
-                ->select('connectable')
-                ->where('uid = ?', $CURUSER['id'])
-                ->fetch();
-        }
+        $connect = $fluent->from('peers')
+            ->select(null)
+            ->select('connectable')
+            ->where('userid = ?', $CURUSER['id'])
+            ->fetch();
         if (!empty($connect)) {
-            $Conn_Y = (XBT_TRACKER === true ? 1 : 'yes');
+            $Conn_Y = 'yes';
             if ($connect == $Conn_Y) {
                 $connectable = 'Yes';
             } else {

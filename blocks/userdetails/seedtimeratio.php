@@ -2,11 +2,11 @@
 
 global $CURUSER, $site_config, $lang, $user_stuffs, $cache, $user;
 
-$What_Cache = (XBT_TRACKER ? 'share_ratio_xbt_' : 'share_ratio_');
-$What_Table = (XBT_TRACKER ? 'xbt_files_users' : 'snatched');
-$What_String = (XBT_TRACKER ? 'fid' : 'id');
-$What_User_String = (XBT_TRACKER ? 'uid' : 'userid');
-$What_Expire = (XBT_TRACKER ? $site_config['expires']['share_ratio_xbt'] : $site_config['expires']['share_ratio']);
+$What_Cache = 'share_ratio_';
+$What_Table = 'snatched';
+$What_String = 'id';
+$What_User_String = 'userid';
+$What_Expire = $site_config['expires']['share_ratio'];
 $cache_share_ratio = $cache->get($What_Cache . $id);
 if ($cache_share_ratio === false || is_null($cache_share_ratio)) {
     $sql = sql_query("SELECT SUM(seedtime) AS seed_time_total, COUNT($What_String) AS total_number FROM $What_Table WHERE seedtime > '0' AND $What_User_String = " . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);

@@ -1,6 +1,10 @@
 <?php
 
 $lang = [
+    'gl_staffbugs' => 'Bugs',
+    'gl_messages' => 'Messages',
+    'gl_search_users' => 'Search Users',
+    'gl_karma' => 'Karma Store',
     'gl_bluray' => 'Blu-Ray.com',
     'gl_bluray_releases' => 'Bluray Releases',
     'gl_imdb' => 'IMDb',
@@ -22,6 +26,7 @@ $lang = [
     'gl_help' => 'Help',
     'gl_torrent' => 'Torrent',
     'gl_torrents' => 'Torrents',
+    'gl_movies' => 'Movies',
     'gl_newtor' => 'New Torrents Today',
     'gl_nseeds' => 'Need Seeds',
     'gl_home' => 'Home',
@@ -72,7 +77,7 @@ $lang = [
     'gl_links' => 'Links',
     'gl_staff' => 'Staff',
     'gl_flood_msg' => 'Anti-Flood limit in effect - you need to wait - ',
-    'gl_catalogue' => 'Catalogue',
+    'gl_catalogue' => 'Catalog',
     'gl_alerts' => 'Current Site Alerts:',
     //a guest user links
     'gl_login' => 'Log In',

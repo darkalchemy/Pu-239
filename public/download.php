@@ -125,11 +125,7 @@ if (!isset($CURUSER['torrent_pass']) || strlen($CURUSER['torrent_pass']) != 64) 
     ], $site_config['expires']['user_cache']);
 }
 $dict = bencdec::decode_file($fn, $site_config['max_torrent_size']);
-if (XBT_TRACKER) {
-    $dict['announce'] = $site_config['xbt_prefix'] . $CURUSER['torrent_pass'] . $site_config['xbt_suffix'];
-} else {
-    $dict['announce'] = $site_config['announce_urls'][$usessl] . '?torrent_pass=' . $CURUSER['torrent_pass'];
-}
+$dict['announce'] = $site_config['announce_urls'][$usessl] . '?torrent_pass=' . $CURUSER['torrent_pass'];
 $dict['uid'] = (int) $CURUSER['id'];
 $tor = bencdec::encode($dict);
 if ($zipuse) {

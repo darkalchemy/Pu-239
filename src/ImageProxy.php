@@ -131,8 +131,10 @@ class ImageProxy
         if (mime_content_type($path) !== 'image/gif') {
             $optimizerChain = OptimizerChainFactory::create();
             try {
-                $optimizerChain->setTimeout(15)->optimize($path);
-            } catch (Exception $e) {
+                $optimizerChain->setTimeout(30)->optimize($path);
+            } catch (\Exception $e) {
+                echo 'Message: ' . $e->getMessage() . "\n";
+
                 return false;
             }
 
@@ -166,6 +168,8 @@ class ImageProxy
                     $constraint->upsize();
                 });
         } catch (\Exception $e) {
+            echo 'Message: ' . $e->getMessage() . "\n";
+
             return false;
         }
         $image->save($new_path);

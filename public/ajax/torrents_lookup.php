@@ -409,8 +409,8 @@ function snatchtable(array $torrents)
         $upspeed = ($torrent['upspeed'] > 0 ? mksize($torrent['upspeed']) : ($torrent['seedtime'] > 0 ? mksize($torrent['uploaded'] / ($torrent['seedtime'] + $torrent['leechtime'])) : mksize(0)));
         $downspeed = ($torrent['downspeed'] > 0 ? mksize($torrent['downspeed']) : ($torrent['leechtime'] > 0 ? mksize($torrent['downloaded'] / $torrent['leechtime']) : mksize(0)));
         $ratio = ($torrent['downloaded'] > 0 ? number_format($torrent['uploaded'] / $torrent['downloaded'], 3) : ($torrent['uploaded'] > 0 ? 'Inf.' : '---'));
-        $XBT_or_PHP = (XBT_TRACKER ? $torrent['fid'] : $torrent['torrentid']);
-        $XBT_or_PHP_TIME = (XBT_TRACKER ? $torrent['completedtime'] : $torrent['complete_date']);
+        $XBT_or_PHP = $torrent['torrentid'];
+        $XBT_or_PHP_TIME = $torrent['complete_date'];
         $body .= "
         <tr>
             <td>
@@ -493,8 +493,7 @@ function staff_snatchtable(array $torrents, int $userid)
         } else {
             $ratio = 'N/A';
         }
-        if (!XBT_TRACKER) {
-            $body .= '
+        $body .= '
             <tr>
                 <td>' . ($arr['owner'] === $userid ? "
                     <b><span class='has-text-orange'>{$lang['userdetails_s_towner']}</span></b><br>" : '' . ($arr['complete_date'] != '0' ? "
@@ -530,14 +529,6 @@ function staff_snatchtable(array $torrents, int $userid)
                     <span class='has-text-danger'><b>{$lang['userdetails_no']}</b></span>") . '
                 </td>
             </tr>';
-        } else {
-            $body .= '
-            <tr>
-                <td>' . ($arr['owner'] == $id ? "<b><span class='has-text-orange'>{$lang['userdetails_s_towner']}</span></b><br>" : '' . ($arr['completedtime'] != '0' ? "<b><span class='has-text-lightgreen'>{$lang['userdetails_s_fin']}</span></b><br>" : "<b><span class='has-text-danger'>{$lang['userdetails_s_nofin']}</span></b><br>") . '') . "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($arr['image']) . "' alt='" . htmlsafechars($arr['name']) . "' title='" . htmlsafechars($arr['name']) . "'></td>" . "
-                <td><a class='altlink' href='{$site_config['baseurl']}/details.php?id=" . (int) $arr['fid'] . "'><b>" . htmlsafechars($arr['torrent_name']) . '</b></a>' . ($arr['completedtime'] != '0' ? "<br><span style='color: yellow'>{$lang['userdetails_s_started']}" . get_date($arr['started'], 0, 1) . '</span><br>' : "<span color='yellow'>started:" . get_date($arr['started'], 0, 1) . "</span><br><span class='has-text-orange'>{$lang['userdetails_s_laction']}" . get_date($arr['mtime'], 0, 1) . '</span>' . get_date($arr['completedtime'], 0, 1) . ' ' . ($arr['completedtime'] == '0' ? '' . ($arr['owner'] == $id ? '' : '[ ' . mksize($arr['size'] - $arr['downloaded']) . "{$lang['userdetails_s_still']}]") . '' : '') . '') . "{$lang['userdetails_s_finished']}" . get_date($arr['completedtime'], 0, 1) . '' . ($arr['completedtime'] != '0' ? "<br><span color='silver'>{$lang['userdetails_s_ttod']}" . ($arr['leechtime'] != '0' ? mkprettytime($arr['leechtime']) : mkprettytime($arr['complete_date'] - $arr['start_date']) . '') . "</span> <span color='$dlc'>[ {$lang['userdetails_s_dled']} $dl_speed ]</span><br>" : '<br>') . "<span color='lightblue'>" . ($arr['seedtime'] != '0' ? "{$lang['userdetails_s_tseed']}" . mkprettytime($arr['seedtime']) . " </span><span color='$dlc'> " : "{$lang['userdetails_s_tseedn']}") . "</span><span class='has-text-lightgreen'> [{$lang['userdetails_s_uspeed']}" . $ul_speed . ' ] </span>' . ($arr['completedtime'] != '0' ? "<br><span color='$dlc;'>{$lang['userdetails_s_dspeed']} $dl_speed</span>" : '') . '</td>' . "
-                <td>{$lang['userdetails_s_seed']}" . (int) $arr['seeders'] . "<br>{$lang['userdetails_s_leech']}" . (int) $arr['leechers'] . "</td><td><span style='color: lightgreen'>{$lang['userdetails_s_upld']}<br><b>" . mksize($arr['uploaded']) . '</b></span>' . (RATIO_FREE ? '' : "<br><span class='has-text-orange'>{$lang['userdetails_s_dld']}<br><b>" . mksize($arr['downloaded']) . '</b></span>') . '</td><td>' . mksize($arr['size']) . '' . (RATIO_FREE ? '' : "<br>{$lang['userdetails_s_diff']}<br><span class='has-text-orange'><b>" . mksize($arr['size'] - $arr['downloaded']) . '</b></span>') . '</td><td>' . $ratio . '<br>' . ($arr['active'] == 1 ? "<span class='has-text-lightgreen'><b>{$lang['userdetails_s_seeding']}</b></span>" : "<span class='has-text-danger'><b>{$lang['userdetails_s_nseeding']}</b></span>") . '</td><td>' . htmlsafechars($arr['peer_id']) . '<br>' . ($arr['connectable'] == 1 ? "<b>{$lang['userdetails_s_conn']}</b> <span class='has-text-lightgreen'>{$lang['userdetails_yes']}</span>" : "<b>{$lang['userdetails_s_conn']}</b> <span class='has-text-danger'><b>{$lang['userdetails_no']}</b></span>") . '</td>
-            </tr>';
-        }
     }
     $table = main_table($body, $heading);
 

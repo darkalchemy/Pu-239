@@ -86,8 +86,7 @@ if (isset($_GET['torrentid'])) {
 }
 
 $completed = $count2 = $dlc = '';
-if (!XBT_TRACKER) {
-    $r = sql_query("SELECT
+$r = sql_query("SELECT
                 t.name,
                 t.added AS torrent_added,
                 s.complete_date AS c,
@@ -116,14 +115,6 @@ if (!XBT_TRACKER) {
                 JOIN categories AS c ON c.id = t.category
                 WHERE (hit_and_run != 0 OR mark_of_cain = 'yes') AND s.seeder='no' AND s.finished='yes' AND userid=" . sqlesc($userid) . ' AND t.owner != ' . sqlesc($userid) . '
                 ORDER BY s.id DESC') or sqlerr(__FILE__, __LINE__);
-} else {
-    $r = sql_query("SELECT torrents.name, torrents.added AS torrent_added, xbt_files_users.started AS st, xbt_files_users.completedtime AS c, xbt_files_users.downspeed, xbt_files_users.seedtime, xbt_files_users.active,
-                            xbt_files_users.left, xbt_files_users.fid AS tid, categories.id AS category, categories.image, categories.name AS catname, xbt_files_users.uploaded, xbt_files_users.downloaded, xbt_files_users.hit_and_run,
-                            xbt_files_users.mark_of_cain, xbt_files_users.completedtime, xbt_files_users.mtime, xbt_files_users.uid, torrents.seeders, torrents.leechers, torrents.owner, torrents.size
-                        FROM xbt_files_users JOIN torrents ON torrents.id = xbt_files_users.fid
-                        JOIN categories ON categories.id = torrents.category
-                        WHERE xbt_files_users.completed>='1' AND uid=" . sqlesc($userid) . ' AND torrents.owner != ' . sqlesc($userid) . ' ORDER BY xbt_files_users.fid DESC') or sqlerr(__FILE__, __LINE__);
-}
 
 $completed .= '<h1>Hit and Runs for: ' . format_username($userid) . '</h1>';
 if (mysqli_num_rows($r) > 0) {
@@ -145,7 +136,7 @@ if (mysqli_num_rows($r) > 0) {
         </tr>";
     $body = '';
     while ($a = mysqli_fetch_assoc($r)) {
-        $What_Id = (XBT_TRACKER ? $a['tid'] : $a['id']);
+        $What_Id = $a['id'];
         $torrent_needed_seed_time = ($a['st'] - $a['torrent_added']);
         switch (true) {
             case $CURUSER['class'] <= $site_config['hnr_config']['firstclass']:
@@ -237,8 +228,7 @@ if (mysqli_num_rows($r) > 0) {
         //            $sucks = $buyout == '' && $buybytes == '' ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
         $sucks = $buyout == '' ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
 
-        if (!XBT_TRACKER) {
-            $body .= "
+        $body .= "
         <tr>
             <td style='padding: 5px'><img height='42px' class='tnyrad' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['name']}' title='{$a['name']}'></td>
             <td align='left'><a class='altlink' href='details.php?id=" . (int) $a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
@@ -254,24 +244,6 @@ if (mysqli_num_rows($r) > 0) {
             <td class='has-text-centered'><span style='color: $dlc;'>{$lang['userdetails_c_dled']}<br>{$dl_speed}ps</span></td>
             <td class='has-text-centered'>$buyout $sucks</td>
         </tr>";
-        } else {
-            $body .= "
-        <tr>
-            <td style='padding: 5px'><img  height='42px' class='tnyrad' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['name']}' title='{$a['name']}'></td>
-            <td align='left'><a class='altlink' href='details.php?id=" . (int) $a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
-                <br><span style='color: .$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['active'] == 1 && $a['left'] == 0 ? "&#160;<font color='limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . $needs_seed) : '') . "
-            </td>
-            <td class='has-text-centered'>" . (int) $a['seeders'] . "</td>
-            <td class='has-text-centered'>" . (int) $a['leechers'] . "</td>
-            <td class='has-text-centered'>" . mksize($a['uploaded']) . '</td>
-            ' . (RATIO_FREE ? "<td class='has-text-centered'>" . mksize($a['size']) . '</td>' : "<td class='has-text-centered'>" . mksize($a['downloaded']) . '</td>') . "
-            <td class='has-text-centered'>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? $lang['userdetails_c_inf'] : '---')) . "<br></td>
-            <td class='has-text-centered'>" . get_date($a['completedtime'], 'DATE') . "</td>
-            <td class='has-text-centered'>" . get_date($a['mtime'], 'DATE') . "</td>
-            <td class='has-text-centered'><span style='color: $dlc;'>[{$lang['userdetails_c_dled']}$dl_speed ]</span></td>
-            <td class='has-text-centered'>$buyout $sucks</td>
-        </tr>";
-        }
     }
     $completed .= main_table($body, $header);
 } else {

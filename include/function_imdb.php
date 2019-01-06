@@ -143,6 +143,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                 ->execute();
         }
 
+        $cache->delete('cast_' . $imdb_id);
         $cache->set('imdb_' . $imdb_id, $imdb_data, 604800);
     }
     if ($tid) {

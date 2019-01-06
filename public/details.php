@@ -622,9 +622,9 @@ if ($CURUSER['downloadpos'] === 1 || $owner) {
         $freeslot_zip = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;zip=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span class='has-text-success'>Freeleech Slot</span></a> Use: <a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;zip=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span class='has-text-success'>Doubleseed Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
         $freeslot_text = $CURUSER['freeslots'] >= 1 ? "Use: <a class='index dt-tooltipper-small' href='{$site_config['baseurl']}/download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;text=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><span class='has-text-success'>Freeleech Slot</span></a> Use: <a class='index dt-tooltipper-small' href='download.php?torrent={$id}" . (get_scheme() === 'https' ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;text=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><span class='has-text-success'>Doubleseed Slot</span></a> - " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining.' : '';
     }
-    $Free_Slot = (XBT_TRACKER ? '' : $freeslot);
-    $Free_Slot_Zip = (XBT_TRACKER ? '' : $freeslot_zip);
-    $Free_Slot_Text = (XBT_TRACKER ? '' : $freeslot_text);
+    $Free_Slot = $freeslot;
+    $Free_Slot_Zip = $freeslot_zip;
+    $Free_Slot_Text = $freeslot_text;
     $slots .= main_table("
                     <tr>
                         <td class='rowhead' width='3%'>{$lang['details_download']}</td>

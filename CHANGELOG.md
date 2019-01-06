@@ -1,6 +1,14 @@
 ### 05 Jan, 2019
+add: exception handling  ImageProxy.php  
+remove: define XBT_TRACKER  
+update: increase timeout ImageProxy.php  
+fix: incorrect var images_update.php  
+revert: IMDb cache back to cache folder  
+fix: search by rating addparams browse.php  
+update: navbar items to lang file  
+add: search movies poster view tmovies.php  
 fix: not show image when caticon is empty  
-removed: category icons, not have proper permission from the creator
+removed: category icons, not have proper permission from the creator  
 
 ### 04 Jan, 2019
 fix: year in slider  

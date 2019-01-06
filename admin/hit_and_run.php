@@ -10,11 +10,7 @@ class_check($class);
 global $CURUSER, $site_config, $lang;
 
 $lang = array_merge($lang, load_language('ad_hit_and_run'));
-if (!XBT_TRACKER) {
-    $query = (isset($_GET['really_bad']) ? 'SELECT COUNT(*) FROM snatched LEFT JOIN users ON users.id = snatched.userid WHERE snatched.finished = \'yes\' AND snatched.hit_and_run > 0 AND users.hit_and_run_total > 2' : 'SELECT COUNT(*) FROM `snatched` WHERE `finished` = \'yes\' AND `hit_and_run` > 0');
-} else {
-    $query = (isset($_GET['really_bad']) ? 'SELECT COUNT(*) FROM xbt_files_users LEFT JOIN users ON users.id = xbt_files_users.uid WHERE xbt_files_users.completed >= \'1\' AND xbt_files_users.hit_and_run > 0 AND users.hit_and_run_total > 2' : 'SELECT COUNT(*) FROM `xbt_files_users` WHERE `completed` >= \'1\' AND `hit_and_run` > 0');
-}
+$query = (isset($_GET['really_bad']) ? 'SELECT COUNT(*) FROM snatched LEFT JOIN users ON users.id = snatched.userid WHERE snatched.finished = \'yes\' AND snatched.hit_and_run > 0 AND users.hit_and_run_total > 2' : 'SELECT COUNT(*) FROM `snatched` WHERE `finished` = \'yes\' AND `hit_and_run` > 0');
 $HTMLOUT = '';
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
 $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 15;
@@ -27,11 +23,7 @@ $menu_top = $pager['pagertop'];
 $menu_bottom = $pager['pagerbottom'];
 $LIMIT = $pager['limit'];
 
-if (!XBT_TRACKER) {
-    $query_2 = (isset($_GET['really_bad']) ? "SELECT s.torrentid, s.userid, s.hit_and_run, s.downloaded AS dload, s.uploaded AS uload, s.seedtime, s.start_date, s.complete_date, p.id, p.torrent, p.seeder, u.id, u.avatar, u.offensive_avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM snatched AS s LEFT JOIN users AS u ON u.id = s.userid LEFT JOIN peers AS p ON p.torrent=s.torrentid AND p.userid=s.userid LEFT JOIN torrents AS t ON t.id = s.torrentid WHERE finished = 'yes' AND hit_and_run > 0 AND u.hit_and_run_total > 2 ORDER BY userid $LIMIT" : "SELECT s.torrentid, s.userid, s.hit_and_run, s.downloaded AS dload, s.uploaded AS uload, s.seedtime, s.start_date, s.complete_date, p.id, p.torrent, p.seeder, u.id, u.avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM snatched AS s LEFT JOIN users AS u ON u.id = s.userid LEFT JOIN peers AS p ON p.torrent = s.torrentid AND p.userid = s.userid LEFT JOIN torrents AS t ON t.id = s.torrentid WHERE `finished` = 'yes' AND `hit_and_run` > 0 ORDER BY `userid` $LIMIT");
-} else {
-    $query_2 = (isset($_GET['really_bad']) ? "SELECT x.fid, x.uid, x.hit_and_run, x.downloaded AS dload, x.uploaded AS uload, x.seedtime, x.started, x.completedtime, x.active, u.id, u.avatar, u.offensive_avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM xbt_files_users AS x LEFT JOIN users AS u ON u.id = x.uid LEFT JOIN torrents AS t ON t.id=x.fid WHERE completed >= '1' AND hit_and_run > 0 AND u.hit_and_run_total > 2 ORDER BY uid $LIMIT" : "SELECT x.fid, x.uid, x.hit_and_run, x.downloaded AS dload, x.uploaded AS uload, x.seedtime, x.started, x.completedtime, x.active, u.id, u.avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM xbt_files_users AS x LEFT JOIN users AS u ON u.id = x.uid LEFT JOIN torrents AS t ON t.id = x.fid WHERE `completed` >= '1' AND `hit_and_run` > 0 ORDER BY `uid` $LIMIT");
-}
+$query_2 = (isset($_GET['really_bad']) ? "SELECT s.torrentid, s.userid, s.hit_and_run, s.downloaded AS dload, s.uploaded AS uload, s.seedtime, s.start_date, s.complete_date, p.id, p.torrent, p.seeder, u.id, u.avatar, u.offensive_avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM snatched AS s LEFT JOIN users AS u ON u.id = s.userid LEFT JOIN peers AS p ON p.torrent=s.torrentid AND p.userid=s.userid LEFT JOIN torrents AS t ON t.id = s.torrentid WHERE finished = 'yes' AND hit_and_run > 0 AND u.hit_and_run_total > 2 ORDER BY userid $LIMIT" : "SELECT s.torrentid, s.userid, s.hit_and_run, s.downloaded AS dload, s.uploaded AS uload, s.seedtime, s.start_date, s.complete_date, p.id, p.torrent, p.seeder, u.id, u.avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM snatched AS s LEFT JOIN users AS u ON u.id = s.userid LEFT JOIN peers AS p ON p.torrent = s.torrentid AND p.userid = s.userid LEFT JOIN torrents AS t ON t.id = s.torrentid WHERE `finished` = 'yes' AND `hit_and_run` > 0 ORDER BY `userid` $LIMIT");
 $hit_and_run_rez = sql_query($query_2) or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= "
             <ul class='level-center bg-06'>
@@ -50,12 +42,11 @@ $HTMLOUT .= "
         <td class="colhead"><b>' . $lang['hitnrun_stats'] . '</b></td>
         <td class="colhead">' . $lang['hitnrun_actions'] . '</td>' : '<tr><td><div class="padding20">' . $lang['hitnrun_none'] . '</div></td>') . '</tr>';
 while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
-    //=== Xbt Tracker or Default Announce
-    $Xbt_Seed = (XBT_TRACKER === true ? $hit_and_run_arr['active'] !== 1 : $hit_and_run_arr['seeder'] !== 'yes');
-    $Uid_ID = (XBT_TRACKER === true ? $hit_and_run_arr['uid'] : $hit_and_run_arr['userid']);
-    $S_date = (XBT_TRACKER === true ? $hit_and_run_arr['started'] : $hit_and_run_arr['start_date']);
-    $T_ID = (XBT_TRACKER === true ? $hit_and_run_arr['fid'] : $hit_and_run_arr['torrentid']);
-    $C_Date = (XBT_TRACKER === true ? $hit_and_run_arr['completedtime'] : $hit_and_run_arr['complete_date']);
+    $Xbt_Seed = $hit_and_run_arr['seeder'] !== 'yes';
+    $Uid_ID = $hit_and_run_arr['userid'];
+    $S_date = $hit_and_run_arr['start_date'];
+    $T_ID = $hit_and_run_arr['torrentid'];
+    $C_Date = $hit_and_run_arr['complete_date'];
     //=== if really seeding list them
     if ($Xbt_Seed) {
         if ($Uid_ID !== $hit_and_run_arr['owner']) {

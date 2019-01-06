@@ -1,8 +1,6 @@
 $('.flexslider').flexslider({
     touch: true,
     useCSS: true,
-    animation: 'fade',
-    //easing: 'easeInElastic',
     pauseOnHover: true,
     mousewheel: false,
     smoothHeight: false,

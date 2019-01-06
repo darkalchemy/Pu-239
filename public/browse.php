@@ -170,7 +170,9 @@ foreach ($valid_search as $search) {
             $column = str_replace(['sn', 'sd', 'si', 'ss', 'spf', 'sp', 'sg', 'sr'], ['name', 'descr', 'imdb', 'isbn', 'fuzzy', 'person', 'genre', 'role'], $search);
             searchcloud_insert($cleaned, $column);
         }
-        $addparam .= "{$search}=" . urlencode($cleaned) . '&amp;';
+        if ($search != 'srs' && $search != 'sre') {
+            $addparam .= "{$search}=" . urlencode($cleaned) . '&amp;';
+        }
         if ($search === 'sn') {
             $count = $count->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
             $select = $select->where('MATCH (t.name) AGAINST (? IN NATURAL LANGUAGE MODE)', $cleaned);
@@ -190,9 +192,11 @@ foreach ($valid_search as $search) {
             $count = $count->where('t.year <= ?', (int) $cleaned);
             $select = $select->where('t.year <= ?', (int) $cleaned);
         } elseif ($search === 'srs') {
+            $addparam .= "{$search}=" . urlencode($_GET['srs']) . '&amp;';
             $count = $count->where('t.rating >= ?', (float) $_GET['srs']);
             $select = $select->where('t.rating >= ?', (float) $_GET['srs']);
         } elseif ($search === 'sre') {
+            $addparam .= "{$search}=" . urlencode($_GET['sre']) . '&amp;';
             $count = $count->where('t.rating <= ?', (float) $_GET['sre']);
             $select = $select->where('t.rating <= ?', (float) $_GET['sre']);
         } elseif ($search === 'si') {
