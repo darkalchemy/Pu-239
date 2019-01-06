@@ -1,4 +1,16 @@
 ### 06 Jan, 2019
+add: index on rating.topic  
+add: index on over_forums.min_class_view  
+add: index on forum_config.id  
+add: index on users.perms  
+add: index on forums.parent_forum  
+add: index on forums.min_class_read  
+add: index on posts.added  
+add: index on topics.added  
+add: add index on ajax_chat_online.dateTime  
+add: add index on images.type  
+add: add index on auth_tokens.expires  
+update: rewrite query to use index  
 update: check $_SERVER['HTTPS'] status if $_SERVER['REQUEST_SCHEME'] not set  
 fix: not show image if no image is set comments.php  
 fix: optimize image ImageProxy.php  
