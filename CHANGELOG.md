@@ -1,4 +1,5 @@
 ### 06 Jan, 2019
+update: handle empty array comments.php  
 update: depenencies  
 remove: increment hits from get_all* Torrent.php  
 fix: AJAX Chat not removing stale users from online users  

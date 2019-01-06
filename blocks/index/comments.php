@@ -5,6 +5,7 @@ global $lang, $site_config, $fluent, $cache, $CURUSER;
 
 $comments = $cache->get('latest_comments_');
 if ($comments === false || is_null($comments)) {
+    $comments = [];
     $torrents = $fluent->from('comments AS c')
         ->select(null)
         ->select('c.id AS comment_id')
