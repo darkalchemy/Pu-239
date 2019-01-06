@@ -1,4 +1,6 @@
 ### 06 Jan, 2019
+update: depenencies  
+remove: increment hits from get_all* Torrent.php  
 fix: AJAX Chat not removing stale users from online users  
 fix: AJAX Chat only show current user instead of all users  
 update: remove duplicated seeders/leechers update announce.php  

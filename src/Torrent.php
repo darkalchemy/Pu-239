@@ -169,21 +169,6 @@ class Torrent
             ->where('s.userid = ?', $userid)
             ->orderBy('id DESC');
 
-        foreach ($torrents as $torrent) {
-            $set = [
-                'hits' => $torrent['hits'] + 1,
-            ];
-            $this->cache->update_row('torrent_details_' . $torrent['id'], $set, $this->site_config['expires']['torrent_details']);
-        }
-        $set = [
-            'hits' => new \Envms\FluentPDO\Literal('hits + 1'),
-        ];
-        $this->fluent->update('torrents')
-            ->set($set)
-            ->innerJoin('snatched AS s ON t.id = s.torrentid')
-            ->where('s.userid = ?', $userid)
-            ->execute();
-
         return $torrents;
     }
 
@@ -202,20 +187,6 @@ class Torrent
             ->select('filename')
             ->where('owner = ?', $userid)
             ->orderBy('id DESC');
-
-        foreach ($torrents as $torrent) {
-            $set = [
-                'hits' => $torrent['hits'] + 1,
-            ];
-            $this->cache->update_row('torrent_details_' . $torrent['id'], $set, $this->site_config['expires']['torrent_details']);
-        }
-        $set = [
-            'hits' => new \Envms\FluentPDO\Literal('hits + 1'),
-        ];
-        $this->fluent->update('torrents')
-            ->set($set)
-            ->where('owner = ?', $userid)
-            ->execute();
 
         return $torrents;
     }
@@ -236,20 +207,6 @@ class Torrent
             ->select('hits')
             ->where('visible = ?', $visible)
             ->orderBy('id DESC');
-
-        foreach ($torrents as $torrent) {
-            $set = [
-                'hits' => $torrent['hits'] + 1,
-            ];
-            $this->cache->update_row('torrent_details_' . $torrent['id'], $set, $this->site_config['expires']['torrent_details']);
-        }
-        $set = [
-            'hits' => new \Envms\FluentPDO\Literal('hits + 1'),
-        ];
-        $this->fluent->update('torrents')
-            ->set($set)
-            ->where('visible = ?', $visible)
-            ->execute();
 
         return $torrents;
     }
