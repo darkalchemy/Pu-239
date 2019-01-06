@@ -1,4 +1,7 @@
-### 04 Jan, 2018
+### 05 Jan, 2019
+removed: category icons, not have proper permission from the creator
+
+### 04 Jan, 2019
 fix: year in slider  
 fix: cursor:pointer icon  
 update: dependencies  

@@ -2027,4 +2027,11 @@ CREATE TABLE `categories` (
         'query' => "ALTER TABLE `imdb_person` ADD COLUMN `type` enum('director', 'composer', 'producer', 'cast', 'writing') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'cast'",
         'flush' => false,
     ],
+    [
+        'id' => 1546735859,
+        'info' => 'Remove icon images',
+        'date' => '05 Jan, 2019',
+        'query' => "UPDATE `categories` SET `image` = ''",
+        'flush' => false,
+    ],
 ];

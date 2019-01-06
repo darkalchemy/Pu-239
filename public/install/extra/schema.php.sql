@@ -1153,6 +1153,7 @@ CREATE TABLE `imdb_person` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `imdb_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
   `person_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` enum('director','composer','producer','cast','writing') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'cast',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_person` (`imdb_id`,`person_id`),
   KEY `person_id` (`person_id`),
@@ -1494,6 +1495,7 @@ CREATE TABLE `over_forums` (
   `name` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `min_class_view` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `forum_id` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -1672,6 +1674,8 @@ CREATE TABLE `posts` (
   KEY `topicid` (`topic_id`),
   KEY `userid` (`user_id`),
   KEY `body` (`post_title`),
+  FULLTEXT KEY `ft_body` (`body`),
+  FULLTEXT KEY `ft_title` (`post_title`),
   CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2207,6 +2211,7 @@ CREATE TABLE `topics` (
   KEY `subject` (`topic_name`),
   KEY `lastpost` (`last_post`),
   KEY `forum_id` (`forum_id`),
+  FULLTEXT KEY `ft_name` (`topic_name`),
   CONSTRAINT `topics_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2243,7 +2248,7 @@ CREATE TABLE `torrents` (
   `owner` int(10) unsigned NOT NULL DEFAULT '0',
   `num_ratings` int(10) unsigned NOT NULL DEFAULT '0',
   `rating_sum` int(10) unsigned NOT NULL DEFAULT '0',
-  `nfo` mediumtext COLLATE utf8mb4_unicode_ci,
+  `nfo` blob,
   `client_created_by` char(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'unknown',
   `free` int(10) unsigned NOT NULL DEFAULT '0',
   `sticky` enum('yes','fly','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
@@ -2359,8 +2364,8 @@ CREATE TABLE `triviausers` (
   KEY `qid` (`qid`),
   KEY `multi` (`user_id`,`qid`,`gamenum`),
   CONSTRAINT `triviausers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `triviausers_ibfk_3` FOREIGN KEY (`gamenum`) REFERENCES `triviasettings` (`gamenum`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `triviausers_ibfk_4` FOREIGN KEY (`qid`) REFERENCES `triviaq` (`qid`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `triviausers_ibfk_2` FOREIGN KEY (`qid`) REFERENCES `triviaq` (`qid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `triviausers_ibfk_3` FOREIGN KEY (`gamenum`) REFERENCES `triviasettings` (`gamenum`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2573,6 +2578,7 @@ CREATE TABLE `users` (
   `viewscloud` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `tenpercent` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `avatars` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
+  `offavatar` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `pirate` int(10) unsigned NOT NULL DEFAULT '0',
   `king` int(10) unsigned NOT NULL DEFAULT '0',
   `hidecur` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
@@ -2747,4 +2753,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-01-02  5:21:36
+-- Dump completed on 2019-01-05 19:53:41
