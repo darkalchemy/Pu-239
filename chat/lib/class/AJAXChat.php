@@ -324,7 +324,6 @@ class AJAXChat
                 ->leftJoin('users AS u ON o.userID = u.id')
                 ->where('u.anonymous = "no"')
                 ->where('u.anonymous_until = 0')
-                ->where('o.userID = ?', $this->getUserID())
                 ->orderBy('o.userRole DESC')
                 ->orderBy('LOWER(o.userName) ASC');
 
@@ -989,7 +988,7 @@ class AJAXChat
                 FROM
                     ' . $this->getDataBaseTable('online') . '
                 WHERE
-                    dateTime > DATE_ADD(NOW(), INTERVAL -' . $this->getConfig('inactiveTimeout') . ' MINUTE);';
+                    dateTime < DATE_ADD(NOW(), INTERVAL -' . $this->getConfig('inactiveTimeout') . ' MINUTE);';
 
         // Create a new SQL query:
         $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
