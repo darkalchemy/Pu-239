@@ -87,12 +87,13 @@ if (!empty($_GET['action']) && $_GET['action'] === 'view') {
 $paths = [
     '/var/log/apache2',
     '/var/log/nginx/',
+    '/var/log/mysql/',
     SQLERROR_LOGS_DIR,
 ];
 
 $files = [];
 foreach ($paths as $path) {
-    if (file_exists($path)) {
+    if (file_exists($path) && is_readable($path)) {
         $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
         $exts = [
             'log',

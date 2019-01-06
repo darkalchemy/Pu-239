@@ -1,4 +1,6 @@
 ### 06 Jan, 2019
+update: add mysql log files, files need 655 to read  
+update: check if path is_readable  
 update: download_multi.php  
 update: database files 
 add: index on rating.topic  
