@@ -1,4 +1,5 @@
 ### 06 Jan, 2019
+fix: AJAX Chat not removing stale users from online users  
 fix: AJAX Chat only show current user instead of all users  
 update: remove duplicated seeders/leechers update announce.php  
 update: add mysql log files, files need 655 to read  

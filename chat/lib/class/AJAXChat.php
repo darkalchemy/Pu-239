@@ -412,7 +412,8 @@ class AJAXChat
         $userID = ($userID === null) ? $this->getUserID() : $userID;
         for ($i = 0; $i < count($this->_onlineUsersData); ++$i) {
             if ($this->_onlineUsersData[$i]['userID'] == $userID) {
-                array_splice($this->_onlineUsersData, $i, 1);
+                //array_splice($this->_onlineUsersData, $i, 1);
+                unset($this->_onlineUsersData[$i]);
                 break;
             }
         }
@@ -754,7 +755,6 @@ class AJAXChat
 
         if ($this->isUserOnline($userData['userID']) || $this->isUserNameInUse($userData['userName'])) {
             if ($userData['userRole'] >= UC_MIN) {
-                $this->setInactive($userData['userID'], $userData['userName']);
                 $this->removeInactive();
             } else {
                 $this->_session->unset('Channel');
@@ -953,27 +953,6 @@ class AJAXChat
         return false;
     }
 
-    /**
-     * @param $userID
-     * @param $userName
-     *
-     * @throws Exception
-     */
-    public function setInactive($userID, $userName)
-    {
-        $set = [
-            'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW - ($this->getConfig('inactiveTimeout') * 60) - 60),
-        ];
-
-        $this->_fluent->update($this->getDataBaseTable('online'))
-            ->set($set)
-            ->where('userId = ?', $userID)
-            ->where('userName = ?', $userName)
-            ->execute();
-
-        $this->resetOnlineUsersData();
-    }
-
     public function resetOnlineUsersData()
     {
         $this->_onlineUsersData = null;
@@ -988,7 +967,7 @@ class AJAXChat
                 FROM
                     ' . $this->getDataBaseTable('online') . '
                 WHERE
-                    dateTime < DATE_ADD(NOW(), INTERVAL -' . $this->getConfig('inactiveTimeout') . ' MINUTE);';
+                    dateTime < DATE_SUB(NOW(), INTERVAL ' . $this->getConfig('inactiveTimeout') . ' MINUTE);';
 
         // Create a new SQL query:
         $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -1001,7 +980,7 @@ class AJAXChat
                     $condition .= ' OR ';
                 }
                 // Add userID to condition for removal:
-                $condition .= 'userID=' . sqlesc($row['userID']);
+                $condition .= 'userID = ' . sqlesc($row['userID']);
 
                 // Update the socket server authentication for the kicked user:
                 if ($this->getConfig('socketServerEnabled')) {
@@ -1639,7 +1618,7 @@ class AJAXChat
                 'ip' => inet_pton(getip()),
             ];
 
-            $set = [
+            $update = [
                 'userName' => $this->getUserName(),
                 'userRole' => $this->getUserRole(),
                 'channel' => $this->getChannel(),
@@ -1647,17 +1626,10 @@ class AJAXChat
                 'ip' => inet_pton(getip()),
             ];
 
-            $lastInsertID = $this->_fluent->insertInto($this->getDataBaseTable('online'))
-                ->values($values)
-                ->ignore()
+            $this->_fluent->insertInto($this->getDataBaseTable('online'), $values)
+                ->onDuplicateKeyUpdate($update)
                 ->execute();
 
-            if (!$lastInsertID) {
-                $this->_fluent->update($this->getDataBaseTable('online'))
-                    ->set($set)
-                    ->where('userID = ?', $this->getUserID())
-                    ->execute();
-            }
             $this->resetOnlineUsersData();
             $this->_cache->set($key, $active_online, 60);
         }
