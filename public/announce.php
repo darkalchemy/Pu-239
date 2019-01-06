@@ -248,7 +248,7 @@ if (isset($self) && $self['prevts'] > ($self['nowts'] - $announce_wait)) {
 }
 if (!isset($self)) {
     $count = $peer_stuffs->get_torrent_count($torrent['id'], $torrent_pass);
-    if ($count >= 3) {
+    if ($count > 3) {
         err('Connection limit exceeded!');
     }
 } else {
@@ -410,10 +410,8 @@ if (isset($self) && $event === 'stopped') {
     if ($peer_deleted) {
         if ($self['seeder'] === 'yes') {
             $torrent_stuffs->adjust_torrent_peers($torrent['id'], -1, 0, 0);
-            $torrent_updateset['seeders'] = max(0, $torrent['seeders'] - 1);
         } else {
             $torrent_stuffs->adjust_torrent_peers($torrent['id'], 0, -1, 0);
-            $torrent_updateset['leechers'] = max(0, $torrent['leechers'] - 1);
         }
         if ($snatched) {
             $snatch_updateset['uploaded'] = $snatched['uploaded'] + $upthis;
@@ -469,12 +467,8 @@ if (isset($self) && $event === 'stopped') {
         if ($seeder != $self['seeder']) {
             if ($seeder === 'yes') {
                 $torrent_stuffs->adjust_torrent_peers($torrent['id'], 1, -1, 0);
-                $torrent_updateset['seeders'] = $torrent['seeders'] + 1;
-                $torrent_updateset['leechers'] = max(0, $torrent['leechers'] - 1);
             } else {
                 $torrent_stuffs->adjust_torrent_peers($torrent['id'], -1, 1, 0);
-                $torrent_updateset['seeders'] = max(0, $torrent['seeders'] - 1);
-                $torrent_updateset['leechers'] = $torrent['leechers'] + 1;
             }
         }
         if ($snatched) {
@@ -527,10 +521,8 @@ if (isset($self) && $event === 'stopped') {
     if (empty($update_id)) {
         if ($seeder === 'yes') {
             $torrent_stuffs->adjust_torrent_peers($torrent['id'], 1, 0, 0);
-            $torrent_updateset['seeders'] = $torrent['seeders'] + 1;
         } else {
             $torrent_stuffs->adjust_torrent_peers($torrent['id'], 0, 1, 0);
-            $torrent_updateset['leechers'] = $torrent['leechers'] + 1;
         }
         if ($snatched) {
             $snatch_updateset['to_go'] = $left;

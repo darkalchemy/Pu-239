@@ -1,4 +1,5 @@
 ### 06 Jan, 2019
+update: remove duplicated seeders/leechers update announce.php  
 update: add mysql log files, files need 655 to read  
 update: check if path is_readable  
 update: download_multi.php  
