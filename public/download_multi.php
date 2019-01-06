@@ -3,6 +3,7 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class.bencdec.php';
+require_once INCL_DIR . 'common_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $torrent_stuffs, $user_stuffs;
 
@@ -30,13 +31,14 @@ if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
     $zip = new ZipArchive();
     $zip->open($zipfile, ZipArchive::CREATE);
 
+    $announce_url = $site_config['announce_urls'][0];
+    if (get_scheme() === 'https') {
+        $announce_url = $site_config['announce_urls'][1];
+    }
+
     foreach ($torrents as $t_file) {
         $fn = TORRENTS_DIR . $t_file['id'] . '.torrent';
         $dict = bencdec::decode_file($fn, $site_config['max_torrent_size']);
-        $announce_url = $site_config['announce_urls'][0];
-        if (get_scheme() === 'https') {
-            $announce_url = $site_config['announce_urls'][1];
-        }
         $dict['announce'] = "{$announce_url}?torrent_pass={$user['torrent_pass']}";
         $dict['uid'] = $userid;
         $tor = bencdec::encode($dict);
