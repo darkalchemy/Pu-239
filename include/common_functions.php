@@ -36,6 +36,8 @@ function get_scheme()
 {
     if (isset($_SERVER['REQUEST_SCHEME'])) {
         return $_SERVER['REQUEST_SCHEME'];
+    } elseif (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+        return 'https';
     }
 
     return 'http';

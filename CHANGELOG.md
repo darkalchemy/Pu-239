@@ -1,3 +1,8 @@
+### 06 Jan, 2019
+update: check $_SERVER['HTTPS'] status if $_SERVER['REQUEST_SCHEME'] not set  
+fix: not show image if no image is set comments.php  
+fix: optimize image ImageProxy.php  
+
 ### 05 Jan, 2019
 add: exception handling  ImageProxy.php  
 remove: define XBT_TRACKER  

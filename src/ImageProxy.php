@@ -77,7 +77,7 @@ class ImageProxy
             return false;
         }
         chmod($path, 0775);
-        if ($this->optimize($path)) {
+        if ($this->optimize($path, false)) {
             return true;
         }
 
@@ -115,7 +115,7 @@ class ImageProxy
                 Image::load($path)
                     ->save($new_path, $quality);
             }
-            $this->optimize($new_path);
+            $this->optimize($new_path, false);
         }
 
         return $hash;
@@ -126,13 +126,22 @@ class ImageProxy
      *
      * @return bool
      */
-    protected function optimize(string $path)
+    protected function optimize(string $path, bool $failed)
     {
         if (mime_content_type($path) !== 'image/gif') {
+            $temp = '/dev/shm/temp.jpg';
+            echo 'Filesize before: ' .  filesize($path) . "\n";
             $optimizerChain = OptimizerChainFactory::create();
             try {
-                $optimizerChain->setTimeout(30)->optimize($path);
+                $optimizerChain->setTimeout(5)->optimize($path, $temp);
+                rename($temp, $path);
+                echo 'Filesize after: ' .  filesize($path) . "\n";
             } catch (\Exception $e) {
+                unlink($temp);
+                if (!$failed) {
+                    echo 'Message: ' . $e->getMessage() . "\n";
+                    $this->optimize($path, true);
+                }
                 echo 'Message: ' . $e->getMessage() . "\n";
 
                 return false;
@@ -173,7 +182,7 @@ class ImageProxy
             return false;
         }
         $image->save($new_path);
-        $this->optimize($new_path);
+        $this->optimize($new_path, false);
 
         return $hash;
     }
@@ -201,7 +210,7 @@ class ImageProxy
                 });
             $image->save($path);
         }
-        $this->optimize($path);
+        $this->optimize($path, false);
 
         return true;
     }

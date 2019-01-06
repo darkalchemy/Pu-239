@@ -30,12 +30,16 @@ function images_update()
     global $fluent, $cache, $image_stuffs;
 
     $time_start = microtime(true);
-    set_time_limit(12000);
+    set_time_limit(1800);
     ignore_user_abort(true);
-    $cache->set('images_update_', 'running', 7200);
+    $cache->set('images_update_', 'running', 1800);
 
     $fluent->deleteFrom('images')
         ->where("url = 'N/A' OR url = '' OR url IS NULL")
+        ->execute();
+
+    $fluent->deleteFrom('person')
+        ->where("imdb_id = '' OR imdb_id IS NULL")
         ->execute();
 
     get_upcoming();
@@ -69,7 +73,6 @@ function images_update()
             'url' => $imdb_id['url'],
         ];
     }
-
     if (!empty($values)) {
         $update = [
             'checked' => TIME_NOW,
@@ -95,8 +98,13 @@ function images_update()
     foreach ($images as $image) {
         $imdb = get_imdbid($image['tmdb_id']);
         if (!empty($imdb['imdb_id'])) {
-            $set = [
+            $values[] = [
                 'imdb_id' => $imdb['imdb_id'],
+                'url' => $image['url'],
+                'checked' => TIME_NOW,
+            ];
+        } else {
+            $values1[] = [
                 'url' => $image['url'],
                 'checked' => TIME_NOW,
             ];
@@ -110,6 +118,14 @@ function images_update()
         $image_stuffs->update($values, $update);
         echo 'Checked ' . count($values) . " image imdb_ids\n";
         unset($values);
+    }
+    if (!empty($values1)) {
+        $update = [
+            'checked' => TIME_NOW,
+        ];
+        $image_stuffs->update($values1, $update);
+        echo 'Checked and failed to find ' . count($values1) . " image imdb_ids\n";
+        unset($values1);
     }
 
     $imdb_ids = $fluent->from('images')
@@ -133,7 +149,6 @@ function images_update()
             'url' => $id['url'],
         ];
     }
-
     if (!empty($values)) {
         $update = [
             'updated' => TIME_NOW,
@@ -164,7 +179,6 @@ function images_update()
             'url' => $id['url'],
         ];
     }
-
     if (!empty($values)) {
         $update = [
             'updated' => TIME_NOW,
@@ -199,7 +213,6 @@ function images_update()
             url_proxy($image['url'], true, 1000, 185);
         }
     }
-
     if (!empty($values)) {
         $update = [
             'fetched' => 'yes',
@@ -249,7 +262,6 @@ function images_update()
 
     foreach ($imdbids as $imdbid) {
         get_imdb_info($imdbid['imdb_id'], true, false, null, null);
-        get_omdb_info($imdbid['imdb_id'], false);
         find_images($imdbid['imdb_id'], 'poster');
         find_images($imdbid['imdb_id'], 'banner');
         find_images($imdbid['imdb_id'], 'background');
@@ -281,7 +293,6 @@ function images_update()
         $imdb = !empty($imdb[2]) ? $imdb[2] : '';
         if (!empty($imdb) && !in_array($imdb, $imdb_ids)) {
             get_imdb_info($imdb, true, false, null, null);
-            get_omdb_info($imdb, false);
             find_images($imdb, 'poster');
             find_images($imdb, 'banner');
             find_images($imdb, 'background');
@@ -314,7 +325,6 @@ function images_update()
         $imdb = !empty($imdb[2]) ? $imdb[2] : '';
         if (!empty($imdb) && !in_array($imdb, $imdb_ids)) {
             get_imdb_info($imdb, true, false, null, null);
-            get_omdb_info($imdb, false);
             find_images($imdb, 'poster');
             find_images($imdb, 'banner');
             find_images($imdb, 'background');

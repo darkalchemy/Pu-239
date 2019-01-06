@@ -18,7 +18,6 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
 
     $imdbid = $imdb_id;
     $imdb_id = str_replace('tt', '', $imdb_id);
-    $cache->delete('imdb_' . $imdb_id);
     $imdb_data = $cache->get('imdb_' . $imdb_id);
     if ($imdb_data === false || is_null($imdb_data)) {
         $config = new Config();

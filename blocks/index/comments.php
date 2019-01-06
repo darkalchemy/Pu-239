@@ -5,7 +5,7 @@ global $lang, $site_config, $fluent, $cache, $CURUSER;
 
 $comments = $cache->get('latest_comments_');
 if ($comments === false || is_null($comments)) {
-    $comments = $fluent->from('comments AS c')
+    $torrents = $fluent->from('comments AS c')
         ->select(null)
         ->select('c.id AS comment_id')
         ->select('c.user')
@@ -39,8 +39,15 @@ if ($comments === false || is_null($comments)) {
         ->leftJoin('categories AS p ON s.parent_id = p.id')
         ->where('c.torrent > 0')
         ->orderBy('c.id DESC')
-        ->limit(5)
-        ->fetchAll();
+        ->limit(5);
+
+    foreach ($torrents as $torrent) {
+        if (!empty($torrent['parent_name'])) {
+            $torrent['cat'] = $torrent['parent_name'] . '::' . $torrent['cat'];
+        }
+        $comments[] = $torrent;
+    }
+
     $cache->set('latest_comments_', $comments, $site_config['expires']['latestcomments']);
 }
 
@@ -79,11 +86,11 @@ foreach ($comments as $comment) {
         $uploader = "<span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($users_data['username']) . '</span>';
     }
 
+    $caticon = !empty($image) ? "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' height='20px' width='auto'>" : htmlsafechars($cat);
+
     $posted_comments .= "
                         <tr>
-                            <td class='has-text-centered'>
-                                <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . "/$image' class='tooltipper' alt='$cat' title='$cat'>
-                            </td>
+                            <td class='has-text-centered'>$caticon</td>
                             <td>";
     $block_id = "comment_id_{$comment_id}";
     $posted_comments .= torrent_tooltip(format_comment($text), $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
