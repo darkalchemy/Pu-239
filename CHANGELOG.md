@@ -1,4 +1,5 @@
 ### 05 Jan, 2019
+fix: not show image when caticon is empty  
 removed: category icons, not have proper permission from the creator
 
 ### 04 Jan, 2019

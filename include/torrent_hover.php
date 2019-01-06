@@ -150,11 +150,10 @@ function torrent_tooltip_wrapper($text, $id, $block_id, $name, $poster, $uploade
 {
     global $site_config, $image, $cat, $times_completed;
 
+    $caticon = !empty($image) ? "<img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' height='20px' width='auto'>" : htmlsafechars($cat);
     $content = "
                     <tr>
-                        <td class='has-text-centered'>
-                            <img src='{$site_config['pic_baseurl']}caticons/" . get_category_icons() . '/' . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' height='20px' width='auto'>
-                        </td>
+                        <td class='has-text-centered'>$caticon</td>
                         <td>" . torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles) . "
                         <td class='has-text-centered'>{$times_completed}</td>
                         <td class='has-text-centered'>{$seeders}</td>
