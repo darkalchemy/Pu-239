@@ -1,3 +1,6 @@
+### 07 Jan, 2019
+fix: not setting correct scheme download.php  
+
 ### 06 Jan, 2019
 update: is var empty announce.php  
 update: handle empty array comments.php  

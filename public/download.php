@@ -21,7 +21,7 @@ if (!empty($T_Pass)) {
     check_user_status();
 }
 $id = isset($_GET['torrent']) ? (int) $_GET['torrent'] : 0;
-$usessl = get_scheme() === 'https' >= 1 ? 1 : 0;
+$usessl = get_scheme() === 'https' ? 1 : 0;
 $zipuse = isset($_GET['zip']) && $_GET['zip'] == 1 ? true : false;
 $text = isset($_GET['text']) && $_GET['text'] == 1 ? true : false;
 if (!is_valid_id($id)) {
