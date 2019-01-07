@@ -14,8 +14,8 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     $receiver = isset($_POST['receiver']) ? intval($_POST['receiver']) : 0;
     $subject = htmlsafechars($_POST['subject']);
     $msg = trim($_POST['body']);
-    $save = isset($_POST['save']) && $_POST['save'] === 1 ? 'yes' : 'no';
-    $delete = isset($_POST['delete']) && $_POST['delete'] !== 0 ? intval($_POST['delete']) : 0;
+    $save = isset($_POST['save']) && intval($_POST['save']) === 1 ? 'yes' : 'no';
+    $delete = isset($_POST['delete']) && intval($_POST['delete']) != 0 ? intval($_POST['delete']) : 0;
     $urgent = isset($_POST['urgent']) && $_POST['urgent'] === 'yes' && $CURUSER['class'] >= UC_STAFF ? 'yes' : 'no';
     $returnto = htmlsafechars(isset($_POST['returnto']) ? $_POST['returnto'] : '');
     $arr_receiver = $user_stuffs->getUserFromId($receiver);
@@ -100,14 +100,18 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
         @$mailer->send($mail);
     }
     if ($delete != 0) {
+        $set = [
+            'location' => 0,
+        ];
         $message = $message_stuffs->get_by_id($delete);
-        if ($message) {
+        if (!empty($message)) {
             if ($message['receiver'] != $CURUSER['id']) {
                 stderr($lang['pm_send_quote'], $lang['pm_send_thou']);
             }
-            if ($message['saved'] === 'no') {
+            if ($save != 'yes') {
                 $message_stuffs->delete($delete, $message['receiver']);
-            } elseif ($message['saved'] === 'yes') {
+                $message_stuffs->update($set, $delete);
+            } else {
                 $values = [
                     'location' => 0,
                 ];
@@ -144,7 +148,7 @@ if ($replyto != 0) {
     }
     if ($message['receiver'] == $CURUSER['id']) {
         $msg .= "\n\n\n{$lang['pm_send_wrote0']}{$arr_member['username']}{$lang['pm_send_wrote']}\n{$message['msg']}\n";
-        $subject = $lang['pm_send_re'] . htmlsafechars($message['subject']);
+        $subject = (!preg_match('#' . $lang['pm_send_re'] . '#i', $message['subject']) ? $lang['pm_send_re'] : '') . htmlsafechars($message['subject']);
     }
 }
 

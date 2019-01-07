@@ -24,7 +24,7 @@ $hasAccess = $current_user === $uid || $isStaff ? true : false;
 
 if ($type === 'torrents' && $hasAccess) {
     $torrents = get_uploaded($uid);
-    if (empty($torrents)) {
+    if (!$torrents) {
         echo json_encode(['content' => main_div('You have not uploaded any torrents')]);
         die();
     }
@@ -38,7 +38,7 @@ if ($type === 'torrents' && $hasAccess) {
     }
 } elseif ($type === 'seeding' && $hasAccess) {
     $torrents = get_seeding($uid);
-    if (empty($torrents)) {
+    if (!$torrents) {
         echo json_encode(['content' => main_div('You are not seeding any torrents')]);
         die();
     }
@@ -52,7 +52,7 @@ if ($type === 'torrents' && $hasAccess) {
     }
 } elseif ($type === 'leeching' && $hasAccess) {
     $torrents = get_leeching($uid);
-    if (empty($torrents)) {
+    if (!$torrents) {
         echo json_encode(['content' => main_div('You have not leeching any torrents')]);
         die();
     }
@@ -66,7 +66,7 @@ if ($type === 'torrents' && $hasAccess) {
     }
 } elseif ($type === 'snatched' && $hasAccess) {
     $torrents = get_snatched($uid);
-    if (empty($torrents)) {
+    if (!$torrents) {
         echo json_encode(['content' => main_div('You have not downloaded any torrents')]);
         die();
     }
@@ -80,7 +80,7 @@ if ($type === 'torrents' && $hasAccess) {
     }
 } elseif ($type === 'snatched_staff' && $isStaff) {
     $torrents = get_snatched_staff($uid);
-    if (empty($torrents)) {
+    if (!$torrents) {
         echo json_encode(['content' => main_div('You have not downloaded any torrents')]);
         die();
     }

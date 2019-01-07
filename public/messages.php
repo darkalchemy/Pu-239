@@ -215,13 +215,14 @@ function get_all_boxes($box = 1)
 
         $cache->set('get_all_boxes_' . $CURUSER['id'], $get_all_boxes, $site_config['expires']['get_all_boxes']);
     }
+    $box = (int) $box;
     $boxes = "
         <select name='boxx' class='right10'>
             <option value='10000'>{$lang['pm_search_move_to']}</option>" . ($box !== 1 ? "
             <option value='1'>{$lang['pm_inbox']}</option>" : '') . ($box !== -1 ? "
             <option value='-1'>{$lang['pm_sentbox']}</option>" : '') . ($box !== -2 ? "
-            <option value='-2'>{$lang['pm_drafts']}</option>" : '') . "
-            <option value='0'>{$lang['pm_deleted']}</option>";
+            <option value='-2'>{$lang['pm_drafts']}</option>" : '') . ($box !== 0 ? "
+            <option value='0'>{$lang['pm_deleted']}</option>" : '');
     if (!empty($get_all_boxes)) {
         foreach ($get_all_boxes as $boxx) {
             $boxes .= $box === (int) $boxx['boxnumber'] ? '' : "

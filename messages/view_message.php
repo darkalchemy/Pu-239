@@ -78,7 +78,7 @@ $HTMLOUT .= "
                         <form action='./messages.php' method='post'>
                             <input type='hidden' name='id' value='{$pm_id}'>
                             <input type='hidden' name='action' value='move'>
-                            " . get_all_boxes() . "
+                            " . get_all_boxes($message['location']) . "
                             <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_move']}'>
                         </form>
                     </div>

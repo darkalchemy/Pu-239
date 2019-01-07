@@ -1,4 +1,10 @@
 ### 07 Jan, 2019
+fix: quoted subject and message lotteryclean.php  
+update: check if var is empty not false torrents_lookup.php  
+fix: increasing Re: on replied to messages  
+fix: no spacing between divs lottery.php  
+fix: no option to move to inbox when its in deleted box  
+fix: reply to message with delete message checked not saving in deleted mailbox  
 fix: not setting correct scheme download.php  
 
 ### 06 Jan, 2019

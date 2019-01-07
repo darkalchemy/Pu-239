@@ -48,8 +48,8 @@ function lotteryclean($data)
             $lottery['total_pot'] = $lottery['total_tickets'] * $lottery_config['ticket_amount'];
         }
         $lottery['user_pot'] = round($lottery['total_pot'] / $lottery_config['total_winners'], 2);
-        $msg['subject'] = sqlesc('You have won the lottery');
-        $msg['body'] = sqlesc('Congratulations, You have won : ' . number_format($lottery['user_pot']) . '. This has been added to your seedbonus total amount. Thanks for playing Lottery.');
+        $msg['subject'] = 'You have won the lottery';
+        $msg['body'] = 'Congratulations, You have won : ' . number_format($lottery['user_pot']) . '. This has been added to your seedbonus total amount. Thanks for playing Lottery.';
         foreach ($lottery['winners'] as $winner) {
             $mod_comment = sqlesc("User won the lottery: {$lottery['user_pot']} at " . get_date($dt, 'LONG') . (!empty($winner['modcomment']) ? "\n" . $winner['modcomment'] : ''));
             $_userq[] = [

@@ -58,7 +58,7 @@ switch (true) {
         }
         //get last lottery data
         if (!empty($lottery_config['lottery_winners'])) {
-            $html .= stdmsg('Last lottery', '' . get_date($lottery_config['lottery_winners_time'], 'LONG') . '');
+            $html .= stdmsg('Last lottery', get_date($lottery_config['lottery_winners_time'], 'LONG'), 'top20');
             $uids = (strpos($lottery_config['lottery_winners'], '|') ? explode('|', $lottery_config['lottery_winners']) : $lottery_config['lottery_winners']);
             $last_winners = [];
             $qus = sql_query('SELECT id, username FROM users WHERE ' . (is_array($uids) ? 'id IN (' . implode(', ', $uids) . ')' : 'id = ' . $uids)) or sqlerr(__FILE__, __LINE__);
@@ -66,7 +66,7 @@ switch (true) {
                 $last_winners[] = format_username($aus['id']);
             }
             $html .= stdmsg('Lottery Winners Info', '<ul><li>Last winners: ' . implode(', ', $last_winners) . '</li><li>Amount won    (each): ' . $lottery_config['lottery_winners_amount'] . '</li></ul><br>
-        <p>' . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='{$site_config['baseurl']}/lottery.php?action=config' class='button is-small margin10'>Lottery configuration</a>" : 'Nothing Configured Atm Sorry') . '</p>');
+        <p>' . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='{$site_config['baseurl']}/lottery.php?action=config' class='button is-small margin10'>Lottery configuration</a>" : 'Nothing Configured Atm Sorry') . '</p>', 'top20');
         } else {
             $html .= "
                     <div class='bordered top20'>
