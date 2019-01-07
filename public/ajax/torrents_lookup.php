@@ -320,8 +320,6 @@ function get_snatched_staff(int $userid)
         ->orderBy('last_action DESC')
         ->fetchAll();
 
-    file_put_contents('/var/log/nginx/data.log', json_encode($torrents) . PHP_EOL, FILE_APPEND);
-
     return $torrents;
 }
 

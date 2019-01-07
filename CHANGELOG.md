@@ -1,4 +1,5 @@
 ### 07 Jan, 2019
+remove: file_put_contents logging  
 add: cli installer  
 remove: web installer  
 remove: super_user from data.sql  
