@@ -1,4 +1,8 @@
 ### 07 Jan, 2019
+add: cli installer  
+remove: web installer  
+remove: super_user from data.sql  
+remove: images, person, imdb_info sql files  
 fix: quoted subject and message lotteryclean.php  
 update: check if var is empty not false torrents_lookup.php  
 fix: increasing Re: on replied to messages  
@@ -483,7 +487,7 @@ remove: unused columns from select User.php
 
 ### 29 Oct, 2018  
 fix: undefined var admin/upgrade_database.php  
-fix: incorrect var namr imdb_lookup.php  
+fix: incorrect var name imdb_lookup.php  
 fix: admin memcached stats when using sockets  
 fix: seedtime cleanup once per userid, not once per torrent  
 

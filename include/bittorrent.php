@@ -3,10 +3,7 @@
 $starttime = microtime(true);
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'define.php';
-if (!@include_once(INCL_DIR . 'config.php')) {
-    header('Location: ./install/index.php');
-    die();
-}
+require_once INCL_DIR . 'config.php';
 require_once INCL_DIR . 'common_functions.php';
 require_once INCL_DIR . 'site_config.php';
 require_once VENDOR_DIR . 'autoload.php';
@@ -446,9 +443,6 @@ function userlogin()
     }
     $session->set('use_12_hour', $users_data['use_12_hour']);
     $GLOBALS['CURUSER'] = $users_data;
-    if ($users_data['class'] >= UC_STAFF) {
-        check_install_dir();
-    }
     get_template();
     $mood = create_moods();
 }
@@ -2110,16 +2104,6 @@ function get_body_image($details, $portrait = false)
     $cache->delete('backgrounds_');
 
     return false;
-}
-
-function check_install_dir()
-{
-    global $session;
-
-    if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {
-        $session->set('is-danger',
-            '[h2]This site is vulnerable until you delete the install directory[/h2]rm -r ' . ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR);
-    }
 }
 
 if (!file_exists(TEMPLATE_DIR . get_stylesheet() . DIRECTORY_SEPARATOR . 'files.php')) {

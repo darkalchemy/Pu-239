@@ -94,20 +94,14 @@ CREATE DATABASE Pu-239;
 # set ownership
 sudo chown -R www-data:www-data ../Pu-239
 
-# goto website and complete install, all fields must be completed and each field includes an example and tooltip explanation when hovered
+# install
+php bin/install.php install
 
 # set permissions and create necessary files
 [sudo] php bin/set_perms.php
 php bin/uglify.php 
 
-# delete public/install folder once directed to
-sudo rm -r public/install/
-
-# create your first user and login
-
-# goto admin and create your bot/system user
-
-# goto admin cleanup and activate/deactivate scripts, they are initially set to last midnight
+# goto admin cleanup and activate/deactivate scripts, they are initially enabled and set to last midnight
 
 # add cron job to root cron for running cleanup, please change path as needed
 sudo crontab -e

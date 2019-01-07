@@ -8,11 +8,8 @@ $pass = $_ENV['DB_PASSWORD'];
 $db = $_ENV['DB_DATABASE'];
 
 $tables = [
-    DATABASE_DIR . 'images.sql.bz2',
-    DATABASE_DIR . 'imdb_info.sql.bz2',
-    DATABASE_DIR . 'person.sql.bz2',
-    DATABASE_DIR . 'trivia.sql.bz2',
-    DATABASE_DIR . 'tvmaze.sql.bz2',
+    DATABASE_DIR . 'trivia.bz2',
+    DATABASE_DIR . 'tvmaze.bz2',
 ];
 
 $i = 0;

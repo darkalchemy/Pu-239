@@ -861,16 +861,16 @@
         },
         {
             "name": "php-curl-class/php-curl-class",
-            "version": "8.4.0",
+            "version": "8.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-curl-class/php-curl-class.git",
-                "reference": "d45e6c17b61bbedf367bb37f35612e4526c07b29"
+                "reference": "2b387e3ef1c8a1d6116a1459c0e3e71643f86806"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-curl-class/php-curl-class/zipball/d45e6c17b61bbedf367bb37f35612e4526c07b29",
-                "reference": "d45e6c17b61bbedf367bb37f35612e4526c07b29",
+                "url": "https://api.github.com/repos/php-curl-class/php-curl-class/zipball/2b387e3ef1c8a1d6116a1459c0e3e71643f86806",
+                "reference": "2b387e3ef1c8a1d6116a1459c0e3e71643f86806",
                 "shasum": ""
             },
             "require": {
@@ -924,7 +924,7 @@
                 "web-service",
                 "xml"
             ],
-            "time": "2018-12-19T16:35:45+00:00"
+            "time": "2019-01-07T06:43:45+00:00"
         },
         {
             "name": "psr/cache",
