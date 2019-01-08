@@ -1,3 +1,6 @@
+### 08 Jan, 2019
+fix: bitbucket not displaying uploaded images  
+
 ### 07 Jan, 2019
 remove: file_put_contents logging  
 add: cli installer  

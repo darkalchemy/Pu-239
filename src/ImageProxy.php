@@ -77,7 +77,7 @@ class ImageProxy
             return false;
         }
         chmod($path, 0775);
-        if ($this->optimize($path, false)) {
+        if ($this->optimize($path, false, true)) {
             return true;
         }
 
@@ -115,7 +115,7 @@ class ImageProxy
                 Image::load($path)
                     ->save($new_path, $quality);
             }
-            $this->optimize($new_path, false);
+            $this->optimize($new_path, false, true);
         }
 
         return $hash;
@@ -126,23 +126,31 @@ class ImageProxy
      *
      * @return bool
      */
-    protected function optimize(string $path, bool $failed)
+    protected function optimize(string $path, bool $failed, bool $debug)
     {
         if (mime_content_type($path) !== 'image/gif') {
             $temp = '/dev/shm/temp.jpg';
-            echo 'Filesize before: ' .  filesize($path) . "\n";
+            if ($debug) {
+                 'Filesize before: ' .  filesize($path) . "\n";
+            }
             $optimizerChain = OptimizerChainFactory::create();
             try {
                 $optimizerChain->setTimeout(5)->optimize($path, $temp);
                 rename($temp, $path);
-                echo 'Filesize after: ' .  filesize($path) . "\n";
+                if ($debug) {
+                    echo 'Filesize after: ' .  filesize($path) . "\n";
+                }
             } catch (\Exception $e) {
                 unlink($temp);
                 if (!$failed) {
-                    echo 'Message: ' . $e->getMessage() . "\n";
-                    $this->optimize($path, true);
+                    if ($debug) {
+                        echo 'Message: ' . $e->getMessage() . "\n";
+                    }
+                    $this->optimize($path, true, $debug);
                 }
-                echo 'Message: ' . $e->getMessage() . "\n";
+                if ($debug) {
+                    echo 'Message: ' . $e->getMessage() . "\n";
+                }
 
                 return false;
             }
@@ -182,7 +190,7 @@ class ImageProxy
             return false;
         }
         $image->save($new_path);
-        $this->optimize($new_path, false);
+        $this->optimize($new_path, false, true);
 
         return $hash;
     }
@@ -194,7 +202,7 @@ class ImageProxy
      *
      * @return bool
      */
-    public function optimize_image(string $path, int $width = null, int $height = null)
+    public function optimize_image(string $path, int $width = null, int $height = null, bool $debug = true)
     {
         $manager = new ImageManager();
 
@@ -210,7 +218,7 @@ class ImageProxy
                 });
             $image->save($path);
         }
-        $this->optimize($path, false);
+        $this->optimize($path, false, $debug);
 
         return true;
     }

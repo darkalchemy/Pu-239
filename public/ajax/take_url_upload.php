@@ -86,7 +86,7 @@ if (!file_exists($path)) {
     echo json_encode(['msg' => $lang['bitbucket_upfail_save']]);
     die();
 }
-$image_proxy->optimize_image($path);
+$image_proxy->optimize_image($path, null, null, false);
 $image = "{$site_config['baseurl']}/img.php?{$pathlink}";
 
 if (!empty($image)) {

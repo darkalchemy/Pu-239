@@ -11,7 +11,7 @@ global $CURUSER, $site_config, $cache, $session;
 $lang = array_merge(load_language('global'), load_language('bitbucket'));
 $image_proxy = new DarkAlchemy\Pu239\ImageProxy();
 
-$HTMLOUT = '';
+header('content-type: application/json');
 
 $SaLt = $site_config['site']['salt'];
 $SaLty = $site_config['site']['salty'];
@@ -22,8 +22,8 @@ $formats = $site_config['allowed_formats'];
 $str = implode('|', $formats);
 $str = str_replace('.', '', $str);
 
-$bucketdir = (isset($_POST['avy']) ? AVATAR_DIR : BITBUCKET_DIR . $folders . '/');
-$bucketlink = ((isset($_POST['avy']) || (isset($_GET['images']) && $_GET['images'] == 2)) ? 'avatar/' : $folders . '/');
+$bucketdir = BITBUCKET_DIR . $folders . '/';
+$bucketlink = $folders . '/';
 $PICSALT = $SaLt . $CURUSER['username'];
 $USERSALT = substr(md5($SaLty . $CURUSER['id']), 0, 6);
 make_year(BITBUCKET_DIR);
@@ -50,15 +50,17 @@ for ($i = 0; $i < $_POST['nbr_files']; ++$i) {
         echo json_encode(['msg' => 'path not exists ' . $lang['bitbucket_upfail']]);
         die();
     }
-    $image_proxy->optimize_image($path);
+    $image_proxy->optimize_image($path, null, null, false);
     $images[] = "{$site_config['baseurl']}/img.php?{$pathlink}";
 }
 
 if (!empty($images)) {
-    echo json_encode([
+    $output = [
         'msg' => $lang['bitbucket_success'],
         'urls' => $images,
-    ]);
+    ];
+    file_put_contents('/var/log/nginx/images.log', json_encode($output) . PHP_EOL, FILE_APPEND);
+    echo json_encode($output);
     die();
 } else {
     echo json_encode(['msg' => 'Failure']);
