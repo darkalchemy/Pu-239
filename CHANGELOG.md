@@ -1,4 +1,5 @@
 ### 11 Jan, 2019
+fix: missing code to display failed login count  
 remove: reference to avatar creator  
 
 ### 08 Jan, 2019

@@ -37,6 +37,8 @@ function left()
     $ip = getip(true);
     $count = $failed_logins->get($ip);
     $left = $site_config['failedlogins'] - $count;
+    return $left;
+
     if ($left <= 2) {
         $left = "
         <span class='has-text-danger'>{$left}</span>";
@@ -54,6 +56,18 @@ if (!empty($_GET['returnto'])) {
 }
 
 $got_ssl = isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] == true ? true : false;
+
+if (left() !== 5) {
+    $HTMLOUT .= main_div("
+        <div class='padding10'>
+            <h3>
+                {$site_config['failedlogins']} {$lang['login_failed']}.
+            </h3>
+            <h3>
+                {$lang['login_failed_1']} <b> " . left() . " </b> {$lang['login_failed_2']}
+            </h3>
+        </div>", 'w-50 has-text-centered bottom20');
+}
 $HTMLOUT .= "
             <form id='site_login' class='form-inline table-wrapper' method='post' action='{$site_config['baseurl']}/takelogin.php'>
                 <div class='level-center'>";
