@@ -1,3 +1,6 @@
+### 11 Jan, 2019
+remove: reference to avatar creator  
+
 ### 08 Jan, 2019
 fix: bitbucket not displaying uploaded images  
 

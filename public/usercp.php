@@ -136,7 +136,6 @@ if ($action === 'avatar') {
                                                 Width should be 150px. (Will be resized if necessary)
                                             </p>
                                             <p class='small'>
-                                                If you need a avatar, try our  <a href='{$site_config['baseurl']}/avatar/index.php'>Avatar creator</a>.<br>
                                                 If you need a host for your image, try our  <a href='{$site_config['baseurl']}/bitbucket.php'>Bitbucket</a>.
                                             </p>
                                         </td>
