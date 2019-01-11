@@ -25,11 +25,6 @@ if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
 $lang = array_merge(load_language('global'), load_language('login'));
 $left = $total = '';
 
-/**
- * @return mixed|string
- *
- * @throws \Envms\FluentPDO\Exception
- */
 function left()
 {
     global $site_config, $failed_logins;
@@ -37,15 +32,6 @@ function left()
     $ip = getip(true);
     $count = $failed_logins->get($ip);
     $left = $site_config['failedlogins'] - $count;
-    return $left;
-
-    if ($left <= 2) {
-        $left = "
-        <span class='has-text-danger'>{$left}</span>";
-    } else {
-        $left = "
-        <span class='has-text-success'>{$left}</span>";
-    }
 
     return $left;
 }
@@ -57,14 +43,23 @@ if (!empty($_GET['returnto'])) {
 
 $got_ssl = isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] == true ? true : false;
 
-if (left() !== 5) {
+$left = left();
+if ($left !== 5) {
+    if ($left <= 2) {
+        $text = "
+        <span class='has-text-danger'>{$left}</span>";
+    } else {
+        $text = "
+        <span class='has-text-success'>{$left}</span>";
+    }
+
     $HTMLOUT .= main_div("
         <div class='padding10'>
             <h3>
-                {$site_config['failedlogins']} {$lang['login_failed']}.
+                {$site_config['failedlogins']} {$lang['login_failed']}
             </h3>
             <h3>
-                {$lang['login_failed_1']} <b> " . left() . " </b> {$lang['login_failed_2']}
+                {$lang['login_failed_1']} $text " . sprintf($lang['login_failed_2'], plural($left)) . "
             </h3>
         </div>", 'w-50 has-text-centered bottom20');
 }

@@ -2111,4 +2111,11 @@ CREATE TABLE `categories` (
         'query' => 'ALTER TABLE `rating` ADD INDEX `topic`(`topic`)',
         'flush' => false,
     ],
+    [
+        'id' => 1547239819,
+        'info' => 'Update Cleanup Time',
+        'date' => '11 Jan, 2019',
+        'query' => 'UPDATE `cleanup` SET `clean_increment` = 3600 WHERE `clean_title` = "Failed Logins"',
+        'flush' => false,
+    ],
 ];

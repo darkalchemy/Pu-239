@@ -1,4 +1,7 @@
 ### 11 Jan, 2019
+update: database files  
+update: failed login cleanup to run hourly  
+update: failed login count display  
 fix: missing code to display failed login count  
 remove: reference to avatar creator  
 

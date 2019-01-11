@@ -4,9 +4,9 @@ $lang = [
     //Login
     'login_cookies' => '<span class="is-info">Note:</span> You need cookies enabled to sign up or log in.',
     'login_cookies1' => '<span class="is-info">Note:</span> If your experiencing login issues delete your old cookies.',
-    'login_failed' => 'failed logins in a row will result in banning your ip',
+    'login_failed' => 'failed login attempts will result in your IP banned for 24 hours.',
     'login_failed_1' => 'You have',
-    'login_failed_2' => 'login attempt' . (left() <= 1 ? '' : 's') . ' remaining.',
+    'login_failed_2' => 'login attempt%s remaining.',
     'login_click' => 'Now click the button marked ',
     'login_x' => 'X',
     'login_use_ssl' => 'SSL Strength',
