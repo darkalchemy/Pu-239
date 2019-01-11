@@ -1,4 +1,5 @@
 ### 11 Jan, 2019
+fix: install.php  
 update: database files  
 update: failed login cleanup to run hourly  
 update: failed login count display  

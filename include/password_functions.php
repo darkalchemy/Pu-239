@@ -4,7 +4,7 @@ function make_passhash($pass)
 {
     $options = get_options();
     $algo = $options['algo'];
-    $options = $options = $options['options'];
+    $options = $options['options'];
 
     return password_hash($pass, $algo, $options);
 }
@@ -20,7 +20,7 @@ function rehash_password($hash, $password, $userid)
 
     $options = get_options();
     $algo = $options['algo'];
-    $options = $options = $options['options'];
+    $options = $options['options'];
 
     if (password_needs_rehash($hash, $algo, $options)) {
         $set = [
