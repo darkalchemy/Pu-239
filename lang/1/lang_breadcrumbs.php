@@ -103,6 +103,7 @@ $lang = [
     'class_config' => 'Configure Classes',
     'class_promo' => 'Class Promotions',
     'cleanup_manager' => 'Cleanup Manager',
+    'clear_chat' => 'Clear Chat Messages',
     'cloudview' => 'Manage Search Cloud',
     'comments' => 'View Comments',
     'config' => 'Config',

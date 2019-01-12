@@ -101,6 +101,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         die();
     } elseif (($action === 'clear_ajaxchat' && $CURUSER['class'] >= UC_SYSOP)) {
         $fluent->deleteFrom('ajax_chat_messages')
+            ->where('id > 0')
             ->execute();
         $session->set('is-success', 'You deleted [i]all[/i] messages in AJAX Chat.');
         header('Location: ' . $_SERVER['PHP_SELF']);
@@ -330,7 +331,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         <a href='{$site_config['baseurl']}/staffpanel.php?action=add' class='tooltipper' title='{$lang['spanel_add_a_new_pg']}'>{$lang['spanel_add_a_new_pg']}</a>
                     </li>
                     <li class='margin10'>
-                        <a href='{$site_config['baseurl']}/staffpanel.php?action=clear_chat' class='tooltipper' title='{$lang['spanel_clear_chat_caution']}'>{$lang['spanel_clear_chat']}</a>
+                        <a href='{$site_config['baseurl']}/staffpanel.php?action=clear_ajaxchat' class='tooltipper' title='{$lang['spanel_clear_chat_caution']}'>{$lang['spanel_clear_chat']}</a>
                     </li>
                     <li class='margin10'>
                         <a href='{$site_config['baseurl']}/staffpanel.php?action=flush' class='tooltipper' title='{$lang['spanel_flush_cache']}'>{$lang['spanel_flush_cache']}</a>

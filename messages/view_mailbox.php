@@ -105,7 +105,7 @@ if (mysqli_num_rows($res) === 0) {
             } else {
                 $friends = '
                     <a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=friend&amp;targetid=' . (int) $row['id'] . '">
-                        <small><i class="icon-plus has-text-success tooltipper" title="' . $lang['pm_mailbox_addf'] . '"></i></small>
+                        <small><i class="icon-users has-text-success tooltipper" title="' . $lang['pm_mailbox_addf'] . '"></i></small>
                     </a>
                     <a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=block&amp;targetid=' . (int) $row['id'] . '">
                         <small><i class="icon-cancel icon has-text-danger tooltipper" title="' . $lang['pm_mailbox_addb'] . '"></i></small>
