@@ -20,6 +20,7 @@ if ($torrents === false || is_null($torrents)) {
         ->select('t.rating')
         ->select('t.year')
         ->select('t.subs AS subtitles')
+        ->select('t.newgenre AS genre')
         ->select('u.username')
         ->select('u.class')
         ->select('p.name AS parent_name')
@@ -99,7 +100,7 @@ if (!empty($sliding_torrents)) {
                 <ul class='slides'>";
     $i = 0;
     foreach ($sliding_torrents as $slider_torrent) {
-        $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
+        $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = $genre = '';
         extract($slider_torrent);
         $i = $site_config['latest_torrents_limit_slider'];
 
@@ -116,7 +117,7 @@ if (!empty($sliding_torrents)) {
                     <li>';
         $torrname = "<img $src>";
         $block_id = "slider_id_{$id}";
-        $slider .= torrent_tooltip($torrname, $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
+        $slider .= torrent_tooltip($torrname, $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre);
         $slider .= '
                     </li>';
     }

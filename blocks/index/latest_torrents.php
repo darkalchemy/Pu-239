@@ -21,6 +21,7 @@ if ($last5torrents === false || is_null($last5torrents)) {
         ->select('t.rating')
         ->select('t.year')
         ->select('t.subs AS subtitles')
+        ->select('t.newgenre AS genre')
         ->select('u.username')
         ->select('u.class')
         ->select('p.name AS parent_name')
@@ -60,7 +61,7 @@ $latest_torrents .= "
                     </thead>
                     <tbody>";
 foreach ($last5torrents as $last5torrent) {
-    $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
+    $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = $genre = '';
     extract($last5torrent);
     if (empty($poster) && !empty($imdb_id)) {
         $poster = find_images($imdb_id);
@@ -74,7 +75,7 @@ foreach ($last5torrents as $last5torrent) {
     }
 
     $block_id = "last_id_{$id}";
-    $latest_torrents .= torrent_tooltip_wrapper(htmlsafechars($name) . " ($year)", $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
+    $latest_torrents .= torrent_tooltip_wrapper(htmlsafechars($name) . " ($year)", $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre);
 }
 if (count($last5torrents) === 0) {
     $latest_torrents .= "

@@ -29,6 +29,7 @@ if ($comments === false || is_null($comments)) {
         ->select('t.rating')
         ->select('t.year')
         ->select('t.subs AS subtitles')
+        ->select('t.newgenre AS genre')
         ->select('u.username')
         ->select('u.class')
         ->select('p.name AS parent_name')
@@ -69,7 +70,7 @@ $posted_comments .= "
                     <tbody>";
 
 foreach ($comments as $comment) {
-    $text = $owner = $user = $id = $comment_id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = $times_completed = '';
+    $text = $owner = $user = $id = $comment_id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = $times_completed = $genre = '';
     $subtitles = $year = $rating = $owner = $anonymous = $name = $added = $class = $cat = $image = '';
     extract($comment);
     $torrname = htmlsafechars($name);
@@ -94,7 +95,7 @@ foreach ($comments as $comment) {
                             <td class='has-text-centered'>$caticon</td>
                             <td>";
     $block_id = "comment_id_{$comment_id}";
-    $posted_comments .= torrent_tooltip(format_comment($text), $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
+    $posted_comments .= torrent_tooltip(format_comment($text), $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre);
     $posted_comments .= "
                             <td class='has-text-centered'>$user</td>
                             <td class='has-text-centered'>" . get_date($added, 'LONG') . "</td>

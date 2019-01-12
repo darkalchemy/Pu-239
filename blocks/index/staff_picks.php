@@ -21,6 +21,7 @@ if ($staff_picks === false || is_null($staff_picks)) {
         ->select('t.rating')
         ->select('t.year')
         ->select('t.subs AS subtitles')
+        ->select('t.newgenre AS genre')
         ->select('u.username')
         ->select('u.class')
         ->select('p.name AS parent_name')
@@ -63,7 +64,7 @@ $staffpicks .= "
                 </thead>
                 <tbody>";
 foreach ($staff_picks as $staff_pick) {
-    $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
+    $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = $genre = '';
     extract($staff_pick);
     if (empty($poster) && !empty($imdb_id)) {
         $poster = find_images($imdb_id);
@@ -77,7 +78,7 @@ foreach ($staff_picks as $staff_pick) {
     }
 
     $block_id = "staff_pick_id_{$id}";
-    $staffpicks .= torrent_tooltip_wrapper(htmlsafechars($name) . " ($year)", $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
+    $staffpicks .= torrent_tooltip_wrapper(htmlsafechars($name) . " ($year)", $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre);
 }
 if (count($staff_picks) === 0) {
     $staffpicks .= "

@@ -20,6 +20,7 @@ if ($torrents === false || is_null($torrents)) {
         ->select('t.rating')
         ->select('t.year')
         ->select('t.subs AS subtitles')
+        ->select('t.newgenre AS genre')
         ->select('u.username')
         ->select('u.class')
         ->select('p.name AS parent_name')
@@ -79,7 +80,7 @@ if (!empty($scroller_torrents)) {
                 <div id='icarousel' class='icarousel'>";
 
     foreach ($scroller_torrents as $scroll_torrent) {
-        $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = '';
+        $subtitles = $year = $rating = $owner = $anonymous = $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = $times_completed = $genre = '';
         extract($scroll_torrent);
         $i = $site_config['latest_torrents_limit_scroll'];
 
@@ -95,7 +96,7 @@ if (!empty($scroller_torrents)) {
                     <div class='slide'>";
         $torrname = "<img src='" . url_proxy($scroll_poster, true, null, 300) . "' alt='{$name}' style='width: auto; height: 300px; max-height: 300px;'>";
         $block_id = "scroll_id_{$id}";
-        $torrents_scroller .= torrent_tooltip($torrname, $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles);
+        $torrents_scroller .= torrent_tooltip($torrname, $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre);
         $torrents_scroller .= '
                     </div>';
     }

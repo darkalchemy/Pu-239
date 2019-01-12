@@ -1,4 +1,5 @@
 ### 11 Jan, 2019
+add: genre to torrent hover  
 update: database files  
 update: failed login cleanup to run hourly  
 update: failed login count display  

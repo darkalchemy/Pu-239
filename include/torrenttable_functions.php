@@ -281,7 +281,7 @@ function torrenttable($res, $variant = 'index')
         $icon_string = implode(' ', array_diff($icons, ['']));
         $name = $row['name'];
         if (!empty($row['username'])) {
-            if ($row['anonymous'] === 'yes' && $CURUSER['class'] < UC_STAFF && $row['owner'] != $CURUSER['id']) {
+            if ($row['anonymous'] && $CURUSER['class'] < UC_STAFF && $row['owner'] != $CURUSER['id']) {
                 $uploader = '<span>' . get_anonymous_name() . '</span>';
             } else {
                 $uploader = "<span class='" . get_user_class_name($row['class'], true) . "'>" . htmlsafechars($row['username']) . '</span>';
@@ -292,7 +292,7 @@ function torrenttable($res, $variant = 'index')
             $formatted = "<i>({$uploader})</i>";
         }
         $block_id = "torrent_{$id}";
-        $tooltip = torrent_tooltip(htmlsafechars($dispname), $id, $block_id, $name, $poster, $uploader, $row['added'], $row['size'], $row['seeders'], $row['leechers'], $row['imdb_id'], $row['rating'], $row['year'], $row['subs']);
+        $tooltip = torrent_tooltip(htmlsafechars($dispname), $id, $block_id, $name, $poster, $uploader, $row['added'], $row['size'], $row['seeders'], $row['leechers'], $row['imdb_id'], $row['rating'], $row['year'], $row['subs'], $row['newgenre']);
 
         $htmlout .= $tooltip . "
                         </a>
