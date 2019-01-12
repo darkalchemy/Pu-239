@@ -42,6 +42,7 @@ $lang = [
     'gl_forums' => 'Forums',
     'gl_tforums' => 'Pu-239 Forums',
     'gl_bookmarks' => 'Bookmarks',
+    'gl_catids' => "Category ID's",
     'gl_general' => 'General',
     'gl_stats' => 'Statistics',
     'gl_status' => 'Status',

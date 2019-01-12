@@ -16,6 +16,7 @@ $lang = [
     'browse.php' => 'Browse Torrents',
     'bugs.php' => 'Bugs',
     'casino.php' => 'Casino',
+    'categoryids.php' => "Category ID's",
     'catalog.php' => 'Torrent Catalog',
     'chat.php' => 'IRC',
     'comment.php' => 'Comments',

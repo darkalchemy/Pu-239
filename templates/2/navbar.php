@@ -86,6 +86,7 @@ function navbar()
                             <a href='#'>User</a>
                             <ul class='ddFade ddFadeFast'>
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
+                                <li class='iss_hidden'><a href='{$site_config['baseurl']}/categoryids.php'>{$lang['gl_catids']}</a></li>
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/friends.php'>{$lang['gl_friends']}</a></li>
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/messages.php'>{$lang['gl_pms']}</a></li>
                                 <li class='iss_hidden'><a href='{$site_config['baseurl']}/users.php'>{$lang['gl_search_users']}</a></li>
