@@ -1,4 +1,5 @@
 ### 12 Jan, 2019
+fix: shuffle on empty array  
 fix: margin takelogin.php  
 
 ### 11 Jan, 2019

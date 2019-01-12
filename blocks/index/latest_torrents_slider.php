@@ -90,8 +90,8 @@ foreach ($torrents as $torrent) {
         break;
     }
 }
-shuffle($sliding_torrents);
 if (!empty($sliding_torrents)) {
+    shuffle($sliding_torrents);
     $slider .= "
     <a id='slider-hash'></a>
     <div id='slider' class='box'>
