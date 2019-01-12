@@ -7,19 +7,35 @@ if (empty($argv[1])) {
     die("To install please run\n\nphp {$argv[0]} install\n");
 }
 
-$vars = [
-    'site_name'      => readline('Site Name: '),
-    'announce_http'  => readline('Site HTTP URL: '),
-    'announce_ssl'   => readline('Site HTTPS URL: '),
-    'mysql_db'       => readline('Database Name: '),
-    'mysql_user'     => readline('Database Username: '),
-    'mysql_pass'     => readline('Database Password: '),
-    'bot_username'   => readline('BOT Username: '),
-    'site_email'     => readline('Site Email: '),
-    'admin_username' => readline('Admin Username: '),
-    'admin_pass'     => readline('Admin Password: '),
-    'admin_email'     => readline('Admin Email: '),
-];
+if (count($argv) === 13) {
+    $vars = [
+        'site_name'      => $argv[2],
+        'announce_http'  => $argv[3],
+        'announce_ssl'   => $argv[4],
+        'mysql_db'       => $argv[5],
+        'mysql_user'     => $argv[6],
+        'mysql_pass'     => $argv[7],
+        'bot_username'   => $argv[8],
+        'site_email'     => $argv[9],
+        'admin_username' => $argv[10],
+        'admin_pass'     => $argv[11],
+        'admin_email'     => $argv[12],
+    ];
+} else {
+    $vars = [
+        'site_name'      => readline('Site Name: '),
+        'announce_http'  => readline('Site HTTP URL: '),
+        'announce_ssl'   => readline('Site HTTPS URL: '),
+        'mysql_db'       => readline('Database Name: '),
+        'mysql_user'     => readline('Database Username: '),
+        'mysql_pass'     => readline('Database Password: '),
+        'bot_username'   => readline('BOT Username: '),
+        'site_email'     => readline('Site Email: '),
+        'admin_username' => readline('Admin Username: '),
+        'admin_pass'     => readline('Admin Password: '),
+        'admin_email'     => readline('Admin Email: '),
+    ];
+}
 
 $vars['sessionName']    = str_replace(' ', '_', $vars['site_name']);
 $vars['cookie_prefix']  = $vars['sessionName'];
@@ -45,7 +61,11 @@ if (!file_put_contents(ROOT_DIR . '.env', $config)) {
     die(ROOT_DIR . '.env file could not be saved');
 }
 
-require_once INCL_DIR . 'bittorrent.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'define.php';
+require_once INCL_DIR . 'config.php';
+require_once INCL_DIR . 'common_functions.php';
+require_once INCL_DIR . 'site_config.php';
+require_once VENDOR_DIR . 'autoload.php';
 require_once INCL_DIR . 'password_functions.php';
 
 $dotenv = new Dotenv\Dotenv(ROOT_DIR);
@@ -88,7 +108,6 @@ $retval = shell_exec($sql);
 if (!preg_match('/innodb_autoinc_lock_mode\s+0/', $retval)) {
     die("Please add/update my.cnf 'innodb_autoinc_lock_mode = 0' and restart mysql.\n");
 }
-
 $admin = [
         'username' => $vars['admin_username'],
         'email' => $vars['admin_email'],
@@ -144,7 +163,7 @@ foreach ($sources as $name => $source) {
     }
 }
 
-echo "Installation Completed!!\n\nGo to http://{$vars['announce_http']}/login.php and sign in.";
+echo "Installation Completed!!\n\nGo to http://{$vars['announce_http']}/login.php and sign in.\n\n";
 
 function regex($x)
 {
@@ -153,10 +172,19 @@ function regex($x)
 
 function add_user($values)
 {
-    global $user_stuffs, $site_config;
+    global $site_config;
 
-    $user_id = $user_stuffs->add($values);
+    $fluent = new DarkAlchemy\Pu239\Database();
+    $user_id = $fluent->insertInto('users')
+        ->values($values)
+        ->execute();
+
     if ($user_id) {
-        sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($user_id) . ')') or sqlerr(__FILE__, __LINE__);
+        $values = [
+            'userid' => $user_id,
+        ];
+        $fluent->insertInto('usersachiev')
+            ->values($values)
+            ->execute();
     }
 }

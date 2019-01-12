@@ -1,5 +1,6 @@
 ### 11 Jan, 2019
 add: genre to torrent hover  
+fix: install.php  
 update: database files  
 update: failed login cleanup to run hourly  
 update: failed login count display  
