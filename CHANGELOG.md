@@ -1,4 +1,5 @@
 ### 12 Jan, 2019
+update: make tagline site_config setting  
 fix: clear_ajaxchat  
 fix: upload name with single quote  
 fix: ebook lookup  

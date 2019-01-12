@@ -93,8 +93,8 @@ function stdhead($title = '', $stdhead = null)
             if (empty($site_config['banners'])) {
                 $banner = "
                     <div class='left50'>
-                        <h1>" . $site_config['variant'] . " Code</h1>
-                        <p class='description left20'><i>Making progress, 1 day at a time...</i></p>
+                        <h1>{$site_config['tagline']['banner']}</h1>
+                        <p class='description left20'><i>{$site_config['tagline']['tagline']}</i></p>
                     </div>";
             } else {
                 $banner = "

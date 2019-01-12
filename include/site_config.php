@@ -292,6 +292,10 @@ $site_config['notifications'] = [
     'is-link',
 ];
 
+$site_config['tagline'] = [
+    'banner' => $site_config['variant'] . ' Code',
+    'tagline' => 'Making progress, 1 day at a time...'
+];
 $site_config['video_banners'] = [];
 $site_config['banners'] = [];
 $site_config['query_limit'] = 65536; // mysql placeholder limit
