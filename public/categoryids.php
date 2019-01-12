@@ -3,23 +3,30 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $site_config;
+global $site_config, $fluent;
 
 $lang = array_merge(load_language('global'), load_language('index'));
 $parents = genrelist(true);
 
 $heading = "
         <tr>
-            <th>Cat ID</th>
-            <th>Cat Name</th>
+            <th class='has-text-centered w-25'>Cat ID</th>
+            <th class='has-text-centered'>Cat Name</th>
+            <th class='has-text-centered w-25'>Torrents Uploaded</th>
         </td>";
 $body = '';
 foreach ($parents as $parent) {
     foreach ($parent['children'] as $child) {
+        $count = $fluent->from('torrents')
+            ->select(null)
+            ->select('COUNT(*) AS count')
+            ->where('category = ?', $child['id'])
+            ->fetch('count');
         $body .= "
         <tr>
-            <td>{$child['id']}</td>
+            <td class='has-text-centered'>{$child['id']}</td>
             <td><a href='{$site_config['baseurl']}/browse.php?cats[]={$child['id']}'>{$parent['name']}::{$child['name']}</a></td>
+            <td class='has-text-centered'>$count</td>
         </tr>";
     }
 }
