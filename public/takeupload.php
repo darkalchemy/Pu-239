@@ -10,7 +10,6 @@ global $site_config, $fluent, $session, $user_stuffs, $cache, $message_stuffs, $
 
 $torrent_pass = $auth = $bot = $owner_id = '';
 $data = $_POST;
-
 extract($_POST);
 unset($_POST);
 if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
@@ -152,7 +151,7 @@ if (isset($half_length) && ($half_length = (int) $half_length)) {
 
 $freetorrent = isset($freetorrent) && is_valid_id($freetorrent) ? intval($freetorrent) : 0;
 $descr = strip_tags(isset($body) ? trim($body) : '');
-
+$descr = preg_replace('/[^\\x20-\\x7e\\x0a\\x0d]|\\x97/', ' ', $descr);
 if (!$descr) {
     if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
         $descr = preg_replace('/[^\\x20-\\x7e\\x0a\\x0d]/', ' ', $nfo);

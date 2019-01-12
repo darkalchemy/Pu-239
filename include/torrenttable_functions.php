@@ -44,7 +44,7 @@ function torrenttable($res, $variant = 'index')
     require_once CLASS_DIR . 'class_user_options_2.php';
     require_once INCL_DIR . 'torrent_hover.php';
     $lang = array_merge($lang, load_language('index'));
-    
+
     foreach ($free as $fl) {
         switch ($fl['modifier']) {
             case 1:
@@ -190,7 +190,8 @@ function torrenttable($res, $variant = 'index')
             $htmlout .= '-';
         }
         $htmlout .= '</td>';
-        $dispname = htmlsafechars($row['name']) . " ({$row['year']})";
+        $year = !empty($row['year']) ? " ({$row['year']})" : '';
+        $dispname = htmlsafechars($row['name']) . $year;
         $staff_pick = $row['staff_picks'] > 0 ? "
             <span id='staff_pick_{$row['id']}'>
                 <img src='{$site_config['pic_baseurl']}staff_pick.png' class='tooltipper emoticon is-2x' alt='Staff Pick!' title='Staff Pick!'>
@@ -267,7 +268,9 @@ function torrenttable($res, $variant = 'index')
         $icons[] = ($row['nuked'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}nuked.gif' class='tooltipper icon' alt='Nuked'  class='has-text-centered' title='<div class=\"size_5 has-text-centered has-text-danger\">Nuked</div><span class=\"right10\">Reason: </span>" . htmlsafechars($row['nukereason']) . "'>" : '');
         $icons[] = ($row['bump'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}forums/up.gif' class='tooltipper icon' alt='Re-Animated torrent' title='<div class=\"size_5 has-text-centered has-text-success\">Bumped</div><span class=\"has-text-centered\">This torrent was ReAnimated!</span>'>" : '');
 
+        $genres = '';
         if (!empty($row['newgenre'])) {
+            $genres = $row['newgenre'];
             $newgenre = [];
             $row['newgenre'] = explode(',', $row['newgenre']);
             foreach ($row['newgenre'] as $foo) {
@@ -292,7 +295,7 @@ function torrenttable($res, $variant = 'index')
             $formatted = "<i>({$uploader})</i>";
         }
         $block_id = "torrent_{$id}";
-        $tooltip = torrent_tooltip(htmlsafechars($dispname), $id, $block_id, $name, $poster, $uploader, $row['added'], $row['size'], $row['seeders'], $row['leechers'], $row['imdb_id'], $row['rating'], $row['year'], $row['subs'], $row['newgenre']);
+        $tooltip = torrent_tooltip(htmlsafechars($dispname), $id, $block_id, $name, $poster, $uploader, $row['added'], $row['size'], $row['seeders'], $row['leechers'], $row['imdb_id'], $row['rating'], $row['year'], $row['subs'], $genres);
 
         $htmlout .= $tooltip . "
                         </a>

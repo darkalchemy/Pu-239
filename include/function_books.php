@@ -112,7 +112,7 @@ function get_book_info($isbn, $name, $tid, $poster)
                 'isbn' => !empty($ebook['isbn13']) ? $ebook['isbn13'] : $ebook['isbn10'],
             ];
             if (!empty($ebook['rating'])) {
-                $set['rating'] = ebook['rating'];
+                $set['rating'] = $ebook['rating'];
             }
             $torrent_stuffs->update($set, $tid);
             $cache->set('book_info_' . $tid, $ebook, $site_config['expires']['book_info']);
