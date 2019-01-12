@@ -22,10 +22,10 @@ function get_book_info($isbn, $name, $tid, $poster)
         return false;
     }
 
-    $search = !empty($isbn) ? $isbn : $name;
+    $search = !empty($isbn) && $isbn != '000000' ? $isbn : $name;
     $api_hits = $cache->get('google_api_limits_');
-    $hash = hash('sha256', $search);
-    $ebook = $cache->get('book_info_' . $hash);
+    $cache->delete('book_info_' . $tid);
+    $ebook = $cache->get('book_info_' . $tid);
     if ($ebook === false || is_null($ebook)) {
         $api_limit = 100;
         if (!empty($_ENV['GOOGLE_API_KEY'])) {
@@ -57,14 +57,15 @@ function get_book_info($isbn, $name, $tid, $poster)
         } else {
             $books = new GoogleBooks();
         }
-        if (!empty($isbn)) {
+        if (!empty($isbn) && $isbn != '000000') {
             $book = $books->volumes->byIsbn($isbn);
         } else {
             $book = $books->volumes->firstOrNull($name);
         }
+
         $keys = $ebook['authors'] = $categories = [];
         if (empty($book->title)) {
-            $cache->set('book_info_' . $hash, 'failed', 86400);
+            $cache->set('book_info_' . $tid, 'failed', 86400);
 
             return false;
         }
@@ -107,17 +108,19 @@ function get_book_info($isbn, $name, $tid, $poster)
             $ebook['year'] = !empty($match[1]) ? $match[1] : null;
             $set = [
                 'year' => $ebook['year'],
-                'rating' => $ebook['rating'],
                 'newgenre' => $ebook['newgenre'],
                 'isbn' => !empty($ebook['isbn13']) ? $ebook['isbn13'] : $ebook['isbn10'],
             ];
+            if (!empty($ebook['rating'])) {
+                $set['rating'] = ebook['rating'];
+            }
             $torrent_stuffs->update($set, $tid);
-            $cache->set('book_info_' . $hash, $ebook, $site_config['expires']['book_info']);
+            $cache->set('book_info_' . $tid, $ebook, $site_config['expires']['book_info']);
         }
     }
 
     if (empty($ebook)) {
-        $cache->set('book_info_' . $hash, 'failed', 86400);
+        $cache->set('book_info_' . $tid, 'failed', 86400);
 
         return false;
     }
@@ -221,7 +224,7 @@ function get_book_info($isbn, $name, $tid, $poster)
         $ebook_info = "<div class='padding10'>$ebook_info</div>";
     }
 
-    $cache->set('book_fullset_' . $hash, $ebook_info, $site_config['expires']['book_info']);
+    $cache->set('book_fullset_' . $tid, $ebook_info, $site_config['expires']['book_info']);
 
     return [
         $ebook_info,

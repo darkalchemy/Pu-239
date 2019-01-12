@@ -18,9 +18,9 @@ $isbn = str_replace([
     '_',
     '-',
 ], '', $isbn);
-$torrent = $torrent_stuffs->get('torrent_details_' . $tid);
+$torrent = $torrent_stuffs->get($tid);
 $poster = !empty($torrent['poster']) ? $torrent['poster'] : '';
-$book_info = get_book_info($isbn, $name, $tid, $poster);
+$book_info = get_book_info((!empty($isbn) ? $isbn : '000000'), $name, $tid, $poster);
 if (!empty($book_info)) {
     echo json_encode(['content' => $book_info[0]]);
     die();

@@ -132,6 +132,7 @@ if ($moderator) {
             $id,
             'tvshow_ids_' . hash('sha512', get_show_name($torrent['name'])),
             'imdb_fullset_title_' . $torrent['imdb_id'],
+            'book_fullset_' . $torrent['id']
         ]);
         if (!empty($imdb_id)) {
             $cache->delete('tvshow_ids_' . $torrent['imdb_id']);
@@ -144,7 +145,7 @@ if ($moderator) {
         if (!empty($ids['tvmaze_id'])) {
             $cache->deleteMulti([
                 'tvshow_episode_info_' . $ids['tvmaze_id'],
-                'tvsmaze_' . $ids['$tvmaze_id'],
+                'tvmaze_' . $ids['tvmaze_id'],
             ]);
         }
         if (!empty($ids['thetvdb_id'])) {
@@ -200,8 +201,7 @@ if ($BLOCKS['google_books_api_on'] && in_array($torrent['category'], $site_confi
         $search = $torrent['isbn'];
     }
 
-    $hash = hash('sha256', $search);
-    $ebook_data = $cache->get('book_fullset_' . $hash);
+    $ebook_data = $cache->get('book_fullset_' . $torrent['id']);
     if ($ebook_data === false || is_null($ebook_data)) {
         $ebook_data = "
             <a id='book-hash'></a>

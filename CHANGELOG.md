@@ -1,4 +1,5 @@
 ### 12 Jan, 2019
+fix: ebook lookup  
 add: torrent count to categories  
 add: categoryids.php  
 fix: shuffle on empty array  
