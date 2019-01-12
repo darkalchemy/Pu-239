@@ -23,7 +23,7 @@ function failedloginscheck()
     if ($total >= $site_config['failedlogins']) {
         $set = ['banned' => 'yes'];
         $failed_logins->set($set, $ip);
-        stderr('Login Locked!', 'You have <b>Exceeded</b> the allowed maximum login attempts without successful login, therefore your ip address <b>(' . htmlsafechars($ip) . ')</b> has been locked for 24 hours.');
+        stderr('Login Locked!', 'You have <b>Exceeded</b> the allowed maximum login attempts without successful login, therefore your ip address <b>(' . htmlsafechars($ip) . ')</b> has been locked for 24 hours.', null);
     }
 }
 
@@ -37,10 +37,10 @@ if (!empty($bot) && !empty($auth) && !empty($torrent_pass)) {
 
 if (empty($user_id)) {
     if (empty($username)) {
-        stderr('Error', "Username can't be blank");
+        stderr('Error', "Username can't be blank", null);
     }
     if (empty($password)) {
-        stderr('Error', "Password can't be blank");
+        stderr('Error', "Password can't be blank", null);
     }
     if (!empty($_ENV['RECAPTCHA_SECRET_KEY'])) {
         $result = verify_recaptcha($response);
@@ -67,7 +67,7 @@ function bark($text = 'Username or password incorrect')
     } else {
         die('Minimum 10 seconds between login attempts :)');
     }
-    stderr($lang['tlogin_failed'], $text);
+    stderr($lang['tlogin_failed'], $text, null);
 }
 
 failedloginscheck();

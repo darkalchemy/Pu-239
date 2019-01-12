@@ -1,3 +1,6 @@
+### 12 Jan, 2019
+fix: margin takelogin.php  
+
 ### 11 Jan, 2019
 add: genre to torrent hover  
 fix: install.php  
