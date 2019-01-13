@@ -22,7 +22,7 @@ function failedlogin_update($data)
     $run_time = $time_end - $time_start;
     $text = " Run time: $run_time seconds";
     echo $text . "\n";
-    if ($data['clean_log'] && $queries > 0) {
+    if ($data['clean_log']) {
         write_log("Expired Failed Login Cleanup: Completed." . $text);
     }
 }

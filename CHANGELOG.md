@@ -1,4 +1,7 @@
 ### 12 Jan, 2019
+fix: typo failedlogin_update.php  
+update: dependancies  
+fix: setting perms on .cache files  
 update: make tagline site_config setting  
 fix: clear_ajaxchat  
 fix: upload name with single quote  

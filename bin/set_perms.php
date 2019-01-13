@@ -35,6 +35,7 @@ $exts = [
     'gz',
     'example',
     'sql',
+    'cache',
 ];
 
 $folders = [
