@@ -234,7 +234,6 @@ function torrenttable($res, $variant = 'index')
         }
         $htmlout .= "'>";
         $icons = $top_icons = [];
-        $CURUSER['last_browse'] = 0;
         $top_icons[] = $row['added'] >= $CURUSER['last_browse'] ? "<span class='tag is-danger'>New!</span>" : '';
         $icons[] = $row['sticky'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}sticky.gif' class='tooltipper icon' alt='Sticky' title='Sticky!'>" : '';
         $icons[] = $row['vip'] == 1 ? "<img src='{$site_config['pic_baseurl']}star.png' class='tooltipper icon' alt='VIP torrent' title='<div class=\"size_5 has-text-centered has-text-success\">VIP</div>This torrent is for VIP user only!'>" : '';
