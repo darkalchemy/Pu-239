@@ -41,7 +41,7 @@ $html = str_replace([
     '‘',
 ], "'", $html);
 $html = str_replace('–', '-', $html);
-$html = str_replace('href="', 'href="' . $site_config['anonymizer_url'],  $html);
+$html = str_replace('href="', 'href="' . $site_config['anonymizer_url'], $html);
 $html = str_replace('="/images/', '="https://torrentfreak.com/images/', $html);
 preg_match_all('/<img.*?src=["|\'](.*?)["|\'](.*?)>/s', $html, $matches);
 $i = 0;

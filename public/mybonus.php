@@ -1323,7 +1323,6 @@ $fpoints = $dpoints = $hpoints = $freeleech_enabled = $double_upload_enabled = $
         $hstatus = $font_color_hd . '';
     }
 
-
 $top_donators = $cache->get('top_donators_');
 if ($top_donators === false || is_null($top_donators)) {
     $a = sql_query("SELECT b.id, SUM(b.donation) AS total

@@ -9,45 +9,45 @@ if (empty($argv[1])) {
 
 if (count($argv) === 13) {
     $vars = [
-        'site_name'      => $argv[2],
-        'announce_http'  => $argv[3],
-        'announce_ssl'   => $argv[4],
-        'mysql_db'       => $argv[5],
-        'mysql_user'     => $argv[6],
-        'mysql_pass'     => $argv[7],
-        'bot_username'   => $argv[8],
-        'site_email'     => $argv[9],
+        'site_name' => $argv[2],
+        'announce_http' => $argv[3],
+        'announce_ssl' => $argv[4],
+        'mysql_db' => $argv[5],
+        'mysql_user' => $argv[6],
+        'mysql_pass' => $argv[7],
+        'bot_username' => $argv[8],
+        'site_email' => $argv[9],
         'admin_username' => $argv[10],
-        'admin_pass'     => $argv[11],
-        'admin_email'     => $argv[12],
+        'admin_pass' => $argv[11],
+        'admin_email' => $argv[12],
     ];
 } else {
     $vars = [
-        'site_name'      => readline('Site Name: '),
-        'announce_http'  => readline('Site HTTP URL: '),
-        'announce_ssl'   => readline('Site HTTPS URL: '),
-        'mysql_db'       => readline('Database Name: '),
-        'mysql_user'     => readline('Database Username: '),
-        'mysql_pass'     => readline('Database Password: '),
-        'bot_username'   => readline('BOT Username: '),
-        'site_email'     => readline('Site Email: '),
+        'site_name' => readline('Site Name: '),
+        'announce_http' => readline('Site HTTP URL: '),
+        'announce_ssl' => readline('Site HTTPS URL: '),
+        'mysql_db' => readline('Database Name: '),
+        'mysql_user' => readline('Database Username: '),
+        'mysql_pass' => readline('Database Password: '),
+        'bot_username' => readline('BOT Username: '),
+        'site_email' => readline('Site Email: '),
         'admin_username' => readline('Admin Username: '),
-        'admin_pass'     => readline('Admin Password: '),
-        'admin_email'     => readline('Admin Email: '),
+        'admin_pass' => readline('Admin Password: '),
+        'admin_email' => readline('Admin Email: '),
     ];
 }
 
-$vars['sessionName']    = str_replace(' ', '_', $vars['site_name']);
-$vars['cookie_prefix']  = $vars['sessionName'];
-$vars['cookie_domain']  = $vars['announce_http'];
-$vars['domain']         = $vars['announce_http'];
+$vars['sessionName'] = str_replace(' ', '_', $vars['site_name']);
+$vars['cookie_prefix'] = $vars['sessionName'];
+$vars['cookie_domain'] = $vars['announce_http'];
+$vars['domain'] = $vars['announce_http'];
 
 $file = INCL_DIR . 'config.php.example';
 $config = file_get_contents($file);
 $keys = array_map('regex', array_keys($vars));
 $values = array_values($vars);
 $config = preg_replace($keys, $values, $config);
-for($i = 1; $i<=6; $i++) {
+for ($i = 1; $i <= 6; ++$i) {
     $config = preg_replace("/#pass{$i}/", bin2hex(random_bytes(16)), $config);
 }
 
@@ -136,13 +136,13 @@ $bot = [
 
 $timestamp = strtotime('today midnight');
 $sources = [
-    'schema'       => 'source ' . DATABASE_DIR . 'schema.sql',
-    'data'         => 'source ' . DATABASE_DIR . 'data.sql',
-    'trivia'       => DATABASE_DIR . 'trivia.sql.bz2',
-    'tvmaze'       => DATABASE_DIR . 'tvmaze.sql.bz2',
-    'timestamps'   => "UPDATE cleanup SET clean_time = $timestamp",
-    'admin'        => $admin,
-    'bot'          => $bot,
+    'schema' => 'source ' . DATABASE_DIR . 'schema.sql',
+    'data' => 'source ' . DATABASE_DIR . 'data.sql',
+    'trivia' => DATABASE_DIR . 'trivia.sql.bz2',
+    'tvmaze' => DATABASE_DIR . 'tvmaze.sql.bz2',
+    'timestamps' => "UPDATE cleanup SET clean_time = $timestamp",
+    'admin' => $admin,
+    'bot' => $bot,
 ];
 
 foreach ($sources as $name => $source) {

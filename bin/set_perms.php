@@ -12,7 +12,7 @@ $commands = [
 $i = 0;
 while (empty($user)) {
     $user = $commands[$i];
-    $i++;
+    ++$i;
 }
 
 $group = posix_getgrgid(filegroup(__FILE__))['name'];

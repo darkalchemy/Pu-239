@@ -118,7 +118,7 @@ function episode_format($tvmaze_data, $tvmaze_type)
  * @param $episode
  * @param $tid
  *
- * @return bool|null|string
+ * @return bool|string|null
  *
  * @throws \Envms\FluentPDO\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction

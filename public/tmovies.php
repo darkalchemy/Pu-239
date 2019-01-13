@@ -16,7 +16,6 @@ $valid_search = [
     'sre',
 ];
 
-
 $count = $fluent->from('torrents AS t')
     ->select(null)
     ->select('COUNT(*) AS count')
@@ -99,10 +98,10 @@ foreach ($select as $torrent) {
     $casts[] = $cast;
     $people = [];
     foreach ($cast as $person) {
-        $people[] = "<div><a href='{$site_config['baseurl']}/browse.php?sp=" . urlencode(htmlsafechars($person['name'])) . "'>" . htmlsafechars($person['name']) . "</a></div>";
+        $people[] = "<div><a href='{$site_config['baseurl']}/browse.php?sp=" . urlencode(htmlsafechars($person['name'])) . "'>" . htmlsafechars($person['name']) . '</a></div>';
     }
 
-    $name = "<a href='{$site_config['baseurl']}/browse.php?si={$torrent['imdb_id']}'>" . htmlsafechars($torrent['name']) . "</a>";
+    $name = "<a href='{$site_config['baseurl']}/browse.php?si={$torrent['imdb_id']}'>" . htmlsafechars($torrent['name']) . '</a>';
     if (empty($torrent['poster'])) {
         $image = find_images($torrent['imdb_id'], 'poster');
         if (!empty($image)) {
@@ -139,13 +138,13 @@ foreach ($select as $torrent) {
                         <div class='column'>
                             <div class='has-text-left'>$name ({$year})</div>
                             $rating
-                            <div><span class='has-text-primary'>Peers:</span><span class='has-text-white'> {$seeders} / {$leechers}</span></div>" . implode("\n", $people) . "
+                            <div><span class='has-text-primary'>Peers:</span><span class='has-text-white'> {$seeders} / {$leechers}</span></div>" . implode("\n", $people) . '
                         </div>
                     </div>
-                </div>";
+                </div>';
 }
-$body .= "
-        </div>";
+$body .= '
+        </div>';
 
 $HTMLOUT .= main_div("
             <form id='test1' method='get' action='{$site_config['baseurl']}/tmovies.php'>

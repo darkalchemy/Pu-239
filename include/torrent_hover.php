@@ -88,8 +88,8 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                         <span class='size_4 has-text-primary has-text-weight-bold'>Subtitles:</span>
                                                     </div>
                                                     <div class='column padding5 is-8'>
-                                                        <span class='size_4'>" . implode(' ', $Subs) . "</span>
-                                                    </div>";
+                                                        <span class='size_4'>" . implode(' ', $Subs) . '</span>
+                                                    </div>';
         }
     }
     if ($icons) {

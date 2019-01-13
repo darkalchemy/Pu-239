@@ -63,7 +63,8 @@ if (isset($_POST['button']) && $_POST['button'] === 'Edit') {
     if (empty($body)) {
         stderr($lang['gl_error'], $lang['fe_body_text_can_not_be_empty']);
     }
-    $changed = '<span style="color:red;">' . $lang['fe_changed'] . '</span>'; $not_changed = '<span style="color:green;">' . $lang['fe_not_changed'] . '</span>';
+    $changed = '<span style="color:red;">' . $lang['fe_changed'] . '</span>';
+    $not_changed = '<span style="color:green;">' . $lang['fe_not_changed'] . '</span>';
     $post_history = '<table>
 	<tr>
 	<td>#' . $post_id . '  ' . format_username($arr_post['user_id']) . '</td>

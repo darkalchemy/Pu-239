@@ -23,7 +23,7 @@ function anime_titles_update($data)
             if (!empty($anime_data)) {
                 foreach ($anime_data['data'] as $anime_data) {
                     if (!empty($anime_data['title'])) {
-                        $titles['title'] = trim(preg_replace('/\s+/', ' ' , $anime_data['title']));
+                        $titles['title'] = trim(preg_replace('/\s+/', ' ', $anime_data['title']));
                         $titles['image'] = !empty($anime_data['picture']) ? trim($anime_data['picture']) : '';
                         $titles['type'] = !empty($anime_data['type']) && in_array($anime_data['type'], $types) ? $anime_data['type'] : '';
                         $titles['anilist_id'] = $titles['anidb_id'] = $titles['kitsu_id'] = $titles['myanimelist_id'] = 0;

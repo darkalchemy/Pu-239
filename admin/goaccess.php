@@ -14,4 +14,3 @@ if (file_exists(CACHE_DIR . 'goaccess.html')) {
 }
 
 echo stdhead('GoAccess') . $HTMLOUT . stdfoot();
-

@@ -1085,7 +1085,7 @@ if ($game) {
 /**
  * @param $cardid
  *
- * @return array|null|string
+ * @return array|string|null
  */
 function getCardData($cardid)
 {

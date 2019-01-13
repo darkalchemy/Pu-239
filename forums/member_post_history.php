@@ -40,7 +40,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 				<input type="text" size="30" name="search" value="' . $search . '">
 				<select name="class">
 					<option value="-">(' . $lang['fmp_any_class'] . ')</option>';
-	for ($i = 0;; ++$i) {
+    for ($i = 0;; ++$i) {
         if ($c = get_user_class_name($i)) {
             $option .= '
 					<option value="' . $i . '"' . (ctype_digit($class) && $class == $i ? ' selected="selected"' : '') . '>' . $c . '</option>';
@@ -76,11 +76,10 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         ++$count;
     }
     $value = !empty($_POST['article']) ? $_POST['article'] : '';
-    $HTMLOUT .= $next . "
+    $HTMLOUT .= $next . '
                 </ul>
             </div>
-        </div>";
-
+        </div>';
 
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 0;
     $perpage = isset($_GET['perpage']) ? (int) $_GET['perpage'] : 20;
@@ -105,7 +104,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 				<th>' . $lang['fmp_country'] . '</th>
 				<th>' . $lang['fe_view'] . '</th>
 			</tr>';
-		$body = '';
+        $body = '';
         while ($row = mysqli_fetch_assoc($res)) {
             $country = ($row['name'] != null) ? '<img src="' . $site_config['pic_baseurl'] . 'flag/' . $row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" class="emoticon">' : '---';
             $body .= '

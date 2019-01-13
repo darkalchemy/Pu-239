@@ -132,7 +132,7 @@ if ($moderator) {
             $id,
             'tvshow_ids_' . hash('sha512', get_show_name($torrent['name'])),
             'imdb_fullset_title_' . $torrent['imdb_id'],
-            'book_fullset_' . $torrent['id']
+            'book_fullset_' . $torrent['id'],
         ]);
         if (!empty($imdb_id)) {
             $cache->delete('tvshow_ids_' . $torrent['imdb_id']);

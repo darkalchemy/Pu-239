@@ -17,7 +17,7 @@ $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, R
 foreach ($objects as $name => $object) {
     if (!in_array($name, $images) && $name != $path . '.gitignore') {
         $filesize += filesize($name);
-        $i++;
+        ++$i;
         unlink($name);
     }
 }
@@ -34,4 +34,3 @@ $fluent->update('images')
 
 echo "$i altered images removed
 Images size: " . mksize($filesize) . "\n";
-

@@ -35,9 +35,10 @@ function searchcloud($limit = 100)
             $searchcloud = [
                 'search' => $searchcloud,
                 'min' => $min,
-                'max' => $max
+                'max' => $max,
             ];
             $cache->set('searchcloud', $searchcloud, 0);
+
             return $searchcloud;
         }
 
@@ -67,7 +68,6 @@ function searchcloud_insert($word, $column)
             $howmuch = $cloud['howmuch'] + 1;
         }
     }
-
 
     if ($add) {
         $searchcloud['search'][] = [
@@ -125,7 +125,7 @@ function cloud()
             $count = $values['howmuch'];
             $size = floor($small + round(($count - $minimum_count) * ($big - $small) / $spread, 0, PHP_ROUND_HALF_UP));
             $color = random_color(100, 200);
-            $column = str_replace(['name','descr','imdb','isbn'], ['sn', 'sd', 'si', 'ss'], $values['column']);
+            $column = str_replace(['name', 'descr', 'imdb', 'isbn'], ['sn', 'sd', 'si', 'ss'], $values['column']);
             $cloud_tags[] = "
                             <a class='tooltipper tag_cloud' style='color:{$color}; font-size: {$size}px' href='{$site_config['baseurl']}/browse.php?{$column}=" . urlencode($tag) . "&amp;incldead=1' title='<div class=\"size_5 has-text-primary has-text-centered\">\"" . htmlsafechars($tag) . "\"</div><br>has been searched for {$count} times.'>
                                 <span class='padding10 has-no-wrap'>" . htmlsafechars(stripslashes($tag)) . '</span>

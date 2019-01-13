@@ -10,6 +10,6 @@ if ($CURUSER['gotgift'] === 'no') {
                 <a href='{$site_config['baseurl']}/gift.php?open=1'>
                     <img src='{$site_config['pic_baseurl']}gift.png' class='tooltipper image_48 padding20' alt='{$lang['index_christmas_gift']}' title='{$lang['index_christmas_gift']}'>
                 </a>";
-    $christmas_gift .= main_div($div, 'has-text-centered') . "
-    </div>";
+    $christmas_gift .= main_div($div, 'has-text-centered') . '
+    </div>';
 }

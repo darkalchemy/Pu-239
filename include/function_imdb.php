@@ -211,34 +211,34 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
             $realname = $birthday = $died = $birthplace = $history = '';
             $bio = get_imdb_person($pp['imdb']);
             if (!empty($bio['realname'])) {
-                $realname =  "
+                $realname = "
                                                         <div class='column padding5 is-4'>
                                                             <span class='size_4 has-text-primary'>Real Name:</span>
                                                         </div>
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$bio['realname']}</span>
-                                                        </div>" ;
+                                                        </div>";
             }
             if (!empty($bio['birthday'])) {
-				$birthdate = date("F j, Y", strtotime($bio['birthday']));
-				$birthday = "
+                $birthdate = date('F j, Y', strtotime($bio['birthday']));
+                $birthday = "
                                                         <div class='column padding5 is-4'>
                                                             <span class='size_4 has-text-primary'>Birthdate:</span>
                                                         </div>
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$birthdate}</span>
                                                         </div>";
-			}
+            }
             if (!empty($bio['died'])) {
-				$died = date("F j, Y", strtotime($bio['died']));
-				$died = "
+                $died = date('F j, Y', strtotime($bio['died']));
+                $died = "
                                                         <div class='column padding5 is-4'>
                                                             <span class='size_4 has-text-primary'>Died On:</span>
                                                         </div>
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$died}</span>
                                                         </div>";
-			}
+            }
             if (!empty($bio['birthplace'])) {
                 $birthplace = "
                                                         <div class='column padding5 is-4'>
@@ -423,7 +423,7 @@ function get_imdb_title($imdb_id)
 /**
  * @param $imdb_id
  *
- * @return bool|null|string|string[]
+ * @return bool|string|string[]|null
  *
  * @throws Exception
  */

@@ -1477,7 +1477,7 @@ class AJAXChat
     /**
      * @param $channelID
      *
-     * @return int|null|string
+     * @return int|string|null
      */
     public function getChannelNameFromChannelID($channelID)
     {
@@ -1636,7 +1636,7 @@ class AJAXChat
     }
 
     /**
-     * @return int|null|string
+     * @return int|string|null
      */
     public function getChannelName()
     {

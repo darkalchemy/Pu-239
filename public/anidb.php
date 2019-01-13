@@ -58,4 +58,3 @@ $time_end = microtime(true);
 $run_time = $time_end - $time_start;
 $text = " Run time: $run_time seconds";
 echo $text . "\n";
-

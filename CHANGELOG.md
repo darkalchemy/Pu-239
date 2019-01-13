@@ -1,3 +1,7 @@
+### 13 Jan, 2019
+update: run php-cs-fixer  
+fix: incorrect lang vars used requests.php
+
 ### 12 Jan, 2019
 update: torrent_hover.php torrenttable_functions.php  
 update: move font awesome icons  

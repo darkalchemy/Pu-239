@@ -117,7 +117,7 @@ if (!empty($sliding_torrents)) {
                     <li>';
         $torrname = "<img $src>";
         $block_id = "slider_id_{$id}";
-        $slider .= torrent_tooltip($torrname, $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre);
+        $slider .= torrent_tooltip($torrname, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre);
         $slider .= '
                     </li>';
     }
