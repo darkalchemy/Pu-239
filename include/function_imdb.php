@@ -774,7 +774,7 @@ function get_top_movies()
     $top = $cache->get('imdb_top_movies_');
     if ($top === false || is_null($top)) {
         $top = [];
-        for ($i = 1; $i <= 1000; $i += 50) {
+        for ($i = 1; $i <= 100; $i += 50) {
             $url = 'https://www.imdb.com/search/title?groups=top_1000&sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
             preg_match_all('/(tt\d{7})/', $html, $matches);
@@ -799,7 +799,7 @@ function get_top_tvshows()
     $top = $cache->get('imdb_top_tvshows_');
     if ($top === false || is_null($top)) {
         $top = [];
-        for ($i = 1; $i <= 350; $i += 50) {
+        for ($i = 1; $i <= 100; $i += 50) {
             $url = 'https://www.imdb.com/search/title?title_type=tv_series&num_votes=30000,&countries=us&sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
             preg_match_all('/(tt\d{7})/', $html, $matches);
@@ -824,7 +824,7 @@ function get_top_anime()
     $top = $cache->get('imdb_top_anime_');
     if ($top === false || is_null($top)) {
         $top = [];
-        for ($i = 1; $i <= 350; $i += 50) {
+        for ($i = 1; $i <= 100; $i += 50) {
             $url = 'https://www.imdb.com/search/title?genres=drama&keywords=anime&num_votes=2000,sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
             preg_match_all('/(tt\d{7})/', $html, $matches);
@@ -849,7 +849,7 @@ function get_oscar_winners()
     $top = $cache->get('imdb_oscar_winners_');
     if ($top === false || is_null($top)) {
         $top = [];
-        for ($i = 1; $i <= 1250; $i += 50) {
+        for ($i = 1; $i <= 100; $i += 50) {
             $url = 'https://www.imdb.com/search/title?groups=oscar_winner&sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
             preg_match_all('/(tt\d{7})/', $html, $matches);
@@ -866,4 +866,3 @@ function get_oscar_winners()
 
     return $top;
 }
-

@@ -33,10 +33,10 @@ define('AJAX_CHAT_PATH', ROOT_DIR . 'chat' . DIRECTORY_SEPARATOR);
 define('IMDB_CACHE_DIR', CACHE_DIR . 'imdb' . DIRECTORY_SEPARATOR);
 
 define('SQL_DEBUG', true);
-define('IP_LOGGING', true);
-define('REQUIRE_CONNECTABLE', false);
+define('IP_LOGGING', false);
+define('REQUIRE_CONNECTABLE', true);
 define('SOCKET', true);
-define('NFO_SIZE', 1048576);
+define('NFO_SIZE', 65536);
 
 define('PM_DELETED', 0);
 define('PM_INBOX', 1);

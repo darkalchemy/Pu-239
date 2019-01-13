@@ -19,12 +19,12 @@ if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_ST
         if ($connect == $XBT_or_PHP) {
             $connectable = "
     <div class='has-text-success tooltipper' title='{$lang['userdetails_conn_sort']}'>
-        <i class='icon-thumbs-up-alt icon' aria-hidden='true'></i><b>{$lang['userdetails_yes']}</b>
+        <i class='icon-thumbs-up icon' aria-hidden='true'></i><b>{$lang['userdetails_yes']}</b>
     </div>";
         } else {
             $connectable = "
     <div class='has-text-danger tooltipper' title='{$lang['userdetails_conn_staff']}'>
-        <i class='icon-thumbs-down-alt icon' aria-hidden='true'></i><b>{$lang['userdetails_no']}</b>
+        <i class='icon-thumbs-down icon' aria-hidden='true'></i><b>{$lang['userdetails_no']}</b>
     </div>";
         }
     } else {

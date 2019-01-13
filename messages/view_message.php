@@ -28,10 +28,10 @@ if ($message['friend'] > 0) {
 } else {
     $friends = '
                     <a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=friend&amp;targetid=' . (int) $message['id'] . '">
-                        <small><i class="icon-users icon has-text-success tooltipper" title="' . $lang['pm_mailbox_addf'] . '"></i></small>
+                        <small><i class="icon-user-plus icon has-text-success tooltipper" title="' . $lang['pm_mailbox_addf'] . '"></i></small>
                     </a>
                     <a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=block&amp;targetid=' . (int) $message['id'] . '">
-                        <small><i class="icon-users icon has-text-danger tooltipper" title="' . $lang['pm_mailbox_addb'] . '"></i></small>
+                        <small><i class="icon-user-times icon has-text-danger tooltipper" title="' . $lang['pm_mailbox_addb'] . '"></i></small>
                     </a>';
 }
 

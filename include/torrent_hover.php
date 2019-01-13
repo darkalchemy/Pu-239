@@ -5,7 +5,7 @@
  *
  * @return string
  */
-function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre)
+function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre, $icons = false)
 {
     global $site_config, $lang, $fluent, $subs, $cache;
 
@@ -35,7 +35,6 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                         </div>";
         }
     }
-
     if (!empty($genre)) {
         $genre = "
                                                     <span class='column padding5 is-4'>
@@ -45,10 +44,10 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                         <span class='size_4'>{$genre}</span>
                                                     </span>";
     }
-
-    if (!empty($rating)) {
+    $rated = '';
+    if (!empty($rating) && $rating > 0) {
         $percent = $rating * 10;
-        $rating = "
+        $rated = "
                                                     <div class='column padding5 is-4'>
                                                         <span class='size_4 has-text-primary has-text-weight-bold'>Rating:</span>
                                                     </div>
@@ -62,6 +61,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                         </span>
                                                     </div>";
     }
+    $is_year = '';
     if (!empty($year)) {
         $released = "
                                                     <div class='column padding5 is-4'>
@@ -70,6 +70,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                     <div class='column padding5 is-8'>
                                                         <span class='size_4'>{$year}</span>
                                                     </div>";
+        $is_year = " ($year)";
     }
     if (!empty($subtitles)) {
         require_once CACHE_DIR . 'subs.php';
@@ -91,7 +92,13 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                     </div>";
         }
     }
-
+    if ($icons) {
+        $icons = "
+                                    <div class='level'>
+                                        <div>$text</div>
+                                        <div>$icons</div>
+                                    </div>";
+    }
     $background = !empty($background) ? " style='background-image: url({$background});'" : '';
     $content = "
                             <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
@@ -112,7 +119,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                                 <div class='column padding5 is-4'>
                                                                     <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_name']}</span>
                                                                 </div>
-                                                                <div class='column padding5 is-8'>" . htmlsafechars($name) . " ($year)</div>
+                                                                <div class='column padding5 is-8'>" . htmlsafechars($name) . "{$is_year}</div>
                                                                 <div class='column padding5 is-4'>
                                                                     <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_uploader']}</span>
                                                                 </div>
@@ -138,7 +145,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                                 </div>
                                                                 <div class='column padding5 is-8'>
                                                                     {$leechers}
-                                                                </div>{$rating}{$plot}
+                                                                </div>{$rated}{$plot}
                                                             </div>
                                                         </div>
                                                     </div>

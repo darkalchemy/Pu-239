@@ -139,7 +139,7 @@ function torrenttable($res, $variant = 'index')
     }
     if ($CURUSER['class'] >= UC_STAFF) {
         $htmlout .= "
-                    <th class='has-text-success w-1 tooltipper' title='Tools'>Tools</th>";
+                    <th class='has-text-centered has-text-success w-5 tooltipper' title='Tools'>Tools</th>";
     }
     $htmlout .= '
             </tr>
@@ -198,18 +198,22 @@ function torrenttable($res, $variant = 'index')
             </span>" : "
             <span id='staff_pick_{$row['id']}'>
             </span>";
-        $percent = !empty($row['rating']) ? $row['rating'] * 10 : 0;
-        $imdb_info = "
+
+        $imdb_info = '';
+        if (in_array($row['category'], $site_config['movie_cats']) || in_array($row['category'], $site_config['tv_cats'])) {
+            $percent = !empty($row['rating']) ? $row['rating'] * 10 : 0;
+            $imdb_info = "
                     <div class='star-ratings-css tooltipper' title='{$percent}% of IMDb voters liked this!'>
                         <div class='star-ratings-css-top' style='width: {$percent}%'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                         <div class='star-ratings-css-bottom'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                     </div>";
-        $smalldescr = (!empty($row['description']) ? '<br><i>[' . htmlsafechars($row['description']) . ']</i>' : '');
+        }
+        $smalldescr = (!empty($row['description']) ? '<div><i>[' . htmlsafechars($row['description']) . ']</i></div>' : '');
         if (empty($row['poster']) && !empty($row['imdb_id'])) {
             $row['poster'] = find_images($row['imdb_id']);
         }
         $poster = empty($row['poster']) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' alt='Poster'>" : "<img src='" . url_proxy($row['poster'], true, 250) . "' class='tooltip-poster' alt='Poster'>";
-        $user_rating = empty($row['rating_sum']) ? 'No users have rated this torrent' : ratingpic($row['rating_sum'] / $row['num_ratings']);
+        $user_rating = empty($row['rating_sum']) ? '' : ratingpic($row['rating_sum'] / $row['num_ratings']);
         if (!empty($row['descr'])) {
             $descr = str_replace('"', '&quot;', readMore($row['descr'], 500, $site_config['baseurl'] . '/details.php?id=' . $row['id'] . '&amp;hit=1'));
             $descr = preg_replace('/\[img\].*?\[\/img\]\s+/', '', $descr);
@@ -218,8 +222,8 @@ function torrenttable($res, $variant = 'index')
 
         $htmlout .= "
             <td>
-                <div class='columns'>
-                    <div class='column is-10'>
+                <div class='level-wide'>
+                    <div>
                         <a href='{$site_config['baseurl']}/details.php?";
         if ($variant === 'mytorrents') {
             $htmlout .= 'returnto=' . urlencode($_SERVER['REQUEST_URI']) . '&amp;';
@@ -229,15 +233,16 @@ function torrenttable($res, $variant = 'index')
             $htmlout .= '&amp;hit=1';
         }
         $htmlout .= "'>";
-        $icons = [];
-        $icons[] = $row['added'] >= $CURUSER['last_browse'] ? "<img src='{$site_config['pic_baseurl']}newb.png' class='tooltipper icon' alt='New!' title='New!'>" : '';
-        $icons[] = ($row['sticky'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}sticky.gif' class='tooltipper icon' alt='Sticky' title='Sticky!'>" : '');
-        $icons[] = ($row['vip'] == 1 ? "<img src='{$site_config['pic_baseurl']}star.png' class='tooltipper icon' alt='VIP torrent' title='<div class=\"size_5 has-text-centered has-text-success\">VIP</div>This torrent is for VIP user only!'>" : '');
-        $icons[] = (!empty($row['youtube']) ? "<a href='" . htmlsafechars($row['youtube']) . "' target='_blank'><img src='{$site_config['pic_baseurl']}youtube.png' class='tooltipper icon' alt='Youtube Trailer' title='Youtube Trailer'></a>" : '');
-        $icons[] = ($row['release_group'] === 'scene' ? "<img src='{$site_config['pic_baseurl']}scene.gif' class='tooltipper icon' title='Scene' alt='Scene'>" : ($row['release_group'] === 'p2p' ? " <img src='{$site_config['pic_baseurl']}p2p.gif' class='tooltipper icon' title='P2P' alt='P2P'>" : ''));
-        $icons[] = (!empty($row['checked_by_username']) && $CURUSER['class'] >= UC_MIN) ? "<img src='{$site_config['pic_baseurl']}mod.gif' class='tooltipper icon' alt='Checked by " . htmlsafechars($row['checked_by_username']) . "' title='<div class=\"size_5 has-text-primary has-text-centered\">CHECKED</div><span class=\"right10\">By: </span><span>" . htmlsafechars($row['checked_by_username']) . '</span><br><span class="right10">On: </span><span>' . get_date($row['checked_when'], 'DATE') . "</span>'>" : '';
-        $icons[] = ($row['free'] != 0 ? "<img src='{$site_config['pic_baseurl']}gold.png' class='tooltipper icon' alt='Free Torrent' title='<div class=\"has-text-centered size_5 has-text-success\">FREE Torrent</div><div class=\"has-text-centered\">" . ($row['free'] > 1 ? 'Expires: ' . get_date($row['free'], 'DATE') . '<br>(' . mkprettytime($row['free'] - TIME_NOW) . ' to go)</div>' : '<div class="has-text-centered">Unlimited</div>') . "'>" : '');
-        $icons[] = ($row['silver'] != 0 ? "<img src='{$site_config['pic_baseurl']}silver.png' class='tooltipper icon' alt='Silver Torrent' title='<div class=\"has-text-centered size_5 has-text-success\">Silver Torrent</div><div class=\"has-text-centered\">" . ($row['silver'] > 1 ? 'Expires: ' . get_date($row['silver'], 'DATE') . '<br>(' . mkprettytime($row['silver'] - TIME_NOW) . ' to go)</div>' : '<div class="has-text-centered">Unlimited</div>') . "'>" : '');
+        $icons = $top_icons = [];
+        $CURUSER['last_browse'] = 0;
+        $top_icons[] = $row['added'] >= $CURUSER['last_browse'] ? "<span class='tag is-danger'>New!</span>" : '';
+        $icons[] = $row['sticky'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}sticky.gif' class='tooltipper icon' alt='Sticky' title='Sticky!'>" : '';
+        $icons[] = $row['vip'] == 1 ? "<img src='{$site_config['pic_baseurl']}star.png' class='tooltipper icon' alt='VIP torrent' title='<div class=\"size_5 has-text-centered has-text-success\">VIP</div>This torrent is for VIP user only!'>" : '';
+        $icons[] = !empty($row['youtube']) ? "<a href='" . htmlsafechars($row['youtube']) . "' target='_blank'><i class='icon-youtube icon' aria-hidden='true'></i></a>" : '';
+        $icons[] = $row['release_group'] === 'scene' ? "<img src='{$site_config['pic_baseurl']}scene.gif' class='tooltipper icon' title='Scene' alt='Scene'>" : ($row['release_group'] === 'p2p' ? " <img src='{$site_config['pic_baseurl']}p2p.gif' class='tooltipper icon' title='P2P' alt='P2P'>" : '');
+        $icons[] = !empty($row['checked_by_username']) && $CURUSER['class'] >= UC_MIN ? "<img src='{$site_config['pic_baseurl']}mod.gif' class='tooltipper icon' alt='Checked by " . htmlsafechars($row['checked_by_username']) . "' title='<div class=\"size_5 has-text-primary has-text-centered\">CHECKED</div><span class=\"right10\">By: </span><span>" . htmlsafechars($row['checked_by_username']) . '</span><br><span class="right10">On: </span><span>' . get_date($row['checked_when'], 'DATE') . "</span>'>" : '';
+        $icons[] = $row['free'] != 0 ? "<img src='{$site_config['pic_baseurl']}gold.png' class='tooltipper icon' alt='Free Torrent' title='<div class=\"has-text-centered size_5 has-text-success\">FREE Torrent</div><div class=\"has-text-centered\">" . ($row['free'] > 1 ? 'Expires: ' . get_date($row['free'], 'DATE') . '<br>(' . mkprettytime($row['free'] - TIME_NOW) . ' to go)</div>' : '<div class="has-text-centered">Unlimited</div>') . "'>" : '';
+        $icons[] = $row['silver'] != 0 ? "<img src='{$site_config['pic_baseurl']}silver.png' class='tooltipper icon' alt='Silver Torrent' title='<div class=\"has-text-centered size_5 has-text-success\">Silver Torrent</div><div class=\"has-text-centered\">" . ($row['silver'] > 1 ? 'Expires: ' . get_date($row['silver'], 'DATE') . '<br>(' . mkprettytime($row['silver'] - TIME_NOW) . ' to go)</div>' : '<div class="has-text-centered">Unlimited</div>') . "'>" : '';
         $title = "
             <span class='dt-tooltipper-large' data-tooltip-content='#desc_{$row['id']}_tooltip'>
                 <i class='icon-search icon' aria-hidden='true'></i>
@@ -263,10 +268,10 @@ function torrenttable($res, $variant = 'index')
                 }
             }
         }
-        $icons[] = ($free_slot == 1 ? '<img src="' . $site_config['pic_baseurl'] . 'freedownload.gif" class="tooltipper icon" alt="Free Slot" title="Free Slot in Use">' : '');
-        $icons[] = ($double_slot == 1 ? '<img src="' . $site_config['pic_baseurl'] . 'doubleseed.gif" class="tooltipper icon" alt="Double Upload Slot" title="Double Upload Slot in Use">' : '');
-        $icons[] = ($row['nuked'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}nuked.gif' class='tooltipper icon' alt='Nuked'  class='has-text-centered' title='<div class=\"size_5 has-text-centered has-text-danger\">Nuked</div><span class=\"right10\">Reason: </span>" . htmlsafechars($row['nukereason']) . "'>" : '');
-        $icons[] = ($row['bump'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}forums/up.gif' class='tooltipper icon' alt='Re-Animated torrent' title='<div class=\"size_5 has-text-centered has-text-success\">Bumped</div><span class=\"has-text-centered\">This torrent was ReAnimated!</span>'>" : '');
+        $icons[] = $free_slot == 1 ? '<img src="' . $site_config['pic_baseurl'] . 'freedownload.gif" class="tooltipper icon" alt="Free Slot" title="Free Slot in Use">' : '';
+        $icons[] = $double_slot == 1 ? '<img src="' . $site_config['pic_baseurl'] . 'doubleseed.gif" class="tooltipper icon" alt="Double Upload Slot" title="Double Upload Slot in Use">' : '';
+        $icons[] = $row['nuked'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}nuked.gif' class='tooltipper icon' alt='Nuked'  class='has-text-centered' title='<div class=\"size_5 has-text-centered has-text-danger\">Nuked</div><span class=\"right10\">Reason: </span>" . htmlsafechars($row['nukereason']) . "'>" : '';
+        $icons[] = $row['bump'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}forums/up.gif' class='tooltipper icon' alt='Re-Animated torrent' title='<div class=\"size_5 has-text-centered has-text-success\">Bumped</div><span class=\"has-text-centered\">This torrent was ReAnimated!</span>'>" : '';
 
         $genres = '';
         if (!empty($row['newgenre'])) {
@@ -282,6 +287,9 @@ function torrenttable($res, $variant = 'index')
         }
 
         $icon_string = implode(' ', array_diff($icons, ['']));
+        $icon_string = !empty($icon_string) ? "<div>{$icon_string}</div>" : '';
+        $top_icons = implode(' ', array_diff($top_icons, ['']));
+        $top_icons = !empty($top_icons) ? "<div class='left10'>{$top_icons}</div>" : '';
         $name = $row['name'];
         if (!empty($row['username'])) {
             if ($row['anonymous'] && $CURUSER['class'] < UC_STAFF && $row['owner'] != $CURUSER['id']) {
@@ -298,16 +306,13 @@ function torrenttable($res, $variant = 'index')
         $tooltip = torrent_tooltip(htmlsafechars($dispname), $id, $block_id, $name, $poster, $uploader, $row['added'], $row['size'], $row['seeders'], $row['leechers'], $row['imdb_id'], $row['rating'], $row['year'], $row['subs'], $genres);
 
         $htmlout .= $tooltip . "
-                        </a>
-                        <div>$icon_string</div>
-                        $imdb_info
-                        $user_rating
-                        $smalldescr
+                        </a>{$icon_string}{$imdb_info}{$user_rating}{$smalldescr}
                     </div>
-                    <div class='column is-2 has-text-right'>
-                        $staff_pick
+                    <div class='level left10'>
+                        {$top_icons}{$staff_pick}
                     </div>
-                </td>";
+                </div>
+            </td>";
         if ($variant === 'mytorrents') {
             $htmlout .= "
                 <td>

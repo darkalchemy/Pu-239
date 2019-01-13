@@ -27,10 +27,10 @@ $result = sql_query($sql);
 $numbers = mysqli_num_rows($result);
 if ($numbers > 0) {
     while ($namecheck = mysqli_fetch_assoc($result)) {
-        $HTMLOUT .= "<div class='has-text-danger tooltipper margin10' title='Username Not Available'><i class='icon-thumbs-down-alt icon' aria-hidden='true'></i><b>Sorry... Username - " . htmlsafechars($namecheck['username']) . ' is already in use.</b></div>';
+        $HTMLOUT .= "<div class='has-text-danger tooltipper margin10' title='Username Not Available'><i class='icon-thumbs-down icon' aria-hidden='true'></i><b>Sorry... Username - " . htmlsafechars($namecheck['username']) . ' is already in use.</b></div>';
     }
 } else {
-    $HTMLOUT .= "<div class='has-text-success tooltipper margin10' title='Username Available'><i class='icon-thumbs-up-alt icon' aria-hidden='true'></i><b>Username Available</b></div>";
+    $HTMLOUT .= "<div class='has-text-success tooltipper margin10' title='Username Available'><i class='icon-thumbs-up icon' aria-hidden='true'></i><b>Username Available</b></div>";
 }
 echo $HTMLOUT;
 die();

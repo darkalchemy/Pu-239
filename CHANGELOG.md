@@ -1,4 +1,6 @@
 ### 12 Jan, 2019
+update: torrent_hover.php torrenttable_functions.php  
+update: move font awesome icons  
 update: database files  
 fix: typo failedlogin_update.php  
 update: dependancies  

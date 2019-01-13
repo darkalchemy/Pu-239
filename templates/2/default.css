@@ -572,6 +572,11 @@ textarea {
     display: flex;
 }
 
+.level-wide {
+    justify-content: space-between;
+    display: flex;
+}
+
 .module {
     position: relative;
 }
