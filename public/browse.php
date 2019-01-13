@@ -54,7 +54,7 @@ $valid_search = [
     'ss',
     'sp',
     'spf',
-    'sr'
+    'sr',
 ];
 
 if (isset($_GET['sort'], $_GET['type'])) {
@@ -164,7 +164,7 @@ foreach ($valid_search as $search) {
             'spf',
             'sp',
             'sg',
-            'sr'
+            'sr',
         ];
         if (in_array($search, $insert_cloud)) {
             $column = str_replace(['sn', 'sd', 'si', 'ss', 'spf', 'sp', 'sg', 'sr'], ['name', 'descr', 'imdb', 'isbn', 'fuzzy', 'person', 'genre', 'role'], $search);

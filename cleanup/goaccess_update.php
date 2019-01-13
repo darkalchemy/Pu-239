@@ -23,7 +23,7 @@ function goaccess_cleanup($data)
     $text = " Run time: $run_time seconds";
     echo $text . "\n";
     if ($data['clean_log']) {
-        write_log("GO Access Cleanup: Completed" . $text);
+        write_log('GO Access Cleanup: Completed' . $text);
     }
 }
 

@@ -75,7 +75,7 @@ foreach ($last5torrents as $last5torrent) {
     }
 
     $block_id = "last_id_{$id}";
-    $latest_torrents .= torrent_tooltip_wrapper(htmlsafechars($name) . " ($year)", $id, $block_id, $name, $poster,  $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre);
+    $latest_torrents .= torrent_tooltip_wrapper(htmlsafechars($name) . " ($year)", $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $genre);
 }
 if (count($last5torrents) === 0) {
     $latest_torrents .= "

@@ -569,8 +569,8 @@ if ($action === 'avatar') {
 
     $HTMLOUT .= tr($lang['usercp_cats_sets'], "
                                             <select name='categorie_icon'>
-                                                <option value='1'" . (get_category_icons() == 1 ? ' selected' : '') . ">Default</option>
-                                            </select>", get_category_icons());
+                                                <option value='1'" . (get_category_icons() == 1 ? ' selected' : '') . '>Default</option>
+                                            </select>', get_category_icons());
     $HTMLOUT .= tr($lang['usercp_tor_perpage'], "
                                             <input type='text' class='w-25' name='torrentsperpage' value='{$CURUSER['torrentsperpage']}'>
                                             <div>{$lang['usercp_default']}</div>", 1);

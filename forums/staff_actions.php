@@ -440,7 +440,7 @@ switch ($staff_action) {
             //=== should I delete attachments? or let the members have a management page? or do it in cleanup?
             sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($arr_count['post_count']) . ', topic_count = topic_count - 1 WHERE id = ' . sqlesc($arr_count['forum_id'])) or sqlerr(__FILE__, __LINE__);
 
-            for ($i = UC_MIN; $i <= UC_MAX; $i++) {
+            for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
                 $cache->delete('last_post_' . $arr_count['forum_id'] . '_' . $i);
             }
             header('Location: forums.php');

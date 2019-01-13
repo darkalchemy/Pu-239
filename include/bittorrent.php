@@ -1174,7 +1174,7 @@ function get_date(int $date, $method, $norelative = 0, $full_relative = 0, $calc
 /**
  * @param $num
  *
- * @return null|string
+ * @return string|null
  */
 function ratingpic($num)
 {
@@ -1475,7 +1475,6 @@ function check_user_status()
 {
     global $session;
 
-    dbconn();
     userlogin();
     if (!$session->validateToken($session->get('auth'), 'auth')) {
         $session->destroy();
@@ -1939,7 +1938,7 @@ function GetDirectorySize($path, $human, $count)
     if ($path !== false && !empty($path) && is_dir($path)) {
         foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)) as $object) {
             $bytestotal += $object->getSize();
-            $files++;
+            ++$files;
         }
     }
 
@@ -1966,7 +1965,7 @@ function GetDirectorySize($path, $human, $count)
 /**
  * @param $query
  *
- * @return null|string|string[]
+ * @return string|string[]|null
  */
 function formatQuery($query)
 {

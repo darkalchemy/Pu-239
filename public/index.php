@@ -204,16 +204,15 @@ if (!empty($left_column)) {
         $HTMLOUT .= wrap_it($item, ${$item});
     }
 
-    $HTMLOUT .= "
+    $HTMLOUT .= '
         </div>
-    </div>";
+    </div>';
 } else {
     $HTMLOUT .= "
     <div class='column is-hidden fl-3'>
         <div id='left_column' class='left_column'>
         </div>
     </div>";
-
 }
 
 $HTMLOUT .= "

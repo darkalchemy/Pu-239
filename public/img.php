@@ -6,7 +6,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
  * @param $root
  * @param $input
  *
- * @return bool|null|string
+ * @return bool|string|null
  */
 function valid_path($root, $input)
 {

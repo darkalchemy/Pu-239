@@ -50,8 +50,16 @@ $valid_actions = [
     'vieworiginal',
     'edit_comment',
     'delete_comment',
+    'add_bounty',
+    'pay_bounty',
 ];
 $action = (in_array($posted_action, $valid_actions) ? $posted_action : 'default');
+$bounty_note1 = 'Bounties are paid automatically 48 hours after uploaded, if not paid by the requestor before then.';
+$bounty_note2 = '1) You are responsible for ensuring that the torrent uploaded matches this request. If not, notify staff.<br>
+2) You are responsible for paying the bounties or challenging them as not metting your request.<br>
+3) If you do not pay the bounty within 48 hours, or challenge them, the system will force them paid.<br>
+4) After the bounties have been paid, they are not reversable.';
+
 $top_menu = '
     <div>
         <ul class="level-center bg-06 bottom20">
@@ -97,7 +105,7 @@ switch ($action) {
         if ($count === 0) {
             stderr('Error!', 'Sorry, there are no current requests!');
         }
-        $HTMLOUT .= (isset($_GET['new']) ? '<h1>Request Added!</h1>' : '') . (isset($_GET['offer_deleted']) ? '<h1>Request Deleted!</h1>' : '') . $top_menu . '' . ($count > $perpage ? $menu_top : '');
+        $HTMLOUT .= (isset($_GET['new']) ? '<h1>Request Added!</h1>' : '') . (isset($_GET['request_deleted']) ? '<h1>Request Deleted!</h1>' : '') . $top_menu . '' . ($count > $perpage ? $menu_top : '');
         $heading = '
         <tr>
             <th>Type</th>
@@ -123,7 +131,7 @@ switch ($action) {
             <td>' . ($main_query_arr['filled_by_user_id'] > 0 ? '<a href="details.php?id=' . (int) $main_query_arr['filled_torrent_id'] . '" title="go to torrent page!!!"><span>yes!</span></a>' : '<span>no</span>') . '</td>
         </tr>';
         }
-        $HTMLOUT .= !empty($body) ? main_table($body, $heading) : main_div('<div class="padding20 has-text-centered">There are no offers</div>');
+        $HTMLOUT .= !empty($body) ? main_table($body, $heading) : main_div('<div class="padding20 has-text-centered">There are no requests</div>');
         $HTMLOUT .= $count > $perpage ? $menu_bottom : '';
 
         echo stdhead('Requests', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
@@ -297,7 +305,7 @@ switch ($action) {
     <td colspan="2"><h1>Making a Request</h1></td>
     </tr>
     <tr>
-    <td colspan="2">Before you make an request, <a class="altlink" href="search.php">Search</a>
+    <td colspan="2">Before you make an request, <a class="altlink" href="browse.php">Search</a>
     to be sure it has not yet been requested, offered, or uploaded!<br><br>Be sure to fill in all fields!
     <div class="has-text-centered error size_6 margin20"><span></span></div>
     </td>

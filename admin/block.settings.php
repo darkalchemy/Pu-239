@@ -743,7 +743,6 @@ $contents[] = "
                             </div>
                             <div class='w-100'>{$lang['anidb_api_set']}</div>";
 
-
 $level4 = "
                 <div class='level-center'>";
 

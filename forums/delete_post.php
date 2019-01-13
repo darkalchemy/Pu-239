@@ -42,7 +42,7 @@ if ($sanity_check > 0) {
         sql_query('UPDATE usersachiev SET forumposts = forumposts - 1 WHERE userid = ' . sqlesc($arr_post['user_id'])) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($arr['forum_id']);
         clr_forums_cache($post_id);
-        for ($i = UC_MIN; $i <= UC_MAX; $i++) {
+        for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
             $cache->delete('last_post_' . $arr['forum_id'] . '_' . $i);
         }
     } else {

@@ -294,7 +294,7 @@ $site_config['notifications'] = [
 
 $site_config['tagline'] = [
     'banner' => $site_config['variant'] . ' Code',
-    'tagline' => 'Making progress, 1 day at a time...'
+    'tagline' => 'Making progress, 1 day at a time...',
 ];
 $site_config['video_banners'] = [];
 $site_config['banners'] = [];

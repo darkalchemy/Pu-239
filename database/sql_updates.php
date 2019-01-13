@@ -1726,7 +1726,7 @@ CREATE TABLE `categories` (
         'id' => 1545578443,
         'info' => 'Update column userdetails_page',
         'date' => '23 Dec, 2018',
-        'query' => "ALTER TABLE `user_blocks` MODIFY COLUMN `userdetails_page` int(10) unsigned NOT NULL DEFAULT 2147483647",
+        'query' => 'ALTER TABLE `user_blocks` MODIFY COLUMN `userdetails_page` int(10) unsigned NOT NULL DEFAULT 2147483647',
         'flush' => false,
     ],
     [
@@ -1740,7 +1740,7 @@ CREATE TABLE `categories` (
         'id' => 1545581160,
         'info' => 'Drop anidb_titles table',
         'date' => '23 Dec, 2018',
-        'query' => "DROP TABLE `anidb_titles`",
+        'query' => 'DROP TABLE `anidb_titles`',
         'flush' => false,
     ],
     [
@@ -1807,13 +1807,13 @@ CREATE TABLE `categories` (
         'id' => 1545843308,
         'info' => 'Add imdb_person table',
         'date' => '26 Dec, 2018',
-        'query' => "CREATE TABLE `imdb_person` (
+        'query' => 'CREATE TABLE `imdb_person` (
   `imdb_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
   `person_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`imdb_id`),
   KEY (`person_id`),
   UNIQUE KEY `id_person` (`imdb_id`, `person_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;",
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;',
         'flush' => false,
     ],
     [
@@ -1841,42 +1841,42 @@ CREATE TABLE `categories` (
         'id' => 1545881588,
         'info' => 'Add imdb_person table',
         'date' => '26 Dec, 2018',
-        'query' => "CREATE TABLE `imdb_person` (
+        'query' => 'CREATE TABLE `imdb_person` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `imdb_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
   `person_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY (`person_id`),
   UNIQUE KEY `id_person` (`imdb_id`, `person_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;",
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;',
         'flush' => true,
     ],
     [
         'id' => 1545935993,
         'info' => 'Change column to smallint',
         'date' => '27 Dec, 2018',
-        'query' => "UPDATE `torrents` SET `year` = 0 WHERE `year` IS NULL",
+        'query' => 'UPDATE `torrents` SET `year` = 0 WHERE `year` IS NULL',
         'flush' => false,
     ],
     [
         'id' => 1545935994,
         'info' => 'Change column to smallint',
         'date' => '27 Dec, 2018',
-        'query' => "ALTER TABLE `torrents` MODIFY COLUMN `year` smallint NOT NULL DEFAULT 0",
+        'query' => 'ALTER TABLE `torrents` MODIFY COLUMN `year` smallint NOT NULL DEFAULT 0',
         'flush' => false,
     ],
     [
         'id' => 1546167289,
         'info' => 'Add column updated',
         'date' => '30 Dec, 2018',
-        'query' => "ALTER TABLE `images` ADD COLUMN `updated` int(10) unsigned DEFAULT 0",
+        'query' => 'ALTER TABLE `images` ADD COLUMN `updated` int(10) unsigned DEFAULT 0',
         'flush' => false,
     ],
     [
         'id' => 1546167290,
         'info' => 'Add column checked',
         'date' => '30 Dec, 2018',
-        'query' => "ALTER TABLE `images` ADD COLUMN `checked` int(10) unsigned DEFAULT 0",
+        'query' => 'ALTER TABLE `images` ADD COLUMN `checked` int(10) unsigned DEFAULT 0',
         'flush' => false,
     ],
     [
@@ -1890,21 +1890,21 @@ CREATE TABLE `categories` (
         'id' => 1546167292,
         'info' => 'Add column info_updated',
         'date' => '30 Dec, 2018',
-        'query' => "ALTER TABLE `torrents` ADD COLUMN `info_updated` int(10) unsigned DEFAULT 0",
+        'query' => 'ALTER TABLE `torrents` ADD COLUMN `info_updated` int(10) unsigned DEFAULT 0',
         'flush' => false,
     ],
     [
         'id' => 1546167293,
         'info' => 'Add column updated',
         'date' => '30 Dec, 2018',
-        'query' => "ALTER TABLE `requests` ADD COLUMN `updated` int(10) unsigned DEFAULT 0",
+        'query' => 'ALTER TABLE `requests` ADD COLUMN `updated` int(10) unsigned DEFAULT 0',
         'flush' => false,
     ],
     [
         'id' => 1546167294,
         'info' => 'Add column updated',
         'date' => '30 Dec, 2018',
-        'query' => "ALTER TABLE `offers` ADD COLUMN `updated` int(10) unsigned DEFAULT 0",
+        'query' => 'ALTER TABLE `offers` ADD COLUMN `updated` int(10) unsigned DEFAULT 0',
         'flush' => false,
     ],
     [
@@ -1925,49 +1925,49 @@ CREATE TABLE `categories` (
         'id' => 1546304347,
         'info' => 'Add imdb_id index',
         'date' => '31 Dec, 2018',
-        'query' => "ALTER TABLE `torrents` ADD INDEX `imdb_id`(`imdb_id`)",
+        'query' => 'ALTER TABLE `torrents` ADD INDEX `imdb_id`(`imdb_id`)',
         'flush' => false,
     ],
     [
         'id' => 1546304348,
         'info' => 'Add imdb_id index',
         'date' => '31 Dec, 2018',
-        'query' => "ALTER TABLE `person` ADD INDEX `imdb_id`(`imdb_id`)",
+        'query' => 'ALTER TABLE `person` ADD INDEX `imdb_id`(`imdb_id`)',
         'flush' => false,
     ],
     [
         'id' => 1546304349,
         'info' => 'Add imdb_id index',
         'date' => '31 Dec, 2018',
-        'query' => "ALTER TABLE `imdb_person` ADD INDEX `imdb_id`(`imdb_id`)",
+        'query' => 'ALTER TABLE `imdb_person` ADD INDEX `imdb_id`(`imdb_id`)',
         'flush' => false,
     ],
     [
         'id' => 1546304350,
         'info' => 'Add index staff_picks',
         'date' => '31 Dec, 2018',
-        'query' => "ALTER TABLE `torrents` ADD INDEX `staff_picks`(`staff_picks`)",
+        'query' => 'ALTER TABLE `torrents` ADD INDEX `staff_picks`(`staff_picks`)',
         'flush' => false,
     ],
     [
         'id' => 1546304351,
         'info' => 'Add index sticky',
         'date' => '31 Dec, 2018',
-        'query' => "ALTER TABLE `torrents` ADD INDEX `sticky`(`sticky`)",
+        'query' => 'ALTER TABLE `torrents` ADD INDEX `sticky`(`sticky`)',
         'flush' => false,
     ],
     [
         'id' => 1546304352,
         'info' => 'Add index added',
         'date' => '31 Dec, 2018',
-        'query' => "ALTER TABLE `torrents` ADD INDEX `added`(`added`)",
+        'query' => 'ALTER TABLE `torrents` ADD INDEX `added`(`added`)',
         'flush' => false,
     ],
     [
         'id' => 1546304353,
         'info' => 'Alter column where_is',
         'date' => '31 Dec, 2018',
-        'query' => "ALTER TABLE `users` MODIFY COLUMN `where_is` text COLLATE utf8mb4_unicode_ci",
+        'query' => 'ALTER TABLE `users` MODIFY COLUMN `where_is` text COLLATE utf8mb4_unicode_ci',
         'flush' => false,
     ],
     [
@@ -1981,7 +1981,7 @@ CREATE TABLE `categories` (
         'id' => 1546304356,
         'info' => 'Add table',
         'date' => '31 Dec, 2018',
-        'query' => "CREATE TABLE `imdb_role` (
+        'query' => 'CREATE TABLE `imdb_role` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `imdb_id` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1989,7 +1989,7 @@ CREATE TABLE `categories` (
   UNIQUE KEY `imdb_name` (`imdb_id`, `name`),
   KEY `name` (`name`),
   FULLTEXT KEY `ft_name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;",
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;',
         'flush' => false,
     ],
     [
@@ -2017,7 +2017,7 @@ CREATE TABLE `categories` (
         'id' => 1546436826,
         'info' => 'Modify column nfo',
         'date' => '02 Jan, 2019',
-        'query' => "ALTER TABLE `torrents` MODIFY COLUMN `nfo` BLOB DEFAULT NULL",
+        'query' => 'ALTER TABLE `torrents` MODIFY COLUMN `nfo` BLOB DEFAULT NULL',
         'flush' => false,
     ],
     [

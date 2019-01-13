@@ -11,7 +11,7 @@ $author = isset($_GET['author']) ? trim(htmlsafechars($_GET['author'])) : '';
 $valid = [
     'body',
     'title',
-    'all'
+    'all',
 ];
 $search_what = !empty($_GET['search_what']) && in_array($_GET['search_what'], $valid) ? $_GET['search_what'] : 'all';
 $search_when = isset($_GET['search_when']) ? intval($_GET['search_when']) : 0;
@@ -69,7 +69,7 @@ if ($search || $author_id) {
         ->where('f.min_class_read <= ?', $CURUSER['class'])
         ->leftJoin('topics AS t ON p.topic_id = t.id')
         ->leftJoin('forums AS f ON t.forum_id = f.id');
-    if($CURUSER['class'] < UC_STAFF) {
+    if ($CURUSER['class'] < UC_STAFF) {
         $count = $count->where('p.status = "ok"')
             ->where('t.status = "ok"');
         $results = $results->where('p.status = "ok"')
@@ -82,33 +82,32 @@ if ($search || $author_id) {
     }
     if (!empty($search)) {
         if ($search_what === 'all') {
-/*
-            $count = $count->whereOr([
-                'MATCH (p.body) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search,
-                'MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search,
-                'MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search
-            ]);
-            $results = $results->whereOr([
-                'MATCH (p.body) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search,
-                'MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search,
-                'MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search
-            ]);
-*/
+            /*
+                        $count = $count->whereOr([
+                            'MATCH (p.body) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search,
+                            'MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search,
+                            'MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search
+                        ]);
+                        $results = $results->whereOr([
+                            'MATCH (p.body) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search,
+                            'MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search,
+                            'MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE)' => $search
+                        ]);
+            */
             $count = $count->where('(MATCH (p.body) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE))', [$search, $search, $search]);
             $results = $results->where('(MATCH (p.body) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE))', [$search, $search, $search]);
         } elseif ($search_what === 'body') {
             $count = $count->where('MATCH (p.body) AGAINST (? IN NATURAL LANGUAGE MODE)', $search);
             $results = $results->where('MATCH (p.body) AGAINST (? IN NATURAL LANGUAGE MODE)', $search);
         } elseif ($search_what === 'title') {
-/*
-            $count = $count->where('MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE)', $search)
-                ->where('MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE)', $search);
-            $results = $results->where('MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE)', $search)
-                ->where('MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE)', $search);
-*/
+            /*
+                        $count = $count->where('MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE)', $search)
+                            ->where('MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE)', $search);
+                        $results = $results->where('MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE)', $search)
+                            ->where('MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE)', $search);
+            */
             $count = $count->where('(MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE))', [$search, $search]);
             $results = $results->where('(MATCH (p.post_title) AGAINST (? IN NATURAL LANGUAGE MODE) OR MATCH (t.topic_name) AGAINST (? IN NATURAL LANGUAGE MODE))', [$search, $search]);
-
         }
     }
 
@@ -272,7 +271,7 @@ if ($search || $author_id) {
             </td>
             <td>
                 <span style="white-space:nowrap;">' . $post_icon . '
-                    <a class="altlink tooltipper" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '&amp;page=' . $page . '#' . $arr['post_id'] . '" title="Link to Post">' . 
+                    <a class="altlink tooltipper" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '&amp;page=' . $page . '#' . $arr['post_id'] . '" title="Link to Post">' .
                     $post_title . '
                     </a>
                     <span class="left20">' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span>

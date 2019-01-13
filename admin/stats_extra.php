@@ -268,7 +268,7 @@ function result_screen($mode = 'reg')
         ->select("DATE_FORMAT(FROM_UNIXTIME($sql_field), '$sql_date') AS result_time")
         ->where("$sql_field >= $from_time")
         ->where("$sql_field <= $to_time")
-        ->groupBy("result_time")
+        ->groupBy('result_time')
         ->fetchAll();
 
     $count = !empty($count) ? count($count) : 0;
@@ -285,7 +285,7 @@ function result_screen($mode = 'reg')
         ->select("DATE_FORMAT(FROM_UNIXTIME($sql_field), '$sql_date') AS result_time")
         ->where("$sql_field >= $from_time")
         ->where("$sql_field <= $to_time")
-        ->groupBy("result_time")
+        ->groupBy('result_time')
         ->orderBy("result_maxdate $sort_by")
         ->limit($pager['pdo'])
         ->fetchAll();
@@ -480,9 +480,9 @@ function make_select($name, $in = [], $default = '')
         $html .= "
                 <option value='{$v[0]}'{$selected}>{$v[1]}</option>";
     }
-    $html .= "
+    $html .= '
             </select>
-            </div>";
+            </div>';
 
     return $html;
 }

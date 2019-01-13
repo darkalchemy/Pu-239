@@ -217,7 +217,7 @@ class AJAXChatEncoding
     /**
      * @param $c
      *
-     * @return null|string
+     * @return string|null
      */
     public static function unicodeChar($c)
     {

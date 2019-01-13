@@ -41,7 +41,7 @@ foreach ($query as $arr2) {
  * @param $staff_array
  * @param $staffclass
  *
- * @return null|string
+ * @return string|null
  */
 function DoStaff($staff_array, $staffclass)
 {

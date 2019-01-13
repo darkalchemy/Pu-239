@@ -59,9 +59,9 @@ if ($left !== 5) {
                 {$site_config['failedlogins']} {$lang['login_failed']}
             </h3>
             <h3>
-                {$lang['login_failed_1']} $text " . sprintf($lang['login_failed_2'], plural($left)) . "
+                {$lang['login_failed_1']} $text " . sprintf($lang['login_failed_2'], plural($left)) . '
             </h3>
-        </div>", 'w-50 has-text-centered bottom20');
+        </div>', 'w-50 has-text-centered bottom20');
 }
 $HTMLOUT .= "
             <form id='site_login' class='form-inline table-wrapper' method='post' action='{$site_config['baseurl']}/takelogin.php'>

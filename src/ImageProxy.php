@@ -131,14 +131,14 @@ class ImageProxy
         if (mime_content_type($path) !== 'image/gif') {
             $temp = '/dev/shm/temp.jpg';
             if ($debug) {
-                 'Filesize before: ' .  filesize($path) . "\n";
+                'Filesize before: ' . filesize($path) . "\n";
             }
             $optimizerChain = OptimizerChainFactory::create();
             try {
                 $optimizerChain->setTimeout(5)->optimize($path, $temp);
                 rename($temp, $path);
                 if ($debug) {
-                    echo 'Filesize after: ' .  filesize($path) . "\n";
+                    echo 'Filesize after: ' . filesize($path) . "\n";
                 }
             } catch (\Exception $e) {
                 unlink($temp);

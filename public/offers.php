@@ -302,7 +302,7 @@ switch ($action) {
     <table class="table table-bordered table-striped">
     <tbody>
     <tr>
-    <td colspan="2">Before you make an offer, <a class="altlink" href="search.php">Search</a>
+    <td colspan="2">Before you make an offer, <a class="altlink" href="browse.php">Search</a>
     to be sure it has not yet been requested, offered, or uploaded!<br><br>
     Be sure to fill in all fields!
     <div class="has-text-centered error size_6 margin20"><span></span></div>

@@ -426,7 +426,7 @@ switch ($action) {
         $i = 0;
         foreach ($children as $child) {
             foreach ($parents as $parent) {
-                $i++;
+                ++$i;
                 $parent['children_ids'][] = $parent['real_forum_id'];
                 if ($parent['real_forum_id'] === $child['parent_forum']) {
                     $original = $parent;

@@ -94,13 +94,13 @@ $html .= "
 $body = "
                 <ul class='padding20'>
                     <li>Tickets are non-refundable</li>
-                    <li>Each ticket costs <b>" . number_format($lottery_config['ticket_amount']) . "</b> Karma Bonus Points, which is taken from your seedbonus amount</li>
+                    <li>Each ticket costs <b>" . number_format($lottery_config['ticket_amount']) . '</b> Karma Bonus Points, which is taken from your seedbonus amount</li>
                     <li>Purchaseable shows how many tickets you can afford to purchase.</li>
                     <li>You can only buy up to your purchaseable amount.</li>
-                    <li>The competiton will end: <b>" . get_date($lottery_config['end_date'], 'LONG') . "</b></li>
-                    <li>There will be <b>" . $lottery_config['total_winners'] . "</b> winner(s) who will be picked at random.</li>
-                    <li>Winner(s) will get <b>" . number_format($lottery['per_user']) . "</b> added to their seedbonus amount</li>
-                    <li>The Winners will be announced once the lottery has closed and posted on the home page.</li>";
+                    <li>The competiton will end: <b>' . get_date($lottery_config['end_date'], 'LONG') . '</b></li>
+                    <li>There will be <b>' . $lottery_config['total_winners'] . '</b> winner(s) who will be picked at random.</li>
+                    <li>Winner(s) will get <b>' . number_format($lottery['per_user']) . '</b> added to their seedbonus amount</li>
+                    <li>The Winners will be announced once the lottery has closed and posted on the home page.</li>';
 if (!$lottery_config['use_prize_fund']) {
     $body .= '
                     <li>The more tickets that are sold the bigger the pot will be !</li>';
@@ -109,12 +109,12 @@ if (!empty($lottery['current_user']['tickets']) && count($lottery['current_user'
     $body .= '
                     <li>You own ticket numbers : <b>' . implode('</b>, <b>', $lottery['current_user']['tickets']) . '</b></li>';
 }
-$body .= "
-                </ul>";
-$table = "
+$body .= '
+                </ul>';
+$table = '
             <tr>
                 <td>Total Pot</td>
-                <td>" . number_format($lottery['total_pot']) . '</td>
+                <td>' . number_format($lottery['total_pot']) . '</td>
             </tr>
             <tr>
                 <td>Total Tickets Purchased</td>

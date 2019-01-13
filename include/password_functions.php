@@ -51,7 +51,6 @@ function get_options()
         ];
     }
 
-
     return [
         'algo' => $algo,
         'options' => $options,
