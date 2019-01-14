@@ -51,10 +51,10 @@ switch (true) {
             $lottery_config[$ac['name']] = $ac['value'];
         }
         if (!$lottery_config['enable']) {
-            $html .= stdmsg('Sorry', 'Lottery is closed at the moment');
+            $html .= stdmsg('Sorry', 'Lottery is closed at the moment', 'bottom20');
         } elseif ($lottery_config['end_date'] > TIME_NOW) {
-            $html .= stdmsg('Lottery in progress', 'Lottery started on <b>' . get_date($lottery_config['start_date'], 'LONG') . '</b> and ends on <b>' . get_date($lottery_config['end_date'], 'LONG') . '</b> remaining <span>' . mkprettytime($lottery_config['end_date'] - TIME_NOW) . "</span><br>
-       <p class='top10'>" . ($CURUSER['class'] >= $valid['viewtickets']['minclass'] ? "<a href='{$site_config['baseurl']}/lottery.php?action=viewtickets' class='button is-small margin10'>View bought tickets</a>" : '') . "<a href='{$site_config['baseurl']}/lottery.php?action=tickets' class='button is-small margin10'>Buy tickets</a></p>");
+            $html .= stdmsg('Lottery in progress', '<div>Lottery started on <b>' . get_date($lottery_config['start_date'], 'LONG') . '</b> and ends on <b>' . get_date($lottery_config['end_date'], 'LONG') . '</b> remaining <span>' . mkprettytime($lottery_config['end_date'] - TIME_NOW) . "</span></div>
+       <div class='top10'>" . ($CURUSER['class'] >= $valid['viewtickets']['minclass'] ? "<a href='{$site_config['baseurl']}/lottery.php?action=viewtickets' class='button is-small margin10'>View bought tickets</a>" : '') . "<a href='{$site_config['baseurl']}/lottery.php?action=tickets' class='button is-small margin10'>Buy tickets</a></div>", 'bottom20 has-text-centered');
         }
         //get last lottery data
         if (!empty($lottery_config['lottery_winners'])) {
@@ -68,16 +68,14 @@ switch (true) {
             $html .= stdmsg('Lottery Winners Info', '<ul><li>Last winners: ' . implode(', ', $last_winners) . '</li><li>Amount won    (each): ' . $lottery_config['lottery_winners_amount'] . '</li></ul><br>
         <p>' . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='{$site_config['baseurl']}/lottery.php?action=config' class='button is-small margin10'>Lottery configuration</a>" : 'Nothing Configured Atm Sorry') . '</p>', 'top20');
         } else {
-            $html .= "
-                    <div class='bordered top20'>
-                        <div class='alt_bordered bg-00'>
-                            <ul>
-                                <li>Nobody has won, because nobody has played yet :)</li>
-                            </ul>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "
-                            <a href='{$site_config['baseurl']}/lottery.php?action=config' class='button is-small margin10'>Lottery configuration</a>" : '
-                            <span>Nothing Configured Atm Sorry.</span>') . '
-                        </div>
-                    </div>';
+            $html .= main_div("
+                        <div class='padding20 has-text-centered'>
+                            <div class='bottom20'>
+                                Nobody has won, because nobody has played yet :)
+                            </div>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "
+                            <a href='{$site_config['baseurl']}/lottery.php?action=config' class='button is-small'>Lottery configuration</a>" : "
+                            <span>Nothing Configured ATM Sorry.</span>") . "
+                        </div>");
         }
 
         echo stdhead('Lottery') . wrapper($html) . stdfoot();

@@ -123,7 +123,7 @@ $HTMLOUT .= main_table('
                 <span>' . $lang['fe_name'] . '</span>
             </td>
             <td>
-                <input type="text" name="topic_name" value="' . trim(strip_tags($topic_name)) . '" class="w-100" placeholder="required">
+                <input type="text" maxlength="120" name="topic_name" value="' . trim(strip_tags($topic_name)) . '" class="w-100"    placeholder="required" required>
             </td>
         </tr>' : '') . '
         <tr>

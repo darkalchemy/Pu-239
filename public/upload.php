@@ -155,12 +155,12 @@ $HTMLOUT .= "
             </tr>
             <tr>
                 <td class='rowhead'>{$lang['upload_name']}</td>
-                <td><input type='text' id='name' name='name' value='$name' class='w-100' required><br>({$lang['upload_filename']})</td>
+                <td><input type='text' id='name' name='name' maxlength='255' value='$name' class='w-100' required><br>({$lang['upload_filename']})</td>
             </tr>
             <tr>
                 <td class='rowhead'>{$lang['upload_imdb_url']}</td>
                 <td>
-                    <input type='url' id='url' name='url' class='w-100' data-csrf='" . $session->get('csrf_token') . "' value='{$url}'><br>
+                    <input type='url' id='url' name='url' maxlength='80' class='w-100' data-csrf='" . $session->get('csrf_token') . "' value='{$url}'><br>
                     {$lang['upload_imdb_tfi']}{$lang['upload_imdb_rfmo']}
                     <div id='imdb_outer'></div>
                 </td>
@@ -168,7 +168,7 @@ $HTMLOUT .= "
             <tr>
                 <td class='rowhead'>{$lang['upload_isbn']}</td>
                 <td>
-                    <input type='text' id='isbn' name='isbn' class='w-100' data-csrf='" . $session->get('csrf_token') . "' value='$isbn'><br>
+                    <input type='text' id='isbn' name='isbn' maxlength='13' class='w-100' data-csrf='" . $session->get('csrf_token') . "' value='$isbn'><br>
                     {$lang['upload_isbn_details']}
                     <div id='isbn_outer'></div>
                 </td>
@@ -176,14 +176,14 @@ $HTMLOUT .= "
             <tr>
                 <td class='rowhead'>{$lang['upload_poster']}</td>
                 <td>
-                    <input type='url' id='poster' name='poster' class='w-100' value='$poster'>
+                    <input type='url' id='poster' maxlength='255' name='poster' class='w-100' value='$poster'>
                     <br>{$lang['upload_poster1']}
                     <div class='poster_container has-text-centered'></div>
                 </td>
             </tr>
             <tr>
                 <td class='rowhead'>{$lang['upload_youtube']}</td>
-                <td><input type='url' id='youtube' name='youtube' class='w-100' value='$youtube'><br>({$lang['upload_youtube_info']})</td>
+                <td><input type='url' id='youtube' name='youtube' maxlength='45' class='w-100' value='$youtube'><br>({$lang['upload_youtube_info']})</td>
             </tr>
             <tr>
                 <td class='rowhead'><b>{$lang['upload_bitbucket']}</b></td>

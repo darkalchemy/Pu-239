@@ -168,7 +168,6 @@ $site_config['pic_baseurl_chat'] = $site_config['baseurl'] . DIRECTORY_SEPARATOR
 $site_config['stylesheet'] = 1;
 $site_config['categorie_icon'] = 1;
 $site_config['comment_check'] = 1; // set it to 0 if you wanna allow commenting with out staff checking
-$site_config['imdb_language'] = 'en-US';
 // for imdb, tmdb, fanart, subs, youtube
 $site_config['movie_cats'] = [
     13,
@@ -302,7 +301,7 @@ $site_config['query_limit'] = 65536; // mysql placeholder limit
 
 // Auto Lottery, you must first start a lottery, then this will restart it based on the settings below
 $site_config['auto_lotto'] = [
-    'enable' => 1,
+    'enable' => 0,
     'use_prize_fund' => 1,
     'prize_fund' => 1000000,
     'ticket_amount' => 100,
@@ -322,3 +321,11 @@ $site_config['auto_lotto'] = [
 ];
 
 $site_config['upload_min_class'] = UC_UPLOADER; // min class allowed to upload
+$site_config['imdb_language'] = 'en-US';
+$site_config['tmdb_language'] = 'en';
+$site_config['tmdb_movie_language'] = 'en-US';
+$site_config['tmdb_movie_region'] = 'US';
+// if this array is empty, then all images will be retrieved from fanart.tv, else only specific languages
+$site_config['image_lang'] = [
+    'en',
+];

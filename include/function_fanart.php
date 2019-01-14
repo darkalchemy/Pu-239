@@ -11,7 +11,7 @@
  */
 function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
 {
-    global $BLOCKS, $fluent;
+    global $BLOCKS, $fluent, $site_config;
 
     if (!$BLOCKS['fanart_api_on']) {
         return false;
@@ -45,7 +45,7 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
     if (!empty($fanart[$type])) {
         $images = [];
         foreach ($fanart[$type] as $image) {
-            if (empty($image['lang']) || $image['lang'] === 'en') {
+            if (!empty($site_config['image_lang']) && (empty($image['lang']) || in_array($image['lang'], $site_config['image_lang']))) {
                 if ($season != 0) {
                     if ($image['season'] == $season) {
                         $images[] = $image['url'];
@@ -53,6 +53,8 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
                 } else {
                     $images[] = $image['url'];
                 }
+            } elseif (empty($site_config['image_lang'])) {
+                $images[] = $image['url'];
             }
         }
         if (!empty($images)) {
@@ -94,7 +96,7 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
  */
 function getMovieImagesByID($id, $type = 'moviebackground')
 {
-    global $BLOCKS, $image_stuffs;
+    global $BLOCKS, $image_stuffs, $site_config;
 
     if (!$BLOCKS['fanart_api_on']) {
         return false;
@@ -121,13 +123,16 @@ function getMovieImagesByID($id, $type = 'moviebackground')
     if (!empty($fanart[$type])) {
         $images = [];
         foreach ($fanart[$type] as $image) {
-            if (empty($image['lang']) || $image['lang'] === 'en') {
-                $images[] = [
-                    'imdb_id' => $fanart['imdb_id'],
-                    'tmdb_id' => $fanart['tmdb_id'],
-                    'url' => $image['url'],
-                    'type' => str_replace('movie', '', $type),
-                ];
+            $image = [
+                'imdb_id' => $fanart['imdb_id'],
+                'tmdb_id' => $fanart['tmdb_id'],
+                'url' => $image['url'],
+                'type' => str_replace('movie', '', $type),
+            ];
+            if (!empty($site_config['image_lang']) && (empty($image['lang']) || in_array($image['lang'], $site_config['image_lang']))) {
+                $images[] = $images;
+            } elseif (empty($site_config['image_lang'])) {
+                $images[] = $images;
             }
         }
         if (!empty($images)) {

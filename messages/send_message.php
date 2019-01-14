@@ -174,7 +174,7 @@ if ($receiver) {
         <input type='hidden' name='receiver' id='receiver' value=''>
         <h1>
             Send {$lang['pm_send_msgto']}
-            <input type='text' id='user_search' class='w-50' data-csrf='" . $session->get('csrf_token') . "' placeholder='Begin typing username' onkeyup='usersearch()'>
+            <input type='text' id='user_search' maxlength='64' class='w-50' data-csrf='" . $session->get('csrf_token') . "' placeholder='Begin typing username' onkeyup='usersearch()'>
         </h1>";
 }
 $HTMLOUT .= "

@@ -753,10 +753,10 @@ function get_imdb_person($person_id)
             $imdb_person['photo'] = $data;
         }
 
+        $imdb_person['imdb_id'] = $person_id;
         $imdb_person['updated'] = TIME_NOW;
         $update = $imdb_person;
         unset($update['name']);
-
         $fluent->insertInto('person', $imdb_person)
             ->onDuplicateKeyUpdate($update)
             ->execute();

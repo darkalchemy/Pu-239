@@ -76,11 +76,11 @@ if (!empty($lottery_config)) {
                     </tr>
                     <tr>
                         <td>Prize Fund</td>
-                        <td><input type='text' name='prize_fund' value='{$lottery_config['prize_fund']}' class='w-100'></td>
+                        <td><input type='text' name='prize_fund' value='{$lottery_config['prize_fund']}' class='w-100' required></td>
                     </tr>
                     <tr>
                         <td>Ticket Amount</td>
-                        <td><input type='text' name='ticket_amount' value='{$lottery_config['ticket_amount']}' class='w-100'></td>
+                        <td><input type='text' name='ticket_amount' value='{$lottery_config['ticket_amount']}' class='w-100' required></td>
                     </tr>
                     <tr>
                         <td>Ticket Amount Type</td>
@@ -92,7 +92,7 @@ if (!empty($lottery_config)) {
                     </tr>
                     <tr>
                         <td>Amount Of Tickets Allowed</td>
-                        <td><input type='text' name='user_tickets' value='{$lottery_config['user_tickets']}' class='w-100'></td>
+                        <td><input type='text' name='user_tickets' value='{$lottery_config['user_tickets']}' class='w-100' required></td>
                     </tr>
                     <tr>
                         <td>Classes Allowed</td>
@@ -108,7 +108,7 @@ if (!empty($lottery_config)) {
                     </tr>
                     <tr>
                         <td>Total Winners</td>
-                        <td><input type='text' name='total_winners' value='{$lottery_config['total_winners']}' class='w-100'></td>
+                        <td><input type='text' name='total_winners' value='{$lottery_config['total_winners']}' class='w-100' required></td>
                     </tr>
                     <tr>
                         <td>Start Date</td>
@@ -124,7 +124,7 @@ if (!empty($lottery_config)) {
                         </td>
                     </tr>
                     <tr>
-                        <td>End Date</td>
+                        <td>Run Length</td>
                         <td>
                             <select name='end_date' class='w-100'>
                                 <option value='0'>------</option>";
