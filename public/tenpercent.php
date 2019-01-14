@@ -2,6 +2,8 @@
 
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+
 check_user_status();
 global $CURUSER, $site_config, $cache, $message_stuffs;
 
@@ -68,24 +70,42 @@ if ($CURUSER['tenpercent'] === 'yes') {
     stderr('Oops', 'It appears that you have already used your 10% addition');
     die();
 }
-$HTMLOUT .= "<h1>10&#37;</h1>
-<table class='table table-bordered table-striped'>
-<tr>
-<td>
+$HTMLOUT .= "<h1 class='has-text-centered'>10&#37;</h1>" . main_div("
 <p><b>How it works:</b></p>
-<p class='sub'>From this page you can <b>add 10&#37;</b> of your current upload amount to your upload amount bringing it it to <b>110%</b> of its current amount. More details about how this would work out for you can be found in the tables below.</p>
-<br><p><b>However, there are some things you should know first:</b></p><b>
-&#8226;&#160;This can only be done <b>once</b>, so chose your moment wisely.<br>
-&#8226;&#160;The staff will <b>not</b> reset your 10&#37; addition for any reason.<br><br>
-</b></td></tr></table>
-<table class='table table-bordered table-striped'>
-<tr><td class='normalheading'>Current&#160;upload&#160;amount:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($uploaded)) . "</td><td class='embedded' width='5%'></td><td class='normalheading'>Increase:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($newuploaded - $uploaded)) . "</td><td class='embedded' width='5%'></td><td class='normalheading'>New&#160;upload&#160;amount:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($newuploaded)) . "</td></tr>
-<tr><td class='normalheading'>Current&#160;download&#160;amount:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($downloaded)) . "</td><td class='embedded' width='5%'></td><td class='normalheading'>Increase:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize(0)) . "</td><td class='embedded' width='5%'></td><td class='normalheading'>New&#160;download&#160;amount:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($downloaded)) . "</td></tr>
-<tr><td class='normalheading'>Current&#160;ratio:</td><td class='normal'>$ratio</td><td class='embedded' width='5%'></td><td class='normalheading'>Increase:</td><td class='normal'>$ratiochange</td><td class='embedded' width='5%'></td><td class='normalheading'>New&#160;ratio:</td><td class='normal'>$newratio</td></tr>
-</table>
-<form name='tenpercent' method='post' action='tenpercent.php'>
-<table class='table table-bordered table-striped'>
-<tr><td><b>Yes please </b><input type='checkbox' name='sure' value='1' onclick='if (this.checked) enablesubmit(); else disablesubmit();'></td></tr>
-<tr><td><input type='submit' name='submit' value='Add 10%' class='button is-small' disabled></td></tr>
-</table></form>\n";
-echo stdhead('Ten Percent') . $HTMLOUT . stdfoot();
+<p class='sub'>From this page you can <b>add 10&#37;</b> of your current upload amount to your upload amount bringing it it to <b>110%</b> of its current amount. More details about how this would work out for you can be found in the tables below.</p><br>
+<p><b>However, there are some things you should know first:</b></p>
+&#8226; This can only be done <b>once</b>, so chose your moment wisely.<br>
+&#8226; The staff will <b>not</b> reset your 10&#37; addition for any reason.") . main_table("
+    <tr>
+        <td>Current upload amount:</td>
+        <td>" . mksize($uploaded) . "</td>
+        <td>Increase:</td>
+        <td>" . mksize($newuploaded - $uploaded) . "</td>
+        <td>New upload amount:</td>
+        <td>" . mksize($newuploaded) . "</td>
+    </tr>
+    <tr>
+        <td>Current download amount:</td>
+        <td>" . mksize($downloaded) . "</td>
+        <td>Increase:</td>
+        <td>" . mksize(0) . "</td>
+        <td>New download amount:</td><td>" . mksize($downloaded) . "</td>
+    </tr>
+    <tr>
+        <td>Current ratio:</td>
+        <td>$ratio</td>
+        <td>Increase:</td>
+        <td>$ratiochange</td>
+        <td>New ratio:</td>
+        <td>$newratio</td>
+    </tr>", '', 'top20 bottom20') . main_div("
+    <form name='tenpercent' method='post' action='tenpercent.php'>
+        <div class='has-text-centered padding10'>
+            <label for='sure'><b>Yes please </b></label>
+            <input type='checkbox' name='sure' value='1' onclick='if (this.checked) enablesubmit(); else disablesubmit();'>
+        </div>
+        <div class='has-text-centered padding10'>
+            <input type='submit' name='submit' value='Add 10%' class='button is-small' disabled>
+        </div>
+    </form>");
+echo stdhead('Ten Percent') . wrapper($HTMLOUT) . stdfoot();

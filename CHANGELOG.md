@@ -1,3 +1,7 @@
+### 14 Jan, 2019
+update: breadcrumbs  
+update: page style tenpercent.php  
+
 ### 13 Jan, 2019
 update: run php-cs-fixer  
 fix: incorrect lang vars used requests.php
