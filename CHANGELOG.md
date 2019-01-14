@@ -3,6 +3,7 @@ update: breadcrumbs
 update: page style tenpercent.php  
 
 ### 13 Jan, 2019
+fix: last_reset reset  
 update: run php-cs-fixer  
 fix: incorrect lang vars used requests.php
 
