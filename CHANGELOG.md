@@ -1,3 +1,6 @@
+### 15 Jan, 2019
+fix: upload.php  
+
 ### 14 Jan, 2019
 update: changes for Percona 8.0  
 update: tmdb and fanart languages set in site_config.php  
