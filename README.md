@@ -71,8 +71,8 @@ character-set-server = utf8mb4
 collation-server = utf8mb4_unicode_ci
 
 # add/modify these in [mysqld] to increase max size for index(required)
-innodb_file_format = Barracuda # MariaDB deprecated this in 10.2 and removed in 10.3
-innodb_large_prefix = 1 # MariaDB deprecated this in 10.2 and removed in 10.3
+innodb_file_format = Barracuda # Percona removed this in 8.0, MariaDB deprecated this in 10.2 and removed in 10.3
+innodb_large_prefix = 1 # Percona removed this in 8.0, MariaDB deprecated this in 10.2 and removed in 10.3
 innodb_file_per_table = 1
 
 # add/modify this in [mysqld] to increase payload capacity

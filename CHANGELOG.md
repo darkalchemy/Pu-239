@@ -1,4 +1,5 @@
 ### 14 Jan, 2019
+update: changes for Percona 8.0  
 update: tmdb and fanart languages set in site_config.php  
 update: some forms to maxlength, lots to go  
 fix: missing imdb_in function_imdb.php  

@@ -79,7 +79,7 @@ if ($mysql_test->connect_error) {
 $query = 'SELECT VERSION() AS ver';
 $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $query);
 $retval = shell_exec($sql);
-if (!preg_match('/10\.3\.\d+\-MariaDB/i', $retval)) {
+if (!preg_match('/10\.\d+\.\d+\-MariaDB|8\.\d+\.\d+/i', $retval)) {
     $query = 'SHOW VARIABLES LIKE "innodb_large_prefix"';
     $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $query);
     $retval = shell_exec($sql);
