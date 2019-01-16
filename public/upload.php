@@ -183,10 +183,6 @@ $HTMLOUT .= "
                 </td>
             </tr>
             <tr>
-                <td class='rowhead'>{$lang['upload_youtube']}</td>
-                <td><input type='url' id='youtube' name='youtube' maxlength='45' class='w-100' value='$youtube'><br>({$lang['upload_youtube_info']})</td>
-            </tr>
-            <tr>
                 <td class='rowhead'><b>{$lang['upload_bitbucket']}</b></td>
                 <td class='has-text-centered'>
                     <div id='droppable' class='droppable bg-03'>
@@ -197,6 +193,10 @@ $HTMLOUT .= "
                     </div>
                     <div class='output-wrapper output'></div>
                 </td>
+            </tr>
+            <tr>
+                <td class='rowhead'>{$lang['upload_youtube']}</td>
+                <td><input type='url' id='youtube' name='youtube' maxlength='45' class='w-100' value='$youtube'><br>({$lang['upload_youtube_info']})</td>
             </tr>
             <tr>
                 <td class='rowhead'>{$lang['upload_tags']}</td>

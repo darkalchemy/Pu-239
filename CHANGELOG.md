@@ -1,4 +1,5 @@
 ### 16 Jan, 2019
+update: require bitbucket for poster requests.php offers.php  
 update: require bitbucket for poster upload.php  
 
 ### 15 Jan, 2019

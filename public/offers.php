@@ -10,7 +10,7 @@ require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $user_stuffs, $fluent, $mysqli, $commentid;
 
-$lang = array_merge(load_language('global'), load_language('comment'));
+$lang = array_merge(load_language('global'), load_language('comment'), load_language('bitbucket'), load_language('upload'));
 $stdhead = [
     'css' => [
         get_file_name('sceditor_css'),
@@ -295,6 +295,10 @@ switch ($action) {
             header('Location: offers.php?action=offer_details&new=1&id=' . $new_offer_id);
             die();
         }
+        $stdfoot['js'] = array_merge($stdfoot['js'], [
+            get_file_name('dragndrop_js'),
+        ]);
+
         $HTMLOUT .= $top_menu . '
     <h1 class="has-text-centered">New Offer</h1>
     <div class="banner_container has-text-centered w-100"></div>
@@ -325,8 +329,21 @@ switch ($action) {
     <tr>
     <td>image:</td>
     <td>
-        <input type="url" id="poster" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="w-100" require>
+        <input type="url" id="image_url" data-csrf="' . $session->get('csrf_token') . '" placeholder="External Image URL" class="w-100" onchange=\'return grab_url(event)\'>
+        <input type="url" id="poster" maxlength="255" name="poster" class="w-100 is-hidden">
         <div class="poster_container has-text-centered"></div>
+    </td>
+    </tr>
+    <tr>
+    <td class="rowhead"><b>' . $lang["upload_bitbucket"] . '</b></td>
+    <td class="has-text-centered">
+        <div id="droppable" class="droppable bg-03">
+            <span id="comment">' . $lang["bitbucket_dragndrop"] . '</span>
+            <div id="loader" class="is-hidden">
+                <img src="' . $site_config["pic_baseurl"] . 'forums/updating.svg" alt="Loading...">
+            </div>
+        </div>
+        <div class="output-wrapper output"></div>
     </td>
     </tr>
     <tr>
