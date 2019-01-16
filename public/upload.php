@@ -176,7 +176,8 @@ $HTMLOUT .= "
             <tr>
                 <td class='rowhead'>{$lang['upload_poster']}</td>
                 <td>
-                    <input type='url' id='poster' maxlength='255' name='poster' class='w-100' value='$poster'>
+                    <input type='url' id='image_url' data-csrf='" . $session->get('csrf_token') . "' placeholder='External Image URL' class='w-100' onchange=\"return grab_url(event)\">
+                    <input type='url' id='poster' maxlength='255' name='poster' class='w-100 is-hidden' value='$poster'>
                     <br>{$lang['upload_poster1']}
                     <div class='poster_container has-text-centered'></div>
                 </td>
@@ -256,7 +257,7 @@ $rg = "
                 <option value='scene'" . ($release_group === 'scene' ? ' selected' : '') . '>Scene</option>
             </select>';
 $HTMLOUT .= tr($lang['upload_type'], $rg, 1);
-$HTMLOUT .= tr("{$lang['upload_anonymous']}", "<div class='level-left'><input type='checkbox' name='uplver' id='uplver' value='yes'" . ($uplver === 'yes' ? ' checked' : '') . "><label for='uplver' class='left5'>{$lang['upload_anonymous1']}</label></div>", 1);
+$HTMLOUT .= tr("{$lang['upload_anonymous']}", "<div class='level-left'><input type='checkbox' name='uplver' id='uplver' value='1'" . ($uplver ? ' checked' : '') . "><label for='uplver' class='left5'>{$lang['upload_anonymous1']}</label></div>", 1);
 if ($CURUSER['class'] === UC_MAX) {
     $HTMLOUT .= tr("{$lang['upload_comment']}", "<div class='level-left'><input type='checkbox' name='allow_comments' id='allow_comments' value='yes'" . ($allow_comments === 'yes' ? ' checked' : '') . "><label for='allow_comments' class='left5'>{$lang['upload_discom1']}</label></div>", 1);
 }
